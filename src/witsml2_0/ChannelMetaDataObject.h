@@ -61,14 +61,9 @@ namespace WITSML2_0_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~ChannelMetaDataObject() {}
 
-		/**
-		 * Gets wellbore dor
-		 *
-		 * @returns	Null if it fails, else the wellbore dor.
-		 */
-		gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const
+		COMMON_NS::DataObjectReference getWellboreDor() const
 		{
-			return static_cast<T*>(gsoapProxy2_1)->Wellbore;
+			return COMMON_NS::DataObjectReference(static_cast<T*>(gsoapProxy2_1)->Wellbore);
 		}
 
 		/**
@@ -93,13 +88,11 @@ namespace WITSML2_0_NS
 		}
 
 		/**
-		 * Get the Data Object Reference of the PropertyKind linked with this data object.
-		 *
-		 * @returns	Null if it fails, else the property kind dor.
-		 */
-		gsoap_eml2_1::eml21__DataObjectReference* getPropertyKindDor() const
+		* Get the Data Object Reference of the PropertyKind linked with this data object.
+		*/
+		COMMON_NS::DataObjectReference getPropertyKindDor() const
 		{
-			return static_cast<T*>(gsoapProxy2_1)->ChannelClass;
+			return COMMON_NS::DataObjectReference(static_cast<T*>(gsoapProxy2_1)->ChannelClass);
 		}
 
 		/**
@@ -109,7 +102,7 @@ namespace WITSML2_0_NS
 		 */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* getPropertyKind() const
 		{
-			return getRepository()->template getDataObjectByUuid<COMMON_NS::PropertyKind>(getPropertyKindDor()->Uuid);
+			return getRepository()->template getDataObjectByUuid<COMMON_NS::PropertyKind>(getPropertyKindDor()->getUuid());
 		}
 
 		/**

@@ -857,18 +857,44 @@ void HdfProxy::readArrayNdOfUCharValues(const std::string & datasetName, unsigne
 	readArrayNdOfValues(datasetName, values, H5T_NATIVE_UCHAR);
 }
 
-hid_t HdfProxy::openOrCreateRootGroup()
+hid_t HdfProxy::openOrCreateRootGroup(const std::string & rootGroup)
 {
-	return hdfFile;
-}
-
-hid_t HdfProxy::openOrCreateGroupInRootGroup(const string & groupName)
-{
-	if (openedGroups.find(groupName) != openedGroups.end()) {
-		return openedGroups.at(groupName);
+	if (!isOpened()) {
+		open();
 	}
 
-	const hid_t rootGroup = openOrCreateRootGroup();
+	if (openedGroups.find(rootGroup) != openedGroups.end()) {
+		return openedGroups.at(rootGroup);
+	}
+
+	H5O_info_t info;
+	const herr_t status = H5Oget_info_by_name(hdfFile, rootGroup.c_str(), &info, H5P_DEFAULT);
+
+	const hid_t result = status >= 0
+		? H5Gopen(hdfFile, rootGroup.c_str(), H5P_DEFAULT)
+		: H5Gcreate(hdfFile, rootGroup.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+	openedGroups[rootGroup] = result;
+	return result;
+}
+
+hid_t HdfProxy::openOrCreateGroupInRootGroup(const string & rootSlashGroup)
+{
+	if (openedGroups.find(rootSlashGroup) != openedGroups.end()) {
+		return openedGroups.at(rootSlashGroup);
+	}
+
+	// The first char must be a slash
+	if (rootSlashGroup.empty() || rootSlashGroup[0] != '/') {
+		throw std::invalid_argument("The group to create is not correct. It must be /rootGroup/groupName and it is : " + rootSlashGroup);
+	}
+
+	const size_t slashPos = rootSlashGroup.find("/", 1);
+	if (slashPos == std::string::npos){
+		throw std::invalid_argument("The group to create is not correct. It must be /rootGroup/groupName and it is : " + rootSlashGroup);
+	}
+	const std::string groupName = rootSlashGroup.substr(slashPos + 1);
+
+	const hid_t rootGroup = openOrCreateRootGroup(rootSlashGroup.substr(1, slashPos - 1));
 	if (rootGroup < 0) {
 		throw invalid_argument("The root group could not be opened or created in the hdf file.");
 	}
@@ -897,7 +923,7 @@ hid_t HdfProxy::openOrCreateGroupInRootGroup(const string & groupName)
 		}
 	}
 
-	openedGroups[groupName] = result;
+	openedGroups[rootSlashGroup] = result;
 	return result;
 }
 
@@ -953,7 +979,7 @@ void HdfProxy::writeGroupAttribute(const std::string & groupName,
 		if (values[i].size() > maxStringSize) maxStringSize = values[i].size();
 	}
 	maxStringSize++;
-	char* concat = new char[maxStringSize * values.size()];
+	std::unique_ptr<char[]> concat(new char[maxStringSize * values.size()]);
 	for (size_t i = 0; i < values.size(); ++i) {
 		for (unsigned int j = 0; j < maxStringSize; ++j) {
 			concat[j + i*maxStringSize] = values[i].size() > j ? values[i][j] : '\0';
@@ -965,8 +991,7 @@ void HdfProxy::writeGroupAttribute(const std::string & groupName,
 	const hid_t atype = H5Tcopy(H5T_C_S1);
 	H5Tset_size(atype, maxStringSize + 1);
 	const hid_t attribute_id = H5Acreate2(groupId, attributeName.c_str(), atype, aid, H5P_DEFAULT, H5P_DEFAULT);
-	H5Awrite(attribute_id, atype, concat);
-	delete[] concat;
+	H5Awrite(attribute_id, atype, concat.get());
 	H5Aclose(attribute_id);
 	H5Sclose(aid);
 	H5Tclose(atype);
@@ -1044,7 +1069,7 @@ void HdfProxy::writeDatasetAttribute(const std::string & datasetName,
 	for (size_t i = 0; i < values.size(); ++i) {
 		if (values[i].size() > maxStringSize) maxStringSize = values[i].size();
 	}
-	char* concat = new char[maxStringSize * values.size()];
+	std::unique_ptr<char[]> concat(new char[maxStringSize * values.size()]);
 	for (size_t i = 0; i < values.size(); ++i) {
 		for (unsigned int j = 0; j < maxStringSize; ++j) {
 			concat[j + i*maxStringSize] = values[i].size() > j ? values[i][j] : '\0';
@@ -1056,8 +1081,7 @@ void HdfProxy::writeDatasetAttribute(const std::string & datasetName,
 	const hid_t atype = H5Tcopy(H5T_C_S1);
 	H5Tset_size(atype, maxStringSize);
 	const hid_t attribute_id = H5Acreate2(dataset, attributeName.c_str(), atype, aid, H5P_DEFAULT, H5P_DEFAULT);
-	H5Awrite(attribute_id, atype, concat);
-	delete[] concat;
+	H5Awrite(attribute_id, atype, concat.get());
 	H5Aclose(attribute_id);
 	H5Sclose(aid);
 	H5Tclose(atype);

@@ -93,15 +93,15 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndic
 	xmlGridIndices->NullValue = gridIndicesNullValue;
 	xmlGridIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlGridIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
-	xmlGridIndices->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/GridIndices";
+	xmlGridIndices->Values->PathInHdfFile = getHdfGroup() + "/GridIndices";
 	rep->GridIndices = xmlGridIndices;
 	// HDF
-	hsize_t dimGridIndices[] = { rep->NodeCount };
-	hdfProxy->writeArrayNd(rep->uuid,
+	hsize_t dimGridIndices = rep->NodeCount;
+	hdfProxy->writeArrayNd(getHdfGroup(),
 		"GridIndices",
 		H5T_NATIVE_UINT,
 		gridIndices,
-		dimGridIndices, 1);
+		&dimGridIndices, 1);
 
 	// cellIndices
 	// XML
@@ -109,15 +109,15 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndic
 	xmlCellIndices->NullValue = -1;
 	xmlCellIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlCellIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
-	xmlCellIndices->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/CellIndices";
+	xmlCellIndices->Values->PathInHdfFile = getHdfGroup() + "/CellIndices";
 	rep->CellIndices = xmlCellIndices;
 	// HDF
-	hsize_t dimCellIndices[] = { cellCount };
-	hdfProxy->writeArrayNd(rep->uuid,
+	hsize_t dimCellIndices = cellCount;
+	hdfProxy->writeArrayNd(getHdfGroup(),
 		"CellIndices",
 		H5T_NATIVE_ULLONG,
 		cellIndices,
-		dimCellIndices, 1);
+		&dimCellIndices, 1);
 
 	// localFacePairPerCellIndices
 	// XML
@@ -125,15 +125,15 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndic
 	xmlLocalFacePairPerCellIndices->NullValue = localFacePairPerCellIndicesNullValue;
 	xmlLocalFacePairPerCellIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlLocalFacePairPerCellIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
-	xmlLocalFacePairPerCellIndices->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/LocalFacePairPerCellIndices";
+	xmlLocalFacePairPerCellIndices->Values->PathInHdfFile = getHdfGroup() + "/LocalFacePairPerCellIndices";
 	rep->LocalFacePairPerCellIndices = xmlLocalFacePairPerCellIndices;
 	// HDF
-	hsize_t dimLocalFacePerCellIndicesNullValue[] = { cellCount*2 };
-	hdfProxy->writeArrayNd(rep->uuid,
+	hsize_t dimLocalFacePerCellIndicesNullValue = cellCount*2;
+	hdfProxy->writeArrayNd(getHdfGroup(),
 		"LocalFacePairPerCellIndices",
 		H5T_NATIVE_UCHAR,
 		localFacePairPerCellIndices,
-		dimLocalFacePerCellIndicesNullValue, 1);
+		&dimLocalFacePerCellIndicesNullValue, 1);
 }
 
 ULONG64 BlockedWellboreRepresentation::getCellCount() const

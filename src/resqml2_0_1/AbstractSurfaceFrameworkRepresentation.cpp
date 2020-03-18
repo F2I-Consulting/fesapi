@@ -49,11 +49,11 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	xmlListOfContactRepresentations->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream ossForHdfContactRepresentations;
 	ossForHdfContactRepresentations << "contactIdentity_listOfContactRep_" << orgRep->ContactIdentity.size();
-	xmlListOfContactRepresentations->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdfContactRepresentations.str();
+	xmlListOfContactRepresentations->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdfContactRepresentations.str();
 	contactIdentity->ListOfContactRepresentations = xmlListOfContactRepresentations;
 	// ************ HDF *************
 	hsize_t dimContactRepresentations[1] = { contactCount };
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdfContactRepresentations.str(), H5T_NATIVE_UINT,
 		contactIndices,
 		dimContactRepresentations, 1);
@@ -78,11 +78,11 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	xmlListOfContactRepresentations->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream ossForHdfContactRepresentations;
 	ossForHdfContactRepresentations << "contactIdentity_listOfContactRep_" << orgRep->ContactIdentity.size();
-	xmlListOfContactRepresentations->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdfContactRepresentations.str();
+	xmlListOfContactRepresentations->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdfContactRepresentations.str();
 	contactIdentity->ListOfContactRepresentations = xmlListOfContactRepresentations;
 	// ************ HDF *************
 	hsize_t dimContactRepresentations[1] = { contactCount };
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdfContactRepresentations.str(), H5T_NATIVE_UINT,
 		contactIndices,
 		dimContactRepresentations, 1);
@@ -94,11 +94,11 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	xmlListOfIdenticalNodes->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream ossForHdfIdenticalNodes;
 	ossForHdfIdenticalNodes << "contactIdentity_listOfIdenticalNodes_" << orgRep->ContactIdentity.size();
-	xmlListOfIdenticalNodes->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdfIdenticalNodes.str();
+	xmlListOfIdenticalNodes->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdfIdenticalNodes.str();
 	contactIdentity->ListOfIdenticalNodes = xmlListOfIdenticalNodes;
 	// ************ HDF *************
 	hsize_t dimIdenticalNodes[2] = { identicalNodesCount, contactCount };
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdfIdenticalNodes.str(), H5T_NATIVE_UINT,
 		identicalNodesIndexes,
 		dimIdenticalNodes, 2);

@@ -18,47 +18,40 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractStratigraphicOrganizationInterpretation.h"
+#include "../resqml2/AbstractStratigraphicOrganizationInterpretation.h"
 #include "StratigraphicColumn.h"
 #include "StratigraphicOccurrenceInterpretation.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
-	/** This class is a container for other organizations that are consistent to each others. */
-	class StratigraphicColumnRankInterpretation : public AbstractStratigraphicOrganizationInterpretation
+	/**
+	* This class is a container for other organizations that are consistent to each others.
+	*/
+	class StratigraphicColumnRankInterpretation : public RESQML2_NS::AbstractStratigraphicOrganizationInterpretation
 	{
 	public:
 
 		/**
-		 * Only to be used in partial transfer context
-		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
-		 */
-		DLL_IMPORT_OR_EXPORT StratigraphicColumnRankInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractStratigraphicOrganizationInterpretation(partialObject) {}
+		* Only to be used in partial transfer context
+		*/
+		DLL_IMPORT_OR_EXPORT StratigraphicColumnRankInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractStratigraphicOrganizationInterpretation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
-		 *
-		 * @param [in,out]	orgFeat				The feature the instance interprets. It must be a
-		 * 										stratigraphic organization feature.
-		 * @param 		  	guid				The guid to set to the interpretation. If empty then a
-		 * 										new guid will be generated.
-		 * @param 		  	title				A title for the instance to create.
-		 * @param 		  	rank				The rank index of this interpretation within a
-		 * 										stratigraphic column.
-		 * @param 		  	orderingCriteria	How the included horizons are ordered.
-		 */
-		StratigraphicColumnRankInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank, const gsoap_resqml2_0_1::resqml20__OrderingCriteria & orderingCriteria);
+		* Creates an instance of this class in a gsoap context.
+		* @param orgFeat			The feature the instance interprets. It must be a stratigraphic organization feature.
+		* @param guid				The guid to set to the interpretation. If empty then a new guid will be generated.
+		* @param title				A title for the instance to create.
+		* @param rank				The rank index of this interpretation within a stratigraphic column
+		* @param orderingCriteria	How the included horizons are ordered.
+		*/
+		StratigraphicColumnRankInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, unsigned long rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria);
 
 		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		StratigraphicColumnRankInterpretation(gsoap_resqml2_0_1::_resqml20__StratigraphicColumnRankInterpretation* fromGsoap) : AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*/
+
+		StratigraphicColumnRankInterpretation(gsoap_resqml2_0_1::_resqml20__StratigraphicColumnRankInterpretation* fromGsoap) : RESQML2_NS::AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~StratigraphicColumnRankInterpretation() {}
@@ -89,7 +82,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	partOf			  	(Optional) If non-null, the part of.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, const gsoap_resqml2_0_1::resqml20__ContactMode & subjectContactMode,
-			StratigraphicUnitInterpretation* directObject, const gsoap_resqml2_0_1::resqml20__ContactMode & directObjectMode,
+			StratigraphicUnitInterpretation* directObject, gsoap_resqml2_0_1::resqml20__ContactMode directObjectMode,
 			class HorizonInterpretation * partOf = nullptr);
 
 		/**

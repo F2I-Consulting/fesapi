@@ -357,9 +357,9 @@ namespace RESQML2_NS
 		/**
 		 * Gets the data object reference of the activity template of this activity.
 		 *
-		 * @returns	A pointer to the data object reference of the activity template.
+		 * @returns	The data object reference of the activity template.
 		 */
-		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getActivityTemplateDor() const = 0;
+		virtual COMMON_NS::DataObjectReference getActivityTemplateDor() const = 0;
 		
 		/** 
 		 * Gets the activity template of this activity.

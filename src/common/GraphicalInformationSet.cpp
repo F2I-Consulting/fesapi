@@ -25,11 +25,9 @@ under the License.
 #include "../resqml2/AbstractValuesProperty.h"
 #include "PropertyKind.h"
 #include "../resqml2_0_1/WellboreMarker.h"
-#if WITH_EXPERIMENTAL
 #include "../resqml2_2/AbstractColorMap.h"
 #include "../resqml2_2/DiscreteColorMap.h"
 #include "../resqml2_2/ContinuousColorMap.h"
-#endif
 
 #include <stdexcept>
 
@@ -38,9 +36,7 @@ using namespace COMMON_NS;
 using namespace gsoap_eml2_2;
 using namespace RESQML2_NS;
 using namespace RESQML2_0_1_NS;
-#if WITH_EXPERIMENTAL
 using namespace RESQML2_2_NS;
-#endif
 
 const char* GraphicalInformationSet::XML_TAG = "GraphicalInformationSet";
 
@@ -92,7 +88,6 @@ AbstractObject* GraphicalInformationSet::getTargetObject(unsigned int index) con
 	return getRepository()->getDataObjectByUuid(getTargetObjectUuid(index));
 }
 
-#if WITH_EXPERIMENTAL
 resqml22__DefaultGraphicalInformation* GraphicalInformationSet::getDefaultGraphicalInformationForAllIndexableElements(AbstractObject const* targetObject) const
 {
 	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
@@ -152,7 +147,7 @@ resqml22__ColorInformation* GraphicalInformationSet::getColorInformation(Abstrac
 
 	return nullptr;
 }
-#endif
+
 bool GraphicalInformationSet::hasDirectGraphicalInformation(AbstractObject const* targetObject) const
 {
 	if (targetObject == nullptr) {
@@ -192,7 +187,7 @@ bool GraphicalInformationSet::hasGraphicalInformation(AbstractObject const* targ
 
 	return false;
 }
-#if WITH_EXPERIMENTAL
+
 bool GraphicalInformationSet::hasDefaultColor(AbstractObject const* targetObject) const
 {
 	if (targetObject == nullptr) {
@@ -676,7 +671,7 @@ void GraphicalInformationSet::setValueVectorIndex(AbstractObject const* targetOb
 	}
 	*colorInformation->ValueVectorIndex = valueVectorIndex;
 }
-#endif
+
 void GraphicalInformationSet::rgbToHsv(double red, double green, double blue, double & hue, double & saturation, double & value)
 {
 	double max = red > green ? red : green;
@@ -776,7 +771,6 @@ void GraphicalInformationSet::hsvToRgb(double hue, double saturation, double val
 
 void GraphicalInformationSet::loadTargetRelationships()
 {
-#if WITH_EXPERIMENTAL
 	_eml22__GraphicalInformationSet const* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 
 	for (size_t giIndex = 0; giIndex < gis->GraphicalInformation.size(); ++giIndex) {
@@ -791,5 +785,4 @@ void GraphicalInformationSet::loadTargetRelationships()
 			}
 		}
 	}
-#endif
 }

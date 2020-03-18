@@ -113,7 +113,7 @@ void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::str
 	const unsigned int nbDimensions = 2;
 
     // HDF
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
         H5T_NATIVE_UCHAR,
         cTab,
@@ -141,7 +141,7 @@ std::string CommentProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdf
 	if (datasetName.empty()) {
 		ostringstream ossForHdf;
 		ossForHdf << "values_patch" << *(patch->RepresentationPatchIndex);
-		xmlValues->Values->PathInHdfFile = "/RESQML/" + prop->uuid + "/" + ossForHdf.str();
+		xmlValues->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 	}
 	else {
 		xmlValues->Values->PathInHdfFile = datasetName;

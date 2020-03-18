@@ -368,7 +368,7 @@ namespace RESQML2_0_1_NS
 		 * @param 	  	datasetName 	The HDF5 dataset name where the values are stored. If empty, the
 		 * 								dataset will be named the same as the dataset naming convention of
 		 * 								fesapi :
-		 * 								<tt>"/RESQML/" + prop-&gt;uuid + "/values_patch" +
+		 * 								<tt>getHdfGroup() + "/values_patch" +
 		 * 								patch-&gt;RepresentationPatchIndex</tt>
 		 * @param 	  	nullValue   	The null value which has been chosen in the referenced HDF
 		 * 								dataset.

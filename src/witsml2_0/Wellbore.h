@@ -92,13 +92,7 @@ namespace WITSML2_0_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~Wellbore() {}
 
-		/**
-		 * Gets well dor
-		 *
-		 * @returns	Null if it fails, else the well dor.
-		 */
-		gsoap_eml2_1::eml21__DataObjectReference* getWellDor() const;
-		/** A well*. */
+		COMMON_NS::DataObjectReference getWellDor() const;
 		DLL_IMPORT_OR_EXPORT class Well* getWell() const;
 
 		/**

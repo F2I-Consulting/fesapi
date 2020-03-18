@@ -45,13 +45,9 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::_resqml20__SubRepresentation* getSpecializedGsoapProxy() const;
 
 		/**
-		 * Get a patch of the current subrepresentation at a particluar index.
-		 *
-		 * @param 	index	Zero-based index of the.
-		 *
-		 * @returns	Null if it fails, else the sub representation patch.
-		 */
-		gsoap_resqml2_0_1::resqml20__SubRepresentationPatch* getSubRepresentationPatch(const unsigned int & index) const;
+		* Get a patch of the current subrepresentation at a particluar index.
+		*/
+		gsoap_resqml2_0_1::resqml20__SubRepresentationPatch* getSubRepresentationPatch(unsigned int index) const;
 
 		/**
 		 * Push back a representation which is one of the support of this subrepresentation. And push
@@ -61,8 +57,7 @@ namespace RESQML2_0_1_NS
 		 */
 		void pushBackXmlSupportingRepresentation(RESQML2_NS::AbstractRepresentation const * supportingRep);
 
-		/** A discrete property*. */
-		class DiscreteProperty* getSupportingRepresentationIndicesDiscretePropOfPatch(const unsigned int & patchIndex) const;
+		class DiscreteProperty* getSupportingRepresentationIndicesDiscretePropOfPatch(unsigned int patchIndex) const;
 
 	public:
 
@@ -107,115 +102,46 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~SubRepresentation() {}
 
-		/**
-		 * Gets hdf proxy dor
-		 *
-		 * @returns	Null if it fails, else the hdf proxy dor.
-		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const;
 
 		/**
-		 * Get the kind of the selected elements for a particular patch of this subrepresentation.
-		 *
-		 * @param 	patchIndex		   	Zero-based index of the patch.
-		 * @param 	elementIndicesIndex	Zero-based index of the element indices.
-		 *
-		 * @returns	The element kind of patch.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation::indexableElement getElementKindOfPatch(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex) const;
+		* Get the kind of the selected elements for a particular patch of this subrepresentation.
+		*/
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation::indexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const;
 
 		/**
-		 * Get the count of the selected elements for a particular patch of this subrepresentation.
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	The element count of patch.
-		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getElementCountOfPatch(const unsigned int & patchIndex) const;
+		* Get the count of the selected elements for a particular patch of this subrepresentation.
+		*/
+		DLL_IMPORT_OR_EXPORT ULONG64 getElementCountOfPatch(unsigned int patchIndex) const;
 
 		/**
-		 * Get the indices of the selected elements in the supporting representation for a particular
-		 * patch of this subrepresentation.
-		 *
-		 * @param 		  	patchIndex		   	Zero-based index of the patch.
-		 * @param 		  	elementIndicesIndex	Must be equal to 0 if the element indices are not
-		 * 										pairwise.
-		 * @param [in,out]	elementIndices	   	This array must be preallocated with
-		 * 										getElementCountOfPatch() size.
-		 */
-		DLL_IMPORT_OR_EXPORT void getElementIndicesOfPatch(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex, ULONG64 * elementIndices) const;
+		* Get the indices of the selected elements in the supporting representation for a particular patch of this subrepresentation.
+		* @param	elementIndicesIndex	Must be equal to 0 if the element indices are not pairwise.
+		* @param	elementIndices		This array must be preallocated with getElementCountOfPatch() size.
+		*/
+		DLL_IMPORT_OR_EXPORT void getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, ULONG64 * elementIndices) const;
 
 		/**
-		 * Get the indices of the supporting representations of the selected elements for a particular
-		 * patch of this subrepresentation.
-		 *
-		 * @param 		  	patchIndex					   	Zero-based index of the patch.
-		 * @param [in,out]	supportingRepresentationIndices	This array must be preallocated with
-		 * 													getElementCountOfPatch() size.
-		 */
-		DLL_IMPORT_OR_EXPORT void getSupportingRepresentationIndicesOfPatch(const unsigned int & patchIndex, short * supportingRepresentationIndices) const;
+		* Get the indices of the supporting representations of the selected elements for a particular patch of this subrepresentation.
+		* @param	supportingRepresentationIndices	This array must be preallocated with getElementCountOfPatch() size.
+		*/
+		DLL_IMPORT_OR_EXPORT void getSupportingRepresentationIndicesOfPatch(unsigned int patchIndex, short * supportingRepresentationIndices) const;
 
 		/**
-		 * Check if the element of a particular patch are pairwise or not.
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	True if element indices pairwise, false if not.
-		 */
-		DLL_IMPORT_OR_EXPORT bool areElementIndicesPairwise(const unsigned int & patchIndex) const;
+		* Check if the element of a particular patch are pairwise or not.
+		*/
+		DLL_IMPORT_OR_EXPORT bool areElementIndicesPairwise(unsigned int patchIndex) const;
 
 		/**
-		 * Check if the element indices of a particular patch are based on a lattice or not.
-		 *
-		 * @param 	patchIndex		   	Zero-based index of the patch.
-		 * @param 	elementIndicesIndex	(Optional) In case of pairwise element, allow to select the first
-		 * 								or second element indice of the pair.
-		 *
-		 * @returns	True if element indices based on lattice, false if not.
-		 */
-		DLL_IMPORT_OR_EXPORT bool areElementIndicesBasedOnLattice(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
+		* Check if the element indices of a particular patch are based on a lattice or not.
+		* @param elementIndicesIndex	In case of pairwise element, allow to select the first or second element indice of the pair.
+		*/
+		DLL_IMPORT_OR_EXPORT bool areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
 
-		/**
-		 * Gets lattice element indices start value
-		 *
-		 * @param 	patchIndex		   	Zero-based index of the patch.
-		 * @param 	elementIndicesIndex	(Optional) Zero-based index of the element indices.
-		 *
-		 * @returns	The lattice element indices start value.
-		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getLatticeElementIndicesStartValue(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
-
-		/**
-		 * Gets lattice element indices dimension count
-		 *
-		 * @param 	patchIndex		   	Zero-based index of the patch.
-		 * @param 	elementIndicesIndex	(Optional) Zero-based index of the element indices.
-		 *
-		 * @returns	The lattice element indices dimension count.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getLatticeElementIndicesDimensionCount(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
-
-		/**
-		 * Gets lattice element indices offset value
-		 *
-		 * @param 	latticeDimensionIndex	Zero-based index of the lattice dimension.
-		 * @param 	patchIndex			 	Zero-based index of the patch.
-		 * @param 	elementIndicesIndex  	(Optional) Zero-based index of the element indices.
-		 *
-		 * @returns	The lattice element indices offset value.
-		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getLatticeElementIndicesOffsetValue(const unsigned int & latticeDimensionIndex, const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
-
-		/**
-		 * Gets lattice element indices offset count
-		 *
-		 * @param 	latticeDimensionIndex	Zero-based index of the lattice dimension.
-		 * @param 	patchIndex			 	Zero-based index of the patch.
-		 * @param 	elementIndicesIndex  	(Optional) Zero-based index of the element indices.
-		 *
-		 * @returns	The lattice element indices offset count.
-		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getLatticeElementIndicesOffsetCount(const unsigned int & latticeDimensionIndex, const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
+		DLL_IMPORT_OR_EXPORT LONG64 getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
+		DLL_IMPORT_OR_EXPORT LONG64 getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
 
 		/**
 		* Push back a new patch in the subrepresentation which is based on a lattice definition.
@@ -258,7 +184,7 @@ namespace RESQML2_0_1_NS
 		* The reason can be that the indice values already exist in an external file (only HDF5 for now) or that the writing of these indice values in the external file is defered in time.
 		* @param	elementKind				The kind of (indexable) elements which constitutes the subrepresentation.
         * @param	elementCount			The count of elements which constitutes the subrepresentation.
-		* @param	elementDataset			The HDF5 dataset name where the element indices are stored. If empty, the dataset will be named the same as the dataset naming convention of the fesapi :"/RESQML/" + subRep->uuid + "/subrepresentation_elementIndices0_patch" + patchIndex;
+		* @param	elementDataset			The HDF5 dataset name where the element indices are stored. If empty, the dataset will be named the same as the dataset naming convention of the fesapi :getHdfGroup() + "/subrepresentation_elementIndices0_patch" + patchIndex;
 		* @param	nullValue				The null value which has been chosen in the referenced hdf dataset.
 		* @param	hdfProxy				The HDF5 proxy where the values are already or will be stored.
 		* @param	supportingRepDataset	The HDF5 dataset name where the element indices are stored. If empty, it won't be exported any information about suppporting rep relying on the fact there is only one suppporting rep for this whole patch.

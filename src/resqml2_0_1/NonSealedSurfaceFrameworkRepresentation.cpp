@@ -91,14 +91,14 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 	contactGeomPoints->Coordinates->HdfProxy = proxy->newResqmlReference();
 	ostringstream oss;
 	oss << "points_contact_representation" << orgRep->NonSealedContactRepresentation.size()-1;
-	contactGeomPoints->Coordinates->PathInHdfFile = "/RESQML/" + getUuid() + "/" + oss.str();
+	contactGeomPoints->Coordinates->PathInHdfFile = getHdfGroup() + "/" + oss.str();
 	
 	// HDF
 	hsize_t numValues[2];
 	numValues[0] = pointCount;
 	numValues[1] = 3; // 3 for X, Y and Z
 
-	proxy->writeArrayNdOfDoubleValues(getUuid(), oss.str(), points, numValues, 2);
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss.str(), points, numValues, 2);
 
 	getRepository()->addRelationship(this, localCrs);
 }

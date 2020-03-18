@@ -108,12 +108,12 @@ void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned i
 	xmlDataset->NullValue = nullValue;
 	xmlDataset->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlDataset->Values->HdfProxy = proxy->newResqmlReference();
-	xmlDataset->Values->PathInHdfFile = "/RESQML/" + frame->uuid + "/IntervalStratigraphicUnits";
+	xmlDataset->Values->PathInHdfFile = getHdfGroup() + "/IntervalStratigraphicUnits";
 	frame->IntervalStratigraphiUnits->UnitIndices = xmlDataset;
 
 	// ************ HDF *************
 	hsize_t dim = frame->NodeCount - 1;
-	proxy->writeArrayNd(frame->uuid, "IntervalStratigraphicUnits", H5T_NATIVE_UINT, stratiUnitIndices, &dim, 1);
+	proxy->writeArrayNd(getHdfGroup(), "IntervalStratigraphicUnits", H5T_NATIVE_UINT, stratiUnitIndices, &dim, 1);
 }
 
 void WellboreMarkerFrameRepresentation::loadTargetRelationships()

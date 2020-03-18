@@ -71,9 +71,9 @@ void Channel::pushBackChannelIndex(gsoap_eml2_1::witsml20__ChannelIndexType inde
 	static_cast<witsml20__Channel*>(gsoapProxy2_1)->Index.push_back(index);
 }
 
-eml21__DataObjectReference* Channel::getPropertyKindDor() const
+COMMON_NS::DataObjectReference Channel::getPropertyKindDor() const
 {
-	return static_cast<witsml20__Channel*>(gsoapProxy2_1)->ChannelClass;
+	return COMMON_NS::DataObjectReference(static_cast<witsml20__Channel*>(gsoapProxy2_1)->ChannelClass);
 }
 
 std::vector<ChannelSet*> Channel::getChannelSets() const
@@ -83,7 +83,7 @@ std::vector<ChannelSet*> Channel::getChannelSets() const
 
 COMMON_NS::PropertyKind* Channel::getPropertyKind() const
 {
-	return getRepository()->getDataObjectByUuid<COMMON_NS::PropertyKind>(getPropertyKindDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<COMMON_NS::PropertyKind>(getPropertyKindDor().getUuid());
 }
 
 GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IMPL(std::string, Channel, Mnemonic)

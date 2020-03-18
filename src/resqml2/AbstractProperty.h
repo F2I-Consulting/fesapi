@@ -72,11 +72,11 @@ namespace RESQML2_NS
 		 * Gets the data object reference of the representation which is associated to the current
 		 * property
 		 *
-		 * @returns	Null pointer if no representation is associated to this property. Otherwise returns
-		 * 			the data object reference of the associated representation. Null should not occured
-		 * 			since each property must be associated to a representation.
+		 * @returns	Empty data object reference if no representation is associated to this property.
+		 * 			Otherwise returns the data object reference of the associated representation. Null
+		 * 			should not occured since each property must be associated to a representation.
 		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getRepresentationDor() const;
+		COMMON_NS::DataObjectReference getRepresentationDor() const;
 
 		/**  
 		 * Gets the representation which is associated to the current property. That is to say the one
@@ -85,27 +85,6 @@ namespace RESQML2_NS
 		 * @returns The representation which is associated to the current property.
 		 */
 		DLL_IMPORT_OR_EXPORT class AbstractRepresentation* getRepresentation() const;
-
-		/**
-		 * Gets the UUID of the representation which is associated to this property
-		 *
-		 * @returns	The UUID of the representation which is associated to this property.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getRepresentationUuid() const;
-
-		/**
-		 * Gets the title of the representation which is associated to this property
-		 *
-		 * @returns	The title of the representation which is associated to this property.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getRepresentationTitle() const;
-
-		/**
-		 * Gets the content type of the representation which is associated to this property
-		 *
-		 * @returns	The content type of the representation which is associated to this property.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getRepresentationContentType() const;
 
 		/**
 		 * Gets the count of elements per property value. If the property is a scalar one then it should
@@ -176,26 +155,10 @@ namespace RESQML2_NS
 		/**
 		 * Gets the data object reference of the local CRS which is associated to this property
 		 *
-		 * @returns	Null pointer if no local CRS is associated to this property. Otherwise returns the
-		 * 			data object reference of the associated local CRS.
+		 * @returns	Empty data object reference if no local CRS is associated to this property. Otherwise
+		 * 			returns the data object reference of the associated local CRS.
 		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor() const;
-
-		/**
-		 * Gets the UUID of the local CRS which is associated to this property
-		 *
-		 * @returns	Empty string if no local CRS is associated to this property. Otherwise returns the
-		 * 			UUIS of the associated local CRS.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getLocalCrsUuid() const;
-
-		/**
-		 * Gets the title of the local CRS which is associated to this property
-		 *
-		 * @returns	Empty string if no local CRS is associated to this property. Otherwise returns the
-		 * 			title of the associated local CRS.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getLocalCrsTitle() const;
+		COMMON_NS::DataObjectReference getLocalCrsDor() const;
 
 		//*********************************************
 		//********** REALIZATION DIMENSION ************
@@ -252,26 +215,10 @@ namespace RESQML2_NS
 		/**
 		 * Gets the data object reference of the time series associated to this property
 		 *
-		 * @returns	Null pointer if no time series is associated to this property. Otherwise returns the
+		 * @returns	Empty data object reference if no time series is associated to this property. Otherwise returns the
 		 * 			data object reference of the associated time series.
 		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getTimeSeriesDor() const;
-
-		/**
-		 * Gets the UUID of the time series which is associated to this property
-		 *
-		 * @returns	Empty string if no time series is associated to this property. Otherwise returns the
-		 * 			UUID of the associated time series.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getTimeSeriesUuid() const;
-
-		/**
-		 * Gets the title of the time series which is associated to this property
-		 *
-		 * @returns	Empty string if no time series is associated to this property. Otherwise returns the
-		 * 			title of the associated time series.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getTimeSeriesTitle() const;
+		COMMON_NS::DataObjectReference getTimeSeriesDor() const;
 
 		/**
 		 * Sets the time stamp of this property by means of an index in a time series
@@ -282,7 +229,7 @@ namespace RESQML2_NS
 		 * @param [in]	timeIndex	The index of the timestamp of the property in the time series.
 		 * @param [in]	ts		 	The time series which contains the timestamp of this property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setTimeIndex(const unsigned int & timeIndex, class TimeSeries * ts);
+		DLL_IMPORT_OR_EXPORT void setTimeIndex(unsigned int timeIndex, class TimeSeries* ts);
 
 		/**
 		 * Sets the time step of this property. The time step indicates that the property is the output
@@ -291,7 +238,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 	timeStep	The time step to set to this property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setTimeStep(const unsigned int & timeStep);
+		DLL_IMPORT_OR_EXPORT void setTimeStep(unsigned int timeStep);
 
 		/**
 		 * Gets the time stamp of this property
@@ -374,28 +321,10 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If the property kind of this property is not a local one.
 		 *
-		 * @returns	Null pointer if no local property kind is associated to this property. Otherwise
-		 * 			return the data object reference of the associated local property kind.
+		 * @returns	Empty data object reference if no local property kind is associated to this property.
+		 * 			Otherwise return the data object reference of the associated local property kind.
 		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalPropertyKindDor() const;
-
-		/**
-		 * Get the UUID of the local property kind which is associated to this property
-		 *
-		 * @exception	std::invalid_argument	If the property kind of this property is not a local one.
-		 *
-		 * @returns	The local property kind UUID.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getLocalPropertyKindUuid() const;
-
-		/**
-		 * Get the title of the local property kind which is associated to this property
-		 *
-		 * @exception	std::invalid_argument	If the property kind of this property is not a local one.
-		 *
-		 * @returns	The local property kind title.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getLocalPropertyKindTitle() const;
+		COMMON_NS::DataObjectReference getLocalPropertyKindDor() const;
 
 		/**
 		 * Gets the local property kind which is associated to this instance

@@ -95,12 +95,7 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~GridConnectionSetRepresentation() {}
 
-		/**
-		 * Gets hdf proxy dor
-		 *
-		 * @returns	Null if it fails, else the hdf proxy dor.
-		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const;
 
 		/**
 		 * Get the cell index pair count of this grid connection representation
@@ -175,14 +170,10 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void getGridConnectionSetInformationFromInterpretationIndex(ULONG64 * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const;
 
 		/**
-		 * Get the UUID of a particular interpretation of this grid connection set.
-		 *
-		 * @param 	interpretationIndex	The index of the interpretation in the collection of feature
-		 * 								interpretation of this grid connection set.
-		 *
-		 * @returns	The interpretation uuid from index.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getInterpretationUuidFromIndex(const unsigned int & interpretationIndex) const;
+		* Get the UUID of a particular interpretation of this grid connection set.
+		* @param interpretationIndex The index of the interpretation in the collection of feature interpretation of this grid connection set.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getInterpretationUuidFromIndex(unsigned int interpretationIndex) const;
 
 		/**
 		 * Get the count of interpretations in this grid connection set.
@@ -300,12 +291,8 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT unsigned int getSupportingGridRepresentationCount() const;
 
 		/**
-		 * Get one of the supporting grid representation dor of this grid connection representation.
-		 *
-		 * @param 	index	Zero-based index of the.
-		 *
-		 * @returns	Null if it fails, else the supporting grid representation dor.
-		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getSupportingGridRepresentationDor(unsigned int index) const;
+		* Get one of the supporting grid representation dor of this grid connection representation.
+		*/
+		COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const;
 	};
 }

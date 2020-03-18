@@ -92,27 +92,12 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~PolylineSetRepresentation() {}
 
-		/**
-		 * Gets hdf proxy dor
-		 *
-		 * @returns	Null if it fails, else the hdf proxy dor.
-		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const;
 
 		/**
-		 * Get the number of polylines in a given patch
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	The polyline count of patch.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPolylineCountOfPatch(const unsigned int & patchIndex) const;
-
-		/**
-		 * Gets polyline count of all patches
-		 *
-		 * @returns	The polyline count of all patches.
-		 */
+		* Get the number of polylines in a given patch
+		*/
+		DLL_IMPORT_OR_EXPORT unsigned int getPolylineCountOfPatch(unsigned int patchIndex) const;
 		DLL_IMPORT_OR_EXPORT unsigned int getPolylineCountOfAllPatches() const;
 
 		/**

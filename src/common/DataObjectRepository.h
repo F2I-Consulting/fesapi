@@ -21,15 +21,7 @@ under the License.
 #include <unordered_map>
 #include <sstream>
 
-#include "../proxies/gsoap_resqml2_0_1H.h"
-#include "../proxies/gsoap_eml2_1H.h"
-#include "../proxies/gsoap_eml2_2H.h"
-
-#include "../nsDefinitions.h"
-
-#if (defined(_WIN32) && _MSC_VER < 1600) || (defined(__GNUC__) && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 6)))
-#include "../tools/nullptr_emulation.h"
-#endif
+#include "DataObjectReference.h"
 
 #if defined(_WIN32) && !defined(FESAPI_STATIC)
 #if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
@@ -45,16 +37,23 @@ namespace RESQML2_NS
 {
 	class AbstractFeature;
 	class AbstractFeatureInterpretation;
+	class AbstractIjkGridRepresentation;
 	class AbstractLocal3dCrs;
+	class AbstractOrganizationInterpretation;
 	class AbstractRepresentation;
 	class Activity;
 	class ActivityTemplate;
 	class GridConnectionSetRepresentation;
+	class IjkGridExplicitRepresentation;
+	class IjkGridLatticeRepresentation;
+	class IjkGridNoGeometryRepresentation;
+	class IjkGridParametricRepresentation;
 	class MdDatum;
 	class PropertySet;
+	class RepresentationSetRepresentation;
 	class SubRepresentation;
 	class TimeSeries;
-	class RepresentationSetRepresentation;
+	class UnstructuredGridRepresentation;
 	class WellboreFrameRepresentation;
 }
 
@@ -79,12 +78,6 @@ namespace RESQML2_0_1_NS
 	class Grid2dRepresentation;
 	class WellboreTrajectoryRepresentation;
 	class DeviationSurveyRepresentation;
-	class AbstractIjkGridRepresentation;
-	class IjkGridExplicitRepresentation;
-	class IjkGridParametricRepresentation;
-	class IjkGridLatticeRepresentation;
-	class IjkGridNoGeometryRepresentation;
-	class UnstructuredGridRepresentation;
 	class BoundaryFeature;
 	class BoundaryFeatureInterpretation;
 	class TectonicBoundaryFeature;
@@ -115,7 +108,6 @@ namespace RESQML2_0_1_NS
 	class DiscretePropertySeries;
 	class CategoricalProperty;
 	class CategoricalPropertySeries;
-	class AbstractOrganizationInterpretation;
 	class AbstractGridRepresentation;
 	class OrganizationFeature;
 	class StratigraphicOccurrenceInterpretation;
@@ -128,14 +120,12 @@ namespace RESQML2_0_1_NS
 	class RockFluidUnitFeature;
 }
 
-#if WITH_EXPERIMENTAL
 namespace RESQML2_2_NS
 {
 	class DiscreteColorMap;
 	class ContinuousColorMap;
 	class SeismicWellboreFrameRepresentation;
 }
-#endif
 
 namespace WITSML2_0_NS
 {
@@ -171,140 +161,6 @@ namespace COMMON_NS
 	 */
 	class DataObjectRepository
 	{
-	private:
-
-		/** The key is the UUID. The value is a vector storing all various versions of this data object */
-		std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects;
-
-		/** Forward relationships */
-		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > forwardRels;
-
-		/**
-		 * Backward relationships. It is redundant with forward relationships but it allows more
-		 * performance.
-		 */
-		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > backwardRels;
-
-		/** Context for the gsoap */
-		soap* gsoapContext;
-
-		/** The warnings */
-		std::vector<std::string> warnings;
-
-		/** The property kind mapper */
-		RESQML2_0_1_NS::PropertyKindMapper* propertyKindMapper;
-
-		/** The default hdf proxy */
-		COMMON_NS::AbstractHdfProxy* defaultHdfProxy;
-		/** The default crs */
-		RESQML2_NS::AbstractLocal3dCrs* defaultCrs;
-
-		/** The hdf proxy factory */
-		COMMON_NS::HdfProxyFactory* hdfProxyFactory;
-
-		/**
-		 * Set the stream of the curent gsoap context.
-		 *
-		 * @param [in,out]	inputStream	If non-null, stream to read data from.
-		 */
-		void setGsoapStream(std::istream * inputStream) { gsoapContext->is = inputStream; }
-
-		/**
-		 * Read the Gsoap proxy from the stream associated to the current gsoap context and wrap this
-		 * gsoap proxy into a fesapi wrapper. It does not add this fesapi wrapper to the current
-		 * instance. It does not work for EpcExternalPartReference content type since this type is
-		 * related to an external file which must be handled differently.
-		 *
-		 * @param 	resqmlContentType	Type of the resqml content.
-		 *
-		 * @returns	Null if it fails, else the resqml 2 0 1 wrapper from gsoap context.
-		 */
-		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
-#if WITH_EXPERIMENTAL
-
-		/**
-		 * Gets resqml 2 wrapper from gsoap context
-		 *
-		 * @param 	resqmlContentType	Type of the resqml content.
-		 *
-		 * @returns	Null if it fails, else the resqml 2 wrapper from gsoap context.
-		 */
-		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
-#endif
-
-		/**
-		 * Gets eml 2 wrapper from gsoap context
-		 *
-		 * @param 	datatype	The datatype.
-		 *
-		 * @returns	Null if it fails, else the eml 2 wrapper from gsoap context.
-		 */
-		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
-
-		/**
-		 * Gets witsml 2 0 wrapper from gsoap context
-		 *
-		 * @param 	datatype	The datatype.
-		 *
-		 * @returns	Null if it fails, else the witsml 2 0 wrapper from gsoap context.
-		 */
-		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
-
-		/**
-		 * Gets prodml 2 1 wrapper from gsoap context
-		 *
-		 * @param 	datatype	The datatype.
-		 *
-		 * @returns	Null if it fails, else the prodml 2 1 wrapper from gsoap context.
-		 */
-		COMMON_NS::AbstractObject* getProdml2_1WrapperFromGsoapContext(const std::string & datatype);
-
-		/**
-		 * Get the error code of the current gsoap context.
-		 *
-		 * @returns	The gsoap error code.
-		 */
-		int getGsoapErrorCode() const;
-
-		/**
-		 * Get the error message (if any) of the current gsoap context.
-		 *
-		 * @returns	The gsoap error message.
-		 */
-		std::string getGsoapErrorMessage() const;
-
-		/**
-		 * Gets objects filtered on datatype
-		 *
-		 * @tparam	valueType	Type of the value type.
-		 * @param 	objs	The objects.
-		 *
-		 * @returns	Null if it fails, else the objects filtered on datatype.
-		 */
-		template <class valueType>
-		std::vector<valueType *> getObjsFilteredOnDatatype(const std::vector< COMMON_NS::AbstractObject * >& objs) const
-		{
-			std::vector<valueType *> result;
-			for (size_t i = 0; i < objs.size(); ++i) {
-				valueType * castedObj = dynamic_cast<valueType *>(objs[i]);
-				if (castedObj != nullptr) {
-					result.push_back(castedObj);
-				}
-			}
-			return result;
-		}
-
-		/**
-		 * Creates a dor
-		 *
-		 * @param 	guid   	Unique identifier.
-		 * @param 	title  	The title.
-		 * @param 	version	The version.
-		 *
-		 * @returns	Null if it fails, else the new dor.
-		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__DataObjectReference* createDor(const std::string & guid, const std::string & title, const std::string & version);
-
 	public:
 
 		/** Default constructor */
@@ -318,6 +174,9 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
 
+		/** Destructor */
+		DLL_IMPORT_OR_EXPORT virtual ~DataObjectRepository();
+
 		/** Values that represent the HDF5 file permission access */
 		enum class openingMode : std::int8_t {
 			READ_ONLY = 0, // It is meant to open an existing file in read only mode. It throws an exception if the file does not exist.
@@ -326,15 +185,60 @@ namespace COMMON_NS
 			OVERWRITE = 3 // It is meant to open an existing file in read and write mode. It deletes the content of the file if the later does already exist.
 		};
 
-		/** Destructor */
-		DLL_IMPORT_OR_EXPORT virtual ~DataObjectRepository();
+		/**
+		* Enumeration for the various Energistics standards.
+		*/
+		enum class EnergisticsStandard : std::int8_t {
+			RESQML2_0_1 = 0,
+			WITSML2_0 = 1,
+			PRODML2_1 = 2,
+			RESQML2_2 = 3
+		};
 
 		/**
-		 * Gets the gSOAP context
+		 * Gets the gSOAP context.
 		 *
 		 * @returns	The gSOAP context.
 		 */
 		soap* getGsoapContext() const { return gsoapContext; }
+
+		/**
+		* Set the used standard when creating a new dataobject
+		*/
+		DLL_IMPORT_OR_EXPORT void setDefaultStandard(EnergisticsStandard version) {
+			switch (version) {
+			case EnergisticsStandard::PRODML2_1:
+				defaultProdmlVersion = version; break;
+			case EnergisticsStandard::RESQML2_0_1:
+			case EnergisticsStandard::RESQML2_2:
+				defaultResqmlVersion = version; break;
+			case EnergisticsStandard::WITSML2_0:
+				defaultWitsmlVersion = version; break;
+			default :
+				throw std::invalid_argument("Unrecognized Energistics standard.");
+			}
+		}
+
+		/**
+		* Gets the default PRODML version used when creating a PRODML data object.
+		* 
+		* @returns The default PRODML version.
+		*/
+		EnergisticsStandard getDefaultProdmlVersion() const { return defaultProdmlVersion; }
+
+		/**
+		* Gets the default RESQML version used when creating a RESQML data object.
+		* 
+		* @returns The default RESQML version.
+		*/
+		EnergisticsStandard getDefaultResqmlVersion() const { return defaultResqmlVersion; }
+
+		/**
+		* Gets the default WITSML version used when creating a WITSML data object.
+		* 
+		* @returns The default WITSML version.
+		*/
+		EnergisticsStandard getDefaultWitsmlVersion() const { return defaultWitsmlVersion; }
 
 		/** Removes and cleans all data objects from this repository */
 		DLL_IMPORT_OR_EXPORT void clear();
@@ -796,7 +700,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the ijk grids of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*> getIjkGridRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractIjkGridRepresentation*> getIjkGridRepresentationSet() const;
 
 		/**
 		 * Gets the ijk grids count into this repository
@@ -816,7 +720,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the ijk grid at @p index position into this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::AbstractIjkGridRepresentation* getIjkGridRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractIjkGridRepresentation* getIjkGridRepresentation(unsigned int index) const;
 
 		/**
 		 * Gets all the ijk grids with parametric geometry contained into this repository
@@ -824,7 +728,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the ijk grids with parametric geometry of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::IjkGridParametricRepresentation*> getIjkGridParametricRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::IjkGridParametricRepresentation*> getIjkGridParametricRepresentationSet() const;
 
 		/**
 		 * Gets all the ijk grids with explicit geometry contained into this repository
@@ -832,14 +736,14 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the ijk grids with explicit geometry of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::IjkGridExplicitRepresentation*> getIjkGridExplicitRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::IjkGridExplicitRepresentation*> getIjkGridExplicitRepresentationSet() const;
 
 		/**
 		 * Gets all the ijk grids contained into this repository which correspond to a seismic cube
 		 *
 		 * @returns	A vector of pointers to all seismic cubes ijk grids of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::IjkGridLatticeRepresentation*> getIjkSeismicCubeGridRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::IjkGridLatticeRepresentation*> getIjkSeismicCubeGridRepresentationSet() const;
 
 		/**
 		 * Gets all the unstructured grids contained into this repository
@@ -847,7 +751,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the unstructured grids of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::UnstructuredGridRepresentation*> getUnstructuredGridRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::UnstructuredGridRepresentation*> getUnstructuredGridRepresentationSet() const;
 
 		/**
 		 * Gets all the frontier features contained into this repository
@@ -1059,40 +963,12 @@ namespace COMMON_NS
 		}
 
 		/**
-		 * Creates a partial object (i.e. a data object reference - or DOR - based on both uuid, title
-		 * and version) in this repository based on a RESQML2.0 data object reference
-		 *
+		 * Creates a partial object in this repository based on a data object reference.
 		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
 		 *
-		 * @param 	dor	A RESQML2.0 data object reference.
-		 *
-		 * @returns	@c nullptr if it fails, else a pointer to the new partial object.
+		 * @param 	dor	A data object reference.
 		 */
-		COMMON_NS::AbstractObject* createPartial(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor);
-
-		/**
-		 * Creates a partial object (i.e. a data object reference - or DOR - based on both uuid, title
-		 * and version) in this repository based on a EML2.1 data object reference
-		 *
-		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
-		 *
-		 * @param 	dor	A EML2.1 data object reference.
-		 *
-		 * @returns	@c nullptr if it fails, else a pointer to the new partial object.
-		 */
-		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_1::eml21__DataObjectReference const * dor);
-
-		/**
-		 * Creates a partial object (i.e. a data object reference - or DOR - based on both uuid, title
-		 * and version) in this repository based on a EML2.2 data object reference
-		 *
-		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
-		 *
-		 * @param 	dor	A EML2.2 data object reference.
-		 *
-		 * @returns	@c nullptr if it fails, else a pointer to the new partial object.
-		 */
-		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_2::eml22__DataObjectReference const * dor);
+		COMMON_NS::AbstractObject* createPartial(const DataObjectReference& dor);
 
 		/**
 		 * Creates a partial object (i.e. a data object reference - or DOR - based on both uuid, title
@@ -2132,9 +2008,6 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
 
-		
-#if WITH_EXPERIMENTAL
-
 		/**
 		 * Creates a wellbore frame representation into this repository
 		 *
@@ -2146,13 +2019,10 @@ namespace COMMON_NS
 		 * 											be set.
 		 * @param [in]	traj					  	The wellbore trajectory that refers this wellbore
 		 * 											frame. It cannot be null.
-		 * @param 	  	previousEnergisticsVersion	(Optional) If true, this methods creates a RESQML2.0
-		 * 											instance. If false (default) it creates a RESQML2.2
-		 * 											instance.
 		 *
 		 * @returns	A pointer to the new wellbore frame representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj, bool previousEnergisticsVersion = false);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj);
 
 		/**
 		 * Creates a seismic wellbore frame representation into this repository
@@ -2182,25 +2052,6 @@ namespace COMMON_NS
 			double seismicReferenceDatum,
 			double weatheringVelocity,
 			class RESQML2_0_1_NS::LocalTime3dCrs* crs);
-#else
-
-		/**
-		 * Creates a wellbore frame representation into this repository
-		 *
-		 * @exception	std::invalid_argument	If @p interp or @p traj is @c nullptr.
-		 *
-		 * @param [in]	interp	The wellbore interpretation this instance represents. It cannot be null.
-		 * @param 	  	guid  	The guid to set to the wellbore frame representation. If empty then a new
-		 * 						guid will be generated.
-		 * @param 	  	title 	The title to set to the wellbore frame representation. If empty then
-		 * 						\"unknown\" title will be set.
-		 * @param [in]	traj  	The wellbore trajectory that refers this wellbore frame. It cannot be
-		 * 						null.
-		 *
-		 * @returns	A pointer to the new wellbore frame representation.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj);
-#endif
 
 		/**
 		 * Creates a wellbore marker frame representation into this repository
@@ -2238,23 +2089,24 @@ namespace COMMON_NS
 		/**
 		 * Creates a representation set representation into this repository
 		 *
-		 * @param 	guid 	The guid to set to the representation set representation. If empty then a new
-		 * 					guid will be generated.
-		 * @param 	title	The title to set to the representation set representation. If empty then
-		 * 					\"unknown\" title will be set.
+		 * @param [in]	interp	The represented interpretation. It cannot be null. You can
+		 * 						alternatively use {@link  createRepresentationSetRepresentation} if no
+		 * 						interpretation is associated to this representation.
+		 * @param 		guid 	The guid to set to the representation set representation. If empty then a new
+		 * 						guid will be generated.
+		 * @param 		title	The title to set to the representation set representation. If empty then
+		 * 						\"unknown\" title will be set.
 		 *
 		 * @returns	A pointer to the new representation set representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::RepresentationSetRepresentation* createRepresentationSetRepresentation(
-			const std::string& guid,
-			const std::string& title);
+			RESQML2_NS::AbstractOrganizationInterpretation* interp,
+			const std::string & guid,
+			const std::string & title);
 
 		/**
 		 * Creates a representation set representation into this repository
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null. You can
-		 * 						alternatively use {@link  createRepresentationSetRepresentation} if no
-		 * 						interpretation is associated to this representation.
 		 * @param 	  	guid  	The guid to set to the representation set representation. If empty then a
 		 * 						new guid will be generated.
 		 * @param 	  	title 	The title to set to the representation set representation. If empty then
@@ -2263,7 +2115,6 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new representation set representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::RepresentationSetRepresentation* createRepresentationSetRepresentation(
-			RESQML2_0_1_NS::AbstractOrganizationInterpretation* interp,
 			const std::string & guid,
 			const std::string & title);
 
@@ -2327,7 +2178,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new partial ijk grid representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::AbstractIjkGridRepresentation* createPartialIjkGridRepresentation(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractIjkGridRepresentation* createPartialIjkGridRepresentation(const std::string& guid, const std::string& title);
 
 		/**
 		 * Creates a partial truncated ijk grid representation into this repository
@@ -2337,7 +2188,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new partial truncated ijk grid representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::AbstractIjkGridRepresentation* createPartialTruncatedIjkGridRepresentation(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractIjkGridRepresentation* createPartialTruncatedIjkGridRepresentation(const std::string& guid, const std::string& title);
 
 		/**
 		 * Creates an ijk grid explicit representation into this repository
@@ -2352,7 +2203,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new ijk grid explicit representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(const std::string& guid, const std::string& title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
 		/**
@@ -2369,8 +2220,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new ijk grid explicit representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-			const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+			const std::string& guid, const std::string& title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
 		/**
@@ -2386,7 +2237,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new ijk grid parametric representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(const std::string& guid, const std::string& title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
 		/**
@@ -2403,8 +2254,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new ijk grid parametric representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-			const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+			const std::string& guid, const std::string& title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
 		/**
@@ -2420,7 +2271,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new ijk grid lattice representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(const std::string& guid, const std::string& title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
 		/**
@@ -2437,8 +2288,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new ijk grid lattice representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-			const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+			const std::string& guid, const std::string& title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
 		/**
@@ -2454,8 +2305,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new ijk grid with no geometry representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(
-			const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(
+			const std::string& guid, const std::string& title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
 		/**
@@ -2472,8 +2323,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new ijk grid with no geometry representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-			const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+			const std::string& guid, const std::string& title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
 		/**
@@ -2487,7 +2338,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new unstructured grid representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(const std::string& guid, const std::string& title,
 			const ULONG64 & cellCount);
 
 		/**
@@ -3413,8 +3264,6 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
 
-#if WITH_EXPERIMENTAL
-
 		/**
 		 * Creates a discrete color map into this repository
 		 *
@@ -3441,7 +3290,6 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
 			gsoap_eml2_2::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml22__InterpolationMethod interpolationMethod);
-#endif
 
 		//***** STANDARD PROP KIND ***********
 
@@ -3471,5 +3319,76 @@ namespace COMMON_NS
 		 * @returns	A vector of all repository warnings.
 		 */
 		DLL_IMPORT_OR_EXPORT const std::vector<std::string> & getWarnings() const;
+
+	private:
+
+		/**
+		* The key is the UUID.
+		* The value is a vector storing all various versions of this data object
+		*/
+		std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects;
+
+		// Forward relationships
+		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > forwardRels;
+
+		// Backward relationships. It is redundant with forward relationships but it allows more performance.
+		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > backwardRels;
+
+		soap* gsoapContext;
+
+		std::vector<std::string> warnings;
+
+		RESQML2_0_1_NS::PropertyKindMapper* propertyKindMapper;
+
+		COMMON_NS::AbstractHdfProxy* defaultHdfProxy;
+		RESQML2_NS::AbstractLocal3dCrs* defaultCrs;
+
+		COMMON_NS::HdfProxyFactory* hdfProxyFactory;
+
+		EnergisticsStandard defaultProdmlVersion;
+		EnergisticsStandard defaultResqmlVersion;
+		EnergisticsStandard defaultWitsmlVersion;
+
+		/**
+		* Set the stream of the curent gsoap context.
+		*/
+		void setGsoapStream(std::istream * inputStream) { gsoapContext->is = inputStream; }
+
+		/**
+		* Read the Gsoap proxy from the stream associated to the current gsoap context and wrap this gsoap proxy into a fesapi wrapper.
+		* It does not add this fesapi wrapper to the current instance.
+		* It does not work for EpcExternalPartReference content type since this type is related to an external file which must be handled differently.
+		*/
+		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
+		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
+		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
+
+		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
+		COMMON_NS::AbstractObject* getProdml2_1WrapperFromGsoapContext(const std::string & datatype);
+
+		/**
+		* Get the error code of the current gsoap context.
+		*/
+		int getGsoapErrorCode() const;
+
+		/**
+		* Get the error message (if any) of the current gsoap context.
+		*/
+		std::string getGsoapErrorMessage() const;
+
+		template <class valueType>
+		std::vector<valueType *> getObjsFilteredOnDatatype(const std::vector< COMMON_NS::AbstractObject * >& objs) const
+		{
+			std::vector<valueType *> result;
+			for (size_t i = 0; i < objs.size(); ++i) {
+				valueType * castedObj = dynamic_cast<valueType *>(objs[i]);
+				if (castedObj != nullptr) {
+					result.push_back(castedObj);
+				}
+			}
+			return result;
+		}
+
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__DataObjectReference* createDor(const std::string & guid, const std::string & title, const std::string & version);
 	};
 }

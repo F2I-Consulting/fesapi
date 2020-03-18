@@ -72,19 +72,5 @@ namespace RESQML2_0_1_NS
 		 * @returns	The XML namespace.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const;
-
-	private:
-		/** Group the resqml root belongs to */
-		static const char * RESQML_ROOT_GROUP;
-
-		/**
-		 * Check if a hdf group named "RESQML" exists as a child of the root of the HDF file. If it
-		 * exists, it returns the latter. If not, it creates this group and then returns it. Please
-		 * close the group after having called and used this group.
-		 *
-		 * @returns	A hdf5_hid_t.
-		 */
-		hdf5_hid_t openOrCreateRootGroup();
-
 	};
 }

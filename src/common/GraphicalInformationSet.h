@@ -25,13 +25,12 @@ namespace COMMON_NS
 	/** Proxy class for handling the graphical information of data objects. */
 	class GraphicalInformationSet : public AbstractObject
 	{
-#if WITH_EXPERIMENTAL
 	private:
 		gsoap_eml2_2::resqml22__DefaultGraphicalInformation* getDefaultGraphicalInformationForAllIndexableElements(AbstractObject const* targetObject) const;
 		gsoap_eml2_2::resqml22__GraphicalInformationForWholeObject* getDefaultGraphicalInformation(AbstractObject const* targetObject) const;
 		gsoap_eml2_2::resqml22__HsvColor* getDefaultColor(AbstractObject const* targetObject) const;
 		gsoap_eml2_2::resqml22__ColorInformation* getColorInformation(AbstractObject const* targetObject) const;
-#endif
+
 	public:
 
 		/**
@@ -136,7 +135,6 @@ namespace COMMON_NS
 		 * @returns	True if @p targetObject (or its property kind) has some graphical information, else false.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasGraphicalInformation(AbstractObject const* targetObject) const;
-#if WITH_EXPERIMENTAL
 
 		/**
 		 * Query if a given data object has a default color. It only looks at direct color association (see
@@ -556,7 +554,6 @@ namespace COMMON_NS
 		 * @param 	valueVectorIndex	The value vector index to set.
 		 */
 		DLL_IMPORT_OR_EXPORT void setValueVectorIndex(AbstractObject const* targetObject, LONG64 valueVectorIndex);
-#endif
 
 		/**
 		 * Converts RGB to HSV color (using https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB

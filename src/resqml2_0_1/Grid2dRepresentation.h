@@ -84,12 +84,7 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~Grid2dRepresentation() {}
 
-		/**
-		 * Gets hdf proxy dor
-		 *
-		 * @returns	Null if it fails, else the hdf proxy dor.
-		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const;
 
 		/**
 		 * Get the number of nodes in the I direction of the lattice 2d grid
@@ -406,20 +401,7 @@ namespace RESQML2_0_1_NS
 			double offsetIX, double offsetIY, double offsetIZ, double spacingI,
 			double offsetJX, double offsetJY, double offsetJZ, double spacingJ, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
-		/**
-		 * Gets supporting representation dor
-		 *
-		 * @returns	Null if it fails, else the supporting representation dor.
-		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference const * getSupportingRepresentationDor() const;
-
-		/**
-		 * Get the supporting representation uuid of this representation. Useful when the supporting
-		 * representation is not accessible. At least we know its uuid.
-		 *
-		 * @returns	The supporting representation uuid.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getSupportingRepresentationUuid() const;
+		COMMON_NS::DataObjectReference getSupportingRepresentationDor() const;
 
 		/**
 		 * Get the supporting representation of this representation
@@ -437,34 +419,19 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT int getIndexOriginOnSupportingRepresentation() const;
 
 		/**
-		 * Get the index of the origin of the current geometry on a particular dimension of the
-		 * supporting representation.
-		 *
-		 * @param 	dimension	The dimension.
-		 *
-		 * @returns	The index origin on supporting representation.
-		 */
-		DLL_IMPORT_OR_EXPORT int getIndexOriginOnSupportingRepresentation(const unsigned int & dimension) const;
+		* Get the index of the origin of the current geometry on a particular dimension of the supporting representation.
+		*/
+		DLL_IMPORT_OR_EXPORT int getIndexOriginOnSupportingRepresentation(unsigned int dimension) const;
 
 		/**
-		 * Get the number of nodes of the current geometry which is extracted from a particular
-		 * dimension of the supporting representation.
-		 *
-		 * @param 	dimension	The dimension.
-		 *
-		 * @returns	The node count on supporting representation.
-		 */
-		DLL_IMPORT_OR_EXPORT int getNodeCountOnSupportingRepresentation(const unsigned int & dimension) const;
+		* Get the number of nodes of the current geometry which is extracted from a particular dimension of the supporting representation.
+		*/
+		DLL_IMPORT_OR_EXPORT int getNodeCountOnSupportingRepresentation(unsigned int dimension) const;
 
 		/**
-		 * Get the index offset of the nodes of the current geometry on a particular dimension of the
-		 * supporting representation.
-		 *
-		 * @param 	dimension	The dimension.
-		 *
-		 * @returns	The index offset on supporting representation.
-		 */
-		DLL_IMPORT_OR_EXPORT int getIndexOffsetOnSupportingRepresentation(const unsigned int & dimension) const;
+		* Get the index offset of the nodes of the current geometry on a particular dimension of the supporting representation.
+		*/
+		DLL_IMPORT_OR_EXPORT int getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const;
 
 		/**
 		 * Gets patch count

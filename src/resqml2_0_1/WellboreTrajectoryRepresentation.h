@@ -419,9 +419,9 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT class DeviationSurveyRepresentation* getDeviationSurvey() const;
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const override;
+		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const override;
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const override;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const override;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override {return 1;}
 

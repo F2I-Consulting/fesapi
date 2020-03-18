@@ -59,12 +59,7 @@ namespace RESQML2_NS
 		 */
 		virtual void pushBackXmlProperty(RESQML2_NS::AbstractProperty * prop) = 0;
 
-		/**
-		 * Gets all properties dors
-		 *
-		 * @returns	Null if it fails, else all properties dors.
-		 */
-		virtual std::vector<gsoap_resqml2_0_1::eml20__DataObjectReference *> getAllPropertiesDors() const = 0;
+		virtual std::vector<COMMON_NS::DataObjectReference> getAllPropertiesDors() const = 0;
 
 	public:
 
@@ -90,17 +85,10 @@ namespace RESQML2_NS
 		/**
 		 * Gets the data object reference of the parent property set of this instance.
 		 *
-		 * @returns	nullptr if no parent property set is defined, else the data object reference of the
-		 * 			parent property set.
+		 * @returns	Empty data object reference if no parent property set is defined, else the data
+		 * 			object reference of the parent property set.
 		 */
-		virtual gsoap_resqml2_0_1::eml20__DataObjectReference const * getParentDor() const = 0;
-
-		/**
-		 * Gets the UUID of the parent property set of this instance
-		 *
-		 * @returns	The parent property set UUID or empty string if no parent property set is defined.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getParentUuid() const;
+		virtual COMMON_NS::DataObjectReference getParentDor() const = 0;
 
 		/**
 		 * Gets the parent property set of this instance.

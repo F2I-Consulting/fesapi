@@ -29,10 +29,7 @@ namespace epc
 	class FilePart
 	{
 	private:
-
-		/** / The path of the part in the package. */
-		std::string finalPathName;
-		/** / The associated rel file to the part */
+		/** The associated rel file to the part */
 		FileRelationship fileRelationship;
 
 	public:
@@ -41,26 +38,14 @@ namespace epc
 		FilePart();
 
 		/**
-		 * Constructor
-		 *
-		 * @param 	outputPartPath	The path of the part within the package.
-		 */
-		FilePart(const std::string & outputPartPath);
-		/** Destructor */
+		* Constructor
+		* @param inputContent		The content which will be included into a part of the package
+		* @param outputPartPath		The path of the part within the package.
+		*/
+		FilePart(std::string outputPartPath);
 		~FilePart() {}
 
-		/**
-		 * ACCESSORS
-		 *
-		 * @returns	The final path name.
-		 */
-		const std::string & getFinalPathName() const;
-
-		/**
-		 * Gets file relationship
-		 *
-		 * @returns	The file relationship.
-		 */
+		// ACCESSORS
 		const FileRelationship & getFileRelationship() const;
 
 		/**
@@ -71,13 +56,6 @@ namespace epc
 		 * @returns	The index relationship.
 		 */
 		Relationship getIndexRelationship(int index) const;
-
-		/**
-		 * Sets final path name
-		 *
-		 * @param 	finalPath	Full pathname of the final file.
-		 */
-		void setFinalPathName(const std::string & finalPath);
 
 		/**
 		 * Copy an existing relationship into the relationship set of the part.

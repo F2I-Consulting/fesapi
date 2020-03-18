@@ -77,7 +77,7 @@ PolylineRepresentation::PolylineRepresentation(RESQML2_NS::AbstractFeatureInterp
 	setInterpretation(interp);
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* PolylineRepresentation::getHdfProxyDor() const
+COMMON_NS::DataObjectReference PolylineRepresentation::getHdfProxyDor() const
 {
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }

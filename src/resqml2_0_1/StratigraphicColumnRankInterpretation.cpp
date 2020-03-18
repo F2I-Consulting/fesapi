@@ -30,7 +30,7 @@ using namespace gsoap_resqml2_0_1;
 
 const char* StratigraphicColumnRankInterpretation::XML_TAG = "StratigraphicColumnRankInterpretation";
 
-StratigraphicColumnRankInterpretation::StratigraphicColumnRankInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank, const gsoap_resqml2_0_1::resqml20__OrderingCriteria & orderingCriteria)
+StratigraphicColumnRankInterpretation::StratigraphicColumnRankInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, unsigned long rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria)
 {
 	if (orgFeat == nullptr) {
 		throw invalid_argument("The interpreted organization feature cannot be null.");
@@ -141,20 +141,19 @@ void StratigraphicColumnRankInterpretation::setHorizonOfLastContact(HorizonInter
 }
 
 void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, const gsoap_resqml2_0_1::resqml20__ContactMode & subjectContactMode,
-			StratigraphicUnitInterpretation* directObject, const gsoap_resqml2_0_1::resqml20__ContactMode & directObjectMode,
+			StratigraphicUnitInterpretation* directObject, gsoap_resqml2_0_1::resqml20__ContactMode directObjectMode,
 			HorizonInterpretation * partOf)
 {
 	resqml20__AbstractOrganizationInterpretation* org = static_cast<resqml20__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
 
-	pushBackBinaryContact(resqml20__ContactRelationship__stratigraphic_x0020unit_x0020to_x0020stratigraphic_x0020unit, subject, resqml20__ContactVerb__stops_x0020at, directObject);
+	pushBackBinaryContact(subject, gsoap_eml2_2::resqml22__ContactVerb__stops, directObject);
     resqml20__BinaryContactInterpretationPart* contact = static_cast<resqml20__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
     contact->DirectObject->SecondaryQualifier = static_cast<resqml20__ContactMode*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactMode)));
     *(contact->DirectObject->SecondaryQualifier) = directObjectMode;
     contact->Subject->SecondaryQualifier = static_cast<resqml20__ContactMode*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactMode)));
     *(contact->Subject->SecondaryQualifier) = subjectContactMode;
 
-	if (partOf != nullptr)
-	{
+	if (partOf != nullptr) {
 		setHorizonOfLastContact(partOf);
 	}
 }

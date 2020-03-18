@@ -18,101 +18,48 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractOrganizationInterpretation.h"
-
-/** . */
-namespace RESQML2_NS
-{
-	/** An abstract grid representation. */
-	class AbstractGridRepresentation;
-}
+#include "../resqml2/RockFluidOrganizationInterpretation.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/**
-	 * This class is a container for rock fluid units. As a first step, This class only works for a
-	 * single rock fluid unit container due to the fact that the workaround described here
-	 * http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html is not
-	 * impelemented yet. Use with caution : ONLY IF YOU HAVE A SINGLE ROCK FLUID UNIT ORGANISATION
-	 * !!!!
-	 */
-	class RockFluidOrganizationInterpretation : public AbstractOrganizationInterpretation
+	* This class is a container for rock fluid units.
+	* As a first step, This class only works for a single rock fluid unit container due to the fact that the workaround described here http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html is not impelemented yet.
+	* Use with caution : ONLY IF YOU HAVE A SINGLE ROCK FLUID UNIT ORGANISATION !!!!
+	*/
+	class RockFluidOrganizationInterpretation : public RESQML2_NS::RockFluidOrganizationInterpretation
 	{
 	public:
 
 		/**
-		 * Only to be used in partial transfer context
-		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
-		 */
-		DLL_IMPORT_OR_EXPORT RockFluidOrganizationInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractOrganizationInterpretation(partialObject) {}
+		* Only to be used in partial transfer context
+		*/
+		DLL_IMPORT_OR_EXPORT RockFluidOrganizationInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::RockFluidOrganizationInterpretation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
-		 *
-		 * @param [in,out]	orgFeat			   	The feature the instance interprets. It must be a "fluid"
-		 * 										organization feature.
-		 * @param 		  	guid			   	The guid to set to the interpretation. If empty then a
-		 * 										new guid will be generated.
-		 * @param 		  	title			   	A title for the instance to create.
-		 * @param [in,out]	rockFluidUnitInterp	The unique (for now) rock fluid unit which is contained
-		 * 										by this organization.
-		 */
-		RockFluidOrganizationInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, class RockFluidUnitInterpretation * rockFluidUnitInterp);
+		* Creates an instance of this class in a gsoap context.
+		* @param orgFeat				The feature the instance interprets. It must be a "fluid" organization feature.
+		* @param guid					The guid to set to the interpretation. If empty then a new guid will be generated.
+		* @param title					A title for the instance to create.
+		* @param rockFluidUnitInterp	The unique (for now) rock fluid unit which is contained by this organization
+		*/
+		RockFluidOrganizationInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterp);
 
 		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		RockFluidOrganizationInterpretation(gsoap_resqml2_0_1::_resqml20__RockFluidOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*/
+		RockFluidOrganizationInterpretation(gsoap_resqml2_0_1::_resqml20__RockFluidOrganizationInterpretation* fromGsoap) : RESQML2_NS::RockFluidOrganizationInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~RockFluidOrganizationInterpretation() {}
 
 		/**
-		 * Gets grid representation set
-		 *
-		 * @returns	Null if it fails, else the grid representation set.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractGridRepresentation *> getGridRepresentationSet() const;
-
-		/**
-		 * Gets grid representation count
-		 *
-		 * @returns	The count of grid representation associated to this rock fluid organization.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getGridRepresentationCount() const;
-
-		/**
-		 * Get a grid representation associated to this rock fluid org interp by means of its index.
-		 *
-		 * @param 	index	The index of the grid representation to get in the array of grid
-		 * 					representaitons of this rock fluid org interp.
-		 *
-		 * @returns	Null if it fails, else the grid representation.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation * getGridRepresentation(unsigned int index) const;
-
-		/**
-		 * Check if a grid representation is wether associated to this rock fluid org interp or not.
-		 *
-		 * @param [in,out]	gridRep	The grid representation to check its assocaition with this rock fluid
-		 * 							org interp.
-		 *
-		 * @returns	True or false.
-		 */
-		DLL_IMPORT_OR_EXPORT bool isAssociatedToGridRepresentation(RESQML2_NS::AbstractGridRepresentation* gridRep) const;
-
-		/**
-		 * Push back a rock fluid unit in this organization
-		 *
-		 * @param [in,out]	rockFluidUnitInterpretation	The rock fluid unit interpretation to push back.
-		 */
-		DLL_IMPORT_OR_EXPORT void pushBackRockFluidUnitInterpretation(class RockFluidUnitInterpretation * rockFluidUnitInterpretation);
+		* Push back a rock fluid unit in this organization
+		*
+		* @param rockFluidUnitInterpretation	The rock fluid unit interpretation to push back
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackRockFluidUnitInterpretation(RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterpretation);
 
 		/**
 		 * Gets rock fluid unit interp count
@@ -121,25 +68,6 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getRockFluidUnitInterpCount() const;
 
-		/** Get a rock fluid unit interp of this rock fluid org interp by means of its index. */
-		DLL_IMPORT_OR_EXPORT class RockFluidUnitInterpretation* getRockFluidUnitInterpretation(unsigned int index) const;
-
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
-
-	private:
-		/** Loads target relationships */
-		void loadTargetRelationships();
+		COMMON_NS::DataObjectReference getRockFluidUnitInterpretationDor(unsigned int index) const;
 	};
 }

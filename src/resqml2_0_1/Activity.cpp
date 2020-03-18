@@ -482,9 +482,9 @@ void Activity::setActivityTemplate(RESQML2_NS::ActivityTemplate * activityTempla
 	static_cast<_resqml20__Activity*>(gsoapProxy2_0_1)->ActivityDescriptor = activityTemplate->newResqmlReference();
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* Activity::getActivityTemplateDor() const
+COMMON_NS::DataObjectReference Activity::getActivityTemplateDor() const
 {
-	return static_cast<_resqml20__Activity*>(gsoapProxy2_0_1)->ActivityDescriptor;
+	return COMMON_NS::DataObjectReference(static_cast<_resqml20__Activity*>(gsoapProxy2_0_1)->ActivityDescriptor);
 }
 
 std::string Activity::getXmlNamespaceVersion() const
@@ -497,13 +497,14 @@ void Activity::loadTargetRelationships()
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
 	// Activity template
-	if (activity->ActivityDescriptor != nullptr) {
-		convertDorIntoRel<ActivityTemplate>(activity->ActivityDescriptor);
+	COMMON_NS::DataObjectReference dor = getActivityTemplateDor();
+	if (!dor.isEmpty()) {
+		convertDorIntoRel<ActivityTemplate>(dor);
 	}
 
 	for (size_t i = 0; i < activity->Parameter.size(); ++i) {
 		if (activity->Parameter[i]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DataObjectParameter) {
-			convertDorIntoRel(static_cast<resqml20__DataObjectParameter*>(activity->Parameter[i])->DataObject);
+			convertDorIntoRel(COMMON_NS::DataObjectReference(static_cast<resqml20__DataObjectParameter*>(activity->Parameter[i])->DataObject));
 		}
 	}
 }

@@ -24,31 +24,25 @@ under the License.
 using namespace std;
 using namespace epc;
 
-FilePart::FilePart():finalPathName(), fileRelationship()
+FilePart::FilePart():fileRelationship()
 {}
 
-FilePart::FilePart(const string & outputPartPath):
-	finalPathName(outputPartPath), fileRelationship()
+FilePart::FilePart(string outputPartPath):
+	fileRelationship()
 {
-	string directoryOfPart(outputPartPath);
-
 	// Clean the potential ending slashes of directoryOfPart
-	while (directoryOfPart[directoryOfPart.size() - 1] == '/' || directoryOfPart[directoryOfPart.size() - 1] == '\\') {
-		directoryOfPart = directoryOfPart.substr(0, directoryOfPart.size() - 1);
+	while (outputPartPath[outputPartPath.size() - 1] == '/' || outputPartPath[outputPartPath.size() - 1] == '\\') {
+		outputPartPath = outputPartPath.substr(0, outputPartPath.size() - 1);
 	}
 
 	// extract the directory path
-	size_t slashPos = directoryOfPart.find_last_of("/\\");
-	directoryOfPart = slashPos == string::npos ? string() : directoryOfPart.substr(0, slashPos + 1);
+	size_t slashPos = outputPartPath.find_last_of("/\\");
 
 	// Create the path for the associated relationship part
-	string wkRelsPathname = directoryOfPart + "_rels/" + outputPartPath + ".rels";
+	string wkRelsPathname = slashPos == string::npos
+		? "_rels/" + outputPartPath + ".rels"
+		: outputPartPath.substr(0, slashPos + 1) + "_rels/" + outputPartPath.substr(slashPos + 1) + ".rels";
 	fileRelationship.setPathName(wkRelsPathname);
-}
-
-const string & FilePart::getFinalPathName() const
-{
-	return finalPathName;
 }
 
 const FileRelationship & FilePart::getFileRelationship() const
@@ -61,25 +55,6 @@ Relationship FilePart::getIndexRelationship(int index) const
 	return fileRelationship.getIndexRelationship(index);
 }
 
-void FilePart::setFinalPathName(const string & finalPath)
-{
-	finalPathName = finalPath;
-	/*
-	int wkFileNamesize = 0;
-	for(int i=finalPath.size()-1; i>=0; i--)
-	{		
-	if(finalPath[i]=='\\')
-	{
-	wkFileNamesize = i;
-	break;
-	}
-	}
-	string wkRelsPathname = finalPath.substr(0, finalPath.size() - wkFileNamesize) + "\\_rels\\" + finalPath.substr(finalPath.size() - wkFileNamesize, wkFileNamesize) + ".rels";
-	*/
-	string wkRelsPathname = "\\_rels\\" + finalPath + ".rels";
-	fileRelationship.setPathName(wkRelsPathname);
-}
-
 void FilePart::createRelationship(const std::string & rsTarget, const std::string & rsType,const std::string & rsId, bool internalTarget)
 {
 	Relationship rel(rsTarget, rsType, rsId, internalTarget);
@@ -90,19 +65,3 @@ void FilePart::addRelationship(const Relationship & relationship)
 {
 	fileRelationship.addRelationship(relationship);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

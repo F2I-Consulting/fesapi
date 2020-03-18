@@ -64,12 +64,12 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::Abstrac
 	setInterpretation(interp);
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* TriangulatedSetRepresentation::getHdfProxyDor() const
+COMMON_NS::DataObjectReference TriangulatedSetRepresentation::getHdfProxyDor() const
 {
 	resqml20__TrianglePatch* patch = static_cast<_resqml20__TriangulatedSetRepresentation*>(gsoapProxy2_0_1)->TrianglePatch[0];
 	if (patch->Triangles->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
 	{
-		return static_cast<resqml20__IntegerHdf5Array*>(patch->Triangles)->Values->HdfProxy;
+		return COMMON_NS::DataObjectReference(static_cast<resqml20__IntegerHdf5Array*>(patch->Triangles)->Values->HdfProxy);
 	}
 
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
@@ -124,10 +124,10 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	hdfTriangles->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream ossForHdf;
 	ossForHdf << "triangles_patch" << patch->PatchIndex;
-	hdfTriangles->Values->PathInHdfFile = "/RESQML/" + triRep->uuid + "/" + ossForHdf.str();
+	hdfTriangles->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 	// ************ HDF *************
 	hsize_t dim[2] = {triangleCount, 3};
-	proxy->writeArrayNd(triRep->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), H5T_NATIVE_UINT,
 		triangleNodeIndices,
 		dim, 2);
@@ -158,7 +158,7 @@ void TriangulatedSetRepresentation::getXyzPointsOfPatch(const unsigned int & pat
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
 }
 
-unsigned int TriangulatedSetRepresentation::getTriangleCountOfPatch(const unsigned int & patchIndex) const
+unsigned int TriangulatedSetRepresentation::getTriangleCountOfPatch(unsigned int patchIndex) const
 {
 	_resqml20__TriangulatedSetRepresentation* triRep = static_cast<_resqml20__TriangulatedSetRepresentation*>(gsoapProxy2_0_1);
 	
@@ -179,7 +179,7 @@ unsigned int TriangulatedSetRepresentation::getTriangleCountOfAllPatches() const
 	return result;
 }
 
-void TriangulatedSetRepresentation::getTriangleNodeIndicesOfPatch(const unsigned int & patchIndex, unsigned int * triangleNodeIndices) const
+void TriangulatedSetRepresentation::getTriangleNodeIndicesOfPatch(unsigned int patchIndex, unsigned int * triangleNodeIndices) const
 {
 	_resqml20__TriangulatedSetRepresentation* triRep = static_cast<_resqml20__TriangulatedSetRepresentation*>(gsoapProxy2_0_1);
 	readArrayNdOfUIntValues(triRep->TrianglePatch[patchIndex]->Triangles, triangleNodeIndices);

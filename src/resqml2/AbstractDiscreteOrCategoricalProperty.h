@@ -251,9 +251,8 @@ namespace RESQML2_NS
 		 * 							nullptr, then a default HDF proxy must be defined in the repository.
 		 * @param 	  	dataset  	(Optional) If not provided during the method call, the dataset will
 		 * 							be named the same as the dataset naming convention of fesapi :
-		 * 							<tt>"/RESQML/" + prop-&gt;uuid + "/values_patch" +
-		 * 							patch-&gt;RepresentationPatchIndex</tt>
-		 * @param 	  	nullValue	(Optional) Only relevant for integer hdf5 datasets.Indeed, RESQML
+		 * 							<tt>getHdfGroup() + "/values_patch" + patchIndex</tt>
+		 * @param 	  	nullValue	(Optional) Only relevant for integer HDF5 datasets. Indeed, RESQML
 		 * 							(and fesapi) forces null value for floating point to be @c NaN value.
 		 *
 		 * @returns	The name of the HDF5 dataset.  

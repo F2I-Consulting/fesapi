@@ -206,9 +206,9 @@ namespace PRODML2_1_NS
 		/**
 		 * Gets rock fluid unit dor
 		 *
-		 * @returns	Null if it fails, else the rock fluid unit dor.
+		 * @returns	Empty if it fails, else the rock fluid unit dor.
 		 */
-		gsoap_eml2_2::eml22__DataObjectReference* getRockFluidUnitDor() const;
+		COMMON_NS::DataObjectReference getRockFluidUnitDor() const;
 
 		/**
 		 * Gets rock fluid unit

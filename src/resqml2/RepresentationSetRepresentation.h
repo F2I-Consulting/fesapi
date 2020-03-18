@@ -65,9 +65,10 @@ namespace RESQML2_NS
 		 * Gets the data object reference of the HDF proxy which is used for storing the numerical
 		 * values of this representation (i.e. its geometry).
 		 *
-		 * @returns nullptr since no geometry is directly associated to a representation set representation.
+		 * @returns	Empty data object reference since no geometry is directly associated to a
+		 * 			representation set representation.
 		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const override { return nullptr; }
+		COMMON_NS::DataObjectReference getHdfProxyDor() const { return COMMON_NS::DataObjectReference(); }
 
 		/** Please do note use: not implemented yet. */ 
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const override ;

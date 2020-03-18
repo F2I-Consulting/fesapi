@@ -63,18 +63,14 @@ namespace WITSML2_0_NS
 		~WellboreCompletion() {}
 
 		/**
-		 * Get the Data Object Reference of the wellbore linked with this data object.
-		 *
-		 * @returns	Null if it fails, else the wellbore dor.
-		 */
-		gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const;
+		* Get the Data Object Reference of the wellbore linked with this data object.
+		*/
+		COMMON_NS::DataObjectReference getWellboreDor() const;
 
 		/**
-		 * Get the Data Object Reference of the well completion linked with this data object.
-		 *
-		 * @returns	Null if it fails, else the well completion dor.
-		 */
-		gsoap_eml2_1::eml21__DataObjectReference* getWellCompletionDor() const;
+		* Get the Data Object Reference of the well completion linked with this data object.
+		*/
+		COMMON_NS::DataObjectReference getWellCompletionDor() const;
 
 		/** Get the well completion linked with this data object */
 		DLL_IMPORT_OR_EXPORT class WellCompletion* getWellCompletion() const;

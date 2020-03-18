@@ -62,11 +62,9 @@ namespace WITSML2_0_NS
 		~WellCompletion() {}
 
 		/**
-		 * Get the Data Object Reference of the well linked with this data object.
-		 *
-		 * @returns	Null if it fails, else the well dor.
-		 */
-		gsoap_eml2_1::eml21__DataObjectReference* getWellDor() const;
+		* Get the Data Object Reference of the well linked with this data object.
+		*/
+		COMMON_NS::DataObjectReference getWellDor() const;
 		
 		/** Get the well of this well completion. */
 		DLL_IMPORT_OR_EXPORT class Well* getWell() const;

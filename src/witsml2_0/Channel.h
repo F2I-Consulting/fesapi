@@ -91,12 +91,7 @@ namespace WITSML2_0_NS
 		 */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* getPropertyKind() const;
 
-		/**
-		 * Gets property kind dor
-		 *
-		 * @returns	Null if it fails, else the property kind dor.
-		 */
-		gsoap_eml2_1::eml21__DataObjectReference* getPropertyKindDor() const;
+		COMMON_NS::DataObjectReference getPropertyKindDor() const;
 
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(std::string, Mnemonic)
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(std::string, Uom)

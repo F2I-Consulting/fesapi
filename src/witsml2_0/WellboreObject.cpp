@@ -28,15 +28,14 @@ using namespace gsoap_eml2_1;
 
 Wellbore* WellboreObject::getWellbore() const
 {
-	gsoap_eml2_1::eml21__DataObjectReference* const dor = getWellboreDor();
-	return dor != nullptr ? getRepository()->getDataObjectByUuid<Wellbore>(dor->Uuid) : nullptr;
-
+	COMMON_NS::DataObjectReference dor = getWellboreDor();
+	return getRepository()->getDataObjectByUuid<Wellbore>(dor.getUuid());
 }
 
 void WellboreObject::loadTargetRelationships()
 {
-	gsoap_eml2_1::eml21__DataObjectReference* const dor = getWellboreDor();
-	if (dor != nullptr) {
-		convertDorIntoRel<Wellbore>(getWellboreDor());
+	COMMON_NS::DataObjectReference dor = getWellboreDor();
+	if (!dor.isEmpty()) {
+		convertDorIntoRel<Wellbore>(dor);
 	}
 }

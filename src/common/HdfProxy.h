@@ -933,22 +933,24 @@ namespace COMMON_NS
 	protected:
 
 		/**
-		 * Allow to force a root group for all newly created groups in inherited hdf proxies.
+		 * Allows to force a root group for all newly created groups in inherited HDF proxies.
+		 *
+		 * @param 	rootGroup	Group the root belongs to.
 		 *
 		 * @returns	A hdf5_hid_t.
 		 */
-		virtual hdf5_hid_t openOrCreateRootGroup();
+		virtual hdf5_hid_t openOrCreateRootGroup(const std::string& rootGroup);
 
 		/**
-		 * Check if an hdf group named as groupName exists in the root group. If it exists, it returns
+		 * Checks if an HDF group named as groupName exists in the root group. If it exists, it returns
 		 * the latter. If not, it creates this group and then returns it. Do not close opened or created
 		 * HDF5 group. They are automatically managed by fesapi.
 		 *
-		 * @param 	groupName	Name of the group.
+		 * @param 	rootSlashGroup	Name of the group.
 		 *
 		 * @returns	A hdf5_hid_t.
 		 */
-		hdf5_hid_t openOrCreateGroupInRootGroup(const std::string& groupName);
+		hdf5_hid_t openOrCreateGroupInRootGroup(const std::string& rootSlashGroup);
 
 		/** The hdf file */
 		hdf5_hid_t hdfFile;

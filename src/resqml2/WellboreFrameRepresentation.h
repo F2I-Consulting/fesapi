@@ -52,8 +52,6 @@ namespace RESQML2_NS
 		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreFrameRepresentation* fromGsoap) :
 			AbstractRepresentation(fromGsoap) {}
 
-#if WITH_EXPERIMENTAL
-
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
@@ -61,7 +59,6 @@ namespace RESQML2_NS
 		 */
 		WellboreFrameRepresentation(gsoap_eml2_2::resqml22__WellboreFrameRepresentation* fromGsoap) :
 			AbstractRepresentation(fromGsoap) {}
-#endif
 
 	public:
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
@@ -194,16 +191,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The data object reference of the associated RESQML wellbore trajectory.
 		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getWellboreTrajectoryDor() const;
-
-		/**
-		 * Gets the UUID of the associated RESQML wellbore trajectory.
-		 *
-		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 *
-		 * @returns	The UUID of the associated RESQML wellbore trajectory.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getWellboreTrajectoryUuid() const;
+		COMMON_NS::DataObjectReference getWellboreTrajectoryDor() const;
 
 		/** 
 		 * Gets the associated RESQML wellbore trajectory. 
@@ -214,7 +202,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT class RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const override;
+		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const override;
 
 		/**
 		 * @copybrief AbstractRepresentation::getHdfProxyDor()
@@ -223,7 +211,7 @@ namespace RESQML2_NS
 		 * 
 		 * @copydetails AbstractRepresentation::getHdfProxyDor()
 		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const override;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override {return 1;}
 

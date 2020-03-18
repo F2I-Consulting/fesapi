@@ -330,37 +330,9 @@ namespace RESQML2_0_1_NS
 		 */
 		gsoap_resqml2_0_1::resqml20__OrientedMacroFace* getRegionInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const;
 
-		/**
-		 * Gets sealed structural framework dor
-		 *
-		 * @returns	Null if it fails, else the sealed structural framework dor.
-		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getSealedStructuralFrameworkDor() const;
+		COMMON_NS::DataObjectReference getSealedStructuralFrameworkDor() const;
 
-		/**
-		 * Gets sealed structural framework uuid
-		 *
-		 * @returns	The sealed structural framework uuid.
-		 */
-		std::string getSealedStructuralFrameworkUuid() const;
-
-		/**
-		 * Gets strati unit interp dor
-		 *
-		 * @param 	regionIndex	Zero-based index of the region.
-		 *
-		 * @returns	Null if it fails, else the strati unit interp dor.
-		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getStratiUnitInterpDor(unsigned int regionIndex) const;
-
-		/**
-		 * Gets strati unit interp uuid
-		 *
-		 * @param 	regionIndex	Zero-based index of the region.
-		 *
-		 * @returns	The strati unit interp uuid.
-		 */
-		std::string getStratiUnitInterpUuid(unsigned int regionIndex) const;
+		COMMON_NS::DataObjectReference getStratiUnitInterpDor(unsigned int regionIndex) const;
 
 		/** Loads target relationships */
 		void loadTargetRelationships();

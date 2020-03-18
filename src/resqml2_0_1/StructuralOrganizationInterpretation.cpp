@@ -34,7 +34,7 @@ using namespace gsoap_resqml2_0_1;
 const char* StructuralOrganizationInterpretation::XML_TAG = "StructuralOrganizationInterpretation";
 
 StructuralOrganizationInterpretation::StructuralOrganizationInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title,
-		const gsoap_resqml2_0_1::resqml20__OrderingCriteria & orderingCriteria)
+	const gsoap_resqml2_0_1::resqml20__OrderingCriteria & orderingCriteria)
 {
 	if (orgFeat == nullptr) {
 		throw invalid_argument("The interpreted organization feature cannot be null.");

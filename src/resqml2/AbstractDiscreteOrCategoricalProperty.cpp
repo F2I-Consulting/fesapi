@@ -150,7 +150,7 @@ std::string AbstractDiscreteOrCategoricalProperty::pushBackRefToExistingDataset(
 		if (datasetName.empty()) {
 			ostringstream ossForHdf;
 			ossForHdf << "values_patch" << *(patch->RepresentationPatchIndex);
-			xmlValues->Values->PathInHdfFile = "/RESQML/" + prop->uuid + "/" + ossForHdf.str();
+			xmlValues->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 		}
 		else {
 			xmlValues->Values->PathInHdfFile = datasetName;
@@ -174,8 +174,9 @@ void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5ArrayOfValues(const 
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
-		proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+		proxy->writeArrayNd(getHdfGroup(),
 			pushBackRefToExistingDataset(proxy, "", nullValue),
 			H5T_NATIVE_LLONG,
 			values,
@@ -196,7 +197,7 @@ void AbstractDiscreteOrCategoricalProperty::pushBackIntHdf5ArrayOfValues(const i
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+		proxy->writeArrayNd(getHdfGroup(),
 			pushBackRefToExistingDataset(proxy, "", nullValue),
 			H5T_NATIVE_INT,
 			values,
@@ -217,7 +218,7 @@ void AbstractDiscreteOrCategoricalProperty::pushBackShortHdf5ArrayOfValues(const
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+		proxy->writeArrayNd(getHdfGroup(),
 			pushBackRefToExistingDataset(proxy, "", nullValue),
 			H5T_NATIVE_SHORT,
 			values,
@@ -238,7 +239,7 @@ void AbstractDiscreteOrCategoricalProperty::pushBackUShortHdf5ArrayOfValues(cons
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+		proxy->writeArrayNd(getHdfGroup(),
 			pushBackRefToExistingDataset(proxy, "", nullValue),
 			H5T_NATIVE_USHORT,
 			values,
@@ -259,7 +260,7 @@ void AbstractDiscreteOrCategoricalProperty::pushBackCharHdf5ArrayOfValues(const 
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+		proxy->writeArrayNd(getHdfGroup(),
 			pushBackRefToExistingDataset(proxy, "", nullValue),
 			H5T_NATIVE_CHAR,
 			values,
@@ -431,7 +432,7 @@ void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5ArrayOfValues(
 		xmlValues->Values->HdfProxy = proxy->newResqmlReference();
 		std::ostringstream ossForHdf;
 		ossForHdf << "values_patch" << *(patch->RepresentationPatchIndex);
-		xmlValues->Values->PathInHdfFile = "/RESQML/" + getUuid() + "/" + ossForHdf.str();
+		xmlValues->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 		patch->Values = xmlValues;
 
 		prop->PatchOfValues.push_back(patch);
@@ -443,7 +444,7 @@ void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5ArrayOfValues(
 	// HDF
 	ostringstream oss;
 	oss << "values_patch" << getPatchCount() - 1;
-	proxy->createArrayNd(getUuid(),
+	proxy->createArrayNd(getHdfGroup(),
 		oss.str(),
 		H5T_NATIVE_LLONG,
 		numValues, numArrayDimensions);
@@ -477,7 +478,7 @@ void AbstractDiscreteOrCategoricalProperty::setValuesOfLongHdf5ArrayOfValues(
 	}
 
 	// HDF
-	proxy->writeArrayNdSlab(getUuid(),
+	proxy->writeArrayNdSlab(getHdfGroup(),
 		oss.str(),
 		H5T_NATIVE_LLONG,
 		values,

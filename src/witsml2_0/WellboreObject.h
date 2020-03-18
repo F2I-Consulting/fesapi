@@ -59,11 +59,9 @@ namespace WITSML2_0_NS
 		~WellboreObject() {}
 
 		/**
-		 * Get the Data Object Reference of the wellbore linked with this data object.
-		 *
-		 * @returns	Null if it fails, else the wellbore dor.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const = 0;
+		* Get the Data Object Reference of the wellbore linked with this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getWellboreDor() const = 0;
 
 		/**
 		 * Get the wellbore linked with this data object.

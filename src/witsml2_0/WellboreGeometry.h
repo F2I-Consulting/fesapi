@@ -64,18 +64,7 @@ namespace WITSML2_0_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~WellboreGeometry() {}
 
-		/**
-		 * Gets wellbore dor
-		 *
-		 * @returns	Null if it fails, else the wellbore dor.
-		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const;
-
-		/**
-		 * Sets a wellbore
-		 *
-		 * @param [in,out]	witsmlWellbore	If non-null, the witsml wellbore.
-		 */
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getWellboreDor() const;
 		DLL_IMPORT_OR_EXPORT void setWellbore(class Wellbore* witsmlWellbore);
 
 		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdBase, gsoap_eml2_1::eml21__LengthUom)

@@ -217,7 +217,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The UUID of the (fault) interpretation at index @p interpretationIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getInterpretationUuidFromIndex(const unsigned int & interpretationIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::string getInterpretationUuidFromIndex(unsigned int interpretationIndex) const = 0;
 
 		/**
 		 * Gets a particular (fault) interpretation of this grid connection set.
@@ -234,7 +234,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The (fault) interpretation at index @p interpretationIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT class AbstractFeatureInterpretation * getInterpretationFromIndex(const unsigned int & interpretationIndex) const;
+		DLL_IMPORT_OR_EXPORT class AbstractFeatureInterpretation* getInterpretationFromIndex(unsigned int interpretationIndex) const;
 
 		/**
 		 * Get the count of interpretations in this grid connection set.
@@ -449,43 +449,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The data object reference of the supporting grid representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getSupportingGridRepresentationDor(unsigned int index) const = 0;
-
-		/**
-		 * Gets the UUID of the supporting grid representation located at a specific index of this grid
-		 * connection set representation.
-		 *
-		 * @exception	std::out_of_range	If @p index is out of range.
-		 *
-		 * @param 	index	Zero-based index of the supporting grid representation we look for.
-		 *
-		 * @returns	The UUID of the supporting grid representation at position @p index.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getSupportingGridRepresentationUuid(unsigned int index) const;
-
-		/**
-		 * Gets the title of the supporting grid representation located at a specific index of this grid
-		 * connection set representation.
-		 *
-		 * @exception	std::out_of_range	If @p index is out of range.
-		 *
-		 * @param 	index	Zero-based index of the supporting grid representation we look for.
-		 *
-		 * @returns	The title of the supporting grid representation at position @p index.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getSupportingGridRepresentationTitle(unsigned int index) const;
-
-		/**
-		 * Gets the content type of the supporting grid representation located at a specific index of
-		 * this grid connection set representation.
-		 *
-		 * @exception	std::out_of_range	If @p index is out of range.
-		 *
-		 * @param 	index	Zero-based index of the supporting grid representation we look for.
-		 *
-		 * @returns	The content type of the supporting grid representation at position @p index.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getSupportingGridRepresentationContentType(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const = 0;
 
 		/** Please do note use: not implemented yet. */
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const override;

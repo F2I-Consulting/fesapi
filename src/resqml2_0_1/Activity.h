@@ -318,9 +318,9 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Gets activity template dor
 		 *
-		 * @returns	Null if it fails, else the activity template dor.
+		 * @returns	Empty data object reference if it fails, else the activity template data object reference.
 		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getActivityTemplateDor() const;
+		COMMON_NS::DataObjectReference getActivityTemplateDor() const;
 
 		/**
 		 * Gets XML namespace version

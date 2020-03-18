@@ -283,18 +283,11 @@ namespace COMMON_NS
 		ULONG64 getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const;
 
 		/**
-		 * Convert a EML 2.0 Data Object Reference into a DataObjectRepository relationship.
+		 * Converts a data object reference into a data object repository relationship.
 		 *
-		 * @param 	dor	The dor.
+		 * @param dor The data object reference to convert.
 		 */
-		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor);
-
-		/**
-		 * Convert a EML 2.2 Data Object Reference into a DataObjectRepository relationship.
-		 *
-		 * @param 	dor	The dor.
-		 */
-		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor);
+		void convertDorIntoRel(const DataObjectReference& dor);
 
 		/**
 		 * Same as convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor). Also
@@ -306,12 +299,12 @@ namespace COMMON_NS
 		 * @param 	dor	The dor.
 		 */
 		template <class valueType>
-		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor)
+		void convertDorIntoRel(const DataObjectReference& dor)
 		{
-			valueType * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->UUID);
+			valueType * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor.getUuid());
 			if (targetObj == nullptr) { // partial transfer
 				getRepository()->createPartial(dor);
-				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->UUID);
+				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor.getUuid());
 				if (targetObj == nullptr) {
 					throw std::invalid_argument("The DOR looks invalid.");
 				}
@@ -320,60 +313,31 @@ namespace COMMON_NS
 		}
 
 		/**
-		 * Same as convertDorIntoRel(gsoap_eml2_1::eml21__DataObjectReference const * dor). Also check
-		 * that the content type of the DOR is OK with the target datatype in memory.
-		 *
-		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
-		 *
-		 * @tparam	valueType	Type of the value type.
-		 * @param 	dor	The dor.
-		 */
-		template <class valueType>
-		void convertDorIntoRel(gsoap_eml2_1::eml21__DataObjectReference const * dor)
-		{
-			valueType * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
-			if (targetObj == nullptr) { // partial transfer
-				getRepository()->createPartial(dor);
-				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
-				if (targetObj == nullptr) {
-					throw std::invalid_argument("The DOR looks invalid.");
-				}
-			}
-			getRepository()->addRelationship(this, targetObj);
-		}
-
-		/**
-		 * Same as convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor). Also check
-		 * that the content type of the DOR is OK with the target datatype in memory.
-		 *
-		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
-		 *
-		 * @tparam	valueType	Type of the value type.
-		 * @param 	dor	The dor.
-		 */
-		template <class valueType>
-		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor)
-		{
-			valueType * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
-			if (targetObj == nullptr) { // partial transfer
-				getRepository()->createPartial(dor);
-				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
-				if (targetObj == nullptr) {
-					throw std::invalid_argument("The DOR looks invalid.");
-				}
-			}
-			getRepository()->addRelationship(this, targetObj);
-		}
-
-		/**
-		 * Get an Hdf Proxy from a EML 2.0 dataset.
+		 * Gets an Hdf Proxy from a EML 2.0 dataset.
 		 *
 		 * @param 	dataset		  	The dataset.
 		 * @param 	throwException	(Optional) True to throw exception.
 		 *
-		 * @returns	Null if it fails, else the hdf proxy from dataset.
+		 * @returns	Null if it fails, else the HDF proxy from dataset.
 		 */
 		COMMON_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset, bool throwException = true) const;
+
+		/**
+		 * Gets an Hdf Proxy from a EML 2.2 dataset.
+		 *
+		 * @param 	dataset		  	The dataset.
+		 * @param 	throwException	(Optional) True to throw exception.
+		 *
+		 * @returns	Null if it fails, else the HDF proxy from dataset.
+		 */
+		COMMON_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_eml2_2::eml22__ExternalDatasetPart const * dataset, bool throwException = true) const;
+
+		/**
+		* @return the HDF group where to write the numerical values associated to this object.
+		*/
+		std::string getHdfGroup() const {
+			return "/" + getXmlNamespace() + "/" + getUuid();
+		}
 
 	public:
 		/** Destructor */
@@ -766,7 +730,14 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new EML2.0 contact data object reference.
 		 */
-		gsoap_resqml2_0_1::resqml20__ContactElementReference* newResqmlContactElementReference() const;
+		gsoap_resqml2_0_1::resqml20__ContactElementReference* newContactElementReference2_0_1() const;
+
+		/**
+		 * Creates an returns an EML2.2 contact data object reference which targets this data object
+		 *
+		 * @returns	A pointer to the new EML2.2 contact data object reference.
+		 */
+		gsoap_eml2_2::resqml22__ContactElement* newContactElementReference2_2() const;
 
 		/**
 		 * Returns the data object repository which contains this instance

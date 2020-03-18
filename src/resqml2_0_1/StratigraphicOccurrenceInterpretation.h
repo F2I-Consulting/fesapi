@@ -18,45 +18,37 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractStratigraphicOrganizationInterpretation.h"
+#include "../resqml2/AbstractStratigraphicOrganizationInterpretation.h"
 #include "EarthModelInterpretation.h"
 #include "WellboreMarkerFrameRepresentation.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
-	/** This class is a container for other organizations that are consistent to each others. */
-	class StratigraphicOccurrenceInterpretation : public AbstractStratigraphicOrganizationInterpretation
+	/**
+	* This class is a container for other organizations that are consistent to each others.
+	*/
+	class StratigraphicOccurrenceInterpretation : public RESQML2_NS::AbstractStratigraphicOrganizationInterpretation
 	{
 	public:
 
 		/**
-		 * Only to be used in partial transfer context
-		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
-		 */
-		DLL_IMPORT_OR_EXPORT StratigraphicOccurrenceInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractStratigraphicOrganizationInterpretation(partialObject) {}
+		* Only to be used in partial transfer context
+		*/
+		DLL_IMPORT_OR_EXPORT StratigraphicOccurrenceInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractStratigraphicOrganizationInterpretation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
-		 *
-		 * @param [in,out]	orgFeat				The feature the instance interprets. It must be a
-		 * 										stratigraphic organization feature.
-		 * @param 		  	guid				The guid to set to the interpretation. If empty then a
-		 * 										new guid will be generated.
-		 * @param 		  	title				A title for the instance to create.
-		 * @param 		  	orderingCriteria	The ordering criteria.
-		 */
-		StratigraphicOccurrenceInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml20__OrderingCriteria & orderingCriteria);
+		* Creates an instance of this class in a gsoap context.
+		* @param orgFeat	The feature the instance interprets. It must be a stratigraphic organization feature.
+		* @param guid		The guid to set to the interpretation. If empty then a new guid will be generated.
+		* @param title		A title for the instance to create.
+		*/
+		StratigraphicOccurrenceInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria);
 
 		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		StratigraphicOccurrenceInterpretation(gsoap_resqml2_0_1::_resqml20__StratigraphicOccurrenceInterpretation* fromGsoap) : AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*/
+		StratigraphicOccurrenceInterpretation(gsoap_resqml2_0_1::_resqml20__StratigraphicOccurrenceInterpretation* fromGsoap) : RESQML2_NS::AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~StratigraphicOccurrenceInterpretation() {}

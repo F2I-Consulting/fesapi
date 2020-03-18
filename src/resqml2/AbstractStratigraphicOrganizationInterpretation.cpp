@@ -21,13 +21,12 @@ under the License.
 #include <stdexcept>
 #include <algorithm>
 
-using namespace RESQML2_0_1_NS;
-using namespace gsoap_resqml2_0_1;
+using namespace RESQML2_NS;
 using namespace std;
 
-std::vector<RESQML2_NS::AbstractGridRepresentation *> AbstractStratigraphicOrganizationInterpretation::getGridRepresentations() const
+std::vector<AbstractGridRepresentation *> AbstractStratigraphicOrganizationInterpretation::getGridRepresentations() const
 {
-	return getRepository()->getSourceObjects<RESQML2_NS::AbstractGridRepresentation>(this);
+	return getRepository()->getSourceObjects<AbstractGridRepresentation>(this);
 }
 
 unsigned int AbstractStratigraphicOrganizationInterpretation::getGridRepresentationCount() const
@@ -41,9 +40,9 @@ unsigned int AbstractStratigraphicOrganizationInterpretation::getGridRepresentat
 	return static_cast<unsigned int>(count);
 }
 
-RESQML2_NS::AbstractGridRepresentation * AbstractStratigraphicOrganizationInterpretation::getGridRepresentation(unsigned int index) const
+AbstractGridRepresentation * AbstractStratigraphicOrganizationInterpretation::getGridRepresentation(unsigned int index) const
 {
-	const std::vector<RESQML2_NS::AbstractGridRepresentation *>& gridRepresentationSet = getGridRepresentations();
+	const std::vector<AbstractGridRepresentation *>& gridRepresentationSet = getGridRepresentations();
 
 	if (index >= gridRepresentationSet.size()) {
 		throw out_of_range("The index of the grid representation to get is out of range.");
@@ -52,9 +51,9 @@ RESQML2_NS::AbstractGridRepresentation * AbstractStratigraphicOrganizationInterp
 	return gridRepresentationSet[index];
 }
 
-bool AbstractStratigraphicOrganizationInterpretation::isAssociatedToGridRepresentation(RESQML2_NS::AbstractGridRepresentation* gridRep) const
+bool AbstractStratigraphicOrganizationInterpretation::isAssociatedToGridRepresentation(AbstractGridRepresentation* gridRep) const
 {
-	const std::vector<RESQML2_NS::AbstractGridRepresentation *>& gridRepresentationSet = getGridRepresentations();
+	const std::vector<AbstractGridRepresentation *>& gridRepresentationSet = getGridRepresentations();
 
 	return find(gridRepresentationSet.begin(), gridRepresentationSet.end(), gridRep) != gridRepresentationSet.end();
 }

@@ -93,7 +93,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The kind of the selected elements.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual indexableElement getElementKindOfPatch(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual indexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const = 0;
 
 		/**
 		 * Gets the count of the selected elements of a particular patch of this sub-representation.
@@ -105,7 +105,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of the selected elements.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual ULONG64 getElementCountOfPatch(const unsigned int & patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual ULONG64 getElementCountOfPatch(unsigned int patchIndex) const = 0;
 
 		/**
 		 * Gets the indices of the selected elements for a particular patch of this sub-representation.
@@ -128,8 +128,8 @@ namespace RESQML2_NS
 		 * 									elements. It must be preallocated with
 		 * 									{@link getElementCountOfPatch()} size.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getElementIndicesOfPatch(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex, ULONG64 * elementIndices) const = 0;
-
+		DLL_IMPORT_OR_EXPORT virtual void getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, ULONG64* elementIndices) const = 0;
+		
 		/**
 		 * Gets the indices of the supporting representations that refer the selected elements indices
 		 * of a particular patch of this sub-representation.
@@ -146,7 +146,7 @@ namespace RESQML2_NS
 		 * 												(or the selected pair of elements) at the same
 		 * 												position in the sub-representation patch.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getSupportingRepresentationIndicesOfPatch(const unsigned int & patchIndex, short * supportingRepresentationIndices) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getSupportingRepresentationIndicesOfPatch(unsigned int patchIndex, short* supportingRepresentationIndices) const = 0;
 
 		/**
 		 * Checks if the element indices of a particular patch are pairwise or not.
@@ -157,7 +157,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if the elements indices are pairwise, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesPairwise(const unsigned int & patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesPairwise(unsigned int patchIndex) const = 0;
 
 		/**
 		 * Checks if the element indices of a particular patch are based on a lattice or not.
@@ -168,7 +168,7 @@ namespace RESQML2_NS
 		 * 									(0 for the left and 1 for the right part of the pairs).
 		 *
 		 * @param 	patchIndex		   	Zero-based index of the patch.
-		 * @param 	elementIndicesIndex	(Optional) In case of pairwise elements, allow to select the
+		 * @param 	elementIndicesIndex	(Optional) In case of pairwise elements, allows to select the
 		 * 								first (<tt>elementIndicesIndex = 0</tt>)
 		 * 								or second (<tt>elementIndicesIndex = 1</tt>) element index of the
 		 * 								pair. Default value is @c 0, corresponding to both non-pairwise
@@ -176,7 +176,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if element indices based on lattice, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesBasedOnLattice(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
 
 		/**
 		 * Gets the start value of the lattice the element indices of a particular patch are based on.
@@ -197,7 +197,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The lattice start value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getLatticeElementIndicesStartValue(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual LONG64 getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
 
 		/**
 		 * Gets the dimension count of the lattice the element indices of a particular patch are based
@@ -219,7 +219,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The lattice dimension count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getLatticeElementIndicesDimensionCount(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
 
 		/**
 		 * Gets the offset value at a given dimension of the lattice the element indices of a particular
@@ -243,7 +243,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The offset value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getLatticeElementIndicesOffsetValue(const unsigned int & latticeDimensionIndex, const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual LONG64 getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
 
 		/**
 		 * Gets the offset count at a given dimension of the lattice the element indices of a particular
@@ -267,7 +267,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The offset count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual ULONG64 getLatticeElementIndicesOffsetCount(const unsigned int & latticeDimensionIndex, const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual ULONG64 getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
 
 		/**
 		 * Pushes back a new lattice-based patch (without pairwise elements) in this sub-representation.
@@ -338,7 +338,7 @@ namespace RESQML2_NS
 		 * 										representation patch.
 		 * @param 	  	elementDataset			The HDF5 dataset name where the element indices are
 		 * 										stored. If empty, the dataset will be named the same as the
-		 * 										dataset naming convention fesapi : <tt>"/RESQML/" + subRep-
+		 * 										dataset naming convention fesapi : <tt>getHdfGroup() + subRep-
 		 * 										&gt;uuid + "/subrepresentation_elementIndices0_patch" +
 		 * 										patchIndex;</tt>
 		 * @param 	  	nullValue				The null value which has been chosen in the referenced
@@ -363,7 +363,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const override;
 
 		/** Please do note use : not implemented yet. */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const override;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int& patchIndex, double* xyzPoints) const override;
 
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getPatchCount() const override = 0;
 

@@ -19,10 +19,9 @@ under the License.
 #pragma once
 
 #include "AbstractOrganizationInterpretation.h"
-#include "../resqml2/AbstractColumnLayerGridRepresentation.h"
+#include "AbstractGridRepresentation.h"
 
-/** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_NS
 {
 	/** An abstract stratigraphic organization interpretation. */
 	class AbstractStratigraphicOrganizationInterpretation : public AbstractOrganizationInterpretation
@@ -47,6 +46,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractStratigraphicOrganizationInterpretation(gsoap_resqml2_0_1::resqml20__AbstractStratigraphicOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
+		AbstractStratigraphicOrganizationInterpretation(gsoap_eml2_2::resqml22__AbstractStratigraphicOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
 
 	public:
 
@@ -58,7 +58,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	Null if it fails, else the grid representations.
 		 */
-		std::vector<RESQML2_NS::AbstractGridRepresentation *> getGridRepresentations() const;
+		std::vector<AbstractGridRepresentation*> getGridRepresentations() const;
 
 		/**
 		 * Gets grid representation count
@@ -68,23 +68,16 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT unsigned int getGridRepresentationCount() const;
 
 		/**
-		 * Get a grid representation associated to this strati org interp by means of its index.
-		 *
-		 * @param 	index	The index of the grid representation to get in the array of grid
-		 * 					representaitons of this strati org interp.
-		 *
-		 * @returns	Null if it fails, else the grid representation.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation * getGridRepresentation(unsigned int index) const;
+		* Get a grid representation associated to this strati org interp by means of its index.
+		* @param index	The index of the grid representation to get in the array of grid representaitons of this strati org interp.
+		*/
+		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation * getGridRepresentation(unsigned int index) const;
 
 		/**
-		 * Check if a grid representation is wether associated to this strati org interp or not.
-		 *
-		 * @param [in,out]	gridRep	The grid representation to check its assocaition with this strati org
-		 * 							interp.
-		 *
-		 * @returns	True or false.
-		 */
-		DLL_IMPORT_OR_EXPORT bool isAssociatedToGridRepresentation(RESQML2_NS::AbstractGridRepresentation* gridRep) const;
+		* Check if a grid representation is wether associated to this strati org interp or not.
+		* @param gridRep	The grid representation to check its assocaition with this strati org interp.
+		* @return			True or false.
+		*/
+		DLL_IMPORT_OR_EXPORT bool isAssociatedToGridRepresentation(AbstractGridRepresentation* gridRep) const;
 	};
 }

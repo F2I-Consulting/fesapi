@@ -18,13 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractIjkGridRepresentation.h"
+#include "../resqml2/IjkGridLatticeRepresentation.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
-	/** An ijk grid lattice representation. */
-	class IjkGridLatticeRepresentation : public AbstractIjkGridRepresentation
+	class IjkGridLatticeRepresentation : public RESQML2_NS::IjkGridLatticeRepresentation
 	{
 	private :
 		gsoap_resqml2_0_1::resqml20__Point3dLatticeArray* getArrayLatticeOfPoints3d() const;
@@ -42,7 +41,8 @@ namespace RESQML2_0_1_NS
 		 */
 		IjkGridLatticeRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount) :
+			RESQML2_NS::IjkGridLatticeRepresentation(repo, guid, title, iCount, jCount, kCount) {}
 
 		/**
 		 * Constructor
@@ -56,14 +56,14 @@ namespace RESQML2_0_1_NS
 		 */
 		IjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 				const std::string & guid, const std::string & title,
-				unsigned int iCount, unsigned int jCount, unsigned int kCount);
+				unsigned int iCount, unsigned int jCount, unsigned int kCount) :
+			RESQML2_NS::IjkGridLatticeRepresentation(interp, guid, title, iCount, jCount, kCount) {}
 
 		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		IjkGridLatticeRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap): AbstractIjkGridRepresentation(fromGsoap) {}
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*/
+		IjkGridLatticeRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap): RESQML2_NS::IjkGridLatticeRepresentation(fromGsoap) {}
+		IjkGridLatticeRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridLatticeRepresentation(fromGsoap) {}
 
 		/**
 		 * Constructor
@@ -76,44 +76,10 @@ namespace RESQML2_0_1_NS
 		~IjkGridLatticeRepresentation() {}
 
 		/**
-		 * Indicates wether the instance corresponds to a seismic cube or not.
-		 *
-		 * @returns	True if a seismic cube, false if not.
-		 */
-		DLL_IMPORT_OR_EXPORT bool isASeismicCube() const;
-
-		/**
-		 * Indicates wether the instance corresponds to a facies cube or not.
-		 *
-		 * @returns	True if the facies cube, false if not.
-		 */
-		DLL_IMPORT_OR_EXPORT bool isAFaciesCube() const;
-
-		/**
-		 * Get the xyz point count in a given patch.
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	The xyz point count of patch.
-		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
-
-		/**
-		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
-		 * the local CRS.
-		 *
-		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is
-		 * 								coordinate dimension (XYZ) and second dimension is vertex
-		 * 								dimension. It must be pre allocated.
-		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
-
-		/**
-		 * Get the X origin of this geometry. X coordinate is given in the local CRS.
-		 *
-		 * @returns	double.NAN coordinate if something's wrong. The X origin point otherwise.
-		 */
+		* Get the X origin of this geometry.
+		* X coordinate is given in the local CRS.
+		* @return double.NAN coordinate if something's wrong. The X origin point otherwise.
+		*/
 		DLL_IMPORT_OR_EXPORT double getXOrigin() const;
 
 		/**
@@ -129,27 +95,6 @@ namespace RESQML2_0_1_NS
 		 * @returns	double.NAN coordinate if something's wrong. The Z origin point otherwise.
 		 */
 		DLL_IMPORT_OR_EXPORT double getZOrigin() const;
-
-		/**
-		 * Get the X origin of this geometry. X coordinate is given in the global CRS.
-		 *
-		 * @returns	double.NAN coordinate if something's wrong. The X origin point otherwise.
-		 */
-		DLL_IMPORT_OR_EXPORT double getXOriginInGlobalCrs() const;
-
-		/**
-		 * Get the Y origin of this geometry. Y coordinate is given in the global CRS.
-		 *
-		 * @returns	double.NAN coordinate if something's wrong. The Y origin point otherwise.
-		 */
-		DLL_IMPORT_OR_EXPORT double getYOriginInGlobalCrs() const;
-
-		/**
-		 * Get the Z origin of this geometry. Z coordinate is given in the global CRS.
-		 *
-		 * @returns	double.NAN coordinate if something's wrong. The Z origin point otherwise.
-		 */
-		DLL_IMPORT_OR_EXPORT double getZOriginInGlobalCrs() const;
 
 		/*****************************************************
 		* Notice that, in seismic context, I is the slowest axis, J is the intermediate axis and K is the fastest axis.
@@ -348,18 +293,6 @@ namespace RESQML2_0_1_NS
 			double startCrossline, double incrCrossline, unsigned int countCrossline,
 			unsigned int countSample, RESQML2_NS::AbstractRepresentation * seismicSupport);
 
-		/**
-		 * Gets hdf proxy dor
-		 *
-		 * @returns	Null if it fails, else the hdf proxy dor.
-		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
-
-		/**
-		 * Gets geometry kind
-		 *
-		 * @returns	The geometry kind.
-		 */
-		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const;
 	};
 }

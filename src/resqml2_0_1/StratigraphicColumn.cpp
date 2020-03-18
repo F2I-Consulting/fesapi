@@ -35,7 +35,7 @@ StratigraphicColumn::StratigraphicColumn(COMMON_NS::DataObjectRepository* repo, 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStratigraphicColumn(repo->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addOrReplaceDataObject(this);
 }
@@ -56,9 +56,9 @@ void StratigraphicColumn::loadTargetRelationships()
 {
 	const std::vector<eml20__DataObjectReference *>& stratColRanks= static_cast<_resqml20__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks;
 	for (size_t i = 0; i < stratColRanks.size(); ++i) {
-		gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = stratColRanks[i];
+		gsoap_resqml2_0_1::eml20__DataObjectReference * dor = stratColRanks[i];
 		if (dor != nullptr) {
-			convertDorIntoRel<StratigraphicColumnRankInterpretation>(dor);
+			convertDorIntoRel<StratigraphicColumnRankInterpretation>(COMMON_NS::DataObjectReference(dor));
 		}
 	}
 }

@@ -49,11 +49,14 @@ void PropertySet::setXmlParent(RESQML2_NS::PropertySet * parent)
 	static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->ParentSet.push_back(parent->newResqmlReference());
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference const * PropertySet::getParentDor() const
+COMMON_NS::DataObjectReference PropertySet::getParentDor() const
 {
-	const std::vector<eml20__DataObjectReference *> & parentVector = static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->ParentSet;
+	std::vector<COMMON_NS::DataObjectReference> parentVector;
+	for (size_t i = 0; i < static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->ParentSet.size(); ++i) {
+		parentVector.push_back(COMMON_NS::DataObjectReference(static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->ParentSet[i]));
+	}
 
-	return parentVector.size() == 1 ? parentVector[0] : nullptr;
+	return parentVector.size() == 1 ? parentVector[0] : COMMON_NS::DataObjectReference();
 }
 
 void PropertySet::pushBackXmlProperty(RESQML2_NS::AbstractProperty * prop)
@@ -76,7 +79,12 @@ gsoap_resqml2_0_1::resqml20__TimeSetKind PropertySet::getTimeSetKind() const
 	return static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->TimeSetKind;
 }
 
-std::vector<gsoap_resqml2_0_1::eml20__DataObjectReference *> PropertySet::getAllPropertiesDors() const
+std::vector<COMMON_NS::DataObjectReference> PropertySet::getAllPropertiesDors() const
 {
-	return static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->Properties;
+	std::vector<COMMON_NS::DataObjectReference> result;
+	for (size_t i = 0; i < static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->Properties.size(); ++i) {
+		result.push_back(COMMON_NS::DataObjectReference(static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->Properties[i]));
+	}
+
+	return result;
 }

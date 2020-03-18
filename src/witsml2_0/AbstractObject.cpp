@@ -33,5 +33,5 @@ string AbstractObject::getContentType() const
 
 std::string AbstractObject::getPartNameInEpcDocument() const
 {
-	return getXmlTag() + "_" + getUuid() + ".xml";
+	return "namespace_witsml20/" + getXmlTag() + "_" + getUuid() + ".xml";
 }
