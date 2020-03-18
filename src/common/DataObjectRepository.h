@@ -964,9 +964,12 @@ namespace COMMON_NS
 
 		/**
 		 * Creates a partial object in this repository based on a data object reference.
-		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @exception	std::invalid_argument	If no partial object can be created from @p dor.
 		 *
 		 * @param 	dor	A data object reference.
+		 *
+		 * @returns	A pointer to the created partial object.
 		 */
 		COMMON_NS::AbstractObject* createPartial(const DataObjectReference& dor);
 
