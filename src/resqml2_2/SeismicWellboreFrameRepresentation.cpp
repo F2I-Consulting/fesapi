@@ -27,7 +27,7 @@ under the License.
 
 using namespace std;
 using namespace RESQML2_2_NS;
-using namespace gsoap_eml2_2;
+using namespace gsoap_eml2_3;
 
 const char* SeismicWellboreFrameRepresentation::XML_TAG = "SeismicWellboreFrameRepresentation";
 
@@ -49,22 +49,22 @@ SeismicWellboreFrameRepresentation::SeismicWellboreFrameRepresentation(
 		throw invalid_argument("The local time crs cannot be null.");
 	}
 
-	gsoapProxy2_2 = soap_new_resqml22__SeismicWellboreFrameRepresentation(interp->getGsoapContext());
-	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2);
+	gsoapProxy2_3 = soap_new_resqml22__SeismicWellboreFrameRepresentation(interp->getGsoapContext());
+	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	setInterpretation(interp);
 
-	frame->Trajectory = traj->newEml22Reference();
+	frame->Trajectory = traj->newEml23Reference();
 	getRepository()->addRelationship(this, traj);
 
 	frame->SeismicReferenceDatum = seismicReferenceDatum;
 
 	frame->WeatheringVelocity = weatheringVelocity;
 
-	frame->LocalTime3dCrs = crs->newEml22Reference();
+	frame->LocalTime3dCrs = crs->newEml23Reference();
 	getRepository()->addRelationship(this, crs);
 }
 
@@ -75,16 +75,16 @@ void SeismicWellboreFrameRepresentation::setTimeValues(double const * timeValues
 	}
 	getRepository()->addRelationship(this, proxy);
 
-	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2);
+	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3);
 
 	// XML
-	eml22__DoubleExternalArray* xmlTimeValues = soap_new_eml22__DoubleExternalArray(gsoapProxy2_2->soap);
-	xmlTimeValues->Values = soap_new_eml22__ExternalDataset(gsoapProxy2_2->soap);
-	xmlTimeValues->Values->ExternalFileProxy.push_back(soap_new_eml22__ExternalDatasetPart(gsoapProxy2_2->soap, 1));
+	eml23__DoubleExternalArray* xmlTimeValues = soap_new_eml23__DoubleExternalArray(gsoapProxy2_3->soap);
+	xmlTimeValues->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+	xmlTimeValues->Values->ExternalFileProxy.push_back(soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap, 1));
 	xmlTimeValues->Values->ExternalFileProxy[0]->Count = timeValueCount;
 	xmlTimeValues->Values->ExternalFileProxy[0]->StartIndex = 0;
 	xmlTimeValues->Values->ExternalFileProxy[0]->PathInExternalFile = getHdfGroup() + "/timeValues";
-	xmlTimeValues->Values->ExternalFileProxy[0]->EpcExternalPartReference = proxy->newEml22Reference();
+	xmlTimeValues->Values->ExternalFileProxy[0]->EpcExternalPartReference = proxy->newEml23Reference();
 
 	frame->NodeTimeValues = xmlTimeValues;
 
@@ -101,12 +101,12 @@ void SeismicWellboreFrameRepresentation::setTimeValues(double const * timeValues
 
 void SeismicWellboreFrameRepresentation::setTimeValues(double firstTimeValue, double incrementTimeValue, unsigned int timeValueCount)
 {
-	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2);
+	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3);
 
 	// XML
-	eml22__FloatingPointLatticeArray* xmlTimeValues = soap_new_eml22__FloatingPointLatticeArray(gsoapProxy2_2->soap);
+	eml23__FloatingPointLatticeArray* xmlTimeValues = soap_new_eml23__FloatingPointLatticeArray(gsoapProxy2_3->soap);
 	xmlTimeValues->StartValue = firstTimeValue;
-	xmlTimeValues->Offset.push_back(soap_new_eml22__FloatingPointConstantArray(gsoapProxy2_2->soap, 1));
+	xmlTimeValues->Offset.push_back(soap_new_eml23__FloatingPointConstantArray(gsoapProxy2_3->soap, 1));
 	xmlTimeValues->Offset[0]->Count = timeValueCount - 1;
 	xmlTimeValues->Offset[0]->Value = incrementTimeValue;
 
@@ -117,7 +117,7 @@ void SeismicWellboreFrameRepresentation::setTimeValues(double firstTimeValue, do
 
 bool SeismicWellboreFrameRepresentation::areTimeValuesRegularlySpaced() const
 {
-	return static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2)->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__FloatingPointLatticeArray;
+	return static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3)->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray;
 }
 
 double SeismicWellboreFrameRepresentation::getTimeConstantIncrementValue() const
@@ -126,15 +126,15 @@ double SeismicWellboreFrameRepresentation::getTimeConstantIncrementValue() const
 		throw invalid_argument("The time values are not regularly spaced.");
 	}
 
-	return static_cast<eml22__FloatingPointLatticeArray*>(static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2)->NodeTimeValues)->Offset[0]->Value;
+	return static_cast<eml23__FloatingPointLatticeArray*>(static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3)->NodeTimeValues)->Offset[0]->Value;
 }
 
 double SeismicWellboreFrameRepresentation::getTimeFirstValue() const
 {
-	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2);
-	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__DoubleExternalArray)
+	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3);
+	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray)
 	{
-		eml22__ExternalDataset const* dataset = static_cast<eml22__DoubleExternalArray*>(frame->NodeTimeValues)->Values;
+		eml23__ExternalDataset const* dataset = static_cast<eml23__DoubleExternalArray*>(frame->NodeTimeValues)->Values;
 		COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
@@ -146,9 +146,9 @@ double SeismicWellboreFrameRepresentation::getTimeFirstValue() const
 
 		return result;
 	}
-	else if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__FloatingPointLatticeArray)
+	else if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 	{
-		return static_cast<eml22__FloatingPointLatticeArray*>(frame->NodeTimeValues)->StartValue;
+		return static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->StartValue;
 	}
 	else
 		throw logic_error("The array structure of time is not supported?");
@@ -161,10 +161,10 @@ unsigned int SeismicWellboreFrameRepresentation::getTimeValuesCount() const
 
 RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum SeismicWellboreFrameRepresentation::getTimeHdfDatatype() const
 {
-	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2);
-	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__DoubleExternalArray)
+	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3);
+	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray)
 	{
-		eml22__ExternalDataset const* dataset = static_cast<eml22__DoubleExternalArray*>(frame->NodeTimeValues)->Values;
+		eml23__ExternalDataset const* dataset = static_cast<eml23__DoubleExternalArray*>(frame->NodeTimeValues)->Values;
 		COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
@@ -191,7 +191,7 @@ RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum SeismicWellboreFrameRepresen
 		else if (H5Tequal(dt, H5T_NATIVE_UCHAR) > 0)
 			return RESQML2_NS::AbstractValuesProperty::UCHAR;
 	}
-	else if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__FloatingPointLatticeArray)
+	else if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 	{
 		return RESQML2_NS::AbstractValuesProperty::DOUBLE;
 	}
@@ -201,20 +201,20 @@ RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum SeismicWellboreFrameRepresen
 
 void SeismicWellboreFrameRepresentation::getTimeAsDoubleValues(double* values) const
 {
-	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2);
-	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__DoubleExternalArray)
+	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3);
+	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray)
 	{
-		eml22__ExternalDataset const* dataset = static_cast<eml22__DoubleExternalArray*>(frame->NodeTimeValues)->Values;
+		eml23__ExternalDataset const* dataset = static_cast<eml23__DoubleExternalArray*>(frame->NodeTimeValues)->Values;
 		COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
 		}
 		hdfProxy->readArrayNdOfDoubleValues(dataset->ExternalFileProxy[0]->PathInExternalFile, values);
 	}
-	else if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__FloatingPointLatticeArray)
+	else if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 	{
-		values[0] = static_cast<eml22__FloatingPointLatticeArray*>(frame->NodeTimeValues)->StartValue;
-		eml22__FloatingPointConstantArray* constantArray = static_cast<eml22__FloatingPointLatticeArray*>(frame->NodeTimeValues)->Offset[0];
+		values[0] = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->StartValue;
+		eml23__FloatingPointConstantArray* constantArray = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->Offset[0];
 		for (ULONG64 inc = 1; inc <= constantArray->Count; ++inc)
 			values[inc] = values[0] + (inc * constantArray->Value);
 	}
@@ -226,20 +226,20 @@ void SeismicWellboreFrameRepresentation::getTimeAsDoubleValues(double* values) c
 
 void SeismicWellboreFrameRepresentation::getTimeAsFloatValues(float* values) const
 {
-	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2);
-	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__DoubleExternalArray)
+	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3);
+	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray)
 	{
-		eml22__ExternalDataset const* dataset = static_cast<eml22__DoubleExternalArray*>(frame->NodeTimeValues)->Values;
+		eml23__ExternalDataset const* dataset = static_cast<eml23__DoubleExternalArray*>(frame->NodeTimeValues)->Values;
 		COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
 		}
 		hdfProxy->readArrayNdOfFloatValues(dataset->ExternalFileProxy[0]->PathInExternalFile, values);
 	}
-	else if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__FloatingPointLatticeArray)
+	else if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 	{
-		values[0] = static_cast<eml22__FloatingPointLatticeArray*>(frame->NodeTimeValues)->StartValue;
-		eml22__FloatingPointConstantArray* constantArray = static_cast<eml22__FloatingPointLatticeArray*>(frame->NodeTimeValues)->Offset[0];
+		values[0] = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->StartValue;
+		eml23__FloatingPointConstantArray* constantArray = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->Offset[0];
 		for (ULONG64 inc = 1; inc <= constantArray->Count; ++inc)
 			values[inc] = values[0] + (inc * constantArray->Value);
 	}
@@ -250,10 +250,10 @@ void SeismicWellboreFrameRepresentation::getTimeAsFloatValues(float* values) con
 
 double SeismicWellboreFrameRepresentation::getSeismicReferenceDatum() const
 {
-	return static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2)->SeismicReferenceDatum;
+	return static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3)->SeismicReferenceDatum;
 }
 
 double SeismicWellboreFrameRepresentation::getWeatheringVelocity() const
 {
-	return static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2)->WeatheringVelocity;
+	return static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3)->WeatheringVelocity;
 }

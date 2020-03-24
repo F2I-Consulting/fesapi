@@ -11,7 +11,6 @@ Product and source code licensed by Genivia Inc., contact@genivia.com
 
 
 #ifndef envStub_H
-///< .
 #define envStub_H
 #include "stdsoap2.h"
 #if GSOAP_VERSION != 20892
@@ -36,33 +35,15 @@ Product and source code licensed by Genivia Inc., contact@genivia.com
 /* env.h:1 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_SOAP_ENV__Header
-/** A macro that defines SOAP type SOAP Environment header */
 #define SOAP_TYPE_SOAP_ENV__Header (7)
 /* SOAP_ENV__Header: */
-/** A SOAP cmac. */
 struct SOAP_CMAC SOAP_ENV__Header {
       public:
-
-        /**
-         * Return unique type id SOAP_TYPE_SOAP_ENV__Header
-         *
-         * @returns	A long.
-         */
+        /** Return unique type id SOAP_TYPE_SOAP_ENV__Header */
         long soap_type() const { return SOAP_TYPE_SOAP_ENV__Header; }
         /** Constructor with member initializations */
         SOAP_ENV__Header() { }
-
-        /**
-         * Friend allocator
-         *
-         * @param [in,out]	parameter1	If non-null, the first parameter.
-         * @param 		  	parameter2	The second parameter.
-         * @param 		  	parameter3	The third parameter.
-         * @param 		  	parameter4	The fourth parameter.
-         * @param [in,out]	parameter5	If non-null, the fifth parameter.
-         *
-         * @returns	A SOAP_FMAC2.
-         */
+        /** Friend allocator */
         friend SOAP_FMAC1 SOAP_ENV__Header * SOAP_FMAC2 env_instantiate_SOAP_ENV__Header(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
@@ -71,11 +52,9 @@ struct SOAP_CMAC SOAP_ENV__Header {
 /* env.h:1 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_SOAP_ENV__Code
-/** A macro that defines SOAP type SOAP Environment code */
 #define SOAP_TYPE_SOAP_ENV__Code (8)
 /* Type SOAP_ENV__Code is a recursive data type, (in)directly referencing itself through its (base or derived class) members */
 /* SOAP_ENV__Code: */
-/** A SOAP cmac. */
 struct SOAP_CMAC SOAP_ENV__Code {
       public:
         /** Optional element 'SOAP-ENV:Value' of XML schema type 'xsd:QName' */
@@ -83,27 +62,11 @@ struct SOAP_CMAC SOAP_ENV__Code {
         /** Optional element 'SOAP-ENV:Subcode' of XML schema type 'SOAP-ENV:Code' */
         struct SOAP_ENV__Code *SOAP_ENV__Subcode;
       public:
-
-        /**
-         * Return unique type id SOAP_TYPE_SOAP_ENV__Code
-         *
-         * @returns	A long.
-         */
+        /** Return unique type id SOAP_TYPE_SOAP_ENV__Code */
         long soap_type() const { return SOAP_TYPE_SOAP_ENV__Code; }
         /** Constructor with member initializations */
         SOAP_ENV__Code() : SOAP_ENV__Value(), SOAP_ENV__Subcode() { }
-
-        /**
-         * Friend allocator
-         *
-         * @param [in,out]	parameter1	If non-null, the first parameter.
-         * @param 		  	parameter2	The second parameter.
-         * @param 		  	parameter3	The third parameter.
-         * @param 		  	parameter4	The fourth parameter.
-         * @param [in,out]	parameter5	If non-null, the fifth parameter.
-         *
-         * @returns	A SOAP_FMAC2.
-         */
+        /** Friend allocator */
         friend SOAP_FMAC1 SOAP_ENV__Code * SOAP_FMAC2 env_instantiate_SOAP_ENV__Code(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
@@ -112,45 +75,21 @@ struct SOAP_CMAC SOAP_ENV__Code {
 /* env.h:1 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_SOAP_ENV__Detail
-/** A macro that defines SOAP type SOAP Environment detail */
 #define SOAP_TYPE_SOAP_ENV__Detail (10)
 /* SOAP_ENV__Detail: */
-/** A SOAP cmac. */
 struct SOAP_CMAC SOAP_ENV__Detail {
       public:
-        /** any */
         char *__any;
         /** Any type of element 'fault' assigned to fault with its SOAP_TYPE_<typename> assigned to __type */
-
-        /**
-         * Do not create a cyclic data structure through this member unless SOAP encoding or
-         * SOAP_XML_GRAPH are used for id-ref serialization
-         */
+        /** Do not create a cyclic data structure through this member unless SOAP encoding or SOAP_XML_GRAPH are used for id-ref serialization */
         int __type;
-        /** The fault */
         void *fault;
       public:
-
-        /**
-         * Return unique type id SOAP_TYPE_SOAP_ENV__Detail
-         *
-         * @returns	A long.
-         */
+        /** Return unique type id SOAP_TYPE_SOAP_ENV__Detail */
         long soap_type() const { return SOAP_TYPE_SOAP_ENV__Detail; }
         /** Constructor with member initializations */
         SOAP_ENV__Detail() : __any(), __type(), fault() { }
-
-        /**
-         * Friend allocator
-         *
-         * @param [in,out]	parameter1	If non-null, the first parameter.
-         * @param 		  	parameter2	The second parameter.
-         * @param 		  	parameter3	The third parameter.
-         * @param 		  	parameter4	The fourth parameter.
-         * @param [in,out]	parameter5	If non-null, the fifth parameter.
-         *
-         * @returns	A SOAP_FMAC2.
-         */
+        /** Friend allocator */
         friend SOAP_FMAC1 SOAP_ENV__Detail * SOAP_FMAC2 env_instantiate_SOAP_ENV__Detail(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
@@ -159,36 +98,18 @@ struct SOAP_CMAC SOAP_ENV__Detail {
 /* env.h:1 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_SOAP_ENV__Reason
-/** A macro that defines SOAP type SOAP Environment reason */
 #define SOAP_TYPE_SOAP_ENV__Reason (13)
 /* SOAP_ENV__Reason: */
-/** A SOAP cmac. */
 struct SOAP_CMAC SOAP_ENV__Reason {
       public:
         /** Optional element 'SOAP-ENV:Text' of XML schema type 'xsd:string' */
         char *SOAP_ENV__Text;
       public:
-
-        /**
-         * Return unique type id SOAP_TYPE_SOAP_ENV__Reason
-         *
-         * @returns	A long.
-         */
+        /** Return unique type id SOAP_TYPE_SOAP_ENV__Reason */
         long soap_type() const { return SOAP_TYPE_SOAP_ENV__Reason; }
         /** Constructor with member initializations */
         SOAP_ENV__Reason() : SOAP_ENV__Text() { }
-
-        /**
-         * Friend allocator
-         *
-         * @param [in,out]	parameter1	If non-null, the first parameter.
-         * @param 		  	parameter2	The second parameter.
-         * @param 		  	parameter3	The third parameter.
-         * @param 		  	parameter4	The fourth parameter.
-         * @param [in,out]	parameter5	If non-null, the fifth parameter.
-         *
-         * @returns	A SOAP_FMAC2.
-         */
+        /** Friend allocator */
         friend SOAP_FMAC1 SOAP_ENV__Reason * SOAP_FMAC2 env_instantiate_SOAP_ENV__Reason(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
@@ -197,10 +118,8 @@ struct SOAP_CMAC SOAP_ENV__Reason {
 /* env.h:1 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_SOAP_ENV__Fault
-/** A macro that defines SOAP type SOAP Environment fault */
 #define SOAP_TYPE_SOAP_ENV__Fault (14)
 /* SOAP_ENV__Fault: */
-/** A SOAP cmac. */
 struct SOAP_CMAC SOAP_ENV__Fault {
       public:
         /** Optional element 'faultcode' of XML schema type 'xsd:QName' */
@@ -222,27 +141,11 @@ struct SOAP_CMAC SOAP_ENV__Fault {
         /** Optional element 'SOAP-ENV:Detail' of XML schema type 'SOAP-ENV:Detail' */
         struct SOAP_ENV__Detail *SOAP_ENV__Detail;
       public:
-
-        /**
-         * Return unique type id SOAP_TYPE_SOAP_ENV__Fault
-         *
-         * @returns	A long.
-         */
+        /** Return unique type id SOAP_TYPE_SOAP_ENV__Fault */
         long soap_type() const { return SOAP_TYPE_SOAP_ENV__Fault; }
         /** Constructor with member initializations */
         SOAP_ENV__Fault() : faultcode(), faultstring(), faultactor(), detail(), SOAP_ENV__Code(), SOAP_ENV__Reason(), SOAP_ENV__Node(), SOAP_ENV__Role(), SOAP_ENV__Detail() { }
-
-        /**
-         * Friend allocator
-         *
-         * @param [in,out]	parameter1	If non-null, the first parameter.
-         * @param 		  	parameter2	The second parameter.
-         * @param 		  	parameter3	The third parameter.
-         * @param 		  	parameter4	The fourth parameter.
-         * @param [in,out]	parameter5	If non-null, the fifth parameter.
-         *
-         * @returns	A SOAP_FMAC2.
-         */
+        /** Friend allocator */
         friend SOAP_FMAC1 SOAP_ENV__Fault * SOAP_FMAC2 env_instantiate_SOAP_ENV__Fault(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
@@ -257,17 +160,13 @@ struct SOAP_CMAC SOAP_ENV__Fault {
 
 /* (built-in):0 */
 #ifndef SOAP_TYPE__XML
-/** A macro that defines SOAP type XML */
 #define SOAP_TYPE__XML (5)
-/** Defines an alias representing the XML */
 typedef char *_XML;
 #endif
 
 /* (built-in):0 */
 #ifndef SOAP_TYPE__QName
-/** A macro that defines SOAP type q name */
 #define SOAP_TYPE__QName (6)
-/** Defines an alias representing the name */
 typedef char *_QName;
 #endif
 
@@ -280,79 +179,66 @@ typedef char *_QName;
 
 /* char has binding name 'byte' for type 'xsd:byte' */
 #ifndef SOAP_TYPE_byte
-/** A macro that defines SOAP type byte */
 #define SOAP_TYPE_byte (3)
 #endif
 
 /* int has binding name 'int' for type 'xsd:int' */
 #ifndef SOAP_TYPE_int
-/** A macro that defines SOAP type int */
 #define SOAP_TYPE_int (1)
 #endif
 
 /* struct SOAP_ENV__Fault has binding name 'SOAP_ENV__Fault' for type '' */
 #ifndef SOAP_TYPE_SOAP_ENV__Fault
-/** A macro that defines SOAP type SOAP Environment fault */
 #define SOAP_TYPE_SOAP_ENV__Fault (14)
 #endif
 
 /* struct SOAP_ENV__Reason has binding name 'SOAP_ENV__Reason' for type '' */
 #ifndef SOAP_TYPE_SOAP_ENV__Reason
-/** A macro that defines SOAP type SOAP Environment reason */
 #define SOAP_TYPE_SOAP_ENV__Reason (13)
 #endif
 
 /* struct SOAP_ENV__Detail has binding name 'SOAP_ENV__Detail' for type '' */
 #ifndef SOAP_TYPE_SOAP_ENV__Detail
-/** A macro that defines SOAP type SOAP Environment detail */
 #define SOAP_TYPE_SOAP_ENV__Detail (10)
 #endif
 
 /* struct SOAP_ENV__Code has binding name 'SOAP_ENV__Code' for type '' */
 #ifndef SOAP_TYPE_SOAP_ENV__Code
-/** A macro that defines SOAP type SOAP Environment code */
 #define SOAP_TYPE_SOAP_ENV__Code (8)
 #endif
 
 /* struct SOAP_ENV__Header has binding name 'SOAP_ENV__Header' for type '' */
 #ifndef SOAP_TYPE_SOAP_ENV__Header
-/** A macro that defines SOAP type SOAP Environment header */
 #define SOAP_TYPE_SOAP_ENV__Header (7)
 #endif
 
 /* struct SOAP_ENV__Reason * has binding name 'PointerToSOAP_ENV__Reason' for type '' */
 #ifndef SOAP_TYPE_PointerToSOAP_ENV__Reason
-/** A macro that defines SOAP type pointer to SOAP Environment reason */
 #define SOAP_TYPE_PointerToSOAP_ENV__Reason (16)
 #endif
 
 /* struct SOAP_ENV__Detail * has binding name 'PointerToSOAP_ENV__Detail' for type '' */
 #ifndef SOAP_TYPE_PointerToSOAP_ENV__Detail
-/** A macro that defines SOAP type pointer to SOAP Environment detail */
 #define SOAP_TYPE_PointerToSOAP_ENV__Detail (15)
 #endif
 
 /* struct SOAP_ENV__Code * has binding name 'PointerToSOAP_ENV__Code' for type '' */
 #ifndef SOAP_TYPE_PointerToSOAP_ENV__Code
-/** A macro that defines SOAP type pointer to SOAP Environment code */
 #define SOAP_TYPE_PointerToSOAP_ENV__Code (9)
 #endif
 
 /* _QName has binding name '_QName' for type 'xsd:QName' */
 #ifndef SOAP_TYPE__QName
-/** A macro that defines SOAP type q name */
 #define SOAP_TYPE__QName (6)
 #endif
 
 /* _XML has binding name '_XML' for type '' */
 #ifndef SOAP_TYPE__XML
-/** A macro that defines SOAP type XML */
 #define SOAP_TYPE__XML (5)
 #endif
 
 /* char * has binding name 'string' for type 'xsd:string' */
 #ifndef SOAP_TYPE_string
-/** A macro that defines SOAP type string */
 #define SOAP_TYPE_string (4)
 #endif
 

@@ -78,7 +78,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The kind of elements on which the property values are attached to.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::resqml22__IndexableElement getAttachmentKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__IndexableElement getAttachmentKind() const;
 
 		/**
 		 * Gets all property sets which contain this property
@@ -346,7 +346,7 @@ namespace RESQML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractProperty(gsoap_resqml2_0_1::resqml20__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-		AbstractProperty(gsoap_eml2_2::resqml22__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		AbstractProperty(gsoap_eml2_3::resqml22__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/** Loads target relationships */
 		virtual void loadTargetRelationships();

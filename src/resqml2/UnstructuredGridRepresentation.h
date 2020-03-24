@@ -49,7 +49,7 @@ namespace RESQML2_NS
 			RESQML2_NS::AbstractGridRepresentation(fromGsoap, false), constantNodeCountPerFace(0), constantFaceCountPerCell(0),
 			cumulativeNodeCountPerFace(nullptr), cumulativeFaceCountPerCell(nullptr),
 			nodeIndicesOfFaces(nullptr), faceIndicesOfCells(nullptr) {}
-		UnstructuredGridRepresentation(gsoap_eml2_2::_resqml22__UnstructuredGridRepresentation* fromGsoap) :
+		UnstructuredGridRepresentation(gsoap_eml2_3::_resqml22__UnstructuredGridRepresentation* fromGsoap) :
 			RESQML2_NS::AbstractGridRepresentation(fromGsoap, false), constantNodeCountPerFace(0), constantFaceCountPerCell(0),
 			cumulativeNodeCountPerFace(nullptr), cumulativeFaceCountPerCell(nullptr),
 			nodeIndicesOfFaces(nullptr), faceIndicesOfCells(nullptr) {}

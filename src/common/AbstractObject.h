@@ -44,104 +44,14 @@ namespace COMMON_NS
 		 */
 		void setUuid(const std::string & uuid);
 
-		/**
-		 * Push back an extra metadata (not a standard one)
-		 *
-		 * @param 	key  	The key.
-		 * @param 	value	The value.
-		 */
-		void pushBackExtraMetadataV2_0_1(const std::string & key, const std::string & value);
-
-		/**
-		 * Pushes a back extra metadata v 2 1
-		 *
-		 * @param 	key  	The key.
-		 * @param 	value	The value.
-		 */
-		void pushBackExtraMetadataV2_1(const std::string & key, const std::string & value);
-
-		/**
-		 * Pushes a back extra metadata v 2
-		 *
-		 * @param 	key  	The key.
-		 * @param 	value	The value.
-		 */
-		void pushBackExtraMetadataV2_2(const std::string & key, const std::string & value);
-
-		/**
-		 * Getter (in read only mode) of all the extra metadata
-		 *
-		 * @returns	The extra metadata set v 2 0 1.
-		 */
-		std::unordered_map< std::string, std::string > getExtraMetadataSetV2_0_1() const;
-
-		/**
-		 * Get an extra metadata according its key.
-		 *
-		 * @param 	key	The key.
-		 *
-		 * @returns	An empty vector if the extra metadata does not exist. Or the extra metadata value
-		 * 			vector if it exists.
-		 */
-		std::vector<std::string> getExtraMetadataV2_0_1(const std::string & key) const;
-
-		/**
-		 * Get the count of extra metadata in the instance.
-		 *
-		 * @returns	The extra metadata count v 2 0 1.
-		 */
-		unsigned int getExtraMetadataCountV2_0_1() const;
-
-		/**
-		 * Get the key of a string value pair at a particular index in the extra metadata set
-		 *
-		 * @param 	index	Zero-based index of the.
-		 *
-		 * @returns	The extra metadata key at index v 2 0 1.
-		 */
-		std::string getExtraMetadataKeyAtIndexV2_0_1(unsigned int index) const;
-
-		/**
-		 * Get the string value of a string value pair at a particular index in the extra metadata set
-		 *
-		 * @param 	index	Zero-based index of the.
-		 *
-		 * @returns	The extra metadata string value at index v 2 0 1.
-		 */
-		std::string getExtraMetadataStringValueAtIndexV2_0_1(unsigned int index) const;
-
-		/**
-		 * Get the count of extra metadata in the instance.
-		 *
-		 * @returns	The extra metadata count v 2.
-		 */
-		unsigned int getExtraMetadataCountV2_2() const;
-
-		/**
-		 * Get the key of a string value pair at a particular index in the extra metadata set
-		 *
-		 * @param 	index	Zero-based index of the.
-		 *
-		 * @returns	The extra metadata key at index v 2.
-		 */
-		std::string getExtraMetadataKeyAtIndexV2_2(unsigned int index) const;
-
-		/**
-		 * Get the string value of a string value pair at a particular index in the extra metadata set
-		 *
-		 * @param 	index	Zero-based index of the.
-		 *
-		 * @returns	The extra metadata string value at index v 2.
-		 */
-		std::string getExtraMetadataStringValueAtIndexV2_2(unsigned int index) const;
-
 	protected:
 
 		/** Enumeration for the various EML versions. */
 		enum class EmlVersion : std::int8_t {
 			TWO_DOT_ZERO = 0,
 			TWO_DOT_ONE = 1,
-			TWO_DOT_TWO = 2
+			TWO_DOT_TWO = 2,
+			TWO_DOT_THREE = 3
 		};
 
 		/** The underlying generated gSoap proxy for a EML 2.0 dataobject. */
@@ -153,6 +63,9 @@ namespace COMMON_NS
 		/** The underlying generated gSoap proxy for a EML 2.2 dataobject. */
 		gsoap_eml2_2::eml22__AbstractObject* gsoapProxy2_2;
 
+		/** The underlying generated gSoap proxy for a EML 2.3 dataobject. */
+		gsoap_eml2_3::eml23__AbstractObject* gsoapProxy2_3;
+
 		/** The repository which contain this data object. */
 		COMMON_NS::DataObjectRepository* repository;
 
@@ -163,6 +76,7 @@ namespace COMMON_NS
 			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
 			gsoapProxy2_1(nullptr),
 			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(nullptr),
 			repository(nullptr) {}
 
 		/**
@@ -174,6 +88,7 @@ namespace COMMON_NS
 			partialObject(partialObject_), gsoapProxy2_0_1(nullptr),
 			gsoapProxy2_1(nullptr),
 			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(nullptr),
 			repository(nullptr) {}
 
 		/**
@@ -185,6 +100,7 @@ namespace COMMON_NS
 			partialObject(nullptr), gsoapProxy2_0_1(proxy),
 			gsoapProxy2_1(nullptr),
 			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(nullptr),
 			repository(nullptr) {}
 
 		/**
@@ -196,6 +112,7 @@ namespace COMMON_NS
 			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
 			gsoapProxy2_1(proxy),
 			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(nullptr),
 			repository(nullptr) {}
 
 		/**
@@ -207,6 +124,19 @@ namespace COMMON_NS
 			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
 			gsoapProxy2_1(nullptr),
 			gsoapProxy2_2(proxy),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
+
+		/**
+		 * Constructor when importing EML 2.2 dataobjects
+		 *
+		 * @param [in,out]	proxy	If non-null, the proxy.
+		 */
+		AbstractObject(gsoap_eml2_3::eml23__AbstractObject* proxy) :
+			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(proxy),
 			repository(nullptr) {}
 
 		/**
@@ -330,7 +260,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	Null if it fails, else the HDF proxy from dataset.
 		 */
-		COMMON_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_eml2_2::eml22__ExternalDatasetPart const * dataset, bool throwException = true) const;
+		COMMON_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_eml2_3::eml23__ExternalDatasetPart const * dataset, bool throwException = true) const;
 
 		/**
 		* @return the HDF group where to write the numerical values associated to this object.
@@ -339,7 +269,7 @@ namespace COMMON_NS
 			return "/" + getXmlNamespace() + "/" + getUuid();
 		}
 
-		gsoap_resqml2_0_1::resqml20__IndexableElements mapIndexableElement(gsoap_eml2_2::resqml22__IndexableElement toMap) const;
+		gsoap_resqml2_0_1::resqml20__IndexableElements mapIndexableElement(gsoap_eml2_3::resqml22__IndexableElement toMap) const;
 
 	public:
 		/** Destructor */
@@ -728,6 +658,13 @@ namespace COMMON_NS
 		gsoap_eml2_2::eml22__DataObjectReference* newEml22Reference() const;
 
 		/**
+		 * Creates an returns an EML2.2 data object reference which targets this data object
+		 *
+		 * @returns	A pointer to the new EML2.2 data object reference.
+		 */
+		gsoap_eml2_3::eml23__DataObjectReference* newEml23Reference() const;
+
+		/**
 		 * Creates an returns an EML2.0 contact data object reference which targets this data object
 		 *
 		 * @returns	A pointer to the new EML2.0 contact data object reference.
@@ -739,7 +676,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new EML2.2 contact data object reference.
 		 */
-		gsoap_eml2_2::resqml22__ContactElement* newContactElementReference2_2() const;
+		gsoap_eml2_3::resqml22__ContactElement* newContactElementReference2_2() const;
 
 		/**
 		 * Returns the data object repository which contains this instance

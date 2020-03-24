@@ -39,8 +39,8 @@ namespace RESQML2_2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		IjkGridNoGeometryRepresentation(gsoap_eml2_2::_resqml22__IjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridNoGeometryRepresentation(fromGsoap) {}
-		IjkGridNoGeometryRepresentation(gsoap_eml2_2::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridNoGeometryRepresentation(fromGsoap) {}
+		IjkGridNoGeometryRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridNoGeometryRepresentation(fromGsoap) {}
+		IjkGridNoGeometryRepresentation(gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridNoGeometryRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

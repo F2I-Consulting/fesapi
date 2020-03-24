@@ -651,12 +651,12 @@ namespace RESQML2_NS
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		AbstractDiscreteOrCategoricalProperty(gsoap_resqml2_0_1::_resqml20__DiscreteProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
-		AbstractDiscreteOrCategoricalProperty(gsoap_eml2_2::_resqml22__DiscreteProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
+		AbstractDiscreteOrCategoricalProperty(gsoap_eml2_3::_resqml22__DiscreteProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		AbstractDiscreteOrCategoricalProperty(gsoap_resqml2_0_1::_resqml20__CategoricalProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
-		AbstractDiscreteOrCategoricalProperty(gsoap_eml2_2::_resqml22__CategoricalProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
+		AbstractDiscreteOrCategoricalProperty(gsoap_eml2_3::_resqml22__CategoricalProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 	};
 }

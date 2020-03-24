@@ -2570,7 +2570,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new comment property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CommentProperty* createCommentProperty201(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
 		 * Creates a comment property (which is of a local property kind) into this repository
@@ -2593,7 +2593,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new comment property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * localPropType);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * localPropType);
 
 		/**
 		 * Creates a continuous property (which is of well known Energistics unit of measure and
@@ -2623,7 +2623,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new continuous property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty201(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
 		 * Creates a continuous property (which is of a well known unit of measure and a local property
@@ -2651,7 +2651,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new continuous property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * localPropType);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * localPropType);
 
 		/**
 		 * Creates a continuous property (which is of a local unit of measure and a well known property
@@ -2680,7 +2680,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new continuous property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty201(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, std::string nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, std::string nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
 		 * Creates a continuous property (which is of local unit of measure and property kind) into this
@@ -2707,7 +2707,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new continuous property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropType);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropType);
 
 		/**
 		 * Creates a discrete property (which is of a well known Energistics property kind) into this
@@ -2732,7 +2732,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new discrete property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscreteProperty* createDiscreteProperty201(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
 		 * Creates a discrete property (which is of a local property kind) into this repository
@@ -2755,7 +2755,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new discrete property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * localPropType);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * localPropType);
 
 		/**
 		 * Creates a categorical property (which is of a standard Energistics property kind) into this
@@ -2782,7 +2782,7 @@ namespace COMMON_NS
 		 * @returns A pointer to new categorical property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty201(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind,
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
 			RESQML2_NS::StringTableLookup* strLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
@@ -2808,7 +2808,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new categorical property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind,
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
 			RESQML2_NS::StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropType);
 
 		//************* ACTIVITIES ***********
@@ -3113,7 +3113,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new continuous color map.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
-			gsoap_eml2_2::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml22__InterpolationMethod interpolationMethod);
+			gsoap_eml2_3::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_3::resqml22__InterpolationMethod interpolationMethod);
 
 		//***** STANDARD PROP KIND ***********
 
@@ -3185,7 +3185,7 @@ namespace COMMON_NS
 		*/
 		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
 		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
-		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
+		COMMON_NS::AbstractObject* getEml2_3WrapperFromGsoapContext(const std::string & datatype);
 
 		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
 		COMMON_NS::AbstractObject* getProdml2_1WrapperFromGsoapContext(const std::string & datatype);

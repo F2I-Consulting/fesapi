@@ -57,7 +57,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		WellboreFrameRepresentation(gsoap_eml2_2::resqml22__WellboreFrameRepresentation* fromGsoap) :
+		WellboreFrameRepresentation(gsoap_eml2_3::resqml22__WellboreFrameRepresentation* fromGsoap) :
 			AbstractRepresentation(fromGsoap) {}
 
 	public:

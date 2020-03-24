@@ -70,7 +70,7 @@ _resqml20__SubRepresentation* SubRepresentation::getSpecializedGsoapProxy() cons
 	return static_cast<_resqml20__SubRepresentation*>(gsoapProxy2_0_1);
 }
 
-void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_2::resqml22__IndexableElement elementKind, ULONG64 originIndex,
+void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 originIndex,
 	unsigned int elementCountInSlowestDimension,
 	unsigned int elementCountInMiddleDimension,
 	unsigned int elementCountInFastestDimension)
@@ -107,7 +107,7 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_2::resqml22__I
 	integerArray->Offset.push_back(offset);
 }
 
-void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_2::resqml22__IndexableElement elementKind, ULONG64 elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy * proxy, short * supportingRepIndices)
+void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy * proxy, short * supportingRepIndices)
 {
 	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
 
@@ -130,7 +130,7 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_2::resqml22__I
 	}
 }
 
-void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_2::resqml22__IndexableElement elementKind, ULONG64 elementCount, const std::string & elementDataset,
+void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 elementCount, const std::string & elementDataset,
 	LONG64 nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset)
 {
 	if (proxy == nullptr) {
@@ -184,7 +184,7 @@ DiscreteProperty* SubRepresentation::getSupportingRepresentationIndicesDiscreteP
 	return getRepository()->getDataObjectByUuid<DiscreteProperty>(uuid[0]);
 }
 
-void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_2::resqml22__IndexableElement elementKind0, gsoap_eml2_2::resqml22__IndexableElement elementKind1,
+void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind0, gsoap_eml2_3::resqml22__IndexableElement elementKind1,
 	ULONG64 elementCount,
 	ULONG64 * elementIndices0, ULONG64 * elementIndices1,
 	COMMON_NS::AbstractHdfProxy * proxy)

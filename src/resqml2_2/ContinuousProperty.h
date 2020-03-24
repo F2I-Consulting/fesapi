@@ -68,7 +68,7 @@ namespace RESQML2_2_NS
 		 * @param [in]	propKind	 	The property kind of these property values. It cannot be null.
 		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * propKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * propKind);
 
 		/**
 		 * Creates a continuous property which is of local unit of measure and property kind.
@@ -91,14 +91,14 @@ namespace RESQML2_2_NS
 		 * @param [in]	propKind	 	The property kind of these property values. It cannot be null.
 		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * propKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * propKind);
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		ContinuousProperty(gsoap_eml2_2::_resqml22__ContinuousProperty* fromGsoap): RESQML2_NS::ContinuousProperty(fromGsoap) {}
+		ContinuousProperty(gsoap_eml2_3::_resqml22__ContinuousProperty* fromGsoap): RESQML2_NS::ContinuousProperty(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~ContinuousProperty() {}
@@ -174,7 +174,7 @@ namespace RESQML2_2_NS
 		 * @param 		  	attachmentKind	The topological orbit which supports each value.
 		 */
 		void init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind);
 
 		COMMON_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const;
 

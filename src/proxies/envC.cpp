@@ -16,7 +16,7 @@ Product and source code licensed by Genivia Inc., contact@genivia.com
 
 #include "envH.h"
 
-SOAP_SOURCE_STAMP("@(#) envC.cpp ver 2.8.92 2020-03-09 13:23:55 GMT")
+SOAP_SOURCE_STAMP("@(#) envC.cpp ver 2.8.92 2020-03-24 11:11:09 GMT")
 
 
 #ifndef WITH_NOGLOBAL

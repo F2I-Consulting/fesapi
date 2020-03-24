@@ -34,7 +34,7 @@ namespace RESQML2_NS
 		**/
 		gsoap_resqml2_0_1::resqml20__Regrid* createRegrid2_0_1(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,
 			const std::string & dimension, COMMON_NS::AbstractHdfProxy * proxy, bool forceConstantCellCountPerInterval = false);
-		gsoap_eml2_2::resqml22__Regrid* createRegrid2_2(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,
+		gsoap_eml2_3::resqml22__Regrid* createRegrid2_2(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,
 			const std::string & dimension, COMMON_NS::AbstractHdfProxy * proxy, bool forceConstantCellCountPerInterval = false);
 
 		/*
@@ -42,7 +42,7 @@ namespace RESQML2_NS
 		* @param	childVsParentCellCount		If true return the child cell count per interval. If false return the parent cell count per interval.
 		*/
 		gsoap_resqml2_0_1::resqml20__AbstractIntegerArray* getCellCountPerInterval2_0_1(char dimension, bool childVsParentCellCount) const;
-		gsoap_eml2_2::eml22__AbstractIntegerArray* getCellCountPerInterval2_2(char dimension, bool childVsParentCellCount) const;
+		gsoap_eml2_3::eml23__AbstractIntegerArray* getCellCountPerInterval2_2(char dimension, bool childVsParentCellCount) const;
 
 		/**
 		 * Gets the parent window 2 0 1
@@ -50,7 +50,7 @@ namespace RESQML2_NS
 		 * @returns	Null if it fails, else the parent window 2 0 1.
 		 */
 		gsoap_resqml2_0_1::resqml20__AbstractParentWindow* getParentWindow2_0_1() const;
-		gsoap_eml2_2::resqml22__AbstractParentWindow* getParentWindow2_2() const;
+		gsoap_eml2_3::resqml22__AbstractParentWindow* getParentWindow2_2() const;
 
 	protected:
 
@@ -76,7 +76,7 @@ namespace RESQML2_NS
 		 * @param 		  	withTruncatedPillars	True to with truncated pillars.
 		 */
 		AbstractGridRepresentation(gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation* fromGsoap, bool withTruncatedPillars) : AbstractRepresentation(fromGsoap), withTruncatedPillars(withTruncatedPillars) {}
-		AbstractGridRepresentation(gsoap_eml2_2::resqml22__AbstractGridRepresentation* fromGsoap, bool withTruncatedPillars) : AbstractRepresentation(fromGsoap), withTruncatedPillars(withTruncatedPillars) {}
+		AbstractGridRepresentation(gsoap_eml2_3::resqml22__AbstractGridRepresentation* fromGsoap, bool withTruncatedPillars) : AbstractRepresentation(fromGsoap), withTruncatedPillars(withTruncatedPillars) {}
 
 	public:
 

@@ -25,7 +25,7 @@ namespace RESQML2_2_NS
 	class IjkGridLatticeRepresentation : public RESQML2_NS::IjkGridLatticeRepresentation
 	{
 	private :
-		gsoap_eml2_2::resqml22__Point3dLatticeArray* getArrayLatticeOfPoints3d() const;
+		gsoap_eml2_3::resqml22__Point3dLatticeArray* getArrayLatticeOfPoints3d() const;
 	public:
 
 		IjkGridLatticeRepresentation(COMMON_NS::DataObjectRepository * repo,
@@ -41,8 +41,8 @@ namespace RESQML2_2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		IjkGridLatticeRepresentation(gsoap_eml2_2::_resqml22__IjkGridRepresentation* fromGsoap): RESQML2_NS::IjkGridLatticeRepresentation(fromGsoap) {}
-		IjkGridLatticeRepresentation(gsoap_eml2_2::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridLatticeRepresentation(fromGsoap) {}
+		IjkGridLatticeRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap): RESQML2_NS::IjkGridLatticeRepresentation(fromGsoap) {}
+		IjkGridLatticeRepresentation(gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridLatticeRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

@@ -32,10 +32,10 @@ under the License.
 
 using namespace std;
 using namespace RESQML2_2_NS;
-using namespace gsoap_eml2_2;
+using namespace gsoap_eml2_3;
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind,
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
 	RESQML2_NS::StringTableLookup* strLookup, COMMON_NS::PropertyKind * propKind)
 {
 	if (strLookup == nullptr) {
@@ -45,18 +45,18 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 		throw invalid_argument("The dimension cannot be zero.");
 	}
 
-	gsoapProxy2_2 = soap_new_resqml22__CategoricalProperty(rep->getGsoapContext());	
-	_resqml22__CategoricalProperty* prop = static_cast<_resqml22__CategoricalProperty*>(gsoapProxy2_2);
+	gsoapProxy2_3 = soap_new_resqml22__CategoricalProperty(rep->getGsoapContext());	
+	_resqml22__CategoricalProperty* prop = static_cast<_resqml22__CategoricalProperty*>(gsoapProxy2_3);
 	prop->IndexableElement = attachmentKind;
 	if (dimension > 1) {
-		prop->ValueCountPerIndexableElement = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_2->soap, sizeof(ULONG64)));
+		prop->ValueCountPerIndexableElement = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_3->soap, sizeof(ULONG64)));
 		*prop->ValueCountPerIndexableElement = dimension;
 	}
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	prop->Lookup = strLookup->newEml22Reference();
+	prop->Lookup = strLookup->newEml23Reference();
 	getRepository()->addRelationship(this, strLookup);
 
 	setRepresentation(rep);
@@ -66,5 +66,5 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 
 COMMON_NS::DataObjectReference CategoricalProperty::getStringLookupDor() const
 {
-	return COMMON_NS::DataObjectReference(static_cast<_resqml22__CategoricalProperty*>(gsoapProxy2_2)->Lookup);
+	return COMMON_NS::DataObjectReference(static_cast<_resqml22__CategoricalProperty*>(gsoapProxy2_3)->Lookup);
 }

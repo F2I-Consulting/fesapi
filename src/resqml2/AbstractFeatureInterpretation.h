@@ -46,7 +46,7 @@ namespace RESQML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractFeatureInterpretation(gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-		AbstractFeatureInterpretation(gsoap_eml2_2::resqml22__AbstractFeatureInterpretation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		AbstractFeatureInterpretation(gsoap_eml2_3::resqml22__AbstractFeatureInterpretation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 

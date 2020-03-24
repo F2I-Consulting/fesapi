@@ -99,7 +99,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		CommentProperty(gsoap_eml2_2::_resqml22__CommentProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
+		CommentProperty(gsoap_eml2_3::_resqml22__CommentProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 
 		virtual COMMON_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const = 0;
 	};

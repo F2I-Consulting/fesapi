@@ -36,7 +36,7 @@ using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, resqml20__ResqmlPropertyKind energisticsPropertyKind)
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, resqml20__ResqmlPropertyKind energisticsPropertyKind)
 {
 	if (rep == nullptr) {
 		throw invalid_argument("The representation of this property values cannot be null.");
@@ -58,7 +58,7 @@ DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, con
 }
 
 DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * localPropKind)
 {
 	if (rep == nullptr) {
 		throw invalid_argument("The representation of this property values cannot be null.");

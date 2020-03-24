@@ -93,13 +93,13 @@ namespace RESQML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), blockInformation(nullptr) {}
-		AbstractIjkGridRepresentation(gsoap_eml2_2::_resqml22__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), blockInformation(nullptr) {}
-		AbstractIjkGridRepresentation(gsoap_eml2_2::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), blockInformation(nullptr) {}
 
 		gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* getSpecializedGsoapProxy2_0_1() const;
 		gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy2_0_1() const;
-		gsoap_eml2_2::_resqml22__IjkGridRepresentation* getSpecializedGsoapProxy2_2() const;
-		gsoap_eml2_2::_resqml22__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy2_2() const;
+		gsoap_eml2_3::_resqml22__IjkGridRepresentation* getSpecializedGsoapProxy2_2() const;
+		gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy2_2() const;
 
 		/**
 		 * Gets point geometry 2 0 1
@@ -109,7 +109,7 @@ namespace RESQML2_NS
 		 * @returns	Null if it fails, else the point geometry 2 0 1.
 		 */
 		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
-		gsoap_eml2_2::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
+		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
 
 		/**
 		* Information about the splits (mainly due to faults) which occur in this grid.

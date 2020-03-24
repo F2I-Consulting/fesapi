@@ -37,7 +37,7 @@ unsigned int AbstractColumnLayerGridRepresentation::getKCellCount() const
 
 	const ULONG64 kCellCount = gsoapProxy2_0_1 != nullptr
 		? (isTruncated() ? static_cast<resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->Nk : static_cast<resqml20__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->Nk)
-		: (isTruncated() ? static_cast<gsoap_eml2_2::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_2)->Nk : static_cast<gsoap_eml2_2::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_2)->Nk);
+		: (isTruncated() ? static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->Nk : static_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_3)->Nk);
 		
 	if (kCellCount > (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("There are too much cells against K dimension");
@@ -56,7 +56,7 @@ void AbstractColumnLayerGridRepresentation::setKCellCount(unsigned int kCount)
 			static_cast<resqml20__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->Nk = kCount;
 		}
 		else {
-			static_cast<gsoap_eml2_2::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_2)->Nk = kCount;
+			static_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_3)->Nk = kCount;
 		}
 	}
 	else {
@@ -64,7 +64,7 @@ void AbstractColumnLayerGridRepresentation::setKCellCount(unsigned int kCount)
 			static_cast<resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->Nk = kCount;
 		}
 		else {
-			static_cast<gsoap_eml2_2::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_2)->Nk = kCount;
+			static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->Nk = kCount;
 		}
 	}
 }
@@ -98,26 +98,26 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 		xmlDataset->Values->PathInHdfFile = getHdfGroup() + "/IntervalStratigraphicUnits";
 		rep->IntervalStratigraphicUnits->UnitIndices = xmlDataset;
 	}
-	else if (gsoapProxy2_2 != nullptr) {
-		gsoap_eml2_2::resqml22__AbstractColumnLayerGridRepresentation* rep = static_cast<gsoap_eml2_2::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_2);
-		rep->IntervalStratigraphicUnits = gsoap_eml2_2::soap_new_resqml22__IntervalStratigraphicUnits(rep->soap);
-		rep->IntervalStratigraphicUnits->StratigraphicOrganizationInterpretation = stratiOrgInterp->newEml22Reference();
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation* rep = static_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_3);
+		rep->IntervalStratigraphicUnits = gsoap_eml2_3::soap_new_resqml22__IntervalStratigraphicUnits(rep->soap);
+		rep->IntervalStratigraphicUnits->StratigraphicOrganizationInterpretation = stratiOrgInterp->newEml23Reference();
 
-		rep->IntervalStratigraphicUnits->UnitIndices = gsoap_eml2_2::soap_new_eml22__JaggedArray(rep->soap);
+		rep->IntervalStratigraphicUnits->UnitIndices = gsoap_eml2_3::soap_new_eml23__JaggedArray(rep->soap);
 		// element XML
-		gsoap_eml2_2::eml22__IntegerExternalArray* elementDataset = gsoap_eml2_2::soap_new_eml22__IntegerExternalArray(rep->soap);
+		gsoap_eml2_3::eml23__IntegerExternalArray* elementDataset = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(rep->soap);
 		elementDataset->NullValue = nullValue;
-		elementDataset->Values = gsoap_eml2_2::soap_new_eml22__ExternalDataset(gsoapProxy2_2->soap);
-		auto dsPart = gsoap_eml2_2::soap_new_eml22__ExternalDatasetPart(gsoapProxy2_2->soap);
-		dsPart->EpcExternalPartReference = hdfProxy->newEml22Reference();
+		elementDataset->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+		auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+		dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
 		dsPart->PathInExternalFile = getHdfGroup() + "/IntervalStratigraphicUnits";
 		elementDataset->Values->ExternalFileProxy.push_back(dsPart);
 		rep->IntervalStratigraphicUnits->UnitIndices->Elements = elementDataset;
 
 		// cumulative XML
-		gsoap_eml2_2::eml22__IntegerLatticeArray* cumulativeDataset = gsoap_eml2_2::soap_new_eml22__IntegerLatticeArray(rep->soap);
+		gsoap_eml2_3::eml23__IntegerLatticeArray* cumulativeDataset = gsoap_eml2_3::soap_new_eml23__IntegerLatticeArray(rep->soap);
 		cumulativeDataset->StartValue = 1;
-		gsoap_eml2_2::eml22__IntegerConstantArray* constantArray = gsoap_eml2_2::soap_new_eml22__IntegerConstantArray(rep->soap);
+		gsoap_eml2_3::eml23__IntegerConstantArray* constantArray = gsoap_eml2_3::soap_new_eml23__IntegerConstantArray(rep->soap);
 		constantArray->Count = dim - 1;
 		constantArray->Value = 1;
 		cumulativeDataset->Offset.push_back(constantArray);
@@ -146,8 +146,8 @@ COMMON_NS::DataObjectReference AbstractColumnLayerGridRepresentation::getStratig
 		}
 		return COMMON_NS::DataObjectReference(rep->IntervalStratigraphicUnits->StratigraphicOrganization);
 	}
-	else if (gsoapProxy2_2 != nullptr) {
-		gsoap_eml2_2::resqml22__AbstractColumnLayerGridRepresentation* rep = static_cast<gsoap_eml2_2::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_2);
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation* rep = static_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_3);
 		if (rep->IntervalStratigraphicUnits == nullptr) {
 			return COMMON_NS::DataObjectReference();
 		}
@@ -169,7 +169,7 @@ bool AbstractColumnLayerGridRepresentation::hasIntervalStratigraphicUnitIndices(
 			return static_cast<resqml20__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->IntervalStratigraphicUnits != nullptr;
 		}
 		else {
-			return static_cast<gsoap_eml2_2::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_2)->IntervalStratigraphicUnits != nullptr;
+			return static_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_3)->IntervalStratigraphicUnits != nullptr;
 		}
 	}
 
@@ -196,17 +196,17 @@ ULONG64 AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 
 		throw logic_error("Not implemented yet.");
 	}
-	else if (gsoapProxy2_2 != nullptr) {
-		auto rep = static_cast<gsoap_eml2_2::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_2);
-		if (rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__IntegerLatticeArray) {
-			gsoap_eml2_2::eml22__IntegerLatticeArray* latticeArray = static_cast<gsoap_eml2_2::eml22__IntegerLatticeArray*>(rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength);
+	else if (gsoapProxy2_3 != nullptr) {
+		auto rep = static_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_3);
+		if (rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray) {
+			gsoap_eml2_3::eml23__IntegerLatticeArray* latticeArray = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength);
 			if (latticeArray->StartValue == 1 && latticeArray->Offset.size() == 1 &&
-				latticeArray->Offset[0]->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__IntegerConstantArray &&
-				static_cast<gsoap_eml2_2::eml22__IntegerConstantArray*>(latticeArray->Offset[0])->Value == 1 &&
-				static_cast<gsoap_eml2_2::eml22__IntegerConstantArray*>(latticeArray->Offset[0])->Count == getKCellCount() - 1) {
-				auto dsPart = static_cast<gsoap_eml2_2::eml22__IntegerExternalArray*>(rep->IntervalStratigraphicUnits->UnitIndices->Elements)->Values->ExternalFileProxy[0];
+				latticeArray->Offset[0]->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray &&
+				static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(latticeArray->Offset[0])->Value == 1 &&
+				static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(latticeArray->Offset[0])->Count == getKCellCount() - 1) {
+				auto dsPart = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->IntervalStratigraphicUnits->UnitIndices->Elements)->Values->ExternalFileProxy[0];
 				getHdfProxyFromDataset(dsPart)->readArrayNdOfULongValues(dsPart->PathInExternalFile, stratiUnitIndices);
-				return static_cast<gsoap_eml2_2::eml22__IntegerExternalArray*>(rep->IntervalStratigraphicUnits->UnitIndices->Elements)->NullValue;
+				return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->IntervalStratigraphicUnits->UnitIndices->Elements)->NullValue;
 			}
 		}
 
@@ -251,13 +251,13 @@ gsoap_resqml2_0_1::resqml20__PillarShape AbstractColumnLayerGridRepresentation::
 
 		return specializedGeom->PillarShape;
 	}
-	else if (gsoapProxy2_2 != nullptr) {
-		gsoap_eml2_2::resqml22__PointGeometry* geom = getPointGeometry2_2(0);
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::resqml22__PointGeometry* geom = getPointGeometry2_2(0);
 		if (geom == nullptr) {
 			throw invalid_argument("This grid has no point geoemtry.");
 		}
 
-		gsoap_eml2_2::resqml22__AbstractColumnLayerGridGeometry* specializedGeom = dynamic_cast<gsoap_eml2_2::resqml22__AbstractColumnLayerGridGeometry*>(geom);
+		gsoap_eml2_3::resqml22__AbstractColumnLayerGridGeometry* specializedGeom = dynamic_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridGeometry*>(geom);
 		if (geom == nullptr) {
 			throw invalid_argument("This grid has no AbstractColumnLayerGrid Geometry.");
 		}

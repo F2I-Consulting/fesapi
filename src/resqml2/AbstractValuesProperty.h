@@ -97,7 +97,7 @@ namespace RESQML2_NS
 		 * @param 	facet	  	The facet.
 		 * @param 	facetValue	The facet value.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackFacet(gsoap_eml2_2::eml22__FacetKind facet, const std::string & facetValue);
+		DLL_IMPORT_OR_EXPORT void pushBackFacet(gsoap_eml2_3::eml23__FacetKind facet, const std::string & facetValue);
 
 		/**
 		 * Gets the count of facet of this instance
@@ -115,7 +115,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The facet at index @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::eml22__FacetKind getFacetKind(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__FacetKind getFacetKind(unsigned int index) const;
 
 		/**
 		 * Gets the facet value at a particular index of the facet collection of this instance.
@@ -149,7 +149,7 @@ namespace RESQML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractValuesProperty(gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}
-		AbstractValuesProperty(gsoap_eml2_2::resqml22__AbstractValuesProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}
+		AbstractValuesProperty(gsoap_eml2_3::resqml22__AbstractValuesProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}
 
 		/**
 		 * Get the HDF Proxy which contains the property values of a particular patch.

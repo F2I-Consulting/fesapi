@@ -522,7 +522,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		ContinuousProperty(gsoap_eml2_2::_resqml22__ContinuousProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
+		ContinuousProperty(gsoap_eml2_3::_resqml22__ContinuousProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 
 		virtual COMMON_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const = 0;
 

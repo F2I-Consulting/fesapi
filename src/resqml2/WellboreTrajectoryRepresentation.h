@@ -244,7 +244,7 @@ namespace RESQML2_NS
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreTrajectoryRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
-		WellboreTrajectoryRepresentation(gsoap_eml2_2::_resqml22__WellboreTrajectoryRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
+		WellboreTrajectoryRepresentation(gsoap_eml2_3::_resqml22__WellboreTrajectoryRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
 
 		void loadTargetRelationships();
 	};

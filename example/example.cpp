@@ -272,7 +272,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 	RESQML2_0_1_NS::PropertyKind * unitNumberPropType = pck->createPropertyKind201("358aac23-b377-4349-9e72-bff99a6edf34", "Unit number", "urn:resqml:F2I.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
 
 	RESQML2_NS::DiscreteProperty* discreteProp = pck->createDiscreteProperty(w1i1FrameRep, "61c2917c-2334-4205-824e-d4f4a0cf6d8e", "Wellbore1 Interp1 FrameRep IntervalIndex", 1,
-		gsoap_eml2_2::resqml22__IndexableElement__intervals, unitNumberPropType);
+		gsoap_eml2_3::resqml22__IndexableElement__intervals, unitNumberPropType);
 	char unitNumbers[5] = { 0, 1, 2, 3, 4 };
 	discreteProp->pushBackCharHdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
 
@@ -374,7 +374,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, CO
 	// creating a new discrete property of type propType1 without associating it to a discrete color map.
 	// Thus, its associated discrete color map remains the one associated to propType1
 	RESQML2_NS::DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(ijkgrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex", 1,
-		gsoap_eml2_2::resqml22__IndexableElement__cells, propType1);
+		gsoap_eml2_3::resqml22__IndexableElement__cells, propType1);
 	unsigned short prop2Values[2] = { 0, 1 };
 	discreteProp2->pushBackUShortHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, -1);
 
@@ -394,7 +394,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, CO
 		1., 1.);
 
 	contColMapContProp = repo->createContinuousProperty201(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map", 2,
-		gsoap_eml2_2::resqml22__IndexableElement__nodes, "continuousColorMapIndex", gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
+		gsoap_eml2_3::resqml22__IndexableElement__nodes, "continuousColorMapIndex", gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
 	std::unique_ptr<double[]> values(new double[numPointInFastestDirection * numPointsInSlowestDirection]);
 	for (size_t slowestIndex = 0; slowestIndex < numPointsInSlowestDirection; ++slowestIndex) {
 		for (size_t fastestIndex = 0; fastestIndex < numPointInFastestDirection; ++fastestIndex) {
@@ -403,7 +403,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, CO
 	}
 	contColMapContProp->pushBackDoubleHdf5Array2dOfValues(values.get(), numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 
-	RESQML2_2_NS::ContinuousColorMap* contColMap = repo->createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", gsoap_eml2_2::resqml22__InterpolationDomain__rgb, gsoap_eml2_2::resqml22__InterpolationMethod__linear);
+	RESQML2_2_NS::ContinuousColorMap* contColMap = repo->createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", gsoap_eml2_3::resqml22__InterpolationDomain__rgb, gsoap_eml2_3::resqml22__InterpolationMethod__linear);
 	unsigned int contColMapRgbColors[6] = { 0, 255, 0, 255, 0, 0 };
 	vector<string> contColMapColTitles = { "green", "red" };
 	double contColMapAlphas[2] = { 1., 1. };
@@ -669,13 +669,13 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, COMMON_NS::Abstr
 	//**************
 	propType1 = pck->createPropertyKind201("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
 	RESQML2_NS::ContinuousProperty* contProp1 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,
-		gsoap_eml2_2::resqml22__IndexableElement__nodes, "exoticMeter", propType1);
+		gsoap_eml2_3::resqml22__IndexableElement__nodes, "exoticMeter", propType1);
 	double prop1Values[16] = { 301, 302, 301, 302, 351, 352, 351, 352, 301, 302, 301, 302, 351, 352, 351, 352 };
 	contProp1->pushBackDoubleHdf5Array2dOfValues(prop1Values, 2, 8, hdfProxy);
 
 	COMMON_NS::PropertyKind * propType2 = pck->createPropertyKind("7372f8f6-b1fd-4263-b9a8-699d9cbf7da6", "propType2", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, propType1);
 	RESQML2_NS::ContinuousProperty* contProp2 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "d3efb337-19f8-4b91-8b4f-3698afe17f01", "Horizon1 Interp1 Grid2dRep Prop2", 1,
-		gsoap_eml2_2::resqml22__IndexableElement__nodes, gsoap_resqml2_0_1::resqml20__ResqmlUom__ft, propType2);
+		gsoap_eml2_3::resqml22__IndexableElement__nodes, gsoap_resqml2_0_1::resqml20__ResqmlUom__ft, propType2);
 	double prop2Values[8] = { 302, 302, 352, 352, 302, 302, 352, 352 };
 	contProp2->pushBackDoubleHdf5Array1dOfValues(prop2Values, 8, hdfProxy);
 #endif
@@ -805,7 +805,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		RESQML2_NS::SubRepresentation * faultSubRep = pck->createSubRepresentation(fault1Interp1, "ff248280-fa3d-11e5-a35c-0002a5d5c51b", "Fault Subrep In Grid");
 		faultSubRep->pushBackSupportingRepresentation(ijkgrid);
 		ULONG64 faultPillar[2] = { 1, 4 };
-		faultSubRep->pushBackSubRepresentationPatch(gsoap_eml2_2::resqml22__IndexableElement__pillars, 2, faultPillar, hdfProxy);
+		faultSubRep->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement__pillars, 2, faultPillar, hdfProxy);
 	}
 
 	RESQML2_NS::SubRepresentation * actnum = pck->createSubRepresentation("323001d0-468c-41d7-abec-7d12c3c9428b", "ACTNUM");
@@ -814,7 +814,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
 	};
-	actnum->pushBackSubRepresentationPatch(gsoap_eml2_2::resqml22__IndexableElement__cells, 21, actnumValues, hdfProxy);
+	actnum->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement__cells, 21, actnumValues, hdfProxy);
 
 	// Double grid subrep
 	RESQML2_NS::SubRepresentation * doubleGridSubrep = pck->createSubRepresentation("f6d23b9c-e45d-4638-9601-ae3b682129a0", "TEST MULTI GRIDS SUBREP");
@@ -830,7 +830,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 	};
-	doubleGridSubrep->pushBackSubRepresentationPatch(gsoap_eml2_2::resqml22__IndexableElement__cells, 23, doubleGridSubrepValues, hdfProxy, doubleGridSubrepSupportingRepIndices);
+	doubleGridSubrep->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement__cells, 23, doubleGridSubrepValues, hdfProxy, doubleGridSubrepSupportingRepIndices);
 
 	//**************
 	// Grid Connection
@@ -879,11 +879,11 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	//**************
 	propType1 = pck->createPropertyKind201("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
 	discreteProp1 = pck->createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
-		gsoap_eml2_2::resqml22__IndexableElement__cells, propType1);
+		gsoap_eml2_3::resqml22__IndexableElement__cells, propType1);
 	unsigned short prop1Values[2] = { 0, 1 };
 	discreteProp1->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
 	RESQML2_NS::DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(ijkgrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex", 1,
-		gsoap_eml2_2::resqml22__IndexableElement__cells, propType1);
+		gsoap_eml2_3::resqml22__IndexableElement__cells, propType1);
 	LONG64 prop2Values[2] = { 10, 11 };
 	discreteProp2->pushBackLongHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
 
@@ -892,7 +892,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	propSet->pushBackProperty(discreteProp2);
 
 	RESQML2_NS::DiscreteProperty* discreteProp1OnIjkgridParametric = pck->createDiscreteProperty(ijkgridParametric, "eb3dbf6c-5745-4e41-9d09-672f6fbab414", "Four sugar cubes cellIndex", 1,
-		gsoap_eml2_2::resqml22__IndexableElement__cells, propType1);
+		gsoap_eml2_3::resqml22__IndexableElement__cells, propType1);
 	unsigned short prop1ValuesOnIjkgridParametric[4] = { 0, 1, 2, 3 };
 	discreteProp1OnIjkgridParametric->pushBackUShortHdf5Array3dOfValues(prop1ValuesOnIjkgridParametric, 2, 1, 2, hdfProxy, 1111, 0, 3);
 	//Move this prop to another same ninjnk ijk grid
@@ -915,17 +915,17 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	timeSeries->pushBackTimestamp(1409753895);
 	timeSeries->pushBackTimestamp(1441289895);
 	ContinuousProperty* continuousPropTime0 = pck->createContinuousProperty201(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
-		gsoap_eml2_2::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+		gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	continuousPropTime0->setTimeIndex(0, timeSeries);
 	double valuesTime0[2] = { 0, 1 };
 	continuousPropTime0->pushBackDoubleHdf5Array3dOfValues(valuesTime0, 2, 1, 1, hdfProxy);
 	ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty201(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
-		gsoap_eml2_2::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+		gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	continuousPropTime1->setTimeIndex(1, timeSeries);
 	double valuesTime1[2] = { 2, 3 };
 	continuousPropTime1->pushBackDoubleHdf5Array3dOfValues(valuesTime1, 2, 1, 1, hdfProxy);
 	ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty201(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property ", 1,
-		gsoap_eml2_2::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+		gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	continuousPropTime2->setTimeIndex(2, timeSeries);
 	double valuesTime2[2] = { 3, 4 };
 	continuousPropTime2->pushBackDoubleHdf5Array3dOfValues(valuesTime2, 2, 1, 1, hdfProxy);
@@ -1032,114 +1032,114 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 
 	// Contact 0: fault1Interp1 HANGING_WALL_SIDE STOPS horizon1Interp1 BOTH_SIDES
 	structuralOrganizationInterpretation->pushBackBinaryContact(fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__hanging_x0020wall,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		horizon1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__both);
 	// Contact 1: fault1Interp1 FOOT_WALL_SIDE STOPS horizon1Interp1 BOTH_SIDES
 	structuralOrganizationInterpretation->pushBackBinaryContact(fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__footwall,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		horizon1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__both);
 	// Contact 2: fault1Interp1 HANGING_WALL_SIDE STOPS horizon2Interp1 BOTH_SIDES
 	structuralOrganizationInterpretation->pushBackBinaryContact(fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__hanging_x0020wall,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		horizon2Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__both);
 	// Contact 3: fault1Interp1 FOOT_WALL_SIDE STOPS horizon2Interp1 BOTH_SIDES
 	structuralOrganizationInterpretation->pushBackBinaryContact(fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__footwall,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		horizon2Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__both);
 
 	// Contact 4: horizon1Interp1 STOPS AT yMinusFrontierInterp
 	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		horizon1Interp1);
 	// Contact 5: fault1Interp1 STOPS AT yMinusFrontierInterp (part above horizon1Interp1)
 	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		fault1Interp1);
 	// Contact 6: horizon2Interp1 STOPS AT yMinusFrontierInterp
 	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		horizon2Interp1);
 
 	// Contact 7: horizon1Interp1 STOPS AT yPlusFrontierInterp
 	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		horizon1Interp1);
 	// Contact 8: fault1Interp1 STOPS AT yPlusFrontierInterp (part above horizon1Interp1)
 	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		fault1Interp1);
 	// Contact 9: horizon2Interp1 STOPS AT yPlusFrontierInterp
 	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		horizon2Interp1);
 
 	// Contact 10: horizon1Interp1 STOPS AT xMinusFrontierInterp
 	structuralOrganizationInterpretation->pushBackBinaryContact(xMinusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		horizon1Interp1);
 	// Contact 11: horizon2Interp1 STOPS AT xMinusFrontierInterp
 	structuralOrganizationInterpretation->pushBackBinaryContact(xMinusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		horizon2Interp1);
 	// Contact 12: xMinusFrontierInterp STOPS AT yMinusFrontierInterp
 	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		xMinusFrontierInterp);
 	// Contact 13: xMinusFrontierInterp STOPS AT yPlusFrontierInterp
 	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		xMinusFrontierInterp);
 
 	// Contact 14: fault1Interp1 STOPS AT yMinusFrontierInterp (part below horizon1Interp1)
 	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		fault1Interp1);
 	// Contact 15: fault1Interp1 STOPS AT yPlusFrontierInterp (part above horizon1Interp1)
 	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		fault1Interp1);
 
 	// Contact 16: horizon1Interp1 STOPS AT yMinusFrontierInterp
 	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		horizon1Interp1);
 	// Contact 17: fault1Interp1 STOPS AT yMinusFrontierInterp (part below horizon2Interp1)
 	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		fault1Interp1);
 	// Contact 18: horizon2Interp1 STOPS AT yMinusFrontierInterp
 	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		horizon2Interp1);
 
 	// Contact 19: horizon1Interp1 STOPS AT yPlusFrontierInterp
 	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		horizon1Interp1);
 	// Contact 20: fault1Interp1 STOPS AT yPlusFrontierInterp (part below horizon2Interp1)
 	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		fault1Interp1);
 	// Contact 21: horizon2Interp1 STOPS AT yPlusFrontierInterp
 	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		horizon2Interp1);
 
 	// Contact 22: horizon1Interp1 STOPS AT xPlusFrontierInterp
 	structuralOrganizationInterpretation->pushBackBinaryContact(xPlusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		horizon1Interp1);
 	// Contact 23: horizon2Interp1 STOPS AT xPlusFrontierInterp
 	structuralOrganizationInterpretation->pushBackBinaryContact(xPlusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		horizon2Interp1);
 	// Contact 24: xPlusFrontierInterp STOPS AT yMinusFrontierInterp
 	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		xPlusFrontierInterp);
 	// Contact 25: xPlusFrontierInterp STOPS AT yPlusFrontierInterp
 	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
-		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		gsoap_eml2_3::resqml22__ContactVerb__stops,
 		xPlusFrontierInterp);
 
 	// =========================================================================

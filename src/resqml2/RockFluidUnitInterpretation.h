@@ -39,7 +39,7 @@ namespace RESQML2_NS
 		 * Get the deposition mode of the stratigraphic unit interpretation.
 		 * You should verify its existency using hasDepositionMode() before to call this function.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_2::resqml22__Phase getPhase() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::resqml22__Phase getPhase() const = 0;
 
 		/**
 		* The standard XML tag without XML namespace for serializing this data object.
@@ -63,6 +63,6 @@ namespace RESQML2_NS
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		RockFluidUnitInterpretation(gsoap_resqml2_0_1::_resqml20__RockFluidUnitInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
-		RockFluidUnitInterpretation(gsoap_eml2_2::_resqml22__RockFluidUnitInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
+		RockFluidUnitInterpretation(gsoap_eml2_3::_resqml22__RockFluidUnitInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
 	};
 }

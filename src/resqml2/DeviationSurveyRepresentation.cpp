@@ -19,8 +19,7 @@ under the License.
 #include "DeviationSurveyRepresentation.h"
 
 #include <stdexcept>
-
-#include "H5public.h"
+#include <limits>
 
 #include "WellboreTrajectoryRepresentation.h"
 #include "MdDatum.h"

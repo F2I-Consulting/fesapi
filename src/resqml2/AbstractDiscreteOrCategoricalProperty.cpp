@@ -162,15 +162,15 @@ std::string AbstractDiscreteOrCategoricalProperty::pushBackRefToExistingDataset(
 
 		return xmlValues->Values->PathInHdfFile;
 	}
-	else if (gsoapProxy2_2 != nullptr) {
-		gsoap_eml2_2::resqml22__AbstractValuesProperty* prop = static_cast<gsoap_eml2_2::resqml22__AbstractValuesProperty*>(gsoapProxy2_2);
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::resqml22__AbstractValuesProperty* prop = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3);
 
 		// XML
-		gsoap_eml2_2::eml22__IntegerExternalArray* xmlValues = gsoap_eml2_2::soap_new_eml22__IntegerExternalArray(gsoapProxy2_2->soap);
+		gsoap_eml2_3::eml23__IntegerExternalArray* xmlValues = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		xmlValues->NullValue = nullValue;
-		xmlValues->Values = gsoap_eml2_2::soap_new_eml22__ExternalDataset(gsoapProxy2_2->soap);
-		auto dsPart = gsoap_eml2_2::soap_new_eml22__ExternalDatasetPart(gsoapProxy2_2->soap);
-		dsPart->EpcExternalPartReference = hdfProxy->newEml22Reference();
+		xmlValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+		auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+		dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
 
 		if (datasetName.empty()) {
 			ostringstream ossForHdf;
@@ -296,10 +296,10 @@ LONG64 AbstractDiscreteOrCategoricalProperty::getNullValueOfPatch(unsigned int p
 
 		throw invalid_argument("The patch does not contain integer values.");
 	}
-	else if (gsoapProxy2_2 != nullptr) {
-		auto patch = static_cast<gsoap_eml2_2::resqml22__AbstractValuesProperty*>(gsoapProxy2_2)->ValuesForPatch[patchIndex];
-		if (patch->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__IntegerExternalArray) {
-			return static_cast<gsoap_eml2_2::eml22__IntegerExternalArray*>(patch)->NullValue;
+	else if (gsoapProxy2_3 != nullptr) {
+		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		if (patch->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+			return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(patch)->NullValue;
 		}
 
 		throw invalid_argument("The patch does not contain integer values.");
@@ -453,15 +453,15 @@ void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5ArrayOfValues(
 
 		prop->PatchOfValues.push_back(patch);
 	}
-	else if (gsoapProxy2_2 != nullptr) {
-		gsoap_eml2_2::resqml22__AbstractValuesProperty* prop = static_cast<gsoap_eml2_2::resqml22__AbstractValuesProperty*>(gsoapProxy2_2);
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::resqml22__AbstractValuesProperty* prop = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3);
 
 		// XML
-		gsoap_eml2_2::eml22__IntegerExternalArray* xmlValues = gsoap_eml2_2::soap_new_eml22__IntegerExternalArray(gsoapProxy2_2->soap);
+		gsoap_eml2_3::eml23__IntegerExternalArray* xmlValues = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		xmlValues->NullValue = nullValue;
-		xmlValues->Values = gsoap_eml2_2::soap_new_eml22__ExternalDataset(gsoapProxy2_2->soap);
-		auto dsPart = gsoap_eml2_2::soap_new_eml22__ExternalDatasetPart(gsoapProxy2_2->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml22Reference();
+		xmlValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+		auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
 		std::ostringstream ossForHdf;
 		ossForHdf << "values_patch" << getPatchCount();
 		dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();

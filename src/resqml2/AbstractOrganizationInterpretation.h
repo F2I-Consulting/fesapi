@@ -41,7 +41,7 @@ namespace RESQML2_NS
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		AbstractOrganizationInterpretation(gsoap_resqml2_0_1::resqml20__AbstractOrganizationInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
-		AbstractOrganizationInterpretation(gsoap_eml2_2::resqml22__AbstractOrganizationInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
+		AbstractOrganizationInterpretation(gsoap_eml2_3::resqml22__AbstractOrganizationInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
 
 	public:
 
@@ -56,7 +56,7 @@ namespace RESQML2_NS
 		 * @param 		  	verb			The verb.
 		 * @param [in,out]	directObject	If non-null, the direct object.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_2::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject);
+		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_3::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject);
 
 		/**
 		 * Add a binary contact to the organization itnerpretation by means of a sentence where the
@@ -68,14 +68,14 @@ namespace RESQML2_NS
 		 * @param [in,out]	directObject		 	If non-null, the direct object.
 		 * @param 		  	directObjectQualifier	The direct object qualifier.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_2::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject,
+		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_3::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject,
 			gsoap_resqml2_0_1::resqml20__ContactSide directObjectQualifier);
 
         /**
          * Add a binary contact to the organization interpretation by means of a sentence where both the subject and the direct object can be qualified.
          */
 		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_resqml2_0_1::resqml20__ContactSide subjectQualifier,
-			gsoap_eml2_2::resqml22__ContactVerb verb,
+			gsoap_eml2_3::resqml22__ContactVerb verb,
 			AbstractFeatureInterpretation* directObject, gsoap_resqml2_0_1::resqml20__ContactSide directObjectQualifier);
 	};
 }

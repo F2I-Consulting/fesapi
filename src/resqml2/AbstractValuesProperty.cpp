@@ -39,8 +39,8 @@ unsigned int AbstractValuesProperty::getPatchCount() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		result = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues.size();
 	}
-	else if (gsoapProxy2_2 != nullptr) {
-		result = static_cast<gsoap_eml2_2::resqml22__AbstractValuesProperty*>(gsoapProxy2_2)->ValuesForPatch.size();
+	else if (gsoapProxy2_3 != nullptr) {
+		result = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch.size();
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -116,26 +116,26 @@ COMMON_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(unsigned
 			throw logic_error("The type of the property values is not implemented yet.");
 		}
 	}
-	else if (gsoapProxy2_2 != nullptr) {
+	else if (gsoapProxy2_3 != nullptr) {
 		nullValue = (numeric_limits<long>::min)();
-		auto patch = static_cast<gsoap_eml2_2::resqml22__AbstractValuesProperty*>(gsoapProxy2_2)->ValuesForPatch[patchIndex];
-		if (dynamic_cast<gsoap_eml2_2::eml22__FloatingPointExternalArray*>(patch) != nullptr) {
-			dsPath = static_cast<gsoap_eml2_2::eml22__FloatingPointExternalArray*>(patch)->Values->ExternalFileProxy[0]->PathInExternalFile;
-			return getHdfProxyFromDataset(static_cast<gsoap_eml2_2::eml22__FloatingPointExternalArray*>(patch)->Values->ExternalFileProxy[0]);
+		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		if (dynamic_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch) != nullptr) {
+			dsPath = static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalFileProxy[0]->PathInExternalFile;
+			return getHdfProxyFromDataset(static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalFileProxy[0]);
 		}
 		int valuesType = patch->soap_type();
-		if (valuesType == SOAP_TYPE_gsoap_eml2_2_eml22__BooleanExternalArray) {
-			dsPath = static_cast<gsoap_eml2_2::eml22__BooleanExternalArray*>(patch)->Values->ExternalFileProxy[0]->PathInExternalFile;
-			return getHdfProxyFromDataset(static_cast<gsoap_eml2_2::eml22__BooleanExternalArray*>(patch)->Values->ExternalFileProxy[0]);
+		if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
+			dsPath = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(patch)->Values->ExternalFileProxy[0]->PathInExternalFile;
+			return getHdfProxyFromDataset(static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(patch)->Values->ExternalFileProxy[0]);
 		}
-		else if (valuesType == SOAP_TYPE_gsoap_eml2_2_eml22__IntegerExternalArray) {
-			dsPath = static_cast<gsoap_eml2_2::eml22__IntegerExternalArray*>(patch)->Values->ExternalFileProxy[0]->PathInExternalFile;
-			nullValue = static_cast<gsoap_eml2_2::eml22__IntegerExternalArray*>(patch)->NullValue;
-			return getHdfProxyFromDataset(static_cast<gsoap_eml2_2::eml22__IntegerExternalArray*>(patch)->Values->ExternalFileProxy[0]);
+		else if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+			dsPath = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(patch)->Values->ExternalFileProxy[0]->PathInExternalFile;
+			nullValue = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(patch)->NullValue;
+			return getHdfProxyFromDataset(static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(patch)->Values->ExternalFileProxy[0]);
 		}
-		else if (valuesType == SOAP_TYPE_gsoap_eml2_2_eml22__StringExternalArray) {
-			dsPath = static_cast<gsoap_eml2_2::eml22__StringExternalArray*>(patch)->Values->ExternalFileProxy[0]->PathInExternalFile;
-			return getHdfProxyFromDataset(static_cast<gsoap_eml2_2::eml22__StringExternalArray*>(patch)->Values->ExternalFileProxy[0]);
+		else if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__StringExternalArray) {
+			dsPath = static_cast<gsoap_eml2_3::eml23__StringExternalArray*>(patch)->Values->ExternalFileProxy[0]->PathInExternalFile;
+			return getHdfProxyFromDataset(static_cast<gsoap_eml2_3::eml23__StringExternalArray*>(patch)->Values->ExternalFileProxy[0]);
 		}
 		else {
 			throw logic_error("The type of the property values is not implemented yet.");
@@ -170,22 +170,22 @@ unsigned int AbstractValuesProperty::getDimensionsCountOfPatch(unsigned int patc
 	return hdfProxy->getDimensionCount(dsPath);
 }
 
-void AbstractValuesProperty::pushBackFacet(gsoap_eml2_2::eml22__FacetKind facet, const std::string & facetValue)
+void AbstractValuesProperty::pushBackFacet(gsoap_eml2_3::eml23__FacetKind facet, const std::string & facetValue)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PropertyKindFacet* newFacet = gsoap_resqml2_0_1::soap_new_resqml20__PropertyKindFacet(gsoapProxy2_0_1->soap);
-		if (facet == gsoap_eml2_2::eml22__FacetKind__side) {
+		if (facet == gsoap_eml2_3::eml23__FacetKind__side) {
 			throw invalid_argument("The facet kind \"side\" is not supported in RESQML 2.0.1");
 		}
-		newFacet->Facet = facet == gsoap_eml2_2::eml22__FacetKind__conditions ? gsoap_resqml2_0_1::resqml20__Facet__conditions : static_cast<gsoap_resqml2_0_1::resqml20__Facet>(facet - 1);
+		newFacet->Facet = facet == gsoap_eml2_3::eml23__FacetKind__conditions ? gsoap_resqml2_0_1::resqml20__Facet__conditions : static_cast<gsoap_resqml2_0_1::resqml20__Facet>(facet - 1);
 		newFacet->Value = facetValue;
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet.push_back(newFacet);
 	}
-	else if (gsoapProxy2_2 != nullptr) {
-		gsoap_eml2_2::eml22__PropertyKindFacet* newFacet = gsoap_eml2_2::soap_new_eml22__PropertyKindFacet(gsoapProxy2_2->soap);
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::eml23__PropertyKindFacet* newFacet = gsoap_eml2_3::soap_new_eml23__PropertyKindFacet(gsoapProxy2_3->soap);
 		newFacet->Facet = facet;
 		newFacet->Facet = facetValue;
-		static_cast<gsoap_eml2_2::resqml22__AbstractValuesProperty*>(gsoapProxy2_2)->Facet.push_back(newFacet);
+		static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet.push_back(newFacet);
 	}
 
 	throw logic_error("Not implemented yet");
@@ -197,8 +197,8 @@ unsigned int AbstractValuesProperty::getFacetCount() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		result = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet.size();
 	}
-	else if (gsoapProxy2_2 != nullptr) {
-		result = static_cast<gsoap_eml2_2::resqml22__AbstractValuesProperty*>(gsoapProxy2_2)->Facet.size();
+	else if (gsoapProxy2_3 != nullptr) {
+		result = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet.size();
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -211,7 +211,7 @@ unsigned int AbstractValuesProperty::getFacetCount() const
 	return static_cast<unsigned int>(result);
 }
 
-gsoap_eml2_2::eml22__FacetKind AbstractValuesProperty::getFacetKind(unsigned int index) const
+gsoap_eml2_3::eml23__FacetKind AbstractValuesProperty::getFacetKind(unsigned int index) const
 {
 	if (index >= getFacetCount()) {
 		throw out_of_range("The facet index is out of range");
@@ -219,10 +219,10 @@ gsoap_eml2_2::eml22__FacetKind AbstractValuesProperty::getFacetKind(unsigned int
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		auto facetKind = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet[index];
-		return facetKind->Facet == gsoap_resqml2_0_1::resqml20__Facet__conditions ? gsoap_eml2_2::eml22__FacetKind__conditions : static_cast<gsoap_eml2_2::eml22__FacetKind>(facetKind->Facet + 1);
+		return facetKind->Facet == gsoap_resqml2_0_1::resqml20__Facet__conditions ? gsoap_eml2_3::eml23__FacetKind__conditions : static_cast<gsoap_eml2_3::eml23__FacetKind>(facetKind->Facet + 1);
 	}
-	else if (gsoapProxy2_2 != nullptr) {
-		return static_cast<gsoap_eml2_2::resqml22__AbstractValuesProperty*>(gsoapProxy2_2)->Facet[index]->Kind;
+	else if (gsoapProxy2_3 != nullptr) {
+		return static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet[index]->Kind;
 	}
 
 	throw logic_error("Not implemented yet");
@@ -237,8 +237,8 @@ std::string AbstractValuesProperty::getFacetValue(unsigned int index) const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet[index]->Value;
 	}
-	else if (gsoapProxy2_2 != nullptr) {
-		return static_cast<gsoap_eml2_2::resqml22__AbstractValuesProperty*>(gsoapProxy2_2)->Facet[index]->Facet;
+	else if (gsoapProxy2_3 != nullptr) {
+		return static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet[index]->Facet;
 	}
 	
 	throw logic_error("Not implemented yet");
@@ -261,6 +261,6 @@ void AbstractValuesProperty::loadTargetRelationships()
 	std::string dsPath;
 	for (size_t patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
-		convertDorIntoRel(hdfProxy->newEml22Reference());
+		convertDorIntoRel(hdfProxy->newEml23Reference());
 	}
 }

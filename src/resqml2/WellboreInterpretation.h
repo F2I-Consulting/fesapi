@@ -49,7 +49,7 @@ namespace RESQML2_NS
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		WellboreInterpretation(gsoap_resqml2_0_1::_resqml20__WellboreInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
-		WellboreInterpretation(gsoap_eml2_2::_resqml22__WellboreInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
+		WellboreInterpretation(gsoap_eml2_3::_resqml22__WellboreInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

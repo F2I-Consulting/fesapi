@@ -146,7 +146,7 @@ void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(S
 {
 	resqml20__AbstractOrganizationInterpretation* org = static_cast<resqml20__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
 
-	pushBackBinaryContact(subject, gsoap_eml2_2::resqml22__ContactVerb__stops, directObject);
+	pushBackBinaryContact(subject, gsoap_eml2_3::resqml22__ContactVerb__stops, directObject);
     resqml20__BinaryContactInterpretationPart* contact = static_cast<resqml20__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
     contact->DirectObject->SecondaryQualifier = static_cast<resqml20__ContactMode*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactMode)));
     *(contact->DirectObject->SecondaryQualifier) = directObjectMode;

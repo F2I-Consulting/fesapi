@@ -44,8 +44,8 @@ namespace RESQML2_2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		IjkGridParametricRepresentation(gsoap_eml2_2::_resqml22__IjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridParametricRepresentation(fromGsoap) {}
-		IjkGridParametricRepresentation(gsoap_eml2_2::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridParametricRepresentation(fromGsoap) {}
+		IjkGridParametricRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridParametricRepresentation(fromGsoap) {}
+		IjkGridParametricRepresentation(gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridParametricRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor clean pillarInformation memory when allocated

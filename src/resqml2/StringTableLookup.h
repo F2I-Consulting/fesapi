@@ -154,7 +154,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		StringTableLookup(gsoap_eml2_2::_resqml22__StringTableLookup* fromGsoap) : AbstractObject(fromGsoap) {}
+		StringTableLookup(gsoap_eml2_3::_resqml22__StringTableLookup* fromGsoap) : AbstractObject(fromGsoap) {}
 
 		/** Loads target relationships */
 		void loadTargetRelationships() {}

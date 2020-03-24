@@ -46,7 +46,7 @@ namespace RESQML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractStratigraphicOrganizationInterpretation(gsoap_resqml2_0_1::resqml20__AbstractStratigraphicOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
-		AbstractStratigraphicOrganizationInterpretation(gsoap_eml2_2::resqml22__AbstractStratigraphicOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
+		AbstractStratigraphicOrganizationInterpretation(gsoap_eml2_3::resqml22__AbstractStratigraphicOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
 
 	public:
 

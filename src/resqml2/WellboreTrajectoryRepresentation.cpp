@@ -29,7 +29,7 @@ under the License.
 
 using namespace std;
 using namespace RESQML2_NS;
-using namespace gsoap_eml2_2;
+using namespace gsoap_eml2_3;
 using namespace COMMON_NS;
 
 const char* WellboreTrajectoryRepresentation::XML_TAG = "WellboreTrajectoryRepresentation";

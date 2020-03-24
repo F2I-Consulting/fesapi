@@ -59,7 +59,7 @@ namespace RESQML2_2_NS
 		 * @param [in]	propKind 		The property kind of these property values. It cannot be null.
 		 */
 		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind,
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
 			RESQML2_NS::StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropKind);
 
 		/**
@@ -67,7 +67,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		CategoricalProperty(gsoap_eml2_2::_resqml22__CategoricalProperty* fromGsoap): RESQML2_NS::CategoricalProperty(fromGsoap) {}
+		CategoricalProperty(gsoap_eml2_3::_resqml22__CategoricalProperty* fromGsoap): RESQML2_NS::CategoricalProperty(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~CategoricalProperty() {}

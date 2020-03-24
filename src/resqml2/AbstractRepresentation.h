@@ -54,7 +54,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		AbstractRepresentation(gsoap_eml2_2::resqml22__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		AbstractRepresentation(gsoap_eml2_3::resqml22__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		 * Get the point geometry of a specific patch of the representation.
@@ -65,7 +65,7 @@ namespace RESQML2_NS
 		 * 			point geometry.
 		 */
 		virtual gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
-		virtual gsoap_eml2_2::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
+		virtual gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
 
 		/**
 		 * Creates a point geometry patch.
@@ -103,7 +103,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Empty data object reference if it fails, else the hdf proxy dor from point geometry patch.
 		 */
-		COMMON_NS::DataObjectReference getHdfProxyDorFromPointGeometryPatch(gsoap_eml2_2::resqml22__PointGeometry* patch) const;
+		COMMON_NS::DataObjectReference getHdfProxyDorFromPointGeometryPatch(gsoap_eml2_3::resqml22__PointGeometry* patch) const;
 
 		/**
 		 * Gets seismic 3D coordinates
@@ -121,7 +121,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the seismic 3D coordinates.
 		 */
-		gsoap_eml2_2::resqml22__Seismic3dCoordinates* getSeismic3dCoordinates2_2(unsigned int patchIndex) const;
+		gsoap_eml2_3::resqml22__Seismic3dCoordinates* getSeismic3dCoordinates2_2(unsigned int patchIndex) const;
 
 	public:
 

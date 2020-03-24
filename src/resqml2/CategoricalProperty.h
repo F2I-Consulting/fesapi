@@ -81,7 +81,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		CategoricalProperty(gsoap_eml2_2::_resqml22__CategoricalProperty* fromGsoap) : AbstractDiscreteOrCategoricalProperty(fromGsoap) {}
+		CategoricalProperty(gsoap_eml2_3::_resqml22__CategoricalProperty* fromGsoap) : AbstractDiscreteOrCategoricalProperty(fromGsoap) {}
 
 		/** Loads target relationships */
 		virtual void loadTargetRelationships();

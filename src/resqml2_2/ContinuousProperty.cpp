@@ -31,20 +31,20 @@ under the License.
 
 using namespace std;
 using namespace RESQML2_2_NS;
-using namespace gsoap_eml2_2;
+using namespace gsoap_eml2_3;
 
 void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind)
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind)
 {
 	if (dimension == 0) {
 		throw invalid_argument("The dimension cannot be zero.");
 	}
 
-	gsoapProxy2_2 = soap_new_resqml22__ContinuousProperty(rep->getGsoapContext());
-	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_2);
+	gsoapProxy2_3 = soap_new_resqml22__ContinuousProperty(rep->getGsoapContext());
+	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
 	prop->IndexableElement = attachmentKind;
 	if (dimension > 1) {
-		prop->ValueCountPerIndexableElement = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_2->soap, sizeof(ULONG64)));
+		prop->ValueCountPerIndexableElement = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_3->soap, sizeof(ULONG64)));
 		*prop->ValueCountPerIndexableElement = dimension;
 	}
 
@@ -55,21 +55,21 @@ void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const st
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * localPropKind)
 {
 	init(rep, guid, title, dimension, attachmentKind);
 
-	static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_2)->Uom = gsoap_resqml2_0_1::soap_resqml20__ResqmlUom2s(gsoapProxy2_2->soap, uom);
+	static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3)->Uom = gsoap_resqml2_0_1::soap_resqml20__ResqmlUom2s(gsoapProxy2_3->soap, uom);
 
 	setPropertyKind(localPropKind);
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropKind)
 {
 	init(rep, guid, title, dimension, attachmentKind);
 
-	static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_2)->Uom = nonStandardUom;
+	static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3)->Uom = nonStandardUom;
 
 	setPropertyKind(localPropKind);
 }
@@ -77,7 +77,7 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 gsoap_resqml2_0_1::resqml20__ResqmlUom ContinuousProperty::getUom() const
 {
 	gsoap_resqml2_0_1::resqml20__ResqmlUom result;
-	gsoap_resqml2_0_1::soap_s2resqml20__ResqmlUom(gsoapProxy2_2->soap, static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_2)->Uom.c_str(), &result);
+	gsoap_resqml2_0_1::soap_s2resqml20__ResqmlUom(gsoapProxy2_3->soap, static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3)->Uom.c_str(), &result);
 	return result;
 }
 
@@ -90,14 +90,14 @@ std::string ContinuousProperty::pushBackRefToExistingDataset(COMMON_NS::Abstract
 		}
 	}
 	getRepository()->addRelationship(this, proxy);
-	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_2);
+	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
 
 	// XML
 	ostringstream oss;
-	eml22__FloatingPointExternalArray* xmlValues = soap_new_eml22__FloatingPointExternalArray(gsoapProxy2_2->soap);
-	xmlValues->Values = soap_new_eml22__ExternalDataset(gsoapProxy2_2->soap);
-	auto dsPart = soap_new_eml22__ExternalDatasetPart(gsoapProxy2_2->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml22Reference();
+	eml23__FloatingPointExternalArray* xmlValues = soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
+	xmlValues->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
 
 	if (datasetName.empty()) {
 		ostringstream ossForHdf;
@@ -120,9 +120,9 @@ COMMON_NS::AbstractHdfProxy* ContinuousProperty::getValuesHdfProxyAndDatasetPath
 		throw out_of_range("The values property patch is out of range");
 	}
 
-	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_2);
-	if (dynamic_cast<eml22__FloatingPointExternalArray*>(prop->ValuesForPatch[patchIndex]) != nullptr) {
-		eml22__ExternalDatasetPart * dsPart = static_cast<eml22__FloatingPointExternalArray*>(prop->ValuesForPatch[patchIndex])->Values->ExternalFileProxy[0];
+	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
+	if (dynamic_cast<eml23__FloatingPointExternalArray*>(prop->ValuesForPatch[patchIndex]) != nullptr) {
+		eml23__ExternalDatasetPart * dsPart = static_cast<eml23__FloatingPointExternalArray*>(prop->ValuesForPatch[patchIndex])->Values->ExternalFileProxy[0];
 		datasetPath = dsPart->PathInExternalFile;
 		return getHdfProxyFromDataset(dsPart);
 	}
@@ -132,21 +132,21 @@ COMMON_NS::AbstractHdfProxy* ContinuousProperty::getValuesHdfProxyAndDatasetPath
 
 double ContinuousProperty::getMinimumValue(unsigned int index) const
 {
-	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_2);
+	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
 
 	return prop->MinimumValue.size() <= index ? std::numeric_limits<double>::quiet_NaN() : prop->MinimumValue[index];
 }
 
 double ContinuousProperty::getMaximumValue(unsigned int index) const
 {
-	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_2);
+	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
 
 	return prop->MaximumValue.size() <= index ? std::numeric_limits<double>::quiet_NaN() : prop->MaximumValue[index];
 }
 
 void ContinuousProperty::setMinimumValue(double value, unsigned int index) const
 {
-	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_2);
+	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
 
 	while (prop->MinimumValue.size() <= index) {
 		prop->MinimumValue.push_back(std::numeric_limits<double>::quiet_NaN());
@@ -157,7 +157,7 @@ void ContinuousProperty::setMinimumValue(double value, unsigned int index) const
 
 void ContinuousProperty::setMaximumValue(double value, unsigned int index) const
 {
-	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_2);
+	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
 
 	while (prop->MaximumValue.size() <= index) {
 		prop->MaximumValue.push_back(std::numeric_limits<double>::quiet_NaN());
@@ -168,10 +168,10 @@ void ContinuousProperty::setMaximumValue(double value, unsigned int index) const
 
 size_t ContinuousProperty::getMinimumValueSize() const
 {
-	return static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_2)->MinimumValue.size();
+	return static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3)->MinimumValue.size();
 }
 
 size_t ContinuousProperty::getMaximumValueSize() const
 {
-	return static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_2)->MaximumValue.size();
+	return static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3)->MaximumValue.size();
 }

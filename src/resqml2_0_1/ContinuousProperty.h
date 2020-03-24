@@ -71,7 +71,7 @@ namespace RESQML2_0_1_NS
 		 * 										dictionary.
 		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
 		 * Creates a continuous property which is of a well known unit of measure and a local property
@@ -97,7 +97,7 @@ namespace RESQML2_0_1_NS
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * localPropKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * localPropKind);
 
 		/**
 		 * Creates a continuous property which is of a local unit of measure and a well known property
@@ -124,7 +124,7 @@ namespace RESQML2_0_1_NS
 		 * 										dictionary.
 		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
 		 * Creates a continuous property which is of local unit of measure and property kind.
@@ -148,7 +148,7 @@ namespace RESQML2_0_1_NS
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropKind);
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
@@ -241,7 +241,7 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	attachmentKind	The topological orbit which supports each value.
 		 */
 		void init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind);
 
 		COMMON_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const;
 

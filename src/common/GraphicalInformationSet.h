@@ -26,10 +26,10 @@ namespace COMMON_NS
 	class GraphicalInformationSet : public AbstractObject
 	{
 	private:
-		gsoap_eml2_2::resqml22__DefaultGraphicalInformation* getDefaultGraphicalInformationForAllIndexableElements(AbstractObject const* targetObject) const;
-		gsoap_eml2_2::resqml22__GraphicalInformationForWholeObject* getDefaultGraphicalInformation(AbstractObject const* targetObject) const;
-		gsoap_eml2_2::resqml22__HsvColor* getDefaultColor(AbstractObject const* targetObject) const;
-		gsoap_eml2_2::resqml22__ColorInformation* getColorInformation(AbstractObject const* targetObject) const;
+		gsoap_eml2_3::resqml22__DefaultGraphicalInformation* getDefaultGraphicalInformationForAllIndexableElements(AbstractObject const* targetObject) const;
+		gsoap_eml2_3::resqml22__GraphicalInformationForWholeObject* getDefaultGraphicalInformation(AbstractObject const* targetObject) const;
+		gsoap_eml2_3::resqml22__HsvColor* getDefaultColor(AbstractObject const* targetObject) const;
+		gsoap_eml2_3::resqml22__ColorInformation* getColorInformation(AbstractObject const* targetObject) const;
 
 	public:
 
@@ -59,7 +59,7 @@ namespace COMMON_NS
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		GraphicalInformationSet(gsoap_eml2_2::_eml22__GraphicalInformationSet* fromGsoap) :
+		GraphicalInformationSet(gsoap_eml2_3::_eml23__GraphicalInformationSet* fromGsoap) :
 			AbstractObject(fromGsoap) {}
 
 		/**
@@ -87,7 +87,7 @@ namespace COMMON_NS
 		 * @returns	The data object reference of the object which receives some graphical information at
 		 * 			@p index.
 		 */
-		gsoap_eml2_2::eml22__DataObjectReference* getTargetObjectDor(unsigned int index) const;
+		gsoap_eml2_3::eml23__DataObjectReference* getTargetObjectDor(unsigned int index) const;
 
 		/**
 		 * Gets the UUID of the object which receives some graphical information at a particular index
@@ -336,7 +336,7 @@ namespace COMMON_NS
 		 * @returns	A data object reference on the discrete color map of @p targetObject (or of its
 		 * 			property kind).
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::eml22__DataObjectReference* getDiscreteColorMapDor(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__DataObjectReference* getDiscreteColorMapDor(AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the discrete color map data UUID of a given data object. If the data object has no
@@ -412,7 +412,7 @@ namespace COMMON_NS
 		 * @returns	A data object reference on the continuous color map of @p targetObject (or of its
 		 * 			property kind).
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::eml22__DataObjectReference* getContinuousColorMapDor(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__DataObjectReference* getContinuousColorMapDor(AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the continuous color map data UUID of a given data object. If the data object has no
@@ -624,7 +624,7 @@ namespace COMMON_NS
 		 * @returns	The XML namespace of this instance.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const {
-			return "eml22";
+			return "eml23";
 		}
 
 		/**

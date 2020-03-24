@@ -63,6 +63,6 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The phase.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::resqml22__Phase getPhase() const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__Phase getPhase() const;
 	};
 }

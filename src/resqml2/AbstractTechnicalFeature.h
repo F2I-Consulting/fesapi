@@ -38,7 +38,7 @@ namespace RESQML2_NS
 		AbstractTechnicalFeature() {}
 
 		AbstractTechnicalFeature(gsoap_resqml2_0_1::resqml20__AbstractTechnicalFeature* fromGsoap) : AbstractFeature(fromGsoap) {}
-		AbstractTechnicalFeature(gsoap_eml2_2::resqml22__AbstractTechnicalFeature* fromGsoap) : AbstractFeature(fromGsoap) {}
+		AbstractTechnicalFeature(gsoap_eml2_3::resqml22__AbstractTechnicalFeature* fromGsoap) : AbstractFeature(fromGsoap) {}
 
 	public:
 		virtual ~AbstractTechnicalFeature() {}

@@ -81,14 +81,14 @@ namespace {
 		throw std::invalid_argument("Invalid type of interpretation for creating such a contact");
 	}
 
-	resqml20__ContactVerb mapVerbFrom(gsoap_eml2_2::resqml22__ContactVerb verb) {
-		return verb == gsoap_eml2_2::resqml22__ContactVerb::resqml22__ContactVerb__crosses
+	resqml20__ContactVerb mapVerbFrom(gsoap_eml2_3::resqml22__ContactVerb verb) {
+		return verb == gsoap_eml2_3::resqml22__ContactVerb::resqml22__ContactVerb__crosses
 			? resqml20__ContactVerb::resqml20__ContactVerb__crosses
 			: resqml20__ContactVerb::resqml20__ContactVerb__interrupts;
 	}
 }
 
-void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_2::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject)
+void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_3::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject)
 {
 	if (subject == nullptr) {
 		throw invalid_argument("The subject of the binary contact cannot be null.");
@@ -109,10 +109,10 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureIn
 		contact->Verb = mapVerbFrom(verb);
 		contact->DirectObject = directObject->newContactElementReference2_0_1(); // Not to add for EPC relationships since by business rule it must be present in the object listing/stack of the organization
 	}
-	else if (gsoapProxy2_2 != nullptr) {
-		gsoap_eml2_2::resqml22__AbstractOrganizationInterpretation* org = static_cast<gsoap_eml2_2::resqml22__AbstractOrganizationInterpretation*>(gsoapProxy2_2);
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::resqml22__AbstractOrganizationInterpretation* org = static_cast<gsoap_eml2_3::resqml22__AbstractOrganizationInterpretation*>(gsoapProxy2_3);
 
-		gsoap_eml2_2::resqml22__BinaryContactInterpretationPart* contact = gsoap_eml2_2::soap_new_resqml22__BinaryContactInterpretationPart(org->soap);
+		gsoap_eml2_3::resqml22__BinaryContactInterpretationPart* contact = gsoap_eml2_3::soap_new_resqml22__BinaryContactInterpretationPart(org->soap);
 		org->ContactInterpretation.push_back(contact);
 
 		contact->Subject = subject->newContactElementReference2_2(); // Not to add for EPC relationships since by business rule it must be present in the object listing/stack of the organization
@@ -121,7 +121,7 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureIn
 	}
 }
 
-void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_2::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject,
+void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_3::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject,
 	gsoap_resqml2_0_1::resqml20__ContactSide directObjectQualifier)
 {
 	pushBackBinaryContact(subject, verb, directObject);
@@ -132,16 +132,16 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureIn
 		contact->DirectObject->Qualifier = static_cast<resqml20__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactSide)));
 		*(contact->DirectObject->Qualifier) = static_cast<resqml20__ContactSide>(directObjectQualifier);
 	}
-	else if (gsoapProxy2_2 != nullptr) {
-		gsoap_eml2_2::resqml22__AbstractOrganizationInterpretation* org = static_cast<gsoap_eml2_2::resqml22__AbstractOrganizationInterpretation*>(gsoapProxy2_2);
-		gsoap_eml2_2::resqml22__BinaryContactInterpretationPart* contact = static_cast<gsoap_eml2_2::resqml22__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
-		contact->DirectObject->Qualifier = static_cast<gsoap_eml2_2::resqml22__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(gsoap_eml2_2::resqml22__ContactSide)));
-		*(contact->DirectObject->Qualifier) = static_cast<gsoap_eml2_2::resqml22__ContactSide>(directObjectQualifier);
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::resqml22__AbstractOrganizationInterpretation* org = static_cast<gsoap_eml2_3::resqml22__AbstractOrganizationInterpretation*>(gsoapProxy2_3);
+		gsoap_eml2_3::resqml22__BinaryContactInterpretationPart* contact = static_cast<gsoap_eml2_3::resqml22__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
+		contact->DirectObject->Qualifier = static_cast<gsoap_eml2_3::resqml22__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(gsoap_eml2_3::resqml22__ContactSide)));
+		*(contact->DirectObject->Qualifier) = static_cast<gsoap_eml2_3::resqml22__ContactSide>(directObjectQualifier);
 	}
 }
 
 void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_resqml2_0_1::resqml20__ContactSide subjectQualifier,
-	gsoap_eml2_2::resqml22__ContactVerb verb,
+	gsoap_eml2_3::resqml22__ContactVerb verb,
 	AbstractFeatureInterpretation* directObject, gsoap_resqml2_0_1::resqml20__ContactSide directObjectQualifier)
 {
     pushBackBinaryContact(subject, verb, directObject, directObjectQualifier);
@@ -152,10 +152,10 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureIn
 		contact->Subject->Qualifier = static_cast<resqml20__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactSide)));
 		*(contact->Subject->Qualifier) = static_cast<resqml20__ContactSide>(subjectQualifier);
 	}
-	else if (gsoapProxy2_2 != nullptr) {
-		gsoap_eml2_2::resqml22__AbstractOrganizationInterpretation* org = static_cast<gsoap_eml2_2::resqml22__AbstractOrganizationInterpretation*>(gsoapProxy2_2);
-		gsoap_eml2_2::resqml22__BinaryContactInterpretationPart* contact = static_cast<gsoap_eml2_2::resqml22__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
-		contact->Subject->Qualifier = static_cast<gsoap_eml2_2::resqml22__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(gsoap_eml2_2::resqml22__ContactSide)));
-		*(contact->Subject->Qualifier) = static_cast<gsoap_eml2_2::resqml22__ContactSide>(subjectQualifier);
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::resqml22__AbstractOrganizationInterpretation* org = static_cast<gsoap_eml2_3::resqml22__AbstractOrganizationInterpretation*>(gsoapProxy2_3);
+		gsoap_eml2_3::resqml22__BinaryContactInterpretationPart* contact = static_cast<gsoap_eml2_3::resqml22__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
+		contact->Subject->Qualifier = static_cast<gsoap_eml2_3::resqml22__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(gsoap_eml2_3::resqml22__ContactSide)));
+		*(contact->Subject->Qualifier) = static_cast<gsoap_eml2_3::resqml22__ContactSide>(subjectQualifier);
 	}
 }

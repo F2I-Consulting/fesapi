@@ -29,7 +29,7 @@ under the License.
 #include "../common/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace gsoap_eml2_2;
+using namespace gsoap_eml2_3;
 using namespace RESQML2_2_NS;
 
 COMMON_NS::DataObjectReference IjkGridExplicitRepresentation::getHdfProxyDor() const
@@ -55,7 +55,7 @@ ULONG64 IjkGridExplicitRepresentation::getXyzPointCountOfPatch(const unsigned in
 	}
 
 	if (isTruncated()) {
-		result += static_cast<_resqml22__TruncatedIjkGridRepresentation*>(gsoapProxy2_2)->TruncationCellPatch->TruncationNodeCount;
+		result += static_cast<_resqml22__TruncatedIjkGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationNodeCount;
 	}
 
 	return result;
@@ -64,7 +64,7 @@ ULONG64 IjkGridExplicitRepresentation::getXyzPointCountOfPatch(const unsigned in
 COMMON_NS::AbstractHdfProxy* IjkGridExplicitRepresentation::getPointDatasetPath(std::string & datasetPathInExternalFile, unsigned long & splitCoordinateLineCount) const
 {
 	resqml22__PointGeometry* pointGeom = getPointGeometry2_2(0);
-	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dExternalArray)
+	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray)
 	{
 		splitCoordinateLineCount = getSplitCoordinateLineCount();
 
@@ -85,7 +85,7 @@ void IjkGridExplicitRepresentation::getXyzPointsOfPatch(const unsigned int & pat
 	}
 
 	resqml22__PointGeometry* pointGeom = getPointGeometry2_2(0);
-	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dExternalArray) {
+	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray) {
 		auto xmlDataset = static_cast<resqml22__Point3dExternalArray*>(pointGeom->Points)->Coordinates->ExternalFileProxy[0];
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(xmlDataset);
 		hdfProxy->readArrayNdOfDoubleValues(xmlDataset->PathInExternalFile, xyzPoints);
@@ -98,10 +98,10 @@ void IjkGridExplicitRepresentation::getXyzPointsOfPatch(const unsigned int & pat
 	if (isTruncated()) {
 		resqml22__AbstractGridGeometry* truncatedGeom = static_cast<resqml22__AbstractGridGeometry*>(pointGeom);
 		if (truncatedGeom->AdditionalGridPoints.size() == 1 && truncatedGeom->AdditionalGridPoints[0]->Attachment == resqml22__GridGeometryAttachment__nodes) {
-			if (truncatedGeom->AdditionalGridPoints[0]->Points->soap_type() == SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dExternalArray) {
+			if (truncatedGeom->AdditionalGridPoints[0]->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray) {
 				auto xmlDataset = static_cast<resqml22__Point3dExternalArray*>(truncatedGeom->AdditionalGridPoints[0]->Points)->Coordinates->ExternalFileProxy[0];
 				COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(xmlDataset);
-				xyzPoints += getXyzPointCountOfPatch(patchIndex) - static_cast<_resqml22__TruncatedIjkGridRepresentation*>(gsoapProxy2_2)->TruncationCellPatch->TruncationNodeCount;
+				xyzPoints += getXyzPointCountOfPatch(patchIndex) - static_cast<_resqml22__TruncatedIjkGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationNodeCount;
 				hdfProxy->readArrayNdOfDoubleValues(xmlDataset->PathInExternalFile, xyzPoints);
 			}
 			else {
@@ -140,8 +140,8 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodesUsingExistin
 		}
 	}
 
-	resqml22__IjkGridGeometry* geom = soap_new_resqml22__IjkGridGeometry(gsoapProxy2_2->soap);
-	geom->LocalCrs = localCrs->newEml22Reference();
+	resqml22__IjkGridGeometry* geom = soap_new_resqml22__IjkGridGeometry(gsoapProxy2_3->soap);
+	geom->LocalCrs = localCrs->newEml23Reference();
 	if (!isTruncated()) {
 		getSpecializedGsoapProxy2_2()->Geometry = geom;
 	}
@@ -155,64 +155,64 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodesUsingExistin
 	getRepository()->addRelationship(this, proxy);
 	// Pillar defined
 	if (definedPillars.empty()) {
-		eml22__BooleanConstantArray* xmlDefinedPillars = soap_new_eml22__BooleanConstantArray(gsoapProxy2_2->soap);
+		eml23__BooleanConstantArray* xmlDefinedPillars = soap_new_eml23__BooleanConstantArray(gsoapProxy2_3->soap);
 		geom->PillarGeometryIsDefined = xmlDefinedPillars;
 		xmlDefinedPillars->Count = (getICellCount() + 1) * (getJCellCount() + 1);
 		xmlDefinedPillars->Value = true;
 	}
 	else {
-		eml22__BooleanExternalArray* xmlDefinedPillars = soap_new_eml22__BooleanExternalArray(gsoapProxy2_2->soap);
+		eml23__BooleanExternalArray* xmlDefinedPillars = soap_new_eml23__BooleanExternalArray(gsoapProxy2_3->soap);
 		geom->PillarGeometryIsDefined = xmlDefinedPillars;
-		xmlDefinedPillars->Values = soap_new_eml22__ExternalDataset(gsoapProxy2_2->soap);
-		auto dsPart = soap_new_eml22__ExternalDatasetPart(gsoapProxy2_2->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml22Reference();
+		xmlDefinedPillars->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+		auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
 		dsPart->PathInExternalFile = definedPillars;
 		xmlDefinedPillars->Values->ExternalFileProxy.push_back(dsPart);
 	}
 
 	// XML coordinate lines
-	resqml22__Point3dExternalArray* xmlPoints = soap_new_resqml22__Point3dExternalArray(gsoapProxy2_2->soap);
+	resqml22__Point3dExternalArray* xmlPoints = soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
 	geom->Points = xmlPoints;
-	xmlPoints->Coordinates = soap_new_eml22__ExternalDataset(gsoapProxy2_2->soap);
-	auto dsPart = soap_new_eml22__ExternalDatasetPart(gsoapProxy2_2->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml22Reference();
+	xmlPoints->Coordinates = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
 	dsPart->PathInExternalFile = points;
 	xmlPoints->Coordinates->ExternalFileProxy.push_back(dsPart);
 
 	if (splitCoordinateLineCount > 0)
 	{
 		// XML split coordinate lines
-		geom->ColumnLayerSplitCoordinateLines = soap_new_resqml22__ColumnLayerSplitCoordinateLines(gsoapProxy2_2->soap);;
+		geom->ColumnLayerSplitCoordinateLines = soap_new_resqml22__ColumnLayerSplitCoordinateLines(gsoapProxy2_3->soap);;
 		geom->ColumnLayerSplitCoordinateLines->Count = splitCoordinateLineCount;
 
 		//XML
-		eml22__IntegerExternalArray* pillarIndices = soap_new_eml22__IntegerExternalArray(gsoapProxy2_2->soap);
+		eml23__IntegerExternalArray* pillarIndices = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		geom->ColumnLayerSplitCoordinateLines->PillarIndices = pillarIndices;
 		pillarIndices->NullValue = getPillarCount();
-		pillarIndices->Values = soap_new_eml22__ExternalDataset(gsoapProxy2_2->soap);
-		dsPart = soap_new_eml22__ExternalDatasetPart(gsoapProxy2_2->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml22Reference();
+		pillarIndices->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+		dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
 		dsPart->PathInExternalFile = pillarOfCoordinateLine;
 		pillarIndices->Values->ExternalFileProxy.push_back(dsPart);
 
 		//XML
-		geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine = soap_new_eml22__JaggedArray(gsoapProxy2_2->soap);
+		geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine = soap_new_eml23__JaggedArray(gsoapProxy2_3->soap);
 		// Cumulative
-		eml22__IntegerExternalArray* cumulativeLength = soap_new_eml22__IntegerExternalArray(gsoapProxy2_2->soap);
+		eml23__IntegerExternalArray* cumulativeLength = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength = cumulativeLength;
 		cumulativeLength->NullValue = 0;
-		cumulativeLength->Values = soap_new_eml22__ExternalDataset(gsoapProxy2_2->soap);
-		dsPart = soap_new_eml22__ExternalDatasetPart(gsoapProxy2_2->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml22Reference();
+		cumulativeLength->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+		dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
 		dsPart->PathInExternalFile = splitCoordinateLineColumnCumulativeCount;
 		cumulativeLength->Values->ExternalFileProxy.push_back(dsPart);
 		// Elements
-		eml22__IntegerExternalArray* elements = soap_new_eml22__IntegerExternalArray(gsoapProxy2_2->soap);
+		eml23__IntegerExternalArray* elements = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements = elements;
 		elements->NullValue = getColumnCount();
-		elements->Values = soap_new_eml22__ExternalDataset(gsoapProxy2_2->soap);
-		dsPart = soap_new_eml22__ExternalDatasetPart(gsoapProxy2_2->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml22Reference();
+		elements->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+		dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
 		dsPart->PathInExternalFile = splitCoordinateLineColumns;
 		elements->Values->ExternalFileProxy.push_back(dsPart);
 	}

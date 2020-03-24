@@ -24,45 +24,45 @@ under the License.
 #include "../resqml2/AbstractFeatureInterpretation.h"
 
 using namespace std;
-using namespace gsoap_eml2_2;
+using namespace gsoap_eml2_3;
 using namespace RESQML2_2_NS;
 
 COMMON_NS::DataObjectReference IjkGridNoGeometryRepresentation::getHdfProxyDor() const
 {
-	resqml22__AbstractParentWindow* parentWindow = static_cast<resqml22__AbstractGridRepresentation*>(gsoapProxy2_2)->ParentWindow;
+	resqml22__AbstractParentWindow* parentWindow = static_cast<resqml22__AbstractGridRepresentation*>(gsoapProxy2_3)->ParentWindow;
 
 	if (parentWindow != nullptr) {
-		if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_2_resqml22__IjkParentWindow) {
+		if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__IjkParentWindow) {
 			resqml22__IjkParentWindow* pw = static_cast<resqml22__IjkParentWindow *>(parentWindow);
-			if (pw->IRegrid->Intervals->ChildCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__IntegerExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<eml22__IntegerExternalArray*>(pw->IRegrid->Intervals->ChildCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+			if (pw->IRegrid->Intervals->ChildCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(pw->IRegrid->Intervals->ChildCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
 			}
-			else if (pw->IRegrid->Intervals->ParentCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__IntegerExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<eml22__IntegerExternalArray*>(pw->IRegrid->Intervals->ParentCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+			else if (pw->IRegrid->Intervals->ParentCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(pw->IRegrid->Intervals->ParentCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
 			}
-			else if (pw->JRegrid->Intervals->ChildCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__IntegerExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<eml22__IntegerExternalArray*>(pw->JRegrid->Intervals->ChildCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+			else if (pw->JRegrid->Intervals->ChildCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(pw->JRegrid->Intervals->ChildCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
 			}
-			else if (pw->JRegrid->Intervals->ParentCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__IntegerExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<eml22__IntegerExternalArray*>(pw->JRegrid->Intervals->ParentCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+			else if (pw->JRegrid->Intervals->ParentCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(pw->JRegrid->Intervals->ParentCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
 			}
-			else if (pw->KRegrid->Intervals->ChildCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__IntegerExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<eml22__IntegerExternalArray*>(pw->KRegrid->Intervals->ChildCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+			else if (pw->KRegrid->Intervals->ChildCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(pw->KRegrid->Intervals->ChildCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
 			}
-			else if (pw->KRegrid->Intervals->ParentCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__IntegerExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<eml22__IntegerExternalArray*>(pw->KRegrid->Intervals->ParentCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+			else if (pw->KRegrid->Intervals->ParentCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(pw->KRegrid->Intervals->ParentCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
 			}
 		}
-		else if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerParentWindow) {
+		else if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__ColumnLayerParentWindow) {
 			resqml22__ColumnLayerParentWindow* pw = static_cast<resqml22__ColumnLayerParentWindow*>(parentWindow);
-			return pw->ColumnIndices->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__IntegerExternalArray
-				? COMMON_NS::DataObjectReference(static_cast<eml22__IntegerExternalArray*>(pw->ColumnIndices)->Values->ExternalFileProxy[0]->EpcExternalPartReference)
+			return pw->ColumnIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray
+				? COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(pw->ColumnIndices)->Values->ExternalFileProxy[0]->EpcExternalPartReference)
 				: COMMON_NS::DataObjectReference();
 		}
-		else if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_2_resqml22__CellParentWindow) {
+		else if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__CellParentWindow) {
 			resqml22__CellParentWindow* pw = static_cast<resqml22__CellParentWindow*>(parentWindow);
-			return pw->CellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__IntegerExternalArray
-				? COMMON_NS::DataObjectReference(static_cast<eml22__IntegerExternalArray*>(pw->CellIndices)->Values->ExternalFileProxy[0]->EpcExternalPartReference)
+			return pw->CellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray
+				? COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(pw->CellIndices)->Values->ExternalFileProxy[0]->EpcExternalPartReference)
 				: COMMON_NS::DataObjectReference();
 		}
 		else {

@@ -557,7 +557,7 @@ namespace RESQML2_NS
 		*
 		* @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		*/
-		DiscreteProperty(gsoap_eml2_2::_resqml22__DiscreteProperty* fromGsoap) : AbstractDiscreteOrCategoricalProperty(fromGsoap) {}
+		DiscreteProperty(gsoap_eml2_3::_resqml22__DiscreteProperty* fromGsoap) : AbstractDiscreteOrCategoricalProperty(fromGsoap) {}
 
 		virtual size_t getMinimumValueSize() const = 0;
 		virtual size_t getMaximumValueSize() const = 0;

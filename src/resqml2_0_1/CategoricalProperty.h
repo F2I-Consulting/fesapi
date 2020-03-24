@@ -61,7 +61,7 @@ namespace RESQML2_0_1_NS
 		 * 										dictionary.
 		 */
 		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind,
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
 			RESQML2_NS::StringTableLookup* strLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
@@ -85,7 +85,7 @@ namespace RESQML2_0_1_NS
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 */
 		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind,
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
 			RESQML2_NS::StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropKind);
 
 		/**

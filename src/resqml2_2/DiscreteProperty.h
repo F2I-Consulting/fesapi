@@ -58,14 +58,14 @@ namespace RESQML2_2_NS
 		 * @param [in]	propKind	 	The property kind of these property values. It cannot be null.
 		 */
 		DiscreteProperty(RESQML2_NS::AbstractRepresentation* rep, const std::string& guid, const std::string& title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind* propKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind* propKind);
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		DiscreteProperty(gsoap_eml2_2::_resqml22__DiscreteProperty* fromGsoap): RESQML2_NS::DiscreteProperty(fromGsoap) {}
+		DiscreteProperty(gsoap_eml2_3::_resqml22__DiscreteProperty* fromGsoap): RESQML2_NS::DiscreteProperty(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~DiscreteProperty() {}
