@@ -1259,3 +1259,23 @@ COMMON_NS::AbstractHdfProxy* AbstractObject::getHdfProxyFromDataset(gsoap_eml2_2
 	}
 	return hdfProxy;
 }
+
+gsoap_resqml2_0_1::resqml20__IndexableElements AbstractObject::mapIndexableElement(gsoap_eml2_2::resqml22__IndexableElement toMap) const
+{
+	size_t intVal = static_cast<size_t>(toMap);
+	if (intVal == 0) {
+		return static_cast<gsoap_resqml2_0_1::resqml20__IndexableElements>(toMap);
+	}
+	else if (toMap == gsoap_eml2_2::resqml22__IndexableElement__intervals_x0020from_x0020datum || intVal == gsoap_eml2_2::resqml22__IndexableElement__lines) {
+		throw std::invalid_argument("There is no mapping for this indexable element in RESQML2.0.1");
+	}
+	else if (intVal < 18) {
+		return static_cast<gsoap_resqml2_0_1::resqml20__IndexableElements>(intVal - 1);
+	}
+	else if (intVal < 29) {
+		return static_cast<gsoap_resqml2_0_1::resqml20__IndexableElements>(intVal - 2);
+	}
+	else {
+		throw std::invalid_argument("The RESQML2.2 indexable element is not part of the RESQML2.2 enumeration.");
+	}
+}

@@ -181,7 +181,7 @@ bool GraphicalInformationSet::hasGraphicalInformation(AbstractObject const* targ
 	} else if (dynamic_cast<AbstractValuesProperty const*>(targetObject) != nullptr) {
 		AbstractValuesProperty const* property = static_cast<AbstractValuesProperty const*>(targetObject);
 		if (!property->isAssociatedToOneStandardEnergisticsPropertyKind()) {
-			return hasDirectGraphicalInformation(property->getLocalPropertyKind());
+			return hasDirectGraphicalInformation(property->getPropertyKind());
 		}
 	}
 
@@ -423,7 +423,7 @@ bool GraphicalInformationSet::hasDiscreteColorMap(AbstractObject const* targetOb
 	else if (dynamic_cast<AbstractValuesProperty const*>(targetObject) != nullptr) {
 		AbstractValuesProperty const* property = static_cast<AbstractValuesProperty const*>(targetObject);
 		if (!property->isAssociatedToOneStandardEnergisticsPropertyKind()) {
-			return hasDiscreteColorMap(property->getLocalPropertyKind());
+			return hasDiscreteColorMap(property->getPropertyKind());
 		}
 	}
 
@@ -448,7 +448,7 @@ gsoap_eml2_2::eml22__DataObjectReference* GraphicalInformationSet::getDiscreteCo
 	else {
 		AbstractValuesProperty const* property = static_cast<AbstractValuesProperty const*>(targetObject);
 		if (!property->isAssociatedToOneStandardEnergisticsPropertyKind()) {
-			return getDiscreteColorMapDor(property->getLocalPropertyKind());
+			return getDiscreteColorMapDor(property->getPropertyKind());
 		}
 	}
 
@@ -512,7 +512,7 @@ bool GraphicalInformationSet::hasContinuousColorMap(AbstractObject const* target
 	else if (dynamic_cast<AbstractValuesProperty const*>(targetObject) != nullptr) {
 		AbstractValuesProperty const* property = static_cast<AbstractValuesProperty const*>(targetObject);
 		if (!property->isAssociatedToOneStandardEnergisticsPropertyKind()) {
-			return hasContinuousColorMap(property->getLocalPropertyKind());
+			return hasContinuousColorMap(property->getPropertyKind());
 		}
 	}
 
@@ -537,7 +537,7 @@ gsoap_eml2_2::eml22__DataObjectReference* GraphicalInformationSet::getContinuous
 	else {
 		AbstractValuesProperty const* property = static_cast<AbstractValuesProperty const*>(targetObject);
 		if (!property->isAssociatedToOneStandardEnergisticsPropertyKind()) {
-			return getContinuousColorMapDor(property->getLocalPropertyKind());
+			return getContinuousColorMapDor(property->getPropertyKind());
 		}
 	}
 

@@ -82,7 +82,6 @@ under the License.
 #include "resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
 #include "resqml2_0_1/SubRepresentation.h"
 #include "resqml2_0_1/TimeSeries.h"
-#include "resqml2_0_1/ContinuousPropertySeries.h"
 #include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
 #include "resqml2_0_1/RockFluidUnitInterpretation.h"
 #include "resqml2_0_1/RockFluidUnitFeature.h"
@@ -140,8 +139,8 @@ StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
 SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
 RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid = nullptr;
 COMMON_NS::PropertyKind* propType1 = nullptr;
-DiscreteProperty* discreteProp1 = nullptr;
-ContinuousProperty* contColMapContProp = nullptr;
+RESQML2_NS::DiscreteProperty* discreteProp1 = nullptr;
+RESQML2_0_1_NS::ContinuousProperty* contColMapContProp = nullptr;
 
 WITSML2_0_NS::Well* witsmlWell = nullptr;
 WITSML2_0_NS::Wellbore* witsmlWellbore = nullptr;
@@ -270,10 +269,10 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 	RESQML2_NS::WellboreFrameRepresentation* w1i1RegularFrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
 	w1i1RegularFrameRep->setMdValues(0, 200, 6);
 
-	COMMON_NS::PropertyKind * unitNumberPropType = pck->createPropertyKind("358aac23-b377-4349-9e72-bff99a6edf34", "Unit number", "urn:resqml:F2I.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
+	RESQML2_0_1_NS::PropertyKind * unitNumberPropType = pck->createPropertyKind201("358aac23-b377-4349-9e72-bff99a6edf34", "Unit number", "urn:resqml:F2I.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
 
-	DiscreteProperty* discreteProp = pck->createDiscreteProperty(w1i1FrameRep, "61c2917c-2334-4205-824e-d4f4a0cf6d8e", "Wellbore1 Interp1 FrameRep IntervalIndex", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__intervals, unitNumberPropType);
+	RESQML2_NS::DiscreteProperty* discreteProp = pck->createDiscreteProperty(w1i1FrameRep, "61c2917c-2334-4205-824e-d4f4a0cf6d8e", "Wellbore1 Interp1 FrameRep IntervalIndex", 1,
+		gsoap_eml2_2::resqml22__IndexableElement__intervals, unitNumberPropType);
 	char unitNumbers[5] = { 0, 1, 2, 3, 4 };
 	discreteProp->pushBackCharHdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
 
@@ -374,8 +373,8 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, CO
 
 	// creating a new discrete property of type propType1 without associating it to a discrete color map.
 	// Thus, its associated discrete color map remains the one associated to propType1
-	DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(ijkgrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, propType1);
+	RESQML2_NS::DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(ijkgrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex", 1,
+		gsoap_eml2_2::resqml22__IndexableElement__cells, propType1);
 	unsigned short prop2Values[2] = { 0, 1 };
 	discreteProp2->pushBackUShortHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, -1);
 
@@ -394,16 +393,15 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, CO
 		0., 1., 0.,
 		1., 1.);
 
-	contColMapContProp = repo->createContinuousProperty(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map", 2,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__nodes, "continuousColorMapIndex", gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
-	double* values = new double[numPointInFastestDirection * numPointsInSlowestDirection];
+	contColMapContProp = repo->createContinuousProperty201(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map", 2,
+		gsoap_eml2_2::resqml22__IndexableElement__nodes, "continuousColorMapIndex", gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
+	std::unique_ptr<double[]> values(new double[numPointInFastestDirection * numPointsInSlowestDirection]);
 	for (size_t slowestIndex = 0; slowestIndex < numPointsInSlowestDirection; ++slowestIndex) {
 		for (size_t fastestIndex = 0; fastestIndex < numPointInFastestDirection; ++fastestIndex) {
 			values[fastestIndex + slowestIndex * numPointInFastestDirection] = fastestIndex * (1. / (numPointInFastestDirection - 1));
 		}
 	}
-	contColMapContProp->pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
-	delete[] values;
+	contColMapContProp->pushBackDoubleHdf5Array2dOfValues(values.get(), numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 
 	RESQML2_2_NS::ContinuousColorMap* contColMap = repo->createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", gsoap_eml2_2::resqml22__InterpolationDomain__rgb, gsoap_eml2_2::resqml22__InterpolationMethod__linear);
 	unsigned int contColMapRgbColors[6] = { 0, 255, 0, 255, 0, 0 };
@@ -669,15 +667,15 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, COMMON_NS::Abstr
 	//**************
 	// Properties
 	//**************
-	propType1 = pck->createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
-	ContinuousProperty* contProp1 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__nodes, "exoticMeter", propType1);
+	propType1 = pck->createPropertyKind201("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
+	RESQML2_NS::ContinuousProperty* contProp1 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,
+		gsoap_eml2_2::resqml22__IndexableElement__nodes, "exoticMeter", propType1);
 	double prop1Values[16] = { 301, 302, 301, 302, 351, 352, 351, 352, 301, 302, 301, 302, 351, 352, 351, 352 };
 	contProp1->pushBackDoubleHdf5Array2dOfValues(prop1Values, 2, 8, hdfProxy);
 
 	COMMON_NS::PropertyKind * propType2 = pck->createPropertyKind("7372f8f6-b1fd-4263-b9a8-699d9cbf7da6", "propType2", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, propType1);
-	ContinuousProperty* contProp2 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "d3efb337-19f8-4b91-8b4f-3698afe17f01", "Horizon1 Interp1 Grid2dRep Prop2", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__nodes, gsoap_resqml2_0_1::resqml20__ResqmlUom__ft, propType2);
+	RESQML2_NS::ContinuousProperty* contProp2 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "d3efb337-19f8-4b91-8b4f-3698afe17f01", "Horizon1 Interp1 Grid2dRep Prop2", 1,
+		gsoap_eml2_2::resqml22__IndexableElement__nodes, gsoap_resqml2_0_1::resqml20__ResqmlUom__ft, propType2);
 	double prop2Values[8] = { 302, 302, 352, 352, 302, 302, 352, 352 };
 	contProp2->pushBackDoubleHdf5Array1dOfValues(prop2Values, 8, hdfProxy);
 #endif
@@ -807,7 +805,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		RESQML2_NS::SubRepresentation * faultSubRep = pck->createSubRepresentation(fault1Interp1, "ff248280-fa3d-11e5-a35c-0002a5d5c51b", "Fault Subrep In Grid");
 		faultSubRep->pushBackSupportingRepresentation(ijkgrid);
 		ULONG64 faultPillar[2] = { 1, 4 };
-		faultSubRep->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements__pillars, 2, faultPillar, hdfProxy);
+		faultSubRep->pushBackSubRepresentationPatch(gsoap_eml2_2::resqml22__IndexableElement__pillars, 2, faultPillar, hdfProxy);
 	}
 
 	RESQML2_NS::SubRepresentation * actnum = pck->createSubRepresentation("323001d0-468c-41d7-abec-7d12c3c9428b", "ACTNUM");
@@ -816,7 +814,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
 	};
-	actnum->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements__cells, 21, actnumValues, hdfProxy);
+	actnum->pushBackSubRepresentationPatch(gsoap_eml2_2::resqml22__IndexableElement__cells, 21, actnumValues, hdfProxy);
 
 	// Double grid subrep
 	RESQML2_NS::SubRepresentation * doubleGridSubrep = pck->createSubRepresentation("f6d23b9c-e45d-4638-9601-ae3b682129a0", "TEST MULTI GRIDS SUBREP");
@@ -832,7 +830,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 	};
-	doubleGridSubrep->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements__cells, 23, doubleGridSubrepValues, hdfProxy, doubleGridSubrepSupportingRepIndices);
+	doubleGridSubrep->pushBackSubRepresentationPatch(gsoap_eml2_2::resqml22__IndexableElement__cells, 23, doubleGridSubrepValues, hdfProxy, doubleGridSubrepSupportingRepIndices);
 
 	//**************
 	// Grid Connection
@@ -879,13 +877,13 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	//**************
 	// Properties
 	//**************
-	propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
+	propType1 = pck->createPropertyKind201("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
 	discreteProp1 = pck->createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, propType1);
+		gsoap_eml2_2::resqml22__IndexableElement__cells, propType1);
 	unsigned short prop1Values[2] = { 0, 1 };
 	discreteProp1->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
-	DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(ijkgrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, propType1);
+	RESQML2_NS::DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(ijkgrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex", 1,
+		gsoap_eml2_2::resqml22__IndexableElement__cells, propType1);
 	LONG64 prop2Values[2] = { 10, 11 };
 	discreteProp2->pushBackLongHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
 
@@ -893,8 +891,8 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	propSet->pushBackProperty(discreteProp1);
 	propSet->pushBackProperty(discreteProp2);
 
-	DiscreteProperty* discreteProp1OnIjkgridParametric = pck->createDiscreteProperty(ijkgridParametric, "eb3dbf6c-5745-4e41-9d09-672f6fbab414", "Four sugar cubes cellIndex", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, propType1);
+	RESQML2_NS::DiscreteProperty* discreteProp1OnIjkgridParametric = pck->createDiscreteProperty(ijkgridParametric, "eb3dbf6c-5745-4e41-9d09-672f6fbab414", "Four sugar cubes cellIndex", 1,
+		gsoap_eml2_2::resqml22__IndexableElement__cells, propType1);
 	unsigned short prop1ValuesOnIjkgridParametric[4] = { 0, 1, 2, 3 };
 	discreteProp1OnIjkgridParametric->pushBackUShortHdf5Array3dOfValues(prop1ValuesOnIjkgridParametric, 2, 1, 2, hdfProxy, 1111, 0, 3);
 	//Move this prop to another same ninjnk ijk grid
@@ -916,32 +914,21 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	timeSeries->pushBackTimestamp(timeStruct);
 	timeSeries->pushBackTimestamp(1409753895);
 	timeSeries->pushBackTimestamp(1441289895);
-	ContinuousProperty* continuousPropTime0 = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+	ContinuousProperty* continuousPropTime0 = pck->createContinuousProperty201(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
+		gsoap_eml2_2::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	continuousPropTime0->setTimeIndex(0, timeSeries);
 	double valuesTime0[2] = { 0, 1 };
 	continuousPropTime0->pushBackDoubleHdf5Array3dOfValues(valuesTime0, 2, 1, 1, hdfProxy);
-	ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+	ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty201(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
+		gsoap_eml2_2::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	continuousPropTime1->setTimeIndex(1, timeSeries);
 	double valuesTime1[2] = { 2, 3 };
 	continuousPropTime1->pushBackDoubleHdf5Array3dOfValues(valuesTime1, 2, 1, 1, hdfProxy);
-	ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property ", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+	ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty201(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property ", 1,
+		gsoap_eml2_2::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	continuousPropTime2->setTimeIndex(2, timeSeries);
 	double valuesTime2[2] = { 3, 4 };
 	continuousPropTime2->pushBackDoubleHdf5Array3dOfValues(valuesTime2, 2, 1, 1, hdfProxy);
-
-	ContinuousPropertySeries* continuousPropertySeries = pck->createContinuousPropertySeries(
-		ijkgrid,
-		"2648f4e0-fa3e-11e5-ab1c-0002a5d5c51b", "Testing continuous property series",
-		1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
-		gsoap_resqml2_0_1::resqml20__ResqmlUom__m,
-		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length,
-		timeSeries);
-	double valuesTime[6] = { 0, 1, 2, 3, 3, 4 };
-	continuousPropertySeries->pushBackDoubleHdf5Array1dOfValues(valuesTime, 6, hdfProxy);
 
 	//**************
 	// LGR
@@ -2050,13 +2037,13 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 		}
 		else {
 			std::cout << "\tProperty kind is not an Energistics one" << std::endl;
-			if (propVal->getLocalPropertyKind()->isParentAnEnergisticsPropertyKind()) {
+			if (propVal->getPropertyKind()->isParentAnEnergisticsPropertyKind()) {
 				std::cout << "\t\tProperty kind parent is an Energistics one" << std::endl;
-				std::cout << "\t\tProperty kind parent is : " << propVal->getLocalPropertyKind()->getParentAsString() << std::endl;
+				std::cout << "\t\tProperty kind parent is : " << propVal->getPropertyKind()->getParentAsString() << std::endl;
 			}
 			else {
 				std::cout << "\t\tProperty kind parent is not an Energistics one" << std::endl;
-				std::cout << "\t\tProperty kind parent is : " << propVal->getLocalPropertyKind()->getParentLocalPropertyKind()->getTitle() << std::endl;
+				std::cout << "\t\tProperty kind parent is : " << propVal->getPropertyKind()->getParentLocalPropertyKind()->getTitle() << std::endl;
 			}
 		}
 
@@ -2077,50 +2064,47 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 			cin.get();
 		}
 		else if (propVal->getValuesHdfDatatype() > 2) {
-			if (dynamic_cast<DiscreteProperty const *>(propVal) == nullptr && dynamic_cast<CategoricalProperty const *>(propVal) == nullptr) {
+			if (dynamic_cast<RESQML2_NS::DiscreteProperty const *>(propVal) == nullptr && dynamic_cast<CategoricalProperty const *>(propVal) == nullptr) {
 				cerr << "\tERROR !!!!! The continuous property is linked to an integer HDF5 dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
-				double* values = new double[valueCount];
-				static_cast<ContinuousProperty const *>(propVal)->getDoubleValuesOfPatch(0, values);
+				std::unique_ptr<double[]> values(new double[valueCount]);
+				static_cast<RESQML2_NS::ContinuousProperty const *>(propVal)->getDoubleValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
-				delete[] values;
 				cout << "\tPress enter to continue..." << endl;
 				cin.get();
 			}
-			else if (dynamic_cast<DiscreteProperty const *>(propVal) != nullptr) {
-				DiscreteProperty const * discreteProp = static_cast<DiscreteProperty const *>(propVal);
+			else if (dynamic_cast<RESQML2_NS::DiscreteProperty const *>(propVal) != nullptr) {
+				RESQML2_NS::DiscreteProperty const * discreteProp = static_cast<RESQML2_NS::DiscreteProperty const *>(propVal);
 				if (discreteProp->hasMinimumValue() && discreteProp->hasMinimumValue()) {
 					std::cout << "\tMax value is " << discreteProp->getMaximumValue() << endl;
 					std::cout << "\tMin value is " << discreteProp->getMinimumValue() << endl;
 				}
-				LONG64* values = new LONG64[valueCount];
-				discreteProp->getLongValuesOfPatch(0, values);
+				std::unique_ptr<LONG64[]> values(new LONG64[valueCount]);
+				discreteProp->getLongValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
-				delete[] values;
 			}
 		}
 		else {
-			if (dynamic_cast<ContinuousProperty const *>(propVal) == nullptr) {
+			if (dynamic_cast<RESQML2_NS::ContinuousProperty const *>(propVal) == nullptr) {
 				cerr << "\tERROR !!!!! The discrete or categorical property is linked to a floating point HDF5 dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
-				LONG64* values = new LONG64[valueCount];
-				dynamic_cast<RESQML2_NS::AbstractDiscreteOrCategoricalProperty const *>(propVal)->getLongValuesOfPatch(0, values);
+				std::unique_ptr<LONG64[]> values(new LONG64[valueCount]);
+				dynamic_cast<RESQML2_NS::AbstractDiscreteOrCategoricalProperty const *>(propVal)->getLongValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
-				delete[] values;
 				cout << "\tPress enter to continue..." << endl;
 				cin.get();
 			}
 			else {
-				ContinuousProperty const * continuousProp = static_cast<ContinuousProperty const *>(propVal);
+				RESQML2_NS::ContinuousProperty const * continuousProp = static_cast<RESQML2_NS::ContinuousProperty const *>(propVal);
 				const double maxValue = continuousProp->getMaximumValue();
 				const double minValue = continuousProp->getMinimumValue();
 				std::cout << "\tMax value is " << maxValue << endl;
 				std::cout << "\tMin value is " << minValue << endl;
-				double* values = new double[valueCount];
-				continuousProp->getDoubleValuesOfPatch(0, values);
+				std::unique_ptr<double[]> values(new double[valueCount]);
+				continuousProp->getDoubleValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 
@@ -2134,8 +2118,6 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 						}
 					}
 				}
-
-				delete[] values;
 			}
 		}
 	}
@@ -4394,12 +4376,12 @@ void deserialize(const string & inputFile)
 			ULONG64 faceCount = 0;
 			if (!unstructuredGridRepSet[i]->isFaceCountOfCellsConstant())
 			{
-				std::unique_ptr<ULONG64> faceCountOfCells(new ULONG64[unstructuredGridRepSet[i]->getCellCount()]);
+				std::unique_ptr<ULONG64[]> faceCountOfCells(new ULONG64[unstructuredGridRepSet[i]->getCellCount()]);
 				unstructuredGridRepSet[i]->getCumulativeFaceCountPerCell(faceCountOfCells.get());
-				std::cout << "Face count of cell 0 is : " << faceCountOfCells.get()[0] << std::endl;
+				std::cout << "Face count of cell 0 is : " << faceCountOfCells[0] << std::endl;
 				if (unstructuredGridRepSet[i]->getCellCount() > 1)
-					std::cout << "Face count of cell 1 is : " << faceCountOfCells.get()[1] - faceCountOfCells.get()[0] << std::endl;
-				faceCount = faceCountOfCells.get()[unstructuredGridRepSet[i]->getCellCount() - 1];
+					std::cout << "Face count of cell 1 is : " << faceCountOfCells[1] - faceCountOfCells[0] << std::endl;
+				faceCount = faceCountOfCells[unstructuredGridRepSet[i]->getCellCount() - 1];
 			}
 			else
 			{
@@ -4408,11 +4390,11 @@ void deserialize(const string & inputFile)
 			}
 			if (!unstructuredGridRepSet[i]->isNodeCountOfFacesConstant())
 			{
-				std::unique_ptr<ULONG64> nodeCountOfFaces(new ULONG64[faceCount]);
+				std::unique_ptr<ULONG64[]> nodeCountOfFaces(new ULONG64[faceCount]);
 				unstructuredGridRepSet[i]->getCumulativeNodeCountPerFace(nodeCountOfFaces.get());
-				std::cout << "Node count of face 0 is : " << nodeCountOfFaces.get()[0] << std::endl;
+				std::cout << "Node count of face 0 is : " << nodeCountOfFaces[0] << std::endl;
 				if (faceCount > 1)
-					std::cout << "Node count of face 1 is : " << nodeCountOfFaces.get()[1] - nodeCountOfFaces.get()[0] << std::endl;
+					std::cout << "Node count of face 1 is : " << nodeCountOfFaces[1] - nodeCountOfFaces[0] << std::endl;
 			}
 			else
 			{

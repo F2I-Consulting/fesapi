@@ -16,23 +16,8 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "WellboreFeature.h"
+#include "StringTableLookup.h"
 
-#include <stdexcept>
-
-#include "../witsml2_0/Wellbore.h"
-
-using namespace std;
 using namespace RESQML2_NS;
 
-const char* WellboreFeature::XML_TAG = "WellboreFeature";
-
-WITSML2_0_NS::Wellbore* WellboreFeature::getWitsmlWellbore() const
-{
-	const auto& witsmlWellbores = getRepository()->getTargetObjects<WITSML2_0_NS::Wellbore>(this);
-	switch (witsmlWellbores.size()) {
-	case 0: return nullptr;
-	case 1: return witsmlWellbores[0];
-	default: throw std::logic_error("There are too much associated WITSML wellbores.");
-	}
-}
+const char* StringTableLookup::XML_TAG = "StringTableLookup";

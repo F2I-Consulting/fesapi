@@ -34,11 +34,9 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* CategoricalProperty::XML_TAG = "CategoricalProperty";
-
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind,
-	StringTableLookup* strLookup, resqml20__ResqmlPropertyKind energisticsPropertyKind)
+	unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind,
+	RESQML2_NS::StringTableLookup* strLookup, resqml20__ResqmlPropertyKind energisticsPropertyKind)
 {
 	if (rep == nullptr) {
 		throw invalid_argument("The representation of this property values cannot be null.");
@@ -49,7 +47,7 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalProperty(rep->getGsoapContext());	
 	_resqml20__CategoricalProperty* prop = static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1);
-	prop->IndexableElement = attachmentKind;
+	prop->IndexableElement = mapIndexableElement(attachmentKind);
 	prop->Count = dimension;
 
 	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap);
@@ -66,8 +64,8 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 }
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind,
-	StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind,
+	RESQML2_NS::StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropKind)
 {
 	if (rep == nullptr) {
 		throw invalid_argument("The representation of this property values cannot be null.");
@@ -78,7 +76,7 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalProperty(rep->getGsoapContext());	
 	_resqml20__CategoricalProperty* prop = static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1);
-	prop->IndexableElement = attachmentKind;
+	prop->IndexableElement = mapIndexableElement(attachmentKind);
 	prop->Count = dimension;
 
 	initMandatoryMetadata();
@@ -89,19 +87,12 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 
 	setRepresentation(rep);
 
-	setLocalPropertyKind(localPropKind);
+	setPropertyKind(localPropKind);
 }
 
-void CategoricalProperty::loadTargetRelationships()
+COMMON_NS::DataObjectReference CategoricalProperty::getStringLookupDor() const
 {
-	AbstractValuesProperty::loadTargetRelationships();
-
-	convertDorIntoRel<StringTableLookup>(static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1)->Lookup);
-}
-
-std::string CategoricalProperty::getStringLookupUuid() const
-{
-	return static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1)->Lookup->UUID;
+	return COMMON_NS::DataObjectReference(static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1)->Lookup);
 }
 
 bool CategoricalProperty::validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk)
@@ -173,7 +164,7 @@ bool CategoricalProperty::validatePropertyKindAssociation(gsoap_resqml2_0_1::res
 	return true;
 }
 
-StringTableLookup* CategoricalProperty::getStringLookup()
+gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind CategoricalProperty::getEnergisticsPropertyKind() const
 {
-	return getRepository()->getDataObjectByUuid<StringTableLookup>(getStringLookupUuid());
+	return getEnergisticsPropertyKind201();
 }

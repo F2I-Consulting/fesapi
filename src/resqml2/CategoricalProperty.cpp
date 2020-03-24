@@ -16,23 +16,23 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "WellboreFeature.h"
+#include "CategoricalProperty.h"
 
-#include <stdexcept>
-
-#include "../witsml2_0/Wellbore.h"
+#include "StringTableLookup.h"
 
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* WellboreFeature::XML_TAG = "WellboreFeature";
+const char* CategoricalProperty::XML_TAG = "CategoricalProperty";
 
-WITSML2_0_NS::Wellbore* WellboreFeature::getWitsmlWellbore() const
+void CategoricalProperty::loadTargetRelationships()
 {
-	const auto& witsmlWellbores = getRepository()->getTargetObjects<WITSML2_0_NS::Wellbore>(this);
-	switch (witsmlWellbores.size()) {
-	case 0: return nullptr;
-	case 1: return witsmlWellbores[0];
-	default: throw std::logic_error("There are too much associated WITSML wellbores.");
-	}
+	AbstractValuesProperty::loadTargetRelationships();
+
+	convertDorIntoRel<StringTableLookup>(getStringLookupDor());
+}
+
+StringTableLookup* CategoricalProperty::getStringLookup()
+{
+	return getRepository()->getDataObjectByUuid<StringTableLookup>(getStringLookupDor().getUuid());
 }

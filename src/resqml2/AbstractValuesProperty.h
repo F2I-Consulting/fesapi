@@ -27,43 +27,6 @@ namespace RESQML2_NS
 	/** Proxy class for an abstract values property. */
 	class AbstractValuesProperty : public AbstractProperty
 	{
-	protected:
-
-		/**
-		 * Only to be used in partial transfer context
-		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
-		 */
-		DLL_IMPORT_OR_EXPORT AbstractValuesProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractProperty(partialObject) {}
-
-		/**
-		 * Default constructor Set the relationship with an AbstractRepresentation and a local property
-		 * type.
-		 */
-		AbstractValuesProperty() {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		AbstractValuesProperty(gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}
-
-		/**
-		 * Get the dataset which contains the property values of a particular patch.
-		 *
-		 * @param 		  	patchIndex	The corresponding patch index of the dataset to get.
-		 * @param [in,out]	nullValue 	If possible, this function will set this parameter to the RESQML
-		 * 								null value of the dataset. If not, it will return long.min.
-		 *
-		 * @returns	Null if it fails, else the dataset of patch.
-		 */
-		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * getDatasetOfPatch(unsigned int patchIndex, LONG64 & nullValue) const;
-
-		void loadTargetRelationships();
-
 	public:
 
 		/** Values that represent HDF data types */
@@ -134,7 +97,7 @@ namespace RESQML2_NS
 		 * @param 	facet	  	The facet.
 		 * @param 	facetValue	The facet value.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackFacet(const gsoap_resqml2_0_1::resqml20__Facet & facet, const std::string & facetValue);
+		DLL_IMPORT_OR_EXPORT void pushBackFacet(gsoap_eml2_2::eml22__FacetKind facet, const std::string & facetValue);
 
 		/**
 		 * Gets the count of facet of this instance
@@ -152,7 +115,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The facet at index @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__Facet getFacet(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::eml22__FacetKind getFacetKind(unsigned int index) const;
 
 		/**
 		 * Gets the facet value at a particular index of the facet collection of this instance.
@@ -164,5 +127,43 @@ namespace RESQML2_NS
 		 * @returns	The facet value at index @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getFacetValue(unsigned int index) const;
+
+	protected:
+
+		/**
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 */
+		DLL_IMPORT_OR_EXPORT AbstractValuesProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractProperty(partialObject) {}
+
+		/**
+		 * Default constructor Set the relationship with an AbstractRepresentation and a local property
+		 * type.
+		 */
+		AbstractValuesProperty() {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		AbstractValuesProperty(gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}
+		AbstractValuesProperty(gsoap_eml2_2::resqml22__AbstractValuesProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}
+
+		/**
+		 * Get the HDF Proxy which contains the property values of a particular patch.
+		 *
+		 * @param 		  	patchIndex	The corresponding patch index of the dataset to get.
+		 * @param [out]		nullValue 	If possible, this function will set this parameter to the RESQML
+		 * 								null value of the dataset. If not, it will return long.min.
+		 * @param [out]		nullValue 	this function will set this parameter to the RESQML
+		 * 								dataset path in the HDF file.
+		 *
+		 * @returns	Null if it fails, else the HDF Proxy of patch.
+		 */
+		COMMON_NS::AbstractHdfProxy* getDatasetOfPatch(unsigned int patchIndex, LONG64 & nullValue, std::string & dsPath) const;
+
+		void loadTargetRelationships();
 	};
 }

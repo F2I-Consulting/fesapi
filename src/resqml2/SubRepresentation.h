@@ -283,7 +283,7 @@ namespace RESQML2_NS
 		 * @param 	elementCountInFastestDimension	The number of elements in the fastest dimension
 		 * 											(commonly in I dimension).
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements elementKind, ULONG64 originIndex,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_2::resqml22__IndexableElement elementKind, ULONG64 originIndex,
 			unsigned int elementCountInSlowestDimension,
 			unsigned int elementCountInMiddleDimension,
 			unsigned int elementCountInFastestDimension) = 0;
@@ -303,7 +303,7 @@ namespace RESQML2_NS
 		 * 										corresponding to the element indices. The count must be
 		 * 										elementCount.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements elementKind, ULONG64 elementCount, ULONG64* elementIndices, COMMON_NS::AbstractHdfProxy* proxy, short* supportingRepIndices = nullptr) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_2::resqml22__IndexableElement elementKind, ULONG64 elementCount, ULONG64* elementIndices, COMMON_NS::AbstractHdfProxy* proxy, short* supportingRepIndices = nullptr) = 0;
 		
 		/**
 		 * Pushes back a new patch in this sub-representation which is constituted by means of pairwise
@@ -321,7 +321,7 @@ namespace RESQML2_NS
 		 * 									supporting representation.
 		 * @param [in,out]	proxy		   	The HDF proxy where the numerical values (indices) are stored.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements elementKind0, gsoap_resqml2_0_1::resqml20__IndexableElements elementKind1,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_2::resqml22__IndexableElement elementKind0, gsoap_eml2_2::resqml22__IndexableElement elementKind1,
 			ULONG64 elementCount,
 			ULONG64 * elementIndices0, ULONG64 * elementIndices1,
 			COMMON_NS::AbstractHdfProxy* proxy) = 0;
@@ -350,7 +350,7 @@ namespace RESQML2_NS
 		 * 										suppporting representation will be exported since there is
 		 * 										only one suppporting representation for this whole patch.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackRefToExistingDataset(gsoap_resqml2_0_1::resqml20__IndexableElements elementKind, ULONG64 elementCount, const std::string& elementDataset,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackRefToExistingDataset(gsoap_eml2_2::resqml22__IndexableElement elementKind, ULONG64 elementCount, const std::string& elementDataset,
 			LONG64 nullValue, COMMON_NS::AbstractHdfProxy* proxy, const std::string& supportingRepDataset = "") = 0;
 
 		/**   

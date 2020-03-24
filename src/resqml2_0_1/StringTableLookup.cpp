@@ -20,18 +20,15 @@ under the License.
 
 #include <stdexcept>
 
-#include "CategoricalProperty.h"
-
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* StringTableLookup::XML_TAG = "StringTableLookup";
-
 StringTableLookup::StringTableLookup(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {
-	if (repo == nullptr)
+	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be null.");
+	}
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStringTableLookup(repo->getGsoapContext());
 
@@ -46,30 +43,30 @@ unsigned int StringTableLookup::getItemCount() const
 	return static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1)->Value.size();
 }
 
-long StringTableLookup::getKeyAtIndex(const unsigned int & index) const
+long StringTableLookup::getKeyAtIndex(unsigned int index) const
 {
-	if (getItemCount() <= index)
+	if (getItemCount() <= index) {
 		throw out_of_range("The index is out of range.");
+	}
 
 	return (static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1)->Value)[index]->Key;
 }
 
-std::string StringTableLookup::getStringValueAtIndex(const unsigned int & index) const
+std::string StringTableLookup::getStringValueAtIndex(unsigned int index) const
 {
-	if (getItemCount() <= index)
+	if (getItemCount() <= index) {
 		throw out_of_range("The index is out of range.");
+	}
 
 	return (static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1)->Value)[index]->Value;
 }
 
-bool StringTableLookup::containsKey(const long & longValue)
+bool StringTableLookup::containsKey(long longValue)
 {
 	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
 
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i)
-	{
-		if (stringLookup->Value[i]->Key == longValue)
-		{
+	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
+		if (stringLookup->Value[i]->Key == longValue) {
 			return true;
 		}
 	}
@@ -77,14 +74,12 @@ bool StringTableLookup::containsKey(const long & longValue)
 	return false;
 }
 
-std::string StringTableLookup::getStringValue(const long & longValue)
+std::string StringTableLookup::getStringValue(long longValue)
 {
 	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
 
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i)
-	{
-		if (stringLookup->Value[i]->Key == longValue)
-		{
+	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
+		if (stringLookup->Value[i]->Key == longValue) {
 			return stringLookup->Value[i]->Value;
 		}
 	}
@@ -92,7 +87,7 @@ std::string StringTableLookup::getStringValue(const long & longValue)
 	return "";
 }
 
-void StringTableLookup::addValue(const string & strValue, const long & longValue)
+void StringTableLookup::addValue(const string & strValue, long longValue)
 {
 	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
 
@@ -102,14 +97,12 @@ void StringTableLookup::addValue(const string & strValue, const long & longValue
 	stringLookup->Value.push_back(xmlValue);
 }
 
-void StringTableLookup::setValue(const string & strValue, const long & longValue)
+void StringTableLookup::setValue(const string & strValue, long longValue)
 {
 	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
 
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i)
-	{
-		if (stringLookup->Value[i]->Key == longValue)
-		{
+	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
+		if (stringLookup->Value[i]->Key == longValue) {
 			stringLookup->Value[i]->Value = strValue;
 			return;
 		}
@@ -156,5 +149,3 @@ unordered_map<long, string> StringTableLookup::getMap() const
 
 	return result;
 }
-
-void StringTableLookup::loadTargetRelationships() {}

@@ -27,28 +27,11 @@ namespace COMMON_NS
 
 namespace RESQML2_NS
 {
+	class AbstractRepresentation;
+
 	/** Proxy class for an abstract property. */
 	class AbstractProperty: public COMMON_NS::AbstractObject
 	{
-	protected:
-
-		/**
-		 * Only to be used in partial transfer context
-		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 */
-		DLL_IMPORT_OR_EXPORT AbstractProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
-
-		/** Default constructor */
-		AbstractProperty() {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		AbstractProperty(gsoap_resqml2_0_1::resqml20__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context */
@@ -61,7 +44,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	rep	The representation to associate to the current property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setRepresentation(class AbstractRepresentation * rep);
+		DLL_IMPORT_OR_EXPORT void setRepresentation(AbstractRepresentation * rep);
 
 		/**
 		 * Gets the data object reference of the representation which is associated to the current
@@ -79,7 +62,7 @@ namespace RESQML2_NS
 		 * 
 		 * @returns The representation which is associated to the current property.
 		 */
-		DLL_IMPORT_OR_EXPORT class AbstractRepresentation* getRepresentation() const;
+		DLL_IMPORT_OR_EXPORT AbstractRepresentation* getRepresentation() const;
 
 		/**
 		 * Gets the count of elements per property value. If the property is a scalar one then it should
@@ -95,7 +78,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The kind of elements on which the property values are attached to.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__IndexableElements getAttachmentKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::resqml22__IndexableElement getAttachmentKind() const;
 
 		/**
 		 * Gets all property sets which contain this property
@@ -293,45 +276,35 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT std::string getPropertyKindParentAsString() const;
 
 		/**
-		 * Gets the Energistics property kind which is associated to this intance
-		 *
-		 * @exception	std::invalid_argument	If the property kind of this property is not an
-		 * 										Energistics one.
-		 *
-		 * @returns	The Energistics property kind.
-		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind() const;
-
-		/**
 		 * Sets the property kind of this property to a local one
 		 *
 		 * @exception	std::invalid_argument	If @p propKind is null.
 		 *
 		 * @param [in]	propKind	The local property kind to set to this property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setLocalPropertyKind(COMMON_NS::PropertyKind* propKind);
+		DLL_IMPORT_OR_EXPORT void setPropertyKind(COMMON_NS::PropertyKind* propKind);
 
 		/**
-		 * Gets the data object reference of the local property kind associated to this property
+		 * Gets the data object reference of the property kind associated to this property
 		 *
 		 * @exception	std::invalid_argument	If the property kind of this property is not a local one.
 		 *
-		 * @returns	Empty data object reference if no local property kind is associated to this property.
+		 * @returns	Empty data object reference if no property kind is associated to this property.
 		 * 			Otherwise return the data object reference of the associated local property kind.
 		 */
-		COMMON_NS::DataObjectReference getLocalPropertyKindDor() const;
+		COMMON_NS::DataObjectReference getPropertyKindDor() const;
 
 		/**
 		 * Gets the local property kind which is associated to this instance
 		 *
 		 * @exception	std::invalid_argument	If the property kind of this property is not a local one.
 
-		 * @returns	A pointer to the local property kind.
+		 * @returns	A pointer to the property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* getLocalPropertyKind() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* getPropertyKind() const;
 
 		/**
-		 * Checks if it is allowed to associate a given local property kind to this property.
+		 * Checks if it is allowed to associate a given property kind to this property.
 		 *
 		 * @param [in]	pk	The local property kind to check.
 		 *
@@ -357,7 +330,35 @@ namespace RESQML2_NS
 
 	protected:
 
+		/**
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 */
+		DLL_IMPORT_OR_EXPORT AbstractProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+
+		/** Default constructor */
+		AbstractProperty() {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		AbstractProperty(gsoap_resqml2_0_1::resqml20__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		AbstractProperty(gsoap_eml2_2::resqml22__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
 		/** Loads target relationships */
 		virtual void loadTargetRelationships();
+
+		/**
+		 * Gets the Energistics property kind which is associated to this intance
+		 *
+		 * @exception	std::invalid_argument	If the property kind of this property is not an
+		 * 										Energistics one.
+		 *
+		 * @returns	The Energistics property kind.
+		 */
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind201() const;
 	};
 }

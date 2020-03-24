@@ -43,6 +43,10 @@ namespace RESQML2_NS
 	class AbstractRepresentation;
 	class Activity;
 	class ActivityTemplate;
+	class CategoricalProperty;
+	class CommentProperty;
+	class ContinuousProperty;
+	class DiscreteProperty;
 	class DeviationSurveyRepresentation;
 	class GridConnectionSetRepresentation;
 	class IjkGridExplicitRepresentation;
@@ -52,6 +56,7 @@ namespace RESQML2_NS
 	class MdDatum;
 	class PropertySet;
 	class RepresentationSetRepresentation;
+	class StringTableLookup;
 	class SubRepresentation;
 	class TimeSeries;
 	class UnstructuredGridRepresentation;
@@ -65,7 +70,12 @@ namespace RESQML2_0_1_NS
 {
 	class Activity;
 	class ActivityTemplate;
+	class PropertyKind;
 	class PropertyKindMapper;
+	class CategoricalProperty;
+	class CommentProperty;
+	class ContinuousProperty;
+	class DiscreteProperty;
 	class LocalDepth3dCrs;
 	class LocalTime3dCrs;
 	class GeneticBoundaryFeature;
@@ -98,15 +108,7 @@ namespace RESQML2_0_1_NS
 	class NonSealedSurfaceFrameworkRepresentation;
 	class SealedSurfaceFrameworkRepresentation;
 	class SealedVolumeFrameworkRepresentation;
-	class StringTableLookup;
 	class PropertySet;
-	class CommentProperty;
-	class ContinuousProperty;
-	class ContinuousPropertySeries;
-	class DiscreteProperty;
-	class DiscretePropertySeries;
-	class CategoricalProperty;
-	class CategoricalPropertySeries;
 	class AbstractGridRepresentation;
 	class OrganizationFeature;
 	class StratigraphicOccurrenceInterpretation;
@@ -2427,7 +2429,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new string table lookup.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::StringTableLookup* createStringTableLookup(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StringTableLookup* createStringTableLookup(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a property kind into this repository
@@ -2447,7 +2449,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind201(const std::string & guid, const std::string & title,
 			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & parentEnergisticsPropertyKind);
 
 		/**
@@ -2486,7 +2488,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind201(const std::string & guid, const std::string & title,
 			const std::string & namingSystem, const std::string & nonStandardUom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & parentEnergisticsPropertyKind);
 
 		/**
@@ -2567,8 +2569,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new comment property.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CommentProperty* createCommentProperty201(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
 		 * Creates a comment property (which is of a local property kind) into this repository
@@ -2590,8 +2592,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new comment property.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, COMMON_NS::PropertyKind * localPropType);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * localPropType);
 
 		/**
 		 * Creates a continuous property (which is of well known Energistics unit of measure and
@@ -2620,8 +2622,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new continuous property.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty201(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
 		 * Creates a continuous property (which is of a well known unit of measure and a local property
@@ -2648,8 +2650,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new continuous property.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * localPropType);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * localPropType);
 
 		/**
 		 * Creates a continuous property (which is of a local unit of measure and a well known property
@@ -2677,8 +2679,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new continuous property.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty201(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, std::string nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
 		 * Creates a continuous property (which is of local unit of measure and property kind) into this
@@ -2704,71 +2706,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new continuous property.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropType);
-
-		/**
-		 * Creates a continuous property series (which is of a well known Energistics property kind)
-		 * into this repository.
-		 *
-		 * @exception	std::invalid_argument	If @p rep or @p ts is null.
-		 *
-		 * @param [in]	rep					   	The representation on which this property is attached to.
-		 * 										It cannot be null.
-		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
-		 * 										will be generated.
-		 * @param 	  	title				   	The title to set to the property. If empty then
-		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
-		 * 										is 1 for a scalar property.
-		 * @param 	  	attachmentKind		   	The topological element on which the property values are
-		 * 										attached to.
-		 * @param 	  	uom					   	The property unit of measure taken from the standard
-		 * 										Energistics units of measure catalog.
-		 * @param 	  	energisticsPropertyKind	The property type of these property values which must be
-		 * 										defined in the standard Energistics property kind catalog.
-		 * @param [in]	ts					   	The time series associated to this property series. It
-		 * 										cannot be null.
-		 * @param 	  	useInterval			   	(Optional) If true the values are associated with each
-		 * 										time interval between two consecutive time entries,
-		 * 										instead (default) of each individual time entry.
-		 *
-		 * @returns	A pointer to the new continuous property series.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousPropertySeries* createContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind,
-			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
-
-		/**
-		 * Creates a continuous property series (which is of a local property kind) into this repository
-		 *
-		 * @exception	std::invalid_argument	If @p rep, @p localPropType or @p ts is null.
-		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
-		 * 								cannot be null.
-		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
-		 * 								generated.
-		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
-		 * 								will be set.
-		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
-		 * 								a scalar property.
-		 * @param 	  	attachmentKind	The topological element on which the property values are attached
-		 * 								to.
-		 * @param 	  	uom			  	The property unit of measure taken from the standard Energistics
-		 * 								units of measure catalog.
-		 * @param [in]	localPropType 	The property type of these property values which must be defined
-		 * 								in this repository as a local property kind.
-		 * @param [in]	ts			  	The time series associated to this property series. It cannot be
-		 * 								null.
-		 * @param 	  	useInterval   	(Optional) If true the values are associated with each time
-		 * 								interval between two consecutive time entries, instead (default)
-		 * 								of each individual time entry.
-		 *
-		 * @returns	A pointer to the new continuous property series.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousPropertySeries* createContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * localPropType,
-			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropType);
 
 		/**
 		 * Creates a discrete property (which is of a well known Energistics property kind) into this
@@ -2792,8 +2731,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new discrete property.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscreteProperty* createDiscreteProperty201(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
 		 * Creates a discrete property (which is of a local property kind) into this repository
@@ -2815,65 +2754,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new discrete property.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, COMMON_NS::PropertyKind * localPropType);
-
-		/**
-		 * Creates a discrete property series (which is of a standard Energistics property kind) into this repository.
-		 *
-		 * @param [in]	rep					   	The representation on which this property is attached to.
-		 * 										It cannot be null.
-		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
-		 * 										will be generated.
-		 * @param 	  	title				   	The title to set to the property. If empty then
-		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
-		 * 										is 1 for a scalar property.
-		 * @param 	  	attachmentKind		   	The topological element on which the property values are
-		 * 										attached to.
-		 * @param 	  	energisticsPropertyKind	The property type of these property values which must
-		 * 										be defined in the standard Energistics property type
-		 * 										dictionary.
-		 * @param [in]	ts					   	The time series associated to this property series. It
-		 * 										cannot be null.
-		 * @param 	  	useInterval			   	(Optional) If true the values are associated with each
-		 * 										time interval between two consecutive time entries,
-		 * 										instead (default) of each individual time entry.
-		 *
-		 * @returns	A pointer to the new discrete property series.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscretePropertySeries* createDiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind,
-			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
-
-		/**
-		 * Creates a discrete property series (which is of a local property kind) into this repository.
-		 *
-		 * @exception	std::invalid_argument	If @p rep, @p localPropType or @p ts is null.
-		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
-		 * 								cannot be null.
-		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
-		 * 								generated.
-		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
-		 * 								will be set.
-		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
-		 * 								a scalar property.
-		 * @param 	  	attachmentKind	The topological element on which the property values are attached
-		 * 								to.
-		 * @param [in]	localPropType 	The property type of these property values which must be defined
-		 * 								in this repository as a local property kind. It cannot be null.
-		 * @param [in]	ts			  	The time series associated to this property series. It cannot be
-		 * 								null.
-		 * @param 	  	useInterval   	(Optional) If true the values are associated with each time
-		 * 								interval between two consecutive time entries, instead (default)
-		 * 								of each individual time entry.
-		 *
-		 * @returns	A pointer to the new discrete property series.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscretePropertySeries* createDiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, COMMON_NS::PropertyKind * localPropType,
-			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * localPropType);
 
 		/**
 		 * Creates a categorical property (which is of a standard Energistics property kind) into this
@@ -2899,9 +2781,9 @@ namespace COMMON_NS
 		 *
 		 * @returns A pointer to new categorical property.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
-			RESQML2_0_1_NS::StringTableLookup* strLookup, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty201(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind,
+			RESQML2_NS::StringTableLookup* strLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
 		 * Creates a categorical property (which is of a local property kind) into this repository
@@ -2925,72 +2807,9 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new categorical property.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
-			RESQML2_0_1_NS::StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropType);
-
-		/**
-		 * Creates a categorical property series (which is of a standard Energistics property kind) into
-		 * this repository
-		 *
-		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p ts is null.
-		 *
-		 * @param [in]	rep					   	The representation on which this property is attached to.
-		 * 										It cannot be null.
-		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
-		 * 										will be generated.
-		 * @param 	  	title				   	The title to set to the property. If empty then
-		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
-		 * 										is 1 for a scalar property.
-		 * @param 	  	attachmentKind		   	The topological element on which the property values are
-		 * 										attached to.
-		 * @param [in]	strLookup			   	The string lookup table associated to this property.
-		 * @param 	  	energisticsPropertyKind	The kind of this property taken from the standard set of
-		 * 										RESQML property kinds.
-		 * @param [in]	ts					   	The time series associated to this property series. It
-		 * 										cannot be null.
-		 * @param 	  	useInterval			   	(Optional) If true the values are associated with each
-		 * 										time interval between two consecutive time entries,
-		 * 										instead (default) of each individual time entry.
-		 *
-		 * @returns	A pointer to the new categorical property series.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalPropertySeries* createCategoricalPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
-			RESQML2_0_1_NS::StringTableLookup* strLookup, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind,
-			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
-
-		/**
-		 * Creates a categorical property series (which is of a local property kind) into this repository
-		 *
-		 * @exception	std::invalid_argument	If @p rep, @p strLookup, @p localPropKind or @p ts is
-		 * 										null.
-		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
-		 * 								cannot be null.
-		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
-		 * 								generated.
-		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
-		 * 								will be set.
-		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
-		 * 								a scalar property.
-		 * @param 	  	attachmentKind	The topological element on which the property values are attached
-		 * 								to.
-		 * @param [in]	strLookup	  	The string lookup table associated to this property.
-		 * @param [in]	localPropType 	The kind of this property. It cannot be null.
-		 * @param [in]	ts			  	The time series associated to this property series. It cannot be
-		 * 								null.
-		 * @param 	  	useInterval   	(Optional) If true the values are associated with each time
-		 * 								interval between two consecutive time entries, instead (default)
-		 * 								of each individual time entry.
-		 *
-		 * @returns	A pointer to the new categorical property series.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalPropertySeries* createCategoricalPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
-			RESQML2_0_1_NS::StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropType,
-			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind,
+			RESQML2_NS::StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropType);
 
 		//************* ACTIVITIES ***********
 

@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/StringTableLookup.h"
+#include "../common/AbstractObject.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_NS
 {
 	/** A string table lookup. */
-	class StringTableLookup : public RESQML2_NS::StringTableLookup
+	class StringTableLookup : public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -32,30 +32,11 @@ namespace RESQML2_0_1_NS
 		 * Only to be used in partial transfer context
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT StringTableLookup(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::StringTableLookup(partialObject) {}
-
-		/**
-		 * Creates an instance of this class in a gsoap context.
-		 *
-		 * @param [in,out]	repo 	A repo which will manage the memory of this instance.
-		 * @param 		  	guid 	The guid to set to this instance. If empty then a new guid will be
-		 * 							generated.
-		 * @param 		  	title	A title for the instance to create.
-		 */
-		StringTableLookup(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		StringTableLookup(gsoap_resqml2_0_1::_resqml20__StringTableLookup* fromGsoap) : RESQML2_NS::StringTableLookup(fromGsoap) {}
+		DLL_IMPORT_OR_EXPORT StringTableLookup(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~StringTableLookup() {}
+		virtual ~StringTableLookup() {}
 
 		/**
 		 * Check wether a key value is contained within this string lookup or not.
@@ -64,14 +45,14 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	True if it succeeds, false if it fails.
 		 */
-		DLL_IMPORT_OR_EXPORT bool containsKey(long longValue);
+		DLL_IMPORT_OR_EXPORT virtual bool containsKey(long longValue) = 0;
 
 		/**
 		 * Get the count of item in the stringTableLookup (in the map).
 		 *
 		 * @returns	The item count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getItemCount() const;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getItemCount() const = 0;
 
 		/**
 		 * Get the key of a string value pair at a particular index in the string table lookup (in the
@@ -81,7 +62,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The key at index.
 		 */
-		DLL_IMPORT_OR_EXPORT long getKeyAtIndex(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT virtual long getKeyAtIndex(unsigned int index) const = 0;
 
 		/**
 		 * Get the string value of a string value pair at a particular index in the string table lookup
@@ -91,7 +72,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The string value at index.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getStringValueAtIndex(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT virtual std::string getStringValueAtIndex(unsigned int index) const = 0;
 
 		/**
 		 * Get a string value from its associated key (long) value. If the key value does not exist, an
@@ -101,7 +82,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The string value.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getStringValue(long longValue);
+		DLL_IMPORT_OR_EXPORT virtual std::string getStringValue(long longValue) = 0;
 
 		/**
 		 * Add a pair value to the string lookup. No verification that the key value (or string value)
@@ -110,7 +91,7 @@ namespace RESQML2_0_1_NS
 		 * @param 	strValue 	The value.
 		 * @param 	longValue	The long value.
 		 */
-		DLL_IMPORT_OR_EXPORT void addValue(const std::string & strValue, long longValue);
+		DLL_IMPORT_OR_EXPORT virtual void addValue(const std::string & strValue, long longValue) = 0;
 
 		/**
 		 * Modify the associated string value according to the key (long) value. If the key value does
@@ -119,27 +100,63 @@ namespace RESQML2_0_1_NS
 		 * @param 	strValue 	The value.
 		 * @param 	longValue	The long value.
 		 */
-		DLL_IMPORT_OR_EXPORT void setValue(const std::string & strValue, long longValue);
+		DLL_IMPORT_OR_EXPORT virtual void setValue(const std::string & strValue, long longValue) = 0;
 
 		/**
 		 * Get the minimum value in this discrete properties. It reads it from file.
 		 *
 		 * @returns	the minimum value if present in the file otherwise long.max.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getMinimumValue();
+		DLL_IMPORT_OR_EXPORT virtual LONG64 getMinimumValue() = 0;
 
 		/**
 		 * Get the maximum value in this discrete properties. It reads it from file.
 		 *
 		 * @returns	the maximum value if present in the file otherwise long.min.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getMaximumValue();
+		DLL_IMPORT_OR_EXPORT virtual LONG64 getMaximumValue() = 0;
 
 		/**
 		 * Getter for the underlying map of the string lookup.
 		 *
 		 * @returns	The map.
 		 */
-		DLL_IMPORT_OR_EXPORT std::unordered_map<long, std::string> getMap() const;
+		DLL_IMPORT_OR_EXPORT virtual std::unordered_map<long, std::string> getMap() const = 0;
+
+		/**
+		 * The standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const { return XML_TAG; }
+
+	protected:
+
+		/** Default constructor */
+		StringTableLookup() {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gSoap RESQML2.0.1 instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		StringTableLookup(gsoap_resqml2_0_1::_resqml20__StringTableLookup* fromGsoap) : AbstractObject(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gSoap RESQML2.2 instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		StringTableLookup(gsoap_eml2_2::_resqml22__StringTableLookup* fromGsoap) : AbstractObject(fromGsoap) {}
+
+		/** Loads target relationships */
+		void loadTargetRelationships() {}
 	};
 }

@@ -339,6 +339,8 @@ namespace COMMON_NS
 			return "/" + getXmlNamespace() + "/" + getUuid();
 		}
 
+		gsoap_resqml2_0_1::resqml20__IndexableElements mapIndexableElement(gsoap_eml2_2::resqml22__IndexableElement toMap) const;
+
 	public:
 		/** Destructor */
 		virtual ~AbstractObject() {}

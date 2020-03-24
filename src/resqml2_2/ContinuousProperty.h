@@ -25,7 +25,7 @@ under the License.
 #include <sstream>
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
 	/**
 	 * Proxy class for a continuous property. Most common type of property used for storing rock or
@@ -46,38 +46,10 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT ContinuousProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::ContinuousProperty(partialObject) {}
 
 		/**
-		 * Creates a continuous property which is of well known Energistics unit of measure and property
-		 * kind.
-		 *
-		 * @exception	std::invalid_argument	If @p rep is null.
-		 *
-		 * @param [in]	rep					   	The representation on which this property is attached to.
-		 * 										It cannot be null.
-		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
-		 * 										will be generated.
-		 * @param 	  	title				   	The title to set to the property. If empty then
-		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
-		 * 										is 1 for a scalar property.
-		 * @param 	  	attachmentKind		   	The topological element on which the property values are
-		 * 										attached to.
-		 * @param 	  	uom					   	The property unit of measure taken from the standard
-		 * 										Energistics units of measure catalog. Please check
-		 * 										COMMON_NS::EnumStringMapper::getEnergisticsUnitOfMeasure
-		 * 										in order to minimize the use of non standard unit of
-		 * 										measure.
-		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
-		 * 										defined in the standard Energistics property type
-		 * 										dictionary.
-		 */
-		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
-
-		/**
 		 * Creates a continuous property which is of a well known unit of measure and a local property
 		 * kind.
 		 *
-		 * @exception	std::invalid_argument	If @p rep or @p localPropType is null.
+		 * @exception	std::invalid_argument	If @p rep or @p propKind is null. If @p dimension is zero.
 		 *
 		 * @param [in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
@@ -93,43 +65,15 @@ namespace RESQML2_0_1_NS
 		 * 								units of measure catalog. Please check
 		 * 								COMMON_NS::EnumStringMapper::getEnergisticsUnitOfMeasure in order
 		 * 								to minimize the use of non standard unit of measure.
-		 * @param [in]	localPropKind 	The property kind of these property values which must be defined
-		 * 								in the EPC document as a local property kind. It cannot be null.
+		 * @param [in]	propKind	 	The property kind of these property values. It cannot be null.
 		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * localPropKind);
-
-		/**
-		 * Creates a continuous property which is of a local unit of measure and a well known property
-		 * kind.
-		 *
-		 * @exception	std::invalid_argument	If @p rep is null.
-		 *
-		 * @param [in]	rep					   	The representation on which this property is attached to.
-		 * 										It cannot be null.
-		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
-		 * 										will be generated.
-		 * @param 	  	title				   	The title to set to the property. If empty then
-		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
-		 * 										is 1 for a scalar property.
-		 * @param 	  	attachmentKind		   	The topological element on which the property values are
-		 * 										attached to.
-		 * @param 	  	nonStandardUom		   	The property unit of measure. Please check
-		 * 										COMMON_NS::EnumStringMapper::getEnergisticsUnitOfMeasure
-		 * 										in order to minimize the use of non standard unit of
-		 * 										measure.
-		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
-		 * 										defined in the standard Energistics property type
-		 * 										dictionary.
-		 */
-		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * propKind);
 
 		/**
 		 * Creates a continuous property which is of local unit of measure and property kind.
 		 *
-		 * @exception	std::invalid_argument	If @p rep or @p localPropType is null.
+		 * @exception	std::invalid_argument	If @p rep or @p propKind is null.
 		 *
 		 * @param [in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
@@ -144,18 +88,17 @@ namespace RESQML2_0_1_NS
 		 * @param 	  	nonStandardUom	The property unit of measure. Please check
 		 * 								COMMON_NS::EnumStringMapper::getEnergisticsUnitOfMeasure in order
 		 * 								to minimize the use of non standard unit of measure.
-		 * @param [in]	localPropKind 	The property kind of these property values which must be defined
-		 * 								in the EPC document as a local property kind. It cannot be null.
+		 * @param [in]	propKind	 	The property kind of these property values. It cannot be null.
 		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropKind);
+			unsigned int dimension, gsoap_eml2_2::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * propKind);
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		ContinuousProperty(gsoap_resqml2_0_1::_resqml20__ContinuousProperty* fromGsoap): RESQML2_NS::ContinuousProperty(fromGsoap) {}
+		ContinuousProperty(gsoap_eml2_2::_resqml22__ContinuousProperty* fromGsoap): RESQML2_NS::ContinuousProperty(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~ContinuousProperty() {}
@@ -214,19 +157,9 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setMaximumValue(double value, unsigned int index = 0) const;
 
-		/**
-		 * Gets the Energistics property kind which is associated to this intance
-		 *
-		 * @exception	std::invalid_argument	If the property kind of this property is not an
-		 * 										Energistics one.
-		 *
-		 * @returns	The Energistics property kind.
-		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind() const;
+		bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk) override { return true; }
 
-		bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk) override;
-
-		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) override;
+		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) override { return true; }
 
 	private:
 

@@ -18,32 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/AbstractValuesProperty.h"
+#include "AbstractValuesProperty.h"
 
 namespace RESQML2_NS
 {
 	/** Proxy class for an abstract discrete or categorical property. */
 	class AbstractDiscreteOrCategoricalProperty : public RESQML2_NS::AbstractValuesProperty
 	{
-	protected:
-
-		AbstractDiscreteOrCategoricalProperty() {}
-
-		/**
-		* Only to be used in partial transfer context
-		*/
-		DLL_IMPORT_OR_EXPORT AbstractDiscreteOrCategoricalProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
-
-		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		AbstractDiscreteOrCategoricalProperty(gsoap_resqml2_0_1::_resqml20__DiscreteProperty* fromGsoap): AbstractValuesProperty(fromGsoap) {}
-
-		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		AbstractDiscreteOrCategoricalProperty(gsoap_resqml2_0_1::_resqml20__CategoricalProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
-
 	public:
 
 		/**
@@ -656,5 +637,26 @@ namespace RESQML2_NS
 			unsigned int offsetInMiddleDim,
 			unsigned int offsetInSlowestDim
 		) const;
+
+	protected:
+
+		AbstractDiscreteOrCategoricalProperty() {}
+
+		/**
+		* Only to be used in partial transfer context
+		*/
+		DLL_IMPORT_OR_EXPORT AbstractDiscreteOrCategoricalProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
+
+		/**
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*/
+		AbstractDiscreteOrCategoricalProperty(gsoap_resqml2_0_1::_resqml20__DiscreteProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
+		AbstractDiscreteOrCategoricalProperty(gsoap_eml2_2::_resqml22__DiscreteProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
+
+		/**
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*/
+		AbstractDiscreteOrCategoricalProperty(gsoap_resqml2_0_1::_resqml20__CategoricalProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
+		AbstractDiscreteOrCategoricalProperty(gsoap_eml2_2::_resqml22__CategoricalProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 	};
 }
