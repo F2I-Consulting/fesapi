@@ -282,7 +282,7 @@ unsigned int UnstructuredGridRepresentation::getNodeCountOfFaceOfCell(ULONG64 ce
 	// Global face index
 	ULONG64 globalFaceIndex = cellIndex == 0
 		? faceIndicesOfCells[cumulativeFaceCountPerCell[0] + localFaceIndex]
-		: globalFaceIndex = faceIndicesOfCells[cumulativeFaceCountPerCell[cellIndex-1] + localFaceIndex];
+		: faceIndicesOfCells[cumulativeFaceCountPerCell[cellIndex-1] + localFaceIndex];
 	
 	if (globalFaceIndex == 0)
 		return cumulativeNodeCountPerFace[0];
@@ -307,7 +307,7 @@ ULONG64 * UnstructuredGridRepresentation::getNodeIndicesOfFaceOfCell(ULONG64 cel
 	{
 		globalFaceIndex = constantFaceCountPerCell != 0
 			? faceIndicesOfCells[constantFaceCountPerCell * cellIndex + localFaceIndex]
-			: globalFaceIndex = faceIndicesOfCells[cumulativeFaceCountPerCell[cellIndex-1] + localFaceIndex];
+			: faceIndicesOfCells[cumulativeFaceCountPerCell[cellIndex-1] + localFaceIndex];
 	}
 
 	if (globalFaceIndex == 0)

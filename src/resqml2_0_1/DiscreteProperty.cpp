@@ -25,7 +25,7 @@ under the License.
 
 #include "../common/AbstractHdfProxy.h"
 #include "../common/EnumStringMapper.h"
-#include "../common/PropertyKind.h"
+#include "../eml2/PropertyKind.h"
 
 #include "../tools/Statistics.h"
 #include "../resqml2/AbstractRepresentation.h"
@@ -58,7 +58,7 @@ DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, con
 }
 
 DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropKind)
 {
 	if (rep == nullptr) {
 		throw invalid_argument("The representation of this property values cannot be null.");
@@ -99,7 +99,7 @@ std::string DiscreteProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHd
 	return result;
 }
 
-bool DiscreteProperty::validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk)
+bool DiscreteProperty::validatePropertyKindAssociation(EML2_NS::PropertyKind* pk)
 {
 	if (pk == nullptr) {
 		throw invalid_argument("The property kind to validate cannot be null.");

@@ -43,7 +43,7 @@ under the License.
 
 #include "../version_config.h"
 
-#include "../resqml2/Activity.h"
+#include "../eml2/Activity.h"
 #include "AbstractHdfProxy.h"
 
 using namespace std;
@@ -878,7 +878,7 @@ std::string AbstractObject::getXmlNamespace() const
 		return "prodml21"; // or eml22 or witsml21
 	}
 	else if (gsoapProxy2_0_1 == nullptr && gsoapProxy2_1 == nullptr && gsoapProxy2_2 == nullptr && gsoapProxy2_3 != nullptr) {
-		return "resqml22"; // or eml22 or witsml21
+		return "resqml22"; // or eml23
 	}
 	else if (partialObject != nullptr) {
 		return "resqml20"; // by default...
@@ -1036,9 +1036,9 @@ std::string AbstractObject::getAliasTitleAtIndex(unsigned int index) const
 	throw invalid_argument("No underlying gsoap proxy.");
 }
 
-std::vector<RESQML2_NS::Activity *> AbstractObject::getActivitySet() const
+std::vector<EML2_NS::Activity *> AbstractObject::getActivitySet() const
 {
-	return getRepository()->getSourceObjects<RESQML2_NS::Activity>(this);
+	return getRepository()->getSourceObjects<EML2_NS::Activity>(this);
 }
 
 unsigned int AbstractObject::getActivityCount() const
@@ -1052,13 +1052,13 @@ unsigned int AbstractObject::getActivityCount() const
 	return static_cast<unsigned int>(result);
 }
 
-RESQML2_NS::Activity * AbstractObject::getActivity(unsigned int index) const
+EML2_NS::Activity * AbstractObject::getActivity(unsigned int index) const
 {
 	if (partialObject != nullptr) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 	}
 
-	const std::vector<RESQML2_NS::Activity *>& activites = getActivitySet();
+	const std::vector<EML2_NS::Activity *>& activites = getActivitySet();
 	if (index >= activites.size())
 		throw out_of_range("The index is out of range.");
 

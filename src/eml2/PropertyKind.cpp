@@ -20,10 +20,10 @@ under the License.
 
 #include <stdexcept>
 
-#include "EnumStringMapper.h"
+#include "../common/EnumStringMapper.h"
 
 using namespace std;
-using namespace COMMON_NS;
+using namespace EML2_NS;
 
 const char* PropertyKind::XML_TAG = "PropertyKind";
 
@@ -147,10 +147,10 @@ void PropertyKind::loadTargetRelationships()
 	}
 
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getParentLocalPropertyKindDor();
-	COMMON_NS::PropertyKind* parentPk = getRepository()->getDataObjectByUuid<PropertyKind>(dor->UUID);
+	EML2_NS::PropertyKind* parentPk = getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(dor->UUID);
 	if (parentPk == nullptr) {
 		getRepository()->createPartial(dor);
-		parentPk = getRepository()->getDataObjectByUuid<PropertyKind>(dor->UUID);
+		parentPk = getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(dor->UUID);
 		if (parentPk == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
 		}

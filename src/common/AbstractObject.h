@@ -781,7 +781,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The vector of all activities involving this instance.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::Activity *> getActivitySet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<EML2_NS::Activity*> getActivitySet() const;
 
 		/**
 		 * Gets the count of the activities where this instance is involved
@@ -804,7 +804,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The associated activity at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::Activity * getActivity(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT EML2_NS::Activity* getActivity(unsigned int index) const;
 
 		/**
 		 * Pushes back an extra metadata (not a standard one) onto this instance

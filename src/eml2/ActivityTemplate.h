@@ -18,17 +18,19 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2_0_1/Activity.h"
+#include "../common/AbstractObject.h"
 
 /** . */
-namespace RESQML2_NS
+namespace EML2_NS
 {
+	class Activity;
+
 	/** Proxy class for an activity template. */
 	class ActivityTemplate : public COMMON_NS::AbstractObject
 	{
 	protected:
 		/** Default constructor */
-		ActivityTemplate() : AbstractObject() {}
+		ActivityTemplate() : COMMON_NS::AbstractObject() {}
 
 		/**
 		 * Constructor
@@ -36,6 +38,13 @@ namespace RESQML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		ActivityTemplate(gsoap_resqml2_0_1::_resqml20__ActivityTemplate* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
+		 * Constructor
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		ActivityTemplate(gsoap_eml2_3::_eml23__ActivityTemplate* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 
@@ -110,7 +119,25 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The title of the parameter at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual const std::string & getParameterTitle(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual const std::string & getParameterTitle(unsigned int index) const = 0;
+
+		/**
+		 * Gets parameter allowed kinds
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	The parameter allowed kinds.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual std::vector<gsoap_resqml2_0_1::resqml20__ParameterKind> getParameterAllowedKinds(unsigned int index) const = 0;
+
+		/**
+		 * Gets parameter allowed kinds
+		 *
+		 * @param 	paramTitle	The parameter title.
+		 *
+		 * @returns	The parameter allowed kinds.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual std::vector<gsoap_resqml2_0_1::resqml20__ParameterKind> getParameterAllowedKinds(const std::string & paramTitle) const = 0;
 
 		/**
 		 * Queries if a particular parameter is an input parameter.
@@ -121,7 +148,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True is the parameter at @p index is an input parameter, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual const bool & getParameterIsInput(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool getParameterIsInput(unsigned int index) const = 0;
 
 		/**
 		 * Queries if a particular parameter is an input parameter.
@@ -133,7 +160,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True is the parameter @p paramTitle is an input parameter, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual const bool & getParameterIsInput(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool getParameterIsInput(const std::string & paramTitle) const = 0;
 
 		/**
 		 * Queries if a particular parameter is an output parameter.
@@ -144,7 +171,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True is the parameter at @p index is an output parameter, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual const bool & getParameterIsOutput(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool getParameterIsOutput(unsigned int index) const = 0;
 
 		/**
 		 * Queries if a particular parameter is an output parameter.
@@ -156,7 +183,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True is the parameter @p paramTitle is an output parameter, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual const bool & getParameterIsOutput(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool getParameterIsOutput(const std::string & paramTitle) const = 0;
 
 		/**
 		 * Gets the minimum occurrences of a particular parameter.
@@ -167,7 +194,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The parameter minimum occurrences.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMinOccurences(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMinOccurences(unsigned int index) const = 0;
 
 		/**
 		 * Gets the minimum occurrences of a particular parameter.
@@ -190,7 +217,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The parameter maximum occurrences.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMaxOccurences(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMaxOccurences(unsigned int index) const = 0;
 
 		/**
 		 * Gets the maximum occurrences of a particular parameter.
@@ -223,6 +250,6 @@ namespace RESQML2_NS
 
 	private:
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() {}
 	};
 }

@@ -25,7 +25,7 @@ under the License.
 
 #include "../common/AbstractHdfProxy.h"
 #include "../common/EnumStringMapper.h"
-#include "../common/PropertyKind.h"
+#include "../eml2/PropertyKind.h"
 
 #include "../tools/Statistics.h"
 #include "../resqml2/AbstractRepresentation.h"
@@ -35,7 +35,7 @@ using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
 DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropKind)
 {
 	if (dimension == 0) {
 		throw invalid_argument("The dimension cannot be zero.");

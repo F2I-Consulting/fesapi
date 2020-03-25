@@ -19,6 +19,7 @@ under the License.
 #include "StringTableLookup.h"
 
 #include <stdexcept>
+#include <limits>
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

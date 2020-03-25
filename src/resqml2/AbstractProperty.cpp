@@ -26,7 +26,7 @@ under the License.
 #include "SubRepresentation.h"
 #include "PropertySet.h"
 #include "RepresentationSetRepresentation.h"
-#include "../common/PropertyKind.h"
+#include "../eml2/PropertyKind.h"
 #include "AbstractLocal3dCrs.h"
 #include "../common/AbstractHdfProxy.h"
 #include "TimeSeries.h"
@@ -77,10 +77,10 @@ void AbstractProperty::loadTargetRelationships()
 	if (!isAssociatedToOneStandardEnergisticsPropertyKind())
 	{
 		dor = getPropertyKindDor();
-		COMMON_NS::PropertyKind* pk = getRepository()->getDataObjectByUuid<COMMON_NS::PropertyKind>(dor.getUuid());
+		EML2_NS::PropertyKind* pk = getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(dor.getUuid());
 		if (pk == nullptr) {
 			getRepository()->createPartial(dor);
-			pk = getRepository()->getDataObjectByUuid<COMMON_NS::PropertyKind>(dor.getUuid());
+			pk = getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(dor.getUuid());
 			if (pk == nullptr) {
 				throw invalid_argument("The DOR looks invalid.");
 			}
@@ -425,7 +425,7 @@ std::string AbstractProperty::getPropertyKindParentAsString() const
 	return getPropertyKind()->getParentAsString();
 }
 
-void AbstractProperty::setPropertyKind(COMMON_NS::PropertyKind* propKind)
+void AbstractProperty::setPropertyKind(EML2_NS::PropertyKind* propKind)
 {
 	if (propKind == nullptr) {
 		throw invalid_argument("The local property kind of this property cannot be null.");
@@ -480,9 +480,9 @@ COMMON_NS::DataObjectReference AbstractProperty::getPropertyKindDor() const
 	throw logic_error("Unrecognized RESQML version");
 }
 
-COMMON_NS::PropertyKind* AbstractProperty::getPropertyKind() const
+EML2_NS::PropertyKind* AbstractProperty::getPropertyKind() const
 {
-	return getRepository()->getDataObjectByUuid<COMMON_NS::PropertyKind>(getPropertyKindDor().getUuid());
+	return getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(getPropertyKindDor().getUuid());
 }
 
 bool AbstractProperty::hasRealizationIndex() const

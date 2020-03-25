@@ -654,7 +654,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 	unsigned long long strideInEachDimension[2] = { 1, (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) + ((getICellCount() + 1) - (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1)) };
 	unsigned long long blockSizeInEachDimension[2] = { blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1, blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1 };
 
-	std:string datasetPathInExternalFile;
+	std::string datasetPathInExternalFile;
 	COMMON_NS::AbstractHdfProxy* hdfProxy = getParameterDatasetPath(datasetPathInExternalFile);
 
 	hid_t dataset, filespace;
@@ -1118,7 +1118,7 @@ void IjkGridParametricRepresentation::loadPillarInformation(IjkGridParametricRep
 
 void IjkGridParametricRepresentation::getXyzPointsFromParametricPoints(double * xyzPoints) const
 {
-	std:string datasetPathInExternalFile;
+	std::string datasetPathInExternalFile;
 	COMMON_NS::AbstractHdfProxy* hdfProxy = getParameterDatasetPath(datasetPathInExternalFile);
 	std::unique_ptr<double[]> parameters(new double[getXyzPointCountOfPatch(0)]);
 	hdfProxy->readArrayNdOfDoubleValues(datasetPathInExternalFile, parameters.get());
@@ -1383,7 +1383,7 @@ gsoap_resqml2_0_1::resqml20__KDirection IjkGridParametricRepresentation::compute
 
 bool IjkGridParametricRepresentation::isNodeGeometryCompressed() const
 {
-	std:string datasetPathInExternalFile;
+	std::string datasetPathInExternalFile;
 	COMMON_NS::AbstractHdfProxy* hdfProxy = getParameterDatasetPath(datasetPathInExternalFile);
 	return hdfProxy->isCompressed(datasetPathInExternalFile);
 }

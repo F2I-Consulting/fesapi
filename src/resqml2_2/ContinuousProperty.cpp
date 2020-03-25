@@ -27,7 +27,7 @@ under the License.
 #include "../common/EnumStringMapper.h"
 
 #include "../resqml2/AbstractRepresentation.h"
-#include "../common/PropertyKind.h"
+#include "../eml2/PropertyKind.h"
 
 using namespace std;
 using namespace RESQML2_2_NS;
@@ -55,7 +55,7 @@ void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const st
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropKind)
 {
 	init(rep, guid, title, dimension, attachmentKind);
 
@@ -65,7 +65,7 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropKind)
 {
 	init(rep, guid, title, dimension, attachmentKind);
 

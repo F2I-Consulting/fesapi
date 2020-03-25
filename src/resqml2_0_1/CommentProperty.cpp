@@ -54,7 +54,7 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 }
 
 CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropKind)
 {
 	if (rep == nullptr) {
 		throw invalid_argument("The representation of this property values cannot be null.");
@@ -118,7 +118,7 @@ COMMON_NS::AbstractHdfProxy* CommentProperty::getValuesHdfProxyAndDatasetPathOfP
 	return getHdfProxyFromDataset(dataset);
 }
 
-bool CommentProperty::validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk)
+bool CommentProperty::validatePropertyKindAssociation(EML2_NS::PropertyKind* pk)
 {
 	if (pk == nullptr) {
 		throw invalid_argument("The property kind to validate cannot be null.");

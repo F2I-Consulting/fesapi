@@ -24,7 +24,7 @@ under the License.
 
 #include <hdf5.h>
 
-#include "../common/PropertyKind.h"
+#include "../eml2/PropertyKind.h"
 
 #include "AbstractRepresentation.h"
 #include "AbstractLocal3dCrs.h"

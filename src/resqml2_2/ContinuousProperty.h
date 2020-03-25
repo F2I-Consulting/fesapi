@@ -68,7 +68,7 @@ namespace RESQML2_2_NS
 		 * @param [in]	propKind	 	The property kind of these property values. It cannot be null.
 		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * propKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * propKind);
 
 		/**
 		 * Creates a continuous property which is of local unit of measure and property kind.
@@ -91,7 +91,7 @@ namespace RESQML2_2_NS
 		 * @param [in]	propKind	 	The property kind of these property values. It cannot be null.
 		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * propKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * propKind);
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
@@ -157,7 +157,7 @@ namespace RESQML2_2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setMaximumValue(double value, unsigned int index = 0) const;
 
-		bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk) override { return true; }
+		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) override { return true; }
 
 		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) override { return true; }
 

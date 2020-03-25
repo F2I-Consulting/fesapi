@@ -20,7 +20,7 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
-namespace COMMON_NS
+namespace EML2_NS
 {
 	class PropertyKind;
 }
@@ -282,7 +282,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	propKind	The local property kind to set to this property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setPropertyKind(COMMON_NS::PropertyKind* propKind);
+		DLL_IMPORT_OR_EXPORT void setPropertyKind(EML2_NS::PropertyKind* propKind);
 
 		/**
 		 * Gets the data object reference of the property kind associated to this property
@@ -301,7 +301,7 @@ namespace RESQML2_NS
 
 		 * @returns	A pointer to the property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* getPropertyKind() const;
+		DLL_IMPORT_OR_EXPORT EML2_NS::PropertyKind* getPropertyKind() const;
 
 		/**
 		 * Checks if it is allowed to associate a given property kind to this property.
@@ -310,7 +310,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if it is allowed, false if it is not.
 		 */
-		virtual bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk) = 0;
+		virtual bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) = 0;
 
 		/**
 		 * Checks if it is allowed to associate a given standard Energistics property kind to this property.

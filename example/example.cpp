@@ -95,6 +95,8 @@ under the License.
 #include "resqml2_2/ContinuousColorMap.h"
 #include "resqml2_2/SeismicWellboreFrameRepresentation.h"
 
+#include "eml2/PropertyKind.h"
+
 #include "witsml2_0/Well.h"
 #include "witsml2_0/Wellbore.h"
 #include "witsml2_0/Trajectory.h"
@@ -104,7 +106,6 @@ under the License.
 #include "witsml2_0/Log.h"
 #include "witsml2_0/ChannelSet.h"
 #include "witsml2_0/Channel.h"
-#include "witsml2_0/PropertyKind.h"
 
 #include "prodml2_1/FluidCharacterization.h"
 #include "prodml2_1/FrictionTheorySpecification.h"
@@ -138,7 +139,7 @@ RESQML2_NS::WellboreInterpretation* wellbore1Interp1 = nullptr;
 StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
 SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
 RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid = nullptr;
-COMMON_NS::PropertyKind* propType1 = nullptr;
+EML2_NS::PropertyKind* propType1 = nullptr;
 RESQML2_NS::DiscreteProperty* discreteProp1 = nullptr;
 RESQML2_0_1_NS::ContinuousProperty* contColMapContProp = nullptr;
 
@@ -219,8 +220,8 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 	witsmlWbGeom->setWellboreGeometrySectionTvdInterval(1, 0, 990, "d3ac5401-d3e7-4474-b846-070673b210ae", gsoap_eml2_1::eml21__LengthUom__m);
 
 	// Log
-	//COMMON_NS::PropertyKind* channelPk = pck->createPartial<WITSML2_0_NS::PropertyKind>("eac77e0f-d13a-4821-9a48-0c4b229ae06e", "My channel prop kind");
-	COMMON_NS::PropertyKind* channelPk = pck->createPropertyKind("eac77e0f-d13a-4821-9a48-0c4b229ae06e", "My channel prop kind", gsoap_eml2_1::eml21__QuantityClassKind__thermodynamic_x0020temperature);
+	//EML2_NS::PropertyKind* channelPk = pck->createPartial<WITSML2_0_NS::PropertyKind>("eac77e0f-d13a-4821-9a48-0c4b229ae06e", "My channel prop kind");
+	EML2_NS::PropertyKind* channelPk = pck->createPropertyKind("eac77e0f-d13a-4821-9a48-0c4b229ae06e", "My channel prop kind", gsoap_eml2_1::eml21__QuantityClassKind__thermodynamic_x0020temperature);
 	WITSML2_0_NS::Channel* channel = pck->createChannel(channelPk, "c3ff6f85-f111-4603-840a-ae8bdc46e0c8", "My channel",
 		"my mnemo", gsoap_eml2_1::eml21__UnitOfMeasure__K, gsoap_eml2_1::witsml20__EtpDataType__double_, gsoap_eml2_1::witsml20__ChannelStatus__closed, "Depth", "F2I-CONSULTING");
 	channel->pushBackChannelIndex(gsoap_eml2_1::witsml20__ChannelIndexType__measured_x0020depth, gsoap_eml2_1::eml21__UnitOfMeasure__m, "MD");
@@ -673,7 +674,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, COMMON_NS::Abstr
 	double prop1Values[16] = { 301, 302, 301, 302, 351, 352, 351, 352, 301, 302, 301, 302, 351, 352, 351, 352 };
 	contProp1->pushBackDoubleHdf5Array2dOfValues(prop1Values, 2, 8, hdfProxy);
 
-	COMMON_NS::PropertyKind * propType2 = pck->createPropertyKind("7372f8f6-b1fd-4263-b9a8-699d9cbf7da6", "propType2", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, propType1);
+	EML2_NS::PropertyKind * propType2 = pck->createPropertyKind("7372f8f6-b1fd-4263-b9a8-699d9cbf7da6", "propType2", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, propType1);
 	RESQML2_NS::ContinuousProperty* contProp2 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "d3efb337-19f8-4b91-8b4f-3698afe17f01", "Horizon1 Interp1 Grid2dRep Prop2", 1,
 		gsoap_eml2_3::resqml22__IndexableElement__nodes, gsoap_resqml2_0_1::resqml20__ResqmlUom__ft, propType2);
 	double prop2Values[8] = { 302, 302, 352, 352, 302, 302, 352, 352 };
@@ -1757,14 +1758,14 @@ void serializeActivities(COMMON_NS::DataObjectRepository * epcDoc)
 	* Activity Template
 	********************/
 
-	RESQML2_NS::ActivityTemplate* genericCreationActivityTemplate = epcDoc->createActivityTemplate("a41c63bf-78cb-454b-8018-c9df060c5cf3", "GenericCreationActivity");
+	EML2_NS::ActivityTemplate* genericCreationActivityTemplate = epcDoc->createActivityTemplate("a41c63bf-78cb-454b-8018-c9df060c5cf3", "GenericCreationActivity");
 	genericCreationActivityTemplate->pushBackParameter("CreationInput", true, false, 0, -1);
 	genericCreationActivityTemplate->pushBackParameter("CreationOutput", false, true, 1, -1);
 
 	/********************
 	* Activities
 	********************/
-	RESQML2_NS::Activity* pickingActivity = epcDoc->createActivity(genericCreationActivityTemplate, "", "Seismic picking");
+	EML2_NS::Activity* pickingActivity = epcDoc->createActivity(genericCreationActivityTemplate, "", "Seismic picking");
 	pickingActivity->pushBackParameter("CreationOutput", horizon1);
 	pickingActivity->pushBackParameter("CreationOutput", horizon1Interp1);
 	pickingActivity->pushBackParameter("CreationOutput", h1i1SingleGrid2dRep);
@@ -1772,15 +1773,15 @@ void serializeActivities(COMMON_NS::DataObjectRepository * epcDoc)
 	pickingActivity->pushBackParameter("CreationOutput", fault1Interp1);
 	pickingActivity->pushBackParameter("CreationOutput", f1i1PolyLineRep);
 
-	RESQML2_NS::Activity* h1triangulationActivity = epcDoc->createActivity(genericCreationActivityTemplate, "", "Triangulation");
+	EML2_NS::Activity* h1triangulationActivity = epcDoc->createActivity(genericCreationActivityTemplate, "", "Triangulation");
 	h1triangulationActivity->pushBackParameter("CreationInput", h1i1SingleGrid2dRep);
 	h1triangulationActivity->pushBackParameter("CreationOutput", h1i1triRep);
 
-	RESQML2_NS::Activity* f1TriangulationActivity1 = epcDoc->createActivity(genericCreationActivityTemplate, "", "Triangulation");
+	EML2_NS::Activity* f1TriangulationActivity1 = epcDoc->createActivity(genericCreationActivityTemplate, "", "Triangulation");
 	f1TriangulationActivity1->pushBackParameter("CreationInput", f1i1PolyLineRep);
 	f1TriangulationActivity1->pushBackParameter("CreationOutput", f1i1triRepSinglePatch);
 
-	RESQML2_NS::Activity* f1TriangulationActivity2 = epcDoc->createActivity(genericCreationActivityTemplate, "", "Triangulation");
+	EML2_NS::Activity* f1TriangulationActivity2 = epcDoc->createActivity(genericCreationActivityTemplate, "", "Triangulation");
 	f1TriangulationActivity2->pushBackParameter("CreationInput", f1i1PolyLineRep);
 	f1TriangulationActivity2->pushBackParameter("CreationOutput", f1i1triRep);
 
@@ -1882,7 +1883,7 @@ void deserializeActivity(COMMON_NS::AbstractObject const * resqmlObject)
 		cout << "Activities for object " << resqmlObject->getTitle() << endl;
 	for (size_t i = 0; i < resqmlObject->getActivitySet().size(); ++i)
 	{
-		RESQML2_NS::Activity const * activity = resqmlObject->getActivitySet()[i];
+		EML2_NS::Activity const * activity = resqmlObject->getActivitySet()[i];
 		cout << "Activity : " << activity->getTitle() << endl;
 		cout << "Activity Template : " << activity->getActivityTemplate()->getTitle() << endl;
 		for (unsigned int j = 0; j < activity->getActivityTemplate()->getParameterCount(); ++j)
@@ -1944,6 +1945,7 @@ bool serialize(const string & filePath)
 	COMMON_NS::EpcDocument pck(filePath);
 	COMMON_NS::DataObjectRepository repo;
 	repo.setDefaultStandard(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_2);
+	repo.setDefaultStandard(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3);
 
 	COMMON_NS::AbstractObject::setFormat("F2I-CONSULTING", "Fesapi Example", FESAPI_VERSION);
 

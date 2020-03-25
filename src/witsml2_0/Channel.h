@@ -51,7 +51,7 @@ namespace WITSML2_0_NS
 		 * @param 		  	timeDepth		  	Depth of the time.
 		 * @param 		  	loggingCompanyName	Name of the logging company.
 		 */
-		Channel(COMMON_NS::PropertyKind * propertyKind, 
+		Channel(EML2_NS::PropertyKind * propertyKind, 
 			const std::string & guid, const std::string & title,
 			const std::string & mnemonic, gsoap_eml2_1::eml21__UnitOfMeasure uom, gsoap_eml2_1::witsml20__EtpDataType dataType, gsoap_eml2_1::witsml20__ChannelStatus growingStatus,
 			const std::string & timeDepth, const std::string & loggingCompanyName);
@@ -89,7 +89,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	Null if it fails, else the property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* getPropertyKind() const;
+		DLL_IMPORT_OR_EXPORT EML2_NS::PropertyKind* getPropertyKind() const;
 
 		COMMON_NS::DataObjectReference getPropertyKindDor() const;
 

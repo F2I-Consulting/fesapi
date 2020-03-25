@@ -20,16 +20,14 @@ under the License.
 
 #include <stdexcept>
 
+#include "Activity.h"
+
 using namespace std;
-using namespace RESQML2_NS;
-using namespace gsoap_resqml2_0_1;
+using namespace EML2_NS;
 
 const char* ActivityTemplate::XML_TAG = "ActivityTemplate";
 
 std::vector<Activity *> ActivityTemplate::getActivityInstanceSet() const
 {
-	return getRepository()->getSourceObjects<Activity>(this);
+	return getRepository()->getSourceObjects<EML2_NS::Activity>(this);
 }
-
-void ActivityTemplate::loadTargetRelationships()
-{}

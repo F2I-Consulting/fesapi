@@ -76,7 +76,7 @@ namespace RESQML2_0_1_NS
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 */
 		CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * localPropKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropKind);
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
@@ -127,7 +127,7 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind() const;
 
-		bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk) override;
+		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) override;
 
 		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) override;
 

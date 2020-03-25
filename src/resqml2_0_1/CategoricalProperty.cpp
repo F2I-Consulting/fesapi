@@ -65,7 +65,7 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
-	RESQML2_NS::StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropKind)
+	RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropKind)
 {
 	if (rep == nullptr) {
 		throw invalid_argument("The representation of this property values cannot be null.");
@@ -95,7 +95,7 @@ COMMON_NS::DataObjectReference CategoricalProperty::getStringLookupDor() const
 	return COMMON_NS::DataObjectReference(static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1)->Lookup);
 }
 
-bool CategoricalProperty::validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk)
+bool CategoricalProperty::validatePropertyKindAssociation(EML2_NS::PropertyKind* pk)
 {
 	if (pk == nullptr) {
 		throw invalid_argument("The property kind to validate cannot be null.");

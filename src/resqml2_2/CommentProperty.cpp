@@ -25,14 +25,14 @@ under the License.
 #include "../common/EnumStringMapper.h"
 
 #include "../resqml2/AbstractRepresentation.h"
-#include "../common/PropertyKind.h"
+#include "../eml2/PropertyKind.h"
 
 using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
 CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * propKind)
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * propKind)
 {
 	if (dimension == 0) {
 		throw invalid_argument("The dimension cannot be zero.");

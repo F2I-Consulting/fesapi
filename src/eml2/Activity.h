@@ -21,14 +21,16 @@ under the License.
 #include "../common/AbstractObject.h"
 
 /** . */
-namespace RESQML2_NS
+namespace EML2_NS
 {
+	class ActivityTemplate;
+
 	/** Proxy class for an activity. */
 	class Activity : public COMMON_NS::AbstractObject
 	{
 	protected:
 		/** Default constructor */
-		Activity() : AbstractObject() {}
+		Activity() : COMMON_NS::AbstractObject() {}
 
 		/**
 		 * Constructor
@@ -36,6 +38,13 @@ namespace RESQML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		Activity(gsoap_resqml2_0_1::_resqml20__Activity* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
+		 * Constructor
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		Activity(gsoap_eml2_3::_eml23__Activity* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 
@@ -81,7 +90,7 @@ namespace RESQML2_NS
 		 * @param 	value	The value of the parameter to push back.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string title,
-			const LONG64 & value) = 0;
+			LONG64 value) = 0;
 
 		/**
 		 * Pushes back a RESQML object parameter in this instance. This parameter must exist in the
@@ -127,7 +136,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The parameter title.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual const std::string & getParameterTitle(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual const std::string & getParameterTitle(unsigned int index) const = 0;
 
 		/**
 		 * Gets the indices of all the parameters sharing a given title.
@@ -161,7 +170,7 @@ namespace RESQML2_NS
 		 * @returns	True if the parameter at position @p index is a floating point quantity parameter,
 		 * 			false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool isAFloatingPointQuantityParameter(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAFloatingPointQuantityParameter(unsigned int index) const = 0;
 
 		/**
 		 * Gets the values of all the floating point quantity parameters sharing a given title.
@@ -189,7 +198,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The floating point quantity value of the parameter at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual double getFloatingPointQuantityParameterValue(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getFloatingPointQuantityParameterValue(unsigned int index) const = 0;
 
 		/**
 		 * Queries if all of the parameters sharing a given title are integer quantity parameters.
@@ -214,7 +223,7 @@ namespace RESQML2_NS
 		 * @returns	True if the parameter at position @p index is an integer quantity parameter,
 		 * 			false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool isAnIntegerQuantityParameter(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAnIntegerQuantityParameter(unsigned int index) const = 0;
 
 		/**
 		 * Gets the values of all the integer quantity parameters sharing a given title.
@@ -242,7 +251,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The integer quantity value of the parameter at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getIntegerQuantityParameterValue(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual LONG64 getIntegerQuantityParameterValue(unsigned int index) const = 0;
 
 		/**
 		 * Queries if all of the parameters sharing a given title are string parameters.
@@ -266,7 +275,7 @@ namespace RESQML2_NS
 		 * @returns	True if the parameter at position @p index is a string parameter,
 		 * 			false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool isAStringParameter(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAStringParameter(unsigned int index) const = 0;
 
 		/**
 		 * Gets the values of all the string parameters sharing a given title.
@@ -293,7 +302,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The string value of the parameter at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual const std::string & getStringParameterValue(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual const std::string & getStringParameterValue(unsigned int index) const = 0;
 
 		/**
 		 * Queries if all of the parameters sharing a given title are RESQML object parameters.
@@ -317,7 +326,7 @@ namespace RESQML2_NS
 		 * @returns	True if the parameter at position @p index is a RESQML object parameter,
 		 * 			false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool isAResqmlObjectParameter(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAResqmlObjectParameter(unsigned int index) const = 0;
 
 		/**
 		 * Gets the values of all the RESQML object parameters sharing a given title.
@@ -345,14 +354,14 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The RESQML object value of the parameter at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual AbstractObject* getResqmlObjectParameterValue(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual AbstractObject* getResqmlObjectParameterValue(unsigned int index) const = 0;
 
 		/**
 		 * Sets the activity template of this activity.
 		 *
 		 * @param [in]	activityTemplate	If non-null, the activity template.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setActivityTemplate(class ActivityTemplate* activityTemplate) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setActivityTemplate(ActivityTemplate* activityTemplate) = 0;
 
 		/**
 		 * Gets the data object reference of the activity template of this activity.
@@ -366,7 +375,7 @@ namespace RESQML2_NS
 		 * 
 		 * @returns The activity template of this activity.
 		 */
-		DLL_IMPORT_OR_EXPORT class ActivityTemplate* getActivityTemplate() const;
+		DLL_IMPORT_OR_EXPORT ActivityTemplate* getActivityTemplate() const;
 
 		/**
 		 * Gets all the RESQML objects which are either input or output of this activity. That is to say

@@ -95,6 +95,9 @@ under the License.
 #include "../resqml2_0_1/Activity.h"
 #include "../resqml2_0_1/ActivityTemplate.h"
 
+#include "../eml2_3/Activity.h"
+#include "../eml2_3/ActivityTemplate.h"
+
 #include "../resqml2_2/CategoricalProperty.h"
 #include "../resqml2_2/CommentProperty.h"
 #include "../resqml2_2/ContinuousProperty.h"
@@ -109,6 +112,8 @@ under the License.
 #include "../resqml2_2/UnstructuredGridRepresentation.h"
 #include "../resqml2_2/WellboreFrameRepresentation.h"
 
+#include "../eml2_1/PropertyKind.h"
+
 #include "../witsml2_0/Well.h"
 #include "../witsml2_0/Wellbore.h"
 #include "../witsml2_0/Trajectory.h"
@@ -118,7 +123,6 @@ under the License.
 #include "../witsml2_0/Log.h"
 #include "../witsml2_0/ChannelSet.h"
 #include "../witsml2_0/Channel.h"
-#include "../witsml2_0/PropertyKind.h"
 
 #include "../prodml2_1/FluidSystem.h"
 #include "../prodml2_1/FluidCharacterization.h"
@@ -265,6 +269,7 @@ DataObjectRepository::DataObjectRepository() :
 	warnings(),
 	propertyKindMapper(nullptr), defaultHdfProxy(nullptr), defaultCrs(nullptr),
 	hdfProxyFactory(new COMMON_NS::HdfProxyFactory()),
+	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3),
 	defaultProdmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::PRODML2_1),
 	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_2),
 	defaultWitsmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::WITSML2_0) {}
@@ -277,6 +282,7 @@ DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappi
 	warnings(),
 	propertyKindMapper(new PropertyKindMapper(this)), defaultHdfProxy(nullptr), defaultCrs(nullptr),
 	hdfProxyFactory(new COMMON_NS::HdfProxyFactory()),
+	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3),
 	defaultProdmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::PRODML2_1),
 	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_2),
 	defaultWitsmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::WITSML2_0)
@@ -621,7 +627,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectR
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Well)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Wellbore)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Trajectory)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::PropertyKind)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(EML2_1_NS::PropertyKind)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Log)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::ChannelSet)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Channel)
@@ -1263,8 +1269,8 @@ RESQML2_0_1_NS::PropertyKind* DataObjectRepository::createPropertyKind201(const 
 	return new RESQML2_0_1_NS::PropertyKind(this, guid, title, namingSystem, uom, parentEnergisticsPropertyKind);
 }
 
-COMMON_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
-	const std::string & namingSystem, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * parentPropType)
+EML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
+	const std::string & namingSystem, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, EML2_NS::PropertyKind * parentPropType)
 {
 	return new RESQML2_0_1_NS::PropertyKind(guid, title, namingSystem, uom, parentPropType);
 }
@@ -1275,16 +1281,16 @@ RESQML2_0_1_NS::PropertyKind* DataObjectRepository::createPropertyKind201(const 
 	return new RESQML2_0_1_NS::PropertyKind(this, guid, title, namingSystem, nonStandardUom, parentEnergisticsPropertyKind);
 }
 
-COMMON_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
-	const std::string & namingSystem, const std::string & nonStandardUom, COMMON_NS::PropertyKind * parentPropType)
+EML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
+	const std::string & namingSystem, const std::string & nonStandardUom, EML2_NS::PropertyKind * parentPropType)
 {
 	return new RESQML2_0_1_NS::PropertyKind(guid, title, namingSystem, nonStandardUom, parentPropType);
 }
 
-COMMON_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
-	gsoap_eml2_1::eml21__QuantityClassKind quantityClass, bool isAbstract, COMMON_NS::PropertyKind* parentPropertyKind)
+EML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
+	gsoap_eml2_1::eml21__QuantityClassKind quantityClass, bool isAbstract, EML2_NS::PropertyKind* parentPropertyKind)
 {
-	return new WITSML2_0_NS::PropertyKind(this, guid, title, quantityClass, isAbstract, parentPropertyKind);
+	return new EML2_1_NS::PropertyKind(this, guid, title, quantityClass, isAbstract, parentPropertyKind);
 }
 
 RESQML2_NS::PropertySet* DataObjectRepository::createPropertySet(const std::string & guid, const std::string & title,
@@ -1300,7 +1306,7 @@ RESQML2_0_1_NS::CommentProperty* DataObjectRepository::createCommentProperty201(
 }
 
 RESQML2_NS::CommentProperty* DataObjectRepository::createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * localPropType)
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropType)
 {
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
@@ -1319,7 +1325,7 @@ RESQML2_0_1_NS::ContinuousProperty* DataObjectRepository::createContinuousProper
 }
 
 RESQML2_NS::ContinuousProperty* DataObjectRepository::createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * localPropType)
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropType)
 {
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
@@ -1338,7 +1344,7 @@ RESQML2_0_1_NS::ContinuousProperty* DataObjectRepository::createContinuousProper
 }
 
 RESQML2_NS::ContinuousProperty* DataObjectRepository::createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropType)
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropType)
 {
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
@@ -1357,7 +1363,7 @@ RESQML2_0_1_NS::DiscreteProperty* DataObjectRepository::createDiscreteProperty20
 }
 
 RESQML2_NS::DiscreteProperty* DataObjectRepository::createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * localPropType)
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropType)
 {
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
@@ -1378,7 +1384,7 @@ RESQML2_0_1_NS::CategoricalProperty* DataObjectRepository::createCategoricalProp
 
 RESQML2_NS::CategoricalProperty* DataObjectRepository::createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
-	RESQML2_NS::StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropType)
+	RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropType)
 {
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
@@ -1394,14 +1400,29 @@ RESQML2_NS::CategoricalProperty* DataObjectRepository::createCategoricalProperty
 //************* ACTIVITIES ***********
 //************************************
 
-RESQML2_NS::ActivityTemplate* DataObjectRepository::createActivityTemplate(const std::string & guid, const std::string & title)
+EML2_NS::ActivityTemplate* DataObjectRepository::createActivityTemplate(const std::string & guid, const std::string & title)
 {
-	return new ActivityTemplate(this, guid, title);
+	switch (defaultEmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::EML2_0:
+		return new RESQML2_0_1_NS::ActivityTemplate(this, guid, title);
+	case DataObjectRepository::EnergisticsStandard::EML2_3:
+		return new EML2_3_NS::ActivityTemplate(this, guid, title);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
-RESQML2_NS::Activity* DataObjectRepository::createActivity(RESQML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title)
+EML2_NS::Activity* DataObjectRepository::createActivity(EML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title)
 {
-	return new Activity(activityTemplate, guid, title);
+	switch (defaultEmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::EML2_0:
+		return new Activity(activityTemplate, guid, title);
+	case DataObjectRepository::EnergisticsStandard::EML2_3:
+		return new EML2_3_NS::Activity(activityTemplate, guid, title);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
+	
 }
 
 //************************************
@@ -1484,7 +1505,7 @@ WITSML2_0_NS::ChannelSet* DataObjectRepository::createChannelSet(const std::stri
 	return new WITSML2_0_NS::ChannelSet(this, guid, title);
 }
 
-WITSML2_0_NS::Channel* DataObjectRepository::createChannel(COMMON_NS::PropertyKind * propertyKind,
+WITSML2_0_NS::Channel* DataObjectRepository::createChannel(EML2_NS::PropertyKind * propertyKind,
 	const std::string & guid, const std::string & title,
 	const std::string & mnemonic, gsoap_eml2_1::eml21__UnitOfMeasure uom, gsoap_eml2_1::witsml20__EtpDataType dataType, gsoap_eml2_1::witsml20__ChannelStatus growingStatus,
 	const std::string & timeDepth, const std::string & loggingCompanyName)
@@ -2233,7 +2254,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::getEml2_3WrapperFromGsoapContex
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;
 	if CHECK_AND_GET_EML_2_3_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(COMMON_NS, GraphicalInformationSet, gsoap_eml2_3)
-		return wrapper;
+	else if CHECK_AND_GET_EML_2_3_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, Activity, gsoap_eml2_3)
+	else if CHECK_AND_GET_EML_2_3_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, ActivityTemplate, gsoap_eml2_3)
+		
+	return wrapper;
 }
 
 

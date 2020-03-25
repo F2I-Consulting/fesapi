@@ -21,7 +21,7 @@ under the License.
 #include "../eml2/ActivityTemplate.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace EML2_3_NS
 {
 	/** An activity template. */
 	class ActivityTemplate : public EML2_NS::ActivityTemplate
@@ -53,7 +53,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		ActivityTemplate(gsoap_resqml2_0_1::_resqml20__ActivityTemplate* fromGsoap) : EML2_NS::ActivityTemplate(fromGsoap) {}
+		ActivityTemplate(gsoap_eml2_3::_eml23__ActivityTemplate* fromGsoap) : EML2_NS::ActivityTemplate(fromGsoap) {}
 
 		/** Destructor */
 		virtual ~ActivityTemplate() {}
@@ -221,13 +221,11 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT LONG64 getParameterMaxOccurences(const std::string & paramTitle) const;
 
 		/**
-		 * ******************************************************************
-		 * ******************** MANDATORY FOR GsoapWrapper ******************
-		 * ******************************************************************
+		 * Gets the XML namespace for the tags for the XML serialization of this instance
 		 *
-		 * @returns	The XML namespace version.
+		 * @returns	The XML namespace.
 		 */		
-		DLL_IMPORT_OR_EXPORT std::string getXmlNamespaceVersion() const;
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const;
 
 	private:
 
@@ -238,6 +236,6 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	Null if it fails, else the parameter from title.
 		 */
-		gsoap_resqml2_0_1::resqml20__ParameterTemplate* getParameterFromTitle(const std::string & paramTitle) const;
+		gsoap_eml2_3::eml23__ParameterTemplate* getParameterFromTitle(const std::string & paramTitle) const;
 	};
 }

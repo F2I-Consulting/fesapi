@@ -22,7 +22,7 @@ under the License.
 
 #include <stdexcept>
 
-#include "../common/PropertyKind.h"
+#include "../eml2/PropertyKind.h"
 
 /** . */
 namespace WITSML2_0_NS
@@ -100,9 +100,9 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	Null if it fails, else the property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* getPropertyKind() const
+		DLL_IMPORT_OR_EXPORT EML2_NS::PropertyKind* getPropertyKind() const
 		{
-			return getRepository()->template getDataObjectByUuid<COMMON_NS::PropertyKind>(getPropertyKindDor()->getUuid());
+			return getRepository()->template getDataObjectByUuid<EML2_NS::PropertyKind>(getPropertyKindDor()->getUuid());
 		}
 
 		/**
@@ -112,7 +112,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @param [in,out]	propKind	If non-null, the property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT void setPropertyKind(COMMON_NS::PropertyKind* propKind)
+		DLL_IMPORT_OR_EXPORT void setPropertyKind(EML2_NS::PropertyKind* propKind)
 		{
 			if (propKind == nullptr) {
 				throw std::invalid_argument("Cannot set a null witsml propKind to a witsml log/channelset/channel");

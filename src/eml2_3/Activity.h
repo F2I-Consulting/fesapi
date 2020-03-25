@@ -21,7 +21,7 @@ under the License.
 #include "../eml2/Activity.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace EML2_3_NS
 {
 	/** An activity. */
 	class Activity : public EML2_NS::Activity
@@ -59,7 +59,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		Activity(gsoap_resqml2_0_1::_resqml20__Activity* fromGsoap) : EML2_NS::Activity(fromGsoap) {}
+		Activity(gsoap_eml2_3::_eml23__Activity* fromGsoap) : EML2_NS::Activity(fromGsoap) {}
 
 		/** Destructor */
 		~Activity() {}
@@ -316,11 +316,11 @@ namespace RESQML2_0_1_NS
 		COMMON_NS::DataObjectReference getActivityTemplateDor() const;
 
 		/**
-		 * Gets XML namespace version
+		 * Gets XML namespace
 		 *
-		 * @returns	The XML namespace version.
+		 * @returns	The XML namespace.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getXmlNamespaceVersion() const;
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const;
 
 	private:
 
@@ -331,6 +331,6 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	Null if it fails, else the parameter from title.
 		 */
-		std::vector<gsoap_resqml2_0_1::resqml20__AbstractActivityParameter*> getParameterFromTitle(const std::string & paramTitle) const;
+		std::vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> getParameterFromTitle(const std::string & paramTitle) const;
 	};
 }

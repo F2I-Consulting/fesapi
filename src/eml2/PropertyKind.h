@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractObject.h"
+#include "../common/AbstractObject.h"
 
-namespace COMMON_NS
+namespace EML2_NS
 {
 	/** Proxy class for property kinds. */
 	class PropertyKind : public COMMON_NS::AbstractObject

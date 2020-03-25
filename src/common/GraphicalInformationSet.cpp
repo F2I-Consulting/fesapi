@@ -23,7 +23,7 @@ under the License.
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractRepresentation.h"
 #include "../resqml2/AbstractValuesProperty.h"
-#include "PropertyKind.h"
+#include "../eml2/PropertyKind.h"
 #include "../resqml2_0_1/WellboreMarker.h"
 #include "../resqml2_2/AbstractColorMap.h"
 #include "../resqml2_2/DiscreteColorMap.h"
@@ -477,7 +477,7 @@ void GraphicalInformationSet::setDiscreteColorMap(AbstractObject* targetObject, 
 	}
 
 	if ((dynamic_cast<AbstractValuesProperty*>(targetObject) == nullptr) &&
-		(dynamic_cast<PropertyKind*>(targetObject) == nullptr)) {
+		(dynamic_cast<EML2_NS::PropertyKind*>(targetObject) == nullptr)) {
 		throw invalid_argument("The object must be a property or property kind.");
 	}
 
@@ -566,7 +566,7 @@ void GraphicalInformationSet::setContinuousColorMap(AbstractObject* targetObject
 	}
 
 	if ((dynamic_cast<AbstractValuesProperty const*>(targetObject) == nullptr) &&
-		(dynamic_cast<PropertyKind const*>(targetObject) == nullptr)) {
+		(dynamic_cast<EML2_NS::PropertyKind const*>(targetObject) == nullptr)) {
 		throw invalid_argument("The object must be a property or property kind.");
 	}
 

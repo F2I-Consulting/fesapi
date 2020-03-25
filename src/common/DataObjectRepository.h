@@ -33,6 +33,13 @@ under the License.
 #define DLL_IMPORT_OR_EXPORT
 #endif
 
+namespace EML2_NS
+{
+	class Activity;
+	class ActivityTemplate;
+	class PropertyKind;
+}
+
 namespace RESQML2_NS
 {
 	class AbstractFeature;
@@ -41,8 +48,6 @@ namespace RESQML2_NS
 	class AbstractLocal3dCrs;
 	class AbstractOrganizationInterpretation;
 	class AbstractRepresentation;
-	class Activity;
-	class ActivityTemplate;
 	class CategoricalProperty;
 	class CommentProperty;
 	class ContinuousProperty;
@@ -68,9 +73,6 @@ namespace RESQML2_NS
 
 namespace RESQML2_0_1_NS
 {
-	class Activity;
-	class ActivityTemplate;
-	class PropertyKind;
 	class PropertyKindMapper;
 	class CategoricalProperty;
 	class CommentProperty;
@@ -109,6 +111,7 @@ namespace RESQML2_0_1_NS
 	class SealedSurfaceFrameworkRepresentation;
 	class SealedVolumeFrameworkRepresentation;
 	class PropertySet;
+	class PropertyKind;
 	class AbstractGridRepresentation;
 	class OrganizationFeature;
 	class StratigraphicOccurrenceInterpretation;
@@ -153,7 +156,6 @@ namespace COMMON_NS
 	class AbstractObject;
 	class AbstractHdfProxy;
 	class HdfProxyFactory;
-	class PropertyKind;
 	class GraphicalInformationSet;
 
 	/**
@@ -191,9 +193,13 @@ namespace COMMON_NS
 		*/
 		enum class EnergisticsStandard : std::int8_t {
 			RESQML2_0_1 = 0,
-			WITSML2_0 = 1,
-			PRODML2_1 = 2,
-			RESQML2_2 = 3
+			EML2_0 = 1,
+			WITSML2_0 = 2,
+			EML2_1 = 3,
+			PRODML2_1 = 4,
+			EML2_2 = 5,
+			RESQML2_2 = 6,
+			EML2_3 = 7
 		};
 
 		/**
@@ -215,10 +221,22 @@ namespace COMMON_NS
 				defaultResqmlVersion = version; break;
 			case EnergisticsStandard::WITSML2_0:
 				defaultWitsmlVersion = version; break;
+			case EnergisticsStandard::EML2_0:
+			case EnergisticsStandard::EML2_1:
+			case EnergisticsStandard::EML2_2:
+			case EnergisticsStandard::EML2_3:
+				defaultEmlVersion = version; break;
 			default :
 				throw std::invalid_argument("Unrecognized Energistics standard.");
 			}
 		}
+
+		/**
+		* Gets the default EML version used when creating a EML data object.
+		*
+		* @returns The default EML version.
+		*/
+		EnergisticsStandard getDefaultEmlVersion() const { return defaultEmlVersion; }
 
 		/**
 		* Gets the default PRODML version used when creating a PRODML data object.
@@ -2468,8 +2486,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * parentPropType);
+		DLL_IMPORT_OR_EXPORT EML2_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
+			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, EML2_NS::PropertyKind * parentPropType);
 
 		/**
 		 * Creates a property kind into this repository.
@@ -2506,8 +2524,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const std::string & nonStandardUom, COMMON_NS::PropertyKind * parentPropType);
+		DLL_IMPORT_OR_EXPORT EML2_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
+			const std::string & namingSystem, const std::string & nonStandardUom, EML2_NS::PropertyKind * parentPropType);
 
 		/**
 		 * Creates an EML2.1 property kind into this repository
@@ -2525,8 +2543,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			gsoap_eml2_1::eml21__QuantityClassKind quantityClass, bool isAbstract = false, COMMON_NS::PropertyKind* parentPropertyKind = nullptr);
+		DLL_IMPORT_OR_EXPORT EML2_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
+			gsoap_eml2_1::eml21__QuantityClassKind quantityClass, bool isAbstract = false, EML2_NS::PropertyKind* parentPropertyKind = nullptr);
 
 		/**
 		 * Creates a property set into this repository
@@ -2593,7 +2611,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new comment property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * localPropType);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropType);
 
 		/**
 		 * Creates a continuous property (which is of well known Energistics unit of measure and
@@ -2651,7 +2669,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new continuous property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * localPropType);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropType);
 
 		/**
 		 * Creates a continuous property (which is of a local unit of measure and a well known property
@@ -2707,7 +2725,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new continuous property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropType);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropType);
 
 		/**
 		 * Creates a discrete property (which is of a well known Energistics property kind) into this
@@ -2755,7 +2773,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new discrete property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind * localPropType);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropType);
 
 		/**
 		 * Creates a categorical property (which is of a standard Energistics property kind) into this
@@ -2809,7 +2827,7 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
-			RESQML2_NS::StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropType);
+			RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropType);
 
 		//************* ACTIVITIES ***********
 
@@ -2821,7 +2839,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new activity template.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::ActivityTemplate* createActivityTemplate(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT EML2_NS::ActivityTemplate* createActivityTemplate(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates an activity into this repository
@@ -2834,7 +2852,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new activity.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::Activity* createActivity(RESQML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT EML2_NS::Activity* createActivity(EML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title);
 
 		//*************** WITSML *************
 
@@ -3031,7 +3049,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new channel.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Channel* createChannel(COMMON_NS::PropertyKind * propertyKind,
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Channel* createChannel(EML2_NS::PropertyKind * propertyKind,
 			const std::string & guid, const std::string & title,
 			const std::string & mnemonic, gsoap_eml2_1::eml21__UnitOfMeasure uom, gsoap_eml2_1::witsml20__EtpDataType dataType, gsoap_eml2_1::witsml20__ChannelStatus growingStatus,
 			const std::string & timeDepth, const std::string & loggingCompanyName);
@@ -3169,6 +3187,7 @@ namespace COMMON_NS
 
 		COMMON_NS::HdfProxyFactory* hdfProxyFactory;
 
+		EnergisticsStandard defaultEmlVersion;
 		EnergisticsStandard defaultProdmlVersion;
 		EnergisticsStandard defaultResqmlVersion;
 		EnergisticsStandard defaultWitsmlVersion;

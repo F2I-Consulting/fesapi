@@ -21,11 +21,11 @@ under the License.
 #include <stdexcept>
 
 using namespace std;
-using namespace WITSML2_0_NS;
+using namespace EML2_1_NS;
 using namespace gsoap_eml2_1;
 
 PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-	gsoap_eml2_1::eml21__QuantityClassKind quantityClass, bool isAbstract, COMMON_NS::PropertyKind* parentPropertyKind)
+	gsoap_eml2_1::eml21__QuantityClassKind quantityClass, bool isAbstract, EML2_NS::PropertyKind* parentPropertyKind)
 {
 	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be null.");
@@ -39,13 +39,13 @@ PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::st
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	if (parentPropertyKind == nullptr) {
-		parentPropertyKind = repo->createPartial<WITSML2_0_NS::PropertyKind>("a48c9c25-1e3a-43c8-be6a-044224cc69cb", "property");
+		parentPropertyKind = repo->createPartial<EML2_1_NS::PropertyKind>("a48c9c25-1e3a-43c8-be6a-044224cc69cb", "property");
 	}
 
 	setParentPropertyKind(parentPropertyKind);
 }
 
-void PropertyKind::setXmlParentPropertyKind(COMMON_NS::PropertyKind* parentPropertyKind)
+void PropertyKind::setXmlParentPropertyKind(EML2_NS::PropertyKind* parentPropertyKind)
 {
 	static_cast<eml21__PropertyKind*>(gsoapProxy2_1)->Parent = parentPropertyKind->newEmlReference();
 }
@@ -76,9 +76,9 @@ bool PropertyKind::isParentPartial() const
 		return false;
 	}
 
-	COMMON_NS::PropertyKind* parentPk = getParentPropertyKind();
+	EML2_NS::PropertyKind* parentPk = getParentPropertyKind();
 	while (parentPk != nullptr && !parentPk->isPartial()) {
-		parentPk = static_cast<WITSML2_0_NS::PropertyKind*>(parentPk)->getParentPropertyKind();
+		parentPk = static_cast<EML2_1_NS::PropertyKind*>(parentPk)->getParentPropertyKind();
 	}
 
 	return parentPk != nullptr;

@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../common/PropertyKind.h"
+#include "../eml2/PropertyKind.h"
 
 /** . */
-namespace WITSML2_0_NS
+namespace EML2_1_NS
 {
 	/** A property kind. */
-	class PropertyKind : public COMMON_NS::PropertyKind
+	class PropertyKind : public EML2_NS::PropertyKind
 	{
 	public:
 
@@ -35,7 +35,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT PropertyKind(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::PropertyKind(partialObject) {}
+		DLL_IMPORT_OR_EXPORT PropertyKind(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EML2_NS::PropertyKind(partialObject) {}
 
 		/**
 		 * Creates a local property type which uses a standard uom and which derives from a standard
@@ -56,14 +56,14 @@ namespace WITSML2_0_NS
 		 * 										kind called "property".
 		 */
 		PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			gsoap_eml2_1::eml21__QuantityClassKind quantityClass, bool isAbstract = false, COMMON_NS::PropertyKind* parentPropertyKind = nullptr);
+			gsoap_eml2_1::eml21__QuantityClassKind quantityClass, bool isAbstract = false, EML2_NS::PropertyKind* parentPropertyKind = nullptr);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		PropertyKind(gsoap_eml2_1::eml21__PropertyKind* fromGsoap) :COMMON_NS::PropertyKind(fromGsoap) {}
+		PropertyKind(gsoap_eml2_1::eml21__PropertyKind* fromGsoap) :EML2_NS::PropertyKind(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~PropertyKind() {}
@@ -105,7 +105,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @param [in,out]	parentPropertyKind	If non-null, the parent property kind.
 		 */
-		void setXmlParentPropertyKind(COMMON_NS::PropertyKind* parentPropertyKind);
+		void setXmlParentPropertyKind(EML2_NS::PropertyKind* parentPropertyKind);
 
 		/**
 		 * Gets the parent property kind

@@ -25,7 +25,7 @@ under the License.
 
 #include "../common/AbstractHdfProxy.h"
 #include "../common/EnumStringMapper.h"
-#include "../common/PropertyKind.h"
+#include "../eml2/PropertyKind.h"
 
 #include "../tools/Statistics.h"
 #include "../resqml2/AbstractRepresentation.h"
@@ -322,7 +322,7 @@ void DiscreteProperty::pushBackLongHdf5ArrayOfValues(
 	getRepository()->addRelationship(this, proxy);
 
 	if (minimumValue != nullptr && maximumValue != nullptr) {
-		const int elementCount = getElementCountPerValue();
+		const unsigned int elementCount = getElementCountPerValue();
 		for (size_t propIndex = 0; propIndex < elementCount; ++propIndex) {
 			setMinimumValue(getMinimumValueSize() > propIndex 
 					? (getMinimumValue(propIndex) > minimumValue[propIndex] ? minimumValue[propIndex] : getMinimumValue(propIndex))
@@ -347,9 +347,7 @@ void DiscreteProperty::setValuesOfLongHdf5ArrayOfValues(
 		offsetInEachDimension, numArrayDimensions, proxy, patchIndex);
 
 	if (computeMinMax) {
-		gsoap_resqml2_0_1::_resqml20__DiscreteProperty* prop = static_cast<gsoap_resqml2_0_1::_resqml20__DiscreteProperty*>(gsoapProxy2_0_1);
-
-		const int elementCount = getElementCountPerValue();
+		const unsigned int elementCount = getElementCountPerValue();
 		ULONG64 nValues = numValuesInEachDimension[0];
 		//If count > 1, the last (fastest) dimension has the number of properties per indexable element of the representation.
 		for (unsigned int dim = 1; dim < (elementCount == 1 ? numArrayDimensions : numArrayDimensions - 1); ++dim) {

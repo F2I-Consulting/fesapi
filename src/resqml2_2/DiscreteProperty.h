@@ -58,7 +58,7 @@ namespace RESQML2_2_NS
 		 * @param [in]	propKind	 	The property kind of these property values. It cannot be null.
 		 */
 		DiscreteProperty(RESQML2_NS::AbstractRepresentation* rep, const std::string& guid, const std::string& title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, COMMON_NS::PropertyKind* propKind);
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind* propKind);
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
@@ -148,7 +148,7 @@ namespace RESQML2_2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setMaximumValue(LONG64 value, unsigned int index = 0) const;
 
-		bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk) override { return true; }
+		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) override { return true; }
 
 		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) override { return true; }
 

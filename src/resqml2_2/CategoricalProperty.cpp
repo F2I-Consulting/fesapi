@@ -25,7 +25,7 @@ under the License.
 
 #include "../common/AbstractHdfProxy.h"
 #include "../common/EnumStringMapper.h"
-#include "../common/PropertyKind.h"
+#include "../eml2/PropertyKind.h"
 
 #include "../resqml2/AbstractRepresentation.h"
 #include "../resqml2/StringTableLookup.h"
@@ -36,7 +36,7 @@ using namespace gsoap_eml2_3;
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
-	RESQML2_NS::StringTableLookup* strLookup, COMMON_NS::PropertyKind * propKind)
+	RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * propKind)
 {
 	if (strLookup == nullptr) {
 		throw invalid_argument("The string lookup table cannot be null.");

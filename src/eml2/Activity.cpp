@@ -24,7 +24,7 @@ under the License.
 #include <algorithm>
 
 using namespace std;
-using namespace RESQML2_NS;
+using namespace EML2_NS;
 
 const char* Activity::XML_TAG = "Activity";
 
@@ -47,16 +47,16 @@ std::vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectSet() const
 
 ActivityTemplate* Activity::getActivityTemplate() const
 {
-	return getRepository()->getDataObjectByUuid<RESQML2_NS::ActivityTemplate>(getActivityTemplateDor().getUuid());
+	return getRepository()->getDataObjectByUuid<EML2_NS::ActivityTemplate>(getActivityTemplateDor().getUuid());
 }
 
 void Activity::loadTargetRelationships()
 {
 	COMMON_NS::DataObjectReference dor = getActivityTemplateDor();
-	RESQML2_NS::ActivityTemplate* targetObj = getRepository()->getDataObjectByUuid<ActivityTemplate>(dor.getUuid());
+	EML2_NS::ActivityTemplate* targetObj = getRepository()->getDataObjectByUuid<EML2_NS::ActivityTemplate>(dor.getUuid());
 	if (targetObj == nullptr) { // partial transfer
 		getRepository()->createPartial(dor);
-		targetObj = getRepository()->getDataObjectByUuid<ActivityTemplate>(dor.getUuid());
+		targetObj = getRepository()->getDataObjectByUuid<EML2_NS::ActivityTemplate>(dor.getUuid());
 		if (targetObj == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
 		}
