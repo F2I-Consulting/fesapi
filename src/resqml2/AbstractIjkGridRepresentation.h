@@ -446,7 +446,7 @@ namespace RESQML2_NS
 		 * @param [in,out]	enabledCells	If non-null, the enabled cells.
 		 * @param [in,out]	proxy			(Optional) If non-null, the proxy.
 		 */
-		DLL_IMPORT_OR_EXPORT void setEnabledCells(unsigned char* enabledCells, COMMON_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void setEnabledCells(unsigned char* enabledCells, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Load the split information into memory to speed up processes. Be aware that you must unload

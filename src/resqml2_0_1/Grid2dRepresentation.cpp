@@ -23,7 +23,7 @@ under the License.
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "SeismicLatticeFeature.h"
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 #include "LocalDepth3dCrs.h"
 
 using namespace std;
@@ -97,7 +97,7 @@ void Grid2dRepresentation::getZValues(double* values) const
 		resqml20__AbstractDoubleArray* zValues = static_cast<resqml20__Point3dZValueArray*>(rep->Grid2dPatch->Geometry->Points)->ZValues;
 		if (zValues->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(zValues)->Values;
-			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 			hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values);
 		}
 		else {
@@ -497,7 +497,7 @@ void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 		}
 		else if (arrayLatticeOfPoints3d->Offset[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Values;
-			COMMON_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
+			EML2_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
@@ -570,7 +570,7 @@ void Grid2dRepresentation::getISpacing(double* const iSpacings) const
 		}
 		else if (arrayLatticeOfPoints3d->Offset[1]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(arrayLatticeOfPoints3d->Offset[1]->Spacing)->Values;
-			COMMON_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
+			EML2_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
@@ -641,7 +641,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfLatticePoints3d(
 
 void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 		double * zValues,
-		unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy * proxy,
+		unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy * proxy,
 		Grid2dRepresentation * supportingGrid2dRepresentation, RESQML2_NS::AbstractLocal3dCrs * localCrs,
 		unsigned int startIndexI, unsigned int startIndexJ,
 		int indexIncrementI, int indexIncrementJ)
@@ -673,7 +673,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 
 void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 				double * zValues,
-				unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy * proxy,
+				unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy * proxy,
 				double originX, double originY, double originZ,
 				double offsetIX, double offsetIY, double offsetIZ, double spacingI,
 				double offsetJX, double offsetJY, double offsetJZ, double spacingJ, RESQML2_NS::AbstractLocal3dCrs * localCrs)

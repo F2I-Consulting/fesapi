@@ -303,7 +303,7 @@ namespace RESQML2_NS
 		 * 										corresponding to the element indices. The count must be
 		 * 										elementCount.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 elementCount, ULONG64* elementIndices, COMMON_NS::AbstractHdfProxy* proxy, short* supportingRepIndices = nullptr) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 elementCount, ULONG64* elementIndices, EML2_NS::AbstractHdfProxy* proxy, short* supportingRepIndices = nullptr) = 0;
 		
 		/**
 		 * Pushes back a new patch in this sub-representation which is constituted by means of pairwise
@@ -324,7 +324,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind0, gsoap_eml2_3::resqml22__IndexableElement elementKind1,
 			ULONG64 elementCount,
 			ULONG64 * elementIndices0, ULONG64 * elementIndices1,
-			COMMON_NS::AbstractHdfProxy* proxy) = 0;
+			EML2_NS::AbstractHdfProxy* proxy) = 0;
 
 		/**
 		 * Pushes back a new patch (without pairwise elements) in this sub-representation where the
@@ -351,7 +351,7 @@ namespace RESQML2_NS
 		 * 										only one suppporting representation for this whole patch.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 elementCount, const std::string& elementDataset,
-			LONG64 nullValue, COMMON_NS::AbstractHdfProxy* proxy, const std::string& supportingRepDataset = "") = 0;
+			LONG64 nullValue, EML2_NS::AbstractHdfProxy* proxy, const std::string& supportingRepDataset = "") = 0;
 
 		/**   
 		 * @copydoc RESQML2_NS::AbstractRepresentation::getXyzPointCountOfPatch  

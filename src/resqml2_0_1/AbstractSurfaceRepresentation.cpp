@@ -25,7 +25,7 @@ under the License.
 
 #include "Grid2dRepresentation.h"
 #include "PolylineRepresentation.h"
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 #include "../resqml2/AbstractLocal3dCrs.h"
 
 using namespace std;
@@ -115,7 +115,7 @@ resqml20__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfLatticePo
 
 resqml20__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ(
 		unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs * localCrs,
-		unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy * proxy,
+		unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy * proxy,
 		Grid2dRepresentation * supportingRepresentation,
 		unsigned int startGlobalIndex,
 		int indexIncrementI, int indexIncrementJ)
@@ -182,7 +182,7 @@ resqml20__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ
 
 resqml20__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ(
 		unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs * localCrs,
-		unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy * proxy,
+		unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy * proxy,
 		double originX, double originY, double originZ,
 		double offsetIX, double offsetIY, double offsetIZ, double spacingI,
 		double offsetJX, double offsetJY, double offsetJZ, double spacingJ)

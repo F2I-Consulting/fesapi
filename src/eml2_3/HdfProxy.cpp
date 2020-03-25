@@ -20,18 +20,10 @@ under the License.
 
 #include <stdexcept>
 
-#include <hdf5.h>
-
-using namespace std;
-using namespace RESQML2_0_1_NS;
+using namespace EML2_3_NS;
 
 HdfProxy::HdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess) :
-	COMMON_NS::HdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess)
+	EML2_NS::HdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess)
 {
-	initGsoapProxy(repo, guid, title, COMMON_NS::AbstractObject::EmlVersion::TWO_DOT_ZERO);
-}
-
-std::string HdfProxy::getXmlNamespace() const
-{
-	return "eml20";
+	initGsoapProxy(repo, guid, title, 23);
 }

@@ -20,7 +20,7 @@ under the License.
 
 #include "HdfProxyFactory.h"
 
-#include "../resqml2_0_1/HdfProxyROS3.h"
+#include "../eml2_0/HdfProxyROS3.h"
 
 namespace COMMON_NS
 {
@@ -48,8 +48,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to an instantiated proxy for an HDF5 file located on an Amazon S3 cloud.
 		 */
-		virtual AbstractHdfProxy* make(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) {
-			return new RESQML2_0_1_NS::HdfProxyROS3(partialObject, secret_id, secret_key);
+		virtual EML2_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) {
+			return new EML2_0_NS::HdfProxyROS3(partialObject, secret_id, secret_key);
 		}
 
 		/**
@@ -60,8 +60,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to an instantiated proxy for an HDF5 file located on an Amazon S3 cloud.
 		 */
-		virtual AbstractHdfProxy* make(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) {
-			return new RESQML2_0_1_NS::HdfProxyROS3(fromGsoap, secret_id, secret_key);
+		virtual EML2_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) {
+			return new EML2_0_NS::HdfProxyROS3(fromGsoap, secret_id, secret_key);
 		}
 	};
 }

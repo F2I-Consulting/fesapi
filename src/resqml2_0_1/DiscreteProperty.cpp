@@ -23,12 +23,15 @@ under the License.
 
 #include <hdf5.h>
 
-#include "../common/AbstractHdfProxy.h"
-#include "../common/EnumStringMapper.h"
-#include "../eml2/PropertyKind.h"
-
 #include "../tools/Statistics.h"
+
+#include "../common/EnumStringMapper.h"
+
+#include "../eml2/AbstractHdfProxy.h"
+
 #include "../resqml2/AbstractRepresentation.h"
+
+#include "PropertyKind.h"
 #include "PropertyKindMapper.h"
 
 using namespace std;
@@ -77,7 +80,7 @@ DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, con
 	setPropertyKind(localPropKind);
 }
 
-std::string DiscreteProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue)
+std::string DiscreteProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue)
 {
 	const string result = AbstractDiscreteOrCategoricalProperty::pushBackRefToExistingDataset(proxy, datasetName, nullValue);
 
@@ -116,14 +119,17 @@ bool DiscreteProperty::validatePropertyKindAssociation(EML2_NS::PropertyKind* pk
 				repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the discrete property " + getUuid() + " is right because one if its parent property kind is abstract.");
 				return true;
 			}
-			if (!pk->isChildOf(resqml20__ResqmlPropertyKind__discrete)) {
-				if (!pk->isChildOf(resqml20__ResqmlPropertyKind__categorical)) {
-					repository->addWarning("The discrete property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
-					changeToPartialObject();
-					return false;
-				}
-				else {
-					repository->addWarning("The discrete property " + getUuid() + " is associated to a categorical property kind " + pk->getUuid() + ".");
+			auto pk201 = dynamic_cast<RESQML2_0_1_NS::PropertyKind*>(pk);
+			if (pk201 != nullptr) {
+				if (!pk201->isChildOf(resqml20__ResqmlPropertyKind__discrete)) {
+					if (!pk201->isChildOf(resqml20__ResqmlPropertyKind__categorical)) {
+						repository->addWarning("The discrete property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
+						changeToPartialObject();
+						return false;
+					}
+					else {
+						repository->addWarning("The discrete property " + getUuid() + " is associated to a categorical property kind " + pk->getUuid() + ".");
+					}
 				}
 			}
 		}

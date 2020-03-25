@@ -23,7 +23,7 @@ under the License.
 
 #include <hdf5.h>
 
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 #include "../common/EnumStringMapper.h"
 
 #include "../resqml2/AbstractRepresentation.h"
@@ -39,7 +39,7 @@ std::string ContinuousProperty::getUomAsString() const
 	return gsoap_resqml2_0_1::soap_resqml20__ResqmlUom2s(gsoapProxy2_0_1->soap, getUom());
 }
 
-void ContinuousProperty::pushBackDoubleHdf5Array1dOfValues(const double * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackDoubleHdf5Array1dOfValues(const double * values, ULONG64 valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	double minimumValue, double maximumValue)
 {
 	const hsize_t valueCountPerDimension = valueCount;
@@ -51,7 +51,7 @@ void ContinuousProperty::pushBackDoubleHdf5Array1dOfValues(const double * values
 	}
 }
 
-void ContinuousProperty::pushBackDoubleHdf5Array2dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackDoubleHdf5Array2dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	double minimumValue, double maximumValue)
 {
 	const hsize_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
@@ -63,7 +63,7 @@ void ContinuousProperty::pushBackDoubleHdf5Array2dOfValues(const double * values
 	}
 }
 
-void ContinuousProperty::pushBackDoubleHdf5Array3dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackDoubleHdf5Array3dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	double minimumValue, double maximumValue)
 {
 	const hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
@@ -75,7 +75,7 @@ void ContinuousProperty::pushBackDoubleHdf5Array3dOfValues(const double * values
 	}
 }
 
-void ContinuousProperty::pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy,
 	double * minimumValue, double * maximumValue)
 {
 	if (proxy == nullptr) {
@@ -95,7 +95,7 @@ void ContinuousProperty::pushBackDoubleHdf5ArrayOfValues(double const * values, 
 		numValues, numArrayDimensions);
 }
 
-void ContinuousProperty::pushBackFloatHdf5Array1dOfValues(const float * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackFloatHdf5Array1dOfValues(const float * values, ULONG64 valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	float minimumValue, float maximumValue)
 {
 	const hsize_t valueCountPerDimension = valueCount;
@@ -107,7 +107,7 @@ void ContinuousProperty::pushBackFloatHdf5Array1dOfValues(const float * values, 
 	}
 }
 
-void ContinuousProperty::pushBackFloatHdf5Array2dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackFloatHdf5Array2dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	float minimumValue, float maximumValue)
 {
 	const hsize_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
@@ -119,7 +119,7 @@ void ContinuousProperty::pushBackFloatHdf5Array2dOfValues(const float * values, 
 	}
 }
 
-void ContinuousProperty::pushBackFloatHdf5Array3dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackFloatHdf5Array3dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	float minimumValue, float maximumValue)
 {
 	const hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
@@ -135,7 +135,7 @@ void ContinuousProperty::pushBackFloatHdf5Array3dOfValues(
 	ULONG64 valueCountInFastestDim,
 	ULONG64 valueCountInMiddleDim,
 	ULONG64 valueCountInSlowestDim,
-	COMMON_NS::AbstractHdfProxy* proxy,
+	EML2_NS::AbstractHdfProxy* proxy,
 	float minimumValue, float maximumValue)
 {
 	const hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
@@ -156,7 +156,7 @@ void ContinuousProperty::setValuesOfFloatHdf5Array3dOfValues(
 	ULONG64 offsetInMiddleDim,
 	ULONG64 offsetInSlowestDim,
 	bool computeMinMax,
-	COMMON_NS::AbstractHdfProxy* proxy,
+	EML2_NS::AbstractHdfProxy* proxy,
 	unsigned int patchIndex)
 {
 	const hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
@@ -172,7 +172,7 @@ void ContinuousProperty::setValuesOfFloatHdf5Array3dOfValues(
 	);
 }
 
-void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy,
 	float * minimumValue, float * maximumValue)
 {
 	if ((minimumValue == nullptr && maximumValue != nullptr) ||
@@ -202,7 +202,7 @@ void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(float const * values, un
 void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(
 	unsigned long long const * numValues,
 	unsigned int numArrayDimensions, 
-	COMMON_NS::AbstractHdfProxy* proxy,
+	EML2_NS::AbstractHdfProxy* proxy,
 	float * minimumValue, float * maximumValue)
 {
 	if (proxy == nullptr) {
@@ -227,7 +227,7 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 	float const * values, unsigned long long const * numValuesInEachDimension,
 	unsigned long long const * offsetInEachDimension, unsigned int numArrayDimensions,
 	bool computeMinMax,
-	COMMON_NS::AbstractHdfProxy* proxy,
+	EML2_NS::AbstractHdfProxy* proxy,
 	unsigned int patchIndex)
 {
 	if (patchIndex >= getPatchCount() && patchIndex != (numeric_limits<unsigned int>::max)()) {
@@ -267,7 +267,7 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 void ContinuousProperty::getDoubleValuesOfPatch(unsigned int patchIndex, double * values) const
 {
 	std::string datasetPath;
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getValuesHdfProxyAndDatasetPathOfPatch(patchIndex, datasetPath);
+	EML2_NS::AbstractHdfProxy* hdfProxy = getValuesHdfProxyAndDatasetPathOfPatch(patchIndex, datasetPath);
 
 	hdfProxy->readArrayNdOfDoubleValues(datasetPath, values);
 }
@@ -275,7 +275,7 @@ void ContinuousProperty::getDoubleValuesOfPatch(unsigned int patchIndex, double 
 void ContinuousProperty::getFloatValuesOfPatch(unsigned int patchIndex, float * values) const
 {
 	std::string datasetPath;
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getValuesHdfProxyAndDatasetPathOfPatch(patchIndex, datasetPath);
+	EML2_NS::AbstractHdfProxy* hdfProxy = getValuesHdfProxyAndDatasetPathOfPatch(patchIndex, datasetPath);
 
 	hdfProxy->readArrayNdOfFloatValues(datasetPath, values);
 }
@@ -288,7 +288,7 @@ void ContinuousProperty::getFloatValuesOfPatch(
 	unsigned int numArrayDimensions) const
 {
 	std::string datasetPath;
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getValuesHdfProxyAndDatasetPathOfPatch(patchIndex, datasetPath);
+	EML2_NS::AbstractHdfProxy* hdfProxy = getValuesHdfProxyAndDatasetPathOfPatch(patchIndex, datasetPath);
 
 	hdfProxy->readArrayNdOfFloatValues(
 		datasetPath,

@@ -23,12 +23,13 @@ under the License.
 
 #include <hdf5.h>
 
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 #include "../common/EnumStringMapper.h"
 
 #include "../resqml2/AbstractRepresentation.h"
+#include "../resqml2/StringTableLookup.h"
+
 #include "PropertyKind.h"
-#include "StringTableLookup.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -112,14 +113,17 @@ bool CategoricalProperty::validatePropertyKindAssociation(EML2_NS::PropertyKind*
 				repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the categorical property " + getUuid() + " is right because one if its parent property kind is abstract.");
 				return true;
 			}
-			if (!pk->isChildOf(resqml20__ResqmlPropertyKind__categorical)) {
-				if (!pk->isChildOf(resqml20__ResqmlPropertyKind__discrete)) {
-					repository->addWarning("The categorical property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
-					changeToPartialObject();
-					return false;
-				}
-				else {
-					repository->addWarning("The categorical property " + getUuid() + " is associated to a discrete local property kind " + pk->getUuid() + ".");
+			auto pk201 = dynamic_cast<RESQML2_0_1_NS::PropertyKind*>(pk);
+			if (pk201 != nullptr) {
+				if (!pk201->isChildOf(resqml20__ResqmlPropertyKind__categorical)) {
+					if (!pk201->isChildOf(resqml20__ResqmlPropertyKind__discrete)) {
+						repository->addWarning("The categorical property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
+						changeToPartialObject();
+						return false;
+					}
+					else {
+						repository->addWarning("The categorical property " + getUuid() + " is associated to a discrete local property kind " + pk->getUuid() + ".");
+					}
 				}
 			}
 		}

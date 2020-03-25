@@ -26,7 +26,7 @@ under the License.
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractLocal3dCrs.h"
 #include "../resqml2/AbstractValuesProperty.h"
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace gsoap_eml2_3;
@@ -87,7 +87,7 @@ bool IjkGridParametricRepresentation::isParametricLineKindConstant() const
 		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 		{
 			auto dataset = static_cast<eml23__IntegerExternalArray*>(paramLineArray->LineKindIndices)->Values->ExternalFileProxy[0];
-			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 			std::unique_ptr<short[]> pillarKind(new short[getPillarCount()]);
 			hdfProxy->readArrayNdOfShortValues(dataset->PathInExternalFile, pillarKind.get());
 			short firstPillarKind = pillarKind[0];
@@ -139,7 +139,7 @@ short IjkGridParametricRepresentation::getConstantParametricLineKind() const
 		}
 		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
 			auto dataset = static_cast<eml23__IntegerExternalArray*>(paramLineArray->LineKindIndices)->Values->ExternalFileProxy[0];
-			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 			std::unique_ptr<short[]> pillarKind(new short[getPillarCount()]);
 			hdfProxy->readArrayNdOfShortValues(dataset->PathInExternalFile, pillarKind.get());
 			return pillarKind[0];
@@ -166,7 +166,7 @@ void IjkGridParametricRepresentation::getRawParametricLineKind(short * pillarKin
 		if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 		{
 			auto dataset = static_cast<eml23__IntegerExternalArray*>(paramLineArray->LineKindIndices)->Values->ExternalFileProxy[0];
-			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 			hdfProxy->readArrayNdOfShortValues(dataset->PathInExternalFile, pillarKind);
 		}
 		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray)
@@ -234,7 +234,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatch(const unsigned int & p
 			if (truncatedGeom->AdditionalGridPoints[0]->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray)
 			{
 				auto xmlDataset = static_cast<resqml22__Point3dExternalArray*>(truncatedGeom->AdditionalGridPoints[0]->Points)->Coordinates->ExternalFileProxy[0];
-				COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(xmlDataset);
+				EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(xmlDataset);
 				xyzPoints += getXyzPointCountOfPatch(patchIndex) - static_cast<_resqml22__TruncatedIjkGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationNodeCount;
 				hdfProxy->readArrayNdOfDoubleValues(xmlDataset->PathInExternalFile, xyzPoints);
 			}
@@ -250,7 +250,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatch(const unsigned int & p
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes(
 	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
-	double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy * proxy,
+	double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, EML2_NS::AbstractHdfProxy * proxy,
 	unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 	unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
@@ -332,7 +332,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
-	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy,
+	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, EML2_NS::AbstractHdfProxy* proxy,
 	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
@@ -381,7 +381,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesWithoutPillarKindUsingExistingDatasets(
 	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
-	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, COMMON_NS::AbstractHdfProxy* proxy,
+	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, EML2_NS::AbstractHdfProxy* proxy,
 	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
@@ -497,7 +497,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
-	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
+	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy* proxy,
 	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
@@ -541,7 +541,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	xmlLineKinds->Count = getPillarCount();
 }
 
-COMMON_NS::AbstractHdfProxy* IjkGridParametricRepresentation::getParameterDatasetPath(std::string & datasetPathInExternalFile) const
+EML2_NS::AbstractHdfProxy* IjkGridParametricRepresentation::getParameterDatasetPath(std::string & datasetPathInExternalFile) const
 {
 	resqml22__PointGeometry* geom = getPointGeometry2_2(0);
 	if (geom == nullptr) {
@@ -558,7 +558,7 @@ COMMON_NS::AbstractHdfProxy* IjkGridParametricRepresentation::getParameterDatase
 	}
 }
 
-COMMON_NS::AbstractHdfProxy* IjkGridParametricRepresentation::getControlPointDatasetPath(std::string & datasetPathInExternalFile) const
+EML2_NS::AbstractHdfProxy* IjkGridParametricRepresentation::getControlPointDatasetPath(std::string & datasetPathInExternalFile) const
 {
 	resqml22__PointGeometry* geom = getPointGeometry2_2(0);
 	if (geom == nullptr) {
@@ -580,7 +580,7 @@ COMMON_NS::AbstractHdfProxy* IjkGridParametricRepresentation::getControlPointDat
 	}
 }
 
-COMMON_NS::AbstractHdfProxy* IjkGridParametricRepresentation::getControlPointParametersDatasetPath(std::string & datasetPathInExternalFile) const
+EML2_NS::AbstractHdfProxy* IjkGridParametricRepresentation::getControlPointParametersDatasetPath(std::string & datasetPathInExternalFile) const
 {
 	resqml22__PointGeometry* geom = getPointGeometry2_2(0);
 	if (geom == nullptr) {
@@ -605,7 +605,7 @@ COMMON_NS::AbstractHdfProxy* IjkGridParametricRepresentation::getControlPointPar
 		throw std::logic_error("Not implemented yet");
 }
 
-COMMON_NS::AbstractHdfProxy* IjkGridParametricRepresentation::getParametersOfNodesDatasetPath(std::string & datasetPathInExternalFile) const
+EML2_NS::AbstractHdfProxy* IjkGridParametricRepresentation::getParametersOfNodesDatasetPath(std::string & datasetPathInExternalFile) const
 {
 	resqml22__PointGeometry* geom = getPointGeometry2_2(0);
 	if (geom == nullptr) {

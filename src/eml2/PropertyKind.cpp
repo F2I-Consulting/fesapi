@@ -20,8 +20,6 @@ under the License.
 
 #include <stdexcept>
 
-#include "../common/EnumStringMapper.h"
-
 using namespace std;
 using namespace EML2_NS;
 
@@ -57,73 +55,9 @@ std::string PropertyKind::getUomAsString() const
 	}
 }
 
-std::string PropertyKind::getParentAsString() const
+PropertyKind* PropertyKind::getParentPropertyKind() const
 {
-	if (!isParentAnEnergisticsPropertyKind()) {
-		return getParentLocalPropertyKindTitle();
-	}
-	else
-	{
-		gsoap_resqml2_0_1::_resqml20__PropertyKind* propType = static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1);
-		COMMON_NS::EnumStringMapper tmp;
-		return tmp.getEnergisticsPropertyKindName(static_cast<gsoap_resqml2_0_1::resqml20__StandardPropertyKind*>(propType->ParentPropertyKind)->Kind);
-	}
-}
-
-bool PropertyKind::isParentAnEnergisticsPropertyKind() const
-{
-	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1)->ParentPropertyKind->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__StandardPropertyKind;
-	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
-}
-
-gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind PropertyKind::getParentEnergisticsPropertyKind() const
-{
-	if (isParentAnEnergisticsPropertyKind())
-	{
-		if (gsoapProxy2_0_1 != nullptr) {
-			gsoap_resqml2_0_1::_resqml20__PropertyKind* propKind = static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1);
-			return static_cast<gsoap_resqml2_0_1::resqml20__StandardPropertyKind*>(propKind->ParentPropertyKind)->Kind;
-		}
-		else {
-			throw logic_error("Not implemented yet");
-		}
-	}
-	
-	throw invalid_argument("The property kind parent of this property kind is not an Energistics one.");
-}
-
-PropertyKind* PropertyKind::getParentLocalPropertyKind() const
-{
-	return static_cast<PropertyKind*>(repository->getDataObjectByUuid(getParentLocalPropertyKindUuid()));
-}
-
-gsoap_resqml2_0_1::eml20__DataObjectReference* PropertyKind::getParentLocalPropertyKindDor() const
-{
-	if (isParentAnEnergisticsPropertyKind()) {
-		throw invalid_argument("The property kind parent of this property kind is not a local one.");
-	}
-
-	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::_resqml20__PropertyKind* propKind = static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1);
-		return static_cast<gsoap_resqml2_0_1::resqml20__LocalPropertyKind*>(propKind->ParentPropertyKind)->LocalPropertyKind;
-	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
-}
-
-std::string PropertyKind::getParentLocalPropertyKindUuid() const
-{
-	return getParentLocalPropertyKindDor()->UUID;
-}
-
-std::string PropertyKind::getParentLocalPropertyKindTitle() const
-{
-	return getParentLocalPropertyKindDor()->Title;
+	return static_cast<PropertyKind*>(repository->getDataObjectByUuid(getParentPropertyKindDor().getUuid()));
 }
 
 void PropertyKind::setParentPropertyKind(PropertyKind* parentPropertyKind)
@@ -138,22 +72,4 @@ void PropertyKind::setParentPropertyKind(PropertyKind* parentPropertyKind)
 	if (getRepository() == nullptr) {
 		parentPropertyKind->getRepository()->addOrReplaceDataObject(this);
 	}
-}
-
-void PropertyKind::loadTargetRelationships()
-{
-	if (isParentAnEnergisticsPropertyKind()) {
-		return;
-	}
-
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getParentLocalPropertyKindDor();
-	EML2_NS::PropertyKind* parentPk = getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(dor->UUID);
-	if (parentPk == nullptr) {
-		getRepository()->createPartial(dor);
-		parentPk = getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(dor->UUID);
-		if (parentPk == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
-	}
-	getRepository()->addRelationship(this, parentPk);
 }

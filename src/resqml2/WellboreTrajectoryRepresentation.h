@@ -52,7 +52,7 @@ namespace RESQML2_NS
 		* @localCrs								The local CRS where the control points are given.
 		*										If null, then the default Local CRS of the DataObject repository will be arbitrarily selected.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, COMMON_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/*
 		* Set the geometry of the representation by means of a parametric line with MD information.
@@ -67,7 +67,7 @@ namespace RESQML2_NS
 		*										If null, then the default Local CRS of the DataObject repository will be arbitrarily selected.
 		*/
 		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* controlPoints, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
-			COMMON_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr) = 0;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/*
 		* Set the geometry of the representation by means of a parametric line with MD and tangent vector information.
@@ -84,7 +84,7 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* controlPoints,
 			double const* tangentVectors, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
-			COMMON_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr) = 0;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
 		* 0 for vertical, 1 for linear spline, 2 for natural cubic spline, 3 for cubic spline, 4 for z linear cubic spline, 5 for minimum-curvature spline, (-1) for null: no line

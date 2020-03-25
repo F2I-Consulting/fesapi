@@ -123,7 +123,7 @@ namespace RESQML2_0_1_NS
 			unsigned int patchCount,
 			unsigned int identicalNodesCount,
 			int * identicalNodes,
-			COMMON_NS::AbstractHdfProxy * proxy);
+			EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * Push back a contact patch in a particular contact of the structural framework.
@@ -141,7 +141,7 @@ namespace RESQML2_0_1_NS
 			unsigned int contactIdx,
 			int * nodeIndicesOnSupportingRepresentation, unsigned int nodeCount,
 			class AbstractRepresentation * supportingRepresentation,
-			COMMON_NS::AbstractHdfProxy * proxy);
+			EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * Gets contact count

@@ -292,7 +292,7 @@ gsoap_resqml2_0_1::resqml20__ResqmlUom Activity::getFloatingPointQuantityParamet
 *****************************/
 bool Activity::isAnIntegerQuantityParameter(const std::string & paramTitle) const
 {
-	::vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
+	vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
 
 	if (param.size() < 1)
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
@@ -318,7 +318,7 @@ bool Activity::isAnIntegerQuantityParameter(unsigned int index) const
 
 vector<LONG64> Activity::getIntegerQuantityParameterValue(const std::string & paramTitle) const
 {
-	::vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
+	vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
 
 	if (param.size() < 1)
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
@@ -353,7 +353,7 @@ LONG64 Activity::getIntegerQuantityParameterValue(unsigned int index) const
 *****************************/
 bool Activity::isAStringParameter(const std::string & paramTitle) const
 {
-	::vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
+	vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
 
 	if (param.size() < 1)
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
@@ -379,7 +379,7 @@ bool Activity::isAStringParameter(unsigned int index) const
 
 vector<string> Activity::getStringParameterValue(const std::string & paramTitle) const
 {
-	::vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
+	vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
 
 	if (param.size() < 1)
 		invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
@@ -414,13 +414,13 @@ const std::string & Activity::getStringParameterValue(unsigned int index) const
 *****************************/
 bool Activity::isAResqmlObjectParameter(const std::string & paramTitle) const
 {
-	::vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
+	vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
 
-	if (param.size() < 1)
+	if (param.size() < 1) {
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
+	}
 
-	for (unsigned int i = 0; i < param.size(); ++i)
-	{
+	for (unsigned int i = 0; i < param.size(); ++i) {
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__DataObjectParameter)
 			return false;
 	}
@@ -440,7 +440,7 @@ bool Activity::isAResqmlObjectParameter(unsigned int index) const
 
 vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectParameterValue(const std::string & paramTitle) const
 {
-	::vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
+	vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
 
 	if (param.size() < 1)
 		invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
@@ -487,11 +487,6 @@ void Activity::setActivityTemplate(EML2_NS::ActivityTemplate * activityTemplate)
 COMMON_NS::DataObjectReference Activity::getActivityTemplateDor() const
 {
 	return COMMON_NS::DataObjectReference(static_cast<_eml23__Activity*>(gsoapProxy2_3)->ActivityDescriptor);
-}
-
-std::string Activity::getXmlNamespace() const
-{
-	return "eml23";
 }
 
 void Activity::loadTargetRelationships()

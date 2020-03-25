@@ -24,7 +24,7 @@ under the License.
 #include "H5Tpublic.h"
 
 #include "StructuralOrganizationInterpretation.h"
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -68,7 +68,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
         unsigned int patchCount,
         unsigned int identicalNodesCount,
         int * identicalNodes,
-		COMMON_NS::AbstractHdfProxy * proxy)
+		EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (patchCount < 2) {
 		throw invalid_argument("Contact point count cannot be less than two.");
@@ -110,7 +110,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
         unsigned int contactIndex,
         int * nodeIndicesOnSupportingRepresentation, unsigned int nodeCount,
         AbstractRepresentation * supportingRepresentation,
-		COMMON_NS::AbstractHdfProxy * proxy)
+		EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (nodeIndicesOnSupportingRepresentation == nullptr) {
 		throw invalid_argument("The array of node indices cannot be null.");

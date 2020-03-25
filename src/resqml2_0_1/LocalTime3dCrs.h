@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../resqml2/LocalTime3dCrs.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** A local time 3D crs. */
-	class LocalTime3dCrs : public RESQML2_NS::AbstractLocal3dCrs
+	class LocalTime3dCrs : public RESQML2_NS::LocalTime3dCrs
 	{
 	private:
 
@@ -44,18 +44,18 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	isUpOriented  	True if is up oriented, false if not.
 		 */
 		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
-			const double & arealRotation,
-			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom,
-			const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
-			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const bool & isUpOriented);
+			double originOrdinal1, double originOrdinal2, double originOrdinal3,
+			double arealRotation,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom,
+			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, bool isUpOriented);
 
 		/**
 		 * Get z coordinate offset
 		 *
 		 * @returns	The z coordinate offset.
 		 */
-		double getZOffset() const {return .0;}
+		double getZOffset() const { return .0; }
 
 	public:
 
@@ -66,7 +66,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT LocalTime3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractLocal3dCrs(partialObject) {}
+		DLL_IMPORT_OR_EXPORT LocalTime3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::LocalTime3dCrs(partialObject) {}
 
 		/**
 		 * Creates a local depth 3d CRS which is fully identified by means of EPSG code.
@@ -91,11 +91,11 @@ namespace RESQML2_0_1_NS
 		 * 										positive. If false, the Z offset is a depth when positive.
 		 */
 		LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
-			const double & arealRotation,
-			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const unsigned long & projectedEpsgCode,
-			const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
-			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const unsigned int & verticalEpsgCode, const bool & isUpOriented);
+			double originOrdinal1, double originOrdinal2, double originOrdinal3,
+			double arealRotation,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom,  unsigned int verticalEpsgCode, bool isUpOriented);
 
 		/**
 		 * Creates a local depth 3d CRS which is fully unknown.
@@ -125,11 +125,11 @@ namespace RESQML2_0_1_NS
 		 * 											positive.
 		 */
 		LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
-			const double & arealRotation,
-			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const std::string & projectedUnknownReason,
-			const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
-			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented);
+			double originOrdinal1, double originOrdinal2, double originOrdinal3,
+			double arealRotation,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
+			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
 
 		/**
 		 * Creates a local depth 3d CRS which is identified by an EPSG code for its projected part and
@@ -159,11 +159,11 @@ namespace RESQML2_0_1_NS
 		 * 											positive.
 		 */
 		LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
-			const double & arealRotation,
-			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const unsigned long & projectedEpsgCode,
-			const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
-			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented);
+			double originOrdinal1, double originOrdinal2, double originOrdinal3,
+			double arealRotation,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
 
 		/**
 		 * Creates a local depth 3d CRS which unkown for its projected part and which is identified by
@@ -193,19 +193,18 @@ namespace RESQML2_0_1_NS
 		 * 											positive.
 		 */
 		LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
-			const double & arealRotation,
-			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const std::string & projectedUnknownReason,
-			const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
-			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const unsigned int & verticalEpsgCode, const bool & isUpOriented);
+			double originOrdinal1, double originOrdinal2, double originOrdinal3,
+			double arealRotation,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
+			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		LocalTime3dCrs(gsoap_resqml2_0_1::_resqml20__LocalTime3dCrs* fromGsoap):
-			AbstractLocal3dCrs(fromGsoap) {}
+		LocalTime3dCrs(gsoap_resqml2_0_1::_resqml20__LocalTime3dCrs* fromGsoap): RESQML2_NS::LocalTime3dCrs(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
 		~LocalTime3dCrs() {}
@@ -223,19 +222,5 @@ namespace RESQML2_0_1_NS
 		 * @returns	The unit as string.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getUnitAsString() const;
-
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

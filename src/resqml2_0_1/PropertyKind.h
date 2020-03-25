@@ -66,7 +66,7 @@ namespace RESQML2_0_1_NS
 		 * 													Energistics property dictionary.
 		 */
 		PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & parentEnergisticsPropertyKind);
+			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
 		 * Creates a local property type which uses a standard uom and which derives from another local
@@ -81,7 +81,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	parentPropType	The local parent property type in the EPC document.
 		 */
 		PropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, EML2_NS::PropertyKind * parentPropType);
+			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * parentPropType);
 
 		/**
 		 * Creates a local property type which uses a non standard uom and which derives from a standard
@@ -101,7 +101,7 @@ namespace RESQML2_0_1_NS
 		 * 													Energistics property dictionary.
 		 */
 		PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const std::string & nonStandardUom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & parentEnergisticsPropertyKind);
+			const std::string & namingSystem, const std::string & nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
 		 * Creates a local property type which uses a non standard uom which derives from another local
@@ -151,6 +151,43 @@ namespace RESQML2_0_1_NS
 		 * @returns	True if parent partial, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool isParentPartial() const;
+
+		/**
+		 * Get the title of the parent property kind
+		 *
+		 * @returns	The title of the parent property kind.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getParentAsString() const;
+
+		/**
+		 * Gets a data object reference on the parent local property kind
+		 *
+		 * @exception	std::invalid_argument	If the parent property kind is not a local one (it is an
+		 * 										Energistics standard one).
+		 *
+		 * @returns	The data object reference of the associated parent local property kind.
+		 */
+		COMMON_NS::DataObjectReference getParentPropertyKindDor() const final;
+
+		/**
+		 * Indicates if the parent property kind is either from the standard catalog of Energistics or
+		 * from another local property kind
+		 *
+		 * @returns	True if the parent is a standard Energistics property kind, false if not.
+		 */
+		DLL_IMPORT_OR_EXPORT bool isParentAnEnergisticsPropertyKind() const;
+
+		/**
+		 * Gets the standard Energistics parent property kind
+		 *
+		 * @exception	std::invalid_argument	If the parent property kind is not an Energistics one.
+		 *
+		 * @returns	The standard Energistics parent property kind.
+		 */
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getParentEnergisticsPropertyKind() const;
+
+		/** Loads target relationships */
+		void loadTargetRelationships();
 
 	protected:
 

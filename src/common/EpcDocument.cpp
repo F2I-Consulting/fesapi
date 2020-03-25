@@ -29,8 +29,9 @@ under the License.
 #include "../epc/Relationship.h"
 #include "../epc/FilePart.h"
 
+#include "../eml2/AbstractHdfProxy.h"
+
 #include "../resqml2_0_1/WellboreMarker.h"
-#include "../resqml2_0_1/HdfProxy.h"
 #include "../resqml2/AbstractProperty.h"
 
 #include "../witsml2_0/Log.h"
@@ -136,7 +137,7 @@ namespace {
 		}
 
 		// External part
-		COMMON_NS::AbstractHdfProxy const * hdfProxy = dynamic_cast<COMMON_NS::AbstractHdfProxy const *>(dataObj);
+		EML2_NS::AbstractHdfProxy const * hdfProxy = dynamic_cast<EML2_NS::AbstractHdfProxy const *>(dataObj);
 		if (hdfProxy != nullptr && !hdfProxy->isPartial()) {
 			epc::Relationship relExt(hdfProxy->getRelativePath(), "", "Hdf5File", false);
 			relExt.setExternalResourceType();
@@ -202,7 +203,8 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 				result += "The content type " + contentType + " should belong to eml and not to resqml since obj_EpcExternalPartReference is part of COMMON and not part of RESQML.\n";
 				contentType = "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference";
 			}
-			if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference") {
+			if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference" ||
+				contentType == "application/x-eml+xml;version=2.3;type=EpcExternalPartReference") {
 				// Look for the relative path of the HDF file
 				string relFilePath = "";
 				const size_t slashPos = it->second.getExtensionOrPartName().substr(1).find_last_of("/\\");
@@ -227,15 +229,15 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 								: new HdfProxyFactory());
 						}
 						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
-						static_cast<AbstractHdfProxy*>(wrapper)->setRelativePath(target);
+						static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setRelativePath(target);
 						break;
 					}
 				}
 
-				static_cast<AbstractHdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
-				static_cast<AbstractHdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
+				static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
+				static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
 
-				repo.setDefaultHdfProxy(static_cast<COMMON_NS::AbstractHdfProxy*>(wrapper));
+				repo.setDefaultHdfProxy(static_cast<EML2_NS::AbstractHdfProxy*>(wrapper));
 			}
 			else {
 				repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);

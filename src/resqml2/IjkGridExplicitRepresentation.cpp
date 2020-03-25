@@ -26,7 +26,7 @@ under the License.
 #include "AbstractFeatureInterpretation.h"
 #include "AbstractLocal3dCrs.h"
 #include "AbstractValuesProperty.h"
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
@@ -52,7 +52,7 @@ void IjkGridExplicitRepresentation::getXyzPointsOfKInterfaceSequence(unsigned in
 
 	std::string datasetPathInExternalFile;
 	unsigned long splitCoordinateLineCount;
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getPointDatasetPath(datasetPathInExternalFile, splitCoordinateLineCount);
+	EML2_NS::AbstractHdfProxy* hdfProxy = getPointDatasetPath(datasetPathInExternalFile, splitCoordinateLineCount);
 
 	if (splitCoordinateLineCount == 0)
 	{
@@ -110,7 +110,7 @@ void IjkGridExplicitRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 
 	std::string datasetPathInExternalFile;
 	unsigned long splitCoordinateLineCount;
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getPointDatasetPath(datasetPathInExternalFile, splitCoordinateLineCount);
+	EML2_NS::AbstractHdfProxy* hdfProxy = getPointDatasetPath(datasetPathInExternalFile, splitCoordinateLineCount);
 
 	if (splitCoordinateLineCount == 0)
 	{
@@ -239,6 +239,6 @@ AbstractIjkGridRepresentation::geometryKind IjkGridExplicitRepresentation::getGe
 bool IjkGridExplicitRepresentation::isNodeGeometryCompressed() const {
 	std::string datasetPathInExternalFile;
 	unsigned long splitCoordinateLineCount;
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getPointDatasetPath(datasetPathInExternalFile, splitCoordinateLineCount);
+	EML2_NS::AbstractHdfProxy* hdfProxy = getPointDatasetPath(datasetPathInExternalFile, splitCoordinateLineCount);
 	return hdfProxy->isCompressed(datasetPathInExternalFile);
 }

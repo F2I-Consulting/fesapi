@@ -78,7 +78,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void pushBackContactIdentity(
 			gsoap_resqml2_0_1::resqml20__IdentityKind kind,
 			unsigned int contactCount, int * contactIndices,
-			COMMON_NS::AbstractHdfProxy * proxy);
+			EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * Push back a contact identity in the structural framework
@@ -95,7 +95,7 @@ namespace RESQML2_0_1_NS
 			gsoap_resqml2_0_1::resqml20__IdentityKind kind,
 			unsigned int contactCount, int * contactIndices,
 			unsigned int identicalNodesCount, int * identicalNodesIndexes,
-			COMMON_NS::AbstractHdfProxy * proxy);
+			EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * Get the count of contacts in this framework.

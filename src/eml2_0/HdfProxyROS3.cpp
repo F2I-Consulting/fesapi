@@ -23,7 +23,7 @@ under the License.
 #include <hdf5.h>
 
 using namespace std;
-using namespace RESQML2_0_1_NS;
+using namespace EML2_0_NS;
 
 void HdfProxyROS3::open()
 {

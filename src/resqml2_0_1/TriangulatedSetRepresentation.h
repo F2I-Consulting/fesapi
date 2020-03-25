@@ -93,7 +93,7 @@ namespace RESQML2_0_1_NS
 		 * 										and triangle indices will be stored.
 		 * @param [in,out]	localCrs		   	(Optional) If non-null, the local crs.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackTrianglePatch(unsigned int nodeCount, double * nodes, unsigned int triangleCount, unsigned int * triangleNodeIndices, COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackTrianglePatch(unsigned int nodeCount, double * nodes, unsigned int triangleCount, unsigned int * triangleNodeIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		 * Get the xyz point count in a given patch.

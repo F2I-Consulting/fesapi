@@ -49,6 +49,14 @@ namespace RESQML2_NS
 			COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		AbstractLocal3dCrs(gsoap_eml2_3::resqml22__AbstractLocal3dCrs* fromGsoap) :
+			COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
 		 * Get the Z offset which is always equal to zero for a time CRS. Don't mix zOffset vs
 		 * depthOffset : the schema calls zOffset what is actually a depthOrElevationOffset.
 		 *

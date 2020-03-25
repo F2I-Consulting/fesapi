@@ -26,7 +26,7 @@ under the License.
 #include "AbstractFeatureInterpretation.h"
 #include "AbstractLocal3dCrs.h"
 #include "AbstractValuesProperty.h"
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
@@ -168,7 +168,7 @@ double IjkGridParametricRepresentation::BSpline::getValueFromParameter(double pa
 void IjkGridParametricRepresentation::getControlPoints(double * controlPoints, bool reverseIAxis, bool reverseJAxis, bool reverseKAxis) const
 {
 	string datasetPath;
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getControlPointDatasetPath(datasetPath);
+	EML2_NS::AbstractHdfProxy* hdfProxy = getControlPointDatasetPath(datasetPath);
 	hdfProxy->readArrayNdOfDoubleValues(datasetPath, controlPoints);
 
 	if (reverseIAxis || reverseJAxis || reverseKAxis)
@@ -237,7 +237,7 @@ void IjkGridParametricRepresentation::getControlPoints(double * controlPoints, b
 void IjkGridParametricRepresentation::getControlPointParameters(double * controlPointParameters, bool reverseIAxis, bool reverseJAxis, bool reverseKAxis) const
 {
 	string datasetPath;
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getControlPointParametersDatasetPath(datasetPath);
+	EML2_NS::AbstractHdfProxy* hdfProxy = getControlPointParametersDatasetPath(datasetPath);
 	hdfProxy->readArrayNdOfDoubleValues(datasetPath, controlPointParameters);
 	
 	if (reverseIAxis || reverseJAxis || reverseKAxis)
@@ -334,7 +334,7 @@ void IjkGridParametricRepresentation::getParametricLineKind(short * pillarKind, 
 void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, bool reverseIAxis, bool reverseJAxis, bool reverseKAxis) const
 {
 	string datasetPath;
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getParametersOfNodesDatasetPath(datasetPath);
+	EML2_NS::AbstractHdfProxy* hdfProxy = getParametersOfNodesDatasetPath(datasetPath);
 	hdfProxy->readArrayNdOfDoubleValues(datasetPath, parameters);
 
 	// Copy in order not to modify the controlPoints pointer
@@ -403,7 +403,7 @@ void IjkGridParametricRepresentation::getParametersOfNodesOfKInterfaceSequence(u
 	}
 
 	string datasetPath;
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getParametersOfNodesDatasetPath(datasetPath);
+	EML2_NS::AbstractHdfProxy* hdfProxy = getParametersOfNodesDatasetPath(datasetPath);
 	const unsigned long long numValuesInEachDimension[2] = { kInterfaceEnd - kInterfaceStart + 1, getXyzPointCountOfKInterface() };
 	const unsigned long long offsetInEachDimension[2] = { kInterfaceStart, 0 };
 	hdfProxy->readArrayNdOfDoubleValues(datasetPath, parameters, numValuesInEachDimension, offsetInEachDimension, 2);
@@ -655,7 +655,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 	unsigned long long blockSizeInEachDimension[2] = { blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1, blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1 };
 
 	std::string datasetPathInExternalFile;
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getParameterDatasetPath(datasetPathInExternalFile);
+	EML2_NS::AbstractHdfProxy* hdfProxy = getParameterDatasetPath(datasetPathInExternalFile);
 
 	hid_t dataset, filespace;
 	hdfProxy->selectArrayNdOfValues(
@@ -940,7 +940,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 
 void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNodes(
 	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
-	double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy* proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, EML2_NS::AbstractHdfProxy* proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setGeometryAsParametricSplittedPillarNodes(mostComplexPillarGeometry, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, pillarKind, proxy,
 		0, nullptr, nullptr, nullptr, localCrs);
@@ -948,7 +948,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNo
 
 void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNodesUsingExistingDatasets(
 	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
-	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, EML2_NS::AbstractHdfProxy* proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(mostComplexPillarGeometry, kDirectionKind, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, pillarKind, definedPillars, proxy,
 		0, "", "", "", localCrs);
@@ -957,7 +957,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNo
 void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * parameters,
 	double const * controlPoints, double const * controlPointParameters, unsigned int controlPointCountPerPillar,
 	unsigned long splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
-	unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, COMMON_NS::AbstractHdfProxy * proxy)
+	unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (splitCoordinateLineCount == 0) {
 		hsize_t numValues[3] = { getKCellCount() + 1, getJCellCount() + 1, getICellCount() + 1 };
@@ -993,7 +993,7 @@ void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * paramete
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes(bool isRightHanded,
-	double const * parameters, double const * controlPoints, double const * controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy * proxy,
+	double const * parameters, double const * controlPoints, double const * controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy * proxy,
 	unsigned long splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
 	unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
@@ -1119,7 +1119,7 @@ void IjkGridParametricRepresentation::loadPillarInformation(IjkGridParametricRep
 void IjkGridParametricRepresentation::getXyzPointsFromParametricPoints(double * xyzPoints) const
 {
 	std::string datasetPathInExternalFile;
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getParameterDatasetPath(datasetPathInExternalFile);
+	EML2_NS::AbstractHdfProxy* hdfProxy = getParameterDatasetPath(datasetPathInExternalFile);
 	std::unique_ptr<double[]> parameters(new double[getXyzPointCountOfPatch(0)]);
 	hdfProxy->readArrayNdOfDoubleValues(datasetPathInExternalFile, parameters.get());
 
@@ -1384,6 +1384,6 @@ gsoap_resqml2_0_1::resqml20__KDirection IjkGridParametricRepresentation::compute
 bool IjkGridParametricRepresentation::isNodeGeometryCompressed() const
 {
 	std::string datasetPathInExternalFile;
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getParameterDatasetPath(datasetPathInExternalFile);
+	EML2_NS::AbstractHdfProxy* hdfProxy = getParameterDatasetPath(datasetPathInExternalFile);
 	return hdfProxy->isCompressed(datasetPathInExternalFile);
 }

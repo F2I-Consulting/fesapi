@@ -20,8 +20,8 @@ under the License.
 
 #include <hdf5.h>
 
-#include "../common/AbstractHdfProxy.h"
-#include "../resqml2_0_1/LocalTime3dCrs.h"
+#include "../eml2/AbstractHdfProxy.h"
+#include "../resqml2/LocalTime3dCrs.h"
 #include "../resqml2/WellboreInterpretation.h"
 #include "../resqml2/WellboreTrajectoryRepresentation.h"
 
@@ -37,7 +37,7 @@ SeismicWellboreFrameRepresentation::SeismicWellboreFrameRepresentation(
 	RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 	double seismicReferenceDatum,
 	double weatheringVelocity,
-	RESQML2_0_1_NS::LocalTime3dCrs* crs)
+	RESQML2_NS::LocalTime3dCrs* crs)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The wellbore interpretation cannot be null.");
@@ -68,7 +68,7 @@ SeismicWellboreFrameRepresentation::SeismicWellboreFrameRepresentation(
 	getRepository()->addRelationship(this, crs);
 }
 
-void SeismicWellboreFrameRepresentation::setTimeValues(double const * timeValues, unsigned int timeValueCount, COMMON_NS::AbstractHdfProxy* proxy)
+void SeismicWellboreFrameRepresentation::setTimeValues(double const * timeValues, unsigned int timeValueCount, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -135,7 +135,7 @@ double SeismicWellboreFrameRepresentation::getTimeFirstValue() const
 	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray)
 	{
 		eml23__ExternalDataset const* dataset = static_cast<eml23__DoubleExternalArray*>(frame->NodeTimeValues)->Values;
-		COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
+		EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
 		}
@@ -165,7 +165,7 @@ RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum SeismicWellboreFrameRepresen
 	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray)
 	{
 		eml23__ExternalDataset const* dataset = static_cast<eml23__DoubleExternalArray*>(frame->NodeTimeValues)->Values;
-		COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
+		EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
 		}
@@ -205,7 +205,7 @@ void SeismicWellboreFrameRepresentation::getTimeAsDoubleValues(double* values) c
 	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray)
 	{
 		eml23__ExternalDataset const* dataset = static_cast<eml23__DoubleExternalArray*>(frame->NodeTimeValues)->Values;
-		COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
+		EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
 		}
@@ -230,7 +230,7 @@ void SeismicWellboreFrameRepresentation::getTimeAsFloatValues(float* values) con
 	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray)
 	{
 		eml23__ExternalDataset const* dataset = static_cast<eml23__DoubleExternalArray*>(frame->NodeTimeValues)->Values;
-		COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
+		EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
 		}

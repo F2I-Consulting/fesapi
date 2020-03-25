@@ -47,7 +47,7 @@ namespace RESQML2_NS
 		 * 						opened for writing and won't be closed in this method. If null then a
 		 * 						default HDF proxy must be defined in the data object repository.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values, COMMON_NS::AbstractHdfProxy* proxy);
+		DLL_IMPORT_OR_EXPORT void pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values, EML2_NS::AbstractHdfProxy* proxy);
 
 		/**
 		 * Pushes back a new patch of values for this property where the values have not to be written in
@@ -65,7 +65,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The name of the HDF5 dataset.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)()) = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)()) = 0;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be string ones.
@@ -101,6 +101,6 @@ namespace RESQML2_NS
 		 */
 		CommentProperty(gsoap_eml2_3::_resqml22__CommentProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 
-		virtual COMMON_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const = 0;
+		virtual EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const = 0;
 	};
 }

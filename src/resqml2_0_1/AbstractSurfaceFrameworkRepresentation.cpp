@@ -24,7 +24,7 @@ under the License.
 #include "H5Tpublic.h"
 
 #include "StructuralOrganizationInterpretation.h"
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -35,7 +35,7 @@ AbstractSurfaceFrameworkRepresentation::AbstractSurfaceFrameworkRepresentation()
 void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	gsoap_resqml2_0_1::resqml20__IdentityKind kind,
 	unsigned int contactCount, int * contactIndices,
-	COMMON_NS::AbstractHdfProxy * proxy)
+	EML2_NS::AbstractHdfProxy * proxy)
 {
 	resqml20__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml20__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
@@ -64,7 +64,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	gsoap_resqml2_0_1::resqml20__IdentityKind kind,
 	unsigned int contactCount, int * contactIndices,
-	unsigned int identicalNodesCount, int * identicalNodesIndexes, COMMON_NS::AbstractHdfProxy * proxy)
+	unsigned int identicalNodesCount, int * identicalNodesIndexes, EML2_NS::AbstractHdfProxy * proxy)
 {
 	resqml20__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml20__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 

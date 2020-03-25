@@ -116,7 +116,7 @@ namespace RESQML2_0_1_NS
 		 */
 		gsoap_resqml2_0_1::resqml20__PointGeometry* createArray2dOfExplicitZ(
 			unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs * localCrs,
-			unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy* proxy,
+			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
 			class Grid2dRepresentation * supportingRepresentation,
 			unsigned int startGlobalIndex = 0,
 			int indexIncrementI = 1, int indexIncrementJ = 1);
@@ -148,7 +148,7 @@ namespace RESQML2_0_1_NS
 		 */
 		gsoap_resqml2_0_1::resqml20__PointGeometry* createArray2dOfExplicitZ(
 			unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs * localCrs,
-			unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy* proxy,
+			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
 			double originX, double originY, double originZ,
 			double offsetIX, double offsetIY, double offsetIZ, double spacingI,
 			double offsetJX, double offsetJY, double offsetJZ, double spacingJ);

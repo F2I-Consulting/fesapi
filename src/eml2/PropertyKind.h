@@ -25,32 +25,6 @@ namespace EML2_NS
 	/** Proxy class for property kinds. */
 	class PropertyKind : public COMMON_NS::AbstractObject
 	{
-	protected:
-
-		/** Default constructor does nothing */
-		PropertyKind() {}
-
-		/**
-		 * Constructor. Only to be used in partial transfer context
-		 *
-		 * @param [in]	partialObject	If non-null, the partial object.
-		 */
-		DLL_IMPORT_OR_EXPORT PropertyKind(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		PropertyKind(gsoap_resqml2_0_1::_resqml20__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		PropertyKind(gsoap_eml2_1::eml21__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context */
@@ -84,24 +58,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The title of the parent property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getParentAsString() const;
-
-		/**
-		 * Indicates if the parent property kind is either from the standard catalog of Energistics or
-		 * from another local property kind
-		 *
-		 * @returns	True if the parent is a standard Energistics property kind, false if not.
-		 */
-		DLL_IMPORT_OR_EXPORT bool isParentAnEnergisticsPropertyKind() const;
-
-		/**
-		 * Gets the standard Energistics parent property kind
-		 *
-		 * @exception	std::invalid_argument	If the parent property kind is not an Energistics one.
-		 *
-		 * @returns	The standard Energistics parent property kind.
-		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getParentEnergisticsPropertyKind() const;
+		DLL_IMPORT_OR_EXPORT virtual std::string getParentAsString() const = 0;
 
 		/**
 		 * Gets a data object reference on the parent local property kind
@@ -111,27 +68,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The data object reference of the associated parent local property kind.
 		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getParentLocalPropertyKindDor() const;
-
-		/**
-		 * Gets the UUID of the parent local property kind
-		 *
-		 * @exception	std::invalid_argument	If the parent property kind is not a local one (it is an
-		 * 										Energistics standard one).
-		 *
-		 * @returns	The UUID of the parent local property kind UUID.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getParentLocalPropertyKindUuid() const;
-
-		/**
-		 * Gets the title of the parent local property kind
-		 *
-		 * @exception	std::invalid_argument	If the parent property kind is not a local one (it is an
-		 * 										Energistics standard one).
-		 *
-		 * @returns	The title of the parent local property kind.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getParentLocalPropertyKindTitle() const;
+		virtual COMMON_NS::DataObjectReference getParentPropertyKindDor() const = 0;
 
 		/**
 		 * Gets the parent local property kind
@@ -141,7 +78,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The parent local property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT PropertyKind* getParentLocalPropertyKind() const;
+		DLL_IMPORT_OR_EXPORT PropertyKind* getParentPropertyKind() const;
 
 		/**
 		 * Sets the parent property kind of this property kind
@@ -151,19 +88,6 @@ namespace EML2_NS
 		 * @param [in]	parentPropertyKind	The parent property kind to set to this property kind.
 		 */
 		DLL_IMPORT_OR_EXPORT void setParentPropertyKind(PropertyKind* parentPropertyKind);
-
-		/**
-		 * Checks if this property kind is a child of a particular standard Energistics property kind
-		 *
-		 * @exception	std::invalid_argument	If this property kind is partial, so that we cannot
-		 * 										consequently get its parents.
-		 * @exception	std::invalid_argument	If a required property kind mapping files is not loaded.
-		 *
-		 * @param 	standardPropKind	A standard Energistics property kind.
-		 *
-		 * @returns	True if this property kind is a child of @c standardPropKind, false if not.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual bool isChildOf(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind standardPropKind) const = 0;
 
 		/**
 		 * Checks if this property kind is abstract or not
@@ -191,14 +115,49 @@ namespace EML2_NS
 
 	protected:
 
+		/** Default constructor does nothing */
+		PropertyKind() {}
+
+		/**
+		 * Constructor. Only to be used in partial transfer context
+		 *
+		 * @param [in]	partialObject	If non-null, the partial object.
+		 */
+		DLL_IMPORT_OR_EXPORT PropertyKind(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		PropertyKind(gsoap_resqml2_0_1::_resqml20__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		PropertyKind(gsoap_eml2_1::eml21__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		PropertyKind(gsoap_eml2_2::eml22__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		PropertyKind(gsoap_eml2_3::eml23__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
 		/**
 		 * Sets XML parent property kind
 		 *
 		 * @param [in,out]	parentPropertyKind	If non-null, the parent property kind.
 		 */
 		virtual void setXmlParentPropertyKind(PropertyKind* parentPropertyKind) = 0;
-
-		/** Loads target relationships */
-		void loadTargetRelationships();
 	};
 }

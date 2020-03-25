@@ -238,7 +238,7 @@ namespace RESQML2_0_1_NS
 		 * 											must correspond to the cell at the same index in the
 		 * 											cellIndexPair array.
 		 */
-		DLL_IMPORT_OR_EXPORT void setCellIndexPairsUsingExistingDataset(ULONG64 cellIndexPairCount, const std::string & cellIndexPair, LONG64 cellIndexPairNullValue, COMMON_NS::AbstractHdfProxy * proxy, LONG64 gridIndexPairNullValue = -1, const std::string & gridIndexPair = "");
+		DLL_IMPORT_OR_EXPORT void setCellIndexPairsUsingExistingDataset(ULONG64 cellIndexPairCount, const std::string & cellIndexPair, LONG64 cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, LONG64 gridIndexPairNullValue = -1, const std::string & gridIndexPair = "");
 
 		/**
 		 * The numerical values
@@ -253,7 +253,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	proxy					 	The HDF proxy where the numerical values (cell
 		 * 												indices) are stored.
 		 */
-		DLL_IMPORT_OR_EXPORT void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, LONG64 nullValue, COMMON_NS::AbstractHdfProxy * proxy);
+		DLL_IMPORT_OR_EXPORT void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, LONG64 nullValue, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * @copybrief RESQML2_NS::GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs
@@ -263,7 +263,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @copydetails RESQML2_NS::GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs
 		 */
-		DLL_IMPORT_OR_EXPORT void setLocalFacePerCellIndexPairs(ULONG64 cellIndexPairCount, int * localFacePerCellIndexPair, int nullValue, COMMON_NS::AbstractHdfProxy * proxy);
+		DLL_IMPORT_OR_EXPORT void setLocalFacePerCellIndexPairs(ULONG64 cellIndexPairCount, int * localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * For each connection in the grid connection set representation, allow to map zero or one
@@ -281,7 +281,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	proxy					 	The Hdf proxy where the numerical values will be
 		 * 												stored.
 		 */
-		DLL_IMPORT_OR_EXPORT void setConnectionInterpretationIndices(unsigned int * interpretationIndices, unsigned int interpretationIndiceCount, unsigned int nullValue, COMMON_NS::AbstractHdfProxy * proxy);
+		DLL_IMPORT_OR_EXPORT void setConnectionInterpretationIndices(unsigned int * interpretationIndices, unsigned int interpretationIndiceCount, unsigned int nullValue, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * Get the count of the supporting grid representations of this grid connection representation.

@@ -18,4 +18,4 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "EpcExternalPartReference.h"
 
-const char* COMMON_NS::EpcExternalPartReference::XML_TAG = "EpcExternalPartReference";
+const char* EML2_NS::EpcExternalPartReference::XML_TAG = "EpcExternalPartReference";

@@ -29,7 +29,7 @@ under the License.
 #include "RepresentationSetRepresentation.h"
 #include "AbstractValuesProperty.h"
 #include "SubRepresentation.h"
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 #include "AbstractLocal3dCrs.h"
 #include "../tools/Misc.h"
 
@@ -105,7 +105,7 @@ gsoap_eml2_3::resqml22__Seismic3dCoordinates* AbstractRepresentation::getSeismic
 }
 
 gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointGeometryPatch2_0_1(unsigned int patchIndex,
-	double* points, AbstractLocal3dCrs* localCrs, hsize_t* numPoints, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy)
+	double* points, AbstractLocal3dCrs* localCrs, hsize_t* numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -485,7 +485,7 @@ void AbstractRepresentation::loadTargetRelationships()
 	// TODO : Currently, only one HDF proxy per representation is supported. It can be multiple (for example, regarding IJK parametric grid, parameters in one hdf proxy and control points in another one)
 	dor = getHdfProxyDor();
 	if (!dor.isEmpty()) {
-		convertDorIntoRel<COMMON_NS::AbstractHdfProxy>(dor);
+		convertDorIntoRel<EML2_NS::AbstractHdfProxy>(dor);
 	}
 
 	// Seismic support
@@ -523,7 +523,7 @@ void AbstractRepresentation::loadTargetRelationships()
 }
 
 void AbstractRepresentation::addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double* inlines, double* crosslines, unsigned int pointCount,
-	RESQML2_NS::AbstractRepresentation* seismicSupport, COMMON_NS::AbstractHdfProxy* proxy)
+	RESQML2_NS::AbstractRepresentation* seismicSupport, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (gsoapProxy2_0_1 != nullptr || gsoapProxy2_3 != nullptr) {
 		getRepository()->addRelationship(this, proxy);
@@ -700,7 +700,7 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(unsigned int patchIn
 }
 
 void AbstractRepresentation::addSeismic2dCoordinatesToPatch(unsigned int patchIndex, double* lineAbscissa,
-	RESQML2_NS::AbstractRepresentation* seismicSupport, COMMON_NS::AbstractHdfProxy* proxy)
+	RESQML2_NS::AbstractRepresentation* seismicSupport, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (gsoapProxy2_0_1 != nullptr || gsoapProxy2_3 != nullptr) {
 		getRepository()->addRelationship(this, proxy);
@@ -784,7 +784,7 @@ void AbstractRepresentation::getSeismicLineAbscissaOfPointsOfPatch(unsigned int 
 		gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates* seisInfo = static_cast<gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates*>(geom->SeismicCoordinates);
 		if (seisInfo->LineAbscissa->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
 			gsoap_resqml2_0_1::resqml20__DoubleHdf5Array* dblValues = static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array*>(seisInfo->LineAbscissa);
-			getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dblValues->Values->HdfProxy->UUID)
+			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dblValues->Values->HdfProxy->UUID)
 				->readArrayNdOfDoubleValues(dblValues->Values->PathInHdfFile, values);
 		}
 		else
@@ -800,7 +800,7 @@ void AbstractRepresentation::getSeismicLineAbscissaOfPointsOfPatch(unsigned int 
 		gsoap_eml2_3::resqml22__Seismic2dCoordinates* seisInfo = static_cast<gsoap_eml2_3::resqml22__Seismic2dCoordinates*>(geom->SeismicCoordinates);
 		if (seisInfo->LineAbscissa->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray) {
 			gsoap_eml2_3::eml23__DoubleExternalArray* dblValues = static_cast<gsoap_eml2_3::eml23__DoubleExternalArray*>(seisInfo->LineAbscissa);
-			getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dblValues->Values->ExternalFileProxy[0]->EpcExternalPartReference->Uuid)
+			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dblValues->Values->ExternalFileProxy[0]->EpcExternalPartReference->Uuid)
 				->readArrayNdOfDoubleValues(dblValues->Values->ExternalFileProxy[0]->PathInExternalFile, values);
 		}
 		else
@@ -821,7 +821,7 @@ void AbstractRepresentation::getInlinesOfPointsOfPatch(unsigned int patchIndex, 
 
 		if (seisInfo->InlineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
 			gsoap_resqml2_0_1::resqml20__DoubleHdf5Array* dblValues = static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array*>(seisInfo->InlineCoordinates);
-			getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dblValues->Values->HdfProxy->UUID)
+			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dblValues->Values->HdfProxy->UUID)
 				->readArrayNdOfDoubleValues(dblValues->Values->PathInHdfFile, values);
 		}
 		else
@@ -835,7 +835,7 @@ void AbstractRepresentation::getInlinesOfPointsOfPatch(unsigned int patchIndex, 
 
 		if (seisInfo->InlineCoordinates->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray) {
 			gsoap_eml2_3::eml23__DoubleExternalArray* dblValues = static_cast<gsoap_eml2_3::eml23__DoubleExternalArray*>(seisInfo->InlineCoordinates);
-			getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dblValues->Values->ExternalFileProxy[0]->EpcExternalPartReference->Uuid)
+			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dblValues->Values->ExternalFileProxy[0]->EpcExternalPartReference->Uuid)
 				->readArrayNdOfDoubleValues(dblValues->Values->ExternalFileProxy[0]->PathInExternalFile, values);
 		}
 		else
@@ -856,7 +856,7 @@ void AbstractRepresentation::getCrosslinesOfPointsOfPatch(unsigned int patchInde
 
 		if (seisInfo->CrosslineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
 			gsoap_resqml2_0_1::resqml20__DoubleHdf5Array* dblValues = static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array*>(seisInfo->CrosslineCoordinates);
-			getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dblValues->Values->HdfProxy->UUID)->readArrayNdOfDoubleValues(dblValues->Values->PathInHdfFile, values);
+			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dblValues->Values->HdfProxy->UUID)->readArrayNdOfDoubleValues(dblValues->Values->PathInHdfFile, values);
 		}
 		else
 			throw logic_error("Not implemented yet");
@@ -869,7 +869,7 @@ void AbstractRepresentation::getCrosslinesOfPointsOfPatch(unsigned int patchInde
 
 		if (seisInfo->CrosslineCoordinates->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray) {
 			gsoap_eml2_3::eml23__DoubleExternalArray* dblValues = static_cast<gsoap_eml2_3::eml23__DoubleExternalArray*>(seisInfo->CrosslineCoordinates);
-			getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dblValues->Values->ExternalFileProxy[0]->EpcExternalPartReference->Uuid)
+			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dblValues->Values->ExternalFileProxy[0]->EpcExternalPartReference->Uuid)
 				->readArrayNdOfDoubleValues(dblValues->Values->ExternalFileProxy[0]->PathInExternalFile, values);
 		}
 		else

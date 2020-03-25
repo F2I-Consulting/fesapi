@@ -108,7 +108,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	hdfProxy								The hdf proxy where the numerical
 		 * 															values will be stored.
 		 */
-		DLL_IMPORT_OR_EXPORT void setIntevalGridCells(unsigned int * gridIndices, unsigned int gridIndicesNullValue, unsigned int cellCount, ULONG64* cellIndices, unsigned char* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, COMMON_NS::AbstractHdfProxy * hdfProxy);
+		DLL_IMPORT_OR_EXPORT void setIntevalGridCells(unsigned int * gridIndices, unsigned int gridIndicesNullValue, unsigned int cellCount, ULONG64* cellIndices, unsigned char* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy);
 
 		/**
 		 * The number of non-null entries in the grid indices array.

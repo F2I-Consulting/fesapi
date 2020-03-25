@@ -69,15 +69,6 @@ namespace EML2_1_NS
 		~PropertyKind() {}
 
 		/**
-		 * Is child of the given standard property kind
-		 *
-		 * @param 	standardPropKind	The standard property kind.
-		 *
-		 * @returns	True if child of, false if not.
-		 */
-		DLL_IMPORT_OR_EXPORT bool isChildOf(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind standardPropKind) const;
-
-		/**
 		 * Query if this object is abstract
 		 *
 		 * @returns	True if abstract, false if not.
@@ -90,6 +81,26 @@ namespace EML2_1_NS
 		 * @returns	True if parent partial, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool isParentPartial() const;
+		
+		/**
+		 * Get the title of the parent property kind
+		 *
+		 * @returns	The title of the parent property kind.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getParentAsString() const;
+
+		/**
+		 * Gets a data object reference on the parent local property kind
+		 *
+		 * @exception	std::invalid_argument	If the parent property kind is not a local one (it is an
+		 * 										Energistics standard one).
+		 *
+		 * @returns	The data object reference of the associated parent local property kind.
+		 */
+		COMMON_NS::DataObjectReference getParentPropertyKindDor() const final;
+
+		/** Loads target relationships */
+		void loadTargetRelationships();
 
 		/**
 		 * Gets XML namespace
@@ -106,12 +117,5 @@ namespace EML2_1_NS
 		 * @param [in,out]	parentPropertyKind	If non-null, the parent property kind.
 		 */
 		void setXmlParentPropertyKind(EML2_NS::PropertyKind* parentPropertyKind);
-
-		/**
-		 * Gets the parent property kind
-		 *
-		 * @returns	Null if it fails, else the parent property kind.
-		 */
-		PropertyKind* getParentPropertyKind() const;
 	};
 }

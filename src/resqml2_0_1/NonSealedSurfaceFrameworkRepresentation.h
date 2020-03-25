@@ -65,7 +65,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	proxy	  	(Optional) If non-null, the proxy.
 		 * @param [in,out]	localCrs  	(Optional) If non-null, the local crs.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackNonSealedContactRepresentation(unsigned int pointCount, double * points, COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackNonSealedContactRepresentation(unsigned int pointCount, double * points, EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
                 
         /**
 		* Pushes back a contact patch in a particular contact representation of the structural framework.
@@ -80,7 +80,7 @@ namespace RESQML2_0_1_NS
         		const unsigned int & contactIndex,
                 int * nodeIndicesOnSupportingRepresentation, const unsigned int & NodeCount,
                 class AbstractRepresentation * supportingRepresentation,
-                COMMON_NS::AbstractHdfProxy* proxy);
+                EML2_NS::AbstractHdfProxy* proxy);
                 */
 
 		/**

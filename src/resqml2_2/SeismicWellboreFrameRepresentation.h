@@ -62,7 +62,7 @@ namespace RESQML2_2_NS
 			RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 			double seismicReferenceDatum,
 			double weatheringVelocity,
-			RESQML2_0_1_NS::LocalTime3dCrs* crs);
+			RESQML2_NS::LocalTime3dCrs* crs);
 	
 		/**
 		* Set the time values of this SeismicWellboreFrameRepresentation frame to an array 1d of explicit values.
@@ -70,7 +70,7 @@ namespace RESQML2_2_NS
 		* @param timeValueCount	The time values count. It must be the same that the md values count.
 		* @param proxy			The HDF proxy where to write the time values. It must be already opened for writing and won't be closed in this method.
 		*/
-		DLL_IMPORT_OR_EXPORT void setTimeValues(double const * timeValues, unsigned int timeValueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void setTimeValues(double const * timeValues, unsigned int timeValueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		* Set the time values of this WellboreFrameRepresentation frame as a regular discretization along the wellbore trajectory.

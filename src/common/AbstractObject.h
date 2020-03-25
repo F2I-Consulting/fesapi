@@ -29,7 +29,7 @@ namespace COMMON_NS
 	class AbstractObject
 	{
 	private:
-		/** Should be instantiate in case a the object is (or was) a partial object. */
+		/** Should be instantiated when the object is (or was) a partial object. */
 		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject;
 
 		/** The variable which holds the format for all exported Energistics DataObjects. */
@@ -45,14 +45,6 @@ namespace COMMON_NS
 		void setUuid(const std::string & uuid);
 
 	protected:
-
-		/** Enumeration for the various EML versions. */
-		enum class EmlVersion : std::int8_t {
-			TWO_DOT_ZERO = 0,
-			TWO_DOT_ONE = 1,
-			TWO_DOT_TWO = 2,
-			TWO_DOT_THREE = 3
-		};
 
 		/** The underlying generated gSoap proxy for a EML 2.0 dataobject. */
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
@@ -250,7 +242,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	Null if it fails, else the HDF proxy from dataset.
 		 */
-		COMMON_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset, bool throwException = true) const;
+		EML2_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset, bool throwException = true) const;
 
 		/**
 		 * Gets an Hdf Proxy from a EML 2.2 dataset.
@@ -260,7 +252,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	Null if it fails, else the HDF proxy from dataset.
 		 */
-		COMMON_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_eml2_3::eml23__ExternalDatasetPart const * dataset, bool throwException = true) const;
+		EML2_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_eml2_3::eml23__ExternalDatasetPart const * dataset, bool throwException = true) const;
 
 		/**
 		* @return the HDF group where to write the numerical values associated to this object.

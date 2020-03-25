@@ -24,7 +24,6 @@ under the License.
 #include "WellboreTrajectoryRepresentation.h"
 #include "MdDatum.h"
 #include "AbstractLocal3dCrs.h"
-#include "../common/HdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_NS;

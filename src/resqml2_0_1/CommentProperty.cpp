@@ -21,7 +21,7 @@ under the License.
 #include <sstream>
 #include <list>
 
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 #include "../common/EnumStringMapper.h"
 
 #include "../resqml2/AbstractRepresentation.h"
@@ -73,7 +73,7 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 	setPropertyKind(localPropKind);
 }
 
-std::string CommentProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64)
+std::string CommentProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64)
 {
 	getRepository()->addRelationship(this, hdfProxy);
 	_resqml20__CommentProperty* prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);
@@ -104,7 +104,7 @@ std::string CommentProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdf
 	return xmlValues->Values->PathInHdfFile;
 }
 
-COMMON_NS::AbstractHdfProxy* CommentProperty::getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const
+EML2_NS::AbstractHdfProxy* CommentProperty::getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const
 {
 	// Look for the hdf where the comments are stored.
 	_resqml20__CommentProperty const * prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);
@@ -135,10 +135,13 @@ bool CommentProperty::validatePropertyKindAssociation(EML2_NS::PropertyKind* pk)
 				repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the comment property " + getUuid() + " is right because one if its parent property kind is abstract.");
 				return true;
 			}
-			if (pk->isChildOf(resqml20__ResqmlPropertyKind__continuous) || pk->isChildOf(resqml20__ResqmlPropertyKind__discrete) || pk->isChildOf(resqml20__ResqmlPropertyKind__categorical)) {
-				repository->addWarning("The comment property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which is either a continuous, discrete or categorical standard property kind. This property will be assumed to be a partial one.");
-				changeToPartialObject();
-				return false;
+			auto pk201 = dynamic_cast<RESQML2_0_1_NS::PropertyKind*>(pk);
+			if (pk201 != nullptr) {
+				if (!pk201->isChildOf(resqml20__ResqmlPropertyKind__continuous) || pk201->isChildOf(resqml20__ResqmlPropertyKind__discrete) || pk201->isChildOf(resqml20__ResqmlPropertyKind__categorical)) {
+					repository->addWarning("The comment property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which is either a continuous, discrete or categorical standard property kind. This property will be assumed to be a partial one.");
+					changeToPartialObject();
+					return false;
+				}
 			}
 		}
 		else {

@@ -46,7 +46,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* firstStationLocation, ULONG64 stationCount,
 			gsoap_resqml2_0_1::eml20__LengthUom mdUom, double const* mds,
 			gsoap_resqml2_0_1::eml20__PlaneAngleUom angleUom, double const* azimuths, double const* inclinations,
-			COMMON_NS::AbstractHdfProxy* proxy) = 0;
+			EML2_NS::AbstractHdfProxy* proxy) = 0;
 
 		/**
 		 * Set the Md datum of this trajectory

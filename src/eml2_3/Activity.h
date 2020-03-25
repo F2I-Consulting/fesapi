@@ -320,7 +320,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The XML namespace.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const;
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const { return "eml23"; }
 
 	private:
 

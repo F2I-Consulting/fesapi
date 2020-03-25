@@ -19,7 +19,7 @@ under the License.
 #pragma once
 
 #include "../resqml2/ContinuousProperty.h"
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 
 #include <stdexcept>
 #include <sstream>
@@ -188,7 +188,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The name of the referenced HDF5 dataset.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "");
+		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "");
 
 		/**
 		 * Get the minimum value in this continuous properties. It reads it from file.
@@ -243,7 +243,7 @@ namespace RESQML2_0_1_NS
 		void init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind);
 
-		COMMON_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const;
+		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const;
 
 		size_t getMinimumValueSize() const;
 		size_t getMaximumValueSize() const;

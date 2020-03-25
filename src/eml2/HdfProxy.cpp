@@ -29,9 +29,9 @@ under the License.
 #define MAX_CHUNK_SIZE 0xffffffff // 2^32 - 1
 
 using namespace std;
-using namespace COMMON_NS;
+using namespace EML2_NS;
 
-HdfProxy::HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess) :
+HdfProxy::HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess) :
 	AbstractHdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess), hdfFile(-1), compressionLevel(0), openedGroups() {}
 
 // create an attribute at the file level to store the uuid of the corresponding COMMON hdf proxy.

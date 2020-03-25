@@ -28,7 +28,7 @@ under the License.
 #include "RepresentationSetRepresentation.h"
 #include "../eml2/PropertyKind.h"
 #include "AbstractLocal3dCrs.h"
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 #include "TimeSeries.h"
 #include "../resqml2_0_1/PropertyKindMapper.h"
 

@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../common/HdfProxy.h"
+#include "../eml2/HdfProxy.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace EML2_3_NS
 {
 	/** A hdf proxy. */
-	class HdfProxy : public COMMON_NS::HdfProxy
+	class HdfProxy : public EML2_NS::HdfProxy
 	{
 	public:
 
@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT HdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::HdfProxy(partialObject) {}
+		DLL_IMPORT_OR_EXPORT HdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EML2_NS::HdfProxy(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -60,8 +60,8 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT HdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
-			COMMON_NS::HdfProxy(fromGsoap) {}
+		DLL_IMPORT_OR_EXPORT HdfProxy(gsoap_eml2_3::_eml23__EpcExternalPartReference* fromGsoap) :
+			EML2_NS::HdfProxy(fromGsoap) {}
 
 		/** Destructor */
 		DLL_IMPORT_OR_EXPORT ~HdfProxy() {}
@@ -71,6 +71,6 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The XML namespace.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const;
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const { return "eml23"; }
 	};
 }

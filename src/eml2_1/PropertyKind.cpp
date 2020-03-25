@@ -20,6 +20,8 @@ under the License.
 
 #include <stdexcept>
 
+#include "../common/EnumStringMapper.h"
+
 using namespace std;
 using namespace EML2_1_NS;
 using namespace gsoap_eml2_1;
@@ -50,19 +52,6 @@ void PropertyKind::setXmlParentPropertyKind(EML2_NS::PropertyKind* parentPropert
 	static_cast<eml21__PropertyKind*>(gsoapProxy2_1)->Parent = parentPropertyKind->newEmlReference();
 }
 
-PropertyKind* PropertyKind::getParentPropertyKind() const
-{
-	if (static_cast<eml21__PropertyKind*>(gsoapProxy2_1)->Parent == nullptr) {
-		return nullptr;
-	}
-	return getRepository()->getDataObjectByUuid<PropertyKind>(static_cast<eml21__PropertyKind*>(gsoapProxy2_1)->Parent->Uuid);
-}
-
-bool PropertyKind::isChildOf(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind) const
-{
-	return false;
-}
-
 bool PropertyKind::isAbstract() const
 {
 	return static_cast<eml21__PropertyKind*>(gsoapProxy2_1)->IsAbstract;
@@ -72,14 +61,34 @@ bool PropertyKind::isParentPartial() const
 {
 	if (isPartial()) { return true; }
 
-	if (isParentAnEnergisticsPropertyKind()) {
-		return false;
-	}
-
 	EML2_NS::PropertyKind* parentPk = getParentPropertyKind();
 	while (parentPk != nullptr && !parentPk->isPartial()) {
 		parentPk = static_cast<EML2_1_NS::PropertyKind*>(parentPk)->getParentPropertyKind();
 	}
 
 	return parentPk != nullptr;
+}
+
+std::string PropertyKind::getParentAsString() const
+{
+	return getParentPropertyKindDor().getTitle();
+}
+
+COMMON_NS::DataObjectReference PropertyKind::getParentPropertyKindDor() const
+{
+	return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_1::_eml21__PropertyKind*>(gsoapProxy2_1)->Parent);
+}
+
+void PropertyKind::loadTargetRelationships()
+{
+	COMMON_NS::DataObjectReference dor = getParentPropertyKindDor();
+	EML2_NS::PropertyKind* parentPk = getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(dor.getUuid());
+	if (parentPk == nullptr) {
+		getRepository()->createPartial(dor);
+		parentPk = getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(dor.getUuid());
+		if (parentPk == nullptr) {
+			throw invalid_argument("The DOR looks invalid.");
+		}
+	}
+	getRepository()->addRelationship(this, parentPk);
 }

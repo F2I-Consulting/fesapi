@@ -28,7 +28,7 @@ under the License.
 
 #include "AbstractRepresentation.h"
 #include "AbstractLocal3dCrs.h"
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 
 using namespace RESQML2_NS;
 using namespace std;
@@ -57,7 +57,7 @@ AbstractValuesProperty::hdfDatatypeEnum AbstractValuesProperty::getValuesHdfData
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	std::string dsPath;
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(0, nullValue, dsPath);
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(0, nullValue, dsPath);
 
 	const hid_t dt = hdfProxy->getHdfDatatypeInDataset(dsPath);
 	if (H5Tequal(dt, H5T_NATIVE_DOUBLE) > 0)
@@ -84,7 +84,7 @@ AbstractValuesProperty::hdfDatatypeEnum AbstractValuesProperty::getValuesHdfData
 	return AbstractValuesProperty::UNKNOWN; // unknwown datatype...
 }
 
-COMMON_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(unsigned int patchIndex, LONG64 & nullValue, std::string & dsPath) const
+EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(unsigned int patchIndex, LONG64 & nullValue, std::string & dsPath) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
@@ -150,7 +150,7 @@ unsigned int AbstractValuesProperty::getValuesCountOfDimensionOfPatch(unsigned i
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	std::string dsPath;
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
 	std::vector<hsize_t> dims = hdfProxy->readArrayDimensions(dsPath);
 
@@ -165,7 +165,7 @@ unsigned int AbstractValuesProperty::getDimensionsCountOfPatch(unsigned int patc
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	std::string dsPath;
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
 	return hdfProxy->getDimensionCount(dsPath);
 }
@@ -248,7 +248,7 @@ unsigned int AbstractValuesProperty::getValuesCountOfPatch (unsigned int patchIn
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	std::string dsPath;
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
 	return hdfProxy->getElementCount(dsPath);
 }
@@ -260,7 +260,7 @@ void AbstractValuesProperty::loadTargetRelationships()
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	std::string dsPath;
 	for (size_t patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
-		COMMON_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
+		EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 		convertDorIntoRel(hdfProxy->newEml23Reference());
 	}
 }

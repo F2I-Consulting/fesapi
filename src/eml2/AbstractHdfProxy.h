@@ -18,218 +18,79 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractHdfProxy.h"
+#include "EpcExternalPartReference.h"
+#include "../common/HidtType.h"
 
-#include <unordered_map>
+/** A macro that defines cumulative length ds name */
+#define CUMULATIVE_LENGTH_DS_NAME "cumulativeLength"
+/** A macro that defines elements ds name */
+#define ELEMENTS_DS_NAME "elements"
 
-namespace COMMON_NS
+namespace EML2_NS
 {
-	/** A proxy for reading and writing values into an HDF5 file. */
-	class HdfProxy : public AbstractHdfProxy
+	/** An abstract proxy for reading and writing values into an HDF5 file. */
+	class AbstractHdfProxy : public EpcExternalPartReference
 	{
-	protected:
+	public:  
+		/** Destructor */
+		virtual ~AbstractHdfProxy() {}
 
 		/**
-		 * Constructor
+		 * Sets the path of the directory containing the EPC file associated to this HDF5 file
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param 	rootPath	Path of the directory containing the EPC file.
 		 */
-		HdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
-			COMMON_NS::AbstractHdfProxy(fromGsoap), hdfFile(-1), compressionLevel(0), openedGroups() {}
+		DLL_IMPORT_OR_EXPORT void setRootPath(const std::string& rootPath) { packageDirectoryAbsolutePath = rootPath; }
 
 		/**
-		 * Constructor
+		 * Sets the relative path of the HDF5 file regarding the path of the directory containing the EPC
+		 * file associated to this HDF5 file
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param 	relPath	Relative path of the HDF5 file.
 		 */
-		HdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
-			COMMON_NS::AbstractHdfProxy(fromGsoap), hdfFile(-1), compressionLevel(0), openedGroups() {}
+		DLL_IMPORT_OR_EXPORT void setRelativePath(const std::string& relPath) { relativeFilePath = relPath; }
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
-		 * @packageDirAbsolutePath	The directory where the EPC document is stored. Must end with a slash
-		 * or back-slash
-		 * @relativeFilePath			The relative file path of the associated HDF file. It is relative to the
-		 * location of the package
+		 * Sets the rights when opening the HDF5 file
 		 *
-		 * @param 	packageDirAbsolutePath	Full pathname of the package dir absolute file.
-		 * @param 	externalFilePath	  	Full pathname of the external file.
-		 * @param 	hdfPermissionAccess   	(Optional) The hdf permission access.
+		 * @param 	openingMode_	The opening mode of the HDF5 file.
 		 */
-		HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
+		DLL_IMPORT_OR_EXPORT void setOpeningMode(COMMON_NS::DataObjectRepository::openingMode openingMode_) { openingMode = openingMode_; }
 
 		/**
-		 * Read an nd array of float values stored in a specific dataset.
+		 * Gets the relative path of the HDF5 file regarding the path of the directory containing the
+		 * EPC file associated to this HDF5 file
 		 *
-		 * @param 		  	datasetName	The absolute dataset name where to read the values.
-		 * @param [in,out]	values	   	The values must be pre-allocated.
-		 * @param 		  	datatype   	The hdf datatype of the values to read. If the values are not
-		 * 								stored in this particular datatype, then hdf library will try to
-		 * 								do a conversion.
+		 * @returns	The relative path of the HDF5 file.
 		 */
-		void readArrayNdOfValues(const std::string& datasetName, void* values, hdf5_hid_t datatype);
+		DLL_IMPORT_OR_EXPORT const std::string& getRelativePath() const { return relativeFilePath; }
 
 		/**
-		 * Find the array associated with @p datasetName and read a portion of it.
-		 *
-		 * @param 		  	datasetName					The name of the array (potentially with multi
-		 * 												dimensions).
-		 * @param [in,out]	values						1d array output of double values ordered firstly
-		 * 												by fastest direction.
-		 * @param 		  	numValuesInEachDimension	Number of values in each dimension of the array
-		 * 												to read. They are ordered from fastest index to
-		 * 												slowest index.
-		 * @param 		  	offsetInEachDimension   	Offset values in each dimension of the array to
-		 * 												read. They are ordered from fastest index to slowest
-		 * 												index.
-		 * @param 		  	numDimensions				The number of the dimensions of the array to read.
-		 * @param 		  	datatype					The hdf datatype of the values to read. If the
-		 * 												values are not stored in this particular datatype,
-		 * 												then hdf library will try to do a conversion.
+		 * Opens the HDF5 file for reading and writing. The read and write rights are determined by the EPC
+		 * document configuration
 		 */
-		void readArrayNdOfValues(
-			const std::string& datasetName,
-			void* values,
-			unsigned long long const* numValuesInEachDimension,
-			unsigned long long const* offsetInEachDimension,
-			unsigned int numDimensions,
-			hdf5_hid_t datatype);
-
-		/**
-		 * Find the array associated with @p datasetName and read from it.
-		 *
-		 * @param 		  	datasetName					The name of the array (potentially with multi
-		 * 												dimensions).
-		 * @param [in,out]	values						1d array output of values ordered firstly by
-		 * 												fastest direction.
-		 * @param 		  	blockCountPerDimension  	Number of blocks to select from the dataspace, in
-		 * 												each dimension. They are ordered from fastest index
-		 * 												to slowest index.
-		 * @param 		  	offsetInEachDimension   	Offset values in each dimension of the array to
-		 * 												read. They are ordered from fastest index to slowest
-		 * 												index.
-		 * @param 		  	strideInEachDimension   	Number of elements to move from one block to
-		 * 												another in each dimension. They are ordered from
-		 * 												fastest index to slowest index.
-		 * @param 		  	blockSizeInEachDimension	Size of selected blocks in each dimension. They
-		 * 												are ordered from fastest index to slowest index.
-		 * @param 		  	numDimensions				The number of the dimensions of the array to read.
-		 * @param 		  	datatype					The hdf datatype of the values to read. If the
-		 * 												values are not stored in this particular datatype,
-		 * 												then hdf library will try to do a conversion.
-		 */
-		void readArrayNdOfValues(
-			const std::string& datasetName,
-			void* values,
-			unsigned long long const* blockCountPerDimension,
-			unsigned long long const* offsetInEachDimension,
-			unsigned long long const* strideInEachDimension,
-			unsigned long long const* blockSizeInEachDimension,
-			unsigned int numDimensions,
-			hdf5_hid_t datatype);
-
-		/**
-		 * Considering a given dataset, this method selects an hyperslab region to add to an existing
-		 * selected region or to add to a new selected region. The dataset is not closed within this
-		 * method.
-		 *
-		 * @param 		  	datasetName					The name of the array (potentially with multi
-		 * 												dimensions).
-		 * @param 		  	blockCountPerDimension  	Number of blocks to select from the dataspace, in
-		 * 												each dimension. They are ordered from fastest index
-		 * 												to slowest index.
-		 * @param 		  	offsetInEachDimension   	Offset values in each dimension of the array to
-		 * 												read. They are ordered from fastest index to slowest
-		 * 												index.
-		 * @param 		  	strideInEachDimension   	Number of elements to move from one block to
-		 * 												another in each dimension. They are ordered from
-		 * 												fastest index to slowest index.
-		 * @param 		  	blockSizeInEachDimension	Size of selected blocks in each dimension. They
-		 * 												are ordered from fastest index to slowest index.
-		 * @param 		  	numDimensions				The number of the dimensions of the array to
-		 * 												select.
-		 * @param 		  	newSelection				true if creating a new selected region else false.
-		 * @param [in,out]	dataset						Input dataset ID if adding a new hyperslab region
-		 * 												to an existing selected region, output dataset ID if
-		 * 												creating a new selected region.
-		 * @param [in,out]	filespace					Input selected region ID if adding a new
-		 * 												hyperslab region to an existing selected region,
-		 * 												output selected region ID if creating a new selected
-		 * 												region.
-		 */
-		void selectArrayNdOfValues(
-			const std::string& datasetName,
-			unsigned long long const* blockCountPerDimension,
-			unsigned long long const* offsetInEachDimension,
-			unsigned long long const* strideInEachDimension,
-			unsigned long long const* blockSizeInEachDimension,
-			unsigned int numDimensions,
-			bool newSelection,
-			hdf5_hid_t& dataset,
-			hdf5_hid_t& filespace);
-
-		/**
-		 * Considering a given dataset, read the double values corresponding to an existing selected
-		 * region.
-		 *
-		 * @param 		  	dataset  	ID of the dataset to read from.
-		 * @param 		  	filespace	ID of the selected region.
-		 * @param [in,out]	values   	1d array output of double values ordered firstly by fastest
-		 * 								direction.
-		 * @param 		  	slabSize 	Number of values to read.
-		 * @param 		  	datatype 	The hdf datatype of the values to read. If the values are not
-		 * 								stored in this particular datatype, then hdf library will try to
-		 * 								do a conversion.
-		 */
-		void readArrayNdOfValues(
-			hdf5_hid_t dataset,
-			hdf5_hid_t filespace,
-			void* values,
-			unsigned long long slabSize,
-			hdf5_hid_t datatype);
-
-		/**
-		* Write the uuid of the XML EpcExternalPartReference as a string attribute of the HDF5 file.
-		*/
-		void writeUuidAttribute();
-
-	public:
-
-		/**
-		 * Constructor. Only to be used in partial transfer context
-		 *
-		 * @param [in]	partialObject	If non-null, the partial object.
-		 */
-		HdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractHdfProxy(partialObject), hdfFile(-1), compressionLevel(0) {}
-
-		/** Destructor. Closes the hdf file. */
-		virtual ~HdfProxy() { close(); }
-
-		/**
-		 * Creates or opens the HDF5 file according to the chosen opening mode.
-		 */
-		void open();
+		virtual void open() = 0;
 
 		/**
 		 * Checks if the HDF5 file is open or not
 		 *
 		 * @returns	True if opened, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool isOpened() const { return hdfFile != -1; }
+		DLL_IMPORT_OR_EXPORT virtual bool isOpened() const = 0;
 
 		/** Closes the HDF5 file */
-		void close();
+		virtual void close() = 0;
 
 		/**
 		 * Gets the native datatype (@c H5T_NATIVE_INT, @c H5T_NATIVE_UINT,
 		 * @c H5T_NATIVE_FLOAT, etc.) of a dataset
 		 *
-		 * @param 	groupName	Name of the dataset.
+		 * @param 	datasetName	Name of the dataset.
 		 *
 		 * @returns	The native HDF5 datatype identifier of the dataset if successful, otherwise returns a
 		 * 			negative value.
 		 */
-		hdf5_hid_t getHdfDatatypeInDataset(const std::string& groupName);
+		virtual hdf5_hid_t getHdfDatatypeInDataset(const std::string & datasetName) = 0;
 
 		/**
 		 * Gets the datatype class (@c H5T_INTEGER, @c H5T_FLOAT, @c H5T_STRING, etc.) of a dataset
@@ -238,7 +99,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The HDF5 datatype class identifier if successful, otherwise @c H5T_NO_CLASS (-1).
 		 */
-		int getHdfDatatypeClassInDataset(const std::string& datasetName);
+		virtual int getHdfDatatypeClassInDataset(const std::string & datasetName) = 0;
 
 		/**
 		 * Writes an itemized list of lists into the HDF5 file by means of a single group containing two
@@ -258,14 +119,14 @@ namespace COMMON_NS
 		 * 										individual lists contents.
 		 * @param 	elementsSize				Size of the elements array.
 		 */
-		void writeItemizedListOfList(const std::string& groupName,
-			const std::string& name,
+		virtual void writeItemizedListOfList(const std::string & groupName,
+			const std::string & name,
 			hdf5_hid_t cumulativeLengthDatatype,
-			const void* cumulativeLength,
+			const void * cumulativeLength,
 			unsigned long long cumulativeLengthSize,
 			hdf5_hid_t elementsDatatype,
-			const void* elements,
-			unsigned long long elementsSize);
+			const void * elements,
+			unsigned long long elementsSize) = 0;
 
 		/**
 		 * Gets the number of dimensions in an HDF5 dataset of the proxy.
@@ -276,7 +137,7 @@ namespace COMMON_NS
 		 * @returns	The number of dimensions of the dataset if successful, otherwise returns a negative
 		 * 			value.
 		 */
-		unsigned int getDimensionCount(const std::string& datasetName);
+		virtual unsigned int getDimensionCount(const std::string & datasetName) = 0;
 
 		/**
 		 * Gets the number of elements in an HDF5 dataset of the proxy. The number of elements is got
@@ -288,7 +149,7 @@ namespace COMMON_NS
 		 * @returns	The number of elements of the dataset if successful, otherwise returns a negative
 		 * 			value.
 		 */
-		signed long long getElementCount(const std::string& datasetName);
+		virtual signed long long getElementCount(const std::string & datasetName) = 0;
 
 		/**
 		 * Sets the new compression level which will be used for all data to be written
@@ -296,9 +157,7 @@ namespace COMMON_NS
 		 * @param 	newCompressionLevel	The new compression level in range [0..9]. Lower compression
 		 * 								levels are faster but result in less compression.
 		 */
-		DLL_IMPORT_OR_EXPORT void setCompressionLevel(unsigned int newCompressionLevel) {
-			compressionLevel = newCompressionLevel > 9 ? 9 : newCompressionLevel;
-		}
+		DLL_IMPORT_OR_EXPORT virtual void setCompressionLevel(unsigned int newCompressionLevel) = 0;
 
 		/**
 		 * Writes an nd array of float values into the HDF5 file by means of a single dataset
@@ -314,11 +173,11 @@ namespace COMMON_NS
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of dimensions (n) of the nd array to write.
 		 */
-		void writeArrayNdOfFloatValues(const std::string& groupName,
-			const std::string& name,
-			const float* floatValues,
-			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions);
+		virtual void writeArrayNdOfFloatValues(const std::string & groupName,
+		  const std::string & name,
+		  const float * floatValues,
+		  const unsigned long long * numValuesInEachDimension,
+		  unsigned int numDimensions) = 0;
 
 		/**
 		 * Writes an nd array of double values into the HDF5 file by means of a single dataset
@@ -334,11 +193,11 @@ namespace COMMON_NS
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of dimensions (n) of the nd array to write.
 		 */
-		void writeArrayNdOfDoubleValues(const std::string& groupName,
-			const std::string& name,
-			const double* dblValues,
-			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions);
+		virtual void writeArrayNdOfDoubleValues(const std::string & groupName,
+		  const std::string & name,
+		  const double * dblValues,
+		  const unsigned long long * numValuesInEachDimension,
+		  unsigned int numDimensions) = 0;
 
 		/**
 		 * Writes an nd array of char values into the HDF5 file by means of a single dataset
@@ -354,11 +213,11 @@ namespace COMMON_NS
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
 		 */
-		void writeArrayNdOfCharValues(const std::string& groupName,
-			const std::string& name,
-			const char* intValues,
-			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions);
+		virtual void writeArrayNdOfCharValues(const std::string & groupName,
+			const std::string & name,
+			const char * intValues,
+			const unsigned long long * numValuesInEachDimension,
+			unsigned int numDimensions) = 0;
 
 		/**
 		 * Writes an nd array of int values into the HDF5 file by means of a single dataset
@@ -374,32 +233,32 @@ namespace COMMON_NS
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
 		 */
-		void writeArrayNdOfIntValues(const std::string& groupName,
-			const std::string& name,
-			const int* intValues,
-			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions);
+		virtual void writeArrayNdOfIntValues(const std::string & groupName,
+		  const std::string & name,
+		  const int * intValues,
+		  const unsigned long long * numValuesInEachDimension,
+		  unsigned int numDimensions) = 0;
 
-		/**
-		 * Writes an nd array of gSOAP unsigned long 64 values into the HDF5 file by means of a single
-		 * dataset
-		 *
-		 * @param 	groupName					The name of the group where to create the nd array of
-		 * 										gSOAP unsigned long 64 values. This name must not contain '/'
-		 * 										character and must be directly contained in RESQML group.
-		 * @param 	name						The name of the nd array HDF5 dataset. It must not
-		 * 										already exist.
-		 * @param 	ulong64Values				1d array of gSOAP unsigned long 64 values ordered firstly
-		 * 										by fastest direction.
-		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
-		 * 										write. They are ordered from fastest index to slowest index.
-		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
-		 */
-		void writeArrayNdOfGSoapULong64Values(const std::string& groupName,
-			const std::string& name,
-			const ULONG64* ulong64Values,
-			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions);
+ 		/**
+ 		 * Writes an nd array of gSOAP unsigned long 64 values into the HDF5 file by means of a single
+ 		 * dataset
+ 		 *
+ 		 * @param 	groupName					The name of the group where to create the nd array of
+ 		 * 										gSOAP unsigned long 64 values. This name must not contain '/'
+ 		 * 										character and must be directly contained in RESQML group.
+ 		 * @param 	name						The name of the nd array HDF5 dataset. It must not
+ 		 * 										already exist.
+ 		 * @param 	ulong64Values				1d array of gSOAP unsigned long 64 values ordered firstly
+ 		 * 										by fastest direction.
+ 		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
+ 		 * 										write. They are ordered from fastest index to slowest index.
+ 		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
+ 		 */
+ 		virtual void writeArrayNdOfGSoapULong64Values(const std::string & groupName,
+			const std::string & name,
+			const ULONG64 * ulong64Values,
+			const unsigned long long * numValuesInEachDimension,
+			unsigned int numDimensions) = 0;
 
 		/**
 		 * Writes an nd array of a specific datatype into the HDF5 file by means of a single dataset
@@ -416,12 +275,12 @@ namespace COMMON_NS
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
 		 */
-		void writeArrayNd(const std::string& groupName,
-			const std::string& name,
-			hdf5_hid_t datatype,
-			const void* values,
-			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions);
+		virtual void writeArrayNd(const std::string & groupName,
+		  const std::string & name,
+		  hdf5_hid_t datatype,
+		  const void * values,
+		  const unsigned long long * numValuesInEachDimension,
+		  unsigned int numDimensions) = 0;
 
 		/**
 		 * Creates an nd array of a specific datatype into the HDF5 file by means of a single dataset.
@@ -437,13 +296,13 @@ namespace COMMON_NS
 		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to
 		 * 										create.
 		 */
-		void createArrayNd(
-			const std::string& groupName,
-			const std::string& name,
-			hdf5_hid_t datatype,
-			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions
-		);
+		virtual void createArrayNd(
+		  const std::string& groupName,
+		  const std::string& name,
+		  hdf5_hid_t datatype,
+		  const unsigned long long* numValuesInEachDimension,
+		  unsigned int numDimensions
+		  ) = 0;
 
 		/**
 		 * Finds the nd array associated with @p groupName and @p name and writes into it
@@ -460,29 +319,29 @@ namespace COMMON_NS
 		 * 										They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions			   	The number of the dimensions (n) of the nd array to write.
 		 */
-		void writeArrayNdSlab(
-			const std::string& groupName,
-			const std::string& name,
-			hdf5_hid_t datatype,
-			const void* values,
-			const unsigned long long* numValuesInEachDimension,
-			const unsigned long long* offsetValuesInEachDimension,
-			unsigned int numDimensions
-		);
+		virtual void writeArrayNdSlab(
+		  const std::string& groupName,
+		  const std::string& name,
+		  hdf5_hid_t datatype,
+		  const void* values,
+		  const unsigned long long* numValuesInEachDimension,
+		  const unsigned long long* offsetValuesInEachDimension,
+		  unsigned int numDimensions
+		  ) = 0;
 
 		/**
 		 * Writes some string attributes into a group
 		 *
-		 * @exception	std::invalid_argument	Attributes names and string values vector do not have the
-		 * 										same size.
+		 * @exception	std::invalid_argument	Attributes names and string values vector do not have the same
+		 * 										size.
 		 *
 		 * @param 	groupName	  	Name of the group.
 		 * @param 	attributeNames	Vector of attributes names.
 		 * @param 	values		  	Vector of string values.
 		 */
-		void writeGroupAttributes(const std::string& groupName,
-			const std::vector<std::string>& attributeNames,
-			const std::vector<std::string>& values);
+		virtual void writeGroupAttributes(const std::string & groupName,
+			const std::vector<std::string> & attributeNames,
+			const std::vector<std::string> & values) = 0;
 
 		/**
 		 * Writes a single attribute into a group which contains an array of string values
@@ -491,37 +350,37 @@ namespace COMMON_NS
 		 * @param 	attributeName	Name of the attribute.
 		 * @param 	values		 	Vector of string values.
 		 */
-		void writeGroupAttribute(const std::string& groupName,
-			const std::string& attributeName,
-			const std::vector<std::string>& values);
+		virtual void writeGroupAttribute(const std::string & groupName,
+			const std::string & attributeName,
+			const std::vector<std::string> & values) = 0;
 
 		/**
 		 * Writes some double attributes into a group
 		 *
 		 * @exception	std::invalid_argument	Attributes names and double values vector do not have the
-		 * 										same size.
+		 * 										same size.  
 		 *
 		 * @param 	groupName	  	Name of the group.
 		 * @param 	attributeNames	Vector of attributes names.
 		 * @param 	values		  	Vector of double values.
 		 */
-		void writeGroupAttributes(const std::string& groupName,
-			const std::vector<std::string>& attributeNames,
-			const std::vector<double>& values);
+		virtual void writeGroupAttributes(const std::string & groupName,
+			const std::vector<std::string> & attributeNames,
+			const std::vector<double> & values) = 0;
 
 		/**
 		 * Writes some int attributes into a group
 		 *
 		 * @exception	std::invalid_argument	Attributes names and int values vector do not have the
-		 * 										same size.
+		 * 										same size.  
 		 *
 		 * @param 	groupName	  	Name of the group.
 		 * @param 	attributeNames	Vector of attributes names.
 		 * @param 	values		  	Vector of int values.
 		 */
-		void writeGroupAttributes(const std::string& groupName,
-			const std::vector<std::string>& attributeNames,
-			const std::vector<int>& values);
+		virtual void writeGroupAttributes(const std::string & groupName,
+			const std::vector<std::string> & attributeNames,
+			const std::vector<int> & values) = 0;
 
 		/**
 		 * Writes some string attributes into a dataset
@@ -533,9 +392,9 @@ namespace COMMON_NS
 		 * @param 	attributeNames	Vector of attributes names.
 		 * @param 	values		  	Vector of string values.
 		 */
-		void writeDatasetAttributes(const std::string& datasetName,
-			const std::vector<std::string>& attributeNames,
-			const std::vector<std::string>& values);
+		virtual void writeDatasetAttributes(const std::string & datasetName,
+			const std::vector<std::string> & attributeNames,
+			const std::vector<std::string> & values) = 0;
 
 		/**
 		 * Writes a single attribute into a dataset which contain an array of strings values
@@ -544,9 +403,9 @@ namespace COMMON_NS
 		 * @param 	attributeName	Name of the attribute.
 		 * @param 	values		 	Vector of string values.
 		 */
-		void writeDatasetAttribute(const std::string& datasetName,
-			const std::string& attributeName,
-			const std::vector<std::string>& values);
+		virtual void writeDatasetAttribute(const std::string & datasetName,
+			const std::string & attributeName,
+			const std::vector<std::string> & values) = 0;
 
 		/**
 		 * Writes some double attributes into a dataset
@@ -558,9 +417,9 @@ namespace COMMON_NS
 		 * @param 	attributeNames	Vector of attributes names.
 		 * @param 	values		  	Vector of double values.
 		 */
-		void writeDatasetAttributes(const std::string& datasetName,
-			const std::vector<std::string>& attributeNames,
-			const std::vector<double>& values);
+		virtual void writeDatasetAttributes(const std::string & datasetName,
+			const std::vector<std::string> & attributeNames,
+			const std::vector<double> & values) = 0;
 
 		/**
 		 * Writes some int attributes into a dataset
@@ -572,9 +431,9 @@ namespace COMMON_NS
 		 * @param 	attributeNames	Vector of attributes names.
 		 * @param 	values		  	Vector of int values.
 		 */
-		void writeDatasetAttributes(const std::string& datasetName,
-			const std::vector<std::string>& attributeNames,
-			const std::vector<int>& values);
+		virtual void writeDatasetAttributes(const std::string & datasetName,
+			const std::vector<std::string> & attributeNames,
+			const std::vector<int> & values) = 0;
 
 		/**
 		 * Reads a string which is stored as an HDF5 attribute in a file, group or dataset
@@ -588,8 +447,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	The attribute value.
 		 */
-		std::string readStringAttribute(const std::string& obj_name,
-			const std::string& attr_name) const;
+		virtual std::string readStringAttribute(const std::string & obj_name,
+			const std::string & attr_name) const = 0;
 
 		/**
 		 * Reads string values which are stored as an HDF5 attribute in a file, group or dataset
@@ -603,8 +462,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	The vector of attribute values.
 		 */
-		std::vector<std::string> readStringArrayAttribute(const std::string& obj_name,
-			const std::string& attr_name) const;
+		virtual std::vector<std::string> readStringArrayAttribute(const std::string & obj_name,
+			const std::string & attr_name) const = 0;
 
 		/**
 		 * Reads a double which is stored as an HDF5 attribute in a file, group or dataset
@@ -618,8 +477,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	The attribute value.
 		 */
-		double readDoubleAttribute(const std::string& obj_name,
-			const std::string& attr_name) const;
+		virtual double readDoubleAttribute(const std::string & obj_name,
+			const std::string & attr_name) const = 0;
 
 		/**
 		 * Reads a long which is stored as an HDF5 attribute in a file, group or dataset
@@ -633,8 +492,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	The attribute value.
 		 */
-		LONG64 readLongAttribute(const std::string& obj_name,
-			const std::string& attr_name) const;
+		virtual LONG64 readLongAttribute(const std::string & obj_name,
+			const std::string & attr_name) const = 0;
 
 		/**
 		 * Reads an nd array of double values stored in a specific dataset
@@ -645,12 +504,12 @@ namespace COMMON_NS
 		 * @param [out]	values	   	1d array of double values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		void readArrayNdOfDoubleValues(const std::string& datasetName, double* values);
+		virtual void readArrayNdOfDoubleValues(const std::string & datasetName, double* values) = 0;
 
 		/**
 		 * Finds the nd array of double values associated with @p datasetName and reads from it
 		 *
-		 * @exception	invalid_argument	Thrown when an invalid argument error condition occurs.
+		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
 		 *
 		 * @param 	   	datasetName					The name of the nd array dataset.
 		 * @param [out]	values						1d array of double values ordered firstly by fastest
@@ -665,13 +524,13 @@ namespace COMMON_NS
 		 * @param 	   	numDimensions				The number of the dimensions (n) of the nd array to
 		 * 											read.
 		 */
-		void readArrayNdOfDoubleValues(
-			const std::string& datasetName,
-			double* values,
-			unsigned long long const* numValuesInEachDimension,
-			unsigned long long const* offsetInEachDimension,
-			unsigned int numDimensions
-		);
+		virtual void readArrayNdOfDoubleValues(
+		  const std::string & datasetName,
+		  double* values,
+		  unsigned long long const * numValuesInEachDimension,
+		  unsigned long long const * offsetInEachDimension,
+		  unsigned int numDimensions
+		  ) = 0;
 
 		/**
 		 * Finds the nd array of double values associated with @p datasetName and reads from it
@@ -696,13 +555,55 @@ namespace COMMON_NS
 		 * @param 	   	numDimensions				The number of the dimensions (n) of the nd array to
 		 * 											read.
 		 */
-		void readArrayNdOfDoubleValues(
-			const std::string& datasetName, double* values,
+		virtual void readArrayNdOfDoubleValues(
+			const std::string & datasetName, 
+			double* values,
+			unsigned long long const * blockCountPerDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned long long const * strideInEachDimension,
+			unsigned long long const * blockSizeInEachDimension,
+			unsigned int numDimensions) = 0;
+
+		/**
+		 * Considering a given nd array dataset, this method selects an hyperslab region to add to an
+		 * existing selected region or to add to a new selected region. The dataset is not closed within
+		 * this method.
+		 *
+		 * @exception	invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @param 		  	datasetName					The name of the nd array dataset.
+		 * @param 		  	blockCountPerDimension  	Number of blocks to select from the dataspace, in
+		 * 												each dimension. They are ordered from fastest index
+		 * 												to slowest index.
+		 * @param 		  	offsetInEachDimension   	Offset values in each dimension of the array to
+		 * 												read. They are ordered from fastest index to slowest
+		 * 												index.
+		 * @param 		  	strideInEachDimension   	Number of elements to move from one block to
+		 * 												another in each dimension. They are ordered from
+		 * 												fastest index to slowest index.
+		 * @param 		  	blockSizeInEachDimension	Size of selected blocks in each dimension. They
+		 * 												are ordered from fastest index to slowest index.
+		 * @param 		  	numDimensions				The number of the dimensions (n) of the nd array
+		 * 												to read.
+		 * @param 		  	newSelection				true if creating a new selected region else false.
+		 * @param [in,out]	dataset						Input dataset ID if adding a new hyperslab region
+		 * 												to an existing selected region, output dataset ID if
+		 * 												creating a new selected region.
+		 * @param [in,out]	filespace					Input selected region ID if adding a new
+		 * 												hyperslab region to an existing selected region,
+		 * 												output selected region ID if creating a new selected
+		 * 												region.
+		 */
+		virtual void selectArrayNdOfValues(
+			const std::string & datasetName,
 			unsigned long long const* blockCountPerDimension,
 			unsigned long long const* offsetInEachDimension,
 			unsigned long long const* strideInEachDimension,
 			unsigned long long const* blockSizeInEachDimension,
-			unsigned int numDimensions);
+			unsigned int numDimensions,
+			bool newSelection,
+			hdf5_hid_t & dataset,
+			hdf5_hid_t & filespace) = 0;
 
 		/**
 		 * Considering a given nd array dataset, reads the double values corresponding to an existing
@@ -716,11 +617,11 @@ namespace COMMON_NS
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 * @param 	   	slabSize 	Number of values to read.
 		 */
-		void readArrayNdOfDoubleValues(
+		virtual void readArrayNdOfDoubleValues(
 			hdf5_hid_t dataset,
 			hdf5_hid_t filespace,
 			void* values,
-			unsigned long long slabSize);
+			unsigned long long slabSize) = 0;
 
 		/**
 		 * Reads an nd array of float values stored in a specific dataset
@@ -731,7 +632,7 @@ namespace COMMON_NS
 		 * @param [out]	values	   	1d array of float values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		void readArrayNdOfFloatValues(const std::string& datasetName, float* values);
+		virtual void readArrayNdOfFloatValues(const std::string & datasetName, float* values) = 0;
 
 		/**
 		 * Finds the nd array of float values associated with @p datasetName and reads from it
@@ -751,13 +652,13 @@ namespace COMMON_NS
 		 * @param 	   	numDimensions				The number of the dimensions (n) of the nd array to
 		 * 											read.
 		 */
-		void readArrayNdOfFloatValues(
-			const std::string& datasetName,
-			float* values,
-			unsigned long long const* numValuesInEachDimension,
-			unsigned long long const* offsetInEachDimension,
-			unsigned int numDimensions
-		);
+		virtual void readArrayNdOfFloatValues(
+		  const std::string & datasetName,
+		  float* values,
+		  unsigned long long const * numValuesInEachDimension,
+		  unsigned long long const * offsetInEachDimension,
+		  unsigned int numDimensions
+		  ) = 0;
 
 		/**
 		 * Reads an nd array of long values stored in a specific dataset
@@ -768,7 +669,7 @@ namespace COMMON_NS
 		 * @param [out]	values	   	1d array of long values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		virtual void readArrayNdOfLongValues(const std::string& datasetName, LONG64* values);
+		virtual void readArrayNdOfLongValues(const std::string & datasetName, LONG64* values) = 0;
 
 		/**
 		 * Finds the nd array of long values associated with @p datasetName and reads from it
@@ -789,11 +690,11 @@ namespace COMMON_NS
 		 * 											read.
 		 */
 		virtual void readArrayNdOfLongValues(
-			const std::string& datasetName,
+			const std::string & datasetName,
 			LONG64* values,
-			unsigned long long const* numValuesInEachDimension,
-			unsigned long long const* offsetInEachDimension,
-			unsigned int numDimensions);
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned int numDimensions) = 0;
 
 		/**
 		 * Reads an nd array of unsigned long values stored in a specific dataset
@@ -805,7 +706,7 @@ namespace COMMON_NS
 		 * 							direction. The values must be pre-allocated and won't be freed by
 		 * 							this method.
 		 */
-		virtual void readArrayNdOfULongValues(const std::string& datasetName, ULONG64* values);
+		virtual void readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values) = 0;
 
 		/**
 		 * Reads an nd array of int values stored in a specific dataset
@@ -816,12 +717,12 @@ namespace COMMON_NS
 		 * @param [out]	values	   	1d array of int values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		void readArrayNdOfIntValues(const std::string& datasetName, int* values);
+		virtual void readArrayNdOfIntValues(const std::string & datasetName, int* values) = 0;
 
 		/**
 		 * Finds the nd array of int values associated with @p datasetName and reads from it
 		 *
-		 * @exception	invalid_argument	Thrown when an invalid argument error condition occurs.
+		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
 		 *
 		 * @param 	   	datasetName					The name of the nd array dataset.
 		 * @param [out]	values						1d array of int values ordered firstly by fastest
@@ -836,13 +737,13 @@ namespace COMMON_NS
 		 * @param 	   	numDimensions				The number of the dimensions (n) of the nd array to
 		 * 											read.
 		 */
-		void readArrayNdOfIntValues(
-			const std::string& datasetName,
+		virtual void readArrayNdOfIntValues(
+			const std::string & datasetName,
 			int* values,
-			unsigned long long const* numValuesInEachDimension,
-			unsigned long long const* offsetInEachDimension,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
 			unsigned int numDimensions
-		);
+		) = 0;
 
 		/**
 		 * Reads an nd array of unsigned int values stored in a specific dataset
@@ -853,7 +754,7 @@ namespace COMMON_NS
 		 * @param [out]	values	   	1d array of unsigned int values ordered firstly by fastest direction.
 		 * 							The values must be pre-allocated and won't be freed by this method.
 		 */
-		void readArrayNdOfUIntValues(const std::string& datasetName, unsigned int* values);
+		virtual void readArrayNdOfUIntValues(const std::string & datasetName, unsigned int* values) = 0;
 
 		/**
 		 * Reads an nd array of short values stored in a specific dataset
@@ -864,7 +765,7 @@ namespace COMMON_NS
 		 * @param [out]	values	   	1d array of short values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		void readArrayNdOfShortValues(const std::string& datasetName, short* values);
+		virtual void readArrayNdOfShortValues(const std::string & datasetName, short* values) = 0;
 
 		/**
 		 * Reads an nd array of unsigned short values stored in a specific dataset
@@ -876,7 +777,7 @@ namespace COMMON_NS
 		 * 							direction. The values must be pre-allocated and won't be freed by
 		 * 							this method.
 		 */
-		void readArrayNdOfUShortValues(const std::string& datasetName, unsigned short* values);
+		virtual void readArrayNdOfUShortValues(const std::string & datasetName, unsigned short* values) = 0;
 
 		/**
 		 * Reads an nd array of char values stored in a specific dataset
@@ -887,7 +788,7 @@ namespace COMMON_NS
 		 * @param [out]	values	   	1d array of char values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		void readArrayNdOfCharValues(const std::string& datasetName, char* values);
+		virtual void readArrayNdOfCharValues(const std::string & datasetName, char* values) = 0;
 
 		/**
 		 * Reads an nd array of unsigned char values stored in a specific dataset
@@ -899,7 +800,7 @@ namespace COMMON_NS
 		 * 							direction. The values must be pre-allocated and won't be freed by
 		 * 							this method.
 		 */
-		void readArrayNdOfUCharValues(const std::string& datasetName, unsigned char* values);
+		virtual void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) = 0;
 
 		/**
 		 * Reads the dimensions size of an nd array stored in a specific dataset
@@ -908,7 +809,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of dimensions size.
 		 */
-		std::vector<unsigned long long> readArrayDimensions(const std::string& datasetName);
+		virtual std::vector<unsigned long long> readArrayDimensions(const std::string & datasetName) = 0;
 
 		/**
 		 * Checks whether an absolute path exists in the HDF5 file
@@ -917,7 +818,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	True if the absolute path exists, else false.
 		 */
-		bool exist(const std::string& absolutePathInHdfFile) const;
+		virtual bool exist(const std::string & absolutePathInHdfFile) const = 0;
 
 		/**
 		 * Checks whether a dataset is compressed or not
@@ -928,37 +829,52 @@ namespace COMMON_NS
 		 *
 		 * @returns	True if compressed, false if not.
 		 */
-		bool isCompressed(const std::string& datasetName);
+		virtual bool isCompressed(const std::string & datasetName) = 0;
 
 	protected:
 
 		/**
-		 * Allows to force a root group for all newly created groups in inherited HDF proxies.
+		 * Only to be used in partial transfer context
 		 *
-		 * @param 	rootGroup	Group the root belongs to.
-		 *
-		 * @returns	A hdf5_hid_t.
+		 * @param [in,out]	partialObject	If non-null, the partial object.
 		 */
-		virtual hdf5_hid_t openOrCreateRootGroup(const std::string& rootGroup);
+		AbstractHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EpcExternalPartReference(partialObject) {}
+
+		/** / The directory where the EPC document is stored. */
+		std::string packageDirectoryAbsolutePath;
+		/** / Must be relative to the location of the package */
+		std::string relativeFilePath;
+		/** The opening mode */
+		COMMON_NS::DataObjectRepository::openingMode openingMode;
 
 		/**
-		 * Checks if an HDF group named as groupName exists in the root group. If it exists, it returns
-		 * the latter. If not, it creates this group and then returns it. Do not close opened or created
-		 * HDF5 group. They are automatically managed by fesapi.
+		 * Abstract hdf proxy
 		 *
-		 * @param 	rootSlashGroup	Name of the group.
+		 * @param 	packageDirAbsolutePath	The soap context where the underlying gSOAP proxy is going to
+		 * 									be created.
+		 * @param 	externalFilePath	  	Full pathname of the external file.
+		 * @param 	hdfPermissionAccess   	(Optional) The hdf permission access.
 		 *
-		 * @returns	A hdf5_hid_t.
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		hdf5_hid_t openOrCreateGroupInRootGroup(const std::string& rootSlashGroup);
+		AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) :
+			packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath), openingMode(hdfPermissionAccess) {}
 
-		/** The hdf file */
-		hdf5_hid_t hdfFile;
+		AbstractHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
+			EpcExternalPartReference(fromGsoap), openingMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {}
 
-		/** The compression level */
-		unsigned int compressionLevel;
+		AbstractHdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
+			EpcExternalPartReference(fromGsoap), openingMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {}
 
-		/** Groups the opened belongs to */
-		std::unordered_map< std::string, hdf5_hid_t > openedGroups;
+		AbstractHdfProxy(gsoap_eml2_3::_eml23__EpcExternalPartReference* fromGsoap) :
+			EpcExternalPartReference(fromGsoap), openingMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {}
+
+		/**
+		 * Instantiate and initialize the gsoap proxy.
+		 * This method is defined in order to be used in derived class without having to link to generated gsoap files.
+		 *
+		 * @param 	emlVersion	  	Desired eml Version such as 20 (for v2.0) or 23 (for v2.3) etc...
+		*/
+		DLL_IMPORT_OR_EXPORT void initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, unsigned int emlVersion);
 	};
 }

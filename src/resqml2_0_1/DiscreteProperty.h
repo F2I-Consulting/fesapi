@@ -116,7 +116,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The name of the referenced HDF5 dataset.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue);
+		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue);
 		using AbstractDiscreteOrCategoricalProperty::pushBackRefToExistingDataset;
 
 		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) override;

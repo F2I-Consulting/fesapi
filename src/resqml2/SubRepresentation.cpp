@@ -22,7 +22,7 @@ under the License.
 #include <stdexcept>
 
 #include "AbstractFeatureInterpretation.h"
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 #include "../resqml2_0_1/UnstructuredGridRepresentation.h"
 #include "AbstractIjkGridRepresentation.h"
 

@@ -218,11 +218,6 @@ LONG64 ActivityTemplate::getParameterMaxOccurences(const std::string & paramTitl
 	return param->MaxOccurs;
 }
 
-std::string ActivityTemplate::getXmlNamespace() const
-{
-	return "eml23";;
-}
-
 gsoap_eml2_3::eml23__ParameterTemplate* ActivityTemplate::getParameterFromTitle(const std::string & paramTitle) const
 {
 	eml23__ActivityTemplate* activityTemplate = static_cast<eml23__ActivityTemplate*>(gsoapProxy2_3);

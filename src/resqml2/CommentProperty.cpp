@@ -23,7 +23,7 @@ under the License.
 
 #include <H5Tpublic.h>
 
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_NS;
@@ -31,7 +31,7 @@ using namespace RESQML2_NS;
 const char* CommentProperty::XML_TAG = "CommentProperty";
 
 void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values,
-	COMMON_NS::AbstractHdfProxy * proxy)
+	EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -79,7 +79,7 @@ std::vector<std::string> CommentProperty::getStringValuesOfPatch(unsigned int pa
 	std::vector<std::string> result;
 
 	std::string datasetPath;
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getValuesHdfProxyAndDatasetPathOfPatch(patchIndex, datasetPath);
+	EML2_NS::AbstractHdfProxy* hdfProxy = getValuesHdfProxyAndDatasetPathOfPatch(patchIndex, datasetPath);
 
 	// Check if the hdf dataset really contains constant length string.
 	std::vector<hsize_t> dims = hdfProxy->readArrayDimensions(datasetPath);

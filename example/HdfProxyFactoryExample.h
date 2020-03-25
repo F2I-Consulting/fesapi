@@ -31,21 +31,21 @@ public:
 	/**
 	* Only to be used in partial transfer context
 	*/
-	COMMON_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) {
+	EML2_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) {
 		return new HdfProxyExample(partialObject);
 	}
 
 	/**
 	* Creates an instance of this class by wrapping a gsoap instance.
 	*/
-	COMMON_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) {
+	EML2_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) {
 		return new HdfProxyExample(fromGsoap);
 	}
 
 	/**
 	* Creates an instance of this class for serialization purpose.
 	*/
-	COMMON_NS::AbstractHdfProxy* make(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+	EML2_NS::AbstractHdfProxy* make(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 		const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {
 		return new HdfProxyExample(repo, guid, title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
 	}
