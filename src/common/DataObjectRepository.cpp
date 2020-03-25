@@ -236,10 +236,9 @@ namespace {
 /////////////////////
 ////// EML //////
 /////////////////////
-#define GLUE(a,b) a##b
 #define GET_EML_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace, xmlNamespace)\
-	gsoapNameSpace::GLUE(_,xmlNamespace)__##className* read = gsoapNameSpace::GLUE(soap_new_,xmlNamespace)__##className(gsoapContext);\
-	gsoapNameSpace::GLUE(soap_read_,xmlNamespace)__##className(gsoapContext, read);
+	gsoapNameSpace::_##xmlNamespace ##__##className* read = gsoapNameSpace::soap_new_##xmlNamespace ##__##className(gsoapContext);\
+	gsoapNameSpace::soap_read_##xmlNamespace ##__##className(gsoapContext, read);
 #define GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace, xmlNamespace)\
 	GET_EML_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace, xmlNamespace)\
 	wrapper = new classNamespace::className(read);
