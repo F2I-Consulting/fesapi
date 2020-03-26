@@ -18,15 +18,23 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/SeismicLineSetFeature.h"
+#include "AbstractFeature.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_NS
 {
-	/** A seismic line set feature. */
-	class SeismicLineSetFeature : public RESQML2_NS::SeismicLineSetFeature
+	/** A geologic unit feature. */
+	class RockVolumeFeature : public AbstractFeature
 	{
 	public:
+
+		/** Destructor */
+		virtual ~RockVolumeFeature() {}
+
+	protected:
+
+		/** Default constructor Set the gsoap proxy to nullptr from superclass constructor */
+		RockVolumeFeature() {}
 
 		/**
 		 * Only to be used in partial transfer context
@@ -35,26 +43,20 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT SeismicLineSetFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::SeismicLineSetFeature(partialObject) {}
+		DLL_IMPORT_OR_EXPORT RockVolumeFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractFeature(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
-		 *
-		 * @param [in,out]	repo 	The repo where the underlying gsoap proxy is going to be created.
-		 * @param 		  	guid 	The guid to set to this instance. If empty then a new guid will be
-		 * 							generated.
-		 * @param 		  	title	A title for the instance to create.
-		 */
-		SeismicLineSetFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
+		 * Constructor
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		SeismicLineSetFeature(gsoap_resqml2_0_1::_resqml20__SeismicLineSetFeature* fromGsoap): RESQML2_NS::SeismicLineSetFeature(fromGsoap) {}
+		RockVolumeFeature(gsoap_resqml2_0_1::_resqml20__GeologicUnitFeature* fromGsoap) : AbstractFeature(fromGsoap) {}
 
-		/** Destructor does nothing since the memory is manged by the gsoap context. */
-		~SeismicLineSetFeature() {}
+		/**
+		 * Constructor
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		RockVolumeFeature(gsoap_eml2_3::_resqml22__RockVolumeFeature* fromGsoap) : AbstractFeature(fromGsoap) {}
 	};
 }

@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractTechnicalFeature.h"
+#include "../resqml2/AbstractSeismicLineFeature.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** A seismic line feature. */
-	class SeismicLineFeature : public AbstractTechnicalFeature
+	class SeismicLineFeature : public RESQML2_NS::AbstractSeismicLineFeature
 	{
 	public:
 
@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT SeismicLineFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractTechnicalFeature(partialObject) {}
+		DLL_IMPORT_OR_EXPORT SeismicLineFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractSeismicLineFeature(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -61,7 +61,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		SeismicLineFeature(gsoap_resqml2_0_1::_resqml20__SeismicLineFeature* fromGsoap): 
-			AbstractTechnicalFeature(fromGsoap) {}
+			RESQML2_NS::AbstractSeismicLineFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
 		~SeismicLineFeature() {}
@@ -85,10 +85,10 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	seisLineSet	If non-null, set the seis line belongs to.
 		 */
-		DLL_IMPORT_OR_EXPORT void setSeismicLineSet(class SeismicLineSetFeature * seisLineSet);
+		DLL_IMPORT_OR_EXPORT void setSeismicLineSet(RESQML2_NS::SeismicLineSetFeature * seisLineSet);
 
 		/** A seismic line set feature*. */
-		DLL_IMPORT_OR_EXPORT class SeismicLineSetFeature* getSeismicLineSet() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getSeismicLineSetDor() const final;
 
 		/**
 		 * Get the total count of traces in this seismic line.
@@ -110,9 +110,5 @@ namespace RESQML2_0_1_NS
 		 * @returns	The XML tag.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
-
-	private:
-		/** Loads target relationships */
-		void loadTargetRelationships();
 	};
 }

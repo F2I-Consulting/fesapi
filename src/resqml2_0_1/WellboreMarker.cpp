@@ -21,7 +21,7 @@ under the License.
 #include <stdexcept>
 
 #include "WellboreMarkerFrameRepresentation.h"
-#include "BoundaryFeatureInterpretation.h"
+#include "../resqml2/BoundaryFeatureInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -83,12 +83,12 @@ std::string WellboreMarker::getBoundaryFeatureInterpretationUuid() const
 	return "";
 }
 
-BoundaryFeatureInterpretation* WellboreMarker::getBoundaryFeatureInterpretation() const
+RESQML2_NS::BoundaryFeatureInterpretation* WellboreMarker::getBoundaryFeatureInterpretation() const
 {
-	return getWellMarkerFrameRepresentation()->getRepository()->getDataObjectByUuid<BoundaryFeatureInterpretation>(getBoundaryFeatureInterpretationUuid());
+	return getWellMarkerFrameRepresentation()->getRepository()->getDataObjectByUuid<RESQML2_NS::BoundaryFeatureInterpretation>(getBoundaryFeatureInterpretationUuid());
 }
 
-void WellboreMarker::setBoundaryFeatureInterpretation(BoundaryFeatureInterpretation* interp)
+void WellboreMarker::setBoundaryFeatureInterpretation(RESQML2_NS::BoundaryFeatureInterpretation* interp)
 {
 	getRepository()->addRelationship(this, interp);
 

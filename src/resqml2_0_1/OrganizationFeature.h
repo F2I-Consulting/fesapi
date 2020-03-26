@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractGeologicFeature.h"
+#include "../resqml2/Model.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** An organization feature. */
-	class OrganizationFeature : public AbstractGeologicFeature
+	class OrganizationFeature : public RESQML2_NS::Model
 	{
 	public:
 
@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT OrganizationFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractGeologicFeature(partialObject) {}
+		DLL_IMPORT_OR_EXPORT OrganizationFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::Model(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -53,7 +53,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		OrganizationFeature(gsoap_resqml2_0_1::_resqml20__OrganizationFeature* fromGsoap): AbstractGeologicFeature(fromGsoap) {}
+		OrganizationFeature(gsoap_resqml2_0_1::_resqml20__OrganizationFeature* fromGsoap): RESQML2_NS::Model(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~OrganizationFeature() {}

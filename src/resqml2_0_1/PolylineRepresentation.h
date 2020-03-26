@@ -18,27 +18,14 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractSurfaceRepresentation.h"
+#include "../resqml2/PolylineRepresentation.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** A polyline representation. */
-	class PolylineRepresentation : public RESQML2_NS::AbstractRepresentation
+	class PolylineRepresentation : public RESQML2_NS::PolylineRepresentation
 	{
-	private :
-		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
-
-		/**
-		 * Initializes this object
-		 *
-		 * @param [in,out]	repo		If non-null, the repo.
-		 * @param 		  	guid		Unique identifier.
-		 * @param 		  	title   	The title.
-		 * @param 		  	isClosed	(Optional) True if is closed, false if not.
-		 */
-		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, bool isClosed = false);
-
 	public:
 
 		/**
@@ -48,7 +35,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT PolylineRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT PolylineRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::PolylineRepresentation(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -62,7 +49,7 @@ namespace RESQML2_0_1_NS
 		 * 								not.
 		 */
 		PolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-			const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__LineRole roleKind,
+			const std::string & guid, const std::string & title, gsoap_eml2_3::resqml22__LineRole roleKind,
 			bool isClosed = false);
 
 		/**
@@ -96,7 +83,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		PolylineRepresentation(gsoap_resqml2_0_1::_resqml20__PolylineRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
+		PolylineRepresentation(gsoap_resqml2_0_1::_resqml20__PolylineRepresentation* fromGsoap) : RESQML2_NS::PolylineRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~PolylineRepresentation() {}
@@ -151,53 +138,31 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT bool hasALineRole() const;
 
 		/**
-		 * Indicates wether the instance corresponds to a seismic 2D line or not.
-		 *
-		 * @returns	True if a seismic line, false if not.
-		 */
-		DLL_IMPORT_OR_EXPORT bool isASeismicLine() const;
-
-		/**
-		 * Indicates wether the instance corresponds to a facies 2d line or not.
-		 *
-		 * @returns	True if the facies line, false if not.
-		 */
-		DLL_IMPORT_OR_EXPORT bool isAFaciesLine() const;
-
-		/**
 		 * Get the role of this polyline. Throw an exception if the polyline has no role (see method
 		 * hasALineRole).
 		 *
 		 * @returns	The line role.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__LineRole getLineRole() const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__LineRole getLineRole() const;
 
 		/**
 		 * Set the line role of this instance
 		 *
 		 * @param 	lineRole	The line role.
 		 */
-		DLL_IMPORT_OR_EXPORT void setLineRole(gsoap_resqml2_0_1::resqml20__LineRole lineRole);
+		DLL_IMPORT_OR_EXPORT void setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole);
+
+	private:
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
 
 		/**
-		 * Gets patch count
+		 * Initializes this object
 		 *
-		 * @returns	The patch count.
+		 * @param [in,out]	repo		If non-null, the repo.
+		 * @param 		  	guid		Unique identifier.
+		 * @param 		  	title   	The title.
+		 * @param 		  	isClosed	(Optional) True if is closed, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
-
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, bool isClosed = false);
 	};
 }

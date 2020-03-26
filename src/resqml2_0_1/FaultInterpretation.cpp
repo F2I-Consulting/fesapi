@@ -21,22 +21,18 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
-#include "GeneticBoundaryFeature.h"
 #include "TectonicBoundaryFeature.h"
-#include "StructuralOrganizationInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* FaultInterpretation::XML_TAG = "FaultInterpretation";
-
-FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const string & guid, const string & title)
+FaultInterpretation::FaultInterpretation(RESQML2_NS::BoundaryFeature * fault, const string & guid, const string & title)
 {
 	if (fault == nullptr) {
 		throw invalid_argument("The interpreted fault cannot be null.");
 	}
-	if (fault->isAFracture()) {
+	if (dynamic_cast<RESQML2_0_1_NS::TectonicBoundaryFeature*>(fault) != nullptr && static_cast<RESQML2_0_1_NS::TectonicBoundaryFeature*>(fault)->isAFracture()) {
 		throw invalid_argument("The interpreted fault cannot be a fracture.");
 	}
 
@@ -50,13 +46,13 @@ FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const 
 	setInterpretedFeature(fault);
 }
 
-FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const string & guid, const string & title,
-										GeneticBoundaryFeature * chronoTop, GeneticBoundaryFeature * chronoBtm)
+FaultInterpretation::FaultInterpretation(RESQML2_NS::BoundaryFeature * fault, const string & guid, const string & title,
+	RESQML2_NS::BoundaryFeature * chronoTop, RESQML2_NS::BoundaryFeature * chronoBtm)
 {
 	if (fault == nullptr) {
 		throw invalid_argument("The interpreted fault cannot be null.");
 	}
-	if (fault->isAFracture()) {
+	if (dynamic_cast<RESQML2_0_1_NS::TectonicBoundaryFeature*>(fault) != nullptr && static_cast<RESQML2_0_1_NS::TectonicBoundaryFeature*>(fault)->isAFracture()) {
 		throw invalid_argument("The interpreted fault cannot be a fracture.");
 	}
 
@@ -75,7 +71,7 @@ FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const 
 	setInterpretedFeature(fault);
 }
 
-void FaultInterpretation::pushBackThrowInterpretation(const gsoap_resqml2_0_1::resqml20__ThrowKind & throwKind)
+void FaultInterpretation::pushBackThrowInterpretation(gsoap_resqml2_0_1::resqml20__ThrowKind throwKind)
 {
 	_resqml20__FaultInterpretation* interp = static_cast<_resqml20__FaultInterpretation*>(gsoapProxy2_0_1);
 

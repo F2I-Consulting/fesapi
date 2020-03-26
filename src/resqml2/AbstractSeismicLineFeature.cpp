@@ -16,27 +16,23 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "GeobodyBoundaryInterpretation.h"
+#include "AbstractSeismicLineFeature.h"
 
-#include <stdexcept>
-
-#include "GeneticBoundaryFeature.h"
+#include "SeismicLineSetFeature.h"
 
 using namespace std;
-using namespace RESQML2_0_1_NS;
-using namespace gsoap_resqml2_0_1;
+using namespace RESQML2_NS;
 
-GeobodyBoundaryInterpretation::GeobodyBoundaryInterpretation(RESQML2_NS::BoundaryFeature * geobodyBoundary, const string & guid, const string & title)
+SeismicLineSetFeature* AbstractSeismicLineFeature::getSeismicLineSet() const
 {
-	if (geobodyBoundary == nullptr)
-		throw invalid_argument("The interpreted geobody boundary cannot be null.");
+	return repository->getDataObjectByUuid<SeismicLineSetFeature>(getSeismicLineSetDor().getUuid());
+}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGeobodyBoundaryInterpretation(geobodyBoundary->getGsoapContext());
+void AbstractSeismicLineFeature::loadTargetRelationships()
+{
+	COMMON_NS::DataObjectReference dor = getSeismicLineSetDor();
 
-	static_cast<_resqml20__GeobodyBoundaryInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
-
-	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
-
-	setInterpretedFeature(geobodyBoundary);
+	if (!dor.isEmpty()) {
+		convertDorIntoRel<SeismicLineSetFeature>(dor);
+	}
 }

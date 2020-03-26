@@ -18,15 +18,34 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/HorizonInterpretation.h"
+#include "BoundaryFeatureInterpretation.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_NS
 {
 	/** A horizon interpretation. */
-	class HorizonInterpretation : public RESQML2_NS::HorizonInterpretation
+	class HorizonInterpretation : public BoundaryFeatureInterpretation
 	{
 	public:
+
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		virtual ~HorizonInterpretation() {}
+
+		/**
+		 * The standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const final { return XML_TAG; }
+
+	protected:
 
 		/**
 		 * Only to be used in partial transfer context
@@ -35,28 +54,26 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT HorizonInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
-			RESQML2_NS::HorizonInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT HorizonInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+			BoundaryFeatureInterpretation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
-		 *
-		 * @param [in,out]	horizon	The feature the instance interprets.
-		 * @param 		  	guid   	The guid to set to the interpretation. If empty then a new guid will
-		 * 							be generated.
-		 * @param 		  	title  	A title for the instance to create.
+		 * Defautl constructor
 		 */
-		HorizonInterpretation(RESQML2_NS::BoundaryFeature * horizon, const std::string & guid, const std::string & title);
+		HorizonInterpretation() {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		HorizonInterpretation(gsoap_resqml2_0_1::_resqml20__HorizonInterpretation* fromGsoap): RESQML2_NS::HorizonInterpretation(fromGsoap) {}
+		HorizonInterpretation(gsoap_resqml2_0_1::_resqml20__HorizonInterpretation* fromGsoap) : BoundaryFeatureInterpretation(fromGsoap) {}
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~HorizonInterpretation() {}
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		HorizonInterpretation(gsoap_eml2_3::_resqml22__HorizonInterpretation* fromGsoap) : BoundaryFeatureInterpretation(fromGsoap) {}
 	};
 }
-

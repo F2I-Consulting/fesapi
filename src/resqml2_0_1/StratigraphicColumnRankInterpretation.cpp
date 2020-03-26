@@ -22,7 +22,7 @@ under the License.
 
 #include "OrganizationFeature.h"
 #include "StratigraphicUnitInterpretation.h"
-#include "HorizonInterpretation.h"
+#include "../resqml2/HorizonInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -71,7 +71,7 @@ unsigned int StratigraphicColumnRankInterpretation::getContactCount() const
 	return static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation.size();
 }
 
-resqml20__ContactMode StratigraphicColumnRankInterpretation::getSubjectContactModeOfContact(const unsigned int & contactIndex) const
+resqml20__ContactMode StratigraphicColumnRankInterpretation::getSubjectContactModeOfContact(unsigned int contactIndex) const
 {
 	if (static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation.size() <= contactIndex)
 		throw range_error("The contact index is out of range in the context of the StratigraphicColumnRankInterpretation");
@@ -83,7 +83,7 @@ resqml20__ContactMode StratigraphicColumnRankInterpretation::getSubjectContactMo
 		return resqml20__ContactMode__proportional;
 }
 
-StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getSubjectOfContact(const unsigned int & contactIndex) const
+StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getSubjectOfContact(unsigned int contactIndex) const
 {
 	if (static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation.size() <= contactIndex)
 		throw range_error("The contact index is out of range in the context of the StratigraphicColumnRankInterpretation");
@@ -95,7 +95,7 @@ StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getSubje
 		return nullptr;
 }
 
-resqml20__ContactMode StratigraphicColumnRankInterpretation::getDirectObjectContactModeOfContact(const unsigned int & contactIndex) const
+resqml20__ContactMode StratigraphicColumnRankInterpretation::getDirectObjectContactModeOfContact(unsigned int contactIndex) const
 {
 	if (static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation.size() <= contactIndex)
 		throw range_error("The contact index is out of range in the context of the StratigraphicColumnRankInterpretation");
@@ -107,7 +107,7 @@ resqml20__ContactMode StratigraphicColumnRankInterpretation::getDirectObjectCont
 		return resqml20__ContactMode__proportional;
 }
 
-StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getDirectObjectOfContact(const unsigned int & contactIndex) const
+StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getDirectObjectOfContact(unsigned int contactIndex) const
 {
 	if (static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation.size() <= contactIndex)
 		throw range_error("The contact index is out of range in the context of the StratigraphicColumnRankInterpretation");
@@ -119,19 +119,19 @@ StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getDirec
 		return nullptr;
 }
 
-HorizonInterpretation* StratigraphicColumnRankInterpretation::getHorizonInterpretationOfContact(const unsigned int & contactIndex) const
+RESQML2_NS::HorizonInterpretation* StratigraphicColumnRankInterpretation::getHorizonInterpretationOfContact(unsigned int contactIndex) const
 {
 	if (static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation.size() <= contactIndex)
 		throw range_error("The contact index is out of range in the context of the StratigraphicColumnRankInterpretation");
 
 	resqml20__BinaryContactInterpretationPart* contact = static_cast<resqml20__BinaryContactInterpretationPart*>(static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
 	if (contact->PartOf)
-		return static_cast<HorizonInterpretation*>(repository->getDataObjectByUuid(contact->PartOf->UUID));
+		return static_cast<RESQML2_NS::HorizonInterpretation*>(repository->getDataObjectByUuid(contact->PartOf->UUID));
 	else
 		return nullptr;
 }
 
-void StratigraphicColumnRankInterpretation::setHorizonOfLastContact(HorizonInterpretation * partOf)
+void StratigraphicColumnRankInterpretation::setHorizonOfLastContact(RESQML2_NS::HorizonInterpretation * partOf)
 {
 	getRepository()->addRelationship(this, partOf);
 
@@ -140,9 +140,9 @@ void StratigraphicColumnRankInterpretation::setHorizonOfLastContact(HorizonInter
 	contact->PartOf = partOf->newResqmlReference();
 }
 
-void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, const gsoap_resqml2_0_1::resqml20__ContactMode & subjectContactMode,
-			StratigraphicUnitInterpretation* directObject, gsoap_resqml2_0_1::resqml20__ContactMode directObjectMode,
-			HorizonInterpretation * partOf)
+void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, gsoap_resqml2_0_1::resqml20__ContactMode subjectContactMode,
+	StratigraphicUnitInterpretation* directObject, gsoap_resqml2_0_1::resqml20__ContactMode directObjectMode,
+	RESQML2_NS::HorizonInterpretation * partOf)
 {
 	resqml20__AbstractOrganizationInterpretation* org = static_cast<resqml20__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
 
@@ -174,7 +174,7 @@ void StratigraphicColumnRankInterpretation::loadTargetRelationships()
 	for (size_t i = 0; i < interp->ContactInterpretation.size(); ++i)
 	{
 		if (interp->ContactInterpretation[i]->PartOf != nullptr) {
-			convertDorIntoRel<HorizonInterpretation>(interp->ContactInterpretation[i]->PartOf);
+			convertDorIntoRel<RESQML2_NS::HorizonInterpretation>(interp->ContactInterpretation[i]->PartOf);
 		}
 	}
 }
@@ -189,9 +189,9 @@ std::vector<StratigraphicOccurrenceInterpretation *> StratigraphicColumnRankInte
 	return getRepository()->getSourceObjects<StratigraphicOccurrenceInterpretation>(this);
 }
 
-std::vector<HorizonInterpretation *> StratigraphicColumnRankInterpretation::getHorizonInterpretationSet() const
+std::vector<RESQML2_NS::HorizonInterpretation *> StratigraphicColumnRankInterpretation::getHorizonInterpretationSet() const
 {
-	return getRepository()->getTargetObjects<HorizonInterpretation>(this);
+	return getRepository()->getTargetObjects<RESQML2_NS::HorizonInterpretation>(this);
 }
 
 std::vector<StratigraphicColumn *> StratigraphicColumnRankInterpretation::getStratigraphicColumnSet() const

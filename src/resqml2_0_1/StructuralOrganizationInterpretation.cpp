@@ -21,8 +21,8 @@ under the License.
 #include <stdexcept>
 
 #include "OrganizationFeature.h"
-#include "FaultInterpretation.h"
-#include "HorizonInterpretation.h"
+#include "../resqml2/FaultInterpretation.h"
+#include "../resqml2/HorizonInterpretation.h"
 #include "EarthModelInterpretation.h"
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../tools/Misc.h"
@@ -54,7 +54,7 @@ StructuralOrganizationInterpretation::StructuralOrganizationInterpretation(Organ
 	setInterpretedFeature(orgFeat);
 }
 
-void StructuralOrganizationInterpretation::pushBackFaultInterpretation(FaultInterpretation * faultInterpretation)
+void StructuralOrganizationInterpretation::pushBackFaultInterpretation(RESQML2_NS::FaultInterpretation * faultInterpretation)
 {
 	getRepository()->addRelationship(this, faultInterpretation);
 
@@ -74,18 +74,18 @@ unsigned int StructuralOrganizationInterpretation::getFaultInterpretationCount()
 	return static_cast<unsigned int>(result);
 }
 
-FaultInterpretation* StructuralOrganizationInterpretation::getFaultInterpretation(unsigned int index)
+RESQML2_NS::FaultInterpretation* StructuralOrganizationInterpretation::getFaultInterpretation(unsigned int index)
 {
 	_resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 	if (index < structuralOrganization->Faults.size()) {
-		return static_cast<FaultInterpretation*>(repository->getDataObjectByUuid(structuralOrganization->Faults[index]->UUID));
+		return repository->getDataObjectByUuid<RESQML2_NS::FaultInterpretation>(structuralOrganization->Faults[index]->UUID);
 	}
 	else {
 		throw std::out_of_range("The fault index is out of range.");
 	}
 }
 
-void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(HorizonInterpretation * horizonInterpretation, const int & stratigraphicRank)
+void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(RESQML2_NS::HorizonInterpretation * horizonInterpretation, const int & stratigraphicRank)
 {
 	getRepository()->addRelationship(this, horizonInterpretation);
 
@@ -111,11 +111,11 @@ unsigned int StructuralOrganizationInterpretation::getHorizonInterpretationCount
 	return static_cast<unsigned int>(result);
 }
 
-HorizonInterpretation* StructuralOrganizationInterpretation::getHorizonInterpretation(unsigned int index) const
+RESQML2_NS::HorizonInterpretation* StructuralOrganizationInterpretation::getHorizonInterpretation(unsigned int index) const
 {
 	_resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 	if (index < structuralOrganization->Horizons.size()) {
-		return static_cast<HorizonInterpretation*>(repository->getDataObjectByUuid(structuralOrganization->Horizons[index]->Horizon->UUID));
+		return repository->getDataObjectByUuid<RESQML2_NS::HorizonInterpretation>(structuralOrganization->Horizons[index]->Horizon->UUID);
 	}
 	else {
 		throw std::out_of_range("The fault index is out of range.");
@@ -222,11 +222,11 @@ void StructuralOrganizationInterpretation::loadTargetRelationships()
 	_resqml20__StructuralOrganizationInterpretation* interp = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 
 	for (size_t i = 0; i < interp->Faults.size(); ++i) {
-		convertDorIntoRel<FaultInterpretation>(interp->Faults[i]);
+		convertDorIntoRel(interp->Faults[i]);
 	}
 	for (size_t i = 0; i < interp->Horizons.size(); ++i) {
 		if (interp->Horizons[i]->StratigraphicRank != nullptr) {
-			convertDorIntoRel<HorizonInterpretation>(interp->Horizons[i]->Horizon);
+			convertDorIntoRel(interp->Horizons[i]->Horizon);
 		}
 		else {
 			throw logic_error("Not implemented yet");

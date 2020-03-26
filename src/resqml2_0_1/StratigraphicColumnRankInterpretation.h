@@ -22,6 +22,11 @@ under the License.
 #include "StratigraphicColumn.h"
 #include "StratigraphicOccurrenceInterpretation.h"
 
+namespace RESQML2_NS
+{
+	class HorizonInterpretation;
+}
+
 /** . */
 namespace RESQML2_0_1_NS
 {
@@ -70,7 +75,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	partOf	If non-null, the part of.
 		 */
-		DLL_IMPORT_OR_EXPORT void setHorizonOfLastContact(class HorizonInterpretation * partOf);
+		DLL_IMPORT_OR_EXPORT void setHorizonOfLastContact(RESQML2_NS::HorizonInterpretation * partOf);
 
 		/**
 		 * Add a stratigraphic binary contact to the organization interpretation.
@@ -81,9 +86,9 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	directObjectMode  	The direct object mode.
 		 * @param [in,out]	partOf			  	(Optional) If non-null, the part of.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, const gsoap_resqml2_0_1::resqml20__ContactMode & subjectContactMode,
+		DLL_IMPORT_OR_EXPORT void pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, gsoap_resqml2_0_1::resqml20__ContactMode subjectContactMode,
 			StratigraphicUnitInterpretation* directObject, gsoap_resqml2_0_1::resqml20__ContactMode directObjectMode,
-			class HorizonInterpretation * partOf = nullptr);
+			RESQML2_NS::HorizonInterpretation * partOf = nullptr);
 
 		/**
 		 * Indicates if this strati column rank interp is wether a chrono one or not. One of the
@@ -109,10 +114,10 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	proportional contact mode by default or the contact mode of the subject.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ContactMode getSubjectContactModeOfContact(const unsigned int & contactIndex) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ContactMode getSubjectContactModeOfContact(unsigned int contactIndex) const;
 
 		/** Get the strati unt interpretation which is the subject of a particular contact. */
-		DLL_IMPORT_OR_EXPORT class StratigraphicUnitInterpretation* getSubjectOfContact(const unsigned int & contactIndex) const;
+		DLL_IMPORT_OR_EXPORT class StratigraphicUnitInterpretation* getSubjectOfContact(unsigned int contactIndex) const;
 
 		/**
 		 * Get the contact mode between the direct object strati unit and the contact located at a
@@ -122,13 +127,13 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	proportional contact mode by default or the contact mode of the direct object.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ContactMode getDirectObjectContactModeOfContact(const unsigned int & contactIndex) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ContactMode getDirectObjectContactModeOfContact(unsigned int contactIndex) const;
 
 		/** Get the strati unt interpretation which is the direct object of a particular contact. */
-		DLL_IMPORT_OR_EXPORT class StratigraphicUnitInterpretation* getDirectObjectOfContact(const unsigned int & contactIndex) const;
+		DLL_IMPORT_OR_EXPORT class StratigraphicUnitInterpretation* getDirectObjectOfContact(unsigned int contactIndex) const;
 
 		/** Get the horizon interpretation which is the contact between two strati units. */
-		DLL_IMPORT_OR_EXPORT class HorizonInterpretation* getHorizonInterpretationOfContact(const unsigned int & contactIndex) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::HorizonInterpretation* getHorizonInterpretationOfContact(unsigned int contactIndex) const;
 
 		/**
 		 * Get all the stratigraphic unit interpretations contained in this
@@ -151,7 +156,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	Null if it fails, else the horizon interpretation set.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<class HorizonInterpretation *> getHorizonInterpretationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::HorizonInterpretation *> getHorizonInterpretationSet() const;
 
 		/**
 		 * Get all the stratigraphic column this strati column rank belongs to.

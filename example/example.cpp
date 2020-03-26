@@ -62,6 +62,7 @@ under the License.
 #include "resqml2_0_1/Grid2dRepresentation.h"
 #include "resqml2_0_1/SeismicLatticeFeature.h"
 #include "resqml2_0_1/SeismicLineSetFeature.h"
+#include "resqml2_0_1/SeismicLineFeature.h"
 #include "resqml2_0_1/WellboreFeature.h"
 #include "resqml2_0_1/WellboreInterpretation.h"
 #include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
@@ -118,19 +119,19 @@ using namespace RESQML2_0_1_NS;
 Horizon* horizon1 = nullptr;
 Horizon* horizon2 = nullptr;
 TectonicBoundaryFeature* fault1 = nullptr;
-HorizonInterpretation* horizon1Interp1 = nullptr;
-HorizonInterpretation* horizon2Interp1 = nullptr;
-FaultInterpretation* fault1Interp1 = nullptr;
-Grid2dRepresentation* h1i1SingleGrid2dRep = nullptr;
+RESQML2_NS::HorizonInterpretation* horizon1Interp1 = nullptr;
+RESQML2_NS::HorizonInterpretation* horizon2Interp1 = nullptr;
+RESQML2_NS::FaultInterpretation* fault1Interp1 = nullptr;
+RESQML2_NS::Grid2dRepresentation* h1i1SingleGrid2dRep = nullptr;
 PolylineSetRepresentation* f1i1PolyLineRep = nullptr;
-TriangulatedSetRepresentation* f1i1triRepSinglePatch = nullptr;
-TriangulatedSetRepresentation* f1i1triRep = nullptr;
-TriangulatedSetRepresentation* h1i1triRep = nullptr;
-TriangulatedSetRepresentation* h2i1triRep = nullptr;
-TriangulatedSetRepresentation* xMinusFrontierRep = nullptr;
-TriangulatedSetRepresentation* xPlusFrontierRep = nullptr;
-TriangulatedSetRepresentation* yMinusFrontierRep = nullptr;
-TriangulatedSetRepresentation* yPlusFrontierRep = nullptr;
+RESQML2_NS::TriangulatedSetRepresentation* f1i1triRepSinglePatch = nullptr;
+RESQML2_NS::TriangulatedSetRepresentation* f1i1triRep = nullptr;
+RESQML2_NS::TriangulatedSetRepresentation* h1i1triRep = nullptr;
+RESQML2_NS::TriangulatedSetRepresentation* h2i1triRep = nullptr;
+RESQML2_NS::TriangulatedSetRepresentation* xMinusFrontierRep = nullptr;
+RESQML2_NS::TriangulatedSetRepresentation* xPlusFrontierRep = nullptr;
+RESQML2_NS::TriangulatedSetRepresentation* yMinusFrontierRep = nullptr;
+RESQML2_NS::TriangulatedSetRepresentation* yPlusFrontierRep = nullptr;
 RESQML2_NS::WellboreTrajectoryRepresentation* w1i1TrajRep = nullptr;
 RESQML2_NS::LocalDepth3dCrs* local3dCrs = nullptr;
 RESQML2_NS::LocalTime3dCrs* localTime3dCrs = nullptr;
@@ -384,8 +385,8 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 	// ********************
 
 	Horizon* contColMapHrz = repo->createHorizon("b9ec6ec9-2766-4af7-889e-5565b5fa5022", "Horizon for continuous color map");
-	HorizonInterpretation* contColMapHrzInterp = repo->createHorizonInterpretation(contColMapHrz, "34b69c81-6cfa-4531-be5b-f6bd9b74802f", "Horizon interpretation for continuous color map");
-	Grid2dRepresentation* contColMapGrid2dRep = repo->createGrid2dRepresentation(contColMapHrzInterp, "4e56b0e4-2cd1-4efa-97dd-95f72bcf9f80", "100x10 grid 2d for continuous color map");
+	RESQML2_NS::HorizonInterpretation* contColMapHrzInterp = repo->createHorizonInterpretation(contColMapHrz, "34b69c81-6cfa-4531-be5b-f6bd9b74802f", "Horizon interpretation for continuous color map");
+	RESQML2_NS::Grid2dRepresentation* contColMapGrid2dRep = repo->createGrid2dRepresentation(contColMapHrzInterp, "4e56b0e4-2cd1-4efa-97dd-95f72bcf9f80", "100x10 grid 2d for continuous color map");
 	const unsigned int numPointInFastestDirection = 50;
 	const unsigned int numPointsInSlowestDirection = 100;
 	contColMapGrid2dRep->setGeometryAsArray2dOfLatticePoints3d(numPointInFastestDirection, numPointsInSlowestDirection,
@@ -490,7 +491,7 @@ void serializeGeobody(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHd
 {
 	// 2D
 	GeneticBoundaryFeature* geobodyBoundary = pck->createGeobodyBoundaryFeature("6d3c158c-303f-4b0d-bfc0-9ce4102ea616", "Geobody boundary");
-	GeobodyBoundaryInterpretation* geobodyBoundaryInterp = pck->createGeobodyBoundaryInterpretation(geobodyBoundary, "12c301a4-3e8b-401a-aca3-8d6f02d5d6d5", "Geobody boundary interp");
+	RESQML2_NS::GeobodyBoundaryInterpretation* geobodyBoundaryInterp = pck->createGeobodyBoundaryInterpretation(geobodyBoundary, "12c301a4-3e8b-401a-aca3-8d6f02d5d6d5", "Geobody boundary interp");
 	PointSetRepresentation* geobodyBoundaryPointSetRep = pck->createPointSetRepresentation(geobodyBoundaryInterp, "fbc5466c-94cd-46ab-8b48-2ae2162b372f", "Geobody boundary PointSetRep");
 	double geobodyBoundaryPointCoords[18] = { 10, 70, 310, 11, 21, 280, 150, 30, 310, 400, 0, 365, 450, 75, 341, 475, 100, 352 };
 	geobodyBoundaryPointSetRep->pushBackGeometryPatch(6, geobodyBoundaryPointCoords, hdfProxy);
@@ -509,17 +510,17 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	// Seismic Lattice
 	SeismicLatticeFeature* seismicLattice = pck->createSeismicLattice("eb6a5e97-4d86-4809-b136-051f34cfcb51", "Seismic lattice", 2, 2, 150, 152, 4, 2);
 	GenericFeatureInterpretation* seismicLatticeInterp = pck->createGenericFeatureInterpretation(seismicLattice, "97816427-6ef6-4776-b21c-5b93c8a6310a", "Seismic lattice Interp");
-	Grid2dRepresentation* seismicLatticeRep = pck->createGrid2dRepresentation(seismicLatticeInterp, "aa5b90f1-2eab-4fa6-8720-69dd4fd51a4d", "Seismic lattice Rep");
+	RESQML2_NS::Grid2dRepresentation* seismicLatticeRep = pck->createGrid2dRepresentation(seismicLatticeInterp, "aa5b90f1-2eab-4fa6-8720-69dd4fd51a4d", "Seismic lattice Rep");
 	seismicLatticeRep->setGeometryAsArray2dOfLatticePoints3d(4, 2, 0, 0, 0, 1, 0, 2, 0, 1, 3, 250, 200);
 
 	// Seismic Line Set
-	SeismicLineSetFeature* seismicLineSet = pck->createSeismicLineSet("53c6a0be-c901-4bb6-845b-fba79745da02", "Seismic line Set");
+	RESQML2_NS::SeismicLineSetFeature* seismicLineSet = pck->createSeismicLineSet("53c6a0be-c901-4bb6-845b-fba79745da02", "Seismic line Set");
 
 	// Seismic Line
-	SeismicLineFeature* seismicLine = pck->createSeismicLine("117f9bf6-6bb0-49f2-9cee-46912300bff6", "Seismic line", 1, 0, 5);
+	RESQML2_NS::AbstractSeismicLineFeature* seismicLine = pck->createSeismicLine("117f9bf6-6bb0-49f2-9cee-46912300bff6", "Seismic line", 1, 0, 5);
 	seismicLine->setSeismicLineSet(seismicLineSet);
 	GenericFeatureInterpretation* seismicLineInterp = pck->createGenericFeatureInterpretation(seismicLine, "", "Seismic line Interp");
-	PolylineRepresentation* seismicLineRep = pck->createPolylineRepresentation(seismicLineInterp, "", "Seismic line Rep");
+	RESQML2_NS::PolylineRepresentation* seismicLineRep = pck->createPolylineRepresentation(seismicLineInterp, "", "Seismic line Rep");
 	double seismicLinePoints[15] = { 0, 100, 0, 150, 110, 0, 300, 120, 0, 450, 130, 0, 600, 140, 0 };
 	seismicLineRep->setGeometry(seismicLinePoints, 5, hdfProxy);
 
@@ -551,7 +552,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	//**************
 	// Horizon Representations
 	//**************
-	PolylineRepresentation* h1i1SinglePolylineRep = pck->createPolylineRepresentation(horizon1Interp1, "", "Horizon1 Interp1 SinglePolylineRep");
+	RESQML2_NS::PolylineRepresentation* h1i1SinglePolylineRep = pck->createPolylineRepresentation(horizon1Interp1, "", "Horizon1 Interp1 SinglePolylineRep");
 	double h1i1SinglePolylineRepPoints[12] = { 0, 100, 300, 150, 110, 300, 450, 130, 350, 600, 140, 350 };
 	h1i1SinglePolylineRep->setGeometry(h1i1SinglePolylineRepPoints, 4, hdfProxy);
 	double seismicLineAbscissa[4] = { 0.0, 1.0, 3.0, 4.0 };
@@ -599,7 +600,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	h2i1triRep->addSeismic3dCoordinatesToPatch(1, inlines, crosslines, 5, seismicLatticeRep, hdfProxy);
 
 	// TriRep without interp
-	TriangulatedSetRepresentation* triRepWithoutInterp = pck->createTriangulatedSetRepresentation("eb0b55a5-9562-4642-946b-d2ec57172daf", "TriRep without interp");
+	RESQML2_NS::TriangulatedSetRepresentation* triRepWithoutInterp = pck->createTriangulatedSetRepresentation("eb0b55a5-9562-4642-946b-d2ec57172daf", "TriRep without interp");
 	triRepWithoutInterp->pushBackTrianglePatch(5, explicitPointsHor2Patch0, 3, triangleNodeIndexHorPatch0, hdfProxy);
 
 	//**************
@@ -1791,7 +1792,7 @@ void serializeFluidBoundary(COMMON_NS::DataObjectRepository & pck, EML2_NS::Abst
 {
 	FluidBoundaryFeature* fluidBoundary = pck.createFluidBoundaryFeature("44a4d87c-3c67-4f98-a314-9d91c4147061", "Fluid boundary", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
 	GenericFeatureInterpretation* interp = pck.createGenericFeatureInterpretation(fluidBoundary, "d06df5e4-3c56-4abd-836f-2abb5e58e13b", "Fluid boundary interp");
-	PlaneSetRepresentation* rep = pck.createPlaneSetRepresentation(interp, "4df87ed5-ea4d-4a00-99a2-828a56c9dd02", "Fluid boundary PlaneSetRep");
+	RESQML2_NS::PlaneSetRepresentation* rep = pck.createPlaneSetRepresentation(interp, "4df87ed5-ea4d-4a00-99a2-828a56c9dd02", "Fluid boundary PlaneSetRep");
 	rep->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
 }
 
@@ -1800,13 +1801,13 @@ void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, EML2_
 	//Top Boundary
 	FluidBoundaryFeature* fluidBoundaryTop = pck.createFluidBoundaryFeature("cd400fa2-4c8b-11e9-be79-3f8079258eaa", "Fluid boundary top", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
 	GenericFeatureInterpretation* interpTop = pck.createGenericFeatureInterpretation(fluidBoundaryTop, "0ab8f2f4-4c96-11e9-999e-c3449b44fef5", "Fluid boundary top interp");
-	PlaneSetRepresentation* repTop = pck.createPlaneSetRepresentation(interpTop, "ae1d618c-4c96-11e9-8f12-cf7f4da2a08d", "Fluid boundary top PlaneSetRep");
+	RESQML2_NS::PlaneSetRepresentation* repTop = pck.createPlaneSetRepresentation(interpTop, "ae1d618c-4c96-11e9-8f12-cf7f4da2a08d", "Fluid boundary top PlaneSetRep");
 	repTop->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
 
 	//Bottom Boundary
 	FluidBoundaryFeature* fluidBoundaryBottom = pck.createFluidBoundaryFeature("d332b298-4c8b-11e9-80d8-c760b2e2530d", "Fluid boundary bottom", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
 	GenericFeatureInterpretation* interpBottom = pck.createGenericFeatureInterpretation(fluidBoundaryBottom, "1371efae-4c96-11e9-bcdd-37d8112fd19e", "Fluid boundary bottom interp");
-	PlaneSetRepresentation* repBottom = pck.createPlaneSetRepresentation(interpBottom, "b54cc3b2-4c96-11e9-b33d-ef2c41476266", "Fluid boundary bottom PlaneSetRep");
+	RESQML2_NS::PlaneSetRepresentation* repBottom = pck.createPlaneSetRepresentation(interpBottom, "b54cc3b2-4c96-11e9-b33d-ef2c41476266", "Fluid boundary bottom PlaneSetRep");
 	repBottom->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
 
 	// Unit construction
@@ -2320,7 +2321,7 @@ void deserializeSealedVolumeFramework(const COMMON_NS::DataObjectRepository & pc
 void deserializeGeobody(COMMON_NS::DataObjectRepository * pck)
 {
 	//2d
-	std::vector<GeneticBoundaryFeature*> geobodyBoundarySet = pck->getGeobodyBoundarySet();
+	std::vector<RESQML2_NS::BoundaryFeature*> geobodyBoundarySet = pck->getGeobodyBoundarySet();
 	for (size_t i = 0; i < geobodyBoundarySet.size(); ++i) {
 		showAllMetadata(geobodyBoundarySet[i]);
 		cout << "interp count : " << geobodyBoundarySet[i]->getInterpretationCount() << endl;
@@ -3695,14 +3696,14 @@ void deserialize(const string & inputFile)
 	deserializeRockFluidOrganization(repo);
 	deserializeFluidCharacterization(repo);
 
-	std::vector<TectonicBoundaryFeature*> faultSet = repo.getFaultSet();
+	std::vector<RESQML2_NS::BoundaryFeature*> faultSet = repo.getFaultSet();
 	std::vector<PolylineSetRepresentation *> faultPolyRep = repo.getFaultPolylineSetRepSet();
-	std::vector<TriangulatedSetRepresentation *> faultTriRepSet = repo.getFaultTriangulatedSetRepSet();
-	std::vector<Horizon*> horizonSet = repo.getHorizonSet();
-	std::vector<Grid2dRepresentation *> horizonGrid2dSet = repo.getHorizonGrid2dRepSet();
-	std::vector<TriangulatedSetRepresentation *> horizonTriRepSet = repo.getHorizonTriangulatedSetRepSet();
-	std::vector<TriangulatedSetRepresentation*> unclassifiedTriRepSet = repo.getUnclassifiedTriangulatedSetRepSet();
-	std::vector<PolylineRepresentation *> horizonSinglePolylineRepSet = repo.getHorizonPolylineRepSet();
+	std::vector<RESQML2_NS::TriangulatedSetRepresentation *> faultTriRepSet = repo.getFaultTriangulatedSetRepSet();
+	std::vector<RESQML2_NS::BoundaryFeature*> horizonSet = repo.getHorizonSet();
+	std::vector<RESQML2_NS::Grid2dRepresentation *> horizonGrid2dSet = repo.getHorizonGrid2dRepSet();
+	std::vector<RESQML2_NS::TriangulatedSetRepresentation *> horizonTriRepSet = repo.getHorizonTriangulatedSetRepSet();
+	std::vector<RESQML2_NS::TriangulatedSetRepresentation*> unclassifiedTriRepSet = repo.getUnclassifiedTriangulatedSetRepSet();
+	std::vector<RESQML2_NS::PolylineRepresentation *> horizonSinglePolylineRepSet = repo.getHorizonPolylineRepSet();
 	std::vector<RESQML2_NS::WellboreFeature*> wellboreSet = repo.getWellboreSet();
 	std::vector<RESQML2_NS::WellboreTrajectoryRepresentation *> wellboreCubicTrajSet = repo.getWellboreTrajectoryRepresentationSet();
 	std::vector<RESQML2_NS::UnstructuredGridRepresentation*> unstructuredGridRepSet = repo.getUnstructuredGridRepresentationSet();
@@ -3723,7 +3724,7 @@ void deserialize(const string & inputFile)
 
 	std::cout << "FAULTS" << endl;
 	for (size_t i = 0; i < faultSet.size(); ++i) {
-		TectonicBoundaryFeature const * faultFeature = faultSet[i];
+		RESQML2_NS::BoundaryFeature const * faultFeature = faultSet[i];
 		showAllMetadata(faultFeature);
 		std::cout << "InterpretationCount : " << faultFeature->getInterpretationCount() << std::endl;
 	}
@@ -3790,10 +3791,10 @@ void deserialize(const string & inputFile)
 		cout << "triangle Count " << triangleCount << endl;
 
 		std::cout << "\tFAULTS TRI REP GEOMETRY" << endl;
-		double* xyzPoints = new double[pointCount * 3];
-		faultTriRepSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(xyzPoints);
-		unsigned int * triangleIndices = new unsigned int[triangleCount * 3];
-		faultTriRepSet[i]->getTriangleNodeIndicesOfAllPatches(triangleIndices);
+		std::unique_ptr<double[]> xyzPoints(new double[pointCount * 3]);
+		faultTriRepSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(xyzPoints.get());
+		std::unique_ptr<unsigned int[]> triangleIndices(new unsigned int[triangleCount * 3]);
+		faultTriRepSet[i]->getTriangleNodeIndicesOfAllPatches(triangleIndices.get());
 		for (size_t j = 0; j < 5; j++) {
 			std::cout << "\txyzPoints : " << xyzPoints[j] << std::endl;
 			std::cout << "\ttriangleIndices : " << triangleIndices[j] << std::endl;
@@ -3801,18 +3802,15 @@ void deserialize(const string & inputFile)
 		}
 		deserializeActivity(faultTriRepSet[i]);
 
-		delete[] xyzPoints;
-		delete[] triangleIndices;
-
 		showAllProperties(faultTriRepSet[i]);
 	}
 
 	std::cout << "HORIZONS" << endl;
 	for (size_t i = 0; i < horizonSet.size(); i++) {
-		Horizon const * horFeature = horizonSet[i];
+		RESQML2_NS::BoundaryFeature * horFeature = horizonSet[i];
 		showAllMetadata(horFeature);
-		if (horFeature->hasAnAge()) {
-			cout << "Age " << horFeature->getAge() << " years" << endl;
+		if (dynamic_cast<RESQML2_0_1_NS::Horizon*>(horFeature) != nullptr && static_cast<RESQML2_0_1_NS::Horizon*>(horFeature)->hasAnAge()) {
+			cout << "Age " << static_cast<RESQML2_0_1_NS::Horizon*>(horFeature)->getAge() << " years" << endl;
 		}
 		std::cout << std::endl;
 		std::cout << "InterpretationCount : " << horFeature->getInterpretationCount() << std::endl;
@@ -3874,10 +3872,10 @@ void deserialize(const string & inputFile)
 		cout << "triangle Count " << triangleCount << endl;
 
 		std::cout << "\tHORIZONS TRI REP GEOMETRY" << endl;
-		double* xyzPoints = new double[pointCount * 3];
-		horizonTriRepSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(xyzPoints);
-		unsigned int * triangleIndices = new unsigned int[triangleCount * 3];
-		horizonTriRepSet[i]->getTriangleNodeIndicesOfAllPatches(triangleIndices);
+		std::unique_ptr<double[]> xyzPoints(new double[pointCount * 3]);
+		horizonTriRepSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(xyzPoints.get());
+		std::unique_ptr<unsigned int[]> triangleIndices(new unsigned int[triangleCount * 3]);
+		horizonTriRepSet[i]->getTriangleNodeIndicesOfAllPatches(triangleIndices.get());
 		for (unsigned int j = 0; j < 5; j++)
 		{
 			std::cout << "\txyzPoints : " << xyzPoints[j] << std::endl;
@@ -3885,29 +3883,22 @@ void deserialize(const string & inputFile)
 			std::cout << "\t--------------------------------------------------" << std::endl;
 		}
 
-		delete[] xyzPoints;
-		delete[] triangleIndices;
-
 		const unsigned int patchCount = horizonTriRepSet[i]->getPatchCount();
 		for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
 			RESQML2_NS::AbstractRepresentation* seismicSupport = horizonTriRepSet[i]->getSeismicSupportOfPatch(patchIndex);
 			if (seismicSupport != nullptr) {
 				const ULONG64 pointCountForPatch = horizonTriRepSet[i]->getXyzPointCountOfPatch(patchIndex);
 				cout << "Seismic support of patch " << patchIndex << " is : " << seismicSupport->getTitle() << endl;
-				double* inlines = new double[pointCountForPatch];
-				horizonTriRepSet[i]->getInlinesOfPointsOfPatch(patchIndex, inlines);
-				for (unsigned int index = 0; index < pointCountForPatch; index++)
-				{
+				std::unique_ptr<double[]> inlines(new double[pointCountForPatch]);
+				horizonTriRepSet[i]->getInlinesOfPointsOfPatch(patchIndex, inlines.get());
+				for (unsigned int index = 0; index < pointCountForPatch; index++) {
 					std::cout << "\tinline : " << inlines[index] << std::endl;
 				}
-				delete[] inlines;
-				double* crosslines = new double[pointCountForPatch];;
-				horizonTriRepSet[i]->getCrosslinesOfPointsOfPatch(patchIndex, crosslines);
-				for (unsigned int index = 0; index < pointCountForPatch; index++)
-				{
+				std::unique_ptr<double[]> crosslines(new double[pointCountForPatch]);
+				horizonTriRepSet[i]->getCrosslinesOfPointsOfPatch(patchIndex, crosslines.get());
+				for (unsigned int index = 0; index < pointCountForPatch; index++) {
 					std::cout << "\tcrossline : " << crosslines[index] << std::endl;
 				}
-				delete[] crosslines;
 			}
 			else {
 				cout << "No seismic support for patch " << patchIndex << endl;

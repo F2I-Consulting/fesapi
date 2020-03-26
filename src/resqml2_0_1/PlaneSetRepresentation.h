@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/AbstractRepresentation.h"
+#include "../resqml2/PlaneSetRepresentation.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** A plane set representation. */
-	class PlaneSetRepresentation : public RESQML2_NS::AbstractRepresentation
+	class PlaneSetRepresentation : public RESQML2_NS::PlaneSetRepresentation
 	{
 	public:
 
@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT PlaneSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT PlaneSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::PlaneSetRepresentation(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -53,18 +53,16 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		PlaneSetRepresentation(gsoap_resqml2_0_1::_resqml20__PlaneSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
+		PlaneSetRepresentation(gsoap_resqml2_0_1::_resqml20__PlaneSetRepresentation* fromGsoap) : RESQML2_NS::PlaneSetRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~PlaneSetRepresentation() {}
-		
-		COMMON_NS::DataObjectReference getHdfProxyDor() const { return COMMON_NS::DataObjectReference(); }
 
 		/**
 		* Get the Local 3d CRS dor where the reference point ordinals are given
 		* It assumes there is only one CRS used by this instance.
 		*/
-		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const;
+		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const final;
 
 		/**
 		 * Get the xyz point count in a given patch.
@@ -73,7 +71,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The xyz point count of patch.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const final;
 
 		/**
 		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
@@ -84,14 +82,14 @@ namespace RESQML2_0_1_NS
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be pre allocated.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Get the number of triangle patch
 		 *
 		 * @returns	The patch count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
 
 		/**
 		 * Push back a new patch which is an horizontal plane
@@ -99,7 +97,7 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	zCoordinate	The Z coordinate of the horizontal plane.
 		 * @param [in,out]	localCrs   	(Optional) If non-null, the local crs.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
 		/**
 		 * Push back a new patch which is not a horizontal plane. It s geometry is given by means of 3
@@ -120,20 +118,6 @@ namespace RESQML2_0_1_NS
 			double x1, double y1, double z1,
 			double x2, double y2, double z2,
 			double x3, double y3, double z3,
-			RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
-
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+			RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 	};
 }

@@ -31,8 +31,6 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* TriangulatedSetRepresentation::XML_TAG = "TriangulatedSetRepresentation";
-
 TriangulatedSetRepresentation::TriangulatedSetRepresentation(COMMON_NS::DataObjectRepository* repo,
 	const std::string & guid, const std::string & title)
 {
@@ -86,8 +84,8 @@ resqml20__PointGeometry* TriangulatedSetRepresentation::getPointGeometry2_0_1(un
 }
 
 void TriangulatedSetRepresentation::pushBackTrianglePatch(
-	unsigned int nodeCount, double * nodes,
-	unsigned int triangleCount, unsigned int * triangleNodeIndices,
+	unsigned int nodeCount, double const * nodes,
+	unsigned int triangleCount, unsigned int const * triangleNodeIndices,
 	EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
@@ -200,4 +198,3 @@ unsigned int TriangulatedSetRepresentation::getPatchCount() const
 {
 	return static_cast<_resqml20__TriangulatedSetRepresentation*>(gsoapProxy2_0_1)->TrianglePatch.size();
 }
-

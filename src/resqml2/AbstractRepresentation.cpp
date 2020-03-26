@@ -105,7 +105,7 @@ gsoap_eml2_3::resqml22__Seismic3dCoordinates* AbstractRepresentation::getSeismic
 }
 
 gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointGeometryPatch2_0_1(unsigned int patchIndex,
-	double* points, AbstractLocal3dCrs* localCrs, hsize_t* numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy)
+	double const * points, AbstractLocal3dCrs const* localCrs, hsize_t const* numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();

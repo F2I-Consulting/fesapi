@@ -18,15 +18,34 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/SeismicLineSetFeature.h"
+#include "AbstractTechnicalFeature.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_NS
 {
 	/** A seismic line set feature. */
-	class SeismicLineSetFeature : public RESQML2_NS::SeismicLineSetFeature
+	class SeismicLineSetFeature : public AbstractTechnicalFeature
 	{
 	public:
+
+		/** Destructor does nothing since the memory is manged by the gsoap context. */
+		virtual ~SeismicLineSetFeature() {}
+
+		/**
+		 * The standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+
+	protected:
 
 		/**
 		 * Only to be used in partial transfer context
@@ -35,26 +54,25 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT SeismicLineSetFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::SeismicLineSetFeature(partialObject) {}
+		DLL_IMPORT_OR_EXPORT SeismicLineSetFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractTechnicalFeature(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
-		 *
-		 * @param [in,out]	repo 	The repo where the underlying gsoap proxy is going to be created.
-		 * @param 		  	guid 	The guid to set to this instance. If empty then a new guid will be
-		 * 							generated.
-		 * @param 		  	title	A title for the instance to create.
+		 * Default cosntructor
 		 */
-		SeismicLineSetFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
+		SeismicLineSetFeature() {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		SeismicLineSetFeature(gsoap_resqml2_0_1::_resqml20__SeismicLineSetFeature* fromGsoap): RESQML2_NS::SeismicLineSetFeature(fromGsoap) {}
+		SeismicLineSetFeature(gsoap_resqml2_0_1::_resqml20__SeismicLineSetFeature* fromGsoap) : AbstractTechnicalFeature(fromGsoap) {}
 
-		/** Destructor does nothing since the memory is manged by the gsoap context. */
-		~SeismicLineSetFeature() {}
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		SeismicLineSetFeature(gsoap_eml2_3::_resqml22__SeismicLineSetFeature* fromGsoap) : AbstractTechnicalFeature(fromGsoap) {}
 	};
 }

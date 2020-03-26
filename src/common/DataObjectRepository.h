@@ -49,12 +49,19 @@ namespace RESQML2_NS
 	class AbstractLocal3dCrs;
 	class AbstractOrganizationInterpretation;
 	class AbstractRepresentation;
+	class AbstractSeismicLineFeature;
+	class BoundaryFeature;
+	class BoundaryFeatureInterpretation;
 	class CategoricalProperty;
 	class CommentProperty;
 	class ContinuousProperty;
 	class DiscreteProperty;
 	class DeviationSurveyRepresentation;
+	class FaultInterpretation;
+	class GeobodyBoundaryInterpretation;
 	class GridConnectionSetRepresentation;
+	class Grid2dRepresentation;
+	class HorizonInterpretation;
 	class IjkGridExplicitRepresentation;
 	class IjkGridLatticeRepresentation;
 	class IjkGridNoGeometryRepresentation;
@@ -62,11 +69,15 @@ namespace RESQML2_NS
 	class LocalDepth3dCrs;
 	class LocalTime3dCrs;
 	class MdDatum;
+	class PlaneSetRepresentation;
+	class PolylineRepresentation;
 	class PropertySet;
 	class RepresentationSetRepresentation;
+	class SeismicLineSetFeature;
 	class StringTableLookup;
 	class SubRepresentation;
 	class TimeSeries;
+	class TriangulatedSetRepresentation;
 	class UnstructuredGridRepresentation;
 	class WellboreFeature;
 	class WellboreFrameRepresentation;
@@ -82,25 +93,15 @@ namespace RESQML2_0_1_NS
 	class ContinuousProperty;
 	class DiscreteProperty;
 	class GeneticBoundaryFeature;
-	class GeobodyBoundaryInterpretation;
 	class GeobodyFeature;
 	class GeobodyInterpretation;
 	class Horizon;
-	class SeismicLineFeature;
 	class StratigraphicUnitFeature;
 	class PolylineSetRepresentation;
-	class PolylineRepresentation;
-	class TriangulatedSetRepresentation;
-	class Grid2dRepresentation;
-	class BoundaryFeature;
-	class BoundaryFeatureInterpretation;
 	class TectonicBoundaryFeature;
 	class SeismicLatticeFeature;
-	class SeismicLineSetFeature;
 	class OrganizationFeature;
 	class GenericFeatureInterpretation;
-	class HorizonInterpretation;
-	class FaultInterpretation;
 	class EarthModelInterpretation;
 	class StructuralOrganizationInterpretation;
 	class StratigraphicUnitInterpretation;
@@ -117,7 +118,6 @@ namespace RESQML2_0_1_NS
 	class OrganizationFeature;
 	class StratigraphicOccurrenceInterpretation;
 	class FrontierFeature;
-	class PlaneSetRepresentation;
 	class FluidBoundaryFeature;
 	class BlockedWellboreRepresentation;
 	class RockFluidOrganizationInterpretation;
@@ -481,14 +481,14 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the faults of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> getFaultSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::BoundaryFeature*> getFaultSet() const;
 
 		/**
 		 * Gets all the fractures contained into this repository
 		 *
 		 * @returns A vector of pointers to all the fractures of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> getFractureSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::BoundaryFeature*> getFractureSet() const;
 
 		/**
 		 * Gets all the individual representations of faults which are associated to a polyline set
@@ -520,7 +520,7 @@ namespace COMMON_NS
 		 *
 		 * @returns A vector of pointers to all the faults triangulated set representations of this repository. 
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation *> getFaultTriangulatedSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::TriangulatedSetRepresentation *> getFaultTriangulatedSetRepSet() const;
 
 		/**
 		 * Gets all the individual representations of fractures which are associated to a triangulated
@@ -528,21 +528,21 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the fractures triangulated set representations of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation *> getFractureTriangulatedSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::TriangulatedSetRepresentation *> getFractureTriangulatedSetRepSet() const;
 
 		/**
 		 * Gets all the horizons contained into this repository
 		 *
 		 * @returns	A vector of pointers to all the horizons of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::Horizon*> getHorizonSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::BoundaryFeature*> getHorizonSet() const;
 
 		/**
 		 * Get all the geobody boundaries contained into this repository
 		 *
 		 * @returns	A vector of pointers to all the geobody boundaries of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::GeneticBoundaryFeature*> getGeobodyBoundarySet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::BoundaryFeature*> getGeobodyBoundarySet() const;
 
 		/**
 		 * Gets the geobody boundaries count into this repository
@@ -563,7 +563,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the geobody boundary at @p index position into this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::GeneticBoundaryFeature* getGeobodyBoundary(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::BoundaryFeature* getGeobodyBoundary(unsigned int index) const;
 
 		/**
 		 * Gets all the geobodies contained into this repository
@@ -579,7 +579,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all horizon grid 2D representations of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::Grid2dRepresentation *> getHorizonGrid2dRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::Grid2dRepresentation *> getHorizonGrid2dRepSet() const;
 
 		/**
 		 * Gets all the individual representations of horizons which are associated to a single polyline
@@ -587,7 +587,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the horizons polyline representations of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineRepresentation *> getHorizonPolylineRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineRepresentation *> getHorizonPolylineRepSet() const;
 
 		/**
 		 * Gets all the individual representations of horizons which are associated to a polyline set
@@ -603,7 +603,7 @@ namespace COMMON_NS
 		 *
 		 * @returns A vector of pointers to all the horizons triangulated set representations of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation *> getHorizonTriangulatedSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::TriangulatedSetRepresentation *> getHorizonTriangulatedSetRepSet() const;
 
 		/**
 		 * Gets all the triangulated set representations contained into this repository
@@ -611,7 +611,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the triangulated set representations of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getAllTriangulatedSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::TriangulatedSetRepresentation*> getAllTriangulatedSetRepSet() const;
 
 		/**
 		 * Gets all the grid 2d representations contained into this repository
@@ -619,7 +619,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the grid 2d representations of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::Grid2dRepresentation*> getAllGrid2dRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::Grid2dRepresentation*> getAllGrid2dRepresentationSet() const;
 
 		/**
 		 * Gets all the polyline set representations contained into this repository
@@ -636,7 +636,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all non-horizon and non-fault triangulated set representations of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getUnclassifiedTriangulatedSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::TriangulatedSetRepresentation*> getUnclassifiedTriangulatedSetRepSet() const;
 
 		/**
 		 * Gets all the seismic lines contained into this repository
@@ -644,7 +644,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the seismic lines of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::SeismicLineFeature*> getSeismicLineSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractSeismicLineFeature*> getSeismicLineSet() const;
 
 		/**
 		 * Gets all the wellbores contained into this repository
@@ -706,7 +706,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the polyline representations of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineRepresentation*> getAllPolylineRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineRepresentation*> getAllPolylineRepresentationSet() const;
 
 		/**
 		 * Gets all the individual representations of seismic lines which are associated to a single
@@ -714,7 +714,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the seismic line polyline representations of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineRepresentation*> getSeismicLinePolylineRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineRepresentation*> getSeismicLinePolylineRepSet() const;
 
 		/**
 		 * Gets all the ijk grids contained into this repository
@@ -1336,7 +1336,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new boundary feature.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::BoundaryFeature* createBoundaryFeature(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::BoundaryFeature* createBoundaryFeature(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a horizon into this repository
@@ -1440,7 +1440,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new seismic lattice.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::SeismicLineFeature* createSeismicLine(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractSeismicLineFeature* createSeismicLine(const std::string & guid, const std::string & title,
 			const int & traceIndexIncrement, const unsigned int & firstTraceIndex, const unsigned int & traceCount);
 
 		/**
@@ -1452,7 +1452,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new seismic line set.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::SeismicLineSetFeature* createSeismicLineSet(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::SeismicLineSetFeature* createSeismicLineSet(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a frontier into this repository
@@ -1570,7 +1570,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new boundary feature interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::BoundaryFeatureInterpretation* createBoundaryFeatureInterpretation(RESQML2_0_1_NS::BoundaryFeature * feature, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::BoundaryFeatureInterpretation* createBoundaryFeatureInterpretation(RESQML2_NS::BoundaryFeature * feature, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a horizon interpretation into this repository
@@ -1583,7 +1583,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new horizon interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::HorizonInterpretation* createHorizonInterpretation(RESQML2_0_1_NS::Horizon * horizon, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::HorizonInterpretation* createHorizonInterpretation(RESQML2_NS::BoundaryFeature * horizon, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a geobody boundary interpretation into this repository
@@ -1596,7 +1596,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new geobody boundary interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::GeobodyBoundaryInterpretation* createGeobodyBoundaryInterpretation(RESQML2_0_1_NS::GeneticBoundaryFeature * geobodyBoundary, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::GeobodyBoundaryInterpretation* createGeobodyBoundaryInterpretation(RESQML2_NS::BoundaryFeature * geobodyBoundary, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a fault interpretation into this repository
@@ -1609,7 +1609,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new fault interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::FaultInterpretation* createFaultInterpretation(RESQML2_0_1_NS::TectonicBoundaryFeature * fault, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::FaultInterpretation* createFaultInterpretation(RESQML2_NS::BoundaryFeature * fault, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a wellbore interpretation into this repository
@@ -1813,7 +1813,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new triangulated set representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::TriangulatedSetRepresentation* createTriangulatedSetRepresentation(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::TriangulatedSetRepresentation* createTriangulatedSetRepresentation(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a triangulated set representation into this repository
@@ -1828,7 +1828,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new triangulated set representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::TriangulatedSetRepresentation* createTriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::TriangulatedSetRepresentation* createTriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
 		/**
@@ -1913,7 +1913,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new plane set representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PlaneSetRepresentation* createPlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::PlaneSetRepresentation* createPlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
 		/**
@@ -1927,7 +1927,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new polyline representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineRepresentation* createPolylineRepresentation(const std::string & guid, const std::string & title, bool isClosed = false);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::PolylineRepresentation* createPolylineRepresentation(const std::string & guid, const std::string & title, bool isClosed = false);
 
 		/**
 		 * Creates a polyline representation into this repository
@@ -1944,7 +1944,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new polyline representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineRepresentation* createPolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::PolylineRepresentation* createPolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title, bool isClosed = false);
 
 		/**
@@ -1963,8 +1963,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new polyline representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineRepresentation* createPolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-			const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml20__LineRole & roleKind, bool isClosed = false);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::PolylineRepresentation* createPolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+			const std::string & guid, const std::string & title, gsoap_eml2_3::resqml22__LineRole roleKind, bool isClosed = false);
 
 		/**
 		 * Creates a 2d grid representation into this repository
@@ -1977,7 +1977,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new 2d grid representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::Grid2dRepresentation* createGrid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::Grid2dRepresentation* createGrid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
 		/**

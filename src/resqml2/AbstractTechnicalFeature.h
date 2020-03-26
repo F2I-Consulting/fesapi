@@ -24,6 +24,9 @@ namespace RESQML2_NS
 {
 	class AbstractTechnicalFeature : public AbstractFeature
 	{
+	public:
+		virtual ~AbstractTechnicalFeature() {}
+
 	protected:
 
 		/**
@@ -39,8 +42,5 @@ namespace RESQML2_NS
 
 		AbstractTechnicalFeature(gsoap_resqml2_0_1::resqml20__AbstractTechnicalFeature* fromGsoap) : AbstractFeature(fromGsoap) {}
 		AbstractTechnicalFeature(gsoap_eml2_3::resqml22__AbstractTechnicalFeature* fromGsoap) : AbstractFeature(fromGsoap) {}
-
-	public:
-		virtual ~AbstractTechnicalFeature() {}
 	};
 }

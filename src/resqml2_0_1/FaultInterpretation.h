@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "BoundaryFeatureInterpretation.h"
+#include "../resqml2/FaultInterpretation.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** A fault interpretation. */
-	class FaultInterpretation : public BoundaryFeatureInterpretation
+	class FaultInterpretation : public RESQML2_NS::FaultInterpretation
 	{
 	public:
 
@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT FaultInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : BoundaryFeatureInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT FaultInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::FaultInterpretation(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -45,7 +45,7 @@ namespace RESQML2_0_1_NS
 		 * 							generated.
 		 * @param 		  	title	A title for the instance to create.
 		 */
-		FaultInterpretation(class TectonicBoundaryFeature * fault, const std::string & guid, const std::string & title);
+		FaultInterpretation(RESQML2_NS::BoundaryFeature * fault, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -59,15 +59,15 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	chronoBtm	The genetic feature which represent the time beginning of the
 		 * 								fault activity.
 		 */
-		FaultInterpretation(class TectonicBoundaryFeature * fault, const std::string & guid, const std::string & title,
-							class GeneticBoundaryFeature * chronoTop, class GeneticBoundaryFeature * chronoBtm);
+		FaultInterpretation(RESQML2_NS::BoundaryFeature * fault, const std::string & guid, const std::string & title,
+			RESQML2_NS::BoundaryFeature * chronoTop, RESQML2_NS::BoundaryFeature * chronoBtm);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		FaultInterpretation(gsoap_resqml2_0_1::_resqml20__FaultInterpretation* fromGsoap): BoundaryFeatureInterpretation(fromGsoap) {}
+		FaultInterpretation(gsoap_resqml2_0_1::_resqml20__FaultInterpretation* fromGsoap): RESQML2_NS::FaultInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~FaultInterpretation() {}
@@ -80,20 +80,6 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param 	throwKind	The throw kind.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackThrowInterpretation(const gsoap_resqml2_0_1::resqml20__ThrowKind & throwKind);
-
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT void pushBackThrowInterpretation(gsoap_resqml2_0_1::resqml20__ThrowKind throwKind) final;
 	};
 }

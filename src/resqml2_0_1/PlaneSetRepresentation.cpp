@@ -30,8 +30,6 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* PlaneSetRepresentation::XML_TAG = "PlaneSetRepresentation";
-
 PlaneSetRepresentation::PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 		const std::string & guid, const std::string & title)
 {

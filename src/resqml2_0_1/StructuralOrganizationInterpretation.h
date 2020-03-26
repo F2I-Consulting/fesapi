@@ -21,6 +21,12 @@ under the License.
 #include "../resqml2/AbstractOrganizationInterpretation.h"
 #include "EarthModelInterpretation.h"
 
+namespace RESQML2_NS
+{
+	class FaultInterpretation;
+	class HorizonInterpretation;
+}
+
 /** . */
 namespace RESQML2_0_1_NS
 {
@@ -62,7 +68,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	faultInterpretation	If non-null, the fault interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackFaultInterpretation(class FaultInterpretation * faultInterpretation);
+		DLL_IMPORT_OR_EXPORT void pushBackFaultInterpretation(RESQML2_NS::FaultInterpretation * faultInterpretation);
 
 		/**
 		 * Gets fault interpretation count
@@ -72,7 +78,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT unsigned int getFaultInterpretationCount() const;
 
 		/** A fault interpretation*. */
-		DLL_IMPORT_OR_EXPORT class FaultInterpretation* getFaultInterpretation(unsigned int index);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::FaultInterpretation* getFaultInterpretation(unsigned int index);
 
 		/**
 		 * Add an HorizonInterpretation to this StructuralOrganizationInterpretation.
@@ -83,7 +89,7 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	stratigraphicRank	 	the rank of the horizon interpretation within this
 		 * 											structural organization.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackHorizonInterpretation(class HorizonInterpretation * horizonInterpretation, const int & stratigraphicRank);
+		DLL_IMPORT_OR_EXPORT void pushBackHorizonInterpretation(RESQML2_NS::HorizonInterpretation * horizonInterpretation, const int & stratigraphicRank);
 
 		/**
 		 * Gets horizon interpretation count
@@ -99,7 +105,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	Null if it fails, else the horizon interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT HorizonInterpretation* getHorizonInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::HorizonInterpretation* getHorizonInterpretation(unsigned int index) const;
 
 		/**
 		 * Add a Frontier interpretation to this StructuralOrganizationInterpretation as a top. Does add
@@ -108,7 +114,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	topFrontierInterpretation	If non-null, the top frontier interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackTopFrontierInterpretation(AbstractFeatureInterpretation * topFrontierInterpretation);
+		DLL_IMPORT_OR_EXPORT void pushBackTopFrontierInterpretation(RESQML2_NS::AbstractFeatureInterpretation * topFrontierInterpretation);
 
 		/**
 		 * Gets top frontier interpretation count
@@ -124,7 +130,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	Null if it fails, else the top frontier interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getTopFrontierInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractFeatureInterpretation* getTopFrontierInterpretation(unsigned int index) const;
 
 		/**
 		 * Add a Frontier interpretation to this StructuralOrganizationInterpretation as a bottom. Does
@@ -134,7 +140,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	bottomFrontierInterpretation	If non-null, the bottom frontier
 		 * 													interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT  void pushBackBottomFrontierInterpretation(AbstractFeatureInterpretation * bottomFrontierInterpretation);
+		DLL_IMPORT_OR_EXPORT  void pushBackBottomFrontierInterpretation(RESQML2_NS::AbstractFeatureInterpretation * bottomFrontierInterpretation);
 
 		/**
 		 * Gets bottom frontier interpretation count
@@ -150,7 +156,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	Null if it fails, else the bottom frontier interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getBottomFrontierInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractFeatureInterpretation* getBottomFrontierInterpretation(unsigned int index) const;
 
 		/**
 		 * Add a Frontier interpretation to this StructuralOrganizationInterpretation as a side. Does
@@ -159,7 +165,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	sideFrontierInterpretation	If non-null, the side frontier interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackSideFrontierInterpretation(AbstractFeatureInterpretation * sideFrontierInterpretation);
+		DLL_IMPORT_OR_EXPORT void pushBackSideFrontierInterpretation(RESQML2_NS::AbstractFeatureInterpretation * sideFrontierInterpretation);
 
 		/**
 		 * Gets side frontier interpretation count
@@ -175,7 +181,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	Null if it fails, else the side frontier interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getSideFrontierInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractFeatureInterpretation* getSideFrontierInterpretation(unsigned int index) const;
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

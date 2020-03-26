@@ -16,27 +16,8 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "GeobodyBoundaryInterpretation.h"
+#include "BoundaryFeatureInterpretation.h"
 
-#include <stdexcept>
+using namespace RESQML2_NS;
 
-#include "GeneticBoundaryFeature.h"
-
-using namespace std;
-using namespace RESQML2_0_1_NS;
-using namespace gsoap_resqml2_0_1;
-
-GeobodyBoundaryInterpretation::GeobodyBoundaryInterpretation(RESQML2_NS::BoundaryFeature * geobodyBoundary, const string & guid, const string & title)
-{
-	if (geobodyBoundary == nullptr)
-		throw invalid_argument("The interpreted geobody boundary cannot be null.");
-
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGeobodyBoundaryInterpretation(geobodyBoundary->getGsoapContext());
-
-	static_cast<_resqml20__GeobodyBoundaryInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
-
-	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
-
-	setInterpretedFeature(geobodyBoundary);
-}
+const char* BoundaryFeatureInterpretation::XML_TAG = "BoundaryFeatureInterpretation";

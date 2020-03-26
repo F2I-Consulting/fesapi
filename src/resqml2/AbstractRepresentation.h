@@ -85,7 +85,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
 		 */
-		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(unsigned int patchIndex, double * points, class AbstractLocal3dCrs* localCrs, unsigned long long * numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
+		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(unsigned int patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, unsigned long long const * numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * Gets hdf proxy dor from point geometry patch

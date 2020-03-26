@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "SeismicLineFeature.h"
 
-#include "SeismicLineSetFeature.h"
+#include "../resqml2/SeismicLineSetFeature.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -61,25 +61,16 @@ unsigned int SeismicLineFeature::getTraceCount() const
 	return static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->TraceCount;
 }
 
-void SeismicLineFeature::setSeismicLineSet(SeismicLineSetFeature * seisLineSet)
+void SeismicLineFeature::setSeismicLineSet(RESQML2_NS::SeismicLineSetFeature * seisLineSet)
 {
 	getRepository()->addRelationship(this, seisLineSet);
 
 	static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->IsPartOf = seisLineSet->newResqmlReference();
 }
 
-SeismicLineSetFeature* SeismicLineFeature::getSeismicLineSet() const
+COMMON_NS::DataObjectReference SeismicLineFeature::getSeismicLineSetDor() const
 {
 	_resqml20__SeismicLineFeature* seismicLine = static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1);
 
-	return seismicLine->IsPartOf == nullptr ? nullptr : getRepository()->getDataObjectByUuid<SeismicLineSetFeature>(seismicLine->IsPartOf->UUID);
-}
-
-void SeismicLineFeature::loadTargetRelationships()
-{
-	_resqml20__SeismicLineFeature* seismicLine = static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1);
-
-	if (seismicLine->IsPartOf != nullptr) {
-		convertDorIntoRel<SeismicLineSetFeature>(seismicLine->IsPartOf);
-	}
+	return seismicLine->IsPartOf == nullptr ? COMMON_NS::DataObjectReference() : COMMON_NS::DataObjectReference(seismicLine->IsPartOf);
 }

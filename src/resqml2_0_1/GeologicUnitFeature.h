@@ -18,19 +18,14 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractGeologicFeature.h"
+#include "../resqml2/RockVolumeFeature.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** A geologic unit feature. */
-	class GeologicUnitFeature : public AbstractGeologicFeature
+	class GeologicUnitFeature : public RESQML2_NS::RockVolumeFeature
 	{
-	protected :
-
-		/** Default constructor Set the gsoap proxy to nullptr from superclass constructor */
-		GeologicUnitFeature() {}
-
 	public:
 
 		/**
@@ -40,7 +35,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT GeologicUnitFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractGeologicFeature(partialObject) {}
+		DLL_IMPORT_OR_EXPORT GeologicUnitFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::RockVolumeFeature(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -57,7 +52,8 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		GeologicUnitFeature(gsoap_resqml2_0_1::_resqml20__GeologicUnitFeature* fromGsoap): AbstractGeologicFeature(fromGsoap) {}
+		GeologicUnitFeature(gsoap_resqml2_0_1::_resqml20__GeologicUnitFeature* fromGsoap): RESQML2_NS::RockVolumeFeature(fromGsoap) {}
+
 		/** Destructor */
 		virtual ~GeologicUnitFeature() {}
 
@@ -74,5 +70,10 @@ namespace RESQML2_0_1_NS
 		 * @returns	The XML tag.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+
+	protected:
+
+		/** Default constructor Set the gsoap proxy to nullptr from superclass constructor */
+		GeologicUnitFeature() {}
 	};
 }

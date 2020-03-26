@@ -18,15 +18,25 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/AbstractFeature.h"
+#include "AbstractFeature.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_NS
 {
-	/** Proxy class for an abstract geologic feature. */
-	class AbstractGeologicFeature : public RESQML2_NS::AbstractFeature
+	/** The explicit description of the relationships between geologic features, such as rock features (e.g. stratigraphic units, geobodies, phase unit) and boundary features (e.g., genetic, tectonic, and fluid boundaries).
+	 * In general, this concept is usually called an “earth model”, but it is not called that in RESQML. In RESQML, model is not to be confused with the concept of earth model organization interpretation.
+	 */
+	class Model : public AbstractFeature
 	{
+	public:
+
+		/** Destructor */
+		virtual ~Model() {}
+
 	protected:
+
+		/** Default constructor Set the gsoap proxy to nullptr from superclass constructor */
+		Model() {}
 
 		/**
 		 * Only to be used in partial transfer context
@@ -35,21 +45,20 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractGeologicFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeature(partialObject) {}
-
-		/** Default constructor Set the gsoap proxy to nullptr from superclass constructor */
-		AbstractGeologicFeature() {}
+		DLL_IMPORT_OR_EXPORT Model(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractFeature(partialObject) {}
 
 		/**
 		 * Constructor
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		AbstractGeologicFeature(gsoap_resqml2_0_1::resqml20__AbstractGeologicFeature* fromGsoap) : RESQML2_NS::AbstractFeature(fromGsoap) {}
+		Model(gsoap_resqml2_0_1::_resqml20__OrganizationFeature* fromGsoap) : AbstractFeature(fromGsoap) {}
 
-	public:
-		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~AbstractGeologicFeature() {}
+		/**
+		 * Constructor
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		Model(gsoap_eml2_3::_resqml22__Model* fromGsoap) : AbstractFeature(fromGsoap) {}
 	};
 }
-

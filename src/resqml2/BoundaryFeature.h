@@ -18,50 +18,50 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/BoundaryFeature.h"
+#include "AbstractFeature.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_NS
 {
 	/** A boundary feature. */
-	class BoundaryFeature : public RESQML2_NS::BoundaryFeature
+	class BoundaryFeature : public AbstractFeature
 	{
 	public:
+		
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
+		virtual ~BoundaryFeature() {}
+
+		/** The standard XML tag without XML namespace for serializing this data object. */
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
+		
+	protected:
 
 		/**
 		 * Only to be used in partial transfer context.
 		 *
 		 * @param [in]	partialObject	If non-nullptr, the partial object.
 		 */
-		DLL_IMPORT_OR_EXPORT BoundaryFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::BoundaryFeature(partialObject) {}
+		DLL_IMPORT_OR_EXPORT BoundaryFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractFeature(partialObject) {}
 
-		/**
-		 * Creates an instance of this class in a gsoap context.
-		 *
-		 * @exception	std::invalid_argument	If @p repo is @c nullptr.
-		 *
-		 * @param [in,out]	repo 	The repository where the underlying gSOAP proxy is going to be
-		 * 							created.
-		 * @param 		  	guid 	The guid to set to the boundary feature. If empty then a new guid
-		 * 							will be generated.
-		 * @param 		  	title	The title to set to the boundary feature. If empty then \"unknown\"
-		 * 							title will be set.
-		 */
-		BoundaryFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
+		/** Default constructor sets the gSOAP proxy to @c nullptr from the super class constructor. */
+		BoundaryFeature() {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		BoundaryFeature(gsoap_resqml2_0_1::_resqml20__BoundaryFeature* fromGsoap): RESQML2_NS::BoundaryFeature(fromGsoap) {}
-		
-		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~BoundaryFeature() {}
+		BoundaryFeature(gsoap_resqml2_0_1::_resqml20__BoundaryFeature* fromGsoap): AbstractFeature(fromGsoap) {}
 
-	protected:
-
-		BoundaryFeature() {}
+		/**
+		 * Creates an instance of this class by wrapping a gSOAP instance.
+		 *
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 */
+		BoundaryFeature(gsoap_eml2_3::_resqml22__BoundaryFeature* fromGsoap): AbstractFeature(fromGsoap) {}
+	
 	};
 }
 

@@ -20,6 +20,11 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
+namespace RESQML2_NS
+{
+	class BoundaryFeatureInterpretation;
+}
+
 /** . */
 namespace RESQML2_0_1_NS
 {
@@ -99,7 +104,7 @@ namespace RESQML2_0_1_NS
 		/** Gets the boundary feature interpretation linked to this well marker.
 		 * @returns The boundary feature interpretation linked to this well marker, or @c nullptr if it fails.
 		 */
-		DLL_IMPORT_OR_EXPORT class BoundaryFeatureInterpretation* getBoundaryFeatureInterpretation() const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::BoundaryFeatureInterpretation* getBoundaryFeatureInterpretation() const;
 
 		/**
 		 * Gets the UUID of the boundary feature interpretation linked to this well marker. Especially
@@ -117,7 +122,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in]	interp	The boundary feature interpretation to link to this well marker. It
 		 * 						cannot be null.
 		 */
-		DLL_IMPORT_OR_EXPORT void setBoundaryFeatureInterpretation(class BoundaryFeatureInterpretation* interp);
+		DLL_IMPORT_OR_EXPORT void setBoundaryFeatureInterpretation(RESQML2_NS::BoundaryFeatureInterpretation* interp);
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

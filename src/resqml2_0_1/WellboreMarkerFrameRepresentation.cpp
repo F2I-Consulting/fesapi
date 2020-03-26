@@ -132,7 +132,7 @@ void WellboreMarkerFrameRepresentation::loadTargetRelationships()
 			marker = new WellboreMarker(rep->WellboreMarker[i]);
 			getRepository()->addOrReplaceDataObject(marker);
 			if (rep->WellboreMarker[i]->Interpretation != nullptr) {
-				marker->setBoundaryFeatureInterpretation(getRepository()->getDataObjectByUuid<BoundaryFeatureInterpretation>(rep->WellboreMarker[i]->Interpretation->UUID));
+				marker->setBoundaryFeatureInterpretation(getRepository()->getDataObjectByUuid<RESQML2_NS::BoundaryFeatureInterpretation>(rep->WellboreMarker[i]->Interpretation->UUID));
 			}
 		}
 		getRepository()->addRelationship(this, marker);
