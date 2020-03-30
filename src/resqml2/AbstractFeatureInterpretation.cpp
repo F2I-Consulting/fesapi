@@ -45,11 +45,19 @@ void AbstractFeatureInterpretation::setInterpretedFeature(AbstractFeature * feat
 			getRepository()->deleteRelationship(this, getInterpretedFeature());
 		}
 	}
+	else if (gsoapProxy2_3 != nullptr) {
+		if (static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->InterpretedFeature != nullptr) {
+			getRepository()->deleteRelationship(this, getInterpretedFeature());
+		}
+	}
 
 	repository->addRelationship(this, feature);
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->InterpretedFeature = feature->newResqmlReference();
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->InterpretedFeature = feature->newEml23Reference();
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -73,7 +81,10 @@ void AbstractFeatureInterpretation::loadTargetRelationships()
 COMMON_NS::DataObjectReference AbstractFeatureInterpretation::getInterpretedFeatureDor() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->InterpretedFeature;
+		return COMMON_NS::DataObjectReference(static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->InterpretedFeature);
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->InterpretedFeature);
 	}
 
 	throw logic_error("Not implemented yet");
@@ -130,6 +141,11 @@ gsoap_resqml2_0_1::resqml20__Domain AbstractFeatureInterpretation::getDomain() c
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain;
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		return static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain == nullptr
+			? gsoap_resqml2_0_1::resqml20__Domain__mixed
+			: static_cast<gsoap_resqml2_0_1::resqml20__Domain>(*static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain);
 	}
 	else {
 		throw logic_error("Not implemented yet");

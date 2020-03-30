@@ -29,7 +29,7 @@ under the License.
 #include "../eml2/PropertyKind.h"
 #include "AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
-#include "TimeSeries.h"
+#include "../eml2/TimeSeries.h"
 #include "../resqml2_0_1/PropertyKindMapper.h"
 
 using namespace RESQML2_NS;
@@ -50,10 +50,10 @@ void AbstractProperty::loadTargetRelationships()
 
 	dor = getTimeSeriesDor();
 	if (!dor.isEmpty()) {
-		TimeSeries* ts = getRepository()->getDataObjectByUuid<TimeSeries>(dor.getUuid());
+		EML2_NS::TimeSeries* ts = getRepository()->getDataObjectByUuid<EML2_NS::TimeSeries>(dor.getUuid());
 		if (ts == nullptr) { // partial transfer
 			getRepository()->createPartial(dor);
-			ts = getRepository()->getDataObjectByUuid<TimeSeries>(dor.getUuid());
+			ts = getRepository()->getDataObjectByUuid<EML2_NS::TimeSeries>(dor.getUuid());
 			if (ts == nullptr) {
 				throw invalid_argument("The DOR looks invalid.");
 			}
@@ -150,12 +150,12 @@ COMMON_NS::DataObjectReference AbstractProperty::getRepresentationDor() const
 	}
 }
 
-TimeSeries* AbstractProperty::getTimeSeries() const
+EML2_NS::TimeSeries* AbstractProperty::getTimeSeries() const
 {
-	return static_cast<TimeSeries*>(repository->getDataObjectByUuid(getTimeSeriesDor().getUuid()));
+	return repository->getDataObjectByUuid<EML2_NS::TimeSeries>(getTimeSeriesDor().getUuid());
 }
 
-void AbstractProperty::setTimeSeries(TimeSeries * ts)
+void AbstractProperty::setTimeSeries(EML2_NS::TimeSeries * ts)
 {
 	if (ts == nullptr) {
 		throw invalid_argument("The time series of this property values cannot be null.");
@@ -205,7 +205,7 @@ COMMON_NS::DataObjectReference AbstractProperty::getTimeSeriesDor() const
 	return COMMON_NS::DataObjectReference();
 }
 
-void AbstractProperty::setTimeIndex(unsigned int timeIndex, TimeSeries * ts)
+void AbstractProperty::setTimeIndex(unsigned int timeIndex, EML2_NS::TimeSeries * ts)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex = gsoap_resqml2_0_1::soap_new_resqml20__TimeIndex(gsoapProxy2_0_1->soap);
@@ -233,7 +233,7 @@ void AbstractProperty::setTimeStep(unsigned int timeStep)
 
 time_t AbstractProperty::getTimestamp() const
 {
-	TimeSeries const * timeSeries = getTimeSeries();
+	EML2_NS::TimeSeries const * timeSeries = getTimeSeries();
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		if (timeSeries && static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {
@@ -248,7 +248,7 @@ time_t AbstractProperty::getTimestamp() const
 
 unsigned int AbstractProperty::getTimeIndex() const
 {
-	TimeSeries const * timeSeries = getTimeSeries();
+	EML2_NS::TimeSeries const * timeSeries = getTimeSeries();
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		if (timeSeries && static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {

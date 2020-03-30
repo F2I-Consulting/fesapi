@@ -18,26 +18,19 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/AbstractOrganizationInterpretation.h"
-#include "EarthModelInterpretation.h"
-
-namespace RESQML2_NS
-{
-	class FaultInterpretation;
-	class HorizonInterpretation;
-}
+#include "../resqml2/StructuralOrganizationInterpretation.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
-	class StructuralOrganizationInterpretation : public RESQML2_NS::AbstractOrganizationInterpretation
+	class StructuralOrganizationInterpretation : public RESQML2_NS::StructuralOrganizationInterpretation
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		DLL_IMPORT_OR_EXPORT StructuralOrganizationInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractOrganizationInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT StructuralOrganizationInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::StructuralOrganizationInterpretation(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -49,14 +42,14 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	title				A title for the instance to create.
 		 * @param 		  	orderingCriteria	How the included horizons are ordered.
 		 */
-		StructuralOrganizationInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml20__OrderingCriteria & orderingCriteria);
+		StructuralOrganizationInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		StructuralOrganizationInterpretation(gsoap_resqml2_0_1::_resqml20__StructuralOrganizationInterpretation* fromGsoap): AbstractOrganizationInterpretation(fromGsoap) {}
+		StructuralOrganizationInterpretation(gsoap_resqml2_0_1::_resqml20__StructuralOrganizationInterpretation* fromGsoap): RESQML2_NS::StructuralOrganizationInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~StructuralOrganizationInterpretation() {}
@@ -68,17 +61,23 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	faultInterpretation	If non-null, the fault interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackFaultInterpretation(RESQML2_NS::FaultInterpretation * faultInterpretation);
+		DLL_IMPORT_OR_EXPORT void pushBackFaultInterpretation(RESQML2_NS::FaultInterpretation * faultInterpretation) final;
 
 		/**
 		 * Gets fault interpretation count
 		 *
 		 * @returns	The fault interpretation count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getFaultInterpretationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getFaultInterpretationCount() const final;
 
-		/** A fault interpretation*. */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::FaultInterpretation* getFaultInterpretation(unsigned int index);
+		/**
+		 * Gets fault interpretation DAta Object Reference
+		 *
+		 * @param 	index	Zero-based index of the fault interpretation.
+		 *
+		 * @returns	Null if it fails, else the fault interpretation.
+		 */
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getFaultInterpretationDor(unsigned int index) const final;
 
 		/**
 		 * Add an HorizonInterpretation to this StructuralOrganizationInterpretation.
@@ -89,23 +88,23 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	stratigraphicRank	 	the rank of the horizon interpretation within this
 		 * 											structural organization.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackHorizonInterpretation(RESQML2_NS::HorizonInterpretation * horizonInterpretation, const int & stratigraphicRank);
+		DLL_IMPORT_OR_EXPORT void pushBackHorizonInterpretation(RESQML2_NS::HorizonInterpretation * horizonInterpretation, int stratigraphicRank) final;
 
 		/**
 		 * Gets horizon interpretation count
 		 *
 		 * @returns	The horizon interpretation count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getHorizonInterpretationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getHorizonInterpretationCount() const final;
 
 		/**
-		 * Gets horizon interpretation
+		 * Gets fault interpretation DataObject Reference
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @param 	index	Zero-based index of the fault interpretation.
 		 *
-		 * @returns	Null if it fails, else the horizon interpretation.
+		 * @returns	Null if it fails, else the fault interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::HorizonInterpretation* getHorizonInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getHorizonInterpretationDor(unsigned int index) const final;
 
 		/**
 		 * Add a Frontier interpretation to this StructuralOrganizationInterpretation as a top. Does add
@@ -114,23 +113,23 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	topFrontierInterpretation	If non-null, the top frontier interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackTopFrontierInterpretation(RESQML2_NS::AbstractFeatureInterpretation * topFrontierInterpretation);
+		DLL_IMPORT_OR_EXPORT void pushBackTopFrontierInterpretation(RESQML2_NS::AbstractFeatureInterpretation * topFrontierInterpretation) final;
 
 		/**
 		 * Gets top frontier interpretation count
 		 *
 		 * @returns	The top frontier interpretation count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTopFrontierInterpretationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getTopFrontierInterpretationCount() const final;
 
 		/**
-		 * Gets top frontier interpretation
+		 * Gets top frontier interpretation DataObject Reference
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @param 	index	Zero-based index of the top frontier interpretation.
 		 *
 		 * @returns	Null if it fails, else the top frontier interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractFeatureInterpretation* getTopFrontierInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getTopFrontierInterpretationDor(unsigned int index) const final;
 
 		/**
 		 * Add a Frontier interpretation to this StructuralOrganizationInterpretation as a bottom. Does
@@ -140,23 +139,23 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	bottomFrontierInterpretation	If non-null, the bottom frontier
 		 * 													interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT  void pushBackBottomFrontierInterpretation(RESQML2_NS::AbstractFeatureInterpretation * bottomFrontierInterpretation);
+		DLL_IMPORT_OR_EXPORT  void pushBackBottomFrontierInterpretation(RESQML2_NS::AbstractFeatureInterpretation * bottomFrontierInterpretation) final;
 
 		/**
 		 * Gets bottom frontier interpretation count
 		 *
 		 * @returns	The bottom frontier interpretation count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getBottomFrontierInterpretationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getBottomFrontierInterpretationCount() const final;
 
 		/**
-		 * Gets bottom frontier interpretation
+		 * Gets Bottom frontier interpretation DataObject Reference
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @param 	index	Zero-based index of the Bottom frontier interpretation.
 		 *
-		 * @returns	Null if it fails, else the bottom frontier interpretation.
+		 * @returns	Null if it fails, else the Bottom frontier interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractFeatureInterpretation* getBottomFrontierInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getBottomFrontierInterpretationDor(unsigned int index) const final;
 
 		/**
 		 * Add a Frontier interpretation to this StructuralOrganizationInterpretation as a side. Does
@@ -165,40 +164,22 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	sideFrontierInterpretation	If non-null, the side frontier interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackSideFrontierInterpretation(RESQML2_NS::AbstractFeatureInterpretation * sideFrontierInterpretation);
+		DLL_IMPORT_OR_EXPORT void pushBackSideFrontierInterpretation(RESQML2_NS::AbstractFeatureInterpretation * sideFrontierInterpretation) final;
 
 		/**
 		 * Gets side frontier interpretation count
 		 *
 		 * @returns	The side frontier interpretation count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getSideFrontierInterpretationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getSideFrontierInterpretationCount() const final;
 
 		/**
-		 * Gets side frontier interpretation
+		 * Gets Side frontier interpretation DataObject Reference
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @param 	index	Zero-based index of the Side frontier interpretation.
 		 *
-		 * @returns	Null if it fails, else the side frontier interpretation.
+		 * @returns	Null if it fails, else the Side frontier interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractFeatureInterpretation* getSideFrontierInterpretation(unsigned int index) const;
-
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
-
-    private:	
-		/** Loads target relationships */
-		void loadTargetRelationships();
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getSideFrontierInterpretationDor(unsigned int index) const final;
 	};
 }

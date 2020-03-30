@@ -35,28 +35,7 @@ namespace RESQML2_NS
 	 */
 	class RepresentationSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
-	protected:
-		/** Default constructor */
-		RepresentationSetRepresentation() {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		RepresentationSetRepresentation(gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
-
 	public:
-
-		/**
-		 * Only to be used in partial transfer context.
-		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
-		 */
-		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			RESQML2_NS::AbstractRepresentation(partialObject)
-		{
-		}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~RepresentationSetRepresentation() {}
@@ -162,6 +141,32 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 
     protected:
+
+		/** Default constructor */
+		RepresentationSetRepresentation() {}
+
+		/**
+		 * Only to be used in partial transfer context.
+		 *
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 */
+		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+			RESQML2_NS::AbstractRepresentation(partialObject) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		RepresentationSetRepresentation(gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		RepresentationSetRepresentation(gsoap_eml2_3::_resqml22__RepresentationSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
+
 		/** Loads target relationships */
 		virtual void loadTargetRelationships();
 	};

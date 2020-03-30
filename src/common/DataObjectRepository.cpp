@@ -98,13 +98,19 @@ under the License.
 #include "../eml2_3/Activity.h"
 #include "../eml2_3/ActivityTemplate.h"
 #include "../eml2_3/PropertyKind.h"
+#include "../eml2_3/TimeSeries.h"
 
+#include "../resqml2_2/BoundaryFeature.h"
+#include "../resqml2_2/BoundaryFeatureInterpretation.h"
 #include "../resqml2_2/CategoricalProperty.h"
 #include "../resqml2_2/CommentProperty.h"
 #include "../resqml2_2/ContinuousProperty.h"
 #include "../resqml2_2/ContinuousColorMap.h"
 #include "../resqml2_2/DiscreteProperty.h"
 #include "../resqml2_2/DiscreteColorMap.h"
+#include "../resqml2_2/EarthModelInterpretation.h"
+#include "../resqml2_2/FaultInterpretation.h"
+#include "../resqml2_2/HorizonInterpretation.h"
 #include "../resqml2_2/IjkGridExplicitRepresentation.h"
 #include "../resqml2_2/IjkGridLatticeRepresentation.h"
 #include "../resqml2_2/IjkGridNoGeometryRepresentation.h"
@@ -113,7 +119,10 @@ under the License.
 #include "../resqml2_2/LocalTime3dCrs.h"
 #include "../resqml2_2/SeismicWellboreFrameRepresentation.h"
 #include "../resqml2_2/UnstructuredGridRepresentation.h"
+#include "../resqml2_2/WellboreFeature.h"
 #include "../resqml2_2/WellboreFrameRepresentation.h"
+#include "../resqml2_2/WellboreInterpretation.h"
+#include "../resqml2_2/WellboreMarkerFrameRepresentation.h"
 
 #include "../eml2_1/PropertyKind.h"
 
@@ -337,7 +346,7 @@ void DataObjectRepository::addRelationship(COMMON_NS::AbstractObject * source, C
 	RESQML2_NS::AbstractLocal3dCrs const * crs = dynamic_cast<RESQML2_NS::AbstractLocal3dCrs const *>(target);
 	if (crs != nullptr) {
 		RESQML2_NS::AbstractRepresentation const * rep = dynamic_cast<RESQML2_NS::AbstractRepresentation const *>(source);
-		if (rep != nullptr && rep->getInterpretation() != nullptr) {
+		if (rep != nullptr && rep->getInterpretation() != nullptr && rep->getInterpretation()->getGsoapProxy() != nullptr) {
 			rep->getInterpretation()->initDomain(gsoap_resqml2_0_1::resqml20__Domain__mixed);
 		}
 	}
@@ -571,20 +580,20 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectR
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::LocalTime3dCrs)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(TectonicBoundaryFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(GeneticBoundaryFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(BoundaryFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WellboreFeature)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::BoundaryFeature)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::WellboreFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(StratigraphicUnitFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(StratigraphicColumn)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(GenericFeatureInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::BoundaryFeatureInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WellboreInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(FaultInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(HorizonInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::WellboreInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::FaultInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::HorizonInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(StratigraphicUnitInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(StratigraphicColumnRankInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(StratigraphicOccurrenceInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::WellboreFrameRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WellboreMarkerFrameRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WellboreTrajectoryRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(PolylineSetRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(PointSetRepresentation)
@@ -602,13 +611,13 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectR
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::DiscreteProperty)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::CommentProperty)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(StringTableLookup)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(EarthModelInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::EarthModelInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(OrganizationFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(StructuralOrganizationInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(FluidBoundaryFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(SubRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(GridConnectionSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(TimeSeries)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::TimeSeries)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RepresentationSetRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(NonSealedSurfaceFrameworkRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(SealedSurfaceFrameworkRepresentation)
@@ -831,8 +840,8 @@ RESQML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std
 }
 
 RESQML2_NS::MdDatum* DataObjectRepository::createMdDatum(const std::string & guid, const std::string & title,
-	RESQML2_NS::AbstractLocal3dCrs * locCrs, const gsoap_resqml2_0_1::resqml20__MdReference & originKind,
-	const double & referenceLocationOrdinal1, const double & referenceLocationOrdinal2, const double & referenceLocationOrdinal3)
+	RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_resqml2_0_1::resqml20__MdReference originKind,
+	double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3)
 {
 	return new MdDatum(this, guid, title, locCrs, originKind, referenceLocationOrdinal1, referenceLocationOrdinal2, referenceLocationOrdinal3);
 }
@@ -842,7 +851,14 @@ RESQML2_NS::MdDatum* DataObjectRepository::createMdDatum(const std::string & gui
 
 RESQML2_NS::BoundaryFeature* DataObjectRepository::createBoundaryFeature(const std::string & guid, const std::string & title)
 {
-	return new RESQML2_0_1_NS::BoundaryFeature(this, guid, title);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::BoundaryFeature(this, guid, title);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::BoundaryFeature(this, guid, title);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
 Horizon* DataObjectRepository::createHorizon(const std::string & guid, const std::string & title)
@@ -872,19 +888,26 @@ TectonicBoundaryFeature* DataObjectRepository::createFracture(const std::string 
 
 RESQML2_NS::WellboreFeature* DataObjectRepository::createWellboreFeature(const std::string & guid, const std::string & title)
 {
-	return new RESQML2_0_1_NS::WellboreFeature(this, guid, title);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::WellboreFeature(this, guid, title);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::WellboreFeature(this, guid, title);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
 SeismicLatticeFeature* DataObjectRepository::createSeismicLattice(const std::string & guid, const std::string & title,
-	const int & inlineIncrement, const int & crosslineIncrement,
-	const unsigned int & originInline, const unsigned int & originCrossline,
-	const unsigned int & inlineCount, const unsigned int & crosslineCount)
+	int inlineIncrement, int crosslineIncrement,
+	unsigned int originInline, unsigned int originCrossline,
+	unsigned int inlineCount, unsigned int crosslineCount)
 {
 	return new SeismicLatticeFeature(this, guid, title, inlineIncrement, crosslineIncrement, originInline, originCrossline, inlineCount, crosslineCount);
 }
 
 RESQML2_NS::AbstractSeismicLineFeature* DataObjectRepository::createSeismicLine(const std::string & guid, const std::string & title,
-	const int & traceIndexIncrement, const unsigned int & firstTraceIndex, const unsigned int & traceCount)
+	int traceIndexIncrement, unsigned int firstTraceIndex, unsigned int traceCount)
 {
 	return new SeismicLineFeature(this, guid, title, traceIndexIncrement, firstTraceIndex, traceCount);
 }
@@ -899,7 +922,7 @@ FrontierFeature* DataObjectRepository::createFrontier(const std::string & guid, 
 	return new FrontierFeature(this, guid, title);
 }
 
-StratigraphicUnitFeature* DataObjectRepository::createStratigraphicUnit(const std::string & guid, const std::string & title)
+RESQML2_NS::RockVolumeFeature* DataObjectRepository::createRockVolumeFeature(const std::string & guid, const std::string & title)
 {
 	return new StratigraphicUnitFeature(this, guid, title);
 }
@@ -910,22 +933,22 @@ RockFluidUnitFeature* DataObjectRepository::createRockFluidUnit(const std::strin
 	return new RockFluidUnitFeature(this, guid, title, phase, fluidBoundaryTop, fluidBoundaryBottom);
 }
 
-OrganizationFeature* DataObjectRepository::createStructuralModel(const std::string & guid, const std::string & title)
+RESQML2_NS::Model* DataObjectRepository::createStructuralModel(const std::string & guid, const std::string & title)
 {
 	return new OrganizationFeature(this, guid, title, gsoap_resqml2_0_1::resqml20__OrganizationKind__structural);
 }
 
-OrganizationFeature* DataObjectRepository::createStratigraphicModel(const std::string & guid, const std::string & title)
+RESQML2_NS::Model* DataObjectRepository::createStratigraphicModel(const std::string & guid, const std::string & title)
 {
 	return new OrganizationFeature(this, guid, title, gsoap_resqml2_0_1::resqml20__OrganizationKind__stratigraphic);
 }
 
-OrganizationFeature* DataObjectRepository::createRockFluidModel(const std::string & guid, const std::string & title)
+RESQML2_NS::Model* DataObjectRepository::createRockFluidModel(const std::string & guid, const std::string & title)
 {
 	return new OrganizationFeature(this, guid, title, gsoap_resqml2_0_1::resqml20__OrganizationKind__fluid);
 }
 
-OrganizationFeature* DataObjectRepository::createEarthModel(const std::string & guid, const std::string & title)
+RESQML2_NS::Model* DataObjectRepository::createEarthModel(const std::string & guid, const std::string & title)
 {
 	return new OrganizationFeature(this, guid, title, gsoap_resqml2_0_1::resqml20__OrganizationKind__earth_x0020model);
 }
@@ -946,12 +969,26 @@ GenericFeatureInterpretation* DataObjectRepository::createGenericFeatureInterpre
 
 RESQML2_NS::BoundaryFeatureInterpretation* DataObjectRepository::createBoundaryFeatureInterpretation(RESQML2_NS::BoundaryFeature * feature, const std::string & guid, const std::string & title)
 {
-	return new RESQML2_0_1_NS::BoundaryFeatureInterpretation(feature, guid, title);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::BoundaryFeatureInterpretation(feature, guid, title);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::BoundaryFeatureInterpretation(feature, guid, title);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
 RESQML2_NS::HorizonInterpretation* DataObjectRepository::createHorizonInterpretation(RESQML2_NS::BoundaryFeature * horizon, const std::string & guid, const std::string & title)
 {
-	return new RESQML2_0_1_NS::HorizonInterpretation(horizon, guid, title);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::HorizonInterpretation(horizon, guid, title);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::HorizonInterpretation(horizon, guid, title);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
 RESQML2_NS::GeobodyBoundaryInterpretation* DataObjectRepository::createGeobodyBoundaryInterpretation(RESQML2_NS::BoundaryFeature * geobodyBoundary, const std::string & guid, const std::string & title)
@@ -961,45 +998,66 @@ RESQML2_NS::GeobodyBoundaryInterpretation* DataObjectRepository::createGeobodyBo
 
 RESQML2_NS::FaultInterpretation* DataObjectRepository::createFaultInterpretation(RESQML2_NS::BoundaryFeature * fault, const std::string & guid, const std::string & title)
 {
-	return new RESQML2_0_1_NS::FaultInterpretation(fault, guid, title);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::FaultInterpretation(fault, guid, title);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::FaultInterpretation(fault, guid, title);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
 RESQML2_NS::WellboreInterpretation* DataObjectRepository::createWellboreInterpretation(RESQML2_NS::WellboreFeature * wellbore, const std::string & guid, const std::string & title, bool isDrilled)
 {
-	return new RESQML2_0_1_NS::WellboreInterpretation(wellbore, guid, title, isDrilled);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::WellboreInterpretation(wellbore, guid, title, isDrilled);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::WellboreInterpretation(wellbore, guid, title, isDrilled);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
-EarthModelInterpretation* DataObjectRepository::createEarthModelInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
+RESQML2_NS::EarthModelInterpretation* DataObjectRepository::createEarthModelInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title)
 {
-	return new EarthModelInterpretation(orgFeat, guid, title);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::EarthModelInterpretation(orgFeat, guid, title);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::EarthModelInterpretation(orgFeat, guid, title);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
-StructuralOrganizationInterpretation* DataObjectRepository::createStructuralOrganizationInterpretationInAge(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
+RESQML2_NS::StructuralOrganizationInterpretation* DataObjectRepository::createStructuralOrganizationInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title)
 {
 	return new StructuralOrganizationInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria__age);
 }
 
-StructuralOrganizationInterpretation* DataObjectRepository::createStructuralOrganizationInterpretationInApparentDepth(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
+RESQML2_NS::StructuralOrganizationInterpretation* DataObjectRepository::createStructuralOrganizationInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title)
 {
 	return new StructuralOrganizationInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria__apparent_x0020depth);
 }
 
-StructuralOrganizationInterpretation* DataObjectRepository::createStructuralOrganizationInterpretationInMeasuredDepth(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
+RESQML2_NS::StructuralOrganizationInterpretation* DataObjectRepository::createStructuralOrganizationInterpretationInMeasuredDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title)
 {
 	return new StructuralOrganizationInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria__measured_x0020depth);
 }
 
-RockFluidOrganizationInterpretation* DataObjectRepository::createRockFluidOrganizationInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, RESQML2_0_1_NS::RockFluidUnitInterpretation * rockFluidUnitInterp)
+RESQML2_NS::RockFluidOrganizationInterpretation* DataObjectRepository::createRockFluidOrganizationInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterp)
 {
 	return new RockFluidOrganizationInterpretation(orgFeat, guid, title, rockFluidUnitInterp);
 }
 
-RockFluidUnitInterpretation* DataObjectRepository::createRockFluidUnitInterpretation(RESQML2_0_1_NS::RockFluidUnitFeature * rockFluidUnitFeature, const std::string & guid, const std::string & title)
+RESQML2_NS::RockFluidUnitInterpretation* DataObjectRepository::createRockFluidUnitInterpretation(RESQML2_NS::RockVolumeFeature * rockFluidUnitFeature, const std::string & guid, const std::string & title)
 {
 	return new RockFluidUnitInterpretation(rockFluidUnitFeature, guid, title);
 }
 
-StratigraphicColumn* DataObjectRepository::createStratigraphicColumn(const std::string & guid, const std::string & title)
+RESQML2_NS::StratigraphicColumn* DataObjectRepository::createStratigraphicColumn(const std::string & guid, const std::string & title)
 {
 	return new StratigraphicColumn(this, guid, title);
 }
@@ -1009,27 +1067,27 @@ GeobodyInterpretation* DataObjectRepository::createGeobodyInterpretation(RESQML2
 	return new GeobodyInterpretation(geobody, guid, title);
 }
 
-StratigraphicUnitInterpretation* DataObjectRepository::createStratigraphicUnitInterpretation(StratigraphicUnitFeature * stratiUnitFeature, const std::string & guid, const std::string & title)
+RESQML2_NS::StratigraphicUnitInterpretation* DataObjectRepository::createStratigraphicUnitInterpretation(RESQML2_NS::RockVolumeFeature * stratiUnitFeature, const std::string & guid, const std::string & title)
 {
 	return new StratigraphicUnitInterpretation(stratiUnitFeature, guid, title);
 }
 
-StratigraphicColumnRankInterpretation* DataObjectRepository::createStratigraphicColumnRankInterpretationInAge(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank)
+RESQML2_NS::StratigraphicColumnRankInterpretation* DataObjectRepository::createStratigraphicColumnRankInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank)
 {
 	return new StratigraphicColumnRankInterpretation(orgFeat, guid, title, rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria__age);
 }
 
-StratigraphicColumnRankInterpretation* DataObjectRepository::createStratigraphicColumnRankInterpretationInApparentDepth(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank)
+RESQML2_NS::StratigraphicColumnRankInterpretation* DataObjectRepository::createStratigraphicColumnRankInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank)
 {
 	return new StratigraphicColumnRankInterpretation(orgFeat, guid, title, rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria__apparent_x0020depth);
 }
 
-StratigraphicOccurrenceInterpretation* DataObjectRepository::createStratigraphicOccurrenceInterpretationInAge(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
+RESQML2_NS::StratigraphicOccurrenceInterpretation* DataObjectRepository::createStratigraphicOccurrenceInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title)
 {
 	return new StratigraphicOccurrenceInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria__age);
 }
 
-StratigraphicOccurrenceInterpretation* DataObjectRepository::createStratigraphicOccurrenceInterpretationInApparentDepth(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
+RESQML2_NS::StratigraphicOccurrenceInterpretation* DataObjectRepository::createStratigraphicOccurrenceInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title)
 {
 	return new StratigraphicOccurrenceInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria__apparent_x0020depth);
 }
@@ -1049,29 +1107,29 @@ RESQML2_NS::TriangulatedSetRepresentation* DataObjectRepository::createTriangula
 	return new TriangulatedSetRepresentation(interp, guid, title);
 }
 
-PolylineSetRepresentation* DataObjectRepository::createPolylineSetRepresentation(const std::string & guid, const std::string & title)
+RESQML2_NS::PolylineSetRepresentation* DataObjectRepository::createPolylineSetRepresentation(const std::string & guid, const std::string & title)
 {
 	return new PolylineSetRepresentation(this, guid, title);
 }
 
-PolylineSetRepresentation* DataObjectRepository::createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+RESQML2_NS::PolylineSetRepresentation* DataObjectRepository::createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title)
 {
 	return new PolylineSetRepresentation(interp, guid, title);
 }
 
-PolylineSetRepresentation* DataObjectRepository::createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+RESQML2_NS::PolylineSetRepresentation* DataObjectRepository::createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__LineRole roleKind)
 {
 	return new PolylineSetRepresentation(interp, guid, title, roleKind);
 }
 
-PointSetRepresentation* DataObjectRepository::createPointSetRepresentation(const std::string & guid, const std::string & title)
+RESQML2_NS::PointSetRepresentation* DataObjectRepository::createPointSetRepresentation(const std::string & guid, const std::string & title)
 {
 	return new PointSetRepresentation(this, guid, title);
 }
 
-PointSetRepresentation* DataObjectRepository::createPointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+RESQML2_NS::PointSetRepresentation* DataObjectRepository::createPointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title)
 {
 	return new PointSetRepresentation(interp, guid, title);
@@ -1144,9 +1202,16 @@ RESQML2_2_NS::SeismicWellboreFrameRepresentation* DataObjectRepository::createSe
 	return new RESQML2_2_NS::SeismicWellboreFrameRepresentation(interp, guid, title, traj, seismicReferenceDatum, weatheringVelocity, crs);
 }
 
-RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* DataObjectRepository::createWellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj)
+RESQML2_NS::WellboreMarkerFrameRepresentation* DataObjectRepository::createWellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj)
 {
-	return new RESQML2_0_1_NS::WellboreMarkerFrameRepresentation(interp, guid, title, traj);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::WellboreMarkerFrameRepresentation(interp, guid, title, traj);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::WellboreMarkerFrameRepresentation(interp, guid, title, traj);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
 BlockedWellboreRepresentation* DataObjectRepository::createBlockedWellboreRepresentation(RESQML2_NS::WellboreInterpretation * interp,
@@ -1170,27 +1235,27 @@ RESQML2_NS::RepresentationSetRepresentation* DataObjectRepository::createReprese
 	return new RESQML2_0_1_NS::RepresentationSetRepresentation(this, guid, title);
 }
 
-NonSealedSurfaceFrameworkRepresentation* DataObjectRepository::createNonSealedSurfaceFrameworkRepresentation(
-	StructuralOrganizationInterpretation* interp,
+RESQML2_NS::NonSealedSurfaceFrameworkRepresentation* DataObjectRepository::createNonSealedSurfaceFrameworkRepresentation(
+	RESQML2_NS::StructuralOrganizationInterpretation* interp,
 	const std::string & guid,
 	const std::string & title)
 {
 	return new NonSealedSurfaceFrameworkRepresentation(interp, guid, title);
 }
 
-SealedSurfaceFrameworkRepresentation* DataObjectRepository::createSealedSurfaceFrameworkRepresentation(
-	StructuralOrganizationInterpretation* interp,
+RESQML2_NS::SealedSurfaceFrameworkRepresentation* DataObjectRepository::createSealedSurfaceFrameworkRepresentation(
+	RESQML2_NS::StructuralOrganizationInterpretation* interp,
 	const std::string & guid,
 	const std::string & title)
 {
 	return new SealedSurfaceFrameworkRepresentation(interp, guid, title);
 }
 
-RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation* DataObjectRepository::createSealedVolumeFrameworkRepresentation(
-	RESQML2_0_1_NS::StratigraphicColumnRankInterpretation* interp,
+RESQML2_NS::SealedVolumeFrameworkRepresentation* DataObjectRepository::createSealedVolumeFrameworkRepresentation(
+	RESQML2_NS::StratigraphicColumnRankInterpretation* interp,
 	const std::string & guid,
 	const std::string & title,
-	RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* ssf)
+	RESQML2_NS::SealedSurfaceFrameworkRepresentation* ssf)
 {
 	return new SealedVolumeFrameworkRepresentation(interp, guid, title, ssf);
 }
@@ -1329,9 +1394,16 @@ RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createGridCon
 //************* PROPERTIES ***********
 //************************************
 
-RESQML2_NS::TimeSeries* DataObjectRepository::createTimeSeries(const std::string & guid, const std::string & title)
+EML2_NS::TimeSeries* DataObjectRepository::createTimeSeries(const std::string & guid, const std::string & title)
 {
-	return new RESQML2_0_1_NS::TimeSeries(this, guid, title);
+	switch (defaultEmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::EML2_1:
+		return new RESQML2_0_1_NS::TimeSeries(this, guid, title);
+	case DataObjectRepository::EnergisticsStandard::EML2_3:
+		return new EML2_3_NS::TimeSeries(this, guid, title);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
 RESQML2_NS::StringTableLookup* DataObjectRepository::createStringTableLookup(const std::string & guid, const std::string & title)
@@ -1643,7 +1715,7 @@ std::vector<RESQML2_NS::LocalDepth3dCrs*> DataObjectRepository::getLocalDepth3dC
 
 std::vector<RESQML2_NS::LocalTime3dCrs*> DataObjectRepository::getLocalTime3dCrsSet() const { return getDataObjects<RESQML2_NS::LocalTime3dCrs>(); }
 
-std::vector<RESQML2_0_1_NS::StratigraphicColumn*> DataObjectRepository::getStratigraphicColumnSet() const { return getDataObjects<RESQML2_0_1_NS::StratigraphicColumn>(); }
+std::vector<RESQML2_NS::StratigraphicColumn*> DataObjectRepository::getStratigraphicColumnSet() const { return getDataObjects<RESQML2_NS::StratigraphicColumn>(); }
 
 std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getFaultSet() const
 {
@@ -1679,19 +1751,19 @@ std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getFractureSet()
 	return result;
 }
 
-vector<PolylineSetRepresentation *> DataObjectRepository::getFaultPolylineSetRepSet() const
+vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getFaultPolylineSetRepSet() const
 {
 	const std::vector<RESQML2_NS::BoundaryFeature*> faultSet = getFaultSet();
 
-	vector<PolylineSetRepresentation *> result;
+	vector<RESQML2_NS::PolylineSetRepresentation *> result;
 
 	for (size_t featureIndex = 0; featureIndex < faultSet.size(); ++featureIndex) {
 		const vector<RESQML2_NS::AbstractFeatureInterpretation *> interpSet = faultSet[featureIndex]->getInterpretationSet();
 		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
 			const vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
 			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCOREPolylineSetRepresentation) {
-					result.push_back(static_cast<PolylineSetRepresentation *>(repSet[repIndex]));
+				if (dynamic_cast<RESQML2_NS::PolylineSetRepresentation*>(repSet[repIndex]) != nullptr) {
+					result.push_back(static_cast<RESQML2_NS::PolylineSetRepresentation*>(repSet[repIndex]));
 				}
 			}
 		}
@@ -1700,19 +1772,19 @@ vector<PolylineSetRepresentation *> DataObjectRepository::getFaultPolylineSetRep
 	return result;
 }
 
-vector<PolylineSetRepresentation *> DataObjectRepository::getFracturePolylineSetRepSet() const
+vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getFracturePolylineSetRepSet() const
 {
 	const std::vector<RESQML2_NS::BoundaryFeature*> fractureSet = getFractureSet();
 
-	vector<PolylineSetRepresentation *> result;
+	vector<RESQML2_NS::PolylineSetRepresentation *> result;
 
 	for (size_t featureIndex = 0; featureIndex < fractureSet.size(); ++featureIndex) {
 		const vector<RESQML2_NS::AbstractFeatureInterpretation *> interpSet = fractureSet[featureIndex]->getInterpretationSet();
 		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
 			const vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
 			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCOREPolylineSetRepresentation) {
-					result.push_back(static_cast<PolylineSetRepresentation *>(repSet[repIndex]));
+				if (dynamic_cast<RESQML2_NS::PolylineSetRepresentation*>(repSet[repIndex]) != nullptr) {
+					result.push_back(static_cast<RESQML2_NS::PolylineSetRepresentation*>(repSet[repIndex]));
 				}
 			}
 		}
@@ -1721,19 +1793,19 @@ vector<PolylineSetRepresentation *> DataObjectRepository::getFracturePolylineSet
 	return result;
 }
 
-vector<PolylineSetRepresentation *> DataObjectRepository::getFrontierPolylineSetRepSet() const
+vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getFrontierPolylineSetRepSet() const
 {
 	const std::vector<RESQML2_0_1_NS::FrontierFeature*> frontierSet = getFrontierSet();
 
-	vector<PolylineSetRepresentation *> result;
+	vector<RESQML2_NS::PolylineSetRepresentation *> result;
 
 	for (size_t featureIndex = 0; featureIndex < frontierSet.size(); ++featureIndex) {
 		const vector<RESQML2_NS::AbstractFeatureInterpretation *> interpSet = frontierSet[featureIndex]->getInterpretationSet();
 		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
 			const vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
 			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCOREPolylineSetRepresentation) {
-					result.push_back(static_cast<PolylineSetRepresentation *>(repSet[repIndex]));
+				if (dynamic_cast<RESQML2_NS::PolylineSetRepresentation*>(repSet[repIndex]) != nullptr) {
+					result.push_back(static_cast<RESQML2_NS::PolylineSetRepresentation*>(repSet[repIndex]));
 				}
 			}
 		}
@@ -1878,9 +1950,9 @@ std::vector<RESQML2_NS::PolylineRepresentation *> DataObjectRepository::getHoriz
 	return result;
 }
 
-std::vector<PolylineSetRepresentation *> DataObjectRepository::getHorizonPolylineSetRepSet() const
+std::vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getHorizonPolylineSetRepSet() const
 {
-	vector<PolylineSetRepresentation *> result;
+	vector<RESQML2_NS::PolylineSetRepresentation *> result;
 
 	const vector<RESQML2_NS::BoundaryFeature*> horizonSet = getHorizonSet();
 	for (size_t featureIndex = 0; featureIndex < horizonSet.size(); ++featureIndex) {
@@ -1888,8 +1960,8 @@ std::vector<PolylineSetRepresentation *> DataObjectRepository::getHorizonPolylin
 		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
 			const vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
 			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCOREPolylineSetRepresentation) {
-					result.push_back(static_cast<PolylineSetRepresentation *>(repSet[repIndex]));
+				if (dynamic_cast<RESQML2_NS::PolylineSetRepresentation*>(repSet[repIndex]) != nullptr) {
+					result.push_back(static_cast<RESQML2_NS::PolylineSetRepresentation*>(repSet[repIndex]));
 				}
 			}
 		}
@@ -1922,7 +1994,7 @@ std::vector<RESQML2_NS::TriangulatedSetRepresentation*> DataObjectRepository::ge
 
 std::vector<RESQML2_NS::Grid2dRepresentation*> DataObjectRepository::getAllGrid2dRepresentationSet() const { return getDataObjects<RESQML2_NS::Grid2dRepresentation>(); }
 
-std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> DataObjectRepository::getAllPolylineSetRepSet() const { return getDataObjects<RESQML2_0_1_NS::PolylineSetRepresentation>(); }
+std::vector<RESQML2_NS::PolylineSetRepresentation*> DataObjectRepository::getAllPolylineSetRepSet() const { return getDataObjects<RESQML2_NS::PolylineSetRepresentation>(); }
 
 namespace {
 	bool isClassified(RESQML2_NS::TriangulatedSetRepresentation* tsr) {
@@ -2090,9 +2162,9 @@ std::vector<RESQML2_NS::UnstructuredGridRepresentation*> DataObjectRepository::g
 
 std::vector<RESQML2_0_1_NS::FrontierFeature*> DataObjectRepository::getFrontierSet() const { return getDataObjects<RESQML2_0_1_NS::FrontierFeature>(); }
 
-std::vector<RESQML2_0_1_NS::OrganizationFeature*> DataObjectRepository::getOrganizationSet() const { return getDataObjects<RESQML2_0_1_NS::OrganizationFeature>(); }
+std::vector<RESQML2_NS::Model*> DataObjectRepository::getModelSet() const { return getDataObjects<RESQML2_NS::Model>(); }
 
-std::vector<RESQML2_NS::TimeSeries*> DataObjectRepository::getTimeSeriesSet() const { return getDataObjects<RESQML2_NS::TimeSeries>(); }
+std::vector<EML2_NS::TimeSeries*> DataObjectRepository::getTimeSeriesSet() const { return getDataObjects<EML2_NS::TimeSeries>(); }
 
 std::vector<RESQML2_NS::SubRepresentation*> DataObjectRepository::getSubRepresentationSet() const { return getDataObjects<RESQML2_NS::SubRepresentation>(); }
 
@@ -2116,7 +2188,7 @@ RESQML2_NS::SubRepresentation* DataObjectRepository::getSubRepresentation(unsign
 	return result[index];
 }
 
-std::vector<RESQML2_0_1_NS::PointSetRepresentation*> DataObjectRepository::getPointSetRepresentationSet() const { return getDataObjects<RESQML2_0_1_NS::PointSetRepresentation>(); }
+std::vector<RESQML2_NS::PointSetRepresentation*> DataObjectRepository::getPointSetRepresentationSet() const { return getDataObjects<RESQML2_NS::PointSetRepresentation>(); }
 
 unsigned int DataObjectRepository::getPointSetRepresentationCount() const
 {
@@ -2128,9 +2200,9 @@ unsigned int DataObjectRepository::getPointSetRepresentationCount() const
 	return static_cast<unsigned int>(result);
 }
 
-RESQML2_0_1_NS::PointSetRepresentation* DataObjectRepository::getPointSetRepresentation(unsigned int index) const
+RESQML2_NS::PointSetRepresentation* DataObjectRepository::getPointSetRepresentation(unsigned int index) const
 {
-	const std::vector<RESQML2_0_1_NS::PointSetRepresentation*> result = getDataObjects<RESQML2_0_1_NS::PointSetRepresentation>();
+	const std::vector<RESQML2_NS::PointSetRepresentation*> result = getDataObjects<RESQML2_NS::PointSetRepresentation>();
 
 	if (index >= result.size()) {
 		throw out_of_range("The point set representation index is out of range.");
@@ -2299,12 +2371,17 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;
 
-	if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CategoricalProperty)
+	if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BoundaryFeature)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BoundaryFeatureInterpretation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CategoricalProperty)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CommentProperty)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousProperty)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousColorMap)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscreteProperty)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscreteColorMap)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EarthModelInterpretation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(FaultInterpretation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(HorizonInterpretation)
 	else if (resqmlContentType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG) == 0)
 	{
 		GET_RESQML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(IjkGridRepresentation)
@@ -2345,8 +2422,11 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(LocalTime3dCrs)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SeismicWellboreFrameRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(UnstructuredGridRepresentation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreFeature)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreFrameRepresentation)
-	
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreInterpretation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreMarkerFrameRepresentation)
+
 	return wrapper;
 }
 
@@ -2365,6 +2445,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getEml2_3WrapperFromGsoapContex
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, ActivityTemplate, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(COMMON_NS, GraphicalInformationSet, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, PropertyKind, gsoap_eml2_3, eml23)
+	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, TimeSeries, gsoap_eml2_3, eml23)
 		
 	return wrapper;
 }

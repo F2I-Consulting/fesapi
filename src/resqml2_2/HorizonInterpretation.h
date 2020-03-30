@@ -18,15 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/AbstractFeature.h"
+#include "../resqml2/HorizonInterpretation.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
-	/** An abstract technical feature. */
-	class AbstractTechnicalFeature : public RESQML2_NS::AbstractFeature
+	/** A horizon interpretation. */
+	class HorizonInterpretation : public RESQML2_NS::HorizonInterpretation
 	{
-	protected:
+	public:
 
 		/**
 		 * Only to be used in partial transfer context
@@ -35,20 +35,28 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractTechnicalFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeature(partialObject) {}
-
-		/** Default constructor Set the gsoap proxy to nullptr from superclass constructor */
-		AbstractTechnicalFeature() {}
+		DLL_IMPORT_OR_EXPORT HorizonInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
+			RESQML2_NS::HorizonInterpretation(partialObject) {}
 
 		/**
-		 * Constructor
+		 * Creates an instance of this class in a gsoap context.
+		 *
+		 * @param [in,out]	horizon	The feature the instance interprets.
+		 * @param 		  	guid   	The guid to set to the interpretation. If empty then a new guid will
+		 * 							be generated.
+		 * @param 		  	title  	A title for the instance to create.
+		 */
+		HorizonInterpretation(RESQML2_NS::BoundaryFeature * horizon, const std::string & guid, const std::string & title);
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		AbstractTechnicalFeature(gsoap_resqml2_0_1::resqml20__AbstractTechnicalFeature* fromGsoap) : RESQML2_NS::AbstractFeature(fromGsoap) {}
+		HorizonInterpretation(gsoap_eml2_3::_resqml22__HorizonInterpretation* fromGsoap): RESQML2_NS::HorizonInterpretation(fromGsoap) {}
 
-	public:
-		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~AbstractTechnicalFeature() {}
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		~HorizonInterpretation() {}
 	};
 }
+

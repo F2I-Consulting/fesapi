@@ -30,8 +30,6 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* PointSetRepresentation::XML_TAG = "PointSetRepresentation";
-
 PointSetRepresentation::PointSetRepresentation(COMMON_NS::DataObjectRepository* repo,
 	const std::string & guid, const std::string & title)
 {
@@ -46,7 +44,6 @@ PointSetRepresentation::PointSetRepresentation(COMMON_NS::DataObjectRepository* 
 
 	repo->addOrReplaceDataObject(this);
 }
-
 
 PointSetRepresentation::PointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title)
@@ -64,7 +61,7 @@ PointSetRepresentation::PointSetRepresentation(RESQML2_NS::AbstractFeatureInterp
 }
 
 void PointSetRepresentation::pushBackGeometryPatch(
-	unsigned int xyzPointCount, double * xyzPoints,
+	unsigned int xyzPointCount, double const * xyzPoints,
 	EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (localCrs == nullptr) {

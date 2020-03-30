@@ -21,20 +21,19 @@ under the License.
 #include <stdexcept>
 
 #include "OrganizationFeature.h"
-#include "StratigraphicColumnRankInterpretation.h"
+#include "../resqml2/StratigraphicColumnRankInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* StratigraphicOccurrenceInterpretation::XML_TAG = "StratigraphicOccurrenceInterpretation";
-
-StratigraphicOccurrenceInterpretation::StratigraphicOccurrenceInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria)
+StratigraphicOccurrenceInterpretation::StratigraphicOccurrenceInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria)
 {
 	if (orgFeat == nullptr) {
 		throw invalid_argument("The interpreted organization feature cannot be null.");
 	}
-	if (!orgFeat->isPartial() && orgFeat->getKind() != gsoap_resqml2_0_1::resqml20__OrganizationKind__stratigraphic) {
+	if (!orgFeat->isPartial() && dynamic_cast<RESQML2_0_1_NS::OrganizationFeature*>(orgFeat) != nullptr
+		&& static_cast<RESQML2_0_1_NS::OrganizationFeature*>(orgFeat)->getKind() != gsoap_resqml2_0_1::resqml20__OrganizationKind__stratigraphic) {
 		throw invalid_argument("The kind of an organization feature linked to a stratigraphic occurrence interpretation must be a stratigraphic one.");
 	}
 
@@ -48,7 +47,7 @@ StratigraphicOccurrenceInterpretation::StratigraphicOccurrenceInterpretation(Org
 	setInterpretedFeature(orgFeat);
 }
 
-void StratigraphicOccurrenceInterpretation::setStratigraphicColumnRankInterpretation(StratigraphicColumnRankInterpretation * stratiColumnRankInterp)
+void StratigraphicOccurrenceInterpretation::setStratigraphicColumnRankInterpretation(RESQML2_NS::StratigraphicColumnRankInterpretation * stratiColumnRankInterp)
 {
 	getRepository()->addRelationship(this, stratiColumnRankInterp);
 
@@ -56,29 +55,7 @@ void StratigraphicOccurrenceInterpretation::setStratigraphicColumnRankInterpreta
 	interp->IsOccurrenceOf = stratiColumnRankInterp->newResqmlReference();
 }
 
-StratigraphicColumnRankInterpretation * StratigraphicOccurrenceInterpretation::getStratigraphicColumnRankInterpretation() const
+COMMON_NS::DataObjectReference StratigraphicOccurrenceInterpretation::getStratigraphicColumnRankInterpretationDor() const
 {
-	return getRepository()->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(getStratigraphicColumnRankInterpretationUuid());
-}
-
-std::string StratigraphicOccurrenceInterpretation::getStratigraphicColumnRankInterpretationUuid() const
-{
-	return static_cast<_resqml20__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->IsOccurrenceOf->UUID;
-}
-
-std::vector<class WellboreMarkerFrameRepresentation *> StratigraphicOccurrenceInterpretation::getWellboreMarkerFrameRepresentationSet() const
-{
-	return getRepository()->getSourceObjects<WellboreMarkerFrameRepresentation>(this);
-}
-	
-void StratigraphicOccurrenceInterpretation::loadTargetRelationships()
-{
-	AbstractStratigraphicOrganizationInterpretation::loadTargetRelationships();
-
-	_resqml20__StratigraphicOccurrenceInterpretation* interp = static_cast<_resqml20__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1); 
-
-	if (interp->IsOccurrenceOf != nullptr)
-	{
-		convertDorIntoRel<StratigraphicColumnRankInterpretation>(interp->IsOccurrenceOf);
-	}
+	return COMMON_NS::DataObjectReference(static_cast<_resqml20__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->IsOccurrenceOf);
 }

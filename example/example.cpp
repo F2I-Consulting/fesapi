@@ -94,9 +94,16 @@ under the License.
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
 #include "resqml2_2/SeismicWellboreFrameRepresentation.h"
+#include "resqml2_2/WellboreMarker.h"
+#include "resqml2_2/WellboreMarkerFrameRepresentation.h"
 
-#include "eml2/PropertyKind.h"
+#include "resqml2/SealedVolumeFrameworkRepresentation.h"
+#include "resqml2/StratigraphicColumn.h"
+#include "resqml2/StratigraphicOccurrenceInterpretation.h"
+
 #include "eml2/AbstractHdfProxy.h"
+#include "eml2/PropertyKind.h"
+#include "eml2/TimeSeries.h"
 
 #include "witsml2_0/Well.h"
 #include "witsml2_0/Wellbore.h"
@@ -123,7 +130,7 @@ RESQML2_NS::HorizonInterpretation* horizon1Interp1 = nullptr;
 RESQML2_NS::HorizonInterpretation* horizon2Interp1 = nullptr;
 RESQML2_NS::FaultInterpretation* fault1Interp1 = nullptr;
 RESQML2_NS::Grid2dRepresentation* h1i1SingleGrid2dRep = nullptr;
-PolylineSetRepresentation* f1i1PolyLineRep = nullptr;
+RESQML2_NS::PolylineSetRepresentation* f1i1PolyLineRep = nullptr;
 RESQML2_NS::TriangulatedSetRepresentation* f1i1triRepSinglePatch = nullptr;
 RESQML2_NS::TriangulatedSetRepresentation* f1i1triRep = nullptr;
 RESQML2_NS::TriangulatedSetRepresentation* h1i1triRep = nullptr;
@@ -137,8 +144,8 @@ RESQML2_NS::LocalDepth3dCrs* local3dCrs = nullptr;
 RESQML2_NS::LocalTime3dCrs* localTime3dCrs = nullptr;
 RESQML2_NS::WellboreFeature* wellbore1 = nullptr;
 RESQML2_NS::WellboreInterpretation* wellbore1Interp1 = nullptr;
-StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
-SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
+RESQML2_NS::StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
+RESQML2_NS::SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
 RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid = nullptr;
 EML2_NS::PropertyKind* propType1 = nullptr;
 RESQML2_NS::DiscreteProperty* discreteProp1 = nullptr;
@@ -418,26 +425,26 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfProxy* hdfProxy)
 {
 	// Build the Stratigraphic column
-	StratigraphicColumn* stratiColumn = pck->createStratigraphicColumn("7f6666a0-fa3b-11e5-a509-0002a5d5c51b", "Stratigraphic column");
-	OrganizationFeature* stratiModelFeature = pck->createStratigraphicModel("7fcde2b5-d184-4481-b31e-32aafbdc4b7f", "stratiModel");
+	RESQML2_NS::StratigraphicColumn* stratiColumn = pck->createStratigraphicColumn("7f6666a0-fa3b-11e5-a509-0002a5d5c51b", "Stratigraphic column");
+	RESQML2_NS::Model* stratiModelFeature = pck->createStratigraphicModel("7fcde2b5-d184-4481-b31e-32aafbdc4b7f", "stratiModel");
 	pck->createStratigraphicOccurrenceInterpretationInApparentDepth(stratiModelFeature, "2426e574-1ea3-4f20-9deb-669c15a17625", "stratiModel Interp");
 	stratiColumnRank0 = pck->createStratigraphicColumnRankInterpretationInApparentDepth(stratiModelFeature, "ba06f220-fa3b-11e5-928c-0002a5d5c51b", "Stratigraphic column rank 0", 0);
-	StratigraphicColumnRankInterpretation* stratiColumnRank1 = pck->createStratigraphicColumnRankInterpretationInApparentDepth(stratiModelFeature, "9d2d19cf-aedb-4766-9691-758d536456ba", "Stratigraphic column rank 1", 1);
+	RESQML2_NS::StratigraphicColumnRankInterpretation* stratiColumnRank1 = pck->createStratigraphicColumnRankInterpretationInApparentDepth(stratiModelFeature, "9d2d19cf-aedb-4766-9691-758d536456ba", "Stratigraphic column rank 1", 1);
 	stratiColumn->pushBackStratiColumnRank(stratiColumnRank0);
 	stratiColumn->pushBackStratiColumnRank(stratiColumnRank1);
-	StratigraphicUnitFeature* stratiUnitAFeature = pck->createStratigraphicUnit("0426c6a0-fa3c-11e5-8b9c-0002a5d5c51b", "Unit A");
-	StratigraphicUnitInterpretation* stratiUnitAInterp = pck->createStratigraphicUnitInterpretation(stratiUnitAFeature, "1a919b40-fa3c-11e5-a72c-0002a5d5c51b", "Unit A interp");
-	StratigraphicUnitFeature* stratiUnitBFeature = pck->createStratigraphicUnit("273a92c0-fa3c-11e5-85f8-0002a5d5c51b", "Unit B");
-	StratigraphicUnitInterpretation* stratiUnitBInterp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "2b9169c0-fa3c-11e5-ae2c-0002a5d5c51b", "Unit B interp");
-	StratigraphicUnitFeature* stratiUnitB1Feature = pck->createStratigraphicUnit("0b7cc266-4280-4696-b9dc-5d17017797e2", "Unit B1");
-	StratigraphicUnitInterpretation* stratiUnitB1Interp = pck->createStratigraphicUnitInterpretation(stratiUnitB1Feature, "7d7ab0bc-554d-48f5-ab5c-3bb7b66696e5", "Unit B1 interp");
-	StratigraphicUnitFeature* stratiUnitB2Feature = pck->createStratigraphicUnit("87255cf5-033f-4fa4-941b-7947b434f4c2", "Unit B2");
-	StratigraphicUnitInterpretation* stratiUnitB2Interp = pck->createStratigraphicUnitInterpretation(stratiUnitB2Feature, "34c37be0-964f-41a8-ba78-db5147744927", "Unit B2 interp");
+	RESQML2_NS::RockVolumeFeature* stratiUnitAFeature = pck->createRockVolumeFeature("0426c6a0-fa3c-11e5-8b9c-0002a5d5c51b", "Unit A");
+	RESQML2_NS::StratigraphicUnitInterpretation* stratiUnitAInterp = pck->createStratigraphicUnitInterpretation(stratiUnitAFeature, "1a919b40-fa3c-11e5-a72c-0002a5d5c51b", "Unit A interp");
+	RESQML2_NS::RockVolumeFeature* stratiUnitBFeature = pck->createRockVolumeFeature("273a92c0-fa3c-11e5-85f8-0002a5d5c51b", "Unit B");
+	RESQML2_NS::StratigraphicUnitInterpretation* stratiUnitBInterp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "2b9169c0-fa3c-11e5-ae2c-0002a5d5c51b", "Unit B interp");
+	RESQML2_NS::RockVolumeFeature* stratiUnitB1Feature = pck->createRockVolumeFeature("0b7cc266-4280-4696-b9dc-5d17017797e2", "Unit B1");
+	RESQML2_NS::StratigraphicUnitInterpretation* stratiUnitB1Interp = pck->createStratigraphicUnitInterpretation(stratiUnitB1Feature, "7d7ab0bc-554d-48f5-ab5c-3bb7b66696e5", "Unit B1 interp");
+	RESQML2_NS::RockVolumeFeature* stratiUnitB2Feature = pck->createRockVolumeFeature("87255cf5-033f-4fa4-941b-7947b434f4c2", "Unit B2");
+	RESQML2_NS::StratigraphicUnitInterpretation* stratiUnitB2Interp = pck->createStratigraphicUnitInterpretation(stratiUnitB2Feature, "34c37be0-964f-41a8-ba78-db5147744927", "Unit B2 interp");
 
 	// Build a minimal Stratigraphic column to allow the definition of a minimal sealed volume framework
-	StratigraphicColumn* minimalStratiColumn = pck->createStratigraphicColumn("90f375b7-6865-4a69-943e-f2328fdbbb7e", "Minimal Stratigraphic column");
-	OrganizationFeature* minimalStratiModelFeature = pck->createStratigraphicModel("ea021981-1b79-435f-9f26-8bf03472efcf", "Minimal stratiModel");
-	StratigraphicColumnRankInterpretation* minimalStratiColumnRank = pck->createStratigraphicColumnRankInterpretationInApparentDepth(minimalStratiModelFeature, "31b0b787-31df-4b87-8830-a3863eb9842c", "Minimal Stratigraphic column rank ", 0);
+	RESQML2_NS::StratigraphicColumn* minimalStratiColumn = pck->createStratigraphicColumn("90f375b7-6865-4a69-943e-f2328fdbbb7e", "Minimal Stratigraphic column");
+	RESQML2_NS::Model* minimalStratiModelFeature = pck->createStratigraphicModel("ea021981-1b79-435f-9f26-8bf03472efcf", "Minimal stratiModel");
+	RESQML2_NS::StratigraphicColumnRankInterpretation* minimalStratiColumnRank = pck->createStratigraphicColumnRankInterpretationInApparentDepth(minimalStratiModelFeature, "31b0b787-31df-4b87-8830-a3863eb9842c", "Minimal Stratigraphic column rank ", 0);
 	minimalStratiColumn->pushBackStratiColumnRank(minimalStratiColumnRank);
 
 	// Build the stratigraphic column ranks
@@ -451,19 +458,27 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, EML2_NS:
 
 	// WellboreFeature marker frame
 	if (wellbore1Interp1 != nullptr) {
-		WellboreMarkerFrameRepresentation* wmf = pck->createWellboreMarkerFrameRepresentation(wellbore1Interp1, "657d5e6b-1752-425d-b3e7-237037fa11eb", "Wellbore Marker Frame", w1i1TrajRep);
+		RESQML2_NS::WellboreMarkerFrameRepresentation* wmf = pck->createWellboreMarkerFrameRepresentation(wellbore1Interp1, "657d5e6b-1752-425d-b3e7-237037fa11eb", "Wellbore Marker Frame", w1i1TrajRep);
 		double markerMdValues[2] = { 350, 550 };
 		wmf->setMdValues(markerMdValues, 2, hdfProxy);
-		WellboreMarker* marker0 = new WellboreMarker(wmf, "624f9f17-6797-4d78-b3fc-9ca2c8174bcd", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
-		marker0->setBoundaryFeatureInterpretation(horizon1Interp1);
-		WellboreMarker* marker1 = new WellboreMarker(wmf, "3611725e-4d9b-4d3e-87e6-58fcd238f5a8", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
-		marker1->setBoundaryFeatureInterpretation(fault1Interp1);
+		if (dynamic_cast<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation*>(wmf) != nullptr) {
+			RESQML2_0_1_NS::WellboreMarker* marker0 = new RESQML2_0_1_NS::WellboreMarker(static_cast<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation*>(wmf), "624f9f17-6797-4d78-b3fc-9ca2c8174bcd", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
+			marker0->setBoundaryFeatureInterpretation(horizon1Interp1);
+			RESQML2_0_1_NS::WellboreMarker* marker1 = new RESQML2_0_1_NS::WellboreMarker(static_cast<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation*>(wmf), "3611725e-4d9b-4d3e-87e6-58fcd238f5a8", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
+			marker1->setBoundaryFeatureInterpretation(fault1Interp1);
+		}
+		else if (dynamic_cast<RESQML2_2_NS::WellboreMarkerFrameRepresentation*>(wmf) != nullptr) {
+			RESQML2_2_NS::WellboreMarker* marker0 = new RESQML2_2_NS::WellboreMarker(static_cast<RESQML2_2_NS::WellboreMarkerFrameRepresentation*>(wmf), "624f9f17-6797-4d78-b3fc-9ca2c8174bcd", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
+			marker0->setBoundaryFeatureInterpretation(horizon1Interp1);
+			RESQML2_2_NS::WellboreMarker* marker1 = new RESQML2_2_NS::WellboreMarker(static_cast<RESQML2_2_NS::WellboreMarkerFrameRepresentation*>(wmf), "3611725e-4d9b-4d3e-87e6-58fcd238f5a8", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
+			marker1->setBoundaryFeatureInterpretation(fault1Interp1);
+		}
 	}
 
 	// ***********************
 	// Sealed volume framework
 	// ***********************
-	SealedVolumeFrameworkRepresentation* svf = pck->createSealedVolumeFrameworkRepresentation(stratiColumnRank1, "c7ed87c2-9a46-4e3d-8f0f-b25d4d72892a", "Minimal Sealed volume framework", sealedSurfaceFramework);
+	RESQML2_NS::SealedVolumeFrameworkRepresentation* svf = pck->createSealedVolumeFrameworkRepresentation(stratiColumnRank1, "c7ed87c2-9a46-4e3d-8f0f-b25d4d72892a", "Minimal Sealed volume framework", sealedSurfaceFramework);
 
 	// Add the surfaces.
 	f1i1triRep->pushBackIntoRepresentationSet(svf);
@@ -492,14 +507,14 @@ void serializeGeobody(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHd
 	// 2D
 	GeneticBoundaryFeature* geobodyBoundary = pck->createGeobodyBoundaryFeature("6d3c158c-303f-4b0d-bfc0-9ce4102ea616", "Geobody boundary");
 	RESQML2_NS::GeobodyBoundaryInterpretation* geobodyBoundaryInterp = pck->createGeobodyBoundaryInterpretation(geobodyBoundary, "12c301a4-3e8b-401a-aca3-8d6f02d5d6d5", "Geobody boundary interp");
-	PointSetRepresentation* geobodyBoundaryPointSetRep = pck->createPointSetRepresentation(geobodyBoundaryInterp, "fbc5466c-94cd-46ab-8b48-2ae2162b372f", "Geobody boundary PointSetRep");
+	RESQML2_NS::PointSetRepresentation* geobodyBoundaryPointSetRep = pck->createPointSetRepresentation(geobodyBoundaryInterp, "fbc5466c-94cd-46ab-8b48-2ae2162b372f", "Geobody boundary PointSetRep");
 	double geobodyBoundaryPointCoords[18] = { 10, 70, 310, 11, 21, 280, 150, 30, 310, 400, 0, 365, 450, 75, 341, 475, 100, 352 };
 	geobodyBoundaryPointSetRep->pushBackGeometryPatch(6, geobodyBoundaryPointCoords, hdfProxy);
 
 	// 3D
 	GeobodyFeature* geobody = pck->createGeobodyFeature("e221f9da-ead3-4a9d-8324-fc2e6606cb01", "Geobody");
 	GeobodyInterpretation* geobodyInterp = pck->createGeobodyInterpretation(geobody, "d445041f-6364-44e7-a7f8-ade5a93bfd49", "Geobody interp");
-	PointSetRepresentation* geobodyGraphNode = pck->createPointSetRepresentation(geobodyInterp, "8442a6b7-a97b-431e-abda-f72cf7ef346f", "Geobody graph node");
+	RESQML2_NS::PointSetRepresentation* geobodyGraphNode = pck->createPointSetRepresentation(geobodyInterp, "8442a6b7-a97b-431e-abda-f72cf7ef346f", "Geobody graph node");
 	double geobodyPointCoords[18] = { 50, 30, 330, 10, 28, 3000, 100, 50, 350, 300, 100, 400, 400, 20, 400, 400, 300, 400 };
 	geobodyGraphNode->pushBackGeometryPatch(6, geobodyPointCoords, hdfProxy);
 	//RESQML2_NS::SubRepresentation* geobodyGraphEdge = pck->createSubRepresentation(geobodyBoundaryInterp, "7e0450aa-c39d-49f8-bee4-62fc42bb849d", "Geobody graph edge");
@@ -568,7 +583,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	h1i1SingleGrid2dRep->setGeometryAsArray2dOfExplicitZ(zValues, 4, 2, hdfProxy, seismicLatticeRep, localTime3dCrs);
 #endif
 
-	PointSetRepresentation* h1i1PointSetRep = pck->createPointSetRepresentation(horizon1Interp1, "", "Horizon1 Interp1 PointSetRep");
+	RESQML2_NS::PointSetRepresentation* h1i1PointSetRep = pck->createPointSetRepresentation(horizon1Interp1, "", "Horizon1 Interp1 PointSetRep");
 	double pointCoords[18] = { 10, 70, 301, 11, 21, 299, 150, 30, 301, 400, 0, 351, 450, 75, 340, 475, 100, 350 };
 	h1i1PointSetRep->pushBackGeometryPatch(6, pointCoords, hdfProxy);
 
@@ -685,8 +700,8 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 
 void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfProxy* hdfProxy)
 {
-	OrganizationFeature * earthModel = pck->createEarthModel("f2060ce0-fa3d-11e5-8620-0002a5d5c51b", "Grid");
-	EarthModelInterpretation * earthModelInterp = pck->createEarthModelInterpretation(earthModel, "f5cd7520-fa3d-11e5-b65b-0002a5d5c51b", "Grid interp");
+	RESQML2_NS::Model * earthModel = pck->createEarthModel("f2060ce0-fa3d-11e5-8620-0002a5d5c51b", "Grid");
+	RESQML2_NS::EarthModelInterpretation * earthModelInterp = pck->createEarthModelInterpretation(earthModel, "f5cd7520-fa3d-11e5-b65b-0002a5d5c51b", "Grid interp");
 
 	// ONE SUGAR
 	RESQML2_NS::IjkGridExplicitRepresentation* singleCellIjkgrid = pck->createIjkGridExplicitRepresentation("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b", "One unfaulted sugar cube", 1, 1, 1);
@@ -903,7 +918,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	//**************
 	// Time Series
 	//**************
-	RESQML2_NS::TimeSeries * timeSeries = pck->createTimeSeries("1187d8a0-fa3e-11e5-ac3a-0002a5d5c51b", "Testing time series");
+	EML2_NS::TimeSeries * timeSeries = pck->createTimeSeries("1187d8a0-fa3e-11e5-ac3a-0002a5d5c51b", "Testing time series");
 	tm timeStruct;
 	timeStruct.tm_hour = 15;
 	timeStruct.tm_min = 2;
@@ -975,17 +990,17 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 void serializeRepresentationSetRepresentation(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfProxy*)
 {
 	RESQML2_NS::RepresentationSetRepresentation* result = pck->createRepresentationSetRepresentation("", "Testing Representation set");
-	cout << "is homogeneous : " << result->isHomogeneous() << endl;
+	std::cout << "is homogeneous : " << result->isHomogeneous() << std::endl;
 	f1i1triRepSinglePatch->pushBackIntoRepresentationSet(result);
-	cout << "is homogeneous : " << result->isHomogeneous() << endl;
+	std::cout << "is homogeneous : " << result->isHomogeneous() << std::endl;
 	f1i1triRep->pushBackIntoRepresentationSet(result);
-	cout << "is homogeneous : " << result->isHomogeneous() << endl;
+	std::cout << "is homogeneous : " << result->isHomogeneous() << std::endl;
 	h1i1triRep->pushBackIntoRepresentationSet(result);
-	cout << "is homogeneous : " << result->isHomogeneous() << endl;
+	std::cout << "is homogeneous : " << result->isHomogeneous() << std::endl;
 	h2i1triRep->pushBackIntoRepresentationSet(result);
-	cout << "is homogeneous : " << result->isHomogeneous() << endl;
+	std::cout << "is homogeneous : " << result->isHomogeneous() << std::endl;
 	w1i1TrajRep->pushBackIntoRepresentationSet(result);
-	cout << "is homogeneous : " << result->isHomogeneous() << endl;
+	std::cout << "is homogeneous : " << result->isHomogeneous() << std::endl;
 }
 
 void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, EML2_NS::AbstractHdfProxy* hdfProxy)
@@ -993,14 +1008,14 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, EML2_NS::Ab
 	// =========================================================================
 	// =========================================================================
 	// Organization features
-	OrganizationFeature * structOrg1 = pck.createStructuralModel("446068f6-33d8-40f4-9bec-2640fb7df23e", "StructuralOrg1");
+	RESQML2_NS::Model * structOrg1 = pck.createStructuralModel("446068f6-33d8-40f4-9bec-2640fb7df23e", "StructuralOrg1");
 	structOrg1->setOriginator("Geosiris");
 	structOrg1->setEditor("F2I");
 
 	// =========================================================================
 	// =========================================================================
 	// Organization interpretations
-	StructuralOrganizationInterpretation * structuralOrganizationInterpretation = pck.createStructuralOrganizationInterpretationInApparentDepth(structOrg1, "456f31e2-f79a-400c-91a9-ffd1fc939d32", "StructuralOrg1 Interp1");
+	RESQML2_NS::StructuralOrganizationInterpretation * structuralOrganizationInterpretation = pck.createStructuralOrganizationInterpretationInApparentDepth(structOrg1, "456f31e2-f79a-400c-91a9-ffd1fc939d32", "StructuralOrg1 Interp1");
 	structuralOrganizationInterpretation->setOriginator("Geosiris");
 	structuralOrganizationInterpretation->setEditor("F2I");
 	structuralOrganizationInterpretation->pushBackFaultInterpretation(fault1Interp1);
@@ -1010,13 +1025,13 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, EML2_NS::Ab
 	// =========================================================================
 	// =========================================================================
 	// EarthModel
-	OrganizationFeature * earthModelOrg = pck.createEarthModel("cb8848cd-8df6-4373-8cdd-fdf5f944b6ab", "EarthModelOrg");
+	RESQML2_NS::Model * earthModelOrg = pck.createEarthModel("cb8848cd-8df6-4373-8cdd-fdf5f944b6ab", "EarthModelOrg");
 	earthModelOrg->setOriginator("Geosiris");
 	earthModelOrg->setEditor("F2I");
-	EarthModelInterpretation * earthModel = pck.createEarthModelInterpretation(earthModelOrg, "03bb3a50-c206-4aee-8343-dbea84011850", "EarthModel");
+	RESQML2_NS::EarthModelInterpretation * earthModel = pck.createEarthModelInterpretation(earthModelOrg, "03bb3a50-c206-4aee-8343-dbea84011850", "EarthModel");
 	earthModel->setOriginator("Geosiris");
 	earthModel->setEditor("F2I");
-	earthModel->setStructuralOrganizationInterpretation(structuralOrganizationInterpretation);
+	earthModel->pushBackStructuralOrganizationInterpretation(structuralOrganizationInterpretation);
 
 	// =========================================================================
 	// Add frontiers
@@ -1153,7 +1168,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, EML2_NS::Ab
 	//    structuralOrganizationInterpretationSurfaceFramework->pushBackRepresentation(h2i1triRep);
 
 	// Single Patch Fault 1
-	SealedSurfaceFrameworkRepresentation* singlePatchFault1SealedSurfaceFramework = pck.createSealedSurfaceFrameworkRepresentation(structuralOrganizationInterpretation, "df673451-d6f2-4e4d-ad86-eaaf131c458f", "Single Patch Fault1 StructuralOrg1 Interp1 Interp1 SealedSurfFrmwk");
+	RESQML2_NS::SealedSurfaceFrameworkRepresentation* singlePatchFault1SealedSurfaceFramework = pck.createSealedSurfaceFrameworkRepresentation(structuralOrganizationInterpretation, "df673451-d6f2-4e4d-ad86-eaaf131c458f", "Single Patch Fault1 StructuralOrg1 Interp1 Interp1 SealedSurfFrmwk");
 	singlePatchFault1SealedSurfaceFramework->setOriginator("Geosiris");
 	singlePatchFault1SealedSurfaceFramework->setEditor("F2I");
 	f1i1triRepSinglePatch->pushBackIntoRepresentationSet(singlePatchFault1SealedSurfaceFramework);
@@ -1812,14 +1827,14 @@ void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, EML2_
 
 	// Unit construction
 	RockFluidUnitFeature* rockFluidFeature = pck.createRockFluidUnit("18a714da-4bf2-11e9-a17e-e74cb7f87d2a", "Rock Fluid Unit", gsoap_resqml2_0_1::resqml20__Phase__oil_x0020column, fluidBoundaryTop, fluidBoundaryBottom);
-	RockFluidUnitInterpretation *rockFluidUnit = pck.createRockFluidUnitInterpretation(rockFluidFeature, "4b73172a-4bf1-11e9-a9f6-9b2813cc56e1", "Rock Fluid Unit interp");
+	RESQML2_NS::RockFluidUnitInterpretation *rockFluidUnit = pck.createRockFluidUnitInterpretation(rockFluidFeature, "4b73172a-4bf1-11e9-a9f6-9b2813cc56e1", "Rock Fluid Unit interp");
 
 	// Feature
-	OrganizationFeature * rockFluidOrgFeature = pck.createRockFluidModel("311587dd-7abc-425b-a364-908d0508ed61", "Rock Fluid Organization feature");
+	RESQML2_NS::Model * rockFluidOrgFeature = pck.createRockFluidModel("311587dd-7abc-425b-a364-908d0508ed61", "Rock Fluid Organization feature");
 	rockFluidOrgFeature->setOriginator("Geosiris");
 
 	// Interp
-	RockFluidOrganizationInterpretation* rockFluidOrgInterp = pck.createRockFluidOrganizationInterpretation(rockFluidOrgFeature, "b5bbfe42-4a63-11e9-9eeb-4f036e6e8141", "Rock Fluid org", rockFluidUnit);
+	RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp = pck.createRockFluidOrganizationInterpretation(rockFluidOrgFeature, "b5bbfe42-4a63-11e9-9eeb-4f036e6e8141", "Rock Fluid org", rockFluidUnit);
 
 	// Link between ijk grid and rock fuid org
 	RESQML2_NS::IjkGridExplicitRepresentation* singleCellIjkgrid = pck.getDataObjectByUuid<RESQML2_NS::IjkGridExplicitRepresentation>("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b");
@@ -1864,16 +1879,16 @@ void deserializePropertyKindMappingFiles(COMMON_NS::DataObjectRepository * pck)
 {
 	PropertyKindMapper* ptMapper = pck->getPropertyKindMapper();
 
-	cout << "Application property kind name for azimuth : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__azimuth, "Petrel") << endl;
-	cout << "Application property kind name for azimuth : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__gamma_x0020ray_x0020API_x0020unit, "Petrel") << endl;
-	cout << "Application property kind name for azimuth : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__gamma_x0020ray_x0020API_x0020unit, "Sismage") << endl;
-	cout << "Application property kind name for dip : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__dip, "myApplication") << endl;
+	std::cout << "Application property kind name for azimuth : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__azimuth, "Petrel") << std::endl;
+	std::cout << "Application property kind name for azimuth : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__gamma_x0020ray_x0020API_x0020unit, "Petrel") << std::endl;
+	std::cout << "Application property kind name for azimuth : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__gamma_x0020ray_x0020API_x0020unit, "Sismage") << std::endl;
+	std::cout << "Application property kind name for dip : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__dip, "myApplication") << std::endl;
 
-	cout << "Standard property for Petrel \"Dip Azimuth\" : " << ptMapper->getResqmlStandardPropertyKindNameFromApplicationPropertyKindName("Dip Azimuth", "Petrel") << endl;
-	cout << "Standard property for Application property Absolute temperature : " << ptMapper->getResqmlStandardPropertyKindNameFromApplicationPropertyKindName("Absolute temperature", "myApplication") << endl;
+	std::cout << "Standard property for Petrel \"Dip Azimuth\" : " << ptMapper->getResqmlStandardPropertyKindNameFromApplicationPropertyKindName("Dip Azimuth", "Petrel") << std::endl;
+	std::cout << "Standard property for Application property Absolute temperature : " << ptMapper->getResqmlStandardPropertyKindNameFromApplicationPropertyKindName("Absolute temperature", "myApplication") << std::endl;
 
-	cout << "Application property kind for unknown local property type uuid  : " << ptMapper->getApplicationPropertyKindNameFromResqmlLocalPropertyKindUuid("unknownUuid", "myApplication") << endl;
-	cout << "Application property kind for local property type 959cf4e1-d485-5225-bbdb-f53c16cc0c3c (VShale) : " << ptMapper->getApplicationPropertyKindNameFromResqmlLocalPropertyKindUuid("959cf4e1-d485-5225-bbdb-f53c16cc0c3c", "Sismage") << endl;
+	std::cout << "Application property kind for unknown local property type uuid  : " << ptMapper->getApplicationPropertyKindNameFromResqmlLocalPropertyKindUuid("unknownUuid", "myApplication") << std::endl;
+	std::cout << "Application property kind for local property type 959cf4e1-d485-5225-bbdb-f53c16cc0c3c (VShale) : " << ptMapper->getApplicationPropertyKindNameFromResqmlLocalPropertyKindUuid("959cf4e1-d485-5225-bbdb-f53c16cc0c3c", "Sismage") << std::endl;
 
 	ptMapper->addResqmlLocalPropertyKindToEpcDocumentFromApplicationPropertyKindName("Elevation depth", "Petrel");
 }
@@ -2166,13 +2181,13 @@ void showAllSubRepresentations(const vector<RESQML2_NS::SubRepresentation *> & s
 	}
 }
 
-void deserializeStratiColumn(StratigraphicColumn * stratiColumn)
+void deserializeStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn)
 {
 	showAllMetadata(stratiColumn);
 	for (size_t i = 0; i < stratiColumn->getStratigraphicColumnRankInterpretationSet().size(); ++i)
 	{
 		std::cout << "\tCOLUMN RANK INTERP" << std::endl;
-		StratigraphicColumnRankInterpretation const * stratiColumnRankInterp = stratiColumn->getStratigraphicColumnRankInterpretationSet()[i];
+		RESQML2_NS::StratigraphicColumnRankInterpretation const * stratiColumnRankInterp = stratiColumn->getStratigraphicColumnRankInterpretationSet()[i];
 		showAllMetadata(stratiColumnRankInterp);
 		if (stratiColumnRankInterp->isAChronoStratiRank() == true)
 			cout << "This is a chrono rank!" << endl;
@@ -2186,13 +2201,13 @@ void deserializeStratiColumn(StratigraphicColumn * stratiColumn)
 			showAllMetadata(stratiColumnRankInterp->getDirectObjectOfContact(contactIndex));
 		}
 
-		vector<StratigraphicOccurrenceInterpretation*> soiSet = stratiColumnRankInterp->getStratigraphicOccurrenceInterpretationSet();
+		vector<RESQML2_NS::StratigraphicOccurrenceInterpretation*> soiSet = stratiColumnRankInterp->getStratigraphicOccurrenceInterpretationSet();
 		for (size_t soiIndex = 0; soiIndex < soiSet.size(); ++soiIndex) {
-			vector<WellboreMarkerFrameRepresentation *> markerFrameSet = soiSet[soiIndex]->getWellboreMarkerFrameRepresentationSet();
+			vector<RESQML2_NS::WellboreMarkerFrameRepresentation *> markerFrameSet = soiSet[soiIndex]->getWellboreMarkerFrameRepresentationSet();
 			for (size_t markerFrameIndex = 0; markerFrameIndex < markerFrameSet.size(); ++markerFrameIndex) {
-				WellboreMarkerFrameRepresentation * markerFrame = markerFrameSet[markerFrameIndex];
+				RESQML2_NS::WellboreMarkerFrameRepresentation * markerFrame = markerFrameSet[markerFrameIndex];
 				showAllMetadata(markerFrame);
-				vector<WellboreMarker *> markerSet = markerFrame->getWellboreMarkerSet();
+				vector<RESQML2_NS::WellboreMarker *> markerSet = markerFrame->getWellboreMarkerSet();
 				double* doubleMds = new double[markerFrame->getMdValuesCount()];
 				markerFrame->getMdAsDoubleValues(doubleMds);
 				for (size_t mIndex = 0; mIndex < markerSet.size(); ++mIndex) {
@@ -2293,11 +2308,11 @@ void deserializeSealedSurfaceFramework(const COMMON_NS::DataObjectRepository & p
 
 void deserializeSealedVolumeFramework(const COMMON_NS::DataObjectRepository & pck)
 {
-	const std::vector<RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation*> svfVec = pck.getDataObjects<RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation>();
+	const std::vector<RESQML2_NS::SealedVolumeFrameworkRepresentation*> svfVec = pck.getDataObjects<RESQML2_NS::SealedVolumeFrameworkRepresentation>();
 
 	for (size_t svfIndex = 0; svfIndex < svfVec.size(); ++svfIndex) {
 		std::cout << "\tSEALED VOLUME FRAMEWORK" << std::endl;
-		RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation* svf = svfVec[svfIndex];
+		RESQML2_NS::SealedVolumeFrameworkRepresentation* svf = svfVec[svfIndex];
 		showAllMetadata(svf);
 
 		std::cout << "\tis based on sealed structural framework " << endl;
@@ -3697,7 +3712,7 @@ void deserialize(const string & inputFile)
 	deserializeFluidCharacterization(repo);
 
 	std::vector<RESQML2_NS::BoundaryFeature*> faultSet = repo.getFaultSet();
-	std::vector<PolylineSetRepresentation *> faultPolyRep = repo.getFaultPolylineSetRepSet();
+	std::vector<RESQML2_NS::PolylineSetRepresentation *> faultPolyRep = repo.getFaultPolylineSetRepSet();
 	std::vector<RESQML2_NS::TriangulatedSetRepresentation *> faultTriRepSet = repo.getFaultTriangulatedSetRepSet();
 	std::vector<RESQML2_NS::BoundaryFeature*> horizonSet = repo.getHorizonSet();
 	std::vector<RESQML2_NS::Grid2dRepresentation *> horizonGrid2dSet = repo.getHorizonGrid2dRepSet();
@@ -3707,11 +3722,11 @@ void deserialize(const string & inputFile)
 	std::vector<RESQML2_NS::WellboreFeature*> wellboreSet = repo.getWellboreSet();
 	std::vector<RESQML2_NS::WellboreTrajectoryRepresentation *> wellboreCubicTrajSet = repo.getWellboreTrajectoryRepresentationSet();
 	std::vector<RESQML2_NS::UnstructuredGridRepresentation*> unstructuredGridRepSet = repo.getUnstructuredGridRepresentationSet();
-	std::vector<RESQML2_NS::TimeSeries*> timeSeriesSet = repo.getTimeSeriesSet();
-	std::vector<StratigraphicColumn*> stratiColumnSet = repo.getStratigraphicColumnSet();
+	std::vector<EML2_NS::TimeSeries*> timeSeriesSet = repo.getTimeSeriesSet();
+	std::vector<RESQML2_NS::StratigraphicColumn*> stratiColumnSet = repo.getStratigraphicColumnSet();
 	std::vector<RESQML2_NS::RepresentationSetRepresentation*> representationSetRepresentationSet = repo.getRepresentationSetRepresentationSet();
 	std::vector<RESQML2_NS::SubRepresentation*> subRepresentationSet = repo.getSubRepresentationSet();
-	std::vector<PolylineSetRepresentation *> frontierPolyRep = repo.getFrontierPolylineSetRepSet();
+	std::vector<RESQML2_NS::PolylineSetRepresentation *> frontierPolyRep = repo.getFrontierPolylineSetRepSet();
 
 	std::cout << "RepresentationSetRepresentation" << endl;
 	for (size_t i = 0; i < representationSetRepresentationSet.size(); i++) {
@@ -3733,12 +3748,11 @@ void deserialize(const string & inputFile)
 	for (size_t i = 0; i < faultPolyRep.size(); ++i) {
 		showAllMetadata(faultPolyRep[i]);
 		ULONG64 nodeCount = faultPolyRep[i]->getXyzPointCountOfAllPatches();
-		double* allXyzPoints = new double[nodeCount * 3];
-		faultPolyRep[i]->getXyzPointsOfAllPatchesInGlobalCrs(allXyzPoints);
+		std::unique_ptr<double[]> allXyzPoints(new double[nodeCount * 3]);
+		faultPolyRep[i]->getXyzPointsOfAllPatchesInGlobalCrs(allXyzPoints.get());
 		for (ULONG64 nodeIndex = 0; nodeIndex < 6; nodeIndex += 3) {
 			std::cout << allXyzPoints[nodeIndex] << " " << allXyzPoints[nodeIndex + 1] << " " << allXyzPoints[nodeIndex + 2] << endl;
 		}
-		delete[] allXyzPoints;
 		deserializeActivity(faultPolyRep[i]);
 
 		if (faultPolyRep[i]->areAllPolylinesClosedOfAllPatches()) {
@@ -3773,12 +3787,11 @@ void deserialize(const string & inputFile)
 	for (size_t i = 0; i < frontierPolyRep.size(); ++i) {
 		showAllMetadata(frontierPolyRep[i]);
 
-		bool* closedFlag = new bool[frontierPolyRep[i]->getPolylineCountOfPatch(0)];
-		frontierPolyRep[i]->getClosedFlagPerPolylineOfPatch(0, closedFlag);
+		std::unique_ptr<bool[]> closedFlag(new bool[frontierPolyRep[i]->getPolylineCountOfPatch(0)]);
+		frontierPolyRep[i]->getClosedFlagPerPolylineOfPatch(0, closedFlag.get());
 		for (unsigned int j = 0; j < frontierPolyRep[i]->getPolylineCountOfPatch(0); ++j) {
 			std::cout << "closed flag : " << closedFlag[j] << endl;
 		}
-		delete[] closedFlag;
 	}
 
 	std::cout << "FAULTS TRI REP" << endl;
@@ -3825,22 +3838,21 @@ void deserialize(const string & inputFile)
 
 		cout << "I Node Count " << horizonGrid2dSet[i]->getNodeCountAlongIAxis() << endl;
 		cout << "J Node Count " << horizonGrid2dSet[i]->getNodeCountAlongJAxis() << endl;
-		double* zValues = new double[horizonGrid2dSet[i]->getNodeCountAlongIAxis() * horizonGrid2dSet[i]->getNodeCountAlongJAxis()];
-		horizonGrid2dSet[i]->getZValuesInGlobalCrs(zValues);
+		std::unique_ptr<double[]> zValues(new double[horizonGrid2dSet[i]->getNodeCountAlongIAxis() * horizonGrid2dSet[i]->getNodeCountAlongJAxis()]);
+		horizonGrid2dSet[i]->getZValuesInGlobalCrs(zValues.get());
 		std::cout << "First zValue is : " << zValues[0] << std::endl;
 		std::cout << "Second zValue is : " << zValues[1] << std::endl;
 		std::cout << "Third zValue is : " << zValues[2] << std::endl;
 		std::cout << "Fourth zValue is : " << zValues[3] << std::endl;
 		std::cout << "Fifth zValue is : " << zValues[4] << std::endl;
 		if (horizonGrid2dSet[i]->getSupportingRepresentation() != nullptr) {
-			horizonGrid2dSet[i]->getSupportingRepresentation()->getZValuesInGlobalCrs(zValues);
+			horizonGrid2dSet[i]->getSupportingRepresentation()->getZValuesInGlobalCrs(zValues.get());
 			std::cout << "Supporting Representation first zValue is : " << zValues[0] << std::endl;
 			std::cout << "Supporting Representation second zValue is : " << zValues[1] << std::endl;
 			std::cout << "Supporting Representation third zValue is : " << zValues[2] << std::endl;
 			std::cout << "Supporting Representation fourth zValue is : " << zValues[3] << std::endl;
 			std::cout << "Supporting Representation fifth zValue is : " << zValues[4] << std::endl;
 		}
-		delete[] zValues;
 		cout << "XIOffset : " << horizonGrid2dSet[i]->getXIOffsetInGlobalCrs() << endl;
 		cout << "YIOffset : " << horizonGrid2dSet[i]->getYIOffsetInGlobalCrs() << endl;
 		cout << "XJOffset : " << horizonGrid2dSet[i]->getXJOffsetInGlobalCrs() << endl;
@@ -3926,14 +3938,12 @@ void deserialize(const string & inputFile)
 			RESQML2_NS::AbstractRepresentation* seismicSupport = horizonSinglePolylineRepSet[i]->getSeismicSupportOfPatch(patchIndex);
 			if (seismicSupport != nullptr) {
 				cout << "Seismic support of patch " << patchIndex << " is : " << seismicSupport->getTitle() << endl;
-				double * lineAbscissa = new double[horizonSinglePolylineRepSet[i]->getXyzPointCountOfPatch(patchIndex)];
-				horizonSinglePolylineRepSet[i]->getSeismicLineAbscissaOfPointsOfPatch(patchIndex, lineAbscissa);
+				std::unique_ptr<double[]> lineAbscissa(new double[horizonSinglePolylineRepSet[i]->getXyzPointCountOfPatch(patchIndex)]);
+				horizonSinglePolylineRepSet[i]->getSeismicLineAbscissaOfPointsOfPatch(patchIndex, lineAbscissa.get());
 
-				for (ULONG64 j = 0; j < horizonSinglePolylineRepSet[i]->getXyzPointCountOfPatch(patchIndex); j++)
-				{
+				for (ULONG64 j = 0; j < horizonSinglePolylineRepSet[i]->getXyzPointCountOfPatch(patchIndex); j++) {
 					std::cout << "line Abscissa : " << lineAbscissa[j] << std::endl;
 				}
-				delete[] lineAbscissa;
 			}
 		}
 
@@ -3962,8 +3972,8 @@ void deserialize(const string & inputFile)
 		for (size_t j = 0; j < wellboreSet[i]->getInterpretationSet().size(); j++) {
 			for (size_t k = 0; k < wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet().size(); k++) {
 				if (wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]->getXmlTag() == WellboreMarkerFrameRepresentation::XML_TAG) {
-					WellboreMarkerFrameRepresentation const * wmf = static_cast<WellboreMarkerFrameRepresentation const *>(wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]);
-					vector<WellboreMarker *> marketSet = wmf->getWellboreMarkerSet();
+					RESQML2_NS::WellboreMarkerFrameRepresentation const * wmf = static_cast<RESQML2_NS::WellboreMarkerFrameRepresentation const *>(wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]);
+					vector<RESQML2_NS::WellboreMarker *> marketSet = wmf->getWellboreMarkerSet();
 					for (size_t markerIndex = 0; markerIndex < marketSet.size(); ++markerIndex) {
 						std::cout << "marker : " << marketSet[markerIndex]->getTitle() << std::endl;
 						if (marketSet[markerIndex]->getBoundaryFeatureInterpretation() != nullptr) {

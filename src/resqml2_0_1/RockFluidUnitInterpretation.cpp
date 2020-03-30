@@ -17,13 +17,14 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "RockFluidUnitInterpretation.h"
-#include "RockFluidUnitFeature.h"
+
+#include "../resqml2/RockVolumeFeature.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-RockFluidUnitInterpretation::RockFluidUnitInterpretation(RockFluidUnitFeature * feature, const string & guid, const string & title)
+RockFluidUnitInterpretation::RockFluidUnitInterpretation(RESQML2_NS::RockVolumeFeature * feature, const string & guid, const string & title)
 {
 	if (feature == nullptr) {
 		throw invalid_argument("The interpreted feature cannot be null.");
@@ -32,7 +33,7 @@ RockFluidUnitInterpretation::RockFluidUnitInterpretation(RockFluidUnitFeature * 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERockFluidUnitInterpretation(feature->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setInterpretedFeature(feature);
 }

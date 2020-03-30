@@ -24,7 +24,6 @@ under the License.
 
 #include "H5public.h"
 
-#include "../resqml2_0_1/AbstractTechnicalFeature.h"
 #include "AbstractFeatureInterpretation.h"
 #include "RepresentationSetRepresentation.h"
 #include "AbstractValuesProperty.h"

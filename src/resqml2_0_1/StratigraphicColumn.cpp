@@ -18,13 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "StratigraphicColumn.h"
 
-#include "StratigraphicColumnRankInterpretation.h"
+#include "../resqml2/StratigraphicColumnRankInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-
-const char* StratigraphicColumn::XML_TAG = "StratigraphicColumn";
 
 StratigraphicColumn::StratigraphicColumn(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title)
 {
@@ -40,25 +38,23 @@ StratigraphicColumn::StratigraphicColumn(COMMON_NS::DataObjectRepository* repo, 
 	repo->addOrReplaceDataObject(this);
 }
 
-void StratigraphicColumn::pushBackStratiColumnRank(StratigraphicColumnRankInterpretation * stratiColumnRank)
+void StratigraphicColumn::pushBackStratiColumnRank(RESQML2_NS::StratigraphicColumnRankInterpretation * stratiColumnRank)
 {
 	getRepository()->addRelationship(this, stratiColumnRank);
 
 	static_cast<_resqml20__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks.push_back(stratiColumnRank->newResqmlReference());
 }
 
-std::vector<class StratigraphicColumnRankInterpretation *> StratigraphicColumn::getStratigraphicColumnRankInterpretationSet() const
+unsigned int StratigraphicColumn::getStratigraphicColumnRankInterpretationCount() const
 {
-	return getRepository()->getTargetObjects<StratigraphicColumnRankInterpretation>(this);
+	return static_cast<_resqml20__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks.size();
 }
 
-void StratigraphicColumn::loadTargetRelationships()
+COMMON_NS::DataObjectReference StratigraphicColumn::getStratigraphicColumnRankInterpretationDor(unsigned int index) const
 {
-	const std::vector<eml20__DataObjectReference *>& stratColRanks= static_cast<_resqml20__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks;
-	for (size_t i = 0; i < stratColRanks.size(); ++i) {
-		gsoap_resqml2_0_1::eml20__DataObjectReference * dor = stratColRanks[i];
-		if (dor != nullptr) {
-			convertDorIntoRel<StratigraphicColumnRankInterpretation>(COMMON_NS::DataObjectReference(dor));
-		}
+	if (index >= getStratigraphicColumnRankInterpretationCount()) {
+		throw std::out_of_range("The index is out of range");
 	}
+
+	return COMMON_NS::DataObjectReference(static_cast<_resqml20__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks[index]);
 }

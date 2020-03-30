@@ -22,6 +22,8 @@ under the License.
 
 namespace RESQML2_NS
 {
+	class Model;
+
 	/**
 	* This class defines the behaviour of all RESQML2 organizations
 	*/

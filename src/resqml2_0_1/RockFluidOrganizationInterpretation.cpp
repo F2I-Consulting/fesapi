@@ -18,25 +18,21 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "RockFluidOrganizationInterpretation.h"
 
-#include <algorithm>
-
 #include "OrganizationFeature.h"
 #include "../resqml2/RockFluidUnitInterpretation.h"
-#include "../resqml2/AbstractGridRepresentation.h"
-
-#include "../tools/Misc.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterp)
+RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterp)
 {
 	if (orgFeat == nullptr) {
 		throw invalid_argument("The interpreted organization feature cannot be null.");
 	}
-	if (!orgFeat->isPartial() && orgFeat->getKind() != gsoap_resqml2_0_1::resqml20__OrganizationKind__fluid) {
-		throw invalid_argument("The kind of the organization feature is not a fluid organization.");
+	if (!orgFeat->isPartial() && dynamic_cast<RESQML2_0_1_NS::OrganizationFeature*>(orgFeat) != nullptr
+		&& static_cast<RESQML2_0_1_NS::OrganizationFeature*>(orgFeat)->getKind() != gsoap_resqml2_0_1::resqml20__OrganizationKind__fluid) {
+		throw invalid_argument("The kind of the v2.0.1 organization feature is not a fluid organization.");
 	}
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERockFluidOrganizationInterpretation(orgFeat->getGsoapContext());
@@ -46,7 +42,7 @@ RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(Organiz
 	pushBackRockFluidUnitInterpretation(rockFluidUnitInterp);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setInterpretedFeature(orgFeat);
 }

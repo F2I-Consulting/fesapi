@@ -18,10 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/RepresentationSetRepresentation.h"
+#include "RepresentationSetRepresentation.h"
+
+namespace EML2_NS
+{
+	class AbstractHdfProxy;
+}
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_NS
 {
 	/**
 	 * Parent class for a sealed or non-sealed surface framework representation. Each one
@@ -29,39 +34,8 @@ namespace RESQML2_0_1_NS
 	 * sealed frameworks is that, in the non-sealed case, we do not have all of the contacts, or we
 	 * have all of the contacts but they are not all sealed.
 	 */
-	class AbstractSurfaceFrameworkRepresentation : public RESQML2_NS::RepresentationSetRepresentation
+	class AbstractSurfaceFrameworkRepresentation : public RepresentationSetRepresentation
 	{
-	protected:
-
-		/**
-		 * Only to be used in partial transfer context
-		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
-		 */
-		DLL_IMPORT_OR_EXPORT AbstractSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::RepresentationSetRepresentation(partialObject) {}
-
-		/** Default constructor */
-		AbstractSurfaceFrameworkRepresentation();
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		AbstractSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::resqml20__AbstractSurfaceFrameworkRepresentation* fromGsoap) : RESQML2_NS::RepresentationSetRepresentation(fromGsoap) {}
-
-		/**
-		 * Get a contact identity from its index in this framework.
-		 *
-		 * @param 	ciIndex	The index of the contact identity in the contact identity list. It must be in
-		 * 					the interval [0..getContactIdentityCount()[.
-		 *
-		 * @returns	A contact identity from its index in this framework.
-		 */
-		gsoap_resqml2_0_1::resqml20__ContactIdentity* getContactIdentity(unsigned int ciIndex) const;
-
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
@@ -77,7 +51,7 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackContactIdentity(
 			gsoap_resqml2_0_1::resqml20__IdentityKind kind,
-			unsigned int contactCount, int * contactIndices,
+			unsigned int contactCount, int const* contactIndices,
 			EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
@@ -93,8 +67,8 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackContactIdentity(
 			gsoap_resqml2_0_1::resqml20__IdentityKind kind,
-			unsigned int contactCount, int * contactIndices,
-			unsigned int identicalNodesCount, int * identicalNodesIndexes,
+			unsigned int contactCount, int const* contactIndices,
+			unsigned int identicalNodesCount, int const* identicalNodesIndexes,
 			EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
@@ -177,5 +151,53 @@ namespace RESQML2_0_1_NS
 		 * 								It will be filled in with the desired node indices.
 		 */
 		DLL_IMPORT_OR_EXPORT void getIdenticalContactNodeIndices(unsigned int ciIndex, unsigned int * nodeIndices) const;
+
+	protected:
+
+		/**
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
+		DLL_IMPORT_OR_EXPORT AbstractSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RepresentationSetRepresentation(partialObject) {}
+
+		/** Default constructor */
+		AbstractSurfaceFrameworkRepresentation() {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		AbstractSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::resqml20__AbstractSurfaceFrameworkRepresentation* fromGsoap) : RepresentationSetRepresentation(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		AbstractSurfaceFrameworkRepresentation(gsoap_eml2_3::resqml22__AbstractSurfaceFrameworkRepresentation* fromGsoap) : RepresentationSetRepresentation(fromGsoap) {}
+
+		/**
+		 * Get a v2.0.1 contact identity from its index in this framework.
+		 *
+		 * @param 	ciIndex	The index of the contact identity in the contact identity list. It must be in
+		 * 					the interval [0..getContactIdentityCount()[.
+		 *
+		 * @returns	A contact identity from its index in this framework.
+		 */
+		gsoap_resqml2_0_1::resqml20__ContactIdentity* getContactIdentity201(unsigned int ciIndex) const;
+
+		/**
+		 * Get a v2.2 contact identity from its index in this framework.
+		 *
+		 * @param 	ciIndex	The index of the contact identity in the contact identity list. It must be in
+		 * 					the interval [0..getContactIdentityCount()[.
+		 *
+		 * @returns	A contact identity from its index in this framework.
+		 */
+		gsoap_eml2_3::resqml22__ContactIdentity* getContactIdentity22(unsigned int ciIndex) const;
 	};
 }

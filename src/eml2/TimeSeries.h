@@ -18,10 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractProperty.h"
+#include "../common/AbstractObject.h"
+
+namespace RESQML2_NS
+{
+	class AbstractProperty;
+}
 
 /** . */
-namespace RESQML2_NS
+namespace EML2_NS
 {
 	/**
 	 * Proxy class for time series. Stores an ordered list of times, for example, for time-dependent
@@ -30,26 +35,6 @@ namespace RESQML2_NS
 	 */
 	class TimeSeries : public COMMON_NS::AbstractObject
 	{
-	protected:
-		/** Default constructor does nothing */
-		TimeSeries() {}
-
-		/**
-		 * Only to be used in partial transfer context
-		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
-		 */
-		DLL_IMPORT_OR_EXPORT TimeSeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		TimeSeries(gsoap_resqml2_0_1::_resqml20__TimeSeries* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-
 	public:
 		
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
@@ -71,7 +56,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 	timestamp	The timestamp to push back.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackTimestamp(const tm & timestamp);
+		DLL_IMPORT_OR_EXPORT virtual void pushBackTimestamp(const tm & timestamp) = 0;
 
 		/**
 		 * Gets the index of a given timestamp in this time series.
@@ -83,7 +68,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The index of @p timestamp in this time series.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(time_t timestamp) const;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getTimestampIndex(time_t timestamp) const = 0;
 
 		/**
 		 * Gets the index of a given timestamp in this time series.
@@ -95,7 +80,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The index of @p timestamp in this time series.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(const tm & timestamp) const;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getTimestampIndex(const tm & timestamp) const = 0;
 
 		/**
 		 * Get the count of timestamps in this time series.
@@ -104,7 +89,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The timestamp count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTimestampCount() const;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getTimestampCount() const = 0;
 
 		/**
 		 * Gets a timestamp at a particular index of this time series.
@@ -129,14 +114,14 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The timestamp at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT tm getTimestampAsTimeStructure(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT virtual tm getTimestampAsTimeStructure(unsigned int index) const = 0;
 
 		/**
 		 * Get all the properties which use this time series
 		 *
 		 * @returns	A vector of pointers to all the properties which use this time series.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractProperty *> getPropertySet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractProperty*> getPropertySet() const;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
@@ -144,7 +129,34 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 
 	protected:
+
+		/** Default constructor does nothing */
+		TimeSeries() {}
+
+		/**
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
+		DLL_IMPORT_OR_EXPORT TimeSeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		TimeSeries(gsoap_resqml2_0_1::_resqml20__TimeSeries* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		TimeSeries(gsoap_eml2_3::_eml23__TimeSeries* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final {};
 	};
 }
