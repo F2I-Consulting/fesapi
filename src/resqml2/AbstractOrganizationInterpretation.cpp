@@ -20,7 +20,7 @@ under the License.
 
 #include <stdexcept>
 
-#include "../resqml2_0_1/FrontierFeature.h"
+#include "CulturalFeature.h"
 #include "../resqml2_0_1/GeneticBoundaryFeature.h"
 #include "../resqml2_0_1/TectonicBoundaryFeature.h"
 #include "../resqml2_0_1/StratigraphicUnitFeature.h"
@@ -33,8 +33,8 @@ namespace {
 	resqml20__ContactRelationship computeFrom(AbstractFeatureInterpretation* subject, AbstractFeatureInterpretation* directObject) {
 		auto subjectFeature = subject->getInterpretedFeature();
 		auto directObjectFeature = directObject->getInterpretedFeature();
-		if (dynamic_cast<RESQML2_0_1_NS::FrontierFeature*>(subjectFeature) != nullptr) {
-			if (dynamic_cast<RESQML2_0_1_NS::FrontierFeature*>(directObjectFeature) != nullptr) {
+		if (dynamic_cast<CulturalFeature*>(subjectFeature) != nullptr) {
+			if (dynamic_cast<CulturalFeature*>(directObjectFeature) != nullptr) {
 				return resqml20__ContactRelationship::resqml20__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature;
 			}
 			else if (dynamic_cast<RESQML2_0_1_NS::GeneticBoundaryFeature*>(directObjectFeature) != nullptr) {
@@ -48,7 +48,7 @@ namespace {
 			}
 		}
 		else if (dynamic_cast<RESQML2_0_1_NS::GeneticBoundaryFeature*>(subjectFeature) != nullptr) {
-			if (dynamic_cast<RESQML2_0_1_NS::FrontierFeature*>(directObjectFeature) != nullptr) {
+			if (dynamic_cast<CulturalFeature*>(directObjectFeature) != nullptr) {
 				return resqml20__ContactRelationship::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature;
 			}
 			else if (dynamic_cast<RESQML2_0_1_NS::GeneticBoundaryFeature*>(directObjectFeature) != nullptr) {
@@ -59,7 +59,7 @@ namespace {
 			}
 		}
 		else if (dynamic_cast<RESQML2_0_1_NS::StratigraphicUnitFeature*>(subjectFeature) != nullptr) {
-			if (dynamic_cast<RESQML2_0_1_NS::FrontierFeature*>(directObjectFeature) != nullptr) {
+			if (dynamic_cast<CulturalFeature*>(directObjectFeature) != nullptr) {
 				return resqml20__ContactRelationship::resqml20__ContactRelationship__stratigraphic_x0020unit_x0020to_x0020frontier_x0020feature;
 			}
 			else if (dynamic_cast<RESQML2_0_1_NS::StratigraphicUnitFeature*>(directObjectFeature) != nullptr) {
@@ -67,7 +67,7 @@ namespace {
 			}
 		}
 		else if (dynamic_cast<RESQML2_0_1_NS::TectonicBoundaryFeature*>(subjectFeature) != nullptr) {
-			if (dynamic_cast<RESQML2_0_1_NS::FrontierFeature*>(directObjectFeature) != nullptr) {
+			if (dynamic_cast<CulturalFeature*>(directObjectFeature) != nullptr) {
 				return resqml20__ContactRelationship::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature;
 			}
 			else if (dynamic_cast<RESQML2_0_1_NS::GeneticBoundaryFeature*>(directObjectFeature) != nullptr) {

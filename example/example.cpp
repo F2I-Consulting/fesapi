@@ -99,6 +99,7 @@ under the License.
 
 #include "resqml2/SealedVolumeFrameworkRepresentation.h"
 #include "resqml2/StratigraphicColumn.h"
+#include "resqml2/StratigraphicColumnRankInterpretation.h"
 #include "resqml2/StratigraphicOccurrenceInterpretation.h"
 
 #include "eml2/AbstractHdfProxy.h"
@@ -524,7 +525,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 {
 	// Seismic Lattice
 	SeismicLatticeFeature* seismicLattice = pck->createSeismicLattice("eb6a5e97-4d86-4809-b136-051f34cfcb51", "Seismic lattice", 2, 2, 150, 152, 4, 2);
-	GenericFeatureInterpretation* seismicLatticeInterp = pck->createGenericFeatureInterpretation(seismicLattice, "97816427-6ef6-4776-b21c-5b93c8a6310a", "Seismic lattice Interp");
+	RESQML2_NS::GenericFeatureInterpretation* seismicLatticeInterp = pck->createGenericFeatureInterpretation(seismicLattice, "97816427-6ef6-4776-b21c-5b93c8a6310a", "Seismic lattice Interp");
 	RESQML2_NS::Grid2dRepresentation* seismicLatticeRep = pck->createGrid2dRepresentation(seismicLatticeInterp, "aa5b90f1-2eab-4fa6-8720-69dd4fd51a4d", "Seismic lattice Rep");
 	seismicLatticeRep->setGeometryAsArray2dOfLatticePoints3d(4, 2, 0, 0, 0, 1, 0, 2, 0, 1, 3, 250, 200);
 
@@ -534,7 +535,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	// Seismic Line
 	RESQML2_NS::AbstractSeismicLineFeature* seismicLine = pck->createSeismicLine("117f9bf6-6bb0-49f2-9cee-46912300bff6", "Seismic line", 1, 0, 5);
 	seismicLine->setSeismicLineSet(seismicLineSet);
-	GenericFeatureInterpretation* seismicLineInterp = pck->createGenericFeatureInterpretation(seismicLine, "", "Seismic line Interp");
+	RESQML2_NS::GenericFeatureInterpretation* seismicLineInterp = pck->createGenericFeatureInterpretation(seismicLine, "", "Seismic line Interp");
 	RESQML2_NS::PolylineRepresentation* seismicLineRep = pck->createPolylineRepresentation(seismicLineInterp, "", "Seismic line Rep");
 	double seismicLinePoints[15] = { 0, 100, 0, 150, 110, 0, 300, 120, 0, 450, 130, 0, 600, 140, 0 };
 	seismicLineRep->setGeometry(seismicLinePoints, 5, hdfProxy);
@@ -1035,14 +1036,14 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, EML2_NS::Ab
 
 	// =========================================================================
 	// Add frontiers
-	FrontierFeature* xPlusFrontier = pck.createFrontier("e062ee65-8296-44c0-adf9-14cef0c2eb27", "X Plus Frontier");
-	GenericFeatureInterpretation* xPlusFrontierInterp = pck.createGenericFeatureInterpretation(xPlusFrontier, "e888c38b-86d5-41ae-9aaa-a7a41d0f4554", "X Plus Frontier Interp");
-	FrontierFeature* xMinusFrontier = pck.createFrontier("0f979db7-1189-47f4-827f-f61f9d163655", "X Minus Frontier");
-	GenericFeatureInterpretation* xMinusFrontierInterp = pck.createGenericFeatureInterpretation(xMinusFrontier, "cdbf2692-ab91-4529-8878-c10348a263a6", "X Minus Frontier Interp");
-	FrontierFeature* yPlusFrontier = pck.createFrontier("f50de712-10cd-40e1-ae71-fe36a5a78453", "Y Plus Frontier");
-	GenericFeatureInterpretation* yPlusFrontierInterp = pck.createGenericFeatureInterpretation(yPlusFrontier, "ef1b0d82-52f5-4394-9b1a-ea92fffa8548", "Y Plus Frontier Interp");
-	FrontierFeature* yMinusFrontier = pck.createFrontier("d4820ef8-2698-407f-84c7-c36396e19d08", "Y Minus Frontier");
-	GenericFeatureInterpretation* yMinusFrontierInterp = pck.createGenericFeatureInterpretation(yMinusFrontier, "74977015-731a-4e66-8fba-7c42cc44faa0", "Y Minus Frontier Interp");
+	RESQML2_NS::CulturalFeature* xPlusFrontier = pck.createCultural("e062ee65-8296-44c0-adf9-14cef0c2eb27", "X Plus Frontier");
+	RESQML2_NS::GenericFeatureInterpretation* xPlusFrontierInterp = pck.createGenericFeatureInterpretation(xPlusFrontier, "e888c38b-86d5-41ae-9aaa-a7a41d0f4554", "X Plus Frontier Interp");
+	RESQML2_NS::CulturalFeature* xMinusFrontier = pck.createCultural("0f979db7-1189-47f4-827f-f61f9d163655", "X Minus Frontier");
+	RESQML2_NS::GenericFeatureInterpretation* xMinusFrontierInterp = pck.createGenericFeatureInterpretation(xMinusFrontier, "cdbf2692-ab91-4529-8878-c10348a263a6", "X Minus Frontier Interp");
+	RESQML2_NS::CulturalFeature* yPlusFrontier = pck.createCultural("f50de712-10cd-40e1-ae71-fe36a5a78453", "Y Plus Frontier");
+	RESQML2_NS::GenericFeatureInterpretation* yPlusFrontierInterp = pck.createGenericFeatureInterpretation(yPlusFrontier, "ef1b0d82-52f5-4394-9b1a-ea92fffa8548", "Y Plus Frontier Interp");
+	RESQML2_NS::CulturalFeature* yMinusFrontier = pck.createCultural("d4820ef8-2698-407f-84c7-c36396e19d08", "Y Minus Frontier");
+	RESQML2_NS::GenericFeatureInterpretation* yMinusFrontierInterp = pck.createGenericFeatureInterpretation(yMinusFrontier, "74977015-731a-4e66-8fba-7c42cc44faa0", "Y Minus Frontier Interp");
 
 	// =========================================================================
 	// Binary contact interpretation
@@ -1806,7 +1807,7 @@ void serializeActivities(COMMON_NS::DataObjectRepository * epcDoc)
 void serializeFluidBoundary(COMMON_NS::DataObjectRepository & pck, EML2_NS::AbstractHdfProxy*)
 {
 	FluidBoundaryFeature* fluidBoundary = pck.createFluidBoundaryFeature("44a4d87c-3c67-4f98-a314-9d91c4147061", "Fluid boundary", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
-	GenericFeatureInterpretation* interp = pck.createGenericFeatureInterpretation(fluidBoundary, "d06df5e4-3c56-4abd-836f-2abb5e58e13b", "Fluid boundary interp");
+	RESQML2_NS::GenericFeatureInterpretation* interp = pck.createGenericFeatureInterpretation(fluidBoundary, "d06df5e4-3c56-4abd-836f-2abb5e58e13b", "Fluid boundary interp");
 	RESQML2_NS::PlaneSetRepresentation* rep = pck.createPlaneSetRepresentation(interp, "4df87ed5-ea4d-4a00-99a2-828a56c9dd02", "Fluid boundary PlaneSetRep");
 	rep->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
 }
@@ -1815,13 +1816,13 @@ void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, EML2_
 {
 	//Top Boundary
 	FluidBoundaryFeature* fluidBoundaryTop = pck.createFluidBoundaryFeature("cd400fa2-4c8b-11e9-be79-3f8079258eaa", "Fluid boundary top", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
-	GenericFeatureInterpretation* interpTop = pck.createGenericFeatureInterpretation(fluidBoundaryTop, "0ab8f2f4-4c96-11e9-999e-c3449b44fef5", "Fluid boundary top interp");
+	RESQML2_NS::GenericFeatureInterpretation* interpTop = pck.createGenericFeatureInterpretation(fluidBoundaryTop, "0ab8f2f4-4c96-11e9-999e-c3449b44fef5", "Fluid boundary top interp");
 	RESQML2_NS::PlaneSetRepresentation* repTop = pck.createPlaneSetRepresentation(interpTop, "ae1d618c-4c96-11e9-8f12-cf7f4da2a08d", "Fluid boundary top PlaneSetRep");
 	repTop->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
 
 	//Bottom Boundary
 	FluidBoundaryFeature* fluidBoundaryBottom = pck.createFluidBoundaryFeature("d332b298-4c8b-11e9-80d8-c760b2e2530d", "Fluid boundary bottom", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
-	GenericFeatureInterpretation* interpBottom = pck.createGenericFeatureInterpretation(fluidBoundaryBottom, "1371efae-4c96-11e9-bcdd-37d8112fd19e", "Fluid boundary bottom interp");
+	RESQML2_NS::GenericFeatureInterpretation* interpBottom = pck.createGenericFeatureInterpretation(fluidBoundaryBottom, "1371efae-4c96-11e9-bcdd-37d8112fd19e", "Fluid boundary bottom interp");
 	RESQML2_NS::PlaneSetRepresentation* repBottom = pck.createPlaneSetRepresentation(interpBottom, "b54cc3b2-4c96-11e9-b33d-ef2c41476266", "Fluid boundary bottom PlaneSetRep");
 	repBottom->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
 
@@ -3726,7 +3727,7 @@ void deserialize(const string & inputFile)
 	std::vector<RESQML2_NS::StratigraphicColumn*> stratiColumnSet = repo.getStratigraphicColumnSet();
 	std::vector<RESQML2_NS::RepresentationSetRepresentation*> representationSetRepresentationSet = repo.getRepresentationSetRepresentationSet();
 	std::vector<RESQML2_NS::SubRepresentation*> subRepresentationSet = repo.getSubRepresentationSet();
-	std::vector<RESQML2_NS::PolylineSetRepresentation *> frontierPolyRep = repo.getFrontierPolylineSetRepSet();
+	std::vector<RESQML2_NS::PolylineSetRepresentation *> frontierPolyRep = repo.getCulturalPolylineSetRepSet();
 
 	std::cout << "RepresentationSetRepresentation" << endl;
 	for (size_t i = 0; i < representationSetRepresentationSet.size(); i++) {

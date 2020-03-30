@@ -16,27 +16,26 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "GeobodyBoundaryInterpretation.h"
+#include "GenericFeatureInterpretation.h"
 
 #include <stdexcept>
 
-#include "../resqml2/BoundaryFeature.h"
+#include "../resqml2/AbstractFeature.h"
 
+using namespace RESQML2_2_NS;
+using namespace gsoap_eml2_3;
 using namespace std;
-using namespace RESQML2_0_1_NS;
-using namespace gsoap_resqml2_0_1;
 
-GeobodyBoundaryInterpretation::GeobodyBoundaryInterpretation(RESQML2_NS::BoundaryFeature * geobodyBoundary, const string & guid, const string & title)
+GenericFeatureInterpretation::GenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const string & guid, const string & title)
 {
-	if (geobodyBoundary == nullptr)
-		throw invalid_argument("The interpreted geobody boundary cannot be null.");
+	if (feature == nullptr) {
+		throw invalid_argument("The interpreted feature cannot be null.");
+	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGeobodyBoundaryInterpretation(geobodyBoundary->getGsoapContext());
-
-	static_cast<_resqml20__GeobodyBoundaryInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
+	gsoapProxy2_3 = soap_new_resqml22__GenericFeatureInterpretation(feature->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	setInterpretedFeature(geobodyBoundary);
+	setInterpretedFeature(feature);
 }

@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/GeobodyBoundaryInterpretation.h"
+#include "../resqml2/CulturalFeature.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
-	/** A geobody boundary interpretation. */
-	class GeobodyBoundaryInterpretation : public RESQML2_NS::GeobodyBoundaryInterpretation
+	/** A frontier feature. */
+	class CulturalFeature : public RESQML2_NS::CulturalFeature
 	{
 	public:
 
@@ -35,27 +35,40 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT GeobodyBoundaryInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			RESQML2_NS::GeobodyBoundaryInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT CulturalFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::CulturalFeature(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * Creates an instance of this class in an EPC document.
 		 *
-		 * @param [in,out]	geobodyBoundary	The feature the instance interprets.
-		 * @param 		  	guid		   	The guid to set to the interpretation. If empty then a new
-		 * 									guid will be generated.
-		 * @param 		  	title		   	A title for the instance to create.
+		 * @param [in,out]	repo 	The repo where the underlying gsoap proxy is going to be created.
+		 * @param 		  	guid 	A guid for the instance to create.
+		 * @param 		  	title	A title for the instance to create.
 		 */
-		GeobodyBoundaryInterpretation(RESQML2_NS::BoundaryFeature * geobodyBoundary, const std::string & guid, const std::string & title);
+		CulturalFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+			gsoap_eml2_3::resqml22__CulturalFeatureKind kind);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		GeobodyBoundaryInterpretation(gsoap_resqml2_0_1::_resqml20__GeobodyBoundaryInterpretation* fromGsoap) : RESQML2_NS::GeobodyBoundaryInterpretation(fromGsoap) {}
+		CulturalFeature(gsoap_eml2_3::_resqml22__CulturalFeature* fromGsoap): RESQML2_NS::CulturalFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~GeobodyBoundaryInterpretation() {}
+		~CulturalFeature() {}
+
+		/**
+		 * The standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};
 }

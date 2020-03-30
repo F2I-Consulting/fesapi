@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/GeobodyBoundaryInterpretation.h"
+#include "../resqml2/GenericFeatureInterpretation.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
-	/** A geobody boundary interpretation. */
-	class GeobodyBoundaryInterpretation : public RESQML2_NS::GeobodyBoundaryInterpretation
+	/** A generic feature interpretation. */
+	class GenericFeatureInterpretation : public RESQML2_NS::GenericFeatureInterpretation
 	{
 	public:
 
@@ -35,27 +35,26 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT GeobodyBoundaryInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			RESQML2_NS::GeobodyBoundaryInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT GenericFeatureInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::GenericFeatureInterpretation(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	geobodyBoundary	The feature the instance interprets.
-		 * @param 		  	guid		   	The guid to set to the interpretation. If empty then a new
-		 * 									guid will be generated.
-		 * @param 		  	title		   	A title for the instance to create.
+		 * @param [in,out]	feature	The feature the instance interprets.
+		 * @param 		  	guid   	The guid to set to the interpretation. If empty then a new guid will
+		 * 							be generated.
+		 * @param 		  	title  	A title for the instance to create.
 		 */
-		GeobodyBoundaryInterpretation(RESQML2_NS::BoundaryFeature * geobodyBoundary, const std::string & guid, const std::string & title);
+		GenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const std::string & guid, const std::string & title);
 
 		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
+		 * Constructor
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		GeobodyBoundaryInterpretation(gsoap_resqml2_0_1::_resqml20__GeobodyBoundaryInterpretation* fromGsoap) : RESQML2_NS::GeobodyBoundaryInterpretation(fromGsoap) {}
+		GenericFeatureInterpretation(gsoap_eml2_3::_resqml22__GenericFeatureInterpretation* fromGsoap) : RESQML2_NS::GenericFeatureInterpretation(fromGsoap) {}
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~GeobodyBoundaryInterpretation() {}
+		/** Destructor */
+		~GenericFeatureInterpretation() {}
 	};
 }

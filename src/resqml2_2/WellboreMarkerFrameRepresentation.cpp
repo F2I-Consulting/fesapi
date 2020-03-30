@@ -71,30 +71,37 @@ unsigned int WellboreMarkerFrameRepresentation::getWellboreMarkerCount()
 
 COMMON_NS::DataObjectReference WellboreMarkerFrameRepresentation::getStratigraphicOccurrenceInterpretationDor() const
 {
-	return COMMON_NS::DataObjectReference();
-	throw logic_error("Not implemented yet");
-	/*
 	_resqml22__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml22__WellboreMarkerFrameRepresentation*>(gsoapProxy2_3);
-	return frame->IntervalStratigraphiUnits != nullptr ? COMMON_NS::DataObjectReference(frame->IntervalStratigraphiUnits->StratigraphicOrganization) : COMMON_NS::DataObjectReference();
-	*/
+
+	if (frame->IntervalStratigraphiUnits.size() > 1) {
+		throw range_error("More than one link to a strati column is not supported for now.");
+	}
+
+	return frame->IntervalStratigraphiUnits.empty()
+		? COMMON_NS::DataObjectReference()
+		: COMMON_NS::DataObjectReference(frame->IntervalStratigraphiUnits[0]->StratigraphicOrganizationInterpretation);	
 }
 
 void WellboreMarkerFrameRepresentation::setStratigraphicOccurrenceInterpretation(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurenceInterp)
 {
-	throw logic_error("Not implemented yet");
-	/*
 	getRepository()->addRelationship(this, stratiOccurenceInterp);
 
 	_resqml22__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml22__WellboreMarkerFrameRepresentation*>(gsoapProxy2_3);
-	frame->IntervalStratigraphiUnits = soap_new_resqml20__IntervalStratigraphicUnits(frame->soap);
-	frame->IntervalStratigraphiUnits->StratigraphicOrganization = stratiOccurenceInterp->newResqmlReference();
-	*/
+	resqml22__IntervalStratigraphicUnits* intervalStratigraphiUnits = nullptr;
+	if (frame->IntervalStratigraphiUnits.empty()) {
+		intervalStratigraphiUnits = soap_new_resqml22__IntervalStratigraphicUnits(frame->soap);
+		frame->IntervalStratigraphiUnits.push_back(intervalStratigraphiUnits);
+	}
+	else {
+		intervalStratigraphiUnits = frame->IntervalStratigraphiUnits[0];
+	}
+	intervalStratigraphiUnits->StratigraphicOrganizationInterpretation = stratiOccurenceInterp->newEml23Reference();
 }
 
 void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, RESQML2_NS::StratigraphicOccurrenceInterpretation* stratiOccurenceInterp, EML2_NS::AbstractHdfProxy* proxy)
 {
 	throw logic_error("Not implemented yet");
-	/*
+	
 	if (stratiUnitIndices == nullptr) {
 		throw invalid_argument("The strati unit indices cannot be null.");
 	}
@@ -104,6 +111,9 @@ void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned i
 
 	_resqml22__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml22__WellboreMarkerFrameRepresentation*>(gsoapProxy2_3);
 
+	eml23__JaggedArray* xmlJaggedArray = soap_new_eml23__JaggedArray(frame->soap);
+
+	// Elements
 	eml23__IntegerExternalArray* xmlDataset = soap_new_eml23__IntegerExternalArray(frame->soap);
 	xmlDataset->NullValue = nullValue;
 	xmlDataset->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
@@ -111,12 +121,21 @@ void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned i
 	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
 	dsPart->PathInExternalFile = getHdfGroup() + "/IntervalStratigraphicUnits";
 	xmlDataset->Values->ExternalFileProxy.push_back(dsPart);
-	frame->IntervalStratigraphiUnits->UnitIndices = xmlDataset;
+	xmlJaggedArray->Elements = xmlDataset;
+
+	// Cumumulative Length
+	eml23__IntegerLatticeArray* cumulativeLength = soap_new_eml23__IntegerLatticeArray(frame->soap);
+	cumulativeLength->StartValue = 1;
+	eml23__IntegerConstantArray* offsets = soap_new_eml23__IntegerConstantArray(frame->soap);
+	offsets->Value = 1;
+	offsets->Count = frame->NodeCount - 2;
+	cumulativeLength->Offset.push_back(offsets);
+
+	frame->IntervalStratigraphiUnits[0]->UnitIndices = xmlJaggedArray;
 
 	// ************ HDF *************
 	hsize_t dim = frame->NodeCount - 1;
 	proxy->writeArrayNd(getHdfGroup(), "IntervalStratigraphicUnits", H5T_NATIVE_UINT, stratiUnitIndices, &dim, 1);
-	*/
 }
 
 void WellboreMarkerFrameRepresentation::loadTargetRelationships()

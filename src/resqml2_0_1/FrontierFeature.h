@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/AbstractTechnicalFeature.h"
+#include "../resqml2/CulturalFeature.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** A frontier feature. */
-	class FrontierFeature : public RESQML2_NS::AbstractTechnicalFeature
+	class FrontierFeature : public RESQML2_NS::CulturalFeature
 	{
 	public:
 
@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT FrontierFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractTechnicalFeature(partialObject) {}
+		DLL_IMPORT_OR_EXPORT FrontierFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::CulturalFeature(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in an EPC document.
@@ -51,7 +51,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		FrontierFeature(gsoap_resqml2_0_1::_resqml20__FrontierFeature* fromGsoap): RESQML2_NS::AbstractTechnicalFeature(fromGsoap) {}
+		FrontierFeature(gsoap_resqml2_0_1::_resqml20__FrontierFeature* fromGsoap): RESQML2_NS::CulturalFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~FrontierFeature() {}
@@ -68,6 +68,6 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The XML tag.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};
 }

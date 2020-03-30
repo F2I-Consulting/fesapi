@@ -16,27 +16,11 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "GeobodyBoundaryInterpretation.h"
+#include "GeobodyInterpretation.h"
 
 #include <stdexcept>
 
-#include "../resqml2/BoundaryFeature.h"
-
 using namespace std;
-using namespace RESQML2_0_1_NS;
-using namespace gsoap_resqml2_0_1;
+using namespace RESQML2_NS;
 
-GeobodyBoundaryInterpretation::GeobodyBoundaryInterpretation(RESQML2_NS::BoundaryFeature * geobodyBoundary, const string & guid, const string & title)
-{
-	if (geobodyBoundary == nullptr)
-		throw invalid_argument("The interpreted geobody boundary cannot be null.");
-
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGeobodyBoundaryInterpretation(geobodyBoundary->getGsoapContext());
-
-	static_cast<_resqml20__GeobodyBoundaryInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
-
-	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "");
-
-	setInterpretedFeature(geobodyBoundary);
-}
+const char* GeobodyInterpretation::XML_TAG = "GeobodyInterpretation";

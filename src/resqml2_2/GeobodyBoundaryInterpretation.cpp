@@ -23,20 +23,19 @@ under the License.
 #include "../resqml2/BoundaryFeature.h"
 
 using namespace std;
-using namespace RESQML2_0_1_NS;
-using namespace gsoap_resqml2_0_1;
+using namespace RESQML2_2_NS;
+using namespace gsoap_eml2_3;
 
 GeobodyBoundaryInterpretation::GeobodyBoundaryInterpretation(RESQML2_NS::BoundaryFeature * geobodyBoundary, const string & guid, const string & title)
 {
-	if (geobodyBoundary == nullptr)
+	if (geobodyBoundary == nullptr) {
 		throw invalid_argument("The interpreted geobody boundary cannot be null.");
+	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGeobodyBoundaryInterpretation(geobodyBoundary->getGsoapContext());
-
-	static_cast<_resqml20__GeobodyBoundaryInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
+	gsoapProxy2_3 = soap_new_resqml22__GeobodyBoundaryInterpretation(geobodyBoundary->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	setInterpretedFeature(geobodyBoundary);
 }
