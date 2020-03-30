@@ -34,24 +34,54 @@ namespace COMMON_NS
 	{
 	public:
 
+		/** Default constructor */
 		DataObjectReference(): dor20(nullptr), dor21(nullptr), dor22(nullptr), dor23(nullptr) {}
+		
+		/**
+		 * Constructor
+		 *
+		 * @param [in]	dor	If non-nullptr, the EML2.0 DOR to wrap.
+		 */
 		DataObjectReference(gsoap_resqml2_0_1::eml20__DataObjectReference * dor): dor20(dor), dor21(nullptr), dor22(nullptr), dor23(nullptr) {}
+		
+		/**
+		 * Constructor
+		 *
+		 * @param [in,out]	dor	If non-nullptr, the EML2.1 DOR to wrap.
+		 */
 		DataObjectReference(gsoap_eml2_1::eml21__DataObjectReference * dor) : dor20(nullptr), dor21(dor), dor22(nullptr), dor23(nullptr) {}
+		
+		/**
+		 * Constructor
+		 *
+		 * @param [in,out]	dor	If non-nullptr, the EML2.2 DOR to wrap.
+		 */
 		DataObjectReference(gsoap_eml2_2::eml22__DataObjectReference * dor) : dor20(nullptr), dor21(nullptr), dor22(dor), dor23(nullptr) {}
+		
+		/**
+		 * Constructor
+		 *
+		 * @param [in,out]	dor	If non-nullptr, the EML2.3 DOR to wrap.
+		 */
 		DataObjectReference(gsoap_eml2_3::eml23__DataObjectReference * dor) : dor20(nullptr), dor21(nullptr), dor22(nullptr), dor23(dor) {}
 
+		/** Destructor */
 		~DataObjectReference() {}
 
 		/**
-		* Check if the reference is empty (i.e. points to nothing)
-		*/
+		 * Checks if this reference is empty (i.e. it points to nothing)
+		 *
+		 * @returns	True if this reference empty, false if it is not.
+		 */
 		bool isEmpty() const {
 			return dor20 == nullptr && dor21 == nullptr && dor22 == nullptr && dor23 == nullptr;
 		}
 
 		/**
-		* Get the referenced dataobject UUID
-		*/
+		 * Gets the referenced data object UUID
+		 *
+		 * @returns	The UUID of the referenced data object if it exists, otherwise empty string.
+		 */
 		std::string getUuid() const {
 			if (dor20 != nullptr) {
 				return dor20->UUID;
@@ -71,8 +101,10 @@ namespace COMMON_NS
 		}
 
 		/**
-		* Get the referenced dataobject title (i.e. name)
-		*/
+		 * Gets the referenced data object title (i.e. its name)
+		 *
+		 * @returns	The title of the referenced data object if it exists, otherwise empty string.
+		 */
 		std::string getTitle() const {
 			if (dor20 != nullptr) {
 				return dor20->Title;
@@ -92,8 +124,10 @@ namespace COMMON_NS
 		}
 
 		/**
-		* Get the referenced dataobject version
-		*/
+		 * Gets the referenced data object version
+		 *
+		 * @returns	The version of the referenced data object if it exists, otherwise empty string.
+		 */
 		std::string getVersion() const {
 			if (dor20 != nullptr) {
 				return dor20->VersionString != nullptr ? *dor20->VersionString : "";
@@ -113,8 +147,10 @@ namespace COMMON_NS
 		}
 
 		/**
-		* Get the referenced dataobject type
-		*/
+		 * Gets the referenced data object type
+		 *
+		 * @returns	The content type of the referenced data object if it exists, otherwise empty string.
+		 */
 		std::string getContentType() const {
 			if (dor20 != nullptr) {
 				return dor20->ContentType;
