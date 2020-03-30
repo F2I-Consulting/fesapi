@@ -23,7 +23,7 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	* This class defines the behaviour of all Resqml2 organizations
+	* This class defines the behaviour of all RESQML2 organizations
 	*/
 	class AbstractOrganizationInterpretation : public AbstractFeatureInterpretation
 	{
@@ -49,31 +49,54 @@ namespace RESQML2_NS
 		virtual ~AbstractOrganizationInterpretation() {}
 
 		/**
-		 * Add a binary contact to the organization interpretation by means of a simple sentence.
+		 * Adds a binary contact to this organization interpretation by means of a simple sentence.
 		 *
-		 * @param 		  	kind			The kind.
-		 * @param [in,out]	subject			If non-null, the subject.
-		 * @param 		  	verb			The verb.
-		 * @param [in,out]	directObject	If non-null, the direct object.
+		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
+		 *
+		 * @param [in]	subject			The subject of the sentence that defines how the contact was
+		 * 								constructed.
+		 * @param 	  	verb			The verb of the sentence that defines how the contact was
+		 * 								constructed.
+		 * @param [in]	directObject	The direct object of the sentence that defines how the contact
+		 * 								was constructed.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_3::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject);
 
 		/**
-		 * Add a binary contact to the organization itnerpretation by means of a sentence where the
+		 * Adds a binary contact to the organization interpretation by means of a sentence where the
 		 * direct object can be qualified.
 		 *
-		 * @param 		  	kind				 	The kind.
-		 * @param [in,out]	subject				 	If non-null, the subject.
-		 * @param 		  	verb				 	The verb.
-		 * @param [in,out]	directObject		 	If non-null, the direct object.
-		 * @param 		  	directObjectQualifier	The direct object qualifier.
+		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
+		 *
+		 * @param [in]	subject				 	The subject of the sentence that defines how the contact
+		 * 										was constructed.
+		 * @param 	  	verb				 	The verb of the sentence that defines how the contact was
+		 * 										constructed.
+		 * @param [in]	directObject		 	The direct object of the sentence that defines how the
+		 * 										contact was constructed.
+		 * @param 	  	directObjectQualifier	The direct object qualifier defining its contact side
+		 * 										(footwall, hanging wall, north, south, etc.).
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_3::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject,
 			gsoap_resqml2_0_1::resqml20__ContactSide directObjectQualifier);
 
-        /**
-         * Add a binary contact to the organization interpretation by means of a sentence where both the subject and the direct object can be qualified.
-         */
+		/**
+		 * Adds a binary contact to the organization interpretation by means of a sentence where both
+		 * the subject and the direct object can be qualified.
+		 *
+		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
+		 *
+		 * @param [in]	subject				 	The subject of the sentence that defines how the contact
+		 * 										was constructed.
+		 * @param 	  	subjectQualifier	 	The subject qualifier defining its contact side (footwall,
+		 * 										hanging wall, north, south, etc.).
+		 * @param 	  	verb				 	The verb of the sentence that defines how the contact was
+		 * 										constructed.
+		 * @param [in]	directObject		 	The direct object of the sentence that defines how the
+		 * 										contact was constructed.
+		 * @param 	  	directObjectQualifier	The direct object qualifier defining its contact side
+		 * 										(footwall, hanging wall, north, south, etc.).
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_resqml2_0_1::resqml20__ContactSide subjectQualifier,
 			gsoap_eml2_3::resqml22__ContactVerb verb,
 			AbstractFeatureInterpretation* directObject, gsoap_resqml2_0_1::resqml20__ContactSide directObjectQualifier);
