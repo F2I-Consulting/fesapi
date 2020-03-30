@@ -32,12 +32,10 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* NonSealedSurfaceFrameworkRepresentation::XML_TAG = "NonSealedSurfaceFrameworkRepresentation";
-
 NonSealedSurfaceFrameworkRepresentation::NonSealedSurfaceFrameworkRepresentation(
-        StructuralOrganizationInterpretation* interp,
-        const std::string & guid, 
-        const std::string & title)
+	RESQML2_NS::StructuralOrganizationInterpretation* interp,
+    const std::string & guid, 
+    const std::string & title)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The structural organization interpretation cannot be null.");
@@ -57,7 +55,7 @@ NonSealedSurfaceFrameworkRepresentation::NonSealedSurfaceFrameworkRepresentation
 	setInterpretation(interp);
 }
 
-void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresentation(unsigned int pointCount, double * points, EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresentation(unsigned int pointCount, double const* points, EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (pointCount == 0)
 		throw invalid_argument("Contact point count cannot be zero.");
@@ -101,27 +99,6 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss.str(), points, numValues, 2);
 
 	getRepository()->addRelationship(this, localCrs);
-}
-
-std::string NonSealedSurfaceFrameworkRepresentation::getHdfProxyUuid() const
-{
-	string result;
-	_resqml20__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
-
-	if (!orgRep->NonSealedContactRepresentation.empty())
-	{
-		resqml20__NonSealedContactRepresentationPart* firstContact = static_cast<resqml20__NonSealedContactRepresentationPart*>(orgRep->NonSealedContactRepresentation[0]);
-		if (firstContact->Geometry->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__PointGeometry)
-		{
-			resqml20__PointGeometry* pointGeom = static_cast<resqml20__PointGeometry*>(firstContact->Geometry);
-			if (pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array)
-			{
-				return static_cast<resqml20__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->HdfProxy->UUID;
-			}
-		}
-	}
-
-	return result;
 }
 
 unsigned int NonSealedSurfaceFrameworkRepresentation::getContactCount() const

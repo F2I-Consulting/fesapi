@@ -107,7 +107,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The XML namespace.
 		 */
-		std::string getXmlNamespace() const { return "eml23"; }
+		std::string getXmlNamespace() const final { return "eml23"; }
 
 	private:
 

@@ -77,5 +77,12 @@ namespace RESQML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		FaultInterpretation(gsoap_resqml2_0_1::_resqml20__FaultInterpretation* fromGsoap) : BoundaryFeatureInterpretation(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		FaultInterpretation(gsoap_eml2_3::_resqml22__FaultInterpretation* fromGsoap) : BoundaryFeatureInterpretation(fromGsoap) {}
 	};
 }

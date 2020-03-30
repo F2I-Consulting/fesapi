@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "EarthModelInterpretation.h"
+#include "../resqml2/StratigraphicColumn.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** This class is a container for other organizations that are consistent to each others. */
-	class StratigraphicColumn : public COMMON_NS::AbstractObject
+	class StratigraphicColumn : public RESQML2_NS::StratigraphicColumn
 	{
 	public:
 
@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT StratigraphicColumn(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT StratigraphicColumn(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::StratigraphicColumn(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -52,7 +52,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		StratigraphicColumn(gsoap_resqml2_0_1::_resqml20__StratigraphicColumn* fromGsoap) : AbstractObject(fromGsoap) {}
+		StratigraphicColumn(gsoap_resqml2_0_1::_resqml20__StratigraphicColumn* fromGsoap) : RESQML2_NS::StratigraphicColumn(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~StratigraphicColumn() {}
@@ -62,32 +62,19 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	stratiColumnRank	If non-null, the strati column rank.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackStratiColumnRank(class StratigraphicColumnRankInterpretation * stratiColumnRank);
+		DLL_IMPORT_OR_EXPORT void pushBackStratiColumnRank(RESQML2_NS::StratigraphicColumnRankInterpretation * stratiColumnRank) final;
 
 		/**
-		 * Get all the stratigraphic column rank interpretations which are contained in this
+		 * Get the count of all the stratigraphic column rank interpretations which are contained in this
 		 * stratigraphic column.
 		 *
-		 * @returns	Null if it fails, else the stratigraphic column rank interpretation set.
+		 * @returns	the count of all the stratigraphic column rank interpretations which are contained in this stratigraphic column.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<class StratigraphicColumnRankInterpretation *> getStratigraphicColumnRankInterpretationSet() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getStratigraphicColumnRankInterpretationCount() const final;
 
 		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
+		 * Get a stratigraphic column rank interpretations DOR at a particular index.
 		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
-
-    private:
-		/** Loads target relationships */
-		void loadTargetRelationships();
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratigraphicColumnRankInterpretationDor(unsigned int index) const final;
 	};
 }

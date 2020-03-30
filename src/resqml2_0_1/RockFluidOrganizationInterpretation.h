@@ -44,7 +44,7 @@ namespace RESQML2_0_1_NS
 		* @param title					A title for the instance to create.
 		* @param rockFluidUnitInterp	The unique (for now) rock fluid unit which is contained by this organization
 		*/
-		RockFluidOrganizationInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterp);
+		RockFluidOrganizationInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterp);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

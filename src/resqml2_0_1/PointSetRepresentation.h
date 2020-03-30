@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/AbstractRepresentation.h"
+#include "../resqml2/PointSetRepresentation.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** A point set representation. */
-	class PointSetRepresentation : public RESQML2_NS::AbstractRepresentation
+	class PointSetRepresentation : public RESQML2_NS::PointSetRepresentation
 	{
 	private :
 		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
@@ -37,7 +37,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT PointSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT PointSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::PointSetRepresentation(partialObject) {}
 
 		PointSetRepresentation(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
@@ -57,12 +57,12 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		PointSetRepresentation(gsoap_resqml2_0_1::_resqml20__PointSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
+		PointSetRepresentation(gsoap_resqml2_0_1::_resqml20__PointSetRepresentation* fromGsoap) : RESQML2_NS::PointSetRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~PointSetRepresentation() {}
 
-		COMMON_NS::DataObjectReference getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
 		/**
 		 * Get the xyz point count in a given patch.
@@ -71,7 +71,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The xyz point count of patch.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const final;
 
 		/**
 		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
@@ -82,14 +82,14 @@ namespace RESQML2_0_1_NS
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be pre allocated.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Get the number of triangle patch
 		 *
 		 * @returns	The patch count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
 
 		/**
 		 * Push back a new patch of polylines
@@ -102,21 +102,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	localCrs	 	(Optional) The local CRS wher the points are given.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
-			unsigned int xyzPointCount, double * xyzPoints,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
-
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+			unsigned int xyzPointCount, double const * xyzPoints,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 	};
 }

@@ -23,19 +23,17 @@ under the License.
 
 #include "H5Tpublic.h"
 
-#include "StructuralOrganizationInterpretation.h"
+#include "../resqml2/StructuralOrganizationInterpretation.h"
 #include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* SealedSurfaceFrameworkRepresentation::XML_TAG = "SealedSurfaceFrameworkRepresentation";
-
 SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
-        StructuralOrganizationInterpretation* interp,
-        const std::string & guid,
-        const std::string & title)
+	RESQML2_NS::StructuralOrganizationInterpretation* interp,
+    const std::string & guid,
+    const std::string & title)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The structural organization interpretation cannot be null.");
@@ -67,7 +65,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
         gsoap_resqml2_0_1::resqml20__IdentityKind kind,
         unsigned int patchCount,
         unsigned int identicalNodesCount,
-        int * identicalNodes,
+        int const* identicalNodes,
 		EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (patchCount < 2) {
@@ -107,10 +105,10 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
 }
 
 void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
-        unsigned int contactIndex,
-        int * nodeIndicesOnSupportingRepresentation, unsigned int nodeCount,
-        AbstractRepresentation * supportingRepresentation,
-		EML2_NS::AbstractHdfProxy * proxy)
+    unsigned int contactIndex,
+    int const* nodeIndicesOnSupportingRepresentation, unsigned int nodeCount,
+	RESQML2_NS::AbstractRepresentation * supportingRepresentation,
+	EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (nodeIndicesOnSupportingRepresentation == nullptr) {
 		throw invalid_argument("The array of node indices cannot be null.");
@@ -164,28 +162,14 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
     xmlSupportingRepresentationNodes->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
     contactPatch->SupportingRepresentationNodes = xmlSupportingRepresentationNodes;
     // ************ HDF *************
-    hsize_t dim[1] = {nodeCount};
+    hsize_t dim = nodeCount;
     proxy->writeArrayNd(getHdfGroup(),
                         ossForHdf.str(), H5T_NATIVE_UINT,
                         nodeIndicesOnSupportingRepresentation,
-                        dim, 1);
+                        &dim, 1);
 
     // adding the contact patch to the contact representation
     contactRep->Contact.push_back(contactPatch);
-}
-
-std::string SealedSurfaceFrameworkRepresentation::getHdfProxyUuid() const
-{
-    string result;
-    _resqml20__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
-
-    if (!orgRep->SealedContactRepresentation.empty() && static_cast<resqml20__SealedContactRepresentationPart*>(orgRep->SealedContactRepresentation[0])->IdenticalNodeIndices != nullptr)
-    {
-        resqml20__SealedContactRepresentationPart *sealedContactRep = static_cast<resqml20__SealedContactRepresentationPart*>(orgRep->SealedContactRepresentation[0]);
-        result = static_cast<resqml20__IntegerHdf5Array *>(sealedContactRep->IdenticalNodeIndices)->Values->HdfProxy->UUID;
-    }
-
-    return result;
 }
 
 unsigned int SealedSurfaceFrameworkRepresentation::getContactCount() const

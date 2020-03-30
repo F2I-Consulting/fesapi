@@ -18,23 +18,20 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../common/AbstractObject.h"
-
-namespace RESQML2_NS
-{
-	class BoundaryFeatureInterpretation;
-}
+#include "../resqml2/WellboreMarker.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
+	class WellboreMarkerFrameRepresentation;
+
 	/**
 	 * Proxy class for a wellbore marker. This class is one of the only one to be a RESQML data
 	 * object which is not exported into a single file i.e. it is not a top level element.
 	 * Consequently its behaviour is slightly different than other class. Especially there is no
 	 * integration of the instances into an EPC document.
 	 */
-	class WellboreMarker : public COMMON_NS::AbstractObject
+	class WellboreMarker : public RESQML2_NS::WellboreMarker
 	{
 	public:
 
@@ -50,7 +47,7 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	title			   	The title to set to this wellbore marker. If empty then
 		 * 										\"unknown\" title will be set.
 		 */
-		DLL_IMPORT_OR_EXPORT WellboreMarker(class WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT WellboreMarker(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates an instance of this class in a gSOAP context.
@@ -66,24 +63,24 @@ namespace RESQML2_0_1_NS
 		 * 											then \"unknown\" title will be set.
 		 * @param 		  	geologicBoundaryKind	The type of the feature the marker intersects.
 		 */
-		DLL_IMPORT_OR_EXPORT WellboreMarker(class WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind);
+		DLL_IMPORT_OR_EXPORT WellboreMarker(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind);
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		WellboreMarker(gsoap_resqml2_0_1::resqml20__WellboreMarker* fromGsoap) : AbstractObject(fromGsoap)  {}
+		WellboreMarker(gsoap_resqml2_0_1::resqml20__WellboreMarker* fromGsoap) : RESQML2_NS::WellboreMarker(fromGsoap)  {}
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		DLL_IMPORT_OR_EXPORT ~WellboreMarker() {}
+		~WellboreMarker() {}
 
 		/**
 		 * Indicates if the marker is associated to a particular geologic boundary kind.
 		 *
 		 * @returns	True if the marker is associated to a particular geologic boundary kind, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasAGeologicBoundaryKind() const;
+		DLL_IMPORT_OR_EXPORT bool hasAGeologicBoundaryKind() const final;
 
 		/**
 		 * Gets the type of the intersected feature of the marker.
@@ -93,18 +90,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The geologic boundary kind associated to this marker.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind getGeologicBoundaryKind() const;
-
-		/** Gets the wellbore marker frame representation which contains this wellbore marker.
-		 *
-		 * @returns The wellbore marker frame representation which contains this wellbore marker frame, or @c nullptr if it fails.
-		 */
-		DLL_IMPORT_OR_EXPORT class WellboreMarkerFrameRepresentation const * getWellMarkerFrameRepresentation() const;
-
-		/** Gets the boundary feature interpretation linked to this well marker.
-		 * @returns The boundary feature interpretation linked to this well marker, or @c nullptr if it fails.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::BoundaryFeatureInterpretation* getBoundaryFeatureInterpretation() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind getGeologicBoundaryKind() const final;
 
 		/**
 		 * Gets the UUID of the boundary feature interpretation linked to this well marker. Especially
@@ -112,7 +98,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The boundary feature interpretation UUID, or empty string if it fails.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getBoundaryFeatureInterpretationUuid() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getBoundaryFeatureInterpretationDor() const final;
 
 		/**
 		 * Sets the boundary feature interpretation linked to this well marker.
@@ -122,15 +108,6 @@ namespace RESQML2_0_1_NS
 		 * @param [in]	interp	The boundary feature interpretation to link to this well marker. It
 		 * 						cannot be null.
 		 */
-		DLL_IMPORT_OR_EXPORT void setBoundaryFeatureInterpretation(RESQML2_NS::BoundaryFeatureInterpretation* interp);
-
-		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
-
-	private:
-		/** Loads target relationships */
-		void loadTargetRelationships();
+		DLL_IMPORT_OR_EXPORT void setBoundaryFeatureInterpretation(RESQML2_NS::BoundaryFeatureInterpretation* interp) final;
 	};
 }

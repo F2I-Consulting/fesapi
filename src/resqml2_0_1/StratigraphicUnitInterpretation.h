@@ -18,14 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "StratigraphicColumnRankInterpretation.h"
-#include "SealedVolumeFrameworkRepresentation.h"
+#include "../resqml2/StratigraphicUnitInterpretation.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** A stratigraphic unit interpretation. */
-	class StratigraphicUnitInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
+	class StratigraphicUnitInterpretation : public RESQML2_NS::StratigraphicUnitInterpretation
 	{
 	public:
 
@@ -36,7 +35,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT StratigraphicUnitInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT StratigraphicUnitInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::StratigraphicUnitInterpretation(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -46,14 +45,14 @@ namespace RESQML2_0_1_NS
 		 * 							be generated.
 		 * @param 		  	title  	A title for the instance to create.
 		 */
-		StratigraphicUnitInterpretation(class StratigraphicUnitFeature * feature, const std::string & guid, const std::string & title);
+		StratigraphicUnitInterpretation(RESQML2_NS::RockVolumeFeature * feature, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		StratigraphicUnitInterpretation(gsoap_resqml2_0_1::_resqml20__StratigraphicUnitInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
+		StratigraphicUnitInterpretation(gsoap_resqml2_0_1::_resqml20__StratigraphicUnitInterpretation* fromGsoap) : RESQML2_NS::StratigraphicUnitInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~StratigraphicUnitInterpretation() {}
@@ -63,7 +62,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	True if deposition mode, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasDepositionMode() const;
+		DLL_IMPORT_OR_EXPORT bool hasDepositionMode() const final;
 
 		/**
 		 * Get the deposition mode of the stratigraphic unit interpretation. You should verify its
@@ -71,20 +70,6 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The deposition mode.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__DepositionMode getDepositionMode() const;
-
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__DepositionMode getDepositionMode() const final;
 	};
 }

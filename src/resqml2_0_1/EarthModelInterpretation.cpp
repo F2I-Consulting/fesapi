@@ -20,20 +20,17 @@ under the License.
 
 #include <stdexcept>
 
-#include "OrganizationFeature.h"
-#include "StructuralOrganizationInterpretation.h"
-#include "StratigraphicColumn.h"
-#include "StratigraphicOccurrenceInterpretation.h"
-#include "RockFluidOrganizationInterpretation.h"
-#include "../tools/Misc.h"
+#include "../resqml2/Model.h"
+#include "../resqml2/StructuralOrganizationInterpretation.h"
+#include "../resqml2/StratigraphicColumn.h"
+#include "../resqml2/StratigraphicOccurrenceInterpretation.h"
+#include "../resqml2/RockFluidOrganizationInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* EarthModelInterpretation::XML_TAG = "EarthModelInterpretation";
-
-EarthModelInterpretation::EarthModelInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const string & title)
+EarthModelInterpretation::EarthModelInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const string & title)
 {
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREEarthModelInterpretation(orgFeat->getGsoapContext());
 	_resqml20__EarthModelInterpretation* interp = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1);
@@ -46,24 +43,28 @@ EarthModelInterpretation::EarthModelInterpretation(OrganizationFeature * orgFeat
 	setInterpretedFeature(orgFeat);
 }
 
-bool EarthModelInterpretation::hasStructuralOrganizationInterpretation() const
+unsigned int EarthModelInterpretation::getStructuralOrganizationInterpretationCount() const
 {
-	return static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure != nullptr;
+	return static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure != nullptr ? 1 : 0;
 }
 
-StructuralOrganizationInterpretation* EarthModelInterpretation::getStructuralOrganizationInterpertation() const
+COMMON_NS::DataObjectReference EarthModelInterpretation::getStructuralOrganizationInterpertationDor(unsigned int index) const
 {
-	if (!hasStructuralOrganizationInterpretation()) {
-		throw invalid_argument("There is no associated structural organization");
+	if (index >= getStructuralOrganizationInterpretationCount()) {
+		throw std::out_of_range("A RESQML 2.0.1 earth model interpretation can only have up to 1 structural organization interpretation.");
 	}
 
-	return repository->getDataObjectByUuid<StructuralOrganizationInterpretation>(static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure->UUID);
+	return COMMON_NS::DataObjectReference(static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure);
 }
 
-void EarthModelInterpretation::setStructuralOrganizationInterpretation(StructuralOrganizationInterpretation * structOrganization)
+void EarthModelInterpretation::pushBackStructuralOrganizationInterpretation(RESQML2_NS::StructuralOrganizationInterpretation * structOrganization)
 {
+	if (getStructuralOrganizationInterpretationCount() > 0) {
+		throw std::range_error("A RESQML 2.0.1 earth model interpretation can only have up to 1 structural organization interpretation.");
+	}
+
 	getRepository()->addRelationship(this, structOrganization);
-        
+
 	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure = structOrganization->newResqmlReference();
 }
 
@@ -72,20 +73,18 @@ bool EarthModelInterpretation::hasStratiColumn() const
 	return static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn != nullptr;
 }
 
-void EarthModelInterpretation::setStratiColumn(StratigraphicColumn * stratiColumn)
+void EarthModelInterpretation::setStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn)
 {
 	getRepository()->addRelationship(this, stratiColumn);
 
 	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn = stratiColumn->newResqmlReference();
 }
 
-StratigraphicColumn* EarthModelInterpretation::getStratiColumn() const
+COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiColumnDor() const
 {
-	if (!hasStratiColumn()) {
-		throw invalid_argument("There is no associated stratigraphic column");
-	}
-
-	return repository->getDataObjectByUuid<StratigraphicColumn>(static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn->UUID);
+	return hasStratiColumn()
+		? COMMON_NS::DataObjectReference(static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn)
+		: COMMON_NS::DataObjectReference();
 }
 
 unsigned int EarthModelInterpretation::getStratiOccurenceCount() const
@@ -98,71 +97,46 @@ unsigned int EarthModelInterpretation::getStratiOccurenceCount() const
 	return static_cast<unsigned int>(result);
 }
 
-StratigraphicOccurrenceInterpretation* EarthModelInterpretation::getStratiOccurence(unsigned int index) const
+COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiOccurenceDor(unsigned int index) const
 {
 	_resqml20__EarthModelInterpretation* earthModelInterpretation = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1);
 	if (index < earthModelInterpretation->StratigraphicOccurrences.size()) {
-		return static_cast<StratigraphicOccurrenceInterpretation*>(repository->getDataObjectByUuid(earthModelInterpretation->StratigraphicOccurrences[index]->UUID));
+		return COMMON_NS::DataObjectReference(earthModelInterpretation->StratigraphicOccurrences[index]);
 	}
 	else {
 		throw std::out_of_range("The strati occurence index is out of range.");
 	}
 }
 
-void EarthModelInterpretation::pushBackStratiOccurence(StratigraphicOccurrenceInterpretation * stratiOccurence)
+void EarthModelInterpretation::pushBackStratiOccurence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurence)
 {
 	getRepository()->addRelationship(this, stratiOccurence);
 		
 	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.push_back(stratiOccurence->newResqmlReference());
 }
 
-bool EarthModelInterpretation::hasRockFluidOrganizationInterpretation() const
+unsigned int EarthModelInterpretation::getRockFluidOrganizationInterpretationCount() const
 {
-	return static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid != nullptr;
+	return static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid != nullptr ? 1 : 0;
 }
 
-void EarthModelInterpretation::setRockFluidOrganizationInterpretation(class RockFluidOrganizationInterpretation* rockFluid)
+void EarthModelInterpretation::pushBackRockFluidOrganizationInterpretation(RESQML2_NS::RockFluidOrganizationInterpretation* rockFluid)
 {
+	if (getRockFluidOrganizationInterpretationCount() > 0) {
+		throw std::range_error("A RESQML 2.0.1 earth model interpretation can only have up to 1 rock fluid organization interpretation.");
+	}
+
 	getRepository()->addRelationship(this, rockFluid);
 
-	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid = rockFluid->newResqmlReference();
+	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure = rockFluid->newResqmlReference();
 }
 
-RockFluidOrganizationInterpretation* EarthModelInterpretation::getRockFluidOrganizationInterpretation() const
+COMMON_NS::DataObjectReference EarthModelInterpretation::getRockFluidOrganizationInterpretationDor(unsigned int index) const
 {
-	if (!hasRockFluidOrganizationInterpretation()) {
-		throw invalid_argument("There is no rock fluid organization");
+	if (index >= getRockFluidOrganizationInterpretationCount()) {
+		throw std::out_of_range("A RESQML 2.0.1 earth model interpretation can only have up to 1 rock fluid organization interpretation.");
 	}
 
-	return repository->getDataObjectByUuid<RockFluidOrganizationInterpretation>(static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid->UUID);
+	return COMMON_NS::DataObjectReference(static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid);
 }
 		
-void EarthModelInterpretation::loadTargetRelationships()
-{
-	AbstractFeatureInterpretation::loadTargetRelationships();
-
-	_resqml20__EarthModelInterpretation* interp = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1);
-
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = interp->Structure;
-	if (dor != nullptr) {
-		convertDorIntoRel<StructuralOrganizationInterpretation>(dor);
-	}
-
-	dor = interp->StratigraphicColumn;
-	if (dor != nullptr) {
-		convertDorIntoRel<StratigraphicColumn>(dor);
-	}
-
-	for (size_t i = 0; i < interp->StratigraphicOccurrences.size(); ++i)
-	{
-		dor = interp->StratigraphicOccurrences[i];
-		if (dor != nullptr) {
-			convertDorIntoRel<StratigraphicOccurrenceInterpretation>(dor);
-		}
-	}
-
-	dor = interp->Fluid;
-	if (dor != nullptr) {
-		convertDorIntoRel<RockFluidOrganizationInterpretation>(dor);
-	}
-}

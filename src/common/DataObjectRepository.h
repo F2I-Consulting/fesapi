@@ -39,6 +39,7 @@ namespace EML2_NS
 	class Activity;
 	class ActivityTemplate;
 	class PropertyKind;
+	class TimeSeries;
 }
 
 namespace RESQML2_NS
@@ -57,6 +58,7 @@ namespace RESQML2_NS
 	class ContinuousProperty;
 	class DiscreteProperty;
 	class DeviationSurveyRepresentation;
+	class EarthModelInterpretation;
 	class FaultInterpretation;
 	class GeobodyBoundaryInterpretation;
 	class GridConnectionSetRepresentation;
@@ -69,19 +71,33 @@ namespace RESQML2_NS
 	class LocalDepth3dCrs;
 	class LocalTime3dCrs;
 	class MdDatum;
+	class Model;
+	class NonSealedSurfaceFrameworkRepresentation;
 	class PlaneSetRepresentation;
+	class PointSetRepresentation;
 	class PolylineRepresentation;
+	class PolylineSetRepresentation;
 	class PropertySet;
 	class RepresentationSetRepresentation;
+	class RockFluidOrganizationInterpretation;
+	class RockFluidUnitInterpretation;
+	class RockVolumeFeature;
+	class SealedSurfaceFrameworkRepresentation;
+	class SealedVolumeFrameworkRepresentation;
 	class SeismicLineSetFeature;
+	class StratigraphicColumn;
+	class StratigraphicColumnRankInterpretation;
+	class StratigraphicOccurrenceInterpretation;
+	class StratigraphicUnitInterpretation;
 	class StringTableLookup;
+	class StructuralOrganizationInterpretation;
 	class SubRepresentation;
-	class TimeSeries;
 	class TriangulatedSetRepresentation;
 	class UnstructuredGridRepresentation;
 	class WellboreFeature;
 	class WellboreFrameRepresentation;
 	class WellboreInterpretation;
+	class WellboreMarkerFrameRepresentation;
 	class WellboreTrajectoryRepresentation;
 }
 
@@ -96,32 +112,15 @@ namespace RESQML2_0_1_NS
 	class GeobodyFeature;
 	class GeobodyInterpretation;
 	class Horizon;
-	class StratigraphicUnitFeature;
-	class PolylineSetRepresentation;
 	class TectonicBoundaryFeature;
 	class SeismicLatticeFeature;
-	class OrganizationFeature;
 	class GenericFeatureInterpretation;
-	class EarthModelInterpretation;
-	class StructuralOrganizationInterpretation;
-	class StratigraphicUnitInterpretation;
-	class StratigraphicColumn;
-	class StratigraphicColumnRankInterpretation;
-	class PointSetRepresentation;
-	class WellboreMarkerFrameRepresentation;
-	class NonSealedSurfaceFrameworkRepresentation;
-	class SealedSurfaceFrameworkRepresentation;
-	class SealedVolumeFrameworkRepresentation;
 	class PropertySet;
 	class PropertyKind;
 	class AbstractGridRepresentation;
-	class OrganizationFeature;
-	class StratigraphicOccurrenceInterpretation;
 	class FrontierFeature;
 	class FluidBoundaryFeature;
 	class BlockedWellboreRepresentation;
-	class RockFluidOrganizationInterpretation;
-	class RockFluidUnitInterpretation;
 	class RockFluidUnitFeature;
 }
 
@@ -474,7 +473,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the stratigraphic columns of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::StratigraphicColumn*> getStratigraphicColumnSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::StratigraphicColumn*> getStratigraphicColumnSet() const;
 
 		/**
 		 * Gets all the faults contained into this repository
@@ -496,7 +495,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the faults polyline set representations of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation *> getFaultPolylineSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineSetRepresentation *> getFaultPolylineSetRepSet() const;
 
 		/**
 		 * Gets all the individual representations of fractures which are associated to a polyline set
@@ -504,7 +503,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the fractures polyline set representations of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation *> getFracturePolylineSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineSetRepresentation *> getFracturePolylineSetRepSet() const;
 
 		/**
 		 * Gets all the individual representations of frontiers which are associated to a polyline set
@@ -512,7 +511,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the frontiers polyline set representations of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation *> getFrontierPolylineSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineSetRepresentation *> getFrontierPolylineSetRepSet() const;
 
 		/**
 		 * Gets all the individual representations of faults which are associated to a triangulated set
@@ -595,7 +594,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the horizons polyline set representations of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation *> getHorizonPolylineSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineSetRepresentation *> getHorizonPolylineSetRepSet() const;
 
 		/**
 		 * Gets all the individual representations of horizons which are associated to a triangulated set
@@ -627,7 +626,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the polyline set representations of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getAllPolylineSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineSetRepresentation*> getAllPolylineSetRepSet() const;
 
 		/**
 		 * Gets all the triangulated set representations of this repository which are neither horizon nor
@@ -789,7 +788,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the organization features of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::OrganizationFeature*> getOrganizationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::Model*> getModelSet() const;
 		
 		/**
 		 * Gets all the time series contained into this repository
@@ -797,7 +796,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the time series of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::TimeSeries*> getTimeSeriesSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<EML2_NS::TimeSeries*> getTimeSeriesSet() const;
 
 		/**
 		 * Gets all the sub-representations contained into this repository
@@ -834,7 +833,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all the point set representations of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PointSetRepresentation*> getPointSetRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PointSetRepresentation*> getPointSetRepresentationSet() const;
 
 		/**
 		 * Gets the point set representations count into this repository
@@ -855,7 +854,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the point set representation at @p index position into this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PointSetRepresentation* getPointSetRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::PointSetRepresentation* getPointSetRepresentation(unsigned int index) const;
 
 		/**
 		 * Gets all the HDF5 file proxies contained into this repository
@@ -1321,8 +1320,8 @@ namespace COMMON_NS
 		 * @returns		A pointer to the new MD datum.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::MdDatum* createMdDatum(const std::string & guid, const std::string & title,
-			RESQML2_NS::AbstractLocal3dCrs * locCrs, const gsoap_resqml2_0_1::resqml20__MdReference & originKind,
-			const double & referenceLocationOrdinal1, const double & referenceLocationOrdinal2, const double & referenceLocationOrdinal3);
+			RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_resqml2_0_1::resqml20__MdReference originKind,
+			double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3);
 
 		//************ FEATURE ***************
 
@@ -1423,9 +1422,9 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new seismic lattice.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::SeismicLatticeFeature* createSeismicLattice(const std::string & guid, const std::string & title,
-			const int & inlineIncrement, const int & crosslineIncrement,
-			const unsigned int & originInline, const unsigned int & originCrossline,
-			const unsigned int & inlineCount, const unsigned int & crosslineCount);
+			int inlineIncrement, int crosslineIncrement,
+			unsigned int originInline, unsigned int originCrossline,
+			unsigned int inlineCount, unsigned int crosslineCount);
 
 		/**
 		 * Creates a seismic line into this repository
@@ -1441,7 +1440,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new seismic lattice.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractSeismicLineFeature* createSeismicLine(const std::string & guid, const std::string & title,
-			const int & traceIndexIncrement, const unsigned int & firstTraceIndex, const unsigned int & traceCount);
+			int traceIndexIncrement, unsigned int firstTraceIndex, unsigned int traceCount);
 
 		/**
 		 * Creates a seismic line set into this repository
@@ -1472,7 +1471,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new stratigraphic unit.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::StratigraphicUnitFeature* createStratigraphicUnit(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockVolumeFeature* createRockVolumeFeature(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a structural model into this repository
@@ -1482,7 +1481,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new structural model.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::OrganizationFeature* createStructuralModel(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::Model* createStructuralModel(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a stratigraphic model into this repository
@@ -1492,7 +1491,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new stratigraphic model.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::OrganizationFeature* createStratigraphicModel(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::Model* createStratigraphicModel(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a rock fluid model into this repository
@@ -1502,7 +1501,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new rock fluid model.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::OrganizationFeature* createRockFluidModel(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::Model* createRockFluidModel(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates an earth model into this repository
@@ -1512,7 +1511,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new earth model.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::OrganizationFeature* createEarthModel(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::Model* createEarthModel(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a fluid boundary feature into this repository
@@ -1639,7 +1638,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new earth model interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::EarthModelInterpretation* createEarthModelInterpretation(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::EarthModelInterpretation* createEarthModelInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a structural organization interpretation ordered by age into this repository
@@ -1652,7 +1651,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new structural organization interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInAge(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a structural organization interpretation ordered by apparent depth into this repository
@@ -1665,7 +1664,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new structural organization interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInApparentDepth(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a structural organization interpretation ordered by measured depth into this repository
@@ -1678,7 +1677,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new structural organization interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInMeasuredDepth(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInMeasuredDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a rock fluid organization interpretation into this repository
@@ -1694,7 +1693,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new rock fluid organization interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::RockFluidOrganizationInterpretation* createRockFluidOrganizationInterpretation(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, RESQML2_0_1_NS::RockFluidUnitInterpretation * rockFluidUnitInterp);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockFluidOrganizationInterpretation* createRockFluidOrganizationInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterp);
 
 		/**
 		 * Creates a rock fluid unit interpretation into this repository
@@ -1707,7 +1706,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new rock fluid unit interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::RockFluidUnitInterpretation* createRockFluidUnitInterpretation(RESQML2_0_1_NS::RockFluidUnitFeature * rockFluidUnitFeature, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockFluidUnitInterpretation* createRockFluidUnitInterpretation(RESQML2_NS::RockVolumeFeature * rockFluidUnitFeature, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a geobody interpretation into this repository
@@ -1733,7 +1732,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new stratigraphic unit interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::StratigraphicUnitInterpretation* createStratigraphicUnitInterpretation(RESQML2_0_1_NS::StratigraphicUnitFeature * stratiUnitFeature, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicUnitInterpretation* createStratigraphicUnitInterpretation(RESQML2_NS::RockVolumeFeature * stratiUnitFeature, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates stratigraphic column into this repository
@@ -1745,7 +1744,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new stratigraphic column.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::StratigraphicColumn* createStratigraphicColumn(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicColumn* createStratigraphicColumn(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a stratigraphic column rank interpretation ordered by age into this repository
@@ -1759,7 +1758,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new stratigraphic column rank interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInAge(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank);
 
 		/**
 		 * Creates a stratigraphic column rank interpretation ordered by apparent depth into this repository
@@ -1773,7 +1772,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new stratigraphic column rank interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInApparentDepth(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank);
 
 		/**
 		 * Creates a stratigraphic occurrence interpretation ordered by age into this repository
@@ -1786,7 +1785,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new stratigraphic occurrence interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInAge(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a stratigraphic occurrence interpretation ordered by apparent depth into this repository
@@ -1799,7 +1798,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new stratigraphic occurrence interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInApparentDepth(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
 		//************ REPRESENTATION ********
 
@@ -1841,7 +1840,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new polyline set representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineSetRepresentation* createPolylineSetRepresentation(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::PolylineSetRepresentation* createPolylineSetRepresentation(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a polyline set representation into this repository
@@ -1856,7 +1855,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new polyline set representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineSetRepresentation* createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::PolylineSetRepresentation* createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
 		/**
@@ -1873,7 +1872,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new polyline set representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineSetRepresentation* createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::PolylineSetRepresentation* createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__LineRole roleKind);
 
 		/**
@@ -1886,7 +1885,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new point set representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PointSetRepresentation* createPointSetRepresentation(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::PointSetRepresentation* createPointSetRepresentation(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a point set representation into this repository
@@ -1899,7 +1898,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new point set representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PointSetRepresentation* createPointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::PointSetRepresentation* createPointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
 		/**
@@ -2093,7 +2092,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new wellbore marker frame representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj);
 		
 		/**
 		 * Creates a blocked wellbore representation into this repository
@@ -2154,8 +2153,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new non sealed surface framework representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation* createNonSealedSurfaceFrameworkRepresentation(
-			RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::NonSealedSurfaceFrameworkRepresentation* createNonSealedSurfaceFrameworkRepresentation(
+			RESQML2_NS::StructuralOrganizationInterpretation* interp,
 			const std::string & guid,
 			const std::string & title);
 
@@ -2170,8 +2169,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new sealed surface framework representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* createSealedSurfaceFrameworkRepresentation(
-			RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::SealedSurfaceFrameworkRepresentation* createSealedSurfaceFrameworkRepresentation(
+			RESQML2_NS::StructuralOrganizationInterpretation* interp,
 			const std::string & guid,
 			const std::string & title);
 
@@ -2188,11 +2187,11 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new sealed volume framework representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation* createSealedVolumeFrameworkRepresentation(
-			RESQML2_0_1_NS::StratigraphicColumnRankInterpretation* interp,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::SealedVolumeFrameworkRepresentation* createSealedVolumeFrameworkRepresentation(
+			RESQML2_NS::StratigraphicColumnRankInterpretation* interp,
 			const std::string & guid,
 			const std::string & title,
-			RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* ssf);
+			RESQML2_NS::SealedSurfaceFrameworkRepresentation* ssf);
 
 		/**
 		 * Creates a partial ijk grid representation into this repository
@@ -2435,7 +2434,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new time series.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::TimeSeries* createTimeSeries(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT EML2_NS::TimeSeries* createTimeSeries(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a string table lookup into this repository

@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/TimeSeries.h"
+#include "../eml2/TimeSeries.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** A time series. */
-	class TimeSeries : public RESQML2_NS::TimeSeries
+	class TimeSeries : public EML2_NS::TimeSeries
 	{
 	public:
 
@@ -36,9 +36,7 @@ namespace RESQML2_0_1_NS
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
 		DLL_IMPORT_OR_EXPORT TimeSeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
-			RESQML2_NS::TimeSeries(partialObject)
-		{
-		}
+			EML2_NS::TimeSeries(partialObject) {}
 
 		/**
 		 * Creates a time series
@@ -55,18 +53,64 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		TimeSeries(gsoap_resqml2_0_1::_resqml20__TimeSeries* fromGsoap) : RESQML2_NS::TimeSeries(fromGsoap) {}
+		TimeSeries(gsoap_resqml2_0_1::_resqml20__TimeSeries* fromGsoap) : EML2_NS::TimeSeries(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~TimeSeries() {}
 
-	protected:		
+		/**
+		 * Pushes back an timestamp into this time series.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @param 	timestamp	The timestamp to push back.
+		 */
+		DLL_IMPORT_OR_EXPORT void pushBackTimestamp(const tm & timestamp) final;
+		
+		/**
+		 * Gets the index of a given timestamp in this time series.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p timestamp has not been found in this time series.
+		 *
+		 * @param 	timestamp	The timestamp we look for.
+		 *
+		 * @returns	The index of @p timestamp in this time series.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(time_t timestamp) const final;
 
 		/**
-		 * Gets specialized gsoap proxy
+		 * Gets the index of a given timestamp in this time series.
 		 *
-		 * @returns	Null if it fails, else the specialized gsoap proxy.
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p timestamp has not been found in this time series.
+		 *
+		 * @param 	timestamp	The timestamp we look for.
+		 *
+		 * @returns	The index of @p timestamp in this time series.
 		 */
-		gsoap_resqml2_0_1::_resqml20__TimeSeries* getSpecializedGsoapProxy() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(const tm & timestamp) const final;
+
+		/**
+		 * Get the count of timestamps in this time series.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	The timestamp count.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getTimestampCount() const final;
+
+		/**
+		 * Gets a timestamp as a time structure at a particular index of this time series. It allows to
+		 * read dates from 1900-01-01T00:00:00.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the timestamp we look for.
+		 *
+		 * @returns	The timestamp at position @p index.
+		 */
+		DLL_IMPORT_OR_EXPORT tm getTimestampAsTimeStructure(unsigned int index) const final;
 	};
 }

@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractTechnicalFeature.h"
+#include "../resqml2/AbstractTechnicalFeature.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** A frontier feature. */
-	class FrontierFeature : public AbstractTechnicalFeature
+	class FrontierFeature : public RESQML2_NS::AbstractTechnicalFeature
 	{
 	public:
 
@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT FrontierFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractTechnicalFeature(partialObject) {}
+		DLL_IMPORT_OR_EXPORT FrontierFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractTechnicalFeature(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in an EPC document.
@@ -51,7 +51,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		FrontierFeature(gsoap_resqml2_0_1::_resqml20__FrontierFeature* fromGsoap): AbstractTechnicalFeature(fromGsoap) {}
+		FrontierFeature(gsoap_resqml2_0_1::_resqml20__FrontierFeature* fromGsoap): RESQML2_NS::AbstractTechnicalFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~FrontierFeature() {}

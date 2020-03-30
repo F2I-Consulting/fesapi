@@ -23,6 +23,7 @@ under the License.
 namespace EML2_NS
 {
 	class PropertyKind;
+	class TimeSeries;
 }
 
 namespace RESQML2_NS
@@ -180,7 +181,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	ts	The time series to associate to this property
 		 */
-		DLL_IMPORT_OR_EXPORT void setTimeSeries(class TimeSeries * ts);
+		DLL_IMPORT_OR_EXPORT void setTimeSeries(EML2_NS::TimeSeries * ts);
 
 		/**
 		 * Gets the time series which is associated to this property
@@ -188,7 +189,7 @@ namespace RESQML2_NS
 		 * @returns	Null pointer if no time series is associated to this property. Otherwise returns the
 		 * 			associated time series.
 		 */
-		DLL_IMPORT_OR_EXPORT TimeSeries* getTimeSeries() const;
+		DLL_IMPORT_OR_EXPORT EML2_NS::TimeSeries* getTimeSeries() const;
 
 		/**
 		 * Gets the data object reference of the time series associated to this property
@@ -207,7 +208,7 @@ namespace RESQML2_NS
 		 * @param [in]	timeIndex	The index of the timestamp of the property in the time series.
 		 * @param [in]	ts		 	The time series which contains the timestamp of this property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setTimeIndex(unsigned int timeIndex, class TimeSeries* ts);
+		DLL_IMPORT_OR_EXPORT void setTimeIndex(unsigned int timeIndex, EML2_NS::TimeSeries* ts);
 
 		/**
 		 * Sets the time step of this property. The time step indicates that the property is the output

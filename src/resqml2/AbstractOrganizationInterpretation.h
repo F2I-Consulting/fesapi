@@ -22,8 +22,10 @@ under the License.
 
 namespace RESQML2_NS
 {
+	class Model;
+
 	/**
-	* This class defines the behaviour of all Resqml2 organizations
+	* This class defines the behaviour of all RESQML2 organizations
 	*/
 	class AbstractOrganizationInterpretation : public AbstractFeatureInterpretation
 	{

@@ -32,6 +32,7 @@ under the License.
 #include "../eml2/AbstractHdfProxy.h"
 
 #include "../resqml2_0_1/WellboreMarker.h"
+#include "../resqml2_2/WellboreMarker.h"
 #include "../resqml2/AbstractProperty.h"
 
 #include "../witsml2_0/Log.h"
@@ -158,7 +159,9 @@ void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64
 	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
 	{
 		for (size_t i = 0; i < it->second.size(); ++i) {
-			if (!it->second[i]->isPartial() && dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(it->second[i]) == nullptr &&
+			if (!it->second[i]->isPartial() &&
+				dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(it->second[i]) == nullptr &&
+				dynamic_cast<RESQML2_2_NS::WellboreMarker*>(it->second[i]) == nullptr &&
 				(dynamic_cast<WITSML2_0_NS::ChannelSet*>(it->second[i]) == nullptr || static_cast<WITSML2_0_NS::ChannelSet*>(it->second[i])->getLogs().empty()) &&
 				(dynamic_cast<WITSML2_0_NS::Channel*>(it->second[i]) == nullptr || static_cast<WITSML2_0_NS::Channel*>(it->second[i])->getChannelSets().empty())) {
 				// Dataobject

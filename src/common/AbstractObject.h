@@ -196,6 +196,15 @@ namespace COMMON_NS
 		void readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const;
 
 		/**
+		 * Read an input array which come from XML (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in,out]	arrayInput 	If non-null, the array input.
+		 * @param [in,out]	arrayOutput	If non-null, the array output.
+		 */
+		void readArrayNdOfUIntValues(gsoap_eml2_3::eml23__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const;
+
+		/**
 		 * Get the count of item in an array of integer
 		 *
 		 * @param [in,out]	arrayInput	The array of integer.
@@ -203,6 +212,15 @@ namespace COMMON_NS
 		 * @returns	The count of item in the array of integer.
 		 */
 		ULONG64 getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const;
+
+		/**
+		 * Get the count of item in an array of integer
+		 *
+		 * @param [in,out]	arrayInput	The array of integer.
+		 *
+		 * @returns	The count of item in the array of integer.
+		 */
+		ULONG64 getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractIntegerArray * arrayInput) const;
 
 		/**
 		 * Converts a data object reference into a data object repository relationship.
@@ -611,6 +629,13 @@ namespace COMMON_NS
 		 * @returns	A pointer to the EML2.1 gSOAP proxy.
 		 */
 		gsoap_eml2_1::eml21__AbstractObject* getEml21GsoapProxy() const { return gsoapProxy2_1; }
+
+		/**
+		 * Get the EML2.3 gSOAP proxy which is wrapped by this entity
+		 *
+		 * @returns	A pointer to the EML2.3 gSOAP proxy.
+		 */
+		gsoap_eml2_3::eml23__AbstractObject* getEml23GsoapProxy() const { return gsoapProxy2_3; }
 
 		/**
 		 * Get the gSOAP context where the underlying gSOAP proxy is defined

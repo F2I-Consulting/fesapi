@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractTechnicalFeature.h"
+#include "../resqml2/AbstractTechnicalFeature.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** A seismic lattice feature. */
-	class SeismicLatticeFeature : public AbstractTechnicalFeature
+	class SeismicLatticeFeature : public RESQML2_NS::AbstractTechnicalFeature
 	{
 	public:
 
@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT SeismicLatticeFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractTechnicalFeature(partialObject) {}
+		DLL_IMPORT_OR_EXPORT SeismicLatticeFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractTechnicalFeature(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -70,7 +70,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		SeismicLatticeFeature(gsoap_resqml2_0_1::_resqml20__SeismicLatticeFeature* fromGsoap): AbstractTechnicalFeature(fromGsoap) {}
+		SeismicLatticeFeature(gsoap_resqml2_0_1::_resqml20__SeismicLatticeFeature* fromGsoap): RESQML2_NS::AbstractTechnicalFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
 		~SeismicLatticeFeature() {}

@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "WellboreFrameRepresentation.h"
+#include "../resqml2/WellboreMarkerFrameRepresentation.h"
 
 #include "WellboreMarker.h"
 
@@ -26,7 +26,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** Proxy class for a wellbore marker frame representation. */
-	class WellboreMarkerFrameRepresentation : public WellboreFrameRepresentation
+	class WellboreMarkerFrameRepresentation : public RESQML2_NS::WellboreMarkerFrameRepresentation
 	{
 	public:
 
@@ -36,9 +36,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT WellboreMarkerFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			WellboreFrameRepresentation(partialObject)
-		{
-		}
+			RESQML2_NS::WellboreMarkerFrameRepresentation(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -60,7 +58,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		WellboreMarkerFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreMarkerFrameRepresentation* fromGsoap);
+		WellboreMarkerFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreMarkerFrameRepresentation* fromGsoap) : RESQML2_NS::WellboreMarkerFrameRepresentation(fromGsoap) {}
 
 		/** Cleans the owned markers. */
 		~WellboreMarkerFrameRepresentation() {}
@@ -70,15 +68,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The wellbore marker count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getWellboreMarkerCount();
-
-		/**
-		 * Get all the wellbore markers of this wellbore marker frame representation.
-		 *
-		 * @returns	A vector of pointers to all the wellbore markers of this wellbore marker frame
-		 * 			representation.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<class WellboreMarker *> getWellboreMarkerSet() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getWellboreMarkerCount() final;
 
 		/**
 		 * Sets stratigraphic occurrence interpretation associated to this wellbore marker frame
@@ -88,7 +78,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in]	stratiOccurenceInterp	The stratigraphic occurrence interpretation to set.
 		 */
-		DLL_IMPORT_OR_EXPORT void setStratigraphicOccurrenceInterpretation(class StratigraphicOccurrenceInterpretation * stratiOccurenceInterp);
+		DLL_IMPORT_OR_EXPORT void setStratigraphicOccurrenceInterpretation(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurenceInterp) final;
 
 		/**
 		 * Sets the correspondence between the intervals of this wellbore marker frame representation
@@ -113,21 +103,14 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	proxy				 	The HDF proxy where the numerical values (indices)
 		 * 											are stored.
 		 */
-		DLL_IMPORT_OR_EXPORT void setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, unsigned int nullValue, class StratigraphicOccurrenceInterpretation* stratiOccurenceInterp, EML2_NS::AbstractHdfProxy* proxy);
+		DLL_IMPORT_OR_EXPORT void setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, RESQML2_NS::StratigraphicOccurrenceInterpretation* stratiOccurenceInterp, EML2_NS::AbstractHdfProxy* proxy) final;
 
 		/** A stratigraphic occurrence interpretation*. */
-		DLL_IMPORT_OR_EXPORT class StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation();
-
-		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
-
-	protected:
-		/** Loads target relationships */
-		void loadTargetRelationships();
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratigraphicOccurrenceInterpretationDor() const final;
 
 	private:
+
+		void loadTargetRelationships() final;
 
 		/**
 		 * Pushes back a new WellboreFeature marker to this WellboreFeature marker frame. One
@@ -135,7 +118,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	marker	If non-null, the marker.
 		 */
-		void pushBackNewWellboreMarker(class WellboreMarker * marker);
+		void pushBackNewWellboreMarker(RESQML2_0_1_NS::WellboreMarker * marker);
 
 		/**
 		 * Wellbore marker
@@ -146,7 +129,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A friend.
 		 */
-		friend WellboreMarker::WellboreMarker(class WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title);
+		friend WellboreMarker::WellboreMarker(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title);
 
 		/**
 		 * Wellbore marker
@@ -158,6 +141,6 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A friend.
 		 */
-		friend WellboreMarker::WellboreMarker(class WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind);
+		friend WellboreMarker::WellboreMarker(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind);
 	};
 }

@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "../resqml2/EarthModelInterpretation.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** This class is a container for other organizations that are consistent to each others. */
-	class EarthModelInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
+	class EarthModelInterpretation : public RESQML2_NS::EarthModelInterpretation
 	{
 	public:
 
@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT EarthModelInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT EarthModelInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::EarthModelInterpretation(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -45,14 +45,14 @@ namespace RESQML2_0_1_NS
 		 * 							be generated.
 		 * @param 		  	title  	A title for the instance to create.
 		 */
-		EarthModelInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
+		EarthModelInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		EarthModelInterpretation(gsoap_resqml2_0_1::_resqml20__EarthModelInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
+		EarthModelInterpretation(gsoap_resqml2_0_1::_resqml20__EarthModelInterpretation* fromGsoap) : RESQML2_NS::EarthModelInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~EarthModelInterpretation() {}
@@ -60,19 +60,19 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Structural
 		 *
-		 * @returns	True if structural organization interpretation, false if not.
+		 * @returns	The structural organization interpretation count.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasStructuralOrganizationInterpretation() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getStructuralOrganizationInterpretationCount() const final;
 
 		/** A structural organization interpretation*. */
-		DLL_IMPORT_OR_EXPORT class StructuralOrganizationInterpretation* getStructuralOrganizationInterpertation() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStructuralOrganizationInterpertationDor(unsigned int index) const final;
 
 		/**
-		 * Sets structural organization interpretation
+		 * Pushes back structural organization interpretation
 		 *
 		 * @param [in,out]	structOrganization	If non-null, the structure organization.
 		 */
-		DLL_IMPORT_OR_EXPORT void setStructuralOrganizationInterpretation(class StructuralOrganizationInterpretation * structOrganization);
+		DLL_IMPORT_OR_EXPORT void pushBackStructuralOrganizationInterpretation(RESQML2_NS::StructuralOrganizationInterpretation * structOrganization) final;
 
 		//Strati column
 
@@ -81,20 +81,20 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	True if a strati column is associated to this earth model interpretation elsa false.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasStratiColumn() const;
+		DLL_IMPORT_OR_EXPORT bool hasStratiColumn() const final;
 
 		/**
 		 * Sets strati column
 		 *
 		 * @param [in,out]	stratiColumn	If non-null, the strati column.
 		 */
-		DLL_IMPORT_OR_EXPORT void setStratiColumn(class StratigraphicColumn * stratiColumn);
+		DLL_IMPORT_OR_EXPORT void setStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn) final;
 
 		/**
 		 * Get the strati column associated to this earth model interpretation. Throw an exception if
 		 * there is no strati column associated. Check with hasStratiColumn().
 		 */
-		DLL_IMPORT_OR_EXPORT class StratigraphicColumn* getStratiColumn() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiColumnDor() const final;
 
 		/**
 		 * Strati occurences
@@ -104,48 +104,30 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT unsigned int getStratiOccurenceCount() const;
 
 		/** A stratigraphic occurrence interpretation*. */
-		DLL_IMPORT_OR_EXPORT class StratigraphicOccurrenceInterpretation* getStratiOccurence(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiOccurenceDor(unsigned int index) const final;
 
 		/**
 		 * Pushes a back strati occurence
 		 *
 		 * @param [in,out]	stratiOccurence	If non-null, the strati occurence.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackStratiOccurence(class StratigraphicOccurrenceInterpretation * stratiOccurence);
+		DLL_IMPORT_OR_EXPORT void pushBackStratiOccurence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurence) final;
 
 		/**
 		 * Rock Fluid
 		 *
-		 * @returns	True if rock fluid organization interpretation, false if not.
+		 * @returns	The Rock Fluid organization count.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasRockFluidOrganizationInterpretation() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getRockFluidOrganizationInterpretationCount() const final;
 
 		/**
-		 * Sets rock fluid organization interpretation
+		 * Pushes back rock fluid organization interpretation
 		 *
 		 * @param [in,out]	rockFluid	If non-null, the rock fluid.
 		 */
-		DLL_IMPORT_OR_EXPORT void setRockFluidOrganizationInterpretation(class RockFluidOrganizationInterpretation* rockFluid);
+		DLL_IMPORT_OR_EXPORT void pushBackRockFluidOrganizationInterpretation(RESQML2_NS::RockFluidOrganizationInterpretation* rockFluid) final;
 
 		/** A rock fluid organization interpretation*. */
-		DLL_IMPORT_OR_EXPORT class RockFluidOrganizationInterpretation* getRockFluidOrganizationInterpretation() const;
-
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
-
-    private:
-		/** Loads target relationships */
-		void loadTargetRelationships();
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getRockFluidOrganizationInterpretationDor(unsigned int index) const final;
 	};
 }
