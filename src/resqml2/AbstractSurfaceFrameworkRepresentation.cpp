@@ -36,6 +36,13 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	unsigned int contactCount, int const* contactIndices,
 	EML2_NS::AbstractHdfProxy * proxy)
 {
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+
 	ostringstream ossForHdfContactRepresentations;
 	if (gsoapProxy2_0_1 != nullptr) {
 		resqml20__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml20__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
@@ -88,6 +95,13 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	unsigned int contactCount, int const* contactIndices,
 	unsigned int identicalNodesCount, int const* identicalNodesIndexes, EML2_NS::AbstractHdfProxy * proxy)
 {
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+
 	ostringstream ossForHdfContactRepresentations;
 	ostringstream ossForHdfIdenticalNodes;
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -190,7 +204,7 @@ gsoap_resqml2_0_1::resqml20__ContactIdentity* AbstractSurfaceFrameworkRepresenta
 	resqml20__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml20__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	if (ciIndex >= orgRep->ContactIdentity.size()) {
-		throw range_error("The index of the contact identity is out of range.");
+		throw out_of_range("The index of the contact identity is out of range.");
 	}
 
 	return orgRep->ContactIdentity[ciIndex];
@@ -201,7 +215,7 @@ gsoap_eml2_3::resqml22__ContactIdentity* AbstractSurfaceFrameworkRepresentation:
 	resqml22__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml22__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_3);
 
 	if (ciIndex >= orgRep->ContactIdentity.size()) {
-		throw range_error("The index of the contact identity is out of range.");
+		throw out_of_range("The index of the contact identity is out of range.");
 	}
 
 	return orgRep->ContactIdentity[ciIndex];

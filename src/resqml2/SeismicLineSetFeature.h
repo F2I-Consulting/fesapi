@@ -23,27 +23,21 @@ under the License.
 /** . */
 namespace RESQML2_NS
 {
-	/** A seismic line set feature. */
+	/**
+	 * Frox class for a seismic line set feature. It is an unordered set of several seismic lines.
+	 * Generally, it has no direct interpretation or representation.
+	 */
 	class SeismicLineSetFeature : public AbstractTechnicalFeature
 	{
 	public:
 
-		/** Destructor does nothing since the memory is manged by the gsoap context. */
+		/** Destructor does nothing since the memory is manged by the gSOAP context. */
 		virtual ~SeismicLineSetFeature() {}
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 
 	protected:
 

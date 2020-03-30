@@ -33,47 +33,54 @@ namespace RESQML2_NS
 	{
 	public:
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~StratigraphicOccurrenceInterpretation() {}
 
 		/**
-		 * Sets stratigraphic column rank interpretation
+		 * Sets the stratigraphic column rank interpretation this stratigraphic occurrence
+		 * interpretation is an occurrence of.
 		 *
-		 * @param [in,out]	stratiColumnRankInterp	If non-null, the strati column rank interp.
+		 * @exception	std::invalid_argument	If @p stratiColumnRankInterp is @c nullptr.
+		 *
+		 * @param [in]	stratiColumnRankInterp	The stratigraphic column rank interpretation this
+		 * 										stratigraphic occurrence interpretation is an occurrence
+		 * 										of.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setStratigraphicColumnRankInterpretation(StratigraphicColumnRankInterpretation * stratiColumnRankInterp) = 0;
 
-		/** A stratigraphic column rank interpretation*. */
+		/**
+		 * Gets the stratigraphic column rank interpretation this stratigraphic occurrence
+		 * interpretation is an occurrence of.
+		 *
+		 * @returns	@c nullptr if no stratigraphic column rank interpretation is associated to this
+		 * 			stratigraphic occurrence interpretation, else the associated stratigraphic column
+		 * 			rank interpretation.
+		 */
 		DLL_IMPORT_OR_EXPORT StratigraphicColumnRankInterpretation * getStratigraphicColumnRankInterpretation() const;
 
 		/**
-		 * Get all the stratigraphic occurence interpretations associated with this
-		 * StratigraphicColumnRankInterpretation.
+		 * Gets all the wellbore marker frame representations associated with this stratigraphic
+		 * occurrence interpretation.
 		 *
-		 * @returns	Null if it fails, else the wellbore marker frame representation set.
+		 * @returns	A vector of pointer to all the wellbore marker frame representations associated with
+		 * 			this stratigraphic occurrence interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<WellboreMarkerFrameRepresentation *> getWellboreMarkerFrameRepresentationSet() const;
 
 		/**
-		 * Gets stratigraphic column rank interpretation uuid
+		 * Gets the data object reference of the stratigraphic column rank interpretation this
+		 * stratigraphic occurrence interpretation is an occurrence of.
 		 *
-		 * @returns	The stratigraphic column rank interpretation uuid.
+		 * @returns	Empty data object reference if no stratigraphic column rank interpretation is
+		 * 			associated to this stratigraphic occurrence interpretation, else the data object
+		 * 			reference of the associated stratigraphic column rank interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStratigraphicColumnRankInterpretationDor() const = 0;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 
 	protected:
 

@@ -34,7 +34,7 @@ unsigned int AbstractStratigraphicOrganizationInterpretation::getGridRepresentat
 	const size_t count = getGridRepresentations().size();
 
 	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("Too much associated grids");
+		throw range_error("Too much associated grids");
 	}
 
 	return static_cast<unsigned int>(count);

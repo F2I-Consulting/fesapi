@@ -25,28 +25,44 @@ namespace RESQML2_NS
 {
 	class SeismicLineSetFeature;
 
-	/** A seismic line feature. */
+	/**
+	 * Proxy class for an abstract seismic line feature. Defined by one lateral dimension: trace
+	 * (lateral). Seismic trace of the 3D seismic survey. To specify its location, the seismic
+	 * feature can be associated with the seismic coordinates of the points of a representation.
+	 */
 	class AbstractSeismicLineFeature : public AbstractTechnicalFeature
 	{
 	public:
-		/** Destructor does nothing since the memory is manged by the gsoap context. */
+		/** Destructor does nothing since the memory is manged by the gSOAP context. */
 		virtual ~AbstractSeismicLineFeature() {}
 
 		/**
-		 * Sets seismic line set
+		 * Sets the seismic line set this seismic line belongs to.
 		 *
-		 * @param [in,out]	seisLineSet	If non-null, set the seis line belongs to.
+		 * @exception	std::invalid_argument	If @p seisLineSet is @c nullptr.
+		 *
+		 * @param [in]	seisLineSet	The seismic line set this seismic line belongs to.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setSeismicLineSet(SeismicLineSetFeature * seisLineSet) = 0;
 
-		/** A seismic line set feature*. */
+		/**
+		 * Gets the seismic line set this seismic line belongs to.
+		 *
+		 * @returns	@c nullptr if this seismic line does not belong to a seismic line set, else the
+		 * 			seismic line set it belongs to.
+		 */
 		DLL_IMPORT_OR_EXPORT SeismicLineSetFeature* getSeismicLineSet() const;
 
-		/** A DOR to the seismic line set feature*. */
+		/**
+		 * Gets the data object reference of the seismic line set this seismic line belongs to.
+		 *
+		 * @returns	Empty data object reference	if this seismic line does not belong to a seismic line
+		 * 			set, else the data object reference of the seismic line set it belongs to.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSeismicLineSetDor() const = 0;
 
 		/**
-		 * Get the total count of traces in this seismic line.
+		 * Gets the total count of traces in this seismic line.
 		 *
 		 * @returns	The trace count.
 		 */

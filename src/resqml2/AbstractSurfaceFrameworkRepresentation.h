@@ -38,16 +38,25 @@ namespace RESQML2_NS
 	{
 	public:
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~AbstractSurfaceFrameworkRepresentation() {}
 
 		/**
-		 * Push back a contact identity in the structural framework with implicit identical nodes
+		 * Pushes back a contact identity in this structural framework with implicit identical nodes.
 		 *
-		 * @param 		  	kind		  	Identity kind.
-		 * @param 		  	contactCount  	The number of sealed contacts involved within the identity.
-		 * @param [in,out]	contactIndices	The sealed contacts involved within the identity.
-		 * @param [in,out]	proxy		  	The hdf proxy.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 * @exception	std::logic_error	 	If the RESQML version is unknown.
+		 *
+		 * @param 		  	kind		  	The identity kind (colocation, previous colocation,
+		 * 									equivalence or previous equivalence).
+		 * @param 		  	contactCount  	The number of sealed contact representations involved within
+		 * 									the identity.
+		 * @param 		  	contactIndices	The indices of the sealed contact representations involved
+		 * 									within the identity. Count is @p contactCount.
+		 * @param [in,out]	proxy		  	The HDF proxy where to write the @p contactIndices values. Id
+		 * 									f @c nullptr, then a default HDF proxy must be defined in the
+		 * 									repository.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackContactIdentity(
 			gsoap_resqml2_0_1::resqml20__IdentityKind kind,
@@ -55,15 +64,28 @@ namespace RESQML2_NS
 			EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
-		 * Push back a contact identity in the structural framework
+		 * Push back a contact identity in this structural framework.
 		 *
-		 * @param 		  	kind				 	Identity kind.
-		 * @param 		  	contactCount		 	The number of sealed contacts involved within the
-		 * 											identity.
-		 * @param [in,out]	contactIndices		 	The sealed contacts involved within the identity.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 * @exception	std::logic_error	 	If the RESQML version is unknown.
+		 *
+		 * @param 		  	kind				 	The identity kind (colocation, previous colocation,
+		 * 											equivalence or previous equivalence).
+		 * @param 		  	contactCount		 	The number of sealed contact representations involved
+		 * 											within the identity.
+		 * @param 		  	contactIndices		 	The indices of the sealed contact representations
+		 * 												involved within the identity. Count is @p
+		 * 												contactCount.
 		 * @param 		  	identicalNodesCount  	The number of identical nodes.
-		 * @param [in,out]	identicalNodesIndexes	The indices of the identical nodes.
-		 * @param [in,out]	proxy				 	The hdf proxy.
+		 * @param 		  	identicalNodesIndexes	Indicates which nodes (identified by their common
+		 * 											index in all contact representations) of the contact
+		 * 											representations are identical. Count is @p
+		 * 											identicalNodesCount.
+		 * @param [in,out]	proxy				 	The HDF proxy where to write the @p contactIndices
+		 * 											and @p identicalNodesIndexes values. Id f @c nullptr,
+		 * 											then a default HDF proxy must be defined in the
+		 * 											repository.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackContactIdentity(
 			gsoap_resqml2_0_1::resqml20__IdentityKind kind,
@@ -72,50 +94,63 @@ namespace RESQML2_NS
 			EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
-		 * Get the count of contacts in this framework.
+		 * Gets the count of contacts in this framework.
+		 *
+		 * @exception	std::range_error	If the count of contacts is strictly greater than unsigned
+		 * 									int max.
 		 *
 		 * @returns	The count of contacts in this framework.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getContactCount() const = 0;
 
 		/**
-		 * Get the count of contact identity in this framework.
+		 * Gets the count of contact identities in this framework.
 		 *
-		 * @returns	The count of contact identity in this framework.
+		 * @exception	std::range_error	If the count of contacts identities is strictly greater than
+		 * 									unsigned int max.
+		 *
+		 * @returns	The count of contact identities in this framework.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getContactIdentityCount() const;
 
 		/**
-		 * Get the kind of a contact identity located at a particular index.
+		 * Gets the kind of a contact identity located at a particular index.
 		 *
-		 * @param 	ciIndex	The index of the contact identity in the contact identity list. It must be in
-		 * 					the interval [0..getContactIdentityCount()[.
+		 * @exception	std::out_of_range	If @p ciIndex is out of range.
+		 * @exception	std::logic_error 	If the RESQML version is unknown.
 		 *
-		 * @returns	The kind of the contact identity located at a particular index.
+		 * @param 	ciIndex	Zero-based index of the contact identity in the contact identity list.
+		 *
+		 * @returns	The kind of the contact identity at position @p ciIndex in the contact identity list.
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__IdentityKind getContactIdentityKind(unsigned int ciIndex) const;
 
 		/**
-		 * Get the count of contact of a particular contact identity.
+		 * Gets the count of contacts of a particular contact identity.
 		 *
-		 * @param 	ciIndex	The index of the contact identity in the contact identity list. It must be in
-		 * 					the interval [0..getContactIdentityCount()[.
+		 * @exception	std::out_of_range	If @p ciIndex is out of range.
+		 * @exception	std::range_error 	If the count of contacts is strictly greater than unsigned
+		 * 									int max.
+		 * @exception	std::logic_error 	If the RESQML version is unknown.
 		 *
-		 * @returns	The count of contact of a particular contact identity.
+		 * @param 	ciIndex	Zero-based index of the contact identity in the contact identity list.
+		 *
+		 * @returns	The count of contacts of the contact identity at position @p ciIndex.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getContactCountInContactIdentity(unsigned int ciIndex) const;
 
 		/**
-		 * Get the contact indices of a particular contact identity. The returned indices are in the
-		 * interval [0..getContactCount()[
+		 * Gets the contact indices of a particular contact identity. The returned indices are in the
+		 * interval <tt>[0..</tt>getContactCount()<tt>[</tt>.
 		 *
-		 * @param 		  	ciIndex			 	The index of the contact identity in the contact identity
-		 * 										list. It must be in the interval
-		 * 										[0..getContactIdentityCount()[.
-		 * @param [in,out]	contactRepIndices	This array must be preallocated with
-		 * 										getContactCountOfContactIdentity(). It won't be deleted
-		 * 										by fesapi. It will be filled in with the desired contact
-		 * 										rep indices.
+		 * @exception	std::out_of_range	If @p ciIndex is out of range.
+		 * @exception	std::logic_error 	If the RESQML version is unknown.
+		 *
+		 * @param 	   	ciIndex			 	Zero-based index of the contact identity in the contact
+		 * 									identity list.
+		 * @param [out]	contactRepIndices	An array to receive contact indices. It must be preallocated
+		 * 									with getContactCountInContactIdentity(). It won't be deleted
+		 * 									by fesapi.
 		 */
 		DLL_IMPORT_OR_EXPORT void getContactIndices(unsigned int ciIndex, unsigned int * contactRepIndices) const;
 

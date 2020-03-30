@@ -23,7 +23,13 @@ under the License.
 
 namespace RESQML2_NS
 {
-	/** An abstract stratigraphic organization interpretation. */
+	/**
+	 * An abstract stratigraphic organization interpretation is the main class that defines the
+	 * relationships between the stratigraphic units and provides the stratigraphic hierarchy of the
+	 * earth. BUSINESS RULE: A stratigraphic organization must be in a ranked order from a lower
+	 * rank to an upper rank. For example, it is possible to find previous unit containment
+	 * relationships between several ranks.
+	 */
 	class AbstractStratigraphicOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
 	protected:
@@ -50,34 +56,51 @@ namespace RESQML2_NS
 
 	public:
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~AbstractStratigraphicOrganizationInterpretation() {}
 
 		/**
-		 * Gets grid representations
+		 * Gets the grid representations associated to this stratigraphic organization interpretation.
 		 *
-		 * @returns	Null if it fails, else the grid representations.
+		 * @returns	A vector of pointers to all the grid representations associated to this stratigraphic
+		 * 			organization interpretation.
 		 */
 		std::vector<AbstractGridRepresentation*> getGridRepresentations() const;
 
 		/**
-		 * Gets grid representation count
+		 * Gets the count of grid representations associated to this stratigraphic organization
+		 * interpretation.
 		 *
-		 * @returns	The count of grid representation assocaited to this strati organization.
+		 * @exception	std::range_error	If the count of associated grid representations is strictly
+		 * 									greater than <tt>unsigned int</tt> max.
+		 *
+		 * @returns	The count of associated grid representations.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getGridRepresentationCount() const;
 
 		/**
-		* Get a grid representation associated to this strati org interp by means of its index.
-		* @param index	The index of the grid representation to get in the array of grid representaitons of this strati org interp.
-		*/
+		 * Gets a grid representation associated to this stratigraphic organization interpretation by
+		 * means of its index.
+		 *
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	The index of the grid representation to get in the array of grid
+		 * 					representations of this stratigraphic organization interpretations.
+		 *
+		 * @returns	The associated grid representation at index @p index.
+		 */
 		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation * getGridRepresentation(unsigned int index) const;
 
 		/**
-		* Check if a grid representation is wether associated to this strati org interp or not.
-		* @param gridRep	The grid representation to check its assocaition with this strati org interp.
-		* @return			True or false.
-		*/
+		 * Checks whether a given grid representation is associated to this stratigraphic organization
+		 * interpretation or not.
+		 *
+		 * @param [in]	gridRep	The grid representation fro which we want to check its association
+		 * 							with this stratigraphic organization interpretation.
+		 *
+		 * @returns	True if @p gridRep is associated to this stratigraphic organization interpretation or
+		 * 			false if it is not.
+		 */
 		DLL_IMPORT_OR_EXPORT bool isAssociatedToGridRepresentation(AbstractGridRepresentation* gridRep) const;
 	};
 }
