@@ -56,10 +56,12 @@ namespace RESQML2_NS
 	class CategoricalProperty;
 	class CommentProperty;
 	class ContinuousProperty;
+	class CulturalFeature;
 	class DiscreteProperty;
 	class DeviationSurveyRepresentation;
 	class EarthModelInterpretation;
 	class FaultInterpretation;
+	class GenericFeatureInterpretation;
 	class GeobodyBoundaryInterpretation;
 	class GridConnectionSetRepresentation;
 	class Grid2dRepresentation;
@@ -114,11 +116,9 @@ namespace RESQML2_0_1_NS
 	class Horizon;
 	class TectonicBoundaryFeature;
 	class SeismicLatticeFeature;
-	class GenericFeatureInterpretation;
 	class PropertySet;
 	class PropertyKind;
 	class AbstractGridRepresentation;
-	class FrontierFeature;
 	class FluidBoundaryFeature;
 	class BlockedWellboreRepresentation;
 	class RockFluidUnitFeature;
@@ -506,12 +506,12 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineSetRepresentation *> getFracturePolylineSetRepSet() const;
 
 		/**
-		 * Gets all the individual representations of frontiers which are associated to a polyline set
+		 * Gets all the individual representations of cultural which are associated to a polyline set
 		 * topology into this repository
 		 *
-		 * @returns	A vector of pointers to all the frontiers polyline set representations of this repository.
+		 * @returns	A vector of pointers to all the cultural polyline set representations of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineSetRepresentation *> getFrontierPolylineSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineSetRepresentation *> getCulturalPolylineSetRepSet() const;
 
 		/**
 		 * Gets all the individual representations of faults which are associated to a triangulated set
@@ -775,12 +775,12 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::UnstructuredGridRepresentation*> getUnstructuredGridRepresentationSet() const;
 
 		/**
-		 * Gets all the frontier features contained into this repository
+		 * Gets all the Cultural features contained into this repository
 		 * @deprecated Use {@link getDataObjects()} template method
 		 *
-		 * @returns	A vector of pointers to all the frontier features of this repository.
+		 * @returns	A vector of pointers to all the Cultural features of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::FrontierFeature*> getFrontierSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::CulturalFeature*> getCulturalSet() const;
 
 		/**
 		 * Gets all the organization features contained into this repository
@@ -1454,14 +1454,16 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::SeismicLineSetFeature* createSeismicLineSet(const std::string & guid, const std::string & title);
 
 		/**
-		 * Creates a frontier into this repository
+		 * Creates a cultural into this repository
 		 *
-		 * @param 	guid 	The guid to set to the frontier. If empty then a new guid will be generated.
-		 * @param 	title	The title to set to the frontier. If empty then \"unknown\" title will be set.
+		 * @param 	guid 	The guid to set to the cultural. If empty then a new guid will be generated.
+		 * @param 	title	The title to set to the cultural. If empty then \"unknown\" title will be set.
+		 * @param 	kind	The kind to set to the cultural. It is defaulted to gsoap_eml2_3::resqml22__CulturalFeatureKind__project_x0020boundaries for easing 2.0.1 compatibility.
 		 *
-		 * @returns	A pointer to the new frontier.
+		 * @returns	A pointer to the new cultural.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::FrontierFeature* createFrontier(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::CulturalFeature* createCultural(const std::string & guid, const std::string & title,
+			gsoap_eml2_3::resqml22__CulturalFeatureKind kind = gsoap_eml2_3::resqml22__CulturalFeatureKind__project_x0020boundaries);
 
 		/**
 		 * Creates a stratigraphic unit into this repository
@@ -1554,7 +1556,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new generic feature interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::GenericFeatureInterpretation* createGenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::GenericFeatureInterpretation* createGenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a boundary feature interpretation into this repository

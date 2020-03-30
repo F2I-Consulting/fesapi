@@ -21,7 +21,7 @@ under the License.
 #include "../resqml2/GeobodyBoundaryInterpretation.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
 	/** A geobody boundary interpretation. */
 	class GeobodyBoundaryInterpretation : public RESQML2_NS::GeobodyBoundaryInterpretation
@@ -53,7 +53,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		GeobodyBoundaryInterpretation(gsoap_resqml2_0_1::_resqml20__GeobodyBoundaryInterpretation* fromGsoap) : RESQML2_NS::GeobodyBoundaryInterpretation(fromGsoap) {}
+		GeobodyBoundaryInterpretation(gsoap_eml2_3::_resqml22__GeobodyBoundaryInterpretation* fromGsoap) : RESQML2_NS::GeobodyBoundaryInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~GeobodyBoundaryInterpretation() {}

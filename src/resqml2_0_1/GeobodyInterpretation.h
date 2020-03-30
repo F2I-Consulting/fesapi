@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "StratigraphicColumnRankInterpretation.h"
+#include "../resqml2/GeobodyInterpretation.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** A geobody interpretation. */
-	class GeobodyInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
+	class GeobodyInterpretation : public RESQML2_NS::GeobodyInterpretation
 	{
 	public:
 
@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT GeobodyInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT GeobodyInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::GeobodyInterpretation(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -52,7 +52,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		GeobodyInterpretation(gsoap_resqml2_0_1::_resqml20__GeobodyInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
+		GeobodyInterpretation(gsoap_resqml2_0_1::_resqml20__GeobodyInterpretation* fromGsoap) : RESQML2_NS::GeobodyInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~GeobodyInterpretation() {}
@@ -62,34 +62,22 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param 	geobody3dShape	The geobody 3D shape.
 		 */
-		DLL_IMPORT_OR_EXPORT void set3dShape(gsoap_resqml2_0_1::resqml20__Geobody3dShape geobody3dShape);
+		DLL_IMPORT_OR_EXPORT void set3dShape(gsoap_eml2_3::resqml22__Shape3d geobody3dShape) final;
+		DLL_IMPORT_OR_EXPORT void set3dShape201(gsoap_resqml2_0_1::resqml20__Geobody3dShape geobody3dShape);
 
 		/**
 		 * check if the 3d shape of this geobody is known
 		 *
 		 * @returns	True if 3D shape, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool has3dShape() const;
+		DLL_IMPORT_OR_EXPORT bool has3dShape() const final;
 
 		/**
 		 * get the 3d shape of this geobody
 		 *
 		 * @returns	The 3D shape.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__Geobody3dShape get3dShape() const;
-
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__Shape3d get3dShape() const final;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__Geobody3dShape get3dShape201() const;
 	};
 }

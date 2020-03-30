@@ -18,15 +18,21 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/GeobodyBoundaryInterpretation.h"
+#include "../resqml2/AbstractTechnicalFeature.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_NS
 {
-	/** A geobody boundary interpretation. */
-	class GeobodyBoundaryInterpretation : public RESQML2_NS::GeobodyBoundaryInterpretation
+	/** A cultural feature. */
+	class CulturalFeature : public RESQML2_NS::AbstractTechnicalFeature
 	{
 	public:
+
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		virtual ~CulturalFeature() {}
+
+
+	protected:
 
 		/**
 		 * Only to be used in partial transfer context
@@ -35,27 +41,25 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT GeobodyBoundaryInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			RESQML2_NS::GeobodyBoundaryInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT CulturalFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractTechnicalFeature(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
-		 *
-		 * @param [in,out]	geobodyBoundary	The feature the instance interprets.
-		 * @param 		  	guid		   	The guid to set to the interpretation. If empty then a new
-		 * 									guid will be generated.
-		 * @param 		  	title		   	A title for the instance to create.
+		 * Defautl constructor
 		 */
-		GeobodyBoundaryInterpretation(RESQML2_NS::BoundaryFeature * geobodyBoundary, const std::string & guid, const std::string & title);
+		CulturalFeature() {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		GeobodyBoundaryInterpretation(gsoap_resqml2_0_1::_resqml20__GeobodyBoundaryInterpretation* fromGsoap) : RESQML2_NS::GeobodyBoundaryInterpretation(fromGsoap) {}
+		CulturalFeature(gsoap_resqml2_0_1::_resqml20__FrontierFeature* fromGsoap): RESQML2_NS::AbstractTechnicalFeature(fromGsoap) {}
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~GeobodyBoundaryInterpretation() {}
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		CulturalFeature(gsoap_eml2_3::_resqml22__CulturalFeature* fromGsoap) : RESQML2_NS::AbstractTechnicalFeature(fromGsoap) {}
 	};
 }
