@@ -147,7 +147,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in,out]	closedFlagPerPolyline	If non-null, true to closed flag per polyline.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual virtual void getClosedFlagPerPolylineOfAllPatches(bool * closedFlagPerPolyline) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getClosedFlagPerPolylineOfAllPatches(bool * closedFlagPerPolyline) const = 0;
 
 		/**
 		 * Indicates if the polylineSet is associated to a particular LineRole.
