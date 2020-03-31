@@ -32,33 +32,44 @@ namespace RESQML2_NS
 	{
 	public:
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~SealedSurfaceFrameworkRepresentation() {}
 
 		/**
-		 * Push back a contact in the structural framework with implicit identical nodes.
-		 * 
-		 * After calling the following method, ContactPatch container of the newly pushed contact
-		 * remains empty. After this call, do not forget to call the pushBackContactPatch method for
-		 * each ContactPatch of the contact.
+		 * Pushes back a contact in this structural framework with implicit identical nodes. After
+		 * calling the following method, the contact patches container of the newly pushed contact
+		 * remains empty. After this call, do not forget to call the pushBackContactPatch() method for
+		 * each contact patch of the contact.
 		 *
-		 * @param 	kind	Identity kind.
+		 * @param 	kind	The identity kind (colocation, previous colocation, equivalence or previous
+		 * 					equivalence) of the contact to push.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind kind) = 0;
 
 		/**
-		 * Push back a contact in the structural framework.
-		 * 
-		 * After calling the following method, ContactPatch container of the newly pushed contact
-		 * remains empty. After this call, do not forget to call the pushBackContactPatch method for
-		 * each ContactPatch of the contact.
+		 * Pushes back a contact in this structural framework.After calling the following method, the
+		 * contact patches container of the newly pushed contact remains empty. After this call, do not
+		 * forget to call the pushBackContactPatch() method for each contact patch of the contact.
 		 *
-		 * @param 		  	kind			   	Identity kind.
-		 * @param 		  	patchCount		   	The number of contact patch within this sealed contact.
+		 * @exception	std::invalid_argument	If @p patchCount is strictly lesser than @c 2.
+		 * @exception	std::invalid_argument	If @p identicalNodesCount is @c 0.
+		 * @exception	std::invalid_argument	If @p identicalNodes is @c nullptr.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 *
+		 * @param 		  	kind			   	The identity kind (colocation, previous colocation,
+		 * 										equivalence or previous equivalence) of the contact to
+		 * 										push.
+		 * @param 		  	patchCount		   	The number of contact patches within this sealed contact.
 		 * @param 		  	identicalNodesCount	The number of identical nodes along this sealed contact.
-		 * @param [in,out]	identicalNodes	   	The patchCount x identicalNodesCount sized 1D array of
-		 * 										identical nodes indices.
-		 * @param [in,out]	proxy			   	The hdf proxy.
+		 * @param [in]	  	identicalNodes	   	A 1d array of identical nodes indices. The size of this
+		 * 										array is @p patchCount <tt>*</tt> @p identicalNodesCount.
+		 * 										It indicates which nodes (identified by their common
+		 * 										index in all contact patches) of the contact patches are
+		 * 										identical.
+		 * @param [in,out]	proxy			   	The HDF proxy where to write the @p identicalNodes
+		 * 										values. If @c nullptr, then a default HDF proxy must be
+		 * 										defined in the repository.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackContact(
 			gsoap_resqml2_0_1::resqml20__IdentityKind kind,
@@ -68,16 +79,29 @@ namespace RESQML2_NS
 			EML2_NS::AbstractHdfProxy * proxy) = 0;
 
 		/**
-		 * Push back a contact patch in a particular contact of the structural framework.
+		 * Pushes back a contact patch in a particular contact of this structural framework.
 		 *
-		 * @param 		  	contactIdx							 	The index of the contact which will
+		 * @exception	std::invalid_argument	If @p nodeIndicesOnSupportingRepresentation is @c nullptr.
+		 * @exception	std::invalid_argument	If @p nodeCount is @c 0.
+		 * @exception	std::invalid_argument	If @p supportingRepresentation is @c nullptr or if it is
+		 * 										not referenced by this sealed surface framework.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 * @exception	std::out_of_range	 	If @p contactIdx is out of range.
+		 *
+		 * @param 		  	contactIdx							 	Zero-base index of the contact which will
 		 * 															contain this contact patch.
-		 * @param [in,out]	nodeIndicesOnSupportingRepresentation	The nodes defining the contact patch
+		 * @param 		  	nodeIndicesOnSupportingRepresentation	The nodes defining the contact patch
 		 * 															on the supporting representation.
+		 * 															Size if @p nodeCount.
 		 * @param 		  	nodeCount							 	The node count of this contact patch.
-		 * @param [in,out]	supportingRepresentation			 	The supporting representation of this
+		 * @param [in]	  	supportingRepresentation			 	The supporting representation of this
 		 * 															contact patch.
-		 * @param [in,out]	proxy								 	If non-null, the proxy.
+		 * @param [in,out]	proxy								 	The HDF proxy where to write the @p
+		 * 															nodeIndicesOnSupportingRepresentation
+		 * 															values. If @c nullptr, then a default
+		 * 															HDF proxy must be defined in the
+		 * 															repository.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackContactPatch(
 			unsigned int contactIdx,
@@ -85,86 +109,100 @@ namespace RESQML2_NS
 			AbstractRepresentation * supportingRepresentation,
 			EML2_NS::AbstractHdfProxy * proxy) = 0;
 
-		/**
-		 * Gets contact count
-		 *
-		 * @returns	The contact count.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getContactCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getContactCount() const override = 0;
 
 		/**
-		 * Get the contact patch identity kind of a contact located at a particular index.
+		 * Gets the identity kind of a particular contact.
 		 *
-		 * @param 	contactIdx	The index of the contact in the contact list. It must be in the interval
-		 * 						[0..getContactCount()[.
+		 * @exception	std::out_of_range	If @p contactIdx is out of range.
 		 *
-		 * @returns	The contact patch identity kind of the contact located at a particular index.
+		 * @param 	contactIdx	Zero-based index of the contact for which we look for the identity kind.
+		 *
+		 * @returns	The identity kind of the contact located at a @p contactIdx.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml20__IdentityKind getContactPatchIdentityKind(unsigned int contactIdx) const = 0;
 
-		/*
-///< .
-		* Check if all nodes of contact patches are identical in a contact.
-		*
-		* @param contactIdx	The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.
-		* @return			True if all node of contact patches are identical else false.
-		*/
+		/**
+		 * Checks if all nodes of contact patches are identical in a particular contact.
+		 *
+		 * @exception	std::out_of_range	If @p contactIdx is out of range.
+		 *
+		 * @param 	contactIdx	Zero-based index of the contact for which we want to check if all nodes
+		 * 						of contact patches are identical.
+		 *
+		 * @returns	True if all nodes of contact patches are identical else false.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual bool areAllContactPatchNodesIdentical(unsigned int contactIdx) const = 0;
 
 		/**
-		 * Get the count of identical nodes of a particular contact. Throw an exception if all nodes are
-		 * identical (see areAllContactPatchNodesIdenticalInContactRep()).
+		 * Gets the count of identical nodes of a particular contact.
 		 *
-		 * @param 	contactIdx	The index of the contact in the contact list. It must be in the interval
-		 * 						[0..getContactCount()[.
+		 * @exception	std::invalid_argument	If all nodes of contact patches are identical (see
+		 * 										areAllContactPatchNodesIdentical()).
+		 * @exception	std::out_of_range	 	If @p contactIdx is out of range.
+		 * @exception	std::range_error	 	If the count of identical nodes is strictly greater than
+		 * 										unsigned int max.
 		 *
-		 * @returns	The count of identical nodes of a particular contact.
+		 * @param 	contactIdx	Zero-based index of the contact for which we look for the count of
+		 * 						identical nodes.
+		 *
+		 * @returns	The count of identical nodes in the contact at position @p contactIdx.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getIdenticalContactPatchNodeCount(unsigned int contactIdx) const = 0;
 
 		/**
-		 * Get the node indices of all contact patches which are identical. Throw an exception if all
-		 * nodes are identical (see areAllContactPatchNodesIdenticalInContactRep()).
+		 * Gets the node indices of all contact patches which are identical in a particular contact.
 		 *
-		 * @param 		  	contactIdx 	The index of the contact in the contact list. It must be in the
-		 * 								interval [0..getContactCount()[.
-		 * @param [in,out]	nodeIndices	This array must be preallocated with getIdenticalNodeCount(). It
-		 * 								won't be deleted by fesapi. It will be filled in with the desired
-		 * 								node indices.
+		 * @exception	std::invalid_argument	If all nodes of contact patches are identical (see
+		 * 										areAllContactPatchNodesIdentical()).
+		 * @exception	std::out_of_range	 	If @p contactIdx is out of range.*.
+		 *
+		 * @param 	   	contactIdx 	Zero-based index of the contact for which we look for the identical
+		 * 							nodes indices.
+		 * @param [out]	nodeIndices	An array to receive the identical nodes indices. This array must be
+		 * 							preallocated with getIdenticalContactPatchNodeCount().
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getIdenticalContactPatchNodeIndices(unsigned int contactIdx, unsigned int * nodeIndices) const = 0;
 
 		/**
-		 * Get the count of contact patches in a particular contact represenation of this framework.
+		 * Gets the count of contact patches in a particular contact of this framework.
 		 *
-		 * @param 	contactIdx	The index of the contact in the contact list. It must be in the interval
-		 * 						[0..getContactCount()[.
+		 * @exception	std::out_of_range	If @p contactIdx is out of range.
+		 * @exception	std::range_error 	If the count of identical nodes is strictly greater than
+		 * 									unsigned int max.
 		 *
-		 * @returns	The count of contact patches in a particular contact represenation in this framework.
+		 * @param 	contactIdx	Zero-based index of the contact for which we look for the contact patches
+		 * 						count.
+		 *
+		 * @returns	The count of contact patches in the contact at position @p contactIdx.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getContactPatchCount(unsigned int contactIdx) const = 0;
 
 		/**
-		 * Get the representation (for instance the triangulated surface) where a particular contact
+		 * Gets the representation (for instance the triangulated surface) where a particular contact
 		 * patch has been defined.
 		 *
-		 * @param 	contactIdx	The index of the contact in the contact list. It must be in the interval
-		 * 						[0..getContactCount()[.
-		 * @param 	cpIndex   	The index of the contact patch in the contact. It must be in the interval
-		 * 						[0..getContactPatchCount()[.
+		 * @exception	std::out_of_range	If @p contactIdx or @p cpIndex is out of range.
+		 * @exception	std::range_error 	If the index of the representation provided in the contact
+		 * 									patch is strictly greater than unsigned int max.
+		 *
+		 * @param 	contactIdx	Zero-based index of the contact in the contact list.
+		 * @param 	cpIndex   	Zero-based index of the contact patch in the contact.
 		 *
 		 * @returns	The representation where the contact patch has been defined.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual RESQML2_NS::AbstractRepresentation* getRepresentationOfContactPatch(unsigned int contactIdx, unsigned int cpIndex) const = 0;
 
 		/**
-		 * Get the representation index where a particular contact patch has been defined. The index is
-		 * in the range [0..getRepresentationCount()[.
+		 * Gets the representation index where a particular contact patch has been defined. The index is
+		 * in the range <tt>[0..</tt>getRepresentationCount()<tt>[</tt>.
 		 *
-		 * @param 	contactIdx	The index of the contact in the contact list. It must be in the interval
-		 * 						[0..getContactCount()[.
-		 * @param 	cpIndex   	The index of the contact patch in the contact. It must be in the interval
-		 * 						[0..getContactPatchCount()[.
+		 * @exception	std::out_of_range	If @p contactIdx or @p cpIndex is out of range.
+		 * @exception	std::range_error 	If the representation index is strictly greater than unsigned
+		 * 									int max.
+		 *
+		 * @param 	contactIdx	Zero-based index of the contact in the contact list.
+		 * @param 	cpIndex   	Zero-based index of the contact patch in the contact.
 		 *
 		 * @returns	The representation index where the contact patch has been defined.
 		 */
@@ -173,43 +211,36 @@ namespace RESQML2_NS
 		/**
 		 * Get the count of nodes of a particular contact patch.
 		 *
-		 * @param 	contactIdx	The index of the contact in the contact list. It must be in the interval
-		 * 						[0..getContactCount()[.
-		 * @param 	cpIndex   	The index of the contact patch in the contact. It must be in the interval
-		 * 						[0..getContactPatchCount()[.
+		 * @exception	std::out_of_range	If @p contactIdx or @p cpIndex is out of range.
+		 * @exception	std::range_error 	If the count of nodes is strictly greater than unsigned int
+		 * 									max.
+		 *
+		 * @param 	contactIdx	Zero-based index of the contact in the contact list.
+		 * @param 	cpIndex   	Zero-based index of the contact patch in the contact.
 		 *
 		 * @returns	The count of nodes of a particular contact patch.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getContactPatchNodeCount(unsigned int contactIdx, unsigned int cpIndex) const = 0;
 
 		/**
-		 * Get the node indices of a particular contact patch. The returned indices are associated to
+		 * Gets the nodes indices of a particular contact patch. The returned indices are associated to
 		 * the node array of the representation of the particular contact patch (see
 		 * getRepresentationOfContactPatch()).
 		 *
-		 * @param 		  	contactIdx 	The index of the contact in the contact list. It must be in the
-		 * 								interval [0..getContactCount()[.
-		 * @param 		  	cpIndex	   	The index of the contact patch in the contact. It must be in the
-		 * 								interval [0..getContactPatchCount()[.
-		 * @param [in,out]	nodeIndices	This array must be preallocated with
-		 * 								getNodeCountOfContactPatch(). It won't be deleted by fesapi. It
-		 * 								will be filled in with the desired node indices.
+		 * @exception	std::out_of_range	If @p contactIdx or @p cpIndex is out of range.
+		 *
+		 * @param 	   	contactIdx 	Zero-based index of the contact in the contact list.
+		 * @param 	   	cpIndex	   	Zero-based index of the contact patch in the contact.
+		 * @param [out]	nodeIndices	An array to received the nodes indices. This array must be
+		 * 							preallocated with getContactPatchNodeCount(). It won't be deleted by
+		 * 							fesapi.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getContactPatchNodeIndices(unsigned int contactIdx, unsigned int cpIndex, unsigned int * nodeIndices) const = 0;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 
 	protected:
 

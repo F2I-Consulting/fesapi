@@ -69,10 +69,10 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
 		EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (patchCount < 2) {
-		throw invalid_argument("Contact point count cannot be less than two.");
+		throw invalid_argument("Contact patch count cannot be less than two.");
 	}
-	if (identicalNodesCount <= 0) {
-		throw invalid_argument("The identical nodes count cannot be lesser or equal to zero.");
+	if (identicalNodesCount == 0) {
+		throw invalid_argument("The identical nodes count cannot be zero.");
 	}
 	if (identicalNodes == nullptr) {
 		throw invalid_argument("The array of identical nodes cannot be null.");
@@ -113,8 +113,8 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
 	if (nodeIndicesOnSupportingRepresentation == nullptr) {
 		throw invalid_argument("The array of node indices cannot be null.");
 	}
-	if (nodeCount <= 0) {
-		throw invalid_argument("The nodes count cannot be lesser or equal to zero.");
+	if (nodeCount == 0) {
+		throw invalid_argument("The nodes count cannot be zero.");
 	}
 	if (supportingRepresentation == nullptr) {
 		throw invalid_argument("The supporting representation cannot be null.");
@@ -130,7 +130,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
     _resqml20__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	if (contactIndex >= orgRep->SealedContactRepresentation.size()) {
-		throw invalid_argument("Invalid contact index.");
+		throw out_of_range("Invalid contact index.");
 	}
 
     resqml20__SealedContactRepresentationPart* contactRep = static_cast<resqml20__SealedContactRepresentationPart*>(orgRep->SealedContactRepresentation[contactIndex]);
@@ -186,7 +186,7 @@ unsigned int SealedSurfaceFrameworkRepresentation::getContactCount() const
 gsoap_resqml2_0_1::resqml20__SealedContactRepresentationPart* SealedSurfaceFrameworkRepresentation::getContact(unsigned int crIndex) const
 {
 	if (crIndex >= getContactCount()) {
-		throw range_error("The index of the contact representation is out of range.");
+		throw out_of_range("The index of the contact representation is out of range.");
 	}
 
 	return static_cast<_resqml20__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1)->SealedContactRepresentation[crIndex];
@@ -241,7 +241,7 @@ gsoap_resqml2_0_1::resqml20__ContactPatch* SealedSurfaceFrameworkRepresentation:
 	resqml20__SealedContactRepresentationPart* contactRep = getContact(crIndex);
 
 	if (cpIndex >= getContactPatchCount(crIndex)) {
-		throw range_error("The index of the contact patch is out of range.");
+		throw out_of_range("The index of the contact patch is out of range.");
 	}
 
 	return contactRep->Contact[cpIndex];

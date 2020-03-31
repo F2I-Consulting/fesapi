@@ -119,7 +119,7 @@ namespace RESQML2_NS
 		*  - first : the split coordinate line index
 		*  - second : all grid columns (identified by their indices: i fastest, j slowest) which are incident to (and consequently affected by) this split coordinate line
 		*
-		* Example : split info set to => {empty, empty, {{10, {51, 23}}}, empty, {{12, {51, 23}}, {15, {22}}, emtpy}
+		* Example : split info set to => {empty, empty, ..., {{10, {51, 23}}}, empty, {{12, {51, 23}}, {15, {22}}}, empty}
 		* This grid has 3 split coordinate lines (10, 12 and 15) which are related to two pillars (2 and 4).
 		* On the pillar 2, only a single split coordinate line (10) affects two columns (51, 23).
 		* On the pillar 4, two split coordinate lines exist (12 and 15). The split coordinate line 12 affects two columns (51 and 23). The split coordinate line 15 affects a single column (22).
@@ -243,7 +243,7 @@ namespace RESQML2_NS
 		 * Gets the count of cells in this grid.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
-		 * @exception	std::range_error	If the count of cells in I direction, J direction or K
+		 * @exception	std::range_error	If the count of cells in I, J or K
 		 * 									direction is strictly greater than unsigned int max.
 		 *
 		 * @returns	The cell count.
@@ -254,7 +254,7 @@ namespace RESQML2_NS
 		 * Gets the count of columns in this grid.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
-		 * @exception	std::range_error	If the count of cells in I direction or J direction is
+		 * @exception	std::range_error	If the count of cells in I or J direction is
 		 * 									strictly greater than unsigned int max.
 		 *
 		 * @returns	The column count.
@@ -265,7 +265,7 @@ namespace RESQML2_NS
 		 * Gets the count of pillars in this grid.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
-		 * @exception	std::range_error	If the count of cells in I direction or J direction is
+		 * @exception	std::range_error	If the count of cells in I or J direction is
 		 * 									strictly greater than unsigned int max.
 		 *
 		 * @returns	The pillar count.
@@ -277,7 +277,7 @@ namespace RESQML2_NS
 		 * information thanks to loadSplitInformation().
 		 *
 		 * @exception	std::logic_error	 	If this grid is partial.
-		 * @exception	std::range_error	 	If the count of cells in I direction, J direction or K
+		 * @exception	std::range_error	 	If the count of cells in I, J or K
 		 * 										direction is strictly greater than unsigned int max.
 		 * @exception	std::invalid_argument	If there is no geometry on this grid.
 		 *
@@ -286,192 +286,328 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT unsigned int getFaceCount() const;
 
 		/**
-		 * Get the I coordinate of a pillar from its global index in the grid.
+		 * Gets the I index of a pillar from its global index in this grid. The global (or
+		 * linearized) index of a given pillar is <tt>i pillar + j pillar * (nI pillar)</tt> where
+		 * <tt>i pillar</tt> and <tt>j pillar</tt> are respectively the I and J indices of the
+		 * pillar and <tt>nI pillar</tt> is the count of pillars in the I direction.
 		 *
-		 * @param 	globalIndex	Zero-based index of the global.
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is
+		 * 									strictly greater than unsigned int max.
+		 * @exception	std::out_of_range	If @p globalIndex is out of range (greater than or equal to
+		 * 									getPillarCount()).
 		 *
-		 * @returns	The i pillar from global index.
+		 * @param 	globalIndex	The global index of the pillar for which we want to get the I index.
+		 *
+		 * @returns	The I index of the pillar.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getIPillarFromGlobalIndex(unsigned int globalIndex) const;
 
 		/**
-		 * Get the J coordinate of a pillar from its global index in the grid.
+		 * Gets the J index of a pillar from its global index in this grid. The global (or
+		 * linearized) index of a given pillar is <tt>i pillar + j pillar * (nI pillar)</tt> where
+		 * <tt>i pillar</tt> and <tt>j pillar</tt> are respectively the I and J indices of the
+		 * pillar and <tt>nI pillar</tt> is the count of pillars in the I direction.
 		 *
-		 * @param 	globalIndex	Zero-based index of the global.
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is
+		 * 									strictly greater than unsigned int max.
+		 * @exception	std::out_of_range	If @p globalIndex is out of range (greater than or equal to
+		 * 									getPillarCount()).
 		 *
-		 * @returns	The j pillar from global index.
+		 * @param 	globalIndex	The global index of the pillar for which we want to get the J index.
+		 *
+		 * @returns	The J index of the pillar.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getJPillarFromGlobalIndex(unsigned int globalIndex) const;
 
 		/**
-		 * Get the global index of a pillar from its I and J indices in the grid.
+		 * Gets the global index of a pillar from its I and J indices in the grid. The global (or
+		 * linearized) index of a given pillar is <tt>i pillar + j pillar * (nI pillar)</tt> where
+		 * <tt>i pillar</tt> and <tt>j pillar</tt> are respectively the I and J indices of the
+		 * pillar and <tt>nI pillar</tt> is the count of pillars in the I direction.
 		 *
-		 * @param 	iPillar	Zero-based index of the pillar.
-		 * @param 	jPillar	The pillar.
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is strictly greater
+		 * 									than unsigned int max.
+		 * @exception	std::out_of_range	If @p iPillar is strictly greater than getICellCount().
+		 * @exception	std::out_of_range	If @p jPillar is strictly greater than getJCellCount().
 		 *
-		 * @returns	The global index pillar from ij index.
+		 * @param 	iPillar	The I index of the pillar.
+		 * @param 	jPillar	The J index of the pillar.
+		 *
+		 * @returns	The global index of the pillar.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getGlobalIndexPillarFromIjIndex(unsigned int iPillar, unsigned int jPillar) const;
 
 		/**
-		 * Get the I coordinate of a column from its global index in the grid.
+		 * Gets the I index of a column from its global index in the grid. The global (or linearized)
+		 * index of a given column is <tt>i column + j column * (nI cell)</tt> where
+		 * <tt>i column</tt> and <tt>j column</tt> are respectively the I and J indices of the
+		 * column and <tt>nI cell</tt> is the count of cells in the I direction.
 		 *
-		 * @param 	globalIndex	Zero-based index of the global.
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is strictly greater
+		 * 									than unsigned int max.
+		 * @exception	std::out_of_range	If @p globalIndex is out of range (greater than or equal to
+		 * 									getColumnCount()).
 		 *
-		 * @returns	The i column from global index.
+		 * @param 	globalIndex	The global index of the column for which we want to get the I index.
+		 *
+		 * @returns	The I index of the column.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getIColumnFromGlobalIndex(unsigned int globalIndex) const;
 
 		/**
-		 * Get the J coordinate of a column from its global index in the grid.
+		 * Gets the J index of a column from its global index in the grid. The global (or linearized)
+		 * index of a given column is <tt>i column + j column * (nI cell)</tt> where
+		 * <tt>i column</tt> and <tt>j column</tt> are respectively the I and J indices of the
+		 * column and <tt>nI cell</tt> is the count of cells in the I direction.
 		 *
-		 * @param 	globalIndex	Zero-based index of the global.
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is strictly greater
+		 * 									than unsigned int max.
+		 * @exception	std::out_of_range	If @p globalIndex is out of range (greater than or equal to
+		 * 									getColumnCount()).
 		 *
-		 * @returns	The j column from global index.
+		 * @param 	globalIndex	The global index of the column for which we want to get the J index.
+		 *
+		 * @returns	The J index of the column.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getJColumnFromGlobalIndex(unsigned int globalIndex) const;
 
 		/**
-		 * Get the global index of a cell from its I and J indices in the grid.
+		 * Gets the global index of a column from its I and J indices in the grid. The global (or
+		 * linearized) index of a given column is <tt>i column + j column * (nI cell)</tt> where
+		 * <tt>i column</tt> and <tt>j column</tt> are respectively the I and J indices of the
+		 * column and <tt>nI cell</tt> is the count of cells in the I direction.
 		 *
-		 * @param 	iColumn	Zero-based index of the column.
-		 * @param 	jColumn	The column.
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is strictly greater
+		 * 									than unsigned int max.
+		 * @exception	std::out_of_range	If @p iColumn is greater than or equal to getICellCount().
+		 * @exception	std::out_of_range	If @p jColumn is greater than or equal to getJCellCount().
 		 *
-		 * @returns	The global index column from ij index.
+		 * @param 	iColumn	The I index of the column.
+		 * @param 	jColumn	The J index of the column.
+		 *
+		 * @returns	The global index of the column.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getGlobalIndexColumnFromIjIndex(unsigned int iColumn, unsigned int jColumn) const;
 
 		/**
-		 * Get the global index of a column from its I, J and K indices in the grid.
+		 * Gets the global index of a cell from its I, J and K indices in the grid.
 		 *
-		 * @param 	iCell	Zero-based index of the cell.
-		 * @param 	jCell	The cell.
-		 * @param 	kCell	The cell.
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I, J or K direction is strictly
+		 * 									greater than unsigned int max.
+		 * @exception	std::out_of_range	If @p iCell is greater than or equal to getICellCount().
+		 * @exception	std::out_of_range	If @p jCell is greater than or equal to getJCellCount().
+		 * @exception	std::out_of_range	If @p kCell is greater than or equal to getKCellCount().
 		 *
-		 * @returns	The global index cell from ijk index.
+		 * @param 	iCell	The I index of the cell.
+		 * @param 	jCell	The J index of the cell.
+		 * @param 	kCell	The K index of the cell.
+		 *
+		 * @returns	The global index of the cell.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getGlobalIndexCellFromIjkIndex(unsigned int iCell, unsigned int jCell, unsigned int kCell) const;
 
 		/**
-		 * Queries if this grid is right handed.
+		 * Queries if this grid is right handed, as determined by the triple product of tangent vectors
+		 * in the I, J, and K directions.
 		 *
-		 * @returns	True if right handed, false if not.
+		 * @exception	std::logic_error	If this grid has no geometry. Or, if it is in an unrecognized
+		 * 									version of RESQML.
+		 *
+		 * @returns	True if this grid is right handed, false if it is not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool isRightHanded() const;
 
 		/**
-		 * Get all the pillars which correspond to all split coordinate lines. Order of the pillar
-		 * correspond to order of the split coordinate lines.
+		 * Gets all the pillars which correspond to all split coordinate lines. The order of the pillars
+		 * corresponds to the order of the split coordinate lines.
 		 *
-		 * @param [in,out]	pillarIndices	It must be pre allocated.
-		 * @param 		  	reverseIAxis 	(Optional) True to reverse i axis.
-		 * @param 		  	reverseJAxis 	(Optional) True to reverse j axis.
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If there is no geometry or no split coordinate line in
+		 * 										this grid.
+		 * @exception	std::logic_error	 	If the indices of the pillars corresponding to the split
+		 * 										coordinate lines are not stored within an HDF5 integer
+		 * 										array.
+		 *
+		 * @param [out]	pillarIndices	An array for receiving the indices of the pillars corresponding
+		 * 								to the split coordinate lines. It must be preallocated with a
+		 * 								size of getSplitCoordinateLineCount().
+		 * @param 	   	reverseIAxis 	(Optional) True to reverse I axis. Default value is false.
+		 * @param 	   	reverseJAxis 	(Optional) True to reverse J axis. Default value is false.
 		 */
 		DLL_IMPORT_OR_EXPORT void getPillarsOfSplitCoordinateLines(unsigned int * pillarIndices, bool reverseIAxis = false, bool reverseJAxis = false) const;
 
 		/**
-		 * Get all the columns impacted by all the split coordinate lines.
+		 * Gets all the columns impacted by all the split coordinate lines. The order of the columns
+		 * corresponds to the order of the split coordinate lines.
 		 *
-		 * @param [in,out]	columnIndices	It must be pre allocated.
-		 * @param 		  	reverseIAxis 	(Optional) True to reverse i axis.
-		 * @param 		  	reverseJAxis 	(Optional) True to reverse j axis.
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If there is no geometry or no split coordinate line in
+		 * 										this grid.
+		 * @exception	std::logic_error	 	If the indices of the columns impacted by the split
+		 * 										coordinate lines are not stored within an HDF5 integer
+		 * 										array.
+		 *
+		 * @param [out]	columnIndices	An array for receiving the indices of the columns impacted by the
+		 * 								split coordinate lines. It must be preallocated with a size equal
+		 * 								to the last value of the array outputted from
+		 * 								getColumnCountOfSplitCoordinateLines().
+		 * @param 	   	reverseIAxis 	(Optional) True to reverse i axis. Default value is false.
+		 * @param 	   	reverseJAxis 	(Optional) True to reverse j axis. Default value is false.
 		 */
 		DLL_IMPORT_OR_EXPORT void getColumnsOfSplitCoordinateLines(unsigned int * columnIndices, bool reverseIAxis = false, bool reverseJAxis = false) const;
 
 		/**
-		 * Gets column count of split coordinate lines
+		 * Gets the cumulative count of columns impacted by all the split coordinate lines. The order of
+		 * the cumulative count values corresponds to the order of the split coordinates lines.
 		 *
-		 * @param [in,out]	columnIndexCountPerSplitCoordinateLine	If non-null, the column index count
-		 * 															per split coordinate line.
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If there is no geometry or no split coordinate line in
+		 * 										this grid.
+		 * @exception	std::logic_error	 	If the cumulative count of the columns impacted by the
+		 * 										split coordinate lines are not stored within an HDF5
+		 * 										integer array.
+		 *
+		 * @param [out]	columnIndexCountPerSplitCoordinateLine	An array for receiving the cumulative
+		 * 														count of columns impacted by the split
+		 * 														coordinate lines.
 		 */
 		DLL_IMPORT_OR_EXPORT void getColumnCountOfSplitCoordinateLines(unsigned int * columnIndexCountPerSplitCoordinateLine) const;
 
 		/**
-		 * Get the split coordinate line count
+		 * Gets the split coordinate lines count.
 		 *
-		 * @returns	The split coordinate line count.
+		 * @exception	std::invalid_argument	If there is no geometry on this IJK grid.
+		 * @exception	std::range_error	 	If the count of split coordinate lines is strictly
+		 * 										greater than unsigned int max.
+		 *
+		 * @returns	The split coordinate lines count.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned long getSplitCoordinateLineCount() const;
 
 		/**
-		 * Get the split coordinate line count within a block. Block information must be loaded.
+		 * Gets the split coordinate lines count within the block. Block information must be loaded thanks
+		 * to loadBlockInformation().
 		 *
-		 * @returns	The block split coordinate line count.
+		 * @exception	std::invalid_argument	If the block information is not loaded.
+		 *
+		 * @returns	The split coordinate lines count within the block.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned long getBlockSplitCoordinateLineCount() const;
 
 		/**
-		 * Get the split coordinate line count
+		 * Gets the split nodes count.
 		 *
-		 * @returns	The split node count.
+		 * @exception	std::invalid_argument	If there is no geometry on this IJK grid.
+		 *
+		 * @returns	The split nodes count.
 		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getSplitNodeCount() const;
 
 		/**
-		 * Gets pillar geometry is defined
+		 * Tells for each pillar if its geometry is defined. This method only looks at the corresponding
+		 * @c PillarGeometryIsDefined attribute in the gSOAP proxy.
 		 *
-		 * @param [in,out]	pillarGeometryIsDefined	If non-null, true if pillar geometry is defined.
-		 * @param 		  	reverseIAxis		   	(Optional) True to reverse i axis.
-		 * @param 		  	reverseJAxis		   	(Optional) True to reverse j axis.
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::range_error	 	If the count of cells in I or J direction is strictly
+		 * 										greater than unsigned int max.
+		 * @exception	std::invalid_argument	If there is no geometry on this IJK grid.
+		 * @exception	std::invalid_argument	If the values indicating for each pillar if its geometry
+		 * 										is defined are neither stored in an HDF5 boolean array
+		 * 										nor in a boolean constant array.
+		 *
+		 * @param [out]	pillarGeometryIsDefined	An array for receiving a boolean value for each pillar
+		 * 										indicating if its geometry is defined or not. It must be
+		 * 										preallocated with a size of getPillarCount().
+		 * @param 	   	reverseIAxis		   	(Optional) True to reverse i axis. Default value is false.
+		 * @param 	   	reverseJAxis		   	(Optional) True to reverse j axis. Default value is false.
 		 */
 		DLL_IMPORT_OR_EXPORT void getPillarGeometryIsDefined(bool * pillarGeometryIsDefined, bool reverseIAxis = false, bool reverseJAxis = false) const;
 
 		/**
-		 * Indicates if this grid contains information on enabled and disabled information.
+		 * Indicates if this grid contains information about enabled and disabled (dead/invisible) cells.
 		 *
-		 * @returns	True if enabled cell information, false if not.
+		 * @returns	True if this grid contains information about enabled and disabled cells, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasEnabledCellInformation() const;
 
 		/**
-		 * Get the information on the dead/invisible cells. The enabledCells array must have a count of
-		 * getCellCount() and must follow the index ordering i then j then k. A zero value in
-		 * enabledCells means that the corresponding cell is disabled. A non zero value means that the
-		 * corresponding cell is enabled.
+		 * Get the information about enabled and disabled (dead/invisible) cells.
 		 *
-		 * @param [in,out]	enabledCells	It must be preallocated with the size of the cell count in
-		 * 									the ijk grid. It won't be disallocated.
-		 * @param 		  	reverseIAxis	(Optional) True to reverse i axis.
-		 * @param 		  	reverseJAxis	(Optional) True to reverse j axis.
-		 * @param 		  	reverseKAxis	(Optional) True to reverse k axis.
+		 * @exception	std::invalid_argument	If this has no geometry or no information about enabled
+		 * 										are disabled cells.
+		 * @exception	std::invalid_argument	If the enabled and disabled celles information is neither
+		 * 										stored in an HDF5 boolean array nor in a boolean constant
+		 * 										array.
+		 *
+		 * @param [out]	enabledCells	An array for receiving the information about enabled and disabled
+		 * 								cells. It must have a count of getCellCount() and must follow the
+		 * 								index ordering I then J then K. It won't be free. A zero value in
+		 * 								@p enabledCells means that the corresponding cell is disabled. A non
+		 * 								zero value means that the corresponding cell is enabled.
+		 * @param 	   	reverseIAxis	(Optional) True to reverse i axis. Default value is false.
+		 * @param 	   	reverseJAxis	(Optional) True to reverse j axis. Default value is false.
+		 * @param 	   	reverseKAxis	(Optional) True to reverse k axis. Default value is false.
 		 */
 		DLL_IMPORT_OR_EXPORT void getEnabledCells(bool * enabledCells, bool reverseIAxis = false, bool reverseJAxis= false, bool reverseKAxis= false) const;
 
 		/**
-		 * Set the information on the dead/invisible cells. The geometry of the grid must have been
-		 * defined yet. The enabledCells array must have a count of getCellCount() and must follow the
-		 * index ordering i then j then k. A zero value in enabledCells means that the corresponding
-		 * cell is disabled. A non zero value means that the corresponding cell is enabled.
+		 * Sets the information about the enabled and disabled (dead/invisible) cells.
 		 *
-		 * @param [in,out]	enabledCells	If non-null, the enabled cells.
-		 * @param [in,out]	proxy			(Optional) If non-null, the proxy.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If this grid has no geometry.
+		 *
+		 * @param [in]	  	enabledCells	An array containing the enabled/disabled information for each
+		 * 									cell. It must have a count of getCellCount() and must follow the
+		 * 									index ordering I then J then K. A zero value in @p enabledCells
+		 * 									means that the corresponding cell is disabled. A non zero value
+		 * 									means that the corresponding cell is enabled.
+		 * @param [in,out]	proxy			(Optional) The HDF proxy for writing the @p enabledCells
+		 * 									values. If @nullptr (default), then the default HDF proxy will be
+		 * 									used.
 		 */
 		DLL_IMPORT_OR_EXPORT void setEnabledCells(unsigned char* enabledCells, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
-		 * Load the split information into memory to speed up processes. Be aware that you must unload
-		 * by yourself this memory.
+		 * Loads the split information into memory to speed up processes. Be aware that you must unload
+		 * by yourself this memory thanks to unloadSplitInformation().
 		 */
 		DLL_IMPORT_OR_EXPORT void loadSplitInformation();
 
 		/**
-		 * Load the block information into memory to speed up the processes and make easier block
+		 * Loads the block information into memory to speed up the processes and make easier block
 		 * geometry handling for the user.
 		 *
-		 * @param 	iInterfaceStart	The starting I cell index of the block taken from zero to iCellCount -
-		 * 							1.
-		 * @param 	iInterfaceEnd  	The ending I cell index of the block taken from zero to iCellCount -
-		 * 							1.
-		 * @param 	jInterfaceStart	The starting J cell index of the block taken from zero to jCellCount -
-		 * 							1.
-		 * @param 	jInterfaceEnd  	The ending J cell index of the block taken from zero to jCellCount -
-		 * 							1.
-		 * @param 	kInterfaceStart	The starting K cell index of the block taken from zero to kCellCount -
-		 * 							1.
-		 * @param 	kInterfaceEnd  	The ending K cell index of the block taken from zero to kCellCount -
-		 * 							1.
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::invalid_argument	If the split information is not loaded.
+		 * @exception	std::out_of_range	 	If @p iInterfaceEnd <tt>&gt;=</tt> getICellCount(), @p
+		 * 										jInterfaceEnd <tt>&gt;=</tt> getJCellCount() or @p
+		 * 										kInterfaceEnd <tt>&gt;=</tt> getKCellCount().
+		 * @exception	std::range_error	 	If @p iInterfaceStart @c > @p iInterfaceEnd, @p
+		 * 										jInterfaceStart @c > @p jInterfaceEnd or @p
+		 * 										kInterfaceStart @c > @p kInterfaceEnd.
+		 *
+		 * @param 	iCellIndexStart	The starting I cell index of the block taken from zero to
+		 * 							getICellCount() <tt>- 1</tt>.
+		 * @param 	iCellIndexEnd  	The ending I cell index of the block taken from zero to
+		 * 							getICellCount() <tt>- 1</tt>.
+		 * @param 	jCellIndexStart	The starting J cell index of the block taken from zero to
+		 * 							getJCellCount() <tt>-	1</tt>.
+		 * @param 	jCellIndexEnd  	The ending J cell index of the block taken from zero to
+		 * 							getJCellCount() <tt>- 1</tt>.
+		 * @param 	kCellIndexStart	The starting K cell index of the block taken from zero to
+		 * 							getKCellCount() <tt>- 1</tt>.
+		 * @param 	kCellIndexEnd  	The ending K cell index of the block taken from zero to
+		 * 							getKCellCount() <tt>- 1</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT void loadBlockInformation(unsigned int iInterfaceStart, unsigned int iInterfaceEnd, unsigned int jInterfaceStart, unsigned int jInterfaceEnd, unsigned int kInterfaceStart, unsigned int kInterfaceEnd);
+		DLL_IMPORT_OR_EXPORT void loadBlockInformation(unsigned int iCellIndexStart, unsigned int iCellIndexEnd, unsigned int jCellIndexStart, unsigned int jCellIndexEnd, unsigned int kCellIndexStart, unsigned int kCellIndexEnd);
 
 		/** Unload the split information from memory. */
 		DLL_IMPORT_OR_EXPORT void unloadSplitInformation();

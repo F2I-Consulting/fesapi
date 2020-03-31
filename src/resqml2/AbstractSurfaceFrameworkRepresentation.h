@@ -54,8 +54,8 @@ namespace RESQML2_NS
 		 * 									the identity.
 		 * @param 		  	contactIndices	The indices of the sealed contact representations involved
 		 * 									within the identity. Count is @p contactCount.
-		 * @param [in,out]	proxy		  	The HDF proxy where to write the @p contactIndices values. Id
-		 * 									f @c nullptr, then a default HDF proxy must be defined in the
+		 * @param [in,out]	proxy		  	The HDF proxy where to write the @p contactIndices values. If
+		 * 									@c nullptr, then a default HDF proxy must be defined in the
 		 * 									repository.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackContactIdentity(
@@ -75,8 +75,8 @@ namespace RESQML2_NS
 		 * @param 		  	contactCount		 	The number of sealed contact representations involved
 		 * 											within the identity.
 		 * @param 		  	contactIndices		 	The indices of the sealed contact representations
-		 * 												involved within the identity. Count is @p
-		 * 												contactCount.
+		 * 											involved within the identity. Count is @p
+		 * 											contactCount.
 		 * @param 		  	identicalNodesCount  	The number of identical nodes.
 		 * @param 		  	identicalNodesIndexes	Indicates which nodes (identified by their common
 		 * 											index in all contact representations) of the contact
@@ -155,35 +155,46 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void getContactIndices(unsigned int ciIndex, unsigned int * contactRepIndices) const;
 
 		/**
-		 * Check if all nodes of contacts are identical in a contact identity.
+		 * Checks if all nodes of contacts are identical in a particular contact identity.
 		 *
-		 * @param 	ciIndex	The index of the contact identity in the contact identity list. It must be in
-		 * 					the interval [0..getContactIdentityCount()[.
+		 * @exception	std::out_of_range	If @p ciIndex is out of range.
+		 * @exception	std::logic_error 	If the RESQML version is unknown.
 		 *
-		 * @returns	True if all node of contacts are identical else false.
+		 * @param 	ciIndex	Zero-based index of the contact identity in the contact identity list.
+		 *
+		 * @returns	True if all nodes of contacts are identical else false.
 		 */
 		DLL_IMPORT_OR_EXPORT bool areAllContactNodesIdentical(unsigned int ciIndex) const;
 
 		/**
-		 * Get the count of identical nodes of a particular contact identity. Throw an exception if all
-		 * nodes are identical (see areAllContactRepNodesIdenticalInContactIdentity()).
+		 * Gets the count of all identical nodes of a particular contact identity.
 		 *
-		 * @param 	ciIndex	The index of the contact identity in the contact identity list. It must be in
-		 * 					the interval [0..getContactIdentityCount()[.
+		 * @exception	std::invalid_argument	If all nodes are identical (see
+		 * 										areAllContactNodesIdentical()).
+		 * @exception	std::out_of_range	 	If @p ciIndex is out of range.
+		 * @exception	std::logic_error	 	If the RESQML version is unknown.
+		 * @exception	std::range_error	 	If the count of identical nodes is strictly greater than
+		 * 										<tt>unsigned int</tt> max.
+		 *
+		 * @param 	ciIndex	Zero-based index of the contact identity in the contact identity list.
 		 *
 		 * @returns	The count of identical nodes of a particular contact identity.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getIdenticalContactNodeCount(unsigned int ciIndex) const;
 
 		/**
-		 * Get the node indices of all contacts which are identical. Throw an exception if all nodes are
-		 * identical (see areAllContactRepNodesIdenticalInContactIdentity()).
+		 * Gets the indices of all identical nodes of a particular contact identity.
 		 *
-		 * @param 		  	ciIndex	   	The index of the contact identity in the contact identity list.
-		 * 								It must be in the interval [0..getContactIdentityCount()[.
-		 * @param [in,out]	nodeIndices	This array must be preallocated with
-		 * 								getIdenticalContactlNodeCount(). It won't be deleted by fesapi.
-		 * 								It will be filled in with the desired node indices.
+		 * @exception	std::invalid_argument	If if all nodes are identical (see
+		 * 										areAllContactRepNodesIdenticalInContactIdentity()).
+		 * @exception	std::out_of_range	 	If @p ciIndex is out of range.
+		 * @exception	std::logic_error	 	If the RESQML version is unknown.
+		 *
+		 * @param 	   	ciIndex	   	ciIndex	Zero-based index of the contact identity in the contact
+		 * 							identity list.
+		 * @param [out]	nodeIndices	An array to receive the identical nodes indices. It must be
+		 * 							preallocated with a count of getIdenticalContactNodeCount(). It won't
+		 * 							be deleted by fesapi.
 		 */
 		DLL_IMPORT_OR_EXPORT void getIdenticalContactNodeIndices(unsigned int ciIndex, unsigned int * nodeIndices) const;
 
