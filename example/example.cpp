@@ -1836,7 +1836,7 @@ void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, EML2_
 	rockFluidOrgFeature->setOriginator("Geosiris");
 
 	// Interp
-	RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp = pck.createRockFluidOrganizationInterpretation(rockFluidOrgFeature, "b5bbfe42-4a63-11e9-9eeb-4f036e6e8141", "Rock Fluid org", rockFluidUnit);
+	RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp = pck.createRockFluidOrganizationInterpretation(rockFluidOrgFeature, "b5bbfe42-4a63-11e9-9eeb-4f036e6e8141", "Rock Fluid org");
 
 	// Link between ijk grid and rock fuid org
 	RESQML2_NS::IjkGridExplicitRepresentation* singleCellIjkgrid = pck.getDataObjectByUuid<RESQML2_NS::IjkGridExplicitRepresentation>("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b");

@@ -131,6 +131,10 @@ under the License.
 #include "../resqml2_2/PolylineSetRepresentation.h"
 #include "../resqml2_2/PropertySet.h"
 #include "../resqml2_2/RepresentationSetRepresentation.h"
+#include "../resqml2_2/RockFluidOrganizationInterpretation.h"
+#include "../resqml2_2/RockFluidUnitInterpretation.h"
+#include "../resqml2_2/SealedSurfaceFrameworkRepresentation.h"
+#include "../resqml2_2/SealedVolumeFrameworkRepresentation.h"
 #include "../resqml2_2/SeismicWellboreFrameRepresentation.h"
 #include "../resqml2_2/UnstructuredGridRepresentation.h"
 #include "../resqml2_2/WellboreFeature.h"
@@ -634,14 +638,14 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectR
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::TimeSeries)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::RepresentationSetRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(SealedSurfaceFrameworkRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(SealedVolumeFrameworkRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(DeviationSurveyRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(GeobodyFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::GeobodyBoundaryInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(GeobodyInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(RockFluidOrganizationInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(RockFluidUnitInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::RockFluidOrganizationInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::RockFluidUnitInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RockFluidUnitFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Well)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Wellbore)
@@ -1124,14 +1128,28 @@ RESQML2_NS::StructuralOrganizationInterpretation* DataObjectRepository::createSt
 	return new StructuralOrganizationInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria__measured_x0020depth);
 }
 
-RESQML2_NS::RockFluidOrganizationInterpretation* DataObjectRepository::createRockFluidOrganizationInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterp)
+RESQML2_NS::RockFluidOrganizationInterpretation* DataObjectRepository::createRockFluidOrganizationInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title)
 {
-	return new RockFluidOrganizationInterpretation(orgFeat, guid, title, rockFluidUnitInterp);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::RockFluidOrganizationInterpretation(orgFeat, guid, title);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::RockFluidOrganizationInterpretation(orgFeat, guid, title);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
 RESQML2_NS::RockFluidUnitInterpretation* DataObjectRepository::createRockFluidUnitInterpretation(RESQML2_NS::RockVolumeFeature * rockFluidUnitFeature, const std::string & guid, const std::string & title)
 {
-	return new RockFluidUnitInterpretation(rockFluidUnitFeature, guid, title);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::RockFluidUnitInterpretation(rockFluidUnitFeature, guid, title);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::RockFluidUnitInterpretation(rockFluidUnitFeature, guid, title);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
 RESQML2_NS::StratigraphicColumn* DataObjectRepository::createStratigraphicColumn(const std::string & guid, const std::string & title)
@@ -1416,7 +1434,14 @@ RESQML2_NS::SealedSurfaceFrameworkRepresentation* DataObjectRepository::createSe
 	const std::string & guid,
 	const std::string & title)
 {
-	return new SealedSurfaceFrameworkRepresentation(interp, guid, title);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation(interp, guid, title);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::SealedSurfaceFrameworkRepresentation(interp, guid, title);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
 RESQML2_NS::SealedVolumeFrameworkRepresentation* DataObjectRepository::createSealedVolumeFrameworkRepresentation(
@@ -1425,7 +1450,14 @@ RESQML2_NS::SealedVolumeFrameworkRepresentation* DataObjectRepository::createSea
 	const std::string & title,
 	RESQML2_NS::SealedSurfaceFrameworkRepresentation* ssf)
 {
-	return new SealedVolumeFrameworkRepresentation(interp, guid, title, ssf);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation(interp, guid, title, ssf);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::SealedVolumeFrameworkRepresentation(interp, guid, title, ssf);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
 RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialIjkGridRepresentation(const std::string & guid, const std::string & title)
@@ -2617,7 +2649,11 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PolylineSetRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PropertySet)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RepresentationSetRepresentation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RockFluidOrganizationInterpretation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RockFluidUnitInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SeismicWellboreFrameRepresentation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SealedSurfaceFrameworkRepresentation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SealedVolumeFrameworkRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(UnstructuredGridRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreFeature)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreFrameRepresentation)

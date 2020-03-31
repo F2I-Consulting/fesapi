@@ -1705,11 +1705,10 @@ namespace COMMON_NS
 		 * @param 		  	title			   	The title to set to the rock fluid organization
 		 * 										interpretation. If empty then \"unknown\" title will be
 		 * 										set.
-		 * @param [in]	  	rockFluidUnitInterp	The rock fluid unit interpretation. It cannot be null.
 		 *
 		 * @returns	A pointer to the new rock fluid organization interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockFluidOrganizationInterpretation* createRockFluidOrganizationInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterp);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockFluidOrganizationInterpretation* createRockFluidOrganizationInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a rock fluid unit interpretation into this repository
