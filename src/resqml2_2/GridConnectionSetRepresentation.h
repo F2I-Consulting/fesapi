@@ -21,7 +21,7 @@ under the License.
 #include "../resqml2/GridConnectionSetRepresentation.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
 	/** A grid connection set representation. */
 	class GridConnectionSetRepresentation : public RESQML2_NS::GridConnectionSetRepresentation
@@ -90,7 +90,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		GridConnectionSetRepresentation(gsoap_resqml2_0_1::_resqml20__GridConnectionSetRepresentation* fromGsoap) : RESQML2_NS::GridConnectionSetRepresentation(fromGsoap) {}
+		GridConnectionSetRepresentation(gsoap_eml2_3::_resqml22__GridConnectionSetRepresentation* fromGsoap) : RESQML2_NS::GridConnectionSetRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~GridConnectionSetRepresentation() {}

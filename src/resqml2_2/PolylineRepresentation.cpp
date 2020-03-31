@@ -29,13 +29,13 @@ under the License.
 #include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace RESQML2_0_1_NS;
-using namespace gsoap_resqml2_0_1;
+using namespace RESQML2_2_NS;
+using namespace gsoap_eml2_3;
 
 void PolylineRepresentation::init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, bool isClosed)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREPolylineRepresentation(repo->getGsoapContext());
-	_resqml20__PolylineRepresentation* polylineRep = static_cast<_resqml20__PolylineRepresentation*>(gsoapProxy2_0_1);
+	gsoapProxy2_3 = soap_new_resqml22__PolylineRepresentation(repo->getGsoapContext());
+	_resqml22__PolylineRepresentation* polylineRep = static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3);
 
 	polylineRep->IsClosed = isClosed;
 
@@ -77,12 +77,12 @@ PolylineRepresentation::PolylineRepresentation(RESQML2_NS::AbstractFeatureInterp
 
 COMMON_NS::DataObjectReference PolylineRepresentation::getHdfProxyDor() const
 {
-	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
+	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_2(0));
 }
 
-resqml20__PointGeometry* PolylineRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
+resqml22__PointGeometry* PolylineRepresentation::getPointGeometry2_2(unsigned int patchIndex) const
 {
-	return patchIndex == 0 ? static_cast<_resqml20__PolylineRepresentation*>(gsoapProxy2_0_1)->NodePatch->Geometry : nullptr;
+	return patchIndex == 0 ? static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->NodePatch->Geometry : nullptr;
 }
 
 ULONG64 PolylineRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
@@ -91,7 +91,7 @@ ULONG64 PolylineRepresentation::getXyzPointCountOfPatch(const unsigned int & pat
 		throw range_error("The index of the patch is not in the allowed range of patch.");
 	}
 
-	return static_cast<_resqml20__PolylineRepresentation*>(gsoapProxy2_0_1)->NodePatch->Count;
+	return static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->NodePatch->Count;
 }
 
 void PolylineRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
@@ -100,12 +100,11 @@ void PolylineRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex
 		throw range_error("The index of the patch is not in the allowed range of patch.");
 	}
 
-	resqml20__PointGeometry* pointGeom = getPointGeometry2_0_1(patchIndex);
-	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array)
+	resqml22__PointGeometry* pointGeom = getPointGeometry2_2(patchIndex);
+	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray)
 	{
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__Point3dHdf5Array*>(pointGeom->Points)->Coordinates;
-		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, xyzPoints);
+		auto dsPart = static_cast<resqml22__Point3dExternalArray*>(pointGeom->Points)->Coordinates->ExternalFileProxy[0];
+		getHdfProxyFromDataset(dsPart)->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, xyzPoints);
 	}
 	else
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
@@ -120,24 +119,23 @@ void PolylineRepresentation::setGeometry(double const* points, unsigned int poin
 		}
 	}
 
-	_resqml20__PolylineRepresentation* polylineRep = static_cast<_resqml20__PolylineRepresentation*>(gsoapProxy2_0_1);
-	polylineRep->NodePatch = soap_new_resqml20__NodePatch(gsoapProxy2_0_1->soap);
+	_resqml22__PolylineRepresentation* polylineRep = static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3);
+	polylineRep->NodePatch = soap_new_resqml22__NodePatch(gsoapProxy2_3->soap);
 	polylineRep->NodePatch->Count = pointCount;
-	polylineRep->NodePatch->PatchIndex = 0;
 
 	hsize_t pointCountDims = pointCount;
-	polylineRep->NodePatch->Geometry = createPointGeometryPatch2_0_1(0, points, localCrs, &pointCountDims, 1, proxy);
+	polylineRep->NodePatch->Geometry = createPointGeometryPatch2_2(0, points, localCrs, &pointCountDims, 1, proxy);
 	getRepository()->addRelationship(this, localCrs);
 }
 
 bool PolylineRepresentation::isClosed() const
 {
-	return static_cast<_resqml20__PolylineRepresentation*>(gsoapProxy2_0_1)->IsClosed;
+	return static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->IsClosed;
 }
 
 bool PolylineRepresentation::hasALineRole() const
 {
-	return static_cast<_resqml20__PolylineRepresentation*>(gsoapProxy2_0_1)->LineRole != nullptr;
+	return static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole != nullptr;
 }
 
 gsoap_eml2_3::resqml22__LineRole PolylineRepresentation::getLineRole() const
@@ -146,7 +144,7 @@ gsoap_eml2_3::resqml22__LineRole PolylineRepresentation::getLineRole() const
 		throw invalid_argument("The polyline doesn't have any role");
 	}
 
-	return static_cast<gsoap_eml2_3::resqml22__LineRole>(*static_cast<_resqml20__PolylineRepresentation*>(gsoapProxy2_0_1)->LineRole);
+	return *static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole;
 }
 
 void PolylineRepresentation::setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole)
@@ -156,8 +154,8 @@ void PolylineRepresentation::setLineRole(gsoap_eml2_3::resqml22__LineRole lineRo
 	}
 
 	if (!hasALineRole()) {
-		static_cast<_resqml20__PolylineRepresentation*>(gsoapProxy2_0_1)->LineRole = (resqml20__LineRole*)soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__LineRole));
+		static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole = (resqml22__LineRole*)soap_malloc(gsoapProxy2_3->soap, sizeof(resqml22__LineRole));
 	}
 
-	*static_cast<_resqml20__PolylineRepresentation*>(gsoapProxy2_0_1)->LineRole = static_cast<gsoap_resqml2_0_1::resqml20__LineRole>(lineRole);
+	*static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole = lineRole;
 }

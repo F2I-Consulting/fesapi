@@ -21,13 +21,13 @@ under the License.
 #include "../resqml2/PolylineSetRepresentation.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
 	/** A polyline set representation. */
 	class PolylineSetRepresentation : public RESQML2_NS::PolylineSetRepresentation
 	{
 	private :
-		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
 
 		/**
 		 * Initializes this object
@@ -87,7 +87,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		PolylineSetRepresentation(gsoap_resqml2_0_1::_resqml20__PolylineSetRepresentation* fromGsoap) : RESQML2_NS::PolylineSetRepresentation(fromGsoap) {}
+		PolylineSetRepresentation(gsoap_eml2_3::_resqml22__PolylineSetRepresentation* fromGsoap) : RESQML2_NS::PolylineSetRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~PolylineSetRepresentation() {}

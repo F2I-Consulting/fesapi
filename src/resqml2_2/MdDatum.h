@@ -21,7 +21,7 @@ under the License.
 #include "../resqml2/MdDatum.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
 	/** A md datum. */
 	class MdDatum : public RESQML2_NS::MdDatum
@@ -63,7 +63,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		MdDatum(gsoap_resqml2_0_1::_resqml20__MdDatum* fromGsoap) :RESQML2_NS::MdDatum(fromGsoap) {}
+		MdDatum(gsoap_eml2_3::_resqml22__MdDatum* fromGsoap) :RESQML2_NS::MdDatum(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~MdDatum() {}
@@ -104,7 +104,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__WellboreDatumReference getOriginKind() const final;
 
 		/** Loads target relationships */
-		void loadTargetRelationships() final;
+		void loadTargetRelationships() final {}
 
 	private:
 

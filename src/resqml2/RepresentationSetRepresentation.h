@@ -105,20 +105,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The data object reference of the representation at position @p index.
 		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getRepresentationDor(const unsigned int & index) const;
-
-		/**
-		 * Gets the UUID of a particular representation in this representation set according to its
-		 * position.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p index is out of range.
-		 *
-		 * @param 	index	Zero-based index of the of the representation we look for.
-		 *
-		 * @returns	The UUID of the representation at position @p index.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getRepresentationUuid(const unsigned int & index) const;
+		COMMON_NS::DataObjectReference getRepresentationDor(unsigned int index) const;
 
 		/**
 		 * Pushes back a representation into this representation set. The value of the @c

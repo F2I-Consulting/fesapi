@@ -21,7 +21,7 @@ under the License.
 #include "../resqml2/PolylineRepresentation.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
 	/** A polyline representation. */
 	class PolylineRepresentation : public RESQML2_NS::PolylineRepresentation
@@ -83,7 +83,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		PolylineRepresentation(gsoap_resqml2_0_1::_resqml20__PolylineRepresentation* fromGsoap) : RESQML2_NS::PolylineRepresentation(fromGsoap) {}
+		PolylineRepresentation(gsoap_eml2_3::_resqml22__PolylineRepresentation* fromGsoap) : RESQML2_NS::PolylineRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~PolylineRepresentation() {}
@@ -153,7 +153,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole);
 
 	private:
-		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
 
 		/**
 		 * Initializes this object

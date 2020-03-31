@@ -149,6 +149,54 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointG
 	}
 }
 
+gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::createPointGeometryPatch2_2(unsigned int patchIndex,
+	double const * points, AbstractLocal3dCrs const* localCrs, hsize_t const* numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy)
+{
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+	getRepository()->addRelationship(this, proxy);
+
+	if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::resqml22__PointGeometry* const geom = gsoap_eml2_3::soap_new_resqml22__PointGeometry(gsoapProxy2_3->soap);
+		geom->LocalCrs = localCrs->newEml23Reference();
+
+		// XML
+		gsoap_eml2_3::resqml22__Point3dExternalArray* xmlPts = gsoap_eml2_3::soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
+		xmlPts->Coordinates = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+		auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
+		ostringstream oss;
+		oss << "points_patch" << patchIndex;
+		dsPart->PathInExternalFile = getHdfGroup() + "/" + oss.str();
+		xmlPts->Coordinates->ExternalFileProxy.push_back(dsPart);
+		geom->Points = xmlPts;
+
+		// HDF
+		std::unique_ptr<hsize_t[]> numValues(new hsize_t[numDimensionsInArray + 1]);
+		for (hsize_t i = 0; i < numDimensionsInArray; ++i) {
+			numValues[i] = numPoints[i];
+		}
+		numValues[numDimensionsInArray] = 3; // 3 for X, Y and Z
+
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss.str(), points, numValues.get(), numDimensionsInArray + 1);
+
+		return geom;
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}
+
 AbstractLocal3dCrs* AbstractRepresentation::getLocalCrs(unsigned int patchIndex) const
 {
 	auto dor = getLocalCrsDor(patchIndex);

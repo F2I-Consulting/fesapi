@@ -21,7 +21,7 @@ under the License.
 #include "../resqml2/PropertySet.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
 	/**
 	 * A set of properties collected together for a specific purpose. For example, a property set
@@ -64,7 +64,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		PropertySet(gsoap_resqml2_0_1::_resqml20__PropertySet* fromGsoap) : RESQML2_NS::PropertySet(fromGsoap) {}
+		PropertySet(gsoap_eml2_3::_resqml22__PropertySet* fromGsoap) : RESQML2_NS::PropertySet(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~PropertySet() {}

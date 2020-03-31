@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "NonSealedSurfaceFrameworkRepresentation.h"
 
-#include <algorithm>
 #include <stdexcept>
 #include <sstream>
 
@@ -30,8 +29,8 @@ under the License.
 #include "../resqml2/StructuralOrganizationInterpretation.h"
 
 using namespace std;
-using namespace RESQML2_0_1_NS;
-using namespace gsoap_resqml2_0_1;
+using namespace RESQML2_2_NS;
+using namespace gsoap_eml2_3;
 
 NonSealedSurfaceFrameworkRepresentation::NonSealedSurfaceFrameworkRepresentation(
 	RESQML2_NS::StructuralOrganizationInterpretation* interp,
@@ -43,8 +42,8 @@ NonSealedSurfaceFrameworkRepresentation::NonSealedSurfaceFrameworkRepresentation
 	}
 
 	// proxy constructor
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORENonSealedSurfaceFrameworkRepresentation(interp->getGsoapContext());	
-	_resqml20__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
+	gsoapProxy2_3 = soap_new_resqml22__NonSealedSurfaceFrameworkRepresentation(interp->getGsoapContext());	
+	_resqml22__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml22__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_3);
 
 	orgRep->IsHomogeneous = true;
 
@@ -74,21 +73,23 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 	}
 	getRepository()->addRelationship(this, proxy);
 
-	_resqml20__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
+	_resqml22__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml22__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_3);
 
-	resqml20__NonSealedContactRepresentationPart* contactRep = soap_new_resqml20__NonSealedContactRepresentationPart(gsoapProxy2_0_1->soap);
+	resqml22__NonSealedContactRepresentationPart* contactRep = soap_new_resqml22__NonSealedContactRepresentationPart(gsoapProxy2_3->soap);
 	contactRep->Index = orgRep->NonSealedContactRepresentation.size();
 	orgRep->NonSealedContactRepresentation.push_back(contactRep);
-	resqml20__PointGeometry* contactGeom = soap_new_resqml20__PointGeometry(gsoapProxy2_0_1->soap);
+	resqml22__PointGeometry* contactGeom = soap_new_resqml22__PointGeometry(gsoapProxy2_3->soap);
 	contactRep->Geometry = contactGeom;
-	contactGeom->LocalCrs = localCrs->newResqmlReference();
-	resqml20__Point3dHdf5Array* contactGeomPoints = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap);
+	contactGeom->LocalCrs = localCrs->newEml23Reference();
+	resqml22__Point3dExternalArray* contactGeomPoints = soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
 	contactGeom->Points = contactGeomPoints;
-	contactGeomPoints->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
-	contactGeomPoints->Coordinates->HdfProxy = proxy->newResqmlReference();
+	contactGeomPoints->Coordinates = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
 	ostringstream oss;
 	oss << "points_contact_representation" << orgRep->NonSealedContactRepresentation.size()-1;
-	contactGeomPoints->Coordinates->PathInHdfFile = getHdfGroup() + "/" + oss.str();
+	dsPart->PathInExternalFile = getHdfGroup() + "/" + oss.str();
+	contactGeomPoints->Coordinates->ExternalFileProxy.push_back(dsPart);
 	
 	// HDF
 	hsize_t numValues[2];
@@ -102,7 +103,7 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 
 unsigned int NonSealedSurfaceFrameworkRepresentation::getContactCount() const
 {
-	_resqml20__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
+	_resqml22__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml22__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_3);
 
 	if (orgRep->NonSealedContactRepresentation.size() > (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("There are too much contact representations for fesapi");

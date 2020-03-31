@@ -148,9 +148,9 @@ namespace RESQML2_2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setMaximumValue(LONG64 value, unsigned int index = 0) const;
 
-		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) override { return true; }
+		bool validatePropertyKindAssociation(EML2_NS::PropertyKind*) override { return true; }
 
-		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) override { return true; }
+		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind) override { return true; }
 
 	private:
 
