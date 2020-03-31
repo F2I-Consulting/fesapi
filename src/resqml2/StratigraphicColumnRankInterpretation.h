@@ -81,8 +81,8 @@ namespace RESQML2_NS
 		 * @param [in]	partOf			  	(Optional) If non-null, the horizon interpretation that
 		 * 									contains this new binary contact. Default value is @c nullptr.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, gsoap_resqml2_0_1::resqml20__ContactMode subjectContactMode,
-			StratigraphicUnitInterpretation* directObject, gsoap_resqml2_0_1::resqml20__ContactMode directObjectMode,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, gsoap_eml2_3::resqml22__ContactMode subjectContactMode,
+			StratigraphicUnitInterpretation* directObject, gsoap_eml2_3::resqml22__ContactMode directObjectMode,
 			HorizonInterpretation * partOf = nullptr) = 0;
 
 		/**
@@ -114,7 +114,7 @@ namespace RESQML2_NS
 		 * @returns	Proportional contact mode by default (if no contact mode is associated to the subject
 		 * 			stratigraphic unit) or the contact mode of the subject stratigraphic unit.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml20__ContactMode getSubjectContactModeOfContact(unsigned int contactIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::resqml22__ContactMode getSubjectContactModeOfContact(unsigned int contactIndex) const = 0;
 
 		/** Gets the stratigraphic unit interpretation which is the subject of a particular contact.
 		 *
@@ -140,7 +140,7 @@ namespace RESQML2_NS
 		 * 			object stratigraphic unit) or the contact mode of the direct object stratigraphic
 		 * 			unit.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml20__ContactMode getDirectObjectContactModeOfContact(unsigned int contactIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::resqml22__ContactMode getDirectObjectContactModeOfContact(unsigned int contactIndex) const = 0;
 
 		/** Gets the stratigraphic unit interpretation which is the direct object of a particular contact.
 		 *

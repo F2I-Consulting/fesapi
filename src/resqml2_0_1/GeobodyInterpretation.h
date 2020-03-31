@@ -45,7 +45,7 @@ namespace RESQML2_0_1_NS
 		 * 							be generated.
 		 * @param 		  	title  	A title for the instance to create.
 		 */
-		GeobodyInterpretation(class GeobodyFeature * feature, const std::string & guid, const std::string & title);
+		GeobodyInterpretation(RESQML2_NS::RockVolumeFeature * feature, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.

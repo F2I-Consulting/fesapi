@@ -63,6 +63,7 @@ namespace RESQML2_NS
 	class FaultInterpretation;
 	class GenericFeatureInterpretation;
 	class GeobodyBoundaryInterpretation;
+	class GeobodyInterpretation;
 	class GridConnectionSetRepresentation;
 	class Grid2dRepresentation;
 	class HorizonInterpretation;
@@ -112,12 +113,10 @@ namespace RESQML2_0_1_NS
 	class DiscreteProperty;
 	class GeneticBoundaryFeature;
 	class GeobodyFeature;
-	class GeobodyInterpretation;
 	class Horizon;
 	class TectonicBoundaryFeature;
 	class SeismicLatticeFeature;
 	class PropertyKind;
-	class AbstractGridRepresentation;
 	class FluidBoundaryFeature;
 	class BlockedWellboreRepresentation;
 	class RockFluidUnitFeature;
@@ -128,6 +127,7 @@ namespace RESQML2_2_NS
 	class DiscreteColorMap;
 	class ContinuousColorMap;
 	class Model;
+	class RockVolumeFeature;
 	class SeismicWellboreFrameRepresentation;
 }
 
@@ -1338,6 +1338,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::BoundaryFeature* createBoundaryFeature(const std::string & guid, const std::string & title);
 
 		/**
+		 * @deprecated Use {@link createBoundaryFeature()} method for RESQML post v2.0.1
 		 * Creates a horizon into this repository
 		 *
 		 * @param 	guid 	The guid to set to the horizon. If empty then a new guid will be generated.
@@ -1345,9 +1346,10 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new horizon.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::Horizon* createHorizon(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::BoundaryFeature* createHorizon(const std::string & guid, const std::string & title);
 
 		/**
+		 * @deprecated Use {@link createBoundaryFeature()} method for RESQML post v2.0.1
 		 * Creates a geobody boundary feature into this repository
 		 *
 		 * @param 	guid 	The guid to set to the geobody boundary feature. If empty then a new guid
@@ -1357,7 +1359,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new geobody boundary feature.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::GeneticBoundaryFeature* createGeobodyBoundaryFeature(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::BoundaryFeature* createGeobodyBoundaryFeature(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a geobody feature into this repository
@@ -1369,9 +1371,10 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new geobody feature.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::GeobodyFeature* createGeobodyFeature(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockVolumeFeature* createGeobodyFeature(const std::string & guid, const std::string & title);
 
 		/**
+		 * @deprecated Use {@link createBoundaryFeature()} method for RESQML post v2.0.1
 		 * Creates a fault into this repository
 		 *
 		 * @param 	guid 	The guid to set to the fault. If empty then a new guid will be generated.
@@ -1379,9 +1382,10 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new fault.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::TectonicBoundaryFeature* createFault(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::BoundaryFeature* createFault(const std::string & guid, const std::string & title);
 
 		/**
+		 * @deprecated Use {@link createBoundaryFeature()} method for RESQML post v2.0.1
 		 * Creates a fracture into this repository
 		 *
 		 * @param 	guid 	The guid to set to the fracture. If empty then a new guid will be generated.
@@ -1389,7 +1393,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new fracture.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::TectonicBoundaryFeature* createFracture(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::BoundaryFeature* createFracture(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a wellbore feature into this repository
@@ -1466,6 +1470,7 @@ namespace COMMON_NS
 			gsoap_eml2_3::resqml22__CulturalFeatureKind kind = gsoap_eml2_3::resqml22__CulturalFeatureKind__project_x0020boundaries);
 
 		/**
+		 * @deprecated Use {@link createRockVolumeFeature()} method for RESQML post v2.0.1
 		 * Creates a stratigraphic unit into this repository
 		 *
 		 * @param 	guid 	The guid to set to the stratigraphic unit. If empty then a new guid will be generated.
@@ -1473,7 +1478,18 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new stratigraphic unit.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockVolumeFeature* createRockVolumeFeature(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockVolumeFeature* createStratigraphicUnitFeature(const std::string & guid, const std::string & title);
+
+		/**
+		 * @deprecated Use {@link createRockVolumeFeature()} method for RESQML post v2.0.1
+		 * Creates a RockVolume feature into this repository
+		 *
+		 * @param 	guid 	The guid to set to the RockVolume feature. If empty then a new guid will be generated.
+		 * @param 	title	The title to set to the RockVolume feature. If empty then \"unknown\" title will be set.
+		 *
+		 * @returns	A pointer to the new RockVolume feature.
+		 */
+		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::RockVolumeFeature* createRockVolumeFeature(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a model into this repository.
@@ -1486,7 +1502,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::Model* createModel(const std::string & guid, const std::string & title);
 
 		/**
-		 * DEPRECATED after v2.0.1: use createModel
+		 * @deprecated Use {@link createModel()} method for RESQML post v2.0.1
 		 * Creates a structural model into this repository
 		 *
 		 * @param 	guid 	The guid to set to the structural model. If empty then a new guid will be generated.
@@ -1497,7 +1513,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::Model* createStructuralModel(const std::string & guid, const std::string & title);
 
 		/**
-		 * DEPRECATED after v2.0.1: use createModel
+		 * @deprecated Use {@link createModel()} method for RESQML post v2.0.1
 		 * Creates a stratigraphic model into this repository
 		 *
 		 * @param 	guid 	The guid to set to the stratigraphic model. If empty then a new guid will be generated.
@@ -1508,7 +1524,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::Model* createStratigraphicModel(const std::string & guid, const std::string & title);
 
 		/**
-		 * DEPRECATED after v2.0.1: use createModel
+		 * @deprecated Use {@link createModel()} method for RESQML post v2.0.1
 		 * Creates a rock fluid model into this repository
 		 *
 		 * @param 	guid 	The guid to set to the rock fluid model. If empty then a new guid will be generated.
@@ -1519,7 +1535,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::Model* createRockFluidModel(const std::string & guid, const std::string & title);
 
 		/**
-		 * DEPRECATED after v2.0.1: use createModel
+		 * @deprecated Use {@link createModel()} method for RESQML post v2.0.1
 		 * Creates an earth model into this repository
 		 *
 		 * @param 	guid 	The guid to set to the earth model. If empty then a new guid will be generated.
@@ -1540,7 +1556,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new fluid boundary feature.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::FluidBoundaryFeature* createFluidBoundaryFeature(const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml20__FluidContact & fluidContact);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::FluidBoundaryFeature* createFluidBoundaryFeature(const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__FluidContact fluidContact);
 
 		/**
 		 * Creates rock fluid unit into this repository
@@ -1734,7 +1750,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new geobody interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::GeobodyInterpretation* createGeobodyInterpretation(RESQML2_0_1_NS::GeobodyFeature * geobody, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::GeobodyInterpretation* createGeobodyInterpretation(RESQML2_NS::RockVolumeFeature* geobody, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a stratigraphic unit interpretation into this repository
@@ -2481,7 +2497,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind201(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
 			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
@@ -2500,7 +2516,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind201(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
 			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * parentPropType);
 
 		/**
@@ -2520,7 +2536,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind201(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
 			const std::string & namingSystem, const std::string & nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
@@ -2538,7 +2554,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind201(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
 			const std::string & namingSystem, const std::string & nonStandardUom, EML2_NS::PropertyKind * parentPropType);
 
 		/**
@@ -2601,7 +2617,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new comment property.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CommentProperty* createCommentProperty201(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
@@ -2654,7 +2670,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new continuous property.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty201(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
@@ -2711,7 +2727,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new continuous property.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty201(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, std::string nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
@@ -2763,7 +2779,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new discrete property.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscreteProperty* createDiscreteProperty201(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
@@ -2813,7 +2829,7 @@ namespace COMMON_NS
 		 *
 		 * @returns A pointer to new categorical property.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty201(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
 			RESQML2_NS::StringTableLookup* strLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 

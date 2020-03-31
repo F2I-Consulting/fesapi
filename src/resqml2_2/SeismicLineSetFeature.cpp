@@ -16,25 +16,18 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "FluidBoundaryFeature.h"
-
-#include <stdexcept>
+#include "SeismicLineSetFeature.h"
 
 using namespace std;
-using namespace RESQML2_0_1_NS;
-using namespace gsoap_resqml2_0_1;
+using namespace RESQML2_2_NS;
+using namespace gsoap_eml2_3;
 
-const char* FluidBoundaryFeature::XML_TAG = "FluidBoundaryFeature";
-
-FluidBoundaryFeature::FluidBoundaryFeature(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title, resqml20__FluidContact fluidContact)
+SeismicLineSetFeature::SeismicLineSetFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title)
 {
-	if (repo == nullptr) {
+	if (repo == nullptr)
 		throw invalid_argument("The repo cannot be null.");
-	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREFluidBoundaryFeature(repo->getGsoapContext());
-	_resqml20__FluidBoundaryFeature* fbf = static_cast<_resqml20__FluidBoundaryFeature*>(gsoapProxy2_0_1);
-	fbf->FluidContact = fluidContact;
+	gsoapProxy2_3 = soap_new_resqml22__SeismicLineSetFeature(repo->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");

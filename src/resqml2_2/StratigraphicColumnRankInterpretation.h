@@ -21,7 +21,7 @@ under the License.
 #include "../resqml2/StratigraphicColumnRankInterpretation.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
 	/**
 	* This class is a container for other organizations that are consistent to each others.
@@ -49,7 +49,7 @@ namespace RESQML2_0_1_NS
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 
-		StratigraphicColumnRankInterpretation(gsoap_resqml2_0_1::_resqml20__StratigraphicColumnRankInterpretation* fromGsoap) : RESQML2_NS::StratigraphicColumnRankInterpretation(fromGsoap) {}
+		StratigraphicColumnRankInterpretation(gsoap_eml2_3::_resqml22__StratigraphicColumnRankInterpretation* fromGsoap) : RESQML2_NS::StratigraphicColumnRankInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~StratigraphicColumnRankInterpretation() {}

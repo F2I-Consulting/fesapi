@@ -135,7 +135,7 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureIn
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::resqml22__AbstractOrganizationInterpretation* org = static_cast<gsoap_eml2_3::resqml22__AbstractOrganizationInterpretation*>(gsoapProxy2_3);
 		gsoap_eml2_3::resqml22__BinaryContactInterpretationPart* contact = static_cast<gsoap_eml2_3::resqml22__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
-		contact->DirectObject->Qualifier = static_cast<gsoap_eml2_3::resqml22__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(gsoap_eml2_3::resqml22__ContactSide)));
+		contact->DirectObject->Qualifier = static_cast<gsoap_eml2_3::resqml22__ContactSide*>(soap_malloc(gsoapProxy2_3->soap, sizeof(gsoap_eml2_3::resqml22__ContactSide)));
 		*(contact->DirectObject->Qualifier) = static_cast<gsoap_eml2_3::resqml22__ContactSide>(directObjectQualifier);
 	}
 }
@@ -155,7 +155,7 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureIn
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::resqml22__AbstractOrganizationInterpretation* org = static_cast<gsoap_eml2_3::resqml22__AbstractOrganizationInterpretation*>(gsoapProxy2_3);
 		gsoap_eml2_3::resqml22__BinaryContactInterpretationPart* contact = static_cast<gsoap_eml2_3::resqml22__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
-		contact->Subject->Qualifier = static_cast<gsoap_eml2_3::resqml22__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(gsoap_eml2_3::resqml22__ContactSide)));
+		contact->Subject->Qualifier = static_cast<gsoap_eml2_3::resqml22__ContactSide*>(soap_malloc(gsoapProxy2_3->soap, sizeof(gsoap_eml2_3::resqml22__ContactSide)));
 		*(contact->Subject->Qualifier) = static_cast<gsoap_eml2_3::resqml22__ContactSide>(subjectQualifier);
 	}
 }

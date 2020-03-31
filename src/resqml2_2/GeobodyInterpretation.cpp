@@ -20,13 +20,13 @@ under the License.
 
 #include <stdexcept>
 
-#include "../resqml2/BoundaryFeature.h"
+#include "../resqml2/RockVolumeFeature.h"
 
 using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
-GeobodyInterpretation::GeobodyInterpretation(RESQML2_NS::BoundaryFeature * feature, const string & guid, const string & title)
+GeobodyInterpretation::GeobodyInterpretation(RESQML2_NS::RockVolumeFeature * feature, const string & guid, const string & title)
 {
 	if (!feature)
 		throw invalid_argument("The interpreted feature cannot be null.");
