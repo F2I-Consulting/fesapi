@@ -93,6 +93,7 @@ under the License.
 #include "common/GraphicalInformationSet.h"
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
+#include "resqml2_2/MdDatum.h"
 #include "resqml2_2/SeismicWellboreFrameRepresentation.h"
 #include "resqml2_2/WellboreMarker.h"
 #include "resqml2_2/WellboreMarkerFrameRepresentation.h"
@@ -262,7 +263,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfP
 	wellbore1Interp1 = pck->createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
 
 	// Representation
-	RESQML2_NS::MdDatum* mdInfo = pck->createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", local3dCrs, gsoap_resqml2_0_1::resqml20__MdReference__mean_x0020sea_x0020level, 275, 75, 0);
+	RESQML2_NS::MdDatum* mdInfo = pck->createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", local3dCrs, gsoap_eml2_3::eml23__WellboreDatumReference__mean_x0020sea_x0020level, 275, 75, 0);
 
 	//Geometry	
 	w1i1TrajRep = pck->createWellboreTrajectoryRepresentation(wellbore1Interp1, "acd2cdcf-bb5d-48da-bd0e-9aeff3e52180", "Wellbore1 Interp1 TrajRep", mdInfo);
@@ -905,7 +906,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	LONG64 prop2Values[2] = { 10, 11 };
 	discreteProp2->pushBackLongHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
 
-	RESQML2_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true,gsoap_resqml2_0_1::resqml20__TimeSetKind__not_x0020a_x0020time_x0020set);
+	RESQML2_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true,gsoap_eml2_3::resqml22__TimeSetKind__not_x0020a_x0020time_x0020set);
 	propSet->pushBackProperty(discreteProp1);
 	propSet->pushBackProperty(discreteProp2);
 
@@ -1835,7 +1836,7 @@ void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, EML2_
 	rockFluidOrgFeature->setOriginator("Geosiris");
 
 	// Interp
-	RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp = pck.createRockFluidOrganizationInterpretation(rockFluidOrgFeature, "b5bbfe42-4a63-11e9-9eeb-4f036e6e8141", "Rock Fluid org", rockFluidUnit);
+	RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp = pck.createRockFluidOrganizationInterpretation(rockFluidOrgFeature, "b5bbfe42-4a63-11e9-9eeb-4f036e6e8141", "Rock Fluid org");
 
 	// Link between ijk grid and rock fuid org
 	RESQML2_NS::IjkGridExplicitRepresentation* singleCellIjkgrid = pck.getDataObjectByUuid<RESQML2_NS::IjkGridExplicitRepresentation>("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b");

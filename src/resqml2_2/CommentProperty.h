@@ -94,9 +94,9 @@ namespace RESQML2_2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<std::string> getStringValuesOfPatch(unsigned int patchIndex);
 
-		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) override { return true; }
+		bool validatePropertyKindAssociation(EML2_NS::PropertyKind*) override { return true; }
 
-		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) override { return true; }
+		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind) override { return true; }
 
 	private:
 		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const;

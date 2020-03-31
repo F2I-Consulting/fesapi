@@ -45,42 +45,6 @@ namespace RESQML2_NS
 	 */
 	class GridConnectionSetRepresentation : public AbstractRepresentation
 	{
-	protected:
-
-		/**
-		 * Only to be used in partial transfer context
-		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
-		 */
-		DLL_IMPORT_OR_EXPORT GridConnectionSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			AbstractRepresentation(partialObject) {}
-
-		/** Creates an instance of this class in a gsoap context. */
-		GridConnectionSetRepresentation() {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		GridConnectionSetRepresentation(gsoap_resqml2_0_1::_resqml20__GridConnectionSetRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
-
-		/**
-		 * Pushes a back XML interpretation
-		 *
-		 * @param [in,out]	interp	If non-null, the interp.
-		 */
-		virtual void pushBackXmlInterpretation(class AbstractFeatureInterpretation* interp) = 0;
-
-		/**
-		 * Pushes a back XML supporting grid representation
-		 *
-		 * @param [in,out]	supportingGridRep	If non-null, the supporting grid rep.
-		 */
-		virtual void pushBackXmlSupportingGridRepresentation(class AbstractGridRepresentation * supportingGridRep) = 0;
-
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
@@ -352,7 +316,7 @@ namespace RESQML2_NS
 		 * 											grid at an index must correspond to the cell at the
 		 * 											same index in the @p cellIndexPair array.
 		 */
-		DLL_IMPORT_OR_EXPORT void setCellIndexPairs(ULONG64 cellIndexPairCount, ULONG64 * cellIndexPair, ULONG64 cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, unsigned short gridIndexPairNullValue = (std::numeric_limits<unsigned short>::max)(), unsigned short * gridIndexPair = nullptr);
+		DLL_IMPORT_OR_EXPORT void setCellIndexPairs(ULONG64 cellIndexPairCount, ULONG64 const* cellIndexPair, ULONG64 cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, unsigned short gridIndexPairNullValue = (std::numeric_limits<unsigned short>::max)(), unsigned short * gridIndexPair = nullptr);
 
 		/**
 		 * @brief Sets the local face per cell index pairs of this grid connection set representation. Local
@@ -375,7 +339,7 @@ namespace RESQML2_NS
 		 * 												indices) are stored. If @c nullptr, then the
 		 * 												default HDF proxy of the repository will be used.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setLocalFacePerCellIndexPairs(ULONG64 cellIndexPairCount, int * localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setLocalFacePerCellIndexPairs(ULONG64 cellIndexPairCount, int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy) = 0;
 
 		/**
 		 * For each connection in this grid connection set representation, allows to map zero or one
@@ -396,7 +360,7 @@ namespace RESQML2_NS
 		 * @param [in,out]	proxy					 	The Hdf proxy where the numerical values will be
 		 * 												stored.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setConnectionInterpretationIndices(unsigned int * interpretationIndices, unsigned int interpretationIndiceCount, unsigned int nullValue, EML2_NS::AbstractHdfProxy * proxy) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setConnectionInterpretationIndices(unsigned int const* interpretationIndices, unsigned int interpretationIndiceCount, unsigned int nullValue, EML2_NS::AbstractHdfProxy * proxy) = 0;
 
 		/**
 		 * Pushes back an interpretation which can be mapped with some connections.
@@ -463,6 +427,49 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
+
+	protected:
+
+		/**
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
+		DLL_IMPORT_OR_EXPORT GridConnectionSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+			AbstractRepresentation(partialObject) {}
+
+		/** Creates an instance of this class in a gsoap context. */
+		GridConnectionSetRepresentation() {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		GridConnectionSetRepresentation(gsoap_resqml2_0_1::_resqml20__GridConnectionSetRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		GridConnectionSetRepresentation(gsoap_eml2_3::_resqml22__GridConnectionSetRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
+
+		/**
+		 * Pushes a back XML interpretation
+		 *
+		 * @param [in,out]	interp	If non-null, the interp.
+		 */
+		virtual void pushBackXmlInterpretation(class AbstractFeatureInterpretation* interp) = 0;
+
+		/**
+		 * Pushes a back XML supporting grid representation
+		 *
+		 * @param [in,out]	supportingGridRep	If non-null, the supporting grid rep.
+		 */
+		virtual void pushBackXmlSupportingGridRepresentation(class AbstractGridRepresentation * supportingGridRep) = 0;
 
 	private:
 		/** Loads target relationships */

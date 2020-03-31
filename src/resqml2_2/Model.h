@@ -21,10 +21,10 @@ under the License.
 #include "../resqml2/Model.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
 	/** An organization feature. */
-	class OrganizationFeature : public RESQML2_NS::Model
+	class Model : public RESQML2_NS::Model
 	{
 	public:
 
@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT OrganizationFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::Model(partialObject) {}
+		DLL_IMPORT_OR_EXPORT Model(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::Model(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -46,24 +46,17 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	title  	A title for the instance to create.
 		 * @param 		  	orgType	The type of organization we want to create.
 		 */
-		OrganizationFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__OrganizationKind orgType);
+		Model(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		OrganizationFeature(gsoap_resqml2_0_1::_resqml20__OrganizationFeature* fromGsoap): RESQML2_NS::Model(fromGsoap) {}
+		Model(gsoap_eml2_3::_resqml22__Model* fromGsoap): RESQML2_NS::Model(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~OrganizationFeature() {}
-
-		/**
-		 * Get the kind of the organization feature.
-		 *
-		 * @returns	The kind.
-		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__OrganizationKind getKind() const;
+		~Model() {}
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

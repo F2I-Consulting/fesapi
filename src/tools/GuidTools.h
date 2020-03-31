@@ -44,6 +44,10 @@ namespace GuidTools
 	{
 		GUID sessionGUID = GUID_NULL;
 		HRESULT hr = CoCreateGuid(&sessionGUID);
+		if (hr != S_OK) {
+			throw std::logic_error("Windows could not create a GUID.");
+		}
+
 		wchar_t uuidWStr[39];
 		StringFromGUID2(sessionGUID, uuidWStr, 39);
 		uuidWStr[37] = L'\0'; // Delete the closing bracket
@@ -75,6 +79,9 @@ namespace GuidTools
 	{
 		GUID sessionGUID = GUID_NULL;
 		HRESULT hr = CoCreateGuid(&sessionGUID);
+		if (hr != S_OK) {
+			throw std::logic_error("Windows could not create a GUID.");
+		}
 
 		std::array<uint8_t, 16> result;
 
@@ -121,6 +128,9 @@ namespace GuidTools
 
 		IID iid = GUID_NULL;
 		HRESULT hr = IIDFromString(uuidWStr, &iid);
+		if (hr != S_OK) {
+			throw std::logic_error("Windows could not convert the string UUID " + uuidStr + " to an UUID structure.");
+		}
 
 		std::array<uint8_t, 16> result;
 

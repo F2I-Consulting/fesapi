@@ -57,7 +57,7 @@ namespace RESQML2_NS
 		AbstractRepresentation(gsoap_eml2_3::resqml22__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
-		 * Get the point geometry of a specific patch of the representation.
+		 * Get the point geometry of a specific v2.0.1 patch of the representation.
 		 *
 		 * @param 	patchIndex	Zero-based index of the patch.
 		 *
@@ -65,10 +65,19 @@ namespace RESQML2_NS
 		 * 			point geometry.
 		 */
 		virtual gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+
+		/**
+		 * Get the point geometry of a specific v2.2 patch of the representation.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch.
+		 *
+		 * @returns	nullptr if there is no point geometry for this particular patch otherwise the found
+		 * 			point geometry.
+		 */
 		virtual gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
 
 		/**
-		 * Creates a point geometry patch.
+		 * Creates a v2.0.1 point geometry patch.
 		 *
 		 * @param 		  	patchIndex				The index of the patch which will contain this
 		 * 											geometry.
@@ -86,6 +95,26 @@ namespace RESQML2_NS
 		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
 		 */
 		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(unsigned int patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, unsigned long long const * numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
+
+		/**
+		 * Creates a v2.2 point geometry patch.
+		 *
+		 * @param 		  	patchIndex				The index of the patch which will contain this
+		 * 											geometry.
+		 * @param [in,out]	points					All the points to set ordered according the topology
+		 * 											of the representation it is based on. It should be 3 *
+		 * 											numPoints sized.
+		 * @param [in,out]	localCrs				The local CRS where the points lie on.
+		 * @param [in,out]	numPoints				The number of points for each dimension of the array
+		 * 											to write.
+		 * @param 		  	numDimensionsInArray	The number of dimensions in the array to write.
+		 * @param [in,out]	proxy					The HDF proxy where to write the points. It must be
+		 * 											already opened for writing and won't be closed in this
+		 * 											method.
+		 *
+		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
+		 */
+		gsoap_eml2_3::resqml22__PointGeometry* createPointGeometryPatch2_2(unsigned int patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, unsigned long long const * numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * Gets hdf proxy dor from point geometry patch

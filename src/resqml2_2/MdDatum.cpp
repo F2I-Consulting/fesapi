@@ -21,10 +21,11 @@ under the License.
 #include <stdexcept>
 
 #include "../resqml2/AbstractLocal3dCrs.h"
+#include "../resqml2/WellboreTrajectoryRepresentation.h"
 
 using namespace std;
-using namespace RESQML2_0_1_NS;
-using namespace gsoap_resqml2_0_1;
+using namespace RESQML2_2_NS;
+using namespace gsoap_eml2_3;
 
 MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title,
 	RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__WellboreDatumReference originKind,
@@ -33,16 +34,15 @@ MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, co
 	if (repo == nullptr)
 		throw invalid_argument("The repo must exist");
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREMdDatum(repo->getGsoapContext());
-	_resqml20__MdDatum* mdInfo = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1);
+	gsoapProxy2_3 = soap_new_resqml22__MdDatum(repo->getGsoapContext());
+	_resqml22__MdDatum* mdDatum = static_cast<_resqml22__MdDatum*>(gsoapProxy2_3);
 
-	mdInfo->MdReference = originKind < 5
-		? static_cast<resqml20__MdReference>(originKind)
-		: static_cast<resqml20__MdReference>(originKind + 1);
-	mdInfo->Location = soap_new_resqml20__Point3d(repo->getGsoapContext());
-	mdInfo->Location->Coordinate1 = referenceLocationOrdinal1;
-	mdInfo->Location->Coordinate2 = referenceLocationOrdinal2;
-	mdInfo->Location->Coordinate3 = referenceLocationOrdinal3;
+	mdDatum->MdReference = originKind;
+	mdDatum->Location = soap_new_resqml22__SinglePointGeometry(repo->getGsoapContext());
+	mdDatum->Location->Point3d = soap_new_resqml22__Point3d(repo->getGsoapContext());
+	mdDatum->Location->Point3d->Coordinate1 = referenceLocationOrdinal1;
+	mdDatum->Location->Point3d->Coordinate2 = referenceLocationOrdinal2;
+	mdDatum->Location->Point3d->Coordinate3 = referenceLocationOrdinal3;
 	
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -59,50 +59,33 @@ void MdDatum::setLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs)
 		localCrs = getRepository()->getDefaultCrs();
 	}
 
-	_resqml20__MdDatum* mdDatum = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1);
-	mdDatum->LocalCrs = localCrs->newResqmlReference();
+	_resqml22__MdDatum* mdDatum = static_cast<_resqml22__MdDatum*>(gsoapProxy2_3);
+	mdDatum->Location->LocalCrs = localCrs->newEml23Reference();
 
 	getRepository()->addRelationship(this, localCrs);
 }
 
 double MdDatum::getX() const
 {
-	return static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1)->Location->Coordinate1;
+	return static_cast<_resqml22__MdDatum*>(gsoapProxy2_3)->Location->Point3d->Coordinate1;
 }
 
 double MdDatum::getY() const
 {
-	return static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1)->Location->Coordinate2;
+	return static_cast<_resqml22__MdDatum*>(gsoapProxy2_3)->Location->Point3d->Coordinate2;
 }
 
 double MdDatum::getZ() const
 {
-	return static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1)->Location->Coordinate3;
+	return static_cast<_resqml22__MdDatum*>(gsoapProxy2_3)->Location->Point3d->Coordinate3;
 }
 
 gsoap_eml2_3::eml23__WellboreDatumReference MdDatum::getOriginKind() const
 {
-	auto mdRef = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1)->MdReference;
-	if (mdRef < 5) {
-		return static_cast<gsoap_eml2_3::eml23__WellboreDatumReference>(mdRef);
-	}
-	else if (mdRef == 5) {
-		throw std::logic_error("This 2.0.1 enum value is no more supported.");
-	}
-	else {
-		return static_cast<gsoap_eml2_3::eml23__WellboreDatumReference>(mdRef - 1);
-	}
+	return static_cast<_resqml22__MdDatum*>(gsoapProxy2_3)->MdReference;
 }
 
 COMMON_NS::DataObjectReference MdDatum::getLocalCrsDor() const
 {
-	return COMMON_NS::DataObjectReference(static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1)->LocalCrs);
-}
-
-void MdDatum::loadTargetRelationships()
-{
-	COMMON_NS::DataObjectReference dor = getLocalCrsDor();
-	if (!dor.isEmpty()) {
-		convertDorIntoRel<RESQML2_NS::AbstractLocal3dCrs>(dor);
-	}
+	return COMMON_NS::DataObjectReference(static_cast<_resqml22__MdDatum*>(gsoapProxy2_3)->Location->LocalCrs);
 }

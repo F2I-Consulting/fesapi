@@ -33,34 +33,6 @@ namespace RESQML2_NS
 	 */
 	class PropertySet : public COMMON_NS::AbstractObject
 	{
-	protected:
-
-		/** Default constructor does nothing */
-		PropertySet() : COMMON_NS::AbstractObject() {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		PropertySet(gsoap_resqml2_0_1::_resqml20__PropertySet* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}protected:
-
-		/**
-		 * Sets XML parent
-		 *
-		 * @param [in,out]	parent	If non-null, the parent.
-		 */
-		virtual void setXmlParent(PropertySet * parent) = 0;
-
-		/**
-		 * Pushes a back XML property
-		 *
-		 * @param [in,out]	prop	If non-null, the property.
-		 */
-		virtual void pushBackXmlProperty(RESQML2_NS::AbstractProperty * prop) = 0;
-
-		virtual std::vector<COMMON_NS::DataObjectReference> getAllPropertiesDors() const = 0;
-
 	public:
 
 		/**
@@ -194,7 +166,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The time set kind associated to this this property set.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml20__TimeSetKind getTimeSetKind() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::resqml22__TimeSetKind getTimeSetKind() const = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
@@ -208,5 +180,40 @@ namespace RESQML2_NS
 
 		/** Loads target relationships */
 		void loadTargetRelationships();
+
+	protected:
+
+		/** Default constructor does nothing */
+		PropertySet() : COMMON_NS::AbstractObject() {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		PropertySet(gsoap_resqml2_0_1::_resqml20__PropertySet* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		PropertySet(gsoap_eml2_3::_resqml22__PropertySet* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
+			* Sets XML parent
+			*
+			* @param [in,out]	parent	If non-null, the parent.
+			*/
+		virtual void setXmlParent(PropertySet * parent) = 0;
+
+		/**
+			* Pushes a back XML property
+			*
+			* @param [in,out]	prop	If non-null, the property.
+			*/
+		virtual void pushBackXmlProperty(RESQML2_NS::AbstractProperty * prop) = 0;
+
+		virtual std::vector<COMMON_NS::DataObjectReference> getAllPropertiesDors() const = 0;
 	};
 }

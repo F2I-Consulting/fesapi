@@ -42,7 +42,7 @@ namespace RESQML2_NS
 		 * 								array will be stored.
 		 * @param [in,out]	localCrs  	(Optional) If non-null, the local crs.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double * points, unsigned int pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* points, unsigned int pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
 		 * Indicates if the representaiton is a closed polyline or a non closed polyline.

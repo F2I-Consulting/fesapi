@@ -61,14 +61,18 @@ PolylineSetRepresentation::PolylineSetRepresentation(RESQML2_NS::AbstractFeature
 
 PolylineSetRepresentation::PolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
-	resqml20__LineRole roleKind)
+	gsoap_eml2_3::resqml22__LineRole roleKind)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("You must provide an interpretation");
 	}
+	if (roleKind == gsoap_eml2_3::resqml22__LineRole__break_x0020line) {
+		throw invalid_argument("Break line role is not supported in v2.0.1");
+	}
+
 	init(interp->getRepository(), guid, title);
 	static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole = (resqml20__LineRole*)soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__LineRole));
-	(*static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole) = roleKind;
+	(*static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole) = static_cast<resqml20__LineRole>(roleKind);
 
 	setInterpretation(interp);
 }

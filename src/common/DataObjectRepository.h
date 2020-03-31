@@ -116,7 +116,6 @@ namespace RESQML2_0_1_NS
 	class Horizon;
 	class TectonicBoundaryFeature;
 	class SeismicLatticeFeature;
-	class PropertySet;
 	class PropertyKind;
 	class AbstractGridRepresentation;
 	class FluidBoundaryFeature;
@@ -128,6 +127,7 @@ namespace RESQML2_2_NS
 {
 	class DiscreteColorMap;
 	class ContinuousColorMap;
+	class Model;
 	class SeismicWellboreFrameRepresentation;
 }
 
@@ -1320,7 +1320,7 @@ namespace COMMON_NS
 		 * @returns		A pointer to the new MD datum.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::MdDatum* createMdDatum(const std::string & guid, const std::string & title,
-			RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_resqml2_0_1::resqml20__MdReference originKind,
+			RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__WellboreDatumReference originKind,
 			double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3);
 
 		//************ FEATURE ***************
@@ -1476,6 +1476,17 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockVolumeFeature* createRockVolumeFeature(const std::string & guid, const std::string & title);
 
 		/**
+		 * Creates a model into this repository.
+		 *
+		 * @param 	guid 	The guid to set to the model. If empty then a new guid will be generated.
+		 * @param 	title	The title to set to the model. If empty then \"unknown\" title will be set.
+		 *
+		 * @returns	A pointer to the new model.
+		 */
+		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::Model* createModel(const std::string & guid, const std::string & title);
+
+		/**
+		 * DEPRECATED after v2.0.1: use createModel
 		 * Creates a structural model into this repository
 		 *
 		 * @param 	guid 	The guid to set to the structural model. If empty then a new guid will be generated.
@@ -1486,6 +1497,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::Model* createStructuralModel(const std::string & guid, const std::string & title);
 
 		/**
+		 * DEPRECATED after v2.0.1: use createModel
 		 * Creates a stratigraphic model into this repository
 		 *
 		 * @param 	guid 	The guid to set to the stratigraphic model. If empty then a new guid will be generated.
@@ -1496,6 +1508,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::Model* createStratigraphicModel(const std::string & guid, const std::string & title);
 
 		/**
+		 * DEPRECATED after v2.0.1: use createModel
 		 * Creates a rock fluid model into this repository
 		 *
 		 * @param 	guid 	The guid to set to the rock fluid model. If empty then a new guid will be generated.
@@ -1506,6 +1519,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::Model* createRockFluidModel(const std::string & guid, const std::string & title);
 
 		/**
+		 * DEPRECATED after v2.0.1: use createModel
 		 * Creates an earth model into this repository
 		 *
 		 * @param 	guid 	The guid to set to the earth model. If empty then a new guid will be generated.
@@ -1691,11 +1705,10 @@ namespace COMMON_NS
 		 * @param 		  	title			   	The title to set to the rock fluid organization
 		 * 										interpretation. If empty then \"unknown\" title will be
 		 * 										set.
-		 * @param [in]	  	rockFluidUnitInterp	The rock fluid unit interpretation. It cannot be null.
 		 *
 		 * @returns	A pointer to the new rock fluid organization interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockFluidOrganizationInterpretation* createRockFluidOrganizationInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterp);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockFluidOrganizationInterpretation* createRockFluidOrganizationInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a rock fluid unit interpretation into this repository
@@ -1875,7 +1888,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new polyline set representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::PolylineSetRepresentation* createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-			const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__LineRole roleKind);
+			const std::string & guid, const std::string & title, gsoap_eml2_3::resqml22__LineRole roleKind);
 
 		/**
 		 * Creates a point set representation into this repository
@@ -2564,7 +2577,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new property set.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertySet* createPropertySet(const std::string & guid, const std::string & title,
-			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml20__TimeSetKind timeSetKind);
+			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_eml2_3::resqml22__TimeSetKind timeSetKind);
 
 		/**
 		 * Creates a comment property (which is of a well known Energistics property kind) into this
