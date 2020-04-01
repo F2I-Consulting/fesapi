@@ -23,49 +23,122 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	* An IJK Grid explicit representation defines each cell corner position by means of XYZ coordinates.
-	* Adjacent cell corner are supposed to be located the same so they are not repeated unless you define split lines or split nodes.
-	*/
+	 * An IJK Grid explicit representation defines each cell corner position by means of XYZ
+	 * coordinates. Adjacent cell corner are supposed to be located the same so they are not
+	 * repeated unless you define split lines or split nodes.
+	 */
 	class IjkGridExplicitRepresentation : public AbstractIjkGridRepresentation
 	{
 	public:
 		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
+		* Destructor does nothing since the memory is managed by the gSOAP context.
 		*/
 		virtual ~IjkGridExplicitRepresentation() {}
 
 		/**
-		* Get all the XYZ points of a particular sequence of K interfaces of a particular patch of this representation.
-		* XYZ points are given in the local CRS.
-		* @param kInterfaceStart The K index of the starting interface taken from zero to kCellCount.
-		* @param kInterfaceEnd The K index of the ending interface taken from zero to kCellCount
-		* @param xyzPoints 	A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated with a size of 3*getXyzPointCountOfKInterfaceOfPatch*(kInterfaceEnd - kInterfaceStart + 1).
+		* @copybrief AbstractIjkGridRepresentation::getXyzPointsOfKInterfaceSequence
+		* 			 
+		* @exception std::invalid_argument	If this grid is truncated.
+		* 
+		* @copydetails AbstractIjkGridRepresentation::getXyzPointsOfKInterfaceSequence									
 		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints);
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints) override;
 
 		/**
-		* Get all the XYZ points of the current block. XYZ points are given in the local CRS. Block information must be loaded.
-		* @param xyzPoints 			A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated with a size of 3*getXyzPointCountOfBlock.
+		* @copybrief AbstractIjkGridRepresentation::getXyzPointsOfBlock
+		*
+		* @exception std::invalid_argument	If this grid is truncated.
+		*
+		* @copydetails AbstractIjkGridRepresentation::getXyzPointsOfBlock
 		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfBlock(double * xyzPoints);
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfBlock(double * xyzPoints) override;
 
 		/**
-		* Set the geometry of the IJK grid as explicit coordinate line nodes. See Resqml Usage, Technical guide and Enterprise Architect diagrams for details.
-		* @param mostComplexPillarGeometry					The most complex pillar geometry which occurs on this reservoir grid.
-		* @param kDirectionKind								The direction of the K axis on the earth. It is not directly related to Z of the vertical CRS but to the physical earth (as the vertical CRS is).
-		* @param isRightHanded								Indicates that the IJK grid is right handed, as determined by the triple product of tangent vectors in the I, J, and K directions.
-		* @param points										XYZ double triplets ordered by i then j then split then k. Count must be ((iCellCount+1) * (jCellCount+1) + splitCoordinateLineCount) * kCellCount.
-		* @param proxy										The HDF proxy where all numerical values will be stored.
-		* @param splitCoordinateLineCount					The count of split coordinate line. A grid pillar is splitted in up to 4 coordinate lines.
-		* @param pillarOfCoordinateLine						For each split coordinate line, indicates which pillar it belongs to. Pillars are identified by their absolute 1d index (iPillar + jPillar*iPillarCount) where iPillarCount == iCellCount+1. Count is splitCoordinateLineCount.
-		* @param splitCoordinateLineColumnCumulativeCount	For each split coordinate line, indicates how many columns of the ijk grid are incident to it (minimum is one and maximum is 3) + the count of all incident columns of previous spit coordinate lines in the array.
-		*													For example {1, 4, 6} would mean that the first split coordinate line is incident to only one column, the second split coordinate line is incident to 4-1=3 columns and the third column is incident to 6-4=2 columns.
-		*													Count is splitCoordinateLineCount.
-		* @param splitCoordinateLineColumns					For each split coordinate line, indicates which columns are incident to it. Count is the last value in the splitCoordinateLineColumnCumulativeCount array.
-		*													Columns are identified by their absolute 1d index (iColumn + jColumn*iColumnCount) where *Column* == *Cell*.
-		* @param definedPillars								For each pillar : 0 if pillar is not defined (i.e points equal to NaN) else the pillar is defined.  This information overrides any pillar geometry information. If null, then all pillars are assumed to be defined.
-		* @param localCrs									The local CRS where the points are given. If nullptr then the default CRS will be used.
-		*/
+		 * @brief Sets the geometry of this IJK grid as explicit coordinate line nodes. See RESQML Usage,
+		 * Technical guide and Enterprise Architect diagrams for details.
+		 *
+		 * @exception	std::invalid_argument	If @p points is @c nullptr.
+		 * @exception	std::invalid_argument	If <tt>(splitCoordinateLineCount != 0 &amp;&amp;
+		 * 										(pillarOfCoordinateLine == nullptr ||
+		 * 										splitCoordinateLineColumnCumulativeCount == nullptr ||
+		 * 										splitCoordinateLineColumns == nullptr))</tt>.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default local 3d CRS
+		 * 										is defined.
+		 *
+		 * @param 		  	mostComplexPillarGeometry					The most complex pillar geometry
+		 * 																which occurs on this reservoir grid.
+		 * @param 		  	kDirectionKind								The direction of the K axis on
+		 * 																the earth. It is not directly related
+		 * 																to Z of the vertical CRS but to the
+		 * 																physical earth (as the vertical CRS
+		 * 																is).
+		 * @param 		  	isRightHanded								Indicates that the IJK grid is
+		 * 																right handed, as determined by the
+		 * 																triple product of tangent vectors in
+		 * 																the I, J, and K directions.
+		 * @param [in]	  	points										XYZ double triplets ordered by i
+		 * 																then j then split then k. Count must
+		 * 																be <tt>((iCellCount+1) *
+		 * 																(jCellCount+1) +
+		 * 																splitCoordinateLineCount) *
+		 * 																kCellCount</tt>.
+		 * @param [in,out]	proxy										(Optional) The HDF proxy where
+		 * 																all numerical values will be stored.
+		 * 																If @c nullptr, then the default HDF
+		 * 																proxy of the repository will be used.
+		 * @param 		  	splitCoordinateLineCount					(Optional) The count of split
+		 * 																coordinate line. A grid pillar is
+		 * 																splitted in up to 4 coordinate lines.
+		 * @param [in]	  	pillarOfCoordinateLine						(Optional) For each split
+		 * 																coordinate line, indicates which
+		 * 																pillar it belongs to. Pillars are
+		 * 																identified by their absolute 1d index
+		 * 																<tt>(iPillar + jPillar *
+		 * 																iPillarCount)</tt> where
+		 * 																<tt>iPillarCount ==
+		 * 																iCellCount+1</tt>. Count is
+		 * 																splitCoordinateLineCount.
+		 * @param [in]	  	splitCoordinateLineColumnCumulativeCount	(Optional) For each split
+		 * 																coordinate line, indicates how many
+		 * 																columns of the ijk grid are incident
+		 * 																to it (minimum is one and maximum is
+		 * 																3) + the count of all incident
+		 * 																columns of previous spit coordinate
+		 * 																lines in the array. For example
+		 * 																<tt>{1, 4, 6}</tt> would mean that
+		 * 																the first split coordinate line is
+		 * 																incident to only one column, the
+		 * 																second split coordinate line is
+		 * 																incident to <tt>4 - 1 = 3</tt>
+		 * 																columns and the third column is
+		 * 																incident to <tt>6 - 4 = 2</tt>
+		 * 																columns. Count is
+		 * 																splitCoordinateLineCount.
+		 * @param [in]	  	splitCoordinateLineColumns					(Optional) For each split
+		 * 																coordinate line, indicates which
+		 * 																columns are incident to it. Count is
+		 * 																the last value in the
+		 * 																splitCoordinateLineColumnCumulativeCount
+		 * 																array. Columns are identified by
+		 * 																their absolute 1d index
+		 * 																<tt>(iColumn</tt>
+		 * 																<tt> + jColumn * iColumnCount)</tt>
+		 * 																where
+		 * 																Column == Cell.
+		 * @param [in]	  	definedPillars								(Optional) For each pillar : 0 if
+		 * 																pillar is not defined (i.e points
+		 * 																equal to NaN) else the pillar is
+		 * 																defined.  This information overrides
+		 * 																any pillar geometry information. If
+		 * 																null, then all pillars are assumed to
+		 * 																be defined.
+		 * @param [in]	  	localCrs									(Optional) The local CRS where
+		 * 																the points are given. If @c nullptr
+		 * 																(default) then the default CRS of the
+		 * 																repository will be used.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsCoordinateLineNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			double * points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
@@ -74,7 +147,10 @@ namespace RESQML2_NS
 			char * definedPillars = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
 		/**
+		* @copybrief setGeometryAsCoordinateLineNodes
 		* Same as setGeometryAsCoordinateLineNodes where the hdf datasets are already written in the the file.
+		* 
+		* @copydetails setGeometryAsCoordinateLineNodes
 		*/
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsCoordinateLineNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
@@ -83,12 +159,9 @@ namespace RESQML2_NS
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
 			const std::string & definedPillars = "", RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
-		/**
-		* Check wether the node geometry dataset is compressed or not.
-		*/
-		DLL_IMPORT_OR_EXPORT bool isNodeGeometryCompressed() const;
+		DLL_IMPORT_OR_EXPORT bool isNodeGeometryCompressed() const override;
 
-		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const;
+		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const override;
 
 	protected:
 		/**

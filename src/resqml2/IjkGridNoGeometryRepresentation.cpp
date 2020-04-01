@@ -30,7 +30,7 @@ using namespace RESQML2_NS;
 ULONG64 IjkGridNoGeometryRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
-		throw range_error("An ijk grid has a maximum of one patch.");
+		throw out_of_range("An ijk grid has a maximum of one patch.");
 	}
 
 	if (getParentGrid() != nullptr && getParentGrid()->getXmlTag() == "IjkGridRepresentation") {
@@ -70,7 +70,7 @@ ULONG64 IjkGridNoGeometryRepresentation::getXyzPointCountOfPatch(const unsigned 
 void IjkGridNoGeometryRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount())
-		throw range_error("An ijk grid has a maximum of one patch.");
+		throw out_of_range("An ijk grid has a maximum of one patch.");
 
 	throw logic_error("Not implemented yet. Please use parent window information or geometrical property information.");
 }

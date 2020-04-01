@@ -23,139 +23,359 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	* An IJK Grid parametric representation define the cell corner positions by means of parameters along the pillars of the grid.
-	* Adjacent cell corner are supposed to be located the same so they are not repeated unless you define split lines or split nodes.
-	*/
+	 * An IJK Grid parametric representation define the cell corner positions by means of parameters
+	 * along the pillars of the grid. Adjacent cell corner are supposed to be located the same so
+	 * they are not repeated unless you define split lines or split nodes.
+	 */
 	class IjkGridParametricRepresentation : public AbstractIjkGridRepresentation
 	{	
 	public:
 		/**
-		* Destructor clean pillarInformation memory when allocated
+		* Destructor cleans the pillars information memory if allocated.
 		*/
 		virtual ~IjkGridParametricRepresentation() { 
 			if (pillarInformation != nullptr) 
 				delete pillarInformation; 
 		}
 
-		/**
-		* Get all the XYZ points of a particular sequence of K interfaces of a particular patch of this representation.
-		* XYZ points are given in the local CRS.
-		* @param kInterfaceStart The K index of the starting interface taken from zero to kCellCount.
-		* @param kInterfaceEnd The K index of the ending interface taken from zero to kCellCount
-		* @param patchIndex	The index of the patch. It is generally zero.
-		* @param xyzPoints 	A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated with a size of 3*getXyzPointCountOfKInterfaceOfPatch.
-		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints);
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints) override;
 
 		/**
-		* Get all the XYZ points of the current block. XYZ points are given in the local CRS. Block information must be loaded.
-		* @param patchIndex			The index of the patch. It is generally zero.
-		* @param xyzPoints 			A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated with a size of 3*getXyzPointCountOfBlock.
+		* @copybrief AbstractIjkGridRepresentation::getXyzPointsOfBlock
+		* 			 
+		* @exception std::logic_error If the computing of XYZ points is not yet supported from this parametric grid.
+		* 							  
+		* @copydetails AbstractIjkGridRepresentation::getXyzPointsOfBlock
 		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfBlock(double * xyzPoints);
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfBlock(double * xyzPoints) override;
 
 		/**
-		* Get the max control point count on a pillar of the grid.
-		*/
+		 * Gets the maximum control points count on a pillar of this grid.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
+		 * @exception	std::range_error	 	If the knot count of this grid is strictly greater than
+		 * 										unsigned int max.
+		 * @exception	std::logic_error	 	If the computing of the maximum control points count is
+		 * 										not yet supported for this grid.
+		 *
+		 * @returns	The maximum control points count on a pillar of this grid.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getControlPointMaxCountPerPillar() const = 0;
 
 		/**
-		* Get all the control points of each pillar of the IJK parametric grid.
-		* They are ordered first (quickest) by pillar and then (slowest) by control point : cp0 of pillar0, cp0 of pillar1, cp0 of pillar3, ..., cp0 of pillarCount-1, cp1 of pillar0, cp1 of pillar1, etc... Pad with nan values if necessary.
-		* For information, pillars are ordered first (quicket) by I and then (slowest) by J.
-		*/
+		 * Gets all the control points of each pillar of this IJK parametric grid.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
+		 * @exception	std::range_error	 	If the knot count of this grid is strictly greater than
+		 * 										unsigned int max.
+		 * @exception	std::logic_error	 	If the reading of the control points of this grid is not
+		 * 										supported yet.
+		 *
+		 * @param [out]	controlPoints	An array for receiving the control points. It must be
+		 * 								preallocated with a size of <tt>(getICellCount() + 1) *
+		 * 								(getJCellCount() + 1) * getControlPointMaxCountPerPillar() *
+		 * 								3</tt>. They are ordered first (quickest) by pillar and then
+		 * 								(slowest) by control point : cp0 of pillar0, cp0 of pillar1, cp0
+		 * 								of pillar3, ..., cp0 of pillarCount-1, cp1 of pillar0, cp1 of
+		 * 								pillar1, etc... Pad with nan values if necessary. For information,
+		 * 								pillars are ordered first (quicket) by I and then (slowest) by J.
+		 * @param 	   	reverseIAxis 	(Optional) True to reverse i axis. Default value is false.
+		 * @param 	   	reverseJAxis 	(Optional) True to reverse j axis. Default value is false.
+		 * @param 	   	reverseKAxis 	(Optional) True to reverse k axis. Default value is false.
+		 */
 		DLL_IMPORT_OR_EXPORT void getControlPoints(double * controlPoints, bool reverseIAxis = false, bool reverseJAxis= false, bool reverseKAxis= false) const;
 
 		/**
-		* Check if the IJK grid contains some paraemeters on some control points.
-		* It happens when the grid contains at least one non vertical or a non Z linear parametric line.
-		*/
+		 * Checks if this IJK parametric grid contains some parameters on some control points. It
+		 * happens when the grid contains at least one non vertical or a non Z linear parametric line.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
+		 * @exception	std::logic_error	 	If the checking for the existance of control point
+		 * 										parameters is not yet supported for this grid.
+		 *
+		 * @returns	True if there exists some control point parameters, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual bool hasControlPointParameters() const = 0;
 
 		/**
-		* Get all the control point parameters of each pillar of the IJK parametric grid.
-		* They are ordered first (quickest) by pillar and then (slowest) by control point : cp0 of pillar0, cp0 of pillar1, cp0 of pillar3, ..., cp0 of pillarCount-1, cp1 of pillar0, cp1 of pillar1, etc... Pad with nan values if necessary.
-		* For information, pillars are ordered first (quicket) by I and then (slowest) by J.
-		* Only relevant in case it contains at least one non vertical or non Z linear parametric line.
-		*/
+		 * Gets all the control point parameters of each pillar of this IJK parametric grid.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
+		 * @exception	std::range_error	 	If the knot count of this grid is strictly greater than
+		 * 										unsigned int max.
+		 * @exception	std::logic_error	 	If the reading of the control point parameters of this
+		 * 										grid is not supported yet.
+		 *
+		 * @param [out]	controlPointParameters	An array for receiving the control point parameters. It
+		 * 										must be preallocated with a size of
+		 * 										<tt>(getICellCount()</tt>
+		 * 										<tt> + 1) *	(getJCellCount() + 1) * </tt>
+		 * 										<tt>getControlPointMaxCountPerPillar()</tt>. They are
+		 * 										ordered
+		 * 										first (quickest) by pillar and then (slowest) by control
+		 * 										point : cp0 of pillar0, cp0 of pillar1, cp0 of pillar3,
+		 * 										..., cp0 of pillarCount-1, cp1 of pillar0, cp1 of pillar1,
+		 * 										etc... Pad with nan values if necessary. For information,
+		 * 										pillars are ordered first (quicket) by I and then
+		 * 										(slowest) by J. Only relevant in case it contains at
+		 * 										least one non vertical or non Z linear parametric line.
+		 * @param 	   	reverseIAxis		  	(Optional) True to reverse i axis. Default value is false.
+		 * @param 	   	reverseJAxis		  	(Optional) True to reverse j axis. Default value is false.
+		 * @param 	   	reverseKAxis		  	(Optional) True to reverse k axis. Default value is false.
+		 */
 		DLL_IMPORT_OR_EXPORT void getControlPointParameters(double * controlPointParameters, bool reverseIAxis = false, bool reverseJAxis= false, bool reverseKAxis= false) const;
 
 		/**
-		* Check if the parametric line kind is constant in the grid.
-		*/
+		 * Checks if the parametric lines kind is constant in this IJK parametric grid.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
+		 * @exception	std::logic_error	 	If this grid is not actually a parametric one or if the
+		 * 										checking for the parametric lines kind constantness is
+		 * 										not supported yet for this grid.
+		 *
+		 * @returns	True if the parametric lines kind is constant, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isParametricLineKindConstant() const = 0;
 
-		/*
-		* Get the constant parametric line count in the grid.
-		*/
+		/**
+		 * Gets the constant parametric line kind of this IJK parametric grid.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
+		 * @exception	std::logic_error	 	If this grid is not actually a parametric one or if the
+		 * 										getting of the constant parametric line kind is not
+		 * 										supported yet for this grid.
+		 *
+		 * @returns	The constant parametric line kind.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual short getConstantParametricLineKind() const = 0;
 
 		/**
-		* Get the kind of each parametric line representing a pillar :
-		*					0 = vertical, 1 = linear spline, 2 = natural cubic spline, 3 = cubic spline, 4 = Z linear cubic spline, 5 = minimum-curvature spline, (-1) = null: no line 
-		* Only relevant in case the IJK grid is a parametric one.
-		*/
+		 * Gets the kind of each parametric line representing a pillar.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
+		 * @exception	std::invalid_argument	If the parametric line kind count is inconsistent with
+		 * 										the pillar count.
+		 * 										@€xception std::logic_error If getting the parametric
+		 * 										lines kind is not yet supported for this grid.
+		 *
+		 * @param [out]	pillarKind  	An array for receiving the parametric lines kind. It must be
+		 * 								preallocated with a size of <tt>(getICellCount() + 1) *
+		 * 								(getJCellCount() + 1)</tt>. Semantic of values is: 0 = vertical, 1 =
+		 * 								linear spline, 2 = natural cubic spline, 3 = cubic spline, 4 = Z
+		 * 								linear cubic spline, 5 = minimum-curvature spline, (-1) = null: no
+		 * 								line.
+		 * @param 	   	reverseIAxis	(Optional) True to reverse i axis. Default value is false.
+		 * @param 	   	reverseJAxis	(Optional) True to reverse j axis. Default value is false.
+		 */
 		DLL_IMPORT_OR_EXPORT void getParametricLineKind(short * pillarKind, bool reverseIAxis = false, bool reverseJAxis= false) const;
 
 		/**
-		* Get all the parameters of each node of the IJK parametric grid.
-		* They are ordered first (quickest) by coordinate line and then (slowest) by K level.
-		* Only relevant in case the IJK grid is a parametric one.
-		*/
+		 * Gets all the parameters of each node of this IJK parametric grid. They are ordered first
+		 * (quickest) by coordinate line and then (slowest) by K level.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this IJK grid.
+		 * @exception	std::range_error	 	If the count of split coordinate lines is strictly
+		 * 										greater than unsigned int max.
+		 * @exception	std::logic_error	 	If the reading of nodes parameters is not yet supported
+		 * 										for this grid.
+		 *
+		 * @param [out]	parameters  	An array for receiving the parameter of each node. It must be
+		 * 								preallocated with a size of <tt>((getICellCount() + 1) *
+		 * 								(getJCellCount() + 1) + getSplitCoordinateLineCount()) *
+		 * 								(getKCellCount() + 1)</tt>. They are ordered first (quickest) by
+		 * 								coordinate line and then (slowest) by K level.
+		 * @param 	   	reverseIAxis	(Optional) True to reverse i axis. Default value is false.
+		 * @param 	   	reverseJAxis	(Optional) True to reverse j axis. Default value is false.
+		 * @param 	   	reverseKAxis	(Optional) True to reverse k axis. Default value is false.
+		 */
 		DLL_IMPORT_OR_EXPORT void getParametersOfNodes(double * parameters, bool reverseIAxis = false, bool reverseJAxis= false, bool reverseKAxis= false) const;
 
 		/**
-		* Get all the parameters of a particular sequence of K interfaces of a particular patch of this representation.
-		* @param kInterfaceStart	The K index of the starting interface taken from zero to kCellCount.
-		* @param kInterfaceEnd		The K index of the ending interface taken from zero to kCellCount
-		* @param patchIndex			The index of the patch. It is generally zero.
-		* @param parameters			It must be pre allocated with a size of getXyzPointCountOfKInterfaceOfPatch * (kInterfaceEnd - kInterfaceStart + 1).
-		*/
+		 * Gets all the parameters of each node of a particular sequence of K interfaces of this IJK
+		 * parametric grid.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this IJK grid.
+		 * @exception	std::logic_error	 	If the reading of nodes parameters is not yet supported
+		 * 										for this sequence of K interfaces.
+		 * @exception	std::out_of_range	 	If <tt>kInterfaceStart &gt; getKCellCount() ||
+		 * 										kInterfaceEnd &gt; getKCellCount())</tt>.
+		 * @exception	std::range_error	 	If <tt>kInterfaceStart &gt; kInterfaceEnd</tt>
+		 * @exception	std::invalid_argument	If @p parameters is @c nullptr.
+		 *
+		 * @param 	   	kInterfaceStart	The K index of the starting interface taken from zero to
+		 * 								getKCellCount().
+		 * @param 	   	kInterfaceEnd  	The K index of the ending interface taken from zero to
+		 * 								getKCellCount().
+		 * @param [out]	parameters	   	An array for receiving the parameter of each node. It must be pre
+		 * 								allocated with a size of
+		 * 								<tt>getXyzPointCountOfKInterface() * (kInterfaceEnd -
+		 * 								kInterfaceStart + 1)</tt>. They are ordered first (quickest) by
+		 * 								coordinate line and then (slowest) by K level.
+		 */
 		DLL_IMPORT_OR_EXPORT void getParametersOfNodesOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * parameters);
 
 		/**
-		* Set the geometry of the IJK grid as parametric pillar nodes where no pillar is splitted.
-		* Defined pillars are deduced from pillarKind == -1;
-		* @param mostComplexPillarGeometry					The most complex pillar shape which we can find on this ijk grid.
-		* @param isRightHanded								Indicates that the IJK grid is right handed, as determined by the triple product of tangent vectors in the I, J, and K directions.
-		* @param parameters									The parameter values (regarding the pillars) of each node of the grid.
-		* @param controlPoints								The control points of the pillars of the grid. They are ordered first (quickest) by pillar and then (slowest) by control point : cp0 of pillar0, cp0 of pillar1, cp0 of pillar3, ..., cp0 of pillarCount-1, cp1 of pillar0, cp1 of pillar1, etc... Pad with nan values if necessary.
-		* @param controlPointParameters						The value of the parameter at each control points. It must be nullptr for vertical and Z linear cubic parametric lines grid.
-		* @param controlPointMaxCountPerPillar				The maximum count of control points which defines a pillar of this grid.
-		* @param pillarKind									The kind of each pillar : 0 = vertical, 1 = linear spline, 2 = natural cubic spline, 3 = cubic spline, 4 = Z linear cubic spline, 5 = minimum-curvature spline, (-1) = null: no line 
-		* @param proxy										The Hdf proxy where all numerical values will be stored.
-		* @param splitCoordinateLineCount					The count of split coordinate line in this grid. A pillar being splitted by a maximum of 3 split coordinate lines (one coordinate line is always non splitted)
-		*/
+		 * Sets the geometry of this IJK grid as parametric pillar nodes where no pillar is splitted.
+		 * Defined pillars are deduced from pillarKind == -1.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
+		 * @exception	std::invalid_argument 	If some parameters values are inconsistent.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default local 3d CRS
+		 * 										is defined.
+		 *
+		 * @param 		  	mostComplexPillarGeometry	 	The most complex pillar shape which we can
+		 * 													find on this IJK grid.
+		 * @param 		  	isRightHanded				 	Indicates that this IJK grid is right handed,
+		 * 													as determined by the triple product of
+		 * 													tangent vectors in the I, J, and K directions.
+		 * @param [in]	  	parameters					 	The parameter values (regarding the pillars)
+		 * 													of each node of the grid.
+		 * @param [in]	  	controlPoints				 	The control points of the pillars of the
+		 * 													grid. They are ordered first (quickest) by
+		 * 													pillar and then (slowest) by control point :
+		 * 													cp0 of pillar0, cp0 of pillar1, cp0 of
+		 * 													pillar3, ..., cp0 of pillarCount-1, cp1 of
+		 * 													pillar0, cp1 of pillar1, etc... Pad with nan
+		 * 													values if necessary.
+		 * @param [in]	  	controlPointParameters		 	The value of the parameter at each control
+		 * 													points. It must be @c nullptr for vertical
+		 * 													and Z linear cubic parametric lines grid.
+		 * @param 		  	controlPointMaxCountPerPillar	The maximum count of control points which
+		 * 													defines a pillar of this grid.
+		 * @param [in]	  	pillarKind					 	The kind of each pillar: 0 = vertical, 1 =
+		 * 													linear spline, 2 = natural cubic spline, 3 =
+		 * 													cubic spline, 4 = Z linear cubic spline, 5 =
+		 * 													minimum-curvature spline, (-1) = null: no
+		 * 													line.
+		 * @param [in,out]	proxy						 	(Optional) The HDF proxy where all numerical
+		 * 													values will be stored. If @c nullptr
+		 * 													(default), then the default HDF proxy of the
+		 * 													repository will be used.
+		 * @param [in]	  	localCrs					 	(Optional) The local CRS where the points are
+		 * 													given. If @c nullptr (default) then the
+		 * 													default CRS of the repository will be used.
+		 */
 		DLL_IMPORT_OR_EXPORT void setGeometryAsParametricNonSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
-		* Same as setGeometryAsParametricNonSplittedPillarNodes where the hdf datasets are already written in the the file.
-		* @param definedPillars								The string to an hdf dataset where the defined pillars are identified : 0 value for not defined (i.e control points are NaN points, i.e pillarKind == -1) else the pillar is defined. This information overrides any pillar geometry information.
-		*/
+		 * Sets the geometry of this IJK grid as parametric pillar nodes where no pillar is splitted.
+		 * Defined pillars are deduced from pillarKind == -1. Same as
+		 * setGeometryAsParametricNonSplittedPillarNodes() where the HDF datasets are already written in
+		 * the the file.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
+		 * @exception	std::invalid_argument	If some parameters values are inconsistent.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default local 3d CRS
+		 * 										is defined.
+		 *
+		 * @param 		  	mostComplexPillarGeometry	 	The most complex pillar shape which we can
+		 * 													find on this IJK grid.
+		 * @param 		  	kDirectionKind				 	The direction kind.
+		 * @param 		  	isRightHanded				 	Indicates that this IJK grid is right handed,
+		 * 													as determined by the triple product of
+		 * 													tangent vectors in the I, J, and K directions.
+		 * @param 		  	parameters					 	Path to the HDF dataset containing the
+		 * 													parameter values (regarding the pillars)
+		 * 													of each node of the grid.
+		 * @param 		  	controlPoints				 	Path to the HDF dataset containing the the
+		 * 													control points of the pillars of the grid.
+		 * @param 		  	controlPointParameters		 	Path to the HDF dataset containing the value
+		 * 													of the parameter at each control points.
+		 * @param 		  	controlPointMaxCountPerPillar	The maximum count of control points which
+		 * 													defines a pillar of this grid.
+		 * @param 		  	pillarKind					 	Path to the HDF dataset containing the kind
+		 * 													of each pillar.
+		 * @param 		  	definedPillars				 	Path to the HDF dataset where the defined
+		 * 													pillars are identified : 0 value for not
+		 * 													defined (i.e control points are NaN points,
+		 * 													i.e pillarKind == -1) else the pillar is
+		 * 													defined. This information overrides any
+		 * 													pillar geometry information.
+		 * @param [in,out]	proxy						 	(Optional) The HDF proxy where all numerical
+		 * 													values will be stored. If @c nullptr
+		 * 													(default), then the default HDF proxy of the
+		 * 													repository will be used.
+		 * @param [in]	  	localCrs					 	(Optional) The local CRS where the points are
+		 * 													given. If @c nullptr (default) then the
+		 * 													default CRS of the repository will be used.
+		 */
 		DLL_IMPORT_OR_EXPORT void setGeometryAsParametricNonSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
-		* Set the geometry of the IJK grid as parametric pillar nodes where at least one pillar is supposed to be splitted
-		* Defined pillars are deduced from pillarKind == -1;
-		* @param mostComplexPillarGeometry					The most complex pillar shape which we can find on this ijk grid.
-		* @param isRightHanded								Indicates that the IJK grid is right handed, as determined by the triple product of tangent vectors in the I, J, and K directions.
-		* @param parameters									The parameter values (regarding the pillars) of each node of the grid.
-		* @param controlPoints								The control points of the pillars of the grid. They are ordered first (quickest) by pillar and then (slowest) by control point : cp0 of pillar0, cp0 of pillar1, cp0 of pillar3, ..., cp0 of pillarCount-1, cp1 of pillar0, cp1 of pillar1, etc... Pad with nan values if necessary.
-		* @param controlPointParameters						The value of the parameter at each control points. It must be nullptr for vertical and Z linear cubic parametric lines grid.
-		* @param controlPointMaxCountPerPillar				The maximum count of control points which defines a pillar of this grid.
-		* @param pillarKind									The kind of each pillar : 0 = vertical, 1 = linear spline, 2 = natural cubic spline, 3 = cubic spline, 4 = Z linear cubic spline, 5 = minimum-curvature spline, (-1) = null: no line 
-		* @param proxy										The Hdf proxy where all numerical values will be stored.
-		* @param splitCoordinateLineCount					The count of split coordinate line in this grid. A pillar being splitted by a maximum of 3 split coordinate lines (one coordinate line is always non splitted)
-		* @param pillarOfCoordinateLine						For each split coordinate line, indicates the pillar it belongs to.
-		* @param splitCoordinateLineColumnCumulativeCount	For each split coordinate line, indicates the count of grid column which are splitted by this coordinate line.
-		* @param splitCoordinateLineColumns					For each split coordinate line, indicates the grid columns which are splitted by this coordinate line.
-		*/
+		 * Sets the geometry of this IJK grid as parametric pillar nodes where at least one pillar is
+		 * supposed to be splitted. Defined pillars are deduced from pillarKind == -1.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
+		 * @exception	std::invalid_argument	If some parameters values are inconsistent.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default local 3d CRS
+		 * 										is defined.
+		 *
+		 * @param 		  	mostComplexPillarGeometry					The most complex pillar shape
+		 * 																which we can find on this ijk grid.
+		 * @param 		  	isRightHanded								Indicates that the IJK grid is
+		 * 																right handed, as determined by the
+		 * 																triple product of tangent vectors in
+		 * 																the I, J, and K directions.
+		 * @param [in]	  	parameters									The parameter values (regarding
+		 * 																the pillars) of each node of the
+		 * 																grid.
+		 * @param [in]	  	controlPoints								The control points of the pillars
+		 * 																of the grid. They are ordered first
+		 * 																(quickest) by pillar and then
+		 * 																(slowest) by control point : cp0 of
+		 * 																pillar0, cp0 of pillar1, cp0 of
+		 * 																pillar3, ..., cp0 of pillarCount-1,
+		 * 																cp1 of pillar0, cp1 of pillar1,
+		 * 																etc... Pad with nan values if
+		 * 																necessary.
+		 * @param [in]	  	controlPointParameters						The value of the parameter at
+		 * 																each control points. It must be
+		 * 																nullptr for vertical and Z linear
+		 * 																cubic parametric lines grid.
+		 * @param 		  	controlPointMaxCountPerPillar				The maximum count of control
+		 * 																points which defines a pillar of this
+		 * 																grid.
+		 * @param [in]	  	pillarKind									The kind of each pillar : 0 =
+		 * 																vertical, 1 = linear spline, 2 =
+		 * 																natural cubic spline, 3 = cubic
+		 * 																spline, 4 = Z linear cubic spline, 5
+		 * 																= minimum-curvature spline, (-1) =
+		 * 																null: no line.
+		 * @param [in,out]	proxy										The HDF proxy where all numerical
+		 * 																values will be stored. If @c nullptr,
+		 * 																then the default HDF proxy of the
+		 * 																repository will be used.
+		 * @param 		  	splitCoordinateLineCount					The count of split coordinate
+		 * 																line in this grid. A pillar being
+		 * 																splitted by a maximum of 3 split
+		 * 																coordinate lines (one coordinate line
+		 * 																is always non splitted)
+		 * @param [in]	  	pillarOfCoordinateLine						For each split coordinate line,
+		 * 																indicates the pillar it belongs to.
+		 * @param [in]	  	splitCoordinateLineColumnCumulativeCount	For each split coordinate line,
+		 * 																indicates the count of grid column
+		 * 																which are splitted by this
+		 * 																coordinate line.
+		 * @param [in]	  	splitCoordinateLineColumns					For each split coordinate line,
+		 * 																indicates the grid columns which are
+		 * 																splitted by this coordinate line.
+		 * @param [in]	  	localCrs									(Optional) The local CRS where
+		 * 																the points are given. If @c nullptr
+		 * 																(default) then the default CRS of the
+		 * 																repository will be used.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsParametricSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, EML2_NS::AbstractHdfProxy* proxy,
@@ -163,9 +383,73 @@ namespace RESQML2_NS
 			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
 		/**
-		* Same as setGeometryAsParametricSplittedPillarNodes where the hdf datasets are already written in the the file.
-		* @param definedPillars								The string to an hdf dataset where the defined pillars are identified : 0 value for not defined (i.e control points are NaN points, i.e pillarKind == -1) else the pillar is defined.  This information overrides any pillar geometry information.
-		*/
+		 * Sets the geometry of this IJK grid as parametric pillar nodes where at least one pillar is
+		 * supposed to be splitted. Defined pillars are deduced from pillarKind == -1. Same as
+		 * setGeometryAsParametricSplittedPillarNodes() where the HDF datasets are already written in
+		 * the the file.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
+		 * @exception	std::invalid_argument	If some parameters values are inconsistent.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default local 3d CRS
+		 * 										is defined.
+		 *
+		 * @param 		  	mostComplexPillarGeometry					The most complex pillar shape
+		 * 																which we can find on this ijk grid.
+		 * @param 		  	kDirectionKind								The direction kind.
+		 * @param 		  	isRightHanded								Indicates that the IJK grid is
+		 * 																right handed, as determined by the
+		 * 																triple product of tangent vectors in
+		 * 																the I, J, and K directions.
+		 * @param 		  	parameters									Path to the HDF dataset
+		 * 																containing the parameter values
+		 * 																(regarding the pillars)
+		 * 																of each node of the grid.
+		 * @param 		  	controlPoints								Path to the HDF dataset
+		 * 																containing the the control points of
+		 * 																the pillars of the grid.
+		 * @param 		  	controlPointParameters						Path to the HDF dataset
+		 * 																containing the value of the parameter
+		 * 																at each control points.
+		 * @param 		  	controlPointMaxCountPerPillar				The maximum count of control
+		 * 																points which defines a pillar of this
+		 * 																grid.
+		 * @param 		  	pillarKind									Path to the HDF dataset
+		 * 																containing the kind of each pillar.
+		 * @param 		  	definedPillars								Path to the HDF dataset where the
+		 * 																defined pillars are identified : 0
+		 * 																value for not defined (i.e control
+		 * 																points are NaN points,
+		 * 																i.e pillarKind == -1) else the pillar
+		 * 																is defined.  This information
+		 * 																overrides any pillar geometry
+		 * 																information.
+		 * @param [in,out]	proxy										The HDF proxy where all numerical
+		 * 																values will be stored. If @c nullptr,
+		 * 																then the default HDF proxy of the
+		 * 																repository will be used.
+		 * @param 		  	splitCoordinateLineCount					The count of split coordinate
+		 * 																line in this grid. A pillar being
+		 * 																splitted by a maximum of 3 split
+		 * 																coordinate lines (one coordinate line
+		 * 																is always non splitted)
+		 * @param 		  	pillarOfCoordinateLine						Path to the HDF dataset
+		 * 																indicating for each split coordinate
+		 * 																line, which pillar it belongs to.
+		 * @param 		  	splitCoordinateLineColumnCumulativeCount	Path to the HDF dataset
+		 * 																indicating for each split coordinate
+		 * 																line, the count of grid column which
+		 * 																are splitted by this coordinate line.
+		 * @param 		  	splitCoordinateLineColumns					Path to the HDF dataset
+		 * 																indicating for each split coordinate
+		 * 																line, the grid columns which are
+		 * 																splitted by this coordinate line.
+		 * @param [in]	  	localCrs									(Optional) The local CRS where
+		 * 																the points are given. If @c nullptr
+		 * 																(default) then the default CRS of the
+		 * 																repository will be used.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, EML2_NS::AbstractHdfProxy* proxy,
@@ -173,40 +457,144 @@ namespace RESQML2_NS
 			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
 		/**
-		* Set the geometry of the IJK grid as parametric pillar nodes where at least one pillar is supposed to be splitted and where all pillars are of the same kind.
-		* All pillars are assumed to be defined using this method.
-		* @param isRightHanded								Indicates that the IJK grid is right handed, as determined by the triple product of tangent vectors in the I, J, and K directions.
-		* @param parameters									The parameter values (regarding the pillars) of each node of the grid.
-		* @param controlPoints								The control points of the pillars of the grid. They are ordered first (quickest) by pillar and then (slowest) by control point : cp0 of pillar0, cp0 of pillar1, cp0 of pillar3, ..., cp0 of pillarCount-1, cp1 of pillar0, cp1 of pillar1, etc... Pad with nan values if necessary.
-		* @param controlPointParameters						The value of the parameter at each control points. It must be nullptr for vertical and Z linear cubic parametric lines grid.
-		* @param controlPointCountPerPillar					The count of control points which defines each of the pillar of this grid.
-		* @param pillarKind									The constant kind of each pillar : 0 = vertical, 1 = linear spline, 2 = natural cubic spline, 3 = cubic spline, 4 = Z linear cubic spline, 5 = minimum-curvature spline, (-1) = null: no line
-		* @param proxy										The Hdf proxy where all numerical values will be stored.
-		* @param splitCoordinateLineCount					The count of split coordinate line in this grid. A pillar being splitted by a maximum of 3 split coordinate lines (one coordinate line is always non splitted)
-		* @param pillarOfCoordinateLine						For each split coordinate line, indicates the pillar it belongs to.
-		* @param splitCoordinateLineColumnCumulativeCount	For each split coordinate line, indicates the count of grid column which are splitted by this coordinate line.
-		* @param splitCoordinateLineColumns					For each split coordinate line, indicates the grid columns which are splitted by this coordinate line.
-		*/
+		 * Set the geometry of the IJK grid as parametric pillar nodes where at least one pillar is
+		 * supposed to be splitted and where all pillars are of the same kind. All pillars are assumed
+		 * to be defined using this method.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
+		 * @exception	std::invalid_argument	If some parameters values are inconsistent.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default local 3d CRS
+		 * 										is defined.
+		 *
+		 * @param 		  	isRightHanded								Indicates that the IJK grid is
+		 * 																right handed, as determined by the
+		 * 																triple product of tangent vectors in
+		 * 																the I, J, and K directions.
+		 * @param [in]	  	parameters									The parameter values (regarding
+		 * 																the pillars) of each node of the grid.
+		 * @param [in]	  	controlPoints								The control points of the pillars
+		 * 																of the grid. They are ordered first
+		 * 																(quickest) by pillar and then
+		 * 																(slowest) by control point : cp0 of
+		 * 																pillar0, cp0 of pillar1, cp0 of
+		 * 																pillar3, ..., cp0 of pillarCount-1,
+		 * 																cp1 of pillar0, cp1 of pillar1,
+		 * 																etc... Pad with nan values if
+		 * 																necessary.
+		 * @param [in]	  	controlPointParameters						The value of the parameter at
+		 * 																each control points. It must be
+		 * 																nullptr for vertical and Z linear
+		 * 																cubic parametric lines grid.
+		 * @param 		  	controlPointCountPerPillar					The maximum count of control
+		 * 																points which defines a pillar of this
+		 * 																grid.
+		 * @param 		  	pillarKind									The constant kind of each pillar
+		 * 																: 0 = vertical, 1 = linear spline, 2
+		 * 																= natural cubic spline, 3 = cubic
+		 * 																spline, 4 = Z linear cubic spline, 5
+		 * 																= minimum-curvature spline, (-1) =
+		 * 																null: no line.
+		 * @param [in,out]	proxy										The HDF proxy where all numerical
+		 * 																values will be stored. If @c nullptr,
+		 * 																then the default HDF proxy of the
+		 * 																repository will be used.
+		 * @param 		  	splitCoordinateLineCount					The count of split coordinate
+		 * 																line in this grid. A pillar being
+		 * 																splitted by a maximum of 3 split
+		 * 																coordinate lines (one coordinate line
+		 * 																is always non splitted)
+		 * @param [in]	  	pillarOfCoordinateLine						For each split coordinate line,
+		 * 																indicates the pillar it belongs to.
+		 * @param [in]	  	splitCoordinateLineColumnCumulativeCount	For each split coordinate line,
+		 * 																indicates the count of grid column
+		 * 																which are splitted by this coordinate
+		 * 																line.
+		 * @param [in]	  	splitCoordinateLineColumns					For each split coordinate line,
+		 * 																indicates the grid columns which are
+		 * 																splitted by this coordinate line.
+		 * @param [in]	  	localCrs									(Optional) The local CRS where
+		 * 																the points are given. If @c nullptr
+		 * 																(default) then the default CRS of the
+		 * 																repository will be used.
+		 */
 		DLL_IMPORT_OR_EXPORT void setGeometryAsParametricSplittedPillarNodes(bool isRightHanded,
 			double const * parameters, double const * controlPoints, double const * controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy* proxy,
 			unsigned long splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
 			unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
-		* Same as setGeometryAsParametricSplittedPillarNodes where the hdf datasets are already written in the the file.
-		*/
+		 * Set the geometry of the IJK grid as parametric pillar nodes where at least one pillar is
+		 * supposed to be splitted and where all pillars are of the same kind. All pillars are assumed
+		 * to be defined using this method.Same as setGeometryAsParametricSplittedPillarNodes where the
+		 * HDF datasets are already written in the the file.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
+		 * @exception	std::invalid_argument	If some parameters values are inconsistent.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default local 3d CRS
+		 * 										is defined.
+		 *
+		 * @param 		  	kDirectionKind								The direction kind.
+		 * @param 		  	isRightHanded								Indicates that the IJK grid is
+		 * 																right handed, as determined by the
+		 * 																triple product of tangent vectors in
+		 * 																the I, J, and K directions.
+		 * @param 		  	parameters									Path to the HDF dataset
+		 * 																containing the parameter values
+		 * 																(regarding the pillars)
+		 * 																of each node of the grid.
+		 * @param 		  	controlPoints								Path to the HDF dataset
+		 * 																containing the the control points of
+		 * 																the pillars of the grid.
+		 * @param 		  	controlPointParameters						Path to the HDF dataset
+		 * 																containing the value of the parameter
+		 * 																at each control points.
+		 * @param 		  	controlPointCountPerPillar					The maximum count of control
+		 * 																points which defines a pillar of this
+		 * 																grid.
+		 * @param 		  	pillarKind									The constant kind of each pillar
+		 * 																: 0 = vertical, 1 = linear spline, 2
+		 * 																= natural cubic spline, 3 = cubic
+		 * 																spline, 4 = Z linear cubic spline, 5
+		 * 																= minimum-curvature spline, (-1) =
+		 * 																null: no line.
+		 * @param [in,out]	proxy										The HDF proxy where all numerical
+		 * 																values will be stored. If @c nullptr,
+		 * 																then the default HDF proxy of the
+		 * 																repository will be used.
+		 * @param 		  	splitCoordinateLineCount					The count of split coordinate
+		 * 																line in this grid. A pillar being
+		 * 																splitted by a maximum of 3 split
+		 * 																coordinate lines (one coordinate line
+		 * 																is always non splitted)
+		 * @param 		  	pillarOfCoordinateLine						Path to the HDF dataset
+		 * 																indicating for each split coordinate
+		 * 																line, which pillar it belongs to.
+		 * @param 		  	splitCoordinateLineColumnCumulativeCount	Path to the HDF dataset
+		 * 																indicating for each split coordinate
+		 * 																line, the count of grid column which
+		 * 																are splitted by this coordinate line.
+		 * @param 		  	splitCoordinateLineColumns					Path to the HDF dataset
+		 * 																indicating for each split coordinate
+		 * 																line, the grid columns which are
+		 * 																splitted by this coordinate line.
+		 * @param [in]	  	localCrs									(Optional) The local CRS where
+		 * 																the points are given. If @c nullptr
+		 * 																(default) then the default CRS of the
+		 * 																repository will be used.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy* proxy,
 			unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
-		/**
-		* Check wether the node geometry dataset is compressed or not.
-		*/
-		DLL_IMPORT_OR_EXPORT bool isNodeGeometryCompressed() const;
+		DLL_IMPORT_OR_EXPORT bool isNodeGeometryCompressed() const override;
 
-		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const;
+		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const override;
 
 	protected:
 		IjkGridParametricRepresentation(COMMON_NS::DataObjectRepository * repo,

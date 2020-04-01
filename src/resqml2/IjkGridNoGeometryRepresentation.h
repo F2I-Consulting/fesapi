@@ -22,27 +22,41 @@ under the License.
 
 namespace RESQML2_NS
 {
+	/**
+	 * This class is dedicated to IJK grids with undefined <tt>IjkGridGeometry</tt>. There are two
+	 * main use cases. A first one is block-centered grid, where no geometry is attached to nodes
+	 * but a property should spatialize cells centers. A second one is LGRs (local refinement grids),
+	 * where the refined geometry is given thanks to refinement parameters.
+	 */
 	class IjkGridNoGeometryRepresentation : public AbstractIjkGridRepresentation
 	{
 	public:
 		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
+		* Destructor does nothing since the memory is managed by the gSOAP context.
 		*/
 		virtual ~IjkGridNoGeometryRepresentation() {}
 
 		/**
-		* Get the xyz point count in a given patch.
-		*/
+		 * Get the XYZ point count in a given patch of this grid.
+		 *
+		 * @exception	std::out_of_range	If <tt>patchIndex &gt;= 1</tt> (IJK grids only carry 1 patch).
+		 * @exception	std::logic_error 	If getting the XYZ points of this grid is not yet supported.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch from which we look for the XYZ points.
+		 *
+		 * @returns	The XYZ point count of the patch.
+		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
 		/**
-		* Get all the XYZ points of a particular patch of this representation.
-		* XYZ points are given in the local CRS.
-		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
-		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		 * Please do not use: not implemented yet. Please use parent window information or geometrical
+		 * property information.  
+		 *
+		 * @exception	std::_out_of_range	If <tt>patchIndex &gt;= 1</tt> (IJK grids only carry 1 patch).
+		 */
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const override;
 
-		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const;
+		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const override;
 
 	protected:
 		IjkGridNoGeometryRepresentation(COMMON_NS::DataObjectRepository * repo,

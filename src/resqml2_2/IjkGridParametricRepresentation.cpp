@@ -42,7 +42,7 @@ unsigned int IjkGridParametricRepresentation::getControlPointMaxCountPerPillar()
 	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__ParametricLineArray) {
 		const ULONG64 result = static_cast<resqml22__ParametricLineArray*>(points->ParametricLines)->KnotCount;
 		if (result > (std::numeric_limits<unsigned int>::max)())
-			throw std::out_of_range("There are too many knot counts");
+			throw std::range_error("There are too many knot counts");
 		return static_cast<unsigned int>(result);
 	}
 

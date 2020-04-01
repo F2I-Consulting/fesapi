@@ -703,7 +703,7 @@ namespace RESQML2_NS
 		 * @exception	std::range_error	 	If the count of split coordinate lines is strictly
 		 * 										greater than unsigned int max.
 		 *
-		 * @returns	The XYZ point count of k interface.
+		 * @returns	The XYZ point count of each K layer interface.
 		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfKInterface() const;
 
@@ -722,16 +722,16 @@ namespace RESQML2_NS
 		 * information but to get it as input.
 		 *
 		 * @param 		  	kInterface	The K interface index starting from zero to kCellCount.
-		 * @param [in,out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is
+		 * @param [out]	xyzPoints 		A linearized 2d array where the first (quickest) dimension is
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be pre allocated with a size of
-		 * 								3*getXyzPointCountOfKInterfaceOfPatch.
+		 * 								<tt>3 * getXyzPointCountOfKInterface()</tt>.
 		 */
-		 /** Please do note use: not implemented yet. */
+		/** Please do note use: not implemented yet. */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfKInterface(unsigned int kInterface, double * xyzPoints);
 
 		/**
-		 * @brief Get all the XYZ points of a particular sequence of K interfaces. XYZ points are given in the
+		 * @brief Gets all the XYZ points of a particular sequence of K interfaces. XYZ points are given in the
 		 * local CRS.
 		 *
 		 * @exception	std::out_of_range	 	If @p kInterfaceStart @c > getKCellCount() or @p
@@ -752,7 +752,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints);
 
 		/**
-		 * Get all the XYZ points of the current block. XYZ points are given in the local CRS. Block
+		 * @brief Gets all the XYZ points of the current block. XYZ points are given in the local CRS. Block
 		 * information must be loaded.
 		 *
 		 * @exception	std::invalid_argument	If the block information is not loaded.

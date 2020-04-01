@@ -396,10 +396,10 @@ void IjkGridParametricRepresentation::getParametersOfNodesOfKInterfaceSequence(u
 		throw out_of_range("kInterfaceStart and/or kInterfaceEnd is/are out of boundaries.");
 	}
 	if (kInterfaceStart > kInterfaceEnd) {
-		throw out_of_range("kInterfaceStart > kInterfaceEnd");
+		throw range_error("kInterfaceStart > kInterfaceEnd");
 	}
 	if (parameters == nullptr) {
-		throw invalid_argument("xyzPoints must be allocated.");
+		throw invalid_argument("parameters must be allocated.");
 	}
 
 	string datasetPath;
