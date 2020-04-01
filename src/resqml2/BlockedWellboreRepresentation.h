@@ -18,45 +18,20 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/BlockedWellboreRepresentation.h"
+#include "WellboreFrameRepresentation.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_NS
 {
+	class AbstractGridRepresentation;
+
 	/** A blocked wellbore representation. */
-	class BlockedWellboreRepresentation : public RESQML2_NS::BlockedWellboreRepresentation
+	class BlockedWellboreRepresentation : public WellboreFrameRepresentation
 	{
 	public:
 
-		/**
-		 * Only to be used in partial transfer context
-		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
-		 */
-		DLL_IMPORT_OR_EXPORT BlockedWellboreRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::BlockedWellboreRepresentation(partialObject) {}
-
-		/**
-		 * Creates an instance of this class in a gsoap context.
-		 *
-		 * @param [in,out]	interp	The interpretation the instance represents.
-		 * @param 		  	guid  	A guid for the instance to create.
-		 * @param 		  	title 	A title for the instance to create.
-		 * @param [in,out]	traj  	The wellbore trajectory this intance is based on.
-		 */
-		BlockedWellboreRepresentation(RESQML2_NS::WellboreInterpretation * interp,
-			const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj);
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		BlockedWellboreRepresentation(gsoap_resqml2_0_1::_resqml20__BlockedWellboreRepresentation* fromGsoap) : RESQML2_NS::BlockedWellboreRepresentation(fromGsoap) {}
-
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~BlockedWellboreRepresentation() {}
+		virtual ~BlockedWellboreRepresentation() {}
 
 		/**
 		 * Set all information about the intersected grid cells. You must first provide MD values of the
@@ -90,16 +65,16 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	hdfProxy								The hdf proxy where the numerical
 		 * 															values will be stored.
 		 */
-		DLL_IMPORT_OR_EXPORT void setIntevalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
+		DLL_IMPORT_OR_EXPORT virtual void setIntevalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
 			unsigned int cellCount, ULONG64 const* cellIndices,
-			unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy) final;
+			unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy) = 0;
 
 		/**
 		 * The number of non-null entries in the grid indices array.
 		 *
 		 * @returns	The cell count.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const final;
+		DLL_IMPORT_OR_EXPORT virtual ULONG64 getCellCount() const = 0;
 
 		/**
 		 * Size of array = IntervalCount on the wellbore frame rep. The grids (and there indices) are
@@ -109,7 +84,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	nullValue.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getGridIndices(unsigned int * gridIndices) const final;
+		DLL_IMPORT_OR_EXPORT virtual LONG64 getGridIndices(unsigned int * gridIndices) const = 0;
 
 		/**
 		 * Pushes back a grid representation which is one of the support of this representation. And
@@ -118,14 +93,24 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	supportingGridRep	If non-null, the supporting grid rep.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep) final;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep) = 0;
 
 		/**
 		 * Get the count of the supporting grid representations of this grid connection representation.
 		 *
 		 * @returns	The supporting grid representation count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getSupportingGridRepresentationCount() const final;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getSupportingGridRepresentationCount() const = 0;
+
+		/**
+		 * Get the supporting grid representation located at a specific index of this blocked wellbore
+		 * representation.
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	Null if it fails, else the supporting grid representation.
+		 */
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index) const;
 
 		/**
 		 * Get the supporting grid representation dor located at a specific index of this blocked
@@ -135,17 +120,53 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	Null if it fails, else the supporting grid representation dor.
 		 */
-		COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const final;
-
-	private:
+		virtual COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const = 0;
 
 		/**
-		 * Initializes this object
+		 * The standard XML tag without XML namespace for serializing this data object.
 		 *
-		 * @param 		  	guid 	Unique identifier.
-		 * @param 		  	title	The title.
-		 * @param [in,out]	traj 	If non-null, the traj.
+		 * @returns	The XML tag.
 		 */
-		void init(const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj);
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+
+	protected:
+
+		/**
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
+		DLL_IMPORT_OR_EXPORT BlockedWellboreRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WellboreFrameRepresentation(partialObject) {}
+
+		/**
+		 * Defatul constructor
+		 */
+		BlockedWellboreRepresentation() {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		BlockedWellboreRepresentation(gsoap_resqml2_0_1::_resqml20__BlockedWellboreRepresentation* fromGsoap) : WellboreFrameRepresentation(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		BlockedWellboreRepresentation(gsoap_eml2_3::_resqml22__BlockedWellboreRepresentation* fromGsoap) : WellboreFrameRepresentation(fromGsoap) {}
+
+		/** Loads target relationships */
+		void loadTargetRelationships();
 	};
 }

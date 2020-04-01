@@ -21,7 +21,7 @@ under the License.
 #include "../resqml2/BlockedWellboreRepresentation.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
 	/** A blocked wellbore representation. */
 	class BlockedWellboreRepresentation : public RESQML2_NS::BlockedWellboreRepresentation
@@ -53,7 +53,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		BlockedWellboreRepresentation(gsoap_resqml2_0_1::_resqml20__BlockedWellboreRepresentation* fromGsoap) : RESQML2_NS::BlockedWellboreRepresentation(fromGsoap) {}
+		BlockedWellboreRepresentation(gsoap_eml2_3::_resqml22__BlockedWellboreRepresentation* fromGsoap) : RESQML2_NS::BlockedWellboreRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~BlockedWellboreRepresentation() {}

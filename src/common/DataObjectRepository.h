@@ -51,6 +51,7 @@ namespace RESQML2_NS
 	class AbstractOrganizationInterpretation;
 	class AbstractRepresentation;
 	class AbstractSeismicLineFeature;
+	class BlockedWellboreRepresentation;
 	class BoundaryFeature;
 	class BoundaryFeatureInterpretation;
 	class CategoricalProperty;
@@ -87,6 +88,7 @@ namespace RESQML2_NS
 	class RockVolumeFeature;
 	class SealedSurfaceFrameworkRepresentation;
 	class SealedVolumeFrameworkRepresentation;
+	class SeismicLatticeFeature;
 	class SeismicLineSetFeature;
 	class StratigraphicColumn;
 	class StratigraphicColumnRankInterpretation;
@@ -115,20 +117,21 @@ namespace RESQML2_0_1_NS
 	class GeobodyFeature;
 	class Horizon;
 	class TectonicBoundaryFeature;
-	class SeismicLatticeFeature;
 	class PropertyKind;
 	class FluidBoundaryFeature;
-	class BlockedWellboreRepresentation;
 	class RockFluidUnitFeature;
+	class SeismicLineFeature;
 }
 
 namespace RESQML2_2_NS
 {
-	class DiscreteColorMap;
+	class CmpLineFeature;
 	class ContinuousColorMap;
+	class DiscreteColorMap;
 	class Model;
 	class RockVolumeFeature;
 	class SeismicWellboreFrameRepresentation;
+	class ShotPointLineFeature;
 }
 
 namespace WITSML2_0_NS
@@ -570,7 +573,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all geobodies of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::GeobodyFeature*> getGeobodySet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::RockVolumeFeature*> getGeobodySet() const;
 
 		/**
 		 * Gets all the individual representations of horizons which are associated to a grid 2d set
@@ -1425,7 +1428,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new seismic lattice.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::SeismicLatticeFeature* createSeismicLattice(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::SeismicLatticeFeature* createSeismicLattice(const std::string & guid, const std::string & title,
 			int inlineIncrement, int crosslineIncrement,
 			unsigned int originInline, unsigned int originCrossline,
 			unsigned int inlineCount, unsigned int crosslineCount);
@@ -1441,10 +1444,38 @@ namespace COMMON_NS
 		 * @param 	firstTraceIndex	   	The index of the first trace of the seismic line.
 		 * @param 	traceCount		   	Number of traces.
 		 *
-		 * @returns	A pointer to the new seismic lattice.
+		 * @returns	A pointer to the new seismic line.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractSeismicLineFeature* createSeismicLine(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::SeismicLineFeature* createSeismicLine(const std::string & guid, const std::string & title,
 			int traceIndexIncrement, unsigned int firstTraceIndex, unsigned int traceCount);
+
+		/**
+		 * Creates a CMP line into this repository
+		 *
+		 * @param 	guid			   	The guid to set to the CMP line. If empty then a new guid
+		 * 								will be generated.
+		 * @param 	title			   	The title to set to the CMP line. If empty then \"unknown\"
+		 * 								title will be set.
+		 * @param 	traceIndexIncrement	The constant index increment between two consecutive shot points indices.
+		 * @param 	firstTraceIndex	   	The index of the first shot point of the CMP line.
+		 * @param 	traceCount		   	Number of shot point.
+		 *
+		 * @returns	A pointer to the new CMP line.
+		 */
+		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::CmpLineFeature* createCmpLine(const std::string & guid, const std::string & title,
+			int nearestShotPointIndicesIncrement, int firstNearestShotPointIndex, unsigned int nearestShotPointCount);
+
+		/**
+		 * Creates a shot point line into this repository
+		 *
+		 * @param 	guid			   	The guid to set to the shot point line. If empty then a new guid
+		 * 								will be generated.
+		 * @param 	title			   	The title to set to the shot point line. If empty then \"unknown\"
+		 * 								title will be set.
+		 *
+		 * @returns	A pointer to the new CMP line.
+		 */
+		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ShotPointLineFeature* createShotPointLine(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a seismic line set into this repository
@@ -2138,7 +2169,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new blocked wellbore representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::BlockedWellboreRepresentation* createBlockedWellboreRepresentation(RESQML2_NS::WellboreInterpretation* interp,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::BlockedWellboreRepresentation* createBlockedWellboreRepresentation(RESQML2_NS::WellboreInterpretation* interp,
 			const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj);
 
 		/**

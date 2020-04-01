@@ -26,15 +26,14 @@ under the License.
 #include "../eml2/AbstractHdfProxy.h"
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractIjkGridRepresentation.h"
-#include "DiscreteProperty.h"
 
 using namespace std;
-using namespace RESQML2_0_1_NS;
-using namespace gsoap_resqml2_0_1;
+using namespace RESQML2_2_NS;
+using namespace gsoap_eml2_3;
 
 void SubRepresentation::init(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESubRepresentation(repo->getGsoapContext());
+	gsoapProxy2_3 = soap_new_resqml22__SubRepresentation(repo->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -60,13 +59,13 @@ SubRepresentation::SubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* 
 	setInterpretation(interp);
 }
 
-_resqml20__SubRepresentation* SubRepresentation::getSpecializedGsoapProxy() const
+_resqml22__SubRepresentation* SubRepresentation::getSpecializedGsoapProxy() const
 {
 	if (isPartial()) {
 		throw logic_error("Partial object");
 	}
 
-	return static_cast<_resqml20__SubRepresentation*>(gsoapProxy2_0_1);
+	return static_cast<_resqml22__SubRepresentation*>(gsoapProxy2_3);
 }
 
 void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 originIndex,
@@ -74,33 +73,33 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 	unsigned int elementCountInMiddleDimension,
 	unsigned int elementCountInFastestDimension)
 {
-	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
+	_resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
 
-	resqml20__SubRepresentationPatch* patch = soap_new_resqml20__SubRepresentationPatch(gsoapProxy2_0_1->soap);
+	resqml22__SubRepresentationPatch* patch = soap_new_resqml22__SubRepresentationPatch(gsoapProxy2_3->soap);
 
 	// XML
-	patch->PatchIndex = rep->SubRepresentationPatch.size();
 	rep->SubRepresentationPatch.push_back(patch);
 	patch->Count = elementCountInSlowestDimension * elementCountInMiddleDimension * elementCountInFastestDimension;
-	resqml20__ElementIndices* elements = soap_new_resqml20__ElementIndices(gsoapProxy2_0_1->soap);
+	resqml22__ElementIndices* elements = soap_new_resqml22__ElementIndices(gsoapProxy2_3->soap);
 	patch->ElementIndices.push_back(elements);
-	elements->IndexableElement = mapIndexableElement(elementKind);
+	elements->__ElementIndices_sequence = soap_new___resqml22__ElementIndices_sequence(gsoapProxy2_3->soap);
+	elements->__ElementIndices_sequence->IndexableElement = elementKind;
 
-	resqml20__IntegerLatticeArray * integerArray = soap_new_resqml20__IntegerLatticeArray(gsoapProxy2_0_1->soap);
-	elements->Indices = integerArray;
+	eml23__IntegerLatticeArray * integerArray = soap_new_eml23__IntegerLatticeArray(gsoapProxy2_3->soap);
+	elements->__ElementIndices_sequence->Indices = integerArray;
 	integerArray->StartValue = originIndex;
 
-	resqml20__IntegerConstantArray * offset = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap);
+	eml23__IntegerConstantArray * offset = soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap);
 	offset->Count = elementCountInSlowestDimension - 1;
 	offset->Value = 1;
 	integerArray->Offset.push_back(offset);
 
-	offset = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap);
+	offset = soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap);
 	offset->Count = elementCountInMiddleDimension - 1;
 	offset->Value = 1;
 	integerArray->Offset.push_back(offset);
 
-	offset = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap);
+	offset = soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap);
 	offset->Count = elementCountInFastestDimension - 1;
 	offset->Value = 1;
 	integerArray->Offset.push_back(offset);
@@ -117,47 +116,46 @@ void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__Ind
 	}
 	getRepository()->addRelationship(this, proxy);
 
-	resqml20__SubRepresentationPatch* patch = soap_new_resqml20__SubRepresentationPatch(gsoapProxy2_0_1->soap);
+	resqml22__SubRepresentationPatch* patch = soap_new_resqml22__SubRepresentationPatch(gsoapProxy2_3->soap);
 
 	// XML
-	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
-	patch->PatchIndex = rep->SubRepresentationPatch.size();
-	rep->SubRepresentationPatch.push_back(patch);
+	_resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
 	patch->Count = elementCount;
-	resqml20__ElementIndices* elements = soap_new_resqml20__ElementIndices(gsoapProxy2_0_1->soap);
+	resqml22__ElementIndices* elements = soap_new_resqml22__ElementIndices(gsoapProxy2_3->soap);
 	patch->ElementIndices.push_back(elements);
-	elements->IndexableElement = mapIndexableElement(elementKind);
+	elements->__ElementIndices_sequence = soap_new___resqml22__ElementIndices_sequence(gsoapProxy2_3->soap);
+	elements->__ElementIndices_sequence->IndexableElement = elementKind;
 
-	resqml20__IntegerHdf5Array * integerArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
-	eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
-	resqmlHDF5dataset->HdfProxy = proxy->newResqmlReference();
+	eml23__IntegerExternalArray * integerArray = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
+	eml23__ExternalDataset * resqmlHDF5dataset = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+	eml23__ExternalDatasetPart * dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
 	if (elementDataset.empty()) {
 		ostringstream ossForHdf;
-		ossForHdf << "subrepresentation_elementIndices0_patch" << patch->PatchIndex;
-		resqmlHDF5dataset->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
+		ossForHdf << "subrepresentation_elementIndices0_patch" << getPatchCount();
+		dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
 	}
 	else {
-		resqmlHDF5dataset->PathInHdfFile = elementDataset;
+		dsPart->PathInExternalFile = elementDataset;
 	}
+	resqmlHDF5dataset->ExternalFileProxy.push_back(dsPart);
 	integerArray->Values = resqmlHDF5dataset;
 	integerArray->NullValue = nullValue;
-	elements->Indices = integerArray;
+	elements->__ElementIndices_sequence->Indices = integerArray;
 
 	if (!supportingRepDataset.empty()) {
-		RESQML2_0_1_NS::DiscreteProperty* discreteProp = getRepository()->createDiscreteProperty(this, "", "SupportingRepresentationIndex", 1, elementKind, resqml20__ResqmlPropertyKind__index);
-		ostringstream oss;
-		oss << "SubRepresentationPatch[" << rep->SubRepresentationPatch.size() - 1 << "]/ElementIndices/SupportingRepresentationIndex";
-		pushBackExtraMetadata(oss.str(), discreteProp->getUuid());
-		discreteProp->pushBackRefToExistingDataset(proxy, supportingRepDataset, nullValue);
+		integerArray = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
+		resqmlHDF5dataset = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+		dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
+		dsPart->PathInExternalFile = supportingRepDataset;
+		resqmlHDF5dataset->ExternalFileProxy.push_back(dsPart);
+		integerArray->Values = resqmlHDF5dataset;
+		integerArray->NullValue = nullValue;
+		elements->__ElementIndices_sequence->SupportingRepresentationIndex = integerArray;
 	}
-}
 
-DiscreteProperty* SubRepresentation::getSupportingRepresentationIndicesDiscretePropOfPatch(unsigned int patchIndex) const
-{
-	ostringstream oss;
-	oss << "SubRepresentationPatch[" << patchIndex << "]/ElementIndices/SupportingRepresentationIndex";
-	vector<string> uuid = getExtraMetadata(oss.str());
-	return getRepository()->getDataObjectByUuid<DiscreteProperty>(uuid[0]);
+	rep->SubRepresentationPatch.push_back(patch);
 }
 
 void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind0, gsoap_eml2_3::resqml22__IndexableElement elementKind1,
@@ -167,24 +165,27 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 {
 	pushBackSubRepresentationPatch(elementKind0, elementCount, elementIndices0, proxy);
 
-	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
+	_resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
 
-	resqml20__SubRepresentationPatch* patch = rep->SubRepresentationPatch[rep->SubRepresentationPatch.size() - 1];
+	resqml22__SubRepresentationPatch* patch = rep->SubRepresentationPatch[getPatchCount() - 1];
 
 	// XML
-	resqml20__ElementIndices* elements = soap_new_resqml20__ElementIndices(gsoapProxy2_0_1->soap);
+	resqml22__ElementIndices* elements = soap_new_resqml22__ElementIndices(gsoapProxy2_3->soap);
 	patch->ElementIndices.push_back(elements);
-	elements->IndexableElement = mapIndexableElement(elementKind1);
+	elements->__ElementIndices_sequence = soap_new___resqml22__ElementIndices_sequence(gsoapProxy2_3->soap);
+	elements->__ElementIndices_sequence->IndexableElement = elementKind1;
 
 	ostringstream ossForHdf;
-	ossForHdf << "subrepresentation_elementIndices1_patch" << patch->PatchIndex;
-	resqml20__IntegerHdf5Array * integerArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
-	eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
-	resqmlHDF5dataset->HdfProxy = proxy->newResqmlReference();
-	resqmlHDF5dataset->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
+	ossForHdf << "subrepresentation_elementIndices1_patch" << getPatchCount() - 1;
+	eml23__IntegerExternalArray * integerArray = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
+	eml23__ExternalDataset * resqmlHDF5dataset = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+	eml23__ExternalDatasetPart * dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
+	dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
+	resqmlHDF5dataset->ExternalFileProxy.push_back(dsPart);
 	integerArray->Values = resqmlHDF5dataset;
 	integerArray->NullValue = (std::numeric_limits<unsigned int>::max)();
-	elements->Indices = integerArray;
+	elements->__ElementIndices_sequence->Indices = integerArray;
 
 	// ************ HDF ************		
 	hsize_t numValues = elementCount;
@@ -193,12 +194,12 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 
 COMMON_NS::DataObjectReference SubRepresentation::getHdfProxyDor() const
 {
-	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
+	_resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
 
 	if (!rep->SubRepresentationPatch.empty()) {
 		if (!rep->SubRepresentationPatch[0]->ElementIndices.empty()) {
-			if (rep->SubRepresentationPatch[0]->ElementIndices[0]->Indices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-				return COMMON_NS::DataObjectReference(static_cast<resqml20__IntegerHdf5Array*>(rep->SubRepresentationPatch[0]->ElementIndices[0]->Indices)->Values->HdfProxy);
+			if (rep->SubRepresentationPatch[0]->ElementIndices[0]->__ElementIndices_sequence->Indices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(rep->SubRepresentationPatch[0]->ElementIndices[0]->__ElementIndices_sequence->Indices)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
 			}
 		}
 	}
@@ -208,16 +209,16 @@ COMMON_NS::DataObjectReference SubRepresentation::getHdfProxyDor() const
 
 RESQML2_NS::AbstractRepresentation::indexableElement SubRepresentation::getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const
 {
-	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
+	_resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
 	if (rep->SubRepresentationPatch.size() > patchIndex) {
 		if (rep->SubRepresentationPatch[patchIndex]->ElementIndices.size() > elementIndicesIndex) {
-			switch (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->IndexableElement) {
-			case resqml20__IndexableElements__nodes: return NODE;
-			case resqml20__IndexableElements__edges:
-			case resqml20__IndexableElements__intervals: return EDGE;
-			case resqml20__IndexableElements__faces: return FACE;
-			case resqml20__IndexableElements__cells: return VOLUME;
-			case resqml20__IndexableElements__pillars: return PILLAR;
+			switch (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->IndexableElement) {
+			case resqml22__IndexableElement__nodes: return NODE;
+			case resqml22__IndexableElement__edges:
+			case resqml22__IndexableElement__intervals: return EDGE;
+			case resqml22__IndexableElement__faces: return FACE;
+			case resqml22__IndexableElement__cells: return VOLUME;
+			case resqml22__IndexableElement__pillars: return PILLAR;
 			default: throw invalid_argument("The indexable element of the subrepresentation is not supported yet");
 			}
 		}
@@ -230,9 +231,9 @@ RESQML2_NS::AbstractRepresentation::indexableElement SubRepresentation::getEleme
 	}
 }
 
-gsoap_resqml2_0_1::resqml20__SubRepresentationPatch* SubRepresentation::getSubRepresentationPatch(unsigned int index) const
+resqml22__SubRepresentationPatch* SubRepresentation::getSubRepresentationPatch(unsigned int index) const
 {
-	_resqml20__SubRepresentation const* rep = getSpecializedGsoapProxy();
+	_resqml22__SubRepresentation const* rep = getSpecializedGsoapProxy();
 	if (rep->SubRepresentationPatch.size() > index) {
 		return rep->SubRepresentationPatch[index];
 	}
@@ -252,12 +253,12 @@ bool SubRepresentation::areElementIndicesPairwise(unsigned int patchIndex) const
 
 bool SubRepresentation::areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex) const
 {
-	return getSubRepresentationPatch(patchIndex)->ElementIndices[elementIndicesIndex]->Indices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray;
+	return getSubRepresentationPatch(patchIndex)->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray;
 }
 
 LONG64 SubRepresentation::getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex) const
 {
-	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
+	_resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
 
 	if (!areElementIndicesBasedOnLattice(patchIndex, elementIndicesIndex)) {
 		throw invalid_argument("The element indices are not based on a lattice.");
@@ -266,13 +267,13 @@ LONG64 SubRepresentation::getLatticeElementIndicesStartValue(unsigned int patchI
 		throw out_of_range("The element indices index is out of range.");
 	}
 
-	resqml20__IntegerLatticeArray* lattice = static_cast<resqml20__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices);
+	eml23__IntegerLatticeArray* lattice = static_cast<eml23__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices);
 	return lattice->StartValue;
 }
 
 unsigned int SubRepresentation::getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex) const
 {
-	_resqml20__SubRepresentation const * rep = getSpecializedGsoapProxy();
+	_resqml22__SubRepresentation const * rep = getSpecializedGsoapProxy();
 
 	if (!areElementIndicesBasedOnLattice(patchIndex, elementIndicesIndex)) {
 		throw invalid_argument("The element indices are not based on a lattice.");
@@ -281,20 +282,20 @@ unsigned int SubRepresentation::getLatticeElementIndicesDimensionCount(unsigned 
 		throw out_of_range("The element indices index is out of range.");
 	}
 
-	resqml20__IntegerLatticeArray* lattice = static_cast<resqml20__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices);
+	eml23__IntegerLatticeArray* lattice = static_cast<eml23__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices);
 	return lattice->Offset.size();
 }
 
 LONG64 SubRepresentation::getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex) const
 {
-	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
+	_resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
 
 	if (!areElementIndicesBasedOnLattice(patchIndex, elementIndicesIndex))
 		throw invalid_argument("The element indices are not based on a lattice.");
 	if (rep->SubRepresentationPatch[patchIndex]->ElementIndices.size() <= elementIndicesIndex)
 		throw out_of_range("The element indices index is out of range.");
 
-	resqml20__IntegerLatticeArray* lattice = static_cast<resqml20__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices);
+	eml23__IntegerLatticeArray* lattice = static_cast<eml23__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices);
 	if (lattice->Offset.size() <= latticeDimensionIndex)
 		throw out_of_range("The lattice dimension index is out of range.");
 
@@ -303,7 +304,7 @@ LONG64 SubRepresentation::getLatticeElementIndicesOffsetValue(unsigned int latti
 
 ULONG64 SubRepresentation::getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex) const
 {
-	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
+	_resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
 
 	if (!areElementIndicesBasedOnLattice(patchIndex, elementIndicesIndex)) {
 		throw invalid_argument("The element indices are not based on a lattice.");
@@ -312,7 +313,7 @@ ULONG64 SubRepresentation::getLatticeElementIndicesOffsetCount(unsigned int latt
 		throw out_of_range("The element indices index is out of range.");
 	}
 
-	resqml20__IntegerLatticeArray* lattice = static_cast<resqml20__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices);
+	eml23__IntegerLatticeArray* lattice = static_cast<eml23__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices);
 	if (lattice->Offset.size() <= latticeDimensionIndex) {
 		throw out_of_range("The lattice dimension index is out of range.");
 	}
@@ -322,7 +323,7 @@ ULONG64 SubRepresentation::getLatticeElementIndicesOffsetCount(unsigned int latt
 
 void SubRepresentation::getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, ULONG64 * elementIndices) const
 {
-	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
+	_resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
 	if (rep->SubRepresentationPatch.size() <= patchIndex) {
 		throw out_of_range("The patch does not exist at this index.");
 	}
@@ -330,10 +331,9 @@ void SubRepresentation::getElementIndicesOfPatch(unsigned int patchIndex, unsign
 		throw out_of_range("The elementIndices does not exist at this index.");
 	}
 
-	if (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices)->Values;
-		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, elementIndices);
+	if (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+		eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__IntegerExternalArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices)->Values->ExternalFileProxy[0];
+		getHdfProxyFromDataset(dsPart)->readArrayNdOfULongValues(dsPart->PathInExternalFile, elementIndices);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -342,21 +342,27 @@ void SubRepresentation::getElementIndicesOfPatch(unsigned int patchIndex, unsign
 
 void SubRepresentation::getSupportingRepresentationIndicesOfPatch(unsigned int patchIndex, short * supportingRepresentationIndices) const
 {
-	const _resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
+	const _resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
 	if (rep->SubRepresentationPatch.size() <= patchIndex) {
 		throw out_of_range("The patch does not exist at this index.");
 	}
 
-	if (getSupportingRepresentationCount() == 1) {
+	if (getSupportingRepresentationCount() == 1 || rep->SubRepresentationPatch[patchIndex]->ElementIndices[0]->__ElementIndices_sequence->SupportingRepresentationIndex == nullptr) {
 		const ULONG64 elementCount = getElementCountOfPatch(patchIndex);
 		for (ULONG64 i = 0; i < elementCount; ++i) {
 			supportingRepresentationIndices[i] = 0;
 		}
 		return;
 	}
-
-	DiscreteProperty* prop = getSupportingRepresentationIndicesDiscretePropOfPatch(patchIndex);
-	prop->getShortValuesOfPatch(0, supportingRepresentationIndices);
+	else {
+		if (rep->SubRepresentationPatch[patchIndex]->ElementIndices[0]->__ElementIndices_sequence->SupportingRepresentationIndex->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+			eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__IntegerExternalArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[0]->__ElementIndices_sequence->SupportingRepresentationIndex)->Values->ExternalFileProxy[0];
+			getHdfProxyFromDataset(dsPart)->readArrayNdOfShortValues(dsPart->PathInExternalFile, supportingRepresentationIndices);
+		}
+		else {
+			throw invalid_argument("Not implemented yet.");
+		}
+	}
 }
 
 unsigned int SubRepresentation::getPatchCount() const
@@ -366,13 +372,7 @@ unsigned int SubRepresentation::getPatchCount() const
 
 unsigned int SubRepresentation::getSupportingRepresentationCount() const
 {
-	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
-	if (rep->SupportingRepresentation == nullptr) {
-		return 0;
-	}
-
-	const size_t count = getExtraMetadata("SupportingRepresentation").size();
-	return count < 2 ? 1 : count;
+	return getSpecializedGsoapProxy()->SupportingRepresentation.size();
 }
 
 COMMON_NS::DataObjectReference SubRepresentation::getSupportingRepresentationDor(unsigned int index) const
@@ -386,29 +386,10 @@ COMMON_NS::DataObjectReference SubRepresentation::getSupportingRepresentationDor
 		throw out_of_range("The index of the supporting represenation is out of range.");
 	}
 
-	if (supRepCount == 1) {
-		return getSpecializedGsoapProxy()->SupportingRepresentation;
-	}
-
-	eml20__DataObjectReference* result = soap_new_eml20__DataObjectReference(getGsoapContext());
-	result->ContentType = getSpecializedGsoapProxy()->SupportingRepresentation->ContentType;
-	result->Title = getSpecializedGsoapProxy()->SupportingRepresentation->Title;
-	result->UUID = getExtraMetadata("SupportingRepresentation")[index];
-	return COMMON_NS::DataObjectReference(result);
+	return COMMON_NS::DataObjectReference(getSpecializedGsoapProxy()->SupportingRepresentation[index]);
 }
 
 void SubRepresentation::pushBackXmlSupportingRepresentation(RESQML2_NS::AbstractRepresentation const * supportingRep)
 {
-	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
-	if (rep->SupportingRepresentation == nullptr) {
-		rep->SupportingRepresentation = supportingRep->newResqmlReference();
-	}
-	else {
-		if (getSupportingRepresentationCount() == 1) {
-			// Copy the supporting rep into the extrametadata
-			pushBackExtraMetadata("SupportingRepresentation", rep->SupportingRepresentation->UUID);
-		}
-		// push back the new supporting rep
-		pushBackExtraMetadata("SupportingRepresentation", supportingRep->getUuid());
-	}
+	getSpecializedGsoapProxy()->SupportingRepresentation.push_back(supportingRep->newEml23Reference());
 }

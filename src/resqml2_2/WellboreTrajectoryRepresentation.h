@@ -21,20 +21,11 @@ under the License.
 #include "../resqml2/WellboreTrajectoryRepresentation.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
 	/** A wellbore trajectory representation. */
 	class WellboreTrajectoryRepresentation : public RESQML2_NS::WellboreTrajectoryRepresentation
 	{
-	private:
-
-		/**
-		 * Gets specialized gsoap proxy
-		 *
-		 * @returns	Null if it fails, else the specialized gsoap proxy.
-		 */
-		gsoap_resqml2_0_1::_resqml20__WellboreTrajectoryRepresentation* getSpecializedGsoapProxy() const;
-
 	public:
 
 		/**
@@ -80,7 +71,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreTrajectoryRepresentation* fromGsoap) : RESQML2_NS::WellboreTrajectoryRepresentation(fromGsoap) {}
+		WellboreTrajectoryRepresentation(gsoap_eml2_3::_resqml22__WellboreTrajectoryRepresentation* fromGsoap) : RESQML2_NS::WellboreTrajectoryRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		~WellboreTrajectoryRepresentation() {}
@@ -387,5 +378,14 @@ namespace RESQML2_0_1_NS
 		 * @returns	True if this trajectory has a geometry, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasGeometry() const;
+
+	private:
+
+		/**
+		 * Gets specialized gsoap proxy
+		 *
+		 * @returns	Null if it fails, else the specialized gsoap proxy.
+		 */
+		gsoap_eml2_3::_resqml22__WellboreTrajectoryRepresentation* getSpecializedGsoapProxy() const;
 	};
 }

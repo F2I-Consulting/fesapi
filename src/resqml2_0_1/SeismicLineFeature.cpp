@@ -74,3 +74,15 @@ COMMON_NS::DataObjectReference SeismicLineFeature::getSeismicLineSetDor() const
 
 	return seismicLine->IsPartOf == nullptr ? COMMON_NS::DataObjectReference() : COMMON_NS::DataObjectReference(seismicLine->IsPartOf);
 }
+
+std::vector<std::string> SeismicLineFeature::getTraceLabels() const
+{
+	_resqml20__SeismicLineFeature* seismicLine = static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1);
+
+	std::vector<std::string> result;
+	for (unsigned int incr = 0; incr < seismicLine->TraceCount; ++incr) {
+		result.push_back(std::to_string(seismicLine->FirstTraceIndex + incr * seismicLine->TraceIndexIncrement));
+	}
+
+	return result;
+}

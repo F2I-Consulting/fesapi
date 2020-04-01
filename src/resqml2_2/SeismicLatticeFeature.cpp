@@ -19,51 +19,59 @@ under the License.
 #include "SeismicLatticeFeature.h"
 
 using namespace std;
-using namespace RESQML2_0_1_NS;
-using namespace gsoap_resqml2_0_1;
+using namespace RESQML2_2_NS;
+using namespace gsoap_eml2_3;
 
 SeismicLatticeFeature::SeismicLatticeFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
 	int inlineIncrement, int crosslineIncrement,
 	unsigned int originInline, unsigned int originCrossline,
 	unsigned int inlineCount, unsigned int crosslineCount)
 {
-	if (repo == nullptr)
+	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be null.");
+	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESeismicLatticeFeature(repo->getGsoapContext());
-	_resqml20__SeismicLatticeFeature* seismicLattice = static_cast<_resqml20__SeismicLatticeFeature*>(gsoapProxy2_0_1);
+	gsoapProxy2_3 = soap_new_resqml22__SeismicLatticeFeature(repo->getGsoapContext());
+	_resqml22__SeismicLatticeFeature* seismicLattice = static_cast<_resqml22__SeismicLatticeFeature*>(gsoapProxy2_3);
 
-	seismicLattice->InlineIndexIncrement = inlineIncrement;
-	seismicLattice->CrosslineIndexIncrement = crosslineIncrement;
-	seismicLattice->FirstInlineIndex = originInline;
-	seismicLattice->FirstCrosslineIndex = originCrossline;
-	seismicLattice->InlineCount = inlineCount;
-	seismicLattice->CrosslineCount = crosslineCount;
+	seismicLattice->InlineLabels = soap_new_eml23__IntegerLatticeArray(repo->getGsoapContext());
+	seismicLattice->InlineLabels->StartValue = originInline;
+	auto inlineDef = soap_new_eml23__IntegerConstantArray(repo->getGsoapContext());
+	inlineDef->Value = inlineIncrement;
+	inlineDef->Count = inlineCount - 1;
+	seismicLattice->InlineLabels->Offset.push_back(inlineDef);
+	
+	seismicLattice->CrosslineLabels = soap_new_eml23__IntegerLatticeArray(repo->getGsoapContext());
+	seismicLattice->CrosslineLabels->StartValue = originCrossline;
+	auto crosslineDef = soap_new_eml23__IntegerConstantArray(repo->getGsoapContext());
+	crosslineDef->Value = crosslineIncrement;
+	crosslineDef->Count = crosslineCount - 1;
+	seismicLattice->CrosslineLabels->Offset.push_back(crosslineDef);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addOrReplaceDataObject(this);
 }
 
 int SeismicLatticeFeature::getCrosslineIncrement() const
 {
-	return static_cast<_resqml20__SeismicLatticeFeature*>(gsoapProxy2_0_1)->CrosslineIndexIncrement;
+	return static_cast<_resqml22__SeismicLatticeFeature*>(gsoapProxy2_3)->CrosslineLabels->Offset[0]->Value;
 }
 		
 int SeismicLatticeFeature::getInlineIncrement() const
 {
-	return static_cast<_resqml20__SeismicLatticeFeature*>(gsoapProxy2_0_1)->InlineIndexIncrement;
+	return static_cast<_resqml22__SeismicLatticeFeature*>(gsoapProxy2_3)->InlineLabels->Offset[0]->Value;
 }
 		
 int SeismicLatticeFeature::getOriginCrossline() const
 {
-	return static_cast<_resqml20__SeismicLatticeFeature*>(gsoapProxy2_0_1)->FirstCrosslineIndex;
+	return static_cast<_resqml22__SeismicLatticeFeature*>(gsoapProxy2_3)->CrosslineLabels->StartValue;
 }
 		
 int SeismicLatticeFeature::getOriginInline() const
 {
-	return static_cast<_resqml20__SeismicLatticeFeature*>(gsoapProxy2_0_1)->FirstInlineIndex;
+	return static_cast<_resqml22__SeismicLatticeFeature*>(gsoapProxy2_3)->InlineLabels->StartValue;
 }
 
 

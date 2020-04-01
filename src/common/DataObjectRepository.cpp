@@ -48,6 +48,7 @@ under the License.
 #include "../resqml2_0_1/TriangulatedSetRepresentation.h"
 #include "../resqml2_0_1/WellboreFeature.h"
 #include "../resqml2_0_1/WellboreInterpretation.h"
+#include "../resqml2_0_1/WellboreFrameRepresentation.h"
 #include "../resqml2_0_1/WellboreMarkerFrameRepresentation.h"
 #include "../resqml2_0_1/WellboreTrajectoryRepresentation.h"
 #include "../resqml2_0_1/DeviationSurveyRepresentation.h"
@@ -100,13 +101,16 @@ under the License.
 #include "../eml2_3/PropertyKind.h"
 #include "../eml2_3/TimeSeries.h"
 
+#include "../resqml2_2/BlockedWellboreRepresentation.h"
 #include "../resqml2_2/BoundaryFeature.h"
 #include "../resqml2_2/BoundaryFeatureInterpretation.h"
 #include "../resqml2_2/CategoricalProperty.h"
-#include "../resqml2_2/CulturalFeature.h"
+#include "../resqml2_2/CmpLineFeature.h"
 #include "../resqml2_2/CommentProperty.h"
 #include "../resqml2_2/ContinuousProperty.h"
 #include "../resqml2_2/ContinuousColorMap.h"
+#include "../resqml2_2/CulturalFeature.h"
+#include "../resqml2_2/DeviationSurveyRepresentation.h"
 #include "../resqml2_2/DiscreteProperty.h"
 #include "../resqml2_2/DiscreteColorMap.h"
 #include "../resqml2_2/EarthModelInterpretation.h"
@@ -137,20 +141,24 @@ under the License.
 #include "../resqml2_2/RockVolumeFeature.h"
 #include "../resqml2_2/SealedSurfaceFrameworkRepresentation.h"
 #include "../resqml2_2/SealedVolumeFrameworkRepresentation.h"
-#include "../resqml2_2/SeismicWellboreFrameRepresentation.h"
+#include "../resqml2_2/SeismicLatticeFeature.h"
 #include "../resqml2_2/SeismicLineSetFeature.h"
+#include "../resqml2_2/SeismicWellboreFrameRepresentation.h"
+#include "../resqml2_2/ShotPointLineFeature.h"
 #include "../resqml2_2/StratigraphicColumn.h"
 #include "../resqml2_2/StratigraphicColumnRankInterpretation.h"
 #include "../resqml2_2/StratigraphicOccurrenceInterpretation.h"
 #include "../resqml2_2/StratigraphicUnitInterpretation.h"
 #include "../resqml2_2/StringTableLookup.h"
 #include "../resqml2_2/StructuralOrganizationInterpretation.h"
+#include "../resqml2_2/SubRepresentation.h"
 #include "../resqml2_2/TriangulatedSetRepresentation.h"
 #include "../resqml2_2/UnstructuredGridRepresentation.h"
 #include "../resqml2_2/WellboreFeature.h"
 #include "../resqml2_2/WellboreFrameRepresentation.h"
 #include "../resqml2_2/WellboreInterpretation.h"
 #include "../resqml2_2/WellboreMarkerFrameRepresentation.h"
+#include "../resqml2_2/WellboreTrajectoryRepresentation.h"
 
 #include "../eml2_1/PropertyKind.h"
 
@@ -600,7 +608,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectR
 	if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::MdDatum)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(Activity)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(ActivityTemplate)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(SeismicLatticeFeature)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::SeismicLatticeFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(SeismicLineFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::SeismicLineSetFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(FrontierFeature)
@@ -622,14 +630,14 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectR
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::WellboreFrameRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WellboreTrajectoryRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::WellboreTrajectoryRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::PlaneSetRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::PointSetRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::PolylineRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::PolylineSetRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::Grid2dRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::TriangulatedSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(BlockedWellboreRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::BlockedWellboreRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_NS::AbstractIjkGridRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::UnstructuredGridRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::PropertyKind)
@@ -643,14 +651,14 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectR
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(OrganizationFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::StructuralOrganizationInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(FluidBoundaryFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(SubRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::SubRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::GridConnectionSetRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::TimeSeries)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::RepresentationSetRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(DeviationSurveyRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::DeviationSurveyRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(GeobodyFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::GeobodyBoundaryInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::GeobodyInterpretation)
@@ -969,18 +977,36 @@ RESQML2_NS::WellboreFeature* DataObjectRepository::createWellboreFeature(const s
 	}
 }
 
-SeismicLatticeFeature* DataObjectRepository::createSeismicLattice(const std::string & guid, const std::string & title,
+RESQML2_NS::SeismicLatticeFeature* DataObjectRepository::createSeismicLattice(const std::string & guid, const std::string & title,
 	int inlineIncrement, int crosslineIncrement,
 	unsigned int originInline, unsigned int originCrossline,
 	unsigned int inlineCount, unsigned int crosslineCount)
 {
-	return new SeismicLatticeFeature(this, guid, title, inlineIncrement, crosslineIncrement, originInline, originCrossline, inlineCount, crosslineCount);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::SeismicLatticeFeature(this, guid, title, inlineIncrement, crosslineIncrement, originInline, originCrossline, inlineCount, crosslineCount);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::SeismicLatticeFeature(this, guid, title, inlineIncrement, crosslineIncrement, originInline, originCrossline, inlineCount, crosslineCount);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
-RESQML2_NS::AbstractSeismicLineFeature* DataObjectRepository::createSeismicLine(const std::string & guid, const std::string & title,
+RESQML2_0_1_NS::SeismicLineFeature* DataObjectRepository::createSeismicLine(const std::string & guid, const std::string & title,
 	int traceIndexIncrement, unsigned int firstTraceIndex, unsigned int traceCount)
 {
-	return new SeismicLineFeature(this, guid, title, traceIndexIncrement, firstTraceIndex, traceCount);
+	return new RESQML2_0_1_NS::SeismicLineFeature(this, guid, title, traceIndexIncrement, firstTraceIndex, traceCount);
+}
+
+RESQML2_2_NS::CmpLineFeature* DataObjectRepository::createCmpLine(const std::string & guid, const std::string & title,
+	int nearestShotPointIndicesIncrement, int firstNearestShotPointIndex, unsigned int nearestShotPointCount)
+{
+	return new RESQML2_2_NS::CmpLineFeature(this, guid, title, nearestShotPointIndicesIncrement, firstNearestShotPointIndex, nearestShotPointCount);
+}
+
+RESQML2_2_NS::ShotPointLineFeature* DataObjectRepository::createShotPointLine(const std::string & guid, const std::string & title)
+{
+	return new RESQML2_2_NS::ShotPointLineFeature(this, guid, title);
 }
 
 RESQML2_NS::SeismicLineSetFeature* DataObjectRepository::createSeismicLineSet(const std::string & guid, const std::string & title)
@@ -1479,17 +1505,38 @@ RESQML2_NS::Grid2dRepresentation* DataObjectRepository::createGrid2dRepresentati
 
 RESQML2_NS::WellboreTrajectoryRepresentation* DataObjectRepository::createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo)
 {
-	return new RESQML2_0_1_NS::WellboreTrajectoryRepresentation(interp, guid, title, mdInfo);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::WellboreTrajectoryRepresentation(interp, guid, title, mdInfo);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::WellboreTrajectoryRepresentation(interp, guid, title, mdInfo);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
 RESQML2_NS::WellboreTrajectoryRepresentation* DataObjectRepository::createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::DeviationSurveyRepresentation * deviationSurvey)
 {
-	return new RESQML2_0_1_NS::WellboreTrajectoryRepresentation(interp, guid, title, deviationSurvey);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::WellboreTrajectoryRepresentation(interp, guid, title, deviationSurvey);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::WellboreTrajectoryRepresentation(interp, guid, title, deviationSurvey);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
 RESQML2_NS::DeviationSurveyRepresentation* DataObjectRepository::createDeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo)
 {
-	return new RESQML2_0_1_NS::DeviationSurveyRepresentation(interp, guid, title, isFinal, mdInfo);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::DeviationSurveyRepresentation(interp, guid, title, isFinal, mdInfo);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::DeviationSurveyRepresentation(interp, guid, title, isFinal, mdInfo);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
 RESQML2_NS::WellboreFrameRepresentation* DataObjectRepository::createWellboreFrameRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj)
@@ -1527,10 +1574,17 @@ RESQML2_NS::WellboreMarkerFrameRepresentation* DataObjectRepository::createWellb
 	}
 }
 
-BlockedWellboreRepresentation* DataObjectRepository::createBlockedWellboreRepresentation(RESQML2_NS::WellboreInterpretation * interp,
+RESQML2_NS::BlockedWellboreRepresentation* DataObjectRepository::createBlockedWellboreRepresentation(RESQML2_NS::WellboreInterpretation * interp,
 	const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj)
 {
-	return new BlockedWellboreRepresentation(interp, guid, title, traj);
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::BlockedWellboreRepresentation(interp, guid, title, traj);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::BlockedWellboreRepresentation(interp, guid, title, traj);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }
 
 RESQML2_NS::RepresentationSetRepresentation* DataObjectRepository::createRepresentationSetRepresentation(
@@ -1718,13 +1772,21 @@ RESQML2_NS::UnstructuredGridRepresentation* DataObjectRepository::createUnstruct
 
 RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(const std::string & guid, const std::string & title)
 {
-	return new SubRepresentation(this, guid, title);
+	switch (defaultResqmlVersion) {
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::SubRepresentation(this, guid, title);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::SubRepresentation(this, guid, title);
+	default: throw std::logic_error("The RESQML version is not supported.");
+	}
 }
 
 RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title)
 {
-	return new SubRepresentation(interp, guid, title);
+	switch (defaultResqmlVersion) {
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::SubRepresentation(interp, guid, title);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::SubRepresentation(interp, guid, title);
+	default: throw std::logic_error("The RESQML version is not supported.");
+	}
 }
 
 RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createGridConnectionSetRepresentation(const std::string & guid, const std::string & title)
@@ -2275,7 +2337,18 @@ RESQML2_NS::BoundaryFeature* DataObjectRepository::getGeobodyBoundary(unsigned i
 	return allgb[index];
 }
 
-std::vector<RESQML2_0_1_NS::GeobodyFeature*> DataObjectRepository::getGeobodySet() const { return getDataObjects<RESQML2_0_1_NS::GeobodyFeature>(); }
+std::vector<RESQML2_NS::RockVolumeFeature*> DataObjectRepository::getGeobodySet() const { 
+	auto interps = getDataObjects<RESQML2_NS::GeobodyInterpretation>();
+	std::vector<RESQML2_NS::RockVolumeFeature*> result;
+	for (auto interp : interps) {
+		auto feature = interp->getInterpretedFeature();
+		if (std::find(result.begin(), result.end(), feature) == result.end()) {
+			result.push_back(static_cast<RESQML2_NS::RockVolumeFeature*>(feature));
+		}
+	}
+
+	return result;
+}
 
 vector<RESQML2_NS::Grid2dRepresentation *> DataObjectRepository::getHorizonGrid2dRepSet() const
 {
@@ -2412,8 +2485,8 @@ vector<RESQML2_NS::WellboreTrajectoryRepresentation *> DataObjectRepository::get
 		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
 			const std::vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
 			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCOREWellboreTrajectoryRepresentation) {
-					result.push_back(static_cast<WellboreTrajectoryRepresentation *>(repSet[repIndex]));
+				if (dynamic_cast<RESQML2_NS::WellboreTrajectoryRepresentation*>(repSet[repIndex]) != nullptr) {
+					result.push_back(static_cast<RESQML2_NS::WellboreTrajectoryRepresentation*>(repSet[repIndex]));
 				}
 			}
 		}
@@ -2433,8 +2506,8 @@ vector<RESQML2_NS::DeviationSurveyRepresentation *> DataObjectRepository::getDev
 		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
 			const std::vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
 			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCOREDeviationSurveyRepresentation) {
-					result.push_back(static_cast<DeviationSurveyRepresentation *>(repSet[repIndex]));
+				if (dynamic_cast<RESQML2_NS::DeviationSurveyRepresentation*>(repSet[repIndex]) != nullptr) {
+					result.push_back(static_cast<RESQML2_NS::DeviationSurveyRepresentation*>(repSet[repIndex]));
 				}
 			}
 		}
@@ -2741,10 +2814,12 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 	if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BoundaryFeature)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BoundaryFeatureInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CategoricalProperty)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CmpLineFeature)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CommentProperty)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousProperty)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousColorMap)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CulturalFeature)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DeviationSurveyRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscreteProperty)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscreteColorMap)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EarthModelInterpretation)
@@ -2805,22 +2880,26 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RockFluidOrganizationInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RockFluidUnitInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RockVolumeFeature)
-	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SeismicWellboreFrameRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SealedSurfaceFrameworkRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SealedVolumeFrameworkRepresentation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SeismicLatticeFeature)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SeismicLineSetFeature)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SeismicWellboreFrameRepresentation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ShotPointLineFeature)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StratigraphicColumn)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StratigraphicColumnRankInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StratigraphicOccurrenceInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StratigraphicUnitInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StringTableLookup)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StructuralOrganizationInterpretation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SubRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(TriangulatedSetRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(UnstructuredGridRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreFeature)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreFrameRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreMarkerFrameRepresentation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreTrajectoryRepresentation)
 
 	return wrapper;
 }
@@ -2841,7 +2920,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getEml2_3WrapperFromGsoapContex
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(COMMON_NS, GraphicalInformationSet, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, PropertyKind, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, TimeSeries, gsoap_eml2_3, eml23)
-		
+
 	return wrapper;
 }
 

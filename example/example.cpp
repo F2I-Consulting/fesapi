@@ -526,7 +526,7 @@ void serializeGeobody(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHd
 void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfProxy* hdfProxy)
 {
 	// Seismic Lattice
-	SeismicLatticeFeature* seismicLattice = pck->createSeismicLattice("eb6a5e97-4d86-4809-b136-051f34cfcb51", "Seismic lattice", 2, 2, 150, 152, 4, 2);
+	RESQML2_NS::SeismicLatticeFeature* seismicLattice = pck->createSeismicLattice("eb6a5e97-4d86-4809-b136-051f34cfcb51", "Seismic lattice", 2, 2, 150, 152, 4, 2);
 	RESQML2_NS::GenericFeatureInterpretation* seismicLatticeInterp = pck->createGenericFeatureInterpretation(seismicLattice, "97816427-6ef6-4776-b21c-5b93c8a6310a", "Seismic lattice Interp");
 	RESQML2_NS::Grid2dRepresentation* seismicLatticeRep = pck->createGrid2dRepresentation(seismicLatticeInterp, "aa5b90f1-2eab-4fa6-8720-69dd4fd51a4d", "Seismic lattice Rep");
 	seismicLatticeRep->setGeometryAsArray2dOfLatticePoints3d(4, 2, 0, 0, 0, 1, 0, 2, 0, 1, 3, 250, 200);
@@ -2348,7 +2348,7 @@ void deserializeGeobody(COMMON_NS::DataObjectRepository * pck)
 	}
 
 	//3d
-	std::vector<GeobodyFeature*> geobodySet = pck->getGeobodySet();
+	std::vector<RESQML2_NS::RockVolumeFeature*> geobodySet = pck->getGeobodySet();
 	for (size_t i = 0; i < geobodySet.size(); ++i) {
 		showAllMetadata(geobodySet[i]);
 		cout << "interp count : " << geobodySet[i]->getInterpretationCount() << endl;

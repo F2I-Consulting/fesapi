@@ -21,7 +21,7 @@ under the License.
 #include "../resqml2/SubRepresentation.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
 	/** A sub representation. */
 	class SubRepresentation : public RESQML2_NS::SubRepresentation
@@ -64,7 +64,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		SubRepresentation(gsoap_resqml2_0_1::_resqml20__SubRepresentation* fromGsoap) : RESQML2_NS::SubRepresentation(fromGsoap) {}
+		SubRepresentation(gsoap_eml2_3::_resqml22__SubRepresentation* fromGsoap) : RESQML2_NS::SubRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~SubRepresentation() {}
@@ -177,34 +177,32 @@ namespace RESQML2_0_1_NS
 	private:
 
 		/**
-			* Initializes this object
-			*
-			* @param [in,out]	repo 	The repo where the underlying gsoap proxy will be created.
-			* @param 		  	guid 	The guid to set to this instance.
-			* @param 		  	title	A title for the instance to init.
-			*/
+		 * Initializes this object
+		 *
+		 * @param [in,out]	repo 	The repo where the underlying gsoap proxy will be created.
+		 * @param 		  	guid 	The guid to set to this instance.
+		 * @param 		  	title	A title for the instance to init.
+		 */
 		void init(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
 		/**
-			* Gets specialized gsoap proxy
-			*
-			* @returns	Null if it fails, else the specialized gsoap proxy.
-			*/
-		gsoap_resqml2_0_1::_resqml20__SubRepresentation* getSpecializedGsoapProxy() const;
+		 * Gets specialized gsoap proxy
+		 *
+		 * @returns	Null if it fails, else the specialized gsoap proxy.
+		 */
+		gsoap_eml2_3::_resqml22__SubRepresentation* getSpecializedGsoapProxy() const;
 
 		/**
 		* Get a patch of the current subrepresentation at a particluar index.
 		*/
-		gsoap_resqml2_0_1::resqml20__SubRepresentationPatch* getSubRepresentationPatch(unsigned int index) const;
+		gsoap_eml2_3::resqml22__SubRepresentationPatch* getSubRepresentationPatch(unsigned int index) const;
 
 		/**
-			* Push back a representation which is one of the support of this subrepresentation. And push
-			* back this representation as a subrepresenation of the representation as well.
-			*
-			* @param 	supportingRep	The supporting rep.
-			*/
+		 * Push back a representation which is one of the support of this subrepresentation. And push
+		 * back this representation as a subrepresenation of the representation as well.
+		 *
+		 * @param 	supportingRep	The supporting rep.
+		 */
 		void pushBackXmlSupportingRepresentation(RESQML2_NS::AbstractRepresentation const * supportingRep);
-
-		class DiscreteProperty* getSupportingRepresentationIndicesDiscretePropOfPatch(unsigned int patchIndex) const;
 	};
 }

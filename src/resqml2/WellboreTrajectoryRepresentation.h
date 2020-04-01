@@ -146,9 +146,15 @@ namespace RESQML2_NS
 		//*****************
 
 		/**
-		* Add a trajectory parent to this trajectory in case of trajectory branching.
-		* Does add the inverse relationship i.e. from the parent trajectory to this trajecotry
-		*/
+		 * Adds a trajectory parent to this trajectory in case of trajectory branching. Does add the
+		 * inverse relationship i.e. from the parent trajectory to this trajectory.
+		 *
+		 * @exception	std::invalid_argument	If @p parentTrajRep is @c nullptr.
+		 *
+		 * @param 	  	kickoffMd	 	The kickoff MD.
+		 * @param 	  	parentMd	 	The MD on the parent wellbore trajectory where this trajectory is starting. It can be NaN if same as kickoffMd.
+		 * @param [in]	parentTrajRep	The parent trajectory.
+		 */
 		DLL_IMPORT_OR_EXPORT void virtual addParentTrajectory(double kickoffMd, double parentMd, WellboreTrajectoryRepresentation* parentTrajRep) = 0;
 
 		/**

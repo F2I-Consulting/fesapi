@@ -28,8 +28,8 @@ under the License.
 #include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace RESQML2_0_1_NS;
-using namespace gsoap_resqml2_0_1;
+using namespace RESQML2_2_NS;
+using namespace gsoap_eml2_3;
 
 void BlockedWellboreRepresentation::init(const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj)
 {
@@ -37,15 +37,15 @@ void BlockedWellboreRepresentation::init(const std::string & guid, const std::st
 		throw invalid_argument("The wellbore trajectory of a blocked wellbore cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREBlockedWellboreRepresentation(traj->getGsoapContext());
-	_resqml20__BlockedWellboreRepresentation* frame = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
+	gsoapProxy2_3 = soap_new_resqml22__BlockedWellboreRepresentation(traj->getGsoapContext());
+	_resqml22__BlockedWellboreRepresentation* frame = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	traj->getRepository()->addOrReplaceDataObject(this);
 
-	frame->Trajectory = traj->newResqmlReference();
+	frame->Trajectory = traj->newEml23Reference();
 	getRepository()->addRelationship(this, traj);
 }
 
@@ -80,19 +80,22 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int const* grid
 		throw invalid_argument("The local Face Per Cell Indices cannot be null.");
 	}
 
-	_resqml20__BlockedWellboreRepresentation* rep = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
-	rep->CellCount = cellCount;
+	_resqml22__BlockedWellboreRepresentation* rep = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3);
+	rep->IntervalGridCells = soap_new_resqml22__IntervalGridCells(gsoapProxy2_3->soap);
+	rep->IntervalGridCells->CellCount = cellCount;
 
 	getRepository()->addRelationship(this, hdfProxy);
 
 	// gridIndices
 	// XML
-	resqml20__IntegerHdf5Array* xmlGridIndices = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
+	eml23__IntegerExternalArray* xmlGridIndices = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	xmlGridIndices->NullValue = gridIndicesNullValue;
-	xmlGridIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
-	xmlGridIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
-	xmlGridIndices->Values->PathInHdfFile = getHdfGroup() + "/GridIndices";
-	rep->GridIndices = xmlGridIndices;
+	xmlGridIndices->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+	dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
+	dsPart->PathInExternalFile = getHdfGroup() + "/GridIndices";
+	xmlGridIndices->Values->ExternalFileProxy.push_back(dsPart);
+	rep->IntervalGridCells->GridIndices = xmlGridIndices;
 	// HDF
 	hsize_t dimGridIndices = rep->NodeCount;
 	hdfProxy->writeArrayNd(getHdfGroup(),
@@ -103,12 +106,14 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int const* grid
 
 	// cellIndices
 	// XML
-	resqml20__IntegerHdf5Array* xmlCellIndices = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
+	eml23__IntegerExternalArray* xmlCellIndices = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	xmlCellIndices->NullValue = -1;
-	xmlCellIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
-	xmlCellIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
-	xmlCellIndices->Values->PathInHdfFile = getHdfGroup() + "/CellIndices";
-	rep->CellIndices = xmlCellIndices;
+	xmlCellIndices->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+	dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
+	dsPart->PathInExternalFile = getHdfGroup() + "/CellIndices";
+	xmlCellIndices->Values->ExternalFileProxy.push_back(dsPart);
+	rep->IntervalGridCells->CellIndices = xmlCellIndices;
 	// HDF
 	hsize_t dimCellIndices = cellCount;
 	hdfProxy->writeArrayNd(getHdfGroup(),
@@ -119,12 +124,14 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int const* grid
 
 	// localFacePairPerCellIndices
 	// XML
-	resqml20__IntegerHdf5Array* xmlLocalFacePairPerCellIndices = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
+	eml23__IntegerExternalArray* xmlLocalFacePairPerCellIndices = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	xmlLocalFacePairPerCellIndices->NullValue = localFacePairPerCellIndicesNullValue;
-	xmlLocalFacePairPerCellIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
-	xmlLocalFacePairPerCellIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
-	xmlLocalFacePairPerCellIndices->Values->PathInHdfFile = getHdfGroup() + "/LocalFacePairPerCellIndices";
-	rep->LocalFacePairPerCellIndices = xmlLocalFacePairPerCellIndices;
+	xmlLocalFacePairPerCellIndices->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+	dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
+	dsPart->PathInExternalFile = getHdfGroup() + "/LocalFacePairPerCellIndices";
+	xmlLocalFacePairPerCellIndices->Values->ExternalFileProxy.push_back(dsPart);
+	rep->IntervalGridCells->LocalFacePairPerCellIndices = xmlLocalFacePairPerCellIndices;
 	// HDF
 	hsize_t dimLocalFacePerCellIndicesNullValue = cellCount*2;
 	hdfProxy->writeArrayNd(getHdfGroup(),
@@ -136,21 +143,20 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int const* grid
 
 ULONG64 BlockedWellboreRepresentation::getCellCount() const
 {
-	return static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->CellCount;
+	return static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->CellCount;
 }
 
 LONG64 BlockedWellboreRepresentation::getGridIndices(unsigned int * gridIndices) const
 {
-	auto xmlGridIndices = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->GridIndices;
+	auto xmlGridIndices = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->GridIndices;
 
-	if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(xmlGridIndices)->Values;
-		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfUIntValues(dataset->PathInHdfFile, gridIndices);
-		return static_cast<resqml20__IntegerHdf5Array*>(xmlGridIndices)->NullValue;
+	if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+		eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__IntegerExternalArray*>(xmlGridIndices)->Values->ExternalFileProxy[0];
+		getHdfProxyFromDataset(dsPart)->readArrayNdOfUIntValues(dsPart->PathInExternalFile, gridIndices);
+		return static_cast<eml23__IntegerExternalArray*>(xmlGridIndices)->NullValue;
 	}
-	else if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
-		const LONG64 constantXmlValue = static_cast<resqml20__IntegerConstantArray*>(xmlGridIndices)->Value;
+	else if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
+		const LONG64 constantXmlValue = static_cast<eml23__IntegerConstantArray*>(xmlGridIndices)->Value;
 		if (constantXmlValue > (std::numeric_limits<LONG64>::max)()) {
 			throw std::range_error("The constant value is superior than unsigned int maximum value.");
 		}
@@ -177,22 +183,22 @@ void BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(RESQML2
 	getRepository()->addRelationship(this, supportingGridRep);
 
 	// XML
-	static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.push_back(supportingGridRep->newResqmlReference());
+	static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->Grid.push_back(supportingGridRep->newEml23Reference());
 }
 
 COMMON_NS::DataObjectReference BlockedWellboreRepresentation::getSupportingGridRepresentationDor(unsigned int index) const
 {
-	_resqml20__BlockedWellboreRepresentation* rep = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
+	_resqml22__BlockedWellboreRepresentation* rep = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3);
 
-	if (index >= rep->Grid.size()) {
+	if (index >= rep->IntervalGridCells->Grid.size()) {
 		throw range_error("The requested index is out of range of the available supporting grid representations.");
 	}
-	return rep->Grid[index];
+	return rep->IntervalGridCells->Grid[index];
 }
 
 unsigned int BlockedWellboreRepresentation::getSupportingGridRepresentationCount() const
 {
-	const size_t result = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.size();
+	const size_t result = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->Grid.size();
 
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
 		throw std::range_error("There are too much supporting representations");

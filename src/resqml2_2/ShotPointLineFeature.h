@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/AbstractSeismicLineFeature.h"
+#include "AbstractSeismicLineFeature.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
 	/** A seismic line feature. */
-	class SeismicLineFeature : public RESQML2_NS::AbstractSeismicLineFeature
+	class ShotPointLineFeature : public AbstractSeismicLineFeature
 	{
 	public:
 
@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT SeismicLineFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractSeismicLineFeature(partialObject) {}
+		DLL_IMPORT_OR_EXPORT ShotPointLineFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSeismicLineFeature(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -45,50 +45,19 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	guid			   	The guid to set to this instance. If empty then a new
 		 * 										guid will be generated.
 		 * @param 		  	title			   	A title for the instance to create.
-		 * @param 		  	traceIndexIncrement	The trace index increment. The trace index increment will
-		 * 										be the difference in the trace number from abscissa i=0
-		 * 										and abscissa i=1. The increment can be a positive or
-		 * 										negative integer, but not zero.
-		 * @param 		  	firstTraceIndex	   	The index of the first trace beginning at abscissa i=0.
-		 * @param 		  	traceCount		   	The count of traces in this seismic line.
 		 */
-		SeismicLineFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
-			int traceIndexIncrement, int firstTraceIndex, unsigned int traceCount);
+		ShotPointLineFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		SeismicLineFeature(gsoap_resqml2_0_1::_resqml20__SeismicLineFeature* fromGsoap): 
-			RESQML2_NS::AbstractSeismicLineFeature(fromGsoap) {}
+		ShotPointLineFeature(gsoap_eml2_3::_resqml22__ShotPointLineFeature* fromGsoap):
+			AbstractSeismicLineFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
-		~SeismicLineFeature() {}
-
-		/**
-		 * Get the trace index increment between two consecutive traces.
-		 *
-		 * @returns	The trace index increment.
-		 */
-		DLL_IMPORT_OR_EXPORT int getTraceIndexIncrement() const;
-
-		/**
-		 * Get the first trace index.
-		 *
-		 * @returns	The first trace index.
-		 */
-		DLL_IMPORT_OR_EXPORT int getFirstTraceIndex() const;
-
-		/**
-		 * Sets seismic line set
-		 *
-		 * @param [in,out]	seisLineSet	If non-null, set the seis line belongs to.
-		 */
-		DLL_IMPORT_OR_EXPORT void setSeismicLineSet(RESQML2_NS::SeismicLineSetFeature * seisLineSet);
-
-		/** A seismic line set feature*. */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getSeismicLineSetDor() const final;
+		~ShotPointLineFeature() {}
 
 		/**
 		 * Get the total count of traces in this seismic line.
@@ -96,13 +65,7 @@ namespace RESQML2_0_1_NS
 		 * @returns	The trace count.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getTraceCount() const final;
-
-		/**
-		 * Gets the trace labels in this seismic line.
-		 *
-		 * @returns	The trace labels.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<std::string> getTraceLabels() const final;
+	
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.
@@ -116,6 +79,6 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The XML tag.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

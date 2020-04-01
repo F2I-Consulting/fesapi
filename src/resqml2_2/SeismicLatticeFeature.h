@@ -21,7 +21,7 @@ under the License.
 #include "../resqml2/SeismicLatticeFeature.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
 	/** A seismic lattice feature. */
 	class SeismicLatticeFeature : public RESQML2_NS::SeismicLatticeFeature
@@ -70,7 +70,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		SeismicLatticeFeature(gsoap_resqml2_0_1::_resqml20__SeismicLatticeFeature* fromGsoap): RESQML2_NS::SeismicLatticeFeature(fromGsoap) {}
+		SeismicLatticeFeature(gsoap_eml2_3::_resqml22__SeismicLatticeFeature* fromGsoap): RESQML2_NS::SeismicLatticeFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
 		~SeismicLatticeFeature() {}

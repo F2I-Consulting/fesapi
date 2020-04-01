@@ -35,37 +35,6 @@ namespace RESQML2_NS
 	 */
 	class SubRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
-	protected:
-
-		/**
-		 * Only to be used in partial transfer context
-		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
-		 */
-		DLL_IMPORT_OR_EXPORT SubRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			RESQML2_NS::AbstractRepresentation(partialObject)
-		{
-		}
-
-		/** Default constructor */
-		SubRepresentation() {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		SubRepresentation(gsoap_resqml2_0_1::_resqml20__SubRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
-
-		/**
-		 * Pushes a back XML supporting representation
-		 *
-		 * @param 	supportingRep	The supporting rep.
-		 */
-		virtual void pushBackXmlSupportingRepresentation(AbstractRepresentation const * supportingRep) = 0;
-
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
@@ -303,7 +272,7 @@ namespace RESQML2_NS
 		 * 										corresponding to the element indices. The count must be
 		 * 										elementCount.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 elementCount, ULONG64* elementIndices, EML2_NS::AbstractHdfProxy* proxy, short* supportingRepIndices = nullptr) = 0;
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 elementCount, ULONG64* elementIndices, EML2_NS::AbstractHdfProxy* proxy, short* supportingRepIndices = nullptr);
 		
 		/**
 		 * Pushes back a new patch in this sub-representation which is constituted by means of pairwise
@@ -413,57 +382,50 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The data object reference of the supporting representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getSupportingRepresentationDor(unsigned int index) const = 0;
-
-		/**
-		 * Gets the UUID of the supporting representation located at a specific index
-		 * of this sub-representation.
-		 *
-		 * @exception	std::invalid_argument	If no supporting representation is already associated to
-		 * 										this sub-representation.
-		 * @exception	std::out_of_range	 	If @p index is out of range.
-		 *
-		 * @param 	index	Zero-based index of the supporting representation we look for.
-		 *
-		 * @returns	The UUID of the supporting representation at position @p index.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getSupportingRepresentationUuid(unsigned int index) const;
-
-		/**
-		 * Gets the title of the supporting representation located at a specific index
-		 * of this sub-representation.
-		 *
-		 * @exception	std::invalid_argument	If no supporting representation is already associated to
-		 * 										this sub-representation.
-		 * @exception	std::out_of_range	 	If @p index is out of range.
-		 *
-		 * @param 	index	Zero-based index of the supporting representation we look for.
-		 *
-		 * @returns	The title of the supporting representation at position @p index.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getSupportingRepresentationTitle(unsigned int index) const;
-
-		/**
-		 * Gets the content type of the supporting representation located at a specific index of this
-		 * sub-representation.
-		 *
-		 * @exception	std::invalid_argument	If no supporting representation is already associated to
-		 * 										this sub-representation.
-		 * @exception	std::out_of_range	 	If @p index is out of range.
-		 *
-		 * @param 	index	Zero-based index of the supporting representation we look for.
-		 *
-		 * @returns	The content type of the supporting representation at position @p index.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getSupportingRepresentationContentType(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSupportingRepresentationDor(unsigned int index) const = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 
-	private:
 		/** Loads target relationships */
 		void loadTargetRelationships();
+
+	protected:
+
+		/**
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
+		DLL_IMPORT_OR_EXPORT SubRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+			RESQML2_NS::AbstractRepresentation(partialObject) {}
+
+		/** Default constructor */
+		SubRepresentation() {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		SubRepresentation(gsoap_resqml2_0_1::_resqml20__SubRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		SubRepresentation(gsoap_eml2_3::_resqml22__SubRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
+
+		/**
+		 * Pushes a back XML supporting representation
+		 *
+		 * @param 	supportingRep	The supporting rep.
+		 */
+		virtual void pushBackXmlSupportingRepresentation(AbstractRepresentation const * supportingRep) = 0;
 	};
 }
