@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "BoundaryFeature.h"
+#include "../resqml2/RockVolumeFeature.h"
 
 /** . */
-namespace RESQML2_0_1_NS
+namespace RESQML2_2_NS
 {
-	/** A fluid boundary feature. */
-	class FluidBoundaryFeature : public BoundaryFeature
+	/** A stratigraphic unit feature. */
+	class RockVolumeFeature : public RESQML2_NS::RockVolumeFeature
 	{
 	public:
 
@@ -35,28 +35,27 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT FluidBoundaryFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : BoundaryFeature(partialObject) {}
+		DLL_IMPORT_OR_EXPORT RockVolumeFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::RockVolumeFeature(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	repo			The repo which will contain the fluid boundary feature.
-		 * @param 		  	guid			The guid to set to the horizon. If empty then a new guid will
-		 * 									be generated.
-		 * @param 		  	title			A title for the instance to create.
-		 * @param 		  	fluidContact	The fluid contact.
+		 * @param [in,out]	repo 	The repo which will contain the instance.
+		 * @param 		  	guid 	The guid to set to the horizon. If empty then a new guid will be
+		 * 							generated.
+		 * @param 		  	title	A title for the instance to create.
 		 */
-		FluidBoundaryFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__FluidContact fluidContact);
+		RockVolumeFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		FluidBoundaryFeature(gsoap_resqml2_0_1::_resqml20__FluidBoundaryFeature* fromGsoap): BoundaryFeature(fromGsoap) {}
+		RockVolumeFeature(gsoap_eml2_3::_resqml22__RockVolumeFeature* fromGsoap): RESQML2_NS::RockVolumeFeature(fromGsoap) {}
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~FluidBoundaryFeature() {}
+		/** Destructor does nothing since the memory is manged by the gsoap context. */
+		~RockVolumeFeature() {}
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.
@@ -70,6 +69,6 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The XML tag.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const final { return XML_TAG; }
 	};
 }

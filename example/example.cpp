@@ -94,6 +94,7 @@ under the License.
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
 #include "resqml2_2/MdDatum.h"
+#include "resqml2_2/RockVolumeFeature.h"
 #include "resqml2_2/SeismicWellboreFrameRepresentation.h"
 #include "resqml2_2/WellboreMarker.h"
 #include "resqml2_2/WellboreMarkerFrameRepresentation.h"
@@ -125,9 +126,9 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 
-Horizon* horizon1 = nullptr;
-Horizon* horizon2 = nullptr;
-TectonicBoundaryFeature* fault1 = nullptr;
+RESQML2_NS::BoundaryFeature* horizon1 = nullptr;
+RESQML2_NS::BoundaryFeature* horizon2 = nullptr;
+RESQML2_NS::BoundaryFeature* fault1 = nullptr;
 RESQML2_NS::HorizonInterpretation* horizon1Interp1 = nullptr;
 RESQML2_NS::HorizonInterpretation* horizon2Interp1 = nullptr;
 RESQML2_NS::FaultInterpretation* fault1Interp1 = nullptr;
@@ -280,7 +281,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfP
 	RESQML2_NS::WellboreFrameRepresentation* w1i1RegularFrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
 	w1i1RegularFrameRep->setMdValues(0, 200, 6);
 
-	RESQML2_0_1_NS::PropertyKind * unitNumberPropType = pck->createPropertyKind201("358aac23-b377-4349-9e72-bff99a6edf34", "Unit number", "urn:resqml:F2I.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
+	RESQML2_0_1_NS::PropertyKind * unitNumberPropType = pck->createPropertyKind("358aac23-b377-4349-9e72-bff99a6edf34", "Unit number", "urn:resqml:F2I.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
 
 	RESQML2_NS::DiscreteProperty* discreteProp = pck->createDiscreteProperty(w1i1FrameRep, "61c2917c-2334-4205-824e-d4f4a0cf6d8e", "Wellbore1 Interp1 FrameRep IntervalIndex", 1,
 		gsoap_eml2_3::resqml22__IndexableElement__intervals, unitNumberPropType);
@@ -393,7 +394,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 	// Continuous color map
 	// ********************
 
-	Horizon* contColMapHrz = repo->createHorizon("b9ec6ec9-2766-4af7-889e-5565b5fa5022", "Horizon for continuous color map");
+	RESQML2_NS::BoundaryFeature* contColMapHrz = repo->createHorizon("b9ec6ec9-2766-4af7-889e-5565b5fa5022", "Horizon for continuous color map");
 	RESQML2_NS::HorizonInterpretation* contColMapHrzInterp = repo->createHorizonInterpretation(contColMapHrz, "34b69c81-6cfa-4531-be5b-f6bd9b74802f", "Horizon interpretation for continuous color map");
 	RESQML2_NS::Grid2dRepresentation* contColMapGrid2dRep = repo->createGrid2dRepresentation(contColMapHrzInterp, "4e56b0e4-2cd1-4efa-97dd-95f72bcf9f80", "100x10 grid 2d for continuous color map");
 	const unsigned int numPointInFastestDirection = 50;
@@ -404,7 +405,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 		0., 1., 0.,
 		1., 1.);
 
-	contColMapContProp = repo->createContinuousProperty201(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map", 2,
+	contColMapContProp = repo->createContinuousProperty(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map", 2,
 		gsoap_eml2_3::resqml22__IndexableElement__nodes, "continuousColorMapIndex", gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
 	std::unique_ptr<double[]> values(new double[numPointInFastestDirection * numPointsInSlowestDirection]);
 	for (size_t slowestIndex = 0; slowestIndex < numPointsInSlowestDirection; ++slowestIndex) {
@@ -434,13 +435,13 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, EML2_NS:
 	RESQML2_NS::StratigraphicColumnRankInterpretation* stratiColumnRank1 = pck->createStratigraphicColumnRankInterpretationInApparentDepth(stratiModelFeature, "9d2d19cf-aedb-4766-9691-758d536456ba", "Stratigraphic column rank 1", 1);
 	stratiColumn->pushBackStratiColumnRank(stratiColumnRank0);
 	stratiColumn->pushBackStratiColumnRank(stratiColumnRank1);
-	RESQML2_NS::RockVolumeFeature* stratiUnitAFeature = pck->createRockVolumeFeature("0426c6a0-fa3c-11e5-8b9c-0002a5d5c51b", "Unit A");
+	RESQML2_2_NS::RockVolumeFeature* stratiUnitAFeature = pck->createRockVolumeFeature("0426c6a0-fa3c-11e5-8b9c-0002a5d5c51b", "Unit A");
 	RESQML2_NS::StratigraphicUnitInterpretation* stratiUnitAInterp = pck->createStratigraphicUnitInterpretation(stratiUnitAFeature, "1a919b40-fa3c-11e5-a72c-0002a5d5c51b", "Unit A interp");
-	RESQML2_NS::RockVolumeFeature* stratiUnitBFeature = pck->createRockVolumeFeature("273a92c0-fa3c-11e5-85f8-0002a5d5c51b", "Unit B");
+	RESQML2_2_NS::RockVolumeFeature* stratiUnitBFeature = pck->createRockVolumeFeature("273a92c0-fa3c-11e5-85f8-0002a5d5c51b", "Unit B");
 	RESQML2_NS::StratigraphicUnitInterpretation* stratiUnitBInterp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "2b9169c0-fa3c-11e5-ae2c-0002a5d5c51b", "Unit B interp");
-	RESQML2_NS::RockVolumeFeature* stratiUnitB1Feature = pck->createRockVolumeFeature("0b7cc266-4280-4696-b9dc-5d17017797e2", "Unit B1");
+	RESQML2_2_NS::RockVolumeFeature* stratiUnitB1Feature = pck->createRockVolumeFeature("0b7cc266-4280-4696-b9dc-5d17017797e2", "Unit B1");
 	RESQML2_NS::StratigraphicUnitInterpretation* stratiUnitB1Interp = pck->createStratigraphicUnitInterpretation(stratiUnitB1Feature, "7d7ab0bc-554d-48f5-ab5c-3bb7b66696e5", "Unit B1 interp");
-	RESQML2_NS::RockVolumeFeature* stratiUnitB2Feature = pck->createRockVolumeFeature("87255cf5-033f-4fa4-941b-7947b434f4c2", "Unit B2");
+	RESQML2_2_NS::RockVolumeFeature* stratiUnitB2Feature = pck->createRockVolumeFeature("87255cf5-033f-4fa4-941b-7947b434f4c2", "Unit B2");
 	RESQML2_NS::StratigraphicUnitInterpretation* stratiUnitB2Interp = pck->createStratigraphicUnitInterpretation(stratiUnitB2Feature, "34c37be0-964f-41a8-ba78-db5147744927", "Unit B2 interp");
 
 	// Build a minimal Stratigraphic column to allow the definition of a minimal sealed volume framework
@@ -456,7 +457,7 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, EML2_NS:
 	stratiColumnRank1->pushBackStratiUnitInterpretation(stratiUnitB1Interp);
 	stratiColumnRank1->pushBackStratiUnitInterpretation(stratiUnitB2Interp);
 	minimalStratiColumnRank->pushBackStratiUnitInterpretation(stratiUnitB1Interp);
-	stratiColumnRank0->pushBackStratigraphicBinaryContact(stratiUnitAInterp, gsoap_resqml2_0_1::resqml20__ContactMode__proportional, stratiUnitBInterp, gsoap_resqml2_0_1::resqml20__ContactMode__proportional, horizon2Interp1);
+	stratiColumnRank0->pushBackStratigraphicBinaryContact(stratiUnitAInterp, gsoap_eml2_3::resqml22__ContactMode__conformable, stratiUnitBInterp, gsoap_eml2_3::resqml22__ContactMode__conformable, horizon2Interp1);
 
 	// WellboreFeature marker frame
 	if (wellbore1Interp1 != nullptr) {
@@ -507,15 +508,15 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, EML2_NS:
 void serializeGeobody(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfProxy* hdfProxy)
 {
 	// 2D
-	GeneticBoundaryFeature* geobodyBoundary = pck->createGeobodyBoundaryFeature("6d3c158c-303f-4b0d-bfc0-9ce4102ea616", "Geobody boundary");
+	RESQML2_NS::BoundaryFeature* geobodyBoundary = pck->createGeobodyBoundaryFeature("6d3c158c-303f-4b0d-bfc0-9ce4102ea616", "Geobody boundary");
 	RESQML2_NS::GeobodyBoundaryInterpretation* geobodyBoundaryInterp = pck->createGeobodyBoundaryInterpretation(geobodyBoundary, "12c301a4-3e8b-401a-aca3-8d6f02d5d6d5", "Geobody boundary interp");
 	RESQML2_NS::PointSetRepresentation* geobodyBoundaryPointSetRep = pck->createPointSetRepresentation(geobodyBoundaryInterp, "fbc5466c-94cd-46ab-8b48-2ae2162b372f", "Geobody boundary PointSetRep");
 	double geobodyBoundaryPointCoords[18] = { 10, 70, 310, 11, 21, 280, 150, 30, 310, 400, 0, 365, 450, 75, 341, 475, 100, 352 };
 	geobodyBoundaryPointSetRep->pushBackGeometryPatch(6, geobodyBoundaryPointCoords, hdfProxy);
 
 	// 3D
-	GeobodyFeature* geobody = pck->createGeobodyFeature("e221f9da-ead3-4a9d-8324-fc2e6606cb01", "Geobody");
-	GeobodyInterpretation* geobodyInterp = pck->createGeobodyInterpretation(geobody, "d445041f-6364-44e7-a7f8-ade5a93bfd49", "Geobody interp");
+	RESQML2_NS::RockVolumeFeature* geobody = pck->createGeobodyFeature("e221f9da-ead3-4a9d-8324-fc2e6606cb01", "Geobody");
+	RESQML2_NS::GeobodyInterpretation* geobodyInterp = pck->createGeobodyInterpretation(geobody, "d445041f-6364-44e7-a7f8-ade5a93bfd49", "Geobody interp");
 	RESQML2_NS::PointSetRepresentation* geobodyGraphNode = pck->createPointSetRepresentation(geobodyInterp, "8442a6b7-a97b-431e-abda-f72cf7ef346f", "Geobody graph node");
 	double geobodyPointCoords[18] = { 50, 30, 330, 10, 28, 3000, 100, 50, 350, 300, 100, 400, 400, 20, 400, 400, 300, 400 };
 	geobodyGraphNode->pushBackGeometryPatch(6, geobodyPointCoords, hdfProxy);
@@ -554,7 +555,9 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	timeStruct.tm_isdst = -1;
 	mktime(&timeStruct);
 	horizon1->setCreation(timeStruct);
-	horizon1->setAge(300000000);
+	if (dynamic_cast<RESQML2_0_1_NS::Horizon*>(horizon1) != nullptr) {
+		static_cast<RESQML2_0_1_NS::Horizon*>(horizon1)->setAge(300000000);
+	}
 	horizon2 = pck->createHorizon("fd7950a6-f62e-4e47-96c4-048820a61c59", "Horizon2");
 	horizon2->setVersion("my version");
 	fault1 = pck->createFault("1424bcc2-3d9d-4f30-b1f9-69dcb897e33b", "Fault1");
@@ -686,7 +689,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	//**************
 	// Properties
 	//**************
-	propType1 = pck->createPropertyKind201("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
+	propType1 = pck->createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
 	RESQML2_NS::ContinuousProperty* contProp1 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,
 		gsoap_eml2_3::resqml22__IndexableElement__nodes, "exoticMeter", propType1);
 	double prop1Values[16] = { 301, 302, 301, 302, 351, 352, 351, 352, 301, 302, 301, 302, 351, 352, 351, 352 };
@@ -896,7 +899,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	//**************
 	// Properties
 	//**************
-	propType1 = pck->createPropertyKind201("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
+	propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
 	discreteProp1 = pck->createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
 		gsoap_eml2_3::resqml22__IndexableElement__cells, propType1);
 	unsigned short prop1Values[2] = { 0, 1 };
@@ -933,17 +936,17 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	timeSeries->pushBackTimestamp(timeStruct);
 	timeSeries->pushBackTimestamp(1409753895);
 	timeSeries->pushBackTimestamp(1441289895);
-	ContinuousProperty* continuousPropTime0 = pck->createContinuousProperty201(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
+	ContinuousProperty* continuousPropTime0 = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
 		gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	continuousPropTime0->setTimeIndex(0, timeSeries);
 	double valuesTime0[2] = { 0, 1 };
 	continuousPropTime0->pushBackDoubleHdf5Array3dOfValues(valuesTime0, 2, 1, 1, hdfProxy);
-	ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty201(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
+	ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
 		gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	continuousPropTime1->setTimeIndex(1, timeSeries);
 	double valuesTime1[2] = { 2, 3 };
 	continuousPropTime1->pushBackDoubleHdf5Array3dOfValues(valuesTime1, 2, 1, 1, hdfProxy);
-	ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty201(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property ", 1,
+	ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property ", 1,
 		gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	continuousPropTime2->setTimeIndex(2, timeSeries);
 	double valuesTime2[2] = { 3, 4 };

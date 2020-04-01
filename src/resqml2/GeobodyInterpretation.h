@@ -23,6 +23,8 @@ under the License.
 /** . */
 namespace RESQML2_NS
 {
+	class RockVolumeFeature;
+
 	/** A geobody interpretation. */
 	class GeobodyInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{

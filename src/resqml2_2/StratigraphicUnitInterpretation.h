@@ -18,13 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/GeobodyInterpretation.h"
+#include "../resqml2/StratigraphicUnitInterpretation.h"
 
 /** . */
 namespace RESQML2_2_NS
 {
-	/** A geobody interpretation. */
-	class GeobodyInterpretation : public RESQML2_NS::GeobodyInterpretation
+	/** A stratigraphic unit interpretation. */
+	class StratigraphicUnitInterpretation : public RESQML2_NS::StratigraphicUnitInterpretation
 	{
 	public:
 
@@ -35,7 +35,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT GeobodyInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::GeobodyInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT StratigraphicUnitInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::StratigraphicUnitInterpretation(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -45,37 +45,31 @@ namespace RESQML2_2_NS
 		 * 							be generated.
 		 * @param 		  	title  	A title for the instance to create.
 		 */
-		GeobodyInterpretation(RESQML2_NS::RockVolumeFeature * feature, const std::string & guid, const std::string & title);
+		StratigraphicUnitInterpretation(RESQML2_NS::RockVolumeFeature * feature, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		GeobodyInterpretation(gsoap_eml2_3::_resqml22__GeobodyInterpretation* fromGsoap) : RESQML2_NS::GeobodyInterpretation(fromGsoap) {}
+		StratigraphicUnitInterpretation(gsoap_eml2_3::_resqml22__StratigraphicUnitInterpretation* fromGsoap) : RESQML2_NS::StratigraphicUnitInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~GeobodyInterpretation() {}
+		~StratigraphicUnitInterpretation() {}
 
 		/**
-		 * Set the geobody 3d shape
+		 * Indicates if the instance has an information about its deposition mode.
 		 *
-		 * @param 	geobody3dShape	The geobody 3D shape.
+		 * @returns	True if deposition mode, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT void set3dShape(gsoap_eml2_3::resqml22__Shape3d geobody3dShape) final;
+		DLL_IMPORT_OR_EXPORT bool hasDepositionMode() const final;
 
 		/**
-		 * check if the 3d shape of this geobody is known
+		 * Get the deposition mode of the stratigraphic unit interpretation. You should verify its
+		 * existency using hasDepositionMode() before to call this function.
 		 *
-		 * @returns	True if 3D shape, false if not.
+		 * @returns	The deposition mode.
 		 */
-		DLL_IMPORT_OR_EXPORT bool has3dShape() const final;
-
-		/**
-		 * get the 3d shape of this geobody
-		 *
-		 * @returns	The 3D shape.
-		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__Shape3d get3dShape() const final;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__DepositionMode getDepositionMode() const final;
 	};
 }

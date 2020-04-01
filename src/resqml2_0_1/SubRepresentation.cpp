@@ -168,7 +168,7 @@ void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__Ind
 	elements->Indices = integerArray;
 
 	if (!supportingRepDataset.empty()) {
-		RESQML2_0_1_NS::DiscreteProperty* discreteProp = getRepository()->createDiscreteProperty201(this, "", "SupportingRepresentationIndex", 1, elementKind, resqml20__ResqmlPropertyKind__index);
+		RESQML2_0_1_NS::DiscreteProperty* discreteProp = getRepository()->createDiscreteProperty(this, "", "SupportingRepresentationIndex", 1, elementKind, resqml20__ResqmlPropertyKind__index);
 		ostringstream oss;
 		oss << "SubRepresentationPatch[" << rep->SubRepresentationPatch.size() - 1 << "]/ElementIndices/SupportingRepresentationIndex";
 		pushBackExtraMetadata(oss.str(), discreteProp->getUuid());

@@ -70,16 +70,23 @@ unsigned int StratigraphicColumnRankInterpretation::getContactCount() const
 	return static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation.size();
 }
 
-resqml20__ContactMode StratigraphicColumnRankInterpretation::getSubjectContactModeOfContact(unsigned int contactIndex) const
+gsoap_eml2_3::resqml22__ContactMode StratigraphicColumnRankInterpretation::getSubjectContactModeOfContact(unsigned int contactIndex) const
 {
 	if (static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation.size() <= contactIndex)
 		throw out_of_range("The contact index is out of range in the context of the StratigraphicColumnRankInterpretation");
 
 	resqml20__BinaryContactInterpretationPart* contact = static_cast<resqml20__BinaryContactInterpretationPart*>(static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
-	if (contact->Subject->SecondaryQualifier)
-		return *contact->Subject->SecondaryQualifier;
-	else
-		return resqml20__ContactMode__proportional;
+	if (contact->Subject->SecondaryQualifier != nullptr) {
+		switch (*contact->Subject->SecondaryQualifier) {
+		case gsoap_resqml2_0_1::resqml20__ContactMode__baselap:
+		case gsoap_resqml2_0_1::resqml20__ContactMode__erosion: return gsoap_eml2_3::resqml22__ContactMode__unconformable;
+		case gsoap_resqml2_0_1::resqml20__ContactMode__extended: return gsoap_eml2_3::resqml22__ContactMode__extended;
+		case gsoap_resqml2_0_1::resqml20__ContactMode__proportional: return gsoap_eml2_3::resqml22__ContactMode__conformable;
+		default: throw std::out_of_range("Not a supported enumerated value for contact mode.");
+		}
+	}
+
+	return gsoap_eml2_3::resqml22__ContactMode__conformable;
 }
 
 RESQML2_NS::StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getSubjectOfContact(unsigned int contactIndex) const
@@ -94,16 +101,23 @@ RESQML2_NS::StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretati
 		return nullptr;
 }
 
-resqml20__ContactMode StratigraphicColumnRankInterpretation::getDirectObjectContactModeOfContact(unsigned int contactIndex) const
+gsoap_eml2_3::resqml22__ContactMode StratigraphicColumnRankInterpretation::getDirectObjectContactModeOfContact(unsigned int contactIndex) const
 {
 	if (static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation.size() <= contactIndex)
 		throw out_of_range("The contact index is out of range in the context of the StratigraphicColumnRankInterpretation");
 
 	resqml20__BinaryContactInterpretationPart* contact = static_cast<resqml20__BinaryContactInterpretationPart*>(static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
-	if (contact->DirectObject->SecondaryQualifier)
-		return *contact->DirectObject->SecondaryQualifier;
-	else
-		return resqml20__ContactMode__proportional;
+	if (contact->DirectObject->SecondaryQualifier != nullptr) {
+		switch (*contact->DirectObject->SecondaryQualifier) {
+		case gsoap_resqml2_0_1::resqml20__ContactMode__baselap:
+		case gsoap_resqml2_0_1::resqml20__ContactMode__erosion: return gsoap_eml2_3::resqml22__ContactMode__unconformable;
+		case gsoap_resqml2_0_1::resqml20__ContactMode__extended: return gsoap_eml2_3::resqml22__ContactMode__extended;
+		case gsoap_resqml2_0_1::resqml20__ContactMode__proportional: return gsoap_eml2_3::resqml22__ContactMode__conformable;
+		default: throw std::out_of_range("Not a supported enumerated value for contact mode.");
+		}
+	}
+
+	return gsoap_eml2_3::resqml22__ContactMode__conformable;
 }
 
 RESQML2_NS::StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getDirectObjectOfContact(unsigned int contactIndex) const
@@ -139,8 +153,8 @@ void StratigraphicColumnRankInterpretation::setHorizonOfLastContact(RESQML2_NS::
 	contact->PartOf = partOf->newResqmlReference();
 }
 
-void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(RESQML2_NS::StratigraphicUnitInterpretation* subject, gsoap_resqml2_0_1::resqml20__ContactMode subjectContactMode,
-	RESQML2_NS::StratigraphicUnitInterpretation* directObject, gsoap_resqml2_0_1::resqml20__ContactMode directObjectMode,
+void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(RESQML2_NS::StratigraphicUnitInterpretation* subject, gsoap_eml2_3::resqml22__ContactMode subjectContactMode,
+	RESQML2_NS::StratigraphicUnitInterpretation* directObject, gsoap_eml2_3::resqml22__ContactMode directObjectMode,
 	RESQML2_NS::HorizonInterpretation * partOf)
 {
 	resqml20__AbstractOrganizationInterpretation* org = static_cast<resqml20__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
@@ -148,9 +162,19 @@ void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(R
 	pushBackBinaryContact(subject, gsoap_eml2_3::resqml22__ContactVerb__stops, directObject);
     resqml20__BinaryContactInterpretationPart* contact = static_cast<resqml20__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
     contact->DirectObject->SecondaryQualifier = static_cast<resqml20__ContactMode*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactMode)));
-    *(contact->DirectObject->SecondaryQualifier) = directObjectMode;
+	switch (subjectContactMode) {
+	case gsoap_eml2_3::resqml22__ContactMode__conformable: *(contact->DirectObject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode__proportional; break;
+	case gsoap_eml2_3::resqml22__ContactMode__extended: *(contact->DirectObject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode__extended; break;
+	case gsoap_eml2_3::resqml22__ContactMode__unconformable: *(contact->DirectObject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode__erosion; break;
+	default: throw std::out_of_range("Not a supported enumerated value for contact mode.");
+	}
     contact->Subject->SecondaryQualifier = static_cast<resqml20__ContactMode*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactMode)));
-    *(contact->Subject->SecondaryQualifier) = subjectContactMode;
+	switch (subjectContactMode) {
+	case gsoap_eml2_3::resqml22__ContactMode__conformable: *(contact->Subject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode__proportional; break;
+	case gsoap_eml2_3::resqml22__ContactMode__extended: *(contact->Subject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode__extended; break;
+	case gsoap_eml2_3::resqml22__ContactMode__unconformable: *(contact->Subject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode__baselap; break;
+	default : throw std::out_of_range("Not a supported enumerated value for contact mode.");
+	}
 
 	if (partOf != nullptr) {
 		setHorizonOfLastContact(partOf);

@@ -26,10 +26,14 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-GeobodyInterpretation::GeobodyInterpretation(GeobodyFeature * feature, const string & guid, const string & title)
+GeobodyInterpretation::GeobodyInterpretation(RESQML2_NS::RockVolumeFeature * feature, const string & guid, const string & title)
 {
-	if (!feature)
+	if (feature == nullptr) {
 		throw invalid_argument("The interpreted feature cannot be null.");
+	}
+	if (!feature->isPartial() && feature->getXmlNamespace() == "resqml20" && dynamic_cast<RESQML2_0_1_NS::GeobodyFeature*>(feature) == nullptr) {
+		throw invalid_argument("The interpreted feature msut be a Geobody Feature if it is a RESQML 2.0.1 version.");
+	}
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGeobodyInterpretation(feature->getGsoapContext());
 	static_cast<_resqml20__GeobodyInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
