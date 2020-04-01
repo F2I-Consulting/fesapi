@@ -189,6 +189,8 @@ namespace RESQML2_NS
 		 * Gets the data object reference of the HDF proxy which is used for storing the numerical
 		 * values of this representation (i.e. its geometry).
 		 *
+		 * @exception	std::logic_error	If this representation is partial.
+		 *
 		 * @returns	The data object reference of the HDF proxy used for storing the geometry, or empty
 		 * 			data object reference if it fails.
 		 */
@@ -309,6 +311,7 @@ namespace RESQML2_NS
 		 * Get the xyz point count in a given patch of this representation.
 		 *
 		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 * @exception	std::logic_error 	If this representation is partial.
 		 *
 		 * @param 	patchIndex	Zero-based index of the patch from which we look for the xyz points.
 		 *
@@ -324,11 +327,12 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfAllPatches() const;
 
 		/**
-		 * @brief Gets all the xyz points of a particular patch of this representation. xyz points are given in
+		 * Gets all the xyz points of a particular patch of this representation. xyz points are given in
 		 * the local CRS.
 		 *
-		 * @exception std::out_of_range If @p patchIndex is out of range.
-		 * 
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 * @exception	std::logic_error 	If this representation is partial.
+		 *
 		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
 		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or z) and second dimension is vertex

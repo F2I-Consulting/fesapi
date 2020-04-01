@@ -540,7 +540,7 @@ namespace RESQML2_NS
 		/**
 		 * Get the information about enabled and disabled (dead/invisible) cells.
 		 *
-		 * @exception	std::invalid_argument	If this has no geometry or no information about enabled
+		 * @exception	std::invalid_argument	If this grid has no geometry or no information about enabled
 		 * 										are disabled cells.
 		 * @exception	std::invalid_argument	If the enabled and disabled celles information is neither
 		 * 										stored in an HDF5 boolean array nor in a boolean constant
@@ -583,151 +583,211 @@ namespace RESQML2_NS
 
 		/**
 		 * Loads the block information into memory to speed up the processes and make easier block
-		 * geometry handling for the user.
+		 * geometry handling for the user. This method requires that you have
+		 * already loaded the split information.
 		 *
 		 * @exception	std::logic_error	 	If this grid is partial.
 		 * @exception	std::invalid_argument	If the split information is not loaded.
-		 * @exception	std::out_of_range	 	If @p iInterfaceEnd <tt>&gt;=</tt> getICellCount(), @p
-		 * 										jInterfaceEnd <tt>&gt;=</tt> getJCellCount() or @p
-		 * 										kInterfaceEnd <tt>&gt;=</tt> getKCellCount().
+		 * @exception	std::out_of_range	 	If @p iInterfaceEnd <tt>&gt;</tt> getICellCount(), @p
+		 * 										jInterfaceEnd <tt>&gt;</tt> getJCellCount() or @p
+		 * 										kInterfaceEnd <tt>&gt;</tt> getKCellCount().
 		 * @exception	std::range_error	 	If @p iInterfaceStart @c > @p iInterfaceEnd, @p
 		 * 										jInterfaceStart @c > @p jInterfaceEnd or @p
 		 * 										kInterfaceStart @c > @p kInterfaceEnd.
 		 *
-		 * @param 	iCellIndexStart	The starting I cell index of the block taken from zero to
-		 * 							getICellCount() <tt>- 1</tt>.
-		 * @param 	iCellIndexEnd  	The ending I cell index of the block taken from zero to
-		 * 							getICellCount() <tt>- 1</tt>.
-		 * @param 	jCellIndexStart	The starting J cell index of the block taken from zero to
-		 * 							getJCellCount() <tt>-	1</tt>.
-		 * @param 	jCellIndexEnd  	The ending J cell index of the block taken from zero to
-		 * 							getJCellCount() <tt>- 1</tt>.
-		 * @param 	kCellIndexStart	The starting K cell index of the block taken from zero to
-		 * 							getKCellCount() <tt>- 1</tt>.
-		 * @param 	kCellIndexEnd  	The ending K cell index of the block taken from zero to
-		 * 							getKCellCount() <tt>- 1</tt>.
+		 * @param 	iInterfaceStart	The starting I interface index of the block taken from zero to
+		 * 							getICellCount().
+		 * @param 	iInterfaceEnd  	The ending I interface index of the block taken from zero to
+		 * 							getICellCount().
+		 * @param 	jInterfaceStart	The starting J interface index of the block taken from zero to
+		 * 							getJCellCount().
+		 * @param 	jInterfaceEnd  	The ending J interface index of the block taken from zero to
+		 * 							getJCellCount().
+		 * @param 	kInterfaceStart	The starting K interface index of the block taken from zero to
+		 * 							getKCellCount().
+		 * @param 	kInterfaceEnd  	The ending K interface index of the block taken from zero to
+		 * 							getKCellCount().
 		 */
-		DLL_IMPORT_OR_EXPORT void loadBlockInformation(unsigned int iCellIndexStart, unsigned int iCellIndexEnd, unsigned int jCellIndexStart, unsigned int jCellIndexEnd, unsigned int kCellIndexStart, unsigned int kCellIndexEnd);
+		DLL_IMPORT_OR_EXPORT void loadBlockInformation(unsigned int iInterfaceStart, unsigned int iInterfaceEnd, unsigned int jInterfaceStart, unsigned int jInterfaceEnd, unsigned int kInterfaceStart, unsigned int kInterfaceEnd);
 
-		/** Unload the split information from memory. */
+		/** Unloads the split information from memory. */
 		DLL_IMPORT_OR_EXPORT void unloadSplitInformation();
 
 		/**
-		 * Check either a column edge is splitted or not. This method requires that you have already
-		 * loaded the split information.
+		 * Checks either a given column edge is splitted or not. This method requires that you have
+		 * already loaded the split information.
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::invalid_argument	If the split information is not loaded.
+		 * @exception	std::out_of_range	 	If @p iColumn is strictly greater than getICellCount().
+		 * @exception	std::out_of_range	 	If @p iColumn is strictly greater than getJCellCount().
+		 * @exception	std::out_of_range	 	If @p edge is strictly greater than 3.
 		 *
 		 * @param 	iColumn	The I index of the column.
 		 * @param 	jColumn	The J index of the column.
-		 * @param 	edge   	0 for edge from i to i+1, lower j connection
-		 * 					1 for edge from j to j+1, upper i connection
-		 * 					2 for edge from i+1 to i, upper j connection
+		 * @param 	edge   	0 for edge from i to i+1, lower j connection;
+		 * 					1 for edge from j to j+1, upper i connection;
+		 * 					2 for edge from i+1 to i, upper j connection;
 		 * 					3 for edge from j+1 to j, lower i connection.
 		 *
-		 * @returns	True if column edge splitted, false if not.
+		 * @returns	True if the column edge is splitted, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool isColumnEdgeSplitted(unsigned int iColumn, unsigned int jColumn, unsigned int edge) const;
 
 		/**
-		 * Get the XYZ point index in the HDF dataset from the corner of a cell. This method requires
+		 * Gets the XYZ point index in the HDF dataset from the corner of a cell. This method requires
 		 * that you have already loaded the split information.
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::invalid_argument	If the split information is not loaded.
+		 * @exception	std::out_of_range	 	If @p iCell @c > getICellCount(), @p jCell @c >
+		 * 										getJCellCount() or @p kCell @c > getKCellCount().
+		 * @exception	std::out_of_range	 	If @p corner @c > 7.
 		 *
 		 * @param 	iCell 	The I index of the cell.
 		 * @param 	jCell 	The J index of the cell.
 		 * @param 	kCell 	The K index of the cell.
-		 * @param 	corner	0 for (0,0,0)
-		 * 					1 for (1,0,0)
-		 * 					2 for (1,1,0)
-		 * 					3 for (0,1,0)
-		 * 					4 for (0,0,1)
-		 * 					5 for (1,0,1)
-		 * 					6 for (1,1,1)
-		 * 					7 for (0,1,1)
+		 * @param 	corner	Index of the corner: 0 for (0,0,0);
+		 * 					1 for (1,0,0);
+		 * 					2 for (1,1,0);
+		 * 					3 for (0,1,0);
+		 * 					4 for (0,0,1);
+		 * 					5 for (1,0,1);
+		 * 					6 for (1,1,1);
+		 * 					7 for (0,1,1).
 		 *
-		 * @returns	index of the XYZ point corresponding to the iCell jCell and corner parameters in the
-		 * 			HDF dataset. Keep in mind to multiply the result by 3 to get the X index since the
-		 * 			points are triplet of values.
+		 * @returns	The index of the XYZ point in the HDF dataset corresponding to the corner of the cell.
+		 * 			Keep in mind to multiply the result by 3 to get the X index since the points are
+		 * 			triplet of values.
 		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointIndexFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner) const;
 
 		/**
-		* Gets the x, y and z values of the corner of a cell of a given block.
-		* This method requires that you have already both loaded the block information and get the geometry of the block thanks to getXyzPointsOfBlock.
-		* @param iCell			The I index of the cell.
-		* @param jCell			The J index of the cell.
-		* @param kCell			The K index of the cell.
-		* @param corner			0 for (0,0,0)
-		*						1 for (1,0,0)
-		*						2 for (1,1,0)
-		*						3 for (0,1,0)
-		*						4 for (0,0,1)
-		*						5 for (1,0,1)
-		*						6 for (1,1,1)
-		*						7 for (0,1,1)
-		* @param xyzPoints		The XYZ points of the block (resulting from a call to getXyzPointsOfBlock).
-		* @param x				(output parameter) the x value of the corner we look for.
-		* @param y				(output parameter) the y value of the corner we look for.
-		* @param z				(output parameter) the z value of the corner we look for.
-		*/
+		 * Gets the x, y and z values of the corner of a cell of a given block. This method requires
+		 * that you have already both loaded the block information and get the geometry of the block
+		 * thanks to getXyzPointsOfBlock().
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::invalid_argument	If the split or block information is not loaded.
+		 * @exception	std::out_of_range	 	If @p iCell @c > getICellCount(), @p jCell @c >
+		 * 										getJCellCount() or @p kCell @c > getKCellCount().
+		 * @exception	std::out_of_range	 	If @p corner @c > 7.
+		 *
+		 * @param 	   	iCell	 	The I index of the cell.
+		 * @param 	   	jCell	 	The J index of the cell.
+		 * @param 	   	kCell	 	The K index of the cell.
+		 * @param 	   	corner   	Index of the corner: 0 for (0,0,0);
+		 * 							1 for (1,0,0);
+		 * 							2 for (1,1,0);
+		 * 							3 for (0,1,0);
+		 * 							4 for (0,0,1);
+		 * 							5 for (1,0,1);
+		 * 							6 for (1,1,1);
+		 * 							7 for (0,1,1).
+		 * @param 	   	xyzPoints	The XYZ points of the block (resulting from a call to
+		 * 							getXyzPointsOfBlock()).
+		 * @param [out]	x		 	The x value of the corner we look for.
+		 * @param [out]	y		 	The y value of the corner we look for.
+		 * @param [out]	z		 	The z value of the corner we look for.
+		 */
 		DLL_IMPORT_OR_EXPORT void getXyzPointOfBlockFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner,
 			const double* xyzPoints, double & x, double & y, double & z) const;
 
 		/**
-		* Get the xyz point count in each K Layer interface in a given patch.
-		* @param patchIndex	The index of the patch. It is generally zero.
-		*/
+		 * Get the XYZ points count in each K layer interface.
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::range_error	 	If the count of cells in I or J direction is strictly
+		 * 										greater than unsigned int max.
+		 * @exception	std::invalid_argument	If there is no geometry on this IJK grid.
+		 * @exception	std::range_error	 	If the count of split coordinate lines is strictly
+		 * 										greater than unsigned int max.
+		 *
+		 * @returns	The XYZ point count of k interface.
+		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfKInterface() const;
 
 		/**
-		 * Get the xyz point count of the current block. Block information must be loaded.
+		 * Gets the XYZ points count of the current block. Block information must be loaded.
 		 *
-		 * @returns	The xyz point count of block.
+		 * @exception	std::invalid_argument	If the block information is not loaded.
+		 *
+		 * @returns	The XYZ point count of the current block.
 		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfBlock() const;
 
-		/**
-		* Get all the XYZ points of a particular K interface of a particular patch of this representation.
-		* XYZ points are given in the local CRS.
-		* This method is not const since it is optimized in order not to recompute the pillar information but to get it as input.
-		* @param kInterface	The K interface index starting from zero to kCellCount.
-		* @param patchIndex	The index of the patch. It is generally zero.
-		* @param xyzPoints 	A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated with a size of 3*getXyzPointCountOfKInterfaceOfPatch.
-		*/
+		/*
+		 * Gets all the XYZ points of a particular K interface. XYZ points are given in the local CRS.
+		 * This method is not const since it is optimized in order not to recompute the pillar
+		 * information but to get it as input.
+		 *
+		 * @param 		  	kInterface	The K interface index starting from zero to kCellCount.
+		 * @param [in,out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is
+		 * 								coordinate dimension (XYZ) and second dimension is vertex
+		 * 								dimension. It must be pre allocated with a size of
+		 * 								3*getXyzPointCountOfKInterfaceOfPatch.
+		 */
+		 /** Please do note use: not implemented yet. */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfKInterface(unsigned int kInterface, double * xyzPoints);
 
+		/**
+		 * @brief Get all the XYZ points of a particular sequence of K interfaces. XYZ points are given in the
+		 * local CRS.
+		 *
+		 * @exception	std::out_of_range	 	If @p kInterfaceStart @c > getKCellCount() or @p
+		 * 										kInterfaceEnd @c > getKCellCount().
+		 * @exception	std::range_error	 	If @p kInterfaceStart @c > @p kInterfaceEnd.
+		 * @exception	std::invalid_argument	If @p xyzPoints is @c nullptr.
+		 *
+		 * @param 	   	kInterfaceStart	The K index of the starting interface taken from zero to
+		 * 								getKCellCount().
+		 * @param 	   	kInterfaceEnd  	The K index of the ending interface taken from zero to
+		 * 								getKCellCount().
+		 * @param [out]	xyzPoints	   	A linearized 2d array where the first (quickest) dimension is
+		 * 								coordinate dimension (XYZ) and second dimension is vertex
+		 * 								dimension. It must be preallocated with a size of
+		 * 								<tt>3 *</tt> getXyzPointCountOfKInterface() <tt>*
+		 * 								(kInterfaceEnd - kInterfaceStart + 1)</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints);
 
+		/**
+		 * Get all the XYZ points of the current block. XYZ points are given in the local CRS. Block
+		 * information must be loaded.
+		 *
+		 * @exception	std::invalid_argument	If the block information is not loaded.
+		 * @exception	std::invalid_argument	If @p xyzPoints is @c nullptr.
+		 *
+		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is
+		 * 							coordinate dimension (XYZ) and second dimension is vertex dimension.
+		 * 							It must be pre allocated with a size of
+		 * 							<tt>3 *</tt> getXyzPointCountOfBlock().
+		 */
 		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfBlock(double * xyzPoints);
 
 		/**
-		 * Check wether the node geometry dataset is compressed or not.
+		 * Checks whether the node geometry dataset is compressed or not.
 		 *
-		 * @returns	True if node geometry compressed, false if not.
+		 * @exception	std::invalid_argument	If this grid has no geometry.
+		 *
+		 * @returns	True if the node geometry dataset is compressed, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isNodeGeometryCompressed() const { return false; }
 
-		/**
-		 * Get the K direction of the grid.
-		 *
-		 * @returns	The k direction.
-		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__KDirection getKDirection() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__KDirection getKDirection() const override;
 
 		/**
-		 * Gets geometry kind
+		 * Gets the geometry kind of this IJK grid.
 		 *
-		 * @returns	The geometry kind.
+		 * @returns	The geometry kind of this IJK grid.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual geometryKind getGeometryKind() const { return UNKNOWN; }
-		virtual COMMON_NS::DataObjectReference getHdfProxyDor() const { throw std::logic_error("Partial object"); }
-		DLL_IMPORT_OR_EXPORT virtual ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
-		/**
-		 * Gets xyz points of patch
-		 *
-		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	xyzPoints 	If non-null, the xyz points.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		virtual COMMON_NS::DataObjectReference getHdfProxyDor() const override { throw std::logic_error("Partial object"); }
+
+		DLL_IMPORT_OR_EXPORT virtual ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const override;
+
+		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const override;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

@@ -802,17 +802,17 @@ void AbstractIjkGridRepresentation::loadBlockInformation(unsigned int iInterface
 	if (splitInformation == nullptr)
 		throw invalid_argument("The split information must have been loaded first.");
 
-	if (iInterfaceEnd >= getICellCount())
+	if (iInterfaceEnd > getICellCount())
 		throw out_of_range("iInterfaceEnd is out of boundaries.");
 	if (iInterfaceStart > iInterfaceEnd)
 		throw range_error("iInterfaceStart > iInterfaceEnd");
 
-	if (jInterfaceEnd >= getJCellCount())
+	if (jInterfaceEnd > getJCellCount())
 		throw out_of_range("jInterfaceEnd is out of boundaries.");
 	if (jInterfaceStart > jInterfaceEnd)
 		throw range_error("jInterfaceStart > jInterfaceEnd");
 
-	if (kInterfaceEnd >= getKCellCount())
+	if (kInterfaceEnd > getKCellCount())
 		throw out_of_range("kInterfaceEnd is out of boundaries.");
 	if (kInterfaceStart > kInterfaceEnd)
 		throw range_error("kInterfaceStart > kInterfaceEnd");
@@ -1055,6 +1055,15 @@ void AbstractIjkGridRepresentation::getXyzPointOfBlockFromCellCorner(unsigned in
 	}
 	if (blockInformation == nullptr) {
 		throw invalid_argument("The block information must have been loaded first.");
+	}
+	if (iCell > getICellCount()) {
+		throw out_of_range("I Cell is out of range.");
+	}
+	if (jCell > getJCellCount()) {
+		throw out_of_range("J Cell is out of range.");
+	}
+	if (kCell > getKCellCount()) {
+		throw out_of_range("K Cell is out of range.");
 	}
 	if (corner > 7) {
 		throw out_of_range("Corner is out of the block.");

@@ -414,6 +414,9 @@ void IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequence(unsigned 
 	if (xyzPoints == nullptr) {
 		throw invalid_argument("xyzPoints must be allocated.");
 	}
+	if (kInterfaceStart > getKCellCount() || kInterfaceEnd > getKCellCount()) {
+		throw out_of_range("kInterfaceStart and/or kInterfaceEnd is/are out of boundaries.");
+	}
 	if (kInterfaceEnd < kInterfaceStart) {
 		throw range_error("kInterfaceEnd cannot be inferior to kInterfaceStart");
 	}
