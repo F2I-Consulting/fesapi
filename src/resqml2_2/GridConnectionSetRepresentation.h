@@ -95,14 +95,14 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~GridConnectionSetRepresentation() {}
 
-		COMMON_NS::DataObjectReference getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
 		/**
 		 * Get the cell index pair count of this grid connection representation
 		 *
 		 * @returns	The cell index pair count.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getCellIndexPairCount() const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getCellIndexPairCount() const final;
 
 		/**
 		 * Get the cell index pair count of this grid connection representation
@@ -111,7 +111,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The cell index pairs.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getCellIndexPairs(ULONG64 * cellIndexPairs) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getCellIndexPairs(ULONG64 * cellIndexPairs) const final;
 
 		/**
 		 * Get the cell index pairs count which correspond to a particular interpretation.
@@ -121,14 +121,14 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The cell index pair count from interpretation index.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getCellIndexPairCountFromInterpretationIndex(unsigned int interpretationIndex) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getCellIndexPairCountFromInterpretationIndex(unsigned int interpretationIndex) const final;
 
 		/**
 		 * Indicates wether the cell connection are associated to interpretation or not.
 		 *
 		 * @returns	True if associated to interpretations, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool isAssociatedToInterpretations() const;
+		DLL_IMPORT_OR_EXPORT bool isAssociatedToInterpretations() const final;
 
 		/**
 		 * Get the interpretation index cumulative count of this grid connection representation The
@@ -136,7 +136,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @param [in,out]	cumulativeCount	If non-null, number of cumulatives.
 		 */
-		DLL_IMPORT_OR_EXPORT void getInterpretationIndexCumulativeCount(unsigned int * cumulativeCount) const;
+		DLL_IMPORT_OR_EXPORT void getInterpretationIndexCumulativeCount(unsigned int * cumulativeCount) const final;
 
 		/**
 		 * Get the interpretation indices of this grid connection representation The count of
@@ -145,14 +145,14 @@ namespace RESQML2_2_NS
 		 *
 		 * @param [in,out]	interpretationIndices	If non-null, the interpretation indices.
 		 */
-		DLL_IMPORT_OR_EXPORT void getInterpretationIndices(unsigned int * interpretationIndices) const;
+		DLL_IMPORT_OR_EXPORT void getInterpretationIndices(unsigned int * interpretationIndices) const final;
 
 		/**
 		 * Returns the null value for interpretation index.
 		 *
 		 * @returns	The interpretation index null value.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getInterpretationIndexNullValue() const;
+		DLL_IMPORT_OR_EXPORT LONG64 getInterpretationIndexNullValue() const final;
 
 		/**
 		 * Get the cell index pairs, the grid index pairs (optional) and the local face pairs (optional)
@@ -167,20 +167,20 @@ namespace RESQML2_2_NS
 		 * @param 		  	interpretationIndex	The index of the interpretation in the collection of
 		 * 										feature interpretation of this grid connection set.
 		 */
-		DLL_IMPORT_OR_EXPORT void getGridConnectionSetInformationFromInterpretationIndex(ULONG64 * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const;
+		DLL_IMPORT_OR_EXPORT void getGridConnectionSetInformationFromInterpretationIndex(ULONG64 * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const final;
 
 		/**
 		* Get the UUID of a particular interpretation of this grid connection set.
 		* @param interpretationIndex The index of the interpretation in the collection of feature interpretation of this grid connection set.
 		*/
-		DLL_IMPORT_OR_EXPORT std::string getInterpretationUuidFromIndex(unsigned int interpretationIndex) const;
+		DLL_IMPORT_OR_EXPORT std::string getInterpretationUuidFromIndex(unsigned int interpretationIndex) const final;
 
 		/**
 		 * Get the count of interpretations in this grid connection set.
 		 *
 		 * @returns	The interpretation count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getInterpretationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getInterpretationCount() const final;
 
 		/**
 		 * Indicates if the grid connection set representation contains information on the connected
@@ -188,7 +188,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	True if local face per cell, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasLocalFacePerCell() const;
+		DLL_IMPORT_OR_EXPORT bool hasLocalFacePerCell() const final;
 
 		/**
 		 * Get the local face cell index pairs of this grid connection representation.
@@ -200,14 +200,14 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The used null value in localFacePerCellIndexPairs.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getLocalFacePerCellIndexPairs(int * localFacePerCellIndexPairs) const;
+		DLL_IMPORT_OR_EXPORT LONG64 getLocalFacePerCellIndexPairs(int * localFacePerCellIndexPairs) const final;
 
 		/**
 		 * Indicates if the grid connection set representation is based on several grids.
 		 *
 		 * @returns	True if based on multi grids, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool isBasedOnMultiGrids() const;
+		DLL_IMPORT_OR_EXPORT bool isBasedOnMultiGrids() const final;
 
 		/**
 		 * Get the grid index pairs of this grid connection representation The count of gridIndexPairs
@@ -215,7 +215,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @param [in,out]	gridIndexPairs	If non-null, the grid index pairs.
 		 */
-		DLL_IMPORT_OR_EXPORT void getGridIndexPairs(unsigned short * gridIndexPairs) const;
+		DLL_IMPORT_OR_EXPORT void getGridIndexPairs(unsigned short * gridIndexPairs) const final;
 
 		/**
 		 * Set the cell index pairs of the grid connections representation using some exisiting hdf5
@@ -238,7 +238,8 @@ namespace RESQML2_2_NS
 		 * 											must correspond to the cell at the same index in the
 		 * 											cellIndexPair array.
 		 */
-		DLL_IMPORT_OR_EXPORT void setCellIndexPairsUsingExistingDataset(ULONG64 cellIndexPairCount, const std::string & cellIndexPair, LONG64 cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, LONG64 gridIndexPairNullValue = -1, const std::string & gridIndexPair = "");
+		DLL_IMPORT_OR_EXPORT void setCellIndexPairsUsingExistingDataset(ULONG64 cellIndexPairCount, const std::string & cellIndexPair, LONG64 cellIndexPairNullValue,
+			EML2_NS::AbstractHdfProxy * proxy, LONG64 gridIndexPairNullValue = -1, const std::string & gridIndexPair = "") final;
 
 		/**
 		 * The numerical values
@@ -278,11 +279,11 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The supporting grid representation count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getSupportingGridRepresentationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getSupportingGridRepresentationCount() const final;
 
 		/**
 		* Get one of the supporting grid representation dor of this grid connection representation.
 		*/
-		COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const;
+		COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const final;
 	};
 }

@@ -111,7 +111,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The unit of measure of the values of this property.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlUom getUom() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlUom getUom() const final;
 
 		/**
 		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF
@@ -131,35 +131,35 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The name of the referenced HDF5 dataset.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "");
+		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "") final;
 
 		/**
 		 * Get the minimum value in this continuous properties. It reads it from file.
 		 *
 		 * @returns	The minimum value if present in the file otherwise @c NaN.
 		 */
-		DLL_IMPORT_OR_EXPORT double getMinimumValue(unsigned int index = 0) const;
+		DLL_IMPORT_OR_EXPORT double getMinimumValue(unsigned int index = 0) const final;
 
 		/**
 		 * Get the maximum value in this discrete properties. It reads it from file.
 		 *
 		 * @returns	the maximum value if present in the file otherwise @c NaN.
 		 */
-		DLL_IMPORT_OR_EXPORT double getMaximumValue(unsigned int index = 0) const;
+		DLL_IMPORT_OR_EXPORT double getMaximumValue(unsigned int index = 0) const final;
 
 		/**
 		 * Set the minimum value in this continuous property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setMinimumValue(double value, unsigned int index = 0) const;
+		DLL_IMPORT_OR_EXPORT void setMinimumValue(double value, unsigned int index = 0) const final;
 
 		/**
 		 * Set the maximum value in this discrete property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setMaximumValue(double value, unsigned int index = 0) const;
+		DLL_IMPORT_OR_EXPORT void setMaximumValue(double value, unsigned int index = 0) const final;
 
-		bool validatePropertyKindAssociation(EML2_NS::PropertyKind*) override { return true; }
+		bool validatePropertyKindAssociation(EML2_NS::PropertyKind*) final { return true; }
 
-		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind) override { return true; }
+		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind) final { return true; }
 
 	private:
 
@@ -176,7 +176,7 @@ namespace RESQML2_2_NS
 		void init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind);
 
-		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const;
+		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const final;
 
 		size_t getMinimumValueSize() const;
 		size_t getMaximumValueSize() const;

@@ -68,6 +68,6 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	True if drilled, false if not.
 		 */
-		bool isDrilled() const;
+		bool isDrilled() const final;
 	};
 }

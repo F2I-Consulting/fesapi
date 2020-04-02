@@ -267,7 +267,7 @@ void PolylineSetRepresentation::getNodeCountPerPolylineOfAllPatches(unsigned int
 	}
 }
 
-void PolylineSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void PolylineSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount())
 		throw range_error("The index of the patch is not in the allowed range of patch.");

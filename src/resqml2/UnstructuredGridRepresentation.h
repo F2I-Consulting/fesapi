@@ -67,7 +67,7 @@ namespace RESQML2_NS
 		/**
 		* Get the xyz point count in a given patch.
 		*/
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
 		 * Get all the face indices of all the cells.

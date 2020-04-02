@@ -64,14 +64,14 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	True if it succeeds, false if it fails.
 		 */
-		DLL_IMPORT_OR_EXPORT bool containsKey(long longValue);
+		DLL_IMPORT_OR_EXPORT bool containsKey(long longValue) final;
 
 		/**
 		 * Get the count of item in the stringTableLookup (in the map).
 		 *
 		 * @returns	The item count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getItemCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getItemCount() const final;
 
 		/**
 		 * Get the key of a string value pair at a particular index in the string table lookup (in the
@@ -81,7 +81,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The key at index.
 		 */
-		DLL_IMPORT_OR_EXPORT long getKeyAtIndex(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT long getKeyAtIndex(unsigned int index) const final;
 
 		/**
 		 * Get the string value of a string value pair at a particular index in the string table lookup
@@ -91,7 +91,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The string value at index.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getStringValueAtIndex(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getStringValueAtIndex(unsigned int index) const final;
 
 		/**
 		 * Get a string value from its associated key (long) value. If the key value does not exist, an
@@ -101,7 +101,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The string value.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getStringValue(long longValue);
+		DLL_IMPORT_OR_EXPORT std::string getStringValue(long longValue) final;
 
 		/**
 		 * Add a pair value to the string lookup. No verification that the key value (or string value)
@@ -110,7 +110,7 @@ namespace RESQML2_2_NS
 		 * @param 	strValue 	The value.
 		 * @param 	longValue	The long value.
 		 */
-		DLL_IMPORT_OR_EXPORT void addValue(const std::string & strValue, long longValue);
+		DLL_IMPORT_OR_EXPORT void addValue(const std::string & strValue, long longValue) final;
 
 		/**
 		 * Modify the associated string value according to the key (long) value. If the key value does
@@ -119,27 +119,27 @@ namespace RESQML2_2_NS
 		 * @param 	strValue 	The value.
 		 * @param 	longValue	The long value.
 		 */
-		DLL_IMPORT_OR_EXPORT void setValue(const std::string & strValue, long longValue);
+		DLL_IMPORT_OR_EXPORT void setValue(const std::string & strValue, long longValue) final;
 
 		/**
 		 * Get the minimum value in this discrete properties. It reads it from file.
 		 *
 		 * @returns	the minimum value if present in the file otherwise long.max.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getMinimumValue();
+		DLL_IMPORT_OR_EXPORT LONG64 getMinimumValue() final;
 
 		/**
 		 * Get the maximum value in this discrete properties. It reads it from file.
 		 *
 		 * @returns	the maximum value if present in the file otherwise long.min.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getMaximumValue();
+		DLL_IMPORT_OR_EXPORT LONG64 getMaximumValue() final;
 
 		/**
 		 * Getter for the underlying map of the string lookup.
 		 *
 		 * @returns	The map.
 		 */
-		DLL_IMPORT_OR_EXPORT std::unordered_map<long, std::string> getMap() const;
+		DLL_IMPORT_OR_EXPORT std::unordered_map<long, std::string> getMap() const final;
 	};
 }

@@ -1199,12 +1199,12 @@ void AbstractIjkGridRepresentation::getXyzPointsOfBlock(double *)
 	throw std::logic_error("Partial object");
 }
 
-ULONG64 AbstractIjkGridRepresentation::getXyzPointCountOfPatch(const unsigned int &) const
+ULONG64 AbstractIjkGridRepresentation::getXyzPointCountOfPatch(unsigned int) const
 {
 	throw std::logic_error("Partial object");
 }
 
-void AbstractIjkGridRepresentation::getXyzPointsOfPatch(const unsigned int &, double *) const
+void AbstractIjkGridRepresentation::getXyzPointsOfPatch(unsigned int, double *) const
 {
 	throw std::logic_error("Partial object");
 }

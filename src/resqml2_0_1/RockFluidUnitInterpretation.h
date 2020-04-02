@@ -55,7 +55,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	True if phase, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPhase() const;
+		DLL_IMPORT_OR_EXPORT bool hasPhase() const final;
 
 		/**
 		 * Get the deposition mode of the stratigraphic unit interpretation. You should verify its
@@ -63,6 +63,6 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The phase.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__Phase getPhase() const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__Phase getPhase() const final;
 	};
 }

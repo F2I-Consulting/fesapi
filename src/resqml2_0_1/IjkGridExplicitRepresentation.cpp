@@ -37,7 +37,7 @@ COMMON_NS::DataObjectReference IjkGridExplicitRepresentation::getHdfProxyDor() c
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
-ULONG64 IjkGridExplicitRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 IjkGridExplicitRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(patchIndex));
 	if (geom == nullptr) {
@@ -78,7 +78,7 @@ EML2_NS::AbstractHdfProxy* IjkGridExplicitRepresentation::getPointDatasetPath(st
 	}
 }
 
-void IjkGridExplicitRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void IjkGridExplicitRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("An ijk grid has a maximum of one patch.");

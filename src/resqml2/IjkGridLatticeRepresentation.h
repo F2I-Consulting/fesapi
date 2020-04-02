@@ -43,14 +43,14 @@ namespace RESQML2_NS
 		/**
 		* Get the xyz point count in a given patch.
 		*/
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
 		* Get all the XYZ points of a particular patch of this representation.
 		* XYZ points are given in the local CRS.
 		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
 		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
 		/**
 		* Get the X origin of this geometry.

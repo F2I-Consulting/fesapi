@@ -25,7 +25,7 @@ using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_NS;
 
-ULONG64 IjkGridNoGeometryRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 IjkGridNoGeometryRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("An ijk grid has a maximum of one patch.");
@@ -65,7 +65,7 @@ ULONG64 IjkGridNoGeometryRepresentation::getXyzPointCountOfPatch(const unsigned 
 	}
 }
 
-void IjkGridNoGeometryRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
+void IjkGridNoGeometryRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount())
 		throw out_of_range("An ijk grid has a maximum of one patch.");

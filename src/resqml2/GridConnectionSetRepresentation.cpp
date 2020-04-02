@@ -127,12 +127,12 @@ void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(ULONG64 cell
 	proxy->writeArrayNd(getHdfGroup(), "LocalFacePerCellIndexPairs", H5T_NATIVE_INT, localFacePerCellIndexPair, numValues, 2);
 }
 
-ULONG64 GridConnectionSetRepresentation::getXyzPointCountOfPatch(const unsigned int &) const
+ULONG64 GridConnectionSetRepresentation::getXyzPointCountOfPatch(unsigned int) const
 {
 	throw logic_error("Not implemented yet");
 }
 
-void GridConnectionSetRepresentation::getXyzPointsOfPatch(const unsigned int &, double *) const
+void GridConnectionSetRepresentation::getXyzPointsOfPatch(unsigned int, double *) const
 {
 	throw logic_error("Not implemented yet");
 }

@@ -59,7 +59,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The xyz point count of patch.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
 		 * Push back a new patch of polylines

@@ -108,10 +108,10 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getMdValuesCount() const;
 
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const override;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const override;
 
 		/** Please do note use: not implemented yet. */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const override;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const override;
 
 		/**
 		 * Gets the MD datatype in the HDF dataset.

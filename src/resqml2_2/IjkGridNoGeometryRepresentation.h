@@ -47,6 +47,6 @@ namespace RESQML2_2_NS
 		*/
 		virtual ~IjkGridNoGeometryRepresentation() {}
 
-		COMMON_NS::DataObjectReference getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 	};
 }

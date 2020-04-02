@@ -215,35 +215,35 @@ namespace RESQML2_NS
 		 * 											be defined in the repository.
 		 * @param 		  	nullValue				The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5ArrayOfValues(const LONG64 * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, LONG64 nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5ArrayOfValues(const LONG64 * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, LONG64 nullValue) final;
 		
 		/**
 		 * Adds an nd array of explicit integer values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue) final;
 		
 		/**
 		 * Adds an nd array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue) final;
 		
 		/**
 		 * Adds an nd array of explicit unsigned short values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue) final;
 		
 		/**
 		 * Adds an nd array of explicit char values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue) final;
 
 		/**
 		 * @brief Adds an nd array of explicit long values to the property values.

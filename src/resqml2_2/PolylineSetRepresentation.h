@@ -124,7 +124,7 @@ namespace RESQML2_2_NS
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be pre allocated.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Get the number of triangle patch

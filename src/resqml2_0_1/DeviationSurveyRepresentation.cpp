@@ -109,7 +109,7 @@ void DeviationSurveyRepresentation::setGeometry(double const* firstStationLocati
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "inclinations", inclinations, &dim, 1);
 }
 
-ULONG64 DeviationSurveyRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 DeviationSurveyRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");
@@ -119,7 +119,7 @@ ULONG64 DeviationSurveyRepresentation::getXyzPointCountOfPatch(const unsigned in
 	return rep->StationCount;
 }
 
-void DeviationSurveyRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
+void DeviationSurveyRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");

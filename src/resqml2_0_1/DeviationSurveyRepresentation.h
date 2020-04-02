@@ -99,7 +99,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The xyz point count of patch.
 		 */
-		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const final;
+		ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
 		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
@@ -110,7 +110,7 @@ namespace RESQML2_0_1_NS
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be pre allocated.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Units of measure of the measured depths along this deviation survey.

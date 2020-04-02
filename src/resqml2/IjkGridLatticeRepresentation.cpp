@@ -70,7 +70,7 @@ bool IjkGridLatticeRepresentation::isAFaciesCube() const
     return getInterpretation() != nullptr && getInterpretation()->getInterpretedFeature()->getXmlTag() == "SeismicLatticeFeature";
 }
 
-ULONG64 IjkGridLatticeRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 IjkGridLatticeRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex < getPatchCount())
 	{
@@ -80,7 +80,7 @@ ULONG64 IjkGridLatticeRepresentation::getXyzPointCountOfPatch(const unsigned int
 	throw range_error("An ijk grid has a maximum of one patch.");
 }
 
-void IjkGridLatticeRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
+void IjkGridLatticeRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
 {
 	if (patchIndex < getPatchCount())
 	{

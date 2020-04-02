@@ -27,7 +27,7 @@ using namespace RESQML2_NS;
 
 const char* Grid2dRepresentation::XML_TAG = "Grid2dRepresentation";
 
-ULONG64 Grid2dRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 Grid2dRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");
@@ -36,7 +36,7 @@ ULONG64 Grid2dRepresentation::getXyzPointCountOfPatch(const unsigned int & patch
 	return getNodeCountAlongIAxis() * getNodeCountAlongJAxis();
 }
 
-void Grid2dRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
+void Grid2dRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");

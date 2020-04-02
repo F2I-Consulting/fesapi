@@ -256,7 +256,7 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getMdDatumDor() const final;
 
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
 		 * @copybrief RESQML2_NS::AbstractRepresentation::getXyzPointsOfPatch
@@ -266,7 +266,7 @@ namespace RESQML2_0_1_NS
 		 * 
 		 * @copydetails RESQML2_NS::AbstractRepresentation::getXyzPointsOfPatch
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Indicates if the wellbore trajectory has got MD values attached to each trajectory station.
