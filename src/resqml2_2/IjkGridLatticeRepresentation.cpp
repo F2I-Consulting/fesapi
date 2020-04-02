@@ -389,6 +389,9 @@ void IjkGridLatticeRepresentation::addSeismic3dCoordinatesToPatch(
 	double startCrossline, double incrCrossline, unsigned int countCrossline,
 	unsigned int countSample, RESQML2_NS::AbstractRepresentation * seismicSupport)
 {
+	if (seismicSupport == nullptr)
+		throw invalid_argument("The seismic support cannot be null.");
+
 	resqml22__PointGeometry* geom = getPointGeometry2_2(patchIndex);
 	if (geom == nullptr)
 		throw invalid_argument("The patchIndex does not identify a point geometry.");

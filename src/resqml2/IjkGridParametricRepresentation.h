@@ -277,7 +277,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	mostComplexPillarGeometry	 	The most complex pillar shape which we can
 		 * 													find on this IJK grid.
-		 * @param 		  	kDirectionKind				 	The direction kind.
+		 * @param 		  	kDirectionKind				 	The K direction kind.
 		 * @param 		  	isRightHanded				 	Indicates that this IJK grid is right handed,
 		 * 													as determined by the triple product of
 		 * 													tangent vectors in the I, J, and K directions.
@@ -537,7 +537,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default local 3d CRS
 		 * 										is defined.
 		 *
-		 * @param 		  	kDirectionKind								The direction kind.
+		 * @param 		  	kDirectionKind								The K direction kind.
 		 * @param 		  	isRightHanded								Indicates that the IJK grid is
 		 * 																right handed, as determined by the
 		 * 																triple product of tangent vectors in

@@ -22,208 +22,318 @@ under the License.
 
 namespace RESQML2_NS
 {
+	/**
+	 * The main use case for this class is the representation of a seismic cubes. Notice that, in
+	 * seismic context, I is the slowest axis, J is the intermediate axis and K is the fastest axis.
+	 * In reservoir grid, I is the fastest axis, J is the intermediate axis and K is slowest axis.
+	 * It should be improved in future RESQML versions.
+	 */
 	class IjkGridLatticeRepresentation : public AbstractIjkGridRepresentation
 	{
 	public:
 		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
+		* Destructor does nothing since the memory is managed by the gSOAP context.
 		*/
 		virtual ~IjkGridLatticeRepresentation() {}
 
 		/**
-		* Indicates wether the instance corresponds to a seismic cube or not.
-		*/
+		 * Indicates whether this instance corresponds to a seismic cube or not.
+		 *
+		 * @returns	True if it is a seismic cube, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT bool isASeismicCube() const;
 
 		/**
-		* Indicates wether the instance corresponds to a facies cube or not.
-		*/
+		 * Indicates whether this instance corresponds to a facies cube or not.
+		 *
+		 * @returns	True if it is a facies cube, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT bool isAFaciesCube() const;
 
-		/**
-		* Get the xyz point count in a given patch.
-		*/
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const override;
+
+		/** Please do note use: not implemented yet. Please use lattice information. */
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const override;
 
 		/**
-		* Get all the XYZ points of a particular patch of this representation.
-		* XYZ points are given in the local CRS.
-		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
-		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
-
-		/**
-		* Get the X origin of this geometry.
-		* X coordinate is given in the local CRS.
-		* @return double.NAN coordinate if something's wrong. The X origin point otherwise.
-		*/
+		 * Gets the X coordinate of the origin of this geometry. The X coordinate is given in the local
+		 * CRS.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The X coordinate of the origin point if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual double getXOrigin() const = 0;
 
 		/**
-		* Get the Y origin of this geometry.
-		* Y coordinate is given in the local CRS.
-		* @return double.NAN coordinate if something's wrong. The Y origin point otherwise.
-		*/
+		 * Gets the Y coordinate of the origin of this geometry. The Y coordinate is given in the local
+		 * CRS.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The Y coordinate of the origin point if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual double getYOrigin() const = 0;
 
-	    /**
-		* Get the Z origin of this geometry.
-		* Z coordinate is given in the local CRS.
-		* @return double.NAN coordinate if something's wrong. The Z origin point otherwise.
-		*/
+		/**
+		 * Gets the Z coordinate of the origin of this geometry. The Z coordinate is given in the local
+		 * CRS.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The Z coordinate of the origin point if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual double getZOrigin() const = 0;
 
 		/**
-		* Get the X origin of this geometry.
-		* X coordinate is given in the global CRS.
-		* @return double.NAN coordinate if something's wrong. The X origin point otherwise.
-		*/
+		 * Gets the X coordinate origin of this geometry. The X coordinate is given in the global CRS.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The X coordinate of the origin point if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT double getXOriginInGlobalCrs() const;
 
 		/**
-		* Get the Y origin of this geometry.
-		* Y coordinate is given in the global CRS.
-		* @return double.NAN coordinate if something's wrong. The Y origin point otherwise.
-		*/
+		 * Gets the Y coordinate origin of this geometry. The Y coordinate is given in the global CRS.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The Y coordinate of the origin point if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT double getYOriginInGlobalCrs() const;
 
 		/**
-		* Get the Z origin of this geometry.
-		* Z coordinate is given in the global CRS.
-		* @return double.NAN coordinate if something's wrong. The Z origin point otherwise.
-		*/
+		 * Gets the Z coordinate origin of this geometry. The Z coordinate is given in the global CRS.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The Z coordinate of the origin point if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT double getZOriginInGlobalCrs() const;
 
-		/*****************************************************
-		* Notice that, in seismic context, I is the slowest axis, J is the intermediate axis and K is the fastest axis.
-		* In reservoir grid, I is the fastest axis, J is the intermediate axis and K is slowest axis.
-		* It should be improved in future Resqml versions.
-		*****************************************************/
-
 		/**
-        * Get the X i offset of this geometry.
-        * X coordinate is given in the local CRS.
-        * @return double.NAN coordinate if something's wrong. The X offset point otherwise.
-        */
+		 * Gets the X coordinate of the I offset of this geometry. Notice that I is the slowest axis in
+		 * the seismic context. The X coordinate is given in the local CRS.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The X coordinate of the I offset if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual double getXIOffset() const = 0;
 
-        /**
-        * Get the Y i offset of this geometry.
-        * Y coordinate is given in the local CRS.
-        * @return double.NAN coordinate if something's wrong. The Y offset point otherwise.
-        */
+		/**
+		 * Gets the Y coordinate of the I offset of this geometry. Notice that I is the slowest axis in
+		 * the seismic context. The Y coordinate is given in the local CRS.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The Y coordinate of the I offset if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual double getYIOffset() const = 0;
 
 		/**
-        * Get the Z i offset of this geometry.
-        * Z coordinate is given in the local CRS.
-        * @return double.NAN coordinate if something's wrong. The Z offset point otherwise.
-        */
+		 * Gets the Z coordinate of the I offset of this geometry. Notice that I is the slowest axis in
+		 * the seismic context. The Z coordinate is given in the local CRS.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The Z coordinate of the I offset if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual double getZIOffset() const = 0;
 
 		/**
-        * Get the X j offset of this geometry.
-        * X coordinate is given in the local CRS.
-        * @return double.NAN coordinate if something's wrong. The X offset point otherwise.
-        */
+		 * Gets the X coordinate of the J offset of this geometry. The X coordinate is given in the
+		 * local CRS.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The X coordinate of the J offset if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual double getXJOffset() const = 0;
 
-        /**
-        * Get the Y j offset of this geometry.
-        * Y coordinate is given in the local CRS.
-        * @return double.NAN coordinate if something's wrong. The Y offset point otherwise.
-        */
+		/**
+		 * Gets the Y coordinate of the J offset of this geometry. The Y coordinate is given in the
+		 * local CRS.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The Y coordinate of the J offset if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual double getYJOffset() const = 0;
 
 		/**
-        * Get the Z j offset of this geometry.
-        * Z coordinate is given in the local CRS.
-        * @return double.NAN coordinate if something's wrong. The Z offset point otherwise.
-        */
+		 * Gets the Z coordinate of the J offset of this geometry. The Z coordinate is given in the
+		 * local CRS.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The Z coordinate of the J offset if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual double getZJOffset() const = 0;
 
 		/**
-        * Get the X k offset of this geometry.
-        * X coordinate is given in the local CRS.
-        * @return double.NAN coordinate if something's wrong. The X offset point otherwise.
-        */
+		 * Gets the X coordinate of the K offset of this geometry. Notice that K is the fastest axis in
+		 * the seismic context. The X coordinate is given in the local CRS.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The X coordinate of the K offset if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual double getXKOffset() const = 0;
 
-        /**
-        * Get the Y k offset of this geometry.
-        * Y coordinate is given in the local CRS.
-        * @return double.NAN coordinate if something's wrong. The Y offset point otherwise.
-        */
+		/**
+		 * Gets the Y coordinate of the K offset of this geometry. Notice that K is the fastest axis in
+		 * the seismic context. The Y coordinate is given in the local CRS.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The Y coordinate of the K offset if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual double getYKOffset() const = 0;
 
 		/**
-        * Get the Z k offset of this geometry.
-        * Z coordinate is given in the local CRS.
-        * @return double.NAN coordinate if something's wrong. The Z offset point otherwise.
-        */
+		 * Gets the Z coordinate of the K offset of this geometry. Notice that K is the fastest axis in
+		 * the seismic context. The Z coordinate is given in the local CRS.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The Z coordinate of the K offset if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual double getZKOffset() const = 0;
 
 		/**
-        * Get the I spacing of the regular (seismic) grid
-        * @return double.NAN if something's wrong. The I spacing otherwise.
-        */
+		 * Gets the I spacing of this regular (seismic) grid. Notice that I is the slowest axis in the
+		 * seismic context.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The I spacing if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual double getISpacing() const = 0;
 
-        /**
-        * Get the J spacing of the regular (seismic) grid
-        * @return double.NAN if something's wrong. The J spacing otherwise.
-        */
+		/**
+		 * Gets the J spacing of this regular (seismic) grid.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The J spacing if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual double getJSpacing() const = 0;
 
 		/**
-        * Get the K spacing of the regular (seismic) grid
-        * @return double.NAN if something's wrong. The K spacing otherwise.
-        */
+		 * Gets the K spacing of this regular (seismic) grid. Notice that K is the fastest axis in the
+		 * seismic context.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The K spacing if successful, otherwise <tt>double.NAN</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual double getKSpacing() const = 0;
 
 		/**
-        * Get the label of the first inline.
-        */
+		 * Gets the label of the first inline.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The label of the first inline if successful, otherwise 0.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual int getOriginInline() const = 0;
 
 		/**
-        * Get the label of the first crossline.
-        */
+		 * Gets the label of the first crossline.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The label of the first crossline if successful, otherwise 0.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual int getOriginCrossline() const = 0;
 
 		/**
-        * Get the inline I offset value.
-        */
+		 * Gets the inline I offset value. Notice that I is the slowest axis in the seismic context.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The inline I offset value if successful, otherwise 0.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual int getInlineIOffset() const = 0;
 
 		/**
-        * Get the inline J offset value.
-        */
+		 * Gets the inline J offset value.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The inline J offset value if successful, otherwise 0.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual int getInlineJOffset() const = 0;
 
 		/**
-        * Get the inline K offset value.
-        */
+		 * Gets the inline K offset value. Notice that K is the fastest axis in the seismic context.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The inline K offset value if successful, otherwise 0.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual int getInlineKOffset() const = 0;
 
 		/**
-        * Get the crossline I offset value.
-        */
+		 * Gets the crossline I offset value. Notice that I is the slowest axis in the seismic context.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The crossline I offset value if successful, otherwise 0.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual int getCrosslineIOffset() const = 0;
 
 		/**
-        * Get the crossline J offset value.
-        */
+		 * Gets the crossline J offset value.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The crossline J offset value if successful, otherwise 0.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual int getCrosslineJOffset() const = 0;
 
 		/**
-        * Get the crossline K offset value.
-        */
+		 * Gets the crossline K offset value. Notice that K is the fastest axis in the seismic context.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The crossline K offset value if successful, otherwise 0.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual int getCrosslineKOffset() const = 0;
 
 		/**
-		* Set the geometry of the IJK grid as a regular IJK grid
-		*/
+		 * Sets the geometry of this IJK grid as a regular IJK grid
+		 *
+		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default local 3d CRS
+		 * 										is defined.
+		 *
+		 * @param 	  	mostComplexPillarGeometry	The most complex pillar shape which we can find on
+		 * 											this IJK grid.
+		 * @param 	  	kDirectionKind			 	The K direction kind.
+		 * @param 	  	isRightHanded			 	Indicates that the IJK grid is right handed, as
+		 * 											determined by the triple product of tangent vectors
+		 * 											in the I, J, and K directions.
+		 * @param 	  	originX					 	The X coordinate of the origin.
+		 * @param 	  	originY					 	The Y coordinate of the origin.
+		 * @param 	  	originZ					 	The Z coordinate of the origin.
+		 * @param 	  	directionIX				 	The X coordinate of the I offset.
+		 * @param 	  	directionIY				 	The Y coordinate of the I offset.
+		 * @param 	  	directionIZ				 	The Z coordinate of the I offset.
+		 * @param 	  	spacingI				 	The spacing in the I direction.
+		 * @param 	  	directionJX				 	The X coordinate of the J offset.
+		 * @param 	  	directionJY				 	The Y coordinate of the J offset.
+		 * @param 	  	directionJZ				 	The Z coordinate of the J offset.
+		 * @param 	  	spacingJ				 	The spacing in the J direction.
+		 * @param 	  	directionKX				 	The X coordinate of the K offset.
+		 * @param 	  	directionKY				 	The Y coordinate of the K offset.
+		 * @param 	  	directionKZ				 	The Z coordinate of the K offset.
+		 * @param 	  	spacingK				 	The spacing in the K direction.
+		 * @param [in]	localCrs				 	(Optional) The local CRS where the points are given.
+		 * 											If @c nullptr (default) then the default CRS of the
+		 * 											repository will be used.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry,
 			gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind,
 			bool isRightHanded,
@@ -233,16 +343,32 @@ namespace RESQML2_NS
 			double directionKX, double directionKY, double directionKZ, double spacingK, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
 		/**
-		* Push back a patch of seismic 3D coordinates info.
-		* The index this patch will be located must be consistent with the index of the geometry patch it is related to.
-		*/
+		 * Pushes back a patch of seismic 3D coordinates.
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::invalid_argument	If @p patchIndex does not identify a point geometry.
+		 * @exception	std:invalid_argument 	If @p seismicSupport is nullptr.
+		 * @exception	std::invalid_argument	If it already exists some seismic 2d coordinates for this
+		 * 										patch.
+		 *
+		 * @param 	  	patchIndex	  	Zero-based index of the patch to push. It must be consistent with
+		 * 								the index of the geometry patch it is related to.
+		 * @param 	  	startInline   	The start inline.
+		 * @param 	  	incrInline	  	The inline increment.
+		 * @param 	  	countInline   	The count of inlines.
+		 * @param 	  	startCrossline	The start crossline.
+		 * @param 	  	incrCrossline 	The crossline increment.
+		 * @param 	  	countCrossline	The count of crosslines.
+		 * @param 	  	countSample   	The count of samples.
+		 * @param [in]	seismicSupport	The seismic support of the patch to push.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual void addSeismic3dCoordinatesToPatch(
 			unsigned int patchIndex,
 			double startInline, double incrInline, unsigned int countInline,
 			double startCrossline, double incrCrossline, unsigned int countCrossline,
 			unsigned int countSample, RESQML2_NS::AbstractRepresentation * seismicSupport) = 0;
 
-		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const;
+		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const override;
 
 	protected:
 		IjkGridLatticeRepresentation(COMMON_NS::DataObjectRepository * repo,

@@ -78,7 +78,7 @@ ULONG64 IjkGridLatticeRepresentation::getXyzPointCountOfPatch(const unsigned int
 		return (getICellCount()+1) * (getJCellCount()+1) * (getKCellCount()+1);
 	}
 	
-	throw range_error("An ijk grid has a maximum of one patch.");
+	throw out_of_range("An ijk grid has a maximum of one patch.");
 }
 
 void IjkGridLatticeRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
@@ -88,7 +88,7 @@ void IjkGridLatticeRepresentation::getXyzPointsOfPatch(const unsigned int & patc
 		throw logic_error("Not implemented yet. Please use lattice information.");
 	}
 	
-	throw range_error("An ijk grid has a maximum of one patch.");
+	throw out_of_range("An ijk grid has a maximum of one patch.");
 }
 
 double IjkGridLatticeRepresentation::getXOriginInGlobalCrs() const
