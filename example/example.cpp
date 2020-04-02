@@ -17,8 +17,6 @@ under the License.
 -----------------------------------------------------------------------*/
 // Acknowledgements: the serializeOrganizations function have been provided by Geosiris
 
-//#define OFFICIAL
-
 #ifdef _WIN32
 // ************************
 // For memory leak
@@ -96,6 +94,7 @@ under the License.
 #include "resqml2_2/MdDatum.h"
 #include "resqml2_2/RockVolumeFeature.h"
 #include "resqml2_2/SeismicWellboreFrameRepresentation.h"
+#include "resqml2_2/ShotPointLineFeature.h"
 #include "resqml2_2/WellboreMarker.h"
 #include "resqml2_2/WellboreMarkerFrameRepresentation.h"
 
@@ -124,7 +123,6 @@ under the License.
 #include "HdfProxyFactoryExample.h"
 
 using namespace std;
-using namespace RESQML2_0_1_NS;
 
 RESQML2_NS::BoundaryFeature* horizon1 = nullptr;
 RESQML2_NS::BoundaryFeature* horizon2 = nullptr;
@@ -152,17 +150,13 @@ RESQML2_NS::SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullp
 RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid = nullptr;
 EML2_NS::PropertyKind* propType1 = nullptr;
 RESQML2_NS::DiscreteProperty* discreteProp1 = nullptr;
-RESQML2_0_1_NS::ContinuousProperty* contColMapContProp = nullptr;
+RESQML2_NS::ContinuousProperty* contColMapContProp = nullptr;
 
 WITSML2_0_NS::Well* witsmlWell = nullptr;
 WITSML2_0_NS::Wellbore* witsmlWellbore = nullptr;
 
-void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfProxy* hdfProxy)
+void serializeWitsmlWells(COMMON_NS::DataObjectRepository * pck)
 {
-	////////////////////////
-	// WITSML
-	////////////////////////
-
 	// WELL
 	witsmlWell = pck->createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1");
 	witsmlWell->setNameLegal("Legal Name");
@@ -249,10 +243,11 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfP
 	witsmlLog->setTimeDepth("Depth");
 	witsmlLog->setLoggingCompanyName("F2I-CONSULTING");
 	witsmlLog->setLoggingCompanyCode("F2I");
+}
 
-	////////////////////////
-	// RESQML
-	////////////////////////
+void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfProxy* hdfProxy)
+{
+	serializeWitsmlWells(pck);
 
 	// Features
 	wellbore1 = pck->createWellboreFeature("22d5b48f-f789-46e7-a454-6d8bd05afd0b", "Wellbore1");
@@ -281,7 +276,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfP
 	RESQML2_NS::WellboreFrameRepresentation* w1i1RegularFrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
 	w1i1RegularFrameRep->setMdValues(0, 200, 6);
 
-	RESQML2_0_1_NS::PropertyKind * unitNumberPropType = pck->createPropertyKind("358aac23-b377-4349-9e72-bff99a6edf34", "Unit number", "urn:resqml:F2I.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
+	EML2_NS::PropertyKind * unitNumberPropType = pck->createPropertyKind("358aac23-b377-4349-9e72-bff99a6edf34", "Unit number", gsoap_eml2_1::eml21__QuantityClassKind__not_x0020a_x0020measure);
 
 	RESQML2_NS::DiscreteProperty* discreteProp = pck->createDiscreteProperty(w1i1FrameRep, "61c2917c-2334-4205-824e-d4f4a0cf6d8e", "Wellbore1 Interp1 FrameRep IntervalIndex", 1,
 		gsoap_eml2_3::resqml22__IndexableElement__intervals, unitNumberPropType);
@@ -311,6 +306,11 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfP
 
 void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 {
+	if (witsmlWell == nullptr) {
+		std::cout << "No WITSML export have been operated" << endl;
+		return;
+	}
+
 	// WELL COMPLETION
 	WITSML2_0_NS::WellCompletion* wellCompletion = pck->createWellCompletion(witsmlWell, "6593d580-2f44-4b18-97ce-8a9cf42a0414", "WellCompletion1");
 	// WELLBORE COMPLETION
@@ -405,8 +405,9 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 		0., 1., 0.,
 		1., 1.);
 
+	auto standardOrientationPropKind = repo->createPropertyKind("b8e9afa0-7930-483b-931f-e5cf2008d03b", "orientation", gsoap_eml2_1::eml21__QuantityClassKind__plane_x0020angle);
 	contColMapContProp = repo->createContinuousProperty(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map", 2,
-		gsoap_eml2_3::resqml22__IndexableElement__nodes, "continuousColorMapIndex", gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
+		gsoap_eml2_3::resqml22__IndexableElement__nodes, "continuousColorMapIndex", standardOrientationPropKind);
 	std::unique_ptr<double[]> values(new double[numPointInFastestDirection * numPointsInSlowestDirection]);
 	for (size_t slowestIndex = 0; slowestIndex < numPointsInSlowestDirection; ++slowestIndex) {
 		for (size_t fastestIndex = 0; fastestIndex < numPointInFastestDirection; ++fastestIndex) {
@@ -535,7 +536,13 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	RESQML2_NS::SeismicLineSetFeature* seismicLineSet = pck->createSeismicLineSet("53c6a0be-c901-4bb6-845b-fba79745da02", "Seismic line Set");
 
 	// Seismic Line
-	RESQML2_NS::AbstractSeismicLineFeature* seismicLine = pck->createSeismicLine("117f9bf6-6bb0-49f2-9cee-46912300bff6", "Seismic line", 1, 0, 5);
+	RESQML2_NS::AbstractSeismicLineFeature* seismicLine = nullptr;
+	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		seismicLine = pck->createSeismicLine("117f9bf6-6bb0-49f2-9cee-46912300bff6", "Seismic line", 1, 0, 5);
+	}
+	else {
+		seismicLine = pck->createShotPointLine("117f9bf6-6bb0-49f2-9cee-46912300bff6", "Seismic line");
+	}
 	seismicLine->setSeismicLineSet(seismicLineSet);
 	RESQML2_NS::GenericFeatureInterpretation* seismicLineInterp = pck->createGenericFeatureInterpretation(seismicLine, "", "Seismic line Interp");
 	RESQML2_NS::PolylineRepresentation* seismicLineRep = pck->createPolylineRepresentation(seismicLineInterp, "", "Seismic line Rep");
@@ -685,22 +692,20 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	f1i1PolyLineRep->pushBackGeometryPatch(numNodesPerPolylinePerPatch, polylinePoints, 2, false, hdfProxy);
 	f1i1PolyLineRep->addSeismic3dCoordinatesToPatch(0, inlines, crosslines, 5, seismicLatticeRep, hdfProxy);
 
-#if !defined(OFFICIAL)
 	//**************
 	// Properties
 	//**************
-	propType1 = pck->createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
+	propType1 = pck->createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", gsoap_eml2_1::eml21__QuantityClassKind__length);
 	RESQML2_NS::ContinuousProperty* contProp1 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,
 		gsoap_eml2_3::resqml22__IndexableElement__nodes, "exoticMeter", propType1);
 	double prop1Values[16] = { 301, 302, 301, 302, 351, 352, 351, 352, 301, 302, 301, 302, 351, 352, 351, 352 };
 	contProp1->pushBackDoubleHdf5Array2dOfValues(prop1Values, 2, 8, hdfProxy);
 
-	EML2_NS::PropertyKind * propType2 = pck->createPropertyKind("7372f8f6-b1fd-4263-b9a8-699d9cbf7da6", "propType2", gsoap_eml2_1::eml21__QuantityClassKind__thermodynamic_x0020temperature, false, propType1);
+	EML2_NS::PropertyKind * propType2 = pck->createPropertyKind("7372f8f6-b1fd-4263-b9a8-699d9cbf7da6", "propType2", gsoap_eml2_1::eml21__QuantityClassKind__thermodynamic_x0020temperature);
 	RESQML2_NS::ContinuousProperty* contProp2 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "d3efb337-19f8-4b91-8b4f-3698afe17f01", "Horizon1 Interp1 Grid2dRep Prop2", 1,
 		gsoap_eml2_3::resqml22__IndexableElement__nodes, gsoap_resqml2_0_1::resqml20__ResqmlUom__ft, propType2);
 	double prop2Values[8] = { 302, 302, 352, 352, 302, 302, 352, 352 };
 	contProp2->pushBackDoubleHdf5Array1dOfValues(prop2Values, 8, hdfProxy);
-#endif
 }
 
 void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfProxy* hdfProxy)
@@ -899,7 +904,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	//**************
 	// Properties
 	//**************
-	propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
+	propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", gsoap_eml2_1::eml21__QuantityClassKind__not_x0020a_x0020measure);
 	discreteProp1 = pck->createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
 		gsoap_eml2_3::resqml22__IndexableElement__cells, propType1);
 	unsigned short prop1Values[2] = { 0, 1 };
@@ -923,6 +928,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	//**************
 	// Time Series
 	//**************
+	/*
 	EML2_NS::TimeSeries * timeSeries = pck->createTimeSeries("1187d8a0-fa3e-11e5-ac3a-0002a5d5c51b", "Testing time series");
 	tm timeStruct;
 	timeStruct.tm_hour = 15;
@@ -936,22 +942,36 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	timeSeries->pushBackTimestamp(timeStruct);
 	timeSeries->pushBackTimestamp(1409753895);
 	timeSeries->pushBackTimestamp(1441289895);
-	ContinuousProperty* continuousPropTime0 = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
-		gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+	RESQML2_NS::ContinuousProperty* continuousPropTime0 = nullptr;
+	RESQML2_NS::ContinuousProperty* continuousPropTime1 = nullptr;
+	RESQML2_NS::ContinuousProperty* continuousPropTime2 = nullptr;
+	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		continuousPropTime0 = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
+			gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+		continuousPropTime1 = pck->createContinuousProperty(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
+			gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+		continuousPropTime2 = pck->createContinuousProperty(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property ", 1,
+			gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+	}
+	else {
+		auto standardLengthPropKind = pck->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind__length);
+		continuousPropTime0 = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
+			gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, standardLengthPropKind);
+		continuousPropTime1 = pck->createContinuousProperty(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
+			gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, standardLengthPropKind);
+		continuousPropTime2 = pck->createContinuousProperty(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property ", 1,
+			gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, standardLengthPropKind);
+	}
 	continuousPropTime0->setTimeIndex(0, timeSeries);
 	double valuesTime0[2] = { 0, 1 };
 	continuousPropTime0->pushBackDoubleHdf5Array3dOfValues(valuesTime0, 2, 1, 1, hdfProxy);
-	ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
-		gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	continuousPropTime1->setTimeIndex(1, timeSeries);
 	double valuesTime1[2] = { 2, 3 };
 	continuousPropTime1->pushBackDoubleHdf5Array3dOfValues(valuesTime1, 2, 1, 1, hdfProxy);
-	ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property ", 1,
-		gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	continuousPropTime2->setTimeIndex(2, timeSeries);
 	double valuesTime2[2] = { 3, 4 };
 	continuousPropTime2->pushBackDoubleHdf5Array3dOfValues(valuesTime2, 2, 1, 1, hdfProxy);
-
+	*/
 	//**************
 	// LGR
 	//**************
@@ -1810,7 +1830,13 @@ void serializeActivities(COMMON_NS::DataObjectRepository * epcDoc)
 
 void serializeFluidBoundary(COMMON_NS::DataObjectRepository & pck, EML2_NS::AbstractHdfProxy*)
 {
-	FluidBoundaryFeature* fluidBoundary = pck.createFluidBoundaryFeature("44a4d87c-3c67-4f98-a314-9d91c4147061", "Fluid boundary", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
+	RESQML2_NS::BoundaryFeature* fluidBoundary = nullptr;
+	if (pck.getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		fluidBoundary = pck.createFluidBoundaryFeature("44a4d87c-3c67-4f98-a314-9d91c4147061", "Fluid boundary", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
+	}
+	else {
+		fluidBoundary = pck.createBoundaryFeature("44a4d87c-3c67-4f98-a314-9d91c4147061", "Fluid boundary");
+	}
 	RESQML2_NS::GenericFeatureInterpretation* interp = pck.createGenericFeatureInterpretation(fluidBoundary, "d06df5e4-3c56-4abd-836f-2abb5e58e13b", "Fluid boundary interp");
 	RESQML2_NS::PlaneSetRepresentation* rep = pck.createPlaneSetRepresentation(interp, "4df87ed5-ea4d-4a00-99a2-828a56c9dd02", "Fluid boundary PlaneSetRep");
 	rep->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
@@ -1818,20 +1844,32 @@ void serializeFluidBoundary(COMMON_NS::DataObjectRepository & pck, EML2_NS::Abst
 
 void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, EML2_NS::AbstractHdfProxy*)
 {
+	RESQML2_NS::BoundaryFeature* fluidBoundaryTop = nullptr;
+	RESQML2_NS::BoundaryFeature* fluidBoundaryBottom = nullptr;
+	RESQML2_NS::RockVolumeFeature* rockFluidFeature = nullptr;
+	if (pck.getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		fluidBoundaryTop = pck.createFluidBoundaryFeature("cd400fa2-4c8b-11e9-be79-3f8079258eaa", "Fluid boundary top", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
+		fluidBoundaryBottom = pck.createFluidBoundaryFeature("d332b298-4c8b-11e9-80d8-c760b2e2530d", "Fluid boundary bottom", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
+		rockFluidFeature = pck.createRockFluidUnit("18a714da-4bf2-11e9-a17e-e74cb7f87d2a", "Rock Fluid Unit", gsoap_resqml2_0_1::resqml20__Phase__oil_x0020column, 
+			static_cast<RESQML2_0_1_NS::FluidBoundaryFeature*>(fluidBoundaryTop), static_cast<RESQML2_0_1_NS::FluidBoundaryFeature*>(fluidBoundaryBottom));
+	}
+	else {
+		fluidBoundaryTop = pck.createBoundaryFeature("cd400fa2-4c8b-11e9-be79-3f8079258eaa", "Fluid boundary top");
+		fluidBoundaryBottom = pck.createBoundaryFeature("d332b298-4c8b-11e9-80d8-c760b2e2530d", "Fluid boundary bottom");
+		rockFluidFeature = pck.createRockVolumeFeature("18a714da-4bf2-11e9-a17e-e74cb7f87d2a", "Rock Fluid Unit");
+	}
+
 	//Top Boundary
-	FluidBoundaryFeature* fluidBoundaryTop = pck.createFluidBoundaryFeature("cd400fa2-4c8b-11e9-be79-3f8079258eaa", "Fluid boundary top", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
 	RESQML2_NS::GenericFeatureInterpretation* interpTop = pck.createGenericFeatureInterpretation(fluidBoundaryTop, "0ab8f2f4-4c96-11e9-999e-c3449b44fef5", "Fluid boundary top interp");
 	RESQML2_NS::PlaneSetRepresentation* repTop = pck.createPlaneSetRepresentation(interpTop, "ae1d618c-4c96-11e9-8f12-cf7f4da2a08d", "Fluid boundary top PlaneSetRep");
 	repTop->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
 
 	//Bottom Boundary
-	FluidBoundaryFeature* fluidBoundaryBottom = pck.createFluidBoundaryFeature("d332b298-4c8b-11e9-80d8-c760b2e2530d", "Fluid boundary bottom", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
 	RESQML2_NS::GenericFeatureInterpretation* interpBottom = pck.createGenericFeatureInterpretation(fluidBoundaryBottom, "1371efae-4c96-11e9-bcdd-37d8112fd19e", "Fluid boundary bottom interp");
 	RESQML2_NS::PlaneSetRepresentation* repBottom = pck.createPlaneSetRepresentation(interpBottom, "b54cc3b2-4c96-11e9-b33d-ef2c41476266", "Fluid boundary bottom PlaneSetRep");
 	repBottom->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
 
 	// Unit construction
-	RockFluidUnitFeature* rockFluidFeature = pck.createRockFluidUnit("18a714da-4bf2-11e9-a17e-e74cb7f87d2a", "Rock Fluid Unit", gsoap_resqml2_0_1::resqml20__Phase__oil_x0020column, fluidBoundaryTop, fluidBoundaryBottom);
 	RESQML2_NS::RockFluidUnitInterpretation *rockFluidUnit = pck.createRockFluidUnitInterpretation(rockFluidFeature, "4b73172a-4bf1-11e9-a9f6-9b2813cc56e1", "Rock Fluid Unit interp");
 
 	// Feature
@@ -1882,7 +1920,7 @@ void serializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
 
 void deserializePropertyKindMappingFiles(COMMON_NS::DataObjectRepository * pck)
 {
-	PropertyKindMapper* ptMapper = pck->getPropertyKindMapper();
+	RESQML2_0_1_NS::PropertyKindMapper* ptMapper = pck->getPropertyKindMapper();
 
 	std::cout << "Application property kind name for azimuth : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__azimuth, "Petrel") << std::endl;
 	std::cout << "Application property kind name for azimuth : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__gamma_x0020ray_x0020API_x0020unit, "Petrel") << std::endl;
@@ -2089,7 +2127,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 			cin.get();
 		}
 		else if (propVal->getValuesHdfDatatype() > 2) {
-			if (dynamic_cast<RESQML2_NS::DiscreteProperty const *>(propVal) == nullptr && dynamic_cast<CategoricalProperty const *>(propVal) == nullptr) {
+			if (dynamic_cast<RESQML2_NS::DiscreteProperty const *>(propVal) == nullptr && dynamic_cast<RESQML2_NS::CategoricalProperty const *>(propVal) == nullptr) {
 				cerr << "\tERROR !!!!! The continuous property is linked to an integer HDF5 dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
 				std::unique_ptr<double[]> values(new double[valueCount]);
@@ -2357,13 +2395,13 @@ void deserializeGeobody(COMMON_NS::DataObjectRepository * pck)
 
 void deserializeFluidBoundary(COMMON_NS::DataObjectRepository & pck)
 {
-	std::vector<FluidBoundaryFeature*> fbfSet = pck.getDataObjects<FluidBoundaryFeature>();
+	std::vector<RESQML2_0_1_NS::FluidBoundaryFeature*> fbfSet = pck.getDataObjects<RESQML2_0_1_NS::FluidBoundaryFeature>();
 	for (size_t fbfIndex = 0; fbfIndex < fbfSet.size(); ++fbfIndex) {
-		FluidBoundaryFeature* fluidBoundary = fbfSet[fbfIndex];
+		RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundary = fbfSet[fbfIndex];
 		if (fluidBoundary == nullptr) return;
 		showAllMetadata(fluidBoundary);
 		showAllMetadata(fluidBoundary->getInterpretation(0));
-		PlaneSetRepresentation const * rep = static_cast<PlaneSetRepresentation const*>(fluidBoundary->getInterpretation(0)->getRepresentation(0));
+		RESQML2_NS::PlaneSetRepresentation const * rep = static_cast<RESQML2_NS::PlaneSetRepresentation const*>(fluidBoundary->getInterpretation(0)->getRepresentation(0));
 		showAllMetadata(rep);
 		ULONG64 ptCount = rep->getXyzPointCountOfAllPatches();
 		double* allXyzPoints = new double[ptCount * 3];
@@ -2379,9 +2417,9 @@ void deserializeFluidBoundary(COMMON_NS::DataObjectRepository & pck)
 
 void deserializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck)
 {
-	std::vector<RockFluidOrganizationInterpretation*> rockFluidOrgInterpSet = pck.getDataObjects<RockFluidOrganizationInterpretation>();
+	std::vector<RESQML2_NS::RockFluidOrganizationInterpretation*> rockFluidOrgInterpSet = pck.getDataObjects<RESQML2_NS::RockFluidOrganizationInterpretation>();
 	for (size_t rfoiIndex = 0; rfoiIndex < rockFluidOrgInterpSet.size(); ++rfoiIndex) {
-		RockFluidOrganizationInterpretation* rockFluidOrgInterp = rockFluidOrgInterpSet[rfoiIndex];
+		RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp = rockFluidOrgInterpSet[rfoiIndex];
 		showAllMetadata(rockFluidOrgInterp);
 		for (unsigned int i = 0; i < rockFluidOrgInterp->getGridRepresentationCount(); ++i) {
 			RESQML2_NS::AbstractGridRepresentation const * grid = rockFluidOrgInterp->getGridRepresentation(i);
@@ -2392,13 +2430,13 @@ void deserializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck)
 			RESQML2_NS::RockFluidUnitInterpretation* rockFluidInterp = rockFluidOrgInterp->getRockFluidUnitInterpretation(unitIndex);
 			showAllMetadata(rockFluidInterp);
 
-			RockFluidUnitFeature* rockFluidFeature = static_cast<RockFluidUnitFeature*>(rockFluidInterp->getInterpretedFeature());
+			RESQML2_0_1_NS::RockFluidUnitFeature* rockFluidFeature = static_cast<RESQML2_0_1_NS::RockFluidUnitFeature*>(rockFluidInterp->getInterpretedFeature());
 			showAllMetadata(rockFluidFeature);
 
-			BoundaryFeature* top = rockFluidFeature->getTop();
+			RESQML2_0_1_NS::BoundaryFeature* top = rockFluidFeature->getTop();
 			showAllMetadata(top);
 
-			BoundaryFeature* bottom = rockFluidFeature->getBottom();
+			RESQML2_0_1_NS::BoundaryFeature* bottom = rockFluidFeature->getBottom();
 			showAllMetadata(bottom);
 		}
 	}
@@ -3328,7 +3366,7 @@ void ijkGridHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentation* ijkGri
 * @param prop		a dicrete property
 * @param nbIter		number of geometry reading iteration
 */
-void discretePropertyHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid, DiscreteProperty* prop, unsigned int nbIter)
+void discretePropertyHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid, RESQML2_NS::DiscreteProperty* prop, unsigned int nbIter)
 {
 	if (ijkGrid == nullptr)
 		throw invalid_argument("discretePropertyHyperslabingTiming: ijkGrid is nullptr.");
@@ -3976,7 +4014,7 @@ void deserialize(const string & inputFile)
 		}
 		for (size_t j = 0; j < wellboreSet[i]->getInterpretationSet().size(); j++) {
 			for (size_t k = 0; k < wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet().size(); k++) {
-				if (wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]->getXmlTag() == WellboreMarkerFrameRepresentation::XML_TAG) {
+				if (wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]->getXmlTag() == RESQML2_NS::WellboreMarkerFrameRepresentation::XML_TAG) {
 					RESQML2_NS::WellboreMarkerFrameRepresentation const * wmf = static_cast<RESQML2_NS::WellboreMarkerFrameRepresentation const *>(wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]);
 					vector<RESQML2_NS::WellboreMarker *> marketSet = wmf->getWellboreMarkerSet();
 					for (size_t markerIndex = 0; markerIndex < marketSet.size(); ++markerIndex) {
@@ -3987,8 +4025,8 @@ void deserialize(const string & inputFile)
 					}
 
 					for (size_t l = 0; l < wmf->getPropertySet().size(); ++l) {
-						if (wmf->getPropertySet()[l]->getXmlTag() == CategoricalProperty::XML_TAG) {
-							CategoricalProperty const * catVal = static_cast<CategoricalProperty const *>(wmf->getPropertySet()[l]);
+						if (wmf->getPropertySet()[l]->getXmlTag() == RESQML2_NS::CategoricalProperty::XML_TAG) {
+							RESQML2_NS::CategoricalProperty const * catVal = static_cast<RESQML2_NS::CategoricalProperty const *>(wmf->getPropertySet()[l]);
 							if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG_64) {
 								std::cout << "Hdf datatype is NATIVE LONG" << std::endl;
 								LONG64* tmp = new LONG64[wmf->getMdValuesCount()];

@@ -28,130 +28,6 @@ namespace RESQML2_NS
 	/** Proxy class for an abstract representation. */
 	class AbstractRepresentation : public COMMON_NS::AbstractObject
 	{
-	protected:
-
-		/**
-		 * Only to be used in partial transfer context
-		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
-		 */
-		DLL_IMPORT_OR_EXPORT AbstractRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
-
-		/** Defatul constructor */
-		AbstractRepresentation() {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		AbstractRepresentation(gsoap_resqml2_0_1::resqml20__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		AbstractRepresentation(gsoap_eml2_3::resqml22__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-
-		/**
-		 * Get the point geometry of a specific v2.0.1 patch of the representation.
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	nullptr if there is no point geometry for this particular patch otherwise the found
-		 * 			point geometry.
-		 */
-		virtual gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
-
-		/**
-		 * Get the point geometry of a specific v2.2 patch of the representation.
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	nullptr if there is no point geometry for this particular patch otherwise the found
-		 * 			point geometry.
-		 */
-		virtual gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
-
-		/**
-		 * Creates a v2.0.1 point geometry patch.
-		 *
-		 * @param 		  	patchIndex				The index of the patch which will contain this
-		 * 											geometry.
-		 * @param [in,out]	points					All the points to set ordered according the topology
-		 * 											of the representation it is based on. It should be 3 *
-		 * 											numPoints sized.
-		 * @param [in,out]	localCrs				The local CRS where the points lie on.
-		 * @param [in,out]	numPoints				The number of points for each dimension of the array
-		 * 											to write.
-		 * @param 		  	numDimensionsInArray	The number of dimensions in the array to write.
-		 * @param [in,out]	proxy					The HDF proxy where to write the points. It must be
-		 * 											already opened for writing and won't be closed in this
-		 * 											method.
-		 *
-		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
-		 */
-		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(unsigned int patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, unsigned long long const * numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
-
-		/**
-		 * Creates a v2.2 point geometry patch.
-		 *
-		 * @param 		  	patchIndex				The index of the patch which will contain this
-		 * 											geometry.
-		 * @param [in,out]	points					All the points to set ordered according the topology
-		 * 											of the representation it is based on. It should be 3 *
-		 * 											numPoints sized.
-		 * @param [in,out]	localCrs				The local CRS where the points lie on.
-		 * @param [in,out]	numPoints				The number of points for each dimension of the array
-		 * 											to write.
-		 * @param 		  	numDimensionsInArray	The number of dimensions in the array to write.
-		 * @param [in,out]	proxy					The HDF proxy where to write the points. It must be
-		 * 											already opened for writing and won't be closed in this
-		 * 											method.
-		 *
-		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
-		 */
-		gsoap_eml2_3::resqml22__PointGeometry* createPointGeometryPatch2_2(unsigned int patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, unsigned long long const * numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
-
-		/**
-		 * Gets hdf proxy dor from point geometry patch
-		 *
-		 * @param [in,out]	patch	If non-null, the patch.
-		 *
-		 * @returns	Empty data object reference if it fails, else the hdf proxy dor from point geometry patch.
-		 */
-		COMMON_NS::DataObjectReference getHdfProxyDorFromPointGeometryPatch(gsoap_resqml2_0_1::resqml20__PointGeometry* patch) const;
-		
-		/**
-		 * Gets hdf proxy dor from point geometry patch
-		 *
-		 * @param [in,out]	patch	If non-null, the patch.
-		 *
-		 * @returns	Empty data object reference if it fails, else the hdf proxy dor from point geometry patch.
-		 */
-		COMMON_NS::DataObjectReference getHdfProxyDorFromPointGeometryPatch(gsoap_eml2_3::resqml22__PointGeometry* patch) const;
-
-		/**
-		 * Gets seismic 3D coordinates
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	Null if it fails, else the seismic 3D coordinates.
-		 */
-		gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* getSeismic3dCoordinates2_0_1(unsigned int patchIndex) const;
-
-		/**
-		 * Gets seismic 3D coordinates
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	Null if it fails, else the seismic 3D coordinates.
-		 */
-		gsoap_eml2_3::resqml22__Seismic3dCoordinates* getSeismic3dCoordinates2_2(unsigned int patchIndex) const;
-
 	public:
 
 		/** Values that represent indexable elements */
@@ -183,7 +59,7 @@ namespace RESQML2_NS
 		 * @returns	Empty data object reference if it fails, else the data object reference of the local
 		 * 			CRS associated to the @p patchIndex patch.
 		 */
-		virtual COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const;
 
 		/**
 		 * Gets the data object reference of the HDF proxy which is used for storing the numerical
@@ -253,7 +129,7 @@ namespace RESQML2_NS
 		 * @returns	Empty data object reference if no interpretation is associated to this
 		 * 			representation. Otherwise the data object reference of the associated interpretation.
 		 */
-		COMMON_NS::DataObjectReference getInterpretationDor() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getInterpretationDor() const;
 
 		/**
 		 * Gets all the subrepresentations of this representation.
@@ -574,6 +450,128 @@ namespace RESQML2_NS
 		static const char* XML_TAG;
 
 	protected:
+
+		/**
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
+		DLL_IMPORT_OR_EXPORT AbstractRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+
+		/** Defatul constructor */
+		AbstractRepresentation() {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		AbstractRepresentation(gsoap_resqml2_0_1::resqml20__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		AbstractRepresentation(gsoap_eml2_3::resqml22__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
+		 * Get the point geometry of a specific v2.0.1 patch of the representation.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch.
+		 *
+		 * @returns	nullptr if there is no point geometry for this particular patch otherwise the found
+		 * 			point geometry.
+		 */
+		virtual gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+
+		/**
+		 * Get the point geometry of a specific v2.2 patch of the representation.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch.
+		 *
+		 * @returns	nullptr if there is no point geometry for this particular patch otherwise the found
+		 * 			point geometry.
+		 */
+		virtual gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
+
+		/**
+		 * Creates a v2.0.1 point geometry patch.
+		 *
+		 * @param 		  	patchIndex				The index of the patch which will contain this
+		 * 											geometry.
+		 * @param [in,out]	points					All the points to set ordered according the topology
+		 * 											of the representation it is based on. It should be 3 *
+		 * 											numPoints sized.
+		 * @param [in,out]	localCrs				The local CRS where the points lie on.
+		 * @param [in,out]	numPoints				The number of points for each dimension of the array
+		 * 											to write.
+		 * @param 		  	numDimensionsInArray	The number of dimensions in the array to write.
+		 * @param [in,out]	proxy					The HDF proxy where to write the points. It must be
+		 * 											already opened for writing and won't be closed in this
+		 * 											method.
+		 *
+		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
+		 */
+		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(unsigned int patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, unsigned long long const * numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
+
+		/**
+		 * Creates a v2.2 point geometry patch.
+		 *
+		 * @param 		  	patchIndex				The index of the patch which will contain this
+		 * 											geometry.
+		 * @param [in,out]	points					All the points to set ordered according the topology
+		 * 											of the representation it is based on. It should be 3 *
+		 * 											numPoints sized.
+		 * @param [in,out]	localCrs				The local CRS where the points lie on.
+		 * @param [in,out]	numPoints				The number of points for each dimension of the array
+		 * 											to write.
+		 * @param 		  	numDimensionsInArray	The number of dimensions in the array to write.
+		 * @param [in,out]	proxy					The HDF proxy where to write the points. It must be
+		 * 											already opened for writing and won't be closed in this
+		 * 											method.
+		 *
+		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
+		 */
+		gsoap_eml2_3::resqml22__PointGeometry* createPointGeometryPatch2_2(unsigned int patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, unsigned long long const * numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
+
+		/**
+		 * Gets hdf proxy dor from point geometry patch
+		 *
+		 * @param [in,out]	patch	If non-null, the patch.
+		 *
+		 * @returns	Empty data object reference if it fails, else the hdf proxy dor from point geometry patch.
+		 */
+		COMMON_NS::DataObjectReference getHdfProxyDorFromPointGeometryPatch(gsoap_resqml2_0_1::resqml20__PointGeometry* patch) const;
+
+		/**
+		 * Gets hdf proxy dor from point geometry patch
+		 *
+		 * @param [in,out]	patch	If non-null, the patch.
+		 *
+		 * @returns	Empty data object reference if it fails, else the hdf proxy dor from point geometry patch.
+		 */
+		COMMON_NS::DataObjectReference getHdfProxyDorFromPointGeometryPatch(gsoap_eml2_3::resqml22__PointGeometry* patch) const;
+
+		/**
+		 * Gets seismic 3D coordinates
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch.
+		 *
+		 * @returns	Null if it fails, else the seismic 3D coordinates.
+		 */
+		gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* getSeismic3dCoordinates2_0_1(unsigned int patchIndex) const;
+
+		/**
+		 * Gets seismic 3D coordinates
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch.
+		 *
+		 * @returns	Null if it fails, else the seismic 3D coordinates.
+		 */
+		gsoap_eml2_3::resqml22__Seismic3dCoordinates* getSeismic3dCoordinates2_2(unsigned int patchIndex) const;
 
 		/** Loads target relationships */
 		virtual void loadTargetRelationships() override;

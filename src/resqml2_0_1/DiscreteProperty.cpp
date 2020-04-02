@@ -195,7 +195,7 @@ bool DiscreteProperty::hasMinimumValue(unsigned int index) const
 LONG64 DiscreteProperty::getMinimumValue(unsigned int index) const
 {
 	if (!hasMinimumValue(index)) {
-		throw std::logic_error("This property has not minimum value at index " + index );
+		throw std::logic_error("This property has not minimum value at index " + std::to_string(index) );
 	}
 
 	return static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1)->MinimumValue[index];
@@ -209,7 +209,7 @@ bool DiscreteProperty::hasMaximumValue(unsigned int index) const
 LONG64 DiscreteProperty::getMaximumValue(unsigned int index) const
 {
 	if (!hasMaximumValue(index)) {
-		throw std::logic_error("This property has not maximum value at index " + index);
+		throw std::logic_error("This property has not maximum value at index " + std::to_string(index));
 	}
 
 	return static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1)->MaximumValue[index];
