@@ -28,7 +28,7 @@ namespace RESQML2_2_NS
 	 * constituted by triangles. Usually all triangles are connected to each others by means of
 	 * their nodes and edges.
 	 */
-	class TriangulatedSetRepresentation : public RESQML2_NS::TriangulatedSetRepresentation
+	class TriangulatedSetRepresentation final : public RESQML2_NS::TriangulatedSetRepresentation
 	{
 	public:
 

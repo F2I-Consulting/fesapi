@@ -25,7 +25,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** Proxy class for a wellbore interpretation. */
-	class WellboreInterpretation : public RESQML2_NS::WellboreInterpretation
+	class WellboreInterpretation final : public RESQML2_NS::WellboreInterpretation
 	{
 	public:
 

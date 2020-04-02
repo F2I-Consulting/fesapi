@@ -34,7 +34,7 @@ namespace RESQML2_0_1_NS
 	 * stored. BUSINESS RULE: It also contains a unit of measure, which can be different from the
 	 * unit of measure of its property type, but it must be convertible into this unit.
 	 */
-	class ContinuousProperty : public RESQML2_NS::ContinuousProperty
+	class ContinuousProperty final : public RESQML2_NS::ContinuousProperty
 	{
 	public:
 
@@ -168,7 +168,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The unit of measure of the values of this property.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlUom getUom() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlUom getUom() const final;
 
 		/**
 		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF
@@ -188,31 +188,31 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The name of the referenced HDF5 dataset.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "");
+		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "") final;
 
 		/**
 		 * Get the minimum value in this continuous properties. It reads it from file.
 		 *
 		 * @returns	The minimum value if present in the file otherwise @c NaN.
 		 */
-		DLL_IMPORT_OR_EXPORT double getMinimumValue(unsigned int index = 0) const;
+		DLL_IMPORT_OR_EXPORT double getMinimumValue(unsigned int index = 0) const final;
 
 		/**
 		 * Get the maximum value in this discrete properties. It reads it from file.
 		 *
 		 * @returns	the maximum value if present in the file otherwise @c NaN.
 		 */
-		DLL_IMPORT_OR_EXPORT double getMaximumValue(unsigned int index = 0) const;
+		DLL_IMPORT_OR_EXPORT double getMaximumValue(unsigned int index = 0) const final;
 
 		/**
 		 * Set the minimum value in this continuous property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setMinimumValue(double value, unsigned int index = 0) const;
+		DLL_IMPORT_OR_EXPORT void setMinimumValue(double value, unsigned int index = 0) const final;
 
 		/**
 		 * Set the maximum value in this discrete property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setMaximumValue(double value, unsigned int index = 0) const;
+		DLL_IMPORT_OR_EXPORT void setMaximumValue(double value, unsigned int index = 0) const final;
 
 		/**
 		 * Gets the Energistics property kind which is associated to this intance
@@ -224,9 +224,9 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind() const;
 
-		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) override;
+		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) final;
 
-		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) override;
+		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) final;
 
 	private:
 

@@ -23,7 +23,6 @@ under the License.
 
 #include "H5Tpublic.h"
 
-#include "../resqml2/StructuralOrganizationInterpretation.h"
 #include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;

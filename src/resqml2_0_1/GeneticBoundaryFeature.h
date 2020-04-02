@@ -26,11 +26,6 @@ namespace RESQML2_0_1_NS
 	/** A genetic boundary feature. */
 	class GeneticBoundaryFeature : public BoundaryFeature
 	{
-	protected :
-
-		/** Default constructor Set the gsoap proxy to nullptr from superclass constructor */
-		GeneticBoundaryFeature() {}
-
 	public:
 
 		/**
@@ -59,6 +54,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		GeneticBoundaryFeature(gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature* fromGsoap): BoundaryFeature(fromGsoap) {}
+
 		/** Destructor */
 		virtual ~GeneticBoundaryFeature() {}
 
@@ -103,6 +99,11 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The XML tag.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
+
+	protected:
+
+		/** Default constructor Set the gsoap proxy to nullptr from superclass constructor */
+		GeneticBoundaryFeature() {}
 	};
 }

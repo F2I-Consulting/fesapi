@@ -57,7 +57,7 @@ namespace RESQML2_0_1_NS
 		BoundaryFeature(gsoap_resqml2_0_1::_resqml20__BoundaryFeature* fromGsoap): RESQML2_NS::BoundaryFeature(fromGsoap) {}
 		
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		~BoundaryFeature() {}
+		virtual ~BoundaryFeature() {}
 
 	protected:
 

@@ -21,11 +21,10 @@ under the License.
 
 #include <stdexcept>
 
-#include "../resqml2/AbstractFeature.h"
-#include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
-#include "../resqml2/AbstractValuesProperty.h"
-#include "../eml2/AbstractHdfProxy.h"
+#include "AbstractFeature.h"
+#include "AbstractFeatureInterpretation.h"
+#include "AbstractLocal3dCrs.h"
+#include "AbstractValuesProperty.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;

@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A deviation survey representation. */
-	class DeviationSurveyRepresentation : public RESQML2_NS::DeviationSurveyRepresentation
+	class DeviationSurveyRepresentation final : public RESQML2_NS::DeviationSurveyRepresentation
 	{
 	public:
 

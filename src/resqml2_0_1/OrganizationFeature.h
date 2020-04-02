@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** An organization feature. */
-	class OrganizationFeature : public RESQML2_NS::Model
+	class OrganizationFeature final : public RESQML2_NS::Model
 	{
 	public:
 

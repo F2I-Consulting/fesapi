@@ -20,7 +20,7 @@ under the License.
 
 #include <stdexcept>
 
-#include "LocalDepth3dCrs.h"
+#include "AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace RESQML2_NS;

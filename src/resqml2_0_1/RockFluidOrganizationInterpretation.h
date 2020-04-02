@@ -28,7 +28,7 @@ namespace RESQML2_0_1_NS
 	* As a first step, This class only works for a single rock fluid unit container due to the fact that the workaround described here http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html is not implemented yet.
 	* Use with caution : ONLY IF YOU HAVE A SINGLE ROCK FLUID UNIT ORGANISATION !!!!
 	*/
-	class RockFluidOrganizationInterpretation : public RESQML2_NS::RockFluidOrganizationInterpretation
+	class RockFluidOrganizationInterpretation final : public RESQML2_NS::RockFluidOrganizationInterpretation
 	{
 	public:
 

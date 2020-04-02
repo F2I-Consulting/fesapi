@@ -30,7 +30,7 @@ namespace PRODML2_1_NS {
 namespace RESQML2_0_1_NS
 {
 	/** A rock fluid unit feature. */
-	class RockFluidUnitFeature : public GeologicUnitFeature
+	class RockFluidUnitFeature final : public GeologicUnitFeature
 	{
 	public:
 

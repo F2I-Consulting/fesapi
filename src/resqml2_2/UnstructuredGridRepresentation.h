@@ -23,7 +23,7 @@ under the License.
 
 namespace RESQML2_2_NS
 {
-	class UnstructuredGridRepresentation : public RESQML2_NS::UnstructuredGridRepresentation
+	class UnstructuredGridRepresentation final : public RESQML2_NS::UnstructuredGridRepresentation
 	{
 	public:
 

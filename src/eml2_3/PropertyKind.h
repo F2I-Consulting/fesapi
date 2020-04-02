@@ -24,7 +24,7 @@ under the License.
 namespace EML2_3_NS
 {
 	/** A property kind. */
-	class PropertyKind : public EML2_NS::PropertyKind
+	class PropertyKind final : public EML2_NS::PropertyKind
 	{
 	public:
 

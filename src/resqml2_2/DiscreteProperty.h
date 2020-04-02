@@ -28,7 +28,7 @@ namespace RESQML2_2_NS
 	 * typically used to store any type of index. So that the value range can be known before
 	 * accessing all values, it also optionally stores the minimum and maximum value in the range.
 	 */
-	class DiscreteProperty : public RESQML2_NS::DiscreteProperty
+	class DiscreteProperty final : public RESQML2_NS::DiscreteProperty
 	{
 	public:
 

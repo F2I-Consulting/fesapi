@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** An activity template. */
-	class ActivityTemplate : public EML2_NS::ActivityTemplate
+	class ActivityTemplate final : public EML2_NS::ActivityTemplate
 	{
 	public:
 

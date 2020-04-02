@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** Proxy class for a representation set representation. */
-	class RepresentationSetRepresentation : public RESQML2_NS::RepresentationSetRepresentation
+	class RepresentationSetRepresentation final : public RESQML2_NS::RepresentationSetRepresentation
 	{
 	public:
 

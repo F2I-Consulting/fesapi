@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A seismic line set feature. */
-	class SeismicLineSetFeature : public RESQML2_NS::SeismicLineSetFeature
+	class SeismicLineSetFeature final : public RESQML2_NS::SeismicLineSetFeature
 	{
 	public:
 

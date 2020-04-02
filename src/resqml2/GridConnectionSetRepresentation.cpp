@@ -23,12 +23,10 @@ under the License.
 
 #include <hdf5.h>
 
-#include "../resqml2_0_1/FaultInterpretation.h"
 #include "../eml2/AbstractHdfProxy.h"
-#include "AbstractLocal3dCrs.h"
-#include "../resqml2_0_1/UnstructuredGridRepresentation.h"
-#include "AbstractIjkGridRepresentation.h"
-#include "../resqml2_0_1/StructuralOrganizationInterpretation.h"
+
+#include "AbstractFeatureInterpretation.h"
+#include "AbstractGridRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_NS;
@@ -108,6 +106,25 @@ void GridConnectionSetRepresentation::setCellIndexPairs(ULONG64 cellIndexPairCou
 	if (gridIndexPair != nullptr) {
 		proxy->writeArrayNd(getHdfGroup(), "GridIndexPairs", H5T_NATIVE_USHORT, gridIndexPair, numValues, 2);
 	}
+}
+
+void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(ULONG64 cellIndexPairCount, int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy)
+{
+	if (gsoapProxy2_0_1 != nullptr && nullValue != -1) {
+		throw invalid_argument("The null value must be -1 in RESQML2.0.1");
+	}
+
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+	setLocalFacePerCellIndexPairsUsingExistingDataset(getHdfGroup() + "/LocalFacePerCellIndexPairs", nullValue, proxy);
+
+	// ************ HDF ************		
+	hsize_t numValues[2] = { cellIndexPairCount,2 };
+	proxy->writeArrayNd(getHdfGroup(), "LocalFacePerCellIndexPairs", H5T_NATIVE_INT, localFacePerCellIndexPair, numValues, 2);
 }
 
 ULONG64 GridConnectionSetRepresentation::getXyzPointCountOfPatch(const unsigned int &) const

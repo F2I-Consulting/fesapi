@@ -23,7 +23,7 @@ under the License.
 /** . */
 namespace RESQML2_0_1_NS
 {
-	class StructuralOrganizationInterpretation : public RESQML2_NS::StructuralOrganizationInterpretation
+	class StructuralOrganizationInterpretation final : public RESQML2_NS::StructuralOrganizationInterpretation
 	{
 	public:
 

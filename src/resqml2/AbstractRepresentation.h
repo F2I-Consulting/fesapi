@@ -576,6 +576,6 @@ namespace RESQML2_NS
 	protected:
 
 		/** Loads target relationships */
-		virtual void loadTargetRelationships();
+		virtual void loadTargetRelationships() override;
 	};
 }

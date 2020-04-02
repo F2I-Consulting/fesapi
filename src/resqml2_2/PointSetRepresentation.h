@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A point set representation. */
-	class PointSetRepresentation : public RESQML2_NS::PointSetRepresentation
+	class PointSetRepresentation final : public RESQML2_NS::PointSetRepresentation
 	{
 	private :
 		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;

@@ -82,7 +82,7 @@ namespace RESQML2_NS
 		/**
 		* Get the standard XML tag without XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:
 		/**

@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A generic feature interpretation. */
-	class GenericFeatureInterpretation : public RESQML2_NS::GenericFeatureInterpretation
+	class GenericFeatureInterpretation final : public RESQML2_NS::GenericFeatureInterpretation
 	{
 	public:
 

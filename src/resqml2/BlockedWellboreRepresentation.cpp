@@ -20,7 +20,7 @@ under the License.
 
 #include <stdexcept>
 
-#include "../resqml2/AbstractGridRepresentation.h"
+#include "AbstractGridRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_NS;

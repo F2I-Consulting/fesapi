@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A polyline set representation. */
-	class PolylineSetRepresentation : public RESQML2_NS::PolylineSetRepresentation
+	class PolylineSetRepresentation final : public RESQML2_NS::PolylineSetRepresentation
 	{
 	private :
 		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;

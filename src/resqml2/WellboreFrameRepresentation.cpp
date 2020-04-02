@@ -22,10 +22,8 @@ under the License.
 
 #include <hdf5.h>
 
-#include "AbstractLocal3dCrs.h"
 #include "WellboreTrajectoryRepresentation.h"
 #include "../eml2/AbstractHdfProxy.h"
-#include "../tools/Misc.h"
 
 using namespace std;
 using namespace RESQML2_NS;

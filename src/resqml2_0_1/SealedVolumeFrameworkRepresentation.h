@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A sealed volume framework representation. */
-	class SealedVolumeFrameworkRepresentation : public RESQML2_NS::SealedVolumeFrameworkRepresentation
+	class SealedVolumeFrameworkRepresentation final : public RESQML2_NS::SealedVolumeFrameworkRepresentation
 	{
 	public:
 

@@ -1,6 +1,6 @@
 language: cpp
 
-matrix:
+jobs:
     include:
         - os: linux
           name: "FesapiCpp with dynamic HDF5 (gcc 4.8.4)"
@@ -8,7 +8,6 @@ matrix:
           dist: trusty
           compiler: gcc
           script:
-            - cmake --version
             - mkdir ../build
             - cd ../build
             - cmake $TRAVIS_BUILD_DIR
@@ -31,7 +30,6 @@ matrix:
           dist: trusty
           compiler: clang
           script:
-            - cmake --version
             - mkdir ../build
             - cd ../build
             - cmake $TRAVIS_BUILD_DIR

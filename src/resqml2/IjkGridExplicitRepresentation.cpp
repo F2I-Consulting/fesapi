@@ -16,16 +16,12 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
 #include "IjkGridExplicitRepresentation.h"
 
 #include <stdexcept>
 
 #include <hdf5.h>
 
-#include "AbstractFeatureInterpretation.h"
-#include "AbstractLocal3dCrs.h"
-#include "AbstractValuesProperty.h"
 #include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;

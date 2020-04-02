@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** Proxy class for a comment property. */
-	class CommentProperty : public RESQML2_NS::CommentProperty
+	class CommentProperty final : public RESQML2_NS::CommentProperty
 	{
 	public:
 
@@ -104,18 +104,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The name of the HDF5 dataset.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be string ones.
-		 *
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	patchIndex	The index of the patch we want the values from.
-		 *
-		 * @returns	The string values of the patch.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<std::string> getStringValuesOfPatch(unsigned int patchIndex);
+		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)()) final;
 
 		/**
 		 * Gets the Energistics property kind which is associated to this intance
@@ -127,9 +116,9 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind() const;
 
-		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) override;
+		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) final;
 
-		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) override;
+		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) final;
 
 	private:
 		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const;

@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A fluid boundary feature. */
-	class FluidBoundaryFeature : public BoundaryFeature
+	class FluidBoundaryFeature final : public BoundaryFeature
 	{
 	public:
 
@@ -70,6 +70,6 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The XML tag.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const final { return XML_TAG; }
 	};
 }

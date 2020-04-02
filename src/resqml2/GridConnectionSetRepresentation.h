@@ -319,6 +319,21 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void setCellIndexPairs(ULONG64 cellIndexPairCount, ULONG64 const* cellIndexPair, ULONG64 cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, unsigned short gridIndexPairNullValue = (std::numeric_limits<unsigned short>::max)(), unsigned short * gridIndexPair = nullptr);
 
 		/**
+		 * The numerical values
+		 * 2 x #Connections array of local face-per-cell indices for (Cell1,Cell2) for each connection.
+		 * Local face-per-cell indices are used because global face indices need not have been defined.
+		 * The numerical values are already stored in an existing hdf5 dataset. Null value = -1 by
+		 * documentation.
+		 *
+		 * @param 		  	localFacePerCellIndexPair	The HDF dataset path where we can find all the
+		 * 												local Face Per CellIndex Pair in a 1d Array.
+		 * @param 		  	nullValue				 	The null value.
+		 * @param [in,out]	proxy					 	The HDF proxy where the numerical values (cell
+		 * 												indices) are stored.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, LONG64 nullValue, EML2_NS::AbstractHdfProxy * proxy) = 0;
+
+		/**
 		 * @brief Sets the local face per cell index pairs of this grid connection set representation. Local
 		 * face-per-cell indices are used because global face indices need not have been defined. The
 		 * numerical values will be written as a new HDF5 dataset in an existing HDF5 file.
@@ -339,7 +354,7 @@ namespace RESQML2_NS
 		 * 												indices) are stored. If @c nullptr, then the
 		 * 												default HDF proxy of the repository will be used.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setLocalFacePerCellIndexPairs(ULONG64 cellIndexPairCount, int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy) = 0;
+		DLL_IMPORT_OR_EXPORT void setLocalFacePerCellIndexPairs(ULONG64 cellIndexPairCount, int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * For each connection in this grid connection set representation, allows to map zero or one
@@ -471,8 +486,7 @@ namespace RESQML2_NS
 		 */
 		virtual void pushBackXmlSupportingGridRepresentation(class AbstractGridRepresentation * supportingGridRep) = 0;
 
-	private:
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 	};
 }

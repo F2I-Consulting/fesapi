@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** Proxy class for a wellbore feature. */
-	class WellboreFeature : public RESQML2_NS::WellboreFeature
+	class WellboreFeature final : public RESQML2_NS::WellboreFeature
 	{
 	public:
 

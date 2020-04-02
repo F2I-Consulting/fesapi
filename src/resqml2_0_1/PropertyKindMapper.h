@@ -26,7 +26,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A property kind mapper. */
-	class PropertyKindMapper
+	class PropertyKindMapper final
 	{
 	public:
 

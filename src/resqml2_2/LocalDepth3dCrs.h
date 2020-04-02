@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A local depth 3D crs. */
-	class LocalDepth3dCrs : public RESQML2_NS::LocalDepth3dCrs
+	class LocalDepth3dCrs final : public RESQML2_NS::LocalDepth3dCrs
 	{
 	public:
 

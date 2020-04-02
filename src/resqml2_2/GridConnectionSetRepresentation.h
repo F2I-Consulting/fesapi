@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A grid connection set representation. */
-	class GridConnectionSetRepresentation : public RESQML2_NS::GridConnectionSetRepresentation
+	class GridConnectionSetRepresentation final : public RESQML2_NS::GridConnectionSetRepresentation
 	{
 	protected:
 
@@ -253,17 +253,7 @@ namespace RESQML2_2_NS
 		 * @param [in,out]	proxy					 	The HDF proxy where the numerical values (cell
 		 * 												indices) are stored.
 		 */
-		DLL_IMPORT_OR_EXPORT void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, LONG64 nullValue, EML2_NS::AbstractHdfProxy * proxy);
-
-		/**
-		 * @copybrief RESQML2_NS::GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs
-		 * @p nullValue must be -1 (business rule in RESQML v2.0.1).
-		 * 
-		 * @exception	std::invalid_argument	If <tt>nullValue != -1</tt>. 
-		 *
-		 * @copydetails RESQML2_NS::GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs
-		 */
-		DLL_IMPORT_OR_EXPORT void setLocalFacePerCellIndexPairs(ULONG64 cellIndexPairCount, int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy) final;
+		DLL_IMPORT_OR_EXPORT void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, LONG64 nullValue, EML2_NS::AbstractHdfProxy * proxy) final;
 
 		/**
 		 * For each connection in the grid connection set representation, allow to map zero or one

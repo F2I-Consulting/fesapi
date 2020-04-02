@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** This class is a container for other organizations that are consistent to each others. */
-	class EarthModelInterpretation : public RESQML2_NS::EarthModelInterpretation
+	class EarthModelInterpretation final : public RESQML2_NS::EarthModelInterpretation
 	{
 	public:
 

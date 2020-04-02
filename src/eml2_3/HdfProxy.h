@@ -24,7 +24,7 @@ under the License.
 namespace EML2_3_NS
 {
 	/** A hdf proxy. */
-	class HdfProxy : public EML2_NS::HdfProxy
+	class HdfProxy final : public EML2_NS::HdfProxy
 	{
 	public:
 

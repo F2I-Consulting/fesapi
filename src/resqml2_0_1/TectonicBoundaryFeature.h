@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A tectonic boundary feature. */
-	class TectonicBoundaryFeature : public BoundaryFeature
+	class TectonicBoundaryFeature final : public BoundaryFeature
 	{
 	public:
 

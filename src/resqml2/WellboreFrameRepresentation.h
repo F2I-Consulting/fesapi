@@ -183,9 +183,9 @@ namespace RESQML2_NS
 		 * 
 		 * @copydetails AbstractRepresentation::getHdfProxyDor()
 		 */
-		COMMON_NS::DataObjectReference getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override {return 1;}
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final {return 1;}
 
 	protected:
 		/** Default constructor */
@@ -216,6 +216,6 @@ namespace RESQML2_NS
 			AbstractRepresentation(fromGsoap) {}
 
 		/** Loads target relationships */
-		virtual void loadTargetRelationships();
+		virtual void loadTargetRelationships() override;
 	};
 }

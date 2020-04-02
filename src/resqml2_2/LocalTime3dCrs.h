@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A local time 3D crs. */
-	class LocalTime3dCrs : public RESQML2_NS::LocalTime3dCrs
+	class LocalTime3dCrs final : public RESQML2_NS::LocalTime3dCrs
 	{
 	private:
 

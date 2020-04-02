@@ -19,15 +19,10 @@ under the License.
 #include "AbstractValuesProperty.h"
 
 #include <stdexcept>
-#include <ostream>
-#include <sstream>
 
 #include <hdf5.h>
 
 #include "../eml2/PropertyKind.h"
-
-#include "AbstractRepresentation.h"
-#include "AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
 
 using namespace RESQML2_NS;

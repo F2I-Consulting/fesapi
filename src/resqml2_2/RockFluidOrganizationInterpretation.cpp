@@ -32,7 +32,6 @@ RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(RESQML2
 	}
 
 	gsoapProxy2_3 = soap_new_resqml22__RockFluidOrganizationInterpretation(orgFeat->getGsoapContext());
-	_resqml22__RockFluidOrganizationInterpretation* rfoi = static_cast<_resqml22__RockFluidOrganizationInterpretation*>(gsoapProxy2_3);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");

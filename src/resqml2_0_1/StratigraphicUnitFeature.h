@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A stratigraphic unit feature. */
-	class StratigraphicUnitFeature : public GeologicUnitFeature
+	class StratigraphicUnitFeature final : public GeologicUnitFeature
 	{
 	public:
 

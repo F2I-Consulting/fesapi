@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "GraphicalInformationSet.h"
 
-#include "../tools/Misc.h"
 #include "../resqml2/AbstractFeature.h"
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractRepresentation.h"

@@ -21,10 +21,6 @@ under the License.
 #include <stdexcept>
 #include <limits>
 
-#include "AbstractLocal3dCrs.h"
-
-#include "../tools/Misc.h"
-
 using namespace std;
 using namespace RESQML2_NS;
 

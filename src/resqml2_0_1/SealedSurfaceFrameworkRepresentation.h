@@ -28,7 +28,7 @@ namespace RESQML2_0_1_NS
 	 * collection of contact is completed by a set of representations gathered at the representation
 	 * set representation level.
 	 */
-	class SealedSurfaceFrameworkRepresentation : public RESQML2_NS::SealedSurfaceFrameworkRepresentation
+	class SealedSurfaceFrameworkRepresentation final : public RESQML2_NS::SealedSurfaceFrameworkRepresentation
 	{
 	public:
 

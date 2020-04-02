@@ -24,9 +24,9 @@ under the License.
 
 #include <hdf5.h>
 
-#include "../tools/Misc.h"
-#include "AbstractStratigraphicOrganizationInterpretation.h"
 #include "../eml2/AbstractHdfProxy.h"
+
+#include "AbstractStratigraphicOrganizationInterpretation.h"
 #include "UnstructuredGridRepresentation.h"
 #include "AbstractIjkGridRepresentation.h"
 #include "RockFluidOrganizationInterpretation.h"

@@ -23,13 +23,13 @@ under the License.
 
 #include "../common/EnumStringMapper.h"
 
-#include "SubRepresentation.h"
-#include "PropertySet.h"
-#include "RepresentationSetRepresentation.h"
 #include "../eml2/PropertyKind.h"
-#include "AbstractLocal3dCrs.h"
-#include "../eml2/AbstractHdfProxy.h"
 #include "../eml2/TimeSeries.h"
+
+#include "AbstractRepresentation.h"
+#include "PropertySet.h"
+#include "AbstractLocal3dCrs.h"
+
 #include "../resqml2_0_1/PropertyKindMapper.h"
 
 using namespace RESQML2_NS;

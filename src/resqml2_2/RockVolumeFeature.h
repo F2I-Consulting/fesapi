@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A stratigraphic unit feature. */
-	class RockVolumeFeature : public RESQML2_NS::RockVolumeFeature
+	class RockVolumeFeature final : public RESQML2_NS::RockVolumeFeature
 	{
 	public:
 

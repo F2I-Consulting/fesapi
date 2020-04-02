@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A non sealed surface framework representation. */
-	class NonSealedSurfaceFrameworkRepresentation : public RESQML2_NS::NonSealedSurfaceFrameworkRepresentation
+	class NonSealedSurfaceFrameworkRepresentation final : public RESQML2_NS::NonSealedSurfaceFrameworkRepresentation
 	{
     public:
 

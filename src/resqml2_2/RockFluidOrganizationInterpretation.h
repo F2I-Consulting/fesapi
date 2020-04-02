@@ -26,7 +26,7 @@ namespace RESQML2_2_NS
 	/**
 	* This class is a container for rock fluid units.
 	*/
-	class RockFluidOrganizationInterpretation : public RESQML2_NS::RockFluidOrganizationInterpretation
+	class RockFluidOrganizationInterpretation final : public RESQML2_NS::RockFluidOrganizationInterpretation
 	{
 	public:
 

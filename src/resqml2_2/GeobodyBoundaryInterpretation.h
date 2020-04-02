@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A geobody boundary interpretation. */
-	class GeobodyBoundaryInterpretation : public RESQML2_NS::GeobodyBoundaryInterpretation
+	class GeobodyBoundaryInterpretation final : public RESQML2_NS::GeobodyBoundaryInterpretation
 	{
 	public:
 

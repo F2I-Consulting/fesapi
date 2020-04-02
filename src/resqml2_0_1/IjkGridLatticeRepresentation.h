@@ -23,7 +23,7 @@ under the License.
 /** . */
 namespace RESQML2_0_1_NS
 {
-	class IjkGridLatticeRepresentation : public RESQML2_NS::IjkGridLatticeRepresentation
+	class IjkGridLatticeRepresentation final : public RESQML2_NS::IjkGridLatticeRepresentation
 	{
 	private :
 		gsoap_resqml2_0_1::resqml20__Point3dLatticeArray* getArrayLatticeOfPoints3d() const;

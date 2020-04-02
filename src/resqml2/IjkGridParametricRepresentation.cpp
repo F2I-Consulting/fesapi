@@ -23,10 +23,9 @@ under the License.
 
 #include <hdf5.h>
 
-#include "AbstractFeatureInterpretation.h"
-#include "AbstractLocal3dCrs.h"
-#include "AbstractValuesProperty.h"
 #include "../eml2/AbstractHdfProxy.h"
+
+#include "AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;

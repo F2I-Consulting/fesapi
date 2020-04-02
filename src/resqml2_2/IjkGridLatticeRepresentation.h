@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_2_NS
 {
-	class IjkGridLatticeRepresentation : public RESQML2_NS::IjkGridLatticeRepresentation
+	class IjkGridLatticeRepresentation final : public RESQML2_NS::IjkGridLatticeRepresentation
 	{
 	private :
 		gsoap_eml2_3::resqml22__Point3dLatticeArray* getArrayLatticeOfPoints3d() const;

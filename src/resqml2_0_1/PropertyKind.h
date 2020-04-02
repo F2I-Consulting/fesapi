@@ -25,7 +25,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A property kind. */
-	class PropertyKind : public EML2_NS::PropertyKind
+	class PropertyKind final : public EML2_NS::PropertyKind
 	{
 	private:
 

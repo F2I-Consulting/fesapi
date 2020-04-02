@@ -24,13 +24,13 @@ under the License.
 
 #include "H5public.h"
 
+#include "../eml2/AbstractHdfProxy.h"
+
 #include "AbstractFeatureInterpretation.h"
 #include "RepresentationSetRepresentation.h"
 #include "AbstractValuesProperty.h"
 #include "SubRepresentation.h"
-#include "../eml2/AbstractHdfProxy.h"
 #include "AbstractLocal3dCrs.h"
-#include "../tools/Misc.h"
 
 using namespace RESQML2_NS;
 using namespace std;

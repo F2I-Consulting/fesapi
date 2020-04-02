@@ -34,7 +34,7 @@ namespace RESQML2_2_NS
 	 * stored. BUSINESS RULE: It also contains a unit of measure, which can be different from the
 	 * unit of measure of its property type, but it must be convertible into this unit.
 	 */
-	class ContinuousProperty : public RESQML2_NS::ContinuousProperty
+	class ContinuousProperty final : public RESQML2_NS::ContinuousProperty
 	{
 	public:
 

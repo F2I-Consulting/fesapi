@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A boundary feature interpretation. */
-	class BoundaryFeatureInterpretation : public RESQML2_NS::BoundaryFeatureInterpretation
+	class BoundaryFeatureInterpretation final : public RESQML2_NS::BoundaryFeatureInterpretation
 	{
 	public:
 

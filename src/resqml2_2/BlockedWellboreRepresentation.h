@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A blocked wellbore representation. */
-	class BlockedWellboreRepresentation : public RESQML2_NS::BlockedWellboreRepresentation
+	class BlockedWellboreRepresentation final : public RESQML2_NS::BlockedWellboreRepresentation
 	{
 	public:
 

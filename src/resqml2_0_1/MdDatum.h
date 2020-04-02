@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A md datum. */
-	class MdDatum : public RESQML2_NS::MdDatum
+	class MdDatum final : public RESQML2_NS::MdDatum
 	{
 	public:
 

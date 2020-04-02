@@ -22,7 +22,6 @@ under the License.
 
 #include "WellboreMarker.h"
 #include "StratigraphicOccurrenceInterpretation.h"
-#include "BoundaryFeatureInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_NS;

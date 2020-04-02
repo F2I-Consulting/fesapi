@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_2_NS
 {
-	class IjkGridNoGeometryRepresentation : public RESQML2_NS::IjkGridNoGeometryRepresentation
+	class IjkGridNoGeometryRepresentation final : public RESQML2_NS::IjkGridNoGeometryRepresentation
 	{
 	public:
 

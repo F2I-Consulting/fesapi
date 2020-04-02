@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A frontier feature. */
-	class CulturalFeature : public RESQML2_NS::CulturalFeature
+	class CulturalFeature final : public RESQML2_NS::CulturalFeature
 	{
 	public:
 

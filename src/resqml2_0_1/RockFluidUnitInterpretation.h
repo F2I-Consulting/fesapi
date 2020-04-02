@@ -23,7 +23,7 @@ under the License.
 /** . */
 namespace RESQML2_0_1_NS
 {
-	class RockFluidUnitInterpretation : public RESQML2_NS::RockFluidUnitInterpretation
+	class RockFluidUnitInterpretation final : public RESQML2_NS::RockFluidUnitInterpretation
 	{
 	public:
 

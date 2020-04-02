@@ -84,6 +84,6 @@ namespace RESQML2_NS
 		CategoricalProperty(gsoap_eml2_3::_resqml22__CategoricalProperty* fromGsoap) : AbstractDiscreteOrCategoricalProperty(fromGsoap) {}
 
 		/** Loads target relationships */
-		virtual void loadTargetRelationships();
+		void loadTargetRelationships() final;
 	};
 }

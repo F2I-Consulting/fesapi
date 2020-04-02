@@ -22,8 +22,6 @@ under the License.
 
 #include "../prodml2_1/FluidCharacterization.h"
 
-#include "../tools/Misc.h"
-
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;

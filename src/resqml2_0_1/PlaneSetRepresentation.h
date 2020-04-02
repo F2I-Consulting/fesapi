@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A plane set representation. */
-	class PlaneSetRepresentation : public RESQML2_NS::PlaneSetRepresentation
+	class PlaneSetRepresentation final : public RESQML2_NS::PlaneSetRepresentation
 	{
 	public:
 

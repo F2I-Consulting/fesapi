@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A sub representation. */
-	class SubRepresentation : public RESQML2_NS::SubRepresentation
+	class SubRepresentation final : public RESQML2_NS::SubRepresentation
 	{
 	public:
 

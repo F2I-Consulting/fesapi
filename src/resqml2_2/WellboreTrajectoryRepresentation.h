@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A wellbore trajectory representation. */
-	class WellboreTrajectoryRepresentation : public RESQML2_NS::WellboreTrajectoryRepresentation
+	class WellboreTrajectoryRepresentation final : public RESQML2_NS::WellboreTrajectoryRepresentation
 	{
 	public:
 

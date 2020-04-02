@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** Proxy class for a comment property. */
-	class CommentProperty : public RESQML2_NS::CommentProperty
+	class CommentProperty final : public RESQML2_NS::CommentProperty
 	{
 	public:
 

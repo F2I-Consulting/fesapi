@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A time series. */
-	class TimeSeries : public EML2_NS::TimeSeries
+	class TimeSeries final : public EML2_NS::TimeSeries
 	{
 	public:
 

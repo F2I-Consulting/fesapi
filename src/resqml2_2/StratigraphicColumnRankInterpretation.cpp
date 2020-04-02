@@ -194,4 +194,6 @@ COMMON_NS::DataObjectReference StratigraphicColumnRankInterpretation::getHorizon
 			return COMMON_NS::DataObjectReference(cr->ContactInterpretation[i]->PartOf);
 		}
 	}
+
+	return COMMON_NS::DataObjectReference();
 }

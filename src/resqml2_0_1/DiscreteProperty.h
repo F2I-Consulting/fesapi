@@ -28,7 +28,7 @@ namespace RESQML2_0_1_NS
 	 * typically used to store any type of index. So that the value range can be known before
 	 * accessing all values, it also optionally stores the minimum and maximum value in the range.
 	 */
-	class DiscreteProperty : public RESQML2_NS::DiscreteProperty
+	class DiscreteProperty final : public RESQML2_NS::DiscreteProperty
 	{
 	public:
 
@@ -116,26 +116,26 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The name of the referenced HDF5 dataset.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue);
+		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue) final;
 		using AbstractDiscreteOrCategoricalProperty::pushBackRefToExistingDataset;
 
-		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) override;
+		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) final;
 
-		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) override;
+		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) final;
 
 		/**
 		 * Gets the null value in this discrete property.
 		 *
 		 * @returns	The null value of this discrete property if present otherwise the maximum int 64 bits value.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getNullValue(unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) const;
+		DLL_IMPORT_OR_EXPORT LONG64 getNullValue(unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) const final;
 
 		/**
 		 * Checks if this discrete property has got a minimum value already computed (or set).
 		 *
 		 * @returns	True if there exists a minimum value, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasMinimumValue(unsigned int index = 0) const;
+		DLL_IMPORT_OR_EXPORT bool hasMinimumValue(unsigned int index = 0) const final;
 
 		/**
 		 * Gets the (first by default) minimum value in this discrete properties. It reads it from
@@ -145,14 +145,14 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The minimum value if present in the file, else false.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getMinimumValue(unsigned int index = 0) const;
+		DLL_IMPORT_OR_EXPORT LONG64 getMinimumValue(unsigned int index = 0) const final;
 
 		/**
 		 * Checks if this discrete property has got a maximum value already computed (or set).
 		 *
 		 * @returns	True if there exists a minimum value, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasMaximumValue(unsigned int index = 0) const;
+		DLL_IMPORT_OR_EXPORT bool hasMaximumValue(unsigned int index = 0) const final;
 
 		/**
 		 * Gets the (first by default) maximum value in this discrete properties. It reads it from
@@ -162,12 +162,12 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The maximum value if present in the file, else false.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getMaximumValue(unsigned int index = 0) const;
+		DLL_IMPORT_OR_EXPORT LONG64 getMaximumValue(unsigned int index = 0) const final;
 
 		/**
 		 * Set the minimum value in this discrete property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setMinimumValue(LONG64 value, unsigned int index = 0) const;
+		DLL_IMPORT_OR_EXPORT void setMinimumValue(LONG64 value, unsigned int index = 0) const final;
 
 		/**
 		 * Set the maximum value in this discrete property.

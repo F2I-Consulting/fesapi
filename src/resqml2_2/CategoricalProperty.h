@@ -28,7 +28,7 @@ namespace RESQML2_2_NS
 	 * is associated either: as an internally stored index to a string through a lookup mapping, or
 	 * as an internally stored double to another double value through an explicitly provided table.
 	 */
-	class CategoricalProperty : public RESQML2_NS::CategoricalProperty
+	class CategoricalProperty final : public RESQML2_NS::CategoricalProperty
 	{
 	public:
 

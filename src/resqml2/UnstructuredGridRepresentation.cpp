@@ -22,9 +22,9 @@ under the License.
 
 #include <hdf5.h>
 
-#include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
+
+#include "AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;

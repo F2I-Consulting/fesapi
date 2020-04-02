@@ -23,10 +23,7 @@ under the License.
 
 #include <hdf5.h>
 
-#include "AbstractFeatureInterpretation.h"
 #include "../eml2/AbstractHdfProxy.h"
-#include "../resqml2_0_1/UnstructuredGridRepresentation.h"
-#include "AbstractIjkGridRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_NS;

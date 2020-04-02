@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A polyline representation. */
-	class PolylineRepresentation : public RESQML2_NS::PolylineRepresentation
+	class PolylineRepresentation final : public RESQML2_NS::PolylineRepresentation
 	{
 	public:
 

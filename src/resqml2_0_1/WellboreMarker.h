@@ -31,7 +31,7 @@ namespace RESQML2_0_1_NS
 	 * Consequently its behaviour is slightly different than other class. Especially there is no
 	 * integration of the instances into an EPC document.
 	 */
-	class WellboreMarker : public RESQML2_NS::WellboreMarker
+	class WellboreMarker final : public RESQML2_NS::WellboreMarker
 	{
 	public:
 

@@ -26,7 +26,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** Proxy class for a wellbore marker frame representation. */
-	class WellboreMarkerFrameRepresentation : public RESQML2_NS::WellboreMarkerFrameRepresentation
+	class WellboreMarkerFrameRepresentation final : public RESQML2_NS::WellboreMarkerFrameRepresentation
 	{
 	public:
 

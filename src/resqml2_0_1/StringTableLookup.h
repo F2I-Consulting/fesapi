@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A string table lookup. */
-	class StringTableLookup : public RESQML2_NS::StringTableLookup
+	class StringTableLookup final : public RESQML2_NS::StringTableLookup
 	{
 	public:
 

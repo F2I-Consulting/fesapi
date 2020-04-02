@@ -27,7 +27,7 @@ namespace RESQML2_0_1_NS
 	* An IJK Grid explicit representation defines each cell corner position by means of XYZ coordinates.
 	* Adjacent cell corner are supposed to be located the same so they are not repeated unless you define split lines or split nodes.
 	*/
-	class IjkGridExplicitRepresentation : public RESQML2_NS::IjkGridExplicitRepresentation
+	class IjkGridExplicitRepresentation final : public RESQML2_NS::IjkGridExplicitRepresentation
 	{
 	public:
 
