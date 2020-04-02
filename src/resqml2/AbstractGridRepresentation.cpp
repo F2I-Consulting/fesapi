@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractGridRepresentation.h"
 
-#include <stdexcept>
 #include <algorithm>
 #include <limits>
+#include <stdexcept>
 
 #include <hdf5.h>
 

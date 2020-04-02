@@ -20,6 +20,8 @@ under the License.
 
 #include "PvtSpecification.h"
 
+#include <limits>
+
 /**
  * A macro that defines getter and setter fluid component property optional attribute
  *

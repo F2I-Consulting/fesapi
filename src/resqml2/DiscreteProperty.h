@@ -20,6 +20,8 @@ under the License.
 
 #include "AbstractDiscreteOrCategoricalProperty.h"
 
+#include <limits>
+
 /** . */
 namespace RESQML2_NS
 {

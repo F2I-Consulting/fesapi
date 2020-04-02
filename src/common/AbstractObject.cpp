@@ -19,6 +19,7 @@ under the License.
 
 #include "AbstractObject.h"
 
+#include <limits>
 #include <stdexcept>
 #include <string>
 #include <sstream>

@@ -18,6 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "StructuralOrganizationInterpretation.h"
 
+#include <limits>
 #include <stdexcept>
 
 #include "OrganizationFeature.h"

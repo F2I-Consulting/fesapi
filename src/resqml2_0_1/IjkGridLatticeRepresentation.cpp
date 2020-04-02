@@ -16,9 +16,9 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
 #include "IjkGridLatticeRepresentation.h"
 
+#include <limits>
 #include <stdexcept>
 
 #include "../resqml2/AbstractFeature.h"

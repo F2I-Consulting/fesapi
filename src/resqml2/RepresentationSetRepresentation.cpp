@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "RepresentationSetRepresentation.h"
 
-#include <stdexcept>
 #include <limits>
+#include <stdexcept>
 
 using namespace std;
 using namespace RESQML2_NS;

@@ -18,17 +18,19 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "GraphicalInformationSet.h"
 
+#include <limits>
+#include <stdexcept>
+
+#include "../eml2/PropertyKind.h"
+
 #include "../resqml2/AbstractFeature.h"
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractRepresentation.h"
 #include "../resqml2/AbstractValuesProperty.h"
 #include "../resqml2/WellboreMarker.h"
-#include "../eml2/PropertyKind.h"
 #include "../resqml2_2/AbstractColorMap.h"
 #include "../resqml2_2/DiscreteColorMap.h"
 #include "../resqml2_2/ContinuousColorMap.h"
-
-#include <stdexcept>
 
 using namespace std;
 using namespace COMMON_NS;

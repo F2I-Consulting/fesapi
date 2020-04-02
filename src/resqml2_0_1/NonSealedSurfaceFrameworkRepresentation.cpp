@@ -19,6 +19,7 @@ under the License.
 #include "NonSealedSurfaceFrameworkRepresentation.h"
 
 #include <algorithm>
+#include <limits>
 #include <stdexcept>
 #include <sstream>
 

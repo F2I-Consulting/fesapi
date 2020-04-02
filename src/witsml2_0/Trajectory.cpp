@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Trajectory.h"
 
+#include <limits>
 #include <sstream>
 #include <stdexcept>
-#include <limits>
 
 #include "Wellbore.h"
 

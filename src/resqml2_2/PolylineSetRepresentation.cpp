@@ -18,8 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PolylineSetRepresentation.h"
 
-#include <sstream>
 #include <algorithm>
+#include <limits>
+#include <sstream>
 #include <stdexcept>
 
 #include <hdf5.h>

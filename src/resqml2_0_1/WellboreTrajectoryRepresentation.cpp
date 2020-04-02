@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreTrajectoryRepresentation.h"
 
-#include <stdexcept>
 #include <limits>
+#include <stdexcept>
 
 #include "H5public.h"
 

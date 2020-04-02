@@ -18,6 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "FluidCharacterization.h"
 
+#include <limits>
 #include <stdexcept>
 
 #include "FrictionTheorySpecification.h"

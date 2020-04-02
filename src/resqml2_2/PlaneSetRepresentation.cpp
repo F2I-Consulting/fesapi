@@ -18,10 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PlaneSetRepresentation.h"
 
+#include <algorithm>
+#include <limits>
 #include <stdexcept>
 #include <sstream>
-#include <algorithm>
-#include <stdexcept>
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractLocal3dCrs.h"

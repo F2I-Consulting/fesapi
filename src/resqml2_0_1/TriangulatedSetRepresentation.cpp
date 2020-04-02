@@ -18,6 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "TriangulatedSetRepresentation.h"
 
+#include <limits>
 #include <sstream>
 #include <stdexcept>
 

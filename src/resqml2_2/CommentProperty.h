@@ -20,6 +20,8 @@ under the License.
 
 #include "../resqml2/CommentProperty.h"
 
+#include <limits>
+
 /** . */
 namespace RESQML2_2_NS
 {

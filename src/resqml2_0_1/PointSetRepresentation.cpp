@@ -18,6 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PointSetRepresentation.h"
 
+#include <limits>
 #include <stdexcept>
 
 #include "H5public.h"

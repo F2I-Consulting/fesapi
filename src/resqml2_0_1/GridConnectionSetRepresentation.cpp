@@ -19,9 +19,8 @@ under the License.
 #include "GridConnectionSetRepresentation.h"
 
 #include <algorithm>
-#if defined(__gnu_linux__) || defined(__APPLE__) 
+#include <limits>
 #include <stdexcept>
-#endif 
 
 #include <hdf5.h>
 

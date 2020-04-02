@@ -20,6 +20,7 @@ under the License.
 
 #include <algorithm>
 #include <functional>
+#include <limits>
 
 #include "../common/HdfProxyFactory.h"
 

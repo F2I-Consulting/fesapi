@@ -19,6 +19,7 @@ under the License.
 #include "RockFluidOrganizationInterpretation.h"
 
 #include <algorithm>
+#include <limits>
 
 #include "RockFluidUnitInterpretation.h"
 #include "AbstractGridRepresentation.h"

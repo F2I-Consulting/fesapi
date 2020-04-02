@@ -18,8 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractStratigraphicOrganizationInterpretation.h"
 
-#include <stdexcept>
 #include <algorithm>
+#include <limits>
+#include <stdexcept>
 
 using namespace RESQML2_NS;
 using namespace std;

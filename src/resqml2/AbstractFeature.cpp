@@ -18,8 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractFeature.h"
 
-#include <stdexcept>
 #include <algorithm>
+#include <limits>
+#include <stdexcept>
 
 using namespace RESQML2_NS;
 using namespace std;

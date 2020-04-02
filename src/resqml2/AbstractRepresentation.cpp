@@ -18,8 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractRepresentation.h"
 
-#include <sstream>
 #include <algorithm>
+#include <limits>
+#include <sstream>
 #include <stdexcept>
 
 #include "H5public.h"

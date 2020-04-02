@@ -18,8 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractProperty.h"
 
-#include <stdexcept>
 #include <algorithm>
+#include <limits>
+#include <stdexcept>
 
 #include "../common/EnumStringMapper.h"
 
