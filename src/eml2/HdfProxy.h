@@ -539,6 +539,46 @@ namespace EML2_NS
 			unsigned int numDimensions) final;
 
 		/**
+		 * Considering a given dataset, this method selects an hyperslab region to add to an existing
+		 * selected region or to add to a new selected region. The dataset is not closed within this
+		 * method.
+		 *
+		 * @param 		  	datasetName					The name of the array (potentially with multi
+		 * 												dimensions).
+		 * @param 		  	blockCountPerDimension  	Number of blocks to select from the dataspace, in
+		 * 												each dimension. They are ordered from fastest index
+		 * 												to slowest index.
+		 * @param 		  	offsetInEachDimension   	Offset values in each dimension of the array to
+		 * 												read. They are ordered from fastest index to slowest
+		 * 												index.
+		 * @param 		  	strideInEachDimension   	Number of elements to move from one block to
+		 * 												another in each dimension. They are ordered from
+		 * 												fastest index to slowest index.
+		 * @param 		  	blockSizeInEachDimension	Size of selected blocks in each dimension. They
+		 * 												are ordered from fastest index to slowest index.
+		 * @param 		  	numDimensions				The number of the dimensions of the array to
+		 * 												select.
+		 * @param 		  	newSelection				true if creating a new selected region else false.
+		 * @param [in,out]	dataset						Input dataset ID if adding a new hyperslab region
+		 * 												to an existing selected region, output dataset ID if
+		 * 												creating a new selected region.
+		 * @param [in,out]	filespace					Input selected region ID if adding a new
+		 * 												hyperslab region to an existing selected region,
+		 * 												output selected region ID if creating a new selected
+		 * 												region.
+		 */
+		void selectArrayNdOfValues(
+			const std::string& datasetName,
+			unsigned long long const* blockCountPerDimension,
+			unsigned long long const* offsetInEachDimension,
+			unsigned long long const* strideInEachDimension,
+			unsigned long long const* blockSizeInEachDimension,
+			unsigned int numDimensions,
+			bool newSelection,
+			hdf5_hid_t& dataset,
+			hdf5_hid_t& filespace) final;
+
+		/**
 		 * Considering a given nd array dataset, reads the double values corresponding to an existing
 		 * selected region.
 		 *
@@ -804,7 +844,7 @@ namespace EML2_NS
 		HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
 
 		/**
-		 * Read an nd array of float values stored in a specific dataset.
+		 * Read an nd array of values stored in a specific dataset.
 		 *
 		 * @param 		  	datasetName	The absolute dataset name where to read the values.
 		 * @param [in,out]	values	   	The values must be pre-allocated.
@@ -872,46 +912,6 @@ namespace EML2_NS
 			unsigned long long const* blockSizeInEachDimension,
 			unsigned int numDimensions,
 			hdf5_hid_t datatype);
-
-		/**
-		 * Considering a given dataset, this method selects an hyperslab region to add to an existing
-		 * selected region or to add to a new selected region. The dataset is not closed within this
-		 * method.
-		 *
-		 * @param 		  	datasetName					The name of the array (potentially with multi
-		 * 												dimensions).
-		 * @param 		  	blockCountPerDimension  	Number of blocks to select from the dataspace, in
-		 * 												each dimension. They are ordered from fastest index
-		 * 												to slowest index.
-		 * @param 		  	offsetInEachDimension   	Offset values in each dimension of the array to
-		 * 												read. They are ordered from fastest index to slowest
-		 * 												index.
-		 * @param 		  	strideInEachDimension   	Number of elements to move from one block to
-		 * 												another in each dimension. They are ordered from
-		 * 												fastest index to slowest index.
-		 * @param 		  	blockSizeInEachDimension	Size of selected blocks in each dimension. They
-		 * 												are ordered from fastest index to slowest index.
-		 * @param 		  	numDimensions				The number of the dimensions of the array to
-		 * 												select.
-		 * @param 		  	newSelection				true if creating a new selected region else false.
-		 * @param [in,out]	dataset						Input dataset ID if adding a new hyperslab region
-		 * 												to an existing selected region, output dataset ID if
-		 * 												creating a new selected region.
-		 * @param [in,out]	filespace					Input selected region ID if adding a new
-		 * 												hyperslab region to an existing selected region,
-		 * 												output selected region ID if creating a new selected
-		 * 												region.
-		 */
-		void selectArrayNdOfValues(
-			const std::string& datasetName,
-			unsigned long long const* blockCountPerDimension,
-			unsigned long long const* offsetInEachDimension,
-			unsigned long long const* strideInEachDimension,
-			unsigned long long const* blockSizeInEachDimension,
-			unsigned int numDimensions,
-			bool newSelection,
-			hdf5_hid_t& dataset,
-			hdf5_hid_t& filespace);
 
 		/**
 		 * Considering a given dataset, read the double values corresponding to an existing selected
