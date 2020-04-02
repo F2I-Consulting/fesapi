@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A wellbore trajectory representation. */
-	class WellboreTrajectoryRepresentation : public RESQML2_NS::WellboreTrajectoryRepresentation
+	class WellboreTrajectoryRepresentation final : public RESQML2_NS::WellboreTrajectoryRepresentation
 	{
 	public:
 
@@ -84,7 +84,7 @@ namespace RESQML2_2_NS
 		 * @param 	endMd  	The end MD of the trajectory. Uom is the same as the one for the associated
 		 * 					MdDatum coordinates.
 		 */
-		DLL_IMPORT_OR_EXPORT void setMinimalGeometry(double startMd, double endMd);
+		DLL_IMPORT_OR_EXPORT void setMinimalGeometry(double startMd, double endMd) final;
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line without MD information
@@ -121,7 +121,8 @@ namespace RESQML2_2_NS
 		 * 										CRS of the data object repository will be arbitrarily
 		 * 										selected.
 		 */
-		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
+		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints, double startMd, double endMd, unsigned int controlPointCount,
+			int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 		
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD information.
@@ -162,7 +163,7 @@ namespace RESQML2_2_NS
 		 * 											arbitrarily selected.
 		 */
 		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD and tangent
@@ -213,7 +214,7 @@ namespace RESQML2_2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints,
 			double const* tangentVectors, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
 		/**
 		 * Gets the geometry kind.
@@ -226,7 +227,7 @@ namespace RESQML2_2_NS
 		 * @returns	0 for vertical, 1 for linear spline, 2 for natural cubic spline, 3 for cubic spline,
 		 * 			4 for z linear cubic spline, 5 for minimum-curvature spline, (-1) for null: no line.
 		 */
-		DLL_IMPORT_OR_EXPORT int getGeometryKind() const;
+		DLL_IMPORT_OR_EXPORT int getGeometryKind() const final;
 
 		/**
 		 * Sets the MD datum of this trajectory.
@@ -235,16 +236,16 @@ namespace RESQML2_2_NS
 		 *
 		 * @param [in]	mdDatum	The MD damtum to set to this trajectory. It cannot be null.
 		 */
-		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum * mdDatum);
+		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum * mdDatum) final;
 
 		/**
 		* Gets the data object reference of the MD information associated to this wellbore trajectory representation.
 		* 
 		* @returns The data object reference of the MD information.
 		*/
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getMdDatumDor() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getMdDatumDor() const final;
 
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const override;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
 		 * @copybrief RESQML2_NS::AbstractRepresentation::getXyzPointsOfPatch
@@ -254,7 +255,7 @@ namespace RESQML2_2_NS
 		 * 
 		 * @copydetails RESQML2_NS::AbstractRepresentation::getXyzPointsOfPatch
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const override ;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Indicates if the wellbore trajectory has got MD values attached to each trajectory station.
@@ -263,14 +264,14 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	True if there is some MD values, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasMdValues() const;
+		DLL_IMPORT_OR_EXPORT bool hasMdValues() const final;
 
 		/**
 		 * Gets the unit of measure of the MDs along this trajectory.
 		 *
 		 * @returns	The unit of measure of the MDs along this trajectory.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const final;
 
 		/**
 		 * Gets the MD double values associated to each trajectory station of this trajectory.
@@ -282,7 +283,7 @@ namespace RESQML2_2_NS
 		 * @param [out]	values	A buffer for receiving the MD values. It must be preallocated with size
 		 * 						of getXyzPointCountOfAllPatches().
 		 */
-		DLL_IMPORT_OR_EXPORT void getMdValues(double* values) const;
+		DLL_IMPORT_OR_EXPORT void getMdValues(double* values) const final;
 
 		/**
 		 * Gets the starting MD of this wellbore trajectory. Range may often be from kickoff to TD,
@@ -290,7 +291,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The start MD.
 		 */
-		DLL_IMPORT_OR_EXPORT double getStartMd() const;
+		DLL_IMPORT_OR_EXPORT double getStartMd() const final;
 
 		/**
 		 * Gets the ending MD of this wellbore trajectory. Range may often be from kickoff to TD, but
@@ -298,7 +299,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The end MD.
 		 */
-		DLL_IMPORT_OR_EXPORT double getFinishMd() const;
+		DLL_IMPORT_OR_EXPORT double getFinishMd() const final;
 
 		/**
 		 * Indicates if the wellbore trajectory has got tangent vectors attached to each trajectory
@@ -308,7 +309,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	True if there is some tangent vectors, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasTangentVectors() const;
+		DLL_IMPORT_OR_EXPORT bool hasTangentVectors() const final;
 
 		/**
 		 * Gets the tangent vectors associated to each trajectory station of this trajectory.
@@ -320,7 +321,7 @@ namespace RESQML2_2_NS
 		 * 								preallocated with size of <tt>3 * </tt>
 		 * 								getXyzPointCountOfAllPatches().
 		 */
-		DLL_IMPORT_OR_EXPORT void getTangentVectors(double* tangentVectors);
+		DLL_IMPORT_OR_EXPORT void getTangentVectors(double* tangentVectors) final;
 
 		/**
 		 * Adds a trajectory parent to this trajectory in case of trajectory branching. Does add the
@@ -340,7 +341,7 @@ namespace RESQML2_2_NS
 		 * @returns	Empty if this trajectory has no parent trajectory, otherwise the data object
 		 * 			reference of the parent trajectory.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getParentTrajectoryDor() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getParentTrajectoryDor() const final;
 
 		/**
 		 * Gets the MD on the parent wellbore trajectory where this trajectory is starting.
@@ -349,7 +350,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The parent trajectory MD.
 		 */
-		DLL_IMPORT_OR_EXPORT double getParentTrajectoryMd() const;
+		DLL_IMPORT_OR_EXPORT double getParentTrajectoryMd() const final;
 
 		/**
 		 * Sets the deviation survey which is the source of this trajectory.
@@ -358,7 +359,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @param [in]	deviationSurvey	The deviation survey to set as a source of this trajectory.
 		 */
-		DLL_IMPORT_OR_EXPORT void setDeviationSurvey(RESQML2_NS::DeviationSurveyRepresentation* deviationSurvey);
+		DLL_IMPORT_OR_EXPORT void setDeviationSurvey(RESQML2_NS::DeviationSurveyRepresentation* deviationSurvey) final;
 
 		/**
 		 * Gets the data object reference of the deviation survey which is the source of this trajectory.
@@ -366,18 +367,18 @@ namespace RESQML2_2_NS
 		 * @returns	The data object reference of the deviation survey which is the source of this
 		 * 			trajectory if exists, else empty data object reference.
 		 */
-		COMMON_NS::DataObjectReference getDeviationSurveyDor() const;
+		COMMON_NS::DataObjectReference getDeviationSurveyDor() const final;
 
-		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const override;
+		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const final;
 
-		COMMON_NS::DataObjectReference getHdfProxyDor() const override;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
 		/**
 		 * Queries if this trajectory has a geometry.
 		 *
 		 * @returns	True if this trajectory has a geometry, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasGeometry() const;
+		DLL_IMPORT_OR_EXPORT bool hasGeometry() const final;
 
 	private:
 

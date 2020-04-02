@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A stratigraphic unit interpretation. */
-	class StratigraphicUnitInterpretation : public RESQML2_NS::StratigraphicUnitInterpretation
+	class StratigraphicUnitInterpretation final : public RESQML2_NS::StratigraphicUnitInterpretation
 	{
 	public:
 

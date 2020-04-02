@@ -19,6 +19,7 @@ under the License.
 #include "HdfProxy.h"
 
 #include <algorithm>
+#include <limits>
 #include <numeric>
 #include <stdexcept>
 #include <sstream>

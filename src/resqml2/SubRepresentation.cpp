@@ -18,15 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "SubRepresentation.h"
 
+#include <limits>
 #include <sstream>
 #include <stdexcept>
 
 #include <hdf5.h>
 
-#include "AbstractFeatureInterpretation.h"
 #include "../eml2/AbstractHdfProxy.h"
-#include "../resqml2_0_1/UnstructuredGridRepresentation.h"
-#include "AbstractIjkGridRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_NS;
@@ -66,7 +64,7 @@ void SubRepresentation::loadTargetRelationships()
 	}
 }
 
-ULONG64 SubRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 SubRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -80,7 +78,7 @@ ULONG64 SubRepresentation::getXyzPointCountOfPatch(const unsigned int & patchInd
 	}
 }
 
-void SubRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
+void SubRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");

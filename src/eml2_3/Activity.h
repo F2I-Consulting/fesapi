@@ -24,7 +24,7 @@ under the License.
 namespace EML2_3_NS
 {
 	/** An activity. */
-	class Activity : public EML2_NS::Activity
+	class Activity final : public EML2_NS::Activity
 	{
 	protected:
 		/** Default constructor */

@@ -19,18 +19,16 @@ under the License.
 #include "GridConnectionSetRepresentation.h"
 
 #include <algorithm>
-#if defined(__gnu_linux__) || defined(__APPLE__) 
+#include <limits>
 #include <stdexcept>
-#endif 
 
 #include <hdf5.h>
 
+#include "../eml2/AbstractHdfProxy.h"
+
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractGridRepresentation.h"
-#include "../eml2/AbstractHdfProxy.h"
 #include "../resqml2/AbstractLocal3dCrs.h"
-
-#include "../tools/Misc.h"
 
 using namespace std;
 using namespace RESQML2_2_NS;
@@ -138,25 +136,6 @@ void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairsUsingExisting
 	integerArray->NullValue = nullValue;
 	resqmlHDF5dataset->ExternalFileProxy.push_back(dsPart);
 	rep->LocalFacePerCellIndexPairs = integerArray;
-}
-
-void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(ULONG64 cellIndexPairCount, int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy)
-{
-	if (nullValue != -1) {
-		throw invalid_argument("The null value must be -1 in RESQML2.0.");
-	}
-
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-		if (proxy == nullptr) {
-			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-		}
-	}
-	setLocalFacePerCellIndexPairsUsingExistingDataset(getHdfGroup() + "/LocalFacePerCellIndexPairs", nullValue, proxy);
-
-	// ************ HDF ************		
-	hsize_t numValues[2] = {cellIndexPairCount,2};
-	proxy->writeArrayNd(getHdfGroup(), "LocalFacePerCellIndexPairs", H5T_NATIVE_INT, localFacePerCellIndexPair, numValues, 2);
 }
 
 bool GridConnectionSetRepresentation::isAssociatedToInterpretations() const

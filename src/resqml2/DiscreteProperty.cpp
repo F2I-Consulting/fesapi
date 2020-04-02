@@ -24,11 +24,8 @@ under the License.
 #include <hdf5.h>
 
 #include "../eml2/AbstractHdfProxy.h"
-#include "../common/EnumStringMapper.h"
-#include "../eml2/PropertyKind.h"
 
 #include "../tools/Statistics.h"
-#include "../resqml2/AbstractRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_NS;

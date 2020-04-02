@@ -18,15 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractGridRepresentation.h"
 
-#include <stdexcept>
 #include <algorithm>
 #include <limits>
+#include <stdexcept>
 
 #include <hdf5.h>
 
-#include "../tools/Misc.h"
-#include "AbstractStratigraphicOrganizationInterpretation.h"
 #include "../eml2/AbstractHdfProxy.h"
+
+#include "AbstractStratigraphicOrganizationInterpretation.h"
 #include "UnstructuredGridRepresentation.h"
 #include "AbstractIjkGridRepresentation.h"
 #include "RockFluidOrganizationInterpretation.h"

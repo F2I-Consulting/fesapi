@@ -20,9 +20,9 @@ under the License.
 
 #include <stdexcept>
 
-#include "../resqml2/CategoricalProperty.h"
-#include "../resqml2/ContinuousProperty.h"
-#include "../resqml2/AbstractSeismicLineFeature.h"
+#include "CategoricalProperty.h"
+#include "ContinuousProperty.h"
+#include "AbstractSeismicLineFeature.h"
 
 using namespace std;
 using namespace RESQML2_NS;

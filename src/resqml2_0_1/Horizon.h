@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A horizon. */
-	class Horizon : public GeneticBoundaryFeature
+	class Horizon final : public GeneticBoundaryFeature
 	{
 	public:
 

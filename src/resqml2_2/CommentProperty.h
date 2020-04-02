@@ -20,11 +20,13 @@ under the License.
 
 #include "../resqml2/CommentProperty.h"
 
+#include <limits>
+
 /** . */
 namespace RESQML2_2_NS
 {
 	/** Proxy class for a comment property. */
-	class CommentProperty : public RESQML2_NS::CommentProperty
+	class CommentProperty final : public RESQML2_NS::CommentProperty
 	{
 	public:
 
@@ -81,24 +83,13 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The name of the HDF5 dataset.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
+		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)()) final;
 
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be string ones.
-		 *
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	patchIndex	The index of the patch we want the values from.
-		 *
-		 * @returns	The string values of the patch.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<std::string> getStringValuesOfPatch(unsigned int patchIndex);
+		bool validatePropertyKindAssociation(EML2_NS::PropertyKind*) final { return true; }
 
-		bool validatePropertyKindAssociation(EML2_NS::PropertyKind*) override { return true; }
-
-		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind) override { return true; }
+		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind) final { return true; }
 
 	private:
-		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const;
+		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const final;
 	};
 }

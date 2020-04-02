@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** This class is a container for other organizations that are consistent to each others. */
-	class EarthModelInterpretation : public RESQML2_NS::EarthModelInterpretation
+	class EarthModelInterpretation final : public RESQML2_NS::EarthModelInterpretation
 	{
 	public:
 
@@ -101,7 +101,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The strati occurence count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getStratiOccurenceCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getStratiOccurenceCount() const final;
 
 		/** A stratigraphic occurrence interpretation*. */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiOccurenceDor(unsigned int index) const final;

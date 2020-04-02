@@ -24,39 +24,8 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A local time 3D crs. */
-	class LocalTime3dCrs : public RESQML2_NS::LocalTime3dCrs
+	class LocalTime3dCrs final : public RESQML2_NS::LocalTime3dCrs
 	{
-	private:
-
-		/**
-		 * Initializes this object
-		 *
-		 * @param [in,out]	repo		  	If non-null, the repo.
-		 * @param 		  	guid		  	Unique identifier.
-		 * @param 		  	title		  	The title.
-		 * @param 		  	originOrdinal1	The first origin ordinal.
-		 * @param 		  	originOrdinal2	The second origin ordinal.
-		 * @param 		  	originOrdinal3	The third origin ordinal.
-		 * @param 		  	arealRotation 	The areal rotation.
-		 * @param 		  	projectedUom  	The projected uom.
-		 * @param 		  	timeUom		  	The time uom.
-		 * @param 		  	verticalUom   	The vertical uom.
-		 * @param 		  	isUpOriented  	True if is up oriented, false if not.
-		 */
-		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			double originOrdinal1, double originOrdinal2, double originOrdinal3,
-			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom,
-			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, bool isUpOriented);
-
-		/**
-		 * Get z coordinate offset
-		 *
-		 * @returns	The z coordinate offset.
-		 */
-		double getZOffset() const {return .0;}
-
 	public:
 
 		/**
@@ -214,13 +183,44 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The unit.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__TimeUom getUnit() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__TimeUom getUnit() const final;
 
 		/**
 		 * Gets unit as string
 		 *
 		 * @returns	The unit as string.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getUnitAsString() const;
+		DLL_IMPORT_OR_EXPORT std::string getUnitAsString() const final;
+
+	private:
+
+		/**
+		 * Initializes this object
+		 *
+		 * @param [in,out]	repo		  	If non-null, the repo.
+		 * @param 		  	guid		  	Unique identifier.
+		 * @param 		  	title		  	The title.
+		 * @param 		  	originOrdinal1	The first origin ordinal.
+		 * @param 		  	originOrdinal2	The second origin ordinal.
+		 * @param 		  	originOrdinal3	The third origin ordinal.
+		 * @param 		  	arealRotation 	The areal rotation.
+		 * @param 		  	projectedUom  	The projected uom.
+		 * @param 		  	timeUom		  	The time uom.
+		 * @param 		  	verticalUom   	The vertical uom.
+		 * @param 		  	isUpOriented  	True if is up oriented, false if not.
+		 */
+		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+			double originOrdinal1, double originOrdinal2, double originOrdinal3,
+			double arealRotation,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom,
+			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, bool isUpOriented);
+
+		/**
+		 * Get z coordinate offset
+		 *
+		 * @returns	The z coordinate offset.
+		 */
+		double getZOffset() const { return .0; }
 	};
 }

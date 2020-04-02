@@ -24,7 +24,7 @@ under the License.
 /** . */
 namespace RESQML2_0_1_NS
 {
-	class UnstructuredGridRepresentation : public RESQML2_NS::UnstructuredGridRepresentation
+	class UnstructuredGridRepresentation final : public RESQML2_NS::UnstructuredGridRepresentation
 	{
 	public:
 
@@ -81,9 +81,9 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	True if geometry, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasGeometry() const;
+		DLL_IMPORT_OR_EXPORT bool hasGeometry() const final;
 
-		COMMON_NS::DataObjectReference getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
 		/**
 		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
@@ -94,7 +94,7 @@ namespace RESQML2_0_1_NS
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be pre allocated.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Get all the face indices of all the cells.
@@ -102,7 +102,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	faceIndices	It must be pre allocated with the last value returned by
 		 * 								getCumulativeFaceCountPerCell()
 		 */
-		DLL_IMPORT_OR_EXPORT void getFaceIndicesOfCells(ULONG64 * faceIndices) const;
+		DLL_IMPORT_OR_EXPORT void getFaceIndicesOfCells(ULONG64 * faceIndices) const final;
 
 		/**
 		 * Get the cumulative face count per cell. First value is the count of faces in the first cell.
@@ -113,19 +113,19 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	cumulativeFaceCountPerCell_	It must be pre allocated with getCellCount()
 		 */
-		DLL_IMPORT_OR_EXPORT void getCumulativeFaceCountPerCell(ULONG64 * cumulativeFaceCountPerCell_) const;
+		DLL_IMPORT_OR_EXPORT void getCumulativeFaceCountPerCell(ULONG64 * cumulativeFaceCountPerCell_) const final;
 
 		/**
 		* Detect if the face count per cell is constant in the grid.
 		*/
-		DLL_IMPORT_OR_EXPORT bool isFaceCountOfCellsConstant() const;
+		DLL_IMPORT_OR_EXPORT bool isFaceCountOfCellsConstant() const final;
 
 		/**
 		 * Get the constant face count per cell in the grid.
 		 *
 		 * @returns	The constant face count of cells.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getConstantFaceCountOfCells() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getConstantFaceCountOfCells() const final;
 
 		/**
 		 * Get all the node indices of all the faces.
@@ -133,7 +133,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	nodeIndices	It must be pre allocated with the last value returned by
 		 * 								getCumulativeNodeCountPerFace().
 		 */
-		DLL_IMPORT_OR_EXPORT void getNodeIndicesOfFaces(ULONG64 * nodeIndices) const;
+		DLL_IMPORT_OR_EXPORT void getNodeIndicesOfFaces(ULONG64 * nodeIndices) const final;
 
 		/**
 		 * Get the cumulative node count per face. First value is the count of nodes in the first face.
@@ -145,47 +145,47 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	nodeCountPerFace	It must be pre allocated with the last value of
 		 * 										getFaceCount().
 		 */
-		DLL_IMPORT_OR_EXPORT void getCumulativeNodeCountPerFace(ULONG64 * nodeCountPerFace) const;
+		DLL_IMPORT_OR_EXPORT void getCumulativeNodeCountPerFace(ULONG64 * nodeCountPerFace) const final;
 
 		/**
 		* Detect if the node count per face is constant in the grid.
 		*/
-		DLL_IMPORT_OR_EXPORT bool isNodeCountOfFacesConstant() const;
+		DLL_IMPORT_OR_EXPORT bool isNodeCountOfFacesConstant() const final;
 
 		/**
 		 * Get the constant node count per face in the grid.
 		 *
 		 * @returns	The constant node count of faces.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getConstantNodeCountOfFaces() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getConstantNodeCountOfFaces() const final;
 
 		/**
 		 * Get the cell count
 		 *
 		 * @returns	The cell count.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const final;
 
 		/**
 		 * Get the face count
 		 *
 		 * @returns	The face count.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getFaceCount() const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getFaceCount() const final;
 
 		/**
 		 * Get the node count
 		 *
 		 * @returns	The node count.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getNodeCount() const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getNodeCount() const final;
 
 		/**
 		 * Retrieves orientation i.e. if each cell face is right handed or not
 		 *
 		 * @param [in,out]	cellFaceIsRightHanded	If non-null, the cell face is right handed.
 		 */
-		DLL_IMPORT_OR_EXPORT void getCellFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const;
+		DLL_IMPORT_OR_EXPORT void getCellFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const final;
 
 		/**
 		 * Set the geometry using some existing hdf5 dataset
@@ -244,7 +244,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, ULONG64 pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& faceIndicesCumulativeCountPerCell,
 			ULONG64 faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
-			gsoap_resqml2_0_1::resqml20__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
+			gsoap_resqml2_0_1::resqml20__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 
 	private:
 
@@ -257,7 +257,7 @@ namespace RESQML2_0_1_NS
 
 		gsoap_resqml2_0_1::_resqml20__UnstructuredGridRepresentation* getSpecializedGsoapProxy() const;
 
-		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const final;
 
 		/**
 		* Set a geometry using some existing hdf5 dataset. This geometry only contains polyedra with constant face count per cell and constant node count per face.
@@ -274,6 +274,6 @@ namespace RESQML2_0_1_NS
 		void setConstantCellShapeGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			ULONG64 pointCount, ULONG64 faceCount, RESQML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, ULONG64 faceCountPerCell,
-			const std::string& nodeIndicesPerFace, ULONG64 nodeCountPerFace);
+			const std::string& nodeIndicesPerFace, ULONG64 nodeCountPerFace) final;
 	};
 }

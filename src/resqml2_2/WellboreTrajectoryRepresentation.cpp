@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreTrajectoryRepresentation.h"
 
-#include <stdexcept>
 #include <limits>
+#include <stdexcept>
 
 #include "H5public.h"
 
@@ -233,7 +233,7 @@ double WellboreTrajectoryRepresentation::getParentTrajectoryMd() const
 	throw logic_error("This wellbore trajectory has no parent trajecory.");
 }
 
-ULONG64 WellboreTrajectoryRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 WellboreTrajectoryRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The index patch is not in the allowed range of patch.");
@@ -246,7 +246,7 @@ ULONG64 WellboreTrajectoryRepresentation::getXyzPointCountOfPatch(const unsigned
 	return static_cast<resqml22__ParametricLineGeometry*>(rep->Geometry)->KnotCount;
 }
 
-void WellboreTrajectoryRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void WellboreTrajectoryRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");

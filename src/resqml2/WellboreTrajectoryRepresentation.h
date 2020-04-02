@@ -223,7 +223,7 @@ namespace RESQML2_NS
 
 		virtual COMMON_NS::DataObjectReference getHdfProxyDor() const = 0;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final {return 1;}
 
 		DLL_IMPORT_OR_EXPORT virtual bool hasGeometry() const = 0;
 
@@ -235,7 +235,7 @@ namespace RESQML2_NS
 		/**
 		* Get the standard XML tag without XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:
 

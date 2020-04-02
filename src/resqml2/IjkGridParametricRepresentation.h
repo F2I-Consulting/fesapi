@@ -38,7 +38,7 @@ namespace RESQML2_NS
 				delete pillarInformation; 
 		}
 
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints) override;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints) final;
 
 		/**
 		* @copybrief AbstractIjkGridRepresentation::getXyzPointsOfBlock
@@ -47,7 +47,7 @@ namespace RESQML2_NS
 		* 							  
 		* @copydetails AbstractIjkGridRepresentation::getXyzPointsOfBlock
 		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfBlock(double * xyzPoints) override;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfBlock(double * xyzPoints) final;
 
 		/**
 		 * Gets the maximum control points count on a pillar of this grid.
@@ -592,9 +592,9 @@ namespace RESQML2_NS
 			unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
-		DLL_IMPORT_OR_EXPORT bool isNodeGeometryCompressed() const override;
+		DLL_IMPORT_OR_EXPORT bool isNodeGeometryCompressed() const final;
 
-		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const override;
+		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const final;
 
 	protected:
 		IjkGridParametricRepresentation(COMMON_NS::DataObjectRepository * repo,

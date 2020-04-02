@@ -18,19 +18,20 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractRepresentation.h"
 
-#include <sstream>
 #include <algorithm>
+#include <limits>
+#include <sstream>
 #include <stdexcept>
 
 #include "H5public.h"
+
+#include "../eml2/AbstractHdfProxy.h"
 
 #include "AbstractFeatureInterpretation.h"
 #include "RepresentationSetRepresentation.h"
 #include "AbstractValuesProperty.h"
 #include "SubRepresentation.h"
-#include "../eml2/AbstractHdfProxy.h"
 #include "AbstractLocal3dCrs.h"
-#include "../tools/Misc.h"
 
 using namespace RESQML2_NS;
 using namespace std;

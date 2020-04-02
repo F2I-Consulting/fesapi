@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A horizon interpretation. */
-	class HorizonInterpretation : public RESQML2_NS::HorizonInterpretation
+	class HorizonInterpretation final : public RESQML2_NS::HorizonInterpretation
 	{
 	public:
 

@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A seismic lattice feature. */
-	class SeismicLatticeFeature : public RESQML2_NS::SeismicLatticeFeature
+	class SeismicLatticeFeature final : public RESQML2_NS::SeismicLatticeFeature
 	{
 	public:
 

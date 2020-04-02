@@ -23,7 +23,7 @@ under the License.
 
 namespace RESQML2_2_NS
 {
-	class DiscreteColorMap : public AbstractColorMap
+	class DiscreteColorMap final : public AbstractColorMap
 	{
 	private:
 		/**

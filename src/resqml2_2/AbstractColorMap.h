@@ -24,30 +24,6 @@ namespace RESQML2_2_NS
 {
 	class AbstractColorMap : public COMMON_NS::AbstractObject
 	{
-	private:
-		/**
-		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map 
-		 */
-		virtual gsoap_eml2_3::resqml22__HsvColor* getColor(double colorIndex) const = 0;
-
-	protected:
-		/**
-		 * Only to be used in partial transfer context
-		 */
-		DLL_IMPORT_OR_EXPORT AbstractColorMap(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
-
-		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		AbstractColorMap(gsoap_eml2_3::resqml22__DiscreteColorMap* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-		AbstractColorMap(gsoap_eml2_3::resqml22__ContinuousColorMap* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-
-		/**
-		* Default constructor
-		* Set the gsoap proxy to nullptr from superclass constructor
-		*/
-		AbstractColorMap() {}
-
 	public:
 		virtual ~AbstractColorMap() {}
 
@@ -134,8 +110,32 @@ namespace RESQML2_2_NS
 
 		void loadTargetRelationships() {};
 
-		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const {
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final {
 			return "resqml22";
 		}
+
+	private:
+		/**
+		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 */
+		virtual gsoap_eml2_3::resqml22__HsvColor* getColor(double colorIndex) const = 0;
+
+	protected:
+		/**
+		 * Only to be used in partial transfer context
+		 */
+		DLL_IMPORT_OR_EXPORT AbstractColorMap(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+
+		/**
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*/
+		AbstractColorMap(gsoap_eml2_3::resqml22__DiscreteColorMap* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		AbstractColorMap(gsoap_eml2_3::resqml22__ContinuousColorMap* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
+		* Default constructor
+		* Set the gsoap proxy to nullptr from superclass constructor
+		*/
+		AbstractColorMap() {}
 	};
 }

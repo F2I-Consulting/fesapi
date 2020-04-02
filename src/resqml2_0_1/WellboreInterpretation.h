@@ -25,7 +25,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** Proxy class for a wellbore interpretation. */
-	class WellboreInterpretation : public RESQML2_NS::WellboreInterpretation
+	class WellboreInterpretation final : public RESQML2_NS::WellboreInterpretation
 	{
 	public:
 
@@ -68,6 +68,6 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	True if drilled, false if not.
 		 */
-		bool isDrilled() const;
+		bool isDrilled() const final;
 	};
 }

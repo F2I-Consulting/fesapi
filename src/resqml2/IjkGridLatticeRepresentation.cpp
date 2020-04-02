@@ -21,11 +21,10 @@ under the License.
 
 #include <stdexcept>
 
-#include "../resqml2/AbstractFeature.h"
-#include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
-#include "../resqml2/AbstractValuesProperty.h"
-#include "../eml2/AbstractHdfProxy.h"
+#include "AbstractFeature.h"
+#include "AbstractFeatureInterpretation.h"
+#include "AbstractLocal3dCrs.h"
+#include "AbstractValuesProperty.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
@@ -71,7 +70,7 @@ bool IjkGridLatticeRepresentation::isAFaciesCube() const
     return getInterpretation() != nullptr && getInterpretation()->getInterpretedFeature()->getXmlTag() == "SeismicLatticeFeature";
 }
 
-ULONG64 IjkGridLatticeRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 IjkGridLatticeRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex < getPatchCount())
 	{
@@ -81,7 +80,7 @@ ULONG64 IjkGridLatticeRepresentation::getXyzPointCountOfPatch(const unsigned int
 	throw out_of_range("An ijk grid has a maximum of one patch.");
 }
 
-void IjkGridLatticeRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
+void IjkGridLatticeRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
 {
 	if (patchIndex < getPatchCount())
 	{

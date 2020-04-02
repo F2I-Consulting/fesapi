@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A seismic line feature. */
-	class SeismicLineFeature : public RESQML2_NS::AbstractSeismicLineFeature
+	class SeismicLineFeature final : public RESQML2_NS::AbstractSeismicLineFeature
 	{
 	public:
 
@@ -85,7 +85,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	seisLineSet	If non-null, set the seis line belongs to.
 		 */
-		DLL_IMPORT_OR_EXPORT void setSeismicLineSet(RESQML2_NS::SeismicLineSetFeature * seisLineSet);
+		DLL_IMPORT_OR_EXPORT void setSeismicLineSet(RESQML2_NS::SeismicLineSetFeature * seisLineSet) final;
 
 		/** A seismic line set feature*. */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getSeismicLineSetDor() const final;

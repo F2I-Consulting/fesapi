@@ -21,7 +21,7 @@ under the License.
 #include <stdexcept>
 
 #include "WellboreMarkerFrameRepresentation.h"
-#include "../resqml2/BoundaryFeatureInterpretation.h"
+#include "BoundaryFeatureInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_NS;

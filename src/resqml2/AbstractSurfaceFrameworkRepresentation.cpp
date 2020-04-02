@@ -18,12 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractSurfaceFrameworkRepresentation.h"
 
+#include <limits>
 #include <stdexcept>
 #include <sstream>
 
 #include "H5Tpublic.h"
 
-#include "../resqml2/StructuralOrganizationInterpretation.h"
 #include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;

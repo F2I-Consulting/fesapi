@@ -19,13 +19,13 @@ under the License.
 
 #include "AbstractFeatureInterpretation.h"
 
-#include <stdexcept>
 #include <algorithm>
+#include <limits>
+#include <stdexcept>
 
 #include "AbstractFeature.h"
 #include "AbstractLocal3dCrs.h"
 #include "GridConnectionSetRepresentation.h"
-#include "../resqml2_0_1/StructuralOrganizationInterpretation.h"
 
 using namespace RESQML2_NS;
 using namespace std;

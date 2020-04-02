@@ -24,7 +24,7 @@ under the License.
 namespace EML2_0_NS
 {
 	/** This class allows to open an HDF5 file for reading only which is located on an AWS S3 bucket. */
-	class HdfProxyROS3 : public EML2_0_NS::HdfProxy
+	class HdfProxyROS3 final : public EML2_0_NS::HdfProxy
 	{
 		/** aws_region is assumed to be managed by means of inherited setRootPath method */
 		std::string secretId_;

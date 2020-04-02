@@ -22,9 +22,9 @@ under the License.
 
 #include <hdf5.h>
 
-#include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
+
+#include "AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
@@ -32,7 +32,7 @@ using namespace RESQML2_NS;
 
 const char* UnstructuredGridRepresentation::XML_TAG = "UnstructuredGridRepresentation";
 
-ULONG64 UnstructuredGridRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 UnstructuredGridRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");

@@ -47,13 +47,13 @@ namespace RESQML2_NS
 		 * @returns	Empty data object reference since no geometry is directly associated to a
 		 * 			representation set representation.
 		 */
-		COMMON_NS::DataObjectReference getHdfProxyDor() const { return COMMON_NS::DataObjectReference(); }
+		COMMON_NS::DataObjectReference getHdfProxyDor() const final { return COMMON_NS::DataObjectReference(); }
 
 		/** Please do note use: not implemented yet. */ 
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const override ;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const override;
 
 		/** Please do note use: not implemented yet. */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const override;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const override;
 
 		/**
 		 * Gets the patch count.
@@ -155,6 +155,6 @@ namespace RESQML2_NS
 		RepresentationSetRepresentation(gsoap_eml2_3::_resqml22__RepresentationSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
 		/** Loads target relationships */
-		virtual void loadTargetRelationships();
+		virtual void loadTargetRelationships() override;
 	};
 }

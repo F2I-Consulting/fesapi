@@ -26,7 +26,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** Proxy class for a wellbore marker frame representation. */
-	class WellboreMarkerFrameRepresentation : public RESQML2_NS::WellboreMarkerFrameRepresentation
+	class WellboreMarkerFrameRepresentation final : public RESQML2_NS::WellboreMarkerFrameRepresentation
 	{
 	public:
 
@@ -103,7 +103,8 @@ namespace RESQML2_2_NS
 		 * @param [in,out]	proxy				 	The HDF proxy where the numerical values (indices)
 		 * 											are stored.
 		 */
-		DLL_IMPORT_OR_EXPORT void setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, RESQML2_NS::StratigraphicOccurrenceInterpretation* stratiOccurenceInterp, EML2_NS::AbstractHdfProxy* proxy) final;
+		DLL_IMPORT_OR_EXPORT void setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue,
+			RESQML2_NS::StratigraphicOccurrenceInterpretation* stratiOccurenceInterp, EML2_NS::AbstractHdfProxy* proxy) final;
 
 		/** A stratigraphic occurrence interpretation*. */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratigraphicOccurrenceInterpretationDor() const final;

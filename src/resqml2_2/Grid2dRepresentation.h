@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A grid 2D representation. */
-	class Grid2dRepresentation : public RESQML2_NS::Grid2dRepresentation
+	class Grid2dRepresentation final : public RESQML2_NS::Grid2dRepresentation
 	{
 	public:
 

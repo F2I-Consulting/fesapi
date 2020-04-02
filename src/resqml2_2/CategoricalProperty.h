@@ -28,7 +28,7 @@ namespace RESQML2_2_NS
 	 * is associated either: as an internally stored index to a string through a lookup mapping, or
 	 * as an internally stored double to another double value through an explicitly provided table.
 	 */
-	class CategoricalProperty : public RESQML2_NS::CategoricalProperty
+	class CategoricalProperty final : public RESQML2_NS::CategoricalProperty
 	{
 	public:
 
@@ -77,10 +77,10 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The DOR of the string lookup which is associated to this categorical property.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStringLookupDor() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStringLookupDor() const final;
 
-		bool validatePropertyKindAssociation(EML2_NS::PropertyKind*) override { return true; }
+		bool validatePropertyKindAssociation(EML2_NS::PropertyKind*) final { return true; }
 
-		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind) override { return true; }
+		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind) final { return true; }
 	};
 }

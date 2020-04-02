@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A polyline set representation. */
-	class PolylineSetRepresentation : public RESQML2_NS::PolylineSetRepresentation
+	class PolylineSetRepresentation final : public RESQML2_NS::PolylineSetRepresentation
 	{
 	private :
 		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
@@ -124,7 +124,7 @@ namespace RESQML2_2_NS
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be pre allocated.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Get the number of triangle patch

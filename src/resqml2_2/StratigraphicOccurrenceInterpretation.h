@@ -26,7 +26,7 @@ namespace RESQML2_2_NS
 	/**
 	* This class is a container for other organizations that are consistent to each others.
 	*/
-	class StratigraphicOccurrenceInterpretation : public RESQML2_NS::StratigraphicOccurrenceInterpretation
+	class StratigraphicOccurrenceInterpretation final : public RESQML2_NS::StratigraphicOccurrenceInterpretation
 	{
 	public:
 

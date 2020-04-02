@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PointSetRepresentation.h"
 
-#include <stdexcept>
-
 using namespace RESQML2_NS;
 
 const char* PointSetRepresentation::XML_TAG = "PointSetRepresentation";

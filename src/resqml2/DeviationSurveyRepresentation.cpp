@@ -18,12 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "DeviationSurveyRepresentation.h"
 
-#include <stdexcept>
 #include <limits>
+#include <stdexcept>
 
 #include "WellboreTrajectoryRepresentation.h"
 #include "MdDatum.h"
-#include "AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace RESQML2_NS;

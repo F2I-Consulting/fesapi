@@ -24,20 +24,8 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A polyline set representation. */
-	class PolylineSetRepresentation : public RESQML2_NS::PolylineSetRepresentation
+	class PolylineSetRepresentation final : public RESQML2_NS::PolylineSetRepresentation
 	{
-	private :
-		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
-
-		/**
-		 * Initializes this object
-		 *
-		 * @param [in,out]	repo 	If non-null, the repo.
-		 * @param 		  	guid 	Unique identifier.
-		 * @param 		  	title	The title.
-		 */
-		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
-
 	public:
 
 		/**
@@ -124,7 +112,7 @@ namespace RESQML2_0_1_NS
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be pre allocated.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Get the number of triangle patch
@@ -242,5 +230,17 @@ namespace RESQML2_0_1_NS
 		 * @param 	lineRole	The line role.
 		 */
 		DLL_IMPORT_OR_EXPORT void setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole) final;
+
+	private:
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const final;
+
+		/**
+		 * Initializes this object
+		 *
+		 * @param [in,out]	repo 	If non-null, the repo.
+		 * @param 		  	guid 	Unique identifier.
+		 * @param 		  	title	The title.
+		 */
+		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
 	};
 }

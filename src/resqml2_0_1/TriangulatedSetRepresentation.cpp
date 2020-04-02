@@ -18,6 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "TriangulatedSetRepresentation.h"
 
+#include <limits>
 #include <sstream>
 #include <stdexcept>
 
@@ -131,7 +132,7 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 		dim, 2);
 }
 
-ULONG64 TriangulatedSetRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 TriangulatedSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount())
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -140,7 +141,7 @@ ULONG64 TriangulatedSetRepresentation::getXyzPointCountOfPatch(const unsigned in
 	return triRep->TrianglePatch[patchIndex]->NodeCount;
 }
 
-void TriangulatedSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void TriangulatedSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount())
 		throw range_error("The index of the patch is not in the allowed range of patch.");

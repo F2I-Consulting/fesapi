@@ -28,7 +28,7 @@ namespace RESQML2_2_NS
 	 * constituted by triangles. Usually all triangles are connected to each others by means of
 	 * their nodes and edges.
 	 */
-	class TriangulatedSetRepresentation : public RESQML2_NS::TriangulatedSetRepresentation
+	class TriangulatedSetRepresentation final : public RESQML2_NS::TriangulatedSetRepresentation
 	{
 	public:
 
@@ -91,7 +91,8 @@ namespace RESQML2_2_NS
 		 * 										and triangle indices will be stored.
 		 * @param [in,out]	localCrs		   	(Optional) If non-null, the local crs.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackTrianglePatch(unsigned int nodeCount, double const * nodes, unsigned int triangleCount, unsigned int const * triangleNodeIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+		DLL_IMPORT_OR_EXPORT void pushBackTrianglePatch(unsigned int nodeCount, double const * nodes, unsigned int triangleCount, unsigned int const * triangleNodeIndices,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
 		/**
 		 * Get the xyz point count in a given patch.
@@ -100,7 +101,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The xyz point count of patch.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
 		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
@@ -111,7 +112,7 @@ namespace RESQML2_2_NS
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be pre allocated.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
         /**
 		* Get the triangle count in a given patch

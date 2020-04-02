@@ -42,17 +42,17 @@ namespace EML2_NS
 		/**
 		 * Creates or opens the HDF5 file according to the chosen opening mode.
 		 */
-		void open();
+		void open() override;
 
 		/**
 		 * Checks if the HDF5 file is open or not
 		 *
 		 * @returns	True if opened, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool isOpened() const { return hdfFile != -1; }
+		DLL_IMPORT_OR_EXPORT bool isOpened() const final { return hdfFile != -1; }
 
 		/** Closes the HDF5 file */
-		void close();
+		void close() final;
 
 		/**
 		 * Gets the native datatype (@c H5T_NATIVE_INT, @c H5T_NATIVE_UINT,
@@ -63,7 +63,7 @@ namespace EML2_NS
 		 * @returns	The native HDF5 datatype identifier of the dataset if successful, otherwise returns a
 		 * 			negative value.
 		 */
-		hdf5_hid_t getHdfDatatypeInDataset(const std::string& groupName);
+		hdf5_hid_t getHdfDatatypeInDataset(const std::string& groupName) final;
 
 		/**
 		 * Gets the datatype class (@c H5T_INTEGER, @c H5T_FLOAT, @c H5T_STRING, etc.) of a dataset
@@ -72,7 +72,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The HDF5 datatype class identifier if successful, otherwise @c H5T_NO_CLASS (-1).
 		 */
-		int getHdfDatatypeClassInDataset(const std::string& datasetName);
+		int getHdfDatatypeClassInDataset(const std::string& datasetName) final;
 
 		/**
 		 * Writes an itemized list of lists into the HDF5 file by means of a single group containing two
@@ -99,7 +99,7 @@ namespace EML2_NS
 			unsigned long long cumulativeLengthSize,
 			hdf5_hid_t elementsDatatype,
 			const void* elements,
-			unsigned long long elementsSize);
+			unsigned long long elementsSize) final;
 
 		/**
 		 * Gets the number of dimensions in an HDF5 dataset of the proxy.
@@ -110,7 +110,7 @@ namespace EML2_NS
 		 * @returns	The number of dimensions of the dataset if successful, otherwise returns a negative
 		 * 			value.
 		 */
-		unsigned int getDimensionCount(const std::string& datasetName);
+		unsigned int getDimensionCount(const std::string& datasetName) final;
 
 		/**
 		 * Gets the number of elements in an HDF5 dataset of the proxy. The number of elements is got
@@ -122,7 +122,7 @@ namespace EML2_NS
 		 * @returns	The number of elements of the dataset if successful, otherwise returns a negative
 		 * 			value.
 		 */
-		signed long long getElementCount(const std::string& datasetName);
+		signed long long getElementCount(const std::string& datasetName) final;
 
 		/**
 		 * Sets the new compression level which will be used for all data to be written
@@ -130,7 +130,7 @@ namespace EML2_NS
 		 * @param 	newCompressionLevel	The new compression level in range [0..9]. Lower compression
 		 * 								levels are faster but result in less compression.
 		 */
-		DLL_IMPORT_OR_EXPORT void setCompressionLevel(unsigned int newCompressionLevel) {
+		DLL_IMPORT_OR_EXPORT void setCompressionLevel(unsigned int newCompressionLevel) final {
 			compressionLevel = newCompressionLevel > 9 ? 9 : newCompressionLevel;
 		}
 
@@ -152,7 +152,7 @@ namespace EML2_NS
 			const std::string& name,
 			const float* floatValues,
 			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions);
+			unsigned int numDimensions) final;
 
 		/**
 		 * Writes an nd array of double values into the HDF5 file by means of a single dataset
@@ -172,7 +172,7 @@ namespace EML2_NS
 			const std::string& name,
 			const double* dblValues,
 			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions);
+			unsigned int numDimensions) final;
 
 		/**
 		 * Writes an nd array of char values into the HDF5 file by means of a single dataset
@@ -192,7 +192,7 @@ namespace EML2_NS
 			const std::string& name,
 			const char* intValues,
 			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions);
+			unsigned int numDimensions) final;
 
 		/**
 		 * Writes an nd array of int values into the HDF5 file by means of a single dataset
@@ -212,7 +212,7 @@ namespace EML2_NS
 			const std::string& name,
 			const int* intValues,
 			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions);
+			unsigned int numDimensions) final;
 
 		/**
 		 * Writes an nd array of gSOAP unsigned long 64 values into the HDF5 file by means of a single
@@ -233,7 +233,7 @@ namespace EML2_NS
 			const std::string& name,
 			const ULONG64* ulong64Values,
 			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions);
+			unsigned int numDimensions) final;
 
 		/**
 		 * Writes an nd array of a specific datatype into the HDF5 file by means of a single dataset
@@ -255,7 +255,7 @@ namespace EML2_NS
 			hdf5_hid_t datatype,
 			const void* values,
 			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions);
+			unsigned int numDimensions) final;
 
 		/**
 		 * Creates an nd array of a specific datatype into the HDF5 file by means of a single dataset.
@@ -277,7 +277,7 @@ namespace EML2_NS
 			hdf5_hid_t datatype,
 			const unsigned long long* numValuesInEachDimension,
 			unsigned int numDimensions
-		);
+		) final;
 
 		/**
 		 * Finds the nd array associated with @p groupName and @p name and writes into it
@@ -302,7 +302,7 @@ namespace EML2_NS
 			const unsigned long long* numValuesInEachDimension,
 			const unsigned long long* offsetValuesInEachDimension,
 			unsigned int numDimensions
-		);
+		) final;
 
 		/**
 		 * Writes some string attributes into a group
@@ -316,7 +316,7 @@ namespace EML2_NS
 		 */
 		void writeGroupAttributes(const std::string& groupName,
 			const std::vector<std::string>& attributeNames,
-			const std::vector<std::string>& values);
+			const std::vector<std::string>& values) final;
 
 		/**
 		 * Writes a single attribute into a group which contains an array of string values
@@ -327,7 +327,7 @@ namespace EML2_NS
 		 */
 		void writeGroupAttribute(const std::string& groupName,
 			const std::string& attributeName,
-			const std::vector<std::string>& values);
+			const std::vector<std::string>& values) final;
 
 		/**
 		 * Writes some double attributes into a group
@@ -341,7 +341,7 @@ namespace EML2_NS
 		 */
 		void writeGroupAttributes(const std::string& groupName,
 			const std::vector<std::string>& attributeNames,
-			const std::vector<double>& values);
+			const std::vector<double>& values) final;
 
 		/**
 		 * Writes some int attributes into a group
@@ -355,7 +355,7 @@ namespace EML2_NS
 		 */
 		void writeGroupAttributes(const std::string& groupName,
 			const std::vector<std::string>& attributeNames,
-			const std::vector<int>& values);
+			const std::vector<int>& values) final;
 
 		/**
 		 * Writes some string attributes into a dataset
@@ -369,7 +369,7 @@ namespace EML2_NS
 		 */
 		void writeDatasetAttributes(const std::string& datasetName,
 			const std::vector<std::string>& attributeNames,
-			const std::vector<std::string>& values);
+			const std::vector<std::string>& values) final;
 
 		/**
 		 * Writes a single attribute into a dataset which contain an array of strings values
@@ -380,7 +380,7 @@ namespace EML2_NS
 		 */
 		void writeDatasetAttribute(const std::string& datasetName,
 			const std::string& attributeName,
-			const std::vector<std::string>& values);
+			const std::vector<std::string>& values) final;
 
 		/**
 		 * Writes some double attributes into a dataset
@@ -394,7 +394,7 @@ namespace EML2_NS
 		 */
 		void writeDatasetAttributes(const std::string& datasetName,
 			const std::vector<std::string>& attributeNames,
-			const std::vector<double>& values);
+			const std::vector<double>& values) final;
 
 		/**
 		 * Writes some int attributes into a dataset
@@ -408,7 +408,7 @@ namespace EML2_NS
 		 */
 		void writeDatasetAttributes(const std::string& datasetName,
 			const std::vector<std::string>& attributeNames,
-			const std::vector<int>& values);
+			const std::vector<int>& values) final;
 
 		/**
 		 * Reads a string which is stored as an HDF5 attribute in a file, group or dataset
@@ -423,7 +423,7 @@ namespace EML2_NS
 		 * @returns	The attribute value.
 		 */
 		std::string readStringAttribute(const std::string& obj_name,
-			const std::string& attr_name) const;
+			const std::string& attr_name) const final;
 
 		/**
 		 * Reads string values which are stored as an HDF5 attribute in a file, group or dataset
@@ -438,7 +438,7 @@ namespace EML2_NS
 		 * @returns	The vector of attribute values.
 		 */
 		std::vector<std::string> readStringArrayAttribute(const std::string& obj_name,
-			const std::string& attr_name) const;
+			const std::string& attr_name) const final;
 
 		/**
 		 * Reads a double which is stored as an HDF5 attribute in a file, group or dataset
@@ -453,7 +453,7 @@ namespace EML2_NS
 		 * @returns	The attribute value.
 		 */
 		double readDoubleAttribute(const std::string& obj_name,
-			const std::string& attr_name) const;
+			const std::string& attr_name) const final;
 
 		/**
 		 * Reads a long which is stored as an HDF5 attribute in a file, group or dataset
@@ -468,7 +468,7 @@ namespace EML2_NS
 		 * @returns	The attribute value.
 		 */
 		LONG64 readLongAttribute(const std::string& obj_name,
-			const std::string& attr_name) const;
+			const std::string& attr_name) const final;
 
 		/**
 		 * Reads an nd array of double values stored in a specific dataset
@@ -479,7 +479,7 @@ namespace EML2_NS
 		 * @param [out]	values	   	1d array of double values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		void readArrayNdOfDoubleValues(const std::string& datasetName, double* values);
+		void readArrayNdOfDoubleValues(const std::string& datasetName, double* values) final;
 
 		/**
 		 * Finds the nd array of double values associated with @p datasetName and reads from it
@@ -505,7 +505,7 @@ namespace EML2_NS
 			unsigned long long const* numValuesInEachDimension,
 			unsigned long long const* offsetInEachDimension,
 			unsigned int numDimensions
-		);
+		) final;
 
 		/**
 		 * Finds the nd array of double values associated with @p datasetName and reads from it
@@ -536,7 +536,47 @@ namespace EML2_NS
 			unsigned long long const* offsetInEachDimension,
 			unsigned long long const* strideInEachDimension,
 			unsigned long long const* blockSizeInEachDimension,
-			unsigned int numDimensions);
+			unsigned int numDimensions) final;
+
+		/**
+		 * Considering a given dataset, this method selects an hyperslab region to add to an existing
+		 * selected region or to add to a new selected region. The dataset is not closed within this
+		 * method.
+		 *
+		 * @param 		  	datasetName					The name of the array (potentially with multi
+		 * 												dimensions).
+		 * @param 		  	blockCountPerDimension  	Number of blocks to select from the dataspace, in
+		 * 												each dimension. They are ordered from fastest index
+		 * 												to slowest index.
+		 * @param 		  	offsetInEachDimension   	Offset values in each dimension of the array to
+		 * 												read. They are ordered from fastest index to slowest
+		 * 												index.
+		 * @param 		  	strideInEachDimension   	Number of elements to move from one block to
+		 * 												another in each dimension. They are ordered from
+		 * 												fastest index to slowest index.
+		 * @param 		  	blockSizeInEachDimension	Size of selected blocks in each dimension. They
+		 * 												are ordered from fastest index to slowest index.
+		 * @param 		  	numDimensions				The number of the dimensions of the array to
+		 * 												select.
+		 * @param 		  	newSelection				true if creating a new selected region else false.
+		 * @param [in,out]	dataset						Input dataset ID if adding a new hyperslab region
+		 * 												to an existing selected region, output dataset ID if
+		 * 												creating a new selected region.
+		 * @param [in,out]	filespace					Input selected region ID if adding a new
+		 * 												hyperslab region to an existing selected region,
+		 * 												output selected region ID if creating a new selected
+		 * 												region.
+		 */
+		void selectArrayNdOfValues(
+			const std::string& datasetName,
+			unsigned long long const* blockCountPerDimension,
+			unsigned long long const* offsetInEachDimension,
+			unsigned long long const* strideInEachDimension,
+			unsigned long long const* blockSizeInEachDimension,
+			unsigned int numDimensions,
+			bool newSelection,
+			hdf5_hid_t& dataset,
+			hdf5_hid_t& filespace) final;
 
 		/**
 		 * Considering a given nd array dataset, reads the double values corresponding to an existing
@@ -554,7 +594,7 @@ namespace EML2_NS
 			hdf5_hid_t dataset,
 			hdf5_hid_t filespace,
 			void* values,
-			unsigned long long slabSize);
+			unsigned long long slabSize) final;
 
 		/**
 		 * Reads an nd array of float values stored in a specific dataset
@@ -565,7 +605,7 @@ namespace EML2_NS
 		 * @param [out]	values	   	1d array of float values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		void readArrayNdOfFloatValues(const std::string& datasetName, float* values);
+		void readArrayNdOfFloatValues(const std::string& datasetName, float* values) final;
 
 		/**
 		 * Finds the nd array of float values associated with @p datasetName and reads from it
@@ -591,7 +631,7 @@ namespace EML2_NS
 			unsigned long long const* numValuesInEachDimension,
 			unsigned long long const* offsetInEachDimension,
 			unsigned int numDimensions
-		);
+		) final;
 
 		/**
 		 * Reads an nd array of long values stored in a specific dataset
@@ -602,7 +642,7 @@ namespace EML2_NS
 		 * @param [out]	values	   	1d array of long values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		virtual void readArrayNdOfLongValues(const std::string& datasetName, LONG64* values);
+		void readArrayNdOfLongValues(const std::string& datasetName, LONG64* values) final;
 
 		/**
 		 * Finds the nd array of long values associated with @p datasetName and reads from it
@@ -622,12 +662,12 @@ namespace EML2_NS
 		 * @param 	   	numDimensions				The number of the dimensions (n) of the nd array to
 		 * 											read.
 		 */
-		virtual void readArrayNdOfLongValues(
+		void readArrayNdOfLongValues(
 			const std::string& datasetName,
 			LONG64* values,
 			unsigned long long const* numValuesInEachDimension,
 			unsigned long long const* offsetInEachDimension,
-			unsigned int numDimensions);
+			unsigned int numDimensions) final;
 
 		/**
 		 * Reads an nd array of unsigned long values stored in a specific dataset
@@ -639,7 +679,7 @@ namespace EML2_NS
 		 * 							direction. The values must be pre-allocated and won't be freed by
 		 * 							this method.
 		 */
-		virtual void readArrayNdOfULongValues(const std::string& datasetName, ULONG64* values);
+		void readArrayNdOfULongValues(const std::string& datasetName, ULONG64* values) final;
 
 		/**
 		 * Reads an nd array of int values stored in a specific dataset
@@ -650,7 +690,7 @@ namespace EML2_NS
 		 * @param [out]	values	   	1d array of int values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		void readArrayNdOfIntValues(const std::string& datasetName, int* values);
+		void readArrayNdOfIntValues(const std::string& datasetName, int* values) final;
 
 		/**
 		 * Finds the nd array of int values associated with @p datasetName and reads from it
@@ -676,7 +716,7 @@ namespace EML2_NS
 			unsigned long long const* numValuesInEachDimension,
 			unsigned long long const* offsetInEachDimension,
 			unsigned int numDimensions
-		);
+		) final;
 
 		/**
 		 * Reads an nd array of unsigned int values stored in a specific dataset
@@ -687,7 +727,7 @@ namespace EML2_NS
 		 * @param [out]	values	   	1d array of unsigned int values ordered firstly by fastest direction.
 		 * 							The values must be pre-allocated and won't be freed by this method.
 		 */
-		void readArrayNdOfUIntValues(const std::string& datasetName, unsigned int* values);
+		void readArrayNdOfUIntValues(const std::string& datasetName, unsigned int* values) final;
 
 		/**
 		 * Reads an nd array of short values stored in a specific dataset
@@ -698,7 +738,7 @@ namespace EML2_NS
 		 * @param [out]	values	   	1d array of short values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		void readArrayNdOfShortValues(const std::string& datasetName, short* values);
+		void readArrayNdOfShortValues(const std::string& datasetName, short* values) final;
 
 		/**
 		 * Reads an nd array of unsigned short values stored in a specific dataset
@@ -710,7 +750,7 @@ namespace EML2_NS
 		 * 							direction. The values must be pre-allocated and won't be freed by
 		 * 							this method.
 		 */
-		void readArrayNdOfUShortValues(const std::string& datasetName, unsigned short* values);
+		void readArrayNdOfUShortValues(const std::string& datasetName, unsigned short* values) final;
 
 		/**
 		 * Reads an nd array of char values stored in a specific dataset
@@ -721,7 +761,7 @@ namespace EML2_NS
 		 * @param [out]	values	   	1d array of char values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		void readArrayNdOfCharValues(const std::string& datasetName, char* values);
+		void readArrayNdOfCharValues(const std::string& datasetName, char* values) final;
 
 		/**
 		 * Reads an nd array of unsigned char values stored in a specific dataset
@@ -733,7 +773,7 @@ namespace EML2_NS
 		 * 							direction. The values must be pre-allocated and won't be freed by
 		 * 							this method.
 		 */
-		void readArrayNdOfUCharValues(const std::string& datasetName, unsigned char* values);
+		void readArrayNdOfUCharValues(const std::string& datasetName, unsigned char* values) final;
 
 		/**
 		 * Reads the dimensions size of an nd array stored in a specific dataset
@@ -742,7 +782,7 @@ namespace EML2_NS
 		 *
 		 * @returns	A vector of dimensions size.
 		 */
-		std::vector<unsigned long long> readArrayDimensions(const std::string& datasetName);
+		std::vector<unsigned long long> readArrayDimensions(const std::string& datasetName) final;
 
 		/**
 		 * Checks whether an absolute path exists in the HDF5 file
@@ -751,7 +791,7 @@ namespace EML2_NS
 		 *
 		 * @returns	True if the absolute path exists, else false.
 		 */
-		bool exist(const std::string& absolutePathInHdfFile) const;
+		bool exist(const std::string& absolutePathInHdfFile) const final;
 
 		/**
 		 * Checks whether a dataset is compressed or not
@@ -762,7 +802,7 @@ namespace EML2_NS
 		 *
 		 * @returns	True if compressed, false if not.
 		 */
-		bool isCompressed(const std::string& datasetName);
+		bool isCompressed(const std::string& datasetName) final;
 
 	protected:
 
@@ -804,7 +844,7 @@ namespace EML2_NS
 		HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
 
 		/**
-		 * Read an nd array of float values stored in a specific dataset.
+		 * Read an nd array of values stored in a specific dataset.
 		 *
 		 * @param 		  	datasetName	The absolute dataset name where to read the values.
 		 * @param [in,out]	values	   	The values must be pre-allocated.
@@ -872,46 +912,6 @@ namespace EML2_NS
 			unsigned long long const* blockSizeInEachDimension,
 			unsigned int numDimensions,
 			hdf5_hid_t datatype);
-
-		/**
-		 * Considering a given dataset, this method selects an hyperslab region to add to an existing
-		 * selected region or to add to a new selected region. The dataset is not closed within this
-		 * method.
-		 *
-		 * @param 		  	datasetName					The name of the array (potentially with multi
-		 * 												dimensions).
-		 * @param 		  	blockCountPerDimension  	Number of blocks to select from the dataspace, in
-		 * 												each dimension. They are ordered from fastest index
-		 * 												to slowest index.
-		 * @param 		  	offsetInEachDimension   	Offset values in each dimension of the array to
-		 * 												read. They are ordered from fastest index to slowest
-		 * 												index.
-		 * @param 		  	strideInEachDimension   	Number of elements to move from one block to
-		 * 												another in each dimension. They are ordered from
-		 * 												fastest index to slowest index.
-		 * @param 		  	blockSizeInEachDimension	Size of selected blocks in each dimension. They
-		 * 												are ordered from fastest index to slowest index.
-		 * @param 		  	numDimensions				The number of the dimensions of the array to
-		 * 												select.
-		 * @param 		  	newSelection				true if creating a new selected region else false.
-		 * @param [in,out]	dataset						Input dataset ID if adding a new hyperslab region
-		 * 												to an existing selected region, output dataset ID if
-		 * 												creating a new selected region.
-		 * @param [in,out]	filespace					Input selected region ID if adding a new
-		 * 												hyperslab region to an existing selected region,
-		 * 												output selected region ID if creating a new selected
-		 * 												region.
-		 */
-		void selectArrayNdOfValues(
-			const std::string& datasetName,
-			unsigned long long const* blockCountPerDimension,
-			unsigned long long const* offsetInEachDimension,
-			unsigned long long const* strideInEachDimension,
-			unsigned long long const* blockSizeInEachDimension,
-			unsigned int numDimensions,
-			bool newSelection,
-			hdf5_hid_t& dataset,
-			hdf5_hid_t& filespace);
 
 		/**
 		 * Considering a given dataset, read the double values corresponding to an existing selected

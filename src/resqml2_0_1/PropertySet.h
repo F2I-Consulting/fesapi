@@ -28,7 +28,7 @@ namespace RESQML2_0_1_NS
 	 * can be used to collect all the properties corresponding to the simulation output at a single
 	 * time, or all the values of a single property kind for all times.
 	 */
-	class PropertySet : public RESQML2_NS::PropertySet
+	class PropertySet final : public RESQML2_NS::PropertySet
 	{
 	public:
 

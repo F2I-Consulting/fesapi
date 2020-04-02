@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A fault interpretation. */
-	class FaultInterpretation : public RESQML2_NS::FaultInterpretation
+	class FaultInterpretation final : public RESQML2_NS::FaultInterpretation
 	{
 	public:
 

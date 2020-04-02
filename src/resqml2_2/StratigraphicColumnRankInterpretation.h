@@ -26,7 +26,7 @@ namespace RESQML2_2_NS
 	/**
 	* This class is a container for other organizations that are consistent to each others.
 	*/
-	class StratigraphicColumnRankInterpretation : public RESQML2_NS::StratigraphicColumnRankInterpretation
+	class StratigraphicColumnRankInterpretation final : public RESQML2_NS::StratigraphicColumnRankInterpretation
 	{
 	public:
 

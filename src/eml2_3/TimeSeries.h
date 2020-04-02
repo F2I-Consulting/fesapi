@@ -24,7 +24,7 @@ under the License.
 namespace EML2_3_NS
 {
 	/** A time series. */
-	class TimeSeries : public EML2_NS::TimeSeries
+	class TimeSeries final : public EML2_NS::TimeSeries
 	{
 	public:
 

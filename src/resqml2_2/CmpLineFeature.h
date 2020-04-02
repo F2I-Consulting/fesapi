@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A seismic line feature. */
-	class CmpLineFeature : public AbstractSeismicLineFeature
+	class CmpLineFeature final : public AbstractSeismicLineFeature
 	{
 	public:
 

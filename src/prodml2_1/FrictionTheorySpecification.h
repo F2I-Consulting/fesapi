@@ -20,6 +20,8 @@ under the License.
 
 #include "CompositionalViscositySpecification.h"
 
+#include <limits>
+
 /** . */
 namespace PRODML2_1_NS
 {

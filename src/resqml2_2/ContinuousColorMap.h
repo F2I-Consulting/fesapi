@@ -23,7 +23,7 @@ under the License.
 
 namespace RESQML2_2_NS
 {
-	class ContinuousColorMap : public AbstractColorMap
+	class ContinuousColorMap final : public AbstractColorMap
 	{
 	private:
 		/**

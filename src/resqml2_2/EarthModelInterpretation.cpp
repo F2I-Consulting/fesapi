@@ -18,6 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "EarthModelInterpretation.h"
 
+#include <limits>
 #include <stdexcept>
 
 #include "../resqml2/Model.h"

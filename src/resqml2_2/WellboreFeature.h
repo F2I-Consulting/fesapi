@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** Proxy class for a wellbore feature. */
-	class WellboreFeature : public RESQML2_NS::WellboreFeature
+	class WellboreFeature final : public RESQML2_NS::WellboreFeature
 	{
 	public:
 
@@ -63,6 +63,6 @@ namespace RESQML2_2_NS
 		 *
 		 * @param [in]	wellbore	The WITSML wellbore to associate to this wellbore. It cannot be null.
 		 */
-		DLL_IMPORT_OR_EXPORT void setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore);
+		DLL_IMPORT_OR_EXPORT void setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore) final;
 	};
 }

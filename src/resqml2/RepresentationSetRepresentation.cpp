@@ -18,12 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "RepresentationSetRepresentation.h"
 
-#include <stdexcept>
 #include <limits>
-
-#include "AbstractLocal3dCrs.h"
-
-#include "../tools/Misc.h"
+#include <stdexcept>
 
 using namespace std;
 using namespace RESQML2_NS;
@@ -42,12 +38,12 @@ void RepresentationSetRepresentation::loadTargetRelationships()
 	}
 }
 
-ULONG64 RepresentationSetRepresentation::getXyzPointCountOfPatch(const unsigned int &) const
+ULONG64 RepresentationSetRepresentation::getXyzPointCountOfPatch(unsigned int) const
 {
 	throw logic_error("Not implemented yet.");
 }
 
-void RepresentationSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
+void RepresentationSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");

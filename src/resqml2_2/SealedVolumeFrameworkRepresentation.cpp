@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "SealedVolumeFrameworkRepresentation.h"
 
+#include <limits>
+
 #include "../resqml2/StratigraphicColumnRankInterpretation.h"
 #include "../resqml2/SealedSurfaceFrameworkRepresentation.h"
 #include "../resqml2/StratigraphicUnitInterpretation.h"

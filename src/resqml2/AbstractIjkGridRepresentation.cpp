@@ -16,16 +16,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
 #include "AbstractIjkGridRepresentation.h"
 
+#include <limits>
 #include <stdexcept>
 
 #include <hdf5.h>
 
-#include "AbstractFeatureInterpretation.h"
-#include "AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
+#include "AbstractFeatureInterpretation.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
@@ -1200,12 +1199,12 @@ void AbstractIjkGridRepresentation::getXyzPointsOfBlock(double *)
 	throw std::logic_error("Partial object");
 }
 
-ULONG64 AbstractIjkGridRepresentation::getXyzPointCountOfPatch(const unsigned int &) const
+ULONG64 AbstractIjkGridRepresentation::getXyzPointCountOfPatch(unsigned int) const
 {
 	throw std::logic_error("Partial object");
 }
 
-void AbstractIjkGridRepresentation::getXyzPointsOfPatch(const unsigned int &, double *) const
+void AbstractIjkGridRepresentation::getXyzPointsOfPatch(unsigned int, double *) const
 {
 	throw std::logic_error("Partial object");
 }

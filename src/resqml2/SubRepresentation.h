@@ -329,10 +329,10 @@ namespace RESQML2_NS
 		 * 							   pairwise) or if the kind of the left part of the pairs of elements is
 		 * 							    not node (pairwise case).
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const override;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const override;
 
 		/** Please do note use : not implemented yet. */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int& patchIndex, double* xyzPoints) const override;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double* xyzPoints) const override;
 
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getPatchCount() const override = 0;
 
@@ -387,10 +387,10 @@ namespace RESQML2_NS
 		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 
 	protected:
 

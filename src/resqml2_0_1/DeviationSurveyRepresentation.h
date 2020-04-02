@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A deviation survey representation. */
-	class DeviationSurveyRepresentation : public RESQML2_NS::DeviationSurveyRepresentation
+	class DeviationSurveyRepresentation final : public RESQML2_NS::DeviationSurveyRepresentation
 	{
 	public:
 
@@ -73,24 +73,24 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void setGeometry(double const* firstStationLocation, ULONG64 stationCount,
 			gsoap_resqml2_0_1::eml20__LengthUom mdUom, double const* mds,
 			gsoap_resqml2_0_1::eml20__PlaneAngleUom angleUom, double const* azimuths, double const* inclinations,
-			EML2_NS::AbstractHdfProxy* proxy);
+			EML2_NS::AbstractHdfProxy* proxy) final;
 
 		/**
 		 * Set the Md datum of this trajectory
 		 *
 		 * @param [in,out]	mdDatum	If non-null, the md datum.
 		 */
-		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum * mdDatum);
+		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum * mdDatum) final;
 
 		/**
 		* @return	null pointer if no md datum is associated to this representation. Otherwise return the data object reference of the associated md datum.
 		*/
-		COMMON_NS::DataObjectReference getMdDatumDor() const;
+		COMMON_NS::DataObjectReference getMdDatumDor() const final;
 
 		/**
 		* Used to indicate that this is a final version of the deviation survey, as distinct from the interim interpretations.
 		*/
-		DLL_IMPORT_OR_EXPORT bool isFinal() const;
+		DLL_IMPORT_OR_EXPORT bool isFinal() const final;
 
 		/**
 		 * Get the xyz point count in a given patch.
@@ -99,7 +99,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The xyz point count of patch.
 		 */
-		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
 		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
@@ -110,21 +110,21 @@ namespace RESQML2_0_1_NS
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be pre allocated.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Units of measure of the measured depths along this deviation survey.
 		 *
 		 * @returns	The md uom.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const final;
 
 		/**
 		 * Defines the units of measure for the azimuth and inclination
 		 *
 		 * @returns	The angle uom.
 		 */
-		gsoap_resqml2_0_1::eml20__PlaneAngleUom getAngleUom() const;
+		gsoap_resqml2_0_1::eml20__PlaneAngleUom getAngleUom() const final;
 
 		/**
 		 * Getter of the md double values associated to each trajectory station of this WellboreFeature
@@ -132,7 +132,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	values	It must preallocated with a count of getXyzPointCountOfPatch(0)
 		 */
-		DLL_IMPORT_OR_EXPORT void getMdValues(double* values) const;
+		DLL_IMPORT_OR_EXPORT void getMdValues(double* values) const final;
 
 		/**
 		 * Getter of the inclination double values associated to each trajectory station of this
@@ -140,7 +140,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	values	It must preallocated with a count of getXyzPointCountOfPatch(0)
 		 */
-		DLL_IMPORT_OR_EXPORT void getInclinations(double* values) const;
+		DLL_IMPORT_OR_EXPORT void getInclinations(double* values) const final;
 
 		/**
 		 * Getter of the azimuth double values associated to each trajectory station of this
@@ -150,8 +150,8 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	values	It must preallocated with a count of getXyzPointCountOfPatch(0)
 		 */
-		DLL_IMPORT_OR_EXPORT void getAzimuths(double* values) const;
+		DLL_IMPORT_OR_EXPORT void getAzimuths(double* values) const final;
 
-		COMMON_NS::DataObjectReference getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 	};
 }

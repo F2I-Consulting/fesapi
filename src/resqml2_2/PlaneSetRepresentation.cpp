@@ -18,10 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PlaneSetRepresentation.h"
 
+#include <algorithm>
+#include <limits>
 #include <stdexcept>
 #include <sstream>
-#include <algorithm>
-#include <stdexcept>
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractLocal3dCrs.h"
@@ -110,7 +110,7 @@ void PlaneSetRepresentation::pushBackTiltedPlaneGeometryPatch(
 	getRepository()->addRelationship(this, localCrs);
 }
 
-ULONG64 PlaneSetRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 PlaneSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");
@@ -122,7 +122,7 @@ ULONG64 PlaneSetRepresentation::getXyzPointCountOfPatch(const unsigned int & pat
 		: static_cast<resqml22__TiltedPlaneGeometry*>(rep->Planes[patchIndex])->Plane.size() * 3;
 }
 
-void PlaneSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void PlaneSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");

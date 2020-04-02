@@ -28,7 +28,7 @@ namespace RESQML2_0_1_NS
 	* As a first step, This class only works for a single rock fluid unit container due to the fact that the workaround described here http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html is not implemented yet.
 	* Use with caution : ONLY IF YOU HAVE A SINGLE ROCK FLUID UNIT ORGANISATION !!!!
 	*/
-	class RockFluidOrganizationInterpretation : public RESQML2_NS::RockFluidOrganizationInterpretation
+	class RockFluidOrganizationInterpretation final : public RESQML2_NS::RockFluidOrganizationInterpretation
 	{
 	public:
 
@@ -58,15 +58,15 @@ namespace RESQML2_0_1_NS
 		*
 		* @param rockFluidUnitInterpretation	The rock fluid unit interpretation to push back
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackRockFluidUnitInterpretation(RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterpretation);
+		DLL_IMPORT_OR_EXPORT void pushBackRockFluidUnitInterpretation(RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterpretation) final;
 
 		/**
 		 * Gets rock fluid unit interp count
 		 *
 		 * @returns	The count of rock fluid unit interp in this rock fluid organization.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getRockFluidUnitInterpCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getRockFluidUnitInterpCount() const final;
 
-		COMMON_NS::DataObjectReference getRockFluidUnitInterpretationDor(unsigned int index) const;
+		COMMON_NS::DataObjectReference getRockFluidUnitInterpretationDor(unsigned int index) const final;
 	};
 }

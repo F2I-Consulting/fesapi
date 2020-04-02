@@ -21,8 +21,6 @@ under the License.
 #include <stdexcept>
 #include <algorithm>
 
-#include "AbstractRepresentation.h"
-
 #include "../tools/Trigonometry.h"
 
 using namespace std;

@@ -18,6 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "BlockedWellboreRepresentation.h"
 
+#include <limits>
 #include <stdexcept>
 
 #include <hdf5.h>

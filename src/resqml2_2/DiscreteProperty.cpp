@@ -18,6 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "DiscreteProperty.h"
 
+#include <limits>
 #include <sstream>
 #include <stdexcept>
 

@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A seismic line feature. */
-	class ShotPointLineFeature : public AbstractSeismicLineFeature
+	class ShotPointLineFeature final : public AbstractSeismicLineFeature
 	{
 	public:
 
@@ -79,6 +79,6 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The XML tag.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};
 }

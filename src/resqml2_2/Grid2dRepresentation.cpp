@@ -19,6 +19,7 @@ under the License.
 #include "Grid2dRepresentation.h"
 
 #include <algorithm>
+#include <limits>
 #include <stdexcept>
 
 #include "H5public.h"

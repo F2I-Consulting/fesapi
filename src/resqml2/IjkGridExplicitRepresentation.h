@@ -159,9 +159,9 @@ namespace RESQML2_NS
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
 			const std::string & definedPillars = "", RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
-		DLL_IMPORT_OR_EXPORT bool isNodeGeometryCompressed() const override;
+		DLL_IMPORT_OR_EXPORT bool isNodeGeometryCompressed() const final;
 
-		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const override;
+		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const final;
 
 	protected:
 		/**

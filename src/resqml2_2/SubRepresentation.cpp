@@ -18,6 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "SubRepresentation.h"
 
+#include <limits>
 #include <sstream>
 #include <stdexcept>
 

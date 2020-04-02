@@ -20,16 +20,9 @@ under the License.
 
 #include "WellboreFrameRepresentation.h"
 
-namespace RESQML2_0_1_NS
-{
-	class WellboreInterpretation;
-	class WellboreTrajectoryRepresentation;
-	class LocalTime3dCrs;
-}
-
 namespace RESQML2_2_NS
 {
-	class SeismicWellboreFrameRepresentation : public RESQML2_2_NS::WellboreFrameRepresentation
+	class SeismicWellboreFrameRepresentation final : public RESQML2_2_NS::WellboreFrameRepresentation
 	{
 	public:
 
@@ -135,6 +128,6 @@ namespace RESQML2_2_NS
 		/**
 		* Get the standard XML tag without XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};
 }

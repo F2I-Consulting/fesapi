@@ -24,7 +24,7 @@ under the License.
 namespace EML2_3_NS
 {
 	/** An activity template. */
-	class ActivityTemplate : public EML2_NS::ActivityTemplate
+	class ActivityTemplate final : public EML2_NS::ActivityTemplate
 	{
 	public:
 

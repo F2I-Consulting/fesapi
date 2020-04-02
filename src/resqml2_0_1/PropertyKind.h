@@ -25,7 +25,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** A property kind. */
-	class PropertyKind : public EML2_NS::PropertyKind
+	class PropertyKind final : public EML2_NS::PropertyKind
 	{
 	private:
 
@@ -143,21 +143,21 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	True if abstract, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool isAbstract() const;
+		DLL_IMPORT_OR_EXPORT bool isAbstract() const final;
 
 		/**
 		 * Query if this object is parent partial
 		 *
 		 * @returns	True if parent partial, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool isParentPartial() const;
+		DLL_IMPORT_OR_EXPORT bool isParentPartial() const final;
 
 		/**
 		 * Get the title of the parent property kind
 		 *
 		 * @returns	The title of the parent property kind.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getParentAsString() const;
+		DLL_IMPORT_OR_EXPORT std::string getParentAsString() const final;
 
 		/**
 		 * Gets a data object reference on the parent local property kind
@@ -187,7 +187,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getParentEnergisticsPropertyKind() const;
 
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 
 	protected:
 

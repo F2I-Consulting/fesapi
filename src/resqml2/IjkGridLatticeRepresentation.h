@@ -50,10 +50,10 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT bool isAFaciesCube() const;
 
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const override;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/** Please do note use: not implemented yet. Please use lattice information. */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const override;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double* xyzPoints) const final;
 
 		/**
 		 * Gets the X coordinate of the origin of this geometry. The X coordinate is given in the local
@@ -368,7 +368,7 @@ namespace RESQML2_NS
 			double startCrossline, double incrCrossline, unsigned int countCrossline,
 			unsigned int countSample, RESQML2_NS::AbstractRepresentation * seismicSupport) = 0;
 
-		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const override;
+		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const final;
 
 	protected:
 		IjkGridLatticeRepresentation(COMMON_NS::DataObjectRepository * repo,

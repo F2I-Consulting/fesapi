@@ -71,6 +71,6 @@ namespace EML2_0_NS
 		 *
 		 * @returns	The XML namespace.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const;
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final;
 	};
 }

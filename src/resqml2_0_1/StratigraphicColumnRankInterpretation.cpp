@@ -162,7 +162,7 @@ void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(R
 	pushBackBinaryContact(subject, gsoap_eml2_3::resqml22__ContactVerb__stops, directObject);
     resqml20__BinaryContactInterpretationPart* contact = static_cast<resqml20__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
     contact->DirectObject->SecondaryQualifier = static_cast<resqml20__ContactMode*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactMode)));
-	switch (subjectContactMode) {
+	switch (directObjectMode) {
 	case gsoap_eml2_3::resqml22__ContactMode__conformable: *(contact->DirectObject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode__proportional; break;
 	case gsoap_eml2_3::resqml22__ContactMode__extended: *(contact->DirectObject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode__extended; break;
 	case gsoap_eml2_3::resqml22__ContactMode__unconformable: *(contact->DirectObject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode__erosion; break;
@@ -226,4 +226,6 @@ COMMON_NS::DataObjectReference StratigraphicColumnRankInterpretation::getHorizon
 			return COMMON_NS::DataObjectReference(cr->ContactInterpretation[i]->PartOf);
 		}
 	}
+
+	return COMMON_NS::DataObjectReference();
 }

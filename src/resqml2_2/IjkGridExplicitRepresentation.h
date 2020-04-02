@@ -26,7 +26,7 @@ namespace RESQML2_2_NS
 	* An IJK Grid explicit representation defines each cell corner position by means of XYZ coordinates.
 	* Adjacent cell corner are supposed to be located the same so they are not repeated unless you define split lines or split nodes.
 	*/
-	class IjkGridExplicitRepresentation : public RESQML2_NS::IjkGridExplicitRepresentation
+	class IjkGridExplicitRepresentation final : public RESQML2_NS::IjkGridExplicitRepresentation
 	{
 	public:
 
@@ -56,19 +56,19 @@ namespace RESQML2_2_NS
 		*/
 		virtual ~IjkGridExplicitRepresentation() {}
 
-		COMMON_NS::DataObjectReference getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
 		/**
 		* Get the xyz point count in a given patch.
 		*/
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
 		* Get all the XYZ points of a particular patch of this representation.
 		* XYZ points are given in the local CRS.
 		* @param xyzPoints XYZ double triplets ordered by i then j then split then k. It must be pre allocated with a count of ((iCellCount+1) * (jCellCount+1) + splitCoordinateLineCount) * kCellCount.
 		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
 		/**
 		* Set the geometry of the IJK grid as explicit coordinate line nodes. See Resqml Usage, Technical guide and Enterprise Architect diagrams for details.
@@ -92,7 +92,7 @@ namespace RESQML2_2_NS
 			double * points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned long splitCoordinateLineCount = 0, unsigned int * pillarOfCoordinateLine = nullptr,
 			unsigned int * splitCoordinateLineColumnCumulativeCount = nullptr, unsigned int * splitCoordinateLineColumns = nullptr,
-			char * definedPillars = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
+			char * definedPillars = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 
 		/**
 		* Same as setGeometryAsCoordinateLineNodes where the hdf datasets are already written in the the file.
@@ -102,9 +102,9 @@ namespace RESQML2_2_NS
 			const std::string & points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned long splitCoordinateLineCount = 0, const std::string & pillarOfCoordinateLine = "",
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
-			const std::string & definedPillars = "", RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string & definedPillars = "", RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 
 	private:
-		EML2_NS::AbstractHdfProxy* getPointDatasetPath(std::string & datasetPathInExternalFile, unsigned long & splitCoordinateLineCount) const;
+		EML2_NS::AbstractHdfProxy* getPointDatasetPath(std::string & datasetPathInExternalFile, unsigned long & splitCoordinateLineCount) const final;
 	};
 }

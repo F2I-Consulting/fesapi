@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** A polyline representation. */
-	class PolylineRepresentation : public RESQML2_NS::PolylineRepresentation
+	class PolylineRepresentation final : public RESQML2_NS::PolylineRepresentation
 	{
 	public:
 
@@ -88,7 +88,7 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~PolylineRepresentation() {}
 
-		COMMON_NS::DataObjectReference getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
 		/**
 		 * Get the xyz point count in a given patch.
@@ -97,7 +97,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The xyz point count of patch.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
 		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
@@ -108,7 +108,7 @@ namespace RESQML2_2_NS
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be pre allocated.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Sets a geometry
@@ -128,14 +128,14 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	True if closed, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool isClosed() const;
+		DLL_IMPORT_OR_EXPORT bool isClosed() const final;
 
 		/**
 		 * Indicates if the polyline is associated to a particular LineRole.
 		 *
 		 * @returns	True if a line role, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasALineRole() const;
+		DLL_IMPORT_OR_EXPORT bool hasALineRole() const final;
 
 		/**
 		 * Get the role of this polyline. Throw an exception if the polyline has no role (see method
@@ -143,17 +143,17 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The line role.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__LineRole getLineRole() const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__LineRole getLineRole() const final;
 
 		/**
 		 * Set the line role of this instance
 		 *
 		 * @param 	lineRole	The line role.
 		 */
-		DLL_IMPORT_OR_EXPORT void setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole);
+		DLL_IMPORT_OR_EXPORT void setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole) final;
 
 	private:
-		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
+		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const final;
 
 		/**
 		 * Initializes this object

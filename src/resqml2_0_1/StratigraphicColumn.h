@@ -24,7 +24,7 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/** This class is a container for other organizations that are consistent to each others. */
-	class StratigraphicColumn : public RESQML2_NS::StratigraphicColumn
+	class StratigraphicColumn final : public RESQML2_NS::StratigraphicColumn
 	{
 	public:
 
