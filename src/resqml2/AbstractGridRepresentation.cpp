@@ -280,7 +280,7 @@ gsoap_eml2_3::resqml22__Regrid* AbstractGridRepresentation::createRegrid2_2(unsi
 		dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
 		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
 		dsPart->PathInExternalFile = getHdfGroup() + "/ParentWindow_" + dimension + "Regrid_ParentCountPerInterval";
-		hdf5ChildCountPerInterval->Values->ExternalFileProxy.push_back(dsPart);
+		hdf5ParentCountPerInterval->Values->ExternalFileProxy.push_back(dsPart);
 
 		// HDF
 		hsize_t numValues = intervalCount;
@@ -579,8 +579,8 @@ void AbstractGridRepresentation::setParentWindow(
 
 		// Regrids
 		ijkpw->IRegrid = createRegrid2_2(iCellIndexRegridStart, &constantChildCellCountPerIInterval, &constantParentCellCountPerIInterval, iIntervalCount, iChildCellWeights, "I", proxy, true);
-		ijkpw->JRegrid = createRegrid2_2(jCellIndexRegridStart, &constantChildCellCountPerIInterval, &constantParentCellCountPerIInterval, iIntervalCount, iChildCellWeights, "I", proxy, true);
-		ijkpw->KRegrid = createRegrid2_2(kCellIndexRegridStart, &constantChildCellCountPerIInterval, &constantParentCellCountPerIInterval, iIntervalCount, iChildCellWeights, "I", proxy, true);
+		ijkpw->JRegrid = createRegrid2_2(jCellIndexRegridStart, &constantChildCellCountPerJInterval, &constantParentCellCountPerJInterval, jIntervalCount, jChildCellWeights, "J", proxy, true);
+		ijkpw->KRegrid = createRegrid2_2(kCellIndexRegridStart, &constantChildCellCountPerKInterval, &constantParentCellCountPerKInterval, kIntervalCount, kChildCellWeights, "K", proxy, true);
 	}
 	else {
 		throw logic_error("Not implemented yet");

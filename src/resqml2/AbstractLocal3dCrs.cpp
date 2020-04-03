@@ -204,7 +204,7 @@ bool AbstractLocal3dCrs::isVerticalCrsDefinedWithEpsg() const
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__VerticalCrsEpsgCode;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->ProjectedCrs->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__VerticalEpsgCrs;
+		return static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->VerticalCrs->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__VerticalEpsgCrs;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -217,7 +217,7 @@ bool AbstractLocal3dCrs::isVerticalCrsUnknown() const
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__VerticalUnknownCrs;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->ProjectedCrs->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__VerticalUnknownCrs;
+		return static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->VerticalCrs->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__VerticalUnknownCrs;
 	}
 	else {
 		throw logic_error("Not implemented yet");

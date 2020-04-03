@@ -46,9 +46,8 @@ RUN yum search epel-release && \
 ##############
 # hdf5 install
 # hdf5 is a dependence of fesapi
-RUN mkdir fesapiEnv && \
-	cd fesapiEnv && \
-	mkdir dependencies && \
+WORKDIR /fesapiEnv
+RUN mkdir dependencies && \
 	cd dependencies && \
 	wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.6/src/hdf5-1.10.6.tar.gz && \
 	tar xf hdf5-1.10.6.tar.gz && \
@@ -70,8 +69,8 @@ RUN mkdir fesapiEnv && \
 
 ################
 # fesapi install
-RUN cd ../../.. && \
-	git clone https://github.com/F2I-Consulting/fesapi.git && \
+WORKDIR /fesapiEnv
+RUN git clone https://github.com/F2I-Consulting/fesapi.git && \
 	cd fesapi && \
 	git checkout resqml22 && \
 	cd ..  && \
@@ -95,5 +94,5 @@ RUN cd ../../.. && \
 
 # generate .epc and .h5 files
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/fesapiEnv/build/install/lib64/:/usr/local/lib/
-WORKDIR fesapiEnv/build/install
+WORKDIR /fesapiEnv/build/install
 RUN ./example

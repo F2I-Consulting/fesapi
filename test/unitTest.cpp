@@ -25,7 +25,7 @@ under the License.
 #include "catch.hpp"
 
 #include "common/DataObjectRepository.h"
-#include "common/AbstractHdfProxy.h"
+#include "eml2/AbstractHdfProxy.h"
 
 #include "EpcDocumentTest.h"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
@@ -61,7 +61,6 @@ under the License.
 #include "witsml2_0test/Perforation.h"
 #include "witsml2_0test/WellboreGeometryTest.h"
 
-#if WITH_EXPERIMENTAL
 #include "GraphicalInformationSetTest.h"
 #include "resqml2_2test/DiscreteColorMapTest.h"
 #include "resqml2_2test/ContinuousColorMapTest.h"
@@ -69,11 +68,10 @@ under the License.
 #include "resqml2_2test/WellboreRegularFrameRepresentationTest.h"
 #include "resqml2_2test/SeismicWellboreFrameRepresentationTest.h"
 #include "resqml2_2test/SeismicWellboreRegularFrameRepresentationTest.h"
-using namespace resqml2_2test;
-#endif
 
 using namespace commontest;
 using namespace resqml2_0_1test;
+using namespace resqml2_2test;
 using namespace witsml2_0test;
 
 #define FESAPI_TEST(name, tags, classTest)  TEST_CASE(name, tags)\
@@ -90,7 +88,6 @@ TEST_CASE( "Deserialize an EPC document", "[epc]")
 }
 */
 
-#if WITH_EXPERIMENTAL
 FESAPI_TEST("Export and import graphical information set", "[graphical information]", GraphicalInformationSetTest)
 FESAPI_TEST("Export and import discrete color map on a discrete property", "[graphical information][color map][discrete color map]", DiscreteColorMapTest)
 FESAPI_TEST("Export and import continuous color map on a discrete property", "[graphical information][color map][continuous color map]", ContinuousColorMapTest)
@@ -98,7 +95,6 @@ FESAPI_TEST("Export and import wellbore frame", "[well]", resqml2_2test::Wellbor
 FESAPI_TEST("Export and import regular wellbore frame", "[well]", resqml2_2test::WellboreRegularFrameRepresentationTest)
 FESAPI_TEST("Export and import seismic wellbore frame", "[well]", SeismicWellboreFrameRepresentationTest)
 FESAPI_TEST("Export and import regular seismic wellbore frame", "[well]", SeismicWellboreRegularFrameRepresentationTest)
-#endif
 
 TEST_CASE("Export and import an empty EPC document", "[repo]")
 {
@@ -116,7 +112,7 @@ TEST_CASE("Test hdf5 opening mode", "[hdf]")
 	std::remove("../../testingFile.h5");
 
 	COMMON_NS::DataObjectRepository repo;
-	COMMON_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy Test", "../../", "testingFile.h5", COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
+	EML2_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy Test", "../../", "testingFile.h5", COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
 	REQUIRE_THROWS(hdfProxy->open());
 	hdfProxy->setOpeningMode(COMMON_NS::DataObjectRepository::openingMode::READ_WRITE_DO_NOT_CREATE);
 	REQUIRE_THROWS(hdfProxy->open());

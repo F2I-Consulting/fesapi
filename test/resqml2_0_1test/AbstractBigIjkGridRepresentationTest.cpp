@@ -21,10 +21,10 @@ under the License.
 #include "catch.hpp"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 
-#include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "resqml2_0_1/IjkGridExplicitRepresentation.h"
-#include "resqml2_0_1/DiscreteProperty.h"
-#include "resqml2_0_1/ContinuousProperty.h"
+#include "resqml2/LocalDepth3dCrs.h"
+#include "resqml2/IjkGridExplicitRepresentation.h"
+#include "resqml2/DiscreteProperty.h"
+#include "resqml2/ContinuousProperty.h"
 
 using namespace std;
 using namespace COMMON_NS;

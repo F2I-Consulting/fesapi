@@ -20,7 +20,7 @@ under the License.
 
 #include "common/EpcDocument.h"
 #include "catch.hpp"
-#include "resqml2_0_1/LocalDepth3dCrs.h"
+#include "resqml2/LocalDepth3dCrs.h"
 
 using namespace std;
 using namespace commontest;

@@ -23,14 +23,13 @@ under the License.
 #include "resqml2_0_1test/PropertyKindTest.h"
 #include "resqml2_0_1test/WellboreFrameRepresentationTest.h"
 
-#include "resqml2_0_1/PropertyKind.h"
-#include "resqml2_0_1/DiscreteProperty.h"
-#include "resqml2_0_1/AbstractIjkGridRepresentation.h"
-#include "common/AbstractHdfProxy.h"
+#include "eml2_3/PropertyKind.h"
+#include "resqml2/DiscreteProperty.h"
+#include "resqml2/AbstractIjkGridRepresentation.h"
+#include "eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace COMMON_NS;
-using namespace RESQML2_NS;
 using namespace resqml2_0_1test;
 
 const char* DiscreteProperty::defaultCharPropUuid = "5aa6a9d4-253e-43a8-bdf5-621e5df2d425";
@@ -52,53 +51,53 @@ DiscreteProperty::DiscreteProperty(DataObjectRepository * repo, bool init)
 }
 
 void DiscreteProperty::initRepoHandler() {
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* ijkGrid = repo->createPartialIjkGridRepresentation("", "partial IJK Grid");
-	RESQML2_0_1_NS::PropertyKind * propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("", "Partial prop kind");
+	RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo->createPartialIjkGridRepresentation("", "partial IJK Grid");
+	EML2_NS::PropertyKind * propertyKind = repo->createPartial<EML2_3_NS::PropertyKind>("", "Partial prop kind");
 
 	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
+	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
 	// creating the char DiscreteProperty
-	RESQML2_0_1_NS::DiscreteProperty* charDiscreteProperty = repo->createDiscreteProperty(
+	RESQML2_NS::DiscreteProperty* charDiscreteProperty = repo->createDiscreteProperty(
 		ijkGrid, defaultCharPropUuid, "char prop",
 		1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_eml2_3::resqml22__IndexableElement__cells,
 		propertyKind);
 	char charValues[6] = { 0, 1, 2, 3, 4, 5 };
 	charDiscreteProperty->pushBackCharHdf5Array3dOfValues(charValues, 1, 2, 3, hdfProxy, -1);
 
 	// creating the short DiscreteProperty
-	RESQML2_0_1_NS::DiscreteProperty* shortDiscreteProperty = repo->createDiscreteProperty(
+	RESQML2_NS::DiscreteProperty* shortDiscreteProperty = repo->createDiscreteProperty(
 		ijkGrid, defaultShortPropUuid, "short prop",
 		1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_eml2_3::resqml22__IndexableElement__cells,
 		propertyKind);
 	short shortValues[6] = { 0, 1, 2, 3, 4, 5 };
 	shortDiscreteProperty->pushBackShortHdf5Array3dOfValues(shortValues, 1, 2, 3, hdfProxy, -1);
 
 	// creating the ushort DiscreteProperty
-	RESQML2_0_1_NS::DiscreteProperty* ushortDiscreteProperty = repo->createDiscreteProperty(
+	RESQML2_NS::DiscreteProperty* ushortDiscreteProperty = repo->createDiscreteProperty(
 		ijkGrid, defaultUShortPropUuid, "ushort prop",
 		1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_eml2_3::resqml22__IndexableElement__cells,
 		propertyKind);
 	unsigned short ushortValues[6] = { 0, 1, 2, 3, 4, 5 };
 	ushortDiscreteProperty->pushBackUShortHdf5Array3dOfValues(ushortValues, 1, 2, 3, hdfProxy, -1);
 
 	// creating the int DiscreteProperty
-	RESQML2_0_1_NS::DiscreteProperty* intDiscreteProperty = repo->createDiscreteProperty(
+	RESQML2_NS::DiscreteProperty* intDiscreteProperty = repo->createDiscreteProperty(
 		ijkGrid, defaultIntPropUuid, "int prop",
 		1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_eml2_3::resqml22__IndexableElement__cells,
 		propertyKind);
 	int intValues[6] = { 0, 1, 2, 3, 4, 5 };
 	intDiscreteProperty->pushBackIntHdf5Array3dOfValues(intValues, 1, 2, 3, hdfProxy, -1);
 
 	// creating the long DiscreteProperty
-	RESQML2_0_1_NS::DiscreteProperty* longDiscreteProperty = repo->createDiscreteProperty(
+	RESQML2_NS::DiscreteProperty* longDiscreteProperty = repo->createDiscreteProperty(
 		ijkGrid, defaultLongPropUuid, "long prop",
 		1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_eml2_3::resqml22__IndexableElement__cells,
 		propertyKind);
 	LONG64 longValues[6] = { 0, 1, 2, 3, 4, 5 };
 	longDiscreteProperty->pushBackLongHdf5Array3dOfValues(longValues, 1, 2, 3, hdfProxy, -1);
@@ -106,14 +105,14 @@ void DiscreteProperty::initRepoHandler() {
 
 void DiscreteProperty::readRepoHandler() {
 	// getting the DiscreteProperty
-	RESQML2_0_1_NS::DiscreteProperty* charDiscreteProperty = repo->getDataObjectByUuid<RESQML2_0_1_NS::DiscreteProperty>(defaultCharPropUuid);
-	REQUIRE(charDiscreteProperty->getValuesHdfDatatype() == AbstractValuesProperty::CHAR);
-	RESQML2_0_1_NS::DiscreteProperty* shortDiscreteProperty = repo->getDataObjectByUuid<RESQML2_0_1_NS::DiscreteProperty>(defaultShortPropUuid);
-	REQUIRE(shortDiscreteProperty->getValuesHdfDatatype() == AbstractValuesProperty::SHORT);
-	RESQML2_0_1_NS::DiscreteProperty* ushortDiscreteProperty = repo->getDataObjectByUuid<RESQML2_0_1_NS::DiscreteProperty>(defaultUShortPropUuid);
-	REQUIRE(ushortDiscreteProperty->getValuesHdfDatatype() == AbstractValuesProperty::USHORT);
-	RESQML2_0_1_NS::DiscreteProperty* intDiscreteProperty = repo->getDataObjectByUuid<RESQML2_0_1_NS::DiscreteProperty>(defaultIntPropUuid);
-	REQUIRE(intDiscreteProperty->getValuesHdfDatatype() == AbstractValuesProperty::INT);
-	RESQML2_0_1_NS::DiscreteProperty* longDiscreteProperty = repo->getDataObjectByUuid<RESQML2_0_1_NS::DiscreteProperty>(defaultLongPropUuid);
-	REQUIRE(longDiscreteProperty->getValuesHdfDatatype() == AbstractValuesProperty::LONG_64);
+	RESQML2_NS::DiscreteProperty* charDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultCharPropUuid);
+	REQUIRE(charDiscreteProperty->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::CHAR);
+	RESQML2_NS::DiscreteProperty* shortDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultShortPropUuid);
+	REQUIRE(shortDiscreteProperty->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::SHORT);
+	RESQML2_NS::DiscreteProperty* ushortDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultUShortPropUuid);
+	REQUIRE(ushortDiscreteProperty->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::USHORT);
+	RESQML2_NS::DiscreteProperty* intDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultIntPropUuid);
+	REQUIRE(intDiscreteProperty->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::INT);
+	RESQML2_NS::DiscreteProperty* longDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultLongPropUuid);
+	REQUIRE(longDiscreteProperty->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG_64);
 }

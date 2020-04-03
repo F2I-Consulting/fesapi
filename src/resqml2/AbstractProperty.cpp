@@ -42,54 +42,21 @@ using namespace std;
 void AbstractProperty::loadTargetRelationships()
 {
 	COMMON_NS::DataObjectReference dor = getRepresentationDor();
-	RESQML2_NS::AbstractRepresentation* rep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor.getUuid());
-	if (rep == nullptr) { // partial transfer
-		getRepository()->createPartial(dor);
-		rep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor.getUuid());
-		if (rep == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
-	}
-	repository->addRelationship(this, rep);
+	convertDorIntoRel<RESQML2_NS::AbstractRepresentation>(dor);
 
 	dor = getTimeSeriesDor();
 	if (!dor.isEmpty()) {
-		EML2_NS::TimeSeries* ts = getRepository()->getDataObjectByUuid<EML2_NS::TimeSeries>(dor.getUuid());
-		if (ts == nullptr) { // partial transfer
-			getRepository()->createPartial(dor);
-			ts = getRepository()->getDataObjectByUuid<EML2_NS::TimeSeries>(dor.getUuid());
-			if (ts == nullptr) {
-				throw invalid_argument("The DOR looks invalid.");
-			}
-		}
-		repository->addRelationship(this, ts);
+		convertDorIntoRel<EML2_NS::TimeSeries>(dor);
 	}
 
 	dor = getLocalCrsDor();
 	if (!dor.isEmpty()) {
-		AbstractLocal3dCrs* crs = getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(dor.getUuid());
-		if (crs == nullptr) { // partial transfer
-			getRepository()->createPartial(dor);
-			crs = getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(dor.getUuid());
-			if (crs == nullptr) {
-				throw invalid_argument("The DOR looks invalid.");
-			}
-		}
-		repository->addRelationship(this, crs);
+		convertDorIntoRel<AbstractLocal3dCrs>(dor);
 	}
 
-	if (!isAssociatedToOneStandardEnergisticsPropertyKind())
-	{
-		dor = getPropertyKindDor();
-		EML2_NS::PropertyKind* pk = getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(dor.getUuid());
-		if (pk == nullptr) {
-			getRepository()->createPartial(dor);
-			pk = getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(dor.getUuid());
-			if (pk == nullptr) {
-				throw invalid_argument("The DOR looks invalid.");
-			}
-		}
-		repository->addRelationship(this, pk);
+	dor = getPropertyKindDor();
+	if (!dor.isEmpty()) {
+		convertDorIntoRel<EML2_NS::PropertyKind>(dor);
 	}
 }
 
@@ -495,7 +462,7 @@ COMMON_NS::DataObjectReference AbstractProperty::getPropertyKindDor() const
 			return COMMON_NS::DataObjectReference(static_cast<gsoap_resqml2_0_1::resqml20__LocalPropertyKind*>(prop->PropertyKind)->LocalPropertyKind);
 		}
 
-		throw invalid_argument("The property kind of this property is not a local one.");
+		return COMMON_NS::DataObjectReference();
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::resqml22__AbstractProperty* prop = static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3);

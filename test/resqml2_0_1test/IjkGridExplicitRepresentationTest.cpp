@@ -20,7 +20,7 @@ under the License.
 
 #include "catch.hpp"
 
-#include "resqml2_0_1/IjkGridExplicitRepresentation.h"
+#include "resqml2/IjkGridExplicitRepresentation.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -46,7 +46,7 @@ IjkGridExplicitRepresentationTest::IjkGridExplicitRepresentationTest(DataObjectR
 
 void IjkGridExplicitRepresentationTest::initRepoHandler() {
 	// creating the ijk grid
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 2, 1, 1);
+	RESQML2_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 2, 1, 1);
 	REQUIRE( ijkGrid != nullptr );
 	unsigned int pillarOfCoordinateLine[2] = {1,4};
 	unsigned int splitCoordinateLineColumnCumulativeCount[2] = {1,2};
@@ -57,7 +57,7 @@ void IjkGridExplicitRepresentationTest::initRepoHandler() {
 
 void IjkGridExplicitRepresentationTest::readRepoHandler() {
 	// checking number of points in the geometry
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* representation = repo->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>(defaultUuid);
+	RESQML2_NS::AbstractIjkGridRepresentation* representation = repo->getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>(defaultUuid);
 	REQUIRE(representation->getXyzPointCountOfAllPatches() == nodesCountIjkGridRepresentation);
 	REQUIRE_FALSE(representation->isNodeGeometryCompressed());
 

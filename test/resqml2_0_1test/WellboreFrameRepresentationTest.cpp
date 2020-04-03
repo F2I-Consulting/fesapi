@@ -23,14 +23,14 @@ under the License.
 #include "resqml2_0_1test/WellboreInterpretationTest.h"
 #include "resqml2_0_1test/WellboreTrajectoryRepresentationTest.h"
 
-#include "resqml2_0_1/WellboreInterpretation.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
+#include "resqml2/WellboreInterpretation.h"
+#include "resqml2/WellboreTrajectoryRepresentation.h"
 #include "resqml2/WellboreFrameRepresentation.h"
-#include "common/AbstractHdfProxy.h"
+#include "eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 using namespace resqml2_0_1test;
 
 const char* WellboreFrameRepresentationTest::defaultUuid = "0047500b-cf08-47c0-89e0-84f330c7e132";
@@ -56,7 +56,7 @@ void WellboreFrameRepresentationTest::initRepoHandler() {
 	WellboreTrajectoryRepresentation * traj = static_cast<WellboreTrajectoryRepresentation*>(repo->getDataObjectByUuid(WellboreTrajectoryRepresentationTest::defaultUuid));
 
 	// getting the hdf proxy
-	COMMON_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
+	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 	REQUIRE(hdfProxy != nullptr);
 
 	// WellboreFeature frame

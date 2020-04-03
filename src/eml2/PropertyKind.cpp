@@ -25,30 +25,13 @@ using namespace EML2_NS;
 
 const char* PropertyKind::XML_TAG = "PropertyKind";
 
-const std::string & PropertyKind::getNamingSystem() const
+std::string PropertyKind::getNamingSystem() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1)->NamingSystem;
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
-}
-
-gsoap_resqml2_0_1::resqml20__ResqmlUom PropertyKind::getUom() const
-{
-	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom;
-	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
-}
-
-std::string PropertyKind::getUomAsString() const
-{
-	if (gsoapProxy2_0_1 != nullptr) {
-		return gsoap_resqml2_0_1::soap_resqml20__ResqmlUom2s(gsoapProxy2_0_1->soap, getUom());
+	else if (gsoapProxy2_3 != nullptr) {
+		return getOriginator();
 	}
 	else {
 		throw logic_error("Not implemented yet");

@@ -18,21 +18,20 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "DiscreteColorMapTest.h"
 #include "catch.hpp"
-#include "common/AbstractHdfProxy.h"
+#include "eml2/AbstractHdfProxy.h"
 #include "common/GraphicalInformationSet.h"
-#include "common/PropertyKind.h"
-#include "resqml2_0_1/IjkGridExplicitRepresentation.h"
-#include "resqml2_0_1/OrganizationFeature.h"
-#include "resqml2_0_1/EarthModelInterpretation.h"
-#include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "resqml2_0_1/DiscreteProperty.h"
+#include "eml2/PropertyKind.h"
+#include "resqml2/IjkGridExplicitRepresentation.h"
+#include "resqml2/Model.h"
+#include "resqml2/EarthModelInterpretation.h"
+#include "resqml2/LocalDepth3dCrs.h"
+#include "resqml2/DiscreteProperty.h"
 #include "resqml2_2/DiscreteColorMap.h"
 
 using namespace std;
 using namespace COMMON_NS;
 using namespace RESQML2_NS;
-using namespace RESQML2_2_NS;
-using namespace RESQML2_0_1_NS;
+using namespace EML2_NS;
 using namespace resqml2_2test;
 using namespace gsoap_resqml2_0_1;
 
@@ -71,7 +70,7 @@ DiscreteColorMapTest::DiscreteColorMapTest(COMMON_NS::DataObjectRepository* repo
 void DiscreteColorMapTest::initRepoHandler() {
 	// creating an ijk grid
 	AbstractHdfProxy* hdfProxy =  repo->getHdfProxySet()[0];
-	OrganizationFeature* organizationFeature =  repo->createEarthModel(uuidOrganizationFeature, titleOrganizationFeature);
+	Model* organizationFeature =  repo->createEarthModel(uuidOrganizationFeature, titleOrganizationFeature);
 	EarthModelInterpretation* earthModelInterp = repo->createEarthModelInterpretation(organizationFeature, uuidEarthModelInterpretation, titleEarthModelInterpretation);
 	IjkGridExplicitRepresentation* ijkgrid = repo->createIjkGridExplicitRepresentation(earthModelInterp, uuidIjkGridExplicitRepresentation, titleIjkGridExplicitRepresentation, 2, 1, 1);
 	double nodes[48] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350, /* SPLIT*/ 375, 0, 350, 375, 150, 350,
@@ -83,15 +82,14 @@ void DiscreteColorMapTest::initRepoHandler() {
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// assotiating a discrete property to the ijk grid
-	PropertyKind* propertyKind = repo->createPropertyKind(uuidPropertyKind, titlePropertyKind, "urn:resqml:f2i-consulting.com", 
-		resqml20__ResqmlUom__Euc, resqml20__ResqmlPropertyKind__discrete);
+	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind__not_x0020a_x0020measure);
 	DiscreteProperty* discreteProperty = repo->createDiscreteProperty(ijkgrid, uuidDiscreteProperty, titleDiscreteProperty, 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, propertyKind);
+		gsoap_eml2_3::resqml22__IndexableElement__cells, propertyKind);
 	unsigned short prop1Values[2] = { 0, 1 };
 	discreteProperty->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, -1);
 
 	// associating a discrete color map to the discrete property kind
-	DiscreteColorMap* discreteColorMap1 = repo->createDiscreteColorMap(uuidPropertyKindDiscreteColorMap, titlePropertyKindDiscreteColorMap);
+	RESQML2_2_NS::DiscreteColorMap* discreteColorMap1 = repo->createDiscreteColorMap(uuidPropertyKindDiscreteColorMap, titlePropertyKindDiscreteColorMap);
 	REQUIRE(discreteColorMap1 != nullptr);
 	unsigned int rgbColors1[6] = { 0, 0, 256, 255, 0, 0 };
 	double alphas1[2] = { 1., 1. };
@@ -105,7 +103,7 @@ void DiscreteColorMapTest::initRepoHandler() {
 	REQUIRE(graphicalInformationSet->getDiscreteColorMapUuid(discreteProperty) == discreteColorMap1->getUuid());
 
 	// associating the discrete color map to the discrete property
-	DiscreteColorMap* discreteColorMap2 = repo->createDiscreteColorMap(defaultUuid, defaultTitle);
+	RESQML2_2_NS::DiscreteColorMap* discreteColorMap2 = repo->createDiscreteColorMap(defaultUuid, defaultTitle);
 	REQUIRE(discreteColorMap2 != nullptr);
 	unsigned int rgbColors2[6] = { 255, 0, 0, 0, 0, 255 };
 	double alphas2[2] = { 1., 1. };
@@ -120,7 +118,7 @@ void DiscreteColorMapTest::readRepoHandler() {
 	GraphicalInformationSet * graphicalInformationSet = repo->getDataObjects<GraphicalInformationSet>()[0];
 	DiscreteProperty* discreteProperty = repo->getDataObjectByUuid<DiscreteProperty>(uuidDiscreteProperty);
 	REQUIRE(graphicalInformationSet->hasDiscreteColorMap(discreteProperty));
-	DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(discreteProperty);
+	RESQML2_2_NS::DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(discreteProperty);
 	REQUIRE(discreteColorMap->getUuid() == defaultUuid);
 	double r, g, b;
 	discreteColorMap->getRgbColor(0, r, g, b);
@@ -132,4 +130,3 @@ void DiscreteColorMapTest::readRepoHandler() {
 	REQUIRE(g == 0.);
 	REQUIRE(b == 1.); // 255 is converted to 1. since we ask for double blue value
 }
-

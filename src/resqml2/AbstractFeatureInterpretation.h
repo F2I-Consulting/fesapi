@@ -87,7 +87,7 @@ namespace RESQML2_NS
 		 * @returns	The domain that have been set to this interpretation (either deduced from its
 		 * 			representation or @p defaultDomain).
 		 */
-		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml20__Domain & initDomain(gsoap_resqml2_0_1::resqml20__Domain defaultDomain) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__Domain initDomain(gsoap_resqml2_0_1::resqml20__Domain defaultDomain) const;
 
 		/**
 		 * Gets the domain of this interpretation.

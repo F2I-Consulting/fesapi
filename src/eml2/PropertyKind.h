@@ -37,21 +37,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The naming system.
 		 */
-		DLL_IMPORT_OR_EXPORT const std::string & getNamingSystem() const;
-
-		/**
-		 * Gets the unit of measure of the values of this property kind
-		 *
-		 * @returns	The unit of measure.
-		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlUom getUom() const;
-
-		/**
-		 * Gets the unit of measure of the values of this property kind as a string
-		 *
-		 * @returns	The unit of measure as a string.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getUomAsString() const;
+		DLL_IMPORT_OR_EXPORT std::string getNamingSystem() const;
 
 		/**
 		 * Get the title of the parent property kind

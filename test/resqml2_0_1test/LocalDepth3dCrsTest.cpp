@@ -20,12 +20,12 @@ under the License.
 #include "common/EpcDocument.h"
 #include "../catch.hpp"
 
-#include "resqml2_0_1/LocalDepth3dCrs.h"
+#include "resqml2/LocalDepth3dCrs.h"
 
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
 using namespace std;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 
 const char* LocalDepth3dCrsTest::defaultUuid = "a8effb2c-c94f-4d88-ae76-581ff14a4b96";
 const char* LocalDepth3dCrsTest::defaultTitle = "Local Depth 3d Crs Test";

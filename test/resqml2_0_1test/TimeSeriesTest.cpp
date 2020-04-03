@@ -18,12 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "TimeSeriesTest.h"
 #include "../catch.hpp"
-#include "resqml2/TimeSeries.h"
+#include "eml2/TimeSeries.h"
 
 using namespace std;
 using namespace COMMON_NS;
 using namespace resqml2_0_1test;
-using namespace RESQML2_NS;
+using namespace EML2_NS;
 
 const char* TimeSeriesTest::defaultUuid = "0b8fc144-8e71-4f2a-a062-60c2d17fdc12";
 const char* TimeSeriesTest::inputTile = "Time Series";

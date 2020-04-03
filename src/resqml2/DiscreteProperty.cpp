@@ -355,7 +355,7 @@ void DiscreteProperty::setValuesOfLongHdf5ArrayOfValues(
 			setMinimumValue((std::numeric_limits<LONG64>::max)(), getMinimumValueSize());
 		}
 		while (getMaximumValueSize() < elementCount) {
-			setMaximumValue((std::numeric_limits<LONG64>::max)(), getMaximumValueSize());
+			setMaximumValue((std::numeric_limits<LONG64>::min)(), getMaximumValueSize());
 		}
 
 		LONG64 nullValue = getNullValue(patchIndex);

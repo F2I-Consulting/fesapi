@@ -24,14 +24,14 @@ under the License.
 #include "resqml2_0_1test/StratigraphicUnitTest.h"
 
 #include "common/EpcDocument.h"
-#include "resqml2_0_1/StratigraphicUnitFeature.h"
-#include "resqml2_0_1/StratigraphicUnitInterpretation.h"
+#include "resqml2/RockVolumeFeature.h"
+#include "resqml2/StratigraphicUnitInterpretation.h"
 #include <stdexcept>
 
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 
 const char* StratigraphicUnitInterpretationTest::defaultUuid = "65abde7d-d6ab-42b5-89c8-cc6ccec56dcc";
 const char* StratigraphicUnitInterpretationTest::defaultTitle = "Strati Unit Interp";
@@ -52,7 +52,7 @@ void StratigraphicUnitInterpretationTest::initRepoHandler() {
 	// creating dependencies
 	StratigraphicUnitTest* stratiUnitTest = new StratigraphicUnitTest(repo, true);
 
-	StratigraphicUnitFeature* stratiUnit = static_cast<StratigraphicUnitFeature*>(this->repo->getDataObjectByUuid(StratigraphicUnitTest::defaultTitle));
+	RockVolumeFeature* stratiUnit = this->repo->getDataObjectByUuid<RockVolumeFeature>(StratigraphicUnitTest::defaultTitle);
 
 	// cleaning
 	delete stratiUnitTest;

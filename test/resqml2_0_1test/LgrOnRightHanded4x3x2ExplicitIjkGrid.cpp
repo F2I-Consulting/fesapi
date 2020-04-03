@@ -25,10 +25,10 @@ under the License.
 
 #include "catch.hpp"
 #include "common/EpcDocument.h"
-#include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "resqml2_0_1/IjkGridExplicitRepresentation.h"
-#include "resqml2_0_1/DiscreteProperty.h"
-#include "resqml2_0_1/ContinuousProperty.h"
+#include "resqml2/LocalDepth3dCrs.h"
+#include "resqml2/IjkGridExplicitRepresentation.h"
+#include "resqml2/DiscreteProperty.h"
+#include "resqml2/ContinuousProperty.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
@@ -69,10 +69,10 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 	// getting the parent grid
 	RightHanded4x3x2ExplicitIjkGrid parentGridTest(repo, true);
 
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* parentGrid = repo->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
+	RESQML2_NS::IjkGridExplicitRepresentation* parentGrid = repo->getDataObjectByUuid<RESQML2_NS::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
 
 	// creating the child ijk grid
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 3, 1, 4);
+	RESQML2_NS::IjkGridExplicitRepresentation* childGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 3, 1, 4);
 	childGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, false, nodesIjkGridRepresentation, nullptr);
 	childGrid->setParentWindow(
 		0, 3, 1, 1,
@@ -81,12 +81,12 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 		parentGrid);
 
 	// creating the same child ijk grid using HDF5 datasets
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridHdf5 = repo->createIjkGridExplicitRepresentation("38930b30-1325-424e-a1e9-666fa50bfa4f", "Child grid HDF5", 3, 1, 4);
+	RESQML2_NS::IjkGridExplicitRepresentation* childGridHdf5 = repo->createIjkGridExplicitRepresentation("38930b30-1325-424e-a1e9-666fa50bfa4f", "Child grid HDF5", 3, 1, 4);
 	childGridHdf5->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, false, nodesIjkGridRepresentation, nullptr);
 	unsigned int one = 1;
 	unsigned int three = 3;
-	unsigned int twotwo[] = { 2,2 };
-	unsigned int oneone[] = { 1,1 };
+	unsigned int twotwo[2] = { 2,2 };
+	unsigned int oneone[2] = { 1,1 };
 	childGridHdf5->setParentWindow(
 		0, &three, &one, one,
 		0, &one, &one, one,
@@ -94,9 +94,9 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 		parentGrid);
 
 	// creating a non constant cell count per interval child ijk grid without geometry
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridNonConstant = repo->createIjkGridExplicitRepresentation("eaf36330-4c0b-40f8-bf07-b2818f09a229", "Child grid irregular refinement", 4, 1, 4);
-	unsigned int onetwo[] = { 1,2 };
-	unsigned int twothree[] = { 1,2 };
+	RESQML2_NS::IjkGridExplicitRepresentation* childGridNonConstant = repo->createIjkGridExplicitRepresentation("eaf36330-4c0b-40f8-bf07-b2818f09a229", "Child grid irregular refinement", 4, 1, 4);
+	unsigned int onetwo[2] = { 1,2 };
+	unsigned int twothree[2] = { 1,2 };
 	childGridNonConstant->setParentWindow(
 		0, onetwo, oneone, 2,
 		0, &one, &one, one,
@@ -108,10 +108,10 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::readRepoHandler() {
 	RightHanded4x3x2ExplicitIjkGrid* parentGridTest = new RightHanded4x3x2ExplicitIjkGrid(repo, false);
 
 	// getting the childGrid
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* childGrid = repo->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>(defaultUuid);
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* childGridHdf5 = repo->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>("38930b30-1325-424e-a1e9-666fa50bfa4f");
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* childGridNonConstant = repo->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>("eaf36330-4c0b-40f8-bf07-b2818f09a229");
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid = repo->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
+	RESQML2_NS::AbstractIjkGridRepresentation* childGrid = repo->getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>(defaultUuid);
+	RESQML2_NS::AbstractIjkGridRepresentation* childGridHdf5 = repo->getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>("38930b30-1325-424e-a1e9-666fa50bfa4f");
+	RESQML2_NS::AbstractIjkGridRepresentation* childGridNonConstant = repo->getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>("eaf36330-4c0b-40f8-bf07-b2818f09a229");
+	RESQML2_NS::AbstractIjkGridRepresentation* parentGrid = repo->getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
 
 	REQUIRE(childGrid->getCellCount() == 12);
 	REQUIRE(childGrid->getPillarCount() == 8);

@@ -18,17 +18,17 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "FaultSinglePatchTriangulatedSetRepresentationTest.h"
 #include "../catch.hpp"
-#include "resqml2_0_1/TriangulatedSetRepresentation.h"
-#include "resqml2_0_1/FaultInterpretation.h"
-#include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "common/HdfProxy.h"
+#include "resqml2/TriangulatedSetRepresentation.h"
+#include "resqml2/FaultInterpretation.h"
+#include "resqml2/LocalDepth3dCrs.h"
+#include "eml2/AbstractHdfProxy.h"
 #include "FaultInterpretationTest.h"
 #include "LocalDepth3dCrsTest.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 
 const char* FaultSinglePatchTriangulatedSetRepresentationTest::defaultUuid = "110124ae-ff4e-478c-90c1-30900e01485e";
 const char* FaultSinglePatchTriangulatedSetRepresentationTest::defaultTitle = "FaultSinglePatchTriangulatedSetRepresentationTest";

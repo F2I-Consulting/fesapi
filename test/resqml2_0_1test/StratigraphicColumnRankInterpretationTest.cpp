@@ -25,15 +25,15 @@ under the License.
 #include "resqml2_0_1test/StratigraphicUnitInterpretationTest.h"
 
 #include "common/EpcDocument.h"
-#include "resqml2_0_1/OrganizationFeature.h"
-#include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
-#include "resqml2_0_1/StratigraphicUnitInterpretation.h"
+#include "resqml2/Model.h"
+#include "resqml2/StratigraphicColumnRankInterpretation.h"
+#include "resqml2/StratigraphicUnitInterpretation.h"
 #include <stdexcept>
 
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 
 const char* StratigraphicColumnRankInterpretationTest::defaultUuid = "51f39ab2-3b1f-4da3-8541-324632357dd7";
 const char* StratigraphicColumnRankInterpretationTest::defaultTitle = "Strati Column Rank";
@@ -67,7 +67,7 @@ void StratigraphicColumnRankInterpretationTest::initRepoHandler() {
 	StratigraphicUnitInterpretationTest stratiLayerInterpTest(repo, true);
 	StratigraphicUnitInterpretationTest underburdenInterpTest(repo, true);
 
-	OrganizationFeature* stratiOrg = repo->getDataObjectByUuid<OrganizationFeature>(StratigraphicOrganizationTest::defaultUuid);
+	Model* stratiOrg = repo->getDataObjectByUuid<Model>(StratigraphicOrganizationTest::defaultUuid);
 	StratigraphicUnitInterpretation* overburdenInterp = repo->getDataObjectByUuid<StratigraphicUnitInterpretation>(defaultOverburdenInterpUuid);
 	StratigraphicUnitInterpretation* stratiLayerInterp = repo->getDataObjectByUuid<StratigraphicUnitInterpretation>(StratigraphicUnitInterpretationTest::defaultUuid);
 	StratigraphicUnitInterpretation* underburdenInterp = repo->getDataObjectByUuid<StratigraphicUnitInterpretation>(defaultUnderburdenInterpUuid);

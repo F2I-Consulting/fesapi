@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_0_1test/GridConnectionSetOnPartialGridSet.h"
 #include "../catch.hpp"
-#include "resqml2_0_1/AbstractIjkGridRepresentation.h"
-#include "resqml2_0_1/UnstructuredGridRepresentation.h"
-#include "resqml2_0_1/ContinuousProperty.h"
+#include "resqml2/AbstractIjkGridRepresentation.h"
+#include "resqml2_2/UnstructuredGridRepresentation.h"
+#include "resqml2/ContinuousProperty.h"
 #include "resqml2/GridConnectionSetRepresentation.h"
 
 using namespace std;
@@ -47,35 +47,36 @@ GridConnectionSetOnPartialGridSet::GridConnectionSetOnPartialGridSet(COMMON_NS::
 
 void GridConnectionSetOnPartialGridSet::initRepoHandler() {
 	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
+	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
 	// Unstructured grid
-	RESQML2_0_1_NS::UnstructuredGridRepresentation* partialGrid = repo->createPartial<RESQML2_0_1_NS::UnstructuredGridRepresentation>(unstructuredGridUuid, unstructuredGridTitle);
+	RESQML2_NS::UnstructuredGridRepresentation* partialGrid = repo->createPartial<RESQML2_2_NS::UnstructuredGridRepresentation>(unstructuredGridUuid, unstructuredGridTitle);
 	REQUIRE( partialGrid != nullptr );
-	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(partialGrid, "62d7e07d-5e17-4e42-b4b2-a4c26204cba2", "Continuous prop on partial unstructured grid", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, 
+	auto propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind__length);
+	RESQML2_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(partialGrid, "62d7e07d-5e17-4e42-b4b2-a4c26204cba2", "Continuous prop on partial unstructured grid", 1,
+		gsoap_eml2_3::resqml22__IndexableElement__cells, 
 		gsoap_resqml2_0_1::resqml20__ResqmlUom__m, 
-		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+		propertyKind);
 	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
 	continuousProperty->pushBackDoubleHdf5Array1dOfValues(continuousProp1Values, 6, hdfProxy);
 
 	// IJK grid
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* partialIjkGrid = repo->createPartialIjkGridRepresentation("b0ec8bf4-9b93-428b-a814-87c38887f6d0", "PartialIjk Grid");
+	RESQML2_NS::AbstractIjkGridRepresentation* partialIjkGrid = repo->createPartialIjkGridRepresentation("b0ec8bf4-9b93-428b-a814-87c38887f6d0", "PartialIjk Grid");
 	REQUIRE(partialIjkGrid != nullptr);
-	RESQML2_0_1_NS::ContinuousProperty* continuousPropertyOnIjk = repo->createContinuousProperty(partialIjkGrid, "b20299b9-6881-4b91-ae2f-a87213437dce", "Continuous prop on partial ijk grid", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+	RESQML2_NS::ContinuousProperty* continuousPropertyOnIjk = repo->createContinuousProperty(partialIjkGrid, "b20299b9-6881-4b91-ae2f-a87213437dce", "Continuous prop on partial ijk grid", 1,
+		gsoap_eml2_3::resqml22__IndexableElement__cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom__m,
-		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+		propertyKind);
 	double continuousPropOnIjkValues[6] = { 0, 1, 2, 3, 4, 5 };
 	continuousPropertyOnIjk->pushBackDoubleHdf5Array1dOfValues(continuousPropOnIjkValues, 6, hdfProxy);
 
 	// Truncated IJK grid
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* partialTruncIjkGrid = repo->createPartialTruncatedIjkGridRepresentation("def167fb-89b2-45bc-92ff-01d228142350", "PartialIjk Grid");
+	RESQML2_NS::AbstractIjkGridRepresentation* partialTruncIjkGrid = repo->createPartialTruncatedIjkGridRepresentation("def167fb-89b2-45bc-92ff-01d228142350", "PartialIjk Grid");
 	REQUIRE(partialIjkGrid != nullptr);
-	RESQML2_0_1_NS::ContinuousProperty* continuousPropertyOnTruncIjk = repo->createContinuousProperty(partialTruncIjkGrid, "4caa8e9a-00b3-40c2-9460-72cb8790393a", "Continuous prop on partial truncated ijk grid", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+	RESQML2_NS::ContinuousProperty* continuousPropertyOnTruncIjk = repo->createContinuousProperty(partialTruncIjkGrid, "4caa8e9a-00b3-40c2-9460-72cb8790393a", "Continuous prop on partial truncated ijk grid", 1,
+		gsoap_eml2_3::resqml22__IndexableElement__cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom__m,
-		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+		propertyKind);
 	double continuousPropOnTruncIjkValues[6] = { 0, 1, 2, 3, 4, 5 };
 	continuousPropertyOnTruncIjk->pushBackDoubleHdf5Array1dOfValues(continuousPropOnTruncIjkValues, 6, hdfProxy);
 
@@ -112,11 +113,12 @@ void GridConnectionSetOnPartialGridSet::readRepoHandler() {
 	REQUIRE(gcsSingleGrid->getSupportingGridRepresentationCount() == 1);
 	REQUIRE(gcsSingleGrid->getSupportingGridRepresentation(0)->isPartial());
 	REQUIRE(gcsSingleGrid->getCellIndexPairCount() == 1);
-	ULONG64* cellIndexPair = new ULONG64[2];
-	gcsSingleGrid->getCellIndexPairs(cellIndexPair);
-	REQUIRE(cellIndexPair[0] == 1);
-	REQUIRE(cellIndexPair[1] == 2);
-	delete[] cellIndexPair;
+	{
+		ULONG64 cellIndexPair[2];
+		gcsSingleGrid->getCellIndexPairs(cellIndexPair);
+		REQUIRE(cellIndexPair[0] == 1);
+		REQUIRE(cellIndexPair[1] == 2);
+	}
 
 	REQUIRE(gcsMultiGrids->isBasedOnMultiGrids());
 	REQUIRE(gcsMultiGrids->getSupportingGridRepresentationCount() == 3);
@@ -124,7 +126,8 @@ void GridConnectionSetOnPartialGridSet::readRepoHandler() {
 	REQUIRE(gcsMultiGrids->getSupportingGridRepresentation(1)->isPartial());
 	REQUIRE(gcsMultiGrids->getSupportingGridRepresentation(2)->isPartial());
 	REQUIRE(gcsMultiGrids->getCellIndexPairCount() == 3);
-	cellIndexPair = new ULONG64[6];
+
+	ULONG64 cellIndexPair[6];
 	gcsMultiGrids->getCellIndexPairs(cellIndexPair);
 	REQUIRE(cellIndexPair[0] == 1);
 	REQUIRE(cellIndexPair[1] == 2);
@@ -132,8 +135,8 @@ void GridConnectionSetOnPartialGridSet::readRepoHandler() {
 	REQUIRE(cellIndexPair[3] == 2);
 	REQUIRE(cellIndexPair[4] == 1);
 	REQUIRE(cellIndexPair[5] == 2);
-	delete[] cellIndexPair;
-	unsigned short* gridIndexPair = new unsigned short[6];
+
+	unsigned short gridIndexPair[6];
 	gcsMultiGrids->getGridIndexPairs(gridIndexPair);
 	REQUIRE(gridIndexPair[0] == 0);
 	REQUIRE(gridIndexPair[1] == 0);
@@ -141,5 +144,4 @@ void GridConnectionSetOnPartialGridSet::readRepoHandler() {
 	REQUIRE(gridIndexPair[3] == 1);
 	REQUIRE(gridIndexPair[4] == 1);
 	REQUIRE(gridIndexPair[5] == 2);
-	delete[] gridIndexPair;
 }

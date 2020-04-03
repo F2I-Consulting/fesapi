@@ -20,10 +20,9 @@ under the License.
 
 #include "../catch.hpp"
 #include "common/EpcDocument.h"
-#include "resqml2_0_1/FaultInterpretation.h"
-#include "resqml2_0_1/LocalTime3dCrs.h"
-#include "resqml2_0_1/PolylineSetRepresentation.h"
-#include "common/HdfProxy.h"
+#include "resqml2/FaultInterpretation.h"
+#include "resqml2/LocalTime3dCrs.h"
+#include "resqml2/PolylineSetRepresentation.h"
 #include "resqml2_0_1test/FaultInterpretationTest.h"
 #include "resqml2_0_1test/LocalTime3dCrs.h"
 
@@ -51,19 +50,19 @@ PolylineSetRepresentation::PolylineSetRepresentation(DataObjectRepository* repo,
 }
 
 void PolylineSetRepresentation::initRepoHandler() {
-	RESQML2_0_1_NS::FaultInterpretation * interp = repo->getDataObjectByUuid<RESQML2_0_1_NS::FaultInterpretation>(FaultInterpretationTest::defaultUuid);
+	RESQML2_NS::FaultInterpretation * interp = repo->getDataObjectByUuid<RESQML2_NS::FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	if (interp == nullptr) {
 		FaultInterpretationTest interpTest(repo, true);
-		interp = repo->getDataObjectByUuid<RESQML2_0_1_NS::FaultInterpretation>(FaultInterpretationTest::defaultUuid);
+		interp = repo->getDataObjectByUuid<RESQML2_NS::FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	}
 
-	RESQML2_0_1_NS::LocalTime3dCrs * crs = repo->getDataObjectByUuid<RESQML2_0_1_NS::LocalTime3dCrs>(LocalTime3dCrs::defaultUuid);
+	RESQML2_NS::LocalTime3dCrs * crs = repo->getDataObjectByUuid<RESQML2_NS::LocalTime3dCrs>(LocalTime3dCrs::defaultUuid);
 	if (crs == nullptr) {
 		LocalTime3dCrs crsTest(repo, true);
-		crs = repo->getDataObjectByUuid<RESQML2_0_1_NS::LocalTime3dCrs>(LocalTime3dCrs::defaultUuid);
+		crs = repo->getDataObjectByUuid<RESQML2_NS::LocalTime3dCrs>(LocalTime3dCrs::defaultUuid);
 	}
 
-	RESQML2_0_1_NS::PolylineSetRepresentation* rep = repo->createPolylineSetRepresentation(interp, defaultUuid, defaultTitle);
+	RESQML2_NS::PolylineSetRepresentation* rep = repo->createPolylineSetRepresentation(interp, defaultUuid, defaultTitle);
 	REQUIRE(rep != nullptr);
 	rep->pushBackGeometryPatch(numNodesPerPolylinePerPatch, polylinePoints, 2, false, nullptr, crs);
 }

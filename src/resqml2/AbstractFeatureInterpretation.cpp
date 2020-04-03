@@ -24,8 +24,9 @@ under the License.
 #include <stdexcept>
 
 #include "AbstractFeature.h"
-#include "AbstractLocal3dCrs.h"
 #include "GridConnectionSetRepresentation.h"
+#include "LocalDepth3dCrs.h"
+#include "LocalTime3dCrs.h"
 
 using namespace RESQML2_NS;
 using namespace std;
@@ -95,28 +96,28 @@ AbstractFeature* AbstractFeatureInterpretation::getInterpretedFeature() const
 	return repository->getDataObjectByUuid<AbstractFeature>(getInterpretedFeatureDor().getUuid());
 }
 
-const gsoap_resqml2_0_1::resqml20__Domain & AbstractFeatureInterpretation::initDomain(gsoap_resqml2_0_1::resqml20__Domain defaultDomain) const
+gsoap_resqml2_0_1::resqml20__Domain AbstractFeatureInterpretation::initDomain(gsoap_resqml2_0_1::resqml20__Domain defaultDomain) const
 {
-	if (gsoapProxy2_0_1 != nullptr) {
-		const unsigned int repCount = getRepresentationCount();
-		bool isTimeDomain = false;
-		bool isDepthDomain = false;
-		for (unsigned int repIndex = 0; repIndex < repCount && (!isTimeDomain || !isDepthDomain); ++repIndex) {
-			AbstractRepresentation const * rep = getRepresentation(repIndex);
-			const unsigned int patchCount = rep->getPatchCount();
-			for (unsigned int patchIndex = 0; patchIndex < patchCount && (!isTimeDomain || !isDepthDomain); ++patchIndex) {
-				AbstractLocal3dCrs* local3dCrs = rep->getLocalCrs(patchIndex);
-				if (local3dCrs != nullptr) {
-					if (local3dCrs->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORELocalTime3dCrs) {
-						isTimeDomain = true;
-					}
-					else if (local3dCrs->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORELocalDepth3dCrs) {
-						isDepthDomain = true;
-					}
+	const unsigned int repCount = getRepresentationCount();
+	bool isTimeDomain = false;
+	bool isDepthDomain = false;
+	for (unsigned int repIndex = 0; repIndex < repCount && (!isTimeDomain || !isDepthDomain); ++repIndex) {
+		AbstractRepresentation const * rep = getRepresentation(repIndex);
+		const unsigned int patchCount = rep->getPatchCount();
+		for (unsigned int patchIndex = 0; patchIndex < patchCount && (!isTimeDomain || !isDepthDomain); ++patchIndex) {
+			AbstractLocal3dCrs* local3dCrs = rep->getLocalCrs(patchIndex);
+			if (local3dCrs != nullptr) {
+				if (dynamic_cast<LocalTime3dCrs*>(local3dCrs) != nullptr) {
+					isTimeDomain = true;
+				}
+				else if (dynamic_cast<LocalDepth3dCrs*>(local3dCrs) != nullptr) {
+					isDepthDomain = true;
 				}
 			}
 		}
+	}
 
+	if (gsoapProxy2_0_1 != nullptr) {
 		if (isTimeDomain && isDepthDomain) {
 			static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = gsoap_resqml2_0_1::resqml20__Domain__mixed;
 		}
@@ -131,6 +132,29 @@ const gsoap_resqml2_0_1::resqml20__Domain & AbstractFeatureInterpretation::initD
 		}
 
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain;
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+
+		if (static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain == nullptr) {
+			static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain = static_cast<gsoap_eml2_3::resqml22__Domain*>(soap_malloc(gsoapProxy2_3->soap, sizeof(gsoap_eml2_3::resqml22__Domain)));
+		}
+
+		if (isTimeDomain && isDepthDomain) {
+			*static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain = gsoap_eml2_3::resqml22__Domain__mixed;
+		}
+		else if (!isTimeDomain && !isDepthDomain) {
+			*static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain = static_cast<gsoap_eml2_3::resqml22__Domain>(defaultDomain);
+		}
+		else if (isTimeDomain) {
+			*static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain = gsoap_eml2_3::resqml22__Domain__time;
+		}
+		else {
+			*static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain = gsoap_eml2_3::resqml22__Domain__depth;
+		}
+
+		return static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain != nullptr
+			? static_cast<gsoap_resqml2_0_1::resqml20__Domain>(*static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain)
+			: gsoap_resqml2_0_1::resqml20__Domain__mixed;
 	}
 	else {
 		throw logic_error("Not implemented yet");
