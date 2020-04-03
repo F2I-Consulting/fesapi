@@ -928,7 +928,6 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	//**************
 	// Time Series
 	//**************
-	/*
 	EML2_NS::TimeSeries * timeSeries = pck->createTimeSeries("1187d8a0-fa3e-11e5-ac3a-0002a5d5c51b", "Testing time series");
 	tm timeStruct;
 	timeStruct.tm_hour = 15;
@@ -942,36 +941,34 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	timeSeries->pushBackTimestamp(timeStruct);
 	timeSeries->pushBackTimestamp(1409753895);
 	timeSeries->pushBackTimestamp(1441289895);
-	RESQML2_NS::ContinuousProperty* continuousPropTime0 = nullptr;
-	RESQML2_NS::ContinuousProperty* continuousPropTime1 = nullptr;
-	RESQML2_NS::ContinuousProperty* continuousPropTime2 = nullptr;
 	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-		continuousPropTime0 = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
+		RESQML2_NS::ContinuousProperty* continuousPropTime0 = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
 			gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
-		continuousPropTime1 = pck->createContinuousProperty(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
+		RESQML2_NS::ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
 			gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
-		continuousPropTime2 = pck->createContinuousProperty(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property ", 1,
+		RESQML2_NS::ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property ", 1,
 			gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+		continuousPropTime0->setTimeIndices(0, 1, timeSeries);
+		double valuesTime0[2] = { 0, 1 };
+		continuousPropTime0->pushBackDoubleHdf5Array3dOfValues(valuesTime0, 2, 1, 1, hdfProxy);
+		continuousPropTime1->setTimeIndices(1, 1, timeSeries);
+		double valuesTime1[2] = { 2, 3 };
+		continuousPropTime1->pushBackDoubleHdf5Array3dOfValues(valuesTime1, 2, 1, 1, hdfProxy);
+		continuousPropTime2->setTimeIndices(2, 1, timeSeries);
+		double valuesTime2[2] = { 3, 4 };
+		continuousPropTime2->pushBackDoubleHdf5Array3dOfValues(valuesTime2, 2, 1, 1, hdfProxy);
 	}
 	else {
 		auto standardLengthPropKind = pck->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind__length);
-		continuousPropTime0 = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
+		RESQML2_NS::ContinuousProperty* dynamicContinuousProp = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
 			gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, standardLengthPropKind);
-		continuousPropTime1 = pck->createContinuousProperty(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
-			gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, standardLengthPropKind);
-		continuousPropTime2 = pck->createContinuousProperty(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property ", 1,
-			gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, standardLengthPropKind);
+		dynamicContinuousProp->setTimeIndices(0, 3, timeSeries);
+		double valuesTime[6] = { 0, 1, 2, 3, 3, 4 };
+		unsigned long long dimensions[4] = { 2, 1, 1, 3 };
+		dynamicContinuousProp->pushBackDoubleHdf5ArrayOfValues(
+			valuesTime, dimensions, 4, hdfProxy);
 	}
-	continuousPropTime0->setTimeIndex(0, timeSeries);
-	double valuesTime0[2] = { 0, 1 };
-	continuousPropTime0->pushBackDoubleHdf5Array3dOfValues(valuesTime0, 2, 1, 1, hdfProxy);
-	continuousPropTime1->setTimeIndex(1, timeSeries);
-	double valuesTime1[2] = { 2, 3 };
-	continuousPropTime1->pushBackDoubleHdf5Array3dOfValues(valuesTime1, 2, 1, 1, hdfProxy);
-	continuousPropTime2->setTimeIndex(2, timeSeries);
-	double valuesTime2[2] = { 3, 4 };
-	continuousPropTime2->pushBackDoubleHdf5Array3dOfValues(valuesTime2, 2, 1, 1, hdfProxy);
-	*/
+
 	//**************
 	// LGR
 	//**************
@@ -2182,6 +2179,13 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 					}
 				}
 			}
+		}
+
+		// Time Series
+		if (propVal->getTimeIndicesCount() != 0) {
+			std::cout << "\tThis property is a dynamic one" << std::endl;
+			std::cout << "\tTime index start is " << propVal->getTimeIndexStart() << std::endl;
+			std::cout << "\tTime index count is " << propVal->getTimeIndicesCount() << std::endl;
 		}
 	}
 	std::cout << "\t--------------------------------------------------" << std::endl;
@@ -4363,29 +4367,24 @@ void deserialize(const string & inputFile)
 		if (ijkGrid->hasIntervalStratigraphicUnitIndices())
 		{
 			cout << "\t\t Linked with strati : " << ijkGrid->getStratigraphicOrganizationInterpretation()->getTitle() << endl;
-			ULONG64* stratiIndices = new ULONG64[ijkGrid->getKCellCount()];
-			ijkGrid->getIntervalStratigraphicUnitIndices(stratiIndices);
-			for (size_t i = 0; i < ijkGrid->getKCellCount(); ++i)
-			{
+			std::unique_ptr<ULONG64[]> stratiIndices(new ULONG64[ijkGrid->getKCellCount()]);
+			ijkGrid->getIntervalStratigraphicUnitIndices(stratiIndices.get());
+			for (size_t i = 0; i < ijkGrid->getKCellCount(); ++i) {
 				cout << "\t\t K layer " << i << " is linked to strati layer " << stratiIndices[i] << endl;
 			}
-			delete[] stratiIndices;
 		}
 		else
 		{
 			cout << "\t\t No link with stratigraphy." << endl;
 		}
 
-		bool * enabledCells = nullptr;
+		std::unique_ptr<bool[]> enabledCells;
 		if (ijkGrid->hasEnabledCellInformation()) {
 			std::cout << "Has enabled/disabled cell information" << std::endl;
-			enabledCells = new bool[ijkGrid->getCellCount()];
-			ijkGrid->getEnabledCells(enabledCells);
+			enabledCells = std::unique_ptr<bool[]>(new bool[ijkGrid->getCellCount()]);
+			ijkGrid->getEnabledCells(enabledCells.get());
 		}
-		showAllProperties(ijkGrid, enabledCells);
-		if (enabledCells != nullptr) {
-			delete[] enabledCells;
-		}
+		showAllProperties(ijkGrid, enabledCells.get());
 	}
 
 	// Testing k-layers hyperslabbing

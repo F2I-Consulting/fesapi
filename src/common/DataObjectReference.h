@@ -25,6 +25,16 @@ under the License.
 
 #include "../nsDefinitions.h"
 
+#if defined(_WIN32) && !defined(FESAPI_STATIC)
+#if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
+#define DLL_IMPORT_OR_EXPORT __declspec(dllexport)
+#else
+#define DLL_IMPORT_OR_EXPORT __declspec(dllimport) 
+#endif
+#else
+#define DLL_IMPORT_OR_EXPORT
+#endif
+
 namespace COMMON_NS
 {
 	/**
@@ -73,7 +83,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	True if this reference empty, false if it is not.
 		 */
-		bool isEmpty() const {
+		DLL_IMPORT_OR_EXPORT bool isEmpty() const {
 			return dor20 == nullptr && dor21 == nullptr && dor22 == nullptr && dor23 == nullptr;
 		}
 
@@ -82,7 +92,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The UUID of the referenced data object if it exists, otherwise empty string.
 		 */
-		std::string getUuid() const {
+		DLL_IMPORT_OR_EXPORT std::string getUuid() const {
 			if (dor20 != nullptr) {
 				return dor20->UUID;
 			}
@@ -105,7 +115,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The title of the referenced data object if it exists, otherwise empty string.
 		 */
-		std::string getTitle() const {
+		DLL_IMPORT_OR_EXPORT std::string getTitle() const {
 			if (dor20 != nullptr) {
 				return dor20->Title;
 			}
@@ -128,7 +138,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The version of the referenced data object if it exists, otherwise empty string.
 		 */
-		std::string getVersion() const {
+		DLL_IMPORT_OR_EXPORT std::string getVersion() const {
 			if (dor20 != nullptr) {
 				return dor20->VersionString != nullptr ? *dor20->VersionString : "";
 			}
@@ -151,7 +161,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The content type of the referenced data object if it exists, otherwise empty string.
 		 */
-		std::string getContentType() const {
+		DLL_IMPORT_OR_EXPORT std::string getContentType() const {
 			if (dor20 != nullptr) {
 				return dor20->ContentType;
 			}
@@ -175,4 +185,12 @@ namespace COMMON_NS
 		gsoap_eml2_2::eml22__DataObjectReference* dor22;
 		gsoap_eml2_3::eml23__DataObjectReference* dor23;
 	};
+
+	// Title is not part of the real identifier of a dataobject. This is just a hint.
+	inline bool operator==(const DataObjectReference& ldor, const DataObjectReference& rdor)
+	{
+		return ldor.getUuid() == rdor.getUuid() &&
+			ldor.getContentType() == rdor.getContentType() &&
+			ldor.getVersion() == rdor.getVersion();
+	}
 }

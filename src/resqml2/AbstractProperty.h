@@ -22,6 +22,7 @@ under the License.
 
 namespace EML2_NS
 {
+	class AbstractHdfProxy;
 	class PropertyKind;
 	class TimeSeries;
 }
@@ -55,7 +56,7 @@ namespace RESQML2_NS
 		 * 			Otherwise returns the data object reference of the associated representation. Null
 		 * 			should not occured since each property must be associated to a representation.
 		 */
-		COMMON_NS::DataObjectReference getRepresentationDor() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getRepresentationDor() const;
 
 		/**  
 		 * Gets the representation which is associated to the current property. That is to say the one
@@ -137,19 +138,20 @@ namespace RESQML2_NS
 		 * @returns	Empty data object reference if no local CRS is associated to this property. Otherwise
 		 * 			returns the data object reference of the associated local CRS.
 		 */
-		COMMON_NS::DataObjectReference getLocalCrsDor() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getLocalCrsDor() const;
 
 		//*********************************************
 		//********** REALIZATION DIMENSION ************
 		//*********************************************
 
 		/**
-		 * Checks if this property has a realization index. Realization index is used if the property is
-		 * the result of a multi-realization process
+		 * Checks if this property has at least one realization index. Realization index is used if the property is
+		 * the result of a multi-realization process.
+		 * Reamrk : v2.0.1 is constrained to have a maximum of one realisation index
 		 *
-		 * @returns	True if the property has a realization index, false if not.
+		 * @returns	True if the property has at least one realization index, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasRealizationIndex() const;
+		DLL_IMPORT_OR_EXPORT bool hasRealizationIndices() const;
 
 		/**
 		 * Gets the realization index of this property. Realization index is used if the property is the
@@ -160,14 +162,22 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The realization index.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getRealizationIndex() const;
+		DLL_IMPORT_OR_EXPORT std::vector<unsigned int> getRealizationIndices() const;
 
 		/**
-		 * Sets the realization index of this property
+		 * Sets the realization indices of this property
 		 *
-		 * @param 	realizationIndex	The realization index to set to this property.
+		 * @param 	startRealizationIndex	The first realization index to set to this property.
+		 * @param 	countRealizationIndices	The count of realization indices to set to this property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setRealizationIndex(ULONG64 realizationIndex);
+		DLL_IMPORT_OR_EXPORT void setRealizationIndices(ULONG64 startRealizationIndex, ULONG64 countRealizationIndices);
+
+		/**
+		 * Sets the realization indices of this property
+		 *
+		 * @param 	realizationIndices	The realization indices to set to this property.
+		 */
+		DLL_IMPORT_OR_EXPORT void setRealizationIndices(const std::vector<unsigned int> & realizationIndices, EML2_NS::AbstractHdfProxy* hdfProxy = nullptr);
 
 		//*********************************************
 		//************ TIME DIMENSION *****************
@@ -197,45 +207,42 @@ namespace RESQML2_NS
 		 * @returns	Empty data object reference if no time series is associated to this property. Otherwise returns the
 		 * 			data object reference of the associated time series.
 		 */
-		COMMON_NS::DataObjectReference getTimeSeriesDor() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getTimeSeriesDor() const;
 
 		/**
-		 * Sets the time stamp of this property by means of an index in a time series
+		 * Sets the timestamps of this property by means of an index in a time series
 		 *
 		 * @exception	invalid_argument	If @p ts is null or if the current property has no time
-		 * 									indices.
+		 * 									index.
 		 *
-		 * @param [in]	timeIndex	The index of the timestamp of the property in the time series.
-		 * @param [in]	ts		 	The time series which contains the timestamp of this property.
+		 * @param [in] startRealizationIndex	The first time index to set to this property.
+		 * @param [in] countRealizationIndices	The count of time indices to set to this property.
+		 * @param [in] ts		 				The time series which contains the timestamps of this property.
+		 * @param [in] useInterval		 		When UseInterval is true, the values are associated with each time intervals between two consecutive time entries instead of each individual time entry.
+		 *										As a consequence the dimension of the value array corresponding to the time series is the number of entry in the series minus one.
 		 */
-		DLL_IMPORT_OR_EXPORT void setTimeIndex(unsigned int timeIndex, EML2_NS::TimeSeries* ts);
-
-		/**
-		 * Sets the time step of this property. The time step indicates that the property is the output
-		 * of a specific time step from a flow simulator. Time step is metadata that makes sense in the
-		 * context of a specific simulation run, and should not be confused with the time index.
-		 *
-		 * @param 	timeStep	The time step to set to this property.
-		 */
-		DLL_IMPORT_OR_EXPORT void setTimeStep(unsigned int timeStep);
-
-		/**
-		 * Gets the time stamp of this property
-		 *
-		 * @exception	std::invalid_argument	If this property does not have any time stamp.
-		 *
-		 * @returns	The time stamp of this property.
-		 */
-		DLL_IMPORT_OR_EXPORT time_t getTimestamp() const;
+		DLL_IMPORT_OR_EXPORT void setTimeIndices(ULONG64 startTimeIndex, ULONG64 countTimeIndices, EML2_NS::TimeSeries* ts, bool useInterval = false);
 
 		/**
 		 * Get the time index of this property in its associated time series
 		 *
-		 * @exception	std::invalid_argument	If this property does not have any time stamp.
+		 * @exception	std::invalid_argument	If this property does not have any time index.
 		 *
 		 * @returns	The time index of this property.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTimeIndex() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getTimeIndexStart() const;
+
+		/**
+		 * Get the time indices count of this property in its associated time series
+		 *
+		 * @returns	The time indices count of this property.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getTimeIndicesCount() const;
+
+		/**
+		 * Check if the values are given at each time index or between each time index.
+		 */
+		DLL_IMPORT_OR_EXPORT bool useInterval() const;
 
 		//*********************************************
 		//****** PROP KIND ****************************

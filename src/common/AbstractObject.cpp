@@ -1282,16 +1282,19 @@ void AbstractObject::readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml20__Abstra
 
 void AbstractObject::readArrayNdOfUIntValues(gsoap_eml2_3::eml23__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const
 {
-	long soapType = arrayInput->soap_type();
-	if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
+	switch (arrayInput->soap_type()) {
+	case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray:
 	{
-		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(arrayInput)->Values->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
-		if (hdfProxy == nullptr) {
-			throw invalid_argument("The hdf proxy " + static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(arrayInput)->Values->ExternalFileProxy[0]->EpcExternalPartReference->Uuid + " is not available.");
+		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(arrayInput)->Values->ExternalFileProxy) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
+			if (hdfProxy == nullptr) {
+				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
+			}
+			hdfProxy->readArrayNdOfUIntValues(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
 		}
-		hdfProxy->readArrayNdOfUIntValues(static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(arrayInput)->Values->ExternalFileProxy[0]->PathInExternalFile, arrayOutput);
+		break;
 	}
-	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerRangeArray)
+	case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerRangeArray:
 	{
 		gsoap_eml2_3::eml23__IntegerRangeArray* rangeArray = static_cast<gsoap_eml2_3::eml23__IntegerRangeArray*>(arrayInput);
 		if (rangeArray->Value + rangeArray->Count > (std::numeric_limits<unsigned int>::max)()) {
@@ -1300,18 +1303,18 @@ void AbstractObject::readArrayNdOfUIntValues(gsoap_eml2_3::eml23__AbstractIntege
 		for (unsigned int i = 0; i < static_cast<unsigned int>(rangeArray->Count); ++i) {
 			arrayOutput[i] = i + static_cast<unsigned int>(rangeArray->Value);
 		}
+		break;
 	}
-	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray)
+	case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
 	{
 		gsoap_eml2_3::eml23__IntegerConstantArray* constantArray = static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(arrayInput);
 		if (constantArray->Value > (std::numeric_limits<unsigned int>::max)()) {
 			throw std::range_error("The constant integer value is superior to unsigned int maximum value.");
 		}
-		for (size_t i = 0; i < constantArray->Count; ++i) {
-			arrayOutput[i] = static_cast<unsigned int>(constantArray->Value);
-		}
+		std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<unsigned int>(constantArray->Value));
+		break;
 	}
-	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray)
+	case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray:
 	{
 		gsoap_eml2_3::eml23__IntegerLatticeArray* latticeArray = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(arrayInput);
 		if (latticeArray->Offset.size() > 1) {
@@ -1320,9 +1323,10 @@ void AbstractObject::readArrayNdOfUIntValues(gsoap_eml2_3::eml23__AbstractIntege
 		for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
 			arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
 		}
+		break;
 	}
-	else
-		throw invalid_argument("The integer array type is not supported yet.");
+	default: throw invalid_argument("The integer array type is not supported yet.");
+	}
 }
 
 ULONG64 AbstractObject::getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const
@@ -1362,8 +1366,8 @@ ULONG64 AbstractObject::getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractInte
 	if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 	{
 		ULONG64 result = 0;
-		for (size_t i = 0; i < static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(arrayInput)->Values->ExternalFileProxy.size(); ++i) {
-			result += static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(arrayInput)->Values->ExternalFileProxy[i]->Count;
+		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(arrayInput)->Values->ExternalFileProxy) {
+			result += dsPart->Count;
 		}
 		return result;
 	}

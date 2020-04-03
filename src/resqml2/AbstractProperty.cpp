@@ -22,8 +22,11 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
+#include <hdf5.h>
+
 #include "../common/EnumStringMapper.h"
 
+#include "../eml2/AbstractHdfProxy.h"
 #include "../eml2/PropertyKind.h"
 #include "../eml2/TimeSeries.h"
 
@@ -206,11 +209,28 @@ COMMON_NS::DataObjectReference AbstractProperty::getTimeSeriesDor() const
 	return COMMON_NS::DataObjectReference();
 }
 
-void AbstractProperty::setTimeIndex(unsigned int timeIndex, EML2_NS::TimeSeries * ts)
+void AbstractProperty::setTimeIndices(ULONG64 startTimeIndex, ULONG64 countTimeIndices, EML2_NS::TimeSeries * ts, bool useInterval)
 {
+	if (countTimeIndices == 0) {
+		throw std::invalid_argument("You cannot set zero time index.");
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
+		if (countTimeIndices > 1) {
+			throw std::invalid_argument("RESQML 2.0.1 does not support more than one time index per property.");
+		}
+
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex = gsoap_resqml2_0_1::soap_new_resqml20__TimeIndex(gsoapProxy2_0_1->soap);
-		static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index = timeIndex;
+		static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index = startTimeIndex;
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices = gsoap_eml2_3::soap_new_eml23__TimeIndices(gsoapProxy2_3->soap);
+		if (startTimeIndex != 0) {
+			static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices->TimeIndexStart = gsoap_eml2_3::soap_new_ULONG64(gsoapProxy2_3->soap);
+			*static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices->TimeIndexStart = startTimeIndex;
+		}
+		static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices->TimeIndexCount = countTimeIndices;
+		static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices->UseInterval = useInterval;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -219,44 +239,48 @@ void AbstractProperty::setTimeIndex(unsigned int timeIndex, EML2_NS::TimeSeries 
 	setTimeSeries(ts);
 }
 
-void AbstractProperty::setTimeStep(unsigned int timeStep)
+unsigned int AbstractProperty::getTimeIndexStart() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeStep == nullptr) {
-			static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeStep = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(ULONG64)));
+		if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {
+			return static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index;
 		}
-		*(static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeStep) = timeStep;
 	}
-	else {
-		throw logic_error("Not implemented yet");
+	else if (gsoapProxy2_3 != nullptr) {
+		if (static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices != nullptr) {
+			return static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices->TimeIndexStart != nullptr
+				? *static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices->TimeIndexStart
+				: 0;
+		}
 	}
+
+	throw invalid_argument("This property does not have any timestamp.");
 }
 
-time_t AbstractProperty::getTimestamp() const
+unsigned int AbstractProperty::getTimeIndicesCount() const
 {
-	EML2_NS::TimeSeries const * timeSeries = getTimeSeries();
-
 	if (gsoapProxy2_0_1 != nullptr) {
-		if (timeSeries && static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {
-			return timeSeries->getTimestamp(static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index);
-		}
-
-		throw invalid_argument("This property does not have any timestamp.");
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr
+			? 1 : 0;
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		return static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices != nullptr
+			? static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices->TimeIndexCount
+			: 0;
 	}
 
 	throw logic_error("Not implemented yet");
 }
 
-unsigned int AbstractProperty::getTimeIndex() const
+bool AbstractProperty::useInterval() const
 {
-	EML2_NS::TimeSeries const * timeSeries = getTimeSeries();
-
 	if (gsoapProxy2_0_1 != nullptr) {
-		if (timeSeries && static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {
-			return static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index;
-		}
-
-		throw invalid_argument("This property does not have any timestamp.");
+		return false;
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		return static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices != nullptr
+			? static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices->UseInterval
+			: false;
 	}
 
 	throw logic_error("Not implemented yet");
@@ -486,7 +510,7 @@ EML2_NS::PropertyKind* AbstractProperty::getPropertyKind() const
 	return getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(getPropertyKindDor().getUuid());
 }
 
-bool AbstractProperty::hasRealizationIndex() const
+bool AbstractProperty::hasRealizationIndices() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->RealizationIndex != nullptr;
@@ -499,28 +523,87 @@ bool AbstractProperty::hasRealizationIndex() const
 	}
 }
 
-ULONG64 AbstractProperty::getRealizationIndex() const
+std::vector<unsigned int> AbstractProperty::getRealizationIndices() const
 {
-	if (!hasRealizationIndex()) {
+	if (!hasRealizationIndices()) {
 		throw invalid_argument("This property has not got any realization index");
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		return *static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->RealizationIndex;
+		return std::vector<unsigned int> {static_cast<unsigned int>(*static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->RealizationIndex)};
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		std::vector<unsigned int> result(getCountOfIntegerArray(static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices));
+		readArrayNdOfUIntValues(static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices, result.data());
+		return result;
 	}
 	else {
 		throw logic_error("Not implemented yet");
 	}
 }
 
-void AbstractProperty::setRealizationIndex(ULONG64 realizationIndex)
+void AbstractProperty::setRealizationIndices(ULONG64 startRealizationIndex, ULONG64 countRealizationIndices)
 {
+	if (countRealizationIndices == 0) {
+		throw std::invalid_argument("Cannot set zero realization index.");
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
+		if (countRealizationIndices > 1) {
+			throw std::invalid_argument("RESQML 2.0.1 does not support more than one realization index per property.");
+		}
 		gsoap_resqml2_0_1::resqml20__AbstractProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1);
 		if (prop->RealizationIndex == nullptr) {
 			prop->RealizationIndex = static_cast<ULONG64*>(soap_malloc(prop->soap, sizeof(ULONG64)));
 		}
-		*prop->RealizationIndex = realizationIndex;
+		*prop->RealizationIndex = startRealizationIndex;
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		auto rangeArray = gsoap_eml2_3::soap_new_eml23__IntegerRangeArray(gsoapProxy2_3->soap);
+		rangeArray->Value = startRealizationIndex;
+		rangeArray->Count = countRealizationIndices;
+		static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices = rangeArray;
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}
+
+void AbstractProperty::setRealizationIndices(const std::vector<unsigned int> & realizationIndices, EML2_NS::AbstractHdfProxy* hdfProxy)
+{
+	if (realizationIndices.empty()) {
+		throw std::invalid_argument("Cannot set zero realization index.");
+	}
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		if (realizationIndices.size() > 1) {
+			throw std::invalid_argument("RESQML 2.0.1 does not support more than one realization index per property.");
+		}
+		setRealizationIndices(realizationIndices[0], 1);
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		if (hdfProxy == nullptr) {
+			hdfProxy = getRepository()->getDefaultHdfProxy();
+			if (hdfProxy == nullptr) {
+				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+			}
+		}
+		getRepository()->addRelationship(this, hdfProxy);
+
+		auto externalArray = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
+		externalArray->NullValue = (std::numeric_limits<unsigned int>::max)();
+		externalArray->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+		auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+		dsPart->Count = realizationIndices.size();
+		dsPart->StartIndex = 0;
+		dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
+		dsPart->PathInExternalFile = getHdfGroup() + "/RealizationIndices";
+		externalArray->Values->ExternalFileProxy.push_back(dsPart);
+		static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices = externalArray;
+
+		// HDF
+		hsize_t numValues = realizationIndices.size();
+		hdfProxy->writeArrayNd(getHdfGroup(), "RealizationIndices", H5T_NATIVE_UINT, realizationIndices.data(), &numValues, 1);
 	}
 	else {
 		throw logic_error("Not implemented yet");

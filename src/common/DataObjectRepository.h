@@ -23,16 +23,6 @@ under the License.
 
 #include "DataObjectReference.h"
 
-#if defined(_WIN32) && !defined(FESAPI_STATIC)
-#if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
-#define DLL_IMPORT_OR_EXPORT __declspec(dllexport)
-#else
-#define DLL_IMPORT_OR_EXPORT __declspec(dllimport) 
-#endif
-#else
-#define DLL_IMPORT_OR_EXPORT
-#endif
-
 namespace EML2_NS
 {
 	class AbstractHdfProxy;
