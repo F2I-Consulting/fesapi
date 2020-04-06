@@ -38,7 +38,9 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 					sp.m_protocolVersion.m_revision == rp.m_protocolVersion.m_revision;
 			}
 		);
-		requestedAndSupportedProtocols.push_back(*validatedProtocol);
+		if (validatedProtocol != std::end(supportedProtocols)) {
+			requestedAndSupportedProtocols.push_back(*validatedProtocol);
+		}
 	}
 
 	if (requestedAndSupportedProtocols.empty()) {
