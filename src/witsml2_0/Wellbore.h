@@ -18,13 +18,19 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "witsml2_0/AbstractObject.h"
-#include "resqml2_0_1/WellboreFeature.h"
-#include "witsml2_0/WellboreCompletion.h"
-#include "witsml2_0/Trajectory.h"
+#include "AbstractObject.h"
+
+namespace RESQML2_0_1_NS {
+	class WellboreFeature;
+}
 
 namespace WITSML2_0_NS
 {
+	class Trajectory;
+	class WellboreCompletion;
+	class WellboreGeometry;
+	class Log;
+
 	class Wellbore : public WITSML2_0_NS::AbstractObject
 	{
 	public:
@@ -32,7 +38,7 @@ namespace WITSML2_0_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		Wellbore(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT Wellbore(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -53,7 +59,7 @@ namespace WITSML2_0_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		Wellbore(gsoap_eml2_1::witsml2__Wellbore* fromGsoap):AbstractObject(fromGsoap), resqmlWellboreFeature(nullptr) {}
+		Wellbore(gsoap_eml2_1::witsml20__Wellbore* fromGsoap):AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -65,33 +71,43 @@ namespace WITSML2_0_NS
 
 		DLL_IMPORT_OR_EXPORT void setWell(class Well* witsmlWell);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreFeature* getResqmlWellboreFeature() const { return resqmlWellboreFeature; }
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::WellboreFeature *> getResqmlWellboreFeature() const;
 
-		DLL_IMPORT_OR_EXPORT const std::vector<WellboreCompletion *>& getWellboreCompletions() const { return wellboreCompletionSet; }
-		DLL_IMPORT_OR_EXPORT const std::vector<Trajectory *>& getTrajectories() const { return trajectorySet; }
+		DLL_IMPORT_OR_EXPORT std::vector<WellboreCompletion *> getWellboreCompletions() const;
+		DLL_IMPORT_OR_EXPORT std::vector<Trajectory *> getTrajectories() const;
+		DLL_IMPORT_OR_EXPORT std::vector<WellboreGeometry *> getWellboreGeometries() const;
+		DLL_IMPORT_OR_EXPORT std::vector<Log *> getLogs() const;
 
-		DLL_IMPORT_OR_EXPORT void setShape(gsoap_eml2_1::witsml2__WellboreShape shape);
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Number)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, SuffixAPI)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumGovt)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::eml21__WellStatus, StatusWellbore)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, IsActive)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellPurpose, PurposeWellbore)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellboreType, TypeWellbore)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellboreShape, Shape)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, AchievedTD)
+		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(Md, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdBit, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdKickoff, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdPlanned, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdSubSeaPlanned, gsoap_eml2_1::eml21__LengthUom)
 
 		/**
-		* Resolve all relationships of the object in an epc document.
+		* The standard XML tag without XML namespace for serializing this data object.
 		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	protected:
 
-		// XML backwards relationship
-		RESQML2_0_1_NS::WellboreFeature* resqmlWellboreFeature;
-		std::vector<WellboreCompletion* > wellboreCompletionSet;
-		std::vector<Trajectory*> trajectorySet;
-
-		friend void RESQML2_0_1_NS::WellboreFeature::setWitsmlWellbore(Wellbore * wellbore);
-		friend void WellboreCompletion::setWellbore(Wellbore* witsmlWellbore);
-		friend void Trajectory::setWellbore(Wellbore* witsmlWellbore);
+		/**
+		* Resolve all relationships of the object in the repository.
+		*/
+		void loadTargetRelationships();
 	};
 }
-

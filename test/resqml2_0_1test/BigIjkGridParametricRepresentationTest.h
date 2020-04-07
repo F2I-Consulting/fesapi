@@ -22,7 +22,7 @@ under the License.
 #include <iostream>
 
 namespace COMMON_NS {
-	class EpcDocument;
+	class DataObjectRepository;
 }
 
 namespace resqml2_0_1test {
@@ -40,7 +40,7 @@ namespace resqml2_0_1test {
 		* aligned along axis (I direction along X, J direction along Y and K direction along Z). 
 		* Resulting grid carries both discrete and continuous properties on cells.
 		* At serialize() call, exising .epc file will be erased. 
-		* @param epcDocPath	the path of the .epc file (including .epc extension)
+		* @param repoPath	the path of the .epc file (including .epc extension)
 		* @param iCount		number of cells in the I direction.
 		* @param jCount		number of cells in the J direction.
 		* @param kCount		number of cells in the K direction.
@@ -54,7 +54,7 @@ namespace resqml2_0_1test {
 		* @param faultThrow	length of the fault throw along z axis. 
 		*/
 		BigIjkGridParametricRepresentationTest(
-			const std::string & epcDocPath,
+			const std::string & repoPath,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount, 
 			const unsigned int & faultCount, 
 			const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
@@ -64,9 +64,9 @@ namespace resqml2_0_1test {
 		* Creation of a parametric IJK grid representation from an existing EPC document. Resulting grid is 
 		* aligned along axis (I direction along X, J direction along Y and K direction along Z).
 		* Resulting grid carries both discrete and continuous properties on cells. 
-		* @param epcDoc		an existing EPC document
+		* @param repo		an existing EPC document
 		* @param init		true if this object is created for initialization purpose else false if it is 
-		*					created for reading purpose. According to init value a iniEpcDoc() or readEpcDoc() is called.
+		*					created for reading purpose. According to init value a inirepo() or readRepo() is called.
 		* @param iCount		number of cells in the I direction.
 		* @param jCount		number of cells in the J direction.
 		* @param kCount		number of cells in the K direction.
@@ -79,15 +79,15 @@ namespace resqml2_0_1test {
 		* @param zMax		maximum z value of the grid (without considering any fault throw).
 		* @param faultThrow	length of the fault throw along z axis.
 		*/
-		BigIjkGridParametricRepresentationTest(COMMON_NS::EpcDocument * epcDoc, bool init,
+		BigIjkGridParametricRepresentationTest(COMMON_NS::DataObjectRepository * repo, bool init,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 			const unsigned int & faultCount,
 			const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
 			const double & faultThrow);
 
 	protected:
-		void initEpcDocHandler();
-		void readEpcDocHandler();
+		void initRepoHandler();
+		void readRepoHandler();
 	private:
 		/**
 		* Initialize generated grid parameters and control points.

@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/MdDatum.h"
+#include "MdDatum.h"
 
 namespace RESQML2_NS
 {
@@ -29,14 +29,14 @@ namespace RESQML2_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractLocal3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT AbstractLocal3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		AbstractLocal3dCrs() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractLocal3dCrs(gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs* fromGsoap):
+		AbstractLocal3dCrs(gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs* fromGsoap):
 			COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
@@ -51,12 +51,6 @@ namespace RESQML2_NS
 		* Destructor does nothing since the memory is manged by the gsoap context.
 		*/
 		virtual ~AbstractLocal3dCrs() {}
-
-		/**
-		* Add a geometrical representation which is based on this local CRS
-		* Does not add the inverse relationship i.e. from the geometrical representation to this local CRS.
-		*/
-		void addRepresentation(class AbstractRepresentation* rep);
 
 		/**
 		* Get the first origin ordinal (usually called X) of the local CRS in the global projected CRS.
@@ -162,21 +156,7 @@ namespace RESQML2_NS
 
 	protected:
 		
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
-		// XML backward relationship
-		std::vector<class AbstractRepresentation*> repSet;
-		std::vector<MdDatum*> mdDatumSet;
-
-	private:
-		/**
-		* Add a md information which is based on this local CRS
-		* Does not add the inverse relationship i.e. from the md information to this local CRS.
-		*/
-		void addMdDatum(MdDatum* mdInfo);
-
-		friend void MdDatum::setLocalCrs(AbstractLocal3dCrs * localCrs);
+		void loadTargetRelationships();
 	};
 }
 

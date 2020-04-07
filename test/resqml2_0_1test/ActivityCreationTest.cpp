@@ -36,29 +36,29 @@ using namespace RESQML2_NS;
 const char* ActivityCreationTest::defaultUuid = "705cd6f5-8ee8-427b-adde-04b0b6afcdf0";
 const char* ActivityCreationTest::defaultTitle = "Activity Creation";
 
-ActivityCreationTest::ActivityCreationTest(const string & epcDocPath)
-	: AbstractResqmlDataObjectTest(epcDocPath, defaultUuid, defaultTitle) {
+ActivityCreationTest::ActivityCreationTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-ActivityCreationTest::ActivityCreationTest(EpcDocument * epcDoc, bool init)
-	: AbstractResqmlDataObjectTest(epcDoc, defaultUuid, defaultTitle) {
-		if (init)
-			this->initEpcDoc();
-		else
-			this->readEpcDoc();
+ActivityCreationTest::ActivityCreationTest(DataObjectRepository * repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
+	if (init)
+		initRepo();
+	else
+		readRepo();
 }
 
-void ActivityCreationTest::initEpcDocHandler() {
+void ActivityCreationTest::initRepoHandler() {
 	// creation of an horizon interpretation
-	HorizonInterpretationTest * horizonInterpretationTest = new HorizonInterpretationTest(this->epcDoc, true);
-	RESQML2_0_1_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_0_1_NS::HorizonInterpretation*>(this->epcDoc->getDataObjectByUuid(HorizonInterpretationTest::defaultUuid));
+	HorizonInterpretationTest * horizonInterpretationTest = new HorizonInterpretationTest(repo, true);
+	RESQML2_0_1_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_0_1_NS::HorizonInterpretation*>(repo->getDataObjectByUuid(HorizonInterpretationTest::defaultUuid));
 
 	// creation of the generic creation activity template
-	ActivityTemplateGenericCreationTest* activityTemplateTest = new ActivityTemplateGenericCreationTest(this->epcDoc, true);
-	ActivityTemplate * activityTemplate = static_cast<ActivityTemplate*>(this->epcDoc->getDataObjectByUuid(ActivityTemplateGenericCreationTest::defaultUuid));
+	ActivityTemplateGenericCreationTest* activityTemplateTest = new ActivityTemplateGenericCreationTest(repo, true);
+	ActivityTemplate * activityTemplate = static_cast<ActivityTemplate*>(repo->getDataObjectByUuid(ActivityTemplateGenericCreationTest::defaultUuid));
 
 	// creation of the creation activity
-	Activity* activity = this->epcDoc->createActivity(activityTemplate, this->uuid, this->title);
+	Activity* activity = repo->createActivity(activityTemplate, defaultUuid, defaultTitle);
 	REQUIRE( activity != nullptr );
 
 	// creation of activity parameters
@@ -69,17 +69,17 @@ void ActivityCreationTest::initEpcDocHandler() {
 	delete activityTemplateTest;
 }
 
-void ActivityCreationTest::readEpcDocHandler() {
+void ActivityCreationTest::readRepoHandler() {
 	// reading dependencies
-	HorizonInterpretationTest * horizonInterpretationTest = new HorizonInterpretationTest(this->epcDoc, false);
-	ActivityTemplateGenericCreationTest* activityTemplateTest = new ActivityTemplateGenericCreationTest(this->epcDoc, false);
+	HorizonInterpretationTest horizonInterpretationTest(repo, false);
+	ActivityTemplateGenericCreationTest activityTemplateTest(repo, false);
 
 	// getting the activity
-	Activity* activity = static_cast<Activity*>(this->epcDoc->getDataObjectByUuid(defaultUuid));
+	Activity* activity = repo->getDataObjectByUuid<Activity>(defaultUuid);
 	REQUIRE( activity != nullptr );
 
 	// getting the horizon interpretation
-	RESQML2_0_1_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_0_1_NS::HorizonInterpretation*>(this->epcDoc->getDataObjectByUuid(HorizonInterpretationTest::defaultUuid));
+	RESQML2_0_1_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_0_1_NS::HorizonInterpretation*>(repo->getDataObjectByUuid(HorizonInterpretationTest::defaultUuid));
 	REQUIRE( horizonInterpretation != nullptr );
 
 	// testing the activity
@@ -95,9 +95,4 @@ void ActivityCreationTest::readEpcDocHandler() {
 	REQUIRE_FALSE( activity->isAFloatingPointQuantityParameter(0) );
 	REQUIRE_THROWS( activity->getFloatingPointQuantityParameterValue("CreationOutput").size());
 	REQUIRE_THROWS( activity->getFloatingPointQuantityParameterValue(0) );
-
-	// cleaning
-	delete horizonInterpretationTest;
-	delete activityTemplateTest;
 }
-

@@ -22,12 +22,14 @@ under the License.
 #include <iostream>
 
 namespace COMMON_NS {
-	class EpcDocument;
+	class DataObjectRepository;
 }
 
 namespace witsml2_0test {
 	class WellTest : public commontest::AbstractObjectTest {
 	public:
+		static const char* defaultUuid;
+		static const char* defaultTitle;
 		static const time_t defaultTimestamp;
 
 		/**
@@ -39,14 +41,14 @@ namespace witsml2_0test {
 
 		/**
 		* Creation of a testing object from an existing EPC document.
-		* @param epcDoc an existing EPC document
+		* @param repo an existing EPC document
 		* @param init true if this object is created for initialization purpose else false if it is
-		* created for reading purpose. According to init value a iniEpcDoc() or readEpcDoc() is called.
+		* created for reading purpose. According to init value a iniEpcDoc() or readRepo() is called.
 		*/
-		WellTest(COMMON_NS::EpcDocument* epcDoc, bool init);
+		WellTest(COMMON_NS::DataObjectRepository* repo, bool init);
 	protected:
-		void initEpcDocHandler();
-		void readEpcDocHandler();
+		void initRepoHandler();
+		void readRepoHandler();
 	};
 }
 

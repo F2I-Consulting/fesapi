@@ -17,126 +17,66 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "resqml2/AbstractFeatureInterpretation.h"
+#include "AbstractFeatureInterpretation.h"
 
 #include <stdexcept>
+#include <algorithm>
 
-#include "resqml2/AbstractFeature.h"
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "resqml2/GridConnectionSetRepresentation.h"
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
+#include "AbstractFeature.h"
+#include "AbstractLocal3dCrs.h"
+#include "GridConnectionSetRepresentation.h"
+#include "../resqml2_0_1/StructuralOrganizationInterpretation.h"
 
 using namespace RESQML2_NS;
 using namespace std;
-using namespace epc;
 
-
-void AbstractFeatureInterpretation::setInterpretedFeatureInXml(RESQML2_NS::AbstractFeature* feature)
+void AbstractFeatureInterpretation::setInterpretedFeature(AbstractFeature * feature)
 {
+	if (feature == nullptr) {
+		throw invalid_argument("The interpreted feature cannot be null.");
+	}
+
+	if (getRepository() == nullptr) {
+		feature->getRepository()->addOrReplaceDataObject(this);
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
-		static_cast<gsoap_resqml2_0_1::resqml2__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->InterpretedFeature = feature->newResqmlReference();
+		if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->InterpretedFeature != nullptr) {
+			getRepository()->deleteRelationship(this, getInterpretedFeature());
+		}
+	}
+
+	repository->addRelationship(this, feature);
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->InterpretedFeature = feature->newResqmlReference();
 	}
 	else {
 		throw logic_error("Not implemented yet");
 	}
 }
 
-void AbstractFeatureInterpretation::setInterpretedFeature(RESQML2_NS::AbstractFeature * feature)
+void AbstractFeatureInterpretation::loadTargetRelationships()
 {
-	if (feature == nullptr)
-		throw invalid_argument("The interpreted feature cannot be null.");
-
-	// EPC
-	feature->interpretationSet.push_back(this);
-
-	// XMl
-	if (updateXml)
-	{
-		setInterpretedFeatureInXml(feature);
-	}
-}
-
-void AbstractFeatureInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
-{
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getInterpretedFeatureDor();
-	RESQML2_NS::AbstractFeature* interpretedFeature = epcDoc->getDataObjectByUuid<AbstractFeature>(dor->UUID);
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getInterpretedFeatureDor();
+	AbstractFeature* interpretedFeature = getRepository()->getDataObjectByUuid<AbstractFeature>(dor->UUID);
 	if (interpretedFeature == nullptr) { // partial transfer
-		getEpcDocument()->createPartial(dor);
-		interpretedFeature = getEpcDocument()->getDataObjectByUuid<AbstractFeature>(dor->UUID);
+		getRepository()->createPartial(dor);
+		interpretedFeature = getRepository()->getDataObjectByUuid<AbstractFeature>(dor->UUID);
 	}
 	if (interpretedFeature == nullptr) {
 		throw invalid_argument("The DOR looks invalid.");
 	}
-	updateXml = false;
-	setInterpretedFeature(interpretedFeature);
-	updateXml = true;
+	repository->addRelationship(this, interpretedFeature);
 }
 
-vector<Relationship> AbstractFeatureInterpretation::getAllEpcRelationships() const
-{
-	vector<Relationship> result;
-
-	RESQML2_NS::AbstractFeature* interpretedFeature = getInterpretedFeature();
-	Relationship rel(interpretedFeature->getPartNameInEpcDocument(), "", interpretedFeature->getUuid());
-	rel.setDestinationObjectType();
-	result.push_back(rel);
-	
-	for (size_t i = 0; i < representationSet.size(); ++i)
-	{
-		if (representationSet[i] != nullptr)
-		{
-			Relationship relRep(representationSet[i]->getPartNameInEpcDocument(), "", representationSet[i]->getUuid());
-			relRep.setSourceObjectType();
-			result.push_back(relRep);
-		}
-		else
-			throw domain_error("The representation associated to the interpretation cannot be nullptr.");
-	}
-
-	for (size_t i = 0; i < gridConnectionSetRepresentationSet.size(); i++)
-	{
-		if (gridConnectionSetRepresentationSet[i] != nullptr)
-		{
-			Relationship relGsr(gridConnectionSetRepresentationSet[i]->getPartNameInEpcDocument(), "", gridConnectionSetRepresentationSet[i]->getUuid());
-			relGsr.setSourceObjectType();
-			result.push_back(relGsr);
-		}
-		else
-			throw domain_error("The representation associated to the interpretation cannot be nullptr.");
-	}
-
-	for (size_t i = 0; i < isTopFrontierSet.size(); i++)
-	{
-		Relationship relOrgStack(isTopFrontierSet[i]->getPartNameInEpcDocument(), "", isTopFrontierSet[i]->getUuid());
-		relOrgStack.setSourceObjectType();
-		result.push_back(relOrgStack);
-	}
-
-	for (size_t i = 0; i < isBottomFrontierSet.size(); i++)
-	{
-		Relationship relOrgStack(isBottomFrontierSet[i]->getPartNameInEpcDocument(), "", isBottomFrontierSet[i]->getUuid());
-		relOrgStack.setSourceObjectType();
-		result.push_back(relOrgStack);
-	}
-
-	for (size_t i = 0; i < isSideFrontierSet.size(); i++)
-	{
-		Relationship relOrgStack(isSideFrontierSet[i]->getPartNameInEpcDocument(), "", isSideFrontierSet[i]->getUuid());
-		relOrgStack.setSourceObjectType();
-		result.push_back(relOrgStack);
-	}
-
-	return result;
-}
-
-gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractFeatureInterpretation::getInterpretedFeatureDor() const
+gsoap_resqml2_0_1::eml20__DataObjectReference const * AbstractFeatureInterpretation::getInterpretedFeatureDor() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->InterpretedFeature;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->InterpretedFeature;
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("Not implemented yet");
 }
 
 std::string AbstractFeatureInterpretation::getInterpretedFeatureUuid() const
@@ -144,95 +84,110 @@ std::string AbstractFeatureInterpretation::getInterpretedFeatureUuid() const
 	return getInterpretedFeatureDor()->UUID;
 }
 
-RESQML2_NS::AbstractFeature* AbstractFeatureInterpretation::getInterpretedFeature() const
+AbstractFeature* AbstractFeatureInterpretation::getInterpretedFeature() const
 {
-	return static_cast<RESQML2_NS::AbstractFeature*>(epcDocument->getDataObjectByUuid(getInterpretedFeatureUuid()));
+	return static_cast<AbstractFeature*>(repository->getDataObjectByUuid(getInterpretedFeatureUuid()));
 }
 
-const gsoap_resqml2_0_1::resqml2__Domain & AbstractFeatureInterpretation::initDomain(const gsoap_resqml2_0_1::resqml2__Domain & defaultDomain) const
+const gsoap_resqml2_0_1::resqml20__Domain & AbstractFeatureInterpretation::initDomain(gsoap_resqml2_0_1::resqml20__Domain defaultDomain) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		const unsigned int repCount = getRepresentationCount();
 		bool isTimeDomain = false;
 		bool isDepthDomain = false;
 		for (unsigned int repIndex = 0; repIndex < repCount && (!isTimeDomain || !isDepthDomain); ++repIndex) {
-			AbstractLocal3dCrs* local3dCrs = getRepresentation(repIndex)->getLocalCrs();
-			if (local3dCrs != nullptr) {
-				if (local3dCrs->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORELocalTime3dCrs) {
-					isTimeDomain = true;
-				}
-				else if (local3dCrs->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORELocalDepth3dCrs) {
-					isDepthDomain = true;
+			AbstractRepresentation const * rep = getRepresentation(repIndex);
+			const unsigned int patchCount = rep->getPatchCount();
+			for (unsigned int patchIndex = 0; patchIndex < patchCount && (!isTimeDomain || !isDepthDomain); ++patchIndex) {
+				AbstractLocal3dCrs* local3dCrs = rep->getLocalCrs(patchIndex);
+				if (local3dCrs != nullptr) {
+					if (local3dCrs->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORELocalTime3dCrs) {
+						isTimeDomain = true;
+					}
+					else if (local3dCrs->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORELocalDepth3dCrs) {
+						isDepthDomain = true;
+					}
 				}
 			}
 		}
 
 		if (isTimeDomain && isDepthDomain) {
-			static_cast<gsoap_resqml2_0_1::resqml2__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = gsoap_resqml2_0_1::resqml2__Domain__mixed;
+			static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = gsoap_resqml2_0_1::resqml20__Domain__mixed;
 		}
 		else if (!isTimeDomain && !isDepthDomain) {
-			static_cast<gsoap_resqml2_0_1::resqml2__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = defaultDomain;
+			static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = defaultDomain;
 		}
 		else if (isTimeDomain) {
-			static_cast<gsoap_resqml2_0_1::resqml2__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = gsoap_resqml2_0_1::resqml2__Domain__time;
+			static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = gsoap_resqml2_0_1::resqml20__Domain__time;
 		}
 		else {
-			static_cast<gsoap_resqml2_0_1::resqml2__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = gsoap_resqml2_0_1::resqml2__Domain__depth;
+			static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = gsoap_resqml2_0_1::resqml20__Domain__depth;
 		}
 
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain;
 	}
 	else {
 		throw logic_error("Not implemented yet");
 	}
 }
 
-gsoap_resqml2_0_1::resqml2__Domain AbstractFeatureInterpretation::getDomain() const
+gsoap_resqml2_0_1::resqml20__Domain AbstractFeatureInterpretation::getDomain() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain;
 	}
 	else {
 		throw logic_error("Not implemented yet");
 	}
 }
 
-vector<AbstractRepresentation*> AbstractFeatureInterpretation::getRepresentationSet() const
+namespace {
+	class DifferentInterp {
+	private:
+		AbstractFeatureInterpretation const * interp;
+	public:
+		explicit DifferentInterp(AbstractFeatureInterpretation const * interp_) : interp(interp_) {}
+
+		bool operator()(AbstractRepresentation const * rep) const
+		{
+			gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = rep->getInterpretationDor();
+			return dor == nullptr
+				|| dor->UUID != interp->getUuid()
+				|| (dor->VersionString == nullptr ? "" : *dor->VersionString) != interp->getVersion();
+		}
+	};
+}
+
+vector<AbstractRepresentation *> AbstractFeatureInterpretation::getRepresentationSet() const
 {
-	return representationSet;
+	std::vector<AbstractRepresentation *> result = repository->getSourceObjects<AbstractRepresentation>(this);
+	result.erase(std::remove_if(result.begin(), result.end(), DifferentInterp(this)), result.end());
+
+	return result;
 }
 
 unsigned int AbstractFeatureInterpretation::getRepresentationCount() const
 {
-	return representationSet.size();
+	size_t result = getRepresentationSet().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("The representation count is superior to unsigned int max");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
-AbstractRepresentation*	AbstractFeatureInterpretation::getRepresentation(const unsigned int & index) const
+AbstractRepresentation * AbstractFeatureInterpretation::getRepresentation(unsigned int index) const
 {
+	const std::vector<AbstractRepresentation*>& representationSet = getRepresentationSet();
+
 	if (representationSet.size() > index)
 		return representationSet[index];
-	else
-		throw range_error("The representation index you are requesting is out of range.");
+	
+	throw range_error("The representation index you are requesting is out of range.");
 }
 
-vector<GridConnectionSetRepresentation *> AbstractFeatureInterpretation::getGridConnectionSetRepresentationSet()
+std::vector<GridConnectionSetRepresentation *> AbstractFeatureInterpretation::getGridConnectionSetRepresentationSet() const
 {
-	return gridConnectionSetRepresentationSet;
+	return getRepository()->getSourceObjects<GridConnectionSetRepresentation>(this);
 }
-
-void AbstractFeatureInterpretation::setBottomFrontierOf(RESQML2_0_1_NS::StructuralOrganizationInterpretation* structOrg)
-{
-	isBottomFrontierSet.push_back(structOrg);
-}
-
-void AbstractFeatureInterpretation::setTopFrontierOf(RESQML2_0_1_NS::StructuralOrganizationInterpretation* structOrg)
-{
-	isTopFrontierSet.push_back(structOrg);
-}
-
-void AbstractFeatureInterpretation::setSideFrontierOf(RESQML2_0_1_NS::StructuralOrganizationInterpretation* structOrg)
-{
-	isSideFrontierSet.push_back(structOrg);
-}
-
-

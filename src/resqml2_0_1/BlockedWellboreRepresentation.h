@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/WellboreFrameRepresentation.h"
+#include "WellboreFrameRepresentation.h"
 
 namespace RESQML2_NS
 {
@@ -37,7 +37,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		BlockedWellboreRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WellboreFrameRepresentation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT BlockedWellboreRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WellboreFrameRepresentation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -46,21 +46,18 @@ namespace RESQML2_0_1_NS
         * @param title	A title for the instance to create.
         * @param traj	The wellbore trajectory this intance is based on.
 		*/
-		BlockedWellboreRepresentation(class WellboreInterpretation* interp,
+		BlockedWellboreRepresentation(class WellboreInterpretation * interp,
 			const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation * traj);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		BlockedWellboreRepresentation(gsoap_resqml2_0_1::_resqml2__BlockedWellboreRepresentation* fromGsoap) : WellboreFrameRepresentation(fromGsoap) {}
+		BlockedWellboreRepresentation(gsoap_resqml2_0_1::_resqml20__BlockedWellboreRepresentation* fromGsoap) : WellboreFrameRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~BlockedWellboreRepresentation() {}
-        
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const {return XML_TAG;}
 	
 		/**
 		* Set all information about the intersected grid cells. You must first provide MD values of the frame before to use this method.
@@ -83,7 +80,7 @@ namespace RESQML2_0_1_NS
 		* Size of array = IntervalCount on the wellbore frame rep. The grids (and there indices) are defined using pushBackSupportingGridRepresentation method.
 		* @return nullValue
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getGridIndices(unsigned int * gridIndices) const;
+		DLL_IMPORT_OR_EXPORT LONG64 getGridIndices(unsigned int * gridIndices) const;
 
 		/**
 		 * Pushes back a grid representation which is one of the support of this representation.
@@ -111,9 +108,17 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getSupportingGridRepresentationUuid(unsigned int index) const;
 
-	private:
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+
+	private:
+		void loadTargetRelationships();
 	};
 }

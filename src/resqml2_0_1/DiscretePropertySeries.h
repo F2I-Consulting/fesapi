@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/DiscreteProperty.h"
+#include "DiscreteProperty.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -29,7 +29,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		DiscretePropertySeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : DiscreteProperty(partialObject) {}
+		DLL_IMPORT_OR_EXPORT DiscretePropertySeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : DiscreteProperty(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -43,8 +43,8 @@ namespace RESQML2_0_1_NS
 		* @param useInterval				Indicates wether the property values will be attached to the time index or to the interval between consecutive time index. 
 		*/
 		DiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
-			const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind,
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
+			const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
@@ -59,23 +59,30 @@ namespace RESQML2_0_1_NS
 		* @param useInterval				Indicates wether the property values will be attached to the time index or to the interval between consecutive time index. 
 		*/
 		DiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
-			RESQML2_NS::PropertyKind * localPropKind,
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
+			COMMON_NS::PropertyKind * localPropKind,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		DiscretePropertySeries(gsoap_resqml2_0_1::_resqml2__DiscretePropertySeries* fromGsoap): DiscreteProperty(fromGsoap) {}
+		DiscretePropertySeries(gsoap_resqml2_0_1::_resqml20__DiscretePropertySeries* fromGsoap): DiscreteProperty(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~DiscretePropertySeries() {}
 
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+		std::string getXmlNamespaceVersion() const {return "2.0.1";}
 
-		std::string getResqmlVersion() const {return "2.0.1";}
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

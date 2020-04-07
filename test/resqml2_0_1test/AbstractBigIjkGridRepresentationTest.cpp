@@ -32,16 +32,12 @@ using namespace resqml2_0_1test;
 using namespace RESQML2_NS;
 
 AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(
-	const string & epcDocPath,
-	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
-	const unsigned int & faultCount,
-	const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
-	const double & faultThrow, 
-	const char * defaultUuid, const char * defaultTitle)
-	: AbstractIjkGridRepresentationTest(
-		epcDocPath, defaultUuid, defaultTitle,
-		initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount),
-		initNodesIjkGridRepresentation(iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow)),
+	const string & repoPath,
+	unsigned int iCount, unsigned int jCount, unsigned int kCount,
+	unsigned int faultCount,
+	double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
+	double faultThrow) :
+	commontest::AbstractObjectTest(repoPath),
 	iCount(iCount), jCount(jCount), kCount(kCount), faultCount(faultCount),
 	xMin(xMin), xMax(xMax), yMin(yMin), yMax(yMax), zMin(zMin), zMax(zMax), faultThrow(faultThrow)
 {
@@ -61,15 +57,12 @@ AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(
 	}
 }
 
-AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(EpcDocument * epcDoc, bool init,
-	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
-	const unsigned int & faultCount,
-	const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
-	const double & faultThrow,
-	const char * defaultUuid, const char * defaultTitle)
-	: AbstractIjkGridRepresentationTest(epcDoc, defaultUuid, defaultTitle,
-		initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount),
-		initNodesIjkGridRepresentation(iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow)),
+AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(DataObjectRepository * repo, bool init,
+	unsigned int iCount, unsigned int jCount, unsigned int kCount,
+	unsigned int faultCount,
+	double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
+	double faultThrow) :
+	commontest::AbstractObjectTest(repo),
 	iCount(iCount), jCount(jCount), kCount(kCount), faultCount(faultCount),
 	xMin(xMin), xMax(xMax), yMin(yMin), yMax(yMax), zMin(zMin), zMax(zMax), faultThrow(faultThrow) {
 	if ((iCount < 1) || (jCount < 1) || (kCount < 1))
@@ -88,23 +81,23 @@ AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(EpcDo
 	}
 
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-ULONG64 AbstractBigIjkGridRepresentationTest::initNodesCountIjkGridRepresentation(const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
-	const unsigned int & faultCount)
+unsigned long long AbstractBigIjkGridRepresentationTest::initNodesCountIjkGridRepresentation(unsigned int iCount, unsigned int jCount, unsigned int kCount,
+	unsigned int faultCount)
 {
 	return ((iCount + 1) * (jCount + 1) * (kCount + 1)) + (faultCount * (jCount + 1) * (kCount + 1));
 }
 
-double * AbstractBigIjkGridRepresentationTest::initNodesIjkGridRepresentation(const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
-	const unsigned int & faultCount,
-	const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
-	const double & faultThrow)
+double * AbstractBigIjkGridRepresentationTest::initNodesIjkGridRepresentation(unsigned int iCount, unsigned int jCount, unsigned int kCount,
+	unsigned int faultCount,
+	double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
+	double faultThrow)
 {
-	ULONG64 nodeCount = this->initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount);
+	ULONG64 nodeCount = initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount);
 	
 	nodesIjkGridRepresentation = new double[nodeCount * 3];
 	
@@ -232,4 +225,3 @@ void AbstractBigIjkGridRepresentationTest::initContinuousProperty(double * conti
 				continuousPropertyValues[k * iCount * jCount + j * iCount + i] = i * valueIncr;
 			}
 }
-

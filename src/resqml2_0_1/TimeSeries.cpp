@@ -16,34 +16,34 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/TimeSeries.h"
+#include "TimeSeries.h"
 
 #include <stdexcept>
 
-#include "resqml2/AbstractValuesProperty.h"
+#include "../resqml2/AbstractValuesProperty.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
-TimeSeries::TimeSeries(soap* soapContext, const string & guid, const string & title)
+TimeSeries::TimeSeries(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {
-	if (soapContext == nullptr) {
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr) {
+		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORETimeSeries(soapContext, 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORETimeSeries(repo->getGsoapContext());
 	
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	repo->addOrReplaceDataObject(this);
 }
 
-_resqml2__TimeSeries* TimeSeries::getSpecializedGsoapProxy() const
+_resqml20__TimeSeries* TimeSeries::getSpecializedGsoapProxy() const
 {
 	if (isPartial() == true)
 		throw logic_error("Partial object");
 
-	return static_cast<_resqml2__TimeSeries*>(gsoapProxy2_0_1);
+	return static_cast<_resqml20__TimeSeries*>(gsoapProxy2_0_1);
 }
-

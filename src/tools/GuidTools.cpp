@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "tools/GuidTools.h"
+#include "../tools/GuidTools.h"
 
 #if defined(__gnu_linux__) || defined(__APPLE__)
 
@@ -32,22 +32,37 @@ std::string GuidTools::generateUidAsString()
     return uuidStr;
 }
 
-#elif defined(_WIN32)
-
-#include <Windows.h>
-
-std::string GuidTools::generateUidAsString()
+std::array<uint8_t, 16> GuidTools::generateUidAsByteArray()
 {
-	GUID sessionGUID = GUID_NULL;
-	HRESULT hr = CoCreateGuid(&sessionGUID);
-	wchar_t uuidWStr[39];
-	StringFromGUID2(sessionGUID, uuidWStr, 39);
-	uuidWStr[37] = '\0'; // Delete the closing bracket
-	char uuidStr[37];
-	wcstombs(uuidStr, uuidWStr+1, 39); // +1 in order not to take into account the opening bracket
-	for (unsigned int i = 0; i < 37; ++i)
-		uuidStr[i] = tolower(uuidStr[i]);
+	uuid_t uuid;
+	uuid_generate_random(uuid);
+	
+	std::array<uint8_t, 16> result;
 
+	std::copy(std::begin(uuid), std::end(uuid), std::begin(result));
+
+	return result;
+}
+
+std::array<uint8_t, 16> GuidTools::convertFromString(const std::string& uuidStr)
+{
+	uuid_t uuid;
+	uuid_parse(uuidStr.c_str(), uuid);
+
+	std::array<uint8_t, 16> result;
+
+	std::copy(std::begin(uuid), std::end(uuid), std::begin(result));
+
+	return result;
+}
+
+std::string GuidTools::convertToString(const std::array<uint8_t, 16>& uuidArray)
+{
+	uuid_t uuid;
+	std::copy(std::begin(uuidArray), std::end(uuidArray), std::begin(uuid));
+
+	char uuidStr[37];
+	uuid_unparse_lower(uuid, uuidStr);
 	return uuidStr;
 }
 

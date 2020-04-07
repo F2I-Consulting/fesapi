@@ -16,9 +16,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
-
-
 #include "FilePart.h"
 
 #include <iostream>
@@ -27,11 +24,11 @@ under the License.
 using namespace std;
 using namespace epc;
 
-FilePart::FilePart():finalPathName(string())
+FilePart::FilePart():finalPathName(), fileRelationship()
 {}
 
 FilePart::FilePart(const string & outputPartPath):
-	finalPathName(outputPartPath)
+	finalPathName(outputPartPath), fileRelationship()
 {
 	string directoryOfPart(outputPartPath);
 
@@ -59,7 +56,7 @@ const FileRelationship & FilePart::getFileRelationship() const
 	return fileRelationship;
 }
 
-Relationship FilePart::getIndexRelationship(const int & index) const
+Relationship FilePart::getIndexRelationship(int index) const
 {
 	return fileRelationship.getIndexRelationship(index);
 }
@@ -83,7 +80,7 @@ void FilePart::setFinalPathName(const string & finalPath)
 	fileRelationship.setPathName(wkRelsPathname);
 }
 
-void FilePart::createRelationship(const std::string & rsTarget, const std::string & rsType,const std::string & rsId, const bool & internalTarget)
+void FilePart::createRelationship(const std::string & rsTarget, const std::string & rsType,const std::string & rsId, bool internalTarget)
 {
 	Relationship rel(rsTarget, rsType, rsId, internalTarget);
 	fileRelationship.addRelationship(rel);

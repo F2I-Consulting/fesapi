@@ -16,14 +16,13 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
+#include "SealedVolumeFrameworkRepresentation.h"
 
-#include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
-#include "resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
-#include "resqml2_0_1/StratigraphicUnitInterpretation.h"
+#include "StratigraphicColumnRankInterpretation.h"
+#include "SealedSurfaceFrameworkRepresentation.h"
+#include "StratigraphicUnitInterpretation.h"
 
 using namespace std;
-using namespace epc;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
@@ -32,8 +31,7 @@ const char* SealedVolumeFrameworkRepresentation::XML_TAG = "SealedVolumeFramewor
 SealedVolumeFrameworkRepresentation::SealedVolumeFrameworkRepresentation(StratigraphicColumnRankInterpretation* interp,
 	const std::string & guid,
 	const std::string & title,
-	SealedSurfaceFrameworkRepresentation* ssf) :
-	RESQML2_NS::RepresentationSetRepresentation(interp)
+	SealedSurfaceFrameworkRepresentation* ssf)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The Stratigraphic Column Rank Interpretation cannot be null.");
@@ -43,8 +41,8 @@ SealedVolumeFrameworkRepresentation::SealedVolumeFrameworkRepresentation(Stratig
 	}
 
 	// proxy constructor
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORESealedVolumeFrameworkRepresentation(interp->getGsoapContext(), 1);
-	_resqml2__SealedVolumeFrameworkRepresentation* orgRep = static_cast<_resqml2__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESealedVolumeFrameworkRepresentation(interp->getGsoapContext());
+	_resqml20__SealedVolumeFrameworkRepresentation* orgRep = static_cast<_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	orgRep->IsHomogeneous = true;
 	initMandatoryMetadata();
@@ -55,11 +53,11 @@ SealedVolumeFrameworkRepresentation::SealedVolumeFrameworkRepresentation(Stratig
 	setSealedSurfaceFramework(ssf);
 
 	// Create a dummy shell as an official workaround (see note in http://docs.energistics.org/RESQML/RESQML_TOPICS/RESQML-500-269-0-R-sv2010.html)
-	resqml2__VolumeShell* dummyShell = soap_new_resqml2__VolumeShell(gsoapProxy2_0_1->soap, 1);
+	resqml20__VolumeShell* dummyShell = soap_new_resqml20__VolumeShell(gsoapProxy2_0_1->soap);
 	dummyShell->ShellUid = "dummy uid";
 	orgRep->Shells.push_back(dummyShell);
 
-	resqml2__OrientedMacroFace* face = soap_new_resqml2__OrientedMacroFace(gsoapProxy2_0_1->soap, 1);
+	resqml20__OrientedMacroFace* face = soap_new_resqml20__OrientedMacroFace(gsoapProxy2_0_1->soap);
 	face->RepresentationIndex = (std::numeric_limits<int>::max)();
 	face->PatchIndexOfRepresentation = (std::numeric_limits<int>::max)();
 	dummyShell->MacroFaces.push_back(face);
@@ -70,14 +68,13 @@ void SealedVolumeFrameworkRepresentation::setSealedSurfaceFramework(SealedSurfac
 	if (ssf == nullptr) {
 		throw invalid_argument("Cannot set a null SealedSurfaceFrameworkRepresentation");
 	}
-
-	// EPC
-	ssf->svfSet.push_back(this);
-
-	// XML
-	if (updateXml) {
-		setXmlSealedSurfaceFramework(ssf);
+	if (getRepository() == nullptr) {
+		ssf->getRepository()->addOrReplaceDataObject(this);
 	}
+
+	getRepository()->addRelationship(this, ssf);
+
+	setXmlSealedSurfaceFramework(ssf);
 }
 
 void SealedVolumeFrameworkRepresentation::setXmlSealedSurfaceFramework(class SealedSurfaceFrameworkRepresentation* ssf)
@@ -86,7 +83,7 @@ void SealedVolumeFrameworkRepresentation::setXmlSealedSurfaceFramework(class Sea
 		throw invalid_argument("Cannot set a null SealedSurfaceFrameworkRepresentation");
 	}
 
-	static_cast<_resqml2__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->BasedOn = ssf->newResqmlReference();
+	static_cast<_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->BasedOn = ssf->newResqmlReference();
 }
 
 void SealedVolumeFrameworkRepresentation::setInterpretationOfVolumeRegion(unsigned int regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp)
@@ -94,18 +91,14 @@ void SealedVolumeFrameworkRepresentation::setInterpretationOfVolumeRegion(unsign
 	if (stratiUnitInterp == nullptr) {
 		throw invalid_argument("Cannot set a null strati Unit Interpretation");
 	}
-	_resqml2__SealedVolumeFrameworkRepresentation* svf = static_cast<_resqml2__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__SealedVolumeFrameworkRepresentation* svf = static_cast<_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1);
 	if (regionIndex >= svf->Regions.size()) {
 		throw range_error("The region index is out of range.");
 	}
 
-	// EPC
-	stratiUnitInterp->svfSet.push_back(this);
+	getRepository()->addRelationship(this, stratiUnitInterp);
 
-	// XML
-	if (updateXml) {
-		setXmlInterpretationOfVolumeRegion(regionIndex, stratiUnitInterp);
-	}
+	setXmlInterpretationOfVolumeRegion(regionIndex, stratiUnitInterp);
 }
 
 void SealedVolumeFrameworkRepresentation::setXmlInterpretationOfVolumeRegion(unsigned int regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp)
@@ -113,7 +106,7 @@ void SealedVolumeFrameworkRepresentation::setXmlInterpretationOfVolumeRegion(uns
 	if (stratiUnitInterp == nullptr) {
 		throw invalid_argument("Cannot set a null strati Unit Interpretation");
 	}
-	_resqml2__SealedVolumeFrameworkRepresentation* svf = static_cast<_resqml2__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__SealedVolumeFrameworkRepresentation* svf = static_cast<_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1);
 	if (regionIndex >= svf->Regions.size()) {
 		throw range_error("The region index is out of range.");
 	}
@@ -121,7 +114,7 @@ void SealedVolumeFrameworkRepresentation::setXmlInterpretationOfVolumeRegion(uns
 	svf->Regions[regionIndex]->Represents = stratiUnitInterp->newResqmlReference();
 }
 
-gsoap_resqml2_0_1::resqml2__VolumeShell* SealedVolumeFrameworkRepresentation::createVolumeShell(
+gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::createVolumeShell(
 	unsigned int shellFaceCount,
 	unsigned int * faceRepresentationIndices, unsigned int * faceRepPatchIndices, bool * faceSide)
 {
@@ -129,12 +122,12 @@ gsoap_resqml2_0_1::resqml2__VolumeShell* SealedVolumeFrameworkRepresentation::cr
 		throw invalid_argument("Cannot create a shell with has got a face count of zero.");
 	}
 
-	resqml2__VolumeShell* externalShell = soap_new_resqml2__VolumeShell(gsoapProxy2_0_1->soap, 1);
+	resqml20__VolumeShell* externalShell = soap_new_resqml20__VolumeShell(gsoapProxy2_0_1->soap);
 	externalShell->ShellUid = "dummy uid";
 
 	// Faces
 	for (unsigned int faceIdx = 0; faceIdx < shellFaceCount; ++faceIdx) {
-		resqml2__OrientedMacroFace* face = soap_new_resqml2__OrientedMacroFace(gsoapProxy2_0_1->soap, 1);
+		resqml20__OrientedMacroFace* face = soap_new_resqml20__OrientedMacroFace(gsoapProxy2_0_1->soap);
 		face->RepresentationIndex = faceRepresentationIndices[faceIdx];
 		face->PatchIndexOfRepresentation = faceRepPatchIndices[faceIdx];
 		face->SideIsPlus = faceSide[faceIdx];
@@ -149,9 +142,9 @@ void SealedVolumeFrameworkRepresentation::pushBackVolumeRegion(StratigraphicUnit
 	unsigned int * faceRepresentationIndices, unsigned int * faceRepPatchIndices, bool * faceSide)
 {
 	// Region
-	resqml2__VolumeRegion* region = soap_new_resqml2__VolumeRegion(gsoapProxy2_0_1->soap, 1);
-	region->PatchIndex = static_cast<_resqml2__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->Regions.size();
-	static_cast<_resqml2__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->Regions.push_back(region);
+	resqml20__VolumeRegion* region = soap_new_resqml20__VolumeRegion(gsoapProxy2_0_1->soap);
+	region->PatchIndex = static_cast<_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->Regions.size();
+	static_cast<_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->Regions.push_back(region);
 	setInterpretationOfVolumeRegion(region->PatchIndex, stratiUnitInterp);
 
 	// External shell
@@ -169,7 +162,7 @@ void SealedVolumeFrameworkRepresentation::pushBackInternalShell(unsigned int reg
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* SealedVolumeFrameworkRepresentation::getSealedStructuralFrameworkDor() const
 {
-	return static_cast<gsoap_resqml2_0_1::_resqml2__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->BasedOn;
+	return static_cast<gsoap_resqml2_0_1::_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->BasedOn;
 }
 
 std::string SealedVolumeFrameworkRepresentation::getSealedStructuralFrameworkUuid() const
@@ -179,15 +172,15 @@ std::string SealedVolumeFrameworkRepresentation::getSealedStructuralFrameworkUui
 
 SealedSurfaceFrameworkRepresentation* SealedVolumeFrameworkRepresentation::getSealedStructuralFramework() const
 {
-	return epcDocument->getDataObjectByUuid<SealedSurfaceFrameworkRepresentation>(getSealedStructuralFrameworkUuid());
+	return repository->getDataObjectByUuid<SealedSurfaceFrameworkRepresentation>(getSealedStructuralFrameworkUuid());
 }
 
-gsoap_resqml2_0_1::resqml2__VolumeRegion* SealedVolumeFrameworkRepresentation::getRegion(unsigned int regionIndex) const
+gsoap_resqml2_0_1::resqml20__VolumeRegion* SealedVolumeFrameworkRepresentation::getRegion(unsigned int regionIndex) const
 {
 	if (regionIndex >= getRegionCount()) {
 		throw range_error("The region index is out of range.");
 	}
-	return static_cast<gsoap_resqml2_0_1::_resqml2__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->Regions[regionIndex];
+	return static_cast<gsoap_resqml2_0_1::_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->Regions[regionIndex];
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* SealedVolumeFrameworkRepresentation::getStratiUnitInterpDor(unsigned int regionIndex) const
@@ -202,12 +195,12 @@ std::string SealedVolumeFrameworkRepresentation::getStratiUnitInterpUuid(unsigne
 
 StratigraphicUnitInterpretation* SealedVolumeFrameworkRepresentation::getStratiUnitInterp(unsigned int regionIndex) const
 {
-	return epcDocument->getDataObjectByUuid<StratigraphicUnitInterpretation>(getStratiUnitInterpUuid(regionIndex));
+	return repository->getDataObjectByUuid<StratigraphicUnitInterpretation>(getStratiUnitInterpUuid(regionIndex));
 }
 
 unsigned int SealedVolumeFrameworkRepresentation::getRegionCount() const
 {
-	_resqml2__SealedVolumeFrameworkRepresentation* svf = static_cast<_resqml2__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__SealedVolumeFrameworkRepresentation* svf = static_cast<_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1);
 	if (svf->Regions.size() >= (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("The count of regions in this framework is too big for fesapi.");
 	}
@@ -225,12 +218,12 @@ unsigned int SealedVolumeFrameworkRepresentation::getInternalShellCount(unsigned
 	return static_cast<unsigned int>(count);
 }
 
-gsoap_resqml2_0_1::resqml2__VolumeShell* SealedVolumeFrameworkRepresentation::getRegionExternalShell(unsigned int regionIndex) const
+gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::getRegionExternalShell(unsigned int regionIndex) const
 {
 	return getRegion(regionIndex)->ExternalShell;
 }
 
-gsoap_resqml2_0_1::resqml2__VolumeShell* SealedVolumeFrameworkRepresentation::getRegionInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const
+gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::getRegionInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const
 {
 	if (internalShellIndex >= getInternalShellCount(regionIndex)) {
 		throw range_error("The internal shell index is out of range.");
@@ -241,7 +234,7 @@ gsoap_resqml2_0_1::resqml2__VolumeShell* SealedVolumeFrameworkRepresentation::ge
 
 unsigned int SealedVolumeFrameworkRepresentation::getFaceCountOfExternalShell(unsigned int regionIndex) const
 {
-	gsoap_resqml2_0_1::resqml2__VolumeShell* shell = getRegionExternalShell(regionIndex);
+	gsoap_resqml2_0_1::resqml20__VolumeShell* shell = getRegionExternalShell(regionIndex);
 	if (shell->MacroFaces.size() >= (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("The count of faces in this shell is too big for fesapi.");
 	}
@@ -251,7 +244,7 @@ unsigned int SealedVolumeFrameworkRepresentation::getFaceCountOfExternalShell(un
 
 unsigned int SealedVolumeFrameworkRepresentation::getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const
 {
-	gsoap_resqml2_0_1::resqml2__VolumeShell* shell = getRegionInternalShell(regionIndex, internalShellIndex);
+	gsoap_resqml2_0_1::resqml20__VolumeShell* shell = getRegionInternalShell(regionIndex, internalShellIndex);
 	if (shell->MacroFaces.size() >= (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("The count of faces in this shell is too big for fesapi.");
 	}
@@ -259,7 +252,7 @@ unsigned int SealedVolumeFrameworkRepresentation::getFaceCountOfInternalShell(un
 	return static_cast<unsigned int>(shell->MacroFaces.size());
 }
 
-gsoap_resqml2_0_1::resqml2__OrientedMacroFace* SealedVolumeFrameworkRepresentation::getRegionExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const
+gsoap_resqml2_0_1::resqml20__OrientedMacroFace* SealedVolumeFrameworkRepresentation::getRegionExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const
 {
 	if (faceIndex >= getFaceCountOfExternalShell(regionIndex)) {
 		throw range_error("The face index of the region external shell is out of range.");
@@ -268,7 +261,7 @@ gsoap_resqml2_0_1::resqml2__OrientedMacroFace* SealedVolumeFrameworkRepresentati
 	return getRegionExternalShell(regionIndex)->MacroFaces[faceIndex];
 }
 
-gsoap_resqml2_0_1::resqml2__OrientedMacroFace* SealedVolumeFrameworkRepresentation::getRegionInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const
+gsoap_resqml2_0_1::resqml20__OrientedMacroFace* SealedVolumeFrameworkRepresentation::getRegionInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const
 {
 	if (faceIndex >= getFaceCountOfInternalShell(regionIndex, internalShellIndex)) {
 		throw range_error("The face index of the region internal shell is out of range.");
@@ -307,54 +300,15 @@ bool SealedVolumeFrameworkRepresentation::getSideFlagOfInternalShellFace(unsigne
 	return getRegionInternalShellFace(regionIndex, internalShellIndex, faceIndex)->SideIsPlus;
 }
 
-vector<Relationship> SealedVolumeFrameworkRepresentation::getAllEpcRelationships() const
+void SealedVolumeFrameworkRepresentation::loadTargetRelationships()
 {
-	vector<Relationship> result = RESQML2_NS::RepresentationSetRepresentation::getAllEpcRelationships();
+	RESQML2_NS::RepresentationSetRepresentation::loadTargetRelationships();
 
-	SealedSurfaceFrameworkRepresentation* ssf = getSealedStructuralFramework();
-	Relationship relSsf(ssf->getPartNameInEpcDocument(), "", ssf->getUuid());
-	relSsf.setDestinationObjectType();
-	result.push_back(relSsf);
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getSealedStructuralFrameworkDor();
+	convertDorIntoRel<SealedSurfaceFrameworkRepresentation>(dor);
 
 	for (size_t regionIdx = 0; regionIdx < getRegionCount(); ++regionIdx) {
-		StratigraphicUnitInterpretation* stratiUnitInterp = getStratiUnitInterp(regionIdx);
-		Relationship relSii(stratiUnitInterp->getPartNameInEpcDocument(), "", stratiUnitInterp->getUuid());
-		relSii.setDestinationObjectType();
-		result.push_back(relSii);
+		dor = getStratiUnitInterpDor(regionIdx);
+		convertDorIntoRel<StratigraphicUnitInterpretation>(dor);
 	}
-
-	return result;
-}
-
-void SealedVolumeFrameworkRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
-{
-	RESQML2_NS::RepresentationSetRepresentation::importRelationshipSetFromEpc(epcDoc);
-
-	updateXml = false;
-
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getSealedStructuralFrameworkDor();
-	SealedSurfaceFrameworkRepresentation* ssf = epcDoc->getDataObjectByUuid<SealedSurfaceFrameworkRepresentation>(dor->UUID);
-	if (ssf == nullptr) { // partial transfer
-		getEpcDocument()->createPartial(dor);
-		ssf = getEpcDocument()->getDataObjectByUuid<SealedSurfaceFrameworkRepresentation>(dor->UUID);
-	}
-	if (ssf == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-	setSealedSurfaceFramework(ssf);
-
-	for (size_t regionIdx = 0; regionIdx < getRegionCount(); ++regionIdx) {
-		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getStratiUnitInterpDor(regionIdx);
-		StratigraphicUnitInterpretation* sui = epcDoc->getDataObjectByUuid<StratigraphicUnitInterpretation>(dor->UUID);
-		if (sui == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			sui = getEpcDocument()->getDataObjectByUuid<StratigraphicUnitInterpretation>(dor->UUID);
-		}
-		if (sui == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
-		setInterpretationOfVolumeRegion(regionIdx, sui);
-	}
-
-	updateXml = true;
 }

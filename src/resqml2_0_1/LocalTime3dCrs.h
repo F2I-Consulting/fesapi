@@ -18,14 +18,14 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractLocal3dCrs.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
 
 namespace RESQML2_0_1_NS
 {
 	class LocalTime3dCrs : public RESQML2_NS::AbstractLocal3dCrs
 	{
 	private:
-		void init(soap* soapContext, const std::string & guid, const std::string & title,
+		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom,
@@ -39,11 +39,11 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		LocalTime3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractLocal3dCrs(partialObject) {}
+		DLL_IMPORT_OR_EXPORT LocalTime3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractLocal3dCrs(partialObject) {}
 
 		/**
 		* Creates a local depth 3d CRS which is fully identified by means of EPSG code.
-		* @param soapContext		The soap context where the underlying gsoap proxy is going to be created.
+		* @param repo					The repo where the underlying gsoap proxy is going to be created.
 		* @param guid				The guid to set to the local 3d crs. If empty then a new guid will be generated.
 		* @param title				A title for the instance to create.
 		* @param originOrdinal1		The offset of the global 2d crs on its first axis.
@@ -57,7 +57,7 @@ namespace RESQML2_0_1_NS
 		* @param verticalEpsgCode	The epsg code of the associated vertical CRS.
 		* @param isUpOriented		If true, indicates that the Z offset if an elevation when positive. If false, the Z offset is a depth when positive.
 		*/
-		LocalTime3dCrs(soap* soapContext, const std::string & guid, const std::string & title,
+		LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const unsigned long & projectedEpsgCode,
@@ -66,7 +66,7 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Creates a local depth 3d CRS which is fully unknown.
-		* @param soapContext			The soap context where the underlying gsoap proxy is going to be created.
+		* @param repo					The repo where the underlying gsoap proxy is going to be created.
 		* @param guid					The guid to set to the local 3d crs. If empty then a new guid will be generated.
 		* @param title					A title for the instance to create.
 		* @param originOrdinal1			The offset of the global 2d crs on its first axis.
@@ -80,7 +80,7 @@ namespace RESQML2_0_1_NS
 		* @param verticalUnknownReason	Indicates why the vertical CRS cannot be provided using EPSG or GML.
 		* @param isUpOriented			If true, indicates that the Z offset if an elevation when positive. If false, the Z offset is a depth when positive.
 		*/
-		LocalTime3dCrs(soap* soapContext, const std::string & guid, const std::string & title,
+		LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const std::string & projectedUnknownReason,
@@ -89,7 +89,7 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Creates a local depth 3d CRS which is identified by an EPSG code for its projected part and which is unkown for its vertial part.
-		* @param soapContext			The soap context where the underlying gsoap proxy is going to be created.
+		* @param repo					The repo where the underlying gsoap proxy is going to be created.
 		* @param guid					The guid to set to the local 3d crs. If empty then a new guid will be generated.
 		* @param title					A title for the instance to create.
 		* @param originOrdinal1			The offset of the global 2d crs on its first axis.
@@ -103,7 +103,7 @@ namespace RESQML2_0_1_NS
 		* @param verticalUnknownReason	Indicates why the vertical CRS cannot be provided using EPSG or GML.
 		* @param isUpOriented			If true, indicates that the Z offset if an elevation when positive. If false, the Z offset is a depth when positive.
 		*/
-		LocalTime3dCrs(soap* soapContext, const std::string & guid, const std::string & title,
+		LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const unsigned long & projectedEpsgCode,
@@ -112,7 +112,7 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Creates a local depth 3d CRS which unkown for its projected part and which is identified by an EPSG code for its vertical part.
-		* @param soapContext			The soap context where the underlying gsoap proxy is going to be created.
+		* @param repo					The repo where the underlying gsoap proxy is going to be created.
 		* @param guid					The guid to set to the local 3d crs. If empty then a new guid will be generated.
 		* @param title					A title for the instance to create.
 		* @param originOrdinal1			The offset of the global 2d crs on its first axis.
@@ -126,7 +126,7 @@ namespace RESQML2_0_1_NS
 		* @param verticalEpsgCode		The epsg code of the associated vertical CRS.
 		* @param isUpOriented			If true, indicates that the Z offset if an elevation when positive. If false, the Z offset is a depth when positive.
 		*/
-		LocalTime3dCrs(soap* soapContext, const std::string & guid, const std::string & title,
+		LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const std::string & projectedUnknownReason,
@@ -136,7 +136,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		LocalTime3dCrs(gsoap_resqml2_0_1::_resqml2__LocalTime3dCrs* fromGsoap):
+		LocalTime3dCrs(gsoap_resqml2_0_1::_resqml20__LocalTime3dCrs* fromGsoap):
 			AbstractLocal3dCrs(fromGsoap) {}
 
 		/**
@@ -148,7 +148,14 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT std::string getUnitAsString() const;
 
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

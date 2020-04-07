@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/AbstractOrganizationInterpretation.h"
-#include "resqml2_0_1/EarthModelInterpretation.h"
+#include "AbstractOrganizationInterpretation.h"
+#include "EarthModelInterpretation.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -30,7 +30,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		StructuralOrganizationInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractOrganizationInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT StructuralOrganizationInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractOrganizationInterpretation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -39,20 +39,17 @@ namespace RESQML2_0_1_NS
 		* @param title				A title for the instance to create.
 		* @param orderingCriteria	How the included horizons are ordered.
 		*/
-		StructuralOrganizationInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__OrderingCriteria & orderingCriteria);
+		StructuralOrganizationInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml20__OrderingCriteria & orderingCriteria);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		StructuralOrganizationInterpretation(gsoap_resqml2_0_1::_resqml2__StructuralOrganizationInterpretation* fromGsoap): AbstractOrganizationInterpretation(fromGsoap) {}
+		StructuralOrganizationInterpretation(gsoap_resqml2_0_1::_resqml20__StructuralOrganizationInterpretation* fromGsoap): AbstractOrganizationInterpretation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~StructuralOrganizationInterpretation() {}
-
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
         /**
         * Add a FaultInterpretation to this StructuralOrganizationInterpretation.
@@ -106,16 +103,17 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getSideFrontierInterpretation(unsigned int index) const;
 
-    private:
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-        std::vector<epc::Relationship> getAllEpcRelationships() const;	
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
-        // backward relationships
-        std::vector<EarthModelInterpretation *> earthModelSet;
-		std::vector<RESQML2_NS::GridConnectionSetRepresentation *> gridConnectionSet;
-
-		friend void EarthModelInterpretation::setStructuralOrganizationInterpretation(StructuralOrganizationInterpretation * structOrganization);
+    private:	
+		void loadTargetRelationships();
 	};
 }
-

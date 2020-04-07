@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "witsml2_0/AbstractObject.h"
+#include "Wellbore.h"
 
 namespace WITSML2_0_NS
 {
@@ -31,7 +31,7 @@ namespace WITSML2_0_NS
 		/**
 		* Constructor for partial transfer
 		*/
-		WellboreObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT WellboreObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -42,6 +42,11 @@ namespace WITSML2_0_NS
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		WellboreObject(gsoap_eml2_1::eml21__AbstractObject* fromGsoap):WITSML2_0_NS::AbstractObject(fromGsoap) {}
+		
+		/**
+		* Resolve all relationships of the object in a repository.
+		*/
+		virtual void loadTargetRelationships();
 
 	public:
 
@@ -50,16 +55,19 @@ namespace WITSML2_0_NS
 		*/
 		~WellboreObject() {}
 
+		/**
+		* Get the Data Object Reference of the wellbore linked with this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const = 0;
-		DLL_IMPORT_OR_EXPORT class Wellbore* getWellbore() const;
-		DLL_IMPORT_OR_EXPORT virtual void setWellbore(class Wellbore* witsmlWellbore) = 0;
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
 
 		/**
-		* Resolve all relationships of the object in an epc document.
+		* Get the wellbore linked with this data object.
 		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		DLL_IMPORT_OR_EXPORT Wellbore* getWellbore() const;
 
+		/**
+		* Set the wellbore linked with this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual void setWellbore(Wellbore* witsmlWellbore) = 0;
 	};
 }

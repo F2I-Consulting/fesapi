@@ -26,49 +26,44 @@ under the License.
 
 #include "resqml2_0_1/FaultInterpretation.h"
 #include <stdexcept>
-#include "../config.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
 
-InterpretationDomain::InterpretationDomain(const string & epcDocPath)
-	: AbstractTest(epcDocPath)
+InterpretationDomain::InterpretationDomain(const string & repoPath)
+	: AbstractTest(repoPath)
 {
 }
 
-InterpretationDomain::InterpretationDomain(EpcDocument* epcDoc, bool init)
-	: AbstractTest(epcDoc)
+InterpretationDomain::InterpretationDomain(DataObjectRepository* repo, bool init)
+	: AbstractTest(repo)
 {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void InterpretationDomain::initEpcDoc() {
-
-	FaultInterpretation* faultInterp = epcDoc->getDataObjectByUuid<FaultInterpretation>(uuidFaultInterpretation);
+void InterpretationDomain::initRepo()
+{
+	FaultInterpretation* faultInterp = repo->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	if (faultInterp == nullptr) {
-		FaultInterpretationTest* faultInterpTest = new FaultInterpretationTest(this->epcDoc, true);
-		faultInterp = epcDoc->getDataObjectByUuid<FaultInterpretation>(uuidFaultInterpretation);
-		delete faultInterpTest;
+		FaultInterpretationTest faultInterpTest(repo, true);
+		faultInterp = repo->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	}
 
-	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml2__Domain__mixed);
-	faultInterp->initDomain(gsoap_resqml2_0_1::resqml2__Domain__time);
-	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml2__Domain__time);
+	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain__mixed);
+	faultInterp->initDomain(gsoap_resqml2_0_1::resqml20__Domain__time);
+	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain__time);
 
-	FaultSinglePatchTriangulatedSetRepresentationTest* repTest = new FaultSinglePatchTriangulatedSetRepresentationTest(epcDoc, true);
-	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml2__Domain__depth);
-	resqml2_0_1test::PolylineSetRepresentation* polylineRepTest = new resqml2_0_1test::PolylineSetRepresentation(epcDoc, true);
-	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml2__Domain__mixed);
-
-	delete repTest;
-	delete polylineRepTest;
+	FaultSinglePatchTriangulatedSetRepresentationTest repTest(repo, true);
+	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain__depth);
+	resqml2_0_1test::PolylineSetRepresentation polylineRepTest(repo, true);
+	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain__mixed);
 }
 
-void InterpretationDomain::readEpcDoc() {
+void InterpretationDomain::readRepo() {
 
 }

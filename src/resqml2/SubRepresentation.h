@@ -18,10 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractRepresentation.h"
+#include "AbstractRepresentation.h"
 
 namespace RESQML2_NS
 {
+	/**
+	* An ordered list of indexable elements and/or indexable element pairs of an existing representation. 
+	* Because the representation concepts of topology, geometry, and property values are separate in RESQML, it is now possible to select a range of nodes, edges, faces, or volumes (cell) indices from the topological support of an existing representation to define a sub-representation.
+	* A sub-representation may describe a different feature interpretation using the same geometry or property as the "parent" representation. In this case, the only information exchanged is a set of potentially non-consecutive indices of the topological support of the representation.
+	*/
 	class SubRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:
@@ -29,19 +34,19 @@ namespace RESQML2_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		SubRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+		DLL_IMPORT_OR_EXPORT SubRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			RESQML2_NS::AbstractRepresentation(partialObject)
 		{
 		}
 
-		SubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp) : RESQML2_NS::AbstractRepresentation(interp, nullptr) {}
+		SubRepresentation() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		SubRepresentation(gsoap_resqml2_0_1::_resqml2__SubRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
+		SubRepresentation(gsoap_resqml2_0_1::_resqml20__SubRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
-		virtual void pushBackXmlSupportingRepresentation(AbstractRepresentation * supportingRep) = 0;
+		virtual void pushBackXmlSupportingRepresentation(AbstractRepresentation const * supportingRep) = 0;
 
 	public:
 
@@ -49,9 +54,6 @@ namespace RESQML2_NS
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		virtual ~SubRepresentation() {}
-        
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**
 		* Get the kind of the selected elements for a particular patch of this subrepresentation.
@@ -99,10 +101,10 @@ namespace RESQML2_NS
 		* @param elementCountInMiddleDimension		Commonly in J dimensionn.
 		* @param elementCountInFastestDimension		Commonly in I dimension.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & originIndex,
-			const unsigned int & elementCountInSlowestDimension,
-			const unsigned int & elementCountInMiddleDimension,
-			const unsigned int & elementCountInFastestDimension) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements elementKind, ULONG64 originIndex,
+			unsigned int elementCountInSlowestDimension,
+			unsigned int elementCountInMiddleDimension,
+			unsigned int elementCountInFastestDimension) = 0;
 
 		/**
 		* Push back a new patch in the subrepresentation.
@@ -112,7 +114,7 @@ namespace RESQML2_NS
         * @param	proxy					The HDF proxy where the numerical values (indices) are stored.
 		* @param	supportingRepIndices	The indices of the supporting represenation for each elment in the supporting representation. The count must be elementCount.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy* proxy, short * supportingRepIndices = nullptr) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements elementKind, ULONG64 elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy* proxy, short * supportingRepIndices = nullptr) = 0;
 
 		/**
 		* Push back a new patch in the subrepresentation which is constituted by means of pairwise elements.
@@ -123,8 +125,8 @@ namespace RESQML2_NS
 		* @param elementIndices1	The indices of the second part of the element pair in the supporting representation.
         * @param proxy				The HDF proxy where the numerical values (indices) are stored.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind0, const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind1,
-			const ULONG64 & elementCount,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements elementKind0, gsoap_resqml2_0_1::resqml20__IndexableElements elementKind1,
+			ULONG64 elementCount,
 			ULONG64 * elementIndices0, ULONG64 * elementIndices1,
 			COMMON_NS::AbstractHdfProxy* proxy) = 0;
 
@@ -138,8 +140,8 @@ namespace RESQML2_NS
 		* @param	hdfProxy				The HDF5 proxy where the values are already or will be stored.
 		* @param	supportingRepDataset	The HDF5 dataset name where the element indices are stored. If empty, it won't be exported any information about suppporting rep relying on the fact there is only one suppporting rep for this whole patch.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual void pushBackRefToExistingDataset(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, const std::string & elementDataset,
-			const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset = "") = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackRefToExistingDataset(gsoap_resqml2_0_1::resqml20__IndexableElements elementKind, ULONG64 elementCount, const std::string & elementDataset,
+			LONG64 nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset = "") = 0;
 
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
@@ -190,9 +192,17 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getSupportingRepresentationContentType() const;
 
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+
 	private:
-		
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		void loadTargetRelationships();
 	};
 }

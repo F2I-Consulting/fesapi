@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/BoundaryFeatureInterpretation.h"
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
-#include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
+#include "BoundaryFeatureInterpretation.h"
+#include "StructuralOrganizationInterpretation.h"
+#include "StratigraphicColumnRankInterpretation.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -31,7 +31,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		HorizonInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
+		DLL_IMPORT_OR_EXPORT HorizonInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
 			BoundaryFeatureInterpretation(partialObject)
 		{
 		}
@@ -47,25 +47,22 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		HorizonInterpretation(gsoap_resqml2_0_1::_resqml2__HorizonInterpretation* fromGsoap): BoundaryFeatureInterpretation(fromGsoap) {}
+		HorizonInterpretation(gsoap_resqml2_0_1::_resqml20__HorizonInterpretation* fromGsoap): BoundaryFeatureInterpretation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~HorizonInterpretation() {}
 
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-    private:
-        std::vector<epc::Relationship> getAllEpcRelationships() const;
-
-        // backward relationships
-        std::vector<class StructuralOrganizationInterpretation*> structuralOrganizationInterpretationSet;
-        std::vector<class StratigraphicColumnRankInterpretation*> stratigraphicColumnRankInterpretationSet;
-
-		friend void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(HorizonInterpretation * horizonInterpretation, const int & stratigraphicRank);
-		friend void StratigraphicColumnRankInterpretation::setHorizonOfLastContact(HorizonInterpretation * partOf);
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }
 

@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractFeature.h"
+#include "../resqml2/AbstractFeature.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -29,7 +29,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractGeologicFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeature(partialObject) {}
+		DLL_IMPORT_OR_EXPORT AbstractGeologicFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeature(partialObject) {}
 
 		/**
 		* Default constructor
@@ -37,7 +37,7 @@ namespace RESQML2_0_1_NS
 		*/
 		AbstractGeologicFeature() {}
 
-		AbstractGeologicFeature(gsoap_resqml2_0_1::resqml2__AbstractGeologicFeature* fromGsoap) : RESQML2_NS::AbstractFeature(fromGsoap) {}
+		AbstractGeologicFeature(gsoap_resqml2_0_1::resqml20__AbstractGeologicFeature* fromGsoap) : RESQML2_NS::AbstractFeature(fromGsoap) {}
 
 	public:
 		virtual ~AbstractGeologicFeature() {}

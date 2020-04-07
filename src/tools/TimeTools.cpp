@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "tools/TimeTools.h"
+#include "../tools/TimeTools.h"
 
 #include <ctime>
 #include <sstream>
@@ -65,6 +65,8 @@ time_t timeTools::convertIsoToUnixTimestamp(const std::string & s)
 	std::istringstream iss(s);
 	iss >> std::get_time(&tm, "%Y-%m-%dT%H:%M:%S");
 #endif
+	tm.tm_isdst = -1;
+	mktime(&tm);
 	return timeTools::timegm(&tm);
 }
 

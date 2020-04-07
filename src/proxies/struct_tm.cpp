@@ -38,8 +38,8 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 # include "stdsoap2.h"
 # include SOAP_XSTRINGIFY(SOAP_H_FILE)
 #else
-	// F2I-CONSULTING : Replaced the line below to include the right header file.
-#include "proxies/gsoap_resqml2_0_1H.h"	/* or manually replace with soapcpp2-generated *H.h file */
+// F2I-CONSULTING : Replaced the line below to include the right header file.
+#include "../proxies/gsoap_resqml2_0_1H.h"	/* or manually replace with soapcpp2-generated *H.h file */
 #endif
 
 SOAP_FMAC3 void SOAP_FMAC4 soap_default_xsd__dateTime(struct soap *soap, struct tm *a)
@@ -55,17 +55,29 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_xsd__dateTime(struct soap *soap, struc
 
 SOAP_FMAC3 const char * SOAP_FMAC4 soap_xsd__dateTime2s(struct soap *soap, const struct tm a)
 {
-	// Remove the daylight saving time if necessary
-	if (a.tm_isdst > 0) {
-		tm b = a;
-		time_t tmp = mktime(&b);
-		tmp -= 3600;
-		b = *gmtime(&tmp);
-		strftime(soap->tmpbuf, sizeof(soap->tmpbuf), "%Y-%m-%dT%H:%M:%SZ", &b);
-		return soap->tmpbuf;
-	}
-
+  if (a.tm_isdst > 0)
+  {
+    struct tm b = a;
+    time_t t;
+    b.tm_isdst = 0;
+    t = soap_timegm(&b) - 3600;
+#ifdef HAVE_GMTIME_R
+    gmtime_r(&t, &b);
+#else
+    b = *gmtime(&t);
+#endif
+#ifndef WITH_NOZONE
+    strftime(soap->tmpbuf, sizeof(soap->tmpbuf), "%Y-%m-%dT%H:%M:%SZ", &b);
+#else
+    strftime(soap->tmpbuf, sizeof(soap->tmpbuf), "%Y-%m-%dT%H:%M:%S", &b);
+#endif
+    return soap->tmpbuf;
+  }
+#ifndef WITH_NOZONE
   strftime(soap->tmpbuf, sizeof(soap->tmpbuf), "%Y-%m-%dT%H:%M:%SZ", &a);
+#else
+  strftime(soap->tmpbuf, sizeof(soap->tmpbuf), "%Y-%m-%dT%H:%M:%S", &a);
+#endif
   return soap->tmpbuf;
 }
 

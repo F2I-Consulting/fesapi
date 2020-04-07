@@ -16,39 +16,25 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/SeismicLineSetFeature.h"
+#include "SeismicLineSetFeature.h"
 
-#include "resqml2_0_1/SeismicLineFeature.h"
+#include "SeismicLineFeature.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* SeismicLineSetFeature::XML_TAG = "SeismicLineSetFeature";
 
-SeismicLineSetFeature::SeismicLineSetFeature(soap* soapContext, const std::string & guid, const std::string & title)
+SeismicLineSetFeature::SeismicLineSetFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title)
 {
-	if (soapContext == nullptr)
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr)
+		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORESeismicLineSetFeature(soapContext, 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESeismicLineSetFeature(repo->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	repo->addOrReplaceDataObject(this);
 }
-
-std::vector<epc::Relationship> SeismicLineSetFeature::getAllEpcRelationships() const
-{
-	std::vector<epc::Relationship> result;
-
-	for (size_t i = 0; i < seismicLineSet.size(); ++i)
-	{
-		Relationship rel(seismicLineSet[i]->getPartNameInEpcDocument(), "", seismicLineSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
-}
-

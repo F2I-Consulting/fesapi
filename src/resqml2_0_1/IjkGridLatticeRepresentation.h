@@ -18,29 +18,29 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/AbstractIjkGridRepresentation.h"
+#include "AbstractIjkGridRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
 	class IjkGridLatticeRepresentation : public AbstractIjkGridRepresentation
 	{
 	private :
-		gsoap_resqml2_0_1::resqml2__Point3dLatticeArray* getArrayLatticeOfPoints3d() const;
+		gsoap_resqml2_0_1::resqml20__Point3dLatticeArray* getArrayLatticeOfPoints3d() const;
 	public:
 
-		IjkGridLatticeRepresentation(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
+		IjkGridLatticeRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
-		IjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+		IjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 				const std::string & guid, const std::string & title,
-				const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
+				unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		IjkGridLatticeRepresentation(gsoap_resqml2_0_1::_resqml2__IjkGridRepresentation* fromGsoap): AbstractIjkGridRepresentation(fromGsoap) {}
-		IjkGridLatticeRepresentation(gsoap_resqml2_0_1::_resqml2__TruncatedIjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap) {}
+		IjkGridLatticeRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap): AbstractIjkGridRepresentation(fromGsoap) {}
+		IjkGridLatticeRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -241,25 +241,25 @@ namespace RESQML2_0_1_NS
 		/**
 		* Set the geometry of the IJK grid as a regular IJK grid
 		*/
-		DLL_IMPORT_OR_EXPORT void setGeometryAsCoordinateLineNodes(	const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry,
-												const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind,
-												const bool & isRightHanded,
-												const double & originX, const double & originY, const double & originZ,
-												const double & directionIX, const double & directionIY, const double & directionIZ, const double & spacingI,
-												const double & directionJX, const double & directionJY, const double & directionJZ, const double & spacingJ,
-												const double & directionKX, const double & directionKY, const double & directionKZ, const double & spacingK);
+		DLL_IMPORT_OR_EXPORT void setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry,
+			gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind,
+			bool isRightHanded,
+			double originX, double originY, double originZ,
+			double directionIX, double directionIY, double directionIZ, double spacingI,
+			double directionJX, double directionJY, double directionJZ, double spacingJ,
+			double directionKX, double directionKY, double directionKZ, double spacingK, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		* Push back a patch of seismic 3D coordinates info.
 		* The index this patch will be located must be consistent with the index of the geometry patch it is related to.
 		*/
 		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(
-						const unsigned int patchIndex,
-						const double & startInline, const double & incrInline, const unsigned int & countInline,
-						const double & startCrossline, const double & incrCrossline, const unsigned int & countCrossline,
-			            const unsigned int & countSample, AbstractRepresentation * seismicSupport);
+			unsigned int patchIndex,
+			double startInline, double incrInline, unsigned int countInline,
+			double startCrossline, double incrCrossline, unsigned int countCrossline,
+			unsigned int countSample, RESQML2_NS::AbstractRepresentation * seismicSupport);
 
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const;
 	};

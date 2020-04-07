@@ -33,14 +33,10 @@ under the License.
 #include <stdio.h>
 #endif
 
-#include "zip.h"
-#include "unzip.h"
+#include <zip.h>
+#include <unzip.h>
 
 #include "FilePart.h"
-
-#if (defined(_WIN32) && _MSC_VER < 1600) || (defined(__GNUC__) && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 6)))
-#include "tools/nullptr_emulation.h"
-#endif
 
 #define CASESENSITIVITY (0)
 
@@ -151,32 +147,34 @@ public:
 	FileCoreProperties	fileCoreProperties;											/// Core Properties file
 	FileContentType		fileContentType;											/// ContentTypes file
 	FileRelationship	filePrincipalRelationship;									/// Relationships file
-	PartMap				allFileParts;												/// Set of parts file
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	unordered_map< string, string >			extendedCoreProperties;					/// Set of non standard (extended) core properties
-#else
-	tr1::unordered_map< string, string >			extendedCoreProperties;					/// Set of non standard (extended) core properties
-#endif
+	PartMap				allFileParts;
+	std::unordered_map< string, string >			extendedCoreProperties;					/// Set of non standard (extended) core properties
+
 	string				pathName;													/// Pathname of package
 	unzFile				unzipped;
 	zipFile             zf;
 	bool                isZip64;
 #ifdef CACHE_FILE_DESCRIPTOR
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	std::unordered_map< std::string, unz64_s > name2file;
-#else
-	std::tr1::unordered_map< std::string, unz64_s > name2file;
-#endif
+	std::unordered_map< std::string, unzFile > name2file;
 #endif
 };
 
-Package::CheshireCat::CheshireCat() : unzipped(nullptr), zf(nullptr), isZip64(false)
+Package::CheshireCat::CheshireCat() : 
+	fileCoreProperties(), fileContentType(), filePrincipalRelationship(), allFileParts(), extendedCoreProperties(), pathName(),
+	unzipped(nullptr), zf(nullptr), isZip64(false)
+#ifdef CACHE_FILE_DESCRIPTOR
+	, name2file()
+#endif
 {
 }
 
 
 Package::CheshireCat::CheshireCat(const FileCoreProperties & pkgFileCP, const FileContentType & pkgFileCT, const FileRelationship & pkgFileRS, const PartMap & pkgFileP, const string & pkgPathName) :
-fileCoreProperties(pkgFileCP), fileContentType(pkgFileCT), filePrincipalRelationship(pkgFileRS), allFileParts(pkgFileP), pathName(pkgPathName), unzipped(nullptr), zf(nullptr), isZip64(false)
+	fileCoreProperties(pkgFileCP), fileContentType(pkgFileCT), filePrincipalRelationship(pkgFileRS), allFileParts(pkgFileP), extendedCoreProperties(), pathName(pkgPathName),
+	unzipped(nullptr), zf(nullptr), isZip64(false)
+#ifdef CACHE_FILE_DESCRIPTOR
+	, name2file()
+#endif
 {
 }
 
@@ -209,7 +207,7 @@ Package::~Package()
 	delete d_ptr;
 }
 
-void Package::openForWriting(const std::string & pkgPathName, bool useZip64)
+void Package::openForWriting(const std::string & pkgPathName, int append, bool useZip64)
 {
 	d_ptr->pathName.assign(pkgPathName);
 
@@ -228,7 +226,7 @@ void Package::openForWriting(const std::string & pkgPathName, bool useZip64)
 	addRelationship(relToCoreProp);
 
 	d_ptr->isZip64 = useZip64;
-	d_ptr->zf = useZip64 ? zipOpen64(d_ptr->pathName.c_str(), 0) : zipOpen(d_ptr->pathName.c_str(), 0);
+	d_ptr->zf = useZip64 ? zipOpen64(d_ptr->pathName.c_str(), append) : zipOpen(d_ptr->pathName.c_str(), append);
 
 	if (d_ptr->zf == nullptr) {
 		throw invalid_argument("The file " + pkgPathName + " could not be opened");
@@ -245,22 +243,6 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 	if (d_ptr->unzipped == nullptr) {
 		throw invalid_argument("Cannot unzip " + pkgPathName + ". Please verify the path of the file and if you can open it with a third party archiver.");
     }
-
-#ifdef CACHE_FILE_DESCRIPTOR
-	// Speedup part lookup, by caching zipped file descriptor using file name
-
-#ifndef UNZ_MAXFILENAMEINZIP
-#define UNZ_MAXFILENAMEINZIP (256)
-#endif
-
-    char current_filename[UNZ_MAXFILENAMEINZIP+1];
-	int err = unzGoToFirstFile(d_ptr->unzipped);
-    while (err == UNZ_OK)
-    {
-		d_ptr->name2file[current_filename] = *(unz64_s*)d_ptr->unzipped;
-		err = unzGoToNextFile(d_ptr->unzipped);
-    }
-#endif
 
 	// Package relationships : core properties
 	string relFile = extractFile("_rels/.rels", "");
@@ -363,11 +345,7 @@ void Package::setFileFileCoreProperties(const FileCoreProperties & pkgFileCP)
 	d_ptr->fileCoreProperties = pkgFileCP;
 }
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 unordered_map< string, string > & Package::getExtendedCoreProperty()
-#else
-tr1::unordered_map< string, string > & Package::getExtendedCoreProperty()
-#endif
 {
 	return d_ptr->extendedCoreProperties;
 }
@@ -552,12 +530,7 @@ void Package::writePackage()
 		oss << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" << endl;
 
 		// content
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-		for (std::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin(); it != d_ptr->extendedCoreProperties.end(); ++it)
-#else
-		for (std::tr1::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin(); it != d_ptr->extendedCoreProperties.end(); ++it)
-#endif
-		{
+		for (std::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin(); it != d_ptr->extendedCoreProperties.end(); ++it) {
 			oss << "\t<" << it->first << ">" + it->second + "</" + it->first + ">" << endl;
 		}
 
@@ -580,13 +553,13 @@ void Package::writePackage()
 	writeStringIntoNewPart(d_ptr->fileContentType.toString(), "[Content_Types].xml");
 	
 	// write Principal Relationships file.
-	if (!d_ptr->filePrincipalRelationship.isEmpty())
+	if (!d_ptr->filePrincipalRelationship.isEmpty()) {
 		writeStringIntoNewPart(d_ptr->filePrincipalRelationship.toString(), "_rels/.rels");
+	}
 	
 	// Write all the part relationships
-	for (PartMap::iterator i = d_ptr->allFileParts.begin(); i != d_ptr->allFileParts.end(); i++){
-		if (!i->second.getFileRelationship().isEmpty())
-		{
+	for (PartMap::iterator i = d_ptr->allFileParts.begin(); i != d_ptr->allFileParts.end(); ++i) {
+		if (!i->second.getFileRelationship().isEmpty()) {
 			writeStringIntoNewPart(i->second.getFileRelationship().toString(), i->second.getFileRelationship().getPathName());
 		}
 	}
@@ -662,22 +635,18 @@ bool Package::fileExists(const string & filename) const
 string Package::extractFile(const string & filename, const string & password)
 {
 #ifdef CACHE_FILE_DESCRIPTOR
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	std::unordered_map< std::string, unz64_s >::const_iterator it = d_ptr->name2file.find(filename);
-#else
-	std::tr1::unordered_map< std::string, unz64_s >::const_iterator it = d_ptr->name2file.find(filename);
-#endif
+	std::unordered_map< std::string, unzFile >::const_iterator it = d_ptr->name2file.find(filename);
 	if (it == d_ptr->name2file.end())
 	{
 		if (!fileExists(filename))
 		{
 			throw invalid_argument("The file " + filename + " does not exist in the EPC document.");
 		}
-		d_ptr->name2file[filename] = *(unz64_s*)d_ptr->unzipped;
+		d_ptr->name2file[filename] = (d_ptr->unzipped);
 	}
 	else
 	{
-		*(unz64_s*)d_ptr->unzipped = it->second;
+		d_ptr->unzipped = it->second;
 	}
 #else
 	if (!fileExists(filename))

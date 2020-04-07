@@ -73,7 +73,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
     }
     else if (type.equals("PropertyKind"))
     {
-        ret = new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PropertyKind(cPtr, owner);
+        ret = new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.PropertyKind(cPtr, owner);
+    }
+    else if (type.equals("PropertySet"))
+    {
+        ret = new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PropertySet(cPtr, owner);
     }
     else if (type.equals("StratigraphicColumn"))
     {
@@ -102,9 +106,30 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 	else if (type.equals("WellboreCompletion"))
 	{
 		ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreCompletion(cPtr, owner);
-	}else
+	}
+	else if (type.equals("WellboreGeometry"))
+	{
+		ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreGeometry(cPtr, owner);
+	}
+	else if (type.equals("Trajectory"))
+	{
+		ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);
+	}
+	else if (type.equals("Log"))
+	{
+		ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Log(cPtr, owner);
+	}
+	else if (type.equals("ChannelSet"))
+	{
+		ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.ChannelSet(cPtr, owner);
+	}
+	else if (type.equals("Channel"))
+	{
+		ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Channel(cPtr, owner);
+	}
+	else
     {
-	throw new IllegalArgumentException("Encountered type " + type + " that is not known to be a Resqml or Witsml concrete class");
+	throw new IllegalArgumentException("Encountered type " + type + " that is not known to be a RESQML or WITSML concrete class");
     }
     
     return ret;
@@ -238,7 +263,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
   
   public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentation resqml2_instantiateConcreteRepresentation(long cPtr, boolean owner)
   {
-	com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentation ret = resqml2_instantiateConcreteWellboreFrameRepresentation(cPtr, owner);
+	com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentation ret = resqml2_0_1_instantiateConcreteWellboreFrameRepresentation(cPtr, owner);
 	if (ret != null) {
 		return ret;
 	}
@@ -347,7 +372,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		return null;
   }
   
-  public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreFrameRepresentation resqml2_instantiateConcreteWellboreFrameRepresentation(long cPtr, boolean owner)
+  public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreFrameRepresentation resqml2_0_1_instantiateConcreteWellboreFrameRepresentation(long cPtr, boolean owner)
   {
     if (cPtr == 0) {
       return null;
@@ -363,6 +388,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
     }
 	else
 		return null;
+  }
+  
+  public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation resqml2_instantiateConcreteWellboreFrameRepresentation(long cPtr, boolean owner)
+  {
+	return resqml2_0_1_instantiateConcreteWellboreFrameRepresentation(cPtr, owner);
   }
   
   public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractLocal3dCrs resqml2_instantiateConcreteLocal3dCrs(long cPtr, boolean owner)
@@ -450,6 +480,10 @@ namespace COMMON_NS
 		$javaclassname ret = ($javaclassname) fesapiJNI.resqml2_instantiateConcreteObject(cPtr, $owner);
 		return ret;
 	}
+	
+	%typemap(javaimports) SWIGTYPE %{
+		import com.f2i.energisticsStandardsApi.*;
+	%}
 }
 
 namespace RESQML2_NS
@@ -484,9 +518,15 @@ namespace RESQML2_NS
 		return ret;
 	}
 	
-	%typemap(javaout) AbstractProperty*, AbstractValuesProperty*  {
+	%typemap(javaout) AbstractProperty*, AbstractValuesProperty*, AbstractDiscreteOrCategoricalProperty*  {
 		long cPtr = $jnicall;
 		$javaclassname ret = ($javaclassname) fesapiJNI.resqml2_instantiateConcreteProperty(cPtr, $owner);
+		return ret;
+	}
+
+	%typemap(javaout) WellboreFrameRepresentation*  {
+		long cPtr = $jnicall;
+		$javaclassname ret = ($javaclassname) fesapiJNI.resqml2_instantiateConcreteWellboreFrameRepresentation(cPtr, $owner);
 		return ret;
 	}
 
@@ -497,12 +537,6 @@ namespace RESQML2_NS
 
 namespace RESQML2_0_1_NS
 {	
-	%typemap(javaout) WellboreFrameRepresentation*  {
-		long cPtr = $jnicall;
-		$javaclassname ret = ($javaclassname) fesapiJNI.resqml2_instantiateConcreteWellboreFrameRepresentation(cPtr, $owner);
-		return ret;
-	}
-	
 	%typemap(javaout) AbstractIjkGridRepresentation*  {
 		long cPtr = $jnicall;
 		$javaclassname ret = ($javaclassname) fesapiJNI.resqml2_0_1_instantiateConcreteIjkGridRepresentation(cPtr, $owner);

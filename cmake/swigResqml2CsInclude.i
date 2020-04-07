@@ -73,7 +73,11 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
     }
     else if (type == "PropertyKind")
     {
-        ret = new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PropertyKind(cPtr, owner);
+        ret = new f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.PropertyKind(cPtr, owner);
+    }
+    else if (type == "PropertySet")
+    {
+        ret = new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PropertySet(cPtr, owner);
     }
     else if (type == "StratigraphicColumn")
     {
@@ -102,7 +106,28 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
 	else if (type == "WellboreCompletion")
 	{
 		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreCompletion(cPtr, owner);
-	}else
+	}
+	else if (type == "WellboreGeometry")
+	{
+		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreGeometry(cPtr, owner);
+	}
+	else if (type == "Trajectory")
+	{
+		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);
+	}
+	else if (type == "Log")
+	{
+		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Log(cPtr, owner);
+	}
+	else if (type == "ChannelSet")
+	{
+		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.ChannelSet(cPtr, owner);
+	}
+	else if (type == "Channel")
+	{
+		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Channel(cPtr, owner);
+	}
+	else
 	{
 		throw new System.ArgumentException(string.Format("Encountered type '{0}' that is not known to be a Resqml or Witsml concrete class", type.ToString()));
 	}
@@ -238,7 +263,7 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
   
   public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentation resqml2_instantiateConcreteRepresentation(global::System.IntPtr cPtr, bool owner)
   {
-	f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentation ret = resqml2_instantiateConcreteWellboreFrameRepresentation(cPtr, owner);
+	f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentation ret = resqml2_0_1_instantiateConcreteWellboreFrameRepresentation(cPtr, owner);
 	if (ret != null) {
 		return ret;
 	}
@@ -344,7 +369,7 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
 		return null;
   }
   
-  public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreFrameRepresentation resqml2_instantiateConcreteWellboreFrameRepresentation(global::System.IntPtr cPtr, bool owner)
+  public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreFrameRepresentation resqml2_0_1_instantiateConcreteWellboreFrameRepresentation(global::System.IntPtr cPtr, bool owner)
   {
     if (cPtr == global::System.IntPtr.Zero) {
       return null;
@@ -360,6 +385,11 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
     }
 	else
 		return null;
+  }
+  
+  public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation resqml2_instantiateConcreteWellboreFrameRepresentation(global::System.IntPtr cPtr, bool owner)
+  {
+	return resqml2_0_1_instantiateConcreteWellboreFrameRepresentation(cPtr, owner);
   }
   
   public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractLocal3dCrs resqml2_instantiateConcreteLocal3dCrs(global::System.IntPtr cPtr, bool owner)
@@ -485,9 +515,15 @@ namespace RESQML2_NS
 		return ret;
 	}
 	
-	%typemap(csout, excode=SWIGEXCODE) AbstractProperty*, AbstractValuesProperty*   {
+	%typemap(csout, excode=SWIGEXCODE) AbstractProperty*, AbstractValuesProperty*, AbstractDiscreteOrCategoricalProperty   {
 		global::System.IntPtr cPtr = $imcall;
 		$csclassname ret = ($csclassname) $modulePINVOKE.resqml2_instantiateConcreteProperty(cPtr, $owner);$excode
+		return ret;
+	}
+	
+	%typemap(csout, excode=SWIGEXCODE) WellboreFrameRepresentation*  {
+		global::System.IntPtr cPtr = $imcall;
+		$csclassname ret = ($csclassname) $modulePINVOKE.resqml2_instantiateConcreteWellboreFrameRepresentation(cPtr, $owner);$excode
 		return ret;
 	}
 }
@@ -496,7 +532,7 @@ namespace RESQML2_0_1_NS
 {	
 	%typemap(csout, excode=SWIGEXCODE) WellboreFrameRepresentation*  {
 		global::System.IntPtr cPtr = $imcall;
-		$csclassname ret = ($csclassname) $modulePINVOKE.resqml2_instantiateConcreteWellboreFrameRepresentation(cPtr, $owner);$excode
+		$csclassname ret = ($csclassname) $modulePINVOKE.resqml2_0_1_instantiateConcreteWellboreFrameRepresentation(cPtr, $owner);$excode
 		return ret;
 	}
 	

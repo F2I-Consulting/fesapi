@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/FrontierFeature.h"
+#include "FrontierFeature.h"
 
 #include <stdexcept>
 
@@ -26,15 +26,15 @@ using namespace gsoap_resqml2_0_1;
 
 const char* FrontierFeature::XML_TAG = "FrontierFeature";
 
-FrontierFeature::FrontierFeature(soap* soapContext, const std::string & guid, const string & title)
+FrontierFeature::FrontierFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const string & title)
 {
-	if (soapContext == nullptr)
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr)
+		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREFrontierFeature(soapContext, 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREFrontierFeature(repo->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	repo->addOrReplaceDataObject(this);
 }
-
-

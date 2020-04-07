@@ -16,48 +16,23 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2/Activity.h"
+#include "Activity.h"
 
-#include "resqml2/ActivityTemplate.h"
+#include "ActivityTemplate.h"
 
 #include <stdexcept>
 #include <algorithm>
 
 using namespace std;
 using namespace RESQML2_NS;
-using namespace epc;
 
 const char* Activity::XML_TAG = "Activity";
-
-vector<Relationship> Activity::getAllEpcRelationships() const
-{
-	vector<Relationship> result;
-
-	RESQML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
-	if (activityTemplate != nullptr) {
-		Relationship rel(activityTemplate->getPartNameInEpcDocument(), "", activityTemplate->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
-	else
-		throw domain_error("The activity template associated to the activity cannot be nullptr.");
-
-	std::vector<AbstractObject*> resqmlObjectSet = getResqmlObjectSet();
-	for (size_t i = 0; i < resqmlObjectSet.size(); ++i) {
-		Relationship relResqmlObject(resqmlObjectSet[i]->getPartNameInEpcDocument(), "", resqmlObjectSet[i]->getUuid());
-		relResqmlObject.setDestinationObjectType();
-		result.push_back(relResqmlObject);
-	}
-
-	return result;
-}
 
 std::vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectSet() const
 {
 	std::vector<COMMON_NS::AbstractObject*> result;
 
-	unsigned int paramCount = getParameterCount();
-
+	const unsigned int paramCount = getParameterCount();
 	for (unsigned int index=0; index < paramCount; ++index) {
 		if (isAResqmlObjectParameter(index)) {
 			COMMON_NS::AbstractObject* obj = getResqmlObjectParameterValue(index);
@@ -72,6 +47,19 @@ std::vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectSet() const
 
 ActivityTemplate* Activity::getActivityTemplate() const
 {
-	return getEpcDocument()->getDataObjectByUuid<RESQML2_NS::ActivityTemplate>(getActivityTemplateDor()->UUID);
+	return getRepository()->getDataObjectByUuid<RESQML2_NS::ActivityTemplate>(getActivityTemplateDor()->UUID);
 }
 
+void Activity::loadTargetRelationships()
+{
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getActivityTemplateDor();
+	RESQML2_NS::ActivityTemplate* targetObj = getRepository()->getDataObjectByUuid<ActivityTemplate>(dor->UUID);
+	if (targetObj == nullptr) { // partial transfer
+		getRepository()->createPartial(dor);
+		targetObj = getRepository()->getDataObjectByUuid<ActivityTemplate>(dor->UUID);
+		if (targetObj == nullptr) {
+			throw invalid_argument("The DOR looks invalid.");
+		}
+	}
+	repository->addRelationship(this, targetObj);
+}

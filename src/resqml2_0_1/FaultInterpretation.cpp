@@ -16,19 +16,18 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/FaultInterpretation.h"
+#include "FaultInterpretation.h"
 
 #include <limits>
 #include <stdexcept>
 
-#include "resqml2_0_1/GeneticBoundaryFeature.h"
-#include "resqml2_0_1/TectonicBoundaryFeature.h"
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
+#include "GeneticBoundaryFeature.h"
+#include "TectonicBoundaryFeature.h"
+#include "StructuralOrganizationInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* FaultInterpretation::XML_TAG = "FaultInterpretation";
 
@@ -41,13 +40,14 @@ FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const 
 		throw invalid_argument("The interpreted fault cannot be a fracture.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREFaultInterpretation(fault->getGsoapContext(), 1);
-	_resqml2__FaultInterpretation* interp = static_cast<_resqml2__FaultInterpretation*>(gsoapProxy2_0_1);
-	interp->Domain = resqml2__Domain__mixed;
-	setInterpretedFeature(fault);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREFaultInterpretation(fault->getGsoapContext());
+	_resqml20__FaultInterpretation* interp = static_cast<_resqml20__FaultInterpretation*>(gsoapProxy2_0_1);
+	interp->Domain = resqml20__Domain__mixed;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	setInterpretedFeature(fault);
 }
 
 FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const string & guid, const string & title,
@@ -60,12 +60,12 @@ FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const 
 		throw invalid_argument("The interpreted fault cannot be a fracture.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREFaultInterpretation(fault->getGsoapContext(), 1);	
-	_resqml2__FaultInterpretation* interp = static_cast<_resqml2__FaultInterpretation*>(gsoapProxy2_0_1);
-	interp->Domain = resqml2__Domain__mixed;
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREFaultInterpretation(fault->getGsoapContext());	
+	_resqml20__FaultInterpretation* interp = static_cast<_resqml20__FaultInterpretation*>(gsoapProxy2_0_1);
+	interp->Domain = resqml20__Domain__mixed;
 	interp->InterpretedFeature = fault->newResqmlReference();
 
-	interp->HasOccuredDuring = soap_new_resqml2__TimeInterval(interp->soap, 1);
+	interp->HasOccuredDuring = soap_new_resqml20__TimeInterval(interp->soap);
 	interp->HasOccuredDuring->ChronoBottom = chronoBtm->newResqmlReference();
 	interp->HasOccuredDuring->ChronoTop = chronoTop->newResqmlReference();
 
@@ -75,31 +75,12 @@ FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const 
 	setInterpretedFeature(fault);
 }
 
-vector<Relationship> FaultInterpretation::getAllEpcRelationships() const
+void FaultInterpretation::pushBackThrowInterpretation(const gsoap_resqml2_0_1::resqml20__ThrowKind & throwKind)
 {
-	vector<Relationship> result = BoundaryFeatureInterpretation::getAllEpcRelationships();
+	_resqml20__FaultInterpretation* interp = static_cast<_resqml20__FaultInterpretation*>(gsoapProxy2_0_1);
 
-	for (size_t i = 0; i < structuralOrganizationInterpretationSet.size(); ++i) {
-		if (structuralOrganizationInterpretationSet[i] != nullptr) {
-			Relationship rel(structuralOrganizationInterpretationSet[i]->getPartNameInEpcDocument(), "", structuralOrganizationInterpretationSet[i]->getUuid());
-			rel.setSourceObjectType();
-			result.push_back(rel);
-		}
-		else {
-			throw domain_error("The structural Organization Interpretation associated to the fault interpretation cannot be nullptr.");
-		}
-	}
-
-	return result;
-}
-
-void FaultInterpretation::pushBackThrowInterpretation(const gsoap_resqml2_0_1::resqml2__ThrowKind & throwKind)
-{
-	_resqml2__FaultInterpretation* interp = static_cast<_resqml2__FaultInterpretation*>(gsoapProxy2_0_1);
-
-	resqml2__FaultThrow * throwInterp = soap_new_resqml2__FaultThrow(gsoapProxy2_0_1->soap, 1);
+	resqml20__FaultThrow * throwInterp = soap_new_resqml20__FaultThrow(gsoapProxy2_0_1->soap);
 	throwInterp->Throw.push_back(throwKind);
 
 	interp->ThrowInterpretation.push_back(throwInterp);
 }
-

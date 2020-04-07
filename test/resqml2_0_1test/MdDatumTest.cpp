@@ -35,29 +35,29 @@ using namespace RESQML2_NS;
 const char* MdDatumTest::defaultUuid = "aa4da18f-5cc8-4bbb-841a-30e4031376fa";
 const char* MdDatumTest::defaultTitle = "Md Datum";
 
-MdDatumTest::MdDatumTest(const string & epcDocPath)
-	: AbstractResqmlDataObjectTest(epcDocPath, defaultUuid, defaultTitle) {
+MdDatumTest::MdDatumTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-MdDatumTest::MdDatumTest(EpcDocument* epcDoc, bool init)
-	: AbstractResqmlDataObjectTest(epcDoc, defaultUuid, defaultTitle) {
+MdDatumTest::MdDatumTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-			this->initEpcDoc();
-		else
-			this->readEpcDoc();
+		initRepo();
+	else
+		readRepo();
 }
 
-void MdDatumTest::initEpcDocHandler() {
-	LocalDepth3dCrsTest * crsTest = new LocalDepth3dCrsTest(this->epcDoc, true);
-	RESQML2_0_1_NS::LocalDepth3dCrs * crs = static_cast<RESQML2_0_1_NS::LocalDepth3dCrs *>(this->epcDoc->getDataObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
+void MdDatumTest::initRepoHandler() {
+	LocalDepth3dCrsTest * crsTest = new LocalDepth3dCrsTest(this->repo, true);
+	RESQML2_0_1_NS::LocalDepth3dCrs * crs = static_cast<RESQML2_0_1_NS::LocalDepth3dCrs *>(this->repo->getDataObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
 
 	// cleaning
 	delete crsTest;
 
-	MdDatum* mdDatum = epcDoc->createMdDatum(uuid, title, crs, gsoap_resqml2_0_1::resqml2__MdReference__mean_x0020sea_x0020level, 275, 75, 0);
+	MdDatum* mdDatum = repo->createMdDatum(defaultUuid, defaultTitle, crs, gsoap_resqml2_0_1::resqml20__MdReference__mean_x0020sea_x0020level, 275, 75, 0);
 	REQUIRE(mdDatum != nullptr);
 }
 
-void MdDatumTest::readEpcDocHandler() {
+void MdDatumTest::readRepoHandler() {
 }
 

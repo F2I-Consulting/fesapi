@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/AbstractStratigraphicOrganizationInterpretation.h"
-#include "resqml2_0_1/StratigraphicColumn.h"
-#include "resqml2_0_1/StratigraphicOccurrenceInterpretation.h"
+#include "AbstractStratigraphicOrganizationInterpretation.h"
+#include "StratigraphicColumn.h"
+#include "StratigraphicOccurrenceInterpretation.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -34,7 +34,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		StratigraphicColumnRankInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractStratigraphicOrganizationInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT StratigraphicColumnRankInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractStratigraphicOrganizationInterpretation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -44,13 +44,13 @@ namespace RESQML2_0_1_NS
 		* @param rank				The rank index of this interpretation within a stratigraphic column
 		* @param orderingCriteria	How the included horizons are ordered.
 		*/
-		StratigraphicColumnRankInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank, const gsoap_resqml2_0_1::resqml2__OrderingCriteria & orderingCriteria);
+		StratigraphicColumnRankInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank, const gsoap_resqml2_0_1::resqml20__OrderingCriteria & orderingCriteria);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 
-		StratigraphicColumnRankInterpretation(gsoap_resqml2_0_1::_resqml2__StratigraphicColumnRankInterpretation* fromGsoap) : AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
+		StratigraphicColumnRankInterpretation(gsoap_resqml2_0_1::_resqml20__StratigraphicColumnRankInterpretation* fromGsoap) : AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -68,8 +68,8 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Add a stratigraphic binary contact to the organization interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactMode & subjectContactMode,
-			StratigraphicUnitInterpretation* directObject, const gsoap_resqml2_0_1::resqml2__ContactMode & directObjectMode,
+		DLL_IMPORT_OR_EXPORT void pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, const gsoap_resqml2_0_1::resqml20__ContactMode & subjectContactMode,
+			StratigraphicUnitInterpretation* directObject, const gsoap_resqml2_0_1::resqml20__ContactMode & directObjectMode,
 			class HorizonInterpretation * partOf = nullptr);
 
 		/**
@@ -88,7 +88,7 @@ namespace RESQML2_0_1_NS
 		* Most of time the subject strati unit is the strati unit on top of the contact.
 		* @return	proportional contact mode by default or the contact mode of the subject.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__ContactMode getSubjectContactModeOfContact(const unsigned int & contactIndex) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ContactMode getSubjectContactModeOfContact(const unsigned int & contactIndex) const;
 
 		/**
 		* Get the strati unt interpretation which is the subject of a particular contact.
@@ -100,7 +100,7 @@ namespace RESQML2_0_1_NS
 		* Most of time the subject strati unit is the strati unit below the contact.
 		* @return	proportional contact mode by default or the contact mode of the direct object.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__ContactMode getDirectObjectContactModeOfContact(const unsigned int & contactIndex) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ContactMode getDirectObjectContactModeOfContact(const unsigned int & contactIndex) const;
 
 		/**
 		* Get the strati unt interpretation which is the direct object of a particular contact.
@@ -115,41 +115,34 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get all the stratigraphic unit interpretations contained in this StratigraphicColumnRankInterpretation.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<class StratigraphicUnitInterpretation*> & getStratigraphicUnitInterpretationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class StratigraphicUnitInterpretation *> getStratigraphicUnitInterpretationSet() const;
 
 		/**
 		* Get all the stratigraphic occurence interpretations associated with this StratigraphicColumnRankInterpretation.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<class StratigraphicOccurrenceInterpretation*> & getStratigraphicOccurrenceInterpretationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class StratigraphicOccurrenceInterpretation *> getStratigraphicOccurrenceInterpretationSet() const;
 
 		/**
 		* Get all the horizon interpretations contained in this StratigraphicColumnRankInterpretation.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<class HorizonInterpretation*> & getHorizonInterpretationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class HorizonInterpretation *> getHorizonInterpretationSet() const;
 
 		/**
 		* Get all the stratigraphic column this strati column rank belongs to.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<StratigraphicColumn*> & getStratigraphicColumnSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<StratigraphicColumn *> getStratigraphicColumnSet() const;
 
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	private:
-
-        std::vector<epc::Relationship> getAllEpcRelationships() const;	
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
-        // forward relationships
-        std::vector<class StratigraphicUnitInterpretation*> stratigraphicUnitSet;
-        std::vector<class HorizonInterpretation*> horizonInterpretationSet;
-
-		// Backward relationship
-		std::vector<StratigraphicColumn *> stratigraphicColumnSet;
-		std::vector<StratigraphicOccurrenceInterpretation *> stratigraphicOccurrenceInterpretationSet;
-
-		friend void StratigraphicColumn::pushBackStratiColumnRank(StratigraphicColumnRankInterpretation * stratiColumnRank);
-		friend void StratigraphicOccurrenceInterpretation::setStratigraphicColumnRankInterpretation(StratigraphicColumnRankInterpretation * stratiColumnRankInterp);
+		void loadTargetRelationships();
 	};
 }
-

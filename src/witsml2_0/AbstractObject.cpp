@@ -16,14 +16,14 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "witsml2_0/AbstractObject.h"
+#include "AbstractObject.h"
 
 using namespace std;
 using namespace WITSML2_0_NS;
 
 std::string AbstractObject::getXmlNamespace() const
 {
-	return "witsml2";
+	return "witsml20";
 }
 
 string AbstractObject::getContentType() const

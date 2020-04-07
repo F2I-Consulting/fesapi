@@ -35,22 +35,21 @@ const char* StratigraphicOrganizationTest::defaultUuid = "8567b4b5-3e03-4e8e-bf6
 const char* StratigraphicOrganizationTest::defaultTitle = "Strati Organization";
 
 StratigraphicOrganizationTest::StratigraphicOrganizationTest(const string & epcDocPath)
-	: AbstractFeatureTest(epcDocPath, defaultUuid, defaultTitle) {
+	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
-StratigraphicOrganizationTest::StratigraphicOrganizationTest(EpcDocument* epcDoc, bool init)
-	: AbstractFeatureTest(epcDoc, defaultUuid, defaultTitle) {
+StratigraphicOrganizationTest::StratigraphicOrganizationTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-			initEpcDoc();
-		else
-			readEpcDoc();
+		initRepo();
+	else
+		readRepo();
 }
 
-void StratigraphicOrganizationTest::initEpcDocHandler() {
-	OrganizationFeature* stratiOrg = epcDoc->createStratigraphicModel(uuid, title);
+void StratigraphicOrganizationTest::initRepoHandler() {
+	OrganizationFeature* stratiOrg = repo->createStratigraphicModel(defaultUuid, defaultTitle);
 	REQUIRE(stratiOrg != nullptr);
 }
 
-void StratigraphicOrganizationTest::readEpcDocHandler() {
+void StratigraphicOrganizationTest::readRepoHandler() {
 }
-

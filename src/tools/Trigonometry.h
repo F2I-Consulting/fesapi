@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "proxies/gsoap_resqml2_0_1Stub.h"
+#include "../proxies/gsoap_resqml2_0_1Stub.h"
 
 namespace trigonometry
 {

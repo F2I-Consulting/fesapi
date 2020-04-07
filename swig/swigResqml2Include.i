@@ -19,8 +19,8 @@ under the License.
 %{
 #define SWIG_FILE_WITH_INIT // In case we use Python Swig Wrapping
 
-#include "resqml2/ActivityTemplate.h"
-#include "common/HdfProxy.h"
+#include "../src/resqml2/ActivityTemplate.h"
+#include "../src/common/HdfProxy.h"
 
 %}
 typedef long long					LONG64;
@@ -49,7 +49,7 @@ namespace RESQML2_NS {
 #ifdef SWIGPYTHON
 namespace RESQML2_NS
 {
-	%typemap(out) COMMON_NS::AbstractObject*, COMMON_NS::AbstractHdfProxy*,  AbstractFeature*, AbstractFeatureInterpretation*,  AbstractLocal3dCrs*, AbstractProperty*, AbstractValuesProperty*,AbstractRepresentation* {
+	%typemap(out) COMMON_NS::AbstractObject*, COMMON_NS::AbstractHdfProxy*,  AbstractFeature*, AbstractFeatureInterpretation*,  AbstractLocal3dCrs*, AbstractProperty*, AbstractValuesProperty*, AbstractDiscreteOrCategoricalProperty*, AbstractRepresentation* {
 		// Check potential downcasting
 		swig_type_info * const outtype = SWIG_TypeQuery(("resqml2::" + result->getXmlTag() + " *").c_str());
 		resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), outtype, 0);
@@ -72,15 +72,31 @@ namespace RESQML2_NS
 	%nspace RESQML2_NS::AbstractProperty;
 	%nspace RESQML2_NS::AbstractRepresentation;
 	%nspace RESQML2_NS::AbstractValuesProperty;
+	%nspace RESQML2_NS::AbstractDiscreteOrCategoricalProperty;
 	%nspace RESQML2_NS::Activity;
 	%nspace RESQML2_NS::ActivityTemplate;
 	%nspace RESQML2_NS::GridConnectionSetRepresentation;
 	%nspace RESQML2_NS::MdDatum;
-	%nspace RESQML2_NS::PropertyKind;
+	%nspace RESQML2_NS::PropertySet;
 	%nspace RESQML2_NS::RepresentationSetRepresentation;
 	%nspace RESQML2_NS::SubRepresentation;
 	%nspace RESQML2_NS::TimeSeries;
+	%nspace RESQML2_NS::WellboreFrameRepresentation;
 #endif
+
+namespace gsoap_resqml2_0_1
+{
+	enum resqml20__PillarShape {
+		resqml20__PillarShape__vertical = 0,
+		resqml20__PillarShape__straight = 1,
+		resqml20__PillarShape__curved = 2
+	};
+	enum resqml20__TimeSetKind {
+		resqml20__TimeSetKind__single_x0020time = 0,
+		resqml20__TimeSetKind__equivalent_x0020times = 1,
+		resqml20__TimeSetKind__not_x0020a_x0020time_x0020set = 2
+	};
+}
 
 namespace RESQML2_NS
 {
@@ -94,13 +110,13 @@ namespace RESQML2_NS
 	class ActivityTemplate : public COMMON_NS::AbstractObject
 	{
 	public:
-		void pushBackParameter(const std::string title,
-			const bool & isInput, const bool isOutput,
-			const unsigned int & minOccurs, const int & maxOccurs);
-		void pushBackParameter(const std::string title,
-			const bool & isInput, const bool isOutput,
-			const unsigned int & minOccurs, const int & maxOccurs,
-			const std::string & resqmlObjectContentType);
+		void pushBackParameter(const std::string & title,
+			bool isInput, bool isOutput,
+			unsigned int minOccurs, int maxOccurs);
+		void pushBackParameter(const std::string & title,
+			bool isInput, bool isOutput,
+			unsigned int minOccurs, int maxOccurs,
+			std::string resqmlObjectContentType);
 		bool isAnExistingParameter(const std::string & paramTitle) const;
 		const unsigned int getParameterCount() const;
 		const std::string & getParameterTitle(const unsigned int & index) const;
@@ -194,7 +210,7 @@ namespace RESQML2_NS
 		virtual double getZ() const = 0;
 		virtual double getZInGlobalCrs() const = 0;
 		
-		virtual gsoap_resqml2_0_1::resqml2__MdReference getOriginKind() const = 0;
+		virtual gsoap_resqml2_0_1::resqml20__MdReference getOriginKind() const = 0;
 	};
 	
 	//************************************
@@ -222,8 +238,8 @@ namespace RESQML2_NS
 		AbstractRepresentation* 	getRepresentation(const unsigned int & index) const;
 		std::string 						getInterpretedFeatureUuid() const;
 		
-		const gsoap_resqml2_0_1::resqml2__Domain & initDomain(const gsoap_resqml2_0_1::resqml2__Domain & defaultDomain) const;
-		gsoap_resqml2_0_1::resqml2__Domain getDomain() const;
+		const gsoap_resqml2_0_1::resqml20__Domain & initDomain(const gsoap_resqml2_0_1::resqml20__Domain & defaultDomain) const;
+		gsoap_resqml2_0_1::resqml20__Domain getDomain() const;
 	};
 
 	//************************************
@@ -241,10 +257,8 @@ namespace RESQML2_NS
 		
 		AbstractFeatureInterpretation* getInterpretation() const;
 		std::string getInterpretationUuid() const;
-		AbstractLocal3dCrs * getLocalCrs();
-		std::string getLocalCrsUuid() const;
-		COMMON_NS::AbstractHdfProxy * getHdfProxy();
-		std::string getHdfProxyUuid() const;
+		AbstractLocal3dCrs * getLocalCrs(unsigned int patchIndex);
+		std::string getLocalCrsUuid(unsigned int patchIndex) const;
 		unsigned int getValuesPropertyCount() const;
 		AbstractValuesProperty* getValuesProperty(const unsigned int & index) const;
 		
@@ -258,15 +272,17 @@ namespace RESQML2_NS
 		void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 		void getXyzPointsOfPatchInGlobalCrs(const unsigned int & patchIndex, double * xyzPoints) const;
 		void getXyzPointsOfAllPatches(double * xyzPoints) const;
+		bool isInSingleLocalCrs() const;
+		bool isInSingleGlobalCrs() const;
 		void getXyzPointsOfAllPatchesInGlobalCrs(double * xyzPoints) const;
 		virtual unsigned int getPatchCount() const;
 		
 		AbstractRepresentation* getSeismicSupportOfPatch(const unsigned int & patchIndex);
-		void getSeismicLineAbscissaOfPointsOfPatch(const unsigned int & patchIndex, double* values);
+		void getSeismicLineAbscissaOfPointsOfPatch(unsigned int patchIndex, double* values) const;
 		void addSeismic2dCoordinatesToPatch(const unsigned int patchIndex, double * lineAbscissa,
 			AbstractRepresentation * seismicSupport, COMMON_NS::AbstractHdfProxy * proxy);
-		void getInlinesOfPointsOfPatch(const unsigned int & patchIndex, double * values);
-		void getCrosslinesOfPointsOfPatch(const unsigned int & patchIndex, double * values);
+		void getInlinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
+		void getCrosslinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
 		void addSeismic3dCoordinatesToPatch(const unsigned int patchIndex, double * inlines, double * crosslines, const unsigned int & pointCount,
 			AbstractRepresentation * seismicSupport, COMMON_NS::AbstractHdfProxy * proxy);
 		void addSeismic3dCoordinatesToPatch(const unsigned int patchIndex, const double & startInline, const double & incrInline, const unsigned int & countInline,
@@ -289,13 +305,13 @@ namespace RESQML2_NS
 	class SubRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
-		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & originIndex, 
-			const unsigned int & elementCountInSlowestDimension,
-			const unsigned int & elementCountInMiddleDimension,
-			const unsigned int & elementCountInFastestDimension);
-		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy * proxy, short * supportingRepIndices = nullptr);
-		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind0, const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind1,
-			const ULONG64 & elementCount,
+		void pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements elementKind, ULONG64 originIndex, 
+			unsigned int elementCountInSlowestDimension,
+			unsigned int elementCountInMiddleDimension,
+			unsigned int elementCountInFastestDimension);
+		void pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements elementKind, ULONG64 elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy * proxy, short * supportingRepIndices = nullptr);
+		void pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements elementKind0, gsoap_resqml2_0_1::resqml20__IndexableElements elementKind1,
+			ULONG64 elementCount,
 			ULONG64 * elementIndices0, ULONG64 * elementIndices1,
 			COMMON_NS::AbstractHdfProxy * proxy);
 		
@@ -326,33 +342,34 @@ namespace RESQML2_NS
 	{
 	public:
 		unsigned int getGridConnectionSetRepresentationCount() const;
-		GridConnectionSetRepresentation* getGridConnectionSetRepresentation(const unsigned int & index) const;
+		GridConnectionSetRepresentation* getGridConnectionSetRepresentation(unsigned int index) const;
 		virtual ULONG64 getCellCount() const = 0;
 		
 		std::string getParentGridUuid() const;
 		AbstractGridRepresentation* getParentGrid() const;
 		unsigned int getChildGridCount() const;
-		AbstractGridRepresentation* getChildGrid(const unsigned int & index) const;
-		void setParentWindow(ULONG64 * cellIndices, const ULONG64 & cellIndexCount, RESQML2_0_1_NS::UnstructuredGridRepresentation* parentGrid);
-		void setParentWindow(unsigned int * columnIndices, const unsigned int & columnIndexCount,
-			const unsigned int & kLayerIndexRegridStart,
-			unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval,  const unsigned int & intervalCount,
-			AbstractColumnLayerGridRepresentation* parentGrid, double * childCellWeights = nullptr);
+		AbstractGridRepresentation* getChildGrid(unsigned int index) const;
+		void setParentWindow(ULONG64 * cellIndices, ULONG64 cellIndexCount, RESQML2_0_1_NS::UnstructuredGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr);
+		void setParentWindow(unsigned int * columnIndices, unsigned int columnIndexCount,
+			unsigned int kLayerIndexRegridStart,
+			unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval,  unsigned int intervalCount,
+			class AbstractColumnLayerGridRepresentation* parentGrid,
+			COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * childCellWeights = nullptr);
 		void setParentWindow(
-			const unsigned int & iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval,  const unsigned int & iIntervalCount,
-			const unsigned int & jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval,  const unsigned int & jIntervalCount,
-			const unsigned int & kCellIndexRegridStart, unsigned int * childCellCountPerKInterval, unsigned int * parentCellCountPerKInterval,  const unsigned int & kIntervalCount,
-			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			unsigned int iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval,  unsigned int iIntervalCount,
+			unsigned int jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval,  unsigned int jIntervalCount,
+			unsigned int kCellIndexRegridStart, unsigned int * childCellCountPerKInterval, unsigned int * parentCellCountPerKInterval,  unsigned int kIntervalCount,
+			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 		void setParentWindow(
-			const unsigned int & iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, const unsigned int & iIntervalCount,
-			const unsigned int & jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, const unsigned int & jIntervalCount,
-			const unsigned int & kCellIndexRegridStart, unsigned int constantChildCellCountPerKInterval, unsigned int constantParentCellCountPerKInterval, const unsigned int & kIntervalCount,
-			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			unsigned int iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, unsigned int iIntervalCount,
+			unsigned int jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, unsigned int jIntervalCount,
+			unsigned int kCellIndexRegridStart, unsigned int constantChildCellCountPerKInterval, unsigned int constantParentCellCountPerKInterval, unsigned int kIntervalCount,
+			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 		void setParentWindow(
-			const unsigned int & iCellIndexRegridStart, unsigned int iChildCellCount, unsigned int iParentCellCount,
-			const unsigned int & jCellIndexRegridStart, unsigned int jChildCellCount, unsigned int jParentCellCount,
-			const unsigned int & kCellIndexRegridStart, unsigned int kChildCellCount, unsigned int kParentCellCount,
-			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			unsigned int iCellIndexRegridStart, unsigned int iChildCellCount, unsigned int iParentCellCount,
+			unsigned int jCellIndexRegridStart, unsigned int jChildCellCount, unsigned int jParentCellCount,
+			unsigned int kCellIndexRegridStart, unsigned int kChildCellCount, unsigned int kParentCellCount,
+			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 		void setForcedNonRegridedParentCell(ULONG64 * cellIndices, const ULONG64 & cellIndexCount);	
 		LONG64 getParentCellIndexCount() const;
 		void getParentCellIndices(ULONG64 * parentCellIndices) const;
@@ -364,7 +381,7 @@ namespace RESQML2_NS
 		ULONG64 getRegridConstantCellCountPerInterval(const char & dimension, const bool & childVsParentCellCount) const;
 		void getRegridCellCountPerInterval(const char & dimension, ULONG64 * childCellCountPerInterval, const bool & childVsParentCellCount) const;
 		bool hasRegridChildCellWeights(const char & dimension) const;
-		void getRegridChildCellWeights(const char & dimension, ULONG64 * childCellWeights) const;
+		void getRegridChildCellWeights(const char & dimension, double * childCellWeights) const;
 		bool hasForcedNonRegridedParentCell() const;
 
 		void setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
@@ -395,10 +412,11 @@ namespace RESQML2_NS
 		unsigned int getKCellCount() const;
 		void setKCellCount(const unsigned int & kCount);
 		
-		void setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
+		void setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, ULONG64 nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, COMMON_NS::AbstractHdfProxy * hdfProxy);
 		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
 		bool hasIntervalStratigraphicUnitIndices() const;
 		ULONG64 getIntervalStratigraphicUnitIndices(ULONG64 * stratiUnitIndices);
+		gsoap_resqml2_0_1::resqml20__PillarShape getMostComplexPillarGeometry() const;
 	};
 	
 	class GridConnectionSetRepresentation : public RESQML2_NS::AbstractRepresentation
@@ -440,22 +458,33 @@ namespace RESQML2_NS
 	//************** PROPERTY ************
 	//************************************
 	
-	class PropertyKind : public COMMON_NS::AbstractObject
+	class PropertySet : public COMMON_NS::AbstractObject
 	{
 	public:
-		const std::string & getNamingSystem() const;
-		
-		const gsoap_resqml2_0_1::resqml2__ResqmlUom & getUom() const;
-		std::string getUomAsString() const;
+		void setParent(PropertySet * parent);
+		std::string getParentUuid() const;
+		PropertySet * getParent() const;
+
+		unsigned int getChildrenCount() const;
+		PropertySet* getChildren(unsigned int index) const;
+
+		void pushBackProperty(RESQML2_NS::AbstractProperty * prop);
+
+		unsigned int getPropertyCount() const;
+		RESQML2_NS::AbstractProperty* getProperty(unsigned int index) const;
+
+		virtual bool hasMultipleRealizations() const = 0;
+		virtual bool hasSinglePropertyKind() const = 0;
+		virtual gsoap_resqml2_0_1::resqml20__TimeSetKind getTimeSetKind() const = 0;
 	};
 	
 	class TimeSeries : public COMMON_NS::AbstractObject
 	{
 	public:
-		void pushBackTimestamp(const time_t & timestamp);
-		unsigned int getTimestampIndex(const time_t & timestamp) const;
+		void pushBackTimestamp(time_t timestamp);
+		unsigned int getTimestampIndex(time_t timestamp) const;
 		unsigned int getTimestampCount() const;
-		time_t getTimestamp(const unsigned int & index) const;
+		time_t getTimestamp(unsigned int index) const;
 	};
 	
 	class AbstractProperty: public COMMON_NS::AbstractObject
@@ -465,121 +494,196 @@ namespace RESQML2_NS
 		AbstractRepresentation* getRepresentation();
 		void setRepresentation(AbstractRepresentation * rep);
 		
-		std::string getHdfProxyUuid() const;
-		COMMON_NS::AbstractHdfProxy* getHdfProxy();
-		
 		std::string getPropertyKindDescription() const;
 		std::string getPropertyKindAsString() const;
 		std::string getPropertyKindParentAsString() const;
 		bool isAssociatedToOneStandardEnergisticsPropertyKind() const;
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind getEnergisticsPropertyKind() const;
+		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind() const;
 		
 		std::string getLocalPropertyKindUuid() const;
-		PropertyKind* getLocalPropertyKind() const;
+		COMMON_NS::PropertyKind* getLocalPropertyKind() const;
 		
 		unsigned int getElementCountPerValue() const;
 		
-		gsoap_resqml2_0_1::resqml2__IndexableElements getAttachmentKind() const;
+		gsoap_resqml2_0_1::resqml20__IndexableElements getAttachmentKind() const;
+		
+		std::vector<RESQML2_NS::PropertySet *> getPropertySets() const;
+		unsigned int getPropertySetCount() const;
+		RESQML2_NS::PropertySet * getPropertySet(unsigned int index) const;
+		
+		bool hasRealizationIndex() const;
+		ULONG64 getRealizationIndex() const;
+		void setRealizationIndex(ULONG64 realizationIndex);
 		
 		void setTimeIndex(const unsigned int & timeIndex, TimeSeries * ts);
 		void setTimeStep(const unsigned int & timeStep);
 		TimeSeries* getTimeSeries() const;
 		time_t getTimestamp() const;
+		unsigned int getTimeIndex() const;
 	};
 	
 	class AbstractValuesProperty : public RESQML2_NS::AbstractProperty
 	{
 	public:
-		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG = 3, ULONG = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
+		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG_64 = 3, ULONG_64 = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
 		AbstractValuesProperty::hdfDatatypeEnum getValuesHdfDatatype() const;
-		virtual std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64 nullValue) = 0;
+
+		unsigned int getValuesCountOfPatch (unsigned int patchIndex) const;
+
+		unsigned int getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const;
+
+		unsigned int getDimensionsCountOfPatch(unsigned int patchIndex) const;
+
+		void pushBackFacet(const gsoap_resqml2_0_1::resqml20__Facet & facet, const std::string & facetValue);
+
+		unsigned int getFacetCount() const const;
+
+		gsoap_resqml2_0_1::resqml20__Facet getFacet(unsigned int index) const const;
+
+		std::string getFacetValue(unsigned int index) const;
+	};
+	
+	class AbstractDiscreteOrCategoricalProperty : public RESQML2_NS::AbstractValuesProperty
+	{
+	public:
+		void pushBackLongHdf5Array1dOfValues(const LONG64 * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy, LONG64 nullValue);
+		void pushBackIntHdf5Array1dOfValues(const int * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy, int nullValue);
+		void pushBackShortHdf5Array1dOfValues(const short * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy, short nullValue);
+		void pushBackCharHdf5Array1dOfValues(const char * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy, char nullValue);
+
+		void pushBackLongHdf5Array2dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, LONG64 nullValue);
+		void pushBackIntHdf5Array2dOfValues(const int * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, int nullValue);
+		void pushBackShortHdf5Array2dOfValues(const short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, short nullValue);
+		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		void pushBackCharHdf5Array2dOfValues(const char * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, char nullValue);
+
+		void pushBackLongHdf5Array3dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, LONG64 nullValue);
+		void pushBackIntHdf5Array3dOfValues(const int * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, int nullValue);
+		void pushBackShortHdf5Array3dOfValues(const short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, short nullValue);
+		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		void pushBackCharHdf5Array3dOfValues(const char * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, char nullValue);
+
+		virtual void pushBackLongHdf5ArrayOfValues(const LONG64 * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, LONG64 nullValue);
+		virtual void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, int nullValue);
+		virtual void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, short nullValue);
+		virtual void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		virtual void pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, char nullValue);
+
+		std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & dataset = "", LONG64 nullValue = std::numeric_limits<LONG64>::max());
+
+		LONG64 getLongValuesOfPatch(unsigned int patchIndex, LONG64 * values) const;
+
+		LONG64 getNullValueOfPatch(unsigned int patchIndex) const;
+
+		ULONG64 getULongValuesOfPatch(unsigned int patchIndex, ULONG64 * values) const;
+
+		int getIntValuesOfPatch(unsigned int patchIndex, int * values) const;
+
+		unsigned int getUIntValuesOfPatch(unsigned int patchIndex, unsigned int * values) const;
+
+		short getShortValuesOfPatch(unsigned int patchIndex, short * values) const;
+
+		unsigned short getUShortValuesOfPatch(unsigned int patchIndex, unsigned short * values) const;
+
+		char getCharValuesOfPatch(unsigned int patchIndex, char * values) const;
+
+		unsigned char getUCharValuesOfPatch(unsigned int patchIndex, unsigned char * values) const;
 		
-		LONG64 getNullValueOfPatch(unsigned int patchIndex);
-		long getLongValuesOfPatch(const unsigned int & patchIndex, long * values);
-		unsigned long getULongValuesOfPatch(const unsigned int & patchIndex, unsigned long * values);
-		int getIntValuesOfPatch(const unsigned int & patchIndex, int * values);
-		
+		//***************************
+		//*** For hyperslabbing *****
+		//***************************
+
+		void pushBackLongHdf5ArrayOfValues(
+			unsigned long long* numValues,
+			unsigned int numArrayDimensions,
+			LONG64 nullValue = std::numeric_limits<LONG64>::max(),
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr);
+
+		void pushBackLongHdf5Array3dOfValues(
+			ULONG64 valueCountInFastestDim,
+			ULONG64 valueCountInMiddleDim,
+			ULONG64 valueCountInSlowestDim,
+			LONG64 nullValue = std::numeric_limits<LONG64>::max(),
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr);
+
+		void setValuesOfLongHdf5Array3dOfValues(
+			LONG64* values,
+			ULONG64 valueCountInFastestDim,
+			ULONG64 valueCountInMiddleDim,
+			ULONG64 valueCountInSlowestDim,
+			ULONG64 offsetInFastestDim,
+			ULONG64 offsetInMiddleDim,
+			ULONG64 offsetInSlowestDim,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+
+		void setValuesOfLongHdf5ArrayOfValues(
+			LONG64* values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+
+		void getLongValuesOfPatch(
+			unsigned int patchIndex,
+			LONG64* values,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned int numArrayDimensions
+		) const;
+
+		void getLongValuesOf3dPatch(
+			unsigned int patchIndex,
+			LONG64* values,
+			ULONG64 valueCountInFastestDim,
+			ULONG64 valueCountInMiddleDim,
+			ULONG64 valueCountInSlowestDim,
+			ULONG64 offsetInFastestDim,
+			ULONG64 offsetInMiddleDim,
+			ULONG64 offsetInSlowestDim
+		) const;
+
 		int getIntValuesOfPatch(
-			const unsigned int& patchIndex,
+			unsigned int patchIndex,
 			int* values,
 			unsigned long long* numValuesInEachDimension,
 			unsigned long long* offsetInEachDimension,
-			const unsigned int& numArrayDimensions
-		);
-		
+			unsigned int numArrayDimensions
+		) const;
+
 		void getIntValuesOf3dPatch(
-			const unsigned int& patchIndex,
+			unsigned int patchIndex,
 			int* values,
-			const unsigned int& valueCountInFastestDim,
-			const unsigned int& valueCountInMiddleDim,
-			const unsigned int& valueCountInSlowestDim,
-			const unsigned int& offsetInFastestDim,
-			const unsigned int& offsetInMiddleDim,
-			const unsigned int& offsetInSlowestDim
-		);
-		
-		unsigned int getUIntValuesOfPatch(const unsigned int & patchIndex, unsigned int * values);
-		short getShortValuesOfPatch(const unsigned int & patchIndex, short * values);
-		unsigned short getUShortValuesOfPatch(const unsigned int & patchIndex, unsigned short * values);
-		char getCharValuesOfPatch(const unsigned int & patchIndex, char * values);
-		unsigned char getUCharValuesOfPatch(const unsigned int & patchIndex, unsigned char * values);
-		
-		unsigned int getValuesCountOfPatch (const unsigned int & patchIndex);
-		unsigned int getValuesCountOfDimensionOfPatch(const unsigned int & dimIndex, const unsigned int & patchIndex);
-		unsigned int getDimensionsCountOfPatch(const unsigned int & patchIndex);
-		
-		void pushBackFacet(const gsoap_resqml2_0_1::resqml2__Facet & facet, const std::string & facetValue);
-		unsigned int getFacetCount() const;
-		gsoap_resqml2_0_1::resqml2__Facet getFacet(const unsigned int & index) const;
-		std::string getFacetValue(const unsigned int & index) const;
-		
-		void createLongHdf5ArrayOfValues(
-			unsigned long long* numValues, 
-			const unsigned int& numArrayDimensions, 
-			COMMON_NS::AbstractHdfProxy* proxy
-		);
-		void createLongHdf5Array3dOfValues(
-			const unsigned int& valueCountInFastestDim, 
-			const unsigned int& valueCountInMiddleDim, 
-			const unsigned int& valueCountInSlowestDim, 
-			COMMON_NS::AbstractHdfProxy * proxy
-		);
-		void pushBackLongHdf5SlabArray3dOfValues(
-			long* values, 
-			const unsigned int& valueCountInFastestDim, 
-			const unsigned int& valueCountInMiddleDim, 
-			const unsigned int& valueCountInSlowestDim, 
-			const unsigned int& offsetInFastestDim, 
-			const unsigned int& offsetInMiddleDim, 
-			const unsigned int& offsetInSlowestDim, 
-			COMMON_NS::AbstractHdfProxy* proxy
-		);
-		void pushBackLongHdf5SlabArrayOfValues(
-			long * values, 
-			unsigned long long * numValues, 
-			unsigned long long * offsetValues, 
-			const unsigned int & numArrayDimensions, 
-			COMMON_NS::AbstractHdfProxy * proxy
-		);
-		void getLongValuesOfPatch(
-			const unsigned int& patchIndex, 
-			long* values, 
-			unsigned long long* numValuesInEachDimension,
-			unsigned long long* offsetInEachDimension, 
-			const unsigned int& numArrayDimensions
-		);
-		void getLongValuesOf3dPatch(
-			const unsigned int& patchIndex, 
-			long* values, 
-			const unsigned int& valueCountInFastestDim, 
-			const unsigned int& valueCountInMiddleDim, 
-			const unsigned int& valueCountInSlowestDim, 
-			const unsigned int& offsetInFastestDim, 
-			const unsigned int& offsetInMiddleDim, 
-			const unsigned int& offsetInSlowestDim
-		);
-		
+			unsigned int valueCountInFastestDim,
+			unsigned int valueCountInMiddleDim,
+			unsigned int valueCountInSlowestDim,
+			unsigned int offsetInFastestDim,
+			unsigned int offsetInMiddleDim,
+			unsigned int offsetInSlowestDim
+		) const;
 	};
 	
+	//************************************
+	//************** Well ****************
+	//************************************
+
+	class WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
+	{
+	public:
+		void setMdValues(double const * mdValues, unsigned int mdValueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr);
+		void setMdValues(double firstMdValue, double incrementMdValue, unsigned int mdValueCount);
+
+		bool areMdValuesRegularlySpaced() const;
+		double getMdConstantIncrementValue() const;
+		double getMdFirstValue() const;
+		unsigned int getMdValuesCount() const;
+		AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
+		void getMdAsDoubleValues(double * values) const;
+		void getMdAsFloatValues(float * values) const;
+
+		std::string getWellboreTrajectoryUuid() const;
+		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
+	};
 }
 

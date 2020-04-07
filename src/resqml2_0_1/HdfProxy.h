@@ -18,34 +18,42 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/HdfProxy.h"
+#include "../common/HdfProxy.h"
 
 namespace RESQML2_0_1_NS
 {
 	class HdfProxy : public COMMON_NS::HdfProxy
 	{
 	public:
+
+		/**
+		* Only to be used in partial transfer context
+		*/
+		DLL_IMPORT_OR_EXPORT HdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::HdfProxy(partialObject) {}
+
 		/**
 		* Creates an instance of this class in a gsoap context.
-		* @param soapContext		The soap context where the underlying gsoap proxy is going to be created.
+		* @param repo				The repo where the underlying gsoap proxy is going to be created.
 		* @param guid				The guid of the underlying gsoap proxy to be created.
 		* @param title				The title of the underlying gsoap proxy to be created.
 		* @packageDirAbsolutePath	The directory where the EPC document is stored. Must end with a slash or back-slash
 		* @relativeFilePath			The relative file path of the associated HDF file. It is relative to the location of the package
 		*/
-		HdfProxy(soap* soapContext, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
+		DLL_IMPORT_OR_EXPORT HdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
 
-		HdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) : 
-			COMMON_NS::HdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath) {}
+		DLL_IMPORT_OR_EXPORT HdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
+			COMMON_NS::HdfProxy(fromGsoap) {}
 
-		~HdfProxy() {}
+		DLL_IMPORT_OR_EXPORT ~HdfProxy() {}
 
 		/**
 		* Get the XML namespace for the tags for the XML serialization of this instance
 		*/
-		std::string getXmlNamespace() const;
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const;
 
 	private:
+		static const char * RESQML_ROOT_GROUP;
+
 		/**
 		* Check if a hdf group named "RESQML" exists as a child of the root of the HDF file.
 		* If it exists, it returns the latter. If not, it creates this group and then returns it.

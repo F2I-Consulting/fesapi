@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractRepresentation.h"
+#include "../resqml2/AbstractRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -29,38 +29,34 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		PlaneSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT PlaneSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
 		* @param interp							The interpretation this representation represents.
-		* @param crs							The local CRS where the geometry of this representation is given.
 		* @param guid							The guid to set to the new instance. If empty then a new guid will be generated.
 		* @param title							A title for the instance to create.
 		*/
-		PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+		PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 				const std::string & guid, const std::string & title);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		PlaneSetRepresentation(gsoap_resqml2_0_1::_resqml2__PlaneSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
+		PlaneSetRepresentation(gsoap_resqml2_0_1::_resqml20__PlaneSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~PlaneSetRepresentation() {}
-
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const {return "";};
-
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+		
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const { return nullptr; }
 
 		/**
 		* Get the Local 3d CRS dor where the reference point ordinals are given
 		* It assumes there is only one CRS used by this instance.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const;
 
 		/**
 		* Get the xyz point count in a given patch.
@@ -83,13 +79,25 @@ namespace RESQML2_0_1_NS
 		* Push back a new patch which is an horizontal plane
 		* @param zCoordinate	The Z coordinate of the horizontal plane
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackHorizontalPlaneGeometryPatch(const double & zCoordinate);
+		DLL_IMPORT_OR_EXPORT void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		* Push back a new patch which is not a horizontal plane. It s geometry is given by means of 3 XYZ points.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackTiltedPlaneGeometryPatch(const double & x1, const double & y1, const double & z1,
-			const double & x2, const double & y2, const double & z2,
-			const double & x3, const double & y3, const double & z3);
+		DLL_IMPORT_OR_EXPORT void pushBackTiltedPlaneGeometryPatch(
+			double x1, double y1, double z1,
+			double x2, double y2, double z2,
+			double x3, double y3, double z3,
+			RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

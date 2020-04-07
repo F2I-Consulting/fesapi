@@ -16,8 +16,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
-
 #ifndef CONTENT_TYPE_H
 #define CONTENT_TYPE_H
 
@@ -56,7 +54,7 @@ namespace epc
 		// *  A segment shall include at least one non-dot character.
 
 		ContentType(){};
-		ContentType(const bool & isAssociatedToAnExtension, const std::string & contentType, const std::string & extensionOrPartName);
+		ContentType(bool isAssociatedToAnExt, const std::string & contentType, const std::string & extOrPartName);
 		~ContentType() {};
 
 		// GETTTERS
@@ -65,7 +63,7 @@ namespace epc
 
 		// SETTERS
 		void setContentTypeString(const std::string & ctString) {contentTypeString = ctString;}
-		void setExtensionOrPartName(const std::string & extensionOrPartName) {this->extensionOrPartName = extensionOrPartName;}
+		void setExtensionOrPartName(const std::string & extOrPartName) {extensionOrPartName = extOrPartName;}
 
 		std::string toString() const;
 	};

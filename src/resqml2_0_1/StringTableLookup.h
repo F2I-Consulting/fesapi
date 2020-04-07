@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/AbstractObject.h"
+#include "../common/AbstractObject.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -29,7 +29,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		StringTableLookup(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT StringTableLookup(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Default constructor
@@ -38,30 +38,21 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Creates an instance of this class in a gsoap context.
-		* @param soap		A gsoap context wihch will manage the memory and the serialization/deserialization of this instance.
+		* @param repo		A repo which will manage the memory of this instance.
 		* @param guid		The guid to set to this instance. If empty then a new guid will be generated.
 		* @param title		A title for the instance to create.
 		*/
-		StringTableLookup(soap* soapContext, const std::string & guid, const std::string & title);
+		StringTableLookup(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		StringTableLookup(gsoap_resqml2_0_1::_resqml2__StringTableLookup* fromGsoap) : AbstractObject(fromGsoap) {}
+		StringTableLookup(gsoap_resqml2_0_1::_resqml20__StringTableLookup* fromGsoap) : AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~StringTableLookup() {}
-		
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
-
-		/**
-		* Add a categorical property values object which uses this string lookup.
-		* Does not add the inverse relationship i.e. from the categorical property values object to this string lookup.
-		*/
-		DLL_IMPORT_OR_EXPORT void addCategoricalPropertyValues(class CategoricalProperty* categVal) {categoricalPropertyValuesSet.push_back(categVal);}
 
 		/**
 		* Check wether a key value is contained within this string lookup or not.
@@ -116,18 +107,19 @@ namespace RESQML2_0_1_NS
 		/*
 		* Getter for the underlying map of the string lookup.
 		*/
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		DLL_IMPORT_OR_EXPORT std::unordered_map<long, std::string> getMap() const;
-#else
-		std::tr1::unordered_map<long, std::string> getMap() const;
-#endif
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	protected:
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
-		// XML backwards relationships
-		std::vector<class CategoricalProperty*> categoricalPropertyValuesSet;
+		void loadTargetRelationships();
 	};
 }

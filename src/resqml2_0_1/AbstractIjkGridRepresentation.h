@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractColumnLayerGridRepresentation.h"
+#include "../resqml2/AbstractColumnLayerGridRepresentation.h"
 
 #include <stdexcept>
 #include <map>
@@ -36,10 +36,9 @@ namespace RESQML2_0_1_NS
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		*/
-		void init(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
+		void init(COMMON_NS::DataObjectRepository * repo,
 				const std::string & guid, const std::string & title,
-				const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
-				bool withTruncatedPillars);
+				unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
 		class BlockInformation
 		{
@@ -67,14 +66,33 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml2__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), blockInformation(nullptr) {}
-		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml2__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), blockInformation(nullptr) {}
 
-		gsoap_resqml2_0_1::_resqml2__IjkGridRepresentation* getSpecializedGsoapProxy() const;
-		gsoap_resqml2_0_1::_resqml2__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy() const;
+		gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* getSpecializedGsoapProxy() const;
+		gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy() const;
 
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
 
+		/**
+		* Information about the splits (mainly due to faults) which occur in this grid.
+		* A splitInformation equal to nullptr means that it has not been initialized. An initialized splitInformation has always a size of getPillarCount().
+		* Indeed, each pillar of the grid (ordered I fastest then J slowest) is represented by a vector of split coordinate line information.
+		* A split coordinate line information is a pair composed by :
+		*  - first : the split coordinate line index
+		*  - second : all grid columns (identified by their indices: i fastest, j slowest) which are incident to (and consequently affected by) this split coordinate line
+		*
+		* Example : split info set to => {empty, empty, {{10, {51, 23}}}, empty, {{12, {51, 23}}, {15, {22}}, emtpy}
+		* This grid has 3 split coordinate lines (10, 12 and 15) which are related to two pillars (2 and 4).
+		* On the pillar 2, only a single split coordinate line (10) affects two columns (51, 23).
+		* On the pillar 4, two split coordinate lines exist (12 and 15). The split coordinate line 12 affects two columns (51 and 23). The split coordinate line 15 affects a single column (22).
+		* The other pillars are not splitted at all.
+		*
+		* Remarks :
+		* - There is a maximum of 3 split coordinate lines per pillar (the fourth one being considered as the non split one).
+		* -	There is a minimum of 1 column per split coordinate line.
+		* - There is a maximum of 3 columns per split coordinate line.
+		*/
 		std::vector< std::pair< unsigned int, std::vector<unsigned int> > >* splitInformation;
 
 		BlockInformation* blockInformation;
@@ -86,24 +104,20 @@ namespace RESQML2_0_1_NS
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		*/
-		AbstractIjkGridRepresentation(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
+		AbstractIjkGridRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
+			unsigned int iCount, unsigned int jCount, unsigned int kCount,
 			bool withTruncatedPillars = false);
 
-		AbstractIjkGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+		AbstractIjkGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
+			unsigned int iCount, unsigned int jCount, unsigned int kCount,
 			bool withTruncatedPillars = false);
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject,
-			bool withTruncatedPillars = false) :
-			AbstractColumnLayerGridRepresentation(partialObject, withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
-		{
-		}
+		DLL_IMPORT_OR_EXPORT AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars = false);
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -158,37 +172,37 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the I coordinate of a pillar from its global index in the grid.
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getIPillarFromGlobalIndex(const unsigned int & globalIndex) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getIPillarFromGlobalIndex(unsigned int globalIndex) const;
 
 		/**
 		* Get the J coordinate of a pillar from its global index in the grid.
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getJPillarFromGlobalIndex(const unsigned int & globalIndex) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getJPillarFromGlobalIndex(unsigned int globalIndex) const;
 
 		/**
 		* Get the global index of a pillar from its I and J indices in the grid.
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getGlobalIndexPillarFromIjIndex(const unsigned int & iPillar, const unsigned int & jPillar) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getGlobalIndexPillarFromIjIndex(unsigned int iPillar, unsigned int jPillar) const;
 
 		/**
 		* Get the I coordinate of a column from its global index in the grid.
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getIColumnFromGlobalIndex(const unsigned int & globalIndex) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getIColumnFromGlobalIndex(unsigned int globalIndex) const;
 
 		/**
 		* Get the J coordinate of a column from its global index in the grid.
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getJColumnFromGlobalIndex(const unsigned int & globalIndex) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getJColumnFromGlobalIndex(unsigned int globalIndex) const;
 
 		/**
 		* Get the global index of a cell from its I and J indices in the grid.
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getGlobalIndexColumnFromIjIndex(const unsigned int & iColumn, const unsigned int & jColumn) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getGlobalIndexColumnFromIjIndex(unsigned int iColumn, unsigned int jColumn) const;
 
 		/**
 		* Get the global index of a column from its I, J and K indices in the grid.
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getGlobalIndexCellFromIjkIndex(const unsigned int & iCell, const unsigned int & jCell, const unsigned int & kCell) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getGlobalIndexCellFromIjkIndex(unsigned int iCell, unsigned int jCell, unsigned int kCell) const;
 
 		DLL_IMPORT_OR_EXPORT bool isRightHanded() const;
 
@@ -241,7 +255,7 @@ namespace RESQML2_0_1_NS
 		 * The enabledCells array must have a count of getCellCount() and must follow the index ordering i then j then k.
 		 * A zero value in enabledCells means that the corresponding cell is disabled. A non zero value means that the corresponding cell is enabled.
 		 */
-		DLL_IMPORT_OR_EXPORT void setEnabledCells(unsigned char* enabledCells);
+		DLL_IMPORT_OR_EXPORT void setEnabledCells(unsigned char* enabledCells, COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		* Load the split information into memory to speed up processes.
@@ -258,7 +272,7 @@ namespace RESQML2_0_1_NS
 		 * @param kCellStart	The starting K cell index of the block taken from zero to kCellCount - 1.
 		 * @param kCellEnd		The ending K cell index of the block taken from zero to kCellCount - 1.
 		 */
-		DLL_IMPORT_OR_EXPORT void loadBlockInformation(const unsigned int & iInterfaceStart, const unsigned int & iInterfaceEnd, const unsigned int & jInterfaceStart, const unsigned int & jInterfaceEnd, const unsigned int & kInterfaceStart, const unsigned int & kInterfaceEnd);
+		DLL_IMPORT_OR_EXPORT void loadBlockInformation(unsigned int iInterfaceStart, unsigned int iInterfaceEnd, unsigned int jInterfaceStart, unsigned int jInterfaceEnd, unsigned int kInterfaceStart, unsigned int kInterfaceEnd);
 
 		/**
 		* Unload the split information from memory.
@@ -267,7 +281,7 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Check either a column edge is splitted or not.
-		* This method requires you have already loaded the split information.
+		* This method requires that you have already loaded the split information.
 		* @param iColumn	The I index of the column
 		* @param jColumn	The J index of the column
 		* @param edge		0 for edge from i to i+1, lower j connection
@@ -275,11 +289,11 @@ namespace RESQML2_0_1_NS
 		*					2 for edge from i+1 to i, upper j connection
 		*					3 for edge from j+1 to j, lower i connection
 		*/
-		DLL_IMPORT_OR_EXPORT bool isColumnEdgeSplitted(const unsigned int & iColumn, const unsigned int & jColumn, const unsigned int & edge) const;
+		DLL_IMPORT_OR_EXPORT bool isColumnEdgeSplitted(unsigned int iColumn, unsigned int jColumn, unsigned int edge) const;
 
 		/**
 		* Get the XYZ point index in the HDF dataset from the corner of a cell.
-		* This method requires your have already loaded the split information.
+		* This method requires that you have already loaded the split information.
 		* @param iCell	The I index of the cell
 		* @param jCell	The J index of the cell
 		* @param kCell	The K index of the cell
@@ -294,11 +308,11 @@ namespace RESQML2_0_1_NS
 		* @return index of the XYZ point corresponding to the iCell jCell and corner 
 		* parameters in the HDF dataset. Keep in mind to multiply the result by 3 to get the X index since the points are triplet of values.
 		*/
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointIndexFromCellCorner(const unsigned int & iCell, const unsigned int & jCell, const unsigned int & kCell, const unsigned int & corner) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointIndexFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner) const;
 
 		/**
 		* Gets the x, y and z values of the corner of a cell of a given block.
-		* This method requires your have already both loaded the block information and get the geometry of the block thanks to getXyzPointsOfBlockOfPatch.
+		* This method requires that you have already both loaded the block information and get the geometry of the block thanks to getXyzPointsOfBlockOfPatch.
 		* @param iCell			The I index of the cell.
 		* @param jCell			The J index of the cell.
 		* @param kCell			The K index of the cell.
@@ -315,14 +329,14 @@ namespace RESQML2_0_1_NS
 		* @param y				(output parameter) the y value of the corner we look for.
 		* @param z				(output parameter) the z value of the corner we look for.
 		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointOfBlockFromCellCorner(const unsigned int & iCell, const unsigned int & jCell, const unsigned int & kCell, const unsigned int & corner,
+		DLL_IMPORT_OR_EXPORT void getXyzPointOfBlockFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner,
 			const double* xyzPoints, double & x, double & y, double & z) const;
 
 		/**
 		* Get the xyz point count in each K Layer interface in a given patch.
 		* @param patchIndex	The index of the patch. It is generally zero.
 		*/
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfKInterfaceOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfKInterfaceOfPatch(unsigned int patchIndex) const;
 
 		/**
 		 * Get the xyz point count of the current block. Block information must be loaded.
@@ -337,25 +351,42 @@ namespace RESQML2_0_1_NS
 		* @param patchIndex	The index of the patch. It is generally zero.
 		* @param xyzPoints 	A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated with a size of 3*getXyzPointCountOfKInterfaceOfPatch.
 		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfKInterfaceOfPatch(const unsigned int & kInterface, const unsigned int & patchIndex, double * xyzPoints);
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfKInterfaceOfPatch(unsigned int kInterface, unsigned int patchIndex, double * xyzPoints);
 
 		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfKInterfaceSequenceOfPatch(const unsigned int & kInterfaceStart, const unsigned int & kInterfaceEnd, const unsigned int & patchIndex, double * xyzPoints);
 
 		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfBlockOfPatch(const unsigned int & patchIndex, double * xyzPoints);
 
 		/**
+		* Check wether the node geometry dataset is compressed or not.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual bool isNodeGeometryCompressed() const { return false; }
+
+		/**
 		* Get the K direction of the grid.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__KDirection getKDirection() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__KDirection getKDirection() const;
 
 		DLL_IMPORT_OR_EXPORT virtual geometryKind getGeometryKind() const { return UNKNOWN; }
-		DLL_IMPORT_OR_EXPORT virtual std::string getHdfProxyUuid() const { throw std::logic_error("Partial object"); }
+		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const { throw std::logic_error("Partial object"); }
 		DLL_IMPORT_OR_EXPORT virtual ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 
+		/**
+		* The standard XML tag without XML namespace for serializing this data object if not truncated.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object if truncated.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG_TRUNCATED;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const;
+
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 	};

@@ -18,14 +18,24 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "witsml2_0/AbstractObject.h"
-#include "witsml2_0/WellboreCompletion.h"
+#include "AbstractObject.h"
 
 namespace WITSML2_0_NS
 {
+	class WellboreCompletion;
+
 	class WellCompletion : public WITSML2_0_NS::AbstractObject
 	{
 	public:
+
+		/**
+		* Only to be used in partial transfer context
+		*/
+		DLL_IMPORT_OR_EXPORT WellCompletion(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
+
+		/**
+		* Constructor
+		*/
 		WellCompletion(class Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);
@@ -33,35 +43,47 @@ namespace WITSML2_0_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellCompletion(gsoap_eml2_1::witsml2__WellCompletion* fromGsoap) :AbstractObject(fromGsoap) {}
+		WellCompletion(gsoap_eml2_1::witsml20__WellCompletion* fromGsoap) :AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~WellCompletion() {}
 
+		/**
+		* Get the Data Object Reference of the well linked with this data object.
+		*/
 		gsoap_eml2_1::eml21__DataObjectReference* getWellDor() const;
 		
+		/**
+		* Get the well of this well completion.
+		*/
 		DLL_IMPORT_OR_EXPORT class Well* getWell() const;
 
+		/**
+		* Set the well of this well completion.
+		*/
 		DLL_IMPORT_OR_EXPORT void setWell(class Well* witsmlWell);
 
 		/**
-		* Resolve all relationships of the object in an epc document.
+		* Get all welbore completions linked with this well completion.
 		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		DLL_IMPORT_OR_EXPORT std::vector<WellboreCompletion *> getWellboreCompletions() const;
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-
-		DLL_IMPORT_OR_EXPORT const std::vector<WellboreCompletion*>& getWellboreCompletions() const { return wellboreCompletionSet; }
-
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	protected:
-		// backwards relationships
-		std::vector<WellboreCompletion* > wellboreCompletionSet;
-
-		friend void WellboreCompletion::setWellCompletion(WellCompletion * wellCompletion);
+		/**
+		* Resolve all relationships of the object in the repository.
+		*/
+		void loadTargetRelationships();
 	};
 }

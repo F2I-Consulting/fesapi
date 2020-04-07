@@ -16,92 +16,93 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/PropertyKind.h"
+#include "PropertyKind.h"
 
 #include <stdexcept>
 
-#include "resqml2/AbstractValuesProperty.h"
+#include "../resqml2/AbstractValuesProperty.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
-void PropertyKind::init(soap* soapContext, const std::string & guid, const std::string & title, const std::string & namingSystem)
+void PropertyKind::init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & namingSystem)
 {
-	if (soapContext == nullptr)
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr)
+		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREPropertyKind(soapContext, 1);
-	_resqml2__PropertyKind* propType = getSpecializedGsoapProxy();
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREPropertyKind(repo->getGsoapContext());
+	_resqml20__PropertyKind* propType = getSpecializedGsoapProxy();
 
 	propType->NamingSystem = namingSystem;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	repo->addOrReplaceDataObject(this);
 }
 
-PropertyKind::PropertyKind(soap* soapContext, const string & guid, const string & title,
-	const string & namingSystem, const resqml2__ResqmlUom & uom, const resqml2__ResqmlPropertyKind & parentEnergisticsPropertyKind)
+PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title,
+	const string & namingSystem, const resqml20__ResqmlUom & uom, const resqml20__ResqmlPropertyKind & parentEnergisticsPropertyKind)
 {
-	init(soapContext, guid, title, namingSystem);
-	static_cast<_resqml2__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = uom;
+	init(repo, guid, title, namingSystem);
+	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = uom;
 
-	resqml2__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml2__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap);
 	xmlStandardPropKind->Kind = parentEnergisticsPropertyKind;
-	static_cast<_resqml2__PropertyKind*>(gsoapProxy2_0_1)->ParentPropertyKind = xmlStandardPropKind;
+	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->ParentPropertyKind = xmlStandardPropKind;
 }
 
-PropertyKind::PropertyKind(soap* soapContext, const string & guid, const string & title,
-	const string & namingSystem, const resqml2__ResqmlUom & uom, RESQML2_NS::PropertyKind * parentPropType)
+PropertyKind::PropertyKind(const string & guid, const string & title,
+	const string & namingSystem, const resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * parentPropType)
 {
-	init(soapContext, guid, title, namingSystem);
-	static_cast<_resqml2__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = uom;
+	init(parentPropType->getRepository(), guid, title, namingSystem);
+	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = uom;
 
 	setParentPropertyKind(parentPropType);
 }
 
-PropertyKind::PropertyKind(soap* soapContext, const string & guid, const string & title,
-	const string & namingSystem, const std::string & nonStandardUom, const resqml2__ResqmlPropertyKind & parentEnergisticsPropertyKind)
+PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title,
+	const string & namingSystem, const std::string & nonStandardUom, const resqml20__ResqmlPropertyKind & parentEnergisticsPropertyKind)
 {
-	init(soapContext, guid, title, namingSystem);
-	static_cast<_resqml2__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc;
+	init(repo, guid, title, namingSystem);
+	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc;
 	pushBackExtraMetadata("Uom", nonStandardUom);
 
-	resqml2__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml2__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap);
 	xmlStandardPropKind->Kind = parentEnergisticsPropertyKind;
-	static_cast<_resqml2__PropertyKind*>(gsoapProxy2_0_1)->ParentPropertyKind = xmlStandardPropKind;
+	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->ParentPropertyKind = xmlStandardPropKind;
 }
 
-PropertyKind::PropertyKind(soap* soapContext, const string & guid, const string & title,
-	const string & namingSystem, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * parentPropType)
+PropertyKind::PropertyKind(const string & guid, const string & title,
+	const string & namingSystem, const std::string & nonStandardUom, COMMON_NS::PropertyKind * parentPropType)
 {
-	init(soapContext, guid, title, namingSystem);
-	static_cast<_resqml2__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc;
+	init(parentPropType->getRepository(), guid, title, namingSystem);
+	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc;
 	pushBackExtraMetadata("Uom", nonStandardUom);
 
 	setParentPropertyKind(parentPropType);
 }
 
-_resqml2__PropertyKind* PropertyKind::getSpecializedGsoapProxy() const
+_resqml20__PropertyKind* PropertyKind::getSpecializedGsoapProxy() const
 {
 	if (isPartial()) {
 		throw logic_error("Partial object");
 	}
 
-	return static_cast<_resqml2__PropertyKind*>(gsoapProxy2_0_1);
+	return static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1);
 }
 
-void PropertyKind::setXmlParentPropertyKind(RESQML2_NS::PropertyKind* parentPropertyKind)
+void PropertyKind::setXmlParentPropertyKind(COMMON_NS::PropertyKind* parentPropertyKind)
 {
-	_resqml2__PropertyKind* propType = getSpecializedGsoapProxy();
+	_resqml20__PropertyKind* propType = getSpecializedGsoapProxy();
 
-	resqml2__LocalPropertyKind* xmlLocalPropKind = soap_new_resqml2__LocalPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__LocalPropertyKind* xmlLocalPropKind = soap_new_resqml20__LocalPropertyKind(gsoapProxy2_0_1->soap);
 	xmlLocalPropKind->LocalPropertyKind = parentPropertyKind->newResqmlReference();
 	propType->ParentPropertyKind = xmlLocalPropKind;
 }
 
-bool PropertyKind::isChildOf(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind standardPropKind) const
+bool PropertyKind::isChildOf(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind standardPropKind) const
 {
 	if (isPartial()) {
 		throw std::invalid_argument("The property kind " + getUuid() + " is partial, we cannot consequently get its parents.");
@@ -114,8 +115,8 @@ bool PropertyKind::isChildOf(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind stan
 		if (getParentEnergisticsPropertyKind() == standardPropKind) {
 			return true;
 		}
-		else if (epcDocument->getPropertyKindMapper() != nullptr) {
-			return epcDocument->getPropertyKindMapper()->isChildOf(getParentEnergisticsPropertyKind(), standardPropKind);
+		else if (repository->getPropertyKindMapper() != nullptr) {
+			return repository->getPropertyKindMapper()->isChildOf(getParentEnergisticsPropertyKind(), standardPropKind);
 		}
 		else {
 			throw std::invalid_argument("You must load the property kind mapping files if you want to get the standard parent property kind.");
@@ -136,7 +137,7 @@ bool PropertyKind::isParentPartial() const
 		return false;
 	}
 
-	RESQML2_NS::PropertyKind* parentPk = getParentLocalPropertyKind();
+	COMMON_NS::PropertyKind* parentPk = getParentLocalPropertyKind();
 	while (!parentPk->isPartial() && !parentPk->isParentAnEnergisticsPropertyKind()) {
 		parentPk = parentPk->getParentLocalPropertyKind();
 	}

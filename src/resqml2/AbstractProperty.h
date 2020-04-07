@@ -18,29 +18,40 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/AbstractObject.h"
+#include "../common/AbstractObject.h"
+
+namespace RESQML2_0_1_NS
+{
+	class PropertySet;
+}
+
+namespace COMMON_NS
+{
+	class PropertyKind;
+}
 
 namespace RESQML2_NS
 {
 	class AbstractProperty: public COMMON_NS::AbstractObject
 	{
-	public:
+	protected:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT AbstractProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Default constructor
-		* Set the relationship with an AbstractRepresentation and a local property type.
 		*/
-		AbstractProperty(): local3dCrs(nullptr) {}
+		AbstractProperty() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractProperty(gsoap_resqml2_0_1::resqml2__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap), local3dCrs(nullptr) {}
+		AbstractProperty(gsoap_resqml2_0_1::resqml20__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+	public:
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -78,8 +89,87 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT std::string getRepresentationContentType() const;
 
 		/**
-		 * Set the representation which is associated to the current property.
-		 */
+		* Getter (in read only mode) of the element count per property value.
+		* If the property is a scalar one then it should be one.
+		* If it is a vectorial one, then it should be more than one.
+		* It is not possible to have some tensor property values (more dimensions than a vector).
+		*/
+		DLL_IMPORT_OR_EXPORT unsigned int getElementCountPerValue() const;
+
+		/**
+		* Get the kind of elements the property values are attached to.
+		*/
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__IndexableElements getAttachmentKind() const;
+
+		/**
+		* Get all property sets which contain this property
+		*/
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PropertySet *> getPropertySets() const;
+
+		DLL_IMPORT_OR_EXPORT unsigned int getPropertySetCount() const;
+
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertySet * getPropertySet(unsigned int index) const;
+		
+		//*********************************************
+		//****** CRS ***********************
+		//*********************************************
+
+		/**
+		* Set the local CRS which is associated to the current property.
+		* you sould not set any CRS if your property is not CRS related.
+		*/
+		DLL_IMPORT_OR_EXPORT void setLocalCrs(class AbstractLocal3dCrs * crs);
+
+		/**
+		* Getter for the local CRS which is associated to this property.
+		* Usually returns null except for a property which is CRS related.
+		*/
+		DLL_IMPORT_OR_EXPORT class AbstractLocal3dCrs* getLocalCrs() const;
+
+		/**
+		* @return	null pointer if no local CRS is associated to this property. Otherwise return the data object reference of the associated local CRS.
+		*/
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor() const;
+
+		/*
+		* Getter for the uuid of the local CRS which is associated to this property.
+		* @return empty string if no local CRS is associated to this property
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getLocalCrsUuid() const;
+
+		/*
+		* Getter for the uuid of the local CRS which is associated to this property.
+		* @return empty string if no local CRS is associated to this property
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getLocalCrsTitle() const;
+
+		//*********************************************
+		//****** REALIZATION DIMENSION ****************
+		//*********************************************
+
+		/**
+		* Check if this property has a realization index.
+		*/
+		DLL_IMPORT_OR_EXPORT bool hasRealizationIndex() const;
+
+		/**
+		* Get the realization index of this property.
+		* You should have verified before that this property actually has a realization index.
+		*/
+		DLL_IMPORT_OR_EXPORT ULONG64 getRealizationIndex() const;
+
+		/**
+		* Set the realization index of this property
+		*/
+		DLL_IMPORT_OR_EXPORT void setRealizationIndex(ULONG64 realizationIndex);
+
+		//*********************************************
+		//****** TIME DIMENSION ***********************
+		//*********************************************
+
+		/**
+		* Set the representation which is associated to the current property.
+		*/
 		DLL_IMPORT_OR_EXPORT void setTimeSeries(class TimeSeries * ts);
 
 		/**
@@ -126,43 +216,14 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT unsigned int getTimeIndex() const;
 
-		/**
-		* Set the Hdf Proxy where the numerical values are stored.
-		*/
-		DLL_IMPORT_OR_EXPORT void setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
-
-		/**
-		* Getter for the hdf proxy which stores this instance values.
-		*/
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractHdfProxy* getHdfProxy() const;
-
-		/*
-		 * Getter for the uuid of the hdf proxy which is used for storing the numerical values of this property.
-		 * An empty string is returned if no hd fproxy is used for storing the numerical values.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
-
-		/**
-		* Getter (in read only mode) of the element count per property value.
-		* If the property is a scalar one then it should be one.
-		* If it is a vectorial one, the it should be more than one.
-		* It is not possible to have some tensor property values (more dimension than a vector).
-		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getElementCountPerValue() const;
-
-		/**
-		* Get the kind of elements the property values are attached to.
-		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__IndexableElements getAttachmentKind() const;
+		//*********************************************
+		//****** PROP KIND ****************************
+		//*********************************************
 
 		/**
 		* Indicates if the property kind attached to this property is either from the standard catalog of Energistics or from a local property kind.
 		*/
 		DLL_IMPORT_OR_EXPORT bool isAssociatedToOneStandardEnergisticsPropertyKind() const;
-
-		//*********************************************
-		//****** PROP KIND ****************************
-		//*********************************************
 
 		/**
 		* Get the title of the property kind of this property
@@ -182,12 +243,12 @@ namespace RESQML2_NS
 		/**
 		* Getter for the energistics property kind which is associated to this intance.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind getEnergisticsPropertyKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind() const;
 
 		/**
 		* Set the property kind of the property to a local one.
 		*/
-		DLL_IMPORT_OR_EXPORT void setLocalPropertyKind(class PropertyKind* propKind);
+		DLL_IMPORT_OR_EXPORT void setLocalPropertyKind(COMMON_NS::PropertyKind* propKind);
 
 		/**
 		* @return	null pointer if no local property kind is associated to this property. Otherwise return the data object reference of the associated local property kind.
@@ -208,17 +269,17 @@ namespace RESQML2_NS
 		* Getter for the local property kind which is associated to this instance.
 		* If nullptr is returned then it means this instance is associated to an energistics standard property kind.
 		*/
-		DLL_IMPORT_OR_EXPORT class PropertyKind* getLocalPropertyKind() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* getLocalPropertyKind() const;
 
 		/**
 		* Check if the associated local property kind is allowed for this property.
 		*/
-		virtual bool validatePropertyKindAssociation(class PropertyKind* pk) = 0;
+		virtual bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk) = 0;
 
 		/**
 		* Check if the associated standard property kind is allowed for this property.
 		*/
-		virtual bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk) = 0;
+		virtual bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) = 0;
 
 		/**
 		* Check if the associated property kind is allowed for this property.
@@ -227,14 +288,6 @@ namespace RESQML2_NS
 
 	protected:
 
-		void setXmlRepresentation(class AbstractRepresentation * rep);
-		void setXmlTimeSeries(TimeSeries * ts);
-		void setXmlLocalPropertyKind(class PropertyKind* propKind);
-
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc);
-
-		class AbstractLocal3dCrs *		local3dCrs;			/// The used local 3D CRS in case the property values need one.
+		virtual void loadTargetRelationships();
 	};
 }
-

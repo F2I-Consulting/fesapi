@@ -16,9 +16,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
-
-
 #ifndef FILE_PART_H
 #define FILE_PART_H
 
@@ -49,7 +46,7 @@ namespace epc
 		// ACCESSORS
 		const std::string & getFinalPathName() const;
 		const FileRelationship & getFileRelationship() const;
-		Relationship getIndexRelationship(const int & index) const;
+		Relationship getIndexRelationship(int index) const;
 
 		void setFinalPathName(const std::string & finalPath);
 
@@ -61,7 +58,7 @@ namespace epc
 		/**
 		* Creates a new relationship into the relationship set of the part according to the supplied parameters
 		*/
-		void createRelationship(const std::string & rsTarget, const std::string & rsType,const std::string & rsId, const bool & internalTarget = true);
+		void createRelationship(const std::string & rsTarget, const std::string & rsType,const std::string & rsId, bool internalTarget = true);
 	};
 }
 

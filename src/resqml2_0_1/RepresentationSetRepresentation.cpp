@@ -16,25 +16,23 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/RepresentationSetRepresentation.h"
+#include "RepresentationSetRepresentation.h"
 
-#include "resqml2/AbstractFeatureInterpretation.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
 
 using namespace std;
-using namespace epc;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-RepresentationSetRepresentation::RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, const std::string & guid, const string & title) :
-	RESQML2_NS::RepresentationSetRepresentation(interp)
+RepresentationSetRepresentation::RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, const std::string & guid, const string & title)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The linked interpretation cannot be null. Please use another constructor.");
 	}
 
 	// proxy constructor
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORERepresentationSetRepresentation(interp->getGsoapContext(), 1);
-	static_cast<_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->IsHomogeneous = true;
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERepresentationSetRepresentation(interp->getGsoapContext());
+	static_cast<_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->IsHomogeneous = true;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -43,17 +41,18 @@ RepresentationSetRepresentation::RepresentationSetRepresentation(RESQML2_NS::Abs
 	setInterpretation(interp);
 }
 
-RepresentationSetRepresentation::RepresentationSetRepresentation(COMMON_NS::EpcDocument* epcDoc, const std::string & guid, const std::string & title)
+RepresentationSetRepresentation::RepresentationSetRepresentation(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title)
 {
-	if (epcDoc == nullptr) {
-		throw invalid_argument("The epc document cannot be NULL.");
+	if (repo == nullptr) {
+		throw invalid_argument("The repo cannot be NULL.");
 	}
 
 	// proxy constructor
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORERepresentationSetRepresentation(epcDoc->getGsoapContext(), 1);
-	static_cast<_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->IsHomogeneous = true;
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERepresentationSetRepresentation(repo->getGsoapContext());
+	static_cast<_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->IsHomogeneous = true;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
-}
 
+	repo->addOrReplaceDataObject(this);
+}

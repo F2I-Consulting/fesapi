@@ -33,39 +33,30 @@ const char* WellboreInterpretationTest::defaultUuid = "efc2e5d6-8a4a-4482-9561-c
 const char* WellboreInterpretationTest::defaultTitle = "Wellbore Interpretation Test";
 
 WellboreInterpretationTest::WellboreInterpretationTest(const string & epcDocPath)
-	: AbstractFeatureInterpretationTest(epcDocPath, defaultUuid, defaultTitle, WellboreTest::defaultUuid, WellboreTest::defaultTitle)
+	: commontest::AbstractObjectTest(epcDocPath)
 {
 }
 
-WellboreInterpretationTest::WellboreInterpretationTest(EpcDocument * epcDoc, bool init)
-	: AbstractFeatureInterpretationTest(epcDoc, defaultUuid, defaultTitle, WellboreTest::defaultUuid, WellboreTest::defaultTitle)
+WellboreInterpretationTest::WellboreInterpretationTest(DataObjectRepository * repo, bool init)
+	: commontest::AbstractObjectTest(repo)
 {
 	if (init)
-		this->initEpcDoc();
+		initRepo();
 	else
-		this->readEpcDoc();
+		readRepo();
 }
 
-void WellboreInterpretationTest::initEpcDocHandler()
+void WellboreInterpretationTest::initRepoHandler()
 {
 	// creating dependencies
-	WellboreTest* wellboreTest = new WellboreTest(this->epcDoc, true);
+	WellboreTest wellboreTest(repo, true);
 
-	WellboreFeature* wellbore = static_cast<WellboreFeature*>(this->epcDoc->getDataObjectByUuid(WellboreTest::defaultUuid));
+	WellboreFeature* wellbore = static_cast<WellboreFeature*>(repo->getDataObjectByUuid(WellboreTest::defaultUuid));
 
-	// cleaning
-	delete wellboreTest;
-
-	WellboreInterpretation* WellboreInterp = this->epcDoc->createWellboreInterpretation(wellbore, uuid, title, true);
+	WellboreInterpretation* WellboreInterp = repo->createWellboreInterpretation(wellbore, defaultUuid, defaultTitle, true);
 	REQUIRE( WellboreInterp != nullptr );
 }
 
-void WellboreInterpretationTest::readEpcDocHandler()
+void WellboreInterpretationTest::readRepoHandler()
 {
-	// reading dependencies
-	WellboreTest* wellboreTest = new WellboreTest(this->epcDoc, false);
-
-	// cleaning
-	delete wellboreTest;
 }
-

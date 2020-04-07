@@ -18,20 +18,16 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#if defined(_WIN32) || defined(__APPLE__)
 #include <unordered_map>
-#else
-#include <tr1/unordered_map>
-#endif
 
-#include "common/EpcDocument.h"
+#include "../common/DataObjectRepository.h"
 
 namespace RESQML2_0_1_NS
 {
 	class PropertyKindMapper
 	{
 	public:
-		PropertyKindMapper(COMMON_NS::EpcDocument* epcDoc):epcDocument(epcDoc) {}
+		PropertyKindMapper(COMMON_NS::DataObjectRepository* repository):dataObjRepo(repository) {}
 		~PropertyKindMapper() {}
 
 		/**
@@ -50,13 +46,13 @@ namespace RESQML2_0_1_NS
 		 * @apram	application						The name of the application
 		 * @return	The property kind name in the particular application. Or an empty string if not found.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & resqmlStandardPropertyKindName, const std::string & application) const;
+		DLL_IMPORT_OR_EXPORT std::string getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind resqmlStandardPropertyKindName, const std::string & application) const;
 
 		/**
 		 * @apram	application						The name of the application
 		 * @return	The abstract Resqml root property name if no resqml standard property name have been found for this particular application property kind name.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind getResqmlStandardPropertyKindNameFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getResqmlStandardPropertyKindNameFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application) const;
 
 		/**
 		 * @apram	application						The name of the application
@@ -78,55 +74,36 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Get the title of the parent of a Resqml Standard PropertyKind.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind getPropertyKindParentOfResqmlStandardPropertyKindName(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & resqmlStandardPropertyKindName) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getPropertyKindParentOfResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind resqmlStandardPropertyKindName) const;
 
 		/**
 		 * Get the description of a Resqml Standard PropertyKind.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getDescriptionOfResqmlStandardPropertyKindName(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & resqmlStandardPropertyKindName) const;
+		DLL_IMPORT_OR_EXPORT std::string getDescriptionOfResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind resqmlStandardPropertyKindName) const;
 
 		/**
 		* Check if a resqml property kind is a child of another one.
 		* @param child	The resqml property kind which is supposed to be the child
 		* @param parent	The resqml property kind which is supposed to be the parent
 		*/
-		DLL_IMPORT_OR_EXPORT bool isChildOf(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind child, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind parent) const;
+		DLL_IMPORT_OR_EXPORT bool isChildOf(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind child, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parent) const;
 
 		/**
 		* Check if a resqml property kind is an abstract one or not.
 		* @param resqmlStandardPropertyKindName	The resqml property kind to test
 		*/
-		DLL_IMPORT_OR_EXPORT bool isAbstract(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind resqmlStandardPropertyKindName) const;
+		DLL_IMPORT_OR_EXPORT bool isAbstract(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind resqmlStandardPropertyKindName) const;
 
 	private:
-		COMMON_NS::EpcDocument * epcDocument;
+		COMMON_NS::DataObjectRepository * dataObjRepo;
 
-
-#if (defined(_WIN32) && _MSC_VER >= 1600)
-		std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*> resqmlStandardPropertyKindNameToApplicationPropertyKindName;
-		std::unordered_map<std::string, std::unordered_map<std::string, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind> > applicationPropertyKindNameToResqmlStandardPropertyKindName; // First key string is the application name Second key string is the application property kind name.
+		std::unordered_map<gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::hash<int> > resqmlStandardPropertyKindNameToApplicationPropertyKindName;
+		std::unordered_map<std::string, std::unordered_map<std::string, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind> > applicationPropertyKindNameToResqmlStandardPropertyKindName; // First key string is the application name Second key string is the application property kind name.
 
 		std::unordered_map<std::string, std::unordered_map<std::string, std::string> > resqmlLocalPropertyKindUuidToApplicationPropertyKindName; // First key string is the application name, second is the uuid of the resqml local property.
 		std::unordered_map<std::string, std::unordered_map<std::string, std::string> > applicationPropertyKindNameToResqmlLocalPropertyKindUuid;
 
-		std::unordered_map<std::string, gsoap_resqml2_0_1::_resqml2__PropertyKind*> resqmlLocalPropertyKindUuidToResqmlLocalPropertyKind;
-#elif defined(__APPLE__)
-		std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::hash<int> > resqmlStandardPropertyKindNameToApplicationPropertyKindName;
-		std::unordered_map<std::string, std::unordered_map<std::string, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind> > applicationPropertyKindNameToResqmlStandardPropertyKindName;
-
-		std::unordered_map<std::string, std::unordered_map<std::string, std::string> > resqmlLocalPropertyKindUuidToApplicationPropertyKindName;
-		std::unordered_map<std::string, std::unordered_map<std::string, std::string> > applicationPropertyKindNameToResqmlLocalPropertyKindUuid;
-
-		std::unordered_map<std::string, gsoap_resqml2_0_1::_resqml2__PropertyKind*> resqmlLocalPropertyKindUuidToResqmlLocalPropertyKind;
-#else
-		std::tr1::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::tr1::hash<int> > resqmlStandardPropertyKindNameToApplicationPropertyKindName;
-		std::tr1::unordered_map< std::string, std::tr1::unordered_map<std::string, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind> > applicationPropertyKindNameToResqmlStandardPropertyKindName;
-
-		std::tr1::unordered_map< std::string, std::tr1::unordered_map<std::string, std::string> > resqmlLocalPropertyKindUuidToApplicationPropertyKindName;
-		std::tr1::unordered_map< std::string, std::tr1::unordered_map<std::string, std::string> > applicationPropertyKindNameToResqmlLocalPropertyKindUuid;
-
-		std::tr1::unordered_map<std::string, gsoap_resqml2_0_1::_resqml2__PropertyKind*> resqmlLocalPropertyKindUuidToResqmlLocalPropertyKind;
-#endif
+		std::unordered_map<std::string, gsoap_resqml2_0_1::_resqml20__PropertyKind*> resqmlLocalPropertyKindUuidToResqmlLocalPropertyKind;
 
 	};
 }

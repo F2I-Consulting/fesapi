@@ -18,15 +18,16 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "ActivityTemplateTest.h"
+#include "AbstractObjectTest.h"
 #include <iostream>
+#include <map>
 
 namespace COMMON_NS {
-	class EpcDocument;
+	class DataObjectRepository;
 }
 
 namespace resqml2_0_1test {
-	class ActivityTemplateGenericCreationTest : public ActivityTemplateTest {
+	class ActivityTemplateGenericCreationTest : public commontest::AbstractObjectTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;
@@ -34,17 +35,29 @@ namespace resqml2_0_1test {
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,
 		* exising .epc file will be erased. 
-		* @param epcDocPath the path of the .epc file (including .epc extension)
+		* @param repoPath the path of the .epc file (including .epc extension)
 		*/
-		ActivityTemplateGenericCreationTest(const std::string & epcDocPath);
+		ActivityTemplateGenericCreationTest(const std::string & repoPath);
 
 		/**
 		* Creation of a testing object from an existing EPC document.
-		* @param epcDoc an existing EPC document
+		* @param repo an existing EPC document
 		* @param init true if this object is created for initialization purpose else false if it is 
-		* created for reading purpose. According to init value a iniEpcDoc() or readEpcDoc() is called.
+		* created for reading purpose. According to init value a inirepo() or readRepo() is called.
 		*/
-		ActivityTemplateGenericCreationTest(COMMON_NS::EpcDocument * epcDoc, bool init);
+		ActivityTemplateGenericCreationTest(COMMON_NS::DataObjectRepository * repo, bool init);
+	protected:
+		struct ParameterTest {
+			std::string title;
+			bool isInput;
+			bool isOutput;
+			int minOccurs;
+			int maxOccurs;
+		};
+
+		std::map<std::string, ParameterTest> parameterMap;
+
+		void initRepoHandler();
+		void readRepoHandler();
 	};
 }
-

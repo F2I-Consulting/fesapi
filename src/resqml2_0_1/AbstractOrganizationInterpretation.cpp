@@ -16,28 +16,27 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/AbstractOrganizationInterpretation.h"
+#include "AbstractOrganizationInterpretation.h"
 
 #include <stdexcept>
 
-#include "resqml2_0_1/OrganizationFeature.h"
-#include "resqml2_0_1/EarthModelInterpretation.h"
+#include "OrganizationFeature.h"
+#include "EarthModelInterpretation.h"
 
 using namespace std;
-using namespace epc;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-void AbstractOrganizationInterpretation::pushBackBinaryContact(const gsoap_resqml2_0_1::resqml2__ContactRelationship & kind, AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactVerb & verb, AbstractFeatureInterpretation* directObject)
+void AbstractOrganizationInterpretation::pushBackBinaryContact(const gsoap_resqml2_0_1::resqml20__ContactRelationship & kind, AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml20__ContactVerb & verb, AbstractFeatureInterpretation* directObject)
 {
 	if (!subject)
 		throw invalid_argument("The subject of the binary contact cannot be null.");
 	if (!directObject)
 		throw invalid_argument("The direct object of the binary contact cannot be null.");
 
-	resqml2__AbstractOrganizationInterpretation* org = static_cast<resqml2__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
+	resqml20__AbstractOrganizationInterpretation* org = static_cast<resqml20__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
 
-	resqml2__BinaryContactInterpretationPart* contact = soap_new_resqml2__BinaryContactInterpretationPart(org->soap, 1);
+	resqml20__BinaryContactInterpretationPart* contact = soap_new_resqml20__BinaryContactInterpretationPart(org->soap);
 	contact->Index = org->ContactInterpretation.size();
 	org->ContactInterpretation.push_back(contact);
 
@@ -47,27 +46,27 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(const gsoap_resqm
 	contact->DirectObject = directObject->newResqmlContactElementReference(); // Not to add for EPC relationships since by business rule it must be present in the object listing/stack of the organization
 }
 
-void AbstractOrganizationInterpretation::pushBackBinaryContact(const gsoap_resqml2_0_1::resqml2__ContactRelationship & kind, AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactVerb & verb, AbstractFeatureInterpretation* directObject,
-		const gsoap_resqml2_0_1::resqml2__ContactSide & directObjectQualifier)
+void AbstractOrganizationInterpretation::pushBackBinaryContact(const gsoap_resqml2_0_1::resqml20__ContactRelationship & kind, AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml20__ContactVerb & verb, AbstractFeatureInterpretation* directObject,
+		const gsoap_resqml2_0_1::resqml20__ContactSide & directObjectQualifier)
 {
-	resqml2__AbstractOrganizationInterpretation* org = static_cast<resqml2__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
+	resqml20__AbstractOrganizationInterpretation* org = static_cast<resqml20__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
 
 	pushBackBinaryContact(kind, subject, verb, directObject);
-	resqml2__BinaryContactInterpretationPart* contact = static_cast<resqml2__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
-	contact->DirectObject->Qualifier = static_cast<resqml2__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml2__ContactSide)));
+	resqml20__BinaryContactInterpretationPart* contact = static_cast<resqml20__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
+	contact->DirectObject->Qualifier = static_cast<resqml20__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactSide)));
 	*(contact->DirectObject->Qualifier) = directObjectQualifier;
 }
 
-void AbstractOrganizationInterpretation::pushBackBinaryContact(const gsoap_resqml2_0_1::resqml2__ContactRelationship & kind, AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactSide & subjectQualifier,
-        const gsoap_resqml2_0_1::resqml2__ContactVerb & verb,
-        AbstractFeatureInterpretation* directObject, const gsoap_resqml2_0_1::resqml2__ContactSide & directObjectQualifier)
+void AbstractOrganizationInterpretation::pushBackBinaryContact(const gsoap_resqml2_0_1::resqml20__ContactRelationship & kind, AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml20__ContactSide & subjectQualifier,
+        const gsoap_resqml2_0_1::resqml20__ContactVerb & verb,
+        AbstractFeatureInterpretation* directObject, const gsoap_resqml2_0_1::resqml20__ContactSide & directObjectQualifier)
 {
-    resqml2__AbstractOrganizationInterpretation* org = static_cast<resqml2__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
+    resqml20__AbstractOrganizationInterpretation* org = static_cast<resqml20__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
 
     pushBackBinaryContact(kind, subject, verb, directObject);
-    resqml2__BinaryContactInterpretationPart* contact = static_cast<resqml2__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
-    contact->DirectObject->Qualifier = static_cast<resqml2__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml2__ContactSide)));
+    resqml20__BinaryContactInterpretationPart* contact = static_cast<resqml20__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
+    contact->DirectObject->Qualifier = static_cast<resqml20__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactSide)));
     *(contact->DirectObject->Qualifier) = directObjectQualifier;
-    contact->Subject->Qualifier = static_cast<resqml2__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml2__ContactSide)));
+    contact->Subject->Qualifier = static_cast<resqml20__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactSide)));
     *(contact->Subject->Qualifier) = subjectQualifier;
 }

@@ -16,65 +16,59 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/Grid2dRepresentation.h"
+#include "Grid2dRepresentation.h"
 
 #include <algorithm>
 #include <stdexcept>
 
-#include "resqml2/AbstractFeatureInterpretation.h"
-#include "resqml2_0_1/SeismicLatticeFeature.h"
-#include "common/AbstractHdfProxy.h"
-#include "resqml2/AbstractLocal3dCrs.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "SeismicLatticeFeature.h"
+#include "../common/AbstractHdfProxy.h"
+#include "LocalDepth3dCrs.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* Grid2dRepresentation::XML_TAG = "Grid2dRepresentation";
 
-Grid2dRepresentation::Grid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
-	const string & guid, const std::string & title):
-	AbstractSurfaceRepresentation(interp, crs), supportingRepresentation(nullptr)
+Grid2dRepresentation::Grid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+	const string & guid, const std::string & title)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREGrid2dRepresentation(interp->getGsoapContext(), 1);
-	_resqml2__Grid2dRepresentation* singleGrid2dRep = static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGrid2dRepresentation(interp->getGsoapContext());
+	_resqml20__Grid2dRepresentation* singleGrid2dRep = static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	// Surface role
-	if (interp->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORESeismicLatticeFeature)
-		singleGrid2dRep->SurfaceRole = resqml2__SurfaceRole__pick;
-
-	// relationhsips
-	localCrs = crs;
-	localCrs->addRepresentation(this);
+	if (interp->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORESeismicLatticeFeature)
+		singleGrid2dRep->SurfaceRole = resqml20__SurfaceRole__pick;
 
 	setInterpretation(interp);
 }
 
-resqml2__PointGeometry* Grid2dRepresentation::getPointGeometry2_0_1(const unsigned int & patchIndex) const
+resqml20__PointGeometry* Grid2dRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
 {
 	if (patchIndex == 0)
-		return static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry;
+		return static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry;
 	else
 		return nullptr;
 }
 
-string Grid2dRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* Grid2dRepresentation::getHdfProxyDor() const
 {
-	return getHdfProxyUuidFromPointGeometryPatch(getPointGeometry2_0_1(0));
+	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
 ULONG64 Grid2dRepresentation::getNodeCountAlongIAxis() const
 {
-	return static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->FastestAxisCount;
+	return static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->FastestAxisCount;
 }
 
 ULONG64 Grid2dRepresentation::getNodeCountAlongJAxis() const
 {
-	return static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->SlowestAxisCount;
+	return static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->SlowestAxisCount;
 }
 
 ULONG64 Grid2dRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
@@ -97,18 +91,20 @@ void Grid2dRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, 
 
 void Grid2dRepresentation::getZValues(double* values) const
 {
-	_resqml2__Grid2dRepresentation* rep = static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__Grid2dRepresentation* rep = static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1);
 
-	if (rep->Grid2dPatch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dZValueArray) {
-		resqml2__AbstractDoubleArray* zValues = static_cast<resqml2__Point3dZValueArray*>(rep->Grid2dPatch->Geometry->Points)->ZValues;
-		if (zValues->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-			hdfProxy->readArrayNdOfDoubleValues(static_cast<resqml2__DoubleHdf5Array*>(zValues)->Values->PathInHdfFile, values);
+	if (rep->Grid2dPatch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dZValueArray) {
+		resqml20__AbstractDoubleArray* zValues = static_cast<resqml20__Point3dZValueArray*>(rep->Grid2dPatch->Geometry->Points)->ZValues;
+		if (zValues->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
+			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(zValues)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values);
 		}
 		else {
 			throw std::logic_error("The Z values can only be retrieved if they are described as a DoubleHdf5Array.");
 		}
 	}
-	else if (rep->Grid2dPatch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dLatticeArray) {
+	else if (rep->Grid2dPatch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray) {
 		const double zOrigin = getZOrigin();
 		double zIOffset = getZIOffset();
 		double zJOffset = getZJOffset();
@@ -165,8 +161,10 @@ void Grid2dRepresentation::getZValuesInGlobalCrs(double * values) const
 {
 	getZValues(values);
 
-	if (localCrs->getGsoapType() != SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORELocalTime3dCrs) {
-		_resqml2__Grid2dRepresentation* rep = static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1);
+	RESQML2_NS::AbstractLocal3dCrs const * localCrs = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractLocal3dCrs>(static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry->LocalCrs->UUID);
+
+	if (localCrs != nullptr) {
+		_resqml20__Grid2dRepresentation const * rep = static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1);
 		const ULONG64 nodeCount = rep->Grid2dPatch->FastestAxisCount * rep->Grid2dPatch->SlowestAxisCount;
 		const double zOffset = localCrs->getOriginDepthOrElevation();
 		if (zOffset != .0) {
@@ -176,17 +174,17 @@ void Grid2dRepresentation::getZValuesInGlobalCrs(double * values) const
 	}
 }
 
-resqml2__Point3dLatticeArray* Grid2dRepresentation::getArrayLatticeOfPoints3d() const
+resqml20__Point3dLatticeArray* Grid2dRepresentation::getArrayLatticeOfPoints3d() const
 {
-	resqml2__Grid2dPatch* patch = static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch;
-	if (patch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dLatticeArray) {
-		return static_cast<resqml2__Point3dLatticeArray*>(patch->Geometry->Points);
+	resqml20__Grid2dPatch* patch = static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch;
+	if (patch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray) {
+		return static_cast<resqml20__Point3dLatticeArray*>(patch->Geometry->Points);
 	}
 	
-	if (patch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dZValueArray) {
-		resqml2__Point3dZValueArray* arrayOfZValuePoints3d = static_cast<resqml2__Point3dZValueArray*>(patch->Geometry->Points);
-		if (arrayOfZValuePoints3d->SupportingGeometry->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dLatticeArray) {
-			return static_cast<resqml2__Point3dLatticeArray*>(arrayOfZValuePoints3d->SupportingGeometry);
+	if (patch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dZValueArray) {
+		resqml20__Point3dZValueArray* arrayOfZValuePoints3d = static_cast<resqml20__Point3dZValueArray*>(patch->Geometry->Points);
+		if (arrayOfZValuePoints3d->SupportingGeometry->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray) {
+			return static_cast<resqml20__Point3dLatticeArray*>(arrayOfZValuePoints3d->SupportingGeometry);
 		}
 	}
 
@@ -195,7 +193,7 @@ resqml2__Point3dLatticeArray* Grid2dRepresentation::getArrayLatticeOfPoints3d() 
 
 double Grid2dRepresentation::getXOrigin() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
 	if (arrayLatticeOfPoints3d != nullptr) {
 		return arrayLatticeOfPoints3d->Origin->Coordinate1;
@@ -205,6 +203,7 @@ double Grid2dRepresentation::getXOrigin() const
 		const int iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
 		const int jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
 
+		Grid2dRepresentation const * supportingRepresentation = getSupportingRepresentation();
 		return iOrigin == 0 && jOrigin == 0 ? supportingRepresentation->getXOrigin() :
 			supportingRepresentation->getXOrigin() + iOrigin*supportingRepresentation->getXIOffset() + jOrigin*supportingRepresentation->getXJOffset();
 
@@ -215,7 +214,7 @@ double Grid2dRepresentation::getXOrigin() const
 
 double Grid2dRepresentation::getYOrigin() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
 	if (arrayLatticeOfPoints3d != nullptr) {
 		return arrayLatticeOfPoints3d->Origin->Coordinate2;
@@ -225,6 +224,7 @@ double Grid2dRepresentation::getYOrigin() const
 		const int iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
 		const int jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
 
+		Grid2dRepresentation const * supportingRepresentation = getSupportingRepresentation();
 		return iOrigin == 0 && jOrigin == 0 ? supportingRepresentation->getYOrigin() :
 			supportingRepresentation->getYOrigin() + iOrigin*supportingRepresentation->getYIOffset() + jOrigin*supportingRepresentation->getYJOffset();
 	}
@@ -234,7 +234,7 @@ double Grid2dRepresentation::getYOrigin() const
 
 double Grid2dRepresentation::getZOrigin() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
 	if (arrayLatticeOfPoints3d != nullptr) {
 		return arrayLatticeOfPoints3d->Origin->Coordinate3;
@@ -244,6 +244,7 @@ double Grid2dRepresentation::getZOrigin() const
 		const int iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
 		const int jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
 
+		Grid2dRepresentation const * supportingRepresentation = getSupportingRepresentation();
 		return iOrigin == 0 && jOrigin == 0 ? supportingRepresentation->getZOrigin() :
 			supportingRepresentation->getZOrigin() + iOrigin*supportingRepresentation->getZIOffset() + jOrigin*supportingRepresentation->getZJOffset();
 	}
@@ -257,6 +258,11 @@ double Grid2dRepresentation::getComponentInGlobalCrs(double x, double y, double 
 	if (result[componentIndex] != result[componentIndex]) {
 		return result[componentIndex];
 	}
+
+	// there can be only one patch in a 2d grid repesentation
+	RESQML2_NS::AbstractLocal3dCrs* localCrs = componentIndex != 2 && getSupportingRepresentationDor() != nullptr
+		? getSupportingRepresentation()->getLocalCrs(0)
+		: getLocalCrs(0);
 
 	localCrs->convertXyzPointsToGlobalCrs(result, 1, withoutTranslation);
 
@@ -280,10 +286,10 @@ double Grid2dRepresentation::getZOriginInGlobalCrs() const
 
 double Grid2dRepresentation::getXJOffset() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
 	if (arrayLatticeOfPoints3d != nullptr) {
-		resqml2__Point3d * offset = arrayLatticeOfPoints3d->Offset[0]->Offset;
+		resqml20__Point3d * offset = arrayLatticeOfPoints3d->Offset[0]->Offset;
 		return isJSpacingConstant() ?
 			offset->Coordinate1 * getJSpacing() /
 			sqrt(offset->Coordinate1 * offset->Coordinate1 + offset->Coordinate2 * offset->Coordinate2) :
@@ -291,7 +297,7 @@ double Grid2dRepresentation::getXJOffset() const
 	}
 	
 	if (!getSupportingRepresentationUuid().empty()) {
-		return supportingRepresentation->getXJOffset() * getIndexOffsetOnSupportingRepresentation(0);
+		return getSupportingRepresentation()->getXJOffset() * getIndexOffsetOnSupportingRepresentation(0);
 	}
 
 	throw invalid_argument("No lattice array have been found for this 2d grid.");
@@ -299,10 +305,10 @@ double Grid2dRepresentation::getXJOffset() const
 
 double Grid2dRepresentation::getYJOffset() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
 	if (arrayLatticeOfPoints3d != nullptr) {
-		resqml2__Point3d * offset = arrayLatticeOfPoints3d->Offset[0]->Offset;
+		resqml20__Point3d * offset = arrayLatticeOfPoints3d->Offset[0]->Offset;
 		return isJSpacingConstant() ?
 			offset->Coordinate2 * getJSpacing() /
 			sqrt(offset->Coordinate1 * offset->Coordinate1 + offset->Coordinate2 * offset->Coordinate2) :
@@ -310,7 +316,7 @@ double Grid2dRepresentation::getYJOffset() const
 	}
 	
 	if (!getSupportingRepresentationUuid().empty()) {
-		return supportingRepresentation->getYJOffset() * getIndexOffsetOnSupportingRepresentation(0);
+		return getSupportingRepresentation()->getYJOffset() * getIndexOffsetOnSupportingRepresentation(0);
 	}
 
 	throw invalid_argument("No lattice array have been found for this 2d grid.");
@@ -318,10 +324,10 @@ double Grid2dRepresentation::getYJOffset() const
 
 double Grid2dRepresentation::getZJOffset() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
 	if (arrayLatticeOfPoints3d != nullptr) {
-		resqml2__Point3d * offset = arrayLatticeOfPoints3d->Offset[0]->Offset;
+		resqml20__Point3d * offset = arrayLatticeOfPoints3d->Offset[0]->Offset;
 		return isJSpacingConstant() ?
 			offset->Coordinate3 * getJSpacing() /
 			sqrt(offset->Coordinate1 * offset->Coordinate1 + offset->Coordinate2 * offset->Coordinate2) :
@@ -329,7 +335,7 @@ double Grid2dRepresentation::getZJOffset() const
 	}
 	
 	if (!getSupportingRepresentationUuid().empty()) {
-		return supportingRepresentation->getZJOffset() * getIndexOffsetOnSupportingRepresentation(0);
+		return getSupportingRepresentation()->getZJOffset() * getIndexOffsetOnSupportingRepresentation(0);
 	}
 
 	throw invalid_argument("No lattice array have been found for this 2d grid.");
@@ -352,10 +358,10 @@ double Grid2dRepresentation::getZJOffsetInGlobalCrs() const
 
 double Grid2dRepresentation::getXIOffset() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
 	if (arrayLatticeOfPoints3d != nullptr) {
-		resqml2__Point3d * offset = arrayLatticeOfPoints3d->Offset[1]->Offset;
+		resqml20__Point3d * offset = arrayLatticeOfPoints3d->Offset[1]->Offset;
 		return isISpacingConstant() ? 
 			offset->Coordinate1 * getISpacing() /
 			sqrt(offset->Coordinate1 * offset->Coordinate1 + offset->Coordinate2 * offset->Coordinate2) :
@@ -363,7 +369,7 @@ double Grid2dRepresentation::getXIOffset() const
 	}
 	
 	if (!getSupportingRepresentationUuid().empty()) {
-		return supportingRepresentation->getXIOffset() * getIndexOffsetOnSupportingRepresentation(1);
+		return getSupportingRepresentation()->getXIOffset() * getIndexOffsetOnSupportingRepresentation(1);
 	}
 
 	throw invalid_argument("No lattice array have been found for this 2d grid.");
@@ -371,10 +377,10 @@ double Grid2dRepresentation::getXIOffset() const
 
 double Grid2dRepresentation::getYIOffset() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
 	if (arrayLatticeOfPoints3d != nullptr) {
-		resqml2__Point3d * offset = arrayLatticeOfPoints3d->Offset[1]->Offset;
+		resqml20__Point3d * offset = arrayLatticeOfPoints3d->Offset[1]->Offset;
 		return isISpacingConstant() ?
 			offset->Coordinate2 * getISpacing() /
 			sqrt(offset->Coordinate1 * offset->Coordinate1 + offset->Coordinate2 * offset->Coordinate2) :
@@ -382,7 +388,7 @@ double Grid2dRepresentation::getYIOffset() const
 	}
 	
 	if (!getSupportingRepresentationUuid().empty()) {
-		return supportingRepresentation->getYIOffset() * getIndexOffsetOnSupportingRepresentation(1);
+		return getSupportingRepresentation()->getYIOffset() * getIndexOffsetOnSupportingRepresentation(1);
 	}
 
 	throw invalid_argument("No lattice array have been found for this 2d grid.");
@@ -390,10 +396,10 @@ double Grid2dRepresentation::getYIOffset() const
 
 double Grid2dRepresentation::getZIOffset() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
 	if (arrayLatticeOfPoints3d != nullptr) {
-		resqml2__Point3d * offset = arrayLatticeOfPoints3d->Offset[1]->Offset;
+		resqml20__Point3d * offset = arrayLatticeOfPoints3d->Offset[1]->Offset;
 		return isISpacingConstant() ?
 			offset->Coordinate3 * getISpacing() /
 			sqrt(offset->Coordinate1 * offset->Coordinate1 + offset->Coordinate2 * offset->Coordinate2) :
@@ -401,7 +407,7 @@ double Grid2dRepresentation::getZIOffset() const
 	}
 
 	if (!getSupportingRepresentationUuid().empty()) {
-		return supportingRepresentation->getYIOffset() * getIndexOffsetOnSupportingRepresentation(1);
+		return getSupportingRepresentation()->getYIOffset() * getIndexOffsetOnSupportingRepresentation(1);
 	}
 
 	throw invalid_argument("No lattice array have been found for this 2d grid.");
@@ -424,17 +430,17 @@ double Grid2dRepresentation::getZIOffsetInGlobalCrs() const
 
 bool Grid2dRepresentation::isJSpacingConstant() const
 {
-	const resqml2__Point3dLatticeArray* const arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	const resqml20__Point3dLatticeArray* const arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
 	if (arrayLatticeOfPoints3d != nullptr) {
 		if (!arrayLatticeOfPoints3d->Offset.empty()) {
-			return arrayLatticeOfPoints3d->Offset[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray;
+			return arrayLatticeOfPoints3d->Offset[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray;
 		}
 
 		throw invalid_argument("This 2d grid representation does not look to have dimensions.");
 	}
 	else if (!getSupportingRepresentationUuid().empty()) {
-		return supportingRepresentation->isJSpacingConstant();
+		return getSupportingRepresentation()->isJSpacingConstant();
 	}
 
 	throw logic_error("This 2D grid representation looks not valid : no lattice geometry and non supporting grid 2D representation.");
@@ -442,17 +448,17 @@ bool Grid2dRepresentation::isJSpacingConstant() const
 
 bool Grid2dRepresentation::isISpacingConstant() const
 {
-	const resqml2__Point3dLatticeArray* const arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	const resqml20__Point3dLatticeArray* const arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
 	if (arrayLatticeOfPoints3d != nullptr) {
 		if (arrayLatticeOfPoints3d->Offset.size() > 1) {
-			return arrayLatticeOfPoints3d->Offset[1]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray;
+			return arrayLatticeOfPoints3d->Offset[1]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray;
 		}
 		
 		throw invalid_argument("This 2d grid representation does not look to have (at least) 2 dimensions.");
 	}
 	else if (!getSupportingRepresentationUuid().empty()) {
-		return supportingRepresentation->isISpacingConstant();
+		return getSupportingRepresentation()->isISpacingConstant();
 	}
 
 	throw logic_error("This 2D grid representation looks not valid : no lattice geometry and non supporting grid 2D representation.");
@@ -464,33 +470,38 @@ double Grid2dRepresentation::getJSpacing() const
 		throw invalid_argument("The J spacing of this 2d grid does not look to be constant.");
 	}
 
-	const resqml2__Point3dLatticeArray* const arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	const resqml20__Point3dLatticeArray* const arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
 	if (arrayLatticeOfPoints3d != nullptr) {
-		return static_cast<resqml2__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Value;
+		return static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Value;
 	}
 
 	const int jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
-	const double jSpacingOnSupportingRep = supportingRepresentation->getJSpacing();
+	const double jSpacingOnSupportingRep = getSupportingRepresentation()->getJSpacing();
 
 	return jIndexOffset * jSpacingOnSupportingRep;
 }
 
 void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 {
-	const resqml2__Point3dLatticeArray* const arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	const resqml20__Point3dLatticeArray* const arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
 	const ULONG64 jSpacingCount = getNodeCountAlongJAxis() - 1;
 
 	if (arrayLatticeOfPoints3d != nullptr) {
-		if (arrayLatticeOfPoints3d->Offset[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray) {
-			const double constantSpacing = static_cast<resqml2__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Value;
+		if (arrayLatticeOfPoints3d->Offset[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray) {
+			const double constantSpacing = static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Value;
 			for (ULONG64 j = 0; j < jSpacingCount; ++j) {
 				jSpacings[j] = constantSpacing;
 			}
 		}
-		else if (arrayLatticeOfPoints3d->Offset[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-			hdfProxy->readArrayNdOfDoubleValues(static_cast<resqml2__DoubleHdf5Array*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Values->PathInHdfFile, jSpacings);
+		else if (arrayLatticeOfPoints3d->Offset[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
+			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
+			if (hdfProxy == nullptr) {
+				throw invalid_argument("The HDF proxy is missing.");
+			}
+			hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, jSpacings);
 		}
 		else {
 			throw logic_error("Not implemented yet.");
@@ -501,7 +512,7 @@ void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 		const int jIndexOrigin = getIndexOriginOnSupportingRepresentation(0);
 		const int jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
 		double* const jSpacingsOnSupportingRep = new double[jSpacingCount];
-		supportingRepresentation->getJSpacing(jSpacingsOnSupportingRep);
+		getSupportingRepresentation()->getJSpacing(jSpacingsOnSupportingRep);
 		
 		for (ULONG64 j = 0; j < jSpacingCount; ++j) {
 			jSpacings[j] = .0;
@@ -532,33 +543,38 @@ double Grid2dRepresentation::getISpacing() const
 		throw invalid_argument("The I spacing of this 2d grid does not look to be constant.");
 	}
 
-	const resqml2__Point3dLatticeArray* const arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	const resqml20__Point3dLatticeArray* const arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
 	if (arrayLatticeOfPoints3d != nullptr) {
-		return static_cast<resqml2__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[1]->Spacing)->Value;
+		return static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[1]->Spacing)->Value;
 	}
 
 	const int iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
-	const double iSpacingOnSupportingRep = supportingRepresentation->getISpacing();
+	const double iSpacingOnSupportingRep = getSupportingRepresentation()->getISpacing();
 
 	return iIndexOffset * iSpacingOnSupportingRep;
 }
 
 void Grid2dRepresentation::getISpacing(double* const iSpacings) const
 {
-	const resqml2__Point3dLatticeArray* const arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	const resqml20__Point3dLatticeArray* const arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
 	const ULONG64 iSpacingCount = getNodeCountAlongIAxis() - 1;
 
 	if (arrayLatticeOfPoints3d != nullptr) {
-		if (arrayLatticeOfPoints3d->Offset[1]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray) {
-			const double constantSpacing = static_cast<resqml2__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[1]->Spacing)->Value;
+		if (arrayLatticeOfPoints3d->Offset[1]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray) {
+			const double constantSpacing = static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[1]->Spacing)->Value;
 			for (ULONG64 i = 0; i < iSpacingCount; ++i) {
 				iSpacings[i] = constantSpacing;
 			}
 		}
-		else if (arrayLatticeOfPoints3d->Offset[1]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-			hdfProxy->readArrayNdOfDoubleValues(static_cast<resqml2__DoubleHdf5Array*>(arrayLatticeOfPoints3d->Offset[1]->Spacing)->Values->PathInHdfFile, iSpacings);
+		else if (arrayLatticeOfPoints3d->Offset[1]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
+			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(arrayLatticeOfPoints3d->Offset[1]->Spacing)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
+			if (hdfProxy == nullptr) {
+				throw invalid_argument("The HDF proxy is missing.");
+			}
+			hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, iSpacings);
 		}
 		else {
 			throw logic_error("Not implemented yet.");
@@ -569,7 +585,7 @@ void Grid2dRepresentation::getISpacing(double* const iSpacings) const
 		const int iIndexOrigin = getIndexOriginOnSupportingRepresentation(1);
 		const int iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
 		double* const iSpacingsOnSupportingRep = new double[iSpacingCount];
-		supportingRepresentation->getISpacing(iSpacingsOnSupportingRep);
+		getSupportingRepresentation()->getISpacing(iSpacingsOnSupportingRep);
 
 		for (ULONG64 i = 0; i < iSpacingCount; ++i) {
 			iSpacings[i] = .0;
@@ -595,100 +611,128 @@ void Grid2dRepresentation::getISpacing(double* const iSpacings) const
 }
 
 void Grid2dRepresentation::setGeometryAsArray2dOfLatticePoints3d(
-			const unsigned int & numPointsInFastestDirection, const unsigned int & numPointsInSlowestDirection,
-			const double & xOrigin, const double & yOrigin, const double & zOrigin,
-			const double & xOffsetInFastestDirection, const double & yOffsetInFastestDirection, const double & zOffsetInFastestDirection,
-			const double & xOffsetInSlowestDirection, const double & yOffsetInSlowestDirection, const double & zOffsetInSlowestDirection,
-			const double & spacingInFastestDirection, const double & spacingInSlowestDirection)
+			unsigned int numPointsInFastestDirection, unsigned int numPointsInSlowestDirection,
+			double xOrigin, double yOrigin, double zOrigin,
+			double xOffsetInFastestDirection, double yOffsetInFastestDirection, double zOffsetInFastestDirection,
+			double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
+			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
-	resqml2__PointGeometry* geomPatch = createArray2dOfLatticePoints3d(numPointsInFastestDirection, numPointsInSlowestDirection,
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
+
+	resqml20__PointGeometry* geomPatch = createArray2dOfLatticePoints3d(numPointsInFastestDirection, numPointsInSlowestDirection,
 			xOrigin, yOrigin, zOrigin,
 			xOffsetInFastestDirection, yOffsetInFastestDirection, zOffsetInFastestDirection,
 			xOffsetInSlowestDirection, yOffsetInSlowestDirection, zOffsetInSlowestDirection,
-			spacingInFastestDirection, spacingInSlowestDirection);
+			spacingInFastestDirection, spacingInSlowestDirection, localCrs);
 
-	resqml2__Grid2dPatch* patch = soap_new_resqml2__Grid2dPatch(gsoapProxy2_0_1->soap, 1);
+	resqml20__Grid2dPatch* patch = soap_new_resqml20__Grid2dPatch(gsoapProxy2_0_1->soap);
 	patch->PatchIndex = 0;
 	patch->Geometry = geomPatch;
 	patch->SlowestAxisCount = numPointsInSlowestDirection;
 	patch->FastestAxisCount = numPointsInFastestDirection;
 
-	static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch = patch;
+	static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch = patch;
+
+	getRepository()->addRelationship(this, localCrs);
 }
 
 void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 		double * zValues,
-		const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy * proxy,
-		Grid2dRepresentation * supportingGrid2dRepresentation,
-		const unsigned int & startIndexI, const unsigned int & startIndexJ,
-		const int & indexIncrementI, const int & indexIncrementJ)
+		unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy * proxy,
+		Grid2dRepresentation * supportingGrid2dRepresentation, RESQML2_NS::AbstractLocal3dCrs * localCrs,
+		unsigned int startIndexI, unsigned int startIndexJ,
+		int indexIncrementI, int indexIncrementJ)
 {
-	resqml2__Grid2dPatch* patch = soap_new_resqml2__Grid2dPatch(gsoapProxy2_0_1->soap, 1);
-	static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch = patch;
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
+
+	resqml20__Grid2dPatch* patch = soap_new_resqml20__Grid2dPatch(gsoapProxy2_0_1->soap);
+	static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch = patch;
 
 	patch->PatchIndex = 0;
 	patch->SlowestAxisCount = numJ;
 	patch->FastestAxisCount = numI;
 
-	setSupportingRepresentation(supportingGrid2dRepresentation);
-	resqml2__PointGeometry* geomPatch = createArray2dOfExplicitZ(0,
-			zValues,
+	resqml20__PointGeometry* geomPatch = createArray2dOfExplicitZ(0,
+			zValues, localCrs,
 			numI, numJ, proxy,
 			supportingGrid2dRepresentation,
 			startIndexI + startIndexJ * getNodeCountAlongIAxis(),
 			indexIncrementI, indexIncrementJ);
 	patch->Geometry = geomPatch;
+
+	getRepository()->addRelationship(this, localCrs);
 }
 
 void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 				double * zValues,
-				const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy * proxy,
-				const double & originX, const double & originY, const double & originZ,
-				const double & offsetIX, const double & offsetIY, const double & offsetIZ, const double & spacingI,
-				const double & offsetJX, const double & offsetJY, const double & offsetJZ, const double & spacingJ)
+				unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy * proxy,
+				double originX, double originY, double originZ,
+				double offsetIX, double offsetIY, double offsetIZ, double spacingI,
+				double offsetJX, double offsetJY, double offsetJZ, double spacingJ, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
-	resqml2__Grid2dPatch* patch = soap_new_resqml2__Grid2dPatch(gsoapProxy2_0_1->soap, 1);
-	static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch = patch;
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
+
+	resqml20__Grid2dPatch* patch = soap_new_resqml20__Grid2dPatch(gsoapProxy2_0_1->soap);
+	static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch = patch;
 
 	patch->PatchIndex = 0;
 	patch->SlowestAxisCount = numJ;
 	patch->FastestAxisCount = numI;
 
-	resqml2__PointGeometry* geomPatch = createArray2dOfExplicitZ(0,
-			zValues,
+	resqml20__PointGeometry* geomPatch = createArray2dOfExplicitZ(0,
+			zValues, localCrs,
 			numI, numJ, proxy,
 			originX, originY, originZ,
 			offsetIX, offsetIY, offsetIZ, spacingI,
 			offsetJX, offsetJY, offsetJZ, spacingJ);
 	patch->Geometry = geomPatch;
+
+	getRepository()->addRelationship(this, localCrs);
+}
+
+gsoap_resqml2_0_1::eml20__DataObjectReference const * Grid2dRepresentation::getSupportingRepresentationDor() const
+{
+	_resqml20__Grid2dRepresentation* singleGrid2dRep = static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1);
+	if (singleGrid2dRep != nullptr && singleGrid2dRep->Grid2dPatch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dZValueArray) {
+		resqml20__Point3dZValueArray* tmp = static_cast<resqml20__Point3dZValueArray*>(singleGrid2dRep->Grid2dPatch->Geometry->Points);
+		if (tmp->SupportingGeometry->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dFromRepresentationLatticeArray) {
+			return static_cast<resqml20__Point3dFromRepresentationLatticeArray*>(tmp->SupportingGeometry)->SupportingRepresentation;
+		}
+	}
+
+	return nullptr;
 }
 
 std::string Grid2dRepresentation::getSupportingRepresentationUuid() const
 {
-	_resqml2__Grid2dRepresentation* singleGrid2dRep = static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1);
-	if (singleGrid2dRep != nullptr && singleGrid2dRep->Grid2dPatch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dZValueArray) {
-		resqml2__Point3dZValueArray* tmp = static_cast<resqml2__Point3dZValueArray*>(singleGrid2dRep->Grid2dPatch->Geometry->Points);
-		if (tmp->SupportingGeometry->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dFromRepresentationLatticeArray) {
-			return static_cast<resqml2__Point3dFromRepresentationLatticeArray*>(tmp->SupportingGeometry)->SupportingRepresentation->UUID;
-		}
-	}
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getSupportingRepresentationDor();
 
-	return string();
+	return dor == nullptr ? "" : dor->UUID;
 }
 
-void Grid2dRepresentation::setSupportingRepresentation(Grid2dRepresentation * supportingRep)
+Grid2dRepresentation* Grid2dRepresentation::getSupportingRepresentation() const
 {
-	if (supportingRep == nullptr) {
-		throw invalid_argument("The supporting representation to set cannot be null.");
-	}
-
-	supportingRepresentation = supportingRep;
-	supportingRepresentation->supportedRepresentationSet.push_back(this);
+	return getRepository()->getDataObjectByUuid<Grid2dRepresentation>(getSupportingRepresentationUuid());
 }
 
 int Grid2dRepresentation::getIndexOriginOnSupportingRepresentation() const
 {
-	resqml2__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry);
+	resqml20__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry);
 
 	if (geom != nullptr) {
 		return geom->NodeIndicesOnSupportingRepresentation->StartValue;
@@ -699,14 +743,14 @@ int Grid2dRepresentation::getIndexOriginOnSupportingRepresentation() const
 
 int Grid2dRepresentation::getIndexOriginOnSupportingRepresentation(const unsigned int & dimension) const
 {
-	resqml2__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry);
+	resqml20__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry);
 
 	if (geom != nullptr)
 	{
 		if (dimension == 0) // J dimension : slowest
-			return geom->NodeIndicesOnSupportingRepresentation->StartValue / supportingRepresentation->getNodeCountAlongIAxis();
+			return geom->NodeIndicesOnSupportingRepresentation->StartValue / getSupportingRepresentation()->getNodeCountAlongIAxis();
 		else if (dimension == 1) // I dimension : fastest
-			return geom->NodeIndicesOnSupportingRepresentation->StartValue % supportingRepresentation->getNodeCountAlongIAxis();
+			return geom->NodeIndicesOnSupportingRepresentation->StartValue % getSupportingRepresentation()->getNodeCountAlongIAxis();
 		throw invalid_argument("There cannot be more than 2 dimensions for a grid 2d representation.");
 	}
 
@@ -715,7 +759,7 @@ int Grid2dRepresentation::getIndexOriginOnSupportingRepresentation(const unsigne
 
 int Grid2dRepresentation::getNodeCountOnSupportingRepresentation(const unsigned int & dimension) const
 {
-	resqml2__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry);
+	resqml20__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry);
 
 	if (geom != nullptr) {
 		return geom->NodeIndicesOnSupportingRepresentation->Offset[dimension]->Count + 1;
@@ -726,7 +770,7 @@ int Grid2dRepresentation::getNodeCountOnSupportingRepresentation(const unsigned 
 
 int Grid2dRepresentation::getIndexOffsetOnSupportingRepresentation(const unsigned int & dimension) const
 {
-	resqml2__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry);
+	resqml20__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry);
 
 	if (geom != nullptr) {
 		return geom->NodeIndicesOnSupportingRepresentation->Offset[dimension]->Value;
@@ -735,48 +779,13 @@ int Grid2dRepresentation::getIndexOffsetOnSupportingRepresentation(const unsigne
 	throw invalid_argument("It does not exist supporting representation for this representation.");
 }
 
-vector<Relationship> Grid2dRepresentation::getAllEpcRelationships() const
+void Grid2dRepresentation::loadTargetRelationships()
 {
-	vector<Relationship> result = AbstractSurfaceRepresentation::getAllEpcRelationships();
-
-	// Supporting Grid 2D representation
-	std::set<AbstractRepresentation*> allSeisSupport = getAllSeismicSupport();
-	if (supportingRepresentation && std::find(allSeisSupport.begin(), allSeisSupport.end(), supportingRepresentation) == allSeisSupport.end())
-	{
-		Relationship relSupportingRepresentation(supportingRepresentation->getPartNameInEpcDocument(), "", supportingRepresentation->getUuid());
-		relSupportingRepresentation.setDestinationObjectType();
-		result.push_back(relSupportingRepresentation);
-	}
-
-	// Supported Grid 2D representations
-	for(vector<AbstractRepresentation*>::const_iterator it = supportedRepresentationSet.begin(); it != supportedRepresentationSet.end(); ++it)
-	{
-		if (it == supportedRepresentationSet.begin() || std::find(supportedRepresentationSet.begin(), it, *it) != supportedRepresentationSet.end()) //  No need to add the rel twice
-		{
-			Relationship relChildRepresentation((*it)->getPartNameInEpcDocument(), "", (*it)->getUuid());
-			relChildRepresentation.setSourceObjectType();
-			result.push_back(relChildRepresentation);
-		}
-	}
-
-	return result;
-}
-
-void Grid2dRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
-{
-	AbstractSurfaceRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractSurfaceRepresentation::loadTargetRelationships();
 
 	// Base representation
-	const string supportingRepUuid = getSupportingRepresentationUuid();
-	if (!supportingRepUuid.empty())
-	{
-		Grid2dRepresentation* grid2d = epcDoc->getDataObjectByUuid<Grid2dRepresentation>(supportingRepUuid);
-		if (grid2d != nullptr) {
-			setSupportingRepresentation(grid2d);
-		}
-		else {
-			throw logic_error(getUuid() + "The referenced supporting representation does not look to be a 2d grid or is partial.");
-		}
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getSupportingRepresentationDor();
+	if (dor != nullptr) {
+		convertDorIntoRel<Grid2dRepresentation>(dor);
 	}
 }
-

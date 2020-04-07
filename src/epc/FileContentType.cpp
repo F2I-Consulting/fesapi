@@ -16,9 +16,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
-
-
 #include "FileContentType.h"
 
 #include <sstream>
@@ -55,8 +52,7 @@ std::string FileContentType::toString() const
 	oss << header << endl;
 	
 	// CONTENT
-	for(ContentTypeMap::const_iterator i=contentTypeMap.begin(); i!=contentTypeMap.end(); i++)
-	{
+	for(ContentTypeMap::const_iterator i=contentTypeMap.begin(); i!=contentTypeMap.end(); ++i) {
 		oss << "\t" << i->second.toString() << endl;
 	}
 

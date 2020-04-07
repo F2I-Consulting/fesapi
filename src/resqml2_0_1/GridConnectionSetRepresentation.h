@@ -18,14 +18,14 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/GridConnectionSetRepresentation.h"
+#include "../resqml2/GridConnectionSetRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
 	class GridConnectionSetRepresentation : public RESQML2_NS::GridConnectionSetRepresentation
 	{
 	protected:
-		void init(soap* soapContext, const std::string & guid, const std::string & title);
+		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
 
 		/**
 		* Pushes back an interpretation which can be mapped with some connections.
@@ -45,7 +45,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		GridConnectionSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+		DLL_IMPORT_OR_EXPORT GridConnectionSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			RESQML2_NS::GridConnectionSetRepresentation(partialObject) {}
 
 		/**
@@ -59,24 +59,24 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Creates an instance of this class in a gsoap context.
-		* @param interp	The interpretation the instance represents.
+		* @param repo	The repo where this instance will be stored.
 		* @param guid	A guid for the instance to create.
 		* @param title	A title for the instance to create.
 		*/
-		GridConnectionSetRepresentation(soap* soapContext,
+		GridConnectionSetRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		GridConnectionSetRepresentation(gsoap_resqml2_0_1::_resqml2__GridConnectionSetRepresentation* fromGsoap) : RESQML2_NS::GridConnectionSetRepresentation(fromGsoap) {}
+		GridConnectionSetRepresentation(gsoap_resqml2_0_1::_resqml20__GridConnectionSetRepresentation* fromGsoap) : RESQML2_NS::GridConnectionSetRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~GridConnectionSetRepresentation() {}
 
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		/**
 		* Get the cell index pair count of this grid connection representation
@@ -211,4 +211,3 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getSupportingGridRepresentationDor(unsigned int index) const;
 	};
 }
-

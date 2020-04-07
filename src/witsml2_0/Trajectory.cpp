@@ -16,14 +16,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "witsml2_0/Trajectory.h"
+#include "Trajectory.h"
 
 #include <sstream>
 #include <stdexcept>
+#include <limits>
 
-#include "witsml2_0/Wellbore.h"
+#include "Wellbore.h"
 
-#include "tools/TimeTools.h"
+#include "../tools/TimeTools.h"
 
 using namespace std;
 using namespace WITSML2_0_NS;
@@ -34,23 +35,23 @@ const char* Trajectory::XML_TAG = "Trajectory";
 Trajectory::Trajectory(Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title,
-	gsoap_eml2_1::witsml2__ChannelStatus channelStatus)
+	gsoap_eml2_1::witsml20__ChannelStatus channelStatus)
 {
 	if (witsmlWellbore == nullptr) throw invalid_argument("A wellbore must be associated to a wellbore trajectory.");
 
-	gsoapProxy2_1 = soap_new_witsml2__Trajectory(witsmlWellbore->getGsoapContext(), 1);
+	gsoapProxy2_1 = soap_new_witsml20__Trajectory(witsmlWellbore->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	setWellbore(witsmlWellbore);
 
-	static_cast<witsml2__Trajectory*>(gsoapProxy2_1)->GrowingStatus = channelStatus;
+	static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->GrowingStatus = channelStatus;
 }
 
 gsoap_eml2_1::eml21__DataObjectReference* Trajectory::getWellboreDor() const
 {
-	return static_cast<witsml2__Trajectory*>(gsoapProxy2_1)->Wellbore;
+	return static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->Wellbore;
 }
 
 void Trajectory::setWellbore(Wellbore* witsmlWellbore)
@@ -58,23 +59,22 @@ void Trajectory::setWellbore(Wellbore* witsmlWellbore)
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml wellbore to a witsml trajectory");
 	}
-
-	// EPC
-	witsmlWellbore->trajectorySet.push_back(this);
-
-	// XML
-	if (updateXml) {
-		static_cast<witsml2__Trajectory*>(gsoapProxy2_1)->Wellbore = witsmlWellbore->newEmlReference();
+	if (getRepository() == nullptr) {
+		witsmlWellbore->getRepository()->addOrReplaceDataObject(this);
 	}
+
+	static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->Wellbore = witsmlWellbore->newEmlReference();
+
+	getRepository()->addRelationship(this, witsmlWellbore);
 }
 
-GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__ChannelStatus, Trajectory, GrowingStatus)
+GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__ChannelStatus, Trajectory, GrowingStatus)
 
 GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, DTimTrajStart)
 GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, DTimTrajEnd)
 
-GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, MdMn, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml2__MeasuredDepthCoord)
-GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, MdMx, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml2__MeasuredDepthCoord)
+GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, MdMn, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
+GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, MdMx, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
 
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Trajectory, ServiceCompany, gsoap_eml2_1::soap_new_std__string)
 
@@ -89,7 +89,7 @@ GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(bool, Trajectory, Definitive, 
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(bool, Trajectory, Memory, gsoap_eml2_1::soap_new_bool)
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(bool, Trajectory, FinalTraj, gsoap_eml2_1::soap_new_bool)
 
-GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__AziRef, Trajectory, AziRef, gsoap_eml2_1::soap_new_witsml2__AziRef)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__AziRef, Trajectory, AziRef, gsoap_eml2_1::soap_new_witsml20__AziRef)
 
 //***************************************
 // ******* TRAJECTORY STATIONS **********
@@ -97,8 +97,8 @@ GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__AziRef,
 
 // Mandatory
 GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR_IMPL(std::string, Trajectory, TrajectoryStation, uid)
-GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_1::witsml2__TrajStationType, Trajectory, TrajectoryStation, TypeTrajStation)
-GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, Md, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_witsml2__MeasuredDepthCoord)
+GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_1::witsml20__TrajStationType, Trajectory, TrajectoryStation, TypeTrajStation)
+GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, Md, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
 
 // Optional bool
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(bool, Trajectory, TrajectoryStation, ManuallyEntered, gsoap_eml2_1::soap_new_bool)
@@ -123,12 +123,12 @@ GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(std::string, Traject
 GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, DTimStn)
 
 // Optional enum
-GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_1::witsml2__TypeSurveyTool, Trajectory, TrajectoryStation, TypeSurveyTool, gsoap_eml2_1::soap_new_witsml2__TypeSurveyTool)
-GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_1::witsml2__TrajStnCalcAlgorithm, Trajectory, TrajectoryStation, CalcAlgorithm, gsoap_eml2_1::soap_new_witsml2__TrajStnCalcAlgorithm)
-GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_1::witsml2__TrajStationStatus, Trajectory, TrajectoryStation, StatusTrajStation, gsoap_eml2_1::soap_new_witsml2__TrajStationStatus)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_1::witsml20__TypeSurveyTool, Trajectory, TrajectoryStation, TypeSurveyTool, gsoap_eml2_1::soap_new_witsml20__TypeSurveyTool)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_1::witsml20__TrajStnCalcAlgorithm, Trajectory, TrajectoryStation, CalcAlgorithm, gsoap_eml2_1::soap_new_witsml20__TrajStnCalcAlgorithm)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_1::witsml20__TrajStationStatus, Trajectory, TrajectoryStation, StatusTrajStation, gsoap_eml2_1::soap_new_witsml20__TrajStationStatus)
 
 // Optional Length Measure
-GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, Tvd, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_witsml2__WellVerticalDepthCoord)
+GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, Tvd, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__WellVerticalDepthCoord)
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, DispNs, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, DispEw, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, VertSect, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
@@ -156,9 +156,9 @@ GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, Trajecto
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, MagTotalUncert, gsoap_eml2_1::eml21__MagneticFluxDensityUom, gsoap_eml2_1::soap_new_eml21__MagneticFluxDensityMeasure)
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, MagTotalFieldReference, gsoap_eml2_1::eml21__MagneticFluxDensityUom, gsoap_eml2_1::soap_new_eml21__MagneticFluxDensityMeasure)
 
-void Trajectory::pushBackTrajectoryStation(gsoap_eml2_1::witsml2__TrajStationType kind, double mdValue, gsoap_eml2_1::eml21__LengthUom uom, const std::string & uid)
+void Trajectory::pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType kind, double mdValue, gsoap_eml2_1::eml21__LengthUom uom, const std::string & datum, const std::string & uid)
 {
-	static_cast<witsml2__Trajectory*>(gsoapProxy2_1)->TrajectoryStation.push_back(gsoap_eml2_1::soap_new_witsml2__TrajectoryStation(gsoapProxy2_1->soap, 1));
+	static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->TrajectoryStation.push_back(gsoap_eml2_1::soap_new_witsml20__TrajectoryStation(gsoapProxy2_1->soap, 1));
 	unsigned int index = getTrajectoryStationCount() - 1;
 	if (uid.empty()) {
 		std::ostringstream oss;
@@ -170,12 +170,12 @@ void Trajectory::pushBackTrajectoryStation(gsoap_eml2_1::witsml2__TrajStationTyp
 	}
 
 	setTrajectoryStationTypeTrajStation(index, kind);
-	setTrajectoryStationMd(index, mdValue, uom);
+	setTrajectoryStationMd(index, mdValue, uom, datum);
 }
 
 unsigned int Trajectory::getTrajectoryStationCount() const
 {
-	const size_t count = static_cast<witsml2__Trajectory*>(gsoapProxy2_1)->TrajectoryStation.size();
+	const size_t count = static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->TrajectoryStation.size();
 	if (count >= (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("Too much trajectory stations");
 	}

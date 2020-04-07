@@ -18,9 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/AbstractSurfaceFrameworkRepresentation.h"
-
-#include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
+#include "AbstractSurfaceFrameworkRepresentation.h"
 
 namespace RESQML2_NS {
 	class AbstractHdfProxy;
@@ -41,7 +39,7 @@ namespace RESQML2_0_1_NS
 		* @param contactIdx	The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.
 		* @return			A contact from its index in this framework.
 		*/
-		gsoap_resqml2_0_1::resqml2__SealedContactRepresentationPart* getContact(unsigned int contactIdx) const;
+		gsoap_resqml2_0_1::resqml20__SealedContactRepresentationPart* getContact(unsigned int contactIdx) const;
 
 		/**
 		* Get a contact patch from its index in a contact of this framework.
@@ -50,19 +48,14 @@ namespace RESQML2_0_1_NS
 		* @param cpIndex	The index of the contact patch in the contact. It must be in the interval [0..getContactPatchCount()[.
 		* @return			A contact patch from its index in a contact of this framework.
 		*/
-		gsoap_resqml2_0_1::resqml2__ContactPatch* getContactPatch(unsigned int contactIdx, unsigned int cpIndex) const;
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-
-		friend void SealedVolumeFrameworkRepresentation::setSealedSurfaceFramework(SealedSurfaceFrameworkRepresentation* ssf);
-		std::vector<SealedVolumeFrameworkRepresentation*> svfSet;
+		gsoap_resqml2_0_1::resqml20__ContactPatch* getContactPatch(unsigned int contactIdx, unsigned int cpIndex) const;
 
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		SealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSurfaceFrameworkRepresentation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT SealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSurfaceFrameworkRepresentation(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -77,7 +70,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 */
-		SealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::_resqml2__SealedSurfaceFrameworkRepresentation* fromGsoap) : AbstractSurfaceFrameworkRepresentation(fromGsoap) {}
+		SealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::_resqml20__SealedSurfaceFrameworkRepresentation* fromGsoap) : AbstractSurfaceFrameworkRepresentation(fromGsoap) {}
 
 		/**
 		 * Destructor does nothing since the memory is managed by the gsoap context.
@@ -93,7 +86,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param kind  Identity kind.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind kind);
+		DLL_IMPORT_OR_EXPORT void pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind kind);
 
 		/**
 		 * Push back a contact in the structural framework.
@@ -109,7 +102,7 @@ namespace RESQML2_0_1_NS
 		 * @param proxy                 The hdf proxy
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackContact(
-			gsoap_resqml2_0_1::resqml2__IdentityKind kind,
+			gsoap_resqml2_0_1::resqml20__IdentityKind kind,
 			unsigned int patchCount,
 			unsigned int identicalNodesCount,
 			int * identicalNodes,
@@ -136,7 +129,7 @@ namespace RESQML2_0_1_NS
 		* @param contactIdx	The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.
 		* @return			The contact patch identity kind of the contact located at a particular index.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__IdentityKind getContactPatchIdentityKind(unsigned int contactIdx) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__IdentityKind getContactPatchIdentityKind(unsigned int contactIdx) const;
 
 		/*
 		* Check if all nodes of contact patches are identical in a contact.
@@ -211,10 +204,17 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void getContactPatchNodeIndices(unsigned int contactIdx, unsigned int cpIndex, unsigned int * nodeIndices) const;
 
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const { return XML_TAG; }
-
 		DLL_IMPORT_OR_EXPORT virtual std::string getHdfProxyUuid() const;
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 
 }

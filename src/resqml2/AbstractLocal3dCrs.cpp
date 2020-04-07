@@ -16,47 +16,19 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2/AbstractLocal3dCrs.h"
+#include "AbstractLocal3dCrs.h"
 
 #include <stdexcept>
 #include <algorithm>
 
-#include "resqml2/AbstractRepresentation.h"
+#include "AbstractRepresentation.h"
 
-#include "tools/Trigonometry.h"
+#include "../tools/Trigonometry.h"
 
 using namespace std;
 using namespace RESQML2_NS;
-using namespace epc;
 
-void AbstractLocal3dCrs::addRepresentation(AbstractRepresentation* rep)
-{
-	repSet.push_back(rep);
-}
-
-void AbstractLocal3dCrs::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*) {}
-
-vector<Relationship> AbstractLocal3dCrs::getAllEpcRelationships() const
-{
-	vector<Relationship> result;
-
-	// Geometry/Representation set
-	for (size_t i = 0; i < repSet.size(); ++i)
-	{
-		Relationship rel(repSet[i]->getPartNameInEpcDocument(), "", repSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	// MD information set
-	for (size_t i = 0; i < mdDatumSet.size(); ++i)
-	{
-		Relationship rel(mdDatumSet[i]->getPartNameInEpcDocument(), "", mdDatumSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
+void AbstractLocal3dCrs::loadTargetRelationships() {
 }
 
 void AbstractLocal3dCrs::convertXyzPointsToGlobalCrs(double * xyzPoints, ULONG64 xyzPointCount, bool withoutTranslation) const
@@ -91,16 +63,10 @@ void AbstractLocal3dCrs::convertXyzPointsToGlobalCrs(double * xyzPoints, ULONG64
 	}
 }
 
-void AbstractLocal3dCrs::addMdDatum(MdDatum* mdInfo)
-{
-	if (find(mdDatumSet.begin(), mdDatumSet.end(), mdInfo) != mdDatumSet.end())
-		mdDatumSet.push_back(mdInfo);
-}
-
 double AbstractLocal3dCrs::getOriginOrdinal1() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->XOffset;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->XOffset;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -110,7 +76,7 @@ double AbstractLocal3dCrs::getOriginOrdinal1() const
 double AbstractLocal3dCrs::getOriginOrdinal2() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->YOffset;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->YOffset;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -120,7 +86,7 @@ double AbstractLocal3dCrs::getOriginOrdinal2() const
 double AbstractLocal3dCrs::getOriginDepthOrElevation() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ZOffset;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ZOffset;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -130,7 +96,7 @@ double AbstractLocal3dCrs::getOriginDepthOrElevation() const
 double AbstractLocal3dCrs::getArealRotation() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ArealRotation->__item;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ArealRotation->__item;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -140,7 +106,7 @@ double AbstractLocal3dCrs::getArealRotation() const
 gsoap_resqml2_0_1::eml20__PlaneAngleUom AbstractLocal3dCrs::getArealRotationUom() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ArealRotation->uom;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ArealRotation->uom;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -150,7 +116,7 @@ gsoap_resqml2_0_1::eml20__PlaneAngleUom AbstractLocal3dCrs::getArealRotationUom(
 bool AbstractLocal3dCrs::isDepthOriented() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ZIncreasingDownward;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ZIncreasingDownward;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -160,7 +126,7 @@ bool AbstractLocal3dCrs::isDepthOriented() const
 bool AbstractLocal3dCrs::isProjectedCrsDefinedWithEpsg() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__ProjectedCrsEpsgCode;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__ProjectedCrsEpsgCode;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -170,7 +136,7 @@ bool AbstractLocal3dCrs::isProjectedCrsDefinedWithEpsg() const
 bool AbstractLocal3dCrs::isProjectedCrsUnknown() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__ProjectedUnknownCrs;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__ProjectedUnknownCrs;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -183,7 +149,7 @@ const std::string & AbstractLocal3dCrs::getProjectedCrsUnknownReason() const
 		throw invalid_argument("The associated projected Crs is not unknown.");
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::eml20__ProjectedUnknownCrs*>(static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedCrs)->Unknown;
+		return static_cast<gsoap_resqml2_0_1::eml20__ProjectedUnknownCrs*>(static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedCrs)->Unknown;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -196,7 +162,7 @@ unsigned long long AbstractLocal3dCrs::getProjectedCrsEpsgCode() const
 		throw invalid_argument("The associated projected Crs is not an EPSG one.");
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::eml20__ProjectedCrsEpsgCode*>(static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedCrs)->EpsgCode;
+		return static_cast<gsoap_resqml2_0_1::eml20__ProjectedCrsEpsgCode*>(static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedCrs)->EpsgCode;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -206,7 +172,7 @@ unsigned long long AbstractLocal3dCrs::getProjectedCrsEpsgCode() const
 bool AbstractLocal3dCrs::isVerticalCrsDefinedWithEpsg() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__VerticalCrsEpsgCode;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__VerticalCrsEpsgCode;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -216,7 +182,7 @@ bool AbstractLocal3dCrs::isVerticalCrsDefinedWithEpsg() const
 bool AbstractLocal3dCrs::isVerticalCrsUnknown() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__VerticalUnknownCrs;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__VerticalUnknownCrs;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -229,7 +195,7 @@ const std::string & AbstractLocal3dCrs::getVerticalCrsUnknownReason() const
 		throw invalid_argument("The associated vertical Crs is not unknown.");
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::eml20__VerticalUnknownCrs*>(static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs)->Unknown;
+		return static_cast<gsoap_resqml2_0_1::eml20__VerticalUnknownCrs*>(static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs)->Unknown;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -242,7 +208,7 @@ unsigned long long AbstractLocal3dCrs::getVerticalCrsEpsgCode() const
 		throw invalid_argument("The associated vertical Crs is not an EPSG one.");
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::eml20__VerticalCrsEpsgCode*>(static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs)->EpsgCode;
+		return static_cast<gsoap_resqml2_0_1::eml20__VerticalCrsEpsgCode*>(static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs)->EpsgCode;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -252,7 +218,7 @@ unsigned long long AbstractLocal3dCrs::getVerticalCrsEpsgCode() const
 gsoap_resqml2_0_1::eml20__LengthUom AbstractLocal3dCrs::getProjectedCrsUnit() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedUom;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedUom;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -262,7 +228,7 @@ gsoap_resqml2_0_1::eml20__LengthUom AbstractLocal3dCrs::getProjectedCrsUnit() co
 string AbstractLocal3dCrs::getProjectedCrsUnitAsString() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return gsoap_resqml2_0_1::soap_eml20__LengthUom2s(gsoapProxy2_0_1->soap, static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedUom);
+		return gsoap_resqml2_0_1::soap_eml20__LengthUom2s(gsoapProxy2_0_1->soap, static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedUom);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -272,7 +238,7 @@ string AbstractLocal3dCrs::getProjectedCrsUnitAsString() const
 gsoap_resqml2_0_1::eml20__LengthUom AbstractLocal3dCrs::getVerticalCrsUnit() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalUom;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalUom;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -282,7 +248,7 @@ gsoap_resqml2_0_1::eml20__LengthUom AbstractLocal3dCrs::getVerticalCrsUnit() con
 string AbstractLocal3dCrs::getVerticalCrsUnitAsString() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return gsoap_resqml2_0_1::soap_eml20__LengthUom2s(gsoapProxy2_0_1->soap, static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalUom);
+		return gsoap_resqml2_0_1::soap_eml20__LengthUom2s(gsoapProxy2_0_1->soap, static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalUom);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -292,7 +258,7 @@ string AbstractLocal3dCrs::getVerticalCrsUnitAsString() const
 gsoap_resqml2_0_1::eml20__AxisOrder2d AbstractLocal3dCrs::getAxisOrder() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedAxisOrder;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedAxisOrder;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -302,7 +268,7 @@ gsoap_resqml2_0_1::eml20__AxisOrder2d AbstractLocal3dCrs::getAxisOrder() const
 void AbstractLocal3dCrs::setAxisOrder(gsoap_resqml2_0_1::eml20__AxisOrder2d axisOrder) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedAxisOrder = axisOrder;
+		static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedAxisOrder = axisOrder;
 	}
 	else {
 		throw logic_error("Not implemented yet");

@@ -20,18 +20,18 @@ under the License.
 
 #include <vector>
 
-#include "resqml2/AbstractFeatureInterpretation.h"
+#include "AbstractFeatureInterpretation.h"
 
 namespace RESQML2_NS
 {
 	class AbstractFeature : public COMMON_NS::AbstractObject
 	{
-	public:
+	protected:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT AbstractFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Default constructor
@@ -43,7 +43,9 @@ namespace RESQML2_NS
 		* Creates an instance of this class by wrapping a gsoap instance.
 		* @param fromGsoap	The gsoap proxy which shold be wrapped by the constructed feature.
 		*/
-		AbstractFeature(gsoap_resqml2_0_1::resqml2__AbstractFeature* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		AbstractFeature(gsoap_resqml2_0_1::resqml20__AbstractFeature* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+	public:
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -53,25 +55,20 @@ namespace RESQML2_NS
 		/**
 		* Get all the interpretations of this feature
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<AbstractFeatureInterpretation*> 	getInterpretationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<AbstractFeatureInterpretation *> getInterpretationSet() const;
 
 		/**
 		 * Get the interpretation count of this feature.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int 								getInterpretationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getInterpretationCount() const;
 
 		/**
 		 * Get a particular interpretation of this feature according to its position in the interpretation ordering.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation*				getInterpretation(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation *	getInterpretation(unsigned int index) const;
 
 	protected:
 
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
-		std::vector<AbstractFeatureInterpretation*> interpretationSet; /// All the interpretations of the feature
-
-		friend void AbstractFeatureInterpretation::setInterpretedFeature(RESQML2_NS::AbstractFeature * feature);
+		virtual void loadTargetRelationships();
 	};
 }

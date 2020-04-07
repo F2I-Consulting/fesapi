@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/RepresentationSetRepresentation.h"
+#include "../resqml2/RepresentationSetRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -28,7 +28,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		SealedVolumeFrameworkRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::RepresentationSetRepresentation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT SealedVolumeFrameworkRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::RepresentationSetRepresentation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -45,7 +45,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 */
-		SealedVolumeFrameworkRepresentation(gsoap_resqml2_0_1::_resqml2__SealedVolumeFrameworkRepresentation* fromGsoap) : RepresentationSetRepresentation(fromGsoap) {}
+		SealedVolumeFrameworkRepresentation(gsoap_resqml2_0_1::_resqml20__SealedVolumeFrameworkRepresentation* fromGsoap) : RepresentationSetRepresentation(fromGsoap) {}
 
 		/**
 		 * Destructor does nothing since the memory is managed by the gsoap context.
@@ -199,20 +199,27 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT bool getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const;
 
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const { return XML_TAG; }
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	private:
 
-		gsoap_resqml2_0_1::resqml2__VolumeShell* createVolumeShell(
+		gsoap_resqml2_0_1::resqml20__VolumeShell* createVolumeShell(
 			unsigned int shellFaceCount,
 			unsigned int * faceRepresentationIndices, unsigned int * faceRepPatchIndices, bool * faceSide);
 
-		gsoap_resqml2_0_1::resqml2__VolumeRegion* getRegion(unsigned int regionIndex) const;
-		gsoap_resqml2_0_1::resqml2__VolumeShell* getRegionExternalShell(unsigned int regionIndex) const;
-		gsoap_resqml2_0_1::resqml2__VolumeShell* getRegionInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const;
-		gsoap_resqml2_0_1::resqml2__OrientedMacroFace* getRegionExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const;
-		gsoap_resqml2_0_1::resqml2__OrientedMacroFace* getRegionInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const;
+		gsoap_resqml2_0_1::resqml20__VolumeRegion* getRegion(unsigned int regionIndex) const;
+		gsoap_resqml2_0_1::resqml20__VolumeShell* getRegionExternalShell(unsigned int regionIndex) const;
+		gsoap_resqml2_0_1::resqml20__VolumeShell* getRegionInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const;
+		gsoap_resqml2_0_1::resqml20__OrientedMacroFace* getRegionExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const;
+		gsoap_resqml2_0_1::resqml20__OrientedMacroFace* getRegionInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const;
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getSealedStructuralFrameworkDor() const;
 		std::string getSealedStructuralFrameworkUuid() const;
@@ -220,8 +227,7 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getStratiUnitInterpDor(unsigned int regionIndex) const;
 		std::string getStratiUnitInterpUuid(unsigned int regionIndex) const;
 
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		void loadTargetRelationships();
 
 		void setXmlSealedSurfaceFramework(class SealedSurfaceFrameworkRepresentation* ssf);
 		void setXmlInterpretationOfVolumeRegion(unsigned int regionIndex, class StratigraphicUnitInterpretation * stratiUnitInterp);

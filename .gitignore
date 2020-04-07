@@ -1,12 +1,14 @@
 ## Ignore the cmake generated files
 /cs/fesapiCs.csproj
 /cs/example/Program.cs
+/swig/swigModule.i
 /swig/swigResqml2CsInclude.i
 /swig/swigWitsml2_0CsInclude.i
 /swig/swigResqml2JavaInclude.i
 /swig/swigWitsml2_0JavaInclude.i
 /src/nsDefinitions.h
 /src/version_config.h
+/src/common/HidtType.h
 
 ## Ignore csharp swig generated files
 /swig/swigGeneratedCsWrapper.cpp

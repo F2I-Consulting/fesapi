@@ -16,54 +16,32 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/HorizonInterpretation.h"
+#include "HorizonInterpretation.h"
 
 #include <algorithm>
 #include <stdexcept>
 
-#include "resqml2_0_1/Horizon.h"
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
+#include "Horizon.h"
+#include "StructuralOrganizationInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* HorizonInterpretation::XML_TAG = "HorizonInterpretation";
 
 HorizonInterpretation::HorizonInterpretation(Horizon * horizon, const string & guid, const string & title)
 {
-	if (!horizon)
+	if (horizon == nullptr) {
 		throw invalid_argument("The interpreted horizon cannot be null.");
+	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREHorizonInterpretation(horizon->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREHorizonInterpretation(horizon->getGsoapContext());
 
-	static_cast<_resqml2__HorizonInterpretation*>(gsoapProxy2_0_1)->Domain = resqml2__Domain__mixed;
+	static_cast<_resqml20__HorizonInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	setInterpretedFeature(horizon);
 }
-
-vector<Relationship> HorizonInterpretation::getAllEpcRelationships() const
-{
-	vector<Relationship> result = BoundaryFeatureInterpretation::getAllEpcRelationships();
-
-	for (unsigned int i = 0; i < structuralOrganizationInterpretationSet.size(); ++i)
-	{
-		Relationship rel(structuralOrganizationInterpretationSet[i]->getPartNameInEpcDocument(), "", structuralOrganizationInterpretationSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	for (unsigned int i = 0; i < stratigraphicColumnRankInterpretationSet.size(); ++i)
-	{
-		Relationship rel(stratigraphicColumnRankInterpretationSet[i]->getPartNameInEpcDocument(), "", stratigraphicColumnRankInterpretationSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-        
-	return result;
-}
-

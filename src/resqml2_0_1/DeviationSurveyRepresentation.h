@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
+#include "WellboreTrajectoryRepresentation.h"
 
 namespace RESQML2_NS
 {
@@ -36,8 +36,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		DeviationSurveyRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :AbstractRepresentation(partialObject) {}
-
+		DLL_IMPORT_OR_EXPORT DeviationSurveyRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :AbstractRepresentation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -47,17 +46,14 @@ namespace RESQML2_0_1_NS
 		* @param isFinal				Used to indicate that this is a final version of the deviation survey, as distinct from the interim interpretations.
 		* @param mdInfo					The MD information of the survey, mainly the well reference point.
 		*/
-		DeviationSurveyRepresentation(class WellboreInterpretation* interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
+		DeviationSurveyRepresentation(class WellboreInterpretation * interp, const std::string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum * mdInfo);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		DeviationSurveyRepresentation(gsoap_resqml2_0_1::_resqml2__DeviationSurveyRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
+		DeviationSurveyRepresentation(gsoap_resqml2_0_1::_resqml20__DeviationSurveyRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
 
 		~DeviationSurveyRepresentation() {}
-
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/*
 		*  Set the geometry of the representation by means of a parametric line without MD information.
@@ -79,7 +75,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Set the Md datum of this trajectory
 		*/
-		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum* mdDatum);
+		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum * mdDatum);
 
 		/**
 		* @return	null pointer if no md datum is associated to this representation. Otherwise return the data object reference of the associated md datum.
@@ -128,14 +124,14 @@ namespace RESQML2_0_1_NS
 		* Uom is given by getMdUom().
 		* @param values	It must preallocated with a count of getXyzPointCountOfPatch(0)
 		*/
-		DLL_IMPORT_OR_EXPORT void getMdValues(double* values);
+		DLL_IMPORT_OR_EXPORT void getMdValues(double* values) const;
 
 		/**
 		* Getter of the inclination double values associated to each trajectory station of this WellboreFeature trajectory representation.
 		* Uom is given by getAngleUom().
 		* @param values	It must preallocated with a count of getXyzPointCountOfPatch(0)
 		*/
-		DLL_IMPORT_OR_EXPORT void getInclinations(double* values);
+		DLL_IMPORT_OR_EXPORT void getInclinations(double* values) const;
 
 		/**
 		* Getter of the azimuth double values associated to each trajectory station of this WellboreFeature trajectory representation.
@@ -143,12 +139,12 @@ namespace RESQML2_0_1_NS
 		* Uom is given by getAngleUom().
 		* @param values	It must preallocated with a count of getXyzPointCountOfPatch(0)
 		*/
-		DLL_IMPORT_OR_EXPORT void getAzimuths(double* values);
+		DLL_IMPORT_OR_EXPORT void getAzimuths(double* values) const;
 
 		/**
 		* Getter of all the wellbore frame representations of associated wellbore trajectory which share the same md datum and md uom.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<class WellboreFrameRepresentation*> getWellboreFrameRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class RESQML2_NS::WellboreFrameRepresentation *> getWellboreFrameRepresentationSet() const;
 
 		/**
 		* Get the count of all the wellbore frame representations of associated wellbore trajectory which share the same md datum and md uom.
@@ -161,12 +157,12 @@ namespace RESQML2_0_1_NS
 		* Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
 		* Throw an out of bound exception if the index is superior or equal to the count of wellbore frame representation.
 		*/
-		DLL_IMPORT_OR_EXPORT class WellboreFrameRepresentation* getWellboreFrameRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const;
 
 		/**
 		* Getter (in read only mode) of all the wellbore trajectories which are associated to this deviation survey.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<class WellboreTrajectoryRepresentation*>& getWellboreTrajectoryRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class WellboreTrajectoryRepresentation *> getWellboreTrajectoryRepresentationSet() const;
 
 		/**
 		* Get the count of all the wellbore trajectories which are associated to this deviation survey.
@@ -179,22 +175,23 @@ namespace RESQML2_0_1_NS
 		* Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
 		* Throw an out of bound exception if the index is superior or equal to the count of wellbore frame representation.
 		*/
-		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation* getWellboreTrajectoryRepresentation(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation * getWellboreTrajectoryRepresentation(unsigned int index) const;
 
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+
 	protected:
-
-		friend void WellboreTrajectoryRepresentation::setDeviationSurvey(DeviationSurveyRepresentation* deviationSurvey);
-
-		void addTrajectory(class WellboreTrajectoryRepresentation* trajectory);
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-		
-		// XML backward relationships
-		std::vector<class WellboreTrajectoryRepresentation*> wbTrajectoryRepSet;
+		void loadTargetRelationships();
 	};
 }

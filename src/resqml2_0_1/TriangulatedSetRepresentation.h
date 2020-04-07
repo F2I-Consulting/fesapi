@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/AbstractSurfaceRepresentation.h"
+#include "AbstractSurfaceRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -29,35 +29,37 @@ namespace RESQML2_0_1_NS
 	class TriangulatedSetRepresentation : public AbstractSurfaceRepresentation
 	{
 	private :
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		TriangulatedSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSurfaceRepresentation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT TriangulatedSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSurfaceRepresentation(partialObject) {}
+
+		TriangulatedSetRepresentation(COMMON_NS::DataObjectRepository* repo,
+			const std::string & guid, const std::string & title);
 
 		/**
 		* Creates an instance of this class in a gsoap context.
 		* @param interp						The interpretation this representation represents.
-		* @param crs						The local CRS where the geometry of this representation is given.
 		* @param guid						The guid to set to the new instance. If empty then a new guid will be generated.
 		* @param title						A title for the instance to create.
 		*/
-		TriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+		TriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		TriangulatedSetRepresentation(gsoap_resqml2_0_1::_resqml2__TriangulatedSetRepresentation* fromGsoap): AbstractSurfaceRepresentation(fromGsoap) {}
+		TriangulatedSetRepresentation(gsoap_resqml2_0_1::_resqml20__TriangulatedSetRepresentation* fromGsoap): AbstractSurfaceRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~TriangulatedSetRepresentation() {}
         
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		/**
 		* Push back a new patch of triangles
@@ -69,7 +71,7 @@ namespace RESQML2_0_1_NS
 		*								The three following values define the 3 vertices of the second triangle and so on...
 		* @param proxy					The HDF proxy which defines where the nodes and triangle indices will be stored.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackTrianglePatch(const unsigned int & nodeCount, double * nodes, const unsigned int & triangleCount, unsigned int * triangleNodeIndices, COMMON_NS::AbstractHdfProxy* proxy);
+		DLL_IMPORT_OR_EXPORT void pushBackTrianglePatch(unsigned int nodeCount, double * nodes, unsigned int triangleCount, unsigned int * triangleNodeIndices, COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		* Get the xyz point count in a given patch.
@@ -109,13 +111,20 @@ namespace RESQML2_0_1_NS
 		 * @param triangleNodeIndices	Must be pre-allocated. The count/size of this array should be equal to getTriangleCountOfAllPatches()*3.
 		 */
 		DLL_IMPORT_OR_EXPORT void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const;
-        
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 		
 		/**
 		* Get the patch count in this representation.
 		*/
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const;
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

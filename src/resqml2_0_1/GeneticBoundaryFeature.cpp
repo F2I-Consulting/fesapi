@@ -16,36 +16,38 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/GeneticBoundaryFeature.h"
+#include "GeneticBoundaryFeature.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 
 const char* GeneticBoundaryFeature::XML_TAG = "GeneticBoundaryFeature";
 
-GeneticBoundaryFeature::GeneticBoundaryFeature(soap* soapContext, const string & guid, const string & title, bool isAnHorizon)
+GeneticBoundaryFeature::GeneticBoundaryFeature(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title, bool isAnHorizon)
 {
-	if (soapContext == nullptr)
+	if (repo == nullptr)
 		throw invalid_argument("The soap context cannot be null.");
 
-	gsoapProxy2_0_1 = gsoap_resqml2_0_1::soap_new_resqml2__obj_USCOREGeneticBoundaryFeature(soapContext, 1);
-	gsoap_resqml2_0_1::_resqml2__GeneticBoundaryFeature* horizon = static_cast<gsoap_resqml2_0_1::_resqml2__GeneticBoundaryFeature*>(gsoapProxy2_0_1);
-	horizon->GeneticBoundaryKind = isAnHorizon ? gsoap_resqml2_0_1::resqml2__GeneticBoundaryKind__horizon : gsoap_resqml2_0_1::resqml2__GeneticBoundaryKind__geobody_x0020boundary;
+	gsoapProxy2_0_1 = gsoap_resqml2_0_1::soap_new_resqml20__obj_USCOREGeneticBoundaryFeature(repo->getGsoapContext());
+	gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature* horizon = static_cast<gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature*>(gsoapProxy2_0_1);
+	horizon->GeneticBoundaryKind = isAnHorizon ? gsoap_resqml2_0_1::resqml20__GeneticBoundaryKind__horizon : gsoap_resqml2_0_1::resqml20__GeneticBoundaryKind__geobody_x0020boundary;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	repo->addOrReplaceDataObject(this);
 }
 
 bool GeneticBoundaryFeature::isAnHorizon() const
 {
-	return static_cast<gsoap_resqml2_0_1::_resqml2__GeneticBoundaryFeature*>(gsoapProxy2_0_1)->GeneticBoundaryKind == gsoap_resqml2_0_1::resqml2__GeneticBoundaryKind__horizon;
+	return static_cast<gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature*>(gsoapProxy2_0_1)->GeneticBoundaryKind == gsoap_resqml2_0_1::resqml20__GeneticBoundaryKind__horizon;
 }
 
 void GeneticBoundaryFeature::setAge(unsigned int age)
 {
-	gsoap_resqml2_0_1::_resqml2__GeneticBoundaryFeature* feature = static_cast<gsoap_resqml2_0_1::_resqml2__GeneticBoundaryFeature*>(gsoapProxy2_0_1);
+	gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature* feature = static_cast<gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature*>(gsoapProxy2_0_1);
 	if (!hasAnAge()) {
-		feature->AbsoluteAge = gsoap_resqml2_0_1::soap_new_resqml2__Timestamp(getGsoapContext());
+		feature->AbsoluteAge = gsoap_resqml2_0_1::soap_new_resqml20__Timestamp(getGsoapContext());
 		feature->AbsoluteAge->DateTime.tm_mday = 1;
 	}
 	if (feature->AbsoluteAge->YearOffset == nullptr) {
@@ -57,7 +59,7 @@ void GeneticBoundaryFeature::setAge(unsigned int age)
 
 bool GeneticBoundaryFeature::hasAnAge() const
 {
-	return static_cast<gsoap_resqml2_0_1::_resqml2__GeneticBoundaryFeature*>(gsoapProxy2_0_1)->AbsoluteAge != nullptr;
+	return static_cast<gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature*>(gsoapProxy2_0_1)->AbsoluteAge != nullptr;
 }
 
 ULONG64 GeneticBoundaryFeature::getAge() const
@@ -66,6 +68,6 @@ ULONG64 GeneticBoundaryFeature::getAge() const
 		throw invalid_argument("This feature has not an age.");
 	}
 
-	return abs(*(static_cast<gsoap_resqml2_0_1::_resqml2__GeneticBoundaryFeature*>(gsoapProxy2_0_1)->AbsoluteAge->YearOffset));
+	return abs(*(static_cast<gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature*>(gsoapProxy2_0_1)->AbsoluteAge->YearOffset));
 }
 

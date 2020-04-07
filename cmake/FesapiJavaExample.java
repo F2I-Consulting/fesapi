@@ -19,35 +19,68 @@ under the License.
 package com.f2i.energisticsStandardsApi.example;
 
 import java.util.UUID;
-
 import com.f2i.energisticsStandardsApi.Grid2dRepresentationVector;
 import com.f2i.energisticsStandardsApi.LocalDepth3dCrsVector;
 import com.f2i.energisticsStandardsApi.SWIGTYPE_p_double;
 import com.f2i.energisticsStandardsApi.SWIGTYPE_p_unsigned_int;
+import com.f2i.energisticsStandardsApi.SWIGTYPE_p_unsigned_short;
+import com.f2i.energisticsStandardsApi.WellVector;
+import com.f2i.energisticsStandardsApi.WellboreGeometryVector;
+import com.f2i.energisticsStandardsApi.WellboreTrajectoryRepresentationVector;
+import com.f2i.energisticsStandardsApi.WellboreVector;
 import com.f2i.energisticsStandardsApi.eml20__LengthUom;
 import com.f2i.energisticsStandardsApi.eml21__LengthUom;
+import com.f2i.energisticsStandardsApi.eml21__MassPerLengthUom;
+import com.f2i.energisticsStandardsApi.eml21__WellStatus;
 import com.f2i.energisticsStandardsApi.eml21__WellboreDatumReference;
 import com.f2i.energisticsStandardsApi.fesapi;
-import com.f2i.energisticsStandardsApi.resqml2__IndexableElements;
-import com.f2i.energisticsStandardsApi.resqml2__ResqmlPropertyKind;
-import com.f2i.energisticsStandardsApi.resqml2__ResqmlUom;
-import com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractHdfProxy;
-import com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.EpcDocument;
-import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.PropertyKind;
+import com.f2i.energisticsStandardsApi.resqml20__IndexableElements;
+import com.f2i.energisticsStandardsApi.resqml20__MdReference;
+import com.f2i.energisticsStandardsApi.resqml20__ResqmlPropertyKind;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.PropertySet;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation;
+import com.f2i.energisticsStandardsApi.resqml20__ResqmlUom;
+import com.f2i.energisticsStandardsApi.resqml20__TimeSetKind;
+import com.f2i.energisticsStandardsApi.witsml20__ChannelStatus;
+import com.f2i.energisticsStandardsApi.witsml20__HoleCasingType;
+import com.f2i.energisticsStandardsApi.witsml20__WellboreShape;
+import com.f2i.energisticsStandardsApi.witsml20__WellboreType;
+import com.f2i.energisticsStandardsApi.common.AbstractHdfProxy;
+import com.f2i.energisticsStandardsApi.common.DataObjectRepository;
+import com.f2i.energisticsStandardsApi.common.EpcDocument;
+import com.f2i.energisticsStandardsApi.common.PropertyKind;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentation;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractValuesProperty;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractValuesProperty.hdfDatatypeEnum;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.MdDatum;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.AbstractIjkGridRepresentation;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.ContinuousProperty;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.DiscreteProperty;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.EarthModelInterpretation;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GenericFeatureInterpretation;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.Grid2dRepresentation;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.Horizon;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.HorizonInterpretation;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.IjkGridExplicitRepresentation;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.LocalDepth3dCrs;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.OrganizationFeature;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PolylineRepresentation;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLatticeFeature;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLineFeature;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLineSetFeature;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.TriangulatedSetRepresentation;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreFeature;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreInterpretation;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreTrajectoryRepresentation;
 import com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Well;
+import com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Wellbore;
+import com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreGeometry;
 
 public class FesapiJavaExample {
+	private static Horizon horizon1;
+	private static IjkGridExplicitRepresentation ijkgrid;
+	private static PropertyKind cellIndexPropKind;
+
 	/**
 	 * Loading the FesapiCpp native library
 	 */
@@ -57,36 +90,135 @@ public class FesapiJavaExample {
 		}
 		catch (UnsatisfiedLinkError e) {
 			System.out.println("UnsatisfiedLinkError : " + e.toString());
-	    }
+		}
 	}
-	
-	static void serializeWells(EpcDocument pck)
+
+	private static void serializeWells(DataObjectRepository repo)
 	{
 		// WELL
-		Well witsmlWell = pck.createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1");
+		Well witsmlWell = repo.createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1");
 		witsmlWell.setNameLegal("Legal Name");
 		witsmlWell.setWaterDepth(0.0, eml21__LengthUom.eml21__LengthUom__0_x002e1_x0020ft);
 		witsmlWell.setTimeZone(true, 0);
 		witsmlWell.pushBackLocation("8cd3c8b2-face-4426-8aea-ae34870bd969", 275, 75, 0);
 		witsmlWell.pushBackDatum("aa92fa8b-d6cc-459e-b456-27fec0c08b24", "well1 msl datum", eml21__WellboreDatumReference.eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", eml21__LengthUom.eml21__LengthUom__m, 0, 5100);
 		witsmlWell.pushBackDatum("d3ac5401-d3e7-4474-b846-070673b210ae", "KB", eml21__WellboreDatumReference.eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", eml21__LengthUom.eml21__LengthUom__m, 15, 5100);
-	}
 	
-	private static void serializeBoundaries(EpcDocument pck, LocalDepth3dCrs crs, AbstractHdfProxy hdfProxy) {
+		// WELLBORE
+		Wellbore witsmlWellbore = repo.createWellbore(witsmlWell, "3bd60188-5688-43df-89bb-935fe86a813f", "Wellbore1");
+		witsmlWellbore.setNumber("Wb1");
+		witsmlWellbore.setStatusWellbore(eml21__WellStatus.eml21__WellStatus__completed);
+		witsmlWellbore.setIsActive(false);
+		witsmlWellbore.setTypeWellbore(witsml20__WellboreType.witsml20__WellboreType__initial);
+		witsmlWellbore.setShape(witsml20__WellboreShape.witsml20__WellboreShape__vertical);
+		witsmlWellbore.setAchievedTD(true);
+		witsmlWellbore.setMd(1000, eml21__LengthUom.eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+		witsmlWellbore.setMdPlanned(1000, eml21__LengthUom.eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+
+		// Geometry
+		WellboreGeometry witsmlWbGeom = repo.createWellboreGeometry(witsmlWellbore, "c9dc03e9-722c-478b-b0ae-b2dd9da67c11", "My wellbore geometry", witsml20__ChannelStatus.witsml20__ChannelStatus__closed);
+		witsmlWbGeom.setMdBase(0, eml21__LengthUom.eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+		witsmlWbGeom.pushBackSection();
+		witsmlWbGeom.setWellboreGeometrySectionTypeHoleCasing(0, witsml20__HoleCasingType.witsml20__HoleCasingType__casing);
+		witsmlWbGeom.setWellboreGeometrySectionOdSection(0, 30, eml21__LengthUom.eml21__LengthUom__in);
+		witsmlWbGeom.setWellboreGeometrySectionMdInterval(0, 0, 250, "d3ac5401-d3e7-4474-b846-070673b210ae", eml21__LengthUom.eml21__LengthUom__m);
+		witsmlWbGeom.setWellboreGeometrySectionTvdInterval(0, 0, 250, "d3ac5401-d3e7-4474-b846-070673b210ae", eml21__LengthUom.eml21__LengthUom__m);
+		witsmlWbGeom.pushBackSection();
+		witsmlWbGeom.setWellboreGeometrySectionTypeHoleCasing(1, witsml20__HoleCasingType.witsml20__HoleCasingType__casing);
+		witsmlWbGeom.setWellboreGeometrySectionCurveConductor(1, false);
+		witsmlWbGeom.setWellboreGeometrySectionDiaDrift(1, 17.5, eml21__LengthUom.eml21__LengthUom__in);
+		witsmlWbGeom.setWellboreGeometrySectionFactFric(1, 0.25);
+		witsmlWbGeom.setWellboreGeometrySectionGrade(1, "L80");
+		witsmlWbGeom.setWellboreGeometrySectionIdSection(1, 18, eml21__LengthUom.eml21__LengthUom__in);
+		witsmlWbGeom.setWellboreGeometrySectionOdSection(1, 20, eml21__LengthUom.eml21__LengthUom__in);
+		witsmlWbGeom.setWellboreGeometrySectionWtPerLen(1, 123, eml21__MassPerLengthUom.eml21__MassPerLengthUom__lbm_x002fft);
+		witsmlWbGeom.setWellboreGeometrySectionTvdInterval(1, 0, 990, "d3ac5401-d3e7-4474-b846-070673b210ae", eml21__LengthUom.eml21__LengthUom__m);
+		
+		// Features
+		WellboreFeature wellbore1 = repo.createWellboreFeature("22d5b48f-f789-46e7-a454-6d8bd05afd0b", "Wellbore1");
+		
+		// Interpretations
+		WellboreInterpretation wellbore1Interp1 = repo.createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
+
+		// Representation
+		MdDatum mdInfo = repo.createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", repo.getDefaultCrs(), resqml20__MdReference.resqml20__MdReference__mean_x0020sea_x0020level, 275, 75, 0);
+
+		//Geometry	
+		WellboreTrajectoryRepresentation w1i1TrajRep = repo.createWellboreTrajectoryRepresentation(wellbore1Interp1, "acd2cdcf-bb5d-48da-bd0e-9aeff3e52180", "Wellbore1 Interp1 TrajRep", mdInfo);
+		SWIGTYPE_p_double controlPoints = fesapi.new_DoubleArray(12);
+		SWIGTYPE_p_double trajectoryTangentVectors = fesapi.new_DoubleArray(12);
+		SWIGTYPE_p_double trajectoryMds = fesapi.new_DoubleArray(4);
+		try {
+			fesapi.DoubleArray_setitem(controlPoints, 0, 275);
+			fesapi.DoubleArray_setitem(controlPoints, 1, 75);
+			fesapi.DoubleArray_setitem(controlPoints, 2, 0);
+			fesapi.DoubleArray_setitem(controlPoints, 3, 275);
+			fesapi.DoubleArray_setitem(controlPoints, 4, 75);
+			fesapi.DoubleArray_setitem(controlPoints, 5, 325);
+			fesapi.DoubleArray_setitem(controlPoints, 6, 275);
+			fesapi.DoubleArray_setitem(controlPoints, 7, 75);
+			fesapi.DoubleArray_setitem(controlPoints, 8, 500);
+			fesapi.DoubleArray_setitem(controlPoints, 9, 275);
+			fesapi.DoubleArray_setitem(controlPoints, 10, 75);
+			fesapi.DoubleArray_setitem(controlPoints, 11, 1000);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 0, 0);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 1, 0);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 2, 1);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 3, 0);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 4, 0);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 5, 1);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 6, 0);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 7, 0);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 8, 1);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 9, 0);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 10, 0);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 11, 1);
+			fesapi.DoubleArray_setitem(trajectoryMds, 0, 0);
+			fesapi.DoubleArray_setitem(trajectoryMds, 1, 325);
+			fesapi.DoubleArray_setitem(trajectoryMds, 2, 500);
+			fesapi.DoubleArray_setitem(trajectoryMds, 3, 1000);
+			w1i1TrajRep.setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, 0, repo.getDefaultHdfProxy());			
+		}
+		finally {
+			fesapi.delete_DoubleArray(controlPoints);
+			fesapi.delete_DoubleArray(trajectoryTangentVectors);
+			fesapi.delete_DoubleArray(trajectoryMds);
+		}
+		
+		// WellboreFeature frame
+		WellboreFrameRepresentation w1i1FrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "d873e243-d893-41ab-9a3e-d20b851c099f", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
+		SWIGTYPE_p_double logMds = fesapi.new_DoubleArray(5);
+		try {
+			fesapi.DoubleArray_setitem(logMds, 0, 0);
+			fesapi.DoubleArray_setitem(logMds, 1, 250);
+			fesapi.DoubleArray_setitem(logMds, 2, 500);
+			fesapi.DoubleArray_setitem(logMds, 3, 750);
+			fesapi.DoubleArray_setitem(logMds, 4, 1000);
+			w1i1FrameRep.setMdValues(logMds, 5, repo.getDefaultHdfProxy());					
+		}
+		finally {
+			fesapi.delete_DoubleArray(logMds);
+		}
+	
+		WellboreFrameRepresentation w1i1RegularFrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
+		w1i1RegularFrameRep.setMdValues(0, 200, 6);
+	}
+
+	private static void serializeBoundaries(DataObjectRepository repo, AbstractHdfProxy hdfProxy) {
 		// Seismic Lattice
-		SeismicLatticeFeature seismicLattice = pck.createSeismicLattice("eb6a5e97-4d86-4809-b136-051f34cfcb51", "Seismic lattice", 2, 2, 150, 152, 4, 2);
-		GenericFeatureInterpretation seismicLatticeInterp = pck.createGenericFeatureInterpretation(seismicLattice, "97816427-6ef6-4776-b21c-5b93c8a6310a", "Seismic lattice Interp");
-		Grid2dRepresentation seismicLatticeRep = pck.createGrid2dRepresentation(seismicLatticeInterp, crs, "aa5b90f1-2eab-4fa6-8720-69dd4fd51a4d", "Seismic lattice Rep");
+		SeismicLatticeFeature seismicLattice = repo.createSeismicLattice("eb6a5e97-4d86-4809-b136-051f34cfcb51", "Seismic lattice", 2, 2, 150, 152, 4, 2);
+		GenericFeatureInterpretation seismicLatticeInterp = repo.createGenericFeatureInterpretation(seismicLattice, "97816427-6ef6-4776-b21c-5b93c8a6310a", "Seismic lattice Interp");
+		Grid2dRepresentation seismicLatticeRep = repo.createGrid2dRepresentation(seismicLatticeInterp, "aa5b90f1-2eab-4fa6-8720-69dd4fd51a4d", "Seismic lattice Rep");
 		seismicLatticeRep.setGeometryAsArray2dOfLatticePoints3d(4, 2, 0, 0, 0, 1, 0, 2, 0, 1, 3, 250, 200);
 
 		// Seismic Line Set
-		SeismicLineSetFeature seismicLineSet = pck.createSeismicLineSet("53c6a0be-c901-4bb6-845b-fba79745da02", "Seismic line Set");
+		SeismicLineSetFeature seismicLineSet = repo.createSeismicLineSet("53c6a0be-c901-4bb6-845b-fba79745da02", "Seismic line Set");
 
 		// Seismic Line
-		SeismicLineFeature seismicLine = pck.createSeismicLine("117f9bf6-6bb0-49f2-9cee-46912300bff6", "Seismic line", 1, 0, 5);
+		SeismicLineFeature seismicLine = repo.createSeismicLine("117f9bf6-6bb0-49f2-9cee-46912300bff6", "Seismic line", 1, 0, 5);
 		seismicLine.setSeismicLineSet(seismicLineSet);
-		GenericFeatureInterpretation seismicLineInterp = pck.createGenericFeatureInterpretation(seismicLine, "", "Seismic line Interp");
-		PolylineRepresentation seismicLineRep = pck.createPolylineRepresentation(seismicLineInterp, crs, "", "Seismic line Rep");
+		GenericFeatureInterpretation seismicLineInterp = repo.createGenericFeatureInterpretation(seismicLine, "", "Seismic line Interp");
+		PolylineRepresentation seismicLineRep = repo.createPolylineRepresentation(seismicLineInterp, "", "Seismic line Rep");
 		SWIGTYPE_p_double seismicLinePoints = fesapi.new_DoubleArray(15);
 		try {
 			fesapi.DoubleArray_setitem(seismicLinePoints, 0, 0);
@@ -111,14 +243,14 @@ public class FesapiJavaExample {
 		}
 
 		// Features
-		Horizon horizon1 = pck.createHorizon("35d7b57e-e5ff-4062-95af-ba2d7c4ce347", "Horizon1");
+		horizon1 = repo.createHorizon("35d7b57e-e5ff-4062-95af-ba2d7c4ce347", "Horizon1");
 		horizon1.setAge(300000000);
 
 		// Interpretations
-		HorizonInterpretation horizon1Interp1 = pck.createHorizonInterpretation(horizon1, "ac12dc12-4951-459b-b585-90f48aa88a5a", "Horizon1 Interp1");
+		HorizonInterpretation horizon1Interp1 = repo.createHorizonInterpretation(horizon1, "ac12dc12-4951-459b-b585-90f48aa88a5a", "Horizon1 Interp1");
 
 		// Horizon Representations
-		PolylineRepresentation h1i1SinglePolylineRep = pck.createPolylineRepresentation(horizon1Interp1, crs, "", "Horizon1 Interp1 SinglePolylineRep");
+		PolylineRepresentation h1i1SinglePolylineRep = repo.createPolylineRepresentation(horizon1Interp1, "", "Horizon1 Interp1 SinglePolylineRep");
 
 		SWIGTYPE_p_double h1i1SinglePolylineRepPoints = fesapi.new_DoubleArray(12);
 		try {
@@ -152,7 +284,7 @@ public class FesapiJavaExample {
 			fesapi.delete_DoubleArray(seismicLineAbscissa);
 		}
 
-		Grid2dRepresentation h1i1SingleGrid2dRep = pck.createGrid2dRepresentation(horizon1Interp1, crs, "", "Horizon1 Interp1 Grid2dRep");
+		Grid2dRepresentation h1i1SingleGrid2dRep = repo.createGrid2dRepresentation(horizon1Interp1, "7281e7b0-ca21-477d-b118-e9b7200e2809", "Horizon1 Interp1 Grid2dRep");
 		SWIGTYPE_p_double zValues = fesapi.new_DoubleArray(8);
 		try {
 			fesapi.DoubleArray_setitem(zValues, 0, 300.0);
@@ -170,9 +302,9 @@ public class FesapiJavaExample {
 		}
 
 		// Horizon 1 triangulated representation
-		TriangulatedSetRepresentation h1i1triRep = pck.createTriangulatedSetRepresentation(horizon1Interp1, crs,
-			"0c49b40a-632a-457a-b519-a178f40a397d",
-			"Horizon1 Interp1 TriRep");
+		TriangulatedSetRepresentation h1i1triRep = repo.createTriangulatedSetRepresentation(horizon1Interp1,
+				"0c49b40a-632a-457a-b519-a178f40a397d",
+				"Horizon1 Interp1 TriRep");
 		// Patch 0
 		SWIGTYPE_p_double explicitPointsHor1Patch0 = fesapi.new_DoubleArray(15);
 		SWIGTYPE_p_unsigned_int triangleNodeIndexHorPatch0 = fesapi.new_UIntArray(9);
@@ -192,7 +324,7 @@ public class FesapiJavaExample {
 			fesapi.DoubleArray_setitem(explicitPointsHor1Patch0, 12, 600);
 			fesapi.DoubleArray_setitem(explicitPointsHor1Patch0, 13, 140);
 			fesapi.DoubleArray_setitem(explicitPointsHor1Patch0, 14, 0);
-			
+
 			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 0, 0);
 			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 1, 1);
 			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 2, 3);
@@ -202,7 +334,7 @@ public class FesapiJavaExample {
 			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 6, 1);
 			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 7, 2);
 			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 8, 4);
-			
+
 			h1i1triRep.pushBackTrianglePatch(5, explicitPointsHor1Patch0, 3, triangleNodeIndexHorPatch0, hdfProxy);
 		}
 		finally {
@@ -228,7 +360,7 @@ public class FesapiJavaExample {
 			fesapi.DoubleArray_setitem(explicitPointsHor1Patch0, 12, 700);
 			fesapi.DoubleArray_setitem(explicitPointsHor1Patch0, 13, 200);
 			fesapi.DoubleArray_setitem(explicitPointsHor1Patch0, 14, 350);
-			
+
 			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 0, 5);
 			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 1, 6);
 			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 2, 8);
@@ -249,9 +381,9 @@ public class FesapiJavaExample {
 		//
 		// Properties
 		//
-		PropertyKind  propType1 = pck.createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", resqml2__ResqmlUom.resqml2__ResqmlUom__Euc, resqml2__ResqmlPropertyKind.resqml2__ResqmlPropertyKind__continuous);
-		ContinuousProperty contProp1 = pck.createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,
-				resqml2__IndexableElements.resqml2__IndexableElements__nodes, resqml2__ResqmlUom.resqml2__ResqmlUom__m, propType1);
+		PropertyKind  propType1 = repo.createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", resqml20__ResqmlUom.resqml20__ResqmlUom__Euc, resqml20__ResqmlPropertyKind.resqml20__ResqmlPropertyKind__continuous);
+		ContinuousProperty contProp1 = repo.createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,
+				resqml20__IndexableElements.resqml20__IndexableElements__nodes, resqml20__ResqmlUom.resqml20__ResqmlUom__m, propType1);
 		SWIGTYPE_p_double prop1Values = fesapi.new_DoubleArray(16);
 		try {
 			fesapi.DoubleArray_setitem(prop1Values, 0, 301);
@@ -278,106 +410,243 @@ public class FesapiJavaExample {
 		}
 	}
 	
+	private static void serializeIjkGrid(DataObjectRepository repo, AbstractHdfProxy hdfProxy)
+	{
+		cellIndexPropKind = repo.createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", resqml20__ResqmlUom.resqml20__ResqmlUom__Euc, resqml20__ResqmlPropertyKind.resqml20__ResqmlPropertyKind__discrete);
+		OrganizationFeature earthModel = repo.createEarthModel("f2060ce0-fa3d-11e5-8620-0002a5d5c51b", "Grid");
+		EarthModelInterpretation earthModelInterp = repo.createEarthModelInterpretation(earthModel, "f5cd7520-fa3d-11e5-b65b-0002a5d5c51b", "Grid interp");
+		ijkgrid = repo.createIjkGridExplicitRepresentation(earthModelInterp, "df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Two faulted sugar cubes (explicit geometry)", 2, 1, 1);
+		DiscreteProperty discreteProp1 = repo.createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
+				resqml20__IndexableElements.resqml20__IndexableElements__cells, cellIndexPropKind);
+
+		SWIGTYPE_p_unsigned_short propValues = fesapi.new_UShortArray(2);
+		try {
+			fesapi.UShortArray_setitem(propValues, 0, 0);
+			fesapi.UShortArray_setitem(propValues, 1, 1);
+			discreteProp1.pushBackUShortHdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
+		}
+		finally {
+			fesapi.delete_UShortArray(propValues);
+		}
+		
+		DiscreteProperty discreteProp2 = repo.createDiscreteProperty(ijkgrid, "", "Two faulted sugar cubes other cellIndex", 1,
+				resqml20__IndexableElements.resqml20__IndexableElements__cells, cellIndexPropKind);
+
+		propValues = fesapi.new_UShortArray(2);
+		try {
+			fesapi.UShortArray_setitem(propValues, 0, 10);
+			fesapi.UShortArray_setitem(propValues, 1, 11);
+			discreteProp2.pushBackUShortHdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
+		}
+		finally {
+			fesapi.delete_UShortArray(propValues);
+		}
+		
+		PropertySet propSet = repo.createPropertySet("", "Testing property set", false, true, resqml20__TimeSetKind.resqml20__TimeSetKind__not_x0020a_x0020time_x0020set);
+		propSet.pushBackProperty(discreteProp1);
+		propSet.pushBackProperty(discreteProp2);
+	}
+
 	private static void serialize()
 	{
-		EpcDocument pck = new EpcDocument("testingPackageJava.epc", EpcDocument.openingMode.OVERWRITE);
-	
-	    try {
-	    	// WITSML
-	    	serializeWells(pck);
-	    	
-	    	// RESQML
-	    	LocalDepth3dCrs crs = pck.createLocalDepth3dCrs(UUID.randomUUID().toString(), "UTF8 Crs title", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.eml20__LengthUom__m, 5215, eml20__LengthUom.eml20__LengthUom__m, "Unknown", false);
-	    	AbstractHdfProxy hdfProxy = pck.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5");
-	    	
-	    	serializeBoundaries(pck, crs, hdfProxy);
-	    	
-	    	pck.serialize();
-	    }
-	    finally {
-	    	pck.close();
-	    }
+		EpcDocument pck = new EpcDocument("testingPackageJava.epc");
+		DataObjectRepository repo = new DataObjectRepository();
+		
+		try {
+			LocalDepth3dCrs crs = repo.createLocalDepth3dCrs(UUID.randomUUID().toString(), "UTF8 Crs title", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.eml20__LengthUom__m, 5215, eml20__LengthUom.eml20__LengthUom__m, "Unknown", false);
+			repo.setDefaultCrs(crs);
+			AbstractHdfProxy hdfProxy = repo.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5", DataObjectRepository.openingMode.OVERWRITE);
+			repo.setDefaultHdfProxy(hdfProxy);
+			
+			// WITSML
+			serializeWells(repo);
+
+			// RESQML
+			serializeBoundaries(repo, hdfProxy);			
+			serializeIjkGrid(repo, hdfProxy);
+
+			pck.serializeFrom(repo);
+		}
+		finally {
+			pck.close();
+			repo.clear();
+		}
 	}
 
 	private static void deserialize()
 	{
 		EpcDocument pck = new EpcDocument("testingPackageJava.epc");
-	
-	    try {
-	    	String status = pck.deserialize();
-	    	if (!status.isEmpty()) {
-	    		System.out.println("Status : " + status);
-	    	}
-	    	
-	        LocalDepth3dCrsVector crs_set = pck.getLocalDepth3dCrsSet();
-	        System.out.println("CRS title is " + crs_set.get(0).getTitle());
+		DataObjectRepository repo = new DataObjectRepository();
 
-	    	Grid2dRepresentationVector horizonGrid2dSet = pck.getHorizonGrid2dRepSet();
-	    	System.out.println("HORIZONS GRID 2D REP");
-    		for (int i = 0; i < horizonGrid2dSet.size(); i++) {
-    			Grid2dRepresentation horizonGrid2d = horizonGrid2dSet.get(i);
+		try {
+			String status = pck.deserializeInto(repo);
+			if (!status.isEmpty()) {
+				System.out.println("Status : " + status);
+			}
 
-    			System.out.println("X origin " + horizonGrid2d.getXOriginInGlobalCrs());
-    			System.out.println("Y origin " + horizonGrid2d.getYOriginInGlobalCrs());
+			LocalDepth3dCrsVector crs_set = repo.getLocalDepth3dCrsSet();
+			System.out.println("CRS title is " + crs_set.get(0).getTitle());
 
-    			System.out.println("I Node Count " + horizonGrid2d.getNodeCountAlongIAxis());
-    			System.out.println("J Node Count " + horizonGrid2d.getNodeCountAlongJAxis());
-    			SWIGTYPE_p_double zValues = fesapi.new_DoubleArray(horizonGrid2d.getNodeCountAlongIAxis() * horizonGrid2d.getNodeCountAlongJAxis());
-    			try {
-    				horizonGrid2d.getZValuesInGlobalCrs(zValues);
-        			System.out.println("First zValue is : " + fesapi.DoubleArray_getitem(zValues, 0));
-        			System.out.println("Second zValue is : " + fesapi.DoubleArray_getitem(zValues, 1));
-        			System.out.println("Third zValue is : " + fesapi.DoubleArray_getitem(zValues, 2));
-        			System.out.println("Fourth zValue is : " + fesapi.DoubleArray_getitem(zValues, 3));
-        			System.out.println("Fifth zValue is : " + fesapi.DoubleArray_getitem(zValues, 4));
-        			horizonGrid2d.getSupportingRepresentation().getZValuesInGlobalCrs(zValues);
-        			System.out.println("Supporting Representation first zValue is : " + fesapi.DoubleArray_getitem(zValues, 0));
-        			System.out.println("Supporting Representation second zValue is : " + fesapi.DoubleArray_getitem(zValues, 1));
-        			System.out.println("Supporting Representation third zValue is : " + fesapi.DoubleArray_getitem(zValues, 2));
-        			System.out.println("Supporting Representation fourth zValue is : " + fesapi.DoubleArray_getitem(zValues, 3));
-        			System.out.println("Supporting Representation fifth zValue is : " + fesapi.DoubleArray_getitem(zValues, 4));
-    			}
-    			finally {
-    				fesapi.delete_DoubleArray(zValues);
-    			}
-    			System.out.println("XIOffset : " + horizonGrid2d.getXIOffsetInGlobalCrs());
-    			System.out.println("YIOffset : " + horizonGrid2d.getYIOffsetInGlobalCrs());
-    			System.out.println("XJOffset : " + horizonGrid2d.getXJOffsetInGlobalCrs());
-    			System.out.println("YJOffset : " + horizonGrid2d.getYJOffsetInGlobalCrs());
-    			if (horizonGrid2d.isISpacingConstant()) {
-    				System.out.println("Spacing in I is constant : " + horizonGrid2d.getISpacing());
-    			}
-    			else {
-    				System.out.println("Spacing in I is not constant.");
-    			}
-    			if (horizonGrid2d.isJSpacingConstant()) {
-    				System.out.println("Spacing in J is constant : " + horizonGrid2d.getJSpacing());
-    			}
-    			else {
-    				System.out.println("Spacing in J is not constant.");
-    			}
-    		}
-    		
-    		// MATHIEU
-    		System.out.println("WITSML WELL");
-    		Well witsmlWell = (Well) pck.getDataObjectByUuid("704a287c-5c24-4af3-a97b-bc6670f4e14f");
-    		System.out.println("Well title is : " + witsmlWell.getTitle());
-    		System.out.println("Location projected X : " + witsmlWell.getLocationProjectedX(0));
-    		System.out.println("Location projected Y : " + witsmlWell.getLocationProjectedY(0));
-    		System.out.println("\tnameLegal : " + witsmlWell.getNameLegal());
-            System.out.println("\twaterDepth : " + witsmlWell.getWaterDepthValue() + " (" + witsmlWell.getWaterDepthUom() + ")");
-            if (witsmlWell.hasTimeZone())
-            {
-                System.out.println("\ttimeZone : " + witsmlWell.getTimeZoneHours() + " hours");
-            }
-	    }
-	    finally {
-	        pck.close();
-	    }
+			Grid2dRepresentationVector horizonGrid2dSet = repo.getHorizonGrid2dRepSet();
+			System.out.println("HORIZONS GRID 2D REP");
+			for (int i = 0; i < horizonGrid2dSet.size(); i++) {
+				Grid2dRepresentation horizonGrid2d = horizonGrid2dSet.get(i);
+
+				System.out.println("X origin " + horizonGrid2d.getXOriginInGlobalCrs());
+				System.out.println("Y origin " + horizonGrid2d.getYOriginInGlobalCrs());
+
+				System.out.println("I Node Count " + horizonGrid2d.getNodeCountAlongIAxis());
+				System.out.println("J Node Count " + horizonGrid2d.getNodeCountAlongJAxis());
+				SWIGTYPE_p_double zValues = fesapi.new_DoubleArray(horizonGrid2d.getNodeCountAlongIAxis() * horizonGrid2d.getNodeCountAlongJAxis());
+				try {
+					horizonGrid2d.getZValuesInGlobalCrs(zValues);
+					System.out.println("First zValue is : " + fesapi.DoubleArray_getitem(zValues, 0));
+					System.out.println("Second zValue is : " + fesapi.DoubleArray_getitem(zValues, 1));
+					System.out.println("Third zValue is : " + fesapi.DoubleArray_getitem(zValues, 2));
+					System.out.println("Fourth zValue is : " + fesapi.DoubleArray_getitem(zValues, 3));
+					System.out.println("Fifth zValue is : " + fesapi.DoubleArray_getitem(zValues, 4));
+				}
+				finally {
+					fesapi.delete_DoubleArray(zValues);
+				}
+				System.out.println("XIOffset : " + horizonGrid2d.getXIOffsetInGlobalCrs());
+				System.out.println("YIOffset : " + horizonGrid2d.getYIOffsetInGlobalCrs());
+				System.out.println("XJOffset : " + horizonGrid2d.getXJOffsetInGlobalCrs());
+				System.out.println("YJOffset : " + horizonGrid2d.getYJOffsetInGlobalCrs());
+				if (horizonGrid2d.isISpacingConstant()) {
+					System.out.println("Spacing in I is constant : " + horizonGrid2d.getISpacing());
+				}
+				else {
+					System.out.println("Spacing in I is not constant.");
+				}
+				if (horizonGrid2d.isJSpacingConstant()) {
+					System.out.println("Spacing in J is constant : " + horizonGrid2d.getJSpacing());
+				}
+				else {
+					System.out.println("Spacing in J is not constant.");
+				}
+			}
+
+			deserializeWell(repo);
+			
+			deserializeIjkGrid(repo);	
+		}
+		finally {
+			pck.close();
+			repo.clear();
+		}
 	}
 	
+	private static void showAllProperties(AbstractRepresentation rep)
+	{
+		long propCount = rep.getValuesPropertyCount();
+		if (propCount > 0) {
+			System.out.println("PROPERTIES");
+		}
+		for (long propIndex = 0; propIndex < propCount; ++propIndex) {
+			AbstractValuesProperty propVal = rep.getValuesProperty(propIndex);
+			System.out.println("\tProperty : " + propVal.getTitle());
+
+			long propSetCount = propVal.getPropertySetCount();
+			for (long propSetIndex = 0; propSetIndex < propSetCount; ++propSetIndex) {
+				PropertySet propSet = propVal.getPropertySet(propSetIndex);
+				System.out.println("\tContained in property set : " + propSet.getTitle());
+			}
+		}
+	}
+
+	private static void deserializeWell(DataObjectRepository repo) {
+		WellVector witsmlWells = repo.getWells();
+		for (int wellIdx = 0; wellIdx < witsmlWells.size(); ++wellIdx) {
+			Well witsmlWell = witsmlWells.get(wellIdx);
+			System.out.println("witsml Well: " + witsmlWell.getTitle() + " (" + witsmlWell.getUuid() + ")");
+			System.out.println("Location projected X : " + witsmlWell.getLocationProjectedX(0));
+			System.out.println("Location projected Y : " + witsmlWell.getLocationProjectedY(0));
+			System.out.println("\tnameLegal : " + witsmlWell.getNameLegal());
+			System.out.println("\twaterDepth : " + witsmlWell.getWaterDepthValue() + " (" + witsmlWell.getWaterDepthUom() + ")");
+			if (witsmlWell.hasTimeZone())
+			{
+				System.out.println("\ttimeZone : " + witsmlWell.getTimeZoneHours() + " hours");
+			}
+			WellboreVector witsmlWellbores = witsmlWell.getWellbores();
+			for (int wellboreIdx = 0; wellboreIdx < witsmlWellbores.size(); ++wellboreIdx) {
+				Wellbore witsmlWellbore = witsmlWellbores.get(wellboreIdx);
+				System.out.println("witsml wellbore: " + witsmlWellbore.getTitle() + " (" + witsmlWellbore.getUuid() + ")");
+				WellboreGeometryVector wbGeoms = witsmlWellbore.getWellboreGeometries();
+				for (int wbGeomIdx = 0; wbGeomIdx < wbGeoms.size(); ++wbGeomIdx) {
+					WellboreGeometry wbGeom = wbGeoms.get(wbGeomIdx);
+					System.out.println("witsml wellbore geom: " + wbGeom.getTitle() + " (" + wbGeom.getUuid() + ")");
+					if (wbGeom.hasDepthWaterMean()) { System.out.println("DepthWaterMean: " + wbGeom.getDepthWaterMeanValue() + " " + wbGeom.getDepthWaterMeanUom()); }
+					if (wbGeom.hasGapAir()) { System.out.println("GapAir: " + wbGeom.getGapAirValue() + " " + wbGeom.getGapAirUom()); }
+					if (wbGeom.hasMdBase()) { System.out.println("MdBase: " + wbGeom.getMdBaseValue() + " " + wbGeom.getMdBaseUom() + " datum=" + wbGeom.getMdBaseDatum()); }
+					for (int sectionIdx = 0; sectionIdx < wbGeom.getSectionCount(); ++sectionIdx) {
+						System.out.println("Section " + sectionIdx);
+						if (wbGeom.hasWellboreGeometrySectionCurveConductor(sectionIdx)) { System.out.println("CurveConductor: " + wbGeom.getWellboreGeometrySectionCurveConductor(sectionIdx)); }
+						if (wbGeom.hasWellboreGeometrySectionDiaDrift(sectionIdx)) { System.out.println("DiaDrift: " + wbGeom.getWellboreGeometrySectionDiaDriftValue(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionDiaDriftUom(sectionIdx)); }
+						if (wbGeom.hasWellboreGeometrySectionFactFric(sectionIdx)) { System.out.println("FactFric: " + wbGeom.getWellboreGeometrySectionFactFric(sectionIdx)); }
+						if (wbGeom.hasWellboreGeometrySectionGrade(sectionIdx)) { System.out.println("Grade: " + wbGeom.getWellboreGeometrySectionGrade(sectionIdx)); }
+						if (wbGeom.hasWellboreGeometrySectionIdSection(sectionIdx)) { System.out.println("IdSection: " + wbGeom.getWellboreGeometrySectionIdSectionValue(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionIdSectionUom(sectionIdx)); }
+						if (wbGeom.hasWellboreGeometrySectionOdSection(sectionIdx)) { System.out.println("OdSection: " + wbGeom.getWellboreGeometrySectionOdSectionValue(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionOdSectionUom(sectionIdx)); }
+						if (wbGeom.hasWellboreGeometrySectionTypeHoleCasing(sectionIdx)) { System.out.println("TypeHoleCasing: " + wbGeom.getWellboreGeometrySectionTypeHoleCasing(sectionIdx)); }
+						if (wbGeom.hasWellboreGeometrySectionMdInterval(sectionIdx)) {
+							System.out.println("Base md: " + wbGeom.getWellboreGeometrySectionMdIntervalBase(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionMdIntervalBaseUom(sectionIdx));
+							System.out.println("Top md: " + wbGeom.getWellboreGeometrySectionMdIntervalTop(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionMdIntervalTopUom(sectionIdx));
+							System.out.println("datum: " + wbGeom.getWellboreGeometrySectionMdIntervaldatum(sectionIdx));
+						}
+						if (wbGeom.hasWellboreGeometrySectionTvdInterval(sectionIdx)) {
+							System.out.println("Base Tvd: " + wbGeom.getWellboreGeometrySectionTvdIntervalBase(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionTvdIntervalBaseUom(sectionIdx));
+							System.out.println("Top Tvd: " + wbGeom.getWellboreGeometrySectionTvdIntervalTop(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionTvdIntervalTopUom(sectionIdx));
+							System.out.println("datum: " + wbGeom.getWellboreGeometrySectionTvdIntervaldatum(sectionIdx));
+						}
+					}
+				}
+			}
+		}
+		
+		System.out.println("WellboreFrameRepresentation");
+		WellboreTrajectoryRepresentationVector wellboreCubicTrajSet = repo.getWellboreTrajectoryRepresentationSet();
+		for (int trajIndex = 0; trajIndex < wellboreCubicTrajSet.size(); trajIndex++) {
+			System.out.println("wbf count = " + wellboreCubicTrajSet.get(trajIndex).getWellboreFrameRepresentationCount());
+			for (int wbfIndex = 0; wbfIndex < wellboreCubicTrajSet.get(trajIndex).getWellboreFrameRepresentationCount(); wbfIndex++) {
+				WellboreFrameRepresentation wbf = wellboreCubicTrajSet.get(trajIndex).getWellboreFrameRepresentation(wbfIndex);
+				
+				System.out.println("WellboreFrameRepresentation title : " + wbf.getTitle());
+				System.out.println("WellboreFrameRepresentation uuid : " + wbf.getUuid());
+				
+				System.out.println("Value Count : " + wbf.getMdValuesCount());
+				if (wbf.areMdValuesRegularlySpaced())
+				{
+					System.out.println("Regularly spaced");
+					System.out.println("First Value : " + wbf.getMdFirstValue());
+					System.out.println("Increment : " + wbf.getMdConstantIncrementValue());
+				}
+				else
+				{
+					System.out.println("Iregularly spaced");
+				}
+				if (wbf.getMdHdfDatatype() == hdfDatatypeEnum.DOUBLE)
+					System.out.println("Hdf datatype is NATIVE DOUBLE");
+				else if (wbf.getMdHdfDatatype() == hdfDatatypeEnum.FLOAT)
+					System.out.println("Hdf datatype is NATIVE FLOAT");
+				else if (wbf.getMdHdfDatatype() == hdfDatatypeEnum.UNKNOWN)
+					System.out.println("Hdf datatype is UNKNOWN");
+			}
+		}
+	}
+	
+	private static void deserializeIjkGrid(DataObjectRepository repo) {
+		System.out.println("IJK GRID REP");
+		long ijkGridCount = repo.getIjkGridRepresentationCount();
+		for (long ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx)
+		{
+			AbstractIjkGridRepresentation ijkGrid = repo.getIjkGridRepresentation(ijkGridIdx);
+			System.out.println("\tIjk Grid : " + ijkGrid.getTitle());
+			showAllProperties(ijkGrid);
+		}
+	}
+
 	public static void main(String[] args) {
 		serialize();
-	    deserialize();
+		deserialize();
 	}
 }

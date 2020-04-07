@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/OrganizationFeature.h"
+#include "OrganizationFeature.h"
 
 #include <stdexcept>
 
@@ -26,19 +26,21 @@ using namespace gsoap_resqml2_0_1;
 
 const char* OrganizationFeature::XML_TAG = "OrganizationFeature";
 
-OrganizationFeature::OrganizationFeature(soap* soapContext, const std::string & guid, const string & title, const resqml2__OrganizationKind & orgType)
+OrganizationFeature::OrganizationFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const string & title, resqml20__OrganizationKind orgType)
 {
-	if (soapContext == nullptr) {
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr) {
+		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREOrganizationFeature(soapContext, 1);
-	static_cast<_resqml2__OrganizationFeature*>(gsoapProxy2_0_1)->OrganizationKind = orgType;
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREOrganizationFeature(repo->getGsoapContext());
+	static_cast<_resqml20__OrganizationFeature*>(gsoapProxy2_0_1)->OrganizationKind = orgType;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	repo->addOrReplaceDataObject(this);
 }
 
-gsoap_resqml2_0_1::resqml2__OrganizationKind OrganizationFeature::getKind() const {
-	return static_cast<_resqml2__OrganizationFeature*>(gsoapProxy2_0_1)->OrganizationKind;
+gsoap_resqml2_0_1::resqml20__OrganizationKind OrganizationFeature::getKind() const {
+	return static_cast<_resqml20__OrganizationFeature*>(gsoapProxy2_0_1)->OrganizationKind;
 }

@@ -16,75 +16,49 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/StratigraphicColumn.h"
+#include "StratigraphicColumn.h"
 
-#include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
+#include "StratigraphicColumnRankInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* StratigraphicColumn::XML_TAG = "StratigraphicColumn";
 
-StratigraphicColumn::StratigraphicColumn(soap* soapContext, const std::string & guid, const std::string & title) : earthModel(nullptr)
+StratigraphicColumn::StratigraphicColumn(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title)
 {
-	if (soapContext == nullptr) {
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr) {
+		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREStratigraphicColumn(soapContext, 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStratigraphicColumn(repo->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	repo->addOrReplaceDataObject(this);
 }
 
 void StratigraphicColumn::pushBackStratiColumnRank(StratigraphicColumnRankInterpretation * stratiColumnRank)
 {
-	// EPC
-	stratigraphicColumnRankSet.push_back(stratiColumnRank);
-	stratiColumnRank->stratigraphicColumnSet.push_back(this);
+	getRepository()->addRelationship(this, stratiColumnRank);
 
-	// XML
-	if (updateXml) {
-		static_cast<_resqml2__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks.push_back(stratiColumnRank->newResqmlReference());
-	}
+	static_cast<_resqml20__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks.push_back(stratiColumnRank->newResqmlReference());
 }
 
-vector<Relationship> StratigraphicColumn::getAllEpcRelationships() const
+std::vector<class StratigraphicColumnRankInterpretation *> StratigraphicColumn::getStratigraphicColumnRankInterpretationSet() const
 {
-	vector<Relationship> result;
-
-	for (size_t i = 0; i < stratigraphicColumnRankSet.size(); ++i) {
-		Relationship rel(stratigraphicColumnRankSet[i]->getPartNameInEpcDocument(), "", stratigraphicColumnRankSet[i]->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
-        
-    return result;
+	return getRepository()->getTargetObjects<StratigraphicColumnRankInterpretation>(this);
 }
 
-void StratigraphicColumn::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void StratigraphicColumn::loadTargetRelationships()
 {
-	updateXml = false;
-
-	std::vector<eml20__DataObjectReference *> stratColRanks= static_cast<_resqml2__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks;
+	const std::vector<eml20__DataObjectReference *>& stratColRanks= static_cast<_resqml20__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks;
 	for (size_t i = 0; i < stratColRanks.size(); ++i) {
-		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = stratColRanks[i];
+		gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = stratColRanks[i];
 		if (dor != nullptr) {
-			StratigraphicColumnRankInterpretation* interp = epcDoc->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(dor->UUID);
-			if (interp == nullptr) { // partial transfer
-				getEpcDocument()->createPartial(dor);
-				interp = getEpcDocument()->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(dor->UUID);
-			}
-			if (interp == nullptr) {
-				throw invalid_argument("The DOR looks invalid.");
-			}
-			updateXml = false;
-			pushBackStratiColumnRank(interp);
-			updateXml = true;
+			convertDorIntoRel<StratigraphicColumnRankInterpretation>(dor);
 		}
 	}
-
-	updateXml = true;
 }

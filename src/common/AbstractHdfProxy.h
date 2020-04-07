@@ -18,9 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/EpcExternalPartReference.h"
-#include "resqml2/AbstractRepresentation.h"
-#include "common/HidtType.h"
+#include "EpcExternalPartReference.h"
+#include "HidtType.h"
 
 #define CUMULATIVE_LENGTH_DS_NAME "cumulativeLength"
 #define ELEMENTS_DS_NAME "elements"
@@ -30,26 +29,56 @@ namespace COMMON_NS
 	class AbstractHdfProxy : public EpcExternalPartReference
 	{
 	protected:
+		/**
+		* Only to be used in partial transfer context
+		*/
+		AbstractHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::EpcExternalPartReference(partialObject) {}
+
+		std::string packageDirectoryAbsolutePath;												/// The directory where the EPC document is stored.
+		std::string relativeFilePath;															/// Must be relative to the location of the package
+		DataObjectRepository::openingMode openingMode;
 
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		*/
-		AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
+		AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY) :
+			packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath), openingMode(hdfPermissionAccess) {}
 
-		AbstractHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-			EpcExternalPartReference(fromGsoap, packageDirAbsolutePath, externalFilePath) {}
+		AbstractHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
+			EpcExternalPartReference(fromGsoap), openingMode(DataObjectRepository::openingMode::READ_ONLY) {}
 
-		AbstractHdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-			EpcExternalPartReference(fromGsoap, packageDirAbsolutePath, externalFilePath) {}
+		AbstractHdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
+			EpcExternalPartReference(fromGsoap), openingMode(DataObjectRepository::openingMode::READ_ONLY) {}
 
 		/**
-		* Instantiate and initialize the gsoap proxy v2.0.1.
+		* Instantiate and initialize the gsoap proxy.
 		* This method is defined in order to be used in derived class without having to link to generated gsoap files.
 		*/
-		void initGsoapProxy(soap* soapContext, const std::string & guid, const std::string & title, EmlVersion emlVersion);
+		DLL_IMPORT_OR_EXPORT void initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, AbstractObject::EmlVersion emlVersion);
 
 	public:  
 		virtual ~AbstractHdfProxy() {}
+
+		/**
+		* Set the root of the path where to resolve relativeFilePath.
+		* It must be the folder path containing the EPC file if this HDF5 file is associated to an EPC file.
+		*/
+		DLL_IMPORT_OR_EXPORT void setRootPath(const std::string& rootPath) { packageDirectoryAbsolutePath = rootPath; }
+
+		/**
+		* Set the relative path regarding packageDirectoryAbsolutePath where the HDF5 file is located.
+		*/
+		DLL_IMPORT_OR_EXPORT void setRelativePath(const std::string& relPath) { relativeFilePath = relPath; }
+
+		/**
+		* Set the rights when opening the HDF5 file.
+		*/
+		DLL_IMPORT_OR_EXPORT void setOpeningMode(DataObjectRepository::openingMode openingMode_) { openingMode = openingMode_; }
+
+		/**
+		* Get the relative path regarding packageDirectoryAbsolutePath where the HDF5 file is located.
+		*/
+		DLL_IMPORT_OR_EXPORT const std::string& getRelativePath() const { return relativeFilePath; }
 
 		/**
 		* Open the file for reading and writing.
@@ -335,8 +364,8 @@ namespace COMMON_NS
 		virtual void readArrayNdOfDoubleValues(
 		  const std::string & datasetName,
 		  double* values,
-		  unsigned long long * numValuesInEachDimension,
-		  unsigned long long * offsetInEachDimension,
+		  unsigned long long const * numValuesInEachDimension,
+		  unsigned long long const * offsetInEachDimension,
 		  unsigned int numDimensions
 		  ) = 0;
 
@@ -353,10 +382,10 @@ namespace COMMON_NS
 		virtual void readArrayNdOfDoubleValues(
 			const std::string & datasetName, 
 			double* values,
-			unsigned long long * blockCountPerDimension,
-			unsigned long long * offsetInEachDimension,
-			unsigned long long * strideInEachDimension,
-			unsigned long long * blockSizeInEachDimension,
+			unsigned long long const * blockCountPerDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned long long const * strideInEachDimension,
+			unsigned long long const * blockSizeInEachDimension,
 			unsigned int numDimensions) = 0;
 
 		/**
@@ -374,10 +403,10 @@ namespace COMMON_NS
 		 */
 		virtual void selectArrayNdOfValues(
 			const std::string & datasetName,
-			unsigned long long * blockCountPerDimension,
-			unsigned long long * offsetInEachDimension,
-			unsigned long long * strideInEachDimension,
-			unsigned long long * blockSizeInEachDimension,
+			unsigned long long const* blockCountPerDimension,
+			unsigned long long const* offsetInEachDimension,
+			unsigned long long const* strideInEachDimension,
+			unsigned long long const* blockSizeInEachDimension,
 			unsigned int numDimensions,
 			bool newSelection,
 			hdf5_hid_t & dataset,
@@ -414,29 +443,17 @@ namespace COMMON_NS
 		virtual void readArrayNdOfFloatValues(
 		  const std::string & datasetName,
 		  float* values,
-		  unsigned long long * numValuesInEachDimension,
-		  unsigned long long * offsetInEachDimension,
+		  unsigned long long const * numValuesInEachDimension,
+		  unsigned long long const * offsetInEachDimension,
 		  unsigned int numDimensions
 		  ) = 0;
-
-		/**
-		* TODO : check all possible size of LONG64 on all different platforms
-		* @param values 		The values must be pre-allocated and won't be freed by this method.
-		*/
-		virtual void readArrayNdOfGSoapLong64Values(const std::string & datasetName, LONG64* values) = 0;
-	
-		/**
-		* TODO : check all possible size of ULONG64 on all different platforms
-		* @param values 		The values must be pre-allocated and won't be freed by this method.
-		*/
-		virtual void readArrayNdOfGSoapULong64Values(const std::string & datasetName, ULONG64* values) = 0;
 
 		/**
 		 * Read an array Nd of long values stored in a specific dataset.
 		 * @param datasetName	The absolute dataset name where to read the values
 		 * @param values 		The values must be pre-allocated and won't be freed by this method.
 		 */
-		virtual void readArrayNdOfLongValues(const std::string & datasetName, long* values) = 0;
+		virtual void readArrayNdOfLongValues(const std::string & datasetName, LONG64* values) = 0;
 
 		/**
 		 * Find the array associated with datasetName and read from it.
@@ -447,19 +464,18 @@ namespace COMMON_NS
 		 * @param numDimensions                  The number of the dimensions of the array to read.
 		 */
 		virtual void readArrayNdOfLongValues(
-		  const std::string & datasetName,
-		  long* values,
-		  unsigned long long * numValuesInEachDimension,
-		  unsigned long long * offsetInEachDimension,
-		  unsigned int numDimensions
-		  ) = 0;
+			const std::string & datasetName,
+			LONG64* values,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned int numDimensions) = 0;
 
 		/**
 		 * Read an array Nd of unsigned long values stored in a specific dataset.
 		 * @param datasetName	The absolute dataset name where to read the values
 		 * @param values 		The values must be pre-allocated and won't be freed by this method.
 		 */
-		virtual void readArrayNdOfULongValues(const std::string & datasetName, unsigned long* values) = 0;
+		virtual void readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values) = 0;
 
 		/**
 		 * Read an array Nd of int values stored in a specific dataset.
@@ -479,8 +495,8 @@ namespace COMMON_NS
 		virtual void readArrayNdOfIntValues(
 			const std::string & datasetName,
 			int* values,
-			unsigned long long * numValuesInEachDimension,
-			unsigned long long * offsetInEachDimension,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
 			unsigned int numDimensions
 		) = 0;
 
@@ -531,9 +547,10 @@ namespace COMMON_NS
 		* Check wether an absolute path exists in the hdf file or not.
 		*/
 		virtual bool exist(const std::string & absolutePathInHdfFile) const = 0;
-  
-		friend void RESQML2_NS::AbstractRepresentation::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
-		friend void RESQML2_NS::AbstractProperty::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
 
+		/**
+		* Check wether a dataset is compressed or not.
+		*/
+		virtual bool isCompressed(const std::string & datasetName) = 0;
 	};
 }

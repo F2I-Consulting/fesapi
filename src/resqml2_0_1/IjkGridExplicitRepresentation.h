@@ -18,39 +18,43 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/AbstractIjkGridRepresentation.h"
+#include "AbstractIjkGridRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
+	/**
+	* An IJK Grid explicit representation defines each cell corner position by means of XYZ coordinates.
+	* Adjacent cell corner are supposed to be located the same so they are not repeated unless you define split lines or split nodes.
+	*/
 	class IjkGridExplicitRepresentation : public AbstractIjkGridRepresentation
 	{
 	public:
 
 		/**
-		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
+		* @param repo	The repo where the underlying gsoap proxy is going to be created.
 		*/
-		IjkGridExplicitRepresentation(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
+		IjkGridExplicitRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
+			unsigned int iCount, unsigned int jCount, unsigned int kCount,
 			bool withTruncatedPillars = false);
 
-		IjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+		IjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
+			unsigned int iCount, unsigned int jCount, unsigned int kCount,
 			bool withTruncatedPillars = false);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		IjkGridExplicitRepresentation(gsoap_resqml2_0_1::_resqml2__IjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap) {}
-		IjkGridExplicitRepresentation(gsoap_resqml2_0_1::_resqml2__TruncatedIjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap) {}
+		IjkGridExplicitRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap) {}
+		IjkGridExplicitRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		virtual ~IjkGridExplicitRepresentation() {}
 
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		/**
 		* Get the xyz point count in a given patch.
@@ -96,23 +100,29 @@ namespace RESQML2_0_1_NS
 		* @param splitCoordinateLineColumns					For each split coordinate line, indicates which columns are incident to it. Count is the last value in the splitCoordinateLineColumnCumulativeCount array.
 		*													Columns are identified by their absolute 1d index (iColumn + jColumn*iColumnCount) where *Column* == *Cell*.
 		* @param definedPillars								For each pillar : 0 if pillar is not defined (i.e points equal to NaN) else the pillar is defined.  This information overrides any pillar geometry information. If null, then all pillars are assumed to be defined.
+		* @param localCrs									The local CRS where the points are given. If nullptr then the default CRS will be used.
 		*/
 		DLL_IMPORT_OR_EXPORT void setGeometryAsCoordinateLineNodes(
-			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-			double * points, COMMON_NS::AbstractHdfProxy* proxy,
-			const unsigned long & splitCoordinateLineCount = 0, unsigned int * pillarOfCoordinateLine = nullptr,
+			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
+			double * points, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned long splitCoordinateLineCount = 0, unsigned int * pillarOfCoordinateLine = nullptr,
 			unsigned int * splitCoordinateLineColumnCumulativeCount = nullptr, unsigned int * splitCoordinateLineColumns = nullptr,
-			char * definedPillars = nullptr);
+			char * definedPillars = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		* Same as setGeometryAsCoordinateLineNodes where the hdf datasets are already written in the the file.
 		*/
 		DLL_IMPORT_OR_EXPORT void setGeometryAsCoordinateLineNodesUsingExistingDatasets(
-			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-			const std::string & points, COMMON_NS::AbstractHdfProxy* proxy,
-			const unsigned long & splitCoordinateLineCount = 0, const std::string & pillarOfCoordinateLine = "",
+			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
+			const std::string & points, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned long splitCoordinateLineCount = 0, const std::string & pillarOfCoordinateLine = "",
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
-			const std::string & definedPillars = "");
+			const std::string & definedPillars = "", RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
+
+		/**
+		* Check wether the node geometry dataset is compressed or not.
+		*/
+		DLL_IMPORT_OR_EXPORT bool isNodeGeometryCompressed() const;
 
 		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const;
 	};

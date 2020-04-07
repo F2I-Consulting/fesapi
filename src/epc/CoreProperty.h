@@ -16,8 +16,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
-
 #ifndef CORE_PROPERTY_H
 #define CORE_PROPERTY_H
 
@@ -53,9 +51,9 @@ namespace epc
 		};
 
 		CoreProperty();
-		CoreProperty(const TypeProperty & pType);
-		CoreProperty(const TypeProperty & pType, const std::string & pValue);
-		CoreProperty(const TypeProperty & pType, const std::vector<std::string> & pValue);
+		CoreProperty(TypeProperty pType);
+		CoreProperty(TypeProperty pType, const std::string & pValue);
+		CoreProperty(TypeProperty pType, const std::vector<std::string> & pValue);
 		~CoreProperty() {}
 
 		/**
@@ -71,18 +69,18 @@ namespace epc
 		/**
 		* Set the type of the core property
 		*/
-		void setTypeProperty(const TypeProperty & corePropertyType);
+		void setTypeProperty(TypeProperty corePropertyType);
 
 		/**
 		* Get all the string values. Relevant only for some core properties which can have several string values (such as keywords)
 		*/
-		std::vector<std::string> getAllValue() const;
+		const std::vector<std::string>& getAllValue() const;
 
 		/**
 		* Get the first string value of the core property.
 		* Usually this method is the common one for retrieving string value of a core property since most of timeonly one string value is necessary for one core property.
 		*/
-		std::string getValue(const int & index = 0) const;
+		std::string getValue(size_t index = 0) const;
 
 		/**
 		* Serialize the core property into an XML element embeded into a string.

@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/TimeSeries.h"
+#include "../resqml2/TimeSeries.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -28,23 +28,23 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		TimeSeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
+		DLL_IMPORT_OR_EXPORT TimeSeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
 			RESQML2_NS::TimeSeries(partialObject)
 		{
 		}
 
 		/**
-		* Creates a local property type which derives from a standard Energistics property type.
-		* @param epcDoc							the epc document where this intance will be stored.
+		* Creates a time series
+		* @param repo							the repo where this intance will be stored.
 		* @param guid							The guid to set to the local 3d crs. If empty then a new guid will be generated.
 		* @param title							The title of the instance.
 		*/
-		TimeSeries(soap* soapContext, const std::string & guid, const std::string & title);
+		TimeSeries(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 		 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		TimeSeries(gsoap_resqml2_0_1::_resqml2__TimeSeries* fromGsoap) : RESQML2_NS::TimeSeries(fromGsoap) {}
+		TimeSeries(gsoap_resqml2_0_1::_resqml20__TimeSeries* fromGsoap) : RESQML2_NS::TimeSeries(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -52,6 +52,6 @@ namespace RESQML2_0_1_NS
 		~TimeSeries() {}
 
 	protected:		
-		gsoap_resqml2_0_1::_resqml2__TimeSeries* getSpecializedGsoapProxy() const;
+		gsoap_resqml2_0_1::_resqml20__TimeSeries* getSpecializedGsoapProxy() const;
 	};
 }

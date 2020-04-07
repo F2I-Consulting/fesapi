@@ -19,9 +19,8 @@ under the License.
 #include "PropertyKindTest.h"
 #include "../catch.hpp"
 #include "common/EpcDocument.h"
-#include "resqml2/PropertyKind.h"
+#include "common/PropertyKind.h"
 #include <stdexcept>
-#include "../config.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
@@ -31,33 +30,32 @@ using namespace RESQML2_NS;
 const char* PropertyKindTest::defaultUuid = "f1effef1-6bc7-4e82-829b-797713b60cdc";
 const char* PropertyKindTest::defaultTitle = "Property Kind Test";
 
-PropertyKindTest::PropertyKindTest(const string & epcDocPath)
-	: AbstractResqmlDataObjectTest(epcDocPath, defaultUuid, defaultTitle) {
+PropertyKindTest::PropertyKindTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-PropertyKindTest::PropertyKindTest(EpcDocument* epcDoc, bool init)
-	: AbstractResqmlDataObjectTest(epcDoc, defaultUuid, defaultTitle) {
+PropertyKindTest::PropertyKindTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-		this->initEpcDoc();
+		initRepo();
 	else
-		this->readEpcDoc();
+		readRepo();
 }
 
-void PropertyKindTest::initEpcDocHandler() {
-	PropertyKind* propertyKind = this->epcDoc->createPropertyKind(defaultUuid, defaultTitle, "F2I", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__index);
+void PropertyKindTest::initRepoHandler() {
+	PropertyKind* propertyKind = repo->createPropertyKind(defaultUuid, defaultTitle, "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__index);
 	REQUIRE(propertyKind != nullptr);
 }
 
-void PropertyKindTest::readEpcDocHandler() {
+void PropertyKindTest::readRepoHandler() {
 	// getting the PropertyKind
-	PropertyKind* propertyKind = this->epcDoc->getDataObjectByUuid<PropertyKind>(uuid);
+	PropertyKind* propertyKind = repo->getDataObjectByUuid<PropertyKind>(defaultUuid);
 
 	REQUIRE(propertyKind->getNamingSystem().compare("F2I") == 0);
-	REQUIRE(propertyKind->getUom() == gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc);
+	REQUIRE(propertyKind->getUom() == gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc);
 	REQUIRE(propertyKind->isParentAnEnergisticsPropertyKind());
-	REQUIRE(propertyKind->getParentEnergisticsPropertyKind() == gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__index);
+	REQUIRE(propertyKind->getParentEnergisticsPropertyKind() == gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__index);
 	REQUIRE_THROWS(propertyKind->getParentLocalPropertyKind());
 	REQUIRE_THROWS(propertyKind->getParentLocalPropertyKindTitle());
 	REQUIRE_THROWS(propertyKind->getParentLocalPropertyKindUuid());
 }
-

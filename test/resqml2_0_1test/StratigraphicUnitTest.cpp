@@ -35,34 +35,21 @@ const char* StratigraphicUnitTest::defaultUuid = "e9e8ce58-b53a-4425-84c7-667642
 const char* StratigraphicUnitTest::defaultTitle = "Strati Unit";
 
 StratigraphicUnitTest::StratigraphicUnitTest(const string & epcDocPath)
-	: AbstractFeatureTest(epcDocPath, defaultUuid, defaultTitle) {
+	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
-StratigraphicUnitTest::StratigraphicUnitTest(const string & epcDocPath, const std::string & uuid, const std::string & title)
-	: AbstractFeatureTest(epcDocPath, uuid, title) {
-}
-
-StratigraphicUnitTest::StratigraphicUnitTest(EpcDocument* epcDoc, bool init)
-	: AbstractFeatureTest(epcDoc, defaultUuid, defaultTitle) {
+StratigraphicUnitTest::StratigraphicUnitTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-			this->initEpcDoc();
-		else
-			this->readEpcDoc();
-}
-
-StratigraphicUnitTest::StratigraphicUnitTest(EpcDocument* epcDoc, const std::string & uuid, const std::string & title, bool init)
-	: AbstractFeatureTest(epcDoc, uuid, title) {
-	if (init)
-		this->initEpcDoc();
+		initRepo();
 	else
-		this->readEpcDoc();
+		readRepo();
 }
 
-void StratigraphicUnitTest::initEpcDocHandler() {
-	StratigraphicUnitFeature* stratiUnit = this->epcDoc->createStratigraphicUnit(uuid, title);
+void StratigraphicUnitTest::initRepoHandler() {
+	StratigraphicUnitFeature* stratiUnit = repo->createStratigraphicUnit(defaultUuid, defaultTitle);
 	REQUIRE(stratiUnit != nullptr);
 }
 
-void StratigraphicUnitTest::readEpcDocHandler() {
+void StratigraphicUnitTest::readRepoHandler() {
 }
-

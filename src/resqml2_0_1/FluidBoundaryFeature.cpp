@@ -16,28 +16,29 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/FluidBoundaryFeature.h"
-#include "tools/Misc.h"
+#include "FluidBoundaryFeature.h"
+#include "../tools/Misc.h"
 
 #include <stdexcept>
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* FluidBoundaryFeature::XML_TAG = "FluidBoundaryFeature";
 
-FluidBoundaryFeature::FluidBoundaryFeature(soap* soapContext, const string & guid, const string & title, const resqml2__FluidContact & fluidContact)
+FluidBoundaryFeature::FluidBoundaryFeature(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title, const resqml20__FluidContact & fluidContact)
 {
-	if (soapContext == nullptr) {
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr) {
+		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREFluidBoundaryFeature(soapContext, 1);
-	_resqml2__FluidBoundaryFeature* fbf = static_cast<_resqml2__FluidBoundaryFeature*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREFluidBoundaryFeature(repo->getGsoapContext());
+	_resqml20__FluidBoundaryFeature* fbf = static_cast<_resqml20__FluidBoundaryFeature*>(gsoapProxy2_0_1);
 	fbf->FluidContact = fluidContact;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	repo->addOrReplaceDataObject(this);
 }

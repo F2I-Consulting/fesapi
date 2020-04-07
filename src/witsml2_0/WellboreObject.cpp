@@ -16,47 +16,27 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "witsml2_0/WellboreObject.h"
+#include "WellboreObject.h"
 
-#include "witsml2_0/Wellbore.h"
+#include "Wellbore.h"
 
 #include <stdexcept>
 
 using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
-using namespace epc;
 
 Wellbore* WellboreObject::getWellbore() const
 {
-	return getEpcDocument()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
+	gsoap_eml2_1::eml21__DataObjectReference* const dor = getWellboreDor();
+	return dor != nullptr ? getRepository()->getDataObjectByUuid<Wellbore>(dor->Uuid) : nullptr;
+
 }
 
-void WellboreObject::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WellboreObject::loadTargetRelationships()
 {
-	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellboreDor();
-	Wellbore* wellbore = epcDoc->getDataObjectByUuid<Wellbore>(dor->Uuid);
-	if (wellbore == nullptr) { // partial transfer
-		getEpcDocument()->createPartial(dor);
-		wellbore = getEpcDocument()->getDataObjectByUuid<Wellbore>(dor->Uuid);
+	gsoap_eml2_1::eml21__DataObjectReference* const dor = getWellboreDor();
+	if (dor != nullptr) {
+		convertDorIntoRel<Wellbore>(getWellboreDor());
 	}
-	if (wellbore == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-
-	updateXml = false;
-	setWellbore(wellbore);
-	updateXml = true;
-}
-
-vector<Relationship> WellboreObject::getAllEpcRelationships() const
-{
-	vector<Relationship> result;
-
-	Wellbore* wellbore = getWellbore();
-	Relationship relWellbore(wellbore->getPartNameInEpcDocument(), "", wellbore->getUuid());
-	relWellbore.setDestinationObjectType();
-	result.push_back(relWellbore);
-
-	return result;
 }

@@ -33,32 +33,32 @@ using namespace resqml2_0_1test;
 const char* CommentProperty::defaultUuid = "3e01e290-7df3-450e-ad93-2f88e79fe2fe";
 const char* CommentProperty::defaultTitle = "Comment Property on well frame Test";
 
-CommentProperty::CommentProperty(const string & epcDocPath)
-	: AbstractValuesPropertyTest(epcDocPath, defaultUuid, defaultTitle, WellboreFrameRepresentationTest::defaultUuid, WellboreFrameRepresentationTest::defaultTitle) {
+CommentProperty::CommentProperty(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-CommentProperty::CommentProperty(EpcDocument * epcDoc, bool init)
-	: AbstractValuesPropertyTest(epcDoc, defaultUuid, defaultTitle, WellboreFrameRepresentationTest::defaultUuid, WellboreFrameRepresentationTest::defaultTitle) {
+CommentProperty::CommentProperty(DataObjectRepository * repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-		this->initEpcDoc();
+		initRepo();
 	else
-		this->readEpcDoc();
+		readRepo();
 }
 
-void CommentProperty::initEpcDocHandler() {
+void CommentProperty::initRepoHandler() {
 	// creating an IJK grid
-	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(this->epcDoc, true);
-	RESQML2_0_1_NS::WellboreFrameRepresentation * frame = static_cast<RESQML2_0_1_NS::WellboreFrameRepresentation *>(this->epcDoc->getDataObjectByUuid(WellboreFrameRepresentationTest::defaultUuid));
+	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(repo, true);
+	RESQML2_0_1_NS::WellboreFrameRepresentation * frame = static_cast<RESQML2_0_1_NS::WellboreFrameRepresentation *>(repo->getDataObjectByUuid(WellboreFrameRepresentationTest::defaultUuid));
 
 	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
+	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
 	// creating the ContinuousProperty
-	RESQML2_0_1_NS::CommentProperty* commentProperty = epcDoc->createCommentProperty(
-		frame, this->uuid, this->title,
+	RESQML2_0_1_NS::CommentProperty* commentProperty = repo->createCommentProperty(
+		frame, defaultUuid, defaultTitle,
 		1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__nodes,
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length); // TODO : modify for a comment prop kind!!
+		gsoap_resqml2_0_1::resqml20__IndexableElements__nodes,
+		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length); // TODO : modify for a comment prop kind!!
 	REQUIRE(commentProperty != nullptr);
 	std::vector<string> values;
 	values.push_back("test0");
@@ -72,12 +72,12 @@ void CommentProperty::initEpcDocHandler() {
 	delete frameTest;
 }
 
-void CommentProperty::readEpcDocHandler() {
+void CommentProperty::readRepoHandler() {
 	// reading dependencies
-	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(this->epcDoc, false);
+	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(repo, false);
 
 	// getting the ContinuousPropertySeries
-	RESQML2_0_1_NS::CommentProperty* commentProperty = this->epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::CommentProperty>(uuid);
+	RESQML2_0_1_NS::CommentProperty* commentProperty = repo->getDataObjectByUuid<RESQML2_0_1_NS::CommentProperty>(defaultUuid);
 
 	// ************************************
 	// reading the ContinuousProperty
@@ -86,7 +86,7 @@ void CommentProperty::readEpcDocHandler() {
 	REQUIRE(commentProperty->getElementCountPerValue() == 1);
 
 	// getAttachmentKind
-	REQUIRE(commentProperty->getAttachmentKind() == gsoap_resqml2_0_1::resqml2__IndexableElements__nodes);
+	REQUIRE(commentProperty->getAttachmentKind() == gsoap_resqml2_0_1::resqml20__IndexableElements__nodes);
 
 	std::vector<string> values = commentProperty->getStringValuesOfPatch(0);
 	REQUIRE(values.size() == 5);
@@ -99,4 +99,3 @@ void CommentProperty::readEpcDocHandler() {
 	// cleaning
 	delete frameTest;
 }
-

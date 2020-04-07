@@ -16,15 +16,16 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "witsml2_0/WellCompletion.h"
-#include "witsml2_0/Well.h"
+#include "WellCompletion.h"
+
+#include "Well.h"
+#include "WellboreCompletion.h"
 
 #include <stdexcept>
 
 using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
-using namespace epc;
 
 const char* WellCompletion::XML_TAG = "WellCompletion";
 
@@ -34,7 +35,7 @@ WellCompletion::WellCompletion(Well* witsmlWell,
 {
 	if (witsmlWell == nullptr) throw invalid_argument("A well must be associated to a well completion.");
 
-	gsoapProxy2_1 = soap_new_witsml2__WellCompletion(witsmlWell->getGsoapContext(), 1);
+	gsoapProxy2_1 = soap_new_witsml20__WellCompletion(witsmlWell->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -44,12 +45,12 @@ WellCompletion::WellCompletion(Well* witsmlWell,
 
 gsoap_eml2_1::eml21__DataObjectReference* WellCompletion::getWellDor() const
 {
-	return static_cast<witsml2__WellCompletion*>(gsoapProxy2_1)->Well;
+	return static_cast<witsml20__WellCompletion*>(gsoapProxy2_1)->Well;
 }
 
 class Well* WellCompletion::getWell() const
 {
-	return getEpcDocument()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
 }
 
 void WellCompletion::setWell(Well* witsmlWell)
@@ -57,47 +58,22 @@ void WellCompletion::setWell(Well* witsmlWell)
 	if (witsmlWell == nullptr) {
 		throw invalid_argument("Cannot set a null witsml Well to a witsml well completion");
 	}
-
-	// EPC
-	witsmlWell->wellCompletionSet.push_back(this);
-
-	// XML
-	if (updateXml) {
-		witsml2__WellCompletion* wellCompletion = static_cast<witsml2__WellCompletion*>(gsoapProxy2_1);
-		wellCompletion->Well = witsmlWell->newEmlReference();
+	if (getRepository() == nullptr) {
+		witsmlWell->getRepository()->addOrReplaceDataObject(this);
 	}
+
+	getRepository()->addRelationship(this, witsmlWell);
+
+	witsml20__WellCompletion* wellCompletion = static_cast<witsml20__WellCompletion*>(gsoapProxy2_1);
+	wellCompletion->Well = witsmlWell->newEmlReference();
 }
 
-void WellCompletion::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+std::vector<WellboreCompletion *> WellCompletion::getWellboreCompletions() const
 {
-	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellDor();
-	Well* well = epcDoc->getDataObjectByUuid<Well>(dor->Uuid);
-
-	if (well == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-	updateXml = false;
-	setWell(well);
-	updateXml = true;
+	return getRepository()->getSourceObjects<WellboreCompletion>(this);
 }
 
-vector<Relationship> WellCompletion::getAllEpcRelationships() const
+void WellCompletion::loadTargetRelationships()
 {
-	vector<Relationship> result;
-
-	// XML forward relationship
-	Well* well = getWell();
-	Relationship relWell(well->getPartNameInEpcDocument(), "", well->getUuid());
-	relWell.setDestinationObjectType();
-	result.push_back(relWell);
-
-	// XML backward relationship
-	for (size_t i = 0; i < wellboreCompletionSet.size(); ++i)
-	{
-		Relationship relWellboreCompletion(wellboreCompletionSet[i]->getPartNameInEpcDocument(), "", wellboreCompletionSet[i]->getUuid());
-		relWellboreCompletion.setSourceObjectType();
-		result.push_back(relWellboreCompletion);
-	}
-
-	return result;
+	convertDorIntoRel<Well>(getWellDor());
 }

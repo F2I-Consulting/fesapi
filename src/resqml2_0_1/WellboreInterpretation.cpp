@@ -16,10 +16,10 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/WellboreInterpretation.h"
+#include "WellboreInterpretation.h"
 
-#include "resqml2_0_1/WellboreFeature.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
+#include "WellboreFeature.h"
+#include "WellboreTrajectoryRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -29,33 +29,24 @@ const char* WellboreInterpretation::XML_TAG = "WellboreInterpretation";
 
 WellboreInterpretation::WellboreInterpretation(WellboreFeature * WellboreFeature, const string & guid, const string & title, bool isDrilled)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreInterpretation(WellboreFeature->getGsoapContext(), 1);
-	_resqml2__WellboreInterpretation* wbInterp = static_cast<_resqml2__WellboreInterpretation*>(gsoapProxy2_0_1);
-	wbInterp->Domain = resqml2__Domain__mixed;
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreInterpretation(WellboreFeature->getGsoapContext());
+	_resqml20__WellboreInterpretation* wbInterp = static_cast<_resqml20__WellboreInterpretation*>(gsoapProxy2_0_1);
+	wbInterp->Domain = resqml20__Domain__mixed;
 
 	wbInterp->IsDrilled = isDrilled;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setInterpretedFeature(WellboreFeature);
 }
 
 bool WellboreInterpretation::isDrilled() const
 {
-	return static_cast<_resqml2__WellboreInterpretation*>(gsoapProxy2_0_1)->IsDrilled;
+	return static_cast<_resqml20__WellboreInterpretation*>(gsoapProxy2_0_1)->IsDrilled;
 }
 
 std::vector<WellboreTrajectoryRepresentation*> WellboreInterpretation::getWellboreTrajectoryRepresentationSet() const
 {
-	std::vector<WellboreTrajectoryRepresentation*> result;
-
-	for (unsigned int i = 0; i < representationSet.size(); ++i)
-	{
-		if (representationSet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREWellboreTrajectoryRepresentation)
-			result.push_back(static_cast<WellboreTrajectoryRepresentation*>(representationSet[i]));
-	}
-
-	return result;
+	return getRepository()->getSourceObjects<WellboreTrajectoryRepresentation>(this);
 }
-

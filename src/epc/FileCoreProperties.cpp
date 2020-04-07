@@ -16,9 +16,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
-
-
 #include "FileCoreProperties.h"
 
 #include <time.h>
@@ -32,7 +29,7 @@ under the License.
 
 
 #if (defined(_WIN32) && _MSC_VER < 1600) || (defined(__GNUC__) && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 6)))
-#include "tools/nullptr_emulation.h"
+#include "../tools/nullptr_emulation.h"
 #endif
 
 using namespace std; // in order not to prefix by "std::" for each class in the "std" namespace. Never use "using namespace" in *.h file but only in*.cpp file!!!
@@ -57,7 +54,8 @@ void FileCoreProperties::initDefaultCoreProperties()
         uid_t uid;
                 
         uid = geteuid ();
-        pw = getpwuid (uid);
+        pw = getpwuid (uid);	// may rise a false positive memory leak with Valgrind
+								// (https://stackoverflow.com/questions/40226297/struct-passwd-is-source-of-memory-leak-how-to-properly-free?rq=1)
         if (pw)
         	setCreator(pw->pw_name);
         else
