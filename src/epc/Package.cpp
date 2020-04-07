@@ -22,6 +22,7 @@ under the License.
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
+#include <memory>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -489,10 +490,9 @@ void Package::writeStringIntoNewPart(const std::string &input, const std::string
 	zi.dosDate = 0;
 	zi.internal_fa = 0;
 	zi.external_fa = 0;
-	char* tmp = new char[partPath.length() + 1];
-	strcpy(tmp, partPath.c_str());
-	buildTimeInfo(tmp,&zi.tmz_date,&zi.dosDate);
-	delete [] tmp;
+	std::unique_ptr<char[]> tmp(new char[partPath.length() + 1]);
+	strcpy(tmp.get(), partPath.c_str());
+	buildTimeInfo(tmp.get(), &zi.tmz_date,&zi.dosDate);
 
 	// Open the content type part in the zip archive
 	int err = zipOpenNewFileInZip64(d_ptr->zf, partPath.c_str(), &zi,

@@ -23,13 +23,13 @@ under the License.
 
 namespace RESQML2_2_NS
 {
-	class ContinuousColorMap : public AbstractColorMap
+	class ContinuousColorMap final : public AbstractColorMap
 	{
 	private:
 		/**
 		 * @param colorIndex	index of a color in the color map
 		 */
-		gsoap_eml2_2::resqml22__HsvColor* getColor(double colorIndex) const;
+		gsoap_eml2_3::resqml22__HsvColor* getColor(double colorIndex) const;
 	public:
 		/**
 		 * Only to be used in partial transfer context
@@ -42,12 +42,12 @@ namespace RESQML2_2_NS
 		* @param title			A title for graphical information set.
 		*/
 		ContinuousColorMap(COMMON_NS::DataObjectRepository *repo, std::string const& guid, std::string const& title,
-			gsoap_eml2_2::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml22__InterpolationMethod interpolationMethod);
+			gsoap_eml2_3::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_3::resqml22__InterpolationMethod interpolationMethod);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		ContinuousColorMap(gsoap_eml2_2::resqml22__ContinuousColorMap* fromGsoap) :
+		ContinuousColorMap(gsoap_eml2_3::resqml22__ContinuousColorMap* fromGsoap) :
 			AbstractColorMap(fromGsoap) {}
 
 		/**
@@ -69,10 +69,10 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT unsigned int getColorCount() const;
 
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::resqml22__InterpolationDomain getInterpolationDomain();
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__InterpolationDomain getInterpolationDomain();
 		DLL_IMPORT_OR_EXPORT std::string getInterpolationDomainAsString();
 
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::resqml22__InterpolationMethod getInterpolationMethod();
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__InterpolationMethod getInterpolationMethod();
 		DLL_IMPORT_OR_EXPORT std::string getInterpolationMethodAsString();
 
 		/**

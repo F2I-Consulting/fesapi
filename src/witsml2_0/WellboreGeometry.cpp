@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreGeometry.h"
 
+#include <limits>
 #include <sstream>
 #include <stdexcept>
-#include <limits>
 
 #include "Wellbore.h"
 
@@ -37,7 +37,7 @@ WellboreGeometry::WellboreGeometry(Wellbore* witsmlWellbore,
 	const std::string & title,
 	gsoap_eml2_1::witsml20__ChannelStatus channelStatus)
 {
-	if (witsmlWellbore == nullptr) throw invalid_argument("A wellbore must be associated to a wellbore trajectory.");
+	if (witsmlWellbore == nullptr) throw invalid_argument("A wellbore must be associated to a wellbore geometry.");
 
 	gsoapProxy2_1 = soap_new_witsml20__WellboreGeometry(witsmlWellbore->getGsoapContext());
 
@@ -49,9 +49,9 @@ WellboreGeometry::WellboreGeometry(Wellbore* witsmlWellbore,
 	setWellbore(witsmlWellbore);
 }
 
-gsoap_eml2_1::eml21__DataObjectReference* WellboreGeometry::getWellboreDor() const
+COMMON_NS::DataObjectReference WellboreGeometry::getWellboreDor() const
 {
-	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->Wellbore;
+	return COMMON_NS::DataObjectReference(static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->Wellbore);
 }
 
 void WellboreGeometry::setWellbore(Wellbore* witsmlWellbore)

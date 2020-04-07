@@ -19,19 +19,22 @@ under the License.
 #pragma once
 #include "PvtSpecification.h"
 
+/** . */
 namespace PRODML2_1_NS
 {
+	/** A correlation viscosity specification. */
 	class CorrelationViscositySpecification : public PvtSpecification
 	{
 	public:
-		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		CorrelationViscositySpecification(gsoap_eml2_2::prodml21__AbstractCorrelationViscosityModel* fromGsoap): PvtSpecification(fromGsoap){}
 
 		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		CorrelationViscositySpecification(gsoap_eml2_2::prodml21__AbstractCorrelationViscosityModel* fromGsoap): PvtSpecification(fromGsoap){}
+
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~CorrelationViscositySpecification() {}
 
 		GETTER_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(gsoap_eml2_2::prodml21__AbstractCorrelationViscosityModel, gsoapProxy, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom)

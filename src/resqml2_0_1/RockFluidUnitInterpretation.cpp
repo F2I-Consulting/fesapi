@@ -17,25 +17,23 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "RockFluidUnitInterpretation.h"
-#include "RockFluidUnitFeature.h"
+
+#include "../resqml2/RockVolumeFeature.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* RockFluidUnitInterpretation::XML_TAG = "RockFluidUnitInterpretation";
-
-RockFluidUnitInterpretation::RockFluidUnitInterpretation(RockFluidUnitFeature * feature, const string & guid, const string & title)
+RockFluidUnitInterpretation::RockFluidUnitInterpretation(RESQML2_NS::RockVolumeFeature * feature, const string & guid, const string & title)
 {
 	if (feature == nullptr) {
 		throw invalid_argument("The interpreted feature cannot be null.");
 	}
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERockFluidUnitInterpretation(feature->getGsoapContext());
-	//static_cast<_resqml20__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase = ??;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setInterpretedFeature(feature);
 }
@@ -45,10 +43,11 @@ bool RockFluidUnitInterpretation::hasPhase() const
 	return static_cast<_resqml20__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase != nullptr;
 }
 
-gsoap_resqml2_0_1::resqml20__Phase RockFluidUnitInterpretation::getPhase() const
+gsoap_eml2_3::resqml22__Phase RockFluidUnitInterpretation::getPhase() const
 {
-	if (hasPhase() == false)
+	if (!hasPhase()) {
 		throw invalid_argument("The rock fluid unit interpretation has not any phase.");
+	}
 
-	return *static_cast<_resqml20__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase;
+	return static_cast<gsoap_eml2_3::resqml22__Phase>(*static_cast<_resqml20__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase);
 }

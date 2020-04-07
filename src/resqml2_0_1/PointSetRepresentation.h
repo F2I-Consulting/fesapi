@@ -18,80 +18,91 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/AbstractRepresentation.h"
+#include "../resqml2/PointSetRepresentation.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
-	class PointSetRepresentation : public RESQML2_NS::AbstractRepresentation
+	/** A point set representation. */
+	class PointSetRepresentation final : public RESQML2_NS::PointSetRepresentation
 	{
 	private :
 		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
 
 	public:
 		/**
-		* Only to be used in partial transfer context
-		*/
-		DLL_IMPORT_OR_EXPORT PointSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
+		DLL_IMPORT_OR_EXPORT PointSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::PointSetRepresentation(partialObject) {}
 
 		PointSetRepresentation(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param interp							The interpretation this representation represents.
-		* @param guid							The guid to set to the new instance. If empty then a new guid will be generated.
-		* @param title							A title for the instance to create.
-		*/
+		 * Creates an instance of this class in a gsoap context.
+		 *
+		 * @param [in,out]	interp	The interpretation this representation represents.
+		 * @param 		  	guid  	The guid to set to the new instance. If empty then a new guid will be
+		 * 							generated.
+		 * @param 		  	title 	A title for the instance to create.
+		 */
 		PointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 				const std::string & guid, const std::string & title);
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		PointSetRepresentation(gsoap_resqml2_0_1::_resqml20__PointSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		PointSetRepresentation(gsoap_resqml2_0_1::_resqml20__PointSetRepresentation* fromGsoap) : RESQML2_NS::PointSetRepresentation(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~PointSetRepresentation() {}
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
 		/**
-		* Get the xyz point count in a given patch.
-		*/
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		 * Get the xyz point count in a given patch.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch.
+		 *
+		 * @returns	The xyz point count of patch.
+		 */
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
-		* Get all the XYZ points of a particular patch of this representation.
-		* XYZ points are given in the local CRS.
-		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
-		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
+		 * the local CRS.
+		 *
+		 * @param 		  	patchIndex	Zero-based index of the patch.
+		 * @param [in,out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is
+		 * 								coordinate dimension (XYZ) and second dimension is vertex
+		 * 								dimension. It must be pre allocated.
+		 */
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Get the number of triangle patch
+		 *
+		 * @returns	The patch count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
 
 		/**
-		* Push back a new patch of polylines
-		* @param xyzPointCount	The XYZ point count in this patch.
-		* @param xyzPoints		The XYZ values of the points of the patch. Ordered by XYZ and then by xyzPointCount. It must be three times xyzPointCount.
-		* @param localCrs		The local CRS wher the points are given.
-		* @param proxy			The HDF proxy which defines where the XYZ points will be stored.
-		*/
+		 * Push back a new patch of polylines
+		 *
+		 * @param 		  	xyzPointCount	The XYZ point count in this patch.
+		 * @param [in,out]	xyzPoints	 	The XYZ values of the points of the patch. Ordered by XYZ and
+		 * 									then by xyzPointCount. It must be three times xyzPointCount.
+		 * @param [in,out]	proxy		 	(Optional) The HDF proxy which defines where the XYZ points
+		 * 									will be stored.
+		 * @param [in,out]	localCrs	 	(Optional) The local CRS wher the points are given.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
-			unsigned int xyzPointCount, double * xyzPoints,
-			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
-
-		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+			unsigned int xyzPointCount, double const * xyzPoints,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 	};
 }

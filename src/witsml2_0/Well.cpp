@@ -18,6 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Well.h"
 
+#include <limits>
 #include <stdexcept>
 #include <sstream>
 
@@ -282,9 +283,9 @@ unsigned int Well::getDatumCount() const
 void Well::loadTargetRelationships()
 {}
 
-std::vector<RESQML2_0_1_NS::WellboreFeature *> Well::getResqmlWellboreFeatures() const
+std::vector<RESQML2_NS::WellboreFeature *> Well::getResqmlWellboreFeatures() const
 {
-	return getRepository()->getSourceObjects<RESQML2_0_1_NS::WellboreFeature>(this);
+	return getRepository()->getSourceObjects<RESQML2_NS::WellboreFeature>(this);
 }
 
 std::vector<Wellbore *> Well::getWellbores() const

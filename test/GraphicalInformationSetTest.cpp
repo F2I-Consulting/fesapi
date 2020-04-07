@@ -19,12 +19,12 @@ under the License.
 #include "GraphicalInformationSetTest.h"
 #include "catch.hpp"
 #include "common/GraphicalInformationSet.h"
-#include "resqml2_0_1/Horizon.h"
-#include "resqml2_0_1/LocalTime3dCrs.h"
+#include "resqml2/BoundaryFeature.h"
+#include "resqml2/LocalTime3dCrs.h"
 
 using namespace std;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 using namespace commontest;
 
 const char* GraphicalInformationSetTest::defaultUuid = "b4a247f5-aeab-46c3-8afc-bce6420d47a8";
@@ -45,7 +45,7 @@ GraphicalInformationSetTest::GraphicalInformationSetTest(COMMON_NS::DataObjectRe
 }
 
 void GraphicalInformationSetTest::initRepoHandler() {
-	Horizon* feature = repo->createHorizon(uuidHorizon, titleHorzon);
+	BoundaryFeature* feature = repo->createHorizon(uuidHorizon, titleHorzon);
 
 	GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet(defaultUuid, defaultTitle);
 	REQUIRE(graphicalInformationSet != nullptr);
@@ -65,7 +65,7 @@ void GraphicalInformationSetTest::readRepoHandler() {
 	REQUIRE(graphicalInformationSet->getUuid() == defaultUuid);
 	
 	REQUIRE(graphicalInformationSet->getGraphicalInformationSetCount() == 1);
-	Horizon* feature = static_cast<Horizon *>(graphicalInformationSet->getTargetObject(0));
+	BoundaryFeature* feature = static_cast<BoundaryFeature *>(graphicalInformationSet->getTargetObject(0));
 	REQUIRE(feature->getUuid() == uuidHorizon);
 	REQUIRE(graphicalInformationSet->hasGraphicalInformation(feature) == true);
 	REQUIRE(graphicalInformationSet->hasDefaultColor(feature) == true);

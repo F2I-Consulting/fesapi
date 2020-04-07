@@ -1,0 +1,123 @@
+/*-----------------------------------------------------------------------
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"; you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-----------------------------------------------------------------------*/
+#pragma once
+
+#include "../eml2/TimeSeries.h"
+
+/** . */
+namespace EML2_3_NS
+{
+	/** A time series. */
+	class TimeSeries final : public EML2_NS::TimeSeries
+	{
+	public:
+
+		/**
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
+		DLL_IMPORT_OR_EXPORT TimeSeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
+			EML2_NS::TimeSeries(partialObject) {}
+
+		/**
+		 * Creates a time series
+		 *
+		 * @param [in,out]	repo 	the repo where this intance will be stored.
+		 * @param 		  	guid 	The guid to set to the local 3d crs. If empty then a new guid will be
+		 * 							generated.
+		 * @param 		  	title	The title of the instance.
+		 */
+		TimeSeries(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		TimeSeries(gsoap_eml2_3::_eml23__TimeSeries* fromGsoap) : EML2_NS::TimeSeries(fromGsoap) {}
+
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		~TimeSeries() {}
+
+		/**
+		 * Pushes back an timestamp into this time series.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @param 	timestamp	The timestamp to push back.
+		 */
+		DLL_IMPORT_OR_EXPORT void pushBackTimestamp(const tm & timestamp) final;
+
+		/**
+		 * Gets the index of a given timestamp in this time series.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p timestamp has not been found in this time series.
+		 *
+		 * @param 	timestamp	The timestamp we look for.
+		 *
+		 * @returns	The index of @p timestamp in this time series.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(time_t timestamp) const final;
+
+		/**
+		 * Gets the index of a given timestamp in this time series.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p timestamp has not been found in this time series.
+		 *
+		 * @param 	timestamp	The timestamp we look for.
+		 *
+		 * @returns	The index of @p timestamp in this time series.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(const tm & timestamp) const final;
+
+		/**
+		 * Get the count of timestamps in this time series.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	The timestamp count.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getTimestampCount() const final;
+
+		/**
+		 * Gets a timestamp as a time structure at a particular index of this time series. It allows to
+		 * read dates from 1900-01-01T00:00:00.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the timestamp we look for.
+		 *
+		 * @returns	The timestamp at position @p index.
+		 */
+		DLL_IMPORT_OR_EXPORT tm getTimestampAsTimeStructure(unsigned int index) const final;
+
+		/**
+		 * Gets XML namespace
+		 *
+		 * @returns	The XML namespace.
+		 */
+		std::string getXmlNamespace() const final { return "eml23"; }
+	};
+}

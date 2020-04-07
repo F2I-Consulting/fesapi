@@ -18,23 +18,22 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "ContinuousColorMapTest.h"
 #include "catch.hpp"
-#include "common/AbstractHdfProxy.h"
+#include "eml2/AbstractHdfProxy.h"
 #include "common/GraphicalInformationSet.h"
-#include "common/PropertyKind.h"
-#include "resqml2_0_1/Horizon.h"
-#include "resqml2_0_1/HorizonInterpretation.h"
-#include "resqml2_0_1/Grid2dRepresentation.h"
-#include "resqml2_0_1/OrganizationFeature.h"
-#include "resqml2_0_1/EarthModelInterpretation.h"
-#include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "resqml2_0_1/ContinuousProperty.h"
+#include "eml2/PropertyKind.h"
+#include "resqml2/BoundaryFeature.h"
+#include "resqml2/HorizonInterpretation.h"
+#include "resqml2/Grid2dRepresentation.h"
+#include "resqml2/Model.h"
+#include "resqml2/EarthModelInterpretation.h"
+#include "resqml2/LocalDepth3dCrs.h"
+#include "resqml2/ContinuousProperty.h"
 #include "resqml2_2/ContinuousColorMap.h"
 
 using namespace std;
 using namespace COMMON_NS;
 using namespace RESQML2_NS;
-using namespace RESQML2_2_NS;
-using namespace RESQML2_0_1_NS;
+using namespace EML2_NS;
 using namespace resqml2_2test;
 using namespace gsoap_resqml2_0_1;
 
@@ -71,7 +70,7 @@ ContinuousColorMapTest::ContinuousColorMapTest(COMMON_NS::DataObjectRepository* 
 
 void ContinuousColorMapTest::initRepoHandler() {
 	// creating a grid 2d representation
-	Horizon* horizon = repo->createHorizon(uuidHorizon,titleHorizonInterpretation);
+	BoundaryFeature* horizon = repo->createHorizon(uuidHorizon,titleHorizonInterpretation);
 	HorizonInterpretation* horizonInterpretation = repo->createHorizonInterpretation(horizon, uuidHorizonInterpretation, titleHorizonInterpretation);
 	AbstractHdfProxy* hdfProxy = this->repo->getHdfProxySet()[0];
 	Grid2dRepresentation* grid2dRepresentation = repo->createGrid2dRepresentation(horizonInterpretation, uuidGrid2dRepresentation, titleGrid2dRepresentation);
@@ -84,13 +83,14 @@ void ContinuousColorMapTest::initRepoHandler() {
 		1., 1.);
 
 	// assotiating a Continuous property to the grid 2d representation
+	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind__not_x0020a_x0020measure);
 	ContinuousProperty* continuousProperty = repo->createContinuousProperty(grid2dRepresentation, uuidContinuousProperty, titleContinuousProperty, 2,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__nodes, "continuousColorMapIndex", gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
+		gsoap_eml2_3::resqml22__IndexableElement__nodes, "continuousColorMapIndex", propertyKind);
 	double values[2] = { 0., 1. };
 	continuousProperty->pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 
 	// creating the continuous color map
-	RESQML2_2_NS::ContinuousColorMap* continuousColorMap = repo->createContinuousColorMap(defaultUuid, defaultTitle, gsoap_eml2_2::resqml22__InterpolationDomain__rgb, gsoap_eml2_2::resqml22__InterpolationMethod__linear);
+	RESQML2_2_NS::ContinuousColorMap* continuousColorMap = repo->createContinuousColorMap(defaultUuid, defaultTitle, gsoap_eml2_3::resqml22__InterpolationDomain__rgb, gsoap_eml2_3::resqml22__InterpolationMethod__linear);
 	REQUIRE(continuousColorMap != nullptr);
 	unsigned int rgbColors[6] = { 0, 256, 0, 255, 0, 0 };
 	vector<string> titles = { "green", "red" };
@@ -110,7 +110,7 @@ void ContinuousColorMapTest::readRepoHandler() {
 	GraphicalInformationSet * graphicalInformationSet = repo->getDataObjects<GraphicalInformationSet>()[0];
 	ContinuousProperty* continuousProperty = repo->getDataObjectByUuid<ContinuousProperty>(uuidContinuousProperty);
 	REQUIRE(graphicalInformationSet->hasContinuousColorMap(continuousProperty));
-	ContinuousColorMap* continuousColorMap = graphicalInformationSet->getContinuousColorMap(continuousProperty);
+	RESQML2_2_NS::ContinuousColorMap* continuousColorMap = graphicalInformationSet->getContinuousColorMap(continuousProperty);
 	REQUIRE(continuousColorMap->getUuid() == defaultUuid);
 	double r, g, b;
 	continuousColorMap->getRgbColor(0, r, g, b);

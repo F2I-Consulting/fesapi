@@ -21,11 +21,11 @@ under the License.
 #include "catch.hpp"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 
-#include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "resqml2_0_1/IjkGridExplicitRepresentation.h"
+#include "resqml2/LocalDepth3dCrs.h"
+#include "resqml2/IjkGridExplicitRepresentation.h"
 #include "resqml2/GridConnectionSetRepresentation.h"
-#include "resqml2_0_1/DiscreteProperty.h"
-#include "resqml2_0_1/ContinuousProperty.h"
+#include "resqml2/DiscreteProperty.h"
+#include "resqml2/ContinuousProperty.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -67,7 +67,7 @@ RightHanded4x3x2ExplicitIjkGrid::RightHanded4x3x2ExplicitIjkGrid(DataObjectRepos
 
 void RightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 	// creating the ijk grid
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 4, 3, 2);
+	RESQML2_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 4, 3, 2);
 	REQUIRE(ijkGrid != nullptr);
 	unsigned int pillarOfCoordinateLine[4] = { 17, 12, 7, 2 };
 	unsigned int splitCoordinateLineColumnCumulativeCount[4] = { 1, 3, 5, 6 };
@@ -103,8 +103,9 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 	gridConnSet432->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, 9999, nullptr);
 
 	// Discrete property
-	RESQML2_0_1_NS::DiscreteProperty* discreteProp = repo->createDiscreteProperty(ijkGrid, "0a8fb2aa-d1e1-4914-931c-e9e6bf2aabe5", "Cell index", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__index);
+	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind__not_x0020a_x0020measure);
+	RESQML2_NS::DiscreteProperty* discreteProp = repo->createDiscreteProperty(ijkGrid, "0a8fb2aa-d1e1-4914-931c-e9e6bf2aabe5", "Cell index", 1,
+		gsoap_eml2_3::resqml22__IndexableElement__cells, propertyKind);
 	LONG64 discretePropValues[24] = {
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
@@ -112,8 +113,9 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 	discreteProp->pushBackLongHdf5Array3dOfValues(discretePropValues, 4, 3, 2, nullptr, -1);
 
 	// Continuous property
-	RESQML2_0_1_NS::ContinuousProperty* continuousProp = repo->createContinuousProperty(ijkGrid, "de5a71cc-879d-4cda-8fb3-146c70539cf9", "Amplitude", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__amplitude);
+	propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind__length);
+	RESQML2_NS::ContinuousProperty* continuousProp = repo->createContinuousProperty(ijkGrid, "de5a71cc-879d-4cda-8fb3-146c70539cf9", "Amplitude", 1,
+		gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, propertyKind);
 	double continuousPropValues[24] = {
 		0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.5, 0.4, 0.3, 0.2, 0.1, 0.0,
 		1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.5, 1.4, 1.3, 1.2, 1.1, 1.0
@@ -123,7 +125,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 
 void RightHanded4x3x2ExplicitIjkGrid::readRepoHandler() {
 	// getting the subrep
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = repo->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(defaultUuid);
+	RESQML2_NS::IjkGridExplicitRepresentation* ijkGrid = repo->getDataObjectByUuid<RESQML2_NS::IjkGridExplicitRepresentation>(defaultUuid);
 
 	REQUIRE(ijkGrid->getCellCount() == 24);
 	REQUIRE(ijkGrid->getPillarCount() == 20);

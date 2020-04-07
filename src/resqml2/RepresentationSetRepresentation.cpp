@@ -18,12 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "RepresentationSetRepresentation.h"
 
-#include <stdexcept>
 #include <limits>
-
-#include "AbstractLocal3dCrs.h"
-
-#include "../tools/Misc.h"
+#include <stdexcept>
 
 using namespace std;
 using namespace RESQML2_NS;
@@ -37,37 +33,33 @@ void RepresentationSetRepresentation::loadTargetRelationships()
 	const unsigned int repCount = getRepresentationCount();
 	for (unsigned int i = 0; i < repCount; ++i)
 	{
-		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getRepresentationDor(i);
-		RESQML2_NS::AbstractRepresentation* rep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
-		if (rep == nullptr) { // partial transfer
-			getRepository()->createPartial(dor);
-			rep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
-			if (rep == nullptr) {
-				throw invalid_argument("The DOR looks invalid.");
-			}
-		}
-		getRepository()->addRelationship(this, rep);
+		COMMON_NS::DataObjectReference dor = getRepresentationDor(i);
+		convertDorIntoRel(dor);
 	}
 }
 
-ULONG64 RepresentationSetRepresentation::getXyzPointCountOfPatch(const unsigned int &) const
+ULONG64 RepresentationSetRepresentation::getXyzPointCountOfPatch(unsigned int) const
 {
 	throw logic_error("Not implemented yet.");
 }
 
-void RepresentationSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
+void RepresentationSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");
 	}
 
-	throw logic_error("Please use getXyzPointsOfPatch on each included representation.");
+	// TODO Use getXyzPointsOfAllPatches on each included representation.
+	throw logic_error("Not implemented yet.");
 }
 
 bool RepresentationSetRepresentation::isHomogeneous() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->IsHomogeneous;
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		return static_cast<gsoap_eml2_3::_resqml22__RepresentationSetRepresentation*>(gsoapProxy2_3)->IsHomogeneous;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -76,41 +68,44 @@ bool RepresentationSetRepresentation::isHomogeneous() const
 
 unsigned int RepresentationSetRepresentation::getRepresentationCount() const
 {
+	size_t count = 0;
 	if (gsoapProxy2_0_1 != nullptr) {
-		const size_t count = static_cast<gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->Representation.size();
-		if (count > (std::numeric_limits<unsigned int>::max)()) {
-			throw range_error("The count is too big.");
-		}
-
-		return static_cast<unsigned int>(count);
+		count = static_cast<gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->Representation.size();
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		count = static_cast<gsoap_eml2_3::_resqml22__RepresentationSetRepresentation*>(gsoapProxy2_3)->Representation.size();
 	}
 	else {
 		throw logic_error("Not implemented yet");
 	}
+
+	if (count > (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("The count is too big.");
+	}
+
+	return static_cast<unsigned int>(count);
 }
 
 RESQML2_NS::AbstractRepresentation* RepresentationSetRepresentation::getRepresentation(unsigned int index) const
 {
-	return repository->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(getRepresentationUuid(index));
+	return repository->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(getRepresentationDor(index).getUuid());
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* RepresentationSetRepresentation::getRepresentationDor(const unsigned int & index) const
+COMMON_NS::DataObjectReference RepresentationSetRepresentation::getRepresentationDor(unsigned int index) const
 {
 	if (index >= getRepresentationCount()) {
-		throw range_error("The index of the representation to get is out of range in this representaiton set representation");
+		throw out_of_range("The index of the representation to get is out of range in this representaiton set representation");
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->Representation[index];
+		return COMMON_NS::DataObjectReference(static_cast<gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->Representation[index]);
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_3::_resqml22__RepresentationSetRepresentation*>(gsoapProxy2_3)->Representation[index]);
 	}
 	else {
 		throw logic_error("Not implemented yet");
 	}
-}
-
-std::string RepresentationSetRepresentation::getRepresentationUuid(const unsigned int & index) const
-{
-	return getRepresentationDor(index)->UUID;
 }
 
 void RepresentationSetRepresentation::pushBack(RESQML2_NS::AbstractRepresentation* rep)
@@ -121,6 +116,17 @@ void RepresentationSetRepresentation::pushBack(RESQML2_NS::AbstractRepresentatio
 		gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation* rsr = static_cast<gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1);
 
 		rsr->Representation.push_back(rep->newResqmlReference());
+		if (isHomogeneous() && getRepresentationCount() > 1)
+		{
+			if (rep->getGsoapType() != getRepresentation(0)->getGsoapType()) {
+				rsr->IsHomogeneous = false;
+			}
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::_resqml22__RepresentationSetRepresentation* rsr = static_cast<gsoap_eml2_3::_resqml22__RepresentationSetRepresentation*>(gsoapProxy2_3);
+
+		rsr->Representation.push_back(rep->newEml23Reference());
 		if (isHomogeneous() && getRepresentationCount() > 1)
 		{
 			if (rep->getGsoapType() != getRepresentation(0)->getGsoapType()) {

@@ -18,21 +18,20 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PolylineSetRepresentation.h"
 
-#include <sstream>
 #include <algorithm>
+#include <limits>
+#include <sstream>
 #include <stdexcept>
 
 #include <hdf5.h>
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractLocal3dCrs.h"
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-
-const char* PolylineSetRepresentation::XML_TAG = "PolylineSetRepresentation";
 
 void PolylineSetRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 									 const std::string & guid, const std::string & title)
@@ -63,22 +62,26 @@ PolylineSetRepresentation::PolylineSetRepresentation(RESQML2_NS::AbstractFeature
 
 PolylineSetRepresentation::PolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
-	resqml20__LineRole roleKind)
+	gsoap_eml2_3::resqml22__LineRole roleKind)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("You must provide an interpretation");
 	}
+	if (roleKind == gsoap_eml2_3::resqml22__LineRole__break_x0020line) {
+		throw invalid_argument("Break line role is not supported in v2.0.1");
+	}
+
 	init(interp->getRepository(), guid, title);
 	static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole = (resqml20__LineRole*)soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__LineRole));
-	(*static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole) = roleKind;
+	(*static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole) = static_cast<resqml20__LineRole>(roleKind);
 
 	setInterpretation(interp);
 }
 
 void PolylineSetRepresentation::pushBackGeometryPatch(
-				unsigned int * nodeCountPerPolyline, double * nodes,
+				unsigned int const* nodeCountPerPolyline, double const* nodes,
 				unsigned int polylineCount, bool allPolylinesClosedFlag,
-				COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+				EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -105,11 +108,11 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	xmlNodeCountPerPolyline->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream ossForHdf;
 	ossForHdf << "NodeCountPerPolyline_patch" << patch->PatchIndex;
-	xmlNodeCountPerPolyline->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdf.str();
+	xmlNodeCountPerPolyline->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 	patch->NodeCountPerPolyline = xmlNodeCountPerPolyline;
 	// ************ HDF *************
 	hsize_t dim = polylineCount;
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), H5T_NATIVE_UINT,
 		nodeCountPerPolyline,
 		&dim, 1);
@@ -124,17 +127,17 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	unsigned int nodeCount = 0;
 	for (unsigned int i = 0; i < polylineCount; ++i)
 		nodeCount += nodeCountPerPolyline[i];
-	hsize_t pointCountDims[] = { nodeCount };
-	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, pointCountDims, 1, proxy);
+	hsize_t pointCountDims = nodeCount;
+	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, &pointCountDims, 1, proxy);
 
 	static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.push_back(patch);
 	getRepository()->addRelationship(this, localCrs);
 }
 
 void PolylineSetRepresentation::pushBackGeometryPatch(
-				unsigned int * nodeCountPerPolyline, double * nodes,
+				unsigned int const* nodeCountPerPolyline, double const* nodes,
 				unsigned int polylineCount, bool * polylineClosedFlags,
-				COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+				EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -161,11 +164,11 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	xmlNodeCountPerPolyline->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream ossForHdf;
 	ossForHdf << "NodeCountPerPolyline_patch" << patch->PatchIndex;
-	xmlNodeCountPerPolyline->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdf.str();
+	xmlNodeCountPerPolyline->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 	patch->NodeCountPerPolyline = xmlNodeCountPerPolyline;
 	// ************ HDF *************
 	hsize_t dim = polylineCount;
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), H5T_NATIVE_UINT,
 		nodeCountPerPolyline,
 		&dim, 1);
@@ -177,10 +180,10 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	ossForHdf.str("");
 	ossForHdf.clear();
 	ossForHdf << "ClosedPolylines_patch" << patch->PatchIndex;
-	xmlClosedPolylines->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdf.str();
+	xmlClosedPolylines->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 	patch->ClosedPolylines = xmlClosedPolylines;
 	// ************ HDF *************
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), H5T_NATIVE_UCHAR,
 		polylineClosedFlags,
 		&dim, 1);
@@ -195,19 +198,17 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	getRepository()->addRelationship(this, localCrs);
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* PolylineSetRepresentation::getHdfProxyDor() const
+COMMON_NS::DataObjectReference PolylineSetRepresentation::getHdfProxyDor() const
 {
 	resqml20__PolylineSetPatch* patch = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch[0];
-	if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray)
-	{
-		if (patch->NodeCountPerPolyline->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
-		{
-			return static_cast<resqml20__IntegerHdf5Array*>(patch->NodeCountPerPolyline)->Values->HdfProxy;
+	if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray) {
+		if (patch->NodeCountPerPolyline->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+			return COMMON_NS::DataObjectReference(static_cast<resqml20__IntegerHdf5Array*>(patch->NodeCountPerPolyline)->Values->HdfProxy);
 		}
 	}
 	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array)
 	{
-		return static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->HdfProxy;
+		return COMMON_NS::DataObjectReference(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->HdfProxy);
 	}
 
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
@@ -222,7 +223,7 @@ resqml20__PointGeometry* PolylineSetRepresentation::getPointGeometry2_0_1(unsign
 		return nullptr;
 }
 
-unsigned int PolylineSetRepresentation::getPolylineCountOfPatch(const unsigned int & patchIndex) const
+unsigned int PolylineSetRepresentation::getPolylineCountOfPatch(unsigned int patchIndex) const
 {
 	resqml20__PolylineSetPatch* patch = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch[patchIndex];
 	if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray)
@@ -232,7 +233,7 @@ unsigned int PolylineSetRepresentation::getPolylineCountOfPatch(const unsigned i
 	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array)
 	{
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values;
-		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		return hdfProxy->getElementCount(dataset->PathInHdfFile);
 	}
 
@@ -243,8 +244,7 @@ unsigned int PolylineSetRepresentation::getPolylineCountOfAllPatches() const
 {
 	unsigned int result = 0;
 
-	for (size_t i = 0; i < static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.size(); i++)
-	{
+	for (size_t i = 0; i < static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.size(); i++) {
 		result += getPolylineCountOfPatch(i);
 	}
 
@@ -267,27 +267,7 @@ void PolylineSetRepresentation::getNodeCountPerPolylineOfAllPatches(unsigned int
 	}
 }
 
-ULONG64 PolylineSetRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
-{
-	if (patchIndex >= getPatchCount())
-		throw range_error("The index of the patch is not in the allowed range of patch.");
-
-	const unsigned int polylineCount = getPolylineCountOfPatch(patchIndex);
-	unsigned int* const nodeCountPerPolyline = new unsigned int[polylineCount];
-
-	getNodeCountPerPolylineInPatch(patchIndex, nodeCountPerPolyline);
-
-	ULONG64 nodeCount = 0;
-	for (unsigned int nodeCountPerPolylineIndex = 0; nodeCountPerPolylineIndex < polylineCount; ++nodeCountPerPolylineIndex)
-	{
-		nodeCount += nodeCountPerPolyline[nodeCountPerPolylineIndex];
-	}
-
-	delete[] nodeCountPerPolyline;
-	return nodeCount;
-}
-
-void PolylineSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void PolylineSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount())
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -296,7 +276,7 @@ void PolylineSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIn
 	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array)
 	{
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__Point3dHdf5Array*>(pointGeom->Points)->Coordinates;
-		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, xyzPoints);
 	}
 	else
@@ -343,11 +323,6 @@ bool PolylineSetRepresentation::areAllPolylinesClosedOfAllPatches() const
 	return true;
 }
 
-bool isNotZero(const long & i)
-{
-	return i != 0;
-}
-
 bool PolylineSetRepresentation::areAllPolylinesNonClosedOfPatch(unsigned int patchIndex) const
 {
 	resqml20__PolylineSetPatch* patch = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch[patchIndex];
@@ -360,16 +335,9 @@ bool PolylineSetRepresentation::areAllPolylinesNonClosedOfPatch(unsigned int pat
 		const unsigned int polylineCount = getPolylineCountOfPatch(patchIndex);
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values;
 
-		char* tmp = new char[polylineCount];
-		getHdfProxyFromDataset(dataset)->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-#if (defined(_WIN32) && _MSC_VER >= 1600) || (__GNUC__ > 4 && __GNUC_MINOR__ > 4)
-		const bool result = find_if(tmp, tmp + polylineCount, [](char i) {return i != 0; }) == tmp + polylineCount;
-#else
-		const bool result = find_if(tmp, tmp + polylineCount, isNotZero) == tmp + polylineCount;
-#endif
-		delete [] tmp;
-
-		return result;
+		std::unique_ptr<char[]> tmp(new char[polylineCount]);
+		getHdfProxyFromDataset(dataset)->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp.get());
+		return find_if(tmp.get(), tmp.get() + polylineCount, [](char i) {return i != 0; }) == tmp.get() + polylineCount;
 	}
 	else
 		throw logic_error("Not yet implemented.");
@@ -397,12 +365,11 @@ void PolylineSetRepresentation::getClosedFlagPerPolylineOfPatch(unsigned int pat
 	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values;
 
-		char* const  tmp = new char[polylineCount];
-		getHdfProxyFromDataset(dataset)->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
+		std::unique_ptr<char[]> tmp(new char[polylineCount]);
+		getHdfProxyFromDataset(dataset)->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp.get());
 		for (size_t i = 0; i < polylineCount; ++i) {
 			closedFlagPerPolyline[i] = tmp[i];
 		}
-		delete [] tmp;
 	}
 	else
 		throw logic_error("Not yet implemented.");
@@ -422,20 +389,23 @@ bool PolylineSetRepresentation::hasALineRole() const
 	return static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole != nullptr;
 }
 
-gsoap_resqml2_0_1::resqml20__LineRole PolylineSetRepresentation::getLineRole() const
+gsoap_eml2_3::resqml22__LineRole PolylineSetRepresentation::getLineRole() const
 {
 	if (!hasALineRole()) {
 		throw invalid_argument("The polylineSet doesn't have any role");
 	}
 
-	return *static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole;
+	return static_cast<gsoap_eml2_3::resqml22__LineRole>(*static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole);
 }
 
-void PolylineSetRepresentation::setLineRole(gsoap_resqml2_0_1::resqml20__LineRole lineRole)
+void PolylineSetRepresentation::setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole)
 {
+	if (lineRole == gsoap_eml2_3::resqml22__LineRole__break_x0020line) {
+		throw std::invalid_argument("Break line enumerated value is not part of RESQML 2.0.1");
+	}
 	if (!hasALineRole()) {
 		static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole = (resqml20__LineRole*)soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__LineRole));
 	}
 
-	*static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole = lineRole;
+	*static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole = static_cast<resqml20__LineRole>(lineRole);
 }

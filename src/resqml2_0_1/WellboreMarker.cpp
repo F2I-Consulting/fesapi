@@ -21,16 +21,18 @@ under the License.
 #include <stdexcept>
 
 #include "WellboreMarkerFrameRepresentation.h"
-#include "BoundaryFeatureInterpretation.h"
+#include "../resqml2/BoundaryFeatureInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* WellboreMarker::XML_TAG = "WellboreMarker";
-
-WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title)
+WellboreMarker::WellboreMarker(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title)
 {
+	if (wellboreMarkerFrame == nullptr) {
+		throw invalid_argument("The wellbore marker frame representation cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__WellboreMarker(wellboreMarkerFrame->getGsoapContext());
 
 	initMandatoryMetadata();
@@ -39,8 +41,12 @@ WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarker
 	wellboreMarkerFrame->pushBackNewWellboreMarker(this);
 }
 
-WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind)
+WellboreMarker::WellboreMarker(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind)
 {
+	if (wellboreMarkerFrame == nullptr) {
+		throw invalid_argument("The wellbore marker frame representation cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__WellboreMarker(wellboreMarkerFrame->getGsoapContext());	
 	resqml20__WellboreMarker* marker = static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1);
 
@@ -67,32 +73,18 @@ resqml20__GeologicBoundaryKind WellboreMarker::getGeologicBoundaryKind() const
 	return *(static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1)->GeologicBoundaryKind);
 }
 
-std::string WellboreMarker::getBoundaryFeatureInterpretationUuid() const
+COMMON_NS::DataObjectReference WellboreMarker::getBoundaryFeatureInterpretationDor() const
 {
 	if (static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1)->Interpretation != nullptr)
-		return static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1)->Interpretation->UUID;
+		return COMMON_NS::DataObjectReference(static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1)->Interpretation);
 
-	return "";
+	return COMMON_NS::DataObjectReference();
 }
 
-BoundaryFeatureInterpretation* WellboreMarker::getBoundaryFeatureInterpretation() const
-{
-	return getWellMarkerFrameRepresentation()->getRepository()->getDataObjectByUuid<BoundaryFeatureInterpretation>(getBoundaryFeatureInterpretationUuid());
-}
-
-void WellboreMarker::setBoundaryFeatureInterpretation(BoundaryFeatureInterpretation* interp)
+void WellboreMarker::setBoundaryFeatureInterpretation(RESQML2_NS::BoundaryFeatureInterpretation* interp)
 {
 	getRepository()->addRelationship(this, interp);
 
     resqml20__WellboreMarker* marker = static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1);
 	marker->Interpretation = interp->newResqmlReference();
-}
-
-void WellboreMarker::loadTargetRelationships()
-{}
-
-WellboreMarkerFrameRepresentation const * WellboreMarker::getWellMarkerFrameRepresentation() const
-{
-	const vector<WellboreMarkerFrameRepresentation *> wmfr = getRepository()->getSourceObjects<WellboreMarkerFrameRepresentation>(this);
-	return wmfr.size() == 1 ? wmfr[0] : nullptr;
 }

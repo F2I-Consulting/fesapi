@@ -23,13 +23,13 @@ under the License.
 #include "catch.hpp"
 
 #include "common/EpcDocument.h"
-#include "resqml2_0_1/OrganizationFeature.h"
+#include "resqml2/Model.h"
 #include <stdexcept>
 
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 
 const char* StratigraphicOrganizationTest::defaultUuid = "8567b4b5-3e03-4e8e-bf69-b77965bea29f";
 const char* StratigraphicOrganizationTest::defaultTitle = "Strati Organization";
@@ -47,7 +47,7 @@ StratigraphicOrganizationTest::StratigraphicOrganizationTest(DataObjectRepositor
 }
 
 void StratigraphicOrganizationTest::initRepoHandler() {
-	OrganizationFeature* stratiOrg = repo->createStratigraphicModel(defaultUuid, defaultTitle);
+	Model* stratiOrg = repo->createStratigraphicModel(defaultUuid, defaultTitle);
 	REQUIRE(stratiOrg != nullptr);
 }
 

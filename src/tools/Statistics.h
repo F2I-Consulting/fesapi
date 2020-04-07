@@ -22,9 +22,21 @@ under the License.
 #include <utility>
 #include <stdexcept>
 
+/** . */
 namespace statistics
 {
-
+	/**
+	 * Finds the minmax of the given arguments
+	 *
+	 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
+	 *
+	 * @tparam	T	Generic type parameter.
+	 * @param 	values	  	The values.
+	 * @param 	noValue   	The no value.
+	 * @param 	valueCount	Number of values.
+	 *
+	 * @returns	The calculated minimum maximum.
+	 */
 	template <class T>
 	std::pair<T, T> getMinMax(
 		const T* values,

@@ -30,7 +30,7 @@ under the License.
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 
 InterpretationDomain::InterpretationDomain(const string & repoPath)
 	: AbstractTest(repoPath)
@@ -58,10 +58,12 @@ void InterpretationDomain::initRepo()
 	faultInterp->initDomain(gsoap_resqml2_0_1::resqml20__Domain__time);
 	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain__time);
 
-	FaultSinglePatchTriangulatedSetRepresentationTest repTest(repo, true);
-	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain__depth);
-	resqml2_0_1test::PolylineSetRepresentation polylineRepTest(repo, true);
-	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain__mixed);
+	if (dynamic_cast<RESQML2_0_1_NS::FaultInterpretation*>(faultInterp) != nullptr) {
+		FaultSinglePatchTriangulatedSetRepresentationTest repTest(repo, true);
+		REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain__depth);
+		resqml2_0_1test::PolylineSetRepresentation polylineRepTest(repo, true);
+		REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain__mixed);
+	}
 }
 
 void InterpretationDomain::readRepo() {

@@ -19,10 +19,10 @@ under the License.
 #include "OneTetrahedronUnstructuredGridRepresentationTest.h"
 #include "../catch.hpp"
 #include "LocalDepth3dCrsTest.h"
-#include "resqml2_0_1/LocalDepth3dCrs.h"
+#include "resqml2/LocalDepth3dCrs.h"
 #include "common/EpcDocument.h"
-#include "common/AbstractHdfProxy.h"
-#include "resqml2_0_1/UnstructuredGridRepresentation.h"
+#include "eml2/AbstractHdfProxy.h"
+#include "resqml2/UnstructuredGridRepresentation.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -47,7 +47,7 @@ OneTetrahedronUnstructuredGridRepresentationTest::OneTetrahedronUnstructuredGrid
 
 void OneTetrahedronUnstructuredGridRepresentationTest::initRepoHandler() {
 	// creating the unstructured grid
-	RESQML2_0_1_NS::UnstructuredGridRepresentation* tetraGrid = repo->createUnstructuredGridRepresentation(defaultUuid, defaultTitle, 1);
+	RESQML2_NS::UnstructuredGridRepresentation* tetraGrid = repo->createUnstructuredGridRepresentation(defaultUuid, defaultTitle, 1);
 	REQUIRE(tetraGrid != nullptr);
 	unsigned char faceRightHandness[4] = { 0, 0, 1, 1 };
 	ULONG64 faceIndicesPerCell[4] = { 0, 1, 2, 3 };
@@ -57,7 +57,7 @@ void OneTetrahedronUnstructuredGridRepresentationTest::initRepoHandler() {
 
 void OneTetrahedronUnstructuredGridRepresentationTest::readRepoHandler() {
 	// getting the unstructured grid
-	RESQML2_0_1_NS::UnstructuredGridRepresentation * unstructuredGrid = repo->getDataObjectByUuid<RESQML2_0_1_NS::UnstructuredGridRepresentation>(defaultUuid);
+	RESQML2_NS::UnstructuredGridRepresentation * unstructuredGrid = repo->getDataObjectByUuid<RESQML2_NS::UnstructuredGridRepresentation>(defaultUuid);
 
 	// getXyzPointCountOfPatch
 	REQUIRE_THROWS( unstructuredGrid->getXyzPointCountOfPatch(1));
@@ -126,13 +126,13 @@ void OneTetrahedronUnstructuredGridRepresentationTest::readRepoHandler() {
 	REQUIRE( unstructuredGrid->getConstantNodeCountOfFaces() == 3 );
 
 	// getFaceCountOfCell should raises en exception since geometry is not loaded
-	REQUIRE_THROWS_AS( unstructuredGrid->getFaceCountOfCell(0), invalid_argument );
+	REQUIRE_THROWS_AS( unstructuredGrid->getFaceCountOfCell(0), logic_error);
 
 	// loading geometry into memory (required for subsequent testing)
 	unstructuredGrid->loadGeometry();
 
 	// getFaceCountOfCell
-	REQUIRE_THROWS_AS( unstructuredGrid->getFaceCountOfCell(1), range_error );
+	REQUIRE_THROWS_AS( unstructuredGrid->getFaceCountOfCell(1), out_of_range);
 	REQUIRE( unstructuredGrid->getFaceCountOfCell(0) == 4 );
 
 	// getNodeCountOfFaceOfCell

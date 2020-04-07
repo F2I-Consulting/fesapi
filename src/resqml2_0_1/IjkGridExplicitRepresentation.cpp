@@ -26,34 +26,18 @@ under the License.
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractLocal3dCrs.h"
 #include "../resqml2/AbstractValuesProperty.h"
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_0_1_NS;
 
-IjkGridExplicitRepresentation::IjkGridExplicitRepresentation(COMMON_NS::DataObjectRepository * repo,
-	const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount,
-	bool withTruncatedPillars) :
-	AbstractIjkGridRepresentation(repo, guid, title, iCount, jCount, kCount, withTruncatedPillars)
-{
-}
-
-IjkGridExplicitRepresentation::IjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-	const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount,
-	bool withTruncatedPillars) :
-	AbstractIjkGridRepresentation(interp, guid, title, iCount, jCount, kCount, withTruncatedPillars)
-{
-}
-
-gsoap_resqml2_0_1::eml20__DataObjectReference* IjkGridExplicitRepresentation::getHdfProxyDor() const
+COMMON_NS::DataObjectReference IjkGridExplicitRepresentation::getHdfProxyDor() const
 {
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
-ULONG64 IjkGridExplicitRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 IjkGridExplicitRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(patchIndex));
 	if (geom == nullptr) {
@@ -77,249 +61,33 @@ ULONG64 IjkGridExplicitRepresentation::getXyzPointCountOfPatch(const unsigned in
 	return result;
 }
 
-void IjkGridExplicitRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch(const unsigned int & kInterfaceStart, const unsigned int & kInterfaceEnd, const unsigned int & patchIndex, double * xyzPoints)
+EML2_NS::AbstractHdfProxy* IjkGridExplicitRepresentation::getPointDatasetPath(std::string & datasetPathInExternalFile, unsigned long & splitCoordinateLineCount) const
 {
-	if (kInterfaceStart > getKCellCount() || kInterfaceEnd > getKCellCount())
-		throw range_error("kInterfaceStart and/or kInterfaceEnd is/are out of boundaries.");
-	if (kInterfaceStart > kInterfaceEnd)
-		throw range_error("kInterfaceStart > kInterfaceEnd");
-
-	if (patchIndex >= getPatchCount())
-		throw range_error("An ijk grid has a maximum of one patch.");
-
-	if (xyzPoints == nullptr)
-		throw invalid_argument("xyzPoints must be allocated.");
-
-	resqml20__PointGeometry* pointGeom = getPointGeometry2_0_1(patchIndex);
+	resqml20__PointGeometry* pointGeom = getPointGeometry2_0_1(0);
 	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array)
 	{
-		unsigned long splitCoordinateLineCount = getSplitCoordinateLineCount();
+		splitCoordinateLineCount = getSplitCoordinateLineCount();
 
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__Point3dHdf5Array*>(pointGeom->Points)->Coordinates;
-		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		if (splitCoordinateLineCount == 0)
-		{
-			unsigned long long* valueCountPerDimension = new unsigned long long[4];
-			valueCountPerDimension[0] = kInterfaceEnd - kInterfaceStart + 1;
-			valueCountPerDimension[1] = getJCellCount() + 1;
-			valueCountPerDimension[2] = getICellCount() + 1;
-			valueCountPerDimension[3] = 3;
-			unsigned long long* offsetPerDimension = new unsigned long long[4];
-			offsetPerDimension[0] = kInterfaceStart;
-			offsetPerDimension[1] = 0;
-			offsetPerDimension[2] = 0;
-			offsetPerDimension[3] = 0;
+		datasetPathInExternalFile = dataset->PathInHdfFile;
 
-			hdfProxy->readArrayNdOfDoubleValues(
-				dataset->PathInHdfFile,
-				xyzPoints,
-				valueCountPerDimension,
-				offsetPerDimension,
-				4);
-			delete[] valueCountPerDimension;
-			delete[] offsetPerDimension;
-		}
-		else
-		{
-			unsigned long long* valueCountPerDimension = new unsigned long long[3];
-			valueCountPerDimension[0] = kInterfaceEnd - kInterfaceStart + 1;
-			valueCountPerDimension[1] = (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount;
-			valueCountPerDimension[2] = 3;
-			unsigned long long* offsetPerDimension = new unsigned long long[3];
-			offsetPerDimension[0] = kInterfaceStart;
-			offsetPerDimension[1] = 0;
-			offsetPerDimension[2] = 0;
-
-			hdfProxy->readArrayNdOfDoubleValues(
-				dataset->PathInHdfFile,
-				xyzPoints,
-				valueCountPerDimension,
-				offsetPerDimension,
-				3);
-
-			delete[] valueCountPerDimension;
-			delete[] offsetPerDimension;
-		}
+		return getHdfProxyFromDataset(dataset);
 	}
 	else {
 		throw invalid_argument("The geometry of the grid either does not exist or it is not an explicit one.");
 	}
-
-	// Truncation
-	if (isTruncated()) {
-		throw invalid_argument("Getting all the XYZ points of a particular K interface is not supported yet for truncated grids.");
-	}
 }
 
-void IjkGridExplicitRepresentation::getXyzPointsOfBlockOfPatch(const unsigned int & patchIndex, double * xyzPoints)
+void IjkGridExplicitRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
 {
-	if (blockInformation == nullptr)
-		throw invalid_argument("The block information must have been loaded first.");
-
-	if (patchIndex >= getPatchCount())
+	if (patchIndex >= getPatchCount()) {
 		throw range_error("An ijk grid has a maximum of one patch.");
-
-	if (xyzPoints == nullptr)
-		throw invalid_argument("xyzPoints must be allocated.");
-
-	resqml20__PointGeometry* pointGeom = getPointGeometry2_0_1(patchIndex);
-	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array)
-	{
-		unsigned long splitCoordinateLineCount = getSplitCoordinateLineCount();
-
-		eml20__Hdf5Dataset const * xmlDataset = static_cast<resqml20__Point3dHdf5Array*>(pointGeom->Points)->Coordinates;
-		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(xmlDataset);
-		if (splitCoordinateLineCount == 0)
-		{
-			unsigned long long* valueCountPerDimension = new unsigned long long[4];
-			valueCountPerDimension[0] = blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1;
-			valueCountPerDimension[1] = blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1;
-			valueCountPerDimension[2] = blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1;
-			valueCountPerDimension[3] = 3;
-			unsigned long long* offsetPerDimension = new unsigned long long[4];
-			offsetPerDimension[0] = blockInformation->kInterfaceStart;
-			offsetPerDimension[1] = blockInformation->jInterfaceStart;
-			offsetPerDimension[2] = blockInformation->iInterfaceStart;
-			offsetPerDimension[3] = 0;
-
-			hdfProxy->readArrayNdOfDoubleValues(
-				xmlDataset->PathInHdfFile,
-				xyzPoints,
-				valueCountPerDimension,
-				offsetPerDimension,
-				4);
-			delete[] valueCountPerDimension;
-			delete[] offsetPerDimension;
-		}
-		else
-		{
-			unsigned long long* blockCountPerDimension = new unsigned long long[3];
-			blockCountPerDimension[0] = 1;
-			blockCountPerDimension[1] = blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1;
-			blockCountPerDimension[2] = 1;
-			unsigned long long* offsetPerDimension = new unsigned long long[3];
-			offsetPerDimension[0] = blockInformation->kInterfaceStart;
-			offsetPerDimension[1] = blockInformation->jInterfaceStart * (getICellCount() + 1) + blockInformation->iInterfaceStart;
-			offsetPerDimension[2] = 0;
-			unsigned long long* strideInEachDimension = new unsigned long long[3];
-			strideInEachDimension[0] = 1;
-			strideInEachDimension[1] = (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) + ((getICellCount() + 1) - (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1));
-			strideInEachDimension[2] = 1;
-			unsigned long long* blockSizeInEachDimension = new unsigned long long[3];
-			blockSizeInEachDimension[0] = blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1;
-			blockSizeInEachDimension[1] = blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1;
-			blockSizeInEachDimension[2] = 3;
-		
-			hid_t dataset, filespace;
-			hdfProxy->selectArrayNdOfValues(
-				xmlDataset->PathInHdfFile,
-				blockCountPerDimension,
-				offsetPerDimension,
-				strideInEachDimension,
-				blockSizeInEachDimension,
-				3,
-				true,
-				dataset,
-				filespace);
-
-			unsigned long long slab_size = 1;
-			for (size_t h = 0; h < 3; ++h) {
-				slab_size *= blockSizeInEachDimension[h];
-			}
-			for (size_t h = 0; h < 3; ++h) {
-				slab_size *= blockCountPerDimension[h];
-			}
-
-			// Adding block split coordinate lines to the selected regions
-			// traversing all bloc pillars in direction i and then in direction j
-			for (unsigned int jPillarIndex = blockInformation->jInterfaceStart; jPillarIndex <= blockInformation->jInterfaceEnd; ++jPillarIndex)
-			{
-				for (unsigned int iPillarIndex = blockInformation->iInterfaceStart; iPillarIndex <= blockInformation->iInterfaceEnd; iPillarIndex++)
-				{
-					unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
-
-					if (splitInformation[pillarIndex].size() != 0)
-					{
-						// here is a split pillar
-
-						// traversing all split coordinate lines corresponding to the current splitted pillar
-						for (size_t splitCoordinateLineIndex = 0; splitCoordinateLineIndex < splitInformation[pillarIndex].size(); ++splitCoordinateLineIndex)
-						{
-							// traversing adjacent columns, it current column is in the bloc, corresponding coordinate line is added to the selected region
-							for (size_t columnIndex = 0; columnIndex < splitInformation[pillarIndex][splitCoordinateLineIndex].second.size(); ++columnIndex)
-							{
-								unsigned int iColumnIndex = getIColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
-								unsigned int jColumnIndex = getJColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
-								
-								if ((iColumnIndex >= blockInformation->iInterfaceStart && iColumnIndex < blockInformation->iInterfaceEnd) && (jColumnIndex >= blockInformation->jInterfaceStart && jColumnIndex < blockInformation->jInterfaceEnd))
-								{
-									// here is a split coordinate line impacting the bloc
-									unsigned int splitCoordinateLineHdfIndex = (getICellCount() + 1) * (getJCellCount() + 1) + splitInformation[pillarIndex][splitCoordinateLineIndex].first;
-
-									// the split coordinate line is added to the selected region
-									blockCountPerDimension[0] = 1;
-									blockCountPerDimension[1] = 1;
-									blockCountPerDimension[2] = 1;
-									offsetPerDimension[0] = blockInformation->kInterfaceStart;
-									offsetPerDimension[1] = splitCoordinateLineHdfIndex;
-									offsetPerDimension[2] = 0;
-									strideInEachDimension[0] = 1;
-									strideInEachDimension[1] = 1;
-									strideInEachDimension[2] = 1;
-									blockSizeInEachDimension[0] = blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1;
-									blockSizeInEachDimension[1] = 1;
-									blockSizeInEachDimension[2] = 3;
-
-									hdfProxy->selectArrayNdOfValues(
-										xmlDataset->PathInHdfFile,
-										blockCountPerDimension,
-										offsetPerDimension,
-										strideInEachDimension,
-										blockSizeInEachDimension,
-										3,
-										false,
-										dataset,
-										filespace);
-
-									slab_size += (blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1) * 3;
-
-									break; // in order to be sure not adding twice a same coordinate line if it is adjacent to several columns within the bloc
-								}
-							}
-						}
-					}
-				}
-			}
-
-			// reading values corresponding to the whole selected region (non splitted and splitted part)
-			hdfProxy->readArrayNdOfDoubleValues(dataset, filespace,
-				xyzPoints, slab_size);
-
-			delete[] blockCountPerDimension;
-			delete[] offsetPerDimension;
-			delete[] strideInEachDimension;
-			delete[] blockSizeInEachDimension;
-		}
-	}
-	else {
-		throw invalid_argument("The geometry of the grid either does not exist or it is not an explicit one.");
 	}
 
-	// Truncation
-	if (isTruncated()) {
-		throw invalid_argument("Getting all the XYZ points of a particular K interface is not supported yet for truncated grids.");
-	}
-}
-
-void IjkGridExplicitRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
-{
-	if (patchIndex >= getPatchCount())
-		throw range_error("An ijk grid has a maximum of one patch.");
-
-	resqml20__PointGeometry* pointGeom = getPointGeometry2_0_1(patchIndex);
+	resqml20__PointGeometry* pointGeom = getPointGeometry2_0_1(0);
 	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array) {
 		eml20__Hdf5Dataset const * xmlDataset = static_cast<resqml20__Point3dHdf5Array*>(pointGeom->Points)->Coordinates;
-		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(xmlDataset);
+		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(xmlDataset);
 		hdfProxy->readArrayNdOfDoubleValues(xmlDataset->PathInHdfFile, xyzPoints);
 	}
 	else {
@@ -332,7 +100,7 @@ void IjkGridExplicitRepresentation::getXyzPointsOfPatch(const unsigned int & pat
 		if (truncatedGeom->AdditionalGridPoints.size() == 1 && truncatedGeom->AdditionalGridPoints[0]->Attachment == resqml20__GridGeometryAttachment__nodes) {
 			if (truncatedGeom->AdditionalGridPoints[0]->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array) {
 				eml20__Hdf5Dataset const * xmlDataset = static_cast<resqml20__Point3dHdf5Array*>(truncatedGeom->AdditionalGridPoints[0]->Points)->Coordinates;
-				COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(xmlDataset);
+				EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(xmlDataset);
 				xyzPoints += getXyzPointCountOfPatch(patchIndex) - static_cast<gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationNodeCount;
 				hdfProxy->readArrayNdOfDoubleValues(xmlDataset->PathInHdfFile, xyzPoints);
 			}
@@ -348,8 +116,8 @@ void IjkGridExplicitRepresentation::getXyzPointsOfPatch(const unsigned int & pat
 
 void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodesUsingExistingDatasets(
 	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
-	const std::string & points, COMMON_NS::AbstractHdfProxy* proxy,
-	const unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
+	const std::string & points, EML2_NS::AbstractHdfProxy* proxy,
+	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns,
 	const std::string & definedPillars, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
@@ -375,10 +143,10 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodesUsingExistin
 	resqml20__IjkGridGeometry* geom = soap_new_resqml20__IjkGridGeometry(gsoapProxy2_0_1->soap);
 	geom->LocalCrs = localCrs->newResqmlReference();
 	if (!isTruncated()) {
-		getSpecializedGsoapProxy()->Geometry = geom;
+		getSpecializedGsoapProxy2_0_1()->Geometry = geom;
 	}
 	else {
-		getSpecializedTruncatedGsoapProxy()->Geometry = geom;
+		getSpecializedTruncatedGsoapProxy2_0_1()->Geometry = geom;
 	}
 	geom->GridIsRighthanded = isRightHanded;
 	geom->PillarShape = mostComplexPillarGeometry;
@@ -447,7 +215,7 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodes(
 	resqml20__PillarShape mostComplexPillarGeometry,
 	resqml20__KDirection kDirectionKind,
 	bool isRightHanded,
-	double * points, COMMON_NS::AbstractHdfProxy * proxy,
+	double * points, EML2_NS::AbstractHdfProxy * proxy,
 	unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 	unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns,
 	char * definedPillars, RESQML2_NS::AbstractLocal3dCrs * localCrs)
@@ -465,64 +233,33 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodes(
 		}
 	}
 
-	const std::string hdfDatasetPrefix = "/RESQML/" + gsoapProxy2_0_1->uuid;
+	const std::string hdfDatasetPrefix = getHdfGroup();
 	setGeometryAsCoordinateLineNodesUsingExistingDatasets(mostComplexPillarGeometry, kDirectionKind, isRightHanded,
 		hdfDatasetPrefix + "/Points", proxy,
 		splitCoordinateLineCount, pillarOfCoordinateLine == nullptr ? "" : hdfDatasetPrefix + "/PillarIndices",
-		splitCoordinateLineColumnCumulativeCount == nullptr ? "" : hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + CUMULATIVE_LENGTH_DS_NAME, splitCoordinateLineColumns == nullptr ? "" : hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + ELEMENTS_DS_NAME,
+		splitCoordinateLineColumnCumulativeCount == nullptr ? "" : hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + CUMULATIVE_LENGTH_DS_NAME,
+		splitCoordinateLineColumns == nullptr ? "" : hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + ELEMENTS_DS_NAME,
 		definedPillars == nullptr ? "" : hdfDatasetPrefix + "/PillarGeometryIsDefined", localCrs);
 
 	// Pillar defined
 	if (definedPillars != nullptr) {
-		hsize_t * pillarGeometryIsDefinedCount = new hsize_t[2];
-		pillarGeometryIsDefinedCount[0] = getJCellCount() + 1;
-		pillarGeometryIsDefinedCount[1] = getICellCount() + 1;
-		proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "PillarGeometryIsDefined", H5T_NATIVE_CHAR, definedPillars, pillarGeometryIsDefinedCount, 2);
+		hsize_t pillarGeometryIsDefinedCount[2] = { getJCellCount() + 1, getICellCount() + 1 };
+		proxy->writeArrayNd(getHdfGroup(), "PillarGeometryIsDefined", H5T_NATIVE_CHAR, definedPillars, pillarGeometryIsDefinedCount, 2);
 	}
 
-	if (splitCoordinateLineCount == 0)
-	{
+	if (splitCoordinateLineCount == 0) {
 		// Points
-		hsize_t * numValues = new hsize_t[4];
-		numValues[0] = getKCellCount() + 1;
-		numValues[1] = getJCellCount() + 1;
-		numValues[2] = getICellCount() + 1;
-		numValues[3] = 3; // 3 for X, Y and Z	
-		proxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid, "Points", points, numValues, 4);
-		delete [] numValues;
-	}
-	else
-	{
-		// Points
-		hsize_t * numValues = new hsize_t[3];
-		numValues[0] = getKCellCount() + 1;
-		numValues[1] = (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount;
-		numValues[2] = 3; // 3 for X, Y and Z
-		proxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid, "Points", points, numValues, 3);
-		delete [] numValues;
-		
-		// split coordinate lines
-		numValues = new hsize_t[1];
-		numValues[0] = splitCoordinateLineCount;
-		proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "PillarIndices", H5T_NATIVE_UINT, pillarOfCoordinateLine, numValues, 1);
-		delete [] numValues;
-		proxy->writeItemizedListOfList(gsoapProxy2_0_1->uuid, "ColumnsPerSplitCoordinateLine", H5T_NATIVE_UINT, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineCount, H5T_NATIVE_UINT, splitCoordinateLineColumns, splitCoordinateLineColumnCumulativeCount[splitCoordinateLineCount - 1]);
-	}
-}
-
-AbstractIjkGridRepresentation::geometryKind IjkGridExplicitRepresentation::getGeometryKind() const
-{
-	return EXPLICIT;
-}
-
-bool IjkGridExplicitRepresentation::isNodeGeometryCompressed() const {
-	resqml20__PointGeometry* pointGeom = getPointGeometry2_0_1(0);
-	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__Point3dHdf5Array*>(pointGeom->Points)->Coordinates;
-		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		return hdfProxy->isCompressed(dataset->PathInHdfFile);
+		hsize_t numValues[4] = { getKCellCount() + 1, getJCellCount() + 1, getICellCount() + 1, 3 };
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "Points", points, numValues, 4);
 	}
 	else {
-		throw invalid_argument("The geometry of the grid either does not exist or is not an explicit one.");
+		// Points
+		hsize_t numValues[3] = { getKCellCount() + 1, (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount, 3 };
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "Points", points, numValues, 3);
+		
+		// split coordinate lines
+		hsize_t hdfSplitCoordinateLineCount = splitCoordinateLineCount;
+		proxy->writeArrayNd(getHdfGroup(), "PillarIndices", H5T_NATIVE_UINT, pillarOfCoordinateLine, &hdfSplitCoordinateLineCount, 1);
+		proxy->writeItemizedListOfList(getHdfGroup(), "ColumnsPerSplitCoordinateLine", H5T_NATIVE_UINT, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineCount, H5T_NATIVE_UINT, splitCoordinateLineColumns, splitCoordinateLineColumnCumulativeCount[splitCoordinateLineCount - 1]);
 	}
 }

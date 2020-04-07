@@ -22,13 +22,13 @@ under the License.
 
 #include "AbstractObjectTest.h"
 
-#include "resqml2_0_1/Horizon.h"
-#include "resqml2_0_1/HorizonInterpretation.h"
+#include "resqml2/BoundaryFeature.h"
+#include "resqml2/HorizonInterpretation.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 
 const char* HorizonInterpretationTest::horizonUuid = "35ea54a9-63d8-4520-a4be-8eb7afff3a4f";
 const char* HorizonInterpretationTest::horizonTitle = "Horizon";
@@ -53,7 +53,7 @@ HorizonInterpretationTest::HorizonInterpretationTest(DataObjectRepository * repo
 void HorizonInterpretationTest::initRepoHandler()
 {
 	// creating dependencies
-	Horizon* horizon = repo->getDataObjectByUuid<Horizon>(horizonUuid);
+	BoundaryFeature* horizon = repo->getDataObjectByUuid<BoundaryFeature>(horizonUuid);
 	if (horizon == nullptr) {
 		horizon = repo->createHorizon(horizonUuid, horizonTitle);
 	}

@@ -18,24 +18,21 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "BlockedWellboreRepresentation.h"
 
+#include <limits>
 #include <stdexcept>
 
 #include <hdf5.h>
 
 #include "../resqml2/AbstractGridRepresentation.h"
-#include "WellboreInterpretation.h"
-#include "WellboreTrajectoryRepresentation.h"
-#include "../common/AbstractHdfProxy.h"
-
-#include "../tools/Misc.h"
+#include "../resqml2/WellboreInterpretation.h"
+#include "../resqml2/WellboreTrajectoryRepresentation.h"
+#include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* BlockedWellboreRepresentation::XML_TAG = "BlockedWellboreRepresentation";
-
-void BlockedWellboreRepresentation::init(const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
+void BlockedWellboreRepresentation::init(const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj)
 {
 	if (traj == nullptr) {
 		throw invalid_argument("The wellbore trajectory of a blocked wellbore cannot be null.");
@@ -53,8 +50,8 @@ void BlockedWellboreRepresentation::init(const std::string & guid, const std::st
 	getRepository()->addRelationship(this, traj);
 }
 
-BlockedWellboreRepresentation::BlockedWellboreRepresentation(WellboreInterpretation * interp,
-	const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation  * traj)
+BlockedWellboreRepresentation::BlockedWellboreRepresentation(RESQML2_NS::WellboreInterpretation * interp,
+	const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation  * traj)
 {
 	init(guid, title, traj);
 
@@ -63,7 +60,9 @@ BlockedWellboreRepresentation::BlockedWellboreRepresentation(WellboreInterpretat
 	}
 }
 
-void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndices, unsigned int gridIndicesNullValue, unsigned int cellCount, ULONG64* cellIndices, unsigned char* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, COMMON_NS::AbstractHdfProxy * hdfProxy)
+void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
+	unsigned int cellCount, ULONG64 const* cellIndices,
+	unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy)
 {
 	// Preconditions
 	if (getXyzPointCountOfAllPatches() == 0) {
@@ -93,15 +92,15 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndic
 	xmlGridIndices->NullValue = gridIndicesNullValue;
 	xmlGridIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlGridIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
-	xmlGridIndices->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/GridIndices";
+	xmlGridIndices->Values->PathInHdfFile = getHdfGroup() + "/GridIndices";
 	rep->GridIndices = xmlGridIndices;
 	// HDF
-	hsize_t dimGridIndices[] = { rep->NodeCount };
-	hdfProxy->writeArrayNd(rep->uuid,
+	hsize_t dimGridIndices = rep->NodeCount;
+	hdfProxy->writeArrayNd(getHdfGroup(),
 		"GridIndices",
 		H5T_NATIVE_UINT,
 		gridIndices,
-		dimGridIndices, 1);
+		&dimGridIndices, 1);
 
 	// cellIndices
 	// XML
@@ -109,15 +108,15 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndic
 	xmlCellIndices->NullValue = -1;
 	xmlCellIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlCellIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
-	xmlCellIndices->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/CellIndices";
+	xmlCellIndices->Values->PathInHdfFile = getHdfGroup() + "/CellIndices";
 	rep->CellIndices = xmlCellIndices;
 	// HDF
-	hsize_t dimCellIndices[] = { cellCount };
-	hdfProxy->writeArrayNd(rep->uuid,
+	hsize_t dimCellIndices = cellCount;
+	hdfProxy->writeArrayNd(getHdfGroup(),
 		"CellIndices",
 		H5T_NATIVE_ULLONG,
 		cellIndices,
-		dimCellIndices, 1);
+		&dimCellIndices, 1);
 
 	// localFacePairPerCellIndices
 	// XML
@@ -125,15 +124,15 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndic
 	xmlLocalFacePairPerCellIndices->NullValue = localFacePairPerCellIndicesNullValue;
 	xmlLocalFacePairPerCellIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlLocalFacePairPerCellIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
-	xmlLocalFacePairPerCellIndices->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/LocalFacePairPerCellIndices";
+	xmlLocalFacePairPerCellIndices->Values->PathInHdfFile = getHdfGroup() + "/LocalFacePairPerCellIndices";
 	rep->LocalFacePairPerCellIndices = xmlLocalFacePairPerCellIndices;
 	// HDF
-	hsize_t dimLocalFacePerCellIndicesNullValue[] = { cellCount*2 };
-	hdfProxy->writeArrayNd(rep->uuid,
+	hsize_t dimLocalFacePerCellIndicesNullValue = cellCount*2;
+	hdfProxy->writeArrayNd(getHdfGroup(),
 		"LocalFacePairPerCellIndices",
 		H5T_NATIVE_UCHAR,
 		localFacePairPerCellIndices,
-		dimLocalFacePerCellIndicesNullValue, 1);
+		&dimLocalFacePerCellIndicesNullValue, 1);
 }
 
 ULONG64 BlockedWellboreRepresentation::getCellCount() const
@@ -147,7 +146,7 @@ LONG64 BlockedWellboreRepresentation::getGridIndices(unsigned int * gridIndices)
 
 	if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(xmlGridIndices)->Values;
-		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		hdfProxy->readArrayNdOfUIntValues(dataset->PathInHdfFile, gridIndices);
 		return static_cast<resqml20__IntegerHdf5Array*>(xmlGridIndices)->NullValue;
 	}
@@ -182,7 +181,7 @@ void BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(RESQML2
 	static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.push_back(supportingGridRep->newResqmlReference());
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* BlockedWellboreRepresentation::getSupportingGridRepresentationDor(unsigned int index) const
+COMMON_NS::DataObjectReference BlockedWellboreRepresentation::getSupportingGridRepresentationDor(unsigned int index) const
 {
 	_resqml20__BlockedWellboreRepresentation* rep = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 
@@ -190,33 +189,6 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* BlockedWellboreRepresentation::ge
 		throw range_error("The requested index is out of range of the available supporting grid representations.");
 	}
 	return rep->Grid[index];
-}
-
-std::string BlockedWellboreRepresentation::getSupportingGridRepresentationUuid(unsigned int index) const
-{
-	return getSupportingGridRepresentationDor(index)->UUID;
-}
-
-void BlockedWellboreRepresentation::loadTargetRelationships()
-{
-	WellboreFrameRepresentation::loadTargetRelationships();
-
-	_resqml20__BlockedWellboreRepresentation* rep = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
-
-	// Supporting grid representation
-	for (size_t i = 0; i < rep->Grid.size(); ++i) {
-		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = rep->Grid[i];
-		RESQML2_NS::AbstractGridRepresentation * supportingGridRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
-		if (supportingGridRep == nullptr) { // partial transfer
-			getRepository()->createPartial(dor);
-			supportingGridRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
-			if (supportingGridRep == nullptr) {
-				throw invalid_argument("The DOR looks invalid.");
-			}
-		}
-		getRepository()->addRelationship(this, supportingGridRep);
-	}
-
 }
 
 unsigned int BlockedWellboreRepresentation::getSupportingGridRepresentationCount() const
@@ -228,9 +200,4 @@ unsigned int BlockedWellboreRepresentation::getSupportingGridRepresentationCount
 	}
 
 	return static_cast<unsigned int>(result);
-}
-
-RESQML2_NS::AbstractGridRepresentation* BlockedWellboreRepresentation::getSupportingGridRepresentation(unsigned int index) const
-{
-	return repository->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(getSupportingGridRepresentationUuid(index));
 }

@@ -19,16 +19,15 @@ under the License.
 #include "GridConnectionSetRepresentation.h"
 
 #include <algorithm>
+#include <limits>
 #include <stdexcept>
 
 #include <hdf5.h>
 
-#include "../resqml2_0_1/FaultInterpretation.h"
-#include "../common/AbstractHdfProxy.h"
-#include "AbstractLocal3dCrs.h"
-#include "../resqml2_0_1/UnstructuredGridRepresentation.h"
-#include "../resqml2_0_1/AbstractIjkGridRepresentation.h"
-#include "../resqml2_0_1/StructuralOrganizationInterpretation.h"
+#include "../eml2/AbstractHdfProxy.h"
+
+#include "AbstractFeatureInterpretation.h"
+#include "AbstractGridRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_NS;
@@ -65,11 +64,11 @@ void GridConnectionSetRepresentation::loadTargetRelationships()
 	// Supporting grid representation
 	unsigned int supportingGridCount = getSupportingGridRepresentationCount();
 	for (unsigned int i = 0; i < supportingGridCount; ++i) {
-		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getSupportingGridRepresentationDor(i);
-		RESQML2_NS::AbstractGridRepresentation* supportingGridRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+		COMMON_NS::DataObjectReference dor = getSupportingGridRepresentationDor(i);
+		RESQML2_NS::AbstractGridRepresentation* supportingGridRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor.getUuid());
 		if (supportingGridRep == nullptr) { // partial transfer
 			getRepository()->createPartial(dor);
-			supportingGridRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+			supportingGridRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor.getUuid());
 			if (supportingGridRep == nullptr) {
 				throw invalid_argument("The DOR looks invalid.");
 			}
@@ -89,7 +88,7 @@ void GridConnectionSetRepresentation::loadTargetRelationships()
 	}
 }
 
-void GridConnectionSetRepresentation::setCellIndexPairs(ULONG64 cellIndexPairCount, ULONG64 * cellIndexPair, ULONG64 cellIndexPairNullValue, COMMON_NS::AbstractHdfProxy * proxy, unsigned short gridIndexPairNullValue, unsigned short * gridIndexPair)
+void GridConnectionSetRepresentation::setCellIndexPairs(ULONG64 cellIndexPairCount, ULONG64 const* cellIndexPair, ULONG64 cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, unsigned short gridIndexPairNullValue, unsigned short * gridIndexPair)
 {
 	if (cellIndexPairNullValue > static_cast<ULONG64>((std::numeric_limits<LONG64>::max)())) {
 		throw std::invalid_argument("The XML null value cannot be greater than a 64 bits signed integer cause of gsoap mappings");
@@ -100,48 +99,51 @@ void GridConnectionSetRepresentation::setCellIndexPairs(ULONG64 cellIndexPairCou
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	const std::string uuid = getUuid();
-	setCellIndexPairsUsingExistingDataset(cellIndexPairCount, "/RESQML/" + uuid + "/CellIndexPairs", cellIndexPairNullValue, proxy, gridIndexPairNullValue, gridIndexPair != nullptr ? "/RESQML/" + getUuid() + "/GridIndexPairs" : "");
+	setCellIndexPairsUsingExistingDataset(cellIndexPairCount, getHdfGroup() + "/CellIndexPairs", cellIndexPairNullValue, proxy, gridIndexPairNullValue, gridIndexPair != nullptr ? getHdfGroup() + "/GridIndexPairs" : "");
 
 	// ************ HDF ************		
-	hsize_t numValues[] = { cellIndexPairCount, 2 };
-	proxy->writeArrayNd(uuid, "CellIndexPairs", H5T_NATIVE_ULLONG, cellIndexPair, numValues, 2);
+	hsize_t numValues[2] = { cellIndexPairCount, 2 };
+	proxy->writeArrayNd(getHdfGroup(), "CellIndexPairs", H5T_NATIVE_ULLONG, cellIndexPair, numValues, 2);
 	if (gridIndexPair != nullptr) {
-		proxy->writeArrayNd(uuid, "GridIndexPairs", H5T_NATIVE_USHORT, gridIndexPair, numValues, 2);
+		proxy->writeArrayNd(getHdfGroup(), "GridIndexPairs", H5T_NATIVE_USHORT, gridIndexPair, numValues, 2);
 	}
 }
 
-ULONG64 GridConnectionSetRepresentation::getXyzPointCountOfPatch(const unsigned int &) const
+void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(ULONG64 cellIndexPairCount, int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy)
+{
+	if (gsoapProxy2_0_1 != nullptr && nullValue != -1) {
+		throw invalid_argument("The null value must be -1 in RESQML2.0.1");
+	}
+
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+	setLocalFacePerCellIndexPairsUsingExistingDataset(getHdfGroup() + "/LocalFacePerCellIndexPairs", nullValue, proxy);
+
+	// ************ HDF ************		
+	hsize_t numValues[2] = { cellIndexPairCount,2 };
+	proxy->writeArrayNd(getHdfGroup(), "LocalFacePerCellIndexPairs", H5T_NATIVE_INT, localFacePerCellIndexPair, numValues, 2);
+}
+
+ULONG64 GridConnectionSetRepresentation::getXyzPointCountOfPatch(unsigned int) const
 {
 	throw logic_error("Not implemented yet");
 }
 
-void GridConnectionSetRepresentation::getXyzPointsOfPatch(const unsigned int &, double *) const
+void GridConnectionSetRepresentation::getXyzPointsOfPatch(unsigned int, double *) const
 {
 	throw logic_error("Not implemented yet");
 }
 
-AbstractFeatureInterpretation * GridConnectionSetRepresentation::getInterpretationFromIndex(const unsigned int & interpretationIndex) const
+AbstractFeatureInterpretation * GridConnectionSetRepresentation::getInterpretationFromIndex(unsigned int interpretationIndex) const
 {
-	return static_cast<AbstractFeatureInterpretation*>(repository->getDataObjectByUuid(getInterpretationUuidFromIndex(interpretationIndex)));
+	return repository->getDataObjectByUuid<AbstractFeatureInterpretation>(getInterpretationUuidFromIndex(interpretationIndex));
 }
 
 AbstractGridRepresentation* GridConnectionSetRepresentation::getSupportingGridRepresentation(unsigned int index) const 
 {
-	return static_cast<AbstractGridRepresentation*>(repository->getDataObjectByUuid(getSupportingGridRepresentationUuid(index)));
-}
-
-std::string GridConnectionSetRepresentation::getSupportingGridRepresentationUuid(unsigned int index) const
-{
-	return getSupportingGridRepresentationDor(index)->UUID;
-}
-
-std::string GridConnectionSetRepresentation::getSupportingGridRepresentationTitle(unsigned int index) const
-{
-	return getSupportingGridRepresentationDor(index)->Title;
-}
-
-std::string GridConnectionSetRepresentation::getSupportingGridRepresentationContentType(unsigned int index) const
-{
-	return getSupportingGridRepresentationDor(index)->ContentType;
+	return repository->getDataObjectByUuid<AbstractGridRepresentation>(getSupportingGridRepresentationDor(index).getUuid());
 }

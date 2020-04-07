@@ -20,6 +20,15 @@ under the License.
 
 #include "PvtSpecification.h"
 
+#include <limits>
+
+/**
+ * A macro that defines getter and setter fluid component property optional attribute
+ *
+ * @param 	vectorName		 	Name of the vector.
+ * @param 	attributeName	 	Name of the attribute.
+ * @param 	attributeDatatype	The attribute datatype.
+ */
 #define GETTER_AND_SETTER_FLUID_COMPONENT_PROPERTY_OPTIONAL_ATTRIBUTE(vectorName, attributeName, attributeDatatype)\
 	DLL_IMPORT_OR_EXPORT void set##vectorName##attributeName(unsigned int index, const attributeDatatype& value);\
 	DLL_IMPORT_OR_EXPORT bool has##vectorName##attributeName(unsigned int index) const {\
@@ -32,6 +41,13 @@ under the License.
 		return *static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->ComponentPropertySet->vectorName[index]->attributeName;\
 	}
 
+/**
+ * A macro that defines getter and setter fluid component property measure attribute
+ *
+ * @param 	vectorName   	Name of the vector.
+ * @param 	attributeName	Name of the attribute.
+ * @param 	uomDatatype  	The uom datatype.
+ */
 #define GETTER_AND_SETTER_FLUID_COMPONENT_PROPERTY_MEASURE_ATTRIBUTE(vectorName, attributeName, uomDatatype)\
 	DLL_IMPORT_OR_EXPORT void set##vectorName##attributeName(unsigned int index, double value, uomDatatype uom);\
 	DLL_IMPORT_OR_EXPORT double has##vectorName##attributeName(unsigned int index) const {\
@@ -48,28 +64,57 @@ under the License.
 		return static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->ComponentPropertySet->vectorName[index]->attributeName->uom;\
 	}
 
+/** . */
 namespace PRODML2_1_NS
 {
+	/** A compositional specification. */
 	class CompositionalSpecification : public PvtSpecification
 	{
 	public:
+
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		CompositionalSpecification(gsoap_eml2_2::prodml21__AbstractCompositionalModel* fromGsoap):PvtSpecification(fromGsoap)  {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~CompositionalSpecification() {}
 
+		/**
+		 * Query if this object has mixing rule
+		 *
+		 * @returns	True if mixing rule, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT bool hasMixingRule() const { return static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->MixingRule != nullptr; }
+
+		/**
+		 * Gets mixing rule
+		 *
+		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @returns	The mixing rule.
+		 */
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::prodml21__MixingRule getMixingRule() const {
 			if (!hasMixingRule()) { throw std::invalid_argument("There is no mixing rule to get"); }
 			return *static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->MixingRule;
 		}
+
+		/**
+		 * Sets mixing rule
+		 *
+		 * @param 	mixingRule	The mixing rule.
+		 */
 		DLL_IMPORT_OR_EXPORT void setMixingRule(gsoap_eml2_2::prodml21__MixingRule mixingRule);
 
+		/**
+		 * Gets binary interaction coefficient count
+		 *
+		 * @exception	std::out_of_range	Thrown when an out of range error condition occurs.
+		 *
+		 * @returns	The binary interaction coefficient count.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getBinaryInteractionCoefficientCount() const {
 			if (static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->BinaryInteractionCoefficientSet == nullptr) {
 				return 0;
@@ -81,6 +126,16 @@ namespace PRODML2_1_NS
 			}
 			return static_cast<unsigned int>(count);
 		}
+
+		/**
+		 * Gets binary interaction coefficient fluid component 1 reference
+		 *
+		 * @exception	std::out_of_range	Thrown when an out of range error condition occurs.
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	The binary interaction coefficient fluid component 1 reference.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getBinaryInteractionCoefficientFluidComponent1Reference(unsigned int index) const
 		{
 			if (index >= getBinaryInteractionCoefficientCount()) {
@@ -89,6 +144,16 @@ namespace PRODML2_1_NS
 
 			return static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->BinaryInteractionCoefficientSet->BinaryInteractionCoefficient[index]->fluidComponent1Reference;
 		}
+
+		/**
+		 * Query if 'index' has binary interaction coefficient fluid component 2 reference
+		 *
+		 * @exception	std::out_of_range	Thrown when an out of range error condition occurs.
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	True if binary interaction coefficient fluid component 2 reference, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT bool hasBinaryInteractionCoefficientFluidComponent2Reference(unsigned int index) const
 		{
 			if (index >= getBinaryInteractionCoefficientCount()) {
@@ -97,6 +162,16 @@ namespace PRODML2_1_NS
 
 			return static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->BinaryInteractionCoefficientSet->BinaryInteractionCoefficient[index]->fluidComponent2Reference != nullptr;
 		}
+
+		/**
+		 * Gets binary interaction coefficient fluid component 2 reference
+		 *
+		 * @exception	std::out_of_range	Thrown when an out of range error condition occurs.
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	The binary interaction coefficient fluid component 2 reference.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getBinaryInteractionCoefficientFluidComponent2Reference(unsigned int index) const
 		{
 			if (!hasBinaryInteractionCoefficientFluidComponent2Reference(index)) {
@@ -105,8 +180,23 @@ namespace PRODML2_1_NS
 
 			return *static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->BinaryInteractionCoefficientSet->BinaryInteractionCoefficient[index]->fluidComponent2Reference;
 		}
+
+		/**
+		 * Pushes a back binary interaction coefficient
+		 *
+		 * @param 	value						The value.
+		 * @param 	fluidComponent1Reference	The fluid component 1 reference.
+		 * @param 	fluidComponent2Reference	(Optional) The fluid component 2 reference.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackBinaryInteractionCoefficient(double value, const std::string & fluidComponent1Reference, const std::string & fluidComponent2Reference = "");
 
+		/**
+		 * Gets fluid component property count
+		 *
+		 * @exception	std::out_of_range	Thrown when an out of range error condition occurs.
+		 *
+		 * @returns	The fluid component property count.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getFluidComponentPropertyCount() const {
 			if (static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->ComponentPropertySet == nullptr) {
 				return 0;
@@ -118,8 +208,23 @@ namespace PRODML2_1_NS
 			}
 			return static_cast<unsigned int>(count);
 		}
+
+		/**
+		 * Pushes a back fluid component property
+		 *
+		 * @param 	fluidComponentReference	The fluid component reference.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackFluidComponentProperty(const std::string & fluidComponentReference);
 
+		/**
+		 * Gets fluid component property fluid component reference
+		 *
+		 * @exception	std::out_of_range	Thrown when an out of range error condition occurs.
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	The fluid component property fluid component reference.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getFluidComponentPropertyFluidComponentReference(unsigned int index) const{
 			if (static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->ComponentPropertySet == nullptr ||
 				static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->ComponentPropertySet->FluidComponentProperty.size() <= index) {

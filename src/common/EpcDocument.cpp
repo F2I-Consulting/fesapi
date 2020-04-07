@@ -29,8 +29,10 @@ under the License.
 #include "../epc/Relationship.h"
 #include "../epc/FilePart.h"
 
+#include "../eml2/AbstractHdfProxy.h"
+
 #include "../resqml2_0_1/WellboreMarker.h"
-#include "../resqml2_0_1/HdfProxy.h"
+#include "../resqml2_2/WellboreMarker.h"
 #include "../resqml2/AbstractProperty.h"
 
 #include "../witsml2_0/Log.h"
@@ -107,7 +109,7 @@ namespace {
 		const std::vector<COMMON_NS::AbstractObject *>& srcObj = repo.getSourceObjects(dataObj);
 		for (size_t index = 0; index < srcObj.size(); ++index) {
 			if (!srcObj[index]->isPartial()) {
-				epc::Relationship relRep(srcObj[index]->getPartNameInEpcDocument(), "", srcObj[index]->getUuid());
+				epc::Relationship relRep("../" + srcObj[index]->getPartNameInEpcDocument(), "", srcObj[index]->getUuid());
 				relRep.setSourceObjectType();
 				result.push_back(relRep);
 			}
@@ -117,7 +119,7 @@ namespace {
 		if (dynamic_cast<WITSML2_0_NS::Log const *>(dataObj) == nullptr && dynamic_cast<WITSML2_0_NS::ChannelSet const *>(dataObj) == nullptr) {
 			for (size_t index = 0; index < targetObj.size(); ++index) {
 				if (!targetObj[index]->isPartial()) {
-					epc::Relationship relRep(targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
+					epc::Relationship relRep("../" + targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
 					relRep.setDestinationObjectType();
 					result.push_back(relRep);
 				}
@@ -128,7 +130,7 @@ namespace {
 				if (!targetObj[index]->isPartial() &&
 					dynamic_cast<WITSML2_0_NS::ChannelSet*>(targetObj[index]) == nullptr &&
 					dynamic_cast<WITSML2_0_NS::Log*>(targetObj[index]) == nullptr) {
-					epc::Relationship relRep(targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
+					epc::Relationship relRep("../" + targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
 					relRep.setDestinationObjectType();
 					result.push_back(relRep);
 				}
@@ -136,7 +138,7 @@ namespace {
 		}
 
 		// External part
-		COMMON_NS::AbstractHdfProxy const * hdfProxy = dynamic_cast<COMMON_NS::AbstractHdfProxy const *>(dataObj);
+		EML2_NS::AbstractHdfProxy const * hdfProxy = dynamic_cast<EML2_NS::AbstractHdfProxy const *>(dataObj);
 		if (hdfProxy != nullptr && !hdfProxy->isPartial()) {
 			epc::Relationship relExt(hdfProxy->getRelativePath(), "", "Hdf5File", false);
 			relExt.setExternalResourceType();
@@ -157,17 +159,22 @@ void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64
 	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
 	{
 		for (size_t i = 0; i < it->second.size(); ++i) {
-			if (!it->second[i]->isPartial() && dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(it->second[i]) == nullptr &&
+			if (!it->second[i]->isPartial() &&
+				dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(it->second[i]) == nullptr &&
+				dynamic_cast<RESQML2_2_NS::WellboreMarker*>(it->second[i]) == nullptr &&
 				(dynamic_cast<WITSML2_0_NS::ChannelSet*>(it->second[i]) == nullptr || static_cast<WITSML2_0_NS::ChannelSet*>(it->second[i])->getLogs().empty()) &&
 				(dynamic_cast<WITSML2_0_NS::Channel*>(it->second[i]) == nullptr || static_cast<WITSML2_0_NS::Channel*>(it->second[i])->getChannelSets().empty())) {
+				// Dataobject
 				const string str = it->second[i]->serializeIntoString();
-
 				epc::FilePart* const fp = package->createPart(str, it->second[i]->getPartNameInEpcDocument());
+
+				// Relationships
 				const std::vector<epc::Relationship>& relSet = getAllEpcRelationships(repo, it->second[i]);
 				for (size_t relIndex = 0; relIndex < relSet.size(); ++relIndex) {
 					fp->addRelationship(relSet[relIndex]);
 				}
 
+				// Content Type entry
 				package->addContentType(epc::ContentType(false, it->second[i]->getContentType(), it->second[i]->getPartNameInEpcDocument()));
 			}
 		}
@@ -199,7 +206,8 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 				result += "The content type " + contentType + " should belong to eml and not to resqml since obj_EpcExternalPartReference is part of COMMON and not part of RESQML.\n";
 				contentType = "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference";
 			}
-			if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference") {
+			if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference" ||
+				contentType == "application/x-eml+xml;version=2.3;type=EpcExternalPartReference") {
 				// Look for the relative path of the HDF file
 				string relFilePath = "";
 				const size_t slashPos = it->second.getExtensionOrPartName().substr(1).find_last_of("/\\");
@@ -224,15 +232,15 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 								: new HdfProxyFactory());
 						}
 						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
-						static_cast<AbstractHdfProxy*>(wrapper)->setRelativePath(target);
+						static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setRelativePath(target);
 						break;
 					}
 				}
 
-				static_cast<AbstractHdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
-				static_cast<AbstractHdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
+				static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
+				static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
 
-				repo.setDefaultHdfProxy(static_cast<COMMON_NS::AbstractHdfProxy*>(wrapper));
+				repo.setDefaultHdfProxy(static_cast<EML2_NS::AbstractHdfProxy*>(wrapper));
 			}
 			else {
 				repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
@@ -274,7 +282,7 @@ unordered_map< string, string > & EpcDocument::getExtendedCoreProperty()
 
 void EpcDocument::setExtendedCoreProperty(const std::string & key, const std::string & value)
 {
-	(package->getExtendedCoreProperty())[key] = value;
+	package->getExtendedCoreProperty()[key] = value;
 }
 
 std::string EpcDocument::getExtendedCoreProperty(const std::string & key)

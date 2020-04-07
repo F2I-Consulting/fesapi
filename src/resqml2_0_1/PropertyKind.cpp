@@ -20,6 +20,8 @@ under the License.
 
 #include <stdexcept>
 
+#include "../common/EnumStringMapper.h"
+
 #include "../resqml2/AbstractValuesProperty.h"
 
 using namespace std;
@@ -43,7 +45,7 @@ void PropertyKind::init(COMMON_NS::DataObjectRepository * repo, const std::strin
 }
 
 PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title,
-	const string & namingSystem, const resqml20__ResqmlUom & uom, const resqml20__ResqmlPropertyKind & parentEnergisticsPropertyKind)
+	const string & namingSystem, resqml20__ResqmlUom uom, resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind)
 {
 	init(repo, guid, title, namingSystem);
 	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = uom;
@@ -54,8 +56,12 @@ PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string 
 }
 
 PropertyKind::PropertyKind(const string & guid, const string & title,
-	const string & namingSystem, const resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * parentPropType)
+	const string & namingSystem, resqml20__ResqmlUom uom, EML2_NS::PropertyKind * parentPropType)
 {
+	if (parentPropType == nullptr) {
+		throw invalid_argument("The parent property kind cannot be null.");
+	}
+
 	init(parentPropType->getRepository(), guid, title, namingSystem);
 	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = uom;
 
@@ -63,7 +69,7 @@ PropertyKind::PropertyKind(const string & guid, const string & title,
 }
 
 PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title,
-	const string & namingSystem, const std::string & nonStandardUom, const resqml20__ResqmlPropertyKind & parentEnergisticsPropertyKind)
+	const string & namingSystem, const std::string & nonStandardUom, resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind)
 {
 	init(repo, guid, title, namingSystem);
 	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc;
@@ -75,7 +81,7 @@ PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string 
 }
 
 PropertyKind::PropertyKind(const string & guid, const string & title,
-	const string & namingSystem, const std::string & nonStandardUom, COMMON_NS::PropertyKind * parentPropType)
+	const string & namingSystem, const std::string & nonStandardUom, EML2_NS::PropertyKind * parentPropType)
 {
 	init(parentPropType->getRepository(), guid, title, namingSystem);
 	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc;
@@ -93,7 +99,7 @@ _resqml20__PropertyKind* PropertyKind::getSpecializedGsoapProxy() const
 	return static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1);
 }
 
-void PropertyKind::setXmlParentPropertyKind(COMMON_NS::PropertyKind* parentPropertyKind)
+void PropertyKind::setXmlParentPropertyKind(EML2_NS::PropertyKind* parentPropertyKind)
 {
 	_resqml20__PropertyKind* propType = getSpecializedGsoapProxy();
 
@@ -109,7 +115,8 @@ bool PropertyKind::isChildOf(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind sta
 	}
 
 	if (!isParentAnEnergisticsPropertyKind()) {
-		return getParentLocalPropertyKind()->isChildOf(standardPropKind);
+		auto parentPk201 = dynamic_cast<RESQML2_0_1_NS::PropertyKind*>(getParentPropertyKind());
+		return parentPk201 != nullptr ? parentPk201->isChildOf(standardPropKind) : false;
 	}
 	else {
 		if (getParentEnergisticsPropertyKind() == standardPropKind) {
@@ -137,10 +144,76 @@ bool PropertyKind::isParentPartial() const
 		return false;
 	}
 
-	COMMON_NS::PropertyKind* parentPk = getParentLocalPropertyKind();
-	while (!parentPk->isPartial() && !parentPk->isParentAnEnergisticsPropertyKind()) {
-		parentPk = parentPk->getParentLocalPropertyKind();
+	EML2_NS::PropertyKind* parentPk = getParentPropertyKind();
+	while (!parentPk->isPartial()) {
+		parentPk = parentPk->getParentPropertyKind();
+		auto parentPk201 = dynamic_cast<RESQML2_0_1_NS::PropertyKind*>(parentPk);
+		if (parentPk201->isParentAnEnergisticsPropertyKind()) {
+			break;
+		}
 	}
 
 	return parentPk->isPartial();
+}
+
+std::string PropertyKind::getParentAsString() const
+{
+	if (!isParentAnEnergisticsPropertyKind()) {
+		return getParentPropertyKindDor().getTitle();
+	}
+	else
+	{
+		gsoap_resqml2_0_1::_resqml20__PropertyKind* propType = static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1);
+		COMMON_NS::EnumStringMapper tmp;
+		return tmp.getEnergisticsPropertyKindName(static_cast<gsoap_resqml2_0_1::resqml20__StandardPropertyKind*>(propType->ParentPropertyKind)->Kind);
+	}
+}
+
+COMMON_NS::DataObjectReference PropertyKind::getParentPropertyKindDor() const
+{
+	if (isParentAnEnergisticsPropertyKind()) {
+		throw invalid_argument("The property kind parent of this property kind is not a local one.");
+	}
+
+	gsoap_resqml2_0_1::_resqml20__PropertyKind* propKind = static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1);
+	return static_cast<gsoap_resqml2_0_1::resqml20__LocalPropertyKind*>(propKind->ParentPropertyKind)->LocalPropertyKind;
+}
+
+bool PropertyKind::isParentAnEnergisticsPropertyKind() const
+{
+	return static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1)->ParentPropertyKind->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__StandardPropertyKind;
+}
+
+gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind PropertyKind::getParentEnergisticsPropertyKind() const
+{
+	if (isParentAnEnergisticsPropertyKind())
+	{
+		if (gsoapProxy2_0_1 != nullptr) {
+			gsoap_resqml2_0_1::_resqml20__PropertyKind* propKind = static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1);
+			return static_cast<gsoap_resqml2_0_1::resqml20__StandardPropertyKind*>(propKind->ParentPropertyKind)->Kind;
+		}
+		else {
+			throw logic_error("Not implemented yet");
+		}
+	}
+
+	throw invalid_argument("The property kind parent of this property kind is not an Energistics one.");
+}
+
+void PropertyKind::loadTargetRelationships()
+{
+	if (isParentAnEnergisticsPropertyKind()) {
+		return;
+	}
+
+	COMMON_NS::DataObjectReference dor = getParentPropertyKindDor();
+	EML2_NS::PropertyKind* parentPk = getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(dor.getUuid());
+	if (parentPk == nullptr) {
+		getRepository()->createPartial(dor);
+		parentPk = getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(dor.getUuid());
+		if (parentPk == nullptr) {
+			throw invalid_argument("The DOR looks invalid.");
+		}
+	}
+	getRepository()->addRelationship(this, parentPk);
 }

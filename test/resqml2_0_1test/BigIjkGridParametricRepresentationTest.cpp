@@ -21,10 +21,10 @@ under the License.
 #include "catch.hpp"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 
-#include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "resqml2_0_1/IjkGridParametricRepresentation.h"
-#include "resqml2_0_1/DiscreteProperty.h"
-#include "resqml2_0_1/ContinuousProperty.h"
+#include "resqml2/LocalDepth3dCrs.h"
+#include "resqml2/IjkGridParametricRepresentation.h"
+#include "resqml2/DiscreteProperty.h"
+#include "resqml2/ContinuousProperty.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -40,18 +40,18 @@ const char* BigIjkGridParametricRepresentationTest::continuousPropertyTitle = "P
 
 BigIjkGridParametricRepresentationTest::BigIjkGridParametricRepresentationTest(
 	const string & repoPath,
-	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
-	const unsigned int & faultCount,
-	const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
-	const double & faultThrow)
+	unsigned int iCount, unsigned int jCount, unsigned int kCount,
+	unsigned int faultCount,
+	double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
+	double faultThrow)
 	: AbstractBigIjkGridRepresentationTest(repoPath, iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow) {
 }
 
 BigIjkGridParametricRepresentationTest::BigIjkGridParametricRepresentationTest(DataObjectRepository * repo, bool init,
-	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
-	const unsigned int & faultCount,
-	const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
-	const double & faultThrow)
+	unsigned int iCount, unsigned int jCount, unsigned int kCount,
+	unsigned int faultCount,
+	double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
+	double faultThrow)
 	: AbstractBigIjkGridRepresentationTest(repo, init, iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow) {
 }
 
@@ -72,49 +72,42 @@ void BigIjkGridParametricRepresentationTest::initParametersAndControlPoints(doub
 
 void BigIjkGridParametricRepresentationTest::initRepoHandler() {
 	// creating the ijk grid
-	RESQML2_0_1_NS::IjkGridParametricRepresentation* ijkGrid = repo->createIjkGridParametricRepresentation(defaultUuid, defaultTitle, iCount, jCount, kCount);
+	RESQML2_NS::IjkGridParametricRepresentation* ijkGrid = repo->createIjkGridParametricRepresentation(defaultUuid, defaultTitle, iCount, jCount, kCount);
 	REQUIRE(ijkGrid != nullptr);
-	double * parameters = new double[initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount)]; 
-	double * controlPoints = new double[(iCount + 1) * (jCount + 1) * 3];
-	unsigned int * pillarOfCoordinateLine = new unsigned int[faultCount * (jCount + 1)];
-	unsigned int * splitCoordinateLineColumnCumulativeCount = new unsigned int[faultCount * (jCount + 1)];
-	unsigned int * splitCoordinateLineColumns = new unsigned int[(faultCount * (jCount + 1)) + (faultCount * (jCount - 1))];
+	std::unique_ptr<double[]> parameters(new double[initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount)]);
+	std::unique_ptr<double[]> controlPoints(new double[(iCount + 1) * (jCount + 1) * 3]);
+	std::unique_ptr<unsigned int[]> pillarOfCoordinateLine(new unsigned int[faultCount * (jCount + 1)]);
+	std::unique_ptr<unsigned int[]> splitCoordinateLineColumnCumulativeCount(new unsigned int[faultCount * (jCount + 1)]);
+	std::unique_ptr<unsigned int[]> splitCoordinateLineColumns(new unsigned int[(faultCount * (jCount + 1)) + (faultCount * (jCount - 1))]);
 	initNodesIjkGridRepresentation(iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow);
-	initParametersAndControlPoints(parameters, controlPoints);
-	initSplitCoordinateLine(pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
+	initParametersAndControlPoints(parameters.get(), controlPoints.get());
+	initSplitCoordinateLine(pillarOfCoordinateLine.get(), splitCoordinateLineColumnCumulativeCount.get(), splitCoordinateLineColumns.get());
 
-	ijkGrid->setGeometryAsParametricSplittedPillarNodes(false, parameters, controlPoints, NULL, 1, 0, nullptr,
-		faultCount * (jCount + 1), pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
+	ijkGrid->setGeometryAsParametricSplittedPillarNodes(false, parameters.get(), controlPoints.get(), NULL, 1, 0, nullptr,
+		faultCount * (jCount + 1), pillarOfCoordinateLine.get(), splitCoordinateLineColumnCumulativeCount.get(), splitCoordinateLineColumns.get());
 
 	// adding a discrete property
-	RESQML2_0_1_NS::DiscreteProperty* discreteProperty = repo->createDiscreteProperty(
+	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind__not_x0020a_x0020measure);
+	RESQML2_NS::DiscreteProperty* discreteProperty = repo->createDiscreteProperty(
 		ijkGrid, discretePropertyUuid, discretePropertyTitle,
 		1, 
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, 
-		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__index);
-	unsigned short * discretePropertyValues = new unsigned short[iCount * jCount * kCount];
-	initDiscreteProperty(discretePropertyValues);
-	discreteProperty->pushBackUShortHdf5Array3dOfValues(discretePropertyValues, iCount, jCount, kCount, nullptr, -1);
+		gsoap_eml2_3::resqml22__IndexableElement__cells,
+		propertyKind);
+	std::unique_ptr<unsigned short> discretePropertyValues(new unsigned short[iCount * jCount * kCount]);
+	initDiscreteProperty(discretePropertyValues.get());
+	discreteProperty->pushBackUShortHdf5Array3dOfValues(discretePropertyValues.get(), iCount, jCount, kCount, nullptr, -1);
 
 	// adding a continuous property
-	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(
+	propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind__length);
+	RESQML2_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(
 		ijkGrid, continuousPropertyUuid, continuousPropertyTitle,
 		1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_eml2_3::resqml22__IndexableElement__cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom__m,
-		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
-	double * continuousPropertyValues = new double[iCount * jCount * kCount];
-	initContinuousProperty(continuousPropertyValues);
-	continuousProperty->pushBackDoubleHdf5Array1dOfValues(continuousPropertyValues, iCount * jCount * kCount, nullptr);
-
-	// cleaning
-	delete[] parameters;
-	delete[] controlPoints;
-	delete[] pillarOfCoordinateLine;
-	delete[] splitCoordinateLineColumnCumulativeCount;
-	delete[] splitCoordinateLineColumns;
-	delete[] discretePropertyValues;
-	delete[] continuousPropertyValues;
+		propertyKind);
+	std::unique_ptr<double[]> continuousPropertyValues(new double[iCount * jCount * kCount]);
+	initContinuousProperty(continuousPropertyValues.get());
+	continuousProperty->pushBackDoubleHdf5Array1dOfValues(continuousPropertyValues.get(), iCount * jCount * kCount, nullptr);
 }
 
 void BigIjkGridParametricRepresentationTest::readRepoHandler() {

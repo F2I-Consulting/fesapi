@@ -18,93 +18,116 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "../resqml2/EarthModelInterpretation.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
-	/**
-	* This class is a container for other organizations that are consistent to each others.
-	*/
-	class EarthModelInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
+	/** This class is a container for other organizations that are consistent to each others. */
+	class EarthModelInterpretation final : public RESQML2_NS::EarthModelInterpretation
 	{
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
-		DLL_IMPORT_OR_EXPORT EarthModelInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
+		DLL_IMPORT_OR_EXPORT EarthModelInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::EarthModelInterpretation(partialObject) {}
 
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param orgFeat	The feature the instance interprets.
-		* @param guid		The guid to set to the interpretation. If empty then a new guid will be generated.
-		* @param title		A title for the instance to create.
-		*/
-		EarthModelInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
+		 * Creates an instance of this class in a gsoap context.
+		 *
+		 * @param [in,out]	orgFeat	The feature the instance interprets.
+		 * @param 		  	guid   	The guid to set to the interpretation. If empty then a new guid will
+		 * 							be generated.
+		 * @param 		  	title  	A title for the instance to create.
+		 */
+		EarthModelInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		EarthModelInterpretation(gsoap_resqml2_0_1::_resqml20__EarthModelInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		EarthModelInterpretation(gsoap_resqml2_0_1::_resqml20__EarthModelInterpretation* fromGsoap) : RESQML2_NS::EarthModelInterpretation(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~EarthModelInterpretation() {}
 
-		//Structural
+		/**
+		 * Structural
+		 *
+		 * @returns	The structural organization interpretation count.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getStructuralOrganizationInterpretationCount() const final;
 
-		DLL_IMPORT_OR_EXPORT bool hasStructuralOrganizationInterpretation() const;
+		/** A structural organization interpretation*. */
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStructuralOrganizationInterpertationDor(unsigned int index) const final;
 
-		DLL_IMPORT_OR_EXPORT class StructuralOrganizationInterpretation* getStructuralOrganizationInterpertation() const;
-
-		DLL_IMPORT_OR_EXPORT void setStructuralOrganizationInterpretation(class StructuralOrganizationInterpretation * structOrganization);
+		/**
+		 * Pushes back structural organization interpretation
+		 *
+		 * @param [in,out]	structOrganization	If non-null, the structure organization.
+		 */
+		DLL_IMPORT_OR_EXPORT void pushBackStructuralOrganizationInterpretation(RESQML2_NS::StructuralOrganizationInterpretation * structOrganization) final;
 
 		//Strati column
 
-		/*
-		* Check if a strati column is associated to this earth model interpretation
-		*
-		* @return True if a strati column is associated to this earth model interpretation elsa false.
-		*/
-		DLL_IMPORT_OR_EXPORT bool hasStratiColumn() const;
-
-		DLL_IMPORT_OR_EXPORT void setStratiColumn(class StratigraphicColumn * stratiColumn);
-
-		/*
-		* Get the strati column associated to this earth model interpretation.
-		* Throw an exception if there is no strati column associated. Check with hasStratiColumn().
-		*
-		* @return The associated stratigraphic column.
-		*/
-		DLL_IMPORT_OR_EXPORT class StratigraphicColumn* getStratiColumn() const;
-
-		//Strati occurences
-
-		DLL_IMPORT_OR_EXPORT unsigned int getStratiOccurenceCount() const;
-
-		DLL_IMPORT_OR_EXPORT class StratigraphicOccurrenceInterpretation* getStratiOccurence(unsigned int index) const;
-
-		DLL_IMPORT_OR_EXPORT void pushBackStratiOccurence(class StratigraphicOccurrenceInterpretation * stratiOccurence);
-
-		// Rock Fluid
-		DLL_IMPORT_OR_EXPORT bool hasRockFluidOrganizationInterpretation() const;
-
-		DLL_IMPORT_OR_EXPORT void setRockFluidOrganizationInterpretation(class RockFluidOrganizationInterpretation* rockFluid);
-
-		DLL_IMPORT_OR_EXPORT class RockFluidOrganizationInterpretation* getRockFluidOrganizationInterpretation() const;
-		
 		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		 * Check if a strati column is associated to this earth model interpretation
+		 *
+		 * @returns	True if a strati column is associated to this earth model interpretation elsa false.
+		 */
+		DLL_IMPORT_OR_EXPORT bool hasStratiColumn() const final;
 
 		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		 * Sets strati column
+		 *
+		 * @param [in,out]	stratiColumn	If non-null, the strati column.
+		 */
+		DLL_IMPORT_OR_EXPORT void setStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn) final;
 
-    private:
-		void loadTargetRelationships();
+		/**
+		 * Get the strati column associated to this earth model interpretation. Throw an exception if
+		 * there is no strati column associated. Check with hasStratiColumn().
+		 */
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiColumnDor() const final;
+
+		/**
+		 * Strati occurences
+		 *
+		 * @returns	The strati occurence count.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getStratiOccurenceCount() const final;
+
+		/** A stratigraphic occurrence interpretation*. */
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiOccurenceDor(unsigned int index) const final;
+
+		/**
+		 * Pushes a back strati occurence
+		 *
+		 * @param [in,out]	stratiOccurence	If non-null, the strati occurence.
+		 */
+		DLL_IMPORT_OR_EXPORT void pushBackStratiOccurence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurence) final;
+
+		/**
+		 * Rock Fluid
+		 *
+		 * @returns	The Rock Fluid organization count.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getRockFluidOrganizationInterpretationCount() const final;
+
+		/**
+		 * Pushes back rock fluid organization interpretation
+		 *
+		 * @param [in,out]	rockFluid	If non-null, the rock fluid.
+		 */
+		DLL_IMPORT_OR_EXPORT void pushBackRockFluidOrganizationInterpretation(RESQML2_NS::RockFluidOrganizationInterpretation* rockFluid) final;
+
+		/** A rock fluid organization interpretation*. */
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getRockFluidOrganizationInterpretationDor(unsigned int index) const final;
 	};
 }

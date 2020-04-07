@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Trajectory.h"
 
+#include <limits>
 #include <sstream>
 #include <stdexcept>
-#include <limits>
 
 #include "Wellbore.h"
 
@@ -49,9 +49,9 @@ Trajectory::Trajectory(Wellbore* witsmlWellbore,
 	static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->GrowingStatus = channelStatus;
 }
 
-gsoap_eml2_1::eml21__DataObjectReference* Trajectory::getWellboreDor() const
+COMMON_NS::DataObjectReference Trajectory::getWellboreDor() const
 {
-	return static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->Wellbore;
+	return COMMON_NS::DataObjectReference(static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->Wellbore);
 }
 
 void Trajectory::setWellbore(Wellbore* witsmlWellbore)

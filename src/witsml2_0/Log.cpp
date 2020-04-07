@@ -35,7 +35,7 @@ Log::Log(Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title)
 {
-	if (witsmlWellbore == nullptr) throw invalid_argument("A wellbore must be associated to a wellbore trajectory.");
+	if (witsmlWellbore == nullptr) throw invalid_argument("A wellbore must be associated to a log.");
 
 	gsoapProxy2_1 = soap_new_witsml20__Log(witsmlWellbore->getGsoapContext());
 

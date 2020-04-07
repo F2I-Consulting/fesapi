@@ -25,9 +25,6 @@ namespace RESQML2_2_NS
 {
 	class WellboreFrameRepresentation : public RESQML2_NS::WellboreFrameRepresentation
 	{
-	protected:
-		WellboreFrameRepresentation() {}
-
 	public:
 
 		/**
@@ -39,7 +36,7 @@ namespace RESQML2_2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreFrameRepresentation(gsoap_eml2_2::resqml22__WellboreFrameRepresentation* fromGsoap):
+		WellboreFrameRepresentation(gsoap_eml2_3::resqml22__WellboreFrameRepresentation* fromGsoap):
 			RESQML2_NS::WellboreFrameRepresentation(fromGsoap) {}
 
 		/**
@@ -49,7 +46,7 @@ namespace RESQML2_2_NS
 		* @param title		A title for the instance to create.
 		* @param traj		The trajectory this WellboreFeature frame is based on.
 		*/
-		WellboreFrameRepresentation(class RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, class RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj);
+		WellboreFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj);
 
 		/**
 		* The standard XML tag without XML namespace for serializing this data object.
@@ -59,6 +56,9 @@ namespace RESQML2_2_NS
 		/**
 		* Get the standard XML tag without XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
+
+	protected:
+		WellboreFrameRepresentation() {}
 	};
 }

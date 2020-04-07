@@ -17,7 +17,6 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "FluidBoundaryFeature.h"
-#include "../tools/Misc.h"
 
 #include <stdexcept>
 
@@ -27,7 +26,7 @@ using namespace gsoap_resqml2_0_1;
 
 const char* FluidBoundaryFeature::XML_TAG = "FluidBoundaryFeature";
 
-FluidBoundaryFeature::FluidBoundaryFeature(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title, const resqml20__FluidContact & fluidContact)
+FluidBoundaryFeature::FluidBoundaryFeature(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title, resqml20__FluidContact fluidContact)
 {
 	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be null.");

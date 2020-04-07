@@ -23,14 +23,15 @@ under the License.
 #include "resqml2_0_1test/HorizonInterpretationTest.h"
 
 #include "common/EpcDocument.h"
-#include "resqml2/ActivityTemplate.h"
-#include "resqml2/Activity.h"
-#include "resqml2_0_1/HorizonInterpretation.h"
+#include "eml2/ActivityTemplate.h"
+#include "eml2/Activity.h"
+#include "resqml2/HorizonInterpretation.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
 using namespace RESQML2_NS;
+using namespace EML2_NS;
 
 // Activity
 const char* ActivityCreationTest::defaultUuid = "705cd6f5-8ee8-427b-adde-04b0b6afcdf0";
@@ -51,7 +52,7 @@ ActivityCreationTest::ActivityCreationTest(DataObjectRepository * repo, bool ini
 void ActivityCreationTest::initRepoHandler() {
 	// creation of an horizon interpretation
 	HorizonInterpretationTest * horizonInterpretationTest = new HorizonInterpretationTest(repo, true);
-	RESQML2_0_1_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_0_1_NS::HorizonInterpretation*>(repo->getDataObjectByUuid(HorizonInterpretationTest::defaultUuid));
+	RESQML2_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_NS::HorizonInterpretation*>(repo->getDataObjectByUuid(HorizonInterpretationTest::defaultUuid));
 
 	// creation of the generic creation activity template
 	ActivityTemplateGenericCreationTest* activityTemplateTest = new ActivityTemplateGenericCreationTest(repo, true);
@@ -79,7 +80,7 @@ void ActivityCreationTest::readRepoHandler() {
 	REQUIRE( activity != nullptr );
 
 	// getting the horizon interpretation
-	RESQML2_0_1_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_0_1_NS::HorizonInterpretation*>(repo->getDataObjectByUuid(HorizonInterpretationTest::defaultUuid));
+	RESQML2_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_NS::HorizonInterpretation*>(repo->getDataObjectByUuid(HorizonInterpretationTest::defaultUuid));
 	REQUIRE( horizonInterpretation != nullptr );
 
 	// testing the activity

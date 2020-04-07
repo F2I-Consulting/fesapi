@@ -22,42 +22,57 @@ under the License.
 
 #include <stdexcept>
 
-#include "../common/PropertyKind.h"
+#include "../eml2/PropertyKind.h"
 
+/** . */
 namespace WITSML2_0_NS
 {
 	/**
-	* Captures information about the configuration of the permanently installed components in a wellbore. It does not define the transient drilling strings (see the Tubular object) or the hanging production components (see the Completion object).
-	*/
+	 * Captures information about the configuration of the permanently installed components in a
+	 * wellbore. It does not define the transient drilling strings (see the Tubular object) or the
+	 * hanging production components (see the Completion object).
+	 *
+	 * @tparam	T	Generic type parameter.
+	 */
 	template <class T>
 	class ChannelMetaDataObject : public WellboreObject
 	{
 	public:
-		/**
-		* Constructor for partial transfer
-		*/
-		DLL_IMPORT_OR_EXPORT ChannelMetaDataObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WellboreObject(partialObject) {}
 
 		/**
-		* Creates an instance of this class in a gsoap context.
-		*/
+		 * Constructor for partial transfer
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
+		DLL_IMPORT_OR_EXPORT ChannelMetaDataObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WellboreObject(partialObject) {}
+
+		/** Creates an instance of this class in a gsoap context. */
 		ChannelMetaDataObject() : WITSML2_0_NS::WellboreObject() {}
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		ChannelMetaDataObject(gsoap_eml2_1::eml21__AbstractObject* fromGsoap) : WITSML2_0_NS::WellboreObject(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~ChannelMetaDataObject() {}
 
-		gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const
+		COMMON_NS::DataObjectReference getWellboreDor() const
 		{
-			return static_cast<T*>(gsoapProxy2_1)->Wellbore;
+			return COMMON_NS::DataObjectReference(static_cast<T*>(gsoapProxy2_1)->Wellbore);
 		}
 
+		/**
+		 * Sets a wellbore
+		 *
+		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @param [in,out]	witsmlWellbore	If non-null, the witsml wellbore.
+		 */
 		DLL_IMPORT_OR_EXPORT void setWellbore(Wellbore* witsmlWellbore)
 		{
 			if (witsmlWellbore == nullptr) {
@@ -75,23 +90,29 @@ namespace WITSML2_0_NS
 		/**
 		* Get the Data Object Reference of the PropertyKind linked with this data object.
 		*/
-		gsoap_eml2_1::eml21__DataObjectReference* getPropertyKindDor() const
+		COMMON_NS::DataObjectReference getPropertyKindDor() const
 		{
-			return static_cast<T*>(gsoapProxy2_1)->ChannelClass;
+			return COMMON_NS::DataObjectReference(static_cast<T*>(gsoapProxy2_1)->ChannelClass);
 		}
 
 		/**
-		* Get the PropertyKind linked with this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* getPropertyKind() const
+		 * Get the PropertyKind linked with this data object.
+		 *
+		 * @returns	Null if it fails, else the property kind.
+		 */
+		DLL_IMPORT_OR_EXPORT EML2_NS::PropertyKind* getPropertyKind() const
 		{
-			return getRepository()->template getDataObjectByUuid<COMMON_NS::PropertyKind>(getPropertyKindDor()->Uuid);
+			return getRepository()->template getDataObjectByUuid<EML2_NS::PropertyKind>(getPropertyKindDor()->getUuid());
 		}
 
 		/**
-		* Set the PropertyKind linked with this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT void setPropertyKind(COMMON_NS::PropertyKind* propKind)
+		 * Set the PropertyKind linked with this data object.
+		 *
+		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @param [in,out]	propKind	If non-null, the property kind.
+		 */
+		DLL_IMPORT_OR_EXPORT void setPropertyKind(EML2_NS::PropertyKind* propKind)
 		{
 			if (propKind == nullptr) {
 				throw std::invalid_argument("Cannot set a null witsml propKind to a witsml log/channelset/channel");
@@ -105,6 +126,13 @@ namespace WITSML2_0_NS
 			getRepository()->addRelationship(this, propKind);
 		}
 
+/**
+ * A macro that defines getter and setter generic optional attribute template
+ *
+ * @param 	attributeDatatype	The attribute datatype.
+ * @param 	attributeName	 	Name of the attribute.
+ * @param 	constructor		 	The constructor.
+ */
 #define GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_TEMPLATE(attributeDatatype, attributeName, constructor)\
 		DLL_IMPORT_OR_EXPORT virtual void set##attributeName(const attributeDatatype & attributeName) = 0;\
 		std::string get##attributeName() const {\
@@ -122,15 +150,46 @@ namespace WITSML2_0_NS
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_TEMPLATE(std::string, ToolClass, gsoap_eml2_1::soap_new_std__string)
 	};
 
+	/**
+	 * Gets time depth
+	 *
+	 * @tparam	gsoap_eml2_1::witsml20__Channel	Type of the gsoap eml 2 1 witsml 20 channel.
+	 *
+	 * @returns	The time depth.
+	 */
 	template<> inline std::string ChannelMetaDataObject<gsoap_eml2_1::witsml20__Channel>::getTimeDepth() const {
 		return static_cast<gsoap_eml2_1::witsml20__Channel*>(gsoapProxy2_1)->TimeDepth;
 	}
+
+	/**
+	 * Query if this object has time depth
+	 *
+	 * @tparam	gsoap_eml2_1::witsml20__Channel	Type of the gsoap eml 2 1 witsml 20 channel.
+	 *
+	 * @returns	True if time depth, false if not.
+	 */
 	template<> inline bool ChannelMetaDataObject<gsoap_eml2_1::witsml20__Channel>::hasTimeDepth() const {
 		return true;
 	}
+
+	/**
+	 * Gets logging company name
+	 *
+	 * @tparam	gsoap_eml2_1::witsml20__Channel	Type of the gsoap eml 2 1 witsml 20 channel.
+	 *
+	 * @returns	The logging company name.
+	 */
 	template<> inline std::string ChannelMetaDataObject<gsoap_eml2_1::witsml20__Channel>::getLoggingCompanyName() const {
 		return static_cast<gsoap_eml2_1::witsml20__Channel*>(gsoapProxy2_1)->LoggingCompanyName;
 	}
+
+	/**
+	 * Query if this object has logging company name
+	 *
+	 * @tparam	gsoap_eml2_1::witsml20__Channel	Type of the gsoap eml 2 1 witsml 20 channel.
+	 *
+	 * @returns	True if logging company name, false if not.
+	 */
 	template<> inline bool ChannelMetaDataObject<gsoap_eml2_1::witsml20__Channel>::hasLoggingCompanyName() const {
 		return true;
 	}

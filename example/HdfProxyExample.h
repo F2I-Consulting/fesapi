@@ -18,14 +18,14 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/AbstractHdfProxy.h"
+#include "eml2/AbstractHdfProxy.h"
 
 #include <stdexcept>
 
 /**
 * A (very) dummy example of an HDF proxy whose purpose is mainly to check if it builds and works
 */
-class HdfProxyExample : public COMMON_NS::AbstractHdfProxy
+class HdfProxyExample : public EML2_NS::AbstractHdfProxy
 {
 public:
 
@@ -33,18 +33,18 @@ public:
 	* Only to be used in partial transfer context
 	*/
 	HdfProxyExample(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-		COMMON_NS::AbstractHdfProxy(partialObject)
+		EML2_NS::AbstractHdfProxy(partialObject)
 	{}
 
 	HdfProxyExample(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
-		COMMON_NS::AbstractHdfProxy(fromGsoap)
+		EML2_NS::AbstractHdfProxy(fromGsoap)
 	{}
 
 	HdfProxyExample(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 		const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) :
-		COMMON_NS::AbstractHdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess)
+		EML2_NS::AbstractHdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess)
 	{
-		initGsoapProxy(repo, guid, title, COMMON_NS::AbstractObject::EmlVersion::TWO_DOT_ZERO);
+		initGsoapProxy(repo, guid, title, 20);
 	}
 
 	~HdfProxyExample() {}

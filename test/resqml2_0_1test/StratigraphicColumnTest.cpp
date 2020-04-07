@@ -23,12 +23,12 @@ under the License.
 #include "catch.hpp"
 
 #include "common/EpcDocument.h"
-#include "resqml2_0_1/StratigraphicColumn.h"
+#include "resqml2/StratigraphicColumn.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 
 const char* StratigraphicColumnTest::defaultUuid = "b407ddc5-67a7-437a-aa24-baf096a76857";
 const char* StratigraphicColumnTest::defaultTitle = "Strati Column";

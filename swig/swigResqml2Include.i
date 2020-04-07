@@ -331,9 +331,9 @@ namespace RESQML2_NS
 		void pushBackSupportingRepresentation(AbstractRepresentation * supportingRep);
 		virtual unsigned int getSupportingRepresentationCount() const = 0;
 		AbstractRepresentation* getSupportingRepresentation(unsigned int index) const;
-		virtual std::string getSupportingRepresentationUuid(unsigned int index) const = 0;
-		virtual std::string getSupportingRepresentationTitle(unsigned int index) const = 0;
-		virtual std::string getSupportingRepresentationContentType() const = 0;
+		virtual std::string getSupportingRepresentationUuid(unsigned int index) const;
+		virtual std::string getSupportingRepresentationTitle(unsigned int index) const;
+		virtual std::string getSupportingRepresentationContentType(unsigned int index) const;
 	};
 	
 	class GridConnectionSetRepresentation;

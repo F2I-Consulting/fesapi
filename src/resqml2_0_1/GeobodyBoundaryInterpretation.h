@@ -18,50 +18,44 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "BoundaryFeatureInterpretation.h"
-#include "StructuralOrganizationInterpretation.h"
-#include "StratigraphicColumnRankInterpretation.h"
+#include "../resqml2/GeobodyBoundaryInterpretation.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
-	class GeobodyBoundaryInterpretation : public BoundaryFeatureInterpretation
+	/** A geobody boundary interpretation. */
+	class GeobodyBoundaryInterpretation final : public RESQML2_NS::GeobodyBoundaryInterpretation
 	{
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
 		DLL_IMPORT_OR_EXPORT GeobodyBoundaryInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			BoundaryFeatureInterpretation(partialObject)
-		{
-		}
+			RESQML2_NS::GeobodyBoundaryInterpretation(partialObject) {}
 
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param geobodyBoundary	The feature the instance interprets.
-		* @param guid		The guid to set to the interpretation. If empty then a new guid will be generated.
-		* @param title		A title for the instance to create.
-		*/
-		GeobodyBoundaryInterpretation(class GeneticBoundaryFeature * geobodyBoundary, const std::string & guid, const std::string & title);
+		 * Creates an instance of this class in a gsoap context.
+		 *
+		 * @param [in,out]	geobodyBoundary	The feature the instance interprets.
+		 * @param 		  	guid		   	The guid to set to the interpretation. If empty then a new
+		 * 									guid will be generated.
+		 * @param 		  	title		   	A title for the instance to create.
+		 */
+		GeobodyBoundaryInterpretation(RESQML2_NS::BoundaryFeature * geobodyBoundary, const std::string & guid, const std::string & title);
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		GeobodyBoundaryInterpretation(gsoap_resqml2_0_1::_resqml20__GeobodyBoundaryInterpretation* fromGsoap) : BoundaryFeatureInterpretation(fromGsoap) {}
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		GeobodyBoundaryInterpretation(gsoap_resqml2_0_1::_resqml20__GeobodyBoundaryInterpretation* fromGsoap) : RESQML2_NS::GeobodyBoundaryInterpretation(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~GeobodyBoundaryInterpretation() {}
-
-		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }
