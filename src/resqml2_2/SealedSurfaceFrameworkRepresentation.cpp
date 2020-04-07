@@ -97,6 +97,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
     ostringstream ossForHdf;
     ossForHdf << "listOfIdenticalNodes_contact" << contactRep->Index;
     dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
+	dsPart->Count = identicalNodesCount * patchCount;
 	xmlListOfIdenticalNodes->Values->ExternalFileProxy.push_back(dsPart);
     contactRep->IdenticalNodeIndices = xmlListOfIdenticalNodes;
     // ************ HDF *************
@@ -163,6 +164,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
     ostringstream ossForHdf;
     ossForHdf << "SupportingRepresentationNodes_contact" << contactIndex << "_patch" << contactRep->Contact.size();
     dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
+	dsPart->Count = nodeCount;
 	xmlSupportingRepresentationNodes->Values->ExternalFileProxy.push_back(dsPart);
     contactPatch->SupportingRepresentationNodes = xmlSupportingRepresentationNodes;
     // ************ HDF *************

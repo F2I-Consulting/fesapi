@@ -2273,11 +2273,11 @@ void deserializeStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn)
 
 void deserializeSealedSurfaceFramework(const COMMON_NS::DataObjectRepository & pck)
 {
-	const std::vector<RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation*> ssfVec = pck.getDataObjects<RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation>();
+	const std::vector<RESQML2_NS::SealedSurfaceFrameworkRepresentation*> ssfVec = pck.getDataObjects<RESQML2_NS::SealedSurfaceFrameworkRepresentation>();
 
 	for (size_t ssfIndex = 0; ssfIndex < ssfVec.size(); ++ssfIndex) {
 		std::cout << "\tSEALED SURFACE FRAMEWORK" << std::endl;
-		RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* ssf = ssfVec[ssfIndex];
+		RESQML2_NS::SealedSurfaceFrameworkRepresentation* ssf = ssfVec[ssfIndex];
 		showAllMetadata(ssf);
 
 		std::cout << "\tCONTAINED REPRESENTATIONS" << std::endl;
@@ -2291,13 +2291,12 @@ void deserializeSealedSurfaceFramework(const COMMON_NS::DataObjectRepository & p
 		for (unsigned int ciIdx = 0; ciIdx < ciCount; ++ciIdx) {
 			std::cout << "\t\tidentity kind (0->coloc, 1->preColoc, 2->eq, 3->preEq) : " << ssf->getContactIdentityKind(ciIdx) << std::endl;
 			const unsigned int ciContactRepCount = ssf->getContactCountInContactIdentity(ciIdx);
-			unsigned int* cicrIndices = new unsigned int[ciContactRepCount];
-			ssf->getContactIndices(ciIdx, cicrIndices);
+			std::unique_ptr<unsigned int[]> cicrIndices(new unsigned int[ciContactRepCount]);
+			ssf->getContactIndices(ciIdx, cicrIndices.get());
 			std::cout << "\t\tcontact rep indices : ";
 			for (unsigned int cicrIdx = 0; cicrIdx < ciContactRepCount; ++cicrIdx) {
 				std::cout << cicrIndices[cicrIdx] << " ";
 			}
-			delete[] cicrIndices;
 			std::cout << std::endl;
 
 			if (ssf->areAllContactNodesIdentical(ciIdx)) {
@@ -2305,13 +2304,12 @@ void deserializeSealedSurfaceFramework(const COMMON_NS::DataObjectRepository & p
 			}
 			else {
 				const unsigned int ciIdenticalNodeCount = ssf->getIdenticalContactNodeCount(ciIdx);
-				unsigned int* ciIdenticalNodeIndices = new unsigned int[ciIdenticalNodeCount];
-				ssf->getIdenticalContactNodeIndices(ciIdx, ciIdenticalNodeIndices);
+				std::unique_ptr<unsigned int[]> ciIdenticalNodeIndices(new unsigned int[ciIdenticalNodeCount]);
+				ssf->getIdenticalContactNodeIndices(ciIdx, ciIdenticalNodeIndices.get());
 				std::cout << "\t\tIdentical nodes : ";
 				for (unsigned int identicalNodesIdx = 0; identicalNodesIdx < ciIdenticalNodeCount; ++identicalNodesIdx) {
 					std::cout << ciIdenticalNodeIndices[identicalNodesIdx] << " ";
 				}
-				delete[] ciIdenticalNodeIndices;
 				std::cout << std::endl;
 			}
 		}
@@ -2325,13 +2323,12 @@ void deserializeSealedSurfaceFramework(const COMMON_NS::DataObjectRepository & p
 			}
 			else {
 				const unsigned int crIdenticalNodeCount = ssf->getIdenticalContactPatchNodeCount(crIdx);
-				unsigned int* crIdenticalNodeIndices = new unsigned int[crIdenticalNodeCount];
-				ssf->getIdenticalContactPatchNodeIndices(crIdx, crIdenticalNodeIndices);
+				std::unique_ptr<unsigned int[]> crIdenticalNodeIndices(new unsigned int[crIdenticalNodeCount]);
+				ssf->getIdenticalContactPatchNodeIndices(crIdx, crIdenticalNodeIndices.get());
 				std::cout << "\t\tIdentical nodes : ";
 				for (unsigned int identicalNodesIdx = 0; identicalNodesIdx < crIdenticalNodeCount; ++identicalNodesIdx) {
 					std::cout << crIdenticalNodeIndices[identicalNodesIdx] << " ";
 				}
-				delete[] crIdenticalNodeIndices;
 				std::cout << std::endl;
 			}
 
@@ -2340,13 +2337,12 @@ void deserializeSealedSurfaceFramework(const COMMON_NS::DataObjectRepository & p
 			for (unsigned int cpIdx = 0; cpIdx < cpCount; ++cpIdx) {
 				showAllMetadata(ssf->getRepresentationOfContactPatch(crIdx, cpIdx));
 				const unsigned int cpNodeCount = ssf->getContactPatchNodeCount(crIdx, cpIdx);
-				unsigned int* cpNodeIndices = new unsigned int[cpNodeCount];
-				ssf->getContactPatchNodeIndices(crIdx, cpIdx, cpNodeIndices);
+				std::unique_ptr<unsigned int[]> cpNodeIndices(new unsigned int[cpNodeCount]);
+				ssf->getContactPatchNodeIndices(crIdx, cpIdx, cpNodeIndices.get());
 				std::cout << "\t\tcontact patch indices : ";
 				for (unsigned int cpNodeIdx = 0; cpNodeIdx < cpNodeCount; ++cpNodeIdx) {
 					std::cout << cpNodeIndices[cpNodeIdx] << " ";
 				}
-				delete[] cpNodeIndices;
 				std::cout << std::endl;
 			}
 		}

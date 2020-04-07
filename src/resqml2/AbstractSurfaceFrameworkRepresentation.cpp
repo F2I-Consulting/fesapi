@@ -74,6 +74,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
 		ossForHdfContactRepresentations << "contactIdentity_listOfContactRep_" << orgRep->ContactIdentity.size();
 		dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdfContactRepresentations.str();
+		dsPart->Count = contactCount;
 		xmlListOfContactRepresentations->Values->ExternalFileProxy.push_back(dsPart);
 		contactIdentity->ListOfContactRepresentations = xmlListOfContactRepresentations;
 		orgRep->ContactIdentity.push_back(contactIdentity);
@@ -144,6 +145,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
 		ossForHdfContactRepresentations << "contactIdentity_listOfContactRep_" << orgRep->ContactIdentity.size();
 		dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdfContactRepresentations.str();
+		dsPart->Count = contactCount;
 		xmlListOfContactRepresentations->Values->ExternalFileProxy.push_back(dsPart);
 		contactIdentity->ListOfContactRepresentations = xmlListOfContactRepresentations;
 
@@ -155,6 +157,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
 		ossForHdfIdenticalNodes << "contactIdentity_listOfIdenticalNodes_" << orgRep->ContactIdentity.size();
 		dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdfIdenticalNodes.str();
+		dsPart->Count = identicalNodesCount* contactCount;
 		xmlListOfIdenticalNodes->Values->ExternalFileProxy.push_back(dsPart);
 		contactIdentity->ListOfIdenticalNodes = xmlListOfIdenticalNodes;
 
