@@ -162,13 +162,23 @@ namespace RESQML2_0_1_NS
 
 		/**
 		 * Gets the unit of measure of the values of this property. If <tt>
-		 * resqml20__ResqmlUom::resqml20__ResqmlUom__Euc </tt> is returned, you should check if an
+		 * resqml20__ResqmlUom::resqml20__ResqmlUom__Euc </tt> is returned and if your instance is a 2.0.1 one, you should check if an
 		 * extrametadata called "Uom" also exists. If so, it would mean that the property uses a non
 		 * standard unit of measure. This is an official workaround for a known issue of Resqml 2.0.1.
 		 *
 		 * @returns	The unit of measure of the values of this property.
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlUom getUom() const final;
+
+		/**
+		 * Gets the unit of measure of the values of this property as a string. If "Euc"  is returned,
+		 * you should check if an extrametadata called "Uom" also exists. If so, it would mean that the
+		 * property uses a non standard uom. This is an official workaround for a known issue of Resqml
+		 * 2.0.1.
+		 *
+		 * @returns	The unit of measure of the values of this property as a string.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getUomAsString() const final;
 
 		/**
 		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF

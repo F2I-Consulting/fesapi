@@ -114,6 +114,13 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlUom getUom() const final;
 
 		/**
+		 * Gets the unit of measure of the values of this property as a string.
+		 *
+		 * @returns	The unit of measure of the values of this property as a string.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getUomAsString() const final;
+
+		/**
 		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF
 		 * proxy. The reason can be that the values already exist in an external file (only HDF5 for
 		 * now) or that the writing of the values in the external file is differed in time.

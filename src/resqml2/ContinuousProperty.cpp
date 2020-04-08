@@ -29,11 +29,6 @@ using namespace RESQML2_NS;
 
 const char* ContinuousProperty::XML_TAG = "ContinuousProperty";
 
-std::string ContinuousProperty::getUomAsString() const
-{
-	return gsoap_resqml2_0_1::soap_resqml20__ResqmlUom2s(gsoapProxy2_0_1->soap, getUom());
-}
-
 void ContinuousProperty::pushBackDoubleHdf5Array1dOfValues(const double * values, ULONG64 valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	double minimumValue, double maximumValue)
 {

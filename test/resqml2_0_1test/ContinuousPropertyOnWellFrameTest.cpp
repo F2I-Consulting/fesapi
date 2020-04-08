@@ -32,6 +32,8 @@ using namespace resqml2_0_1test;
 
 const char* ContinuousPropertyOnWellFrameTest::defaultUuid = "6e4ca2c9-6780-44bd-b4c2-6bb3ef4682d4";
 const char* ContinuousPropertyOnWellFrameTest::defaultTitle = "Continuous Property on well frame Test";
+const char* ContinuousPropertyOnWellFrameTest::exoticUuid = "8535b08f-739f-470c-b940-36c1bd5209a4";
+const char* ContinuousPropertyOnWellFrameTest::exoticTitle = "Continuous Property exotic uom on well frame Test";
 
 ContinuousPropertyOnWellFrameTest::ContinuousPropertyOnWellFrameTest(const string & repoPath)
 	: commontest::AbstractObjectTest(repoPath) {
@@ -64,6 +66,16 @@ void ContinuousPropertyOnWellFrameTest::initRepoHandler() {
 	REQUIRE(continuousProperty != nullptr);
 	double values[5] = { 0.1, 1.2, 2.3, 3.4, 4.5 };
 	continuousProperty->pushBackDoubleHdf5Array1dOfValues(values, 5, hdfProxy);
+	
+	// creating the exotic ContinuousProperty
+	RESQML2_NS::ContinuousProperty* exoticContinuousProperty = repo->createContinuousProperty(
+		frame, exoticUuid, exoticTitle,
+		1,
+		gsoap_eml2_3::resqml22__IndexableElement__nodes,
+		"My exotic Uom",
+		propertyKind);
+	REQUIRE(exoticContinuousProperty != nullptr);
+	exoticContinuousProperty->pushBackDoubleHdf5Array1dOfValues(values, 5, hdfProxy);
 
 	// cleaning
 	delete frameTest;
@@ -75,6 +87,7 @@ void ContinuousPropertyOnWellFrameTest::readRepoHandler() {
 
 	// getting the ContinuousPropertySeries
 	RESQML2_NS::ContinuousProperty* continuousProperty = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>(defaultUuid);
+	RESQML2_NS::ContinuousProperty* exoticContinuousProperty = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>(exoticUuid);
 
 	// ************************************
 	// reading the ContinuousProperty
@@ -87,6 +100,8 @@ void ContinuousPropertyOnWellFrameTest::readRepoHandler() {
 
 	// getUom
 	REQUIRE(continuousProperty->getUom() == gsoap_resqml2_0_1::resqml20__ResqmlUom__m);
+	REQUIRE(exoticContinuousProperty->getUom() == gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc);
+	REQUIRE(exoticContinuousProperty->getUomAsString() == "My exotic Uom");
 
 	// getEnergisticsPropertyKind
 	//REQUIRE(continuousProperty->isAssociatedToOneStandardEnergisticsPropertyKind());

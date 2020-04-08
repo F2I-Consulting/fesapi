@@ -102,6 +102,22 @@ gsoap_resqml2_0_1::resqml20__ResqmlUom ContinuousProperty::getUom() const
 	return static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->UOM;
 }
 
+std::string ContinuousProperty::getUomAsString() const
+{
+	gsoap_resqml2_0_1::resqml20__ResqmlUom uom = getUom();
+
+	if (uom == gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc) {
+		unsigned int emCount = getExtraMetadataCount();
+		for (unsigned int i = 0; i < emCount; ++i) {
+			if (getExtraMetadataKeyAtIndex(i) == "Uom") {
+				return getExtraMetadataStringValueAtIndex(i);
+			}
+		}
+	}
+
+	return gsoap_resqml2_0_1::soap_resqml20__ResqmlUom2s(gsoapProxy2_0_1->soap, uom);
+}
+
 std::string ContinuousProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName)
 {
 	if (proxy == nullptr) {
