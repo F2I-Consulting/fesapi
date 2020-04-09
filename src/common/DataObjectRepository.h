@@ -24,6 +24,7 @@ under the License.
 #include "../proxies/gsoap_resqml2_0_1H.h"
 #include "../proxies/gsoap_eml2_1H.h"
 #include "../proxies/gsoap_eml2_2H.h"
+#include "../proxies/gsoap_eml2_3H.h"
 
 #include "../nsDefinitions.h"
 
@@ -209,7 +210,7 @@ namespace COMMON_NS
 #if WITH_EXPERIMENTAL
 		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
 #endif
-		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
+		COMMON_NS::AbstractObject* getEml2_3WrapperFromGsoapContext(const std::string& datatype);
 
 		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
 		COMMON_NS::AbstractObject* getProdml2_1WrapperFromGsoapContext(const std::string & datatype);
@@ -697,9 +698,14 @@ namespace COMMON_NS
 		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_1::eml21__DataObjectReference const * dor);
 
 		/**
-		* Create a partial object in this repository based on a EML2.1 Data Object Reference
+		* Create a partial object in this repository based on a EML2.2 Data Object Reference
 		*/
 		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_2::eml22__DataObjectReference const * dor);
+
+		/**
+		* Create a partial object in this repository based on a EML2.3 Data Object Reference
+		*/
+		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_3::eml23__DataObjectReference const* dor);
 
 		/**
 		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title + a version.

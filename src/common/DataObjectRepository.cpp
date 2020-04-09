@@ -165,6 +165,11 @@ namespace {
 	{\
 		return dor->ObjectVersion == nullptr ? createPartial<className>(dor->Uuid, dor->Title) : createPartial<className>(dor->Uuid, dor->Title, *dor->ObjectVersion);\
 	}
+#define CREATE_EML_2_3_FESAPI_PARTIAL_WRAPPER(className)\
+	(contentType.compare(className::XML_TAG) == 0)\
+	{\
+		return dor->ObjectVersion == nullptr ? createPartial<className>(dor->Uuid, dor->Title) : createPartial<className>(dor->Uuid, dor->Title, *dor->ObjectVersion);\
+	}
 
 /////////////////////
 /////// RESQML //////
@@ -236,18 +241,18 @@ namespace {
 	}
 
 /////////////////////
-////// EML 2.2 //////
+////// EML //////
 /////////////////////
-#define GET_EML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
-	gsoapNameSpace::_eml22__##className* read = gsoapNameSpace::soap_new_eml22__##className(gsoapContext);\
-	gsoapNameSpace::soap_read_eml22__##className(gsoapContext, read);
-#define GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
-	GET_EML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
+#define GET_EML_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace, xmlNamespace)\
+	gsoapNameSpace::_##xmlNamespace ##__##className* read = gsoapNameSpace::soap_new_##xmlNamespace ##__##className(gsoapContext);\
+	gsoapNameSpace::soap_read_##xmlNamespace ##__##className(gsoapContext, read);
+#define GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace, xmlNamespace)\
+	GET_EML_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace, xmlNamespace)\
 	wrapper = new classNamespace::className(read);
-#define CHECK_AND_GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
+#define CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace, xmlNamespace)\
 	(datatype.compare(classNamespace::className::XML_TAG) == 0)\
 	{\
-		GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace);\
+		GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace, xmlNamespace);\
 	}
 
 DataObjectRepository::DataObjectRepository() :
@@ -457,8 +462,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 		wrapper = getResqml2_2WrapperFromGsoapContext(datatype);
 	}
 #endif
-	else if (contentType.find("application/x-eml+xml;version=2.2;type=") != string::npos) {
-		wrapper = getEml2_2WrapperFromGsoapContext(datatype);
+	else if (contentType.find("application/x-eml+xml;version=2.3;type=") != string::npos) {
+		wrapper = getEml2_3WrapperFromGsoapContext(datatype);
 	}
 
 	if (wrapper != nullptr) {
@@ -538,8 +543,17 @@ const std::vector<std::string> & DataObjectRepository::getWarnings() const
 
 COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor)
 {
-	const size_t lastEqualCharPos = dor->ContentType.find_last_of('_'); // The XML tag is after "type=obj_"
-	const string resqmlContentType = dor->ContentType.substr(lastEqualCharPos + 1);
+	std::string contentType = dor->ContentType;
+
+	string resqmlContentType;
+	if (contentType.find("obj_") != std::string::npos) {
+		const size_t lastEqualCharPos = contentType.find_last_of('_'); // The XML tag is after "type=obj_"
+		resqmlContentType = contentType.substr(lastEqualCharPos + 1);
+	}
+	else {
+		const size_t lastEqualCharPos = contentType.find_last_of('='); // The XML tag is after "type="
+		resqmlContentType = contentType.substr(lastEqualCharPos + 1);
+	}
 
 	if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(MdDatum)
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(Activity)
@@ -637,8 +651,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml
 	const size_t lastEqualCharPos = dor->ContentType.find_last_of('='); // The XML tag is after "type="
 	const string contentType = dor->ContentType.substr(lastEqualCharPos + 1);
 
-	if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(COMMON_NS::GraphicalInformationSet)
-	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(PRODML2_1_NS::FluidSystem)
+	if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(PRODML2_1_NS::FluidSystem)
 	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(PRODML2_1_NS::FluidCharacterization)
 #if WITH_EXPERIMENTAL
 	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::DiscreteColorMap)
@@ -646,6 +659,20 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml
 	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::WellboreFrameRepresentation)
 	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::SeismicWellboreFrameRepresentation)
 #endif
+	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
+	{
+		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
+	}
+
+	throw invalid_argument("The content type " + contentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_3::eml23__DataObjectReference const* dor)
+{
+	const size_t lastEqualCharPos = dor->ContentType.find_last_of('='); // The XML tag is after "type="
+	const string contentType = dor->ContentType.substr(lastEqualCharPos + 1);
+
+	if CREATE_EML_2_3_FESAPI_PARTIAL_WRAPPER(COMMON_NS::GraphicalInformationSet)
 	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
@@ -2187,10 +2214,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 }
 #endif
 
-COMMON_NS::AbstractObject* DataObjectRepository::getEml2_2WrapperFromGsoapContext(const std::string & datatype)
+COMMON_NS::AbstractObject* DataObjectRepository::getEml2_3WrapperFromGsoapContext(const std::string & datatype)
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;
-	if CHECK_AND_GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(COMMON_NS, GraphicalInformationSet, gsoap_eml2_2)
+	if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(COMMON_NS, GraphicalInformationSet, gsoap_eml2_3, eml23)
 		return wrapper;
 }
 

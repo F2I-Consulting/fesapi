@@ -224,7 +224,15 @@ namespace COMMON_NS
 %include "swigResqml2_2Include.i"
 %include "swigWitsml2_0Include.i"
 
-%template(StringVector) std::vector< std::string >;
+//************************
+// STD::VECTOR DEFINITIONS
+//************************
+
+%include "std_vector.i"
+namespace std {
+	%template(GraphicalInformationSetVector) vector<COMMON_NS::GraphicalInformationSet*>;
+	%template(StringVector) vector< std::string >;
+}
 
 %{
 #include "../src/common/EnumStringMapper.h"
@@ -432,6 +440,7 @@ namespace COMMON_NS
 		%template(getLogs) getDataObjects<WITSML2_0_NS::Log>;
 		%template(getChannelSets) getDataObjects<WITSML2_0_NS::ChannelSet>;
 		%template(getChannels) getDataObjects<WITSML2_0_NS::Channel>;
+		%template(getGraphicalInformationSets) getDataObjects<COMMON_NS::GraphicalInformationSet>;
 		
 		COMMON_NS::AbstractHdfProxy* createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess);
 
