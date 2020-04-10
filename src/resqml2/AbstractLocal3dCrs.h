@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "MdDatum.h"
+#include "../common/AbstractObject.h"
 
 /** . */
 namespace RESQML2_NS
@@ -26,44 +26,6 @@ namespace RESQML2_NS
 	/** Proxy class for an abstract local 3D coordinate reference system (CRS). */
 	class AbstractLocal3dCrs : public COMMON_NS::AbstractObject
 	{
-	protected:
-
-		/**
-		 * Only to be used in partial transfer context
-		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
-		 */
-		DLL_IMPORT_OR_EXPORT AbstractLocal3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
-
-		/** Default constructor */
-		AbstractLocal3dCrs() {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		AbstractLocal3dCrs(gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs* fromGsoap):
-			COMMON_NS::AbstractObject(fromGsoap) {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		AbstractLocal3dCrs(gsoap_eml2_3::resqml22__AbstractLocal3dCrs* fromGsoap) :
-			COMMON_NS::AbstractObject(fromGsoap) {}
-
-		/**
-		 * Get the Z offset which is always equal to zero for a time CRS. Don't mix zOffset vs
-		 * depthOffset : the schema calls zOffset what is actually a depthOrElevationOffset.
-		 *
-		 * @returns	The z coordinate offset.
-		 */
-		virtual double getZOffset() const = 0;
-
 	public:
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
@@ -243,12 +205,47 @@ namespace RESQML2_NS
 		 * @param 		  	withoutTranslation	(Optional) True to only compute the rotation (no
 		 * 										translation is computed). Default value if false.
 		 */
-		void convertXyzPointsToGlobalCrs(double * xyzPoints, ULONG64 xyzPointCount, bool withoutTranslation = false) const;
+		DLL_IMPORT_OR_EXPORT void convertXyzPointsToGlobalCrs(double * xyzPoints, ULONG64 xyzPointCount, bool withoutTranslation = false) const;
 
 	protected:
+
+		/**
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
+		AbstractLocal3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+
+		/** Default constructor */
+		AbstractLocal3dCrs() {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		AbstractLocal3dCrs(gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs* fromGsoap) :
+			COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		AbstractLocal3dCrs(gsoap_eml2_3::resqml22__AbstractLocal3dCrs* fromGsoap) :
+			COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
+		 * Get the Z offset which is always equal to zero for a time CRS. Don't mix zOffset vs
+		 * depthOffset : the schema calls zOffset what is actually a depthOrElevationOffset.
+		 *
+		 * @returns	The z coordinate offset.
+		 */
+		virtual double getZOffset() const = 0;
 		
 		/** Loads target relationships */
 		void loadTargetRelationships();
 	};
 }
-

@@ -19,10 +19,11 @@ under the License.
 #pragma once
 
 #include "AbstractOrganizationInterpretation.h"
-#include "AbstractGridRepresentation.h"
 
 namespace RESQML2_NS
 {
+	class AbstractGridRepresentation;
+
 	/**
 	 * An abstract stratigraphic organization interpretation is the main class that defines the
 	 * relationships between the stratigraphic units and provides the stratigraphic hierarchy of the

@@ -172,9 +172,9 @@ void IjkGridParametricRepresentation::getControlPoints(double * controlPoints, b
 
 	if (reverseIAxis || reverseJAxis || reverseKAxis)
 	{
-		unsigned int iPillarCount = getICellCount() + 1;
-		unsigned int jPillarCount = getJCellCount() + 1;
-		unsigned int arrayCount = iPillarCount * jPillarCount * getControlPointMaxCountPerPillar() * 3;
+		const unsigned int iPillarCount = getICellCount() + 1;
+		const unsigned int jPillarCount = getJCellCount() + 1;
+		const unsigned int arrayCount = iPillarCount * jPillarCount * getControlPointMaxCountPerPillar() * 3;
 
 		// Copy in order not to modify the controlPoints pointer
 		std::unique_ptr<double[]> reversedControlPoints(new double[arrayCount]);
@@ -212,15 +212,11 @@ void IjkGridParametricRepresentation::getControlPoints(double * controlPoints, b
 			}
 		}
 
-		if (reverseKAxis)
-		{
+		if (reverseKAxis) {
 			unsigned int controlPointIndex = 0;
-			for (unsigned int k = 0; k < getControlPointMaxCountPerPillar(); ++k)
-			{
-				for (unsigned int j = 0; j < jPillarCount; ++j)
-				{
-					for (unsigned int i = 0; i < iPillarCount; ++i)
-					{
+			for (unsigned int k = 0; k < getControlPointMaxCountPerPillar(); ++k) {
+				for (unsigned int j = 0; j < jPillarCount; ++j) {
+					for (unsigned int i = 0; i < iPillarCount; ++i) {
 						unsigned int reversedControlPointIndex = i + j * iPillarCount + (getControlPointMaxCountPerPillar() - 1 - k)*iPillarCount*jPillarCount;
 						controlPoints[controlPointIndex * 3] = reversedControlPoints[reversedControlPointIndex * 3];
 						controlPoints[controlPointIndex * 3 + 1] = reversedControlPoints[reversedControlPointIndex * 3 + 1];
@@ -241,9 +237,9 @@ void IjkGridParametricRepresentation::getControlPointParameters(double * control
 	
 	if (reverseIAxis || reverseJAxis || reverseKAxis)
 	{
-		unsigned int iPillarCount = getICellCount()+1;
-		unsigned int jPillarCount = getJCellCount()+1;
-		unsigned int arrayCount = iPillarCount * jPillarCount * getControlPointMaxCountPerPillar();
+		const unsigned int iPillarCount = getICellCount()+1;
+		const unsigned int jPillarCount = getJCellCount()+1;
+		const unsigned int arrayCount = iPillarCount * jPillarCount * getControlPointMaxCountPerPillar();
 
 		// Copy in order not to modify the controlPoints pointer
 		std::unique_ptr<double[]> reversedControlPointParameters(new double[arrayCount]);
@@ -296,11 +292,10 @@ void IjkGridParametricRepresentation::getParametricLineKind(short * pillarKind, 
 {
 	getRawParametricLineKind(pillarKind);
 
-	if (reverseIAxis || reverseJAxis)
-	{
-		unsigned int iPillarCount = getICellCount()+1;
-		unsigned int jPillarCount = getJCellCount()+1;
-		unsigned int arrayCount = iPillarCount * jPillarCount;
+	if (reverseIAxis || reverseJAxis) {
+		const unsigned int iPillarCount = getICellCount()+1;
+		const unsigned int jPillarCount = getJCellCount()+1;
+		const unsigned int arrayCount = iPillarCount * jPillarCount;
 
 		// Copy in order not to modify the controlPoints pointer
 		std::unique_ptr<double[]> initialPillarKind(new double [arrayCount]);
@@ -339,10 +334,10 @@ void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, 
 	// Copy in order not to modify the controlPoints pointer
 	if (reverseIAxis || reverseJAxis || reverseKAxis)
 	{
-		unsigned int iPillarCount = getICellCount()+1;
-		unsigned int jPillarCount = getJCellCount()+1;
-		unsigned int kNodeCount = getKCellCount()+1;
-		unsigned int arrayCount = iPillarCount * jPillarCount * kNodeCount + getSplitCoordinateLineCount()*kNodeCount;
+		const unsigned int iPillarCount = getICellCount()+1;
+		const unsigned int jPillarCount = getJCellCount()+1;
+		const unsigned int kNodeCount = getKCellCount()+1;
+		const unsigned int arrayCount = iPillarCount * jPillarCount * kNodeCount + getSplitCoordinateLineCount()*kNodeCount;
 		std::unique_ptr<double[]> initialParameters(new double[arrayCount]);
 		for (unsigned int index = 0; index < arrayCount; ++index) {
 			initialParameters[index] = parameters[index];
@@ -426,8 +421,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequence(unsigned 
 	getParametersOfNodesOfKInterfaceSequence(kInterfaceStart, kInterfaceEnd, parameters.get());
 
 	// Convert the parameters into XYZ points
-	if (pillarInformation == nullptr)
-	{
+	if (pillarInformation == nullptr) {
 		pillarInformation = new PillarInformation();
 		loadPillarInformation(*pillarInformation);
 	}
@@ -551,7 +545,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequence(unsigned 
 
 	for (unsigned int splitLineIndex = 0; splitLineIndex < pillarInformation->splitLineCount; ++splitLineIndex)
 	{
-		unsigned int pillarIndex = pillarInformation->pillarOfSplitCoordLines[splitLineIndex];
+		const unsigned int pillarIndex = pillarInformation->pillarOfSplitCoordLines[splitLineIndex];
 		if (pillarInformation->pillarKind[pillarIndex] == -1 || parameters[paramIndex] != parameters[paramIndex]) { // not defined line
 			for (unsigned int k = 0; k <= kInterfaceEnd - kInterfaceStart; ++k) {
 				xyzPoints[(k * xyzPointCount + paramIndex) * 3] = std::numeric_limits<double>::quiet_NaN();
@@ -635,8 +629,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 		throw invalid_argument("xyzPoints must be allocated.");
 	}
 
-	if (pillarInformation == nullptr)
-	{
+	if (pillarInformation == nullptr) {
 		pillarInformation = new PillarInformation();
 		loadPillarInformation(*pillarInformation);
 	}
@@ -646,8 +639,6 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 	//	delete pillarInformation;
 	//pillarInformation = new PillarInformation();
 	//loadPillarInformation(*pillarInformation);
-
-	ULONG64 xyzPointCount =	(blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) *  (blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1) + getBlockSplitCoordinateLineCount(); 
 
 	// parameters : ordered
 	std::unique_ptr<double[]> parameters(new double[getXyzPointCountOfBlock()]);
@@ -681,27 +672,22 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 
 	// Adding block split coordinate lines to the selected regions
 	// traversing all bloc pillars in direction i and then in direction j
-	for (unsigned int jPillarIndex = blockInformation->jInterfaceStart; jPillarIndex <= blockInformation->jInterfaceEnd; ++jPillarIndex)
-	{
-		for (unsigned int iPillarIndex = blockInformation->iInterfaceStart; iPillarIndex <= blockInformation->iInterfaceEnd; iPillarIndex++)
-		{
+	for (unsigned int jPillarIndex = blockInformation->jInterfaceStart; jPillarIndex <= blockInformation->jInterfaceEnd; ++jPillarIndex) {
+		for (unsigned int iPillarIndex = blockInformation->iInterfaceStart; iPillarIndex <= blockInformation->iInterfaceEnd; iPillarIndex++) {
 			unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
 
-			if (splitInformation[pillarIndex].size() != 0)
-			{
+			if (!splitInformation[pillarIndex].empty()) {
 				// here is a split pillar
 
 				// traversing all split coordinate lines corresponding to the current splitted pillar
-				for (size_t splitCoordinateLineIndex = 0; splitCoordinateLineIndex < splitInformation[pillarIndex].size(); ++splitCoordinateLineIndex)
-				{
+				for (size_t splitCoordinateLineIndex = 0; splitCoordinateLineIndex < splitInformation[pillarIndex].size(); ++splitCoordinateLineIndex) {
 					// traversing adjacent columns, it current column is in the bloc, corresponding coordinate line is added to the selected region
-					for (size_t columnIndex = 0; columnIndex < splitInformation[pillarIndex][splitCoordinateLineIndex].second.size(); ++columnIndex)
-					{
-						unsigned int iColumnIndex = getIColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
-						unsigned int jColumnIndex = getJColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
+					for (size_t columnIndex = 0; columnIndex < splitInformation[pillarIndex][splitCoordinateLineIndex].second.size(); ++columnIndex) {
+						const unsigned int iColumnIndex = getIColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
+						const unsigned int jColumnIndex = getJColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
 
-						if ((iColumnIndex >= blockInformation->iInterfaceStart && iColumnIndex < blockInformation->iInterfaceEnd) && (jColumnIndex >= blockInformation->jInterfaceStart && jColumnIndex < blockInformation->jInterfaceEnd))
-						{
+						if ((iColumnIndex >= blockInformation->iInterfaceStart && iColumnIndex < blockInformation->iInterfaceEnd) &&
+							(jColumnIndex >= blockInformation->jInterfaceStart && jColumnIndex < blockInformation->jInterfaceEnd)) {
 							// here is a split coordinate line impacting the bloc
 							unsigned int splitCoordinateLineHdfIndex = (getICellCount() + 1) * (getJCellCount() + 1) + splitInformation[pillarIndex][splitCoordinateLineIndex].first;
 
@@ -740,12 +726,12 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 	hdfProxy->readArrayNdOfDoubleValues(dataset, filespace, parameters.get(), slab_size);
 
 	//Mapping
+	ULONG64 xyzPointCount = (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) * (blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1) + getBlockSplitCoordinateLineCount();
 	size_t paramIndex = 0;
-	for (unsigned int j = blockInformation->jInterfaceStart; j <= blockInformation->jInterfaceEnd; ++j)
-	{
+	for (unsigned int j = blockInformation->jInterfaceStart; j <= blockInformation->jInterfaceEnd; ++j) {
 		for (unsigned int i = blockInformation->iInterfaceStart; i <= blockInformation->iInterfaceEnd; ++i) {
 		//for (unsigned int pillarIndex = 0; pillarIndex < pillarInformation->parametricLineCount; ++pillarIndex) {
-			unsigned int pillarIndex = i + j * (getICellCount()+1);
+			const unsigned int pillarIndex = i + j * (getICellCount()+1);
 			if (pillarInformation->pillarKind[pillarIndex] == -1 || parameters[paramIndex] != parameters[paramIndex]) { // not defined line
 				for (unsigned int k = 0; k <= blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart; ++k) {
 					xyzPoints[(k * xyzPointCount + paramIndex) * 3] = std::numeric_limits<double>::quiet_NaN();
@@ -861,10 +847,8 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 		}
 	}
 
-	for (unsigned int splitLineIndex = 0; splitLineIndex < pillarInformation->splitLineCount; ++splitLineIndex)
-	{
-		if (blockInformation->globalToLocalSplitCoordinateLinesIndex.find(splitLineIndex) != blockInformation->globalToLocalSplitCoordinateLinesIndex.end())
-		{
+	for (unsigned int splitLineIndex = 0; splitLineIndex < pillarInformation->splitLineCount; ++splitLineIndex) {
+		if (blockInformation->globalToLocalSplitCoordinateLinesIndex.find(splitLineIndex) != blockInformation->globalToLocalSplitCoordinateLinesIndex.end()) {
 			paramIndex = blockInformation->globalToLocalSplitCoordinateLinesIndex[splitLineIndex];
 			unsigned int pillarIndex = pillarInformation->pillarOfSplitCoordLines[splitLineIndex];
 			if (pillarInformation->pillarKind[pillarIndex] == -1 || parameters[paramIndex] != parameters[paramIndex]) { // not defined line
@@ -942,7 +926,8 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 
 void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNodes(
 	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
-	double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, EML2_NS::AbstractHdfProxy* proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	double const * parameters, double const * controlPoints, double const * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short const * pillarKind,
+	EML2_NS::AbstractHdfProxy* proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setGeometryAsParametricSplittedPillarNodes(mostComplexPillarGeometry, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, pillarKind, proxy,
 		0, nullptr, nullptr, nullptr, localCrs);
@@ -1342,7 +1327,7 @@ namespace {
 	}
 }
 
-gsoap_resqml2_0_1::resqml20__KDirection IjkGridParametricRepresentation::computeKDirection(double const * controlPoints, unsigned int controlPointCountPerPillar, short * pillarKind, RESQML2_NS::AbstractLocal3dCrs const * localCrs) {
+gsoap_resqml2_0_1::resqml20__KDirection IjkGridParametricRepresentation::computeKDirection(double const * controlPoints, unsigned int controlPointCountPerPillar, short const * pillarKind, RESQML2_NS::AbstractLocal3dCrs const * localCrs) {
 	if (controlPoints == nullptr) {
 		throw invalid_argument("The control points cannot be null.");
 	}

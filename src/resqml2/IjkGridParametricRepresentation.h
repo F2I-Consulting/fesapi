@@ -259,7 +259,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setGeometryAsParametricNonSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
-			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind,
+			double const * parameters, double const * controlPoints, double const * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short const * pillarKind,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
@@ -378,9 +378,9 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsParametricSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
-			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, EML2_NS::AbstractHdfProxy* proxy,
-			unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
+			double const * parameters, double const * controlPoints, double const * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short const * pillarKind, EML2_NS::AbstractHdfProxy* proxy,
+			unsigned long splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
+			unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
 		/**
 		 * Sets the geometry of this IJK grid as parametric pillar nodes where at least one pillar is
@@ -620,7 +620,7 @@ namespace RESQML2_NS
 		/**
 		* Compute the K Direction of the gid according to its control points.
 		*/
-		gsoap_resqml2_0_1::resqml20__KDirection computeKDirection(double const * controlPoints, unsigned int controlPointCountPerPillar, short * pillarKind, RESQML2_NS::AbstractLocal3dCrs const * localCrs);
+		gsoap_resqml2_0_1::resqml20__KDirection computeKDirection(double const * controlPoints, unsigned int controlPointCountPerPillar, short const * pillarKind, RESQML2_NS::AbstractLocal3dCrs const * localCrs);
 
 		void writeGeometryOnHdf(double const * parameters,
 			double const * controlPoints, double const * controlPointParameters, unsigned int controlPointCountPerPillar,

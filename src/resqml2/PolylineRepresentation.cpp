@@ -20,9 +20,10 @@ under the License.
 
 #include <stdexcept>
 
+#include "AbstractSeismicLineFeature.h"
+#include "AbstractFeatureInterpretation.h"
 #include "CategoricalProperty.h"
 #include "ContinuousProperty.h"
-#include "AbstractSeismicLineFeature.h"
 
 using namespace std;
 using namespace RESQML2_NS;
@@ -35,10 +36,8 @@ bool PolylineRepresentation::isASeismicLine() const
 	// has at least one continuous property (amplitude).
 	bool atLeastOneContProp = false;
 	vector<RESQML2_NS::AbstractValuesProperty *> allValuesProperty = getValuesPropertySet();
-    for (unsigned int propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex)
-    {
-        if (dynamic_cast<RESQML2_NS::ContinuousProperty*>(allValuesProperty[propIndex]) != nullptr)
-        {
+    for (size_t propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex) {
+        if (dynamic_cast<RESQML2_NS::ContinuousProperty*>(allValuesProperty[propIndex]) != nullptr)  {
             atLeastOneContProp = true;
             break;
         }
@@ -57,10 +56,8 @@ bool PolylineRepresentation::isAFaciesLine() const
 	// has at least one categorical property (facies).
 	bool atLeastOneCateProp = false;
 	vector<RESQML2_NS::AbstractValuesProperty *> allValuesProperty = getValuesPropertySet();
-    for (unsigned int propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex)
-    {
-        if (dynamic_cast<RESQML2_NS::CategoricalProperty*>(allValuesProperty[propIndex]) != nullptr)
-        {
+    for (size_t propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex) {
+        if (dynamic_cast<RESQML2_NS::CategoricalProperty*>(allValuesProperty[propIndex]) != nullptr) {
             atLeastOneCateProp = true;
             break;
         }

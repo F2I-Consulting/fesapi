@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "PolylineRepresentation.h"
+#include "AbstractRepresentation.h"
 
 /** . */
 namespace RESQML2_NS

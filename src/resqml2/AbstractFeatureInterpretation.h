@@ -18,11 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "GridConnectionSetRepresentation.h"
+#include "../common/AbstractObject.h"
 
 /** . */
 namespace RESQML2_NS
 {
+	class GridConnectionSetRepresentation;
+
 	/** Proxy class for an abstract feature interpretation. */
 	class AbstractFeatureInterpretation : public COMMON_NS::AbstractObject
 	{

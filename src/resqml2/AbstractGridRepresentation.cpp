@@ -26,10 +26,11 @@ under the License.
 
 #include "../eml2/AbstractHdfProxy.h"
 
-#include "AbstractStratigraphicOrganizationInterpretation.h"
-#include "UnstructuredGridRepresentation.h"
 #include "AbstractIjkGridRepresentation.h"
+#include "AbstractStratigraphicOrganizationInterpretation.h"
+#include "GridConnectionSetRepresentation.h"
 #include "RockFluidOrganizationInterpretation.h"
+#include "UnstructuredGridRepresentation.h"
 
 using namespace RESQML2_NS;
 using namespace std;

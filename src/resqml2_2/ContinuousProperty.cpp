@@ -77,8 +77,14 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 gsoap_resqml2_0_1::resqml20__ResqmlUom ContinuousProperty::getUom() const
 {
 	gsoap_resqml2_0_1::resqml20__ResqmlUom result;
-	gsoap_resqml2_0_1::soap_s2resqml20__ResqmlUom(gsoapProxy2_3->soap, static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3)->Uom.c_str(), &result);
-	return result;
+	const int tmp = gsoap_resqml2_0_1::soap_s2resqml20__ResqmlUom(gsoapProxy2_3->soap, static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3)->Uom.c_str(), &result);
+
+	return tmp != SOAP_OK ? gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc : result;
+}
+
+std::string ContinuousProperty::getUomAsString() const
+{
+	return static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3)->Uom;
 }
 
 std::string ContinuousProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName)

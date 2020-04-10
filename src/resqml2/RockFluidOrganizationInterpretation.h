@@ -22,6 +22,8 @@ under the License.
 
 namespace RESQML2_NS
 {
+	class AbstractGridRepresentation;
+
 	class RockFluidOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
 	public:
@@ -30,7 +32,7 @@ namespace RESQML2_NS
 		*/
 		virtual ~RockFluidOrganizationInterpretation() {}
 		
-		DLL_IMPORT_OR_EXPORT std::vector<AbstractGridRepresentation *> getGridRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<AbstractGridRepresentation*> getGridRepresentationSet() const;
 
 		/**
 		* @return The count of grid representation associated to this rock fluid organization.

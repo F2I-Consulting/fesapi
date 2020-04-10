@@ -49,23 +49,19 @@ namespace RESQML2_NS
 
 		/**
 		 * Gets the unit of measure of the values of this property. If <tt>
-		 * resqml20__ResqmlUom::resqml20__ResqmlUom__Euc </tt> is returned, you should check if an
-		 * extrametadata called "Uom" also exists. If so, it would mean that the property uses a non
-		 * standard unit of measure. This is an official workaround for a known issue of Resqml 2.0.1.
+		 * resqml20__ResqmlUom::resqml20__ResqmlUom__Euc </tt> is returned,
+		 * you should check if getUomAsString() gives you another result : it would be that the writer would have used a non standard uom.
 		 *
 		 * @returns	The unit of measure of the values of this property.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml20__ResqmlUom getUom() const = 0;
 
 		/**
-		 * Gets the unit of measure of the values of this property as a string. If "Euc"  is returned,
-		 * you should check if an extrametadata called "Uom" also exists. If so, it would mean that the
-		 * property uses a non standard uom. This is an official workaround for a known issue of Resqml
-		 * 2.0.1.
+		 * Gets the unit of measure of the values of this property as a string.
 		 *
 		 * @returns	The unit of measure of the values of this property as a string.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getUomAsString() const;
+		DLL_IMPORT_OR_EXPORT virtual std::string getUomAsString() const = 0;
 
 		/**
 		 * @brief Adds a 1d array of explicit double values to the property values.

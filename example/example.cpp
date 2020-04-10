@@ -74,6 +74,7 @@ under the License.
 #include "resqml2_0_1/DiscreteProperty.h"
 #include "resqml2_0_1/CategoricalProperty.h"
 #include "resqml2_0_1/StringTableLookup.h"
+#include "resqml2/GridConnectionSetRepresentation.h"
 #include "resqml2/IjkGridExplicitRepresentation.h"
 #include "resqml2/IjkGridParametricRepresentation.h"
 #include "resqml2/UnstructuredGridRepresentation.h"

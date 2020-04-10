@@ -22,6 +22,8 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
+#include "AbstractFeatureInterpretation.h"
+
 using namespace RESQML2_NS;
 using namespace std;
 
