@@ -175,9 +175,9 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setGeometryAsParametricSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
-			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, EML2_NS::AbstractHdfProxy* proxy,
-			unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
+			double const * parameters, double const * controlPoints, double const * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short const * pillarKind, EML2_NS::AbstractHdfProxy* proxy,
+			unsigned long splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
+			unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 
 		/**
 		 * Same as setGeometryAsParametricSplittedPillarNodes where the hdf datasets are already written

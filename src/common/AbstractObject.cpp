@@ -1235,6 +1235,43 @@ void AbstractObject::readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__Abst
 		throw invalid_argument("The integer array type is not supported yet.");
 }
 
+void AbstractObject::readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloatingPointArray * arrayInput, double * arrayOutput) const
+{
+	switch (arrayInput->soap_type()) {
+	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray:
+	case SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray:
+	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatExternalArray:
+	{
+		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(arrayInput)->Values->ExternalFileProxy) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
+			if (hdfProxy == nullptr) {
+				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
+			}
+			hdfProxy->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		}
+		break;
+	}
+	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray:
+	{
+		gsoap_eml2_3::eml23__FloatingPointConstantArray* constantArray = static_cast<gsoap_eml2_3::eml23__FloatingPointConstantArray*>(arrayInput);
+		std::fill(arrayOutput, arrayOutput + constantArray->Count, constantArray->Value);
+		break;
+	}
+	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray:
+	{
+		gsoap_eml2_3::eml23__FloatingPointLatticeArray* latticeArray = static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray*>(arrayInput);
+		if (latticeArray->Offset.size() > 1) {
+			throw invalid_argument("The integer lattice array contains more than one offset.");
+		}
+		for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
+			arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
+		}
+		break;
+	}
+	default: throw invalid_argument("The integer array type is not supported yet.");
+	}
+}
+
 void AbstractObject::readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const
 {
 	long soapType = arrayInput->soap_type();

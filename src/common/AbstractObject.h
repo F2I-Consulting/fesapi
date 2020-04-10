@@ -178,7 +178,7 @@ namespace COMMON_NS
 		void changeToPartialObject();
 
 		/**
-		 * Read an input array which come from XML (and potentially HDF5) and store it into a
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
 		 * preallocated output array in memory. It does not allocate or deallocate memory.
 		 *
 		 * @param [in,out]	arrayInput 	If non-null, the array input.
@@ -187,7 +187,16 @@ namespace COMMON_NS
 		void readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray * arrayInput, double * arrayOutput) const;
 
 		/**
-		 * Read an input array which come from XML (and potentially HDF5) and store it into a
+		 * Read an input array which come from EML 2.3 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in,out]	arrayInput 	If non-null, the array input.
+		 * @param [in,out]	arrayOutput	If non-null, the array output.
+		 */
+		void readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloatingPointArray * arrayInput, double * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
 		 * preallocated output array in memory. It does not allocate or deallocate memory.
 		 *
 		 * @param [in,out]	arrayInput 	If non-null, the array input.
@@ -196,7 +205,7 @@ namespace COMMON_NS
 		void readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const;
 
 		/**
-		 * Read an input array which come from XML (and potentially HDF5) and store it into a
+		 * Read an input array which come from EML 2.3 (and potentially HDF5) and store it into a
 		 * preallocated output array in memory. It does not allocate or deallocate memory.
 		 *
 		 * @param [in,out]	arrayInput 	If non-null, the array input.

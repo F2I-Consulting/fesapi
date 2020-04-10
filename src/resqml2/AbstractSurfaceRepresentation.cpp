@@ -43,9 +43,8 @@ unsigned int AbstractSurfaceRepresentation::getBoundariesCount() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return static_cast<gsoap_eml2_3::resqml22__AbstractSurfaceRepresentation*>(gsoapProxy2_3)->Boundaries.size();
 	}
-	else {
-		throw std::logic_error("Unsupported version of RESQML");
-	}
+
+	throw std::logic_error("Unsupported version of RESQML");
 }
 
 COMMON_NS::DataObjectReference AbstractSurfaceRepresentation::getOuterRingDor(unsigned int index) const

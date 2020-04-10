@@ -46,6 +46,7 @@ target_compile_options(${CPP_LIBRARY_NAME}	PRIVATE
 	$<$<CXX_COMPILER_ID:MSVC>:/W4>
 	$<$<CXX_COMPILER_ID:GNU>:-Wall>
 	$<$<CXX_COMPILER_ID:GNU>:-Wextra>
+	$<$<CXX_COMPILER_ID:GNU>:-Wcast-qual>
 	$<$<CXX_COMPILER_ID:GNU>:-pedantic>
 	$<$<CXX_COMPILER_ID:CLANG>:-Weverything>
 )
