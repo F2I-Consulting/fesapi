@@ -263,12 +263,12 @@ namespace COMMON_NS
 		* Convert a EML 2.2 Data Object Reference into a DataObjectRepository relationship.
 		*/
 		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor);
-
+#if WITH_EXPERIMENTAL
 		/**
 		* Convert a EML 2.3 Data Object Reference into a DataObjectRepository relationship.
 		*/
 		void convertDorIntoRel(gsoap_eml2_3::eml23__DataObjectReference const* dor);
-
+#endif
 		/**
 		* Same as convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor).
 		* Also check that the content type of the DOR is OK with the target datatype in memory.

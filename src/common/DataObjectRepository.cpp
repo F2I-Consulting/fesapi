@@ -23,7 +23,9 @@ under the License.
 
 #include "../common/HdfProxyFactory.h"
 
+#if WITH_EXPERIMENTAL
 #include "GraphicalInformationSet.h"
+#endif
 
 #include "../resqml2_0_1/PropertyKindMapper.h"
 
@@ -461,10 +463,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 	else if (contentType.find("application/x-resqml+xml;version=2.2;type=") != string::npos) {
 		wrapper = getResqml2_2WrapperFromGsoapContext(datatype);
 	}
-#endif
 	else if (contentType.find("application/x-eml+xml;version=2.3;type=") != string::npos) {
 		wrapper = getEml2_3WrapperFromGsoapContext(datatype);
 	}
+#endif
 
 	if (wrapper != nullptr) {
 		if (gsoapContext->error != SOAP_OK) {
@@ -667,6 +669,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml
 	throw invalid_argument("The content type " + contentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
 }
 
+#if WITH_EXPERIMENTAL
 COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_3::eml23__DataObjectReference const* dor)
 {
 	const size_t lastEqualCharPos = dor->ContentType.find_last_of('='); // The XML tag is after "type="
@@ -680,6 +683,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_3::eml
 
 	throw invalid_argument("The content type " + contentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
 }
+#endif
 
 //************************************
 //************ HDF *******************
@@ -1538,12 +1542,12 @@ PRODML2_1_NS::FluidCharacterization* DataObjectRepository::createFluidCharacteri
 	return new PRODML2_1_NS::FluidCharacterization(this, guid, title);
 }
 
+#if WITH_EXPERIMENTAL
 COMMON_NS::GraphicalInformationSet* DataObjectRepository::createGraphicalInformationSet(const std::string & guid, const std::string & title)
 {
 	return new COMMON_NS::GraphicalInformationSet(this, guid, title);
 }
 
-#if WITH_EXPERIMENTAL
 RESQML2_2_NS::DiscreteColorMap* DataObjectRepository::createDiscreteColorMap(const std::string& guid, const std::string& title)
 {
 	return new RESQML2_2_NS::DiscreteColorMap(this, guid, title);
@@ -2212,14 +2216,15 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 		
 	return wrapper;
 }
-#endif
 
 COMMON_NS::AbstractObject* DataObjectRepository::getEml2_3WrapperFromGsoapContext(const std::string & datatype)
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;
 	if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(COMMON_NS, GraphicalInformationSet, gsoap_eml2_3, eml23)
-		return wrapper;
+	
+	return wrapper;
 }
+#endif
 
 int DataObjectRepository::getGsoapErrorCode() const
 {

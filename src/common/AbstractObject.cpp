@@ -1423,7 +1423,7 @@ void AbstractObject::convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference 
 	}
 	getRepository()->addRelationship(this, targetObj);
 }
-
+#if WITH_EXPERIMENTAL
 void AbstractObject::convertDorIntoRel(gsoap_eml2_3::eml23__DataObjectReference const* dor)
 {
 	AbstractObject* targetObj = getRepository()->getDataObjectByUuid(dor->Uuid);
@@ -1436,7 +1436,7 @@ void AbstractObject::convertDorIntoRel(gsoap_eml2_3::eml23__DataObjectReference 
 	}
 	getRepository()->addRelationship(this, targetObj);
 }
-
+#endif
 COMMON_NS::AbstractHdfProxy* AbstractObject::getHdfProxyFromDataset(gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset, bool throwException) const
 {
 	COMMON_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);

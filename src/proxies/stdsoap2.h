@@ -33,6 +33,14 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 
 #define GSOAP_VERSION 20892
 
+#ifdef _WIN32
+#pragma warning(disable : 4458) /* declaration hides class member */
+#endif
+
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wcast-qual"
+#endif 
+
 #ifdef WITH_SOAPDEFS_H
 # include "soapdefs.h"          /* include user-defined stuff in soapdefs.h */
 #endif
