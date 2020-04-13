@@ -108,8 +108,6 @@ int AbstractObject::getGsoapType() const {
 	else {
 		return partialObject->soap_type();
 	}
-
-	throw invalid_argument("There is no available gsoap proxy instance.");
 }
 
 string AbstractObject::getUuid() const
@@ -1243,7 +1241,7 @@ unsigned int AbstractObject::getExtraMetadataCount() const
 	else if (gsoapProxy2_2 != nullptr) {
 		return getExtraMetadataCountV2_2();
 	}
-	else if (gsoapProxy2_2 != nullptr) {
+	else if (gsoapProxy2_3 != nullptr) {
 		return getExtraMetadataCountV2_3();
 	}
 	else {

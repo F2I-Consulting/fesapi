@@ -29,7 +29,7 @@ namespace RESQML2_2_NS
 		/**
 		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
 		 */
-		gsoap_eml2_2::resqml22__HsvColor* getColor(double colorIndex) const;
+		gsoap_eml2_3::resqml22__HsvColor* getColor(double colorIndex) const;
 	public:
 		/**
 		 * Only to be used in partial transfer context
@@ -46,7 +46,7 @@ namespace RESQML2_2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		DiscreteColorMap(gsoap_eml2_2::resqml22__DiscreteColorMap* fromGsoap) :
+		DiscreteColorMap(gsoap_eml2_3::resqml22__DiscreteColorMap* fromGsoap) :
 			AbstractColorMap(fromGsoap) {}
 
 		/**

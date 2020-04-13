@@ -322,7 +322,7 @@ namespace COMMON_NS
 			}
 			getRepository()->addRelationship(this, targetObj);
 		}
-
+#if WITH_EXPERIMENTAL
 		/**
 		* Same as convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor).
 		* Also check that the content type of the DOR is OK with the target datatype in memory.
@@ -340,7 +340,7 @@ namespace COMMON_NS
 			}
 			getRepository()->addRelationship(this, targetObj);
 		}
-
+#endif
 		/**
 		* Get an Hdf Proxy from a EML 2.0 dataset.
 		*/

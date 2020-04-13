@@ -21,7 +21,7 @@ under the License.
 #include "../common/GraphicalInformationSet.h"
 
 using namespace std;
-using namespace gsoap_eml2_2;
+using namespace gsoap_eml2_3;
 using namespace COMMON_NS;
 using namespace RESQML2_2_NS;
 
