@@ -161,13 +161,17 @@ set (FESAPI_RESQML2_NS resqml2 CACHE STRING "Namespace for resqml2 objects")
 set (FESAPI_RESQML2_0_1_NS resqml2_0_1 CACHE STRING "Namespace for resqml2_0_1 objects")
 if (WITH_EXPERIMENTAL)
 	set (FESAPI_RESQML2_2_NS resqml2_2 CACHE STRING "Namespace for resqml2_2 objects")
-endif(WITH_EXPERIMENTAL)
+endif ()
 set (FESAPI_WITSML2_0_NS witsml2_0 CACHE STRING "Namespace for witsml2_0 objects")
 
 configure_file(${FESAPI_ROOT_DIR}/cmake/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/nsDefinitions.h) # Overwrite if different
 
 file (GLOB FESAPI_COMMON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/common/*.cpp)
 file (GLOB FESAPI_COMMON_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/common/*.h)
+if (NOT WITH_EXPERIMENTAL)
+	list(REMOVE_ITEM FESAPI_COMMON_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/common/GraphicalInformationSet.cpp")
+	list(REMOVE_ITEM FESAPI_COMMON_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/common/GraphicalInformationSet.h")
+endif ()
 
 file (GLOB FESAPI_TOOLS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tools/*.cpp)
 file (GLOB FESAPI_TOOLS_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/tools/*.h)
@@ -246,6 +250,7 @@ if (WIN32)
 	source_group ("${RESQML_PREFIX_2}" FILES ${FESAPI_RESQML_2_SOURCES} ${FESAPI_RESQML_2_HEADERS})
 
 	source_group ("${RESQML_PREFIX_2_0_1}" FILES ${FESAPI_RESQML_2_0_1_SOURCES} ${FESAPI_RESQML_2_0_1_HEADERS})
+	
 	if (WITH_EXPERIMENTAL)
 		source_group ("${RESQML_PREFIX_2_2}" FILES ${FESAPI_RESQML_2_2_SOURCES} ${FESAPI_RESQML_2_2_HEADERS})
 	endif(WITH_EXPERIMENTAL)
@@ -319,14 +324,14 @@ IF (UNIX) # Methods are not exported  under windows
 	)
 ENDIF (UNIX)
 
-# epc headers
+# EPC headers
 INSTALL (
 	FILES ${FESAPI_EPC_HEADERS}
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/epc/
 	COMPONENT fesapi_headers
 )
 
-# resqml headers
+# RESQML headers
 INSTALL (
 	FILES ${FESAPI_RESQML_2_HEADERS}
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${RESQML_PREFIX_2}/
@@ -347,14 +352,14 @@ if (WITH_EXPERIMENTAL)
 	)
 endif(WITH_EXPERIMENTAL)
 
-# witsml headers
+# WITSML headers
 INSTALL (
 	FILES ${FESAPI_WITSML_2_0_HEADERS}
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${WITSML_PREFIX_2_0}/
 	COMPONENT fesapi_headers
 )
 
-# prodml headers
+# PRODML headers
 INSTALL (
 	FILES ${FESAPI_PRODML_2_1_HEADERS}
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${PRODML_PREFIX_2_1}/

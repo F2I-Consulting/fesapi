@@ -88,7 +88,7 @@ StratigraphicColumn* EarthModelInterpretation::getStratiColumn() const
 	return repository->getDataObjectByUuid<StratigraphicColumn>(static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn->UUID);
 }
 
-unsigned int EarthModelInterpretation::getStratiOccurenceCount() const
+unsigned int EarthModelInterpretation::getStratiOccurrenceCount() const
 {
 	const size_t result = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.size();
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
@@ -98,7 +98,7 @@ unsigned int EarthModelInterpretation::getStratiOccurenceCount() const
 	return static_cast<unsigned int>(result);
 }
 
-StratigraphicOccurrenceInterpretation* EarthModelInterpretation::getStratiOccurence(unsigned int index) const
+StratigraphicOccurrenceInterpretation* EarthModelInterpretation::getStratiOccurrence(unsigned int index) const
 {
 	_resqml20__EarthModelInterpretation* earthModelInterpretation = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1);
 	if (index < earthModelInterpretation->StratigraphicOccurrences.size()) {
@@ -109,7 +109,7 @@ StratigraphicOccurrenceInterpretation* EarthModelInterpretation::getStratiOccure
 	}
 }
 
-void EarthModelInterpretation::pushBackStratiOccurence(StratigraphicOccurrenceInterpretation * stratiOccurence)
+void EarthModelInterpretation::pushBackStratiOccurrence(StratigraphicOccurrenceInterpretation * stratiOccurence)
 {
 	getRepository()->addRelationship(this, stratiOccurence);
 		

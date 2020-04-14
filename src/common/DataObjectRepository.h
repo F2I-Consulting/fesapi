@@ -24,6 +24,7 @@ under the License.
 #include "../proxies/gsoap_resqml2_0_1H.h"
 #include "../proxies/gsoap_eml2_1H.h"
 #include "../proxies/gsoap_eml2_2H.h"
+#include "../proxies/gsoap_eml2_3H.h"
 
 #include "../nsDefinitions.h"
 
@@ -163,7 +164,9 @@ namespace COMMON_NS
 	class AbstractHdfProxy;
 	class HdfProxyFactory;
 	class PropertyKind;
+#if WITH_EXPERIMENTAL
 	class GraphicalInformationSet;
+#endif
 
 	/**
 	* This abstract class acts as a buffer between the RESQML (business) classes and the persisted data.
@@ -208,9 +211,9 @@ namespace COMMON_NS
 		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
 #if WITH_EXPERIMENTAL
 		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
-#endif
-		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
 
+		COMMON_NS::AbstractObject* getEml2_3WrapperFromGsoapContext(const std::string& datatype);
+#endif
 		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
 		COMMON_NS::AbstractObject* getProdml2_1WrapperFromGsoapContext(const std::string & datatype);
 
@@ -697,10 +700,15 @@ namespace COMMON_NS
 		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_1::eml21__DataObjectReference const * dor);
 
 		/**
-		* Create a partial object in this repository based on a EML2.1 Data Object Reference
+		* Create a partial object in this repository based on a EML2.2 Data Object Reference
 		*/
 		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_2::eml22__DataObjectReference const * dor);
-
+#if WITH_EXPERIMENTAL
+		/**
+		* Create a partial object in this repository based on a EML2.3 Data Object Reference
+		*/
+		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_3::eml23__DataObjectReference const* dor);
+#endif
 		/**
 		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title + a version.
 		* Such an object is useful to describe the underlying data object by means of a minimal amount of information : UUID, Title, Version.
@@ -1022,8 +1030,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::DeviationSurveyRepresentation * deviationSurvey);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
-
-		
+	
 #if WITH_EXPERIMENTAL
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj, bool previousEnergisticsVersion = false);
 
@@ -1276,16 +1283,16 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT PRODML2_1_NS::FluidCharacterization* createFluidCharacterization(const std::string & guid, const std::string & title);
 
 		//************************************
-		//************ EML2.2 ****************
+		//************ EML2.3 ****************
 		//************************************
 
+#if WITH_EXPERIMENTAL
 		DLL_IMPORT_OR_EXPORT GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
 
-#if WITH_EXPERIMENTAL
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::DiscreteColorMap* createDiscreteColorMap(const std::string& guid, const std::string& title);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
-			gsoap_eml2_2::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml22__InterpolationMethod interpolationMethod);
+			gsoap_eml2_3::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_3::resqml22__InterpolationMethod interpolationMethod);
 #endif
 
 		//************************************

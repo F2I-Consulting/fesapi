@@ -214,8 +214,8 @@ void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation* in
 		}
 	}
 #if WITH_EXPERIMENTAL
-	else if (gsoapProxy2_2 != nullptr) {
-		if (static_cast<gsoap_eml2_2::resqml22__AbstractRepresentation*>(gsoapProxy2_2)->RepresentedInterpretation != nullptr) {
+	else if (gsoapProxy2_3 != nullptr) {
+		if (static_cast<gsoap_eml2_3::resqml22__AbstractRepresentation*>(gsoapProxy2_3)->RepresentedInterpretation != nullptr) {
 			getRepository()->deleteRelationship(this, getInterpretation());
 		}
 	}
@@ -227,8 +227,8 @@ void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation* in
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation = interp->newResqmlReference();
 	}
 #if WITH_EXPERIMENTAL
-	else if (gsoapProxy2_2 != nullptr) {
-		static_cast<gsoap_eml2_2::resqml22__AbstractRepresentation*>(gsoapProxy2_2)->RepresentedInterpretation = interp->newEml22Reference();
+	else if (gsoapProxy2_3 != nullptr) {
+		static_cast<gsoap_eml2_3::resqml22__AbstractRepresentation*>(gsoapProxy2_3)->RepresentedInterpretation = interp->newEml23Reference();
 	}
 #endif
 	else
@@ -246,9 +246,9 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractRepresentation::getInterp
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation;
 	}
 #if WITH_EXPERIMENTAL
-	else if (gsoapProxy2_2 != nullptr) {
-		return static_cast<gsoap_eml2_2::resqml22__AbstractRepresentation*>(gsoapProxy2_2)->RepresentedInterpretation != nullptr ?
-			misc::eml22ToEml20Reference(static_cast<gsoap_eml2_2::resqml22__AbstractRepresentation*>(gsoapProxy2_2)->RepresentedInterpretation, gsoapProxy2_2->soap) : nullptr;
+	else if (gsoapProxy2_3 != nullptr) {
+		return static_cast<gsoap_eml2_3::resqml22__AbstractRepresentation*>(gsoapProxy2_3)->RepresentedInterpretation != nullptr ?
+			misc::eml23ToEml20Reference(static_cast<gsoap_eml2_3::resqml22__AbstractRepresentation*>(gsoapProxy2_3)->RepresentedInterpretation, gsoapProxy2_3->soap) : nullptr;
 	}
 #endif
 	else {
@@ -509,7 +509,7 @@ void AbstractRepresentation::loadTargetRelationships()
 			}
 		}
 	}
-	// TODO : else if (gsoapProxy2_2 != nullptr)
+	// TODO : else if (gsoapProxy2_3 != nullptr)
 }
 
 void AbstractRepresentation::addSeismic3dCoordinatesToPatch(const unsigned int patchIndex, double* inlines, double* crosslines, const unsigned int& pointCount,
