@@ -903,7 +903,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	gridConnSet432rh->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, -1, hdfProxy);
 
 	//**************
-	// Properties
+	// Discrete Properties
 	//**************
 	propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", gsoap_eml2_1::eml21__QuantityClassKind__not_x0020a_x0020measure);
 	discreteProp1 = pck->createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
@@ -969,6 +969,17 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		dynamicContinuousProp->pushBackDoubleHdf5ArrayOfValues(
 			valuesTime, dimensions, 4, hdfProxy);
 	}
+
+	//**************
+	// Categorical Properties
+	//**************
+
+	RESQML2_NS::StringTableLookup* stringTableLookup = pck->createStringTableLookup("62245eb4-dbf4-4871-97de-de9e4f4597be", "My String Table Lookup");
+	stringTableLookup->addValue("Cell index 0", 0);
+	stringTableLookup->addValue("Cell index 1", 1);
+	RESQML2_NS::CategoricalProperty* categoricalProp = pck->createCategoricalProperty(ijkgrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)", 1,
+		gsoap_eml2_3::resqml22__IndexableElement__cells, stringTableLookup, propType1);
+	categoricalProp->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
 
 	//**************
 	// LGR
