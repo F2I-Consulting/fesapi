@@ -950,6 +950,17 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	continuousPropertySeries->pushBackDoubleHdf5Array1dOfValues(valuesTime, 6, hdfProxy);
 
 	//**************
+	// Categorical Properties
+	//**************
+
+	StringTableLookup* stringTableLookup = pck->createStringTableLookup("62245eb4-dbf4-4871-97de-de9e4f4597be", "My String Table Lookup");
+	stringTableLookup->addValue("Cell index 0", 0);
+	stringTableLookup->addValue("Cell index 1", 1);
+	CategoricalProperty* categoricalProp = pck->createCategoricalProperty(ijkgrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)", 1,
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, stringTableLookup, propType1);
+	categoricalProp->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
+
+	//**************
 	// LGR
 	//**************
 

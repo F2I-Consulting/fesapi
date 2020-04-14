@@ -52,10 +52,10 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
+	setRepresentation(rep);
+
 	prop->Lookup = strLookup->newResqmlReference();
 	getRepository()->addRelationship(this, strLookup);
-
-	setRepresentation(rep);
 }
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
@@ -70,12 +70,12 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	prop->Lookup = strLookup->newResqmlReference();
-	getRepository()->addRelationship(this, strLookup);
-
 	setRepresentation(rep);
 
 	setLocalPropertyKind(localPropKind);
+
+	prop->Lookup = strLookup->newResqmlReference();
+	getRepository()->addRelationship(this, strLookup);
 }
 
 void CategoricalProperty::loadTargetRelationships()
