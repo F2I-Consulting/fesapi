@@ -72,6 +72,10 @@ COMMON_NS::DataObjectReference AbstractSurfaceRepresentation::getOuterRingDor(un
 
 void AbstractSurfaceRepresentation::pushBackOuterRing(PolylineRepresentation * outerRing)
 {
+	if (outerRing == nullptr) {
+		throw std::invalid_argument("outerRing cannot be nullptr.");
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractSurfaceRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml20__AbstractSurfaceRepresentation*>(gsoapProxy2_0_1);
 

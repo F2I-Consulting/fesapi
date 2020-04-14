@@ -137,7 +137,7 @@ void DeviationSurveyRepresentation::getMdValues(double * values) const
 		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values);
 	}
 	else {
-		throw invalid_argument("Mds can only be defined using DoubleHdf5Array for now in fesapi.");
+		throw logic_error("Mds can only be defined using DoubleHdf5Array for now in fesapi.");
 	}
 }
 

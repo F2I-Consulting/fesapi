@@ -99,7 +99,7 @@ unsigned int DeviationSurveyRepresentation::getWellboreTrajectoryRepresentationC
 	const size_t result = getWellboreTrajectoryRepresentationSet().size();
 
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too many associated WellboreTrajectoryRepresentation.");
+		throw range_error("There are too many associated WellboreTrajectoryRepresentation.");
 	}
 
 	return static_cast<unsigned int>(result);

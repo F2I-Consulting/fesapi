@@ -28,31 +28,57 @@ namespace RESQML2_NS
 	class StratigraphicOccurrenceInterpretation;
 	class StructuralOrganizationInterpretation;
 
-	/** This class is a container for other organizations that are consistent to each others. */
+	/**
+	 * This class is a container for stratigraphic, structural and rock fluid organization interpretations that are consistent to each others.
+	 * 
+	 * BUSINESS RULE: An earth model Interpretation interprets only an earth model feature.
+	 */
 	class EarthModelInterpretation : public AbstractFeatureInterpretation
 	{
 	public:
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~EarthModelInterpretation() {}
 
 		 /**
-		 * Structural
+		 * Get the count of structural organization interpretations associated to this earth model interpretation.
 		 *
-		 * @returns	The structural organization interpretation count.
+		 * @returns	The count of associated structural organization interpretations.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getStructuralOrganizationInterpretationCount() const = 0;
 
-		/** A structural organization interpretationDOR. */
+		/**
+		 * Gets the DOR of a given associated structural organization interpretation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=
+		 * 									getStructuralOrganizationInterpretationCount()</tt>.
+		 *
+		 * @param 	index	Zero-based index of the associated structural organization interpretation we
+		 * 					look for the DOR.
+		 *
+		 * @returns	The DOR of the structural organization interpretation at position @p index.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStructuralOrganizationInterpertationDor(unsigned int index) const = 0;
 
-		/** A structural organization interpretation*. */
+		/**
+		 * Gets a given associated structural organization interpretation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=
+		 * 									getStructuralOrganizationInterpretationCount()</tt>.
+		 *
+		 * @param 	index	Zero-based index of the associated structural organization interpretation we
+		 * 					look for.
+		 *
+		 * @returns	The structural organization interpretation at position @p index.
+		 */
 		DLL_IMPORT_OR_EXPORT StructuralOrganizationInterpretation* getStructuralOrganizationInterpertation(unsigned int index) const;
 
 		/**
-		 * Pushes back structural organization interpretation
+		 * Pushes back a structural organization interpretation.
 		 *
-		 * @param [in,out]	structOrganization	If non-null, the structure organization.
+		 * @exception	std::invalid_argument	If <tt>structOrganization == nullptr</tt>.
+		 *
+		 * @param [in]	structOrganization	The structural organization interpretation to push back.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackStructuralOrganizationInterpretation(StructuralOrganizationInterpretation * structOrganization) = 0;
 
@@ -66,77 +92,121 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual bool hasStratiColumn() const = 0;
 
 		/**
-		 * Sets strati column
+		 * Sets the stratigraphic column.
 		 *
-		 * @param [in,out]	stratiColumn	If non-null, the strati column.
+		 * @exception	std::invalid_argument	If <tt>stratiColumn == nullptr</tt>.
+		 *
+		 * @param [in]	stratiColumn	The stratigraphic column to set.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setStratiColumn(StratigraphicColumn * stratiColumn) = 0;
 
 		/**
-		 * Get the strati column DOR associated to this earth model interpretation. Throw an exception if
-		 * there is no strati column associated. Check with hasStratiColumn().
+		 * Gets the DOR of the stratigraphic column associated to this earth model interpretation.
+		 *
+		 * @returns	The DOR of the stratigraphic column associated to this earth model interpretation if
+		 * 			it exists, else empty DOR.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStratiColumnDor() const = 0;
 
 		/**
-		 * Get the strati column associated to this earth model interpretation. Throw an exception if
-		 * there is no strati column associated. Check with hasStratiColumn().
+		 * Gets the stratigraphic column associated to this earth model interpretation.
+		 *
+		 * @returns	The stratigraphic column associated to this earth model interpretation if it exists,
+		 * 			else @c nullptr.
 		 */
 		DLL_IMPORT_OR_EXPORT StratigraphicColumn* getStratiColumn() const;
 
 		/**
-		 * Strati occurences
+		 * Get the count of stratigraphic occurrence interpretations associated to this earth model
+		 * interpretation.
 		 *
-		 * @returns	The strati occurence count.
+		 * @exception	std::range_error	If the count of stratigraphic occurrence interpretations is
+		 * 									strictly greater than unsigned int max.
+		 *
+		 * @returns	The count of associated stratigraphic occurrence interpretations.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getStratiOccurenceCount() const = 0;
 
-		/** A stratigraphic occurrence interpretation DOR. */
+		/**
+		 * Gets the DOR of a given associated stratigraphic occurrence interpretation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;= getStratiOccurrenceCount()</tt>.
+		 *
+		 * @param 	index	Zero-based index of the associated stratigraphic occurrence interpretation we
+		 * 					look for the DOR.
+		 *
+		 * @returns	The DOR of the stratigraphic occurrence interpretation at position @p index.
+		 */
 		virtual COMMON_NS::DataObjectReference getStratiOccurenceDor(unsigned int index) const = 0;
 
-		/** A stratigraphic occurrence interpretation. */
+		/**
+		 * Gets a given associated stratigraphic occurrence interpretation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;= getStratiOccurrenceCount()</tt>.
+		 *
+		 * @param 	index	Zero-based index of the associated stratigraphic occurrence interpretation we
+		 * 					look for.
+		 *
+		 * @returns	The stratigraphic occurrence interpretation at position @p index.
+		 */
 		DLL_IMPORT_OR_EXPORT StratigraphicOccurrenceInterpretation* getStratiOccurence(unsigned int index) const;
 
-		/**
-		 * Pushes back strati occurence
-		 *
-		 * @param [in,out]	stratiOccurence	If non-null, the strati occurence.
-		 */
+		 /**
+		  * Pushes back a stratigraphic occurrence interpretation.
+		  *
+		  * @exception	std::invalid_argument	If <tt>stratiOccurrence == nullptr</tt>.
+		  *
+		  * @param [in]	stratiOccurrence	The stratigraphic occurrence interpretation to push back.
+		  */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackStratiOccurence(StratigraphicOccurrenceInterpretation * stratiOccurence) = 0;
 
-		/**
-		 * Rock Fluid
-		 *
-		 * @returns	The Rock Fluid organization count.
-		 */
+		 /**
+		  * Get the count of rock fluid organization interpretations associated to this earth model
+		  * interpretation.
+		  *
+		  * @returns	The count of associated rock fluid organization interpretations.
+		  */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getRockFluidOrganizationInterpretationCount() const = 0;
 
-		/**
-		 * Pushes back rock fluid organization interpretation
-		 *
-		 * @param [in,out]	rockFluid	If non-null, the rock fluid.
-		 */
+		 /**
+		  * Pushes back a rock fluid organization interpretation.
+		  *
+		  * @exception	std::invalid_argument	If <tt>rockFluid == nullptr</tt>.
+		  *
+		  * @param [in]	rockFluid	The rock fluid organization interpretation to push back.
+		  */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackRockFluidOrganizationInterpretation(RockFluidOrganizationInterpretation* rockFluid) = 0;
 
-		/** A rock fluid organization interpretation DOR. */
+		/**
+		 * Gets the DOR of a given associated rock fluid organization interpretation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=
+		 * 									getRockFluidOrganizationInterpretationCount()</tt>.
+		 *
+		 * @param 	index	Zero-based index of the associated rock fluid organization interpretation we
+		 * 					look for the DOR.
+		 *
+		 * @returns	The DOR of the rock fluid organization interpretation at position @p index.
+		 */
 		virtual COMMON_NS::DataObjectReference getRockFluidOrganizationInterpretationDor(unsigned int index) const = 0;
 
-		/** A rock fluid organization interpretation. */
+		/**
+		 * Gets a given associated rock fluid organization interpretation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=
+		 * 									getRockFluidOrganizationInterpretationCount()</tt>.
+		 *
+		 * @param 	index	Zero-based index of the associated rock fluid organization interpretation we
+		 * 					look for.
+		 *
+		 * @returns	The rock fluid organization interpretation at position @p index.
+		 */
 		DLL_IMPORT_OR_EXPORT RockFluidOrganizationInterpretation* getRockFluidOrganizationInterpretation(unsigned int index) const;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 
     protected:
 

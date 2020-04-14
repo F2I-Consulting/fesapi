@@ -153,7 +153,7 @@ LONG64 BlockedWellboreRepresentation::getGridIndices(unsigned int * gridIndices)
 	else if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
 		const LONG64 constantXmlValue = static_cast<resqml20__IntegerConstantArray*>(xmlGridIndices)->Value;
 		if (constantXmlValue > (std::numeric_limits<LONG64>::max)()) {
-			throw std::range_error("The constant value is superior than unsigned int maximum value.");
+			throw std::range_error("The constant value is strictly superior than unsigned int maximum value.");
 		}
 
 		const unsigned int intervalCount = getMdValuesCount() - 1;
@@ -186,7 +186,7 @@ COMMON_NS::DataObjectReference BlockedWellboreRepresentation::getSupportingGridR
 	_resqml20__BlockedWellboreRepresentation* rep = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 
 	if (index >= rep->Grid.size()) {
-		throw range_error("The requested index is out of range of the available supporting grid representations.");
+		throw out_of_range("The requested index is out of range of the available supporting grid representations.");
 	}
 	return rep->Grid[index];
 }

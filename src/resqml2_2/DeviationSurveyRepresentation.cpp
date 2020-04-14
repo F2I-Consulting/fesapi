@@ -144,7 +144,7 @@ void DeviationSurveyRepresentation::getMdValues(double * values) const
 		getHdfProxyFromDataset(dsPart)->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, values);
 	}
 	else {
-		throw invalid_argument("Mds can only be defined using DoubleHdf5Array for now in fesapi.");
+		throw logic_error("Mds can only be defined using FloatingPointExternalArray for now in fesapi.");
 	}
 }
 
@@ -156,7 +156,7 @@ void DeviationSurveyRepresentation::getInclinations(double* values) const
 		getHdfProxyFromDataset(dsPart)->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, values);
 	}
 	else {
-		throw invalid_argument("Inclinations can only be defined using DoubleHdf5Array for now in fesapi.");
+		throw invalid_argument("Inclinations can only be defined using FloatingPointExternalArray for now in fesapi.");
 	}
 }
 
@@ -168,7 +168,7 @@ void DeviationSurveyRepresentation::getAzimuths(double* values) const
 		getHdfProxyFromDataset(dsPart)->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, values);
 	}
 	else {
-		throw invalid_argument("Azimuths can only be defined using DoubleHdf5Array for now in fesapi.");
+		throw invalid_argument("Azimuths can only be defined using FloatingPointExternalArray for now in fesapi.");
 	}
 }
 

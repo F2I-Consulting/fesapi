@@ -25,7 +25,11 @@ under the License.
 /** . */
 namespace RESQML2_NS
 {
-	/** Proxy class for a comment property. */
+	/**
+	 * Proxy class for a comment property. It is used to capture comments or annotations associated
+	 * with a given element type in a data-object, for example, associating comments on the specific
+	 * location of a well path.
+	 */
 	class CommentProperty : public AbstractValuesProperty
 	{
 	public:
@@ -37,7 +41,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT CommentProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractValuesProperty(partialObject) {}
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~CommentProperty() {}
 
 		/**

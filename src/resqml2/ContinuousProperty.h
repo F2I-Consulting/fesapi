@@ -44,13 +44,14 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT ContinuousProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~ContinuousProperty() {}
 
 		/**
 		 * Gets the unit of measure of the values of this property. If <tt>
-		 * resqml20__ResqmlUom::resqml20__ResqmlUom__Euc </tt> is returned,
-		 * you should check if getUomAsString() gives you another result : it would be that the writer would have used a non standard uom.
+		 * resqml20__ResqmlUom::resqml20__ResqmlUom__Euc </tt> is returned, you should check if
+		 * getUomAsString() gives you another result: it would be that the writer would have used a non
+		 * standard unit of measure.
 		 *
 		 * @returns	The unit of measure of the values of this property.
 		 */
