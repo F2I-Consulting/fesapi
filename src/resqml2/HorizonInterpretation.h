@@ -23,26 +23,17 @@ under the License.
 /** . */
 namespace RESQML2_NS
 {
-	/** A horizon interpretation. */
+	/** An interpretation of a horizon, which optionally provides stratigraphic information. */
 	class HorizonInterpretation : public BoundaryFeatureInterpretation
 	{
 	public:
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~HorizonInterpretation() {}
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:

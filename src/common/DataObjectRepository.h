@@ -2020,6 +2020,8 @@ namespace COMMON_NS
 		/**
 		 * Creates a 2d grid representation into this repository
 		 *
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
+		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the 2d grid representation. If empty then a new guid
 		 * 						will be generated.

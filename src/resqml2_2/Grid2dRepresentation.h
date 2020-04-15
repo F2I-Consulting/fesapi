@@ -23,41 +23,47 @@ under the License.
 /** . */
 namespace RESQML2_2_NS
 {
-	/** A grid 2D representation. */
+	/** A 2d grid representation. */
 	class Grid2dRepresentation final : public RESQML2_NS::Grid2dRepresentation
 	{
 	public:
 
 		/**
-		 * Only to be used in partial transfer context
+		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT Grid2dRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::Grid2dRepresentation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * Creates an instance of this class in a gSOAP context.
 		 *
-		 * @param [in,out]	interp	The interpretation this representation represents.
-		 * @param 		  	guid  	The guid to set to the new instance. If empty then a new guid will be
-		 * 							generated.
-		 * @param 		  	title 	A title for the instance to create.
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
+		 *
+		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param 	  	guid  	The guid to set to the 2d grid representation. If empty then a new guid
+		 * 						will be generated.
+		 * @param 	  	title 	The title to set to the 2d grid representation. If empty then \"unknown\"
+		 * 						title will be set.
 		 */
 		Grid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
 		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
+		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		Grid2dRepresentation(gsoap_eml2_3::_resqml22__Grid2dRepresentation* fromGsoap): RESQML2_NS::Grid2dRepresentation(fromGsoap) {}
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		~Grid2dRepresentation() {}
 
+		/**
+		 * Gets the HDF proxy data object reference.
+		 *
+		 * @returns	The HDF proxy data object reference.
+		 */
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
 		/**
