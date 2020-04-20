@@ -23,40 +23,42 @@ under the License.
 /** . */
 namespace RESQML2_NS
 {
-	/** A point set representation. */
+	/**
+	 * A representation that consists of one or more node patches. Each node patch is an array of
+	 * xyz coordinates for the 3D points. There is no implied linkage between the multiple patches.
+	 */
 	class PointSetRepresentation : public AbstractRepresentation
 	{
 	public:
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~PointSetRepresentation() {}
 
 		/**
-		 * Push back a new patch of polylines
+		 * Pushes back a new patch of points.
 		 *
-		 * @param 		  	xyzPointCount	The XYZ point count in this patch.
-		 * @param [in,out]	xyzPoints	 	The XYZ values of the points of the patch. Ordered by XYZ and
-		 * 									then by xyzPointCount. It must be three times xyzPointCount.
-		 * @param [in,out]	proxy		 	(Optional) The HDF proxy which defines where the XYZ points
-		 * 									will be stored.
-		 * @param [in,out]	localCrs	 	(Optional) The local CRS wher the points are given.
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
+		 * 										id defined in the repository.
+		 *
+		 * @param 		  	xyzPointCount	The xyz points count in this patch.
+		 * @param [in]	  	xyzPoints	 	The xyz values of the points of the patch. Ordered by xyz and
+		 * 									then by @p xyzPointCount. Size is <tt>3 * xyzPointCount</tt>.
+		 * @param [in,out]	proxy		 	(Optional) The HDF proxy which defines where the xyz points
+		 * 									will be stored. If @c nullptr (default), then the repository
+		 * 									default HDF proxy will be used.
+		 * @param [in]	  	localCrs	 	(Optional) The local CRS where the points are given. If @c
+		 * 									nullptr (default), then the repository default local CRS will
+		 * 									be used.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackGeometryPatch(
 			unsigned int xyzPointCount, double const * xyzPoints,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:

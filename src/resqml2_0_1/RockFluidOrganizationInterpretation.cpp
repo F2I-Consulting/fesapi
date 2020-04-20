@@ -68,7 +68,7 @@ unsigned int RockFluidOrganizationInterpretation::getRockFluidUnitInterpCount() 
 COMMON_NS::DataObjectReference RockFluidOrganizationInterpretation::getRockFluidUnitInterpretationDor(unsigned int index) const
 {
 	if (index >= getRockFluidUnitInterpCount()) {
-		throw range_error("The index is out of range");
+		throw out_of_range("The index is out of range");
 	}
 
 	return COMMON_NS::DataObjectReference(static_cast<_resqml20__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit);

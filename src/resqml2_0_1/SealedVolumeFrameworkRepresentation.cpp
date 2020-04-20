@@ -79,7 +79,7 @@ void SealedVolumeFrameworkRepresentation::setXmlInterpretationOfVolumeRegion(uns
 	}
 	_resqml20__SealedVolumeFrameworkRepresentation* svf = static_cast<_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1);
 	if (regionIndex >= svf->Regions.size()) {
-		throw range_error("The region index is out of range.");
+		throw out_of_range("The region index is out of range.");
 	}
 
 	svf->Regions[regionIndex]->Represents = stratiUnitInterp->newResqmlReference();
@@ -124,10 +124,10 @@ void SealedVolumeFrameworkRepresentation::pushBackVolumeRegion(RESQML2_NS::Strat
 }
 
 void SealedVolumeFrameworkRepresentation::pushBackInternalShell(unsigned int regionIndex,
-	unsigned int externalShellFaceCount,
+	unsigned int internalShellFaceCount,
 	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide)
 {
-	getRegion(regionIndex)->InternalShells.push_back(createVolumeShell(externalShellFaceCount,
+	getRegion(regionIndex)->InternalShells.push_back(createVolumeShell(internalShellFaceCount,
 		faceRepresentationIndices, faceRepPatchIndices, faceSide));
 }
 
@@ -139,7 +139,7 @@ COMMON_NS::DataObjectReference SealedVolumeFrameworkRepresentation::getSealedStr
 gsoap_resqml2_0_1::resqml20__VolumeRegion* SealedVolumeFrameworkRepresentation::getRegion(unsigned int regionIndex) const
 {
 	if (regionIndex >= getRegionCount()) {
-		throw range_error("The region index is out of range.");
+		throw out_of_range("The region index is out of range.");
 	}
 	return static_cast<gsoap_resqml2_0_1::_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->Regions[regionIndex];
 }
@@ -177,7 +177,7 @@ gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::g
 gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::getRegionInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const
 {
 	if (internalShellIndex >= getInternalShellCount(regionIndex)) {
-		throw range_error("The internal shell index is out of range.");
+		throw out_of_range("The internal shell index is out of range.");
 	}
 
 	return getRegion(regionIndex)->InternalShells[internalShellIndex];
@@ -206,7 +206,7 @@ unsigned int SealedVolumeFrameworkRepresentation::getFaceCountOfInternalShell(un
 gsoap_resqml2_0_1::resqml20__OrientedMacroFace* SealedVolumeFrameworkRepresentation::getRegionExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const
 {
 	if (faceIndex >= getFaceCountOfExternalShell(regionIndex)) {
-		throw range_error("The face index of the region external shell is out of range.");
+		throw out_of_range("The face index of the region external shell is out of range.");
 	}
 
 	return getRegionExternalShell(regionIndex)->MacroFaces[faceIndex];
@@ -215,7 +215,7 @@ gsoap_resqml2_0_1::resqml20__OrientedMacroFace* SealedVolumeFrameworkRepresentat
 gsoap_resqml2_0_1::resqml20__OrientedMacroFace* SealedVolumeFrameworkRepresentation::getRegionInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const
 {
 	if (faceIndex >= getFaceCountOfInternalShell(regionIndex, internalShellIndex)) {
-		throw range_error("The face index of the region internal shell is out of range.");
+		throw out_of_range("The face index of the region internal shell is out of range.");
 	}
 
 	return getRegionInternalShell(regionIndex, internalShellIndex)->MacroFaces[faceIndex];

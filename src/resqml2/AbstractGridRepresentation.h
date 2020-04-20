@@ -122,7 +122,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The grid connection set representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT class GridConnectionSetRepresentation * getGridConnectionSetRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT class GridConnectionSetRepresentation * getGridConnectionSetRepresentation(unsigned int index) const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 
 		//************************************************************

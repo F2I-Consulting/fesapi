@@ -23,89 +23,95 @@ under the License.
 /** . */
 namespace RESQML2_NS
 {
-	/** A polyline representation. */
+	/**
+	 * A representation made up of a single polyline or "polygonal chain", which may be closed or
+	 * not. See definition here: http://en.wikipedia.org/wiki/Piecewise_linear_curve.
+	 * 
+	 * BUSINESS RULE: To record a polyline the writer software must give the values of the geometry
+	 * of each node in an order corresponding to the logical series of segments (edges). The
+	 * geometry of a polyline must be a 1D array of points.
+	 * 
+	 * A simple polygonal chain is one in which only consecutive (or the first and the last)
+	 * segments intersect and only at their endpoints.
+	 */
 	class PolylineRepresentation : public AbstractRepresentation
 	{
 	public:
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~PolylineRepresentation() {}
 
 		/**
-		 * Sets a geometry
+		 * Sets the geometry of this polyline representation.
 		 *
-		 * @param [in,out]	points	  	The points which constitute the polyline. Ordered by XYZ and then
-		 * 								points.
-		 * @param 		  	pointCount	The count of points in the polyline. Must be three times the
-		 * 								count of the array of doubles "points".
-		 * @param [in,out]	proxy	  	(Optional) The HDf proxy defining the HDF file where the double
-		 * 								array will be stored.
-		 * @param [in,out]	localCrs  	(Optional) If non-null, the local crs.
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
+		 * 										id defined in the repository.
+		 *
+		 * @param [in]	  	points	  	The points which constitute the polyline. Ordered by xyz and then
+		 * 								points. Size is <tt>3 * pointCount</tt>.
+		 * @param 		  	pointCount	The count of points in the polyline.
+		 * @param [in,out]	proxy	  	(Optional) The HDF proxy which defines where the xyz points will
+		 * 								be stored. If @c nullptr (default), then the repository default
+		 * 								HDF proxy will be used.
+		 * @param [in]	  	localCrs  	(Optional) The local CRS where the points are given. If @c
+		 * 								nullptr (default), then the repository default local CRS will be
+		 * 								used.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* points, unsigned int pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
-		 * Indicates if the representaiton is a closed polyline or a non closed polyline.
+		 * Indicates if this representation is a closed polyline or a non closed polyline. A closed
+		 * polyline is one in which the first vertex coincides with the last one, or the first and the
+		 * last vertices are connected by a line segment.
 		 *
-		 * @returns	True if closed, false if not.
+		 * @returns	True if this polyline representation is closed, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isClosed() const = 0;
 
 		/**
-		 * Indicates if the polyline is associated to a particular LineRole.
+		 * Indicates if this polyline is associated to a particular line role.
 		 *
-		 * @returns	True if a line role, false if not.
+		 * @returns	True if this polyline has a line role, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool hasALineRole() const = 0;
 
 		/**
-		 * Indicates wether the instance corresponds to a seismic 2D line or not.
+		 * Indicates whether this instance corresponds to a seismic 2d line or not.
 		 *
-		 * @returns	True if a seismic line, false if not.
+		 * @returns	True if is a seismic line, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool isASeismicLine() const;
 
 		/**
-		 * Indicates wether the instance corresponds to a facies 2d line or not.
+		 * Indicates whether this instance corresponds to a facies 2d line or not.
 		 *
-		 * @returns	True if the facies line, false if not.
+		 * @returns	True if it is a facies line, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool isAFaciesLine() const;
 
 		/**
-		 * Get the role of this polyline. Throw an exception if the polyline has no role (see method
-		 * hasALineRole).
+		 * Gets the line role of this polyline.
+		 *
+		 * @exception	std::logic_error	If this polyline has no line role (see hasALineRole()).
 		 *
 		 * @returns	The line role.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::resqml22__LineRole getLineRole() const = 0;
 
 		/**
-		 * Set the line role of this instance
+		 * Sets the line role of this instance.
 		 *
 		 * @param 	lineRole	The line role.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole) = 0;
 
-		/**
-		 * Gets patch count
-		 *
-		 * @returns	The patch count.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final {return 1;}
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:

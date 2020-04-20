@@ -411,7 +411,7 @@ namespace RESQML2_NS
 		 * @param 		  	offsetJZ	The z offset in the J (slowest) direction.
 		 * @param 		  	spacingJ	The spacing in the J (slowest) direction.
 		 * @param [in]	  	localCrs	(Optional) If non-null, the local CRS. If @c nullptr (default),
-		 * 								the repository default CRS will be used.
+		 * 								the repository default local CRS will be used.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsArray2dOfExplicitZ(
 			double * zValues,

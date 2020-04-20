@@ -25,59 +25,72 @@ namespace RESQML2_NS
 {
 	class StratigraphicColumnRankInterpretation;
 
-	/** This class is a container for other organizations that are consistent to each others. */
+	/**
+	 * A global interpretation of the stratigraphy, which can be made up of several ranks of
+	 * stratigraphic unit interpretations. BUSINESS RULE: All stratigraphic column rank
+	 * interpretations that make up a stratigraphic column must be ordered by age.
+	 */
 	class StratigraphicColumn : public COMMON_NS::AbstractObject
 	{
 	public:
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~StratigraphicColumn() {}
 
 		/**
-		 * Pushes a back strati column rank
+		 * Pushes a back a stratigraphic column rank interpretation into this stratigraphic column.
 		 *
-		 * @param [in,out]	stratiColumnRank	If non-null, the strati column rank.
+		 * @exception	std::invalid_argument	If <tt>stratiColumnRank == nullptr</tt>
+		 *
+		 * @param [in]	stratiColumnRank	A stratigraphic column rank interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackStratiColumnRank(StratigraphicColumnRankInterpretation * stratiColumnRank) = 0;
 
 		/**
-		 * Get the count of all the stratigraphic column rank interpretations which are contained in this
-		 * stratigraphic column.
+		 * Gets the count of all the stratigraphic column rank interpretations which are contained in
+		 * this stratigraphic column.
 		 *
-		 * @returns	the count of all the stratigraphic column rank interpretations which are contained in this stratigraphic column.
+		 * @returns	The count of all the stratigraphic column rank interpretations which are contained in
+		 * 			this stratigraphic column.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getStratigraphicColumnRankInterpretationCount() const = 0;
 
 		/**
-		 * Get a stratigraphic column rank interpretations DOR at a particular index.
+		 * Gets the DOR of a stratigraphic column rank interpretations at a particular index.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=
+		 * 									getStratigraphicColumnRankInterpretationCount()</tt>.
+		 *
+		 * @param 	index	Zero-based index of the stratigraphic column rank interpretations.
+		 *
+		 * @returns	The DOR of the stratigraphic column rank interpretation at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStratigraphicColumnRankInterpretationDor(unsigned int index) const = 0;
 
 		/**
-		 * Get a stratigraphic column rank interpretations at a particular index.
+		 * Gets the stratigraphic column rank interpretations at a particular index.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=
+		 * 									getStratigraphicColumnRankInterpretationCount()</tt>.
+		 *
+		 * @param 	index	Zero-based index of the stratigraphic column rank interpretations.
+		 *
+		 * @returns	The stratigraphic column rank interpretation at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT StratigraphicColumnRankInterpretation* getStratigraphicColumnRankInterpretation(unsigned int index) const;
 
 		/**
-		 * Get all the stratigraphic column rank interpretations which are contained in this
+		 * Gets all the stratigraphic column rank interpretations which are contained in this
 		 * stratigraphic column.
 		 *
-		 * @returns	Null if it fails, else the stratigraphic column rank interpretation set.
+		 * @returns	A vector of pointers to all the stratigraphic column rank interpretations which are
+		 * 			contained in this stratigraphic column.
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<StratigraphicColumnRankInterpretation *> getStratigraphicColumnRankInterpretationSet() const;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
     protected:

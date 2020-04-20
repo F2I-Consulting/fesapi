@@ -23,56 +23,88 @@ under the License.
 /** . */
 namespace RESQML2_NS
 {
-	/** A polyline set representation. */
+	/**
+	 * A representation made up of a set of polylines or a set of polygonal chains (for more
+	 * information, see PolylineRepresentation).
+	 * 
+	 * For compactness, it is organized by line patch as a unique polyline set patch.
+	 * 
+	 * A closed polyline is connected between the first and the last point.
+	 */
 	class PolylineSetRepresentation : public AbstractRepresentation
 	{
 	public:
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~PolylineSetRepresentation() {}
 
 		/**
-		* Get the number of polylines in a given patch
-		*/
+		 * Gets the number of polylines in a given patch.
+		 *
+		 * @exception	std::out_of_range	If <tt>patchIndex >=</tt> getPatchCount().
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch for which we want to count the number of
+		 * 						polylines.
+		 *
+		 * @returns	The polyline count of patch @p patchIndex.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getPolylineCountOfPatch(unsigned int patchIndex) const = 0;
+
+		/**
+		 * Gets the polyline count of all patches.
+		 *
+		 * @returns	The polyline count of all patches.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getPolylineCountOfAllPatches() const = 0;
 
 		/**
-		 * Gets node count per polyline in patch
+		 * Gets the node count per polyline in a given patch.
 		 *
-		 * @param 		  	patchIndex				Zero-based index of the patch.
-		 * @param [in,out]	nodeCountPerPolyline	If non-null, the node count per polyline.
+		 * @exception	std::out_of_range	If <tt>patchIndex &gt;=</tt> getPatchCount().
+		 *
+		 * @param 	   	patchIndex				Zero-based index of the patch for which we want to count
+		 * 										the nodes per polyline.
+		 * @param [out]	nodeCountPerPolyline	A preallocated array to receive the node count per
+		 * 										polyline. It is ordered by polyline in the patch @p
+		 * 										patchIndex. Its size must be
+		 * 										<tt>getPolylineCountOfPatch(patchIndex)</tt>.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getNodeCountPerPolylineInPatch(unsigned int patchIndex, unsigned int * nodeCountPerPolyline) const = 0;
 
 		/**
-		 * Get all the node count par polyline for all teh aptches of the representation.
+		 * Gets all the node count per polyline for all the patches of this representation.
 		 *
-		 * @param [in,out]	NodeCountPerPolyline	It must be pre-allocated.
+		 * @param [out]	NodeCountPerPolyline	A preallocated array to receive the node count per
+		 * 										polyline per patch. It is ordered first by polyline and then
+		 * 										by patch. Its size must be getPolylineCountOfAllPatches().
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getNodeCountPerPolylineOfAllPatches(unsigned int * NodeCountPerPolyline) const = 0;
 
-		/**
-		 * Get the xyz point count in a given patch.
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	The xyz point count of patch.
-		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
-		 * Push back a new patch of polylines
+		 * Pushes back a new patch of polylines. Here, the closed flag of all of the polylines is the
+		 * same.
 		 *
-		 * @param [in,out]	nodeCountPerPolyline  	The node count per polyline in this patch. There must
-		 * 											be polylineCount values in this array.
-		 * @param [in,out]	nodes				  	The XYZ values of the nodes. Ordered by XYZ and then
-		 * 											by NodeCount. It must be three times NodeCount.
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
+		 * 										id defined in the repository.
+		 *
+		 * @param [in]	  	nodeCountPerPolyline  	The node count per polyline in this patch. It is
+		 * 											ordered by polyline. There must be @p polylineCount
+		 * 											values in this array.
+		 * @param [in]	  	nodes				  	The xyz values of the nodes. Ordered by xyz, then by
+		 * 											node and then by polyline. It must be three times the
+		 * 											total count of nodes.
 		 * @param 		  	polylineCount		  	The polyline count in this patch.
 		 * @param 		  	allPolylinesClosedFlag	Indicates the closed flags of all the polylines.
 		 * @param [in,out]	proxy				  	(Optional) The HDF proxy which defines where the
-		 * 											nodes and triangle indices will be stored.
-		 * @param [in,out]	localCrs			  	(Optional) If non-null, the local crs.
+		 * 											nodes will be stored. If @c nullptr (default), then
+		 * 											the repository default HDF proxy will be used.
+		 * @param [in]	  	localCrs			  	(Optional) The local CRS where the points are
+		 * 											defined. If @c nullptr (default value), then the
+		 * 											repository default local CRS will be used.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackGeometryPatch(
 			unsigned int const * nodeCountPerPolyline, double const * nodes,
@@ -80,18 +112,28 @@ namespace RESQML2_NS
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
-		 * Push back a new patch of polylines
+		 * Pushes back a new patch of polylines.
 		 *
-		 * @param [in,out]	nodeCountPerPolyline	The node count per polyline in this patch. There must
-		 * 											be polylineCount values in this array.
-		 * @param [in,out]	nodes					The XYZ values of the nodes. Ordered by XYZ and then
-		 * 											by NodeCount. It must be three times NodeCount.
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
+		 * 										id defined in the repository.
+		 *
+		 * @param [in]	  	nodeCountPerPolyline	The node count per polyline in this patch. It is
+		 * 											ordered by polyline. There must be @p polylineCount
+		 * 											values in this array.
+		 * @param [in]	  	nodes					The xyz values of the nodes. Ordered by xyz, then by
+		 * 											node and then by polyline. It must be three times the
+		 * 											total count of nodes.
 		 * @param 		  	polylineCount			The polyline count in this patch.
-		 * @param [in,out]	polylineClosedFlags 	Indicates the closed flags for each of the polyline.
-		 * 											The count of this array must be polylineCount.
+		 * @param [in]	  	polylineClosedFlags 	Indicates the closed flags for each of the polyline.
+		 * 											The count of this array must be @p polylineCount.
 		 * @param [in,out]	proxy					(Optional) The HDF proxy which defines where the
-		 * 											nodes and triangle indices will be stored.
-		 * @param [in,out]	localCrs				(Optional) If non-null, the local crs.
+		 * 											nodes will be stored. If @c nullptr (default), then the
+		 * 											repository default HDF proxy will be used.
+		 * @param [in]	  	localCrs				(Optional) The local CRS where the points are
+		 * 											defined. If @c nullptr (default value), then the
+		 * 											repository default local CRS will be used.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackGeometryPatch(
 			unsigned int const * nodeCountPerPolyline, double const * nodes,
@@ -99,90 +141,99 @@ namespace RESQML2_NS
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
-		 * Check if all polylines contained in a single patch are closed or not. Notice that a returned
-		 * "false" does not mean they are all not closed. Indeed they can be mixed i.e. some closed and
-		 * some not.
+		 * Checks if all polylines contained in a given patch are closed. Notice that a returned "false"
+		 * does not mean they are all not closed (it means that at least one polyline is not closed).
+		 * Indeed they can be mixed i.e. some closed and some not.
 		 *
-		 * @param 	patchIndex	The index of the patch to check.
+		 * @exception	std::out_of_range	If <tt>patchIndex &gt;=</tt> getPatchCount().
 		 *
-		 * @returns	True if all polylines of the studied patch are closed.
+		 * @param 	patchIndex	The index of the patch for which we want to know if all polylines are
+		 * 						closed.
+		 *
+		 * @returns	True if all polylines of patch @p patchIndex are closed, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool virtual areAllPolylinesClosedOfPatch(unsigned int patchIndex) const = 0;
 
 		/**
-		 * Determine if we are all polylines closed of all patches
+		 * Checks if all polylines of all patches are closed. Notice that a returned "false" does not
+		 * mean they are all not closed (it means that at least one polyline in one patch is not
+		 * closed). Indeed they can be mixed i.e. some closed and some not.
 		 *
-		 * @returns	True if all polylines closed of all patches, false if not.
+		 * @returns	True if all polylines of all patches are closed, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool areAllPolylinesClosedOfAllPatches() const = 0;
 
 		/**
-		 * Check if all polylines contained in a single patch are closed or not. Notice that a returned
-		 * "false" does not mean they are all closed. Indeed they can be mixed i.e. some closed and some
-		 * not.
+		 * Checks if all polylines contained in a given patch are not closed. Notice that a returned
+		 * "false" does not mean they are all closed (it means that at least one polyline is closed).
+		 * Indeed they can be mixed i.e. some closed and some not.
 		 *
-		 * @param 	patchIndex	The index of the patch to check.
+		 * @exception	std::out_of_range	If <tt>patchIndex &gt;=</tt> getPatchCount().
 		 *
-		 * @returns	True if all polylines of the studied patch are not closed.
+		 * @param 	patchIndex	The index of the patch for which we want to know if all polylines are not
+		 * 						closed.
+		 *
+		 * @returns	True if all polylines of patch @p patchIndex are not closed, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool areAllPolylinesNonClosedOfPatch(unsigned int patchIndex) const = 0;
 
 		/**
-		 * Determine if we are all polylines non closed of all patches
+		 * Checks if all polylines of all patches are not closed. Notice that a returned "false" does
+		 * not mean they are all closed (it means that at least one polyline in one patch is closed).
+		 * Indeed they can be mixed i.e. some closed and some not.
 		 *
-		 * @returns	True if all polylines non closed of all patches, false if not.
+		 * @returns	True if all polylines of all patches are not closed, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool areAllPolylinesNonClosedOfAllPatches() const = 0;
 
 		/**
-		 * Get all the node count par polyline for all teh aptches of the representation.
+		 * Gets the closed flag of all polylines of a given patch.
 		 *
-		 * @param 		  	patchIndex			 	It must be pre-allocated.
-		 * @param [in,out]	closedFlagPerPolyline	If non-null, true to closed flag per polyline.
+		 * @exception	std::out_of_range	If <tt>patchIndex &gt;=</tt> getPatchCount().
+		 *
+		 * @param 	   	patchIndex			 	The index of the patch for which we want to get the
+		 * 										closed flag of the polylines.
+		 * @param [out]	closedFlagPerPolyline	A preallocated array to receive the closed flags. It is
+		 * 										ordered by polyline. Its size must be
+		 * 										<tt>getPolylineCountOfPatch(patchIndex)</tt>.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getClosedFlagPerPolylineOfPatch(unsigned int patchIndex, bool * closedFlagPerPolyline) const = 0;
 
 		/**
-		 * Gets closed flag per polyline of all patches
+		 * Gets the closed flag of all polylines of all patches.
 		 *
-		 * @param [in,out]	closedFlagPerPolyline	If non-null, true to closed flag per polyline.
+		 * @param [out]	closedFlagPerPolyline	A preallocated array to receive the closed flags. It is
+		 * 										ordered first by polyline then by patch. Its size must be
+		 * 										getPolylineCountOfAllPatches().
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getClosedFlagPerPolylineOfAllPatches(bool * closedFlagPerPolyline) const = 0;
 
 		/**
-		 * Indicates if the polylineSet is associated to a particular LineRole.
+		 * Indicates if this polyline set reprsentation is associated to a particular line role.
 		 *
-		 * @returns	True if a line role, false if not.
+		 * @returns	True if this polyline set is associated to a line role, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool hasALineRole() const = 0;
 
 		/**
-		 * Get the role of this polylineSet. Throw an exception if the polylineSet has no role (see
-		 * method hasALineRole).
+		 * Gets the line role of this polyline set representation.
+		 * 
+		 * @exception std::logic_error If no line role is associated to this polyline set representation (please use hasALineRole().
 		 *
-		 * @returns	The line role.
+		 * @returns	The line role of this polyline set representation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::resqml22__LineRole getLineRole() const = 0;
 
 		/**
-		 * Set the line role of this instance
+		 * Sets the line role of this instance.
 		 *
-		 * @param 	lineRole	The line role.
+		 * @param 	lineRole	The line role to set.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole) = 0;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:

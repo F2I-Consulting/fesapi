@@ -62,7 +62,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const;
 
 		/**
-		 * Gets the data object reference of the HDF proxy which is used for storing the numerical
+		 * @brief Gets the data object reference of the HDF proxy which is used for storing the numerical
 		 * values of this representation (i.e. its geometry).
 		 *
 		 * @exception	std::logic_error	If this representation is partial.

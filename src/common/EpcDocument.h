@@ -85,7 +85,7 @@ namespace COMMON_NS
 		 * @param 		  	hdfPermissionAccess	(Optional) The HDF5 file permission access. It is read
 		 * 										only by default.
 		 *
-		 * @returns	An empty string if success otherwise the error string.
+		 * @returns	An empty string if success otherwise the warning string.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
 

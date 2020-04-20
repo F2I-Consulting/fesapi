@@ -141,7 +141,7 @@ bool PolylineRepresentation::hasALineRole() const
 gsoap_eml2_3::resqml22__LineRole PolylineRepresentation::getLineRole() const
 {
 	if (!hasALineRole()) {
-		throw invalid_argument("The polyline doesn't have any role");
+		throw logic_error("The polyline doesn't have any role");
 	}
 
 	return *static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole;
@@ -149,10 +149,6 @@ gsoap_eml2_3::resqml22__LineRole PolylineRepresentation::getLineRole() const
 
 void PolylineRepresentation::setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole)
 {
-	if (lineRole == gsoap_eml2_3::resqml22__LineRole__break_x0020line) {
-		throw invalid_argument("Break line enumerated value is not supported in RESQML2.0.1");
-	}
-
 	if (!hasALineRole()) {
 		static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole = (resqml22__LineRole*)soap_malloc(gsoapProxy2_3->soap, sizeof(resqml22__LineRole));
 	}

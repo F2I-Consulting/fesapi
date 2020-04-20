@@ -143,7 +143,7 @@ bool PolylineRepresentation::hasALineRole() const
 gsoap_eml2_3::resqml22__LineRole PolylineRepresentation::getLineRole() const
 {
 	if (!hasALineRole()) {
-		throw invalid_argument("The polyline doesn't have any role");
+		throw logic_error("The polyline doesn't have any role");
 	}
 
 	return static_cast<gsoap_eml2_3::resqml22__LineRole>(*static_cast<_resqml20__PolylineRepresentation*>(gsoapProxy2_0_1)->LineRole);
