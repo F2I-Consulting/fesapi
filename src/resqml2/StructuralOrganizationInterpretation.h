@@ -25,193 +25,236 @@ namespace RESQML2_NS
 {
 	class FaultInterpretation;
 	class HorizonInterpretation;
-	
+
+	/**
+	 * One of the main types of RESQML organizations, this class gathers boundary interpretations
+	 * (e.g., horizons and faults) plus frontier features and their relationships (contacts
+	 * interpretations), which when taken together define the structure of a part of the earth.
+	 */
 	class StructuralOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
 	public:
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~StructuralOrganizationInterpretation() {}
 
 		/**
-		 * Add a FaultInterpretation to this StructuralOrganizationInterpretation. Does add the inverse
-		 * relationship i.e. from the included FaultInterpretation to this
-		 * StructuralOrganizationInterpretation.
+		 * Adds a fault interpretation to this structural organization interpretation.
 		 *
-		 * @param [in,out]	faultInterpretation	If non-null, the fault interpretation.
+		 * @exception	std::invalid_argument	If <tt>faultInterpretation == nullptr</tt>.
+		 *
+		 * @param [in]	faultInterpretation	A fault interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackFaultInterpretation(FaultInterpretation * faultInterpretation) = 0;
 
 		/**
-		 * Gets fault interpretation count
+		 * Gets the fault interpretations count.
 		 *
-		 * @returns	The fault interpretation count.
+		 * @exception	std::range_error	If the fault interpretation count is strictly greater than
+		 * 									unsigned int max.
+		 *
+		 * @returns	The fault interpretations count.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getFaultInterpretationCount() const = 0;
 
 		/**
-		 * Gets fault interpretation DAta Object Reference
+		 * Gets the DOR of a given fault interpretation.
 		 *
-		 * @param 	index	Zero-based index of the fault interpretation.
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getFaultInterpretationCount().
 		 *
-		 * @returns	Null if it fails, else the fault interpretation.
+		 * @param 	index	Zero-based index of the fault interpretation for which we look for the DOR.
+		 *
+		 * @returns	The DOR of the fault interpretation at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getFaultInterpretationDor(unsigned int index) const = 0;
 
-		/** A fault interpretation*. */
+		/**
+		 * Gets a given fault interpretation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getFaultInterpretationCount().
+		 *
+		 * @param 	index	Zero-based index of the fault interpretation we look for.
+		 *
+		 * @returns	The fault interpretation at position @p index.
+		 */
 		DLL_IMPORT_OR_EXPORT FaultInterpretation* getFaultInterpretation(unsigned int index) const;
 
 		/**
-		 * Add an HorizonInterpretation to this StructuralOrganizationInterpretation.
-		 *       Does add the inverse relationship i.e. from the included HorizonInterpretation to this
-		 *       StructuralOrganizationInterpretation.
+		 * Adds a horizon interpretation at a given rank of this structural organization interpretation.
 		 *
-		 * @param [in,out]	horizonInterpretation	the HorizonInterpretation to add.
-		 * @param 		  	stratigraphicRank	 	the rank of the horizon interpretation within this
-		 * 											structural organization.
+		 * @exception	std::invalid_argument	If <tt>horizonInterpretation == nullptr</tt>.
+		 *
+		 * @param [in]	horizonInterpretation	A horizon interpretation.
+		 * @param 	  	stratigraphicRank	 	The rank of the horizon interpretation within this
+		 * 										structural organization.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackHorizonInterpretation(HorizonInterpretation * horizonInterpretation, int stratigraphicRank) = 0;
 
 		/**
-		 * Gets horizon interpretation count
+		 * Gets the horizon interpretations count.
 		 *
-		 * @returns	The horizon interpretation count.
+		 * @exception	std::range_error	If the horizon interpretation count is strictly greater than
+		 * 									unsigned int max.
+		 *
+		 * @returns	The horizon interpretations count.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getHorizonInterpretationCount() const = 0;
 
 		/**
-		 * Gets fault interpretation DataObject Reference
+		 * Gets the DOR of a given horizon interpretation.
 		 *
-		 * @param 	index	Zero-based index of the fault interpretation.
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getHorizonInterpretationCount().
 		 *
-		 * @returns	Null if it fails, else the fault interpretation.
+		 * @param 	index	Zero-based index of the horizon interpretation for which we look for the DOR.
+		 *
+		 * @returns	The DOR of the horizon interpretation at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getHorizonInterpretationDor(unsigned int index) const = 0;
 
 		/**
-		 * Gets horizon interpretation
+		 * Gets a given horizon interpretation.
 		 *
-		 * @param 	index	Zero-based index of the horizon interpretation.
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getHorizonInterpretationCount().
 		 *
-		 * @returns	Null if it fails, else the horizon interpretation.
+		 * @param 	index	Zero-based index of the horizon interpretation we look for.
+		 *
+		 * @returns	The horizon interpretation at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT HorizonInterpretation* getHorizonInterpretation(unsigned int index) const;
 
 		/**
-		 * Add a Frontier interpretation to this StructuralOrganizationInterpretation as a top. Does add
-		 * the inverse relationship i.e. from the included Frontier interpretation to this
-		 * StructuralOrganizationInterpretation.
+		 * Adds a frontier interpretation to this structural organization interpretation as a top.
 		 *
-		 * @param [in,out]	topFrontierInterpretation	If non-null, the top frontier interpretation.
+		 * @exception	std::invalid_argument	If <tt>topFrontierInterpretation == nullptr</tt>.
+		 *
+		 * @param [in]	topFrontierInterpretation	A top frontier interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackTopFrontierInterpretation(AbstractFeatureInterpretation * topFrontierInterpretation) = 0;
 
 		/**
-		 * Gets top frontier interpretation count
+		 * Gets the top frontier interpretations count.
 		 *
-		 * @returns	The top frontier interpretation count.
+		 * @exception	std::range_error	If the top frontier interpretation count is strictly greater
+		 * 									than unsigned int max.
+		 *
+		 * @returns	The top frontier interpretations count.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getTopFrontierInterpretationCount() const = 0;
 
 		/**
-		 * Gets top frontier interpretation DataObject Reference
+		 * Gets the DOR of a given top frontier interpretation.
 		 *
-		 * @param 	index	Zero-based index of the top frontier interpretation.
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getTopFrontierInterpretationCount().
 		 *
-		 * @returns	Null if it fails, else the top frontier interpretation.
+		 * @param 	index	Zero-based index of the top frontier interpretation for which we look for the
+		 * 					DOR.
+		 *
+		 * @returns	The DOR of the top frontier interpretation at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getTopFrontierInterpretationDor(unsigned int index) const = 0;
 
 		/**
-		 * Gets top frontier interpretation
+		 * Gets a given top frontier interpretation.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getTopFrontierInterpretationCount().
 		 *
-		 * @returns	Null if it fails, else the top frontier interpretation.
+		 * @param 	index	Zero-based index of the top frontier interpretation we look for.
+		 *
+		 * @returns	The top frontier interpretation at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getTopFrontierInterpretation(unsigned int index) const;
 
 		/**
-		 * Add a Frontier interpretation to this StructuralOrganizationInterpretation as a bottom. Does
-		 * add the inverse relationship i.e. from the included Frontier interpretation to this
-		 * StructuralOrganizationInterpretation.
+		 * Adds a frontier interpretation to this structural organization interpretation as a bottom.
 		 *
-		 * @param [in,out]	bottomFrontierInterpretation	If non-null, the bottom frontier
-		 * 													interpretation.
+		 * @exception	std::invalid_argument	If <tt>bottomFrontierInterpretation == nullptr</tt>.
+		 *
+		 * @param [in]	bottomFrontierInterpretation	A bottom frontier interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackBottomFrontierInterpretation(AbstractFeatureInterpretation * bottomFrontierInterpretation) = 0;
 
 		/**
-		 * Gets bottom frontier interpretation count
+		 * Gets the bottom frontier interpretations count.
 		 *
-		 * @returns	The bottom frontier interpretation count.
+		 * @exception	std::range_error	If the bottom frontier interpretation count is strictly
+		 * 									greater than unsigned int max.
+		 *
+		 * @returns	The bottom frontier interpretations count.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getBottomFrontierInterpretationCount() const = 0;
 
 		/**
-		 * Gets Bottom frontier interpretation DataObject Reference
+		 * Gets the DOR of a given bottom frontier interpretation.
 		 *
-		 * @param 	index	Zero-based index of the Bottom frontier interpretation.
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt>
+		 * 									getBottomFrontierInterpretationCount().
 		 *
-		 * @returns	Null if it fails, else the Bottom frontier interpretation.
+		 * @param 	index	Zero-based index of the bottom frontier interpretation for which we look for
+		 * 					the DOR.
+		 *
+		 * @returns	The DOR of the bottom frontier interpretation at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getBottomFrontierInterpretationDor(unsigned int index) const = 0;
 
 		/**
-		 * Gets bottom frontier interpretation
+		 * Gets a given bottom frontier interpretation.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt>
+		 * 									getBottomFrontierInterpretationCount().
 		 *
-		 * @returns	Null if it fails, else the bottom frontier interpretation.
+		 * @param 	index	Zero-based index of the bottom frontier interpretation we look for.
+		 *
+		 * @returns	The bottom frontier interpretation at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getBottomFrontierInterpretation(unsigned int index) const;
 
 		/**
-		 * Add a Frontier interpretation to this StructuralOrganizationInterpretation as a side. Does
-		 * add the inverse relationship i.e. from the included Frontier interpretation to this
-		 * StructuralOrganizationInterpretation.
+		 * Adds a frontier interpretation to this structural organization interpretation as a side.
 		 *
-		 * @param [in,out]	sideFrontierInterpretation	If non-null, the side frontier interpretation.
+		 * @exception	std::invalid_argument	If <tt>sideFrontierInterpretation == nullptr</tt>.
+		 *
+		 * @param [in]	sideFrontierInterpretation	A side frontier interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackSideFrontierInterpretation(AbstractFeatureInterpretation * sideFrontierInterpretation) = 0;
 
 		/**
-		 * Gets side frontier interpretation count
+		 * Gets the side frontier interpretations count.
 		 *
-		 * @returns	The side frontier interpretation count.
+		 * @exception	std::range_error	If the side frontier interpretation count is strictly greater
+		 * 									than unsigned int max.
+		 *
+		 * @returns	The side frontier interpretations count.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getSideFrontierInterpretationCount() const = 0;
 
 		/**
-		 * Gets Side frontier interpretation DataObject Reference
+		 * Gets the DOR of a given side frontier interpretation.
 		 *
-		 * @param 	index	Zero-based index of the Side frontier interpretation.
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt>
+		 * 									getSideFrontierInterpretationCount().
 		 *
-		 * @returns	Null if it fails, else the Side frontier interpretation.
+		 * @param 	index	Zero-based index of the side frontier interpretation for which we look for
+		 * 					the DOR.
+		 *
+		 * @returns	The DOR of the side frontier interpretation at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSideFrontierInterpretationDor(unsigned int index) const = 0;
 
 		/**
-		 * Gets side frontier interpretation
+		 * Gets a given side frontier interpretation.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt>
+		 * 									getSideFrontierInterpretationCount().
 		 *
-		 * @returns	Null if it fails, else the side frontier interpretation.
+		 * @param 	index	Zero-based index of the side frontier interpretation we look for.
+		 *
+		 * @returns	The side frontier interpretation at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getSideFrontierInterpretation(unsigned int index) const;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
     protected:

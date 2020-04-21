@@ -73,7 +73,7 @@ unsigned int StructuralOrganizationInterpretation::getFaultInterpretationCount()
 		: structuralOrganization->UnorderedFaultCollection->FeatureInterpretation.size();
 
 	if (result > (numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too many associated fault interpretations.");
+		throw range_error("There are too many associated fault interpretations.");
 	}
 
 	return static_cast<unsigned int>(result);
@@ -112,7 +112,7 @@ unsigned int StructuralOrganizationInterpretation::getHorizonInterpretationCount
 	}
 
 	if (result > (numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too many associated horizon interpretations.");
+		throw range_error("There are too many associated horizon interpretations.");
 	}
 
 	return static_cast<unsigned int>(result);
@@ -148,7 +148,7 @@ unsigned int StructuralOrganizationInterpretation::getTopFrontierInterpretationC
 	const size_t result = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3)->TopFrontier.size();
 
 	if (result > (numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too many associated top frontier interpretations.");
+		throw range_error("There are too many associated top frontier interpretations.");
 	}
 
 	return static_cast<unsigned int>(result);
@@ -177,7 +177,7 @@ unsigned int StructuralOrganizationInterpretation::getBottomFrontierInterpretati
 	const size_t result = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3)->BottomFrontier.size();
 
 	if (result > (numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too many associated bottom frontier interpretations.");
+		throw range_error("There are too many associated bottom frontier interpretations.");
 	}
 
 	return static_cast<unsigned int>(result);
@@ -206,7 +206,7 @@ unsigned int StructuralOrganizationInterpretation::getSideFrontierInterpretation
 	const size_t result = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3)->Sides.size();
 
 	if (result > (numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too many associated side frontier interpretations.");
+		throw range_error("There are too many associated side frontier interpretations.");
 	}
 
 	return static_cast<unsigned int>(result);
@@ -216,7 +216,7 @@ COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getSideFron
 {
 	_resqml22__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3);
 	if (index >= structuralOrganization->Sides.size()) {
-		throw std::out_of_range("The bottom frontier index is out of range.");
+		throw std::out_of_range("The side frontier index is out of range.");
 	}
 
 	return COMMON_NS::DataObjectReference(structuralOrganization->Sides[index]);

@@ -23,118 +23,119 @@ under the License.
 /** . */
 namespace RESQML2_NS
 {
-	/** A string table lookup. */
+	/**
+	 * Defines an integer (key) to string (value) lookup table, for example, stores facies properties, where a
+	 * facies index is associated with a facies name. Used for categorical properties, which also
+	 * may use a double table lookup.
+	 */
 	class StringTableLookup : public COMMON_NS::AbstractObject
 	{
 	public:
 
 		/**
-		 * Only to be used in partial transfer context
+		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT StringTableLookup(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~StringTableLookup() {}
 
 		/**
-		 * Check wether a key value is contained within this string lookup or not.
+		 * Checks whether a key is contained within this string lookup.
 		 *
-		 * @param 	longValue	The long value.
+		 * @param 	longValue	A key.
 		 *
-		 * @returns	True if it succeeds, false if it fails.
+		 * @returns	True if @p longValue is a key of this string table lookup, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool containsKey(long longValue) = 0;
 
 		/**
-		 * Get the count of item in the stringTableLookup (in the map).
+		 * Gets the count of items in the string table lookup (in its map).
 		 *
-		 * @returns	The item count.
+		 * @returns	The count of items.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getItemCount() const = 0;
 
 		/**
-		 * Get the key of a string value pair at a particular index in the string table lookup (in the
-		 * map)
+		 * Gets the key of a key/value pair at a particular index of this string table lookup (in its
+		 * map).
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getItemCount().
 		 *
-		 * @returns	The key at index.
+		 * @param 	index	Zero-based index of the key/value pair.
+		 *
+		 * @returns	The key of the key/value pair at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual long getKeyAtIndex(unsigned int index) const = 0;
 
 		/**
-		 * Get the string value of a string value pair at a particular index in the string table lookup
-		 * (in the map)
+		 * Gets the string value of a key/value pair at a particular index of this string table lookup
+		 * (in its map).
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getItemCount().
 		 *
-		 * @returns	The string value at index.
+		 * @param 	index	Zero-based index of the key/value pair.
+		 *
+		 * @returns	The string value of the key/value pair at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getStringValueAtIndex(unsigned int index) const = 0;
 
 		/**
-		 * Get a string value from its associated key (long) value. If the key value does not exist, an
-		 * empty string is returned.
+		 * Gets a string value from its associated key (long).
 		 *
-		 * @param 	longValue	The long value.
+		 * @param 	longValue	A key.
 		 *
-		 * @returns	The string value.
+		 * @returns	The string value corresponding to the key @p longValue if it exists, empty string if
+		 * 			not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getStringValue(long longValue) = 0;
 
 		/**
-		 * Add a pair value to the string lookup. No verification that the key value (or string value)
-		 * already exists
+		 * Adds a key/value pair to this string table lookup. No verification that the key (or string
+		 * value) already exists is done.
 		 *
-		 * @param 	strValue 	The value.
-		 * @param 	longValue	The long value.
+		 * @param 	strValue 	A string value.
+		 * @param 	longValue	A key.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void addValue(const std::string & strValue, long longValue) = 0;
 
 		/**
-		 * Modify the associated string value according to the key (long) value. If the key value does
-		 * not exist, nothing is done.
+		 * Modifies the string value associated to a key (long). If the key does not exist, nothing is
+		 * done.
 		 *
-		 * @param 	strValue 	The value.
-		 * @param 	longValue	The long value.
+		 * @param 	strValue 	The new string value.
+		 * @param 	longValue	A key.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setValue(const std::string & strValue, long longValue) = 0;
 
 		/**
-		 * Get the minimum value in this discrete properties. It reads it from file.
+		 * Gets the minimum key in this string table lookup. It reads it from file.
 		 *
-		 * @returns	the minimum value if present in the file otherwise long.max.
+		 * @returns	The minimum key if some key/value pairs exists in this string table lookup, otherwise
+		 * 			the long maximum value.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual LONG64 getMinimumValue() = 0;
 
 		/**
-		 * Get the maximum value in this discrete properties. It reads it from file.
+		 * Gets the maximum key in this string table lookup. It reads it from file.
 		 *
-		 * @returns	the maximum value if present in the file otherwise long.min.
+		 * @returns	The maximum key if some key/value pairs exists in this string table lookup, otherwise
+		 * 			the long minimum value.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual LONG64 getMaximumValue() = 0;
 
 		/**
-		 * Getter for the underlying map of the string lookup.
+		 * Gets the underlying key/value map of this string table lookup.
 		 *
-		 * @returns	The map.
+		 * @returns	The key/value map.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::unordered_map<long, std::string> getMap() const = 0;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:

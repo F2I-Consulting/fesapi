@@ -182,6 +182,11 @@ unsigned int TriangulatedSetRepresentation::getTriangleCountOfAllPatches() const
 void TriangulatedSetRepresentation::getTriangleNodeIndicesOfPatch(unsigned int patchIndex, unsigned int * triangleNodeIndices) const
 {
 	_resqml22__TriangulatedSetRepresentation* triRep = static_cast<_resqml22__TriangulatedSetRepresentation*>(gsoapProxy2_3);
+
+	if (patchIndex >= triRep->TrianglePatch.size()) {
+		throw out_of_range("The patchIndex is out of range");
+	}
+
 	readArrayNdOfUIntValues(triRep->TrianglePatch[patchIndex]->Triangles, triangleNodeIndices);
 }
 

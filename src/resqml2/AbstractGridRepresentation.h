@@ -87,6 +87,7 @@ namespace RESQML2_NS
 		 * Gets the count of (volumetric) cells in the grid.
 		 *
 		 * @exception	std::range_error	If the cell count is strictly greater than unsigned int max.
+		 * @exception	std::logic_error	If this grid is partial.
 		 *
 		 * @returns	The cell count.
 		 */
@@ -441,19 +442,19 @@ namespace RESQML2_NS
 		 * 										in the repository.
 		 *
 		 * @param 		  	iCellIndexRegridStart	I index of the first parent grid cell to
-		 * 														be regridded.
+		 * 											be regridded.
 		 * @param 		  	iChildCellCount		 	The count of cells for the unique I interval in this
 		 * 											(child) grid.
 		 * @param 		  	iParentCellCount	 	The count of cells for the unique I interval in the
 		 * 											parent grid.
 		 * @param 		  	jCellIndexRegridStart	J index of the first parent grid cell to
-		 * 														be regridded.
+		 * 											be regridded.
 		 * @param 		  	jChildCellCount		 	The count of cells for the unique J interval in this
 		 * 											(child) grid.
 		 * @param 		  	jParentCellCount	 	The count of cells for the unique J interval in the
 		 * 											parent grid.
 		 * @param 		  	kCellIndexRegridStart	K index of the first parent grid cell to
-		 * 														be regridded.
+		 * 											be regridded.
 		 * @param 		  	kChildCellCount		 	The count of cells for the unique K interval in this
 		 * 											(child) grid.
 		 * @param 		  	kParentCellCount	 	The count of cells for the unique K interval in the

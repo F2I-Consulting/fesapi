@@ -264,6 +264,9 @@ namespace COMMON_NS
 		/**
 		 * Gets an Hdf Proxy from a EML 2.0 dataset.
 		 *
+		 * @exception	std::invalid_argument	If <tt>throwException == true</tt> and the HDF proxy is
+		 * 										missing.
+		 *
 		 * @param 	dataset		  	The dataset.
 		 * @param 	throwException	(Optional) True to throw exception.
 		 *
@@ -273,6 +276,9 @@ namespace COMMON_NS
 
 		/**
 		 * Gets an Hdf Proxy from a EML 2.2 dataset.
+		 *
+		 * @exception	std::invalid_argument	If <tt>throwException == true</tt> and the HDF proxy is
+		 * 										missing.
 		 *
 		 * @param 	dataset		  	The dataset.
 		 * @param 	throwException	(Optional) True to throw exception.
