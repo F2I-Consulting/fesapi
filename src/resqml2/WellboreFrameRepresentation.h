@@ -130,7 +130,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT std::string getWellboreTrajectoryUuid() const;
 
 		/**
-		* Get the associated RESQML wellbore trajector.
+		* Get the associated RESQML wellbore trajectory.
 		*/
 		DLL_IMPORT_OR_EXPORT class RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 

@@ -449,7 +449,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_ContinuousPropertySeries" &&
 			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_StreamlinesFeature" &&
 			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_StreamlinesRepresentation") {
-			addWarning("Content type \"" + contentType + "\" does not belong to 2.0.1. Probably to 2.0? Please fix your ccontent type or ask exporter to fix it.");
+			addWarning("Content type \"" + contentType + "\" does not belong to 2.0.1. Probably to 2.0? Please fix your content type or ask exporter to fix it.");
 		}
 		wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
 	}

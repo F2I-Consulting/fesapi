@@ -3703,7 +3703,7 @@ void deserialize(const string & inputFile)
 	string resqmlResult = pck.deserializeInto(repo);
 	if (!resqmlResult.empty()) {
 		cerr << resqmlResult << endl;
-		throw invalid_argument("The epc document is not a valid one");
+		repo.clearWarnings();
 	}
 
 	const unsigned int hdfProxyCount = repo.getHdfProxyCount();
