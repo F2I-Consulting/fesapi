@@ -23,6 +23,7 @@ under the License.
 
 namespace RESQML2_2_NS
 {
+	/** @brief	Map of continuous colors. This class cannot be inherited. */
 	class ContinuousColorMap final : public AbstractColorMap
 	{
 	private:

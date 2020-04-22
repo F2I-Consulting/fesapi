@@ -20,57 +20,54 @@ under the License.
 
 #include "AbstractTechnicalFeature.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_NS
 {
-	/** A seismic lattice feature. */
+	/**
+	 * Defined by two lateral ordered dimensions: inline (lateral), crossline (lateral and
+	 * orthogonal to the inline dimension), which are fixed.
+	 * 
+	 * To specify its location, a seismic feature can be associated with the seismic coordinates of
+	 * the points of a representation.
+	 */
 	class SeismicLatticeFeature : public AbstractTechnicalFeature
 	{
 	public:
 
-		/** Destructor does nothing since the memory is manged by the gsoap context. */
+		/** Destructor does nothing since the memory is manged by the gSOAP context. */
 		virtual ~SeismicLatticeFeature() {}
 
 		/**
-		 * Get the crossline index increment between two consecutive crosslines.
+		 * Gets the crossline index increment between two consecutive crosslines.
 		 *
 		 * @returns	The crossline increment.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual int getCrosslineIncrement() const = 0;
 
 		/**
-		 * Get the inline index increment between two consecutive inlines.
+		 * Gets the inline index increment between two consecutive inlines.
 		 *
 		 * @returns	The inline increment.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual int getInlineIncrement() const = 0;
 
 		/**
-		 * Get the index of the first crossline.
+		 * Gets the index of the first crossline.
 		 *
 		 * @returns	The origin crossline.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual int getOriginCrossline() const = 0;
 
 		/**
-		 * Get the index of the first inline.
+		 * Gets the index of the first inline.
 		 *
 		 * @returns	The origin inline.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual int getOriginInline() const = 0;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:

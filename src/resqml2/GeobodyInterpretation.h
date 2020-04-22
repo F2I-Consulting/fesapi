@@ -20,7 +20,7 @@ under the License.
 
 #include "AbstractFeatureInterpretation.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_NS
 {
 	class RockVolumeFeature;

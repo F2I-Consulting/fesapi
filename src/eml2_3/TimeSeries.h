@@ -20,7 +20,7 @@ under the License.
 
 #include "../eml2/TimeSeries.h"
 
-/** . */
+/** @brief */
 namespace EML2_3_NS
 {
 	/** A time series. */

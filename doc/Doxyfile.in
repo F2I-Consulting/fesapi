@@ -2136,7 +2136,8 @@ INCLUDE_FILE_PATTERNS  =
 # recursively expanded use the := operator instead of the = operator.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
-PREDEFINED             = protected=private
+PREDEFINED             = protected=private \
+						 DLL_IMPORT_OR_EXPORT=
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The
@@ -2145,7 +2146,17 @@ PREDEFINED             = protected=private
 # definition found in the source code.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
-EXPAND_AS_DEFINED      =
+EXPAND_AS_DEFINED      = COMMON_NS \
+						 RESQML2_NS \
+						 RESQML2_0_1_NS \
+						 RESQML2_2_NS \
+						 WITSML2_0_NS \
+						 PRODML2_1_NS \
+						 EML2_NS \
+						 EML2_0_NS \
+						 EML2_1_NS \
+						 EML2_2_NS \
+						 EML2_3_NS
 
 # If the SKIP_FUNCTION_MACROS tag is set to YES then doxygen's preprocessor will
 # remove all references to function-like macros that are alone on a line, have

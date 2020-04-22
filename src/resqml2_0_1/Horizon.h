@@ -20,7 +20,7 @@ under the License.
 
 #include "GeneticBoundaryFeature.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** A horizon. */

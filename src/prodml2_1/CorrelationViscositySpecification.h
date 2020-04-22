@@ -19,7 +19,7 @@ under the License.
 #pragma once
 #include "PvtSpecification.h"
 
-/** . */
+/** @brief */
 namespace PRODML2_1_NS
 {
 	/** A correlation viscosity specification. */

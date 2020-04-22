@@ -23,6 +23,7 @@ under the License.
 
 namespace RESQML2_2_NS
 {
+	/** @brief	Map of discrete colors. This class cannot be inherited. */
 	class DiscreteColorMap final : public AbstractColorMap
 	{
 	private:

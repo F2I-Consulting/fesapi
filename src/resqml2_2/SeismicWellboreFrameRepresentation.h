@@ -22,6 +22,7 @@ under the License.
 
 namespace RESQML2_2_NS
 {
+	/** @brief	A seismic wellbore frame representation. This class cannot be inherited. */
 	class SeismicWellboreFrameRepresentation final : public RESQML2_2_NS::WellboreFrameRepresentation
 	{
 	public:

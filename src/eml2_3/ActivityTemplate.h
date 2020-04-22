@@ -20,7 +20,7 @@ under the License.
 
 #include "../eml2/ActivityTemplate.h"
 
-/** . */
+/** @brief */
 namespace EML2_3_NS
 {
 	/** An activity template. */

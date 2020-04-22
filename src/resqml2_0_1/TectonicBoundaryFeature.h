@@ -20,7 +20,7 @@ under the License.
 
 #include "BoundaryFeature.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** A tectonic boundary feature. */

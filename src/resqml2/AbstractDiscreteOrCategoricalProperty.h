@@ -33,7 +33,7 @@ namespace RESQML2_NS
 		virtual ~AbstractDiscreteOrCategoricalProperty() {}
 
 		/**
-		 * @brief Adds a 1d array of explicit long values to the property values.
+		 * @brief	Adds a 1d array of explicit long values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -172,7 +172,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackCharHdf5Array3dOfValues(const char * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, char nullValue);
 
 		/**
-		 * @brief Adds an nd array of explicit long values to the property values.
+		 * @brief	Adds an nd array of explicit long values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is

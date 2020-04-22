@@ -20,7 +20,7 @@ under the License.
 
 #include "../resqml2/EarthModelInterpretation.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_2_NS
 {
 	/** This class is a container for other organizations that are consistent to each others. */

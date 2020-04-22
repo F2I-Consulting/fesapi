@@ -20,7 +20,7 @@ under the License.
 
 #include "WellboreFrameRepresentation.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_NS
 {
 	class AbstractGridRepresentation;

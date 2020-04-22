@@ -25,7 +25,7 @@ namespace EML2_NS
 	class AbstractHdfProxy;
 }
 
-/** . */
+/** @brief */
 namespace RESQML2_NS
 {
 	/**

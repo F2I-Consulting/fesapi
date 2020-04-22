@@ -22,7 +22,7 @@ under the License.
 
 #include <limits>
 
-/** . */
+/** @brief */
 namespace RESQML2_NS
 {
 	/**

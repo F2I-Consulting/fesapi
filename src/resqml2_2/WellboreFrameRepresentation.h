@@ -23,6 +23,7 @@ under the License.
 
 namespace RESQML2_2_NS
 {
+	/** @brief	A wellbore frame representation. */
 	class WellboreFrameRepresentation : public RESQML2_NS::WellboreFrameRepresentation
 	{
 	public:

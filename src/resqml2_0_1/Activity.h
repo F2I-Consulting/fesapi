@@ -20,7 +20,7 @@ under the License.
 
 #include "../eml2/Activity.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** An activity. */

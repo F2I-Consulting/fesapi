@@ -20,7 +20,7 @@ under the License.
 
 #include "AbstractSurfaceRepresentation.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_NS
 {
 	/**

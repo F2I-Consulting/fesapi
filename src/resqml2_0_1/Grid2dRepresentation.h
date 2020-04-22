@@ -20,7 +20,7 @@ under the License.
 
 #include "../resqml2/Grid2dRepresentation.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** A grid 2D representation. */

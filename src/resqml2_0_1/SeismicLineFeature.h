@@ -20,7 +20,7 @@ under the License.
 
 #include "../resqml2/AbstractSeismicLineFeature.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** A seismic line feature. */

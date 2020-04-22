@@ -25,8 +25,21 @@ namespace WITSML2_0_NS
 	class Wellbore;
 }
 
+/** @brief */
 namespace RESQML2_NS
 {
+	/**
+	 * May refer to one of these: wellbore. A unique, oriented path from the bottom of a drilled
+	 * borehole to the surface of the earth. The path must not overlap or cross itself.
+	 * 
+	 * borehole. A hole excavated in the earth as a result of drilling or boring operations. The
+	 * borehole may represent the hole of an entire wellbore (when no sidetracks are present), or a
+	 * sidetrack extension. A borehole extends from an originating point (the surface location for
+	 * the initial borehole or kickoff point for sidetracks) to a terminating (bottomhole) point.
+	 * 
+	 * sidetrack. A borehole that originates in another borehole as opposed to originating at the
+	 * surface.
+	 */
 	class WellboreFeature : public AbstractTechnicalFeature
 	{
 	public:
@@ -34,22 +47,47 @@ namespace RESQML2_NS
 		WellboreFeature() {}
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context.
+		 *
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 */
 		DLL_IMPORT_OR_EXPORT WellboreFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractTechnicalFeature(partialObject) {}
-		
+
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gSOAP instance.
+		 *
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 */
 		WellboreFeature(gsoap_resqml2_0_1::_resqml20__WellboreFeature* fromGsoap): AbstractTechnicalFeature(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gSOAP instance.
+		 *
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 */
 		WellboreFeature(gsoap_eml2_3::_resqml22__WellboreFeature* fromGsoap) : AbstractTechnicalFeature(fromGsoap) {}
 
 		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
+		* Destructor does nothing since the memory is managed by the gSOAP context.
 		*/
 		virtual ~WellboreFeature() {}
-		
+
+		/**
+		 * Gets the WITSML wellbore associated to this wellbore feature.
+		 *
+		 * @exception	std::logic_error	If more than one WITSML wellbore is associated to this
+		 * 									wellbore feature.
+		 *
+		 * @returns	@c nullptr if no WITSML wellbore is associated to this wellbore feature, else the
+		 * 			associated WITSML wellbore.
+		 */
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Wellbore* getWitsmlWellbore() const;
+
+		/**
+		 * Sets the WITSML wellbore associated to this instance.
+		 *
+		 * @param [in]	wellbore	The WITSML wellbore to associate to this wellbore. It cannot be null.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual void setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore) = 0;
 
 		/**
@@ -57,9 +95,6 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};
 }

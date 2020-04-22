@@ -20,13 +20,13 @@ under the License.
 
 #include "WellboreFrameRepresentation.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_NS
 {
 	class StratigraphicOccurrenceInterpretation;
 	class WellboreMarker;
 
-	/** Proxy class for a wellbore marker frame representation. */
+	/** A well log frame where each entry represents a well marker. */
 	class WellboreMarkerFrameRepresentation : public WellboreFrameRepresentation
 	{
 	public:
@@ -84,10 +84,22 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, StratigraphicOccurrenceInterpretation* stratiOccurenceInterp, EML2_NS::AbstractHdfProxy* proxy) = 0;
 
-		/** A stratigraphic occurrence interpretation*. */
+		/**
+		 * Gets the DOR of the stratigraphic occurrence interpretation associated to this wellbore
+		 * marker frame representation.
+		 *
+		 * @returns	The DOR of the associated stratigraphic occurrence interpretation if there is one,
+		 * 			else empty DOR if not.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStratigraphicOccurrenceInterpretationDor() const = 0;
 
-		/** A stratigraphic occurrence interpretation*. */
+		/**
+		 * Gets the stratigraphic occurrence interpretation associated to this wellbore marker frame
+		 * representation.
+		 *
+		 * @returns	The associated stratigraphic occurrence interpretation if there is one, else @c
+		 * 			nullptr if not.
+		 */
 		DLL_IMPORT_OR_EXPORT StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation() const;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */

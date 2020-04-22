@@ -20,9 +20,10 @@ under the License.
 
 #include "../resqml2/RockFluidUnitInterpretation.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_2_NS
 {
+	/** @brief	A rock fluid unit interpretation. This class cannot be inherited. */
 	class RockFluidUnitInterpretation final : public RESQML2_NS::RockFluidUnitInterpretation
 	{
 	public:

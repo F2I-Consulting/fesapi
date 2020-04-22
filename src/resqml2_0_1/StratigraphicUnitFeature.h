@@ -20,7 +20,7 @@ under the License.
 
 #include "GeologicUnitFeature.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** A stratigraphic unit feature. */

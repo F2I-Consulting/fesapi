@@ -20,9 +20,10 @@ under the License.
 
 #include "../resqml2/IjkGridNoGeometryRepresentation.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_0_1_NS
 {
+	/** @brief	An ijk grid no geometry representation. This class cannot be inherited. */
 	class IjkGridNoGeometryRepresentation final : public RESQML2_NS::IjkGridNoGeometryRepresentation
 	{
 	public:

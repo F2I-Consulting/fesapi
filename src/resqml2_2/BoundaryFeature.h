@@ -20,7 +20,7 @@ under the License.
 
 #include "../resqml2/BoundaryFeature.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_2_NS
 {
 	/** A boundary feature. */

@@ -22,7 +22,7 @@ under the License.
 #include <utility>
 #include <stdexcept>
 
-/** . */
+/** @brief */
 namespace statistics
 {
 	/**

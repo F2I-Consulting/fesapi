@@ -21,7 +21,7 @@ under the License.
 
 #include "FileRelationship.h"
 
-/** . */
+/** @brief */
 namespace epc
 {
 

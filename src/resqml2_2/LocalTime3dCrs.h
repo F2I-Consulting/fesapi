@@ -20,7 +20,7 @@ under the License.
 
 #include "../resqml2/LocalTime3dCrs.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_2_NS
 {
 	/** A local time 3D crs. */

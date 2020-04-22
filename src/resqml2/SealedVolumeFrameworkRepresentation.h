@@ -20,7 +20,7 @@ under the License.
 
 #include "RepresentationSetRepresentation.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_NS
 {
 	class SealedSurfaceFrameworkRepresentation;

@@ -21,59 +21,67 @@ under the License.
 
 #include "AbstractFeatureInterpretation.h"
 
+/** @brief */
 namespace RESQML2_NS
 {
 	class WellboreFeature;
 
+	/**
+	 * Contains the data describing an opinion of a borehole.This interpretation is relative to one
+	 * particular well trajectory.
+	 */
 	class WellboreInterpretation : public AbstractFeatureInterpretation
 	{
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context.
+		 *
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 */
 		DLL_IMPORT_OR_EXPORT WellboreInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			AbstractFeatureInterpretation(partialObject)
 		{}
 
-		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param horizon	The feature the instance interprets.
-		* @param guid		The guid to set to the fault. If empty then a new guid will be generated.
-		* @param title		A title for the instance to create.
-		* @param isDrilled	Indicate if the wellbore is interpreted wether as drilled or not.
-		*/
+		/** Default constructor */
 		WellboreInterpretation() {};
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gSOAP instance.
+		 *
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 */
 		WellboreInterpretation(gsoap_resqml2_0_1::_resqml20__WellboreInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gSOAP instance.
+		 *
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 */
 		WellboreInterpretation(gsoap_eml2_3::_resqml22__WellboreInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
 
 		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
+		* Destructor does nothing since the memory is managed by the gSOAP context.
 		*/
 		virtual ~WellboreInterpretation() {}
 
 		/**
-		* Indicates if the wellbore has been interpreted as drilled or not.
-		*/
+		 * Indicates if the wellbore has been interpreted as drilled or not.
+		 *
+		 * @returns	True if drilled, false if not.
+		 */
 		virtual bool isDrilled() const = 0;
 
 		/**
-		* Get all the trajectory representations of this interpretation
-		*/
+		 * Gets all the trajectory representations of this interpretation.
+		 *
+		 * @returns	A vector of pointers to the trajectory representations of this interpretation.
+		 */
 		DLL_IMPORT_OR_EXPORT std::vector<class WellboreTrajectoryRepresentation *> getWellboreTrajectoryRepresentationSet() const;
 
-		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};
 }

@@ -20,7 +20,7 @@ under the License.
 
 #include "../resqml2/RockVolumeFeature.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_2_NS
 {
 	/** A stratigraphic unit feature. */

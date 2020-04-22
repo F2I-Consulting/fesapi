@@ -20,7 +20,7 @@ under the License.
 
 #include "../resqml2/BlockedWellboreRepresentation.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_2_NS
 {
 	/** A blocked wellbore representation. */

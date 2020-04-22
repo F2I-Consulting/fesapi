@@ -20,7 +20,7 @@ under the License.
 
 #include "../resqml2/WellboreFeature.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** Proxy class for a wellbore feature. */
@@ -31,7 +31,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param[in]	partialObject	If non-nullptr, the partial object.
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT WellboreFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::WellboreFeature(partialObject) {}
 
@@ -55,14 +55,9 @@ namespace RESQML2_0_1_NS
 		 */
 		WellboreFeature(gsoap_resqml2_0_1::_resqml20__WellboreFeature* fromGsoap): RESQML2_NS::WellboreFeature(fromGsoap) {}
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		~WellboreFeature() {}
 
-		/**
-		 * Sets the WITSML wellbore associated to this instance.
-		 *
-		 * @param [in]	wellbore	The WITSML wellbore to associate to this wellbore. It cannot be null.
-		 */
 		DLL_IMPORT_OR_EXPORT void setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore) final;
 	};
 }

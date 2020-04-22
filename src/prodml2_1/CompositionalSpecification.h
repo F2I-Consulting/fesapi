@@ -64,7 +64,7 @@ under the License.
 		return static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->ComponentPropertySet->vectorName[index]->attributeName->uom;\
 	}
 
-/** . */
+/** @brief */
 namespace PRODML2_1_NS
 {
 	/** A compositional specification. */

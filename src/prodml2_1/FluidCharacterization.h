@@ -22,7 +22,7 @@ under the License.
 
 #include "PvtSpecification.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** A rock fluid unit feature. */
@@ -96,7 +96,7 @@ namespace RESQML2_0_1_NS
 	GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(vectorName, MassFraction, gsoap_eml2_2::eml22__MassPerMassUom)\
 	GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(vectorName, MoleFraction, gsoap_eml2_2::eml22__AmountOfSubstancePerAmountOfSubstanceUom)
 
-/** . */
+/** @brief */
 namespace PRODML2_1_NS
 {
 	/**

@@ -21,7 +21,7 @@ under the License.
 
 #include "../resqml2/WellboreInterpretation.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** Proxy class for a wellbore interpretation. */
@@ -60,14 +60,9 @@ namespace RESQML2_0_1_NS
 		 */
 		WellboreInterpretation(gsoap_resqml2_0_1::_resqml20__WellboreInterpretation* fromGsoap) : RESQML2_NS::WellboreInterpretation(fromGsoap) {}
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		~WellboreInterpretation() {}
 
-		/**
-		 * Indicates if the wellbore has been interpreted as drilled or not.
-		 *
-		 * @returns	True if drilled, false if not.
-		 */
 		bool isDrilled() const final;
 	};
 }

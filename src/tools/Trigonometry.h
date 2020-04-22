@@ -20,7 +20,7 @@ under the License.
 
 #include "../proxies/gsoap_resqml2_0_1Stub.h"
 
-/** . */
+/** @brief */
 namespace trigonometry
 {
 	/**

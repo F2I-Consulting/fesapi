@@ -23,6 +23,7 @@ under the License.
 
 namespace RESQML2_2_NS
 {
+	/** @brief	An unstructured grid representation. This class cannot be inherited. */
 	class UnstructuredGridRepresentation final : public RESQML2_NS::UnstructuredGridRepresentation
 	{
 	public:

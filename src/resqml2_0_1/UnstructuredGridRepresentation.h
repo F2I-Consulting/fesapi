@@ -21,9 +21,10 @@ under the License.
 
 #include "../resqml2/UnstructuredGridRepresentation.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_0_1_NS
 {
+	/** @brief	An unstructured grid representation. This class cannot be inherited. */
 	class UnstructuredGridRepresentation final : public RESQML2_NS::UnstructuredGridRepresentation
 	{
 	public:

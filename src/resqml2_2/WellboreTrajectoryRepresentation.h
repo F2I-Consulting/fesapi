@@ -20,7 +20,7 @@ under the License.
 
 #include "../resqml2/WellboreTrajectoryRepresentation.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_2_NS
 {
 	/** A wellbore trajectory representation. */

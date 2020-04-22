@@ -21,7 +21,7 @@ under the License.
 
 #include <string>
 
-/** . */
+/** @brief */
 namespace epc
 {
 	/** A content type. */

@@ -22,6 +22,7 @@ under the License.
 
 namespace RESQML2_2_NS
 {
+	/** @brief	An ijk grid no geometry representation. This class cannot be inherited. */
 	class IjkGridNoGeometryRepresentation final : public RESQML2_NS::IjkGridNoGeometryRepresentation
 	{
 	public:

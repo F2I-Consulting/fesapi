@@ -22,6 +22,7 @@ under the License.
 
 namespace RESQML2_2_NS
 {
+	/** @brief	Map of abstract colors. */
 	class AbstractColorMap : public COMMON_NS::AbstractObject
 	{
 	public:

@@ -20,7 +20,7 @@ under the License.
 
 #include "ChannelIndexDataObject.h"
 
-/** . */
+/** @brief */
 namespace WITSML2_0_NS
 {
 	/** Channels are the fundamental unit of organization for WITSML logs. */

@@ -20,13 +20,13 @@ under the License.
 
 #include "AbstractObject.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_0_1_NS {
 	/** A wellbore feature. */
 	class WellboreFeature;
 }
 
-/** . */
+/** @brief */
 namespace WITSML2_0_NS
 {
 	/** A trajectory. */

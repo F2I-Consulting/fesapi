@@ -1017,7 +1017,7 @@ namespace COMMON_NS
 		/**
 		 * Creates an EPC external part reference into this repository for 
 		 * allowing the use of a different behavior for persisting numerical
-		 * data. @p NumericalValueBase must be a child of {@link EpcExternalPartReference}
+		 * data. @p NumericalValueBase must be a child of {@link eml2::EpcExternalPartReference}
 		 *
 		 * @tparam	NumericalValueBase	Type of the numerical values.
 		 * @param 	guid 	The guid to set to the EPC external part reference.
@@ -1440,15 +1440,16 @@ namespace COMMON_NS
 			int traceIndexIncrement, unsigned int firstTraceIndex, unsigned int traceCount);
 
 		/**
-		 * Creates a CMP line into this repository
+		 * @brief	Creates a CMP line into this repository
 		 *
-		 * @param 	guid			   	The guid to set to the CMP line. If empty then a new guid
-		 * 								will be generated.
-		 * @param 	title			   	The title to set to the CMP line. If empty then \"unknown\"
-		 * 								title will be set.
-		 * @param 	traceIndexIncrement	The constant index increment between two consecutive shot points indices.
-		 * @param 	firstTraceIndex	   	The index of the first shot point of the CMP line.
-		 * @param 	traceCount		   	Number of shot point.
+		 * @param 	guid								The guid to set to the CMP line. If empty then a
+		 * 												new guid will be generated.
+		 * @param 	title								The title to set to the CMP line. If empty then
+		 * 												\"unknown\" title will be set.
+		 * @param 	nearestShotPointIndicesIncrement	The constant index increment between two
+		 * 												consecutive shot points indices.
+		 * @param 	firstNearestShotPointIndex			The index of the first shot point of the CMP line.
+		 * @param 	nearestShotPointCount				Number of shot point.
 		 *
 		 * @returns	A pointer to the new CMP line.
 		 */

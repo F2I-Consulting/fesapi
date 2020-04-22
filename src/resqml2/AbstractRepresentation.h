@@ -22,7 +22,7 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_NS
 {
 	/** Proxy class for an abstract representation. */

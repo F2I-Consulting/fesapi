@@ -21,7 +21,7 @@ under the License.
 #include <limits>
 #include "AbstractProperty.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_NS
 {
 	/** Proxy class for an abstract values property. */

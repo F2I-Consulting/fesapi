@@ -20,7 +20,7 @@ under the License.
 
 #include "../resqml2/GeobodyInterpretation.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** A geobody interpretation. */

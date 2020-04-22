@@ -20,7 +20,7 @@ under the License.
 
 #include "HdfProxy.h"
 
-/** . */
+/** @brief */
 namespace EML2_0_NS
 {
 	/** This class allows to open an HDF5 file for reading only which is located on an AWS S3 bucket. */

@@ -20,7 +20,7 @@ under the License.
 
 #include "../resqml2/StratigraphicColumnRankInterpretation.h"
 
-/** . */
+/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/**

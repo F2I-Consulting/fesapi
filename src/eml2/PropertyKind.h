@@ -22,7 +22,12 @@ under the License.
 
 namespace EML2_NS
 {
-	/** Proxy class for property kinds. */
+	/**
+	 * Property kinds carry the semantics of property values. They are used to identify if the
+	 * values are, for example, representing porosity, length, stress tensor, etc. Energistics
+	 * provides a list of standard property kind that represent the basis for the commonly used
+	 * properties in the E&amp;P subsurface workflow.
+	 */
 	class PropertyKind : public COMMON_NS::AbstractObject
 	{
 	public:
@@ -92,12 +97,7 @@ namespace EML2_NS
 		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Gets the standard XML tag without XML namespace for serializing this data object
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:
 

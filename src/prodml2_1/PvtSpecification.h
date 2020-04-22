@@ -35,7 +35,7 @@ under the License.
 
 #include "../MacroDefinitions.h"
 
-/** . */
+/** @brief */
 namespace PRODML2_1_NS
 {
 	/** A pvt specification. */
