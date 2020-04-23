@@ -98,22 +98,23 @@ namespace RESQML2_NS
 		 * 									{@link getElementCountOfPatch()} size.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, ULONG64* elementIndices) const = 0;
-		
+
 		/**
-		 * Gets the indices of the supporting representations that refer the selected elements indices
-		 * of a particular patch of this sub-representation.
+		 * @brief	Gets the indices of the supporting representations that refer the selected elements
+		 * 			indices of a particular patch of this sub-representation.
 		 *
 		 * @exception	std::out_of_range	If @p patchIndex is out of range.
 		 *
 		 * @param 	   	patchIndex					   	Zero-based index of the patch.
 		 * @param [out]	supportingRepresentationIndices	Output array for collecting the supporting
 		 * 												representations indices. This array must be
-		 * 												preallocated with {@link
-		 * 												getElementCountOfPatch()} size. The index at a
-		 * 												given position is the index of the supporting
-		 * 												representation associated to the selected element
-		 * 												(or the selected pair of elements) at the same
-		 * 												position in the sub-representation patch.
+		 * 												preallocated with getElementCountOfPatch()
+		 * 												size. The index at a given position is the index
+		 * 												of the supporting representation associated to
+		 * 												the selected element (or the selected pair of
+		 * 												elements) at the same position in the sub-
+		 * 												elements) at the same position in the sub-
+		 * 												representation patch.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getSupportingRepresentationIndicesOfPatch(unsigned int patchIndex, short* supportingRepresentationIndices) const = 0;
 
@@ -323,7 +324,7 @@ namespace RESQML2_NS
 			LONG64 nullValue, EML2_NS::AbstractHdfProxy* proxy, const std::string& supportingRepDataset = "") = 0;
 
 		/**   
-		 * @copydoc RESQML2_NS::AbstractRepresentation::getXyzPointCountOfPatch  
+		 * @copydoc AbstractRepresentation::getXyzPointCountOfPatch  
 		 *
 		 * @exception std::logic_error If the kind of the selected elements of this patch is not node (non 
 		 * 							   pairwise) or if the kind of the left part of the pairs of elements is

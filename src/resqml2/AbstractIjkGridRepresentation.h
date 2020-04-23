@@ -231,11 +231,11 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT unsigned int getJCellCount() const;
 
 		/**
-		 * Sets the count of cells in the J direction.
+		 * @brief	Sets the count of cells in the J direction.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
-		 * @param 	iCount	The count of cells to set in the J direction.
+		 * @param 	jCount	The count of cells to set in the J direction.
 		 */
 		DLL_IMPORT_OR_EXPORT void setJCellCount(const unsigned int & jCount);
 
@@ -570,7 +570,7 @@ namespace RESQML2_NS
 		 * 									means that the corresponding cell is disabled. A non zero value
 		 * 									means that the corresponding cell is enabled.
 		 * @param [in,out]	proxy			(Optional) The HDF proxy for writing the @p enabledCells
-		 * 									values. If @nullptr (default), then the default HDF proxy will be
+		 * 									values. If @c nullptr (default), then the default HDF proxy will be
 		 * 									used.
 		 */
 		DLL_IMPORT_OR_EXPORT void setEnabledCells(unsigned char* enabledCells, EML2_NS::AbstractHdfProxy* proxy = nullptr);
@@ -614,8 +614,8 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void unloadSplitInformation();
 
 		/**
-		 * Checks either a given column edge is splitted or not. This method requires that you have
-		 * already loaded the split information.
+		 * @brief	Checks either a given column edge is splitted or not. This method requires that you
+		 * 			have already loaded the split information.
 		 *
 		 * @exception	std::logic_error	 	If this grid is partial.
 		 * @exception	std::invalid_argument	If the split information is not loaded.
@@ -625,18 +625,17 @@ namespace RESQML2_NS
 		 *
 		 * @param 	iColumn	The I index of the column.
 		 * @param 	jColumn	The J index of the column.
-		 * @param 	edge   	0 for edge from i to i+1, lower j connection;
-		 * 					1 for edge from j to j+1, upper i connection;
-		 * 					2 for edge from i+1 to i, upper j connection;
-		 * 					3 for edge from j+1 to j, lower i connection.
+		 * @param 	edge   	0 for edge from i to i+1, lower j connection; 1 for edge from j to j+1, upper
+		 * 					i connection; 2 for edge from i+1 to i, upper j connection; 3 for edge from
+		 * 					j+1 to j, lower i connection.
 		 *
 		 * @returns	True if the column edge is splitted, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool isColumnEdgeSplitted(unsigned int iColumn, unsigned int jColumn, unsigned int edge) const;
 
 		/**
-		 * Gets the XYZ point index in the HDF dataset from the corner of a cell. This method requires
-		 * that you have already loaded the split information.
+		 * @brief	Gets the XYZ point index in the HDF dataset from the corner of a cell. This method
+		 * 			requires that you have already loaded the split information.
 		 *
 		 * @exception	std::logic_error	 	If this grid is partial.
 		 * @exception	std::invalid_argument	If the split information is not loaded.
@@ -647,25 +646,19 @@ namespace RESQML2_NS
 		 * @param 	iCell 	The I index of the cell.
 		 * @param 	jCell 	The J index of the cell.
 		 * @param 	kCell 	The K index of the cell.
-		 * @param 	corner	Index of the corner: 0 for (0,0,0);
-		 * 					1 for (1,0,0);
-		 * 					2 for (1,1,0);
-		 * 					3 for (0,1,0);
-		 * 					4 for (0,0,1);
-		 * 					5 for (1,0,1);
-		 * 					6 for (1,1,1);
-		 * 					7 for (0,1,1).
+		 * @param 	corner	Index of the corner: 0 for (0,0,0); 1 for (1,0,0); 2 for (1,1,0); 3 for (0,1,
+		 * 					0); 4 for (0,0,1); 5 for (1,0,1); 6 for (1,1,1); 7 for (0,1,1).
 		 *
-		 * @returns	The index of the XYZ point in the HDF dataset corresponding to the corner of the cell.
-		 * 			Keep in mind to multiply the result by 3 to get the X index since the points are
-		 * 			triplet of values.
+		 * @returns	The index of the XYZ point in the HDF dataset corresponding to the corner of the
+		 * 			cell. Keep in mind to multiply the result by 3 to get the X index since the points
+		 * 			are triplet of values.
 		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointIndexFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner) const;
 
 		/**
-		 * Gets the x, y and z values of the corner of a cell of a given block. This method requires
-		 * that you have already both loaded the block information and get the geometry of the block
-		 * thanks to getXyzPointsOfBlock().
+		 * @brief	Gets the x, y and z values of the corner of a cell of a given block. This method
+		 * 			requires that you have already both loaded the block information and get the geometry
+		 * 			of the block thanks to getXyzPointsOfBlock().
 		 *
 		 * @exception	std::logic_error	 	If this grid is partial.
 		 * @exception	std::invalid_argument	If the split or block information is not loaded.
@@ -676,14 +669,9 @@ namespace RESQML2_NS
 		 * @param 	   	iCell	 	The I index of the cell.
 		 * @param 	   	jCell	 	The J index of the cell.
 		 * @param 	   	kCell	 	The K index of the cell.
-		 * @param 	   	corner   	Index of the corner: 0 for (0,0,0);
-		 * 							1 for (1,0,0);
-		 * 							2 for (1,1,0);
-		 * 							3 for (0,1,0);
-		 * 							4 for (0,0,1);
-		 * 							5 for (1,0,1);
-		 * 							6 for (1,1,1);
-		 * 							7 for (0,1,1).
+		 * @param 	   	corner   	Index of the corner: 0 for (0,0,0); 1 for (1,0,0); 2 for (1,1,0); 3
+		 * 							for (0,1,0); 4 for (0,0,1); 5 for (1,0,1); 6 for (1,1,1); 7 for (0,1,
+		 * 							1).
 		 * @param 	   	xyzPoints	The XYZ points of the block (resulting from a call to
 		 * 							getXyzPointsOfBlock()).
 		 * @param [out]	x		 	The x value of the corner we look for.

@@ -151,13 +151,13 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT StratigraphicOccurrenceInterpretation* getStratiOccurence(unsigned int index) const;
 
-		 /**
-		  * Pushes back a stratigraphic occurrence interpretation.
-		  *
-		  * @exception	std::invalid_argument	If <tt>stratiOccurrence == nullptr</tt>.
-		  *
-		  * @param [in]	stratiOccurrence	The stratigraphic occurrence interpretation to push back.
-		  */
+		/**
+		 * @brief	Pushes back a stratigraphic occurrence interpretation.
+		 *
+		 * @exception	std::invalid_argument	If <tt>stratiOccurrence == nullptr</tt>.
+		 *
+		 * @param [in]	stratiOccurence	The stratigraphic occurrence interpretation to push back.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackStratiOccurence(StratigraphicOccurrenceInterpretation * stratiOccurence) = 0;
 
 		 /**

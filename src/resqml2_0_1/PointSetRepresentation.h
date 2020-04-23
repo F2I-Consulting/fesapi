@@ -39,6 +39,13 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT PointSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::PointSetRepresentation(partialObject) {}
 
+		/**
+		 * @brief	Constructor
+		 *
+		 * @param [in,out]	repo 	If non-nullptr, the repo.
+		 * @param 		  	guid 	Unique identifier.
+		 * @param 		  	title	The title.
+		 */
 		PointSetRepresentation(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
 		/**

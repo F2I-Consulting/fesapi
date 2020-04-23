@@ -397,7 +397,7 @@ namespace RESQML2_NS
 		 * 									The count of this array must be equal to
 		 * 									<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 * @param [in,out]	seismicSupport	The representation of the seismic line.
-		 * @param [in,out]	proxy		  	The HDF proxy where to write the @lineAbscissa values. It
+		 * @param [in,out]	proxy		  	The HDF proxy where to write the @p lineAbscissa values. It
 		 * 									must be already opened for writing and won't be closed in
 		 * 									this method.
 		 */

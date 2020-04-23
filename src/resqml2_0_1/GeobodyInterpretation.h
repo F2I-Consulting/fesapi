@@ -63,6 +63,12 @@ namespace RESQML2_0_1_NS
 		 * @param 	geobody3dShape	The geobody 3D shape.
 		 */
 		DLL_IMPORT_OR_EXPORT void set3dShape(gsoap_eml2_3::resqml22__Shape3d geobody3dShape) final;
+
+		/**
+		 * @brief	Sets 3D shape 201
+		 *
+		 * @param 	geobody3dShape	The geobody 3D shape.
+		 */
 		DLL_IMPORT_OR_EXPORT void set3dShape201(gsoap_resqml2_0_1::resqml20__Geobody3dShape geobody3dShape);
 
 		/**
@@ -78,6 +84,12 @@ namespace RESQML2_0_1_NS
 		 * @returns	The 3D shape.
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__Shape3d get3dShape() const final;
+
+		/**
+		 * @brief	Gets 3D shape 201
+		 *
+		 * @returns	The 3D shape 201.
+		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__Geobody3dShape get3dShape201() const;
 	};
 }

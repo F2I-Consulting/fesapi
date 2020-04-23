@@ -290,16 +290,14 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void setCellIndexPairsUsingExistingDataset(ULONG64 cellIndexPairCount, const std::string & cellIndexPair, LONG64 cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, LONG64 gridIndexPairNullValue = -1, const std::string & gridIndexPair = "") = 0;
 
 		/**
-		 * Sets the cell index pairs of this grid connection set representation.
+		 * @brief	Sets the cell index pairs of this grid connection set representation.
 		 *
 		 * @exception	std::invalid_argument	If @p cellIndexPairCount is 0.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
-		 * @exception	std::invalid_argument	If <tt>cellIndexPairNullValue &gt; static_cast&lt;
-		 * 										ULONG64&gt;((std::numeric_limits&lt;
-		 * 										LONG64&gt;::max)())</tt>. The XML null value cannot be
-		 * 										greater than a 64 bits signed integer cause of gSOAP
-		 * 										mappings.
+		 * @exception	std::invalid_argument	If @p cellIndexPairNullValue is strictly greater than
+		 * 										ULONG64 max. The XML null value cannot be greater than a
+		 * 										64 bits signed integer cause of gSOAP mappings.
 		 *
 		 * @param 		  	cellIndexPairCount	  	The count of cell index pairs. It is half the size of
 		 * 											@p cellIndexPair (and of @p gridIndexPair if used).
@@ -319,17 +317,24 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void setCellIndexPairs(ULONG64 cellIndexPairCount, ULONG64 const* cellIndexPair, ULONG64 cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, unsigned short gridIndexPairNullValue = (std::numeric_limits<unsigned short>::max)(), unsigned short * gridIndexPair = nullptr);
 
 		/**
-		 * The numerical values
-		 * 2 x #Connections array of local face-per-cell indices for (Cell1,Cell2) for each connection.
-		 * Local face-per-cell indices are used because global face indices need not have been defined.
-		 * The numerical values are already stored in an existing hdf5 dataset. Null value = -1 by
-		 * documentation.
+		 * @brief	Sets the local face per cell index pairs of this grid connection set representation.
+		 * 			Local face-per-cell indices are used because global face indices need not have been
+		 * 			defined. The numerical values are already stored in an existing hdf5 dataset. Null
+		 * 			value = -1 according to documentation.
+		 *
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
+		 * 										defined in the repository.
 		 *
 		 * @param 		  	localFacePerCellIndexPair	The HDF dataset path where we can find all the
-		 * 												local Face Per CellIndex Pair in a 1d Array.
+		 * 												local Face Per CellIndex Pair in a 1d array. The
+		 * 												size of the numerical values is 2 times the
+		 * 												number of connections array of local face-per-
+		 * 												cell indices for (Cell1,Cell2) for each
+		 * 												connection.
 		 * @param 		  	nullValue				 	The null value.
 		 * @param [in,out]	proxy					 	The HDF proxy where the numerical values (cell
-		 * 												indices) are stored.
+		 * 												indices) are stored. if @c nullptr, then the
+		 * 												repository default HDF proxy will be used.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, LONG64 nullValue, EML2_NS::AbstractHdfProxy * proxy) = 0;
 
@@ -361,7 +366,7 @@ namespace RESQML2_NS
 		 * feature interpretation. RESQML allows to map with more than one feature interpretation but
 		 * this feature is not implemented yet.
 		 *
-		 * @exception	std::invalid_argument	If @p proxy is @nullptr.
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt>.
 		 *
 		 * @param [in]	  	interpretationIndices	 	For each connection, the index of the
 		 * 												corresponding interpretation in the

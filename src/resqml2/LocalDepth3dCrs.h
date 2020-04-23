@@ -24,9 +24,9 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * Defines a local depth coordinate system. The geometrical origin and location are defined by
-	 * the elements of the base class {@link AbstractLocal3dCRS}. This CRS uses the units of measure of its
-	 * projected and vertical CRS.
+	 * @brief	Defines a local depth coordinate system. The geometrical origin and location are
+	 * 			defined by the elements of the base class AbstractLocal3dCrs. This CRS uses the units
+	 * 			of measure of its projected and vertical CRS.
 	 */
 	class LocalDepth3dCrs : public RESQML2_NS::AbstractLocal3dCrs
 	{

@@ -80,7 +80,7 @@ namespace RESQML2_NS
 		 * @param 		  	minimumValue	(Optional) The minimum value of the values to add. If @c NaN is
 		 * 									provided then both minimum and maximum values will be computed
 		 * 									from the values.
-		 * @param 		  	maximumValue	(Optional) The maximum value of the values to add. If @s NaN is
+		 * @param 		  	maximumValue	(Optional) The maximum value of the values to add. If @c NaN is
 		 * 									provided then both maximum and minimum values will be computed
 		 * 									from the values.
 		 */
@@ -108,7 +108,7 @@ namespace RESQML2_NS
 		 * 											@c NaN is provided then both minimum and maximum
 		 * 											values will be computed from the values.
 		 * @param 		  	maximumValue		  	(Optional) The maximum value of the values to add. If
-		 * 											@s NaN is provided then both maximum and minimum
+		 * 											@c NaN is provided then both maximum and minimum
 		 * 											values will be computed from the values.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array2dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr,
@@ -137,7 +137,7 @@ namespace RESQML2_NS
 		 * 											@c NaN is provided then both minimum and maximum
 		 * 											values will be computed from the values.
 		 * @param 		  	maximumValue		  	(Optional) The maximum value of the values to add. If
-		 * 											@s NaN is provided then both maximum and minimum
+		 * 											@c NaN is provided then both maximum and minimum
 		 * 											values will be computed from the values.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array3dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr,
@@ -200,7 +200,7 @@ namespace RESQML2_NS
 		/**
 		 * Adds an nd array of explicit float values to the property values.
 		 * 
-		 * @exception std::invalid_argument If <tt> minimumValue == nullptr </tt> and </tt> maximumValue != nullptr </tt>.
+		 * @exception std::invalid_argument If <tt> minimumValue == nullptr </tt> and <tt> maximumValue != nullptr </tt>.
 		 * @exception std::invalid_argument	If <tt> minimumValue != nullptr </tt> and <tt> maximumValue == nullptr </tt>.
 		 * 									
 		 * @copydetails	pushBackDoubleHdf5ArrayOfValues

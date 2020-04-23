@@ -24,9 +24,9 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * Defines a local time coordinate system. The geometrical origin and location are defined by
-	 * the elements of the base class {@link AbstractLocal3dCRS}. This CRS defines the time unit
-	 * that the time-based geometries that refer to it will use.
+	 * @brief	Defines a local time coordinate system. The geometrical origin and location are
+	 * 			defined by the elements of the base class AbstractLocal3dCrs. This CRS defines the
+	 * 			time unit that the time-based geometries that refer to it will use.
 	 */
 	class LocalTime3dCrs : public AbstractLocal3dCrs
 	{

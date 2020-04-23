@@ -84,8 +84,8 @@ namespace RESQML2_0_1_NS
 			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * parentPropType);
 
 		/**
-		 * Creates a local property type which uses a non standard uom and which derives from a standard
-		 * Energistics property type.
+		 * @brief	Creates a local property type which uses a non standard uom and which derives from a
+		 * 			standard Energistics property type.
 		 *
 		 * @param [in,out]	repo						 	The repo where the underlying gsoap proxy is
 		 * 													going to be created.
@@ -94,9 +94,7 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	title						 	The title of the instance.
 		 * @param 		  	namingSystem				 	The name of the dictionary within which the
 		 * 													property is unique.
-		 * 													@apram nonStandardUom					The non standard
-		 * 													uom of the values.
-		 * @param 		  	nonStandardUom				 	The non standard uom.
+		 * @param 		  	nonStandardUom				 	The non standard uom of the values.
 		 * @param 		  	parentEnergisticsPropertyKind	The name of the parent property type in the
 		 * 													Energistics property dictionary.
 		 */
@@ -104,16 +102,15 @@ namespace RESQML2_0_1_NS
 			const std::string & namingSystem, const std::string & nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
-		 * Creates a local property type which uses a non standard uom which derives from another local
-		 * property type.
+		 * @brief	Creates a local property type which uses a non standard uom which derives from
+		 * 			another local property type.
 		 *
 		 * @param 		  	guid		  	The guid to set to the local 3d crs. If empty then a new guid
 		 * 									will be generated.
 		 * @param 		  	title		  	The title of the instance.
 		 * @param 		  	namingSystem  	The name of the dictionary within which the property is
 		 * 									unique.
-		 * 									@apram nonStandardUom					The non standard uom of the values.
-		 * @param 		  	nonStandardUom	The non standard uom.
+		 * @param 		  	nonStandardUom	The non standard uom of the values.
 		 * @param [in,out]	parentPropType	The local parent property type in the EPC document.
 		 */
 		PropertyKind(const std::string & guid, const std::string & title,
