@@ -287,6 +287,15 @@ DataObjectRepository::~DataObjectRepository()
 {
 	clear();
 
+	if (propertyKindMapper != nullptr) {
+		delete propertyKindMapper;
+		propertyKindMapper = nullptr;
+	}
+
+	// An HDF proxy factory must always exist.
+	// It is created at construction time
+	delete hdfProxyFactory;
+
 	soap_destroy(gsoapContext); // remove deserialized C++ objects
 	soap_end(gsoapContext); // remove deserialized data
 	soap_done(gsoapContext); // finalize last use of the context
@@ -295,11 +304,6 @@ DataObjectRepository::~DataObjectRepository()
 
 void DataObjectRepository::clear()
 {
-	if (propertyKindMapper != nullptr) {
-		delete propertyKindMapper;
-		propertyKindMapper = nullptr;
-	}
-
 	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
 		for (size_t i = 0; i < it->second.size(); ++i) {
 			delete it->second[i];
@@ -310,8 +314,6 @@ void DataObjectRepository::clear()
 	backwardRels.clear();
 
 	warnings.clear();
-
-	delete hdfProxyFactory;
 }
 
 void DataObjectRepository::addRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target)
@@ -2239,6 +2241,9 @@ std::string DataObjectRepository::getGsoapErrorMessage() const
 }
 
 void DataObjectRepository::setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory) {
+	if (factory == nullptr) {
+		throw invalid_argument("You cannot set a NULL HDF proxy factory.");
+	}
 	delete hdfProxyFactory;
 	hdfProxyFactory = factory;
 }
