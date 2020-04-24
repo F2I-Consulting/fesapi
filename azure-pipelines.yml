@@ -11,95 +11,6 @@ pr:
 
 jobs:
   - job:
-    displayName: Windows VS2015
-    pool:
-      vmImage: 'vs2015-win2012r2'
-    strategy:
-      matrix:
-        # 64-bit Debug:
-        #   BuildType: Debug
-        #   Generator: '-G"Visual Studio 14 2015 Win64" -T host=x64'
-        #   JFlag: -j 4
-
-        64-bit Release:
-          BuildType: Release
-          Generator: '-G"Visual Studio 14 2015 Win64" -T host=x64'
-    steps:
-      - powershell: |
-          Invoke-WebRequest https://cmake.org/files/v3.12/cmake-3.12.0-win64-x64.zip -OutFile C:\cmake-3.12.0-win64-x64.zip
-          Expand-Archive C:\cmake-3.12.0-win64-x64.zip -DestinationPath C:\
-          Rename-Item -Path C:\cmake-3.12.0-win64-x64 -NewName C:\cmake
-          Write-Host "##vso[task.prependpath]C:\cmake\bin"
-        displayName: 'Install CMake 3.12.0'
-
-      - powershell: |
-          Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.18/bin/windows/noszip/extra/hdf5-1.8.18-win64-vs2015-noszip.zip -OutFile C:\hdf5-1.8.18-win64-vs2015-noszip.zip
-          Expand-Archive C:\hdf5-1.8.18-win64-vs2015-noszip.zip -DestinationPath C:\
-          msiexec.exe /i "C:\hdf5\HDF5-1.8.18-win64.msi" /qn INSTALL_ROOT=C:\hdf5-1.8.18-win64-vs2015-noszip
-        displayName: 'Install HDF5 1.8.18'
-
-      - powershell: |
-          Invoke-WebRequest https://github.com/F2I-Consulting/Minizip/releases/download/1.1/minizip-1.1-win64-vs2015-static.zip -OutFile C:\minizip-1.1-win64-vs2015-static.zip
-          Expand-Archive C:\minizip-1.1-win64-vs2015-static.zip -DestinationPath C:\
-        displayName: 'Install Minizip'
-
-      # sourceforge and WebRequest incompatible
-      - task: PowerShell@2
-        inputs:
-            targetType: 'inline'
-            script: |
-                Write-Host "Downloading SWIG..."
-                $url = "http://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip"
-                $output = [System.IO.Path]::Combine("C:/", "swigwin-3.0.12.zip")
-                (new-object System.Net.WebClient).DownloadFile($url, $output)
-            errorActionPreference: 'stop'
-            failOnStderr: 'true'
-        displayName: Download SWIG from official repository
-      - task: ExtractFiles@1
-        inputs:
-          archiveFilePatterns: 'C:/swigwin-3.0.12.zip'
-          destinationFolder: 'C:/'
-          cleanDestinationFolder: false
-        displayName: Install SWIG
-
-      - task: CMake@1
-        displayName: 'CMake .. $(Generator)'
-        inputs:
-          # workingDirectory: $(BUILD_DIR)
-          cmakeArgs:
-            ..
-            $(Generator)
-            -Wno-dev -Wno-deprecated
-            -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
-            -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
-            -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/hdf5.lib
-            -DMINIZIP_INCLUDE_DIR=C:/minizip-1.1-win64-vs2015-static/include
-            -DMINIZIP_LIBRARY_RELEASE=C:/minizip-1.1-win64-vs2015-static/lib/minizip.lib
-            -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
-            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
-            -DWITH_EXAMPLE=TRUE
-            -DWITH_EXPERIMENTAL=TRUE
-            -DWITH_DOTNET_WRAPPING=TRUE
-            -DWITH_TEST=TRUE
-            -DSWIG_EXECUTABLE=C:/swigwin-3.0.12/swig.exe
-
-      - task: CMake@1
-        displayName: "Build --config $(BuildType)"
-        inputs:
-          cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
-          
-      - powershell: |
-          Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
-          Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
-          ctest -C $(BuildType) -V
-        failOnStderr: true
-        workingDirectory: $(Build.SourcesDirectory)\build
-        displayName: 'Test'
-
-      - script: |
-          $(Build.SourcesDirectory)\build\$(BuildType)\example.exe"
-        displayName: 'Example'
-  - job:
     displayName: Windows VS2017
     pool:
       vmImage: 'vs2017-win2016'
@@ -107,7 +18,7 @@ jobs:
       matrix:
         # 64-bit Debug:
         #   BuildType: Debug
-        #   Generator: '-G"Visual Studio 14 2015 Win64" -T host=x64'
+        #   Generator: '-G"Visual Studio 15 2017 Win64" -T host=x64'
         #   JFlag: -j 4
 
         64-bit Release:
@@ -190,7 +101,7 @@ jobs:
       matrix:
         # 64-bit Debug:
         #   BuildType: Debug
-        #   Generator: '-G"Visual Studio 14 2015 Win64" -T host=x64'
+        #   Generator: '-G"Visual Studio 16 2019" -A x64" -T host=x64'
         #   JFlag: -j 4
 
         64-bit Release:

@@ -187,8 +187,8 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 {
 	std::string result;
 	vector<string> warningsDuringReading = package->openForReading(filePath);
-	for (size_t i = 0; i < warningsDuringReading.size(); ++i) {
-		result += warningsDuringReading[i] + "\n";
+	for (const auto& warning : warningsDuringReading) {
+		result += warning + "\n";
 	}
 
 	// Read all RESQML objects
@@ -254,6 +254,10 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 	const vector<RESQML2_NS::AbstractProperty*> allprops = repo.getDataObjects<RESQML2_NS::AbstractProperty>();
 	for (size_t propIndex = 0; propIndex < allprops.size(); ++propIndex) {
 		allprops[propIndex]->validate();
+	}
+
+	for (const auto& warning : repo.getWarnings()) {
+		result += warning + "\n";
 	}
 
 	return result;

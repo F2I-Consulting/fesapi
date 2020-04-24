@@ -57,7 +57,7 @@ namespace COMMON_NS
 		/** The underlying generated gSoap proxy for a EML 2.3 dataobject. */
 		gsoap_eml2_3::eml23__AbstractObject* gsoapProxy2_3;
 
-		/** The repository which contain this data object. */
+		/** The repository which contains this data object. */
 		COMMON_NS::DataObjectRepository* repository;
 
 		/**
@@ -119,7 +119,7 @@ namespace COMMON_NS
 			repository(nullptr) {}
 
 		/**
-		 * Constructor when importing EML 2.2 dataobjects
+		 * Constructor when importing EML 2.3 dataobjects
 		 *
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */

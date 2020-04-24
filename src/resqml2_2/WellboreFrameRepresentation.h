@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/WellboreFrameRepresentation.h"
 #include "../resqml2/AbstractValuesProperty.h"
+#include "../resqml2/WellboreFrameRepresentation.h"
 
 namespace RESQML2_2_NS
 {

@@ -88,7 +88,7 @@ COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiColumnDor() co
 		: COMMON_NS::DataObjectReference();
 }
 
-unsigned int EarthModelInterpretation::getStratiOccurenceCount() const
+unsigned int EarthModelInterpretation::getStratiOccurrenceCount() const
 {
 	const size_t result = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.size();
 	if (result > (std::numeric_limits<unsigned int>::max)()) {

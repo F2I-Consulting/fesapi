@@ -794,7 +794,6 @@ namespace COMMON_NS
 		//************************************
 
 		void clearWarnings();
-		void addWarning(const std::string & warning);
 		const std::vector<std::string> & getWarnings() const;
 		
 		template <class valueType>

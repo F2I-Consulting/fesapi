@@ -312,7 +312,7 @@ namespace RESQML2_NS
 		 * @returns	A vector of pointers to all the representation set representations which contain this
 		 * 			representation.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RepresentationSetRepresentation *> getRepresentationSetRespresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RepresentationSetRepresentation *> getRepresentationSetRepresentationSet() const;
 
 		/**
 		 * Gets the count of all representation set representations which contain this representation.
@@ -332,7 +332,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The parent representation set representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation * getRepresentationSetRepresentation(const ULONG64  & index) const;
+		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation* getRepresentationSetRepresentation(ULONG64 index) const;
 
 		/**
 		 * Adds seismic 3d coordinates to an existing point geometry patch.

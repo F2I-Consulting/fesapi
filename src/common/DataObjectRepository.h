@@ -3146,7 +3146,7 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT PRODML2_1_NS::FluidCharacterization* createFluidCharacterization(const std::string & guid, const std::string & title);
 
-		//************** EML2.2 ****************
+		//************** EML2.3 ****************
 
 		/**
 		 * Creates a graphical information set into this repository

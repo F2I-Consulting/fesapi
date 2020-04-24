@@ -102,6 +102,13 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 		0, &one, &one, one,
 		0, twothree, oneone, 2,
 		parentGrid);
+
+	// Put all LGRs in a single representation set representation for other testing
+	auto rsr = repo->createRepresentationSetRepresentation("4526345b-3900-4b1a-a68d-7ea9fd824827", "RSR");
+	childGrid->pushBackIntoRepresentationSet(rsr);
+	childGridHdf5->pushBackIntoRepresentationSet(rsr);
+	childGridNonConstant->pushBackIntoRepresentationSet(rsr);
+	REQUIRE(childGrid->getRepresentationSetRepresentation(0)->getRepresentationCount() == 3);
 }
 
 void LgrOnRightHanded4x3x2ExplicitIjkGrid::readRepoHandler() {
@@ -171,6 +178,19 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::readRepoHandler() {
 	REQUIRE_FALSE(childGridNonConstant->hasRegridChildCellWeights('i'));
 	REQUIRE_FALSE(childGridNonConstant->hasRegridChildCellWeights('j'));
 	REQUIRE_FALSE(childGridNonConstant->hasRegridChildCellWeights('k'));
+
+	// RSR
+	REQUIRE(childGrid->getRepresentationSetRepresentationCount() == 1);
+	REQUIRE(childGridHdf5->getRepresentationSetRepresentationCount() == 1);
+	REQUIRE(childGridNonConstant->getRepresentationSetRepresentationCount() == 1);
+	auto rsr = childGridHdf5->getRepresentationSetRepresentation(0);
+	REQUIRE(childGrid->getRepresentationSetRepresentation(0) == rsr);
+	REQUIRE(childGridNonConstant->getRepresentationSetRepresentation(0) == rsr);
+	REQUIRE(rsr->isHomogeneous());
+	REQUIRE(rsr->getRepresentationCount() == 3);
+	REQUIRE(rsr->getRepresentation(0) == childGrid);
+	REQUIRE(rsr->getRepresentation(1) == childGridHdf5);
+	REQUIRE(rsr->getRepresentation(2) == childGridNonConstant);
 
 	delete parentGridTest;
 }
