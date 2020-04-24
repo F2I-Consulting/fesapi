@@ -260,9 +260,9 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackIntoRepresentationSet(class RepresentationSetRepresentation * repSet);
 
 		/**
-		* Get all the subrepresentations of this instance which represent a fault.
+		* Get all the representation sets which contain this instance.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RepresentationSetRepresentation *> getRepresentationSetRespresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RepresentationSetRepresentation*> getRepresentationSetRepresentationSet() const;
 
 		/**
 		 * Get the count of representation set representations which contain this representation
@@ -272,7 +272,7 @@ namespace RESQML2_NS
 		/**
 		 * Get the parent representation set representations at the specified index of the representation set representation list.
 		 */
-		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation * getRepresentationSetRepresentation(const ULONG64  & index) const;
+		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation* getRepresentationSetRepresentation(ULONG64 index) const;
 
 		/**
 		* Push back a patch of seismic 3D coordinates info.

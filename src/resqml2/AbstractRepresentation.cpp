@@ -450,19 +450,19 @@ void AbstractRepresentation::pushBackIntoRepresentationSet(RepresentationSetRepr
 	repSet->pushBack(this);
 }
 
-std::vector<RepresentationSetRepresentation*> AbstractRepresentation::getRepresentationSetRespresentationSet() const
+std::vector<RepresentationSetRepresentation*> AbstractRepresentation::getRepresentationSetRepresentationSet() const
 {
-	return repository->getTargetObjects<RepresentationSetRepresentation>(this);
+	return repository->getSourceObjects<RepresentationSetRepresentation>(this);
 }
 
 ULONG64 AbstractRepresentation::getRepresentationSetRepresentationCount() const
 {
-	return getRepresentationSetRespresentationSet().size();
+	return getRepresentationSetRepresentationSet().size();
 }
 
-RepresentationSetRepresentation* AbstractRepresentation::getRepresentationSetRepresentation(const ULONG64& index) const
+RepresentationSetRepresentation* AbstractRepresentation::getRepresentationSetRepresentation(ULONG64 index) const
 {
-	const std::vector<RESQML2_NS::RepresentationSetRepresentation*>& representationSetRepresentationSet = getRepresentationSetRespresentationSet();
+	const std::vector<RESQML2_NS::RepresentationSetRepresentation*> representationSetRepresentationSet = getRepresentationSetRepresentationSet();
 
 	if (index >= getRepresentationSetRepresentationCount()) {
 		throw range_error("The index of the representation set representation is out of range.");
@@ -509,7 +509,6 @@ void AbstractRepresentation::loadTargetRelationships()
 			}
 		}
 	}
-	// TODO : else if (gsoapProxy2_3 != nullptr)
 }
 
 void AbstractRepresentation::addSeismic3dCoordinatesToPatch(const unsigned int patchIndex, double* inlines, double* crosslines, const unsigned int& pointCount,
