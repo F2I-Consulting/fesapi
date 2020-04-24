@@ -29,6 +29,7 @@ under the License.
 #include "resqml2/IjkGridExplicitRepresentation.h"
 #include "resqml2/DiscreteProperty.h"
 #include "resqml2/ContinuousProperty.h"
+#include "resqml2/RepresentationSetRepresentation.h"
 
 using namespace std;
 using namespace resqml2_0_1test;

@@ -77,7 +77,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in]	stratiOccurenceInterp	The stratigraphic occurrence interpretation to set.
 		 */
-		DLL_IMPORT_OR_EXPORT void setStratigraphicOccurrenceInterpretation(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurenceInterp) final;
+		DLL_IMPORT_OR_EXPORT void setStratigraphicOccurrenceInterpretation(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrenceInterp) final;
 
 		/**
 		 * Sets the correspondence between the intervals of this wellbore marker frame representation
@@ -102,7 +102,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in,out]	proxy				 	The HDF proxy where the numerical values (indices)
 		 * 											are stored.
 		 */
-		DLL_IMPORT_OR_EXPORT void setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, RESQML2_NS::StratigraphicOccurrenceInterpretation* stratiOccurenceInterp, EML2_NS::AbstractHdfProxy* proxy) final;
+		DLL_IMPORT_OR_EXPORT void setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, RESQML2_NS::StratigraphicOccurrenceInterpretation* stratiOccurrenceInterp, EML2_NS::AbstractHdfProxy* proxy) final;
 
 		/** A stratigraphic occurrence interpretation*. */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratigraphicOccurrenceInterpretationDor() const final;

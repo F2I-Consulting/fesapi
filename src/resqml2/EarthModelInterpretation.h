@@ -124,7 +124,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of associated stratigraphic occurrence interpretations.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getStratiOccurenceCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getStratiOccurrenceCount() const = 0;
 
 		/**
 		 * Gets the DOR of a given associated stratigraphic occurrence interpretation.
@@ -136,7 +136,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the stratigraphic occurrence interpretation at position @p index.
 		 */
-		virtual COMMON_NS::DataObjectReference getStratiOccurenceDor(unsigned int index) const = 0;
+		virtual COMMON_NS::DataObjectReference getStratiOccurrenceDor(unsigned int index) const = 0;
 
 		/**
 		 * Gets a given associated stratigraphic occurrence interpretation.
@@ -148,7 +148,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The stratigraphic occurrence interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT StratigraphicOccurrenceInterpretation* getStratiOccurence(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT StratigraphicOccurrenceInterpretation* getStratiOccurrence(unsigned int index) const;
 
 		/**
 		 * @brief	Pushes back a stratigraphic occurrence interpretation.
@@ -157,7 +157,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	stratiOccurence	The stratigraphic occurrence interpretation to push back.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackStratiOccurence(StratigraphicOccurrenceInterpretation * stratiOccurence) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackStratiOccurrence(StratigraphicOccurrenceInterpretation * stratiOccurence) = 0;
 
 		 /**
 		  * Get the count of rock fluid organization interpretations associated to this earth model

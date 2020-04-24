@@ -72,8 +72,8 @@ under the License.
 #include "resqml2_0_1/PropertySet.h"
 #include "resqml2_0_1/ContinuousProperty.h"
 #include "resqml2_0_1/DiscreteProperty.h"
-#include "resqml2_0_1/CategoricalProperty.h"
-#include "resqml2_0_1/StringTableLookup.h"
+#include "resqml2/CategoricalProperty.h"
+#include "resqml2/StringTableLookup.h"
 #include "resqml2/GridConnectionSetRepresentation.h"
 #include "resqml2/IjkGridExplicitRepresentation.h"
 #include "resqml2/IjkGridParametricRepresentation.h"
@@ -979,17 +979,6 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	stringTableLookup->addValue("Cell index 1", 1);
 	RESQML2_NS::CategoricalProperty* categoricalProp = pck->createCategoricalProperty(ijkgrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)", 1,
 		gsoap_eml2_3::resqml22__IndexableElement__cells, stringTableLookup, propType1);
-	categoricalProp->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
-
-	//**************
-	// Categorical Properties
-	//**************
-
-	StringTableLookup* stringTableLookup = pck->createStringTableLookup("62245eb4-dbf4-4871-97de-de9e4f4597be", "My String Table Lookup");
-	stringTableLookup->addValue("Cell index 0", 0);
-	stringTableLookup->addValue("Cell index 1", 1);
-	CategoricalProperty* categoricalProp = pck->createCategoricalProperty(ijkgrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, stringTableLookup, propType1);
 	categoricalProp->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
 
 	//**************

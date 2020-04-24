@@ -88,17 +88,17 @@ COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiColumnDor() co
 		: COMMON_NS::DataObjectReference();
 }
 
-unsigned int EarthModelInterpretation::getStratiOccurenceCount() const
+unsigned int EarthModelInterpretation::getStratiOccurrenceCount() const
 {
 	const size_t result = static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->StratigraphicOccurrences.size();
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much StratiOccurence");
+		throw std::range_error("There are too much StratiOccurrences");
 	}
 
 	return static_cast<unsigned int>(result);
 }
 
-COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiOccurenceDor(unsigned int index) const
+COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiOccurrenceDor(unsigned int index) const
 {
 	_resqml22__EarthModelInterpretation* earthModelInterpretation = static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3);
 	if (index < earthModelInterpretation->StratigraphicOccurrences.size()) {
@@ -109,11 +109,11 @@ COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiOccurenceDor(u
 	}
 }
 
-void EarthModelInterpretation::pushBackStratiOccurence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurence)
+void EarthModelInterpretation::pushBackStratiOccurrence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrence)
 {
-	getRepository()->addRelationship(this, stratiOccurence);
+	getRepository()->addRelationship(this, stratiOccurrence);
 		
-	static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->StratigraphicOccurrences.push_back(stratiOccurence->newEml23Reference());
+	static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->StratigraphicOccurrences.push_back(stratiOccurrence->newEml23Reference());
 }
 
 unsigned int EarthModelInterpretation::getRockFluidOrganizationInterpretationCount() const

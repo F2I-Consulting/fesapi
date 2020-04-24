@@ -525,7 +525,6 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 	else if (contentType.find("application/x-eml+xml;version=2.3;type=") != string::npos) {
 		wrapper = getEml2_3WrapperFromGsoapContext(datatype);
 	}
-#endif
 
 	if (wrapper != nullptr) {
 		if (gsoapContext->error != SOAP_OK) {
@@ -2136,7 +2135,7 @@ PRODML2_1_NS::FluidCharacterization* DataObjectRepository::createFluidCharacteri
 	return new PRODML2_1_NS::FluidCharacterization(this, guid, title);
 }
 
-#if WITH_EXPERIMENTAL
+
 COMMON_NS::GraphicalInformationSet* DataObjectRepository::createGraphicalInformationSet(const std::string & guid, const std::string & title)
 {
 	return new COMMON_NS::GraphicalInformationSet(this, guid, title);
@@ -2924,7 +2923,6 @@ COMMON_NS::AbstractObject* DataObjectRepository::getEml2_1WrapperFromGsoapContex
 
 	return wrapper;
 }
-#endif
 
 COMMON_NS::AbstractObject* DataObjectRepository::getEml2_3WrapperFromGsoapContext(const std::string & datatype)
 {

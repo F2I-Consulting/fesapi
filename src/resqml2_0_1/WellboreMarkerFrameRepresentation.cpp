@@ -75,7 +75,7 @@ COMMON_NS::DataObjectReference WellboreMarkerFrameRepresentation::getStratigraph
 	return frame->IntervalStratigraphiUnits != nullptr ? COMMON_NS::DataObjectReference(frame->IntervalStratigraphiUnits->StratigraphicOrganization) : COMMON_NS::DataObjectReference();
 }
 
-void WellboreMarkerFrameRepresentation::setStratigraphicOccurrenceInterpretation(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurenceInterp)
+void WellboreMarkerFrameRepresentation::setStratigraphicOccurrenceInterpretation(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrenceInterp)
 {
 	getRepository()->addRelationship(this, stratiOccurrenceInterp);
 
@@ -84,7 +84,7 @@ void WellboreMarkerFrameRepresentation::setStratigraphicOccurrenceInterpretation
 	frame->IntervalStratigraphiUnits->StratigraphicOrganization = stratiOccurrenceInterp->newResqmlReference();
 }
 
-void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, RESQML2_NS::StratigraphicOccurrenceInterpretation* stratiOccurenceInterp, EML2_NS::AbstractHdfProxy* proxy)
+void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, RESQML2_NS::StratigraphicOccurrenceInterpretation* stratiOccurrenceInterp, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (stratiUnitIndices == nullptr) {
 		throw invalid_argument("The strati unit indices cannot be null.");

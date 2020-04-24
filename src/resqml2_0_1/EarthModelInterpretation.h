@@ -96,21 +96,21 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiColumnDor() const final;
 
 		/**
-		 * Strati occurences
+		 * Strati occurrences
 		 *
-		 * @returns	The strati occurence count.
+		 * @returns	The strati occurrence count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getStratiOccurenceCount() const final;
+		DLL_IMPORT_OR_EXPORT unsigned int getStratiOccurrenceCount() const final;
 
 		/** A stratigraphic occurrence interpretation*. */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiOccurenceDor(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiOccurrenceDor(unsigned int index) const final;
 
 		/**
-		 * Pushes a back strati occurence
+		 * Pushes a back strati occurrence
 		 *
-		 * @param [in,out]	stratiOccurence	If non-null, the strati occurence.
+		 * @param [in,out]	stratiOccurrence	If non-null, the strati occurrence.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackStratiOccurence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurence) final;
+		DLL_IMPORT_OR_EXPORT void pushBackStratiOccurrence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrence) final;
 
 		/**
 		 * Rock Fluid
