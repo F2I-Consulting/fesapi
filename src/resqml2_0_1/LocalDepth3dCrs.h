@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/LocalDepth3dCrs.h"
 
-/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** A local depth 3D crs. */

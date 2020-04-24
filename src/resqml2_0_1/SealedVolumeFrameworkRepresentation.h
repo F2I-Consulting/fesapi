@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/SealedVolumeFrameworkRepresentation.h"
 
-/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** A sealed volume framework representation. */

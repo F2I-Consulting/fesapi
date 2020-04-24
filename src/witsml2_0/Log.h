@@ -20,7 +20,6 @@ under the License.
 
 #include "ChannelMetaDataObject.h"
 
-/** @brief */
 namespace WITSML2_0_NS
 {
 	/** Primarily a container for one or more channel sets (ChannelSet). */

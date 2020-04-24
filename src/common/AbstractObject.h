@@ -22,7 +22,6 @@ under the License.
 
 #include "DataObjectRepository.h"
 
-/** @brief */
 namespace COMMON_NS
 {
 	/** An abstract data object. */

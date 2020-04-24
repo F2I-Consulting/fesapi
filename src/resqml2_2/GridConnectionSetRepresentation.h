@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/GridConnectionSetRepresentation.h"
 
-/** @brief */
 namespace RESQML2_2_NS
 {
 	/** A grid connection set representation. */

@@ -26,7 +26,6 @@ under the License.
 /** A macro that defines elements ds name */
 #define ELEMENTS_DS_NAME "elements"
 
-/** @brief */
 namespace EML2_NS
 {
 	/** An abstract proxy for reading and writing values into an HDF5 file. */

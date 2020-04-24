@@ -20,7 +20,6 @@ under the License.
 
 #include "AbstractLocal3dCrs.h"
 
-/** @brief */
 namespace RESQML2_NS
 {
 	/**

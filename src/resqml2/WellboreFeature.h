@@ -25,7 +25,6 @@ namespace WITSML2_0_NS
 	class Wellbore;
 }
 
-/** @brief */
 namespace RESQML2_NS
 {
 	/**

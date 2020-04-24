@@ -20,7 +20,6 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
-/** @brief */
 namespace RESQML2_NS
 {
 	class GridConnectionSetRepresentation;

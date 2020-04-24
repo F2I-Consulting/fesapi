@@ -23,7 +23,6 @@ under the License.
 
 #include "ContentType.h"
 
-/** @brief */
 namespace epc
 {
 	/** A file content type. */

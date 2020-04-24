@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/IjkGridLatticeRepresentation.h"
 
-/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** @brief	An ijk grid lattice representation. This class cannot be inherited. */

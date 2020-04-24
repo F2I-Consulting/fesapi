@@ -20,7 +20,6 @@ under the License.
 
 #include "AbstractOrganizationInterpretation.h"
 
-/** @brief */
 namespace RESQML2_NS
 {
 	class FaultInterpretation;

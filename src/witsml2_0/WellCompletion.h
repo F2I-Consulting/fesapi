@@ -20,7 +20,6 @@ under the License.
 
 #include "AbstractObject.h"
 
-/** @brief */
 namespace WITSML2_0_NS
 {
 	/** A wellbore completion. */

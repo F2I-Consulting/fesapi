@@ -22,7 +22,6 @@ under the License.
 
 #include <limits>
 
-/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** Proxy class for a comment property. */

@@ -27,7 +27,6 @@ namespace RESQML2_NS
 	class StratigraphicOccurrenceInterpretation;
 }
 
-/** @brief */
 namespace RESQML2_NS
 {
 	class StratigraphicUnitInterpretation;

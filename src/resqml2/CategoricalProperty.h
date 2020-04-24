@@ -20,7 +20,6 @@ under the License.
 
 #include "AbstractDiscreteOrCategoricalProperty.h"
 
-/** @brief */
 namespace RESQML2_NS
 {
 	class StringTableLookup;

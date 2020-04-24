@@ -21,7 +21,6 @@ under the License.
 #include <ctime>
 #include <string>
 
-/** @brief */
 namespace timeTools
 {
 	/**

@@ -23,7 +23,6 @@ under the License.
 
 #include <stdexcept>
 
-/** @brief */
 namespace RESQML2_NS
 {
 	/**

@@ -22,7 +22,6 @@ under the License.
 
 #include "WellboreMarker.h"
 
-/** @brief */
 namespace RESQML2_2_NS
 {
 	/** Proxy class for a wellbore marker frame representation. */

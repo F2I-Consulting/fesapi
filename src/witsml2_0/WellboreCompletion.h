@@ -20,7 +20,6 @@ under the License.
 
 #include "WellboreObject.h"
 
-/** @brief */
 namespace WITSML2_0_NS
 {
 	/** The location/interval of the perforation set and its history. */

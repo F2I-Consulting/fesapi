@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/PolylineSetRepresentation.h"
 
-/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** A polyline set representation. */

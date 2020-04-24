@@ -20,7 +20,6 @@ under the License.
 
 #include "../eml2/PropertyKind.h"
 
-/** @brief */
 namespace EML2_3_NS
 {
 	/** A property kind. */

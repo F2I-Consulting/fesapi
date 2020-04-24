@@ -20,7 +20,6 @@ under the License.
 
 #include "BoundaryFeatureInterpretation.h"
 
-/** @brief */
 namespace RESQML2_NS
 {
 	/** An interpretation of a horizon, which optionally provides stratigraphic information. */

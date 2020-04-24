@@ -20,7 +20,6 @@ under the License.
 
 #include "AbstractFeature.h"
 
-/** @brief */
 namespace RESQML2_NS
 {
 	/**

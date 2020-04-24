@@ -24,7 +24,6 @@ under the License.
 
 #include "../eml2/PropertyKind.h"
 
-/** @brief */
 namespace WITSML2_0_NS
 {
 	/**

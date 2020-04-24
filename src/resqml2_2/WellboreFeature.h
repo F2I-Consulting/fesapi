@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/WellboreFeature.h"
 
-/** @brief */
 namespace RESQML2_2_NS
 {
 	/** Proxy class for a wellbore feature. */

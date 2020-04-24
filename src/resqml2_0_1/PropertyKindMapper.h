@@ -22,7 +22,6 @@ under the License.
 
 #include "../common/DataObjectRepository.h"
 
-/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** A property kind mapper. */

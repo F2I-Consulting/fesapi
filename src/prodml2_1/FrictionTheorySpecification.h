@@ -22,7 +22,6 @@ under the License.
 
 #include <limits>
 
-/** @brief */
 namespace PRODML2_1_NS
 {
 	/** A friction theory specification. */

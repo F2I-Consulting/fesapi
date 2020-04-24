@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/NonSealedSurfaceFrameworkRepresentation.h"
 
-/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** A non sealed surface framework representation. */

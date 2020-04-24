@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/StructuralOrganizationInterpretation.h"
 
-/** @brief */
 namespace RESQML2_2_NS
 {
 	/** @brief	A structural organization interpretation. This class cannot be inherited. */

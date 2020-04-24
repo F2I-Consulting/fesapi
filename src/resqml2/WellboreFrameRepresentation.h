@@ -21,7 +21,6 @@ under the License.
 #include "AbstractRepresentation.h"
 #include "AbstractValuesProperty.h"
 
-/** @brief */
 namespace RESQML2_NS
 {
 	/**

@@ -21,7 +21,6 @@ under the License.
 
 #include "../resqml2/WellboreInterpretation.h"
 
-/** @brief */
 namespace RESQML2_2_NS
 {
 	/** Proxy class for a wellbore interpretation. */

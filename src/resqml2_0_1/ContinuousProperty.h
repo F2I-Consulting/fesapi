@@ -24,7 +24,6 @@ under the License.
 #include <stdexcept>
 #include <sstream>
 
-/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/**

@@ -21,7 +21,6 @@ under the License.
 #include "../eml2/PropertyKind.h"
 #include "PropertyKindMapper.h"
 
-/** @brief */
 namespace RESQML2_0_1_NS
 {
 	/** A property kind. */

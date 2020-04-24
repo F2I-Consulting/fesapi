@@ -22,7 +22,6 @@ under the License.
 
 #include "AbstractRepresentation.h"
 
-/** @brief */
 namespace RESQML2_NS
 {
 	/**

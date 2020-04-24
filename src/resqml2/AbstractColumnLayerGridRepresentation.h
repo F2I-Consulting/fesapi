@@ -20,7 +20,6 @@ under the License.
 
 #include "AbstractGridRepresentation.h"
 
-/** @brief */
 namespace RESQML2_NS
 {
 	/** Proxy class for an abstract column layer grid representation. */
