@@ -33,13 +33,24 @@ namespace EML2_0_NS
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * @brief	Only to be used in partial transfer context
+		 *
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 * @param 	  	secretId	 	(Optional) Identifier for the secret.
+		 * @param 	  	secretKey_   	(Optional) The secret key.
+		 */
 		HdfProxyROS3(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, const std::string & secretId = "", const std::string & secretKey_ = "") :
 			EML2_0_NS::HdfProxy(partialObject),
 			secretId_(secretId), secretKey_(secretKey_)
 		{}
 
+		/**
+		 * @brief	Constructor
+		 *
+		 * @param [in]	fromGsoap 	If non-nullptr, from gsoap.
+		 * @param 	  	secretId  	(Optional) Identifier for the secret.
+		 * @param 	  	secretKey_	(Optional) The secret key.
+		 */
 		HdfProxyROS3(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & secretId = "", const std::string & secretKey_ = "") :
 			EML2_0_NS::HdfProxy(fromGsoap),
 			secretId_(secretId), secretKey_(secretKey_)

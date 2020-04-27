@@ -23,9 +23,9 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * A triangulated representation is a representation (most of time a surface) which is
-	 * constituted by triangles. Usually all triangles are connected to each others by means of
-	 * their nodes and edges.
+	 * @brief	A triangulated representation is a representation (most of time a surface) which is
+	 * 			constituted by triangles. Usually all triangles are connected to each others by means
+	 * 			of their nodes and edges.
 	 */
 	class TriangulatedSetRepresentation : public AbstractSurfaceRepresentation
 	{

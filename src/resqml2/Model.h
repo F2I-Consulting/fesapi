@@ -23,11 +23,13 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * The explicit description of the relationships between geologic features, such as rock
-	 * features (e.g. stratigraphic units, geobodies, phase unit) and boundary features (e.g.,
-	 * genetic, tectonic, and fluid boundaries). In general, this concept is usually called an
-	 * “earth model”, but it is not called that in RESQML. In RESQML, model is not to be confused
-	 * with the concept of earth model organization interpretation.
+	 * @brief	The explicit description of the relationships between geologic features, such as rock
+	 * 			features (e.g. stratigraphic units, geobodies, phase unit) and boundary features
+	 * 			(e.g., genetic, tectonic, and fluid boundaries). In general, this concept is usually
+	 * 			called an "earth model", but it is not called that in RESQML.
+	 * 			
+	 * 			In RESQML, model is not to be confused with the concept of earth model organization
+	 * 			interpretation.
 	 */
 	class Model : public AbstractFeature
 	{

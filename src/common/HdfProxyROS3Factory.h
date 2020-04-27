@@ -24,7 +24,10 @@ under the License.
 
 namespace COMMON_NS
 {
-	/** A proxy factory for an HDF5 file located on an Amazon S3 cloud. Here, HDF5 file access is read only. */
+	/**
+	 * @brief	A proxy factory for an HDF5 file located on an Amazon S3 cloud. Here, HDF5 file
+	 * 			access is read only.
+	 */
 	class HdfProxyROS3Factory : public HdfProxyFactory
 	{
 	public:

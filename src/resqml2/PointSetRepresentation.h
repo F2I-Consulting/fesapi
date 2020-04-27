@@ -23,8 +23,9 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * A representation that consists of one or more node patches. Each node patch is an array of
-	 * xyz coordinates for the 3D points. There is no implied linkage between the multiple patches.
+	 * @brief	A representation that consists of one or more node patches. Each node patch is an
+	 * 			array of xyz coordinates for the 3D points. There is no implied linkage between the
+	 * 			multiple patches.
 	 */
 	class PointSetRepresentation : public AbstractRepresentation
 	{

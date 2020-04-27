@@ -32,7 +32,7 @@ under the License.
 
 namespace COMMON_NS
 {
-	/** A class for mapping enum values with strings. */
+	/** @brief	A class for mapping enum values with strings. */
 	class EnumStringMapper
 	{
 	private :

@@ -24,7 +24,7 @@ namespace EML2_NS
 {
 	class Activity;
 
-	/** Description of one type of activity. */
+	/** @brief	Description of one type of activity. */
 	class ActivityTemplate : public COMMON_NS::AbstractObject
 	{
 	protected:

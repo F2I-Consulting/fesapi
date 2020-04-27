@@ -27,11 +27,11 @@ namespace RESQML2_NS
 	class StratigraphicUnitInterpretation;
 
 	/**
-	 * A strict boundary representation (BREP), which represents the volume region by assembling
-	 * together shells.
-	 * 
-	 * BUSINESS RULE: The sealed structural framework must be part of the same earth model as this
-	 * sealed volume framework.
+	 * @brief	A strict boundary representation (BREP), which represents the volume region by
+	 * 			assembling together shells.
+	 * 			
+	 * 			BUSINESS RULE: The sealed structural framework must be part of the same earth model
+	 * 			as this sealed volume framework.
 	 */
 	class SealedVolumeFrameworkRepresentation : public RepresentationSetRepresentation
 	{

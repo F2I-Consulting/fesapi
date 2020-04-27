@@ -24,7 +24,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	/** Proxy class for an abstract representation. */
+	/** @brief	Proxy class for an abstract representation. */
 	class AbstractRepresentation : public COMMON_NS::AbstractObject
 	{
 	public:
@@ -202,8 +202,8 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfAllPatches() const;
 
 		/**
-		 * Gets all the xyz points of a particular patch of this representation. xyz points are given in
-		 * the local CRS.
+		 * @brief	Gets all the xyz points of a particular patch of this representation. xyz points are
+		 * 			given in the local CRS.
 		 *
 		 * @exception	std::out_of_range	If @p patchIndex is out of range.
 		 * @exception	std::logic_error 	If this representation is partial.

@@ -23,8 +23,8 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * A fault interpretation. This type of boundary feature contains the data describing an opinion
-	 * about the characterization of the fault.
+	 * @brief	A fault interpretation. This type of boundary feature contains the data describing an
+	 * 			opinion about the characterization of the fault.
 	 */
 	class FaultInterpretation : public BoundaryFeatureInterpretation
 	{

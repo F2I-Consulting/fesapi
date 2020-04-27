@@ -29,7 +29,7 @@ under the License.
 
 namespace COMMON_NS
 {
-	/** This class allows an access to a memory package representing an EPC document. */
+	/** @brief	This class allows an access to a memory package representing an EPC document. */
 	class EpcDocument
 	{		
 	public:

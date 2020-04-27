@@ -23,15 +23,16 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * A representation made up of a single polyline or "polygonal chain", which may be closed or
-	 * not. See definition here: http://en.wikipedia.org/wiki/Piecewise_linear_curve.
-	 * 
-	 * BUSINESS RULE: To record a polyline the writer software must give the values of the geometry
-	 * of each node in an order corresponding to the logical series of segments (edges). The
-	 * geometry of a polyline must be a 1D array of points.
-	 * 
-	 * A simple polygonal chain is one in which only consecutive (or the first and the last)
-	 * segments intersect and only at their endpoints.
+	 * @brief	A representation made up of a single polyline or "polygonal chain", which may be
+	 * 			closed or not. See definition here:
+	 * 			http://en.wikipedia.org/wiki/Piecewise_linear_curve.
+	 * 			
+	 * 			BUSINESS RULE: To record a polyline the writer software must give the values of the
+	 * 			geometry of each node in an order corresponding to the logical series of segments
+	 * 			(edges). The geometry of a polyline must be a 1D array of points.
+	 * 			
+	 * 			A simple polygonal chain is one in which only consecutive (or the first and the last)
+	 * 			segments intersect and only at their endpoints.
 	 */
 	class PolylineRepresentation : public AbstractRepresentation
 	{

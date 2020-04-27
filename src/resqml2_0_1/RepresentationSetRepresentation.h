@@ -35,12 +35,14 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::RepresentationSetRepresentation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gSOAP context.
+		 * @brief	Creates an instance of this class in a gSOAP context.
 		 *
-		 * @param [in,out]	interp	the interpretation the instance represents.
-		 * @param 		  	guid  	A guid for the instance to create. Empty guid lead to the creation of
-		 * 							a random one.
-		 * @param 		  	title 	A title for the instance to create.
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
+		 *
+		 * @param [in]	interp	the interpretation the instance represents.
+		 * @param 	  	guid  	A guid for the instance to create. Empty guid lead to the creation of a
+		 * 						random one.
+		 * @param 	  	title 	A title for the instance to create.
 		 */
 		RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, const std::string & guid, const std::string & title);
 

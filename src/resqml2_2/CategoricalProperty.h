@@ -39,9 +39,10 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT CategoricalProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::CategoricalProperty(partialObject) {}
 
 		/**
-		 * Creates a categorical property
+		 * @brief	Creates a categorical property
 		 *
-		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p propKind is null. If @p dimension is zero.
+		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p propKind is null. If @p
+		 * 										dimension is zero.
 		 *
 		 * @param [in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
@@ -55,7 +56,7 @@ namespace RESQML2_2_NS
 		 * 								to.
 		 * @param [in]	strLookup	  	The string lookup which defines the possible string values and
 		 * 								their keys. It cannot be null.
-		 * @param [in]	propKind 		The property kind of these property values. It cannot be null.
+		 * @param [in]	localPropKind 	The property kind of these property values. It cannot be null.
 		 */
 		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,

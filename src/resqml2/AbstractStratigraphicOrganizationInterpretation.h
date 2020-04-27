@@ -25,11 +25,13 @@ namespace RESQML2_NS
 	class AbstractGridRepresentation;
 
 	/**
-	 * An abstract stratigraphic organization interpretation is the main class that defines the
-	 * relationships between the stratigraphic units and provides the stratigraphic hierarchy of the
-	 * earth. BUSINESS RULE: A stratigraphic organization must be in a ranked order from a lower
-	 * rank to an upper rank. For example, it is possible to find previous unit containment
-	 * relationships between several ranks.
+	 * @brief	An abstract stratigraphic organization interpretation is the main class that defines
+	 * 			the relationships between the stratigraphic units and provides the stratigraphic
+	 * 			hierarchy of the earth.
+	 * 			
+	 * 			BUSINESS RULE: A stratigraphic organization must be in a ranked order from a lower
+	 * 			rank to an upper rank. For example, it is possible to find previous unit containment
+	 * 			relationships between several ranks.
 	 */
 	class AbstractStratigraphicOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{

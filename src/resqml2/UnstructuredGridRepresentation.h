@@ -23,8 +23,8 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * Unstructured grid representation characterized by a cell count, and potentially nothing else.
-	 * Both the oldest and newest simulation formats are based on this format.
+	 * @brief	Unstructured grid representation characterized by a cell count, and potentially
+	 * 			nothing else. Both the oldest and newest simulation formats are based on this format.
 	 */
 	class UnstructuredGridRepresentation : public AbstractGridRepresentation
 	{

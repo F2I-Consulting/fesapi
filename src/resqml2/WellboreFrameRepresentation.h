@@ -24,10 +24,12 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * Proxy class for a wellbore frame representation. A wellbore frame representation is a
-	 * representation of a wellbore that is organized along a wellbore trajectory by its MD values.
-	 * RESQML uses MD values to associate properties on points and to organize association of
-	 * properties on intervals between MD points.
+	 * @brief	Proxy class for a wellbore frame representation. A wellbore frame representation is a
+	 * 			representation of a wellbore that is organized along a wellbore trajectory by its MD
+	 * 			values. 
+	 * 			
+	 *			RESQML uses MD values to associate properties on points and to organize
+	 * 			association of properties on intervals between MD points.
 	 */
 	class WellboreFrameRepresentation : public AbstractRepresentation
 	{

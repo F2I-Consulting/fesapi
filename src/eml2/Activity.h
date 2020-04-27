@@ -24,7 +24,7 @@ namespace EML2_NS
 {
 	class ActivityTemplate;
 
-	/** Instance of a given activity. */
+	/** @brief	Instance of a given activity. */
 	class Activity : public COMMON_NS::AbstractObject
 	{
 	protected:

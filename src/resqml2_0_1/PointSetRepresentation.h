@@ -48,12 +48,14 @@ namespace RESQML2_0_1_NS
 		PointSetRepresentation(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	interp	The interpretation this representation represents.
-		 * @param 		  	guid  	The guid to set to the new instance. If empty then a new guid will be
-		 * 							generated.
-		 * @param 		  	title 	A title for the instance to create.
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
+		 *
+		 * @param [in]	interp	The interpretation this representation represents.
+		 * @param 	  	guid  	The guid to set to the new instance. If empty then a new guid will be
+		 * 						generated.
+		 * @param 	  	title 	A title for the instance to create.
 		 */
 		PointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 				const std::string & guid, const std::string & title);

@@ -31,7 +31,7 @@ namespace RESQML2_NS
 {
 	class AbstractRepresentation;
 
-	/** Proxy class for an abstract property. */
+	/** @brief	Proxy class for an abstract property. */
 	class AbstractProperty: public COMMON_NS::AbstractObject
 	{
 	public:

@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	/** Proxy class for an abstract local 3D coordinate reference system (CRS). */
+	/** @brief	Proxy class for an abstract local 3D coordinate reference system (CRS). */
 	class AbstractLocal3dCrs : public COMMON_NS::AbstractObject
 	{
 	public:

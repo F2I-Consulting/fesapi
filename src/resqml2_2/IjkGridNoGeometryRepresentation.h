@@ -27,20 +27,48 @@ namespace RESQML2_2_NS
 	{
 	public:
 
+		/**
+		 * @brief	Constructor
+		 *
+		 * @param [in]	repo  	If non-nullptr, the repo.
+		 * @param 	  	guid  	Unique identifier.
+		 * @param 	  	title 	The title.
+		 * @param 	  	iCount	Number of.
+		 * @param 	  	jCount	Number of.
+		 * @param 	  	kCount	Number of.
+		 */
 		IjkGridNoGeometryRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount) :
 			RESQML2_NS::IjkGridNoGeometryRepresentation(repo, guid, title, iCount, jCount, kCount) {}
 
+		/**
+		 * @brief	Constructor
+		 *
+		 * @param [in]	interp	If non-nullptr, the interp.
+		 * @param 	  	guid  	Unique identifier.
+		 * @param 	  	title 	The title.
+		 * @param 	  	iCount	Number of.
+		 * @param 	  	jCount	Number of.
+		 * @param 	  	kCount	Number of.
+		 */
 		IjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount) :
 			RESQML2_NS::IjkGridNoGeometryRepresentation(interp, guid, title, iCount, jCount, kCount) {}
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * @brief	Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in]	fromGsoap	If non-nullptr, from gsoap.
+		 */
 		IjkGridNoGeometryRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridNoGeometryRepresentation(fromGsoap) {}
+
+		/**
+		 * @brief	Constructor
+		 *
+		 * @param [in]	fromGsoap	If non-nullptr, from gsoap.
+		 */
 		IjkGridNoGeometryRepresentation(gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridNoGeometryRepresentation(fromGsoap) {}
 
 		/**

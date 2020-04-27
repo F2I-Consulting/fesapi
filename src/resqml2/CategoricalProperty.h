@@ -25,9 +25,10 @@ namespace RESQML2_NS
 	class StringTableLookup;
 
 	/**
-	 * Proxy class for a categorical property. It contains discrete integers. This type of property
-	 * is associated either: as an internally stored index to a string through a lookup mapping, or
-	 * as an internally stored double to another double value through an explicitly provided table.
+	 * @brief	Proxy class for a categorical property. It contains discrete integers. This type of
+	 * 			property is associated either: as an internally stored index to a string through a
+	 * 			lookup mapping, or as an internally stored double to another double value through an
+	 * 			explicitly provided table.
 	 */
 	class CategoricalProperty : public AbstractDiscreteOrCategoricalProperty
 	{

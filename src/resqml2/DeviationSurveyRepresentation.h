@@ -23,18 +23,19 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * A deviation survey representation. It Specifies the station data from a deviation survey.
-	 * 
-	 * The deviation survey does not provide a complete specification of the geometry of a wellbore
-	 * trajectory. Although a minimum-curvature algorithm is used in most cases, the implementation
-	 * varies sufficiently that no single algorithmic specification is available as a data transfer
-	 * standard.
-	 * 
-	 * Instead, the geometry of a RESQML wellbore trajectory is represented by a parametric line,
-	 * parameterized by the MD.
-	 * 
-	 * CRS and units of measure do not need to be consistent with the CRS and units of measure for
-	 * wellbore trajectory representation.
+	 * @brief	A deviation survey representation. It Specifies the station data from a deviation
+	 * 			survey.
+	 * 			
+	 * 			The deviation survey does not provide a complete specification of the geometry of a
+	 * 			wellbore trajectory. Although a minimum-curvature algorithm is used in most cases,
+	 * 			the implementation varies sufficiently that no single algorithmic specification is
+	 * 			available as a data transfer standard.
+	 * 			
+	 * 			Instead, the geometry of a RESQML wellbore trajectory is represented by a parametric
+	 * 			line, parameterized by the MD.
+	 * 			
+	 * 			CRS and units of measure do not need to be consistent with the CRS and units of
+	 * 			measure for wellbore trajectory representation.
 	 */
 	class DeviationSurveyRepresentation : public AbstractRepresentation
 	{

@@ -23,14 +23,17 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * Proxy class for a representation set representation. This is the parent class of the
-	 * framework representations. It is used to group together individual representations to
-	 * represent a “bag” of representations. If the individual representations are all of the same
-	 * type, then you can indicate that the set is homogenous. These “bags” do not imply any
-	 * geologic consistency. For example, you can define a set of wellbore frames, a set of wellbore
-	 * trajectories, a set of blocked wellbores. Because the framework representations inherit from
-	 * this class, they inherit the capability to gather individual representations into sealed and
-	 * non-sealed surface framework representations, or sealed volume framework representations.
+	 * @brief	Proxy class for a representation set representation. This is the parent class of the
+	 * 			framework representations. It is used to group together individual representations to
+	 * 			represent a "bag" of representations.
+	 * 			
+	 * 			If the individual representations are all of the same type, then you can indicate
+	 * 			that the set is homogenous. These "bags" do not imply any geologic consistency. For
+	 * 			example, you can define a set of wellbore frames, a set of wellbore trajectories, a
+	 * 			set of blocked wellbores. Because the framework representations inherit from this
+	 * 			class, they inherit the capability to gather individual representations into sealed
+	 * 			and non-sealed surface framework representations, or sealed volume framework
+	 * 			representations.
 	 */
 	class RepresentationSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{

@@ -90,6 +90,11 @@ namespace WITSML2_0_NS
 		 */
 		DLL_IMPORT_OR_EXPORT EML2_NS::PropertyKind* getPropertyKind() const;
 
+		/**
+		 * @brief	Gets property kind dor
+		 *
+		 * @returns	The property kind dor.
+		 */
 		COMMON_NS::DataObjectReference getPropertyKindDor() const;
 
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(std::string, Mnemonic)

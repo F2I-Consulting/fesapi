@@ -28,16 +28,19 @@ namespace WITSML2_0_NS
 namespace RESQML2_NS
 {
 	/**
-	 * May refer to one of these: wellbore. A unique, oriented path from the bottom of a drilled
-	 * borehole to the surface of the earth. The path must not overlap or cross itself.
-	 * 
-	 * borehole. A hole excavated in the earth as a result of drilling or boring operations. The
-	 * borehole may represent the hole of an entire wellbore (when no sidetracks are present), or a
-	 * sidetrack extension. A borehole extends from an originating point (the surface location for
-	 * the initial borehole or kickoff point for sidetracks) to a terminating (bottomhole) point.
-	 * 
-	 * sidetrack. A borehole that originates in another borehole as opposed to originating at the
-	 * surface.
+	 * @brief	May refer to one of these: wellore, borehole or sidetrack.
+	 * 			
+	 * 			Wellbore: a unique, oriented path from the bottom of a drilled borehole to the
+	 * 			surface of the earth. The path must not overlap or cross itself.
+	 * 			
+	 * 			Borehole: a hole excavated in the earth as a result of drilling or boring operations.
+	 * 			The borehole may represent the hole of an entire wellbore (when no sidetracks are
+	 * 			present), or a sidetrack extension. A borehole extends from an originating point (the
+	 * 			surface location for the initial borehole or kickoff point for sidetracks) to a
+	 * 			terminating (bottomhole) point.
+	 * 			
+	 * 			Sidetrack: a borehole that originates in another borehole as opposed to originating
+	 * 			at the surface.
 	 */
 	class WellboreFeature : public AbstractTechnicalFeature
 	{

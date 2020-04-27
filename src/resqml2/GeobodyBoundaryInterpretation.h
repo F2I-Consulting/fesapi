@@ -23,8 +23,8 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * A type of boundary feature, this class identifies if the boundary is a geobody and the type
-	 * of the boundary.
+	 * @brief	A type of boundary feature, this class identifies if the boundary is a geobody and
+	 * 			the type of the boundary.
 	 */
 	class GeobodyBoundaryInterpretation : public BoundaryFeatureInterpretation
 	{

@@ -24,7 +24,7 @@ under the License.
 
 namespace COMMON_NS
 {
-	/** An abstract data object. */
+	/** @brief	An abstract data object. */
 	class AbstractObject
 	{
 	private:

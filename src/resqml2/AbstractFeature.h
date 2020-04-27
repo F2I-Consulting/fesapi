@@ -26,7 +26,7 @@ namespace RESQML2_NS
 {
 	class AbstractFeatureInterpretation;
 
-	/** Proxy class for an abstract feature. */
+	/** @brief	Proxy class for an abstract feature. */
 	class AbstractFeature : public COMMON_NS::AbstractObject
 	{
 	protected:

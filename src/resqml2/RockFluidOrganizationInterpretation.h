@@ -25,10 +25,10 @@ namespace RESQML2_NS
 	class AbstractGridRepresentation;
 
 	/**
-	 * This class describes the organization of geological reservoir, i.e., of an interconnected
-	 * network of porous and permeable rock units, containing an accumulation of economic fluids,
-	 * such as oil and gas. A reservoir is normally enveloped by rock and fluid barriers and
-	 * contains a single natural pressure system.
+	 * @brief	This class describes the organization of geological reservoir, i.e., of an
+	 * 			interconnected network of porous and permeable rock units, containing an accumulation
+	 * 			of economic fluids, such as oil and gas. A reservoir is normally enveloped by rock
+	 * 			and fluid barriers and contains a single natural pressure system.
 	 */
 	class RockFluidOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{

@@ -23,10 +23,10 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * Proxy class for a MD datum. An MD datum specifies the location of the measured depth = 0
-	 * reference point. The location of this reference point is defined with respect to a CRS, which
-	 * need not be the same as the CRS of a wellbore trajectory representation, which may reference
-	 * this location.
+	 * @brief	Proxy class for a MD datum. An MD datum specifies the location of the measured depth
+	 * 			= 0 reference point. The location of this reference point is defined with respect to
+	 * 			a CRS, which need not be the same as the CRS of a wellbore trajectory representation,
+	 * 			which may reference this location.
 	 */
 	class MdDatum : public COMMON_NS::AbstractObject
 	{

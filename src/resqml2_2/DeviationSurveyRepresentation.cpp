@@ -33,6 +33,14 @@ using namespace gsoap_eml2_3;
 
 DeviationSurveyRepresentation::DeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const string& guid, const std::string& title, bool isFinal, RESQML2_NS::MdDatum* mdInfo)
 {
+	if (interp == nullptr) {
+		throw invalid_argument("The interpretation cannot be nullptr.");
+	}
+
+	if (mdInfo == nullptr) {
+		throw invalid_argument("The MD information cannot be nullptr.");
+	}
+
 	gsoapProxy2_3 = soap_new_resqml22__DeviationSurveyRepresentation(interp->getGsoapContext());	
 	_resqml22__DeviationSurveyRepresentation* rep = static_cast<_resqml22__DeviationSurveyRepresentation*>(gsoapProxy2_3);
 

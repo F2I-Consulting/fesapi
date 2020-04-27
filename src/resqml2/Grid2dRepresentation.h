@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	/** A 2d grid representation. */
+	/** @brief	A 2d grid representation. */
 	class Grid2dRepresentation : public AbstractSurfaceRepresentation
 	{
 	public:

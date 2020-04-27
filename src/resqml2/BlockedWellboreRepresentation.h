@@ -25,9 +25,9 @@ namespace RESQML2_NS
 	class AbstractGridRepresentation;
 
 	/**
-	 * A blocked wellbore representation. This is the information that allows you to locate, on one
-	 * or several grids (existing or planned), the intersection of volume (cells) and surface
-	 * (faces) elements with a wellbore trajectory (existing or planned).
+	 * @brief	A blocked wellbore representation. This is the information that allows you to locate,
+	 * 			on one or several grids (existing or planned), the intersection of volume (cells) and
+	 * 			surface (faces) elements with a wellbore trajectory (existing or planned).
 	 */
 	class BlockedWellboreRepresentation : public WellboreFrameRepresentation
 	{

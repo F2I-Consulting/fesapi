@@ -23,12 +23,12 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * Defines a plane representation, which can be made up of multiple patches. Commonly
-	 * represented features are fluid contacts or frontiers. Common geometries of this
-	 * representation are titled or horizontal planes.
-	 * 
-	 * BUSINESS RULE: If the plane representation is made up of multiple patches, then you must
-	 * specify the outer rings for each plane patch.
+	 * @brief	Defines a plane representation, which can be made up of multiple patches. Commonly
+	 * 			represented features are fluid contacts or frontiers. Common geometries of this
+	 * 			representation are titled or horizontal planes.
+	 * 			
+	 * 			BUSINESS RULE: If the plane representation is made up of multiple patches, then you
+	 * 			must specify the outer rings for each plane patch.
 	 */
 	class PlaneSetRepresentation : public AbstractSurfaceRepresentation
 	{

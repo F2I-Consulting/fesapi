@@ -33,6 +33,10 @@ using namespace gsoap_resqml2_0_1;
 
 EarthModelInterpretation::EarthModelInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const string & title)
 {
+	if (orgFeat == nullptr) {
+		throw invalid_argument("The interpreted organization feature cannot be nullptr.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREEarthModelInterpretation(orgFeat->getGsoapContext());
 	_resqml20__EarthModelInterpretation* interp = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1);
 

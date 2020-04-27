@@ -24,7 +24,7 @@ under the License.
 
 namespace EML2_NS
 {
-	/** A proxy for reading and writing values into an HDF5 file. */
+	/** @brief	A proxy for reading and writing values into an HDF5 file. */
 	class HdfProxy : public AbstractHdfProxy
 	{
 	public:

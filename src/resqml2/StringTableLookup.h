@@ -23,9 +23,10 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * Defines an integer (key) to string (value) lookup table, for example, stores facies properties, where a
-	 * facies index is associated with a facies name. Used for categorical properties, which also
-	 * may use a double table lookup.
+	 * @brief	Defines an integer (key) to string (value) lookup table, for example, stores facies
+	 * 			properties, where a facies index is associated with a facies name.
+	 * 			
+	 * 			Used for categorical properties, which also may use a double table lookup.
 	 */
 	class StringTableLookup : public COMMON_NS::AbstractObject
 	{

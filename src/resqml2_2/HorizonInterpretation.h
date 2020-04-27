@@ -38,12 +38,14 @@ namespace RESQML2_2_NS
 			RESQML2_NS::HorizonInterpretation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	horizon	The feature the instance interprets.
-		 * @param 		  	guid   	The guid to set to the interpretation. If empty then a new guid will
-		 * 							be generated.
-		 * @param 		  	title  	A title for the instance to create.
+		 * @exception	std::invalid_argument	If <tt>horizon == nullptr</tt>.
+		 *
+		 * @param [in]	horizon	The feature the instance interprets.
+		 * @param 	  	guid   	The guid to set to the interpretation. If empty then a new guid will be
+		 * 						generated.
+		 * @param 	  	title  	A title for the instance to create.
 		 */
 		HorizonInterpretation(RESQML2_NS::BoundaryFeature * horizon, const std::string & guid, const std::string & title);
 

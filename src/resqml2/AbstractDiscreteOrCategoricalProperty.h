@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	/** Proxy class for an abstract discrete or categorical property. */
+	/** @brief	Proxy class for an abstract discrete or categorical property. */
 	class AbstractDiscreteOrCategoricalProperty : public RESQML2_NS::AbstractValuesProperty
 	{
 	public:

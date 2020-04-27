@@ -25,9 +25,10 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * Proxy class for a discrete  property. Such property contains discrete integer values;
-	 * typically used to store any type of index. So that the value range can be known before
-	 * accessing all values, it also optionally stores the minimum and maximum value in the range.
+	 * @brief	Proxy class for a discrete  property. Such property contains discrete integer values;
+	 * 			typically used to store any type of index. So that the value range can be known
+	 * 			before accessing all values, it also optionally stores the minimum and maximum value
+	 * 			in the range.
 	 */
 	class DiscreteProperty : public RESQML2_NS::AbstractDiscreteOrCategoricalProperty
 	{

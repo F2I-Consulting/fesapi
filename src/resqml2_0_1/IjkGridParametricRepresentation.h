@@ -95,9 +95,12 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
-		* Get all the XYZ points of a particular patch of this representation.
-		* XYZ points are given in the local CRS.
-		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated with a size of 3*getXyzPointCountOfPatch.
+		* @copybrief resqml2::AbstractRepresentation::getXyzPointsOfPatch
+		*
+		* @exception std::logic_error	If the geometry of the grid either does not exist or if it is not handled yet by fesapi.
+		* @exception std::logic_error	If this grid is truncated and the additional grid points cannot be read.
+		*
+		* @copydetails resqml2::AbstractIjkGridRepresentation::getXyzPointsOfPatch
 		*/
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 

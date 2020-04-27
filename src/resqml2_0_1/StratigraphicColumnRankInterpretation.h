@@ -35,13 +35,20 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT StratigraphicColumnRankInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::StratigraphicColumnRankInterpretation(partialObject) {}
 
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param orgFeat			The feature the instance interprets. It must be a stratigraphic organization feature.
-		* @param guid				The guid to set to the interpretation. If empty then a new guid will be generated.
-		* @param title				A title for the instance to create.
-		* @param rank				The rank index of this interpretation within a stratigraphic column
-		* @param orderingCriteria	How the included horizons are ordered.
-		*/
+		 * @brief	Creates an instance of this class in a gsoap context.
+		 *
+		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if @p orgFeat is not a
+		 * 										stratigraphic organization.
+		 *
+		 * @param [in]	orgFeat				The feature the instance interprets. It must be a
+		 * 										stratigraphic organization feature.
+		 * @param 	  	guid				The guid to set to the interpretation. If empty then a new
+		 * 									guid will be generated.
+		 * @param 	  	title				A title for the instance to create.
+		 * @param 	  	rank				The rank index of this interpretation within a stratigraphic
+		 * 									column.
+		 * @param 	  	orderingCriteria	How the included horizons are ordered.
+		 */
 		StratigraphicColumnRankInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, unsigned long rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria);
 
 		/**

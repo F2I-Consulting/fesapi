@@ -37,12 +37,14 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT BlockedWellboreRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::BlockedWellboreRepresentation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	interp	The interpretation the instance represents.
-		 * @param 		  	guid  	A guid for the instance to create.
-		 * @param 		  	title 	A title for the instance to create.
-		 * @param [in,out]	traj  	The wellbore trajectory this intance is based on.
+		 * @exception	std::invalid_argument	If <tt>traj == nullptr</tt>.
+		 *
+		 * @param [in]	interp	The interpretation the instance represents.
+		 * @param 	  	guid  	A guid for the instance to create.
+		 * @param 	  	title 	A title for the instance to create.
+		 * @param [in]	traj  	The wellbore trajectory this intance is based on.
 		 */
 		BlockedWellboreRepresentation(RESQML2_NS::WellboreInterpretation * interp,
 			const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj);

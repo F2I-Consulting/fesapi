@@ -32,9 +32,9 @@ namespace RESQML2_NS
 	class StratigraphicUnitInterpretation;
 
 	/**
-	* A stratigraphic column rank interpretation is a global hierarchy containing an ordered list of stratigraphic unit interpretations.
-
-	*/
+	 * @brief	A stratigraphic column rank interpretation is a global hierarchy containing an
+	 * 			ordered list of stratigraphic unit interpretations.
+	 */
 	class StratigraphicColumnRankInterpretation : public AbstractStratigraphicOrganizationInterpretation
 	{
 	public:

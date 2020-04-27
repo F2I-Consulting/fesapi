@@ -25,8 +25,8 @@ namespace RESQML2_NS
 	class RockVolumeFeature;
 
 	/**
-	 * A type of rock feature, this class identifies if a rock feature is a geobody with any
-	 * qualifications on the interpretation of the geobody.
+	 * @brief	A type of rock feature, this class identifies if a rock feature is a geobody with any
+	 * 			qualifications on the interpretation of the geobody.
 	 */
 	class GeobodyInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{

@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	/** The interpretation of a stratigraphic unit. */
+	/** @brief	The interpretation of a stratigraphic unit. */
 	class StratigraphicUnitInterpretation : public AbstractFeatureInterpretation
 	{
 	public:

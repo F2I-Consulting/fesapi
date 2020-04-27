@@ -37,19 +37,21 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT CmpLineFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSeismicLineFeature(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	repo			   	The repo where the underlying gsoap proxy is going to be
-		 * 										created.
-		 * @param 		  	guid			   	The guid to set to this instance. If empty then a new
-		 * 										guid will be generated.
-		 * @param 		  	title			   	A title for the instance to create.
-		 * @param 		  	traceIndexIncrement	The trace index increment. The trace index increment will
-		 * 										be the difference in the trace number from abscissa i=0
-		 * 										and abscissa i=1. The increment can be a positive or
-		 * 										negative integer, but not zero.
-		 * @param 		  	firstTraceIndex	   	The index of the first trace beginning at abscissa i=0.
-		 * @param 		  	traceCount		   	The count of traces in this seismic line.
+		 * @param [in,out]	repo								The repo where the underlying gsoap proxy
+		 * 														is going to be created.
+		 * @param 		  	guid								The guid to set to this instance. If
+		 * 														empty then a new guid will be generated.
+		 * @param 		  	title								A title for the instance to create.
+		 * @param 		  	nearestShotPointIndicesIncrement	The trace index increment. The trace
+		 * 														index increment will be the difference in the
+		 * 														trace number from abscissa i=0 and abscissa
+		 * 														i=1. The increment can be a positive or
+		 * 														negative integer, but not zero.
+		 * @param 		  	firstNearestShotPointIndex			The index of the first trace beginning at
+		 * 														abscissa i=0.
+		 * @param 		  	nearestShotPointCount				The count of traces in this seismic line.
 		 */
 		CmpLineFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
 			int nearestShotPointIndicesIncrement, int firstNearestShotPointIndex, unsigned int nearestShotPointCount);

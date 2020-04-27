@@ -94,9 +94,13 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
-		* Get all the XYZ points of a particular patch of this representation.
-		* XYZ points are given in the local CRS.
-		* @param xyzPoints XYZ double triplets ordered by i then j then split then k. It must be pre allocated with a count of ((iCellCount+1) * (jCellCount+1) + splitCoordinateLineCount) * kCellCount.
+		* @copybrief resqml2::AbstractRepresentation::getXyzPointsOfPatch
+		* 			 
+		* @exception std::logic_error	If the geometry of the grid either does not exist or is not an 
+		* 								explicit one.
+		* @exception std::logic_error	If this grid is truncated and the additional grid points cannot be read.
+		* 								
+		* @copydetails resqml2::AbstractIjkGridRepresentation::getXyzPointsOfPatch
 		*/
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 

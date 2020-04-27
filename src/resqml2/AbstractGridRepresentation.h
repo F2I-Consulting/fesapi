@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	/** Proxy class for an abstract grid representation. */
+	/** @brief	Proxy class for an abstract grid representation. */
 	class AbstractGridRepresentation : public AbstractRepresentation
 	{
 	private:

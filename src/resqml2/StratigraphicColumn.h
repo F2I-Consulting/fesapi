@@ -25,9 +25,11 @@ namespace RESQML2_NS
 	class StratigraphicColumnRankInterpretation;
 
 	/**
-	 * A global interpretation of the stratigraphy, which can be made up of several ranks of
-	 * stratigraphic unit interpretations. BUSINESS RULE: All stratigraphic column rank
-	 * interpretations that make up a stratigraphic column must be ordered by age.
+	 * @brief	A global interpretation of the stratigraphy, which can be made up of several ranks of
+	 * 			stratigraphic unit interpretations.
+	 * 			
+	 * 			BUSINESS RULE: All stratigraphic column rank interpretations that make up a
+	 * 			stratigraphic column must be ordered by age.
 	 */
 	class StratigraphicColumn : public COMMON_NS::AbstractObject
 	{

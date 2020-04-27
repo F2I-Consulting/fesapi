@@ -62,49 +62,12 @@ namespace RESQML2_0_1_NS
 		/** Cleans the owned markers. */
 		~WellboreMarkerFrameRepresentation() {}
 
-		/**
-		 * Gets the number of wellbore marker of this wellbore marker frame representation.
-		 *
-		 * @returns	The wellbore marker count.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getWellboreMarkerCount() final;
 
-		/**
-		 * Sets stratigraphic occurrence interpretation associated to this wellbore marker frame
-		 * representation.
-		 *
-		 * @exception	std::invalid_argument	If @p stratiOccurenceInterp is @c nullptr.
-		 *
-		 * @param [in]	stratiOccurenceInterp	The stratigraphic occurrence interpretation to set.
-		 */
 		DLL_IMPORT_OR_EXPORT void setStratigraphicOccurrenceInterpretation(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrenceInterp) final;
 
-		/**
-		 * Sets the correspondence between the intervals of this wellbore marker frame representation
-		 * and the units of a stratigraphic column rank interpretation of a stratigraphic occurrence
-		 * interpretation.
-		 *
-		 * @exception	std::invalid_argument	If @p stratiUnitIndices, @p stratiOccurenceInterp or @p
-		 * 										proxy is @c nullptr.
-		 *
-		 * @param [in]	  	stratiUnitIndices	 	The index of the stratigraphic unit per interval, of
-		 * 											a given stratigraphic column. The count must be equal
-		 * 											to the count of wellbore marker intervals
-		 * 											(getWellboreMarkerCount() <tt> - 1
-		 * 											</tt>).
-		 * @param 		  	nullValue			 	The value which is used to tell that there is no
-		 * 											correspondence between stratigraphic units and a
-		 * 											particular interval (e.g., within salt, use this null
-		 * 											value).
-		 * @param [in]	  	stratiOccurenceInterp	The stratigraphic occurrence interpretation to
-		 * 											associate to this wellbore marker frame
-		 * 											representation.
-		 * @param [in,out]	proxy				 	The HDF proxy where the numerical values (indices)
-		 * 											are stored.
-		 */
 		DLL_IMPORT_OR_EXPORT void setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, RESQML2_NS::StratigraphicOccurrenceInterpretation* stratiOccurrenceInterp, EML2_NS::AbstractHdfProxy* proxy) final;
 
-		/** A stratigraphic occurrence interpretation*. */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratigraphicOccurrenceInterpretationDor() const final;
 
 	private:

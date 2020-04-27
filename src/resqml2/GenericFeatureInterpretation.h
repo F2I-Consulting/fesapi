@@ -23,8 +23,8 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * An interpretation of a feature that is not specialized. For example, use it when the
-	 * specialized type of the associated feature is not known.
+	 * @brief	An interpretation of a feature that is not specialized. For example, use it when the
+	 * 			specialized type of the associated feature is not known.
 	 */
 	class GenericFeatureInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{

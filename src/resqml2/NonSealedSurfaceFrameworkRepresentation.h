@@ -23,10 +23,10 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * A non sealed surface framework representation is collection of contact representations parts,
-	 * which are a list of contact patches with no identity. This collection of contact
-	 * representations is completed by a set of representations gathered at the representation set
-	 * representation level.
+	 * @brief	A non sealed surface framework representation is collection of contact
+	 * 			representations parts, which are a list of contact patches with no identity. This
+	 * 			collection of contact representations is completed by a set of representations
+	 * 			gathered at the representation set representation level.
 	 */
 	class NonSealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
 	{

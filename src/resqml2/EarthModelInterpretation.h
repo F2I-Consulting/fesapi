@@ -28,9 +28,10 @@ namespace RESQML2_NS
 	class StructuralOrganizationInterpretation;
 
 	/**
-	 * This class is a container for stratigraphic, structural and rock fluid organization interpretations that are consistent to each others.
-	 * 
-	 * BUSINESS RULE: An earth model Interpretation interprets only an earth model feature.
+	 * @brief	This class is a container for stratigraphic, structural and rock fluid organization
+	 * 			interpretations that are consistent to each others.
+	 * 			
+	 * 			BUSINESS RULE: An earth model Interpretation interprets only an earth model feature.
 	 */
 	class EarthModelInterpretation : public AbstractFeatureInterpretation
 	{

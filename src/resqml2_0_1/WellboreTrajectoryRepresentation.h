@@ -107,12 +107,12 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
-		 * @copybrief RESQML2_NS::AbstractRepresentation::getXyzPointsOfPatch
+		 * @copybrief resqml2::AbstractRepresentation::getXyzPointsOfPatch
 		 * 
 		 * @exception std::invalid_argument If the HDF proxy is missing.
 		 * @exception	std::logic_error 	If this trajectory has no geometry.
 		 * 
-		 * @copydetails RESQML2_NS::AbstractRepresentation::getXyzPointsOfPatch
+		 * @copydetails resqml2::AbstractRepresentation::getXyzPointsOfPatch
 		 */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 

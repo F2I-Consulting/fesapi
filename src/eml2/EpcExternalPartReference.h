@@ -22,7 +22,10 @@ under the License.
 
 namespace EML2_NS
 {
-	/** Proxy class for handling external parts of an EPC package. It must be used at least for external HDF5 parts. */
+	/**
+	 * @brief	Proxy class for handling external parts of an EPC package. It must be used at least
+	 * 			for external HDF5 parts.
+	 */
 	class EpcExternalPartReference : public COMMON_NS::AbstractObject
 	{
 	public:

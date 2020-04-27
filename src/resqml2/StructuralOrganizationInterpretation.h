@@ -26,9 +26,10 @@ namespace RESQML2_NS
 	class HorizonInterpretation;
 
 	/**
-	 * One of the main types of RESQML organizations, this class gathers boundary interpretations
-	 * (e.g., horizons and faults) plus frontier features and their relationships (contacts
-	 * interpretations), which when taken together define the structure of a part of the earth.
+	 * @brief	One of the main types of RESQML organizations, this class gathers boundary
+	 * 			interpretations (e.g., horizons and faults) plus frontier features and their
+	 * 			relationships (contacts interpretations), which when taken together define the
+	 * 			structure of a part of the earth.
 	 */
 	class StructuralOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{

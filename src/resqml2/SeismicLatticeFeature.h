@@ -23,11 +23,11 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * Defined by two lateral ordered dimensions: inline (lateral), crossline (lateral and
-	 * orthogonal to the inline dimension), which are fixed.
-	 * 
-	 * To specify its location, a seismic feature can be associated with the seismic coordinates of
-	 * the points of a representation.
+	 * @brief	Defined by two lateral ordered dimensions: inline (lateral), crossline (lateral and
+	 * 			orthogonal to the inline dimension), which are fixed.
+	 * 			
+	 * 			To specify its location, a seismic feature can be associated with the seismic
+	 * 			coordinates of the points of a representation.
 	 */
 	class SeismicLatticeFeature : public AbstractTechnicalFeature
 	{

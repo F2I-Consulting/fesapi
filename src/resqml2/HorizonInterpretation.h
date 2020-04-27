@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	/** An interpretation of a horizon, which optionally provides stratigraphic information. */
+	/** @brief	An interpretation of a horizon, which optionally provides stratigraphic information. */
 	class HorizonInterpretation : public BoundaryFeatureInterpretation
 	{
 	public:

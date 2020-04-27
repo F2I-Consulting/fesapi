@@ -28,10 +28,10 @@ namespace EML2_NS
 namespace RESQML2_NS
 {
 	/**
-	 * Parent class for a sealed or non-sealed surface framework representation. Each one
-	 * instantiates a representation set representation. The difference between the sealed and non-
-	 * sealed frameworks is that, in the non-sealed case, we do not have all of the contacts, or we
-	 * have all of the contacts but they are not all sealed.
+	 * @brief	Parent class for a sealed or non-sealed surface framework representation. Each one
+	 * 			instantiates a representation set representation. The difference between the sealed
+	 * 			and non- sealed frameworks is that, in the non-sealed case, we do not have all of the
+	 * 			contacts, or we have all of the contacts but they are not all sealed.
 	 */
 	class AbstractSurfaceFrameworkRepresentation : public RepresentationSetRepresentation
 	{

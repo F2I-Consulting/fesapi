@@ -23,8 +23,8 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * A boundary feature. This is an interface between two geological objects, such as horizons and
-	 * faults. It is a surface object.
+	 * @brief	A boundary feature. This is an interface between two geological objects, such as
+	 * 			horizons and faults. It is a surface object.
 	 */
 	class BoundaryFeature : public AbstractFeature
 	{

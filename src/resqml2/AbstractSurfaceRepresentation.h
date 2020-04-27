@@ -25,9 +25,9 @@ namespace RESQML2_NS
 	class PolylineRepresentation;
 
 	/**
-	 * An abstract surface representation. It is the parent class of structural surface
-	 * representations, which can be bounded by an outer ring and has inner rings. These surfaces
-	 * may consist of one or more patches.
+	 * @brief	An abstract surface representation. It is the parent class of structural surface
+	 * 			representations, which can be bounded by an outer ring and has inner rings. These
+	 * 			surfaces may consist of one or more patches.
 	 */
 	class AbstractSurfaceRepresentation : public AbstractRepresentation
 	{

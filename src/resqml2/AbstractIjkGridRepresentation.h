@@ -26,9 +26,9 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * Proxy class for an abstract IJK grid representation. This class is semantically abstract.
-	 * Technically speaking, it is not an abstract because it can be used in case of partial
-	 * transfer where we don't know the geometry of the IJK grid.
+	 * @brief	Proxy class for an abstract IJK grid representation. This class is semantically
+	 * 			abstract. Technically speaking, it is not an abstract because it can be used in case
+	 * 			of partial transfer where we don't know the geometry of the IJK grid.
 	 */
 	class AbstractIjkGridRepresentation : public RESQML2_NS::AbstractColumnLayerGridRepresentation
 	{
@@ -774,6 +774,16 @@ namespace RESQML2_NS
 
 		DLL_IMPORT_OR_EXPORT virtual ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const override;
 
+		/**
+		* @copybrief AbstractRepresentation::getXyzPointsOfPatch
+		*
+		* @exception std::out_of_range	If <tt>patchIndex >=</tt> getPatchCount().
+		*
+		* @param patchIndex	The index of the patch.
+		* @param xyzPoints	xyz double triplets ordered by i then j then split then k. It must be preallocated
+		* 					with a count of <tt>((iCellCount+1) * (jCellCount+1) + splitCoordinateLineCount)</tt>
+		* 					<tt> * kCellCount.</tt>
+		*/
 		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const override;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */

@@ -23,10 +23,10 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * The main use case for this class is the representation of a seismic cubes. Notice that, in
-	 * seismic context, I is the slowest axis, J is the intermediate axis and K is the fastest axis.
-	 * In reservoir grid, I is the fastest axis, J is the intermediate axis and K is slowest axis.
-	 * It should be improved in future RESQML versions.
+	 * @brief	The main use case for this class is the representation of a seismic cubes. Notice
+	 * 			that, in seismic context, I is the slowest axis, J is the intermediate axis and K is
+	 * 			the fastest axis. In reservoir grid, I is the fastest axis, J is the intermediate
+	 * 			axis and K is slowest axis. It should be improved in future RESQML versions.
 	 */
 	class IjkGridLatticeRepresentation : public AbstractIjkGridRepresentation
 	{

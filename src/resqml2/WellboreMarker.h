@@ -26,10 +26,10 @@ namespace RESQML2_NS
 	class WellboreMarkerFrameRepresentation;
 
 	/**
-	 * Proxy class for a wellbore marker. This class is one of the only one to be a RESQML data
-	 * object which is not exported into a single file i.e. it is not a top level element.
-	 * Consequently its behaviour is slightly different than other class. Especially there is no
-	 * integration of the instances into an EPC document.
+	 * @brief	Proxy class for a wellbore marker. This class is one of the only one to be a RESQML
+	 * 			data object which is not exported into a single file i.e. it is not a top level
+	 * 			element. Consequently its behaviour is slightly different than other class.
+	 * 			Especially there is no integration of the instances into an EPC document.
 	 */
 	class WellboreMarker : public COMMON_NS::AbstractObject
 	{

@@ -26,11 +26,13 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * Proxy class for a continuous property. Most common type of property used for storing rock or
-	 * fluid attributes; all are represented as floating point values. So that the value range can
-	 * be known before accessing all values, the min and max values of the range are also optionally
-	 * stored. BUSINESS RULE: It also contains a unit of measure, which can be different from the
-	 * unit of measure of its property type, but it must be convertible into this unit.
+	 * @brief	Proxy class for a continuous property. Most common type of property used for storing
+	 * 			rock or fluid attributes; all are represented as floating point values. So that the
+	 * 			value range can be known before accessing all values, the min and max values of the
+	 * 			range are also optionally stored.
+	 * 			
+	 * 			BUSINESS RULE: It also contains a unit of measure, which can be different from the
+	 * 			unit of measure of its property type, but it must be convertible into this unit.
 	 */
 	class ContinuousProperty : public AbstractValuesProperty
 	{

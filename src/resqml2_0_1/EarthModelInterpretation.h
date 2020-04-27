@@ -37,12 +37,14 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT EarthModelInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::EarthModelInterpretation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	orgFeat	The feature the instance interprets.
-		 * @param 		  	guid   	The guid to set to the interpretation. If empty then a new guid will
-		 * 							be generated.
-		 * @param 		  	title  	A title for the instance to create.
+		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt>.
+		 *
+		 * @param [in]	orgFeat	The feature the instance interprets.
+		 * @param 	  	guid   	The guid to set to the interpretation. If empty then a new guid will be
+		 * 						generated.
+		 * @param 	  	title  	A title for the instance to create.
 		 */
 		EarthModelInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 

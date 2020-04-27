@@ -24,7 +24,7 @@ namespace RESQML2_NS
 {
 	class WellboreInterpretation;
 
-	/** Representation of a wellbore trajectory. */
+	/** @brief	Representation of a wellbore trajectory. */
 	class WellboreTrajectoryRepresentation : public AbstractRepresentation
 	{
 	public:

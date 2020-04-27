@@ -38,11 +38,13 @@ namespace RESQML2_0_1_NS
 			RESQML2_NS::GridConnectionSetRepresentation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	interp	The interpretation the instance represents.
-		 * @param 		  	guid  	A guid for the instance to create.
-		 * @param 		  	title 	A title for the instance to create.
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
+		 *
+		 * @param [in]	interp	The interpretation the instance represents.
+		 * @param 	  	guid  	A guid for the instance to create.
+		 * @param 	  	title 	A title for the instance to create.
 		 */
 		GridConnectionSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
                 const std::string & guid, const std::string & title);

@@ -23,7 +23,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	/** Proxy class for an abstract values property. */
+	/** @brief	Proxy class for an abstract values property. */
 	class AbstractValuesProperty : public AbstractProperty
 	{
 	public:

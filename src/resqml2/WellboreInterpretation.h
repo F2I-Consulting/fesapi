@@ -26,8 +26,8 @@ namespace RESQML2_NS
 	class WellboreFeature;
 
 	/**
-	 * Contains the data describing an opinion of a borehole.This interpretation is relative to one
-	 * particular well trajectory.
+	 * @brief	Contains the data describing an opinion of a borehole.This interpretation is relative
+	 * 			to one particular well trajectory.
 	 */
 	class WellboreInterpretation : public AbstractFeatureInterpretation
 	{

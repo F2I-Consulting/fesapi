@@ -23,10 +23,10 @@ under the License.
 namespace EML2_NS
 {
 	/**
-	 * Property kinds carry the semantics of property values. They are used to identify if the
-	 * values are, for example, representing porosity, length, stress tensor, etc. Energistics
-	 * provides a list of standard property kind that represent the basis for the commonly used
-	 * properties in the E&amp;P subsurface workflow.
+	 * @brief	Property kinds carry the semantics of property values. They are used to identify if
+	 * 			the values are, for example, representing porosity, length, stress tensor, etc.
+	 * 			Energistics provides a list of standard property kind that represent the basis for
+	 * 			the commonly used properties in the E&amp;P subsurface workflow.
 	 */
 	class PropertyKind : public COMMON_NS::AbstractObject
 	{

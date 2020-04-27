@@ -37,9 +37,7 @@ under the License.
 
 namespace COMMON_NS
 {
-	/**
-	* This class wraps an Energistics Data Object Reference whatever its version is.
-	*/
+	/** @brief	This class wraps an Energistics Data Object Reference whatever its version is. */
 	class DataObjectReference
 	{
 	public:

@@ -24,9 +24,7 @@ namespace RESQML2_NS
 {
 	class Model;
 
-	/**
-	* This class defines the behaviour of all RESQML2 organizations
-	*/
+	/** @brief	This class defines the behaviour of all RESQML2 organizations */
 	class AbstractOrganizationInterpretation : public AbstractFeatureInterpretation
 	{
 	protected:

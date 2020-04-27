@@ -23,8 +23,8 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * Frox class for a seismic line set feature. It is an unordered set of several seismic lines.
-	 * Generally, it has no direct interpretation or representation.
+	 * @brief	Frox class for a seismic line set feature. It is an unordered set of several seismic
+	 * 			lines. Generally, it has no direct interpretation or representation.
 	 */
 	class SeismicLineSetFeature : public AbstractTechnicalFeature
 	{

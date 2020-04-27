@@ -23,12 +23,12 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * A representation made up of a set of polylines or a set of polygonal chains (for more
-	 * information, see PolylineRepresentation).
-	 * 
-	 * For compactness, it is organized by line patch as a unique polyline set patch.
-	 * 
-	 * A closed polyline is connected between the first and the last point.
+	 * @brief	A representation made up of a set of polylines or a set of polygonal chains (for more
+	 * 			information, see PolylineRepresentation).
+	 * 			
+	 * 			For compactness, it is organized by line patch as a unique polyline set patch.
+	 * 			
+	 * 			A closed polyline is connected between the first and the last point.
 	 */
 	class PolylineSetRepresentation : public AbstractRepresentation
 	{

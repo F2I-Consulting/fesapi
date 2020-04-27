@@ -23,8 +23,8 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * A type of rock fluid feature-interpretation , this class identifies a rock fluid feature by
-	 * its phase.
+	 * @brief	A type of rock fluid feature-interpretation , this class identifies a rock fluid
+	 * 			feature by its phase.
 	 */
 	class RockFluidUnitInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{

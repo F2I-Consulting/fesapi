@@ -25,9 +25,9 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * Proxy class for a comment property. It is used to capture comments or annotations associated
-	 * with a given element type in a data-object, for example, associating comments on the specific
-	 * location of a well path.
+	 * @brief	Proxy class for a comment property. It is used to capture comments or annotations
+	 * 			associated with a given element type in a data-object, for example, associating
+	 * 			comments on the specific location of a well path.
 	 */
 	class CommentProperty : public AbstractValuesProperty
 	{
