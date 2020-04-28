@@ -76,33 +76,12 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
 			double value, gsoap_resqml2_0_1::resqml20__ResqmlUom uom = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc);
 
-		/**
-		 * Push back a string parameter in the instance. This parameter must exist in the associated
-		 * activity template.
-		 *
-		 * @param 	title	The title.
-		 * @param 	value	The value.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
 			const std::string & value) final;
 
-		/**
-		 * Push back an integer parameter in the instance. This parameter must exist in the associated
-		 * activity template.
-		 *
-		 * @param 	title	The title.
-		 * @param 	value	The value.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
 			LONG64 value) final;
 
-		/**
-		 * Push back a resqml object parameter in the instance. This parameter must exist in the
-		 * associated activity template.
-		 *
-		 * @param 		  	title			The title.
-		 * @param [in,out]	resqmlObject	If non-null, the resqml object.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
 			AbstractObject* resqmlObject) final;
 

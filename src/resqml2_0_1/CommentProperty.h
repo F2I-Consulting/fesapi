@@ -89,22 +89,6 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~CommentProperty() {}
 
-		/**
-		 * Pushes back a new patch of values for this property where the values have not to be written in
-		 * the HDF5 file. The reason can be that the values already exist in an external file (only HDF5
-		 * for now) or that the writing of the values in the external file is differed in time.
-		 *
-		 * @exception	std::invalid_argument	If @p hdfProxy is null.
-		 *
-		 * @param [in]	hdfProxy   	The HDF5 proxy where the values are already or will be stored. It
-		 * 							cannot be null.
-		 * @param 	  	datasetName	(Optional) If not provided during the method call, the dataset will
-		 * 							be named the same as the dataset naming convention of fesapi:
-		 * 							<tt>"/RESQML/" + prop-&gt;uuid + "/values_patch" + patchIndex</tt>
-		 * @param 	  	nullValue  	(Optional) Not used for comment properties.
-		 *
-		 * @returns	The name of the HDF5 dataset.
-		 */
 		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)()) final;
 
 		/**

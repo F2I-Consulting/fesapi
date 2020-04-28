@@ -59,11 +59,6 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~GeobodyInterpretation() {}
 
-		/**
-		 * Set the geobody 3d shape
-		 *
-		 * @param 	geobody3dShape	The geobody 3D shape.
-		 */
 		DLL_IMPORT_OR_EXPORT void set3dShape(gsoap_eml2_3::resqml22__Shape3d geobody3dShape) final;
 
 		/**
@@ -73,18 +68,8 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void set3dShape201(gsoap_resqml2_0_1::resqml20__Geobody3dShape geobody3dShape);
 
-		/**
-		 * check if the 3d shape of this geobody is known
-		 *
-		 * @returns	True if 3D shape, false if not.
-		 */
 		DLL_IMPORT_OR_EXPORT bool has3dShape() const final;
 
-		/**
-		 * get the 3d shape of this geobody
-		 *
-		 * @returns	The 3D shape.
-		 */
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__Shape3d get3dShape() const final;
 
 		/**

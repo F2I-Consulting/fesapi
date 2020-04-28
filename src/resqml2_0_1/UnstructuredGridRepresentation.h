@@ -159,11 +159,6 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getConstantNodeCountOfFaces() const final;
 
-		/**
-		 * Get the cell count
-		 *
-		 * @returns	The cell count.
-		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const final;
 
 		/**

@@ -79,42 +79,17 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT int getFirstTraceIndex() const;
 
-		/**
-		 * Sets seismic line set
-		 *
-		 * @param [in,out]	seisLineSet	If non-null, set the seis line belongs to.
-		 */
 		DLL_IMPORT_OR_EXPORT void setSeismicLineSet(RESQML2_NS::SeismicLineSetFeature * seisLineSet) final;
 
-		/** A seismic line set feature*. */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getSeismicLineSetDor() const final;
 
-		/**
-		 * Get the total count of traces in this seismic line.
-		 *
-		 * @returns	The trace count.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getTraceCount() const final;
 
-		/**
-		 * Gets the trace labels in this seismic line.
-		 *
-		 * @returns	The trace labels.
-		 */
 		DLL_IMPORT_OR_EXPORT std::vector<std::string> getTraceLabels() const final;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};
 }

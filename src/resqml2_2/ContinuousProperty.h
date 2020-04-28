@@ -102,65 +102,18 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~ContinuousProperty() {}
 
-		/**
-		 * Gets the unit of measure of the values of this property. If <tt>
-		 * resqml20__ResqmlUom::resqml20__ResqmlUom__Euc </tt> is returned, you should check if an
-		 * extrametadata called "Uom" also exists. If so, it would mean that the property uses a non
-		 * standard unit of measure. This is an official workaround for a known issue of Resqml 2.0.1.
-		 *
-		 * @returns	The unit of measure of the values of this property.
-		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlUom getUom() const final;
 
-		/**
-		 * Gets the unit of measure of the values of this property as a string.
-		 *
-		 * @returns	The unit of measure of the values of this property as a string.
-		 */
 		DLL_IMPORT_OR_EXPORT std::string getUomAsString() const final;
 
-		/**
-		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF
-		 * proxy. The reason can be that the values already exist in an external file (only HDF5 for
-		 * now) or that the writing of the values in the external file is differed in time.
-		 *
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined in the repository.
-		 *
-		 * @param [in]	proxy	   	The HDF5 proxy where the values are already or will be stored. If
-		 * 							@c nullptr, then a default HDF proxy must be defined in the
-		 * 							repository.
-		 * @param 	  	datasetName	(Optional) The HDF5 dataset name where the values are stored. If
-		 * 							empty, the dataset will be named the same as the dataset naming
-		 * 							convention of fesapi :
-		 * 							<tt>getHdfGroup() + "/values_patch" + patchIndex</tt>
-		 *
-		 * @returns	The name of the referenced HDF5 dataset.
-		 */
 		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "") final;
 
-		/**
-		 * Get the minimum value in this continuous properties. It reads it from file.
-		 *
-		 * @returns	The minimum value if present in the file otherwise @c NaN.
-		 */
 		DLL_IMPORT_OR_EXPORT double getMinimumValue(unsigned int index = 0) const final;
 
-		/**
-		 * Get the maximum value in this discrete properties. It reads it from file.
-		 *
-		 * @returns	the maximum value if present in the file otherwise @c NaN.
-		 */
 		DLL_IMPORT_OR_EXPORT double getMaximumValue(unsigned int index = 0) const final;
 
-		/**
-		 * Set the minimum value in this continuous property.
-		 */
 		DLL_IMPORT_OR_EXPORT void setMinimumValue(double value, unsigned int index = 0) const final;
 
-		/**
-		 * Set the maximum value in this discrete property.
-		 */
 		DLL_IMPORT_OR_EXPORT void setMaximumValue(double value, unsigned int index = 0) const final;
 
 		bool validatePropertyKindAssociation(EML2_NS::PropertyKind*) final { return true; }

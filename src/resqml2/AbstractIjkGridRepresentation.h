@@ -238,16 +238,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setJCellCount(const unsigned int & jCount);
 
-		/**
-		 * Gets the count of cells in this grid.
-		 *
-		 * @exception	std::logic_error	If this grid is partial.
-		 * @exception	std::range_error	If the count of cells in I, J or K
-		 * 									direction is strictly greater than unsigned int max.
-		 *
-		 * @returns	The cell count.
-		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const  final {return getICellCount() * getJCellCount() * getKCellCount();}
+		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const final {return getICellCount() * getJCellCount() * getKCellCount();}
 
 		/**
 		 * Gets the count of columns in this grid.

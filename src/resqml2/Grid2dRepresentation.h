@@ -476,8 +476,8 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual int getNodeCountOnSupportingRepresentation(unsigned int dimension) const = 0;
 
 		/**
-		 * Get the index offset of the nodes of the current geometry on a particular dimension of the
-		 * supporting representation.
+		 * @brief	Gets the index offset of the nodes of the current geometry on a particular dimension
+		 * 			of the supporting representation.
 		 *
 		 * @exception	std::logic_error 	If no supporting representation is associated to this 2d grid
 		 * 									representation.

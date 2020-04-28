@@ -58,172 +58,44 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		~Grid2dRepresentation() {}
 
-		/**
-		 * Gets the HDF proxy data object reference.
-		 *
-		 * @returns	The HDF proxy data object reference.
-		 */
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
-		/**
-		 * Get the number of nodes in the I direction of the lattice 2d grid
-		 *
-		 * @returns	The node count along i axis.
-		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getNodeCountAlongIAxis() const final;
 
-		/**
-		 * Get the number of nodes in the J direction of the lattice 2d grid
-		 *
-		 * @returns	The node count along j axis.
-		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getNodeCountAlongJAxis() const final;
 
-		/**
-		 * Get all the z values of a patch located at a specific index of the geometry points. Z Values
-		 * are given in the local CRS.
-		 *
-		 * @param [in,out]	values	All the z values of the selected patch. i dimension is the quickest.
-		 * 							It must be preallocated and won't be freed by this method. Its size
-		 * 							must be equel to getNodeCountAlongIAxis() * getNodeCountAlongJAxis().
-		 */
 		DLL_IMPORT_OR_EXPORT void getZValues(double * values) const final;
 
-		/**
-		 * Get the X origin of this geometry. X coordinate is given in the local CRS.
-		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The X origin point otherwise.
-		 */
 		DLL_IMPORT_OR_EXPORT double getXOrigin() const final;
 
-		/**
-		 * Get the Y origin of this geometry. Y coordinate is given in the local CRS.
-		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Y origin point otherwise.
-		 */
 		DLL_IMPORT_OR_EXPORT double getYOrigin() const final;
 
-		/**
-		 * Get the Z origin of this geometry. Z coordinate is given in the local CRS.
-		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Z origin point otherwise.
-		 */
 		DLL_IMPORT_OR_EXPORT double getZOrigin() const final;
 
-		/**
-		 * Get the X (in local crs) offset on the J axis. If the J spacing is constant, the returned
-		 * offset is exactly the offset between two consecutive nodes lying on the J axis. If not, the
-		 * offset length does not have any meaning. X coordinate is given in the local CRS.
-		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The X offset point otherwise.
-		 */
 		DLL_IMPORT_OR_EXPORT double getXJOffset() const final;
 
-		/**
-		 * Get the Y (in local crs) offset on the J axis. If the J spacing is constant, the returned
-		 * offset is exactly the offset between two consecutive nodes lying on the J axis. If not, the
-		 * offset length does not have any meaning. Y coordinate is given in the local CRS.
-		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Y offset point otherwise.
-		 */
 		DLL_IMPORT_OR_EXPORT double getYJOffset() const final;
 
-		/**
-		 * Get the Z (in local crs) offset on the J axis. If the J spacing is constant, the returned
-		 * offset is exactly the offset between two consecutive nodes lying on the J axis. If not, the
-		 * offset length does not have any meaning. Z coordinate is given in the local CRS.
-		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Z offset point otherwise.
-		 */
 		DLL_IMPORT_OR_EXPORT double getZJOffset() const final;
 
-		/**
-		 * Get the X (in local crs) offset between two consecutive nodes lying on the I axis. X
-		 * coordinate is given in the local CRS.
-		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The X offset point otherwise.
-		 */
 		DLL_IMPORT_OR_EXPORT double getXIOffset() const final;
 
-		/**
-		 * Get the Y (in local crs) offset between two consecutive nodes lying on the I axis. Y
-		 * coordinate is given in the local CRS.
-		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Y offset point otherwise.
-		 */
 		DLL_IMPORT_OR_EXPORT double getYIOffset() const final;
 
-		/**
-		 * Get the Z (in local crs) offset between two consecutive nodes lying on the I axis. Z
-		 * coordinate is given in the local CRS.
-		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Z offset point otherwise.
-		 */
 		DLL_IMPORT_OR_EXPORT double getZIOffset() const final;
 
-		/**
-		 * Checkes wether the spacing between nodes on J dimension is constant or not.
-		 *
-		 * @returns	True if j spacing constant, false if not.
-		 */
 		DLL_IMPORT_OR_EXPORT bool isJSpacingConstant() const final;
 
-		/**
-		 * Checkes wether the spacing between nodes on I dimension is constant or not.
-		 *
-		 * @returns	True if i spacing constant, false if not.
-		 */
 		DLL_IMPORT_OR_EXPORT bool isISpacingConstant() const final;
 
-		/**
-		 * Get the constant J (fastest) spacing of this 2d grid representation.
-		 *
-		 * @returns	The constant spacing in the J direction of the 2d grid representation.
-		 */
 		DLL_IMPORT_OR_EXPORT double getJSpacing() const final;
 
-		/**
-		 * Get all the J (fastest) spacings of this 2d grid representation.
-		 *
-		 * @param [in,out]	jSpacings	The count of this array should be getNodeCountAlongJAxis - 1. It
-		 * 								must be preallocated and won't be freed by this method.
-		 */
 		DLL_IMPORT_OR_EXPORT void getJSpacing(double* jSpacings) const final;
 
-		/**
-		 * Get the constant I (slowest) spacing of this 2d grid representation.
-		 *
-		 * @returns	The constant spacing in the I direction of the 2d grid representation.
-		 */
 		DLL_IMPORT_OR_EXPORT double getISpacing() const final;
 
-		/**
-		 * Get all the I (fastest) spacings of this 2d grid representation.
-		 *
-		 * @param [in,out]	iSpacings	The count of this array shouhd be getNodeCountAlongIAxis - 1. It
-		 * 								must be preallocated and won't be freed by this method.
-		 */
 		DLL_IMPORT_OR_EXPORT void getISpacing(double* iSpacings) const final;
 
-		/**
-		 * Set the geometry patch for a lattice 2d grid. The set geometry is an array 2d of lattice
-		 * points3d.
-		 *
-		 * @param 		  	numPointsInFastestDirection	Number of points in fastest directions.
-		 * @param 		  	numPointsInSlowestDirection	Number of points in slowest directions.
-		 * @param 		  	xOrigin					   	The origin.
-		 * @param 		  	yOrigin					   	The origin.
-		 * @param 		  	zOrigin					   	The origin.
-		 * @param 		  	xOffsetInFastestDirection  	The offset in fastest direction.
-		 * @param 		  	yOffsetInFastestDirection  	The offset in fastest direction.
-		 * @param 		  	zOffsetInFastestDirection  	The offset in fastest direction.
-		 * @param 		  	xOffsetInSlowestDirection  	The offset in slowest direction.
-		 * @param 		  	yOffsetInSlowestDirection  	The offset in slowest direction.
-		 * @param 		  	zOffsetInSlowestDirection  	The offset in slowest direction.
-		 * @param 		  	spacingInFastestDirection  	The spacing in fastest direction.
-		 * @param 		  	spacingInSlowestDirection  	The spacing in slowest direction.
-		 * @param [in,out]	localCrs				   	(Optional) If non-null, the local crs.
-		 */
 		DLL_IMPORT_OR_EXPORT void setGeometryAsArray2dOfLatticePoints3d(
 			unsigned int numPointsInFastestDirection, unsigned int numPointsInSlowestDirection,
 			double xOrigin, double yOrigin, double zOrigin,
@@ -231,22 +103,6 @@ namespace RESQML2_2_NS
 			double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
 			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 
-		/**
-		 * Set the geometry patch for a lattice 2d grid. The set geometry is an array 2d of explicit Z
-		 * based on an existing representation
-		 *
-		 * @param [in,out]	zValues						  	If non-null, the values.
-		 * @param 		  	numI						  	Number of is.
-		 * @param 		  	numJ						  	Number of js.
-		 * @param [in,out]	proxy						  	If non-null, the proxy.
-		 * @param [in,out]	supportingGrid2dRepresentation	If non-null, the supporting grid 2D
-		 * 													representation.
-		 * @param [in,out]	localCrs					  	(Optional) If non-null, the local crs.
-		 * @param 		  	startIndexI					  	(Optional) The start index i.
-		 * @param 		  	startIndexJ					  	(Optional) The start index j.
-		 * @param 		  	indexIncrementI				  	(Optional) The index increment i.
-		 * @param 		  	indexIncrementJ				  	(Optional) The index increment j.
-		 */
 		DLL_IMPORT_OR_EXPORT void setGeometryAsArray2dOfExplicitZ(
 			double * zValues,
 			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
@@ -254,26 +110,6 @@ namespace RESQML2_2_NS
 			unsigned int startIndexI = 0, unsigned int startIndexJ = 0,
 			int indexIncrementI = 1, int indexIncrementJ = 1) final;
 
-		/**
-		 * Set the geometry patch for a lattice 2d grid. The set geometry is an array 2d of explicit Z.
-		 *
-		 * @param [in,out]	zValues 	If non-null, the values.
-		 * @param 		  	numI		Number of is.
-		 * @param 		  	numJ		Number of js.
-		 * @param [in,out]	proxy   	If non-null, the proxy.
-		 * @param 		  	originX 	The origin x coordinate.
-		 * @param 		  	originY 	The origin y coordinate.
-		 * @param 		  	originZ 	The origin z coordinate.
-		 * @param 		  	offsetIX	Zero-based index of the offset.
-		 * @param 		  	offsetIY	The offset iy.
-		 * @param 		  	offsetIZ	The offset iz.
-		 * @param 		  	spacingI	The spacing i.
-		 * @param 		  	offsetJX	The offset jx.
-		 * @param 		  	offsetJY	The offset jy.
-		 * @param 		  	offsetJZ	The offset jz.
-		 * @param 		  	spacingJ	The spacing j.
-		 * @param [in,out]	localCrs	(Optional) If non-null, the local crs.
-		 */
 		DLL_IMPORT_OR_EXPORT void setGeometryAsArray2dOfExplicitZ(
 			double * zValues,
 			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
@@ -283,27 +119,12 @@ namespace RESQML2_2_NS
 
 		COMMON_NS::DataObjectReference getSupportingRepresentationDor() const final;
 
-		/**
-		 * Get the index of the origin of the current geometry on the supporting representation. The
-		 * index is given by means of the formula iOrigin + jOrigin*iNodeCountOnSupportingRepresentation
-		 *
-		 * @returns	The index origin on supporting representation.
-		 */
 		DLL_IMPORT_OR_EXPORT int getIndexOriginOnSupportingRepresentation() const final;
 
-		/**
-		* Get the index of the origin of the current geometry on a particular dimension of the supporting representation.
-		*/
 		DLL_IMPORT_OR_EXPORT int getIndexOriginOnSupportingRepresentation(unsigned int dimension) const final;
 
-		/**
-		* Get the number of nodes of the current geometry which is extracted from a particular dimension of the supporting representation.
-		*/
 		DLL_IMPORT_OR_EXPORT int getNodeCountOnSupportingRepresentation(unsigned int dimension) const final;
 
-		/**
-		* Get the index offset of the nodes of the current geometry on a particular dimension of the supporting representation.
-		*/
 		DLL_IMPORT_OR_EXPORT int getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const final;
 
 	private:

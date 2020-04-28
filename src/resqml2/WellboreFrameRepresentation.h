@@ -180,7 +180,7 @@ namespace RESQML2_NS
 		/**
 		 * @copybrief AbstractRepresentation::getHdfProxyDor()
 		 *
-		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML v2.0 or RESQML v2.0 one.
 		 * 
 		 * @copydetails AbstractRepresentation::getHdfProxyDor()
 		 */

@@ -95,24 +95,8 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void pushBackTrianglePatch(unsigned int nodeCount, double const * nodes, unsigned int triangleCount, unsigned int const * triangleNodeIndices,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
-		/**
-		 * Get the xyz point count in a given patch.
-		 *
-		 * @param 	patchIndex	The index of the patch of the representation.
-		 *
-		 * @returns	The xyz point count of patch.
-		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
-		/**
-		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
-		 * the local CRS.
-		 *
-		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is
-		 * 								coordinate dimension (XYZ) and second dimension is vertex
-		 * 								dimension. It must be pre allocated.
-		 */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
         /**
@@ -150,11 +134,6 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const final;
 
-		/**
-		 * Get the patch count in this representation.
-		 *
-		 * @returns	The patch count.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
 
 	private:

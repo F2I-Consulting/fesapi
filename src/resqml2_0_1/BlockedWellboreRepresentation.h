@@ -59,83 +59,18 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~BlockedWellboreRepresentation() {}
 
-		/**
-		 * Set all information about the intersected grid cells. You must first provide MD values of the
-		 * frame before to use this method.
-		 *
-		 * @param [in,out]	gridIndices								Size of array = IntervalCount on the
-		 * 															wellbore frame rep. BUSINESS RULE: The
-		 * 															cell count must equal the number of non-
-		 * 															null entries in this array. The grids
-		 * 															(and there indices) are defined using
-		 * 															pushBackSupportingGridRepresentation
-		 * 															method.
-		 * @param 		  	gridIndicesNullValue					The null value used in gridIndices in
-		 * 															order to indicate that an interval deos
-		 * 															not correspond to any intersected grid.
-		 * @param 		  	cellCount								The number of non-null entries in the
-		 * 															grid indices array.
-		 * @param [in,out]	cellIndices								The intersected cell index for each
-		 * 															non null gridIndices. They are ordered
-		 * 															according to non null gridIndices. Array
-		 * 															length must equal cell count.
-		 * @param [in,out]	localFacePairPerCellIndices				For each cell, these are the entry
-		 * 															and exit intersection faces of the
-		 * 															trajectory in the cell. The array
-		 * 															dimensions must equal 2 x CellCount.
-		 * @param 		  	localFacePairPerCellIndicesNullValue	The null value used in
-		 * 															localFacePerCellIndices in order to
-		 * 															indicate that it corresponds to a missing
-		 * 															intersection, e.g., when a trajectory
-		 * 															originates or terminates within a cell.
-		 * @param [in,out]	hdfProxy								The hdf proxy where the numerical
-		 * 															values will be stored.
-		 */
 		DLL_IMPORT_OR_EXPORT void setIntevalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
 			unsigned int cellCount, ULONG64 const* cellIndices,
 			unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy) final;
 
-		/**
-		 * The number of non-null entries in the grid indices array.
-		 *
-		 * @returns	The cell count.
-		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const final;
 
-		/**
-		 * Size of array = IntervalCount on the wellbore frame rep. The grids (and there indices) are
-		 * defined using pushBackSupportingGridRepresentation method.
-		 *
-		 * @param [in,out]	gridIndices	If non-null, the grid indices.
-		 *
-		 * @returns	nullValue.
-		 */
 		DLL_IMPORT_OR_EXPORT LONG64 getGridIndices(unsigned int * gridIndices) const final;
 
-		/**
-		 * Pushes back a grid representation which is one of the support of this representation. And
-		 * push back this representation as a grid connection information of the grid representation as
-		 * well.
-		 *
-		 * @param [in,out]	supportingGridRep	If non-null, the supporting grid rep.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep) final;
 
-		/**
-		 * Get the count of the supporting grid representations of this grid connection representation.
-		 *
-		 * @returns	The supporting grid representation count.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getSupportingGridRepresentationCount() const final;
 
-		/**
-		 * Get the supporting grid representation dor located at a specific index of this blocked
-		 * wellbore representation.
-		 *
-		 * @param 	index	Zero-based index of the.
-		 *
-		 * @returns	Null if it fails, else the supporting grid representation dor.
-		 */
 		COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const final;
 
 	private:

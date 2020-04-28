@@ -41,28 +41,10 @@ namespace RESQML2_2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setTraceLabels(const std::vector<std::string> & values, EML2_NS::AbstractHdfProxy * proxy);
 
-		/**
-		 * Sets the seismic line set this seismic line belongs to.
-		 *
-		 * @exception	std::invalid_argument	If @p seisLineSet is @c nullptr.
-		 *
-		 * @param [in]	seisLineSet	The seismic line set this seismic line belongs to.
-		 */
 		DLL_IMPORT_OR_EXPORT void setSeismicLineSet(RESQML2_NS::SeismicLineSetFeature * seisLineSet) final;
 
-		/**
-		 * Gets the data object reference of the seismic line set this seismic line belongs to.
-		 *
-		 * @returns	Empty data object reference	if this seismic line does not belong to a seismic line
-		 * 			set, else the data object reference of the seismic line set it belongs to.
-		 */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getSeismicLineSetDor() const final;
 
-		/**
-		 * Gets the trace labels in this seismic line.
-		 *
-		 * @returns	The trace labels.
-		 */
 		DLL_IMPORT_OR_EXPORT std::vector<std::string> getTraceLabels() const final;
 
 	protected:

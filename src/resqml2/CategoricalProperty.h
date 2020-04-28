@@ -44,10 +44,10 @@ namespace RESQML2_NS
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~CategoricalProperty() {}
 
-		/**   
-		 * Gets the string lookup which is associated to this categorical property values. 
-		 * 
-		 * 	@returns A pointer to the string lookup which is associated to this categorical property
+		/**
+		 * @brief	Gets the string lookup which is associated to this categorical property values.
+		 *
+		 * @returns	A pointer to the string lookup which is associated to this categorical property
 		 * 			 values.
 		 */
 		DLL_IMPORT_OR_EXPORT StringTableLookup* getStringLookup();

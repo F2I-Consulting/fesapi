@@ -84,11 +84,6 @@ namespace RESQML2_0_1_NS
                 EML2_NS::AbstractHdfProxy* proxy);
                 */
 
-		/**
-		 * Gets contact count
-		 *
-		 * @returns	The contact count.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getContactCount() const final;
 	};
 }
