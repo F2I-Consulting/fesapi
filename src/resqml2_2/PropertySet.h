@@ -41,19 +41,20 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT PropertySet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::PropertySet(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	repo				   	The DataObjectRepository where the instance must be
-		 * 											created.
-		 * @param 		  	guid				   	A guid for the instance to create. Empty guid lead to
-		 * 											the creation of a random one.
-		 * @param 		  	title				   	A title for the instance to create.
-		 * @param 		  	hasMultipleRealizations	If true, indicates that the collection contains
-		 * 											properties with defined realization indices.
-		 * @param 		  	hasSinglePropertyKind  	If true, indicates that the collection contains only
-		 * 											property values associated with a single property
-		 * 											kind.
-		 * @param 		  	timeSetKind			   	the time set kind of this property set.
+		 * @exception	std::invalid_argument	If <tt>repo == nullptr</tt>.
+		 *
+		 * @param [in]	repo				   	The DataObjectRepository where the instance must be
+		 * 										created.
+		 * @param 	  	guid				   	A guid for the instance to create. Empty guid lead to the
+		 * 										creation of a random one.
+		 * @param 	  	title				   	A title for the instance to create.
+		 * @param 	  	hasMultipleRealizations	If true, indicates that the collection contains
+		 * 										properties with defined realization indices.
+		 * @param 	  	hasSinglePropertyKind  	If true, indicates that the collection contains only
+		 * 										property values associated with a single property kind.
+		 * @param 	  	timeSetKind			   	the time set kind of this property set.
 		 */
 		PropertySet(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
 			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_eml2_3::resqml22__TimeSetKind timeSetKind);

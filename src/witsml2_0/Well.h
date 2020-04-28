@@ -55,7 +55,9 @@ namespace WITSML2_0_NS
 			const std::string & title);
 
 		/**
-		 * Constructor
+		 * @brief	Constructor
+		 *
+		 * @exception	std::invalid_argument	If <tt>repo == nullptr</tt>.
 		 *
 		 * @param [in,out]	repo		 	If non-null, the repo.
 		 * @param 		  	guid		 	Unique identifier.

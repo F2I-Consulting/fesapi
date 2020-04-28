@@ -40,11 +40,13 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT WellCompletion(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
 
 		/**
-		 * Constructor
+		 * @brief	Constructor
 		 *
-		 * @param [in,out]	witsmlWell	If non-null, the witsml well.
-		 * @param 		  	guid	  	Unique identifier.
-		 * @param 		  	title	  	The title.
+		 * @exception	std::invalid_argument	If <tt>witsmlWell == nullptr</tt>.
+		 *
+		 * @param [in]	witsmlWell	If non-null, the witsml well.
+		 * @param 	  	guid	  	Unique identifier.
+		 * @param 	  	title	  	The title.
 		 */
 		WellCompletion(class Well* witsmlWell,
 			const std::string & guid,

@@ -42,22 +42,23 @@ namespace RESQML2_2_NS
 		 * @exception	std::invalid_argument	If <tt>projectedEpsgCode == 0 || verticalEpsgCode ==
 		 * 										0</tt>.
 		 *
-		 * @param [in,]	repo			 	The repo where the underlying gsoap proxy is going to be
+		 * @param [in,out]	repo			 	The repo where the underlying gsoap proxy is going to be
 		 * 										created.
-		 * @param 	   	guid			 	The guid to set to the local 3d crs. If empty then a new guid
-		 * 									will be generated.
-		 * @param 	   	title			 	A title for the instance to create.
-		 * @param 	   	originOrdinal1   	The offset of the global 2d crs on its first axis.
-		 * @param 	   	originOrdinal2   	The offset of the global 2d crs on its second axis.
-		 * @param 	   	originOrdinal3   	The offset in depth of the local CRS regarding the depth
-		 * 									origin of the vertical CRS.
-		 * @param 	   	arealRotation	 	The areal rotation in radians regarding the projected crs.
-		 * @param 	   	projectedUom	 	The unit of measure of the projected axis of this instance.
-		 * @param 	   	projectedEpsgCode	The epsg code of the associated projected CRS.
-		 * @param 	   	verticalUom		 	The unit of measure of the vertical axis of this instance.
-		 * @param 	   	verticalEpsgCode 	The epsg code of the associated vertical CRS.
-		 * @param 	   	isUpOriented	 	If true, indicates that this depth CRS is actually an
-		 * 									elevation CRS.
+		 * @param 		  	guid			 	The guid to set to the local 3d crs. If empty then a new
+		 * 										guid will be generated.
+		 * @param 		  	title			 	A title for the instance to create.
+		 * @param 		  	originOrdinal1   	The offset of the global 2d crs on its first axis.
+		 * @param 		  	originOrdinal2   	The offset of the global 2d crs on its second axis.
+		 * @param 		  	originOrdinal3   	The offset in depth of the local CRS regarding the depth
+		 * 										origin of the vertical CRS.
+		 * @param 		  	arealRotation	 	The areal rotation in radians regarding the projected crs.
+		 * @param 		  	projectedUom	 	The unit of measure of the projected axis of this
+		 * 										instance.
+		 * @param 		  	projectedEpsgCode	The epsg code of the associated projected CRS.
+		 * @param 		  	verticalUom		 	The unit of measure of the vertical axis of this instance.
+		 * @param 		  	verticalEpsgCode 	The epsg code of the associated vertical CRS.
+		 * @param 		  	isUpOriented	 	If true, indicates that this depth CRS is actually an
+		 * 										elevation CRS.
 		 */
 		LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,

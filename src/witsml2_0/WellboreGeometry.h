@@ -41,12 +41,14 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT WellboreGeometry(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WellboreObject(partialObject) {}
 
 		/**
-		 * Constructor
+		 * @brief	Constructor
 		 *
-		 * @param [in,out]	witsmlWellbore	If non-null, the witsml wellbore.
-		 * @param 		  	guid		  	Unique identifier.
-		 * @param 		  	title		  	The title.
-		 * @param 		  	channelStatus 	The channel status.
+		 * @exception	std::invalid_argument	If <tt>witsmlWellbore == nullptr</tt>.
+		 *
+		 * @param [in]	witsmlWellbore	If non-null, the witsml wellbore.
+		 * @param 	  	guid		  	Unique identifier.
+		 * @param 	  	title		  	The title.
+		 * @param 	  	channelStatus 	The channel status.
 		 */
 		WellboreGeometry(class Wellbore* witsmlWellbore,
 			const std::string & guid,
