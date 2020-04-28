@@ -20,13 +20,12 @@ under the License.
 
 #include "AbstractSurfaceFrameworkRepresentation.h"
 
-/** . */
 namespace RESQML2_NS
 {
 	/**
-	 * A collection of contact, which are a list of contact patches and their identities. This
-	 * collection of contact is completed by a set of representations gathered at the representation
-	 * set representation level.
+	 * @brief	A collection of contact, which are a list of contact patches and their identities.
+	 * 			This collection of contact is completed by a set of representations gathered at the
+	 * 			representation set representation level.
 	 */
 	class SealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
 	{

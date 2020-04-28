@@ -20,7 +20,6 @@ under the License.
 
 #include "Wellbore.h"
 
-/** . */
 namespace WITSML2_0_NS
 {
 	/**

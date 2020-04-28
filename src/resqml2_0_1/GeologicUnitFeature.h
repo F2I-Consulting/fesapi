@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/RockVolumeFeature.h"
 
-/** . */
 namespace RESQML2_0_1_NS
 {
 	/** A geologic unit feature. */

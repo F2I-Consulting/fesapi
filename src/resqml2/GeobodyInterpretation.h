@@ -20,52 +20,48 @@ under the License.
 
 #include "AbstractFeatureInterpretation.h"
 
-/** . */
 namespace RESQML2_NS
 {
 	class RockVolumeFeature;
 
-	/** A geobody interpretation. */
+	/**
+	 * @brief	A type of rock feature, this class identifies if a rock feature is a geobody with any
+	 * 			qualifications on the interpretation of the geobody.
+	 */
 	class GeobodyInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~GeobodyInterpretation() {}
 
 		/**
-		 * Set the geobody 3d shape
+		 * Sets the geobody 3d shape.
 		 *
-		 * @param 	geobody3dShape	The geobody 3D shape.
+		 * @param 	geobody3dShape	The geobody 3d shape to push.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void set3dShape(gsoap_eml2_3::resqml22__Shape3d geobody3dShape) = 0;
 
 		/**
-		 * check if the 3d shape of this geobody is known
+		 * Checks if the 3d shape of this geobody is known.
 		 *
-		 * @returns	True if 3D shape, false if not.
+		 * @returns	True if the 3d shape is known, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool has3dShape() const = 0;
 
 		/**
-		 * get the 3d shape of this geobody
+		 * Gets the 3d shape of this geobody.
 		 *
-		 * @returns	The 3D shape.
+		 * @exception	std::invalid_argument	If the 3d shape of this geobody is unknown. Please use
+		 * 										has3dShape().
+		 *
+		 * @returns	The 3D shape of this geobody.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::resqml22__Shape3d get3dShape() const = 0;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:

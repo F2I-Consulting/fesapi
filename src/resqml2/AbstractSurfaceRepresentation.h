@@ -20,46 +20,73 @@ under the License.
 
 #include "AbstractRepresentation.h"
 
-/** . */
 namespace RESQML2_NS
 {
 	class PolylineRepresentation;
 
-	/** An abstract surface representation. */
+	/**
+	 * @brief	An abstract surface representation. It is the parent class of structural surface
+	 * 			representations, which can be bounded by an outer ring and has inner rings. These
+	 * 			surfaces may consist of one or more patches.
+	 */
 	class AbstractSurfaceRepresentation : public AbstractRepresentation
 	{
 	public:
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~AbstractSurfaceRepresentation() {}
 
-		/** Get the count of boundaries. */
+		/**
+		 * Gets the count of boundaries.
+		 *
+		 * @exception	std::logic_error	If the RESQML version is unknown.
+		 *
+		 * @returns	The boundaries count.
+		 */
 		unsigned int getBoundariesCount() const;
 
-		/** Get the DOR of an outer ring at a particular index. */
+		/**
+		 * Gets the DOR of an outer ring at a particular index.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getBoundariesCount().
+		 * @exception	std::logic_error 	If the RESQML version is unknown.
+		 *
+		 * @param 	index	Zero-based index of the outer ring we look for.
+		 *
+		 * @returns	The DOR of the outer ring at position @p index.
+		 */
 		COMMON_NS::DataObjectReference getOuterRingDor(unsigned int index) const;
 
 		/**
-		 * Push back an outer ring of this representation The index of the ring must correspond to the
-		 * index of the patch it delimits.
+		 * Pushes back an outer ring at the first available boundary index of this surface
+		 * representation. The index of the patch referenced by this ring will be the same index than
+		 * this ring boundary.
 		 *
-		 * @param [in,out]	outerRing	If non-null, the outer ring.
+		 * @exception	std::invalid_argument	If @p outerRing <tt>== nullptr</tt>.
+		 * @exception	std::logic_error	 	If the RESQML version is unknown.
+		 *
+		 * @param [in]	outerRing	A polyline representation of the outer ring to push back.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackOuterRing(PolylineRepresentation * outerRing);
 
 		/**
-		 * Set the surface role of the representation. map : Representation support for properties. pick
-		 * : Representation support for 3D points picked in 2D or 3D.
+		 * Sets the surface role of this representation.
 		 *
-		 * @param 	surfaceRole	The surface role.
+		 * @exception	std::logic_error	If the RESQML version is unknown.
+		 *
+		 * @param 	surfaceRole	The surface role to set. It can be "map" (representation support for
+		 * 						properties) or "pick" (representation support for 3d points picked in 2d
+		 * 						or 3d).
 		 */
 		DLL_IMPORT_OR_EXPORT void setSurfaceRole(gsoap_resqml2_0_1::resqml20__SurfaceRole surfaceRole);
 
 		/**
-		 * Get the surface role of this representation. map : Representation support for properties.
-		 * pick : Representation support for 3D points picked in 2D or 3D.
+		 * Gets the surface role of this representation.
 		 *
-		 * @returns	The surface role.
+		 * @exception	std::logic_error	If the RESQML version is unknown.
+		 *
+		 * @returns	The surface role of this representation. It can be "map" (representation support for
+		 * 			properties) or "pick" (representation support for 3d points picked in 2d or 3d).
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__SurfaceRole getSurfaceRole() const;
 

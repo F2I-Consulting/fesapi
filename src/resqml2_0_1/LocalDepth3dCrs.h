@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/LocalDepth3dCrs.h"
 
-/** . */
 namespace RESQML2_0_1_NS
 {
 	/** A local depth 3D crs. */
@@ -125,8 +124,10 @@ namespace RESQML2_0_1_NS
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
 
 		/**
-		 * Creates a local depth 3d CRS which is identified by an EPSG code for its projected part and
-		 * which is unkown for its vertical part.
+		 * @brief	Creates a local depth 3d CRS which is identified by an EPSG code for its projected
+		 * 			part and which is unkown for its vertical part.
+		 *
+		 * @exception	std::invalid_argument	If <tt>projectedEpsgCode == 0</tt>.
 		 *
 		 * @param [in,out]	repo				 	The repo where the underlying gsoap proxy is going to
 		 * 											be created.
@@ -156,29 +157,29 @@ namespace RESQML2_0_1_NS
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
 
 		/**
-		 * Creates a local depth 3d CRS which unkown for its projected part and which is identified by
-		 * an EPSG code for its vertical part.
+		 * @brief	Creates a local depth 3d CRS which unkown for its projected part and which is
+		 * 			identified by an EPSG code for its vertical part.
 		 *
-		 * @param [in,out]	repo				  	The repo where the underlying gsoap proxy is going to
+		 * @exception	std::invalid_argument	If <tt>verticalEpsgCode == 0</tt>.
+		 *
+		 * @param [in]	repo				  	The repo where the underlying gsoap proxy is going to
 		 * 											be created.
-		 * @param 		  	guid				  	The guid to set to the local 3d crs. If empty then a
-		 * 											new guid will be generated.
-		 * @param 		  	title				  	A title for the instance to create.
-		 * @param 		  	originOrdinal1		  	The offset of the global 2d crs on its first axis.
-		 * @param 		  	originOrdinal2		  	The offset of the global 2d crs on its second axis.
-		 * @param 		  	originOrdinal3		  	The offset in depth of the local CRS regarding the
-		 * 											depth origin of the vertical CRS.
-		 * @param 		  	arealRotation		  	The areal rotation in radians regarding the projected
-		 * 											crs.
-		 * @param 		  	projectedUom		  	The unit of measure of the projected axis of this
-		 * 											instance.
-		 * @param 		  	projectedUnknownReason	Indicates why the projected CRS cannot be provided
-		 * 											using EPSG or GML.
-		 * @param 		  	verticalUom			  	The unit of measure of the vertical axis of this
-		 * 											instance.
-		 * @param 		  	verticalEpsgCode	  	The epsg code of the associated vertical CRS.
-		 * @param 		  	isUpOriented		  	If true, indicates that this depth CRS is actually an
-		 * 											elevation CRS.
+		 * @param 	  	guid				  	The guid to set to the local 3d crs. If empty then a new
+		 * 										guid will be generated.
+		 * @param 	  	title				  	A title for the instance to create.
+		 * @param 	  	originOrdinal1		  	The offset of the global 2d crs on its first axis.
+		 * @param 	  	originOrdinal2		  	The offset of the global 2d crs on its second axis.
+		 * @param 	  	originOrdinal3		  	The offset in depth of the local CRS regarding the depth
+		 * 										origin of the vertical CRS.
+		 * @param 	  	arealRotation		  	The areal rotation in radians regarding the projected crs.
+		 * @param 	  	projectedUom		  	The unit of measure of the projected axis of this
+		 * 										instance.
+		 * @param 	  	projectedUnknownReason	Indicates why the projected CRS cannot be provided using
+		 * 										EPSG or GML.
+		 * @param 	  	verticalUom			  	The unit of measure of the vertical axis of this instance.
+		 * @param 	  	verticalEpsgCode	  	The epsg code of the associated vertical CRS.
+		 * @param 	  	isUpOriented		  	If true, indicates that this depth CRS is actually an
+		 * 										elevation CRS.
 		 */
 		LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,

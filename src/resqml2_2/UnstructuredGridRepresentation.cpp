@@ -155,7 +155,7 @@ void UnstructuredGridRepresentation::getCumulativeFaceCountPerCell(ULONG64 * cum
 {
 	_resqml22__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (grid->Geometry == nullptr)
-		throw invalid_argument("There is no geometry in this grid.");
+		throw logic_error("There is no geometry in this grid.");
 	if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 	{
 		auto dataset = static_cast<eml23__IntegerExternalArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->Values->ExternalFileProxy[0];
@@ -175,7 +175,7 @@ void UnstructuredGridRepresentation::getCumulativeFaceCountPerCell(ULONG64 * cum
 	else if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray)
 	{
 		if (getCellCount() > 1)
-			throw range_error("The cumulative length of faces count per cells cannot be constant if there is more than one cell in the grid");
+			throw range_error("The cumulative length of faces count per cell cannot be constant if there is more than one cell in the grid");
 		cumulativeFaceCountPerCell_[0] = static_cast<eml23__IntegerConstantArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->Value;
 	}
 }
@@ -208,7 +208,7 @@ unsigned int UnstructuredGridRepresentation::getConstantFaceCountOfCells() const
 {
 	_resqml22__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (!isFaceCountOfCellsConstant())
-		throw invalid_argument("The face count per cell is not constant.");
+		throw logic_error("The face count per cell is not constant.");
 
 	if (grid->Geometry->CellShape == resqml22__CellShape__hexahedral)
 	{
@@ -271,7 +271,7 @@ void UnstructuredGridRepresentation::getCumulativeNodeCountPerFace(ULONG64 * nod
 	}
 	else if (grid->Geometry->NodesPerFace->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray)
 	{
-		throw range_error("The *cumulative* length of nodes count per cells cannot be constant.");
+		throw range_error("The *cumulative* length of nodes count per face cannot be constant.");
 	}
 }
 

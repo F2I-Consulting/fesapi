@@ -21,7 +21,6 @@ under the License.
 
 #include "../resqml2/WellboreInterpretation.h"
 
-/** . */
 namespace RESQML2_2_NS
 {
 	/** Proxy class for a wellbore interpretation. */
@@ -51,7 +50,7 @@ namespace RESQML2_2_NS
 		 * @param 	  	isDrilled	   	Indicate if the wellbore is interpreted wether as drilled (true)
 		 * 								or not (false).
 		 */
-		WellboreInterpretation(RESQML2_NS::WellboreFeature* WellboreFeature, const std::string& guid, const std::string& title, bool isDrilled);
+		WellboreInterpretation(RESQML2_NS::WellboreFeature* wellboreFeature, const std::string& guid, const std::string& title, bool isDrilled);
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.

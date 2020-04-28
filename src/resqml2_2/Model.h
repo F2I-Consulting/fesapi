@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/Model.h"
 
-/** . */
 namespace RESQML2_2_NS
 {
 	/** An organization feature. */
@@ -38,13 +37,12 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT Model(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::Model(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	repo   	The repo which will contain this instance.
-		 * @param 		  	guid   	The guid to set to the horizon. If empty then a new guid will be
-		 * 							generated.
-		 * @param 		  	title  	A title for the instance to create.
-		 * @param 		  	orgType	The type of organization we want to create.
+		 * @param [in]	repo 	The repo which will contain this instance.
+		 * @param 	  	guid 	The guid to set to the horizon. If empty then a new guid will be
+		 * 						generated.
+		 * @param 	  	title	A title for the instance to create.
 		 */
 		Model(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
 

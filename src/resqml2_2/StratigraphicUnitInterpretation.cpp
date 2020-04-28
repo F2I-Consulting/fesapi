@@ -48,7 +48,7 @@ bool StratigraphicUnitInterpretation::hasDepositionMode() const
 gsoap_resqml2_0_1::resqml20__DepositionMode StratigraphicUnitInterpretation::getDepositionMode() const
 {
 	if (!hasDepositionMode())
-		throw invalid_argument("The stratigraphic unit interpretation has not any deposition mode.");
+		throw logic_error("The stratigraphic unit interpretation has not any deposition mode.");
 
 	return static_cast<gsoap_resqml2_0_1::resqml20__DepositionMode>(*static_cast<_resqml22__StratigraphicUnitInterpretation*>(gsoapProxy2_3)->DepositionMode);
 }

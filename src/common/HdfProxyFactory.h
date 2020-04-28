@@ -23,7 +23,7 @@ under the License.
 
 namespace COMMON_NS
 {
-	/** An HDF5 file proxy factory. */
+	/** @brief	An HDF5 file proxy factory. */
 	class HdfProxyFactory
 	{
 	public:
@@ -65,14 +65,19 @@ namespace COMMON_NS
 		}
 
 		/**
-		 * Creates an instance of HDF5 file proxy for serialization purpose.
+		 * @brief	Creates an instance of HDF5 file proxy for serialization purpose.
+		 *
+		 * @exception	std::invalid_argument	If <tt>repo == nullptr</tt>.
+		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
 		 *
 		 * @param [in]	repo				  	A non-null data object repository.
-		 * @param 	  	guid				  	A unique identifier for the HDF5 file proxy.
-		 * @param 	  	title				  	The title of the HDF5 file proxy.
+		 * @param 	  	guid				  	The guid to set to the HDF5 file proxy. If empty then a
+		 * 										new guid will be generated.
+		 * @param 	  	title				  	The title to set to the HDF5 file proxy. If empty then
+		 * 										\"unknown\" title will be set.
 		 * @param 	  	packageDirAbsolutePath	Path of the directory containing the EPC file.
-		 * @param 	  	externalFilePath	  	Path of the HDF5 file relative to the directory where
-		 * 										the EPC document is stored.
+		 * @param 	  	externalFilePath	  	Path of the HDF5 file relative to the directory where the
+		 * 										EPC document is stored.
 		 * @param 	  	hdfPermissionAccess   	(Optional) The HDF5 file permission access. It is read
 		 * 										only by default.
 		 *
@@ -81,6 +86,10 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT virtual EML2_NS::AbstractHdfProxy* make(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 			const std::string & packageDirAbsolutePath, const std::string & externalFilePath,
 			COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {
+			if (repo == nullptr) {
+				throw std::invalid_argument("The repository cannot be nullptr.");
+			}
+
 			switch (repo->getDefaultEmlVersion()) {
 			case COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0:
 				return new EML2_0_NS::HdfProxy(repo, guid, title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);

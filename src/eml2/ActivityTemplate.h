@@ -20,12 +20,11 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
-/** . */
 namespace EML2_NS
 {
 	class Activity;
 
-	/** Proxy class for an activity template. */
+	/** @brief	Description of one type of activity. */
 	class ActivityTemplate : public COMMON_NS::AbstractObject
 	{
 	protected:
@@ -241,12 +240,7 @@ namespace EML2_NS
 		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Gets the standard XML tag without XML namespace for serializing this data object
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	private:
 		/** Loads target relationships */

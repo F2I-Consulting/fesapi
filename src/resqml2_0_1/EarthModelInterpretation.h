@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/EarthModelInterpretation.h"
 
-/** . */
 namespace RESQML2_0_1_NS
 {
 	/** This class is a container for other organizations that are consistent to each others. */
@@ -38,12 +37,14 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT EarthModelInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::EarthModelInterpretation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	orgFeat	The feature the instance interprets.
-		 * @param 		  	guid   	The guid to set to the interpretation. If empty then a new guid will
-		 * 							be generated.
-		 * @param 		  	title  	A title for the instance to create.
+		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt>.
+		 *
+		 * @param [in]	orgFeat	The feature the instance interprets.
+		 * @param 	  	guid   	The guid to set to the interpretation. If empty then a new guid will be
+		 * 						generated.
+		 * @param 	  	title  	A title for the instance to create.
 		 */
 		EarthModelInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
@@ -97,21 +98,21 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiColumnDor() const final;
 
 		/**
-		 * Strati occurences
+		 * Strati occurrences
 		 *
-		 * @returns	The strati occurence count.
+		 * @returns	The strati occurrence count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getStratiOccurenceCount() const final;
+		DLL_IMPORT_OR_EXPORT unsigned int getStratiOccurrenceCount() const final;
 
 		/** A stratigraphic occurrence interpretation*. */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiOccurenceDor(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiOccurrenceDor(unsigned int index) const final;
 
 		/**
-		 * Pushes a back strati occurence
+		 * Pushes a back strati occurrence
 		 *
-		 * @param [in,out]	stratiOccurence	If non-null, the strati occurence.
+		 * @param [in,out]	stratiOccurrence	If non-null, the strati occurrence.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackStratiOccurence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurence) final;
+		DLL_IMPORT_OR_EXPORT void pushBackStratiOccurrence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrence) final;
 
 		/**
 		 * Rock Fluid

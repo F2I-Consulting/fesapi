@@ -22,7 +22,6 @@ under the License.
 
 #include "../MacroDefinitions.h"
 
-/** . */
 namespace WITSML2_0_NS
 {
 	/** An abstract object. */

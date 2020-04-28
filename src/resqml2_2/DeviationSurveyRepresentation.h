@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/DeviationSurveyRepresentation.h"
 
-/** . */
 namespace RESQML2_2_NS
 {
 	/** A deviation survey representation. */
@@ -36,15 +35,18 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT DeviationSurveyRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::DeviationSurveyRepresentation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	interp 	The WellboreFeature interpretation the instance represents.
-		 * @param 		  	guid   	The guid to set to the new instance. If empty then a new guid will be
-		 * 							generated.
-		 * @param 		  	title  	A title for the instance to create.
-		 * @param 		  	isFinal	Used to indicate that this is a final version of the deviation survey,
-		 * 							as distinct from the interim interpretations.
-		 * @param [in,out]	mdInfo 	The MD information of the survey, mainly the well reference point.
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt> or <tt>mdInfo ==
+		 * 										nullptr</tt>.
+		 *
+		 * @param [in]	interp 	The WellboreFeature interpretation the instance represents.
+		 * @param 	  	guid   	The guid to set to the new instance. If empty then a new guid will be
+		 * 						generated.
+		 * @param 	  	title  	A title for the instance to create.
+		 * @param 	  	isFinal	Used to indicate that this is a final version of the deviation survey, as
+		 * 						distinct from the interim interpretations.
+		 * @param [in]	mdInfo 	The MD information of the survey, mainly the well reference point.
 		 */
 		DeviationSurveyRepresentation(class RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum * mdInfo);
 

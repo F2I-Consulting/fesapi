@@ -35,7 +35,7 @@ const char* UnstructuredGridRepresentation::XML_TAG = "UnstructuredGridRepresent
 ULONG64 UnstructuredGridRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
-		throw range_error("The index of the patch is not in the allowed range of patch.");
+		throw out_of_range("The index of the patch is not in the allowed range of patch.");
 	}
 
 	return getNodeCount();

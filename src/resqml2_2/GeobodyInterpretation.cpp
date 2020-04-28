@@ -47,7 +47,7 @@ void GeobodyInterpretation::set3dShape(gsoap_eml2_3::resqml22__Shape3d geobody3d
 		interp->GeologicUnit3dShape = soap_new_std__string(gsoapProxy2_3->soap);
 	}
 
-	*interp->GeologicUnit3dShape = geobody3dShape;
+	*interp->GeologicUnit3dShape = gsoap_eml2_3::soap_resqml22__Shape3d2s(gsoapProxy2_3->soap, geobody3dShape);
 }
 
 bool GeobodyInterpretation::has3dShape() const

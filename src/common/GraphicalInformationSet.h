@@ -22,7 +22,7 @@ under the License.
 
 namespace COMMON_NS
 {
-	/** Proxy class for handling the graphical information of data objects. */
+	/** @brief	Proxy class for handling the graphical information of data objects. */
 	class GraphicalInformationSet : public AbstractObject
 	{
 	private:

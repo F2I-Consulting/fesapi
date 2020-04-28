@@ -22,7 +22,6 @@ under the License.
 #include <utility>
 #include <stdexcept>
 
-/** . */
 namespace statistics
 {
 	/**

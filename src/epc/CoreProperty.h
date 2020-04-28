@@ -22,7 +22,6 @@ under the License.
 #include <vector>
 #include <string>
 
-/** . */
 namespace epc
 {
 	/** A core property. */

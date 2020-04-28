@@ -10,8 +10,8 @@ set (FESAPI_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 # version mechanism
 set (Fesapi_VERSION_MAJOR 1)
-set (Fesapi_VERSION_MINOR 1)
-set (Fesapi_VERSION_PATCH 1)
+set (Fesapi_VERSION_MINOR 2)
+set (Fesapi_VERSION_PATCH 0)
 set (Fesapi_VERSION_TWEAK 0)
 
 set (Fesapi_VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}.${Fesapi_VERSION_PATCH}.${Fesapi_VERSION_TWEAK})
@@ -134,7 +134,7 @@ else (BUILD_SHARED_LIBS)
 	set (LIB_TYPE STATIC)
 endif (BUILD_SHARED_LIBS)
 
-set (WITH_EXPERIMENTAL OFF CACHE BOOL "Compile some experimental functionalities.")
+set (WITH_RESQML2_2 OFF CACHE BOOL "Compile RESQML2.2 experimental support. Don't use it in production.")
 
 # ============================================================================
 # including subdirectories

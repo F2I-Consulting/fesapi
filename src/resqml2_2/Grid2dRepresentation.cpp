@@ -36,6 +36,10 @@ using namespace gsoap_eml2_3;
 Grid2dRepresentation::Grid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const string & guid, const std::string & title)
 {
+	if (interp == nullptr) {
+		throw invalid_argument("The interpretation cannot be null.");
+	}
+
 	gsoapProxy2_3 = soap_new_resqml22__Grid2dRepresentation(interp->getGsoapContext());
 	_resqml22__Grid2dRepresentation* singleGrid2dRep = static_cast<_resqml22__Grid2dRepresentation*>(gsoapProxy2_3);
 
@@ -56,7 +60,7 @@ resqml22__PointGeometry* Grid2dRepresentation::getPointGeometry2_2(unsigned int)
 
 COMMON_NS::DataObjectReference Grid2dRepresentation::getHdfProxyDor() const
 {
-	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
+	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_2(0));
 }
 
 ULONG64 Grid2dRepresentation::getNodeCountAlongIAxis() const
@@ -81,7 +85,7 @@ void Grid2dRepresentation::getZValues(double* values) const
 			hdfProxy->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, values);
 		}
 		else {
-			throw std::logic_error("The Z values can only be retrieved if they are described as a DoubleHdf5Array.");
+			throw std::logic_error("The Z values can only be retrieved if they are described as a FloatingPointExternalArray.");
 		}
 	}
 	else if (rep->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dLatticeArray) {
@@ -228,7 +232,7 @@ double Grid2dRepresentation::getXJOffset() const
 		return getSupportingRepresentation()->getXJOffset() * getIndexOffsetOnSupportingRepresentation(0);
 	}
 
-	throw invalid_argument("No lattice array have been found for this 2d grid.");
+	throw logic_error("No lattice array have been found for this 2d grid.");
 }
 
 double Grid2dRepresentation::getYJOffset() const
@@ -247,7 +251,7 @@ double Grid2dRepresentation::getYJOffset() const
 		return getSupportingRepresentation()->getYJOffset() * getIndexOffsetOnSupportingRepresentation(0);
 	}
 
-	throw invalid_argument("No lattice array have been found for this 2d grid.");
+	throw logic_error("No lattice array have been found for this 2d grid.");
 }
 
 double Grid2dRepresentation::getZJOffset() const
@@ -266,7 +270,7 @@ double Grid2dRepresentation::getZJOffset() const
 		return getSupportingRepresentation()->getZJOffset() * getIndexOffsetOnSupportingRepresentation(0);
 	}
 
-	throw invalid_argument("No lattice array have been found for this 2d grid.");
+	throw logic_error("No lattice array have been found for this 2d grid.");
 }
 
 double Grid2dRepresentation::getXIOffset() const
@@ -285,7 +289,7 @@ double Grid2dRepresentation::getXIOffset() const
 		return getSupportingRepresentation()->getXIOffset() * getIndexOffsetOnSupportingRepresentation(1);
 	}
 
-	throw invalid_argument("No lattice array have been found for this 2d grid.");
+	throw logic_error("No lattice array have been found for this 2d grid.");
 }
 
 double Grid2dRepresentation::getYIOffset() const
@@ -304,7 +308,7 @@ double Grid2dRepresentation::getYIOffset() const
 		return getSupportingRepresentation()->getYIOffset() * getIndexOffsetOnSupportingRepresentation(1);
 	}
 
-	throw invalid_argument("No lattice array have been found for this 2d grid.");
+	throw logic_error("No lattice array have been found for this 2d grid.");
 }
 
 double Grid2dRepresentation::getZIOffset() const
@@ -323,7 +327,7 @@ double Grid2dRepresentation::getZIOffset() const
 		return getSupportingRepresentation()->getYIOffset() * getIndexOffsetOnSupportingRepresentation(1);
 	}
 
-	throw invalid_argument("No lattice array have been found for this 2d grid.");
+	throw logic_error("No lattice array have been found for this 2d grid.");
 }
 
 bool Grid2dRepresentation::isJSpacingConstant() const
@@ -335,7 +339,7 @@ bool Grid2dRepresentation::isJSpacingConstant() const
 			return arrayLatticeOfPoints3d->Dimension[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray;
 		}
 
-		throw invalid_argument("This 2d grid representation does not look to have dimensions.");
+		throw logic_error("This 2d grid representation does not look to have dimensions.");
 	}
 	else if (!getSupportingRepresentationDor().isEmpty()) {
 		return getSupportingRepresentation()->isJSpacingConstant();
@@ -365,7 +369,7 @@ bool Grid2dRepresentation::isISpacingConstant() const
 double Grid2dRepresentation::getJSpacing() const
 {
 	if (!isJSpacingConstant()) {
-		throw invalid_argument("The J spacing of this 2d grid does not look to be constant.");
+		throw logic_error("The J spacing of this 2d grid does not look to be constant.");
 	}
 
 	const resqml22__Point3dLatticeArray* const arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
@@ -397,7 +401,7 @@ void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 			eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__FloatingPointExternalArray*>(arrayLatticeOfPoints3d->Dimension[0]->Spacing)->Values->ExternalFileProxy[0];
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dsPart);
 			if (hdfProxy == nullptr) {
-				throw invalid_argument("The HDF proxy is missing.");
+				throw logic_error("The HDF proxy is missing.");
 			}
 			hdfProxy->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, jSpacings);
 		}
@@ -425,7 +429,7 @@ void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 				}
 			}
 			else {
-				throw invalid_argument("The index offset on supporting representation cannot be 0.");
+				throw logic_error("The index offset on supporting representation cannot be 0.");
 			}
 		}
 	}
@@ -602,7 +606,7 @@ int Grid2dRepresentation::getIndexOriginOnSupportingRepresentation() const
 		return geom->NodeIndicesOnSupportingRepresentation->StartValue;
 	}
 
-	throw invalid_argument("It does not exist supporting representation for this representation.");
+	throw logic_error("It does not exist supporting representation for this representation.");
 }
 
 int Grid2dRepresentation::getIndexOriginOnSupportingRepresentation(unsigned int dimension) const
@@ -618,7 +622,7 @@ int Grid2dRepresentation::getIndexOriginOnSupportingRepresentation(unsigned int 
 		throw invalid_argument("There cannot be more than 2 dimensions for a grid 2d representation.");
 	}
 
-	throw invalid_argument("It does not exist supporting representation for this representation.");
+	throw logic_error("It does not exist supporting representation for this representation.");
 }
 
 int Grid2dRepresentation::getNodeCountOnSupportingRepresentation(unsigned int dimension) const
@@ -626,7 +630,13 @@ int Grid2dRepresentation::getNodeCountOnSupportingRepresentation(unsigned int di
 	resqml22__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml22__Grid2dRepresentation*>(gsoapProxy2_3)->Geometry);
 
 	if (geom != nullptr) {
-		return geom->NodeIndicesOnSupportingRepresentation->Offset[dimension]->Count + 1;
+		if (dimension < geom->NodeIndicesOnSupportingRepresentation->Offset.size()) {
+			return geom->NodeIndicesOnSupportingRepresentation->Offset[dimension]->Count + 1;
+		}
+		else {
+			throw out_of_range("dimension is out of range.");
+		}
+
 	}
 	
 	throw invalid_argument("It does not exist supporting representation for this representation.");
@@ -637,7 +647,12 @@ int Grid2dRepresentation::getIndexOffsetOnSupportingRepresentation(unsigned int 
 	resqml22__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml22__Grid2dRepresentation*>(gsoapProxy2_3)->Geometry);
 
 	if (geom != nullptr) {
-		return geom->NodeIndicesOnSupportingRepresentation->Offset[dimension]->Value;
+		if (dimension < geom->NodeIndicesOnSupportingRepresentation->Offset.size()) {
+			return geom->NodeIndicesOnSupportingRepresentation->Offset[dimension]->Value;
+		}
+		else {
+			throw out_of_range("dimension is out of range.");
+		}
 	}
 
 	throw invalid_argument("It does not exist supporting representation for this representation.");

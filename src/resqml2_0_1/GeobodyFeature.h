@@ -20,7 +20,6 @@ under the License.
 
 #include "GeologicUnitFeature.h"
 
-/** . */
 namespace RESQML2_0_1_NS
 {
 	/** A geobody feature. */

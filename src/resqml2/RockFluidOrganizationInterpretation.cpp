@@ -50,7 +50,7 @@ AbstractGridRepresentation * RockFluidOrganizationInterpretation::getGridReprese
 	const std::vector<AbstractGridRepresentation *>& gridRepresentationSet = getGridRepresentationSet();
 
 	if (index >= gridRepresentationSet.size()) {
-		throw range_error("The index of the grid representation to get is out of range.");
+		throw out_of_range("The index of the grid representation to get is out of range.");
 	}
 
 	return gridRepresentationSet[index];

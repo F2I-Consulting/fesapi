@@ -37,9 +37,7 @@ under the License.
 
 namespace COMMON_NS
 {
-	/**
-	* This class wraps an Energistics Data Object Reference whatever its version is.
-	*/
+	/** @brief	This class wraps an Energistics Data Object Reference whatever its version is. */
 	class DataObjectReference
 	{
 	public:
@@ -186,7 +184,14 @@ namespace COMMON_NS
 		gsoap_eml2_3::eml23__DataObjectReference* dor23;
 	};
 
-	// Title is not part of the real identifier of a dataobject. This is just a hint.
+	/**
+	 * @brief	Title is not part of the real identifier of a dataobject. This is just a hint.
+	 *
+	 * @param 	ldor	The first instance to compare.
+	 * @param 	rdor	The second instance to compare.
+	 *
+	 * @returns	True if the parameters are considered equivalent.
+	 */
 	inline bool operator==(const DataObjectReference& ldor, const DataObjectReference& rdor)
 	{
 		return ldor.getUuid() == rdor.getUuid() &&

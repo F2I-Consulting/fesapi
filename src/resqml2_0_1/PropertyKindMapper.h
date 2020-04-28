@@ -22,7 +22,6 @@ under the License.
 
 #include "../common/DataObjectRepository.h"
 
-/** . */
 namespace RESQML2_0_1_NS
 {
 	/** A property kind mapper. */
@@ -52,21 +51,20 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT std::string loadMappingFilesFromDirectory(const std::string & directory);
 
 		/**
-		 * Get the name of a resqml standard property kind into a particular application.
+		 * @brief	Get the name of a resqml standard property kind into a particular application.
 		 *
-		 * @param 	resqmlStandardPropertyKindName	The enumerated resqml standard property kind name
-		 * 											@apram	application						The name of the application.
-		 * @param 	application					  	The application.
+		 * @param 	resqmlStandardPropertyKindName	The enumerated resqml standard property kind name.
+		 * @param 	application					  	The name of the application.
 		 *
 		 * @returns	The property kind name in the particular application. Or an empty string if not found.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind resqmlStandardPropertyKindName, const std::string & application) const;
 
 		/**
-		 * @apram	application						The name of the application
+		 * @brief	Gets resqml standard property kind name from application property kind name
 		 *
 		 * @param 	applicationPropertyKindName	Name of the application property kind.
-		 * @param 	application				   	The application.
+		 * @param 	application				   	The name of the application.
 		 *
 		 * @returns	The abstract Resqml root property name if no resqml standard property name have been
 		 * 			found for this particular application property kind name.
@@ -74,10 +72,10 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getResqmlStandardPropertyKindNameFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application) const;
 
 		/**
-		 * @apram	application						The name of the application
+		 * @brief	Gets application property kind name from resqml local property kind uuid
 		 *
 		 * @param 	resqmlLocalPropertyKindUuid	The resqml local property kind uuid.
-		 * @param 	application				   	The application.
+		 * @param 	application				   	The name of the application.
 		 *
 		 * @returns	empty string if not found.
 		 */

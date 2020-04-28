@@ -2870,7 +2870,7 @@ namespace RESQML2_0_1_NS
 		unsigned int getWellboreMarkerCount();
 		std::vector<WellboreMarker *> getWellboreMarkerSet() const;
 
-		void setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, unsigned int nullValue, class StratigraphicOccurrenceInterpretation* stratiOccurenceInterp, COMMON_NS::AbstractHdfProxy* proxy);
+		void setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, unsigned int nullValue, class StratigraphicOccurrenceInterpretation* stratiOccurrenceInterp, COMMON_NS::AbstractHdfProxy* proxy);
 		StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation();
 	};
 	

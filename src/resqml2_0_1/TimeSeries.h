@@ -20,7 +20,6 @@ under the License.
 
 #include "../eml2/TimeSeries.h"
 
-/** . */
 namespace RESQML2_0_1_NS
 {
 	/** A time series. */

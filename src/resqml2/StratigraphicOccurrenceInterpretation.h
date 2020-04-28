@@ -20,15 +20,12 @@ under the License.
 
 #include "../resqml2/AbstractStratigraphicOrganizationInterpretation.h"
 
-/** . */
 namespace RESQML2_NS
 {
 	class StratigraphicColumnRankInterpretation;
 	class WellboreMarkerFrameRepresentation;
 
-	/**
-	* This class is a container for stratigraphic organizations described along a wellbore.
-	*/
+	/** @brief	This class is a container for stratigraphic organizations described along a wellbore. */
 	class StratigraphicOccurrenceInterpretation : public RESQML2_NS::AbstractStratigraphicOrganizationInterpretation
 	{
 	public:

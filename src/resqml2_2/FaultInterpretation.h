@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/FaultInterpretation.h"
 
-/** . */
 namespace RESQML2_2_NS
 {
 	/** A fault interpretation. */
@@ -38,12 +37,14 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT FaultInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::FaultInterpretation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	fault	The feature the instance interprets.
-		 * @param 		  	guid 	The guid to set to the new instance. If empty then a new guid will be
-		 * 							generated.
-		 * @param 		  	title	A title for the instance to create.
+		 * @exception	std::invalid_argument	If <tt>fault == nullptr</tt>.
+		 *
+		 * @param [in]	fault	The feature the instance interprets.
+		 * @param 	  	guid 	The guid to set to the new instance. If empty then a new guid will be
+		 * 						generated.
+		 * @param 	  	title	A title for the instance to create.
 		 */
 		FaultInterpretation(RESQML2_NS::BoundaryFeature * fault, const std::string & guid, const std::string & title);
 

@@ -20,15 +20,15 @@ under the License.
 
 #include "AbstractTechnicalFeature.h"
 
-/** . */
 namespace RESQML2_NS
 {
 	class SeismicLineSetFeature;
 
 	/**
-	 * Proxy class for an abstract seismic line feature. Defined by one lateral dimension: trace
-	 * (lateral). Seismic trace of the 3D seismic survey. To specify its location, the seismic
-	 * feature can be associated with the seismic coordinates of the points of a representation.
+	 * @brief	Proxy class for an abstract seismic line feature. Defined by one lateral dimension:
+	 * 			trace (lateral). Seismic trace of the 3D seismic survey. To specify its location, the
+	 * 			seismic feature can be associated with the seismic coordinates of the points of a
+	 * 			representation.
 	 */
 	class AbstractSeismicLineFeature : public AbstractTechnicalFeature
 	{

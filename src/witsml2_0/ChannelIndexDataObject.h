@@ -22,7 +22,6 @@ under the License.
 
 #include <limits>
 
-/** . */
 namespace WITSML2_0_NS
 {
 	/**

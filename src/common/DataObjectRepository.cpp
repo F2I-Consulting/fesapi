@@ -24,7 +24,9 @@ under the License.
 
 #include "../common/HdfProxyFactory.h"
 
+#if WITH_EXPERIMENTAL
 #include "GraphicalInformationSet.h"
+#endif
 
 #include "../resqml2_0_1/PropertyKindMapper.h"
 
@@ -210,6 +212,11 @@ namespace {
 	{\
 		return dor.getVersion().empty() ? createPartial<className>(dor.getUuid(), dor.getTitle()) : createPartial<className>(dor.getUuid(), dor.getTitle(), dor.getVersion());\
 	}
+#define CREATE_EML_2_3_FESAPI_PARTIAL_WRAPPER(className)\
+	(contentType.compare(className::XML_TAG) == 0)\
+	{\
+		return dor->ObjectVersion == nullptr ? createPartial<className>(dor->Uuid, dor->Title) : createPartial<className>(dor->Uuid, dor->Title, *dor->ObjectVersion);\
+	}
 
 /////////////////////
 /////// RESQML //////
@@ -333,6 +340,15 @@ DataObjectRepository::~DataObjectRepository()
 {
 	clear();
 
+	if (propertyKindMapper != nullptr) {
+		delete propertyKindMapper;
+		propertyKindMapper = nullptr;
+	}
+
+	// An HDF proxy factory must always exist.
+	// It is created at construction time
+	delete hdfProxyFactory;
+
 	soap_destroy(gsoapContext); // remove deserialized C++ objects
 	soap_end(gsoapContext); // remove deserialized data
 	soap_done(gsoapContext); // finalize last use of the context
@@ -341,11 +357,6 @@ DataObjectRepository::~DataObjectRepository()
 
 void DataObjectRepository::clear()
 {
-	if (propertyKindMapper != nullptr) {
-		delete propertyKindMapper;
-		propertyKindMapper = nullptr;
-	}
-
 	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
 		for (size_t i = 0; i < it->second.size(); ++i) {
 			delete it->second[i];
@@ -356,8 +367,6 @@ void DataObjectRepository::clear()
 	backwardRels.clear();
 
 	warnings.clear();
-
-	delete hdfProxyFactory;
 }
 
 void DataObjectRepository::addRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target)
@@ -497,7 +506,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_ActivityTemplate" &&
 			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_StreamlinesFeature" &&
 			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_StreamlinesRepresentation") {
-			addWarning("Content type \"" + contentType + "\" does not belong to 2.0.1. Probably to 2.0? Please fix your ccontent type or ask exporter to fix it.");
+			addWarning("Content type \"" + contentType + "\" does not belong to 2.0.1. Probably to 2.0? Please fix your content type or ask exporter to fix it.");
 		}
 		wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
 	}
@@ -687,6 +696,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectR
 
 	throw invalid_argument("The content type " + contentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
 }
+
 //************************************
 //************ HDF *******************
 //************************************
@@ -2125,6 +2135,7 @@ PRODML2_1_NS::FluidCharacterization* DataObjectRepository::createFluidCharacteri
 	return new PRODML2_1_NS::FluidCharacterization(this, guid, title);
 }
 
+
 COMMON_NS::GraphicalInformationSet* DataObjectRepository::createGraphicalInformationSet(const std::string & guid, const std::string & title)
 {
 	return new COMMON_NS::GraphicalInformationSet(this, guid, title);
@@ -2939,6 +2950,9 @@ std::string DataObjectRepository::getGsoapErrorMessage() const
 }
 
 void DataObjectRepository::setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory) {
+	if (factory == nullptr) {
+		throw invalid_argument("You cannot set a NULL HDF proxy factory.");
+	}
 	delete hdfProxyFactory;
 	hdfProxyFactory = factory;
 }

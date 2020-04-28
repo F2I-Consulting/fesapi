@@ -20,7 +20,6 @@ under the License.
 
 #include "../eml2/HdfProxy.h"
 
-/** . */
 namespace EML2_0_NS
 {
 	/** A hdf proxy. */

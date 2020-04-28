@@ -20,10 +20,9 @@ under the License.
 
 #include "AbstractRepresentation.h"
 
-/** . */
 namespace RESQML2_NS
 {
-	/** Proxy class for an abstract grid representation. */
+	/** @brief	Proxy class for an abstract grid representation. */
 	class AbstractGridRepresentation : public AbstractRepresentation
 	{
 	private:
@@ -87,6 +86,7 @@ namespace RESQML2_NS
 		 * Gets the count of (volumetric) cells in the grid.
 		 *
 		 * @exception	std::range_error	If the cell count is strictly greater than unsigned int max.
+		 * @exception	std::logic_error	If this grid is partial.
 		 *
 		 * @returns	The cell count.
 		 */
@@ -122,7 +122,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The grid connection set representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT class GridConnectionSetRepresentation * getGridConnectionSetRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT class GridConnectionSetRepresentation * getGridConnectionSetRepresentation(unsigned int index) const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 
 		//************************************************************
@@ -172,8 +172,7 @@ namespace RESQML2_NS
 		/**
 		 * Gets a particular child grid of this grid.
 		 *
-		 * @exception	std::out_of_range	If @p index is out of range (greater than {@link
-		 * 									getChildGridCount()}).
+		 * @exception	std::out_of_range	If <tt>index >=</tt> getChildGridCount().
 		 *
 		 * @param 	index	Zero-based index of the the child grid we look for.
 		 *
@@ -333,8 +332,9 @@ namespace RESQML2_NS
 			class AbstractIjkGridRepresentation* parentGrid, EML2_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 
 		/**
-		 * Indicates that this grid takes place into another IJK parent grid. This method assumes that
-		 * the count of cells per regrid interval is constant in both child and parent grids.
+		 * @brief	Indicates that this grid takes place into another IJK parent grid. This method
+		 * 			assumes that the count of cells per regrid interval is constant in both child and
+		 * 			parent grids.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p constantChildCellCountPerIInterval is 0 or @p
@@ -407,8 +407,8 @@ namespace RESQML2_NS
 		 * 														The count of double values must be equal
 		 * 														to the count of all child cells on J
 		 * 														dimension
-		 * 														(<tt>constantChildCellCountPerJInterval
-		 * 														* jIntervalCount</tt>).
+		 * 														(<tt>constantChildCellCountPerJInterval</tt>
+		 * 														<tt>* jIntervalCount</tt>).
 		 * @param [in]	  	kChildCellWeights				   	(Optional) The weights that are
 		 * 														proportional to the relative K sizes of
 		 * 														child cells within each K interval. This
@@ -418,8 +418,8 @@ namespace RESQML2_NS
 		 * 														The count of double values must be equal
 		 * 														to the count of all child cells on K
 		 * 														dimension
-		 * 														(<tt>constantChildCellCountPerKInterval
-		 * 														* kIntervalCount</tt>).
+		 * 														(<tt>constantChildCellCountPerKInterval</tt>
+		 * 														<tt>* kIntervalCount</tt>).
 		 */
 		DLL_IMPORT_OR_EXPORT void setParentWindow(
 			unsigned int iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, unsigned int iIntervalCount,
@@ -441,19 +441,19 @@ namespace RESQML2_NS
 		 * 										in the repository.
 		 *
 		 * @param 		  	iCellIndexRegridStart	I index of the first parent grid cell to
-		 * 														be regridded.
+		 * 											be regridded.
 		 * @param 		  	iChildCellCount		 	The count of cells for the unique I interval in this
 		 * 											(child) grid.
 		 * @param 		  	iParentCellCount	 	The count of cells for the unique I interval in the
 		 * 											parent grid.
 		 * @param 		  	jCellIndexRegridStart	J index of the first parent grid cell to
-		 * 														be regridded.
+		 * 											be regridded.
 		 * @param 		  	jChildCellCount		 	The count of cells for the unique J interval in this
 		 * 											(child) grid.
 		 * @param 		  	jParentCellCount	 	The count of cells for the unique J interval in the
 		 * 											parent grid.
 		 * @param 		  	kCellIndexRegridStart	K index of the first parent grid cell to
-		 * 														be regridded.
+		 * 											be regridded.
 		 * @param 		  	kChildCellCount		 	The count of cells for the unique K interval in this
 		 * 											(child) grid.
 		 * @param 		  	kParentCellCount	 	The count of cells for the unique K interval in the
@@ -497,7 +497,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If no parent window is already defined of if the defined
 		 * 										parent window is neither an IJK nor a column layer parent
 		 * 										window.
-		 * @exception	std::invalid_argument	If @p cellIndices is nullptr or @cellIndexCount is 0.
+		 * @exception	std::invalid_argument	If @p cellIndices is nullptr or @p cellIndexCount is 0.
 		 * @exception	std::invalid_argument	If an HDF proxy is required and no default HDF proxy is
 		 * 										defined in the repository.
 		 *
@@ -516,7 +516,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If no parent window is already defined.
 		 * @exception	std::invalid_argument	If @p parentChildCellPairCount is 0 or
-		 * 										@parentChildCellPair is nullptr.
+		 * 										@p parentChildCellPair is nullptr.
 		 * @exception	std::invalid_argument	If no default HDF proxy is defined in the repository.
 		 *
 		 * @param 	  	parentChildCellPairCount	Number of (parent cell, child cell) pairs that

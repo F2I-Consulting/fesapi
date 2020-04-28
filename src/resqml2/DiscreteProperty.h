@@ -22,13 +22,13 @@ under the License.
 
 #include <limits>
 
-/** . */
 namespace RESQML2_NS
 {
 	/**
-	 * Proxy class for a discrete  property. Such property contains discrete integer values;
-	 * typically used to store any type of index. So that the value range can be known before
-	 * accessing all values, it also optionally stores the minimum and maximum value in the range.
+	 * @brief	Proxy class for a discrete  property. Such property contains discrete integer values;
+	 * 			typically used to store any type of index. So that the value range can be known
+	 * 			before accessing all values, it also optionally stores the minimum and maximum value
+	 * 			in the range.
 	 */
 	class DiscreteProperty : public RESQML2_NS::AbstractDiscreteOrCategoricalProperty
 	{
@@ -41,7 +41,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT DiscreteProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractDiscreteOrCategoricalProperty(partialObject) {}
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~DiscreteProperty() {}
 
 		/**
@@ -275,28 +275,28 @@ namespace RESQML2_NS
 		/**
 		 * Adds an nd array of explicit integer values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5ArrayOfValues(const LONG64 *, unsigned long long *, unsigned int, EML2_NS::AbstractHdfProxy*, LONG64, LONG64, LONG64)
+		 * @copydetails pushBackLongHdf5ArrayOfValues(const LONG64 *,unsigned long long *,unsigned int,eml2::AbstractHdfProxy*,LONG64,LONG64,LONG64)
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
 		
 		/**
 		 * Adds an nd array of explicit short values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5ArrayOfValues(const LONG64 *, unsigned long long *, unsigned int, EML2_NS::AbstractHdfProxy*, LONG64, LONG64, LONG64)
+		 * @copydetails pushBackLongHdf5ArrayOfValues(const LONG64 *,unsigned long long *,unsigned int,eml2::AbstractHdfProxy*,LONG64,LONG64,LONG64)
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
 		
 		/**
 		 * Adds an nd array of explicit unsigned short values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5ArrayOfValues(const LONG64 *, unsigned long long *, unsigned int, EML2_NS::AbstractHdfProxy*, LONG64, LONG64, LONG64)
+		 * @copydetails pushBackLongHdf5ArrayOfValues(const LONG64 *,unsigned long long *,unsigned int,eml2::AbstractHdfProxy*,LONG64,LONG64,LONG64)
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
 		
 		/**
 		 * Adds an nd array of explicit char values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5ArrayOfValues(const LONG64 *, unsigned long long *, unsigned int, EML2_NS::AbstractHdfProxy*, LONG64, LONG64, LONG64)
+		 * @copydetails pushBackLongHdf5ArrayOfValues(const LONG64 *,unsigned long long *,unsigned int,eml2::AbstractHdfProxy*,LONG64,LONG64,LONG64)
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue, char minimumValue, char maximumValue);
 

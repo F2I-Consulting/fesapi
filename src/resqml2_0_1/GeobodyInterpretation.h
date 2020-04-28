@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/GeobodyInterpretation.h"
 
-/** . */
 namespace RESQML2_0_1_NS
 {
 	/** A geobody interpretation. */
@@ -38,12 +37,15 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT GeobodyInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::GeobodyInterpretation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	feature	The feature the instance interprets.
-		 * @param 		  	guid   	The guid to set to the interpretation. If empty then a new guid will
-		 * 							be generated.
-		 * @param 		  	title  	A title for the instance to create.
+		 * @exception	std::invalid_argument	If <tt>feature == nullptr</tt> or if @p feature is not a
+		 * 										geobody feature.
+		 *
+		 * @param [in]	feature	The feature the instance interprets.
+		 * @param 	  	guid   	The guid to set to the interpretation. If empty then a new guid will be
+		 * 						generated.
+		 * @param 	  	title  	A title for the instance to create.
 		 */
 		GeobodyInterpretation(RESQML2_NS::RockVolumeFeature * feature, const std::string & guid, const std::string & title);
 
@@ -63,6 +65,12 @@ namespace RESQML2_0_1_NS
 		 * @param 	geobody3dShape	The geobody 3D shape.
 		 */
 		DLL_IMPORT_OR_EXPORT void set3dShape(gsoap_eml2_3::resqml22__Shape3d geobody3dShape) final;
+
+		/**
+		 * @brief	Sets 3D shape 201
+		 *
+		 * @param 	geobody3dShape	The geobody 3D shape.
+		 */
 		DLL_IMPORT_OR_EXPORT void set3dShape201(gsoap_resqml2_0_1::resqml20__Geobody3dShape geobody3dShape);
 
 		/**
@@ -78,6 +86,12 @@ namespace RESQML2_0_1_NS
 		 * @returns	The 3D shape.
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__Shape3d get3dShape() const final;
+
+		/**
+		 * @brief	Gets 3D shape 201
+		 *
+		 * @returns	The 3D shape 201.
+		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__Geobody3dShape get3dShape201() const;
 	};
 }

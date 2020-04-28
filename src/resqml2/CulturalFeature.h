@@ -20,10 +20,13 @@ under the License.
 
 #include "../resqml2/AbstractTechnicalFeature.h"
 
-/** . */
 namespace RESQML2_NS
 {
-	/** A cultural feature. */
+	/**
+	 * @brief	A cultural feature. It identifies a frontier or boundary in the earth model that is
+	 * 			not a geological feature but an arbitrary geographic/geometric surface used to
+	 * 			delineate the boundary of the model.
+	 */
 	class CulturalFeature : public RESQML2_NS::AbstractTechnicalFeature
 	{
 	public:

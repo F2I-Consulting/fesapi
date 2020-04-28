@@ -27,7 +27,6 @@ under the License.
 #include <cstdint>
 #include <algorithm>
 
-/** . */
 namespace GuidTools
 {
 #if defined(_WIN32)

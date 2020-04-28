@@ -33,6 +33,14 @@ using namespace gsoap_eml2_3;
 
 DeviationSurveyRepresentation::DeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const string& guid, const std::string& title, bool isFinal, RESQML2_NS::MdDatum* mdInfo)
 {
+	if (interp == nullptr) {
+		throw invalid_argument("The interpretation cannot be nullptr.");
+	}
+
+	if (mdInfo == nullptr) {
+		throw invalid_argument("The MD information cannot be nullptr.");
+	}
+
 	gsoapProxy2_3 = soap_new_resqml22__DeviationSurveyRepresentation(interp->getGsoapContext());	
 	_resqml22__DeviationSurveyRepresentation* rep = static_cast<_resqml22__DeviationSurveyRepresentation*>(gsoapProxy2_3);
 
@@ -42,7 +50,7 @@ DeviationSurveyRepresentation::DeviationSurveyRepresentation(RESQML2_NS::Wellbor
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	if (dynamic_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
-		rep->MdUom = static_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
+		rep->MdUom = gsoap_resqml2_0_1::soap_eml20__LengthUom2s(gsoapProxy2_3->soap, static_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit());
 	}
 
 	setMdDatum(mdInfo);
@@ -82,7 +90,7 @@ void DeviationSurveyRepresentation::setGeometry(double const* firstStationLocati
 
 	rep->StationCount = stationCount;
 
-	rep->MdUom = mdUom;
+	rep->MdUom = gsoap_resqml2_0_1::soap_eml20__LengthUom2s(gsoapProxy2_3->soap, mdUom);
 	eml23__FloatingPointExternalArray* xmlMds = soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
 	xmlMds->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
 	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
@@ -94,7 +102,7 @@ void DeviationSurveyRepresentation::setGeometry(double const* firstStationLocati
 	const hsize_t dim = stationCount;
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "mds", mds, &dim, 1);
 
-	rep->AngleUom = angleUom;
+	rep->AngleUom = gsoap_resqml2_0_1::soap_eml20__PlaneAngleUom2s(gsoapProxy2_3->soap, angleUom);
 	// XML azimuths
 	eml23__FloatingPointExternalArray* xmlAzims = soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
 	xmlAzims->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
@@ -144,7 +152,7 @@ void DeviationSurveyRepresentation::getMdValues(double * values) const
 		getHdfProxyFromDataset(dsPart)->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, values);
 	}
 	else {
-		throw invalid_argument("Mds can only be defined using DoubleHdf5Array for now in fesapi.");
+		throw logic_error("Mds can only be defined using FloatingPointExternalArray for now in fesapi.");
 	}
 }
 
@@ -156,7 +164,7 @@ void DeviationSurveyRepresentation::getInclinations(double* values) const
 		getHdfProxyFromDataset(dsPart)->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, values);
 	}
 	else {
-		throw invalid_argument("Inclinations can only be defined using DoubleHdf5Array for now in fesapi.");
+		throw invalid_argument("Inclinations can only be defined using FloatingPointExternalArray for now in fesapi.");
 	}
 }
 
@@ -168,7 +176,7 @@ void DeviationSurveyRepresentation::getAzimuths(double* values) const
 		getHdfProxyFromDataset(dsPart)->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, values);
 	}
 	else {
-		throw invalid_argument("Azimuths can only be defined using DoubleHdf5Array for now in fesapi.");
+		throw invalid_argument("Azimuths can only be defined using FloatingPointExternalArray for now in fesapi.");
 	}
 }
 

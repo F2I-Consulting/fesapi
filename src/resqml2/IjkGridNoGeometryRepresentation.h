@@ -23,10 +23,11 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * This class is dedicated to IJK grids with undefined <tt>IjkGridGeometry</tt>. There are two
-	 * main use cases. A first one is block-centered grid, where no geometry is attached to nodes
-	 * but a property should spatialize cells centers. A second one is LGRs (local refinement grids),
-	 * where the refined geometry is given thanks to refinement parameters.
+	 * @brief	This class is dedicated to IJK grids with undefined <tt>IjkGridGeometry</tt>. There
+	 * 			are two main use cases. A first one is block-centered grid, where no geometry is
+	 * 			attached to nodes but a property should spatialize cells centers. A second one is
+	 * 			LGRs (local refinement grids), where the refined geometry is given thanks to
+	 * 			refinement parameters.
 	 */
 	class IjkGridNoGeometryRepresentation : public AbstractIjkGridRepresentation
 	{

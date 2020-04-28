@@ -20,222 +20,287 @@ under the License.
 
 #include "RepresentationSetRepresentation.h"
 
-/** . */
 namespace RESQML2_NS
 {
 	class SealedSurfaceFrameworkRepresentation;
 	class StratigraphicColumnRankInterpretation;
 	class StratigraphicUnitInterpretation;
 
-	/** A sealed volume framework representation. */
+	/**
+	 * @brief	A strict boundary representation (BREP), which represents the volume region by
+	 * 			assembling together shells.
+	 * 			
+	 * 			BUSINESS RULE: The sealed structural framework must be part of the same earth model
+	 * 			as this sealed volume framework.
+	 */
 	class SealedVolumeFrameworkRepresentation : public RepresentationSetRepresentation
 	{
 	public:
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~SealedVolumeFrameworkRepresentation() {}
 
 		/**
-		 * Set the Sealed Surface Framework which the sealed volume framework is based on. It also sets
-		 * the opposite relationship i.e. from the Sealed Surface Framework to the Sealed Volume
-		 * Framework.
+		 * Sets the sealed surface framework representation this sealed volume framework representation
+		 * is based on.
 		 *
-		 * @param [in,out]	ssf	The Sealed Surface Framework which the sealed volume framework is based
-		 * 						on.
+		 * @exception	std::invalid_argument	If <tt>ssf == nullptr</tt>.
+		 *
+		 * @param [in]	ssf	The sealed surface framework representation to set.
 		 */
 		DLL_IMPORT_OR_EXPORT void setSealedSurfaceFramework(SealedSurfaceFrameworkRepresentation* ssf);
 
 		/**
-		 * Set the strati unit interpretation of a particular volume region.
+		 * Sets the stratigraphic unit interpretation of a particular volume region.
 		 *
-		 * @param 		  	regionIndex			The index of the region which represent the strati unit
-		 * 										interpretation.
-		 * @param [in,out]	stratiUnitInterp	The strati unit interpretation represented by the region.
+		 * @exception	std::out_of_range	 	If <tt>regionIndex &gt;=</tt> getRegionCount().
+		 * @exception	std::invalid_argument	If <tt>stratiUnitInterp == nullptr</tt>.
+		 *
+		 * @param 	  	regionIndex			Zero-base index of the volume region.
+		 * @param [in]	stratiUnitInterp	The stratigraphic unit interpretation represented by the
+		 * 									region at position @p regionIndex.
 		 */
 		DLL_IMPORT_OR_EXPORT void setInterpretationOfVolumeRegion(unsigned int regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp);
 
 		/**
-		 * Push back a region in this sealed volume framework.
+		 * Pushes back a volume region in this sealed volume framework.
 		 *
-		 * @param [in,out]	stratiUnitInterp		 	The stratigraphic unit inter^retation represented
-		 * 												by this region.
-		 * @param 		  	externalShellFaceCount   	The count of faces composing the region external
-		 * 												shell.
-		 * @param [in,out]	faceRepresentationIndices	The indices of the representation in the
-		 * 												representation list of this organization for each
-		 * 												external shell face.
-		 * @param [in,out]	faceRepPatchIndices		 	The indices of the patch in the representation
-		 * 												defined in \a faceRepresentationIndices for each
-		 * 												external shell face.
-		 * @param [in,out]	faceSide				 	The side "flag" dor each external shell face.
+		 * @exception	std::invalid_argument	If <tt>stratiUnitInterp == nullptr</tt>.
+		 * @exception	std::invalid_argument	If <tt>externalShellFaceCount == 0</tt>.
+		 *
+		 * @param [in]	stratiUnitInterp		 	The stratigraphic unit interpretation represented by
+		 * 											this region.
+		 * @param 	  	externalShellFaceCount   	The count of faces composing the region external
+		 * 											shell.
+		 * @param 	  	faceRepresentationIndices	An array containing, for each external shell face,
+		 * 											the index of the corresponding representation in the
+		 * 											representation list of this organization. The size of
+		 * 											this array is @p externalShellFaceCount.
+		 * @param 	  	faceRepPatchIndices		 	An array containing, for each external shell face,
+		 * 											the index of the corresponding patch in the
+		 * 											corresponding representation. The size of this array
+		 * 											is @p externalShellFaceCount.
+		 * @param 	  	faceSide				 	An array containing the orientation of each external
+		 * 											shell face. The positive orientation is defined with
+		 * 											@c true while the negative one is defined with
+		 * 											@c false. The size of this array is @p
+		 * 											externalShellFaceCount.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackVolumeRegion(StratigraphicUnitInterpretation * stratiUnitInterp,
 			unsigned int externalShellFaceCount,
 			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide) = 0;
 
 		/**
-		 * Push back an internal shell in a particular region of this sealed volume framework. Throw
-		 * exception if the region index does not correspond to a region which has been already pushed.
+		 * Pushes back an internal shell in a particular volume region of this sealed volume framework.
 		 *
-		 * @param 		  	regionIndex				 	The index of the framework region.. It must be in
-		 * 												the interval [0..getRegionCount()[.
-		 * @param 		  	externalShellFaceCount   	The count of faces composing the region internal
-		 * 												shell.
-		 * @param [in,out]	faceRepresentationIndices	The indices of the representation in the
-		 * 												representation list of this organization for each
-		 * 												internal shell face.
-		 * @param [in,out]	faceRepPatchIndices		 	The indices of the patch in the representation
-		 * 												defined in \a faceRepresentationIndices for each
-		 * 												internal shell face.
-		 * @param [in,out]	faceSide				 	The side "flag" dor each internal shell face.
+		 * @exception	std::out_of_range	 	If <tt>regionIndex &gt;=</tt> getRegionCount().
+		 * @exception	std::invalid_argument	If <tt>externalShellFaceCount == 0</tt>.
+		 *
+		 * @param 	regionIndex				 	Zero-base index of the volume region where to push back
+		 * 										the internal shell.
+		 * @param 	internalShellFaceCount   	The count of faces composing the region internal shell.
+		 * @param 	faceRepresentationIndices	An array containing, for each internal shell face, the
+		 * 										index of the corresponding representation in the
+		 * 										representation list of this organization. The size of
+		 * 										this array is @p internalShellFaceCount.
+		 * @param 	faceRepPatchIndices		 	An array containing, for each internal shell face, the
+		 * 										index of the corresponding patch in the corresponding
+		 * 										representation. The size of this array is @p
+		 * 										internalShellFaceCount.
+		 * @param 	faceSide				 	An array containing the orientation of each internal
+		 * 										shell face. The positive orientation is defined with
+		 * 										@c true while the negative one is defined with
+		 * 										@c false. The size of this array is @p
+		 * 										internalShellFaceCount.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackInternalShell(unsigned int regionIndex,
-			unsigned int externalShellFaceCount,
+			unsigned int internalShellFaceCount,
 			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide) = 0;
 
-		/** Get the Sealed Structural Framework this framework is based on. */
+		/** 
+		 * Gets the sealed structural framework this sealed volume framework is based on.
+		 *
+		 * @returns The sealed structural framework this sealed volume framework is based on.
+		 */
 		DLL_IMPORT_OR_EXPORT class SealedSurfaceFrameworkRepresentation* getSealedStructuralFramework() const;
 
-		/** Get the Stratigraphic Unit Interpretation a particular region of this framework represents. */
+		/** 
+		 * Gets the stratigraphic unit interpretation a particular region of this framework represents.
+		 *
+		 * @exception	std::out_of_range	 	If <tt>regionIndex &gt;=</tt> getRegionCount().
+		 *
+		 * @param	regionIndex	Zero-based index of the region.
+		 * 						
+		 * @returns The stratigraphic unit interpretation represented by the region at position @p regionIndex. 
+		 */
 		DLL_IMPORT_OR_EXPORT class StratigraphicUnitInterpretation* getStratiUnitInterp(unsigned int regionIndex) const;
 
 		/**
-		 * Get the count of region in this framework.
+		 * Gets the count of regions in this framework.
 		 *
-		 * @returns	The count of region in this framework.
+		 * @exception	std::range_error	If the count of regions is strictly greater than unsigned int.
+		 *
+		 * @returns	The count of regions in this framework.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getRegionCount() const = 0;
 
 		/**
-		 * Get the count of internal shells in a particular region.
+		 * Gets the count of internal shells in a particular region.
 		 *
-		 * @param 	regionIndex	The index of the framework region. It must be in the interval
-		 * 						[0..getRegionCount()[.
+		 * @exception	std::out_of_range	If <tt>regionIndex &gt;=</tt> getRegionCount().
+		 * @exception	std::range_error 	If the count of internal shells is strictly greater than
+		 * 									unsigned int max.
 		 *
-		 * @returns	The count of internal shells in a particular region.
+		 * @param 	regionIndex	Zero-based index of the framework region.
+		 *
+		 * @returns	The count of internal shells in the region at position @p regionIndex.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getInternalShellCount(unsigned int regionIndex) const = 0;
 
 		/**
-		 * Get the count of faces in a particular region external shell.
+		 * Gets the count of faces in a particular region external shell.
 		 *
-		 * @param 	regionIndex	The index of the framework region. It must be in the interval
-		 * 						[0..getRegionCount()[.
+		 * @exception	std::out_of_range	If <tt>regionIndex &gt;=</tt> getRegionCount().
+		 * @exception	std::range_error 	If the count of faces is strictly greater than unsigned int
+		 * 									max.
 		 *
-		 * @returns	The count of faces in a particular region external shell.
+		 * @param 	regionIndex	Zero-based index of the framework region.
+		 *
+		 * @returns	The count of faces in the external shell of the region at position @p regionIndex.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getFaceCountOfExternalShell(unsigned int regionIndex) const = 0;
 
 		/**
-		 * Get the count of faces in a particular region internal shell.
+		 * Gets the count of faces in a particular region internal shell.
 		 *
-		 * @param 	regionIndex		  	The index of the framework region. It must be in the interval
-		 * 								[0..getRegionCount()[.
-		 * @param 	internalShellIndex	The index of the internal shell. It must be in the interval
-		 * 								[0..getInternalShellCount()[.
+		 * @exception	std::out_of_range	If <tt>regionIndex &gt;=</tt> getRegionCount().
+		 * @exception	std::out_of_range	If <tt>internalShellIndex &gt;=
+		 * 									getInternalShellCount(regionIndex)</tt>.
+		 * @exception	std::range_error 	If the count of faces is strictly greater than unsigned int
+		 * 									max.
 		 *
-		 * @returns	The count of faces in a particular region internal shell.
+		 * @param 	regionIndex		  	Zero-based index of the region.
+		 * @param 	internalShellIndex	Zero-based index of the internal shell.
+		 *
+		 * @returns	The count of faces of the region @p regionIndex internal shell @p internalShellIndex.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const = 0;
 
 		/**
-		 * Get the representation (for instance the triangulated surface) which contains a particular
+		 * Gets the representation (for instance the triangulated surface) which contains a particular
 		 * face of the external shell of a particular region of this framework.
 		 *
-		 * @param 	regionIndex	The index of the framework region. It must be in the interval
-		 * 						[0..getRegionCount()[.
-		 * @param 	faceIndex  	The index of the face of the framework region external shell.
+		 * @exception	std::out_of_range	If <tt>regionIndex &gt;=</tt> getRegionCount().
+		 * @exception	std::out_of_range	If <tt>faceIndex &gt;=
+		 * 									getFaceCountOfExternalShell(regionIndex)</tt>.
 		 *
-		 * @returns	The representation which contains the face \a faceIndex of the external shell of the
-		 * 			region \a regionIndex of this framework.
+		 * @param 	regionIndex	Zero-based index of the region.
+		 * @param 	faceIndex  	Zero-base index of the external shell face.
+		 *
+		 * @returns	The representation which contains the face @p faceIndex of the external shell of the
+		 * 			region @p regionIndex of this framework.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual RESQML2_NS::AbstractRepresentation* getRepOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const = 0;
 
 		/**
-		 * Get the representation (for instance the triangulated surface) which contains a particular
+		 * Gets the representation (for instance the triangulated surface) which contains a particular
 		 * face of a particular internal shell of a particular region of this framework.
 		 *
-		 * @param 	regionIndex		  	The index of the framework region. It must be in the interval
-		 * 								[0..getRegionCount()[.
-		 * @param 	internalShellIndex	The index of the internal shell. It must be in the interval
-		 * 								[0..getInternalShellCount()[.
-		 * @param 	faceIndex		  	The index of the face of the framework region external shell.
+		 * @exception	std::out_of_range	If <tt>regionIndex &gt;=</tt> getRegionCount().
+		 * @exception	std::out_of_range	If <tt>internalShellIndex &gt;=
+		 * 									getInternalShellCount(regionIndex)</tt>.
+		 * @exception	std::out_of_range	If <tt>faceIndex &gt;=
+		 * 									getFaceCountOfInternalShell(regionIndex,
+		 * 									internalShellIndex)</tt>.
 		 *
-		 * @returns	The representation which contains the face \a faceIndex of the external shell of the
-		 * 			region \a regionIndex of this framework.
+		 * @param 	regionIndex		  	Zero-based index of the framework region.
+		 * @param 	internalShellIndex	Zero-based index of the internal shell.
+		 * @param 	faceIndex		  	Zero-based index of the face of the framework region internal
+		 * 								shell.
+		 *
+		 * @returns	The representation which contains the face @p faceIndex of the internal shell @p
+		 * 			internalShellIndex of the region @p regionIndex of this framework.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual RESQML2_NS::AbstractRepresentation* getRepOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const = 0;
 
 		/**
-		 * Get the representation patch index which is a particular face of the external shell of a
-		 * particular region of this framework.
+		 * Get the representation patch index corresponding to a particular face of the external shell
+		 * of a particular region of this framework.
 		 *
-		 * @param 	regionIndex	The index of the framework region. It must be in the interval
-		 * 						[0..getRegionCount()[.
-		 * @param 	faceIndex  	The index of the face of the framework region external shell.
+		 * @exception	std::out_of_range	If <tt>regionIndex &gt;=</tt> getRegionCount().
+		 * @exception	std::out_of_range	If <tt>faceIndex &gt;=
+		 * 									getFaceCountOfExternalShell(regionIndex)</tt>.
 		 *
-		 * @returns	The representation patch index (on representation getRepOfExternalShellFace()) which
-		 * 			is the face \a faceIndex of the external shell of the region \a regionIndex of this
-		 * 			framework.
+		 * @param 	regionIndex	Zero-based index of the framework region.
+		 * @param 	faceIndex  	Zero-based index of the external shell face.
+		 *
+		 * @returns	The representation patch index (on representation
+		 * 			<tt>getRepOfExternalShellFace(regionIndex, faceIndex)</tt>) which is the face @p
+		 * 			faceIndex of the external shell of the region @p regionIndex of this framework.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const = 0;
 
 		/**
-		 * Get the representation patch index which is a particular face of particular internal shell of
-		 * a particular region of this framework.
+		 * Get the representation patch index corresponding to a particular face of particular internal
+		 * shell of a particular region of this framework.
 		 *
-		 * @param 	regionIndex		  	The index of the framework region. It must be in the interval
-		 * 								[0..getRegionCount()[.
-		 * @param 	internalShellIndex	The index of the internal shell. It must be in the interval
-		 * 								[0..getInternalShellCount()[.
-		 * @param 	faceIndex		  	The index of the face of the framework region external shell.
+		 * @exception	std::out_of_range	If <tt>regionIndex &gt;=</tt> getRegionCount().
+		 * @exception	std::out_of_range	If <tt>internalShellIndex &gt;=
+		 * 									getInternalShellCount(regionIndex)</tt>.
+		 * @exception	std::out_of_range	If <tt>faceIndex &gt;=
+		 * 									getFaceCountOfInternalShell(regionIndex,
+		 * 									internalShellIndex)</tt>.
 		 *
-		 * @returns	The representation patch index (on representation getRepOfExternalShellFace()) which
-		 * 			is the face \a faceIndex of the external shell of the region \a regionIndex of this
-		 * 			framework.
+		 * @param 	regionIndex		  	Zero-based index of the framework region.
+		 * @param 	internalShellIndex	Zero-based index of the internal shell.
+		 * @param 	faceIndex		  	Zero-based index of the face.
+		 *
+		 * @returns	The representation patch index (on representation
+		 * 			<tt>getRepOfInternalShellFace(regionIndex, internalShellIndex, faceIndex)</tt>) which
+		 * 			is the face @p faceIndex of the internal shell @p internalShellIndex of the region @p
+		 * 			regionIndex of this framework.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const = 0;
 
 		/**
-		 * Get the side flag of a particular face of the external shell of a particular region of this
-		 * framework.
+		 * Get the orientation (the side flag) of a particular face of the external shell of a
+		 * particular region of this framework.
 		 *
-		 * @param 	regionIndex	The index of the framework region. It must be in the interval
-		 * 						[0..getRegionCount()[.
-		 * @param 	faceIndex  	The index of the face of the framework region external shell.
+		 * @exception	std::out_of_range	If <tt>regionIndex &gt;=</tt> getRegionCount().
+		 * @exception	std::out_of_range	If <tt>faceIndex &gt;=
+		 * 									getFaceCountOfExternalShell(regionIndex)</tt>.
 		 *
-		 * @returns	The side flag of the face \a faceIndex of the external shell of the region \a
+		 * @param 	regionIndex	Zero-based index of the framework region.
+		 * @param 	faceIndex  	Zero-based index of the external shell face.
+		 *
+		 * @returns	The side flag of the face @p faceIndex of the external shell of the region @p
 		 * 			regionIndex of this framework.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const = 0;
 
 		/**
-		 * Get the side flag of a particular face of a particular internal shell of a particular region
-		 * of this framework.
+		 * Get the orientation (the side flag) of a particular face of a particular internal shell of a
+		 * particular region of this framework.
 		 *
-		 * @param 	regionIndex		  	The index of the framework region. It must be in the interval
-		 * 								[0..getRegionCount()[.
-		 * @param 	internalShellIndex	The index of the internal shell. It must be in the interval
-		 * 								[0..getInternalShellCount()[.
-		 * @param 	faceIndex		  	The index of the face of the framework region external shell.
+		 * @exception	std::out_of_range	If <tt>regionIndex &gt;=</tt> getRegionCount().
+		 * @exception	std::out_of_range	If <tt>internalShellIndex &gt;=
+		 * 									getInternalShellCount(regionIndex)</tt>.
+		 * @exception	std::out_of_range	If <tt>faceIndex &gt;=
+		 * 									getFaceCountOfInternalShell(regionIndex,
+		 * 									internalShellIndex)</tt>.
 		 *
-		 * @returns	The side flag of the face \a faceIndex of the external shell of the region \a
-		 * 			regionIndex of this framework.
+		 * @param 	regionIndex		  	Zero-based index of the framework region.
+		 * @param 	internalShellIndex	Zero-based index of the internal shell.
+		 * @param 	faceIndex		  	Zero-based index of the face.
+		 *
+		 * @returns	The side flag of the face @p faceIndex of the internal shell @p internalShellIndex of
+		 * 			the region @p regionIndex of this framework.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const = 0;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:

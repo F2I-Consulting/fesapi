@@ -22,10 +22,9 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
-/** . */
 namespace RESQML2_NS
 {
-	/** Proxy class for an abstract representation. */
+	/** @brief	Proxy class for an abstract representation. */
 	class AbstractRepresentation : public COMMON_NS::AbstractObject
 	{
 	public:
@@ -62,7 +61,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const;
 
 		/**
-		 * Gets the data object reference of the HDF proxy which is used for storing the numerical
+		 * @brief Gets the data object reference of the HDF proxy which is used for storing the numerical
 		 * values of this representation (i.e. its geometry).
 		 *
 		 * @exception	std::logic_error	If this representation is partial.
@@ -203,8 +202,8 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfAllPatches() const;
 
 		/**
-		 * Gets all the xyz points of a particular patch of this representation. xyz points are given in
-		 * the local CRS.
+		 * @brief	Gets all the xyz points of a particular patch of this representation. xyz points are
+		 * 			given in the local CRS.
 		 *
 		 * @exception	std::out_of_range	If @p patchIndex is out of range.
 		 * @exception	std::logic_error 	If this representation is partial.
@@ -313,7 +312,7 @@ namespace RESQML2_NS
 		 * @returns	A vector of pointers to all the representation set representations which contain this
 		 * 			representation.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RepresentationSetRepresentation *> getRepresentationSetRespresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RepresentationSetRepresentation *> getRepresentationSetRepresentationSet() const;
 
 		/**
 		 * Gets the count of all representation set representations which contain this representation.
@@ -333,7 +332,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The parent representation set representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation * getRepresentationSetRepresentation(const ULONG64  & index) const;
+		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation* getRepresentationSetRepresentation(ULONG64 index) const;
 
 		/**
 		 * Adds seismic 3d coordinates to an existing point geometry patch.
@@ -397,7 +396,7 @@ namespace RESQML2_NS
 		 * 									The count of this array must be equal to
 		 * 									<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 * @param [in,out]	seismicSupport	The representation of the seismic line.
-		 * @param [in,out]	proxy		  	The HDF proxy where to write the @lineAbscissa values. It
+		 * @param [in,out]	proxy		  	The HDF proxy where to write the @p lineAbscissa values. It
 		 * 									must be already opened for writing and won't be closed in
 		 * 									this method.
 		 */

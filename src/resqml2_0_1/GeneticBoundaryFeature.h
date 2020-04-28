@@ -20,7 +20,6 @@ under the License.
 
 #include "BoundaryFeature.h"
 
-/** . */
 namespace RESQML2_0_1_NS
 {
 	/** A genetic boundary feature. */

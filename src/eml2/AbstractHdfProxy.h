@@ -28,7 +28,7 @@ under the License.
 
 namespace EML2_NS
 {
-	/** An abstract proxy for reading and writing values into an HDF5 file. */
+	/** @brief	An abstract proxy for reading and writing values into an HDF5 file. */
 	class AbstractHdfProxy : public EpcExternalPartReference
 	{
 	public:  

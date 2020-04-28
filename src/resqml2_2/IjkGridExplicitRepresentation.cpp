@@ -91,7 +91,7 @@ void IjkGridExplicitRepresentation::getXyzPointsOfPatch(unsigned int patchIndex,
 		hdfProxy->readArrayNdOfDoubleValues(xmlDataset->PathInExternalFile, xyzPoints);
 	}
 	else {
-		throw invalid_argument("The geometry of the grid either does not exist or is not an explicit one.");
+		throw logic_error("The geometry of the grid either does not exist or is not an explicit one.");
 	}
 
 	// Truncation
@@ -105,11 +105,11 @@ void IjkGridExplicitRepresentation::getXyzPointsOfPatch(unsigned int patchIndex,
 				hdfProxy->readArrayNdOfDoubleValues(xmlDataset->PathInExternalFile, xyzPoints);
 			}
 			else {
-				throw invalid_argument("The additional grid points must be explicit ones for now. Parametric additional points are not supported yet for example.");
+				throw logic_error("The additional grid points must be explicit ones for now. Parametric additional points are not supported yet for example.");
 			}
 		}
 		else {
-			throw invalid_argument("The truncated geometry must have one additional grid points construct (more than one is not implemented in fesapi yet although allowed by the standard). The attachment of this grid points must be set to node.");
+			throw logic_error("The truncated geometry must have one additional grid points construct (more than one is not implemented in fesapi yet although allowed by the standard). The attachment of this grid points must be set to node.");
 		}
 	}
 }

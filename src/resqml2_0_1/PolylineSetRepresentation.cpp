@@ -225,6 +225,10 @@ resqml20__PointGeometry* PolylineSetRepresentation::getPointGeometry2_0_1(unsign
 
 unsigned int PolylineSetRepresentation::getPolylineCountOfPatch(unsigned int patchIndex) const
 {
+	if (patchIndex >= getPatchCount()) {
+		throw std::out_of_range("patchIndex id out of range.");
+	}
+
 	resqml20__PolylineSetPatch* patch = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch[patchIndex];
 	if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray)
 	{
@@ -253,6 +257,9 @@ unsigned int PolylineSetRepresentation::getPolylineCountOfAllPatches() const
 
 void PolylineSetRepresentation::getNodeCountPerPolylineInPatch(unsigned int patchIndex, unsigned int * nodeCountPerPolyline) const
 {
+	if (patchIndex >= getPatchCount()) {
+		throw std::out_of_range("patchIndex id out of range.");
+	}
 	resqml20__PolylineSetPatch* patch = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch[patchIndex];
 	readArrayNdOfUIntValues(patch->NodeCountPerPolyline, nodeCountPerPolyline);
 }
@@ -269,8 +276,9 @@ void PolylineSetRepresentation::getNodeCountPerPolylineOfAllPatches(unsigned int
 
 void PolylineSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
 {
-	if (patchIndex >= getPatchCount())
+	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
+	}
 
 	resqml20__PointGeometry* pointGeom = getPointGeometry2_0_1(patchIndex);
 	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array)
@@ -290,6 +298,10 @@ unsigned int PolylineSetRepresentation::getPatchCount() const
 
 bool PolylineSetRepresentation::areAllPolylinesClosedOfPatch(unsigned int patchIndex) const
 {
+	if (patchIndex >= getPatchCount()) {
+		throw range_error("The index of the patch is not in the allowed range of patch.");
+	}
+
 	resqml20__PolylineSetPatch* patch = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch[patchIndex];
 	if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray)
 	{
@@ -325,6 +337,10 @@ bool PolylineSetRepresentation::areAllPolylinesClosedOfAllPatches() const
 
 bool PolylineSetRepresentation::areAllPolylinesNonClosedOfPatch(unsigned int patchIndex) const
 {
+	if (patchIndex >= getPatchCount()) {
+		throw range_error("The index of the patch is not in the allowed range of patch.");
+	}
+
 	resqml20__PolylineSetPatch* patch = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch[patchIndex];
 	if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray)
 	{
@@ -392,7 +408,7 @@ bool PolylineSetRepresentation::hasALineRole() const
 gsoap_eml2_3::resqml22__LineRole PolylineSetRepresentation::getLineRole() const
 {
 	if (!hasALineRole()) {
-		throw invalid_argument("The polylineSet doesn't have any role");
+		throw logic_error("The polylineSet doesn't have any role");
 	}
 
 	return static_cast<gsoap_eml2_3::resqml22__LineRole>(*static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole);

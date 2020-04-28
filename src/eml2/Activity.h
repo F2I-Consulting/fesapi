@@ -20,12 +20,11 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
-/** . */
 namespace EML2_NS
 {
 	class ActivityTemplate;
 
-	/** Proxy class for an activity. */
+	/** @brief	Instance of a given activity. */
 	class Activity : public COMMON_NS::AbstractObject
 	{
 	protected:
@@ -254,7 +253,7 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT virtual LONG64 getIntegerQuantityParameterValue(unsigned int index) const = 0;
 
 		/**
-		 * Queries if all of the parameters sharing a given title are string parameters.
+		 * @brief	Queries if all of the parameters sharing a given title are string parameters.
 		 *
 		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
 		 * 										activity.
@@ -389,12 +388,7 @@ namespace EML2_NS
 		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Gets the standard XML tag without XML namespace for serializing this data object
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:
 		/** Loads target relationships */

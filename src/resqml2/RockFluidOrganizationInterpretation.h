@@ -24,66 +24,104 @@ namespace RESQML2_NS
 {
 	class AbstractGridRepresentation;
 
+	/**
+	 * @brief	This class describes the organization of geological reservoir, i.e., of an
+	 * 			interconnected network of porous and permeable rock units, containing an accumulation
+	 * 			of economic fluids, such as oil and gas. A reservoir is normally enveloped by rock
+	 * 			and fluid barriers and contains a single natural pressure system.
+	 */
 	class RockFluidOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
 	public:
 		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
+		* Destructor does nothing since the memory is managed by the gSOAP context.
 		*/
 		virtual ~RockFluidOrganizationInterpretation() {}
-		
+
+		/**
+		 * Gets the set of grid representations associated to this rock fluid organization.
+		 *
+		 * @returns	A vector of pointers to the grid representations associated to this rock fluid
+		 * 			organization.
+		 */
 		DLL_IMPORT_OR_EXPORT std::vector<AbstractGridRepresentation*> getGridRepresentationSet() const;
 
 		/**
-		* @return The count of grid representation associated to this rock fluid organization.
-		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getGridRepresentationCount() const;
+		 * Gets the count of grid representations associated to this rock fluid organization.
+		 *
+		 * @exception	std::range_error	If the count of associated grid representations is strictly
+		 * 									greater than unsigned int max.
+		 *
+		 * @returns	The count of grid representations associated to this rock fluid organization.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getGridRepresentationCount() const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 		/**
-		* Get a grid representation associated to this rock fluid org interp by means of its index.
-		* @param index	The index of the grid representation to get in the array of grid representaitons of this rock fluid org interp.
-		*/
-		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation* getGridRepresentation(unsigned int index) const;
+		 * Gets a grid representation associated to this rock fluid organization by means of its index.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getGridRepresentationCount().
+		 *
+		 * @param 	index	Zero-based index of the grid representation to get in the array of grid
+		 * 					representations of this rock fluid organization.
+		 *
+		 * @returns	The associated grid representation at position @p index.
+		 */
+		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation* getGridRepresentation(unsigned int index) const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 		/**
-		* Check if a grid representation is wether associated to this rock fluid org interp or not.
-		* @param gridRep	The grid representation to check its assocaition with this rock fluid org interp.
-		* @return			True or false.
-		*/
+		 * Checks whether a given grid representation is associated to this rock fluid organization.
+		 *
+		 * @param [in]	gridRep	The grid representation for which we want to know if it is associated to
+		 * 						this rock fluid organization.
+		 *
+		 * @returns	True if @p gridRep is associated to this rock fluid organization, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT bool isAssociatedToGridRepresentation(AbstractGridRepresentation* gridRep) const;
 
 		/**
-		* Push back a rock fluid unit in this organization
-		*
-		* @param rockFluidUnitInterpretation	The rock fluid unit interpretation to push back
-		*/
+		 * Pushes back a rock fluid unit interpretation in this rock fluid organization.
+		 *
+		 * @exception	std::invalid_argument	If <tt>rockFluidUnitInterpretation == nullptr</tt>.
+		 *
+		 * @param [in]	rockFluidUnitInterpretation	The rock fluid unit interpretation to push back.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackRockFluidUnitInterpretation(class RockFluidUnitInterpretation* rockFluidUnitInterpretation) = 0;
 
 		/**
-		* @return The count of rock fluid unit interp in this rock fluid organization.
-		*/
+		 * Gets the count of rock fluid unit interpretations of this rock fluid organization.
+		 *
+		 * @returns	The count of rock fluid unit interpretations of this rock fluid organization.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getRockFluidUnitInterpCount() const = 0;
 
 		/**
-		* Get a rock fluid unit interp DOR of this rock fluid org interp by means of its index.
-		* @param index	The index of the rock fluid unit interp to get in this rock fluid org interp.
-		*/
+		 * Gets the DOR of a rock fluid unit interpretation of this rock fluid organization by means of
+		 * its index.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getRockFluidUnitInterpCount().
+		 *
+		 * @param 	index	Zero-based index of the rock fluid unit interpretation for which we look for
+		 * 					the DOR.
+		 *
+		 * @returns	The DOR of the rock fluid unit interpretation at position @p index.
+		 */
 		virtual COMMON_NS::DataObjectReference getRockFluidUnitInterpretationDor(unsigned int index) const = 0;
 
 		/**
-		* Get a rock fluid unit interp of this rock fluid org interp by means of its index.
-		* @param index	The index of the rock fluid unit interp to get in this rock fluid org interp.
-		*/
+		 * Gets a rock fluid unit interpretation of this rock fluid organization by means of
+		 * its index.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getRockFluidUnitInterpCount().
+		 *
+		 * @param 	index	Zero-based index of the rock fluid unit interpretation we look for.
+		 *
+		 * @returns	The rock fluid unit interpretation at position @p index.
+		 */
 		DLL_IMPORT_OR_EXPORT class RockFluidUnitInterpretation* getRockFluidUnitInterpretation(unsigned int index) const;
 
-		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:

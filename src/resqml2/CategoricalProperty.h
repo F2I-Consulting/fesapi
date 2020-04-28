@@ -20,28 +20,28 @@ under the License.
 
 #include "AbstractDiscreteOrCategoricalProperty.h"
 
-/** . */
 namespace RESQML2_NS
 {
 	class StringTableLookup;
 
 	/**
-	 * Proxy class for a categorical property. It contains discrete integers. This type of property
-	 * is associated either: as an internally stored index to a string through a lookup mapping, or
-	 * as an internally stored double to another double value through an explicitly provided table.
+	 * @brief	Proxy class for a categorical property. It contains discrete integers. This type of
+	 * 			property is associated either: as an internally stored index to a string through a
+	 * 			lookup mapping, or as an internally stored double to another double value through an
+	 * 			explicitly provided table.
 	 */
 	class CategoricalProperty : public AbstractDiscreteOrCategoricalProperty
 	{
 	public:
 
 		/**
-		 * Only to be used in partial transfer context
+		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-null, the partial object.
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT CategoricalProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractDiscreteOrCategoricalProperty(partialObject) {}
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~CategoricalProperty() {}
 
 		/**   

@@ -29,7 +29,6 @@ under the License.
 #include "FileRelationship.h"
 #include "FilePart.h"
 
-/** . */
 namespace epc
 {
 	/** A package. */

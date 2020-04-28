@@ -24,7 +24,6 @@ under the License.
 
 #include "../eml2/PropertyKind.h"
 
-/** . */
 namespace WITSML2_0_NS
 {
 	/**
@@ -61,6 +60,11 @@ namespace WITSML2_0_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~ChannelMetaDataObject() {}
 
+		/**
+		 * @brief	Gets wellbore dor
+		 *
+		 * @returns	The wellbore dor.
+		 */
 		COMMON_NS::DataObjectReference getWellboreDor() const
 		{
 			return COMMON_NS::DataObjectReference(static_cast<T*>(gsoapProxy2_1)->Wellbore);

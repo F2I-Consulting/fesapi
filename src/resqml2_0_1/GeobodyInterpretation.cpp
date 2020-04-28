@@ -32,7 +32,7 @@ GeobodyInterpretation::GeobodyInterpretation(RESQML2_NS::RockVolumeFeature * fea
 		throw invalid_argument("The interpreted feature cannot be null.");
 	}
 	if (!feature->isPartial() && feature->getXmlNamespace() == "resqml20" && dynamic_cast<RESQML2_0_1_NS::GeobodyFeature*>(feature) == nullptr) {
-		throw invalid_argument("The interpreted feature msut be a Geobody Feature if it is a RESQML 2.0.1 version.");
+		throw invalid_argument("The interpreted feature must be a Geobody Feature if it is a RESQML 2.0.1 version.");
 	}
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGeobodyInterpretation(feature->getGsoapContext());

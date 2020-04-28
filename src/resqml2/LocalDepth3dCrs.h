@@ -20,38 +20,30 @@ under the License.
 
 #include "AbstractLocal3dCrs.h"
 
-/** . */
 namespace RESQML2_NS
 {
-	/** A local depth 3D crs. */
+	/**
+	 * @brief	Defines a local depth coordinate system. The geometrical origin and location are
+	 * 			defined by the elements of the base class AbstractLocal3dCrs. This CRS uses the units
+	 * 			of measure of its projected and vertical CRS.
+	 */
 	class LocalDepth3dCrs : public RESQML2_NS::AbstractLocal3dCrs
 	{
 	public:
 
 		/**
-		 * Only to be used in partial transfer context
+		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT LocalDepth3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractLocal3dCrs(partialObject) {}
 
-		/** Destructor does nothing since the memory is manged by the gsoap context. */
+		/** Destructor does nothing since the memory is manged by the gSOAP context. */
 		virtual ~LocalDepth3dCrs() {}
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected :

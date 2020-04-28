@@ -33,6 +33,10 @@ using namespace gsoap_resqml2_0_1;
 
 EarthModelInterpretation::EarthModelInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const string & title)
 {
+	if (orgFeat == nullptr) {
+		throw invalid_argument("The interpreted organization feature cannot be nullptr.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREEarthModelInterpretation(orgFeat->getGsoapContext());
 	_resqml20__EarthModelInterpretation* interp = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1);
 
@@ -88,7 +92,7 @@ COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiColumnDor() co
 		: COMMON_NS::DataObjectReference();
 }
 
-unsigned int EarthModelInterpretation::getStratiOccurenceCount() const
+unsigned int EarthModelInterpretation::getStratiOccurrenceCount() const
 {
 	const size_t result = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.size();
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
@@ -98,7 +102,7 @@ unsigned int EarthModelInterpretation::getStratiOccurenceCount() const
 	return static_cast<unsigned int>(result);
 }
 
-COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiOccurenceDor(unsigned int index) const
+COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiOccurrenceDor(unsigned int index) const
 {
 	_resqml20__EarthModelInterpretation* earthModelInterpretation = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1);
 	if (index < earthModelInterpretation->StratigraphicOccurrences.size()) {
@@ -109,11 +113,11 @@ COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiOccurenceDor(u
 	}
 }
 
-void EarthModelInterpretation::pushBackStratiOccurence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurence)
+void EarthModelInterpretation::pushBackStratiOccurrence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrence)
 {
-	getRepository()->addRelationship(this, stratiOccurence);
+	getRepository()->addRelationship(this, stratiOccurrence);
 		
-	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.push_back(stratiOccurence->newResqmlReference());
+	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.push_back(stratiOccurrence->newResqmlReference());
 }
 
 unsigned int EarthModelInterpretation::getRockFluidOrganizationInterpretationCount() const

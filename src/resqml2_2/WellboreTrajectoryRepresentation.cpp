@@ -411,7 +411,9 @@ COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getLocalCrsDor(
 
 COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getDeviationSurveyDor() const
 {
-	return getSpecializedGsoapProxy()->DeviationSurvey;
+	return getSpecializedGsoapProxy()->DeviationSurvey != nullptr
+		? COMMON_NS::DataObjectReference(getSpecializedGsoapProxy()->DeviationSurvey)
+		: COMMON_NS::DataObjectReference();
 }
 
 bool WellboreTrajectoryRepresentation::hasGeometry() const

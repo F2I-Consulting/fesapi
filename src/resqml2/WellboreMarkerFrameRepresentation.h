@@ -20,13 +20,12 @@ under the License.
 
 #include "WellboreFrameRepresentation.h"
 
-/** . */
 namespace RESQML2_NS
 {
 	class StratigraphicOccurrenceInterpretation;
 	class WellboreMarker;
 
-	/** Proxy class for a wellbore marker frame representation. */
+	/** @brief	A well log frame where each entry represents a well marker. */
 	class WellboreMarkerFrameRepresentation : public WellboreFrameRepresentation
 	{
 	public:
@@ -50,44 +49,56 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT std::vector<WellboreMarker *> getWellboreMarkerSet() const;
 
 		/**
-		 * Sets stratigraphic occurrence interpretation associated to this wellbore marker frame
-		 * representation.
+		 * @brief	Sets stratigraphic occurrence interpretation associated to this wellbore marker frame
+		 * 			representation.
 		 *
 		 * @exception	std::invalid_argument	If @p stratiOccurenceInterp is @c nullptr.
 		 *
-		 * @param [in]	stratiOccurenceInterp	The stratigraphic occurrence interpretation to set.
+		 * @param [in]	stratiOccurrenceInterp	The stratigraphic occurrence interpretation to set.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setStratigraphicOccurrenceInterpretation(StratigraphicOccurrenceInterpretation * stratiOccurenceInterp) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setStratigraphicOccurrenceInterpretation(StratigraphicOccurrenceInterpretation * stratiOccurrenceInterp) = 0;
 
 		/**
-		 * Sets the correspondence between the intervals of this wellbore marker frame representation
-		 * and the units of a stratigraphic column rank interpretation of a stratigraphic occurrence
-		 * interpretation.
+		 * @brief	Sets the correspondence between the intervals of this wellbore marker frame
+		 * 			representation and the units of a stratigraphic column rank interpretation of a
+		 * 			stratigraphic occurrence interpretation.
 		 *
 		 * @exception	std::invalid_argument	If @p stratiUnitIndices, @p stratiOccurenceInterp or @p
 		 * 										proxy is @c nullptr.
 		 *
-		 * @param [in]	  	stratiUnitIndices	 	The index of the stratigraphic unit per interval, of
+		 * @param [in]	  	stratiUnitIndices	  	The index of the stratigraphic unit per interval, of
 		 * 											a given stratigraphic column. The count must be equal
 		 * 											to the count of wellbore marker intervals
 		 * 											(getWellboreMarkerCount() <tt> - 1
 		 * 											</tt>).
-		 * @param 		  	nullValue			 	The value which is used to tell that there is no
+		 * @param 		  	nullValue			  	The value which is used to tell that there is no
 		 * 											correspondence between stratigraphic units and a
 		 * 											particular interval (e.g., within salt, use this null
 		 * 											value).
-		 * @param [in]	  	stratiOccurenceInterp	The stratigraphic occurrence interpretation to
+		 * @param [in]	  	stratiOccurrenceInterp	The stratigraphic occurrence interpretation to
 		 * 											associate to this wellbore marker frame
 		 * 											representation.
-		 * @param [in,out]	proxy				 	The HDF proxy where the numerical values (indices)
+		 * @param [in,out]	proxy				  	The HDF proxy where the numerical values (indices)
 		 * 											are stored.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, StratigraphicOccurrenceInterpretation* stratiOccurenceInterp, EML2_NS::AbstractHdfProxy* proxy) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, StratigraphicOccurrenceInterpretation* stratiOccurrenceInterp, EML2_NS::AbstractHdfProxy* proxy) = 0;
 
-		/** A stratigraphic occurrence interpretation*. */
+		/**
+		 * Gets the DOR of the stratigraphic occurrence interpretation associated to this wellbore
+		 * marker frame representation.
+		 *
+		 * @returns	The DOR of the associated stratigraphic occurrence interpretation if there is one,
+		 * 			else empty DOR if not.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStratigraphicOccurrenceInterpretationDor() const = 0;
 
-		/** A stratigraphic occurrence interpretation*. */
+		/**
+		 * Gets the stratigraphic occurrence interpretation associated to this wellbore marker frame
+		 * representation.
+		 *
+		 * @returns	The associated stratigraphic occurrence interpretation if there is one, else @c
+		 * 			nullptr if not.
+		 */
 		DLL_IMPORT_OR_EXPORT StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation() const;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */

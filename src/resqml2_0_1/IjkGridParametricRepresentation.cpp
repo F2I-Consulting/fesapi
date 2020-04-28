@@ -226,7 +226,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatch(unsigned int patchInde
 	if (isTruncated()) {
 		gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);
 		if (geom == nullptr) {
-			throw invalid_argument("There is no geometry on this grid.");
+			throw logic_error("There is no geometry on this grid.");
 		}
 
 		resqml20__AbstractGridGeometry* truncatedGeom = static_cast<gsoap_resqml2_0_1::resqml20__AbstractGridGeometry*>(geom);
@@ -239,11 +239,11 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatch(unsigned int patchInde
 				hdfProxy->readArrayNdOfDoubleValues(xmlDataset->PathInHdfFile, xyzPoints);
 			}
 			else {
-				throw invalid_argument("The additional grid points must be explicit ones for now. Parametric additional points are not supported yet for example.");
+				throw logic_error("The additional grid points must be explicit ones for now. Parametric additional points are not supported yet for example.");
 			}
 		}
 		else {
-			throw invalid_argument("The truncated geometry must have one additional grid points construct (more than one is not implemented in fesapi yet although allowed by the standard). The attachment of this grid points must be set to node.");
+			throw logic_error("The truncated geometry must have one additional grid points construct (more than one is not implemented in fesapi yet although allowed by the standard). The attachment of this grid points must be set to node.");
 		}
 	}
 }

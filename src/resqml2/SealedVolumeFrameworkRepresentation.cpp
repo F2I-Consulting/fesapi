@@ -47,7 +47,7 @@ void SealedVolumeFrameworkRepresentation::setInterpretationOfVolumeRegion(unsign
 	}
 
 	if (regionIndex >= getRegionCount()) {
-		throw range_error("The region index is out of range.");
+		throw out_of_range("The region index is out of range.");
 	}
 
 	getRepository()->addRelationship(this, stratiUnitInterp);

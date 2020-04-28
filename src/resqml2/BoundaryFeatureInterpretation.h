@@ -20,12 +20,17 @@ under the License.
 
 #include "AbstractFeatureInterpretation.h"
 
-/** . */
 namespace RESQML2_NS
 {
 	class BoundaryFeature;
 
-	/** A boundary feature interpretation. */
+	/**
+	 * @brief	A boundary feature interpretation. This is the main class for data describing an
+	 * 			opinion of a surface feature between two volumes.
+	 * 			
+	 * 			BUSINESS RULE: The data-object reference (of type "interprets") must reference only a
+	 * 			boundary feature.
+	 */
 	class BoundaryFeatureInterpretation : public AbstractFeatureInterpretation
 	{
 	public:

@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/CulturalFeature.h"
 
-/** . */
 namespace RESQML2_2_NS
 {
 	/** A frontier feature. */
@@ -38,11 +37,12 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT CulturalFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::CulturalFeature(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in an EPC document.
+		 * @brief	Creates an instance of this class in an EPC document.
 		 *
 		 * @param [in,out]	repo 	The repo where the underlying gsoap proxy is going to be created.
 		 * @param 		  	guid 	A guid for the instance to create.
 		 * @param 		  	title	A title for the instance to create.
+		 * @param 		  	kind 	The kind.
 		 */
 		CulturalFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 			gsoap_eml2_3::resqml22__CulturalFeatureKind kind);

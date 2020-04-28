@@ -20,9 +20,9 @@ under the License.
 
 #include "../resqml2/IjkGridLatticeRepresentation.h"
 
-/** . */
 namespace RESQML2_0_1_NS
 {
+	/** @brief	An ijk grid lattice representation. This class cannot be inherited. */
 	class IjkGridLatticeRepresentation final : public RESQML2_NS::IjkGridLatticeRepresentation
 	{
 	private :
@@ -60,9 +60,17 @@ namespace RESQML2_0_1_NS
 			RESQML2_NS::IjkGridLatticeRepresentation(interp, guid, title, iCount, jCount, kCount) {}
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * @brief	Creates an instance of this class by wrapping a gSOAP instance.
+		 *
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 */
 		IjkGridLatticeRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap): RESQML2_NS::IjkGridLatticeRepresentation(fromGsoap) {}
+
+		/**
+		 * @brief	Creates an instance of this class by wrapping a gSOAP instance.
+		 *
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 */
 		IjkGridLatticeRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridLatticeRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */

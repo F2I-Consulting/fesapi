@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/WellboreMarker.h"
 
-/** . */
 namespace RESQML2_2_NS
 {
 	class WellboreMarkerFrameRepresentation;

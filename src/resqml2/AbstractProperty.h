@@ -31,7 +31,7 @@ namespace RESQML2_NS
 {
 	class AbstractRepresentation;
 
-	/** Proxy class for an abstract property. */
+	/** @brief	Proxy class for an abstract property. */
 	class AbstractProperty: public COMMON_NS::AbstractObject
 	{
 	public:
@@ -173,9 +173,19 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void setRealizationIndices(ULONG64 startRealizationIndex, ULONG64 countRealizationIndices);
 
 		/**
-		 * Sets the realization indices of this property
+		 * @brief	Sets the realization indices of this property
 		 *
-		 * @param 	realizationIndices	The realization indices to set to this property.
+		 * @exception	std::invalid_argument	If @p realizationIndices is empty.
+		 * @exception	std::invalid_argument	If the @p realizationIndices size is strictly greater
+		 * 										than 1 in a RESQML 2.0.1 context.
+		 * @exception	std::invalid_argument	If, in a RESQML 2.2 context, <tt>hdfProxy == nullptr</tt>
+		 * 										and no default HDF proxy is defined in the repository.
+		 * @exception	std::logic_error	 	If no supported gSOAP proxy is available.
+		 *
+		 * @param 		  	realizationIndices	The realization indices to set to this property.
+		 * @param [in,out]	hdfProxy		  	(Optional) The HDF proxy where to store @p
+		 * 										realizationIndices values. If @p nullptr (default), then
+		 * 										the repository default HDF proxy will be used.
 		 */
 		DLL_IMPORT_OR_EXPORT void setRealizationIndices(const std::vector<unsigned int> & realizationIndices, EML2_NS::AbstractHdfProxy* hdfProxy = nullptr);
 
@@ -210,16 +220,19 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getTimeSeriesDor() const;
 
 		/**
-		 * Sets the timestamps of this property by means of an index in a time series
+		 * @brief	Sets the timestamps of this property by means of an index in a time series
 		 *
-		 * @exception	invalid_argument	If @p ts is null or if the current property has no time
-		 * 									index.
+		 * @exception	invalid_argument	If @p ts is null or if the current property has no time index.
 		 *
-		 * @param [in] startRealizationIndex	The first time index to set to this property.
-		 * @param [in] countRealizationIndices	The count of time indices to set to this property.
-		 * @param [in] ts		 				The time series which contains the timestamps of this property.
-		 * @param [in] useInterval		 		When UseInterval is true, the values are associated with each time intervals between two consecutive time entries instead of each individual time entry.
-		 *										As a consequence the dimension of the value array corresponding to the time series is the number of entry in the series minus one.
+		 * @param [in]	startTimeIndex  	The first time index to set to this property.
+		 * @param [in]	countTimeIndices	The count of time indices to set to this property.
+		 * @param [in]	ts					The time series which contains the timestamps of this
+		 * 									property.
+		 * @param [in]	useInterval			(Optional) When UseInterval is true, the values are
+		 * 									associated with each time intervals between two consecutive time
+		 * 									entries instead of each individual time entry. As a consequence
+		 * 									the dimension of the value array corresponding to the time series
+		 * 									is the number of entry in the series minus one.
 		 */
 		DLL_IMPORT_OR_EXPORT void setTimeIndices(ULONG64 startTimeIndex, ULONG64 countTimeIndices, EML2_NS::TimeSeries* ts, bool useInterval = false);
 

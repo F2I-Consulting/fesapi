@@ -22,10 +22,9 @@ under the License.
 
 #include "DataObjectRepository.h"
 
-/** . */
 namespace COMMON_NS
 {
-	/** An abstract data object. */
+	/** @brief	An abstract data object. */
 	class AbstractObject
 	{
 	private:
@@ -58,7 +57,7 @@ namespace COMMON_NS
 		/** The underlying generated gSoap proxy for a EML 2.3 dataobject. */
 		gsoap_eml2_3::eml23__AbstractObject* gsoapProxy2_3;
 
-		/** The repository which contain this data object. */
+		/** The repository which contains this data object. */
 		COMMON_NS::DataObjectRepository* repository;
 
 		/**
@@ -120,7 +119,7 @@ namespace COMMON_NS
 			repository(nullptr) {}
 
 		/**
-		 * Constructor when importing EML 2.2 dataobjects
+		 * Constructor when importing EML 2.3 dataobjects
 		 *
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
@@ -264,6 +263,9 @@ namespace COMMON_NS
 		/**
 		 * Gets an Hdf Proxy from a EML 2.0 dataset.
 		 *
+		 * @exception	std::invalid_argument	If <tt>throwException == true</tt> and the HDF proxy is
+		 * 										missing.
+		 *
 		 * @param 	dataset		  	The dataset.
 		 * @param 	throwException	(Optional) True to throw exception.
 		 *
@@ -273,6 +275,9 @@ namespace COMMON_NS
 
 		/**
 		 * Gets an Hdf Proxy from a EML 2.2 dataset.
+		 *
+		 * @exception	std::invalid_argument	If <tt>throwException == true</tt> and the HDF proxy is
+		 * 										missing.
 		 *
 		 * @param 	dataset		  	The dataset.
 		 * @param 	throwException	(Optional) True to throw exception.

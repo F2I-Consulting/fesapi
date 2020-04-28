@@ -20,16 +20,17 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
-/** . */
 namespace RESQML2_NS
 {
 	class AbstractProperty;
 
 	/**
-	 * Proxy class for a property set. A property set is a set of properties collected together for
-	 * a specific purpose. For example, a property set can be used to collect all the properties
-	 * corresponding to the simulation output at a single time, or all the values of a single
-	 * property kind for all times.
+	 * @brief	Proxy class for a property set. A property set is a set of properties collected
+	 * 			together for a specific purpose.
+	 * 			
+	 * 			For example, a property set can be used to collect all the properties corresponding
+	 * 			to the simulation output at a single time, or all the values of a single property
+	 * 			kind for all times.
 	 */
 	class PropertySet : public COMMON_NS::AbstractObject
 	{

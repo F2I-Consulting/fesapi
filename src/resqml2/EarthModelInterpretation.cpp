@@ -40,9 +40,9 @@ StratigraphicColumn* EarthModelInterpretation::getStratiColumn() const
 	return repository->getDataObjectByUuid<StratigraphicColumn>(getStratiColumnDor().getUuid());
 }
 
-StratigraphicOccurrenceInterpretation* EarthModelInterpretation::getStratiOccurence(unsigned int index) const
+StratigraphicOccurrenceInterpretation* EarthModelInterpretation::getStratiOccurrence(unsigned int index) const
 {
-	return repository->getDataObjectByUuid<StratigraphicOccurrenceInterpretation>(getStratiOccurenceDor(index).getUuid());
+	return repository->getDataObjectByUuid<StratigraphicOccurrenceInterpretation>(getStratiOccurrenceDor(index).getUuid());
 }
 
 RockFluidOrganizationInterpretation* EarthModelInterpretation::getRockFluidOrganizationInterpretation(unsigned int index) const
@@ -64,9 +64,9 @@ void EarthModelInterpretation::loadTargetRelationships()
 		convertDorIntoRel<StructuralOrganizationInterpretation>(getStructuralOrganizationInterpertationDor(i));
 	}
 
-	count = getStratiOccurenceCount();
+	count = getStratiOccurrenceCount();
 	for (size_t i = 0; i < count; ++i) {
-		convertDorIntoRel<StratigraphicOccurrenceInterpretation>(getStratiOccurenceDor(i));
+		convertDorIntoRel<StratigraphicOccurrenceInterpretation>(getStratiOccurrenceDor(i));
 	}
 
 	count = getRockFluidOrganizationInterpretationCount();

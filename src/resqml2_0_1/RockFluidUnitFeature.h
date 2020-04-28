@@ -20,13 +20,11 @@ under the License.
 
 #include "GeologicUnitFeature.h"
 
-/** . */
 namespace PRODML2_1_NS {
 	/** A fluid characterization. */
 	class FluidCharacterization;
 }
 
-/** . */
 namespace RESQML2_0_1_NS
 {
 	/** A rock fluid unit feature. */

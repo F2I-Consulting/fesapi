@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/NonSealedSurfaceFrameworkRepresentation.h"
 
-/** . */
 namespace RESQML2_2_NS
 {
 	/** A non sealed surface framework representation. */
@@ -38,12 +37,14 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT NonSealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::NonSealedSurfaceFrameworkRepresentation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	interp	The structural organization interpretation the instance interprets.
-		 * @param 		  	guid  	The guid to set to the horizon. If empty then a new guid will be
-		 * 							generated.
-		 * @param 		  	title 	A title for the instance to create.
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
+		 *
+		 * @param [in]	interp	The structural organization interpretation the instance interprets.
+		 * @param 	  	guid  	The guid to set to the horizon. If empty then a new guid will be
+		 * 						generated.
+		 * @param 	  	title 	A title for the instance to create.
 		 */
 		NonSealedSurfaceFrameworkRepresentation(RESQML2_NS::StructuralOrganizationInterpretation* interp, const std::string & guid, const std::string & title);
 

@@ -23,7 +23,6 @@ under the License.
 
 #include "Relationship.h"
 
-/** . */
 namespace epc
 {
 	/** This class intends to represent any rel file of the package. */

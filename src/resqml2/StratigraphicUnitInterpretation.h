@@ -20,44 +20,37 @@ under the License.
 
 #include "AbstractFeatureInterpretation.h"
 
-/** . */
 namespace RESQML2_NS
 {
-	/** A stratigraphic unit interpretation. */
+	/** @brief	The interpretation of a stratigraphic unit. */
 	class StratigraphicUnitInterpretation : public AbstractFeatureInterpretation
 	{
 	public:
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~StratigraphicUnitInterpretation() {}
 
 		/**
-		 * Indicates if the instance has an information about its deposition mode.
+		 * Indicates if this instance has an information about its deposition mode.
 		 *
-		 * @returns	True if deposition mode, false if not.
+		 * @returns	True if the deposition mode is known, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool hasDepositionMode() const = 0;
 
 		/**
-		 * Get the deposition mode of the stratigraphic unit interpretation. You should verify its
-		 * existency using hasDepositionMode() before to call this function.
+		 * Gets the deposition mode of this stratigraphic unit interpretation.
+		 *
+		 * @exception	logic_error	If the deposition mode is unknown for this instance (you should
+		 * 							verify its existence using hasDepositionMode() before to call this
+		 * 							function).
 		 *
 		 * @returns	The deposition mode.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml20__DepositionMode getDepositionMode() const = 0;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected :

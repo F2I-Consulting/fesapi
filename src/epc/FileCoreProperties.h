@@ -21,7 +21,6 @@ under the License.
 
 #include "CoreProperty.h"
 
-/** . */
 namespace epc
 {
 	/** A file core properties. */

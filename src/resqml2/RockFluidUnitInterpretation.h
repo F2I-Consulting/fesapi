@@ -22,33 +22,37 @@ under the License.
 
 namespace RESQML2_NS
 {
+	/**
+	 * @brief	A type of rock fluid feature-interpretation , this class identifies a rock fluid
+	 * 			feature by its phase.
+	 */
 	class RockFluidUnitInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~RockFluidUnitInterpretation() {}
 
 		/**
-		 * Indicates if the instance has an information about its deposition mode.
+		 * Indicates if this instance has a phase information.
+		 *
+		 * @returns	True if there exists a phase information, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool hasPhase() const = 0;
 
 		/**
-		 * Get the deposition mode of the stratigraphic unit interpretation.
-		 * You should verify its existency using hasDepositionMode() before to call this function.
+		 * Gets the phase information of this rock fluid unit interpretation.
+		 *
+		 * @exception	std::logic_error	If no phase information exists in this rock fluid unit
+		 * 									interpretation (please use hasPhase() before calling this
+		 * 									method).  
+		 *
+		 * @returns	The phase of this rock fluid unit interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::resqml22__Phase getPhase() const = 0;
 
-		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:

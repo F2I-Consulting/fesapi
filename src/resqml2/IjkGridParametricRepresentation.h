@@ -23,9 +23,10 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * An IJK Grid parametric representation define the cell corner positions by means of parameters
-	 * along the pillars of the grid. Adjacent cell corner are supposed to be located the same so
-	 * they are not repeated unless you define split lines or split nodes.
+	 * @brief	An IJK Grid parametric representation define the cell corner positions by means of
+	 * 			parameters along the pillars of the grid. Adjacent cell corner are supposed to be
+	 * 			located the same so they are not repeated unless you define split lines or split
+	 * 			nodes.
 	 */
 	class IjkGridParametricRepresentation : public AbstractIjkGridRepresentation
 	{	

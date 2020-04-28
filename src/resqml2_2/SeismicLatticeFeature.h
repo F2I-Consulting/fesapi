@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/SeismicLatticeFeature.h"
 
-/** . */
 namespace RESQML2_2_NS
 {
 	/** A seismic lattice feature. */

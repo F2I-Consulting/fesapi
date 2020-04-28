@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/GenericFeatureInterpretation.h"
 
-/** . */
 namespace RESQML2_0_1_NS
 {
 	/** A generic feature interpretation. */
@@ -38,12 +37,14 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT GenericFeatureInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::GenericFeatureInterpretation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	feature	The feature the instance interprets.
-		 * @param 		  	guid   	The guid to set to the interpretation. If empty then a new guid will
-		 * 							be generated.
-		 * @param 		  	title  	A title for the instance to create.
+		 * @exception	std::invalid_argument	If <tt>feature == nullptr</tt>.
+		 *
+		 * @param [in]	feature	The feature the instance interprets.
+		 * @param 	  	guid   	The guid to set to the interpretation. If empty then a new guid will be
+		 * 						generated.
+		 * @param 	  	title  	A title for the instance to create.
 		 */
 		GenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const std::string & guid, const std::string & title);
 

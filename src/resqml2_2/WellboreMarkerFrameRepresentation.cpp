@@ -82,9 +82,9 @@ COMMON_NS::DataObjectReference WellboreMarkerFrameRepresentation::getStratigraph
 		: COMMON_NS::DataObjectReference(frame->IntervalStratigraphiUnits[0]->StratigraphicOrganizationInterpretation);	
 }
 
-void WellboreMarkerFrameRepresentation::setStratigraphicOccurrenceInterpretation(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurenceInterp)
+void WellboreMarkerFrameRepresentation::setStratigraphicOccurrenceInterpretation(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrenceInterp)
 {
-	getRepository()->addRelationship(this, stratiOccurenceInterp);
+	getRepository()->addRelationship(this, stratiOccurrenceInterp);
 
 	_resqml22__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml22__WellboreMarkerFrameRepresentation*>(gsoapProxy2_3);
 	resqml22__IntervalStratigraphicUnits* intervalStratigraphiUnits = nullptr;
@@ -95,10 +95,10 @@ void WellboreMarkerFrameRepresentation::setStratigraphicOccurrenceInterpretation
 	else {
 		intervalStratigraphiUnits = frame->IntervalStratigraphiUnits[0];
 	}
-	intervalStratigraphiUnits->StratigraphicOrganizationInterpretation = stratiOccurenceInterp->newEml23Reference();
+	intervalStratigraphiUnits->StratigraphicOrganizationInterpretation = stratiOccurrenceInterp->newEml23Reference();
 }
 
-void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, RESQML2_NS::StratigraphicOccurrenceInterpretation* stratiOccurenceInterp, EML2_NS::AbstractHdfProxy* proxy)
+void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, RESQML2_NS::StratigraphicOccurrenceInterpretation* stratiOccurrenceInterp, EML2_NS::AbstractHdfProxy* proxy)
 {
 	throw logic_error("Not implemented yet");
 	
@@ -106,7 +106,7 @@ void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned i
 		throw invalid_argument("The strati unit indices cannot be null.");
 	}
 
-	setStratigraphicOccurrenceInterpretation(stratiOccurenceInterp);
+	setStratigraphicOccurrenceInterpretation(stratiOccurrenceInterp);
 	getRepository()->addRelationship(this, proxy);
 
 	_resqml22__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml22__WellboreMarkerFrameRepresentation*>(gsoapProxy2_3);

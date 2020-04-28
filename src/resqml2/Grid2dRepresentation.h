@@ -20,273 +20,321 @@ under the License.
 
 #include "AbstractSurfaceRepresentation.h"
 
-/** . */
 namespace RESQML2_NS
 {
-	/** A grid 2D representation. */
+	/** @brief	A 2d grid representation. */
 	class Grid2dRepresentation : public AbstractSurfaceRepresentation
 	{
 	public:
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~Grid2dRepresentation() {}
 
 		/**
-		 * Get the number of nodes in the I direction of the lattice 2d grid
+		 * Gets the number of nodes along the I (fastest) axis of this 2d grid representation.
 		 *
-		 * @returns	The node count along i axis.
+		 * @returns	The node count along the I (fastest) axis.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual ULONG64 getNodeCountAlongIAxis() const = 0;
 
 		/**
-		 * Get the number of nodes in the J direction of the lattice 2d grid
+		 * Gets the number of nodes along the J (slowest) axis of this 2d grid representation.
 		 *
-		 * @returns	The node count along j axis.
+		 * @returns	The node count along the J (slowest) axis.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual ULONG64 getNodeCountAlongJAxis() const = 0;
 
-		/**
-		 * Get the xyz point count in a given patch.
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	The xyz point count of patch.
-		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
-		/**
-		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
-		 * the local CRS.
-		 *
-		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is
-		 * 								coordinate dimension (XYZ) and second dimension is vertex
-		 * 								dimension. It must be pre allocated.
-		 */
+		/** Please do note use: please compute x and y values with the lattice information. */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
 		/**
-		 * Get all the z values of a patch located at a specific index of the geometry points. Z Values
-		 * are given in the local CRS.
+		 * Gets all the z values of this 2d grid representation. The z values are given in the local CRS.
 		 *
-		 * @param [in,out]	values	All the z values of the selected patch. i dimension is the quickest.
-		 * 							It must be preallocated and won't be freed by this method. Its size
-		 * 							must be equel to getNodeCountAlongIAxis() * getNodeCountAlongJAxis().
+		 * @exception	std::logic_error	If the z values cannot be get from this 2d grid
+		 * 									representation.
+		 *
+		 * @param [out]	values	A preallocated array to receive the z values. Its size must be equal to
+		 * 						getNodeCountAlongIAxis() @c * getNodeCountAlongJAxis() and it will not be
+		 * 						freed by this method. The I dimension is the fastest.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getZValues(double * values) const = 0;
 
 		/**
-		 * Get all the z values of a patch located at a specific index of the geometry points. Z Values
-		 * are given in the global CRS.
+		 * Gets all the z values of this 2d grid representation. The z values are given in the global
+		 * CRS.
 		 *
-		 * @param [in,out]	values	All the z values of the selected patch. i dimension is the quickest.
-		 * 							It must be preallocated and won't be freed by this method. Its size
-		 * 							must be equel to getNodeCountAlongIAxis() * getNodeCountAlongJAxis().
+		 * @exception	std::logic_error	If the z values cannot be get from this 2d grid
+		 * 									representation.
+		 *
+		 * @param [out]	values	A preallocated array to receive the z values. Its size must be equal to
+		 * 						getNodeCountAlongIAxis() @c * getNodeCountAlongJAxis() and it will not be
+		 * 						freed by this method. The I dimension is the fastest.
 		 */
 		DLL_IMPORT_OR_EXPORT void getZValuesInGlobalCrs(double * values) const;
 
 		/**
-		 * Get the X origin of this geometry. X coordinate is given in the local CRS.
+		 * Gets the x coordinate of the origin of this 2d grid representation. The x coordinate is given
+		 * in the local CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The X origin point otherwise.
+		 * @returns	NAN if the origin x coordinate cannot be get, the origin x coordinate otherwise.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getXOrigin() const = 0;
 
 		/**
-		 * Get the Y origin of this geometry. Y coordinate is given in the local CRS.
+		 * Gets the y coordinate of the origin of this 2d grid representation. The y coordinate is given
+		 * in the local CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Y origin point otherwise.
+		 * @returns	NAN if the origin y coordinate cannot be get, the origin y coordinate otherwise.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getYOrigin() const = 0;
 
 		/**
-		 * Get the Z origin of this geometry. Z coordinate is given in the local CRS.
+		 * Gets the z coordinate of the origin of this 2d grid representation. The z coordinate is given
+		 * in the local CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Z origin point otherwise.
+		 * @returns	NAN if the origin z coordinate cannot be get, the origin z coordinate otherwise.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getZOrigin() const = 0;
 
 		/**
-		 * Get the X origin of this geometry. X coordinate is given in the global CRS.
+		 * Gets the x coordinate of the origin of this 2d grid representation. The x coordinate is given
+		 * in the global CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The X origin point otherwise.
+		 * @returns	NAN if the origin x coordinate cannot be get, the origin x coordinate otherwise.
 		 */
 		DLL_IMPORT_OR_EXPORT double getXOriginInGlobalCrs() const;
 
 		/**
-		 * Get the Y origin of this geometry. Y coordinate is given in the global CRS.
+		 * Gets the y coordinate of the origin of this 2d grid representation. The y coordinate is given
+		 * in the global CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Y origin point otherwise.
+		 * @returns	NAN if the origin y coordinate cannot be get, the origin y coordinate otherwise.
 		 */
 		DLL_IMPORT_OR_EXPORT double getYOriginInGlobalCrs() const;
 
 		/**
-		 * Get the Z origin of this geometry. Z coordinate is given in the global CRS.
+		 * Gets the z coordinate of the origin of this 2d grid representation. The z coordinate is given
+		 * in the global CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Z origin point otherwise.
+		 * @returns	NAN if the origin z coordinate cannot be get, the origin z coordinate otherwise.
 		 */
 		DLL_IMPORT_OR_EXPORT double getZOriginInGlobalCrs() const;
 
 		/**
-		 * Get the X (in local crs) offset on the J axis. If the J spacing is constant, the returned
+		 * Gets the x offset along the J (slowest) axis. If the J spacing is constant, the returned
 		 * offset is exactly the offset between two consecutive nodes lying on the J axis. If not, the
-		 * offset length does not have any meaning. X coordinate is given in the local CRS.
+		 * offset length does not have any meaning. The x coordinate is given in the local CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The X offset point otherwise.
+		 * @exception	std::logic_error	If the x offset along the J axis cannot be get.
+		 *
+		 * @returns	The x offset along the J (slowest) axis.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getXJOffset() const = 0;
 
 		/**
-		 * Get the Y (in local crs) offset on the J axis. If the J spacing is constant, the returned
+		 * Gets the y offset along the J (slowest) axis. If the J spacing is constant, the returned
 		 * offset is exactly the offset between two consecutive nodes lying on the J axis. If not, the
-		 * offset length does not have any meaning. Y coordinate is given in the local CRS.
+		 * offset length does not have any meaning. The y coordinate is given in the local CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Y offset point otherwise.
+		 * @exception	std::logic_error	If the y offset along the J axis cannot be get.
+		 *
+		 * @returns	The y offset along the J (slowest) axis.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getYJOffset() const = 0;
 
 		/**
-		 * Get the Z (in local crs) offset on the J axis. If the J spacing is constant, the returned
+		 * Gets the z offset along the J (slowest) axis. If the J spacing is constant, the returned
 		 * offset is exactly the offset between two consecutive nodes lying on the J axis. If not, the
-		 * offset length does not have any meaning. Z coordinate is given in the local CRS.
+		 * offset length does not have any meaning. The z coordinate is given in the local CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Z offset point otherwise.
+		 * @exception	std::logic_error	If the z offset along the J axis cannot be get.
+		 *
+		 * @returns	The z offset along the J (slowest) axis.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getZJOffset() const = 0;
 
 		/**
-		 * Get the X (in global crs) offset between two consecutive nodes lying on the J axis. X
-		 * coordinate is given in the global CRS.
+		 * Gets the x offset along the J (slowest) axis. If the J spacing is constant, the returned
+		 * offset is exactly the offset between two consecutive nodes lying on the J axis. If not, the
+		 * offset length does not have any meaning. The x coordinate is given in the global CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The X offset point otherwise.
+		 * @exception	std::logic_error	If the x offset along the J axis cannot be get.
+		 *
+		 * @returns	The x offset along the J (slowest) axis.
 		 */
 		DLL_IMPORT_OR_EXPORT double getXJOffsetInGlobalCrs() const;
 
 		/**
-		 * Get the Y (in global crs) offset between two consecutive nodes lying on the J axis. Y
-		 * coordinate is given in the global CRS.
+		 * Gets the y offset along the J (slowest) axis. If the J spacing is constant, the returned
+		 * offset is exactly the offset between two consecutive nodes lying on the J axis. If not, the
+		 * offset length does not have any meaning. The y coordinate is given in the global CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Y offset point otherwise.
+		 * @exception	std::logic_error	If the y offset along the J axis cannot be get.
+		 *
+		 * @returns	The y offset along the J (slowest) axis.
 		 */
 		DLL_IMPORT_OR_EXPORT double getYJOffsetInGlobalCrs() const;
 
 		/**
-		 * Get the Z (in global crs) offset between two consecutive nodes lying on the J axis. Z
-		 * coordinate is given in the global CRS.
+		 * Gets the z offset along the J (slowest) axis. If the J spacing is constant, the returned
+		 * offset is exactly the offset between two consecutive nodes lying on the J axis. If not, the
+		 * offset length does not have any meaning. The z coordinate is given in the global CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Z offset point otherwise.
+		 * @exception	std::logic_error	If the z offset along the J axis cannot be get.
+		 *
+		 * @returns	The z offset along the J (slowest) axis.
 		 */
 		DLL_IMPORT_OR_EXPORT double getZJOffsetInGlobalCrs() const;
 
 		/**
-		 * Get the X (in local crs) offset between two consecutive nodes lying on the I axis. X
-		 * coordinate is given in the local CRS.
+		 * Gets the x offset along the I (fastest) axis. If the J spacing is constant, the returned
+		 * offset is exactly the offset between two consecutive nodes lying on the J axis. If not, the
+		 * offset length does not have any meaning. The x coordinate is given in the local CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The X offset point otherwise.
+		 * @exception	std::logic_error	If the x offset along the I axis cannot be get.
+		 *
+		 * @returns	The x offset along the I (fastest) axis.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getXIOffset() const = 0;
 
 		/**
-		 * Get the Y (in local crs) offset between two consecutive nodes lying on the I axis. Y
-		 * coordinate is given in the local CRS.
+		 * Gets the y offset along the I (fastest) axis. If the J spacing is constant, the returned
+		 * offset is exactly the offset between two consecutive nodes lying on the J axis. If not, the
+		 * offset length does not have any meaning. The y coordinate is given in the local CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Y offset point otherwise.
+		 * @exception	std::logic_error	If the y offset along the I axis cannot be get.
+		 *
+		 * @returns	The y offset along the I (fastest) axis.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getYIOffset() const = 0;
 
 		/**
-		 * Get the Z (in local crs) offset between two consecutive nodes lying on the I axis. Z
-		 * coordinate is given in the local CRS.
+		 * Gets the z offset along the I (fastest) axis. If the J spacing is constant, the returned
+		 * offset is exactly the offset between two consecutive nodes lying on the J axis. If not, the
+		 * offset length does not have any meaning. The z coordinate is given in the local CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Z offset point otherwise.
+		 * @exception	std::logic_error	If the z offset along the I axis cannot be get.
+		 *
+		 * @returns	The z offset along the I (fastest) axis.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getZIOffset() const = 0;
 
 		/**
-		 * Get the X (in global crs) offset between two consecutive nodes lying on the I axis. X
-		 * coordinate is given in the global CRS.
+		 * Gets the x offset along the I (fastest) axis. If the J spacing is constant, the returned
+		 * offset is exactly the offset between two consecutive nodes lying on the J axis. If not, the
+		 * offset length does not have any meaning. The x coordinate is given in the global CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The X offset point otherwise.
+		 * @exception	std::logic_error	If the x offset along the I axis cannot be get.
+		 *
+		 * @returns	The x offset along the I (fastest) axis.
 		 */
 		DLL_IMPORT_OR_EXPORT double getXIOffsetInGlobalCrs() const;
 
 		/**
-		 * Get the Y (in global crs) offset between two consecutive nodes lying on the I axis. Y
-		 * coordinate is given in the global CRS.
+		 * Gets the y offset along the I (fastest) axis. If the J spacing is constant, the returned
+		 * offset is exactly the offset between two consecutive nodes lying on the J axis. If not, the
+		 * offset length does not have any meaning. The y coordinate is given in the global CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Y offset point otherwise.
+		 * @exception	std::logic_error	If the y offset along the I axis cannot be get.
+		 *
+		 * @returns	The y offset along the I (fastest) axis.
 		 */
 		DLL_IMPORT_OR_EXPORT double getYIOffsetInGlobalCrs() const;
 
 		/**
-		 * Get the Z (in global crs) offset between two consecutive nodes lying on the I axis. Z
-		 * coordinate is given in the global CRS.
+		 * Gets the z offset along the I (fastest) axis. If the J spacing is constant, the returned
+		 * offset is exactly the offset between two consecutive nodes lying on the J axis. If not, the
+		 * offset length does not have any meaning. The z coordinate is given in the global CRS.
 		 *
-		 * @returns	A double.NAN coordinate if something's wrong. The Z offset point otherwise.
+		 * @exception	std::logic_error	If the z offset along the I axis cannot be get.
+		 *
+		 * @returns	The z offset along the I (fastest) axis.
 		 */
 		DLL_IMPORT_OR_EXPORT double getZIOffsetInGlobalCrs() const;
 
 		/**
-		 * Checkes wether the spacing between nodes on J dimension is constant or not.
+		 * Checks whether the spacing between nodes on J (slowest) dimension is constant or not.
 		 *
-		 * @returns	True if j spacing constant, false if not.
+		 * @exception	std::logic_error	If the J spacing cannot be get.
+		 *
+		 * @returns	True if the J (slowest) spacing is constant, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isJSpacingConstant() const = 0;
 
 		/**
-		 * Checkes wether the spacing between nodes on I dimension is constant or not.
+		 * Checks whether the spacing between nodes on I (fastest) dimension is constant or not.
 		 *
-		 * @returns	True if i spacing constant, false if not.
+		 * @exception	std::logic_error	If the J spacing cannot be get.
+		 *
+		 * @returns	True if the J (fastest) spacing is constant, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isISpacingConstant() const = 0;
 
 		/**
-		 * Get the constant J (fastest) spacing of this 2d grid representation.
+		 * Gets the constant J (slowest) spacing of this 2d grid representation.
 		 *
-		 * @returns	The constant spacing in the J direction of the 2d grid representation.
+		 * @exception	std::logic_error	If the J spacing is not constant or cannot be get.
+		 *
+		 * @returns	The constant J (slowest) spacing of this 2d grid representation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getJSpacing() const = 0;
 
 		/**
-		 * Get all the J (fastest) spacings of this 2d grid representation.
+		 * Gets all the J (slowest) spacings of this 2d grid representation.
 		 *
-		 * @param [in,out]	jSpacings	The count of this array should be getNodeCountAlongJAxis - 1. It
-		 * 								must be preallocated and won't be freed by this method.
+		 * @exception	std::logic_error	If the HDF proxy is missing of if the J spacings cannot be
+		 * 									get.
+		 *
+		 * @param [out]	jSpacings	A preallocated array to receive the J spacings. The count of this
+		 * 							array must be getNodeCountAlongJAxis() <tt>- 1</tt> and it will not
+		 * 							be freed by this method.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getJSpacing(double* jSpacings) const = 0;
 
 		/**
-		 * Get the constant I (slowest) spacing of this 2d grid representation.
+		 * Gets the constant I (fastest) spacing of this 2d grid representation.
 		 *
-		 * @returns	The constant spacing in the I direction of the 2d grid representation.
+		 * @exception	std::logic_error	If the I spacing is not constant or cannot be get.
+		 *
+		 * @returns	The constant I (fastest) spacing of this 2d grid representation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getISpacing() const = 0;
 
 		/**
-		 * Get all the I (fastest) spacings of this 2d grid representation.
+		 * Gets all the I (fastest) spacings of this 2d grid representation.
 		 *
-		 * @param [in,out]	iSpacings	The count of this array shouhd be getNodeCountAlongIAxis - 1. It
-		 * 								must be preallocated and won't be freed by this method.
+		 * @exception	std::logic_error	If the HDF proxy is missing of if the I spacings cannot be
+		 * 									get.
+		 *
+		 * @param [out]	iSpacings	A preallocated array to receive the I spacings. The count of this
+		 * 							array must be getNodeCountAlongJAxis() <tt>- 1</tt> and it will not
+		 * 							be freed by this method.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getISpacing(double* iSpacings) const = 0;
 
 		/**
-		 * Set the geometry patch for a lattice 2d grid. The set geometry is an array 2d of lattice
-		 * points3d.
+		 * Sets the geometry of this 2d grid representation. The set geometry is a 2d array of 3d
+		 * lattice points.
 		 *
-		 * @param 		  	numPointsInFastestDirection	Number of points in fastest directions.
-		 * @param 		  	numPointsInSlowestDirection	Number of points in slowest directions.
-		 * @param 		  	xOrigin					   	The origin.
-		 * @param 		  	yOrigin					   	The origin.
-		 * @param 		  	zOrigin					   	The origin.
-		 * @param 		  	xOffsetInFastestDirection  	The offset in fastest direction.
-		 * @param 		  	yOffsetInFastestDirection  	The offset in fastest direction.
-		 * @param 		  	zOffsetInFastestDirection  	The offset in fastest direction.
-		 * @param 		  	xOffsetInSlowestDirection  	The offset in slowest direction.
-		 * @param 		  	yOffsetInSlowestDirection  	The offset in slowest direction.
-		 * @param 		  	zOffsetInSlowestDirection  	The offset in slowest direction.
-		 * @param 		  	spacingInFastestDirection  	The spacing in fastest direction.
-		 * @param 		  	spacingInSlowestDirection  	The spacing in slowest direction.
-		 * @param [in,out]	localCrs				   	(Optional) If non-null, the local crs.
+		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default CRS is
+		 * 										defined in the repository.
+		 *
+		 * @param 	  	numPointsInFastestDirection	The number of points in the fastest direction.
+		 * @param 	  	numPointsInSlowestDirection	The number of points in the slowest direction.
+		 * @param 	  	xOrigin					   	The origin x coordinate.
+		 * @param 	  	yOrigin					   	The origin y coordinate.
+		 * @param 	  	zOrigin					   	The origin z coordinate.
+		 * @param 	  	xOffsetInFastestDirection  	The x offset in the fastest direction.
+		 * @param 	  	yOffsetInFastestDirection  	The y offset in the fastest direction.
+		 * @param 	  	zOffsetInFastestDirection  	The z offset in the fastest direction.
+		 * @param 	  	xOffsetInSlowestDirection  	The x offset in the slowest direction.
+		 * @param 	  	yOffsetInSlowestDirection  	The y offset in the slowest direction.
+		 * @param 	  	zOffsetInSlowestDirection  	The z offset in the slowest direction.
+		 * @param 	  	spacingInFastestDirection  	The spacing in the fastest direction.
+		 * @param 	  	spacingInSlowestDirection  	The spacing in the slowest direction.
+		 * @param [in]	localCrs				   	(Optional) If non-null, the local CRS. If @c nullptr
+		 * 											(default), the repository default CRS will be used.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsArray2dOfLatticePoints3d(
 			unsigned int numPointsInFastestDirection, unsigned int numPointsInSlowestDirection,
@@ -296,20 +344,35 @@ namespace RESQML2_NS
 			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
 		/**
-		 * Set the geometry patch for a lattice 2d grid. The set geometry is an array 2d of explicit Z
-		 * based on an existing representation
+		 * Sets the geometry of this 2d grid representation. The set geometry is a 2d array of explicit
+		 * z based on an existing representation.
 		 *
-		 * @param [in,out]	zValues						  	If non-null, the values.
-		 * @param 		  	numI						  	Number of is.
-		 * @param 		  	numJ						  	Number of js.
-		 * @param [in,out]	proxy						  	If non-null, the proxy.
-		 * @param [in,out]	supportingGrid2dRepresentation	If non-null, the supporting grid 2D
-		 * 													representation.
-		 * @param [in,out]	localCrs					  	(Optional) If non-null, the local crs.
-		 * @param 		  	startIndexI					  	(Optional) The start index i.
-		 * @param 		  	startIndexJ					  	(Optional) The start index j.
-		 * @param 		  	indexIncrementI				  	(Optional) The index increment i.
-		 * @param 		  	indexIncrementJ				  	(Optional) The index increment j.
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If <tt>supportingGrid2dRepresentation == nullptr</tt>.
+		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default CRS is
+		 * 										defined in the repository.
+		 *
+		 * @param [in]	  	zValues						  	An array of <tt>numI * numJ</tt> z values.
+		 * @param 		  	numI						  	The number of points in the I (fastest)
+		 * 													direction.
+		 * @param 		  	numJ						  	The number of points in the J (slowest)
+		 * 													direction.
+		 * @param [in,out]	proxy						  	The HDF proxy where to store the z values. If
+		 * 													@c nullptr, the repository default HDF proxy
+		 * 													will be used.
+		 * @param [in]	  	supportingGrid2dRepresentation	The supporting 2d grid representation.
+		 * @param [in]	  	localCrs					  	(Optional) If non-null, the local CRS. If @c
+		 * 													nullptr (default), the repository default CRS
+		 * 													will be used.
+		 * @param 		  	startIndexI					  	(Optional) The start index in the I (fastest)
+		 * 													direction. Default value is @c 0.
+		 * @param 		  	startIndexJ					  	(Optional) The start index in the J (slowest)
+		 * 													direction. Default value is @c 0.
+		 * @param 		  	indexIncrementI				  	(Optional) The index increment in the I
+		 * 													(fastest) direction. Default value is @c 1.
+		 * @param 		  	indexIncrementJ				  	(Optional) The index increment in the J
+		 * 													(slowest) direction. Default value is @c 1.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsArray2dOfExplicitZ(
 			double * zValues,
@@ -319,24 +382,35 @@ namespace RESQML2_NS
 			int indexIncrementI = 1, int indexIncrementJ = 1) = 0;
 
 		/**
-		 * Set the geometry patch for a lattice 2d grid. The set geometry is an array 2d of explicit Z.
+		 * Sets the geometry of this 2d grid representation. The set geometry is a 2d array of explicit
+		 * z.
 		 *
-		 * @param [in,out]	zValues 	If non-null, the values.
-		 * @param 		  	numI		Number of is.
-		 * @param 		  	numJ		Number of js.
-		 * @param [in,out]	proxy   	If non-null, the proxy.
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default CRS is
+		 * 										defined in the repository.
+		 *
+		 * @param [in]	  	zValues 	An array of <tt>numI * numJ</tt> z values.
+		 * @param 		  	numI		The number of points in the I (fastest)
+		 * 								direction.
+		 * @param 		  	numJ		The number of points in the J (slowest)
+		 * 								direction.
+		 * @param [in,out]	proxy   	The HDF proxy where to store the z values. If
+		 * 								@c nullptr, the repository default HDF proxy
+		 * 								will be used.
 		 * @param 		  	originX 	The origin x coordinate.
 		 * @param 		  	originY 	The origin y coordinate.
 		 * @param 		  	originZ 	The origin z coordinate.
-		 * @param 		  	offsetIX	Zero-based index of the offset.
-		 * @param 		  	offsetIY	The offset iy.
-		 * @param 		  	offsetIZ	The offset iz.
-		 * @param 		  	spacingI	The spacing i.
-		 * @param 		  	offsetJX	The offset jx.
-		 * @param 		  	offsetJY	The offset jy.
-		 * @param 		  	offsetJZ	The offset jz.
-		 * @param 		  	spacingJ	The spacing j.
-		 * @param [in,out]	localCrs	(Optional) If non-null, the local crs.
+		 * @param 		  	offsetIX	The x offset in the I (fastest) direction.
+		 * @param 		  	offsetIY	The y offset in the I (fastest) direction.
+		 * @param 		  	offsetIZ	The z offset in the I (fastest) direction.
+		 * @param 		  	spacingI	The spacing in the I (fastest) direction.
+		 * @param 		  	offsetJX	The x offset in the J (slowest) direction.
+		 * @param 		  	offsetJY	The y offset in the J (slowest) direction.
+		 * @param 		  	offsetJZ	The z offset in the J (slowest) direction.
+		 * @param 		  	spacingJ	The spacing in the J (slowest) direction.
+		 * @param [in]	  	localCrs	(Optional) If non-null, the local CRS. If @c nullptr (default),
+		 * 								the repository default local CRS will be used.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsArray2dOfExplicitZ(
 			double * zValues,
@@ -345,58 +419,82 @@ namespace RESQML2_NS
 			double offsetIX, double offsetIY, double offsetIZ, double spacingI,
 			double offsetJX, double offsetJY, double offsetJZ, double spacingJ, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
+		/**
+		 * Gets the supporting representation data object reference.
+		 *
+		 * @returns	The supporting representation data object reference if there exists one, else empty
+		 * 			data object reference.
+		 */
 		virtual COMMON_NS::DataObjectReference getSupportingRepresentationDor() const = 0;
 
 		/**
-		 * Get the supporting representation of this representation
+		 * Gets the supporting representation of this 2d grid representation.
 		 *
-		 * @returns	Null if it fails, else the supporting representation.
+		 * @returns	The supporting representation if there exists one, else @c nullptr.
 		 */
 		DLL_IMPORT_OR_EXPORT Grid2dRepresentation* getSupportingRepresentation() const;
 
 		/**
-		 * Get the index of the origin of the current geometry on the supporting representation. The
-		 * index is given by means of the formula iOrigin + jOrigin*iNodeCountOnSupportingRepresentation
+		 * Gets the index of the origin of the current geometry on the supporting representation. The
+		 * index is given by means of the formula <tt>iOrigin + jOrigin *
+		 * iNodeCountOnSupportingRepresentation</tt>
 		 *
-		 * @returns	The index origin on supporting representation.
+		 * @exception	std::logic_error	If no supporting representation is associated to this 2d grid
+		 * 									representation.
+		 *
+		 * @returns	The index of the origin on the supporting representation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual int getIndexOriginOnSupportingRepresentation() const = 0;
 
 		/**
-		* Get the index of the origin of the current geometry on a particular dimension of the supporting representation.
-		*/
+		 * Gets the index of the origin of the current geometry on a particular dimension of the
+		 * supporting representation.
+		 *
+		 * @exception	std::logic_error	 	If no supporting representation is associated to this 2d
+		 * 										grid representation.
+		 * @exception	std::invalid_argument	If @p dimension differs from @c 0 or @c 1.
+		 *
+		 * @param 	dimension	The dimension for which we look for the index of the origin. It can be @c
+		 * 						0 for J (slowest) dimension or @c 1 for I (fastest) dimension.
+		 *
+		 * @returns	The index of the origin on the supporting representation on the dimension @p dimension.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual int getIndexOriginOnSupportingRepresentation(unsigned int dimension) const = 0;
 
 		/**
-		* Get the number of nodes of the current geometry which is extracted from a particular dimension of the supporting representation.
-		*/
+		 * Gets the number of nodes of the current geometry which is extracted from a particular
+		 * dimension of the supporting representation.
+		 *
+		 * @exception	std::logic_error 	If no supporting representation is associated to this 2d grid
+		 * 									representation.
+		 * @exception	std::out_of_range	If @p dimension is out of range.
+		 *
+		 * @param 	dimension	The dimension for which we look for the number of nodes.
+		 *
+		 * @returns	The number of nodes on the dimension @p dimension.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual int getNodeCountOnSupportingRepresentation(unsigned int dimension) const = 0;
 
 		/**
-		* Get the index offset of the nodes of the current geometry on a particular dimension of the supporting representation.
-		*/
+		 * Get the index offset of the nodes of the current geometry on a particular dimension of the
+		 * supporting representation.
+		 *
+		 * @exception	std::logic_error 	If no supporting representation is associated to this 2d grid
+		 * 									representation.
+		 * @exception	std::out_of_range	If @p dimension is out of range.
+		 *
+		 * @param 	dimension	The dimension for which we look for the index offset.
+		 *
+		 * @returns	The index offset on the dimension @p dimension.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual int getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const = 0;
 
-		/**
-		 * Gets patch count
-		 *
-		 * @returns	The patch count.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final {return 1;}
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:
 		
@@ -445,6 +543,6 @@ namespace RESQML2_NS
 		double getComponentInGlobalCrs(double x, double y, double z, size_t componentIndex, bool withoutTranslation = false) const;
 
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 	};
 }

@@ -29,7 +29,7 @@ under the License.
 
 namespace COMMON_NS
 {
-	/** This class allows an access to a memory package representing an EPC document. */
+	/** @brief	This class allows an access to a memory package representing an EPC document. */
 	class EpcDocument
 	{		
 	public:
@@ -85,7 +85,7 @@ namespace COMMON_NS
 		 * @param 		  	hdfPermissionAccess	(Optional) The HDF5 file permission access. It is read
 		 * 										only by default.
 		 *
-		 * @returns	An empty string if success otherwise the error string.
+		 * @returns	An empty string if success otherwise the warning string.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
 

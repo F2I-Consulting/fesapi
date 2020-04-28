@@ -20,10 +20,12 @@ under the License.
 
 #include "AbstractFeature.h"
 
-/** . */
 namespace RESQML2_NS
 {
-	/** A boundary feature. */
+	/**
+	 * @brief	A boundary feature. This is an interface between two geological objects, such as
+	 * 			horizons and faults. It is a surface object.
+	 */
 	class BoundaryFeature : public AbstractFeature
 	{
 	public:

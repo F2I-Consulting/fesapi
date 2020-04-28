@@ -23,15 +23,16 @@ under the License.
 
 #include <stdexcept>
 
-/** . */
 namespace RESQML2_NS
 {
 	/**
-	 * Proxy class for a continuous property. Most common type of property used for storing rock or
-	 * fluid attributes; all are represented as floating point values. So that the value range can
-	 * be known before accessing all values, the min and max values of the range are also optionally
-	 * stored. BUSINESS RULE: It also contains a unit of measure, which can be different from the
-	 * unit of measure of its property type, but it must be convertible into this unit.
+	 * @brief	Proxy class for a continuous property. Most common type of property used for storing
+	 * 			rock or fluid attributes; all are represented as floating point values. So that the
+	 * 			value range can be known before accessing all values, the min and max values of the
+	 * 			range are also optionally stored.
+	 * 			
+	 * 			BUSINESS RULE: It also contains a unit of measure, which can be different from the
+	 * 			unit of measure of its property type, but it must be convertible into this unit.
 	 */
 	class ContinuousProperty : public AbstractValuesProperty
 	{
@@ -44,13 +45,14 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT ContinuousProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~ContinuousProperty() {}
 
 		/**
 		 * Gets the unit of measure of the values of this property. If <tt>
-		 * resqml20__ResqmlUom::resqml20__ResqmlUom__Euc </tt> is returned,
-		 * you should check if getUomAsString() gives you another result : it would be that the writer would have used a non standard uom.
+		 * resqml20__ResqmlUom::resqml20__ResqmlUom__Euc </tt> is returned, you should check if
+		 * getUomAsString() gives you another result: it would be that the writer would have used a non
+		 * standard unit of measure.
 		 *
 		 * @returns	The unit of measure of the values of this property.
 		 */
@@ -79,7 +81,7 @@ namespace RESQML2_NS
 		 * @param 		  	minimumValue	(Optional) The minimum value of the values to add. If @c NaN is
 		 * 									provided then both minimum and maximum values will be computed
 		 * 									from the values.
-		 * @param 		  	maximumValue	(Optional) The maximum value of the values to add. If @s NaN is
+		 * @param 		  	maximumValue	(Optional) The maximum value of the values to add. If @c NaN is
 		 * 									provided then both maximum and minimum values will be computed
 		 * 									from the values.
 		 */
@@ -107,7 +109,7 @@ namespace RESQML2_NS
 		 * 											@c NaN is provided then both minimum and maximum
 		 * 											values will be computed from the values.
 		 * @param 		  	maximumValue		  	(Optional) The maximum value of the values to add. If
-		 * 											@s NaN is provided then both maximum and minimum
+		 * 											@c NaN is provided then both maximum and minimum
 		 * 											values will be computed from the values.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array2dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr,
@@ -136,7 +138,7 @@ namespace RESQML2_NS
 		 * 											@c NaN is provided then both minimum and maximum
 		 * 											values will be computed from the values.
 		 * @param 		  	maximumValue		  	(Optional) The maximum value of the values to add. If
-		 * 											@s NaN is provided then both maximum and minimum
+		 * 											@c NaN is provided then both maximum and minimum
 		 * 											values will be computed from the values.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array3dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr,
@@ -199,7 +201,7 @@ namespace RESQML2_NS
 		/**
 		 * Adds an nd array of explicit float values to the property values.
 		 * 
-		 * @exception std::invalid_argument If <tt> minimumValue == nullptr </tt> and </tt> maximumValue != nullptr </tt>.
+		 * @exception std::invalid_argument If <tt> minimumValue == nullptr </tt> and <tt> maximumValue != nullptr </tt>.
 		 * @exception std::invalid_argument	If <tt> minimumValue != nullptr </tt> and <tt> maximumValue == nullptr </tt>.
 		 * 									
 		 * @copydetails	pushBackDoubleHdf5ArrayOfValues

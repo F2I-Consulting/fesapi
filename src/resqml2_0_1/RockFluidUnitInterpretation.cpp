@@ -46,7 +46,7 @@ bool RockFluidUnitInterpretation::hasPhase() const
 gsoap_eml2_3::resqml22__Phase RockFluidUnitInterpretation::getPhase() const
 {
 	if (!hasPhase()) {
-		throw invalid_argument("The rock fluid unit interpretation has not any phase.");
+		throw logic_error("The rock fluid unit interpretation has not any phase.");
 	}
 
 	return static_cast<gsoap_eml2_3::resqml22__Phase>(*static_cast<_resqml20__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase);

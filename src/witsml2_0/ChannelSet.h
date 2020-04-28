@@ -20,7 +20,6 @@ under the License.
 
 #include "ChannelIndexDataObject.h"
 
-/** . */
 namespace WITSML2_0_NS
 {
 	/**

@@ -20,13 +20,11 @@ under the License.
 
 #include "AbstractObject.h"
 
-/** . */
 namespace RESQML2_0_1_NS {
 	/** A wellbore feature. */
 	class WellboreFeature;
 }
 
-/** . */
 namespace WITSML2_0_NS
 {
 	/** A trajectory. */
@@ -92,7 +90,18 @@ namespace WITSML2_0_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~Wellbore() {}
 
+		/**
+		 * @brief	Gets well dor
+		 *
+		 * @returns	The well dor.
+		 */
 		COMMON_NS::DataObjectReference getWellDor() const;
+
+		/**
+		 * @brief	Gets the well
+		 *
+		 * @returns	Nullptr if it fails, else the well.
+		 */
 		DLL_IMPORT_OR_EXPORT class Well* getWell() const;
 
 		/**

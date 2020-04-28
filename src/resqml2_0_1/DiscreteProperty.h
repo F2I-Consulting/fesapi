@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/DiscreteProperty.h"
 
-/** . */
 namespace RESQML2_0_1_NS
 {
 	/**

@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/BoundaryFeatureInterpretation.h"
 
-/** . */
 namespace RESQML2_2_NS
 {
 	/** A boundary feature interpretation. */

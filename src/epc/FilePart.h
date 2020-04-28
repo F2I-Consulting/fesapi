@@ -21,7 +21,6 @@ under the License.
 
 #include "FileRelationship.h"
 
-/** . */
 namespace epc
 {
 
@@ -38,14 +37,22 @@ namespace epc
 		FilePart();
 
 		/**
-		* Constructor
-		* @param inputContent		The content which will be included into a part of the package
-		* @param outputPartPath		The path of the part within the package.
-		*/
+		 * @brief	Constructor
+		 *
+		 * @param 	outputPartPath	The path of the part within the package.
+		 */
 		FilePart(std::string outputPartPath);
+		
+		/** @brief	Destructor */
 		~FilePart() {}
 
 		// ACCESSORS
+
+		/**
+		 * @brief	Gets file relationship
+		 *
+		 * @returns	The file relationship.
+		 */
 		const FileRelationship & getFileRelationship() const;
 
 		/**

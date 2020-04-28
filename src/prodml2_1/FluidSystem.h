@@ -20,7 +20,6 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
-/** . */
 namespace PRODML2_1_NS
 {
 	/** A fluid system. */

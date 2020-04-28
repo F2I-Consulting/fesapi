@@ -20,29 +20,22 @@ under the License.
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
 
-/** . */
 namespace RESQML2_NS
 {
-	/** A generic feature interpretation. */
+	/**
+	 * @brief	An interpretation of a feature that is not specialized. For example, use it when the
+	 * 			specialized type of the associated feature is not known.
+	 */
 	class GenericFeatureInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
 
-		/** Destructor */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~GenericFeatureInterpretation() {}
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:

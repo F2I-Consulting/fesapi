@@ -84,7 +84,7 @@ soap* AbstractObject::getGsoapContext() const
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		 return gsoapProxy2_3->soap;
-	 }
+	}
 	else if (partialObject != nullptr) {
 		return partialObject->soap;
 	}
@@ -537,25 +537,25 @@ void AbstractObject::setLastUpdate(const tm & lastUpdate)
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		if (gsoapProxy2_0_1->Citation->LastUpdate == nullptr) {
-			gsoapProxy2_0_1->Citation->LastUpdate = (tm *)soap_malloc(gsoapProxy2_0_1->soap, sizeof(tm));
+			gsoapProxy2_0_1->Citation->LastUpdate = (tm*)soap_malloc(gsoapProxy2_0_1->soap, sizeof(tm));
 		}
 		*gsoapProxy2_0_1->Citation->LastUpdate = lastUpdate;
 	}
 	else if (gsoapProxy2_1 != nullptr) {
 		if (gsoapProxy2_1->Citation->LastUpdate == nullptr) {
-			gsoapProxy2_1->Citation->LastUpdate = (tm *)soap_malloc(gsoapProxy2_1->soap, sizeof(tm));
+			gsoapProxy2_1->Citation->LastUpdate = (tm*)soap_malloc(gsoapProxy2_1->soap, sizeof(tm));
 		}
 		*gsoapProxy2_1->Citation->LastUpdate = lastUpdate;
 	}
 	else if (gsoapProxy2_2 != nullptr) {
 		if (gsoapProxy2_2->Citation->LastUpdate == nullptr) {
-			gsoapProxy2_2->Citation->LastUpdate = (tm *)soap_malloc(gsoapProxy2_2->soap, sizeof(tm));
+			gsoapProxy2_2->Citation->LastUpdate = (tm*)soap_malloc(gsoapProxy2_2->soap, sizeof(tm));
 		}
 		*gsoapProxy2_2->Citation->LastUpdate = lastUpdate;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		if (gsoapProxy2_3->Citation->LastUpdate == nullptr) {
-			gsoapProxy2_3->Citation->LastUpdate = (tm *)soap_malloc(gsoapProxy2_3->soap, sizeof(tm));
+			gsoapProxy2_3->Citation->LastUpdate = (tm*)soap_malloc(gsoapProxy2_3->soap, sizeof(tm));
 		}
 		*gsoapProxy2_3->Citation->LastUpdate = lastUpdate;
 	}

@@ -20,29 +20,22 @@ under the License.
 
 #include "../resqml2/BoundaryFeatureInterpretation.h"
 
-/** . */
 namespace RESQML2_NS
 {
-	/** A geobody boundary interpretation. */
+	/**
+	 * @brief	A type of boundary feature, this class identifies if the boundary is a geobody and
+	 * 			the type of the boundary.
+	 */
 	class GeobodyBoundaryInterpretation : public BoundaryFeatureInterpretation
 	{
 	public:
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~GeobodyBoundaryInterpretation() {}
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:

@@ -1173,7 +1173,7 @@ void IjkGridParametricRepresentation::getXyzPointsFromParametricPoints(double * 
 					}
 
 					if (previousControlPoint == controlPointCount - 1) {
-						throw invalid_argument("Cannot extrapolate piecewiselinear pillar for now to explicit a grid node.");
+						throw logic_error("Cannot extrapolate piecewiselinear pillar for now to explicit a grid node.");
 					}
 
 					double ratioFromPreviousControlPoint = .0;

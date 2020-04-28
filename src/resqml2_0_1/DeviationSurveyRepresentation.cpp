@@ -33,6 +33,14 @@ using namespace gsoap_resqml2_0_1;
 
 DeviationSurveyRepresentation::DeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const string& guid, const std::string& title, bool isFinal, RESQML2_NS::MdDatum* mdInfo)
 {
+	if (interp == nullptr) {
+		throw invalid_argument("The interpretation cannot be nullptr.");
+	}
+
+	if (mdInfo == nullptr) {
+		throw invalid_argument("The MD information cannot be nullptr.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREDeviationSurveyRepresentation(interp->getGsoapContext());	
 	_resqml20__DeviationSurveyRepresentation* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
 
@@ -137,7 +145,7 @@ void DeviationSurveyRepresentation::getMdValues(double * values) const
 		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values);
 	}
 	else {
-		throw invalid_argument("Mds can only be defined using DoubleHdf5Array for now in fesapi.");
+		throw logic_error("Mds can only be defined using DoubleHdf5Array for now in fesapi.");
 	}
 }
 

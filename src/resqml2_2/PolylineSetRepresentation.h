@@ -20,7 +20,6 @@ under the License.
 
 #include "../resqml2/PolylineSetRepresentation.h"
 
-/** . */
 namespace RESQML2_2_NS
 {
 	/** A polyline set representation. */
@@ -60,24 +59,28 @@ namespace RESQML2_2_NS
 		PolylineSetRepresentation(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	interp	The interpretation this representation represents.
-		 * @param 		  	guid  	The guid to set to the new instance. If empty then a new guid will be
-		 * 							generated.
-		 * @param 		  	title 	A title for the instance to create.
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
+		 *
+		 * @param [in]	interp	The interpretation this representation represents.
+		 * @param 	  	guid  	The guid to set to the new instance. If empty then a new guid will be
+		 * 						generated.
+		 * @param 	  	title 	A title for the instance to create.
 		 */
 		PolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	interp  	The interpretation this representation represents.
-		 * @param 		  	guid		The guid to set to the new instance. If empty then a new guid
-		 * 								will be generated.
-		 * @param 		  	title   	A title for the instance to create.
-		 * @param 		  	roleKind	Indicates the role of this representation.
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
+		 *
+		 * @param [in]	interp  	The interpretation this representation represents.
+		 * @param 	  	guid		The guid to set to the new instance. If empty then a new guid will be
+		 * 							generated.
+		 * @param 	  	title   	A title for the instance to create.
+		 * @param 	  	roleKind	Indicates the role of this representation.
 		 */
 		PolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title, gsoap_eml2_3::resqml22__LineRole roleKind);

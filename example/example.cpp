@@ -72,8 +72,8 @@ under the License.
 #include "resqml2_0_1/PropertySet.h"
 #include "resqml2_0_1/ContinuousProperty.h"
 #include "resqml2_0_1/DiscreteProperty.h"
-#include "resqml2_0_1/CategoricalProperty.h"
-#include "resqml2_0_1/StringTableLookup.h"
+#include "resqml2/CategoricalProperty.h"
+#include "resqml2/StringTableLookup.h"
 #include "resqml2/GridConnectionSetRepresentation.h"
 #include "resqml2/IjkGridExplicitRepresentation.h"
 #include "resqml2/IjkGridParametricRepresentation.h"
@@ -3714,7 +3714,7 @@ void deserialize(const string & inputFile)
 	string resqmlResult = pck.deserializeInto(repo);
 	if (!resqmlResult.empty()) {
 		cerr << resqmlResult << endl;
-		throw invalid_argument("The epc document is not a valid one");
+		repo.clearWarnings();
 	}
 
 	const unsigned int hdfProxyCount = repo.getHdfProxyCount();

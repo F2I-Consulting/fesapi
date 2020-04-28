@@ -21,7 +21,6 @@ under the License.
 
 #include <string>
 
-/** . */
 namespace epc
 {
 	/** This class intends to represent a relationship entry of a rel file of a package part. */

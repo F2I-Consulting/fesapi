@@ -20,7 +20,6 @@ under the License.
 
 #include "WellboreObject.h"
 
-/** . */
 namespace WITSML2_0_NS
 {
 	/** A trajectory. */
