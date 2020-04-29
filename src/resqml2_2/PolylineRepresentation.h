@@ -95,46 +95,14 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
-		/**
-		 * Sets a geometry
-		 *
-		 * @param [in,out]	points	  	The points which constitute the polyline. Ordered by XYZ and then
-		 * 								points.
-		 * @param 		  	pointCount	The count of points in the polyline. Must be three times the
-		 * 								count of the array of doubles "points".
-		 * @param [in,out]	proxy	  	(Optional) The HDf proxy defining the HDF file where the double
-		 * 								array will be stored.
-		 * @param [in,out]	localCrs  	(Optional) If non-null, the local crs.
-		 */
 		DLL_IMPORT_OR_EXPORT void setGeometry(double const* points, unsigned int pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
-		/**
-		 * Indicates if the representaiton is a closed polyline or a non closed polyline.
-		 *
-		 * @returns	True if closed, false if not.
-		 */
 		DLL_IMPORT_OR_EXPORT bool isClosed() const final;
 
-		/**
-		 * Indicates if the polyline is associated to a particular LineRole.
-		 *
-		 * @returns	True if a line role, false if not.
-		 */
 		DLL_IMPORT_OR_EXPORT bool hasALineRole() const final;
 
-		/**
-		 * Get the role of this polyline. Throw an exception if the polyline has no role (see method
-		 * hasALineRole).
-		 *
-		 * @returns	The line role.
-		 */
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__LineRole getLineRole() const final;
 
-		/**
-		 * Set the line role of this instance
-		 *
-		 * @param 	lineRole	The line role.
-		 */
 		DLL_IMPORT_OR_EXPORT void setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole) final;
 
 	private:

@@ -84,7 +84,7 @@ namespace RESQML2_NS
 
 		/**
 		 * Gets all the triangle node indices of a particular patch of this representation. See
-		 * {@link AbstractRepresentation::getXyzPointsOfPatch} method to read the xyz coordinates
+		 * {@link resqml2::AbstractRepresentation::getXyzPointsOfPatch} method to read the xyz coordinates
 		 * of the triangle nodes.
 		 *
 		 * @exception	std::out_of_range	If <tt>patchIndex &gt;=</tt> getPatchCount().
@@ -102,7 +102,7 @@ namespace RESQML2_NS
 
 		/**
 		 * Gets all the triangle node indices of all patches of this representation. See
-		 * {@link AbstractRepresentation::getXyzPointsOfPatch} method to read the xyz coordinates
+		 * {@link resqml2::AbstractRepresentation::getXyzPointsOfPatch} method to read the xyz coordinates
 		 * of the triangle nodes.
 		 *
 		 * @param [out]	triangleNodeIndices	A preallocated array of size <tt>3 *

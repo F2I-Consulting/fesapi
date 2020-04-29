@@ -52,19 +52,8 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~RockFluidUnitInterpretation() {}
 
-		/**
-		 * Indicates if the instance has an information about its deposition mode.
-		 *
-		 * @returns	True if phase, false if not.
-		 */
 		DLL_IMPORT_OR_EXPORT bool hasPhase() const final;
 
-		/**
-		 * Get the deposition mode of the stratigraphic unit interpretation. You should verify its
-		 * existency using hasDepositionMode() before to call this function.
-		 *
-		 * @returns	The phase.
-		 */
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__Phase getPhase() const final;
 	};
 }

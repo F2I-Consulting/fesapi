@@ -56,14 +56,8 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~StratigraphicOccurrenceInterpretation() {}
 
-		/**
-		 * Sets stratigraphic column rank interpretation
-		 *
-		 * @param [in,out]	stratiColumnRankInterp	If non-null, the strati column rank interp.
-		 */
 		DLL_IMPORT_OR_EXPORT void setStratigraphicColumnRankInterpretation(RESQML2_NS::StratigraphicColumnRankInterpretation * stratiColumnRankInterp) final;
 
-		/** A stratigraphic column rank interpretation*. */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratigraphicColumnRankInterpretationDor() const final;
 	};
 }

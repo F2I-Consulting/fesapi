@@ -56,24 +56,10 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~StratigraphicColumn() {}
 
-		/**
-		 * Pushes a back strati column rank
-		 *
-		 * @param [in,out]	stratiColumnRank	If non-null, the strati column rank.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackStratiColumnRank(RESQML2_NS::StratigraphicColumnRankInterpretation * stratiColumnRank) final;
 
-		/**
-		 * Get the count of all the stratigraphic column rank interpretations which are contained in this
-		 * stratigraphic column.
-		 *
-		 * @returns	the count of all the stratigraphic column rank interpretations which are contained in this stratigraphic column.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getStratigraphicColumnRankInterpretationCount() const final;
 
-		/**
-		 * Get a stratigraphic column rank interpretations DOR at a particular index.
-		 */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratigraphicColumnRankInterpretationDor(unsigned int index) const final;
 	};
 }

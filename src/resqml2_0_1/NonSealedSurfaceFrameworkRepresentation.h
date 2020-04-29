@@ -58,14 +58,6 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~NonSealedSurfaceFrameworkRepresentation() {}
 
-		/**
-		 * Pushes back a contact representation in the structural framework
-		 *
-		 * @param 		  	pointCount	Number of points.
-		 * @param [in,out]	points	  	If non-null, the points.
-		 * @param [in,out]	proxy	  	(Optional) If non-null, the proxy.
-		 * @param [in,out]	localCrs  	(Optional) If non-null, the local crs.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackNonSealedContactRepresentation(unsigned int pointCount, double const* points, EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
                 
         /**

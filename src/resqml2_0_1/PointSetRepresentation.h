@@ -87,17 +87,6 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
 
-		/**
-		 * Push back a new patch of polylines
-		 *
-		 * @param 		  	xyzPointCount	The XYZ point count in this patch.
-		 * @param 		  	xyzPoints	 	The XYZ values of the points of the patch. Ordered by XYZ and
-		 * 									then by @p xyzPointCount. It must be three times
-		 * 									xyzPointCount.
-		 * @param [in,out]	proxy		 	(Optional) The HDF proxy which defines where the XYZ points
-		 * 									will be stored.
-		 * @param [in,out]	localCrs	 	(Optional) The local CRS wher the points are given.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
 			unsigned int xyzPointCount, double const * xyzPoints,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;

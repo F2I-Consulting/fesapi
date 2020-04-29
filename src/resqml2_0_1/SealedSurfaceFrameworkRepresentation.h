@@ -64,31 +64,8 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~SealedSurfaceFrameworkRepresentation() {}
 
-		/**
-		 * Push back a contact in the structural framework with implicit identical nodes.
-		 * 
-		 * After calling the following method, ContactPatch container of the newly pushed contact
-		 * remains empty. After this call, do not forget to call the pushBackContactPatch method for
-		 * each ContactPatch of the contact.
-		 *
-		 * @param 	kind	Identity kind.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind kind) final;
 
-		/**
-		 * Push back a contact in the structural framework.
-		 * 
-		 * After calling the following method, ContactPatch container of the newly pushed contact
-		 * remains empty. After this call, do not forget to call the pushBackContactPatch method for
-		 * each ContactPatch of the contact.
-		 *
-		 * @param 		  	kind			   	Identity kind.
-		 * @param 		  	patchCount		   	The number of contact patch within this sealed contact.
-		 * @param 		  	identicalNodesCount	The number of identical nodes along this sealed contact.
-		 * @param [in,out]	identicalNodes	   	The patchCount x identicalNodesCount sized 1D array of
-		 * 										identical nodes indices.
-		 * @param [in,out]	proxy			   	The hdf proxy.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackContact(
 			gsoap_resqml2_0_1::resqml20__IdentityKind kind,
 			unsigned int patchCount,
@@ -96,18 +73,6 @@ namespace RESQML2_0_1_NS
 			int const* identicalNodes,
 			EML2_NS::AbstractHdfProxy * proxy) final;
 
-		/**
-		 * Push back a contact patch in a particular contact of the structural framework.
-		 *
-		 * @param 		  	contactIdx							 	The index of the contact which will
-		 * 															contain this contact patch.
-		 * @param [in,out]	nodeIndicesOnSupportingRepresentation	The nodes defining the contact patch
-		 * 															on the supporting representation.
-		 * @param 		  	nodeCount							 	The node count of this contact patch.
-		 * @param [in,out]	supportingRepresentation			 	The supporting representation of this
-		 * 															contact patch.
-		 * @param [in,out]	proxy								 	If non-null, the proxy.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackContactPatch(
 			unsigned int contactIdx,
 			int const* nodeIndicesOnSupportingRepresentation, unsigned int nodeCount,
@@ -116,108 +81,22 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT unsigned int getContactCount() const final;
 
-		/**
-		 * Get the contact patch identity kind of a contact located at a particular index.
-		 *
-		 * @param 	contactIdx	The index of the contact in the contact list. It must be in the interval
-		 * 						[0..getContactCount()[.
-		 *
-		 * @returns	The contact patch identity kind of the contact located at a particular index.
-		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__IdentityKind getContactPatchIdentityKind(unsigned int contactIdx) const final;
 
-		/**
-		* Check if all nodes of contact patches are identical in a contact.
-		*
-		* @param contactIdx	The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.
-		* @return			True if all node of contact patches are identical else false.
-		*/
 		DLL_IMPORT_OR_EXPORT bool areAllContactPatchNodesIdentical(unsigned int contactIdx) const final;
 
-		/**
-		 * Get the count of identical nodes of a particular contact. Throw an exception if all nodes are
-		 * identical (see areAllContactPatchNodesIdenticalInContactRep()).
-		 *
-		 * @param 	contactIdx	The index of the contact in the contact list. It must be in the interval
-		 * 						[0..getContactCount()[.
-		 *
-		 * @returns	The count of identical nodes of a particular contact.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getIdenticalContactPatchNodeCount(unsigned int contactIdx) const final;
 
-		/**
-		 * Get the node indices of all contact patches which are identical. Throw an exception if all
-		 * nodes are identical (see areAllContactPatchNodesIdenticalInContactRep()).
-		 *
-		 * @param 		  	contactIdx 	The index of the contact in the contact list. It must be in the
-		 * 								interval [0..getContactCount()[.
-		 * @param [in,out]	nodeIndices	This array must be preallocated with getIdenticalNodeCount(). It
-		 * 								won't be deleted by fesapi. It will be filled in with the desired
-		 * 								node indices.
-		 */
 		DLL_IMPORT_OR_EXPORT void getIdenticalContactPatchNodeIndices(unsigned int contactIdx, unsigned int * nodeIndices) const final;
 
-		/**
-		 * Get the count of contact patches in a particular contact represenation of this framework.
-		 *
-		 * @param 	contactIdx	The index of the contact in the contact list. It must be in the interval
-		 * 						[0..getContactCount()[.
-		 *
-		 * @returns	The count of contact patches in a particular contact represenation in this framework.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getContactPatchCount(unsigned int contactIdx) const final;
 
-		/**
-		 * Get the representation (for instance the triangulated surface) where a particular contact
-		 * patch has been defined.
-		 *
-		 * @param 	contactIdx	The index of the contact in the contact list. It must be in the interval
-		 * 						[0..getContactCount()[.
-		 * @param 	cpIndex   	The index of the contact patch in the contact. It must be in the interval
-		 * 						[0..getContactPatchCount()[.
-		 *
-		 * @returns	The representation where the contact patch has been defined.
-		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepresentationOfContactPatch(unsigned int contactIdx, unsigned int cpIndex) const final;
 
-		/**
-		 * Get the representation index where a particular contact patch has been defined. The index is
-		 * in the range [0..getRepresentationCount()[.
-		 *
-		 * @param 	contactIdx	The index of the contact in the contact list. It must be in the interval
-		 * 						[0..getContactCount()[.
-		 * @param 	cpIndex   	The index of the contact patch in the contact. It must be in the interval
-		 * 						[0..getContactPatchCount()[.
-		 *
-		 * @returns	The representation index where the contact patch has been defined.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getRepresentationIndexOfContactPatch(unsigned int contactIdx, unsigned int cpIndex) const final;
 
-		/**
-		 * Get the count of nodes of a particular contact patch.
-		 *
-		 * @param 	contactIdx	The index of the contact in the contact list. It must be in the interval
-		 * 						[0..getContactCount()[.
-		 * @param 	cpIndex   	The index of the contact patch in the contact. It must be in the interval
-		 * 						[0..getContactPatchCount()[.
-		 *
-		 * @returns	The count of nodes of a particular contact patch.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getContactPatchNodeCount(unsigned int contactIdx, unsigned int cpIndex) const final;
 
-		/**
-		 * Get the node indices of a particular contact patch. The returned indices are associated to
-		 * the node array of the representation of the particular contact patch (see
-		 * getRepresentationOfContactPatch()).
-		 *
-		 * @param 		  	contactIdx 	The index of the contact in the contact list. It must be in the
-		 * 								interval [0..getContactCount()[.
-		 * @param 		  	cpIndex	   	The index of the contact patch in the contact. It must be in the
-		 * 								interval [0..getContactPatchCount()[.
-		 * @param [in,out]	nodeIndices	This array must be preallocated with
-		 * 								getNodeCountOfContactPatch(). It won't be deleted by fesapi. It
-		 * 								will be filled in with the desired node indices.
-		 */
 		DLL_IMPORT_OR_EXPORT void getContactPatchNodeIndices(unsigned int contactIdx, unsigned int cpIndex, unsigned int * nodeIndices) const final;
 
 	private:

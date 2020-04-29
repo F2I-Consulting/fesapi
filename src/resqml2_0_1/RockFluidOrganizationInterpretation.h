@@ -58,18 +58,8 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~RockFluidOrganizationInterpretation() {}
 
-		/**
-		* Push back a rock fluid unit in this organization
-		*
-		* @param rockFluidUnitInterpretation	The rock fluid unit interpretation to push back
-		*/
 		DLL_IMPORT_OR_EXPORT void pushBackRockFluidUnitInterpretation(RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterpretation) final;
 
-		/**
-		 * Gets rock fluid unit interp count
-		 *
-		 * @returns	The count of rock fluid unit interp in this rock fluid organization.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getRockFluidUnitInterpCount() const final;
 
 		COMMON_NS::DataObjectReference getRockFluidUnitInterpretationDor(unsigned int index) const final;

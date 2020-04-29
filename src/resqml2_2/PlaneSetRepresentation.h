@@ -81,29 +81,8 @@ namespace RESQML2_2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
 
-		/**
-		 * Push back a new patch which is an horizontal plane
-		 *
-		 * @param 		  	zCoordinate	The Z coordinate of the horizontal plane.
-		 * @param [in,out]	localCrs   	(Optional) If non-null, the local crs.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
-		/**
-		 * Push back a new patch which is not a horizontal plane. It s geometry is given by means of 3
-		 * XYZ points.
-		 *
-		 * @param 		  	x1			The first x value.
-		 * @param 		  	y1			The first y value.
-		 * @param 		  	z1			The first z value.
-		 * @param 		  	x2			The second x value.
-		 * @param 		  	y2			The second y value.
-		 * @param 		  	z2			The second z value.
-		 * @param 		  	x3			The third double.
-		 * @param 		  	y3			The third double.
-		 * @param 		  	z3			The third double.
-		 * @param [in,out]	localCrs	(Optional) If non-null, the local crs.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackTiltedPlaneGeometryPatch(
 			double x1, double y1, double z1,
 			double x2, double y2, double z2,

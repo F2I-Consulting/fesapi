@@ -76,166 +76,36 @@ namespace RESQML2_0_1_NS
 		*/
 		~UnstructuredGridRepresentation() {}
 
-		/**
-		 * Indicates wether the grid has a geometry or not.
-		 *
-		 * @returns	True if geometry, false if not.
-		 */
 		DLL_IMPORT_OR_EXPORT bool hasGeometry() const final;
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
-		/**
-		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
-		 * the local CRS.
-		 *
-		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is
-		 * 								coordinate dimension (XYZ) and second dimension is vertex
-		 * 								dimension. It must be pre allocated.
-		 */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
-		/**
-		 * Get all the face indices of all the cells.
-		 *
-		 * @param [in,out]	faceIndices	It must be pre allocated with the last value returned by
-		 * 								getCumulativeFaceCountPerCell()
-		 */
 		DLL_IMPORT_OR_EXPORT void getFaceIndicesOfCells(ULONG64 * faceIndices) const final;
 
-		/**
-		 * Get the cumulative face count per cell. First value is the count of faces in the first cell.
-		 * Second value is the count of faces in the first and in the second cell. Third value is the
-		 * count of faces in the first and in the second and in the third cell. Etc... Count of this
-		 * array is equal to getCellCount()
-		 * A single face count should be at least 4.
-		 *
-		 * @param [in,out]	cumulativeFaceCountPerCell_	It must be pre allocated with getCellCount()
-		 */
 		DLL_IMPORT_OR_EXPORT void getCumulativeFaceCountPerCell(ULONG64 * cumulativeFaceCountPerCell_) const final;
 
-		/**
-		* Detect if the face count per cell is constant in the grid.
-		*/
 		DLL_IMPORT_OR_EXPORT bool isFaceCountOfCellsConstant() const final;
 
-		/**
-		 * Get the constant face count per cell in the grid.
-		 *
-		 * @returns	The constant face count of cells.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getConstantFaceCountOfCells() const final;
 
-		/**
-		 * Get all the node indices of all the faces.
-		 *
-		 * @param [in,out]	nodeIndices	It must be pre allocated with the last value returned by
-		 * 								getCumulativeNodeCountPerFace().
-		 */
 		DLL_IMPORT_OR_EXPORT void getNodeIndicesOfFaces(ULONG64 * nodeIndices) const final;
 
-		/**
-		 * Get the cumulative node count per face. First value is the count of nodes in the first face.
-		 * Second value is the count of nodes in the first and in the second face. Third value is the
-		 * count of nodes in the first and in the second and in the third face. Etc... Count of this
-		 * array is equal to getFaceCount()
-		 * A single node count should be at least 3.
-		 *
-		 * @param [in,out]	nodeCountPerFace	It must be pre allocated with the last value of
-		 * 										getFaceCount().
-		 */
 		DLL_IMPORT_OR_EXPORT void getCumulativeNodeCountPerFace(ULONG64 * nodeCountPerFace) const final;
 
-		/**
-		* Detect if the node count per face is constant in the grid.
-		*/
 		DLL_IMPORT_OR_EXPORT bool isNodeCountOfFacesConstant() const final;
 
-		/**
-		 * Get the constant node count per face in the grid.
-		 *
-		 * @returns	The constant node count of faces.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getConstantNodeCountOfFaces() const final;
 
 		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const final;
 
-		/**
-		 * Get the face count
-		 *
-		 * @returns	The face count.
-		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getFaceCount() const final;
 
-		/**
-		 * Get the node count
-		 *
-		 * @returns	The node count.
-		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getNodeCount() const final;
 
-		/**
-		 * Retrieves orientation i.e. if each cell face is right handed or not
-		 *
-		 * @param [in,out]	cellFaceIsRightHanded	If non-null, the cell face is right handed.
-		 */
 		DLL_IMPORT_OR_EXPORT void getCellFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const final;
 
-		/**
-		 * Set the geometry using some existing hdf5 dataset
-		 *
-		 * @param 		  	cellFaceIsRightHanded			 	The path to the hdf5 dataset in the hdf
-		 * 														proxy where a boolean mask is used to
-		 * 														indicate which cell faces have an
-		 * 														outwardly directed normal following a
-		 * 														right hand rule. Array length is the sum
-		 * 														of the cell face count per cell, and the
-		 * 														data follows the order of the faces per
-		 * 														cell RESQMLlist-of-lists.
-		 * @param 		  	points							 	The path to the hdf5 dataset in the hdf
-		 * 														proxy where all the XYZ points defining
-		 * 														the nodes of the unstructured grid are
-		 * 														defined. There must a double count of
-		 * 														pointCount * 3.
-		 * @param 		  	pointCount						 	The count of points defining the nodes of
-		 * 														this unstructured grid.
-		 * @param [in,out]	proxy							 	The hdf proxy which contains the datasets
-		 * 														given inthis method by means of path.
-		 * @param 		  	faceIndicesPerCell				 	The path to the hdf5 dataset in the hdf
-		 * 														proxy where each item defines the index
-		 * 														of the face of a cell. There must be a
-		 * 														count of the last value in
-		 * 														faceIndicesCumulativeCountPerCell.
-		 * @param 		  	faceIndicesCumulativeCountPerCell	The path to the hdf5 dataset in the hdf
-		 * 														proxy where each item defines the
-		 * 														cumulative count of faces. The count of
-		 * 														this array must be equal to the count of
-		 * 														cells in this unstructured grid. For
-		 * 														example if the first cell a 4 faces, the
-		 * 														second cell 5 faces and the third cell 6
-		 * 														faces then the array would be {4, 9, 15}
-		 * @param 		  	faceCount						 	The count of faces in this unstructured
-		 * 														grid. Be aware this count does not
-		 * 														duplicate shared faces. Most of time, you
-		 * 														have less faceCount than the last value
-		 * 														of faceIndicesCumulativeCountPerCell
-		 * 														which is the count of faces per cell.
-		 * @param 		  	nodeIndicesPerFace				 	The path to the hdf5 dataset in the hdf
-		 * 														proxy where each item defines the index
-		 * 														of the node of a face. There must be a
-		 * 														count of the last value in
-		 * 														nodeIndicesCumulativeCountPerFace.
-		 * @param 		  	nodeIndicesCumulativeCountPerFace	The path to the hdf5 dataset in the hdf
-		 * 														proxy where each item defines the
-		 * 														cumulative count of nodes. The count of
-		 * 														this array must be eqaul to faceCount.
-		 * @param 		  	cellShape						 	A denormalization of the information
-		 * 														which gives quick access to the most
-		 * 														complex shape of polyhedron encountered
-		 * 														in this unstructured grid.
-		 * @param [in,out]	localCrs						 	(Optional) If non-null, the local crs.
-		 */
 		DLL_IMPORT_OR_EXPORT void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, ULONG64 pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& faceIndicesCumulativeCountPerCell,
 			ULONG64 faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,

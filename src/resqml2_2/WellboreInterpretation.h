@@ -62,11 +62,6 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~WellboreInterpretation() {}
 
-		/**
-		 * Indicates if the wellbore has been interpreted as drilled or not.
-		 *
-		 * @returns	True if drilled, false if not.
-		 */
 		bool isDrilled() const final;
 	};
 }

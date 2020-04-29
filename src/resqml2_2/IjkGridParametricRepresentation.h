@@ -97,25 +97,12 @@ namespace RESQML2_2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
-		/**
-		* Get the max control point count on a pillar of the grid.
-		*/
 		DLL_IMPORT_OR_EXPORT unsigned int getControlPointMaxCountPerPillar() const final;
 
-		/**
-		* Check if the IJK grid contains some paraemeters on some control points.
-		* It happens when the grid contains at least one non vertical or a non Z linear parametric line.
-		*/
 		DLL_IMPORT_OR_EXPORT bool hasControlPointParameters() const final;
 
-		/**
-		* Check if the parametric line kind is constant in the grid.
-		*/
 		DLL_IMPORT_OR_EXPORT bool isParametricLineKindConstant() const final;
 
-		/*
-		* Get the constant parametric line count in the grid.
-		*/
 		DLL_IMPORT_OR_EXPORT short getConstantParametricLineKind() const final;
 
 		using RESQML2_NS::IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes;

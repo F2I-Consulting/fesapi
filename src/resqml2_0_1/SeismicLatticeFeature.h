@@ -74,32 +74,12 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
 		~SeismicLatticeFeature() {}
 
-		/**
-		 * Get the crossline index increment between two consecutive crosslines.
-		 *
-		 * @returns	The crossline increment.
-		 */
 		DLL_IMPORT_OR_EXPORT int getCrosslineIncrement() const final;
 
-		/**
-		 * Get the inline index increment between two consecutive inlines.
-		 *
-		 * @returns	The inline increment.
-		 */
 		DLL_IMPORT_OR_EXPORT int getInlineIncrement() const final;
 
-		/**
-		 * Get the index of the first crossline.
-		 *
-		 * @returns	The origin crossline.
-		 */
 		DLL_IMPORT_OR_EXPORT int getOriginCrossline() const final;
 
-		/**
-		 * Get the index of the first inline.
-		 *
-		 * @returns	The origin inline.
-		 */
 		DLL_IMPORT_OR_EXPORT int getOriginInline() const final;
 	};
 }

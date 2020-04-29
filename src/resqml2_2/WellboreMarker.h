@@ -74,39 +74,12 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		~WellboreMarker() {}
 
-		/**
-		 * Indicates if the marker is associated to a particular geologic boundary kind.
-		 *
-		 * @returns	True if the marker is associated to a particular geologic boundary kind, false if not.
-		 */
 		DLL_IMPORT_OR_EXPORT bool hasAGeologicBoundaryKind() const final;
 
-		/**
-		 * Gets the type of the intersected feature of the marker.
-		 *
-		 * @exception	std::invalid_argument	If the marker has no geologic boundary kind (see method
-		 * 										hasAGeologicBoundaryKind()).
-		 *
-		 * @returns	The geologic boundary kind associated to this marker.
-		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind getGeologicBoundaryKind() const final;
 
-		/**
-		 * Gets the UUID of the boundary feature interpretation linked to this well marker. Especially
-		 * useful in partial transfer mode.
-		 *
-		 * @returns	The boundary feature interpretation UUID, or empty string if it fails.
-		 */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getBoundaryFeatureInterpretationDor() const final;
 
-		/**
-		 * Sets the boundary feature interpretation linked to this well marker.
-		 *
-		 * @exception	std::invalid_argument	If @p interp is @c nullptr.
-		 *
-		 * @param [in]	interp	The boundary feature interpretation to link to this well marker. It
-		 * 						cannot be null.
-		 */
 		DLL_IMPORT_OR_EXPORT void setBoundaryFeatureInterpretation(RESQML2_NS::BoundaryFeatureInterpretation* interp) final;
 	};
 }

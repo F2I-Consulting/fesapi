@@ -63,168 +63,32 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~SealedVolumeFrameworkRepresentation() {}
 
-		/**
-		 * Push back a region in this sealed volume framework.
-		 *
-		 * @param [in,out]	stratiUnitInterp		 	The stratigraphic unit inter^retation represented
-		 * 												by this region.
-		 * @param 		  	externalShellFaceCount   	The count of faces composing the region external
-		 * 												shell.
-		 * @param [in,out]	faceRepresentationIndices	The indices of the representation in the
-		 * 												representation list of this organization for each
-		 * 												external shell face.
-		 * @param [in,out]	faceRepPatchIndices		 	The indices of the patch in the representation
-		 * 												defined in \a faceRepresentationIndices for each
-		 * 												external shell face.
-		 * @param [in,out]	faceSide				 	The side "flag" dor each external shell face.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackVolumeRegion(RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp,
 			unsigned int externalShellFaceCount,
 			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide) final;
 
-		/**
-		 * Push back an internal shell in a particular region of this sealed volume framework. Throw
-		 * exception if the region index does not correspond to a region which has been already pushed.
-		 *
-		 * @param 		  	regionIndex				 	The index of the framework region.. It must be in
-		 * 												the interval [0..getRegionCount()[.
-		 * @param 		  	externalShellFaceCount   	The count of faces composing the region internal
-		 * 												shell.
-		 * @param [in,out]	faceRepresentationIndices	The indices of the representation in the
-		 * 												representation list of this organization for each
-		 * 												internal shell face.
-		 * @param [in,out]	faceRepPatchIndices		 	The indices of the patch in the representation
-		 * 												defined in \a faceRepresentationIndices for each
-		 * 												internal shell face.
-		 * @param [in,out]	faceSide				 	The side "flag" dor each internal shell face.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackInternalShell(unsigned int regionIndex,
 			unsigned int externalShellFaceCount,
 			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide) final;
 
-		/**
-		 * Get the count of region in this framework.
-		 *
-		 * @returns	The count of region in this framework.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getRegionCount() const final;
 
-		/**
-		 * Get the count of internal shells in a particular region.
-		 *
-		 * @param 	regionIndex	The index of the framework region. It must be in the interval
-		 * 						[0..getRegionCount()[.
-		 *
-		 * @returns	The count of internal shells in a particular region.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getInternalShellCount(unsigned int regionIndex) const final;
 
-		/**
-		 * Get the count of faces in a particular region external shell.
-		 *
-		 * @param 	regionIndex	The index of the framework region. It must be in the interval
-		 * 						[0..getRegionCount()[.
-		 *
-		 * @returns	The count of faces in a particular region external shell.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getFaceCountOfExternalShell(unsigned int regionIndex) const final;
 
-		/**
-		 * Get the count of faces in a particular region internal shell.
-		 *
-		 * @param 	regionIndex		  	The index of the framework region. It must be in the interval
-		 * 								[0..getRegionCount()[.
-		 * @param 	internalShellIndex	The index of the internal shell. It must be in the interval
-		 * 								[0..getInternalShellCount()[.
-		 *
-		 * @returns	The count of faces in a particular region internal shell.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const final;
 
-		/**
-		 * Get the representation (for instance the triangulated surface) which contains a particular
-		 * face of the external shell of a particular region of this framework.
-		 *
-		 * @param 	regionIndex	The index of the framework region. It must be in the interval
-		 * 						[0..getRegionCount()[.
-		 * @param 	faceIndex  	The index of the face of the framework region external shell.
-		 *
-		 * @returns	The representation which contains the face \a faceIndex of the external shell of the
-		 * 			region \a regionIndex of this framework.
-		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const final;
 
-		/**
-		 * Get the representation (for instance the triangulated surface) which contains a particular
-		 * face of a particular internal shell of a particular region of this framework.
-		 *
-		 * @param 	regionIndex		  	The index of the framework region. It must be in the interval
-		 * 								[0..getRegionCount()[.
-		 * @param 	internalShellIndex	The index of the internal shell. It must be in the interval
-		 * 								[0..getInternalShellCount()[.
-		 * @param 	faceIndex		  	The index of the face of the framework region external shell.
-		 *
-		 * @returns	The representation which contains the face \a faceIndex of the external shell of the
-		 * 			region \a regionIndex of this framework.
-		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const final;
 
-		/**
-		 * Get the representation patch index which is a particular face of the external shell of a
-		 * particular region of this framework.
-		 *
-		 * @param 	regionIndex	The index of the framework region. It must be in the interval
-		 * 						[0..getRegionCount()[.
-		 * @param 	faceIndex  	The index of the face of the framework region external shell.
-		 *
-		 * @returns	The representation patch index (on representation getRepOfExternalShellFace()) which
-		 * 			is the face \a faceIndex of the external shell of the region \a regionIndex of this
-		 * 			framework.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const final;
 
-		/**
-		 * Get the representation patch index which is a particular face of particular internal shell of
-		 * a particular region of this framework.
-		 *
-		 * @param 	regionIndex		  	The index of the framework region. It must be in the interval
-		 * 								[0..getRegionCount()[.
-		 * @param 	internalShellIndex	The index of the internal shell. It must be in the interval
-		 * 								[0..getInternalShellCount()[.
-		 * @param 	faceIndex		  	The index of the face of the framework region external shell.
-		 *
-		 * @returns	The representation patch index (on representation getRepOfExternalShellFace()) which
-		 * 			is the face \a faceIndex of the external shell of the region \a regionIndex of this
-		 * 			framework.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const final;
 
-		/**
-		 * Get the side flag of a particular face of the external shell of a particular region of this
-		 * framework.
-		 *
-		 * @param 	regionIndex	The index of the framework region. It must be in the interval
-		 * 						[0..getRegionCount()[.
-		 * @param 	faceIndex  	The index of the face of the framework region external shell.
-		 *
-		 * @returns	The side flag of the face \a faceIndex of the external shell of the region \a
-		 * 			regionIndex of this framework.
-		 */
 		DLL_IMPORT_OR_EXPORT bool getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const final;
 
-		/**
-		 * Get the side flag of a particular face of a particular internal shell of a particular region
-		 * of this framework.
-		 *
-		 * @param 	regionIndex		  	The index of the framework region. It must be in the interval
-		 * 								[0..getRegionCount()[.
-		 * @param 	internalShellIndex	The index of the internal shell. It must be in the interval
-		 * 								[0..getInternalShellCount()[.
-		 * @param 	faceIndex		  	The index of the face of the framework region external shell.
-		 *
-		 * @returns	The side flag of the face \a faceIndex of the external shell of the region \a
-		 * 			regionIndex of this framework.
-		 */
 		DLL_IMPORT_OR_EXPORT bool getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const final;
 
 	private:

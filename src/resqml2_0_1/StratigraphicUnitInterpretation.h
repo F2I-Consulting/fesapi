@@ -58,19 +58,8 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~StratigraphicUnitInterpretation() {}
 
-		/**
-		 * Indicates if the instance has an information about its deposition mode.
-		 *
-		 * @returns	True if deposition mode, false if not.
-		 */
 		DLL_IMPORT_OR_EXPORT bool hasDepositionMode() const final;
 
-		/**
-		 * Get the deposition mode of the stratigraphic unit interpretation. You should verify its
-		 * existency using hasDepositionMode() before to call this function.
-		 *
-		 * @returns	The deposition mode.
-		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__DepositionMode getDepositionMode() const final;
 	};
 }

@@ -97,139 +97,44 @@ namespace RESQML2_2_NS
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
-		/**
-		* Get the number of polylines in a given patch
-		*/
 		DLL_IMPORT_OR_EXPORT unsigned int getPolylineCountOfPatch(unsigned int patchIndex) const final;
+		
 		DLL_IMPORT_OR_EXPORT unsigned int getPolylineCountOfAllPatches() const final;
 
-		/**
-		 * Gets node count per polyline in patch
-		 *
-		 * @param 		  	patchIndex				Zero-based index of the patch.
-		 * @param [in,out]	nodeCountPerPolyline	If non-null, the node count per polyline.
-		 */
 		DLL_IMPORT_OR_EXPORT void getNodeCountPerPolylineInPatch(unsigned int patchIndex, unsigned int * nodeCountPerPolyline) const final;
 
-		/**
-		 * Get all the node count par polyline for all the patches of the representation.
-		 *
-		 * @param [in,out]	NodeCountPerPolyline	It must be pre-allocated.
-		 */
 		DLL_IMPORT_OR_EXPORT void getNodeCountPerPolylineOfAllPatches(unsigned int * NodeCountPerPolyline) const final;
 
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
 
-		/**
-		 * Push back a new patch of polylines
-		 *
-		 * @param [in,out]	nodeCountPerPolyline  	The node count per polyline in this patch. There must
-		 * 											be polylineCount values in this array.
-		 * @param [in,out]	nodes				  	The XYZ values of the nodes. Ordered by XYZ and then
-		 * 											by NodeCount. It must be three times NodeCount.
-		 * @param 		  	polylineCount		  	The polyline count in this patch.
-		 * @param 		  	allPolylinesClosedFlag	Indicates the closed flags of all the polylines.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy which defines where the
-		 * 											nodes and triangle indices will be stored.
-		 * @param [in,out]	localCrs			  	(Optional) If non-null, the local crs.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
 			unsigned int const * nodeCountPerPolyline, double const * nodes,
 			unsigned int polylineCount, bool allPolylinesClosedFlag,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
-		/**
-		 * Push back a new patch of polylines
-		 *
-		 * @param [in,out]	nodeCountPerPolyline	The node count per polyline in this patch. There must
-		 * 											be polylineCount values in this array.
-		 * @param [in,out]	nodes					The XYZ values of the nodes. Ordered by XYZ and then
-		 * 											by NodeCount. It must be three times NodeCount.
-		 * @param 		  	polylineCount			The polyline count in this patch.
-		 * @param [in,out]	polylineClosedFlags 	Indicates the closed flags for each of the polyline.
-		 * 											The count of this array must be polylineCount.
-		 * @param [in,out]	proxy					(Optional) The HDF proxy which defines where the
-		 * 											nodes and triangle indices will be stored.
-		 * @param [in,out]	localCrs				(Optional) If non-null, the local crs.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
 			unsigned int const * nodeCountPerPolyline, double const * nodes,
 			unsigned int polylineCount, bool * polylineClosedFlags,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
-		/**
-		 * Check if all polylines contained in a single patch are closed or not. Notice that a returned
-		 * "false" does not mean they are all not closed. Indeed they can be mixed i.e. some closed and
-		 * some not.
-		 *
-		 * @param 	patchIndex	The index of the patch to check.
-		 *
-		 * @returns	True if all polylines of the studied patch are closed.
-		 */
 		DLL_IMPORT_OR_EXPORT bool areAllPolylinesClosedOfPatch(unsigned int patchIndex) const final;
 
-		/**
-		 * Determine if we are all polylines closed of all patches
-		 *
-		 * @returns	True if all polylines closed of all patches, false if not.
-		 */
 		DLL_IMPORT_OR_EXPORT bool areAllPolylinesClosedOfAllPatches() const final;
 
-		/**
-		 * Check if all polylines contained in a single patch are closed or not. Notice that a returned
-		 * "false" does not mean they are all closed. Indeed they can be mixed i.e. some closed and some
-		 * not.
-		 *
-		 * @param 	patchIndex	The index of the patch to check.
-		 *
-		 * @returns	True if all polylines of the studied patch are not closed.
-		 */
 		DLL_IMPORT_OR_EXPORT bool areAllPolylinesNonClosedOfPatch(unsigned int patchIndex) const final;
 
-		/**
-		 * Determine if we are all polylines non closed of all patches
-		 *
-		 * @returns	True if all polylines non closed of all patches, false if not.
-		 */
 		DLL_IMPORT_OR_EXPORT bool areAllPolylinesNonClosedOfAllPatches() const final;
 
-		/**
-		 * Get all the node count par polyline for all teh aptches of the representation.
-		 *
-		 * @param 		  	patchIndex			 	It must be pre-allocated.
-		 * @param [in,out]	closedFlagPerPolyline	If non-null, true to closed flag per polyline.
-		 */
 		DLL_IMPORT_OR_EXPORT void getClosedFlagPerPolylineOfPatch(unsigned int patchIndex, bool * closedFlagPerPolyline) const final;
 
-		/**
-		 * Gets closed flag per polyline of all patches
-		 *
-		 * @param [in,out]	closedFlagPerPolyline	If non-null, true to closed flag per polyline.
-		 */
 		DLL_IMPORT_OR_EXPORT void getClosedFlagPerPolylineOfAllPatches(bool * closedFlagPerPolyline) const final;
 
-		/**
-		 * Indicates if the polylineSet is associated to a particular LineRole.
-		 *
-		 * @returns	True if a line role, false if not.
-		 */
 		DLL_IMPORT_OR_EXPORT bool hasALineRole() const final;
 
-		/**
-		 * Get the role of this polylineSet. Throw an exception if the polylineSet has no role (see
-		 * method hasALineRole).
-		 *
-		 * @returns	The line role.
-		 */
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__LineRole getLineRole() const final;
 
-		/**
-		 * Set the line role of this instance
-		 *
-		 * @param 	lineRole	The line role.
-		 */
 		DLL_IMPORT_OR_EXPORT void setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole) final;
 	};
 }
