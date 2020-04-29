@@ -35,6 +35,12 @@ namespace EML2_NS
 		 * @param [in]	partialObject	If non-null, the partial object.
 		 */
 		HdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractHdfProxy(partialObject), hdfFile(-1), compressionLevel(0) {}
+
+		/**
+		 * @brief	Constructor
+		 *
+		 * @param 	dor	The dor.
+		 */
 		HdfProxy(const COMMON_NS::DataObjectReference& dor) : AbstractHdfProxy(dor), hdfFile(-1), compressionLevel(0) {}
 
 		/** Destructor. Closes the hdf file. */

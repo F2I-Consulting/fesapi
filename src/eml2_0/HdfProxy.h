@@ -31,10 +31,14 @@ namespace EML2_0_NS
 		 * Only to be used in partial transfer context
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
 		DLL_IMPORT_OR_EXPORT HdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EML2_NS::HdfProxy(partialObject) {}
+
+		/**
+		 * @brief	Constructor
+		 *
+		 * @param 	dor	The dor.
+		 */
 		DLL_IMPORT_OR_EXPORT HdfProxy(const COMMON_NS::DataObjectReference& dor) : EML2_NS::HdfProxy(dor) {}
 
 		/**
@@ -58,7 +62,7 @@ namespace EML2_0_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * 
 		 */
 		DLL_IMPORT_OR_EXPORT HdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
 			EML2_NS::HdfProxy(fromGsoap) {}

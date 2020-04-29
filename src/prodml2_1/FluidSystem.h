@@ -32,7 +32,7 @@ namespace PRODML2_1_NS
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
 		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * 
 		 */
 		DLL_IMPORT_OR_EXPORT FluidSystem(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 

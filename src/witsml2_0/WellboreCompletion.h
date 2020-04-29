@@ -32,7 +32,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
 		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * 
 		 */
 		DLL_IMPORT_OR_EXPORT WellboreCompletion(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::WellboreObject(partialObject) {}
 

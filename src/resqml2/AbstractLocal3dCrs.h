@@ -213,7 +213,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
 		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * 
 		 */
 		AbstractLocal3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 

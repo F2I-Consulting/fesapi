@@ -32,9 +32,11 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT virtual ~HdfProxyFactory() {}
 
 		/**
-		 * Creates an instance of HDF5 file proxy. Only to be used in partial transfer context
+		 * @brief	Creates an instance of HDF5 file proxy. Only to be used in partial transfer context
 		 *
-		 * @param [in]	partialObject	If non-null, the partial object.
+		 * @exception	std::logic_error	Raised when a logic error condition occurs.
+		 *
+		 * @param [in]	dor	If non-null, the dor.
 		 *
 		 * @returns	A pointer to an instantiated HDF5 file proxy.
 		 */

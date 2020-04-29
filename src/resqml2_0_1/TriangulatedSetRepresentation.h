@@ -36,7 +36,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
 		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * 
 		 */
 		DLL_IMPORT_OR_EXPORT TriangulatedSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::TriangulatedSetRepresentation(partialObject) {}
 

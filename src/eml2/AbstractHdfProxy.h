@@ -856,7 +856,7 @@ namespace EML2_NS
 		 * @param 	externalFilePath	  	Full pathname of the external file.
 		 * @param 	hdfPermissionAccess   	(Optional) The hdf permission access.
 		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * 
 		 */
 		AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) :
 			packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath), openingMode(hdfPermissionAccess) {}
