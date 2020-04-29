@@ -81,6 +81,12 @@ namespace COMMON_NS
 			gsoapProxy2_2(nullptr),
 			gsoapProxy2_3(nullptr),
 			repository(nullptr) {}
+		AbstractObject(const DataObjectReference& dor) :
+			partialObject(dor.toDor20()), gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
 
 		/**
 		 * Constructor when importing EML 2.0 (i.e RESQML2.0.1) dataobjects
