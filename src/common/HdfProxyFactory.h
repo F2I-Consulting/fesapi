@@ -38,8 +38,16 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to an instantiated HDF5 file proxy.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual EML2_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) {
-			return new EML2_0_NS::HdfProxy(partialObject);
+		DLL_IMPORT_OR_EXPORT virtual EML2_NS::AbstractHdfProxy* make(const DataObjectReference& dor) {
+			const std::string contentType = dor.getContentType();
+			if (contentType.find("version=2.0") != std::string::npos) {
+				return new EML2_0_NS::HdfProxy(dor);
+			}
+			else if (contentType.find("version=2.3") != std::string::npos) {
+				return new EML2_3_NS::HdfProxy(dor);
+			}
+			
+			throw std::logic_error("Not implemented yet.");
 		}
 
 		/**

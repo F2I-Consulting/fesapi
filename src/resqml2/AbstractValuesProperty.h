@@ -163,6 +163,17 @@ namespace RESQML2_NS
 		 */
 		EML2_NS::AbstractHdfProxy* getDatasetOfPatch(unsigned int patchIndex, LONG64 & nullValue, std::string & dsPath) const;
 
+		/**
+		 * Gets the data object reference of the HDF proxy which is associated to a particular
+		 * property patch.
+		 *
+		 * @param 		  	patchIndex	The corresponding patch index of the HDF proxy to get.
+		 * @returns	Empty data object reference if no HDF proxy is associated to this property patch.
+		 * 			Otherwise returns the data object reference of the associated representation. Null
+		 * 			should not occured since each property must be associated to a representation.
+		 */
+		COMMON_NS::DataObjectReference getHdfProxyDor(unsigned int patchIndex) const;
+
 		void loadTargetRelationships();
 	};
 }

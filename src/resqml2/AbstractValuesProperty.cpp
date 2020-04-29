@@ -142,6 +142,56 @@ EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(unsigned i
 	}
 }
 
+COMMON_NS::DataObjectReference AbstractValuesProperty::getHdfProxyDor(unsigned int patchIndex) const
+{
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
+	}
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+
+		int valuesType = patch->Values->soap_type();
+		if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
+			return static_cast<gsoap_resqml2_0_1::resqml20__BooleanHdf5Array*>(patch->Values)->Values->HdfProxy;
+		}
+		else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
+			return static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array*>(patch->Values)->Values->HdfProxy;
+		}
+		else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+			return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(patch->Values)->Values->HdfProxy;
+		}
+		else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__StringHdf5Array) {
+			return static_cast<gsoap_resqml2_0_1::resqml20__StringHdf5Array*>(patch->Values)->Values->HdfProxy;
+		}
+		else {
+			throw logic_error("The type of the property values is not implemented yet.");
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		if (dynamic_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch) != nullptr) {
+			return static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalFileProxy[0]->EpcExternalPartReference;
+		}
+		int valuesType = patch->soap_type();
+		if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
+			return static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(patch)->Values->ExternalFileProxy[0]->EpcExternalPartReference;
+		}
+		else if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+			return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(patch)->Values->ExternalFileProxy[0]->EpcExternalPartReference;
+		}
+		else if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__StringExternalArray) {
+			return static_cast<gsoap_eml2_3::eml23__StringExternalArray*>(patch)->Values->ExternalFileProxy[0]->EpcExternalPartReference;
+		}
+		else {
+			throw logic_error("The type of the property values is not implemented yet.");
+		}
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}
+
 unsigned int AbstractValuesProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
@@ -253,10 +303,7 @@ void AbstractValuesProperty::loadTargetRelationships()
 {
 	AbstractProperty::loadTargetRelationships();
 
-	LONG64 nullValue = (numeric_limits<LONG64>::min)();
-	std::string dsPath;
 	for (size_t patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
-		EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
-		convertDorIntoRel(hdfProxy->newEml23Reference());
+		convertDorIntoRel(getHdfProxyDor(patchIndex));
 	}
 }

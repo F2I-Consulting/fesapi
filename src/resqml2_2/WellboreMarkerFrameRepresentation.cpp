@@ -100,8 +100,6 @@ void WellboreMarkerFrameRepresentation::setStratigraphicOccurrenceInterpretation
 
 void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, RESQML2_NS::StratigraphicOccurrenceInterpretation* stratiOccurrenceInterp, EML2_NS::AbstractHdfProxy* proxy)
 {
-	throw logic_error("Not implemented yet");
-	
 	if (stratiUnitIndices == nullptr) {
 		throw invalid_argument("The strati unit indices cannot be null.");
 	}

@@ -530,6 +530,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 		if (gsoapContext->error != SOAP_OK) {
 			ostringstream oss;
 			soap_stream_fault(gsoapContext, oss);
+			addWarning(oss.str());
 			delete wrapper;
 		}
 		else {
@@ -538,7 +539,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 		}
 	}
 
-	addWarning("The content type " + contentType + " could not be wrapped by fesapi. The related instance will be ignored.");
+	addWarning("The content type " + contentType + " could not be wrapped by FESAPI. The related instance will be ignored.");
 	return nullptr;
 }
 
@@ -691,7 +692,9 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectR
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::SeismicWellboreFrameRepresentation)
 	else if (dataType.compare(EML2_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
-		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
+		COMMON_NS::AbstractObject* result = hdfProxyFactory->make(dor);
+		addOrReplaceDataObject(result);
+		return result;
 	}
 
 	throw invalid_argument("The content type " + contentType + " of the partial object (DOR) to create has not been recognized by fesapi.");

@@ -839,6 +839,7 @@ namespace EML2_NS
 		 * @param [in,out]	partialObject	If non-null, the partial object.
 		 */
 		AbstractHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EpcExternalPartReference(partialObject) {}
+		AbstractHdfProxy(const COMMON_NS::DataObjectReference& dor) : EpcExternalPartReference(dor) {}
 
 		/** / The directory where the EPC document is stored. */
 		std::string packageDirectoryAbsolutePath;

@@ -194,16 +194,14 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 	// Read all RESQML objects
 	const epc::FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
 	// 14 equals "application/x-".size()
-	for (epc::FileContentType::ContentTypeMap::const_iterator it=contentTypes.begin(); it != contentTypes.end(); ++it)
-	{
+	for (epc::FileContentType::ContentTypeMap::const_iterator it=contentTypes.begin(); it != contentTypes.end(); ++it) {
 		std::string contentType = it->second.getContentTypeString();
 		if (contentType.find("resqml", 14) != std::string::npos ||
 			contentType.find("eml", 14) != std::string::npos ||
 			contentType.find("witsml", 14) != std::string::npos ||
-			contentType.find("prodml", 14) != std::string::npos)
-		{
+			contentType.find("prodml", 14) != std::string::npos) {
 			if (contentType == "application/x-resqml+xml;version=2.0;type=obj_EpcExternalPartReference") {
-				result += "The content type " + contentType + " should belong to eml and not to resqml since obj_EpcExternalPartReference is part of COMMON and not part of RESQML.\n";
+				result += "The content type " + contentType + " should belong to EML and not to RESQML since obj_EpcExternalPartReference is part of COMMON and not part of RESQML.\n";
 				contentType = "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference";
 			}
 			if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference" ||
@@ -216,31 +214,36 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 				}
 				relFilePath += "_rels" + it->second.getExtensionOrPartName().substr(it->second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
 				if (!package->fileExists(relFilePath)) {
-					result += "The HDF proxy " + it->second.getExtensionOrPartName() + " does not look to be associated to any HDF files : there is no rel file for this object. It is going to be withdrawn.\n";
+					result += "The EpcExternalPartReference (aka HDF proxy) " + it->second.getExtensionOrPartName() + " does not look to be associated to any HDF files : there is no rel file for this object. It is going to be withdrawn.\n";
 					continue;
 				}
 				epc::FileRelationship relFile;
 				relFile.readFromString(package->extractFile(relFilePath));
 				const vector<epc::Relationship>& allRels = relFile.getAllRelationship();
 				COMMON_NS::AbstractObject* wrapper = nullptr;
+				std::string target;
 				for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
 					if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
-						const std::string target = allRels[relIndex].getTarget();
+						target = allRels[relIndex].getTarget();
 						if (!repo.hasHdfProxyFactory()) {
 							repo.setHdfProxyFactory(target.find("http://") == 0 || target.find("https://") == 0
 								? new HdfProxyROS3Factory()
 								: new HdfProxyFactory());
 						}
 						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
-						static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setRelativePath(target);
 						break;
 					}
 				}
 
-				static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
-				static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
-
-				repo.setDefaultHdfProxy(static_cast<EML2_NS::AbstractHdfProxy*>(wrapper));
+				if (wrapper != nullptr) {
+					static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setRelativePath(target);
+					static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
+					static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
+					repo.setDefaultHdfProxy(static_cast<EML2_NS::AbstractHdfProxy*>(wrapper));
+				}
+				else {
+					result += "The EpcExternalPartReference (aka HDF proxy) " + it->second.getExtensionOrPartName() + " is either not XML valid or it does not contain any EPC external relationship entry towards an HDF5 file.\n";
+				}
 			}
 			else {
 				repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
