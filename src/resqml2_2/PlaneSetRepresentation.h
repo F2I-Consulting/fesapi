@@ -59,19 +59,8 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~PlaneSetRepresentation() {}
 
-		/**
-		* Get the Local 3d CRS dor where the reference point ordinals are given
-		* It assumes there is only one CRS used by this instance.
-		*/
 		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const final;
 
-		/**
-		 * Get the xyz point count in a given patch.
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	The xyz point count of patch.
-		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**

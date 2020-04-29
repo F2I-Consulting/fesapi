@@ -44,12 +44,14 @@ namespace EML2_3_NS
 		DLL_IMPORT_OR_EXPORT Activity(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EML2_NS::Activity(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	activityTemplate	If non-null, the activity template.
-		 * @param 		  	guid				The guid to set to the boundary horizon. If empty then a
-		 * 										new guid will be generated.
-		 * @param 		  	title				A title for the instance to create.
+		 * @exception	std::invalid_argument	If <tt>activityTemplate == nullptr</tt>.
+		 *
+		 * @param [in]	activityTemplate	If non-null, the activity template.
+		 * @param 	  	guid				The guid to set to the boundary horizon. If empty then a new
+		 * 									guid will be generated.
+		 * @param 	  	title				A title for the instance to create.
 		 */
 		Activity(EML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title);
 

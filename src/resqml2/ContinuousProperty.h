@@ -254,26 +254,54 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(unsigned int patchIndex, float * values) const;
 
 		/**
-		 * Get the minimum value in this continuous properties. It reads it from file.
+		 * @brief	Gets the minimum value of a non vector property or the minimum value of one given
+		 * 			value of a vector property. This minimum value is read (it is not computed).
 		 *
-		 * @returns	The minimum value if present in the file otherwise @c NaN.
+		 * @param 	index	(Optional) @c 0 (default value, corresponding to the non vector property case) or
+		 * 					zero-based index of the vector value for which we look for the minimum value
+		 * 					(vector property case).
+		 *
+		 * @returns	The minimum value of the non vector property or the minimum value at position @p
+		 * 			index of the vector value or @c NaN if @p index is out of range (strictly
+		 * 			greater than @p 0 for a non vector property or greater than the vector size for a
+		 * 			vector property).
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getMinimumValue(unsigned int index = 0) const = 0;
 
 		/**
-		 * Get the maximum value in this discrete properties. It reads it from file.
+		 * @brief	Gets the maximum value of a non vector property or the maximum value of one given
+		 * 			value of a vector property. This maximum value is read (it is not computed).
 		 *
-		 * @returns	the maximum value if present in the file otherwise @c NaN.
+		 * @param 	index	(Optional) @c 0 (default value, corresponding to the non vector property case) or
+		 * 					zero-based index of the vector value for which we look for the maximum value
+		 * 					(vector property case).
+		 *
+		 * @returns	The maximum value of the non vector property or the maximum value at position @p
+		 * 			index of the vector value or @c NaN if @p index is out of range (strictly
+		 * 			greater than @p 0 for a non vector property or greater than the vector size for a
+		 * 			vector property).
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getMaximumValue(unsigned int index = 0) const = 0;
 
 		/**
-		 * Set the minimum value in this continuous property.
+		 * @brief	Sets the minimum value of a non vector property or the minimum value of one given
+		 * 			value of a vector property.
+		 *
+		 * @param 	value	The minimum value to set.
+		 * @param 	index	(Optional)  @c 0 (default value, corresponding to the non vector property
+		 * 					case) or zero-based index of the vector value for which we want to set the
+		 * 					minimum value (vector property case).
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setMinimumValue(double value, unsigned int index = 0) const = 0;
 
 		/**
-		 * Set the maximum value in this discrete property.
+		 * @brief	Sets the maximum value of a non vector property or the maximum value of one given
+		 * 			value of a vector property.
+		 *
+		 * @param 	value	The maximum value to set.
+		 * @param 	index	(Optional)  @c 0 (default value, corresponding to the non vector property
+		 * 					case) or zero-based index of the vector value for which we want to set the
+		 * 					maximum value (vector property case).
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setMaximumValue(double value, unsigned int index = 0) const = 0;
 

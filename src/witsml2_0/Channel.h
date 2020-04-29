@@ -37,18 +37,20 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT Channel(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : ChannelIndexDataObject<gsoap_eml2_1::witsml20__Channel>(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	propertyKind	  	If non-null, the property kind.
-		 * @param 		  	guid			  	The guid to set to this instance. If empty then a new
-		 * 										guid will be generated.
-		 * @param 		  	title			  	The title.
-		 * @param 		  	mnemonic		  	The mnemonic.
-		 * @param 		  	uom				  	The uom.
-		 * @param 		  	dataType		  	Type of the data.
-		 * @param 		  	growingStatus	  	The growing status.
-		 * @param 		  	timeDepth		  	Depth of the time.
-		 * @param 		  	loggingCompanyName	Name of the logging company.
+		 * @exception	std::invalid_argument	If <tt>propertyKind == nullptr</tt>.
+		 *
+		 * @param [in]	propertyKind	  	If non-null, the property kind.
+		 * @param 	  	guid			  	The guid to set to this instance. If empty then a new guid
+		 * 									will be generated.
+		 * @param 	  	title			  	The title.
+		 * @param 	  	mnemonic		  	The mnemonic.
+		 * @param 	  	uom				  	The uom.
+		 * @param 	  	dataType		  	Type of the data.
+		 * @param 	  	growingStatus	  	The growing status.
+		 * @param 	  	timeDepth		  	Depth of the time.
+		 * @param 	  	loggingCompanyName	Name of the logging company.
 		 */
 		Channel(EML2_NS::PropertyKind * propertyKind, 
 			const std::string & guid, const std::string & title,

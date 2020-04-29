@@ -179,48 +179,14 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getUomAsString() const final;
 
-		/**
-		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF
-		 * proxy. The reason can be that the values already exist in an external file (only HDF5 for
-		 * now) or that the writing of the values in the external file is differed in time.
-		 *
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined in the repository.
-		 *
-		 * @param [in]	proxy	   	The HDF5 proxy where the values are already or will be stored. If
-		 * 							@c nullptr, then a default HDF proxy must be defined in the
-		 * 							repository.
-		 * @param 	  	datasetName	(Optional) The HDF5 dataset name where the values are stored. If
-		 * 							empty, the dataset will be named the same as the dataset naming
-		 * 							convention of fesapi :
-		 * 							<tt>getHdfGroup() + "/values_patch" + patchIndex</tt>
-		 *
-		 * @returns	The name of the referenced HDF5 dataset.
-		 */
 		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "") final;
 
-		/**
-		 * Get the minimum value in this continuous properties. It reads it from file.
-		 *
-		 * @returns	The minimum value if present in the file otherwise @c NaN.
-		 */
 		DLL_IMPORT_OR_EXPORT double getMinimumValue(unsigned int index = 0) const final;
 
-		/**
-		 * Get the maximum value in this discrete properties. It reads it from file.
-		 *
-		 * @returns	the maximum value if present in the file otherwise @c NaN.
-		 */
 		DLL_IMPORT_OR_EXPORT double getMaximumValue(unsigned int index = 0) const final;
 
-		/**
-		 * Set the minimum value in this continuous property.
-		 */
 		DLL_IMPORT_OR_EXPORT void setMinimumValue(double value, unsigned int index = 0) const final;
 
-		/**
-		 * Set the maximum value in this discrete property.
-		 */
 		DLL_IMPORT_OR_EXPORT void setMaximumValue(double value, unsigned int index = 0) const final;
 
 		/**

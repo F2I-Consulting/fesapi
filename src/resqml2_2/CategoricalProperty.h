@@ -72,11 +72,6 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~CategoricalProperty() {}
 
-		/**
-		 * Gets the DOR of the string lookup which is associated to this categorical property values.
-		 *
-		 * @returns	The DOR of the string lookup which is associated to this categorical property.
-		 */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStringLookupDor() const final;
 
 		bool validatePropertyKindAssociation(EML2_NS::PropertyKind*) final { return true; }

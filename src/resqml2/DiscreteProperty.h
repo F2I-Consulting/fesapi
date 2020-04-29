@@ -305,7 +305,6 @@ namespace RESQML2_NS
 		 * proxy. The reason can be that the index values already exist in an external file (only HDF5
 		 * for now) or that the writing of the values in the external file is differed in time.
 		 *
-		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
 		 *
@@ -489,51 +488,92 @@ namespace RESQML2_NS
 			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
 
 		/**
-		 * Gets the null value in this discrete property.
+		 * @brief	Gets the null value in this discrete property.
 		 *
-		 * @returns	The null value of this discrete property if present otherwise the maximum int 64 bits value. 
+		 * @param 	patchIndex	(Optional) Zero-based index of the patch for which we want to get the null value.
+		 *
+		 * @returns	The null value of this discrete property if present otherwise the maximum int 64 bits
+		 * 			value.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual LONG64 getNullValue(unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) const = 0;
 
 		/**
-		 * Checks if this discrete property has got a minimum value already computed (or set).
+		 * @brief	Checks if a non vector property or a given value of a vector property has got a
+		 * 			minimum value already computed (or set).
+		 *
+		 * @param 	index	(Optional) @c 0 (default value, corresponding to the non vector property
+		 * 					case) or zero-based index of the vector value for which we want to know if a
+		 * 					minimum value exists (vector property case).
 		 *
 		 * @returns	True if there exists a minimum value, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool hasMinimumValue(unsigned int index = 0) const = 0;
 
 		/**
-		 * Gets the (first by default) minimum value in this discrete properties.
+		 * @brief	Gets the minimum value of a non vector property or the minimum value of one given
+		 * 			value of a vector property. This minimum value is read (it is not computed).
 		 *
 		 * @exception	std::logic_error	If this property has no minimum value.
 		 *
-		 * @returns	The minimum value if present in the file, else false.
+		 * @param 	index	(Optional) @c 0 (default value, corresponding to the non vector property
+		 * 					case) or zero-based index of the vector value for which we look for the
+		 * 					minimum value (vector property case).
+		 *
+		 * @returns	The minimum value of the non vector property or the minimum value at position @p
+		 * 			index of the vector value or @c NaN if @p index is out of range (strictly greater
+		 * 			than @p 0 for a non vector property or greater than the vector size for a vector
+		 * 			property).
 		 */
 		DLL_IMPORT_OR_EXPORT virtual LONG64 getMinimumValue(unsigned int index = 0) const = 0;
 
 		/**
-		 * Checks if this discrete property has got a maximum value already computed (or set).
+		 * @brief	Checks if a non vector property or a given value of a vector property has got a
+		 * 			maximum value already computed (or set).
 		 *
-		 * @returns	True if there exists a minimum value, false if not.
+		 * @param 	index	(Optional) @c 0 (default value, corresponding to the non vector property
+		 * 					case) or zero-based index of the vector value for which we want to know if a
+		 * 					maximum value exists (vector property case).
+		 *
+		 * @returns	True if there exists a maximum value, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool hasMaximumValue(unsigned int index = 0) const = 0;
 
 		/**
-		 * Gets the (first by default) maximum value in this discrete properties.
+		 * @brief	Gets the maximum value of a non vector property or the maximum value of one given
+		 * 			value of a vector property. This maximum value is read (it is not computed).
 		 *
 		 * @exception	std::logic_error	If this property has no maximum value.
 		 *
-		 * @returns	The maximum value if present in the file, else false.
+		 * @param 	index	(Optional) @c 0 (default value, corresponding to the non vector property
+		 * 					case) or zero-based index of the vector value for which we look for the
+		 * 					maximum value (vector property case).
+		 *
+		 * @returns	The maximum value of the non vector property or the maximum value at position @p
+		 * 			index of the vector value or @c NaN if @p index is out of range (strictly greater
+		 * 			than @p 0 for a non vector property or greater than the vector size for a vector
+		 * 			property).
 		 */
 		DLL_IMPORT_OR_EXPORT virtual LONG64 getMaximumValue(unsigned int index = 0) const = 0;
 
 		/**
-		 * Set the minimum value in this discrete property.
+		 * @brief	Sets the minimum value of a non vector property or the minimum value of one given
+		 * 			value of a vector property.
+		 *
+		 * @param 	value	The minimum value to set.
+		 * @param 	index	(Optional)  @c 0 (default value, corresponding to the non vector property
+		 * 					case) or zero-based index of the vector value for which we want to set the
+		 * 					minimum value (vector property case).
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setMinimumValue(LONG64 value, unsigned int index = 0) const = 0;
 
 		/**
-		 * Set the maximum value in this discrete property.
+		 * @brief	Sets the maximum value of a non vector property or the maximum value of one given
+		 * 			value of a vector property.
+		 *
+		 * @param 	value	The maximum value to set.
+		 * @param 	index	(Optional)  @c 0 (default value, corresponding to the non vector property
+		 * 					case) or zero-based index of the vector value for which we want to set the
+		 * 					maximum value (vector property case).
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setMaximumValue(LONG64 value, unsigned int index = 0) const = 0;
 

@@ -49,6 +49,7 @@ namespace EML2_NS
 		 * @param [in]	partialObject	If non-null, the partial object.
 		 */
 		EpcExternalPartReference(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+		EpcExternalPartReference(const COMMON_NS::DataObjectReference& dor) : COMMON_NS::AbstractObject(dor) {}
 
 		/**
 		 * Creates an instance of this class by wrapping an EML2.0 gSOAP instance

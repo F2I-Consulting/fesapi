@@ -58,77 +58,30 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~EarthModelInterpretation() {}
 
-		/**
-		 * Structural
-		 *
-		 * @returns	The structural organization interpretation count.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getStructuralOrganizationInterpretationCount() const final;
 
-		/** A structural organization interpretation*. */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStructuralOrganizationInterpertationDor(unsigned int index) const final;
 
-		/**
-		 * Pushes back structural organization interpretation
-		 *
-		 * @param [in,out]	structOrganization	If non-null, the structure organization.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackStructuralOrganizationInterpretation(RESQML2_NS::StructuralOrganizationInterpretation * structOrganization) final;
 
 		//Strati column
 
-		/**
-		 * Check if a strati column is associated to this earth model interpretation
-		 *
-		 * @returns	True if a strati column is associated to this earth model interpretation elsa false.
-		 */
 		DLL_IMPORT_OR_EXPORT bool hasStratiColumn() const final;
 
-		/**
-		 * Sets strati column
-		 *
-		 * @param [in,out]	stratiColumn	If non-null, the strati column.
-		 */
 		DLL_IMPORT_OR_EXPORT void setStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn) final;
 
-		/**
-		 * Get the strati column associated to this earth model interpretation. Throw an exception if
-		 * there is no strati column associated. Check with hasStratiColumn().
-		 */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiColumnDor() const final;
 
-		/**
-		 * Strati occurrences
-		 *
-		 * @returns	The strati occurence count.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getStratiOccurrenceCount() const;
 
-		/** A stratigraphic occurrence interpretation*. */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiOccurrenceDor(unsigned int index) const final;
 
-		/**
-		 * Pushes a back strati occurrence
-		 *
-		 * @param [in,out]	stratiOccurrence	If non-null, the strati occurrence.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackStratiOccurrence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrence) final;
 
-		/**
-		 * Rock Fluid
-		 *
-		 * @returns	The Rock Fluid organization count.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getRockFluidOrganizationInterpretationCount() const final;
 
-		/**
-		 * Pushes back rock fluid organization interpretation
-		 *
-		 * @param [in,out]	rockFluid	If non-null, the rock fluid.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackRockFluidOrganizationInterpretation(RESQML2_NS::RockFluidOrganizationInterpretation* rockFluid) final;
 
-		/** A rock fluid organization interpretation*. */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getRockFluidOrganizationInterpretationDor(unsigned int index) const final;
 	};
 }

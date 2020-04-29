@@ -37,7 +37,9 @@ namespace PRODML2_1_NS
 		DLL_IMPORT_OR_EXPORT FluidSystem(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
+		 *
+		 * @exception	std::invalid_argument	If <tt>repo == nullptr</tt>.
 		 *
 		 * @param [in,out]	repo			  	The dataobject repo where the underlying gsoap proxy is
 		 * 										going to be created.

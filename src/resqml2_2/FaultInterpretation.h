@@ -73,14 +73,6 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~FaultInterpretation() {}
 
-		/**
-		 * Pushes back a new throw interpretation for this fault interpretation. More than one throw
-		 * kind is necessary if for example the throw is reverse at a time period and then normal at
-		 * another time period. TODO : add a parameter to be able to indicate the time period the throw
-		 * occured.
-		 *
-		 * @param 	throwKind	The throw kind.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackThrowInterpretation(gsoap_resqml2_0_1::resqml20__ThrowKind throwKind) final;
 	};
 }

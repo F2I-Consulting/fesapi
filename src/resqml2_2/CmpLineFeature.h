@@ -67,11 +67,6 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
 		~CmpLineFeature() {}
 
-		/**
-		 * Get the total count of traces in this seismic line.
-		 *
-		 * @returns	The trace count.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getTraceCount() const final;
 		
 		/**
@@ -88,18 +83,9 @@ namespace RESQML2_2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT class ShotPointLineFeature* getShotPointLine() const;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 		void loadTargetRelationships() final;

@@ -41,7 +41,7 @@ namespace RESQML2_NS
 		virtual ~EarthModelInterpretation() {}
 
 		 /**
-		 * Get the count of structural organization interpretations associated to this earth model interpretation.
+		 * Gets the count of structural organization interpretations associated to this earth model interpretation.
 		 *
 		 * @returns	The count of associated structural organization interpretations.
 		 */
@@ -85,9 +85,9 @@ namespace RESQML2_NS
 		//Strati column
 
 		/**
-		 * Check if a strati column is associated to this earth model interpretation
+		 * Checks if a strati column is associated to this earth model interpretation
 		 *
-		 * @returns	True if a strati column is associated to this earth model interpretation elsa false.
+		 * @returns	True if a strati column is associated to this earth model interpretation else false.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool hasStratiColumn() const = 0;
 
@@ -117,8 +117,8 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT StratigraphicColumn* getStratiColumn() const;
 
 		/**
-		 * Get the count of stratigraphic occurrence interpretations associated to this earth model
-		 * interpretation.
+		 * @brief	Gets the count of stratigraphic occurrence interpretations associated to this earth
+		 * 			model interpretation.
 		 *
 		 * @exception	std::range_error	If the count of stratigraphic occurrence interpretations is
 		 * 									strictly greater than unsigned int max.
@@ -161,7 +161,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void pushBackStratiOccurrence(StratigraphicOccurrenceInterpretation * stratiOccurence) = 0;
 
 		 /**
-		  * Get the count of rock fluid organization interpretations associated to this earth model
+		  * Gets the count of rock fluid organization interpretations associated to this earth model
 		  * interpretation.
 		  *
 		  * @returns	The count of associated rock fluid organization interpretations.

@@ -40,11 +40,13 @@ namespace RESQML2_2_NS
 		/**
 		 * @brief	Constructor
 		 *
-		 * @param [in]		repo			   	If non-nullptr, the repo.
-		 * @param 		  	guid			   	The guid to set to graphical information set.
-		 * @param 		  	title			   	A title for graphical information set.
-		 * @param 		  	interpolationDomain	The interpolation domain.
-		 * @param 		  	interpolationMethod	The interpolation method.
+		 * @exception	std::invalid_argument	If <tt>repo == nullptr</tt>.
+		 *
+		 * @param [in]	repo			   	If non-nullptr, the repo.
+		 * @param 	  	guid			   	The guid to set to graphical information set.
+		 * @param 	  	title			   	A title for graphical information set.
+		 * @param 	  	interpolationDomain	The interpolation domain.
+		 * @param 	  	interpolationMethod	The interpolation method.
 		 */
 		ContinuousColorMap(COMMON_NS::DataObjectRepository *repo, std::string const& guid, std::string const& title,
 			gsoap_eml2_3::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_3::resqml22__InterpolationMethod interpolationMethod);

@@ -51,26 +51,30 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT Wellbore(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	witsmlWell	If non-null, the witsml well.
-		 * @param 		  	guid	  	The guid to set to this instance. If empty then a new guid will
-		 * 								be generated.
-		 * @param 		  	title	  	The title.
+		 * @exception	std::invalid_argument	If <tt>witsmlWell == nullptr</tt>.
+		 *
+		 * @param [in]	witsmlWell	If non-null, the witsml well.
+		 * @param 	  	guid	  	The guid to set to this instance. If empty then a new guid will be
+		 * 							generated.
+		 * @param 	  	title	  	The title.
 		 */
 		Wellbore(class Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);
 
 		/**
-		 * Constructor
+		 * @brief	Constructor
 		 *
-		 * @param [in,out]	witsmlWell	  	If non-null, the witsml well.
-		 * @param 		  	guid		  	Unique identifier.
-		 * @param 		  	title		  	The title.
-		 * @param 		  	statusWellbore	The status wellbore.
-		 * @param 		  	isActive	  	True if is active, false if not.
-		 * @param 		  	achievedTD	  	True to achieved td.
+		 * @exception	std::invalid_argument	If <tt>witsmlWell == nullptr</tt>.
+		 *
+		 * @param [in]	witsmlWell	  	If non-null, the witsml well.
+		 * @param 	  	guid		  	Unique identifier.
+		 * @param 	  	title		  	The title.
+		 * @param 	  	statusWellbore	The status wellbore.
+		 * @param 	  	isActive	  	True if is active, false if not.
+		 * @param 	  	achievedTD	  	True to achieved td.
 		 */
 		Wellbore(class Well* witsmlWell,
 			const std::string & guid,

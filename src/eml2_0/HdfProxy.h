@@ -35,6 +35,7 @@ namespace EML2_0_NS
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
 		DLL_IMPORT_OR_EXPORT HdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EML2_NS::HdfProxy(partialObject) {}
+		DLL_IMPORT_OR_EXPORT HdfProxy(const COMMON_NS::DataObjectReference& dor) : EML2_NS::HdfProxy(dor) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.

@@ -44,12 +44,14 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT Activity(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EML2_NS::Activity(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * @brief	Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	activityTemplate	If non-null, the activity template.
-		 * @param 		  	guid				The guid to set to the boundary horizon. If empty then a
-		 * 										new guid will be generated.
-		 * @param 		  	title				A title for the instance to create.
+		 * @exception	std::invalid_argument	If <tt>activityTemplate == nullptr</tt>.
+		 *
+		 * @param [in]	activityTemplate	If non-null, the activity template.
+		 * @param 	  	guid				The guid to set to the boundary horizon. If empty then a new
+		 * 									guid will be generated.
+		 * @param 	  	title				A title for the instance to create.
 		 */
 		Activity(EML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title);
 
@@ -74,33 +76,12 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
 			double value, gsoap_resqml2_0_1::resqml20__ResqmlUom uom = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc);
 
-		/**
-		 * Push back a string parameter in the instance. This parameter must exist in the associated
-		 * activity template.
-		 *
-		 * @param 	title	The title.
-		 * @param 	value	The value.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
 			const std::string & value) final;
 
-		/**
-		 * Push back an integer parameter in the instance. This parameter must exist in the associated
-		 * activity template.
-		 *
-		 * @param 	title	The title.
-		 * @param 	value	The value.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
 			LONG64 value) final;
 
-		/**
-		 * Push back a resqml object parameter in the instance. This parameter must exist in the
-		 * associated activity template.
-		 *
-		 * @param 		  	title			The title.
-		 * @param [in,out]	resqmlObject	If non-null, the resqml object.
-		 */
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
 			AbstractObject* resqmlObject) final;
 

@@ -114,11 +114,6 @@ namespace RESQML2_2_NS
 			RESQML2_NS::AbstractRepresentation * supportingRepresentation,
 			EML2_NS::AbstractHdfProxy * proxy) final;
 
-		/**
-		 * Gets contact count
-		 *
-		 * @returns	The contact count.
-		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getContactCount() const final;
 
 		/**
@@ -131,8 +126,7 @@ namespace RESQML2_2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__IdentityKind getContactPatchIdentityKind(unsigned int contactIdx) const final;
 
-		/*
-///< .
+		/**
 		* Check if all nodes of contact patches are identical in a contact.
 		*
 		* @param contactIdx	The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.

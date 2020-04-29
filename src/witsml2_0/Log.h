@@ -37,11 +37,13 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT Log(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : ChannelMetaDataObject(partialObject) {}
 
 		/**
-		 * Constructor
+		 * @brief	Constructor
 		 *
-		 * @param [in,out]	witsmlWellbore	If non-null, the witsml wellbore.
-		 * @param 		  	guid		  	Unique identifier.
-		 * @param 		  	title		  	The title.
+		 * @exception	std::invalid_argument	If <tt>witsmlWellbore == nullptr</tt>.
+		 *
+		 * @param [in]	witsmlWellbore	If non-null, the witsml wellbore.
+		 * @param 	  	guid		  	Unique identifier.
+		 * @param 	  	title		  	The title.
 		 */
 		Log(class Wellbore* witsmlWellbore,
 			const std::string & guid,

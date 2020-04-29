@@ -68,8 +68,10 @@ namespace RESQML2_0_1_NS
 			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
-		 * Creates a local property type which uses a standard uom and which derives from another local
-		 * property type.
+		 * @brief	Creates a local property type which uses a standard uom and which derives from
+		 * 			another local property type.
+		 *
+		 * @exception	std::invalid_argument	If <tt>parentPropType == nullptr</tt>.
 		 *
 		 * @param 		  	guid		  	The guid to set to the local 3d crs. If empty then a new guid
 		 * 									will be generated.

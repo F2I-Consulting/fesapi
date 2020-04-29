@@ -84,15 +84,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64* stratiUnitIndices, ULONG64 nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy* hdfProxy = nullptr);
 
-		/**
-		 * Gets the data object reference of the stratigraphic organization interpretation which is
-		 * associated to this grid representation.
-		 *
-		 * @returns	Empty if no stratigraphic organization interpretation is associated to this
-		 * 			grid representation. Otherwise return the data objet reference of the associated
-		 * 			stratigraphic organization interpretation.
-		 */
-		COMMON_NS::DataObjectReference getStratigraphicOrganizationInterpretationDor() const;
+		COMMON_NS::DataObjectReference getStratigraphicOrganizationInterpretationDor() const final;
 
 		/**
 		 * Queries if this grid has some interval stratigraphic unit indices.

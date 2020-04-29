@@ -1037,7 +1037,7 @@ namespace COMMON_NS
 		 * @brief	Creates a non parallel access to an HDF5 file for writing to it. Resulting HDF5 file
 		 * 			proxy is stored into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid				  	The guid to set to the HDF5 file proxy. If empty then a new
 		 * 									guid will be generated.
@@ -1060,7 +1060,7 @@ namespace COMMON_NS
 		 * @brief	Creates a local depth 3d CRS which is fully identified by means of an EPSG code.
 		 * 			Resulting local depth 3d CRS is stored into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>projectedEpsgCode == 0 || verticalEpsgCode ==
 		 * 										0</tt>.
 		 *
@@ -1092,7 +1092,7 @@ namespace COMMON_NS
 		 * @brief	Creates a local depth 3d CRS which is fully unknown. Resulting local depth 3d CRS is
 		 * 			stored into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid				  	The guid to set to the local 3d CRS. If empty then a new guid
 		 * 									will be generated.
@@ -1125,7 +1125,7 @@ namespace COMMON_NS
 		 * 			part and which is unknown for its vertical part. Resulting local depth 3d CRS is
 		 * 			stored into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>projectedEpsgCode == 0</tt>.
 		 *
 		 * @param 	guid				 	The guid to set to the local 3d CRS. If empty then a new guid
@@ -1158,7 +1158,7 @@ namespace COMMON_NS
 		 * 			identified by an EPSG code for its vertical part. Resulting local depth 3d CRS is
 		 * 			stored into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>verticalEpsgCode == 0</tt>.
 		 *
 		 * @param 	guid				  	The guid to set to the local 3d CRS. If empty then a new guid
@@ -1190,7 +1190,7 @@ namespace COMMON_NS
 		 * @brief	Creates a local time 3d CRS which is fully identified by means of EPSG code.
 		 * 			Resulting local time 3d CRS is stored into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>projectedEpsgCode == 0 || verticalEpsgCode ==
 		 * 										0</tt>.
 		 *
@@ -1224,7 +1224,7 @@ namespace COMMON_NS
 		 * @brief	Creates a local time 3d CRS which is fully unknown. Resulting local time 3d CRS is
 		 * 			stored into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid				  	The guid to set to the local 3d CRS. If empty then a new guid
 		 * 									will be generated.
@@ -1259,7 +1259,7 @@ namespace COMMON_NS
 		 * 			part and which is unknown for its vertical part. Resulting local time 3d CRS is
 		 * 			stored into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>projectedEpsgCode == 0</tt>.
 		 *
 		 * @param 	guid				 	The guid to set to the local 3d CRS. If empty then a new guid
@@ -1294,7 +1294,7 @@ namespace COMMON_NS
 		 * 			identified by an EPSG code for its vertical part. Resulting local time 3d CRS is
 		 * 			stored into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>verticalEpsgCode == 0</tt>.
 		 *
 		 * @param 	guid				  	The guid to set to the local 3d CRS. If empty then a new guid
@@ -1327,7 +1327,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a measured depth (MD) datum into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	  	guid					 	The guid to set to the MD datum. If empty then a new
 		 * 											guid will be generated.
@@ -1354,7 +1354,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a boundary feature into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the boundary feature. If empty then a new guid will be
 		 * 					generated.
@@ -1369,7 +1369,7 @@ namespace COMMON_NS
 		 * @brief	@deprecated Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
 		 * 			a horizon into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the horizon. If empty then a new guid will be generated.
 		 * @param 	title	The title to set to the horizon. If empty then \"unknown\" title will be set.
@@ -1382,7 +1382,7 @@ namespace COMMON_NS
 		 * @brief	@deprecated Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
 		 * 			a geobody boundary feature into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the geobody boundary feature. If empty then a new guid
 		 * 					will be generated.
@@ -1396,7 +1396,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a geobody feature into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the geobody feature. If empty then a new guid will be
 		 * 					generated.
@@ -1411,7 +1411,7 @@ namespace COMMON_NS
 		 * @brief	@deprecated Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
 		 * 			a fault into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the fault. If empty then a new guid will be generated.
 		 * @param 	title	The title to set to the fault. If empty then \"unknown\" title will be set.
@@ -1424,7 +1424,7 @@ namespace COMMON_NS
 		 * @brief	@deprecated Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
 		 * 			a fracture into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the fracture. If empty then a new guid will be generated.
 		 * @param 	title	The title to set to the fracture. If empty then \"unknown\" title will be set.
@@ -1436,7 +1436,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a wellbore feature into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the wellbore feature. If empty then a new guid will be
 		 * 					generated.
@@ -1450,7 +1450,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a seismic lattice into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid			  	The guid to set to the seismic lattice. If empty then a new guid
 		 * 								will be generated.
@@ -1520,7 +1520,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a seismic line set into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the seismic line set. If empty then a new guid will be
 		 * 					generated.
@@ -1533,7 +1533,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a cultural into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the cultural. If empty then a new guid will be generated.
 		 * @param 	title	The title to set to the cultural. If empty then \"unknown\" title will be set.
@@ -1550,7 +1550,7 @@ namespace COMMON_NS
 		 * @brief	@deprecated Use {@link createRockVolumeFeature()} method for RESQML post v2.0.1
 		 * 			Creates a stratigraphic unit into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the stratigraphic unit. If empty then a new guid will be
 		 * 					generated.
@@ -1586,7 +1586,7 @@ namespace COMMON_NS
 		 * @brief	@deprecated Use {@link createModel()} method for RESQML post v2.0.1 Creates a
 		 * 			structural model into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the structural model. If empty then a new guid will be
 		 * 					generated.
@@ -1601,7 +1601,7 @@ namespace COMMON_NS
 		 * @brief	@deprecated Use {@link createModel()} method for RESQML post v2.0.1 Creates a
 		 * 			stratigraphic model into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the stratigraphic model. If empty then a new guid will be
 		 * 					generated.
@@ -1616,7 +1616,7 @@ namespace COMMON_NS
 		 * @brief	@deprecated Use {@link createModel()} method for RESQML post v2.0.1 Creates a rock
 		 * 			fluid model into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the rock fluid model. If empty then a new guid will be
 		 * 					generated.
@@ -1631,7 +1631,7 @@ namespace COMMON_NS
 		 * @brief	@deprecated Use {@link createModel()} method for RESQML post v2.0.1 Creates an earth
 		 * 			model into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the earth model. If empty then a new guid will be
 		 * 					generated.
@@ -1675,7 +1675,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a generic feature interpretation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>feature == nullptr</tt>.
 		 *
 		 * @param [in]	feature	The interpreted feature. It cannot be null.
@@ -1691,7 +1691,7 @@ namespace COMMON_NS
 		/**
 		 * Creates a boundary feature interpretation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p feature is @c nullptr.
 		 *
 		 * @param [in]	feature	The interpreted boundary feature. It cannot be null.
@@ -1707,7 +1707,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a horizon interpretation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>horizon == nullptr</tt>.
 		 *
 		 * @param [in]	horizon	The interpreted horizon. It cannot be null.
@@ -1723,7 +1723,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a geobody boundary interpretation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>geobodyBoundary == nullptr</tt>.
 		 *
 		 * @param [in]	geobodyBoundary	The interpreted geobody boundary. It cannot be null.
@@ -1739,7 +1739,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a fault interpretation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>fault == nullptr</tt>.
 		 *
 		 * @param [in]	fault	The interpreted fault. It cannot be null.
@@ -1755,7 +1755,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a wellbore interpretation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p wellbore is @c nullptr.
 		 *
 		 * @param [in]	wellbore 	The interpreted wellbore feature. It cannot be null.
@@ -1773,7 +1773,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates an earth model interpretation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt>.
 		 *
 		 * @param [in]	orgFeat	The interpreted organization. It cannot be null.
@@ -1789,7 +1789,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a structural organization interpretation ordered by age into this repository.
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p orgFeat is not a structural organization.
 		 *
@@ -1807,7 +1807,7 @@ namespace COMMON_NS
 		 * @brief	Creates a structural organization interpretation ordered by apparent depth into this
 		 * 			repository.
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p orgFeat is not a structural organization.
 		 *
@@ -1825,7 +1825,7 @@ namespace COMMON_NS
 		 * @brief	Creates a structural organization interpretation ordered by measured depth into this
 		 * 			repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p orgFeat is not a structural organization.
 		 *
@@ -1842,7 +1842,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a rock fluid organization interpretation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p orgFeat is not a fluid organization.
 		 *
@@ -1859,7 +1859,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a rock fluid unit interpretation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>feature == nullptr</tt>.
 		 *
 		 * @param [in]	rockFluidUnitFeature	The interpreted rock fluid unit. It cannot be null.
@@ -1875,7 +1875,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a geobody interpretation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>geobody == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p geobody is not an actual geobody feature.
 		 *
@@ -1892,7 +1892,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a stratigraphic unit interpretation into this repository.
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>stratiUnitFeature == nullptr</tt>.
 		 *
 		 * @param [in]	stratiUnitFeature	The interpreted stratigraphic unit. It cannot be null.
@@ -1908,7 +1908,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates stratigraphic column into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the stratigraphic column. If empty then a new guid will be
 		 * 					generated.
@@ -1923,7 +1923,7 @@ namespace COMMON_NS
 		 * @brief	Creates a stratigraphic column rank interpretation ordered by age into this
 		 * 			repository.
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p orgFeat is not a stratigraphic organization.
 		 *
@@ -1942,7 +1942,7 @@ namespace COMMON_NS
 		 * @brief	Creates a stratigraphic column rank interpretation ordered by apparent depth into
 		 * 			this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p orgFeat is not a stratigraphic organization.
 		 *
@@ -1960,7 +1960,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a stratigraphic occurrence interpretation ordered by age into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p orgFeat is not a stratigraphic organization.
 		 *
@@ -1978,7 +1978,7 @@ namespace COMMON_NS
 		 * @brief	Creates a stratigraphic occurrence interpretation ordered by apparent depth into this
 		 * 			repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p orgFeat is not a stratigraphic organization.
 		 *
@@ -1997,7 +1997,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a triangulated set representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the triangulated set representation. If empty then a new
 		 * 					guid will be generated.
@@ -2011,7 +2011,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a triangulated set representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
@@ -2030,7 +2030,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a polyline set representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the polyline set representation. If empty then a new guid
 		 * 					will be generated.
@@ -2044,7 +2044,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a polyline set representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
@@ -2063,7 +2063,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a polyline set representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 * @exception	std::invalid_argument	If in a RESQML v2.0 context, @p roleKind is a break line
 		 * 										role.
@@ -2085,7 +2085,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a point set representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the point set representation. If empty then a new guid
 		 * 					will be generated.
@@ -2099,7 +2099,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a point set representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null.
@@ -2116,7 +2116,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a plane set representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null.
@@ -2133,7 +2133,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a polyline representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid		The guid to set to the polyline representation. If empty then a new guid
 		 * 						will be generated.
@@ -2148,7 +2148,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a polyline representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp  	The represented interpretation. It cannot be null. You can
@@ -2169,7 +2169,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a polyline representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp  	The represented interpretation. It cannot be null. You can
@@ -2191,7 +2191,7 @@ namespace COMMON_NS
 		/**
 		 * Creates a 2d grid representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null.
@@ -2208,7 +2208,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a wellbore trajectory representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p interp or @p mdInfo is @c nullptr.
 		 *
 		 * @param [in]	interp	The represented wellbore interpretation. It cannot be null.
@@ -2228,7 +2228,7 @@ namespace COMMON_NS
 		 * Creates a wellbore trajectory representation (with an existing deviation survey as its
 		 * origin) into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p interp or @p deviationSurvey is @c nullptr.
 		 *
 		 * @param [in]	interp		   	The represented interpretation. It cannot be null.
@@ -2246,7 +2246,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a deviation survey representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt> or <tt>mdInfo ==
 		 * 												nullptr</tt>.
 		 *
@@ -2267,7 +2267,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a wellbore frame representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p interp or @p traj is @c nullptr.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null.
@@ -2316,7 +2316,7 @@ namespace COMMON_NS
 		/**
 		 * Creates a wellbore marker frame representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p interp of @p traj is @c nullptr.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null.
@@ -2334,7 +2334,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a blocked wellbore representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>traj == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null.
@@ -2353,7 +2353,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a representation set representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
@@ -2374,7 +2374,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a representation set representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the representation set representation. If empty then a new
 		 * 					guid will be generated.
@@ -2390,7 +2390,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a non sealed surface framework representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null.
@@ -2409,7 +2409,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a sealed surface framework representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null.
@@ -2428,7 +2428,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a sealed volume framework representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt> or <tt>ssf == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null.
@@ -2471,7 +2471,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates an ijk grid explicit representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid  	The guid to set to the ijk grid explicit representation. If empty then a new
 		 * 					guid will be generated.
@@ -2489,7 +2489,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates an ijk grid explicit representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null.
@@ -2510,7 +2510,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates an ijk grid parametric representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid  	The guid to set to the ijk grid parametric representation. If empty then a
 		 * 					new guid will be generated.
@@ -2528,7 +2528,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates an ijk grid parametric representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null.
@@ -2549,7 +2549,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates an ijk grid lattice representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid  	The guid to set to the ijk grid lattice representation. If empty then a new
 		 * 					guid will be generated.
@@ -2567,7 +2567,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates an ijk grid lattice representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null.
@@ -2588,7 +2588,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates an ijk grid with no geometry representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid  	The guid to set to the ijk grid with no geometry representation. If empty
 		 * 					then a new guid will be generated.
@@ -2607,7 +2607,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates an ijk grid with no geometry representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null.
@@ -2628,7 +2628,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates an unstructured grid representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid	 	The guid to set to the unstructured grid representation. If empty then a
 		 * 						new guid will be generated.
@@ -2644,7 +2644,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a sub-representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the sub-representation. If empty then a new guid will be
 		 * 					generated.
@@ -2659,7 +2659,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a sub-representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
@@ -2678,7 +2678,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a grid connection set representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	guid 	The guid to set to the grid connection set representation. If empty then a
 		 * 					new guid will be generated.
@@ -2692,7 +2692,7 @@ namespace COMMON_NS
 		/**
 		 * @brief	Creates a grid connection set representation into this repository
 		 *
-		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
@@ -2711,24 +2711,28 @@ namespace COMMON_NS
 		//************* PROPERTIES ***********
 
 		/**
-		 * Creates a time series into this repository
+		 * @brief	Creates a time series into this repository
 		 *
-		 * @param 	guid 	The guid to set to the time series. If empty then a
-		 * 					new guid will be generated.
-		 * @param 	title	The title to set to the time series. If empty then
-		 * 					\"unknown\" title will be set.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	guid 	The guid to set to the time series. If empty then a new guid will be
+		 * 					generated.
+		 * @param 	title	The title to set to the time series. If empty then \"unknown\" title will be
+		 * 					set.
 		 *
 		 * @returns	A pointer to the new time series.
 		 */
 		DLL_IMPORT_OR_EXPORT EML2_NS::TimeSeries* createTimeSeries(const std::string & guid, const std::string & title);
 
 		/**
-		 * Creates a string table lookup into this repository
+		 * @brief	Creates a string table lookup into this repository
 		 *
-		 * @param 	guid 	The guid to set to the string table lookup. If empty then a
-		 * 					new guid will be generated.
-		 * @param 	title	The title to set to the string table lookup. If empty then
-		 * 					\"unknown\" title will be set.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	guid 	The guid to set to the string table lookup. If empty then a new guid will be
+		 * 					generated.
+		 * @param 	title	The title to set to the string table lookup. If empty then \"unknown\" title
+		 * 					will be set.
 		 *
 		 * @returns	A pointer to the new string table lookup.
 		 */
@@ -2756,7 +2760,9 @@ namespace COMMON_NS
 			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
-		 * Creates a property kind into this repository
+		 * @brief	Creates a property kind into this repository
+		 *
+		 * @exception	std::invalid_argument	If <tt>parentPropType == nullptr</tt>.
 		 *
 		 * @param 	  	guid		  	The guid to set to the property kind. If empty then a new guid
 		 * 								will be generated.
@@ -2813,7 +2819,9 @@ namespace COMMON_NS
 			const std::string & namingSystem, const std::string & nonStandardUom, EML2_NS::PropertyKind * parentPropType);
 
 		/**
-		 * Creates an EML2.1 property kind into this repository
+		 * @brief	Creates an EML2.1 property kind into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
 		 * @param 	  	guid			  	The guid to set to the property kind. If empty then a new
 		 * 									guid will be generated.
@@ -2832,10 +2840,14 @@ namespace COMMON_NS
 			gsoap_eml2_1::eml21__QuantityClassKind quantityClass, bool isAbstract = false, EML2_NS::PropertyKind* parentPropertyKind = nullptr);
 
 		/**
-		 * Creates a property set into this repository
+		 * @brief	Creates a property set into this repository.
 		 *
-		 * @param 	guid				   	The guid to set to the property set. If empty then a new
-		 * 									guid will be generated.
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If, in a RESQML v2.0 context, @p timeSetKind is single
+		 * 										time series.
+		 *
+		 * @param 	guid				   	The guid to set to the property set. If empty then a new guid
+		 * 									will be generated.
 		 * @param 	title				   	The title to set to the property set. If empty then
 		 * 									\"unknown\" title will be set.
 		 * @param 	hasMultipleRealizations	True if the set contains properties with defined realization
@@ -2852,7 +2864,7 @@ namespace COMMON_NS
 
 		/**
 		 * Creates a comment property (which is of a well known Energistics property kind) into this
-		 * repository
+		 * repository.
 		 *
 		 * @exception	std::invalid_argument	If @p rep is null.
 		 *
@@ -2878,6 +2890,7 @@ namespace COMMON_NS
 		/**
 		 * Creates a comment property (which is of a local property kind) into this repository
 		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p rep or @p localPropKind is null.
 		 *
 		 * @param [in]	rep			  	The representation on which this property is attached to. It
@@ -2932,6 +2945,7 @@ namespace COMMON_NS
 		 * Creates a continuous property (which is of a well known unit of measure and a local property
 		 * kind) into this repository
 		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p rep or @p localPropType is null.
 		 *
 		 * @param [in]	rep			  	The representation on which this property is attached to. It
@@ -2989,6 +3003,7 @@ namespace COMMON_NS
 		 * Creates a continuous property (which is of local unit of measure and property kind) into this
 		 * repository
 		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p rep or @p localPropType is null.
 		 *
 		 * @param [in]	rep			  	The representation on which this property is attached to. It
@@ -3040,6 +3055,7 @@ namespace COMMON_NS
 		/**
 		 * Creates a discrete property (which is of a local property kind) into this repository
 		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p or @p localPropKind is null.
 		 *
 		 * @param [in]	rep			  	The representation on which this property is attached to. It
@@ -3091,6 +3107,7 @@ namespace COMMON_NS
 		/**
 		 * Creates a categorical property (which is of a local property kind) into this repository
 		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p localPropKind is null.
 		 *
 		 * @param [in]	rep			  	The representation on which this property is attached to. It
@@ -3117,17 +3134,24 @@ namespace COMMON_NS
 		//************* ACTIVITIES ***********
 
 		/**
-		 * Creates an activity template into this repository
+		 * @brief	Creates an activity template into this repository
 		 *
-		 * @param 	guid 	The guid to set to the activity template. If empty then a new guid will be generated.
-		 * @param 	title	The title to set to the activity template. If empty then \"unknown\" title will be set.
+		 * @exception	std::invalid_argument	If the default EML version is unrecognized.
+		 *
+		 * @param 	guid 	The guid to set to the activity template. If empty then a new guid will be
+		 * 					generated.
+		 * @param 	title	The title to set to the activity template. If empty then \"unknown\" title
+		 * 					will be set.
 		 *
 		 * @returns	A pointer to the new activity template.
 		 */
 		DLL_IMPORT_OR_EXPORT EML2_NS::ActivityTemplate* createActivityTemplate(const std::string & guid, const std::string & title);
 
 		/**
-		 * Creates an activity into this repository
+		 * @brief	Creates an activity into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default EML version is unrecognized.
+		 * @exception	std::invalid_argument	If <tt>activityTemplate == nullptr</tt>.
 		 *
 		 * @param [in]	activityTemplate	The activity template on which this activity is based on.
 		 * @param 	  	guid				The guid to set to the activity. If empty then a new guid
@@ -3174,13 +3198,15 @@ namespace COMMON_NS
 		);
 
 		/**
-		 * Creates a wellbore into this repository
+		 * @brief	Creates a wellbore into this repository.
+		 *
+		 * @exception	std::invalid_argument	If <tt>witsmlWell == nullptr</tt>.
 		 *
 		 * @param [in]	witsmlWell	The well associated to this wellbore. It cannot be null.
 		 * @param 	  	guid	  	The guid to set to the wellbore. If empty then a new guid will be
 		 * 							generated.
-		 * @param 	  	title	  	The title to set to the wellbore. If empty then \"unknown\" title will be
-		 * 							set.
+		 * @param 	  	title	  	The title to set to the wellbore. If empty then \"unknown\" title
+		 * 							will be set.
 		 *
 		 * @returns	A pointer to the new wellbore.
 		 */
@@ -3189,7 +3215,9 @@ namespace COMMON_NS
 			const std::string & title);
 
 		/**
-		 * Creates a wellbore into this repository
+		 * @brief	Creates a wellbore into this repository.
+		 *
+		 * @exception	std::invalid_argument	If <tt>witsmlWell == nullptr</tt>.
 		 *
 		 * @param [in]	witsmlWell	  	The well associated to this wellbore. It cannot be null.
 		 * @param 	  	guid		  	The guid to set to the wellbore. If empty then a new guid will be
@@ -3212,13 +3240,15 @@ namespace COMMON_NS
 		);
 
 		/**
-		 * Creates a well completion into this repository
+		 * @brief	Creates a well completion into this repository
+		 *
+		 * @exception	std::invalid_argument	If <tt>witsmlWell == nullptr</tt>.
 		 *
 		 * @param [in]	witsmlWell	The well associated to this well completion. It cannot be null.
-		 * @param 	  	guid	  	The guid to set to the well completion. If empty then a new guid will be
-		 * 							generated.
-		 * @param 	  	title	  	The title to set to the well completion. If empty then \"unknown\" title will be
-		 * 							set.
+		 * @param 	  	guid	  	The guid to set to the well completion. If empty then a new guid will
+		 * 							be generated.
+		 * @param 	  	title	  	The title to set to the well completion. If empty then \"unknown\"
+		 * 							title will be set.
 		 *
 		 * @returns	A pointer to the new well completion.
 		 */
@@ -3249,8 +3279,10 @@ namespace COMMON_NS
 			const std::string & wellCompletionName);
 
 		/**
-		 * Creates a wellbore geometry into this repository. It is used to capture information about the
-		 * configuration of the permanently installed components in a wellbore
+		 * @brief	Creates a wellbore geometry into this repository. It is used to capture information
+		 * 			about the configuration of the permanently installed components in a wellbore
+		 *
+		 * @exception	std::invalid_argument	If <tt>witsmlWellbore == nullptr</tt>.
 		 *
 		 * @param [in]	witsmlWellbore	The wellbore associated to this wellbore geometry. It cannot be
 		 * 								null.
@@ -3269,14 +3301,16 @@ namespace COMMON_NS
 			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
 
 		/**
-		 * Creates a wellbore trajectory into this repository
+		 * @brief	Creates a wellbore trajectory into this repository
+		 *
+		 * @exception	std::invalid_argument	If <tt>witsmlWellbore == nullptr</tt>.
 		 *
 		 * @param [in]	witsmlWellbore	The wellbore associated to this wellbore trajectory. It cannot be
 		 * 								null.
-		 * @param 	  	guid		  	The guid to set to the trajectory. If empty then a new guid will be
-		 * 								generated.
-		 * @param 	  	title		  	The title to set to the trajectory. If empty then \"unknown\" title
-		 * 								will be set.
+		 * @param 	  	guid		  	The guid to set to the trajectory. If empty then a new guid will
+		 * 								be generated.
+		 * @param 	  	title		  	The title to set to the trajectory. If empty then \"unknown\"
+		 * 								title will be set.
 		 * @param 	  	channelStatus 	Describes the growing status of the trajectory, whether active,
 		 * 								inactive or closed.
 		 *
@@ -3288,14 +3322,15 @@ namespace COMMON_NS
 			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
 
 		/**
-		 * Creates a wellbore log into this repository
+		 * @brief	Creates a wellbore log into this repository
 		 *
-		 * @param [in]	witsmlWellbore	The wellbore associated to this log. It cannot be
-		 * 								null.
+		 * @exception	std::invalid_argument	If <tt>witsmlWellbore == nullptr</tt>.
+		 *
+		 * @param [in]	witsmlWellbore	The wellbore associated to this log. It cannot be null.
 		 * @param 	  	guid		  	The guid to set to the log. If empty then a new guid will be
 		 * 								generated.
-		 * @param 	  	title		  	The title to set to the log. If empty then \"unknown\" title
-		 * 								will be set.
+		 * @param 	  	title		  	The title to set to the log. If empty then \"unknown\" title will
+		 * 								be set.
 		 *
 		 * @returns	A pointer to the new log.
 		 */
@@ -3316,14 +3351,16 @@ namespace COMMON_NS
 			const std::string & title);
 
 		/**
-		 * Creates a channel into this repository
+		 * @brief	Creates a channel into this repository
+		 *
+		 * @exception	std::invalid_argument	If <tt>propertyKind == nullptr</tt>.
 		 *
 		 * @param [in]	propertyKind	  	The property kind associated to this channel. It cannot be
 		 * 									null.
-		 * @param 	  	guid			  	The guid to set to the channel. If empty then a new guid will be
-		 * 									generated.
-		 * @param 	  	title			  	The title to set to the channel. If empty then \"unknown\" title
-		 * 									will be set.
+		 * @param 	  	guid			  	The guid to set to the channel. If empty then a new guid will
+		 * 									be generated.
+		 * @param 	  	title			  	The title to set to the channel. If empty then \"unknown\"
+		 * 									title will be set.
 		 * @param 	  	mnemonic		  	The mnemonic name to set to this channel.
 		 * @param 	  	uom				  	The underlying unit of measure of the value.
 		 * @param 	  	dataType		  	The underlying ETP data type of the value.

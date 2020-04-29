@@ -85,13 +85,6 @@ namespace RESQML2_0_1_NS
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
-		/**
-		 * Get the xyz point count in a given patch.
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	The xyz point count of patch.
-		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**

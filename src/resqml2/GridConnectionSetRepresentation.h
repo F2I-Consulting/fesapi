@@ -76,7 +76,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual ULONG64 getCellIndexPairs(ULONG64 * cellIndexPairs) const = 0;
 
 		/**
-		 * Get the count of cell index pairs which correspond to a particular interpretation.
+		 * @brief	Gets the count of cell index pairs which correspond to a particular interpretation.
 		 *
 		 * @exception	std::invalid_argument	If this grid connection set representation does not
 		 * 										contain any (fault) interpretation association.
