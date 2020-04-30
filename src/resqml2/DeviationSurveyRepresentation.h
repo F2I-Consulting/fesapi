@@ -224,12 +224,12 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation * getWellboreTrajectoryRepresentation(unsigned int index) const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override {return 1;}
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final {return 1;}
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:
 
@@ -262,6 +262,6 @@ namespace RESQML2_NS
 		DeviationSurveyRepresentation(gsoap_eml2_3::_resqml22__DeviationSurveyRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
 
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 	};
 }
