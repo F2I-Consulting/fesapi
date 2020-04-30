@@ -414,6 +414,6 @@ namespace RESQML2_NS
 		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreTrajectoryRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
 		WellboreTrajectoryRepresentation(gsoap_eml2_3::_resqml22__WellboreTrajectoryRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
 
-		void loadTargetRelationships();
+		void loadTargetRelationships() override;
 	};
 }
