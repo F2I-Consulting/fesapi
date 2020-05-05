@@ -160,42 +160,45 @@ void askUser(std::shared_ptr<ETP_NS::AbstractSession> session, COMMON_NS::DataOb
 		}
 		else if (commandTokens[0] == "SubscribeNotif") {
 			Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotifications mb;
-			mb.m_request.m_context.m_uri = commandTokens[1];
-			mb.m_request.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
-			mb.m_request.m_context.m_depth = 1;
-			mb.m_request.m_startTime = std::time(nullptr);
-			mb.m_request.m_requestUuid.m_array = GuidTools::generateUidAsByteArray();
+			Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo subscriptionInfo;
+			subscriptionInfo.m_context.m_uri = commandTokens[1];
+			subscriptionInfo.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
+			subscriptionInfo.m_context.m_depth = 1;
+			subscriptionInfo.m_startTime = std::time(nullptr);
+			subscriptionInfo.m_requestUuid.m_array = GuidTools::generateUidAsByteArray();
 
 			if (commandTokens.size() > 2) {
 				if (commandTokens[2] == "self")
-					mb.m_request.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
+					subscriptionInfo.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
 				else if (commandTokens[2] == "sources")
-					mb.m_request.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources;
+					subscriptionInfo.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources;
 				else if (commandTokens[2] == "sourcesOrSelf")
-					mb.m_request.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf;
+					subscriptionInfo.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf;
 				else if (commandTokens[2] == "targets")
-					mb.m_request.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets;
+					subscriptionInfo.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets;
 				else if (commandTokens[2] == "targetsOrSelf")
-					mb.m_request.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
+					subscriptionInfo.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
 
 				if (commandTokens.size() > 3) {
-					mb.m_request.m_context.m_depth = std::stoi(commandTokens[3]);
+					subscriptionInfo.m_context.m_depth = std::stoi(commandTokens[3]);
 
 					if (commandTokens.size() > 4) {
-						mb.m_request.m_includeObjectData = commandTokens[4] == "true";
+						subscriptionInfo.m_includeObjectData = commandTokens[4] == "true";
 
 						if (commandTokens.size() > 5) {
 							if (commandTokens[5] != "now") {
-								mb.m_request.m_startTime = std::stoll(commandTokens[5]);
+								subscriptionInfo.m_startTime = std::stoll(commandTokens[5]);
 							}
 
 							if (commandTokens.size() > 6) {
-								mb.m_request.m_context.m_dataObjectTypes = tokenize(commandTokens[6], ',');
+								subscriptionInfo.m_context.m_dataObjectTypes = tokenize(commandTokens[6], ',');
 							}
 						}
 					}
 				}
 			}
+
+			mb.m_request["0"] = subscriptionInfo;
 
 			session->send(mb);
 

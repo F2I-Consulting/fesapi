@@ -30,29 +30,31 @@ MyOwnStoreNotificationProtocolHandlers::MyOwnStoreNotificationProtocolHandlers(s
 
 void MyOwnStoreNotificationProtocolHandlers::on_SubscribeNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotifications & msg, int64_t messageId)
 {
-	session->subscriptions[messageId] = msg.m_request;
+	for (const auto& subscriptionInfo : msg.m_request) {
+		session->subscriptions[messageId] = subscriptionInfo.second;
 
-	auto journal = repo->getJournal();
-	auto startime = msg.m_request.m_startTime;
-	const auto firstInJournal = std::find_if(journal.begin(), journal.end(),
-		[startime](const std::tuple<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::DataObjectIdentifier, COMMON_NS::DataObjectRepository::CUD>& entry) {
-		return std::chrono::duration_cast<std::chrono::seconds>(std::get<0>(entry).time_since_epoch()).count() > startime; });
-	std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> created;
-	std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> updated;
-	for (auto it = firstInJournal; it != journal.end(); ++it) {
-		COMMON_NS::AbstractObject* obj = repo->getDataObjectByUuidAndVersion(std::get<1>(*it).uuid, std::get<1>(*it).version);
-		if (std::get<2>(*it) == COMMON_NS::DataObjectRepository::CREATED) {
-			created.push_back(std::make_pair(std::get<0>(*it), obj));
+		auto journal = repo->getJournal();
+		auto startime = subscriptionInfo.second.m_startTime;
+		const auto firstInJournal = std::find_if(journal.begin(), journal.end(),
+			[startime](const std::tuple<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::DataObjectIdentifier, COMMON_NS::DataObjectRepository::CUD>& entry) {
+			return std::chrono::duration_cast<std::chrono::seconds>(std::get<0>(entry).time_since_epoch()).count() > startime; });
+		std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> created;
+		std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> updated;
+		for (auto it = firstInJournal; it != journal.end(); ++it) {
+			COMMON_NS::AbstractObject* obj = repo->getDataObjectByUuidAndVersion(std::get<1>(*it).uuid, std::get<1>(*it).version);
+			if (std::get<2>(*it) == COMMON_NS::DataObjectRepository::CREATED) {
+				created.push_back(std::make_pair(std::get<0>(*it), obj));
+			}
+			else if (std::get<2>(*it) == COMMON_NS::DataObjectRepository::UPDATED) {
+				updated.push_back(std::make_pair(std::get<0>(*it), obj));
+			}
 		}
-		else if (std::get<2>(*it) == COMMON_NS::DataObjectRepository::UPDATED) {
-			updated.push_back(std::make_pair(std::get<0>(*it), obj));
-		}
-	}
 
-	if (!created.empty()) {
-		repo->on_CreateDataObject(created);
-	}
-	if (!updated.empty()) {
-		repo->on_UpdateDataObject(created);
+		if (!created.empty()) {
+			repo->on_CreateDataObject(created);
+		}
+		if (!updated.empty()) {
+			repo->on_UpdateDataObject(created);
+		}
 	}
 }

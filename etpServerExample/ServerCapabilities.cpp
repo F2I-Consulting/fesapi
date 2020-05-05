@@ -21,6 +21,7 @@ std::vector<std::string> makeSupportedObjects()
 {
 	std::vector<std::string> result;
 	result.push_back("resqml20.*");
+	result.push_back("eml20.*");
 
 	result.push_back("witsml20.Well");
 	result.push_back("witsml20.Wellbore");
