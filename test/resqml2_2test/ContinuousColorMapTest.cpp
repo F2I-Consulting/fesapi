@@ -90,7 +90,7 @@ void ContinuousColorMapTest::initRepoHandler() {
 	continuousProperty->pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 
 	// creating the continuous color map
-	RESQML2_2_NS::ContinuousColorMap* continuousColorMap = repo->createContinuousColorMap(defaultUuid, defaultTitle, gsoap_eml2_2::resqml22__InterpolationDomain__rgb, gsoap_eml2_2::resqml22__InterpolationMethod__linear);
+	RESQML2_2_NS::ContinuousColorMap* continuousColorMap = repo->createContinuousColorMap(defaultUuid, defaultTitle, gsoap_eml2_3::resqml22__InterpolationDomain__rgb, gsoap_eml2_3::resqml22__InterpolationMethod__linear);
 	REQUIRE(continuousColorMap != nullptr);
 	unsigned int rgbColors[6] = { 0, 256, 0, 255, 0, 0 };
 	vector<string> titles = { "green", "red" };

@@ -260,7 +260,7 @@ namespace RESQML2_NS
 
 		void pushBackIntoRepresentationSet(RepresentationSetRepresentation * repSet);
 		ULONG64 getRepresentationSetRepresentationCount() const;
-		RepresentationSetRepresentation* getRepresentationSetRepresentation(const ULONG64  & index) const;
+		RepresentationSetRepresentation* getRepresentationSetRepresentation(ULONG64 index) const;
 	};
 	
 	class RepresentationSetRepresentation : public RESQML2_NS::AbstractRepresentation

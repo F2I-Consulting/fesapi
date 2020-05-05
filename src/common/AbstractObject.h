@@ -51,6 +51,7 @@ namespace COMMON_NS
 		void pushBackExtraMetadataV2_0_1(const std::string & key, const std::string & value);
 		void pushBackExtraMetadataV2_1(const std::string & key, const std::string & value);
 		void pushBackExtraMetadataV2_2(const std::string & key, const std::string & value);
+		void pushBackExtraMetadataV2_3(const std::string& key, const std::string& value);
 
 		/**
 		* Getter (in read only mode) of all the extra metadata
@@ -93,12 +94,27 @@ namespace COMMON_NS
 		*/
 		std::string getExtraMetadataStringValueAtIndexV2_2(unsigned int index) const;
 
+		/**
+		* Get the count of extra metadata in the instance.
+		*/
+		unsigned int getExtraMetadataCountV2_3() const;
+
+		/**
+		* Get the key of a string value pair at a particular index in the extra metadata set
+		*/
+		std::string getExtraMetadataKeyAtIndexV2_3(unsigned int index) const;
+
+		/**
+		* Get the string value of a string value pair at a particular index in the extra metadata set
+		*/
+		std::string getExtraMetadataStringValueAtIndexV2_3(unsigned int index) const;
+
 	protected:
 
 		/**
 		* Enumeration for the various EML versions.
 		*/
-		enum EmlVersion {
+		enum class EmlVersion : std::int8_t {
 			TWO_DOT_ZERO = 0,
 			TWO_DOT_ONE = 1,
 			TWO_DOT_TWO = 2
@@ -119,6 +135,9 @@ namespace COMMON_NS
 		*/
 		gsoap_eml2_2::eml22__AbstractObject* gsoapProxy2_2;
 
+		/** The underlying generated gSoap proxy for a EML 2.3 dataobject. */
+		gsoap_eml2_3::eml23__AbstractObject* gsoapProxy2_3;
+
 		/**
 		* The repository which contain this data object.
 		*/
@@ -127,27 +146,64 @@ namespace COMMON_NS
 		/**
 		* Default constructor
 		*/
-		AbstractObject();
+		AbstractObject() :
+			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
 
 		/**
 		* Constructor for partial transfer
 		*/
-		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_);
+		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_) :
+			partialObject(partialObject_), gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
 
 		/**
 		* Constructor when importing EML 2.0 (i.e RESQML2.0.1) dataobjects
 		*/
-		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy);
+		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy) :
+			partialObject(nullptr), gsoapProxy2_0_1(proxy),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
 
 		/**
 		* Constructor when importing EML 2.1 dataobjects
 		*/
-		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy);
+		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) :
+			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(proxy),
+			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
 
 		/**
-		* Constructor when importing EML 2.1 dataobjects
+		* Constructor when importing EML 2.2 dataobjects
 		*/
-		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy);
+		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) :
+			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(proxy),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
+
+		/**
+		 * Constructor when importing EML 2.3 dataobjects
+		 *
+		 * @param [in,out]	proxy	If non-null, the proxy.
+		 */
+		AbstractObject(gsoap_eml2_3::eml23__AbstractObject* proxy) :
+			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(proxy),
+			repository(nullptr) {}
 
 		friend COMMON_NS::AbstractObject* COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy, bool replaceOnlyContent);
 
@@ -203,7 +259,12 @@ namespace COMMON_NS
 		* Convert a EML 2.2 Data Object Reference into a DataObjectRepository relationship.
 		*/
 		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor);
-
+#if WITH_EXPERIMENTAL
+		/**
+		* Convert a EML 2.3 Data Object Reference into a DataObjectRepository relationship.
+		*/
+		void convertDorIntoRel(gsoap_eml2_3::eml23__DataObjectReference const* dor);
+#endif
 		/**
 		* Same as convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor).
 		* Also check that the content type of the DOR is OK with the target datatype in memory.
@@ -257,7 +318,25 @@ namespace COMMON_NS
 			}
 			getRepository()->addRelationship(this, targetObj);
 		}
-
+#if WITH_EXPERIMENTAL
+		/**
+		* Same as convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor).
+		* Also check that the content type of the DOR is OK with the target datatype in memory.
+		*/
+		template <class valueType>
+		void convertDorIntoRel(gsoap_eml2_3::eml23__DataObjectReference const* dor)
+		{
+			valueType* targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
+			if (targetObj == nullptr) { // partial transfer
+				getRepository()->createPartial(dor);
+				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
+				if (targetObj == nullptr) {
+					throw std::invalid_argument("The DOR looks invalid.");
+				}
+			}
+			getRepository()->addRelationship(this, targetObj);
+		}
+#endif
 		/**
 		* Get an Hdf Proxy from a EML 2.0 dataset.
 		*/
@@ -483,6 +562,13 @@ namespace COMMON_NS
 		gsoap_eml2_2::eml22__DataObjectReference* newEml22Reference() const;
 
 		/**
+		 * Creates an returns an EML2.3 data object reference which targets this data object
+		 *
+		 * @returns	A pointer to the new EML2.3 data object reference.
+		 */
+		gsoap_eml2_3::eml23__DataObjectReference* newEml23Reference() const;
+
+		/**
 		* Creates an returns an EML2.0 Contact Data Object Reference which targets this dataobject.
 		*/
 		gsoap_resqml2_0_1::resqml20__ContactElementReference* newResqmlContactElementReference() const;
@@ -520,7 +606,7 @@ namespace COMMON_NS
 		/**
 		* Get part name of this XML top level instance in the EPC document
 		*/
-		virtual std::string getPartNameInEpcDocument() const;
+		DLL_IMPORT_OR_EXPORT virtual std::string getPartNameInEpcDocument() const;
 
 		/**
 		* Serialize the gsoap proxy into a string

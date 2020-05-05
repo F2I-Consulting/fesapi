@@ -28,7 +28,9 @@ under the License.
 
 #include "../common/HdfProxyFactory.h"
 
+#if WITH_EXPERIMENTAL
 #include "GraphicalInformationSet.h"
+#endif
 
 #include "../resqml2_0_1/PropertyKindMapper.h"
 
@@ -184,6 +186,11 @@ namespace {
 	{\
 		return dor->ObjectVersion == nullptr || dor->ObjectVersion->empty() ? createPartial<className>(dor->Uuid, dor->Title, dor->ContentType) : createPartial<className>(dor->Uuid, dor->Title, dor->ContentType, *dor->ObjectVersion);\
 	}
+#define CREATE_EML_2_3_FESAPI_PARTIAL_WRAPPER(className)\
+	(contentType.compare(className::XML_TAG) == 0)\
+	{\
+		return dor->ObjectVersion == nullptr ? createPartial<className>(dor->Uuid, dor->Title) : createPartial<className>(dor->Uuid, dor->Title, *dor->ObjectVersion);\
+	}
 
 /////////////////////
 /////// RESQML //////
@@ -207,7 +214,7 @@ namespace {
 /////// RESQML 2.2 //////
 ///////////////////////////
 #define GET_RESQML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
-	gsoap_eml2_2::_resqml22__##className* read = gsoap_eml2_2::soap_new_resqml22__##className(gsoapContext);\
+	gsoap_eml2_3::_resqml22__##className* read = gsoap_eml2_3::soap_new_resqml22__##className(gsoapContext);\
 	soap_read_resqml22__##className(gsoapContext, read);
 
 #define GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
@@ -255,20 +262,18 @@ namespace {
 	}
 
 /////////////////////
-////// EML 2.2 //////
+////// EML //////
 /////////////////////
-#define GET_EML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
-	gsoapNameSpace::_eml22__##className* read = gsoapNameSpace::soap_new_eml22__##className(gsoapContext);\
-	gsoapNameSpace::soap_read_eml22__##className(gsoapContext, read);
-
-#define GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
-	GET_EML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
+#define GET_EML_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace, xmlNamespace)\
+	gsoapNameSpace::_##xmlNamespace ##__##className* read = gsoapNameSpace::soap_new_##xmlNamespace ##__##className(gsoapContext);\
+	gsoapNameSpace::soap_read_##xmlNamespace ##__##className(gsoapContext, read);
+#define GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace, xmlNamespace)\
+	GET_EML_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace, xmlNamespace)\
 	wrapper = new classNamespace::className(read);
-
-#define CHECK_AND_GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
+#define CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace, xmlNamespace)\
 	(datatype.compare(classNamespace::className::XML_TAG) == 0)\
 	{\
-		GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace);\
+		GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace, xmlNamespace);\
 	}
 
 DataObjectRepository::DataObjectRepository() :
@@ -301,6 +306,15 @@ DataObjectRepository::~DataObjectRepository()
 {
 	clear();
 
+	if (propertyKindMapper != nullptr) {
+		delete propertyKindMapper;
+		propertyKindMapper = nullptr;
+	}
+
+	// An HDF proxy factory must always exist.
+	// It is created at construction time
+	delete hdfProxyFactory;
+
 	soap_destroy(gsoapContext); // remove deserialized C++ objects
 	soap_end(gsoapContext); // remove deserialized data
 	soap_done(gsoapContext); // finalize last use of the context
@@ -309,11 +323,6 @@ DataObjectRepository::~DataObjectRepository()
 
 void DataObjectRepository::clear()
 {
-	if (propertyKindMapper != nullptr) {
-		delete propertyKindMapper;
-		propertyKindMapper = nullptr;
-	}
-
 	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
 		for (size_t i = 0; i < it->second.size(); ++i) {
 			delete it->second[i];
@@ -324,8 +333,6 @@ void DataObjectRepository::clear()
 	backwardRels.clear();
 
 	warnings.clear();
-
-	delete hdfProxyFactory;
 }
 
 void DataObjectRepository::addRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target)
@@ -636,10 +643,14 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 	else if (ns == "witsml21") {
 		wrapper = getWitsml2_1WrapperFromGsoapContext(datatype);
 	}
+	else if (ns == "eml23") {
+		wrapper = getEml2_3WrapperFromGsoapContext(datatype);
+	}
 #endif
 	else if (ns == "eml22") {
 		wrapper = getEml2_2WrapperFromGsoapContext(datatype);
 	}
+#endif
 
 	if (wrapper != nullptr) {
 		if (gsoapContext->error != SOAP_OK) {
@@ -884,6 +895,22 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml
 		return createPartial(uuid, title, contentType, *dor->ObjectVersion);
 	}
 }
+
+#if WITH_EXPERIMENTAL
+COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_3::eml23__DataObjectReference const* dor)
+{
+	const size_t lastEqualCharPos = dor->ContentType.find_last_of('='); // The XML tag is after "type="
+	const string contentType = dor->ContentType.substr(lastEqualCharPos + 1);
+
+	if CREATE_EML_2_3_FESAPI_PARTIAL_WRAPPER(COMMON_NS::GraphicalInformationSet)
+	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
+	{
+		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
+	}
+
+	throw invalid_argument("The content type " + contentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
+}
+#endif
 
 //************************************
 //************ HDF *******************
@@ -1228,6 +1255,11 @@ PolylineSetRepresentation* DataObjectRepository::createPolylineSetRepresentation
 	const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__LineRole roleKind)
 {
 	return new PolylineSetRepresentation(interp, guid, title, roleKind);
+}
+
+PointSetRepresentation* DataObjectRepository::createPointSetRepresentation(const std::string & guid, const std::string & title)
+{
+	return new PointSetRepresentation(this, guid, title);
 }
 
 PointSetRepresentation* DataObjectRepository::createPointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
@@ -1737,19 +1769,19 @@ PRODML2_1_NS::FluidCharacterization* DataObjectRepository::createFluidCharacteri
 	return new PRODML2_1_NS::FluidCharacterization(this, guid, title);
 }
 
+#if WITH_EXPERIMENTAL
 COMMON_NS::GraphicalInformationSet* DataObjectRepository::createGraphicalInformationSet(const std::string & guid, const std::string & title)
 {
 	return new COMMON_NS::GraphicalInformationSet(this, guid, title);
 }
 
-#if WITH_EXPERIMENTAL
 RESQML2_2_NS::DiscreteColorMap* DataObjectRepository::createDiscreteColorMap(const std::string& guid, const std::string& title)
 {
 	return new RESQML2_2_NS::DiscreteColorMap(this, guid, title);
 }
 
 RESQML2_2_NS::ContinuousColorMap* DataObjectRepository::createContinuousColorMap(const std::string& guid, const std::string& title,
-	gsoap_eml2_2::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml22__InterpolationMethod interpolationMethod)
+	gsoap_eml2_3::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_3::resqml22__InterpolationMethod interpolationMethod)
 {
 	return new RESQML2_2_NS::ContinuousColorMap(this, guid, title, interpolationDomain, interpolationMethod);
 }
@@ -2480,15 +2512,16 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 		
 	return wrapper;
 }
-#endif
 
-COMMON_NS::AbstractObject* DataObjectRepository::getEml2_2WrapperFromGsoapContext(const std::string & datatype)
+COMMON_NS::AbstractObject* DataObjectRepository::getEml2_3WrapperFromGsoapContext(const std::string & datatype)
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;
 
-	if CHECK_AND_GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(COMMON_NS, GraphicalInformationSet, gsoap_eml2_2)
-		return wrapper;
+	if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(COMMON_NS, GraphicalInformationSet, gsoap_eml2_3, eml23)
+	
+	return wrapper;
 }
+#endif
 
 int DataObjectRepository::getGsoapErrorCode() const
 {
@@ -2508,6 +2541,9 @@ void DataObjectRepository::registerDataFeeder(COMMON_NS::DataFeeder * dataFeeder
 }
 
 void DataObjectRepository::setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory) {
+	if (factory == nullptr) {
+		throw invalid_argument("You cannot set a NULL HDF proxy factory.");
+	}
 	delete hdfProxyFactory;
 	hdfProxyFactory = factory;
 }

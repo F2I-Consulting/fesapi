@@ -55,7 +55,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractRepresentation::getHdfPro
 	return nullptr;
 }
 
-gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates* AbstractRepresentation::getSeismic2dCoordinates(const unsigned int& patchIndex) const
+gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates* AbstractRepresentation::getSeismic2dCoordinates(unsigned int patchIndex) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PointGeometry* const geom = getPointGeometry2_0_1(patchIndex);
@@ -74,7 +74,7 @@ gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates* AbstractRepresentation::getSe
 	}
 }
 
-gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* AbstractRepresentation::getSeismic3dCoordinates(const unsigned int& patchIndex) const
+gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* AbstractRepresentation::getSeismic3dCoordinates(unsigned int patchIndex) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PointGeometry* const geom = getPointGeometry2_0_1(patchIndex);
@@ -124,15 +124,13 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointG
 		geom->Points = xmlPts;
 
 		// HDF
-		hsize_t* const numValues = new hsize_t[numDimensionsInArray + 1];
+		std::unique_ptr<hsize_t[]> numValues(new hsize_t[numDimensionsInArray + 1]);
 		for (hsize_t i = 0; i < numDimensionsInArray; ++i) {
 			numValues[i] = numPoints[i];
 		}
 		numValues[numDimensionsInArray] = 3; // 3 for X, Y and Z
 
-		proxy->writeArrayNdOfDoubleValues(getUuid(), oss.str(), points, numValues, numDimensionsInArray + 1);
-
-		delete[] numValues;
+		proxy->writeArrayNdOfDoubleValues(getUuid(), oss.str(), points, numValues.get(), numDimensionsInArray + 1);
 
 		return geom;
 	}
@@ -180,7 +178,13 @@ std::vector<AbstractValuesProperty*> AbstractRepresentation::getValuesPropertySe
 
 unsigned int AbstractRepresentation::getValuesPropertyCount() const
 {
-	return getValuesPropertySet().size();
+	const size_t result = getValuesPropertySet().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw std::range_error("There are too much properties");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 AbstractValuesProperty* AbstractRepresentation::getValuesProperty(unsigned int index) const
@@ -206,10 +210,13 @@ void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation* in
 			interp->getRepository()->deleteRelationship(this, getInterpretation());
 		}
 	}
-#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_2 != nullptr) {
 		if (static_cast<gsoap_eml2_2::resqml22__AbstractRepresentation*>(gsoapProxy2_2)->RepresentedInterpretation != nullptr) {
 			interp->getRepository()->deleteRelationship(this, getInterpretation());
+#if WITH_EXPERIMENTAL
+	else if (gsoapProxy2_3 != nullptr) {
+		if (static_cast<gsoap_eml2_3::resqml22__AbstractRepresentation*>(gsoapProxy2_3)->RepresentedInterpretation != nullptr) {
+			getRepository()->deleteRelationship(this, getInterpretation());
 		}
 	}
 #endif
@@ -224,8 +231,8 @@ void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation* in
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation = interp->newResqmlReference();
 	}
 #if WITH_EXPERIMENTAL
-	else if (gsoapProxy2_2 != nullptr) {
-		static_cast<gsoap_eml2_2::resqml22__AbstractRepresentation*>(gsoapProxy2_2)->RepresentedInterpretation = interp->newEml22Reference();
+	else if (gsoapProxy2_3 != nullptr) {
+		static_cast<gsoap_eml2_3::resqml22__AbstractRepresentation*>(gsoapProxy2_3)->RepresentedInterpretation = interp->newEml23Reference();
 	}
 #endif
 	else
@@ -243,9 +250,9 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractRepresentation::getInterp
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation;
 	}
 #if WITH_EXPERIMENTAL
-	else if (gsoapProxy2_2 != nullptr) {
-		return static_cast<gsoap_eml2_2::resqml22__AbstractRepresentation*>(gsoapProxy2_2)->RepresentedInterpretation != nullptr ?
-			misc::eml22ToEml20Reference(static_cast<gsoap_eml2_2::resqml22__AbstractRepresentation*>(gsoapProxy2_2)->RepresentedInterpretation, gsoapProxy2_2->soap) : nullptr;
+	else if (gsoapProxy2_3 != nullptr) {
+		return static_cast<gsoap_eml2_3::resqml22__AbstractRepresentation*>(gsoapProxy2_3)->RepresentedInterpretation != nullptr ?
+			misc::eml23ToEml20Reference(static_cast<gsoap_eml2_3::resqml22__AbstractRepresentation*>(gsoapProxy2_3)->RepresentedInterpretation, gsoapProxy2_3->soap) : nullptr;
 	}
 #endif
 	else {
@@ -272,7 +279,13 @@ std::vector<SubRepresentation*> AbstractRepresentation::getSubRepresentationSet(
 
 unsigned int AbstractRepresentation::getSubRepresentationCount() const
 {
-	return getSubRepresentationSet().size();
+	const size_t result = getSubRepresentationSet().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw std::range_error("There are too much subrepresentations");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 SubRepresentation* AbstractRepresentation::getSubRepresentation(unsigned int index) const
@@ -302,7 +315,13 @@ std::vector<SubRepresentation*> AbstractRepresentation::getFaultSubRepresentatio
 
 unsigned int AbstractRepresentation::getFaultSubRepresentationCount() const
 {
-	return getFaultSubRepresentationSet().size();
+	const size_t result = getFaultSubRepresentationSet().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw std::range_error("There are too much fault subrepresentations");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 SubRepresentation* AbstractRepresentation::getFaultSubRepresentation(unsigned int index) const
@@ -416,7 +435,7 @@ std::set<AbstractRepresentation*> AbstractRepresentation::getAllSeismicSupport()
 {
 	std::set<AbstractRepresentation*> result;
 	const unsigned int patchCount = getPatchCount();
-	for (size_t patchIndex = 0; patchIndex < patchCount; ++patchIndex)
+	for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex)
 	{
 		AbstractRepresentation* seismicSupport = getSeismicSupportOfPatch(patchIndex);
 		if (seismicSupport != nullptr)
@@ -435,19 +454,19 @@ void AbstractRepresentation::pushBackIntoRepresentationSet(RepresentationSetRepr
 	repSet->pushBack(this);
 }
 
-std::vector<RepresentationSetRepresentation*> AbstractRepresentation::getRepresentationSetRespresentationSet() const
+std::vector<RepresentationSetRepresentation*> AbstractRepresentation::getRepresentationSetRepresentationSet() const
 {
-	return repository->getTargetObjects<RepresentationSetRepresentation>(this);
+	return repository->getSourceObjects<RepresentationSetRepresentation>(this);
 }
 
 ULONG64 AbstractRepresentation::getRepresentationSetRepresentationCount() const
 {
-	return getRepresentationSetRespresentationSet().size();
+	return getRepresentationSetRepresentationSet().size();
 }
 
-RepresentationSetRepresentation* AbstractRepresentation::getRepresentationSetRepresentation(const ULONG64& index) const
+RepresentationSetRepresentation* AbstractRepresentation::getRepresentationSetRepresentation(ULONG64 index) const
 {
-	const std::vector<RESQML2_NS::RepresentationSetRepresentation*>& representationSetRepresentationSet = getRepresentationSetRespresentationSet();
+	const std::vector<RESQML2_NS::RepresentationSetRepresentation*> representationSetRepresentationSet = getRepresentationSetRepresentationSet();
 
 	if (index >= getRepresentationSetRepresentationCount()) {
 		throw range_error("The index of the representation set representation is out of range.");
@@ -494,7 +513,6 @@ void AbstractRepresentation::loadTargetRelationships()
 			}
 		}
 	}
-	// TODO : else if (gsoapProxy2_2 != nullptr)
 }
 
 void AbstractRepresentation::addSeismic3dCoordinatesToPatch(const unsigned int patchIndex, double* inlines, double* crosslines, const unsigned int& pointCount,

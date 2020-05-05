@@ -47,7 +47,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractRepresentation(gsoap_eml2_2::resqml22__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		AbstractRepresentation(gsoap_eml2_3::resqml22__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 #endif
 		
 		/**
@@ -69,9 +69,9 @@ namespace RESQML2_NS
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDorFromPointGeometryPatch(gsoap_resqml2_0_1::resqml20__PointGeometry* patch) const;
 
-		gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates* getSeismic2dCoordinates(const unsigned int & patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates* getSeismic2dCoordinates(unsigned int patchIndex) const;
 
-		gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* getSeismic3dCoordinates(const unsigned int & patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* getSeismic3dCoordinates(unsigned int patchIndex) const;
 
 	public:
 
@@ -260,9 +260,9 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackIntoRepresentationSet(class RepresentationSetRepresentation * repSet);
 
 		/**
-		* Get all the subrepresentations of this instance which represent a fault.
+		* Get all the representation sets which contain this instance.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RepresentationSetRepresentation *> getRepresentationSetRespresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RepresentationSetRepresentation*> getRepresentationSetRepresentationSet() const;
 
 		/**
 		 * Get the count of representation set representations which contain this representation
@@ -272,7 +272,7 @@ namespace RESQML2_NS
 		/**
 		 * Get the parent representation set representations at the specified index of the representation set representation list.
 		 */
-		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation * getRepresentationSetRepresentation(const ULONG64  & index) const;
+		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation* getRepresentationSetRepresentation(ULONG64 index) const;
 
 		/**
 		* Push back a patch of seismic 3D coordinates info.

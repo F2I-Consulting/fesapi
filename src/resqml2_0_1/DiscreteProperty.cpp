@@ -430,13 +430,14 @@ void DiscreteProperty::setValuesOfLongHdf5ArrayOfValues(
 			prop->MaximumValue.push_back((std::numeric_limits<LONG64>::min)());
 		}
 
-		if (patchIndex == (numeric_limits<unsigned int>::max)()) {
-			patchIndex = prop->PatchOfValues.size() - 1;
+		auto abstractIntArray = prop->PatchOfValues[patchIndex == (numeric_limits<unsigned int>::max)() ? prop->PatchOfValues.size() - 1 : patchIndex]->Values;
+		if (abstractIntArray->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+			throw std::logic_error("Cannot set values of a non IntegerHdf5Array");
 		}
 
 		for (size_t propIndex = 0; propIndex < prop->Count; ++propIndex) {
 			for (size_t i = 0; i < nValues; i += prop->Count) {
-				if (values[i] == static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(prop->PatchOfValues[patchIndex]->Values)->NullValue) { continue; }
+				if (values[i] == static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(abstractIntArray)->NullValue) { continue; }
 				if (prop->MinimumValue[propIndex] > values[i]) {
 					prop->MinimumValue[propIndex] = values[i];
 				}

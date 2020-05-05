@@ -244,6 +244,8 @@ namespace COMMON_NS
 		
 		void clear();
 		
+		bool hasHdfProxyFactory();
+		
 		std::vector<RESQML2_0_1_NS::LocalDepth3dCrs*> getLocalDepth3dCrsSet() const;
 
 		std::vector<RESQML2_0_1_NS::LocalTime3dCrs*> getLocalTime3dCrsSet() const;
@@ -525,6 +527,8 @@ namespace COMMON_NS
 		RESQML2_0_1_NS::PolylineSetRepresentation* createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__LineRole roleKind);
 
+		RESQML2_0_1_NS::PointSetRepresentation* createPointSetRepresentation(const std::string & guid, const std::string & title);
+
 		RESQML2_0_1_NS::PointSetRepresentation* createPointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
@@ -773,7 +777,6 @@ namespace COMMON_NS
 		/* WARNINGS */
 
 		void clearWarnings();
-		void addWarning(const std::string & warning);
 		const std::vector<std::string> & getWarnings() const;
 		
 		template <class valueType>

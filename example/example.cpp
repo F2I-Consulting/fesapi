@@ -15,7 +15,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-// Acknowledgements: the serializeOrganizations function have been provided by Geosiris (contact: mathieu.poudret@geosiris.com)
+// Acknowledgements: the serializeOrganizations function have been provided by Geosiris
 
 //#define OFFICIAL
 
@@ -111,6 +111,8 @@ under the License.
 
 #include "prodml2_1/FluidCharacterization.h"
 #include "prodml2_1/FrictionTheorySpecification.h"
+
+#include "HdfProxyFactoryExample.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -408,7 +410,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, CO
 	contColMapContProp->pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 	delete[] values;
 
-	RESQML2_2_NS::ContinuousColorMap* contColMap = repo->createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", gsoap_eml2_2::resqml22__InterpolationDomain__rgb, gsoap_eml2_2::resqml22__InterpolationMethod__linear);
+	RESQML2_2_NS::ContinuousColorMap* contColMap = repo->createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", gsoap_eml2_3::resqml22__InterpolationDomain__rgb, gsoap_eml2_3::resqml22__InterpolationMethod__linear);
 	unsigned int contColMapRgbColors[6] = { 0, 255, 0, 255, 0, 0 };
 	vector<string> contColMapColTitles = { "green", "red" };
 	double contColMapAlphas[2] = { 1., 1. };
@@ -948,6 +950,17 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		timeSeries);
 	double valuesTime[6] = { 0, 1, 2, 3, 3, 4 };
 	continuousPropertySeries->pushBackDoubleHdf5Array1dOfValues(valuesTime, 6, hdfProxy);
+
+	//**************
+	// Categorical Properties
+	//**************
+
+	StringTableLookup* stringTableLookup = pck->createStringTableLookup("62245eb4-dbf4-4871-97de-de9e4f4597be", "My String Table Lookup");
+	stringTableLookup->addValue("Cell index 0", 0);
+	stringTableLookup->addValue("Cell index 1", 1);
+	CategoricalProperty* categoricalProp = pck->createCategoricalProperty(ijkgrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)", 1,
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, stringTableLookup, propType1);
+	categoricalProp->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
 
 	//**************
 	// LGR
@@ -1995,6 +2008,13 @@ bool serialize(const string & filePath)
 
 	cout << "Start serialization of " << pck.getName() << " in " << (pck.getStorageDirectory().empty() ? "working directory." : pck.getStorageDirectory()) << endl;
 	pck.serializeFrom(repo);
+
+	// Check HDF proxy factory
+	repo.setHdfProxyFactory(new HdfProxyFactoryExample());
+	auto exoticHdfPox = repo.createHdfProxy("", "Dummy Exotic HDF proxy", "", "", COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
+	double dummyPoints[3] = { 1.0, 2.0, 3.0 };
+	repo.createPointSetRepresentation("", "")->pushBackGeometryPatch(1, dummyPoints, exoticHdfPox);
+
 	return true;
 }
 
@@ -3688,7 +3708,7 @@ void deserialize(const string & inputFile)
 	string resqmlResult = pck.deserializeInto(repo);
 	if (!resqmlResult.empty()) {
 		cerr << resqmlResult << endl;
-		throw invalid_argument("The epc document is not a valid one");
+		repo.clearWarnings();
 	}
 
 	const unsigned int hdfProxyCount = repo.getHdfProxyCount();

@@ -42,7 +42,7 @@ namespace RESQML2_2_NS
 	%nspace RESQML2_2_NS::SeismicWellboreFrameRepresentation;
 #endif
 
-namespace gsoap_eml2_2
+namespace gsoap_eml2_3
 {
 	enum resqml22__InterpolationDomain {
 		resqml22__InterpolationDomain__hsv = 0,
@@ -103,10 +103,10 @@ namespace RESQML2_2_NS
 
 		unsigned int getColorCount() const;
 
-		gsoap_eml2_2::resqml22__InterpolationDomain getInterpolationDomain();
+		gsoap_eml2_3::resqml22__InterpolationDomain getInterpolationDomain();
 		std::string getInterpolationDomainAsString();
 
-		gsoap_eml2_2::resqml22__InterpolationMethod getInterpolationMethod();
+		gsoap_eml2_3::resqml22__InterpolationMethod getInterpolationMethod();
 		std::string getInterpolationMethodAsString();
 
 		void setNanHsvColor(double hue, double saturation, double value, double alpha = 1, std::string const& colorTitle = "");

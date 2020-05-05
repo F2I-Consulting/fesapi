@@ -47,7 +47,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreFrameRepresentation(gsoap_eml2_2::resqml22__WellboreFrameRepresentation* fromGsoap) :
+		WellboreFrameRepresentation(gsoap_eml2_3::resqml22__WellboreFrameRepresentation* fromGsoap) :
 			AbstractRepresentation(fromGsoap) {}
 #endif
 
@@ -130,7 +130,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT std::string getWellboreTrajectoryUuid() const;
 
 		/**
-		* Get the associated RESQML wellbore trajector.
+		* Get the associated RESQML wellbore trajectory.
 		*/
 		DLL_IMPORT_OR_EXPORT class RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 

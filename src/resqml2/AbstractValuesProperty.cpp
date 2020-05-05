@@ -153,7 +153,13 @@ void AbstractValuesProperty::pushBackFacet(const gsoap_resqml2_0_1::resqml20__Fa
 unsigned int AbstractValuesProperty::getFacetCount() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet.size();
+		const size_t result = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet.size();
+
+		if (result > (std::numeric_limits<unsigned int>::max)()) {
+			throw std::range_error("There are too much facets");
+		}
+
+		return static_cast<unsigned int>(result);
 	}
 
 	throw logic_error("Not implemented yet");

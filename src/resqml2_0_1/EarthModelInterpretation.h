@@ -79,13 +79,13 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT class StratigraphicColumn* getStratiColumn() const;
 
-		//Strati occurences
+		//Strati occurrences
 
-		DLL_IMPORT_OR_EXPORT unsigned int getStratiOccurenceCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getStratiOccurrenceCount() const;
 
-		DLL_IMPORT_OR_EXPORT class StratigraphicOccurrenceInterpretation* getStratiOccurence(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT class StratigraphicOccurrenceInterpretation* getStratiOccurrence(unsigned int index) const;
 
-		DLL_IMPORT_OR_EXPORT void pushBackStratiOccurence(class StratigraphicOccurrenceInterpretation * stratiOccurence);
+		DLL_IMPORT_OR_EXPORT void pushBackStratiOccurrence(class StratigraphicOccurrenceInterpretation * stratiOccurence);
 
 		// Rock Fluid
 		DLL_IMPORT_OR_EXPORT bool hasRockFluidOrganizationInterpretation() const;

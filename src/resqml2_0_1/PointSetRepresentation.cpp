@@ -31,11 +31,25 @@ using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* PointSetRepresentation::XML_TAG = "PointSetRepresentation";
-
 const char* PointSetRepresentation::XML_NS = "resqml20";
 
+PointSetRepresentation::PointSetRepresentation(COMMON_NS::DataObjectRepository* repo,
+	const std::string & guid, const std::string & title)
+{
+	if (repo == nullptr) {
+		throw invalid_argument("The repo cannot be null.");
+	}
+
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREPointSetRepresentation(repo->getGsoapContext());
+
+	initMandatoryMetadata();
+	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	repo->addOrReplaceDataObject(this);
+}
+
 PointSetRepresentation::PointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-		const std::string & guid, const std::string & title)
+	const std::string & guid, const std::string & title)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("You must provide an interpretation");
@@ -65,8 +79,8 @@ void PointSetRepresentation::pushBackGeometryPatch(
 	patch->Count = xyzPointCount;
 
 	// XYZ points
-	hsize_t pointCountDims[] = {xyzPointCount};
-	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, xyzPoints, localCrs, pointCountDims, 1, proxy);
+	hsize_t pointCountDims = xyzPointCount;
+	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, xyzPoints, localCrs, &pointCountDims, 1, proxy);
 
 	static_cast<_resqml20__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch.push_back(patch);
 	getRepository()->addRelationship(this, localCrs);
@@ -113,5 +127,11 @@ void PointSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex
 
 unsigned int PointSetRepresentation::getPatchCount() const
 {
-    return static_cast<_resqml20__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch.size();
+	const size_t result = static_cast<_resqml20__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch.size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw std::range_error("There are too much patches");
+	}
+
+	return static_cast<unsigned int>(result);
 }

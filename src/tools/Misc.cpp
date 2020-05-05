@@ -21,6 +21,7 @@ under the License.
 
 #include <stdexcept>
 #include "../proxies/gsoap_resqml2_0_1H.h"
+#include "../proxies/gsoap_eml2_3H.h"
 
 using namespace std;
 
@@ -29,12 +30,12 @@ string misc::getPartNameFromReference(gsoap_resqml2_0_1::eml20__DataObjectRefere
 	return reference->ContentType.substr(reference->ContentType.rfind('=')+1) + "_" + reference->UUID + ".xml";
 }
 
-string misc::getPartNameFromReference(gsoap_eml2_2::eml22__DataObjectReference * reference)
+string misc::getPartNameFromReference(gsoap_eml2_3::eml23__DataObjectReference * reference)
 {
 	return reference->ContentType.substr(reference->ContentType.rfind('=') + 1) + "_" + reference->Uuid + ".xml";
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* misc::eml22ToEml20Reference(gsoap_eml2_2::eml22__DataObjectReference* reference, soap* soapContext)
+gsoap_resqml2_0_1::eml20__DataObjectReference* misc::eml23ToEml20Reference(gsoap_eml2_3::eml23__DataObjectReference* reference, soap* soapContext)
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* result = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(soapContext);
 	result->UUID = reference->Uuid;

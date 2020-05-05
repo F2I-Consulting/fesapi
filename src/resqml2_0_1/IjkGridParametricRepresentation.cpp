@@ -440,8 +440,9 @@ bool IjkGridParametricRepresentation::isParametricLineKindConstant() const
 
 short IjkGridParametricRepresentation::getConstantParametricLineKind() const
 {
-	if (!isParametricLineKindConstant())
+	if (!isParametricLineKindConstant()) {
 		throw invalid_argument("The parametric line kind is not constant.");
+	}
 
 	gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
@@ -451,29 +452,33 @@ short IjkGridParametricRepresentation::getConstantParametricLineKind() const
 	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ParametricLineArray)
 	{
 		resqml20__ParametricLineArray* paramLineArray = static_cast<resqml20__ParametricLineArray*>(points->ParametricLines);
-		if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)
-		{
-			return static_cast<resqml20__IntegerLatticeArray*>(paramLineArray->LineKindIndices)->StartValue;
+		if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray) {
+			LONG64 result = static_cast<resqml20__IntegerLatticeArray*>(paramLineArray->LineKindIndices)->StartValue;
+			if (result > (std::numeric_limits<short>::max)()) {
+				throw std::range_error("The constant parametric line kind is not a short one.");
+			}
+			return static_cast<short>(result);
 		}
-		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray)
-		{
-			return static_cast<resqml20__IntegerConstantArray*>(paramLineArray->LineKindIndices)->Value;
+		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
+			LONG64 result = static_cast<resqml20__IntegerConstantArray*>(paramLineArray->LineKindIndices)->Value;
+			if (result > (std::numeric_limits<short>::max)()) {
+				throw std::range_error("The constant parametric line kind is not a short one.");
+			}
+			return static_cast<short>(result);
 		}
-		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
-		{
+		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(paramLineArray->LineKindIndices)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			short * pillarKind = new short [getPillarCount()];
-			hdfProxy->readArrayNdOfShortValues(dataset->PathInHdfFile, pillarKind);
-			short firstPillarKind = pillarKind[0];
-			delete [] pillarKind;
-			return firstPillarKind;
+			std::unique_ptr<short[]> pillarKind(new short[getPillarCount()]);
+			hdfProxy->readArrayNdOfShortValues(dataset->PathInHdfFile, pillarKind.get());
+			return pillarKind[0];
 		}
-		else
+		else {
 			throw std::logic_error("Not yet implemented");
+		}
 	}
-	else
-		throw std::logic_error("This ijk grid should be a parametric one but does not look like a parametric one.");
+
+	throw std::logic_error("This ijk grid should be a parametric one but does not look like a parametric one.");
 }
 
 void IjkGridParametricRepresentation::getParametricLineKind(short * pillarKind, bool reverseIAxis, bool reverseJAxis) const
