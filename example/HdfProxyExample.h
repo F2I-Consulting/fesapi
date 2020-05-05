@@ -53,29 +53,28 @@ public:
 		* Open the file for reading and writing.
 		* The read/write access are determined by the EPC document configuration.
 		*/
-	void open() { std::cout << "Open the proxy" << std::endl; };
+	void open() { std::cout << "Open the proxy" << std::endl; }
 
 	/**
 	 * Check if the Hdf file is open or not
 	 */
-	bool isOpened() const { return true; };
+	bool isOpened() const { return true; }
 
 	/**
 	 * Close the file
 	 */
-	void close() { std::cout << "Close the proxy" << std::endl; };
+	void close() { std::cout << "Close the proxy" << std::endl; }
 
 	/**
 	 * Get the used (native) datatype in a dataset
-	* To compare with H5T_NATIVE_INT, H5T_NATIVE_UINT, H5T_NATIVE_FLOAT, etc...
 	 */
-	hdf5_hid_t getHdfDatatypeInDataset(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); };
+	AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Get the used datatype class in a dataset
 	* To compare with H5T_INTEGER, H5T_FLOAT , H5T_STRING , etc...
 	*/
-	int getHdfDatatypeClassInDataset(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); };
+	int getHdfDatatypeClassInDataset(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Write an itemized list of list into the HDF file by means of a single group containing 2 datasets.
@@ -96,31 +95,37 @@ public:
 		unsigned long long cumulativeLengthSize,
 		hdf5_hid_t elementsDatatype,
 		const void * elements,
-		unsigned long long elementsSize) { throw std::logic_error("Not implemented yet"); };
+		unsigned long long elementsSize) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Get the number of dimensions in an HDF dataset of the proxy.
 	 * @param datasetName	The absolute name of the dataset we want to get the number of dimensions.
 	 */
-	unsigned int getDimensionCount(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); };
+	unsigned int getDimensionCount(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
+
+	/**
+	 * Get the number of elements in each dimension in an HDF dataset of the proxy.
+	 * @param datasetName	The absolute name of the dataset we want to get the number of elements.
+	 */
+	std::vector<unsigned long long> getElementCountPerDimension(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Get the number of elements in an HDF dataset of the proxy. The number of elements is get from all dimensions.
 	 * @param datasetName	The absolute name of the dataset we want to get the number of elements.
 	 */
-	signed long long getElementCount(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); };
+	signed long long getElementCount(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Set the new compression level which will be used for all data to be written
 	 * @param compressionLevel				Lower compression levels are faster but result in less compression. Range [0..9] is allowed.
 	 */
-	void setCompressionLevel(unsigned int newCompressionLevel) { throw std::logic_error("Not implemented yet"); };
+	void setCompressionLevel(unsigned int newCompressionLevel) { throw std::logic_error("Not implemented yet"); }
 
 	void writeArrayNdOfFloatValues(const std::string & groupName,
 		const std::string & name,
 		const float * floatValues,
 		const unsigned long long * numValuesInEachDimension,
-		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); };
+		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Write an array (potentially with multi dimensions) of double values into the HDF file by means of a single dataset.
@@ -137,7 +142,7 @@ public:
 		const unsigned long long * numValuesInEachDimension,
 		unsigned int numDimensions) {
 		std::cout << "Write values starting with " << dblValues[0] << std::endl;
-	};
+	}
 
 	/**
 	* Write an array (potentially with multi dimensions) of char values into the HDF file by means of a single dataset.
@@ -152,7 +157,7 @@ public:
 		const std::string & name,
 		const char * intValues,
 		const unsigned long long * numValuesInEachDimension,
-		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); };
+		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Write an array (potentially with multi dimensions) of int values into the HDF file by means of a single dataset.
@@ -167,7 +172,7 @@ public:
 		const std::string & name,
 		const int * intValues,
 		const unsigned long long * numValuesInEachDimension,
-		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); };
+		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Write an array (potentially with multi dimensions) of gSoap unsigned long 64 values into the HDF file by means of a single dataset.
@@ -182,7 +187,7 @@ public:
 		const std::string & name,
 		const ULONG64 * ulong64Values,
 		const unsigned long long * numValuesInEachDimension,
-		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); };
+		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Write an array (potentially with multi dimensions) of a specific datatype into the HDF file by means of a single dataset.
@@ -199,7 +204,7 @@ public:
 		hdf5_hid_t datatype,
 		const void * values,
 		const unsigned long long * numValuesInEachDimension,
-		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); };
+		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Create an array (potentially with multi dimensions) of a specific datatype into the HDF file. Values are not yet written to this array.
@@ -216,7 +221,7 @@ public:
 		hdf5_hid_t datatype,
 		const unsigned long long* numValuesInEachDimension,
 		unsigned int numDimensions
-	) { throw std::logic_error("Not implemented yet"); };
+	) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Find the array associated with @p groupName and @p name and write to it.
@@ -235,94 +240,94 @@ public:
 		const unsigned long long* numValuesInEachDimension,
 		const unsigned long long* offsetValuesInEachDimension,
 		unsigned int numDimensions
-	) { throw std::logic_error("Not implemented yet"); };
+	) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Write some string attributes into a group
 	*/
 	void writeGroupAttributes(const std::string & groupName,
 		const std::vector<std::string> & attributeNames,
-		const std::vector<std::string> & values) { throw std::logic_error("Not implemented yet"); };
+		const std::vector<std::string> & values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Write a single attribute which contain an array of strings
 	*/
 	void writeGroupAttribute(const std::string & groupName,
 		const std::string & attributeName,
-		const std::vector<std::string> & values) { throw std::logic_error("Not implemented yet"); };
+		const std::vector<std::string> & values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Write some double attributes into a group
 	*/
 	void writeGroupAttributes(const std::string & groupName,
 		const std::vector<std::string> & attributeNames,
-		const std::vector<double> & values) { throw std::logic_error("Not implemented yet"); };
+		const std::vector<double> & values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Write some int attributes into a group
 	*/
 	void writeGroupAttributes(const std::string & groupName,
 		const std::vector<std::string> & attributeNames,
-		const std::vector<int> & values) { throw std::logic_error("Not implemented yet"); };
+		const std::vector<int> & values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Write some string attributes into a dataset
 	*/
 	void writeDatasetAttributes(const std::string & datasetName,
 		const std::vector<std::string> & attributeNames,
-		const std::vector<std::string> & values) { throw std::logic_error("Not implemented yet"); };
+		const std::vector<std::string> & values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Write a single attribute which contain an array of strings
 	*/
 	void writeDatasetAttribute(const std::string & datasetName,
 		const std::string & attributeName,
-		const std::vector<std::string> & values) { throw std::logic_error("Not implemented yet"); };
+		const std::vector<std::string> & values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Write some double attributes into a dataset
 	*/
 	void writeDatasetAttributes(const std::string & datasetName,
 		const std::vector<std::string> & attributeNames,
-		const std::vector<double> & values) { throw std::logic_error("Not implemented yet"); };
+		const std::vector<double> & values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Write some int attributes into a dataset
 	*/
 	void writeDatasetAttributes(const std::string & datasetName,
 		const std::vector<std::string> & attributeNames,
-		const std::vector<int> & values) { throw std::logic_error("Not implemented yet"); };
+		const std::vector<int> & values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Read a string which is stored as an HDF attribute in a file, group or dataset
 	* @param obj_name use '.' if the attribute to read is on the file otherwise the full path
 	*/
 	std::string readStringAttribute(const std::string & obj_name,
-		const std::string & attr_name) const { throw std::logic_error("Not implemented yet"); };
+		const std::string & attr_name) const { throw std::logic_error("Not implemented yet"); }
 
 	std::vector<std::string> readStringArrayAttribute(const std::string & obj_name,
-		const std::string & attr_name) const { throw std::logic_error("Not implemented yet"); };
+		const std::string & attr_name) const { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Read a double which is stored as an HDF attribute in a file, group or dataset
 	* @param obj_name use '.' if the attribute to read is on the file otherwise the full path
 	*/
 	double readDoubleAttribute(const std::string & obj_name,
-		const std::string & attr_name) const { throw std::logic_error("Not implemented yet"); };
+		const std::string & attr_name) const { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Read a long which is stored as an HDF attribute in a file, group or dataset
 	* @param obj_name use '.' if the attribute to read is on the file otherwise the full path
 	*/
 	LONG64 readLongAttribute(const std::string & obj_name,
-		const std::string & attr_name) const { throw std::logic_error("Not implemented yet"); };
+		const std::string & attr_name) const { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Read an array Nd of double values stored in a specific dataset
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
-	void readArrayNdOfDoubleValues(const std::string & datasetName, double* values) { throw std::logic_error("Not implemented yet"); };
+	void readArrayNdOfDoubleValues(const std::string & datasetName, double* values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Find the array associated with @p datasetName and read from it.
@@ -338,7 +343,7 @@ public:
 		unsigned long long const * numValuesInEachDimension,
 		unsigned long long const * offsetInEachDimension,
 		unsigned int numDimensions
-	) { throw std::logic_error("Not implemented yet"); };
+	) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Find the array associated with @p datasetName and read from it.
@@ -357,7 +362,7 @@ public:
 		unsigned long long const * offsetInEachDimension,
 		unsigned long long const * strideInEachDimension,
 		unsigned long long const * blockSizeInEachDimension,
-		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); };
+		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Considering a given dataset, this method selects an hyperslab region to add to an existing selected region or to add to a new selected region.
@@ -381,7 +386,7 @@ public:
 		unsigned int numDimensions,
 		bool newSelection,
 		hdf5_hid_t & dataset,
-		hdf5_hid_t & filespace) { throw std::logic_error("Not implemented yet"); };
+		hdf5_hid_t & filespace) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Considering a given dataset, read the double values corresponding to an existing selected region.
@@ -394,14 +399,14 @@ public:
 		hdf5_hid_t dataset,
 		hdf5_hid_t filespace,
 		void* values,
-		unsigned long long slabSize) { throw std::logic_error("Not implemented yet"); };
+		unsigned long long slabSize) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Read an array Nd of float values stored in a specific dataset.
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated.
 	 */
-	void readArrayNdOfFloatValues(const std::string & datasetName, float* values) { throw std::logic_error("Not implemented yet"); };
+	void readArrayNdOfFloatValues(const std::string & datasetName, float* values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Find the array associated with @p datasetName and read from it.
@@ -417,14 +422,14 @@ public:
 		unsigned long long const * numValuesInEachDimension,
 		unsigned long long const * offsetInEachDimension,
 		unsigned int numDimensions
-	) { throw std::logic_error("Not implemented yet"); };
+	) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Read an array Nd of long values stored in a specific dataset.
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
-	void readArrayNdOfLongValues(const std::string & datasetName, LONG64* values) { throw std::logic_error("Not implemented yet"); };
+	void readArrayNdOfLongValues(const std::string & datasetName, LONG64* values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Find the array associated with datasetName and read from it.
@@ -439,21 +444,21 @@ public:
 		LONG64* values,
 		unsigned long long const * numValuesInEachDimension,
 		unsigned long long const * offsetInEachDimension,
-		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); };
+		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Read an array Nd of unsigned long values stored in a specific dataset.
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
-	void readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values) { throw std::logic_error("Not implemented yet"); };
+	void readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Read an array Nd of int values stored in a specific dataset.
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
-	void readArrayNdOfIntValues(const std::string & datasetName, int* values) { throw std::logic_error("Not implemented yet"); };
+	void readArrayNdOfIntValues(const std::string & datasetName, int* values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Find the array associated with datasetName and read from it.
@@ -469,7 +474,7 @@ public:
 		unsigned long long const * numValuesInEachDimension,
 		unsigned long long const * offsetInEachDimension,
 		unsigned int numDimensions
-	) { throw std::logic_error("Not implemented yet"); };
+	) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Read an array Nd of unsigned int values stored in a specific dataset
@@ -477,7 +482,7 @@ public:
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
-	void readArrayNdOfUIntValues(const std::string & datasetName, unsigned int* values) { throw std::logic_error("Not implemented yet"); };
+	void readArrayNdOfUIntValues(const std::string & datasetName, unsigned int* values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Read an array Nd of short values stored in a specific dataset
@@ -485,42 +490,52 @@ public:
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
-	void readArrayNdOfShortValues(const std::string & datasetName, short* values) { throw std::logic_error("Not implemented yet"); };
+	void readArrayNdOfShortValues(const std::string & datasetName, short* values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Read an array Nd of unsigned short values stored in a specific dataset.
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
-	void readArrayNdOfUShortValues(const std::string & datasetName, unsigned short* values) { throw std::logic_error("Not implemented yet"); };
+	void readArrayNdOfUShortValues(const std::string & datasetName, unsigned short* values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Read an array Nd of char values stored in a specific dataset.
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
-	void readArrayNdOfCharValues(const std::string & datasetName, char* values) { throw std::logic_error("Not implemented yet"); };
+	void readArrayNdOfCharValues(const std::string & datasetName, char* values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Read an array Nd of unsigned char values stored in a specific dataset.
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
-	void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) { throw std::logic_error("Not implemented yet"); };
+	void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Read the dimensions of an array stored in a specific dataset
 	 * @param datasetName	The absolute dataset name where to read the array dimensions
 	 */
-	std::vector<unsigned long long> readArrayDimensions(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); };
+	std::vector<unsigned long long> readArrayDimensions(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Check wether an absolute path exists in the hdf file or not.
 	*/
-	bool exist(const std::string & absolutePathInHdfFile) const { throw std::logic_error("Not implemented yet"); };
+	bool exist(const std::string & absolutePathInHdfFile) const { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Check wether a dataset is compressed or not.
 	*/
-	bool isCompressed(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); };
+	bool isCompressed(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
+
+	/**
+	* The standard XML namespace for serializing this data object.
+	*/
+	static const char* XML_NS;
+
+	/**
+	* Get the standard XML namespace for serializing this data object.
+	*/
+	virtual std::string getXmlNamespace() const { return XML_NS; }
 };

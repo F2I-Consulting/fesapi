@@ -26,7 +26,8 @@ endif(WITH_EXPERIMENTAL)
 target_sources(example PRIVATE 
 	${CMAKE_CURRENT_SOURCE_DIR}/example.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyFactoryExample.h
-	${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyExample.h)
+	${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyExample.h
+	${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyExample.cpp)
 
 target_include_directories (example PRIVATE ${FESAPI_ROOT_DIR}/src/)
 

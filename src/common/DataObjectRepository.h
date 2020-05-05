@@ -241,12 +241,12 @@ namespace COMMON_NS
 		/**
 		* Allow a specialization of a DataObjectRepository to provide a special behaviour when a dataobject is created
 		*/
-		DLL_IMPORT_OR_EXPORT virtual void on_CreateDataObject(const std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>>& created) {}
+		DLL_IMPORT_OR_EXPORT virtual void on_CreateDataObject(const std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>>&) {}
 
 		/**
 		* Allow a specialization of a DataObjectRepository to provide a special behaviour when a dataobject is update
 		*/
-		DLL_IMPORT_OR_EXPORT virtual void on_UpdateDataObject(const std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>>& updated) {}
+		DLL_IMPORT_OR_EXPORT virtual void on_UpdateDataObject(const std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>>&) {}
 
 		/**
 		* Resolve a partial object thanks to a data feeder into this data repository.
@@ -1409,7 +1409,6 @@ namespace COMMON_NS
 
 		COMMON_NS::AbstractObject* getEml2_3WrapperFromGsoapContext(const std::string& datatype);
 #endif
-		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
 
 		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
 		COMMON_NS::AbstractObject* getProdml2_1WrapperFromGsoapContext(const std::string & datatype);

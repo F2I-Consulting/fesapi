@@ -210,9 +210,6 @@ void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation* in
 			interp->getRepository()->deleteRelationship(this, getInterpretation());
 		}
 	}
-	else if (gsoapProxy2_2 != nullptr) {
-		if (static_cast<gsoap_eml2_2::resqml22__AbstractRepresentation*>(gsoapProxy2_2)->RepresentedInterpretation != nullptr) {
-			interp->getRepository()->deleteRelationship(this, getInterpretation());
 #if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_3 != nullptr) {
 		if (static_cast<gsoap_eml2_3::resqml22__AbstractRepresentation*>(gsoapProxy2_3)->RepresentedInterpretation != nullptr) {
