@@ -57,92 +57,37 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v1
 			auto dt = hdfProxy->getHdfDatatypeInDataset(dai.m_pathInResource);
 			if (dt == COMMON_NS::AbstractObject::DOUBLE)
 			{
-				double* hdfValues = new double[globalElemCount];
-				hdfProxy->readArrayNdOfDoubleValues(dai.m_pathInResource, hdfValues);
 				Energistics::Etp::v12::Datatypes::ArrayOfDouble avroArray;
-				avroArray.m_values.assign(hdfValues, hdfValues + globalElemCount);
-				delete[] hdfValues;
+				avroArray.m_values = std::vector<double>(globalElemCount);
+				hdfProxy->readArrayNdOfDoubleValues(dai.m_pathInResource, avroArray.m_values.data());
 				da.m_data.m_item.set_ArrayOfDouble(avroArray);
 			}
 			else if (dt == COMMON_NS::AbstractObject::FLOAT)
 			{
-				float* hdfValues = new float[globalElemCount];
-				hdfProxy->readArrayNdOfFloatValues(dai.m_pathInResource, hdfValues);
 				Energistics::Etp::v12::Datatypes::ArrayOfFloat avroArray;
-				avroArray.m_values.assign(hdfValues, hdfValues + globalElemCount);
-				delete[] hdfValues;
+				avroArray.m_values = std::vector<float>(globalElemCount);
+				hdfProxy->readArrayNdOfFloatValues(dai.m_pathInResource, avroArray.m_values.data());
 				da.m_data.m_item.set_ArrayOfFloat(avroArray);
 			}
-			else if (dt == COMMON_NS::AbstractObject::LONG_64)
+			else if (dt == COMMON_NS::AbstractObject::LONG_64 || dt == COMMON_NS::AbstractObject::ULONG_64)
 			{
-				LONG64* hdfValues = new LONG64[globalElemCount];
-				hdfProxy->readArrayNdOfLongValues(dai.m_pathInResource, hdfValues);
 				Energistics::Etp::v12::Datatypes::ArrayOfLong avroArray;
-				avroArray.m_values.assign(hdfValues, hdfValues + globalElemCount);
-				delete[] hdfValues;
+				avroArray.m_values = std::vector<LONG64>(globalElemCount);
+				hdfProxy->readArrayNdOfLongValues(dai.m_pathInResource, avroArray.m_values.data());
 				da.m_data.m_item.set_ArrayOfLong(avroArray);
 			}
-			else if (dt == COMMON_NS::AbstractObject::ULONG_64)
+			else if (dt == COMMON_NS::AbstractObject::INT || dt == COMMON_NS::AbstractObject::UINT ||
+				dt == COMMON_NS::AbstractObject::SHORT || dt == COMMON_NS::AbstractObject::USHORT)
 			{
-				ULONG64* hdfValues = new ULONG64[globalElemCount];
-				hdfProxy->readArrayNdOfULongValues(dai.m_pathInResource, hdfValues);
-				Energistics::Etp::v12::Datatypes::ArrayOfLong avroArray;
-				avroArray.m_values.assign(hdfValues, hdfValues + globalElemCount);
-				delete[] hdfValues;
-				da.m_data.m_item.set_ArrayOfLong(avroArray);
-			}
-			else if (dt == COMMON_NS::AbstractObject::INT)
-			{
-				int* hdfValues = new int[globalElemCount];
-				hdfProxy->readArrayNdOfIntValues(dai.m_pathInResource, hdfValues);
 				Energistics::Etp::v12::Datatypes::ArrayOfInt avroArray;
-				avroArray.m_values.assign(hdfValues, hdfValues + globalElemCount);
-				delete[] hdfValues;
+				avroArray.m_values = std::vector<int>(globalElemCount);
+				hdfProxy->readArrayNdOfIntValues(dai.m_pathInResource, avroArray.m_values.data());
 				da.m_data.m_item.set_ArrayOfInt(avroArray);
 			}
-			else if (dt == COMMON_NS::AbstractObject::UINT)
+			else if (dt == COMMON_NS::AbstractObject::CHAR || dt == COMMON_NS::AbstractObject::UCHAR)
 			{
-				unsigned int* hdfValues = new unsigned int[globalElemCount];
-				hdfProxy->readArrayNdOfUIntValues(dai.m_pathInResource, hdfValues);
-				Energistics::Etp::v12::Datatypes::ArrayOfInt avroArray;
-				avroArray.m_values.assign(hdfValues, hdfValues + globalElemCount);
-				delete[] hdfValues;
-				da.m_data.m_item.set_ArrayOfInt(avroArray);
-			}
-			else if (dt == COMMON_NS::AbstractObject::SHORT)
-			{
-				short* hdfValues = new short[globalElemCount];
-				hdfProxy->readArrayNdOfShortValues(dai.m_pathInResource, hdfValues);
-				Energistics::Etp::v12::Datatypes::ArrayOfInt avroArray;
-				avroArray.m_values.assign(hdfValues, hdfValues + globalElemCount);
-				delete[] hdfValues;
-				da.m_data.m_item.set_ArrayOfInt(avroArray);
-			}
-			else if (dt == COMMON_NS::AbstractObject::USHORT)
-			{
-				unsigned short* hdfValues = new unsigned short[globalElemCount];
-				hdfProxy->readArrayNdOfUShortValues(dai.m_pathInResource, hdfValues);
-				Energistics::Etp::v12::Datatypes::ArrayOfInt avroArray;
-				avroArray.m_values.assign(hdfValues, hdfValues + globalElemCount);
-				delete[] hdfValues;
-				da.m_data.m_item.set_ArrayOfInt(avroArray);
-			}
-			else if (dt == COMMON_NS::AbstractObject::CHAR)
-			{
-				char* hdfValues = new char[globalElemCount];
-				hdfProxy->readArrayNdOfCharValues(dai.m_pathInResource, hdfValues);
-				std::string avroArray;
-				avroArray.assign(hdfValues, hdfValues + globalElemCount);
-				delete[] hdfValues;
-				da.m_data.m_item.set_bytes(avroArray);
-			}
-			else if (dt == COMMON_NS::AbstractObject::UCHAR)
-			{
-				unsigned char* hdfValues = new unsigned char[globalElemCount];
-				hdfProxy->readArrayNdOfUCharValues(dai.m_pathInResource, hdfValues);
-				std::string avroArray;
-				avroArray.assign(hdfValues, hdfValues + globalElemCount);
-				delete[] hdfValues;
+				std::string avroArray(globalElemCount, '\0');
+				hdfProxy->readArrayNdOfCharValues(dai.m_pathInResource, &avroArray[0]);
 				da.m_data.m_item.set_bytes(avroArray);
 			}
 

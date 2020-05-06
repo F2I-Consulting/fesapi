@@ -514,13 +514,22 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 	else {
 		std::vector< COMMON_NS::AbstractObject* >& versions = dataObjects[proxy->getUuid()];
 		std::vector< COMMON_NS::AbstractObject* >::iterator same = std::find_if(versions.begin(), versions.end(), SameVersion(proxy->getVersion()));
-		if (same == versions.end()) {
-			if (proxy->getVersion().empty() && !versions.empty()) {
-				throw invalid_argument("You cannot have at the same time a versionned and an unversionned object.");
-			}
 
-			// replace unversionned version by the versioned version.
-			if (!proxy->getVersion().empty()) {
+		// Assume "no version" means current latest version in the repository
+		if (same == versions.end()) {
+
+			if (proxy->getVersion().empty()) {
+				if (versions.size() == 1) {
+					// replace the single present version which is consequently the current latest version in the repository
+					proxy->setVersion(versions[0]->getVersion());
+					same = versions.begin();
+				}
+				else {
+					throw logic_error("Ordering of different versions is not implemented yet.");
+				}
+			}
+			else {
+				// replace repository unversionned version by the versioned version which are consequently both the current latest version in the repository
 				same = std::find_if(versions.begin(), versions.end(), SameVersion(""));
 			}
 		}
@@ -557,18 +566,19 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 					on_UpdateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
 				}
 
-				if (proxy->getXmlNamespace() == "resqml20" || proxy->getXmlNamespace() == "eml20") {
+				const std::string xmlNs = proxy->getXmlNamespace();
+				if (xmlNs == "resqml20" || xmlNs == "eml20") {
 					(*same)->setGsoapProxy(proxy->getEml20GsoapProxy());
 				}
-				else if (proxy->getXmlNamespace() == "witsml20" || proxy->getXmlNamespace() == "eml21") {
+				else if (xmlNs == "witsml20" || xmlNs == "eml21") {
 					(*same)->setGsoapProxy(proxy->getEml21GsoapProxy());
 				}
-				else if (proxy->getXmlNamespace() == "prodml21" || proxy->getXmlNamespace() == "eml22") {
+				else if (xmlNs == "prodml21" || xmlNs == "eml22") {
 					(*same)->setGsoapProxy(proxy->getEml22GsoapProxy());
 				}
 #if WITH_EXPERIMENTAL
-				else if (proxy->getXmlNamespace() == "resqml22") {
-					(*same)->setGsoapProxy(proxy->getEml22GsoapProxy());
+				else if (xmlNs == "resqml22" || xmlNs == "eml23") {
+					(*same)->setGsoapProxy(proxy->getEml23GsoapProxy());
 				}
 #endif
 				delete proxy;

@@ -196,7 +196,7 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 			contentType.find("prodml", 14) != std::string::npos)
 		{
 			if (contentType == "application/x-resqml+xml;version=2.0;type=obj_EpcExternalPartReference") {
-				result += "The content type " + contentType + " should belong to eml and not to resqml since obj_EpcExternalPartReference is part of COMMON and not part of RESQML.\n";
+				result += "The content type " + contentType + " should belong to EML20 and not to RESQML20 since obj_EpcExternalPartReference is part of COMMON 2.0 and not part of RESQML 2.0.\n";
 				contentType = "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference";
 			}
 			if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference") {
@@ -282,6 +282,10 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 				contentType.find("witsml", 14) != std::string::npos ||
 				contentType.find("prodml", 14) != std::string::npos)
 			{
+				if (contentType == "application/x-resqml+xml;version=2.0;type=obj_EpcExternalPartReference") {
+					result += "The content type " + contentType + " should belong to EML20 and not to RESQML20 since obj_EpcExternalPartReference is part of COMMON 2.0 and not part of RESQML 2.0.\n";
+					contentType = "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference";
+				}
 				if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference") {
 					// Look for the relative path of the HDF file
 					string relFilePath = "";
