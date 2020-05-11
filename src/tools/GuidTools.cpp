@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "../tools/GuidTools.h"
 
-#if defined(__gnu_linux__) || defined(__APPLE__)
+#if defined(__gnu_linux__) || defined(__linux__) || defined(__APPLE__)
 
 #include <uuid/uuid.h> // Need package "uuid-dev"
 #include <iostream>
