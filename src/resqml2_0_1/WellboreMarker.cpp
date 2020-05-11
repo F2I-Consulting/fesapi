@@ -31,6 +31,10 @@ const char* WellboreMarker::XML_TAG = "WellboreMarker";
 
 WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title)
 {
+	if (wellboreMarkerFrame == nullptr) {
+		throw invalid_argument("The wellbore marker frame representation cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__WellboreMarker(wellboreMarkerFrame->getGsoapContext());
 
 	initMandatoryMetadata();
@@ -41,6 +45,10 @@ WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarker
 
 WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind)
 {
+	if (wellboreMarkerFrame == nullptr) {
+		throw invalid_argument("The wellbore marker frame representation cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__WellboreMarker(wellboreMarkerFrame->getGsoapContext());	
 	resqml20__WellboreMarker* marker = static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1);
 

@@ -23,9 +23,12 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/**
-	* This class is one of the only one to be a ResqmlDataObject which is not exported into a single file i.e. not a top level element.
-	* Consequently its behaviour is slightly different than other class. Especially there is no integration of the instances into an EPC document.
-	*/
+	 * @brief	Representation of a wellbore marker that is located along a wellbore trajectory, one
+	 * 			for each MD value in the wellbore frame.
+	 * 			
+	 * 			BUSINESS RULE: Ordering of the wellbore markers must match the ordering of the nodes
+	 * 			in the wellbore marker frame representation.
+	 */
 	class WellboreMarker : public COMMON_NS::AbstractObject
 	{
 	public:

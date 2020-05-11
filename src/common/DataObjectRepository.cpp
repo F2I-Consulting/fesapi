@@ -51,6 +51,7 @@ under the License.
 #include "../resqml2_0_1/WellboreFeature.h"
 #include "../resqml2_0_1/WellboreInterpretation.h"
 #include "../resqml2_0_1/WellboreMarkerFrameRepresentation.h"
+#include "../resqml2_0_1/WellboreMarker.h"
 #include "../resqml2_0_1/WellboreTrajectoryRepresentation.h"
 #include "../resqml2_0_1/DeviationSurveyRepresentation.h"
 #include "../resqml2_0_1/MdDatum.h"
@@ -1117,6 +1118,16 @@ RESQML2_NS::WellboreFrameRepresentation* DataObjectRepository::createWellboreFra
 WellboreMarkerFrameRepresentation* DataObjectRepository::createWellboreMarkerFrameRepresentation(WellboreInterpretation * interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
 {
 	return new WellboreMarkerFrameRepresentation(interp, guid, title, traj);
+}
+
+WellboreMarker* DataObjectRepository::createWellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title)
+{
+	return new WellboreMarker(wellboreMarkerFrame, guid, title);
+}
+
+WellboreMarker* DataObjectRepository::createWellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind)
+{
+	return new WellboreMarker(wellboreMarkerFrame, guid, title, geologicBoundaryKind);
 }
 
 BlockedWellboreRepresentation* DataObjectRepository::createBlockedWellboreRepresentation(WellboreInterpretation * interp,

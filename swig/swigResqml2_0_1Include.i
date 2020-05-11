@@ -2851,8 +2851,6 @@ namespace RESQML2_0_1_NS
 	class WellboreMarker : public COMMON_NS::AbstractObject
 	{
 	public:
-		WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title);
-		WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind);
 		bool hasAGeologicBoundaryKind() const;
 		gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind getGeologicBoundaryKind() const;
 		WellboreMarkerFrameRepresentation const * getWellMarkerFrameRepresentation() const;
