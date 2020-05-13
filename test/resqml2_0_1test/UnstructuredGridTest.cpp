@@ -1,0 +1,257 @@
+/*-----------------------------------------------------------------------
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"; you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-----------------------------------------------------------------------*/
+#include "UnstructuredGridTest.h"
+
+#include "../catch.hpp"
+#include "LocalDepth3dCrsTest.h"
+#include "resqml2_0_1/LocalDepth3dCrs.h"
+#include "common/EpcDocument.h"
+#include "common/AbstractHdfProxy.h"
+#include "resqml2_0_1/UnstructuredGridRepresentation.h"
+
+using namespace std;
+using namespace COMMON_NS;
+using namespace resqml2_0_1test;
+using namespace RESQML2_NS;
+
+const char* UnstructuredGridTest::defaultUuid = "6f1d493d-3da5-43ab-8f57-a508f9590eb8";
+const char* UnstructuredGridTest::defaultTitle = "One tetrahedron plus prism grid";
+double UnstructuredGridTest::nodes[] = { 0, 0, 300, 375, 0, 300, 0, 150, 300, // points for shared face between tetra and wedge
+		0, 0, 500, // point for tetra
+		0, 0, 0, 375, 0, 0, 0, 150, 0 }; // points for wedge
+
+UnstructuredGridTest::UnstructuredGridTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
+}
+
+UnstructuredGridTest::UnstructuredGridTest(DataObjectRepository * repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
+	if (init)
+		initRepo();
+	else
+		readRepo();
+}
+
+void UnstructuredGridTest::initRepoHandler() {
+	// creating the unstructured grid
+	RESQML2_0_1_NS::UnstructuredGridRepresentation* unstructuredGrid = repo->createUnstructuredGridRepresentation(defaultUuid, defaultTitle, 2);
+	REQUIRE(unstructuredGrid != nullptr);
+	
+	// The point indices of each face.
+	ULONG64 nodeIndicesPerFace[27] = { 0, 1, 2, // shared face
+		1, 2, 3, 0, 1, 3, 0, 2, 3, // faces for tetra
+		0, 2, 6, 4, 2, 1, 5, 6, 0, 1, 5, 4, 4, 5, 6 //  faces for wedge
+	};
+	// The cumulative count of points per face i.e. first face contains 3 points, second face contains 6-3=3 points, third face contains 9-6=3 points etc...
+	ULONG64 nodeIndicesCumulativeCountPerFace[8] = { 3, // shared face
+		6, 9, 12, // faces for tetra
+		16, 20, 24, 27 //  faces for wedge
+	};
+	// The face indices of each cell. 
+	ULONG64 faceIndicesPerCell[9] = { 0, 1, 2, 3, // tetra
+		0, 4, 5, 6, 7 }; //wedge
+	ULONG64 faceIndicesCumulativeCountPerCell[2] = { 4, 9 };
+	// Exporting the right handness of each face of each cell is mandatory. However, it is often ignored by the readers. Dummy values
+	unsigned char faceRightHandness[9] = { 0, 0, 1, 1, 1, 0, 1, 0, 0 };
+
+	unstructuredGrid->setGeometry(faceRightHandness, nodes, 7, nullptr, faceIndicesPerCell, faceIndicesCumulativeCountPerCell, 8, nodeIndicesPerFace, nodeIndicesCumulativeCountPerFace,
+		gsoap_resqml2_0_1::resqml20__CellShape__prism);
+}
+
+void UnstructuredGridTest::readRepoHandler() {
+	// getting the unstructured grid
+	RESQML2_0_1_NS::UnstructuredGridRepresentation * unstructuredGrid = repo->getDataObjectByUuid<RESQML2_0_1_NS::UnstructuredGridRepresentation>(defaultUuid);
+
+	// getXyzPointCountOfPatch
+	REQUIRE_THROWS(unstructuredGrid->getXyzPointCountOfPatch(1));
+	REQUIRE(unstructuredGrid->getXyzPointCountOfPatch(0) == 7);
+	
+	// getFaceIndicesOfCells
+	ULONG64 faceIndicesPerCell[9];
+	unstructuredGrid->getFaceIndicesOfCells(faceIndicesPerCell);
+	REQUIRE( faceIndicesPerCell[0] == 0 );
+	REQUIRE( faceIndicesPerCell[1] == 1 );
+	REQUIRE( faceIndicesPerCell[2] == 2 );
+	REQUIRE( faceIndicesPerCell[3] == 3 );
+	REQUIRE(faceIndicesPerCell[4] == 0);
+	REQUIRE(faceIndicesPerCell[5] == 4);
+	REQUIRE(faceIndicesPerCell[6] == 5);
+	REQUIRE(faceIndicesPerCell[7] == 6);
+	REQUIRE(faceIndicesPerCell[8] == 7);
+
+	// getCumulativeFaceCountPerCell
+	ULONG64 cumulativeFaceCountPerCell[2];
+	unstructuredGrid->getCumulativeFaceCountPerCell(cumulativeFaceCountPerCell);
+	REQUIRE( cumulativeFaceCountPerCell[0] == 4 );
+	REQUIRE(cumulativeFaceCountPerCell[1] == 9);
+
+	// getFaceCountPerCell
+	ULONG64 faceCountPerCell[2];
+	unstructuredGrid->getFaceCountPerCell(faceCountPerCell);
+	REQUIRE( faceCountPerCell[0] == 4 );
+	REQUIRE(faceCountPerCell[1] == 5);
+
+	// isFaceCountOfCellsConstant
+	REQUIRE( !unstructuredGrid->isFaceCountOfCellsConstant() );
+
+	// getConstantFaceCountOfCells
+	REQUIRE_THROWS( unstructuredGrid->getConstantFaceCountOfCells() == 4);
+
+	// getNodeIndicesOfFaces
+	ULONG64 nodeIndicesPerCell[12];
+	unstructuredGrid->getNodeIndicesOfFaces(nodeIndicesPerCell);
+	REQUIRE( nodeIndicesPerCell[0] == 0 );
+	REQUIRE( nodeIndicesPerCell[1] == 1 );
+	REQUIRE( nodeIndicesPerCell[2] == 2 );
+	REQUIRE( nodeIndicesPerCell[3] == 1 );
+	REQUIRE( nodeIndicesPerCell[4] == 2 );
+	REQUIRE( nodeIndicesPerCell[5] == 3 );
+	REQUIRE( nodeIndicesPerCell[6] == 0 );
+	REQUIRE( nodeIndicesPerCell[7] == 1 );
+	REQUIRE( nodeIndicesPerCell[8] == 3 );
+	REQUIRE( nodeIndicesPerCell[9] == 0 );
+	REQUIRE( nodeIndicesPerCell[10] == 2 );
+	REQUIRE( nodeIndicesPerCell[11] == 3 );
+	REQUIRE(nodeIndicesPerCell[12] == 0);
+	REQUIRE(nodeIndicesPerCell[13] == 2);
+	REQUIRE(nodeIndicesPerCell[14] == 6);
+	REQUIRE(nodeIndicesPerCell[15] == 4);
+	REQUIRE(nodeIndicesPerCell[16] == 2);
+	REQUIRE(nodeIndicesPerCell[17] == 1);
+	REQUIRE(nodeIndicesPerCell[18] == 5);
+	REQUIRE(nodeIndicesPerCell[19] == 6);
+	REQUIRE(nodeIndicesPerCell[20] == 0);
+	REQUIRE(nodeIndicesPerCell[21] == 1);
+	REQUIRE(nodeIndicesPerCell[22] == 5);
+	REQUIRE(nodeIndicesPerCell[23] == 4);
+	REQUIRE(nodeIndicesPerCell[24] == 4);
+	REQUIRE(nodeIndicesPerCell[25] == 5);
+	REQUIRE(nodeIndicesPerCell[26] == 6);
+
+	// getCumulativeNodeCountPerFace
+	ULONG64 cumulativeNodeCountPerFace[8];
+	unstructuredGrid->getCumulativeNodeCountPerFace(cumulativeNodeCountPerFace);
+	REQUIRE( cumulativeNodeCountPerFace[0] == 3 );
+	REQUIRE( cumulativeNodeCountPerFace[1] == 6 );
+	REQUIRE( cumulativeNodeCountPerFace[2] == 9 );
+	REQUIRE( cumulativeNodeCountPerFace[3] == 12 );
+	REQUIRE(cumulativeNodeCountPerFace[4] == 16);
+	REQUIRE(cumulativeNodeCountPerFace[5] == 20);
+	REQUIRE(cumulativeNodeCountPerFace[6] == 24);
+	REQUIRE(cumulativeNodeCountPerFace[7] == 27);
+
+	// getNodeCountPerFace
+	ULONG64 nodeCountPerFace[8];
+	unstructuredGrid->getNodeCountPerFace(nodeCountPerFace);
+	REQUIRE( nodeCountPerFace[0] == 3 );
+	REQUIRE( nodeCountPerFace[1] == 3 );
+	REQUIRE( nodeCountPerFace[2] == 3 );
+	REQUIRE( nodeCountPerFace[3] == 3 );
+	REQUIRE(nodeCountPerFace[4] == 4);
+	REQUIRE(nodeCountPerFace[5] == 4);
+	REQUIRE(nodeCountPerFace[6] == 4);
+	REQUIRE(nodeCountPerFace[7] == 3);
+
+	// isNodeCountOfFacesContant
+	REQUIRE( !unstructuredGrid->isNodeCountOfFacesConstant() );
+
+	// getConstantNodeCountOfFaces
+	REQUIRE_THROWS( unstructuredGrid->getConstantNodeCountOfFaces() == 3 );
+
+	// getFaceCountOfCell should raises en exception since geometry is not loaded
+	REQUIRE_THROWS_AS( unstructuredGrid->getFaceCountOfCell(0), invalid_argument );
+
+	// loading geometry into memory (required for subsequent testing)
+	unstructuredGrid->loadGeometry();
+
+	// getFaceCountOfCell
+	REQUIRE_THROWS_AS( unstructuredGrid->getFaceCountOfCell(2), range_error );
+	REQUIRE( unstructuredGrid->getFaceCountOfCell(0) == 4 );
+	REQUIRE(unstructuredGrid->getFaceCountOfCell(1) == 5);
+
+	// getNodeCountOfFaceOfCell
+	REQUIRE( unstructuredGrid->getNodeCountOfFaceOfCell(0, 0) == 3 );
+	REQUIRE( unstructuredGrid->getNodeCountOfFaceOfCell(0, 1) == 3 );
+	REQUIRE( unstructuredGrid->getNodeCountOfFaceOfCell(0, 2) == 3 );
+	REQUIRE( unstructuredGrid->getNodeCountOfFaceOfCell(0, 3) == 3 );
+	REQUIRE(unstructuredGrid->getNodeCountOfFaceOfCell(1, 0) == 3);
+	REQUIRE(unstructuredGrid->getNodeCountOfFaceOfCell(1, 1) == 4);
+	REQUIRE(unstructuredGrid->getNodeCountOfFaceOfCell(1, 2) == 4);
+	REQUIRE(unstructuredGrid->getNodeCountOfFaceOfCell(1, 3) == 4);
+	REQUIRE(unstructuredGrid->getNodeCountOfFaceOfCell(1, 4) == 3);
+
+	// getNodeIndicesOfFaceOfCell
+	ULONG64* nodeIndicesOfFirstFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 0);
+	REQUIRE( nodeIndicesOfFirstFace[0] == 0 );
+	REQUIRE( nodeIndicesOfFirstFace[1] == 1 );
+	REQUIRE( nodeIndicesOfFirstFace[2] == 2 );
+	ULONG64* nodeIndicesOfSecondFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 1);
+	REQUIRE( nodeIndicesOfSecondFace[0] == 1 );
+	REQUIRE( nodeIndicesOfSecondFace[1] == 2 );
+	REQUIRE( nodeIndicesOfSecondFace[2] == 3 );
+	ULONG64* nodeIndicesOfThirdFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 2);
+	REQUIRE( nodeIndicesOfThirdFace[0] == 0 );
+	REQUIRE( nodeIndicesOfThirdFace[1] == 1 );
+	REQUIRE( nodeIndicesOfThirdFace[2] == 3 );
+	ULONG64* nodeIndicesOfFourthFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 3);
+	REQUIRE( nodeIndicesOfFourthFace[0] == 0 );
+	REQUIRE( nodeIndicesOfFourthFace[1] == 2 );
+	REQUIRE( nodeIndicesOfFourthFace[2] == 3 );
+	nodeIndicesOfFirstFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(1, 0);
+	REQUIRE(nodeIndicesOfFirstFace[0] == 0);
+	REQUIRE(nodeIndicesOfFirstFace[1] == 1);
+	REQUIRE(nodeIndicesOfFirstFace[2] == 2);
+	nodeIndicesOfSecondFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(1, 1);
+	REQUIRE(nodeIndicesOfSecondFace[0] == 0);
+	REQUIRE(nodeIndicesOfSecondFace[1] == 2);
+	REQUIRE(nodeIndicesOfSecondFace[2] == 6);
+	REQUIRE(nodeIndicesOfSecondFace[3] == 4);
+	nodeIndicesOfThirdFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(1, 2);
+	REQUIRE(nodeIndicesOfThirdFace[0] == 2);
+	REQUIRE(nodeIndicesOfThirdFace[1] == 1);
+	REQUIRE(nodeIndicesOfThirdFace[2] == 5);
+	REQUIRE(nodeIndicesOfThirdFace[3] == 6);
+	nodeIndicesOfFourthFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(1, 3);
+	REQUIRE(nodeIndicesOfFourthFace[0] == 0);
+	REQUIRE(nodeIndicesOfFourthFace[1] == 1);
+	REQUIRE(nodeIndicesOfFourthFace[2] == 5);
+	REQUIRE(nodeIndicesOfFourthFace[3] == 4);
+	ULONG64* nodeIndicesOfFifthFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(1, 4);
+	REQUIRE(nodeIndicesOfFifthFace[0] == 4);
+	REQUIRE(nodeIndicesOfFifthFace[1] == 5);
+	REQUIRE(nodeIndicesOfFifthFace[2] == 6);
+
+	// getCellCount
+	REQUIRE( unstructuredGrid->getCellCount() == 2);
+
+	// getFaceCount
+	REQUIRE( unstructuredGrid->getFaceCount() == 8);
+
+	// getNodeCount
+	REQUIRE( unstructuredGrid->getNodeCount() == 7);
+
+	// TODO: not able to test since method is not implemented yet
+	//unstructuredGrid->getCellFaceIsRightHanded(cellFaceIsRightHanded);
+
+	// unloading geometry
+	unstructuredGrid->unloadGeometry();
+
+	// getPatchCount
+	REQUIRE( unstructuredGrid->getPatchCount() == 1);
+}
