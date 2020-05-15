@@ -466,9 +466,9 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, EML2_NS:
 		RESQML2_NS::WellboreMarkerFrameRepresentation* wmf = pck->createWellboreMarkerFrameRepresentation(wellbore1Interp1, "657d5e6b-1752-425d-b3e7-237037fa11eb", "Wellbore Marker Frame", w1i1TrajRep);
 		double markerMdValues[2] = { 350, 550 };
 		wmf->setMdValues(markerMdValues, 2, hdfProxy);
-		WellboreMarker* marker0 = pck->createWellboreMarker(wmf, "624f9f17-6797-4d78-b3fc-9ca2c8174bcd", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
+		RESQML2_NS::WellboreMarker* marker0 = pck->createWellboreMarker(wmf, "624f9f17-6797-4d78-b3fc-9ca2c8174bcd", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
 		marker0->setBoundaryFeatureInterpretation(horizon1Interp1);
-		WellboreMarker* marker1 = pck->createWellboreMarker(wmf, "3611725e-4d9b-4d3e-87e6-58fcd238f5a8", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
+		RESQML2_NS::WellboreMarker* marker1 = pck->createWellboreMarker(wmf, "3611725e-4d9b-4d3e-87e6-58fcd238f5a8", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
 		marker1->setBoundaryFeatureInterpretation(fault1Interp1);
 	}
 

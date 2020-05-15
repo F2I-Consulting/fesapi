@@ -1589,26 +1589,32 @@ RESQML2_NS::WellboreMarkerFrameRepresentation* DataObjectRepository::createWellb
 	}
 }
 
-RESQML2_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title)
+RESQML2_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(RESQML2_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title)
 {
-	switch (defaultResqmlVersion) {
-	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
-		return new RESQML2_0_1_NS::WellboreMarker(wellboreMarkerFrame, guid, title);
-	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
-		return new RESQML2_2_NS::WellboreMarker(wellboreMarkerFrame, guid, title);
-	default:
+	if (dynamic_cast<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation*>(wellboreMarkerFrame) != nullptr) {
+		return new RESQML2_0_1_NS::WellboreMarker(static_cast<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation*>(wellboreMarkerFrame),
+			guid, title);
+	}
+	else if (dynamic_cast<RESQML2_2_NS::WellboreMarkerFrameRepresentation*>(wellboreMarkerFrame) != nullptr) {
+		return new RESQML2_2_NS::WellboreMarker(static_cast<RESQML2_2_NS::WellboreMarkerFrameRepresentation*>(wellboreMarkerFrame),
+			guid, title);
+	}
+	else {
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
 }
 
-RESQML2_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind)
+RESQML2_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(RESQML2_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind)
 {
-	switch (defaultResqmlVersion) {
-	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
-		return new RESQML2_0_1_NS::WellboreMarker(wellboreMarkerFrame, guid, title, geologicBoundaryKind);
-	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
-		return new RESQML2_2_NS::WellboreMarker(wellboreMarkerFrame, guid, title, geologicBoundaryKind);
-	default:
+	if (dynamic_cast<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation*>(wellboreMarkerFrame) != nullptr) {
+		return new RESQML2_0_1_NS::WellboreMarker(static_cast<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation*>(wellboreMarkerFrame),
+			guid, title, geologicBoundaryKind);
+	}
+	else if (dynamic_cast<RESQML2_2_NS::WellboreMarkerFrameRepresentation*>(wellboreMarkerFrame) != nullptr) {
+		return new RESQML2_2_NS::WellboreMarker(static_cast<RESQML2_2_NS::WellboreMarkerFrameRepresentation*>(wellboreMarkerFrame),
+			guid, title, geologicBoundaryKind);
+	}
+	else {
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
 }

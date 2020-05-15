@@ -87,6 +87,13 @@ void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRight
 	if (nodeIndicesCumulativeCountPerFace == nullptr)
 		throw invalid_argument("The definition of the node indices count per face is incomplete.");
 
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+
 	setGeometryUsingExistingDatasets(getHdfGroup() + "/CellFaceIsRightHanded", getHdfGroup() + "/Points", pointCount, proxy,
 		getHdfGroup() + "/FacesPerCell/" + ELEMENTS_DS_NAME, getHdfGroup() + "/FacesPerCell/" + CUMULATIVE_LENGTH_DS_NAME,
 		faceCount, getHdfGroup() + "/NodesPerFace/" + ELEMENTS_DS_NAME, getHdfGroup() + "/NodesPerFace/" + CUMULATIVE_LENGTH_DS_NAME,
@@ -266,54 +273,50 @@ unsigned int UnstructuredGridRepresentation::getFaceCountOfCell(ULONG64 cellInde
 	return cumulativeFaceCountPerCell[cellIndex] -  cumulativeFaceCountPerCell[cellIndex-1];
 }
 
-unsigned int UnstructuredGridRepresentation::getNodeCountOfFaceOfCell(ULONG64 cellIndex, unsigned int localFaceIndex) const
-{
-	if (cellIndex >= getCellCount())
-		throw out_of_range("The cell index is out of range.");
-	if (localFaceIndex >= getFaceCountOfCell(cellIndex))
-		throw out_of_range("The face index is out of range.");
-	
-	if (constantNodeCountPerFace != 0)
-		return constantNodeCountPerFace;
-
-	if (faceIndicesOfCells == nullptr)
-		throw logic_error("The geometry must have been loaded first.");
-
-	// Global face index
-	ULONG64 globalFaceIndex = cellIndex == 0
-		? faceIndicesOfCells[cumulativeFaceCountPerCell[0] + localFaceIndex]
-		: faceIndicesOfCells[cumulativeFaceCountPerCell[cellIndex-1] + localFaceIndex];
-	
-	if (globalFaceIndex == 0)
-		return cumulativeNodeCountPerFace[0];
-
-	return cumulativeNodeCountPerFace[globalFaceIndex] -  cumulativeNodeCountPerFace[globalFaceIndex-1];
-}
-
-ULONG64 * UnstructuredGridRepresentation::getNodeIndicesOfFaceOfCell(ULONG64 cellIndex, unsigned int localFaceIndex) const
+ULONG64 UnstructuredGridRepresentation::getGlobalFaceIndex(ULONG64 cellIndex, unsigned int localFaceIndex) const
 {
 	if (faceIndicesOfCells == nullptr)
-		throw logic_error("The geometry must have been loaded first.");
+		throw invalid_argument("The geometry must have been loaded first.");
 	if (cellIndex >= getCellCount())
-		throw out_of_range("The cell index is out of range.");
+		throw range_error("The cell index is out of range.");
 	if (localFaceIndex >= getFaceCountOfCell(cellIndex))
-		throw out_of_range("The face index is out of range.");
+		throw range_error("The face index is out of range.");
 
-	// Global face index
 	ULONG64 globalFaceIndex = 0;
 	if (cellIndex == 0)
 		globalFaceIndex = faceIndicesOfCells[localFaceIndex];
 	else
 	{
-		globalFaceIndex = constantFaceCountPerCell != 0
-			? faceIndicesOfCells[constantFaceCountPerCell * cellIndex + localFaceIndex]
-			: faceIndicesOfCells[cumulativeFaceCountPerCell[cellIndex-1] + localFaceIndex];
+		if (constantFaceCountPerCell != 0)
+			globalFaceIndex = faceIndicesOfCells[constantFaceCountPerCell * cellIndex + localFaceIndex];
+		else
+			globalFaceIndex = faceIndicesOfCells[cumulativeFaceCountPerCell[cellIndex - 1] + localFaceIndex];
 	}
+
+	return globalFaceIndex;
+}
+
+unsigned int UnstructuredGridRepresentation::getNodeCountOfFaceOfCell(ULONG64 cellIndex, unsigned int localFaceIndex) const
+{
+	if (constantNodeCountPerFace != 0)
+		return constantNodeCountPerFace;
+
+	const ULONG64 globalFaceIndex = getGlobalFaceIndex(cellIndex, localFaceIndex);
+
+	return globalFaceIndex == 0
+		? cumulativeNodeCountPerFace[0]
+		: cumulativeNodeCountPerFace[globalFaceIndex] - cumulativeNodeCountPerFace[globalFaceIndex - 1];
+}
+
+ULONG64 * UnstructuredGridRepresentation::getNodeIndicesOfFaceOfCell(ULONG64 cellIndex, unsigned int localFaceIndex) const
+{
+	const ULONG64 globalFaceIndex = getGlobalFaceIndex(cellIndex, localFaceIndex);
 
 	if (globalFaceIndex == 0)
 		return nodeIndicesOfFaces;
 
-	return constantNodeCountPerFace != 0 
-		? &(nodeIndicesOfFaces[constantNodeCountPerFace * globalFaceIndex])
-		: &(nodeIndicesOfFaces[cumulativeNodeCountPerFace[globalFaceIndex-1]]);
+	if (constantNodeCountPerFace != 0)
+		return &(nodeIndicesOfFaces[constantNodeCountPerFace * globalFaceIndex]);
+	else
+		return &(nodeIndicesOfFaces[cumulativeNodeCountPerFace[globalFaceIndex - 1]]);
 }
