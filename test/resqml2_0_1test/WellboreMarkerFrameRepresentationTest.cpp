@@ -58,14 +58,8 @@ void WellboreMarkerFrameRepresentationTest::initRepoHandler() {
 	WellboreMarkerFrameRepresentation* wmf = repo->createWellboreMarkerFrameRepresentation(interp, defaultUuid, defaultTitle, traj);
 	double markerMdValues[2] = { 350, 550 };
 	wmf->setMdValues(markerMdValues, 2, repo->getHdfProxySet()[0]);
-	if (dynamic_cast<RESQML2_2_NS::WellboreMarkerFrameRepresentation*>(wmf) != nullptr) {
-		new RESQML2_2_NS::WellboreMarker(static_cast<RESQML2_2_NS::WellboreMarkerFrameRepresentation*>(wmf), "", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
-		new RESQML2_2_NS::WellboreMarker(static_cast<RESQML2_2_NS::WellboreMarkerFrameRepresentation*>(wmf), "", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
-	}
-	else if (dynamic_cast<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation*>(wmf) != nullptr) {
-		new RESQML2_0_1_NS::WellboreMarker(static_cast<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation*>(wmf), "", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
-		new RESQML2_0_1_NS::WellboreMarker(static_cast<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation*>(wmf), "", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
-	}
+	repo->createWellboreMarker(wmf, "", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
+	repo->createWellboreMarker(wmf, "", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
 }
 
 void WellboreMarkerFrameRepresentationTest::readRepoHandler() {

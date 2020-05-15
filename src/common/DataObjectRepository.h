@@ -92,6 +92,7 @@ namespace RESQML2_NS
 	class WellboreFeature;
 	class WellboreFrameRepresentation;
 	class WellboreInterpretation;
+	class WellboreMarker;
 	class WellboreMarkerFrameRepresentation;
 	class WellboreTrajectoryRepresentation;
 }
@@ -2330,6 +2331,39 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new wellbore marker frame representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj);
+
+		/**
+		 * @brief	Creates a wellbore marker within a given wellbore marker frame representation.
+		 *
+		 * @exception	std::invalid_argument	If <tt>wellboreMarkerFrame == nullptr</tt>.
+		 *
+		 * @param [in]	wellboreMarkerFrame	The wellbore marker frame representation where to push back
+		 * 									the wellbore marker.
+		 * @param 	  	guid			   	The guid to set to the wellbore marker. If empty then a new
+		 * 									guid will be generated.
+		 * @param 	  	title			   	The title to set to the wellbore marker. If empty then
+		 * 									\"unknown\" title will be set.
+		 *
+		 * @returns	A pointer to the new wellbore marker.
+		 */
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreMarker* createWellboreMarker(RESQML2_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title);
+
+		/**
+		 * @brief	Creates a wellbore marker within a given wellbore marker frame representation.
+		 *
+		 * @exception	std::invalid_argument	If <tt>wellboreMarkerFrame == nullptr</tt>.
+		 *
+		 * @param [in]	wellboreMarkerFrame 	The wellbore marker frame representation where to push
+		 * 										back the wellbore marker.
+		 * @param 	  	guid					The guid to set to the wellbore marker. If empty then a
+		 * 										new guid will be generated.
+		 * @param 	  	title					The title to set to the wellbore marker. If empty then
+		 * 										\"unknown\" title will be set.
+		 * @param 	  	geologicBoundaryKind	The geologic boundary kind.
+		 *
+		 * @returns	A pointer to the new wellbore marker.
+		 */
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreMarker* createWellboreMarker(RESQML2_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind);
 
 		/**
 		 * @brief	Creates a blocked wellbore representation into this repository

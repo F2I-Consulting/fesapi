@@ -53,6 +53,7 @@ under the License.
 #include "../resqml2_0_1/WellboreInterpretation.h"
 #include "../resqml2_0_1/WellboreFrameRepresentation.h"
 #include "../resqml2_0_1/WellboreMarkerFrameRepresentation.h"
+#include "../resqml2_0_1/WellboreMarker.h"
 #include "../resqml2_0_1/WellboreTrajectoryRepresentation.h"
 #include "../resqml2_0_1/DeviationSurveyRepresentation.h"
 #include "../resqml2_0_1/MdDatum.h"
@@ -1583,6 +1584,30 @@ RESQML2_NS::WellboreMarkerFrameRepresentation* DataObjectRepository::createWellb
 		return new RESQML2_0_1_NS::WellboreMarkerFrameRepresentation(interp, guid, title, traj);
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::WellboreMarkerFrameRepresentation(interp, guid, title, traj);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
+}
+
+RESQML2_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title)
+{
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::WellboreMarker(wellboreMarkerFrame, guid, title);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::WellboreMarker(wellboreMarkerFrame, guid, title);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
+}
+
+RESQML2_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind)
+{
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::WellboreMarker(wellboreMarkerFrame, guid, title, geologicBoundaryKind);
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::WellboreMarker(wellboreMarkerFrame, guid, title, geologicBoundaryKind);
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
