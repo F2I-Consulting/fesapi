@@ -94,6 +94,7 @@ namespace RESQML2_NS
 
 		/**
 		* Get the xyz point count in a given patch.
+		* Use linear interpolation between 2 trajectory stations.
 		*/
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
