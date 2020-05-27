@@ -65,7 +65,17 @@ void WellboreMarkerFrameRepresentationTest::initRepoHandler() {
 void WellboreMarkerFrameRepresentationTest::readRepoHandler() {
 	WellboreMarkerFrameRepresentation* wmf = repo->getDataObjectByUuid<WellboreMarkerFrameRepresentation>(defaultUuid);
 	REQUIRE(wmf != nullptr);
-	REQUIRE(wmf->getWellboreMarkerCount() == 2);
-	REQUIRE((wmf->getWellboreMarkerSet()[0])->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
-	REQUIRE((wmf->getWellboreMarkerSet()[1])->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
+	const auto mdCount = wmf->getWellboreMarkerCount();
+	REQUIRE(mdCount == 2);
+	REQUIRE(wmf->getWellboreMarkerSet()[0]->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
+	REQUIRE(wmf->getWellboreMarkerSet()[1]->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
+
+	std::unique_ptr<double[]> xyzPoints(new double[mdCount*3]);
+	wmf->getXyzPointsOfPatch(0, xyzPoints.get());
+	REQUIRE(xyzPoints[0] == 275.0);
+	REQUIRE(xyzPoints[1] == 75.0);
+	REQUIRE(xyzPoints[2] == 350.0);
+	REQUIRE(xyzPoints[3] == 275.0);
+	REQUIRE(xyzPoints[4] == 75.0);
+	REQUIRE(xyzPoints[5] == 550.0);
 }

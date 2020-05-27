@@ -30,12 +30,62 @@ using namespace RESQML2_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace gsoap_eml2_3;
 
-void WellboreFrameRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
+void WellboreFrameRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
 {
-	if (patchIndex >= getPatchCount())
+	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
+	}
 
-	throw logic_error("Not implemented yet");
+	auto trajectory = getWellboreTrajectory();
+	if (trajectory == nullptr || trajectory->isPartial()) {
+		throw logic_error("Cannot compute the XYZ points of the frame without the trajectory.");
+	}
+	auto mdDatum = trajectory->getMdDatum();
+	if (mdDatum == nullptr || mdDatum->isPartial()) {
+		throw logic_error("Cannot compute the XYZ points of the frame without the MD datum.");
+	}
+
+	// We add 1 trajecotry station for MDDatum support.
+	auto trajStationCount = trajectory->getXyzPointCountOfPatch(patchIndex) + 1;
+	if (trajStationCount == 0) {
+		throw logic_error("Cannot compute the XYZ points of the frame with a trajectory which does not contain any trajectory station.");
+	}
+	std::unique_ptr<double[]> mdTrajValues(new double[trajStationCount]);
+	mdTrajValues[0] = .0; // MD Datum
+	trajectory->getMdValues(mdTrajValues.get() + 1);
+
+	std::unique_ptr<double[]> xyzTrajValues(new double[trajStationCount*3]);
+	xyzTrajValues[0] = mdDatum->getX();
+	xyzTrajValues[1] = mdDatum->getY();
+	xyzTrajValues[2] = mdDatum->getZ();
+	trajectory->getXyzPointsOfPatch(patchIndex, xyzTrajValues.get() + 3);
+	
+	const auto mdCount = getXyzPointCountOfPatch(patchIndex);
+	std::unique_ptr<double[]> mdFrameValues(new double[mdCount]);
+	getMdAsDoubleValues(mdFrameValues.get());
+	size_t nextTrajStationIndex = 1;
+	for (unsigned int i = 0; i < mdCount; ++i) {
+		while (nextTrajStationIndex < trajStationCount &&
+			mdTrajValues[nextTrajStationIndex] <= mdFrameValues[i]) {
+			++nextTrajStationIndex;
+		}
+		if (nextTrajStationIndex == trajStationCount) {
+			if (mdTrajValues[nextTrajStationIndex - 1] != mdFrameValues[i]) {
+				throw range_error("Cannot compute the frame MD " + std::to_string(mdFrameValues[i]) + " because it is out of the trajectory range");
+			}
+			nextTrajStationIndex = nextTrajStationIndex - 1;
+		}
+
+		const size_t previousTrajStationIndex = nextTrajStationIndex - 1;
+		const double mdDistance = mdTrajValues[nextTrajStationIndex] - mdTrajValues[previousTrajStationIndex];
+		const double ratioFromPreviousControlPoint = mdDistance != .0
+			? (mdFrameValues[i] - mdTrajValues[previousTrajStationIndex]) / mdDistance
+			: .0;
+
+		xyzPoints[i * 3] = xyzTrajValues[previousTrajStationIndex * 3] + ratioFromPreviousControlPoint * (xyzTrajValues[nextTrajStationIndex * 3] - xyzTrajValues[previousTrajStationIndex * 3]);
+		xyzPoints[i * 3 + 1] = xyzTrajValues[previousTrajStationIndex * 3 + 1] + ratioFromPreviousControlPoint * (xyzTrajValues[nextTrajStationIndex * 3 + 1] - xyzTrajValues[previousTrajStationIndex * 3 + 1]);
+		xyzPoints[i * 3 + 2] = xyzTrajValues[previousTrajStationIndex * 3 + 2] + ratioFromPreviousControlPoint * (xyzTrajValues[nextTrajStationIndex * 3 + 2] - xyzTrajValues[previousTrajStationIndex * 3 + 2]);
+	}
 }
 
 void WellboreFrameRepresentation::setMdValues(double const * mdValues, unsigned int mdValueCount, EML2_NS::AbstractHdfProxy* proxy)
