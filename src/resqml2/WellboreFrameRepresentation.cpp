@@ -22,8 +22,9 @@ under the License.
 
 #include <hdf5.h>
 
-#include "WellboreTrajectoryRepresentation.h"
 #include "../eml2/AbstractHdfProxy.h"
+#include "MdDatum.h"
+#include "WellboreTrajectoryRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_NS;
@@ -45,7 +46,7 @@ void WellboreFrameRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, d
 		throw logic_error("Cannot compute the XYZ points of the frame without the MD datum.");
 	}
 
-	// We add 1 trajecotry station for MDDatum support.
+	// We add 1 trajectory station for MDDatum support.
 	auto trajStationCount = trajectory->getXyzPointCountOfPatch(patchIndex) + 1;
 	if (trajStationCount == 0) {
 		throw logic_error("Cannot compute the XYZ points of the frame with a trajectory which does not contain any trajectory station.");

@@ -1032,17 +1032,25 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	unstructuredGrid->setGeometry(faceRightHandness, unstructuredGridPoints, 7, nullptr, faceIndicesPerCell, faceIndicesCumulativeCountPerCell, 8, nodeIndicesPerFace, nodeIndicesCumulativeCountPerFace,
 		gsoap_resqml2_0_1::resqml20__CellShape__prism);
 
-	// Create a property kind
-	COMMON_NS::PropertyKind* unstructuredGridPropKind = pck->createPropertyKind("e2d41ce9-54f5-498b-8dee-4653cbff6d09", "propKind2", "urn:resqml:f2i.com:testingAPI",
-		gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
+	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
 
-	// Create the property
-	RESQML2_NS::ContinuousProperty* unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyedra property", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, unstructuredGridPropKind);
+		// Create the property
+		RESQML2_NS::ContinuousProperty* unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyedra property", 1,
+			gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 
-	// Fill the property
-	double propValues[2] = { 12.3, 45.6 };
-	unstructuredGridProp->pushBackDoubleHdf5Array1dOfValues(propValues, 2);
+		// Fill the property
+		double propValues[2] = { 12.3, 45.6 };
+		unstructuredGridProp->pushBackDoubleHdf5Array1dOfValues(propValues, 2);
+	}
+	else {
+		auto standardLengthPropKind = pck->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind__length);
+		RESQML2_NS::ContinuousProperty* unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyedra property", 1,
+			gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, standardLengthPropKind);
+
+		// Fill the property
+		double propValues[2] = { 12.3, 45.6 };
+		unstructuredGridProp->pushBackDoubleHdf5Array1dOfValues(propValues, 2);
+	}
 }
 
 void serializeRepresentationSetRepresentation(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfProxy*)
