@@ -79,6 +79,15 @@ namespace RESQML2_0_1_NS
 		ULONG64 * nodeIndicesOfFaces;
 		ULONG64 * faceIndicesOfCells;
 
+		/**
+		* This method requires you have already loaded the geometry.
+		*
+		* @param cellIndex		The cell which contains the face we are getting its global index.
+		* @param localFaceIndex The local face index regarding the cell of the face we are getting its global index.
+		* @return				The global face index from its local face index in a cell.
+		*/
+		ULONG64 getGlobalFaceIndex(ULONG64 cellIndex, unsigned int localFaceIndex) const;
+
 	public:
 
 		/**
@@ -216,7 +225,7 @@ namespace RESQML2_0_1_NS
 		* @return The count of faces in a particular cell.
 		*/
 		DLL_IMPORT_OR_EXPORT unsigned int getFaceCountOfCell(ULONG64 cellIndex) const;
-	
+
 		/**
 		* This method requires your have already loaded the geometry.
 		* @return The count of nodes in a particular face of a particular cell.

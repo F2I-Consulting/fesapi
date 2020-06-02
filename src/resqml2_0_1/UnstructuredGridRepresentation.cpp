@@ -500,6 +500,13 @@ void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRight
 	if (nodeIndicesCumulativeCountPerFace == nullptr)
 		throw invalid_argument("The definition of the node indices count per face is incomplete.");
 
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+
 	setGeometryUsingExistingDatasets("/RESQML/" + gsoapProxy2_0_1->uuid + "/CellFaceIsRightHanded", "/RESQML/" + gsoapProxy2_0_1->uuid + "/Points", pointCount, proxy,
 		"/RESQML/" + gsoapProxy2_0_1->uuid + "/FacesPerCell/" + ELEMENTS_DS_NAME, "/RESQML/" + gsoapProxy2_0_1->uuid + "/FacesPerCell/" + CUMULATIVE_LENGTH_DS_NAME,
 		faceCount, "/RESQML/" + gsoapProxy2_0_1->uuid + "/NodesPerFace/" + ELEMENTS_DS_NAME, "/RESQML/" + gsoapProxy2_0_1->uuid + "/NodesPerFace/" + CUMULATIVE_LENGTH_DS_NAME,
@@ -794,33 +801,7 @@ unsigned int UnstructuredGridRepresentation::getFaceCountOfCell(ULONG64 cellInde
 	return cumulativeFaceCountPerCell[cellIndex] -  cumulativeFaceCountPerCell[cellIndex-1];
 }
 
-unsigned int UnstructuredGridRepresentation::getNodeCountOfFaceOfCell(const ULONG64 & cellIndex, const unsigned int & localFaceIndex) const
-{
-	if (cellIndex >= getCellCount())
-		throw range_error("The cell index is out of range.");
-	if (localFaceIndex >= getFaceCountOfCell(cellIndex))
-		throw range_error("The face index is out of range.");
-	
-	if (constantNodeCountPerFace != 0)
-		return constantNodeCountPerFace;
-
-	if (faceIndicesOfCells == nullptr)
-		throw invalid_argument("The geometry must have been loaded first.");
-
-	// Global face index
-	ULONG64 globalFaceIndex = 0;
-	if (cellIndex == 0)
-		globalFaceIndex = faceIndicesOfCells[cumulativeFaceCountPerCell[0] + localFaceIndex];
-	else
-		globalFaceIndex = faceIndicesOfCells[cumulativeFaceCountPerCell[cellIndex-1] + localFaceIndex];
-	
-	if (globalFaceIndex == 0)
-		return cumulativeNodeCountPerFace[0];
-
-	return cumulativeNodeCountPerFace[globalFaceIndex] -  cumulativeNodeCountPerFace[globalFaceIndex-1];
-}
-
-ULONG64 * UnstructuredGridRepresentation::getNodeIndicesOfFaceOfCell(const ULONG64 & cellIndex, const unsigned int & localFaceIndex) const
+ULONG64 UnstructuredGridRepresentation::getGlobalFaceIndex(ULONG64 cellIndex, unsigned int localFaceIndex) const
 {
 	if (faceIndicesOfCells == nullptr)
 		throw invalid_argument("The geometry must have been loaded first.");
@@ -829,7 +810,6 @@ ULONG64 * UnstructuredGridRepresentation::getNodeIndicesOfFaceOfCell(const ULONG
 	if (localFaceIndex >= getFaceCountOfCell(cellIndex))
 		throw range_error("The face index is out of range.");
 
-	// Global face index
 	ULONG64 globalFaceIndex = 0;
 	if (cellIndex == 0)
 		globalFaceIndex = faceIndicesOfCells[localFaceIndex];
@@ -838,8 +818,27 @@ ULONG64 * UnstructuredGridRepresentation::getNodeIndicesOfFaceOfCell(const ULONG
 		if (constantFaceCountPerCell != 0)
 			globalFaceIndex = faceIndicesOfCells[constantFaceCountPerCell * cellIndex + localFaceIndex];
 		else
-			globalFaceIndex = faceIndicesOfCells[cumulativeFaceCountPerCell[cellIndex-1] + localFaceIndex];
+			globalFaceIndex = faceIndicesOfCells[cumulativeFaceCountPerCell[cellIndex - 1] + localFaceIndex];
 	}
+
+	return globalFaceIndex;
+}
+
+unsigned int UnstructuredGridRepresentation::getNodeCountOfFaceOfCell(const ULONG64 & cellIndex, const unsigned int & localFaceIndex) const
+{
+	if (constantNodeCountPerFace != 0)
+		return constantNodeCountPerFace;
+
+	const ULONG64 globalFaceIndex = getGlobalFaceIndex(cellIndex, localFaceIndex);
+	
+	return globalFaceIndex == 0
+		? cumulativeNodeCountPerFace[0]
+		: cumulativeNodeCountPerFace[globalFaceIndex] - cumulativeNodeCountPerFace[globalFaceIndex - 1];
+}
+
+ULONG64 * UnstructuredGridRepresentation::getNodeIndicesOfFaceOfCell(const ULONG64 & cellIndex, const unsigned int & localFaceIndex) const
+{
+	const ULONG64 globalFaceIndex = getGlobalFaceIndex(cellIndex, localFaceIndex);
 
 	if (globalFaceIndex == 0)
 		return nodeIndicesOfFaces;
@@ -849,4 +848,3 @@ ULONG64 * UnstructuredGridRepresentation::getNodeIndicesOfFaceOfCell(const ULONG
 	else
 		return &(nodeIndicesOfFaces[cumulativeNodeCountPerFace[globalFaceIndex-1]]);
 }
-

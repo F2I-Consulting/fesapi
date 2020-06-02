@@ -36,6 +36,7 @@ under the License.
 #include "resqml2_0_1test/ActivityTemplateGenericCreationTest.h"
 #include "resqml2_0_1test/ActivityCreationTest.h"
 #include "resqml2_0_1test/OneTetrahedronUnstructuredGridRepresentationTest.h"
+#include "resqml2_0_1test/UnstructuredGridTest.h"
 #include "resqml2_0_1test/TimeSeriesTest.h"
 #include "resqml2_0_1test/CommentProperty.h"
 #include "resqml2_0_1test/ContinuousPropertyOnWellFrameTest.h"
@@ -174,7 +175,8 @@ TEST_CASE("Export and import a big parametric ijk grid", "[grid][property]")
 
 FESAPI_TEST("Export and import a LGR on a 4*3*2 explicit right handed ijk grid", "[grid]", LgrOnRightHanded4x3x2ExplicitIjkGrid)
 
-FESAPI_TEST("Export and import an unstructured grid", "[grid]", OneTetrahedronUnstructuredGridRepresentationTest)
+FESAPI_TEST("Export and import a singel tetra grid", "[grid]", OneTetrahedronUnstructuredGridRepresentationTest)
+FESAPI_TEST("Export and import an unstructured grid", "[grid]", UnstructuredGridTest)
 
 FESAPI_TEST("Export and import a subrepresentation on a partial grid connection set", "[grid]", SubRepresentationOnPartialGridConnectionSet)
 

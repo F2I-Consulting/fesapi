@@ -460,9 +460,9 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, COMMON_N
 		WellboreMarkerFrameRepresentation* wmf = pck->createWellboreMarkerFrameRepresentation(wellbore1Interp1, "657d5e6b-1752-425d-b3e7-237037fa11eb", "Wellbore Marker Frame", w1i1TrajRep);
 		double markerMdValues[2] = { 350, 550 };
 		wmf->setMdValues(markerMdValues, 2, hdfProxy);
-		WellboreMarker* marker0 = new WellboreMarker(wmf, "624f9f17-6797-4d78-b3fc-9ca2c8174bcd", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
+		WellboreMarker* marker0 = pck->createWellboreMarker(wmf, "624f9f17-6797-4d78-b3fc-9ca2c8174bcd", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
 		marker0->setBoundaryFeatureInterpretation(horizon1Interp1);
-		WellboreMarker* marker1 = new WellboreMarker(wmf, "3611725e-4d9b-4d3e-87e6-58fcd238f5a8", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
+		WellboreMarker* marker1 = pck->createWellboreMarker(wmf, "3611725e-4d9b-4d3e-87e6-58fcd238f5a8", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
 		marker1->setBoundaryFeatureInterpretation(fault1Interp1);
 	}
 
@@ -991,15 +991,46 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	subRepOfUnstructuredGrid->pushBackSupportingRepresentation(partialGrid);
 	ULONG64 nodeIndex[2] = { 0, 1 };
 	subRepOfUnstructuredGrid->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements__nodes, 2, nodeIndex, hdfProxy);
-
-	// Tetra grid
-	UnstructuredGridRepresentation* tetraGrid = pck->createUnstructuredGridRepresentation("9283cd33-5e52-4110-b7b1-616abde2b303", "One tetrahedron grid", 1);
-	double tetraGridPoints[12] = { 0, 0, 300, 375, 0, 300, 0, 150, 300, 0, 0, 500 };
-	ULONG64 faceIndicesPerCell[4] = { 0, 1, 2, 3 };
-	unsigned char faceRightHandness[4] = { 0, 0, 1, 1 };
-	ULONG64 nodeIndicesPerFace[12] = { 0, 1, 2, 1, 2, 3, 0, 1, 3, 0, 2, 3 };
-	tetraGrid->setTetrahedraOnlyGeometry(faceRightHandness, tetraGridPoints, 4, 4, hdfProxy, faceIndicesPerCell, nodeIndicesPerFace);
 	*/
+
+	// creating the unstructured grid
+	RESQML2_0_1_NS::UnstructuredGridRepresentation* unstructuredGrid = pck->createUnstructuredGridRepresentation("9283cd33-5e52-4110-b7b1-616abde2b303", "One tetrahedron + prism grid", 2);
+
+	double unstructuredGridPoints[] = { 0, 0, 300, 375, 0, 300, 0, 150, 300, // points for shared face between tetra and wedge
+		0, 0, 500, // point for tetra
+		0, 0, 0, 375, 0, 0, 0, 150, 0 }; // points for wedge
+
+	// The point indices of each face.
+	ULONG64 nodeIndicesPerFace[27] = { 0, 1, 2, // shared face
+		1, 2, 3, 0, 1, 3, 0, 2, 3, // faces for tetra
+		0, 2, 6, 4, 2, 1, 5, 6, 0, 1, 5, 4, 4, 5, 6 //  faces for wedge
+	};
+	// The cumulative count of points per face i.e. first face contains 3 points, second face contains 6-3=3 points, third face contains 9-6=3 points etc...
+	ULONG64 nodeIndicesCumulativeCountPerFace[8] = { 3, // shared face
+		6, 9, 12, // faces for tetra
+		16, 20, 24, 27 //  faces for wedge
+	};
+	// The face indices of each cell. 
+	ULONG64 faceIndicesPerCell[9] = { 0, 1, 2, 3, // tetra
+		0, 4, 5, 6, 7 }; //wedge
+	ULONG64 faceIndicesCumulativeCountPerCell[2] = { 4, 9 };
+	// Exporting the right handness of each face of each cell is mandatory. However, it is often ignored by the readers. Dummy values
+	unsigned char faceRightHandness[9] = { 0, 0, 1, 1, 1, 0, 1, 0, 0 };
+
+	unstructuredGrid->setGeometry(faceRightHandness, unstructuredGridPoints, 7, nullptr, faceIndicesPerCell, faceIndicesCumulativeCountPerCell, 8, nodeIndicesPerFace, nodeIndicesCumulativeCountPerFace,
+		gsoap_resqml2_0_1::resqml20__CellShape__prism);
+
+	// Create a property kind
+	COMMON_NS::PropertyKind* unstructuredGridPropKind = pck->createPropertyKind("e2d41ce9-54f5-498b-8dee-4653cbff6d09", "propKind2", "urn:resqml:f2i.com:testingAPI",
+		gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
+
+	// Create the property
+	RESQML2_0_1_NS::ContinuousProperty* unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyedra property", 1,
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, unstructuredGridPropKind);
+
+	// Fill the property
+	double propValues[2] = { 12.3, 45.6 };
+	unstructuredGridProp->pushBackDoubleHdf5Array1dOfValues(propValues, 2);
 }
 
 void serializeRepresentationSetRepresentation(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdfProxy*)
