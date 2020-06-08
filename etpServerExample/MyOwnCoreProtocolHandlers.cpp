@@ -56,7 +56,7 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 	openSession.m_supportedFormats.push_back("xml");
 	openSession.m_supportedProtocols = requestedAndSupportedProtocols;
 	openSession.m_endpointCapabilities = endpointCapabilities;
-	openSession.m_supportedObjects = supportedObjects;
+	openSession.m_supportedDataObjects = supportedDataObjects;
 
 	session->send(openSession, correlationId);
 

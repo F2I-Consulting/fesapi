@@ -47,12 +47,12 @@ void DiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes
 	}
 }
 
-void DiscoveryHandlers::on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources & msg, int64_t correlationId)
+void DiscoveryHandlers::on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources &, int64_t)
 {
 	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The Discovery::on_GetResources method has not been overriden by the agent."));
 }
 
-void DiscoveryHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse & msg, int64_t correlationId)
+void DiscoveryHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse & msg, int64_t)
 {
 	for (const auto & resource : msg.m_resources) {
 		std::cout << "DISCOVERED RESOURCE (" << resource.m_name << ", " << resource.m_dataObjectType << ')' << std::endl;

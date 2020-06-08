@@ -61,12 +61,12 @@ namespace ETP_NS
 	     * @param target	usually "/" but a server can decide to serve etp on a particular target
 	     * @param authorization			The HTTP authorization attribute to send to the server. It may be empty if not needed.
 	     * @param requestedProtocols	An array of protocol IDs that the client expects to communicate on for this session. If the server does not support all of the protocols, the client may or may not continue with the protocols that are supported.
-	     * @param supportedObjects		A list of the Data Objects supported by the client. This list MUST be empty if the client is a customer. This field MUST be supplied if the client is a Store and is requesting a customer role for the server.
+	     * @param supportedDataObjects		A list of the Data Objects supported by the client. This list MUST be empty if the client is a customer. This field MUST be supplied if the client is a Store and is requesting a customer role for the server.
 	     */
 		AbstractClientSession(
 				const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
 				const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
-				const std::vector<std::string>& supportedObjects) :
+				const std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject>& supportedDataObjects) :
 			ioc(),
 			resolver(ioc),
 			host(host),
@@ -79,7 +79,7 @@ namespace ETP_NS
 			requestSession.m_applicationName = "F2I ETP Client";
 			requestSession.m_applicationVersion = "0.0";
 			requestSession.m_requestedProtocols = requestedProtocols;
-			requestSession.m_supportedObjects = supportedObjects;
+			requestSession.m_supportedDataObjects = supportedDataObjects;
 		}
 
 		virtual ~AbstractClientSession() {}

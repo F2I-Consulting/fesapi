@@ -27,7 +27,7 @@ std::shared_ptr<ETP_NS::PlainClientSession> ETP_NS::ClientSessionLaunchers::crea
 	protocolVersion.m_patch = 0;
 	protocolVersion.m_revision = 0;
 
-	std::vector<std::string> supportedObjects;
+	std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject> supportedDataObjects;
 
 	// Requested protocol
 	std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> requestedProtocols;
@@ -58,5 +58,5 @@ std::shared_ptr<ETP_NS::PlainClientSession> ETP_NS::ClientSessionLaunchers::crea
 	protocol.m_role = "store";
 	requestedProtocols.push_back(protocol);
 
-	return std::make_shared<PlainClientSession>(host, port, target.empty() ? "/" : target, authorization, requestedProtocols, supportedObjects);
+	return std::make_shared<PlainClientSession>(host, port, target.empty() ? "/" : target, authorization, requestedProtocols, supportedDataObjects);
 }

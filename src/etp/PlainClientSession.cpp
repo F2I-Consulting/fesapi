@@ -24,9 +24,9 @@ using namespace ETP_NS;
 PlainClientSession::PlainClientSession(
 	const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
 	const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
-	const std::vector<std::string>& supportedObjects)
+	const std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject>& supportedDataObjects)
 	: AbstractClientSession<PlainClientSession>(host, port, target, authorization,
-		requestedProtocols, supportedObjects),
+		requestedProtocols, supportedDataObjects),
 		ws_(ioc)
 {
 	ws_.binary(true);

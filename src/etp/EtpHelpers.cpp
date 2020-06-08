@@ -119,12 +119,8 @@ Energistics::Etp::v12::Datatypes::Object::Resource ETP_NS::EtpHelpers::buildEtpR
 	}
 	
 	if (countRels) {
-		result.m_sourceCount.set_int(obj->getRepository()->getSourceObjects(obj).size());
-		result.m_targetCount.set_int(obj->getRepository()->getTargetObjects(obj).size());
-	}
-	else {
-		result.m_sourceCount.set_null();
-		result.m_targetCount.set_null();
+		result.m_sourceCount = obj->getRepository()->getSourceObjects(obj).size();
+		result.m_targetCount = obj->getRepository()->getTargetObjects(obj).size();
 	}
 
 	return result;

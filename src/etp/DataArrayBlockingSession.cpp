@@ -54,8 +54,8 @@ DataArrayBlockingSession::DataArrayBlockingSession(boost::asio::io_context& ioc,
 	requestedProtocols.push_back(requestedProtocol);
 	requestSession.m_requestedProtocols = requestedProtocols;
 
-	std::vector<std::string> supportedObjects;
-	requestSession.m_supportedObjects = supportedObjects;
+	std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject> supportedObjects;
+	requestSession.m_supportedDataObjects = supportedObjects;
 }
 
 bool DataArrayBlockingSession::run()

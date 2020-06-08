@@ -70,17 +70,17 @@ void CoreHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::Mes
 	}
 }
 
-void CoreHandlers::on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession & rs, int64_t correlationId)
+void CoreHandlers::on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession &, int64_t)
 {
 	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(2, "The Core::on_RequestSession method has not been overriden by the agent."));
 }
 
-void CoreHandlers::on_OpenSession(const Energistics::Etp::v12::Protocol::Core::OpenSession & os, int64_t correlationId)
+void CoreHandlers::on_OpenSession(const Energistics::Etp::v12::Protocol::Core::OpenSession &, int64_t)
 {
 	std::cout << "The session has been opened with the default core protocol handlers. You probably want to use your own." << std::endl;
 }
 
-void CoreHandlers::on_CloseSession(const Energistics::Etp::v12::Protocol::Core::CloseSession & cs, int64_t correlationId)
+void CoreHandlers::on_CloseSession(const Energistics::Etp::v12::Protocol::Core::CloseSession &, int64_t)
 {
 	std::cout << "Close session after received request." << std::endl;
 	session->sendCloseFrame();
@@ -102,7 +102,7 @@ void CoreHandlers::on_ProtocolException(const Energistics::Etp::v12::Protocol::C
 	}
 }
 
-void CoreHandlers::on_Acknowledge(const Energistics::Etp::v12::Protocol::Core::Acknowledge & ack, int64_t correlationId)
+void CoreHandlers::on_Acknowledge(const Energistics::Etp::v12::Protocol::Core::Acknowledge &, int64_t correlationId)
 {
 	std::cout << "Acknowledge message_id " << correlationId << std::endl;
 }

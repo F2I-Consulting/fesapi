@@ -234,7 +234,7 @@ template<
 			"	  \"name\": \"contactInformation\","
 			"	  \"type\": {"
 			"		\"type\": \"record\","
-			"        \"name\": \"Contact\","
+			"       \"name\": \"Contact\","
 			"		\"fields\": ["
 			"		  {"
 			"		    \"name\": \"organizationName\","
@@ -264,7 +264,10 @@ template<
 			"	},"
 			"	{"
 			"	  \"name\": \"supportedEncodings\","
-			"	  \"type\": \"string\""
+			"	  \"type\": {"
+			"		\"type\": \"array\","
+			"		\"items\": \"string\""
+			"	  }"
 			"	},"
 			"	{"
 			"	  \"name\": \"supportedFormats\","
@@ -277,8 +280,24 @@ template<
 			"	  \"name\": \"supportedObjects\","
 			"	  \"type\": {"
 			"		\"type\": \"array\","
-			"		\"items\": \"string\""
-			"	  }"
+			"		\"items\": {"
+			"		  \"type\": \"record\","
+			"		  \"name\" : \"SupportedDataObject\","
+			"		  \"fields\" : ["
+			"		    {"
+			"			  \"name\": \"qualifiedType\","
+			"			  \"type\" : \"string\""
+			"		    },"
+			"		    {"
+			"			  \"name\": \"dataObjectCapabilities\","
+			"			  \"type\" : {"
+			"			    \"type\": \"array\","
+			"			    \"items\" : \"string\""
+			"		      }"
+			"		    }"
+			"		  ]"
+			"	    }"
+			"     }"
 			"	},"
 			"	{"
 			"	  \"name\": \"supportedProtocols\","
@@ -387,7 +406,7 @@ template<
 		serverCap.m_endpointCapabilities = endpointCapabilities;
 		serverCap.m_supportedEncodings = supportedEncodings;
 		serverCap.m_supportedFormats.push_back("xml");
-		serverCap.m_supportedObjects = supportedObjects;
+		serverCap.m_supportedDataObjects = supportedDataObjects;
 		serverCap.m_supportedProtocols = supportedProtocols;
 
 		avro::OutputStreamPtr out = avro::ostreamOutputStream(oss);

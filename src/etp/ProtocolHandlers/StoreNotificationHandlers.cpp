@@ -78,14 +78,14 @@ void StoreNotificationHandlers::decodeMessageBody(const Energistics::Etp::v12::D
 	}
 }
 
-void StoreNotificationHandlers::on_SubscribeNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotifications & msg, int64_t messageId)
+void StoreNotificationHandlers::on_SubscribeNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotifications &, int64_t)
 {
 	std::cout << "on_SubscribeNotifications" << std::endl;
 
 	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The StoreHandlers::on_SubscribeNotifications method has not been overriden by the agent."));
 }
 
-void StoreNotificationHandlers::on_UnsubscribeNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::UnsubscribeNotifications & msg, int64_t messageId, int64_t correlationId)
+void StoreNotificationHandlers::on_UnsubscribeNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::UnsubscribeNotifications & msg, int64_t messageId, int64_t)
 {
 	std::cout << "on_UnsubscribeNotifications" << std::endl;
 
@@ -105,17 +105,17 @@ void StoreNotificationHandlers::on_UnsubscribeNotifications(const Energistics::E
 	}
 }
 
-void StoreNotificationHandlers::on_UnsolicitedStoreNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::UnsolicitedStoreNotifications & msg, int64_t correlationId)
+void StoreNotificationHandlers::on_UnsolicitedStoreNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::UnsolicitedStoreNotifications &, int64_t)
 {
 	std::cout << "Received UnsolicitedStoreNotifications" << std::endl;
 }
 
-void StoreNotificationHandlers::on_SubscriptionEnded(const Energistics::Etp::v12::Protocol::StoreNotification::SubscriptionEnded & msg, int64_t correlationId)
+void StoreNotificationHandlers::on_SubscriptionEnded(const Energistics::Etp::v12::Protocol::StoreNotification::SubscriptionEnded &, int64_t)
 {
 	std::cout << "Received SubscriptionEnded " << std::endl;
 }
 
-void StoreNotificationHandlers::on_ObjectChanged(const Energistics::Etp::v12::Protocol::StoreNotification::ObjectChanged & msg, int64_t correlationId)
+void StoreNotificationHandlers::on_ObjectChanged(const Energistics::Etp::v12::Protocol::StoreNotification::ObjectChanged & msg, int64_t)
 {
 	switch (msg.m_change.m_changeKind) {
 	case Energistics::Etp::v12::Datatypes::Object::ObjectChangeKind::authorized: std::cout << "authorized "; break;
@@ -130,14 +130,14 @@ void StoreNotificationHandlers::on_ObjectChanged(const Energistics::Etp::v12::Pr
 	std::cout << std::endl;
 }
 
-void StoreNotificationHandlers::on_ObjectDeleted(const Energistics::Etp::v12::Protocol::StoreNotification::ObjectDeleted & msg, int64_t correlationId)
+void StoreNotificationHandlers::on_ObjectDeleted(const Energistics::Etp::v12::Protocol::StoreNotification::ObjectDeleted &, int64_t)
 {
 	std::cout << "on_ObjectDeleted" << std::endl;
 
 	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The StoreHandlers::on_ObjectDeleted method has not been overriden by the agent."));
 }
 
-void StoreNotificationHandlers::on_ObjectAccessRevoked(const Energistics::Etp::v12::Protocol::StoreNotification::ObjectAccessRevoked & msg, int64_t correlationId)
+void StoreNotificationHandlers::on_ObjectAccessRevoked(const Energistics::Etp::v12::Protocol::StoreNotification::ObjectAccessRevoked &, int64_t)
 {
 	std::cout << "on_ObjectAccessRevoked" << std::endl;
 

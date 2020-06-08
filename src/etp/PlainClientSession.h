@@ -33,7 +33,7 @@ namespace ETP_NS
 		DLL_IMPORT_OR_EXPORT PlainClientSession(
 			const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
 			const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
-			const std::vector<std::string>& supportedObjects);
+			const std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject>& supportedDataObjects);
 
 		virtual ~PlainClientSession() {}
 

@@ -135,7 +135,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v
 			msg.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
 
 			time_t lastUpdate = -1;
-			if (!msg.m_lastChangedFilter.is_null() && !obj->isPartial()) {
+			if (msg.m_storeLastWriteFilter && !obj->isPartial()) {
 				lastUpdate = obj->getLastUpdate();
 				if (lastUpdate < 0) {
 					lastUpdate = obj->getCreation();
@@ -146,7 +146,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v
 			std::string namespaceStar = qualifiedType.substr(0, qualifiedType.find(".") + 1) + "*";
 			if ((msg.m_context.m_dataObjectTypes.empty() || std::find(msg.m_context.m_dataObjectTypes.begin(), msg.m_context.m_dataObjectTypes.end(), qualifiedType) != msg.m_context.m_dataObjectTypes.end()
 				|| std::find(msg.m_context.m_dataObjectTypes.begin(), msg.m_context.m_dataObjectTypes.end(), namespaceStar) != msg.m_context.m_dataObjectTypes.end())
-				&& (msg.m_lastChangedFilter.is_null() || lastUpdate >= msg.m_lastChangedFilter.get_long())) {
+				&& (!msg.m_storeLastWriteFilter || lastUpdate >= msg.m_storeLastWriteFilter.get())) {
 				result.push_back(ETP_NS::EtpHelpers::buildEtpResourceFromEnergisticsObject(obj, msg.m_countObjects));
 			}
 		}

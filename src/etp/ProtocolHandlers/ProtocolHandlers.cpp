@@ -39,11 +39,11 @@ void ProtocolHandlers::printDataObject(const Energistics::Etp::v12::Datatypes::O
 	}
 	std::cout << "contentType : " << dataObject.m_resource.m_dataObjectType << std::endl;
 	std::cout << "name : " << dataObject.m_resource.m_name << std::endl;
-	if (!dataObject.m_resource.m_sourceCount.is_null()) {
-		std::cout << "source count : " << dataObject.m_resource.m_sourceCount.get_int() << std::endl;
+	if (dataObject.m_resource.m_sourceCount) {
+		std::cout << "source count : " << dataObject.m_resource.m_sourceCount.get() << std::endl;
 	}
-	if (!dataObject.m_resource.m_targetCount.is_null()) {
-		std::cout << "target count : " << dataObject.m_resource.m_targetCount.get_int() << std::endl;
+	if (dataObject.m_resource.m_targetCount) {
+		std::cout << "target count : " << dataObject.m_resource.m_targetCount.get() << std::endl;
 	}
 	std::cout << "lastChanged : " << (dataObject.m_resource.m_lastChanged >= 0 ? ctime(&dataObject.m_resource.m_lastChanged) : "unknown") << std::endl;
 	std::cout << "*********** SERIALIZATION ***********************" << std::endl;

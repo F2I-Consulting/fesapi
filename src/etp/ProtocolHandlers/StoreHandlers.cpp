@@ -60,28 +60,28 @@ void StoreHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::Me
 	}
 }
 
-void StoreHandlers::on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & msg, int64_t correlationId)
+void StoreHandlers::on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects &, int64_t)
 {
 	std::cout << "on_GetDataObjects" << std::endl;
 
 	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The StoreHandlers::on_GetDataObjects method has not been overriden by the agent."));
 }
 
-void StoreHandlers::on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & msg, int64_t correlationId)
+void StoreHandlers::on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects &, int64_t)
 {
 	std::cout << "on_PutDataObject" << std::endl;
 
 	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The StoreHandlers::on_PutDataObject method has not been overriden by the agent."));
 }
 
-void StoreHandlers::on_DeleteDataObjects(const Energistics::Etp::v12::Protocol::Store::DeleteDataObjects & msg, int64_t correlationId)
+void StoreHandlers::on_DeleteDataObjects(const Energistics::Etp::v12::Protocol::Store::DeleteDataObjects &, int64_t)
 {
 	std::cout << "on_DeleteDataObject" << std::endl;
 
 	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The StoreHandlers::on_DeleteDataObject method has not been overriden by the agent."));
 }
 
-void StoreHandlers::on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & msg, int64_t correlationId)
+void StoreHandlers::on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & msg, int64_t)
 {
 	for (const auto& graphResource : msg.m_dataObjects) {
 		std::cout << "Resource received : " << std::endl;

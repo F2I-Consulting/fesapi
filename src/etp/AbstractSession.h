@@ -254,7 +254,7 @@ namespace ETP_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void on_read(boost::system::error_code ec, std::size_t bytes_transferred);
 
-		void on_write(boost::system::error_code ec, std::size_t bytes_transferred) {
+		void on_write(boost::system::error_code ec, std::size_t) {
 			if(ec) {
 				std::cerr << "on_write : " << ec.message() << std::endl;
 			}

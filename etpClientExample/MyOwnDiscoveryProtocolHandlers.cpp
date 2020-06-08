@@ -34,10 +34,10 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energistics::
 		std::cout << "uri : " << resource.m_uri << std::endl;
 		std::cout << "data type : " << resource.m_dataObjectType << std::endl;
 		std::cout << "name : " << resource.m_name << std::endl;
-		if (!resource.m_sourceCount.is_null())
-			std::cout << "sourceCount : " << resource.m_sourceCount.get_int() << std::endl;
-		if (!resource.m_targetCount.is_null())
-			std::cout << "targetCount : " << resource.m_targetCount.get_int() << std::endl;
+		if (resource.m_sourceCount)
+			std::cout << "sourceCount : " << resource.m_sourceCount.get() << std::endl;
+		if (resource.m_targetCount)
+			std::cout << "targetCount : " << resource.m_targetCount.get() << std::endl;
 		std::cout << "*************************************************" << std::endl;
 
 

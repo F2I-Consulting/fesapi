@@ -26,13 +26,15 @@ constexpr char contactEmail[] = "name@f2i-consulting.com";
 constexpr char contactName[] = "Philippe Verney";
 constexpr char contactPhone[] = "Please use Zoom";
 constexpr char organizationName[] = "F2I-CONSULTING";
-constexpr char supportedEncodings[] = "binary";
+
+std::vector<std::string> makeSupportedEncodings();
+const std::vector<std::string> supportedEncodings = makeSupportedEncodings();
 
 std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue> makeEndpointCapabilities();
 const std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue> endpointCapabilities = makeEndpointCapabilities();
 
-std::vector<std::string> makeSupportedObjects();
-const std::vector<std::string> supportedObjects = makeSupportedObjects();
+std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject> makeSupportedDataObjects();
+const std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject> supportedDataObjects = makeSupportedDataObjects();
 
 std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> makeSupportedProtocols();
 const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> supportedProtocols = makeSupportedProtocols();
