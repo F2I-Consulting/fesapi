@@ -103,13 +103,41 @@ GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__WellFl
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__WellDirection, Well, DirectionWell, gsoap_eml2_1::soap_new_witsml20__WellDirection)
 
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, WaterDepth, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
-GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, GroundElevation, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__WellElevationCoord)
+GETTER_PRESENCE_ATTRIBUTE_IMPL(Well, GroundElevation)
 
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, PcInterest, gsoap_eml2_1::eml21__DimensionlessUom, gsoap_eml2_1::soap_new_eml21__DimensionlessMeasure)
 
 GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Well, DTimLicense)
 GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Well, DTimSpud)
 GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Well, DTimPa)
+
+void Well::setGroundElevation(double value, gsoap_eml2_1::eml21__LengthUom uom, const std::string& datum)
+{
+	if (value != value) { throw invalid_argument("You cannot set an undefined measure"); }
+	witsml20__Well* well = static_cast<witsml20__Well*>(gsoapProxy2_1);
+	if (well->GroundElevation == nullptr) { well->GroundElevation = soap_new_witsml20__WellElevationCoord(gsoapProxy2_1->soap); }
+	static_cast<witsml20__Well*>(gsoapProxy2_1)->GroundElevation->__item = value;
+	static_cast<witsml20__Well*>(gsoapProxy2_1)->GroundElevation->uom = uom;
+	static_cast<witsml20__Well*>(gsoapProxy2_1)->GroundElevation->datum = datum;
+}
+
+double Well::getGroundElevationValue() const
+{
+	if (!hasGroundElevation()) { throw invalid_argument("The measure attribute to get does not exist."); }\
+	return static_cast<witsml20__Well*>(gsoapProxy2_1)->GroundElevation->__item;
+}
+
+gsoap_eml2_1::eml21__LengthUom Well::getGroundElevationUom() const
+{
+	if (!hasGroundElevation()) { throw invalid_argument("The measure attribute to get does not exist."); }\
+	return static_cast<witsml20__Well*>(gsoapProxy2_1)->GroundElevation->uom;
+}
+
+std::string Well::getGroundElevationDatum() const
+{
+	if (!hasGroundElevation()) { throw invalid_argument("The measure attribute to get does not exist."); }\
+	return static_cast<witsml20__Well*>(gsoapProxy2_1)->GroundElevation->datum;
+}
 
 void Well::setTimeZone(bool direction, unsigned short hours, unsigned short minutes)
 {

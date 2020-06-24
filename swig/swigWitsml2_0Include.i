@@ -1792,13 +1792,18 @@ namespace WITSML2_0_NS
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellDirection, DirectionWell)
 
 		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(WaterDepth, gsoap_eml2_1::eml21__LengthUom)
-		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(GroundElevation, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_PRESENCE_ATTRIBUTE(GroundElevation)
 
 		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(PcInterest, gsoap_eml2_1::eml21__DimensionlessUom)
 
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimLicense)
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimSpud)
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimPa)
+		
+		void setGroundElevation(double value, gsoap_eml2_1::eml21__LengthUom uom, const std::string& datum);
+		double getGroundElevationValue() const;
+		gsoap_eml2_1::eml21__LengthUom getGroundElevationUom() const;
+		std::string getGroundElevationDatum() const;
 		
 		void setTimeZone(bool direction, unsigned short hours, unsigned short minutes = 0);
 		GETTER_PRESENCE_ATTRIBUTE(TimeZone)
