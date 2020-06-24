@@ -104,6 +104,8 @@ GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__WellDi
 
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, WaterDepth, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
 GETTER_PRESENCE_ATTRIBUTE_IMPL(Well, GroundElevation)
+GETTER_VALUE_OF_MEASURE_ATTRIBUTE_IMPL(Well, GroundElevation)
+GETTER_UOM_OF_MEASURE_ATTRIBUTE_IMPL(Well, GroundElevation, gsoap_eml2_1::eml21__LengthUom)
 
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, PcInterest, gsoap_eml2_1::eml21__DimensionlessUom, gsoap_eml2_1::soap_new_eml21__DimensionlessMeasure)
 
@@ -119,18 +121,6 @@ void Well::setGroundElevation(double value, gsoap_eml2_1::eml21__LengthUom uom, 
 	static_cast<witsml20__Well*>(gsoapProxy2_1)->GroundElevation->__item = value;
 	static_cast<witsml20__Well*>(gsoapProxy2_1)->GroundElevation->uom = uom;
 	static_cast<witsml20__Well*>(gsoapProxy2_1)->GroundElevation->datum = datum;
-}
-
-double Well::getGroundElevationValue() const
-{
-	if (!hasGroundElevation()) { throw invalid_argument("The measure attribute to get does not exist."); }\
-	return static_cast<witsml20__Well*>(gsoapProxy2_1)->GroundElevation->__item;
-}
-
-gsoap_eml2_1::eml21__LengthUom Well::getGroundElevationUom() const
-{
-	if (!hasGroundElevation()) { throw invalid_argument("The measure attribute to get does not exist."); }\
-	return static_cast<witsml20__Well*>(gsoapProxy2_1)->GroundElevation->uom;
 }
 
 std::string Well::getGroundElevationDatum() const
