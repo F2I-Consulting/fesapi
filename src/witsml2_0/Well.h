@@ -106,7 +106,7 @@ namespace WITSML2_0_NS
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellDirection, DirectionWell)
 
 		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(WaterDepth, gsoap_eml2_1::eml21__LengthUom)
-		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(GroundElevation, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_PRESENCE_ATTRIBUTE(GroundElevation)
 
 		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(PcInterest, gsoap_eml2_1::eml21__DimensionlessUom)
 
@@ -115,15 +115,53 @@ namespace WITSML2_0_NS
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimPa)
 
 		/**
-		 * Set the time zone in which the well is located. It is the deviation in hours and minutes from
-		 * UTC. This should be the normal time zone at the well and not a seasonally-adjusted value,
-		 * such as daylight savings time
+		 * @brief	Sets the ground level elevation (land rigs)
 		 *
-		 * @param 	direction	True means the time zone is a positive offset from UTC, false means the
-		 * 						time zone is a negative offset from UTC.
-		 * @param 	hours	 	the deviation hours from UTC.
-		 * @param 	minutes  	(Optional) the deviation minutes from UTC.
+		 * @exception	std::invalid_argument	If @p value is undefined.
+		 *
+		 * @param 	value	The elevation value.
+		 * @param 	uom  	The elevation unit of measure.
+		 * @param 	datum	The elevation datum.
 		 */
+		DLL_IMPORT_OR_EXPORT void setGroundElevation(double value, gsoap_eml2_1::eml21__LengthUom uom, const std::string& datum);
+
+		/**
+		 * @brief	Gets the ground level elevation value
+		 *
+		 * @exception	std::invalid_argument	If the ground elevation does not exist.
+		 *
+		 * @returns	The ground level elevation value.
+		 */
+		DLL_IMPORT_OR_EXPORT double getGroundElevationValue() const;
+
+		/**
+		 * @brief	Gets the ground level elevation unit of measure
+		 *
+		 * @exception	std::invalid_argument	If the ground elevation does not exist.
+		 *
+		 * @returns	The ground level elevation unit of measure.
+		 */
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getGroundElevationUom() const;
+
+		/**
+		 * @brief	Gets the ground level elevation datum
+		 *
+		 * @exception	std::invalid_argument	If the ground elevation does not exist.
+		 *
+		 * @returns	The ground level elevation datum.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getGroundElevationDatum() const;
+
+		/**
+		* Set the time zone in which the well is located.It is the deviation in hours and minutes from
+		* UTC.This should be the normal time zone at the well and not a seasonally-adjusted value,
+		* such as daylight savings time
+		*
+		* @param 	direction	True means the time zone is a positive offset from UTC, false means the
+		* 						time zone is a negative offset from UTC.
+		* @param 	hours	 	the deviation hours from UTC.
+		* @param 	minutes(Optional) the deviation minutes from UTC.
+		*/
 		DLL_IMPORT_OR_EXPORT void setTimeZone(bool direction, unsigned short hours, unsigned short minutes = 0);
 		GETTER_PRESENCE_ATTRIBUTE(TimeZone)
 
