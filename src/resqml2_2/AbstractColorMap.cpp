@@ -18,18 +18,17 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractColorMap.h"
 
-#include "../common/GraphicalInformationSet.h"
+#include "../eml2_3/GraphicalInformationSet.h"
 
 using namespace std;
 using namespace gsoap_eml2_3;
-using namespace COMMON_NS;
 using namespace RESQML2_2_NS;
 
 void AbstractColorMap::setRgbColors(unsigned int colorCount,
 	double const* rgbColors, double const* alphas, vector<string> const& colorTitles,
 	double const* indices)
 {
-	double* hsvColors = new double[colorCount * 3];
+	std::unique_ptr<double[]> hsvColors(new double[colorCount * 3]);
 	for (size_t colorIndex = 0; colorIndex < colorCount; ++colorIndex) {
 		if (rgbColors[3 * colorIndex] < 0 || rgbColors[3 * colorIndex] > 1) {
 			throw invalid_argument("red must be in range [0, 1]");
@@ -43,20 +42,18 @@ void AbstractColorMap::setRgbColors(unsigned int colorCount,
 			throw invalid_argument("blue must be in range [0, 1]");
 		}
 
-		GraphicalInformationSet::rgbToHsv(rgbColors[3 * colorIndex], rgbColors[3 * colorIndex + 1], rgbColors[3 * colorIndex + 2],
+		EML2_3_NS::GraphicalInformationSet::rgbToHsv(rgbColors[3 * colorIndex], rgbColors[3 * colorIndex + 1], rgbColors[3 * colorIndex + 2],
 			hsvColors[3 * colorIndex], hsvColors[3 * colorIndex + 1], hsvColors[3 * colorIndex + 2]);
 	}
 
-	setHsvColors(colorCount, hsvColors, alphas, colorTitles, indices);
-
-	delete[] hsvColors;
+	setHsvColors(colorCount, hsvColors.get(), alphas, colorTitles, indices);
 }
 
 void AbstractColorMap::setRgbColors(unsigned int colorCount,
 	unsigned int const* rgbColors, double const* alphas, vector<string> const& colorTitles,
 	double const* indices)
 {
-	double* hsvColors = new double[colorCount * 3];
+	std::unique_ptr<double[]> hsvColors(new double[colorCount * 3]);
 	for (size_t colorIndex = 0; colorIndex < colorCount; ++colorIndex) {
 		if (rgbColors[3 * colorIndex] > 255) {
 			throw invalid_argument("red must be in range [0, 255]");
@@ -70,13 +67,11 @@ void AbstractColorMap::setRgbColors(unsigned int colorCount,
 			throw invalid_argument("blue must be in range [0, 255]");
 		}
 
-		GraphicalInformationSet::rgbToHsv(rgbColors[3 * colorIndex], rgbColors[3 * colorIndex + 1], rgbColors[3 * colorIndex + 2],
+		EML2_3_NS::GraphicalInformationSet::rgbToHsv(rgbColors[3 * colorIndex], rgbColors[3 * colorIndex + 1], rgbColors[3 * colorIndex + 2],
 			hsvColors[3 * colorIndex], hsvColors[3 * colorIndex + 1], hsvColors[3 * colorIndex + 2]);
 	}
 
-	setHsvColors(colorCount, hsvColors, alphas, colorTitles, indices);
-
-	delete[] hsvColors;
+	setHsvColors(colorCount, hsvColors.get(), alphas, colorTitles, indices);
 }
 
 double AbstractColorMap::getHue(double colorIndex) const
@@ -120,12 +115,12 @@ double AbstractColorMap::getAlpha(double colorIndex) const
 
 void AbstractColorMap::getRgbColor(double colorIndex, double& red, double& green, double& blue) const
 {
-	GraphicalInformationSet::hsvToRgb(getHue(colorIndex), getSaturation(colorIndex), getValue(colorIndex), red, green, blue);
+	EML2_3_NS::GraphicalInformationSet::hsvToRgb(getHue(colorIndex), getSaturation(colorIndex), getValue(colorIndex), red, green, blue);
 }
 
 void AbstractColorMap::getRgbColor(double colorIndex, unsigned int& red, unsigned int& green, unsigned int& blue) const
 {
-	GraphicalInformationSet::hsvToRgb(getHue(colorIndex), getSaturation(colorIndex), getValue(colorIndex), red, green, blue);
+	EML2_3_NS::GraphicalInformationSet::hsvToRgb(getHue(colorIndex), getSaturation(colorIndex), getValue(colorIndex), red, green, blue);
 }
 
 bool AbstractColorMap::hasColorTitle(double colorIndex) const

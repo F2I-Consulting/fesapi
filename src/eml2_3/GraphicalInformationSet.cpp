@@ -33,8 +33,9 @@ under the License.
 #include "../resqml2_2/ContinuousColorMap.h"
 
 using namespace std;
-using namespace COMMON_NS;
+using namespace EML2_3_NS;
 using namespace gsoap_eml2_3;
+using namespace COMMON_NS;
 using namespace RESQML2_NS;
 using namespace RESQML2_0_1_NS;
 using namespace RESQML2_2_NS;

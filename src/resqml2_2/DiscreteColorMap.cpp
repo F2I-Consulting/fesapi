@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "DiscreteColorMap.h"
 
-#include "../common/GraphicalInformationSet.h"
-
 using namespace std;
 using namespace gsoap_eml2_3;
 using namespace COMMON_NS;

@@ -23,7 +23,7 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/** @brief	A seismic wellbore frame representation. This class cannot be inherited. */
-	class SeismicWellboreFrameRepresentation final : public RESQML2_2_NS::WellboreFrameRepresentation
+	class SeismicWellboreFrameRepresentation final : public WellboreFrameRepresentation
 	{
 	public:
 
@@ -31,13 +31,13 @@ namespace RESQML2_2_NS
 		* Only to be used in partial transfer context
 		*/
 		DLL_IMPORT_OR_EXPORT SeismicWellboreFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			RESQML2_2_NS::WellboreFrameRepresentation(partialObject) {}
+			WellboreFrameRepresentation(partialObject) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		SeismicWellboreFrameRepresentation(gsoap_eml2_3::resqml22__SeismicWellboreFrameRepresentation * fromGsoap) :
-			RESQML2_2_NS::WellboreFrameRepresentation(fromGsoap) {}
+			WellboreFrameRepresentation(fromGsoap) {}
 
 		~SeismicWellboreFrameRepresentation() {}
 

@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../common/GraphicalInformationSet.h"
+#include "../eml2_3/GraphicalInformationSet.h"
 #include "AbstractColorMap.h"
 
 namespace RESQML2_2_NS

@@ -1830,8 +1830,6 @@ namespace WITSML2_0_NS
 			unsigned int verticalCrsEpsgCode);
 		
 		unsigned int getDatumCount() const;
-		
-		std::vector<RESQML2_0_1_NS::WellboreFeature *> getResqmlWellboreFeatures() const;
 
 		std::vector<Wellbore *> getWellbores() const;
 
@@ -1847,8 +1845,6 @@ namespace WITSML2_0_NS
 		class Well* getWell() const;
 
 		void setWell(class Well* witsmlWell);
-
-		std::vector<RESQML2_0_1_NS::WellboreFeature *> getResqmlWellboreFeature() const;
 
 		std::vector<class WellboreCompletion *> getWellboreCompletions() const;
 		std::vector<class Trajectory *> getTrajectories() const;
@@ -1886,15 +1882,15 @@ namespace WITSML2_0_NS
 	{
 	public:
 		Wellbore* getWellbore() const;
-		virtual void setWellbore(class Wellbore* witsmlWellbore) = 0;
+		void setWellbore(class Wellbore* witsmlWellbore) = 0;
 	};
 	
 	class WellboreCompletion : public WellboreObject
 	{
 	public:
-		class Wellbore* getWellbore() const;
+		Wellbore* getWellbore() const;
 
-		class WellCompletion* getWellCompletion() const;
+		WellCompletion* getWellCompletion() const;
 		void setWellCompletion(class WellCompletion* wellCompletion);
 
 		void pushBackPerforation(const std::string & datum,
@@ -2171,8 +2167,8 @@ namespace WITSML2_0_NS
 	{
 	public:
 
-		COMMON_NS::PropertyKind* getPropertyKind() const;
-		void setPropertyKind(COMMON_NS::PropertyKind* propKind);
+		EML2_NS::PropertyKind* getPropertyKind() const;
+		void setPropertyKind(EML2_NS::PropertyKind* propKind);
 	};
 	%template(ChannelMetaDataLog) ChannelMetaDataObject<gsoap_eml2_1::witsml20__Log>;
 	%template(ChannelMetaDataChannelSet) ChannelMetaDataObject<gsoap_eml2_1::witsml20__ChannelSet>;
@@ -2257,9 +2253,7 @@ namespace WITSML2_0_NS
 	{
 	public:
 		std::vector<class ChannelSet*> getChannelSets() const;
-		COMMON_NS::PropertyKind* getPropertyKind() const;
-
-		gsoap_eml2_1::eml21__DataObjectReference* getPropertyKindDor() const;
+		EML2_NS::PropertyKind* getPropertyKind() const;
 
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(std::string, Mnemonic)
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(std::string, Uom)

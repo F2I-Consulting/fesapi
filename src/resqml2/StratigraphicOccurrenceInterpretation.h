@@ -26,7 +26,7 @@ namespace RESQML2_NS
 	class WellboreMarkerFrameRepresentation;
 
 	/** @brief	This class is a container for stratigraphic organizations described along a wellbore. */
-	class StratigraphicOccurrenceInterpretation : public RESQML2_NS::AbstractStratigraphicOrganizationInterpretation
+	class StratigraphicOccurrenceInterpretation : public AbstractStratigraphicOrganizationInterpretation
 	{
 	public:
 

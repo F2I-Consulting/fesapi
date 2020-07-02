@@ -24,9 +24,8 @@ under the License.
 
 #include "../common/HdfProxyFactory.h"
 
-#if WITH_EXPERIMENTAL
-#include "GraphicalInformationSet.h"
-#endif
+#include "../eml2_1/PropertyKind.h"
+#include "../eml2_3/GraphicalInformationSet.h"
 
 #include "../resqml2_0_1/PropertyKindMapper.h"
 
@@ -163,8 +162,6 @@ under the License.
 #include "../resqml2_2/WellboreInterpretation.h"
 #include "../resqml2_2/WellboreMarkerFrameRepresentation.h"
 #include "../resqml2_2/WellboreTrajectoryRepresentation.h"
-
-#include "../eml2_1/PropertyKind.h"
 
 #include "../witsml2_0/Well.h"
 #include "../witsml2_0/Wellbore.h"
@@ -684,7 +681,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectR
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Log)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::ChannelSet)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Channel)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(COMMON_NS::GraphicalInformationSet)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(EML2_3_NS::GraphicalInformationSet)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(PRODML2_1_NS::FluidSystem)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(PRODML2_1_NS::FluidCharacterization)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::DiscreteColorMap)
@@ -2170,9 +2167,9 @@ PRODML2_1_NS::FluidCharacterization* DataObjectRepository::createFluidCharacteri
 }
 
 
-COMMON_NS::GraphicalInformationSet* DataObjectRepository::createGraphicalInformationSet(const std::string & guid, const std::string & title)
+EML2_3_NS::GraphicalInformationSet* DataObjectRepository::createGraphicalInformationSet(const std::string & guid, const std::string & title)
 {
-	return new COMMON_NS::GraphicalInformationSet(this, guid, title);
+	return new EML2_3_NS::GraphicalInformationSet(this, guid, title);
 }
 
 RESQML2_2_NS::DiscreteColorMap* DataObjectRepository::createDiscreteColorMap(const std::string& guid, const std::string& title)
@@ -2362,27 +2359,6 @@ std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getGeobodyBounda
 	return result;
 }
 
-unsigned int DataObjectRepository::getGeobodyBoundaryCount() const
-{
-	size_t result = getGeobodyBoundarySet().size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("The geobody boundary count is superior to unsigned int max");
-	}
-	return static_cast<unsigned int>(result);
-}
-
-RESQML2_NS::BoundaryFeature* DataObjectRepository::getGeobodyBoundary(unsigned int index) const
-{
-	std::vector<RESQML2_NS::BoundaryFeature*> allgb = getGeobodyBoundarySet();
-
-	if (index >= allgb.size()) {
-		throw out_of_range("The index of the geobody boundary is out of range");
-	}
-
-	return allgb[index];
-}
-
 std::vector<RESQML2_NS::RockVolumeFeature*> DataObjectRepository::getGeobodySet() const { 
 	auto interps = getDataObjects<RESQML2_NS::GeobodyInterpretation>();
 	std::vector<RESQML2_NS::RockVolumeFeature*> result;
@@ -2564,27 +2540,6 @@ vector<RESQML2_NS::DeviationSurveyRepresentation *> DataObjectRepository::getDev
 
 std::vector<RESQML2_NS::RepresentationSetRepresentation*> DataObjectRepository::getRepresentationSetRepresentationSet() const { return getDataObjects<RESQML2_NS::RepresentationSetRepresentation>(); }
 
-unsigned int DataObjectRepository::getRepresentationSetRepresentationCount() const
-{
-	const size_t result = getDataObjects<RESQML2_NS::RepresentationSetRepresentation>().size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("The RepresentationSetRepresentation count is superior to unsigned int max");
-	}
-	return static_cast<unsigned int>(result);
-}
-
-RESQML2_NS::RepresentationSetRepresentation* DataObjectRepository::getRepresentationSetRepresentation(unsigned int index) const
-{
-	const std::vector<RESQML2_NS::RepresentationSetRepresentation*> result = getDataObjects<RESQML2_NS::RepresentationSetRepresentation>();
-
-	if (index >= result.size()) {
-		throw out_of_range("The index of the representation set representation is out of range");
-	}
-
-	return result[index];
-}
-
 std::vector<RESQML2_NS::PolylineRepresentation*> DataObjectRepository::getAllPolylineRepresentationSet() const { return getDataObjects<RESQML2_NS::PolylineRepresentation>(); }
 
 namespace {
@@ -2603,27 +2558,6 @@ std::vector<RESQML2_NS::PolylineRepresentation*> DataObjectRepository::getSeismi
 }
 
 std::vector<RESQML2_NS::AbstractIjkGridRepresentation*> DataObjectRepository::getIjkGridRepresentationSet() const { return getDataObjects<RESQML2_NS::AbstractIjkGridRepresentation>(); }
-
-unsigned int DataObjectRepository::getIjkGridRepresentationCount() const
-{
-	const size_t result = getDataObjects<RESQML2_NS::AbstractIjkGridRepresentation>().size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("The Ijk Grid Representation count is superior to unsigned int max");
-	}
-	return static_cast<unsigned int>(result);
-}
-
-RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::getIjkGridRepresentation(unsigned int index) const
-{
-	const std::vector<RESQML2_NS::AbstractIjkGridRepresentation*> result = getDataObjects<RESQML2_NS::AbstractIjkGridRepresentation>();
-
-	if (index >= result.size()) {
-		throw out_of_range("The index of the ijk grid is out of range");
-	}
-
-	return result[index];
-}
 
 std::vector<RESQML2_NS::IjkGridParametricRepresentation*> DataObjectRepository::getIjkGridParametricRepresentationSet() const { return getDataObjects<RESQML2_NS::IjkGridParametricRepresentation>(); }
 
@@ -2654,70 +2588,9 @@ std::vector<EML2_NS::TimeSeries*> DataObjectRepository::getTimeSeriesSet() const
 
 std::vector<RESQML2_NS::SubRepresentation*> DataObjectRepository::getSubRepresentationSet() const { return getDataObjects<RESQML2_NS::SubRepresentation>(); }
 
-unsigned int DataObjectRepository::getSubRepresentationCount() const {
-	const size_t result = getDataObjects<RESQML2_NS::SubRepresentation>().size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("The subrepresentation count is superior to unsigned int max");
-	}
-	return static_cast<unsigned int>(result);
-}
-
-RESQML2_NS::SubRepresentation* DataObjectRepository::getSubRepresentation(unsigned int index) const
-{
-	const std::vector<RESQML2_NS::SubRepresentation*> result = getDataObjects<RESQML2_NS::SubRepresentation>();
-
-	if (index >= result.size()) {
-		throw out_of_range("The index of the subrepresentation is out of range");
-	}
-
-	return result[index];
-}
-
 std::vector<RESQML2_NS::PointSetRepresentation*> DataObjectRepository::getPointSetRepresentationSet() const { return getDataObjects<RESQML2_NS::PointSetRepresentation>(); }
 
-unsigned int DataObjectRepository::getPointSetRepresentationCount() const
-{
-	const size_t result = getDataObjects<RESQML2_0_1_NS::PointSetRepresentation>().size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("The PointSet Representation count is superior to unsigned int max");
-	}
-	return static_cast<unsigned int>(result);
-}
-
-RESQML2_NS::PointSetRepresentation* DataObjectRepository::getPointSetRepresentation(unsigned int index) const
-{
-	const std::vector<RESQML2_NS::PointSetRepresentation*> result = getDataObjects<RESQML2_NS::PointSetRepresentation>();
-
-	if (index >= result.size()) {
-		throw out_of_range("The point set representation index is out of range.");
-	}
-
-	return result[index];
-}
-
 std::vector<EML2_NS::AbstractHdfProxy*> DataObjectRepository::getHdfProxySet() const { return getDataObjects<EML2_NS::AbstractHdfProxy>(); }
-
-unsigned int DataObjectRepository::getHdfProxyCount() const {
-	const size_t result = getDataObjects<EML2_NS::AbstractHdfProxy>().size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("The Hdf Proxy count is superior to unsigned int max");
-	}
-	return static_cast<unsigned int>(result);
-}
-
-EML2_NS::AbstractHdfProxy* DataObjectRepository::getHdfProxy(unsigned int index) const
-{
-	const std::vector<EML2_NS::AbstractHdfProxy*> result = getDataObjects<EML2_NS::AbstractHdfProxy>();
-
-	if (index >= result.size()) {
-		throw out_of_range("The index of the requested hdf proxy is out of range");
-	}
-
-	return result[index];
-}
 
 COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType)
 {
@@ -2963,7 +2836,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getEml2_3WrapperFromGsoapContex
 	COMMON_NS::AbstractObject* wrapper = nullptr;
 	if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, Activity, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, ActivityTemplate, gsoap_eml2_3, eml23)
-	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(COMMON_NS, GraphicalInformationSet, gsoap_eml2_3, eml23)
+	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, GraphicalInformationSet, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, PropertyKind, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, TimeSeries, gsoap_eml2_3, eml23)
 

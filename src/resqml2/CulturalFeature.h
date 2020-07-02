@@ -34,7 +34,6 @@ namespace RESQML2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~CulturalFeature() {}
 
-
 	protected:
 
 		/**

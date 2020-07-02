@@ -89,7 +89,7 @@ under the License.
 #include "resqml2_0_1/Activity.h"
 #include "resqml2_0_1/ActivityTemplate.h"
 
-#include "common/GraphicalInformationSet.h"
+#include "eml2_3/GraphicalInformationSet.h"
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
 #include "resqml2_2/MdDatum.h"
@@ -340,7 +340,7 @@ void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 
 void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfProxy * hdfProxy)
 {
-	COMMON_NS::GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
+	EML2_3_NS::GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
 
 	// *************
 	// Default color
@@ -3670,9 +3670,9 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 {
 	std::cout << "GRAPHICAL INFORMATIONS" << std::endl;
 
-	std::vector<COMMON_NS::GraphicalInformationSet*> gisSet = pck.getDataObjects<COMMON_NS::GraphicalInformationSet>();
+	std::vector<EML2_3_NS::GraphicalInformationSet*> gisSet = pck.getDataObjects<EML2_3_NS::GraphicalInformationSet>();
 	for (unsigned int gisIndex = 0; gisIndex < gisSet.size(); ++gisIndex) {
-		COMMON_NS::GraphicalInformationSet* graphicalInformationSet = gisSet[gisIndex];
+		EML2_3_NS::GraphicalInformationSet* graphicalInformationSet = gisSet[gisIndex];
 		for (unsigned int i = 0; i < graphicalInformationSet->getGraphicalInformationSetCount(); ++i)
 		{
 			COMMON_NS::AbstractObject* targetObject = graphicalInformationSet->getTargetObject(i);

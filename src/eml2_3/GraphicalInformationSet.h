@@ -18,18 +18,18 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractObject.h"
+#include "../common/AbstractObject.h"
 
-namespace COMMON_NS
+namespace EML2_3_NS
 {
 	/** @brief	Proxy class for handling the graphical information of data objects. */
-	class GraphicalInformationSet : public AbstractObject
+	class GraphicalInformationSet : public COMMON_NS::AbstractObject
 	{
 	private:
-		gsoap_eml2_3::resqml22__DefaultGraphicalInformation* getDefaultGraphicalInformationForAllIndexableElements(AbstractObject const* targetObject) const;
-		gsoap_eml2_3::resqml22__GraphicalInformationForWholeObject* getDefaultGraphicalInformation(AbstractObject const* targetObject) const;
-		gsoap_eml2_3::resqml22__HsvColor* getDefaultColor(AbstractObject const* targetObject) const;
-		gsoap_eml2_3::resqml22__ColorInformation* getColorInformation(AbstractObject const* targetObject) const;
+		gsoap_eml2_3::resqml22__DefaultGraphicalInformation* getDefaultGraphicalInformationForAllIndexableElements(COMMON_NS::AbstractObject const* targetObject) const;
+		gsoap_eml2_3::resqml22__GraphicalInformationForWholeObject* getDefaultGraphicalInformation(COMMON_NS::AbstractObject const* targetObject) const;
+		gsoap_eml2_3::resqml22__HsvColor* getDefaultColor(COMMON_NS::AbstractObject const* targetObject) const;
+		gsoap_eml2_3::resqml22__ColorInformation* getColorInformation(COMMON_NS::AbstractObject const* targetObject) const;
 
 	public:
 
@@ -38,7 +38,7 @@ namespace COMMON_NS
 		 *
 		 * @param [in]	partialObject	If non-null, the partial object.
 		 */
-		GraphicalInformationSet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject): AbstractObject(partialObject) {}
+		GraphicalInformationSet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject): COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		 * Creates a graphical information set.
@@ -60,7 +60,7 @@ namespace COMMON_NS
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		GraphicalInformationSet(gsoap_eml2_3::_eml23__GraphicalInformationSet* fromGsoap) :
-			AbstractObject(fromGsoap) {}
+			COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		 * Destructor does nothing since the memory is managed by the gsoap context.
@@ -121,7 +121,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	True if @p targetObject has some graphical information, else false.
 		 */
-		bool hasDirectGraphicalInformation(AbstractObject const* targetObject) const;
+		bool hasDirectGraphicalInformation(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Query if a given data object has some graphical information. If it has no direct graphical
@@ -134,7 +134,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	True if @p targetObject (or its property kind) has some graphical information, else false.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasGraphicalInformation(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT bool hasGraphicalInformation(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Query if a given data object has a default color. It only looks at direct color association (see
@@ -146,7 +146,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	True @p targetObject has one default color, else false.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasDefaultColor(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT bool hasDefaultColor(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the default hue of a given data object. It only looks at direct color association (see
@@ -158,7 +158,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The default hue of @p targetObject in the range [0, 360].
 		 */
-		DLL_IMPORT_OR_EXPORT double getDefaultHue(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT double getDefaultHue(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the default saturation of a given data object. It only looks at direct color association
@@ -170,7 +170,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The default saturation of @p targetObject in the range [0, 1].
 		 */
-		DLL_IMPORT_OR_EXPORT double getDefaultSaturation(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT double getDefaultSaturation(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the default color value of a given data object. It only looks at direct color
@@ -182,7 +182,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The default color value of @p targetObject in the range [0, 1].
 		 */
-		DLL_IMPORT_OR_EXPORT double getDefaultValue(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT double getDefaultValue(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the default alpha value of a given data object. It only looks at direct color
@@ -194,7 +194,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The default alpha value in the range [0, 1] (0 means transparent and 1 means opaque).
 		 */
-		DLL_IMPORT_OR_EXPORT double getDefaultAlpha(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT double getDefaultAlpha(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the default RGB color (https://en.wikipedia.org/wiki/RGB_color_space) of a given data
@@ -207,7 +207,7 @@ namespace COMMON_NS
 		 * @param [out]	green			Green value in the range [0, 1].
 		 * @param [out]	blue			Blue value in the range [0, 1].
 		 */
-		DLL_IMPORT_OR_EXPORT void getDefaultRgbColor(AbstractObject const* targetObject, double& red, double& green, double& blue) const;
+		DLL_IMPORT_OR_EXPORT void getDefaultRgbColor(COMMON_NS::AbstractObject const* targetObject, double& red, double& green, double& blue) const;
 
 		/**
 		 * Gets the default RGB color (https://en.wikipedia.org/wiki/RGB_color_space) of a given data
@@ -220,7 +220,7 @@ namespace COMMON_NS
 		 * @param [out]	green			Green value in the range [0, 255].
 		 * @param [out]	blue			Blue value in the range [0, 255].
 		 */
-		DLL_IMPORT_OR_EXPORT void getDefaultRgbColor(AbstractObject const* targetObject, unsigned int& red, unsigned int& green, unsigned int& blue) const;
+		DLL_IMPORT_OR_EXPORT void getDefaultRgbColor(COMMON_NS::AbstractObject const* targetObject, unsigned int& red, unsigned int& green, unsigned int& blue) const;
 
 		/**
 		 * Query if a given data object has a default color title. It only looks at direct color
@@ -232,7 +232,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	True if @p targetObject has a default color title, else false.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasDefaultColorTitle(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT bool hasDefaultColorTitle(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the default color title of a given data object. It only looks at direct color
@@ -245,7 +245,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The default title.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getDefaultColorTitle(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT std::string getDefaultColorTitle(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Sets the default HSV color (https://en.wikipedia.org/wiki/HSV_color_space) of a given data
@@ -266,7 +266,7 @@ namespace COMMON_NS
 		 * @param 	  	colorTitle  	(Optional) The title of the given HSV color. It is not set if
 		 * 								title is empty (default).
 		 */
-		DLL_IMPORT_OR_EXPORT void setDefaultHsvColor(AbstractObject* targetObject, double hue, double saturation, double value, double alpha = 1.0, std::string const& colorTitle = "");
+		DLL_IMPORT_OR_EXPORT void setDefaultHsvColor(COMMON_NS::AbstractObject* targetObject, double hue, double saturation, double value, double alpha = 1.0, std::string const& colorTitle = "");
 
 		/**
 		 * Sets the default RGB color https://en.wikipedia.org/wiki/RGB_color_space of a given data
@@ -287,7 +287,7 @@ namespace COMMON_NS
 		 * @param 	  	colorTitle  	(Optional) The title of the given HSV color. It is not set if
 		 * 								title is empty (default).
 		 */
-		DLL_IMPORT_OR_EXPORT void setDefaultRgbColor(AbstractObject* targetObject, double red, double green, double blue, double alpha = 1.0, std::string const& colorTitle = "");
+		DLL_IMPORT_OR_EXPORT void setDefaultRgbColor(COMMON_NS::AbstractObject* targetObject, double red, double green, double blue, double alpha = 1.0, std::string const& colorTitle = "");
 
 		/**
 		 * Sets the default RGB color https://en.wikipedia.org/wiki/RGB_color_space of a given data
@@ -309,7 +309,7 @@ namespace COMMON_NS
 		 * @param 	  	colorTitle  	(Optional) The title of the given HSV color. It is not set if
 		 * 								title is empty (default).
 		 */
-		DLL_IMPORT_OR_EXPORT void setDefaultRgbColor(AbstractObject* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string const& colorTitle = "");
+		DLL_IMPORT_OR_EXPORT void setDefaultRgbColor(COMMON_NS::AbstractObject* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string const& colorTitle = "");
 
 		/**
 		 * Query if a given data object has a discrete color map. If it has not and it is a property, we
@@ -321,7 +321,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	True if @p targetObject (or its property kind) has a discrete color map, else false.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasDiscreteColorMap(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT bool hasDiscreteColorMap(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the discrete color map data object reference of a given data object. If the data object
@@ -336,7 +336,7 @@ namespace COMMON_NS
 		 * @returns	A data object reference on the discrete color map of @p targetObject (or of its
 		 * 			property kind).
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__DataObjectReference* getDiscreteColorMapDor(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__DataObjectReference* getDiscreteColorMapDor(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the discrete color map data UUID of a given data object. If the data object has no
@@ -350,7 +350,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The UUID of the discrete color map of @p targetObject (or of its property kind).
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getDiscreteColorMapUuid(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT std::string getDiscreteColorMapUuid(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the discrete color map of a given data object. If the data object has no discrete color
@@ -363,7 +363,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The discrete color map of @p targetObject (or of its property kind).
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::DiscreteColorMap* getDiscreteColorMap(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::DiscreteColorMap* getDiscreteColorMap(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Sets a discrete color map on a given data object
@@ -384,7 +384,7 @@ namespace COMMON_NS
 		 * 										property values are taken into account when mapped with
 		 * 										the index of the color map. Default value is false.
 		 */
-		DLL_IMPORT_OR_EXPORT void setDiscreteColorMap(AbstractObject* targetObject, RESQML2_2_NS::DiscreteColorMap* discreteColorMap,
+		DLL_IMPORT_OR_EXPORT void setDiscreteColorMap(COMMON_NS::AbstractObject* targetObject, RESQML2_2_NS::DiscreteColorMap* discreteColorMap,
 			bool useReverseMapping = false, bool useLogarithmicMapping = false);
 
 		/**
@@ -397,7 +397,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	True if @p targetObject (or its property kind) has a continuous color map, else false.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasContinuousColorMap(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT bool hasContinuousColorMap(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the continuous color map data object reference of a given data object. If the data
@@ -412,7 +412,7 @@ namespace COMMON_NS
 		 * @returns	A data object reference on the continuous color map of @p targetObject (or of its
 		 * 			property kind).
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__DataObjectReference* getContinuousColorMapDor(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__DataObjectReference* getContinuousColorMapDor(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the continuous color map data UUID of a given data object. If the data object has no
@@ -426,7 +426,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The UUID of the continuous color map of @p targetObject (or of its property kind).
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getContinuousColorMapUuid(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT std::string getContinuousColorMapUuid(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the continuous color map of a given data object. If the data object has no continuous
@@ -439,7 +439,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The continuous color map of @p targetObject (or of its property kind).
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ContinuousColorMap* getContinuousColorMap(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ContinuousColorMap* getContinuousColorMap(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Sets a continuous color map on a given data object
@@ -461,7 +461,7 @@ namespace COMMON_NS
 		 * 										property values are taken into account when mapped with
 		 * 										the index of the color map. Default value is false.
 		 */
-		DLL_IMPORT_OR_EXPORT void setContinuousColorMap(AbstractObject* targetObject, RESQML2_2_NS::ContinuousColorMap* continuousColorMap,
+		DLL_IMPORT_OR_EXPORT void setContinuousColorMap(COMMON_NS::AbstractObject* targetObject, RESQML2_2_NS::ContinuousColorMap* continuousColorMap,
 			bool useReverseMapping = false, bool useLogarithmicMapping = false);
 
 		/**
@@ -475,7 +475,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	True if minimum and maximum values exist, else false.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasColorMapMinMax(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT bool hasColorMapMinMax(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the minimum value to map with a color map for a given data object. It only looks at
@@ -488,7 +488,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The minimum value.
 		 */
-		DLL_IMPORT_OR_EXPORT double getColorMapMin(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT double getColorMapMin(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the maximum value to map with a color map for a given data object. It only looks at
@@ -501,7 +501,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The maximum value.
 		 */
-		DLL_IMPORT_OR_EXPORT double getColorMapMax(AbstractObject const* targetObject) const;
+		DLL_IMPORT_OR_EXPORT double getColorMapMax(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Sets the minimum and maximum values to map with a color map for a given data object
@@ -513,7 +513,7 @@ namespace COMMON_NS
 		 * @param 	min				The minimum value.
 		 * @param 	max				The maximum value.
 		 */
-		DLL_IMPORT_OR_EXPORT void setColorMapMinMax(AbstractObject const* targetObject, double min, double max) const;
+		DLL_IMPORT_OR_EXPORT void setColorMapMinMax(COMMON_NS::AbstractObject const* targetObject, double min, double max) const;
 
 		/**
 		 * Query if a given data object indicates which value vector index to look when mapping with a
@@ -527,7 +527,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	True if a value vector index exists, else false.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasValueVectorIndex(AbstractObject const* targetObject);
+		DLL_IMPORT_OR_EXPORT bool hasValueVectorIndex(COMMON_NS::AbstractObject const* targetObject);
 
 		/**
 		 * Gets the value vector index to look when mapping with a color map. It is especially useful
@@ -541,7 +541,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The value vector index.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getValueVectorIndex(AbstractObject const* targetObject);
+		DLL_IMPORT_OR_EXPORT LONG64 getValueVectorIndex(COMMON_NS::AbstractObject const* targetObject);
 
 		/**
 		 * Sets the value vector index to look when mapping with a color map. It is especially useful
@@ -553,7 +553,7 @@ namespace COMMON_NS
 		 * 								to look when mapping with a color map.
 		 * @param 	valueVectorIndex	The value vector index to set.
 		 */
-		DLL_IMPORT_OR_EXPORT void setValueVectorIndex(AbstractObject const* targetObject, LONG64 valueVectorIndex);
+		DLL_IMPORT_OR_EXPORT void setValueVectorIndex(COMMON_NS::AbstractObject const* targetObject, LONG64 valueVectorIndex);
 
 		/**
 		 * Converts RGB to HSV color (using https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB

@@ -18,11 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "ContinuousColorMap.h"
 
-#include "../common/GraphicalInformationSet.h"
+#include "../eml2_3/GraphicalInformationSet.h"
 
 using namespace std;
 using namespace gsoap_eml2_3;
-using namespace COMMON_NS;
 using namespace RESQML2_2_NS;
 
 const char* ContinuousColorMap::XML_TAG = "ContinuousColorMap";
@@ -30,8 +29,9 @@ const char* ContinuousColorMap::XML_TAG = "ContinuousColorMap";
 ContinuousColorMap::ContinuousColorMap(COMMON_NS::DataObjectRepository* repo, string const& guid, string const& title,
 	resqml22__InterpolationDomain interpolationDomain, resqml22__InterpolationMethod interpolationMethod)
 {
-	if (repo == nullptr)
+	if (repo == nullptr) {
 		throw invalid_argument("The repository cannot be null.");
+	}
 
 	gsoapProxy2_3 = soap_new_resqml22__ContinuousColorMap(repo->getGsoapContext(), 1);
 
@@ -49,8 +49,9 @@ void ContinuousColorMap::setHsvColors(unsigned int colorCount,
 	double const* hsvColors, double const* alphas, vector<string> const& colorTitles,
 	double const* indices)
 {
-	if (colorCount < 2)
+	if (colorCount < 2) {
 		throw invalid_argument("At least 2 color must be set.");
+	}
 
 	resqml22__ContinuousColorMap* const continuousColorMap = static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_3);
 
@@ -170,7 +171,7 @@ void ContinuousColorMap::setNanRgbColor(double red, double green, double blue, d
 	}
 
 	double hue, saturation, value;
-	GraphicalInformationSet::rgbToHsv(red, green, blue, hue, saturation, value);
+	EML2_3_NS::GraphicalInformationSet::rgbToHsv(red, green, blue, hue, saturation, value);
 
 	setNanHsvColor(hue, saturation, value, alpha, colorTitle);
 }
@@ -194,7 +195,7 @@ void ContinuousColorMap::setNanRgbColor(unsigned int red, unsigned int green, un
 	}
 
 	double hue, saturation, value;
-	GraphicalInformationSet::rgbToHsv(red, green, blue, hue, saturation, value);
+	EML2_3_NS::GraphicalInformationSet::rgbToHsv(red, green, blue, hue, saturation, value);
 
 	setNanHsvColor(hue, saturation, value, alpha, colorTitle);
 }

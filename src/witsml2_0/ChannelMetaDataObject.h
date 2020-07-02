@@ -106,7 +106,7 @@ namespace WITSML2_0_NS
 		 */
 		DLL_IMPORT_OR_EXPORT EML2_NS::PropertyKind* getPropertyKind() const
 		{
-			return getRepository()->template getDataObjectByUuid<EML2_NS::PropertyKind>(getPropertyKindDor()->getUuid());
+			return getRepository()->template getDataObjectByUuid<EML2_NS::PropertyKind>(getPropertyKindDor().getUuid());
 		}
 
 		/**

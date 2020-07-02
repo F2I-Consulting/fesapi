@@ -32,6 +32,11 @@ namespace EML2_NS
 	class TimeSeries;
 }
 
+namespace EML2_3_NS
+{
+	class GraphicalInformationSet;
+}
+
 namespace RESQML2_NS
 {
 	class AbstractFeature;
@@ -149,7 +154,6 @@ namespace COMMON_NS
 {
 	class AbstractObject;
 	class HdfProxyFactory;
-	class GraphicalInformationSet;
 
 	/**
 	 * @brief	This abstract class acts as a buffer between the RESQML (business) classes and the
@@ -430,22 +434,6 @@ namespace COMMON_NS
 		}
 
 		/**
-		 * Gets all the local depth 3d CRS contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the local depth 3d CRS of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::LocalDepth3dCrs*> getLocalDepth3dCrsSet() const;
-
-		/**
-		 * Gets all the local time 3d CRS contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the local time 3d CRS of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::LocalTime3dCrs*> getLocalTime3dCrsSet() const;
-
-		/**
 		 * Gets the default CRS for writing. It is used in all writing methods if no explicit CRS is
 		 * provided.
 		 *
@@ -462,424 +450,6 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void setDefaultCrs(RESQML2_NS::AbstractLocal3dCrs* crs) { defaultCrs = crs; }
 
 		/**
-		 * Gets all the stratigraphic columns contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the stratigraphic columns of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::StratigraphicColumn*> getStratigraphicColumnSet() const;
-
-		/**
-		 * Gets all the faults contained into this repository
-		 *
-		 * @returns	A vector of pointers to all the faults of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::BoundaryFeature*> getFaultSet() const;
-
-		/**
-		 * Gets all the fractures contained into this repository
-		 *
-		 * @returns A vector of pointers to all the fractures of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::BoundaryFeature*> getFractureSet() const;
-
-		/**
-		 * Gets all the individual representations of faults which are associated to a polyline set
-		 * topology into this repository
-		 *
-		 * @returns	A vector of pointers to all the faults polyline set representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineSetRepresentation *> getFaultPolylineSetRepSet() const;
-
-		/**
-		 * Gets all the individual representations of fractures which are associated to a polyline set
-		 * topology into this repository
-		 *
-		 * @returns	A vector of pointers to all the fractures polyline set representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineSetRepresentation *> getFracturePolylineSetRepSet() const;
-
-		/**
-		 * Gets all the individual representations of cultural which are associated to a polyline set
-		 * topology into this repository
-		 *
-		 * @returns	A vector of pointers to all the cultural polyline set representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineSetRepresentation *> getCulturalPolylineSetRepSet() const;
-
-		/**
-		 * Gets all the individual representations of faults which are associated to a triangulated set
-		 * topology into this repository
-		 *
-		 * @returns A vector of pointers to all the faults triangulated set representations of this repository. 
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::TriangulatedSetRepresentation *> getFaultTriangulatedSetRepSet() const;
-
-		/**
-		 * Gets all the individual representations of fractures which are associated to a triangulated
-		 * set topology into this repository
-		 *
-		 * @returns	A vector of pointers to all the fractures triangulated set representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::TriangulatedSetRepresentation *> getFractureTriangulatedSetRepSet() const;
-
-		/**
-		 * Gets all the horizons contained into this repository
-		 *
-		 * @returns	A vector of pointers to all the horizons of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::BoundaryFeature*> getHorizonSet() const;
-
-		/**
-		 * Get all the geobody boundaries contained into this repository
-		 *
-		 * @returns	A vector of pointers to all the geobody boundaries of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::BoundaryFeature*> getGeobodyBoundarySet() const;
-
-		/**
-		 * Gets the geobody boundaries count into this repository
-		 *
-		 * @exception	std::out_of_range	If the geobody boundaries count is superior to @c unsigned @c
-		 * 									int max.
-		 *
-		 * @returns	The geobody boundaries count of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getGeobodyBoundaryCount() const;
-
-		/**
-		 * Gets a particular geobody boundary into this repository
-		 *
-		 * @exception	std::out_of_range	If the index of the geobody boundary is out of range.
-		 *
-		 * @param 	index	Zero-based index.
-		 *
-		 * @returns	A pointer to the geobody boundary at @p index position into this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::BoundaryFeature* getGeobodyBoundary(unsigned int index) const;
-
-		/**
-		 * Gets all the geobodies contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all geobodies of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::RockVolumeFeature*> getGeobodySet() const;
-
-		/**
-		 * Gets all the individual representations of horizons which are associated to a grid 2d set
-		 * topology into this repository
-		 *
-		 * @returns	A vector of pointers to all horizon grid 2D representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::Grid2dRepresentation *> getHorizonGrid2dRepSet() const;
-
-		/**
-		 * Gets all the individual representations of horizons which are associated to a single polyline
-		 * topology into this repository
-		 *
-		 * @returns	A vector of pointers to all the horizons polyline representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineRepresentation *> getHorizonPolylineRepSet() const;
-
-		/**
-		 * Gets all the individual representations of horizons which are associated to a polyline set
-		 * topology into this repository
-		 *
-		 * @returns	A vector of pointers to all the horizons polyline set representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineSetRepresentation *> getHorizonPolylineSetRepSet() const;
-
-		/**
-		 * Gets all the individual representations of horizons which are associated to a triangulated set
-		 * topology into this repository
-		 *
-		 * @returns A vector of pointers to all the horizons triangulated set representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::TriangulatedSetRepresentation *> getHorizonTriangulatedSetRepSet() const;
-
-		/**
-		 * Gets all the triangulated set representations contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the triangulated set representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::TriangulatedSetRepresentation*> getAllTriangulatedSetRepSet() const;
-
-		/**
-		 * Gets all the grid 2d representations contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the grid 2d representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::Grid2dRepresentation*> getAllGrid2dRepresentationSet() const;
-
-		/**
-		 * Gets all the polyline set representations contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the polyline set representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineSetRepresentation*> getAllPolylineSetRepSet() const;
-
-		/**
-		 * Gets all the triangulated set representations of this repository which are neither horizon nor
-		 * fault.
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all non-horizon and non-fault triangulated set representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::TriangulatedSetRepresentation*> getUnclassifiedTriangulatedSetRepSet() const;
-
-		/**
-		 * Gets all the seismic lines contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the seismic lines of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractSeismicLineFeature*> getSeismicLineSet() const;
-
-		/**
-		 * Gets all the wellbores contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the wellbores of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::WellboreFeature*> getWellboreSet() const;
-
-		/**
-		 * Gets all the trajectory representations of all wellbores into this repository.
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns A vector of pointers to all wellbores trajectory representations of this repository. 
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::WellboreTrajectoryRepresentation *> getWellboreTrajectoryRepresentationSet() const;
-
-		/**
-		 * Gets all the deviation surveys of all wellbores into this repository.
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the wellbores deviation surveys of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::DeviationSurveyRepresentation *> getDeviationSurveyRepresentationSet() const;
-
-		/**
-		 * Gets all the representation set representations contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the representation set representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::RepresentationSetRepresentation*> getRepresentationSetRepresentationSet() const;
-
-		/**
-		 * Gets the count of representation set representations into this repository
-		 *
-		 * @exception	std::out_of_range	If the representation set representations count is superior
-		 * 									to @c unsigned @c int max.
-		 *
-		 * @returns	The representation set representations count of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getRepresentationSetRepresentationCount() const;
-
-		/**
-		 * Gets a particular representation set representation into this repository
-		 *
-		 * @exception	std::out_of_range	If the index of the representation set representation is out
-		 * 									of range.
-		 *
-		 * @param 	index	Zero-based index.
-		 *
-		 * @returns	A pointer to the representation set representation at @p index position into this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::RepresentationSetRepresentation* getRepresentationSetRepresentation(unsigned int index) const;
-
-		/**
-		 * Gets all the polyline representations contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the polyline representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineRepresentation*> getAllPolylineRepresentationSet() const;
-
-		/**
-		 * Gets all the individual representations of seismic lines which are associated to a single
-		 * polyline topology into this repository
-		 *
-		 * @returns	A vector of pointers to all the seismic line polyline representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PolylineRepresentation*> getSeismicLinePolylineRepSet() const;
-
-		/**
-		 * Gets all the ijk grids contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the ijk grids of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractIjkGridRepresentation*> getIjkGridRepresentationSet() const;
-
-		/**
-		 * Gets the ijk grids count into this repository
-		 *
-		 * @exception	std::out_of_range	If the ijk grids count is superior to @c unsigned @c int max.
-		 *
-		 * @returns	The ijk grids count of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getIjkGridRepresentationCount() const;
-
-		/**
-		 * Gets a particular ijk grid into this repository
-		 *
-		 * @exception	std::out_of_range	If the index of the ijk grid is out of range.
-		 *
-		 * @param 	index	Zero-based index.
-		 *
-		 * @returns	A pointer to the ijk grid at @p index position into this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractIjkGridRepresentation* getIjkGridRepresentation(unsigned int index) const;
-
-		/**
-		 * Gets all the ijk grids with parametric geometry contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the ijk grids with parametric geometry of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::IjkGridParametricRepresentation*> getIjkGridParametricRepresentationSet() const;
-
-		/**
-		 * Gets all the ijk grids with explicit geometry contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the ijk grids with explicit geometry of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::IjkGridExplicitRepresentation*> getIjkGridExplicitRepresentationSet() const;
-
-		/**
-		 * Gets all the ijk grids contained into this repository which correspond to a seismic cube
-		 *
-		 * @returns	A vector of pointers to all seismic cubes ijk grids of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::IjkGridLatticeRepresentation*> getIjkSeismicCubeGridRepresentationSet() const;
-
-		/**
-		 * Gets all the unstructured grids contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the unstructured grids of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::UnstructuredGridRepresentation*> getUnstructuredGridRepresentationSet() const;
-
-		/**
-		 * Gets all the Cultural features contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the Cultural features of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::CulturalFeature*> getCulturalSet() const;
-
-		/**
-		 * Gets all the organization features contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the organization features of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::Model*> getModelSet() const;
-		
-		/**
-		 * Gets all the time series contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the time series of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<EML2_NS::TimeSeries*> getTimeSeriesSet() const;
-
-		/**
-		 * Gets all the sub-representations contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the sub-representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::SubRepresentation*> getSubRepresentationSet() const;
-
-		/**
-		 * Gets the sub-representations count into this repository
-		 *
-		 * @exception	std::out_of_range	If the sub-representations count is superior to @c unsigned @c
-		 * 									int max.
-		 *
-		 * @returns	The sub-representations count of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getSubRepresentationCount() const;
-
-		/**
-		 * Gets a particular sub-representation into this repository
-		 *
-		 * @exception	std::out_of_range	If the index of the sub-representation is out of range.
-		 *
-		 * @param 	index	Zero-based index.
-		 *
-		 * @returns	A pointer to the sub-representation at @p index position into this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::SubRepresentation* getSubRepresentation(unsigned int index) const;
-
-		/**
-		 * Gets all the point set representations contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the point set representations of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PointSetRepresentation*> getPointSetRepresentationSet() const;
-
-		/**
-		 * Gets the point set representations count into this repository
-		 *
-		 * @exception	std::out_of_range	If the point set representations count is superior to @c
-		 * 									unsigned @c int max.
-		 *
-		 * @returns	The point set representations count of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPointSetRepresentationCount() const;
-
-		/**
-		 * Gets a particular point set representation into this repository
-		 *
-		 * @exception	std::out_of_range	If the index of the point set representation is out of range.
-		 *
-		 * @param 	index	Zero-based index.
-		 *
-		 * @returns	A pointer to the point set representation at @p index position into this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::PointSetRepresentation* getPointSetRepresentation(unsigned int index) const;
-
-		/**
-		 * Gets all the HDF5 file proxies contained into this repository
-		 * @deprecated Use {@link getDataObjects()} template method
-		 *
-		 * @returns	A vector of pointers to all the HDF5 file proxies of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<EML2_NS::AbstractHdfProxy*> getHdfProxySet() const;
-
-		/**
-		 * Gets the HDF5 file proxies count into this repository
-		 *
-		 * @exception	std::out_of_range	If the HDF5 file proxies count is superior to @c
-		 * 									unsigned @c int max.
-		 *
-		 * @returns	The HDF5 file proxies count of this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getHdfProxyCount() const;
-
-		/**
-		 * Gets a particular HDF5 file proxy into this repository
-		 *
-		 * @exception	std::out_of_range	If the index of the HDF5 file proxy is out of range.
-		 *
-		 * @param 	index	Zero-based index.
-		 *
-		 * @returns	A pointer to the HDF5 file proxy at @p index position into this repository.
-		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractHdfProxy* getHdfProxy(unsigned int index) const;
-
-		/**
 		 * Gets the default HDF5 file proxy for writing. It is used in all writing methods if no
 		 * explicit HDF5 file proxy is provided.
 		 *
@@ -894,6 +464,63 @@ namespace COMMON_NS
 		 * @param [in]	hdfProxy	If non-null, the HDF5 file proxy.
 		 */
 		DLL_IMPORT_OR_EXPORT void setDefaultHdfProxy(EML2_NS::AbstractHdfProxy* hdfProxy) { defaultHdfProxy = hdfProxy; }
+
+		/**
+		* This macro allows vector and array access at the same time. Array access is necessary for SWIG.
+		*/
+#define GETTER_DATAOBJECTS(returnedDataType, dataObjectName)\
+		DLL_IMPORT_OR_EXPORT std::vector<returnedDataType*> get##dataObjectName##Set() const;\
+		DLL_IMPORT_OR_EXPORT unsigned int get##dataObjectName##Count() const {\
+			const size_t result = get##dataObjectName##Set().size();\
+			if (result > (std::numeric_limits<unsigned int>::max)()) { throw std::range_error("The count is superior to unsigned int max"); }\
+			return static_cast<unsigned int>(result);\
+		}\
+		DLL_IMPORT_OR_EXPORT returnedDataType* get##dataObjectName(unsigned int index) const {\
+			std::vector<returnedDataType*> all = get##dataObjectName##Set();\
+			if (index >= all.size()) { throw std::out_of_range("The index is out of range"); }\
+			return all[index];\
+		}
+
+		GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
+		GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)
+
+		GETTER_DATAOBJECTS(RESQML2_NS::LocalDepth3dCrs, LocalDepth3dCrs)
+		GETTER_DATAOBJECTS(RESQML2_NS::LocalTime3dCrs, LocalTime3dCrs)
+		GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicColumn, StratigraphicColumn)
+		GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Fault)
+		GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Fracture)
+		GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Horizon)
+		GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, GeobodyBoundary)
+		GETTER_DATAOBJECTS(RESQML2_NS::RockVolumeFeature, Geobody)
+		GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, FaultPolylineSetRep)
+		GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, FracturePolylineSetRep)
+		GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, CulturalPolylineSetRep)
+		GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, FaultTriangulatedSetRep)
+		GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, FractureTriangulatedSetRep)
+		GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, HorizonGrid2dRep)
+		GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, HorizonPolylineRep)
+		GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, HorizonPolylineSetRep)
+		GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, HorizonTriangulatedSetRep)
+		GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, UnclassifiedTriangulatedSetRep)
+		GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, AllTriangulatedSetRep)
+		GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, AllGrid2dRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, AllPolylineRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, AllPolylineSetRep)
+		GETTER_DATAOBJECTS(RESQML2_NS::AbstractSeismicLineFeature, SeismicLine)
+		GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, SeismicLinePolylineRep)
+		GETTER_DATAOBJECTS(RESQML2_NS::WellboreFeature, Wellbore)
+		GETTER_DATAOBJECTS(RESQML2_NS::WellboreTrajectoryRepresentation, WellboreTrajectoryRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::DeviationSurveyRepresentation, DeviationSurveyRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::RepresentationSetRepresentation, RepresentationSetRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::AbstractIjkGridRepresentation, IjkGridRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::IjkGridParametricRepresentation, IjkGridParametricRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::IjkGridExplicitRepresentation, IjkGridExplicitRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::IjkGridLatticeRepresentation, IjkSeismicCubeGridRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::UnstructuredGridRepresentation, UnstructuredGridRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::CulturalFeature, Cultural)
+		GETTER_DATAOBJECTS(RESQML2_NS::Model, Model)
+		GETTER_DATAOBJECTS(RESQML2_NS::SubRepresentation, SubRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::PointSetRepresentation, PointSetRepresentation)
 
 		/**
 		 * Gets a data object from the repository by means of its uuid. If several data object
@@ -3460,7 +3087,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new graphical information set.
 		 */
-		DLL_IMPORT_OR_EXPORT GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT EML2_3_NS::GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a discrete color map into this repository
