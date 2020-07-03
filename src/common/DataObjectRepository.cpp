@@ -25,7 +25,6 @@ under the License.
 #include "../common/HdfProxyFactory.h"
 
 #include "../eml2_1/PropertyKind.h"
-#include "../eml2_3/GraphicalInformationSet.h"
 
 #include "../resqml2_0_1/PropertyKindMapper.h"
 
@@ -98,9 +97,10 @@ under the License.
 
 #include "../resqml2_0_1/Activity.h"
 #include "../resqml2_0_1/ActivityTemplate.h"
-
+#if WITH_RESQML2_2
 #include "../eml2_3/Activity.h"
 #include "../eml2_3/ActivityTemplate.h"
+#include "../eml2_3/GraphicalInformationSet.h"
 #include "../eml2_3/PropertyKind.h"
 #include "../eml2_3/TimeSeries.h"
 
@@ -162,7 +162,7 @@ under the License.
 #include "../resqml2_2/WellboreInterpretation.h"
 #include "../resqml2_2/WellboreMarkerFrameRepresentation.h"
 #include "../resqml2_2/WellboreTrajectoryRepresentation.h"
-
+#endif
 #include "../witsml2_0/Well.h"
 #include "../witsml2_0/Wellbore.h"
 #include "../witsml2_0/Trajectory.h"
@@ -188,7 +188,6 @@ using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
 using namespace WITSML2_0_NS;
 using namespace PRODML2_1_NS;
-using namespace RESQML2_2_NS;
 
 namespace {
 	class SameVersion {
@@ -308,9 +307,17 @@ DataObjectRepository::DataObjectRepository() :
 	warnings(),
 	propertyKindMapper(nullptr), defaultHdfProxy(nullptr), defaultCrs(nullptr),
 	hdfProxyFactory(new COMMON_NS::HdfProxyFactory()),
+#if WITH_RESQML2_2
 	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3),
+#else
+	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0),
+#endif
 	defaultProdmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::PRODML2_1),
+#if WITH_RESQML2_2
 	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_2),
+#else
+	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1),
+#endif
 	defaultWitsmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::WITSML2_0) {}
 
 DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappingFilesDirectory) :
@@ -321,9 +328,17 @@ DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappi
 	warnings(),
 	propertyKindMapper(new PropertyKindMapper(this)), defaultHdfProxy(nullptr), defaultCrs(nullptr),
 	hdfProxyFactory(new COMMON_NS::HdfProxyFactory()),
+#if WITH_RESQML2_2
 	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3),
+#else
+	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0),
+#endif
 	defaultProdmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::PRODML2_1),
+#if WITH_RESQML2_2
 	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_2),
+#else
+	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1),
+#endif
 	defaultWitsmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::WITSML2_0)
 {
 	const string error = propertyKindMapper->loadMappingFilesFromDirectory(propertyKindMappingFilesDirectory);
@@ -491,11 +506,13 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 		soap_read_eml20__obj_USCOREEpcExternalPartReference(gsoapContext, read);
 		wrapper = hdfProxyFactory->make(read);
 	}
+#if WITH_RESQML2_2
 	else if (contentType.find("application/x-eml+xml;version=2.3;type=EpcExternalPartReference") != string::npos) {
 		gsoap_eml2_3::_eml23__EpcExternalPartReference* read = gsoap_eml2_3::soap_new_eml23__EpcExternalPartReference(gsoapContext);
 		soap_read__eml23__EpcExternalPartReference(gsoapContext, read);
 		wrapper = hdfProxyFactory->make(read);
 	}
+#endif
 	else if (contentType.find("application/x-resqml+xml;version=2.0;type=obj_") != string::npos) {
 		wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
 	}
@@ -681,13 +698,15 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectR
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Log)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::ChannelSet)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Channel)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(EML2_3_NS::GraphicalInformationSet)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(PRODML2_1_NS::FluidSystem)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(PRODML2_1_NS::FluidCharacterization)
+#if WITH_RESQML2_2
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(EML2_3_NS::GraphicalInformationSet)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::DiscreteColorMap)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::ContinuousColorMap)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::WellboreFrameRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::SeismicWellboreFrameRepresentation)
+#endif
 	else if (dataType.compare(EML2_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		COMMON_NS::AbstractObject* result = hdfProxyFactory->make(dor);
@@ -722,10 +741,12 @@ RESQML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const s
 		return new RESQML2_0_1_NS::LocalDepth3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedEpsgCode,
 			verticalUom, verticalEpsgCode, isUpOriented);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::LocalDepth3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedEpsgCode,
 			verticalUom, verticalEpsgCode, isUpOriented);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -742,10 +763,12 @@ RESQML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const s
 		return new RESQML2_0_1_NS::LocalDepth3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedUnknownReason,
 			verticalUom, verticalUnknownReason, isUpOriented);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::LocalDepth3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedUnknownReason,
 			verticalUom, verticalUnknownReason, isUpOriented);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -762,10 +785,12 @@ RESQML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const s
 		return new RESQML2_0_1_NS::LocalDepth3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedEpsgCode,
 			verticalUom, verticalUnknownReason, isUpOriented);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::LocalDepth3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedEpsgCode,
 			verticalUom, verticalUnknownReason, isUpOriented);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -782,10 +807,12 @@ RESQML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const s
 		return new RESQML2_0_1_NS::LocalDepth3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedUnknownReason,
 			verticalUom, verticalEpsgCode, isUpOriented);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::LocalDepth3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedUnknownReason,
 			verticalUom, verticalEpsgCode, isUpOriented);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -804,11 +831,13 @@ RESQML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std
 			projectedUom, projectedEpsgCode,
 			timeUom,
 			verticalUom, verticalEpsgCode, isUpOriented);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::LocalTime3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedEpsgCode,
 			timeUom,
 			verticalUom, verticalEpsgCode, isUpOriented);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -827,11 +856,13 @@ RESQML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std
 			projectedUom, projectedUnknownReason,
 			timeUom,
 			verticalUom, verticalUnknownReason, isUpOriented);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::LocalTime3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedUnknownReason,
 			timeUom,
 			verticalUom, verticalUnknownReason, isUpOriented);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -851,12 +882,14 @@ RESQML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std
 			timeUom,
 			verticalUom, verticalUnknownReason, isUpOriented);
 
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::LocalTime3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedEpsgCode,
 			timeUom,
 			verticalUom, verticalUnknownReason, isUpOriented);
 
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -876,12 +909,14 @@ RESQML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std
 			timeUom,
 			verticalUom, verticalEpsgCode, isUpOriented);
 
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::LocalTime3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedUnknownReason,
 			timeUom,
 			verticalUom, verticalEpsgCode, isUpOriented);
 
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -894,8 +929,10 @@ RESQML2_NS::MdDatum* DataObjectRepository::createMdDatum(const std::string & gui
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::MdDatum(this, guid, title, locCrs, originKind, referenceLocationOrdinal1, referenceLocationOrdinal2, referenceLocationOrdinal3);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::MdDatum(this, guid, title, locCrs, originKind, referenceLocationOrdinal1, referenceLocationOrdinal2, referenceLocationOrdinal3);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -910,8 +947,10 @@ RESQML2_NS::BoundaryFeature* DataObjectRepository::createBoundaryFeature(const s
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::BoundaryFeature(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::BoundaryFeature(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -922,8 +961,10 @@ RESQML2_NS::BoundaryFeature* DataObjectRepository::createHorizon(const std::stri
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new Horizon(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::BoundaryFeature(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -934,8 +975,10 @@ RESQML2_NS::BoundaryFeature* DataObjectRepository::createGeobodyBoundaryFeature(
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new GeneticBoundaryFeature(this, guid, title, false);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::BoundaryFeature(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -946,8 +989,10 @@ RESQML2_NS::RockVolumeFeature* DataObjectRepository::createGeobodyFeature(const 
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new GeobodyFeature(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::RockVolumeFeature(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -958,8 +1003,10 @@ RESQML2_NS::BoundaryFeature* DataObjectRepository::createFault(const std::string
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::TectonicBoundaryFeature(this, guid, title, false);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::BoundaryFeature(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -970,8 +1017,10 @@ RESQML2_NS::BoundaryFeature* DataObjectRepository::createFracture(const std::str
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::TectonicBoundaryFeature(this, guid, title, true);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::BoundaryFeature(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -982,8 +1031,10 @@ RESQML2_NS::WellboreFeature* DataObjectRepository::createWellboreFeature(const s
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::WellboreFeature(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::WellboreFeature(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -997,8 +1048,10 @@ RESQML2_NS::SeismicLatticeFeature* DataObjectRepository::createSeismicLattice(co
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::SeismicLatticeFeature(this, guid, title, inlineIncrement, crosslineIncrement, originInline, originCrossline, inlineCount, crosslineCount);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::SeismicLatticeFeature(this, guid, title, inlineIncrement, crosslineIncrement, originInline, originCrossline, inlineCount, crosslineCount);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1010,15 +1063,23 @@ RESQML2_0_1_NS::SeismicLineFeature* DataObjectRepository::createSeismicLine(cons
 	return new RESQML2_0_1_NS::SeismicLineFeature(this, guid, title, traceIndexIncrement, firstTraceIndex, traceCount);
 }
 
-RESQML2_2_NS::CmpLineFeature* DataObjectRepository::createCmpLine(const std::string & guid, const std::string & title,
+RESQML2_NS::CmpLineFeature* DataObjectRepository::createCmpLine(const std::string & guid, const std::string & title,
 	int nearestShotPointIndicesIncrement, int firstNearestShotPointIndex, unsigned int nearestShotPointCount)
 {
+#ifdef WITH_RESQML2_2
 	return new RESQML2_2_NS::CmpLineFeature(this, guid, title, nearestShotPointIndicesIncrement, firstNearestShotPointIndex, nearestShotPointCount);
+#else
+	throw std::logic_error("RESQML2.2 support has not been built in this library.");
+#endif
 }
 
-RESQML2_2_NS::ShotPointLineFeature* DataObjectRepository::createShotPointLine(const std::string & guid, const std::string & title)
+RESQML2_NS::ShotPointLineFeature* DataObjectRepository::createShotPointLine(const std::string & guid, const std::string & title)
 {
+#ifdef WITH_RESQML2_2
 	return new RESQML2_2_NS::ShotPointLineFeature(this, guid, title);
+#else
+	throw std::logic_error("RESQML2.2 support has not been built in this library.");
+#endif
 }
 
 RESQML2_NS::SeismicLineSetFeature* DataObjectRepository::createSeismicLineSet(const std::string & guid, const std::string & title)
@@ -1026,8 +1087,10 @@ RESQML2_NS::SeismicLineSetFeature* DataObjectRepository::createSeismicLineSet(co
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::SeismicLineSetFeature(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::SeismicLineSetFeature(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1039,8 +1102,10 @@ RESQML2_NS::CulturalFeature* DataObjectRepository::createCultural(const std::str
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new FrontierFeature(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::CulturalFeature(this, guid, title, kind);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1051,16 +1116,31 @@ RESQML2_NS::RockVolumeFeature* DataObjectRepository::createStratigraphicUnitFeat
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new StratigraphicUnitFeature(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::RockVolumeFeature(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
 }
 
-RESQML2_2_NS::RockVolumeFeature* DataObjectRepository::createRockVolumeFeature(const std::string & guid, const std::string & title)
+RESQML2_NS::RockVolumeFeature* DataObjectRepository::createRockVolumeFeature(const std::string & guid, const std::string & title)
 {
+#ifdef WITH_RESQML2_2
 	return new RESQML2_2_NS::RockVolumeFeature(this, guid, title);
+#else
+	throw std::logic_error("RESQML2.2 support has not been built in this library.");
+#endif
+}
+
+RESQML2_NS::Model* DataObjectRepository::createModel(const std::string & guid, const std::string & title)
+{
+#ifdef WITH_RESQML2_2
+	return new RESQML2_2_NS::Model(this, guid, title);
+#else
+	throw std::logic_error("RESQML2.2 support has not been built in this library.");
+#endif
 }
 
 RESQML2_0_1_NS::RockFluidUnitFeature* DataObjectRepository::createRockFluidUnit(const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__Phase phase,
@@ -1069,18 +1149,15 @@ RESQML2_0_1_NS::RockFluidUnitFeature* DataObjectRepository::createRockFluidUnit(
 	return new RockFluidUnitFeature(this, guid, title, phase, fluidBoundaryTop, fluidBoundaryBottom);
 }
 
-RESQML2_2_NS::Model* DataObjectRepository::createModel(const std::string & guid, const std::string & title)
-{
-	return new RESQML2_2_NS::Model(this, guid, title);
-}
-
 RESQML2_NS::Model* DataObjectRepository::createStructuralModel(const std::string & guid, const std::string & title)
 {
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new OrganizationFeature(this, guid, title, gsoap_resqml2_0_1::resqml20__OrganizationKind__structural);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::Model(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1091,8 +1168,10 @@ RESQML2_NS::Model* DataObjectRepository::createStratigraphicModel(const std::str
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new OrganizationFeature(this, guid, title, gsoap_resqml2_0_1::resqml20__OrganizationKind__stratigraphic);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::Model(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1103,8 +1182,10 @@ RESQML2_NS::Model* DataObjectRepository::createRockFluidModel(const std::string 
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new OrganizationFeature(this, guid, title, gsoap_resqml2_0_1::resqml20__OrganizationKind__fluid);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::Model(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1115,8 +1196,10 @@ RESQML2_NS::Model* DataObjectRepository::createEarthModel(const std::string & gu
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new OrganizationFeature(this, guid, title, gsoap_resqml2_0_1::resqml20__OrganizationKind__earth_x0020model);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::Model(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1136,8 +1219,10 @@ RESQML2_NS::GenericFeatureInterpretation* DataObjectRepository::createGenericFea
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::GenericFeatureInterpretation(feature, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::GenericFeatureInterpretation(feature, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1148,8 +1233,10 @@ RESQML2_NS::BoundaryFeatureInterpretation* DataObjectRepository::createBoundaryF
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::BoundaryFeatureInterpretation(feature, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::BoundaryFeatureInterpretation(feature, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1160,8 +1247,10 @@ RESQML2_NS::HorizonInterpretation* DataObjectRepository::createHorizonInterpreta
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::HorizonInterpretation(horizon, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::HorizonInterpretation(horizon, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1172,8 +1261,10 @@ RESQML2_NS::GeobodyBoundaryInterpretation* DataObjectRepository::createGeobodyBo
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::GeobodyBoundaryInterpretation(geobodyBoundary, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::GeobodyBoundaryInterpretation(geobodyBoundary, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1184,8 +1275,10 @@ RESQML2_NS::FaultInterpretation* DataObjectRepository::createFaultInterpretation
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::FaultInterpretation(fault, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::FaultInterpretation(fault, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1196,8 +1289,10 @@ RESQML2_NS::WellboreInterpretation* DataObjectRepository::createWellboreInterpre
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::WellboreInterpretation(wellbore, guid, title, isDrilled);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::WellboreInterpretation(wellbore, guid, title, isDrilled);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1208,8 +1303,10 @@ RESQML2_NS::EarthModelInterpretation* DataObjectRepository::createEarthModelInte
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::EarthModelInterpretation(orgFeat, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::EarthModelInterpretation(orgFeat, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1220,8 +1317,10 @@ RESQML2_NS::StructuralOrganizationInterpretation* DataObjectRepository::createSt
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::StructuralOrganizationInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria__age);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::StructuralOrganizationInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria__age);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1232,8 +1331,10 @@ RESQML2_NS::StructuralOrganizationInterpretation* DataObjectRepository::createSt
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::StructuralOrganizationInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria__apparent_x0020depth);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::StructuralOrganizationInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria__apparent_x0020depth);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1244,8 +1345,10 @@ RESQML2_NS::StructuralOrganizationInterpretation* DataObjectRepository::createSt
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::StructuralOrganizationInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria__measured_x0020depth);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::StructuralOrganizationInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria__measured_x0020depth);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1256,8 +1359,10 @@ RESQML2_NS::RockFluidOrganizationInterpretation* DataObjectRepository::createRoc
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::RockFluidOrganizationInterpretation(orgFeat, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::RockFluidOrganizationInterpretation(orgFeat, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1268,8 +1373,10 @@ RESQML2_NS::RockFluidUnitInterpretation* DataObjectRepository::createRockFluidUn
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::RockFluidUnitInterpretation(rockFluidUnitFeature, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::RockFluidUnitInterpretation(rockFluidUnitFeature, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1280,8 +1387,10 @@ RESQML2_NS::StratigraphicColumn* DataObjectRepository::createStratigraphicColumn
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::StratigraphicColumn(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::StratigraphicColumn(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1292,8 +1401,10 @@ RESQML2_NS::GeobodyInterpretation* DataObjectRepository::createGeobodyInterpreta
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::GeobodyInterpretation(geobody, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::GeobodyInterpretation(geobody, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1304,8 +1415,10 @@ RESQML2_NS::StratigraphicUnitInterpretation* DataObjectRepository::createStratig
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::StratigraphicUnitInterpretation(stratiUnitFeature, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::StratigraphicUnitInterpretation(stratiUnitFeature, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1316,8 +1429,10 @@ RESQML2_NS::StratigraphicColumnRankInterpretation* DataObjectRepository::createS
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::StratigraphicColumnRankInterpretation(orgFeat, guid, title, rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria__age);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::StratigraphicColumnRankInterpretation(orgFeat, guid, title, rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria__age);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1328,8 +1443,10 @@ RESQML2_NS::StratigraphicColumnRankInterpretation* DataObjectRepository::createS
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::StratigraphicColumnRankInterpretation(orgFeat, guid, title, rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria__apparent_x0020depth);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::StratigraphicColumnRankInterpretation(orgFeat, guid, title, rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria__apparent_x0020depth);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1340,8 +1457,10 @@ RESQML2_NS::StratigraphicOccurrenceInterpretation* DataObjectRepository::createS
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria__age);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::StratigraphicOccurrenceInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria__age);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1352,8 +1471,10 @@ RESQML2_NS::StratigraphicOccurrenceInterpretation* DataObjectRepository::createS
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria__apparent_x0020depth);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::StratigraphicOccurrenceInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria__apparent_x0020depth);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1368,8 +1489,10 @@ RESQML2_NS::TriangulatedSetRepresentation* DataObjectRepository::createTriangula
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::TriangulatedSetRepresentation(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::TriangulatedSetRepresentation(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1381,8 +1504,10 @@ RESQML2_NS::TriangulatedSetRepresentation* DataObjectRepository::createTriangula
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::TriangulatedSetRepresentation(interp, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::TriangulatedSetRepresentation(interp, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1393,8 +1518,10 @@ RESQML2_NS::PolylineSetRepresentation* DataObjectRepository::createPolylineSetRe
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::PolylineSetRepresentation(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::PolylineSetRepresentation(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1406,8 +1533,10 @@ RESQML2_NS::PolylineSetRepresentation* DataObjectRepository::createPolylineSetRe
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::PolylineSetRepresentation(interp, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::PolylineSetRepresentation(interp, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1419,8 +1548,10 @@ RESQML2_NS::PolylineSetRepresentation* DataObjectRepository::createPolylineSetRe
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::PolylineSetRepresentation(interp, guid, title, roleKind);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::PolylineSetRepresentation(interp, guid, title, roleKind);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1431,8 +1562,10 @@ RESQML2_NS::PointSetRepresentation* DataObjectRepository::createPointSetRepresen
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::PointSetRepresentation(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::PointSetRepresentation(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1444,8 +1577,10 @@ RESQML2_NS::PointSetRepresentation* DataObjectRepository::createPointSetRepresen
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::PointSetRepresentation(interp, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::PointSetRepresentation(interp, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1457,8 +1592,10 @@ RESQML2_NS::PlaneSetRepresentation* DataObjectRepository::createPlaneSetRepresen
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::PlaneSetRepresentation(interp, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::PlaneSetRepresentation(interp, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1469,8 +1606,10 @@ RESQML2_NS::PolylineRepresentation* DataObjectRepository::createPolylineRepresen
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::PolylineRepresentation(this, guid, title, isClosed);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::PolylineRepresentation(this, guid, title, isClosed);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1482,8 +1621,10 @@ RESQML2_NS::PolylineRepresentation* DataObjectRepository::createPolylineRepresen
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::PolylineRepresentation(interp, guid, title, isClosed);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::PolylineRepresentation(interp, guid, title, isClosed);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1495,8 +1636,10 @@ RESQML2_NS::PolylineRepresentation* DataObjectRepository::createPolylineRepresen
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::PolylineRepresentation(interp, guid, title, roleKind, isClosed);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::PolylineRepresentation(interp, guid, title, roleKind, isClosed);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1508,8 +1651,10 @@ RESQML2_NS::Grid2dRepresentation* DataObjectRepository::createGrid2dRepresentati
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::Grid2dRepresentation(interp, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::Grid2dRepresentation(interp, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1520,8 +1665,10 @@ RESQML2_NS::WellboreTrajectoryRepresentation* DataObjectRepository::createWellbo
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::WellboreTrajectoryRepresentation(interp, guid, title, mdInfo);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::WellboreTrajectoryRepresentation(interp, guid, title, mdInfo);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1532,8 +1679,10 @@ RESQML2_NS::WellboreTrajectoryRepresentation* DataObjectRepository::createWellbo
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::WellboreTrajectoryRepresentation(interp, guid, title, deviationSurvey);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::WellboreTrajectoryRepresentation(interp, guid, title, deviationSurvey);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1544,8 +1693,10 @@ RESQML2_NS::DeviationSurveyRepresentation* DataObjectRepository::createDeviation
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::DeviationSurveyRepresentation(interp, guid, title, isFinal, mdInfo);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::DeviationSurveyRepresentation(interp, guid, title, isFinal, mdInfo);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1556,14 +1707,16 @@ RESQML2_NS::WellboreFrameRepresentation* DataObjectRepository::createWellboreFra
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::WellboreFrameRepresentation(interp, guid, title, traj);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::WellboreFrameRepresentation(interp, guid, title, traj);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
 }
 
-RESQML2_2_NS::SeismicWellboreFrameRepresentation* DataObjectRepository::createSeismicWellboreFrameRepresentation(
+RESQML2_NS::SeismicWellboreFrameRepresentation* DataObjectRepository::createSeismicWellboreFrameRepresentation(
 	RESQML2_NS::WellboreInterpretation* interp,
 	const std::string& guid, const std::string& title,
 	RESQML2_NS::WellboreTrajectoryRepresentation* traj,
@@ -1571,7 +1724,11 @@ RESQML2_2_NS::SeismicWellboreFrameRepresentation* DataObjectRepository::createSe
 	double weatheringVelocity,
 	RESQML2_NS::LocalTime3dCrs* crs)
 {
+#ifdef WITH_RESQML2_2
 	return new RESQML2_2_NS::SeismicWellboreFrameRepresentation(interp, guid, title, traj, seismicReferenceDatum, weatheringVelocity, crs);
+#else
+	throw std::logic_error("RESQML2.2 support has not been built in this library.");
+#endif
 }
 
 RESQML2_NS::WellboreMarkerFrameRepresentation* DataObjectRepository::createWellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj)
@@ -1579,8 +1736,10 @@ RESQML2_NS::WellboreMarkerFrameRepresentation* DataObjectRepository::createWellb
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::WellboreMarkerFrameRepresentation(interp, guid, title, traj);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::WellboreMarkerFrameRepresentation(interp, guid, title, traj);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1592,10 +1751,12 @@ RESQML2_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(RESQML2_N
 		return new RESQML2_0_1_NS::WellboreMarker(static_cast<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation*>(wellboreMarkerFrame),
 			guid, title);
 	}
+#ifdef WITH_RESQML2_2
 	else if (dynamic_cast<RESQML2_2_NS::WellboreMarkerFrameRepresentation*>(wellboreMarkerFrame) != nullptr) {
 		return new RESQML2_2_NS::WellboreMarker(static_cast<RESQML2_2_NS::WellboreMarkerFrameRepresentation*>(wellboreMarkerFrame),
 			guid, title);
 	}
+#endif
 	else {
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1607,10 +1768,12 @@ RESQML2_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(RESQML2_N
 		return new RESQML2_0_1_NS::WellboreMarker(static_cast<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation*>(wellboreMarkerFrame),
 			guid, title, geologicBoundaryKind);
 	}
+#ifdef WITH_RESQML2_2
 	else if (dynamic_cast<RESQML2_2_NS::WellboreMarkerFrameRepresentation*>(wellboreMarkerFrame) != nullptr) {
 		return new RESQML2_2_NS::WellboreMarker(static_cast<RESQML2_2_NS::WellboreMarkerFrameRepresentation*>(wellboreMarkerFrame),
 			guid, title, geologicBoundaryKind);
 	}
+#endif
 	else {
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1622,8 +1785,10 @@ RESQML2_NS::BlockedWellboreRepresentation* DataObjectRepository::createBlockedWe
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::BlockedWellboreRepresentation(interp, guid, title, traj);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::BlockedWellboreRepresentation(interp, guid, title, traj);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1637,8 +1802,10 @@ RESQML2_NS::RepresentationSetRepresentation* DataObjectRepository::createReprese
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::RepresentationSetRepresentation(interp, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::RepresentationSetRepresentation(interp, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1651,8 +1818,10 @@ RESQML2_NS::RepresentationSetRepresentation* DataObjectRepository::createReprese
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::RepresentationSetRepresentation(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::RepresentationSetRepresentation(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1666,8 +1835,10 @@ RESQML2_NS::NonSealedSurfaceFrameworkRepresentation* DataObjectRepository::creat
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation(interp, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::NonSealedSurfaceFrameworkRepresentation(interp, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1681,8 +1852,10 @@ RESQML2_NS::SealedSurfaceFrameworkRepresentation* DataObjectRepository::createSe
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation(interp, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::SealedSurfaceFrameworkRepresentation(interp, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1697,8 +1870,10 @@ RESQML2_NS::SealedVolumeFrameworkRepresentation* DataObjectRepository::createSea
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation(interp, guid, title, ssf);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::SealedVolumeFrameworkRepresentation(interp, guid, title, ssf);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1722,7 +1897,9 @@ RESQML2_NS::IjkGridExplicitRepresentation* DataObjectRepository::createIjkGridEx
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1 : return new RESQML2_0_1_NS::IjkGridExplicitRepresentation(this, guid, title, iCount, jCount, kCount);
+#ifdef WITH_RESQML2_2
 	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridExplicitRepresentation(this, guid, title, iCount, jCount, kCount);
+#endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
@@ -1733,7 +1910,9 @@ RESQML2_NS::IjkGridExplicitRepresentation* DataObjectRepository::createIjkGridEx
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridExplicitRepresentation(interp, guid, title, iCount, jCount, kCount);
+#ifdef WITH_RESQML2_2
 	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridExplicitRepresentation(interp, guid, title, iCount, jCount, kCount);
+#endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
@@ -1743,7 +1922,9 @@ RESQML2_NS::IjkGridParametricRepresentation* DataObjectRepository::createIjkGrid
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridParametricRepresentation(this, guid, title, iCount, jCount, kCount);
+#ifdef WITH_RESQML2_2
 	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridParametricRepresentation(this, guid, title, iCount, jCount, kCount);
+#endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
@@ -1754,7 +1935,9 @@ RESQML2_NS::IjkGridParametricRepresentation* DataObjectRepository::createIjkGrid
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridParametricRepresentation(interp, guid, title, iCount, jCount, kCount);
+#ifdef WITH_RESQML2_2
 	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridParametricRepresentation(interp, guid, title, iCount, jCount, kCount);
+#endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
@@ -1764,7 +1947,9 @@ RESQML2_NS::IjkGridLatticeRepresentation* DataObjectRepository::createIjkGridLat
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridLatticeRepresentation(this, guid, title, iCount, jCount, kCount);
+#ifdef WITH_RESQML2_2
 	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridLatticeRepresentation(this, guid, title, iCount, jCount, kCount);
+#endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
@@ -1775,7 +1960,9 @@ RESQML2_NS::IjkGridLatticeRepresentation* DataObjectRepository::createIjkGridLat
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridLatticeRepresentation(interp, guid, title, iCount, jCount, kCount);
+#ifdef WITH_RESQML2_2
 	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridLatticeRepresentation(interp, guid, title, iCount, jCount, kCount);
+#endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
@@ -1786,7 +1973,9 @@ RESQML2_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGrid
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridNoGeometryRepresentation(this, guid, title, iCount, jCount, kCount);
+#ifdef WITH_RESQML2_2
 	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridNoGeometryRepresentation(this, guid, title, iCount, jCount, kCount);
+#endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
@@ -1797,7 +1986,9 @@ RESQML2_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGrid
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridNoGeometryRepresentation(interp, guid, title, iCount, jCount, kCount);
+#ifdef WITH_RESQML2_2
 	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridNoGeometryRepresentation(interp, guid, title, iCount, jCount, kCount);
+#endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
@@ -1807,7 +1998,9 @@ RESQML2_NS::UnstructuredGridRepresentation* DataObjectRepository::createUnstruct
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::UnstructuredGridRepresentation(this, guid, title, cellCount);
+#ifdef WITH_RESQML2_2
 	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::UnstructuredGridRepresentation(this, guid, title, cellCount);
+#endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
@@ -1816,7 +2009,9 @@ RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(con
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::SubRepresentation(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::SubRepresentation(this, guid, title);
+#endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
@@ -1826,7 +2021,9 @@ RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(RES
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::SubRepresentation(interp, guid, title);
+#ifdef WITH_RESQML2_2
 	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::SubRepresentation(interp, guid, title);
+#endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
@@ -1835,7 +2032,9 @@ RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createGridCon
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::GridConnectionSetRepresentation(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::GridConnectionSetRepresentation(this, guid, title);
+#endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
@@ -1845,7 +2044,9 @@ RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createGridCon
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::GridConnectionSetRepresentation(interp, guid, title);
+#ifdef WITH_RESQML2_2
 	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::GridConnectionSetRepresentation(interp, guid, title);
+#endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
@@ -1857,10 +2058,12 @@ RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createGridCon
 EML2_NS::TimeSeries* DataObjectRepository::createTimeSeries(const std::string & guid, const std::string & title)
 {
 	switch (defaultEmlVersion) {
-	case DataObjectRepository::EnergisticsStandard::EML2_1:
+	case DataObjectRepository::EnergisticsStandard::EML2_0:
 		return new RESQML2_0_1_NS::TimeSeries(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::EML2_3:
 		return new EML2_3_NS::TimeSeries(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1870,7 +2073,9 @@ RESQML2_NS::StringTableLookup* DataObjectRepository::createStringTableLookup(con
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::StringTableLookup(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::StringTableLookup(this, guid, title);
+#endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
@@ -1903,10 +2108,13 @@ EML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::strin
 	gsoap_eml2_1::eml21__QuantityClassKind quantityClass, bool isAbstract, EML2_NS::PropertyKind* parentPropertyKind)
 {
 	switch (defaultEmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::EML2_0:
 	case DataObjectRepository::EnergisticsStandard::EML2_1:
 		return new EML2_1_NS::PropertyKind(this, guid, title, quantityClass, isAbstract, parentPropertyKind);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::EML2_3:
 		return new EML2_3_NS::PropertyKind(this, guid, title, quantityClass, isAbstract, parentPropertyKind);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1918,8 +2126,10 @@ RESQML2_NS::PropertySet* DataObjectRepository::createPropertySet(const std::stri
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::PropertySet(this, guid, title, hasMultipleRealizations, hasSinglePropertyKind, timeSetKind);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::PropertySet(this, guid, title, hasMultipleRealizations, hasSinglePropertyKind, timeSetKind);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1937,8 +2147,10 @@ RESQML2_NS::CommentProperty* DataObjectRepository::createCommentProperty(RESQML2
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::CommentProperty(rep, guid, title, dimension, attachmentKind, localPropType);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::CommentProperty(rep, guid, title, dimension, attachmentKind, localPropType);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1956,8 +2168,10 @@ RESQML2_NS::ContinuousProperty* DataObjectRepository::createContinuousProperty(R
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::ContinuousProperty(rep, guid, title, dimension, attachmentKind, uom, localPropType);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::ContinuousProperty(rep, guid, title, dimension, attachmentKind, uom, localPropType);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1975,8 +2189,10 @@ RESQML2_NS::ContinuousProperty* DataObjectRepository::createContinuousProperty(R
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::ContinuousProperty(rep, guid, title, dimension, attachmentKind, nonStandardUom, localPropType);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::ContinuousProperty(rep, guid, title, dimension, attachmentKind, nonStandardUom, localPropType);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1994,8 +2210,10 @@ RESQML2_NS::DiscreteProperty* DataObjectRepository::createDiscreteProperty(RESQM
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::DiscreteProperty(rep, guid, title, dimension, attachmentKind, localPropType);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::DiscreteProperty(rep, guid, title, dimension, attachmentKind, localPropType);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -2015,8 +2233,10 @@ RESQML2_NS::CategoricalProperty* DataObjectRepository::createCategoricalProperty
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::CategoricalProperty(rep, guid, title, dimension, attachmentKind, strLookup, localPropType);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::CategoricalProperty(rep, guid, title, dimension, attachmentKind, strLookup, localPropType);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -2031,8 +2251,10 @@ EML2_NS::ActivityTemplate* DataObjectRepository::createActivityTemplate(const st
 	switch (defaultEmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::EML2_0:
 		return new RESQML2_0_1_NS::ActivityTemplate(this, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::EML2_3:
 		return new EML2_3_NS::ActivityTemplate(this, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -2043,12 +2265,13 @@ EML2_NS::Activity* DataObjectRepository::createActivity(EML2_NS::ActivityTemplat
 	switch (defaultEmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::EML2_0:
 		return new Activity(activityTemplate, guid, title);
+#ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::EML2_3:
 		return new EML2_3_NS::Activity(activityTemplate, guid, title);
+#endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
-	
 }
 
 //************************************
@@ -2166,21 +2389,32 @@ PRODML2_1_NS::FluidCharacterization* DataObjectRepository::createFluidCharacteri
 	return new PRODML2_1_NS::FluidCharacterization(this, guid, title);
 }
 
-
-EML2_3_NS::GraphicalInformationSet* DataObjectRepository::createGraphicalInformationSet(const std::string & guid, const std::string & title)
+EML2_NS::GraphicalInformationSet* DataObjectRepository::createGraphicalInformationSet(const std::string & guid, const std::string & title)
 {
+#if WITH_RESQML2_2
 	return new EML2_3_NS::GraphicalInformationSet(this, guid, title);
+#else
+	throw std::logic_error("RESQML2.2 support has not been built in this library.");
+#endif
 }
 
-RESQML2_2_NS::DiscreteColorMap* DataObjectRepository::createDiscreteColorMap(const std::string& guid, const std::string& title)
+RESQML2_NS::DiscreteColorMap* DataObjectRepository::createDiscreteColorMap(const std::string& guid, const std::string& title)
 {
+#if WITH_RESQML2_2
 	return new RESQML2_2_NS::DiscreteColorMap(this, guid, title);
+#else
+	throw std::logic_error("RESQML2.2 support has not been built in this library.");
+#endif
 }
 
-RESQML2_2_NS::ContinuousColorMap* DataObjectRepository::createContinuousColorMap(const std::string& guid, const std::string& title,
+RESQML2_NS::ContinuousColorMap* DataObjectRepository::createContinuousColorMap(const std::string& guid, const std::string& title,
 	gsoap_eml2_3::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_3::resqml22__InterpolationMethod interpolationMethod)
 {
+#if WITH_RESQML2_2
 	return new RESQML2_2_NS::ContinuousColorMap(this, guid, title, interpolationDomain, interpolationMethod);
+#else
+	throw std::logic_error("RESQML2.2 support has not been built in this library.");
+#endif
 }
 
 std::vector<RESQML2_NS::LocalDepth3dCrs*> DataObjectRepository::getLocalDepth3dCrsSet() const { return getDataObjects<RESQML2_NS::LocalDepth3dCrs>(); }
@@ -2729,7 +2963,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getProdml2_1WrapperFromGsoapCon
 COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType)
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;
-
+#if WITH_RESQML2_2
 	if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BoundaryFeature)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BoundaryFeatureInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CategoricalProperty)
@@ -2819,7 +3053,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreMarkerFrameRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreTrajectoryRepresentation)
-
+#endif
 	return wrapper;
 }
 
@@ -2834,12 +3068,13 @@ COMMON_NS::AbstractObject* DataObjectRepository::getEml2_1WrapperFromGsoapContex
 COMMON_NS::AbstractObject* DataObjectRepository::getEml2_3WrapperFromGsoapContext(const std::string & datatype)
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;
+#if WITH_RESQML2_2
 	if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, Activity, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, ActivityTemplate, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, GraphicalInformationSet, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, PropertyKind, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, TimeSeries, gsoap_eml2_3, eml23)
-
+#endif
 	return wrapper;
 }
 

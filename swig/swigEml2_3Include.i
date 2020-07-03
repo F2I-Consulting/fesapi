@@ -54,55 +54,12 @@ namespace EML2_3_NS
 	public:
 	};
 
-#if defined(SWIGPYTHON)
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(GraphicalInformationSet_eml23) GraphicalInformationSet;
 #endif
-	class GraphicalInformationSet : public COMMON_NS::AbstractObject
+	class GraphicalInformationSet : public EML2_NS::GraphicalInformationSet
 	{
 	public:
-		unsigned int getGraphicalInformationSetCount() const;
-		std::string getTargetObjectUuid(unsigned int index) const;
-		COMMON_NS::AbstractObject* getTargetObject(unsigned int index) const;
-		bool hasGraphicalInformation(COMMON_NS::AbstractObject const* targetObject) const;
-		
-		bool hasDefaultColor(COMMON_NS::AbstractObject const* targetObject) const;
-		double getDefaultHue(COMMON_NS::AbstractObject const* targetObject) const;
-		double getDefaultSaturation(COMMON_NS::AbstractObject const* targetObject) const;
-		double getDefaultValue(COMMON_NS::AbstractObject const* targetObject) const;
-		double getDefaultAlpha(COMMON_NS::AbstractObject const* targetObject) const;
-		void getDefaultRgbColor(COMMON_NS::AbstractObject const* targetObject, double& red, double& green, double& blue) const;
-		void getDefaultRgbColor(COMMON_NS::AbstractObject const* targetObject, unsigned int& red, unsigned int& green, unsigned int& blue) const;
-		bool hasDefaultColorTitle(COMMON_NS::AbstractObject const* targetObject) const;
-		std::string getDefaultColorTitle(COMMON_NS::AbstractObject const* targetObject) const;
-		void setDefaultHsvColor(COMMON_NS::AbstractObject * targetObject, double hue, double saturation, double value, double alpha = 1.0, std::string const& colorTitle = "");
-		void setDefaultRgbColor(COMMON_NS::AbstractObject * targetObject, double red, double green, double blue, double alpha = 1.0, std::string const& colorTitle = "");
-		void setDefaultRgbColor(COMMON_NS::AbstractObject * targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string const& colorTitle = "");
-
-		bool hasDiscreteColorMap(COMMON_NS::AbstractObject const* targetObject) const;
-		std::string getDiscreteColorMapUuid(COMMON_NS::AbstractObject const* targetObject) const;
-		RESQML2_2_NS::DiscreteColorMap* getDiscreteColorMap(COMMON_NS::AbstractObject const* targetObject) const;
-		void setDiscreteColorMap(COMMON_NS::AbstractObject * targetObject, RESQML2_2_NS::DiscreteColorMap* discreteColorMap,
-			bool useReverseMapping = false, bool useLogarithmicMapping = false);
-
-		bool hasContinuousColorMap(COMMON_NS::AbstractObject const* targetObject) const;
-		std::string getContinuousColorMapUuid(COMMON_NS::AbstractObject const* targetObject) const;
-		RESQML2_2_NS::ContinuousColorMap* getContinuousColorMap(COMMON_NS::AbstractObject const* targetObject) const;
-		void setContinuousColorMap(COMMON_NS::AbstractObject * targetObject, RESQML2_2_NS::ContinuousColorMap* continuousColorMap,
-			bool useReverseMapping = false, bool useLogarithmicMapping = false);
-
-		bool hasColorMapMinMax(COMMON_NS::AbstractObject const* targetObject) const;
-		double getColorMapMin(COMMON_NS::AbstractObject const* targetObject) const;
-		double getColorMapMax(COMMON_NS::AbstractObject const* targetObject) const;
-		void setColorMapMinMax(COMMON_NS::AbstractObject const* targetObject, double min, double max) const;
-
-		bool hasValueVectorIndex(COMMON_NS::AbstractObject const* targetObject);
-		LONG64 getValueVectorIndex(COMMON_NS::AbstractObject const* targetObject);
-		void setValueVectorIndex(COMMON_NS::AbstractObject const* targetObject, LONG64 valueVectorIndex);
-
-		static void rgbToHsv(double red, double green, double blue, double& hue, double& saturation, double& value);
-		static void rgbToHsv(unsigned int red, unsigned int green, unsigned int blue, double& hue, double& saturation, double& value);
-		static void hsvToRgb(double hue, double saturation, double value, double& red, double& green, double& blue);
-		static void hsvToRgb(double hue, double saturation, double value, unsigned int& red, unsigned int& green, unsigned int& blue);
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)

@@ -21,19 +21,15 @@ under the License.
 #include "../resqml2/SeismicLineSetFeature.h"
 
 using namespace std;
-using namespace RESQML2_2_NS;
+using namespace RESQML2_NS;
 using namespace gsoap_eml2_3;
 
-ShotPointLineFeature::ShotPointLineFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title)
+const char* ShotPointLineFeature::XML_TAG = "ShotPointLineFeature";
+		
+unsigned int ShotPointLineFeature::getTraceCount() const
 {
-	if (repo == nullptr) {
-		throw invalid_argument("The soap context cannot be null.");
-	}
-
-	gsoapProxy2_3 = soap_new_resqml22__ShotPointLineFeature(repo->getGsoapContext());
-
-	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
-
-	repo->addOrReplaceDataObject(this);
+	auto labels = getTraceLabels();
+	return labels.empty()
+		? -1
+		: labels.size();
 }

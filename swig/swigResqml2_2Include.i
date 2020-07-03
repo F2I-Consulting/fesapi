@@ -17,8 +17,6 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 %{
-#include "../src/resqml2_2/AbstractColorMap.h"
-#include "../src/resqml2_2/AbstractSeismicLineFeature.h"
 #include "../src/resqml2_2/BoundaryFeature.h"
 #include "../src/resqml2_2/BoundaryFeatureInterpretation.h"
 #include "../src/resqml2_2/CategoricalProperty.h"
@@ -89,8 +87,6 @@ namespace RESQML2_2_NS
 }
 #endif
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
-%nspace RESQML2_2_NS::AbstractColorMap;	
-%nspace RESQML2_2_NS::AbstractSeismicLineFeature;
 %nspace RESQML2_2_NS::BoundaryFeature;
 %nspace RESQML2_2_NS::BoundaryFeatureInterpretation;
 %nspace RESQML2_2_NS::CategoricalProperty;
@@ -166,84 +162,26 @@ namespace gsoap_eml2_3
 namespace RESQML2_2_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
-
-#if defined(SWIGPYTHON)
-	%rename(AbstractColorMap_resqml22) AbstractColorMap;
-#endif
-	class AbstractColorMap : public COMMON_NS::AbstractObject
+	
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(DiscreteColorMap_resqml22) DiscreteColorMap;
+#endif	
+	class DiscreteColorMap : public RESQML2_NS::DiscreteColorMap
 	{
 	public:
-		void setRgbColors(unsigned int colorCount,
-			double const* rgbColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const* indices = nullptr);
-		void setRgbColors(unsigned int colorCount,
-			unsigned int const* rgbColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const* indices = nullptr);
-
-		double getHue(double colorIndex) const;
-		double getSaturation(double colorIndex) const;
-		double getValue(double colorIndex) const;
-		double getAlpha(double colorIndex) const;
-		
-		void getRgbColor(double colorIndex, double& red, double& green, double& blue) const;
-		void getRgbColor(double colorIndex, unsigned int& red, unsigned int& green, unsigned int& blue) const;
-
-		bool hasColorTitle(double colorIndex) const;
-		std::string getColorTitle(double colorIndex) const;
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(AbstractSeismicLineFeature_resqml22) AbstractSeismicLineFeature;
-#endif	
-	class AbstractSeismicLineFeature : public RESQML2_NS::AbstractSeismicLineFeature
-	{
-	public:
-		void setTraceLabels(const std::vector<std::string> & values, EML2_NS::AbstractHdfProxy * proxy);
-		void setSeismicLineSet(RESQML2_NS::SeismicLineSetFeature * seisLineSet);
-
-		std::vector<std::string> getTraceLabels() const;
-	};
-	
-#if defined(SWIGPYTHON)
-	%rename(DiscreteColorMap_resqml22) DiscreteColorMap;
-#endif	
-	class DiscreteColorMap : public AbstractColorMap
-	{
-	public:
-		void setHsvColors(unsigned int colorCount, 
-			double const * hsvColors, double const * alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const * indices = nullptr);
-
-		unsigned int getColorCount() const;
-	};
-	
-#if defined(SWIGPYTHON)
 	%rename(ContinuousColorMap_resqml22) ContinuousColorMap;
 #endif	
-	class ContinuousColorMap : public AbstractColorMap 
+	class ContinuousColorMap : public RESQML2_NS::ContinuousColorMap 
 	{
 	public:
-		void setHsvColors(unsigned int colorCount,
-			double const* hsvColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const* indices = nullptr);
-
-		unsigned int getColorCount() const;
-
-		gsoap_eml2_3::resqml22__InterpolationDomain getInterpolationDomain();
-		std::string getInterpolationDomainAsString();
-
-		gsoap_eml2_3::resqml22__InterpolationMethod getInterpolationMethod();
-		std::string getInterpolationMethodAsString();
-
-		void setNanHsvColor(double hue, double saturation, double value, double alpha = 1, std::string const& colorTitle = "");
-		void setNanRgbColor(double red, double green, double blue, double alpha = 1, std::string const& colorTitle = "");
-		void setNanRgbColor(unsigned int red, unsigned int green, unsigned int blue, double alpha = 1, std::string const& colorTitle = "");
 	};
-	
 
-	//************************************
-	//************ CRS *******************
-	//************************************
+	//************************************/
+	//************ CRS *******************/
+	//************************************/
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(LocalDepth3dCrs_resqml22) LocalDepth3dCrs;
 #endif
@@ -268,9 +206,9 @@ namespace RESQML2_2_NS
 	public:
 	};
 	
-	//************************************
-	//************ FEATURE ***************
-	//************************************
+	//************************************/
+	//************ FEATURE ***************/
+	//************************************/
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(BoundaryFeature_resqml22) BoundaryFeature;
@@ -313,7 +251,7 @@ namespace RESQML2_2_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(ShotPointLineFeature_resqml22) ShotPointLineFeature;
 #endif
-	class ShotPointLineFeature : public AbstractSeismicLineFeature
+	class ShotPointLineFeature : public RESQML2_NS::ShotPointLineFeature
 	{
 	public:
 	};
@@ -321,11 +259,9 @@ namespace RESQML2_2_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(CmpLineFeature_resqml22) CmpLineFeature;
 #endif
-	class CmpLineFeature : public AbstractSeismicLineFeature
+	class CmpLineFeature : public RESQML2_NS::CmpLineFeature
 	{
 	public:
-		void setShotPointLine(class ShotPointLineFeature* shotPointLine);
-		ShotPointLineFeature* getShotPointLine() const;
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
@@ -551,24 +487,12 @@ namespace RESQML2_2_NS
 	public:
 	};
 	
-#if defined(SWIGPYTHON)
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(SeismicWellboreFrameRepresentation_resqml22) SeismicWellboreFrameRepresentation;
 #endif
-	class SeismicWellboreFrameRepresentation : public WellboreFrameRepresentation
+	class SeismicWellboreFrameRepresentation : public RESQML2_NS::SeismicWellboreFrameRepresentation
 	{
 	public:
-		void setTimeValues(double const * timeValues, unsigned int timeValueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
-		void setTimeValues(double firstTimeValue, double incrementTimeValue, unsigned int timeValueCount);
-
-		bool areTimeValuesRegularlySpaced() const;
-		double getTimeConstantIncrementValue() const;
-		double getTimeFirstValue() const;
-		unsigned int getTimeValuesCount() const;
-		RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getTimeHdfDatatype() const;
-		void getTimeAsDoubleValues(double* values) const;
-		void getTimeAsFloatValues(float* values) const;
-		double getSeismicReferenceDatum() const;
-		double getWeatheringVelocity() const;
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)

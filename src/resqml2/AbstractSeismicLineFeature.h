@@ -43,7 +43,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	seisLineSet	The seismic line set this seismic line belongs to.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setSeismicLineSet(SeismicLineSetFeature * seisLineSet) = 0;
+		DLL_IMPORT_OR_EXPORT void setSeismicLineSet(SeismicLineSetFeature * seisLineSet);
 
 		/**
 		 * Gets the seismic line set this seismic line belongs to.
@@ -59,7 +59,7 @@ namespace RESQML2_NS
 		 * @returns	Empty data object reference	if this seismic line does not belong to a seismic line
 		 * 			set, else the data object reference of the seismic line set it belongs to.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSeismicLineSetDor() const = 0;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getSeismicLineSetDor() const;
 
 		/**
 		 * Gets the total count of traces in this seismic line.
@@ -73,7 +73,15 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The trace labels.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::vector<std::string> getTraceLabels() const = 0;
+		DLL_IMPORT_OR_EXPORT std::vector<std::string> getTraceLabels() const;
+
+		/**
+		 * Sets the trace labels.
+		 *
+		 * @param [in]	values	The labels to set.
+		 * @param [in]	proxy	The proxy where to write the labels.
+		 */
+		DLL_IMPORT_OR_EXPORT void setTraceLabels(const std::vector<std::string> & values, EML2_NS::AbstractHdfProxy * proxy);
 
 	protected:
 

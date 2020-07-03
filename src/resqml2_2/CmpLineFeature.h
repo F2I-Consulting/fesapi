@@ -18,12 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractSeismicLineFeature.h"
+#include "../resqml2/CmpLineFeature.h"
 
 namespace RESQML2_2_NS
 {
 	/** A seismic line feature. */
-	class CmpLineFeature final : public AbstractSeismicLineFeature
+	class CmpLineFeature final : public RESQML2_NS::CmpLineFeature
 	{
 	public:
 
@@ -34,7 +34,7 @@ namespace RESQML2_2_NS
 		 *
 		 * 
 		 */
-		DLL_IMPORT_OR_EXPORT CmpLineFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSeismicLineFeature(partialObject) {}
+		DLL_IMPORT_OR_EXPORT CmpLineFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::CmpLineFeature(partialObject) {}
 
 		/**
 		 * @brief	Creates an instance of this class in a gsoap context.
@@ -62,32 +62,9 @@ namespace RESQML2_2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		CmpLineFeature(gsoap_eml2_3::_resqml22__CmpLineFeature* fromGsoap):
-			AbstractSeismicLineFeature(fromGsoap) {}
+			RESQML2_NS::CmpLineFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
 		~CmpLineFeature() {}
-
-		DLL_IMPORT_OR_EXPORT unsigned int getTraceCount() const final;
-		
-		/**
-		 * Sets the ShotPointLine.
-		 *
-		 * @param [in]	shotPointLine	The ShotPointLine to set.
-		 */
-		DLL_IMPORT_OR_EXPORT void setShotPointLine(class ShotPointLineFeature* shotPointLine);
-		
-		/**
-		 * Get the ShotPointLineFeature of this seismic line.
-		 *
-		 * @returns	The assocaited ShotPointLineFeature.
-		 */
-		DLL_IMPORT_OR_EXPORT class ShotPointLineFeature* getShotPointLine() const;
-
-		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
-
-		void loadTargetRelationships() final;
 	};
 }

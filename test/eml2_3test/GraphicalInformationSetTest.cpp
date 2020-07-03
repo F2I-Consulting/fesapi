@@ -18,12 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "GraphicalInformationSetTest.h"
 #include "catch.hpp"
-#include "common/GraphicalInformationSet.h"
+#include "eml2/GraphicalInformationSet.h"
 #include "resqml2/BoundaryFeature.h"
 #include "resqml2/LocalTime3dCrs.h"
 
 using namespace std;
-using namespace COMMON_NS;
+using namespace EML2_NS;
 using namespace RESQML2_NS;
 using namespace commontest;
 

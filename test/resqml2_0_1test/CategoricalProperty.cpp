@@ -23,6 +23,7 @@ under the License.
 #include "resqml2_0_1test/PropertyKindTest.h"
 #include "resqml2_0_1test/WellboreFrameRepresentationTest.h"
 
+#include "resqml2_0_1/PropertyKind.h"
 #include "eml2_3/PropertyKind.h"
 #include "resqml2/CategoricalProperty.h"
 #include "resqml2/StringTableLookup.h"
@@ -50,7 +51,7 @@ CategoricalProperty::CategoricalProperty(DataObjectRepository * repo, bool init)
 
 void CategoricalProperty::initRepoHandler() {
 	RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo->createPartialIjkGridRepresentation("", "partial IJK Grid");
-	EML2_NS::PropertyKind * propertyKind = repo->createPartial<EML2_3_NS::PropertyKind>("", "Partial prop kind");
+	EML2_NS::PropertyKind * propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("", "Partial prop kind");
 
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];

@@ -520,9 +520,6 @@ namespace RESQML2_0_1_NS
 	public:
 		int getTraceIndexIncrement() const;
 		int getFirstTraceIndex() const;
-		
-		SeismicLineSetFeature* getSeismicLineSet();
-		void setSeismicLineSet(class SeismicLineSetFeature * seisLineSet);
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)

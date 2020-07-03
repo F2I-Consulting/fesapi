@@ -18,12 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractSeismicLineFeature.h"
+#include "../resqml2/ShotPointLineFeature.h"
 
 namespace RESQML2_2_NS
 {
 	/** A seismic line feature. */
-	class ShotPointLineFeature final : public AbstractSeismicLineFeature
+	class ShotPointLineFeature final : public RESQML2_NS::ShotPointLineFeature
 	{
 	public:
 
@@ -34,7 +34,7 @@ namespace RESQML2_2_NS
 		 *
 		 * 
 		 */
-		DLL_IMPORT_OR_EXPORT ShotPointLineFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSeismicLineFeature(partialObject) {}
+		DLL_IMPORT_OR_EXPORT ShotPointLineFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::ShotPointLineFeature(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -53,16 +53,9 @@ namespace RESQML2_2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		ShotPointLineFeature(gsoap_eml2_3::_resqml22__ShotPointLineFeature* fromGsoap):
-			AbstractSeismicLineFeature(fromGsoap) {}
+			RESQML2_NS::ShotPointLineFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
 		~ShotPointLineFeature() {}
-
-		DLL_IMPORT_OR_EXPORT unsigned int getTraceCount() const final;
-	
-		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};
 }

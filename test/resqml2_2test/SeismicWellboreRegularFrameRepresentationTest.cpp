@@ -70,7 +70,7 @@ void SeismicWellboreRegularFrameRepresentationTest::initRepoHandler() {
 	}
 
 	// WellboreFeature frame
-	RESQML2_2_NS::SeismicWellboreFrameRepresentation* w1i1RegularSeismicFrameRep = repo->createSeismicWellboreFrameRepresentation(interp, defaultUuid, defaultTitle, traj, 0., 0., crs);
+	RESQML2_NS::SeismicWellboreFrameRepresentation* w1i1RegularSeismicFrameRep = repo->createSeismicWellboreFrameRepresentation(interp, defaultUuid, defaultTitle, traj, 0., 0., crs);
 	w1i1RegularSeismicFrameRep->setMdValues(0, 200, 6);
 	w1i1RegularSeismicFrameRep->setTimeValues(0., 10., 6);
 }

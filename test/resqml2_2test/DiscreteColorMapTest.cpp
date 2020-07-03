@@ -19,7 +19,7 @@ under the License.
 #include "DiscreteColorMapTest.h"
 #include "catch.hpp"
 #include "eml2/AbstractHdfProxy.h"
-#include "common/GraphicalInformationSet.h"
+#include "eml2/GraphicalInformationSet.h"
 #include "eml2/PropertyKind.h"
 #include "resqml2/IjkGridExplicitRepresentation.h"
 #include "resqml2/Model.h"
@@ -89,7 +89,7 @@ void DiscreteColorMapTest::initRepoHandler() {
 	discreteProperty->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, -1);
 
 	// associating a discrete color map to the discrete property kind
-	RESQML2_2_NS::DiscreteColorMap* discreteColorMap1 = repo->createDiscreteColorMap(uuidPropertyKindDiscreteColorMap, titlePropertyKindDiscreteColorMap);
+	RESQML2_NS::DiscreteColorMap* discreteColorMap1 = repo->createDiscreteColorMap(uuidPropertyKindDiscreteColorMap, titlePropertyKindDiscreteColorMap);
 	REQUIRE(discreteColorMap1 != nullptr);
 	unsigned int rgbColors1[6] = { 0, 0, 256, 255, 0, 0 };
 	double alphas1[2] = { 1., 1. };
@@ -103,7 +103,7 @@ void DiscreteColorMapTest::initRepoHandler() {
 	REQUIRE(graphicalInformationSet->getDiscreteColorMapUuid(discreteProperty) == discreteColorMap1->getUuid());
 
 	// associating the discrete color map to the discrete property
-	RESQML2_2_NS::DiscreteColorMap* discreteColorMap2 = repo->createDiscreteColorMap(defaultUuid, defaultTitle);
+	RESQML2_NS::DiscreteColorMap* discreteColorMap2 = repo->createDiscreteColorMap(defaultUuid, defaultTitle);
 	REQUIRE(discreteColorMap2 != nullptr);
 	unsigned int rgbColors2[6] = { 255, 0, 0, 0, 0, 255 };
 	double alphas2[2] = { 1., 1. };
@@ -118,7 +118,7 @@ void DiscreteColorMapTest::readRepoHandler() {
 	GraphicalInformationSet * graphicalInformationSet = repo->getDataObjects<GraphicalInformationSet>()[0];
 	DiscreteProperty* discreteProperty = repo->getDataObjectByUuid<DiscreteProperty>(uuidDiscreteProperty);
 	REQUIRE(graphicalInformationSet->hasDiscreteColorMap(discreteProperty));
-	RESQML2_2_NS::DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(discreteProperty);
+	RESQML2_NS::DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(discreteProperty);
 	REQUIRE(discreteColorMap->getUuid() == defaultUuid);
 	double r, g, b;
 	discreteColorMap->getRgbColor(0, r, g, b);

@@ -62,18 +62,18 @@ under the License.
 #include "witsml2_0test/Trajectory.h"
 #include "witsml2_0test/Perforation.h"
 #include "witsml2_0test/WellboreGeometryTest.h"
-
-#include "GraphicalInformationSetTest.h"
+#if WITH_RESQML2_2
+#include "eml2_3test/GraphicalInformationSetTest.h"
 #include "resqml2_2test/DiscreteColorMapTest.h"
 #include "resqml2_2test/ContinuousColorMapTest.h"
 #include "resqml2_2test/WellboreFrameRepresentationTest.h"
 #include "resqml2_2test/WellboreRegularFrameRepresentationTest.h"
 #include "resqml2_2test/SeismicWellboreFrameRepresentationTest.h"
 #include "resqml2_2test/SeismicWellboreRegularFrameRepresentationTest.h"
-
+using namespace resqml2_2test;
+#endif
 using namespace commontest;
 using namespace resqml2_0_1test;
-using namespace resqml2_2test;
 using namespace witsml2_0test;
 
 #define FESAPI_TEST(name, tags, classTest)  TEST_CASE(name, tags)\
@@ -89,7 +89,7 @@ TEST_CASE( "Deserialize an EPC document", "[epc]")
 	test.deserialize();
 }
 */
-
+#if WITH_RESQML2_2
 FESAPI_TEST("Export and import graphical information set", "[graphical information]", GraphicalInformationSetTest)
 FESAPI_TEST("Export and import discrete color map on a discrete property", "[graphical information][color map][discrete color map]", DiscreteColorMapTest)
 FESAPI_TEST("Export and import continuous color map on a discrete property", "[graphical information][color map][continuous color map]", ContinuousColorMapTest)
@@ -97,7 +97,7 @@ FESAPI_TEST("Export and import wellbore frame", "[well]", resqml2_2test::Wellbor
 FESAPI_TEST("Export and import regular wellbore frame", "[well]", resqml2_2test::WellboreRegularFrameRepresentationTest)
 FESAPI_TEST("Export and import seismic wellbore frame", "[well]", SeismicWellboreFrameRepresentationTest)
 FESAPI_TEST("Export and import regular seismic wellbore frame", "[well]", SeismicWellboreRegularFrameRepresentationTest)
-
+#endif
 TEST_CASE("Export and import an empty EPC document", "[repo]")
 {
 	EpcDocumentTest testIn("../../EpcDocumentTest");

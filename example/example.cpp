@@ -88,7 +88,7 @@ under the License.
 
 #include "resqml2_0_1/Activity.h"
 #include "resqml2_0_1/ActivityTemplate.h"
-
+#if WITH_RESQML2_2
 #include "eml2_3/GraphicalInformationSet.h"
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
@@ -98,7 +98,7 @@ under the License.
 #include "resqml2_2/ShotPointLineFeature.h"
 #include "resqml2_2/WellboreMarker.h"
 #include "resqml2_2/WellboreMarkerFrameRepresentation.h"
-
+#endif
 #include "resqml2/SealedVolumeFrameworkRepresentation.h"
 #include "resqml2/StratigraphicColumn.h"
 #include "resqml2/StratigraphicColumnRankInterpretation.h"
@@ -283,9 +283,9 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfP
 		gsoap_eml2_3::resqml22__IndexableElement__intervals, unitNumberPropType);
 	char unitNumbers[5] = { 0, 1, 2, 3, 4 };
 	discreteProp->pushBackCharHdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
-
+#if WITH_RESQML2_2
 	// SeismicWellboreFrameRepresentation
-	RESQML2_2_NS::SeismicWellboreFrameRepresentation* w1i1SeismicFrameRep = pck->createSeismicWellboreFrameRepresentation(
+	RESQML2_NS::SeismicWellboreFrameRepresentation* w1i1SeismicFrameRep = pck->createSeismicWellboreFrameRepresentation(
 		wellbore1Interp1, "dcbeea2e-8327-4c5b-97e3-bdced0680de5", "Wellbore1 Interp1 SeismicFrameRep",
 		w1i1TrajRep,
 		0.,
@@ -295,7 +295,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfP
 	double logTimes[5] = { 0., 10., 20., 25., 30. };
 	w1i1SeismicFrameRep->setTimeValues(logTimes, 5, hdfProxy);
 
-	RESQML2_2_NS::SeismicWellboreFrameRepresentation* w1i1RegularSeismicFrameRep = pck->createSeismicWellboreFrameRepresentation(
+	RESQML2_NS::SeismicWellboreFrameRepresentation* w1i1RegularSeismicFrameRep = pck->createSeismicWellboreFrameRepresentation(
 		wellbore1Interp1, "7f1b75ff-1226-4c0a-a531-8f71661da419", "Wellbore1 Interp1 Regular SeismicFrameRep",
 		w1i1TrajRep,
 		0.,
@@ -303,6 +303,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfP
 		localTime3dCrs);
 	w1i1RegularSeismicFrameRep->setMdValues(0, 200, 6);
 	w1i1RegularSeismicFrameRep->setTimeValues(0., 10., 6);
+#endif
 }
 
 void serializePerforations(COMMON_NS::DataObjectRepository * pck)
@@ -337,10 +338,10 @@ void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 	wellboreCompletion->setPerforationHistoryStatus(1, 1, gsoap_eml2_1::witsml20__PerforationStatus__squeezed);
 	wellboreCompletion->setPerforationHistoryStartDate(1, 1, 1514764800);
 }
-
+#if WITH_RESQML2_2
 void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfProxy * hdfProxy)
 {
-	EML2_3_NS::GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
+	EML2_NS::GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
 
 	// *************
 	// Default color
@@ -369,7 +370,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 	// ******************
 
 	// associating a discrete color map to property kind propType1
-	RESQML2_2_NS::DiscreteColorMap* propKindDiscrColMap = repo->createDiscreteColorMap("d808d79c-2cad-4c4f-9712-3b3ab4aa3f4a", "Property kind discrete color map");
+	RESQML2_NS::DiscreteColorMap* propKindDiscrColMap = repo->createDiscreteColorMap("d808d79c-2cad-4c4f-9712-3b3ab4aa3f4a", "Property kind discrete color map");
 	unsigned int propKindDiscrColMapRgbColors[9] = { 0, 0, 255, 255, 255, 255, 255, 0, 0 };
 	double propKindDiscrColMapAlphas[3] = { 1., 1., 1. };
 	vector<string> propKindDiscrColMapTitles = { "blue", "white", "red" };
@@ -377,7 +378,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 	graphicalInformationSet->setDiscreteColorMap(propType1, propKindDiscrColMap);
 
 	// associating a discrete color map to dicreteProp1
-	RESQML2_2_NS::DiscreteColorMap* discrColMap = repo->createDiscreteColorMap("3daf4661-ae8f-4357-adee-0b0159bdd0a9", "Discrete color map");
+	RESQML2_NS::DiscreteColorMap* discrColMap = repo->createDiscreteColorMap("3daf4661-ae8f-4357-adee-0b0159bdd0a9", "Discrete color map");
 	unsigned int discrColMapRgbColors[18] = { 255, 0, 0, 0, 255, 0, 0, 0, 255, 169, 84, 27, 0, 0, 0, 255, 255, 255 };
 	double discrColMapAlphas[6] = { 1., 1., 1., 1., 1., 1. };
 	vector<string> discrColMapTitles = { "red", "green", "blue", "orange", "black", "white" };
@@ -417,7 +418,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 	}
 	contColMapContProp->pushBackDoubleHdf5Array2dOfValues(values.get(), numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 
-	RESQML2_2_NS::ContinuousColorMap* contColMap = repo->createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", gsoap_eml2_3::resqml22__InterpolationDomain__rgb, gsoap_eml2_3::resqml22__InterpolationMethod__linear);
+	RESQML2_NS::ContinuousColorMap* contColMap = repo->createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", gsoap_eml2_3::resqml22__InterpolationDomain__rgb, gsoap_eml2_3::resqml22__InterpolationMethod__linear);
 	unsigned int contColMapRgbColors[6] = { 0, 255, 0, 255, 0, 0 };
 	vector<string> contColMapColTitles = { "green", "red" };
 	double contColMapAlphas[2] = { 1., 1. };
@@ -426,7 +427,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 	graphicalInformationSet->setColorMapMinMax(contColMapContProp, 0., 1.);
 	graphicalInformationSet->setValueVectorIndex(contColMapContProp, 1);
 }
-
+#endif
 void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfProxy* hdfProxy)
 {
 	// Build the Stratigraphic column
@@ -437,13 +438,28 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, EML2_NS:
 	RESQML2_NS::StratigraphicColumnRankInterpretation* stratiColumnRank1 = pck->createStratigraphicColumnRankInterpretationInApparentDepth(stratiModelFeature, "9d2d19cf-aedb-4766-9691-758d536456ba", "Stratigraphic column rank 1", 1);
 	stratiColumn->pushBackStratiColumnRank(stratiColumnRank0);
 	stratiColumn->pushBackStratiColumnRank(stratiColumnRank1);
-	RESQML2_2_NS::RockVolumeFeature* stratiUnitAFeature = pck->createRockVolumeFeature("0426c6a0-fa3c-11e5-8b9c-0002a5d5c51b", "Unit A");
+	RESQML2_NS::RockVolumeFeature* stratiUnitAFeature = nullptr;
+	RESQML2_NS::RockVolumeFeature* stratiUnitBFeature = nullptr;
+	RESQML2_NS::RockVolumeFeature* stratiUnitB1Feature = nullptr;
+	RESQML2_NS::RockVolumeFeature* stratiUnitB2Feature = nullptr;
+	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		stratiUnitAFeature = pck->createStratigraphicUnitFeature("0426c6a0-fa3c-11e5-8b9c-0002a5d5c51b", "Unit A");
+		stratiUnitBFeature = pck->createStratigraphicUnitFeature("273a92c0-fa3c-11e5-85f8-0002a5d5c51b", "Unit B");
+		stratiUnitB1Feature = pck->createStratigraphicUnitFeature("0b7cc266-4280-4696-b9dc-5d17017797e2", "Unit B1");
+		stratiUnitB2Feature = pck->createStratigraphicUnitFeature("87255cf5-033f-4fa4-941b-7947b434f4c2", "Unit B2");
+
+	}
+#if WITH_RESQML2_2
+	else {
+		stratiUnitAFeature = pck->createRockVolumeFeature("0426c6a0-fa3c-11e5-8b9c-0002a5d5c51b", "Unit A");
+		stratiUnitBFeature = pck->createRockVolumeFeature("273a92c0-fa3c-11e5-85f8-0002a5d5c51b", "Unit B");
+		stratiUnitB1Feature = pck->createRockVolumeFeature("0b7cc266-4280-4696-b9dc-5d17017797e2", "Unit B1");
+		stratiUnitB2Feature = pck->createRockVolumeFeature("87255cf5-033f-4fa4-941b-7947b434f4c2", "Unit B2");
+	}
+#endif
 	RESQML2_NS::StratigraphicUnitInterpretation* stratiUnitAInterp = pck->createStratigraphicUnitInterpretation(stratiUnitAFeature, "1a919b40-fa3c-11e5-a72c-0002a5d5c51b", "Unit A interp");
-	RESQML2_2_NS::RockVolumeFeature* stratiUnitBFeature = pck->createRockVolumeFeature("273a92c0-fa3c-11e5-85f8-0002a5d5c51b", "Unit B");
 	RESQML2_NS::StratigraphicUnitInterpretation* stratiUnitBInterp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "2b9169c0-fa3c-11e5-ae2c-0002a5d5c51b", "Unit B interp");
-	RESQML2_2_NS::RockVolumeFeature* stratiUnitB1Feature = pck->createRockVolumeFeature("0b7cc266-4280-4696-b9dc-5d17017797e2", "Unit B1");
 	RESQML2_NS::StratigraphicUnitInterpretation* stratiUnitB1Interp = pck->createStratigraphicUnitInterpretation(stratiUnitB1Feature, "7d7ab0bc-554d-48f5-ab5c-3bb7b66696e5", "Unit B1 interp");
-	RESQML2_2_NS::RockVolumeFeature* stratiUnitB2Feature = pck->createRockVolumeFeature("87255cf5-033f-4fa4-941b-7947b434f4c2", "Unit B2");
 	RESQML2_NS::StratigraphicUnitInterpretation* stratiUnitB2Interp = pck->createStratigraphicUnitInterpretation(stratiUnitB2Feature, "34c37be0-964f-41a8-ba78-db5147744927", "Unit B2 interp");
 
 	// Build a minimal Stratigraphic column to allow the definition of a minimal sealed volume framework
@@ -533,9 +549,11 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
 		seismicLine = pck->createSeismicLine("117f9bf6-6bb0-49f2-9cee-46912300bff6", "Seismic line", 1, 0, 5);
 	}
+#if WITH_RESQML2_2
 	else {
 		seismicLine = pck->createShotPointLine("117f9bf6-6bb0-49f2-9cee-46912300bff6", "Seismic line");
 	}
+#endif
 	seismicLine->setSeismicLineSet(seismicLineSet);
 	RESQML2_NS::GenericFeatureInterpretation* seismicLineInterp = pck->createGenericFeatureInterpretation(seismicLine, "", "Seismic line Interp");
 	RESQML2_NS::PolylineRepresentation* seismicLineRep = pck->createPolylineRepresentation(seismicLineInterp, "", "Seismic line Rep");
@@ -1894,11 +1912,13 @@ void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, EML2_
 		rockFluidFeature = pck.createRockFluidUnit("18a714da-4bf2-11e9-a17e-e74cb7f87d2a", "Rock Fluid Unit", gsoap_resqml2_0_1::resqml20__Phase__oil_x0020column, 
 			static_cast<RESQML2_0_1_NS::FluidBoundaryFeature*>(fluidBoundaryTop), static_cast<RESQML2_0_1_NS::FluidBoundaryFeature*>(fluidBoundaryBottom));
 	}
+#if WITH_RESQML2_2
 	else {
 		fluidBoundaryTop = pck.createBoundaryFeature("cd400fa2-4c8b-11e9-be79-3f8079258eaa", "Fluid boundary top");
 		fluidBoundaryBottom = pck.createBoundaryFeature("d332b298-4c8b-11e9-80d8-c760b2e2530d", "Fluid boundary bottom");
 		rockFluidFeature = pck.createRockVolumeFeature("18a714da-4bf2-11e9-a17e-e74cb7f87d2a", "Rock Fluid Unit");
 	}
+#endif
 
 	//Top Boundary
 	RESQML2_NS::GenericFeatureInterpretation* interpTop = pck.createGenericFeatureInterpretation(fluidBoundaryTop, "0ab8f2f4-4c96-11e9-999e-c3449b44fef5", "Fluid boundary top interp");
@@ -1919,6 +1939,7 @@ void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, EML2_
 
 	// Interp
 	RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp = pck.createRockFluidOrganizationInterpretation(rockFluidOrgFeature, "b5bbfe42-4a63-11e9-9eeb-4f036e6e8141", "Rock Fluid org");
+	rockFluidOrgInterp->pushBackRockFluidUnitInterpretation(rockFluidUnit);
 
 	// Link between ijk grid and rock fuid org
 	RESQML2_NS::IjkGridExplicitRepresentation* singleCellIjkgrid = pck.getDataObjectByUuid<RESQML2_NS::IjkGridExplicitRepresentation>("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b");
@@ -2044,8 +2065,10 @@ bool serialize(const string & filePath)
 {
 	COMMON_NS::EpcDocument pck(filePath);
 	COMMON_NS::DataObjectRepository repo;
+#if WITH_RESQML2_2
 	repo.setDefaultStandard(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_2);
 	repo.setDefaultStandard(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3);
+#endif
 
 	COMMON_NS::AbstractObject::setFormat("F2I-CONSULTING", "Fesapi Example", FESAPI_VERSION);
 
@@ -2070,7 +2093,9 @@ bool serialize(const string & filePath)
 	serializeFluidBoundary(repo, hdfProxy);
 	serializeRockFluidOrganization(repo, hdfProxy);
 	serializeFluidCharacterization(repo);
+#if WITH_RESQML2_2
 	serializeGraphicalInformationSet(&repo, hdfProxy);
+#endif
 
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
@@ -2448,14 +2473,13 @@ void deserializeFluidBoundary(COMMON_NS::DataObjectRepository & pck)
 		RESQML2_NS::PlaneSetRepresentation const * rep = static_cast<RESQML2_NS::PlaneSetRepresentation const*>(fluidBoundary->getInterpretation(0)->getRepresentation(0));
 		showAllMetadata(rep);
 		ULONG64 ptCount = rep->getXyzPointCountOfAllPatches();
-		double* allXyzPoints = new double[ptCount * 3];
-		rep->getXyzPointsOfAllPatchesInGlobalCrs(allXyzPoints);
+		std::unique_ptr<double[]> allXyzPoints(new double[ptCount * 3]);
+		rep->getXyzPointsOfAllPatchesInGlobalCrs(allXyzPoints.get());
 		for (size_t i = 0; i < ptCount; ++i) {
 			std::cout << "Point " << i << " X=" << allXyzPoints[i * 3] << std::endl;
 			std::cout << "Point " << i << " Y=" << allXyzPoints[i * 3 + 1] << std::endl;
 			std::cout << "Point " << i << " Z=" << allXyzPoints[i * 3 + 2] << std::endl;
 		}
-		delete[] allXyzPoints;
 	}
 }
 
@@ -2474,14 +2498,16 @@ void deserializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck)
 			RESQML2_NS::RockFluidUnitInterpretation* rockFluidInterp = rockFluidOrgInterp->getRockFluidUnitInterpretation(unitIndex);
 			showAllMetadata(rockFluidInterp);
 
-			RESQML2_0_1_NS::RockFluidUnitFeature* rockFluidFeature = static_cast<RESQML2_0_1_NS::RockFluidUnitFeature*>(rockFluidInterp->getInterpretedFeature());
+			RESQML2_NS::AbstractFeature* rockFluidFeature = rockFluidInterp->getInterpretedFeature();
 			showAllMetadata(rockFluidFeature);
 
-			RESQML2_0_1_NS::BoundaryFeature* top = rockFluidFeature->getTop();
-			showAllMetadata(top);
+			if (dynamic_cast<RESQML2_0_1_NS::RockFluidUnitFeature*>(rockFluidFeature) != nullptr) {
+				RESQML2_0_1_NS::BoundaryFeature* top = static_cast<RESQML2_0_1_NS::RockFluidUnitFeature*>(rockFluidFeature)->getTop();
+				showAllMetadata(top);
 
-			RESQML2_0_1_NS::BoundaryFeature* bottom = rockFluidFeature->getBottom();
-			showAllMetadata(bottom);
+				RESQML2_0_1_NS::BoundaryFeature* bottom = static_cast<RESQML2_0_1_NS::RockFluidUnitFeature*>(rockFluidFeature)->getBottom();
+				showAllMetadata(bottom);
+			}
 		}
 	}
 }
@@ -3665,7 +3691,7 @@ void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 		}
 	}
 }
-
+#if WITH_RESQML2_2
 void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 {
 	std::cout << "GRAPHICAL INFORMATIONS" << std::endl;
@@ -3690,7 +3716,7 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 			}
 
 			if (graphicalInformationSet->hasDiscreteColorMap(targetObject)) {
-				RESQML2_2_NS::DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(targetObject);
+				RESQML2_NS::DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(targetObject);
 				std::cout << "discrete color map title: " << discreteColorMap->getTitle() << std::endl;
 				unsigned int r, g, b;
 				for (unsigned int colorIndex = 0; colorIndex < discreteColorMap->getColorCount(); ++colorIndex) {
@@ -3712,7 +3738,7 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 			}
 
 			if (graphicalInformationSet->hasContinuousColorMap(targetObject)) {
-				RESQML2_2_NS::ContinuousColorMap* continuousColorMap = graphicalInformationSet->getContinuousColorMap(targetObject);
+				RESQML2_NS::ContinuousColorMap* continuousColorMap = graphicalInformationSet->getContinuousColorMap(targetObject);
 				std::cout << "continuous color map title: " << continuousColorMap->getTitle() << std::endl;
 				unsigned int r, g, b;
 				for (unsigned int mapIndex = 0; mapIndex < continuousColorMap->getColorCount(); ++mapIndex) {
@@ -3735,7 +3761,7 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 		}
 	}
 }
-
+#endif
 void deserialize(const string & inputFile)
 {
 	COMMON_NS::EpcDocument pck(inputFile);
@@ -4136,6 +4162,7 @@ void deserialize(const string & inputFile)
 			else if (wellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
 				std::cout << "Hdf datatype is UNKNOWN" << std::endl;
 			std::cout << std::endl;
+#if WITH_RESQML2_2
 			if (wellboreFrameSet[j]->getXmlTag() == "SeismicWellboreFrameRepresentation") {
 				RESQML2_2_NS::SeismicWellboreFrameRepresentation* seismicWellboreFrame = static_cast<RESQML2_2_NS::SeismicWellboreFrameRepresentation*>(wellboreFrameSet[j]);
 				std::cout << "Seismic reference datum : " << seismicWellboreFrame->getSeismicReferenceDatum() << std::endl;
@@ -4158,6 +4185,7 @@ void deserialize(const string & inputFile)
 					std::cout << "Hdf datatype is UNKNOWN" << std::endl;
 				std::cout << std::endl;
 			}
+#endif
 		}
 	}
 
@@ -4540,8 +4568,9 @@ void deserialize(const string & inputFile)
 		}
 	}
 
-	// GRAPHICAL INFORMATION
+#if WITH_RESQML2_2
 	deserializeGraphicalInformationSet(repo);
+#endif
 
 	std::cout << endl << repo.getWarnings().size() << " WARNING(S)" << endl;
 	for (size_t i = 0; i < repo.getWarnings().size(); ++i) {

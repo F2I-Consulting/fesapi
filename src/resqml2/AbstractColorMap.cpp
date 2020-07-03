@@ -22,7 +22,7 @@ under the License.
 
 using namespace std;
 using namespace gsoap_eml2_3;
-using namespace RESQML2_2_NS;
+using namespace RESQML2_NS;
 
 void AbstractColorMap::setRgbColors(unsigned int colorCount,
 	double const* rgbColors, double const* alphas, vector<string> const& colorTitles,

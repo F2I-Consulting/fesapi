@@ -20,7 +20,7 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
-namespace RESQML2_2_NS
+namespace RESQML2_NS
 {
 	/** @brief	Map of abstract colors. */
 	class AbstractColorMap : public COMMON_NS::AbstractObject
@@ -150,8 +150,7 @@ namespace RESQML2_2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractColorMap(gsoap_eml2_3::resqml22__DiscreteColorMap* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-		AbstractColorMap(gsoap_eml2_3::resqml22__ContinuousColorMap* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		AbstractColorMap(gsoap_eml2_3::resqml22__AbstractColorMap* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		* Default constructor

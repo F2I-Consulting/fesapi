@@ -18,17 +18,17 @@ under the License.
 -----------------------------------------------------------------------*/
 %module fesapi
 
-//************************
+//************************/
 // STD STRING
-//************************
+//************************/
 
 %include "std_string.i"
 
 %include "../src/nsDefinitions.h"
 
-//************************
+//************************/
 // JAVA
-//************************
+//************************/
 
 #ifdef SWIGJAVA
 	// Notice you must not compile the C++ API with an optimisation superior to -O1 with gcc 4.4.7 in order SWIG to work
@@ -53,9 +53,9 @@ under the License.
 	%include "swigJavaInclude.i"
 #endif
 
-//************************
+//************************/
 // CSHARP
-//************************
+//************************/
 
 #ifdef SWIGCSHARP
 	SWIG_CSBODY_PROXY(public, public, SWIGTYPE)
@@ -64,9 +64,9 @@ under the License.
 	%include "swigCsInclude.i"
 #endif
 
-//************************
+//************************/
 // POD C ARRAYS
-//************************
+//************************/
 %include "carrays_indexing64bits.i"
 #ifdef SWIGJAVA // Use functions instead of classes in java in order to avoid premature garbage collection
 	%array_functions(unsigned long long, ULongArray);
@@ -102,9 +102,9 @@ under the License.
 // Use C array approach instead.
 %include "std_vector.i"
 
-//************************
+//************************/
 // EXCEPTIONS
-//************************
+//************************/
 
 %include "exception.i"
 %exception {
@@ -208,15 +208,19 @@ namespace COMMON_NS
 %include "swigEml2Include.i"
 %include "swigEml2_0Include.i"
 %include "swigEml2_1Include.i"
+#ifdef WITH_RESQML2_2
 %include "swigEml2_3Include.i"
+#endif
 %include "swigResqml2Include.i"
 %include "swigResqml2_0_1Include.i"
+#ifdef WITH_RESQML2_2
 %include "swigResqml2_2Include.i"
+#endif
 %include "swigWitsml2_0Include.i"
 
-//************************
+//************************/
 // STD::VECTOR DEFINITIONS
-//************************
+//************************/
 
 namespace std {
 	%template(StringVector) vector< std::string >;
@@ -343,11 +347,13 @@ namespace COMMON_NS
 		%template(getLogs) getDataObjects<WITSML2_0_NS::Log>;
 		%template(getChannelSets) getDataObjects<WITSML2_0_NS::ChannelSet>;
 		%template(getChannels) getDataObjects<WITSML2_0_NS::Channel>;
+#ifdef WITH_RESQML2_2
 		%template(getGraphicalInformationSets) getDataObjects<EML2_3_NS::GraphicalInformationSet>;
+#endif
 		
 		EML2_NS::AbstractHdfProxy* createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess);
 
-		//************ CRS *******************
+		//************ CRS *******************/
 
 		RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
@@ -412,7 +418,7 @@ namespace COMMON_NS
 			RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__WellboreDatumReference originKind,
 			double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3);
 
-		//************ FEATURE ***************
+		//************ FEATURE ***************/
 
 		RESQML2_NS::BoundaryFeature* createBoundaryFeature(const std::string & guid, const std::string & title);
 
@@ -435,23 +441,23 @@ namespace COMMON_NS
 
 		RESQML2_0_1_NS::SeismicLineFeature* createSeismicLine(const std::string & guid, const std::string & title,
 			int traceIndexIncrement, unsigned int firstTraceIndex, unsigned int traceCount);
-			
-		RESQML2_2_NS::CmpLineFeature* createCmpLine(const std::string & guid, const std::string & title,
+#ifdef WITH_RESQML2_2	
+		RESQML2_NS::CmpLineFeature* createCmpLine(const std::string & guid, const std::string & title,
 			int nearestShotPointIndicesIncrement, int firstNearestShotPointIndex, unsigned int nearestShotPointCount);
 			
-		RESQML2_2_NS::ShotPointLineFeature* createShotPointLine(const std::string & guid, const std::string & title);
-
+		RESQML2_NS::ShotPointLineFeature* createShotPointLine(const std::string & guid, const std::string & title);
+#endif
 		RESQML2_NS::SeismicLineSetFeature* createSeismicLineSet(const std::string & guid, const std::string & title);
 
 		RESQML2_NS::CulturalFeature* createCultural(const std::string & guid, const std::string & title,
 			gsoap_eml2_3::resqml22__CulturalFeatureKind kind = gsoap_eml2_3::resqml22__CulturalFeatureKind__project_x0020boundaries);
 
 		RESQML2_NS::RockVolumeFeature* createStratigraphicUnitFeature(const std::string & guid, const std::string & title);
+#ifdef WITH_RESQML2_2
+		RESQML2_NS::RockVolumeFeature* createRockVolumeFeature(const std::string & guid, const std::string & title);
 		
-		RESQML2_2_NS::RockVolumeFeature* createRockVolumeFeature(const std::string & guid, const std::string & title);
-		
-		RESQML2_2_NS::Model* createModel(const std::string & guid, const std::string & title);
-
+		RESQML2_NS::Model* createModel(const std::string & guid, const std::string & title);
+#endif
 		RESQML2_NS::Model* createStructuralModel(const std::string & guid, const std::string & title);
 
 		RESQML2_NS::Model* createStratigraphicModel(const std::string & guid, const std::string & title);
@@ -464,7 +470,7 @@ namespace COMMON_NS
 
 		RESQML2_0_1_NS::RockFluidUnitFeature* createRockFluidUnit(const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__Phase phase, RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundaryTop, RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundaryBottom);
 
-		//************ INTERPRETATION ********
+		//************ INTERPRETATION ********/
 
 		RESQML2_NS::GenericFeatureInterpretation* createGenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const std::string & guid, const std::string & title);
 
@@ -496,7 +502,7 @@ namespace COMMON_NS
 		RESQML2_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 		RESQML2_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
-		//************ REPRESENTATION ********
+		//************ REPRESENTATION ********/
 
 		RESQML2_NS::TriangulatedSetRepresentation* createTriangulatedSetRepresentation(const std::string & guid, const std::string & title);
 			
@@ -536,15 +542,15 @@ namespace COMMON_NS
 		RESQML2_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
 
 		RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj);
-
-		RESQML2_2_NS::SeismicWellboreFrameRepresentation* createSeismicWellboreFrameRepresentation(
+#ifdef WITH_RESQML2_2
+		RESQML2_NS::SeismicWellboreFrameRepresentation* createSeismicWellboreFrameRepresentation(
 			RESQML2_NS::WellboreInterpretation* interp, 
 			const std::string& guid, const std::string& title, 
 			RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 			double seismicReferenceDatum,
 			double weatheringVelocity,
 			RESQML2_NS::LocalTime3dCrs* crs);
-
+#endif
 		RESQML2_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj);
 
 		RESQML2_NS::WellboreMarker* createWellboreMarker(RESQML2_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title);
@@ -626,7 +632,7 @@ namespace COMMON_NS
 		RESQML2_NS::GridConnectionSetRepresentation* createGridConnectionSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
-		//************* PROPERTIES ***********
+		//************* PROPERTIES ***********/
 
 		EML2_NS::TimeSeries* createTimeSeries(const std::string & guid, const std::string & title);
 
@@ -682,14 +688,13 @@ namespace COMMON_NS
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
 			RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropType);
 
-
-		//************* ACTIVITIES ***********
+		//************* ACTIVITIES ***********/
 
 		EML2_NS::ActivityTemplate* createActivityTemplate(const std::string & guid, const std::string & title);
 
 		EML2_NS::Activity* createActivity(EML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title);
 
-		//*************** WITSML *************
+		//*************** WITSML *************/
 
 		WITSML2_0_NS::Well* createWell(const std::string & guid,
 			const std::string & title);
@@ -745,27 +750,27 @@ namespace COMMON_NS
 			const std::string & guid, const std::string & title,
 			const std::string & mnemonic, gsoap_eml2_1::eml21__UnitOfMeasure uom, gsoap_eml2_1::witsml20__EtpDataType dataType, gsoap_eml2_1::witsml20__ChannelStatus growingStatus,
 			const std::string & timeDepth, const std::string & loggingCompanyName);
+#ifdef WITH_RESQML2_2
+		//************************************/
+		//************ EML2.3 ****************/
+		//************************************/
 
-		//************************************
-		//************ EML2.3 ****************
-		//************************************
+		EML2_NS::GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
 
-		EML2_3_NS::GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
+		RESQML2_NS::DiscreteColorMap* createDiscreteColorMap(const std::string& guid, const std::string& title);
 
-		RESQML2_2_NS::DiscreteColorMap* createDiscreteColorMap(const std::string& guid, const std::string& title);
-
-		RESQML2_2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
+		RESQML2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
 			gsoap_eml2_3::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_3::resqml22__InterpolationMethod interpolationMethod);
-
-		//************************************
-		//***** STANDARD PROP KIND ***********
-		//************************************
+#endif
+		//************************************/
+		//***** STANDARD PROP KIND ***********/
+		//************************************/
 		
 		RESQML2_0_1_NS::PropertyKindMapper* getPropertyKindMapper() const;
 
-		//************************************
-		//************* WARNINGS *************
-		//************************************
+		//************************************/
+		//************* WARNINGS *************/
+		//************************************/
 
 		void clearWarnings();
 		const std::vector<std::string> & getWarnings() const;
@@ -786,11 +791,11 @@ namespace COMMON_NS
 		}
 		
 		// Template for partial RESQML2.2
-		
+#ifdef WITH_RESQML2_2		
 		%template(createPartialDiscreteColorMap) createPartial<RESQML2_2_NS::DiscreteColorMap>;
 		%template(createPartialContinuousColorMap) createPartial<RESQML2_2_NS::ContinuousColorMap>;
 		%template(createPartialSeismicWellboreFrameRepresentation) createPartial<RESQML2_2_NS::SeismicWellboreFrameRepresentation>;
-		
+#endif
 		// Template for partial RESQML2.0.1
 		
 		%template(createPartialLocalDepth3dCrs) createPartial<RESQML2_0_1_NS::LocalDepth3dCrs>;

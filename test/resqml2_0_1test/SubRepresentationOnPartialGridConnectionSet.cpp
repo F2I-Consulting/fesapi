@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_0_1test/SubRepresentationOnPartialGridConnectionSet.h"
 #include "../catch.hpp"
-#include "resqml2_2/GridConnectionSetRepresentation.h"
+#include "resqml2_0_1/GridConnectionSetRepresentation.h"
 #include "resqml2/SubRepresentation.h"
 #include "resqml2/AbstractRepresentation.h"
 
@@ -47,7 +47,7 @@ void SubRepresentationOnPartialGridConnectionSet::initRepoHandler()
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
-	RESQML2_NS::GridConnectionSetRepresentation* partialGcsr = repo->createPartial<RESQML2_2_NS::GridConnectionSetRepresentation>("00a7d22f-4746-409b-87dc-5bdb83660d27", "GCSR");
+	RESQML2_NS::GridConnectionSetRepresentation* partialGcsr = repo->createPartial<RESQML2_0_1_NS::GridConnectionSetRepresentation>("00a7d22f-4746-409b-87dc-5bdb83660d27", "GCSR");
 	REQUIRE(partialGcsr != nullptr);
 	RESQML2_NS::SubRepresentation* subRep = repo->createSubRepresentation(defaultUuid, defaultTitle);
 	subRep->pushBackSupportingRepresentation(partialGcsr);

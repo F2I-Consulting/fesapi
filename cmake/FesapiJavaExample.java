@@ -52,7 +52,7 @@ import com.f2i.energisticsStandardsApi.common.DataObjectRepository.EnergisticsSt
 import com.f2i.energisticsStandardsApi.common.EpcDocument;
 import com.f2i.energisticsStandardsApi.eml2.AbstractHdfProxy;
 import com.f2i.energisticsStandardsApi.eml2.PropertyKind;
-import com.f2i.energisticsStandardsApi.eml2_3.GraphicalInformationSet;
+import com.f2i.energisticsStandardsApi.eml2.GraphicalInformationSet;
 import com.f2i.energisticsStandardsApi.resqml2.AbstractIjkGridRepresentation;
 import com.f2i.energisticsStandardsApi.resqml2.AbstractRepresentation;
 import com.f2i.energisticsStandardsApi.resqml2.AbstractSeismicLineFeature;
@@ -80,9 +80,9 @@ import com.f2i.energisticsStandardsApi.resqml2.WellboreFrameRepresentation;
 import com.f2i.energisticsStandardsApi.resqml2.WellboreInterpretation;
 import com.f2i.energisticsStandardsApi.resqml2.WellboreTrajectoryRepresentation;
 import com.f2i.energisticsStandardsApi.resqml2_0_1.Horizon_resqml20;
-import com.f2i.energisticsStandardsApi.resqml2_2.ContinuousColorMap;
-import com.f2i.energisticsStandardsApi.resqml2_2.DiscreteColorMap;
-import com.f2i.energisticsStandardsApi.resqml2_2.SeismicWellboreFrameRepresentation;
+import com.f2i.energisticsStandardsApi.resqml2.ContinuousColorMap;
+import com.f2i.energisticsStandardsApi.resqml2.DiscreteColorMap;
+import com.f2i.energisticsStandardsApi.resqml2.SeismicWellboreFrameRepresentation;
 import com.f2i.energisticsStandardsApi.witsml2_0.Well;
 import com.f2i.energisticsStandardsApi.witsml2_0.Wellbore;
 import com.f2i.energisticsStandardsApi.witsml2_0.WellboreGeometry;
@@ -213,7 +213,7 @@ public class FesapiJavaExample {
 	
 		WellboreFrameRepresentation w1i1RegularFrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
 		w1i1RegularFrameRep.setMdValues(0, 200, 6);
-
+${COMMENT_START}
 		// SeismicWellboreFrameRepresentation
 		LocalTime3dCrs localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, eml20__LengthUom.eml20__LengthUom__m, 23031, eml20__TimeUom.eml20__TimeUom__s, eml20__LengthUom.eml20__LengthUom__m, "Unknown", false);
 				
@@ -245,6 +245,7 @@ public class FesapiJavaExample {
 			localTime3dCrs);
 		w1i1RegularSeismicFrameRep.setMdValues(0, 200, 6);
 		w1i1RegularSeismicFrameRep.setTimeValues(0., 10., 6);
+${COMMENT_END}
 	}
 
 	private static void serializeBoundaries(DataObjectRepository repo, AbstractHdfProxy hdfProxy) {
@@ -263,7 +264,9 @@ public class FesapiJavaExample {
 			seismicLine = repo.createSeismicLine("117f9bf6-6bb0-49f2-9cee-46912300bff6", "Seismic line", 1, 0, 5);
 		}
 		else {
+${COMMENT_START}
 			seismicLine = repo.createShotPointLine("117f9bf6-6bb0-49f2-9cee-46912300bff6", "Seismic line");
+${COMMENT_END}
 		}
 		seismicLine.setSeismicLineSet(seismicLineSet);
 		GenericFeatureInterpretation seismicLineInterp = repo.createGenericFeatureInterpretation(seismicLine, "", "Seismic line Interp");
@@ -497,7 +500,7 @@ public class FesapiJavaExample {
 		propSet.pushBackProperty(discreteProp1);
 		propSet.pushBackProperty(discreteProp2);
 	}
-
+${COMMENT_START}
 	private static void serializeGraphicalInformationSet(DataObjectRepository repo, AbstractHdfProxy hdfProxy)
 	{
 		GraphicalInformationSet graphicalInformationSet = repo.createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
@@ -631,7 +634,7 @@ public class FesapiJavaExample {
 
 		graphicalInformationSet.setContinuousColorMap(contColMapContProp, contColMap);
 	}
-
+${COMMENT_END}
 	private static void serialize()
 	{
 		EpcDocument pck = new EpcDocument("testingPackageJava.epc");
@@ -649,8 +652,9 @@ public class FesapiJavaExample {
 			// RESQML
 			serializeBoundaries(repo, hdfProxy);			
 			serializeIjkGrid(repo, hdfProxy);
-
+${COMMENT_START}
 			serializeGraphicalInformationSet(repo, hdfProxy);
+${COMMENT_END}
 
 			pck.serializeFrom(repo);
 		}
@@ -715,7 +719,7 @@ public class FesapiJavaExample {
 			deserializeWell(repo);
 			
 			deserializeIjkGrid(repo);
-
+${COMMENT_START}
 			System.out.println("GRAPHICAL INFORMATIONS");
 			GraphicalInformationSet graphicalInformationSet = (GraphicalInformationSet) repo.getDataObjectByUuid("be17c053-9189-4bc0-9db1-75aa51a026cd");
 			for (int i = 0; i < graphicalInformationSet.getGraphicalInformationSetCount(); ++i)
@@ -768,7 +772,8 @@ public class FesapiJavaExample {
 						System.out.println(")");
 					}
 				}
-			}	
+			}
+${COMMENT_END}			
 		}
 		finally {
 			pck.close();

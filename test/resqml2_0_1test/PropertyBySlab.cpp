@@ -23,6 +23,7 @@ under the License.
 #include "catch.hpp"
 
 #include "eml2/AbstractHdfProxy.h"
+#include "resqml2_0_1/PropertyKind.h"
 #include "eml2_3/PropertyKind.h"
 
 #include "resqml2/ContinuousProperty.h"
@@ -53,7 +54,7 @@ PropertyBySlab::PropertyBySlab(DataObjectRepository * repo, bool init)
 
 void PropertyBySlab::initRepoHandler() {
 	RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo->createPartialIjkGridRepresentation("", "partial IJK Grid");
-	EML2_NS::PropertyKind * propertyKind = repo->createPartial<EML2_3_NS::PropertyKind>("", "Partial prop kind");
+	EML2_NS::PropertyKind * propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("", "Partial prop kind");
 
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];

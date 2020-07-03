@@ -17,7 +17,13 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 %{
+#include "../src/resqml2/AbstractColorMap.h"
+#include "../src/resqml2/CmpLineFeature.h"
+#include "../src/resqml2/ContinuousColorMap.h"
+#include "../src/resqml2/DiscreteColorMap.h"
 #include "../src/resqml2/RockFluidUnitInterpretation.h"
+#include "../src/resqml2/SeismicWellboreFrameRepresentation.h"
+#include "../src/resqml2/ShotPointLineFeature.h"
 #include "../src/resqml2/StratigraphicColumn.h"
 #include "../src/resqml2/StratigraphicColumnRankInterpretation.h"
 #include "../src/resqml2/UnstructuredGridRepresentation.h"
@@ -35,6 +41,7 @@ namespace RESQML2_NS
 #endif
 
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
+	%nspace RESQML2_NS::AbstractColorMap;	
 	%nspace RESQML2_NS::AbstractColumnLayerGridRepresentation;
 	%nspace RESQML2_NS::AbstractDiscreteOrCategoricalProperty;
 	%nspace RESQML2_NS::AbstractFeature;
@@ -54,10 +61,13 @@ namespace RESQML2_NS
 	%nspace RESQML2_NS::BoundaryFeature;
 	%nspace RESQML2_NS::BoundaryFeatureInterpretation;
 	%nspace RESQML2_NS::CategoricalProperty;
+	%nspace RESQML2_NS::CmpLineFeature;
 	%nspace RESQML2_NS::CommentProperty;
+	%nspace RESQML2_NS::ContinuousColorMap;
 	%nspace RESQML2_NS::ContinuousProperty;
 	%nspace RESQML2_NS::CulturalFeature;
 	%nspace RESQML2_NS::DeviationSurveyRepresentation;
+	%nspace RESQML2_NS::DiscreteColorMap;
 	%nspace RESQML2_NS::DiscreteProperty;
 	%nspace RESQML2_NS::EarthModelInterpretation;
 	%nspace RESQML2_NS::FaultInterpretation;
@@ -88,6 +98,8 @@ namespace RESQML2_NS
 	%nspace RESQML2_NS::SealedSurfaceFrameworkRepresentation;
 	%nspace RESQML2_NS::SeismicLatticeFeature;
 	%nspace RESQML2_NS::SeismicLineSetFeature;
+	%nspace RESQML2_NS::SeismicWellboreFrameRepresentation;
+	%nspace RESQML2_NS::ShotPointLineFeature;
 	%nspace RESQML2_NS::StratigraphicColumn;
 	%nspace RESQML2_NS::StratigraphicColumnRankInterpretation;
 	%nspace RESQML2_NS::StratigraphicOccurrenceInterpretation;
@@ -1844,10 +1856,71 @@ namespace gsoap_eml2_3
 namespace RESQML2_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
+
+#if defined(SWIGPYTHON)
+	%rename(AbstractColorMap_resqml2) AbstractColorMap;
+#endif
+	class AbstractColorMap : public COMMON_NS::AbstractObject
+	{
+	public:
+		void setRgbColors(unsigned int colorCount,
+			double const* rgbColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
+			double const* indices = nullptr);
+		void setRgbColors(unsigned int colorCount,
+			unsigned int const* rgbColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
+			double const* indices = nullptr);
+
+		double getHue(double colorIndex) const;
+		double getSaturation(double colorIndex) const;
+		double getValue(double colorIndex) const;
+		double getAlpha(double colorIndex) const;
+		
+		void getRgbColor(double colorIndex, double& red, double& green, double& blue) const;
+		void getRgbColor(double colorIndex, unsigned int& red, unsigned int& green, unsigned int& blue) const;
+
+		bool hasColorTitle(double colorIndex) const;
+		std::string getColorTitle(double colorIndex) const;
+	};
 	
-	//************************************
-	//************ CRS *******************
-	//************************************
+#if defined(SWIGPYTHON)
+	%rename(DiscreteColorMap_resqml2) DiscreteColorMap;
+#endif	
+	class DiscreteColorMap : public AbstractColorMap
+	{
+	public:
+		void setHsvColors(unsigned int colorCount, 
+			double const * hsvColors, double const * alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
+			double const * indices = nullptr);
+
+		unsigned int getColorCount() const;
+	};
+	
+#if defined(SWIGPYTHON)
+	%rename(ContinuousColorMap_resqml2) ContinuousColorMap;
+#endif	
+	class ContinuousColorMap : public AbstractColorMap 
+	{
+	public:
+		void setHsvColors(unsigned int colorCount,
+			double const* hsvColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
+			double const* indices = nullptr);
+
+		unsigned int getColorCount() const;
+
+		gsoap_eml2_3::resqml22__InterpolationDomain getInterpolationDomain();
+		std::string getInterpolationDomainAsString();
+
+		gsoap_eml2_3::resqml22__InterpolationMethod getInterpolationMethod();
+		std::string getInterpolationMethodAsString();
+
+		void setNanHsvColor(double hue, double saturation, double value, double alpha = 1, std::string const& colorTitle = "");
+		void setNanRgbColor(double red, double green, double blue, double alpha = 1, std::string const& colorTitle = "");
+		void setNanRgbColor(unsigned int red, unsigned int green, unsigned int blue, double alpha = 1, std::string const& colorTitle = "");
+	};
+	
+	//************************************/
+	//************ CRS *******************/
+	//************************************/
 	
 	class AbstractLocal3dCrs : public COMMON_NS::AbstractObject
 	{
@@ -1988,7 +2061,29 @@ namespace RESQML2_NS
 	public:
 		void setSeismicLineSet(SeismicLineSetFeature * seisLineSet);
 		SeismicLineSetFeature* getSeismicLineSet() const;
+		
 		unsigned int getTraceCount() const;
+		
+		void setTraceLabels(const std::vector<std::string> & values, EML2_NS::AbstractHdfProxy * proxy);
+		std::vector<std::string> getTraceLabels() const;
+	};
+	
+#ifdef SWIGPYTHON
+	%rename(ShotPointLineFeature_resqml2) ShotPointLineFeature;
+#endif
+	class ShotPointLineFeature : public AbstractSeismicLineFeature
+	{
+	public:
+	};
+
+#ifdef SWIGPYTHON
+	%rename(CmpLineFeature_resqml2) CmpLineFeature;
+#endif
+	class CmpLineFeature : public AbstractSeismicLineFeature
+	{
+	public:
+		void setShotPointLine(class ShotPointLineFeature* shotPointLine);
+		ShotPointLineFeature* getShotPointLine() const;
 	};
 
 #ifdef SWIGPYTHON
@@ -3288,7 +3383,7 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_WellboreFrameRepresentation) WellboreFrameRepresentation;
+	%rename(WellboreFrameRepresentation_resqml2) WellboreFrameRepresentation;
 #endif
 	class WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
@@ -3307,8 +3402,28 @@ namespace RESQML2_NS
 		WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 	};
 	
+#if defined(SWIGPYTHON)
+	%rename(SeismicWellboreFrameRepresentation_resqml2) SeismicWellboreFrameRepresentation;
+#endif
+	class SeismicWellboreFrameRepresentation : public WellboreFrameRepresentation
+	{
+	public:
+		void setTimeValues(double const * timeValues, unsigned int timeValueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		void setTimeValues(double firstTimeValue, double incrementTimeValue, unsigned int timeValueCount);
+
+		bool areTimeValuesRegularlySpaced() const;
+		double getTimeConstantIncrementValue() const;
+		double getTimeFirstValue() const;
+		unsigned int getTimeValuesCount() const;
+		AbstractValuesProperty::hdfDatatypeEnum getTimeHdfDatatype() const;
+		void getTimeAsDoubleValues(double* values) const;
+		void getTimeAsFloatValues(float* values) const;
+		double getSeismicReferenceDatum() const;
+		double getWeatheringVelocity() const;
+	};
+	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_WellboreMarkerFrameRepresentation) WellboreMarkerFrameRepresentation;
+	%rename(WellboreMarkerFrameRepresentation_resqml2) WellboreMarkerFrameRepresentation;
 #endif
 	class WellboreMarkerFrameRepresentation : public WellboreFrameRepresentation
 	{

@@ -19,6 +19,7 @@ under the License.
 %{
 #include "../src/eml2/Activity.h"
 #include "../src/eml2/ActivityTemplate.h"
+#include "../src/eml2/GraphicalInformationSet.h"
 #include "../src/eml2/HdfProxy.h"
 #include "../src/eml2/PropertyKind.h"
 #include "../src/eml2/TimeSeries.h"
@@ -29,6 +30,7 @@ under the License.
 	%nspace EML2_NS::Activity;
 	%nspace EML2_NS::ActivityTemplate;
 	%nspace EML2_NS::EpcExternalPartReference;
+	%nspace EML2_NS::GraphicalInformationSet;
 	%nspace EML2_NS::HdfProxy;
 	%nspace EML2_NS::PropertyKind;
 	%nspace EML2_NS::TimeSeries;
@@ -38,9 +40,7 @@ namespace EML2_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
 	
-	//************************************
-	//************ HDF *******************
-	//************************************
+	/************ HDF *******************/
 	class EpcExternalPartReference : public COMMON_NS::AbstractObject {};
 
 	class AbstractHdfProxy : public EpcExternalPartReference
@@ -58,9 +58,60 @@ namespace EML2_NS
 		void setCompressionLevel(unsigned int newCompressionLevel);
 	};
 	
-	//************************************
-	//************ Property **************
-	//************************************
+	/************ GraphicalInformationSet **************/
+	
+#if defined(SWIGPYTHON)
+	%rename(GraphicalInformationSet_eml2) GraphicalInformationSet;
+#endif
+	class GraphicalInformationSet : public COMMON_NS::AbstractObject
+	{
+	public:
+		unsigned int getGraphicalInformationSetCount() const;
+		std::string getTargetObjectUuid(unsigned int index) const;
+		COMMON_NS::AbstractObject* getTargetObject(unsigned int index) const;
+		bool hasGraphicalInformation(COMMON_NS::AbstractObject const* targetObject) const;
+		
+		bool hasDefaultColor(COMMON_NS::AbstractObject const* targetObject) const;
+		double getDefaultHue(COMMON_NS::AbstractObject const* targetObject) const;
+		double getDefaultSaturation(COMMON_NS::AbstractObject const* targetObject) const;
+		double getDefaultValue(COMMON_NS::AbstractObject const* targetObject) const;
+		double getDefaultAlpha(COMMON_NS::AbstractObject const* targetObject) const;
+		void getDefaultRgbColor(COMMON_NS::AbstractObject const* targetObject, double& red, double& green, double& blue) const;
+		void getDefaultRgbColor(COMMON_NS::AbstractObject const* targetObject, unsigned int& red, unsigned int& green, unsigned int& blue) const;
+		bool hasDefaultColorTitle(COMMON_NS::AbstractObject const* targetObject) const;
+		std::string getDefaultColorTitle(COMMON_NS::AbstractObject const* targetObject) const;
+		void setDefaultHsvColor(COMMON_NS::AbstractObject * targetObject, double hue, double saturation, double value, double alpha = 1.0, std::string const& colorTitle = "");
+		void setDefaultRgbColor(COMMON_NS::AbstractObject * targetObject, double red, double green, double blue, double alpha = 1.0, std::string const& colorTitle = "");
+		void setDefaultRgbColor(COMMON_NS::AbstractObject * targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string const& colorTitle = "");
+
+		bool hasDiscreteColorMap(COMMON_NS::AbstractObject const* targetObject) const;
+		std::string getDiscreteColorMapUuid(COMMON_NS::AbstractObject const* targetObject) const;
+		RESQML2_NS::DiscreteColorMap* getDiscreteColorMap(COMMON_NS::AbstractObject const* targetObject) const;
+		void setDiscreteColorMap(COMMON_NS::AbstractObject * targetObject, RESQML2_NS::DiscreteColorMap* discreteColorMap,
+			bool useReverseMapping = false, bool useLogarithmicMapping = false);
+
+		bool hasContinuousColorMap(COMMON_NS::AbstractObject const* targetObject) const;
+		std::string getContinuousColorMapUuid(COMMON_NS::AbstractObject const* targetObject) const;
+		RESQML2_NS::ContinuousColorMap* getContinuousColorMap(COMMON_NS::AbstractObject const* targetObject) const;
+		void setContinuousColorMap(COMMON_NS::AbstractObject * targetObject, RESQML2_NS::ContinuousColorMap* continuousColorMap,
+			bool useReverseMapping = false, bool useLogarithmicMapping = false);
+
+		bool hasColorMapMinMax(COMMON_NS::AbstractObject const* targetObject) const;
+		double getColorMapMin(COMMON_NS::AbstractObject const* targetObject) const;
+		double getColorMapMax(COMMON_NS::AbstractObject const* targetObject) const;
+		void setColorMapMinMax(COMMON_NS::AbstractObject const* targetObject, double min, double max) const;
+
+		bool hasValueVectorIndex(COMMON_NS::AbstractObject const* targetObject);
+		LONG64 getValueVectorIndex(COMMON_NS::AbstractObject const* targetObject);
+		void setValueVectorIndex(COMMON_NS::AbstractObject const* targetObject, LONG64 valueVectorIndex);
+
+		static void rgbToHsv(double red, double green, double blue, double& hue, double& saturation, double& value);
+		static void rgbToHsv(unsigned int red, unsigned int green, unsigned int blue, double& hue, double& saturation, double& value);
+		static void hsvToRgb(double hue, double saturation, double value, double& red, double& green, double& blue);
+		static void hsvToRgb(double hue, double saturation, double value, unsigned int& red, unsigned int& green, unsigned int& blue);
+	};
+	
+	/************ Property **************/
 	
 	class PropertyKind : public COMMON_NS::AbstractObject {};
 	
@@ -73,9 +124,7 @@ namespace EML2_NS
 		time_t getTimestamp(unsigned int index) const;
 	};
 	
-	//************************************
-	//************ Activity **************
-	//************************************
+	/************ Activity **************/
 
 	class ActivityTemplate : public COMMON_NS::AbstractObject
 	{

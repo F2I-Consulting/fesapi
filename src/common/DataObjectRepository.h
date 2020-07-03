@@ -28,13 +28,9 @@ namespace EML2_NS
 	class AbstractHdfProxy;
 	class Activity;
 	class ActivityTemplate;
+	class GraphicalInformationSet;
 	class PropertyKind;
 	class TimeSeries;
-}
-
-namespace EML2_3_NS
-{
-	class GraphicalInformationSet;
 }
 
 namespace RESQML2_NS
@@ -50,9 +46,12 @@ namespace RESQML2_NS
 	class BoundaryFeature;
 	class BoundaryFeatureInterpretation;
 	class CategoricalProperty;
+	class CmpLineFeature;
 	class CommentProperty;
+	class ContinuousColorMap;
 	class ContinuousProperty;
 	class CulturalFeature;
+	class DiscreteColorMap;
 	class DiscreteProperty;
 	class DeviationSurveyRepresentation;
 	class EarthModelInterpretation;
@@ -85,6 +84,8 @@ namespace RESQML2_NS
 	class SealedVolumeFrameworkRepresentation;
 	class SeismicLatticeFeature;
 	class SeismicLineSetFeature;
+	class SeismicWellboreFrameRepresentation;
+	class ShotPointLineFeature;
 	class StratigraphicColumn;
 	class StratigraphicColumnRankInterpretation;
 	class StratigraphicOccurrenceInterpretation;
@@ -117,17 +118,6 @@ namespace RESQML2_0_1_NS
 	class FluidBoundaryFeature;
 	class RockFluidUnitFeature;
 	class SeismicLineFeature;
-}
-
-namespace RESQML2_2_NS
-{
-	class CmpLineFeature;
-	class ContinuousColorMap;
-	class DiscreteColorMap;
-	class Model;
-	class RockVolumeFeature;
-	class SeismicWellboreFrameRepresentation;
-	class ShotPointLineFeature;
 }
 
 namespace WITSML2_0_NS
@@ -1130,7 +1120,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new CMP line.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::CmpLineFeature* createCmpLine(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::CmpLineFeature* createCmpLine(const std::string & guid, const std::string & title,
 			int nearestShotPointIndicesIncrement, int firstNearestShotPointIndex, unsigned int nearestShotPointCount);
 
 		/**
@@ -1143,7 +1133,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new CMP line.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ShotPointLineFeature* createShotPointLine(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::ShotPointLineFeature* createShotPointLine(const std::string & guid, const std::string & title);
 
 		/**
 		 * @brief	Creates a seismic line set into this repository
@@ -1198,7 +1188,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new RockVolume feature.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::RockVolumeFeature* createRockVolumeFeature(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockVolumeFeature* createRockVolumeFeature(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a model into this repository.
@@ -1208,7 +1198,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new model.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::Model* createModel(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::Model* createModel(const std::string & guid, const std::string & title);
 
 		/**
 		 * @brief	@deprecated Use {@link createModel()} method for RESQML post v2.0.1 Creates a
@@ -1933,7 +1923,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new seismic wellbore frame representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::SeismicWellboreFrameRepresentation* createSeismicWellboreFrameRepresentation(
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::SeismicWellboreFrameRepresentation* createSeismicWellboreFrameRepresentation(
 			RESQML2_NS::WellboreInterpretation* interp,
 			const std::string& guid, const std::string& title, 
 			RESQML2_NS::WellboreTrajectoryRepresentation* traj,
@@ -3087,7 +3077,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new graphical information set.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_3_NS::GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT EML2_NS::GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a discrete color map into this repository
@@ -3099,7 +3089,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new discrete color map.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::DiscreteColorMap* createDiscreteColorMap(const std::string& guid, const std::string& title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::DiscreteColorMap* createDiscreteColorMap(const std::string& guid, const std::string& title);
 
 		/**
 		 * Creates a continuous color map into this repository
@@ -3113,7 +3103,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new continuous color map.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
 			gsoap_eml2_3::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_3::resqml22__InterpolationMethod interpolationMethod);
 
 		//***** STANDARD PROP KIND ***********

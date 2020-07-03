@@ -108,9 +108,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.Activity_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("eml23".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.Activity_eml23(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -121,9 +123,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.ActivityTemplate_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("eml23".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.ActivityTemplate_eml23(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -134,9 +138,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("eml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_0_NS}.HdfProxy_eml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("eml23".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.HdfProxy_eml23(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -150,9 +156,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		else if ("eml21".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_1_NS}.PropertyKind_eml21(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("eml23".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.PropertyKind_eml23(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -163,9 +171,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.TimeSeries_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("eml23".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.TimeSeries_eml23(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -176,9 +186,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.BoundaryFeature_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.BoundaryFeature_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -189,9 +201,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreFeature_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.WellboreFeature_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -202,9 +216,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLatticeFeature_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SeismicLatticeFeature_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -215,9 +231,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLineSetFeature_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SeismicLineSetFeature_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -228,9 +246,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicColumn_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.StratigraphicColumn_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -241,9 +261,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.BoundaryFeatureInterpretation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.BoundaryFeatureInterpretation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -254,9 +276,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.EarthModelInterpretation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.EarthModelInterpretation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -267,9 +291,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.FaultInterpretation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.FaultInterpretation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -280,9 +306,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeobodyBoundaryInterpretation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.GeobodyBoundaryInterpretation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -293,9 +321,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeobodyInterpretation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.GeobodyInterpretation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -306,9 +336,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GenericFeatureInterpretation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.GenericFeatureInterpretation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -319,9 +351,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.HorizonInterpretation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.HorizonInterpretation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -332,9 +366,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicColumnRankInterpretation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.StratigraphicColumnRankInterpretation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -345,9 +381,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicOccurrenceInterpretation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.StratigraphicOccurrenceInterpretation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -358,9 +396,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicUnitInterpretation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.StratigraphicUnitInterpretation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -371,9 +411,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StructuralOrganizationInterpretation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.StructuralOrganizationInterpretation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -384,9 +426,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreInterpretation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.WellboreInterpretation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -397,9 +441,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.DeviationSurveyRepresentation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DeviationSurveyRepresentation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -410,9 +456,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.Grid2dRepresentation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.Grid2dRepresentation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -423,9 +471,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GridConnectionSetRepresentation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.GridConnectionSetRepresentation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -436,9 +486,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.NonSealedSurfaceFrameworkRepresentation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.NonSealedSurfaceFrameworkRepresentation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -449,9 +501,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PlaneSetRepresentation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.PlaneSetRepresentation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -462,9 +516,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PointSetRepresentation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.PointSetRepresentation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -475,9 +531,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PolylineRepresentation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.PolylineRepresentation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -488,9 +546,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PolylineSetRepresentation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.PolylineSetRepresentation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -501,9 +561,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.RepresentationSetRepresentation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.RepresentationSetRepresentation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -514,9 +576,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.RockFluidOrganizationInterpretation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.RockFluidOrganizationInterpretation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -527,9 +591,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.RockFluidUnitInterpretation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.RockFluidUnitInterpretation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -540,9 +606,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SubRepresentation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SubRepresentation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -553,9 +621,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.TriangulatedSetRepresentation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.TriangulatedSetRepresentation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -566,9 +636,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.UnstructuredGridRepresentation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.UnstructuredGridRepresentation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -579,9 +651,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreTrajectoryRepresentation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.WellboreTrajectoryRepresentation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -598,25 +672,31 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 			if ("resqml20".equals(xmlNs)) {
 				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.IjkGridExplicitRepresentation_resqml20(cPtr, owner);
 			}
+${COMMENT_START}
 			else if ("resqml22".equals(xmlNs)) {
 				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.IjkGridExplicitRepresentation_resqml22(cPtr, owner);
 			}
+${COMMENT_END}
 		}
 		else if (type == com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractIjkGridRepresentation.geometryKind.PARAMETRIC) {
 			if ("resqml20".equals(xmlNs)) {
 				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.IjkGridParametricRepresentation_resqml20(cPtr, owner);
 			}
+${COMMENT_START}
 			else if ("resqml22".equals(xmlNs)) {
 				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.IjkGridParametricRepresentation_resqml22(cPtr, owner);
 			}
+${COMMENT_END}
 		}
 		else if (type == com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractIjkGridRepresentation.geometryKind.LATTICE) {
 			if ("resqml20".equals(xmlNs)) {
 				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.IjkGridLatticeRepresentation_resqml20(cPtr, owner);
 			}
+${COMMENT_START}
 			else if ("resqml22".equals(xmlNs)) {
 				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.IjkGridLatticeRepresentation_resqml22(cPtr, owner);
 			}
+${COMMENT_END}
 		}
 		else // TODO : see if it is possible to return the object itself instead of a copy.
 		{
@@ -632,9 +712,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.CategoricalProperty_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.CategoricalProperty_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -645,9 +727,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.CommentProperty_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.CommentProperty_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -658,9 +742,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.ContinuousProperty_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.ContinuousProperty_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -671,9 +757,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.DiscreteProperty_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DiscreteProperty_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -684,9 +772,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreFrameRepresentation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.WellboreFrameRepresentation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -697,9 +787,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreMarkerFrameRepresentation_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.WellboreMarkerFrameRepresentation_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -710,9 +802,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.LocalDepth3dCrs_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.LocalDepth3dCrs_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -723,9 +817,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if ("resqml20".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.LocalTime3dCrs_resqml20(cPtr, owner);
 		}
+${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.LocalTime3dCrs_resqml22(cPtr, owner);
 		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -748,13 +844,21 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		case CATEGORICALPROPERTY : return resqml2_instantiateCategoricalProperty(cPtr, owner);
 		case CHANNEL : return new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Channel(cPtr, owner);
 		case CHANNELSET : return new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.ChannelSet(cPtr, owner);
+${COMMENT_START}
 		case CMPLINEFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.CmpLineFeature_resqml22(cPtr, owner);
+${COMMENT_END}
 		case COMMENTPROPERTY : return resqml2_instantiateCommentProperty(cPtr, owner);
-		case CONTINUOUSCOLORMAP : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.ContinuousColorMap(cPtr, owner);
+${COMMENT_START}
+		case CONTINUOUSCOLORMAP : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.ContinuousColorMap_resqml22(cPtr, owner);
+${COMMENT_END}
 		case CONTINUOUSPROPERTY : return resqml2_instantiateContinuousProperty(cPtr, owner);
+${COMMENT_START}
 		case CULTURALFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.CulturalFeature_resqml22(cPtr, owner);
+${COMMENT_END}
 		case DEVIATIONSURVEYREPRESENTATION : return resqml2_instantiateDeviationSurveyRepresentation(cPtr, owner);
-		case DISCRETECOLORMAP : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DiscreteColorMap(cPtr, owner);
+${COMMENT_START}
+		case DISCRETECOLORMAP : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DiscreteColorMap_resqml22(cPtr, owner);
+${COMMENT_END}
 		case DISCRETEPROPERTY : return resqml2_instantiateDiscreteProperty(cPtr, owner);
 		case EARTHMODELINTERPRETATION : return resqml2_instantiateEarthModelInterpretation(cPtr, owner);
 		case EPCEXTERNALPARTREFERENCE : return eml2_instantiateEpcExternalPartReference(cPtr, owner);
@@ -769,7 +873,9 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		case GEOBODYINTERPRETATION : return resqml2_instantiateGeobodyInterpretation(cPtr, owner);
 		case GENERICFEATUREINTERPRETATION : return resqml2_instantiateGenericFeatureInterpretation(cPtr, owner);
 		case GEOLOGICUNITFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeologicUnitFeature_resqml20(cPtr, owner);
-		case GRAPHICALINFORMATIONSET : return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.GraphicalInformationSet(cPtr, owner);
+${COMMENT_START}
+		case GRAPHICALINFORMATIONSET : return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.GraphicalInformationSet_eml23(cPtr, owner);
+${COMMENT_END}
 		case GRID2DREPRESENTATION : return resqml2_instantiateGrid2dRepresentation(cPtr, owner);
 		case GRIDCONNECTIONSETREPRESENTATION : return resqml2_instantiateGridConnectionSetRepresentation(cPtr, owner);
 		case HORIZONINTERPRETATION : return resqml2_instantiateHorizonInterpretation(cPtr, owner);
@@ -778,7 +884,9 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		case LOCALTIME3DCRS : return resqml2_instantiateLocalTime3dCrs(cPtr, owner);
 		case LOG : return new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Log(cPtr, owner);
 		case MDDATUM : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.MdDatum_resqml20(cPtr, owner);
+${COMMENT_START}
 		case MODEL : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.Model_resqml22(cPtr, owner);
+${COMMENT_END}
 		case NONSEALEDSURFACEFRAMEWORKREPRESENTATION : return resqml2_instantiateNonSealedSurfaceFrameworkRepresentation(cPtr, owner);
 		case ORGANIZATIONFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.OrganizationFeature_resqml20(cPtr, owner);
 		case PLANESETREPRESENTATION : return resqml2_instantiatePlaneSetRepresentation(cPtr, owner);
@@ -790,12 +898,16 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		case REPRESENTATIONSETREPRESENTATION : return resqml2_instantiateRepresentationSetRepresentation(cPtr, owner);
 		case ROCKFLUIDORGANIZATIONINTERPRETATION : return resqml2_instantiateRockFluidOrganizationInterpretation(cPtr, owner);
 		case ROCKFLUIDUNITINTERPRETATION : return resqml2_instantiateRockFluidUnitInterpretation(cPtr, owner);
+${COMMENT_START}
 		case ROCKVOLUMEFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.RockVolumeFeature_resqml22(cPtr, owner);
+${COMMENT_END}
 		case SEISMICLATTICEFEATURE : return resqml2_instantiateSeismicLatticeFeature(cPtr, owner);
 		case SEISMICLINEFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLineFeature_resqml20(cPtr, owner);
 		case SEISMICLINESETFEATURE : return resqml2_instantiateSeismicLineSetFeature(cPtr, owner);
-		case SEISMICWELLBOREFRAMEREPRESENTATION : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SeismicWellboreFrameRepresentation(cPtr, owner);
+${COMMENT_START}
+		case SEISMICWELLBOREFRAMEREPRESENTATION : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SeismicWellboreFrameRepresentation_resqml22(cPtr, owner);
 		case SHOTPOINTLINEFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.ShotPointLineFeature_resqml22(cPtr, owner);
+${COMMENT_END}
 		case STRATIGRAPHICCOLUMN : return resqml2_instantiateStratigraphicColumn(cPtr, owner);
 		case STRATIGRAPHICCOLUMNRANKINTERPRETATION : return resqml2_instantiateStratigraphicColumnRankInterpretation(cPtr, owner);
 		case STRATIGRAPHICOCCURRENCEINTERPRETATION : return resqml2_instantiateStratigraphicOccurrenceInterpretation(cPtr, owner);
@@ -839,7 +951,11 @@ namespace COMMON_NS
 
 namespace EML2_NS
 {
-	%typemap(javaout) Activity*, ActivityTemplate*, EpcExternalPartReference*, AbstractHdfProxy*, HdfProxy*, PropertyKind*, TimeSeries* {
+	%typemap(javaout) Activity*, ActivityTemplate*, EpcExternalPartReference*, AbstractHdfProxy*, HdfProxy*, PropertyKind*, TimeSeries* 
+#ifdef WITH_RESQML2_2
+										,GraphicalInformationSet*
+#endif
+	{
 		long cPtr = $jnicall;
 		$javaclassname ret = ($javaclassname) fesapiJNI.eml2_instantiateConcreteObject(cPtr, $owner);
 		return ret;
@@ -855,14 +971,26 @@ namespace RESQML2_NS
 	%typemap(javaout) 	AbstractFeature*, AbstractFeatureInterpretation*, AbstractRepresentation*, AbstractGridRepresentation*, AbstractLocal3dCrs*,
 						AbstractProperty*, AbstractValuesProperty*, AbstractDiscreteOrCategoricalProperty*,
 						AbstractIjkGridRepresentation*, AbstractStratigraphicOrganizationInterpretation*,
+#ifdef WITH_RESQML2_2
+						AbstractColorMap*,
+#endif
 						BlockedWellboreRepresentation*,
 						BoundaryFeature*,
 						BoundaryFeatureInterpretation*,
 						CategoricalProperty*,
+#ifdef WITH_RESQML2_2
+						CmpLineFeature*,
+#endif
 						CommentProperty*,
+#ifdef WITH_RESQML2_2
+						ContinuousColorMap*,
+#endif
 						ContinuousProperty*,
 						CulturalFeature*,
 						DeviationSurveyRepresentation*,
+#ifdef WITH_RESQML2_2
+						DiscreteColorMap*,
+#endif
 						DiscreteProperty*,
 						EarthModelInterpretation*,
 						FaultInterpretation*,
@@ -894,6 +1022,10 @@ namespace RESQML2_NS
 						SealedVolumeFrameworkRepresentation*,
 						SeismicLatticeFeature*,
 						SeismicLineSetFeature*,
+#ifdef WITH_RESQML2_2
+						SeismicWellboreFrameRepresentation*,
+						ShotPointLineFeature*,
+#endif
 						StratigraphicColumn*,
 						StratigraphicColumnRankInterpretation*,
 						StratigraphicOccurrenceInterpretation*,
