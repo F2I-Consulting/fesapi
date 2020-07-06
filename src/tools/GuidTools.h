@@ -26,6 +26,7 @@ under the License.
 #include <array>
 #include <cstdint>
 #include <algorithm>
+#include <stdexcept>
 
 namespace GuidTools
 {
