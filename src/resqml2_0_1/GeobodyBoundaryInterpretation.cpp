@@ -20,15 +20,13 @@ under the License.
 
 #include <stdexcept>
 
-#include "GeneticBoundaryFeature.h"
+#include "../resqml2/BoundaryFeature.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* GeobodyBoundaryInterpretation::XML_TAG = "GeobodyBoundaryInterpretation";
-
-GeobodyBoundaryInterpretation::GeobodyBoundaryInterpretation(GeneticBoundaryFeature * geobodyBoundary, const string & guid, const string & title)
+GeobodyBoundaryInterpretation::GeobodyBoundaryInterpretation(RESQML2_NS::BoundaryFeature * geobodyBoundary, const string & guid, const string & title)
 {
 	if (geobodyBoundary == nullptr)
 		throw invalid_argument("The interpreted geobody boundary cannot be null.");
@@ -38,7 +36,7 @@ GeobodyBoundaryInterpretation::GeobodyBoundaryInterpretation(GeneticBoundaryFeat
 	static_cast<_resqml20__GeobodyBoundaryInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setInterpretedFeature(geobodyBoundary);
 }

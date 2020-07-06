@@ -23,16 +23,26 @@ under the License.
 namespace trigonometry
 {
 	/**
-	* Convert an angle into radians
-	*/
+	 * Convert an angle into radians
+	 *
+	 * @param 	angleValue	The angle value.
+	 * @param 	angleUom  	The angle uom.
+	 *
+	 * @returns	The given data converted to the radians.
+	 */
 	double convertToRadians(const double & angleValue, const gsoap_resqml2_0_1::eml20__PlaneAngleUom & angleUom);
 
 	/**
-	* From https://fr.wikipedia.org/wiki/Matrice_de_rotation#En_dimension_deux
-	*
-	* @param	angleValue	A positive value indicates a clockwise rotation
-	* @return	A pair of double where the first value is the X coordinate of the rotated point and where the second value is the Y coordinate of the rotated point
-	*/
+	 * From https://fr.wikipedia.org/wiki/Matrice_de_rotation#En_dimension_deux
+	 *
+	 * @param 	xSource   	Source for the.
+	 * @param 	ySource   	Source for the.
+	 * @param 	angleValue	A positive value indicates a clockwise rotation.
+	 * @param 	angleUom  	The angle uom.
+	 *
+	 * @returns	A pair of double where the first value is the X coordinate of the rotated point and
+	 * 			where the second value is the Y coordinate of the rotated point.
+	 */
 	std::pair<double, double> rotateXY(const double & xSource, const double & ySource, const double & angleValue, const gsoap_resqml2_0_1::eml20__PlaneAngleUom & angleUom);
 }
 

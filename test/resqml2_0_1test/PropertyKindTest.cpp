@@ -19,7 +19,7 @@ under the License.
 #include "PropertyKindTest.h"
 #include "../catch.hpp"
 #include "common/EpcDocument.h"
-#include "common/PropertyKind.h"
+#include "eml2/PropertyKind.h"
 #include <stdexcept>
 
 using namespace std;
@@ -43,19 +43,14 @@ PropertyKindTest::PropertyKindTest(DataObjectRepository* repo, bool init)
 }
 
 void PropertyKindTest::initRepoHandler() {
-	PropertyKind* propertyKind = repo->createPropertyKind(defaultUuid, defaultTitle, "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__index);
+	auto parentPropertyKind = repo->createPropertyKind("a48c9c25-1e3a-43c8-be6a-044224cc69cb", "property", gsoap_eml2_1::eml21__QuantityClassKind__unitless);
+	auto propertyKind = repo->createPropertyKind(defaultUuid, defaultTitle, gsoap_eml2_1::eml21__QuantityClassKind__not_x0020a_x0020measure, false, parentPropertyKind);
 	REQUIRE(propertyKind != nullptr);
 }
 
 void PropertyKindTest::readRepoHandler() {
 	// getting the PropertyKind
-	PropertyKind* propertyKind = repo->getDataObjectByUuid<PropertyKind>(defaultUuid);
+	EML2_NS::PropertyKind* propertyKind = repo->getDataObjectByUuid<EML2_NS::PropertyKind>(defaultUuid);
 
-	REQUIRE(propertyKind->getNamingSystem().compare("F2I") == 0);
-	REQUIRE(propertyKind->getUom() == gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc);
-	REQUIRE(propertyKind->isParentAnEnergisticsPropertyKind());
-	REQUIRE(propertyKind->getParentEnergisticsPropertyKind() == gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__index);
-	REQUIRE_THROWS(propertyKind->getParentLocalPropertyKind());
-	REQUIRE_THROWS(propertyKind->getParentLocalPropertyKindTitle());
-	REQUIRE_THROWS(propertyKind->getParentLocalPropertyKindUuid());
+	REQUIRE(propertyKind->getParentPropertyKindDor().getUuid() == "a48c9c25-1e3a-43c8-be6a-044224cc69cb");
 }

@@ -20,17 +20,13 @@ under the License.
 
 #include <stdexcept>
 
-#include "StratigraphicUnitFeature.h"
-#include "StratigraphicColumnRankInterpretation.h"
-#include "SealedVolumeFrameworkRepresentation.h"
+#include "../resqml2/RockVolumeFeature.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* StratigraphicUnitInterpretation::XML_TAG = "StratigraphicUnitInterpretation";
-
-StratigraphicUnitInterpretation::StratigraphicUnitInterpretation(StratigraphicUnitFeature * feature, const string & guid, const string & title)
+StratigraphicUnitInterpretation::StratigraphicUnitInterpretation(RESQML2_NS::RockVolumeFeature * feature, const string & guid, const string & title)
 {
 	if (feature == nullptr) {
 		throw invalid_argument("The interpreted feature cannot be null.");
@@ -52,8 +48,8 @@ bool StratigraphicUnitInterpretation::hasDepositionMode() const
 
 gsoap_resqml2_0_1::resqml20__DepositionMode StratigraphicUnitInterpretation::getDepositionMode() const
 {
-	if (hasDepositionMode() == false)
-		throw invalid_argument("The stratigraphic unit interpretation has not any deposition mode.");
+	if (!hasDepositionMode())
+		throw logic_error("The stratigraphic unit interpretation has not any deposition mode.");
 
 	return *static_cast<_resqml20__StratigraphicUnitInterpretation*>(gsoapProxy2_0_1)->DepositionMode;
 }

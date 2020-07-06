@@ -22,23 +22,35 @@ under the License.
 
 namespace PRODML2_1_NS
 {
+	/** A compositional viscosity specification. */
 	class CompositionalViscositySpecification : public CompositionalSpecification
 	{
 	public:
+
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		CompositionalViscositySpecification(gsoap_eml2_2::prodml21__AbstractCompositionalViscosityModel* fromGsoap) :CompositionalSpecification(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~CompositionalViscositySpecification() {}
 
+		/**
+		 * Gets thermodynamic phase
+		 *
+		 * @returns	The thermodynamic phase.
+		 */
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::prodml21__ThermodynamicPhase getThermodynamicPhase() const {
 			return static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalViscosityModel*>(gsoapProxy)->phase;
 		}
 
+		/**
+		 * Sets thermodynamic phase
+		 *
+		 * @param 	phase	The phase.
+		 */
 		DLL_IMPORT_OR_EXPORT void setThermodynamicPhase(gsoap_eml2_2::prodml21__ThermodynamicPhase phase) {
 			static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalViscosityModel*>(gsoapProxy)->phase = phase;
 		}

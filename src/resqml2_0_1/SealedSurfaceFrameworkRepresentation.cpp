@@ -18,24 +18,23 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "SealedSurfaceFrameworkRepresentation.h"
 
+#include <limits>
 #include <stdexcept>
 #include <sstream>
 
 #include "H5Tpublic.h"
 
-#include "StructuralOrganizationInterpretation.h"
-#include "../common/AbstractHdfProxy.h"
+#include "../resqml2/StructuralOrganizationInterpretation.h"
+#include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* SealedSurfaceFrameworkRepresentation::XML_TAG = "SealedSurfaceFrameworkRepresentation";
-
 SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
-        StructuralOrganizationInterpretation* interp,
-        const std::string & guid,
-        const std::string & title)
+	RESQML2_NS::StructuralOrganizationInterpretation* interp,
+    const std::string & guid,
+    const std::string & title)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The structural organization interpretation cannot be null.");
@@ -67,14 +66,14 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
         gsoap_resqml2_0_1::resqml20__IdentityKind kind,
         unsigned int patchCount,
         unsigned int identicalNodesCount,
-        int * identicalNodes,
-		COMMON_NS::AbstractHdfProxy * proxy)
+        int const* identicalNodes,
+		EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (patchCount < 2) {
-		throw invalid_argument("Contact point count cannot be less than two.");
+		throw invalid_argument("Contact patch count cannot be less than two.");
 	}
-	if (identicalNodesCount <= 0) {
-		throw invalid_argument("The identical nodes count cannot be lesser or equal to zero.");
+	if (identicalNodesCount == 0) {
+		throw invalid_argument("The identical nodes count cannot be zero.");
 	}
 	if (identicalNodes == nullptr) {
 		throw invalid_argument("The array of identical nodes cannot be null.");
@@ -96,27 +95,27 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
     xmlListOfIdenticalNodes->Values->HdfProxy = proxy->newResqmlReference();
     ostringstream ossForHdf;
     ossForHdf << "listOfIdenticalNodes_contact" << contactRep->Index;
-    xmlListOfIdenticalNodes->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdf.str();
+    xmlListOfIdenticalNodes->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
     contactRep->IdenticalNodeIndices = xmlListOfIdenticalNodes;
     // ************ HDF *************
     hsize_t dim[2] = {identicalNodesCount, patchCount};
-    proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+    proxy->writeArrayNd(getHdfGroup(),
         ossForHdf.str(), H5T_NATIVE_UINT,
         identicalNodes,
         dim, 2);
 }
 
 void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
-        unsigned int contactIndex,
-        int * nodeIndicesOnSupportingRepresentation, unsigned int nodeCount,
-        AbstractRepresentation * supportingRepresentation,
-		COMMON_NS::AbstractHdfProxy * proxy)
+    unsigned int contactIndex,
+    int const* nodeIndicesOnSupportingRepresentation, unsigned int nodeCount,
+	RESQML2_NS::AbstractRepresentation * supportingRepresentation,
+	EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (nodeIndicesOnSupportingRepresentation == nullptr) {
 		throw invalid_argument("The array of node indices cannot be null.");
 	}
-	if (nodeCount <= 0) {
-		throw invalid_argument("The nodes count cannot be lesser or equal to zero.");
+	if (nodeCount == 0) {
+		throw invalid_argument("The nodes count cannot be zero.");
 	}
 	if (supportingRepresentation == nullptr) {
 		throw invalid_argument("The supporting representation cannot be null.");
@@ -132,7 +131,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
     _resqml20__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	if (contactIndex >= orgRep->SealedContactRepresentation.size()) {
-		throw invalid_argument("Invalid contact index.");
+		throw out_of_range("Invalid contact index.");
 	}
 
     resqml20__SealedContactRepresentationPart* contactRep = static_cast<resqml20__SealedContactRepresentationPart*>(orgRep->SealedContactRepresentation[contactIndex]);
@@ -161,31 +160,17 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
     xmlSupportingRepresentationNodes->Values->HdfProxy = proxy->newResqmlReference();
     ostringstream ossForHdf;
     ossForHdf << "SupportingRepresentationNodes_contact" << contactIndex << "_patch" << contactPatch->PatchIndex;
-    xmlSupportingRepresentationNodes->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdf.str();
+    xmlSupportingRepresentationNodes->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
     contactPatch->SupportingRepresentationNodes = xmlSupportingRepresentationNodes;
     // ************ HDF *************
-    hsize_t dim[1] = {nodeCount};
-    proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+    hsize_t dim = nodeCount;
+    proxy->writeArrayNd(getHdfGroup(),
                         ossForHdf.str(), H5T_NATIVE_UINT,
                         nodeIndicesOnSupportingRepresentation,
-                        dim, 1);
+                        &dim, 1);
 
     // adding the contact patch to the contact representation
     contactRep->Contact.push_back(contactPatch);
-}
-
-std::string SealedSurfaceFrameworkRepresentation::getHdfProxyUuid() const
-{
-    string result;
-    _resqml20__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
-
-    if (!orgRep->SealedContactRepresentation.empty() && static_cast<resqml20__SealedContactRepresentationPart*>(orgRep->SealedContactRepresentation[0])->IdenticalNodeIndices != nullptr)
-    {
-        resqml20__SealedContactRepresentationPart *sealedContactRep = static_cast<resqml20__SealedContactRepresentationPart*>(orgRep->SealedContactRepresentation[0]);
-        result = static_cast<resqml20__IntegerHdf5Array *>(sealedContactRep->IdenticalNodeIndices)->Values->HdfProxy->UUID;
-    }
-
-    return result;
 }
 
 unsigned int SealedSurfaceFrameworkRepresentation::getContactCount() const
@@ -202,7 +187,7 @@ unsigned int SealedSurfaceFrameworkRepresentation::getContactCount() const
 gsoap_resqml2_0_1::resqml20__SealedContactRepresentationPart* SealedSurfaceFrameworkRepresentation::getContact(unsigned int crIndex) const
 {
 	if (crIndex >= getContactCount()) {
-		throw range_error("The index of the contact representation is out of range.");
+		throw out_of_range("The index of the contact representation is out of range.");
 	}
 
 	return static_cast<_resqml20__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1)->SealedContactRepresentation[crIndex];
@@ -257,7 +242,7 @@ gsoap_resqml2_0_1::resqml20__ContactPatch* SealedSurfaceFrameworkRepresentation:
 	resqml20__SealedContactRepresentationPart* contactRep = getContact(crIndex);
 
 	if (cpIndex >= getContactPatchCount(crIndex)) {
-		throw range_error("The index of the contact patch is out of range.");
+		throw out_of_range("The index of the contact patch is out of range.");
 	}
 
 	return contactRep->Contact[cpIndex];

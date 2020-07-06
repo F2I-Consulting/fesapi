@@ -18,114 +18,115 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractDiscreteOrCategoricalProperty.h"
 
+#include <limits>
 #include <sstream>
 #include <stdexcept>
 
 #include <hdf5.h>
 
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_NS;
 
-void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5Array1dOfValues(const LONG64 * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy * proxy,
+void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5Array1dOfValues(const LONG64 * values, ULONG64 valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	LONG64 nullValue)
 {
 	hsize_t valueCountPerDimension = valueCount;
 	pushBackLongHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy, nullValue);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackIntHdf5Array1dOfValues(const int * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy * proxy,
+void AbstractDiscreteOrCategoricalProperty::pushBackIntHdf5Array1dOfValues(const int * values, ULONG64 valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	int nullValue)
 {
 	hsize_t valueCountPerDimension = valueCount;
 	pushBackIntHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy, nullValue);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackShortHdf5Array1dOfValues(const short * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy * proxy,
+void AbstractDiscreteOrCategoricalProperty::pushBackShortHdf5Array1dOfValues(const short * values, ULONG64 valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	short nullValue)
 {
 	hsize_t valueCountPerDimension = valueCount;
 	pushBackShortHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy, nullValue);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackCharHdf5Array1dOfValues(const char * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy * proxy,
+void AbstractDiscreteOrCategoricalProperty::pushBackCharHdf5Array1dOfValues(const char * values, ULONG64 valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	char nullValue)
 {
 	hsize_t valueCountPerDimension = valueCount;
 	pushBackCharHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy, nullValue);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5Array2dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5Array2dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	LONG64 nullValue)
 {
 	hsize_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
 	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackIntHdf5Array2dOfValues(const int * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void AbstractDiscreteOrCategoricalProperty::pushBackIntHdf5Array2dOfValues(const int * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	int nullValue)
 {
 	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackIntHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackShortHdf5Array2dOfValues(const short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void AbstractDiscreteOrCategoricalProperty::pushBackShortHdf5Array2dOfValues(const short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	short nullValue)
 {
 	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackShortHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackUShortHdf5Array2dOfValues(const unsigned short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
+void AbstractDiscreteOrCategoricalProperty::pushBackUShortHdf5Array2dOfValues(const unsigned short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
 {
 	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackCharHdf5Array2dOfValues(const char * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void AbstractDiscreteOrCategoricalProperty::pushBackCharHdf5Array2dOfValues(const char * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	char nullValue)
 {
 	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackCharHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5Array3dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5Array3dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	LONG64 nullValue)
 {
 	hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
 	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackIntHdf5Array3dOfValues(const int * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void AbstractDiscreteOrCategoricalProperty::pushBackIntHdf5Array3dOfValues(const int * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	int nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackIntHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackShortHdf5Array3dOfValues(const short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void AbstractDiscreteOrCategoricalProperty::pushBackShortHdf5Array3dOfValues(const short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	short nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackShortHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackUShortHdf5Array3dOfValues(const unsigned short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void AbstractDiscreteOrCategoricalProperty::pushBackUShortHdf5Array3dOfValues(const unsigned short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	unsigned short nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackCharHdf5Array3dOfValues(const char * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void AbstractDiscreteOrCategoricalProperty::pushBackCharHdf5Array3dOfValues(const char * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	char nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackCharHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-std::string AbstractDiscreteOrCategoricalProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64 nullValue)
+std::string AbstractDiscreteOrCategoricalProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64 nullValue)
 {
 	if (hdfProxy == nullptr) {
 		hdfProxy = getRepository()->getDefaultHdfProxy();
@@ -150,7 +151,7 @@ std::string AbstractDiscreteOrCategoricalProperty::pushBackRefToExistingDataset(
 		if (datasetName.empty()) {
 			ostringstream ossForHdf;
 			ossForHdf << "values_patch" << *(patch->RepresentationPatchIndex);
-			xmlValues->Values->PathInHdfFile = "/RESQML/" + prop->uuid + "/" + ossForHdf.str();
+			xmlValues->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 		}
 		else {
 			xmlValues->Values->PathInHdfFile = datasetName;
@@ -162,11 +163,36 @@ std::string AbstractDiscreteOrCategoricalProperty::pushBackRefToExistingDataset(
 
 		return xmlValues->Values->PathInHdfFile;
 	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::resqml22__AbstractValuesProperty* prop = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3);
 
-	throw logic_error("Not implemented yet");
+		// XML
+		gsoap_eml2_3::eml23__IntegerExternalArray* xmlValues = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
+		xmlValues->NullValue = nullValue;
+		xmlValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+		auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+		dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
+
+		if (datasetName.empty()) {
+			ostringstream ossForHdf;
+			ossForHdf << "values_patch" << getPatchCount();
+			dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
+		}
+		else {
+			dsPart->PathInExternalFile = datasetName;
+		}
+
+		xmlValues->Values->ExternalFileProxy.push_back(dsPart);
+
+		prop->ValuesForPatch.push_back(xmlValues);
+
+		return dsPart->PathInExternalFile;
+	}
+
+	throw logic_error("Unrecognized RESQML version");
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5ArrayOfValues(const LONG64 * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy, LONG64 nullValue)
+void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5ArrayOfValues(const LONG64 * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy, LONG64 nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -175,14 +201,14 @@ void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5ArrayOfValues(const 
 		}
 	}
 
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingDataset(proxy, "", nullValue),
 		H5T_NATIVE_LLONG,
 		values,
 		numValues, numDimensionsInArray);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, int nullValue)
+void AbstractDiscreteOrCategoricalProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -191,14 +217,14 @@ void AbstractDiscreteOrCategoricalProperty::pushBackIntHdf5ArrayOfValues(const i
 		}
 	}
 
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingDataset(proxy, "", nullValue),
 		H5T_NATIVE_INT,
 		values,
 		numValues, numDimensionsInArray);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, short nullValue)
+void AbstractDiscreteOrCategoricalProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -207,14 +233,14 @@ void AbstractDiscreteOrCategoricalProperty::pushBackShortHdf5ArrayOfValues(const
 		}
 	}
 
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingDataset(proxy, "", nullValue),
 		H5T_NATIVE_SHORT,
 		values,
 		numValues, numDimensionsInArray);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
+void AbstractDiscreteOrCategoricalProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -223,14 +249,14 @@ void AbstractDiscreteOrCategoricalProperty::pushBackUShortHdf5ArrayOfValues(cons
 		}
 	}
 
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingDataset(proxy, "", nullValue),
 		H5T_NATIVE_USHORT,
 		values,
 		numValues, numDimensionsInArray);
 }
 
-void AbstractDiscreteOrCategoricalProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, char nullValue)
+void AbstractDiscreteOrCategoricalProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -239,7 +265,7 @@ void AbstractDiscreteOrCategoricalProperty::pushBackCharHdf5ArrayOfValues(const 
 		}
 	}
 
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingDataset(proxy, "", nullValue),
 		H5T_NATIVE_CHAR,
 		values,
@@ -249,19 +275,32 @@ void AbstractDiscreteOrCategoricalProperty::pushBackCharHdf5ArrayOfValues(const 
 LONG64 AbstractDiscreteOrCategoricalProperty::getLongValuesOfPatch(unsigned int patchIndex, LONG64 * values) const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
-	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
-	getHdfProxyFromDataset(dataset)->readArrayNdOfLongValues(dataset->PathInHdfFile, values);
+	hdfProxy->readArrayNdOfLongValues(dsPath, values);
 
 	return nullValue;
 }
 
 LONG64 AbstractDiscreteOrCategoricalProperty::getNullValueOfPatch(unsigned int patchIndex) const
 {
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
 		if (patch->Values->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 			return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(patch->Values)->NullValue;
+		}
+
+		throw invalid_argument("The patch does not contain integer values.");
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		if (patch->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+			return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(patch)->NullValue;
 		}
 
 		throw invalid_argument("The patch does not contain integer values.");
@@ -274,9 +313,10 @@ LONG64 AbstractDiscreteOrCategoricalProperty::getNullValueOfPatch(unsigned int p
 ULONG64 AbstractDiscreteOrCategoricalProperty::getULongValuesOfPatch(unsigned int patchIndex, ULONG64 * values) const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
-	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
-	getHdfProxyFromDataset(dataset)->readArrayNdOfULongValues(dataset->PathInHdfFile, values);
+	hdfProxy->readArrayNdOfULongValues(dsPath, values);
 
 	return nullValue;
 }
@@ -284,9 +324,10 @@ ULONG64 AbstractDiscreteOrCategoricalProperty::getULongValuesOfPatch(unsigned in
 int AbstractDiscreteOrCategoricalProperty::getIntValuesOfPatch(unsigned int patchIndex, int * values) const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
-	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
-	getHdfProxyFromDataset(dataset)->readArrayNdOfIntValues(dataset->PathInHdfFile, values);
+	hdfProxy->readArrayNdOfIntValues(dsPath, values);
 
 	return nullValue;
 }
@@ -294,9 +335,10 @@ int AbstractDiscreteOrCategoricalProperty::getIntValuesOfPatch(unsigned int patc
 unsigned int AbstractDiscreteOrCategoricalProperty::getUIntValuesOfPatch(unsigned int patchIndex, unsigned int * values) const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
-	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
-	getHdfProxyFromDataset(dataset)->readArrayNdOfUIntValues(dataset->PathInHdfFile, values);
+	hdfProxy->readArrayNdOfUIntValues(dsPath, values);
 
 	return nullValue;
 }
@@ -304,9 +346,10 @@ unsigned int AbstractDiscreteOrCategoricalProperty::getUIntValuesOfPatch(unsigne
 short AbstractDiscreteOrCategoricalProperty::getShortValuesOfPatch(unsigned int patchIndex, short * values) const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
-	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
-	getHdfProxyFromDataset(dataset)->readArrayNdOfShortValues(dataset->PathInHdfFile, values);
+	hdfProxy->readArrayNdOfShortValues(dsPath, values);
 
 	return nullValue;
 }
@@ -314,9 +357,10 @@ short AbstractDiscreteOrCategoricalProperty::getShortValuesOfPatch(unsigned int 
 unsigned short AbstractDiscreteOrCategoricalProperty::getUShortValuesOfPatch(unsigned int patchIndex, unsigned short * values) const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
-	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
-	getHdfProxyFromDataset(dataset)->readArrayNdOfUShortValues(dataset->PathInHdfFile, values);
+	hdfProxy->readArrayNdOfUShortValues(dsPath, values);
 
 	return nullValue;
 }
@@ -324,9 +368,10 @@ unsigned short AbstractDiscreteOrCategoricalProperty::getUShortValuesOfPatch(uns
 char AbstractDiscreteOrCategoricalProperty::getCharValuesOfPatch(unsigned int patchIndex, char * values) const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
-	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
-	getHdfProxyFromDataset(dataset)->readArrayNdOfCharValues(dataset->PathInHdfFile, values);
+	hdfProxy->readArrayNdOfCharValues(dsPath, values);
 
 	return nullValue;
 }
@@ -334,9 +379,10 @@ char AbstractDiscreteOrCategoricalProperty::getCharValuesOfPatch(unsigned int pa
 unsigned char AbstractDiscreteOrCategoricalProperty::getUCharValuesOfPatch(unsigned int patchIndex, unsigned char * values) const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
-	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
-	getHdfProxyFromDataset(dataset)->readArrayNdOfUCharValues(dataset->PathInHdfFile, values);
+	hdfProxy->readArrayNdOfUCharValues(dsPath, values);
 
 	return nullValue;
 }
@@ -346,7 +392,7 @@ void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5Array3dOfValues(
 	ULONG64 valueCountInMiddleDim,
 	ULONG64 valueCountInSlowestDim,
 	LONG64 nullValue,
-	COMMON_NS::AbstractHdfProxy* proxy)
+	EML2_NS::AbstractHdfProxy* proxy)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackLongHdf5ArrayOfValues(valueCountPerDimension, 3, nullValue, proxy);
@@ -360,7 +406,7 @@ void AbstractDiscreteOrCategoricalProperty::setValuesOfLongHdf5Array3dOfValues(
 	ULONG64 offsetInFastestDim,
 	ULONG64 offsetInMiddleDim,
 	ULONG64 offsetInSlowestDim,
-	COMMON_NS::AbstractHdfProxy * proxy,
+	EML2_NS::AbstractHdfProxy * proxy,
 	unsigned int patchIndex)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
@@ -379,7 +425,7 @@ void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5ArrayOfValues(
 	hsize_t* numValues,
 	unsigned int numArrayDimensions,
 	LONG64 nullValue,
-	COMMON_NS::AbstractHdfProxy* proxy)
+	EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -403,10 +449,26 @@ void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5ArrayOfValues(
 		xmlValues->Values->HdfProxy = proxy->newResqmlReference();
 		std::ostringstream ossForHdf;
 		ossForHdf << "values_patch" << *(patch->RepresentationPatchIndex);
-		xmlValues->Values->PathInHdfFile = "/RESQML/" + getUuid() + "/" + ossForHdf.str();
+		xmlValues->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 		patch->Values = xmlValues;
 
 		prop->PatchOfValues.push_back(patch);
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::resqml22__AbstractValuesProperty* prop = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3);
+
+		// XML
+		gsoap_eml2_3::eml23__IntegerExternalArray* xmlValues = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
+		xmlValues->NullValue = nullValue;
+		xmlValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
+		auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
+		std::ostringstream ossForHdf;
+		ossForHdf << "values_patch" << getPatchCount();
+		dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
+		xmlValues->Values->ExternalFileProxy.push_back(dsPart);
+
+		prop->ValuesForPatch.push_back(xmlValues);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -415,7 +477,7 @@ void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5ArrayOfValues(
 	// HDF
 	ostringstream oss;
 	oss << "values_patch" << getPatchCount() - 1;
-	proxy->createArrayNd(getUuid(),
+	proxy->createArrayNd(getHdfGroup(),
 		oss.str(),
 		H5T_NATIVE_LLONG,
 		numValues, numArrayDimensions);
@@ -424,9 +486,13 @@ void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5ArrayOfValues(
 void AbstractDiscreteOrCategoricalProperty::setValuesOfLongHdf5ArrayOfValues(
 	LONG64* values, hsize_t const * numValuesInEachDimension,
 	hsize_t const * offsetInEachDimension, unsigned int numArrayDimensions,
-	COMMON_NS::AbstractHdfProxy* proxy,
+	EML2_NS::AbstractHdfProxy* proxy,
 	unsigned int patchIndex)
 {
+	if (patchIndex >= getPatchCount() && patchIndex != (numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The values property patch is out of range");
+	}
+
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
 		if (proxy == nullptr) {
@@ -438,14 +504,14 @@ void AbstractDiscreteOrCategoricalProperty::setValuesOfLongHdf5ArrayOfValues(
 	ostringstream oss;
 	oss << "values_patch";
 	if (patchIndex == (numeric_limits<unsigned int>::max)()) {
-		oss << static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty *>(gsoapProxy2_0_1)->PatchOfValues.size() - 1;
+		oss << getPatchCount() - 1;
 	}
 	else {
 		oss << patchIndex;
 	}
 
 	// HDF
-	proxy->writeArrayNdSlab(getUuid(),
+	proxy->writeArrayNdSlab(getHdfGroup(),
 		oss.str(),
 		H5T_NATIVE_LLONG,
 		values,
@@ -462,10 +528,11 @@ void AbstractDiscreteOrCategoricalProperty::getLongValuesOfPatch(
 	unsigned int numArrayDimensions) const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
-	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
-	getHdfProxyFromDataset(dataset)->readArrayNdOfLongValues(
-		dataset->PathInHdfFile,
+	hdfProxy->readArrayNdOfLongValues(
+		dsPath,
 		values,
 		numValuesInEachDimension,
 		offsetInEachDimension,
@@ -502,9 +569,11 @@ int AbstractDiscreteOrCategoricalProperty::getIntValuesOfPatch(
 	unsigned int numArrayDimensions) const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
-	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
-	getHdfProxyFromDataset(dataset)->readArrayNdOfIntValues(
-		dataset->PathInHdfFile,
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
+
+	hdfProxy->readArrayNdOfIntValues(
+		dsPath,
 		values,
 		numValuesInEachDimension,
 		offsetInEachDimension,

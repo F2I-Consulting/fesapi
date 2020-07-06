@@ -18,18 +18,18 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_0_1test/Grid2dRepresentationTest.h"
 #include "../catch.hpp"
-#include "resqml2_0_1/Horizon.h"
-#include "resqml2_0_1/HorizonInterpretation.h"
-#include "resqml2_0_1/Grid2dRepresentation.h"
-#include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "common/HdfProxy.h"
+#include "resqml2/BoundaryFeature.h"
+#include "resqml2/HorizonInterpretation.h"
+#include "resqml2/Grid2dRepresentation.h"
+#include "resqml2/LocalDepth3dCrs.h"
+#include "eml2/AbstractHdfProxy.h"
 #include "resqml2_0_1test/SeismicLatticeRepresentationTest.h"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 
 const char* Grid2dRepresentationTest::defaultUuidFeature = "25ecaf5e-90f2-482f-a3cc-9707b772f62d";
 const char* Grid2dRepresentationTest::defaultTitleFeature = "Horizon Feature";
@@ -54,7 +54,7 @@ Grid2dRepresentationTest::Grid2dRepresentationTest(DataObjectRepository* repo, b
 
 void Grid2dRepresentationTest::initRepoHandler()
 {
-	Horizon* feature = repo->createHorizon(defaultUuidFeature, defaultTitleFeature);
+	BoundaryFeature* feature = repo->createHorizon(defaultUuidFeature, defaultTitleFeature);
 	HorizonInterpretation* interp = repo->createHorizonInterpretation(feature, defaultUuidInterp, defaultTitleInterp);
 	Grid2dRepresentation* rep = repo->createGrid2dRepresentation(interp, defaultUuid, defaultTitle);
 
@@ -71,7 +71,7 @@ void Grid2dRepresentationTest::initRepoHandler()
 void Grid2dRepresentationTest::readRepoHandler()
 {
 	// Grid 2D
-	RESQML2_0_1_NS::Grid2dRepresentation* rep = repo->getDataObjectByUuid<RESQML2_0_1_NS::Grid2dRepresentation>(defaultUuid);
+	RESQML2_NS::Grid2dRepresentation* rep = repo->getDataObjectByUuid<RESQML2_NS::Grid2dRepresentation>(defaultUuid);
 	REQUIRE(rep->getSupportingRepresentation() != nullptr);
 	REQUIRE(rep->getSeismicSupportOfPatch(0) == nullptr);
 	REQUIRE((rep->isISpacingConstant() && rep->isJSpacingConstant()));
@@ -87,7 +87,7 @@ void Grid2dRepresentationTest::readRepoHandler()
 	REQUIRE(rep->getIndexOffsetOnSupportingRepresentation(0) == 1);
 	REQUIRE(rep->getNodeCountOnSupportingRepresentation(1) == 4);
 
-	double* zValues = new double[8];
+	double zValues[8];
 	rep->getZValues(zValues);
 	REQUIRE(zValues[0] == 300);
 	REQUIRE(zValues[1] == 300);
@@ -106,5 +106,4 @@ void Grid2dRepresentationTest::readRepoHandler()
 	REQUIRE(zValues[5] == 3300);
 	REQUIRE(zValues[6] == 3350);
 	REQUIRE(zValues[7] == 3350);
-	delete[] zValues;
 }

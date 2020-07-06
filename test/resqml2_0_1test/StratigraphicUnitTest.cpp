@@ -23,13 +23,13 @@ under the License.
 #include "catch.hpp"
 
 #include "common/EpcDocument.h"
-#include "resqml2_0_1/StratigraphicUnitFeature.h"
+#include "resqml2/RockVolumeFeature.h"
 #include <stdexcept>
 
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 
 const char* StratigraphicUnitTest::defaultUuid = "e9e8ce58-b53a-4425-84c7-667642027a4a";
 const char* StratigraphicUnitTest::defaultTitle = "Strati Unit";
@@ -47,7 +47,7 @@ StratigraphicUnitTest::StratigraphicUnitTest(DataObjectRepository* repo, bool in
 }
 
 void StratigraphicUnitTest::initRepoHandler() {
-	StratigraphicUnitFeature* stratiUnit = repo->createStratigraphicUnit(defaultUuid, defaultTitle);
+	RockVolumeFeature* stratiUnit = repo->createStratigraphicUnitFeature(defaultUuid, defaultTitle);
 	REQUIRE(stratiUnit != nullptr);
 }
 

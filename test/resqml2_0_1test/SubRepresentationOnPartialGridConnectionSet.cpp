@@ -19,7 +19,7 @@ under the License.
 #include "resqml2_0_1test/SubRepresentationOnPartialGridConnectionSet.h"
 #include "../catch.hpp"
 #include "resqml2_0_1/GridConnectionSetRepresentation.h"
-#include "resqml2_0_1/SubRepresentation.h"
+#include "resqml2/SubRepresentation.h"
 #include "resqml2/AbstractRepresentation.h"
 
 using namespace std;
@@ -45,15 +45,15 @@ SubRepresentationOnPartialGridConnectionSet::SubRepresentationOnPartialGridConne
 void SubRepresentationOnPartialGridConnectionSet::initRepoHandler()
 {
 	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
+	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
-	RESQML2_0_1_NS::GridConnectionSetRepresentation* partialGcsr = repo->createPartial<RESQML2_0_1_NS::GridConnectionSetRepresentation>("00a7d22f-4746-409b-87dc-5bdb83660d27", "GCSR");
+	RESQML2_NS::GridConnectionSetRepresentation* partialGcsr = repo->createPartial<RESQML2_0_1_NS::GridConnectionSetRepresentation>("00a7d22f-4746-409b-87dc-5bdb83660d27", "GCSR");
 	REQUIRE(partialGcsr != nullptr);
 	RESQML2_NS::SubRepresentation* subRep = repo->createSubRepresentation(defaultUuid, defaultTitle);
 	subRep->pushBackSupportingRepresentation(partialGcsr);
 
 	ULONG64 elements[2] = { 1, 2 };
-	subRep->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements__cells, 2, elements, hdfProxy);
+	subRep->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement__cells, 2, elements, hdfProxy);
 }
 
 void SubRepresentationOnPartialGridConnectionSet::readRepoHandler()

@@ -17,15 +17,15 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "FaultInterpretationTest.h"
-#include "resqml2_0_1/TectonicBoundaryFeature.h"
-#include "resqml2_0_1/FaultInterpretation.h"
+#include "resqml2/BoundaryFeature.h"
+#include "resqml2/FaultInterpretation.h"
 #include "../catch.hpp"
 #include "AbstractObjectTest.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 
 const char* FaultInterpretationTest::faultUuid = "a2e84855-738e-462a-82c5-863abd058be1";
 const char* FaultInterpretationTest::faultTitle = "Fault";
@@ -49,7 +49,7 @@ FaultInterpretationTest::FaultInterpretationTest(DataObjectRepository * repo, bo
 void FaultInterpretationTest::initRepoHandler()
 {
 	// creating dependencies
-	TectonicBoundaryFeature* fault = repo->createFault(faultUuid, faultTitle);
+	BoundaryFeature* fault = repo->createFault(faultUuid, faultTitle);
 
 	FaultInterpretation* faultInterp = repo->createFaultInterpretation(fault, defaultUuid, defaultTitle);
 	REQUIRE(faultInterp != nullptr);

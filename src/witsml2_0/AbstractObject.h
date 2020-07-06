@@ -24,45 +24,54 @@ under the License.
 
 namespace WITSML2_0_NS
 {
+	/** An abstract object. */
 	class AbstractObject : public COMMON_NS::AbstractObject
 	{
 	public:
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~AbstractObject() {}
 
 		/**
-		* Get the XML namespace for the tags for the XML serialization of this instance
-		*/
+		 * Get the XML namespace for the tags for the XML serialization of this instance
+		 *
+		 * @returns	The XML namespace.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const;
 
 		/**
-		* Get the content type of the instance according to EPC recommendation
-		*/
+		 * Get the content type of the instance according to EPC recommendation
+		 *
+		 * @returns	The content type.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getContentType() const;
 
 		/**
-		* Get part name of this XML top level instance in the EPC document
-		*/
+		 * Get part name of this XML top level instance in the EPC document
+		 *
+		 * @returns	The part name in epc document.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getPartNameInEpcDocument() const;
 
 	protected:
 
 		/**
-		* Constructor for partial transfer
-		*/
+		 * Constructor for partial transfer
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * 
+		 */
 		DLL_IMPORT_OR_EXPORT AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
-		/**
-		* Default constructor
-		*/
+		/** Default constructor */
 		AbstractObject() {}
 
 		/**
-		* Constructor when importing EML 2.1 dataobjects
-		*/
+		 * Constructor when importing EML 2.1 dataobjects
+		 *
+		 * @param [in,out]	proxy	If non-null, the proxy.
+		 */
 		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) : COMMON_NS::AbstractObject(proxy) {}
 	};
 }

@@ -18,40 +18,98 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/TimeSeries.h"
+#include "../eml2/TimeSeries.h"
 
 namespace RESQML2_0_1_NS
 {
-	class TimeSeries : public RESQML2_NS::TimeSeries
+	/** A time series. */
+	class TimeSeries final : public EML2_NS::TimeSeries
 	{
 	public:
+
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * 
+		 */
 		DLL_IMPORT_OR_EXPORT TimeSeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
-			RESQML2_NS::TimeSeries(partialObject)
-		{
-		}
+			EML2_NS::TimeSeries(partialObject) {}
 
 		/**
-		* Creates a time series
-		* @param repo							the repo where this intance will be stored.
-		* @param guid							The guid to set to the local 3d crs. If empty then a new guid will be generated.
-		* @param title							The title of the instance.
-		*/
+		 * Creates a time series
+		 *
+		 * @param [in,out]	repo 	the repo where this intance will be stored.
+		 * @param 		  	guid 	The guid to set to the local 3d crs. If empty then a new guid will be
+		 * 							generated.
+		 * @param 		  	title	The title of the instance.
+		 */
 		TimeSeries(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
-		 
-		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		TimeSeries(gsoap_resqml2_0_1::_resqml20__TimeSeries* fromGsoap) : RESQML2_NS::TimeSeries(fromGsoap) {}
 
 		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		TimeSeries(gsoap_resqml2_0_1::_resqml20__TimeSeries* fromGsoap) : EML2_NS::TimeSeries(fromGsoap) {}
+
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~TimeSeries() {}
 
-	protected:		
-		gsoap_resqml2_0_1::_resqml20__TimeSeries* getSpecializedGsoapProxy() const;
+		/**
+		 * Pushes back an timestamp into this time series.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @param 	timestamp	The timestamp to push back.
+		 */
+		DLL_IMPORT_OR_EXPORT void pushBackTimestamp(const tm & timestamp) final;
+		
+		/**
+		 * Gets the index of a given timestamp in this time series.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p timestamp has not been found in this time series.
+		 *
+		 * @param 	timestamp	The timestamp we look for.
+		 *
+		 * @returns	The index of @p timestamp in this time series.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(time_t timestamp) const final;
+
+		/**
+		 * Gets the index of a given timestamp in this time series.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p timestamp has not been found in this time series.
+		 *
+		 * @param 	timestamp	The timestamp we look for.
+		 *
+		 * @returns	The index of @p timestamp in this time series.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(const tm & timestamp) const final;
+
+		/**
+		 * Get the count of timestamps in this time series.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	The timestamp count.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getTimestampCount() const final;
+
+		/**
+		 * Gets a timestamp as a time structure at a particular index of this time series. It allows to
+		 * read dates from 1900-01-01T00:00:00.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the timestamp we look for.
+		 *
+		 * @returns	The timestamp at position @p index.
+		 */
+		DLL_IMPORT_OR_EXPORT tm getTimestampAsTimeStructure(unsigned int index) const final;
 	};
 }

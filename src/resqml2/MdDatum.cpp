@@ -18,10 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MdDatum.h"
 
-#include <stdexcept>
-
 #include "AbstractLocal3dCrs.h"
-#include "../resqml2_0_1/WellboreTrajectoryRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_NS;
@@ -29,43 +26,39 @@ using namespace gsoap_resqml2_0_1;
 
 const char* MdDatum::XML_TAG = "MdDatum";
 
-void MdDatum::loadTargetRelationships()
+double MdDatum::getXInGlobalCrs() const
 {
-	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getLocalCrsDor();
-	if (dor != nullptr) {
-		AbstractLocal3dCrs* localCrs = getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(dor->UUID);
-		if (localCrs == nullptr) { // partial transfer
-			getRepository()->createPartial(dor);
-			localCrs = getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(dor->UUID);
-			if (localCrs == nullptr) {
-				throw invalid_argument("The DOR looks invalid.");
-			}
-		}
-		getRepository()->addRelationship(this, localCrs);
-	}
+	double result[] = { getX(), getY(), .0 };
+	if (result[0] != result[0])
+		return result[0];
+
+	getLocalCrs()->convertXyzPointsToGlobalCrs(result, 1);
+
+	return result[0];
 }
 
-void MdDatum::setLocalCrs(AbstractLocal3dCrs * localCrs)
+double MdDatum::getYInGlobalCrs() const
 {
-	if (localCrs == nullptr) {
-		localCrs = getRepository()->getDefaultCrs();
-	}
-	if (getRepository() == nullptr) {
-		localCrs->getRepository()->addOrReplaceDataObject(this);
-	}
+	double result[] = { getX(), getY(), .0 };
+	if (result[0] != result[0])
+		return result[0];
 
-	setXmlLocalCrs(localCrs);
+	getLocalCrs()->convertXyzPointsToGlobalCrs(result, 1);
 
-	getRepository()->addRelationship(this, localCrs);
+	return result[1];
 }
 
-std::string MdDatum::getLocalCrsUuid() const
+double MdDatum::getZInGlobalCrs() const
 {
-	return getLocalCrsDor()->UUID;
+	double originOrdinal3 = .0;
+	RESQML2_NS::AbstractLocal3dCrs* localCrs = getLocalCrs();
+	if (localCrs->getGsoapType() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORELocalTime3dCrs)
+		originOrdinal3 = localCrs->getOriginDepthOrElevation();
+	return getZ() + originOrdinal3;
 }
 
 AbstractLocal3dCrs * MdDatum::getLocalCrs() const
 {
-	const string uuidLocalCrs = getLocalCrsUuid();
+	const string uuidLocalCrs = getLocalCrsDor().getUuid();
 	return static_cast<AbstractLocal3dCrs*>(repository->getDataObjectByUuid(uuidLocalCrs));
 }

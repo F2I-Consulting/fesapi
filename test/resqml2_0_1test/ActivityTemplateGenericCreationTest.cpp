@@ -18,13 +18,14 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "ActivityTemplateGenericCreationTest.h"
 #include "common/EpcDocument.h"
-#include "resqml2_0_1/ActivityTemplate.h"
+#include "eml2/ActivityTemplate.h"
 #include "../catch.hpp"
 
 using namespace std;
 using namespace COMMON_NS;
 using namespace resqml2_0_1test;
 using namespace RESQML2_NS;
+using namespace EML2_NS;
 
 // ***************************************************************
 // two followings values are conventions, they must not be changed

@@ -18,17 +18,16 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_0_1test/SeismicLatticeRepresentationTest.h"
 #include "../catch.hpp"
-#include "resqml2_0_1/SeismicLatticeFeature.h"
-#include "resqml2_0_1/GenericFeatureInterpretation.h"
-#include "resqml2_0_1/Grid2dRepresentation.h"
-#include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "common/HdfProxy.h"
+#include "resqml2/SeismicLatticeFeature.h"
+#include "resqml2/GenericFeatureInterpretation.h"
+#include "resqml2/Grid2dRepresentation.h"
+#include "resqml2/LocalDepth3dCrs.h"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 
 const char* SeismicLatticeRepresentationTest::defaultUuidFeature = "3e04d513-7d2c-4cc3-853c-a3a651c5eb4a";
 const char* SeismicLatticeRepresentationTest::defaultTitleFeature = "Seismic Lattice Feature";
@@ -62,14 +61,14 @@ void SeismicLatticeRepresentationTest::initRepoHandler()
 void SeismicLatticeRepresentationTest::readRepoHandler()
 {
 	// Feature
-	RESQML2_0_1_NS::SeismicLatticeFeature* feature = repo->getDataObjectByUuid<RESQML2_0_1_NS::SeismicLatticeFeature>(defaultUuidFeature);
+	RESQML2_NS::SeismicLatticeFeature* feature = repo->getDataObjectByUuid<RESQML2_NS::SeismicLatticeFeature>(defaultUuidFeature);
 	REQUIRE(feature->getCrosslineIncrement() == 2);
 	REQUIRE(feature->getOriginCrossline() == 152);
 	REQUIRE(feature->getInlineIncrement() == 2);
 	REQUIRE(feature->getOriginInline() == 150);
 
 	// Grid 2D
-	RESQML2_0_1_NS::Grid2dRepresentation* rep = repo->getDataObjectByUuid<RESQML2_0_1_NS::Grid2dRepresentation>(defaultUuid);
+	RESQML2_NS::Grid2dRepresentation* rep = repo->getDataObjectByUuid<RESQML2_NS::Grid2dRepresentation>(defaultUuid);
 	REQUIRE(rep->getSupportingRepresentation() == nullptr);
 	REQUIRE(rep->getSeismicSupportOfPatch(0) == nullptr);
 	REQUIRE((rep->isISpacingConstant() && rep->isJSpacingConstant()));

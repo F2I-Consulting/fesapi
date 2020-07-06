@@ -18,19 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "HorizonInterpretation.h"
 
-#include <algorithm>
 #include <stdexcept>
 
 #include "Horizon.h"
-#include "StructuralOrganizationInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* HorizonInterpretation::XML_TAG = "HorizonInterpretation";
-
-HorizonInterpretation::HorizonInterpretation(Horizon * horizon, const string & guid, const string & title)
+HorizonInterpretation::HorizonInterpretation(RESQML2_NS::BoundaryFeature * horizon, const string & guid, const string & title)
 {
 	if (horizon == nullptr) {
 		throw invalid_argument("The interpreted horizon cannot be null.");

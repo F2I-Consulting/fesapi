@@ -20,306 +20,559 @@ under the License.
 
 #include <set>
 
-#include "AbstractProperty.h"
+#include "../common/AbstractObject.h"
 
 namespace RESQML2_NS
 {
+	/** @brief	Proxy class for an abstract representation. */
 	class AbstractRepresentation : public COMMON_NS::AbstractObject
 	{
-	protected:
-
-		/**
-		* Only to be used in partial transfer context
-		*/
-		DLL_IMPORT_OR_EXPORT AbstractRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
-
-		/** 
-		* Defatul constructor
-		*/
-		AbstractRepresentation() {}
-
-		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		AbstractRepresentation(gsoap_resqml2_0_1::resqml20__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-
-#if WITH_EXPERIMENTAL
-		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		AbstractRepresentation(gsoap_eml2_3::resqml22__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-#endif
-		
-		/**
-		* Get the point geometry of a specific patch of the representation.
-		* @return	nullptr if there is no point geometry for this particular patch otherwise the found point geometry.
-		*/
-		virtual gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
-
-		/**
-		* Creates a point geometry patch.
-		* @param patchIndex				The index of the patch which will contain this geometry.
-		* @param points					All the points to set ordered according the topology of the representation it is based on. It should be 3 * numPoints sized.
-		* @param localCrs				The local CRS where the points lie on.
-		* @param numPoints				The number of points for each dimension of the array to write.
-		* @param numDimensionsInArray	The number of dimensions in the array to write.
-		* @param proxy					The HDF proxy where to write the points. It must be already opened for writing and won't be closed in this method.
-		*/
-		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(unsigned int patchIndex, double * points, class AbstractLocal3dCrs* localCrs, unsigned long long * numPoints, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy);
-
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDorFromPointGeometryPatch(gsoap_resqml2_0_1::resqml20__PointGeometry* patch) const;
-
-		gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates* getSeismic2dCoordinates(unsigned int patchIndex) const;
-
-		gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* getSeismic3dCoordinates(unsigned int patchIndex) const;
-
 	public:
 
+		/** Values that represent indexable elements */
 		enum indexableElement { NODE = 0, EDGE = 1, FACE = 2, VOLUME = 3, PILLAR = 4 };
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~AbstractRepresentation() {}
 
 		/**
-		* Getter (read/write access) for the localCrs
-		*/
+		 * Gets the local 3d CRS associated to a given patch of this representation in read and write
+		 * access.
+		 * 
+		 * @exception std::out_of_range	If @p patchIndex is out of range.
+		 * 								
+		 * @param patchIndex	Zero-based index of the patch for which we look for the local CRS.
+		 * 						
+		 * @returns Null if it fails, else the local CRS associated to the @p patchIndex patch.
+		 */
 		DLL_IMPORT_OR_EXPORT class AbstractLocal3dCrs* getLocalCrs(unsigned int patchIndex) const;
 
 		/**
-		* Get the Local 3d CRS dor where the reference point ordinals are given
-		*/
-		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const;
-		
-		/**
-		* Get the Local 3d CRS uuid where the reference point ordinals are given
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getLocalCrsUuid(unsigned int patchIndex) const;
-
-		/*
-		* Getter for the uuid of the hdf proxy which is used for storing the numerical values of this representation i.e. geometry.
-		* An empty string is returned if no hdf proxy is used for storing the representation/geometry.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const {
-			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getHdfProxyDor();
-			return dor == nullptr ? "" : dor->UUID;
-		}
-
-		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const = 0;
+		 * Gets the data object reference of the local 3d CRS associated to a given patch of this
+		 * representation. This local CRS is where the point ordinals are given.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch for which we look for the local CRS.
+		 *
+		 * @returns	Empty data object reference if it fails, else the data object reference of the local
+		 * 			CRS associated to the @p patchIndex patch.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const;
 
 		/**
-		* Getter (read only) of all the properties which use this representation as support.
-		*/
+		 * @brief Gets the data object reference of the HDF proxy which is used for storing the numerical
+		 * values of this representation (i.e. its geometry).
+		 *
+		 * @exception	std::logic_error	If this representation is partial.
+		 *
+		 * @returns	The data object reference of the HDF proxy used for storing the geometry, or empty
+		 * 			data object reference if it fails.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getHdfProxyDor() const = 0;
+
+		/**
+		 * Gets all the properties which use this representation as support.
+		 *
+		 * @returns	A vector of pointers on all the properties which use this representation as support.
+		 */
 		DLL_IMPORT_OR_EXPORT std::vector<class AbstractProperty *> getPropertySet() const;
 
 		/**
-		* Getter of all the properties values which use this representation as support.
-		*/
+		 * Gets of all the values properties which use this representation as support.
+		 *
+		 * @returns	A vector of pointers to all the values properties which use this representation as
+		 * 			support.
+		 */
 		DLL_IMPORT_OR_EXPORT std::vector<class AbstractValuesProperty *> getValuesPropertySet() const;
 
 		/**
-		* Getter of the count of values properties which use this representation as support.
-		* Necessary for now in SWIG context because I ma not sure if I can always wrap a vector of polymorphic class yet.
-		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getValuesPropertyCount() const;
+		 * Gets the count of values properties which use this representation as support.
+		 *
+		 * @returns	The values properties count.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getValuesPropertyCount() const; // Necessary for now in SWIG context because I ma not sure if I can always wrap a vector of polymorphic class yet.
 
 		/**
-		* Getter of a particular values property which use this representation as support. It is identified by its index.
-		* Necessary for now in SWIG context because I ma not sure if I can always wrap a vector of polymorphic class yet.
-		* Throw an out of bound exception if the index is superior or equal to the count of values property.
-		*/
-		DLL_IMPORT_OR_EXPORT class AbstractValuesProperty * getValuesProperty(unsigned int index) const;
+		 * Gets a particular values property which uses this representation as support.
+		 * 
+		 * @exception std::out_of_range If @p index is out of range of the array of properties 
+		 * 								for this representation.
+		 * 								
+		 * @param index	The index of the values property we look for.
+		 * 				
+		 * @returns The values property at position @p index.
+		 */
+		DLL_IMPORT_OR_EXPORT class AbstractValuesProperty * getValuesProperty(unsigned int index) const; // Necessary for now in SWIG context because I ma not sure if I can always wrap a vector of polymorphic class yet.
 
 		/**
-		 * Set the interpretation which is associated to this representation.
-		 * And push back this representation as a representation of the interpreation as well.
+		 * Sets the interpretation which is associated to this representation.
+		 *
+		 * @exception	std::invalid_argument	If @p interp is null.
+		 *
+		 * @param [in]	interp	The interpretation to associate to this representation.
 		 */
 		DLL_IMPORT_OR_EXPORT void setInterpretation(class AbstractFeatureInterpretation * interp);
 
-		/**
-		* Get the interpretation of this representation
-		*/
+		/** 
+		 * Gets the interpretation associated to this representation.
+		 *
+		 * @returns Null pointer if no interpretation is associated to this representation. Otherwise
+		 * 			the associated interpretation.
+		 */
 		DLL_IMPORT_OR_EXPORT class AbstractFeatureInterpretation* getInterpretation() const;
 
 		/**
-		* @return	null pointer if no interpretation is associated to this representation. Otherwise return the data object reference of the associated interpretation.
-		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getInterpretationDor() const;
+		 * Gets the data object reference of the interpretation associated to this representation.
+		 *
+		 * @returns	Empty data object reference if no interpretation is associated to this
+		 * 			representation. Otherwise the data object reference of the associated interpretation.
+		 */
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getInterpretationDor() const;
 
 		/**
-		* Get the interpretation uuid of this representation
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getInterpretationUuid() const;
-
-		/**
-		* Get the interpretation content type of this representation
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getInterpretationContentType() const;
-
-		/**
-		* Get all the subrepresentations of this instance.
-		*/
+		 * Gets all the subrepresentations of this representation.
+		 *
+		 * @returns	A vector of pointers to all of the subrepresentations associated to this
+		 * 			representation.
+		 */
 		DLL_IMPORT_OR_EXPORT std::vector<SubRepresentation *> getSubRepresentationSet() const;
 
 		/**
-		 * Get the subrepresentation count into this EPC document.
-		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
+		 * Get the count of all the subrepresentations associated to this representation.
+		 *
+		 * @returns	The count of all subrepresentations associated to this representation.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getSubRepresentationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getSubRepresentationCount() const; //  It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 		/**
-		 * Get a particular subrepresentation according to its position in the EPC document.
-		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
+		 * Gets a particular subrepresentation associated to this representation according to its
+		 * position in the EPC document.
+		 *
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the subrepresentation we look for.
+		 *
+		 * @returns	The subrepresentaiton at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT SubRepresentation * getSubRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT SubRepresentation * getSubRepresentation(unsigned int index) const; //  It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 		/**
-		* Get all the subrepresentations of this instance which represent a fault.
-		*/
+		 * Gets all the subrepresentations of this representation which represent a fault.
+		 *
+		 * @returns	A vector of pointers to all the fault subrepresentations associated to this
+		 * 			representation.
+		 */
 		DLL_IMPORT_OR_EXPORT std::vector<SubRepresentation *> getFaultSubRepresentationSet() const;
 
 		/**
-		 * Get the subrepresentation count into this EPC document which are representations of a fault.
-		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
+		 * Gets the count of all the fault subrepresentations of this EPC document associated to this
+		 * representation.
+		 *
+		 * @returns	The fault subrepresentations count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getFaultSubRepresentationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getFaultSubRepresentationCount() const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 		/**
-		 * Get a particular fault subrepresentation according to its position in the EPC document.
-		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
+		 * Gets a particular fault subrepresentation associated to this representation according to its position in the EPC document.
+		 *
+		 * @param 	index	Zero-based index of the fault subrepresentation we look for.
+		 *
+		 * @returns	The fault subrepresentation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT SubRepresentation * getFaultSubRepresentation(unsigned int index) const;
-        
-		/**
-		* Get the xyz point count in a given patch.
-		*/
-		DLL_IMPORT_OR_EXPORT virtual ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT SubRepresentation * getFaultSubRepresentation(unsigned int index) const; //  It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
-        /**
-		* Get the xyz point count of all patches of this representation.
-		*/
+		/**
+		 * Get the xyz point count in a given patch of this representation.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 * @exception	std::logic_error 	If this representation is partial.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch from which we look for the xyz points.
+		 *
+		 * @returns	The xyz point count of the patch at position @p patchIndex.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const = 0;
+
+		/**
+		 * Get the xyz point count of all patches of this representation.
+		 *
+		 * @returns	The xyz point count of all patches.
+		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfAllPatches() const;
 
 		/**
-		* Get all the XYZ points of a particular patch of this representation.
-		* XYZ points are given in the local CRS.
-		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
-		*/
-		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const = 0;
+		 * @brief	Gets all the xyz points of a particular patch of this representation. xyz points are
+		 * 			given in the local CRS.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 * @exception	std::logic_error 	If this representation is partial.
+		 *
+		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
+		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
+		 * 							coordinate dimension (x, y or z) and second dimension is vertex
+		 * 							dimension. It must be preallocated with a size of <tt>3 *
+		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const = 0;
 
 		/**
-		* Get all the XYZ points of a particular patch of this representation.
-		* XYZ points are given in the global CRS.
-		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension.  It must be pre allocated.
-		*/
+		 * @brief Gets all the xyz points of a particular patch of this representation. xyz points are given in
+		 * the global CRS.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 *
+		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
+		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
+		 * 							coordinate dimension (x, y or z) and second dimension is vertex
+		 * 							dimension. It must be preallocated with a size of <tt>3 *
+		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatchInGlobalCrs(const unsigned int & patchIndex, double * xyzPoints) const;
 
 		/**
-		* Get all the XYZ points of all patches of this individual representation
-		* XYZ points are given in the local CRS.
-		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
-		*/
+		 * @brief Gets all the xyz points of all patches of this representation. xyz points are given in the
+		 * local CRS.
+		 *
+		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
+		 * 							coordinate dimension (x, y or z) and second dimension is vertex
+		 * 							dimension. It must be preallocated with a size of <tt>3 *
+		 * 							getXyzPointCountOfAllPatches()</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfAllPatches(double * xyzPoints) const;
 
 		/**
-		* Check if the representation (i.e. all its patches/geometries) is defined in a single local CRS.
-		*/
+		 * Checks if all of the patches (geometries) of this representation are defined in a same local
+		 * CRS.
+		 *
+		 * @returns	True if this representation is defined in a single local CRS, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT bool isInSingleLocalCrs() const;
 
 		/**
-		* Check if the representation (i.e. all its patches/geometries) is defined in a single global CRS.
-		*/
+		 * Checks if all of the patches (geometries) of this representation are defined in a same global
+		 * CRS.
+		 *
+		 * @returns	True if this representation is defined in a single global CRS, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT bool isInSingleGlobalCrs() const;
 
 		/**
-		* Get all the XYZ points of all patches of this individual representation
-		* XYZ points are given in the global CRS.
-		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension.  It must be pre allocated.
-		*/
+		 * Gets all the xyz points of all patches of this individual representation. xyz points are
+		 * given in the global CRS.
+		 *
+		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
+		 * 							coordinate dimension (x, y or Z) and second dimension is vertex
+		 * 							dimension. Thus, its size is 3*(3*[count of all xyz points]). It must
+		 * 							be preallocated.
+		 */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfAllPatchesInGlobalCrs(double * xyzPoints) const;
 
 		/**
-		* Get the seismic support of a specific patch.
-		* @return nullptr if seismic info have not been provided.
-		*/
+		 * Gets the seismic support of a specific patch of this representation.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of the patch count range.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch from which we look for the seismic support.
+		 *
+		 * @returns	Null if no seismic information have been provided for the patch at position @p
+		 * 			patchIndex. Else, its seismic support.
+		 */
 		DLL_IMPORT_OR_EXPORT AbstractRepresentation* getSeismicSupportOfPatch(const unsigned int & patchIndex) const;
 
 		/**
-		* Get all seismic support of the current geoemtry of this representation.
-		* This method does not return the seismic lattice representations which are support of 2D grid representation.
-		*/
+		 * Gets all seismic supports of the current geometry of this representation (that is to say the
+		 * seismic supports of all the patches). This method does not return the seismic lattice
+		 * representations which are support of 2d grid representation.
+		 *
+		 * @returns	A vector of pointers to all the seismic supports associated to this representation.
+		 */
 		DLL_IMPORT_OR_EXPORT std::set<AbstractRepresentation*> getAllSeismicSupport() const;
 
+		/**
+		 * Gets the patch count.
+		 *
+		 * @returns	The patch count.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getPatchCount() const = 0;
 
 		/**
-		* Pushes back this representaiton into a representation set
-		* @param repSet	The representation set representation which will contain this representation.
-		*/
+		 * Pushes back this representation into a representation set representation.
+		 *
+		 * @exception	std::invalid_argument	If @p repSet is null.
+		 *
+		 * @param [in]	repSet	The representation set representation which will contain this
+		 * 							representation.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackIntoRepresentationSet(class RepresentationSetRepresentation * repSet);
 
 		/**
-		* Get all the representation sets which contain this instance.
-		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RepresentationSetRepresentation*> getRepresentationSetRepresentationSet() const;
+		 * Gets all the representation set representations which contain this representation.
+		 *
+		 * @returns	A vector of pointers to all the representation set representations which contain this
+		 * 			representation.
+		 */
+		DLL_IMPORT_OR_EXPORT std::vector<RepresentationSetRepresentation *> getRepresentationSetRepresentationSet() const;
 
 		/**
-		 * Get the count of representation set representations which contain this representation
+		 * Gets the count of all representation set representations which contain this representation.
+		 *
+		 * @returns	The count of all representation set representations which contain this representation.
 		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getRepresentationSetRepresentationCount() const;
 
 		/**
-		 * Get the parent representation set representations at the specified index of the representation set representation list.
+		 * Gets the parent representation set representation at the specified index of the
+		 * representation set representation list.
+		 *
+		 * @exception	out_of_range	If @p index is out of the range of representation set
+		 * 								representation count.
+		 *
+		 * @param 	index	Zero-based index of the representation set representation we look for.
+		 *
+		 * @returns	The parent representation set representation at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation* getRepresentationSetRepresentation(ULONG64 index) const;
 
 		/**
-		* Push back a patch of seismic 3D coordinates info.
-		* The index this patch will be located must be consistent with the index of the geometry patch it is related to.
-		*/
-		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(const unsigned int patchIndex, double * inlines, double * crosslines, const unsigned int & pointCount,
-			RESQML2_NS::AbstractRepresentation * seismicSupport, COMMON_NS::AbstractHdfProxy * proxy);
-
-		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(const unsigned int patchIndex, const double & startInline, const double & incrInline, const unsigned int & countInline,
-			const double & startCrossline, const double & incrCrossline, const unsigned int & countCrossline,
-			RESQML2_NS::AbstractRepresentation * seismicSupport);
+		 * Adds seismic 3d coordinates to an existing point geometry patch.
+		 *
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::invalid_argument	If @p patchIndex does not identify a point geometry patch.
+		 * @exception	std::invalid_argument	If there already exists some seismic 2d coordinates for
+		 * 										the geometry patch at position @p patchIndex.
+		 *
+		 * @param 		   	patchIndex	  	The index of the geometry patch which receives the seismic
+		 * 									coordinates.
+		 * @param [in]	   	inlines		  	The sequence of trace or inter-trace inline positions that
+		 * 									correspond to the geometry coordinates. It must be in the
+		 * 									same order than @p crosslines.
+		 * @param [in]	   	crosslines	  	The sequence of trace or inter-trace crossline positions that
+		 * 									correspond to the geometry coordinates. It must be in the
+		 * 									same order than @p inlines.
+		 * @param 		   	pointCount	  	Number of points. It is the size of both @p inlines and @p
+		 * 									crosslines.
+		 * @param [in]	   	seismicSupport	The representation of the seismic line.
+		 * @param [in, out]	proxy		  	The HDF proxy where to write the @p inlines and @p crosslines
+		 * 									values. It must be already opened for writing and won't be
+		 * 									closed in this method.
+		 */
+		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double* inlines, double* crosslines, unsigned int pointCount,
+			RESQML2_NS::AbstractRepresentation* seismicSupport, EML2_NS::AbstractHdfProxy* proxy);
 
 		/**
-		* Add seismic coordinates to an existing point geometry patch.
-		* @param patchIndex		The index of the geometry patch which receives the seismic coordinates
-		* @param lineAbscissa	The abscissa of each points of the patch on the seismic line. The count of this array must be equal to getXyzPointCountOfPatch(patchIndex).
-		* @param seismicSupport	The representation of the seismic line.
-		* @param proxy			The hdf proxy where the lineAbscissa are stored.
-		*/
-		DLL_IMPORT_OR_EXPORT void addSeismic2dCoordinatesToPatch(const unsigned int patchIndex, double * lineAbscissa,
-			RESQML2_NS::AbstractRepresentation * seismicSupport, COMMON_NS::AbstractHdfProxy * proxy);
+		 * Adds seismic 3d coordinates to an existing point geometry patch.
+		 *
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::invalid_argument	If @p patchIndex does not identify a point geometry patch.
+		 * @exception	std::invalid_argument	If there already exists some seismic 2d coordinates for
+		 * 										the geometry patch at position @p patchIndex.
+		 *
+		 * @param 	  	patchIndex	  	The index of the geometry patch which receives the seismic
+		 * 								coordinates.
+		 * @param 	  	startInline   	The first inline.
+		 * @param 	  	incrInline	  	The inline increment.
+		 * @param 	  	countInline   	The inline count.
+		 * @param 	  	startCrossline	The first crossline.
+		 * @param 	  	incrCrossline 	The crossline increment.
+		 * @param 	  	countCrossline	The crossline count.
+		 * @param [in]	seismicSupport	The representation of the seismic line.
+		 */
+		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double startInline, double incrInline, unsigned int countInline,
+			double startCrossline, double incrCrossline, unsigned int countCrossline,
+			RESQML2_NS::AbstractRepresentation* seismicSupport);
 
 		/**
-		* Get all the abscissa of the points of a specific patch related to seismic line 2d.
-		* @param patchIndex		The index of the geometry patch which stores the seismic coordinates
-		* @param values			The array where the abscissa are going to be stored. The count of this array must be equal to getXyzPointCountOfPatch(patchIndex).
-		*/
+		 * Adds seismic 2d coordinates to an existing point geometry patch.
+		 *
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::invalid_argument	If @p patchIndex does not identify a point geometry patch.
+		 * @exception	std::invalid_argument	If there already exists some seismic 3d coordinates for
+		 * 										the geometry patch at position @p patchIndex.
+		 *
+		 * @param 		  	patchIndex	  	The index of the geometry patch which receives the seismic
+		 * 									coordinates.
+		 * @param [in,out]	lineAbscissa  	The abscissa of each points of the patch on the seismic line.
+		 * 									The count of this array must be equal to
+		 * 									<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
+		 * @param [in,out]	seismicSupport	The representation of the seismic line.
+		 * @param [in,out]	proxy		  	The HDF proxy where to write the @p lineAbscissa values. It
+		 * 									must be already opened for writing and won't be closed in
+		 * 									this method.
+		 */
+		DLL_IMPORT_OR_EXPORT void addSeismic2dCoordinatesToPatch(unsigned int patchIndex, double* lineAbscissa,
+			RESQML2_NS::AbstractRepresentation * seismicSupport, EML2_NS::AbstractHdfProxy * proxy);
+
+		/**
+		 * Gets all the abscissa of the points of a specific patch related to 2d seismic line.
+		 *
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::invalid_argument	If the patch at position @p patchIndex has no seismic
+		 * 										information.
+		 *
+		 * @param 	   	patchIndex	The index of the geometry patch which stores the seismic coordinates.
+		 * @param [out]	values	  	The array where the abscissa are going to be stored. The count of
+		 * 							this array must be equal to <tt>getXyzPointCountOfPatch(patchIndex)</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT void getSeismicLineAbscissaOfPointsOfPatch(unsigned int patchIndex, double* values) const;
 
 		/**
-		* Get all the inline coordinates of the points of a specific patch related to seismic lattice.
-		* @param patchIndex		The index of the geometry patch which stores the seismic coordinates
-		* @param values			The array where the inlines coordinates are going to be stored. The count of this array must be equal to getXyzPointCountOfPatch(patchIndex).
-		*/
+		 * Gets all the inline coordinates of the points of a specific patch related to seismic lattice.
+		 *
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::invalid_argument	If the patch at position @p patchIndex has no seismic
+		 * 										information.
+		 *
+		 * @param 	   	patchIndex	The index of the geometry patch which stores the seismic coordinates.
+		 * @param [out]	values	  	The array where the inlines coordinates are going to be stored. The
+		 * 							count of this array must be equal to
+		 * 							<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT void getInlinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
 
 		/**
-		* Get all the crossline coordinates of the points of a specific patch related to seismic lattice.
-		* @param patchIndex		The index of the geometry patch which stores the seismic coordinates
-		* @param values			The array where the crossline coordinates are going to be stored. The count of this array must be equal to getXyzPointCountOfPatch(patchIndex).
-		*/
+		 * Gets all the crossline coordinates of the points of a specific patch related to seismic
+		 * lattice.
+		 *
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::invalid_argument	If the patch at position @p patchIndex has no seismic
+		 * 										information.
+		 *
+		 * @param 	   	patchIndex	The index of the geometry patch which stores the seismic coordinates.
+		 * @param [out]	values	  	The array where the crossline coordinates are going to be stored. The
+		 * 							count of this array must be equal to
+		 * 							<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT void getCrosslinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
 
+		/** The standard XML tag without XML namespace for serializing this data object */
 		static const char* XML_TAG;
 
 	protected:
 
-		virtual void loadTargetRelationships();
+		/**
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * 
+		 */
+		DLL_IMPORT_OR_EXPORT AbstractRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+
+		/** Defatul constructor */
+		AbstractRepresentation() {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		AbstractRepresentation(gsoap_resqml2_0_1::resqml20__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		AbstractRepresentation(gsoap_eml2_3::resqml22__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
+		 * Get the point geometry of a specific v2.0.1 patch of the representation.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch.
+		 *
+		 * @returns	nullptr if there is no point geometry for this particular patch otherwise the found
+		 * 			point geometry.
+		 */
+		virtual gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+
+		/**
+		 * Get the point geometry of a specific v2.2 patch of the representation.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch.
+		 *
+		 * @returns	nullptr if there is no point geometry for this particular patch otherwise the found
+		 * 			point geometry.
+		 */
+		virtual gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
+
+		/**
+		 * Creates a v2.0.1 point geometry patch.
+		 *
+		 * @param 		  	patchIndex				The index of the patch which will contain this
+		 * 											geometry.
+		 * @param [in,out]	points					All the points to set ordered according the topology
+		 * 											of the representation it is based on. It should be 3 *
+		 * 											numPoints sized.
+		 * @param [in,out]	localCrs				The local CRS where the points lie on.
+		 * @param [in,out]	numPoints				The number of points for each dimension of the array
+		 * 											to write.
+		 * @param 		  	numDimensionsInArray	The number of dimensions in the array to write.
+		 * @param [in,out]	proxy					The HDF proxy where to write the points. It must be
+		 * 											already opened for writing and won't be closed in this
+		 * 											method.
+		 *
+		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
+		 */
+		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(unsigned int patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, unsigned long long const * numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
+
+		/**
+		 * Creates a v2.2 point geometry patch.
+		 *
+		 * @param 		  	patchIndex				The index of the patch which will contain this
+		 * 											geometry.
+		 * @param [in,out]	points					All the points to set ordered according the topology
+		 * 											of the representation it is based on. It should be 3 *
+		 * 											numPoints sized.
+		 * @param [in,out]	localCrs				The local CRS where the points lie on.
+		 * @param [in,out]	numPoints				The number of points for each dimension of the array
+		 * 											to write.
+		 * @param 		  	numDimensionsInArray	The number of dimensions in the array to write.
+		 * @param [in,out]	proxy					The HDF proxy where to write the points. It must be
+		 * 											already opened for writing and won't be closed in this
+		 * 											method.
+		 *
+		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
+		 */
+		gsoap_eml2_3::resqml22__PointGeometry* createPointGeometryPatch2_2(unsigned int patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, unsigned long long const * numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
+
+		/**
+		 * Gets hdf proxy dor from point geometry patch
+		 *
+		 * @param [in,out]	patch	If non-null, the patch.
+		 *
+		 * @returns	Empty data object reference if it fails, else the hdf proxy dor from point geometry patch.
+		 */
+		COMMON_NS::DataObjectReference getHdfProxyDorFromPointGeometryPatch(gsoap_resqml2_0_1::resqml20__PointGeometry* patch) const;
+
+		/**
+		 * Gets hdf proxy dor from point geometry patch
+		 *
+		 * @param [in,out]	patch	If non-null, the patch.
+		 *
+		 * @returns	Empty data object reference if it fails, else the hdf proxy dor from point geometry patch.
+		 */
+		COMMON_NS::DataObjectReference getHdfProxyDorFromPointGeometryPatch(gsoap_eml2_3::resqml22__PointGeometry* patch) const;
+
+		/**
+		 * Gets seismic 3D coordinates
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch.
+		 *
+		 * @returns	Null if it fails, else the seismic 3D coordinates.
+		 */
+		gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* getSeismic3dCoordinates2_0_1(unsigned int patchIndex) const;
+
+		/**
+		 * Gets seismic 3D coordinates
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch.
+		 *
+		 * @returns	Null if it fails, else the seismic 3D coordinates.
+		 */
+		gsoap_eml2_3::resqml22__Seismic3dCoordinates* getSeismic3dCoordinates2_2(unsigned int patchIndex) const;
+
+		/** Loads target relationships */
+		virtual void loadTargetRelationships() override;
 	};
 }

@@ -22,8 +22,6 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* SeismicLatticeFeature::XML_TAG = "SeismicLatticeFeature";
-
 SeismicLatticeFeature::SeismicLatticeFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
 	int inlineIncrement, int crosslineIncrement,
 	unsigned int originInline, unsigned int originCrossline,

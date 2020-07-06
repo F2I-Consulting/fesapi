@@ -20,7 +20,7 @@ under the License.
 
 #include <stdexcept>
 
-#include "../resqml2/AbstractValuesProperty.h"
+#include "../tools/TimeTools.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -40,10 +40,57 @@ TimeSeries::TimeSeries(COMMON_NS::DataObjectRepository* repo, const string & gui
 	repo->addOrReplaceDataObject(this);
 }
 
-_resqml20__TimeSeries* TimeSeries::getSpecializedGsoapProxy() const
+void TimeSeries::pushBackTimestamp(const tm & timestamp)
 {
-	if (isPartial() == true)
-		throw logic_error("Partial object");
+	gsoap_resqml2_0_1::resqml20__Timestamp* ts = gsoap_resqml2_0_1::soap_new_resqml20__Timestamp(gsoapProxy2_0_1->soap);
+	ts->DateTime = timestamp;
+	static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1)->Time.push_back(ts);
+}
 
-	return static_cast<_resqml20__TimeSeries*>(gsoapProxy2_0_1);
+unsigned int TimeSeries::getTimestampIndex(time_t timestamp) const
+{
+	gsoap_resqml2_0_1::_resqml20__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1);
+
+	for (size_t result = 0; result < timeSeries->Time.size(); ++result) {
+		if (timeTools::timegm(&timeSeries->Time[result]->DateTime) == timestamp) {
+			return result;
+		}
+	}
+
+	throw out_of_range("The timestamp has not been found in the allowed range.");
+}
+
+unsigned int TimeSeries::getTimestampIndex(const tm & timestamp) const
+{
+	gsoap_resqml2_0_1::_resqml20__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1);
+
+	for (size_t result = 0; result < timeSeries->Time.size(); ++result) {
+		// Very basic equality check between two tm
+		if (timeSeries->Time[result]->DateTime.tm_year == timestamp.tm_year &&
+			timeSeries->Time[result]->DateTime.tm_mon == timestamp.tm_mon &&
+			timeSeries->Time[result]->DateTime.tm_mday == timestamp.tm_mday &&
+			timeSeries->Time[result]->DateTime.tm_hour == timestamp.tm_hour &&
+			timeSeries->Time[result]->DateTime.tm_min == timestamp.tm_min &&
+			timeSeries->Time[result]->DateTime.tm_sec == timestamp.tm_sec) {
+			return result;
+		}
+	}
+
+	throw out_of_range("The timestamp has not been found in the allowed range.");
+}
+
+unsigned int TimeSeries::getTimestampCount() const
+{
+	return static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1)->Time.size();
+}
+
+tm TimeSeries::getTimestampAsTimeStructure(unsigned int index) const
+{
+	gsoap_resqml2_0_1::_resqml20__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1);
+
+	if (timeSeries->Time.size() > index) {
+		return timeSeries->Time[index]->DateTime;
+	}
+
+	throw out_of_range("The index is out of range");
 }

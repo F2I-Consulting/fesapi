@@ -18,180 +18,73 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "WellboreTrajectoryRepresentation.h"
-
-namespace RESQML2_NS
-{
-	class MdDatum;
-}
+#include "../resqml2/DeviationSurveyRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
-	class WellboreTrajectoryRepresentation;
-
-	class DeviationSurveyRepresentation : public RESQML2_NS::AbstractRepresentation
+	/** A deviation survey representation. */
+	class DeviationSurveyRepresentation final : public RESQML2_NS::DeviationSurveyRepresentation
 	{
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
-		DLL_IMPORT_OR_EXPORT DeviationSurveyRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :AbstractRepresentation(partialObject) {}
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 */
+		DLL_IMPORT_OR_EXPORT DeviationSurveyRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::DeviationSurveyRepresentation(partialObject) {}
 
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param interp					The WellboreFeature interpretation the instance represents.
-		* @param guid					The guid to set to the new instance. If empty then a new guid will be generated.
-		* @param title					A title for the instance to create.
-		* @param isFinal				Used to indicate that this is a final version of the deviation survey, as distinct from the interim interpretations.
-		* @param mdInfo					The MD information of the survey, mainly the well reference point.
-		*/
-		DeviationSurveyRepresentation(class WellboreInterpretation * interp, const std::string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum * mdInfo);
+		 * @brief	Creates an instance of this class in a gsoap context.
+		 *
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt> or <tt>mdInfo ==
+		 * 										nullptr</tt>.
+		 *
+		 * @param [in]	interp 	The WellboreFeature interpretation the instance represents.
+		 * @param 	  	guid   	The guid to set to the new instance. If empty then a new guid will be
+		 * 						generated.
+		 * @param 	  	title  	A title for the instance to create.
+		 * @param 	  	isFinal	Used to indicate that this is a final version of the deviation survey, as
+		 * 						distinct from the interim interpretations.
+		 * @param [in]	mdInfo 	The MD information of the survey, mainly the well reference point.
+		 */
+		DeviationSurveyRepresentation(class RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum * mdInfo);
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		DeviationSurveyRepresentation(gsoap_resqml2_0_1::_resqml20__DeviationSurveyRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		DeviationSurveyRepresentation(gsoap_resqml2_0_1::_resqml20__DeviationSurveyRepresentation* fromGsoap) : RESQML2_NS::DeviationSurveyRepresentation(fromGsoap) {}
 
+		/** Destructor */
 		~DeviationSurveyRepresentation() {}
 
-		/*
-		*  Set the geometry of the representation by means of a parametric line without MD information.
-		* @param firstStationLocation			XYZ location of the first station of the deviation survey in the local CRS. It must be three doubles. It is not created and not deleted by this method.
-		* @param stationCount					Number of stations (including the first station location).
-		* @param mdUom							Units of measure of the measured depths along this deviation survey.
-		* @param mds							MD values for the position of the stations. Array length equals station count.
-		* @param angleUom						Defines the units of measure for the azimuth and inclination
-		* @param azimuths						An array of azimuth angles, one for each survey station. The rotation is relative to the projected CRS north with a positive value indicating a clockwise rotation as seen from above. Array length equals station count.
-		* @param inclinations					Dip (or inclination) angle for each station. Array length equals station count.
-		* @param proxy							The HDF proxy which indicates in which HDF5 file the numerical values will be stored.
-		*										It must be already opened for writing and won't be closed.
-		*/
-		DLL_IMPORT_OR_EXPORT void setGeometry(double * firstStationLocation, const ULONG64 & stationCount,
-			const gsoap_resqml2_0_1::eml20__LengthUom & mdUom, double * mds,
-			const gsoap_resqml2_0_1::eml20__PlaneAngleUom & angleUom, double * azimuths, double * inclinations,
-			COMMON_NS::AbstractHdfProxy* proxy);
+		DLL_IMPORT_OR_EXPORT void setGeometry(double const* firstStationLocation, ULONG64 stationCount,
+			gsoap_resqml2_0_1::eml20__LengthUom mdUom, double const* mds,
+			gsoap_resqml2_0_1::eml20__PlaneAngleUom angleUom, double const* azimuths, double const* inclinations,
+			EML2_NS::AbstractHdfProxy* proxy) final;
 
-		/**
-		* Set the Md datum of this trajectory
-		*/
-		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum * mdDatum);
+		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum * mdDatum) final;
 
-		/**
-		* @return	null pointer if no md datum is associated to this representation. Otherwise return the data object reference of the associated md datum.
-		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getMdDatumDor() const;
+		COMMON_NS::DataObjectReference getMdDatumDor() const final;
 
-		/**
-		* Getter of the md information associated to this WellboreFeature trajectory representation.
-		*/
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::MdDatum * getMdDatum() const;
+		DLL_IMPORT_OR_EXPORT bool isFinal() const final;
 
-		/**
-		* Getter of the md information uuid associated to this WellboreFeature trajectory representation.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getMdDatumUuid() const;
+		ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
-		/**
-		* Used to indicate that this is a final version of the deviation survey, as distinct from the interim interpretations.
-		*/
-		DLL_IMPORT_OR_EXPORT bool isFinal() const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
-		/**
-		* Get the xyz point count in a given patch.
-		*/
-		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const final;
 
-		/**
-		* Get all the XYZ points of a particular patch of this representation.
-		* XYZ points are given in the local CRS.
-		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
-		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		gsoap_resqml2_0_1::eml20__PlaneAngleUom getAngleUom() const final;
 
-		/**
-		* Units of measure of the measured depths along this deviation survey.
-		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const;
+		DLL_IMPORT_OR_EXPORT void getMdValues(double* values) const final;
 
-		/**
-		* Defines the units of measure for the azimuth and inclination
-		*/
-		gsoap_resqml2_0_1::eml20__PlaneAngleUom getAngleUom() const;
+		DLL_IMPORT_OR_EXPORT void getInclinations(double* values) const final;
 
-		/**
-		* Getter of the md double values associated to each trajectory station of this WellboreFeature trajectory representation.
-		* Uom is given by getMdUom().
-		* @param values	It must preallocated with a count of getXyzPointCountOfPatch(0)
-		*/
-		DLL_IMPORT_OR_EXPORT void getMdValues(double* values) const;
+		DLL_IMPORT_OR_EXPORT void getAzimuths(double* values) const final;
 
-		/**
-		* Getter of the inclination double values associated to each trajectory station of this WellboreFeature trajectory representation.
-		* Uom is given by getAngleUom().
-		* @param values	It must preallocated with a count of getXyzPointCountOfPatch(0)
-		*/
-		DLL_IMPORT_OR_EXPORT void getInclinations(double* values) const;
-
-		/**
-		* Getter of the azimuth double values associated to each trajectory station of this WellboreFeature trajectory representation.
-		* The rotation is relative to the projected CRS north with a positive value indicating a clockwise rotation as seen from above.
-		* Uom is given by getAngleUom().
-		* @param values	It must preallocated with a count of getXyzPointCountOfPatch(0)
-		*/
-		DLL_IMPORT_OR_EXPORT void getAzimuths(double* values) const;
-
-		/**
-		* Getter of all the wellbore frame representations of associated wellbore trajectory which share the same md datum and md uom.
-		*/
-		DLL_IMPORT_OR_EXPORT std::vector<class RESQML2_NS::WellboreFrameRepresentation *> getWellboreFrameRepresentationSet() const;
-
-		/**
-		* Get the count of all the wellbore frame representations of associated wellbore trajectory which share the same md datum and md uom.
-		* Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
-		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getWellboreFrameRepresentationCount() const;
-
-		/**
-		* Get a particular wellbore frame representation according to its position.
-		* Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
-		* Throw an out of bound exception if the index is superior or equal to the count of wellbore frame representation.
-		*/
-		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const;
-
-		/**
-		* Getter (in read only mode) of all the wellbore trajectories which are associated to this deviation survey.
-		*/
-		DLL_IMPORT_OR_EXPORT std::vector<class WellboreTrajectoryRepresentation *> getWellboreTrajectoryRepresentationSet() const;
-
-		/**
-		* Get the count of all the wellbore trajectories which are associated to this deviation survey.
-		* Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
-		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getWellboreTrajectoryRepresentationCount() const;
-
-		/**
-		* Get a particular wellbore trajectory according to its position.
-		* Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
-		* Throw an out of bound exception if the index is superior or equal to the count of wellbore frame representation.
-		*/
-		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation * getWellboreTrajectoryRepresentation(unsigned int index) const;
-
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
-
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
-
-		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
-
-	protected:
-		void loadTargetRelationships();
+		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 	};
 }

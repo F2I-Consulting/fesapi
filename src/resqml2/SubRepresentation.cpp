@@ -18,18 +18,39 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "SubRepresentation.h"
 
+#include <limits>
 #include <sstream>
 #include <stdexcept>
 
-#include "AbstractFeatureInterpretation.h"
-#include "../common/AbstractHdfProxy.h"
-#include "../resqml2_0_1/UnstructuredGridRepresentation.h"
-#include "../resqml2_0_1/AbstractIjkGridRepresentation.h"
+#include <hdf5.h>
+
+#include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_NS;
 
 const char* SubRepresentation::XML_TAG = "SubRepresentation";
+
+void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 elementCount, ULONG64 * elementIndices, EML2_NS::AbstractHdfProxy * proxy, short * supportingRepIndices)
+{
+	std::string supportingRepDataset = "";
+	ostringstream ossForHdfSupRep;
+	if (supportingRepIndices != nullptr) {
+		ossForHdfSupRep << "subrepresentation_supportingRepresentationIndices_patch" << getPatchCount();
+		supportingRepDataset = getHdfGroup() + "/" + ossForHdfSupRep.str();
+	}
+	ostringstream ossForHdf;
+	ossForHdf << "subrepresentation_elementIndices0_patch" << getPatchCount();
+
+	pushBackRefToExistingDataset(elementKind, elementCount, getHdfGroup() + "/" + ossForHdf.str(), (std::numeric_limits<unsigned int>::max)(), proxy, supportingRepDataset);
+
+	// ************ HDF ************		
+	hsize_t numValues = elementCount;
+	proxy->writeArrayNdOfGSoapULong64Values(getHdfGroup(), ossForHdf.str(), elementIndices, &numValues, 1);
+	if (supportingRepIndices != nullptr) {
+		proxy->writeArrayNd(getHdfGroup(), ossForHdfSupRep.str(), H5T_NATIVE_SHORT, supportingRepIndices, &numValues, 1);
+	}
+}
 
 void SubRepresentation::loadTargetRelationships()
 {
@@ -38,20 +59,12 @@ void SubRepresentation::loadTargetRelationships()
 	// Supporting representation
 	const unsigned int supRepCount = getSupportingRepresentationCount();
 	for (unsigned int supRepIndex = 0; supRepIndex < supRepCount; ++supRepIndex) {
-		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getSupportingRepresentationDor(supRepIndex);
-		RESQML2_NS::AbstractRepresentation* supportingRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
-		if (supportingRep == nullptr) { // partial transfer
-			getRepository()->createPartial(dor);
-			supportingRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
-			if (supportingRep == nullptr) {
-				throw invalid_argument("The DOR looks invalid.");
-			}
-		}
-		getRepository()->addRelationship(this, supportingRep);
+		COMMON_NS::DataObjectReference dor = getSupportingRepresentationDor(supRepIndex);
+		convertDorIntoRel<RESQML2_NS::AbstractRepresentation>(dor);
 	}
 }
 
-ULONG64 SubRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 SubRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -65,7 +78,7 @@ ULONG64 SubRepresentation::getXyzPointCountOfPatch(const unsigned int & patchInd
 	}
 }
 
-void SubRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
+void SubRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -87,20 +100,5 @@ void SubRepresentation::pushBackSupportingRepresentation(AbstractRepresentation 
 
 AbstractRepresentation* SubRepresentation::getSupportingRepresentation(unsigned int index) const
 {
-	return static_cast<AbstractRepresentation*>(repository->getDataObjectByUuid(getSupportingRepresentationUuid(index)));
-}
-
-std::string SubRepresentation::getSupportingRepresentationUuid(unsigned int index) const
-{
-	return getSupportingRepresentationDor(index)->UUID;
-}
-
-std::string SubRepresentation::getSupportingRepresentationTitle(unsigned int index) const
-{
-	return getSupportingRepresentationDor(index)->Title;
-}
-
-std::string SubRepresentation::getSupportingRepresentationContentType() const
-{
-	return getSupportingRepresentationDor(0)->ContentType;
+	return static_cast<AbstractRepresentation*>(repository->getDataObjectByUuid(getSupportingRepresentationDor(index).getUuid()));
 }

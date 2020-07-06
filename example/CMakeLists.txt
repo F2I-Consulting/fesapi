@@ -40,6 +40,10 @@ endif (WIN32)
 # except for executable targets because earlier CMake versions which did not use this variable for executables.
 set_target_properties(example PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 
+if (WITH_RESQML2_2)
+	target_compile_definitions(example PRIVATE "-DWITH_RESQML2_2")
+endif(WITH_RESQML2_2)
+
 INSTALL (
 	TARGETS example
 	DESTINATION ${CMAKE_INSTALL_PREFIX}

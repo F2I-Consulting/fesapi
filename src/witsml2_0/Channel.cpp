@@ -20,7 +20,7 @@ under the License.
 
 #include <stdexcept>
 
-#include "../common/PropertyKind.h"
+#include "../eml2/PropertyKind.h"
 
 #include "Well.h"
 #include "ChannelSet.h"
@@ -31,7 +31,7 @@ using namespace gsoap_eml2_1;
 
 const char* Channel::XML_TAG = "Channel";
 
-Channel::Channel(COMMON_NS::PropertyKind * propertyKind,
+Channel::Channel(EML2_NS::PropertyKind * propertyKind,
 	const std::string & guid, const std::string & title,
 	const std::string & mnemonic, gsoap_eml2_1::eml21__UnitOfMeasure uom, gsoap_eml2_1::witsml20__EtpDataType dataType, gsoap_eml2_1::witsml20__ChannelStatus growingStatus,
 	const std::string & timeDepth, const std::string & loggingCompanyName)
@@ -71,9 +71,9 @@ void Channel::pushBackChannelIndex(gsoap_eml2_1::witsml20__ChannelIndexType inde
 	static_cast<witsml20__Channel*>(gsoapProxy2_1)->Index.push_back(index);
 }
 
-eml21__DataObjectReference* Channel::getPropertyKindDor() const
+COMMON_NS::DataObjectReference Channel::getPropertyKindDor() const
 {
-	return static_cast<witsml20__Channel*>(gsoapProxy2_1)->ChannelClass;
+	return COMMON_NS::DataObjectReference(static_cast<witsml20__Channel*>(gsoapProxy2_1)->ChannelClass);
 }
 
 std::vector<ChannelSet*> Channel::getChannelSets() const
@@ -81,9 +81,9 @@ std::vector<ChannelSet*> Channel::getChannelSets() const
 	return getRepository()->getSourceObjects<ChannelSet>(this);
 }
 
-COMMON_NS::PropertyKind* Channel::getPropertyKind() const
+EML2_NS::PropertyKind* Channel::getPropertyKind() const
 {
-	return getRepository()->getDataObjectByUuid<COMMON_NS::PropertyKind>(getPropertyKindDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(getPropertyKindDor().getUuid());
 }
 
 GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IMPL(std::string, Channel, Mnemonic)
@@ -114,5 +114,5 @@ void Channel::loadTargetRelationships()
 {
 	WellboreObject::loadTargetRelationships();
 
-	convertDorIntoRel<COMMON_NS::PropertyKind>(getPropertyKindDor());
+	convertDorIntoRel<EML2_NS::PropertyKind>(getPropertyKindDor());
 }

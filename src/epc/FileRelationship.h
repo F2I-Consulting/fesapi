@@ -25,35 +25,91 @@ under the License.
 
 namespace epc
 {
-	/**
-	* This class intends to represent any rel file of the package.
-	*/
+	/** This class intends to represent any rel file of the package. */
 	class FileRelationship
 	{
 	private:
+		/** Full pathname of the file */
 		std::string pathName;
+		/** The relationship */
 		std::vector<Relationship> relationship;
 
 	public:
-		// CONSTRUCTORS
+		/** CONSTRUCTORS */
 		FileRelationship() {}
+
+		/**
+		 * Constructor
+		 *
+		 * @param 	frRelationship	The fr relationship.
+		 */
 		FileRelationship(const Relationship & frRelationship);
+
+		/**
+		 * Constructor
+		 *
+		 * @param 	frRelationship	The fr relationship.
+		 */
 		FileRelationship(const std::vector<Relationship> & frRelationship);
+		/** Destructor */
 		~FileRelationship() {}
 
-		// ACCESSORS
+		/**
+		 * ACCESSORS
+		 *
+		 * @returns	True if empty, false if not.
+		 */
 		bool isEmpty() const;
+
+		/**
+		 * Gets path name
+		 *
+		 * @returns	The path name.
+		 */
 		const std::string& getPathName() const { return pathName; }
+
+		/**
+		 * Gets all relationship
+		 *
+		 * @returns	all relationship.
+		 */
 		const std::vector<Relationship>& getAllRelationship() const { return relationship; }
+
+		/**
+		 * Gets index relationship
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	The index relationship.
+		 */
 		Relationship getIndexRelationship(size_t index) const;
+
+		/**
+		 * Convert this object into a string representation
+		 *
+		 * @returns	A std::string that represents this object.
+		 */
 		std::string toString() const;
 
+		/**
+		 * Sets path name
+		 *
+		 * @param 	frPathName	Full pathname of the fr file.
+		 */
 		void setPathName(const std::string & frPathName) { pathName = frPathName; }
+
+		/**
+		 * Adds a relationship
+		 *
+		 * @param 	frRelationship	The fr relationship.
+		 */
 		void addRelationship(const Relationship & frRelationship);
 
 		/**
-		* Read a relationships part from a string.
-		*/
+		 * Read a relationships part from a string.
+		 *
+		 * @param 	textInput	The text input.
+		 */
 		void readFromString(const std::string & textInput);
 	};
 }

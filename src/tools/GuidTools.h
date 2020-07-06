@@ -26,17 +26,28 @@ under the License.
 #include <array>
 #include <cstdint>
 #include <algorithm>
+#include <stdexcept>
 
 namespace GuidTools
 {
 #if defined(_WIN32)
 	inline
 #endif
+
+	/**
+	 * Generates an UID as string
+	 *
+	 * @returns	The UID as string.
+	 */
 	std::string generateUidAsString()
 #if defined(_WIN32)
 	{
 		GUID sessionGUID = GUID_NULL;
 		HRESULT hr = CoCreateGuid(&sessionGUID);
+		if (hr != S_OK) {
+			throw std::logic_error("Windows could not create a GUID.");
+		}
+
 		wchar_t uuidWStr[39];
 		StringFromGUID2(sessionGUID, uuidWStr, 39);
 		uuidWStr[37] = L'\0'; // Delete the closing bracket
@@ -50,17 +61,27 @@ namespace GuidTools
 		return uuidStr;
 	}
 #else
+	///< .
 	;
 #endif
 
 #if defined(_WIN32)
 	inline
 #endif
+
+		/**
+		 * Generates an UID as byte array
+		 *
+		 * @returns	The UID as byte array.
+		 */
 		std::array<uint8_t, 16> generateUidAsByteArray()
 #if defined(_WIN32)
 	{
 		GUID sessionGUID = GUID_NULL;
 		HRESULT hr = CoCreateGuid(&sessionGUID);
+		if (hr != S_OK) {
+			throw std::logic_error("Windows could not create a GUID.");
+		}
 
 		std::array<uint8_t, 16> result;
 
@@ -80,12 +101,21 @@ namespace GuidTools
 		return result;
 	}
 #else
+		///< .
 		;
 #endif
 
 #if defined(_WIN32)
 	inline
 #endif
+
+		/**
+		 * Initializes this object from the given string
+		 *
+		 * @param 	uuidStr	The uuid string.
+		 *
+		 * @returns	from converted string.
+		 */
 		std::array<uint8_t, 16> convertFromString(const std::string& uuidStr)
 #if defined(_WIN32)
 	{
@@ -98,6 +128,9 @@ namespace GuidTools
 
 		IID iid = GUID_NULL;
 		HRESULT hr = IIDFromString(uuidWStr, &iid);
+		if (hr != S_OK) {
+			throw std::logic_error("Windows could not convert the string UUID " + uuidStr + " to an UUID structure.");
+		}
 
 		std::array<uint8_t, 16> result;
 
@@ -117,12 +150,21 @@ namespace GuidTools
 		return result;
 	}
 #else
+		///< .
 		;
 #endif
 
 #if defined(_WIN32)
 	inline
 #endif
+
+		/**
+		 * Converts an uuidArray to a string
+		 *
+		 * @param 	uuidArray	Array of uuids.
+		 *
+		 * @returns	The given data converted to a string.
+		 */
 		std::string convertToString(const std::array<uint8_t, 16>& uuidArray)
 #if defined(_WIN32)
 	{
@@ -147,6 +189,7 @@ namespace GuidTools
 		return uuidStr;
 	}
 #else
+		///< .
 		;
 #endif
 

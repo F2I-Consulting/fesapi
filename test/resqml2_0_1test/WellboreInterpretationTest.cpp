@@ -21,13 +21,13 @@ under the License.
 #include "catch.hpp"
 #include "resqml2_0_1test/WellboreTest.h"
 
-#include "resqml2_0_1/WellboreFeature.h"
-#include "resqml2_0_1/WellboreInterpretation.h"
+#include "resqml2/WellboreFeature.h"
+#include "resqml2/WellboreInterpretation.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 
 const char* WellboreInterpretationTest::defaultUuid = "efc2e5d6-8a4a-4482-9561-cf3538c89ba4";
 const char* WellboreInterpretationTest::defaultTitle = "Wellbore Interpretation Test";

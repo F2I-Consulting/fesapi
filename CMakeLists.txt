@@ -9,8 +9,8 @@ set (FESAPI_ROOT_DIR ${CMAKE_SOURCE_DIR})
 set (FESAPI_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 # version mechanism
-set (Fesapi_VERSION_MAJOR 1)
-set (Fesapi_VERSION_MINOR 3)
+set (Fesapi_VERSION_MAJOR 2)
+set (Fesapi_VERSION_MINOR 0)
 set (Fesapi_VERSION_PATCH 0)
 set (Fesapi_VERSION_TWEAK 0)
 
@@ -21,13 +21,6 @@ set (CPP_LIBRARY_NAME FesapiCpp)
 if(NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE "Release")
 endif()
-
-file (GLOB FESAPI_PROXIES_SOURCES ${FESAPI_ROOT_DIR}/src/proxies/*.cpp)
-set (FESAPI_PROXIES_SOURCES
-	${FESAPI_PROXIES_SOURCES}
-	${CMAKE_CURRENT_SOURCE_DIR}/src/proxies/struct_tm.cpp
-)
-file (GLOB FESAPI_PROXIES_HEADERS ${FESAPI_ROOT_DIR}/src/proxies/*.h)
 
 set (BUILD_SHARED_LIBS ON CACHE BOOL "Build shared lib")
 
@@ -134,7 +127,35 @@ else (BUILD_SHARED_LIBS)
 	set (LIB_TYPE STATIC)
 endif (BUILD_SHARED_LIBS)
 
-set (WITH_EXPERIMENTAL OFF CACHE BOOL "Compile some experimental functionalities.")
+set (WITH_RESQML2_2 OFF CACHE BOOL "Compile RESQML2.2 experimental support. Don't use it in production.")
+
+# ============================================================================
+# Gsoap proxies source
+# ============================================================================
+
+list(APPEND FESAPI_PROXIES_SOURCES
+	${FESAPI_ROOT_DIR}/src/proxies/envC.cpp
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_1C.cpp
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_2C.cpp
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_resqml2_0_1C.cpp
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_3C.cpp
+	${FESAPI_ROOT_DIR}/src/proxies/namespace.cpp
+	${FESAPI_ROOT_DIR}/src/proxies/stdsoap2.cpp
+	${FESAPI_ROOT_DIR}/src/proxies/struct_tm.cpp
+)
+list(APPEND FESAPI_PROXIES_HEADERS
+	${FESAPI_ROOT_DIR}/src/proxies/envH.h
+	${FESAPI_ROOT_DIR}/src/proxies/envStub.h
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_1H.h
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_1Stub.h
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_2H.h
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_2Stub.h
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_3H.h
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_3Stub.h
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_resqml2_0_1H.h
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_resqml2_0_1Stub.h
+	${FESAPI_ROOT_DIR}/src/proxies/stdsoap2.h
+)
 
 # ============================================================================
 # including subdirectories

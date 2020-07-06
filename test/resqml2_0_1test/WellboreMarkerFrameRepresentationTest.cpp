@@ -23,14 +23,17 @@ under the License.
 #include "resqml2_0_1test/WellboreInterpretationTest.h"
 #include "resqml2_0_1test/WellboreTrajectoryRepresentationTest.h"
 
-#include "resqml2_0_1/WellboreInterpretation.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
+#include "resqml2/WellboreInterpretation.h"
+#include "resqml2/WellboreTrajectoryRepresentation.h"
+
 #include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
-#include "resqml2_0_1/WellboreMarker.h"
+
+#include "resqml2_2/WellboreMarkerFrameRepresentation.h"
+#include "resqml2_2/WellboreMarker.h"
 
 using namespace std;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 using namespace resqml2_0_1test;
 
 const char* WellboreMarkerFrameRepresentationTest::defaultUuid = "8f1c7e38-afc7-4cb8-86bb-a116e9135de4";

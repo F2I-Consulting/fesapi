@@ -20,10 +20,10 @@ under the License.
 #include "../catch.hpp"
 
 #include "resqml2/AbstractLocal3dCrs.h"
-#include "resqml2_0_1/PolylineRepresentation.h"
-#include "resqml2_0_1/HorizonInterpretation.h"
-#include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "common/HdfProxy.h"
+#include "resqml2/PolylineRepresentation.h"
+#include "resqml2/HorizonInterpretation.h"
+#include "resqml2/LocalDepth3dCrs.h"
+#include "eml2/AbstractHdfProxy.h"
 #include "resqml2_0_1test/HorizonInterpretationTest.h"
 #include "resqml2_0_1test/SeismicLineRepresentationTest.h"
 #include "LocalDepth3dCrsTest.h"
@@ -31,7 +31,7 @@ under the License.
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 
 const char* HorizonOnSeismicLine::defaultUuid = "c9bea300-6231-4acb-8b7c-77e4099224d4";
 const char* HorizonOnSeismicLine::defaultTitle = "Horizon on seismic line";
@@ -53,7 +53,7 @@ HorizonOnSeismicLine::HorizonOnSeismicLine(DataObjectRepository* repo, bool init
 
 void HorizonOnSeismicLine::initRepoHandler()
 {
-	COMMON_NS::AbstractHdfProxy * hdfProxy = repo->getHdfProxy(0);
+	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxy(0);
 
 	HorizonInterpretation* horizonInterp = repo->getDataObjectByUuid<HorizonInterpretation>(HorizonInterpretationTest::defaultUuid);
 	if (horizonInterp == nullptr) {

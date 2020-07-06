@@ -30,7 +30,7 @@ const char* PropertySet::XML_TAG = "PropertySet";
 void PropertySet::setParent(PropertySet * parent)
 {
 	if (parent == nullptr) {
-		throw invalid_argument("The interpreted feature cannot be null.");
+		throw invalid_argument("The parent property set cannot be null.");
 	}
 
 	repository->addRelationship(this, parent);
@@ -38,16 +38,9 @@ void PropertySet::setParent(PropertySet * parent)
 	setXmlParent(parent);
 }
 
-std::string PropertySet::getParentUuid() const
-{
-	gsoap_resqml2_0_1::eml20__DataObjectReference const * parentDor = getParentDor();
-
-	return parentDor != nullptr ? parentDor->UUID : "";
-}
-
 PropertySet * PropertySet::getParent() const
 {
-	return static_cast<PropertySet*>(repository->getDataObjectByUuid(getParentUuid()));
+	return static_cast<PropertySet*>(repository->getDataObjectByUuid(getParentDor().getUuid()));
 }
 
 std::vector<PropertySet *> PropertySet::getChildren() const
@@ -79,6 +72,9 @@ PropertySet* PropertySet::getChildren(unsigned int index) const
 
 void PropertySet::pushBackProperty(RESQML2_NS::AbstractProperty * prop)
 {
+	if (prop == nullptr)
+		throw invalid_argument("The property to push cannot be null.");
+
 	pushBackXmlProperty(prop);
 
 	repository->addRelationship(this, prop);
@@ -113,12 +109,12 @@ RESQML2_NS::AbstractProperty* PropertySet::getProperty(unsigned int index) const
 
 void PropertySet::loadTargetRelationships()
 {
-	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getParentDor();
-	if (dor != nullptr) {
-		PropertySet* propertySet = getRepository()->getDataObjectByUuid<PropertySet>(dor->UUID);
+	COMMON_NS::DataObjectReference dor = getParentDor();
+	if (!dor.isEmpty()) {
+		PropertySet* propertySet = getRepository()->getDataObjectByUuid<PropertySet>(dor.getUuid());
 		if (propertySet == nullptr) { // partial transfer
 			getRepository()->createPartial(dor);
-			propertySet = getRepository()->getDataObjectByUuid<PropertySet>(dor->UUID);
+			propertySet = getRepository()->getDataObjectByUuid<PropertySet>(dor.getUuid());
 			if (propertySet == nullptr) {
 				throw invalid_argument("The DOR looks invalid.");
 			}
@@ -126,13 +122,13 @@ void PropertySet::loadTargetRelationships()
 		repository->addRelationship(this, propertySet);
 	}
 
-	const std::vector<gsoap_resqml2_0_1::eml20__DataObjectReference *> & propDors = getAllPropertiesDors();
+	const std::vector<COMMON_NS::DataObjectReference>& propDors = getAllPropertiesDors();
 	for (size_t i = 0; i < propDors.size(); ++i) {
 		dor = propDors[i];
-		RESQML2_NS::AbstractProperty* prop = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractProperty>(dor->UUID);
+		RESQML2_NS::AbstractProperty* prop = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractProperty>(dor.getUuid());
 		if (prop == nullptr) { // partial transfer
 			getRepository()->createPartial(dor);
-			prop = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractProperty>(dor->UUID);
+			prop = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractProperty>(dor.getUuid());
 			if (prop == nullptr) {
 				throw invalid_argument("The DOR looks invalid.");
 			}

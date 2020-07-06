@@ -18,10 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PlaneSetRepresentation.h"
 
+#include <algorithm>
+#include <limits>
 #include <stdexcept>
 #include <sstream>
-#include <algorithm>
-#include <stdexcept>
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractLocal3dCrs.h"
@@ -29,8 +29,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-
-const char* PlaneSetRepresentation::XML_TAG = "PlaneSetRepresentation";
 
 PlaneSetRepresentation::PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 		const std::string & guid, const std::string & title)
@@ -47,16 +45,16 @@ PlaneSetRepresentation::PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterp
 	setInterpretation(interp);
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* PlaneSetRepresentation::getLocalCrsDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference PlaneSetRepresentation::getLocalCrsDor(unsigned int patchIndex) const
 {
 	_resqml20__PlaneSetRepresentation* rep = static_cast<_resqml20__PlaneSetRepresentation*>(gsoapProxy2_0_1);
 	gsoap_resqml2_0_1::eml20__DataObjectReference* result = rep->Planes[patchIndex]->LocalCrs;
 	for (size_t geomIndex = 1; geomIndex < rep->Planes.size(); ++geomIndex) {
 		if (result->UUID != rep->Planes[geomIndex]->LocalCrs->UUID) {
-			throw std::invalid_argument("A multi CRS plane set representaiton is not supported yet");
+			throw std::invalid_argument("A multi CRS plane set representation is not supported yet");
 		}
 	}
-	return result;
+	return COMMON_NS::DataObjectReference(result);
 }
 
 void PlaneSetRepresentation::pushBackHorizontalPlaneGeometryPatch(double zCoordinate, RESQML2_NS::AbstractLocal3dCrs* localCrs)
@@ -112,7 +110,7 @@ void PlaneSetRepresentation::pushBackTiltedPlaneGeometryPatch(
 	getRepository()->addRelationship(this, localCrs);
 }
 
-ULONG64 PlaneSetRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 PlaneSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");
@@ -124,7 +122,7 @@ ULONG64 PlaneSetRepresentation::getXyzPointCountOfPatch(const unsigned int & pat
 		: static_cast<resqml20__TiltedPlaneGeometry*>(rep->Planes[patchIndex])->Plane.size() * 3;
 }
 
-void PlaneSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void PlaneSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");

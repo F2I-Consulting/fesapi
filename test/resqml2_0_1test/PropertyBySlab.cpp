@@ -22,11 +22,13 @@ under the License.
 
 #include "catch.hpp"
 
+#include "eml2/AbstractHdfProxy.h"
 #include "resqml2_0_1/PropertyKind.h"
-#include "resqml2_0_1/ContinuousProperty.h"
-#include "resqml2_0_1/DiscreteProperty.h"
-#include "resqml2_0_1/AbstractIjkGridRepresentation.h"
-#include "common/AbstractHdfProxy.h"
+#include "eml2_3/PropertyKind.h"
+
+#include "resqml2/ContinuousProperty.h"
+#include "resqml2/DiscreteProperty.h"
+#include "resqml2/AbstractIjkGridRepresentation.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -51,17 +53,17 @@ PropertyBySlab::PropertyBySlab(DataObjectRepository * repo, bool init)
 }
 
 void PropertyBySlab::initRepoHandler() {
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* ijkGrid = repo->createPartialIjkGridRepresentation("", "partial IJK Grid");
-	RESQML2_0_1_NS::PropertyKind * propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("", "Partial prop kind");
+	RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo->createPartialIjkGridRepresentation("", "partial IJK Grid");
+	EML2_NS::PropertyKind * propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("", "Partial prop kind");
 
 	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
+	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
 	// creating the continuous Property with computing min max
-	RESQML2_0_1_NS::ContinuousProperty* propertyCompute = repo->createContinuousProperty(
+	RESQML2_NS::ContinuousProperty* propertyCompute = repo->createContinuousProperty(
 		ijkGrid, defaultContinuousPropComputeUuid, "slab prop compute min max",
 		1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_eml2_3::resqml22__IndexableElement__cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom__m,
 		propertyKind);
 	propertyCompute->pushBackFloatHdf5Array3dOfValues(2, 3, 4);
@@ -89,10 +91,10 @@ void PropertyBySlab::initRepoHandler() {
 		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
 
 	// creating the continuous Property without computing min max
-	RESQML2_0_1_NS::ContinuousProperty* propertyNoCompute = repo->createContinuousProperty(
+	RESQML2_NS::ContinuousProperty* propertyNoCompute = repo->createContinuousProperty(
 		ijkGrid, defaultPropNoComputeUuid, "slab prop no compute min max",
 		1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_eml2_3::resqml22__IndexableElement__cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom__m,
 		propertyKind);
 	propertyNoCompute->pushBackFloatHdf5Array3dOfValues(2, 3, 4, nullptr, -500.0f, 0.1f);
@@ -118,11 +120,12 @@ void PropertyBySlab::initRepoHandler() {
 	REQUIRE(propertyNoCompute->getMaximumValue() == 100.0f);
 
 	// Creating the Discrete property using slab
-	RESQML2_0_1_NS::DiscreteProperty* discretePropertyCompute = repo->createDiscreteProperty(
+	auto discPropertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind__not_x0020a_x0020measure);
+	RESQML2_NS::DiscreteProperty* discretePropertyCompute = repo->createDiscreteProperty(
 		ijkGrid, defaultDiscretePropComputeUuid, "testing discrete prop",
 		1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
-		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__index);
+		gsoap_eml2_3::resqml22__IndexableElement__cells,
+		discPropertyKind);
 	discretePropertyCompute->pushBackLongHdf5Array3dOfValues(2, 3, 4, 9999);
 	REQUIRE_THROWS(discretePropertyCompute->getMinimumValue() == -10);
 	REQUIRE_THROWS(discretePropertyCompute->getMaximumValue() == 35);
@@ -160,10 +163,10 @@ void PropertyBySlab::initRepoHandler() {
 		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, true);
 
 	// creating the discrete Property without computing min max
-	RESQML2_0_1_NS::DiscreteProperty* discretePropertyNoCompute = repo->createDiscreteProperty(
+	RESQML2_NS::DiscreteProperty* discretePropertyNoCompute = repo->createDiscreteProperty(
 		ijkGrid, defaultDiscretePropNoComputeUuid, "testing discrete prop no min max",
 		1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_eml2_3::resqml22__IndexableElement__cells,
 		propertyKind);
 	discretePropertyNoCompute->pushBackLongHdf5Array3dOfValues(2, 3, 4, 9999);
 	offsetInSlowestDim = 0;
@@ -180,16 +183,16 @@ void PropertyBySlab::initRepoHandler() {
 
 void PropertyBySlab::readRepoHandler()
 {
-	RESQML2_0_1_NS::ContinuousProperty* propertyCompute = repo->getDataObjectByUuid<RESQML2_0_1_NS::ContinuousProperty>(defaultContinuousPropComputeUuid);
+	RESQML2_NS::ContinuousProperty* propertyCompute = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>(defaultContinuousPropComputeUuid);
 	REQUIRE(propertyCompute->getValuesHdfDatatype() == AbstractValuesProperty::FLOAT);
 	REQUIRE(propertyCompute->getMinimumValue() == -123.0);
 	REQUIRE(propertyCompute->getMaximumValue() == .35f);
 
-	RESQML2_0_1_NS::ContinuousProperty* propertyNoCompute = repo->getDataObjectByUuid<RESQML2_0_1_NS::ContinuousProperty>(defaultPropNoComputeUuid);
+	RESQML2_NS::ContinuousProperty* propertyNoCompute = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>(defaultPropNoComputeUuid);
 	REQUIRE(propertyNoCompute->getMinimumValue() == -500.0f);
 	REQUIRE(propertyNoCompute->getMaximumValue() == 100.0f);
 
-	RESQML2_0_1_NS::DiscreteProperty* discretePropertyCompute = repo->getDataObjectByUuid<RESQML2_0_1_NS::DiscreteProperty>(defaultDiscretePropComputeUuid);
+	RESQML2_NS::DiscreteProperty* discretePropertyCompute = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultDiscretePropComputeUuid);
 	REQUIRE(discretePropertyCompute->getMinimumValue() == -10);
 	REQUIRE(discretePropertyCompute->getMaximumValue() == 35);
 }

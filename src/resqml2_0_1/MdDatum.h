@@ -22,73 +22,75 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class MdDatum : public RESQML2_NS::MdDatum
+	/** A md datum. */
+	class MdDatum final : public RESQML2_NS::MdDatum
 	{
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * 
+		 */
 		DLL_IMPORT_OR_EXPORT MdDatum(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::MdDatum(partialObject) {}
 
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param repo					The repo where the underlying gsoap proxy is going to be created.
-		* @param guid						The guid to set to the local 3d crs. If empty then a new guid will be generated.
-		* @param title						A title for the instance to create.
-		* @param locCrs						The local CRS where the ordinal are given
-		* @param originKind					Indicates the kind of the MD reference point.
-		* @param referenceLocationOrdinal1	The location of the MD reference point on the first axis of the local 3d CRS.
-		* @param referenceLocationOrdinal2	The location of the MD reference point on the second axis of the local 3d CRS.
-		* @param referenceLocationOrdinal3	The location of the MD reference point on the third axis of the local 3d CRS.
-		*/
+		 * Creates an instance of this class in a gsoap context.
+		 *
+		 * @param [in,out]	repo					 	The repo where the underlying gsoap proxy is
+		 * 												going to be created.
+		 * @param 		  	guid					 	The guid to set to the local 3d crs. If empty
+		 * 												then a new guid will be generated.
+		 * @param 		  	title					 	A title for the instance to create.
+		 * @param [in,out]	locCrs					 	The local CRS where the ordinal are given.
+		 * @param 		  	originKind				 	Indicates the kind of the MD reference point.
+		 * @param 		  	referenceLocationOrdinal1	The location of the MD reference point on the
+		 * 												first axis of the local 3d CRS.
+		 * @param 		  	referenceLocationOrdinal2	The location of the MD reference point on the
+		 * 												second axis of the local 3d CRS.
+		 * @param 		  	referenceLocationOrdinal3	The location of the MD reference point on the
+		 * 												third axis of the local 3d CRS.
+		 */
 		MdDatum(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_resqml2_0_1::resqml20__MdReference originKind,
+			RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__WellboreDatumReference originKind,
 			double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3);
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		MdDatum(gsoap_resqml2_0_1::_resqml20__MdDatum* fromGsoap) :RESQML2_NS::MdDatum(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~MdDatum() {}
 
-		/**
-		* Get the Local 3d CRS dor where the reference point ordinals are given
-		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor() const;
+		COMMON_NS::DataObjectReference getLocalCrsDor() const final;
+
+		DLL_IMPORT_OR_EXPORT double getX() const final;
+
+		DLL_IMPORT_OR_EXPORT double getY() const final;
+
+		DLL_IMPORT_OR_EXPORT double getZ() const final;
+
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__WellboreDatumReference getOriginKind() const final;
+
+		/** Loads target relationships */
+		void loadTargetRelationships() final;
+
+	private:
 
 		/**
-		* Getter of the first ordinal of the reference location.
-		*/
-		DLL_IMPORT_OR_EXPORT double getX() const;
-		DLL_IMPORT_OR_EXPORT double getXInGlobalCrs() const;
-
-		/**
-		* Getter of the second ordinal of the reference location.
-		*/
-		DLL_IMPORT_OR_EXPORT double getY() const;
-		DLL_IMPORT_OR_EXPORT double getYInGlobalCrs() const;
-
-		/**
-		* Getter of the third ordinal of the reference location.
-		*/
-		DLL_IMPORT_OR_EXPORT double getZ() const;
-		DLL_IMPORT_OR_EXPORT double getZInGlobalCrs() const;
-
-		/**
-		* Getter of the origin kind of the MD.
-		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__MdReference getOriginKind() const;
-
-	protected:
-
-		void setXmlLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs);
-
-		// XML backward relationship
-		std::vector<class WellboreTrajectoryRepresentation*> wellboreTrajectoryRepresentationSet;
+		 * Sets the local CRS where the reference point ordinals are given.
+		 *
+		 * @exception	std::invalid_argument	If @p localCrs is nullptr and no default CRS is
+		 * 										defined in the repository.
+		 *
+		 * @param [in]	localCrs	If non-nullptr, the local CRS. If nullptr, the data object repository
+		 * 							default CRS is set.
+		 */
+		DLL_IMPORT_OR_EXPORT void setLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs) final;
 	};
 }

@@ -21,13 +21,13 @@ under the License.
 #include "catch.hpp"
 #include "resqml2_0_1test/WellboreFrameRepresentationTest.h"
 
-#include "resqml2_0_1/CommentProperty.h"
-#include "resqml2_0_1/WellboreFrameRepresentation.h"
-#include "common/AbstractHdfProxy.h"
+#include "resqml2/CommentProperty.h"
+#include "resqml2/WellboreFrameRepresentation.h"
+#include "eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace COMMON_NS;
-using namespace RESQML2_NS;
+using namespace EML2_NS;
 using namespace resqml2_0_1test;
 
 const char* CommentProperty::defaultUuid = "3e01e290-7df3-450e-ad93-2f88e79fe2fe";
@@ -48,17 +48,18 @@ CommentProperty::CommentProperty(DataObjectRepository * repo, bool init)
 void CommentProperty::initRepoHandler() {
 	// creating an IJK grid
 	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(repo, true);
-	RESQML2_0_1_NS::WellboreFrameRepresentation * frame = static_cast<RESQML2_0_1_NS::WellboreFrameRepresentation *>(repo->getDataObjectByUuid(WellboreFrameRepresentationTest::defaultUuid));
+	RESQML2_NS::WellboreFrameRepresentation * frame = static_cast<RESQML2_NS::WellboreFrameRepresentation *>(repo->getDataObjectByUuid(WellboreFrameRepresentationTest::defaultUuid));
 
 	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
+	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
 	// creating the ContinuousProperty
-	RESQML2_0_1_NS::CommentProperty* commentProperty = repo->createCommentProperty(
+	auto propertyKind = repo->createPropertyKind("", "comment", gsoap_eml2_1::eml21__QuantityClassKind__not_x0020a_x0020measure);
+	RESQML2_NS::CommentProperty* commentProperty = repo->createCommentProperty(
 		frame, defaultUuid, defaultTitle,
 		1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__nodes,
-		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length); // TODO : modify for a comment prop kind!!
+		gsoap_eml2_3::resqml22__IndexableElement__nodes,
+		propertyKind);
 	REQUIRE(commentProperty != nullptr);
 	std::vector<string> values;
 	values.push_back("test0");
@@ -77,7 +78,7 @@ void CommentProperty::readRepoHandler() {
 	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(repo, false);
 
 	// getting the ContinuousPropertySeries
-	RESQML2_0_1_NS::CommentProperty* commentProperty = repo->getDataObjectByUuid<RESQML2_0_1_NS::CommentProperty>(defaultUuid);
+	RESQML2_NS::CommentProperty* commentProperty = repo->getDataObjectByUuid<RESQML2_NS::CommentProperty>(defaultUuid);
 
 	// ************************************
 	// reading the ContinuousProperty
@@ -86,7 +87,7 @@ void CommentProperty::readRepoHandler() {
 	REQUIRE(commentProperty->getElementCountPerValue() == 1);
 
 	// getAttachmentKind
-	REQUIRE(commentProperty->getAttachmentKind() == gsoap_resqml2_0_1::resqml20__IndexableElements__nodes);
+	REQUIRE(commentProperty->getAttachmentKind() == gsoap_eml2_3::resqml22__IndexableElement__nodes);
 
 	std::vector<string> values = commentProperty->getStringValuesOfPatch(0);
 	REQUIRE(values.size() == 5);
