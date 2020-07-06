@@ -20,6 +20,7 @@ under the License.
 
 #include <unordered_map>
 #include <sstream>
+#include <limits>
 
 #include "DataObjectReference.h"
 
