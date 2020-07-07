@@ -18,19 +18,19 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PointSetRepresentation.h"
 
+#include <limits>
 #include <stdexcept>
 
 #include "H5public.h"
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractLocal3dCrs.h"
-#include "../common/AbstractHdfProxy.h"
+#include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* PointSetRepresentation::XML_TAG = "PointSetRepresentation";
 const char* PointSetRepresentation::XML_NS = "resqml20";
 
 PointSetRepresentation::PointSetRepresentation(COMMON_NS::DataObjectRepository* repo,
@@ -64,8 +64,8 @@ PointSetRepresentation::PointSetRepresentation(RESQML2_NS::AbstractFeatureInterp
 }
 
 void PointSetRepresentation::pushBackGeometryPatch(
-	unsigned int xyzPointCount, double * xyzPoints,
-	COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	unsigned int xyzPointCount, double const * xyzPoints,
+	EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -86,7 +86,7 @@ void PointSetRepresentation::pushBackGeometryPatch(
 	getRepository()->addRelationship(this, localCrs);
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* PointSetRepresentation::getHdfProxyDor() const
+COMMON_NS::DataObjectReference PointSetRepresentation::getHdfProxyDor() const
 {
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
@@ -100,7 +100,7 @@ resqml20__PointGeometry* PointSetRepresentation::getPointGeometry2_0_1(unsigned 
 	return static_cast<_resqml20__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch[patchIndex]->Geometry;
 }
 
-ULONG64 PointSetRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 PointSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -109,7 +109,7 @@ ULONG64 PointSetRepresentation::getXyzPointCountOfPatch(const unsigned int & pat
 	return static_cast<_resqml20__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch[patchIndex]->Count;
 }
 
-void PointSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void PointSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount())
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -118,7 +118,7 @@ void PointSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex
 	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array)
 	{
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__Point3dHdf5Array*>(pointGeom->Points)->Coordinates;
-		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, xyzPoints);
 	}
 	else

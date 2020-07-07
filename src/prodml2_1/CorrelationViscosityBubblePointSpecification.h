@@ -21,17 +21,19 @@ under the License.
 
 namespace PRODML2_1_NS
 {
+	/** A correlation viscosity bubble point specification. */
 	class CorrelationViscosityBubblePointSpecification : public CorrelationViscositySpecification
 	{
 	public:
-		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		CorrelationViscosityBubblePointSpecification(gsoap_eml2_2::prodml21__AbstractCorrelationViscosityBubblePointModel* fromGsoap): CorrelationViscositySpecification(fromGsoap){}
 
 		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		CorrelationViscosityBubblePointSpecification(gsoap_eml2_2::prodml21__AbstractCorrelationViscosityBubblePointModel* fromGsoap): CorrelationViscositySpecification(fromGsoap){}
+
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~CorrelationViscosityBubblePointSpecification() {}
 
 		GETTER_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(gsoap_eml2_2::prodml21__AbstractCorrelationViscosityBubblePointModel, gsoapProxy, DeadOilViscosity, gsoap_eml2_2::eml22__DynamicViscosityUom)

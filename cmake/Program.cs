@@ -2,8 +2,8 @@
 
 using f2i.energisticsStandardsApi;
 using f2i.energisticsStandardsApi.${FESAPI_COMMON_NS};
+using f2i.energisticsStandardsApi.${FESAPI_EML2_NS};
 using f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS};
-using f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS};
 using f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS};
 
 // Add the fesapi cpp and hdf5, szip, zlib dll into the executable directory.
@@ -15,13 +15,13 @@ namespace example
 		private static void serializeIjkGrid(DataObjectRepository repo)
         {
             AbstractIjkGridRepresentation ijkGrid = repo.createPartialIjkGridRepresentation("", "partial IJK Grid");
-            f2i.energisticsStandardsApi.common.PropertyKind propertyKind = repo.createPartialPropertyKind("", "Partial prop kind");
+            f2i.energisticsStandardsApi.${FESAPI_EML2_NS}.PropertyKind propertyKind = repo.createPartialPropertyKind("", "Partial prop kind");
 
             // creating the continuous Property with computing min max
             ContinuousProperty propertyCompute = repo.createContinuousProperty(
                 ijkGrid, "9d0a717f-2cd3-4d43-9cbf-3484105ed384", "slab prop compute min max",
                 1,
-                resqml20__IndexableElements.resqml20__IndexableElements__cells,
+                resqml22__IndexableElement.resqml22__IndexableElement__cells,
                 resqml20__ResqmlUom.resqml20__ResqmlUom__m,
                 propertyKind);
             propertyCompute.pushBackFloatHdf5Array3dOfValues(2, 3, 4);
@@ -74,7 +74,7 @@ namespace example
             DiscreteProperty discretePropertyCompute = repo.createDiscreteProperty(
                 ijkGrid, "50935c31-93ec-4084-8891-6e9f130c49c3", "testing discrete prop",
                 1,
-                resqml20__IndexableElements.resqml20__IndexableElements__cells,
+                resqml22__IndexableElement.resqml22__IndexableElement__cells,
                 resqml20__ResqmlPropertyKind.resqml20__ResqmlPropertyKind__index);
             discretePropertyCompute.pushBackLongHdf5Array3dOfValues(2, 3, 4, 9999);
 
@@ -143,7 +143,7 @@ namespace example
                 WellboreInterpretation wellbore1Interp1 = repo.createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
 
                 // Representation
-                f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.MdDatum mdInfo = repo.createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", repo.getDefaultCrs(), resqml20__MdReference.resqml20__MdReference__mean_x0020sea_x0020level, 275, 75, 0);
+                f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.MdDatum mdInfo = repo.createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", repo.getDefaultCrs(), eml23__WellboreDatumReference.eml23__WellboreDatumReference__mean_x0020sea_x0020level, 275, 75, 0);
 
                 //Geometry	
                 WellboreTrajectoryRepresentation w1i1TrajRep = repo.createWellboreTrajectoryRepresentation(wellbore1Interp1, "acd2cdcf-bb5d-48da-bd0e-9aeff3e52180", "Wellbore1 Interp1 TrajRep", mdInfo);
@@ -192,7 +192,34 @@ namespace example
 
                 f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation w1i1RegularFrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
                 w1i1RegularFrameRep.setMdValues(0, 200, 6);
+${COMMENT_START}
+                // WellboreFeature seismic frame
+                LocalTime3dCrs localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, eml20__LengthUom.eml20__LengthUom__m, 23031, eml20__TimeUom.eml20__TimeUom__s, eml20__LengthUom.eml20__LengthUom__m, "Unknown", false);
 
+                SeismicWellboreFrameRepresentation w1i1SeismicFrameRep = repo.createSeismicWellboreFrameRepresentation(
+                    wellbore1Interp1, "dcbeea2e-8327-4c5b-97e3-bdced0680de5", "Wellbore1 Interp1 SeismicFrameRep",
+                    w1i1TrajRep,
+                    0,
+                    0,
+                    localTime3dCrs);
+                w1i1SeismicFrameRep.setMdValues(logMds.cast(), 5, hdfProxy);
+                DoubleArray logTimes = new DoubleArray(5);
+                logTimes.setitem(0, 0);
+                logTimes.setitem(1, 10);
+                logTimes.setitem(2, 20);
+                logTimes.setitem(3, 25);
+                logTimes.setitem(4, 30);
+                w1i1SeismicFrameRep.setTimeValues(logTimes.cast(), 5, hdfProxy);
+
+                SeismicWellboreFrameRepresentation w1i1RegularSeismicFrameRep = repo.createSeismicWellboreFrameRepresentation(
+                    wellbore1Interp1, "7f1b75ff-1226-4c0a-a531-8f71661da419", "Wellbore1 Interp1 Regular SeismicFrameRep",
+                    w1i1TrajRep,
+                    0,
+                    0,
+                    localTime3dCrs);
+                w1i1RegularSeismicFrameRep.setMdValues(0, 200, 6);
+                w1i1RegularSeismicFrameRep.setTimeValues(0, 10, 6);
+${COMMENT_END}
                 serializeIjkGrid(repo);
 
                 epc_file.serializeFrom(repo);
@@ -210,8 +237,7 @@ namespace example
                 {
                     System.Console.WriteLine("Warnings are " + status);
                 }
-                LocalDepth3dCrsVector crs_set = repo.getLocalDepth3dCrsSet();
-                System.Console.WriteLine("Deserialize : CRS title is " + crs_set[0].getTitle());
+                System.Console.WriteLine("Deserialize : CRS title is " + repo.getWellboreTrajectoryRepresentation(0).getTitle());
                 Well well = repo.getDataObjectByUuid("1425632e-3c22-4845-b431-ecd36da0671e") as Well;
                 System.Console.WriteLine("Deserialize : Well title is " + well.getTitle());
                 System.Console.WriteLine("\tnameLegal : " + well.getNameLegal());
@@ -221,9 +247,9 @@ namespace example
                     System.Console.WriteLine("\ttimeZone : " + well.getTimeZoneHours() + " hours");
                 }
 
-                WellboreTrajectoryRepresentationVector wellboreCubicTrajSet = repo.getWellboreTrajectoryRepresentationSet();
-                foreach (WellboreTrajectoryRepresentation traj in wellboreCubicTrajSet)
+                for (uint trajIndex = 0; trajIndex < repo.getWellboreTrajectoryRepresentationCount(); trajIndex++)
                 {
+					WellboreTrajectoryRepresentation traj = repo.getWellboreTrajectoryRepresentation(trajIndex);
                     for (uint wbfIndex = 0; wbfIndex < traj.getWellboreFrameRepresentationCount(); wbfIndex++)
                     {
                         f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation wbf = traj.getWellboreFrameRepresentation(wbfIndex);
@@ -240,17 +266,46 @@ namespace example
                         {
                             System.Console.WriteLine("Iregularly spaced");
                         }
-                        if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.DOUBLE) 
-						{	
+                        if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.DOUBLE)
+						{
                             System.Console.WriteLine("Hdf datatype is NATIVE DOUBLE");
-                        }
-						if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.FLOAT)
+						}
+                        if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.FLOAT)
 						{
                             System.Console.WriteLine("Hdf datatype is NATIVE FLOAT");
 						}
                         if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.UNKNOWN)
 						{
                             System.Console.WriteLine("Hdf datatype is NATIVE UNKNOWN");
+						}
+						if (wbf.getXmlTag() == "SeismicWellboreFrameRepresentation")
+						{
+							SeismicWellboreFrameRepresentation swbf = (SeismicWellboreFrameRepresentation) wbf;
+							
+							System.Console.WriteLine("Seismic reference datum : " + swbf.getSeismicReferenceDatum());
+							System.Console.WriteLine("Weathering velocity : " + swbf.getWeatheringVelocity());
+							if (swbf.areTimeValuesRegularlySpaced())
+							{
+								System.Console.WriteLine("Time values regularly spaced");
+								System.Console.WriteLine("First Value : " + swbf.getTimeFirstValue());
+								System.Console.WriteLine("Increment : " + swbf.getTimeConstantIncrementValue());
+							}
+							else
+							{
+								System.Console.WriteLine("Time values iregularly spaced");
+							}
+							if (swbf.getTimeHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.DOUBLE)
+							{
+								System.Console.WriteLine("Hdf datatype is NATIVE DOUBLE");
+							}
+							else if (swbf.getTimeHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.FLOAT)
+							{
+								System.Console.WriteLine("Hdf datatype is NATIVE FLOAT");
+							}
+							else if (swbf.getTimeHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.UNKNOWN)
+							{
+								System.Console.WriteLine("Hdf datatype is UNKNOWN");
+							}
 						}
                     }
                 }

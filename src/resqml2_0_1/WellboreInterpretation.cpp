@@ -18,20 +18,21 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreInterpretation.h"
 
-#include "WellboreFeature.h"
-#include "WellboreTrajectoryRepresentation.h"
+#include "../resqml2/WellboreFeature.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* WellboreInterpretation::XML_TAG = "WellboreInterpretation";
-
 const char* WellboreInterpretation::XML_NS = "resqml20";
 
-WellboreInterpretation::WellboreInterpretation(WellboreFeature * WellboreFeature, const string & guid, const string & title, bool isDrilled)
+WellboreInterpretation::WellboreInterpretation(RESQML2_NS::WellboreFeature * wellboreFeature, const string & guid, const string & title, bool isDrilled)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreInterpretation(WellboreFeature->getGsoapContext());
+	if (wellboreFeature == nullptr) {
+		throw invalid_argument("The interpreted wellbore cannot be null.");
+	}
+
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreInterpretation(wellboreFeature->getGsoapContext());
 	_resqml20__WellboreInterpretation* wbInterp = static_cast<_resqml20__WellboreInterpretation*>(gsoapProxy2_0_1);
 	wbInterp->Domain = resqml20__Domain__mixed;
 
@@ -40,15 +41,10 @@ WellboreInterpretation::WellboreInterpretation(WellboreFeature * WellboreFeature
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	setInterpretedFeature(WellboreFeature);
+	setInterpretedFeature(wellboreFeature);
 }
 
 bool WellboreInterpretation::isDrilled() const
 {
 	return static_cast<_resqml20__WellboreInterpretation*>(gsoapProxy2_0_1)->IsDrilled;
-}
-
-std::vector<WellboreTrajectoryRepresentation*> WellboreInterpretation::getWellboreTrajectoryRepresentationSet() const
-{
-	return getRepository()->getSourceObjects<WellboreTrajectoryRepresentation>(this);
 }

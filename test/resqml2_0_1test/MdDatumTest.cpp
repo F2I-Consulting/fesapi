@@ -24,8 +24,8 @@ under the License.
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 
 #include "common/EpcDocument.h"
-#include "resqml2_0_1/WellboreFeature.h"
-#include "resqml2_0_1/LocalDepth3dCrs.h"
+#include "resqml2/WellboreFeature.h"
+#include "resqml2/LocalDepth3dCrs.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
@@ -49,12 +49,12 @@ MdDatumTest::MdDatumTest(DataObjectRepository* repo, bool init)
 
 void MdDatumTest::initRepoHandler() {
 	LocalDepth3dCrsTest * crsTest = new LocalDepth3dCrsTest(this->repo, true);
-	RESQML2_0_1_NS::LocalDepth3dCrs * crs = static_cast<RESQML2_0_1_NS::LocalDepth3dCrs *>(this->repo->getDataObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
+	RESQML2_NS::LocalDepth3dCrs * crs = static_cast<RESQML2_NS::LocalDepth3dCrs *>(this->repo->getDataObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
 
 	// cleaning
 	delete crsTest;
 
-	MdDatum* mdDatum = repo->createMdDatum(defaultUuid, defaultTitle, crs, gsoap_resqml2_0_1::resqml20__MdReference__mean_x0020sea_x0020level, 275, 75, 0);
+	MdDatum* mdDatum = repo->createMdDatum(defaultUuid, defaultTitle, crs, gsoap_eml2_3::eml23__WellboreDatumReference__mean_x0020sea_x0020level, 275, 75, 0);
 	REQUIRE(mdDatum != nullptr);
 }
 

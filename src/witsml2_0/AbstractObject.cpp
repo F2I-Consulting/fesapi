@@ -26,3 +26,8 @@ std::string AbstractObject::getContentType() const
 {
 	return "application/x-witsml+xml;version=2.0;type=" + getXmlTag();
 }
+
+std::string AbstractObject::getPartNameInEpcDocument() const
+{
+	return "namespace_witsml20/" + getXmlTag() + "_" + getUuid() + ".xml";
+}

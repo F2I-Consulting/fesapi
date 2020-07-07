@@ -21,9 +21,9 @@ under the License.
 #include "catch.hpp"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 
-#include "common/AbstractHdfProxy.h"
-#include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "resqml2_0_1/IjkGridExplicitRepresentation.h"
+#include "eml2/AbstractHdfProxy.h"
+#include "resqml2/LocalDepth3dCrs.h"
+#include "resqml2/IjkGridExplicitRepresentation.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -49,11 +49,11 @@ CompressedIjkGridExplicitRepresentationTest::CompressedIjkGridExplicitRepresenta
 
 void CompressedIjkGridExplicitRepresentationTest::initRepoHandler() {
 	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
+	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 	hdfProxy->setCompressionLevel(6);
 
 	// creating the ijk grid
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 2, 1, 1);
+	RESQML2_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 2, 1, 1);
 	REQUIRE( ijkGrid != nullptr );
 	unsigned int pillarOfCoordinateLine[2] = {1,4};
 	unsigned int splitCoordinateLineColumnCumulativeCount[2] = {1,2};
@@ -64,7 +64,7 @@ void CompressedIjkGridExplicitRepresentationTest::initRepoHandler() {
 
 void CompressedIjkGridExplicitRepresentationTest::readRepoHandler() {
 	// checking number of points in the geometry
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* representation = repo->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>(defaultUuid);
+	RESQML2_NS::AbstractIjkGridRepresentation* representation = repo->getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>(defaultUuid);
 	REQUIRE(representation->getXyzPointCountOfAllPatches() == nodesCountIjkGridRepresentation);
 	REQUIRE(representation->isNodeGeometryCompressed());
 

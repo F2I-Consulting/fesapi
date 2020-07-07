@@ -18,12 +18,54 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
+/** @namespace	${FESAPI_COMMON_NS} @brief The ${FESAPI_COMMON_NS} namespace. This namespace contains classes that are common to different Energistics data models and classes that handle the EPC document (EpcDocument) and the data object repository (DataObjectRepository) as well. These two last classes are starting points to write or read an EPC document contaning some data objects. */
 #define COMMON_NS ${FESAPI_COMMON_NS}
+
+/** @namespace	${FESAPI_RESQML2_NS} @brief The ${FESAPI_RESQML2_NS} namespace. This namespaces contains classes to handle data objects that exist in both RESQML v2.0.1 and RESQML v2.2. The classes of this namespace should be favored, when possible, instead of the classes of the namespace ${FESAPI_RESQML2_0_1_NS} and ${FESAPI_RESQML2_2_NS}. */
 #define RESQML2_NS ${FESAPI_RESQML2_NS}
+
+/** @namespace	${FESAPI_RESQML2_0_1_NS} @brief The ${FESAPI_RESQML2_0_1_NS} namespace. */
 #define RESQML2_0_1_NS ${FESAPI_RESQML2_0_1_NS}
+
+/** @namespace	${FESAPI_RESQML2_2_NS} @brief The ${FESAPI_RESQML2_2_NS} namespace. */
 #define RESQML2_2_NS ${FESAPI_RESQML2_2_NS}
+
+/** @namespace	${FESAPI_WITSML2_NS} @brief The ${FESAPI_WITSML2_NS} namespace.  This namespaces contains classes to handle data objects that exist in various WITSML v2.*. The classes of this namespace should be favored, when possible, instead of the classes of the lower level namespaces. */
 #define WITSML2_NS ${FESAPI_WITSML2_NS}
+
+/** @namespace	${FESAPI_WITSML2_0_NS} @brief The ${FESAPI_WITSML2_0_NS} namespace. */
 #define WITSML2_0_NS ${FESAPI_WITSML2_0_NS}
+
+/** @namespace	${FESAPI_WITSML2_1_NS} @brief The ${FESAPI_WITSML2_1_NS} namespace. */
 #define WITSML2_1_NS ${FESAPI_WITSML2_1_NS}
+
+/** @namespace	${FESAPI_PRODML2_1_NS} @brief The ${FESAPI_PRODML2_1_NS} namespace. */
 #define PRODML2_1_NS ${FESAPI_PRODML2_1_NS}
+
+/** @namespace	${FESAPI_EML2_NS} @brief The ${FESAPI_EML2_NS} namespace.  This namespaces contains classes to handle data objects that exist in various EML v2.*. The classes of this namespace should be favored, when possible, instead of the classes of the namespace ${FESAPI_EML2_0_NS}, ${FESAPI_EML2_1_NS}, ${FESAPI_EML2_2_NS} and ${FESAPI_EML2_3_NS}. */
+#define EML2_NS ${FESAPI_EML2_NS}
+
+/** @namespace	${FESAPI_EML2_0_NS} @brief The ${FESAPI_EML2_0_NS} namespace. */
+#define EML2_0_NS ${FESAPI_EML2_0_NS}
+
+/** @namespace	${FESAPI_EML2_1_NS} @brief The ${FESAPI_EML2_1_NS} namespace. */
+#define EML2_1_NS ${FESAPI_EML2_1_NS}
+
+/** @namespace	${FESAPI_EML2_2_NS} @brief The ${FESAPI_EML2_2_NS} namespace. */
+#define EML2_2_NS ${FESAPI_EML2_2_NS}
+
+/** @namespace	${FESAPI_EML2_3_NS} @brief The ${FESAPI_EML2_3_NS} namespace. */
+#define EML2_3_NS ${FESAPI_EML2_3_NS}
+
+/** @namespace	${FESAPI_ETP_NS} @brief The ${FESAPI_ETP_NS} namespace. */
 #define ETP_NS ${FESAPI_ETP_NS}
+
+/** @namespace	epc @brief The epc namespace. */
+
+/** @namespace	GuidTools @brief The GuidTools namespace. */
+
+/** @namespace	statistics @brief The statistics namespace. */
+
+/** @namespace	timeTools @brief The timeTools namespace. */
+
+/** @namespace	trigonometry @brief The trigonometry namespace. */

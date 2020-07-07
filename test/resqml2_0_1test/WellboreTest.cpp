@@ -22,12 +22,12 @@ under the License.
 
 #include "catch.hpp"
 #include "common/EpcDocument.h"
-#include "resqml2_0_1/WellboreFeature.h"
+#include "resqml2/WellboreFeature.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 
 const char* WellboreTest::defaultUuid = "9058a950-35c7-44e6-9671-0f1ba13118cf";
 const char* WellboreTest::defaultTitle = "Wellbore Test";

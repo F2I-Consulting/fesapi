@@ -22,8 +22,6 @@ under the License.
 
 #include "../prodml2_1/FluidCharacterization.h"
 
-#include "../tools/Misc.h"
-
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
@@ -82,13 +80,13 @@ void RockFluidUnitFeature::loadTargetRelationships()
 
 	_resqml20__RockFluidUnitFeature* interp = static_cast<_resqml20__RockFluidUnitFeature*>(gsoapProxy2_0_1);
 
-	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = interp->FluidBoundaryTop;
-	if(dor != nullptr) {
+	COMMON_NS::DataObjectReference dor(interp->FluidBoundaryTop);
+	if(!dor.isEmpty()) {
 		convertDorIntoRel<BoundaryFeature>(dor);
 	}
 
-	dor = interp->FluidBoundaryBottom;
-	if(dor != nullptr) {
+	dor = COMMON_NS::DataObjectReference(interp->FluidBoundaryBottom);
+	if(!dor.isEmpty()) {
 		convertDorIntoRel<BoundaryFeature>(dor);
 	}
 }

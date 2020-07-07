@@ -30,7 +30,9 @@ namespace resqml2_0_1test {
 	public:
 
 		static const char* defaultUuid;
+		static const char* exoticUuid;
 		static const char* defaultTitle;
+		static const char* exoticTitle;
 
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,

@@ -18,168 +18,126 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/AbstractRepresentation.h"
+#include "../resqml2/PolylineSetRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
-	class PolylineSetRepresentation : public RESQML2_NS::AbstractRepresentation
+	/** A polyline set representation. */
+	class PolylineSetRepresentation final : public RESQML2_NS::PolylineSetRepresentation
 	{
-	private :
-		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
-		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
-
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
-		DLL_IMPORT_OR_EXPORT PolylineSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
-		
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * 
+		 */
+		DLL_IMPORT_OR_EXPORT PolylineSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::PolylineSetRepresentation(partialObject) {}
+
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param guid							The guid to set to the new instance. If empty then a new guid will be generated.
-		* @param title							A title for the instance to create.
-		*/
+		 * Creates an instance of this class in a gsoap context.
+		 *
+		 * @param [in,out]	repo 	If non-null, the repo.
+		 * @param 		  	guid 	The guid to set to the new instance. If empty then a new guid will be
+		 * 							generated.
+		 * @param 		  	title	A title for the instance to create.
+		 */
 		PolylineSetRepresentation(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
 
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param interp							The interpretation this representation represents.
-		* @param guid							The guid to set to the new instance. If empty then a new guid will be generated.
-		* @param title							A title for the instance to create.
-		*/
+		 * @brief	Creates an instance of this class in a gsoap context.
+		 *
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
+		 *
+		 * @param [in]	interp	The interpretation this representation represents.
+		 * @param 	  	guid  	The guid to set to the new instance. If empty then a new guid will be
+		 * 						generated.
+		 * @param 	  	title 	A title for the instance to create.
+		 */
 		PolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param interp							The interpretation this representation represents.
-		* @param guid							The guid to set to the new instance. If empty then a new guid will be generated.
-		* @param title							A title for the instance to create.
-		* @param roleKind						Indicates the role of this representation.
-		*/
+		 * @brief	Creates an instance of this class in a gsoap context.
+		 *
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
+		 * @exception	std::invalid_argument	If @p roleKind is a break line role.
+		 *
+		 * @param [in]	interp  	The interpretation this representation represents.
+		 * @param 	  	guid		The guid to set to the new instance. If empty then a new guid will be
+		 * 							generated.
+		 * @param 	  	title   	A title for the instance to create.
+		 * @param 	  	roleKind	Indicates the role of this representation.
+		 */
 		PolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-			const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__LineRole roleKind);
+			const std::string & guid, const std::string & title, gsoap_eml2_3::resqml22__LineRole roleKind);
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		PolylineSetRepresentation(gsoap_resqml2_0_1::_resqml20__PolylineSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		PolylineSetRepresentation(gsoap_resqml2_0_1::_resqml20__PolylineSetRepresentation* fromGsoap) : RESQML2_NS::PolylineSetRepresentation(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~PolylineSetRepresentation() {}
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
-		/**
-		* Get the number of polylines in a given patch
-		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getPolylineCountOfPatch(const unsigned int & patchIndex) const;
-		DLL_IMPORT_OR_EXPORT unsigned int getPolylineCountOfAllPatches() const;
-
-		DLL_IMPORT_OR_EXPORT void getNodeCountPerPolylineInPatch(unsigned int patchIndex, unsigned int * nodeCountPerPolyline) const;
-
-		/**
-		 * Get all the node count par polyline for all teh aptches of the representation.
-		 * @param NodeCountPerPolyline It must be pre-allocated.
-		 */
-		DLL_IMPORT_OR_EXPORT void getNodeCountPerPolylineOfAllPatches(unsigned int * NodeCountPerPolyline) const;
-
-		/**
-		* Get the xyz point count in a given patch.
-		*/
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
-
-		/**
-		* Get all the XYZ points of a particular patch of this representation.
-		* XYZ points are given in the local CRS.
-		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
-		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
-
-		/**
-		 * Get the number of triangle patch
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const;
-
-		/**
-		* Push back a new patch of polylines
-		* @param NodeCountPerPolyline	The node count per polyline in this patch. There must be polylineCount values in this array.
-		* @param nodes					The XYZ values of the nodes. Ordered by XYZ and then by NodeCount. It must be three times NodeCount.
-		* @param polylineCount			The polyline count in this patch.
-		* @param allPolylinesClosedFlag	Indicates the closed flags of all the polylines.
-		* @param proxy					The HDF proxy which defines where the nodes and triangle indices will be stored.
-		*/
-		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
-			unsigned int * nodeCountPerPolyline, double * nodes,
-			unsigned int polylineCount, bool allPolylinesClosedFlag,
-			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
-
-		/**
-		* Push back a new patch of polylines
-		* @param NodeCountPerPolyline	The node count per polyline in this patch. There must be polylineCount values in this array.
-		* @param nodes					The XYZ values of the nodes. Ordered by XYZ and then by NodeCount. It must be three times NodeCount.
-		* @param polylineCount			The polyline count in this patch.
-		* @param polylineClosedFlags	Indicates the closed flags for each of the polyline. The count of this array must be polylineCount.
-		* @param proxy					The HDF proxy which defines where the nodes and triangle indices will be stored.
-		*/
-		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
-			unsigned int * nodeCountPerPolyline, double * nodes,
-			unsigned int polylineCount, bool * polylineClosedFlags,
-			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
-
-		/**
-		* Check if all polylines contained in a single patch are closed or not.
-		* Notice that a returned "false" does not mean they are all not closed. Indeed they can be mixed i.e. some closed and some not.
-		* @param patchIndex	The index of the patch to check.
-		* @return			True if all polylines of the studied patch are closed.
-		*/
-		DLL_IMPORT_OR_EXPORT bool areAllPolylinesClosedOfPatch(unsigned int patchIndex) const;
-		DLL_IMPORT_OR_EXPORT bool areAllPolylinesClosedOfAllPatches() const;
-
-		/**
-		* Check if all polylines contained in a single patch are closed or not.
-		* Notice that a returned "false" does not mean they are all closed. Indeed they can be mixed i.e. some closed and some not.
-		* @param patchIndex	The index of the patch to check.
-		* @return			True if all polylines of the studied patch are not closed.
-		*/
-		DLL_IMPORT_OR_EXPORT bool areAllPolylinesNonClosedOfPatch(unsigned int patchIndex) const;
-		DLL_IMPORT_OR_EXPORT bool areAllPolylinesNonClosedOfAllPatches() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getPolylineCountOfPatch(unsigned int patchIndex) const final;
 		
+		DLL_IMPORT_OR_EXPORT unsigned int getPolylineCountOfAllPatches() const final;
+
+		DLL_IMPORT_OR_EXPORT void getNodeCountPerPolylineInPatch(unsigned int patchIndex, unsigned int * nodeCountPerPolyline) const final;
+
+		DLL_IMPORT_OR_EXPORT void getNodeCountPerPolylineOfAllPatches(unsigned int * NodeCountPerPolyline) const final;
+
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
+
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
+
+		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
+			unsigned int const * nodeCountPerPolyline, double const * nodes,
+			unsigned int polylineCount, bool allPolylinesClosedFlag,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+
+		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
+			unsigned int const * nodeCountPerPolyline, double const * nodes,
+			unsigned int polylineCount, bool * polylineClosedFlags,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+
+		DLL_IMPORT_OR_EXPORT bool areAllPolylinesClosedOfPatch(unsigned int patchIndex) const final;
+
+		DLL_IMPORT_OR_EXPORT bool areAllPolylinesClosedOfAllPatches() const final;
+
+		DLL_IMPORT_OR_EXPORT bool areAllPolylinesNonClosedOfPatch(unsigned int patchIndex) const final;
+
+		DLL_IMPORT_OR_EXPORT bool areAllPolylinesNonClosedOfAllPatches() const final;
+
+		DLL_IMPORT_OR_EXPORT void getClosedFlagPerPolylineOfPatch(unsigned int patchIndex, bool * closedFlagPerPolyline) const final;
+
+		DLL_IMPORT_OR_EXPORT void getClosedFlagPerPolylineOfAllPatches(bool * closedFlagPerPolyline) const final;
+
+		DLL_IMPORT_OR_EXPORT bool hasALineRole() const final;
+
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__LineRole getLineRole() const final;
+
+		DLL_IMPORT_OR_EXPORT void setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole) final;
+
+	private:
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const final;
+
 		/**
-		 * Get all the node count par polyline for all teh aptches of the representation.
-		 * @param NodeCountPerPolyline It must be pre-allocated.
+		 * Initializes this object
+		 *
+		 * @param [in,out]	repo 	If non-null, the repo.
+		 * @param 		  	guid 	Unique identifier.
+		 * @param 		  	title	The title.
 		 */
-		DLL_IMPORT_OR_EXPORT void getClosedFlagPerPolylineOfPatch(unsigned int patchIndex, bool * closedFlagPerPolyline) const;
-		DLL_IMPORT_OR_EXPORT void getClosedFlagPerPolylineOfAllPatches(bool * closedFlagPerPolyline) const;
+		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
 
-		/**
-		* Indicates if the polylineSet is associated to a particular LineRole.
-		*/
-		DLL_IMPORT_OR_EXPORT bool hasALineRole() const;
-
-		/**
-		* Get the role of this polylineSet.
-		* Throw an exception if the polylineSet has no role (see method hasALineRole).
-		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__LineRole getLineRole() const;
-
-		/**
-		* Set the line role of this instance
-		*/
-		DLL_IMPORT_OR_EXPORT void setLineRole(gsoap_resqml2_0_1::resqml20__LineRole lineRole);
-
-		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 		/**
 		* The standard XML namespace for serializing this data object.

@@ -25,9 +25,9 @@ under the License.
 
 #include "catch.hpp"
 #include "common/EpcDocument.h"
-#include "resqml2_0_1/WellboreInterpretation.h"
+#include "resqml2/WellboreInterpretation.h"
 #include "resqml2/MdDatum.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
+#include "resqml2/WellboreTrajectoryRepresentation.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
@@ -54,11 +54,11 @@ void WellboreTrajectoryRepresentationTest::initRepoHandler() {
 	WellboreInterpretationTest interpTest(repo, true);
 	MdDatumTest mdDatumTest(repo, true);
 
-	RESQML2_0_1_NS::WellboreInterpretation* interp = static_cast<RESQML2_0_1_NS::WellboreInterpretation*>(repo->getDataObjectByUuid(WellboreInterpretationTest::defaultUuid));
+	RESQML2_NS::WellboreInterpretation* interp = static_cast<RESQML2_NS::WellboreInterpretation*>(repo->getDataObjectByUuid(WellboreInterpretationTest::defaultUuid));
 	MdDatum* mdDatum = static_cast<MdDatum*>(repo->getDataObjectByUuid(MdDatumTest::defaultUuid));
 
 	// creating the representation
-	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* rep = repo->createWellboreTrajectoryRepresentation(interp, defaultUuid, defaultTitle, mdDatum);
+	RESQML2_NS::WellboreTrajectoryRepresentation* rep = repo->createWellboreTrajectoryRepresentation(interp, defaultUuid, defaultTitle, mdDatum);
 	double controlPoints[12] = { 275, 75, 0, 275, 75, 325, 275, 75, 500, 275, 75, 1000 };
 	double trajectoryTangentVectors[12] = { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1 };
 	double trajectoryMds[4] = { 0, 325, 500, 1000 };
@@ -67,9 +67,9 @@ void WellboreTrajectoryRepresentationTest::initRepoHandler() {
 
 void WellboreTrajectoryRepresentationTest::readRepoHandler() {
 	// getting the TimeSeries
-	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj = static_cast<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*>(repo->getDataObjectByUuid(defaultUuid));
+	RESQML2_NS::WellboreTrajectoryRepresentation* traj = static_cast<RESQML2_NS::WellboreTrajectoryRepresentation*>(repo->getDataObjectByUuid(defaultUuid));
 
-	REQUIRE(traj->getMdDatumUuid() == MdDatumTest::defaultUuid);
+	REQUIRE(traj->getMdDatumDor().getUuid() == MdDatumTest::defaultUuid);
 	REQUIRE(traj->getXyzPointCountOfAllPatches() == 4);
 	REQUIRE(traj->getGeometryKind() == 0);
 	double trajectoryMds[4];

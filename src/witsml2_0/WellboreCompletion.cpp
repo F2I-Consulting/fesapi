@@ -53,19 +53,19 @@ WellboreCompletion::WellboreCompletion(Wellbore* witsmlWellbore,
 	setWellCompletion(wellCompletion);
 }
 
-gsoap_eml2_1::eml21__DataObjectReference* WellboreCompletion::getWellboreDor() const
+COMMON_NS::DataObjectReference WellboreCompletion::getWellboreDor() const
 {
-	return static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1)->ReferenceWellbore;
+	return COMMON_NS::DataObjectReference(static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1)->ReferenceWellbore);
 }
 
-gsoap_eml2_1::eml21__DataObjectReference* WellboreCompletion::getWellCompletionDor() const
+COMMON_NS::DataObjectReference WellboreCompletion::getWellCompletionDor() const
 {
-	return static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1)->WellCompletion;
+	return COMMON_NS::DataObjectReference(static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1)->WellCompletion);
 }
 
 class WellCompletion* WellboreCompletion::getWellCompletion() const
 {
-	return getRepository()->getDataObjectByUuid<WellCompletion>(getWellCompletionDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<WellCompletion>(getWellCompletionDor().getUuid());
 }
 
 void WellboreCompletion::setWellbore(Wellbore* witsmlWellbore)

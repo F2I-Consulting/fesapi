@@ -23,10 +23,10 @@ under the License.
 #include "resqml2_0_1test/WellboreInterpretationTest.h"
 #include "resqml2_0_1test/WellboreTrajectoryRepresentationTest.h"
 
-#include "resqml2_0_1/WellboreInterpretation.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
+#include "resqml2/WellboreInterpretation.h"
+#include "resqml2/WellboreTrajectoryRepresentation.h"
 #include "resqml2/WellboreFrameRepresentation.h"
-#include "common/AbstractHdfProxy.h"
+#include "eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -47,19 +47,15 @@ void WellboreRegularFrameRepresentationTest::initRepoHandler() {
 	// creating dependencies
 	resqml2_0_1test::WellboreTrajectoryRepresentationTest trajTest(repo, true);
 
-	RESQML2_0_1_NS::WellboreInterpretation * interp = repo->getDataObjectByUuid<RESQML2_0_1_NS::WellboreInterpretation>(resqml2_0_1test::WellboreInterpretationTest::defaultUuid);
-	RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj = repo->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(resqml2_0_1test::WellboreTrajectoryRepresentationTest::defaultUuid);
+	RESQML2_NS::WellboreInterpretation * interp = repo->getDataObjectByUuid<RESQML2_NS::WellboreInterpretation>(resqml2_0_1test::WellboreInterpretationTest::defaultUuid);
+	RESQML2_NS::WellboreTrajectoryRepresentation * traj = repo->getDataObjectByUuid<RESQML2_NS::WellboreTrajectoryRepresentation>(resqml2_0_1test::WellboreTrajectoryRepresentationTest::defaultUuid);
 
 	// getting the hdf proxy
-	COMMON_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
+	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 	REQUIRE(hdfProxy != nullptr);
 
 	// WellboreFeature frame
-#if WITH_EXPERIMENTAL
-	RESQML2_NS::WellboreFrameRepresentation* w1i1FrameRep = repo->createWellboreFrameRepresentation(interp, defaultUuid, defaultTitle, traj, true);
-#else
 	RESQML2_NS::WellboreFrameRepresentation* w1i1FrameRep = repo->createWellboreFrameRepresentation(interp, defaultUuid, defaultTitle, traj);
-#endif
 	w1i1FrameRep->setMdValues(0, 200, 6);
 }
 

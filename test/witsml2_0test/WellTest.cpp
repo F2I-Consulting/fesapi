@@ -49,7 +49,7 @@ void WellTest::initRepoHandler() {
 	well->setBlock("my Block");
 	// No county
 	well->setDTimLicense(defaultTimestamp);
-	well->setGroundElevation(10, gsoap_eml2_1::eml21__LengthUom__m);
+	well->setGroundElevation(10, gsoap_eml2_1::eml21__LengthUom__m, "MSL");
 	REQUIRE_THROWS(well->setTimeZone(true, 24));
 	REQUIRE_THROWS(well->setTimeZone(true, 22, 65));
 	well->setTimeZone(true, 0); // time zone == 'Z'
@@ -65,6 +65,7 @@ void WellTest::readRepoHandler() {
 	REQUIRE(well->getDTimLicense() == defaultTimestamp);
 	REQUIRE(well->getGroundElevationValue() == 10);
 	REQUIRE(well->getGroundElevationUom() == gsoap_eml2_1::eml21__LengthUom__m);
+	REQUIRE(well->getGroundElevationDatum() == "MSL");
 	REQUIRE(well->getTimeZoneDirection() == true);
 	REQUIRE(well->getTimeZoneHours() == 0);
 	REQUIRE(well->getTimeZoneMinutes() == 0);

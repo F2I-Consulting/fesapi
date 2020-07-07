@@ -22,35 +22,63 @@ under the License.
 
 namespace WITSML2_0_NS
 {
-	/**
-	* Primarily a container for one or more channel sets (ChannelSet).
-	*/
+	/** Primarily a container for one or more channel sets (ChannelSet). */
 	class Log : public ChannelMetaDataObject<gsoap_eml2_1::witsml20__Log>
 	{
 	public:
+
 		/**
-		* Constructor for partial transfer
-		*/
+		 * Constructor for partial transfer
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * 
+		 */
 		DLL_IMPORT_OR_EXPORT Log(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : ChannelMetaDataObject(partialObject) {}
 
+		/**
+		 * @brief	Constructor
+		 *
+		 * @exception	std::invalid_argument	If <tt>witsmlWellbore == nullptr</tt>.
+		 *
+		 * @param [in]	witsmlWellbore	If non-null, the witsml wellbore.
+		 * @param 	  	guid		  	Unique identifier.
+		 * @param 	  	title		  	The title.
+		 */
 		Log(class Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title);
-	
+
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		Log(gsoap_eml2_1::witsml20__Log* fromGsoap) : ChannelMetaDataObject(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~Log() {}
 
+		/**
+		 * Pushes a back channel set
+		 *
+		 * @param [in,out]	channelSet	If non-null, set the channel belongs to.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackChannelSet(class ChannelSet * channelSet);
 
+		/**
+		 * Gets channel sets
+		 *
+		 * @returns	Null if it fails, else the channel sets.
+		 */
 		DLL_IMPORT_OR_EXPORT std::vector<class ChannelSet*> getChannelSets() const;
 
+/**
+ * A macro that defines setter generic optional attribute
+ *
+ * @param 	attributeDatatype	The attribute datatype.
+ * @param 	attributeName	 	Name of the attribute.
+ */
 #define SETTER_GENERIC_OPTIONAL_ATTRIBUTE(attributeDatatype, attributeName)\
 		DLL_IMPORT_OR_EXPORT void set##attributeName(const attributeDatatype & attributeName);
 
@@ -63,15 +91,20 @@ namespace WITSML2_0_NS
 		SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, ToolClass)
 
 		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * The standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
+		/** Loads target relationships */
 		void loadTargetRelationships();
 	};
 }

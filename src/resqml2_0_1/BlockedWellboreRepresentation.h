@@ -18,106 +18,72 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "WellboreFrameRepresentation.h"
-
-namespace RESQML2_NS
-{
-	class AbstractGridRepresentation;
-}
+#include "../resqml2/BlockedWellboreRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
-	class BlockedWellboreRepresentation : public WellboreFrameRepresentation
+	/** A blocked wellbore representation. */
+	class BlockedWellboreRepresentation final : public RESQML2_NS::BlockedWellboreRepresentation
 	{
-	private:
-		void init(const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation * traj);
-
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
-		DLL_IMPORT_OR_EXPORT BlockedWellboreRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WellboreFrameRepresentation(partialObject) {}
-
-		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param interp	The interpretation the instance represents.
-		* @param guid	A guid for the instance to create.
-        * @param title	A title for the instance to create.
-        * @param traj	The wellbore trajectory this intance is based on.
-		*/
-		BlockedWellboreRepresentation(class WellboreInterpretation * interp,
-			const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation * traj);
-
-		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		BlockedWellboreRepresentation(gsoap_resqml2_0_1::_resqml20__BlockedWellboreRepresentation* fromGsoap) : WellboreFrameRepresentation(fromGsoap) {}
-
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
-		~BlockedWellboreRepresentation() {}
-	
-		/**
-		* Set all information about the intersected grid cells. You must first provide MD values of the frame before to use this method.
-		* @param gridIndices							Size of array = IntervalCount on the wellbore frame rep. BUSINESS RULE: The cell count must equal the number of non-null entries in this array. The grids (and there indices) are defined using pushBackSupportingGridRepresentation method.
-		* @param gridIndicesNullValue					The null value used in gridIndices in order to indicate that an interval deos not correspond to any intersected grid.
-		* @param cellCount								The number of non-null entries in the grid indices array.
-		* @param cellIndices							The intersected cell index for each non null gridIndices. They are ordered according to non null gridIndices. Array length must equal cell count.
-		* @param localFacePairPerCellIndices			For each cell, these are the entry and exit intersection faces of the trajectory in the cell. The array dimensions must equal 2 x CellCount.
-		* @param localFacePairPerCellIndicesNullValue	The null value used in localFacePerCellIndices in order to indicate that it corresponds to a missing intersection, e.g., when a trajectory originates or terminates within a cell.
-		* @param hdfProxy								The hdf proxy where the numerical values will be stored.
-		*/
-		DLL_IMPORT_OR_EXPORT void setIntevalGridCells(unsigned int * gridIndices, unsigned int gridIndicesNullValue, unsigned int cellCount, ULONG64* cellIndices, unsigned char* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, COMMON_NS::AbstractHdfProxy * hdfProxy);
-
-		/**
-		* The number of non-null entries in the grid indices array.
-		*/
-		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const;
-
-		/**
-		* Size of array = IntervalCount on the wellbore frame rep. The grids (and there indices) are defined using pushBackSupportingGridRepresentation method.
-		* @return nullValue
-		*/
-		DLL_IMPORT_OR_EXPORT LONG64 getGridIndices(unsigned int * gridIndices) const;
-
-		/**
-		 * Pushes back a grid representation which is one of the support of this representation.
-		 * And push back this representation as a grid connection information of the grid representation as well.
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * 
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep);
-		
-		/**
-		* Get the count of the supporting grid representations of this grid connection representation.
-		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getSupportingGridRepresentationCount() const;
+		DLL_IMPORT_OR_EXPORT BlockedWellboreRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::BlockedWellboreRepresentation(partialObject) {}
 
 		/**
-		* Get the supporting grid representation located at a specific index of this blocked wellbore representation.
-		*/
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index) const;
+		 * @brief	Creates an instance of this class in a gsoap context.
+		 *
+		 * @exception	std::invalid_argument	If <tt>traj == nullptr</tt>.
+		 *
+		 * @param [in]	interp	The interpretation the instance represents.
+		 * @param 	  	guid  	A guid for the instance to create.
+		 * @param 	  	title 	A title for the instance to create.
+		 * @param [in]	traj  	The wellbore trajectory this intance is based on.
+		 */
+		BlockedWellboreRepresentation(RESQML2_NS::WellboreInterpretation * interp,
+			const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj);
 
 		/**
-		* Get the supporting grid representation dor located at a specific index of this blocked wellbore representation.
-		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getSupportingGridRepresentationDor(unsigned int index) const;
-		
-		/**
-		* Get the supporting grid representation uuid located at a specific index of this blocked wellbore representation.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getSupportingGridRepresentationUuid(unsigned int index) const;
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		BlockedWellboreRepresentation(gsoap_resqml2_0_1::_resqml20__BlockedWellboreRepresentation* fromGsoap) : RESQML2_NS::BlockedWellboreRepresentation(fromGsoap) {}
 
-		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		~BlockedWellboreRepresentation() {}
 
-		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT void setIntevalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
+			unsigned int cellCount, ULONG64 const* cellIndices,
+			unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy) final;
+
+		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const final;
+
+		DLL_IMPORT_OR_EXPORT LONG64 getGridIndices(unsigned int * gridIndices) const final;
+
+		DLL_IMPORT_OR_EXPORT void pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep) final;
+
+		DLL_IMPORT_OR_EXPORT unsigned int getSupportingGridRepresentationCount() const final;
+
+		COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const final;
 
 		void loadTargetRelationships();
+
+	private:
+
+		/**
+		 * Initializes this object
+		 *
+		 * @param 		  	guid 	Unique identifier.
+		 * @param 		  	title	The title.
+		 * @param [in,out]	traj 	If non-null, the traj.
+		 */
+		void init(const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj);
 	};
 }

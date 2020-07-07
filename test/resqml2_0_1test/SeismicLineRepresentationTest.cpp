@@ -19,16 +19,15 @@ under the License.
 #include "resqml2_0_1test/SeismicLineRepresentationTest.h"
 #include "../catch.hpp"
 #include "resqml2_0_1/SeismicLineFeature.h"
-#include "resqml2_0_1/GenericFeatureInterpretation.h"
-#include "resqml2_0_1/PolylineRepresentation.h"
-#include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "common/AbstractHdfProxy.h"
+#include "resqml2/GenericFeatureInterpretation.h"
+#include "resqml2/PolylineRepresentation.h"
+#include "resqml2/LocalDepth3dCrs.h"
+#include "eml2/AbstractHdfProxy.h"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
 
 const char* SeismicLineRepresentationTest::defaultUuidFeatureSet = "4b463e9b-0369-40e7-a3c0-0f0d4b228a21";
 const char* SeismicLineRepresentationTest::defaultTitleFeatureSet = "Seismic Line Set Feature";
@@ -55,13 +54,13 @@ SeismicLineRepresentationTest::SeismicLineRepresentationTest(DataObjectRepositor
 
 void SeismicLineRepresentationTest::initRepoHandler()
 {
-	SeismicLineSetFeature* seismicLineSet = repo->createSeismicLineSet(defaultUuidFeatureSet, defaultTitleFeatureSet);
+	RESQML2_NS::SeismicLineSetFeature* seismicLineSet = repo->createSeismicLineSet(defaultUuidFeatureSet, defaultTitleFeatureSet);
 
 	// Seismic Line
-	SeismicLineFeature* seismicLine = repo->createSeismicLine(defaultUuidFeature, defaultTitleFeature, 1, 0, 5);
+	RESQML2_0_1_NS::SeismicLineFeature* seismicLine = repo->createSeismicLine(defaultUuidFeature, defaultTitleFeature, 1, 0, 5);
 	seismicLine->setSeismicLineSet(seismicLineSet);
-	GenericFeatureInterpretation* seismicLineInterp = repo->createGenericFeatureInterpretation(seismicLine, defaultUuidInterp, defaultTitleInterp);
-	PolylineRepresentation* seismicLineRep = repo->createPolylineRepresentation(seismicLineInterp, defaultUuid, defaultTitle);
+	RESQML2_NS::GenericFeatureInterpretation* seismicLineInterp = repo->createGenericFeatureInterpretation(seismicLine, defaultUuidInterp, defaultTitleInterp);
+	RESQML2_NS::PolylineRepresentation* seismicLineRep = repo->createPolylineRepresentation(seismicLineInterp, defaultUuid, defaultTitle);
 	double seismicLinePoints[15] = { 0, 100, 0, 150, 110, 0, 300, 120, 0, 450, 130, 0, 600, 140, 0 };
 	seismicLineRep->setGeometry(seismicLinePoints, 5, nullptr);
 }
@@ -75,7 +74,7 @@ void SeismicLineRepresentationTest::readRepoHandler()
 	REQUIRE(feature->getTraceIndexIncrement() == 1);
 
 	// Grid 2D
-	RESQML2_0_1_NS::PolylineRepresentation* rep = repo->getDataObjectByUuid<RESQML2_0_1_NS::PolylineRepresentation>(defaultUuid);
+	RESQML2_NS::PolylineRepresentation* rep = repo->getDataObjectByUuid<RESQML2_NS::PolylineRepresentation>(defaultUuid);
 	REQUIRE(rep->getSeismicSupportOfPatch(0) == nullptr);
 	REQUIRE(rep->getXyzPointCountOfAllPatches() == 5);
 }

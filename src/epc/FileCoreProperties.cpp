@@ -138,10 +138,10 @@ std::string FileCoreProperties::toString() const
 	oss << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" << endl;
 
 	// content
-	for (unsigned int i = 0; i < CoreProperty::undefinedCoreProperty; i++)
-	{
-		if (!properties[i].isEmpty())
+	for (unsigned int i = 0; i < CoreProperty::undefinedCoreProperty; i++) {
+		if (!properties[i].isEmpty()) {
 			oss << "\t" << properties[i].toString() << endl;
+		}
 	}
 
 	// end tag
@@ -236,18 +236,19 @@ void FileCoreProperties::readFromString(const string & textInput)
 		properties[i].setTypeProperty(CoreProperty::undefinedCoreProperty);
 
 	size_t start = textInput.find("<coreProperties ");
-	if (start != string::npos)
-			start = textInput.find("<coreProperties>");
+	if (start != string::npos) {
+		start = textInput.find("<coreProperties>");
+	}
 	size_t end = textInput.find("</coreProperties>", start);
 		
 	//identifier
 	size_t attStart = textInput.find("identifier", start);
-	if (attStart != string::npos && attStart < end)
-	{
+	if (attStart != string::npos && attStart < end) {
 		attStart += 11;
 		size_t attEnd = textInput.find("</", attStart);
-		if (attStart != string::npos && attEnd != string::npos)
+		if (attStart != string::npos && attEnd != string::npos) {
 			properties[CoreProperty::identifier].setIdentifier(textInput.substr(attStart, attEnd - attStart));
+		}
 	}
 	
 }

@@ -18,36 +18,44 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/AbstractFeatureInterpretation.h"
-#include "WellboreMarker.h"
+#include "../resqml2/BoundaryFeatureInterpretation.h"
 
 namespace RESQML2_0_1_NS
 {
-	class BoundaryFeatureInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
+	/** A boundary feature interpretation. */
+	class BoundaryFeatureInterpretation final : public RESQML2_NS::BoundaryFeatureInterpretation
 	{
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
-		DLL_IMPORT_OR_EXPORT BoundaryFeatureInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
+		 * Only to be used in partial transfer context.
+		 *
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 */
+		DLL_IMPORT_OR_EXPORT BoundaryFeatureInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::BoundaryFeatureInterpretation(partialObject) {}
 
 		/**
-		* Default constructor
-		* Set the gsoap proxy to nullptr from superclass constructor
-		*/
-		BoundaryFeatureInterpretation() {}
+		 * Creates an instance of this class in a gsoap context.
+		 *
+		 * @exception	std::invalid_argument	If @p feature is @c nullptr.
+		 *
+		 * @param [in]	feature	The interpreted boundary feature. It cannot be null.
+		 * @param 	  	guid   	The guid to set to the boundary feature interpretation. If empty then a
+		 * 						new guid will be generated.
+		 * @param 	  	title  	The title to set to the boundary feature interpretation. If empty then
+		 * 						\"unknown\" title will be set.
+		 */
+		BoundaryFeatureInterpretation(RESQML2_NS::BoundaryFeature * feature, const std::string & guid, const std::string & title);
 
-		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param feature	The feature the instance interprets.
-		* @param guid		The guid to set to the boundary horizon. If empty then a new guid will be generated.
-		* @param title		A title for the instance to create.
-		*/
-		BoundaryFeatureInterpretation(class BoundaryFeature * feature, const std::string & guid, const std::string & title);
+		/*
+		 * Creates an instance of this class by wrapping a gSOAP instance.
+		 *
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 */
+		BoundaryFeatureInterpretation(gsoap_resqml2_0_1::_resqml20__BoundaryFeatureInterpretation* fromGsoap) : RESQML2_NS::BoundaryFeatureInterpretation(fromGsoap) {}
 
-		BoundaryFeatureInterpretation(gsoap_resqml2_0_1::_resqml20__BoundaryFeatureInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
-		virtual ~BoundaryFeatureInterpretation() {}
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
+		~BoundaryFeatureInterpretation() {}
 
 		/**
 		* The standard XML tag without XML namespace for serializing this data object.
@@ -68,5 +76,6 @@ namespace RESQML2_0_1_NS
 		* Get the standard XML namespace for serializing this data object.
 		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const { return XML_NS; }
+
 	};
 }

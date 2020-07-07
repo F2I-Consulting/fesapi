@@ -22,16 +22,16 @@ under the License.
 
 #include <hdf5.h>
 
-#include "AbstractLocal3dCrs.h"
-#include "../common/AbstractHdfProxy.h"
-#include "../tools/Misc.h"
+#include "../eml2/AbstractHdfProxy.h"
+#include "MdDatum.h"
+#include "WellboreTrajectoryRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace gsoap_eml2_3;
 
-void WellboreFrameRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void WellboreFrameRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -46,7 +46,7 @@ void WellboreFrameRepresentation::getXyzPointsOfPatch(const unsigned int & patch
 		throw logic_error("Cannot compute the XYZ points of the frame without the MD datum.");
 	}
 
-	// We add 1 trajecotry station for MDDatum support.
+	// We add 1 trajectory station for MDDatum support.
 	auto trajStationCount = trajectory->getXyzPointCountOfPatch(patchIndex) + 1;
 	if (trajStationCount == 0) {
 		throw logic_error("Cannot compute the XYZ points of the frame with a trajectory which does not contain any trajectory station.");
@@ -89,7 +89,7 @@ void WellboreFrameRepresentation::getXyzPointsOfPatch(const unsigned int & patch
 	}
 }
 
-void WellboreFrameRepresentation::setMdValues(double const * mdValues, unsigned int mdValueCount, COMMON_NS::AbstractHdfProxy* proxy)
+void WellboreFrameRepresentation::setMdValues(double const * mdValues, unsigned int mdValueCount, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -108,13 +108,12 @@ void WellboreFrameRepresentation::setMdValues(double const * mdValues, unsigned 
 		resqml20__DoubleHdf5Array* xmlMdValues = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
 		xmlMdValues->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		xmlMdValues->Values->HdfProxy = proxy->newResqmlReference();
-		xmlMdValues->Values->PathInHdfFile = "/RESQML/" + frame->uuid + "/mdValues";
+		xmlMdValues->Values->PathInHdfFile = getHdfGroup() + "/mdValues";
 
 		frame->NodeMd = xmlMdValues;
 
 		frame->NodeCount = mdValueCount;
 	}
-#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_3 != nullptr) {
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3);
 		frameUuid = frame->uuid;
@@ -125,25 +124,24 @@ void WellboreFrameRepresentation::setMdValues(double const * mdValues, unsigned 
 		xmlMdValues->Values->ExternalFileProxy.push_back(soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap, 1));
 		xmlMdValues->Values->ExternalFileProxy[0]->Count = mdValueCount;
 		xmlMdValues->Values->ExternalFileProxy[0]->StartIndex = 0;
-		xmlMdValues->Values->ExternalFileProxy[0]->PathInExternalFile = "/RESQML/" + frame->uuid + "/mdValues";
+		xmlMdValues->Values->ExternalFileProxy[0]->PathInExternalFile = getHdfGroup() + "/mdValues";
 		xmlMdValues->Values->ExternalFileProxy[0]->EpcExternalPartReference = proxy->newEml23Reference();
 
 		frame->NodeMd = xmlMdValues;
 
 		frame->NodeCount = mdValueCount;
 	}
-#endif
 	else {
 		throw invalid_argument("Not implemented yet");
 	}
 
 	// HDF
-	hsize_t dim[] = { mdValueCount };
-	proxy->writeArrayNd(frameUuid,
+	hsize_t dim = mdValueCount;
+	proxy->writeArrayNd(getHdfGroup(),
 		"mdValues",
 		H5T_NATIVE_DOUBLE,
 		mdValues,
-		dim, 1);
+		&dim, 1);
 }
 
 void WellboreFrameRepresentation::setMdValues(double firstMdValue, double incrementMdValue, unsigned int mdValueCount)
@@ -162,7 +160,6 @@ void WellboreFrameRepresentation::setMdValues(double firstMdValue, double increm
 
 		frame->NodeCount = mdValueCount;
 	}
-#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_3 != nullptr) {
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3);
 
@@ -177,7 +174,6 @@ void WellboreFrameRepresentation::setMdValues(double firstMdValue, double increm
 
 		frame->NodeCount = mdValueCount;
 	}
-#endif
 	else {
 		throw invalid_argument("Not implemented yet");
 	}
@@ -188,11 +184,9 @@ bool WellboreFrameRepresentation::areMdValuesRegularlySpaced() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray;
 	}
-#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_3 != nullptr) {
 		return static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3)->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray;
 	}
-#endif
 	
 	throw invalid_argument("Not implemented yet");
 }
@@ -206,11 +200,9 @@ double WellboreFrameRepresentation::getMdConstantIncrementValue() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<resqml20__DoubleLatticeArray*>(static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->NodeMd)->Offset[0]->Value;
 	}
-#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_3 != nullptr) {
 		return static_cast<eml23__FloatingPointLatticeArray*>(static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3)->NodeMd)->Offset[0]->Value;
 	}
-#endif
 
 	throw invalid_argument("Not implemented yet");
 }
@@ -222,7 +214,7 @@ double WellboreFrameRepresentation::getMdFirstValue() const
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array)
 		{
 			eml20__Hdf5Dataset const* dataset = static_cast<resqml20__DoubleHdf5Array*>(frame->NodeMd)->Values;
-			COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
+			EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
@@ -240,13 +232,12 @@ double WellboreFrameRepresentation::getMdFirstValue() const
 		else
 			throw logic_error("The array structure of MD is not supported?");
 	}
-#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_3 != nullptr) {
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
 		{
 			eml23__ExternalDataset const* dataset = static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values;
-			COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
+			EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
@@ -264,7 +255,6 @@ double WellboreFrameRepresentation::getMdFirstValue() const
 		else
 			throw logic_error("The array structure of MD is not supported?");
 	}
-#endif
 
 	throw invalid_argument("Not implemented yet");
 }
@@ -274,11 +264,9 @@ unsigned int WellboreFrameRepresentation::getMdValuesCount() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->NodeCount;
 	}
-#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_3 != nullptr) {
 		return static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3)->NodeCount;
 	}
-#endif
 
 	throw invalid_argument("Not implemented yet");
 }
@@ -290,7 +278,7 @@ RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum WellboreFrameRepresentation:
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array)
 		{
 			eml20__Hdf5Dataset const* dataset = static_cast<resqml20__DoubleHdf5Array*>(frame->NodeMd)->Values;
-			COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
+			EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
@@ -323,13 +311,12 @@ RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum WellboreFrameRepresentation:
 
 		return RESQML2_NS::AbstractValuesProperty::UNKNOWN; // unknwown datatype...
 	}
-#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_3 != nullptr) {
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
 		{
 			eml23__ExternalDataset const* dataset = static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values;
-			COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
+			EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
@@ -362,7 +349,6 @@ RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum WellboreFrameRepresentation:
 
 		return RESQML2_NS::AbstractValuesProperty::UNKNOWN; // unknwown datatype...
 	}
-#endif
 
 	throw invalid_argument("Not implemented yet");
 }
@@ -374,7 +360,7 @@ void WellboreFrameRepresentation::getMdAsDoubleValues(double* values) const
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array)
 		{
 			eml20__Hdf5Dataset const* dataset = static_cast<resqml20__DoubleHdf5Array*>(frame->NodeMd)->Values;
-			COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
+			EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
@@ -391,13 +377,12 @@ void WellboreFrameRepresentation::getMdAsDoubleValues(double* values) const
 			throw logic_error("The array structure of MD is not supported?");
 		}
 	}
-#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_3 != nullptr) {
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
 		{
 			eml23__ExternalDataset const* dataset = static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values;
-			COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
+			EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
@@ -414,9 +399,8 @@ void WellboreFrameRepresentation::getMdAsDoubleValues(double* values) const
 			throw logic_error("The array structure of MD is not supported?");
 		}
 	}
-#endif
 	else {
-		throw invalid_argument("Not implemented yet");
+		throw logic_error("Not implemented yet");
 	}
 }
 
@@ -427,7 +411,7 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array)
 		{
 			eml20__Hdf5Dataset const* dataset = static_cast<resqml20__DoubleHdf5Array*>(frame->NodeMd)->Values;
-			COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
+			EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
@@ -444,13 +428,12 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 			throw logic_error("The array structure of MD is not supported?");
 		}
 	}
-#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_3 != nullptr) {
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
 		{
 			eml23__ExternalDataset const* dataset = static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values;
-			COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
+			EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
@@ -467,102 +450,74 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 			throw logic_error("The array structure of MD is not supported?");
 		}
 	}
-#endif
 	else {
-		throw invalid_argument("Not implemented yet");
+		throw logic_error("Not implemented yet");
 	}
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getWellboreTrajectoryDor() const
+COMMON_NS::DataObjectReference WellboreFrameRepresentation::getWellboreTrajectoryDor() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->Trajectory;
+		return COMMON_NS::DataObjectReference(static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->Trajectory);
 	}
-#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_3 != nullptr) {
-		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3)->Trajectory->Uuid);
-		return traj->newResqmlReference();
+		return COMMON_NS::DataObjectReference(static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3)->Trajectory);
 	}
-#endif
 
 	throw invalid_argument("Not implemented yet");
 }
 
-std::string WellboreFrameRepresentation::getWellboreTrajectoryUuid() const
+COMMON_NS::DataObjectReference WellboreFrameRepresentation::getLocalCrsDor(unsigned int patchIndex) const
 {
-	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->Trajectory->UUID;
-	}
-#if WITH_EXPERIMENTAL
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3)->Trajectory->Uuid;
-	}
-#endif
-
-	throw invalid_argument("Not implemented yet");
+	return getWellboreTrajectory()->getLocalCrsDor(patchIndex);
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getHdfProxyDor() const
+COMMON_NS::DataObjectReference WellboreFrameRepresentation::getHdfProxyDor() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		_resqml20__WellboreFrameRepresentation* frame = static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array)
 		{
-			return static_cast<resqml20__DoubleHdf5Array*>(frame->NodeMd)->Values->HdfProxy;
+			return COMMON_NS::DataObjectReference(static_cast<resqml20__DoubleHdf5Array*>(frame->NodeMd)->Values->HdfProxy);
 		}
 	}
-#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_3 != nullptr) {
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3);
-		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
-		{
-			eml23__ExternalDataset const* dataset = static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values;
-			return misc::eml23ToEml20Reference(dataset->ExternalFileProxy[0]->EpcExternalPartReference, gsoapProxy2_3->soap);
+		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
+			return COMMON_NS::DataObjectReference(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
 		}
 	}
-#endif
 	else {
 		throw invalid_argument("Not implemented yet");
 	}
 
-	return nullptr;
+	return COMMON_NS::DataObjectReference();
 }
 
-ULONG64 WellboreFrameRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 WellboreFrameRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
-		throw range_error("The patch index is out of range");
+		throw out_of_range("The patch index is out of range");
 	}
 
 	return getMdValuesCount();
 }
 
-
-
-RESQML2_0_1_NS::WellboreTrajectoryRepresentation* WellboreFrameRepresentation::getWellboreTrajectory() const
+WellboreTrajectoryRepresentation* WellboreFrameRepresentation::getWellboreTrajectory() const
 {
-	if (gsoapProxy2_0_1 != nullptr) {
-		return getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->Trajectory->UUID);
-	}
-#if WITH_EXPERIMENTAL
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3)->Trajectory->Uuid);
-	}
-#endif
-
-	throw invalid_argument("Not implemented yet");
+	return getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(getWellboreTrajectoryDor().getUuid());
 }
 
 void WellboreFrameRepresentation::loadTargetRelationships()
 {
 	AbstractRepresentation::loadTargetRelationships();
 
-	gsoap_resqml2_0_1::eml20__DataObjectReference const* dor = getWellboreTrajectoryDor();
+	COMMON_NS::DataObjectReference dor = getWellboreTrajectoryDor();
 	// todo the trajectory should be resqml2 instead of resqml2_0_1
-	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(dor->UUID);
+	WellboreTrajectoryRepresentation* traj = getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(dor.getUuid());
 	if (traj == nullptr) { // partial transfer
 		getRepository()->createPartial(dor);
-		traj = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(dor->UUID);
+		traj = getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(dor.getUuid());
 	}
 	if (traj == nullptr) {
 		throw invalid_argument("The DOR looks invalid.");

@@ -18,6 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "FluidCharacterization.h"
 
+#include <limits>
 #include <stdexcept>
 
 #include "FrictionTheorySpecification.h"
@@ -141,15 +142,14 @@ void FluidCharacterization::setRockFluidUnit(RESQML2_0_1_NS::RockFluidUnitFeatur
 	getRepository()->addRelationship(this, rockFluidUnit);
 }
 
-gsoap_eml2_2::eml22__DataObjectReference* FluidCharacterization::getRockFluidUnitDor() const
+COMMON_NS::DataObjectReference FluidCharacterization::getRockFluidUnitDor() const
 {
 	return static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->RockFluidUnitFeature;
 }
 
 RESQML2_0_1_NS::RockFluidUnitFeature* FluidCharacterization::getRockFluidUnit() const
 {
-	gsoap_eml2_2::eml22__DataObjectReference const * const dor = getRockFluidUnitDor();
-	return dor == nullptr ? nullptr : getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::RockFluidUnitFeature>(dor->Uuid);
+	return getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::RockFluidUnitFeature>(getRockFluidUnitDor().getUuid());
 }
 
 #define SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(vectorName, attributeName, attributeDatatype, constructor)\
@@ -430,9 +430,9 @@ SETTER_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL(FluidCharacterization, gsoap_eml2_2::pro
 
 void FluidCharacterization::loadTargetRelationships()
 {
-	gsoap_eml2_2::eml22__DataObjectReference const * const dor = getRockFluidUnitDor();
-	if (dor != nullptr) {
-		RESQML2_0_1_NS::RockFluidUnitFeature* rockFluidUnit = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::RockFluidUnitFeature>(dor->Uuid);
+	COMMON_NS::DataObjectReference dor = getRockFluidUnitDor();
+	if (!dor.isEmpty()) {
+		RESQML2_0_1_NS::RockFluidUnitFeature* rockFluidUnit = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::RockFluidUnitFeature>(dor.getUuid());
 		if (rockFluidUnit == nullptr) {
 			convertDorIntoRel<RESQML2_0_1_NS::RockFluidUnitFeature>(dor);
 		}

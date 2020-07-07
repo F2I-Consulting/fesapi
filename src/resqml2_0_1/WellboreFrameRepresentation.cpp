@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreFrameRepresentation.h"
 
-#include "WellboreInterpretation.h"
-#include "WellboreTrajectoryRepresentation.h"
+#include "../resqml2/WellboreInterpretation.h"
+#include "../resqml2/WellboreTrajectoryRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -28,8 +28,15 @@ using namespace gsoap_resqml2_0_1;
 const char* WellboreFrameRepresentation::XML_TAG = "WellboreFrameRepresentation";
 const char* WellboreFrameRepresentation::XML_NS = "resqml20";
 
-WellboreFrameRepresentation::WellboreFrameRepresentation(WellboreInterpretation* interp, const string& guid, const std::string& title, WellboreTrajectoryRepresentation* traj)
+WellboreFrameRepresentation::WellboreFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj)
 {
+	if (interp == nullptr) {
+		throw invalid_argument("The wellbore interpretation this wellbore frame represents cannot be null.");
+	}
+	if (traj == nullptr) {
+		throw invalid_argument("The wellbore trajectory representation cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreFrameRepresentation(interp->getGsoapContext());
 	_resqml20__WellboreFrameRepresentation* frame = static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 

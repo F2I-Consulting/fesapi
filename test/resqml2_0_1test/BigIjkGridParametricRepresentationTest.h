@@ -55,10 +55,10 @@ namespace resqml2_0_1test {
 		*/
 		BigIjkGridParametricRepresentationTest(
 			const std::string & repoPath,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount, 
-			const unsigned int & faultCount, 
-			const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
-			const double & faultThrow);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount, 
+			unsigned int faultCount, 
+			double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
+			double faultThrow);
 
 		/**
 		* Creation of a parametric IJK grid representation from an existing EPC document. Resulting grid is 
@@ -80,10 +80,10 @@ namespace resqml2_0_1test {
 		* @param faultThrow	length of the fault throw along z axis.
 		*/
 		BigIjkGridParametricRepresentationTest(COMMON_NS::DataObjectRepository * repo, bool init,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
-			const unsigned int & faultCount,
-			const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
-			const double & faultThrow);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount,
+			unsigned int faultCount,
+			double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
+			double faultThrow);
 
 	protected:
 		void initRepoHandler();

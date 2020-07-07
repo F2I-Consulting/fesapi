@@ -43,14 +43,14 @@ WellCompletion::WellCompletion(Well* witsmlWell,
 	setWell(witsmlWell);
 }
 
-gsoap_eml2_1::eml21__DataObjectReference* WellCompletion::getWellDor() const
+COMMON_NS::DataObjectReference WellCompletion::getWellDor() const
 {
-	return static_cast<witsml20__WellCompletion*>(gsoapProxy2_1)->Well;
+	return COMMON_NS::DataObjectReference(static_cast<witsml20__WellCompletion*>(gsoapProxy2_1)->Well);
 }
 
 class Well* WellCompletion::getWell() const
 {
-	return getRepository()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<Well>(getWellDor().getUuid());
 }
 
 void WellCompletion::setWell(Well* witsmlWell)
