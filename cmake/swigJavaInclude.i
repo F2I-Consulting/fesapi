@@ -72,6 +72,8 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		ROCKFLUIDORGANIZATIONINTERPRETATION,
 		ROCKFLUIDUNITINTERPRETATION,
 		ROCKVOLUMEFEATURE,
+		SEALEDSURFACEFRAMEWORKREPRESENTATION,
+		SEALEDVOLUMEFRAMEWORKREPRESENTATION,
 		SEISMICLATTICEFEATURE,
 		SEISMICLINEFEATURE,
 		SEISMICLINESETFEATURE,
@@ -495,6 +497,36 @@ ${COMMENT_END}
 		return null;
 	}
 	
+	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.SealedSurfaceFrameworkRepresentation resqml2_instantiateSealedSurfaceFrameworkRepresentation(long cPtr, boolean owner)
+	{
+		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
+		if ("resqml20".equals(xmlNs)) {
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SealedSurfaceFrameworkRepresentation_resqml20(cPtr, owner);
+		}
+${COMMENT_START}
+		else if ("resqml22".equals(xmlNs)) {
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SealedSurfaceFrameworkRepresentation_resqml22(cPtr, owner);
+		}
+${COMMENT_END}
+		
+		return null;
+	}
+	
+	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.SealedVolumeFrameworkRepresentation resqml2_instantiateSealedVolumeFrameworkRepresentation(long cPtr, boolean owner)
+	{
+		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
+		if ("resqml20".equals(xmlNs)) {
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SealedVolumeFrameworkRepresentation(cPtr, owner);
+		}
+${COMMENT_START}
+		else if ("resqml22".equals(xmlNs)) {
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SealedVolumeFrameworkRepresentation(cPtr, owner);
+		}
+${COMMENT_END}
+		
+		return null;
+	}
+	
 	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.PlaneSetRepresentation resqml2_instantiatePlaneSetRepresentation(long cPtr, boolean owner)
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
@@ -901,6 +933,8 @@ ${COMMENT_END}
 ${COMMENT_START}
 		case ROCKVOLUMEFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.RockVolumeFeature_resqml22(cPtr, owner);
 ${COMMENT_END}
+		case SEALEDSURFACEFRAMEWORKREPRESENTATION : return resqml2_instantiateSealedSurfaceFrameworkRepresentation(cPtr, owner);
+		case SEALEDVOLUMEFRAMEWORKREPRESENTATION : return resqml2_instantiateSealedVolumeFrameworkRepresentation(cPtr, owner);
 		case SEISMICLATTICEFEATURE : return resqml2_instantiateSeismicLatticeFeature(cPtr, owner);
 		case SEISMICLINEFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLineFeature_resqml20(cPtr, owner);
 		case SEISMICLINESETFEATURE : return resqml2_instantiateSeismicLineSetFeature(cPtr, owner);

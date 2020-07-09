@@ -22,6 +22,8 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
+const char* SeismicLineSetFeature::XML_NS = "resqml22";
+
 SeismicLineSetFeature::SeismicLineSetFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title)
 {
 	if (repo == nullptr)

@@ -30,9 +30,6 @@ namespace COMMON_NS
 	class AbstractObject
 	{
 	private:
-		/** Should be instantiated when the object is (or was) a partial object. */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject;
-
 		/** The variable which holds the format for all exported Energistics DataObjects. */
 		static char citationFormat[];
 
@@ -46,6 +43,8 @@ namespace COMMON_NS
 		void setUuid(const std::string & uuid);
 
 	protected:
+		/** Should be instantiated when the object is (or was) a partial object. */
+		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject;
 
 		/** The underlying generated gSoap proxy for a EML 2.0 dataobject. */
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
@@ -662,6 +661,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the EML2.3 gSOAP proxy.
 		 */
 		gsoap_eml2_3::eml23__AbstractObject* getEml23GsoapProxy() const { return gsoapProxy2_3; }
+		void setGsoapProxy(gsoap_eml2_3::eml23__AbstractObject* gsoapProxy) { gsoapProxy2_3 = gsoapProxy; }
 
 		/**
 		 * Get the gSOAP context where the underlying gSOAP proxy is defined

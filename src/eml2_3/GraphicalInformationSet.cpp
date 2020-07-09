@@ -21,6 +21,8 @@ under the License.
 using namespace std;
 using namespace EML2_3_NS;
 
+const char* GraphicalInformationSet::XML_NS = "eml23";
+
 GraphicalInformationSet::GraphicalInformationSet(COMMON_NS::DataObjectRepository* repo, string const& guid, string const& title)
 {
 	if (repo == nullptr) {

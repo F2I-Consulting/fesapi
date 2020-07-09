@@ -72,6 +72,8 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		ROCKFLUIDORGANIZATIONINTERPRETATION,
 		ROCKFLUIDUNITINTERPRETATION,
 		ROCKVOLUMEFEATURE,
+		SEALEDSURFACEFRAMEWORKREPRESENTATION,
+		SEALEDVOLUMEFRAMEWORKREPRESENTATION,
 		SEISMICLATTICEFEATURE,
 		SEISMICLINEFEATURE,
 		SEISMICLINESETFEATURE,
@@ -495,6 +497,36 @@ ${COMMENT_END}
 		return null;
 	}
 	
+	public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.SealedSurfaceFrameworkRepresentation resqml2_instantiateSealedSurfaceFrameworkRepresentation(global::System.IntPtr cPtr, bool owner)
+	{
+		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
+		if (xmlNs.Equals("resqml20")) {
+			return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SealedSurfaceFrameworkRepresentation(cPtr, owner);
+		}
+${COMMENT_START}
+		else if (xmlNs.Equals("resqml22")) {
+			return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SealedSurfaceFrameworkRepresentation(cPtr, owner);
+		}
+${COMMENT_END}
+		
+		return null;
+	}
+	
+	public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.SealedVolumeFrameworkRepresentation resqml2_instantiateSealedVolumeFrameworkRepresentation(global::System.IntPtr cPtr, bool owner)
+	{
+		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
+		if (xmlNs.Equals("resqml20")) {
+			return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SealedVolumeFrameworkRepresentation(cPtr, owner);
+		}
+${COMMENT_START}
+		else if (xmlNs.Equals("resqml22")) {
+			return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SealedVolumeFrameworkRepresentation(cPtr, owner);
+		}
+${COMMENT_END}
+		
+		return null;
+	}
+	
 	public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.PlaneSetRepresentation resqml2_instantiatePlaneSetRepresentation(global::System.IntPtr cPtr, bool owner)
 	{
 		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
@@ -902,6 +934,8 @@ ${COMMENT_END}
 ${COMMENT_START}
 		case DataObjectName.ROCKVOLUMEFEATURE : return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.RockVolumeFeature(cPtr, owner);
 ${COMMENT_END}
+		case DataObjectName.SEALEDSURFACEFRAMEWORKREPRESENTATION : return resqml2_instantiateSealedSurfaceFrameworkRepresentation(cPtr, owner);
+		case DataObjectName.SEALEDVOLUMEFRAMEWORKREPRESENTATION : return resqml2_instantiateSealedVolumeFrameworkRepresentation(cPtr, owner);
 		case DataObjectName.SEISMICLATTICEFEATURE : return resqml2_instantiateSeismicLatticeFeature(cPtr, owner);
 		case DataObjectName.SEISMICLINEFEATURE : return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLineFeature(cPtr, owner);
 		case DataObjectName.SEISMICLINESETFEATURE : return resqml2_instantiateSeismicLineSetFeature(cPtr, owner);

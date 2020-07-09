@@ -111,32 +111,32 @@ void FileContentType::readFromString(const string & textInput)
 
 	// Override partname
 	pos = textInput.find("Override");
-	while (pos != string::npos)
-	{
+	while (pos != string::npos) {
 		size_t end = textInput.find("/>", pos + 8);
-		if (end == string::npos)
+		if (end == string::npos) {
 			end = textInput.find("Override>", pos + 8);
+		}
 		
 		// Extension
 		string partName = "";
 		size_t attStart = textInput.find("PartName=\"", pos);
-		if (attStart != string::npos && attStart < end)
-		{
+		if (attStart != string::npos && attStart < end) {
 			attStart += 10;
 			size_t attEnd = textInput.find("\"", attStart);
-			if (attStart != string::npos && attEnd != string::npos)
+			if (attStart != string::npos && attEnd != string::npos) {
 				partName = textInput.substr(attStart, attEnd - attStart);
+			}
 		}
 
 		// Content type
 		string contentType = "";
 		attStart = textInput.find("ContentType=\"", pos);
-		if (attStart != string::npos && attStart < end)
-		{
+		if (attStart != string::npos && attStart < end) {
 			attStart += 13;
 			size_t attEnd = textInput.find("\"", attStart);
-			if (attStart != string::npos && attEnd != string::npos)
+			if (attStart != string::npos && attEnd != string::npos) {
 				contentType = textInput.substr(attStart, attEnd - attStart);
+			}
 		}
 
 		ContentType entry(false, contentType, partName);
@@ -145,19 +145,3 @@ void FileContentType::readFromString(const string & textInput)
 		pos = textInput.find("Override", end + 1);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

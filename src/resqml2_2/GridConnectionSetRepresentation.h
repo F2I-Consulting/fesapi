@@ -25,33 +25,6 @@ namespace RESQML2_2_NS
 	/** A grid connection set representation. */
 	class GridConnectionSetRepresentation final : public RESQML2_NS::GridConnectionSetRepresentation
 	{
-	protected:
-
-		/**
-		 * Initializes this object
-		 *
-		 * @param [in,out]	repo 	If non-null, the repo.
-		 * @param 		  	guid 	Unique identifier.
-		 * @param 		  	title	The title.
-		 */
-		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
-
-		/**
-		 * Pushes back an interpretation which can be mapped with some connections.
-		 *
-		 * @param [in,out]	interp	The interpration to push back.
-		 */
-		void pushBackXmlInterpretation(RESQML2_NS::AbstractFeatureInterpretation* interp);
-
-		/**
-		 * Pushes back a grid representation which is one of the support of this representation. And
-		 * push back this representation as a grid connection information of the grid representation as
-		 * well.
-		 *
-		 * @param [in,out]	supportingGridRep	If non-null, the supporting grid rep.
-		 */
-		void pushBackXmlSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep);
-
 	public:
 
 		/**
@@ -136,5 +109,42 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT unsigned int getSupportingGridRepresentationCount() const final;
 
 		COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const final;
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
+
+	protected:
+
+		/**
+		 * Initializes this object
+		 *
+		 * @param [in,out]	repo 	If non-null, the repo.
+		 * @param 		  	guid 	Unique identifier.
+		 * @param 		  	title	The title.
+		 */
+		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
+
+		/**
+		 * Pushes back an interpretation which can be mapped with some connections.
+		 *
+		 * @param [in,out]	interp	The interpration to push back.
+		 */
+		void pushBackXmlInterpretation(RESQML2_NS::AbstractFeatureInterpretation* interp);
+
+		/**
+		 * Pushes back a grid representation which is one of the support of this representation. And
+		 * push back this representation as a grid connection information of the grid representation as
+		 * well.
+		 *
+		 * @param [in,out]	supportingGridRep	If non-null, the supporting grid rep.
+		 */
+		void pushBackXmlSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep);
 	};
 }

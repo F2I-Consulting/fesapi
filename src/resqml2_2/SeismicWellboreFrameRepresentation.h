@@ -57,5 +57,15 @@ namespace RESQML2_2_NS
 			double seismicReferenceDatum,
 			double weatheringVelocity,
 			RESQML2_NS::LocalTime3dCrs* crs);
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

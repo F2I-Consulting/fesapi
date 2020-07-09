@@ -30,6 +30,8 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
+const char* PlaneSetRepresentation::XML_NS = "resqml22";
+
 PlaneSetRepresentation::PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 		const std::string & guid, const std::string & title)
 {

@@ -31,9 +31,12 @@ under the License.
 
 #include "../eml2/AbstractHdfProxy.h"
 
-#include "../resqml2_0_1/WellboreMarker.h"
-#include "../resqml2_2/WellboreMarker.h"
 #include "../resqml2/AbstractProperty.h"
+
+#include "../resqml2_0_1/WellboreMarker.h"
+#if WITH_RESQML2_2
+#include "../resqml2_2/WellboreMarker.h"
+#endif
 
 #include "../witsml2_0/Log.h"
 #include "../witsml2_0/Channel.h"
@@ -161,7 +164,9 @@ void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64
 		for (size_t i = 0; i < it->second.size(); ++i) {
 			if (!it->second[i]->isPartial() &&
 				dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(it->second[i]) == nullptr &&
+#if WITH_RESQML2_2
 				dynamic_cast<RESQML2_2_NS::WellboreMarker*>(it->second[i]) == nullptr &&
+#endif
 				(dynamic_cast<WITSML2_0_NS::ChannelSet*>(it->second[i]) == nullptr || static_cast<WITSML2_0_NS::ChannelSet*>(it->second[i])->getLogs().empty()) &&
 				(dynamic_cast<WITSML2_0_NS::Channel*>(it->second[i]) == nullptr || static_cast<WITSML2_0_NS::Channel*>(it->second[i])->getChannelSets().empty())) {
 				// Dataobject
@@ -188,7 +193,7 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 	std::string result;
 	vector<string> warningsDuringReading = package->openForReading(filePath);
 	for (const auto& warning : warningsDuringReading) {
-		result += warning + "\n";
+		result += warning + '\n';
 	}
 
 	// Read all RESQML objects
@@ -225,10 +230,8 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 				for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
 					if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
 						target = allRels[relIndex].getTarget();
-						if (!repo.hasHdfProxyFactory()) {
-							repo.setHdfProxyFactory(target.find("http://") == 0 || target.find("https://") == 0
-								? new HdfProxyROS3Factory()
-								: new HdfProxyFactory());
+						if (target.find("http://") == 0 || target.find("https://") == 0) {
+							repo.setHdfProxyFactory(new HdfProxyROS3Factory());
 						}
 						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
 						break;
@@ -260,7 +263,7 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 	}
 
 	for (const auto& warning : repo.getWarnings()) {
-		result += warning + "\n";
+		result += warning + '\n';
 	}
 
 	return result;
@@ -279,7 +282,7 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 	std::string result;
 	vector<string> warningsDuringReading = package->openForReading(filePath);
 	for (size_t i = 0; i < warningsDuringReading.size(); ++i) {
-		result += warningsDuringReading[i] + "\n";
+		result += warningsDuringReading[i] + '\n';
 	}
 
 	// Read all RESQML objects

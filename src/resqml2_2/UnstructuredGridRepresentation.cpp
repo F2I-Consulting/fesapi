@@ -29,6 +29,8 @@ using namespace std;
 using namespace gsoap_eml2_3;
 using namespace RESQML2_2_NS;
 
+const char* UnstructuredGridRepresentation::XML_NS = "resqml22";
+
 void UnstructuredGridRepresentation::init(COMMON_NS::DataObjectRepository* repo,
 	const std::string & guid, const std::string & title,
 	ULONG64 cellCount)

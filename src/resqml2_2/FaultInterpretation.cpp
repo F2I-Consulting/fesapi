@@ -27,6 +27,8 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
+const char* FaultInterpretation::XML_NS = "resqml22";
+
 FaultInterpretation::FaultInterpretation(RESQML2_NS::BoundaryFeature * fault, const string & guid, const string & title)
 {
 	if (fault == nullptr) {

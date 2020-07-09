@@ -26,6 +26,8 @@ using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 using namespace std;
 
+const char* GenericFeatureInterpretation::XML_NS = "resqml22";
+
 GenericFeatureInterpretation::GenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const string & guid, const string & title)
 {
 	if (feature == nullptr) {

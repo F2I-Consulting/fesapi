@@ -22,6 +22,8 @@ using namespace std;
 using namespace gsoap_eml2_3;
 using namespace RESQML2_2_NS;
 
+const char* ContinuousColorMap::XML_NS = "resqml22";
+
 ContinuousColorMap::ContinuousColorMap(COMMON_NS::DataObjectRepository* repo, string const& guid, string const& title,
 	resqml22__InterpolationDomain interpolationDomain, resqml22__InterpolationMethod interpolationMethod)
 {

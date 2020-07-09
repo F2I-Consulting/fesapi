@@ -286,13 +286,6 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void deleteRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target);
 
 		/**
-		* Checks either this repository has got an HDF proxy or not.
-		* 
-		* @returns True if this repository has got an HDF proxy, else false.
-		*/
-		DLL_IMPORT_OR_EXPORT bool hasHdfProxyFactory() { return hdfProxyFactory != nullptr; }
-
-		/**
 		* Set the factory used to create HDF proxy and takes ownership of this HDF Proxy factory (don't delete it!)
 		* 
 		* @param [in]	factory	If non-null, the factory.
@@ -3211,7 +3204,7 @@ namespace COMMON_NS
 		 * @returns	The property kind mapper, or @c nullptr if no property kind mapper was given at
 		 * 			repository construction time.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKindMapper* getPropertyKindMapper() const { return propertyKindMapper; }
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKindMapper* getPropertyKindMapper() const { return propertyKindMapper.get(); }
 
 		//*************** WARNINGS *************
 		
@@ -3263,14 +3256,14 @@ namespace COMMON_NS
 
 		std::vector<std::string> warnings;
 
-		RESQML2_0_1_NS::PropertyKindMapper* propertyKindMapper;
+		std::unique_ptr<RESQML2_0_1_NS::PropertyKindMapper> propertyKindMapper;
 
 		EML2_NS::AbstractHdfProxy* defaultHdfProxy;
 		RESQML2_NS::AbstractLocal3dCrs* defaultCrs;
 
 		std::vector<COMMON_NS::DataFeeder*> dataFeeders;
 
-		COMMON_NS::HdfProxyFactory* hdfProxyFactory;
+		std::unique_ptr<COMMON_NS::HdfProxyFactory> hdfProxyFactory;
 
 		EnergisticsStandard defaultEmlVersion;
 		EnergisticsStandard defaultProdmlVersion;

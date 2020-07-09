@@ -31,6 +31,8 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
+const char* SealedSurfaceFrameworkRepresentation::XML_NS = "resqml22";
+
 SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
 	RESQML2_NS::StructuralOrganizationInterpretation* interp,
     const std::string & guid,

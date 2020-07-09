@@ -33,6 +33,8 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
+const char* NonSealedSurfaceFrameworkRepresentation::XML_NS = "resqml22";
+
 NonSealedSurfaceFrameworkRepresentation::NonSealedSurfaceFrameworkRepresentation(
 	RESQML2_NS::StructuralOrganizationInterpretation* interp,
     const std::string & guid, 

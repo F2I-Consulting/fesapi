@@ -317,11 +317,14 @@ namespace EML2_3_NS
 		COMMON_NS::DataObjectReference getActivityTemplateDor() const;
 
 		/**
-		 * Gets XML namespace
-		 *
-		 * @returns	The XML namespace.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const { return "eml23"; }
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
 	private:
 

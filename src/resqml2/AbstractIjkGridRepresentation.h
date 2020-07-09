@@ -692,8 +692,13 @@ namespace RESQML2_NS
 			if (gsoapProxy2_0_1 != nullptr) { return "resqml20"; }
 			if (gsoapProxy2_3 != nullptr) { return "resqml22"; }
 
-			//It is a workaround in order to be able to create a partial IJK Grid Representation (which can consequently only by resqml20 and not resqml22).
-			return "resqml20";
+
+			if (partialObject != nullptr) {
+				if (partialObject->ContentType.find("x-resqml+xml;version=2.0") != std::string::npos) { return "resqml20"; }
+				if (partialObject->ContentType.find("x-resqml+xml;version=2.2") != std::string::npos) { return "resqml22"; }
+			}
+
+			throw std::logic_error("Cannot infer what is the Energistics namespace of this instance.");
 		}
 
 	protected:

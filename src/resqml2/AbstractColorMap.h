@@ -131,10 +131,6 @@ namespace RESQML2_NS
 
 		void loadTargetRelationships() {};
 
-		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final {
-			return "resqml22";
-		}
-
 	private:
 		/**
 		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map

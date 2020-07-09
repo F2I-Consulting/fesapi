@@ -35,6 +35,8 @@ using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 using namespace COMMON_NS;
 
+const char* WellboreTrajectoryRepresentation::XML_NS = "resqml22";
+
 WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo)
 {
 	if (interp == nullptr) {

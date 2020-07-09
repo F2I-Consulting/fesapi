@@ -66,5 +66,15 @@ namespace RESQML2_2_NS
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
 		~CmpLineFeature() {}
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

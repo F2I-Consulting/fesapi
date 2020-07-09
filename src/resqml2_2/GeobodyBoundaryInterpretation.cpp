@@ -26,6 +26,8 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
+const char* GeobodyBoundaryInterpretation::XML_NS = "resqml22";
+
 GeobodyBoundaryInterpretation::GeobodyBoundaryInterpretation(RESQML2_NS::BoundaryFeature * geobodyBoundary, const string & guid, const string & title)
 {
 	if (geobodyBoundary == nullptr) {

@@ -33,6 +33,8 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
+const char* PolylineSetRepresentation::XML_NS = "resqml22";
+
 void PolylineSetRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 									 const std::string & guid, const std::string & title)
 {

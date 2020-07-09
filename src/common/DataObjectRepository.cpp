@@ -228,7 +228,7 @@ namespace {
 /////////////////////
 #define GET_RESQML_2_0_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
 	gsoap_resqml2_0_1::_resqml20__##className* read = gsoap_resqml2_0_1::soap_new_resqml20__obj_USCORE##className(gsoapContext);\
-	soap_read_resqml20__obj_USCORE##className(gsoapContext, read);
+	gsoap_resqml2_0_1::soap_read_resqml20__obj_USCORE##className(gsoapContext, read);
 
 
 #define GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
@@ -313,7 +313,7 @@ DataObjectRepository::DataObjectRepository() :
 	backwardRels(),
 	gsoapContext(soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING)),
 	warnings(),
-	propertyKindMapper(nullptr), defaultHdfProxy(nullptr), defaultCrs(nullptr),
+	propertyKindMapper(), defaultHdfProxy(nullptr), defaultCrs(nullptr),
 	hdfProxyFactory(new COMMON_NS::HdfProxyFactory()),
 #if WITH_RESQML2_2
 	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3),
@@ -351,8 +351,7 @@ DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappi
 {
 	const string error = propertyKindMapper->loadMappingFilesFromDirectory(propertyKindMappingFilesDirectory);
 	if (!error.empty()) {
-		delete propertyKindMapper;
-		propertyKindMapper = nullptr;
+		propertyKindMapper.reset();
 		throw invalid_argument("Could not import property kind mappers : " + error);
 	}
 }
@@ -360,15 +359,6 @@ DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappi
 DataObjectRepository::~DataObjectRepository()
 {
 	clear();
-
-	if (propertyKindMapper != nullptr) {
-		delete propertyKindMapper;
-		propertyKindMapper = nullptr;
-	}
-
-	// An HDF proxy factory must always exist.
-	// It is created at construction time
-	delete hdfProxyFactory;
 
 	soap_destroy(gsoapContext); // remove deserialized C++ objects
 	soap_end(gsoapContext); // remove deserialized data
@@ -572,7 +562,6 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 
 		// Assume "no version" means current latest version in the repository
 		if (same == versions.end()) {
-
 			if (proxy->getVersion().empty()) {
 				if (versions.size() == 1) {
 					// replace the single present version which is consequently the current latest version in the repository
@@ -842,98 +831,209 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	// ignore the dot in the version
 	ns += contentType[characterPos + 3];
 
-	if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(MdDatum)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(Activity)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(ActivityTemplate)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(SeismicLatticeFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(SeismicLineFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(SeismicLineSetFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(FrontierFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(LocalDepth3dCrs)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(LocalTime3dCrs)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(TectonicBoundaryFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(GeneticBoundaryFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(BoundaryFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WellboreFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StratigraphicUnitFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StratigraphicColumn)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(GenericFeatureInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(BoundaryFeatureInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WellboreInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(FaultInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(HorizonInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StratigraphicUnitInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StratigraphicColumnRankInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StratigraphicOccurrenceInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreFrameRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WellboreMarkerFrameRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WellboreTrajectoryRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PolylineSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PointSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PlaneSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PolylineRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(Grid2dRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(TriangulatedSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(BlockedWellboreRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(UnstructuredGridRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PropertyKind)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PropertySet)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(ContinuousProperty)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(CategoricalProperty)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(DiscreteProperty)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(CommentProperty)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StringTableLookup)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EarthModelInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(OrganizationFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StructuralOrganizationInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(FluidBoundaryFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(SubRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(GridConnectionSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(TimeSeries)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RepresentationSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(NonSealedSurfaceFrameworkRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(SealedSurfaceFrameworkRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(SealedVolumeFrameworkRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(DeviationSurveyRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(GeobodyFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(GeobodyBoundaryInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(GeobodyInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RockFluidOrganizationInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RockFluidUnitInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RockFluidUnitFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Well)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellCompletion)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellboreCompletion)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Wellbore)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Trajectory)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Log)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::ChannelSet)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Channel)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellboreGeometry)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_1_NS::PropertyKind)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_1_NS::FluidSystem)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_1_NS::FluidCharacterization)
-#if WITH_EXPERIMENTAL
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(COMMON_NS::GraphicalInformationSet)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_1_NS::ToolErrorModel)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_1_NS::ErrorTerm)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_1_NS::WeightingFunction)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::DiscreteColorMap)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::ContinuousColorMap)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::WellboreFrameRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::SeismicWellboreFrameRepresentation)
+	if (ns == "eml20") {
+		if (dataType.compare(EML2_NS::EpcExternalPartReference::XML_TAG) == 0)
+		{
+			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(uuid, title, version);
+			COMMON_NS::AbstractObject* result = hdfProxyFactory->make(dor);
+			dor->ContentType = result->getContentType();
+			addOrReplaceDataObject(result);
+			return result;
+		}
+	}
+	else if (ns == "eml21") {
+		if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_1_NS::PropertyKind)
+	}
+#if WITH_RESQML2_2
+	else if (ns == "eml23") {
+		if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::Activity)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::ActivityTemplate)
+		else if (dataType.compare(EML2_NS::EpcExternalPartReference::XML_TAG) == 0)
+		{
+			gsoap_eml2_3::eml23__DataObjectReference* dor = gsoap_eml2_3::soap_new_eml23__DataObjectReference(gsoapContext);
+			dor->Uuid = uuid;
+			dor->Title = title;
+			dor->ContentType = contentType;
+			if (!version.empty()) {
+				dor->ObjectVersion = gsoap_eml2_3::soap_new_std__string(gsoapContext);
+				dor->ObjectVersion->assign(version);
+			}
+			COMMON_NS::AbstractObject* result = hdfProxyFactory->make(dor);
+			addOrReplaceDataObject(result);
+			return result;
+		}
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::GraphicalInformationSet)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::PropertyKind)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::TimeSeries)
+	}
 #endif
-	else if (dataType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG) == 0 && ns.compare("resqml20") == 0) {
-		return createPartial<RESQML2_NS::AbstractIjkGridRepresentation>(uuid, title, version); \
+	else if (ns == "prodml21") {
+		if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_1_NS::FluidSystem)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_1_NS::FluidCharacterization)
 	}
-	else if (dataType.compare(EML2_NS::EpcExternalPartReference::XML_TAG) == 0)
-	{
-		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(uuid, title, version);
-		COMMON_NS::AbstractObject* result = hdfProxyFactory->make(dor);
-		dor->ContentType = result->getContentType();
-		addOrReplaceDataObject(result);
-		return result;
+	else if (ns == "resqml20") {
+		if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::Activity)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::ActivityTemplate)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::BlockedWellboreRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::BoundaryFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::BoundaryFeatureInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::CategoricalProperty)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::CommentProperty)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::ContinuousProperty)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::DeviationSurveyRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::DiscreteProperty)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::EarthModelInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::FaultInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::FluidBoundaryFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::FrontierFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::GenericFeatureInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::GeneticBoundaryFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::GeobodyBoundaryInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::GeobodyFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::GeobodyInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::GeologicUnitFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::Grid2dRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::GridConnectionSetRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::HorizonInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::LocalDepth3dCrs)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::LocalTime3dCrs)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::MdDatum)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::OrganizationFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PlaneSetRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PointSetRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PolylineRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PolylineSetRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PropertyKind)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PropertySet)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::RepresentationSetRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::RockFluidOrganizationInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::RockFluidUnitInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::SeismicLatticeFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::SeismicLineFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::SeismicLineSetFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StratigraphicColumn)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StratigraphicColumnRankInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StratigraphicUnitFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StratigraphicUnitInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StringTableLookup)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StructuralOrganizationInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::SubRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::TectonicBoundaryFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::TimeSeries)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::TriangulatedSetRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::UnstructuredGridRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreFrameRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreTrajectoryRepresentation)
+		else if (dataType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG) == 0) {
+			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext);
+			dor->UUID = uuid;
+			dor->Title = title;
+			if (!version.empty()) {
+				dor->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapContext);
+				dor->VersionString->assign(version);
+			}
+			dor->ContentType = contentType;
+			RESQML2_NS::AbstractIjkGridRepresentation* result = new RESQML2_NS::AbstractIjkGridRepresentation(dor);
+			addOrReplaceDataObject(result);
+			return result;
+		}
 	}
+#if WITH_RESQML2_2
+	else if (ns == "resqml22") {
+		if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::BlockedWellboreRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::BoundaryFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::BoundaryFeatureInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::CategoricalProperty)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::CmpLineFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::CommentProperty)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::ContinuousColorMap)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::ContinuousProperty)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::CulturalFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::DeviationSurveyRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::DiscreteColorMap)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::DiscreteProperty)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::EarthModelInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::FaultInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::GenericFeatureInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::GeobodyBoundaryInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::GeobodyInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::Grid2dRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::GridConnectionSetRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::HorizonInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::LocalDepth3dCrs)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::LocalTime3dCrs)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::MdDatum)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::Model)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::NonSealedSurfaceFrameworkRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::PlaneSetRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::PointSetRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::PolylineRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::PolylineSetRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::PropertySet)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::RepresentationSetRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::RockFluidOrganizationInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::RockFluidUnitInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::RockVolumeFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::SealedSurfaceFrameworkRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::SealedVolumeFrameworkRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::SeismicLatticeFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::SeismicLineSetFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::SeismicWellboreFrameRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::ShotPointLineFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::StratigraphicColumn)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::StratigraphicColumnRankInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::StratigraphicOccurrenceInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::StratigraphicUnitInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::StringTableLookup)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::StructuralOrganizationInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::SubRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::TriangulatedSetRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::UnstructuredGridRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::WellboreFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::WellboreFrameRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::WellboreInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::WellboreMarkerFrameRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::WellboreTrajectoryRepresentation)
+		else if (dataType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG) == 0) {
+			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext);
+			dor->UUID = uuid;
+			dor->Title = title;
+			if (!version.empty()) {
+				dor->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapContext);
+				dor->VersionString->assign(version);
+			}
+			dor->ContentType = contentType;
+			RESQML2_NS::AbstractIjkGridRepresentation* result = new RESQML2_NS::AbstractIjkGridRepresentation(dor);
+			addOrReplaceDataObject(result);
+			return result;
+		}
+	}
+#endif
+	else if (ns == "witsml20") {
+		if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Channel)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::ChannelSet)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Log)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Trajectory)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Well)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Wellbore)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellboreCompletion)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellboreGeometry)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellCompletion)
+	}
+#if WITH_WITSML2_1
+	else if (ns == "witsml21") {
+		if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_1_NS::ToolErrorModel)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_1_NS::ErrorTerm)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_1_NS::WeightingFunction)
+	}
+#endif
 
 	throw invalid_argument("The content type " + contentType + " of the partial object to create has not been recognized by fesapi.");
 }
@@ -3390,8 +3490,7 @@ void DataObjectRepository::setHdfProxyFactory(COMMON_NS::HdfProxyFactory * facto
 	if (factory == nullptr) {
 		throw invalid_argument("You cannot set a NULL HDF proxy factory.");
 	}
-	delete hdfProxyFactory;
-	hdfProxyFactory = factory;
+	hdfProxyFactory.reset(factory);
 }
 
 COMMON_NS::AbstractObject* DataObjectRepository::resolvePartial(COMMON_NS::AbstractObject * partialObj)
