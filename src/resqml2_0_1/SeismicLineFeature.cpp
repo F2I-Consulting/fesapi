@@ -25,6 +25,7 @@ using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* SeismicLineFeature::XML_TAG = "SeismicLineFeature";
+const char* SeismicLineFeature::XML_NS = "resqml20";
 
 SeismicLineFeature::SeismicLineFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
 	int traceIndexIncrement, int firstTraceIndex, unsigned int traceCount)

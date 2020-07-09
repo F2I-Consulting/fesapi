@@ -32,6 +32,8 @@ using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_0_1_NS;
 
+const char* IjkGridParametricRepresentation::XML_NS = "resqml20";
+
 unsigned int IjkGridParametricRepresentation::getControlPointMaxCountPerPillar() const
 {
 	gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);

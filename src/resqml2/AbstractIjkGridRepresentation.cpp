@@ -33,8 +33,6 @@ using namespace RESQML2_NS;
 const char* AbstractIjkGridRepresentation::XML_TAG = "IjkGridRepresentation";
 const char* AbstractIjkGridRepresentation::XML_TAG_TRUNCATED = "TruncatedIjkGridRepresentation";
 
-const char* AbstractIjkGridRepresentation::XML_NS = "resqml20";
-
 AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars) :
 	AbstractColumnLayerGridRepresentation(partialObject, withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
 {

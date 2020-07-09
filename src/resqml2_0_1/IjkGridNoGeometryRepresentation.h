@@ -72,8 +72,18 @@ namespace RESQML2_0_1_NS
 		IjkGridNoGeometryRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridNoGeometryRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		virtual ~IjkGridNoGeometryRepresentation() {}
+		~IjkGridNoGeometryRepresentation() {}
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

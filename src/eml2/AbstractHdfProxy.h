@@ -140,6 +140,12 @@ namespace EML2_NS
 		virtual unsigned int getDimensionCount(const std::string & datasetName) = 0;
 
 		/**
+		 * Get the number of elements in each dimension in an HDF dataset of the proxy.
+		 * @param datasetName	The absolute name of the dataset we want to get the number of elements.
+		 */
+		virtual std::vector<unsigned long long> getElementCountPerDimension(const std::string & datasetName) = 0;
+
+		/**
 		 * Gets the number of elements in an HDF5 dataset of the proxy. The number of elements is got
 		 * from all dimensions.
 		 *

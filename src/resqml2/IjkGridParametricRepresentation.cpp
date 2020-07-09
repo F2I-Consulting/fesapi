@@ -87,23 +87,24 @@ void IjkGridParametricRepresentation::BSpline::checkIfParametersIncreaseOrDecrea
 	}
 
 	// initialization
-	for (size_t i = 0; i < parameter.size() - 1; ++i) {
-		if (parameter[i] != parameter[i] || parameter[i + 1] != parameter[i + 1]) {
+	size_t paramIndex = 0; // should be a loop variable from 0 to parameter.size() - 1 when Control points with equal parameter will be supported.
+	//for (size_t paramIndex = 0; paramIndex < parameter.size() - 1; ++paramIndex) {
+		if (parameter[paramIndex] != parameter[paramIndex] || parameter[paramIndex + 1] != parameter[paramIndex + 1]) {
 			throw invalid_argument("Control points with NaN parameter are not supported yet.");
 		}
 
-		if (parameter[i + 1] > parameter[i]) {
+		if (parameter[paramIndex + 1] > parameter[paramIndex]) {
 			areParametersIncreasing = true;
-			break;
+			//break;
 		}
-		else if (parameter[i + 1] < parameter[i]) {
+		else if (parameter[paramIndex + 1] < parameter[paramIndex]) {
 			areParametersIncreasing = false;
-			break;
+			//break;
 		}
 		else {
 			throw invalid_argument("Control points with equal parameter are not supported yet.");
 		}
-	}
+	//}
 
 	// Checking
 	if (areParametersIncreasing) {

@@ -111,6 +111,16 @@ namespace RESQML2_0_1_NS
 			ULONG64 faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
 			gsoap_resqml2_0_1::resqml20__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const { return XML_NS; }
+
 	private:
 
 		/**
@@ -140,15 +150,5 @@ namespace RESQML2_0_1_NS
 			ULONG64 pointCount, ULONG64 faceCount, RESQML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, ULONG64 faceCountPerCell,
 			const std::string& nodeIndicesPerFace, ULONG64 nodeCountPerFace) final;
-
-		/**
-		* The standard XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
-
-		/**
-		* Get the standard XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const { return XML_NS; }
 	};
 }

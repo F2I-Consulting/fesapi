@@ -323,15 +323,15 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 								repo.setHdfProxyFactory(new HdfProxyFactory());
 							}
 							wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
-							static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setRelativePath(target);
+							static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setRelativePath(target);
 							break;
 						}
 					}
 
-					static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
-					static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
+					static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
+					static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
 
-					repo.setDefaultHdfProxy(static_cast<COMMON_NS::AbstractHdfProxy*>(wrapper));
+					repo.setDefaultHdfProxy(static_cast<EML2_NS::AbstractHdfProxy*>(wrapper));
 				}
 				else {
 					repo.createPartial(extractUuidFromFileName(it->first), "Partial title", contentType);

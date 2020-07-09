@@ -33,6 +33,8 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* Grid2dRepresentation::XML_NS = "resqml20";
+
 Grid2dRepresentation::Grid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const string & guid, const std::string & title)
 {

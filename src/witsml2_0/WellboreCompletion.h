@@ -547,8 +547,5 @@ namespace WITSML2_0_NS
 		 */
 		gsoap_eml2_1::witsml20__PerforationStatusHistory* getPerforationHistoryEntry(unsigned int index,
 			unsigned int perforationIndex) const;
-
-		/** Resolve all relationships of the object in an epc document. */
-		void loadTargetRelationships();
 	};
 }

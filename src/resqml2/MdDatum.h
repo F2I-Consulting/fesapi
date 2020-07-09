@@ -108,8 +108,6 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT double getZInGlobalCrs() const;
 
-		void loadTargetRelationships();
-
 		/**
 		 * Gets the origin kind of this MD datum.
 		 *

@@ -217,21 +217,10 @@ namespace {
 	};
 }
 
-// Create a fesapi partial wrapper based on a content type
+// Create a fesapi partial wrapper based on a data type and its version
 #define CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(className)\
-	(datatype.compare(className::XML_TAG) == 0)\
-	{\
+	(dataType.compare(className::XML_TAG) == 0 && ns.compare(className::XML_NS) == 0) {\
 		return createPartial<className>(uuid, title, version);\
-	}
-#define CREATE_FESAPI_PARTIAL_WRAPPER(className)\
-	(dataType.compare(className::XML_TAG) == 0)\
-	{\
-		return dor.getVersion().empty() ? createPartial<className>(dor.getUuid(), dor.getTitle()) : createPartial<className>(dor.getUuid(), dor.getTitle(), dor.getVersion());\
-	}
-#define CREATE_EML_2_3_FESAPI_PARTIAL_WRAPPER(className)\
-	(contentType.compare(className::XML_TAG) == 0)\
-	{\
-		return dor->ObjectVersion == nullptr ? createPartial<className>(dor->Uuid, dor->Title) : createPartial<className>(dor->Uuid, dor->Title, *dor->ObjectVersion);\
 	}
 
 /////////////////////
@@ -574,7 +563,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 		}
 
 		auto now = std::chrono::system_clock::now();
-		journal.push_back(std::make_tuple(now, DataObjectIdentifier(proxy->getUuid(), proxy->getVersion()), CREATED));
+		journal.push_back(std::make_tuple(now, DataObjectReference(proxy), CREATED));
 		on_CreateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
 	}
 	else {
@@ -604,7 +593,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 			// New version of an existing UUID
 			dataObjects[proxy->getUuid()].push_back(proxy);
 			auto now = std::chrono::system_clock::now();
-			journal.push_back(std::make_tuple(now, DataObjectIdentifier((*same)->getUuid(), (*same)->getVersion()), CREATED));
+			journal.push_back(std::make_tuple(now, DataObjectReference(*same), CREATED));
 			on_CreateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
 		}
 		else {
@@ -613,12 +602,12 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 				throw invalid_argument("Cannot replace " + proxy->getUuid() + " with a different content type : " + proxy->getContentType() + " vs " + (*same)->getContentType());
 			}
 
-			if (!replaceOnlyContent || dynamic_cast<AbstractIjkGridRepresentation*>(*same) != nullptr) {
+			if (!replaceOnlyContent || dynamic_cast<RESQML2_NS::AbstractIjkGridRepresentation*>(*same) != nullptr) {
 				replaceDataObjectInRels(*same, proxy);
 
 				if (!(*same)->isPartial()) {
 					auto now = std::chrono::system_clock::now();
-					journal.push_back(std::make_tuple(now, DataObjectIdentifier(proxy->getUuid(), proxy->getVersion()), UPDATED));
+					journal.push_back(std::make_tuple(now, DataObjectReference(proxy), UPDATED));
 					on_UpdateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
 				}
 
@@ -628,7 +617,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 			else {
 				if (!(*same)->isPartial()) {
 					auto now = std::chrono::system_clock::now();
-					journal.push_back(std::make_tuple(now, DataObjectIdentifier((*same)->getUuid(), (*same)->getVersion()), UPDATED));
+					journal.push_back(std::make_tuple(now, DataObjectReference(*same), UPDATED));
 					on_UpdateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
 				}
 
@@ -642,7 +631,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 				else if (xmlNs == "prodml21" || xmlNs == "eml22") {
 					(*same)->setGsoapProxy(proxy->getEml22GsoapProxy());
 				}
-#if WITH_EXPERIMENTAL
+#if WITH_RESQML2_2
 				else if (xmlNs == "resqml22" || xmlNs == "eml23") {
 					(*same)->setGsoapProxy(proxy->getEml23GsoapProxy());
 				}
@@ -714,15 +703,20 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 	else if (ns == "witsml20") {
 		wrapper = getWitsml2_0WrapperFromGsoapContext(datatype);
 	}
+	else if (ns == "eml21") {
+		wrapper = getEml2_1WrapperFromGsoapContext(datatype);
+	}
 	else if (ns == "prodml21") {
 		wrapper = getProdml2_1WrapperFromGsoapContext(datatype);
 	}
 	else if (ns == "resqml22") {
 		wrapper = getResqml2_2WrapperFromGsoapContext(datatype);
 	}
+	/*
 	else if (ns == "witsml21") {
 		wrapper = getWitsml2_1WrapperFromGsoapContext(datatype);
 	}
+	*/
 	else if (ns == "eml23") {
 		wrapper = getEml2_3WrapperFromGsoapContext(datatype);
 	}
@@ -825,109 +819,128 @@ const std::vector<std::string> & DataObjectRepository::getWarnings() const
 	return warnings;
 }
 
-COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectReference& dor)
+COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string & uuid, const std::string & title, const std::string & contentType, const std::string & version)
 {
-	std::string contentType = dor.getContentType();
-
-	string dataType;
-	if (contentType.find("obj_") != std::string::npos) {
-		const size_t lastEqualCharPos = contentType.find_last_of('_'); // The XML tag is after "type=obj_"
-		dataType = contentType.substr(lastEqualCharPos + 1);
+	size_t characterPos = contentType.find_last_of('_'); // The XML tag is after "obj_"
+	if (characterPos == string::npos) { characterPos = contentType.find_last_of('='); }
+	if (characterPos == string::npos) {
+		throw logic_error("The content type " + contentType + " has an invalid syntax.");
 	}
-	else {
-		const size_t lastEqualCharPos = contentType.find_last_of('='); // The XML tag is after "type="
-		 dataType = contentType.substr(lastEqualCharPos + 1);
-	}
+	const string dataType = contentType.substr(characterPos + 1);
 
-	if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::MdDatum)
+	characterPos = contentType.find('-'); // The namespace starts after "application/x-"
+	size_t plusPos = contentType.find('+'); // The namespace without version ends before "+xml"
+	if (characterPos == string::npos || plusPos == string::npos || plusPos < characterPos) {
+		throw logic_error("The content type " + contentType + " has an invalid syntax.");
+	}
+	string ns = contentType.substr(characterPos + 1, plusPos - characterPos - 1);
+	characterPos = contentType.find('='); // The version starts after "version="
+	if (characterPos == string::npos || contentType.size() < characterPos + 3) {
+		throw logic_error("The content type " + contentType + " has an invalid syntax.");
+	}
+	ns += contentType[characterPos + 1];
+	// ignore the dot in the version
+	ns += contentType[characterPos + 3];
+
+	if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(MdDatum)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(Activity)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(ActivityTemplate)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::SeismicLatticeFeature)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(SeismicLatticeFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(SeismicLineFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::SeismicLineSetFeature)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(SeismicLineSetFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(FrontierFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::LocalDepth3dCrs)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::LocalTime3dCrs)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(LocalDepth3dCrs)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(LocalTime3dCrs)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(TectonicBoundaryFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(GeneticBoundaryFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::BoundaryFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreFeature)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(BoundaryFeature)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WellboreFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StratigraphicUnitFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StratigraphicColumn)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::GenericFeatureInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::BoundaryFeatureInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::FaultInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::HorizonInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StratigraphicUnitInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StratigraphicColumnRankInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StratigraphicColumn)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(GenericFeatureInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(BoundaryFeatureInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WellboreInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(FaultInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(HorizonInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StratigraphicUnitInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StratigraphicColumnRankInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StratigraphicOccurrenceInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreFrameRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreTrajectoryRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PlaneSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PointSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PolylineRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PolylineSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::Grid2dRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::TriangulatedSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::BlockedWellboreRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_NS::AbstractIjkGridRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::UnstructuredGridRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WellboreMarkerFrameRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WellboreTrajectoryRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PolylineSetRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PointSetRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PlaneSetRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PolylineRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(Grid2dRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(TriangulatedSetRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(BlockedWellboreRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(UnstructuredGridRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PropertyKind)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PropertySet)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::ContinuousProperty)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::CategoricalProperty)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::DiscreteProperty)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::CommentProperty)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StringTableLookup)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::EarthModelInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PropertySet)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(ContinuousProperty)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(CategoricalProperty)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(DiscreteProperty)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(CommentProperty)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StringTableLookup)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EarthModelInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(OrganizationFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StructuralOrganizationInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StructuralOrganizationInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(FluidBoundaryFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::SubRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::GridConnectionSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::TimeSeries)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::RepresentationSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::DeviationSurveyRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(SubRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(GridConnectionSetRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(TimeSeries)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RepresentationSetRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(NonSealedSurfaceFrameworkRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(SealedSurfaceFrameworkRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(SealedVolumeFrameworkRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(DeviationSurveyRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(GeobodyFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::GeobodyBoundaryInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::GeobodyInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::RockFluidOrganizationInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::RockFluidUnitInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(GeobodyBoundaryInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(GeobodyInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RockFluidOrganizationInterpretation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RockFluidUnitInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RockFluidUnitFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Well)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellCompletion)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellboreCompletion)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Wellbore)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Trajectory)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_1_NS::PropertyKind)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Log)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::ChannelSet)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Channel)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellboreGeometry)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_1_NS::PropertyKind)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_1_NS::FluidSystem)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_1_NS::FluidCharacterization)
-#if WITH_RESQML2_2
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::GraphicalInformationSet)
+#if WITH_EXPERIMENTAL
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(COMMON_NS::GraphicalInformationSet)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_1_NS::ToolErrorModel)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_1_NS::ErrorTerm)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_1_NS::WeightingFunction)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::DiscreteColorMap)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::ContinuousColorMap)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::WellboreFrameRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::SeismicWellboreFrameRepresentation)
 #endif
-#if WITH_WITSML2_1
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_1_NS::ToolErrorModel)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_1_NS::ErrorTerm)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_1_NS::WeightingFunction)
-#endif
+	else if (dataType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG) == 0 && ns.compare("resqml20") == 0) {
+		return createPartial<RESQML2_NS::AbstractIjkGridRepresentation>(uuid, title, version); \
+	}
 	else if (dataType.compare(EML2_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
+		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(uuid, title, version);
 		COMMON_NS::AbstractObject* result = hdfProxyFactory->make(dor);
+		dor->ContentType = result->getContentType();
 		addOrReplaceDataObject(result);
 		return result;
 	}
 
-	throw invalid_argument("The content type " + contentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
+	throw invalid_argument("The content type " + contentType + " of the partial object to create has not been recognized by fesapi.");
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectReference& dor)
+{
+	return createPartial(dor.getUuid(), dor.getTitle(), dor.getContentType(), dor.getVersion());
 }
 
 //************************************
@@ -2102,6 +2115,7 @@ RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialTr
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(getGsoapContext());
 	dor->UUID = guid;
 	dor->Title = title;
+	dor->ContentType = "application/x-resqml+xml;version=2.0;type=obj_TruncatedIjkGridRepresentation";
 	return new RESQML2_NS::AbstractIjkGridRepresentation(dor, true);
 }
 
@@ -2629,7 +2643,7 @@ RESQML2_NS::ContinuousColorMap* DataObjectRepository::createContinuousColorMap(c
 	throw std::logic_error("RESQML2.2 support has not been built in this library.");
 #endif
 }
-
+/*
 WITSML2_1_NS::ToolErrorModel* DataObjectRepository::createToolErrorModel(
 	const std::string & guid,
 	const std::string & title,
@@ -2677,7 +2691,7 @@ WITSML2_1_NS::WeightingFunctionDictionary* DataObjectRepository::createWeighting
 {
 	return new WITSML2_1_NS::WeightingFunctionDictionary(this, guid, title);
 }
-
+*/
 std::vector<RESQML2_NS::LocalDepth3dCrs*> DataObjectRepository::getLocalDepth3dCrsSet() const { return getDataObjects<RESQML2_NS::LocalDepth3dCrs>(); }
 
 std::vector<RESQML2_NS::LocalTime3dCrs*> DataObjectRepository::getLocalTime3dCrsSet() const { return getDataObjects<RESQML2_NS::LocalTime3dCrs>(); }
@@ -3220,7 +3234,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getProdml2_1WrapperFromGsoapCon
 
 		return wrapper;
 }
-
+/*
 COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_1WrapperFromGsoapContext(const std::string & datatype)
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;
@@ -3234,7 +3248,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_1WrapperFromGsoapCon
 #endif
 	return wrapper;
 }
-
+*/
 COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType)
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;

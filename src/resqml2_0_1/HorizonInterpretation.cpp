@@ -26,6 +26,8 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* HorizonInterpretation::XML_NS = "resqml20";
+
 HorizonInterpretation::HorizonInterpretation(RESQML2_NS::BoundaryFeature * horizon, const string & guid, const string & title)
 {
 	if (horizon == nullptr) {

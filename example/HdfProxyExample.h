@@ -68,7 +68,7 @@ public:
 	/**
 	 * Get the used (native) datatype in a dataset
 	 */
-	AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
+	hdf5_hid_t getHdfDatatypeInDataset(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Get the used datatype class in a dataset

@@ -20,11 +20,11 @@ under the License.
 
 #include <stdexcept>
 
-#include "../common/EnumStringMapper.h"
-
 using namespace std;
 using namespace EML2_1_NS;
 using namespace gsoap_eml2_1;
+
+const char* PropertyKind::XML_NS = "eml21";
 
 PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 	gsoap_eml2_1::eml21__QuantityClassKind quantityClass, bool isAbstract, EML2_NS::PropertyKind* parentPropertyKind)

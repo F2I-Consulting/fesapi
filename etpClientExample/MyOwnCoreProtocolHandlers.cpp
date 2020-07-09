@@ -23,9 +23,9 @@ under the License.
 #include <etp/EtpHdfProxy.h>
 #include <etp/EtpHelpers.h>
 
-#include <resqml2_0_1/LocalDepth3dCrs.h>
-#include <resqml2_0_1/IjkGridExplicitRepresentation.h>
-#include <resqml2_0_1/ContinuousPropertySeries.h>
+#include <resqml2/ContinuousProperty.h>
+#include <resqml2/LocalDepth3dCrs.h>
+#include <resqml2/IjkGridExplicitRepresentation.h>
 
 #include <tools/GuidTools.h>
 
@@ -138,13 +138,13 @@ void askUser(std::shared_ptr<ETP_NS::AbstractSession> session, COMMON_NS::DataOb
 			
 			// Fake the creation of an IJK Grid
 			COMMON_NS::DataObjectRepository repo;
-			COMMON_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy", "../..", "fakeForIjkGrid.h5", COMMON_NS::DataObjectRepository::openingMode::OVERWRITE);
+			EML2_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy", "../..", "fakeForIjkGrid.h5", COMMON_NS::DataObjectRepository::openingMode::OVERWRITE);
 			repo.setDefaultHdfProxy(hdfProxy);
 
-			RESQML2_0_1_NS::LocalDepth3dCrs* local3dCrs = repo.createLocalDepth3dCrs("f951f4b7-684a-4c1b-bcd7-bc61d939b328", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
+			RESQML2_NS::LocalDepth3dCrs* local3dCrs = repo.createLocalDepth3dCrs("f951f4b7-684a-4c1b-bcd7-bc61d939b328", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
 			repo.setDefaultCrs(local3dCrs);
 
-			RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkgrid = repo.createIjkGridExplicitRepresentation("", "Put IJK Grid", 2, 1, 1);
+			RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid = repo.createIjkGridExplicitRepresentation("", "Put IJK Grid", 2, 1, 1);
 			double nodes[48] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350, /* SPLIT*/ 375, 0, 350, 375, 150, 350,
 				0, 0, 500, 375, 0, 500, 700, 0, 550, 0, 150, 500, 375, 150, 500, 700, 150, 550, /* SPLIT*/ 375, 0, 550, 375, 150, 550 };
 			unsigned int pillarOfCoordinateLine[2] = { 1, 4 };
@@ -216,7 +216,7 @@ void askUser(std::shared_ptr<ETP_NS::AbstractSession> session, COMMON_NS::DataOb
 					}
 					else {
 						std::cout << "Ijk Grid " << ijkGrid->getTitle() << " : " << ijkGrid->getUuid() << std::endl;
-						if (ijkGrid->getGeometryKind() == RESQML2_0_1_NS::AbstractIjkGridRepresentation::NO_GEOMETRY) {
+						if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::NO_GEOMETRY) {
 							std::cout << "This IJK Grid has got no geometry." << std::endl;
 							continue;
 						}
@@ -237,8 +237,8 @@ void askUser(std::shared_ptr<ETP_NS::AbstractSession> session, COMMON_NS::DataOb
 					//*****************
 					auto propSet = ijkGrid->getPropertySet();
 					for (const auto & prop : propSet) {
-						RESQML2_0_1_NS::ContinuousProperty const * continuousProp = dynamic_cast<RESQML2_0_1_NS::ContinuousProperty const *>(prop);
-						if (continuousProp != nullptr && dynamic_cast<RESQML2_0_1_NS::ContinuousPropertySeries const *>(continuousProp) == nullptr &&
+						RESQML2_NS::ContinuousProperty const * continuousProp = dynamic_cast<RESQML2_NS::ContinuousProperty const *>(prop);
+						if (continuousProp != nullptr &&
 							continuousProp->getAttachmentKind() == gsoap_resqml2_0_1::resqml20__IndexableElements::resqml20__IndexableElements__cells) {
 							std::cout << "Continuous property " << prop->getTitle() << " : " << prop->getUuid() << std::endl;
 							auto cellCount = ijkGrid->getCellCount();

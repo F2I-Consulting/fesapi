@@ -77,8 +77,5 @@ namespace WITSML2_0_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		WellboreObject(gsoap_eml2_1::eml21__AbstractObject* fromGsoap) :WITSML2_0_NS::AbstractObject(fromGsoap) {}
-
-		/** Resolve all relationships of the object in a repository. */
-		virtual void loadTargetRelationships();
 	};
 }

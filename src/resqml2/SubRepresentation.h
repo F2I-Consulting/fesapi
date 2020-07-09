@@ -423,8 +423,6 @@ namespace RESQML2_NS
 		 */
 		SubRepresentation(gsoap_eml2_3::_resqml22__SubRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
-		void loadTargetRelationships();
-
 		/**
 		 * Pushes a back XML supporting representation
 		 *

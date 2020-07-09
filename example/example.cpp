@@ -4535,13 +4535,12 @@ void deserialize(const string & inputFile)
 					std::cout << "Node count of face " << faceIndex << " of cell " << cellIndex << " is : " << unstructuredGridRepSet[i]->getNodeCountOfFaceOfCell(cellIndex, faceIndex) << std::endl;
 					for (unsigned int nodeIndex = 0; nodeIndex < unstructuredGridRepSet[i]->getNodeCountOfFaceOfCell(cellIndex, faceIndex); ++nodeIndex) {
 						std::cout << "Node indice " << nodeIndex << " of face " << faceIndex << " of cell " << cellIndex << " is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] << std::endl;
-						std::cout << "X= " <<  gridPoints[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3] << " Y= " <<  gridPoints[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3+1 ] << " Z= " <<  gridPoints[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3+ 2 ] << std::endl;
+						std::cout << "X= " <<  gridPoints.get()[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3] << " Y= " <<  gridPoints.get()[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3+1 ] << " Z= " <<  gridPoints.get()[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3+ 2 ] << std::endl;
 					}
 				}
 			}
 
 			unstructuredGridRepSet[i]->unloadGeometry();
-			delete[] gridPoints;
 
 			showAllProperties(unstructuredGridRepSet[i]);
 		}

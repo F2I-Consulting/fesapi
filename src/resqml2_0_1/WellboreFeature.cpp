@@ -27,6 +27,8 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* WellboreFeature::XML_NS = "resqml20";
+
 WellboreFeature::WellboreFeature(COMMON_NS::DataObjectRepository* repo, const string& guid, const std::string& title)
 {
 	if (repo == nullptr) {

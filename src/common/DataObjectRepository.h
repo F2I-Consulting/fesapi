@@ -302,7 +302,7 @@ namespace COMMON_NS
 		/**
 		* Get the journal of the DataObject repository.
 		*/
-		const std::vector< std::tuple<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::DataObjectIdentifier, CUD> >& getJournal() const { return journal; }
+		const std::vector< std::tuple<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::DataObjectReference, CUD> >& getJournal() const { return journal; }
 
 		/**
 		* Allow a specialization of a DataObjectRepository to provide a special behaviour when a dataobject is created
@@ -654,6 +654,11 @@ namespace COMMON_NS
 
 			throw std::invalid_argument("The uuid " + uuid + " does not resolve to the expected datatype");
 		}
+
+		/**
+		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title + a content type + a version
+		*/
+		COMMON_NS::AbstractObject* createPartial(const std::string & uuid, const std::string & title, const std::string & contentType, const std::string & version = "");
 
 		/**
 		 * Creates a partial object in this repository based on a data object reference.
@@ -2877,7 +2882,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT EML2_NS::Activity* createActivity(EML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title);
 
 		//*************** WITSML *************
-
+/*
 		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ToolErrorModel* createToolErrorModel(
 			const std::string & guid,
 			const std::string & title,
@@ -2907,7 +2912,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::WeightingFunctionDictionary* createWeightingFunctionDictionary(
 			const std::string & guid,
 			const std::string & title);
-
+*/
 		/**
 		 * Creates a well into this repository
 		 *
@@ -3272,7 +3277,7 @@ namespace COMMON_NS
 		EnergisticsStandard defaultResqmlVersion;
 		EnergisticsStandard defaultWitsmlVersion;
 
-		std::vector< std::tuple<std::chrono::time_point<std::chrono::system_clock>, DataObjectIdentifier, CUD> > journal;
+		std::vector< std::tuple<std::chrono::time_point<std::chrono::system_clock>, DataObjectReference, CUD> > journal;
 
 		/**
 		* Necessary to avoid a dependency on GuidTools.h

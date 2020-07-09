@@ -21,7 +21,7 @@ under the License.
 #include "etp/AbstractSession.h"
 #include "etp/EtpException.h"
 
-#include "common/AbstractHdfProxy.h"
+#include "eml2/AbstractHdfProxy.h"
 
 #include "MyDataObjectRepository.h"
 
@@ -37,7 +37,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v1
 		try
 		{
 			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(dai.m_uri);
-			COMMON_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<COMMON_NS::AbstractHdfProxy*>(obj);
+			EML2_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<EML2_NS::AbstractHdfProxy*>(obj);
 			if (hdfProxy == nullptr) {
 				pe.m_errors[element.first].m_message = "The URI points to an object which is not an HDF proxy";
 				pe.m_errors[element.first].m_code = 9;
@@ -123,7 +123,7 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v1
 
 		try {
 			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(pdat.second.m_uid.m_uri);
-			COMMON_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<COMMON_NS::AbstractHdfProxy*>(obj);
+			EML2_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<EML2_NS::AbstractHdfProxy*>(obj);
 			if (hdfProxy == nullptr) {
 				pe.m_errors[pdat.first].m_message = obj->getUuid() + " cannot be resolved as an HDF Proxy in this store";
 				pe.m_errors[pdat.first].m_code = 11;
@@ -169,7 +169,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrayMetadata(const Energistics::
 
 		try {
 			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(dai.m_uri);
-			COMMON_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<COMMON_NS::AbstractHdfProxy*>(obj);
+			EML2_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<EML2_NS::AbstractHdfProxy*>(obj);
 			if (hdfProxy == nullptr) {
 				pe.m_errors[element.first].m_message = "The URI points to an object which is not an HDF proxy";
 				pe.m_errors[element.first].m_code = 9;

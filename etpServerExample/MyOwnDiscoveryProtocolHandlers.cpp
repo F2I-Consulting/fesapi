@@ -20,7 +20,7 @@ under the License.
 
 #include "etp/EtpHelpers.h"
 
-#include "common/AbstractHdfProxy.h"
+#include "eml2/AbstractHdfProxy.h"
 #include "resqml2_0_1/TriangulatedSetRepresentation.h"
 #include "resqml2_0_1/Grid2dRepresentation.h"
 #include "resqml2_0_1/WellboreTrajectoryRepresentation.h"

@@ -100,6 +100,16 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStringLookupDor() const final;
 
 		/**
+		 * Gets the Energistics property kind which is associated to this intance
+		 *
+		 * @exception	std::invalid_argument	If the property kind of this property is not an
+		 * 										Energistics one.
+		 *
+		 * @returns	The Energistics property kind.
+		 */
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind() const;
+
+		/**
 		* Check if the associated local property kind is allowed for this property.
 		*/
 		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) final;
@@ -128,7 +138,5 @@ namespace RESQML2_0_1_NS
 		* Get the standard XML namespace for serializing this data object.
 		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const { return XML_NS; }
-
-		virtual void loadTargetRelationships();
 	};
 }

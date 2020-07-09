@@ -36,12 +36,12 @@ void MyOwnStoreNotificationProtocolHandlers::on_SubscribeNotifications(const Ene
 		auto journal = repo->getJournal();
 		auto startime = subscriptionInfo.second.m_startTime;
 		const auto firstInJournal = std::find_if(journal.begin(), journal.end(),
-			[startime](const std::tuple<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::DataObjectIdentifier, COMMON_NS::DataObjectRepository::CUD>& entry) {
+			[startime](const std::tuple<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::DataObjectReference, COMMON_NS::DataObjectRepository::CUD>& entry) {
 			return std::chrono::duration_cast<std::chrono::seconds>(std::get<0>(entry).time_since_epoch()).count() > startime; });
 		std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> created;
 		std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> updated;
 		for (auto it = firstInJournal; it != journal.end(); ++it) {
-			COMMON_NS::AbstractObject* obj = repo->getDataObjectByUuidAndVersion(std::get<1>(*it).uuid, std::get<1>(*it).version);
+			COMMON_NS::AbstractObject* obj = repo->getDataObjectByUuidAndVersion(std::get<1>(*it).getUuid(), std::get<1>(*it).getVersion());
 			if (std::get<2>(*it) == COMMON_NS::DataObjectRepository::CREATED) {
 				created.push_back(std::make_pair(std::get<0>(*it), obj));
 			}

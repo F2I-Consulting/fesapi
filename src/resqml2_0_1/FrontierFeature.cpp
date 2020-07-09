@@ -25,6 +25,7 @@ using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* FrontierFeature::XML_TAG = "FrontierFeature";
+const char* FrontierFeature::XML_NS = "resqml20";
 
 FrontierFeature::FrontierFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const string & title)
 {

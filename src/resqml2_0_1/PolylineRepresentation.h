@@ -105,18 +105,6 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT void setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole) final;
 
-	private:
-		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const final;
-
-		/*Initializes this object
-		*
-		* @param[in, out]	repo		If non - null, the repo.
-		* @param 		  	guid		Unique identifier.
-		* @param 		  	title   	The title.
-		* @param 		  	isClosed(Optional) True if is closed, false if not.
-		* /
-		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, bool isClosed = false);
-
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
@@ -126,5 +114,18 @@ namespace RESQML2_0_1_NS
 		* Get the standard XML namespace for serializing this data object.
 		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const { return XML_NS; }
+
+	private:
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const final;
+
+		/**
+		 * Initializes this object
+		 *
+		 * @param [in,out]	repo		If non-null, the repo.
+		 * @param 		  	guid		Unique identifier.
+		 * @param 		  	title   	The title.
+		 * @param 		  	isClosed	(Optional) True if is closed, false if not.
+		 */
+		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, bool isClosed = false);
 	};
 }

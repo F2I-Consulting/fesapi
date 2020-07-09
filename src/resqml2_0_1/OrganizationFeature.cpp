@@ -25,6 +25,7 @@ using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* OrganizationFeature::XML_TAG = "OrganizationFeature";
+const char* OrganizationFeature::XML_NS = "resqml20";
 
 OrganizationFeature::OrganizationFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const string & title, resqml20__OrganizationKind orgType)
 {

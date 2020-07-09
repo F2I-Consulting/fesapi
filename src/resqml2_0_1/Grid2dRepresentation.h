@@ -126,6 +126,16 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT int getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const final;
 
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
+
 	private:
 
 		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
@@ -210,8 +220,6 @@ namespace RESQML2_0_1_NS
 			RESQML2_NS::Grid2dRepresentation * supportingRepresentation,
 			unsigned int startGlobalIndex = 0,
 			int indexIncrementI = 1, int indexIncrementJ = 1);
-
-		void loadTargetRelationships();
 
 		/**
 		 * Push back a geometry for a grid 2d representation which defines its own support. This

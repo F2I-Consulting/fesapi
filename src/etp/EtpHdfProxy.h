@@ -24,7 +24,7 @@ under the License.
 
 namespace ETP_NS
 {
-	class DLL_IMPORT_OR_EXPORT EtpHdfProxy : public COMMON_NS::AbstractHdfProxy
+	class DLL_IMPORT_OR_EXPORT EtpHdfProxy : public EML2_NS::AbstractHdfProxy
 	{
 	private:
 		std::shared_ptr<DataArrayBlockingSession> session;
@@ -35,16 +35,16 @@ namespace ETP_NS
 	public:
 
 		EtpHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
-			COMMON_NS::AbstractHdfProxy(fromGsoap), session(nullptr), compressionLevel(0) {}
+			EML2_NS::AbstractHdfProxy(fromGsoap), session(nullptr), compressionLevel(0) {}
 
 		EtpHdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
-			COMMON_NS::AbstractHdfProxy(fromGsoap), session(nullptr), compressionLevel(0) {}
+			EML2_NS::AbstractHdfProxy(fromGsoap), session(nullptr), compressionLevel(0) {}
 
 		/**
 		* Only for partial transfer
 		*/
 		EtpHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			COMMON_NS::AbstractHdfProxy(partialObject), session(nullptr), compressionLevel(0) {}
+			EML2_NS::AbstractHdfProxy(partialObject), session(nullptr), compressionLevel(0) {}
 
 		/**
 		* Destructor.
@@ -75,7 +75,7 @@ namespace ETP_NS
 		* Get the used (native) datatype in a dataset
 		* To compare with H5T_NATIVE_INT, H5T_NATIVE_UINT, H5T_NATIVE_FLOAT, etc...
 		*/
-		AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & groupName);
+		hdf5_hid_t getHdfDatatypeInDataset(const std::string & groupName);
 
 		/**
 		* Get the used datatype class in a dataset
@@ -525,14 +525,14 @@ namespace ETP_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		COMMON_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) {
+		EML2_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) {
 			return new EtpHdfProxy(partialObject);
 		}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		COMMON_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) {
+		EML2_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) {
 			return new EtpHdfProxy(fromGsoap);
 		}
 	};
