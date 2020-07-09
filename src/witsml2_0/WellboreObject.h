@@ -31,7 +31,7 @@ namespace WITSML2_0_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~WellboreObject() {}
+		virtual ~WellboreObject() {}
 
 		/**
 		* Get the Data Object Reference of the wellbore linked with this data object.

@@ -71,10 +71,13 @@ namespace EML2_0_NS
 		DLL_IMPORT_OR_EXPORT ~HdfProxy() {}
 
 		/**
-		 * Get the XML namespace for the tags for the XML serialization of this instance
-		 *
-		 * @returns	The XML namespace.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final;
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

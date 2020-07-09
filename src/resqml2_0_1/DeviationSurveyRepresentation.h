@@ -85,6 +85,8 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT void getAzimuths(double* values) const final;
 
+		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
+
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
@@ -93,8 +95,6 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const { return XML_NS; }
-
-		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

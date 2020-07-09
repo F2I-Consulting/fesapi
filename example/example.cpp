@@ -2520,7 +2520,7 @@ void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
 	for (size_t fcIndex = 0; fcIndex < fluidCharacterization.size(); ++fcIndex) {
 		PRODML2_1_NS::FluidCharacterization* fc = fluidCharacterization[fcIndex];
 		showAllMetadata(fc);
-		RESQML2_0_1_NS::RockFluidUnitFeature* rfu = fc->getRockFluidUnit();
+		RESQML2_NS::RockFluidUnitInterpretation* rfu = fc->getRockFluidUnit();
 		if (rfu != nullptr) {
 			std::cout << "connected wiht rock fluid unit " << std::endl;
 			showAllMetadata(rfu);

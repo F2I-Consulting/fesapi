@@ -29,7 +29,7 @@ namespace WITSML2_0_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~AbstractObject() {}
+		virtual ~AbstractObject() {}
 
 		/**
 		 * Get the content type of the instance according to EPC recommendation
@@ -55,7 +55,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The XML namespace.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const { return XML_NS; }
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
 	protected:
 
