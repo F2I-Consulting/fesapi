@@ -44,7 +44,7 @@ install:
   - mkdir build
   - cd build
   - cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX:STRING=../../minizip-install ..
-  - cmake3 --build . --config Release
+  - cmake --build . --config Release
   - make install
   - cd ../..
   - wget http://prdownloads.sourceforge.net/swig/swig-4.0.2.tar.gz;
