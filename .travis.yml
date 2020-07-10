@@ -44,9 +44,9 @@ install:
       tar -xzf minizip-1.1-linux-ubuntu1604-x86_64-gcc540.tar.gz;
       wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.sh;
       sudo sh cmake-3.12.0-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir;
-      wget http://prdownloads.sourceforge.net/swig/swig-4.0.1.tar.gz;
-      tar -xzf swig-4.0.1.tar.gz;
-      cd swig-4.0.1;
+      wget http://prdownloads.sourceforge.net/swig/swig-4.0.2.tar.gz;
+      tar -xzf swig-4.0.2.tar.gz;
+      cd swig-4.0.2;
       ./configure;
       make;
       sudo make install;
