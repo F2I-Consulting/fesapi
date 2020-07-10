@@ -37,6 +37,8 @@ install:
   - sudo rm -rf /usr/local/cmake-*
   - mkdir ../dependencies
   - cd ../dependencies
+  - wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.sh;
+  - sudo sh cmake-3.12.0-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir;
   - git clone https://github.com/F2I-Consulting/Minizip.git
   - cd Minizip
   - mkdir build
@@ -45,8 +47,6 @@ install:
   - cmake3 --build . --config Release
   - make install
   - cd ../..
-  - wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.sh;
-  - sudo sh cmake-3.12.0-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir;
   - wget http://prdownloads.sourceforge.net/swig/swig-4.0.2.tar.gz;
   - tar -xzf swig-4.0.2.tar.gz;
   - cd swig-4.0.2;
