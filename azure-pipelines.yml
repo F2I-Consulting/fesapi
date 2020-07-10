@@ -45,10 +45,11 @@ jobs:
         inputs:
           workingDirectory: C:/Minizip/build
           cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
-      - powershell: |
-          make install
-        workingDirectory: C:/Minizip/build
-        displayName: 'Installing Minizip'
+      - task: CMake@1
+        displayName: "CMake Install Minizip --config $(BuildType)"
+        inputs:
+          workingDirectory: C:/Minizip/build
+          cmakeArgs: --install . --config $(BuildType)
 
       # sourceforge and WebRequest incompatible
       - task: PowerShell@2
