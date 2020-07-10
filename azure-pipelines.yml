@@ -27,6 +27,7 @@ jobs:
           msiexec.exe /i "C:\hdf5\HDF5-1.8.18-win64.msi" /qn INSTALL_ROOT=C:\hdf5-1.8.18-win64-vs2015-noszip
         displayName: 'Install HDF5 1.8.18'
 
+      # Minizip
       - powershell: |
           git clone https://github.com/F2I-Consulting/Minizip.git C:/Minizip
         displayName: 'Cloning Minizip'
@@ -130,10 +131,30 @@ jobs:
           msiexec.exe /i "C:\hdf5\HDF5-1.8.18-win64.msi" /qn INSTALL_ROOT=C:\hdf5-1.8.18-win64-vs2015-noszip
         displayName: 'Install HDF5 1.8.18'
 
+      # Minizip
       - powershell: |
-          Invoke-WebRequest https://github.com/F2I-Consulting/Minizip/releases/download/1.1/minizip-1.1-win64-vs2017-static.zip -OutFile C:\minizip-1.1-win64-vs2017-static.zip
-          Expand-Archive C:\minizip-1.1-win64-vs2017-static.zip -DestinationPath C:\
-        displayName: 'Install Minizip'
+          git clone https://github.com/F2I-Consulting/Minizip.git C:/Minizip
+        displayName: 'Cloning Minizip'
+      - task: CMake@1
+        displayName: 'CMake configure Minizip'
+        inputs:
+          workingDirectory: C:/Minizip/build
+          cmakeArgs:
+            ..
+            $(Generator)
+            -Wno-dev -Wno-deprecated
+            -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
+            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+      - task: CMake@1
+        displayName: "CMake build Minizip --config $(BuildType)"
+        inputs:
+          workingDirectory: C:/Minizip/build
+          cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
+      - task: CMake@1
+        displayName: "CMake Install Minizip --config $(BuildType)"
+        inputs:
+          workingDirectory: C:/Minizip/build
+          cmakeArgs: --install . --config $(BuildType)
 
       # sourceforge and WebRequest incompatible
       - task: PowerShell@2

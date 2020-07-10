@@ -222,7 +222,9 @@ namespace COMMON_NS
 %include "swigResqml2_2Include.i"
 #endif
 %include "swigWitsml2_0Include.i"
+#ifdef WITH_ETP
 %include "swigEtp1_2Include.i"
+#endif
 
 //************************/
 // STD::VECTOR DEFINITIONS

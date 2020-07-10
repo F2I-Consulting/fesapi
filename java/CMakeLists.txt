@@ -49,20 +49,20 @@ configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR
 configure_file(${FESAPI_ROOT_DIR}/cmake/EtpExample.java ${FESAPI_ROOT_DIR}/java/example/EtpExample.java) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnCoreProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/example/MyOwnCoreProtocolHandlers.java) # Overwrite if different
 
+set (SWIG_DEFINITIONS "")
+if (WITH_RESQML2_2)
+	string(APPEND SWIG_DEFINITIONS "-DWITH_RESQML2_2")
+endif (WITH_RESQML2_2)
+if (WITH_ETP)
+	string(APPEND SWIG_DEFINITIONS " -DWITH_ETP")
+endif (WITH_ETP)
+
 # SWIG execution
 if (WIN32)
-	if (WITH_RESQML2_2)
-		set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} -DWITH_RESQML2_2 -c++ -java -doxygen -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i")
-	else (WITH_RESQML2_2)
-		set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} -c++ -java -doxygen -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i")
-	endif(WITH_RESQML2_2)
+	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -c++ -java -doxygen -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i")
 	execute_process(COMMAND powershell ${EXECUTE_COMMAND})
 elseif (UNIX)
-	if (WITH_RESQML2_2)
-		set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} -DWITH_RESQML2_2 -c++ -java -doxygen -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i)
-	else (WITH_RESQML2_2)
-		set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} -c++ -java -doxygen -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i)
-	endif(WITH_RESQML2_2)
+	set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -c++ -java -doxygen -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i)
 	execute_process(COMMAND ${EXECUTE_COMMAND})
 endif (WIN32)
 message("SWIG Java files have been generated.")
