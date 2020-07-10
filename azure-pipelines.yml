@@ -97,7 +97,7 @@ jobs:
   - job:
     displayName: Windows VS2019
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'windows-2019'
     timeoutInMinutes: 120
     strategy:
       matrix:
