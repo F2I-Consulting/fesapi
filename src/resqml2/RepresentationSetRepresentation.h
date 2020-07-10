@@ -130,7 +130,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 
 		/** Loads target relationships */
-		virtual void loadTargetRelationships();
+		void virtual loadTargetRelationships() override;
 
     protected:
 

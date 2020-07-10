@@ -678,15 +678,6 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 		wrapper = hdfProxyFactory->make(read);
 	}
 	else if (ns == "resqml20") {
-		if (contentOrDataType != "application/x-resqml+xml;version=2.0.1;type=obj_Activity" &&
-			contentOrDataType != "application/x-resqml+xml;version=2.0.1;type=obj_ActivityTemplate" &&
-			contentOrDataType != "application/x-resqml+xml;version=2.0.1;type=obj_CategoricalPropertySeries" &&
-			contentOrDataType != "application/x-resqml+xml;version=2.0.1;type=obj_CommentPropertySeries" &&
-			contentOrDataType != "application/x-resqml+xml;version=2.0.1;type=obj_ContinuousPropertySeries" &&
-			contentOrDataType != "application/x-resqml+xml;version=2.0.1;type=obj_StreamlinesFeature" &&
-			contentOrDataType != "application/x-resqml+xml;version=2.0.1;type=obj_StreamlinesRepresentation") {
-			addWarning("Content type \"" + contentOrDataType + "\" does not belong to 2.0.1. Probably to 2.0? Please fix your content type or ask exporter to fix it.");
-		}
 		wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
 	}
 	else if (ns == "witsml20") {
@@ -2207,7 +2198,15 @@ RESQML2_NS::SealedVolumeFrameworkRepresentation* DataObjectRepository::createSea
 
 RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialIjkGridRepresentation(const std::string & guid, const std::string & title)
 {
-	return createPartial<RESQML2_NS::AbstractIjkGridRepresentation>(guid, title, "application/x-resqml+xml;version=2.0;type=obj_IjkGridRepresentation");
+	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(getGsoapContext());
+	dor->UUID = guid;
+	dor->Title = title;
+	dor->ContentType = getDefaultResqmlVersion() == EnergisticsStandard::RESQML2_2
+		? "application/x-resqml+xml;version=2.2;type=obj_IjkGridRepresentation"
+		: "application/x-resqml+xml;version=2.0;type=obj_IjkGridRepresentation";
+	auto result = new RESQML2_NS::AbstractIjkGridRepresentation(dor, false);
+	addOrReplaceDataObject(result);
+	return result;
 }
 
 RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialTruncatedIjkGridRepresentation(const std::string & guid, const std::string & title)
@@ -2215,8 +2214,12 @@ RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialTr
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(getGsoapContext());
 	dor->UUID = guid;
 	dor->Title = title;
-	dor->ContentType = "application/x-resqml+xml;version=2.0;type=obj_TruncatedIjkGridRepresentation";
-	return new RESQML2_NS::AbstractIjkGridRepresentation(dor, true);
+	dor->ContentType = getDefaultResqmlVersion() == EnergisticsStandard::RESQML2_2
+		? "application/x-resqml+xml;version=2.2;type=obj_TruncatedIjkGridRepresentation"
+		: "application/x-resqml+xml;version=2.0;type=obj_TruncatedIjkGridRepresentation";
+	auto result = new RESQML2_NS::AbstractIjkGridRepresentation(dor, true);
+	addOrReplaceDataObject(result);
+	return result;
 }
 
 RESQML2_NS::IjkGridExplicitRepresentation* DataObjectRepository::createIjkGridExplicitRepresentation(const std::string & guid, const std::string & title,

@@ -338,7 +338,7 @@ namespace RESQML2_NS
 		virtual COMMON_NS::DataObjectReference getStratiUnitInterpDor(unsigned int regionIndex) const = 0;
 
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 
 		/**
 		 * Sets XML sealed surface framework

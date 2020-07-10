@@ -681,14 +681,14 @@ namespace RESQML2_NS
 		/** The standard XML tag without XML namespace for serializing this data object if truncated. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG_TRUNCATED;
 
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override;
+		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override {return 1;}
 
 		/**
 		* Get the standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const { 
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const override {
 			if (gsoapProxy2_0_1 != nullptr) { return "resqml20"; }
 			if (gsoapProxy2_3 != nullptr) { return "resqml22"; }
 

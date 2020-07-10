@@ -31,8 +31,7 @@ void RepresentationSetRepresentation::loadTargetRelationships()
 	AbstractRepresentation::loadTargetRelationships();
 
 	const unsigned int repCount = getRepresentationCount();
-	for (unsigned int i = 0; i < repCount; ++i)
-	{
+	for (unsigned int i = 0; i < repCount; ++i) {
 		COMMON_NS::DataObjectReference dor = getRepresentationDor(i);
 		convertDorIntoRel(dor);
 	}
