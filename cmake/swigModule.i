@@ -277,8 +277,6 @@ namespace COMMON_NS
 		RESQML2_NS::AbstractLocal3dCrs* getDefaultCrs() const;
 		void setDefaultCrs(RESQML2_NS::AbstractLocal3dCrs* crs);
 		
-		bool hasHdfProxyFactory();
-		
 		EML2_NS::AbstractHdfProxy* getDefaultHdfProxy() const;
 		void setDefaultHdfProxy(EML2_NS::AbstractHdfProxy* hdfProxy);
 		
