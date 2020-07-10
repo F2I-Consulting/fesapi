@@ -219,7 +219,7 @@ namespace {
 
 // Create a fesapi partial wrapper based on a data type and its version
 #define CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(className)\
-	(dataType.compare(className::XML_TAG) == 0 && ns.compare(className::XML_NS) == 0) {\
+	(dataType.compare(className::XML_TAG) == 0) {\
 		return createPartial<className>(uuid, title, version);\
 	}
 
