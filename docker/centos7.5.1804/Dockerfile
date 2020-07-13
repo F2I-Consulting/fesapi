@@ -72,7 +72,7 @@ RUN mkdir dependencies && \
 WORKDIR /fesapiEnv
 RUN git clone https://github.com/F2I-Consulting/fesapi.git && \
 	cd fesapi && \
-	git checkout resqml22 && \
+	git checkout etp && \
 	cd ..  && \
 	mkdir build && \
 	cd build && \
