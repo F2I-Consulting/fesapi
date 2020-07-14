@@ -4488,8 +4488,7 @@ void deserialize(const string & inputFile)
 			std::cout << "Node count is : " << unstructuredGridRepSet[i]->getXyzPointCountOfPatch(0) << std::endl;
 
 			ULONG64 faceCount = 0;
-			if (!unstructuredGridRepSet[i]->isFaceCountOfCellsConstant())
-			{
+			if (!unstructuredGridRepSet[i]->isFaceCountOfCellsConstant()) {
 				std::unique_ptr<ULONG64[]> faceCountOfCells(new ULONG64[unstructuredGridRepSet[i]->getCellCount()]);
 				unstructuredGridRepSet[i]->getCumulativeFaceCountPerCell(faceCountOfCells.get());
 				std::cout << "Face count of cell 0 is : " << faceCountOfCells[0] << std::endl;
@@ -4497,27 +4496,24 @@ void deserialize(const string & inputFile)
 					std::cout << "Face count of cell 1 is : " << faceCountOfCells[1] - faceCountOfCells[0] << std::endl;
 				faceCount = faceCountOfCells[unstructuredGridRepSet[i]->getCellCount() - 1];
 			}
-			else
-			{
+			else {
 				std::cout << "Face count of cell is constant : " << unstructuredGridRepSet[i]->getConstantFaceCountOfCells() << std::endl;
 				faceCount = unstructuredGridRepSet[i]->getConstantFaceCountOfCells() * unstructuredGridRepSet[i]->getCellCount();
 			}
-			if (!unstructuredGridRepSet[i]->isNodeCountOfFacesConstant())
-			{
+			if (!unstructuredGridRepSet[i]->isNodeCountOfFacesConstant()) 	{
 				std::unique_ptr<ULONG64[]> nodeCountOfFaces(new ULONG64[faceCount]);
 				unstructuredGridRepSet[i]->getCumulativeNodeCountPerFace(nodeCountOfFaces.get());
 				std::cout << "Node count of face 0 is : " << nodeCountOfFaces[0] << std::endl;
 				if (faceCount > 1)
 					std::cout << "Node count of face 1 is : " << nodeCountOfFaces[1] - nodeCountOfFaces[0] << std::endl;
 			}
-			else
-			{
+			else {
 				std::cout << "Node count of face is constant : " << unstructuredGridRepSet[i]->getConstantNodeCountOfFaces() << std::endl;
 			}
 
 
 			std::cout << "Reading XYZ points" << std::endl;
-			std::unique_ptr<double> gridPoints(new double[unstructuredGridRepSet[i]->getXyzPointCountOfPatch(0) * 3]);
+			std::unique_ptr<double[]> gridPoints(new double[unstructuredGridRepSet[i]->getXyzPointCountOfPatch(0) * 3]);
 			unstructuredGridRepSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(gridPoints.get());
 			std::cout << "DONE" << std::endl;
 			std::cout << "--------------------------------------------------" << std::endl;
@@ -4554,8 +4550,7 @@ void deserialize(const string & inputFile)
 	showAllSubRepresentations(onlyPartialSubReps);
 
 	std::cout << endl << "TIME SERIES" << endl;
-	for (size_t i = 0; i < timeSeriesSet.size(); ++i)
-	{
+	for (size_t i = 0; i < timeSeriesSet.size(); ++i) {
 		showAllMetadata(timeSeriesSet[i]);
 		for (unsigned int j = 0; j < timeSeriesSet[i]->getTimestampCount(); ++j) {
 			time_t creation = timeSeriesSet[i]->getTimestamp(j);
@@ -4563,8 +4558,7 @@ void deserialize(const string & inputFile)
 			tm creationTm = timeSeriesSet[i]->getTimestampAsTimeStructure(j);
 			std::cout << "Timestamp " << j << " is (struct tm) : " << 1900 + creationTm.tm_year << "-" << creationTm.tm_mon + 1 << "-" << creationTm.tm_mday << "T" << creationTm.tm_hour << ":" << creationTm.tm_min << ":" << creationTm.tm_sec << std::endl;
 		}
-		for (size_t j = 0; j < timeSeriesSet[i]->getPropertySet().size(); ++j)
-		{
+		for (size_t j = 0; j < timeSeriesSet[i]->getPropertySet().size(); ++j) 	{
 			std::cout << endl << "\tPROPERTIES" << endl;
 			showAllMetadata(timeSeriesSet[i]->getPropertySet()[j]);
 		}

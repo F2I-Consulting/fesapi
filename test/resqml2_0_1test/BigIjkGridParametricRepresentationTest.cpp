@@ -93,7 +93,7 @@ void BigIjkGridParametricRepresentationTest::initRepoHandler() {
 		1, 
 		gsoap_eml2_3::resqml22__IndexableElement__cells,
 		propertyKind);
-	std::unique_ptr<unsigned short> discretePropertyValues(new unsigned short[iCount * jCount * kCount]);
+	std::unique_ptr<unsigned short[]> discretePropertyValues(new unsigned short[iCount * jCount * kCount]);
 	initDiscreteProperty(discretePropertyValues.get());
 	discreteProperty->pushBackUShortHdf5Array3dOfValues(discretePropertyValues.get(), iCount, jCount, kCount, nullptr, -1);
 
