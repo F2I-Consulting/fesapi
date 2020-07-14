@@ -138,7 +138,7 @@ std::string FileCoreProperties::toString() const
 	oss << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" << endl;
 
 	// content
-	for (unsigned int i = 0; i < CoreProperty::undefinedCoreProperty; i++) {
+	for (unsigned int i = 0; i < CoreProperty::undefinedCoreProperty; ++i) {
 		if (!properties[i].isEmpty()) {
 			oss << "\t" << properties[i].toString() << endl;
 		}
@@ -232,8 +232,9 @@ void FileCoreProperties::setVersion(const std::string & value)
 
 void FileCoreProperties::readFromString(const string & textInput)
 {
-	for (unsigned int i = 0; i < CoreProperty::undefinedCoreProperty; i++)
+	for (unsigned int i = 0; i < CoreProperty::undefinedCoreProperty; ++i) {
 		properties[i].setTypeProperty(CoreProperty::undefinedCoreProperty);
+	}
 
 	size_t start = textInput.find("<coreProperties ");
 	if (start != string::npos) {
@@ -252,19 +253,3 @@ void FileCoreProperties::readFromString(const string & textInput)
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

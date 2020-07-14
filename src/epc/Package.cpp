@@ -185,8 +185,7 @@ Package::CheshireCat::~CheshireCat()
 
 void Package::CheshireCat::close()
 {
-	if (unzipped)
-	{
+	if (unzipped) {
 		unzClose(unzipped);
 		unzipped = nullptr;
 	}
@@ -212,18 +211,15 @@ void Package::openForWriting(const std::string & pkgPathName, int append, bool u
 	d_ptr->pathName.assign(pkgPathName);
 
 	// Clean the potential ending slashes
-	while (d_ptr->pathName[d_ptr->pathName.size() - 1] == '/' || d_ptr->pathName[d_ptr->pathName.size() - 1] == '\\') {
+	while (!d_ptr->pathName.empty() &&
+		(d_ptr->pathName[d_ptr->pathName.size() - 1] == '/' || d_ptr->pathName[d_ptr->pathName.size() - 1] == '\\')) {
 		d_ptr->pathName = d_ptr->pathName.substr(0, d_ptr->pathName.size() - 1);
 	}
 
-	ContentType contentTypeRel(true, "application/vnd.openxmlformats-package.relationships+xml", ".rels");
-	addContentType(contentTypeRel);
+	addContentType(ContentType(true, "application/vnd.openxmlformats-package.relationships+xml", ".rels"));
+	addContentType(ContentType(false, "application/vnd.openxmlformats-package.core-properties+xml", "docProps/core.xml"));
 
-	ContentType contentTypeCoreProp(false, "application/vnd.openxmlformats-package.core-properties+xml", "docProps/core.xml");
-	addContentType(contentTypeCoreProp);
-
-	Relationship relToCoreProp("docProps/core.xml", CORE_PROP_REL_TYPE,"CoreProperties");
-	addRelationship(relToCoreProp);
+	addRelationship(Relationship("docProps/core.xml", CORE_PROP_REL_TYPE, "CoreProperties"));
 
 	d_ptr->isZip64 = useZip64;
 	d_ptr->zf = useZip64 ? zipOpen64(d_ptr->pathName.c_str(), append) : zipOpen(d_ptr->pathName.c_str(), append);
@@ -253,7 +249,7 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 	string relFile = extractFile("_rels/.rels", "");
 	d_ptr->filePrincipalRelationship.readFromString(relFile);
 	vector<Relationship> pckRelset = d_ptr->filePrincipalRelationship.getAllRelationship();
-	for (size_t i = 0; i < pckRelset.size(); i++) {
+	for (size_t i = 0; i < pckRelset.size(); ++i) {
 		if (pckRelset[i].getType().compare(CORE_PROP_REL_TYPE) == 0) {
 			std::string target = pckRelset[i].getTarget();
 			if (target.size() > 1 && target[0] == '/' && target[1] != '/') { // Rule 8 of A.3 paragraph Open Packaging Conventions (ECMA version)
@@ -270,7 +266,7 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 		FileRelationship extendedCpRelFile;
 		extendedCpRelFile.readFromString(extendedCpRelFilePath);
 		vector<Relationship> extendedCpRelSet = extendedCpRelFile.getAllRelationship();
-		for (size_t i = 0; i < extendedCpRelSet.size(); i++) {
+		for (size_t i = 0; i < extendedCpRelSet.size(); ++i) {
 			std::string target = extendedCpRelSet[i].getTarget();
 			if (target.size() > 1 && target[0] == '/' && target[1] != '/') { // Rule 8 of A.3 paragraph Open Packaging Conventions (ECMA version)
 				target = target.substr(1);
@@ -280,9 +276,8 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 				result.push_back("The extended core properties file " + target + " targeted in docProps/_rels/core.xml.rels is not present in the Epc document");
 				continue;
 			}
-			string extendedCorePropFile = extractFile(target, "");
-			std::istringstream iss(extendedCorePropFile);
 
+			std::istringstream iss(extractFile(target, ""));
 			std::string line;
 			while (std::getline(iss, line)) {
 				if (line[0] == '\t') // To find a better condition
@@ -303,8 +298,7 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 	}
 
 	// Package content type
-	string contentTypeFile = extractFile("[Content_Types].xml", "");
-	d_ptr->fileContentType.readFromString(contentTypeFile);
+	d_ptr->fileContentType.readFromString(extractFile("[Content_Types].xml", ""));
 
 	return result;
 }
@@ -430,9 +424,8 @@ void Package::addRelationship(const Relationship & relationship)
 
 FilePart* Package::createPart(const std::string & inputContent, const std::string & outputPartPath)
 {
-	FilePart fp(outputPartPath);
-	d_ptr->allFileParts[outputPartPath] = fp;
-    writeStringIntoNewPart( inputContent, outputPartPath );
+	d_ptr->allFileParts[outputPartPath] = FilePart(outputPartPath);
+    writeStringIntoNewPart(inputContent, outputPartPath);
 	return &(d_ptr->allFileParts[outputPartPath]);
 }
 
@@ -538,12 +531,10 @@ void Package::writePackage()
 		writeStringIntoNewPart(oss.str(), "docProps/extendedCore.xml");
 		
 		// Add the content type for extended core properties part
-		ContentType contentTypeExtendedCoreProp(false, "application/x-extended-core-properties+xml", "docProps/extendedCore.xml");
-		addContentType(contentTypeExtendedCoreProp);
+		addContentType(ContentType(false, "application/x-extended-core-properties+xml", "docProps/extendedCore.xml"));
 		
 		// Relationhsip with the standard core properties part
-		Relationship relToExtCoreProp("extendedCore.xml", EXTENDED_CORE_PROP_REL_TYPE, "ExtendedCoreProperties");
-		FileRelationship fileRelToExtCoreProp(relToExtCoreProp);
+		FileRelationship fileRelToExtCoreProp(Relationship("extendedCore.xml", EXTENDED_CORE_PROP_REL_TYPE, "ExtendedCoreProperties"));
 		fileRelToExtCoreProp.setPathName("docProps/_rels/core.xml.rels");
 		writeStringIntoNewPart(fileRelToExtCoreProp.toString(), fileRelToExtCoreProp.getPathName());
 	}
