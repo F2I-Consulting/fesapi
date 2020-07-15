@@ -122,7 +122,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns The sealed structural framework this sealed volume framework is based on.
 		 */
-		DLL_IMPORT_OR_EXPORT class SealedSurfaceFrameworkRepresentation* getSealedStructuralFramework() const;
+		DLL_IMPORT_OR_EXPORT SealedSurfaceFrameworkRepresentation* getSealedStructuralFramework() const;
 
 		/** 
 		 * Gets the stratigraphic unit interpretation a particular region of this framework represents.

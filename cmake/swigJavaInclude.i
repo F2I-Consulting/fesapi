@@ -516,11 +516,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SealedVolumeFrameworkRepresentation(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SealedVolumeFrameworkRepresentation_resqml20(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SealedVolumeFrameworkRepresentation(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SealedVolumeFrameworkRepresentation_resqml22(cPtr, owner);
 		}
 ${COMMENT_END}
 		

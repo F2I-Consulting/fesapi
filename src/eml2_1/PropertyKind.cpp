@@ -41,7 +41,10 @@ PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::st
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	if (parentPropertyKind == nullptr) {
-		parentPropertyKind = repo->createPartial<EML2_1_NS::PropertyKind>("a48c9c25-1e3a-43c8-be6a-044224cc69cb", "property");
+		parentPropertyKind = repo->getDataObjectByUuid<EML2_NS::PropertyKind>("a48c9c25-1e3a-43c8-be6a-044224cc69cb");
+		if (parentPropertyKind == nullptr) {
+			parentPropertyKind = repo->createPartial<PropertyKind>("a48c9c25-1e3a-43c8-be6a-044224cc69cb", "property");
+		}
 	}
 
 	setParentPropertyKind(parentPropertyKind);

@@ -96,6 +96,7 @@ namespace RESQML2_NS
 	%nspace RESQML2_NS::RockFluidUnitInterpretation;
 	%nspace RESQML2_NS::RockVolumeFeature;
 	%nspace RESQML2_NS::SealedSurfaceFrameworkRepresentation;
+	%nspace RESQML2_NS::SealedVolumeFrameworkRepresentation;
 	%nspace RESQML2_NS::SeismicLatticeFeature;
 	%nspace RESQML2_NS::SeismicLineSetFeature;
 	%nspace RESQML2_NS::SeismicWellboreFrameRepresentation;
@@ -2574,6 +2575,41 @@ namespace RESQML2_NS
 	class SealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
 	{
 	public:
+	};
+	
+#ifdef SWIGPYTHON
+	%rename(Resqml2_SealedVolumeFrameworkRepresentation) SealedVolumeFrameworkRepresentation;
+#endif
+	class SealedVolumeFrameworkRepresentation : public RepresentationSetRepresentation
+	{
+	public:
+		SealedSurfaceFrameworkRepresentation* getSealedStructuralFramework() const;
+		void setSealedSurfaceFramework(SealedSurfaceFrameworkRepresentation* ssf);
+		
+		void setInterpretationOfVolumeRegion(unsigned int regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp);
+		
+		void pushBackVolumeRegion(StratigraphicUnitInterpretation * stratiUnitInterp,
+			unsigned int externalShellFaceCount,
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide);
+		pushBackInternalShell(unsigned int regionIndex,
+			unsigned int internalShellFaceCount,
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide);
+			
+		unsigned int getRegionCount() const final;
+
+		unsigned int getInternalShellCount(unsigned int regionIndex) const final;
+
+		unsigned int getFaceCountOfExternalShell(unsigned int regionIndex) const final;
+		unsigned int getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const final;
+
+		RESQML2_NS::AbstractRepresentation* getRepOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const final;
+		RESQML2_NS::AbstractRepresentation* getRepOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const final;
+
+		unsigned int getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const final;
+		unsigned int getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const final;
+
+		bool getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const final;
+		bool getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const final;
 	};
 	
 	class GridConnectionSetRepresentation;

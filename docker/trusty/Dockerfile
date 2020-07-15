@@ -21,7 +21,7 @@ ENV CFLAGS="-fPIC -O2"
 ENV CXXFLAGS="-fPIC -O2"
 
 RUN	apt-get update &&\
-	apt-get -y install build-essential uuid-dev libhdf5-dev wget git valgrind
+	apt-get -y install build-essential uuid-dev libhdf5-dev wget git
 
 RUN	apt-get purge cmake swig
 
@@ -72,4 +72,4 @@ RUN git clone https://github.com/F2I-Consulting/fesapi.git && \
 
 # generate .epc and .h5 files
 WORKDIR /fesapiEnv/build/install
-RUN valgrind --leak-check=full --show-leak-kinds=all ./example
+RUN ./example

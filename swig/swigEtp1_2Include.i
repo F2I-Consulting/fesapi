@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 %{
-#include "etp/ClientSessionLaunchers.h"
+#include "../src/etp/ClientSessionLaunchers.h"
 %}
 
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
@@ -25,6 +25,13 @@ under the License.
 	%nspace ETP_NS::CoreHandlers;
 	%nspace ETP_NS::AbstractSession;
 	%nspace ETP_NS::PlainClientSession;
+	
+	%nspace Energistics::Etp::v12::Datatypes::SupportedDataObject;
+	%nspace Energistics::Etp::v12::Datatypes::Uuid;
+	%nspace Energistics::Etp::v12::Datatypes::Version;
+	%nspace Energistics::Etp::v12::Datatypes::SupportedProtocol;
+	
+	%nspace Energistics::Etp::v12::Protocol::Core::OpenSession;
 #endif
 
 #ifdef SWIGJAVA
@@ -38,6 +45,34 @@ under the License.
 #endif
 
 %include "stdint.i"
+
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
+				struct SupportedDataObject{				
+					std::string m_qualifiedType;
+					std::vector<std::string> m_dataObjectCapabilities;
+				};				
+			};			
+		};		
+	};	
+};
+%template(SupportedDataObjectVector) std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject>;
+
+%include "std_array.i"
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
+				struct Uuid{				
+					std::array<uint8_t, 16> m_array;
+				};				
+			};			
+		};		
+	};	
+};
+%template(uint8_t16Array) std::array<uint8_t, 16>;
 
 namespace Energistics {
 	namespace Etp {	
@@ -67,6 +102,7 @@ namespace Energistics {
 	};	
 };
 %template(SupportedProtocolVector) std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol>;
+
 namespace Energistics {
 	namespace Etp {	
 		namespace v12 {		
@@ -75,10 +111,14 @@ namespace Energistics {
 					struct OpenSession{					
 						std::string m_applicationName;
 						std::string m_applicationVersion;
-						std::string m_sessionId;
+						Energistics::Etp::v12::Datatypes::Uuid m_serverInstanceId;
 						std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> m_supportedProtocols;
-						std::vector<std::string> m_supportedObjects;
+						std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject> m_supportedDataObjects;
 						std::string m_supportedCompression;
+						std::vector<std::string> m_supportedFormats;
+						Energistics::Etp::v12::Datatypes::Uuid m_sessionId;
+						int64_t m_currentDateTime;
+						std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue> m_endpointCapabilities;
 						static const int messageTypeId=2;
 					};					
 				};				
@@ -118,16 +158,17 @@ namespace ETP_NS
 		virtual void on_Acknowledge(const Energistics::Etp::v12::Protocol::Core::Acknowledge & ack, int64_t correlationId);
 	};
 
+	%nodefaultctor AbstractSession;
 	class AbstractSession
 	{
 	public:
-		virtual void run() = 0;
 		void setCoreProtocolHandlers(std::shared_ptr<ETP_NS::CoreHandlers> coreHandlers);
 	};
 
 	class PlainClientSession : public AbstractSession
 	{
 	public:
+		bool run();
 	};
 
 	namespace ClientSessionLaunchers
