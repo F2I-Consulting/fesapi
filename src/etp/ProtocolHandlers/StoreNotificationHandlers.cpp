@@ -25,52 +25,52 @@ using namespace ETP_NS;
 
 void StoreNotificationHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d)
 {
-	if (mh.m_protocol != Energistics::Etp::v12::Datatypes::Protocol::StoreNotification) {
+	if (mh.protocol != Energistics::Etp::v12::Datatypes::Protocol::StoreNotification) {
 		std::cerr << "Error : This message header does not belong to the protocol Store" << std::endl;
 		return;
 	}
 
-	if (mh.m_messageType == Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotifications::messageTypeId) {
+	if (mh.messageType == Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotifications::messageTypeId) {
 		Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotifications msg;
 		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
-		on_SubscribeNotifications(msg, mh.m_messageId);
+		on_SubscribeNotifications(msg, mh.messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::StoreNotification::UnsubscribeNotifications::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::StoreNotification::UnsubscribeNotifications::messageTypeId) {
 		Energistics::Etp::v12::Protocol::StoreNotification::UnsubscribeNotifications msg;
 		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
-		on_UnsubscribeNotifications(msg, mh.m_messageId, mh.m_correlationId);
+		on_UnsubscribeNotifications(msg, mh.messageId, mh.correlationId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::StoreNotification::UnsolicitedStoreNotifications::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::StoreNotification::UnsolicitedStoreNotifications::messageTypeId) {
 		Energistics::Etp::v12::Protocol::StoreNotification::UnsolicitedStoreNotifications msg;
 		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
-		on_UnsolicitedStoreNotifications(msg, mh.m_messageId);
+		on_UnsolicitedStoreNotifications(msg, mh.messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::StoreNotification::SubscriptionEnded::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::StoreNotification::SubscriptionEnded::messageTypeId) {
 		Energistics::Etp::v12::Protocol::StoreNotification::SubscriptionEnded msg;
 		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
-		on_SubscriptionEnded(msg, mh.m_correlationId);
+		on_SubscriptionEnded(msg, mh.correlationId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::StoreNotification::ObjectChanged::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::StoreNotification::ObjectChanged::messageTypeId) {
 		Energistics::Etp::v12::Protocol::StoreNotification::ObjectChanged msg;
 		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
-		on_ObjectChanged(msg, mh.m_correlationId);
+		on_ObjectChanged(msg, mh.correlationId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::StoreNotification::ObjectDeleted::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::StoreNotification::ObjectDeleted::messageTypeId) {
 		Energistics::Etp::v12::Protocol::StoreNotification::ObjectDeleted msg;
 		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
-		on_ObjectDeleted(msg, mh.m_correlationId);
+		on_ObjectDeleted(msg, mh.correlationId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::StoreNotification::ObjectAccessRevoked::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::StoreNotification::ObjectAccessRevoked::messageTypeId) {
 		Energistics::Etp::v12::Protocol::StoreNotification::ObjectAccessRevoked msg;
 		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
-		on_ObjectAccessRevoked(msg, mh.m_correlationId);
+		on_ObjectAccessRevoked(msg, mh.correlationId);
 	}
 	else {
 		session->flushReceivingBuffer();
@@ -91,7 +91,7 @@ void StoreNotificationHandlers::on_UnsubscribeNotifications(const Energistics::E
 
 	int64_t toRemove = (std::numeric_limits<int64_t>::max)();
 	for (const auto& pair : session->subscriptions) {
-		if (pair.second.m_requestUuid.m_array == msg.m_requestUuid.m_array) {
+		if (pair.second.requestUuid.array == msg.requestUuid.array) {
 			toRemove = pair.first;
 			break;
 		}
@@ -117,15 +117,15 @@ void StoreNotificationHandlers::on_SubscriptionEnded(const Energistics::Etp::v12
 
 void StoreNotificationHandlers::on_ObjectChanged(const Energistics::Etp::v12::Protocol::StoreNotification::ObjectChanged & msg, int64_t)
 {
-	switch (msg.m_change.m_changeKind) {
+	switch (msg.change.changeKind) {
 	case Energistics::Etp::v12::Datatypes::Object::ObjectChangeKind::authorized: std::cout << "authorized "; break;
 	case Energistics::Etp::v12::Datatypes::Object::ObjectChangeKind::insert: std::cout << "insert "; break;
 	case Energistics::Etp::v12::Datatypes::Object::ObjectChangeKind::update: std::cout << "update "; break;
 	}
 
-	std::cout << "on " << ctime(&msg.m_change.m_changeTime) << std::endl;
+	std::cout << "on " << ctime(&msg.change.changeTime) << std::endl;
 
-	printDataObject(msg.m_change.m_dataObject);
+	printDataObject(msg.change.dataObject);
 
 	std::cout << std::endl;
 }

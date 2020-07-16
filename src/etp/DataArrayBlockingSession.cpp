@@ -37,25 +37,25 @@ DataArrayBlockingSession::DataArrayBlockingSession(boost::asio::io_context& ioc,
 	ws.binary(true);
 
 	// Build the request session
-	requestSession.m_applicationName = "F2I ETP Client";
-	requestSession.m_applicationVersion = "0.0";
+	requestSession.applicationName = "F2I ETP Client";
+	requestSession.applicationVersion = "0.0";
 
 	Energistics::Etp::v12::Datatypes::Version protocolVersion;
-	protocolVersion.m_major = 1;
-	protocolVersion.m_minor = 2;
-	protocolVersion.m_patch = 0;
-	protocolVersion.m_revision = 0;
+	protocolVersion.major = 1;
+	protocolVersion.minor = 2;
+	protocolVersion.patch = 0;
+	protocolVersion.revision = 0;
 
 	std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> requestedProtocols;
 	Energistics::Etp::v12::Datatypes::SupportedProtocol requestedProtocol;
-	requestedProtocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::DataArray;
-	requestedProtocol.m_protocolVersion = protocolVersion;
-	requestedProtocol.m_role = "store";
+	requestedProtocol.protocol = Energistics::Etp::v12::Datatypes::Protocol::DataArray;
+	requestedProtocol.protocolVersion = protocolVersion;
+	requestedProtocol.role = "store";
 	requestedProtocols.push_back(requestedProtocol);
-	requestSession.m_requestedProtocols = requestedProtocols;
+	requestSession.requestedProtocols = requestedProtocols;
 
 	std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject> supportedObjects;
-	requestSession.m_supportedDataObjects = supportedObjects;
+	requestSession.supportedDataObjects = supportedObjects;
 }
 
 bool DataArrayBlockingSession::run()

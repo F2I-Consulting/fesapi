@@ -92,20 +92,20 @@ namespace ETP_NS
 		{
 			// Build message header
 			Energistics::Etp::v12::Datatypes::MessageHeader mh;
-			mh.m_protocol = mb.protocolId;
-			mh.m_messageType = mb.messageTypeId;
-			mh.m_correlationId = correlationId;
-			mh.m_messageId = messageId++;
-			mh.m_messageFlags = messageFlags;
+			mh.protocol = mb.protocolId;
+			mh.messageType = mb.messageTypeId;
+			mh.correlationId = correlationId;
+			mh.messageId = messageId++;
+			mh.messageFlags = messageFlags;
 
 #ifndef NDEBUG
 			std::cout << "*************************************************" << std::endl;
 			std::cout << "Message Header sent : " << std::endl;
-			std::cout << "protocol : " << mh.m_protocol << std::endl;
-			std::cout << "type : " << mh.m_messageType << std::endl;
-			std::cout << "id : " << mh.m_messageId << std::endl;
-			std::cout << "correlation id : " << mh.m_correlationId << std::endl;
-			std::cout << "flags : " << mh.m_messageFlags << std::endl;
+			std::cout << "protocol : " << mh.protocol << std::endl;
+			std::cout << "type : " << mh.messageType << std::endl;
+			std::cout << "id : " << mh.messageId << std::endl;
+			std::cout << "correlation id : " << mh.correlationId << std::endl;
+			std::cout << "flags : " << mh.messageFlags << std::endl;
 			std::cout << "*************************************************" << std::endl;
 #endif
 
@@ -116,7 +116,7 @@ namespace ETP_NS
 			avro::encode(*e, mb);
 			sendingQueue.push_back(*avro::snapshot(*out).get());
 
-			return mh.m_messageId;
+			return mh.messageId;
 		}
 
 	public:

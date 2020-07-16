@@ -27,15 +27,15 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 {
 	// Check requested protocols
 	std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> requestedAndSupportedProtocols;
-	for (auto& rp : rs.m_requestedProtocols) {
+	for (auto& rp : rs.requestedProtocols) {
 		const auto validatedProtocol = std::find_if(supportedProtocols.begin(), supportedProtocols.end(),
 			[rp](const Energistics::Etp::v12::Datatypes::SupportedProtocol & sp) -> bool {
-				return sp.m_protocol == rp.m_protocol &&
-					sp.m_role == rp.m_role &&
-					sp.m_protocolVersion.m_major == rp.m_protocolVersion.m_major &&
-					sp.m_protocolVersion.m_minor == rp.m_protocolVersion.m_minor &&
-					sp.m_protocolVersion.m_patch == rp.m_protocolVersion.m_patch &&
-					sp.m_protocolVersion.m_revision == rp.m_protocolVersion.m_revision;
+				return sp.protocol == rp.protocol &&
+					sp.role == rp.role &&
+					sp.protocolVersion.major == rp.protocolVersion.major &&
+					sp.protocolVersion.minor == rp.protocolVersion.minor &&
+					sp.protocolVersion.patch == rp.protocolVersion.patch &&
+					sp.protocolVersion.revision == rp.protocolVersion.revision;
 			}
 		);
 		if (validatedProtocol != std::end(supportedProtocols)) {
@@ -50,13 +50,13 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 
 	// Build Open Session message
 	Energistics::Etp::v12::Protocol::Core::OpenSession openSession;
-	openSession.m_applicationName = applicationName;
-	openSession.m_applicationVersion = applicationVersion;
-	openSession.m_serverInstanceId.m_array = GuidTools::generateUidAsByteArray();
-	openSession.m_supportedFormats.push_back("xml");
-	openSession.m_supportedProtocols = requestedAndSupportedProtocols;
-	openSession.m_endpointCapabilities = endpointCapabilities;
-	openSession.m_supportedDataObjects = supportedDataObjects;
+	openSession.applicationName = applicationName;
+	openSession.applicationVersion = applicationVersion;
+	openSession.serverInstanceId.array = GuidTools::generateUidAsByteArray();
+	openSession.supportedFormats.push_back("xml");
+	openSession.supportedProtocols = requestedAndSupportedProtocols;
+	openSession.endpointCapabilities = endpointCapabilities;
+	openSession.supportedDataObjects = supportedDataObjects;
 
 	session->send(openSession, correlationId);
 

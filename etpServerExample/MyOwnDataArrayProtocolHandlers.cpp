@@ -30,78 +30,78 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v1
 	Energistics::Etp::v12::Protocol::DataArray::GetDataArraysResponse gdaResponse;
 
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
-	for (std::pair < std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayIdentifier > element : gda.m_dataArrays) {
+	for (std::pair < std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayIdentifier > element : gda.dataArrays) {
 		Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayIdentifier& dai = element.second;
-		std::cout << "Data array received uri : " << dai.m_uri << std::endl;
+		std::cout << "Data array received uri : " << dai.uri << std::endl;
 
 		try
 		{
-			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(dai.m_uri);
+			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(dai.uri);
 			EML2_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<EML2_NS::AbstractHdfProxy*>(obj);
 			if (hdfProxy == nullptr) {
-				pe.m_errors[element.first].m_message = "The URI points to an object which is not an HDF proxy";
-				pe.m_errors[element.first].m_code = 9;
+				pe.errors[element.first].message = "The URI points to an object which is not an HDF proxy";
+				pe.errors[element.first].code = 9;
 				continue;
 			}
 
-			std::cout << "Received pathInResource : " << dai.m_pathInResource << std::endl;
-			auto elemCountPerDim = hdfProxy->getElementCountPerDimension(dai.m_pathInResource);
+			std::cout << "Received pathInResource : " << dai.pathInResource << std::endl;
+			auto elemCountPerDim = hdfProxy->getElementCountPerDimension(dai.pathInResource);
 			Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArray da;
-			da.m_dimensions.reserve(elemCountPerDim.size());
+			da.dimensions.reserve(elemCountPerDim.size());
 			size_t globalElemCount = 1;
 			for (size_t i = 0; i < elemCountPerDim.size(); ++i) {
-				da.m_dimensions.push_back(elemCountPerDim[i]);
+				da.dimensions.push_back(elemCountPerDim[i]);
 				globalElemCount *= elemCountPerDim[i];
 			}
 
-			auto dt = hdfProxy->getHdfDatatypeInDataset(dai.m_pathInResource);
+			auto dt = hdfProxy->getHdfDatatypeInDataset(dai.pathInResource);
 			if (dt == COMMON_NS::AbstractObject::DOUBLE)
 			{
 				Energistics::Etp::v12::Datatypes::ArrayOfDouble avroArray;
-				avroArray.m_values = std::vector<double>(globalElemCount);
-				hdfProxy->readArrayNdOfDoubleValues(dai.m_pathInResource, avroArray.m_values.data());
-				da.m_data.m_item.set_ArrayOfDouble(avroArray);
+				avroArray.values = std::vector<double>(globalElemCount);
+				hdfProxy->readArrayNdOfDoubleValues(dai.pathInResource, avroArray.values.data());
+				da.data.item.set_ArrayOfDouble(avroArray);
 			}
 			else if (dt == COMMON_NS::AbstractObject::FLOAT)
 			{
 				Energistics::Etp::v12::Datatypes::ArrayOfFloat avroArray;
-				avroArray.m_values = std::vector<float>(globalElemCount);
-				hdfProxy->readArrayNdOfFloatValues(dai.m_pathInResource, avroArray.m_values.data());
-				da.m_data.m_item.set_ArrayOfFloat(avroArray);
+				avroArray.values = std::vector<float>(globalElemCount);
+				hdfProxy->readArrayNdOfFloatValues(dai.pathInResource, avroArray.values.data());
+				da.data.item.set_ArrayOfFloat(avroArray);
 			}
 			else if (dt == COMMON_NS::AbstractObject::LONG_64 || dt == COMMON_NS::AbstractObject::ULONG_64)
 			{
 				Energistics::Etp::v12::Datatypes::ArrayOfLong avroArray;
-				avroArray.m_values = std::vector<LONG64>(globalElemCount);
-				hdfProxy->readArrayNdOfLongValues(dai.m_pathInResource, avroArray.m_values.data());
-				da.m_data.m_item.set_ArrayOfLong(avroArray);
+				avroArray.values = std::vector<LONG64>(globalElemCount);
+				hdfProxy->readArrayNdOfLongValues(dai.pathInResource, avroArray.values.data());
+				da.data.item.set_ArrayOfLong(avroArray);
 			}
 			else if (dt == COMMON_NS::AbstractObject::INT || dt == COMMON_NS::AbstractObject::UINT ||
 				dt == COMMON_NS::AbstractObject::SHORT || dt == COMMON_NS::AbstractObject::USHORT)
 			{
 				Energistics::Etp::v12::Datatypes::ArrayOfInt avroArray;
-				avroArray.m_values = std::vector<int>(globalElemCount);
-				hdfProxy->readArrayNdOfIntValues(dai.m_pathInResource, avroArray.m_values.data());
-				da.m_data.m_item.set_ArrayOfInt(avroArray);
+				avroArray.values = std::vector<int>(globalElemCount);
+				hdfProxy->readArrayNdOfIntValues(dai.pathInResource, avroArray.values.data());
+				da.data.item.set_ArrayOfInt(avroArray);
 			}
 			else if (dt == COMMON_NS::AbstractObject::CHAR || dt == COMMON_NS::AbstractObject::UCHAR)
 			{
 				std::string avroArray(globalElemCount, '\0');
-				hdfProxy->readArrayNdOfCharValues(dai.m_pathInResource, &avroArray[0]);
-				da.m_data.m_item.set_bytes(avroArray);
+				hdfProxy->readArrayNdOfCharValues(dai.pathInResource, &avroArray[0]);
+				da.data.item.set_bytes(avroArray);
 			}
 
-			gdaResponse.m_dataArrays[element.first] = da;
+			gdaResponse.dataArrays[element.first] = da;
 		}
 		catch (ETP_NS::EtpException& ex)
 		{
-			pe.m_errors[element.first].m_message = ex.what();
-			pe.m_errors[element.first].m_code = ex.getErrorCode();
+			pe.errors[element.first].message = ex.what();
+			pe.errors[element.first].code = ex.getErrorCode();
 			continue;
 		}		
 	}
 
-	if (!pe.m_errors.empty()) {
+	if (!pe.errors.empty()) {
 		session->send(gdaResponse, correlationId, 0x01);
 		session->send(pe, correlationId, 0x01 | 0x02);
 	}
@@ -115,22 +115,22 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v1
 	std::cout << "on_PutDataArray : DO ALMOST NOTHING FOR NOW" << std::endl;
 
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
-	for (std::pair < std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::PutDataArraysType > pdat : pda.m_dataArrays) {
-		std::cout << "PutDataArray in resource " << pdat.second.m_uid.m_uri << " at path " << pdat.second.m_uid.m_pathInResource << std::endl;;
-		for (auto i = 0; i < pdat.second.m_array.m_dimensions.size(); ++i) {
-			std::cout << "Dimension " << i << " with count : " << pdat.second.m_array.m_dimensions[i] << std::endl;
+	for (std::pair < std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::PutDataArraysType > pdat : pda.dataArrays) {
+		std::cout << "PutDataArray in resource " << pdat.second.uid.uri << " at path " << pdat.second.uid.pathInResource << std::endl;;
+		for (auto i = 0; i < pdat.second.array.dimensions.size(); ++i) {
+			std::cout << "Dimension " << i << " with count : " << pdat.second.array.dimensions[i] << std::endl;
 		}
 
 		try {
-			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(pdat.second.m_uid.m_uri);
+			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(pdat.second.uid.uri);
 			EML2_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<EML2_NS::AbstractHdfProxy*>(obj);
 			if (hdfProxy == nullptr) {
-				pe.m_errors[pdat.first].m_message = obj->getUuid() + " cannot be resolved as an HDF Proxy in this store";
-				pe.m_errors[pdat.first].m_code = 11;
+				pe.errors[pdat.first].message = obj->getUuid() + " cannot be resolved as an HDF Proxy in this store";
+				pe.errors[pdat.first].code = 11;
 				continue;
 			}
 
-			auto hdfGroups = tokenize(pdat.second.m_uid.m_pathInResource, '/');
+			auto hdfGroups = tokenize(pdat.second.uid.pathInResource, '/');
 
 			if (hdfGroups.size() != 3) {
 				std::cout << "This server does not support putting a data array in a path which does not follow /RESQML/groupname/datasetname convention." << std::endl;
@@ -141,19 +141,19 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v1
 				continue;
 			}
 			/*
-			std::unique_ptr<unsigned long long[]> numValuesInEachDimension(new unsigned long long[pda.m_dimensions.size()]());
-			hdfProxy->writeArrayNd(hdfGroups[1], hdfGroups[2], , , numValuesInEachDimension.get(), pda.m_dimensions.size());
+			std::unique_ptr<unsigned long long[]> numValuesInEachDimension(new unsigned long long[pda.dimensions.size()]());
+			hdfProxy->writeArrayNd(hdfGroups[1], hdfGroups[2], , , numValuesInEachDimension.get(), pda.dimensions.size());
 			*/
 		}
 		catch (ETP_NS::EtpException& ex)
 		{
-			pe.m_errors[pdat.first].m_message = ex.what();
-			pe.m_errors[pdat.first].m_code = ex.getErrorCode();
+			pe.errors[pdat.first].message = ex.what();
+			pe.errors[pdat.first].code = ex.getErrorCode();
 			continue;
 		}
 	}
 
-	if (!pe.m_errors.empty()) {
+	if (!pe.errors.empty()) {
 		session->send(pe, correlationId, 0x01 | 0x02);
 	}
 }
@@ -163,62 +163,62 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrayMetadata(const Energistics::
 	Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadataResponse gdamResponse;
 
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
-	for (std::pair < std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayIdentifier > element : gdam.m_dataArrays) {
+	for (std::pair < std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayIdentifier > element : gdam.dataArrays) {
 		Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayIdentifier& dai = element.second;
-		std::cout << "GetDataArrayMetadata received uri : " << dai.m_uri << std::endl;
+		std::cout << "GetDataArrayMetadata received uri : " << dai.uri << std::endl;
 
 		try {
-			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(dai.m_uri);
+			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(dai.uri);
 			EML2_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<EML2_NS::AbstractHdfProxy*>(obj);
 			if (hdfProxy == nullptr) {
-				pe.m_errors[element.first].m_message = "The URI points to an object which is not an HDF proxy";
-				pe.m_errors[element.first].m_code = 9;
+				pe.errors[element.first].message = "The URI points to an object which is not an HDF proxy";
+				pe.errors[element.first].code = 9;
 				continue;
 			}
 
-			std::cout << "Received pathInResource : " << dai.m_pathInResource << std::endl;
+			std::cout << "Received pathInResource : " << dai.pathInResource << std::endl;
 			Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayMetadata dam;
-			auto elemCountPerDim = hdfProxy->getElementCountPerDimension(dai.m_pathInResource);
-			dam.m_dimensions.reserve(elemCountPerDim.size());
+			auto elemCountPerDim = hdfProxy->getElementCountPerDimension(dai.pathInResource);
+			dam.dimensions.reserve(elemCountPerDim.size());
 			unsigned long long globalElemCount = 1;
 			for (auto i = 0; i < elemCountPerDim.size(); ++i) {
-				dam.m_dimensions.push_back(elemCountPerDim[i]);
+				dam.dimensions.push_back(elemCountPerDim[i]);
 				globalElemCount *= elemCountPerDim[i];
 			}
 
-			auto dt = hdfProxy->getHdfDatatypeInDataset(dai.m_pathInResource);
+			auto dt = hdfProxy->getHdfDatatypeInDataset(dai.pathInResource);
 			if (dt == COMMON_NS::AbstractObject::DOUBLE)
 			{
-				dam.m_arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfDouble;
+				dam.arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfDouble;
 			}
 			else if (dt == COMMON_NS::AbstractObject::FLOAT)
 			{
-				dam.m_arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfFloat;
+				dam.arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfFloat;
 			}
 			else if (dt == COMMON_NS::AbstractObject::LONG_64 || dt == COMMON_NS::AbstractObject::ULONG_64)
 			{
-				dam.m_arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfLong;
+				dam.arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfLong;
 			}
 			else if (dt == COMMON_NS::AbstractObject::INT || dt == COMMON_NS::AbstractObject::UINT ||
 				dt == COMMON_NS::AbstractObject::SHORT || dt == COMMON_NS::AbstractObject::USHORT)
 			{
-				dam.m_arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfInt;
+				dam.arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfInt;
 			}
 			else if (dt == COMMON_NS::AbstractObject::CHAR || dt == COMMON_NS::AbstractObject::UCHAR)
 			{
-				dam.m_arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::bytes;
+				dam.arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::bytes;
 			}
-			gdamResponse.m_arrayMetadata[element.first] = dam;
+			gdamResponse.arrayMetadata[element.first] = dam;
 		}
 		catch (ETP_NS::EtpException& ex)
 		{
-			pe.m_errors[element.first].m_message = ex.what();
-			pe.m_errors[element.first].m_code = ex.getErrorCode();
+			pe.errors[element.first].message = ex.what();
+			pe.errors[element.first].code = ex.getErrorCode();
 			continue;
 		}
 	}
 
-	if (!pe.m_errors.empty()) {
+	if (!pe.errors.empty()) {
 		session->send(gdamResponse, correlationId, 0x01);
 		session->send(pe, correlationId, 0x01 | 0x02);
 	}

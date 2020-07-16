@@ -38,6 +38,8 @@ public class EtpExample {
 	public static void main(String[] args) {
 		PlainClientSession session = fesapi.createClientSession("127.0.0.1", "8080", "/", "");
 		session.setCoreProtocolHandlers(new MyOwnCoreProtocolHandlers(session));
+		session.setDiscoveryProtocolHandlers(new MyOwnDiscoveryProtocolHandlers(session));
+		session.setStoreProtocolHandlers(new MyOwnStoreProtocolHandlers(session));
 		session.run();
 		System.out.println("FINISHED");
 	}

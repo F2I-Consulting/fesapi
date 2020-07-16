@@ -397,17 +397,17 @@ template<
 		);
 
 		Energistics::Etp::v12::Datatypes::ServerCapabilities serverCap;
-		serverCap.m_applicationName = applicationName;
-		serverCap.m_applicationVersion = applicationVersion;
-		serverCap.m_contactInformation.m_contactEmail = contactEmail;
-		serverCap.m_contactInformation.m_contactName = contactName;
-		serverCap.m_contactInformation.m_contactPhone = contactPhone;
-		serverCap.m_contactInformation.m_organizationName = organizationName;
-		serverCap.m_endpointCapabilities = endpointCapabilities;
-		serverCap.m_supportedEncodings = supportedEncodings;
-		serverCap.m_supportedFormats.push_back("xml");
-		serverCap.m_supportedDataObjects = supportedDataObjects;
-		serverCap.m_supportedProtocols = supportedProtocols;
+		serverCap.applicationName = applicationName;
+		serverCap.applicationVersion = applicationVersion;
+		serverCap.contactInformation.contactEmail = contactEmail;
+		serverCap.contactInformation.contactName = contactName;
+		serverCap.contactInformation.contactPhone = contactPhone;
+		serverCap.contactInformation.organizationName = organizationName;
+		serverCap.endpointCapabilities = endpointCapabilities;
+		serverCap.supportedEncodings = supportedEncodings;
+		serverCap.supportedFormats.push_back("xml");
+		serverCap.supportedDataObjects = supportedDataObjects;
+		serverCap.supportedProtocols = supportedProtocols;
 
 		avro::OutputStreamPtr out = avro::ostreamOutputStream(oss);
 		avro::EncoderPtr e = avro::jsonPrettyEncoder(vs);

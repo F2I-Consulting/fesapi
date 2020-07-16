@@ -30,11 +30,11 @@ MyOwnStoreNotificationProtocolHandlers::MyOwnStoreNotificationProtocolHandlers(s
 
 void MyOwnStoreNotificationProtocolHandlers::on_SubscribeNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotifications & msg, int64_t messageId)
 {
-	for (const auto& subscriptionInfo : msg.m_request) {
+	for (const auto& subscriptionInfo : msg.request) {
 		session->subscriptions[messageId] = subscriptionInfo.second;
 
 		auto journal = repo->getJournal();
-		auto startime = subscriptionInfo.second.m_startTime;
+		auto startime = subscriptionInfo.second.startTime;
 		const auto firstInJournal = std::find_if(journal.begin(), journal.end(),
 			[startime](const std::tuple<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::DataObjectReference, COMMON_NS::DataObjectRepository::CUD>& entry) {
 			return std::chrono::duration_cast<std::chrono::seconds>(std::get<0>(entry).time_since_epoch()).count() > startime; });

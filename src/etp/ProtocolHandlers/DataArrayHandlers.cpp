@@ -25,54 +25,54 @@ using namespace ETP_NS;
 
 void DataArrayHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d)
 {
-	if (mh.m_protocol != Energistics::Etp::v12::Datatypes::Protocol::DataArray) {
+	if (mh.protocol != Energistics::Etp::v12::Datatypes::Protocol::DataArray) {
 		std::cerr << "Error : This message header does not belong to the protocol DataArray" << std::endl;
 		return;
 	}
 
-	if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataArrays::messageTypeId) {
+	if (mh.messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataArrays::messageTypeId) {
 		Energistics::Etp::v12::Protocol::DataArray::GetDataArrays gda;
 		avro::decode(*d, gda);
 		session->flushReceivingBuffer();
-		on_GetDataArrays(gda, mh.m_messageId);
+		on_GetDataArrays(gda, mh.messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataArraysResponse::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataArraysResponse::messageTypeId) {
 		Energistics::Etp::v12::Protocol::DataArray::GetDataArraysResponse gdar;
 		avro::decode(*d, gdar);
 		session->flushReceivingBuffer();
 		on_GetDataArraysResponse(gdar);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::PutDataArrays::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::DataArray::PutDataArrays::messageTypeId) {
 		Energistics::Etp::v12::Protocol::DataArray::PutDataArrays pda;
 		avro::decode(*d, pda);
 		session->flushReceivingBuffer();
-		on_PutDataArrays(pda, mh.m_messageId);
+		on_PutDataArrays(pda, mh.messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataSubarrays::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataSubarrays::messageTypeId) {
 		Energistics::Etp::v12::Protocol::DataArray::GetDataSubarrays msg;
 		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
-		on_GetDataSubarrays(msg, mh.m_messageId);
+		on_GetDataSubarrays(msg, mh.messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataSubarraysResponse::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataSubarraysResponse::messageTypeId) {
 		Energistics::Etp::v12::Protocol::DataArray::GetDataSubarraysResponse msg;
 		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
 		on_GetDataSubarraysResponse(msg);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::PutDataSubarrays::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::DataArray::PutDataSubarrays::messageTypeId) {
 		Energistics::Etp::v12::Protocol::DataArray::PutDataSubarrays msg;
 		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
-		on_PutDataSubarrays(msg, mh.m_messageId);
+		on_PutDataSubarrays(msg, mh.messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadata::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadata::messageTypeId) {
 		Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadata gdam;
 		avro::decode(*d, gdam);
 		session->flushReceivingBuffer();
-		on_GetDataArrayMetadata(gdam, mh.m_messageId);
+		on_GetDataArrayMetadata(gdam, mh.messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadataResponse::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadataResponse::messageTypeId) {
 		Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadataResponse gdamr;
 		avro::decode(*d, gdamr);
 		session->flushReceivingBuffer();
@@ -91,52 +91,52 @@ void DataArrayHandlers::on_GetDataArrays(const Energistics::Etp::v12::Protocol::
 
 void DataArrayHandlers::on_GetDataArraysResponse(Energistics::Etp::v12::Protocol::DataArray::GetDataArraysResponse & gdar)
 {
-	for (std::pair < std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArray > element : gdar.m_dataArrays) {
+	for (std::pair < std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArray > element : gdar.dataArrays) {
 		Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArray& da = element.second;
 		std::cout << "*************************************************" << std::endl;
 		std::cout << "Data Array received : " << std::endl;
-		std::cout << "Dimension count : " << da.m_dimensions.size() << std::endl;
-		for (auto i = 0; i < da.m_dimensions.size(); ++i) {
-			std::cout << "Dimension " << i << " with count : " << da.m_dimensions[i] << std::endl;
+		std::cout << "Dimension count : " << da.dimensions.size() << std::endl;
+		for (auto i = 0; i < da.dimensions.size(); ++i) {
+			std::cout << "Dimension " << i << " with count : " << da.dimensions[i] << std::endl;
 		}
 		std::cout << "*************************************************" << std::endl;
-		if (da.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfBoolean) {
-			Energistics::Etp::v12::Datatypes::ArrayOfBoolean avroArray = da.m_data.m_item.get_ArrayOfBoolean();
-			auto values = avroArray.m_values;
+		if (da.data.item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfBoolean) {
+			Energistics::Etp::v12::Datatypes::ArrayOfBoolean avroArray = da.data.item.get_ArrayOfBoolean();
+			auto values = avroArray.values;
 			for (auto i = 0; i < values.size() && i < 20; ++i) {
 				std::cout << "bool value " << i << " == " << values[i] << std::endl;
 			}
 		}
-		else if (da.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::bytes) {
-			std::string values = da.m_data.m_item.get_bytes();
+		else if (da.data.item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::bytes) {
+			std::string values = da.data.item.get_bytes();
 			for (auto i = 0; i < values.size() && i < 20; ++i) {
 				std::cout << "char value " << i << " == " << (int)values[i] << std::endl;
 			}
 		}
-		else if (da.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfInt) {
-			Energistics::Etp::v12::Datatypes::ArrayOfInt avroArray = da.m_data.m_item.get_ArrayOfInt();
-			auto values = avroArray.m_values;
+		else if (da.data.item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfInt) {
+			Energistics::Etp::v12::Datatypes::ArrayOfInt avroArray = da.data.item.get_ArrayOfInt();
+			auto values = avroArray.values;
 			for (auto i = 0; i < values.size() && i < 20; ++i) {
 				std::cout << "int value " << i << " == " << values[i] << std::endl;
 			}
 		}
-		else if (da.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfLong) {
-			Energistics::Etp::v12::Datatypes::ArrayOfLong avroArray = da.m_data.m_item.get_ArrayOfLong();
-			auto values = avroArray.m_values;
+		else if (da.data.item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfLong) {
+			Energistics::Etp::v12::Datatypes::ArrayOfLong avroArray = da.data.item.get_ArrayOfLong();
+			auto values = avroArray.values;
 			for (auto i = 0; i < values.size() && i < 20; ++i) {
 				std::cout << "long value " << i << " == " << values[i] << std::endl;
 			}
 		}
-		else if (da.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfFloat) {
-			Energistics::Etp::v12::Datatypes::ArrayOfFloat avroArray = da.m_data.m_item.get_ArrayOfFloat();
-			auto values = avroArray.m_values;
+		else if (da.data.item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfFloat) {
+			Energistics::Etp::v12::Datatypes::ArrayOfFloat avroArray = da.data.item.get_ArrayOfFloat();
+			auto values = avroArray.values;
 			for (auto i = 0; i < values.size() && i < 20; ++i) {
 				std::cout << "float value " << i << " == " << values[i] << std::endl;
 			}
 		}
-		else if (da.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfDouble) {
-			Energistics::Etp::v12::Datatypes::ArrayOfDouble avroArray = da.m_data.m_item.get_ArrayOfDouble();
-			auto values = avroArray.m_values;
+		else if (da.data.item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfDouble) {
+			Energistics::Etp::v12::Datatypes::ArrayOfDouble avroArray = da.data.item.get_ArrayOfDouble();
+			auto values = avroArray.values;
 			for (auto i = 0; i < values.size() && i < 20; ++i) {
 				std::cout << "double value " << i << " == " << values[i] << std::endl;
 			}
@@ -172,12 +172,12 @@ void DataArrayHandlers::on_GetDataArrayMetadata(const Energistics::Etp::v12::Pro
 
 void DataArrayHandlers::on_GetDataArrayMetadataResponse(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadataResponse & gdamr)
 {
-	for (std::pair < std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayMetadata > element : gdamr.m_arrayMetadata) {
+	for (std::pair < std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayMetadata > element : gdamr.arrayMetadata) {
 		Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayMetadata& dam = element.second;
 		std::cout << "*************************************************" << std::endl;
 		std::cout << "Data Array Metadata received : " << std::endl;
 		std::cout << "Array type : ";
-		switch (dam.m_arrayType) {
+		switch (dam.arrayType) {
 		case 0: std::cout << "bool"; break;
 		case 1: std::cout << "int"; break;
 		case 2: std::cout << "long"; break;
@@ -187,8 +187,8 @@ void DataArrayHandlers::on_GetDataArrayMetadataResponse(const Energistics::Etp::
 		case 6: std::cout << "byte"; break;
 		}
 		std::cout << std::endl;
-		for (auto i = 0; i < dam.m_dimensions.size(); ++i) {
-			std::cout << "Dimension " << i << " with count : " << dam.m_dimensions[i] << std::endl;
+		for (auto i = 0; i < dam.dimensions.size(); ++i) {
+			std::cout << "Dimension " << i << " with count : " << dam.dimensions[i] << std::endl;
 		}
 		std::cout << "*************************************************" << std::endl;
 	}

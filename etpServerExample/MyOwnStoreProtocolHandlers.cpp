@@ -35,7 +35,7 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::
 	Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse objResponse;
 
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
-	for (const auto & pair : msg.m_uris) {
+	for (const auto & pair : msg.uris) {
 		std::cout << "Store received URI : " << pair.second << std::endl;
 
 		try
@@ -47,16 +47,16 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::
 			}
 
 			Energistics::Etp::v12::Datatypes::Object::DataObject dataObject = ETP_NS::EtpHelpers::buildEtpDataObjectFromEnergisticsObject(obj);
-			objResponse.m_dataObjects[pair.first] = dataObject;
+			objResponse.dataObjects[pair.first] = dataObject;
 		}
 		catch (ETP_NS::EtpException& ex)
 		{
-			pe.m_errors[pair.first].m_message = ex.what();
-			pe.m_errors[pair.first].m_code = ex.getErrorCode();
+			pe.errors[pair.first].message = ex.what();
+			pe.errors[pair.first].code = ex.getErrorCode();
 		}
 	}
 
-	if (!pe.m_errors.empty()) {
+	if (!pe.errors.empty()) {
 		session->send(objResponse, correlationId);
 		session->send(pe, correlationId, 0x02);
 	}
@@ -68,19 +68,19 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::
 void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & msg, int64_t correlationId)
 {
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
-	for (const auto & pair : msg.m_dataObjects) {
-		std::cout << "Store received data object : " << pair.second.m_resource.m_dataObjectType << " (" << pair.second.m_resource.m_uri << ")" << std::endl;
+	for (const auto & pair : msg.dataObjects) {
+		std::cout << "Store received data object : " << pair.second.resource.dataObjectType << " (" << pair.second.resource.uri << ")" << std::endl;
 
-		COMMON_NS::AbstractObject* importedObj = repo->addOrReplaceGsoapProxy(pair.second.m_data, pair.second.m_resource.m_dataObjectType);
+		COMMON_NS::AbstractObject* importedObj = repo->addOrReplaceGsoapProxy(pair.second.data, pair.second.resource.dataObjectType);
 		if (importedObj == nullptr) {
-			pe.m_errors[pair.first].m_message = "Could not put the dataobject with content type " + pair.second.m_resource.m_dataObjectType;
-			pe.m_errors[pair.first].m_code = 4001;
+			pe.errors[pair.first].message = "Could not put the dataobject with content type " + pair.second.resource.dataObjectType;
+			pe.errors[pair.first].code = 4001;
 			continue;
 		}
 
 		importedObj->loadTargetRelationships();
 
-		if (pair.second.m_resource.m_dataObjectType == "resqml20.obj_IjkGridRepresentation") {
+		if (pair.second.resource.dataObjectType == "resqml20.obj_IjkGridRepresentation") {
 			std::cout << "Create a dummy Grid Connection Set for received IJK Grid Representation." << std::endl;
 			RESQML2_NS::GridConnectionSetRepresentation* gcsr = repo->createGridConnectionSetRepresentation(std::string(), "Dummy GCSR");
 			ULONG64 cellIndexPair[] = { 0, 1 };
@@ -89,7 +89,7 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 		}
 	}
 
-	if (!pe.m_errors.empty()) {
+	if (!pe.errors.empty()) {
 		session->send(pe, correlationId, 0x02);
 	}
 }
@@ -97,10 +97,10 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 void MyOwnStoreProtocolHandlers::on_DeleteDataObjects(const Energistics::Etp::v12::Protocol::Store::DeleteDataObjects & msg, int64_t correlationId)
 {
 	Energistics::Etp::v12::Datatypes::ErrorInfo error;
-	error.m_code = 7;
-	error.m_message = "The operation is not supported by the agent.";
+	error.code = 7;
+	error.message = "The operation is not supported by the agent.";
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
-	pe.m_error.set_ErrorInfo(error);
+	pe.error.emplace(error);
 
 	session->send(pe, correlationId, 0x02);
 }

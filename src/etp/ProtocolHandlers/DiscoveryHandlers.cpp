@@ -25,21 +25,21 @@ using namespace ETP_NS;
 
 void DiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d)
 {
-	if (mh.m_protocol != Energistics::Etp::v12::Datatypes::Protocol::Discovery) {
+	if (mh.protocol != Energistics::Etp::v12::Datatypes::Protocol::Discovery) {
 		std::cerr << "Error : This message header does not belong to the protocol Discovery" << std::endl;
 		return;
 	}
-	if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetResources::messageTypeId) {
+	if (mh.messageType == Energistics::Etp::v12::Protocol::Discovery::GetResources::messageTypeId) {
 		Energistics::Etp::v12::Protocol::Discovery::GetResources msg;
 		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
-		on_GetResources(msg, mh.m_messageId);
+		on_GetResources(msg, mh.messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse::messageTypeId) {
 		Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse msg;
 		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
-		on_GetResourcesResponse(msg, mh.m_correlationId);
+		on_GetResourcesResponse(msg, mh.correlationId);
 	}
 	else {
 		session->flushReceivingBuffer();
@@ -54,7 +54,7 @@ void DiscoveryHandlers::on_GetResources(const Energistics::Etp::v12::Protocol::D
 
 void DiscoveryHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse & msg, int64_t)
 {
-	for (const auto & resource : msg.m_resources) {
-		std::cout << "DISCOVERED RESOURCE (" << resource.m_name << ", " << resource.m_dataObjectType << ')' << std::endl;
+	for (const auto & resource : msg.resources) {
+		std::cout << "DISCOVERED RESOURCE (" << resource.name << ", " << resource.dataObjectType << ')' << std::endl;
 	}
 }

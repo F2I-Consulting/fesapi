@@ -29,7 +29,7 @@ under the License.
 Energistics::Etp::v12::Datatypes::ErrorInfo ETP_NS::EtpHelpers::validateUri(const std::string & uri, std::shared_ptr<ETP_NS::AbstractSession> session)
 {
 	Energistics::Etp::v12::Datatypes::ErrorInfo errorInfo;
-	errorInfo.m_code = -1;
+	errorInfo.code = -1;
 	// Regular expressions are not handled before GCC 4.9
 	// https://stackoverflow.com/questions/12530406/is-gcc-4-8-or-earlier-buggy-about-regular-expressions
 #if (defined(_WIN32) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9))))
@@ -45,12 +45,12 @@ Energistics::Etp::v12::Datatypes::ErrorInfo ETP_NS::EtpHelpers::validateUri(cons
 #endif
 
 	if (!result) {
-		errorInfo.m_code = 9;
-		errorInfo.m_message = "The URI " + uri + "  is invalid.";
+		errorInfo.code = 9;
+		errorInfo.message = "The URI " + uri + "  is invalid.";
 
 		if (session != nullptr) {
 			Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-			error.m_error.set_ErrorInfo(errorInfo);
+			error.error.emplace(errorInfo);
 			session->send(error);
 		}
 	}
@@ -62,7 +62,7 @@ Energistics::Etp::v12::Datatypes::ErrorInfo ETP_NS::EtpHelpers::validateUri(cons
 Energistics::Etp::v12::Datatypes::ErrorInfo ETP_NS::EtpHelpers::validateDataObjectUri(const std::string & uri, std::shared_ptr<ETP_NS::AbstractSession> session)
 {
 	Energistics::Etp::v12::Datatypes::ErrorInfo errorInfo;
-	errorInfo.m_code = -1;
+	errorInfo.code = -1;
 	// Regular expressions are not handled before GCC 4.9
 	// https://stackoverflow.com/questions/12530406/is-gcc-4-8-or-earlier-buggy-about-regular-expressions
 #if (defined(_WIN32) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9))))
@@ -81,12 +81,12 @@ Energistics::Etp::v12::Datatypes::ErrorInfo ETP_NS::EtpHelpers::validateDataObje
 #endif
 
 	if (!result) {
-		errorInfo.m_code = 9;
-		errorInfo.m_message = "The data object URI " + uri + "  is invalid.";
+		errorInfo.code = 9;
+		errorInfo.message = "The data object URI " + uri + "  is invalid.";
 
 		if (session != nullptr) {
 			Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-			error.m_error.set_ErrorInfo(errorInfo);
+			error.error.emplace(errorInfo);
 			session->send(error);
 		}
 	}
@@ -107,20 +107,20 @@ Energistics::Etp::v12::Datatypes::Object::Resource ETP_NS::EtpHelpers::buildEtpR
 
 	Energistics::Etp::v12::Datatypes::Object::Resource result;
 
-	result.m_dataObjectType = obj->getQualifiedType();
-	result.m_uri = buildUriFromEnergisticsObject(obj);
-	result.m_name = obj->getTitle();
+	result.dataObjectType = obj->getQualifiedType();
+	result.uri = buildUriFromEnergisticsObject(obj);
+	result.name = obj->getTitle();
 	if (obj->isPartial()) {
-		result.m_lastChanged = -1;
+		result.lastChanged = -1;
 	}
 	else {
 		const time_t lastUpdate = obj->getLastUpdate();
-		result.m_lastChanged = (lastUpdate > -1 ? lastUpdate : obj->getCreation()) * 1e6;
+		result.lastChanged = (lastUpdate > -1 ? lastUpdate : obj->getCreation()) * 1e6;
 	}
 	
 	if (countRels) {
-		result.m_sourceCount = obj->getRepository()->getSourceObjects(obj).size();
-		result.m_targetCount = obj->getRepository()->getTargetObjects(obj).size();
+		result.sourceCount = obj->getRepository()->getSourceObjects(obj).size();
+		result.targetCount = obj->getRepository()->getTargetObjects(obj).size();
 	}
 
 	return result;
@@ -133,10 +133,10 @@ Energistics::Etp::v12::Datatypes::Object::DataObject ETP_NS::EtpHelpers::buildEt
 		if (obj->isPartial()) {
 			obj = obj->getRepository()->resolvePartial(obj);
 		}
-		result.m_format = "xml";
-		result.m_data = obj->serializeIntoString();
+		result.format = "xml";
+		result.data = obj->serializeIntoString();
 	}
-	result.m_resource = ETP_NS::EtpHelpers::buildEtpResourceFromEnergisticsObject(obj);
+	result.resource = ETP_NS::EtpHelpers::buildEtpResourceFromEnergisticsObject(obj);
 
 	return result;
 }
@@ -144,10 +144,10 @@ Energistics::Etp::v12::Datatypes::Object::DataObject ETP_NS::EtpHelpers::buildEt
 Energistics::Etp::v12::Protocol::Core::ProtocolException ETP_NS::EtpHelpers::buildSingleMessageProtocolException(int32_t m_code, const std::string & m_message)
 {
 	Energistics::Etp::v12::Datatypes::ErrorInfo errorInfo;
-	errorInfo.m_code = m_code;
-	errorInfo.m_message = m_message;
+	errorInfo.code = m_code;
+	errorInfo.message = m_message;
 	Energistics::Etp::v12::Protocol::Core::ProtocolException peMessage;
-	peMessage.m_error.set_ErrorInfo(errorInfo);
+	peMessage.error.emplace(errorInfo);
 
 	return peMessage;
 }

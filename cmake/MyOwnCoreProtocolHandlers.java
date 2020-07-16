@@ -18,7 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 package com.f2i.energisticsStandardsApi.example;
 
-import com.f2i.energisticsStandardsApi.OpenSession;
+import com.f2i.energisticsStandardsApi.Energistics.Etp.v12.Datatypes.Object.ContextScopeKind;
+import com.f2i.energisticsStandardsApi.Energistics.Etp.v12.Protocol.Core.OpenSession;
+import com.f2i.energisticsStandardsApi.Energistics.Etp.v12.Protocol.Discovery.GetResources;
 import com.f2i.energisticsStandardsApi.${FESAPI_ETP_NS}.AbstractSession;
 import com.f2i.energisticsStandardsApi.${FESAPI_ETP_NS}.CoreHandlers;
 
@@ -30,5 +32,14 @@ public class MyOwnCoreProtocolHandlers extends CoreHandlers {
 	@Override
 	public void on_OpenSession(OpenSession os, long correlationId) {
 		System.out.println("Opened a session");
+		
+        System.out.println("Asking all dataobjects");
+		GetResources mb = new GetResources();
+		mb.getContext().setUri("eml:///");
+		mb.getContext().setDepth(1);
+		mb.setScope(ContextScopeKind.self);
+		mb.setCountObjects(true);
+
+		getSession().send(mb);
 	}
 }

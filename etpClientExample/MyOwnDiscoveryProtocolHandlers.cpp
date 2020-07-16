@@ -28,33 +28,33 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energistics::
 	Energistics::Etp::v12::Protocol::Store::GetDataObjects getO;
 	unsigned int index = 0;
 
-	std::cout << msg.m_resources.size() << " resources received." << std::endl;
-	for (const Energistics::Etp::v12::Datatypes::Object::Resource & resource : msg.m_resources) {
+	std::cout << msg.resources.size() << " resources received." << std::endl;
+	for (const Energistics::Etp::v12::Datatypes::Object::Resource & resource : msg.resources) {
 		std::cout << "*************************************************" << std::endl;
-		std::cout << "uri : " << resource.m_uri << std::endl;
-		std::cout << "data type : " << resource.m_dataObjectType << std::endl;
-		std::cout << "name : " << resource.m_name << std::endl;
-		if (resource.m_sourceCount)
-			std::cout << "sourceCount : " << resource.m_sourceCount.get() << std::endl;
-		if (resource.m_targetCount)
-			std::cout << "targetCount : " << resource.m_targetCount.get() << std::endl;
+		std::cout << "uri : " << resource.uri << std::endl;
+		std::cout << "data type : " << resource.dataObjectType << std::endl;
+		std::cout << "name : " << resource.name << std::endl;
+		if (resource.sourceCount)
+			std::cout << "sourceCount : " << resource.sourceCount.get() << std::endl;
+		if (resource.targetCount)
+			std::cout << "targetCount : " << resource.targetCount.get() << std::endl;
 		std::cout << "*************************************************" << std::endl;
 
 
 		if (std::find(getObjectWhenDiscovered.begin(), getObjectWhenDiscovered.end(), correlationId) != getObjectWhenDiscovered.end()) {
-			const size_t openingParenthesis = resource.m_uri.find('(', 5);
+			const size_t openingParenthesis = resource.uri.find('(', 5);
 			if (openingParenthesis != std::string::npos) {
-				auto resqmlObj = repo->getDataObjectByUuid(resource.m_uri.substr(openingParenthesis + 1, 36));
+				auto resqmlObj = repo->getDataObjectByUuid(resource.uri.substr(openingParenthesis + 1, 36));
 				if (resqmlObj == nullptr || resqmlObj->isPartial()) {
 					std::cout << "GET OBJECT -----------------------------------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;			
-					getO.m_uris[std::to_string(index)] = resource.m_uri;
+					getO.uris[std::to_string(index)] = resource.uri;
 					++index;
 				}
 			}
 		}
 	}
 
-	if (!getO.m_uris.empty()) {
+	if (!getO.uris.empty()) {
 		session->send(getO);
 	}
 }

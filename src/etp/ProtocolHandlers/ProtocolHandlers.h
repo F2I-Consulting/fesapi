@@ -53,5 +53,7 @@ namespace ETP_NS
 		virtual ~ProtocolHandlers() {}
 
 	    virtual void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d) = 0;
+
+		std::shared_ptr<AbstractSession> getSession() { return session; }
 	};
 }

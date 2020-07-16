@@ -26,6 +26,7 @@ namespace ETP_NS
 	{
 	public:
 		DataArrayHandlers(std::shared_ptr<AbstractSession> mySession): ProtocolHandlers(mySession) {}
+		virtual ~DataArrayHandlers() {}
 
 	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
 
@@ -37,7 +38,5 @@ namespace ETP_NS
 	    virtual void on_PutDataSubarrays(const Energistics::Etp::v12::Protocol::DataArray::PutDataSubarrays & msg, int64_t correlationId);
 		virtual void on_GetDataArrayMetadata(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadata & gdam, int64_t correlationId);
 		virtual void on_GetDataArrayMetadataResponse(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadataResponse & gdamr);
-
-		virtual ~DataArrayHandlers() {}
 	};
 }

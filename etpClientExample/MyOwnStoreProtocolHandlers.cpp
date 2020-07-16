@@ -25,16 +25,16 @@ under the License.
 
 void MyOwnStoreProtocolHandlers::on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & obj, int64_t correlationId)
 {
-	for (const auto & graphResource : obj.m_dataObjects) {
+	for (const auto & graphResource : obj.dataObjects) {
 		std::cout << "*************************************************" << std::endl;
 		std::cout << "Resource received : " << std::endl;
-		std::cout << "uri : " << graphResource.second.m_resource.m_uri << std::endl;
-		std::cout << "datatype : " << graphResource.second.m_resource.m_dataObjectType << std::endl;
-		std::cout << "name : " << graphResource.second.m_resource.m_name << std::endl;
-		std::cout << "xml : " << graphResource.second.m_data << std::endl;
+		std::cout << "uri : " << graphResource.second.resource.uri << std::endl;
+		std::cout << "datatype : " << graphResource.second.resource.dataObjectType << std::endl;
+		std::cout << "name : " << graphResource.second.resource.name << std::endl;
+		std::cout << "xml : " << graphResource.second.data << std::endl;
 		std::cout << "*************************************************" << std::endl;
 
-		COMMON_NS::AbstractObject* importedObj = repo->addOrReplaceGsoapProxy(graphResource.second.m_data, graphResource.second.m_resource.m_dataObjectType);
+		COMMON_NS::AbstractObject* importedObj = repo->addOrReplaceGsoapProxy(graphResource.second.data, graphResource.second.resource.dataObjectType);
 
 		importedObj->loadTargetRelationships();
 	}

@@ -26,6 +26,7 @@ namespace ETP_NS
 	{
 	public:
 		StoreHandlers(std::shared_ptr<AbstractSession> mySession): ProtocolHandlers(mySession) {}
+		virtual ~StoreHandlers() {}
 
 	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
 
@@ -33,7 +34,5 @@ namespace ETP_NS
 	    virtual void on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & msg, int64_t correlationId);
 	    virtual void on_DeleteDataObjects(const Energistics::Etp::v12::Protocol::Store::DeleteDataObjects & msg, int64_t correlationId);
 	    virtual void on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & msg, int64_t correlationId);
-
-		virtual ~StoreHandlers() {}
 	};
 }

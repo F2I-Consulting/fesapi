@@ -48,6 +48,8 @@ configure_file(${FESAPI_ROOT_DIR}/cmake/swigJavaInclude.i ${FESAPI_ROOT_DIR}/swi
 configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/example/FesapiJavaExample.java) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/EtpExample.java ${FESAPI_ROOT_DIR}/java/example/EtpExample.java) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnCoreProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/example/MyOwnCoreProtocolHandlers.java) # Overwrite if different
+configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnDiscoveryProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/example/MyOwnDiscoveryProtocolHandlers.java) # Overwrite if different
+configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnStoreProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/example/MyOwnStoreProtocolHandlers.java) # Overwrite if different
 
 set (SWIG_DEFINITIONS "")
 if (WITH_RESQML2_2)

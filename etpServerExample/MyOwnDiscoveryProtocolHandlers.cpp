@@ -34,7 +34,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlash(const Energistics:
 	std::vector<std::string> & result)
 {
 	Energistics::Etp::v12::Datatypes::Object::Resource resource;
-	resource.m_contentType = std::string();
+	resource.contentType = std::string();
 
 	const auto & objectsGroupedByContentType = repo->getDataObjectsGroupedByContentType();
 
@@ -112,30 +112,30 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v
 	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result)
 {
 	Energistics::Etp::v12::Datatypes::Object::Resource resource;
-	resource.m_dataObjectType = "";
+	resource.dataObjectType = "";
 
-	if (msg.m_context.m_depth >= 0) {
-		const size_t dataspacePos = msg.m_context.m_uri.find("dataspace");
-		const size_t openingParenthesis = dataspacePos != std::string::npos ? msg.m_context.m_uri.find('(', dataspacePos + 10) : msg.m_context.m_uri.find('(', 5);
-		COMMON_NS::AbstractObject* obj = repo->getDataObjectByUuid(msg.m_context.m_uri.substr(openingParenthesis + 1, 36));
+	if (msg.context.depth >= 0) {
+		const size_t dataspacePos = msg.context.uri.find("dataspace");
+		const size_t openingParenthesis = dataspacePos != std::string::npos ? msg.context.uri.find('(', dataspacePos + 10) : msg.context.uri.find('(', 5);
+		COMMON_NS::AbstractObject* obj = repo->getDataObjectByUuid(msg.context.uri.substr(openingParenthesis + 1, 36));
 		if (obj == nullptr) {
 			Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 			Energistics::Etp::v12::Datatypes::ErrorInfo error;
-			error.m_code = 9;
-			error.m_message = "The URI " + msg.m_context.m_uri + " targets something which does not exist.";
-			pe.m_error.set_ErrorInfo(error);
+			error.code = 9;
+			error.message = "The URI " + msg.context.uri + " targets something which does not exist.";
+			pe.error.emplace(error);
 
 			session->send(pe, correlationId);
 			return;
 		}
 
 		// Self
-		if (msg.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self ||
-			msg.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf ||
-			msg.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
+		if (msg.scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self ||
+			msg.scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf ||
+			msg.scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
 
 			time_t lastUpdate = -1;
-			if (msg.m_storeLastWriteFilter && !obj->isPartial()) {
+			if (msg.storeLastWriteFilter && !obj->isPartial()) {
 				lastUpdate = obj->getLastUpdate();
 				if (lastUpdate < 0) {
 					lastUpdate = obj->getCreation();
@@ -144,36 +144,36 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v
 			}
 			std::string qualifiedType = obj->getQualifiedType();
 			std::string namespaceStar = qualifiedType.substr(0, qualifiedType.find(".") + 1) + "*";
-			if ((msg.m_context.m_dataObjectTypes.empty() || std::find(msg.m_context.m_dataObjectTypes.begin(), msg.m_context.m_dataObjectTypes.end(), qualifiedType) != msg.m_context.m_dataObjectTypes.end()
-				|| std::find(msg.m_context.m_dataObjectTypes.begin(), msg.m_context.m_dataObjectTypes.end(), namespaceStar) != msg.m_context.m_dataObjectTypes.end())
-				&& (!msg.m_storeLastWriteFilter || lastUpdate >= msg.m_storeLastWriteFilter.get())) {
-				result.push_back(ETP_NS::EtpHelpers::buildEtpResourceFromEnergisticsObject(obj, msg.m_countObjects));
+			if ((msg.context.dataObjectTypes.empty() || std::find(msg.context.dataObjectTypes.begin(), msg.context.dataObjectTypes.end(), qualifiedType) != msg.context.dataObjectTypes.end()
+				|| std::find(msg.context.dataObjectTypes.begin(), msg.context.dataObjectTypes.end(), namespaceStar) != msg.context.dataObjectTypes.end())
+				&& (!msg.storeLastWriteFilter || lastUpdate >= msg.storeLastWriteFilter.get())) {
+				result.push_back(ETP_NS::EtpHelpers::buildEtpResourceFromEnergisticsObject(obj, msg.countObjects));
 			}
 		}
 
-		if (msg.m_context.m_depth >= 1) {
+		if (msg.context.depth >= 1) {
 			// Target
-			if (msg.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets ||
-				msg.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
+			if (msg.scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets ||
+				msg.scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
 				Energistics::Etp::v12::Protocol::Discovery::GetResources nextGr = msg;
-				--nextGr.m_context.m_depth;
-				nextGr.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
+				--nextGr.context.depth;
+				nextGr.scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
 
 				for (const auto & targetObj : repo->getTargetObjects(obj)) {
-					nextGr.m_context.m_uri = msg.m_context.m_uri.substr(0, openingParenthesis) + '(' + targetObj->getUuid() + ')';
+					nextGr.context.uri = msg.context.uri.substr(0, openingParenthesis) + '(' + targetObj->getUuid() + ')';
 					on_GetDataObjects(nextGr, correlationId, result);
 				}
 			}
 
 			// Source
-			if (msg.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources ||
-				msg.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf) {
+			if (msg.scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources ||
+				msg.scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf) {
 				Energistics::Etp::v12::Protocol::Discovery::GetResources nextGr = msg;
-				--nextGr.m_context.m_depth;
-				nextGr.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf;
+				--nextGr.context.depth;
+				nextGr.scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf;
 				
 				for (const auto & sourceObj : repo->getSourceObjects(obj)) {
-					nextGr.m_context.m_uri = msg.m_context.m_uri.substr(0, openingParenthesis) + '(' + sourceObj->getUuid() + ')';
+					nextGr.context.uri = msg.context.uri.substr(0, openingParenthesis) + '(' + sourceObj->getUuid() + ')';
 					on_GetDataObjects(nextGr, correlationId, result);
 				}
 			}
@@ -183,52 +183,52 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v
 
 void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources & msg, int64_t correlationId)
 {
-	std::cout << "Discovery graph resource received uri : " << msg.m_context.m_uri << std::endl;
+	std::cout << "Discovery graph resource received uri : " << msg.context.uri << std::endl;
 
-	if (msg.m_context.m_depth < 0) {
+	if (msg.context.depth < 0) {
 		session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(5, "The requested depth cannot be inferior to zero."), correlationId, 0x02);
 		return;
 	}
 
 	Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse mb;
-	if ((msg.m_context.m_uri.find("eml2") != std::string::npos ||
-		msg.m_context.m_uri.find("resqml2") != std::string::npos ||
-		msg.m_context.m_uri.find("witsml2") != std::string::npos ||
-		msg.m_context.m_uri.find("prodml2") != std::string::npos) &&
-		msg.m_context.m_uri.back() == ')') { // dataobject
-		if (ETP_NS::EtpHelpers::validateDataObjectUri(msg.m_context.m_uri, session).m_code > -1) {
+	if ((msg.context.uri.find("eml2") != std::string::npos ||
+		msg.context.uri.find("resqml2") != std::string::npos ||
+		msg.context.uri.find("witsml2") != std::string::npos ||
+		msg.context.uri.find("prodml2") != std::string::npos) &&
+		msg.context.uri.back() == ')') { // dataobject
+		if (ETP_NS::EtpHelpers::validateDataObjectUri(msg.context.uri, session).code > -1) {
 			return;
 		}
 
-		on_GetDataObjects(msg, correlationId, mb.m_resources);
+		on_GetDataObjects(msg, correlationId, mb.resources);
 	}
 	else { // eml, dataspace
-		if (ETP_NS::EtpHelpers::validateUri(msg.m_context.m_uri, session).m_code > -1) {
+		if (ETP_NS::EtpHelpers::validateUri(msg.context.uri, session).code > -1) {
 			return;
 		}
 
 		Energistics::Etp::v12::Protocol::Discovery::GetResources nextGr = msg;
-		--nextGr.m_context.m_depth;
-		if (msg.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources ||
-			msg.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf) {
-			nextGr.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf;
+		--nextGr.context.depth;
+		if (msg.scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources ||
+			msg.scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf) {
+			nextGr.scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf;
 		}
-		else if (msg.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets ||
-			msg.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
-			nextGr.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
+		else if (msg.scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets ||
+			msg.scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
+			nextGr.scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
 		}
 
 		std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > groupedDataObj;
-		if (msg.m_context.m_uri == "eml:///" || msg.m_context.m_uri == "eml:/" ||
-			msg.m_context.m_uri == "eml:///dataspace()" || msg.m_context.m_uri == "eml:/dataspace()") {
+		if (msg.context.uri == "eml:///" || msg.context.uri == "eml:/" ||
+			msg.context.uri == "eml:///dataspace()" || msg.context.uri == "eml:/dataspace()") {
 			groupedDataObj = repo->getDataObjectsGroupedByDataType();
 		}
 		else {
 			Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 			Energistics::Etp::v12::Datatypes::ErrorInfo error;
-			error.m_code = 9;
-			error.m_message = "The URI " + msg.m_context.m_uri + " targets something which does not exist.";
-			pe.m_error.set_ErrorInfo(error);
+			error.code = 9;
+			error.message = "The URI " + msg.context.uri + " targets something which does not exist.";
+			pe.error.emplace(error);
 
 			session->send(pe, correlationId, 0x02);
 			return;
@@ -236,8 +236,8 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12
 
 		for (const auto & pair : groupedDataObj) {
 			for (const auto & obj : pair.second) {
-				nextGr.m_context.m_uri = ETP_NS::EtpHelpers::buildUriFromEnergisticsObject(obj);
-				on_GetDataObjects(nextGr, correlationId, mb.m_resources);
+				nextGr.context.uri = ETP_NS::EtpHelpers::buildUriFromEnergisticsObject(obj);
+				on_GetDataObjects(nextGr, correlationId, mb.resources);
 			}
 		}
 	}

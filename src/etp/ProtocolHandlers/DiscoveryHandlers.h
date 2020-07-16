@@ -26,12 +26,11 @@ namespace ETP_NS
 	{
 	public:
 		DiscoveryHandlers(std::shared_ptr<AbstractSession> mySession): ProtocolHandlers(mySession) {}
+		virtual ~DiscoveryHandlers() {}
 
 	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
 
 		virtual void on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources & msg, int64_t correlationId);
 		virtual void on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse & msg, int64_t correlationId);
-
-		virtual ~DiscoveryHandlers() {}
 	};
 }

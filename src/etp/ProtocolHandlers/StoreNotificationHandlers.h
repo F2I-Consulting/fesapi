@@ -26,6 +26,7 @@ namespace ETP_NS
 	{
 	public:
 		StoreNotificationHandlers(std::shared_ptr<AbstractSession> mySession): ProtocolHandlers(mySession) {}
+		virtual ~StoreNotificationHandlers() {}
 
 	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
 
@@ -36,7 +37,5 @@ namespace ETP_NS
 	    virtual void on_ObjectChanged(const Energistics::Etp::v12::Protocol::StoreNotification::ObjectChanged & msg, int64_t correlationId);
 	    virtual void on_ObjectDeleted(const Energistics::Etp::v12::Protocol::StoreNotification::ObjectDeleted & msg, int64_t correlationId);
 		virtual void on_ObjectAccessRevoked(const Energistics::Etp::v12::Protocol::StoreNotification::ObjectAccessRevoked & msg, int64_t correlationId);
-
-		virtual ~StoreNotificationHandlers() {}
 	};
 }

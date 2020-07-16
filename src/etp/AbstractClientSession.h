@@ -76,10 +76,10 @@ namespace ETP_NS
 			successfulConnection(false)
 		{
 			// Build the request session
-			requestSession.m_applicationName = "F2I ETP Client";
-			requestSession.m_applicationVersion = "0.0";
-			requestSession.m_requestedProtocols = requestedProtocols;
-			requestSession.m_supportedDataObjects = supportedDataObjects;
+			requestSession.applicationName = "F2I ETP Client";
+			requestSession.applicationVersion = "0.0";
+			requestSession.requestedProtocols = requestedProtocols;
+			requestSession.supportedDataObjects = supportedDataObjects;
 		}
 
 		virtual ~AbstractClientSession() {}

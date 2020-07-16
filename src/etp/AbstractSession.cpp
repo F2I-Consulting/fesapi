@@ -30,11 +30,11 @@ Energistics::Etp::v12::Datatypes::MessageHeader AbstractSession::decodeMessageHe
 #ifndef NDEBUG
 	std::cout << "*************************************************" << std::endl;
 	std::cout << "Message Header received : " << std::endl;
-	std::cout << "protocol : " << receivedMh.m_protocol << std::endl;
-	std::cout << "type : " << receivedMh.m_messageType << std::endl;
-	std::cout << "id : " << receivedMh.m_messageId << std::endl;
-	std::cout << "correlation id : " << receivedMh.m_correlationId << std::endl;
-	std::cout << "flags : " << receivedMh.m_messageFlags << std::endl;
+	std::cout << "protocol : " << receivedMh.protocol << std::endl;
+	std::cout << "type : " << receivedMh.messageType << std::endl;
+	std::cout << "id : " << receivedMh.messageId << std::endl;
+	std::cout << "correlation id : " << receivedMh.correlationId << std::endl;
+	std::cout << "flags : " << receivedMh.messageFlags << std::endl;
 	std::cout << "*************************************************" << std::endl;
 #endif
 
@@ -67,29 +67,29 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 	Energistics::Etp::v12::Datatypes::MessageHeader receivedMh = decodeMessageHeader(d);
 
 	// Request for Acknowledge
-	if ((receivedMh.m_messageFlags & 0x10) != 0) {
+	if ((receivedMh.messageFlags & 0x10) != 0) {
 		Energistics::Etp::v12::Protocol::Core::Acknowledge acknowledge;
-		acknowledge.protocolId = receivedMh.m_protocol;
-		send(acknowledge, receivedMh.m_messageId);
+		acknowledge.protocolId = receivedMh.protocol;
+		send(acknowledge, receivedMh.messageId);
 	}
 
-	auto specificProtocolHandlerIt = specificProtocolHandlers.find(receivedMh.m_correlationId);
-	if (receivedMh.m_messageType == Energistics::Etp::v12::Protocol::Core::Acknowledge::messageTypeId) { // Receive Acknowledge
+	auto specificProtocolHandlerIt = specificProtocolHandlers.find(receivedMh.correlationId);
+	if (receivedMh.messageType == Energistics::Etp::v12::Protocol::Core::Acknowledge::messageTypeId) { // Receive Acknowledge
 		protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Core]->decodeMessageBody(receivedMh, d);
 	}
-	else if (receivedMh.m_messageType == Energistics::Etp::v12::Protocol::Core::ProtocolException::messageTypeId) { // Receive Protocol Exception
+	else if (receivedMh.messageType == Energistics::Etp::v12::Protocol::Core::ProtocolException::messageTypeId) { // Receive Protocol Exception
 		protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Core]->decodeMessageBody(receivedMh, d);
 	}
 	else if (specificProtocolHandlerIt != specificProtocolHandlers.end()) {
 		specificProtocolHandlerIt->second->decodeMessageBody(receivedMh, d);
 		specificProtocolHandlers.erase(specificProtocolHandlerIt);
 	}
-	else if (receivedMh.m_protocol < protocolHandlers.size() && protocolHandlers[receivedMh.m_protocol] != nullptr) {
-		protocolHandlers[receivedMh.m_protocol]->decodeMessageBody(receivedMh, d);
+	else if (receivedMh.protocol < protocolHandlers.size() && protocolHandlers[receivedMh.protocol] != nullptr) {
+		protocolHandlers[receivedMh.protocol]->decodeMessageBody(receivedMh, d);
 	}
 	else {
 		flushReceivingBuffer();
-		send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(4, "The agent does not support the protocol " + std::to_string(receivedMh.m_protocol) + " identified in a message header."));
+		send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(4, "The agent does not support the protocol " + std::to_string(receivedMh.protocol) + " identified in a message header."));
 	}
 
 	do_read();

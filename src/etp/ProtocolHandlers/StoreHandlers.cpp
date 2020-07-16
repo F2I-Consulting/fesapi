@@ -25,34 +25,34 @@ using namespace ETP_NS;
 
 void StoreHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d)
 {
-	if (mh.m_protocol != Energistics::Etp::v12::Datatypes::Protocol::Store) {
+	if (mh.protocol != Energistics::Etp::v12::Datatypes::Protocol::Store) {
 		std::cerr << "Error : This message header does not belong to the protocol Store" << std::endl;
 		return;
 	}
 
-	if (mh.m_messageType == Energistics::Etp::v12::Protocol::Store::GetDataObjects::messageTypeId) {
+	if (mh.messageType == Energistics::Etp::v12::Protocol::Store::GetDataObjects::messageTypeId) {
 		Energistics::Etp::v12::Protocol::Store::GetDataObjects getO;
 		avro::decode(*d, getO);
 		session->flushReceivingBuffer();
-		on_GetDataObjects(getO, mh.m_messageId);
+		on_GetDataObjects(getO, mh.messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Store::PutDataObjects::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::Store::PutDataObjects::messageTypeId) {
 		Energistics::Etp::v12::Protocol::Store::PutDataObjects putO;
 		avro::decode(*d, putO);
 		session->flushReceivingBuffer();
-		on_PutDataObjects(putO, mh.m_messageId);
+		on_PutDataObjects(putO, mh.messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Store::DeleteDataObjects::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::Store::DeleteDataObjects::messageTypeId) {
 		Energistics::Etp::v12::Protocol::Store::DeleteDataObjects deleteO;
 		avro::decode(*d, deleteO);
 		session->flushReceivingBuffer();
-		on_DeleteDataObjects(deleteO, mh.m_messageId);
+		on_DeleteDataObjects(deleteO, mh.messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse::messageTypeId) {
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse::messageTypeId) {
 		Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse obj;
 		avro::decode(*d, obj);
 		session->flushReceivingBuffer();
-		on_GetDataObjectsResponse(obj, mh.m_correlationId);
+		on_GetDataObjectsResponse(obj, mh.correlationId);
 	}
 	else {
 		session->flushReceivingBuffer();
@@ -83,7 +83,7 @@ void StoreHandlers::on_DeleteDataObjects(const Energistics::Etp::v12::Protocol::
 
 void StoreHandlers::on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & msg, int64_t)
 {
-	for (const auto& graphResource : msg.m_dataObjects) {
+	for (const auto& graphResource : msg.dataObjects) {
 		std::cout << "Resource received : " << std::endl;
 		printDataObject(graphResource.second);
 	}

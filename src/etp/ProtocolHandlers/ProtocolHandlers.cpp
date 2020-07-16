@@ -29,24 +29,24 @@ void ProtocolHandlers::sendExceptionCode3() {
 
 void ProtocolHandlers::printDataObject(const Energistics::Etp::v12::Datatypes::Object::DataObject & dataObject)
 {
-	std::cout << "uri : " << dataObject.m_resource.m_uri << std::endl;
-	if (!dataObject.m_resource.m_alternateUris.empty()) {
+	std::cout << "uri : " << dataObject.resource.uri << std::endl;
+	if (!dataObject.resource.alternateUris.empty()) {
 		std::cout << "alternateUris :";
-		for (const auto & alternateUri : dataObject.m_resource.m_alternateUris) {
+		for (const auto & alternateUri : dataObject.resource.alternateUris) {
 			std::cout << " " << alternateUri;
 		}
 		std::cout << std::endl;
 	}
-	std::cout << "contentType : " << dataObject.m_resource.m_dataObjectType << std::endl;
-	std::cout << "name : " << dataObject.m_resource.m_name << std::endl;
-	if (dataObject.m_resource.m_sourceCount) {
-		std::cout << "source count : " << dataObject.m_resource.m_sourceCount.get() << std::endl;
+	std::cout << "contentType : " << dataObject.resource.dataObjectType << std::endl;
+	std::cout << "name : " << dataObject.resource.name << std::endl;
+	if (dataObject.resource.sourceCount) {
+		std::cout << "source count : " << dataObject.resource.sourceCount.get() << std::endl;
 	}
-	if (dataObject.m_resource.m_targetCount) {
-		std::cout << "target count : " << dataObject.m_resource.m_targetCount.get() << std::endl;
+	if (dataObject.resource.targetCount) {
+		std::cout << "target count : " << dataObject.resource.targetCount.get() << std::endl;
 	}
-	std::cout << "lastChanged : " << (dataObject.m_resource.m_lastChanged >= 0 ? ctime(&dataObject.m_resource.m_lastChanged) : "unknown") << std::endl;
+	std::cout << "lastChanged : " << (dataObject.resource.lastChanged >= 0 ? ctime(&dataObject.resource.lastChanged) : "unknown") << std::endl;
 	std::cout << "*********** SERIALIZATION ***********************" << std::endl;
-	std::cout << dataObject.m_data << std::endl;
+	std::cout << dataObject.data << std::endl;
 	std::cout << "*************************************************" << std::endl;
 }
