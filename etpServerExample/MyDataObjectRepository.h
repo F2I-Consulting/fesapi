@@ -25,7 +25,7 @@ under the License.
 class MyDataObjectRepository : public COMMON_NS::DataObjectRepository
 {
 public:
-	std::vector<std::shared_ptr<ETP_NS::AbstractSession>> sessions;
+	std::vector<ETP_NS::AbstractSession*> sessions;
 
 	~MyDataObjectRepository() {}
 

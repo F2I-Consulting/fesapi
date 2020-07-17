@@ -25,7 +25,7 @@ namespace ETP_NS
 	class DLL_IMPORT_OR_EXPORT StoreHandlers : public ProtocolHandlers
 	{
 	public:
-		StoreHandlers(std::shared_ptr<AbstractSession> mySession): ProtocolHandlers(mySession) {}
+		StoreHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
 		virtual ~StoreHandlers() {}
 
 	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d);

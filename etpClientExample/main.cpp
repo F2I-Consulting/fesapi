@@ -65,11 +65,11 @@ int main(int argc, char **argv)
 	repo.setHdfProxyFactory(new EtpHdfProxyFactory());
 
 	auto session = ClientSessionLaunchers::createClientSession(argv[1], argv[2], argc < 4 ? "/" : argv[3], authorization);
-	session->setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(session, &repo));
-	session->setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(session, &repo));
-	session->setStoreProtocolHandlers(std::make_shared<MyOwnStoreProtocolHandlers>(session, &repo));
-	session->setDataArrayProtocolHandlers(std::make_shared<ETP_NS::DataArrayHandlers>(session));
-	session->setStoreNotificationProtocolHandlers(std::make_shared<ETP_NS::StoreNotificationHandlers>(session));
+	session->setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(session.get(), &repo));
+	session->setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(session.get(), &repo));
+	session->setStoreProtocolHandlers(std::make_shared<MyOwnStoreProtocolHandlers>(session.get(), &repo));
+	session->setDataArrayProtocolHandlers(std::make_shared<ETP_NS::DataArrayHandlers>(session.get()));
+	session->setStoreNotificationProtocolHandlers(std::make_shared<ETP_NS::StoreNotificationHandlers>(session.get()));
 	
 	bool successfulConnection = session->run();
 

@@ -42,9 +42,9 @@ namespace ETP_NS
 	class DLL_IMPORT_OR_EXPORT ProtocolHandlers : public std::enable_shared_from_this<ProtocolHandlers>
 	{
 	protected:
-		ProtocolHandlers(std::shared_ptr<AbstractSession> mySession): session(mySession) {}
+		ProtocolHandlers(AbstractSession* mySession): session(mySession) {}
 
-		std::shared_ptr<AbstractSession> session;
+		AbstractSession* session;
 
 		void printDataObject(const Energistics::Etp::v12::Datatypes::Object::DataObject & dataObject);
 		void sendExceptionCode3();
@@ -54,6 +54,6 @@ namespace ETP_NS
 
 	    virtual void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d) = 0;
 
-		std::shared_ptr<AbstractSession> getSession() { return session; }
+		AbstractSession* getSession() { return session; }
 	};
 }

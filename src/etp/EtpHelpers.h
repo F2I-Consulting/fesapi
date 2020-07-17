@@ -47,12 +47,12 @@ namespace ETP_NS
 		/**
 		* Provide a session if you want to send a protocol exception in case of non validation.
 		*/
-		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Datatypes::ErrorInfo validateUri(const std::string & uri, std::shared_ptr<AbstractSession> session = nullptr);
+		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Datatypes::ErrorInfo validateUri(const std::string & uri, AbstractSession* session = nullptr);
 
 		/**
 		* Provide a session if you want to send a protocol exception in case of non validation.
 		*/
-		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Datatypes::ErrorInfo validateDataObjectUri(const std::string & uri, std::shared_ptr<AbstractSession> session = nullptr);
+		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Datatypes::ErrorInfo validateDataObjectUri(const std::string & uri, AbstractSession* session = nullptr);
 
 		/**
 		* Build and return an URI from an Energistics object.

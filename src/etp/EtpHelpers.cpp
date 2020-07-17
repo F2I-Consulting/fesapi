@@ -26,7 +26,7 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
-Energistics::Etp::v12::Datatypes::ErrorInfo ETP_NS::EtpHelpers::validateUri(const std::string & uri, std::shared_ptr<ETP_NS::AbstractSession> session)
+Energistics::Etp::v12::Datatypes::ErrorInfo ETP_NS::EtpHelpers::validateUri(const std::string & uri, ETP_NS::AbstractSession* session)
 {
 	Energistics::Etp::v12::Datatypes::ErrorInfo errorInfo;
 	errorInfo.code = -1;
@@ -59,7 +59,7 @@ Energistics::Etp::v12::Datatypes::ErrorInfo ETP_NS::EtpHelpers::validateUri(cons
 
 }
 
-Energistics::Etp::v12::Datatypes::ErrorInfo ETP_NS::EtpHelpers::validateDataObjectUri(const std::string & uri, std::shared_ptr<ETP_NS::AbstractSession> session)
+Energistics::Etp::v12::Datatypes::ErrorInfo ETP_NS::EtpHelpers::validateDataObjectUri(const std::string & uri, AbstractSession* session)
 {
 	Energistics::Etp::v12::Datatypes::ErrorInfo errorInfo;
 	errorInfo.code = -1;

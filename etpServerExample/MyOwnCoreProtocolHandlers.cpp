@@ -18,13 +18,16 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnCoreProtocolHandlers.h"
 
-#include "ServerCapabilities.h"
+#include "MyServerInitializationParameters.h"
 #include "etp/AbstractSession.h"
 #include "etp/EtpHelpers.h"
 #include "tools/GuidTools.h"
 
 void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession & rs, int64_t correlationId)
 {
+	MyServerInitializationParameters serverInitializationParams(nullptr);
+	auto supportedProtocols = serverInitializationParams.makeSupportedProtocols();
+
 	// Check requested protocols
 	std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> requestedAndSupportedProtocols;
 	for (auto& rp : rs.requestedProtocols) {
@@ -50,13 +53,13 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 
 	// Build Open Session message
 	Energistics::Etp::v12::Protocol::Core::OpenSession openSession;
-	openSession.applicationName = applicationName;
-	openSession.applicationVersion = applicationVersion;
+	openSession.applicationName = serverInitializationParams.getApplicationName();
+	openSession.applicationVersion = serverInitializationParams.getApplicationVersion();
 	openSession.serverInstanceId.array = GuidTools::generateUidAsByteArray();
 	openSession.supportedFormats.push_back("xml");
 	openSession.supportedProtocols = requestedAndSupportedProtocols;
-	openSession.endpointCapabilities = endpointCapabilities;
-	openSession.supportedDataObjects = supportedDataObjects;
+	openSession.endpointCapabilities = serverInitializationParams.makeEndpointCapabilities();
+	openSession.supportedDataObjects = serverInitializationParams.makeSupportedDataObjects();
 
 	session->send(openSession, correlationId);
 

@@ -28,7 +28,7 @@ private:
 	COMMON_NS::DataObjectRepository* repo;
 
 public:
-	MyOwnDiscoveryProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_): ETP_NS::DiscoveryHandlers(mySession), repo(repo_) {}
+	MyOwnDiscoveryProtocolHandlers(ETP_NS::AbstractSession* mySession, COMMON_NS::DataObjectRepository* repo_): ETP_NS::DiscoveryHandlers(mySession), repo(repo_) {}
 	~MyOwnDiscoveryProtocolHandlers() {}
 
 	std::vector<int64_t> getObjectWhenDiscovered; // all message id in this vector will result in response where the objects are going to be get in addition to be discovered

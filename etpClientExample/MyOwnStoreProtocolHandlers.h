@@ -28,7 +28,7 @@ private:
 	COMMON_NS::DataObjectRepository* repo;
 
 public:
-	MyOwnStoreProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_): ETP_NS::StoreHandlers(mySession), repo(repo_) {}
+	MyOwnStoreProtocolHandlers(ETP_NS::AbstractSession* mySession, COMMON_NS::DataObjectRepository* repo_): ETP_NS::StoreHandlers(mySession), repo(repo_) {}
 	~MyOwnStoreProtocolHandlers() {}
 
 	void on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & obj, int64_t correlationId);

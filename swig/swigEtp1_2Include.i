@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 %{
 #include "../src/etp/ClientSessionLaunchers.h"
+#include "../src/etp/Server.h"
+#include "../src/etp/PlainServerSession.h"
 %}
 
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
@@ -28,6 +30,9 @@ under the License.
 	%nspace ETP_NS::DataArrayHandlers;
 	%nspace ETP_NS::AbstractSession;
 	%nspace ETP_NS::PlainClientSession;
+	%nspace ETP_NS::ServerInitializationParameters;
+	%nspace ETP_NS::PlainServerSession;
+	%nspace ETP_NS::Server<ETP_NS::PlainServerSession>;
 	
 	%nspace Energistics::Etp::v12::Datatypes::SupportedDataObject;
 	%nspace Energistics::Etp::v12::Datatypes::Uuid;
@@ -97,6 +102,10 @@ under the License.
 	 The default visibility is protected but it needs to be public for access from a different package. Just changing 'protected' to 'public' in the typemap achieves this.
 	*/
 	#define SWIG_SHARED_PTR_TYPEMAPS(CONST, TYPE...) SWIG_SHARED_PTR_TYPEMAPS_IMPLEMENTATION(public, public, CONST, TYPE)
+	
+	%insert("runtime") %{
+		#define SWIG_JAVA_ATTACH_CURRENT_THREAD_AS_DAEMON
+	%}
 #endif
 
 %include "std_map.i"
@@ -981,12 +990,14 @@ namespace Energistics {
 %shared_ptr(ETP_NS::DataArrayHandlers)
 %shared_ptr(ETP_NS::AbstractSession)
 %shared_ptr(ETP_NS::PlainClientSession)
+%shared_ptr(ETP_NS::PlainServerSession)
 
 %module(directors="1") fesapi
 %feature("director") ETP_NS::CoreHandlers;
 %feature("director") ETP_NS::DiscoveryHandlers;
 %feature("director") ETP_NS::StoreHandlers;
 %feature("director") ETP_NS::DataArrayHandlers;
+%feature("director") ETP_NS::ServerInitializationParameters;
 namespace ETP_NS
 {
 	class AbstractSession;
@@ -995,13 +1006,13 @@ namespace ETP_NS
 	class ProtocolHandlers
 	{
 	public:
-		std::shared_ptr<AbstractSession> getSession();
+		AbstractSession* getSession();
 	};
 
 	class CoreHandlers : public ProtocolHandlers
 	{
 	public:
-		CoreHandlers(std::shared_ptr<AbstractSession> mySession);
+		CoreHandlers(AbstractSession* mySession);
 		virtual ~CoreHandlers();
 		
 		virtual void on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession & rs, int64_t correlationId);
@@ -1014,7 +1025,7 @@ namespace ETP_NS
 	class DiscoveryHandlers : public ProtocolHandlers
 	{
 	public:
-		DiscoveryHandlers(std::shared_ptr<AbstractSession> mySession);
+		DiscoveryHandlers(AbstractSession* mySession);
 		virtual ~DiscoveryHandlers() {}
 
 		virtual void on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources & msg, int64_t correlationId);
@@ -1024,7 +1035,7 @@ namespace ETP_NS
 	class StoreHandlers : public ProtocolHandlers
 	{
 	public:
-		StoreHandlers(std::shared_ptr<AbstractSession> mySession): ProtocolHandlers(mySession) {}
+		StoreHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
 		virtual ~StoreHandlers() {}
 
 	    virtual void on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & msg, int64_t correlationId);
@@ -1038,7 +1049,7 @@ namespace ETP_NS
 	class DataArrayHandlers : public ProtocolHandlers
 	{
 	public:
-		DataArrayHandlers(std::shared_ptr<AbstractSession> mySession): ProtocolHandlers(mySession) {}
+		DataArrayHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
 		virtual ~DataArrayHandlers() {}
 
 	    virtual void on_GetDataArrays(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrays & gda, int64_t correlationId);
@@ -1107,6 +1118,9 @@ namespace ETP_NS
 		void close();
 	};
 
+	/******************* CLIENT ***************************/
+
+	%nodefaultctor PlainClientSession;
 	class PlainClientSession : public AbstractSession
 	{
 	public:
@@ -1117,4 +1131,44 @@ namespace ETP_NS
 	{
 		std::shared_ptr<ETP_NS::PlainClientSession> createClientSession(const std::string & host, const std::string & port, const std::string & target, const std::string & authorization);
 	}
+	
+	/******************* SERVER ***************************/
+	
+	class ServerInitializationParameters
+	{
+	public:
+		ServerInitializationParameters() {}
+		virtual ~ServerInitializationParameters() {}
+
+		virtual std::string getApplicationName();
+		virtual std::string getApplicationVersion();
+		virtual std::string getContactEmail();
+		virtual std::string getContactName();
+		virtual std::string getContactPhone();
+		virtual std::string getOrganizationName();
+
+		virtual std::vector<std::string> makeSupportedEncodings();
+		virtual std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue> makeEndpointCapabilities();
+		virtual std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject> makeSupportedDataObjects();
+		virtual std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> makeSupportedProtocols();
+
+		virtual void postSessionCreationOperation(AbstractSession* session);
+	};
+	
+	%nodefaultctor PlainServerSession;
+	class PlainServerSession : public AbstractSession
+	{
+	public:
+	};
+
+	template <class T>
+	class Server
+	{
+	public:
+		Server(ServerInitializationParameters* serverInitializationParams) : serverInitializationParams_(serverInitializationParams) {}
+		std::vector< std::shared_ptr<T> >& getSessions() { return sessions_; }
+		void listen(const std::string & host, unsigned short port, int threadCount);
+	};
+	%template(PlainServer) ETP_NS::Server<ETP_NS::PlainServerSession>;
+
 }

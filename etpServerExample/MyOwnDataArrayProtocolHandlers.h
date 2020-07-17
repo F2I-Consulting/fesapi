@@ -28,7 +28,7 @@ private:
 	MyDataObjectRepository* repo;
 
 public:
-	MyOwnDataArrayProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, MyDataObjectRepository* repo_): ETP_NS::DataArrayHandlers(mySession), repo(repo_) {}
+	MyOwnDataArrayProtocolHandlers(ETP_NS::AbstractSession* mySession, MyDataObjectRepository* repo_): ETP_NS::DataArrayHandlers(mySession), repo(repo_) {}
 	~MyOwnDataArrayProtocolHandlers() {}
 
     void on_GetDataArrays(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrays & gda, int64_t correlationId);

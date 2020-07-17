@@ -27,7 +27,7 @@ under the License.
 
 #include "MyDataObjectRepository.h"
 
-MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, MyDataObjectRepository* repo_) :
+MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(ETP_NS::AbstractSession* mySession, MyDataObjectRepository* repo_) :
 	ETP_NS::StoreHandlers(mySession), repo(repo_) {}
 
 void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & msg, int64_t correlationId)

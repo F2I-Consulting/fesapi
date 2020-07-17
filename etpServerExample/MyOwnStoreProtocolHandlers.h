@@ -29,7 +29,7 @@ private:
 	MyDataObjectRepository* repo;
 
 public:
-	MyOwnStoreProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, MyDataObjectRepository* repo_);
+	MyOwnStoreProtocolHandlers(ETP_NS::AbstractSession* mySession, MyDataObjectRepository* repo_);
 	~MyOwnStoreProtocolHandlers() {}
 
     void on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & msg, int64_t correlationId);

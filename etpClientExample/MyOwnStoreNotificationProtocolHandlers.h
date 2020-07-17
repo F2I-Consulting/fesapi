@@ -28,6 +28,6 @@ private:
 	COMMON_NS::DataObjectRepository* repo;
 
 public:
-	MyOwnStoreNotificationProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_) : ETP_NS::StoreNotificationHandlers(mySession), repo(repo_) {}
+	MyOwnStoreNotificationProtocolHandlers(ETP_NS::AbstractSession* mySession, COMMON_NS::DataObjectRepository* repo_) : ETP_NS::StoreNotificationHandlers(mySession), repo(repo_) {}
 	~MyOwnStoreNotificationProtocolHandlers() {}
 };

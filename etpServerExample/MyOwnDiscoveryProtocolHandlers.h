@@ -32,7 +32,7 @@ private:
 		std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result);
 
 public:
-	MyOwnDiscoveryProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, MyDataObjectRepository* repo_): ETP_NS::DiscoveryHandlers(mySession), repo(repo_) {}
+	MyOwnDiscoveryProtocolHandlers(ETP_NS::AbstractSession* mySession, MyDataObjectRepository* repo_): ETP_NS::DiscoveryHandlers(mySession), repo(repo_) {}
 	~MyOwnDiscoveryProtocolHandlers() {}
 
 	void on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources & msg, int64_t correlationId);

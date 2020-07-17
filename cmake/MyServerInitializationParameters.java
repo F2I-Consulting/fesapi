@@ -18,29 +18,20 @@ under the License.
 -----------------------------------------------------------------------*/
 package com.f2i.energisticsStandardsApi.example;
 
-import com.f2i.energisticsStandardsApi.fesapi;
-import com.f2i.energisticsStandardsApi.${FESAPI_ETP_NS}.PlainClientSession;
+import com.f2i.energisticsStandardsApi.${FESAPI_ETP_NS}.ServerInitializationParameters;
 
-public class EtpClientExample {
-
-	/**
-	 * Loading the FesapiCpp native library
-	 */
-	static {
-		try {
-			System.loadLibrary("${ASSEMBLY_NAME}");
-		}
-		catch (UnsatisfiedLinkError e) {
-			System.out.println("UnsatisfiedLinkError : " + e.toString());
-		}
+public class MyServerInitializationParameters extends ServerInitializationParameters {
+	public MyServerInitializationParameters() {
+		super();
 	}
 
-	public static void main(String[] args) {
-		PlainClientSession session = fesapi.createClientSession("127.0.0.1", "8080", "/", "");
-		session.setCoreProtocolHandlers(new MyOwnClientCoreHandlers(session));
-		session.setDiscoveryProtocolHandlers(new MyOwnDiscoveryProtocolHandlers(session));
-		session.setStoreProtocolHandlers(new MyOwnStoreProtocolHandlers(session));
-		session.run();
-		System.out.println("FINISHED");
+	@Override
+	public String getApplicationName() {
+		return "JAVA ETP F2I SERVER";
+	}
+	
+	@Override
+	public void postSessionCreationOperation(com.f2i.energisticsStandardsApi.etp.AbstractSession session) {
+		session.setCoreProtocolHandlers(new MyOwnServerCoreHandlers(session));
 	}
 }

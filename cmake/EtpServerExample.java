@@ -18,10 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 package com.f2i.energisticsStandardsApi.example;
 
-import com.f2i.energisticsStandardsApi.fesapi;
-import com.f2i.energisticsStandardsApi.${FESAPI_ETP_NS}.PlainClientSession;
+import com.f2i.energisticsStandardsApi.etp.PlainServer;
 
-public class EtpClientExample {
+public class EtpServerExample {
 
 	/**
 	 * Loading the FesapiCpp native library
@@ -36,11 +35,11 @@ public class EtpClientExample {
 	}
 
 	public static void main(String[] args) {
-		PlainClientSession session = fesapi.createClientSession("127.0.0.1", "8080", "/", "");
-		session.setCoreProtocolHandlers(new MyOwnClientCoreHandlers(session));
-		session.setDiscoveryProtocolHandlers(new MyOwnDiscoveryProtocolHandlers(session));
-		session.setStoreProtocolHandlers(new MyOwnStoreProtocolHandlers(session));
-		session.run();
+		MyServerInitializationParameters initParams = new MyServerInitializationParameters();
+		PlainServer etpServer = new PlainServer(initParams);
+
+		etpServer.listen("127.0.0.1", 8080, 2);
+		
 		System.out.println("FINISHED");
 	}
 }

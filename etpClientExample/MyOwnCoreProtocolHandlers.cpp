@@ -50,7 +50,7 @@ void printHelp()
 	std::cout << "\tquit" << std::endl << "\t\tQuit the session." << std::endl << std::endl;
 }
 
-void askUser(std::shared_ptr<ETP_NS::AbstractSession> session, COMMON_NS::DataObjectRepository* repo)
+void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* repo)
 {
 	std::string buffer;
 

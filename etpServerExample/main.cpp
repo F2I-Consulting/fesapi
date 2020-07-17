@@ -22,13 +22,13 @@ under the License.
 #else
 #include "etp/PlainServerSession.h"
 #endif
-#include "Server.h"
+#include "etp/Server.h"
 
 #ifdef WITH_ETP_SSL
 #include "ssl/server_certificate.h"
 #endif
 
-#include "MyDataObjectRepository.h"
+#include "MyServerInitializationParameters.h"
 
 #include "common/EpcDocument.h"
 
@@ -80,8 +80,10 @@ int main(int argc, char **argv)
 		generatePropertiesThread.detach(); // Detach the thread since we don't want it to be a blocking one.
 	}
 
+	MyServerInitializationParameters serverInitializationParams(&repo);
+
 #ifdef WITH_ETP_SSL
-	Server<ETP_NS::SslServerSession> etpServer(repo);
+	Server<ETP_NS::SslServerSession> etpServer(postSessionCreationOp.get());
 
 	// The SSL context is required, and holds certificates
 	boost::asio::ssl::context ctx{ boost::asio::ssl::context::tlsv12_server };
@@ -91,7 +93,7 @@ int main(int argc, char **argv)
 
 	etpServer.listen(argv[1], std::stoi(argv[2]), threadCount, ctx);
 #else
-	Server<ETP_NS::PlainServerSession> etpServer(repo);
+	ETP_NS::Server<ETP_NS::PlainServerSession> etpServer(&serverInitializationParams);
 
 	etpServer.listen(argv[1], std::stoi(argv[2]), threadCount);
 #endif

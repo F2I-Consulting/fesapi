@@ -25,7 +25,7 @@ under the License.
 
 #include "MyDataObjectRepository.h"
 
-MyOwnStoreNotificationProtocolHandlers::MyOwnStoreNotificationProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, MyDataObjectRepository* repo_) :
+MyOwnStoreNotificationProtocolHandlers::MyOwnStoreNotificationProtocolHandlers(ETP_NS::AbstractSession* mySession, MyDataObjectRepository* repo_) :
 	ETP_NS::StoreNotificationHandlers(mySession), repo(repo_) {}
 
 void MyOwnStoreNotificationProtocolHandlers::on_SubscribeNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotifications & msg, int64_t messageId)

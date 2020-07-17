@@ -29,7 +29,7 @@ private:
 	MyDataObjectRepository* repo;
 
 public:
-	MyOwnStoreNotificationProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, MyDataObjectRepository* repo_);
+	MyOwnStoreNotificationProtocolHandlers(ETP_NS::AbstractSession* mySession, MyDataObjectRepository* repo_);
 	~MyOwnStoreNotificationProtocolHandlers() {}
 
 	void on_SubscribeNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotifications & msg, int64_t messageId);

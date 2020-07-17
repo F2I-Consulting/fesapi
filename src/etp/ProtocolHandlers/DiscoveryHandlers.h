@@ -25,7 +25,7 @@ namespace ETP_NS
 	class DLL_IMPORT_OR_EXPORT DiscoveryHandlers : public ProtocolHandlers
 	{
 	public:
-		DiscoveryHandlers(std::shared_ptr<AbstractSession> mySession): ProtocolHandlers(mySession) {}
+		DiscoveryHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
 		virtual ~DiscoveryHandlers() {}
 
 	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d);

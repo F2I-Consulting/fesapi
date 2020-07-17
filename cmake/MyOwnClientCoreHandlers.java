@@ -24,8 +24,8 @@ import com.f2i.energisticsStandardsApi.Energistics.Etp.v12.Protocol.Discovery.Ge
 import com.f2i.energisticsStandardsApi.${FESAPI_ETP_NS}.AbstractSession;
 import com.f2i.energisticsStandardsApi.${FESAPI_ETP_NS}.CoreHandlers;
 
-public class MyOwnCoreProtocolHandlers extends CoreHandlers {
-	public MyOwnCoreProtocolHandlers(AbstractSession mySession) {
+public class MyOwnClientCoreHandlers extends CoreHandlers {
+	public MyOwnClientCoreHandlers(AbstractSession mySession) {
 		super(mySession);
 	}
 
