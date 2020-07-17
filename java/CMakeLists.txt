@@ -29,6 +29,10 @@ file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2_0)
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2_1)
 
+if (WITH_ETP)
+	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/etp)
+endif ()
+
 # Create the dedicated swig files
 if (SWIG_LINKED_TO_RELEASE)
 	set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_RELEASE_POSTFIX}.${Fesapi_VERSION})
@@ -46,10 +50,12 @@ endif(WITH_RESQML2_2)
 configure_file(${FESAPI_ROOT_DIR}/cmake/swigModule.i ${FESAPI_ROOT_DIR}/swig/swigModule.i) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/swigJavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigJavaInclude.i) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/example/FesapiJavaExample.java) # Overwrite if different
-configure_file(${FESAPI_ROOT_DIR}/cmake/EtpExample.java ${FESAPI_ROOT_DIR}/java/example/EtpExample.java) # Overwrite if different
-configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnCoreProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/example/MyOwnCoreProtocolHandlers.java) # Overwrite if different
-configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnDiscoveryProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/example/MyOwnDiscoveryProtocolHandlers.java) # Overwrite if different
-configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnStoreProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/example/MyOwnStoreProtocolHandlers.java) # Overwrite if different
+if (WITH_ETP)
+	configure_file(${FESAPI_ROOT_DIR}/cmake/EtpClientExample.java ${FESAPI_ROOT_DIR}/java/example/EtpClientExample.java) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnCoreProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/example/MyOwnCoreProtocolHandlers.java) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnDiscoveryProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/example/MyOwnDiscoveryProtocolHandlers.java) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnStoreProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/example/MyOwnStoreProtocolHandlers.java) # Overwrite if different
+endif ()
 
 set (SWIG_DEFINITIONS "")
 if (WITH_RESQML2_2)

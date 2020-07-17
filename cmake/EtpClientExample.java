@@ -21,7 +21,7 @@ package com.f2i.energisticsStandardsApi.example;
 import com.f2i.energisticsStandardsApi.fesapi;
 import com.f2i.energisticsStandardsApi.${FESAPI_ETP_NS}.PlainClientSession;
 
-public class EtpExample {
+public class EtpClientExample {
 
 	/**
 	 * Loading the FesapiCpp native library

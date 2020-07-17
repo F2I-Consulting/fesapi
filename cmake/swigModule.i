@@ -104,6 +104,13 @@ under the License.
 // Use C array approach instead.
 %include "std_vector.i"
 
+%template(StringVector) std::vector< std::string >;
+%template(Int32Vector) std::vector< int >;
+%template(Int64Vector) std::vector< long long >;
+%template(FloatVector) std::vector< float >;
+%template(DoubleVector) std::vector< double >;
+%template(BoolVector) std::vector< bool >;
+
 //************************/
 // EXCEPTIONS
 //************************/
@@ -225,14 +232,6 @@ namespace COMMON_NS
 #ifdef WITH_ETP
 %include "swigEtp1_2Include.i"
 #endif
-
-//************************/
-// STD::VECTOR DEFINITIONS
-//************************/
-
-namespace std {
-	%template(StringVector) vector< std::string >;
-}
 
 %{
 #include "../src/common/EnumStringMapper.h"
