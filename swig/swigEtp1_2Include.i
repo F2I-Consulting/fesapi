@@ -33,6 +33,9 @@ under the License.
 	%nspace Energistics::Etp::v12::Datatypes::Uuid;
 	%nspace Energistics::Etp::v12::Datatypes::Version;
 	%nspace Energistics::Etp::v12::Datatypes::SupportedProtocol;
+	%nspace Energistics::Etp::v12::Datatypes::DataValue;
+	%nspace Energistics::Etp::v12::Datatypes::DataValueitem_t;
+	%nspace Energistics::Etp::v12::Datatypes::ErrorInfo;
 	%nspace Energistics::Etp::v12::Datatypes::AnyArrayType;
 	%nspace Energistics::Etp::v12::Datatypes::AnyArray;
 	%nspace Energistics::Etp::v12::Datatypes::AnyArrayitem_t;
@@ -162,6 +165,160 @@ namespace Energistics {
 	namespace Etp {	
 		namespace v12 {		
 			namespace Datatypes {			
+				struct ArrayOfBoolean{				
+					std::vector<bool> values;
+				};				
+			};			
+		};		
+	};	
+};
+
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
+				struct ArrayOfInt{				
+					std::vector<int32_t> values;
+				};				
+			};			
+		};		
+	};	
+};
+
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
+				struct ArrayOfLong{				
+					std::vector<int64_t> values;
+				};				
+			};			
+		};		
+	};	
+};
+
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
+				struct ArrayOfFloat{				
+					std::vector<float> values;
+				};				
+			};			
+		};		
+	};	
+};
+
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
+				struct ArrayOfDouble{				
+					std::vector<double> values;
+				};				
+			};			
+		};		
+	};	
+};
+
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
+				struct ArrayOfString{				
+					std::vector<std::string> values;
+				};				
+			};			
+		};		
+	};	
+};
+
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
+				struct DataValueitem_t {
+				public:				
+					size_t idx() const;
+					
+					bool is_null() const;
+					void set_null();
+									
+					bool get_boolean();				
+					void set_boolean(const bool& v);
+					
+					int32_t get_int();			
+					void set_int(const int32_t& v);	
+					
+					int64_t get_long();				
+					void set_long(const int64_t& v);
+					
+					float get_float();				
+					void set_float(const float& v);
+					
+					double get_double();				
+					void set_double(const double& v);
+					
+					std::string get_string();				
+					void set_string(const std::string& v);
+					
+					Energistics::Etp::v12::Datatypes::ArrayOfBoolean get_ArrayOfBoolean();		
+					void set_ArrayOfBoolean(const Energistics::Etp::v12::Datatypes::ArrayOfBoolean& v);
+					
+					Energistics::Etp::v12::Datatypes::ArrayOfInt get_ArrayOfInt();			
+					void set_ArrayOfInt(const Energistics::Etp::v12::Datatypes::ArrayOfInt& v);
+					
+					Energistics::Etp::v12::Datatypes::ArrayOfLong get_ArrayOfLong();
+					void set_ArrayOfLong(const Energistics::Etp::v12::Datatypes::ArrayOfLong& v);	
+					
+					Energistics::Etp::v12::Datatypes::ArrayOfFloat get_ArrayOfFloat();				
+					void set_ArrayOfFloat(const Energistics::Etp::v12::Datatypes::ArrayOfFloat& v);
+					
+					Energistics::Etp::v12::Datatypes::ArrayOfDouble get_ArrayOfDouble();	
+					void set_ArrayOfDouble(const Energistics::Etp::v12::Datatypes::ArrayOfDouble& v);
+					
+					Energistics::Etp::v12::Datatypes::ArrayOfString get_ArrayOfString();			
+					void set_ArrayOfString(const Energistics::Etp::v12::Datatypes::ArrayOfString& v);	
+					
+					std::string get_bytes();				
+					void set_bytes(const std::string& v);		
+				};				
+			};			
+		};		
+	};	
+};
+
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
+				struct DataValue{				
+					Energistics::Etp::v12::Datatypes::DataValueitem_t item;
+				};				
+			};			
+		};		
+	};	
+};
+%template(MapStringDataValue) std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue>;
+
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
+				struct ErrorInfo{				
+					std::string message;
+					int32_t code;
+				};				
+			};			
+		};		
+	};	
+};
+%template(MapStringErrorInfo) std::map<std::string, Energistics::Etp::v12::Datatypes::ErrorInfo>;
+
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
 				namespace Object {				
 					struct ContextInfo{					
 						std::string uri;
@@ -248,78 +405,6 @@ namespace Energistics {
 	};	
 };
 %template(MapStringDataArrayIdentifier) std::map<std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayIdentifier>;
-
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Datatypes {			
-				struct ArrayOfBoolean{				
-					std::vector<bool> values;
-				};				
-			};			
-		};		
-	};	
-};
-
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Datatypes {			
-				struct ArrayOfInt{				
-					std::vector<int32_t> values;
-				};				
-			};			
-		};		
-	};	
-};
-
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Datatypes {			
-				struct ArrayOfLong{				
-					std::vector<int64_t> values;
-				};				
-			};			
-		};		
-	};	
-};
-
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Datatypes {			
-				struct ArrayOfFloat{				
-					std::vector<float> values;
-				};				
-			};			
-		};		
-	};	
-};
-
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Datatypes {			
-				struct ArrayOfDouble{				
-					std::vector<double> values;
-				};				
-			};			
-		};		
-	};	
-};
-
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Datatypes {			
-				struct ArrayOfString{				
-					std::vector<std::string> values;
-				};				
-			};			
-		};		
-	};	
-};
 
 namespace Energistics {
 	namespace Etp {	

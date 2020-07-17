@@ -156,7 +156,7 @@ template<
 		res.set(http::field::server, F2I_ETP_SERVER);
 		res.set(http::field::content_type, "text/html");
 		res.keep_alive(req.keep_alive());
-		res.body() = "This server does not support ETP1.1. Add a query string ?GetVersion=etp12.energistics.org if you want ot discover these server capabilities.";
+		res.body() = "This server does not support ETP1.1. Add a query string ?GetVersion=etp12.energistics.org if you want to discover these server capabilities.";
 		res.prepare_payload();
 		return res;
 	};
