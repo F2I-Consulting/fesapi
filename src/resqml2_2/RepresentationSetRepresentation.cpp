@@ -24,6 +24,8 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
+const char* RepresentationSetRepresentation::XML_NS = "resqml22";
+
 RepresentationSetRepresentation::RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, const std::string & guid, const string & title)
 {
 	if (interp == nullptr) {

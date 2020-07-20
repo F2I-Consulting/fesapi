@@ -37,6 +37,7 @@ under the License.
 
 namespace COMMON_NS
 {
+	class AbstractObject;
 	/** @brief	This class wraps an Energistics Data Object Reference whatever its version is. */
 	class DataObjectReference
 	{
@@ -72,6 +73,13 @@ namespace COMMON_NS
 		 * @param [in,out]	dor	If non-nullptr, the EML2.3 DOR to wrap.
 		 */
 		DataObjectReference(gsoap_eml2_3::eml23__DataObjectReference * dor) : dor20(nullptr), dor21(nullptr), dor22(nullptr), dor23(dor) {}
+
+		/**
+		 * Constructor
+		 *
+		 * @param [in,out]	dor	If non-nullptr, the Energistics DataObject to wrap.
+		 */
+		DataObjectReference(AbstractObject const * dataObj);
 
 		/** Destructor */
 		~DataObjectReference() {}

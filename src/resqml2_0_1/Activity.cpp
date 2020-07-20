@@ -27,6 +27,8 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* Activity::XML_NS = "resqml20";
+
 Activity::Activity(EML2_NS::ActivityTemplate* activityTemplate, const string & guid, const string & title)
 {
 	if (activityTemplate == nullptr) {
@@ -471,11 +473,12 @@ void Activity::setActivityTemplate(EML2_NS::ActivityTemplate * activityTemplate)
 	if (activityTemplate == nullptr) {
 		return;
 	}
+
+	activityTemplate->getRepository()->addRelationship(this, activityTemplate);
+
 	if (getRepository() == nullptr) {
 		activityTemplate->getRepository()->addOrReplaceDataObject(this);
 	}
-
-	getRepository()->addRelationship(this, activityTemplate);
 
 	static_cast<_resqml20__Activity*>(gsoapProxy2_0_1)->ActivityDescriptor = activityTemplate->newResqmlReference();
 }

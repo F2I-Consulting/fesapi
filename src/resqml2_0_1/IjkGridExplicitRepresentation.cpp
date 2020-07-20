@@ -32,6 +32,8 @@ using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_0_1_NS;
 
+const char* IjkGridExplicitRepresentation::XML_NS = "resqml20";
+
 COMMON_NS::DataObjectReference IjkGridExplicitRepresentation::getHdfProxyDor() const
 {
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));

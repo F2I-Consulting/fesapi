@@ -22,6 +22,8 @@ using namespace std;
 using namespace gsoap_eml2_3;
 using namespace RESQML2_2_NS;
 
+const char* DiscreteColorMap::XML_NS = "resqml22";
+
 DiscreteColorMap::DiscreteColorMap(COMMON_NS::DataObjectRepository* repo, string const& guid, string const& title)
 {
 	if (repo == nullptr)

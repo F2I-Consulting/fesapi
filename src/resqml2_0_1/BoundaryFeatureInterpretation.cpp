@@ -26,6 +26,9 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* BoundaryFeatureInterpretation::XML_TAG = "BoundaryFeatureInterpretation";
+const char* BoundaryFeatureInterpretation::XML_NS = "resqml20";
+
 BoundaryFeatureInterpretation::BoundaryFeatureInterpretation(RESQML2_NS::BoundaryFeature * feature, const string & guid, const string & title)
 {
 	if (feature == nullptr) {

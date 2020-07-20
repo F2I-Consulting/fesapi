@@ -20,6 +20,15 @@ endif(WITH_RESQML2_2)
 configure_file(${FESAPI_ROOT_DIR}/cmake/swigModule.i ${FESAPI_ROOT_DIR}/swig/swigModule.i) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/swigCsInclude.i ${FESAPI_ROOT_DIR}/swig/swigCsInclude.i) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/Program.cs ${FESAPI_ROOT_DIR}/cs/example/Program.cs) # Overwrite if different
+
+set (SWIG_DEFINITION "")
+if (WITH_RESQML2_2)
+	string(APPEND SWIG_DEFINITION "-DWITH_RESQML2_2")
+endif (WITH_RESQML2_2)
+if (WITH_ETP)
+	string(APPEND SWIG_DEFINITION " -DWITH_ETP")
+endif (WITH_ETP)
+
 # SWIG execution
 if (SWIG_LINKED_TO_RELEASE)
 	if (WITH_RESQML2_2)

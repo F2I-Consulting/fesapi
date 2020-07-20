@@ -54,6 +54,8 @@ under the License.
 #include "resqml2_0_1test/SubRepresentationOnPartialGridConnectionSet.h"
 #include "resqml2_0_1test/LgrOnRightHanded4x3x2ExplicitIjkGrid.h"
 #include "resqml2_0_1test/InterpretationDomain.h"
+#include "resqml2_2test/DiscreteColorMapTest.h"
+#include "resqml2_2test/ContinuousColorMapTest.h"
 #include "resqml2_0_1test/MultirealPropertyTest.h"
 #include "resqml2_0_1test/CategoricalProperty.h"
 #include "resqml2_0_1test/DiscreteProperty.h"
@@ -74,6 +76,7 @@ using namespace resqml2_2test;
 #endif
 using namespace commontest;
 using namespace resqml2_0_1test;
+using namespace resqml2_2test;
 using namespace witsml2_0test;
 
 #define FESAPI_TEST(name, tags, classTest)  TEST_CASE(name, tags)\

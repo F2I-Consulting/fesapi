@@ -96,6 +96,7 @@ namespace RESQML2_NS
 	%nspace RESQML2_NS::RockFluidUnitInterpretation;
 	%nspace RESQML2_NS::RockVolumeFeature;
 	%nspace RESQML2_NS::SealedSurfaceFrameworkRepresentation;
+	%nspace RESQML2_NS::SealedVolumeFrameworkRepresentation;
 	%nspace RESQML2_NS::SeismicLatticeFeature;
 	%nspace RESQML2_NS::SeismicLineSetFeature;
 	%nspace RESQML2_NS::SeismicWellboreFrameRepresentation;
@@ -1918,10 +1919,10 @@ namespace RESQML2_NS
 		void setNanRgbColor(unsigned int red, unsigned int green, unsigned int blue, double alpha = 1, std::string const& colorTitle = "");
 	};
 	
+
 	//************************************/
 	//************ CRS *******************/
 	//************************************/
-	
 	class AbstractLocal3dCrs : public COMMON_NS::AbstractObject
 	{
 	public:
@@ -1985,10 +1986,6 @@ namespace RESQML2_NS
 		
 		gsoap_eml2_3::eml23__WellboreDatumReference getOriginKind() const;
 	};
-	
-	//************************************
-	//************ FEATURE ***************
-	//************************************
 
 	class AbstractFeatureInterpretation;
 	class AbstractFeature : public COMMON_NS::AbstractObject
@@ -2095,10 +2092,6 @@ namespace RESQML2_NS
 		WITSML2_0_NS::Wellbore* getWitsmlWellbore();
 		void setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore);
 	};
-	
-	//************************************
-	//************ INTERPRETATION ********
-	//************************************
 
 	class AbstractRepresentation;
 	class AbstractFeatureInterpretation : public COMMON_NS::AbstractObject
@@ -2308,9 +2301,9 @@ namespace RESQML2_NS
 		bool isDrilled() const;
 	};
 
-	//************************************
-	//************ REPRESENTATION ********
-	//************************************
+	//************************************/
+	//************ REPRESENTATION ********/
+	//************************************/
 	
 	class AbstractValuesProperty;
 	class SubRepresentation;
@@ -2582,6 +2575,41 @@ namespace RESQML2_NS
 	class SealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
 	{
 	public:
+	};
+	
+#ifdef SWIGPYTHON
+	%rename(Resqml2_SealedVolumeFrameworkRepresentation) SealedVolumeFrameworkRepresentation;
+#endif
+	class SealedVolumeFrameworkRepresentation : public RepresentationSetRepresentation
+	{
+	public:
+		SealedSurfaceFrameworkRepresentation* getSealedStructuralFramework() const;
+		void setSealedSurfaceFramework(SealedSurfaceFrameworkRepresentation* ssf);
+		
+		void setInterpretationOfVolumeRegion(unsigned int regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp);
+		
+		void pushBackVolumeRegion(StratigraphicUnitInterpretation * stratiUnitInterp,
+			unsigned int externalShellFaceCount,
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide);
+		pushBackInternalShell(unsigned int regionIndex,
+			unsigned int internalShellFaceCount,
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide);
+			
+		unsigned int getRegionCount() const final;
+
+		unsigned int getInternalShellCount(unsigned int regionIndex) const final;
+
+		unsigned int getFaceCountOfExternalShell(unsigned int regionIndex) const final;
+		unsigned int getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const final;
+
+		RESQML2_NS::AbstractRepresentation* getRepOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const final;
+		RESQML2_NS::AbstractRepresentation* getRepOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const final;
+
+		unsigned int getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const final;
+		unsigned int getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const final;
+
+		bool getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const final;
+		bool getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const final;
 	};
 	
 	class GridConnectionSetRepresentation;
@@ -2932,10 +2960,6 @@ namespace RESQML2_NS
 		unsigned int getSupportingGridRepresentationCount() const;
 		AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index);
 	};
-
-	//************************************
-	//************** PROPERTY ************
-	//************************************
 	
 	class AbstractProperty;
 	class PropertySet : public COMMON_NS::AbstractObject
@@ -2994,8 +3018,7 @@ namespace RESQML2_NS
 	class AbstractValuesProperty : public RESQML2_NS::AbstractProperty
 	{
 	public:
-		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG_64 = 3, ULONG_64 = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
-		AbstractValuesProperty::hdfDatatypeEnum getValuesHdfDatatype() const;
+		COMMON_NS::AbstractObject::hdfDatatypeEnum getValuesHdfDatatype() const;
 
 		unsigned int getValuesCountOfPatch (unsigned int patchIndex) const;
 
@@ -3055,9 +3078,9 @@ namespace RESQML2_NS
 
 		unsigned char getUCharValuesOfPatch(unsigned int patchIndex, unsigned char * values) const;
 		
-		//***************************
-		//*** For hyperslabbing *****
-		//***************************
+		//***************************/
+		//*** For hyperslabbing *****/
+		//***************************/
 
 		void pushBackLongHdf5ArrayOfValues(
 			unsigned long long* numValues,
@@ -3476,4 +3499,3 @@ namespace RESQML2_NS
 		WellboreTrajectoryRepresentation* getWellboreTrajectoryRepresentation(unsigned int index) const;
 	};
 }
-

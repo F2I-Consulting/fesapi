@@ -25,6 +25,8 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
+const char* StringTableLookup::XML_NS = "resqml22";
+
 StringTableLookup::StringTableLookup(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {
 	if (repo == nullptr) {

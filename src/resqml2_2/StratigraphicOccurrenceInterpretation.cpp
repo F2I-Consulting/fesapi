@@ -27,6 +27,8 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
+const char* StratigraphicOccurrenceInterpretation::XML_NS = "resqml22";
+
 StratigraphicOccurrenceInterpretation::StratigraphicOccurrenceInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria)
 {
 	if (orgFeat == nullptr) {

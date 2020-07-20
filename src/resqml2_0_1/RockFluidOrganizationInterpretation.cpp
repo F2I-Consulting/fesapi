@@ -25,6 +25,8 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* RockFluidOrganizationInterpretation::XML_NS = "resqml20";
+
 RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title)
 {
 	if (orgFeat == nullptr) {

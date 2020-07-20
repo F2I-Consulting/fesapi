@@ -28,10 +28,9 @@ namespace RESQML2_NS
 	{
 	public:
 
-		/** Values that represent HDF data types */
-		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG_64 = 3, ULONG_64 = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
-
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/**
+		* Destructor does nothing since the memory is managed by the gsoap context.
+		*/
 		virtual ~AbstractValuesProperty() {}
 
 		/**
@@ -50,7 +49,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The data type of the values if successful, else @c UNKNOWN.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractValuesProperty::hdfDatatypeEnum getValuesHdfDatatype() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::hdfDatatypeEnum getValuesHdfDatatype() const;
 
 		/**
 		 * Gets the count of all values contained into the underlying HDF5 dataset of a given patch of

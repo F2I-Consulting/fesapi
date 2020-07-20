@@ -24,7 +24,7 @@ under the License.
 #include "FrictionTheorySpecification.h"
 #include "CorrelationViscosityBubblePointSpecification.h"
 
-#include "../resqml2_0_1/RockFluidUnitFeature.h"
+#include "../resqml2/RockFluidUnitInterpretation.h"
 
 using namespace std;
 using namespace PRODML2_1_NS;
@@ -32,6 +32,7 @@ using namespace gsoap_eml2_2;
 using namespace COMMON_NS;
 
 const char* FluidCharacterization::XML_TAG = "FluidCharacterization";
+const char* FluidCharacterization::XML_NS = "prodml21";
 
 FluidCharacterization::FluidCharacterization(COMMON_NS::DataObjectRepository * repo,
 	const std::string & guid,
@@ -131,7 +132,7 @@ gsoap_eml2_2::eml22__PressureUom FluidCharacterization::getStandardPressureUom()
 	}
 }
 
-void FluidCharacterization::setRockFluidUnit(RESQML2_0_1_NS::RockFluidUnitFeature* rockFluidUnit)
+void FluidCharacterization::setRockFluidUnit(RESQML2_NS::RockFluidUnitInterpretation* rockFluidUnit)
 {
 	if (rockFluidUnit == nullptr) {
 		throw std::invalid_argument("Cannot set a null rockFluidUnit");
@@ -146,9 +147,9 @@ COMMON_NS::DataObjectReference FluidCharacterization::getRockFluidUnitDor() cons
 	return static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->RockFluidUnitFeature;
 }
 
-RESQML2_0_1_NS::RockFluidUnitFeature* FluidCharacterization::getRockFluidUnit() const
+RESQML2_NS::RockFluidUnitInterpretation* FluidCharacterization::getRockFluidUnit() const
 {
-	return getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::RockFluidUnitFeature>(getRockFluidUnitDor().getUuid());
+	return getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidUnitInterpretation>(getRockFluidUnitDor().getUuid());
 }
 
 #define SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(vectorName, attributeName, attributeDatatype, constructor)\
@@ -431,9 +432,9 @@ void FluidCharacterization::loadTargetRelationships()
 {
 	COMMON_NS::DataObjectReference dor = getRockFluidUnitDor();
 	if (!dor.isEmpty()) {
-		RESQML2_0_1_NS::RockFluidUnitFeature* rockFluidUnit = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::RockFluidUnitFeature>(dor.getUuid());
+		RESQML2_NS::RockFluidUnitInterpretation* rockFluidUnit = getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidUnitInterpretation>(dor.getUuid());
 		if (rockFluidUnit == nullptr) {
-			convertDorIntoRel<RESQML2_0_1_NS::RockFluidUnitFeature>(dor);
+			convertDorIntoRel<RESQML2_NS::RockFluidUnitInterpretation>(dor);
 		}
 		getRepository()->addRelationship(this, rockFluidUnit);
 	}

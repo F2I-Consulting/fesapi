@@ -26,11 +26,12 @@ under the License.
 #include "../epc/Package.h"
 
 #include "DataObjectRepository.h"
+#include "DataFeeder.h"
 
 namespace COMMON_NS
 {
 	/** @brief	This class allows an access to a memory package representing an EPC document. */
-	class EpcDocument
+	class EpcDocument : public DataFeeder
 	{		
 	public:
 
@@ -90,6 +91,12 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
 
 		/**
+		* Unzip the package (dataobjects + relationships) into a data repository by only creating partila objects.
+		* @return			An empty string if everything's ok otherwise the error string.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string deserializePartiallyInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
+
+		/**
 		 * Gets the absolute path of the directory where the EPC document is stored.
 		 *
 		 * @returns	The EPC document storage directory.
@@ -128,8 +135,12 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getExtendedCoreProperty(const std::string & key);
 
+		DLL_IMPORT_OR_EXPORT std::string resolvePartial(AbstractObject* partialObj) const;
+
 	private :
 		static const char * DOCUMENT_EXTENSION;
+
+		void deserializeRelFiles(DataObjectRepository & repo);
 
 		/** The package */
 		epc::Package* package;

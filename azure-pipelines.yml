@@ -3,12 +3,6 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger:
-- master
-
-pr:
-- master
-
 jobs:
   - job:
     displayName: Windows VS2017
@@ -25,6 +19,7 @@ jobs:
           BuildType: Release
           Generator: '-G"Visual Studio 15 2017 Win64" -T host=x64'
           JFlag: '-j 2'
+    timeoutInMinutes: 120
     steps:
       - powershell: |
           Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.18/bin/windows/noszip/extra/hdf5-1.8.18-win64-vs2015-noszip.zip -OutFile C:\hdf5-1.8.18-win64-vs2015-noszip.zip
@@ -32,10 +27,30 @@ jobs:
           msiexec.exe /i "C:\hdf5\HDF5-1.8.18-win64.msi" /qn INSTALL_ROOT=C:\hdf5-1.8.18-win64-vs2015-noszip
         displayName: 'Install HDF5 1.8.18'
 
+      # Minizip
       - powershell: |
-          Invoke-WebRequest https://github.com/F2I-Consulting/Minizip/releases/download/1.1/minizip-1.1-win64-vs2015-static.zip -OutFile C:\minizip-1.1-win64-vs2015-static.zip
-          Expand-Archive C:\minizip-1.1-win64-vs2015-static.zip -DestinationPath C:\
-        displayName: 'Install Minizip'
+          git clone https://github.com/F2I-Consulting/Minizip.git C:/Minizip
+        displayName: 'Cloning Minizip'
+      - task: CMake@1
+        displayName: 'CMake configure Minizip'
+        inputs:
+          workingDirectory: C:/Minizip/build
+          cmakeArgs:
+            ..
+            $(Generator)
+            -Wno-dev -Wno-deprecated
+            -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
+            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+      - task: CMake@1
+        displayName: "CMake build Minizip --config $(BuildType)"
+        inputs:
+          workingDirectory: C:/Minizip/build
+          cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
+      - task: CMake@1
+        displayName: "CMake Install Minizip --config $(BuildType)"
+        inputs:
+          workingDirectory: C:/Minizip/build
+          cmakeArgs: --install . --config $(BuildType)
 
       # sourceforge and WebRequest incompatible
       - task: PowerShell@2
@@ -43,15 +58,15 @@ jobs:
             targetType: 'inline'
             script: |
                 Write-Host "Downloading SWIG..."
-                $url = "http://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip"
-                $output = [System.IO.Path]::Combine("C:/", "swigwin-3.0.12.zip")
+                $url = "http://prdownloads.sourceforge.net/swig/swigwin-4.0.2.zip"
+                $output = [System.IO.Path]::Combine("C:/", "swigwin-4.0.2.zip")
                 (new-object System.Net.WebClient).DownloadFile($url, $output)
             errorActionPreference: 'stop'
             failOnStderr: 'true'
         displayName: Download SWIG from official repository
       - task: ExtractFiles@1
         inputs:
-          archiveFilePatterns: 'C:/swigwin-3.0.12.zip'
+          archiveFilePatterns: 'C:/swigwin-4.0.2.zip'
           destinationFolder: 'C:/'
           cleanDestinationFolder: false
         displayName: Install SWIG
@@ -67,15 +82,15 @@ jobs:
             -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
             -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/hdf5.lib
-            -DMINIZIP_INCLUDE_DIR=C:/minizip-1.1-win64-vs2015-static/include
-            -DMINIZIP_LIBRARY_RELEASE=C:/minizip-1.1-win64-vs2015-static/lib/minizip.lib
+            -DMINIZIP_INCLUDE_DIR=C:/Minizip/build/install/include
+            -DMINIZIP_LIBRARY_RELEASE=C:/Minizip/build/install/lib/minizip.lib
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
             -DWITH_EXAMPLE=TRUE
             -DWITH_EXPERIMENTAL=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
             -DWITH_TEST=TRUE
-            -DSWIG_EXECUTABLE=C:/swigwin-3.0.12/swig.exe
+            -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
 
       - task: CMake@1
         displayName: "Build --config $(BuildType)"
@@ -96,7 +111,8 @@ jobs:
   - job:
     displayName: Windows VS2019
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'windows-2019'
+    timeoutInMinutes: 120
     strategy:
       matrix:
         # 64-bit Debug:
@@ -115,10 +131,30 @@ jobs:
           msiexec.exe /i "C:\hdf5\HDF5-1.8.18-win64.msi" /qn INSTALL_ROOT=C:\hdf5-1.8.18-win64-vs2015-noszip
         displayName: 'Install HDF5 1.8.18'
 
+      # Minizip
       - powershell: |
-          Invoke-WebRequest https://github.com/F2I-Consulting/Minizip/releases/download/1.1/minizip-1.1-win64-vs2015-static.zip -OutFile C:\minizip-1.1-win64-vs2015-static.zip
-          Expand-Archive C:\minizip-1.1-win64-vs2015-static.zip -DestinationPath C:\
-        displayName: 'Install Minizip'
+          git clone https://github.com/F2I-Consulting/Minizip.git C:/Minizip
+        displayName: 'Cloning Minizip'
+      - task: CMake@1
+        displayName: 'CMake configure Minizip'
+        inputs:
+          workingDirectory: C:/Minizip/build
+          cmakeArgs:
+            ..
+            $(Generator)
+            -Wno-dev -Wno-deprecated
+            -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
+            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+      - task: CMake@1
+        displayName: "CMake build Minizip --config $(BuildType)"
+        inputs:
+          workingDirectory: C:/Minizip/build
+          cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
+      - task: CMake@1
+        displayName: "CMake Install Minizip --config $(BuildType)"
+        inputs:
+          workingDirectory: C:/Minizip/build
+          cmakeArgs: --install . --config $(BuildType)
 
       # sourceforge and WebRequest incompatible
       - task: PowerShell@2
@@ -126,15 +162,15 @@ jobs:
             targetType: 'inline'
             script: |
                 Write-Host "Downloading SWIG..."
-                $url = "http://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip"
-                $output = [System.IO.Path]::Combine("C:/", "swigwin-3.0.12.zip")
+                $url = "http://prdownloads.sourceforge.net/swig/swigwin-4.0.2.zip"
+                $output = [System.IO.Path]::Combine("C:/", "swigwin-4.0.2.zip")
                 (new-object System.Net.WebClient).DownloadFile($url, $output)
             errorActionPreference: 'stop'
             failOnStderr: 'true'
         displayName: Download SWIG from official repository
       - task: ExtractFiles@1
         inputs:
-          archiveFilePatterns: 'C:/swigwin-3.0.12.zip'
+          archiveFilePatterns: 'C:/swigwin-4.0.2.zip'
           destinationFolder: 'C:/'
           cleanDestinationFolder: false
         displayName: Install SWIG
@@ -150,15 +186,15 @@ jobs:
             -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
             -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/hdf5.lib
-            -DMINIZIP_INCLUDE_DIR=C:/minizip-1.1-win64-vs2015-static/include
-            -DMINIZIP_LIBRARY_RELEASE=C:/minizip-1.1-win64-vs2015-static/lib/minizip.lib
+            -DMINIZIP_INCLUDE_DIR=C:/Minizip/build/install/include
+            -DMINIZIP_LIBRARY_RELEASE=C:/Minizip/build/install/lib/minizip.lib
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
             -DWITH_EXAMPLE=TRUE
             -DWITH_EXPERIMENTAL=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
             -DWITH_TEST=TRUE
-            -DSWIG_EXECUTABLE=C:/swigwin-3.0.12/swig.exe
+            -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
 
       - task: CMake@1
         displayName: "Build --config $(BuildType)"

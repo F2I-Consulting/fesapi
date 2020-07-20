@@ -37,13 +37,9 @@ void AbstractFeatureInterpretation::setInterpretedFeature(AbstractFeature * feat
 		throw invalid_argument("The interpreted feature cannot be null.");
 	}
 
-	if (getRepository() == nullptr) {
-		feature->getRepository()->addOrReplaceDataObject(this);
-	}
-
 	if (gsoapProxy2_0_1 != nullptr) {
 		if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->InterpretedFeature != nullptr) {
-			getRepository()->deleteRelationship(this, getInterpretedFeature());
+			feature->getRepository()->deleteRelationship(this, getInterpretedFeature());
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
@@ -52,7 +48,11 @@ void AbstractFeatureInterpretation::setInterpretedFeature(AbstractFeature * feat
 		}
 	}
 
-	repository->addRelationship(this, feature);
+	feature->getRepository()->addRelationship(this, feature);
+
+	if (getRepository() == nullptr) {
+		feature->getRepository()->addOrReplaceDataObject(this);
+	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->InterpretedFeature = feature->newResqmlReference();

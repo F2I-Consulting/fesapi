@@ -129,6 +129,9 @@ namespace RESQML2_NS
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 
+		/** Loads target relationships */
+		void virtual loadTargetRelationships() override;
+
     protected:
 
 		/** Default constructor */
@@ -156,7 +159,5 @@ namespace RESQML2_NS
 		 */
 		RepresentationSetRepresentation(gsoap_eml2_3::_resqml22__RepresentationSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
-		/** Loads target relationships */
-		virtual void loadTargetRelationships() override;
 	};
 }

@@ -18,26 +18,18 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../common/AbstractObject.h"
+#include "../witsml2/AbstractObject.h"
 
 #include "../MacroDefinitions.h"
 
 namespace WITSML2_0_NS
 {
-	/** An abstract object. */
-	class AbstractObject : public COMMON_NS::AbstractObject
+	class AbstractObject : public WITSML2_NS::AbstractObject
 	{
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~AbstractObject() {}
-
-		/**
-		 * Get the XML namespace for the tags for the XML serialization of this instance
-		 *
-		 * @returns	The XML namespace.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const;
+		virtual ~AbstractObject() {}
 
 		/**
 		 * Get the content type of the instance according to EPC recommendation
@@ -53,16 +45,26 @@ namespace WITSML2_0_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getPartNameInEpcDocument() const;
 
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+
+		/**
+		 * Get the XML namespace for the tags for the XML serialization of this instance
+		 *
+		 * @returns	The XML namespace.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
+
 	protected:
 
 		/**
 		 * Constructor for partial transfer
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * 
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::AbstractObject(partialObject) {}
 
 		/** Default constructor */
 		AbstractObject() {}
@@ -72,6 +74,6 @@ namespace WITSML2_0_NS
 		 *
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
-		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) : COMMON_NS::AbstractObject(proxy) {}
+		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) : WITSML2_NS::AbstractObject(proxy) {}
 	};
 }

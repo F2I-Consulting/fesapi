@@ -87,11 +87,14 @@ namespace PRODML2_1_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 		/**
-		 * Gets XML namespace
-		 *
-		 * @returns	The XML namespace.
-		 */
-		std::string getXmlNamespace() const { return "prodml21"; }
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
 		/** Loads target relationships */
 		void loadTargetRelationships() {}

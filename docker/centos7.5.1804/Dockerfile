@@ -72,7 +72,7 @@ RUN mkdir dependencies && \
 WORKDIR /fesapiEnv
 RUN git clone https://github.com/F2I-Consulting/fesapi.git && \
 	cd fesapi && \
-	git checkout resqml22 && \
+	git checkout etp && \
 	cd ..  && \
 	mkdir build && \
 	cd build && \
@@ -93,6 +93,5 @@ RUN git clone https://github.com/F2I-Consulting/fesapi.git && \
 	make install
 
 # generate .epc and .h5 files
-ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/fesapiEnv/build/install/lib64/:/usr/local/lib/
 WORKDIR /fesapiEnv/build/install
 RUN ./example

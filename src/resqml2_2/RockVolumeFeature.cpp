@@ -23,6 +23,7 @@ using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
 const char* RockVolumeFeature::XML_TAG = "RockVolumeFeature";
+const char* RockVolumeFeature::XML_NS = "resqml22";
 
 RockVolumeFeature::RockVolumeFeature(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {

@@ -31,6 +31,8 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* DeviationSurveyRepresentation::XML_NS = "resqml20";
+
 DeviationSurveyRepresentation::DeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const string& guid, const std::string& title, bool isFinal, RESQML2_NS::MdDatum* mdInfo)
 {
 	if (interp == nullptr) {

@@ -139,6 +139,8 @@ namespace RESQML2_NS
 		*/
 		AbstractColumnLayerGridRepresentation(bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(withTruncatedPillars) {}
 
+		void loadTargetRelationships();
+
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
@@ -146,7 +148,5 @@ namespace RESQML2_NS
 		AbstractColumnLayerGridRepresentation(gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation* fromGsoap, bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(fromGsoap, withTruncatedPillars) {}
 		AbstractColumnLayerGridRepresentation(gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation* fromGsoap, bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(fromGsoap, withTruncatedPillars) {}
 		AbstractColumnLayerGridRepresentation(gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation* fromGsoap, bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(fromGsoap, withTruncatedPillars) {}
-
-		void loadTargetRelationships();
 	};
 }

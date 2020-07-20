@@ -27,6 +27,8 @@ using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_0_1_NS;
 
+const char* IjkGridNoGeometryRepresentation::XML_NS = "resqml20";
+
 COMMON_NS::DataObjectReference IjkGridNoGeometryRepresentation::getHdfProxyDor() const
 {
 	gsoap_resqml2_0_1::resqml20__AbstractParentWindow* parentWindow = static_cast<gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation*>(gsoapProxy2_0_1)->ParentWindow;

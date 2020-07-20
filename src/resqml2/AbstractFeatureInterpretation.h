@@ -132,8 +132,6 @@ namespace RESQML2_NS
 		 * @returns	A pointer to the representation at @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT AbstractRepresentation * getRepresentation(unsigned int index) const;
-
-	protected:
 		
 		/** Loads target relationships */
 		virtual void loadTargetRelationships();

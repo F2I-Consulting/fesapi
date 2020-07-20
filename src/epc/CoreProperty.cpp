@@ -90,10 +90,11 @@ string CoreProperty::toString() const
 			const vector<string> wk_Vector = getAllValue();
 
 			ostringstream oss;
-			oss << "<keywords xml:lang=\"" << wk_Vector[0].substr(0,5) << "\"> " << wk_Vector[0].substr(5,wk_Vector[0].size()) << endl;
+			oss << "<keywords xml:lang=\"" << getValue(0).substr(0,5) << "\"> " << getValue(0).substr(5, getValue(0).size()) << endl;
 		
-			for (size_t i = 1; i < wk_Vector.size(); ++i) {
-				oss << "<value xml:lang=\"" << wk_Vector[i].substr(0,5) << "\">" << wk_Vector[i].substr(5,wk_Vector[i].size()) << "</value>" << endl; 
+			for (size_t i = 1; i < value.size(); ++i)
+			{
+				oss << "<value xml:lang=\"" << getValue(i).substr(0,5) << "\">" << getValue(i).substr(5, getValue(i).size()) << "</value>" << endl;
 			}
 
 			oss << "</keywords>" << endl;
@@ -117,7 +118,7 @@ string CoreProperty::toString() const
 	case version:
 		return "<version>" + getValue() + "</version>";
 	default :
-		return "";
+		return std::string();
 	}
 }
 

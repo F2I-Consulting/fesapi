@@ -1166,10 +1166,10 @@ namespace RESQML2_NS
 		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-	protected:
-
 		/** Loads target relationships */
 		void loadTargetRelationships();
+
+	protected:
 
 		/** True to with truncated pillars */
 		bool withTruncatedPillars;

@@ -113,10 +113,13 @@ namespace EML2_3_NS
 		DLL_IMPORT_OR_EXPORT tm getTimestampAsTimeStructure(unsigned int index) const final;
 
 		/**
-		 * Gets XML namespace
-		 *
-		 * @returns	The XML namespace.
-		 */
-		std::string getXmlNamespace() const final { return "eml23"; }
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

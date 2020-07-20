@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractColorMap.h"
 
-#include "../eml2_3/GraphicalInformationSet.h"
+#include "../eml2/GraphicalInformationSet.h"
 
 using namespace std;
 using namespace gsoap_eml2_3;
@@ -42,7 +42,7 @@ void AbstractColorMap::setRgbColors(unsigned int colorCount,
 			throw invalid_argument("blue must be in range [0, 1]");
 		}
 
-		EML2_3_NS::GraphicalInformationSet::rgbToHsv(rgbColors[3 * colorIndex], rgbColors[3 * colorIndex + 1], rgbColors[3 * colorIndex + 2],
+		EML2_NS::GraphicalInformationSet::rgbToHsv(rgbColors[3 * colorIndex], rgbColors[3 * colorIndex + 1], rgbColors[3 * colorIndex + 2],
 			hsvColors[3 * colorIndex], hsvColors[3 * colorIndex + 1], hsvColors[3 * colorIndex + 2]);
 	}
 
@@ -67,7 +67,7 @@ void AbstractColorMap::setRgbColors(unsigned int colorCount,
 			throw invalid_argument("blue must be in range [0, 255]");
 		}
 
-		EML2_3_NS::GraphicalInformationSet::rgbToHsv(rgbColors[3 * colorIndex], rgbColors[3 * colorIndex + 1], rgbColors[3 * colorIndex + 2],
+		EML2_NS::GraphicalInformationSet::rgbToHsv(rgbColors[3 * colorIndex], rgbColors[3 * colorIndex + 1], rgbColors[3 * colorIndex + 2],
 			hsvColors[3 * colorIndex], hsvColors[3 * colorIndex + 1], hsvColors[3 * colorIndex + 2]);
 	}
 
@@ -115,12 +115,12 @@ double AbstractColorMap::getAlpha(double colorIndex) const
 
 void AbstractColorMap::getRgbColor(double colorIndex, double& red, double& green, double& blue) const
 {
-	EML2_3_NS::GraphicalInformationSet::hsvToRgb(getHue(colorIndex), getSaturation(colorIndex), getValue(colorIndex), red, green, blue);
+	EML2_NS::GraphicalInformationSet::hsvToRgb(getHue(colorIndex), getSaturation(colorIndex), getValue(colorIndex), red, green, blue);
 }
 
 void AbstractColorMap::getRgbColor(double colorIndex, unsigned int& red, unsigned int& green, unsigned int& blue) const
 {
-	EML2_3_NS::GraphicalInformationSet::hsvToRgb(getHue(colorIndex), getSaturation(colorIndex), getValue(colorIndex), red, green, blue);
+	EML2_NS::GraphicalInformationSet::hsvToRgb(getHue(colorIndex), getSaturation(colorIndex), getValue(colorIndex), red, green, blue);
 }
 
 bool AbstractColorMap::hasColorTitle(double colorIndex) const

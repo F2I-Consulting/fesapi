@@ -32,108 +32,6 @@ namespace RESQML2_NS
 	 */
 	class AbstractIjkGridRepresentation : public RESQML2_NS::AbstractColumnLayerGridRepresentation
 	{
-	private :
-
-		/**
-		 * Initializes this object
-		 *
-		 * @param [in,out]	repo  	The soap context where the underlying gsoap proxy is going to be
-		 * 							created.
-		 * @param 		  	guid  	Unique identifier.
-		 * @param 		  	title 	The title.
-		 * @param 		  	iCount	Number of.
-		 * @param 		  	jCount	Number of.
-		 * @param 		  	kCount	Number of.
-		 */
-		void init(COMMON_NS::DataObjectRepository * repo,
-				const std::string & guid, const std::string & title,
-				unsigned int iCount, unsigned int jCount, unsigned int kCount);
-
-		/** Information about the block. */
-		class BlockInformation
-		{
-		public:
-
-			/** Zero-based index of the interface start */
-			unsigned int iInterfaceStart;
-			/** Zero-based index of the interface end */
-			unsigned int iInterfaceEnd;
-			/** The interface start */
-			unsigned int jInterfaceStart;
-			/** The interface end */
-			unsigned int jInterfaceEnd;
-			/** The interface start */
-			unsigned int kInterfaceStart;
-			/** The interface end */
-			unsigned int kInterfaceEnd;
-
-			/** Map split coordinate lines index with local index (according to a block) */
-			std::map<unsigned int, unsigned int> globalToLocalSplitCoordinateLinesIndex;
-			
-			/** Default constructor */
-			BlockInformation() {}
-
-			/** Destructor */
-			~BlockInformation() {}
-		};
-
-	protected :
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), blockInformation(nullptr) {}
-
-		/**
-		 * Constructor
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), blockInformation(nullptr) {}
-		AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), blockInformation(nullptr) {}
-		AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), blockInformation(nullptr) {}
-
-		gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* getSpecializedGsoapProxy2_0_1() const;
-		gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy2_0_1() const;
-		gsoap_eml2_3::_resqml22__IjkGridRepresentation* getSpecializedGsoapProxy2_2() const;
-		gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy2_2() const;
-
-		/**
-		 * Gets point geometry 2 0 1
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	Null if it fails, else the point geometry 2 0 1.
-		 */
-		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const final;
-		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const final;
-
-		/**
-		* Information about the splits (mainly due to faults) which occur in this grid.
-		* A splitInformation equal to nullptr means that it has not been initialized. An initialized splitInformation has always a size of getPillarCount().
-		* Indeed, each pillar of the grid (ordered I fastest then J slowest) is represented by a vector of split coordinate line information.
-		* A split coordinate line information is a pair composed by :
-		*  - first : the split coordinate line index
-		*  - second : all grid columns (identified by their indices: i fastest, j slowest) which are incident to (and consequently affected by) this split coordinate line
-		*
-		* Example : split info set to => {empty, empty, ..., {{10, {51, 23}}}, empty, {{12, {51, 23}}, {15, {22}}}, empty}
-		* This grid has 3 split coordinate lines (10, 12 and 15) which are related to two pillars (2 and 4).
-		* On the pillar 2, only a single split coordinate line (10) affects two columns (51, 23).
-		* On the pillar 4, two split coordinate lines exist (12 and 15). The split coordinate line 12 affects two columns (51 and 23). The split coordinate line 15 affects a single column (22).
-		* The other pillars are not splitted at all.
-		*
-		* Remarks :
-		* - There is a maximum of 3 split coordinate lines per pillar (the fourth one being considered as the non split one).
-		* -	There is a minimum of 1 column per split coordinate line.
-		* - There is a maximum of 3 columns per split coordinate line.
-		*/
-		std::vector< std::pair< unsigned int, std::vector<unsigned int> > >* splitInformation;
-
-		/** Information describing the block */
-		BlockInformation* blockInformation;
-
 	public:
 
 		/** Values that represent geometry kinds. */
@@ -783,8 +681,126 @@ namespace RESQML2_NS
 		/** The standard XML tag without XML namespace for serializing this data object if truncated. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG_TRUNCATED;
 
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override;
+		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override {return 1;}
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const override {
+			if (gsoapProxy2_0_1 != nullptr) { return "resqml20"; }
+			if (gsoapProxy2_3 != nullptr) { return "resqml22"; }
+
+
+			if (partialObject != nullptr) {
+				if (partialObject->ContentType.find("x-resqml+xml;version=2.0") != std::string::npos) { return "resqml20"; }
+				if (partialObject->ContentType.find("x-resqml+xml;version=2.2") != std::string::npos) { return "resqml22"; }
+			}
+
+			throw std::logic_error("Cannot infer what is the Energistics namespace of this instance.");
+		}
+
+	protected:
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), blockInformation(nullptr) {}
+
+		/**
+		 * Constructor
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), blockInformation(nullptr) {}
+
+		gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* getSpecializedGsoapProxy2_0_1() const;
+		gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy2_0_1() const;
+		gsoap_eml2_3::_resqml22__IjkGridRepresentation* getSpecializedGsoapProxy2_2() const;
+		gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy2_2() const;
+
+		/**
+		 * Gets point geometry 2 0 1
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch.
+		 *
+		 * @returns	Null if it fails, else the point geometry 2 0 1.
+		 */
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const final;
+		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const final;
+
+		/**
+		* Information about the splits (mainly due to faults) which occur in this grid.
+		* A splitInformation equal to nullptr means that it has not been initialized. An initialized splitInformation has always a size of getPillarCount().
+		* Indeed, each pillar of the grid (ordered I fastest then J slowest) is represented by a vector of split coordinate line information.
+		* A split coordinate line information is a pair composed by :
+		*  - first : the split coordinate line index
+		*  - second : all grid columns (identified by their indices: i fastest, j slowest) which are incident to (and consequently affected by) this split coordinate line
+		*
+		* Example : split info set to => {empty, empty, ..., {{10, {51, 23}}}, empty, {{12, {51, 23}}, {15, {22}}}, empty}
+		* This grid has 3 split coordinate lines (10, 12 and 15) which are related to two pillars (2 and 4).
+		* On the pillar 2, only a single split coordinate line (10) affects two columns (51, 23).
+		* On the pillar 4, two split coordinate lines exist (12 and 15). The split coordinate line 12 affects two columns (51 and 23). The split coordinate line 15 affects a single column (22).
+		* The other pillars are not splitted at all.
+		*
+		* Remarks :
+		* - There is a maximum of 3 split coordinate lines per pillar (the fourth one being considered as the non split one).
+		* -	There is a minimum of 1 column per split coordinate line.
+		* - There is a maximum of 3 columns per split coordinate line.
+		*/
+		std::vector< std::pair< unsigned int, std::vector<unsigned int> > >* splitInformation;
+
+		/** Information about the block. */
+		class BlockInformation
+		{
+		public:
+
+			/** Zero-based index of the interface start */
+			unsigned int iInterfaceStart;
+			/** Zero-based index of the interface end */
+			unsigned int iInterfaceEnd;
+			/** The interface start */
+			unsigned int jInterfaceStart;
+			/** The interface end */
+			unsigned int jInterfaceEnd;
+			/** The interface start */
+			unsigned int kInterfaceStart;
+			/** The interface end */
+			unsigned int kInterfaceEnd;
+
+			/** Map split coordinate lines index with local index (according to a block) */
+			std::map<unsigned int, unsigned int> globalToLocalSplitCoordinateLinesIndex;
+
+			/** Default constructor */
+			BlockInformation() {}
+
+			/** Destructor */
+			~BlockInformation() {}
+		};
+
+		/** Information describing the block */
+		BlockInformation* blockInformation;
+
+	private:
+
+		/**
+		 * Initializes this object
+		 *
+		 * @param [in,out]	repo  	The soap context where the underlying gsoap proxy is going to be
+		 * 							created.
+		 * @param 		  	guid  	Unique identifier.
+		 * @param 		  	title 	The title.
+		 * @param 		  	iCount	Number of.
+		 * @param 		  	jCount	Number of.
+		 * @param 		  	kCount	Number of.
+		 */
+		void init(COMMON_NS::DataObjectRepository * repo,
+			const std::string & guid, const std::string & title,
+			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 	};
 }

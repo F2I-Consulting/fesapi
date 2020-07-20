@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
+#include <unordered_map>
+#include <vector>
 #include <stdexcept>
 
 #include "DataObjectRepository.h"
@@ -28,9 +30,6 @@ namespace COMMON_NS
 	class AbstractObject
 	{
 	private:
-		/** Should be instantiated when the object is (or was) a partial object. */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject;
-
 		/** The variable which holds the format for all exported Energistics DataObjects. */
 		static char citationFormat[];
 
@@ -44,6 +43,8 @@ namespace COMMON_NS
 		void setUuid(const std::string & uuid);
 
 	protected:
+		/** Should be instantiated when the object is (or was) a partial object. */
+		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject;
 
 		/** The underlying generated gSoap proxy for a EML 2.0 dataobject. */
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
@@ -139,23 +140,18 @@ namespace COMMON_NS
 		/**
 		 * Adds an or replace data object
 		 *
-		 * @param [in,out]	proxy	If non-null, the proxy.
+		 * @param [in,out]	proxy				If non-null, the proxy.
+		 * @param [in,out]	replaceOnlyContent	If true, only replace the content of corresponding object, not the object itself.
+		 *
+		 * @returns	The new DataObject.
 		 */
-		friend void COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy);
+		friend COMMON_NS::AbstractObject* COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy, bool replaceOnlyContent);
 
 		/**
 		 * Initialize all mandatory attributes of an AbstractObject (not the attributes of a
 		 * specialization) with some valid values.
 		 */
 		void initMandatoryMetadata();
-
-		/**
-		 * Reads the forward relationships of this data object and update the <tt>.rels</tt> of the
-		 * associated data repository.
-		 */
-		virtual void loadTargetRelationships() = 0;
-		/** Updates all relationships */
-		friend void COMMON_NS::DataObjectRepository::updateAllRelationships();
 
 		/**
 		 * It is too dangerous for now to modify the uuid because too much things depend on it. That's
@@ -302,7 +298,9 @@ namespace COMMON_NS
 		gsoap_resqml2_0_1::resqml20__IndexableElements mapIndexableElement(gsoap_eml2_3::resqml22__IndexableElement toMap) const;
 
 	public:
-		/** Destructor */
+
+		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG_64 = 3, ULONG_64 = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
+
 		virtual ~AbstractObject() {}
 
 		/**
@@ -312,7 +310,9 @@ namespace COMMON_NS
 		 *
 		 * @returns	True if is partial, false if is not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool isPartial() const {return partialObject != nullptr;}
+		DLL_IMPORT_OR_EXPORT bool isPartial() const;
+
+		DLL_IMPORT_OR_EXPORT virtual bool isTopLevelElement() const { return true; }
 
 		/**
 		 * Gets the UUID (https://tools.ietf.org/html/rfc4122#page-3) of this data object. The UUID
@@ -634,14 +634,16 @@ namespace COMMON_NS
 		 *
 		 * @param [in]	gsoapProxy	If non-null, the gSOAP proxy.
 		 */
-		void setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy);
+		void setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy) { gsoapProxy2_0_1 = gsoapProxy; }
+
+		void setGsoapProxy(gsoap_eml2_1::eml21__AbstractObject* gsoapProxy) { gsoapProxy2_1 = gsoapProxy; }
 
 		/**
 		 * Get the EML2.0 gSOAP proxy which is wrapped by this entity
 		 *
 		 * @returns	A pointer to the EML2.0 gSOAP proxy.
 		 */
-		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* getGsoapProxy() const;
+		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* getEml20GsoapProxy() const { return gsoapProxy2_0_1; }
 
 		/**
 		 * Get the EML2.1 gSOAP proxy which is wrapped by this entity
@@ -650,12 +652,16 @@ namespace COMMON_NS
 		 */
 		gsoap_eml2_1::eml21__AbstractObject* getEml21GsoapProxy() const { return gsoapProxy2_1; }
 
+		gsoap_eml2_2::eml22__AbstractObject* getEml22GsoapProxy() const { return gsoapProxy2_2; }
+		void setGsoapProxy(gsoap_eml2_2::eml22__AbstractObject* gsoapProxy) { gsoapProxy2_2 = gsoapProxy; }
+
 		/**
 		 * Get the EML2.3 gSOAP proxy which is wrapped by this entity
 		 *
 		 * @returns	A pointer to the EML2.3 gSOAP proxy.
 		 */
 		gsoap_eml2_3::eml23__AbstractObject* getEml23GsoapProxy() const { return gsoapProxy2_3; }
+		void setGsoapProxy(gsoap_eml2_3::eml23__AbstractObject* gsoapProxy) { gsoapProxy2_3 = gsoapProxy; }
 
 		/**
 		 * Get the gSOAP context where the underlying gSOAP proxy is defined
@@ -723,11 +729,11 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectRepository* getRepository() const {return repository;}
 
 		/**
-		 * Gets the XML namespace for the tags for the XML serialization of this instance
-		 *
-		 * @returns	The XML namespace of this instance.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const;
+		* Gets the XML namespace for the tags for the XML serialization of this instance
+		*
+		* @returns	The XML namespace of this instance.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const = 0;
 
 		/**
 		 * Gets the standard XML tag without XML namespace for serializing this data object.
@@ -751,6 +757,13 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getContentType() const;
 
+		/**
+		 * Get the qualified type of the instance i.e. "namespace.datatype"
+		 *
+		 * @returns	The qualified type of the instance i.e. "namespace.datatype"
+		 */
+		DLL_IMPORT_OR_EXPORT virtual std::string getQualifiedType() const;
+		
 		/**
 		 * Gets the part name of this XML top level instance in the EPC document
 		 *
@@ -905,5 +918,11 @@ namespace COMMON_NS
 		 * @returns	The extra metadata value at @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
+		
+		/**
+		 * Reads the forward relationships of this data object and update the <tt>.rels</tt> of the
+		 * associated data repository.
+		 */
+		virtual void loadTargetRelationships() = 0;
 	};
 }

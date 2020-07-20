@@ -31,9 +31,12 @@ under the License.
 
 #include "../eml2/AbstractHdfProxy.h"
 
-#include "../resqml2_0_1/WellboreMarker.h"
-#include "../resqml2_2/WellboreMarker.h"
 #include "../resqml2/AbstractProperty.h"
+
+#include "../resqml2_0_1/WellboreMarker.h"
+#if WITH_RESQML2_2
+#include "../resqml2_2/WellboreMarker.h"
+#endif
 
 #include "../witsml2_0/Log.h"
 #include "../witsml2_0/Channel.h"
@@ -161,7 +164,9 @@ void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64
 		for (size_t i = 0; i < it->second.size(); ++i) {
 			if (!it->second[i]->isPartial() &&
 				dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(it->second[i]) == nullptr &&
+#if WITH_RESQML2_2
 				dynamic_cast<RESQML2_2_NS::WellboreMarker*>(it->second[i]) == nullptr &&
+#endif
 				(dynamic_cast<WITSML2_0_NS::ChannelSet*>(it->second[i]) == nullptr || static_cast<WITSML2_0_NS::ChannelSet*>(it->second[i])->getLogs().empty()) &&
 				(dynamic_cast<WITSML2_0_NS::Channel*>(it->second[i]) == nullptr || static_cast<WITSML2_0_NS::Channel*>(it->second[i])->getChannelSets().empty())) {
 				// Dataobject
@@ -188,7 +193,7 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 	std::string result;
 	vector<string> warningsDuringReading = package->openForReading(filePath);
 	for (const auto& warning : warningsDuringReading) {
-		result += warning + "\n";
+		result += warning + '\n';
 	}
 
 	// Read all RESQML objects
@@ -201,7 +206,7 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 			contentType.find("witsml", 14) != std::string::npos ||
 			contentType.find("prodml", 14) != std::string::npos) {
 			if (contentType == "application/x-resqml+xml;version=2.0;type=obj_EpcExternalPartReference") {
-				result += "The content type " + contentType + " should belong to EML and not to RESQML since obj_EpcExternalPartReference is part of COMMON and not part of RESQML.\n";
+				result += "The content type " + contentType + " should belong to EML20 and not to RESQML20 since obj_EpcExternalPartReference is part of COMMON 2.0 and not part of RESQML 2.0.\n";
 				contentType = "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference";
 			}
 			if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference" ||
@@ -225,10 +230,8 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 				for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
 					if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
 						target = allRels[relIndex].getTarget();
-						if (!repo.hasHdfProxyFactory()) {
-							repo.setHdfProxyFactory(target.find("http://") == 0 || target.find("https://") == 0
-								? new HdfProxyROS3Factory()
-								: new HdfProxyFactory());
+						if (target.find("http://") == 0 || target.find("https://") == 0) {
+							repo.setHdfProxyFactory(new HdfProxyROS3Factory());
 						}
 						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
 						break;
@@ -260,10 +263,126 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 	}
 
 	for (const auto& warning : repo.getWarnings()) {
-		result += warning + "\n";
+		result += warning + '\n';
 	}
 
 	return result;
+}
+
+namespace {
+
+	std::string extractUuidFromFileName(std::string fileName) {
+		return fileName.substr(fileName.find_last_of('_') + 1, 36);
+	}
+
+}
+
+std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess)
+{
+	std::string result;
+	vector<string> warningsDuringReading = package->openForReading(filePath);
+	for (size_t i = 0; i < warningsDuringReading.size(); ++i) {
+		result += warningsDuringReading[i] + '\n';
+	}
+
+	// Read all RESQML objects
+	const epc::FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
+	// 14 equals "application/x-".size()
+	for (epc::FileContentType::ContentTypeMap::const_iterator it = contentTypes.begin(); it != contentTypes.end(); ++it) {
+		if (!it->second.isAssociatedToAnExtension) {
+			std::string contentType = it->second.getContentTypeString();
+			if (contentType.find("resqml", 14) != std::string::npos ||
+				contentType.find("eml", 14) != std::string::npos ||
+				contentType.find("witsml", 14) != std::string::npos ||
+				contentType.find("prodml", 14) != std::string::npos)
+			{
+				if (contentType == "application/x-resqml+xml;version=2.0;type=obj_EpcExternalPartReference") {
+					result += "The content type " + contentType + " should belong to EML20 and not to RESQML20 since obj_EpcExternalPartReference is part of COMMON 2.0 and not part of RESQML 2.0.\n";
+					contentType = "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference";
+				}
+				if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference") {
+					// Look for the relative path of the HDF file
+					string relFilePath = "";
+					const size_t slashPos = it->second.getExtensionOrPartName().substr(1).find_last_of("/\\");
+					if (slashPos != string::npos) {
+						relFilePath = it->second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
+					}
+					relFilePath += "_rels" + it->second.getExtensionOrPartName().substr(it->second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
+					if (!package->fileExists(relFilePath)) {
+						result += "The HDF proxy " + it->second.getExtensionOrPartName() + " does not look to be associated to any HDF files : there is no rel file for this object. It is going to be withdrawn.\n";
+						continue;
+					}
+					epc::FileRelationship relFile;
+					relFile.readFromString(package->extractFile(relFilePath));
+					const vector<epc::Relationship>& allRels = relFile.getAllRelationship();
+					COMMON_NS::AbstractObject* wrapper = nullptr;
+					for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
+						if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
+							const std::string target = allRels[relIndex].getTarget();
+							if (target.find("http://") == 0 || target.find("https://") == 0) {
+								repo.setHdfProxyFactory(new HdfProxyROS3Factory());
+							}
+							else {
+								repo.setHdfProxyFactory(new HdfProxyFactory());
+							}
+							wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
+							static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setRelativePath(target);
+							break;
+						}
+					}
+
+					static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
+					static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
+
+					repo.setDefaultHdfProxy(static_cast<EML2_NS::AbstractHdfProxy*>(wrapper));
+				}
+				else {
+					repo.createPartial(extractUuidFromFileName(it->first), "Partial title", contentType);
+				}
+			}
+		}
+	}
+
+	deserializeRelFiles(repo);
+
+	return result;
+}
+
+void EpcDocument::deserializeRelFiles(DataObjectRepository & repo)
+{
+	// Read all RESQML objects
+	const epc::FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
+	// 14 equals "application/x-".size()
+	for (epc::FileContentType::ContentTypeMap::const_iterator it = contentTypes.begin(); it != contentTypes.end(); ++it)
+	{
+		std::string contentType = it->second.getContentTypeString();
+		if (contentType.find("resqml", 14) != std::string::npos ||
+			contentType.find("eml", 14) != std::string::npos ||
+			contentType.find("witsml", 14) != std::string::npos)
+		{
+			// Look for the relative path of the file
+			string relFilePath = "";
+			const size_t slashPos = it->second.getExtensionOrPartName().substr(1).find_last_of("/\\");
+			if (slashPos != string::npos) {
+				relFilePath = it->second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
+			}
+			relFilePath += "_rels" + it->second.getExtensionOrPartName().substr(it->second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
+			if (package->fileExists(relFilePath)) {
+				// Read Relationshsips
+				epc::FileRelationship relFile;
+				relFile.readFromString(package->extractFile(relFilePath));
+				const vector<epc::Relationship>& allRels = relFile.getAllRelationship();
+				for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
+					const epc::Relationship& rel = allRels[relIndex];
+					if (rel.getType() == "http://schemas.energistics.org/package/2012/relationships/destinationObject") {
+						COMMON_NS::AbstractObject* source = repo.getDataObjectByUuid(extractUuidFromFileName(it->first));
+						COMMON_NS::AbstractObject* destination = repo.getDataObjectByUuid(extractUuidFromFileName(rel.getTarget()));
+						repo.addRelationship(source, destination);
+					}
+				}
+			}
+		}
+	}
 }
 
 string EpcDocument::getStorageDirectory() const
@@ -299,4 +418,23 @@ std::string EpcDocument::getExtendedCoreProperty(const std::string & key)
 	}
 
 	return string();
+}
+
+std::string EpcDocument::resolvePartial(AbstractObject* partialObj) const
+{
+	if (!package->isOpenedForReading()) {
+		package->openForReading(filePath);
+	}
+
+	const epc::FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
+	// 14 equals "application/x-".size()
+	for (epc::FileContentType::ContentTypeMap::const_iterator it = contentTypes.begin(); it != contentTypes.end(); ++it)
+	{
+		if (it->first.find(partialObj->getUuid()) != std::string::npos)
+		{
+			return package->extractFile(it->second.getExtensionOrPartName().substr(1));
+		}
+	}
+
+	return "";
 }

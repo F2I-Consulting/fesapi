@@ -30,13 +30,19 @@ under the License.
 /** @namespace	${FESAPI_RESQML2_2_NS} @brief The ${FESAPI_RESQML2_2_NS} namespace. */
 #define RESQML2_2_NS ${FESAPI_RESQML2_2_NS}
 
+/** @namespace	${FESAPI_WITSML2_NS} @brief The ${FESAPI_WITSML2_NS} namespace.  This namespaces contains classes to handle data objects that exist in various WITSML v2.*. The classes of this namespace should be favored, when possible, instead of the classes of the lower level namespaces. */
+#define WITSML2_NS ${FESAPI_WITSML2_NS}
+
 /** @namespace	${FESAPI_WITSML2_0_NS} @brief The ${FESAPI_WITSML2_0_NS} namespace. */
 #define WITSML2_0_NS ${FESAPI_WITSML2_0_NS}
+
+/** @namespace	${FESAPI_WITSML2_1_NS} @brief The ${FESAPI_WITSML2_1_NS} namespace. */
+#define WITSML2_1_NS ${FESAPI_WITSML2_1_NS}
 
 /** @namespace	${FESAPI_PRODML2_1_NS} @brief The ${FESAPI_PRODML2_1_NS} namespace. */
 #define PRODML2_1_NS ${FESAPI_PRODML2_1_NS}
 
-/** @namespace	${FESAPI_EML2_NS} @brief The ${FESAPI_EML2_NS} namespace.  This namespaces contains classes to handle data objects that exist in both EML v2.0, EML v2.1, EML v2.2 and EML v2.3. The classes of this namespace should be favored, when possible, instead of the classes of the namespace ${FESAPI_EML2_0_NS}, ${FESAPI_EML2_1_NS}, ${FESAPI_EML2_2_NS} and ${FESAPI_EML2_3_NS}. */
+/** @namespace	${FESAPI_EML2_NS} @brief The ${FESAPI_EML2_NS} namespace.  This namespaces contains classes to handle data objects that exist in various EML v2.*. The classes of this namespace should be favored, when possible, instead of the classes of the namespace ${FESAPI_EML2_0_NS}, ${FESAPI_EML2_1_NS}, ${FESAPI_EML2_2_NS} and ${FESAPI_EML2_3_NS}. */
 #define EML2_NS ${FESAPI_EML2_NS}
 
 /** @namespace	${FESAPI_EML2_0_NS} @brief The ${FESAPI_EML2_0_NS} namespace. */
@@ -50,6 +56,9 @@ under the License.
 
 /** @namespace	${FESAPI_EML2_3_NS} @brief The ${FESAPI_EML2_3_NS} namespace. */
 #define EML2_3_NS ${FESAPI_EML2_3_NS}
+
+/** @namespace	${FESAPI_ETP_NS} @brief The ${FESAPI_ETP_NS} namespace. */
+#define ETP_NS ${FESAPI_ETP_NS}
 
 /** @namespace	epc @brief The epc namespace. */
 

@@ -74,13 +74,10 @@ void AbstractProperty::setRepresentation(AbstractRepresentation * rep)
 	if (rep == nullptr) {
 		throw invalid_argument("The representation of this property values cannot be null.");
 	}
-	if (getRepository() == nullptr) {
-		rep->getRepository()->addOrReplaceDataObject(this);
-	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->SupportingRepresentation != nullptr) {
-			getRepository()->deleteRelationship(this, getRepresentation());
+			rep->getRepository()->deleteRelationship(this, getRepresentation());
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
@@ -89,7 +86,11 @@ void AbstractProperty::setRepresentation(AbstractRepresentation * rep)
 		}
 	}
 
-	getRepository()->addRelationship(this, rep);
+	rep->getRepository()->addRelationship(this, rep);
+
+	if (getRepository() == nullptr) {
+		rep->getRepository()->addOrReplaceDataObject(this);
+	}
 
 	// XML
 	if (gsoapProxy2_0_1 != nullptr) {

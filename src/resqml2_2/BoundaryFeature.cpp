@@ -22,6 +22,8 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
+const char* BoundaryFeature::XML_NS = "resqml22";
+
 BoundaryFeature::BoundaryFeature(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title)
 {
 	if (repo == nullptr) {

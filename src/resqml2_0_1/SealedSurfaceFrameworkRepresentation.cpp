@@ -31,6 +31,8 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* SealedSurfaceFrameworkRepresentation::XML_NS = "resqml20";
+
 SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
 	RESQML2_NS::StructuralOrganizationInterpretation* interp,
     const std::string & guid,
@@ -43,8 +45,8 @@ SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
     // proxy constructor
     gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESealedSurfaceFrameworkRepresentation(interp->getGsoapContext());
     _resqml20__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
-
-    orgRep->IsHomogeneous = true;
+	
+	orgRep->IsHomogeneous = true;
 
     initMandatoryMetadata();
     setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());

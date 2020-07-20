@@ -29,7 +29,6 @@ under the License.
 #else 
 #include <fcntl.h>
 #include <sys/types.h>
-#include <sys/stat.h>
 #include <string.h>
 #include <stdio.h>
 #endif
@@ -186,8 +185,7 @@ Package::CheshireCat::~CheshireCat()
 
 void Package::CheshireCat::close()
 {
-	if (unzipped)
-	{
+	if (unzipped) {
 		unzClose(unzipped);
 		unzipped = nullptr;
 	}
@@ -213,18 +211,15 @@ void Package::openForWriting(const std::string & pkgPathName, int append, bool u
 	d_ptr->pathName.assign(pkgPathName);
 
 	// Clean the potential ending slashes
-	while (d_ptr->pathName[d_ptr->pathName.size() - 1] == '/' || d_ptr->pathName[d_ptr->pathName.size() - 1] == '\\') {
+	while (!d_ptr->pathName.empty() &&
+		(d_ptr->pathName[d_ptr->pathName.size() - 1] == '/' || d_ptr->pathName[d_ptr->pathName.size() - 1] == '\\')) {
 		d_ptr->pathName = d_ptr->pathName.substr(0, d_ptr->pathName.size() - 1);
 	}
 
-	ContentType contentTypeRel(true, "application/vnd.openxmlformats-package.relationships+xml", ".rels");
-	addContentType(contentTypeRel);
+	addContentType(ContentType(true, "application/vnd.openxmlformats-package.relationships+xml", ".rels"));
+	addContentType(ContentType(false, "application/vnd.openxmlformats-package.core-properties+xml", "docProps/core.xml"));
 
-	ContentType contentTypeCoreProp(false, "application/vnd.openxmlformats-package.core-properties+xml", "docProps/core.xml");
-	addContentType(contentTypeCoreProp);
-
-	Relationship relToCoreProp("docProps/core.xml", CORE_PROP_REL_TYPE,"CoreProperties");
-	addRelationship(relToCoreProp);
+	addRelationship(Relationship("docProps/core.xml", CORE_PROP_REL_TYPE, "CoreProperties"));
 
 	d_ptr->isZip64 = useZip64;
 	d_ptr->zf = useZip64 ? zipOpen64(d_ptr->pathName.c_str(), append) : zipOpen(d_ptr->pathName.c_str(), append);
@@ -232,6 +227,11 @@ void Package::openForWriting(const std::string & pkgPathName, int append, bool u
 	if (d_ptr->zf == nullptr) {
 		throw invalid_argument("The file " + pkgPathName + " could not be opened");
 	}
+}
+
+bool Package::isOpenedForWriting() const
+{
+	return d_ptr->zf != nullptr;
 }
 
 std::vector<std::string> Package::openForReading(const std::string & pkgPathName)
@@ -249,10 +249,8 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 	string relFile = extractFile("_rels/.rels", "");
 	d_ptr->filePrincipalRelationship.readFromString(relFile);
 	vector<Relationship> pckRelset = d_ptr->filePrincipalRelationship.getAllRelationship();
-	for (size_t i = 0; i < pckRelset.size(); i++)
-	{
-		if (pckRelset[i].getType().compare(CORE_PROP_REL_TYPE) == 0)
-		{
+	for (size_t i = 0; i < pckRelset.size(); ++i) {
+		if (pckRelset[i].getType().compare(CORE_PROP_REL_TYPE) == 0) {
 			std::string target = pckRelset[i].getTarget();
 			if (target.size() > 1 && target[0] == '/' && target[1] != '/') { // Rule 8 of A.3 paragraph Open Packaging Conventions (ECMA version)
 				target = target.substr(1);
@@ -263,30 +261,25 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 	}
 
 	// Package relationships : extended core properties	
-	if (fileExists("docProps/_rels/core.xml.rels"))
-	{
+	if (fileExists("docProps/_rels/core.xml.rels")) {
 		string extendedCpRelFilePath = extractFile("docProps/_rels/core.xml.rels", "");
 		FileRelationship extendedCpRelFile;
 		extendedCpRelFile.readFromString(extendedCpRelFilePath);
 		vector<Relationship> extendedCpRelSet = extendedCpRelFile.getAllRelationship();
-		for (size_t i = 0; i < extendedCpRelSet.size(); i++)
-		{
+		for (size_t i = 0; i < extendedCpRelSet.size(); ++i) {
 			std::string target = extendedCpRelSet[i].getTarget();
 			if (target.size() > 1 && target[0] == '/' && target[1] != '/') { // Rule 8 of A.3 paragraph Open Packaging Conventions (ECMA version)
 				target = target.substr(1);
 			}
 			target = "docProps/" + target; // always prefixed by "docProps/" because core.xml is always in folder docProps by business rule
-			if (!fileExists(target))
-			{
+			if (!fileExists(target)) {
 				result.push_back("The extended core properties file " + target + " targeted in docProps/_rels/core.xml.rels is not present in the Epc document");
 				continue;
 			}
-			string extendedCorePropFile = extractFile(target, "");
-			std::istringstream iss(extendedCorePropFile);
 
+			std::istringstream iss(extractFile(target, ""));
 			std::string line;
-			while (std::getline(iss, line))
-			{
+			while (std::getline(iss, line)) {
 				if (line[0] == '\t') // To find a better condition
 				{
 					size_t start = line.find("<");
@@ -305,10 +298,14 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 	}
 
 	// Package content type
-	string contentTypeFile = extractFile("[Content_Types].xml", "");
-	d_ptr->fileContentType.readFromString(contentTypeFile);
+	d_ptr->fileContentType.readFromString(extractFile("[Content_Types].xml", ""));
 
 	return result;
+}
+
+bool Package::isOpenedForReading() const
+{
+	return d_ptr->unzipped != nullptr;
 }
 
 void Package::close()
@@ -427,9 +424,8 @@ void Package::addRelationship(const Relationship & relationship)
 
 FilePart* Package::createPart(const std::string & inputContent, const std::string & outputPartPath)
 {
-	FilePart fp(outputPartPath);
-	d_ptr->allFileParts[outputPartPath] = fp;
-    writeStringIntoNewPart( inputContent, outputPartPath );
+	d_ptr->allFileParts[outputPartPath] = FilePart(outputPartPath);
+    writeStringIntoNewPart(inputContent, outputPartPath);
 	return &(d_ptr->allFileParts[outputPartPath]);
 }
 
@@ -439,9 +435,8 @@ const FilePart* Package::findPart(const std::string & outputPartPath) const
 	return it == d_ptr->allFileParts.end() ? nullptr : &(it->second);
 }
 
-uLong buildTimeInfo(const char *filename, tm_zip *tmzip, uLong *dostime)
+void buildTimeInfo(const char *filename, tm_zip *tmzip, uLong *dostime)
 {
-    int ret = 0;
 #ifdef _WIN32
 	FILETIME ftUtc;
     FILETIME ftLocal;
@@ -454,7 +449,6 @@ uLong buildTimeInfo(const char *filename, tm_zip *tmzip, uLong *dostime)
         FileTimeToLocalFileTime(&(ff32.ftLastWriteTime), &ftLocal);
         FileTimeToDosDateTime(&ftLocal,((LPWORD)dostime)+1,((LPWORD)dostime)+0);
         FindClose(hFind);
-        ret = 1;
     }
 	else
 	{
@@ -462,11 +456,9 @@ uLong buildTimeInfo(const char *filename, tm_zip *tmzip, uLong *dostime)
         FileTimeToLocalFileTime(&ftUtc, &ftLocal);
         FileTimeToDosDateTime(&ftLocal,((LPWORD)dostime)+1,((LPWORD)dostime)+0);
         FindClose(hFind);
-        ret = 1;
 	}
 #else
 #if defined unix || defined __APPLE__
-    struct stat s = {0};
     struct tm* filedate;
     time_t tm_t = time(0);
     filedate = localtime(&tm_t);
@@ -479,7 +471,6 @@ uLong buildTimeInfo(const char *filename, tm_zip *tmzip, uLong *dostime)
     tmzip->tm_year = filedate->tm_year;
 #endif
 #endif
-    return ret;
 }
 
 void Package::writeStringIntoNewPart(const std::string &input, const std::string & partPath)
@@ -540,12 +531,10 @@ void Package::writePackage()
 		writeStringIntoNewPart(oss.str(), "docProps/extendedCore.xml");
 		
 		// Add the content type for extended core properties part
-		ContentType contentTypeExtendedCoreProp(false, "application/x-extended-core-properties+xml", "docProps/extendedCore.xml");
-		addContentType(contentTypeExtendedCoreProp);
+		addContentType(ContentType(false, "application/x-extended-core-properties+xml", "docProps/extendedCore.xml"));
 		
 		// Relationhsip with the standard core properties part
-		Relationship relToExtCoreProp("extendedCore.xml", EXTENDED_CORE_PROP_REL_TYPE, "ExtendedCoreProperties");
-		FileRelationship fileRelToExtCoreProp(relToExtCoreProp);
+		FileRelationship fileRelToExtCoreProp(Relationship("extendedCore.xml", EXTENDED_CORE_PROP_REL_TYPE, "ExtendedCoreProperties"));
 		fileRelToExtCoreProp.setPathName("docProps/_rels/core.xml.rels");
 		writeStringIntoNewPart(fileRelToExtCoreProp.toString(), fileRelToExtCoreProp.getPathName());
 	}
@@ -578,8 +567,7 @@ string do_extract_currentfile(unzFile uf, const char* password)
     const unsigned size_buf = 8192;
 
     buf = (void*)malloc(size_buf);
-    if (buf == nullptr)
-    {
+    if (buf == nullptr)  {
     	ostringstream oss;
     	oss << "Error allocating " <<  size_buf << " bytes.";
 		throw invalid_argument(oss.str());
@@ -593,32 +581,28 @@ string do_extract_currentfile(unzFile uf, const char* password)
     }
 
 	ostringstream oss;
-    do
-    {
+    do {
         err = unzReadCurrentFile(uf,buf,size_buf);
-        if (err < 0)
-        {
+        if (err < 0)  {
 			free(buf);
 			throw invalid_argument("Error with zipfile in unzReadCurrentFile");
         }
-		if (err > 0)
-		{
+		if (err > 0) {
 			oss.write((char*)buf, err);
 		}
     }
     while (err > 0);
 
-    if (err == UNZ_OK)
-    {
+    if (err == UNZ_OK) {
         err = unzCloseCurrentFile (uf);
-        if (err != UNZ_OK)
-        {
+        if (err != UNZ_OK)  {
 			free(buf);
 			throw invalid_argument("Error with zipfile in unzCloseCurrentFile");
         }
     }
-    else
-        unzCloseCurrentFile(uf); /* don't lose the error */
+	else {
+		unzCloseCurrentFile(uf); /* don't lose the error */
+	}
 
     free(buf);
     return oss.str();
@@ -636,42 +620,22 @@ string Package::extractFile(const string & filename, const string & password)
 {
 #ifdef CACHE_FILE_DESCRIPTOR
 	std::unordered_map< std::string, unzFile >::const_iterator it = d_ptr->name2file.find(filename);
-	if (it == d_ptr->name2file.end())
-	{
-		if (!fileExists(filename))
-		{
+	if (it == d_ptr->name2file.end()) {
+		if (!fileExists(filename)) {
 			throw invalid_argument("The file " + filename + " does not exist in the EPC document.");
 		}
 		d_ptr->name2file[filename] = (d_ptr->unzipped);
 	}
-	else
-	{
+	else {
 		d_ptr->unzipped = it->second;
 	}
 #else
-	if (!fileExists(filename))
-    {
+	if (!fileExists(filename))  {
 		throw invalid_argument("The file " + filename + " does not exist in the EPC document.");
     }
 #endif
 
-	if (!password.empty())
-		return do_extract_currentfile(d_ptr->unzipped, password.c_str());
-	else
-		return do_extract_currentfile(d_ptr->unzipped, nullptr);
+	return password.empty()
+		? do_extract_currentfile(d_ptr->unzipped, nullptr)
+		: do_extract_currentfile(d_ptr->unzipped, password.c_str());
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

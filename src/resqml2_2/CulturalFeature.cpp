@@ -25,6 +25,7 @@ using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
 const char* CulturalFeature::XML_TAG = "CulturalFeature";
+const char* CulturalFeature::XML_NS = "resqml22";
 
 CulturalFeature::CulturalFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const string & title,
 	gsoap_eml2_3::resqml22__CulturalFeatureKind kind)

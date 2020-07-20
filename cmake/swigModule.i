@@ -67,6 +67,7 @@ under the License.
 //************************/
 // POD C ARRAYS
 //************************/
+
 %include "carrays_indexing64bits.i"
 #ifdef SWIGJAVA // Use functions instead of classes in java in order to avoid premature garbage collection
 	%array_functions(unsigned long long, ULongArray);
@@ -93,6 +94,7 @@ under the License.
 	%array_class(unsigned char, UCharArray);
 	%array_class(bool, BoolArray);
 #endif
+
 // Example below of premature garbage collection
 // DoubleArray myDoubleArray = new DoubleArray(100);
 // myOperations(myDoubleArray.cast());
@@ -101,6 +103,13 @@ under the License.
 // Don't try to create vector of polymorphic data unless you really know what you are doing.
 // Use C array approach instead.
 %include "std_vector.i"
+
+%template(StringVector) std::vector< std::string >;
+%template(Int32Vector) std::vector< int >;
+%template(Int64Vector) std::vector< long long >;
+%template(FloatVector) std::vector< float >;
+%template(DoubleVector) std::vector< double >;
+%template(BoolVector) std::vector< bool >;
 
 //************************/
 // EXCEPTIONS
@@ -155,6 +164,8 @@ namespace COMMON_NS
 	class AbstractObject
 	{
 	public:
+		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG_64 = 3, ULONG_64 = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
+	
 		COMMON_NS::DataObjectRepository* getRepository() const;
 	
 		bool isPartial() const;
@@ -197,6 +208,7 @@ namespace COMMON_NS
 		std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
 
 		unsigned int getActivityCount() const;
+
 		EML2_NS::Activity * getActivity (unsigned int index) const;
 	};
 }
@@ -217,14 +229,9 @@ namespace COMMON_NS
 %include "swigResqml2_2Include.i"
 #endif
 %include "swigWitsml2_0Include.i"
-
-//************************/
-// STD::VECTOR DEFINITIONS
-//************************/
-
-namespace std {
-	%template(StringVector) vector< std::string >;
-}
+#ifdef WITH_ETP
+%include "swigEtp1_2Include.i"
+#endif
 
 %{
 #include "../src/common/EnumStringMapper.h"
@@ -268,8 +275,6 @@ namespace COMMON_NS
 		
 		RESQML2_NS::AbstractLocal3dCrs* getDefaultCrs() const;
 		void setDefaultCrs(RESQML2_NS::AbstractLocal3dCrs* crs);
-		
-		bool hasHdfProxyFactory();
 		
 		EML2_NS::AbstractHdfProxy* getDefaultHdfProxy() const;
 		void setDefaultHdfProxy(EML2_NS::AbstractHdfProxy* hdfProxy);
@@ -418,7 +423,7 @@ namespace COMMON_NS
 			RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__WellboreDatumReference originKind,
 			double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3);
 
-		//************ FEATURE ***************/
+		/* FEATURE */
 
 		RESQML2_NS::BoundaryFeature* createBoundaryFeature(const std::string & guid, const std::string & title);
 
@@ -470,7 +475,7 @@ namespace COMMON_NS
 
 		RESQML2_0_1_NS::RockFluidUnitFeature* createRockFluidUnit(const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__Phase phase, RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundaryTop, RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundaryBottom);
 
-		//************ INTERPRETATION ********/
+		/* INTERPRETATION */
 
 		RESQML2_NS::GenericFeatureInterpretation* createGenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const std::string & guid, const std::string & title);
 
@@ -502,7 +507,7 @@ namespace COMMON_NS
 		RESQML2_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 		RESQML2_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
-		//************ REPRESENTATION ********/
+		/* REPRESENTATION */
 
 		RESQML2_NS::TriangulatedSetRepresentation* createTriangulatedSetRepresentation(const std::string & guid, const std::string & title);
 			
@@ -632,7 +637,7 @@ namespace COMMON_NS
 		RESQML2_NS::GridConnectionSetRepresentation* createGridConnectionSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
-		//************* PROPERTIES ***********/
+		/* PROPERTIES */
 
 		EML2_NS::TimeSeries* createTimeSeries(const std::string & guid, const std::string & title);
 
@@ -750,6 +755,7 @@ namespace COMMON_NS
 			const std::string & guid, const std::string & title,
 			const std::string & mnemonic, gsoap_eml2_1::eml21__UnitOfMeasure uom, gsoap_eml2_1::witsml20__EtpDataType dataType, gsoap_eml2_1::witsml20__ChannelStatus growingStatus,
 			const std::string & timeDepth, const std::string & loggingCompanyName);
+
 #ifdef WITH_RESQML2_2
 		//************************************/
 		//************ EML2.3 ****************/

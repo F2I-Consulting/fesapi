@@ -81,10 +81,6 @@ under the License.
 	GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
 	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)
 
-//************************
-// STD::VECTOR DEFINITIONS
-//************************
-
 %include "std_vector.i"
 namespace std {
 	%template(WellVector) vector<WITSML2_0_NS::Well*>;
@@ -2261,4 +2257,3 @@ namespace WITSML2_0_NS
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(gsoap_eml2_1::witsml20__ChannelStatus, GrowingStatus)
 	};
 }
-

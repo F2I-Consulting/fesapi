@@ -27,7 +27,6 @@ namespace epc
 	class Relationship
 	{
 	private: 
-
 		/**
 		 * / The target mode indicates wether the destination part is external or internal to the
 		 * package.

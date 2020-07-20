@@ -448,6 +448,8 @@ namespace RESQML2_NS
 		/** The standard XML tag without XML namespace for serializing this data object */
 		static const char* XML_TAG;
 
+		virtual void loadTargetRelationships();
+
 	protected:
 
 		/**
@@ -571,8 +573,5 @@ namespace RESQML2_NS
 		 * @returns	Null if it fails, else the seismic 3D coordinates.
 		 */
 		gsoap_eml2_3::resqml22__Seismic3dCoordinates* getSeismic3dCoordinates2_2(unsigned int patchIndex) const;
-
-		/** Loads target relationships */
-		virtual void loadTargetRelationships() override;
 	};
 }

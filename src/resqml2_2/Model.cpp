@@ -25,6 +25,7 @@ using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
 const char* Model::XML_TAG = "Model";
+const char* Model::XML_NS = "resqml22";
 
 Model::Model(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const string & title)
 {

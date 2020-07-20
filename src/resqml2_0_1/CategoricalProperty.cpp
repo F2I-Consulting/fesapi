@@ -35,6 +35,9 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* CategoricalProperty::XML_TAG = "CategoricalProperty";
+const char* CategoricalProperty::XML_NS = "resqml20";
+
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
 	RESQML2_NS::StringTableLookup* strLookup, resqml20__ResqmlPropertyKind energisticsPropertyKind)

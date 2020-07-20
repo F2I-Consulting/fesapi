@@ -259,13 +259,10 @@ void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation* in
 	if (interp == nullptr) {
 		throw invalid_argument("Cannot set a null interpretation to a representation");
 	}
-	if (getRepository() == nullptr) {
-		interp->getRepository()->addOrReplaceDataObject(this);
-	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation != nullptr) {
-			getRepository()->deleteRelationship(this, getInterpretation());
+			interp->getRepository()->deleteRelationship(this, getInterpretation());
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
@@ -274,7 +271,11 @@ void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation* in
 		}
 	}
 
-	getRepository()->addRelationship(this, interp);
+	interp->getRepository()->addRelationship(this, interp);
+
+	if (getRepository() == nullptr) {
+		interp->getRepository()->addOrReplaceDataObject(this);
+	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation = interp->newResqmlReference();

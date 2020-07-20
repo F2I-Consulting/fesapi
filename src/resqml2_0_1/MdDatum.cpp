@@ -26,6 +26,8 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* MdDatum::XML_NS = "resqml20";
+
 MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title,
 	RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__WellboreDatumReference originKind,
 	double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3)

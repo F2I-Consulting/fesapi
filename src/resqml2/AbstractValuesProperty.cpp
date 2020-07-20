@@ -49,7 +49,7 @@ unsigned int AbstractValuesProperty::getPatchCount() const
 	return static_cast<unsigned int>(result);
 }
 
-AbstractValuesProperty::hdfDatatypeEnum AbstractValuesProperty::getValuesHdfDatatype() const
+COMMON_NS::AbstractObject::hdfDatatypeEnum AbstractValuesProperty::getValuesHdfDatatype() const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	std::string dsPath;

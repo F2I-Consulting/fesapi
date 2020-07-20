@@ -77,7 +77,7 @@ under the License.
 #include "resqml2/GridConnectionSetRepresentation.h"
 #include "resqml2/IjkGridExplicitRepresentation.h"
 #include "resqml2/IjkGridParametricRepresentation.h"
-#include "resqml2/UnstructuredGridRepresentation.h"
+#include "resqml2_0_1/UnstructuredGridRepresentation.h"
 #include "resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
 #include "resqml2_0_1/SubRepresentation.h"
 #include "resqml2_0_1/TimeSeries.h"
@@ -868,6 +868,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 	};
+
 	doubleGridSubrep->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement__cells, 23, doubleGridSubrepValues, hdfProxy, doubleGridSubrepSupportingRepIndices);
 
 	//**************
@@ -1009,10 +1010,9 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	ijkgrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank0);
 
 	// Partial transfer
-	/*
-	RESQML2_NS::UnstructuredGridRepresentation* partialGrid = pck->createPartial<RESQML2_NS::UnstructuredGridRepresentation>("5cc3ee47-4bd5-4d82-ae3e-ed64e6d8d1eb", "Partial Grid");
-	ContinuousProperty* continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "Testing partial property", 1,
-		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+	RESQML2_NS::UnstructuredGridRepresentation* partialGrid = pck->createPartial<RESQML2_0_1_NS::UnstructuredGridRepresentation>("5cc3ee47-4bd5-4d82-ae3e-ed64e6d8d1eb", "Partial Grid");
+	RESQML2_NS::ContinuousProperty* continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "Testing partial property", 1,
+		gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
 	continuousProp1->pushBackDoubleHdf5Array1dOfValues(continuousProp1Values, 6, hdfProxy);
 
@@ -1020,8 +1020,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	RESQML2_NS::SubRepresentation * subRepOfUnstructuredGrid = pck->createSubRepresentation("6b48c8d0-d60e-42b5-994c-2d4d4f3d0765", "Subrep On Partial grid");
 	subRepOfUnstructuredGrid->pushBackSupportingRepresentation(partialGrid);
 	ULONG64 nodeIndex[2] = { 0, 1 };
-	subRepOfUnstructuredGrid->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements__nodes, 2, nodeIndex, hdfProxy);
-	*/
+	subRepOfUnstructuredGrid->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement__nodes, 2, nodeIndex, hdfProxy);
 
 	// creating the unstructured grid
 	RESQML2_NS::UnstructuredGridRepresentation* unstructuredGrid = pck->createUnstructuredGridRepresentation("9283cd33-5e52-4110-b7b1-616abde2b303", "One tetrahedron + prism grid", 2);
@@ -2075,7 +2074,6 @@ bool serialize(const string & filePath)
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5", COMMON_NS::DataObjectRepository::openingMode::OVERWRITE);
 	repo.setDefaultHdfProxy(hdfProxy);
 
-	//CRS
 	local3dCrs = repo.createLocalDepth3dCrs("", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
 	localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__s, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false); // CRS translation is just for testing;
 	repo.setDefaultCrs(local3dCrs);
@@ -2518,7 +2516,7 @@ void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
 	for (size_t fcIndex = 0; fcIndex < fluidCharacterization.size(); ++fcIndex) {
 		PRODML2_1_NS::FluidCharacterization* fc = fluidCharacterization[fcIndex];
 		showAllMetadata(fc);
-		RESQML2_0_1_NS::RockFluidUnitFeature* rfu = fc->getRockFluidUnit();
+		RESQML2_NS::RockFluidUnitInterpretation* rfu = fc->getRockFluidUnit();
 		if (rfu != nullptr) {
 			std::cout << "connected wiht rock fluid unit " << std::endl;
 			showAllMetadata(rfu);
@@ -4197,6 +4195,7 @@ void deserialize(const string & inputFile)
 
 		showAllMetadata(ijkGrid);
 		if (ijkGrid->isPartial()) {
+			showAllProperties(ijkGrid);
 			continue;
 		}
 		std::cout << "This ijk grid is ";
@@ -4489,8 +4488,7 @@ void deserialize(const string & inputFile)
 			std::cout << "Node count is : " << unstructuredGridRepSet[i]->getXyzPointCountOfPatch(0) << std::endl;
 
 			ULONG64 faceCount = 0;
-			if (!unstructuredGridRepSet[i]->isFaceCountOfCellsConstant())
-			{
+			if (!unstructuredGridRepSet[i]->isFaceCountOfCellsConstant()) {
 				std::unique_ptr<ULONG64[]> faceCountOfCells(new ULONG64[unstructuredGridRepSet[i]->getCellCount()]);
 				unstructuredGridRepSet[i]->getCumulativeFaceCountPerCell(faceCountOfCells.get());
 				std::cout << "Face count of cell 0 is : " << faceCountOfCells[0] << std::endl;
@@ -4498,41 +4496,41 @@ void deserialize(const string & inputFile)
 					std::cout << "Face count of cell 1 is : " << faceCountOfCells[1] - faceCountOfCells[0] << std::endl;
 				faceCount = faceCountOfCells[unstructuredGridRepSet[i]->getCellCount() - 1];
 			}
-			else
-			{
+			else {
 				std::cout << "Face count of cell is constant : " << unstructuredGridRepSet[i]->getConstantFaceCountOfCells() << std::endl;
 				faceCount = unstructuredGridRepSet[i]->getConstantFaceCountOfCells() * unstructuredGridRepSet[i]->getCellCount();
 			}
-			if (!unstructuredGridRepSet[i]->isNodeCountOfFacesConstant())
-			{
+			if (!unstructuredGridRepSet[i]->isNodeCountOfFacesConstant()) 	{
 				std::unique_ptr<ULONG64[]> nodeCountOfFaces(new ULONG64[faceCount]);
 				unstructuredGridRepSet[i]->getCumulativeNodeCountPerFace(nodeCountOfFaces.get());
 				std::cout << "Node count of face 0 is : " << nodeCountOfFaces[0] << std::endl;
 				if (faceCount > 1)
 					std::cout << "Node count of face 1 is : " << nodeCountOfFaces[1] - nodeCountOfFaces[0] << std::endl;
 			}
-			else
-			{
+			else {
 				std::cout << "Node count of face is constant : " << unstructuredGridRepSet[i]->getConstantNodeCountOfFaces() << std::endl;
 			}
 
 
 			std::cout << "Reading XYZ points" << std::endl;
-			std::unique_ptr<double> gridPoints(new double[unstructuredGridRepSet[i]->getXyzPointCountOfPatch(0) * 3]);
+			std::unique_ptr<double[]> gridPoints(new double[unstructuredGridRepSet[i]->getXyzPointCountOfPatch(0) * 3]);
 			unstructuredGridRepSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(gridPoints.get());
 			std::cout << "DONE" << std::endl;
 			std::cout << "--------------------------------------------------" << std::endl;
 
 			unstructuredGridRepSet[i]->loadGeometry();
 
-			std::cout << "(in memory) Face count of cell 0 is : " << unstructuredGridRepSet[i]->getFaceCountOfCell(0) << std::endl;
-			if (unstructuredGridRepSet[i]->getCellCount() > 1)
-				std::cout << "(in memory) Face count of cell 1 is : " << unstructuredGridRepSet[i]->getFaceCountOfCell(1) << std::endl;
-			std::cout << "(in memory) Node count of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeCountOfFaceOfCell(0, 0) << std::endl;
-			std::cout << "(in memory) Node indice 0 of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 0)[0] << std::endl;
-			std::cout << "(in memory) Node indice 1 of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 0)[1] << std::endl;
-			std::cout << "(in memory) Node indice 2 of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 0)[2] << std::endl;
-			std::cout << "(in memory) Node indice 0 of face 1 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 1)[0] << std::endl;
+			std::cout << "In memory" << std::endl;
+			for (unsigned long cellIndex = 0; cellIndex < unstructuredGridRepSet[i]->getCellCount(); ++cellIndex) {
+				std::cout << "Face count of cell " << cellIndex << " is : " << unstructuredGridRepSet[i]->getFaceCountOfCell(cellIndex) << std::endl;
+				for (unsigned int faceIndex = 0; faceIndex < unstructuredGridRepSet[i]->getFaceCountOfCell(cellIndex); ++faceIndex) {
+					std::cout << "Node count of face " << faceIndex << " of cell " << cellIndex << " is : " << unstructuredGridRepSet[i]->getNodeCountOfFaceOfCell(cellIndex, faceIndex) << std::endl;
+					for (unsigned int nodeIndex = 0; nodeIndex < unstructuredGridRepSet[i]->getNodeCountOfFaceOfCell(cellIndex, faceIndex); ++nodeIndex) {
+						std::cout << "Node indice " << nodeIndex << " of face " << faceIndex << " of cell " << cellIndex << " is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] << std::endl;
+						std::cout << "X= " <<  gridPoints.get()[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3] << " Y= " <<  gridPoints.get()[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3+1 ] << " Z= " <<  gridPoints.get()[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3+ 2 ] << std::endl;
+					}
+				}
+			}
 
 			unstructuredGridRepSet[i]->unloadGeometry();
 
@@ -4552,8 +4550,7 @@ void deserialize(const string & inputFile)
 	showAllSubRepresentations(onlyPartialSubReps);
 
 	std::cout << endl << "TIME SERIES" << endl;
-	for (size_t i = 0; i < timeSeriesSet.size(); ++i)
-	{
+	for (size_t i = 0; i < timeSeriesSet.size(); ++i) {
 		showAllMetadata(timeSeriesSet[i]);
 		for (unsigned int j = 0; j < timeSeriesSet[i]->getTimestampCount(); ++j) {
 			time_t creation = timeSeriesSet[i]->getTimestamp(j);
@@ -4561,8 +4558,7 @@ void deserialize(const string & inputFile)
 			tm creationTm = timeSeriesSet[i]->getTimestampAsTimeStructure(j);
 			std::cout << "Timestamp " << j << " is (struct tm) : " << 1900 + creationTm.tm_year << "-" << creationTm.tm_mon + 1 << "-" << creationTm.tm_mday << "T" << creationTm.tm_hour << ":" << creationTm.tm_min << ":" << creationTm.tm_sec << std::endl;
 		}
-		for (size_t j = 0; j < timeSeriesSet[i]->getPropertySet().size(); ++j)
-		{
+		for (size_t j = 0; j < timeSeriesSet[i]->getPropertySet().size(); ++j) 	{
 			std::cout << endl << "\tPROPERTIES" << endl;
 			showAllMetadata(timeSeriesSet[i]->getPropertySet()[j]);
 		}

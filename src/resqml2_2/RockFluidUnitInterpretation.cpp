@@ -24,6 +24,8 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
+const char* RockFluidUnitInterpretation::XML_NS = "resqml22";
+
 RockFluidUnitInterpretation::RockFluidUnitInterpretation(RESQML2_NS::RockVolumeFeature * feature, const string & guid, const string & title)
 {
 	if (feature == nullptr) {

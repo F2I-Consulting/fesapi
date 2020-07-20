@@ -28,13 +28,16 @@ configure_file(${FESAPI_ROOT_DIR}/cmake/HidtType.h.in ${FESAPI_ROOT_DIR}/src/com
 set (RESQML_PREFIX_2 "resqml2")
 set (RESQML_PREFIX_2_0_1 "resqml2_0_1")
 set (RESQML_PREFIX_2_2 "resqml2_2")
+set (WITSML_PREFIX_2 "witsml2")
 set (WITSML_PREFIX_2_0 "witsml2_0")
+set (WITSML_PREFIX_2_1 "witsml2_1")
 set (PRODML_PREFIX_2_1 "prodml2_1")
 set (EML_PREFIX_2 "eml2")
 set (EML_PREFIX_2_0 "eml2_0")
 set (EML_PREFIX_2_1 "eml2_1")
 set (EML_PREFIX_2_2 "eml2_2")
 set (EML_PREFIX_2_3 "eml2_3")
+set (ETP_PREFIX "etp")
 
 # Define the compile options according to the compiler
 target_compile_options(${CPP_LIBRARY_NAME}	PRIVATE
@@ -60,10 +63,18 @@ if (WIN32)
 	endif ()
 endif (WIN32)
 
-if (FESAPI_USE_BOOST_UUID)
-	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE FESAPI_USE_BOOST_UUID)
+if (WITH_ETP OR FESAPI_USE_BOOST_UUID)
 	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE BOOST_ALL_NO_LIB)
-endif (FESAPI_USE_BOOST_UUID)
+	if (WITH_ETP)
+		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE WITH_ETP)
+		if (WITH_ETP_SSL)
+			target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE WITH_ETP_SSL)
+		endif ()
+	endif ()
+	if (FESAPI_USE_BOOST_UUID)
+		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE FESAPI_USE_BOOST_UUID)
+	endif (FESAPI_USE_BOOST_UUID)
+endif (WITH_ETP OR FESAPI_USE_BOOST_UUID)
 
 # Linker instructions
 if (WIN32)
@@ -153,6 +164,28 @@ ELSEIF (UNIX)
 		SOVERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
 endif (WIN32)
 
+if (WITH_ETP)
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${Boost_SYSTEM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT})
+	if (WIN32)
+		if (EXISTS ${AVRO_LIBRARY_RELEASE} AND EXISTS ${AVRO_LIBRARY_DEBUG})
+			target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${AVRO_LIBRARY_RELEASE} debug ${AVRO_LIBRARY_DEBUG})
+		elseif (EXISTS ${AVRO_LIBRARY_RELEASE})
+			target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${AVRO_LIBRARY_RELEASE})
+		elseif (EXISTS ${AVRO_LIBRARY_DEBUG})
+			target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${AVRO_LIBRARY_DEBUG})
+		endif ()
+	else (WIN32)
+		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${AVRO_LIBRARY_RELEASE})
+	endif (WIN32)
+
+	if (WITH_ETP_SSL)
+		if (NOT TARGET OpenSSL::SSL OR NOT TARGET OpenSSL::Crypto)
+			find_package(OpenSSL REQUIRED)
+		endif()
+		target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+	endif ()
+endif (WITH_ETP)
+
 # ============================================================================
 # Getting source files
 # ============================================================================
@@ -162,16 +195,24 @@ set (WITH_DOTNET_WRAPPING OFF CACHE BOOL "Compile the swig cpp generated file fo
 
 # Namespaces definitions
 set (FESAPI_COMMON_NS common CACHE STRING "Namespace for common objects")
+
 set (FESAPI_PRODML2_1_NS prodml2_1 CACHE STRING "Namespace for prodml2_1 objects")
+
 set (FESAPI_RESQML2_NS resqml2 CACHE STRING "Namespace for resqml2 objects")
 set (FESAPI_RESQML2_0_1_NS resqml2_0_1 CACHE STRING "Namespace for resqml2_0_1 objects")
 set (FESAPI_RESQML2_2_NS resqml2_2 CACHE STRING "Namespace for resqml2_2 objects")
+
+set (FESAPI_WITSML2_NS witsml2 CACHE STRING "Namespace for witsml2 objects")
 set (FESAPI_WITSML2_0_NS witsml2_0 CACHE STRING "Namespace for witsml2_0 objects")
+set (FESAPI_WITSML2_1_NS witsml2_1 CACHE STRING "Namespace for witsml2_1 objects")
+
 set (FESAPI_EML2_NS eml2 CACHE STRING "Namespace for eml2 objects")
 set (FESAPI_EML2_0_NS eml2_0 CACHE STRING "Namespace for eml2_0 objects")
 set (FESAPI_EML2_1_NS eml2_1 CACHE STRING "Namespace for eml2_1 objects")
 set (FESAPI_EML2_2_NS eml2_2 CACHE STRING "Namespace for eml2_2 objects")
 set (FESAPI_EML2_3_NS eml2_3 CACHE STRING "Namespace for eml2_3 objects")
+
+set (FESAPI_ETP_NS etp CACHE STRING "Namespace for etp objects")
 
 configure_file(${FESAPI_ROOT_DIR}/cmake/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/nsDefinitions.h) # Overwrite if different
 
@@ -200,8 +241,14 @@ file (GLOB FESAPI_RESQML_2_2_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX
 file (GLOB FESAPI_PRODML_2_1_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_1}/*.cpp)
 file (GLOB FESAPI_PRODML_2_1_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_1}/*.h)
 
+file (GLOB FESAPI_WITSML_2_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2}/*.cpp)
+file (GLOB FESAPI_WITSML_2_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2}/*.h)
+
 file (GLOB FESAPI_WITSML_2_0_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_0}/*.cpp)
 file (GLOB FESAPI_WITSML_2_0_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_0}/*.h)
+
+file (GLOB FESAPI_WITSML_2_1_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/*.cpp)
+file (GLOB FESAPI_WITSML_2_1_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/*.h)
 
 file (GLOB FESAPI_EML_2_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2}/*.cpp)
 file (GLOB FESAPI_EML_2_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2}/*.h)
@@ -232,6 +279,8 @@ list(APPEND ALL_SOURCES_AND_HEADERS
 	${FESAPI_RESQML_2_HEADERS}
 	${FESAPI_RESQML_2_0_1_SOURCES}
 	${FESAPI_RESQML_2_0_1_HEADERS}
+	${FESAPI_WITSML_2_SOURCES}
+	${FESAPI_WITSML_2_HEADERS}
 	${FESAPI_WITSML_2_0_SOURCES}
 	${FESAPI_WITSML_2_0_HEADERS}
 	${FESAPI_PRODML_2_1_SOURCES}
@@ -255,16 +304,55 @@ if (WITH_RESQML2_2)
 		${FESAPI_EML_2_3_HEADERS}
 	)
 endif (WITH_RESQML2_2)
+if (WITH_WITSML2_1)
+	list(APPEND ALL_SOURCES_AND_HEADERS
+		${FESAPI_WITSML_2_1_SOURCES}
+		${FESAPI_WITSML_2_1_HEADERS}
+	)
+endif (WITH_WITSML2_1)
+
+if (WITH_ETP)	
+	file (GLOB FESAPI_ETP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etp/*.cpp)
+	file (GLOB FESAPI_ETP_PROTOCOL_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etp/ProtocolHandlers/*.cpp)
+	file (GLOB FESAPI_ETP_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/etp/*.h)
+	file (GLOB FESAPI_ETP_PROTOCOL_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/etp/ProtocolHandlers/*.h)
+
+	set (ALL_SOURCES_AND_HEADERS
+		${ALL_SOURCES_AND_HEADERS}
+		${FESAPI_ETP_SOURCES}
+		${FESAPI_ETP_PROTOCOL_SOURCES}
+		${FESAPI_ETP_HEADERS}	
+		${FESAPI_ETP_PROTOCOL_HEADERS}	
+	)
+	
+	if (WITH_ETP_SSL)
+		file (GLOB FESAPI_ETP_SSL_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etp/ssl/*.cpp)
+		file (GLOB FESAPI_ETP_SSL_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/etp/ssl/*.h)
+		
+		set (ALL_SOURCES_AND_HEADERS
+			${ALL_SOURCES_AND_HEADERS}
+			${FESAPI_ETP_SSL_SOURCES}
+			${FESAPI_ETP_SSL_HEADERS}
+		)
+	endif ()
+endif (WITH_ETP)
 
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
 
 target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_INCLUDE_DIR} ${HDF5_C_INCLUDE_DIR} ${MINIZIP_INCLUDE_DIR})
 
-if (FESAPI_USE_BOOST_UUID)
+if (WITH_ETP)
+	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${AVRO_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
+	if (WITH_ETP_SSL)
+		target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${OPENSSL_INCLUDE_DIR})
+	endif ()
+elseif (FESAPI_USE_BOOST_UUID)
 	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${Boost_INCLUDE_DIR})
-elseif (UNIX)
+endif (WITH_ETP)
+
+if (UNIX AND NOT FESAPI_USE_BOOST_UUID)
 	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${UUID_INCLUDE_DIR})
-endif (FESAPI_USE_BOOST_UUID)
+endif ()
 
 target_include_directories(${CPP_LIBRARY_NAME} INTERFACE
 	$<INSTALL_INTERFACE:include>
@@ -284,8 +372,14 @@ if (WIN32)
 		source_group ("${RESQML_PREFIX_2_2}" FILES ${FESAPI_RESQML_2_2_SOURCES} ${FESAPI_RESQML_2_2_HEADERS})
 		source_group ("${EML_PREFIX_2_3}" FILES ${FESAPI_EML_2_3_SOURCES} ${FESAPI_EML_2_3_HEADERS})
 	endif (WITH_RESQML2_2)
+	
+	source_group ("${WITSML_PREFIX_2}" FILES ${FESAPI_WITSML_2_SOURCES} ${FESAPI_WITSML_2_HEADERS})
 
 	source_group ("${WITSML_PREFIX_2_0}" FILES ${FESAPI_WITSML_2_0_SOURCES} ${FESAPI_WITSML_2_0_HEADERS})
+	
+	if (WITH_WITSML2_1)
+		source_group ("${WITSML_PREFIX_2_1}" FILES ${FESAPI_WITSML_2_1_SOURCES} ${FESAPI_WITSML_2_1_HEADERS})
+	endif(WITH_WITSML2_1)
 
 	source_group ("${PRODML_PREFIX_2_1}" FILES ${FESAPI_PRODML_2_1_SOURCES} ${FESAPI_PRODML_2_1_HEADERS})
 
@@ -298,6 +392,15 @@ if (WIN32)
 	source_group ("${EML_PREFIX_2_2}" FILES ${FESAPI_EML_2_2_SOURCES} ${FESAPI_EML_2_2_HEADERS})
 
 	source_group ("proxies" FILES ${FESAPI_PROXIES_SOURCES} ${FESAPI_PROXIES_HEADERS})
+	
+	if (WITH_ETP)
+		source_group ("${ETP_PREFIX}" FILES ${FESAPI_ETP_SOURCES} ${FESAPI_ETP_HEADERS})
+		source_group ("${ETP_PREFIX}\\ProtocolHandlers" FILES ${FESAPI_ETP_PROTOCOL_SOURCES} ${FESAPI_ETP_PROTOCOL_HEADERS})
+		if (WITH_ETP_SSL)
+			source_group ("${ETP_PREFIX}\\ssl" FILES ${FESAPI_ETP_SSL_SOURCES} ${FESAPI_ETP_SSL_HEADERS})
+		endif ()
+	endif (WITH_ETP)
+	
 endif (WIN32)
 
 # ${FESAPI_ROOT_DIR}/java/CMakeLists.txt uses GNUInstallDirs in its install command
@@ -332,7 +435,7 @@ IF (WIN32)
 	)
 ENDIF()
 
-# proxies headers
+# namespaces
 INSTALL (
 	FILES ${FESAPI_ROOT_DIR}/src/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/version_config.h ${FESAPI_ROOT_DIR}/src/MacroDefinitions.h
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/
@@ -346,7 +449,7 @@ INSTALL (
 	COMPONENT fesapi_headers
 )
 
-# main headers
+# common headers
 INSTALL (
 	FILES ${FESAPI_COMMON_HEADERS}
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/common
@@ -382,12 +485,39 @@ INSTALL (
 	COMPONENT fesapi_headers
 )
 
+if (WITH_RESQML2_2)
+	INSTALL (
+		FILES ${FESAPI_RESQML_2_2_HEADERS}
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${RESQML_PREFIX_2_2}/
+		COMPONENT fesapi_headers
+	)
+
+	INSTALL (
+		FILES ${FESAPI_EML_2_3_HEADERS}
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${EML_PREFIX_2_3}/
+		COMPONENT fesapi_headers
+	)
+endif (WITH_RESQML2_2)
+
 # WITSML headers
+INSTALL (
+	FILES ${FESAPI_WITSML_2_HEADERS}
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${WITSML_PREFIX_2}/
+)
+
 INSTALL (
 	FILES ${FESAPI_WITSML_2_0_HEADERS}
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${WITSML_PREFIX_2_0}/
 	COMPONENT fesapi_headers
 )
+
+if (WITH_WITSML2_1)
+	INSTALL (
+		FILES ${FESAPI_WITSML2_1_HEADERS}
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${WITSML_PREFIX_2_1}/
+		COMPONENT fesapi_headers
+	)
+endif (WITH_WITSML2_1)
 
 # PRODML headers
 INSTALL (
@@ -395,6 +525,15 @@ INSTALL (
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${PRODML_PREFIX_2_1}/
 	COMPONENT fesapi_headers
 )
+
+# etp header
+IF (WITH_ETP)
+	INSTALL (
+		DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/etp
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/
+		FILES_MATCHING PATTERN "*.h"
+	)
+endif (WITH_ETP)
 
 # EML headers
 INSTALL (
@@ -420,20 +559,6 @@ INSTALL (
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${EML_PREFIX_2_2}/
 	COMPONENT fesapi_headers
 )
-
-if (WITH_RESQML2_2)
-	INSTALL (
-		FILES ${FESAPI_RESQML_2_2_HEADERS}
-		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${RESQML_PREFIX_2_2}/
-		COMPONENT fesapi_headers
-	)
-
-	INSTALL (
-		FILES ${FESAPI_EML_2_3_HEADERS}
-		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${EML_PREFIX_2_3}/
-		COMPONENT fesapi_headers
-	)
-endif (WITH_RESQML2_2)
 
 # PropertyTypeMapping.xml
 INSTALL (

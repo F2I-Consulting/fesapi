@@ -20,11 +20,11 @@ under the License.
 
 #include <stdexcept>
 
-#include "../common/EnumStringMapper.h"
-
 using namespace std;
 using namespace EML2_1_NS;
 using namespace gsoap_eml2_1;
+
+const char* PropertyKind::XML_NS = "eml21";
 
 PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 	gsoap_eml2_1::eml21__QuantityClassKind quantityClass, bool isAbstract, EML2_NS::PropertyKind* parentPropertyKind)
@@ -41,7 +41,10 @@ PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::st
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	if (parentPropertyKind == nullptr) {
-		parentPropertyKind = repo->createPartial<EML2_1_NS::PropertyKind>("a48c9c25-1e3a-43c8-be6a-044224cc69cb", "property");
+		parentPropertyKind = repo->getDataObjectByUuid<EML2_NS::PropertyKind>("a48c9c25-1e3a-43c8-be6a-044224cc69cb");
+		if (parentPropertyKind == nullptr) {
+			parentPropertyKind = repo->createPartial<PropertyKind>("a48c9c25-1e3a-43c8-be6a-044224cc69cb", "property");
+		}
 	}
 
 	setParentPropertyKind(parentPropertyKind);

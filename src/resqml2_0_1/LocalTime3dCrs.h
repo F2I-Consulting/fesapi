@@ -211,5 +211,15 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__TimeUom getUnit() const final;
 
 		DLL_IMPORT_OR_EXPORT std::string getUnitAsString() const final;
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

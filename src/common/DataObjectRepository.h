@@ -20,6 +20,7 @@ under the License.
 
 #include <unordered_map>
 #include <sstream>
+#include <chrono>
 #include <limits>
 
 #include "DataObjectReference.h"
@@ -144,6 +145,7 @@ namespace PRODML2_1_NS
 namespace COMMON_NS
 {
 	class AbstractObject;
+	class DataFeeder;
 	class HdfProxyFactory;
 
 	/**
@@ -175,6 +177,7 @@ namespace COMMON_NS
 			READ_WRITE_DO_NOT_CREATE = 2, // It is meant to open an existing file in read and write mode. It throws an exception if the file does not exist.
 			OVERWRITE = 3 // It is meant to open an existing file in read and write mode. It deletes the content of the file if the later does already exist.
 		};
+		enum CUD { CREATED = 0, UPDATED = 1, DELETED = 2 };
 
 		/**
 		* Enumeration for the various Energistics standards.
@@ -264,6 +267,12 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void addRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target);
 
 		/**
+		* Register a data feeder to allow partial objects resolution.
+		* It is your responsability to manage the memory of your data feeder. DataObject repository won't never free memory of a data feeder.
+		*/
+		DLL_IMPORT_OR_EXPORT void registerDataFeeder(COMMON_NS::DataFeeder * dataFeeder);
+
+		/*
 		 * Delete a relationship between two objects. Source and target of the relationship are defined
 		 * by Energistics data model. Usually, the simplest is to look at Energistics UML diagrams. 
 		 * Another way is to rely on XSD/XML: explicit relationships are contained by the source objects
@@ -277,13 +286,6 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void deleteRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target);
 
 		/**
-		* Checks either this repository has got an HDF proxy or not.
-		* 
-		* @returns True if this repository has got an HDF proxy, else false.
-		*/
-		DLL_IMPORT_OR_EXPORT bool hasHdfProxyFactory() { return hdfProxyFactory != nullptr; }
-
-		/**
 		* Set the factory used to create HDF proxy and takes ownership of this HDF Proxy factory (don't delete it!)
 		* 
 		* @param [in]	factory	If non-null, the factory.
@@ -291,15 +293,40 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory);
 
 		/**
-		 * Gets the target objects of a particular data object.
-		 *
-		 * @exception	std::out_of_range	If the target objects have not been defined yet.
-		 *
-		 * @param 	dataObj	The data object.
-		 *
-		 * @returns	A vector of pointers to all target objects.
-		 */
-		DLL_IMPORT_OR_EXPORT const std::vector< COMMON_NS::AbstractObject * >& getTargetObjects(COMMON_NS::AbstractObject const * dataObj) const;
+		* Get the journal of the DataObject repository.
+		*/
+		const std::vector< std::tuple<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::DataObjectReference, CUD> >& getJournal() const { return journal; }
+
+		/**
+		* Allow a specialization of a DataObjectRepository to provide a special behaviour when a dataobject is created
+		*/
+		DLL_IMPORT_OR_EXPORT virtual void on_CreateDataObject(const std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>>&) {}
+
+		/**
+		* Allow a specialization of a DataObjectRepository to provide a special behaviour when a dataobject is update
+		*/
+		DLL_IMPORT_OR_EXPORT virtual void on_UpdateDataObject(const std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>>&) {}
+
+		/**
+		* Resolve a partial object thanks to a data feeder into this data repository.
+		* This method needs some registered data feeder in order to work.
+		*/
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* resolvePartial(COMMON_NS::AbstractObject * partialObj);
+
+		/**
+		* Get the direct target objects (by reference) of a particular data object.
+		*/
+		DLL_IMPORT_OR_EXPORT const std::vector<COMMON_NS::AbstractObject*>& getTargetObjects(COMMON_NS::AbstractObject const * dataObj) const { return forwardRels.at(dataObj); }
+
+		/**
+		* Get the target objects of a particular data object and potentially targets of targets, etc...
+		* @param dataObj			The dataobject which we want to know the targets about.
+		* @param depth				How much targets of targets do we want? A depth of 0 means that we only want the dataobject itself. A depth of 1 means that we only want the direct targets.
+		*							A depth of 2 means that we want the direct targets + the targets of the direct targets, etc... 
+		* @param filteredDatatypes	The returned targets will be filtered based on this list of authorized datatypes. A qualified type "namespace.*" means a filter on the namespace.
+		*/
+		DLL_IMPORT_OR_EXPORT std::vector<COMMON_NS::AbstractObject*> getTargetObjects(COMMON_NS::AbstractObject const * dataObj, size_t depth,
+			const std::vector<std::string>& filteredDatatypes = std::vector<std::string>()) const;
 
 		/**
 		 * Gets the @p valueType typed target objects of a particular data object.
@@ -326,7 +353,17 @@ namespace COMMON_NS
 		 *
 		 * @returns	A vector of pointers to all source objects.
 		 */
-		DLL_IMPORT_OR_EXPORT const std::vector< COMMON_NS::AbstractObject * >& getSourceObjects(COMMON_NS::AbstractObject const * dataObj) const;
+		DLL_IMPORT_OR_EXPORT const std::vector< COMMON_NS::AbstractObject*>& getSourceObjects(COMMON_NS::AbstractObject const * dataObj) const { return backwardRels.at(dataObj); }
+
+		/**
+		* Get the source objects of a particular data object and potentially sources of sources, etc...
+		* @param dataObj			The dataobject which we want to know the sources about.
+		* @param depth				How much sources of sources do we want? A depth of 0 means that we only want the dataobject itself. A depth of 1 means that we only want the direct sources.
+		*							A depth of 2 means that we want the direct sources + the sources of the direct sources, etc...
+		* @param filteredDatatypes	The returned sources will be filtered based on this list of authorized datatypes. A qualified type "namespace.*" means a filter on the namespace.
+		*/
+		DLL_IMPORT_OR_EXPORT std::vector<COMMON_NS::AbstractObject*> getSourceObjects(COMMON_NS::AbstractObject const * dataObj, size_t depth,
+			const std::vector<std::string>& filteredDatatypes = std::vector<std::string>()) const;
 
 		/**
 		 * Gets the @p valueType typed source objects
@@ -357,8 +394,9 @@ namespace COMMON_NS
 		 * 										object has changed.
 		 *
 		 * @param [in, out]	proxy	The data object to add or to replace.
+		 * @param replaceOnlyContent	If true, it does not replace the full object(not the pointer) but only replace the content of the object.
 		 */
-		DLL_IMPORT_OR_EXPORT void addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy);
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy, bool replaceOnlyContent = false);
 
 		/**
 		 * Adds or replaces (based on Energistics XML definition) a data object in the repository. It
@@ -369,7 +407,7 @@ namespace COMMON_NS
 		 *
 		 * @param 	xml		   	The XML which is the serialization of the Energistics data object to add
 		 * 						or to replace.
-		 * @param 	contentType	The content type of the Energistics data object to add or to replace.
+		 * @param 	contentOrDataType	The content or qualified data type of the Energistics dataobject to add or to replace.
 		 *
 		 * @returns	Null if the content type of the data object cannot be wrapped by fesapi, else a
 		 * 			pointer the added or replaced data object.
@@ -385,12 +423,19 @@ namespace COMMON_NS
 		const std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > & getDataObjects() const { return dataObjects; }
 
 		/**
-		 * Gets all the data object and groups them by content type
+		 * Gets all the data object and groups them by datatype
 		 *
 		 * @returns	A map where the key is a content type and the value is a vector of pointers to all
-		 * 			data objects of this content type.
+		 * 			data objects of this datatype.
 		 */
-		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getDataObjectsGroupedByContentType() const;
+		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getDataObjectsGroupedByDataType() const;
+
+		/**
+		* Group Data objects of the repository by datatype based on a filtered list 
+		* @param filter A string that the returned Dataobject must contain in their datatype.
+		* @return A map where the key is a datatype and where the value is the collection of Data objects of this datatype
+		*/
+		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getDataObjectsGroupedByDataType(const std::string & filter) const;
 
 		/**
 		 * Gets all the data objects which honor a given content type
@@ -566,6 +611,14 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* getDataObjectByUuidAndVersion(const std::string & uuid, const std::string & version) const;
 
 		/**
+		* Get a data object from the repository by means of its uuid and from its version.
+		* @param uuid		The uuid of the requested data object.
+		* @param version	The version of the requested data object.
+		* @return			nullptr if no dataobject corresponds to the uuid + version
+		*/
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* getDataObjectByUuidAndVersion(const std::array<uint8_t, 16> & uuid, const std::string & version) const;
+
+		/**
 		 * Gets a data object from the repository by means of both its uuid and version and try to
 		 * cast it to @p valueType. @p valueType must be a child of {@link AbstractObject}
 		 *
@@ -596,6 +649,11 @@ namespace COMMON_NS
 		}
 
 		/**
+		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title + a content type + a version
+		*/
+		COMMON_NS::AbstractObject* createPartial(const std::string & uuid, const std::string & title, const std::string & contentType, const std::string & version = "");
+
+		/**
 		 * Creates a partial object in this repository based on a data object reference.
 		 *
 		 * @exception	std::invalid_argument	If no partial object can be created from @p dor.
@@ -623,7 +681,9 @@ namespace COMMON_NS
 		template <class valueType>
 		valueType* createPartial(const std::string & guid, const std::string & title, const std::string & version = "")
 		{
-			valueType* result = new valueType(createDor(guid, title, version));
+			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(guid, title, version);
+			valueType* result = new valueType(dor);
+			dor->ContentType = result->getContentType();
 			addOrReplaceDataObject(result);
 			return result;
 		}
@@ -671,7 +731,6 @@ namespace COMMON_NS
 		 * @returns	A pointer to an instantiated HDF5 file proxy.
 		 */
 		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractHdfProxy* createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess);
-
 
 		//************ CRS *******************
 
@@ -2816,7 +2875,37 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT EML2_NS::Activity* createActivity(EML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title);
 
 		//*************** WITSML *************
+/*
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ToolErrorModel* createToolErrorModel(
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_2::witsml2__MisalignmentMode misalignmentMode);
 
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ToolErrorModelDictionary* createToolErrorModelDictionary(
+			const std::string & guid,
+			const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ErrorTerm* createErrorTerm(
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_2::witsml2__ErrorPropagationMode propagationMode,
+			WITSML2_1_NS::WeightingFunction* weightingFunction);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ErrorTermDictionary* createErrorTermDictionary(
+			const std::string & guid,
+			const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::WeightingFunction* createWeightingFunction(
+			const std::string & guid,
+			const std::string & title,
+			const std::string & depthFormula,
+			const std::string & inclinationFormula,
+			const std::string & azimuthFormula);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::WeightingFunctionDictionary* createWeightingFunctionDictionary(
+			const std::string & guid,
+			const std::string & title);
+*/
 		/**
 		 * Creates a well into this repository
 		 *
@@ -3115,7 +3204,7 @@ namespace COMMON_NS
 		 * @returns	The property kind mapper, or @c nullptr if no property kind mapper was given at
 		 * 			repository construction time.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKindMapper* getPropertyKindMapper() const { return propertyKindMapper; }
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKindMapper* getPropertyKindMapper() const { return propertyKindMapper.get(); }
 
 		//*************** WARNINGS *************
 		
@@ -3136,6 +3225,19 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT const std::vector<std::string> & getWarnings() const;
 
+		//*********** TRANSACTION ***********
+
+		/**
+		* Creates a transaction.
+		* The transactionis actually a child dataobject repository which will be merged into this master dataobject repository.
+		*/
+		DataObjectRepository* newTransactionRepo();
+
+		/**
+		* Commit a transaction into this master repository.
+		*/
+		void commitTransactionRepo(DataObjectRepository* transactionRepo);
+
 	private:
 
 		/**
@@ -3154,17 +3256,26 @@ namespace COMMON_NS
 
 		std::vector<std::string> warnings;
 
-		RESQML2_0_1_NS::PropertyKindMapper* propertyKindMapper;
+		std::unique_ptr<RESQML2_0_1_NS::PropertyKindMapper> propertyKindMapper;
 
 		EML2_NS::AbstractHdfProxy* defaultHdfProxy;
 		RESQML2_NS::AbstractLocal3dCrs* defaultCrs;
 
-		COMMON_NS::HdfProxyFactory* hdfProxyFactory;
+		std::vector<COMMON_NS::DataFeeder*> dataFeeders;
+
+		std::unique_ptr<COMMON_NS::HdfProxyFactory> hdfProxyFactory;
 
 		EnergisticsStandard defaultEmlVersion;
 		EnergisticsStandard defaultProdmlVersion;
 		EnergisticsStandard defaultResqmlVersion;
 		EnergisticsStandard defaultWitsmlVersion;
+
+		std::vector< std::tuple<std::chrono::time_point<std::chrono::system_clock>, DataObjectReference, CUD> > journal;
+
+		/**
+		* Necessary to avoid a dependency on GuidTools.h
+		*/
+		std::string generateRandomUuidAsString() const;
 
 		/**
 		* Set the stream of the curent gsoap context.
@@ -3177,6 +3288,7 @@ namespace COMMON_NS
 		* It does not work for EpcExternalPartReference content type since this type is related to an external file which must be handled differently.
 		*/
 		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
+
 		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
 		COMMON_NS::AbstractObject* getEml2_1WrapperFromGsoapContext(const std::string & datatype);
 		COMMON_NS::AbstractObject* getEml2_3WrapperFromGsoapContext(const std::string & datatype);
@@ -3208,5 +3320,7 @@ namespace COMMON_NS
 		}
 
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__DataObjectReference* createDor(const std::string & guid, const std::string & title, const std::string & version);
+
+		void replaceDataObjectInRels(COMMON_NS::AbstractObject* dataObjToReplace, COMMON_NS::AbstractObject* newDataObj);
 	};
 }

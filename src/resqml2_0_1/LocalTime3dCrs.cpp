@@ -24,6 +24,8 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* LocalTime3dCrs::XML_NS = "resqml20";
+
 void LocalTime3dCrs::init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,

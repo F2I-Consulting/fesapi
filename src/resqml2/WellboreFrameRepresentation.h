@@ -198,26 +198,26 @@ namespace RESQML2_NS
 		WellboreFrameRepresentation() {}
 
 		/**
-			* Only to be used in partial transfer context
-			*
-			* @param [in,out]	partialObject	If non-null, the partial object.
-			*/
+		* Only to be used in partial transfer context
+		*
+		* @param [in,out]	partialObject	If non-null, the partial object.
+		*/
 		WellboreFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			RESQML2_NS::AbstractRepresentation(partialObject) {}
 
 		/**
-			* Creates an instance of this class by wrapping a gsoap instance.
-			*
-			* @param [in,out]	fromGsoap	If non-null, from gsoap.
-			*/
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*
+		* @param [in,out]	fromGsoap	If non-null, from gsoap.
+		*/
 		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreFrameRepresentation* fromGsoap) :
 			AbstractRepresentation(fromGsoap) {}
 
 		/**
-			* Creates an instance of this class by wrapping a gsoap instance.
-			*
-			* @param [in,out]	fromGsoap	If non-null, from gsoap.
-			*/
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*
+		* @param [in,out]	fromGsoap	If non-null, from gsoap.
+		*/
 		WellboreFrameRepresentation(gsoap_eml2_3::resqml22__WellboreFrameRepresentation* fromGsoap) :
 			AbstractRepresentation(fromGsoap) {}
 

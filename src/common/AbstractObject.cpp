@@ -59,6 +59,15 @@ void AbstractObject::cannotBePartial() const
 	}
 }
 
+bool AbstractObject::isPartial() const {
+	return partialObject != nullptr
+		&& gsoapProxy2_0_1 == nullptr && gsoapProxy2_1 == nullptr
+#if WITH_RESQML2_2
+		&& gsoapProxy2_2 == nullptr
+#endif
+		;
+}
+
 void AbstractObject::changeToPartialObject()
 {
 	cannotBePartial();
@@ -85,7 +94,7 @@ soap* AbstractObject::getGsoapContext() const
 	else if (gsoapProxy2_3 != nullptr) {
 		 return gsoapProxy2_3->soap;
 	}
-	else if (partialObject != nullptr) {
+	else if (isPartial()) {
 		return partialObject->soap;
 	}
 	else {
@@ -125,7 +134,7 @@ string AbstractObject::getUuid() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return gsoapProxy2_3->uuid;
 	}
-	else if (partialObject != nullptr) { // partial transfer
+	else if (isPartial()) { // partial transfer
 		return partialObject->UUID;
 	}
 
@@ -144,7 +153,7 @@ string AbstractObject::getTitle() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return gsoapProxy2_3->Citation->Title;
 	}
-	else if (partialObject != nullptr) { // partial transfer
+	else if (isPartial()) { // partial transfer
 		return partialObject->Title;
 	}
 
@@ -153,7 +162,7 @@ string AbstractObject::getTitle() const
 
 string AbstractObject::getEditor() const
 {
-	if (partialObject != nullptr)
+	if (isPartial())
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (gsoapProxy2_0_1 != nullptr && gsoapProxy2_0_1->Citation->Editor)
@@ -176,7 +185,7 @@ time_t AbstractObject::getCreation() const
 
 tm AbstractObject::getCreationAsTimeStructure() const
 {
-	if (partialObject != nullptr)
+	if (isPartial())
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (gsoapProxy2_0_1 != nullptr)
@@ -193,7 +202,7 @@ tm AbstractObject::getCreationAsTimeStructure() const
 
 string AbstractObject::getOriginator() const
 {
-	if (partialObject != nullptr)
+	if (isPartial())
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (gsoapProxy2_0_1 != nullptr)
@@ -210,7 +219,7 @@ string AbstractObject::getOriginator() const
 
 string AbstractObject::getDescription() const
 {
-	if (partialObject != nullptr)
+	if (isPartial())
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (gsoapProxy2_0_1 != nullptr && gsoapProxy2_0_1->Citation->Description)
@@ -228,7 +237,7 @@ string AbstractObject::getDescription() const
 time_t AbstractObject::getLastUpdate() const
 {
 	tm result = getLastUpdateAsTimeStructure();
-
+	
 	if (result.tm_mday == 0) {
 		return -1;
 	}
@@ -238,8 +247,9 @@ time_t AbstractObject::getLastUpdate() const
 
 tm AbstractObject::getLastUpdateAsTimeStructure() const
 {
-	if (partialObject != nullptr)
-		throw invalid_argument("The wrapped gsoap proxy must not be null");
+	if (isPartial()) {
+		throw invalid_argument("Cannot get the last update of a partial object.");
+	}
 
 	if (gsoapProxy2_0_1 != nullptr && gsoapProxy2_0_1->Citation->LastUpdate)
 		return *gsoapProxy2_0_1->Citation->LastUpdate;
@@ -266,7 +276,7 @@ tm AbstractObject::getLastUpdateAsTimeStructure() const
 
 string AbstractObject::getFormat() const
 {
-	if (partialObject != nullptr)
+	if (isPartial())
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (gsoapProxy2_0_1 != nullptr)
@@ -283,7 +293,7 @@ string AbstractObject::getFormat() const
 
 string AbstractObject::getDescriptiveKeywords() const
 {
-	if (partialObject != nullptr)
+	if (isPartial())
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (gsoapProxy2_0_1 != nullptr && gsoapProxy2_0_1->Citation->DescriptiveKeywords)
@@ -321,7 +331,7 @@ std::string AbstractObject::getVersion() const
 
 void AbstractObject::setUuid(const std::string & uuid)
 {
-	if (partialObject != nullptr) {
+	if (isPartial()) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 	}
 
@@ -353,7 +363,7 @@ void AbstractObject::setUuid(const std::string & uuid)
 
 void AbstractObject::setTitle(const std::string & title)
 {
-	if (partialObject != nullptr) {
+	if (isPartial()) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 	}
 	if (title.size() > 256) {
@@ -376,7 +386,7 @@ void AbstractObject::setTitle(const std::string & title)
 
 void AbstractObject::setEditor(const std::string & editor)
 {
-	if (partialObject != nullptr) {
+	if (isPartial()) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 	}
 	if (editor.size() > 64) {
@@ -421,7 +431,7 @@ void AbstractObject::setCreation(time_t creation)
 
 void AbstractObject::setCreation(const tm & creation)
 {
-	if (partialObject != nullptr)
+	if (isPartial())
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -440,7 +450,7 @@ void AbstractObject::setCreation(const tm & creation)
 
 void AbstractObject::setOriginator(const std::string & originator)
 {
-	if (partialObject != nullptr) {
+	if (isPartial()){
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 	}
 	if (originator.size() > 64) {
@@ -479,7 +489,7 @@ void AbstractObject::setOriginator(const std::string & originator)
 
 void AbstractObject::setDescription(const std::string & description)
 {
-	if (partialObject != nullptr) {
+	if (isPartial()) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 	}
 
@@ -522,7 +532,7 @@ void AbstractObject::setDescription(const std::string & description)
 
 void AbstractObject::setLastUpdate(time_t lastUpdate)
 {
-	if (partialObject != nullptr)
+	if (isPartial())
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (lastUpdate > 0) {
@@ -532,7 +542,7 @@ void AbstractObject::setLastUpdate(time_t lastUpdate)
 
 void AbstractObject::setLastUpdate(const tm & lastUpdate)
 {
-	if (partialObject != nullptr)
+	if (isPartial())
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -580,7 +590,7 @@ void AbstractObject::setFormat(const std::string & vendor, const std::string & a
 
 void AbstractObject::setDescriptiveKeywords(const std::string & descriptiveKeywords)
 {
-	if (partialObject != nullptr) {
+	if (isPartial()) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 	}
 
@@ -650,7 +660,7 @@ void AbstractObject::setVersion(const std::string & version)
 			gsoapProxy2_3->objectVersion = gsoap_eml2_3::soap_new_std__string(gsoapProxy2_3->soap);
 		gsoapProxy2_3->objectVersion->assign(version);
 	}
-	else if (partialObject != nullptr) {
+	else if (isPartial()) {
 		if (partialObject->VersionString == nullptr)
 			partialObject->VersionString = gsoap_resqml2_0_1::soap_new_std__string(partialObject->soap);
 		partialObject->VersionString->assign(version);
@@ -659,7 +669,7 @@ void AbstractObject::setVersion(const std::string & version)
 
 void AbstractObject::initMandatoryMetadata()
 {
-	if (partialObject != nullptr)
+	if (isPartial())
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -693,7 +703,7 @@ void AbstractObject::setMetadata(const std::string & guid, const std::string & t
 void AbstractObject::setMetadata(const std::string & title, const std::string & editor, time_t creation, const std::string & originator,
 	const std::string & description, time_t lastUpdate, const std::string & descriptiveKeywords)
 {
-	if (partialObject != nullptr)
+	if (isPartial())
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	setTitle(title);
@@ -718,15 +728,11 @@ void AbstractObject::setMetadata(const std::string & title, const std::string & 
 
 void AbstractObject::serializeIntoStream(ostream * stream)
 {
-	if (partialObject != nullptr) {
-		throw invalid_argument("The wrapped gsoap proxy must not be null");
-	}
-
 	if (stream == nullptr) {
 		throw invalid_argument("The stream where the entity will be stored cannot be null.");
 	}
 
-	string xmlTagIncludingNamespace = getXmlNamespace() + ":"+ getXmlTag();
+	string xmlTagIncludingNamespace = getXmlNamespace() + ":" + getXmlTag();
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoapProxy2_0_1->soap->os = stream;
@@ -756,14 +762,9 @@ void AbstractObject::serializeIntoStream(ostream * stream)
 			gsoapProxy2_3->soap_put(gsoapProxy2_3->soap, xmlTagIncludingNamespace.c_str(), nullptr) ||
 			soap_end_send(gsoapProxy2_3->soap));
 	}
-}
-
-gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* AbstractObject::getGsoapProxy() const {
-	return gsoapProxy2_0_1;
-}
-
-void AbstractObject::setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy) {
-	gsoapProxy2_0_1 = gsoapProxy;
+	else {
+		throw invalid_argument("Cannot serialize a partial object.");
+	}
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractObject::newResqmlReference() const
@@ -831,7 +832,7 @@ gsoap_eml2_3::eml23__DataObjectReference* AbstractObject::newEml23Reference() co
 
 gsoap_resqml2_0_1::resqml20__ContactElementReference* AbstractObject::newContactElementReference2_0_1() const
 {
-	if (partialObject != nullptr) {
+	if (isPartial()) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 	}
 
@@ -867,27 +868,6 @@ gsoap_eml2_3::resqml22__ContactElement* AbstractObject::newContactElementReferen
 	return result;
 }
 
-std::string AbstractObject::getXmlNamespace() const
-{
-	if (gsoapProxy2_0_1 != nullptr && gsoapProxy2_1 == nullptr && gsoapProxy2_2 == nullptr && gsoapProxy2_3 == nullptr) {
-		return "resqml20"; // or eml20
-	}
-	else if (gsoapProxy2_0_1 == nullptr && gsoapProxy2_1 != nullptr && gsoapProxy2_2 == nullptr && gsoapProxy2_3 == nullptr) {
-		return "witsml20"; // or eml21
-	}
-	else if (gsoapProxy2_0_1 == nullptr && gsoapProxy2_1 == nullptr && gsoapProxy2_2 != nullptr && gsoapProxy2_3 == nullptr) {
-		return "prodml21"; // or eml22 or witsml21
-	}
-	else if (gsoapProxy2_0_1 == nullptr && gsoapProxy2_1 == nullptr && gsoapProxy2_2 == nullptr && gsoapProxy2_3 != nullptr) {
-		return "resqml22"; // or eml23
-	}
-	else if (partialObject != nullptr) {
-		return "resqml20"; // by default...
-	}
-
-	throw logic_error("There is no associated gsoap proxy.");
-}
-
 std::string AbstractObject::getXmlNamespaceVersion() const
 {
 	const std::string & xmlNs = getXmlNamespace();
@@ -904,6 +884,12 @@ string AbstractObject::getContentType() const
 {
 	const std::string & xmlNs = getXmlNamespace();
 	return "application/x-" + xmlNs.substr(0, xmlNs.size()-2) + "+xml;version=" + getXmlNamespaceVersion() + ";type=" + (xmlNs == "resqml20" || xmlNs == "eml20" ? "obj_" + getXmlTag() : getXmlTag());
+}
+
+string AbstractObject::getQualifiedType() const
+{
+	const std::string & xmlNs = getXmlNamespace();
+	return getXmlNamespace() + "." + (xmlNs == "resqml20" || xmlNs == "eml20" ? "obj_" + getXmlTag() : getXmlTag());
 }
 
 std::string AbstractObject::getPartNameInEpcDocument() const
@@ -924,7 +910,7 @@ string AbstractObject::serializeIntoString()
 
 void AbstractObject::addAlias(const std::string & authority, const std::string & title)
 {
-	if (partialObject != nullptr) {
+	if (isPartial()) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 	}
 	if (authority.size() > 64) {
@@ -963,7 +949,7 @@ void AbstractObject::addAlias(const std::string & authority, const std::string &
 
 unsigned int AbstractObject::getAliasCount() const
 {
-	if (partialObject != nullptr)
+	if (isPartial())
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	size_t count = 0;
@@ -990,7 +976,7 @@ unsigned int AbstractObject::getAliasCount() const
 
 std::string AbstractObject::getAliasAuthorityAtIndex(unsigned int index) const
 {
-	if (partialObject != nullptr)
+	if (isPartial())
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (getAliasCount() <= index) {
@@ -1015,7 +1001,7 @@ std::string AbstractObject::getAliasAuthorityAtIndex(unsigned int index) const
 
 std::string AbstractObject::getAliasTitleAtIndex(unsigned int index) const
 {
-	if (partialObject != nullptr)
+	if (isPartial())
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (getAliasCount() <= index)
@@ -1055,7 +1041,7 @@ unsigned int AbstractObject::getActivityCount() const
 
 EML2_NS::Activity * AbstractObject::getActivity(unsigned int index) const
 {
-	if (partialObject != nullptr) {
+	if (isPartial()) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 	}
 

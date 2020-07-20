@@ -33,6 +33,8 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
+const char* ContinuousProperty::XML_NS = "resqml22";
+
 void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind)
 {

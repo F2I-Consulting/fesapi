@@ -97,7 +97,26 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT unsigned int getContactPatchNodeCount(unsigned int contactIdx, unsigned int cpIndex) const final;
 
+		/**
+		* Get the node indices of a particular contact patch.
+		* The returned indices are associated to the node array of the representation of the particular contact patch (see getRepresentationOfContactPatch()).
+		*
+		* @param contactIdx		The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.
+		* @param cpIndex		The index of the contact patch in the contact. It must be in the interval [0..getContactPatchCount()[.
+		* @param nodeIndices	This array must be preallocated with getNodeCountOfContactPatch(). It won't be deleted by fesapi.
+		*						It will be filled in with the desired node indices.
+		*/
 		DLL_IMPORT_OR_EXPORT void getContactPatchNodeIndices(unsigned int contactIdx, unsigned int cpIndex, unsigned int * nodeIndices) const final;
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
 	private:
 

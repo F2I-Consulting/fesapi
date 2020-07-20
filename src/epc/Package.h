@@ -89,6 +89,11 @@ namespace epc
 		void openForWriting(const std::string & pkgPathName, int append, bool useZip64 = false);
 
 		/**
+		* Check if the package is already opened for writing.
+		*/
+		bool isOpenedForWriting() const;
+
+		/**
 		 * Open the package for reading purpose
 		 *
 		 * @param 	pkgPathName	Full pathname of the package file.
@@ -96,6 +101,11 @@ namespace epc
 		 * @returns	empty vector if nothing went wrong. Otherwise, return warnings.
 		 */
 		std::vector<std::string> openForReading(const std::string & pkgPathName);
+
+		/**
+		* Check if the package is already opened for reading.
+		*/
+		bool isOpenedForReading() const;
 
 		/** Close the package */
 		void close();

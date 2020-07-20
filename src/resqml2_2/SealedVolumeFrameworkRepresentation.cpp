@@ -28,6 +28,8 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
+const char* SealedVolumeFrameworkRepresentation::XML_NS = "resqml22";
+
 SealedVolumeFrameworkRepresentation::SealedVolumeFrameworkRepresentation(RESQML2_NS::StratigraphicColumnRankInterpretation* interp,
 	const std::string & guid,
 	const std::string & title,

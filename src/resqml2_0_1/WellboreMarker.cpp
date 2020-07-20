@@ -27,6 +27,8 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* WellboreMarker::XML_NS = "resqml20";
+
 WellboreMarker::WellboreMarker(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title)
 {
 	if (wellboreMarkerFrame == nullptr) {

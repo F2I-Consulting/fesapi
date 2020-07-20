@@ -3,51 +3,76 @@ language: cpp
 jobs:
     include:
         - os: linux
-          name: "FesapiCpp with dynamic HDF5 (clang 5.0.0), unit test and RESQML2.2"
+          name: "FesapiCpp Debug with dynamic HDF5 (clang 5.0.0), RESQML2.2 and valgrind"
           dist: trusty
           compiler: clang
           script:
             - mkdir ../build
             - cd ../build
             - cmake $TRAVIS_BUILD_DIR
+                -DCMAKE_BUILD_TYPE=Debug
                 -DUUID_INCLUDE_DIR=/usr/include
                 -DUUID_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libuuid.so
                 -DHDF5_C_INCLUDE_DIR=/usr/include
                 -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libhdf5.so
-                -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.1-linux-ubuntu1604-x86_64-gcc540/include
-                -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.1-linux-ubuntu1604-x86_64-gcc540/lib/libminizip.a
+                -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/Minizip/build/install/include
+                -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/Minizip/build/install/lib/libminizip.a
+                -DZLIB_INCLUDE_DIR=/usr/include
+                -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
+                -DWITH_EXAMPLE=TRUE
+                -DWITH_RESQML2_2=TRUE
+            - cmake --build . -- -j 2
+            - valgrind --leak-check=full --show-leak-kinds=all ./example/exampled
+            
+        - os: linux
+          name: "FesapiCpp Release with dynamic HDF5 (clang 5.0.0), unit test and RESQML2.2"
+          dist: trusty
+          compiler: clang
+          script:
+            - mkdir ../build
+            - cd ../build
+            - cmake $TRAVIS_BUILD_DIR
+                -DCMAKE_BUILD_TYPE=Release
+                -DUUID_INCLUDE_DIR=/usr/include
+                -DUUID_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libuuid.so
+                -DHDF5_C_INCLUDE_DIR=/usr/include
+                -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libhdf5.so
+                -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/Minizip/build/install/include
+                -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/Minizip/build/install/lib/libminizip.a
                 -DZLIB_INCLUDE_DIR=/usr/include
                 -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
                 -DWITH_EXAMPLE=TRUE
                 -DWITH_RESQML2_2=TRUE
                 -DWITH_TEST=TRUE
             - cmake --build . -- -j 2
-            - ./example/example
+            - valgrind --leak-check=full --show-leak-kinds=all ./example/example
             - ctest -V
 addons:
   apt:
     packages:
       - uuid-dev
-      - zlib1g-dev
       - libhdf5-dev #1.8.11
+      - valgrind
 
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      sudo apt-get purge cmake;
-      sudo apt-get purge swig;
-    fi
+  - sudo apt-get purge cmake;
+  - sudo apt-get purge swig;
   - sudo rm -rf /usr/local/cmake-*
   - mkdir ../dependencies
   - cd ../dependencies
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      wget https://github.com/F2I-Consulting/Minizip/releases/download/1.1/minizip-1.1-linux-ubuntu1604-x86_64-gcc540.tar.gz;
-      tar -xzf minizip-1.1-linux-ubuntu1604-x86_64-gcc540.tar.gz;
-      wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.sh;
-      sudo sh cmake-3.12.0-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir;
-      wget http://prdownloads.sourceforge.net/swig/swig-4.0.1.tar.gz;
-      tar -xzf swig-4.0.1.tar.gz;
-      cd swig-4.0.1;
-      ./configure;
-      make;
-      sudo make install;
-    fi
+  - wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.sh;
+  - sudo sh cmake-3.12.0-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir;
+  - git clone https://github.com/F2I-Consulting/Minizip.git
+  - cd Minizip
+  - mkdir build
+  - cd build
+  - cmake -G "Unix Makefiles" ..
+  - cmake --build . --config Release
+  - make install
+  - cd ../..
+  - wget http://prdownloads.sourceforge.net/swig/swig-4.0.2.tar.gz;
+  - tar -xzf swig-4.0.2.tar.gz;
+  - cd swig-4.0.2;
+  - ./configure;
+  - make;
+  - sudo make install;

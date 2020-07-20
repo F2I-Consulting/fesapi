@@ -31,7 +31,10 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* EarthModelInterpretation::XML_NS = "resqml20";
+
 EarthModelInterpretation::EarthModelInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const string & title)
+
 {
 	if (orgFeat == nullptr) {
 		throw invalid_argument("The interpreted organization feature cannot be nullptr.");

@@ -31,6 +31,8 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* CommentProperty::XML_NS = "resqml20";
+
 CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, resqml20__ResqmlPropertyKind energisticsPropertyKind)
 {

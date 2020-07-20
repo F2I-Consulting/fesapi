@@ -65,6 +65,7 @@ under the License.
 #include "../src/resqml2_0_1/RepresentationSetRepresentation.h"
 #include "../src/resqml2_0_1/NonSealedSurfaceFrameworkRepresentation.h"
 #include "../src/resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
+#include "../src/resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
 
 #include "../src/resqml2_0_1/IjkGridExplicitRepresentation.h"
 #include "../src/resqml2_0_1/IjkGridParametricRepresentation.h"
@@ -377,6 +378,7 @@ namespace RESQML2_0_1_NS
 	%nspace RESQML2_0_1_NS::RockFluidUnitInterpretation;
 	%nspace RESQML2_0_1_NS::RockFluidOrganizationInterpretation;
 	%nspace RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation;
+	%nspace RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation;
 	%nspace RESQML2_0_1_NS::SeismicLatticeFeature;
 	%nspace RESQML2_0_1_NS::SeismicLineFeature;
 	%nspace RESQML2_0_1_NS::SeismicLineSetFeature;
@@ -822,6 +824,14 @@ namespace RESQML2_0_1_NS
 	%rename(SealedSurfaceFrameworkRepresentation_resqml20) SealedSurfaceFrameworkRepresentation;
 #endif
 	class SealedSurfaceFrameworkRepresentation : public RESQML2_NS::SealedSurfaceFrameworkRepresentation
+	{
+	public:
+	};
+	
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(SealedVolumeFrameworkRepresentation_resqml20) SealedVolumeFrameworkRepresentation;
+#endif
+	class SealedVolumeFrameworkRepresentation : public RESQML2_NS::SealedVolumeFrameworkRepresentation
 	{
 	public:
 	};
