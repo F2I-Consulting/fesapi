@@ -367,9 +367,9 @@ namespace PRODML2_1_NS
 		/**
 		 * Pushes a back model
 		 *
-		 * @param 	uid	The UID.
+		 * @param 	uid	The UID. If empty, it will be set to its index in this Fluid Characterization
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackModel(const std::string & uid);
+		DLL_IMPORT_OR_EXPORT void pushBackModel(const std::string & uid = "");
 
 		/**
 		 * Gets model specification
@@ -389,12 +389,126 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	Null if it fails, else a pointer to a PvtSpecification.
 		 */
-		DLL_IMPORT_OR_EXPORT PvtSpecification* setModelSpecification(unsigned int modelIndex, ModelSpecification kind);
+		DLL_IMPORT_OR_EXPORT PvtSpecification* initModelSpecification(unsigned int modelIndex, ModelSpecification kind);
 
 		GETTER_SETTER_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_2::prodml21__FluidCharacterization, gsoapProxy2_2, FluidCharacterizationModel, Name, std::string)
 		GETTER_SETTER_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_2::prodml21__FluidCharacterization, gsoapProxy2_2, FluidCharacterizationModel, Remark, std::string)
 		GETTER_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_2::prodml21__FluidCharacterization, gsoapProxy2_2, FluidCharacterizationModel, ReferenceTemperature, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom)
 		GETTER_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_2::prodml21__FluidCharacterization, gsoapProxy2_2, FluidCharacterizationModel, ReferenceStockTankTemperature, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom)
+
+		/**
+		 * Gets the table format count
+		 *
+		 * @returns	The table format count.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getTableFormatCount() const;
+
+		/**
+		* Pushes a table format
+		*
+		* @param 	uid	The UID. If empty, it will be set to its index in this Fluid Characterization
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackTableFormat(const std::string & uid = "");
+
+		/**
+		 * Gets the uom of a table format column
+		 *
+		 * @param	tableFormatUid	The uid of the table format.
+		 * @param	columnIndex		The zero-based index of the column.
+		 * @returns	The uom of a table format column
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getTableFormatColumnUom(const std::string & tableFormatUid, unsigned int columnIndex) const;
+
+		/**
+		 * Gets the property kind of a table format column
+		 *
+		 * @param	tableFormatUid	The uid of the table format.
+		 * @param	columnIndex		The zero-based index of the column.
+		 * @returns	The property kind of a table format column
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getTableFormatColumnProperty(const std::string & tableFormatUid, unsigned int columnIndex) const;
+
+		/**
+		* Pushes a table format colum
+		*
+		* @param	tableFormatIndex	Zero-based index of the table format.
+		* @param 	uom					The uom associated to the values of this column
+		* @param	fluidProperty		The property that this column contains
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackTableFormatColumn(unsigned int tableFormatIndex, const std::string & uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty);
+
+		/**
+		* Pushes a table format colum
+		*
+		* @param	tableFormatIndex	Zero-based index of the table format.
+		* @param 	uom					The uom associated to the values of this column
+		* @param	fluidProperty		The non standard property name that this column contains
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackTableFormatColumn(unsigned int tableFormatIndex, const std::string & uom, const std::string & fluidProperty);
+
+		/**
+		 * Gets the table count
+		 *
+		 * @param	modelIndex		Zero-based index of the model in this fluid characterization.
+		 * @returns	The table count.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getTableCount(unsigned int modelIndex) const;
+
+		/**
+		 * Gets the name of a table.
+		 *
+		 * @param	modelIndex		Zero-based index of the model in this fluid characterization.
+		 * @param 	tableIndex		Zero-based index of the table in a model of this fluid characterization.
+		 * @returns	The name of a table.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getTableName(unsigned int modelIndex, unsigned int tableIndex) const;
+
+		/**
+		 * Gets the uid of the table format of a table.
+		 *
+		 * @param	modelIndex		Zero-based index of the model in this fluid characterization.
+		 * @param 	tableIndex		Zero-based index of the table in a model of this fluid characterization.
+		 * @returns	The uid of the table format of a table.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getTableFormatUid(unsigned int modelIndex, unsigned int tableIndex) const;
+
+		/**
+		* Pushes back a table
+		*
+		* @param	modelIndex		Zero-based index of the model.
+		* @param 	name			The name of this table.
+		* @param 	tableFormatUid	The UID of the table format this table is using.The table format defines the semantic of the colums and values.
+		* @param 	uid				The UID of this table. If empty, it will be set to its index in this Fluid Characterization
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackTable(unsigned int modelIndex, const std::string & name, const std::string & tableFormatUid, const std::string & uid = "");
+
+		/**
+		 * Gets the table row count
+		 *
+		 * @param	modelIndex		Zero-based index of the model in this fluid characterization.
+		 * @param 	tableIndex		Zero-based index of the table in a model of this fluid characterization.
+		 * @returns	The table row count.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getTableRowCount(unsigned int modelIndex, unsigned int tableIndex) const;
+
+		/**
+		 * Gets the content of a row of a table.
+		 *
+		 * @param	modelIndex		Zero-based index of the model in this fluid characterization.
+		 * @param 	tableIndex		Zero-based index of the table in a model of this fluid characterization.
+		 * @param 	rowIndex		Zero-based index of the row of the table in a model of this fluid characterization.
+		 * @returns	The content of a row of a table.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getTableRowContent(unsigned int modelIndex, unsigned int tableIndex, unsigned int rowIndex) const;
+
+		/**
+		* Pushes back a row in a table of a model
+		*
+		* @param	modelIndex		Zero-based index of the model in this fluid characterization.
+		* @param 	tableIndex		Zero-based index of the table in a model of this fluid characterization.
+		* @param 	rowContent		The string containing the content of the row in the table.
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackTableRow(unsigned int modelIndex, unsigned int tableIndex, const std::string & rowContent);
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.
@@ -408,7 +522,7 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The XML tag.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 		/**
 		* The standard XML namespace for serializing this data object.
@@ -421,7 +535,7 @@ namespace PRODML2_1_NS
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 
 	private:
 		/** The model specifications */

@@ -217,6 +217,19 @@ namespace COMMON_NS
 #define SWIG_FILE_WITH_INIT // In case we use Python Swig Wrapping
 %}
 
+#define CHECKER_PRESENCE_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName) bool has##vectorName##attributeName(unsigned int index) const;
+
+#define GETTER_SETTER_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName, attributeDatatype)\
+	void set##vectorName##attributeName(unsigned int index, const attributeDatatype& value);\
+	attributeDatatype get##vectorName##attributeName(unsigned int index) const;\
+	CHECKER_PRESENCE_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName)
+	
+#define GETTER_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName, uomDatatype)\
+	void set##vectorName##attributeName(unsigned int index, double value, uomDatatype uom);\
+	double get##vectorName##attributeName##Value(unsigned int index) const;\
+	uomDatatype get##vectorName##attributeName##Uom(unsigned int index) const;\
+	CHECKER_PRESENCE_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName)
+
 %include "swigEml2Include.i"
 %include "swigEml2_0Include.i"
 %include "swigEml2_1Include.i"
@@ -229,6 +242,7 @@ namespace COMMON_NS
 %include "swigResqml2_2Include.i"
 #endif
 %include "swigWitsml2_0Include.i"
+%include "swigProdml2_1Include.i"
 #ifdef WITH_ETP
 %include "swigEtp1_2Include.i"
 #endif
@@ -352,6 +366,10 @@ namespace COMMON_NS
 		%template(getLogs) getDataObjects<WITSML2_0_NS::Log>;
 		%template(getChannelSets) getDataObjects<WITSML2_0_NS::ChannelSet>;
 		%template(getChannels) getDataObjects<WITSML2_0_NS::Channel>;
+		
+		%template(getFluidSystems) getDataObjects<PRODML2_1_NS::FluidSystem>;
+		%template(getFluidCharacterizations) getDataObjects<PRODML2_1_NS::FluidCharacterization>;
+		
 #ifdef WITH_RESQML2_2
 		%template(getGraphicalInformationSets) getDataObjects<EML2_3_NS::GraphicalInformationSet>;
 #endif
@@ -755,6 +773,17 @@ namespace COMMON_NS
 			const std::string & guid, const std::string & title,
 			const std::string & mnemonic, gsoap_eml2_1::eml21__UnitOfMeasure uom, gsoap_eml2_1::witsml20__EtpDataType dataType, gsoap_eml2_1::witsml20__ChannelStatus growingStatus,
 			const std::string & timeDepth, const std::string & loggingCompanyName);
+			
+		//*************** PRODML *************/	
+		
+		PRODML2_1_NS::FluidSystem* createFluidSystem(const std::string & guid,
+			const std::string & title,
+			double temperatureValue, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom temperatureUom,
+			double pressureValue, gsoap_eml2_2::eml22__PressureUom pressureUom,
+			gsoap_eml2_2::prodml21__ReservoirFluidKind reservoirFluidKind,
+			double gasOilRatio, gsoap_eml2_2::eml22__VolumePerVolumeUom gasOilRatioUom);
+			
+		PRODML2_1_NS::FluidCharacterization* createFluidCharacterization(const std::string & guid, const std::string & title);
 
 #ifdef WITH_RESQML2_2
 		//************************************/
