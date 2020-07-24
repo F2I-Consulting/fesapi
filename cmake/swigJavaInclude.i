@@ -43,6 +43,8 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		EPCEXTERNALPARTREFERENCE,
 		FAULTINTERPRETATION,
 		FLUIDBOUNDARYFEATURE,
+		FLUIDCHARACTERIZATION,
+		FLUIDSYSTEM,
 		FRONTIERFEATURE,
 		GENERICFEATUREINTERPRETATION,
 		GENETICBOUNDARYFEATURE,
@@ -912,6 +914,8 @@ ${COMMENT_END}
 		case EPCEXTERNALPARTREFERENCE : return eml2_instantiateEpcExternalPartReference(cPtr, owner);
 		case FAULTINTERPRETATION : return resqml2_instantiateFaultInterpretation(cPtr, owner);
 		case FLUIDBOUNDARYFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.FluidBoundaryFeature_resqml20(cPtr, owner);
+		case FLUIDCHARACTERIZATION : return new com.f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.FluidCharacterization(cPtr, owner);
+		case FLUIDSYSTEM : return new com.f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.FluidSystem(cPtr, owner);
 		case FRONTIERFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.FrontierFeature_resqml20(cPtr, owner);
 		case GENETICBOUNDARYFEATURE :
 			com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeneticBoundaryFeature_resqml20 result = new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeneticBoundaryFeature_resqml20(cPtr, owner);

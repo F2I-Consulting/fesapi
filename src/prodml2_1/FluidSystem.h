@@ -71,6 +71,16 @@ namespace PRODML2_1_NS
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~FluidSystem() {}
+		
+		/**
+		* Get the kind of reservoir hydrocarbon fluid, in broad terms, by its phase behavior. 
+		*/
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::prodml21__ReservoirFluidKind getReservoirFluidKind() const {
+			if (isPartial()) {
+				throw std::logic_error("Cannot get the Reservoir fluid kind of a partial Fluid System.");
+			}
+			return static_cast<gsoap_eml2_2::prodml21__FluidSystem*>(gsoapProxy2_2)->ReservoirFluidKind;
+		}
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

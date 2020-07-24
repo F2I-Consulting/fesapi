@@ -1975,7 +1975,7 @@ void serializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
 	fluidCharac->setFluidCharacterizationModelName(0, "F2I Good Oil No. 4 EOS Demonstration");
 	fluidCharac->setFluidCharacterizationModelReferenceTemperature(0, 60, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom__degF);
 
-	PRODML2_1_NS::PvtSpecification* spec = fluidCharac->setModelSpecification(0, PRODML2_1_NS::FluidCharacterization::SrkEos);
+	PRODML2_1_NS::PvtSpecification* spec = fluidCharac->initModelSpecification(0, PRODML2_1_NS::FluidCharacterization::SrkEos);
 	PRODML2_1_NS::CompositionalSpecification* srkEosSpec = dynamic_cast<PRODML2_1_NS::CompositionalSpecification*>(spec);
 	srkEosSpec->pushBackCoefficient(1, gsoap_eml2_2::prodml21__PvtModelParameterKind__a1);
 	srkEosSpec->setMixingRule(gsoap_eml2_2::prodml21__MixingRule__classical);
