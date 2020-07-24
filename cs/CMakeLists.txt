@@ -17,7 +17,6 @@ else (WITH_RESQML2_2)
 	set (COMMENT_START "/*")
 	set (COMMENT_END "*/")
 endif(WITH_RESQML2_2)
-configure_file(${FESAPI_ROOT_DIR}/cmake/swigModule.i ${FESAPI_ROOT_DIR}/swig/swigModule.i) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/swigCsInclude.i ${FESAPI_ROOT_DIR}/swig/swigCsInclude.i) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/Program.cs ${FESAPI_ROOT_DIR}/cs/example/Program.cs) # Overwrite if different
 

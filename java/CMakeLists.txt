@@ -29,6 +29,8 @@ file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2_0)
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2_1)
 
+file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/prodml2_1)
+
 if (WITH_ETP)
 	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/etp)
 endif ()
@@ -47,7 +49,6 @@ else (WITH_RESQML2_2)
 	set (COMMENT_START "/*")
 	set (COMMENT_END "*/")
 endif(WITH_RESQML2_2)
-configure_file(${FESAPI_ROOT_DIR}/cmake/swigModule.i ${FESAPI_ROOT_DIR}/swig/swigModule.i) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/swigJavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigJavaInclude.i) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/example/FesapiJavaExample.java) # Overwrite if different
 if (WITH_ETP)

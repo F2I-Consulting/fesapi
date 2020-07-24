@@ -354,20 +354,23 @@ unsigned int FluidCharacterization::getModelCount() const
 {
 	size_t count = static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel.size();
 	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too much PseudoFluidComponent");
+		throw out_of_range("There are too much models.");
 	}
 	return static_cast<unsigned int>(count);
 }
+
 void FluidCharacterization::pushBackModel(const std::string & uid)
 {
 	prodml21__FluidCharacterizationModel* const result = soap_new_prodml21__FluidCharacterizationModel(getGsoapContext());
-	result->uid = uid;
+	result->uid = uid.empty() 
+		? std::to_string(static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel.size())
+		: uid;
 	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel.push_back(result);
 
 	modelSpecifications.push_back(nullptr);
 }
 
-PvtSpecification* FluidCharacterization::setModelSpecification(unsigned int modelIndex, ModelSpecification kind)
+PvtSpecification* FluidCharacterization::initModelSpecification(unsigned int modelIndex, ModelSpecification kind)
 {
 	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel.size() <= modelIndex) {
 		throw std::out_of_range("The index of the model is out of range");
@@ -492,4 +495,160 @@ void FluidCharacterization::loadTargetRelationships()
 			modelSpecifications.push_back(nullptr);
 		}
 	}
+}
+
+unsigned int FluidCharacterization::getTableFormatCount() const
+{
+	size_t count = static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationTableFormat.size();
+	if (count > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("There are too much FluidCharacterizationTableFormat");
+	}
+	return static_cast<unsigned int>(count);
+}
+
+void FluidCharacterization::pushBackTableFormat(const std::string & uid)
+{
+	prodml21__FluidCharacterizationTableFormat* const result = soap_new_prodml21__FluidCharacterizationTableFormat(getGsoapContext());
+	result->uid = uid.empty()
+		? std::to_string(static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationTableFormat.size())
+		: uid;
+	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationTableFormat.push_back(result);
+}
+
+std::string FluidCharacterization::getTableFormatColumnUom(const std::string & tableFormatUid, unsigned int columnIndex) const
+{
+	for (const auto& tableFormat : static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationTableFormat) {
+		if (tableFormat->uid == tableFormatUid) {
+			return tableFormat->TableColumn[columnIndex]->uom;
+		}
+	}
+
+	throw out_of_range("The table format uid \"" + tableFormatUid + "\" has not been found.");
+}
+
+std::string FluidCharacterization::getTableFormatColumnProperty(const std::string & tableFormatUid, unsigned int columnIndex) const
+{
+	for (const auto& tableFormat : static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationTableFormat) {
+		if (tableFormat->uid == tableFormatUid) {
+			return tableFormat->TableColumn[columnIndex]->Property;
+		}
+	}
+
+	throw out_of_range("The table format uid \"" + tableFormatUid + "\" has not been found.");
+}
+
+void FluidCharacterization::pushBackTableFormatColumn(unsigned int tableFormatIndex, const std::string & uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty)
+{
+	pushBackTableFormatColumn(tableFormatIndex, uom, gsoap_eml2_2::soap_prodml21__OutputFluidProperty2s(getGsoapContext(), fluidProperty));
+}
+
+void FluidCharacterization::pushBackTableFormatColumn(unsigned int tableFormatIndex, const std::string & uom, const std::string & fluidProperty)
+{
+	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationTableFormat.size() <= tableFormatIndex) {
+		throw std::out_of_range("The table format index is out of range.");
+	}
+
+	prodml21__FluidCharacterizationTableColumn* const result = soap_new_prodml21__FluidCharacterizationTableColumn(getGsoapContext());
+	result->uom = uom;
+	result->Property = fluidProperty;
+	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationTableFormat[tableFormatIndex]->TableColumn.push_back(result);
+}
+
+unsigned int FluidCharacterization::getTableCount(unsigned int modelIndex) const
+{
+	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel.size() <= modelIndex) {
+		throw std::out_of_range("The model index is out of range.");
+	}
+
+	size_t count = static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable.size();
+	if (count > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("There are too much FluidCharacterizationTable in this model");
+	}
+	return static_cast<unsigned int>(count);
+}
+
+std::string FluidCharacterization::getTableName(unsigned int modelIndex, unsigned int tableIndex) const
+{
+	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel.size() <= modelIndex) {
+		throw std::out_of_range("The model index is out of range.");
+	}
+	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable.size() <= tableIndex) {
+		throw std::out_of_range("The table index is out of range.");
+	}
+
+	return static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable[tableIndex]->name;
+}
+
+std::string FluidCharacterization::getTableFormatUid(unsigned int modelIndex, unsigned int tableIndex) const
+{
+	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel.size() <= modelIndex) {
+		throw std::out_of_range("The model index is out of range.");
+	}
+	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable.size() <= tableIndex) {
+		throw std::out_of_range("The table index is out of range.");
+	}
+
+	return static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable[tableIndex]->tableFormat;
+}
+
+void FluidCharacterization::pushBackTable(unsigned int modelIndex, const std::string & name, const std::string & tableFormatUid, const std::string & uid)
+{
+	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel.size() <= modelIndex) {
+		throw std::out_of_range("The model index is out of range.");
+	}
+
+	prodml21__FluidCharacterizationTable* const result = soap_new_prodml21__FluidCharacterizationTable(getGsoapContext());
+	result->uid = uid.empty()
+		? std::to_string(static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable.size())
+		: uid;
+
+	result->name = name;
+	result->tableFormat = tableFormatUid;
+	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable.push_back(result);
+}
+
+unsigned int FluidCharacterization::getTableRowCount(unsigned int modelIndex, unsigned int tableIndex) const
+{
+	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel.size() <= modelIndex) {
+		throw std::out_of_range("The model index is out of range.");
+	}
+	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable.size() <= tableIndex) {
+		throw std::out_of_range("The table index is out of range.");
+	}
+
+	size_t count = static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow.size();
+	if (count > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("There are too much row in this table");
+	}
+	return static_cast<unsigned int>(count);
+}
+
+std::string FluidCharacterization::getTableRowContent(unsigned int modelIndex, unsigned int tableIndex, unsigned int rowIndex) const
+{
+	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel.size() <= modelIndex) {
+		throw std::out_of_range("The model index is out of range.");
+	}
+	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable.size() <= tableIndex) {
+		throw std::out_of_range("The table index is out of range.");
+	}
+	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow.size() <= rowIndex) {
+		throw std::out_of_range("The row index is out of range.");
+	}
+
+	return static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow[rowIndex]->__item;
+}
+
+void FluidCharacterization::pushBackTableRow(unsigned int modelIndex, unsigned int tableIndex, const std::string & rowContent)
+{
+	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel.size() <= modelIndex) {
+		throw std::out_of_range("The model index is out of range.");
+	}
+
+	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable.size() <= tableIndex) {
+		throw std::out_of_range("The table index is out of range.");
+	}
+
+	prodml21__FluidCharacterizationTableRow* const result = soap_new_prodml21__FluidCharacterizationTableRow(getGsoapContext());
+	result->__item = rowContent;
+	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow.push_back(result);
 }

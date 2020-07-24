@@ -1,7 +1,6 @@
 ## Ignore the cmake generated files
 /cs/fesapiCs.csproj
 /cs/example/Program.cs
-/swig/swigModule.i
 /swig/swigCsInclude.i
 /swig/swigJavaInclude.i
 /src/nsDefinitions.h
