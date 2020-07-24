@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_2test/WellboreRegularFrameRepresentationTest.h"
+#include "resqml2_test/WellboreRegularFrameRepresentationTest.h"
 
 #include "catch.hpp"
 
@@ -25,14 +25,15 @@ under the License.
 
 #include "resqml2/WellboreInterpretation.h"
 #include "resqml2/WellboreTrajectoryRepresentation.h"
-#include "resqml2/WellboreFrameRepresentation.h"
+#include "resqml2/WellboreMarkerFrameRepresentation.h"
 #include "eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace COMMON_NS;
-using namespace resqml2_2test;
+using namespace RESQML2_NS;
+using namespace resqml2_test;
 
-const char* WellboreRegularFrameRepresentationTest::defaultUuid = "7cc1e441-ad2f-4eb5-88e6-5c5dfc7aff51";
+const char* WellboreRegularFrameRepresentationTest::defaultUuid = "bbcacfa6-b117-467f-8514-02660df62270";
 const char* WellboreRegularFrameRepresentationTest::defaultTitle = "Wellbore Regular Frame Representation";
 
 WellboreRegularFrameRepresentationTest::WellboreRegularFrameRepresentationTest(const string & repoPath)
@@ -45,22 +46,26 @@ WellboreRegularFrameRepresentationTest::WellboreRegularFrameRepresentationTest(D
 
 void WellboreRegularFrameRepresentationTest::initRepoHandler() {
 	// creating dependencies
-	resqml2_test::WellboreTrajectoryRepresentationTest trajTest(repo, true);
+	WellboreTrajectoryRepresentationTest trajTest(repo, true);
 
-	RESQML2_NS::WellboreInterpretation * interp = repo->getDataObjectByUuid<RESQML2_NS::WellboreInterpretation>(resqml2_test::WellboreInterpretationTest::defaultUuid);
-	RESQML2_NS::WellboreTrajectoryRepresentation * traj = repo->getDataObjectByUuid<RESQML2_NS::WellboreTrajectoryRepresentation>(resqml2_test::WellboreTrajectoryRepresentationTest::defaultUuid);
+	WellboreInterpretation * interp = repo->getDataObjectByUuid<WellboreInterpretation>(WellboreInterpretationTest::defaultUuid);
+	WellboreTrajectoryRepresentation * traj = repo->getDataObjectByUuid<WellboreTrajectoryRepresentation>(WellboreTrajectoryRepresentationTest::defaultUuid);
 
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 	REQUIRE(hdfProxy != nullptr);
 
 	// WellboreFeature frame
+#if WITH_EXPERIMENTAL
+	RESQML2_NS::WellboreFrameRepresentation* w1i1FrameRep = repo->createWellboreFrameRepresentation(interp, defaultUuid, defaultTitle, traj, true);
+#else
 	RESQML2_NS::WellboreFrameRepresentation* w1i1FrameRep = repo->createWellboreFrameRepresentation(interp, defaultUuid, defaultTitle, traj);
+#endif
 	w1i1FrameRep->setMdValues(0, 200, 6);
 }
 
 void WellboreRegularFrameRepresentationTest::readRepoHandler() {
-	RESQML2_NS::WellboreFrameRepresentation* w1i1FrameRep = repo->getDataObjectByUuid<RESQML2_NS::WellboreFrameRepresentation>(defaultUuid);
+	WellboreFrameRepresentation* w1i1FrameRep = repo->getDataObjectByUuid<WellboreFrameRepresentation>(defaultUuid);
 	REQUIRE(w1i1FrameRep != nullptr);
 
 	REQUIRE(w1i1FrameRep->areMdValuesRegularlySpaced());

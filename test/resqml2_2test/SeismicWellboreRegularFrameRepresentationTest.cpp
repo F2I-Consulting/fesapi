@@ -20,9 +20,9 @@ under the License.
 
 #include "catch.hpp"
 
-#include "resqml2_0_1test/WellboreInterpretationTest.h"
-#include "resqml2_0_1test/WellboreTrajectoryRepresentationTest.h"
-#include "resqml2_0_1test/LocalTime3dCrs.h"
+#include "resqml2_test/WellboreInterpretationTest.h"
+#include "resqml2_test/WellboreTrajectoryRepresentationTest.h"
+#include "resqml2_test/LocalTime3dCrs.h"
 
 #include "resqml2/WellboreInterpretation.h"
 #include "resqml2/WellboreTrajectoryRepresentation.h"
@@ -53,20 +53,20 @@ SeismicWellboreRegularFrameRepresentationTest::SeismicWellboreRegularFrameRepres
 
 void SeismicWellboreRegularFrameRepresentationTest::initRepoHandler() {
 	// creating dependencies
-	resqml2_0_1test::WellboreTrajectoryRepresentationTest trajTest(repo, true);
+	resqml2_test::WellboreTrajectoryRepresentationTest trajTest(repo, true);
 
-	RESQML2_NS::WellboreInterpretation * interp = repo->getDataObjectByUuid<RESQML2_NS::WellboreInterpretation>(resqml2_0_1test::WellboreInterpretationTest::defaultUuid);
-	RESQML2_NS::WellboreTrajectoryRepresentation * traj = repo->getDataObjectByUuid<RESQML2_NS::WellboreTrajectoryRepresentation>(resqml2_0_1test::WellboreTrajectoryRepresentationTest::defaultUuid);
+	RESQML2_NS::WellboreInterpretation * interp = repo->getDataObjectByUuid<RESQML2_NS::WellboreInterpretation>(resqml2_test::WellboreInterpretationTest::defaultUuid);
+	RESQML2_NS::WellboreTrajectoryRepresentation * traj = repo->getDataObjectByUuid<RESQML2_NS::WellboreTrajectoryRepresentation>(resqml2_test::WellboreTrajectoryRepresentationTest::defaultUuid);
 
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 	REQUIRE(hdfProxy != nullptr);
 
 	// getting the local time crs
-	RESQML2_NS::LocalTime3dCrs* crs = repo->getDataObjectByUuid<RESQML2_NS::LocalTime3dCrs>(resqml2_0_1test::LocalTime3dCrs::defaultUuid);
+	RESQML2_NS::LocalTime3dCrs* crs = repo->getDataObjectByUuid<RESQML2_NS::LocalTime3dCrs>(resqml2_test::LocalTime3dCrs::defaultUuid);
 	if (crs == nullptr) {
-		resqml2_0_1test::LocalTime3dCrs crsTest(repo, true);
-		crs = repo->getDataObjectByUuid<RESQML2_NS::LocalTime3dCrs>(resqml2_0_1test::LocalTime3dCrs::defaultUuid);
+		resqml2_test::LocalTime3dCrs crsTest(repo, true);
+		crs = repo->getDataObjectByUuid<RESQML2_NS::LocalTime3dCrs>(resqml2_test::LocalTime3dCrs::defaultUuid);
 	}
 
 	// WellboreFeature frame

@@ -28,43 +28,43 @@ under the License.
 #include "eml2/AbstractHdfProxy.h"
 
 #include "EpcDocumentTest.h"
-#include "resqml2_0_1test/LocalDepth3dCrsTest.h"
-#include "resqml2_0_1test/HorizonInterpretationTest.h"
-#include "resqml2_0_1test/FaultSinglePatchTriangulatedSetRepresentationTest.h"
-#include "resqml2_0_1test/FaultMultiPatchTriangulatedSetRepresentationTest.h"
-#include "resqml2_0_1test/ActivityTemplateGenericCreationTest.h"
-#include "resqml2_0_1test/ActivityCreationTest.h"
-#include "resqml2_0_1test/OneTetrahedronUnstructuredGridRepresentationTest.h"
-#include "resqml2_0_1test/UnstructuredGridTest.h"
-#include "resqml2_0_1test/TimeSeriesTest.h"
-#include "resqml2_0_1test/CommentProperty.h"
-#include "resqml2_0_1test/ContinuousPropertyOnWellFrameTest.h"
-#include "resqml2_0_1test/GridConnectionSetOnPartialGridSet.h"
-#include "resqml2_0_1test/WellboreMarkerFrameRepresentationTest.h"
-#include "resqml2_0_1test/WellboreFrameRepresentationTest.h"
-#include "resqml2_0_1test/WellboreRegularFrameRepresentationTest.h"
-#include "resqml2_0_1test/DiscretePropertyUsingLocalKindOnWellFrameTest.h"
-#include "resqml2_0_1test/SeismicLatticeRepresentationTest.h"
-#include "resqml2_0_1test/Grid2dRepresentationTest.h"
-#include "resqml2_0_1test/HorizonOnSeismicLine.h"
-#include "resqml2_0_1test/CompressedIjkGridExplicitRepresentationTest.h"
-#include "resqml2_0_1test/RightHanded4x3x2ExplicitIjkGrid.h"
-#include "resqml2_0_1test/BigIjkGridExplicitRepresentationTest.h"
-#include "resqml2_0_1test/BigIjkGridParametricRepresentationTest.h"
-#include "resqml2_0_1test/SubRepresentationOnPartialGridConnectionSet.h"
-#include "resqml2_0_1test/LgrOnRightHanded4x3x2ExplicitIjkGrid.h"
-#include "resqml2_0_1test/InterpretationDomain.h"
+#include "resqml2_test/LocalDepth3dCrsTest.h"
+#include "resqml2_test/HorizonInterpretationTest.h"
+#include "resqml2_test/FaultSinglePatchTriangulatedSetRepresentationTest.h"
+#include "resqml2_test/FaultMultiPatchTriangulatedSetRepresentationTest.h"
+#include "resqml2_test/ActivityTemplateGenericCreationTest.h"
+#include "resqml2_test/ActivityCreationTest.h"
+#include "resqml2_test/OneTetrahedronUnstructuredGridRepresentationTest.h"
+#include "resqml2_test/UnstructuredGridTest.h"
+#include "resqml2_test/TimeSeriesTest.h"
+#include "resqml2_test/CommentProperty.h"
+#include "resqml2_test/ContinuousPropertyOnWellFrameTest.h"
+#include "resqml2_test/GridConnectionSetOnPartialGridSet.h"
+#include "resqml2_test/WellboreMarkerFrameRepresentationTest.h"
+#include "resqml2_test/WellboreFrameRepresentationTest.h"
+#include "resqml2_test/WellboreRegularFrameRepresentationTest.h"
+#include "resqml2_test/DiscretePropertyUsingLocalKindOnWellFrameTest.h"
+#include "resqml2_test/SeismicLatticeRepresentationTest.h"
+#include "resqml2_test/Grid2dRepresentationTest.h"
+#include "resqml2_test/HorizonOnSeismicLine.h"
+#include "resqml2_test/CompressedIjkGridExplicitRepresentationTest.h"
+#include "resqml2_test/RightHanded4x3x2ExplicitIjkGrid.h"
+#include "resqml2_test/BigIjkGridExplicitRepresentationTest.h"
+#include "resqml2_test/BigIjkGridParametricRepresentationTest.h"
+#include "resqml2_test/SubRepresentationOnPartialGridConnectionSet.h"
+#include "resqml2_test/LgrOnRightHanded4x3x2ExplicitIjkGrid.h"
+#include "resqml2_test/InterpretationDomain.h"
 #include "resqml2_2test/DiscreteColorMapTest.h"
 #include "resqml2_2test/ContinuousColorMapTest.h"
-#include "resqml2_0_1test/MultirealPropertyTest.h"
-#include "resqml2_0_1test/CategoricalProperty.h"
-#include "resqml2_0_1test/DiscreteProperty.h"
-#include "resqml2_0_1test/PointsProperty.h"
-#include "resqml2_0_1test/PropertyBySlab.h"
-#include "witsml2_0test/WellTest.h"
-#include "witsml2_0test/Trajectory.h"
-#include "witsml2_0test/Perforation.h"
-#include "witsml2_0test/WellboreGeometryTest.h"
+#include "resqml2_test/MultirealPropertyTest.h"
+#include "resqml2_test/CategoricalProperty.h"
+#include "resqml2_test/DiscreteProperty.h"
+#include "resqml2_test/PointsProperty.h"
+#include "resqml2_test/PropertyBySlab.h"
+#include "witsml2_test/WellTest.h"
+#include "witsml2_test/Trajectory.h"
+#include "witsml2_test/Perforation.h"
+#include "witsml2_test/WellboreGeometryTest.h"
 #if WITH_RESQML2_2
 #include "eml2_3test/GraphicalInformationSetTest.h"
 #include "resqml2_2test/DiscreteColorMapTest.h"
@@ -76,15 +76,34 @@ under the License.
 using namespace resqml2_2test;
 #endif
 using namespace commontest;
-using namespace resqml2_0_1test;
-using namespace witsml2_0test;
+using namespace resqml2_test;
+using namespace witsml2_test;
 
-#define FESAPI_TEST(name, tags, classTest)  TEST_CASE(name, tags)\
+#define FESAPI_TEST2_2(name, tags, classTest)  TEST_CASE(#name "2_2", tags)\
 {\
-	classTest test("../../" #classTest ".epc");\
+	classTest test("../../" #classTest "2_2.epc");\
+	test.defaultEmlVersion = COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3;\
+	test.defaultResqmlVersion = COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_2;\
 	test.serialize();\
 	test.deserialize();\
 }
+
+#define FESAPI_TEST2_0(name, tags, classTest)  TEST_CASE(#name "2_0", tags)\
+{\
+	classTest test("../../" #classTest "2_0.epc");\
+	test.defaultEmlVersion = COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0;\
+	test.defaultResqmlVersion = COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1;\
+	test.serialize();\
+	test.deserialize();\
+}
+
+#if WITH_RESQML2_2
+	#define FESAPI_TEST(name, tags, classTest)\
+		FESAPI_TEST2_0(name, tags, classTest)\
+		FESAPI_TEST2_2(name, tags, classTest)
+#else
+	#define FESAPI_TEST(name, tags, classTest)  FESAPI_TEST2_0(name, tags, classTest)
+#endif
 /*
 TEST_CASE( "Deserialize an EPC document", "[epc]")
 {
@@ -93,13 +112,13 @@ TEST_CASE( "Deserialize an EPC document", "[epc]")
 }
 */
 #if WITH_RESQML2_2
-FESAPI_TEST("Export and import graphical information set", "[graphical information]", GraphicalInformationSetTest)
-FESAPI_TEST("Export and import discrete color map on a discrete property", "[graphical information][color map][discrete color map]", DiscreteColorMapTest)
-FESAPI_TEST("Export and import continuous color map on a discrete property", "[graphical information][color map][continuous color map]", ContinuousColorMapTest)
-FESAPI_TEST("Export and import wellbore frame", "[well]", resqml2_2test::WellboreFrameRepresentationTest)
-FESAPI_TEST("Export and import regular wellbore frame", "[well]", resqml2_2test::WellboreRegularFrameRepresentationTest)
-FESAPI_TEST("Export and import seismic wellbore frame", "[well]", SeismicWellboreFrameRepresentationTest)
-FESAPI_TEST("Export and import regular seismic wellbore frame", "[well]", SeismicWellboreRegularFrameRepresentationTest)
+FESAPI_TEST2_2("Export and import graphical information set", "[graphical information]", GraphicalInformationSetTest)
+FESAPI_TEST2_2("Export and import discrete color map on a discrete property", "[graphical information][color map][discrete color map]", DiscreteColorMapTest)
+FESAPI_TEST2_2("Export and import continuous color map on a discrete property", "[graphical information][color map][continuous color map]", ContinuousColorMapTest)
+FESAPI_TEST2_2("Export and import wellbore frame", "[well]", resqml2_2test::WellboreFrameRepresentationTest)
+FESAPI_TEST2_2("Export and import regular wellbore frame", "[well]", resqml2_2test::WellboreRegularFrameRepresentationTest)
+FESAPI_TEST2_2("Export and import seismic wellbore frame", "[well]", SeismicWellboreFrameRepresentationTest)
+FESAPI_TEST2_2("Export and import regular seismic wellbore frame", "[well]", SeismicWellboreRegularFrameRepresentationTest)
 #endif
 TEST_CASE("Export and import an empty EPC document", "[repo]")
 {
@@ -182,7 +201,7 @@ FESAPI_TEST("Export and import a subrepresentation on a partial grid connection 
 
 FESAPI_TEST("Export and import a wellbore marker frame", "[well][stratigraphy]", WellboreMarkerFrameRepresentationTest)
 
-FESAPI_TEST("Export and import a wellbore frame (regular md spacings)", "[well]", resqml2_0_1test::WellboreRegularFrameRepresentationTest)
+FESAPI_TEST("Export and import a wellbore frame (regular md spacings)", "[well]", resqml2_test::WellboreRegularFrameRepresentationTest)
 
 FESAPI_TEST("Export and import a wellbore frame (irregular md spacings) with a single continuous property on node", "[well][property]", ContinuousPropertyOnWellFrameTest)
 FESAPI_TEST("Export and import a wellbore frame (irregular md spacings) with a single comment property on node", "[well][property]", CommentProperty)
