@@ -43,7 +43,7 @@ namespace RESQML2_NS
 		 * @returns	The xyz point count of the patch at position @p patchIndex.
 		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const {
-			return getValuesCountOfPatch(patchIndex / 3);
+			return getValuesCountOfPatch(patchIndex) / 3;
 		}
 
 		/**

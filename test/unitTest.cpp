@@ -59,6 +59,7 @@ under the License.
 #include "resqml2_0_1test/MultirealPropertyTest.h"
 #include "resqml2_0_1test/CategoricalProperty.h"
 #include "resqml2_0_1test/DiscreteProperty.h"
+#include "resqml2_0_1test/PointsProperty.h"
 #include "resqml2_0_1test/PropertyBySlab.h"
 #include "witsml2_0test/WellTest.h"
 #include "witsml2_0test/Trajectory.h"
@@ -76,7 +77,6 @@ using namespace resqml2_2test;
 #endif
 using namespace commontest;
 using namespace resqml2_0_1test;
-using namespace resqml2_2test;
 using namespace witsml2_0test;
 
 #define FESAPI_TEST(name, tags, classTest)  TEST_CASE(name, tags)\
@@ -201,5 +201,6 @@ FESAPI_TEST("Export and import a WITSML Wellbore Geometry", "[well]", WellboreGe
 FESAPI_TEST("Export and import some multi realization properties", "[property]", MultirealPropertyTest)
 FESAPI_TEST("Check categorical property", "[property]", CategoricalProperty)
 FESAPI_TEST("Check discrete property datatypes", "[property]", DiscreteProperty)
+FESAPI_TEST("Check points property", "[property]", PointsProperty)
 FESAPI_TEST("Export and import properties using slab", "[property]", PropertyBySlab)
 FESAPI_TEST("Export and import a time series", "[property]", TimeSeriesTest)

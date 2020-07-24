@@ -229,6 +229,11 @@ namespace COMMON_NS
 	double get##vectorName##attributeName##Value(unsigned int index) const;\
 	uomDatatype get##vectorName##attributeName##Uom(unsigned int index) const;\
 	CHECKER_PRESENCE_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName)
+	
+%define SWIG_GETTER_DATAOBJECTS(returnedDataType, dataObjectName)
+	unsigned int get ## dataObjectName ## Count() const;
+	returnedDataType * get ## dataObjectName(unsigned int index) const;
+%enddef
 
 %include "swigEml2Include.i"
 %include "swigEml2_0Include.i"
@@ -292,11 +297,6 @@ namespace COMMON_NS
 		
 		EML2_NS::AbstractHdfProxy* getDefaultHdfProxy() const;
 		void setDefaultHdfProxy(EML2_NS::AbstractHdfProxy* hdfProxy);
-		
-%define SWIG_GETTER_DATAOBJECTS(returnedDataType, dataObjectName)
-		unsigned int get ## dataObjectName ## Count() const;
-		returnedDataType * get ## dataObjectName(unsigned int index) const;
-%enddef
 		
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)
@@ -710,6 +710,57 @@ namespace COMMON_NS
 		RESQML2_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
 			RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropType);
+			
+		/**
+		 * Creates a points property (which is of a well known Energistics property kind) into this
+		 * repository
+		 *
+		 * @exception	std::invalid_argument	If @p rep is null.
+		 *
+		 * @param [in]	rep					   	The representation on which this property is attached to.
+		 * 										It cannot be null.
+		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
+		 * 										will be generated.
+		 * @param 	  	title				   	The title to set to the property. If empty then
+		 * 										\"unknown\" title will be set.
+		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
+		 * 										is 1 for a scalar property.
+		 * @param 	  	attachmentKind		   	The topological element on which the property values are
+		 * 										attached to.
+		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
+		 * 										defined in the standard Energistics property type
+		 * 										dictionary. Defautl is length
+		 *
+		 * @returns	A pointer to the new points property.
+		 */
+		RESQML2_0_1_NS::PointsProperty* createPointsProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind = gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+
+		/**
+		 * Creates a points property (which is of a local property kind) into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If @p or @p localPropKind is null.
+		 *
+		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * 								cannot be null.
+		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
+		 * 								will be set.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
+		 * @param [in]	localPropType 	The property kind of these property values which must be defined
+		 * 								in the EPC document as a local property kind. It cannot be null.
+		 *
+		 * @returns	A pointer to the new points property.
+		 */
+		RESQML2_NS::PointsProperty* createPointsProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+			EML2_NS::PropertyKind * localPropType);
 
 		//************* ACTIVITIES ***********/
 

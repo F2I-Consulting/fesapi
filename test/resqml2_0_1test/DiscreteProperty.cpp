@@ -19,9 +19,6 @@ under the License.
 #include "resqml2_0_1test/DiscreteProperty.h"
 
 #include "catch.hpp"
-#include "resqml2_0_1test/LgrOnRightHanded4x3x2ExplicitIjkGrid.h"
-#include "resqml2_0_1test/PropertyKindTest.h"
-#include "resqml2_0_1test/WellboreFrameRepresentationTest.h"
 
 #include "resqml2_0_1/PropertyKind.h"
 #include "eml2_3/PropertyKind.h"
