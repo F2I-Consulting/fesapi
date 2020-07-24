@@ -83,6 +83,65 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__IndexableElement getAttachmentKind() const;
 
 		/**
+		 * Gets the number of patches in this values property. It should be the same count as the patch
+		 * count of the associated representation.
+		 *
+		 * @exception	std::out_of_range	If the patch count is strictly greater than unsigned int max
+		 * 									value.
+		 *
+		 * @returns	The patch count.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getPatchCount() const = 0;
+
+		/**
+		 * Get the values data type in the HDF dataset
+		 *
+		 * @returns	The data type of the values if successful, else @c UNKNOWN.
+		 */
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::hdfDatatypeEnum getValuesHdfDatatype() const;
+
+		/**
+		 * Gets the count of all values contained into the underlying HDF5 dataset of a given patch of
+		 * this property.
+		 *
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	patchIndex	The index of the patch we want to count the values from.
+		 *
+		 * @returns	The count of values of the @p patchIndex patch.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getValuesCountOfPatch(unsigned int patchIndex) const;
+
+		/**
+		 * Gets the count of values on a specific dimension of the underlying HDF5 dataset of a given
+		 * patch of this property.
+		 *
+		 * @exception	std::out_of_range	If @p dimIndex is strictly greater than dimension count.
+		 * @exception	std::range_error 	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	dimIndex  	The index of the dimension we want to count the values from.
+		 * @param 	patchIndex	The index of the patch we want to count the values from.
+		 *
+		 * @returns	The count of values in the @p dimIndex dimension of @p patchIndex patch.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const;
+
+		/**
+		 * Gets the count of dimensions of the underlying HDF5 dataset of a given patch of this property.
+		 *
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	patchIndex	The index of the patch we want to count the dimensions from.
+		 *
+		 * @returns	The number of values, 0 otherwise.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getDimensionsCountOfPatch(unsigned int patchIndex) const;
+
+		//*********************************************
+		//************* PROPERTY SET ******************
+		//*********************************************
+
+		/**
 		 * Gets all property sets which contain this property
 		 *
 		 * @returns A vector of all property sets which contain this property.
@@ -381,5 +440,29 @@ namespace RESQML2_NS
 		 * @returns	The Energistics property kind.
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind201() const;
+
+		/**
+		 * Get the HDF Proxy which contains the property values of a particular patch.
+		 *
+		 * @param 		  	patchIndex	The corresponding patch index of the dataset to get.
+		 * @param [out]		nullValue 	If possible, this function will set this parameter to the RESQML
+		 * 								null value of the dataset. If not, it will return long.min.
+		 * @param [out]		nullValue 	this function will set this parameter to the RESQML
+		 * 								dataset path in the HDF file.
+		 *
+		 * @returns	Null if it fails, else the HDF Proxy of patch.
+		 */
+		virtual EML2_NS::AbstractHdfProxy* getDatasetOfPatch(unsigned int patchIndex, LONG64 & nullValue, std::string & dsPath) const = 0;
+
+		/**
+		 * Gets the data object reference of the HDF proxy which is associated to a particular
+		 * property patch.
+		 *
+		 * @param	patchIndex	The corresponding patch index of the HDF proxy to get.
+		 * @returns	Empty data object reference if no HDF proxy is associated to this property patch.
+		 * 			Otherwise returns the data object reference of the associated representation. Null
+		 * 			should not occured since each property must be associated to a representation.
+		 */
+		virtual COMMON_NS::DataObjectReference getHdfProxyDor(unsigned int patchIndex) const = 0;
 	};
 }

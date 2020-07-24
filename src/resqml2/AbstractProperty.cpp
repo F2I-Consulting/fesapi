@@ -58,6 +58,10 @@ void AbstractProperty::loadTargetRelationships()
 	if (!dor.isEmpty()) {
 		convertDorIntoRel<EML2_NS::PropertyKind>(dor);
 	}
+
+	for (size_t patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
+		convertDorIntoRel(getHdfProxyDor(patchIndex));
+	}
 }
 
 bool AbstractProperty::validate()
@@ -591,4 +595,69 @@ gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind AbstractProperty::getEnergistics
 	}
 
 	throw invalid_argument("The property kind of this property is not an Energistics one.");
+}
+
+
+COMMON_NS::AbstractObject::hdfDatatypeEnum AbstractProperty::getValuesHdfDatatype() const
+{
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(0, nullValue, dsPath);
+
+	const hid_t dt = hdfProxy->getHdfDatatypeInDataset(dsPath);
+	if (H5Tequal(dt, H5T_NATIVE_DOUBLE) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::DOUBLE;
+	else if (H5Tequal(dt, H5T_NATIVE_FLOAT) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::FLOAT;
+	else if (H5Tequal(dt, H5T_NATIVE_LLONG) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::LONG_64;
+	else if (H5Tequal(dt, H5T_NATIVE_ULLONG) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::ULONG_64;
+	else if (H5Tequal(dt, H5T_NATIVE_INT) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::INT;
+	else if (H5Tequal(dt, H5T_NATIVE_UINT) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::UINT;
+	else if (H5Tequal(dt, H5T_NATIVE_SHORT) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::SHORT;
+	else if (H5Tequal(dt, H5T_NATIVE_USHORT) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::USHORT;
+	else if (H5Tequal(dt, H5T_NATIVE_CHAR) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::CHAR;
+	else if (H5Tequal(dt, H5T_NATIVE_UCHAR) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::UCHAR;
+
+	return COMMON_NS::AbstractObject::hdfDatatypeEnum::UNKNOWN; // unknwown datatype...
+}
+
+unsigned int AbstractProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const
+{
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
+
+	std::vector<hsize_t> dims = hdfProxy->readArrayDimensions(dsPath);
+
+	if (dimIndex < dims.size()) {
+		return dims[dimIndex];
+	}
+
+	throw out_of_range("The dim index to get the count is out of range.");
+}
+
+unsigned int AbstractProperty::getDimensionsCountOfPatch(unsigned int patchIndex) const
+{
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
+
+	return hdfProxy->getDimensionCount(dsPath);
+}
+
+unsigned int AbstractProperty::getValuesCountOfPatch(unsigned int patchIndex) const
+{
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
+
+	return hdfProxy->getElementCount(dsPath);
 }

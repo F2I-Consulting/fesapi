@@ -47,6 +47,7 @@ under the License.
 #include "../src/resqml2_2/NonSealedSurfaceFrameworkRepresentation.h"
 #include "../src/resqml2_2/PlaneSetRepresentation.h"
 #include "../src/resqml2_2/PointSetRepresentation.h"
+#include "../src/resqml2_2/PointsProperty.h"
 #include "../src/resqml2_2/PolylineRepresentation.h"
 #include "../src/resqml2_2/PolylineSetRepresentation.h"
 #include "../src/resqml2_2/PropertySet.h"
@@ -88,64 +89,65 @@ namespace RESQML2_2_NS
 }
 #endif
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
-%nspace RESQML2_2_NS::BoundaryFeature;
-%nspace RESQML2_2_NS::BoundaryFeatureInterpretation;
-%nspace RESQML2_2_NS::CategoricalProperty;
-%nspace RESQML2_2_NS::CmpLineFeature;
-%nspace RESQML2_2_NS::CommentProperty;
-%nspace RESQML2_2_NS::ContinuousColorMap;
-%nspace RESQML2_2_NS::ContinuousProperty;
-%nspace RESQML2_2_NS::CulturalFeature;
-%nspace RESQML2_2_NS::DeviationSurveyRepresentation;
-%nspace RESQML2_2_NS::DiscreteColorMap;
-%nspace RESQML2_2_NS::DiscreteProperty;
-%nspace RESQML2_2_NS::EarthModelInterpretation;
-%nspace RESQML2_2_NS::FaultInterpretation;
-%nspace RESQML2_2_NS::GenericFeatureInterpretation;
-%nspace RESQML2_2_NS::GeobodyBoundaryInterpretation;
-%nspace RESQML2_2_NS::GeobodyInterpretation;
-%nspace RESQML2_2_NS::Grid2dRepresentation;
-%nspace RESQML2_2_NS::GridConnectionSetRepresentation;
-%nspace RESQML2_2_NS::HorizonInterpretation;
-%nspace RESQML2_2_NS::IjkGridExplicitRepresentation;
-%nspace RESQML2_2_NS::IjkGridLatticeRepresentation;
-%nspace RESQML2_2_NS::IjkGridNoGeometryRepresentation;
-%nspace RESQML2_2_NS::IjkGridParametricRepresentation;
-%nspace RESQML2_2_NS::LocalDepth3dCrs;
-%nspace RESQML2_2_NS::LocalTime3dCrs ;
-%nspace RESQML2_2_NS::MdDatum;
-%nspace RESQML2_2_NS::Model;
-%nspace RESQML2_2_NS::NonSealedSurfaceFrameworkRepresentation;
-%nspace RESQML2_2_NS::PlaneSetRepresentation;
-%nspace RESQML2_2_NS::PointSetRepresentation;
-%nspace RESQML2_2_NS::PolylineRepresentation;
-%nspace RESQML2_2_NS::PolylineSetRepresentation;
-%nspace RESQML2_2_NS::PropertySet;
-%nspace RESQML2_2_NS::RepresentationSetRepresentation;
-%nspace RESQML2_2_NS::RockFluidUnitInterpretation;
-%nspace RESQML2_2_NS::RockFluidOrganizationInterpretation;
-%nspace RESQML2_2_NS::RockVolumeFeature;
-%nspace RESQML2_2_NS::SealedSurfaceFrameworkRepresentation;
-%nspace RESQML2_2_NS::SealedVolumeFrameworkRepresentation;
-%nspace RESQML2_2_NS::SeismicLatticeFeature;
-%nspace RESQML2_2_NS::SeismicLineSetFeature;
-%nspace RESQML2_2_NS::SeismicWellboreFrameRepresentation;
-%nspace RESQML2_2_NS::ShotPointLineFeature;
-%nspace RESQML2_2_NS::StratigraphicColumn;
-%nspace RESQML2_2_NS::StratigraphicColumnRankInterpretation;
-%nspace RESQML2_2_NS::StratigraphicOccurrenceInterpretation;
-%nspace RESQML2_2_NS::StratigraphicUnitInterpretation;
-%nspace RESQML2_2_NS::StringTableLookup;
-%nspace RESQML2_2_NS::StructuralOrganizationInterpretation;
-%nspace RESQML2_2_NS::SubRepresentation;
-%nspace RESQML2_2_NS::TriangulatedSetRepresentation;
-%nspace RESQML2_2_NS::UnstructuredGridRepresentation;
-%nspace RESQML2_2_NS::WellboreFeature;
-%nspace RESQML2_2_NS::WellboreFrameRepresentation;
-%nspace RESQML2_2_NS::WellboreInterpretation;
-%nspace RESQML2_2_NS::WellboreMarker;
-%nspace RESQML2_2_NS::WellboreMarkerFrameRepresentation;
-%nspace RESQML2_2_NS::WellboreTrajectoryRepresentation;
+	%nspace RESQML2_2_NS::BoundaryFeature;
+	%nspace RESQML2_2_NS::BoundaryFeatureInterpretation;
+	%nspace RESQML2_2_NS::CategoricalProperty;
+	%nspace RESQML2_2_NS::CmpLineFeature;
+	%nspace RESQML2_2_NS::CommentProperty;
+	%nspace RESQML2_2_NS::ContinuousColorMap;
+	%nspace RESQML2_2_NS::ContinuousProperty;
+	%nspace RESQML2_2_NS::CulturalFeature;
+	%nspace RESQML2_2_NS::DeviationSurveyRepresentation;
+	%nspace RESQML2_2_NS::DiscreteColorMap;
+	%nspace RESQML2_2_NS::DiscreteProperty;
+	%nspace RESQML2_2_NS::EarthModelInterpretation;
+	%nspace RESQML2_2_NS::FaultInterpretation;
+	%nspace RESQML2_2_NS::GenericFeatureInterpretation;
+	%nspace RESQML2_2_NS::GeobodyBoundaryInterpretation;
+	%nspace RESQML2_2_NS::GeobodyInterpretation;
+	%nspace RESQML2_2_NS::Grid2dRepresentation;
+	%nspace RESQML2_2_NS::GridConnectionSetRepresentation;
+	%nspace RESQML2_2_NS::HorizonInterpretation;
+	%nspace RESQML2_2_NS::IjkGridExplicitRepresentation;
+	%nspace RESQML2_2_NS::IjkGridLatticeRepresentation;
+	%nspace RESQML2_2_NS::IjkGridNoGeometryRepresentation;
+	%nspace RESQML2_2_NS::IjkGridParametricRepresentation;
+	%nspace RESQML2_2_NS::LocalDepth3dCrs;
+	%nspace RESQML2_2_NS::LocalTime3dCrs ;
+	%nspace RESQML2_2_NS::MdDatum;
+	%nspace RESQML2_2_NS::Model;
+	%nspace RESQML2_2_NS::NonSealedSurfaceFrameworkRepresentation;
+	%nspace RESQML2_2_NS::PlaneSetRepresentation;
+	%nspace RESQML2_2_NS::PointSetRepresentation;
+	%nspace RESQML2_2_NS::PointsProperty;
+	%nspace RESQML2_2_NS::PolylineRepresentation;
+	%nspace RESQML2_2_NS::PolylineSetRepresentation;
+	%nspace RESQML2_2_NS::PropertySet;
+	%nspace RESQML2_2_NS::RepresentationSetRepresentation;
+	%nspace RESQML2_2_NS::RockFluidUnitInterpretation;
+	%nspace RESQML2_2_NS::RockFluidOrganizationInterpretation;
+	%nspace RESQML2_2_NS::RockVolumeFeature;
+	%nspace RESQML2_2_NS::SealedSurfaceFrameworkRepresentation;
+	%nspace RESQML2_2_NS::SealedVolumeFrameworkRepresentation;
+	%nspace RESQML2_2_NS::SeismicLatticeFeature;
+	%nspace RESQML2_2_NS::SeismicLineSetFeature;
+	%nspace RESQML2_2_NS::SeismicWellboreFrameRepresentation;
+	%nspace RESQML2_2_NS::ShotPointLineFeature;
+	%nspace RESQML2_2_NS::StratigraphicColumn;
+	%nspace RESQML2_2_NS::StratigraphicColumnRankInterpretation;
+	%nspace RESQML2_2_NS::StratigraphicOccurrenceInterpretation;
+	%nspace RESQML2_2_NS::StratigraphicUnitInterpretation;
+	%nspace RESQML2_2_NS::StringTableLookup;
+	%nspace RESQML2_2_NS::StructuralOrganizationInterpretation;
+	%nspace RESQML2_2_NS::SubRepresentation;
+	%nspace RESQML2_2_NS::TriangulatedSetRepresentation;
+	%nspace RESQML2_2_NS::UnstructuredGridRepresentation;
+	%nspace RESQML2_2_NS::WellboreFeature;
+	%nspace RESQML2_2_NS::WellboreFrameRepresentation;
+	%nspace RESQML2_2_NS::WellboreInterpretation;
+	%nspace RESQML2_2_NS::WellboreMarker;
+	%nspace RESQML2_2_NS::WellboreMarkerFrameRepresentation;
+	%nspace RESQML2_2_NS::WellboreTrajectoryRepresentation;
 #endif
 
 namespace gsoap_eml2_3
@@ -282,9 +284,9 @@ namespace RESQML2_2_NS
 	public:
 	};
 
-	//************************************
-	//************ INTERPRETATION ********
-	//************************************
+	//************************************/
+	//************ INTERPRETATION ********/
+	//************************************/
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(GenericFeatureInterpretation_resqml22) GenericFeatureInterpretation;
 #endif
@@ -404,9 +406,9 @@ namespace RESQML2_2_NS
 	public:
 	};
 
-	//************************************
-	//************ REPRESENTATION ********
-	//************************************
+	//************************************/
+	//************ REPRESENTATION ********/
+	//************************************/
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(SubRepresentation_resqml22) SubRepresentation;
@@ -593,9 +595,9 @@ namespace RESQML2_2_NS
 	public:
 	};
 
-	//************************************
-	//************** PROPERTY ************
-	//************************************	
+	//************************************/
+	//************** PROPERTY ************/
+	//************************************/
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(StringTableLookup_resqml22) StringTableLookup;
@@ -641,6 +643,14 @@ namespace RESQML2_2_NS
 	%rename(CategoricalProperty_resqml22) CategoricalProperty;
 #endif
 	class CategoricalProperty : public RESQML2_NS::CategoricalProperty
+	{
+	public:
+	};
+	
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(PointsProperty_resqml22) PointsProperty;
+#endif
+	class PointsProperty : public RESQML2_NS::PointsProperty
 	{
 	public:
 	};

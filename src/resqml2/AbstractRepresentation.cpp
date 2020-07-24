@@ -30,6 +30,7 @@ under the License.
 #include "AbstractFeatureInterpretation.h"
 #include "RepresentationSetRepresentation.h"
 #include "AbstractValuesProperty.h"
+#include "PointsProperty.h"
 #include "SubRepresentation.h"
 #include "AbstractLocal3dCrs.h"
 
@@ -232,26 +233,9 @@ std::vector<AbstractValuesProperty*> AbstractRepresentation::getValuesPropertySe
 	return getRepository()->getSourceObjects<RESQML2_NS::AbstractValuesProperty>(this);
 }
 
-unsigned int AbstractRepresentation::getValuesPropertyCount() const
+std::vector<PointsProperty*> AbstractRepresentation::getPointsPropertySet() const
 {
-	const size_t result = getValuesPropertySet().size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much properties");
-	}
-
-	return static_cast<unsigned int>(result);
-}
-
-AbstractValuesProperty* AbstractRepresentation::getValuesProperty(unsigned int index) const
-{
-	const std::vector<AbstractValuesProperty*>& propSet = getValuesPropertySet();
-
-	if (propSet.size() > index) {
-		return propSet[index];
-	}
-
-	throw out_of_range("The index of the property to get is out of range of the array of properties for this representation.");
+	return getRepository()->getSourceObjects<RESQML2_NS::PointsProperty>(this);
 }
 
 void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation* interp)
@@ -310,28 +294,6 @@ std::vector<SubRepresentation*> AbstractRepresentation::getSubRepresentationSet(
 	return repository->getSourceObjects<SubRepresentation>(this);
 }
 
-unsigned int AbstractRepresentation::getSubRepresentationCount() const
-{
-	const size_t result = getSubRepresentationSet().size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much subrepresentations");
-	}
-
-	return static_cast<unsigned int>(result);
-}
-
-SubRepresentation* AbstractRepresentation::getSubRepresentation(unsigned int index) const
-{
-	const std::vector<SubRepresentation*>& subRepresentationSet = getSubRepresentationSet();
-
-	if (index >= subRepresentationSet.size()) {
-		throw out_of_range("The subrepresentation at the specified index is out of range.");
-	}
-
-	return subRepresentationSet[index];
-}
-
 std::vector<SubRepresentation*> AbstractRepresentation::getFaultSubRepresentationSet() const
 {
 	std::vector<SubRepresentation*> result;
@@ -344,28 +306,6 @@ std::vector<SubRepresentation*> AbstractRepresentation::getFaultSubRepresentatio
 	}
 
 	return result;
-}
-
-unsigned int AbstractRepresentation::getFaultSubRepresentationCount() const
-{
-	const size_t result = getFaultSubRepresentationSet().size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much fault subrepresentations");
-	}
-
-	return static_cast<unsigned int>(result);
-}
-
-SubRepresentation* AbstractRepresentation::getFaultSubRepresentation(unsigned int index) const
-{
-	const std::vector<RESQML2_NS::SubRepresentation*>& tmp = getFaultSubRepresentationSet();
-
-	if (index >= tmp.size()) {
-		throw range_error("The fault subrepresentation at the specified index is out of range.");
-	}
-
-	return tmp[index];
 }
 
 ULONG64 AbstractRepresentation::getXyzPointCountOfAllPatches() const
@@ -498,22 +438,6 @@ void AbstractRepresentation::pushBackIntoRepresentationSet(RepresentationSetRepr
 std::vector<RepresentationSetRepresentation*> AbstractRepresentation::getRepresentationSetRepresentationSet() const
 {
 	return repository->getSourceObjects<RepresentationSetRepresentation>(this);
-}
-
-ULONG64 AbstractRepresentation::getRepresentationSetRepresentationCount() const
-{
-	return getRepresentationSetRepresentationSet().size();
-}
-
-RepresentationSetRepresentation* AbstractRepresentation::getRepresentationSetRepresentation(ULONG64 index) const
-{
-	const std::vector<RESQML2_NS::RepresentationSetRepresentation*> representationSetRepresentationSet = getRepresentationSetRepresentationSet();
-
-	if (index >= getRepresentationSetRepresentationCount()) {
-		throw out_of_range("The index of the representation set representation is out of range.");
-	}
-
-	return representationSetRepresentationSet[index];
 }
 
 void AbstractRepresentation::loadTargetRelationships()

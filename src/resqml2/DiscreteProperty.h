@@ -34,13 +34,6 @@ namespace RESQML2_NS
 	{
 	public:
 
-		/**
-		 * Only to be used in partial transfer context.
-		 *
-		 * @param [in]	partialObject	If non-null, the partial object.
-		 */
-		DLL_IMPORT_OR_EXPORT DiscreteProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractDiscreteOrCategoricalProperty(partialObject) {}
-
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~DiscreteProperty() {}
 
@@ -580,9 +573,16 @@ namespace RESQML2_NS
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:
+
+		/**
+		 * Only to be used in partial transfer context.
+		 *
+		 * @param [in]	partialObject	If non-null, the partial object.
+		 */
+		DiscreteProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractDiscreteOrCategoricalProperty(partialObject) {}
 
 		/** Default constructor */
 		DiscreteProperty() {}

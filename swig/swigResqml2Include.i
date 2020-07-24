@@ -88,6 +88,7 @@ namespace RESQML2_NS
 	%nspace RESQML2_NS::NonSealedSurfaceFrameworkRepresentation;
 	%nspace RESQML2_NS::PlaneSetRepresentation;
 	%nspace RESQML2_NS::PointSetRepresentation;
+	%nspace RESQML2_NS::PointsProperty;
 	%nspace RESQML2_NS::PolylineRepresentation;
 	%nspace RESQML2_NS::PolylineSetRepresentation;
 	%nspace RESQML2_NS::PropertySet;
@@ -2306,8 +2307,9 @@ namespace RESQML2_NS
 	//************************************/
 	
 	class AbstractValuesProperty;
-	class SubRepresentation;
+	class PointsProperty;
 	class RepresentationSetRepresentation;
+	class SubRepresentation;
 	class AbstractRepresentation : public COMMON_NS::AbstractObject
 	{
 	public:
@@ -2316,13 +2318,13 @@ namespace RESQML2_NS
 		
 		AbstractFeatureInterpretation* getInterpretation() const;
 		AbstractLocal3dCrs * getLocalCrs(unsigned int patchIndex);
-		unsigned int getValuesPropertyCount() const;
-		AbstractValuesProperty* getValuesProperty(unsigned int index) const;
 		
-		unsigned int getSubRepresentationCount() const;
-		SubRepresentation* getSubRepresentation(unsigned int index) const;
-		unsigned int getFaultSubRepresentationCount() const;
-		SubRepresentation* getFaultSubRepresentation(unsigned int index) const;
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::AbstractValuesProperty, ValuesProperty)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PointsProperty, PointsProperty)
+		
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::SubRepresentation, SubRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::SubRepresentation, FaultSubRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::RepresentationSetRepresentation, RepresentationSetRepresentation)
 
 		virtual ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const = 0;
 		ULONG64 getXyzPointCountOfAllPatches() const;
@@ -2347,8 +2349,6 @@ namespace RESQML2_NS
 			AbstractRepresentation * seismicSupport);
 
 		void pushBackIntoRepresentationSet(RepresentationSetRepresentation * repSet);
-		ULONG64 getRepresentationSetRepresentationCount() const;
-		RepresentationSetRepresentation* getRepresentationSetRepresentation(ULONG64 index) const;
 	};
 	
 		
@@ -2987,6 +2987,50 @@ namespace RESQML2_NS
 		AbstractRepresentation* getRepresentation();
 		void setRepresentation(AbstractRepresentation * rep);
 		
+		/**
+		 * Get the values data type in the HDF dataset
+		 *
+		 * @returns	The data type of the values if successful, else @c UNKNOWN.
+		 */
+		COMMON_NS::AbstractObject::hdfDatatypeEnum getValuesHdfDatatype() const;
+
+		/**
+		 * Gets the count of all values contained into the underlying HDF5 dataset of a given patch of
+		 * this property.
+		 *
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	patchIndex	The index of the patch we want to count the values from.
+		 *
+		 * @returns	The count of values of the @p patchIndex patch.
+		 */
+		unsigned int getValuesCountOfPatch(unsigned int patchIndex) const;
+
+		/**
+		 * Gets the count of values on a specific dimension of the underlying HDF5 dataset of a given
+		 * patch of this property.
+		 *
+		 * @exception	std::out_of_range	If @p dimIndex is strictly greater than dimension count.
+		 * @exception	std::range_error 	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	dimIndex  	The index of the dimension we want to count the values from.
+		 * @param 	patchIndex	The index of the patch we want to count the values from.
+		 *
+		 * @returns	The count of values in the @p dimIndex dimension of @p patchIndex patch.
+		 */
+		unsigned int getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const;
+
+		/**
+		 * Gets the count of dimensions of the underlying HDF5 dataset of a given patch of this property.
+		 *
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	patchIndex	The index of the patch we want to count the dimensions from.
+		 *
+		 * @returns	The number of values, 0 otherwise.
+		 */
+		unsigned int getDimensionsCountOfPatch(unsigned int patchIndex) const;
+		
 		std::string getPropertyKindDescription() const;
 		std::string getPropertyKindAsString() const;
 		std::string getPropertyKindParentAsString() const;
@@ -3018,13 +3062,7 @@ namespace RESQML2_NS
 	class AbstractValuesProperty : public RESQML2_NS::AbstractProperty
 	{
 	public:
-		COMMON_NS::AbstractObject::hdfDatatypeEnum getValuesHdfDatatype() const;
-
 		unsigned int getValuesCountOfPatch (unsigned int patchIndex) const;
-
-		unsigned int getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const;
-
-		unsigned int getDimensionsCountOfPatch(unsigned int patchIndex) const;
 
 		void pushBackFacet(gsoap_eml2_3::eml23__FacetKind facet, const std::string & facetValue);
 		unsigned int getFacetCount() const const;
@@ -3355,6 +3393,180 @@ namespace RESQML2_NS
 	{
 	public:
 		StringTableLookup* getStringLookup();
+	};
+	
+#ifdef SWIGPYTHON
+	%rename(Resqml2_PointsProperty) PointsProperty;
+#endif
+	class PointsProperty : public RESQML2_NS::AbstractProperty
+	{
+	public:
+		/**
+		 * Get the xyz point count in a given patch of this property.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 * @exception	std::logic_error 	If this representation is partial.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch from which we look for the xyz points.
+		 *
+		 * @returns	The xyz point count of the patch at position @p patchIndex.
+		 */
+		ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const;
+
+		/**
+		 * Get the xyz point count of all patches of this property.
+		 *
+		 * @returns	The xyz point count of all patches.
+		 */
+		ULONG64 getXyzPointCountOfAllPatches() const;
+
+		/**
+		 * @brief	Gets all the xyz points of a particular patch of this property. xyz points are
+		 * 			given in the local CRS.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 * @exception	std::logic_error 	If this property is partial.
+		 *
+		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
+		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
+		 * 							coordinate dimension (x, y or z) and second dimension is vertex
+		 * 							dimension. It must be preallocated with a size of <tt>3 *
+		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
+		 */
+		void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const;
+
+		/**
+		 * @brief Gets all the xyz points of a particular patch of this property. xyz points are given in
+		 * the global CRS.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 *
+		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
+		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
+		 * 							coordinate dimension (x, y or z) and second dimension is vertex
+		 * 							dimension. It must be preallocated with a size of <tt>3 *
+		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
+		 */
+		void getXyzPointsOfPatchInGlobalCrs(unsigned int patchIndex, double * xyzPoints) const;
+
+		/**
+		 * @brief Gets all the xyz points of all patches of this property. xyz points are given in the
+		 * local CRS.
+		 *
+		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
+		 * 							coordinate dimension (x, y or z) and second dimension is vertex
+		 * 							dimension. It must be preallocated with a size of <tt>3 *
+		 * 							getXyzPointCountOfAllPatches()</tt>.
+		 */
+		void getXyzPointsOfAllPatches(double * xyzPoints) const;
+
+		/**
+		 * Gets all the xyz points of all patches of this property. xyz points are
+		 * given in the global CRS.
+		 *
+		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
+		 * 							coordinate dimension (x, y or Z) and second dimension is vertex
+		 * 							dimension. Thus, its size is 3*(3*[count of all xyz points]). It must
+		 * 							be preallocated.
+		 */
+		void getXyzPointsOfAllPatchesInGlobalCrs(double * xyzPoints) const;
+
+		/**
+		 * @brief Adds a 1d array of points (in local CRS) to the property.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	xyzPoints		All the property values to set ordered according the topology
+		 * 									of the representation it is based on.
+		 * @param 		  	pointCount  	The number of points to write.
+		 * @param [in,out]	proxy			(Optional) The HDF proxy where to write the property points.
+		 * 									It must be already opened for writing and won't be closed in this
+		 * 									method. If @c nullptr (default value), then a default HDF proxy
+		 * 									must be defined in the repository.
+		 */
+		void pushBackArray1dOfXyzPoints(const double * xyzPoints, ULONG64 pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * @brief Adds a 2d array of points (in local CRS) to the property.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	xyzPoints				All the property values to set ordered according the
+		 * 											topology of the representation it is based on.
+		 * @param 		  	pointCountInFastestDim	The number of points to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	pointCountInSlowestDim	The number of points to write in the slowest
+		 * 											dimension (mainly J dimension).
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 											points. It must be already opened for writing and
+		 * 											won't be closed in this method. If @c nullptr
+		 * 											(default value), then a default HDF proxy must be
+		 * 											defined in the repository.
+		 */
+		void pushBackArray2dOfXyzPoints(const double * xyzPoints, ULONG64 pointCountInFastestDim, ULONG64 pointCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * @brief Adds a 3d array of points (in local CRS) to the property.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	xyzPoints				All the property values to set ordered according the
+		 * 											topology of the representation it is based on.
+		 * @param 		  	pointCountInFastestDim	The number of points to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	pointCountInMiddleDim 	The number of points to write in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	pointCountInSlowestDim	The number of points to write in the slowest
+		 * 											dimension (mainly K dimension).
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 											points. It must be already opened for writing and
+		 * 											won't be closed in this method. If @c nullptr
+		 * 											(default value), then a default HDF proxy must be
+		 * 											defined in the repository.
+		 */
+		void pushBackArray3dOfXyzPoints(const double * xyzPoints, ULONG64 pointCountInFastestDim, ULONG64 pointCountInMiddleDim, ULONG64 pointCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * @brief Adds an nd array of points (in local CRS) to the property.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	xyzPoints				All the property values to set ordered according the
+		 * 											topology of the representation it is based on.
+		 * @param 		  	pointCountByDimension	The number of property points ordered by dimension of the
+		 * 											array to write.
+		 * @param 		  	numArrayDimensions		The number of dimensions of the array to write.
+		 * @param [in,out]	proxy			  		(Optional) The HDF proxy where to write the property
+		 * 											points. It must be already opened for writing and won't
+		 * 											be closed in this method. If @c nullptr (default value),
+		 * 											then a default HDF proxy must be defined in the
+		 * 											repository.
+		 */
+		void pushBackArrayOfXyzPoints(double const * xyzPoints, unsigned long long const * pointCountByDimension, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF
+		 * proxy. The reason can be that the values already exist in an external file (only HDF5 for
+		 * now) or that the writing of the values in the external file is differed in time.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param [in]	proxy	   	The HDF5 proxy where the values are already or will be stored. If
+		 * 							@c nullptr, then a default HDF proxy must be defined in the
+		 * 							repository.
+		 * @param 	  	datasetName	(Optional) The HDF5 dataset name where the values are stored. If
+		 * 							empty, the dataset will be named the same as the dataset naming
+		 * 							convention of fesapi :
+		 * 							<tt>getHdfGroup() + "/points_patch" + patchIndex</tt>
+		 *
+		 * @returns	The name of the referenced HDF5 dataset.
+		 */
+		std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "");
 	};
 	
 	//************************************

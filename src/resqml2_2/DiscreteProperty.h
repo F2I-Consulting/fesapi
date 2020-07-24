@@ -38,7 +38,6 @@ namespace RESQML2_2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT DiscreteProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::DiscreteProperty(partialObject) {}
 
-
 		/**
 		 * Creates a discrete property which is of a local property kind.
 		 *
