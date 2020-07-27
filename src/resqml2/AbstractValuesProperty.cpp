@@ -23,7 +23,6 @@ under the License.
 
 #include <hdf5.h>
 
-#include "../eml2/PropertyKind.h"
 #include "../eml2/AbstractHdfProxy.h"
 
 using namespace RESQML2_NS;
@@ -47,37 +46,6 @@ unsigned int AbstractValuesProperty::getPatchCount() const
 	}
 
 	return static_cast<unsigned int>(result);
-}
-
-COMMON_NS::AbstractObject::hdfDatatypeEnum AbstractValuesProperty::getValuesHdfDatatype() const
-{
-	LONG64 nullValue = (numeric_limits<LONG64>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(0, nullValue, dsPath);
-
-	const hid_t dt = hdfProxy->getHdfDatatypeInDataset(dsPath);
-	if (H5Tequal(dt, H5T_NATIVE_DOUBLE) > 0)
-		return AbstractValuesProperty::DOUBLE;
-	else if (H5Tequal(dt, H5T_NATIVE_FLOAT) > 0)
-		return AbstractValuesProperty::FLOAT;
-	else if (H5Tequal(dt, H5T_NATIVE_LLONG) > 0)
-		return AbstractValuesProperty::LONG_64;
-	else if (H5Tequal(dt, H5T_NATIVE_ULLONG) > 0)
-		return AbstractValuesProperty::ULONG_64;
-	else if (H5Tequal(dt, H5T_NATIVE_INT) > 0)
-		return AbstractValuesProperty::INT;
-	else if (H5Tequal(dt, H5T_NATIVE_UINT) > 0)
-		return AbstractValuesProperty::UINT;
-	else if (H5Tequal(dt, H5T_NATIVE_SHORT) > 0)
-		return AbstractValuesProperty::SHORT;
-	else if (H5Tequal(dt, H5T_NATIVE_USHORT) > 0)
-		return AbstractValuesProperty::USHORT;
-	else if (H5Tequal(dt, H5T_NATIVE_CHAR) > 0)
-		return AbstractValuesProperty::CHAR;
-	else if (H5Tequal(dt, H5T_NATIVE_UCHAR) > 0)
-		return AbstractValuesProperty::UCHAR;
-
-	return AbstractValuesProperty::UNKNOWN; // unknwown datatype...
 }
 
 EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(unsigned int patchIndex, LONG64 & nullValue, std::string & dsPath) const
@@ -192,30 +160,6 @@ COMMON_NS::DataObjectReference AbstractValuesProperty::getHdfProxyDor(unsigned i
 	}
 }
 
-unsigned int AbstractValuesProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const
-{
-	LONG64 nullValue = (numeric_limits<LONG64>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
-
-	std::vector<hsize_t> dims = hdfProxy->readArrayDimensions(dsPath);
-
-	if (dimIndex < dims.size()) {
-		return dims[dimIndex];
-	}
-
-	throw out_of_range("The dim index to get the count is out of range.");
-}
-
-unsigned int AbstractValuesProperty::getDimensionsCountOfPatch(unsigned int patchIndex) const
-{
-	LONG64 nullValue = (numeric_limits<LONG64>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
-
-	return hdfProxy->getDimensionCount(dsPath);
-}
-
 void AbstractValuesProperty::pushBackFacet(gsoap_eml2_3::eml23__FacetKind facet, const std::string & facetValue)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -288,22 +232,4 @@ std::string AbstractValuesProperty::getFacetValue(unsigned int index) const
 	}
 	
 	throw logic_error("Not implemented yet");
-}
-
-unsigned int AbstractValuesProperty::getValuesCountOfPatch (unsigned int patchIndex) const
-{
-	LONG64 nullValue = (numeric_limits<LONG64>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
-
-	return hdfProxy->getElementCount(dsPath);
-}
-
-void AbstractValuesProperty::loadTargetRelationships()
-{
-	AbstractProperty::loadTargetRelationships();
-
-	for (size_t patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
-		convertDorIntoRel(getHdfProxyDor(patchIndex));
-	}
 }

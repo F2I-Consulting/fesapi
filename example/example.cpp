@@ -72,6 +72,7 @@ under the License.
 #include "resqml2_0_1/PropertySet.h"
 #include "resqml2_0_1/ContinuousProperty.h"
 #include "resqml2_0_1/DiscreteProperty.h"
+#include "resqml2_0_1/PointsProperty.h"
 #include "resqml2/CategoricalProperty.h"
 #include "resqml2/StringTableLookup.h"
 #include "resqml2/GridConnectionSetRepresentation.h"
@@ -991,6 +992,15 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	RESQML2_NS::CategoricalProperty* categoricalProp = pck->createCategoricalProperty(ijkgrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)", 1,
 		gsoap_eml2_3::resqml22__IndexableElement__cells, stringTableLookup, propType1);
 	categoricalProp->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
+
+	//**************
+	// Points Properties
+	//**************
+
+	RESQML2_NS::PointsProperty* pointsProp = pck->createPointsProperty(ijkgrid, "fdf3e92b-1ac2-4589-832d-69ee7c167db7", "Cell center", 1,
+		gsoap_eml2_3::resqml22__IndexableElement__cells, local3dCrs);
+	double cellCenters[6] = { 185, 75, 400, 560, 75, 450 };
+	pointsProp->pushBackArray3dOfXyzPoints(cellCenters, 2, 1, 1, hdfProxy);
 
 	//**************
 	// LGR
@@ -2140,13 +2150,13 @@ void showAllMetadata(COMMON_NS::AbstractObject const * obj, const std::string & 
 
 void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* enabledCells = nullptr)
 {
-	std::vector<RESQML2_NS::AbstractValuesProperty *> propertyValuesSet = rep->getValuesPropertySet();
-	if (!propertyValuesSet.empty()) {
+	std::vector<RESQML2_NS::AbstractProperty *> propertySet = rep->getPropertySet();
+	if (!propertySet.empty()) {
 		cout << "PROPERTIES" << std::endl;
 	}
-	for (size_t propIndex = 0; propIndex < propertyValuesSet.size(); ++propIndex) {
+	for (size_t propIndex = 0; propIndex < propertySet.size(); ++propIndex) {
 		std::cout << "\t--------------------------------------------------" << std::endl;
-		RESQML2_NS::AbstractValuesProperty const * propVal = propertyValuesSet[propIndex];
+		RESQML2_NS::AbstractProperty const * propVal = propertySet[propIndex];
 		showAllMetadata(propVal, "\t");
 
 		std::vector<RESQML2_NS::PropertySet *> propSets = propVal->getPropertySets();
@@ -2214,17 +2224,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 			}
 		}
 		else {
-			if (dynamic_cast<RESQML2_NS::ContinuousProperty const *>(propVal) == nullptr) {
-				cerr << "\tERROR !!!!! The discrete or categorical property is linked to a floating point HDF5 dataset." << endl;
-				cout << "\tTrying to convert.." << endl;
-				std::unique_ptr<LONG64[]> values(new LONG64[valueCount]);
-				dynamic_cast<RESQML2_NS::AbstractDiscreteOrCategoricalProperty const *>(propVal)->getLongValuesOfPatch(0, values.get());
-				std::cout << "\tFirst value is " << values[0] << endl;
-				std::cout << "\tSecond value is " << values[1] << endl;
-				cout << "\tPress enter to continue..." << endl;
-				cin.get();
-			}
-			else {
+			if (dynamic_cast<RESQML2_NS::ContinuousProperty const *>(propVal) != nullptr) {
 				RESQML2_NS::ContinuousProperty const * continuousProp = static_cast<RESQML2_NS::ContinuousProperty const *>(propVal);
 				const double maxValue = continuousProp->getMaximumValue();
 				const double minValue = continuousProp->getMinimumValue();
@@ -2246,6 +2246,23 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 					}
 				}
 			}
+			else if (dynamic_cast<RESQML2_NS::PointsProperty const *>(propVal) != nullptr) {
+				RESQML2_NS::PointsProperty const * pointsProp = static_cast<RESQML2_NS::PointsProperty const *>(propVal);
+				std::unique_ptr<double[]> values(new double[pointsProp->getXyzPointCountOfPatch(0) * 3]);
+				pointsProp->getXyzPointsOfPatch(0, values.get());
+				std::cout << "\tFirst point is " << values[0] << ", " << values[1] << ", " << values[2] << endl;
+				std::cout << "\tSecond point is " << values[3] << ", " << values[4] << ", " << values[5] << endl;
+			}
+			else {
+				cerr << "\tERROR !!!!! The discrete or categorical property is linked to a floating point HDF5 dataset." << endl;
+				cout << "\tTrying to convert.." << endl;
+				std::unique_ptr<LONG64[]> values(new LONG64[valueCount]);
+				dynamic_cast<RESQML2_NS::AbstractDiscreteOrCategoricalProperty const *>(propVal)->getLongValuesOfPatch(0, values.get());
+				std::cout << "\tFirst value is " << values[0] << endl;
+				std::cout << "\tSecond value is " << values[1] << endl;
+				cout << "\tPress enter to continue..." << endl;
+				cin.get();
+			}
 		}
 
 		// Time Series
@@ -2255,6 +2272,9 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 			std::cout << "\tTime index count is " << propVal->getTimeIndicesCount() << std::endl;
 		}
 	}
+
+
+
 	std::cout << "\t--------------------------------------------------" << std::endl;
 }
 
@@ -2583,7 +2603,7 @@ void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
 * and then layer by layer.
 * @param pck	An EPC document containing the IJK grid to deserialize.
 */
-void deserializeGridHyperslabbingInterfaceSequence(COMMON_NS::DataObjectRepository & pck)
+void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRepository & pck)
 {
 	cout << endl << "BEGIN: IJK GRID REP (hyperslabbing)" << std::endl;
 	unsigned int ijkGridCount = pck.getIjkGridRepresentationCount();
@@ -2863,7 +2883,7 @@ void displayBlockCellGeometry(RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid
 * layer by layer.
 * @param pck	An EPC document containing the IJK grid to deserialize.
 */
-void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
+void deserializeGridHyperslabbingBlock(const COMMON_NS::DataObjectRepository & pck)
 {
 	cout << endl << "BEGIN: IJK GRID REP (block hyperslabbing)" << endl;
 
@@ -3760,6 +3780,301 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 	}
 }
 #endif
+
+void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
+{
+	std::cout << endl << "IJK GRID REP" << endl;
+	unsigned int ijkGridCount = repo.getIjkGridRepresentationCount();
+	for (unsigned int ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx)
+	{
+		RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo.getIjkGridRepresentation(ijkGridIdx);
+
+		showAllMetadata(ijkGrid);
+		if (ijkGrid->isPartial()) {
+			showAllProperties(ijkGrid);
+			continue;
+		}
+		std::cout << "This ijk grid is ";
+		if (!ijkGrid->isNodeGeometryCompressed()) {
+			std::cout << "not ";
+		}
+		std::cout << "compressed." << std::endl;
+
+		if (ijkGrid->getGeometryKind() != RESQML2_NS::AbstractIjkGridRepresentation::NO_GEOMETRY)
+		{
+			std::cout << "Most complex pillar geometry is ";
+			gsoap_resqml2_0_1::resqml20__PillarShape mostcomplexPillarGeom = ijkGrid->getMostComplexPillarGeometry();
+			if (mostcomplexPillarGeom == gsoap_resqml2_0_1::resqml20__PillarShape__vertical) {
+				std::cout << "vertical";
+			}
+			else if (mostcomplexPillarGeom == gsoap_resqml2_0_1::resqml20__PillarShape__straight) {
+				std::cout << "straight";
+			}
+			else if (mostcomplexPillarGeom == gsoap_resqml2_0_1::resqml20__PillarShape__curved) {
+				std::cout << "curved";
+			}
+			std::cout << std::endl;
+
+			if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::LATTICE) {
+				std::cout << "This 3d grid has a lattice geometry." << std::endl;
+			}
+			else {
+				if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::PARAMETRIC)
+				{
+					std::cout << "This 3d grid has a parametric geometry." << std::endl;
+					RESQML2_NS::IjkGridParametricRepresentation* paramIjkGrid = static_cast<RESQML2_NS::IjkGridParametricRepresentation*>(ijkGrid);
+					if (paramIjkGrid->isParametricLineKindConstant())
+					{
+						std::cout << "Constant parametric line kind : " << paramIjkGrid->getConstantParametricLineKind() << std::endl;
+					}
+					else
+					{
+						std::cout << "Non constant parametric line kind" << std::endl;
+						std::unique_ptr<short[]> pillarKind(new short[paramIjkGrid->getPillarCount()]);
+						paramIjkGrid->getParametricLineKind(pillarKind.get());
+						for (size_t pillarIndex = 0; pillarIndex < paramIjkGrid->getPillarCount() && pillarIndex < 10; ++pillarIndex) {
+							cout << "Pillar index " << pillarIndex << " with kind " << pillarKind[pillarIndex] << endl;
+						}
+						std::unique_ptr<bool[]> pillarIsDefined(new bool[paramIjkGrid->getPillarCount()]);
+						paramIjkGrid->getPillarGeometryIsDefined(pillarIsDefined.get());
+						for (size_t pillarIndex = 0; pillarIndex < paramIjkGrid->getPillarCount() && pillarIndex < 10; ++pillarIndex) {
+							cout << "Pillar index " << pillarIndex << " is defined : " << pillarIsDefined[pillarIndex] << endl;
+						}
+					}
+
+					unsigned int patchCount = ijkGrid->getPatchCount();
+					for (unsigned int currentPatch = 0; currentPatch < patchCount; ++currentPatch) {
+						ULONG64 nbVertex = ijkGrid->getXyzPointCountOfPatch(currentPatch);
+
+						std::unique_ptr<double[]> xyzPts(new double[nbVertex * 3]);
+						ijkGrid->getXyzPointsOfPatch(currentPatch, xyzPts.get());
+
+						for (size_t vIndex = 0; vIndex < nbVertex && vIndex < 10; ++vIndex) {
+							double x = xyzPts[vIndex * 3];
+							double y = xyzPts[vIndex * 3 + 1];
+							double z = xyzPts[vIndex * 3 + 2];
+							std::cout << x << " " << y << " " << z << std::endl;
+						}
+					}
+					/*
+					ULONG64 pointCountByInterface = paramIjkGrid->getXyzPointCountOfKInterfaceOfPatch(0);
+					double* interfaceXyzPoints = new double[pointCountByInterface * 3];
+					paramIjkGrid->getXyzPointsOfKInterfaceOfPatch(0, 0, interfaceXyzPoints);
+					delete[] interfaceXyzPoints;
+					*/
+				}
+				else if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::EXPLICIT)
+				{
+					std::cout << "This 3d grid has an explicit geometry." << std::endl;
+				}
+				else
+				{
+					std::cout << "This 3d grid has an unknown geometry." << std::endl;
+				}
+
+				// read points
+				ULONG64 xyzPointCount = ijkGrid->getXyzPointCountOfAllPatches();
+				std::cout << "\t XYZ points count :" << xyzPointCount << std::endl;
+				std::cout << "\t Start reading XYZ points..." << std::endl;
+				std::unique_ptr<double[]> xyzPoints(new double[xyzPointCount * 3]);
+				ijkGrid->getXyzPointsOfAllPatches(xyzPoints.get());
+				std::cout << "\t Stop reading XYZ points :" << std::endl;
+
+				std::cout << "Split coordinate line count is : " << ijkGrid->getSplitCoordinateLineCount() << std::endl;
+			}
+		}
+		else
+			std::cout << "This 3d grid has no geometry." << std::endl;
+
+		if (ijkGrid->getInterpretation())
+		{
+			std::cout << "Interpretation is : " << ijkGrid->getInterpretation()->getTitle() << std::endl;
+			if (ijkGrid->getInterpretation()->getInterpretedFeature())
+				std::cout << "Feature is : " << ijkGrid->getInterpretation()->getInterpretedFeature()->getTitle() << std::endl;
+			else
+				std::cout << " NO Feature" << std::endl;
+		}
+		else
+			std::cout << " NO interpretation" << std::endl;
+
+		for (unsigned int subRepIndex = 0; subRepIndex < ijkGrid->getFaultSubRepresentationCount(); ++subRepIndex)
+		{
+			std::cout << "Fault Subrep is : " << ijkGrid->getFaultSubRepresentation(subRepIndex)->getTitle() << std::endl;
+		}
+
+		showAllSubRepresentations(ijkGrid->getSubRepresentationSet());
+
+		//*****************************
+		// TRUNCATION
+		//*****************************
+		if (ijkGrid->isTruncated()) {
+			std::cout << "This grid is truncated" << std::endl;
+			std::cout << "Truncated face count : " << ijkGrid->getTruncatedFaceCount() << std::endl;
+			std::cout << "Truncated cell count : " << ijkGrid->getTruncatedCellCount() << std::endl;
+
+			ULONG64* cellIndices = new ULONG64[ijkGrid->getTruncatedCellCount()];
+			ijkGrid->getTruncatedCellIndices(cellIndices);
+			for (ULONG64 index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
+				cout << "truncated cell Indices : " << cellIndices[index] << endl;
+			}
+			delete[] cellIndices;
+
+			ULONG64* cumNodeCount = new ULONG64[ijkGrid->getTruncatedFaceCount()];
+			ijkGrid->getCumulativeNodeCountPerTruncatedFace(cumNodeCount);
+			for (ULONG64 index = 0; index < ijkGrid->getTruncatedFaceCount() && index < 10; ++index) {
+				cout << "CumulativeNodeCountPerTruncatedFace : " << cumNodeCount[index] << endl;
+			}
+			ULONG64* nodeIndicesPerTruncFace = new ULONG64[cumNodeCount[ijkGrid->getTruncatedFaceCount() - 1]];
+			ijkGrid->getNodeIndicesOfTruncatedFaces(nodeIndicesPerTruncFace);
+			for (ULONG64 index = 0; index < cumNodeCount[ijkGrid->getTruncatedFaceCount() - 1] && index < 10; ++index) {
+				cout << "nodeIndicesPerTruncFace : " << nodeIndicesPerTruncFace[index] << endl;
+			}
+			delete[] cumNodeCount;
+			delete[] nodeIndicesPerTruncFace;
+
+			ULONG64* cumFaceCount = new ULONG64[ijkGrid->getTruncatedCellCount()];
+			ijkGrid->getCumulativeTruncatedFaceCountPerTruncatedCell(cumFaceCount);
+			for (ULONG64 index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
+				cout << "CumulativeTruncatedFaceCountPerTruncatedCell : " << cumFaceCount[index] << endl;
+			}
+			ULONG64* faceIndicesPerTruncCell = new ULONG64[cumFaceCount[ijkGrid->getTruncatedCellCount() - 1]];
+			ijkGrid->getTruncatedFaceIndicesOfTruncatedCells(faceIndicesPerTruncCell);
+			for (ULONG64 index = 0; index < cumFaceCount[ijkGrid->getTruncatedCellCount() - 1] && index < 10; ++index) {
+				cout << "faceIndicesPerTruncCell : " << faceIndicesPerTruncCell[index] << endl;
+			}
+			delete[] cumFaceCount;
+			delete[] faceIndicesPerTruncCell;
+
+			ULONG64* cumNonTruncFaceCount = new ULONG64[ijkGrid->getTruncatedCellCount()];
+			ijkGrid->getCumulativeNonTruncatedFaceCountPerTruncatedCell(cumNonTruncFaceCount);
+			for (ULONG64 index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
+				cout << "CumulativeNonTruncatedFaceCountPerTruncatedCell : " << cumNonTruncFaceCount[index] << endl;
+			}
+			ULONG64* nonTruncfaceIndicesPerTruncCell = new ULONG64[cumNonTruncFaceCount[ijkGrid->getTruncatedCellCount() - 1]];
+			ijkGrid->getNonTruncatedFaceIndicesOfTruncatedCells(nonTruncfaceIndicesPerTruncCell);
+			for (ULONG64 index = 0; index < cumNonTruncFaceCount[ijkGrid->getTruncatedCellCount() - 1] && index < 10; ++index) {
+				cout << "nonTruncfaceIndicesPerTruncCell : " << nonTruncfaceIndicesPerTruncCell[index] << endl;
+			}
+			delete[] cumNonTruncFaceCount;
+			delete[] nonTruncfaceIndicesPerTruncCell;
+
+			unsigned char* rightHandnessTruncFace = new unsigned char[ijkGrid->getTruncatedFaceCount()];
+			ijkGrid->getTruncatedFaceIsRightHanded(rightHandnessTruncFace);
+			for (ULONG64 index = 0; index < ijkGrid->getTruncatedFaceCount() && index < 10; ++index) {
+				cout << "rightHandnessTruncFace : " << rightHandnessTruncFace[index] << endl;
+			}
+			delete[] rightHandnessTruncFace;
+		}
+
+		//*****************************
+		// GRID CONNECTION SET 
+		//*****************************
+		unsigned int gridConnectionSetCount = ijkGrid->getGridConnectionSetRepresentationCount();
+		std::cout << "Grid Connection Count is : " << gridConnectionSetCount << std::endl;
+		if (gridConnectionSetCount > 0) {
+			RESQML2_NS::GridConnectionSetRepresentation const * gridConnectionSet = ijkGrid->getGridConnectionSetRepresentation(0);
+			unsigned int faultInterpOfGridConnCount = gridConnectionSet->getInterpretationCount();
+			std::cout << "Interpretation Count of this grid connection set is : " << faultInterpOfGridConnCount << endl;
+			if (faultInterpOfGridConnCount > 0)
+			{
+				RESQML2_NS::AbstractFeatureInterpretation* faultInterpOfGridConn = gridConnectionSet->getInterpretationFromIndex(0);
+				std::cout << "Interpretation of this grid connection set is : " << faultInterpOfGridConn->getTitle() << " With UUID " << faultInterpOfGridConn->getUuid() << endl;
+			}
+
+			int* localFacePerCellIndexPairs = new int[gridConnectionSet->getCellIndexPairCount() * 2];
+			LONG64 gcsNullValue = gridConnectionSet->getLocalFacePerCellIndexPairs(localFacePerCellIndexPairs);
+			std::cout << "Null Value for LocalFacePerCellIndexPairs : " << gcsNullValue << endl;
+			delete[] localFacePerCellIndexPairs;
+		}
+
+		//*****************************
+		// LGR 
+		//*****************************
+		if (ijkGrid->getParentGrid() != NULL)
+		{
+			std::cout << "\t PARENT WINDOW" << std::endl;
+			if (ijkGrid->getParentGrid()->getXmlTag() == RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG)
+			{
+				for (char dimension = 'i'; dimension < 'l'; ++dimension) {
+					std::cout << "\t\t DIMENSION :" << dimension << std::endl;
+					std::cout << "\t\t Regrid start at :" << ijkGrid->getRegridStartIndexOnParentGrid(dimension) << std::endl;
+					std::cout << "\t\t Interval count is :" << ijkGrid->getRegridIntervalCount(dimension) << std::endl;
+					if (ijkGrid->isRegridCellCountPerIntervalConstant('i', false)) {
+						std::cout << "\t\t Constant parent cell count per interval :" << ijkGrid->getRegridConstantCellCountPerInterval(dimension, false) << std::endl;
+					}
+					else {
+						std::cout << "\t\t Non constant parent cell count per interval" << std::endl;
+					}
+					if (ijkGrid->isRegridCellCountPerIntervalConstant('i', true)) {
+						std::cout << "\t\t Constant child cell count per interval :" << ijkGrid->getRegridConstantCellCountPerInterval(dimension, true) << std::endl;
+					}
+					else {
+						std::cout << "\t\t Non constant child cell count per interval" << std::endl;
+					}
+				}
+			}/*
+			 else if (ijkGrid->getParentGrid()->getXmlTag() == UnstructuredColumnLayerGridRepresentation::XML_TAG)
+			 {
+			 std::cout << "\t\t Refined columns count :" << ijkGrid->getParentColumnIndexCount() << std::endl;
+			 }*/
+			else if (ijkGrid->getParentGrid()->getXmlTag() == RESQML2_NS::UnstructuredGridRepresentation::XML_TAG)
+			{
+				std::cout << "\t\t Refined cells count :" << ijkGrid->getParentCellIndexCount() << std::endl;
+			}
+		}
+
+		//*****************************
+		// STRATIGRAPHY 
+		//*****************************
+		cout << "\t STRATIGRAPHY" << std::endl;
+		if (ijkGrid->hasIntervalStratigraphicUnitIndices())
+		{
+			cout << "\t\t Linked with strati : " << ijkGrid->getStratigraphicOrganizationInterpretation()->getTitle() << endl;
+			std::unique_ptr<ULONG64[]> stratiIndices(new ULONG64[ijkGrid->getKCellCount()]);
+			ijkGrid->getIntervalStratigraphicUnitIndices(stratiIndices.get());
+			for (size_t i = 0; i < ijkGrid->getKCellCount(); ++i) {
+				cout << "\t\t K layer " << i << " is linked to strati layer " << stratiIndices[i] << endl;
+			}
+		}
+		else
+		{
+			cout << "\t\t No link with stratigraphy." << endl;
+		}
+
+		std::unique_ptr<bool[]> enabledCells;
+		if (ijkGrid->hasEnabledCellInformation()) {
+			std::cout << "Has enabled/disabled cell information" << std::endl;
+			enabledCells = std::unique_ptr<bool[]>(new bool[ijkGrid->getCellCount()]);
+			ijkGrid->getEnabledCells(enabledCells.get());
+		}
+		showAllProperties(ijkGrid, enabledCells.get());
+	}
+
+	// Testing k-layers hyperslabbing
+	deserializeGridHyperslabbingInterfaceSequence(repo);
+
+	// Testing block hyperslabbing
+	deserializeGridHyperslabbingBlock(repo);
+
+
+	// ====================
+	// Timing hyperslabbing (time consuming)
+
+	//// 4*3*2 explicit grid Left Handed
+	//AbstractIjkGridRepresentation* ijkgrid432 = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("e96c2bde-e3ae-4d51-b078-a8e57fb1e667"));
+	//ijkGridHyperslabingTiming(ijkgrid432, 250000);
+
+	//// FOUR SUGARS PARAMETRIC
+	//AbstractIjkGridRepresentation* ijkgridParametric = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("37c45c00-fa3e-11e5-a21e-0002a5d5c51b"));
+	//ijkGridHyperslabingTiming(ijkgridParametric, 250000);
+
+	//// Four sugar cubes cellIndex
+	//DiscreteProperty* discreteProp1OnIjkgridParametric = static_cast<DiscreteProperty*>(pck.getDataObjectByUuid("eb3dbf6c-5745-4e41-9d09-672f6fbab414"));
+	//discretePropertyHyperslabingTiming(ijkgridParametric, discreteProp1OnIjkgridParametric, 250000);
+
+	// ====================
+}
+
 void deserialize(const string & inputFile)
 {
 	COMMON_NS::EpcDocument pck(inputFile);
@@ -4187,297 +4502,7 @@ void deserialize(const string & inputFile)
 		}
 	}
 
-	std::cout << endl << "IJK GRID REP" << endl;
-	unsigned int ijkGridCount = repo.getIjkGridRepresentationCount();
-	for (unsigned int ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx)
-	{
-		RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo.getIjkGridRepresentation(ijkGridIdx);
-
-		showAllMetadata(ijkGrid);
-		if (ijkGrid->isPartial()) {
-			showAllProperties(ijkGrid);
-			continue;
-		}
-		std::cout << "This ijk grid is ";
-		if (!ijkGrid->isNodeGeometryCompressed()) {
-			std::cout << "not ";
-		}
-		std::cout << "compressed." << std::endl;
-
-		if (ijkGrid->getGeometryKind() != RESQML2_NS::AbstractIjkGridRepresentation::NO_GEOMETRY)
-		{
-			std::cout << "Most complex pillar geometry is ";
-			gsoap_resqml2_0_1::resqml20__PillarShape mostcomplexPillarGeom = ijkGrid->getMostComplexPillarGeometry();
-			if (mostcomplexPillarGeom == gsoap_resqml2_0_1::resqml20__PillarShape__vertical) {
-				std::cout << "vertical";
-			}
-			else if (mostcomplexPillarGeom == gsoap_resqml2_0_1::resqml20__PillarShape__straight) {
-				std::cout << "straight";
-			}
-			else if (mostcomplexPillarGeom == gsoap_resqml2_0_1::resqml20__PillarShape__curved) {
-				std::cout << "curved";
-			}
-			std::cout << std::endl;
-
-			if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::LATTICE) {
-				std::cout << "This 3d grid has a lattice geometry." << std::endl;
-			}
-			else {
-				if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::PARAMETRIC)
-				{
-					std::cout << "This 3d grid has a parametric geometry." << std::endl;
-					RESQML2_NS::IjkGridParametricRepresentation* paramIjkGrid = static_cast<RESQML2_NS::IjkGridParametricRepresentation*>(ijkGrid);
-					if (paramIjkGrid->isParametricLineKindConstant())
-					{
-						std::cout << "Constant parametric line kind : " << paramIjkGrid->getConstantParametricLineKind() << std::endl;
-					}
-					else
-					{
-						std::cout << "Non constant parametric line kind" << std::endl;
-						std::unique_ptr<short[]> pillarKind(new short[paramIjkGrid->getPillarCount()]);
-						paramIjkGrid->getParametricLineKind(pillarKind.get());
-						for (size_t pillarIndex = 0; pillarIndex < paramIjkGrid->getPillarCount() && pillarIndex < 10; ++pillarIndex) {
-							cout << "Pillar index " << pillarIndex << " with kind " << pillarKind[pillarIndex] << endl;
-						}
-						std::unique_ptr<bool[]> pillarIsDefined(new bool[paramIjkGrid->getPillarCount()]);
-						paramIjkGrid->getPillarGeometryIsDefined(pillarIsDefined.get());
-						for (size_t pillarIndex = 0; pillarIndex < paramIjkGrid->getPillarCount() && pillarIndex < 10; ++pillarIndex) {
-							cout << "Pillar index " << pillarIndex << " is defined : " << pillarIsDefined[pillarIndex] << endl;
-						}
-					}
-
-					unsigned int patchCount = ijkGrid->getPatchCount();
-					for (unsigned int currentPatch = 0; currentPatch < patchCount; ++currentPatch) {
-						ULONG64 nbVertex = ijkGrid->getXyzPointCountOfPatch(currentPatch);
-
-						std::unique_ptr<double[]> xyzPts(new double[nbVertex * 3]);
-						ijkGrid->getXyzPointsOfPatch(currentPatch, xyzPts.get());
-
-						for (size_t vIndex = 0; vIndex < nbVertex && vIndex < 10; ++vIndex) {
-							double x = xyzPts[vIndex * 3];
-							double y = xyzPts[vIndex * 3 + 1];
-							double z = xyzPts[vIndex * 3 + 2];
-							std::cout << x << " " << y << " " << z << std::endl;
-						}
-					}
-					/*
-					ULONG64 pointCountByInterface = paramIjkGrid->getXyzPointCountOfKInterfaceOfPatch(0);
-					double* interfaceXyzPoints = new double[pointCountByInterface * 3];
-					paramIjkGrid->getXyzPointsOfKInterfaceOfPatch(0, 0, interfaceXyzPoints);
-					delete[] interfaceXyzPoints;
-					*/
-				}
-				else if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::EXPLICIT)
-				{
-					std::cout << "This 3d grid has an explicit geometry." << std::endl;
-				}
-				else
-				{
-					std::cout << "This 3d grid has an unknown geometry." << std::endl;
-				}
-
-				// read points
-				ULONG64 xyzPointCount = ijkGrid->getXyzPointCountOfAllPatches();
-				std::cout << "\t XYZ points count :" << xyzPointCount << std::endl;
-				std::cout << "\t Start reading XYZ points..." << std::endl;
-				std::unique_ptr<double[]> xyzPoints(new double[xyzPointCount * 3]);
-				ijkGrid->getXyzPointsOfAllPatches(xyzPoints.get());
-				std::cout << "\t Stop reading XYZ points :" << std::endl;
-
-				std::cout << "Split coordinate line count is : " << ijkGrid->getSplitCoordinateLineCount() << std::endl;
-			}
-		}
-		else
-			std::cout << "This 3d grid has no geometry." << std::endl;
-
-		if (ijkGrid->getInterpretation())
-		{
-			std::cout << "Interpretation is : " << ijkGrid->getInterpretation()->getTitle() << std::endl;
-			if (ijkGrid->getInterpretation()->getInterpretedFeature())
-				std::cout << "Feature is : " << ijkGrid->getInterpretation()->getInterpretedFeature()->getTitle() << std::endl;
-			else
-				std::cout << " NO Feature" << std::endl;
-		}
-		else
-			std::cout << " NO interpretation" << std::endl;
-
-		for (unsigned int subRepIndex = 0; subRepIndex < ijkGrid->getFaultSubRepresentationCount(); ++subRepIndex)
-		{
-			std::cout << "Fault Subrep is : " << ijkGrid->getFaultSubRepresentation(subRepIndex)->getTitle() << std::endl;
-		}
-
-		showAllSubRepresentations(ijkGrid->getSubRepresentationSet());
-
-		//*****************************
-		// TRUNCATION
-		//*****************************
-		if (ijkGrid->isTruncated()) {
-			std::cout << "This grid is truncated" << std::endl;
-			std::cout << "Truncated face count : " << ijkGrid->getTruncatedFaceCount() << std::endl;
-			std::cout << "Truncated cell count : " << ijkGrid->getTruncatedCellCount() << std::endl;
-
-			ULONG64* cellIndices = new ULONG64[ijkGrid->getTruncatedCellCount()];
-			ijkGrid->getTruncatedCellIndices(cellIndices);
-			for (ULONG64 index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
-				cout << "truncated cell Indices : " << cellIndices[index] << endl;
-			}
-			delete[] cellIndices;
-
-			ULONG64* cumNodeCount = new ULONG64[ijkGrid->getTruncatedFaceCount()];
-			ijkGrid->getCumulativeNodeCountPerTruncatedFace(cumNodeCount);
-			for (ULONG64 index = 0; index < ijkGrid->getTruncatedFaceCount() && index < 10; ++index) {
-				cout << "CumulativeNodeCountPerTruncatedFace : " << cumNodeCount[index] << endl;
-			}
-			ULONG64* nodeIndicesPerTruncFace = new ULONG64[cumNodeCount[ijkGrid->getTruncatedFaceCount() - 1]];
-			ijkGrid->getNodeIndicesOfTruncatedFaces(nodeIndicesPerTruncFace);
-			for (ULONG64 index = 0; index < cumNodeCount[ijkGrid->getTruncatedFaceCount() - 1] && index < 10; ++index) {
-				cout << "nodeIndicesPerTruncFace : " << nodeIndicesPerTruncFace[index] << endl;
-			}
-			delete[] cumNodeCount;
-			delete[] nodeIndicesPerTruncFace;
-
-			ULONG64* cumFaceCount = new ULONG64[ijkGrid->getTruncatedCellCount()];
-			ijkGrid->getCumulativeTruncatedFaceCountPerTruncatedCell(cumFaceCount);
-			for (ULONG64 index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
-				cout << "CumulativeTruncatedFaceCountPerTruncatedCell : " << cumFaceCount[index] << endl;
-			}
-			ULONG64* faceIndicesPerTruncCell = new ULONG64[cumFaceCount[ijkGrid->getTruncatedCellCount() - 1]];
-			ijkGrid->getTruncatedFaceIndicesOfTruncatedCells(faceIndicesPerTruncCell);
-			for (ULONG64 index = 0; index < cumFaceCount[ijkGrid->getTruncatedCellCount() - 1] && index < 10; ++index) {
-				cout << "faceIndicesPerTruncCell : " << faceIndicesPerTruncCell[index] << endl;
-			}
-			delete[] cumFaceCount;
-			delete[] faceIndicesPerTruncCell;
-
-			ULONG64* cumNonTruncFaceCount = new ULONG64[ijkGrid->getTruncatedCellCount()];
-			ijkGrid->getCumulativeNonTruncatedFaceCountPerTruncatedCell(cumNonTruncFaceCount);
-			for (ULONG64 index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
-				cout << "CumulativeNonTruncatedFaceCountPerTruncatedCell : " << cumNonTruncFaceCount[index] << endl;
-			}
-			ULONG64* nonTruncfaceIndicesPerTruncCell = new ULONG64[cumNonTruncFaceCount[ijkGrid->getTruncatedCellCount() - 1]];
-			ijkGrid->getNonTruncatedFaceIndicesOfTruncatedCells(nonTruncfaceIndicesPerTruncCell);
-			for (ULONG64 index = 0; index < cumNonTruncFaceCount[ijkGrid->getTruncatedCellCount() - 1] && index < 10; ++index) {
-				cout << "nonTruncfaceIndicesPerTruncCell : " << nonTruncfaceIndicesPerTruncCell[index] << endl;
-			}
-			delete[] cumNonTruncFaceCount;
-			delete[] nonTruncfaceIndicesPerTruncCell;
-
-			unsigned char* rightHandnessTruncFace = new unsigned char[ijkGrid->getTruncatedFaceCount()];
-			ijkGrid->getTruncatedFaceIsRightHanded(rightHandnessTruncFace);
-			for (ULONG64 index = 0; index < ijkGrid->getTruncatedFaceCount() && index < 10; ++index) {
-				cout << "rightHandnessTruncFace : " << rightHandnessTruncFace[index] << endl;
-			}
-			delete[] rightHandnessTruncFace;
-		}
-
-		//*****************************
-		// GRID CONNECTION SET 
-		//*****************************
-		unsigned int gridConnectionSetCount = ijkGrid->getGridConnectionSetRepresentationCount();
-		std::cout << "Grid Connection Count is : " << gridConnectionSetCount << std::endl;
-		if (gridConnectionSetCount > 0) {
-			RESQML2_NS::GridConnectionSetRepresentation const * gridConnectionSet = ijkGrid->getGridConnectionSetRepresentation(0);
-			unsigned int faultInterpOfGridConnCount = gridConnectionSet->getInterpretationCount();
-			std::cout << "Interpretation Count of this grid connection set is : " << faultInterpOfGridConnCount << endl;
-			if (faultInterpOfGridConnCount > 0)
-			{
-				RESQML2_NS::AbstractFeatureInterpretation* faultInterpOfGridConn = gridConnectionSet->getInterpretationFromIndex(0);
-				std::cout << "Interpretation of this grid connection set is : " << faultInterpOfGridConn->getTitle() << " With UUID " << faultInterpOfGridConn->getUuid() << endl;
-			}
-
-			int* localFacePerCellIndexPairs = new int[gridConnectionSet->getCellIndexPairCount() * 2];
-			LONG64 gcsNullValue = gridConnectionSet->getLocalFacePerCellIndexPairs(localFacePerCellIndexPairs);
-			std::cout << "Null Value for LocalFacePerCellIndexPairs : " << gcsNullValue << endl;
-			delete[] localFacePerCellIndexPairs;
-		}
-
-		//*****************************
-		// LGR 
-		//*****************************
-		if (ijkGrid->getParentGrid() != NULL)
-		{
-			std::cout << "\t PARENT WINDOW" << std::endl;
-			if (ijkGrid->getParentGrid()->getXmlTag() == RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG)
-			{
-				for (char dimension = 'i'; dimension < 'l'; ++dimension) {
-					std::cout << "\t\t DIMENSION :" << dimension << std::endl;
-					std::cout << "\t\t Regrid start at :" << ijkGrid->getRegridStartIndexOnParentGrid(dimension) << std::endl;
-					std::cout << "\t\t Interval count is :" << ijkGrid->getRegridIntervalCount(dimension) << std::endl;
-					if (ijkGrid->isRegridCellCountPerIntervalConstant('i', false)) {
-						std::cout << "\t\t Constant parent cell count per interval :" << ijkGrid->getRegridConstantCellCountPerInterval(dimension, false) << std::endl;
-					}
-					else {
-						std::cout << "\t\t Non constant parent cell count per interval" << std::endl;
-					}
-					if (ijkGrid->isRegridCellCountPerIntervalConstant('i', true)) {
-						std::cout << "\t\t Constant child cell count per interval :" << ijkGrid->getRegridConstantCellCountPerInterval(dimension, true) << std::endl;
-					}
-					else {
-						std::cout << "\t\t Non constant child cell count per interval" << std::endl;
-					}
-				}
-			}/*
-			 else if (ijkGrid->getParentGrid()->getXmlTag() == UnstructuredColumnLayerGridRepresentation::XML_TAG)
-			 {
-			 std::cout << "\t\t Refined columns count :" << ijkGrid->getParentColumnIndexCount() << std::endl;
-			 }*/
-			else if (ijkGrid->getParentGrid()->getXmlTag() == RESQML2_NS::UnstructuredGridRepresentation::XML_TAG)
-			{
-				std::cout << "\t\t Refined cells count :" << ijkGrid->getParentCellIndexCount() << std::endl;
-			}
-		}
-
-		//*****************************
-		// STRATIGRAPHY 
-		//*****************************
-		cout << "\t STRATIGRAPHY" << std::endl;
-		if (ijkGrid->hasIntervalStratigraphicUnitIndices())
-		{
-			cout << "\t\t Linked with strati : " << ijkGrid->getStratigraphicOrganizationInterpretation()->getTitle() << endl;
-			std::unique_ptr<ULONG64[]> stratiIndices(new ULONG64[ijkGrid->getKCellCount()]);
-			ijkGrid->getIntervalStratigraphicUnitIndices(stratiIndices.get());
-			for (size_t i = 0; i < ijkGrid->getKCellCount(); ++i) {
-				cout << "\t\t K layer " << i << " is linked to strati layer " << stratiIndices[i] << endl;
-			}
-		}
-		else
-		{
-			cout << "\t\t No link with stratigraphy." << endl;
-		}
-
-		std::unique_ptr<bool[]> enabledCells;
-		if (ijkGrid->hasEnabledCellInformation()) {
-			std::cout << "Has enabled/disabled cell information" << std::endl;
-			enabledCells = std::unique_ptr<bool[]>(new bool[ijkGrid->getCellCount()]);
-			ijkGrid->getEnabledCells(enabledCells.get());
-		}
-		showAllProperties(ijkGrid, enabledCells.get());
-	}
-
-	// Testing k-layers hyperslabbing
-	deserializeGridHyperslabbingInterfaceSequence(repo);
-
-	// Testing block hyperslabbing
-	deserializeGridHyperslabbingBlock(repo);
-
-
-	// ====================
-	// Timing hyperslabbing (time consuming)
-
-	//// 4*3*2 explicit grid Left Handed
-	//AbstractIjkGridRepresentation* ijkgrid432 = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("e96c2bde-e3ae-4d51-b078-a8e57fb1e667"));
-	//ijkGridHyperslabingTiming(ijkgrid432, 250000);
-
-	//// FOUR SUGARS PARAMETRIC
-	//AbstractIjkGridRepresentation* ijkgridParametric = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("37c45c00-fa3e-11e5-a21e-0002a5d5c51b"));
-	//ijkGridHyperslabingTiming(ijkgridParametric, 250000);
-
-	//// Four sugar cubes cellIndex
-	//DiscreteProperty* discreteProp1OnIjkgridParametric = static_cast<DiscreteProperty*>(pck.getDataObjectByUuid("eb3dbf6c-5745-4e41-9d09-672f6fbab414"));
-	//discretePropertyHyperslabingTiming(ijkgridParametric, discreteProp1OnIjkgridParametric, 250000);
-
-	// ====================
-
+	deserializeIjkGrid(repo);
 
 	std::cout << endl << "UNSTRUCTURED GRID REP" << endl;
 	for (size_t i = 0; i < unstructuredGridRepSet.size(); ++i)

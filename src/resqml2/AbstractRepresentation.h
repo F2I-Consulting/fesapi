@@ -24,6 +24,9 @@ under the License.
 
 namespace RESQML2_NS
 {
+	class AbstractValuesProperty;
+	class PointsProperty;
+
 	/** @brief	Proxy class for an abstract representation. */
 	class AbstractRepresentation : public COMMON_NS::AbstractObject
 	{
@@ -78,32 +81,8 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<class AbstractProperty *> getPropertySet() const;
 
-		/**
-		 * Gets of all the values properties which use this representation as support.
-		 *
-		 * @returns	A vector of pointers to all the values properties which use this representation as
-		 * 			support.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<class AbstractValuesProperty *> getValuesPropertySet() const;
-
-		/**
-		 * Gets the count of values properties which use this representation as support.
-		 *
-		 * @returns	The values properties count.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getValuesPropertyCount() const; // Necessary for now in SWIG context because I ma not sure if I can always wrap a vector of polymorphic class yet.
-
-		/**
-		 * Gets a particular values property which uses this representation as support.
-		 * 
-		 * @exception std::out_of_range If @p index is out of range of the array of properties 
-		 * 								for this representation.
-		 * 								
-		 * @param index	The index of the values property we look for.
-		 * 				
-		 * @returns The values property at position @p index.
-		 */
-		DLL_IMPORT_OR_EXPORT class AbstractValuesProperty * getValuesProperty(unsigned int index) const; // Necessary for now in SWIG context because I ma not sure if I can always wrap a vector of polymorphic class yet.
+		GETTER_DATAOBJECTS(AbstractValuesProperty, ValuesProperty)
+		GETTER_DATAOBJECTS(PointsProperty, PointsProperty)
 
 		/**
 		 * Sets the interpretation which is associated to this representation.
@@ -130,57 +109,9 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getInterpretationDor() const;
 
-		/**
-		 * Gets all the subrepresentations of this representation.
-		 *
-		 * @returns	A vector of pointers to all of the subrepresentations associated to this
-		 * 			representation.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<SubRepresentation *> getSubRepresentationSet() const;
-
-		/**
-		 * Get the count of all the subrepresentations associated to this representation.
-		 *
-		 * @returns	The count of all subrepresentations associated to this representation.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getSubRepresentationCount() const; //  It is mainly used in SWIG context for parsing the vector from a non C++ language.
-
-		/**
-		 * Gets a particular subrepresentation associated to this representation according to its
-		 * position in the EPC document.
-		 *
-		 * @exception	std::out_of_range	If @p index is out of range.
-		 *
-		 * @param 	index	Zero-based index of the subrepresentation we look for.
-		 *
-		 * @returns	The subrepresentaiton at position @p index.
-		 */
-		DLL_IMPORT_OR_EXPORT SubRepresentation * getSubRepresentation(unsigned int index) const; //  It is mainly used in SWIG context for parsing the vector from a non C++ language.
-
-		/**
-		 * Gets all the subrepresentations of this representation which represent a fault.
-		 *
-		 * @returns	A vector of pointers to all the fault subrepresentations associated to this
-		 * 			representation.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<SubRepresentation *> getFaultSubRepresentationSet() const;
-
-		/**
-		 * Gets the count of all the fault subrepresentations of this EPC document associated to this
-		 * representation.
-		 *
-		 * @returns	The fault subrepresentations count.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getFaultSubRepresentationCount() const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
-
-		/**
-		 * Gets a particular fault subrepresentation associated to this representation according to its position in the EPC document.
-		 *
-		 * @param 	index	Zero-based index of the fault subrepresentation we look for.
-		 *
-		 * @returns	The fault subrepresentation at position @p index.
-		 */
-		DLL_IMPORT_OR_EXPORT SubRepresentation * getFaultSubRepresentation(unsigned int index) const; //  It is mainly used in SWIG context for parsing the vector from a non C++ language.
+		GETTER_DATAOBJECTS(SubRepresentation, SubRepresentation)
+		GETTER_DATAOBJECTS(SubRepresentation, FaultSubRepresentation)
+		GETTER_DATAOBJECTS(RepresentationSetRepresentation, RepresentationSetRepresentation)
 
 		/**
 		 * Get the xyz point count in a given patch of this representation.
@@ -305,34 +236,6 @@ namespace RESQML2_NS
 		 * 							representation.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackIntoRepresentationSet(class RepresentationSetRepresentation * repSet);
-
-		/**
-		 * Gets all the representation set representations which contain this representation.
-		 *
-		 * @returns	A vector of pointers to all the representation set representations which contain this
-		 * 			representation.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RepresentationSetRepresentation *> getRepresentationSetRepresentationSet() const;
-
-		/**
-		 * Gets the count of all representation set representations which contain this representation.
-		 *
-		 * @returns	The count of all representation set representations which contain this representation.
-		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getRepresentationSetRepresentationCount() const;
-
-		/**
-		 * Gets the parent representation set representation at the specified index of the
-		 * representation set representation list.
-		 *
-		 * @exception	out_of_range	If @p index is out of the range of representation set
-		 * 								representation count.
-		 *
-		 * @param 	index	Zero-based index of the representation set representation we look for.
-		 *
-		 * @returns	The parent representation set representation at position @p index.
-		 */
-		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation* getRepresentationSetRepresentation(ULONG64 index) const;
 
 		/**
 		 * Adds seismic 3d coordinates to an existing point geometry patch.

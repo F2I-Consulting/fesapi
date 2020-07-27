@@ -66,6 +66,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		ORGANIZATIONFEATURE,
 		PLANESETREPRESENTATION,
 		POINTSETREPRESENTATION,
+		POINTSPROPERTY,
 		POLYLINEREPRESENTATION,
 		POLYLINESETREPRESENTATION,
 		PROPERTYKIND,
@@ -559,6 +560,21 @@ ${COMMENT_END}
 		return null;
 	}
 	
+	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.PointsProperty resqml2_instantiatePointsProperty(long cPtr, boolean owner)
+	{
+		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
+		if ("resqml20".equals(xmlNs)) {
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PointsProperty_resqml20(cPtr, owner);
+		}
+${COMMENT_START}
+		else if ("resqml22".equals(xmlNs)) {
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.PointsProperty_resqml22(cPtr, owner);
+		}
+${COMMENT_END}
+		
+		return null;
+	}
+	
 	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.PolylineRepresentation resqml2_instantiatePolylineRepresentation(long cPtr, boolean owner)
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
@@ -927,6 +943,7 @@ ${COMMENT_END}
 		case ORGANIZATIONFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.OrganizationFeature_resqml20(cPtr, owner);
 		case PLANESETREPRESENTATION : return resqml2_instantiatePlaneSetRepresentation(cPtr, owner);
 		case POINTSETREPRESENTATION : return resqml2_instantiatePointSetRepresentation(cPtr, owner);
+		case POINTSPROPERTY : return resqml2_instantiatePointsProperty(cPtr, owner);
 		case POLYLINEREPRESENTATION : return resqml2_instantiatePolylineRepresentation(cPtr, owner);
 		case POLYLINESETREPRESENTATION : return resqml2_instantiatePolylineSetRepresentation(cPtr, owner);
 		case PROPERTYKIND : return eml2_instantiatePropertyKind(cPtr, owner);
@@ -1049,6 +1066,7 @@ namespace RESQML2_NS
 						NonSealedSurfaceFrameworkRepresentation*,
 						PlaneSetRepresentation*,
 						PointSetRepresentation*,
+						PointsProperty*,
 						PolylineRepresentation*,
 						PolylineSetRepresentation*,
 						PropertySet*,

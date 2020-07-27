@@ -20,8 +20,8 @@ under the License.
 
 #include "catch.hpp"
 
-#include "resqml2_0_1test/WellboreInterpretationTest.h"
-#include "resqml2_0_1test/WellboreTrajectoryRepresentationTest.h"
+#include "resqml2_test/WellboreInterpretationTest.h"
+#include "resqml2_test/WellboreTrajectoryRepresentationTest.h"
 
 #include "resqml2/WellboreInterpretation.h"
 #include "resqml2/WellboreTrajectoryRepresentation.h"
@@ -45,10 +45,10 @@ WellboreRegularFrameRepresentationTest::WellboreRegularFrameRepresentationTest(D
 
 void WellboreRegularFrameRepresentationTest::initRepoHandler() {
 	// creating dependencies
-	resqml2_0_1test::WellboreTrajectoryRepresentationTest trajTest(repo, true);
+	resqml2_test::WellboreTrajectoryRepresentationTest trajTest(repo, true);
 
-	RESQML2_NS::WellboreInterpretation * interp = repo->getDataObjectByUuid<RESQML2_NS::WellboreInterpretation>(resqml2_0_1test::WellboreInterpretationTest::defaultUuid);
-	RESQML2_NS::WellboreTrajectoryRepresentation * traj = repo->getDataObjectByUuid<RESQML2_NS::WellboreTrajectoryRepresentation>(resqml2_0_1test::WellboreTrajectoryRepresentationTest::defaultUuid);
+	RESQML2_NS::WellboreInterpretation * interp = repo->getDataObjectByUuid<RESQML2_NS::WellboreInterpretation>(resqml2_test::WellboreInterpretationTest::defaultUuid);
+	RESQML2_NS::WellboreTrajectoryRepresentation * traj = repo->getDataObjectByUuid<RESQML2_NS::WellboreTrajectoryRepresentation>(resqml2_test::WellboreTrajectoryRepresentationTest::defaultUuid);
 
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];

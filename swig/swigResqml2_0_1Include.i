@@ -84,6 +84,7 @@ under the License.
 #include "../src/resqml2_0_1/CategoricalProperty.h"
 #include "../src/resqml2_0_1/CommentProperty.h"
 #include "../src/resqml2_0_1/ContinuousProperty.h"
+#include "../src/resqml2_0_1/PointsProperty.h"
 
 #include "../src/resqml2_0_1/Activity.h"
 #include "../src/resqml2_0_1/ActivityTemplate.h"
@@ -369,6 +370,7 @@ namespace RESQML2_0_1_NS
 	%nspace RESQML2_0_1_NS::OrganizationFeature;
 	%nspace RESQML2_0_1_NS::PlaneSetRepresentation;
 	%nspace RESQML2_0_1_NS::PointSetRepresentation;
+	%nspace RESQML2_0_1_NS::PointsProperty;
 	%nspace RESQML2_0_1_NS::PolylineRepresentation;
 	%nspace RESQML2_0_1_NS::PolylineSetRepresentation;
 	%nspace RESQML2_0_1_NS::PropertyKind;
@@ -406,9 +408,9 @@ namespace RESQML2_0_1_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
 	
-	//************************************
-	//************ Activity **************
-	//************************************
+	//***********************************/
+	//************ Activity *************/
+	//***********************************/
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(ActivityTemplate_resqml20) ActivityTemplate;
@@ -434,9 +436,9 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::resqml20__ResqmlUom getFloatingPointQuantityParameterUom(unsigned int index) const;
 	};
 
-	//************************************
-	//************ CRS *******************
-	//************************************
+	//************************************/
+	//************ CRS *******************/
+	//************************************/
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(LocalDepth3dCrs_resqml20) LocalDepth3dCrs;
 #endif
@@ -461,9 +463,9 @@ namespace RESQML2_0_1_NS
 	public:
 	};
 	
-	//************************************
-	//************ FEATURE ***************
-	//************************************
+	//************************************/
+	//************ FEATURE ***************/
+	//************************************/
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(BoundaryFeature_resqml20) BoundaryFeature;
@@ -579,9 +581,9 @@ namespace RESQML2_0_1_NS
 	public:
 	};
 
-	//************************************
-	//************ INTERPRETATION ********
-	//************************************
+	//************************************/
+	//************ INTERPRETATION ********/
+	//************************************/
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(GenericFeatureInterpretation_resqml20) GenericFeatureInterpretation;
 #endif
@@ -701,9 +703,9 @@ namespace RESQML2_0_1_NS
 	public:
 	};
 
-	//************************************
-	//************ REPRESENTATION ********
-	//************************************
+	//************************************/
+	//************ REPRESENTATION ********/
+	//************************************/
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(SubRepresentation_resqml20) SubRepresentation;
@@ -884,9 +886,9 @@ namespace RESQML2_0_1_NS
 	public:
 	};
 
-	//************************************
-	//************** PROPERTY ************
-	//************************************	
+	//************************************/
+	//************** PROPERTY ************/
+	//************************************/
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(TimeSeries_resqml20) TimeSeries;
 #endif	
@@ -950,6 +952,15 @@ namespace RESQML2_0_1_NS
 	%rename(CategoricalProperty_resqml20) CategoricalProperty;
 #endif
 	class CategoricalProperty : public RESQML2_NS::CategoricalProperty
+	{
+	public:
+		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind() const;
+	};
+	
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(PointsProperty_resqml20) PointsProperty;
+#endif
+	class PointsProperty : public RESQML2_NS::PointsProperty
 	{
 	public:
 		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind() const;

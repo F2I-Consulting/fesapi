@@ -66,6 +66,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		ORGANIZATIONFEATURE,
 		PLANESETREPRESENTATION,
 		POINTSETREPRESENTATION,
+		POINTSPROPERTY,
 		POLYLINEREPRESENTATION,
 		POLYLINESETREPRESENTATION,
 		PROPERTYKIND,
@@ -559,6 +560,21 @@ ${COMMENT_END}
 		return null;
 	}
 	
+	public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.PointsProperty resqml2_instantiatePointsProperty(global::System.IntPtr cPtr, bool owner)
+	{
+		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
+		if (xmlNs.Equals("resqml20")) {
+			return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PointsProperty(cPtr, owner);
+		}
+${COMMENT_START}
+		else if (xmlNs.Equals("resqml22")) {
+			return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.PointsProperty(cPtr, owner);
+		}
+${COMMENT_END}
+		
+		return null;
+	}
+	
 	public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.PolylineRepresentation resqml2_instantiatePolylineRepresentation(global::System.IntPtr cPtr, bool owner)
 	{
 		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
@@ -928,6 +944,7 @@ ${COMMENT_END}
 		case DataObjectName.ORGANIZATIONFEATURE : return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.OrganizationFeature(cPtr, owner);
 		case DataObjectName.PLANESETREPRESENTATION : return resqml2_instantiatePlaneSetRepresentation(cPtr, owner);
 		case DataObjectName.POINTSETREPRESENTATION : return resqml2_instantiatePointSetRepresentation(cPtr, owner);
+		case DataObjectName.POINTSPROPERTY : return resqml2_instantiatePointSetRepresentation(cPtr, owner);
 		case DataObjectName.POLYLINEREPRESENTATION : return resqml2_instantiatePolylineRepresentation(cPtr, owner);
 		case DataObjectName.POLYLINESETREPRESENTATION : return resqml2_instantiatePolylineSetRepresentation(cPtr, owner);
 		case DataObjectName.PROPERTYKIND : return eml2_instantiatePropertyKind(cPtr, owner);
@@ -1042,6 +1059,7 @@ namespace RESQML2_NS
 										NonSealedSurfaceFrameworkRepresentation*,
 										PlaneSetRepresentation*,
 										PointSetRepresentation*,
+										PointsProperty*,
 										PolylineRepresentation*,
 										PolylineSetRepresentation*,
 										PropertySet*,

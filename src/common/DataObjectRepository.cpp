@@ -66,6 +66,7 @@ under the License.
 #include "../resqml2_0_1/ContinuousProperty.h"
 #include "../resqml2_0_1/CategoricalProperty.h"
 #include "../resqml2_0_1/DiscreteProperty.h"
+#include "../resqml2_0_1/PointsProperty.h"
 #include "../resqml2_0_1/CommentProperty.h"
 #include "../resqml2_0_1/StringTableLookup.h"
 #include "../resqml2_0_1/SeismicLineFeature.h"
@@ -137,6 +138,7 @@ under the License.
 #include "../resqml2_2/NonSealedSurfaceFrameworkRepresentation.h"
 #include "../resqml2_2/PlaneSetRepresentation.h"
 #include "../resqml2_2/PointSetRepresentation.h"
+#include "../resqml2_2/PointsProperty.h"
 #include "../resqml2_2/PolylineRepresentation.h"
 #include "../resqml2_2/PolylineSetRepresentation.h"
 #include "../resqml2_2/PropertySet.h"
@@ -893,6 +895,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::OrganizationFeature)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PlaneSetRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PointSetRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PointsProperty)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PolylineRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PolylineSetRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PropertyKind)
@@ -966,6 +969,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::NonSealedSurfaceFrameworkRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::PlaneSetRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::PointSetRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::PointsProperty)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::PolylineRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::PolylineSetRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::PropertySet)
@@ -2573,6 +2577,29 @@ RESQML2_NS::CategoricalProperty* DataObjectRepository::createCategoricalProperty
 	}
 }
 
+RESQML2_0_1_NS::PointsProperty* DataObjectRepository::createPointsProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+	gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind)
+{
+	return new RESQML2_0_1_NS::PointsProperty(rep, guid, title, dimension, attachmentKind, localCrs, energisticsPropertyKind);
+}
+
+RESQML2_NS::PointsProperty* DataObjectRepository::createPointsProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+	EML2_NS::PropertyKind * localPropType)
+{
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::PointsProperty(rep, guid, title, dimension, attachmentKind, localCrs, localPropType);
+#ifdef WITH_RESQML2_2
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::PointsProperty(rep, guid, title, dimension, attachmentKind, localCrs, localPropType);
+#endif
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
+}
+
 //************************************
 //************* ACTIVITIES ***********
 //************************************
@@ -3285,6 +3312,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapC
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousProperty)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CategoricalProperty)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscreteProperty)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PointsProperty)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CommentProperty)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StringTableLookup)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EarthModelInterpretation)
@@ -3419,6 +3447,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(NonSealedSurfaceFrameworkRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PlaneSetRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PointSetRepresentation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PointsProperty)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PolylineRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PolylineSetRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PropertySet)

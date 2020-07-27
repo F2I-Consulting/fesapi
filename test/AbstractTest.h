@@ -20,11 +20,7 @@ under the License.
 
 #include <iostream>
 
-#include "nsDefinitions.h"
-
-namespace COMMON_NS {
-	class DataObjectRepository;
-}
+#include "common/DataObjectRepository.h"
 
 namespace commontest {
 	/**
@@ -69,6 +65,10 @@ namespace commontest {
 		 * As reading differs from one unit test to another, it is virtual in this most general testing class.
 		 */
 		virtual void readRepo() = 0;
+
+		COMMON_NS::DataObjectRepository::EnergisticsStandard defaultEmlVersion;
+		COMMON_NS::DataObjectRepository::EnergisticsStandard defaultResqmlVersion;
+
 	protected:
 		COMMON_NS::DataObjectRepository* repo;
 		const std::string epcDocPath;
