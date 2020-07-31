@@ -19,11 +19,13 @@ under the License.
 %{
 #include "../src/prodml2_1/FluidSystem.h"
 #include "../src/prodml2_1/FluidCharacterization.h"
+#include "../src/prodml2_1/TimeSeriesData.h"
 %}
 
 namespace std {
 	%template(FluidSystemVector) vector<PRODML2_1_NS::FluidSystem*>;
 	%template(FluidCharacterizationVector) vector<PRODML2_1_NS::FluidCharacterization*>;
+	%template(TimeSeriesDataVector) vector<PRODML2_1_NS::TimeSeriesData*>;
 }
 
 //#ifdef SWIGJAVA
@@ -38,6 +40,7 @@ namespace std {
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
 	%nspace PRODML2_1_NS::FluidSystem;
 	%nspace PRODML2_1_NS::FluidCharacterization;
+	%nspace PRODML2_1_NS::TimeSeriesData;
 #endif
 
 namespace gsoap_eml2_2
@@ -723,5 +726,179 @@ namespace PRODML2_1_NS
 		* @param 	rowContent		The string containing the content of the row in the table .
 		*/
 		void pushBackTableRow(unsigned int modelIndex, unsigned int tableIndex, const std::string & rowContent);
+	};
+	
+	/** The time series data object is intended for use in transferring time series of data, e.g. from a historian. 
+	 * The Time Series data object describes a context free, time based series of measurement data for the 
+	 * purpose of targeted exchanges between consumers and providers of data services. This is intended for 
+	 * use in support of smart fields or high-frequency historian type interactions, not reporting. It provides a 
+	 * flat view of the data and uses a set of keyword-value pairs to define the business identity of the series, 
+	 * as described in the following generalized hierarchy.
+	 */
+	class TimeSeriesData : public COMMON_NS::AbstractObject
+	{
+	public:
+		/**
+		* The keyword value pairs are used to characterize the underlying nature of the values. The key value may provide part of the unique identity of an instance of a concept or it may characterize the underlying concept.
+		* @param	keyword	One of this enumerated value
+		*   - asset identifier :	A formatted URI identifier of the asset (facility) related to the value. This captures the 
+		*							kind of asset as well as the unique identifier of the asset within a specified context 
+		*							(the authority). The identifier may define a hierarchy of assets.
+		*   - qualifier :			A qualifier of the meaning of the value. This is used to distinguish between variations 
+		*							of an underlying meaning based on the method of creating the value (e.g., measured 
+		*							versus simulated). The values associated with this keyword must be from the list 
+		*							defined by type FlowQualifier. 
+		*	- subqualifier :		A specialization of a qualifier. The values associated with this keyword must be from 
+		*							the list defined by type FlowSubQualifier. 
+		*	- product :				The type of product that is represented by the value. This is generally used with 
+		*							things like volume or flow rate. It is generally meaningless for things like temperature 
+		*							or pressure. The values associated with this keyword must be from the list defined by 
+		*							type ReportingProduct. 
+		*	- flow :				Defines the part of the flow network where the asset is located. This is most useful in 
+		*							situations (e.g., reporting) where detailed knowledge of the network configuration is 
+		*							not needed. Basically, this classifies different segments of the flow network based on 
+		*							its purpose within the context of the whole network. The values associated with this 
+		*							keyword must be from the list defined by type ReportingFlow.
+		* @param	value	The string value associated to the keyword
+		*/
+		void pushBackKeywordValue(gsoap_eml2_2::prodml21__TimeSeriesKeyword keyword, const std::string & value);
+
+		/**
+		* Set the uom of the data of the time series.
+		*
+		* @param uom	The unit of measure taken from the standard Energistics
+		 * 				units of measure catalog. Please check
+		 * 				COMMON_NS::EnumStringMapper::getEnergisticsUnitOfMeasure in order
+		 * 				to minimize the use of non standard unit of measure.
+		*/
+		void setUom(gsoap_resqml2_0_1::resqml20__ResqmlUom uom);
+
+		/**
+		* Set the measure class of the data of the time series.
+		*
+		* @param measureClass	The measure class to set.
+		*/
+		void setMeasureClass(gsoap_eml2_2::eml22__MeasureClass measureClass);
+
+		/**
+		* Push back a new value (i.e data) in the time series
+		*
+		* @param value	The value to push back.
+		* @param value	(Optional) The time of the value to push back.
+		*/
+		void pushBackDoubleValue(double value, time_t timestamp = -1);
+
+		/**
+		* Push back a new value (i.e data) in the time series
+		*
+		* @param value	The value to push back.
+		* @param value	The time of the value to push back.
+		* @param value	The status of the value to push back.
+		*/
+		void pushBackDoubleValue(double value, time_t timestamp, gsoap_eml2_2::prodml21__ValueStatus status);
+
+		/**
+		* Push back a new value (i.e data) in the time series
+		*
+		* @param value	The value to push back.
+		* @param value	(Optional) The time of the value to push back.
+		*/
+		void pushBackStringValue(const std::string & value, time_t timestamp = -1);
+
+		/**
+		 * Gets the unit of measure of the values of this time series as a string.
+		 *
+		 * @returns	The unit of measure of the values of this time series as a string. Returns empty string if no uom is stored.
+		 */
+		std::string getUomAsString() const;
+
+		/**
+		 * Gets the measure class of the values of this time series as a string.
+		 *
+		 * @returns	The measure class of the values of this time series as a string. Returns empty string if no measure class is stored.
+		 */
+		std::string getMeasureClassAsString() const;
+
+		/**
+		* Get the count of value in this time series
+		*/
+		unsigned int getValueCount() const;
+
+		/**
+		* Check if a value at a particular index is a double one.
+		*
+		* @param index	The index of the value in this timeseries
+		* @return true if the value at this index is a double one
+		*/
+		bool isDoubleValue(unsigned int index) const;
+
+		/**
+		* Check if a value at a particular index is a string one.
+		*
+		* @param index	The index of the value in this timeseries
+		* @return true if the value at this index is a string one
+		*/
+		bool isStringValue(unsigned int index) const;
+
+		/**
+		* Get a double value at a particular index.
+		*
+		* @param index	The index of the value in this timeseries
+		* @return the double value at a particular index
+		*/
+		double getDoubleValue(unsigned int index) const;
+
+		/**
+		* Get a string value at a particular index.
+		*
+		* @param index	The index of the value in this timeseries
+		* @return the string value at a particular index
+		*/
+		std::string getStringValue(unsigned int index) const;
+
+		/**
+		* Get the timestamp associated to a value at a particular index.
+		*
+		* @param index	The index of the value in this timeseries
+		* @return the timestamp associated to a value at a particular index. -1 if no timesteamp is provided for this value.
+		*/
+		time_t getValueTimestamp(unsigned int index) const;
+
+		/**
+		* Check if a value at a particular index has a status.
+		*
+		* @param index	The index of the value in this timeseries
+		* @return true if the value at this index has a status
+		*/
+		bool hasValueStatus(unsigned int index) const;
+
+		/**
+		* Get the status associated to a value at a particular index.
+		*
+		* @param index	The index of the value in this timeseries
+		* @return the status associated to a value at a particular index.
+		*/
+		gsoap_eml2_2::prodml21__ValueStatus getValueStatus(unsigned int index) const;
+
+		/**
+		* Get the count of keywords in this time series
+		*/
+		unsigned int getKeywordCount() const;
+
+		/**
+		* Get a keyword at a particular index.
+		*
+		* @param index	The index of the keyword in this timeseries
+		* @return the keyword at a particular index
+		*/
+		gsoap_eml2_2::prodml21__TimeSeriesKeyword getKeyword(unsigned int index) const;
+
+		/**
+		* Get the value of a keyword at a particular index.
+		*
+		* @param index	The index of the value in this timeseries
+		* @return the value of a keyword at a particular index.
+		*/
+		std::string getKeywordValue(unsigned int index) const;
 	};
 }

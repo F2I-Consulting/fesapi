@@ -965,14 +965,53 @@ namespace COMMON_NS
 			
 		//*************** PRODML *************/	
 		
+		/**
+		 * Creates a fluid system into this repository
+		 *
+		 * @param 	guid			  	The guid to set to the fluid system. If empty then a new guid
+		 * 								will be generated.
+		 * @param 	title			  	The title to set to the fluid system. If empty then \"unknown\"
+		 * 								title will be set.
+		 * @param 	temperatureValue  	The temperature value.
+		 * @param 	temperatureUom	  	The temperature unit of measure.
+		 * @param 	pressureValue	  	The pressure value.
+		 * @param 	pressureUom		  	The pressure unit of measure.
+		 * @param 	reservoirFluidKind	The kind of the reservoir fluid.
+		 * @param 	gasOilRatio		  	The gas oil ratio.
+		 * @param 	gasOilRatioUom	  	The gas oil ratio unit of measure.
+		 *
+		 * @returns	A pointer to the new fluid system.
+		 */
 		PRODML2_1_NS::FluidSystem* createFluidSystem(const std::string & guid,
 			const std::string & title,
 			double temperatureValue, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom temperatureUom,
 			double pressureValue, gsoap_eml2_2::eml22__PressureUom pressureUom,
 			gsoap_eml2_2::prodml21__ReservoirFluidKind reservoirFluidKind,
 			double gasOilRatio, gsoap_eml2_2::eml22__VolumePerVolumeUom gasOilRatioUom);
-			
+
+		/**
+		 * Creates a fluid characterization into this repository
+		 *
+		 * @param 	guid 	The guid to set to the fluid characterization. If empty then a new guid will
+		 * 					be generated.
+		 * @param 	title	The title to set to the fluid characterization. If empty then \"unknown\"
+		 * 					title will be set.
+		 *
+		 * @returns	A pointer to the new fluid characterization.
+		 */
 		PRODML2_1_NS::FluidCharacterization* createFluidCharacterization(const std::string & guid, const std::string & title);
+
+		/**
+		 * Creates a time series data into this repository
+		 *
+		 * @param 	guid 	The guid to set to the time series data. If empty then a new guid will
+		 * 					be generated.
+		 * @param 	title	The title to set to the time series data. If empty then \"unknown\"
+		 * 					title will be set.
+		 *
+		 * @returns	A pointer to the new time series data.
+		 */
+		PRODML2_1_NS::TimeSeriesData* createTimeSeriesData(const std::string & guid, const std::string & title);
 
 #ifdef WITH_RESQML2_2
 		//************************************/

@@ -193,6 +193,7 @@ under the License.
 
 #include "../prodml2_1/FluidSystem.h"
 #include "../prodml2_1/FluidCharacterization.h"
+#include "../prodml2_1/TimeSeriesData.h"
 
 #if !defined(FESAPI_USE_BOOST_UUID)
 #include "../tools/GuidTools.h"
@@ -865,6 +866,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if (ns == "prodml21") {
 		if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_1_NS::FluidSystem)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_1_NS::FluidCharacterization)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_1_NS::TimeSeriesData)
 	}
 	else if (ns == "resqml20") {
 		if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::Activity)
@@ -2785,6 +2787,11 @@ PRODML2_1_NS::FluidCharacterization* DataObjectRepository::createFluidCharacteri
 	return new PRODML2_1_NS::FluidCharacterization(this, guid, title);
 }
 
+PRODML2_1_NS::TimeSeriesData* DataObjectRepository::createTimeSeriesData(const std::string & guid, const std::string & title)
+{
+	return new PRODML2_1_NS::TimeSeriesData(this, guid, title);
+}
+
 EML2_NS::GraphicalInformationSet* DataObjectRepository::createGraphicalInformationSet(const std::string & guid, const std::string & title)
 {
 #if WITH_RESQML2_2
@@ -3402,6 +3409,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getProdml2_1WrapperFromGsoapCon
 
 	if CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PRODML2_1_NS, FluidSystem, gsoap_eml2_2)
 	else if CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PRODML2_1_NS, FluidCharacterization, gsoap_eml2_2)
+	else if CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PRODML2_1_NS, TimeSeriesData, gsoap_eml2_2)
 
 		return wrapper;
 }
