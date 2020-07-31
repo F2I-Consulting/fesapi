@@ -120,42 +120,6 @@ std::string ContinuousProperty::getUomAsString() const
 	return gsoap_resqml2_0_1::soap_resqml20__ResqmlUom2s(gsoapProxy2_0_1->soap, uom);
 }
 
-std::string ContinuousProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName)
-{
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-		if (proxy == nullptr) {
-			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-		}
-	}
-	getRepository()->addRelationship(this, proxy);
-	gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
-
-	gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = gsoap_resqml2_0_1::soap_new_resqml20__PatchOfValues(gsoapProxy2_0_1->soap);
-	patch->RepresentationPatchIndex = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(ULONG64)));
-	*(patch->RepresentationPatchIndex) = prop->PatchOfValues.size();
-
-	// XML
-	gsoap_resqml2_0_1::resqml20__DoubleHdf5Array* xmlValues = gsoap_resqml2_0_1::soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
-	xmlValues->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
-	xmlValues->Values->HdfProxy = proxy->newResqmlReference();
-
-	if (datasetName.empty()) {
-		ostringstream ossForHdf;
-		ossForHdf << "values_patch" << *(patch->RepresentationPatchIndex);
-		xmlValues->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
-	}
-	else {
-		xmlValues->Values->PathInHdfFile = datasetName;
-	}
-
-	patch->Values = xmlValues;
-
-	prop->PatchOfValues.push_back(patch);
-
-	return xmlValues->Values->PathInHdfFile;
-}
-
 EML2_NS::AbstractHdfProxy* ContinuousProperty::getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const
 {
 	if (patchIndex >= getPatchCount()) {

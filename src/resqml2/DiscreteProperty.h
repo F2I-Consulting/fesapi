@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractDiscreteOrCategoricalProperty.h"
+#include "AbstractValuesProperty.h"
 
 #include <limits>
 
@@ -30,7 +30,7 @@ namespace RESQML2_NS
 	 * 			before accessing all values, it also optionally stores the minimum and maximum value
 	 * 			in the range.
 	 */
-	class DiscreteProperty : public RESQML2_NS::AbstractDiscreteOrCategoricalProperty
+	class DiscreteProperty : public RESQML2_NS::AbstractValuesProperty
 	{
 	public:
 
@@ -55,7 +55,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue	The maximum value of the values to add.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5Array1dOfValues(const LONG64 * values, ULONG64 valueCount, EML2_NS::AbstractHdfProxy* proxy, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue);
-		using AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5Array1dOfValues;
+		using AbstractValuesProperty::pushBackLongHdf5Array1dOfValues;
 		
 		/**
 		 * Adds a 1d array of explicit integer values to the property values.
@@ -63,7 +63,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackLongHdf5Array1dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackIntHdf5Array1dOfValues(const int * values, ULONG64 valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		using AbstractDiscreteOrCategoricalProperty::pushBackIntHdf5Array1dOfValues;
+		using AbstractValuesProperty::pushBackIntHdf5Array1dOfValues;
 		
 		/**
 		 * Adds a 1d array of explicit short values to the property values.
@@ -71,7 +71,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackLongHdf5Array1dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackShortHdf5Array1dOfValues(const short * values, ULONG64 valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
-		using AbstractDiscreteOrCategoricalProperty::pushBackShortHdf5Array1dOfValues;
+		using AbstractValuesProperty::pushBackShortHdf5Array1dOfValues;
 		
 		/**
 		 * Adds a 1d array of explicit char values to the property values.
@@ -79,7 +79,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackLongHdf5Array1dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackCharHdf5Array1dOfValues(const char * values, ULONG64 valueCount, EML2_NS::AbstractHdfProxy* proxy, char nullValue, char minimumValue, char maximumValue);
-		using AbstractDiscreteOrCategoricalProperty::pushBackCharHdf5Array1dOfValues;
+		using AbstractValuesProperty::pushBackCharHdf5Array1dOfValues;
 
 		/**
 		 * @brief Adds a 2d array of explicit long values to the property values.
@@ -102,7 +102,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		  	The maximum value of the values to add.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5Array2dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue);
-		using AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5Array2dOfValues;
+		using AbstractValuesProperty::pushBackLongHdf5Array2dOfValues;
 		
 		/**
 		 * Adds a 2d array of explicit integer values to the property values.
@@ -110,7 +110,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackLongHdf5Array2dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackIntHdf5Array2dOfValues(const int * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		using AbstractDiscreteOrCategoricalProperty::pushBackIntHdf5Array2dOfValues;
+		using AbstractValuesProperty::pushBackIntHdf5Array2dOfValues;
 		
 		/**
 		 * Adds a 2d array of explicit short values to the property values.
@@ -118,7 +118,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackLongHdf5Array2dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackShortHdf5Array2dOfValues(const short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
-		using AbstractDiscreteOrCategoricalProperty::pushBackShortHdf5Array2dOfValues;
+		using AbstractValuesProperty::pushBackShortHdf5Array2dOfValues;
 		
 		/**
 		 * Adds a 2d array of explicit unsigned short values to the property values.
@@ -126,7 +126,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackLongHdf5Array2dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
-		using AbstractDiscreteOrCategoricalProperty::pushBackUShortHdf5Array2dOfValues;
+		using AbstractValuesProperty::pushBackUShortHdf5Array2dOfValues;
 		
 		/**
 		 * Adds a 2d array of explicit char values to the property values.
@@ -134,7 +134,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackLongHdf5Array2dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackCharHdf5Array2dOfValues(const char * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, char nullValue, char minimumValue, char maximumValue);
-		using AbstractDiscreteOrCategoricalProperty::pushBackCharHdf5Array2dOfValues;
+		using AbstractValuesProperty::pushBackCharHdf5Array2dOfValues;
 
 		/**
 		 * @brief Adds a 3d array of explicit long values to the property values.
@@ -159,7 +159,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		  	The maximum value of the values to add.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5Array3dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue);
-		using AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5Array3dOfValues;
+		using AbstractValuesProperty::pushBackLongHdf5Array3dOfValues;
 		
 		/**
 		 * Adds a 3d array of explicit integer values to the property values.
@@ -167,7 +167,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackLongHdf5Array3dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackIntHdf5Array3dOfValues(const int * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		using AbstractDiscreteOrCategoricalProperty::pushBackIntHdf5Array3dOfValues;
+		using AbstractValuesProperty::pushBackIntHdf5Array3dOfValues;
 		
 		/**
 		 * Adds a 3d array of explicit short values to the property values.
@@ -175,7 +175,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackLongHdf5Array3dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackShortHdf5Array3dOfValues(const short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
-		using AbstractDiscreteOrCategoricalProperty::pushBackShortHdf5Array3dOfValues;
+		using AbstractValuesProperty::pushBackShortHdf5Array3dOfValues;
 		
 		/**
 		 * Adds a 3d array of explicit unsigned short values to the property values.
@@ -183,7 +183,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackLongHdf5Array3dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
-		using AbstractDiscreteOrCategoricalProperty::pushBackUShortHdf5Array3dOfValues;
+		using AbstractValuesProperty::pushBackUShortHdf5Array3dOfValues;
 		
 		/**
 		 * Adds a 3d array of explicit char values to the property values.
@@ -191,7 +191,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackLongHdf5Array3dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackCharHdf5Array3dOfValues(const char * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, char nullValue, char minimumValue, char maximumValue);
-		using AbstractDiscreteOrCategoricalProperty::pushBackCharHdf5Array3dOfValues;
+		using AbstractValuesProperty::pushBackCharHdf5Array3dOfValues;
 
 		/**
 		 * @brief Adds an nd array of explicit long values to the property values.
@@ -316,8 +316,8 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The name of the referenced HDF5 dataset.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue) = 0;
-		using AbstractDiscreteOrCategoricalProperty::pushBackRefToExistingDataset;
+		DLL_IMPORT_OR_EXPORT virtual std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue) = 0;
+		using AbstractValuesProperty::pushBackRefToExistingIntegerDataset;
 
 		//***************************
 		//*** For hyperslabbing *****
@@ -355,7 +355,7 @@ namespace RESQML2_NS
 			LONG64* minimumValue, LONG64* maximumValue,
 			LONG64 nullValue = (std::numeric_limits<LONG64>::max)(),
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
-		using AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5ArrayOfValues;
+		using AbstractValuesProperty::pushBackLongHdf5ArrayOfValues;
 
 		/**
 		 * Creates a 3d array of explicit long 64 values into the property values. No values are written
@@ -438,7 +438,7 @@ namespace RESQML2_NS
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
-		using AbstractDiscreteOrCategoricalProperty::setValuesOfLongHdf5Array3dOfValues;
+		using AbstractValuesProperty::setValuesOfLongHdf5Array3dOfValues;
 
 		/**
 		 * Adds an nd array of explicit long 64 bits values into to the property values. Since this
@@ -582,7 +582,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	partialObject	If non-null, the partial object.
 		 */
-		DiscreteProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractDiscreteOrCategoricalProperty(partialObject) {}
+		DiscreteProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
 
 		/** Default constructor */
 		DiscreteProperty() {}
@@ -592,14 +592,14 @@ namespace RESQML2_NS
 		*
 		* @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		*/
-		DiscreteProperty(gsoap_resqml2_0_1::_resqml20__DiscreteProperty* fromGsoap) : AbstractDiscreteOrCategoricalProperty(fromGsoap) {}
+		DiscreteProperty(gsoap_resqml2_0_1::_resqml20__DiscreteProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gSOAP instance.
 		*
 		* @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		*/
-		DiscreteProperty(gsoap_eml2_3::_resqml22__DiscreteProperty* fromGsoap) : AbstractDiscreteOrCategoricalProperty(fromGsoap) {}
+		DiscreteProperty(gsoap_eml2_3::_resqml22__DiscreteProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 
 		virtual size_t getMinimumValueSize() const = 0;
 		virtual size_t getMaximumValueSize() const = 0;

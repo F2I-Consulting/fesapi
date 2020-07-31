@@ -73,7 +73,8 @@ under the License.
 #include "resqml2_0_1/ContinuousProperty.h"
 #include "resqml2_0_1/DiscreteProperty.h"
 #include "resqml2_0_1/PointsProperty.h"
-#include "resqml2/CategoricalProperty.h"
+#include "resqml2_0_1/CategoricalProperty.h"
+#include "resqml2/DoubleTableLookup.h"
 #include "resqml2/StringTableLookup.h"
 #include "resqml2/GridConnectionSetRepresentation.h"
 #include "resqml2/IjkGridExplicitRepresentation.h"
@@ -992,6 +993,21 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	RESQML2_NS::CategoricalProperty* categoricalProp = pck->createCategoricalProperty(ijkgrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)", 1,
 		gsoap_eml2_3::resqml22__IndexableElement__cells, stringTableLookup, propType1);
 	categoricalProp->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
+
+	// Relative permeability
+	RESQML2_NS::ContinuousProperty* waterSat = pck->createContinuousProperty(ijkgrid, "cbbc24b1-9a4b-4088-9d0e-e254088d3840", "Water saturation", 1,
+		gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom___x0025, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__saturation);
+	double waterSatValues[2] = { 0.35, 0.85 };
+	waterSat->pushBackDoubleHdf5Array3dOfValues(waterSatValues, 2, 1, 1, hdfProxy);
+
+	RESQML2_NS::DoubleTableLookup* waterRelPermTable = pck->createDoubleTableLookup("c51039fb-3178-41d3-86d7-5e5a74c5a46b", "My String Table Lookup");
+	waterRelPermTable->addValue(.0, .0);
+	waterRelPermTable->addValue(0.22, 0.005);
+	waterRelPermTable->addValue(0.75, 0.46);
+	waterRelPermTable->addValue(1.0, 1.0);
+	RESQML2_NS::CategoricalProperty* waterRelPerm = pck->createCategoricalProperty(ijkgrid, "dd4eae66-fe52-4086-a023-5b2c423543d5", "Water Relative Permeability", 1,
+		gsoap_eml2_3::resqml22__IndexableElement__cells, waterRelPermTable, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__relative_x0020permeability);
+	waterRelPerm->pushBackRefToExistingFloatingPointDataset(nullptr, "/resqml20/cbbc24b1-9a4b-4088-9d0e-e254088d3840/values_patch0");
 
 	//**************
 	// Points Properties
@@ -2156,23 +2172,23 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 	}
 	for (size_t propIndex = 0; propIndex < propertySet.size(); ++propIndex) {
 		std::cout << "\t--------------------------------------------------" << std::endl;
-		RESQML2_NS::AbstractProperty const * propVal = propertySet[propIndex];
-		showAllMetadata(propVal, "\t");
+		RESQML2_NS::AbstractProperty const * prop = propertySet[propIndex];
+		showAllMetadata(prop, "\t");
 
-		std::vector<RESQML2_NS::PropertySet *> propSets = propVal->getPropertySets();
+		std::vector<RESQML2_NS::PropertySet *> propSets = prop->getPropertySets();
 		for (size_t propSetIndex = 0; propSetIndex < propSets.size(); ++propSetIndex) {
 			RESQML2_NS::PropertySet* propSet = propSets[propSetIndex];
 			std::cout << "\tContained in property set : ";
 			showAllMetadata(propSet, "\t");
 		}
 
-		std::cout << "\tProperty kind is : " << propVal->getPropertyKindAsString() << std::endl;
-		if (propVal->isAssociatedToOneStandardEnergisticsPropertyKind()) {
+		std::cout << "\tProperty kind is : " << prop->getPropertyKindAsString() << std::endl;
+		if (prop->isAssociatedToOneStandardEnergisticsPropertyKind()) {
 			std::cout << "\tProperty kind is an Energistics one" << std::endl;
 		}
 		else {
 			std::cout << "\tProperty kind is not an Energistics one" << std::endl;
-			auto pk = propVal->getPropertyKind();
+			auto pk = prop->getPropertyKind();
 			auto pk201 = dynamic_cast<RESQML2_0_1_NS::PropertyKind*>(pk);
 			if (pk201 != nullptr && pk201->isParentAnEnergisticsPropertyKind()) {
 				std::cout << "\t\tProperty kind parent is an Energistics one" << std::endl;
@@ -2185,47 +2201,62 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 		}
 
 		// Dimension
-		unsigned int dimCount = propVal->getDimensionsCountOfPatch(0);
+		unsigned int dimCount = prop->getDimensionsCountOfPatch(0);
 		std::cout << "\tDimension count is : " << dimCount << std::endl;
 		for (unsigned int dimIndex = 0; dimIndex < dimCount; ++dimIndex) {
-			std::cout << "\tValues count in dimension " << dimIndex << " is : " << propVal->getValuesCountOfDimensionOfPatch(dimIndex, 0) << std::endl;
+			std::cout << "\tValues count in dimension " << dimIndex << " is : " << prop->getValuesCountOfDimensionOfPatch(dimIndex, 0) << std::endl;
 		}
-		unsigned int valueCount = propVal->getValuesCountOfPatch(0);
+		unsigned int valueCount = prop->getValuesCountOfPatch(0);
 		std::cout << "\tValues count in all dimensions is : " << valueCount << std::endl;
 
 		// Datatype
-		std::cout << "\tDatatype is : " << propVal->getValuesHdfDatatype() << std::endl;
-		if (propVal->getValuesHdfDatatype() == 0) {
+		std::cout << "\tDatatype is : " << prop->getValuesHdfDatatype() << std::endl;
+		if (prop->getValuesHdfDatatype() == 0) {
 			cerr << "\tERROR !!!!! The hdf datatype is unknown" << endl;
 			cout << "\tPress enter to continue..." << endl;
 			cin.get();
 		}
-		else if (propVal->getValuesHdfDatatype() > 2) {
-			if (dynamic_cast<RESQML2_NS::DiscreteProperty const *>(propVal) == nullptr && dynamic_cast<RESQML2_NS::CategoricalProperty const *>(propVal) == nullptr) {
-				cerr << "\tERROR !!!!! The continuous property is linked to an integer HDF5 dataset." << endl;
+		else if (prop->getValuesHdfDatatype() > 2) {
+			if (dynamic_cast<RESQML2_NS::DiscreteProperty const *>(prop) == nullptr && dynamic_cast<RESQML2_NS::CategoricalProperty const *>(prop) == nullptr) {
+				cerr << "\tERROR !!!!! Only categorical or Discrete properties should be associated to an integer dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
 				std::unique_ptr<double[]> values(new double[valueCount]);
-				static_cast<RESQML2_NS::ContinuousProperty const *>(propVal)->getDoubleValuesOfPatch(0, values.get());
+				static_cast<RESQML2_NS::ContinuousProperty const *>(prop)->getDoubleValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 				cout << "\tPress enter to continue..." << endl;
 				cin.get();
 			}
-			else if (dynamic_cast<RESQML2_NS::DiscreteProperty const *>(propVal) != nullptr) {
-				RESQML2_NS::DiscreteProperty const * discreteProp = static_cast<RESQML2_NS::DiscreteProperty const *>(propVal);
-				if (discreteProp->hasMinimumValue() && discreteProp->hasMinimumValue()) {
-					std::cout << "\tMax value is " << discreteProp->getMaximumValue() << endl;
-					std::cout << "\tMin value is " << discreteProp->getMinimumValue() << endl;
+			else {
+				if (dynamic_cast<RESQML2_NS::DiscreteProperty const *>(prop) != nullptr) {
+					RESQML2_NS::DiscreteProperty const * discreteProp = static_cast<RESQML2_NS::DiscreteProperty const *>(prop);
+					if (discreteProp->hasMinimumValue() && discreteProp->hasMinimumValue()) {
+						std::cout << "\tMax value is " << discreteProp->getMaximumValue() << endl;
+						std::cout << "\tMin value is " << discreteProp->getMinimumValue() << endl;
+					}
+				}
+				else { //RESQML2_NS::CategoricalProperty
+					RESQML2_NS::StringTableLookup* stl = static_cast<RESQML2_NS::CategoricalProperty const *>(prop)->getStringLookup();
+					if (stl == nullptr) {
+						cerr << "\tERROR !!!!! An integer categorical property should be associated to a string table lookup." << endl;
+						cout << "\tPress enter to continue..." << endl;
+						cin.get();
+					}
+					const unsigned int itemCount = stl->getItemCount();
+					std::cout << "\tAssociated String Table lookup" << endl;
+					for (unsigned int itemIndex = 0; itemIndex < itemCount; ++itemIndex) {
+						std::cout << stl->getKeyAtIndex(itemIndex) << "->" << stl->getStringValueAtIndex(itemIndex) << endl;
+					}
 				}
 				std::unique_ptr<LONG64[]> values(new LONG64[valueCount]);
-				discreteProp->getLongValuesOfPatch(0, values.get());
+				static_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getLongValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 			}
 		}
 		else {
-			if (dynamic_cast<RESQML2_NS::ContinuousProperty const *>(propVal) != nullptr) {
-				RESQML2_NS::ContinuousProperty const * continuousProp = static_cast<RESQML2_NS::ContinuousProperty const *>(propVal);
+			if (dynamic_cast<RESQML2_NS::ContinuousProperty const *>(prop) != nullptr) {
+				RESQML2_NS::ContinuousProperty const * continuousProp = static_cast<RESQML2_NS::ContinuousProperty const *>(prop);
 				const double maxValue = continuousProp->getMaximumValue();
 				const double minValue = continuousProp->getMinimumValue();
 				std::cout << "\tMax value is " << maxValue << endl;
@@ -2246,18 +2277,35 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 					}
 				}
 			}
-			else if (dynamic_cast<RESQML2_NS::PointsProperty const *>(propVal) != nullptr) {
-				RESQML2_NS::PointsProperty const * pointsProp = static_cast<RESQML2_NS::PointsProperty const *>(propVal);
+			else if (dynamic_cast<RESQML2_NS::PointsProperty const *>(prop) != nullptr) {
+				RESQML2_NS::PointsProperty const * pointsProp = static_cast<RESQML2_NS::PointsProperty const *>(prop);
 				std::unique_ptr<double[]> values(new double[pointsProp->getXyzPointCountOfPatch(0) * 3]);
 				pointsProp->getXyzPointsOfPatch(0, values.get());
 				std::cout << "\tFirst point is " << values[0] << ", " << values[1] << ", " << values[2] << endl;
 				std::cout << "\tSecond point is " << values[3] << ", " << values[4] << ", " << values[5] << endl;
 			}
+			else if (dynamic_cast<RESQML2_NS::CategoricalProperty const *>(prop) != nullptr) {
+				RESQML2_NS::DoubleTableLookup* stl = static_cast<RESQML2_NS::CategoricalProperty const *>(prop)->getDoubleLookup();
+				if (stl == nullptr) {
+					cerr << "\tERROR !!!!! A floating point categorical property should be associated to a double table lookup." << endl;
+					cout << "\tPress enter to continue..." << endl;
+					cin.get();
+				}
+				const unsigned int itemCount = stl->getItemCount();
+				std::cout << "\tAssociated Double Table lookup" << endl;
+				for (unsigned int itemIndex = 0; itemIndex < itemCount; ++itemIndex) {
+					std::cout << stl->getKeyAtIndex(itemIndex) << "->" << stl->getValueAtIndex(itemIndex) << endl;
+				}
+				std::unique_ptr<double[]> values(new double[valueCount]);
+				static_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getDoubleValuesOfPatch(0, values.get());
+				std::cout << "\tFirst value is " << values[0] << endl;
+				std::cout << "\tSecond value is " << values[1] << endl;
+			}
 			else {
-				cerr << "\tERROR !!!!! The discrete or categorical property is linked to a floating point HDF5 dataset." << endl;
+				cerr << "\tERROR !!!!! The discrete or comment property is linked to a floating point HDF5 dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
 				std::unique_ptr<LONG64[]> values(new LONG64[valueCount]);
-				dynamic_cast<RESQML2_NS::AbstractDiscreteOrCategoricalProperty const *>(propVal)->getLongValuesOfPatch(0, values.get());
+				dynamic_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getLongValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 				cout << "\tPress enter to continue..." << endl;
@@ -2266,14 +2314,12 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 		}
 
 		// Time Series
-		if (propVal->getTimeIndicesCount() != 0) {
+		if (prop->getTimeIndicesCount() != 0) {
 			std::cout << "\tThis property is a dynamic one" << std::endl;
-			std::cout << "\tTime index start is " << propVal->getTimeIndexStart() << std::endl;
-			std::cout << "\tTime index count is " << propVal->getTimeIndicesCount() << std::endl;
+			std::cout << "\tTime index start is " << prop->getTimeIndexStart() << std::endl;
+			std::cout << "\tTime index count is " << prop->getTimeIndicesCount() << std::endl;
 		}
 	}
-
-
 
 	std::cout << "\t--------------------------------------------------" << std::endl;
 }

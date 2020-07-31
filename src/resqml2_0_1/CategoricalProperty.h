@@ -64,6 +64,30 @@ namespace RESQML2_0_1_NS
 			RESQML2_NS::StringTableLookup* strLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
+		 * Creates a categorical property which is of an Energistics standard property kind
+		 *
+		 * @exception	std::invalid_argument	If @p rep or @p strLookup is null.
+		 *
+		 * @param [in]	rep			  			The representation on which this property is attached to. It
+		 * 										cannot be null.
+		 * @param 	  	guid		  			The guid to set to the property. If empty then a new guid will be
+		 * 										generated.
+		 * @param 	  	title		  			The title to set to the property. If empty then \"unknown\" title
+		 * 										will be set.
+		 * @param 	  	dimension	  			The dimension of each value of this property. Dimension is 1 for
+		 * 										a scalar property.
+		 * @param 	  	attachmentKind			The topological element on which the property values are attached
+		 * 										to.
+		 * @param [in]	dblLookup	  			The double table lookup which associate a discrete function to the property values.
+		 * @param [in]	energisticsPropertyKind	The property kind of these property values which must be
+		 * 										defined in the standard Energistics property type
+		 * 										dictionary.
+		 */
+		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+			RESQML2_NS::DoubleTableLookup* dblLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+
+		/**
 		 * Creates a categorical property which is of a local property kind
 		 *
 		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p localPropKind is null.
@@ -88,6 +112,29 @@ namespace RESQML2_0_1_NS
 			RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropKind);
 
 		/**
+		 * Creates a categorical property which is of a local property kind
+		 *
+		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p localPropKind is null.
+		 *
+		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * 								cannot be null.
+		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
+		 * 								will be set.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
+		 * @param [in]	dblLookup	  	The double table lookup which associate a discrete function to the property values.
+		 * @param [in]	localPropKind 	The property kind of these property values which must be defined
+		 * 								in the EPC document as a local property kind. It cannot be null.
+		 */
+		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+			RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * localPropKind);
+
+		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
@@ -95,9 +142,9 @@ namespace RESQML2_0_1_NS
 		CategoricalProperty(gsoap_resqml2_0_1::_resqml20__CategoricalProperty* fromGsoap): RESQML2_NS::CategoricalProperty(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~CategoricalProperty() {}
+		~CategoricalProperty() = default;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStringLookupDor() const final;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getLookupDor() const final;
 
 		/**
 		 * Gets the Energistics property kind which is associated to this intance

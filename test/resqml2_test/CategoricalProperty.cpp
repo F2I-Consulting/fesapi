@@ -26,6 +26,7 @@ under the License.
 #include "resqml2_0_1/PropertyKind.h"
 #include "eml2_3/PropertyKind.h"
 #include "resqml2/CategoricalProperty.h"
+#include "resqml2/DoubleTableLookup.h"
 #include "resqml2/StringTableLookup.h"
 #include "resqml2/AbstractIjkGridRepresentation.h"
 #include "eml2/AbstractHdfProxy.h"
@@ -74,17 +75,43 @@ void CategoricalProperty::initRepoHandler() {
 		propertyKind);
 	char charValues[6] = { 0, 1, 2, 3, 4, 5 };
 	charCategoricalProperty->pushBackCharHdf5Array3dOfValues(charValues, 1, 2, 3, hdfProxy, -1);
+
+	// creating the Double Table Lookup
+	RESQML2_NS::DoubleTableLookup* dblTableLookup = repo->createDoubleTableLookup("0df04180-8bb1-4ca2-90c2-c48bfd4b0958", "My Double Table Lookup");
+	dblTableLookup->addValue(.0, .0);
+	dblTableLookup->addValue(1.25, 0.52);
+	dblTableLookup->addValue(2.451, 0.625);
+	dblTableLookup->addValue(3.9, 0.845662);
+	dblTableLookup->addValue(6.1, .1);
+
+	// creating the char CategoricalProperty
+	RESQML2_NS::CategoricalProperty* dblCategoricalProperty = repo->createCategoricalProperty(
+		ijkGrid, "3de7a1d8-8b5b-45f3-b90c-6c14b2dcb43e", "Continuous Categorical Property",
+		1,
+		gsoap_eml2_3::resqml22__IndexableElement__cells,
+		dblTableLookup,
+		propertyKind);
+	double dblValues[6] = { .0, .1, .2, .3, .4, .5 };
+	dblCategoricalProperty->pushBackDoubleHdf5Array3dOfValues(dblValues, 1, 2, 3, hdfProxy);
 }
 
 void CategoricalProperty::readRepoHandler() {
-	// getting the CategoricalProperty
+	// getting the string CategoricalProperty
 	RESQML2_NS::CategoricalProperty* categoricalProperty = repo->getDataObjectByUuid<RESQML2_NS::CategoricalProperty>(defaultUuid);
 	auto strTableLookup = categoricalProperty->getStringLookup();
 	REQUIRE(strTableLookup->getItemCount() == 6);
 	REQUIRE(strTableLookup->getStringValue(0) == "Item 0");
-	REQUIRE(strTableLookup->getStringValue(1) == "Item 1");
-	REQUIRE(strTableLookup->getStringValue(2) == "Item 2");
+	REQUIRE(strTableLookup->getStringValueAtIndex(1) == "Item 1");
+	REQUIRE(strTableLookup->getKeyAtIndex(2) == 2);
 	REQUIRE(strTableLookup->getStringValue(3) == "Item 3");
 	REQUIRE(strTableLookup->getStringValue(4) == "Item 4");
 	REQUIRE(strTableLookup->getStringValue(5) == "Item 5");
+
+	// getting the continuous CategoricalProperty
+	categoricalProperty = repo->getDataObjectByUuid<RESQML2_NS::CategoricalProperty>("3de7a1d8-8b5b-45f3-b90c-6c14b2dcb43e");
+	auto dblTableLookup = categoricalProperty->getDoubleLookup();
+	REQUIRE(dblTableLookup->getItemCount() == 5);
+	REQUIRE(dblTableLookup->getValueAtIndex(0) == .0);
+	REQUIRE(dblTableLookup->getValueAtKey(1.25) == 0.52);
+	REQUIRE(dblTableLookup->getKeyAtIndex(2) == 2.451);
 }

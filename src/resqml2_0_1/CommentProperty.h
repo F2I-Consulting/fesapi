@@ -89,7 +89,7 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~CommentProperty() {}
 
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)()) final;
+		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "") final;
 
 		/**
 		 * Gets the Energistics property kind which is associated to this intance

@@ -75,7 +75,7 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 	setPropertyKind(localPropKind);
 }
 
-std::string CommentProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64)
+std::string CommentProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName)
 {
 	getRepository()->addRelationship(this, hdfProxy);
 	_resqml20__CommentProperty* prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);

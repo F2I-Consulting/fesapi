@@ -39,6 +39,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		DEVIATIONSURVEYREPRESENTATION,
 		DISCRETECOLORMAP,
 		DISCRETEPROPERTY,
+		DOUBLETABLELOOKUP,
 		EARTHMODELINTERPRETATION,
 		EPCEXTERNALPARTREFERENCE,
 		FAULTINTERPRETATION,
@@ -875,7 +876,36 @@ ${COMMENT_END}
 		
 		return null;
 	}
-
+	
+	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.DoubleTableLookup resqml2_instantiateDoubleTableLookup(long cPtr, boolean owner)
+	{
+		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
+		if ("resqml20".equals(xmlNs)) {
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.DoubleTableLookup_resqml20(cPtr, owner);
+		}
+${COMMENT_START}
+		else if ("resqml22".equals(xmlNs)) {
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DoubleTableLookup_resqml22(cPtr, owner);
+		}
+${COMMENT_END}
+		
+		return null;
+	}
+	
+	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.StringTableLookup resqml2_instantiateStringTableLookup(long cPtr, boolean owner)
+	{
+		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
+		if ("resqml20".equals(xmlNs)) {
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StringTableLookup_resqml20(cPtr, owner);
+		}
+${COMMENT_START}
+		else if ("resqml22".equals(xmlNs)) {
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.StringTableLookup_resqml22(cPtr, owner);
+		}
+${COMMENT_END}
+		
+		return null;
+	}
 
   public static com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject eml2_instantiateConcreteObject(long cPtr, boolean owner)
   {
@@ -910,6 +940,7 @@ ${COMMENT_START}
 		case DISCRETECOLORMAP : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DiscreteColorMap_resqml22(cPtr, owner);
 ${COMMENT_END}
 		case DISCRETEPROPERTY : return resqml2_instantiateDiscreteProperty(cPtr, owner);
+		case DOUBLETABLELOOKUP : return resqml2_instantiateDoubleTableLookup(cPtr, owner);
 		case EARTHMODELINTERPRETATION : return resqml2_instantiateEarthModelInterpretation(cPtr, owner);
 		case EPCEXTERNALPARTREFERENCE : return eml2_instantiateEpcExternalPartReference(cPtr, owner);
 		case FAULTINTERPRETATION : return resqml2_instantiateFaultInterpretation(cPtr, owner);
@@ -968,7 +999,7 @@ ${COMMENT_END}
 		case STRATIGRAPHICOCCURRENCEINTERPRETATION : return resqml2_instantiateStratigraphicOccurrenceInterpretation(cPtr, owner);
 		case STRATIGRAPHICUNITFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicUnitFeature_resqml20(cPtr, owner);
 		case STRATIGRAPHICUNITINTERPRETATION : return resqml2_instantiateStratigraphicUnitInterpretation(cPtr, owner);
-		case STRINGTABLELOOKUP : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StringTableLookup_resqml20(cPtr, owner);
+		case STRINGTABLELOOKUP : return resqml2_instantiateStringTableLookup(cPtr, owner);
 		case STRUCTURALORGANIZATIONINTERPRETATION : return resqml2_instantiateStructuralOrganizationInterpretation(cPtr, owner);
 		case SUBREPRESENTATION : return resqml2_instantiateSubRepresentation(cPtr, owner);
 		case TECTONICBOUNDARYFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.TectonicBoundaryFeature_resqml20(cPtr, owner);
@@ -1024,7 +1055,7 @@ namespace EML2_NS
 namespace RESQML2_NS
 {		
 	%typemap(javaout) 	AbstractFeature*, AbstractFeatureInterpretation*, AbstractRepresentation*, AbstractGridRepresentation*, AbstractLocal3dCrs*,
-						AbstractProperty*, AbstractValuesProperty*, AbstractDiscreteOrCategoricalProperty*,
+						AbstractProperty*, AbstractValuesProperty*,
 						AbstractIjkGridRepresentation*, AbstractStratigraphicOrganizationInterpretation*,
 #ifdef WITH_RESQML2_2
 						AbstractColorMap*,
@@ -1047,6 +1078,7 @@ namespace RESQML2_NS
 						DiscreteColorMap*,
 #endif
 						DiscreteProperty*,
+						DoubleTableLookup*,
 						EarthModelInterpretation*,
 						FaultInterpretation*,
 						GenericFeatureInterpretation*,

@@ -158,6 +158,6 @@ namespace RESQML2_NS
 		StringTableLookup(gsoap_eml2_3::_resqml22__StringTableLookup* fromGsoap) : AbstractObject(fromGsoap) {}
 
 		/** Loads target relationships */
-		void loadTargetRelationships() {}
+		void loadTargetRelationships() final {}
 	};
 }

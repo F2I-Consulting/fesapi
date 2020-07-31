@@ -35,29 +35,29 @@ const char* DiscreteProperty::XML_TAG = "DiscreteProperty";
 void DiscreteProperty::pushBackLongHdf5Array1dOfValues(const LONG64 * values, ULONG64 valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	LONG64 nullValue, LONG64  minimumValue, LONG64  maximumValue)
 {
-	hsize_t valueCountPerDimension[1] = {valueCount};
-	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue, minimumValue, maximumValue);
+	hsize_t valueCountPerDimension = valueCount;
+	pushBackLongHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy, nullValue, minimumValue, maximumValue);
 }
 
 void DiscreteProperty::pushBackIntHdf5Array1dOfValues(const int * values, ULONG64 valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	int nullValue, int  minimumValue, int  maximumValue)
 {
-	hsize_t valueCountPerDimension[1] = { valueCount };
-	pushBackIntHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue, minimumValue, maximumValue);
+	hsize_t valueCountPerDimension = valueCount;
+	pushBackIntHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy, nullValue, minimumValue, maximumValue);
 }
 
 void DiscreteProperty::pushBackShortHdf5Array1dOfValues(const short * values, ULONG64 valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	short nullValue, short  minimumValue, short  maximumValue)
 {
-	hsize_t valueCountPerDimension[1] = { valueCount };
-	pushBackShortHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue, minimumValue, maximumValue);
+	hsize_t valueCountPerDimension = valueCount ;
+	pushBackShortHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy, nullValue, minimumValue, maximumValue);
 }
 
 void DiscreteProperty::pushBackCharHdf5Array1dOfValues(const char * values, ULONG64 valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	char nullValue, char  minimumValue, char  maximumValue)
 {
-	hsize_t valueCountPerDimension[1] = { valueCount };
-	pushBackCharHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue, minimumValue, maximumValue);
+	hsize_t valueCountPerDimension = valueCount;
+	pushBackCharHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy, nullValue, minimumValue, maximumValue);
 }
 
 void DiscreteProperty::pushBackLongHdf5Array2dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
@@ -195,7 +195,7 @@ void DiscreteProperty::pushBackLongHdf5ArrayOfValues(const LONG64 * values, unsi
 	}
 
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue),
+		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
 		H5T_NATIVE_LLONG,
 		values,
 		numValues, numDimensionsInArray);
@@ -211,7 +211,7 @@ void DiscreteProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned
 	}
 
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue),
+		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
 		H5T_NATIVE_INT,
 		values,
 		numValues, numDimensionsInArray);
@@ -227,7 +227,7 @@ void DiscreteProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsi
 	}
 
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue),
+		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
 		H5T_NATIVE_SHORT,
 		values,
 		numValues, numDimensionsInArray);
@@ -243,7 +243,7 @@ void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * va
 	}
 
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue),
+		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
 		H5T_NATIVE_USHORT,
 		values,
 		numValues, numDimensionsInArray);
@@ -259,7 +259,7 @@ void DiscreteProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsign
 	}
 
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue),
+		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
 		H5T_NATIVE_CHAR,
 		values,
 		numValues, numDimensionsInArray);
@@ -340,7 +340,7 @@ void DiscreteProperty::setValuesOfLongHdf5ArrayOfValues(
 	EML2_NS::AbstractHdfProxy* proxy,
 	unsigned int patchIndex)
 {
-	AbstractDiscreteOrCategoricalProperty::setValuesOfLongHdf5ArrayOfValues(values, numValuesInEachDimension,
+	AbstractValuesProperty::setValuesOfLongHdf5ArrayOfValues(values, numValuesInEachDimension,
 		offsetInEachDimension, numArrayDimensions, proxy, patchIndex);
 
 	if (computeMinMax) {

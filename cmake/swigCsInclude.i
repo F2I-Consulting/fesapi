@@ -39,6 +39,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		DEVIATIONSURVEYREPRESENTATION,
 		DISCRETECOLORMAP,
 		DISCRETEPROPERTY,
+		DOUBLETABLELOOKUP,
 		EARTHMODELINTERPRETATION,
 		EPCEXTERNALPARTREFERENCE,
 		FAULTINTERPRETATION,
@@ -859,7 +860,7 @@ ${COMMENT_START}
 ${COMMENT_END}
 		
 		return null;
-	}
+	
 	
 	public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.LocalTime3dCrs resqml2_instantiateLocalTime3dCrs(global::System.IntPtr cPtr, bool owner)
 	{
@@ -875,7 +876,36 @@ ${COMMENT_END}
 		
 		return null;
 	}
-
+	
+	public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.DoubleTableLookup resqml2_instantiateDoubleTableLookup(global::System.IntPtr cPtr, bool owner)
+	{
+		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
+		if (xmlNs.Equals("resqml20")) {
+			return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.DoubleTableLookup(cPtr, owner);
+		}
+${COMMENT_START}
+		else if (xmlNs.Equals("resqml22")) {
+			return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DoubleTableLookup(cPtr, owner);
+		}
+${COMMENT_END}
+		
+		return null;
+	}
+	
+	public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.StringTableLookup resqml2_instantiateStringTableLookup(global::System.IntPtr cPtr, bool owner)
+	{
+		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
+		if (xmlNs.Equals("resqml20")) {
+			return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StringTableLookup(cPtr, owner);
+		}
+${COMMENT_START}
+		else if (xmlNs.Equals("resqml22")) {
+			return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.StringTableLookup(cPtr, owner);
+		}
+${COMMENT_END}
+		
+		return null;
+	}
 
   public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject eml2_instantiateConcreteObject(global::System.IntPtr cPtr, bool owner)
   {
@@ -911,6 +941,7 @@ ${COMMENT_START}
 		case DataObjectName.DISCRETECOLORMAP : return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DiscreteColorMap(cPtr, owner);
 ${COMMENT_END}
 		case DataObjectName.DISCRETEPROPERTY : return resqml2_instantiateDiscreteProperty(cPtr, owner);
+		case DataObjectName.DOUBLETABLELOOKUP : return resqml2_instantiateDoubleTableLookup(cPtr, owner);
 		case DataObjectName.EARTHMODELINTERPRETATION : return resqml2_instantiateEarthModelInterpretation(cPtr, owner);
 		case DataObjectName.EPCEXTERNALPARTREFERENCE : return eml2_instantiateEpcExternalPartReference(cPtr, owner);
 		case DataObjectName.FAULTINTERPRETATION : return resqml2_instantiateFaultInterpretation(cPtr, owner);
@@ -969,7 +1000,7 @@ ${COMMENT_END}
 		case DataObjectName.STRATIGRAPHICOCCURRENCEINTERPRETATION : return resqml2_instantiateStratigraphicOccurrenceInterpretation(cPtr, owner);
 		case DataObjectName.STRATIGRAPHICUNITFEATURE : return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicUnitFeature(cPtr, owner);
 		case DataObjectName.STRATIGRAPHICUNITINTERPRETATION : return resqml2_instantiateStratigraphicUnitInterpretation(cPtr, owner);
-		case DataObjectName.STRINGTABLELOOKUP : return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StringTableLookup(cPtr, owner);
+		case DataObjectName.STRINGTABLELOOKUP : return resqml2_instantiateStringTableLookup(cPtr, owner);
 		case DataObjectName.STRUCTURALORGANIZATIONINTERPRETATION : return resqml2_instantiateStructuralOrganizationInterpretation(cPtr, owner);
 		case DataObjectName.SUBREPRESENTATION : return resqml2_instantiateSubRepresentation(cPtr, owner);
 		case DataObjectName.TECTONICBOUNDARYFEATURE : return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.TectonicBoundaryFeature(cPtr, owner);
@@ -1017,7 +1048,7 @@ namespace EML2_NS
 namespace RESQML2_NS
 {		
 	%typemap(csout, excode=SWIGEXCODE)	AbstractFeature*, AbstractFeatureInterpretation*, AbstractRepresentation*, AbstractGridRepresentation*, AbstractLocal3dCrs*,
-										AbstractProperty*, AbstractValuesProperty*, AbstractDiscreteOrCategoricalProperty*,
+										AbstractProperty*, AbstractValuesProperty*,
 										AbstractIjkGridRepresentation*, AbstractStratigraphicOrganizationInterpretation*,
 #ifdef WITH_RESQML2_2
 										AbstractColorMap*,
@@ -1040,6 +1071,7 @@ namespace RESQML2_NS
 										DiscreteColorMap*,
 #endif
 										DiscreteProperty*,
+										DoubleTableLookup*,
 										EarthModelInterpretation*,
 										FaultInterpretation*,
 										GenericFeatureInterpretation*,

@@ -657,9 +657,47 @@ namespace COMMON_NS
 
 		/* PROPERTIES */
 
+		/**
+		 * @brief	Creates a time series into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	guid 	The guid to set to the time series. If empty then a new guid will be
+		 * 					generated.
+		 * @param 	title	The title to set to the time series. If empty then \"unknown\" title will be
+		 * 					set.
+		 *
+		 * @returns	A pointer to the new time series.
+		 */
 		EML2_NS::TimeSeries* createTimeSeries(const std::string & guid, const std::string & title);
 
-		RESQML2_NS::StringTableLookup* createStringTableLookup(const std::string & guid, const std::string & title);
+		/**
+		 * @brief	Creates a double table lookup into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	guid 	The guid to set to the double table lookup. If empty then a new guid will be
+		 * 					generated.
+		 * @param 	title	The title to set to the double table lookup. If empty then \"unknown\" title
+		 * 					will be set.
+		 *
+		 * @returns	A pointer to the new double table lookup.
+		 */
+		RESQML2_NS::DoubleTableLookup* createDoubleTableLookup(const std::string & guid, const std::string & title);
+
+		/**
+		 * @brief	Creates a string table lookup into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	guid 	The guid to set to the string table lookup. If empty then a new guid will be
+		 * 					generated.
+		 * @param 	title	The title to set to the string table lookup. If empty then \"unknown\" title
+		 * 					will be set.
+		 *
+		 * @returns	A pointer to the new string table lookup.
+		 */
+		 RESQML2_NS::StringTableLookup* createStringTableLookup(const std::string & guid, const std::string & title);
 
 		RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
 			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
@@ -703,13 +741,113 @@ namespace COMMON_NS
 		RESQML2_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropType);
 
+		/**
+		 * Creates a categorical property (which is of a standard Energistics property kind) into this
+		 * repository
+		 *
+		 * @exception	std::invalid_argument	If @p rep or @p strLookup is null.
+		 *
+		 * @param [in]	rep					   	The representation on which this property is attached to.
+		 * 										It cannot be null.
+		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
+		 * 										will be generated.
+		 * @param 	  	title				   	The title to set to the property. If empty then
+		 * 										\"unknown\" title will be set.
+		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
+		 * 										is 1 for a scalar property.
+		 * @param 	  	attachmentKind		   	The topological element on which the property values are
+		 * 										attached to.
+		 * @param [in]	strLookup			   	The string lookup which defines the possible string
+		 * 										values and their keys.
+		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
+		 * 										defined in the standard Energistics property type
+		 * 										dictionary.
+		 *
+		 * @returns A pointer to new categorical property.
+		 */
 		RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
 			RESQML2_NS::StringTableLookup* strLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
+		/**
+		 * Creates a categorical property (which is of a standard Energistics property kind) into this
+		 * repository
+		 *
+		 * @exception	std::invalid_argument	If @p rep or @p strLookup is null.
+		 *
+		 * @param [in]	rep					   	The representation on which this property is attached to.
+		 * 										It cannot be null.
+		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
+		 * 										will be generated.
+		 * @param 	  	title				   	The title to set to the property. If empty then
+		 * 										\"unknown\" title will be set.
+		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
+		 * 										is 1 for a scalar property.
+		 * @param 	  	attachmentKind		   	The topological element on which the property values are
+		 * 										attached to.
+		 * @param [in]	dblLookup			   	The double lookup which defines a discrete function associated with the property values.
+		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
+		 * 										defined in the standard Energistics property type
+		 * 										dictionary.
+		 *
+		 * @returns A pointer to new categorical property.
+		 */
+		RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+			RESQML2_NS::DoubleTableLookup* dblLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+
+		/**
+		 * Creates a categorical property (which is of a local property kind) into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p localPropKind is null.
+		 *
+		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * 								cannot be null.
+		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
+		 * 								will be set.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
+		 * @param [in]	strLookup	  	The string lookup which defines the possible string values and
+		 * 								their keys. It cannot be null.
+		 * @param [in]	localPropType 	The property kind of these property values which must be defined
+		 * 								in the EPC document as a local property kind. It cannot be null.
+		 *
+		 * @returns	A pointer to the new categorical property.
+		 */
 		RESQML2_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
 			RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropType);
+
+		/**
+		 * Creates a categorical property (which is of a local property kind) into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p localPropKind is null.
+		 *
+		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * 								cannot be null.
+		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
+		 * 								will be set.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
+		 * @param [in]	dblLookup		The double lookup which defines a discrete function associated with the property values.
+		 * @param [in]	localPropType 	The property kind of these property values which must be defined
+		 * 								in the EPC document as a local property kind. It cannot be null.
+		 *
+		 * @returns	A pointer to the new categorical property.
+		 */
+		RESQML2_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+			RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * localPropType);
 			
 		/**
 		 * Creates a points property (which is of a well known Energistics property kind) into this
@@ -932,6 +1070,7 @@ namespace COMMON_NS
 
 		%template(createPartialPropertyKind) createPartial<RESQML2_0_1_NS::PropertyKind>;
 		%template(createPartialPropertySet) createPartial<RESQML2_0_1_NS::PropertySet>;
+		%template(createPartialDoubleTableLookup) createPartial<RESQML2_0_1_NS::DoubleTableLookup>;
 		%template(createPartialStringTableLookup) createPartial<RESQML2_0_1_NS::StringTableLookup>;
 		%template(createPartialDiscreteProperty) createPartial<RESQML2_0_1_NS::DiscreteProperty>;
 		%template(createPartialCategoricalProperty) createPartial<RESQML2_0_1_NS::CategoricalProperty>;

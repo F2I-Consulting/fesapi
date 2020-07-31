@@ -68,6 +68,7 @@ under the License.
 #include "../resqml2_0_1/DiscreteProperty.h"
 #include "../resqml2_0_1/PointsProperty.h"
 #include "../resqml2_0_1/CommentProperty.h"
+#include "../resqml2_0_1/DoubleTableLookup.h"
 #include "../resqml2_0_1/StringTableLookup.h"
 #include "../resqml2_0_1/SeismicLineFeature.h"
 #include "../resqml2_0_1/SeismicLineSetFeature.h"
@@ -119,6 +120,7 @@ under the License.
 #include "../resqml2_2/DeviationSurveyRepresentation.h"
 #include "../resqml2_2/DiscreteProperty.h"
 #include "../resqml2_2/DiscreteColorMap.h"
+#include "../resqml2_2/DoubleTableLookup.h"
 #include "../resqml2_2/EarthModelInterpretation.h"
 #include "../resqml2_2/FaultInterpretation.h"
 #include "../resqml2_2/GenericFeatureInterpretation.h"
@@ -875,6 +877,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::ContinuousProperty)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::DeviationSurveyRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::DiscreteProperty)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::DoubleTableLookup)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::EarthModelInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::FaultInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::FluidBoundaryFeature)
@@ -954,6 +957,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::DeviationSurveyRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::DiscreteColorMap)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::DiscreteProperty)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::DoubleTableLookup)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::EarthModelInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::FaultInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::GenericFeatureInterpretation)
@@ -2404,6 +2408,17 @@ EML2_NS::TimeSeries* DataObjectRepository::createTimeSeries(const std::string & 
 	}
 }
 
+RESQML2_NS::DoubleTableLookup* DataObjectRepository::createDoubleTableLookup(const std::string & guid, const std::string & title)
+{
+	switch (defaultResqmlVersion) {
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::DoubleTableLookup(this, guid, title);
+#ifdef WITH_RESQML2_2
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::DoubleTableLookup(this, guid, title);
+#endif
+	default: throw std::logic_error("The RESQML version is not supported.");
+	}
+}
+
 RESQML2_NS::StringTableLookup* DataObjectRepository::createStringTableLookup(const std::string & guid, const std::string & title)
 {
 	switch (defaultResqmlVersion) {
@@ -2561,6 +2576,13 @@ RESQML2_0_1_NS::CategoricalProperty* DataObjectRepository::createCategoricalProp
 	return new RESQML2_0_1_NS::CategoricalProperty(rep, guid, title, dimension, attachmentKind, strLookup, energisticsPropertyKind);
 }
 
+RESQML2_0_1_NS::CategoricalProperty* DataObjectRepository::createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+	RESQML2_NS::DoubleTableLookup* dblLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind)
+{
+	return new RESQML2_0_1_NS::CategoricalProperty(rep, guid, title, dimension, attachmentKind, dblLookup, energisticsPropertyKind);
+}
+
 RESQML2_NS::CategoricalProperty* DataObjectRepository::createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
 	RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropType)
@@ -2571,6 +2593,22 @@ RESQML2_NS::CategoricalProperty* DataObjectRepository::createCategoricalProperty
 #ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
 		return new RESQML2_2_NS::CategoricalProperty(rep, guid, title, dimension, attachmentKind, strLookup, localPropType);
+#endif
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
+}
+
+RESQML2_NS::CategoricalProperty* DataObjectRepository::createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+	RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * localPropType)
+{
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+		return new RESQML2_0_1_NS::CategoricalProperty(rep, guid, title, dimension, attachmentKind, dblLookup, localPropType);
+#ifdef WITH_RESQML2_2
+	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+		return new RESQML2_2_NS::CategoricalProperty(rep, guid, title, dimension, attachmentKind, dblLookup, localPropType);
 #endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
@@ -3314,6 +3352,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapC
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscreteProperty)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PointsProperty)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CommentProperty)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DoubleTableLookup)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StringTableLookup)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EarthModelInterpretation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(OrganizationFeature)
@@ -3396,6 +3435,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DeviationSurveyRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscreteProperty)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscreteColorMap)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DoubleTableLookup)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EarthModelInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(FaultInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GenericFeatureInterpretation)
@@ -3529,7 +3569,7 @@ void DataObjectRepository::setHdfProxyFactory(COMMON_NS::HdfProxyFactory * facto
 COMMON_NS::AbstractObject* DataObjectRepository::resolvePartial(COMMON_NS::AbstractObject * partialObj)
 {
 	for (size_t i = 0; i < dataFeeders.size(); ++i) {
-		std::string xml = dataFeeders[i]->resolvePartial(partialObj);
+		const std::string xml = dataFeeders[i]->resolvePartial(partialObj);
 		if (!xml.empty()) {
 			return addOrReplaceGsoapProxy(xml, partialObj->getContentType());
 		}

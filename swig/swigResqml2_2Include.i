@@ -28,6 +28,7 @@ under the License.
 #include "../src/resqml2_2/DeviationSurveyRepresentation.h"
 #include "../src/resqml2_2/DiscreteColorMap.h"
 #include "../src/resqml2_2/DiscreteProperty.h"
+#include "../src/resqml2_2/DoubleTableLookup.h"
 #include "../src/resqml2_2/EarthModelInterpretation.h"
 #include "../src/resqml2_2/FaultInterpretation.h"
 #include "../src/resqml2_2/GenericFeatureInterpretation.h"
@@ -100,6 +101,7 @@ namespace RESQML2_2_NS
 	%nspace RESQML2_2_NS::DeviationSurveyRepresentation;
 	%nspace RESQML2_2_NS::DiscreteColorMap;
 	%nspace RESQML2_2_NS::DiscreteProperty;
+	%nspace RESQML2_2_NS::DoubleTableLookup;
 	%nspace RESQML2_2_NS::EarthModelInterpretation;
 	%nspace RESQML2_2_NS::FaultInterpretation;
 	%nspace RESQML2_2_NS::GenericFeatureInterpretation;
@@ -598,6 +600,14 @@ namespace RESQML2_2_NS
 	//************************************/
 	//************** PROPERTY ************/
 	//************************************/
+	
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(DoubleTableLookup_resqml22) DoubleTableLookup;
+#endif	
+	class DoubleTableLookup : public RESQML2_NS::DoubleTableLookup
+	{
+	public:
+	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(StringTableLookup_resqml22) StringTableLookup;

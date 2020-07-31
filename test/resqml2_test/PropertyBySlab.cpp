@@ -76,19 +76,19 @@ void PropertyBySlab::initRepoHandler() {
 	ULONG64 offsetInSlowestDim = 0;
 	std::array<float, 6> k0LayerValues = { -123.0f, .01f, .02f, .03f, .04f, .05f };
 	propertyCompute->setValuesOfFloatHdf5Array3dOfValues(k0LayerValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
-		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
+		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, true);
 	std::array<float, 6> k1LayerValues = { .10f, .11f, .12f, .13f, .14f, .15f };
 	++offsetInSlowestDim;
 	propertyCompute->setValuesOfFloatHdf5Array3dOfValues(k1LayerValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
-		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
+		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, true);
 	std::array<float, 6> k2LayerValues = { .20f, .21f, .22f, std::numeric_limits<float>::quiet_NaN(), .24f, .25f };
 	++offsetInSlowestDim;
 	propertyCompute->setValuesOfFloatHdf5Array3dOfValues(k2LayerValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
-		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
+		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, true);
 	std::array<float, 6> k3LayerValues = { .30f, .31f, .32f, .33f, .34f, .35f};
 	++offsetInSlowestDim;
 	propertyCompute->setValuesOfFloatHdf5Array3dOfValues(k3LayerValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
-		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
+		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, true);
 
 	// creating the continuous Property without computing min max
 	RESQML2_NS::ContinuousProperty* propertyNoCompute = repo->createContinuousProperty(
@@ -97,7 +97,8 @@ void PropertyBySlab::initRepoHandler() {
 		gsoap_eml2_3::resqml22__IndexableElement__cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom__m,
 		propertyKind);
-	propertyNoCompute->pushBackFloatHdf5Array3dOfValues(2, 3, 4, nullptr, -500.0f, 0.1f);
+	// Set the min and max and create an empty dataset
+	propertyNoCompute->pushBackFloatHdf5Array3dOfValues(2, 3, 4, -500.0f, 0.1f, nullptr);
 
 	offsetInSlowestDim = 0;
 	propertyNoCompute->setValuesOfFloatHdf5Array3dOfValues(k0LayerValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
@@ -115,7 +116,7 @@ void PropertyBySlab::initRepoHandler() {
 	REQUIRE(propertyNoCompute->getMinimumValue() == -500.0f);
 	REQUIRE(propertyNoCompute->getMaximumValue() == .1f);
 
-	propertyNoCompute->pushBackFloatHdf5Array3dOfValues(2, 3, 4, nullptr, -300.0f, 100.0f);
+	propertyNoCompute->pushBackFloatHdf5Array3dOfValues(2, 3, 4, -300.0f, 100.0f, nullptr);
 	REQUIRE(propertyNoCompute->getMinimumValue() == -500.0f);
 	REQUIRE(propertyNoCompute->getMaximumValue() == 100.0f);
 

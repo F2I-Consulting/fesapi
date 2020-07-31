@@ -91,8 +91,8 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~DiscreteProperty() {}
 
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue) final;
-		using AbstractDiscreteOrCategoricalProperty::pushBackRefToExistingDataset;
+		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue) final;
+		using AbstractValuesProperty::pushBackRefToExistingIntegerDataset;
 
 		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) final;
 
