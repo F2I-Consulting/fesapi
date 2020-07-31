@@ -19,15 +19,11 @@ under the License.
 #include "CategoricalProperty.h"
 
 #include <stdexcept>
-#include <sstream>
 
-#include <hdf5.h>
-
-#include "../eml2/AbstractHdfProxy.h"
-#include "../common/EnumStringMapper.h"
 #include "../eml2/PropertyKind.h"
 
 #include "../resqml2/AbstractRepresentation.h"
+#include "../resqml2/DoubleTableLookup.h"
 #include "../resqml2/StringTableLookup.h"
 
 using namespace std;
@@ -56,7 +52,7 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	}
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setRepresentation(rep);
 
@@ -66,7 +62,37 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	getRepository()->addRelationship(this, strLookup);
 }
 
-COMMON_NS::DataObjectReference CategoricalProperty::getStringLookupDor() const
+CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+	RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * propKind)
+{
+	if (dblLookup == nullptr) {
+		throw invalid_argument("The double lookup table cannot be null.");
+	}
+	if (dimension == 0) {
+		throw invalid_argument("The dimension cannot be zero.");
+	}
+
+	gsoapProxy2_3 = soap_new_resqml22__CategoricalProperty(rep->getGsoapContext());
+	_resqml22__CategoricalProperty* prop = static_cast<_resqml22__CategoricalProperty*>(gsoapProxy2_3);
+	prop->IndexableElement = attachmentKind;
+	if (dimension > 1) {
+		prop->ValueCountPerIndexableElement = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_3->soap, sizeof(ULONG64)));
+		*prop->ValueCountPerIndexableElement = dimension;
+	}
+
+	initMandatoryMetadata();
+	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	setRepresentation(rep);
+
+	setPropertyKind(propKind);
+
+	prop->Lookup = dblLookup->newEml23Reference();
+	getRepository()->addRelationship(this, dblLookup);
+}
+
+COMMON_NS::DataObjectReference CategoricalProperty::getLookupDor() const
 {
 	return COMMON_NS::DataObjectReference(static_cast<_resqml22__CategoricalProperty*>(gsoapProxy2_3)->Lookup);
 }

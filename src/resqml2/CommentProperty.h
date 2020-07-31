@@ -37,6 +37,13 @@ namespace RESQML2_NS
 		virtual ~CommentProperty() {}
 
 		/**
+		* Please use std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "") instead. Notice the lack of null value parameter.
+		*/
+		std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & dataset = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)()) final {
+			throw std::logic_error("You cannot push back integer values in a Continuous Property.");
+		}
+
+		/**
 		 * Adds an array of string values to the property values.
 		 *
 		 * @param 	  	values	All the property values to set ordered according the topology of the
@@ -63,7 +70,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The name of the HDF5 dataset.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)()) = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "") = 0;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be string ones.

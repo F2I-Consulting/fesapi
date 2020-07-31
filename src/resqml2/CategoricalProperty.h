@@ -18,10 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractDiscreteOrCategoricalProperty.h"
+#include "AbstractValuesProperty.h"
 
 namespace RESQML2_NS
 {
+	class DoubleTableLookup;
 	class StringTableLookup;
 
 	/**
@@ -30,12 +31,12 @@ namespace RESQML2_NS
 	 * 			lookup mapping, or as an internally stored double to another double value through an
 	 * 			explicitly provided table.
 	 */
-	class CategoricalProperty : public AbstractDiscreteOrCategoricalProperty
+	class CategoricalProperty : public AbstractValuesProperty
 	{
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~CategoricalProperty() {}
+		virtual ~CategoricalProperty() = default;
 
 		/**
 		 * @brief	Gets the string lookup which is associated to this categorical property values.
@@ -43,14 +44,22 @@ namespace RESQML2_NS
 		 * @returns	A pointer to the string lookup which is associated to this categorical property
 		 * 			 values.
 		 */
-		DLL_IMPORT_OR_EXPORT StringTableLookup* getStringLookup();
+		DLL_IMPORT_OR_EXPORT StringTableLookup* getStringLookup() const;
 
 		/**
-		 * Gets the DOR of the string lookup which is associated to this categorical property values.
+		 * Gets the DOR of the lookup which is associated to this categorical property values.
 		 *
-		 * @returns	The DOR of the string lookup which is associated to this categorical property.
+		 * @returns	The DOR of the lookup which is associated to this categorical property.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStringLookupDor() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getLookupDor() const = 0;
+
+		/**
+		 * @brief	Gets the double lookup which is associated to this categorical property values.
+		 *
+		 * @returns	A pointer to the double lookup which is associated to this categorical property
+		 * 			 values.
+		 */
+		DLL_IMPORT_OR_EXPORT DoubleTableLookup* getDoubleLookup() const;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
@@ -64,7 +73,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	partialObject	If non-nullptr, the partial object.
 		 */
-		DLL_IMPORT_OR_EXPORT CategoricalProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractDiscreteOrCategoricalProperty(partialObject) {}
+		DLL_IMPORT_OR_EXPORT CategoricalProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractValuesProperty(partialObject) {}
 
 		/** Default constructor */
 		CategoricalProperty() {}
@@ -74,14 +83,14 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		CategoricalProperty(gsoap_resqml2_0_1::_resqml20__CategoricalProperty* fromGsoap) : AbstractDiscreteOrCategoricalProperty(fromGsoap) {}
+		CategoricalProperty(gsoap_resqml2_0_1::_resqml20__CategoricalProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP RESQML2.2 instance
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		CategoricalProperty(gsoap_eml2_3::_resqml22__CategoricalProperty* fromGsoap) : AbstractDiscreteOrCategoricalProperty(fromGsoap) {}
+		CategoricalProperty(gsoap_eml2_3::_resqml22__CategoricalProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 
 		/** Loads target relationships */
 		void loadTargetRelationships() final;

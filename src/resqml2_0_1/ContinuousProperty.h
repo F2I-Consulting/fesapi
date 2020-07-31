@@ -179,8 +179,6 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getUomAsString() const final;
 
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "") final;
-
 		DLL_IMPORT_OR_EXPORT double getMinimumValue(unsigned int index = 0) const final;
 
 		DLL_IMPORT_OR_EXPORT double getMaximumValue(unsigned int index = 0) const final;

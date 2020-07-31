@@ -19,14 +19,11 @@ under the License.
 #include "CategoricalProperty.h"
 
 #include <stdexcept>
-#include <sstream>
 
-#include <hdf5.h>
-
-#include "../eml2/AbstractHdfProxy.h"
 #include "../common/EnumStringMapper.h"
 
 #include "../resqml2/AbstractRepresentation.h"
+#include "../resqml2/DoubleTableLookup.h"
 #include "../resqml2/StringTableLookup.h"
 
 #include "PropertyKind.h"
@@ -58,12 +55,41 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	prop->PropertyKind = xmlStandardPropKind;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setRepresentation(rep);
 
 	prop->Lookup = strLookup->newResqmlReference();
 	getRepository()->addRelationship(this, strLookup);
+}
+
+CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+	RESQML2_NS::DoubleTableLookup* dblLookup, resqml20__ResqmlPropertyKind energisticsPropertyKind)
+{
+	if (rep == nullptr) {
+		throw invalid_argument("The representation of this property values cannot be null.");
+	}
+	if (dblLookup == nullptr) {
+		throw invalid_argument("The double lookup table cannot be null.");
+	}
+
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalProperty(rep->getGsoapContext());
+	_resqml20__CategoricalProperty* prop = static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1);
+	prop->IndexableElement = mapIndexableElement(attachmentKind);
+	prop->Count = dimension;
+
+	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap);
+	xmlStandardPropKind->Kind = energisticsPropertyKind;
+	prop->PropertyKind = xmlStandardPropKind;
+
+	initMandatoryMetadata();
+	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	setRepresentation(rep);
+
+	prop->Lookup = dblLookup->newResqmlReference();
+	getRepository()->addRelationship(this, dblLookup);
 }
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
@@ -83,7 +109,7 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	prop->Count = dimension;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setRepresentation(rep);
 
@@ -93,7 +119,34 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	getRepository()->addRelationship(this, strLookup);
 }
 
-COMMON_NS::DataObjectReference CategoricalProperty::getStringLookupDor() const
+CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
+	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+	RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * localPropKind)
+{
+	if (rep == nullptr) {
+		throw invalid_argument("The representation of this property values cannot be null.");
+	}
+	if (dblLookup == nullptr) {
+		throw invalid_argument("The double lookup table cannot be null.");
+	}
+
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalProperty(rep->getGsoapContext());
+	_resqml20__CategoricalProperty* prop = static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1);
+	prop->IndexableElement = mapIndexableElement(attachmentKind);
+	prop->Count = dimension;
+
+	initMandatoryMetadata();
+	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	setRepresentation(rep);
+
+	setPropertyKind(localPropKind);
+
+	prop->Lookup = dblLookup->newResqmlReference();
+	getRepository()->addRelationship(this, dblLookup);
+}
+
+COMMON_NS::DataObjectReference CategoricalProperty::getLookupDor() const
 {
 	return COMMON_NS::DataObjectReference(static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1)->Lookup);
 }

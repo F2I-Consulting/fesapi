@@ -16,29 +16,8 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "CategoricalProperty.h"
-
 #include "DoubleTableLookup.h"
-#include "StringTableLookup.h"
 
-using namespace std;
 using namespace RESQML2_NS;
 
-const char* CategoricalProperty::XML_TAG = "CategoricalProperty";
-
-void CategoricalProperty::loadTargetRelationships()
-{
-	AbstractValuesProperty::loadTargetRelationships();
-
-	convertDorIntoRel(getLookupDor());
-}
-
-StringTableLookup* CategoricalProperty::getStringLookup() const
-{
-	return getRepository()->getDataObjectByUuid<StringTableLookup>(getLookupDor().getUuid());
-}
-
-DoubleTableLookup* CategoricalProperty::getDoubleLookup() const
-{
-	return getRepository()->getDataObjectByUuid<DoubleTableLookup>(getLookupDor().getUuid());
-}
+const char* DoubleTableLookup::XML_TAG = "DoubleTableLookup";

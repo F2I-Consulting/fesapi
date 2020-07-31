@@ -151,7 +151,7 @@ void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__Ind
 		ostringstream oss;
 		oss << "SubRepresentationPatch[" << rep->SubRepresentationPatch.size() - 1 << "]/ElementIndices/SupportingRepresentationIndex";
 		pushBackExtraMetadata(oss.str(), discreteProp->getUuid());
-		discreteProp->pushBackRefToExistingDataset(proxy, supportingRepDataset, nullValue);
+		discreteProp->pushBackRefToExistingIntegerDataset(proxy, supportingRepDataset, nullValue);
 	}
 }
 

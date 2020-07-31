@@ -79,6 +79,7 @@ under the License.
 
 #include "../src/resqml2_0_1/PropertyKind.h"
 #include "../src/resqml2_0_1/PropertySet.h"
+#include "../src/resqml2_0_1/DoubleTableLookup.h"
 #include "../src/resqml2_0_1/StringTableLookup.h"
 #include "../src/resqml2_0_1/DiscreteProperty.h"
 #include "../src/resqml2_0_1/CategoricalProperty.h"
@@ -345,6 +346,7 @@ namespace RESQML2_0_1_NS
 	%nspace RESQML2_0_1_NS::ContinuousProperty;
 	%nspace RESQML2_0_1_NS::DeviationSurveyRepresentation;
 	%nspace RESQML2_0_1_NS::DiscreteProperty;
+	%nspace RESQML2_0_1_NS::DoubleTableLookup;
 	%nspace RESQML2_0_1_NS::EarthModelInterpretation;
 	%nspace RESQML2_0_1_NS::FaultInterpretation;
 	%nspace RESQML2_0_1_NS::FluidBoundaryFeature;
@@ -901,6 +903,14 @@ namespace RESQML2_0_1_NS
 	%rename(PropertyKind_resqml20) PropertyKind;
 #endif	
 	class PropertyKind : public EML2_NS::PropertyKind
+	{
+	public:
+	};
+	
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(DoubleTableLookup_resqml20) DoubleTableLookup;
+#endif	
+	class DoubleTableLookup : public RESQML2_NS::DoubleTableLookup
 	{
 	public:
 	};

@@ -63,6 +63,29 @@ namespace RESQML2_2_NS
 			RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropKind);
 
 		/**
+		 * @brief	Creates a categorical property
+		 *
+		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p propKind is null. If @p
+		 * 										dimension is zero.
+		 *
+		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * 								cannot be null.
+		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
+		 * 								will be set.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
+		 * @param [in]	dblLookup	  	The double table lookup which associate a discrete function to the property values.
+		 * @param [in]	localPropKind 	The property kind of these property values. It cannot be null.
+		 */
+		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+			RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * localPropKind);
+
+		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
@@ -70,9 +93,9 @@ namespace RESQML2_2_NS
 		CategoricalProperty(gsoap_eml2_3::_resqml22__CategoricalProperty* fromGsoap): RESQML2_NS::CategoricalProperty(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~CategoricalProperty() {}
+		~CategoricalProperty() = default;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStringLookupDor() const final;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getLookupDor() const final;
 
 		bool validatePropertyKindAssociation(EML2_NS::PropertyKind*) final { return true; }
 

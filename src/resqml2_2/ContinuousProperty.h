@@ -106,8 +106,6 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT std::string getUomAsString() const final;
 
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "") final;
-
 		DLL_IMPORT_OR_EXPORT double getMinimumValue(unsigned int index = 0) const final;
 
 		DLL_IMPORT_OR_EXPORT double getMaximumValue(unsigned int index = 0) const final;
@@ -144,8 +142,6 @@ namespace RESQML2_2_NS
 		 */
 		void init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind);
-
-		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const final;
 
 		size_t getMinimumValueSize() const;
 		size_t getMaximumValueSize() const;

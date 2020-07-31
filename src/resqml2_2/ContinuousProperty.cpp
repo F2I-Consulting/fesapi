@@ -89,55 +89,6 @@ std::string ContinuousProperty::getUomAsString() const
 	return static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3)->Uom;
 }
 
-std::string ContinuousProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName)
-{
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-		if (proxy == nullptr) {
-			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-		}
-	}
-	getRepository()->addRelationship(this, proxy);
-	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
-
-	// XML
-	ostringstream oss;
-	eml23__FloatingPointExternalArray* xmlValues = soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
-	xmlValues->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-
-	if (datasetName.empty()) {
-		ostringstream ossForHdf;
-		ossForHdf << "values_patch" << prop->ValuesForPatch.size();
-		dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
-	}
-	else {
-		dsPart->PathInExternalFile = datasetName;
-	}
-	xmlValues->Values->ExternalFileProxy.push_back(dsPart);
-
-	prop->ValuesForPatch.push_back(xmlValues);
-
-	return dsPart->PathInExternalFile;
-}
-
-EML2_NS::AbstractHdfProxy* ContinuousProperty::getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const
-{
-	if (patchIndex >= getPatchCount()) {
-		throw out_of_range("The values property patch is out of range");
-	}
-
-	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
-	if (dynamic_cast<eml23__FloatingPointExternalArray*>(prop->ValuesForPatch[patchIndex]) != nullptr) {
-		eml23__ExternalDatasetPart * dsPart = static_cast<eml23__FloatingPointExternalArray*>(prop->ValuesForPatch[patchIndex])->Values->ExternalFileProxy[0];
-		datasetPath = dsPart->PathInExternalFile;
-		return getHdfProxyFromDataset(dsPart);
-	}
-
-	return nullptr;
-}
-
 double ContinuousProperty::getMinimumValue(unsigned int index) const
 {
 	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
