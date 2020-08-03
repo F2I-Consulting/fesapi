@@ -22,6 +22,8 @@ under the License.
 
 namespace WITSML2_0_NS
 {
+	class Wellbore;
+
 	/**
 	 * The class is the super class for all wellbore objects (all top level objects pointing to
 	 * Wellbore)

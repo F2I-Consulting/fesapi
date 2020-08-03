@@ -861,7 +861,7 @@ ${COMMENT_START}
 ${COMMENT_END}
 		
 		return null;
-	
+	}
 	
 	public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.LocalTime3dCrs resqml2_instantiateLocalTime3dCrs(global::System.IntPtr cPtr, bool owner)
 	{
