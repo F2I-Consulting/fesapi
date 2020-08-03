@@ -143,6 +143,7 @@ namespace PRODML2_1_NS
 {
 	class FluidSystem;
 	class FluidCharacterization;
+	class TimeSeriesData;
 }
 
 namespace COMMON_NS
@@ -3275,6 +3276,18 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new fluid characterization.
 		 */
 		DLL_IMPORT_OR_EXPORT PRODML2_1_NS::FluidCharacterization* createFluidCharacterization(const std::string & guid, const std::string & title);
+
+		/**
+		 * Creates a time series data into this repository
+		 *
+		 * @param 	guid 	The guid to set to the time series data. If empty then a new guid will
+		 * 					be generated.
+		 * @param 	title	The title to set to the time series data. If empty then \"unknown\"
+		 * 					title will be set.
+		 *
+		 * @returns	A pointer to the new time series data.
+		 */
+		DLL_IMPORT_OR_EXPORT PRODML2_1_NS::TimeSeriesData* createTimeSeriesData(const std::string & guid, const std::string & title);
 
 		//************** EML2.3 ****************
 

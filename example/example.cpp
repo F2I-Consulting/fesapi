@@ -122,6 +122,7 @@ under the License.
 
 #include "prodml2_1/FluidCharacterization.h"
 #include "prodml2_1/FrictionTheorySpecification.h"
+#include "prodml2_1/TimeSeriesData.h"
 
 #include "HdfProxyFactoryExample.h"
 
@@ -2005,6 +2006,29 @@ void serializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
 	srkEosSpec->setFluidComponentPropertyParachor(2, 126.03);
 }
 
+void serializeTimeSeriesData(COMMON_NS::DataObjectRepository & pck)
+{
+	PRODML2_1_NS::TimeSeriesData* timeSeriesData = pck.createTimeSeriesData("25d2e0d8-dffa-414d-b7cd-f871cb436781", "my Time Series Data");
+
+	timeSeriesData->pushBackKeywordValue(gsoap_eml2_2::prodml21__TimeSeriesKeyword__asset_x0020identifier, "prodml://f2i-consulting.com/manifold(HDR01)");
+	timeSeriesData->pushBackKeywordValue(gsoap_eml2_2::prodml21__TimeSeriesKeyword__flow, "production");
+	timeSeriesData->pushBackKeywordValue(gsoap_eml2_2::prodml21__TimeSeriesKeyword__product, "oil");
+	timeSeriesData->pushBackKeywordValue(gsoap_eml2_2::prodml21__TimeSeriesKeyword__qualifier, "measured");
+
+	timeSeriesData->setUom(gsoap_resqml2_0_1::resqml20__ResqmlUom__psi);
+	timeSeriesData->setMeasureClass(gsoap_eml2_2::eml22__MeasureClass__pressure);
+
+	timeSeriesData->pushBackDoubleValue(747.7316, 1328706000, gsoap_eml2_2::prodml21__ValueStatus__frozen);
+	timeSeriesData->pushBackDoubleValue(747.7316, 1328706060, gsoap_eml2_2::prodml21__ValueStatus__frozen);
+	timeSeriesData->pushBackDoubleValue(747.7316, 1328706120, gsoap_eml2_2::prodml21__ValueStatus__frozen);
+	timeSeriesData->pushBackDoubleValue(747.7316, 1328706180, gsoap_eml2_2::prodml21__ValueStatus__frozen);
+	timeSeriesData->pushBackDoubleValue(746.7316, 1328706241);
+	timeSeriesData->pushBackDoubleValue(745.7316, 1328706242);
+	timeSeriesData->pushBackDoubleValue(746.003, 1328706243);
+	timeSeriesData->pushBackDoubleValue(748.613, 1328706244);
+	timeSeriesData->pushBackStringValue("My testing string", 1328706245);
+}
+
 void deserializePropertyKindMappingFiles(COMMON_NS::DataObjectRepository * pck)
 {
 	RESQML2_0_1_NS::PropertyKindMapper* ptMapper = pck->getPropertyKindMapper();
@@ -2117,6 +2141,7 @@ bool serialize(const string & filePath)
 	serializeFluidBoundary(repo, hdfProxy);
 	serializeRockFluidOrganization(repo, hdfProxy);
 	serializeFluidCharacterization(repo);
+	serializeTimeSeriesData(repo);
 #if WITH_RESQML2_2
 	serializeGraphicalInformationSet(&repo, hdfProxy);
 #endif
@@ -2638,6 +2663,34 @@ void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
 						if (compoSpec->hasFluidComponentPropertyMassDensity(propIndex)) { cout << "MassDensity: " << compoSpec->getFluidComponentPropertyMassDensityValue(propIndex) << " " << compoSpec->getFluidComponentPropertyMassDensityUom(propIndex) << std::endl; }
 					}
 				}
+			}
+		}
+	}
+}
+
+void deserializeTimeSeriesData(COMMON_NS::DataObjectRepository & pck)
+{
+	std::vector<PRODML2_1_NS::TimeSeriesData*> timeSeriesDataSet = pck.getDataObjects<PRODML2_1_NS::TimeSeriesData>();
+	for (size_t timeSeriesDataSetIdx = 0; timeSeriesDataSetIdx < timeSeriesDataSet.size(); ++timeSeriesDataSetIdx) {
+		PRODML2_1_NS::TimeSeriesData* tsd = timeSeriesDataSet[timeSeriesDataSetIdx];
+		showAllMetadata(tsd);
+
+		for (size_t i = 0; i < tsd->getKeywordCount(); ++i) {
+			std::cout << "KEYWORD " << tsd->getKeyword(i) << " : " << tsd->getKeywordValue(i) << std::endl;
+		}
+		std::cout << "UOM : " << tsd->getUomAsString() << std::endl;
+		std::cout << "Measure class : " << tsd->getMeasureClassAsString() << std::endl;
+
+		for (size_t i = 0; i < tsd->getValueCount(); ++i) {
+			if (tsd->isStringValue(i)) {
+				std::cout << "String value: " << tsd->getStringValue(i) << " timestamp: " << tsd->getValueTimestamp(i) << std::endl;
+			}
+			else if (tsd->isDoubleValue(i)) {
+				std::cout << "Double value: " << tsd->getDoubleValue(i) << " timestamp: " << tsd->getValueTimestamp(i);
+				if (tsd->hasValueStatus(i)) {
+					std::cout << " status: " << tsd->getValueStatus(i);
+				}
+				std::cout << std::endl;
 			}
 		}
 	}
@@ -4182,6 +4235,7 @@ void deserialize(const string & inputFile)
 	deserializeFluidBoundary(repo);
 	deserializeRockFluidOrganization(repo);
 	deserializeFluidCharacterization(repo);
+	deserializeTimeSeriesData(repo);
 
 	std::vector<RESQML2_NS::BoundaryFeature*> faultSet = repo.getFaultSet();
 	std::vector<RESQML2_NS::PolylineSetRepresentation *> faultPolyRep = repo.getFaultPolylineSetRepSet();
