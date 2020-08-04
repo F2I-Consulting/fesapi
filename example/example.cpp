@@ -4586,6 +4586,27 @@ void deserialize(const string & inputFile)
 			else if (wellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
 				std::cout << "Hdf datatype is UNKNOWN" << std::endl;
 			std::cout << std::endl;
+			if (dynamic_cast<RESQML2_NS::WellboreMarkerFrameRepresentation*>(wellboreFrameSet[j]) != nullptr) {
+				auto markerFrame = static_cast<RESQML2_NS::WellboreMarkerFrameRepresentation*>(wellboreFrameSet[j]);
+				showAllMetadata(markerFrame);
+				vector<RESQML2_NS::WellboreMarker *> markerSet = markerFrame->getWellboreMarkerSet();
+				std::unique_ptr<double[]> doubleMds(new double[markerFrame->getMdValuesCount()]);
+				markerFrame->getMdAsDoubleValues(doubleMds.get());
+				for (size_t mIndex = 0; mIndex < markerSet.size(); ++mIndex) {
+					if (doubleMds[mIndex] == doubleMds[mIndex]) {
+						cout << doubleMds[mIndex] << endl;
+					}
+					else {
+						cout << "NaN" << endl;
+					}
+					if (markerSet[mIndex]->hasDipAngle()) {
+						cout << "dip Angle " << markerSet[mIndex]->getDipAngleValue() << " " << enumStrMapper.planeAngleUomToString(markerSet[mIndex]->getDipAngleUom()) << endl;
+					}
+					if (markerSet[mIndex]->hasDipDirection()) {
+						cout << "dip Direction " << markerSet[mIndex]->getDipDirectionValue() << " " << enumStrMapper.planeAngleUomToString(markerSet[mIndex]->getDipDirectionUom()) << endl;
+					}
+				}
+			}
 #if WITH_RESQML2_2
 			if (wellboreFrameSet[j]->getXmlTag() == "SeismicWellboreFrameRepresentation") {
 				RESQML2_2_NS::SeismicWellboreFrameRepresentation* seismicWellboreFrame = static_cast<RESQML2_2_NS::SeismicWellboreFrameRepresentation*>(wellboreFrameSet[j]);

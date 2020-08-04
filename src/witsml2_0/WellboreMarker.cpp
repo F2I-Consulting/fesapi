@@ -45,6 +45,8 @@ WellboreMarker::WellboreMarker(COMMON_NS::DataObjectRepository * repo,
 	static_cast<witsml20__WellboreMarker*>(gsoapProxy2_1)->Md->__item = md;
 	static_cast<witsml20__WellboreMarker*>(gsoapProxy2_1)->Md->uom = mdUom;
 	static_cast<witsml20__WellboreMarker*>(gsoapProxy2_1)->Md->datum = mdDatum;
+
+	repo->addOrReplaceDataObject(this);
 }
 
 WellboreMarker::WellboreMarker(Wellbore* witsmlWellbore,

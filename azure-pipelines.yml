@@ -95,7 +95,7 @@ jobs:
       - task: DotNetCoreCLI@2
         inputs:
           command: 'build'
-          projects: ../cs/example/example.sln
+          projects: '../cs/example/example.sln'
 
       - task: CMake@1
         displayName: "Build --config $(BuildType)"
@@ -204,7 +204,7 @@ jobs:
       - task: DotNetCoreCLI@2
         inputs:
           command: 'build'
-          projects: ../cs/example/example.sln
+          projects: '../cs/example/example.sln'
 
       - task: CMake@1
         displayName: "Build --config $(BuildType)"
