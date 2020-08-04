@@ -92,7 +92,6 @@ jobs:
             -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
             
       - task: VSBuild@1
-        workingDirectory: $(Build.SourcesDirectory)
         inputs:
           platform: 'x64'
           solution: '../example/example.sln'
@@ -202,7 +201,6 @@ jobs:
             -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
             
       - task: VSBuild@1
-        workingDirectory: $(Build.SourcesDirectory)
         inputs:
           platform: 'x64'
           solution: '../example/example.sln'
