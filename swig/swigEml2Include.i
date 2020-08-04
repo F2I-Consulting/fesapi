@@ -113,7 +113,10 @@ namespace EML2_NS
 	
 	/************ Property **************/
 	
-	class PropertyKind : public COMMON_NS::AbstractObject {};
+	class PropertyKind : public COMMON_NS::AbstractObject {
+	public:
+		std::string getUomAsString() const;
+	};
 	
 	class TimeSeries : public COMMON_NS::AbstractObject
 	{

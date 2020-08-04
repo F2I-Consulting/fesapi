@@ -72,6 +72,11 @@ bool PropertyKind::isParentPartial() const
 	return parentPk != nullptr;
 }
 
+std::string PropertyKind::getUomAsString() const
+{
+	throw logic_error("Not yet implemented.");
+}
+
 std::string PropertyKind::getParentAsString() const
 {
 	return getParentPropertyKindDor().getTitle();

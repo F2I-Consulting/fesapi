@@ -158,6 +158,11 @@ bool PropertyKind::isParentPartial() const
 	return parentPk->isPartial();
 }
 
+std::string PropertyKind::getUomAsString() const
+{
+	return gsoap_resqml2_0_1::soap_resqml20__ResqmlUom2s(gsoapProxy2_0_1->soap, getSpecializedGsoapProxy()->RepresentativeUom);
+}
+
 std::string PropertyKind::getParentAsString() const
 {
 	if (!isParentAnEnergisticsPropertyKind()) {
