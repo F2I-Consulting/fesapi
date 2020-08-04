@@ -95,7 +95,7 @@ jobs:
         displayName: "Build the C# example"
         inputs:
           platform: 'x64'
-          solution: '../cs/example/example.sln'
+          solution: 'cs/example/example.sln'
           configuration: '$(BuildType)'
 
       - task: CMake@1
@@ -205,7 +205,7 @@ jobs:
         displayName: "Build the C# example"
         inputs:
           platform: 'x64'
-          solution: '../cs/example/example.sln'
+          solution: 'cs/example/example.sln'
           configuration: '$(BuildType)'
 
       - task: CMake@1
