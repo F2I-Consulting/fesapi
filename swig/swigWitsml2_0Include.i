@@ -23,7 +23,7 @@ under the License.
 #include "../src/witsml2_0/WellboreObject.h"
 #include "../src/witsml2_0/WellboreCompletion.h"
 #include "../src/witsml2_0/WellboreGeometry.h"
-#include "../src/witsml2_0/WellboreMarker
+#include "../src/witsml2_0/WellboreMarker.h"
 #include "../src/witsml2_0/Trajectory.h"
 #include "../src/witsml2_0/Log.h"
 #include "../src/witsml2_0/ChannelSet.h"
