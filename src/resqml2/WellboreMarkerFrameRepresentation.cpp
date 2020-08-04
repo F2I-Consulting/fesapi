@@ -46,5 +46,5 @@ void WellboreMarkerFrameRepresentation::loadTargetRelationships()
 
 std::vector<WellboreMarker *> WellboreMarkerFrameRepresentation::getWellboreMarkerSet() const
 {
-	return getRepository()->getTargetObjects<WellboreMarker>(this);
+	return getRepository()->getSourceObjects<WellboreMarker>(this);
 }

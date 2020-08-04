@@ -72,7 +72,7 @@ namespace RESQML2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gSOAP context.
 		*/
-		virtual ~WellboreFeature() {}
+		virtual ~WellboreFeature() = default;
 
 		/**
 		 * Gets the WITSML wellbore associated to this wellbore feature.
@@ -87,6 +87,8 @@ namespace RESQML2_NS
 
 		/**
 		 * Sets the WITSML wellbore associated to this instance.
+		 *
+		 * @exception	std::invalid_argument	If the WITSML wellbore to set is NULL.
 		 *
 		 * @param [in]	wellbore	The WITSML wellbore to associate to this wellbore. It cannot be null.
 		 */

@@ -176,6 +176,7 @@ under the License.
 #include "../witsml2_0/WellCompletion.h"
 #include "../witsml2_0/WellboreCompletion.h"
 #include "../witsml2_0/WellboreGeometry.h"
+#include "../witsml2_0/WellboreMarker.h"
 #include "../witsml2_0/Log.h"
 #include "../witsml2_0/ChannelSet.h"
 #include "../witsml2_0/Channel.h"
@@ -1027,6 +1028,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Wellbore)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellboreCompletion)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellboreGeometry)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellboreMarker)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellCompletion)
 	}
 #if WITH_WITSML2_1
@@ -2763,6 +2765,24 @@ WITSML2_0_NS::Channel* DataObjectRepository::createChannel(EML2_NS::PropertyKind
 		timeDepth, loggingCompanyName);
 }
 
+WITSML2_0_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(
+	const std::string & guid, const std::string & title,
+	double md, gsoap_eml2_1::eml21__LengthUom mdUom, const std::string & mdDatum)
+{
+	return new WITSML2_0_NS::WellboreMarker(this,
+		guid, title,
+		md, mdUom, mdDatum);
+}
+
+WITSML2_0_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(WITSML2_0_NS::Wellbore* witsmlWellbore,
+	const std::string & guid, const std::string & title,
+	double md, gsoap_eml2_1::eml21__LengthUom mdUom, const std::string & mdDatum)
+{
+	return new WITSML2_0_NS::WellboreMarker(witsmlWellbore,
+		guid, title,
+		md, mdUom, mdDatum);
+}
+
 //************************************
 //*************** PRODML *************
 //************************************
@@ -3395,12 +3415,13 @@ COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_0WrapperFromGsoapCon
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Wellbore, gsoap_eml2_1)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, WellboreCompletion, gsoap_eml2_1)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, WellboreGeometry, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, WellboreMarker, gsoap_eml2_1)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Trajectory, gsoap_eml2_1)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Log, gsoap_eml2_1)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, ChannelSet, gsoap_eml2_1)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Channel, gsoap_eml2_1)
 
-		return wrapper;
+	return wrapper;
 }
 
 COMMON_NS::AbstractObject* DataObjectRepository::getProdml2_1WrapperFromGsoapContext(const std::string & datatype)
@@ -3411,7 +3432,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getProdml2_1WrapperFromGsoapCon
 	else if CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PRODML2_1_NS, FluidCharacterization, gsoap_eml2_2)
 	else if CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PRODML2_1_NS, TimeSeriesData, gsoap_eml2_2)
 
-		return wrapper;
+	return wrapper;
 }
 /*
 COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_1WrapperFromGsoapContext(const std::string & datatype)

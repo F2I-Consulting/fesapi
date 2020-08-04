@@ -35,7 +35,7 @@ namespace RESQML2_NS
 	{
 	public:
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		~WellboreFrameRepresentation() {}
+		~WellboreFrameRepresentation() = default;
 
 		/**
 		 * Sets the measured depth (MD) values of this wellbore frame representation as a 1d array of explicit values.

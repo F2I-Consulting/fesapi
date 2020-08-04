@@ -20,6 +20,11 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
+namespace WITSML2_0_NS
+{
+	class WellboreMarker;
+}
+
 namespace RESQML2_NS
 {
 	class BoundaryFeatureInterpretation;
@@ -37,7 +42,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~WellboreMarker() {}
+		virtual ~WellboreMarker() = default;
 
 		/**
 		 * Indicates if the marker is associated to a particular geologic boundary kind.
@@ -84,6 +89,78 @@ namespace RESQML2_NS
 		 * 						cannot be null.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setBoundaryFeatureInterpretation(BoundaryFeatureInterpretation* interp) = 0;
+
+		/**
+		 * Gets the WITSML wellbore marker associated to this wellbore marker.
+		 *
+		 * @exception	std::logic_error	If more than one WITSML wellbore marker is associated to this
+		 * 									wellbore feature.
+		 *
+		 * @returns	@c nullptr if no WITSML wellbore marker is associated to this wellbore marker, else the
+		 * 			associated WITSML wellbore marker.
+		 */
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreMarker* getWitsmlWellboreMarker() const;
+
+		/**
+		 * Sets the WITSML wellbore marker associated to this instance.
+		 *
+		 * @exception	std::invalid_argument	If the WITSML wellbore marker to set is NULL.
+		 *
+		 * @param [in]	wellbore	The WITSML wellbore marker to associate to this wellbore. It cannot be null.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual void setWitsmlWellboreMarker(WITSML2_0_NS::WellboreMarker * wellboreMarker) = 0;
+
+		/**
+		 * Check wether this marker has got a dip angle or not.
+		 * FYI, Dip Angle is store in the WITSML WellboreMarker companion if present.
+		 *
+		 * @return true if this marker has got a dip angle. 
+		 */
+		DLL_IMPORT_OR_EXPORT bool hasDipAngle() const;
+
+		/**
+		 * Get the Dip angle value.
+		 *
+		 * @exception	std::logic_error	If the marker has not got any dip value.
+		 *
+		 * @return the Dip angle value.
+		 */
+		DLL_IMPORT_OR_EXPORT double getDipAngleValue() const;
+
+		/**
+		 * Get the Dip angle uom.
+		 *
+		 * @exception	std::logic_error	If the marker has not got any dip value.
+		 *
+		 * @return the Dip angle uom.
+		 */
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__PlaneAngleUom getDipAngleUom() const;
+
+		/**
+		 * Check wether this marker has got a dip direction or not.
+		 * FYI, Dip direction is store in the WITSML WellboreMarker companion if present.
+		 *
+		 * @return true if this marker has got a dip direction.
+		 */
+		DLL_IMPORT_OR_EXPORT bool hasDipDirection() const;
+
+		/**
+		 * Get the Dip direction value.
+		 *
+		 * @exception	std::logic_error	If the marker has not got any dip direction.
+		 *
+		 * @return the Dip direction value.
+		 */
+		DLL_IMPORT_OR_EXPORT double getDipDirectionValue() const;
+
+		/**
+		 * Get the Dip direction uom.
+		 *
+		 * @exception	std::logic_error	If the marker has not got any dip direction.
+		 *
+		 * @return the Dip direction uom.
+		 */
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__PlaneAngleUom getDipDirectionUom() const;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

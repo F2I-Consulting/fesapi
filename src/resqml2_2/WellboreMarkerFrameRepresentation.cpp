@@ -20,14 +20,18 @@ under the License.
 
 #include <stdexcept>
 
-#include "H5Tpublic.h"
+#include <H5Tpublic.h>
+
+#include "../eml2/AbstractHdfProxy.h"
 
 #include "../resqml2/WellboreInterpretation.h"
 #include "../resqml2/WellboreTrajectoryRepresentation.h"
-#include "WellboreMarker.h"
 #include "../resqml2/StratigraphicOccurrenceInterpretation.h"
 #include "../resqml2/BoundaryFeatureInterpretation.h"
-#include "../eml2/AbstractHdfProxy.h"
+
+#include "../witsml2_0/WellboreMarker.h"
+
+#include "WellboreMarker.h"
 
 using namespace std;
 using namespace RESQML2_2_NS;
@@ -150,9 +154,12 @@ void WellboreMarkerFrameRepresentation::loadTargetRelationships()
 			marker = new WellboreMarker(rep->WellboreMarker[i]);
 			getRepository()->addOrReplaceDataObject(marker);
 			if (rep->WellboreMarker[i]->Interpretation != nullptr) {
-				marker->setBoundaryFeatureInterpretation(getRepository()->getDataObjectByUuid<RESQML2_NS::BoundaryFeatureInterpretation>(rep->WellboreMarker[i]->Interpretation->Uuid));
+				getRepository()->addRelationship(marker, getRepository()->getDataObjectByUuid<RESQML2_NS::BoundaryFeatureInterpretation>(rep->WellboreMarker[i]->Interpretation->Uuid));
+			}
+			if (rep->WellboreMarker[i]->WitsmlFormationMarker != nullptr) {
+				getRepository()->addRelationship(marker, getRepository()->getDataObjectByUuid<WITSML2_0_NS::WellboreMarker>(rep->WellboreMarker[i]->WitsmlFormationMarker->Uuid));
 			}
 		}
-		getRepository()->addRelationship(this, marker);
+		getRepository()->addRelationship(marker, this);
 	}
 }

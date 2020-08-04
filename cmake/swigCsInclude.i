@@ -861,7 +861,7 @@ ${COMMENT_START}
 ${COMMENT_END}
 		
 		return null;
-	
+	}
 	
 	public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.LocalTime3dCrs resqml2_instantiateLocalTime3dCrs(global::System.IntPtr cPtr, bool owner)
 	{
@@ -947,8 +947,8 @@ ${COMMENT_END}
 		case DataObjectName.EPCEXTERNALPARTREFERENCE : return eml2_instantiateEpcExternalPartReference(cPtr, owner);
 		case DataObjectName.FAULTINTERPRETATION : return resqml2_instantiateFaultInterpretation(cPtr, owner);
 		case DataObjectName.FLUIDBOUNDARYFEATURE : return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.FluidBoundaryFeature(cPtr, owner);
-		case DataObjectName.FLUIDCHARACTERIZATION : return new com.f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.FluidCharacterization(cPtr, owner);
-		case DataObjectName.FLUIDSYSTEM : return new com.f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.FluidSystem(cPtr, owner);
+		case DataObjectName.FLUIDCHARACTERIZATION : return new f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.FluidCharacterization(cPtr, owner);
+		case DataObjectName.FLUIDSYSTEM : return new f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.FluidSystem(cPtr, owner);
 		case DataObjectName.FRONTIERFEATURE : return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.FrontierFeature(cPtr, owner);
 		case DataObjectName.GENETICBOUNDARYFEATURE :
 			f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeneticBoundaryFeature result = new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeneticBoundaryFeature(cPtr, owner);
@@ -1006,7 +1006,7 @@ ${COMMENT_END}
 		case DataObjectName.SUBREPRESENTATION : return resqml2_instantiateSubRepresentation(cPtr, owner);
 		case DataObjectName.TECTONICBOUNDARYFEATURE : return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.TectonicBoundaryFeature(cPtr, owner);
 		case DataObjectName.TIMESERIES : return eml2_instantiateTimeSeries(cPtr, owner);
-		case DataObjectName.TIMESERIESDATA : return new com.f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.TimeSeriesData(cPtr, owner);
+		case DataObjectName.TIMESERIESDATA : return new f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.TimeSeriesData(cPtr, owner);
 		case DataObjectName.TRAJECTORY : return new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);
 		case DataObjectName.TRIANGULATEDSETREPRESENTATION : return resqml2_instantiateTriangulatedSetRepresentation(cPtr, owner);
 		case DataObjectName.UNSTRUCTUREDGRIDREPRESENTATION : return resqml2_instantiateUnstructuredGridRepresentation(cPtr, owner);
