@@ -947,8 +947,8 @@ ${COMMENT_END}
 		case DataObjectName.EPCEXTERNALPARTREFERENCE : return eml2_instantiateEpcExternalPartReference(cPtr, owner);
 		case DataObjectName.FAULTINTERPRETATION : return resqml2_instantiateFaultInterpretation(cPtr, owner);
 		case DataObjectName.FLUIDBOUNDARYFEATURE : return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.FluidBoundaryFeature(cPtr, owner);
-		case DataObjectName.FLUIDCHARACTERIZATION : return new com.f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.FluidCharacterization(cPtr, owner);
-		case DataObjectName.FLUIDSYSTEM : return new com.f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.FluidSystem(cPtr, owner);
+		case DataObjectName.FLUIDCHARACTERIZATION : return new f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.FluidCharacterization(cPtr, owner);
+		case DataObjectName.FLUIDSYSTEM : return new f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.FluidSystem(cPtr, owner);
 		case DataObjectName.FRONTIERFEATURE : return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.FrontierFeature(cPtr, owner);
 		case DataObjectName.GENETICBOUNDARYFEATURE :
 			f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeneticBoundaryFeature result = new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeneticBoundaryFeature(cPtr, owner);
