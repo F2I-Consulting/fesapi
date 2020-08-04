@@ -1006,7 +1006,7 @@ ${COMMENT_END}
 		case DataObjectName.SUBREPRESENTATION : return resqml2_instantiateSubRepresentation(cPtr, owner);
 		case DataObjectName.TECTONICBOUNDARYFEATURE : return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.TectonicBoundaryFeature(cPtr, owner);
 		case DataObjectName.TIMESERIES : return eml2_instantiateTimeSeries(cPtr, owner);
-		case DataObjectName.TIMESERIESDATA : return new com.f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.TimeSeriesData(cPtr, owner);
+		case DataObjectName.TIMESERIESDATA : return new f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.TimeSeriesData(cPtr, owner);
 		case DataObjectName.TRAJECTORY : return new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);
 		case DataObjectName.TRIANGULATEDSETREPRESENTATION : return resqml2_instantiateTriangulatedSetRepresentation(cPtr, owner);
 		case DataObjectName.UNSTRUCTUREDGRIDREPRESENTATION : return resqml2_instantiateUnstructuredGridRepresentation(cPtr, owner);
