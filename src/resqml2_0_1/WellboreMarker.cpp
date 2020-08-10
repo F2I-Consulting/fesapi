@@ -22,6 +22,7 @@ under the License.
 
 #include "WellboreMarkerFrameRepresentation.h"
 #include "../resqml2/BoundaryFeatureInterpretation.h"
+#include "../witsml2_0/WellboreMarker.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -89,4 +90,10 @@ void WellboreMarker::setBoundaryFeatureInterpretation(RESQML2_NS::BoundaryFeatur
 
     resqml20__WellboreMarker* marker = static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1);
 	marker->Interpretation = interp->newResqmlReference();
+}
+
+void WellboreMarker::setWitsmlWellboreMarker(WITSML2_0_NS::WellboreMarker * wellboreMarker)
+{
+	getRepository()->addRelationship(this, wellboreMarker);
+	static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1)->WitsmlFormationMarker = wellboreMarker->newResqmlReference();
 }

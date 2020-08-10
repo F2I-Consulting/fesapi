@@ -31,6 +31,8 @@ under the License.
 #include "resqml2_2/WellboreMarkerFrameRepresentation.h"
 #include "resqml2_2/WellboreMarker.h"
 
+#include "witsml2_0/WellboreMarker.h"
+
 using namespace std;
 using namespace COMMON_NS;
 using namespace RESQML2_NS;
@@ -58,8 +60,14 @@ void WellboreMarkerFrameRepresentationTest::initRepoHandler() {
 	WellboreMarkerFrameRepresentation* wmf = repo->createWellboreMarkerFrameRepresentation(interp, defaultUuid, defaultTitle, traj);
 	double markerMdValues[2] = { 350, 550 };
 	wmf->setMdValues(markerMdValues, 2, repo->getHdfProxySet()[0]);
-	repo->createWellboreMarker(wmf, "", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
-	repo->createWellboreMarker(wmf, "", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
+	auto resqmlMarker = repo->createWellboreMarker(wmf, "dfc5292d-88cd-4c20-977f-e808f5a1d56e", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
+	repo->createWellboreMarker(wmf, "0f35ddef-d13e-4921-ab5b-3ee68b24a714", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
+
+	// WITSML link for dip and azimuth
+	WITSML2_0_NS::WellboreMarker* witsmlMarker = repo->createWellboreMarker("c08339bc-acf7-49e7-90c8-cf4e275705bd", "WITSML marker", 350, gsoap_eml2_1::eml21__LengthUom__m, "my datum");
+	witsmlMarker->setDipAngle(5, gsoap_eml2_1::eml21__PlaneAngleUom__dega);
+	witsmlMarker->setDipDirection(10, gsoap_eml2_1::eml21__PlaneAngleUom__dega);
+	resqmlMarker->setWitsmlWellboreMarker(witsmlMarker);
 }
 
 void WellboreMarkerFrameRepresentationTest::readRepoHandler() {
@@ -67,8 +75,28 @@ void WellboreMarkerFrameRepresentationTest::readRepoHandler() {
 	REQUIRE(wmf != nullptr);
 	const auto mdCount = wmf->getWellboreMarkerCount();
 	REQUIRE(mdCount == 2);
-	REQUIRE(wmf->getWellboreMarkerSet()[0]->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
-	REQUIRE(wmf->getWellboreMarkerSet()[1]->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
+	
+	auto resqmlMarker = wmf->getWellboreMarkerSet()[0];
+	REQUIRE(resqmlMarker->getWellboreMarkerFrameRepresentation() == wmf);
+	REQUIRE(resqmlMarker->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
+	REQUIRE(resqmlMarker->getWitsmlWellboreMarker() != nullptr);
+	REQUIRE(resqmlMarker->hasDipAngle());
+	REQUIRE(resqmlMarker->getDipAngleValue() == 5);
+	REQUIRE(resqmlMarker->getDipAngleUom() == gsoap_eml2_1::eml21__PlaneAngleUom__dega);
+	REQUIRE(resqmlMarker->hasDipDirection());
+	REQUIRE(resqmlMarker->getDipDirectionValue() == 10);
+	REQUIRE(resqmlMarker->getDipDirectionUom() == gsoap_eml2_1::eml21__PlaneAngleUom__dega);
+
+	resqmlMarker = wmf->getWellboreMarkerSet()[1];
+	REQUIRE(resqmlMarker->getWellboreMarkerFrameRepresentation() == wmf);
+	REQUIRE(resqmlMarker->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
+	REQUIRE(resqmlMarker->getWitsmlWellboreMarker() == nullptr);
+	REQUIRE(!resqmlMarker->hasDipAngle());
+	REQUIRE_THROWS(resqmlMarker->getDipAngleValue() == 5);
+	REQUIRE_THROWS(resqmlMarker->getDipAngleUom() == gsoap_eml2_1::eml21__LengthUom__m);
+	REQUIRE(!resqmlMarker->hasDipDirection());
+	REQUIRE_THROWS(resqmlMarker->getDipDirectionValue() == 10);
+	REQUIRE_THROWS(resqmlMarker->getDipDirectionUom() == gsoap_eml2_1::eml21__LengthUom__m);
 
 	std::unique_ptr<double[]> xyzPoints(new double[mdCount*3]);
 	wmf->getXyzPointsOfPatch(0, xyzPoints.get());

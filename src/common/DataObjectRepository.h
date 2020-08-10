@@ -133,6 +133,7 @@ namespace WITSML2_0_NS
 	class Wellbore;
 	class WellboreCompletion;
 	class WellboreGeometry;
+	class WellboreMarker;
 	class Trajectory;
 	class Log;
 	class ChannelSet;
@@ -3238,6 +3239,43 @@ namespace COMMON_NS
 			const std::string & guid, const std::string & title,
 			const std::string & mnemonic, gsoap_eml2_1::eml21__UnitOfMeasure uom, gsoap_eml2_1::witsml20__EtpDataType dataType, gsoap_eml2_1::witsml20__ChannelStatus growingStatus,
 			const std::string & timeDepth, const std::string & loggingCompanyName);
+
+		/**
+		 * @brief	Creates a WITSML2.0 Wellbore Marker into this repository
+		 *
+		 * @param 	  	guid		  	The guid to set to the marker. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the marker. If empty then \"unknown\" title will
+		 * 								be set.
+		 * @param 	  	md		  		The Measured Depth to set to this marker.
+		 * @param 	  	mdUom			The underlying unit of measure of the MD value.
+		 * @param 	  	mdDatum		  	A free string to unformally indicate the datum of the MD (i.e. where MD==0).
+		 *
+		 * @returns	A pointer to the new Wellbore Marker.
+		 */
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreMarker* createWellboreMarker(
+			const std::string & guid, const std::string & title,
+			double md, gsoap_eml2_1::eml21__LengthUom mdUom, const std::string & mdDatum);
+
+		/**
+		 * @brief	Creates a WITSML2.0 Wellbore Marker into this repository
+		 *
+		 * @exception	std::invalid_argument	If <tt>witsmlWellbore == nullptr</tt>.
+		 *
+		 * @param [in]	witsmlWellbore	The wellbore associated to this marker. It cannot be null.
+		 * @param 	  	guid		  	The guid to set to the marker. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the marker. If empty then \"unknown\" title will
+		 * 								be set.
+		 * @param 	  	md		  		The Measured Depth to set to this marker.
+		 * @param 	  	mdUom			The underlying unit of measure of the MD value.
+		 * @param 	  	mdDatum		  	A free string to unformally indicate the datum of the MD (i.e. where MD==0).
+		 *
+		 * @returns	A pointer to the new Wellbore Marker.
+		 */
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreMarker* createWellboreMarker(WITSML2_0_NS::Wellbore* witsmlWellbore,
+			const std::string & guid, const std::string & title,
+			double md, gsoap_eml2_1::eml21__LengthUom mdUom, const std::string & mdDatum);
 
 		//*************** PRODML *************
 

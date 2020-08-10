@@ -74,7 +74,6 @@ jobs:
       - task: CMake@1
         displayName: 'CMake .. $(Generator)'
         inputs:
-          # workingDirectory: $(BUILD_DIR)
           cmakeArgs:
             ..
             $(Generator)
@@ -91,6 +90,13 @@ jobs:
             -DWITH_DOTNET_WRAPPING=TRUE
             -DWITH_TEST=TRUE
             -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
+            
+      - task: VSBuild@1
+        displayName: "Build the C# example"
+        inputs:
+          platform: 'x64'
+          solution: 'cs/example/example.sln'
+          configuration: '$(BuildType)'
 
       - task: CMake@1
         displayName: "Build --config $(BuildType)"
@@ -178,7 +184,6 @@ jobs:
       - task: CMake@1
         displayName: 'CMake .. $(Generator)'
         inputs:
-          # workingDirectory: $(BUILD_DIR)
           cmakeArgs:
             ..
             $(Generator)
@@ -195,6 +200,13 @@ jobs:
             -DWITH_DOTNET_WRAPPING=TRUE
             -DWITH_TEST=TRUE
             -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
+            
+      - task: VSBuild@1
+        displayName: "Build the C# example"
+        inputs:
+          platform: 'x64'
+          solution: 'cs/example/example.sln'
+          configuration: '$(BuildType)'
 
       - task: CMake@1
         displayName: "Build --config $(BuildType)"

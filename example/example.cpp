@@ -116,6 +116,7 @@ under the License.
 #include "witsml2_0/WellCompletion.h"
 #include "witsml2_0/WellboreCompletion.h"
 #include "witsml2_0/WellboreGeometry.h"
+#include "witsml2_0/WellboreMarker.h"
 #include "witsml2_0/Log.h"
 #include "witsml2_0/ChannelSet.h"
 #include "witsml2_0/Channel.h"
@@ -158,6 +159,7 @@ RESQML2_NS::ContinuousProperty* contColMapContProp = nullptr;
 
 WITSML2_0_NS::Well* witsmlWell = nullptr;
 WITSML2_0_NS::Wellbore* witsmlWellbore = nullptr;
+WITSML2_0_NS::WellboreMarker* witsmlWellboreMarker = nullptr;
 
 void serializeWitsmlWells(COMMON_NS::DataObjectRepository * pck)
 {
@@ -247,6 +249,11 @@ void serializeWitsmlWells(COMMON_NS::DataObjectRepository * pck)
 	witsmlLog->setTimeDepth("Depth");
 	witsmlLog->setLoggingCompanyName("F2I-CONSULTING");
 	witsmlLog->setLoggingCompanyCode("F2I");
+
+	// Marker
+	witsmlWellboreMarker = pck->createWellboreMarker(witsmlWellbore, "08b18514-e0c8-4667-850b-4ddd1cb785b5", "WITSML marker", 350, gsoap_eml2_1::eml21__LengthUom__m, "36e91de5-7833-4b6d-90d0-1d643c0adece");
+	witsmlWellboreMarker->setDipAngle(5, gsoap_eml2_1::eml21__PlaneAngleUom__dega);
+	witsmlWellboreMarker->setDipDirection(10, gsoap_eml2_1::eml21__PlaneAngleUom__dega);
 }
 
 void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfProxy* hdfProxy)
@@ -487,6 +494,7 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, EML2_NS:
 		wmf->setMdValues(markerMdValues, 2, hdfProxy);
 		RESQML2_NS::WellboreMarker* marker0 = pck->createWellboreMarker(wmf, "624f9f17-6797-4d78-b3fc-9ca2c8174bcd", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
 		marker0->setBoundaryFeatureInterpretation(horizon1Interp1);
+		marker0->setWitsmlWellboreMarker(witsmlWellboreMarker);
 		RESQML2_NS::WellboreMarker* marker1 = pck->createWellboreMarker(wmf, "3611725e-4d9b-4d3e-87e6-58fcd238f5a8", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
 		marker1->setBoundaryFeatureInterpretation(fault1Interp1);
 	}
@@ -2362,20 +2370,18 @@ void showAllSubRepresentations(const vector<RESQML2_NS::SubRepresentation *> & s
 			const ULONG64 indiceCount = subRepSet[subRepIndex]->getElementCountOfPatch(0);
 
 			// element indices
-			ULONG64 * elementIndices = new ULONG64[indiceCount];
-			subRepSet[subRepIndex]->getElementIndicesOfPatch(0, 0, elementIndices);
+			std::unique_ptr<ULONG64[]> elementIndices(new ULONG64[indiceCount]);
+			subRepSet[subRepIndex]->getElementIndicesOfPatch(0, 0, elementIndices.get());
 			for (unsigned int i = 0; i < indiceCount && i < 10; ++i) {
 				std::cout << "Element indice at position " << i << " : " << elementIndices[i] << std::endl;
 			}
-			delete[] elementIndices;
 
 			// Supporting rep indices
-			short * supRepIndices = new short[indiceCount];
-			subRepSet[subRepIndex]->getSupportingRepresentationIndicesOfPatch(0, supRepIndices);
+			std::unique_ptr<short[]> supRepIndices (new short[indiceCount]);
+			subRepSet[subRepIndex]->getSupportingRepresentationIndicesOfPatch(0, supRepIndices.get());
 			for (unsigned int i = 0; i < indiceCount && i < 10; ++i) {
 				std::cout << "Supporting rep indice at position " << i << " : " << supRepIndices[i] << std::endl;
 			}
-			delete[] supRepIndices;
 
 		}
 		else {
@@ -2386,7 +2392,7 @@ void showAllSubRepresentations(const vector<RESQML2_NS::SubRepresentation *> & s
 	}
 }
 
-void deserializeStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn)
+void deserializeStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn, const COMMON_NS::EnumStringMapper & enumStrMapper)
 {
 	showAllMetadata(stratiColumn);
 	for (size_t i = 0; i < stratiColumn->getStratigraphicColumnRankInterpretationSet().size(); ++i)
@@ -2394,7 +2400,7 @@ void deserializeStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn)
 		std::cout << "\tCOLUMN RANK INTERP" << std::endl;
 		RESQML2_NS::StratigraphicColumnRankInterpretation const * stratiColumnRankInterp = stratiColumn->getStratigraphicColumnRankInterpretationSet()[i];
 		showAllMetadata(stratiColumnRankInterp);
-		if (stratiColumnRankInterp->isAChronoStratiRank() == true)
+		if (stratiColumnRankInterp->isAChronoStratiRank())
 			cout << "This is a chrono rank!" << endl;
 		else
 			cout << "This is not a chrono rank!" << endl;
@@ -2413,8 +2419,8 @@ void deserializeStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn)
 				RESQML2_NS::WellboreMarkerFrameRepresentation * markerFrame = markerFrameSet[markerFrameIndex];
 				showAllMetadata(markerFrame);
 				vector<RESQML2_NS::WellboreMarker *> markerSet = markerFrame->getWellboreMarkerSet();
-				double* doubleMds = new double[markerFrame->getMdValuesCount()];
-				markerFrame->getMdAsDoubleValues(doubleMds);
+				std::unique_ptr<double[]> doubleMds(new double[markerFrame->getMdValuesCount()]);
+				markerFrame->getMdAsDoubleValues(doubleMds.get());
 				for (size_t mIndex = 0; mIndex < markerSet.size(); ++mIndex) {
 					if (doubleMds[mIndex] == doubleMds[mIndex]) {
 						cout << doubleMds[mIndex] << endl;
@@ -2422,8 +2428,13 @@ void deserializeStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn)
 					else {
 						cout << "NaN" << endl;
 					}
+					if (markerSet[mIndex]->hasDipAngle()) {
+						cout << "dip Angle " << markerSet[mIndex]->getDipAngleValue() << " " << enumStrMapper.planeAngleUomToString(markerSet[mIndex]->getDipAngleUom()) << endl;
+					}
+					if (markerSet[mIndex]->hasDipDirection()) {
+						cout << "dip Direction " << markerSet[mIndex]->getDipDirectionValue() << " " << enumStrMapper.planeAngleUomToString(markerSet[mIndex]->getDipDirectionUom()) << endl;
+					}
 				}
-				delete[] doubleMds;
 			}
 		}
 	}
@@ -4482,7 +4493,7 @@ void deserialize(const string & inputFile)
 	std::cout << "STRATI COLUMN" << endl;
 	for (size_t i = 0; i < stratiColumnSet.size(); i++)
 	{
-		deserializeStratiColumn(stratiColumnSet[i]);
+		deserializeStratiColumn(stratiColumnSet[i], enumStrMapper);
 	}
 
 	std::cout << "WELLBORES" << endl;
@@ -4575,6 +4586,27 @@ void deserialize(const string & inputFile)
 			else if (wellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
 				std::cout << "Hdf datatype is UNKNOWN" << std::endl;
 			std::cout << std::endl;
+			if (dynamic_cast<RESQML2_NS::WellboreMarkerFrameRepresentation*>(wellboreFrameSet[j]) != nullptr) {
+				auto markerFrame = static_cast<RESQML2_NS::WellboreMarkerFrameRepresentation*>(wellboreFrameSet[j]);
+				showAllMetadata(markerFrame);
+				vector<RESQML2_NS::WellboreMarker *> markerSet = markerFrame->getWellboreMarkerSet();
+				std::unique_ptr<double[]> doubleMds(new double[markerFrame->getMdValuesCount()]);
+				markerFrame->getMdAsDoubleValues(doubleMds.get());
+				for (size_t mIndex = 0; mIndex < markerSet.size(); ++mIndex) {
+					if (doubleMds[mIndex] == doubleMds[mIndex]) {
+						cout << doubleMds[mIndex] << endl;
+					}
+					else {
+						cout << "NaN" << endl;
+					}
+					if (markerSet[mIndex]->hasDipAngle()) {
+						cout << "dip Angle " << markerSet[mIndex]->getDipAngleValue() << " " << enumStrMapper.planeAngleUomToString(markerSet[mIndex]->getDipAngleUom()) << endl;
+					}
+					if (markerSet[mIndex]->hasDipDirection()) {
+						cout << "dip Direction " << markerSet[mIndex]->getDipDirectionValue() << " " << enumStrMapper.planeAngleUomToString(markerSet[mIndex]->getDipDirectionUom()) << endl;
+					}
+				}
+			}
 #if WITH_RESQML2_2
 			if (wellboreFrameSet[j]->getXmlTag() == "SeismicWellboreFrameRepresentation") {
 				RESQML2_2_NS::SeismicWellboreFrameRepresentation* seismicWellboreFrame = static_cast<RESQML2_2_NS::SeismicWellboreFrameRepresentation*>(wellboreFrameSet[j]);

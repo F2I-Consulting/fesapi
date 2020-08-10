@@ -23,6 +23,7 @@ under the License.
 #include "../src/witsml2_0/WellboreObject.h"
 #include "../src/witsml2_0/WellboreCompletion.h"
 #include "../src/witsml2_0/WellboreGeometry.h"
+#include "../src/witsml2_0/WellboreMarker.h"
 #include "../src/witsml2_0/Trajectory.h"
 #include "../src/witsml2_0/Log.h"
 #include "../src/witsml2_0/ChannelSet.h"
@@ -2015,9 +2016,9 @@ namespace WITSML2_0_NS
 		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(GapAir, gsoap_eml2_1::eml21__LengthUom)
 		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(DepthWaterMean, gsoap_eml2_1::eml21__LengthUom)
 
-		//***************************************
-		//************** SECTION ****************
-		//***************************************
+		//***************************************/
+		//************** SECTION ****************/
+		//***************************************/
 
 		// Mandatory
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(std::string, WellboreGeometrySection, uid)
@@ -2088,9 +2089,9 @@ namespace WITSML2_0_NS
 
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__AziRef, AziRef)
 
-		//***************************************
-		// ******* TRAJECTORY STATIONS **********
-		//***************************************
+		//***************************************/
+		// ******* TRAJECTORY STATIONS **********/
+		//***************************************/
 
 		// Mandatory
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(std::string, TrajectoryStation, uid)
@@ -2254,5 +2255,14 @@ namespace WITSML2_0_NS
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(std::string, Uom)
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(gsoap_eml2_1::witsml20__EtpDataType, DataType)
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(gsoap_eml2_1::witsml20__ChannelStatus, GrowingStatus)
+	};
+	
+	class WellboreMarker : public WellboreObject
+	{
+	public:
+		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(Md, gsoap_eml2_1::eml21__LengthUom)
+
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(DipAngle, gsoap_eml2_1::eml21__PlaneAngleUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(DipDirection, gsoap_eml2_1::eml21__PlaneAngleUom)
 	};
 }

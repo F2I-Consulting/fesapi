@@ -41,7 +41,7 @@ WellboreFrameRepresentation::WellboreFrameRepresentation(RESQML2_NS::WellboreInt
 	resqml22__WellboreFrameRepresentation* frame = static_cast<resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setInterpretation(interp);
 
