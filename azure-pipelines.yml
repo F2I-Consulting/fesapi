@@ -117,6 +117,8 @@ jobs:
         
       - script: |
           copy $(Build.SourcesDirectory)\build\$(BuildType)\FesapiCpp*.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
+          copy C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
+          copy C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
           $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)\example.exe
         displayName: 'C# Example'
         
@@ -233,5 +235,7 @@ jobs:
         
       - script: |
           copy $(Build.SourcesDirectory)\build\$(BuildType)\FesapiCpp*.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
+          copy C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
+          copy C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
           $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)\example.exe
         displayName: 'C# Example'
