@@ -1744,6 +1744,13 @@ namespace gsoap_resqml2_0_1
 		resqml20__PillarShape__straight = 1,
 		resqml20__PillarShape__curved = 2
 	};
+	enum resqml20__FluidContact {
+		resqml20__FluidContact__free_x0020water_x0020contact = 0,
+		resqml20__FluidContact__gas_x0020oil_x0020contact = 1,
+		resqml20__FluidContact__gas_x0020water_x0020contact = 2,
+		resqml20__FluidContact__seal = 3,
+		resqml20__FluidContact__water_x0020oil_x0020contact = 4
+	};
 }
 namespace gsoap_eml2_3
 {
@@ -1853,6 +1860,14 @@ namespace gsoap_eml2_3
 		eml23__FacetKind__statistics = 5,
 		eml23__FacetKind__what = 6
 	};
+}
+
+namespace std {
+	%template(StratigraphicOccurrenceInterpretationVector) vector<RESQML2_NS::StratigraphicOccurrenceInterpretation *>;
+	%template(HorizonInterpretationVector) vector<RESQML2_NS::HorizonInterpretation *>;
+	%template(StratigraphicColumnVector) vector<RESQML2_NS::StratigraphicColumn *>;
+	%template(WellboreMarkerFrameRepresentationVector) std::vector<RESQML2_NS::WellboreMarkerFrameRepresentation *>;
+	%template(WellboreMarkerVector) vector<RESQML2_NS::WellboreMarker *>;
 }
 
 namespace RESQML2_NS
@@ -2208,6 +2223,9 @@ namespace RESQML2_NS
 		bool isAChronoStratiRank() const;
 		StratigraphicUnitInterpretation* getSubjectOfContact(unsigned int contactIndex) const;
 		StratigraphicUnitInterpretation* getDirectObjectOfContact(unsigned int contactIndex) const;
+		std::vector<RESQML2_NS::StratigraphicOccurrenceInterpretation *> getStratigraphicOccurrenceInterpretationSet() const;
+		std::vector<RESQML2_NS::HorizonInterpretation *> getHorizonInterpretationSet() const;
+		std::vector<RESQML2_NS::StratigraphicColumn *> getStratigraphicColumnSet() const;
 	};
 	
 #ifdef SWIGPYTHON
@@ -2218,6 +2236,7 @@ namespace RESQML2_NS
 	public:
 		void setStratigraphicColumnRankInterpretation(StratigraphicColumnRankInterpretation * stratiColumnRankInterp);
 		StratigraphicColumnRankInterpretation * getStratigraphicColumnRankInterpretation() const;
+		std::vector<RESQML2_NS::WellboreMarkerFrameRepresentation *> getWellboreMarkerFrameRepresentationSet() const;
 	};
 
 #ifdef SWIGPYTHON
@@ -4823,6 +4842,7 @@ namespace RESQML2_NS
 	{
 	public:		
 		unsigned int getWellboreMarkerCount();
+		std::vector<RESQML2_NS::WellboreMarker *> getWellboreMarkerSet() const;
 
 		void setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, unsigned int nullValue, class StratigraphicOccurrenceInterpretation* stratiOccurrenceInterp, EML2_NS::AbstractHdfProxy* proxy);
 		StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation();

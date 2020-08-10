@@ -34,6 +34,10 @@ under the License.
 	%nspace EML2_3_NS::TimeSeries;
 #endif
 
+namespace std {
+	%template(GraphicalInformationSetVector) vector<EML2_3_NS::GraphicalInformationSet*>;
+}
+
 namespace EML2_3_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
