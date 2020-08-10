@@ -120,6 +120,7 @@ jobs:
           copy C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
           copy C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
           $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)\example.exe
+        workingDirectory: $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
         displayName: 'C# Example'
         
   - job:
@@ -238,4 +239,5 @@ jobs:
           copy C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
           copy C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
           $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)\example.exe
+        workingDirectory: $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
         displayName: 'C# Example'
