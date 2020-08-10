@@ -112,8 +112,14 @@ jobs:
         displayName: 'Test'
 
       - script: |
-          $(Build.SourcesDirectory)\build\$(BuildType)\example.exe"
+          $(Build.SourcesDirectory)\build\$(BuildType)\example.exe
         displayName: 'Example'
+        
+      - script: |
+          copy $(Build.SourcesDirectory)\build\$(BuildType)\FesapiCpp*.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
+          $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)\example.exe
+        displayName: 'C# Example'
+        
   - job:
     displayName: Windows VS2019
     pool:
@@ -222,5 +228,10 @@ jobs:
         displayName: 'Test'
 
       - script: |
-          $(Build.SourcesDirectory)\build\$(BuildType)\example.exe"
+          $(Build.SourcesDirectory)\build\$(BuildType)\example.exe
         displayName: 'Example'
+        
+      - script: |
+          copy $(Build.SourcesDirectory)\build\$(BuildType)\FesapiCpp*.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
+          $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)\example.exe
+        displayName: 'C# Example'
