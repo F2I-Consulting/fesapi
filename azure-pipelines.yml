@@ -119,9 +119,7 @@ jobs:
         displayName: 'Copy dependencies of C# Example'
         inputs:
             contents: |
-                $(Build.SourcesDirectory)\build\$(BuildType)\FesapiCpp*.dll
-                $(Build.SourcesDirectory)\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll
-                $(Build.SourcesDirectory)\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll
+                $(Build.SourcesDirectory)\build\$(BuildType)\*.dll
             targetFolder: '$(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)'
             flattenFolders: true
         
@@ -244,9 +242,7 @@ jobs:
         displayName: 'Copy dependencies of C# Example'
         inputs:
             contents: |
-                $(Build.SourcesDirectory)\build\$(BuildType)\FesapiCpp*.dll
-                $(Build.SourcesDirectory)\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll
-                $(Build.SourcesDirectory)\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll
+                $(Build.SourcesDirectory)\build\$(BuildType)\*.dll
             targetFolder: '$(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)'
             flattenFolders: true
         
