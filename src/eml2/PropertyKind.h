@@ -49,7 +49,7 @@ namespace EML2_NS
 		*
 		* @returns The unit or measure of the values of this property kind as a string.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getBaseUomForConversionAsString() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::string getBaseUomAsString() const = 0;
 		
 		/**
 		 * Get the title of the parent property kind

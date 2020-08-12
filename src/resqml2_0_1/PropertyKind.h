@@ -143,7 +143,7 @@ namespace RESQML2_0_1_NS
 		*
 		* @returns The unit or measure of the values of this property kind as a string.
 		*/
-		DLL_IMPORT_OR_EXPORT std::string getBaseUomForConversionAsString() const final;
+		DLL_IMPORT_OR_EXPORT std::string getBaseUomAsString() const final;
 
 		/**
 		 * Get the title of the parent property kind

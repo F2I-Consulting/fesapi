@@ -120,9 +120,10 @@ jobs:
         inputs:
             contents: |
                 $(Build.SourcesDirectory)\build\$(BuildType)\FesapiCpp*.dll
-                C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll
-                C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll
-            targetFolder: '$(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)'  
+                $(Build.SourcesDirectory)\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll
+                $(Build.SourcesDirectory)\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll
+            targetFolder: '$(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)'
+            flattenFolders: true
         
       - script: |
           $(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)\example.exe
@@ -244,9 +245,10 @@ jobs:
         inputs:
             contents: |
                 $(Build.SourcesDirectory)\build\$(BuildType)\FesapiCpp*.dll
-                C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll
-                C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll
-            targetFolder: '$(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)'  
+                $(Build.SourcesDirectory)\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll
+                $(Build.SourcesDirectory)\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll
+            targetFolder: '$(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)'
+            flattenFolders: true
         
       - script: |
           $(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)\example.exe

@@ -158,7 +158,7 @@ bool PropertyKind::isParentPartial() const
 	return parentPk->isPartial();
 }
 
-std::string PropertyKind::getBaseUomForConversionAsString() const
+std::string PropertyKind::getBaseUomAsString() const
 {
 	gsoap_resqml2_0_1::resqml20__ResqmlUom representativeUom = getSpecializedGsoapProxy()->RepresentativeUom;
 
