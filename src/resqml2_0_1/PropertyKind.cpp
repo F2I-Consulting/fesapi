@@ -158,6 +158,22 @@ bool PropertyKind::isParentPartial() const
 	return parentPk->isPartial();
 }
 
+std::string PropertyKind::getBaseUomAsString() const
+{
+	gsoap_resqml2_0_1::resqml20__ResqmlUom representativeUom = getSpecializedGsoapProxy()->RepresentativeUom;
+
+	if (representativeUom == gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc) {
+		unsigned int emCount = getExtraMetadataCount();
+		for (unsigned int i = 0; i < emCount; ++i) {
+			if (getExtraMetadataKeyAtIndex(i) == "Uom") {
+				return getExtraMetadataStringValueAtIndex(i);
+			}
+		}
+	}
+
+	return gsoap_resqml2_0_1::soap_resqml20__ResqmlUom2s(gsoapProxy2_0_1->soap, representativeUom);
+}
+
 std::string PropertyKind::getParentAsString() const
 {
 	if (!isParentAnEnergisticsPropertyKind()) {

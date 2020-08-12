@@ -112,8 +112,21 @@ jobs:
         displayName: 'Test'
 
       - script: |
-          $(Build.SourcesDirectory)\build\$(BuildType)\example.exe"
+          $(Build.SourcesDirectory)\build\$(BuildType)\example.exe
         displayName: 'Example'
+        
+      - task: CopyFiles@2
+        displayName: 'Copy dependencies of C# Example'
+        inputs:
+            contents: |
+                $(Build.SourcesDirectory)\build\$(BuildType)\*.dll
+            targetFolder: '$(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)'
+            flattenFolders: true
+        
+      - script: |
+          $(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)\example.exe
+        displayName: 'C# Example'
+        
   - job:
     displayName: Windows VS2019
     pool:
@@ -222,5 +235,19 @@ jobs:
         displayName: 'Test'
 
       - script: |
-          $(Build.SourcesDirectory)\build\$(BuildType)\example.exe"
+          $(Build.SourcesDirectory)\build\$(BuildType)\example.exe
         displayName: 'Example'
+        
+      - task: CopyFiles@2
+        displayName: 'Copy dependencies of C# Example'
+        inputs:
+            contents: |
+                $(Build.SourcesDirectory)\build\$(BuildType)\*.dll
+            targetFolder: '$(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)'
+            flattenFolders: true
+        
+      - script: |
+          $(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)\example.exe
+        displayName: 'C# Example'
+        
+        

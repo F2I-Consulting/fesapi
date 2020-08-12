@@ -198,15 +198,8 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<StratigraphicUnitInterpretation *> getStratigraphicUnitInterpretationSet() const;
 
-		/**
-		 * Gets all the stratigraphic occurrence interpretations associated with this stratigraphic
-		 * column rank interpretation.
-		 *
-		 * @returns	A vector of pointers to all the stratigraphic occurrence interpretations associated
-		 * 			with this stratigraphic column rank interpretation.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<StratigraphicOccurrenceInterpretation *> getStratigraphicOccurrenceInterpretationSet() const;
-
+		GETTER_DATAOBJECTS(StratigraphicOccurrenceInterpretation, StratigraphicOccurrenceInterpretation)
+		
 		/**
 		 * Gets the count of all the contact horizon interpretations which are contained in this
 		 * stratigraphic column rank.
@@ -229,6 +222,17 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getHorizonInterpretationDor(unsigned int index) const = 0;
 
 		/**
+		 * Gets the contact horizon interpretation at a particular index.
+		 *
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the contact horizon interpretation we look for.
+		 *
+		 * @returns	The contact horizon interpretation at position @p index.
+		 */
+		DLL_IMPORT_OR_EXPORT HorizonInterpretation* getHorizonInterpretation(unsigned int index) const;
+
+		/**
 		 * Gets all the horizon interpretations contained in this stratigraphic column rank
 		 * interpretation.
 		 *
@@ -237,13 +241,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<HorizonInterpretation *> getHorizonInterpretationSet() const;
 
-		/**
-		 * Gets all the stratigraphic columns this stratigraphic column rank belongs to.
-		 *
-		 * @returns	A vector of pointers to all the stratigraphic columns this stratigraphic column rank
-		 * 			belongs to.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<StratigraphicColumn *> getStratigraphicColumnSet() const;
+		GETTER_DATAOBJECTS(StratigraphicColumn, StratigraphicColumn)
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

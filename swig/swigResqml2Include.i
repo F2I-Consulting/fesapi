@@ -1744,6 +1744,13 @@ namespace gsoap_resqml2_0_1
 		resqml20__PillarShape__straight = 1,
 		resqml20__PillarShape__curved = 2
 	};
+	enum resqml20__FluidContact {
+		resqml20__FluidContact__free_x0020water_x0020contact = 0,
+		resqml20__FluidContact__gas_x0020oil_x0020contact = 1,
+		resqml20__FluidContact__gas_x0020water_x0020contact = 2,
+		resqml20__FluidContact__seal = 3,
+		resqml20__FluidContact__water_x0020oil_x0020contact = 4
+	};
 }
 namespace gsoap_eml2_3
 {
@@ -2208,6 +2215,9 @@ namespace RESQML2_NS
 		bool isAChronoStratiRank() const;
 		StratigraphicUnitInterpretation* getSubjectOfContact(unsigned int contactIndex) const;
 		StratigraphicUnitInterpretation* getDirectObjectOfContact(unsigned int contactIndex) const;
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicOccurrenceInterpretation, StratigraphicOccurrenceInterpretation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::HorizonInterpretation, HorizonInterpretation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicColumn, StratigraphicColumn)
 	};
 	
 #ifdef SWIGPYTHON
@@ -2218,6 +2228,7 @@ namespace RESQML2_NS
 	public:
 		void setStratigraphicColumnRankInterpretation(StratigraphicColumnRankInterpretation * stratiColumnRankInterp);
 		StratigraphicColumnRankInterpretation * getStratigraphicColumnRankInterpretation() const;
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreMarkerFrameRepresentation, WellboreMarkerFrameRepresentation)
 	};
 
 #ifdef SWIGPYTHON
@@ -4822,8 +4833,7 @@ namespace RESQML2_NS
 	class WellboreMarkerFrameRepresentation : public WellboreFrameRepresentation
 	{
 	public:		
-		unsigned int getWellboreMarkerCount();
-
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreMarker, WellboreMarker)
 		void setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, unsigned int nullValue, class StratigraphicOccurrenceInterpretation* stratiOccurrenceInterp, EML2_NS::AbstractHdfProxy* proxy);
 		StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation();
 	};

@@ -82,6 +82,11 @@ namespace EML2_3_NS
 		DLL_IMPORT_OR_EXPORT bool isParentPartial() const;
 		
 		/**
+		* Please do not use: not implemented yet.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getBaseUomAsString() const final;
+
+		/**
 		 * Get the title of the parent property kind
 		 *
 		 * @returns	The title of the parent property kind.
