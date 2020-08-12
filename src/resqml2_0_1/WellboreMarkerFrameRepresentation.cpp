@@ -70,11 +70,6 @@ void WellboreMarkerFrameRepresentation::pushBackNewWellboreMarker(RESQML2_0_1_NS
 	getRepository()->addOrReplaceDataObject(marker);
 }
 
-unsigned int WellboreMarkerFrameRepresentation::getWellboreMarkerCount()
-{
-	return static_cast<_resqml20__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1)->WellboreMarker.size();
-}
-
 COMMON_NS::DataObjectReference WellboreMarkerFrameRepresentation::getStratigraphicOccurrenceInterpretationDor() const
 {
 	_resqml20__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml20__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);

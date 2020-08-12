@@ -115,12 +115,17 @@ jobs:
           $(Build.SourcesDirectory)\build\$(BuildType)\example.exe
         displayName: 'Example'
         
+      - task: CopyFiles@2
+        displayName: 'Copy dependencies of C# Example'
+        inputs:
+            contents: |
+                $(Build.SourcesDirectory)\build\$(BuildType)\FesapiCpp*.dll
+                C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll
+                C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll
+            targetFolder: '$(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)'  
+        
       - script: |
-          copy $(Build.SourcesDirectory)\build\$(BuildType)\FesapiCpp*.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
-          copy C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
-          copy C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
-          $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)\example.exe
-        workingDirectory: $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
+          $(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)\example.exe
         displayName: 'C# Example'
         
   - job:
@@ -234,10 +239,17 @@ jobs:
           $(Build.SourcesDirectory)\build\$(BuildType)\example.exe
         displayName: 'Example'
         
+      - task: CopyFiles@2
+        displayName: 'Copy dependencies of C# Example'
+        inputs:
+            contents: |
+                $(Build.SourcesDirectory)\build\$(BuildType)\FesapiCpp*.dll
+                C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll
+                C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll
+            targetFolder: '$(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)'  
+        
       - script: |
-          copy $(Build.SourcesDirectory)\build\$(BuildType)\FesapiCpp*.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
-          copy C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
-          copy C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
-          $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)\example.exe
-        workingDirectory: $(Build.SourcesDirectory)\cs\example\bin\$(BuildType)
+          $(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)\example.exe
         displayName: 'C# Example'
+        
+        

@@ -45,11 +45,11 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT std::string getNamingSystem() const;
 
 		/**
-		* Get the unit of measure of the values of this property kind as a string.
+		* Get the base unit of measure for conversion of the values of this property kind as a string.
 		*
 		* @returns The unit or measure of the values of this property kind as a string.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getUomAsString() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::string getBaseUomForConversionAsString() const = 0;
 		
 		/**
 		 * Get the title of the parent property kind

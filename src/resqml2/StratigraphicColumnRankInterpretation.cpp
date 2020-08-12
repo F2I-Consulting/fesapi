@@ -55,6 +55,11 @@ std::vector<StratigraphicOccurrenceInterpretation *> StratigraphicColumnRankInte
 	return getRepository()->getSourceObjects<StratigraphicOccurrenceInterpretation>(this);
 }
 
+HorizonInterpretation* StratigraphicColumnRankInterpretation::getHorizonInterpretation(unsigned int index) const
+{
+	return getRepository()->getDataObjectByUuid<HorizonInterpretation>(getHorizonInterpretationDor(index).getUuid());
+}
+
 std::vector<HorizonInterpretation *> StratigraphicColumnRankInterpretation::getHorizonInterpretationSet() const
 {
 	return getRepository()->getTargetObjects<HorizonInterpretation>(this);

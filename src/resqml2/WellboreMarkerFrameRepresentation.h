@@ -33,20 +33,7 @@ namespace RESQML2_NS
 		/** Cleans the owned markers. */
 		virtual ~WellboreMarkerFrameRepresentation() {}
 
-		/**
-		 * Gets the number of wellbore marker of this wellbore marker frame representation.
-		 *
-		 * @returns	The wellbore marker count.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getWellboreMarkerCount() = 0;
-
-		/**
-		 * Get all the wellbore markers of this wellbore marker frame representation.
-		 *
-		 * @returns	A vector of pointers to all the wellbore markers of this wellbore marker frame
-		 * 			representation.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<WellboreMarker *> getWellboreMarkerSet() const;
+		GETTER_DATAOBJECTS(WellboreMarker, WellboreMarker)
 
 		/**
 		 * @brief	Sets stratigraphic occurrence interpretation associated to this wellbore marker frame

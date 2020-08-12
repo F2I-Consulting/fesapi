@@ -115,7 +115,7 @@ namespace EML2_NS
 	
 	class PropertyKind : public COMMON_NS::AbstractObject {
 	public:
-		std::string getUomAsString() const;
+		std::string getBaseUomForConversionAsString() const;
 	};
 	
 	class TimeSeries : public COMMON_NS::AbstractObject

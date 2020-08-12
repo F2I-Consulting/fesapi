@@ -1862,14 +1862,6 @@ namespace gsoap_eml2_3
 	};
 }
 
-namespace std {
-	%template(StratigraphicOccurrenceInterpretationVector) vector<RESQML2_NS::StratigraphicOccurrenceInterpretation *>;
-	%template(HorizonInterpretationVector) vector<RESQML2_NS::HorizonInterpretation *>;
-	%template(StratigraphicColumnVector) vector<RESQML2_NS::StratigraphicColumn *>;
-	%template(WellboreMarkerFrameRepresentationVector) std::vector<RESQML2_NS::WellboreMarkerFrameRepresentation *>;
-	%template(WellboreMarkerVector) vector<RESQML2_NS::WellboreMarker *>;
-}
-
 namespace RESQML2_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
@@ -2223,9 +2215,9 @@ namespace RESQML2_NS
 		bool isAChronoStratiRank() const;
 		StratigraphicUnitInterpretation* getSubjectOfContact(unsigned int contactIndex) const;
 		StratigraphicUnitInterpretation* getDirectObjectOfContact(unsigned int contactIndex) const;
-		std::vector<RESQML2_NS::StratigraphicOccurrenceInterpretation *> getStratigraphicOccurrenceInterpretationSet() const;
-		std::vector<RESQML2_NS::HorizonInterpretation *> getHorizonInterpretationSet() const;
-		std::vector<RESQML2_NS::StratigraphicColumn *> getStratigraphicColumnSet() const;
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicOccurrenceInterpretation, StratigraphicOccurrenceInterpretation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::HorizonInterpretation, HorizonInterpretation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicColumn, StratigraphicColumn)
 	};
 	
 #ifdef SWIGPYTHON
@@ -2236,7 +2228,7 @@ namespace RESQML2_NS
 	public:
 		void setStratigraphicColumnRankInterpretation(StratigraphicColumnRankInterpretation * stratiColumnRankInterp);
 		StratigraphicColumnRankInterpretation * getStratigraphicColumnRankInterpretation() const;
-		std::vector<RESQML2_NS::WellboreMarkerFrameRepresentation *> getWellboreMarkerFrameRepresentationSet() const;
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreMarkerFrameRepresentation, WellboreMarkerFrameRepresentation)
 	};
 
 #ifdef SWIGPYTHON
@@ -4841,9 +4833,7 @@ namespace RESQML2_NS
 	class WellboreMarkerFrameRepresentation : public WellboreFrameRepresentation
 	{
 	public:		
-		unsigned int getWellboreMarkerCount();
-		std::vector<RESQML2_NS::WellboreMarker *> getWellboreMarkerSet() const;
-
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreMarker, WellboreMarker)
 		void setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, unsigned int nullValue, class StratigraphicOccurrenceInterpretation* stratiOccurrenceInterp, EML2_NS::AbstractHdfProxy* proxy);
 		StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation();
 	};

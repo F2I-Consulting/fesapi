@@ -72,7 +72,7 @@ bool PropertyKind::isParentPartial() const
 	return parentPk != nullptr;
 }
 
-std::string PropertyKind::getUomAsString() const
+std::string PropertyKind::getBaseUomForConversionAsString() const
 {
 	throw logic_error("Not yet implemented.");
 }

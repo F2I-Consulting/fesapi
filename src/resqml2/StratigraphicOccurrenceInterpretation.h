@@ -55,14 +55,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT StratigraphicColumnRankInterpretation * getStratigraphicColumnRankInterpretation() const;
 
-		/**
-		 * Gets all the wellbore marker frame representations associated with this stratigraphic
-		 * occurrence interpretation.
-		 *
-		 * @returns	A vector of pointer to all the wellbore marker frame representations associated with
-		 * 			this stratigraphic occurrence interpretation.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<WellboreMarkerFrameRepresentation *> getWellboreMarkerFrameRepresentationSet() const;
+		GETTER_DATAOBJECTS(WellboreMarkerFrameRepresentation, WellboreMarkerFrameRepresentation)
 
 		/**
 		 * Gets the data object reference of the stratigraphic column rank interpretation this

@@ -139,11 +139,11 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT bool isParentPartial() const final;
 
 		/**
-		* Get the unit of measure of the values of this property kind as a string.
+		* Get the base unit of measure for conversion of the values of this property kind as a string.
 		*
 		* @returns The unit or measure of the values of this property kind as a string.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getUomAsString() const final;
+		DLL_IMPORT_OR_EXPORT std::string getBaseUomForConversionAsString() const final;
 
 		/**
 		 * Get the title of the parent property kind

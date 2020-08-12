@@ -62,8 +62,6 @@ namespace RESQML2_0_1_NS
 		/** Cleans the owned markers. */
 		~WellboreMarkerFrameRepresentation() {}
 
-		DLL_IMPORT_OR_EXPORT unsigned int getWellboreMarkerCount() final;
-
 		DLL_IMPORT_OR_EXPORT void setStratigraphicOccurrenceInterpretation(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrenceInterp) final;
 
 		DLL_IMPORT_OR_EXPORT void setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, RESQML2_NS::StratigraphicOccurrenceInterpretation* stratiOccurrenceInterp, EML2_NS::AbstractHdfProxy* proxy) final;

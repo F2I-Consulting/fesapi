@@ -84,7 +84,7 @@ namespace EML2_3_NS
 		/**
 		* Please do not use: not implemented yet.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getUomAsString() const final;
+		DLL_IMPORT_OR_EXPORT std::string getBaseUomForConversionAsString() const final;
 
 		/**
 		 * Get the title of the parent property kind

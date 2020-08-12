@@ -1741,6 +1741,7 @@ namespace gsoap_eml2_1
 	%nspace WITSML2_0_NS::Log;
 	%nspace WITSML2_0_NS::ChannelSet;
 	%nspace WITSML2_0_NS::Channel;
+	%nspace WITSML2_0_NS::WellboreMarker;
 #endif
 
 namespace WITSML2_0_NS
