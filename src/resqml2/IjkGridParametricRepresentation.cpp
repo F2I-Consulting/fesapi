@@ -399,9 +399,18 @@ void IjkGridParametricRepresentation::getParametersOfNodesOfKInterfaceSequence(u
 
 	string datasetPath;
 	EML2_NS::AbstractHdfProxy* hdfProxy = getParametersOfNodesDatasetPath(datasetPath);
-	const unsigned long long numValuesInEachDimension[2] = { kInterfaceEnd - kInterfaceStart + 1, getXyzPointCountOfKInterface() };
-	const unsigned long long offsetInEachDimension[2] = { kInterfaceStart, 0 };
-	hdfProxy->readArrayNdOfDoubleValues(datasetPath, parameters, numValuesInEachDimension, offsetInEachDimension, 2);
+	if (getSplitCoordinateLineCount() != 0)
+	{
+		const unsigned long long numValuesInEachDimension[2] = { kInterfaceEnd - kInterfaceStart + 1, getXyzPointCountOfKInterface() };
+		const unsigned long long offsetInEachDimension[2] = { kInterfaceStart, 0 };
+		hdfProxy->readArrayNdOfDoubleValues(datasetPath, parameters, numValuesInEachDimension, offsetInEachDimension, 2);
+	}
+	else
+	{
+		const unsigned long long numValuesInEachDimension[3] = { kInterfaceEnd - kInterfaceStart + 1, getJCellCount() + 1, getICellCount() + 1 };
+		const unsigned long long offsetInEachDimension[3] = { kInterfaceStart , 0, 0 };
+		hdfProxy->readArrayNdOfDoubleValues(datasetPath, parameters, numValuesInEachDimension, offsetInEachDimension, 3);
+	}
 }
 
 void IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints)
@@ -641,90 +650,119 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 	//pillarInformation = new PillarInformation();
 	//loadPillarInformation(*pillarInformation);
 
-	// parameters : ordered
 	std::unique_ptr<double[]> parameters(new double[getXyzPointCountOfBlock()]);
-	unsigned long long blockCountPerDimension[2] = { 1, blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1 };
-	unsigned long long offsetPerDimension[2] = { blockInformation->kInterfaceStart , blockInformation->jInterfaceStart * (getICellCount() + 1) + blockInformation->iInterfaceStart };
-	unsigned long long strideInEachDimension[2] = { 1, (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) + ((getICellCount() + 1) - (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1)) };
-	unsigned long long blockSizeInEachDimension[2] = { blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1, blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1 };
-
 	std::string datasetPathInExternalFile;
 	EML2_NS::AbstractHdfProxy* hdfProxy = getParameterDatasetPath(datasetPathInExternalFile);
-
 	hid_t dataset, filespace;
-	hdfProxy->selectArrayNdOfValues(
-		datasetPathInExternalFile,
-		blockCountPerDimension,
-		offsetPerDimension,
-		strideInEachDimension,
-		blockSizeInEachDimension,
-		2,
-		true,
-		dataset,
-		filespace);
 
-	unsigned long long slab_size = 1;
-	for (size_t h = 0; h < 2; ++h) {
-		slab_size *= blockSizeInEachDimension[h];
+	if (getSplitCoordinateLineCount() == 0)
+	{
+		unsigned long long blockCountPerDimension[3] = { 1, 1, 1 };
+		unsigned long long offsetPerDimension[3] = { blockInformation->kInterfaceStart, blockInformation->jInterfaceStart, blockInformation->iInterfaceStart };
+		unsigned long long strideInEachDimension[3] = { 1, 1, 1 };
+		unsigned long long blockSizeInEachDimension[3] = { blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1,	blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1, blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1 };
+		
+		hdfProxy->selectArrayNdOfValues(
+			datasetPathInExternalFile,
+			blockCountPerDimension,
+			offsetPerDimension,
+			strideInEachDimension,
+			blockSizeInEachDimension,
+			3,
+			true,
+			dataset,
+			filespace);
+
+		unsigned long long slab_size = 1;
+		for (size_t h = 0; h < 3; ++h) {
+			slab_size *= blockSizeInEachDimension[h];
+		}
+
+		// reading values corresponding to the whole selected region (non splitted and splitted part)
+		hdfProxy->readArrayNdOfDoubleValues(dataset, filespace, parameters.get(), slab_size);
 	}
-	for (size_t h = 0; h < 2; ++h) {
-		slab_size *= blockCountPerDimension[h];
-	}
+	else
+	{
+		// parameters : ordered
+		unsigned long long blockCountPerDimension[2] = { 1, blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1 };
+		unsigned long long offsetPerDimension[2] = { blockInformation->kInterfaceStart , blockInformation->jInterfaceStart * (getICellCount() + 1) + blockInformation->iInterfaceStart };
+		unsigned long long strideInEachDimension[2] = { 1, (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) + ((getICellCount() + 1) - (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1)) };
+		unsigned long long blockSizeInEachDimension[2] = { blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1, blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1 };
 
-	// Adding block split coordinate lines to the selected regions
-	// traversing all bloc pillars in direction i and then in direction j
-	for (unsigned int jPillarIndex = blockInformation->jInterfaceStart; jPillarIndex <= blockInformation->jInterfaceEnd; ++jPillarIndex) {
-		for (unsigned int iPillarIndex = blockInformation->iInterfaceStart; iPillarIndex <= blockInformation->iInterfaceEnd; iPillarIndex++) {
-			unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
+		hdfProxy->selectArrayNdOfValues(
+			datasetPathInExternalFile,
+			blockCountPerDimension,
+			offsetPerDimension,
+			strideInEachDimension,
+			blockSizeInEachDimension,
+			2,
+			true,
+			dataset,
+			filespace);
 
-			if (!splitInformation[pillarIndex].empty()) {
-				// here is a split pillar
+		unsigned long long slab_size = 1;
+		for (size_t h = 0; h < 2; ++h) {
+			slab_size *= blockSizeInEachDimension[h];
+		}
+		for (size_t h = 0; h < 2; ++h) {
+			slab_size *= blockCountPerDimension[h];
+		}
 
-				// traversing all split coordinate lines corresponding to the current splitted pillar
-				for (size_t splitCoordinateLineIndex = 0; splitCoordinateLineIndex < splitInformation[pillarIndex].size(); ++splitCoordinateLineIndex) {
-					// traversing adjacent columns, it current column is in the bloc, corresponding coordinate line is added to the selected region
-					for (size_t columnIndex = 0; columnIndex < splitInformation[pillarIndex][splitCoordinateLineIndex].second.size(); ++columnIndex) {
-						const unsigned int iColumnIndex = getIColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
-						const unsigned int jColumnIndex = getJColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
+		// Adding block split coordinate lines to the selected regions
+		// traversing all bloc pillars in direction i and then in direction j
+		for (unsigned int jPillarIndex = blockInformation->jInterfaceStart; jPillarIndex <= blockInformation->jInterfaceEnd; ++jPillarIndex) {
+			for (unsigned int iPillarIndex = blockInformation->iInterfaceStart; iPillarIndex <= blockInformation->iInterfaceEnd; iPillarIndex++) {
+				unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
 
-						if ((iColumnIndex >= blockInformation->iInterfaceStart && iColumnIndex < blockInformation->iInterfaceEnd) &&
-							(jColumnIndex >= blockInformation->jInterfaceStart && jColumnIndex < blockInformation->jInterfaceEnd)) {
-							// here is a split coordinate line impacting the bloc
-							unsigned int splitCoordinateLineHdfIndex = (getICellCount() + 1) * (getJCellCount() + 1) + splitInformation[pillarIndex][splitCoordinateLineIndex].first;
+				if (!splitInformation[pillarIndex].empty()) {
+					// here is a split pillar
 
-							// the split coordinate line is added to the selected region
-							blockCountPerDimension[0] = 1;
-							blockCountPerDimension[1] = 1;
-							offsetPerDimension[0] = blockInformation->kInterfaceStart;
-							offsetPerDimension[1] = splitCoordinateLineHdfIndex;
-							strideInEachDimension[0] = 1;
-							strideInEachDimension[1] = 1;
-							blockSizeInEachDimension[0] = blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1;
-							blockSizeInEachDimension[1] = 1;
-							
-							hdfProxy->selectArrayNdOfValues(
-								datasetPathInExternalFile,
-								blockCountPerDimension,
-								offsetPerDimension,
-								strideInEachDimension,
-								blockSizeInEachDimension,
-								2,
-								false,
-								dataset,
-								filespace);
+					// traversing all split coordinate lines corresponding to the current splitted pillar
+					for (size_t splitCoordinateLineIndex = 0; splitCoordinateLineIndex < splitInformation[pillarIndex].size(); ++splitCoordinateLineIndex) {
+						// traversing adjacent columns, it current column is in the bloc, corresponding coordinate line is added to the selected region
+						for (size_t columnIndex = 0; columnIndex < splitInformation[pillarIndex][splitCoordinateLineIndex].second.size(); ++columnIndex) {
+							const unsigned int iColumnIndex = getIColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
+							const unsigned int jColumnIndex = getJColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
 
-							slab_size += (blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1);
+							if ((iColumnIndex >= blockInformation->iInterfaceStart && iColumnIndex < blockInformation->iInterfaceEnd) &&
+								(jColumnIndex >= blockInformation->jInterfaceStart && jColumnIndex < blockInformation->jInterfaceEnd)) {
+								// here is a split coordinate line impacting the bloc
+								unsigned int splitCoordinateLineHdfIndex = (getICellCount() + 1) * (getJCellCount() + 1) + splitInformation[pillarIndex][splitCoordinateLineIndex].first;
 
-							break; // in order to be sure not adding twice a same coordinate line if it is adjacent to several columns within the bloc
+								// the split coordinate line is added to the selected region
+								blockCountPerDimension[0] = 1;
+								blockCountPerDimension[1] = 1;
+								offsetPerDimension[0] = blockInformation->kInterfaceStart;
+								offsetPerDimension[1] = splitCoordinateLineHdfIndex;
+								strideInEachDimension[0] = 1;
+								strideInEachDimension[1] = 1;
+								blockSizeInEachDimension[0] = blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1;
+								blockSizeInEachDimension[1] = 1;
+
+								hdfProxy->selectArrayNdOfValues(
+									datasetPathInExternalFile,
+									blockCountPerDimension,
+									offsetPerDimension,
+									strideInEachDimension,
+									blockSizeInEachDimension,
+									2,
+									false,
+									dataset,
+									filespace);
+
+								slab_size += (blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1);
+
+								break; // in order to be sure not adding twice a same coordinate line if it is adjacent to several columns within the bloc
+							}
 						}
 					}
 				}
 			}
 		}
-	}
 
-	// reading values corresponding to the whole selected region (non splitted and splitted part)
-	hdfProxy->readArrayNdOfDoubleValues(dataset, filespace, parameters.get(), slab_size);
+		// reading values corresponding to the whole selected region (non splitted and splitted part)
+		hdfProxy->readArrayNdOfDoubleValues(dataset, filespace, parameters.get(), slab_size);
+	}
 
 	//Mapping
 	ULONG64 xyzPointCount = (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) * (blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1) + getBlockSplitCoordinateLineCount();
