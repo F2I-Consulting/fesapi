@@ -741,6 +741,14 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		0, 0, 500, 700, 0, 550, 0, 150, 500, 700, 150, 550 };
 	singleCellIjkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, false, singleCellIjkgridNodes, hdfProxy);
 
+	// ONE SUGAR PARAMETRIC
+	RESQML2_NS::IjkGridParametricRepresentation* singleCellIjkgridParametric = pck->createIjkGridParametricRepresentation(earthModelInterp, "53bb70fe-2eef-4691-b4fe-14541e3a57eb", "One unfaulted sugar cube (parametric geometry)", 1, 1, 1);
+	double singleCellParameters[8] = { 300, 300, 300, 300, 500, 500, 500, 500 };
+	double singleCellControlPoints[12] = { 0, 0, 300, 700, 0, 300, 0, 150, 300, 700, 150, 300 };
+	short singleCellPillarKind[4] = { 0, 0, 0, 0 };
+	singleCellIjkgridParametric->setGeometryAsParametricNonSplittedPillarNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, false,
+		singleCellParameters, singleCellControlPoints, NULL, 1, singleCellPillarKind, hdfProxy);
+
 	// TWO SUGARS EXPLICIT
 	ijkgrid = pck->createIjkGridExplicitRepresentation(earthModelInterp, "df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Two faulted sugar cubes (explicit geometry)", 2, 1, 1);
 	double nodes[48] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350, /* SPLIT*/ 375, 0, 350, 375, 150, 350,
@@ -3021,6 +3029,37 @@ void deserializeGridHyperslabbingBlock(const COMMON_NS::DataObjectRepository & p
 	ULONG64 xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
 
 	std::unique_ptr<double[]> xyzPoints(new double[xyzPointCountOfBlock * 3]);
+	ijkGrid->getXyzPointsOfBlock(xyzPoints.get());
+
+	// Keep for testing
+	/*cout << "All xyz points:" << endl;
+	for (unsigned int index = 0; index < xyzPointCountOfBlock; ++index)
+	std::cout << "(" << xyzPoints[3 * index] << " " << xyzPoints[3 * index + 1] << " " << xyzPoints[3 * index + 2] << ") ";
+	std::cout << std::endl;*/
+
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints.get()
+	);
+
+	ijkGrid->unloadSplitInformation();
+
+	// ONE SUGAR PARAMETRIC
+	ijkGrid = pck.getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>("53bb70fe-2eef-4691-b4fe-14541e3a57eb");
+	if (ijkGrid == nullptr) {
+		return;
+	}
+
+	cout << "--------------------------------------------------" << std::endl;
+	showAllMetadata(ijkGrid);
+	cout << "--------------------------------------------------" << std::endl;
+
+	ijkGrid->loadSplitInformation();
+
+	ijkGrid->loadBlockInformation(iInterfaceStart, iInterfaceEnd, jInterfaceStart, jInterfaceEnd, kInterfaceStart, kInterfaceEnd);
+
 	ijkGrid->getXyzPointsOfBlock(xyzPoints.get());
 
 	// Keep for testing
