@@ -48,7 +48,7 @@ namespace RESQML2_NS
 		/**
 		 * Defautl constructor
 		 */
-		CulturalFeature() {}
+		CulturalFeature() = default;
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
