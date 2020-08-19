@@ -104,6 +104,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		WELLBOREFRAMEREPRESENTATION,
 		WELLBOREGEOMETRY,
 		WELLBOREINTERPRETATION,
+		WELLBOREMARKER,
 		WELLBOREMARKERFRAMEREPRESENTATION,
 		WELLBORETRAJECTORYREPRESENTATION,
 		WELLCOMPLETION
@@ -833,6 +834,21 @@ ${COMMENT_END}
 		return null;
 	}
 	
+	public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreMarker resqml2_instantiateWellboreMarker(global::System.IntPtr cPtr, bool owner)
+	{
+		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
+		if (xmlNs.Equals("resqml20")) {
+			return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreMarker(cPtr, owner);
+		}
+${COMMENT_START}
+		else if (xmlNs.Equals("resqml22")) {
+			return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.WellboreMarker(cPtr, owner);
+		}
+${COMMENT_END}
+		
+		return null;
+	}
+	
 	public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreMarkerFrameRepresentation resqml2_instantiateWellboreMarkerFrameRepresentation(global::System.IntPtr cPtr, bool owner)
 	{
 		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
@@ -916,8 +932,7 @@ ${COMMENT_END}
 	}
 
 	string type = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlTag(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
-    DataObjectName dataObjName;
-    System.Enum.TryParse<DataObjectName>(type, true, out dataObjName);
+    DataObjectName dataObjName = (DataObjectName) System.Enum.Parse(typeof(DataObjectName), type, true);
 	switch (dataObjName) {
 		case DataObjectName.ACTIVITY : return eml2_instantiateActivity(cPtr, owner);
 		case DataObjectName.ACTIVITYTEMPLATE : return eml2_instantiateActivityTemplate(cPtr, owner);
@@ -1017,6 +1032,7 @@ ${COMMENT_END}
 		case DataObjectName.WELLBOREFRAMEREPRESENTATION : return resqml2_instantiateWellboreFrameRepresentation(cPtr, owner);
 		case DataObjectName.WELLBOREGEOMETRY : return new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreGeometry(cPtr, owner);
 		case DataObjectName.WELLBOREINTERPRETATION : return resqml2_instantiateWellboreInterpretation(cPtr, owner);
+		case DataObjectName.WELLBOREMARKER : return resqml2_instantiateWellboreMarker(cPtr, owner);
 		case DataObjectName.WELLBOREMARKERFRAMEREPRESENTATION : return resqml2_instantiateWellboreMarkerFrameRepresentation(cPtr, owner);
 		case DataObjectName.WELLBORETRAJECTORYREPRESENTATION : return resqml2_instantiateWellboreTrajectoryRepresentation(cPtr, owner);
 		case DataObjectName.WELLCOMPLETION : return new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellCompletion(cPtr, owner);
