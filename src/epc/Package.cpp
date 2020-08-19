@@ -23,6 +23,7 @@ under the License.
 #include <sstream>
 #include <stdexcept>
 #include <memory>
+#include <limits>
 
 #ifdef _WIN32
 #include <windows.h>
