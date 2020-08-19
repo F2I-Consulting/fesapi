@@ -104,6 +104,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		WELLBOREFRAMEREPRESENTATION,
 		WELLBOREGEOMETRY,
 		WELLBOREINTERPRETATION,
+		WELLBOREMARKER,
 		WELLBOREMARKERFRAMEREPRESENTATION,
 		WELLBORETRAJECTORYREPRESENTATION,
 		WELLCOMPLETION;
@@ -833,6 +834,21 @@ ${COMMENT_END}
 		return null;
 	}
 	
+	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreMarker resqml2_instantiateWellboreMarker(long cPtr, boolean owner)
+	{
+		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
+		if ("resqml20".equals(xmlNs)) {
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreMarker_resqml20(cPtr, owner);
+		}
+${COMMENT_START}
+		else if ("resqml22".equals(xmlNs)) {
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.WellboreMarker_resqml22(cPtr, owner);
+		}
+${COMMENT_END}
+		
+		return null;
+	}
+	
 	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreMarkerFrameRepresentation resqml2_instantiateWellboreMarkerFrameRepresentation(long cPtr, boolean owner)
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
@@ -1016,6 +1032,7 @@ ${COMMENT_END}
 		case WELLBOREFRAMEREPRESENTATION : return resqml2_instantiateWellboreFrameRepresentation(cPtr, owner);
 		case WELLBOREGEOMETRY : return new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreGeometry(cPtr, owner);
 		case WELLBOREINTERPRETATION : return resqml2_instantiateWellboreInterpretation(cPtr, owner);
+		case WELLBOREMARKER : return resqml2_instantiateWellboreMarker(cPtr, owner);
 		case WELLBOREMARKERFRAMEREPRESENTATION : return resqml2_instantiateWellboreMarkerFrameRepresentation(cPtr, owner);
 		case WELLBORETRAJECTORYREPRESENTATION : return resqml2_instantiateWellboreTrajectoryRepresentation(cPtr, owner);
 		case WELLCOMPLETION : return new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellCompletion(cPtr, owner);
