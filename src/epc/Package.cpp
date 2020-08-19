@@ -46,150 +46,46 @@ using namespace epc; // in order not to prefix by "epc::" for each class in the 
 const char* Package::CORE_PROP_REL_TYPE = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties";
 const char* Package::EXTENDED_CORE_PROP_REL_TYPE = "http://schemas.f2i-consulting.com/package/2014/relationships/extended-core-properties";
 
-namespace epc {
-#define CACHE_FILE_DESCRIPTOR //When defined all file descriptors are cached to speedup file lookup
-
-#ifdef CACHE_FILE_DESCRIPTOR
-	/* unz_file_info_interntal contain internal info about a file in zipfile*/
-	typedef struct unz_file_info64_internal_s
-	{
-		ZPOS64_T offset_curfile;            /* relative offset of local header 8 bytes */
-		ZPOS64_T byte_before_the_zipfile;   /* byte before the zipfile, (>0 for sfx) */
-#ifdef HAVE_AES
-		uLong aes_encryption_mode;
-		uLong aes_compression_method;
-#endif
-	} unz_file_info64_internal;
-
-	/* file_in_zip_read_info_s contain internal information about a file in zipfile */
-	typedef struct
-	{
-		Bytef *read_buffer;                 /* internal buffer for compressed data */
-		z_stream stream;                    /* zLib stream structure for inflate */
-
-#ifdef HAVE_BZIP2
-		bz_stream bstream;                  /* bzLib stream structure for bziped */
-#endif
-#ifdef HAVE_AES
-		fcrypt_ctx aes_ctx;
-#endif
-
-		ZPOS64_T pos_in_zipfile;            /* position in byte on the zipfile, for fseek */
-		uLong stream_initialised;           /* flag set if stream structure is initialised */
-
-		ZPOS64_T offset_local_extrafield;   /* offset of the local extra field */
-		uInt size_local_extrafield;         /* size of the local extra field */
-		ZPOS64_T pos_local_extrafield;      /* position in the local extra field in read */
-		ZPOS64_T total_out_64;
-
-		uLong crc32;                        /* crc32 of all data uncompressed */
-		uLong crc32_wait;                   /* crc32 we must obtain after decompress all */
-		ZPOS64_T rest_read_compressed;      /* number of byte to be decompressed */
-		ZPOS64_T rest_read_uncompressed;    /* number of byte to be obtained after decomp */
-
-		zlib_filefunc64_32_def z_filefunc;
-
-		voidpf filestream;                  /* io structore of the zipfile */
-		uLong compression_method;           /* compression method (0==store) */
-		ZPOS64_T byte_before_the_zipfile;   /* byte before the zipfile, (>0 for sfx) */
-		int raw;
-	} file_in_zip64_read_info_s;
-
-	/* unz64_s contain internal information about the zipfile */
-	typedef struct
-	{
-		zlib_filefunc64_32_def z_filefunc;
-		voidpf filestream;                  /* io structure of the current zipfile */
-		voidpf filestream_with_CD;          /* io structure of the disk with the central directory */
-		unz_global_info64 gi;               /* public global information */
-		ZPOS64_T byte_before_the_zipfile;   /* byte before the zipfile, (>0 for sfx)*/
-		ZPOS64_T num_file;                  /* number of the current file in the zipfile*/
-		ZPOS64_T pos_in_central_dir;        /* pos of the current file in the central dir*/
-		ZPOS64_T current_file_ok;           /* flag about the usability of the current file*/
-		ZPOS64_T central_pos;               /* position of the beginning of the central dir*/
-		uLong number_disk;                  /* number of the current disk, used for spanning ZIP*/
-		ZPOS64_T size_central_dir;          /* size of the central directory  */
-		ZPOS64_T offset_central_dir;        /* offset of start of central directory with
-											respect to the starting disk number */
-
-		unz_file_info64 cur_file_info;      /* public info about the current file in zip*/
-		unz_file_info64_internal cur_file_info_internal;
-		/* private info about it*/
-		file_in_zip64_read_info_s* pfile_in_zip_read;
-		/* structure about the current file if we are decompressing it */
-		int encrypted;                      /* is the current file encrypted */
-		int isZip64;                        /* is the current file zip64 */
-#ifndef NOUNCRYPT
-		unsigned long keys[3];              /* keys defining the pseudo-random sequence */
-		const unsigned long* pcrc_32_tab;
-#endif
-	} unz64_s;
-#endif
-}
-
 class Package::CheshireCat {
 public:
 
 	/**
 	* Create a Package with pathname.
 	*/
-	CheshireCat();
+	CheshireCat() :
+		fileCoreProperties(), fileContentType(), filePrincipalRelationship(), allFileParts(), extendedCoreProperties(), pathName(),
+		unzipped(nullptr), zf(nullptr), isZip64(false), name2file()
+	{}
 
 	/**
 	* Create a Package with CoreProperties file, ContentType file, Relationship file, vector of Part file and pathname.
 	*/
-	CheshireCat(const FileCoreProperties & pkgFileCP, const FileContentType & pkgFileCT, const FileRelationship & pkgFileRS, const PartMap & pkgFileP, const std::string & pkgPathName);
+	CheshireCat(const FileCoreProperties & pkgFileCP, const FileContentType & pkgFileCT, const FileRelationship & pkgFileRS, const PartMap & pkgFileP, const std::string & pkgPathName) :
+		fileCoreProperties(pkgFileCP), fileContentType(pkgFileCT), filePrincipalRelationship(pkgFileRS), allFileParts(pkgFileP), extendedCoreProperties(), pathName(pkgPathName),
+		unzipped(nullptr), zf(nullptr), isZip64(false), name2file()
+	{}
 
-	~CheshireCat();
+	~CheshireCat() { close(); }
 
-	void close();
+	void close() {
+		if (unzipped != nullptr) {
+			unzClose(unzipped);
+			unzipped = nullptr;
+		}
+	}
 
 	FileCoreProperties	fileCoreProperties;											/// Core Properties file
 	FileContentType		fileContentType;											/// ContentTypes file
 	FileRelationship	filePrincipalRelationship;									/// Relationships file
 	PartMap				allFileParts;
-	std::unordered_map< string, string >			extendedCoreProperties;					/// Set of non standard (extended) core properties
+	std::unordered_map< string, string > extendedCoreProperties;					/// Set of non standard (extended) core properties
 
 	string				pathName;													/// Pathname of package
 	unzFile				unzipped;
 	zipFile             zf;
 	bool                isZip64;
-#ifdef CACHE_FILE_DESCRIPTOR
-	std::unordered_map< std::string, unzFile > name2file;
-#endif
+	std::unordered_map< std::string, unz64_file_pos > name2file;
 };
-
-Package::CheshireCat::CheshireCat() : 
-	fileCoreProperties(), fileContentType(), filePrincipalRelationship(), allFileParts(), extendedCoreProperties(), pathName(),
-	unzipped(nullptr), zf(nullptr), isZip64(false)
-#ifdef CACHE_FILE_DESCRIPTOR
-	, name2file()
-#endif
-{
-}
-
-
-Package::CheshireCat::CheshireCat(const FileCoreProperties & pkgFileCP, const FileContentType & pkgFileCT, const FileRelationship & pkgFileRS, const PartMap & pkgFileP, const string & pkgPathName) :
-	fileCoreProperties(pkgFileCP), fileContentType(pkgFileCT), filePrincipalRelationship(pkgFileRS), allFileParts(pkgFileP), extendedCoreProperties(), pathName(pkgPathName),
-	unzipped(nullptr), zf(nullptr), isZip64(false)
-#ifdef CACHE_FILE_DESCRIPTOR
-	, name2file()
-#endif
-{
-}
-
-Package::CheshireCat::~CheshireCat()
-{
-	close();
-}
-
-void Package::CheshireCat::close()
-{
-	if (unzipped) {
-		unzClose(unzipped);
-		unzipped = nullptr;
-	}
-}
 
 Package::Package()
 {
@@ -245,29 +141,37 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 		throw invalid_argument("Cannot unzip " + pkgPathName + ". Please verify the path of the file and if you can open it with a third party archiver.");
     }
 
+	// Cache all file locations
+	if (unzGoToFirstFile(d_ptr->unzipped) != UNZ_OK) {
+		result.push_back("Cannot go to the first file of the EPC");
+		return result;
+	}
+	do {
+		char partName[1024];
+		unzGetCurrentFileInfo64(d_ptr->unzipped, nullptr, partName, 1024, nullptr, 0, nullptr, 0);
+		unz64_file_pos filePos;
+		unzGetFilePos64(d_ptr->unzipped, &filePos);
+		d_ptr->name2file[partName] = filePos;
+	} while (unzGoToNextFile(d_ptr->unzipped) != UNZ_END_OF_LIST_OF_FILE);
+
 	// Package relationships : core properties
-	string relFile = extractFile("_rels/.rels", "");
-	d_ptr->filePrincipalRelationship.readFromString(relFile);
-	vector<Relationship> pckRelset = d_ptr->filePrincipalRelationship.getAllRelationship();
-	for (size_t i = 0; i < pckRelset.size(); ++i) {
-		if (pckRelset[i].getType().compare(CORE_PROP_REL_TYPE) == 0) {
-			std::string target = pckRelset[i].getTarget();
+	d_ptr->filePrincipalRelationship.readFromString(extractFile("_rels/.rels"));
+	for (const auto& pckRel : d_ptr->filePrincipalRelationship.getAllRelationship()) {
+		if (pckRel.getType().compare(CORE_PROP_REL_TYPE) == 0) {
+			std::string target = pckRel.getTarget();
 			if (target.size() > 1 && target[0] == '/' && target[1] != '/') { // Rule 8 of A.3 paragraph Open Packaging Conventions (ECMA version)
 				target = target.substr(1);
 			}
-			string corePropFile = extractFile(target, "");
-			d_ptr->fileCoreProperties.readFromString(corePropFile);
+			d_ptr->fileCoreProperties.readFromString(extractFile(target));
 		}
 	}
 
 	// Package relationships : extended core properties	
 	if (fileExists("docProps/_rels/core.xml.rels")) {
-		string extendedCpRelFilePath = extractFile("docProps/_rels/core.xml.rels", "");
 		FileRelationship extendedCpRelFile;
-		extendedCpRelFile.readFromString(extendedCpRelFilePath);
-		vector<Relationship> extendedCpRelSet = extendedCpRelFile.getAllRelationship();
-		for (size_t i = 0; i < extendedCpRelSet.size(); ++i) {
-			std::string target = extendedCpRelSet[i].getTarget();
+		extendedCpRelFile.readFromString(extractFile("docProps/_rels/core.xml.rels"));
+		for (const auto& extendedCpRel : extendedCpRelFile.getAllRelationship()) {
+			std::string target = extendedCpRel.getTarget();
 			if (target.size() > 1 && target[0] == '/' && target[1] != '/') { // Rule 8 of A.3 paragraph Open Packaging Conventions (ECMA version)
 				target = target.substr(1);
 			}
@@ -280,15 +184,12 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 			std::istringstream iss(extractFile(target, ""));
 			std::string line;
 			while (std::getline(iss, line)) {
-				if (line[0] == '\t') // To find a better condition
-				{
+				if (line[0] == '\t') { // To find a better condition
 					size_t start = line.find("<");
 					size_t end = line.find(">");
-					if (start != string::npos && end != string::npos)
-					{
+					if (start != string::npos && end != string::npos) {
 						size_t end2 = line.find("<", end + 1);
-						if (end2 != string::npos)
-						{
+						if (end2 != string::npos) {
 							d_ptr->extendedCoreProperties[line.substr(start + 1, end - start - 1)] = line.substr(end + 1, end2 - end - 1);
 						}
 					}
@@ -435,30 +336,33 @@ const FilePart* Package::findPart(const std::string & outputPartPath) const
 	return it == d_ptr->allFileParts.end() ? nullptr : &(it->second);
 }
 
-void buildTimeInfo(const char *filename, tm_zip *tmzip, uLong *dostime)
-{
-#ifdef _WIN32
-	FILETIME ftUtc;
-    FILETIME ftLocal;
-    HANDLE hFind;
-    WIN32_FIND_DATAA ff32;
 
-    hFind = FindFirstFileA(filename, &ff32);
-    if (hFind != INVALID_HANDLE_VALUE)
-    {
-        FileTimeToLocalFileTime(&(ff32.ftLastWriteTime), &ftLocal);
-        FileTimeToDosDateTime(&ftLocal,((LPWORD)dostime)+1,((LPWORD)dostime)+0);
-        FindClose(hFind);
-    }
+#ifdef _WIN32
+void buildTimeInfo(const char *filename, uLong *dostime)
+{
+	FILETIME ftUtc;
+	FILETIME ftLocal;
+	HANDLE hFind;
+	WIN32_FIND_DATAA ff32;
+
+	hFind = FindFirstFileA(filename, &ff32);
+	if (hFind != INVALID_HANDLE_VALUE)
+	{
+		FileTimeToLocalFileTime(&(ff32.ftLastWriteTime), &ftLocal);
+		FileTimeToDosDateTime(&ftLocal, ((LPWORD)dostime) + 1, ((LPWORD)dostime) + 0);
+		FindClose(hFind);
+	}
 	else
 	{
 		GetSystemTimeAsFileTime(&ftUtc);
-        FileTimeToLocalFileTime(&ftUtc, &ftLocal);
-        FileTimeToDosDateTime(&ftLocal,((LPWORD)dostime)+1,((LPWORD)dostime)+0);
-        FindClose(hFind);
+		FileTimeToLocalFileTime(&ftUtc, &ftLocal);
+		FileTimeToDosDateTime(&ftLocal, ((LPWORD)dostime) + 1, ((LPWORD)dostime) + 0);
+		FindClose(hFind);
 	}
+}
 #else
-#if defined unix || defined __APPLE__
+void buildTimeInfo(tm_zip *tmzip)
+{
     struct tm* filedate;
     time_t tm_t = time(0);
     filedate = localtime(&tm_t);
@@ -469,9 +373,8 @@ void buildTimeInfo(const char *filename, tm_zip *tmzip, uLong *dostime)
     tmzip->tm_mday = filedate->tm_mday;
     tmzip->tm_mon  = filedate->tm_mon ;
     tmzip->tm_year = filedate->tm_year;
-#endif
-#endif
 }
+#endif
 
 void Package::writeStringIntoNewPart(const std::string &input, const std::string & partPath)
 {
@@ -481,9 +384,11 @@ void Package::writeStringIntoNewPart(const std::string &input, const std::string
 	zi.dosDate = 0;
 	zi.internal_fa = 0;
 	zi.external_fa = 0;
-	std::unique_ptr<char[]> tmp(new char[partPath.length() + 1]);
-	strcpy(tmp.get(), partPath.c_str());
-	buildTimeInfo(tmp.get(), &zi.tmz_date,&zi.dosDate);
+#ifdef _WIN32
+	buildTimeInfo(partPath.c_str(), &zi.dosDate);
+#else
+	buildTimeInfo(&zi.tmz_date);
+#endif
 
 	// Open the content type part in the zip archive
 	int err = zipOpenNewFileInZip64(d_ptr->zf, partPath.c_str(), &zi,
@@ -496,7 +401,10 @@ void Package::writeStringIntoNewPart(const std::string &input, const std::string
 	}
 
 	// Write the content of the content type part
-	err = zipWriteInFileInZip(d_ptr->zf, input.c_str(), input.size());
+	if (input.size() > (std::numeric_limits<unsigned int>::max)()) {
+		throw invalid_argument("The string to write into " + partPath + " is too long.");
+	}
+	err = zipWriteInFileInZip(d_ptr->zf, input.c_str(), static_cast<unsigned int>(input.size()));
 	if (err < 0) {
 		throw invalid_argument("Could not write " + partPath + " in the zipfile");
 	}
@@ -613,27 +521,26 @@ bool Package::fileExists(const string & filename) const
 	if (d_ptr->unzipped == nullptr) {
 		throw logic_error("The EPC document must be opened first.");
 	}
-	return unzLocateFile(d_ptr->unzipped, filename.c_str(), CASESENSITIVITY) == UNZ_OK;
+	std::unordered_map< std::string, unz64_file_pos >::const_iterator it = d_ptr->name2file.find(filename);
+	if (it == d_ptr->name2file.end()) {
+		if (unzLocateFile(d_ptr->unzipped, filename.c_str(), CASESENSITIVITY) != UNZ_OK) {
+			return false;
+		}
+		unz64_file_pos filePos;
+		unzGetFilePos64(d_ptr->unzipped, &filePos);
+		d_ptr->name2file[filename] = filePos;
+	}
+	else {
+		unzGoToFilePos64(d_ptr->unzipped, &it->second);
+	}
+	return true;
 }
 
 string Package::extractFile(const string & filename, const string & password)
 {
-#ifdef CACHE_FILE_DESCRIPTOR
-	std::unordered_map< std::string, unzFile >::const_iterator it = d_ptr->name2file.find(filename);
-	if (it == d_ptr->name2file.end()) {
-		if (!fileExists(filename)) {
-			throw invalid_argument("The file " + filename + " does not exist in the EPC document.");
-		}
-		d_ptr->name2file[filename] = (d_ptr->unzipped);
-	}
-	else {
-		d_ptr->unzipped = it->second;
-	}
-#else
 	if (!fileExists(filename))  {
 		throw invalid_argument("The file " + filename + " does not exist in the EPC document.");
     }
-#endif
 
 	return password.empty()
 		? do_extract_currentfile(d_ptr->unzipped, nullptr)

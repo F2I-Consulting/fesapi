@@ -112,27 +112,24 @@ namespace {
 
 		// Special case for WellboreMarkerFrameRepresentation and byValue rel.
 		if (dynamic_cast<RESQML2_NS::WellboreMarkerFrameRepresentation const *>(dataObj) != nullptr) {
-			const std::vector<COMMON_NS::AbstractObject *>& srcObj = repo.getSourceObjects(dataObj);
-			for (size_t index = 0; index < srcObj.size(); ++index) {
-				if (dynamic_cast<RESQML2_NS::WellboreMarker*>(srcObj[index]) == nullptr) {
-					epc::Relationship relRep("../" + srcObj[index]->getPartNameInEpcDocument(), "", srcObj[index]->getUuid());
+			for (const auto srcMarkerFrame : repo.getSourceObjects(dataObj)) {
+				if (dynamic_cast<RESQML2_NS::WellboreMarker*>(srcMarkerFrame) == nullptr) {
+					epc::Relationship relRep("../" + srcMarkerFrame->getPartNameInEpcDocument(), "", srcMarkerFrame->getUuid());
 					relRep.setSourceObjectType();
 					result.push_back(relRep);
 				}
 				else {
-					const std::vector<COMMON_NS::AbstractObject *>& srcMarkers = repo.getSourceObjects(srcObj[index]);
-					for (size_t index2 = 0; index2 < srcMarkers.size(); ++index2) {
-						if (!srcMarkers[index2]->isPartial()) {
-							epc::Relationship relRep("../" + srcObj[index2]->getPartNameInEpcDocument(), "", srcObj[index2]->getUuid());
+					for (const auto srcMarker : repo.getSourceObjects(srcMarkerFrame)) {
+						if (!srcMarker->isPartial()) {
+							epc::Relationship relRep("../" + srcMarker->getPartNameInEpcDocument(), "", srcMarker->getUuid());
 							relRep.setSourceObjectType();
 							result.push_back(relRep);
 						}
 					}
-					const std::vector<COMMON_NS::AbstractObject *>& targetMarkers = repo.getTargetObjects(srcObj[index]);
-					for (size_t index = 0; index < targetMarkers.size(); ++index) {
-						if (!targetMarkers[index]->isPartial() &&
-							dynamic_cast<RESQML2_NS::WellboreMarkerFrameRepresentation*>(targetMarkers[index]) == nullptr) {
-							epc::Relationship relRep("../" + targetMarkers[index]->getPartNameInEpcDocument(), "", targetMarkers[index]->getUuid());
+					for (const auto targetMarker : repo.getTargetObjects(srcMarkerFrame)) {
+						if (!targetMarker->isPartial() &&
+							dynamic_cast<RESQML2_NS::WellboreMarkerFrameRepresentation*>(targetMarker) == nullptr) {
+							epc::Relationship relRep("../" + targetMarker->getPartNameInEpcDocument(), "", targetMarker->getUuid());
 							relRep.setDestinationObjectType();
 							result.push_back(relRep);
 						}
@@ -140,10 +137,9 @@ namespace {
 				}
 			}
 
-			const std::vector<COMMON_NS::AbstractObject *>& targetObj = repo.getTargetObjects(dataObj);
-			for (size_t index = 0; index < targetObj.size(); ++index) {
-				if (!targetObj[index]->isPartial()) {
-					epc::Relationship relRep("../" + targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
+			for (const auto targetMarkerFrame : repo.getTargetObjects(dataObj)) {
+				if (!targetMarkerFrame->isPartial()) {
+					epc::Relationship relRep("../" + targetMarkerFrame->getPartNameInEpcDocument(), "", targetMarkerFrame->getUuid());
 					relRep.setDestinationObjectType();
 					result.push_back(relRep);
 				}
