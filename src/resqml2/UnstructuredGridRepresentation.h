@@ -69,7 +69,7 @@ namespace RESQML2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gSOAP context.
 		*/
-		virtual ~UnstructuredGridRepresentation() {}
+		virtual ~UnstructuredGridRepresentation() = default;
 
 		/**
 		 * Indicates whether this grid has a geometry or not.
@@ -118,6 +118,22 @@ namespace RESQML2_NS
 		 * 											and in the second and in the third cell. And so on.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getCumulativeFaceCountPerCell(ULONG64 * cumulativeFaceCountPerCell_) const = 0;
+
+		/**
+		 * Gets the cumulative face count per cell. This method requires you to have already loaded the
+		 * geometry.
+		 *
+		 * @exception	std::logic_error	If this grid has a constant count of faces per cell.
+		 * @exception	std::logic_error 	If the geometry is not loaded.
+		 *
+		 * @returns	The cumulative face count per cell. First value is
+		 * 			the count of faces in the first cell. Second value is
+		 * 			the count of faces in the first and in the second
+		 * 			cell. Third value is the count of faces in the first
+		 * 			and in the second and in the third cell. And so on.
+		 *			DO NOT FREE the returned value. It is owned and managed by this class.
+		 */
+		DLL_IMPORT_OR_EXPORT ULONG64 const * getCumulativeFaceCountPerCell() const;
 
 		/**
 		 * Gets the face count per cell. This method is less efficient than
@@ -326,7 +342,7 @@ namespace RESQML2_NS
 		 * 			the cell @p cellIndex. This array is allocated by loadGeometry() and is freed by
 		 * 			unloadGeometry().
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 * getNodeIndicesOfFaceOfCell(ULONG64 cellIndex, unsigned int localFaceIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 const * getNodeIndicesOfFaceOfCell(ULONG64 cellIndex, unsigned int localFaceIndex) const;
 
 		DLL_IMPORT_OR_EXPORT virtual ULONG64 getCellCount() const override = 0;
 
@@ -349,8 +365,8 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual ULONG64 getNodeCount() const = 0;
 
 		/**
-		 * Gets the orientation of each cell. That is to say tells for each cell, if it is right handed
-		 * or not
+		 * Gets the orientation of each cell face. That is to say tells for each cell face, if its face
+		 * normal defined using a right hand rule is outwardly directed.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 * @exception	std::logic_error	If the geometry is not loaded.
@@ -358,7 +374,7 @@ namespace RESQML2_NS
 		 * 									cell is not already supported by fesapi.
 		 *
 		 * @param [out]	cellFaceIsRightHanded	Preallocated array for receiving the orientation of each
-		 * 										cell. The size is the last value outputed by
+		 * 										cell face. The size is the last value returned by
 		 * 										getCumulativeFaceCountPerCell().
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getCellFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const = 0;
@@ -647,10 +663,10 @@ namespace RESQML2_NS
 
 		unsigned int constantNodeCountPerFace;
 		unsigned int constantFaceCountPerCell;
-		ULONG64 * cumulativeNodeCountPerFace;
-		ULONG64 * cumulativeFaceCountPerCell;
-		ULONG64 * nodeIndicesOfFaces;
-		ULONG64 * faceIndicesOfCells;
+		std::unique_ptr<ULONG64[]> cumulativeNodeCountPerFace;
+		std::unique_ptr<ULONG64[]> cumulativeFaceCountPerCell;
+		std::unique_ptr<ULONG64[]> nodeIndicesOfFaces;
+		std::unique_ptr<ULONG64[]> faceIndicesOfCells;
 
 		/**
 		* This method requires you have already loaded the geometry.

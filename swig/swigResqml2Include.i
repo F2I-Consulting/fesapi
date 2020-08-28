@@ -2704,6 +2704,7 @@ namespace RESQML2_NS
 		ULONG64 getFaceCount() const;
 		void getFaceIndicesOfCells(ULONG64 * faceIndices) const;
 		void getCumulativeFaceCountPerCell(ULONG64 * faceCountPerCell) const;
+		ULONG64 const * getCumulativeFaceCountPerCell() const;
 		void getFaceCountPerCell(ULONG64 * faceCountPerCell) const;
 		bool isFaceCountOfCellsConstant() const;
 		unsigned int getConstantFaceCountOfCells() const;
@@ -2717,7 +2718,7 @@ namespace RESQML2_NS
 		void loadGeometry();
 		unsigned int getFaceCountOfCell(ULONG64 cellIndex) const;
 		unsigned int getNodeCountOfFaceOfCell(ULONG64 cellIndex, unsigned int localFaceIndex) const;
-		ULONG64 * getNodeIndicesOfFaceOfCell(ULONG64 cellIndex, unsigned int localFaceIndex) const;
+		ULONG64 const * getNodeIndicesOfFaceOfCell(ULONG64 cellIndex, unsigned int localFaceIndex) const;
 		void unloadGeometry();
 		
 		void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, ULONG64 pointCount, EML2_NS::AbstractHdfProxy* proxy,

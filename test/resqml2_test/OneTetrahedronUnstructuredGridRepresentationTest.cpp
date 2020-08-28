@@ -142,19 +142,19 @@ void OneTetrahedronUnstructuredGridRepresentationTest::readRepoHandler() {
 	REQUIRE( unstructuredGrid->getNodeCountOfFaceOfCell(0, 3) == 3 );
 
 	// getNodeIndicesOfFaceOfCell
-	ULONG64* nodeIndicesOfFirstFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 0);
+	ULONG64 const * nodeIndicesOfFirstFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 0);
 	REQUIRE( nodeIndicesOfFirstFace[0] == 0 );
 	REQUIRE( nodeIndicesOfFirstFace[1] == 1 );
 	REQUIRE( nodeIndicesOfFirstFace[2] == 2 );
-	ULONG64* nodeIndicesOfSecondFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 1);
+	ULONG64 const* nodeIndicesOfSecondFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 1);
 	REQUIRE( nodeIndicesOfSecondFace[0] == 1 );
 	REQUIRE( nodeIndicesOfSecondFace[1] == 2 );
 	REQUIRE( nodeIndicesOfSecondFace[2] == 3 );
-	ULONG64* nodeIndicesOfThirdFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 2);
+	ULONG64 const* nodeIndicesOfThirdFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 2);
 	REQUIRE( nodeIndicesOfThirdFace[0] == 0 );
 	REQUIRE( nodeIndicesOfThirdFace[1] == 1 );
 	REQUIRE( nodeIndicesOfThirdFace[2] == 3 );
-	ULONG64* nodeIndicesOfFourthFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 3);
+	ULONG64 const* nodeIndicesOfFourthFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 3);
 	REQUIRE( nodeIndicesOfFourthFace[0] == 0 );
 	REQUIRE( nodeIndicesOfFourthFace[1] == 2 );
 	REQUIRE( nodeIndicesOfFourthFace[2] == 3 );

@@ -76,14 +76,14 @@ void UnstructuredGridTest::readRepoHandler() {
 	// getXyzPointCountOfPatch
 	REQUIRE_THROWS(unstructuredGrid->getXyzPointCountOfPatch(1));
 	REQUIRE(unstructuredGrid->getXyzPointCountOfPatch(0) == 7);
-	
+
 	// getFaceIndicesOfCells
 	ULONG64 faceIndicesPerCell[9];
 	unstructuredGrid->getFaceIndicesOfCells(faceIndicesPerCell);
-	REQUIRE( faceIndicesPerCell[0] == 0 );
-	REQUIRE( faceIndicesPerCell[1] == 1 );
-	REQUIRE( faceIndicesPerCell[2] == 2 );
-	REQUIRE( faceIndicesPerCell[3] == 3 );
+	REQUIRE(faceIndicesPerCell[0] == 0);
+	REQUIRE(faceIndicesPerCell[1] == 1);
+	REQUIRE(faceIndicesPerCell[2] == 2);
+	REQUIRE(faceIndicesPerCell[3] == 3);
 	REQUIRE(faceIndicesPerCell[4] == 0);
 	REQUIRE(faceIndicesPerCell[5] == 4);
 	REQUIRE(faceIndicesPerCell[6] == 5);
@@ -93,20 +93,20 @@ void UnstructuredGridTest::readRepoHandler() {
 	// getCumulativeFaceCountPerCell
 	ULONG64 cumulativeFaceCountPerCell[2];
 	unstructuredGrid->getCumulativeFaceCountPerCell(cumulativeFaceCountPerCell);
-	REQUIRE( cumulativeFaceCountPerCell[0] == 4 );
+	REQUIRE(cumulativeFaceCountPerCell[0] == 4);
 	REQUIRE(cumulativeFaceCountPerCell[1] == 9);
 
 	// getFaceCountPerCell
 	ULONG64 faceCountPerCell[2];
 	unstructuredGrid->getFaceCountPerCell(faceCountPerCell);
-	REQUIRE( faceCountPerCell[0] == 4 );
+	REQUIRE(faceCountPerCell[0] == 4);
 	REQUIRE(faceCountPerCell[1] == 5);
 
 	// isFaceCountOfCellsConstant
-	REQUIRE( !unstructuredGrid->isFaceCountOfCellsConstant() );
+	REQUIRE(!unstructuredGrid->isFaceCountOfCellsConstant());
 
 	// getConstantFaceCountOfCells
-	REQUIRE_THROWS( unstructuredGrid->getConstantFaceCountOfCells() == 4);
+	REQUIRE_THROWS(unstructuredGrid->getConstantFaceCountOfCells() == 4);
 
 	// getNodeIndicesOfFaces
 	ULONG64 nodeIndicesPerFace[27];
@@ -142,10 +142,10 @@ void UnstructuredGridTest::readRepoHandler() {
 	// getCumulativeNodeCountPerFace
 	ULONG64 cumulativeNodeCountPerFace[8];
 	unstructuredGrid->getCumulativeNodeCountPerFace(cumulativeNodeCountPerFace);
-	REQUIRE( cumulativeNodeCountPerFace[0] == 3 );
-	REQUIRE( cumulativeNodeCountPerFace[1] == 6 );
-	REQUIRE( cumulativeNodeCountPerFace[2] == 9 );
-	REQUIRE( cumulativeNodeCountPerFace[3] == 12 );
+	REQUIRE(cumulativeNodeCountPerFace[0] == 3);
+	REQUIRE(cumulativeNodeCountPerFace[1] == 6);
+	REQUIRE(cumulativeNodeCountPerFace[2] == 9);
+	REQUIRE(cumulativeNodeCountPerFace[3] == 12);
 	REQUIRE(cumulativeNodeCountPerFace[4] == 16);
 	REQUIRE(cumulativeNodeCountPerFace[5] == 20);
 	REQUIRE(cumulativeNodeCountPerFace[6] == 24);
@@ -154,37 +154,37 @@ void UnstructuredGridTest::readRepoHandler() {
 	// getNodeCountPerFace
 	ULONG64 nodeCountPerFace[8];
 	unstructuredGrid->getNodeCountPerFace(nodeCountPerFace);
-	REQUIRE( nodeCountPerFace[0] == 3 );
-	REQUIRE( nodeCountPerFace[1] == 3 );
-	REQUIRE( nodeCountPerFace[2] == 3 );
-	REQUIRE( nodeCountPerFace[3] == 3 );
+	REQUIRE(nodeCountPerFace[0] == 3);
+	REQUIRE(nodeCountPerFace[1] == 3);
+	REQUIRE(nodeCountPerFace[2] == 3);
+	REQUIRE(nodeCountPerFace[3] == 3);
 	REQUIRE(nodeCountPerFace[4] == 4);
 	REQUIRE(nodeCountPerFace[5] == 4);
 	REQUIRE(nodeCountPerFace[6] == 4);
 	REQUIRE(nodeCountPerFace[7] == 3);
 
 	// isNodeCountOfFacesContant
-	REQUIRE( !unstructuredGrid->isNodeCountOfFacesConstant() );
+	REQUIRE(!unstructuredGrid->isNodeCountOfFacesConstant());
 
 	// getConstantNodeCountOfFaces
-	REQUIRE_THROWS( unstructuredGrid->getConstantNodeCountOfFaces() == 3 );
+	REQUIRE_THROWS(unstructuredGrid->getConstantNodeCountOfFaces() == 3);
 
 	// getFaceCountOfCell should raises en exception since geometry is not loaded
-	REQUIRE_THROWS_AS( unstructuredGrid->getFaceCountOfCell(0), logic_error);
+	REQUIRE_THROWS_AS(unstructuredGrid->getFaceCountOfCell(0), logic_error);
 
 	// loading geometry into memory (required for subsequent testing)
 	unstructuredGrid->loadGeometry();
 
 	// getFaceCountOfCell
-	REQUIRE_THROWS_AS( unstructuredGrid->getFaceCountOfCell(2), out_of_range);
-	REQUIRE( unstructuredGrid->getFaceCountOfCell(0) == 4 );
+	REQUIRE_THROWS_AS(unstructuredGrid->getFaceCountOfCell(2), out_of_range);
+	REQUIRE(unstructuredGrid->getFaceCountOfCell(0) == 4);
 	REQUIRE(unstructuredGrid->getFaceCountOfCell(1) == 5);
 
 	// getNodeCountOfFaceOfCell
-	REQUIRE( unstructuredGrid->getNodeCountOfFaceOfCell(0, 0) == 3 );
-	REQUIRE( unstructuredGrid->getNodeCountOfFaceOfCell(0, 1) == 3 );
-	REQUIRE( unstructuredGrid->getNodeCountOfFaceOfCell(0, 2) == 3 );
-	REQUIRE( unstructuredGrid->getNodeCountOfFaceOfCell(0, 3) == 3 );
+	REQUIRE(unstructuredGrid->getNodeCountOfFaceOfCell(0, 0) == 3);
+	REQUIRE(unstructuredGrid->getNodeCountOfFaceOfCell(0, 1) == 3);
+	REQUIRE(unstructuredGrid->getNodeCountOfFaceOfCell(0, 2) == 3);
+	REQUIRE(unstructuredGrid->getNodeCountOfFaceOfCell(0, 3) == 3);
 	REQUIRE(unstructuredGrid->getNodeCountOfFaceOfCell(1, 0) == 3);
 	REQUIRE(unstructuredGrid->getNodeCountOfFaceOfCell(1, 1) == 4);
 	REQUIRE(unstructuredGrid->getNodeCountOfFaceOfCell(1, 2) == 4);
@@ -192,22 +192,22 @@ void UnstructuredGridTest::readRepoHandler() {
 	REQUIRE(unstructuredGrid->getNodeCountOfFaceOfCell(1, 4) == 3);
 
 	// getNodeIndicesOfFaceOfCell
-	ULONG64* nodeIndicesOfFirstFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 0);
-	REQUIRE( nodeIndicesOfFirstFace[0] == 0 );
-	REQUIRE( nodeIndicesOfFirstFace[1] == 1 );
-	REQUIRE( nodeIndicesOfFirstFace[2] == 2 );
-	ULONG64* nodeIndicesOfSecondFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 1);
-	REQUIRE( nodeIndicesOfSecondFace[0] == 1 );
-	REQUIRE( nodeIndicesOfSecondFace[1] == 2 );
-	REQUIRE( nodeIndicesOfSecondFace[2] == 3 );
-	ULONG64* nodeIndicesOfThirdFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 2);
-	REQUIRE( nodeIndicesOfThirdFace[0] == 0 );
-	REQUIRE( nodeIndicesOfThirdFace[1] == 1 );
-	REQUIRE( nodeIndicesOfThirdFace[2] == 3 );
-	ULONG64* nodeIndicesOfFourthFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 3);
-	REQUIRE( nodeIndicesOfFourthFace[0] == 0 );
-	REQUIRE( nodeIndicesOfFourthFace[1] == 2 );
-	REQUIRE( nodeIndicesOfFourthFace[2] == 3 );
+	ULONG64 const* nodeIndicesOfFirstFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 0);
+	REQUIRE(nodeIndicesOfFirstFace[0] == 0);
+	REQUIRE(nodeIndicesOfFirstFace[1] == 1);
+	REQUIRE(nodeIndicesOfFirstFace[2] == 2);
+	ULONG64 const* nodeIndicesOfSecondFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 1);
+	REQUIRE(nodeIndicesOfSecondFace[0] == 1);
+	REQUIRE(nodeIndicesOfSecondFace[1] == 2);
+	REQUIRE(nodeIndicesOfSecondFace[2] == 3);
+	ULONG64 const* nodeIndicesOfThirdFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 2);
+	REQUIRE(nodeIndicesOfThirdFace[0] == 0);
+	REQUIRE(nodeIndicesOfThirdFace[1] == 1);
+	REQUIRE(nodeIndicesOfThirdFace[2] == 3);
+	ULONG64 const* nodeIndicesOfFourthFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 3);
+	REQUIRE(nodeIndicesOfFourthFace[0] == 0);
+	REQUIRE(nodeIndicesOfFourthFace[1] == 2);
+	REQUIRE(nodeIndicesOfFourthFace[2] == 3);
 	nodeIndicesOfFirstFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(1, 0);
 	REQUIRE(nodeIndicesOfFirstFace[0] == 0);
 	REQUIRE(nodeIndicesOfFirstFace[1] == 1);
@@ -227,22 +227,32 @@ void UnstructuredGridTest::readRepoHandler() {
 	REQUIRE(nodeIndicesOfFourthFace[1] == 1);
 	REQUIRE(nodeIndicesOfFourthFace[2] == 5);
 	REQUIRE(nodeIndicesOfFourthFace[3] == 4);
-	ULONG64* nodeIndicesOfFifthFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(1, 4);
+	ULONG64 const* nodeIndicesOfFifthFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(1, 4);
 	REQUIRE(nodeIndicesOfFifthFace[0] == 4);
 	REQUIRE(nodeIndicesOfFifthFace[1] == 5);
 	REQUIRE(nodeIndicesOfFifthFace[2] == 6);
 
 	// getCellCount
-	REQUIRE( unstructuredGrid->getCellCount() == 2);
+	REQUIRE(unstructuredGrid->getCellCount() == 2);
 
 	// getFaceCount
-	REQUIRE( unstructuredGrid->getFaceCount() == 8);
+	REQUIRE(unstructuredGrid->getFaceCount() == 8);
 
 	// getNodeCount
-	REQUIRE( unstructuredGrid->getNodeCount() == 7);
+	REQUIRE(unstructuredGrid->getNodeCount() == 7);
 
 	// TODO: not able to test since method is not implemented yet
-	//unstructuredGrid->getCellFaceIsRightHanded(cellFaceIsRightHanded);
+	unsigned char faceRightHandness[9];
+	unstructuredGrid->getCellFaceIsRightHanded(faceRightHandness);
+	REQUIRE(faceRightHandness[0] == 0);
+	REQUIRE(faceRightHandness[1] == 0);
+	REQUIRE(faceRightHandness[2] == 1);
+	REQUIRE(faceRightHandness[3] == 1);
+	REQUIRE(faceRightHandness[4] == 1);
+	REQUIRE(faceRightHandness[5] == 0);
+	REQUIRE(faceRightHandness[6] == 1);
+	REQUIRE(faceRightHandness[7] == 0);
+	REQUIRE(faceRightHandness[8] == 0);
 
 	// unloading geometry
 	unstructuredGrid->unloadGeometry();
