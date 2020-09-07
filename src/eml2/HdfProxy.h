@@ -52,7 +52,7 @@ namespace EML2_NS
 
 		void close() final;
 
-		hdf5_hid_t getHdfDatatypeInDataset(const std::string& groupName) final;
+		COMMON_NS::AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string& groupName) final;
 
 		int getHdfDatatypeClassInDataset(const std::string& datasetName) final;
 

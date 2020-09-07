@@ -301,7 +301,7 @@ namespace COMMON_NS
 
 		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG_64 = 3, ULONG_64 = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
 
-		virtual ~AbstractObject() {}
+		virtual ~AbstractObject() = default;
 
 		/**
 		 * Indicates if this data object is actually a partial object. A partial object just contains a mime

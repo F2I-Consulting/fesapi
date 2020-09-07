@@ -27,7 +27,7 @@ namespace RESQML2_NS
 	{
 	public:
 
-		virtual ~SeismicWellboreFrameRepresentation() {}
+		virtual ~SeismicWellboreFrameRepresentation() = default;
 	
 		/**
 		* Set the time values of this SeismicWellboreFrameRepresentation frame to an array 1d of explicit values.
@@ -70,7 +70,7 @@ namespace RESQML2_NS
 		/**
 		* Get the time values datatype in the HDF dataset
 		*/
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getTimeHdfDatatype() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::hdfDatatypeEnum getTimeHdfDatatype() const;
 
 		/**
 		* Get all the time values of the instance which are supposed to be double ones.

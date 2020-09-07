@@ -82,15 +82,14 @@ namespace EML2_NS
 		virtual void close() = 0;
 
 		/**
-		 * Gets the native datatype (@c H5T_NATIVE_INT, @c H5T_NATIVE_UINT,
-		 * @c H5T_NATIVE_FLOAT, etc.) of a dataset
+		 * Gets the native datatype of a dataset
 		 *
 		 * @param 	datasetName	Name of the dataset.
 		 *
 		 * @returns	The native HDF5 datatype identifier of the dataset if successful, otherwise returns a
 		 * 			negative value.
 		 */
-		virtual hdf5_hid_t getHdfDatatypeInDataset(const std::string & datasetName) = 0;
+		virtual COMMON_NS::AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & datasetName) = 0;
 
 		/**
 		 * Gets the datatype class (@c H5T_INTEGER, @c H5T_FLOAT, @c H5T_STRING, etc.) of a dataset

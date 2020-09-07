@@ -73,9 +73,8 @@ namespace ETP_NS
 
 		/*
 		* Get the used (native) datatype in a dataset
-		* To compare with H5T_NATIVE_INT, H5T_NATIVE_UINT, H5T_NATIVE_FLOAT, etc...
 		*/
-		hdf5_hid_t getHdfDatatypeInDataset(const std::string & groupName);
+		COMMON_NS::AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & groupName);
 
 		/**
 		* Get the used datatype class in a dataset

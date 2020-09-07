@@ -46,7 +46,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		virtual ~AbstractOrganizationInterpretation() {}
+		virtual ~AbstractOrganizationInterpretation() = default;
 
 		/**
 		 * Adds a binary contact to this organization interpretation by means of a simple sentence.

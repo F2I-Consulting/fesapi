@@ -108,7 +108,7 @@ std::vector<std::string> AbstractSeismicLineFeature::getTraceLabels() const
 			return result;
 		}
 		// Check if the hdf dataset really contains unsigned char values.
-		if (H5Tequal(hdfProxy->getHdfDatatypeInDataset(dsPart->PathInExternalFile), H5T_NATIVE_UCHAR) > 0) {
+		if (hdfProxy->getHdfDatatypeInDataset(dsPart->PathInExternalFile) != COMMON_NS::AbstractObject::hdfDatatypeEnum::UCHAR) {
 			return result;
 		}
 
