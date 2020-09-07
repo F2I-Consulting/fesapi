@@ -300,34 +300,12 @@ COMMON_NS::AbstractObject::hdfDatatypeEnum WellboreFrameRepresentation::getMdHdf
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
-			hid_t dt = hdfProxy->getHdfDatatypeInDataset(dataset->ExternalFileProxy[0]->PathInExternalFile);
-			if (H5Tequal(dt, H5T_NATIVE_DOUBLE) > 0)
-				return RESQML2_NS::AbstractValuesProperty::DOUBLE;
-			else if (H5Tequal(dt, H5T_NATIVE_FLOAT) > 0)
-				return RESQML2_NS::AbstractValuesProperty::FLOAT;
-			else if (H5Tequal(dt, H5T_NATIVE_LLONG) > 0)
-				return RESQML2_NS::AbstractValuesProperty::LONG_64;
-			else if (H5Tequal(dt, H5T_NATIVE_ULLONG) > 0)
-				return RESQML2_NS::AbstractValuesProperty::ULONG_64;
-			else if (H5Tequal(dt, H5T_NATIVE_INT) > 0)
-				return RESQML2_NS::AbstractValuesProperty::INT;
-			else if (H5Tequal(dt, H5T_NATIVE_UINT) > 0)
-				return RESQML2_NS::AbstractValuesProperty::UINT;
-			else if (H5Tequal(dt, H5T_NATIVE_SHORT) > 0)
-				return RESQML2_NS::AbstractValuesProperty::SHORT;
-			else if (H5Tequal(dt, H5T_NATIVE_USHORT) > 0)
-				return RESQML2_NS::AbstractValuesProperty::USHORT;
-			else if (H5Tequal(dt, H5T_NATIVE_CHAR) > 0)
-				return RESQML2_NS::AbstractValuesProperty::CHAR;
-			else if (H5Tequal(dt, H5T_NATIVE_UCHAR) > 0)
-				return RESQML2_NS::AbstractValuesProperty::UCHAR;
+			return hdfProxy->getHdfDatatypeInDataset(dataset->ExternalFileProxy[0]->PathInExternalFile);
 		}
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 		{
 			return RESQML2_NS::AbstractValuesProperty::DOUBLE;
 		}
-
-		return RESQML2_NS::AbstractValuesProperty::UNKNOWN; // unknwown datatype...
 	}
 
 	throw invalid_argument("Not implemented yet");
