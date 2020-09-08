@@ -130,7 +130,7 @@ namespace RESQML2_NS
 		 * 			Returns @c DOUBLE if MD values are stored as a regular discretization along the
 		 * 			wellbore trajectory.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::hdfDatatypeEnum getMdHdfDatatype() const;
 
 		/**
 		 * Gets all the MD values of this instance which are supposed to be double ones.

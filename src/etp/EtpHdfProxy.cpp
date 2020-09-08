@@ -45,7 +45,7 @@ void EtpHdfProxy::open()
 	session->run();
 }
 
-hdf5_hid_t EtpHdfProxy::getHdfDatatypeInDataset(const std::string & datasetName)
+COMMON_NS::AbstractObject::hdfDatatypeEnum EtpHdfProxy::getHdfDatatypeInDataset(const std::string & datasetName)
 {
 	throw logic_error("Not implemented yet");
 }

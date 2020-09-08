@@ -43,7 +43,7 @@ void generateProperties(RESQML2_NS::AbstractRepresentation* ijkgrid)
 			gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 
 		double prop1Values[2] = { i, i };
-		continuousProp->pushBackDoubleHdf5Array3dOfValues(prop1Values, 2, 1, 1, nullptr, -1);
+		continuousProp->pushBackDoubleHdf5Array3dOfValues(prop1Values, 2, 1, 1, nullptr);
 
 		std::cout << "A new discrete property has been added" << std::endl;
 

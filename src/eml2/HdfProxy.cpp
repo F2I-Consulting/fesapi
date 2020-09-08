@@ -331,7 +331,7 @@ void HdfProxy::readArrayNdOfValues(
 	}
 }
 
-hid_t HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName)
+COMMON_NS::AbstractObject::hdfDatatypeEnum HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName)
 {
 	if (!isOpened()) {
 		open();
@@ -344,7 +344,28 @@ hid_t HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName)
 	H5Dclose(dataset);
 	H5Tclose(datatype);
 
-	return native_datatype;
+	if (H5Tequal(native_datatype, H5T_NATIVE_DOUBLE) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::DOUBLE;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_FLOAT) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::FLOAT;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_LLONG) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::LONG_64;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_ULLONG) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::ULONG_64;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_INT) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::INT;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_UINT) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::UINT;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_SHORT) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::SHORT;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_USHORT) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::USHORT;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_CHAR) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::CHAR;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_UCHAR) > 0)
+		return COMMON_NS::AbstractObject::hdfDatatypeEnum::UCHAR;
+
+	return COMMON_NS::AbstractObject::hdfDatatypeEnum::UNKNOWN;
 }
 
 int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName)

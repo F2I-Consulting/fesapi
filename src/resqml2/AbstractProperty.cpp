@@ -604,29 +604,7 @@ COMMON_NS::AbstractObject::hdfDatatypeEnum AbstractProperty::getValuesHdfDatatyp
 	std::string dsPath;
 	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(0, nullValue, dsPath);
 
-	const hid_t dt = hdfProxy->getHdfDatatypeInDataset(dsPath);
-	if (H5Tequal(dt, H5T_NATIVE_DOUBLE) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::DOUBLE;
-	else if (H5Tequal(dt, H5T_NATIVE_FLOAT) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::FLOAT;
-	else if (H5Tequal(dt, H5T_NATIVE_LLONG) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::LONG_64;
-	else if (H5Tequal(dt, H5T_NATIVE_ULLONG) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::ULONG_64;
-	else if (H5Tequal(dt, H5T_NATIVE_INT) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::INT;
-	else if (H5Tequal(dt, H5T_NATIVE_UINT) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::UINT;
-	else if (H5Tequal(dt, H5T_NATIVE_SHORT) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::SHORT;
-	else if (H5Tequal(dt, H5T_NATIVE_USHORT) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::USHORT;
-	else if (H5Tequal(dt, H5T_NATIVE_CHAR) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::CHAR;
-	else if (H5Tequal(dt, H5T_NATIVE_UCHAR) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::UCHAR;
-
-	return COMMON_NS::AbstractObject::hdfDatatypeEnum::UNKNOWN; // unknwown datatype...
+	return hdfProxy->getHdfDatatypeInDataset(dsPath);
 }
 
 unsigned int AbstractProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const

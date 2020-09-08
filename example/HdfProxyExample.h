@@ -68,13 +68,13 @@ public:
 	/**
 	 * Get the used (native) datatype in a dataset
 	 */
-	hdf5_hid_t getHdfDatatypeInDataset(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
+	COMMON_NS::AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & datasetName) final { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Get the used datatype class in a dataset
 	* To compare with H5T_INTEGER, H5T_FLOAT , H5T_STRING , etc...
 	*/
-	int getHdfDatatypeClassInDataset(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
+	int getHdfDatatypeClassInDataset(const std::string & datasetName) final { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Write an itemized list of list into the HDF file by means of a single group containing 2 datasets.

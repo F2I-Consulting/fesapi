@@ -123,7 +123,7 @@ unsigned int SeismicWellboreFrameRepresentation::getTimeValuesCount() const
 	return getMdValuesCount();
 }
 
-RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum SeismicWellboreFrameRepresentation::getTimeHdfDatatype() const
+COMMON_NS::AbstractObject::hdfDatatypeEnum SeismicWellboreFrameRepresentation::getTimeHdfDatatype() const
 {
 	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3);
 	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
@@ -133,27 +133,7 @@ RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum SeismicWellboreFrameRepresen
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
 		}
-		hid_t dt = hdfProxy->getHdfDatatypeInDataset(dataset->ExternalFileProxy[0]->PathInExternalFile);
-		if (H5Tequal(dt, H5T_NATIVE_DOUBLE) > 0)
-			return RESQML2_NS::AbstractValuesProperty::DOUBLE;
-		else if (H5Tequal(dt, H5T_NATIVE_FLOAT) > 0)
-			return RESQML2_NS::AbstractValuesProperty::FLOAT;
-		else if (H5Tequal(dt, H5T_NATIVE_LLONG) > 0)
-			return RESQML2_NS::AbstractValuesProperty::LONG_64;
-		else if (H5Tequal(dt, H5T_NATIVE_ULLONG) > 0)
-			return RESQML2_NS::AbstractValuesProperty::ULONG_64;
-		else if (H5Tequal(dt, H5T_NATIVE_INT) > 0)
-			return RESQML2_NS::AbstractValuesProperty::INT;
-		else if (H5Tequal(dt, H5T_NATIVE_UINT) > 0)
-			return RESQML2_NS::AbstractValuesProperty::UINT;
-		else if (H5Tequal(dt, H5T_NATIVE_SHORT) > 0)
-			return RESQML2_NS::AbstractValuesProperty::SHORT;
-		else if (H5Tequal(dt, H5T_NATIVE_USHORT) > 0)
-			return RESQML2_NS::AbstractValuesProperty::USHORT;
-		else if (H5Tequal(dt, H5T_NATIVE_CHAR) > 0)
-			return RESQML2_NS::AbstractValuesProperty::CHAR;
-		else if (H5Tequal(dt, H5T_NATIVE_UCHAR) > 0)
-			return RESQML2_NS::AbstractValuesProperty::UCHAR;
+		return hdfProxy->getHdfDatatypeInDataset(dataset->ExternalFileProxy[0]->PathInExternalFile);
 	}
 	else if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 	{
