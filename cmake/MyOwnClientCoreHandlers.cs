@@ -17,7 +17,7 @@ public class MyOwnClientCoreHandlers : CoreHandlers {
 
 		Console.WriteLine("Asking all dataobjects");
 		GetResources mb = new GetResources();
-		mb.context.uri ="eml:///";
+		mb.context.uri = "eml:///";
 		mb.context.depth = 1;
 		mb.scope = ContextScopeKind.self;
 		mb.countObjects = true;
