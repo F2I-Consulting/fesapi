@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 package com.f2i.energisticsStandardsApi.example;
 
-import com.f2i.energisticsStandardsApi.etp.PlainServer;
+import com.f2i.energisticsStandardsApi.${FESAPI_ETP_NS}.PlainServer;
 
 public class EtpServerExample {
 

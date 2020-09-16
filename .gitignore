@@ -1,6 +1,10 @@
 ## Ignore the cmake generated files
 /cs/fesapiCs.csproj
 /cs/example/Program.cs
+/cs/EtpClientExample/EtpClientExample.cs
+/cs/EtpClientExample/MyOwnClientCoreHandlers.cs
+/cs/EtpClientExample/MyOwnDiscoveryProtocolHandlers.cs
+/cs/EtpClientExample/MyOwnStoreProtocolHandlers.cs
 /swig/swigCsInclude.i
 /swig/swigJavaInclude.i
 /src/nsDefinitions.h
