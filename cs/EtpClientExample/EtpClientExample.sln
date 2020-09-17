@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "example", "example.csproj", "{45AAFC55-D20F-46C6-924B-5D97CFB80CCA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtpClientExample", "EtpClientExample.csproj", "{45AAFC55-D20F-46C6-924B-5D97CFB80CCA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fesapiCs", "..\fesapiCs.csproj", "{50CF64AB-EA6E-4D04-AC83-6DFEC148A4F0}"
 EndProject

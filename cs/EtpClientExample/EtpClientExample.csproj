@@ -7,8 +7,8 @@
     <ProjectGuid>{45AAFC55-D20F-46C6-924B-5D97CFB80CCA}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>example</RootNamespace>
-    <AssemblyName>example</AssemblyName>
+    <RootNamespace>EtpClientExample</RootNamespace>
+    <AssemblyName>EtpClientExample</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -71,7 +71,10 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="EtpClientExample.cs" />
+    <Compile Include="MyOwnClientCoreHandlers.cs" />
+    <Compile Include="MyOwnDiscoveryProtocolHandlers.cs" />
+    <Compile Include="MyOwnStoreProtocolHandlers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
