@@ -832,8 +832,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		if (dataType.compare(EML2_NS::EpcExternalPartReference::XML_TAG) == 0)
 		{
 			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(uuid, title, version);
+			dor->ContentType = contentType;
 			COMMON_NS::AbstractObject* result = hdfProxyFactory->make(dor);
-			dor->ContentType = result->getContentType();
 			addOrReplaceDataObject(result);
 			return result;
 		}

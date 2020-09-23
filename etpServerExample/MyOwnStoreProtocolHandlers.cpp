@@ -89,8 +89,15 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 		}
 	}
 
+	Energistics::Etp::v12::Protocol::Store::PutDataObjectsResponse objResponse;
+
 	if (!pe.errors.empty()) {
+		session->send(objResponse, correlationId);
 		session->send(pe, correlationId, 0x02);
+	}
+	else
+	{
+		session->send(objResponse, correlationId, 0x02);
 	}
 }
 

@@ -20,6 +20,7 @@ under the License.
 #include "../src/etp/ClientSessionLaunchers.h"
 #include "../src/etp/Server.h"
 #include "../src/etp/PlainServerSession.h"
+#include "../src/etp/EtpHelpers.h"
 %}
 
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
@@ -1117,6 +1118,15 @@ namespace ETP_NS
 		
 		void close();
 	};
+
+	namespace EtpHelpers {
+		Energistics::Etp::v12::Datatypes::ErrorInfo validateUri(const std::string & uri, ETP_NS::AbstractSession* session = nullptr);
+		Energistics::Etp::v12::Datatypes::ErrorInfo validateDataObjectUri(const std::string & uri, ETP_NS::AbstractSession* session = nullptr);
+		std::string buildUriFromEnergisticsObject(const COMMON_NS::AbstractObject * const obj);
+		Energistics::Etp::v12::Datatypes::Object::Resource buildEtpResourceFromEnergisticsObject(const COMMON_NS::AbstractObject * const obj, bool countRels = true);
+		Energistics::Etp::v12::Datatypes::Object::DataObject buildEtpDataObjectFromEnergisticsObject(COMMON_NS::AbstractObject * obj, bool includeSerialization = true);	
+		Energistics::Etp::v12::Protocol::Core::ProtocolException buildSingleMessageProtocolException(int32_t m_code, const std::string & m_message);
+	}
 
 	/******************* CLIENT ***************************/
 
