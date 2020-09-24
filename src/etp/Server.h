@@ -196,21 +196,21 @@ namespace ETP_NS
 			return send(not_found(req.target()));
 			*/
 
-		if (path == "/.well-known/etp-server-capabilities" ||
+		if (path == "./.well-known/etp-server-capabilities" ||
 			path == ".\\.well-known\\etp-server-capabilities") {
 			return send(unprocessable_entity(req.target()));
 		}
 
-		if (path != "/.well-known/etp-server-capabilities?GetVersion=etp12.energistics.org" &&
+		if (path != "./.well-known/etp-server-capabilities?GetVersion=etp12.energistics.org" &&
 			path != ".\\.well-known\\etp-server-capabilities?GetVersion=etp12.energistics.org" &&
-			path != "/.well-known/etp-server-capabilities?GetVersions=true" &&
+			path != "./.well-known/etp-server-capabilities?GetVersions=true" &&
 			path != ".\\.well-known\\etp-server-capabilities?GetVersions=true") {
 			return send(not_found(req.target()));
 		}
 
 		std::ostringstream oss;
 
-		if (path == "/.well-known/etp-server-capabilities?GetVersion=etp12.energistics.org" ||
+		if (path == "./.well-known/etp-server-capabilities?GetVersion=etp12.energistics.org" ||
 			path == ".\\.well-known\\etp-server-capabilities?GetVersion=etp12.energistics.org") {
 			avro::ValidSchema vs = avro::compileJsonSchemaFromString(
 				"{"
