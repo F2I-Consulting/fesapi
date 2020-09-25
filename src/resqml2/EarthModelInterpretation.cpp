@@ -60,17 +60,17 @@ void EarthModelInterpretation::loadTargetRelationships()
 	}
 	
 	unsigned int count = getStructuralOrganizationInterpretationCount();
-	for (size_t i = 0; i < count; ++i) {
+	for (unsigned int i = 0; i < count; ++i) {
 		convertDorIntoRel<StructuralOrganizationInterpretation>(getStructuralOrganizationInterpertationDor(i));
 	}
 
 	count = getStratiOccurrenceCount();
-	for (size_t i = 0; i < count; ++i) {
+	for (unsigned int i = 0; i < count; ++i) {
 		convertDorIntoRel<StratigraphicOccurrenceInterpretation>(getStratiOccurrenceDor(i));
 	}
 
 	count = getRockFluidOrganizationInterpretationCount();
-	for (size_t i = 0; i < count; ++i) {
+	for (unsigned int i = 0; i < count; ++i) {
 		convertDorIntoRel<RockFluidOrganizationInterpretation>(getRockFluidOrganizationInterpretationDor(i));
 	}
 }

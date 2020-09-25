@@ -59,7 +59,7 @@ void AbstractProperty::loadTargetRelationships()
 		convertDorIntoRel<EML2_NS::PropertyKind>(dor);
 	}
 
-	for (size_t patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
+	for (unsigned int patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
 		convertDorIntoRel(getHdfProxyDor(patchIndex));
 	}
 }
@@ -213,20 +213,28 @@ void AbstractProperty::setTimeIndices(ULONG64 startTimeIndex, ULONG64 countTimeI
 
 unsigned int AbstractProperty::getTimeIndexStart() const
 {
+	ULONG64 result = 0;
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {
-			return static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index;
+			result = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index;
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		if (static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices != nullptr) {
-			return static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices->TimeIndexStart != nullptr
-				? *static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices->TimeIndexStart
-				: 0;
+		if (static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices != nullptr &&
+			static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices->TimeIndexStart != nullptr) {
+			result = *static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices->TimeIndexStart;
 		}
 	}
+	else {
+		throw invalid_argument("This property does not have any timestamp.");
+	}
 
-	throw invalid_argument("This property does not have any timestamp.");
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw std::range_error("The time index start is too big");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 unsigned int AbstractProperty::getTimeIndicesCount() const

@@ -38,7 +38,7 @@ StratigraphicColumnRankInterpretation* StratigraphicColumn::getStratigraphicColu
 void StratigraphicColumn::loadTargetRelationships()
 {
 	unsigned int count = getStratigraphicColumnRankInterpretationCount();
-	for (size_t i = 0; i < count; ++i) {
+	for (unsigned int i = 0; i < count; ++i) {
 		convertDorIntoRel<StratigraphicColumnRankInterpretation>(getStratigraphicColumnRankInterpretationDor(i));
 	}
 }

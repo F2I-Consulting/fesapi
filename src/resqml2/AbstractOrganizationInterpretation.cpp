@@ -87,6 +87,8 @@ namespace {
 		case gsoap_eml2_3::resqml22__ContactVerb::resqml22__ContactVerb__interrupts :return resqml20__ContactVerb::resqml20__ContactVerb__splits; // see https://energistics.atlassian.net/browse/RESQML-578
 		case gsoap_eml2_3::resqml22__ContactVerb::resqml22__ContactVerb__stops:return resqml20__ContactVerb::resqml20__ContactVerb__stops_x0020at;
 		}
+
+		throw std::out_of_range("The enumerated verb is not supported");
 	}
 }
 
@@ -135,7 +137,7 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureIn
 	if (gsoapProxy2_0_1 != nullptr) {
 		resqml20__AbstractOrganizationInterpretation* org = static_cast<resqml20__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
 		resqml20__BinaryContactInterpretationPart* contact = static_cast<resqml20__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
-		if (gsoap_eml2_3::resqml22__ContactVerb::resqml22__ContactVerb__stops) { // stops is mapped with stops at in 2.0.1)
+		if (verb == gsoap_eml2_3::resqml22__ContactVerb::resqml22__ContactVerb__stops) { // stops is mapped with stops at in 2.0.1)
 			contact->Subject->Qualifier = static_cast<resqml20__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactSide)));
 			*(contact->Subject->Qualifier) = static_cast<resqml20__ContactSide>(directObjectQualifier);
 		}
@@ -161,7 +163,7 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureIn
 	if (gsoapProxy2_0_1 != nullptr) {
 		resqml20__AbstractOrganizationInterpretation* org = static_cast<resqml20__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
 		resqml20__BinaryContactInterpretationPart* contact = static_cast<resqml20__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
-		if (gsoap_eml2_3::resqml22__ContactVerb::resqml22__ContactVerb__stops) { // stops is mapped with stops at in 2.0.1)
+		if (verb == gsoap_eml2_3::resqml22__ContactVerb::resqml22__ContactVerb__stops) { // stops is mapped with stops at in 2.0.1
 			contact->DirectObject->Qualifier = static_cast<resqml20__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactSide)));
 			*(contact->DirectObject->Qualifier) = static_cast<resqml20__ContactSide>(subjectQualifier);
 		}

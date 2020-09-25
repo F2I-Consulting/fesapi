@@ -115,7 +115,7 @@ Energistics::Etp::v12::Datatypes::Object::Resource ETP_NS::EtpHelpers::buildEtpR
 	}
 	else {
 		const time_t lastUpdate = obj->getLastUpdate();
-		result.lastChanged = (lastUpdate > -1 ? lastUpdate : obj->getCreation()) * 1e6;
+		result.lastChanged = (lastUpdate > -1 ? lastUpdate : obj->getCreation()) * 1000000;
 	}
 	
 	if (countRels) {

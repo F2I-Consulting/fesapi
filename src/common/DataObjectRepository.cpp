@@ -1393,21 +1393,26 @@ RESQML2_0_1_NS::SeismicLineFeature* DataObjectRepository::createSeismicLine(cons
 	return new RESQML2_0_1_NS::SeismicLineFeature(this, guid, title, traceIndexIncrement, firstTraceIndex, traceCount);
 }
 
+#ifdef WITH_RESQML2_2
 RESQML2_NS::CmpLineFeature* DataObjectRepository::createCmpLine(const std::string & guid, const std::string & title,
 	int nearestShotPointIndicesIncrement, int firstNearestShotPointIndex, unsigned int nearestShotPointCount)
 {
-#ifdef WITH_RESQML2_2
 	return new RESQML2_2_NS::CmpLineFeature(this, guid, title, nearestShotPointIndicesIncrement, firstNearestShotPointIndex, nearestShotPointCount);
 #else
+RESQML2_NS::CmpLineFeature* DataObjectRepository::createCmpLine(const std::string&, const std::string&,
+	int, int, unsigned int)
+{
 	throw std::logic_error("RESQML2.2 support has not been built in this library.");
 #endif
 }
 
+#ifdef WITH_RESQML2_2
 RESQML2_NS::ShotPointLineFeature* DataObjectRepository::createShotPointLine(const std::string & guid, const std::string & title)
 {
-#ifdef WITH_RESQML2_2
 	return new RESQML2_2_NS::ShotPointLineFeature(this, guid, title);
 #else
+RESQML2_NS::ShotPointLineFeature* DataObjectRepository::createShotPointLine(const std::string&, const std::string&)
+{
 	throw std::logic_error("RESQML2.2 support has not been built in this library.");
 #endif
 }
@@ -1427,7 +1432,11 @@ RESQML2_NS::SeismicLineSetFeature* DataObjectRepository::createSeismicLineSet(co
 }
 
 RESQML2_NS::CulturalFeature* DataObjectRepository::createCultural(const std::string & guid, const std::string & title,
+#ifdef WITH_RESQML2_2
 	gsoap_eml2_3::resqml22__CulturalFeatureKind kind)
+#else
+	gsoap_eml2_3::resqml22__CulturalFeatureKind)
+#endif
 {
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
@@ -1455,20 +1464,24 @@ RESQML2_NS::RockVolumeFeature* DataObjectRepository::createStratigraphicUnitFeat
 	}
 }
 
+#ifdef WITH_RESQML2_2
 RESQML2_NS::RockVolumeFeature* DataObjectRepository::createRockVolumeFeature(const std::string & guid, const std::string & title)
 {
-#ifdef WITH_RESQML2_2
 	return new RESQML2_2_NS::RockVolumeFeature(this, guid, title);
 #else
+RESQML2_NS::RockVolumeFeature* DataObjectRepository::createRockVolumeFeature(const std::string&, const std::string&)
+{
 	throw std::logic_error("RESQML2.2 support has not been built in this library.");
 #endif
 }
 
+#ifdef WITH_RESQML2_2
 RESQML2_NS::Model* DataObjectRepository::createModel(const std::string & guid, const std::string & title)
 {
-#ifdef WITH_RESQML2_2
 	return new RESQML2_2_NS::Model(this, guid, title);
 #else
+RESQML2_NS::Model* DataObjectRepository::createModel(const std::string&, const std::string&)
+{
 	throw std::logic_error("RESQML2.2 support has not been built in this library.");
 #endif
 }
@@ -2046,6 +2059,7 @@ RESQML2_NS::WellboreFrameRepresentation* DataObjectRepository::createWellboreFra
 	}
 }
 
+#ifdef WITH_RESQML2_2
 RESQML2_NS::SeismicWellboreFrameRepresentation* DataObjectRepository::createSeismicWellboreFrameRepresentation(
 	RESQML2_NS::WellboreInterpretation* interp,
 	const std::string& guid, const std::string& title,
@@ -2054,9 +2068,16 @@ RESQML2_NS::SeismicWellboreFrameRepresentation* DataObjectRepository::createSeis
 	double weatheringVelocity,
 	RESQML2_NS::LocalTime3dCrs* crs)
 {
-#ifdef WITH_RESQML2_2
 	return new RESQML2_2_NS::SeismicWellboreFrameRepresentation(interp, guid, title, traj, seismicReferenceDatum, weatheringVelocity, crs);
 #else
+RESQML2_NS::SeismicWellboreFrameRepresentation* DataObjectRepository::createSeismicWellboreFrameRepresentation(
+	RESQML2_NS::WellboreInterpretation*,
+	const std::string&, const std::string&,
+	RESQML2_NS::WellboreTrajectoryRepresentation*,
+	double,
+	double,
+	RESQML2_NS::LocalTime3dCrs*)
+{
 	throw std::logic_error("RESQML2.2 support has not been built in this library.");
 #endif
 }
@@ -2812,30 +2833,38 @@ PRODML2_1_NS::TimeSeriesData* DataObjectRepository::createTimeSeriesData(const s
 	return new PRODML2_1_NS::TimeSeriesData(this, guid, title);
 }
 
+#if WITH_RESQML2_2
 EML2_NS::GraphicalInformationSet* DataObjectRepository::createGraphicalInformationSet(const std::string & guid, const std::string & title)
 {
-#if WITH_RESQML2_2
 	return new EML2_3_NS::GraphicalInformationSet(this, guid, title);
 #else
+EML2_NS::GraphicalInformationSet* DataObjectRepository::createGraphicalInformationSet(const std::string&, const std::string&)
+{
 	throw std::logic_error("RESQML2.2 support has not been built in this library.");
 #endif
 }
 
+
+#if WITH_RESQML2_2
 RESQML2_NS::DiscreteColorMap* DataObjectRepository::createDiscreteColorMap(const std::string& guid, const std::string& title)
 {
-#if WITH_RESQML2_2
 	return new RESQML2_2_NS::DiscreteColorMap(this, guid, title);
 #else
+RESQML2_NS::DiscreteColorMap* DataObjectRepository::createDiscreteColorMap(const std::string&, const std::string&)
+{
 	throw std::logic_error("RESQML2.2 support has not been built in this library.");
 #endif
 }
 
+#if WITH_RESQML2_2
 RESQML2_NS::ContinuousColorMap* DataObjectRepository::createContinuousColorMap(const std::string& guid, const std::string& title,
 	gsoap_eml2_3::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_3::resqml22__InterpolationMethod interpolationMethod)
 {
-#if WITH_RESQML2_2
 	return new RESQML2_2_NS::ContinuousColorMap(this, guid, title, interpolationDomain, interpolationMethod);
 #else
+RESQML2_NS::ContinuousColorMap* DataObjectRepository::createContinuousColorMap(const std::string&, const std::string&,
+	gsoap_eml2_3::resqml22__InterpolationDomain, gsoap_eml2_3::resqml22__InterpolationMethod)
+{
 	throw std::logic_error("RESQML2.2 support has not been built in this library.");
 #endif
 }
@@ -3449,10 +3478,11 @@ COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_1WrapperFromGsoapCon
 	return wrapper;
 }
 */
+#if WITH_RESQML2_2
 COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType)
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;
-#if WITH_RESQML2_2
+
 	if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BoundaryFeature)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BoundaryFeatureInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CategoricalProperty)
@@ -3544,9 +3574,15 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreMarkerFrameRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreTrajectoryRepresentation)
-#endif
+
 	return wrapper;
 }
+#else
+COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapContext(const std::string&)
+{
+	return nullptr;
+}
+#endif
 
 COMMON_NS::AbstractObject* DataObjectRepository::getEml2_1WrapperFromGsoapContext(const std::string & datatype)
 {
@@ -3557,18 +3593,25 @@ COMMON_NS::AbstractObject* DataObjectRepository::getEml2_1WrapperFromGsoapContex
 	return wrapper;
 }
 
+#if WITH_RESQML2_2
 COMMON_NS::AbstractObject* DataObjectRepository::getEml2_3WrapperFromGsoapContext(const std::string & datatype)
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;
-#if WITH_RESQML2_2
+
 	if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, Activity, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, ActivityTemplate, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, GraphicalInformationSet, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, PropertyKind, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, TimeSeries, gsoap_eml2_3, eml23)
-#endif
+
 	return wrapper;
 }
+#else
+COMMON_NS::AbstractObject* DataObjectRepository::getEml2_3WrapperFromGsoapContext(const std::string&)
+{
+	return nullptr;
+}
+#endif
 
 
 int DataObjectRepository::getGsoapErrorCode() const

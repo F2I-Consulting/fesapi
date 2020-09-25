@@ -209,7 +209,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if it is allowed, false if it is not.
 		 */
-		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) final {
+		bool validatePropertyKindAssociation(EML2_NS::PropertyKind*) final {
 			return true;
 		}
 
@@ -221,7 +221,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if it is allowed, false if it is not.
 		 */
-		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) final {
+		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind) final {
 			return true;
 		}
 
