@@ -1198,7 +1198,7 @@ std::string HdfProxy::readStringAttribute(const std::string & obj_name,
 	const std::string & attr_name) const
 {
 	if (!isOpened()) {
-		throw invalid_argument("The HDF5 file must be opened");
+		throw invalid_argument("The HDF5 file is not opened");
 	}
 
 	hid_t uuidAtt = H5Aopen_by_name(hdfFile, obj_name.c_str(), attr_name.c_str(), H5P_DEFAULT, H5P_DEFAULT);
@@ -1260,7 +1260,7 @@ vector<string> HdfProxy::readStringArrayAttribute(const std::string & obj_name,
 	const std::string & attr_name) const
 {
 	if (!isOpened()) {
-		throw invalid_argument("The HDF5 file must be opened");
+		throw invalid_argument("The HDF5 file is not opened");
 	}
 
 	vector<string> result;
@@ -1334,7 +1334,7 @@ double HdfProxy::readDoubleAttribute(const std::string & obj_name,
 	const std::string & attr_name) const
 {
 	if (!isOpened()) {
-		throw invalid_argument("The HDF5 file must be opened");
+		throw invalid_argument("The HDF5 file is not opened");
 	}
 
 	hid_t uuidAtt = H5Aopen_by_name(hdfFile, obj_name.c_str(), attr_name.c_str(), H5P_DEFAULT, H5P_DEFAULT);

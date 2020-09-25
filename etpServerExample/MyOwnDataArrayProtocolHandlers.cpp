@@ -117,7 +117,7 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v1
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 	for (std::pair < std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::PutDataArraysType > pdat : pda.dataArrays) {
 		std::cout << "PutDataArray in resource " << pdat.second.uid.uri << " at path " << pdat.second.uid.pathInResource << std::endl;;
-		for (auto i = 0; i < pdat.second.array.dimensions.size(); ++i) {
+		for (size_t i = 0; i < pdat.second.array.dimensions.size(); ++i) {
 			std::cout << "Dimension " << i << " with count : " << pdat.second.array.dimensions[i] << std::endl;
 		}
 
