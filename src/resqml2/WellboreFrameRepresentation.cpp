@@ -218,10 +218,9 @@ double WellboreFrameRepresentation::getMdFirstValue() const
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
-			double* values = new double[getMdValuesCount()];
-			hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values);
+			std::unique_ptr<double[]> values(new double[getMdValuesCount()]);
+			hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values.get());
 			double result = values[0];
-			delete[] values;
 
 			return result;
 		}
@@ -241,10 +240,9 @@ double WellboreFrameRepresentation::getMdFirstValue() const
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
-			double* values = new double[getMdValuesCount()];
-			hdfProxy->readArrayNdOfDoubleValues(dataset->ExternalFileProxy[0]->PathInExternalFile, values);
+			std::unique_ptr<double[]> values(new double[getMdValuesCount()]);
+			hdfProxy->readArrayNdOfDoubleValues(dataset->ExternalFileProxy[0]->PathInExternalFile, values.get());
 			double result = values[0];
-			delete[] values;
 
 			return result;
 		}
@@ -261,14 +259,23 @@ double WellboreFrameRepresentation::getMdFirstValue() const
 
 unsigned int WellboreFrameRepresentation::getMdValuesCount() const
 {
+	ULONG64 result;
+
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->NodeCount;
+		result = static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->NodeCount;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3)->NodeCount;
+		result = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3)->NodeCount;
+	}
+	else {
+		throw invalid_argument("Not implemented yet");
 	}
 
-	throw invalid_argument("Not implemented yet");
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw std::range_error("There are too much md values.");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 COMMON_NS::AbstractObject::hdfDatatypeEnum WellboreFrameRepresentation::getMdHdfDatatype() const

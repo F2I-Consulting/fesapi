@@ -71,8 +71,8 @@ void SealedVolumeFrameworkRepresentation::loadTargetRelationships()
 
 	convertDorIntoRel<SealedSurfaceFrameworkRepresentation>(getSealedStructuralFrameworkDor());
 
-	const auto count = getRegionCount();
-	for (size_t regionIdx = 0; regionIdx < count; ++regionIdx) {
+	const unsigned int count = getRegionCount();
+	for (unsigned int regionIdx = 0; regionIdx < count; ++regionIdx) {
 		convertDorIntoRel<StratigraphicUnitInterpretation>(getStratiUnitInterpDor(regionIdx));
 	}
 }

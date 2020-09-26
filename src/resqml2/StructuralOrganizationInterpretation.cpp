@@ -57,28 +57,28 @@ void StructuralOrganizationInterpretation::loadTargetRelationships()
 {
 	AbstractOrganizationInterpretation::loadTargetRelationships();
 
-	size_t count = getFaultInterpretationCount();
-	for (size_t i = 0; i < count; ++i) {
+	unsigned int count = getFaultInterpretationCount();
+	for (unsigned int i = 0; i < count; ++i) {
 		convertDorIntoRel<RESQML2_NS::FaultInterpretation>(getFaultInterpretationDor(i));
 	}
 
 	count = getHorizonInterpretationCount();
-	for (size_t i = 0; i < count; ++i) {
+	for (unsigned int i = 0; i < count; ++i) {
 		convertDorIntoRel<RESQML2_NS::HorizonInterpretation>(getHorizonInterpretationDor(i));
 	}
 
 	count = getTopFrontierInterpretationCount();
-	for (size_t i = 0; i < count; ++i) {
+	for (unsigned int i = 0; i < count; ++i) {
 		convertDorIntoRel<RESQML2_NS::AbstractFeatureInterpretation>(getTopFrontierInterpretationDor(i));
 	}
 
 	count = getBottomFrontierInterpretationCount();
-	for (size_t i = 0; i < count; ++i) {
+	for (unsigned int i = 0; i < count; ++i) {
 		convertDorIntoRel<RESQML2_NS::AbstractFeatureInterpretation>(getBottomFrontierInterpretationDor(i));
 	}
 
 	count = getSideFrontierInterpretationCount();
-	for (size_t i = 0; i < count; ++i) {
+	for (unsigned int i = 0; i < count; ++i) {
 		convertDorIntoRel<RESQML2_NS::AbstractFeatureInterpretation>(getSideFrontierInterpretationDor(i));
 	}
 }

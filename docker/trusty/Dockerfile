@@ -49,7 +49,6 @@ RUN cd dependencies && \
 # fesapi install
 RUN git clone https://github.com/F2I-Consulting/fesapi.git && \
 	cd fesapi && \
-	git checkout etp && \
 	cd ..  && \
 	mkdir build && \
 	cd build && \

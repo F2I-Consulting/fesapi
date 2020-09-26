@@ -140,7 +140,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v
 				if (lastUpdate < 0) {
 					lastUpdate = obj->getCreation();
 				}
-				lastUpdate *= 1e6; // ETP Last update must be in micro seconds.
+				lastUpdate *= 1000000; // ETP Last update must be in micro seconds.
 			}
 			std::string qualifiedType = obj->getQualifiedType();
 			std::string namespaceStar = qualifiedType.substr(0, qualifiedType.find(".") + 1) + "*";

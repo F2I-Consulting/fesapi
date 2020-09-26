@@ -27,7 +27,7 @@ void AbstractSurfaceRepresentation::loadTargetRelationships()
 {
 	AbstractRepresentation::loadTargetRelationships();
 
-	for (size_t i = 0; i < getBoundariesCount(); ++i) {
+	for (unsigned int i = 0; i < getBoundariesCount(); ++i) {
 		COMMON_NS::DataObjectReference dor = getOuterRingDor(i);
 		if (!dor.isEmpty()) {
 			convertDorIntoRel(dor);
@@ -37,14 +37,23 @@ void AbstractSurfaceRepresentation::loadTargetRelationships()
 
 unsigned int AbstractSurfaceRepresentation::getBoundariesCount() const
 {
+	size_t result;
+
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractSurfaceRepresentation*>(gsoapProxy2_0_1)->Boundaries.size();
+		result = static_cast<gsoap_resqml2_0_1::resqml20__AbstractSurfaceRepresentation*>(gsoapProxy2_0_1)->Boundaries.size();
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractSurfaceRepresentation*>(gsoapProxy2_3)->Boundaries.size();
+		result = static_cast<gsoap_eml2_3::resqml22__AbstractSurfaceRepresentation*>(gsoapProxy2_3)->Boundaries.size();
+	}
+	else {
+		throw std::logic_error("Unsupported version of RESQML");
 	}
 
-	throw std::logic_error("Unsupported version of RESQML");
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw std::range_error("There are too much boundaries");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 COMMON_NS::DataObjectReference AbstractSurfaceRepresentation::getOuterRingDor(unsigned int index) const

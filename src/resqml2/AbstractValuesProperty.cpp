@@ -173,7 +173,7 @@ void AbstractValuesProperty::pushBackFacet(gsoap_eml2_3::eml23__FacetKind facet,
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::eml23__PropertyKindFacet* newFacet = gsoap_eml2_3::soap_new_eml23__PropertyKindFacet(gsoapProxy2_3->soap);
-		newFacet->Facet = facet;
+		newFacet->Facet = gsoap_eml2_3::soap_eml23__FacetKind2s(gsoapProxy2_3->soap, facet);
 		newFacet->Facet = facetValue;
 		static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet.push_back(newFacet);
 	}

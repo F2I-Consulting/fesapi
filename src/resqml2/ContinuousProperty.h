@@ -39,12 +39,12 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~ContinuousProperty() {}
+		virtual ~ContinuousProperty() = default;
 
 		/**
 		* Please use std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "") instead. Notice the lack of null value parameter.
 		*/
-		std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & dataset = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)()) final {
+		std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy*, const std::string&, LONG64) final {
 			throw std::logic_error("You cannot push back integer values in a Continuous Property.");
 		}
 

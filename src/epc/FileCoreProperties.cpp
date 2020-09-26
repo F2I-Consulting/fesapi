@@ -113,7 +113,7 @@ void FileCoreProperties::initDefaultCoreProperties()
 	{
 #if defined(_WIN32)
 		GUID sessionGUID = GUID_NULL;
-		HRESULT hr = CoCreateGuid(&sessionGUID);
+		CoCreateGuid(&sessionGUID);
 		wchar_t uuidWStr[39];
 		StringFromGUID2(sessionGUID, uuidWStr, 39);
 		uuidWStr[37] = '\0'; // Delete the closing bracket

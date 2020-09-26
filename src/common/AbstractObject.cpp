@@ -1129,20 +1129,28 @@ vector<string> AbstractObject::getExtraMetadata(const std::string & key) const
 
 unsigned int AbstractObject::getExtraMetadataCount() const
 {
+	size_t result = 0;
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.size();
+		result = static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.size();
 	}
 	else if (gsoapProxy2_1 != nullptr) {
-		return static_cast<gsoap_eml2_1::eml21__AbstractObject*>(gsoapProxy2_1)->ExtensionNameValue.size();
+		result = static_cast<gsoap_eml2_1::eml21__AbstractObject*>(gsoapProxy2_1)->ExtensionNameValue.size();
 	}
 	else if (gsoapProxy2_2 != nullptr) {
-		return static_cast<gsoap_eml2_2::eml22__AbstractObject*>(gsoapProxy2_2)->ExtensionNameValue.size();
+		result = static_cast<gsoap_eml2_2::eml22__AbstractObject*>(gsoapProxy2_2)->ExtensionNameValue.size();
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::eml23__AbstractObject*>(gsoapProxy2_3)->ExtensionNameValue.size();
+		result = static_cast<gsoap_eml2_3::eml23__AbstractObject*>(gsoapProxy2_3)->ExtensionNameValue.size();
 	}
-	
-	throw logic_error("Not implemented yet.");
+	else {
+		throw logic_error("Not implemented yet.");
+	}
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("There are too much extra metadata.");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 std::string AbstractObject::getExtraMetadataKeyAtIndex(unsigned int index) const

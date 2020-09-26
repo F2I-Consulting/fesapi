@@ -2678,7 +2678,7 @@ void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
 			std::cout << "connected wiht rock fluid unit " << std::endl;
 			showAllMetadata(rfu);
 		}
-		for (size_t i = 0; i < fc->getFormationWaterCount(); ++i) {
+		for (unsigned int i = 0; i < fc->getFormationWaterCount(); ++i) {
 			std::cout << "FORMATION WATER " << std::endl;
 			if (fc->hasFormationWaterMassFraction(i)) { cout << "MassFraction: " << fc->getFormationWaterMassFractionValue(i) << " " << fc->getFormationWaterMassFractionUom(i) << std::endl; }
 			if (fc->hasFormationWaterMoleFraction(i)) { cout << "MoleFraction: " << fc->getFormationWaterMoleFractionValue(i) << " " << fc->getFormationWaterMoleFractionUom(i) << std::endl; }
@@ -2686,7 +2686,7 @@ void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
 			if (fc->hasFormationWaterSpecificGravity(i)) { cout << "SpecificGravity: " << fc->getFormationWaterSpecificGravity(i) << std::endl; }
 			if (fc->hasFormationWaterRemark(i)) { cout << "Remark: " << fc->getFormationWaterRemark(i) << std::endl; }
 		}
-		for (size_t i = 0; i < fc->getPureFluidComponentCount(); ++i) {
+		for (unsigned int i = 0; i < fc->getPureFluidComponentCount(); ++i) {
 			std::cout << "PURE FLUID COMPONENT " << std::endl;
 			if (fc->hasPureFluidComponentMassFraction(i)) { cout << "MassFraction: " << fc->getPureFluidComponentMassFractionValue(i) << " " << fc->getPureFluidComponentMassFractionUom(i) << std::endl; }
 			if (fc->hasPureFluidComponentMolecularWeight(i)) { cout << "MolecularWeight: " << fc->getPureFluidComponentMolecularWeightValue(i) << " " << fc->getPureFluidComponentMolecularWeightUom(i) << std::endl; }
@@ -2694,7 +2694,7 @@ void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
 			if (fc->hasPureFluidComponentRemark(i)) { cout << "Remark: " << fc->getPureFluidComponentRemark(i) << std::endl; }
 		}
 
-		for (size_t modelIndex = 0; modelIndex < fc->getModelCount(); ++modelIndex) {
+		for (unsigned int modelIndex = 0; modelIndex < fc->getModelCount(); ++modelIndex) {
 			std::cout << "MODEL " << std::endl;
 			if (fc->hasFluidCharacterizationModelName(modelIndex)) { cout << "name: " << fc->getFluidCharacterizationModelName(modelIndex) << std::endl; }
 			if (fc->hasFluidCharacterizationModelReferenceStockTankTemperature(modelIndex)) {
@@ -2709,16 +2709,16 @@ void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
 			if (spec != nullptr) {
 				if (dynamic_cast<PRODML2_1_NS::CompositionalSpecification*>(spec) != nullptr) {
 					PRODML2_1_NS::CompositionalSpecification* compoSpec = static_cast<PRODML2_1_NS::CompositionalSpecification*>(spec);
-					for (size_t coeffIndex = 0; coeffIndex < compoSpec->getCoefficientCount(); ++coeffIndex) {
+					for (unsigned int coeffIndex = 0; coeffIndex < compoSpec->getCoefficientCount(); ++coeffIndex) {
 						cout << "coeff value: " << compoSpec->getCoefficientValue(coeffIndex) << std::endl;
 						cout << "coeff kind: " << compoSpec->getCoefficientKind(coeffIndex) << std::endl;
 						if (compoSpec->hasCoefficientName(modelIndex)) { cout << "Name: " << compoSpec->getCoefficientName(coeffIndex) << std::endl; }
 					}
-					for (size_t coeffIndex = 0; coeffIndex < compoSpec->getBinaryInteractionCoefficientCount(); ++coeffIndex) {
+					for (unsigned int coeffIndex = 0; coeffIndex < compoSpec->getBinaryInteractionCoefficientCount(); ++coeffIndex) {
 						cout << "fluid compo 1 ref: " << compoSpec->getBinaryInteractionCoefficientFluidComponent1Reference(coeffIndex) << std::endl;
 						if (compoSpec->hasBinaryInteractionCoefficientFluidComponent2Reference(modelIndex)) { cout << "fluid compo 2 ref: " << compoSpec->getBinaryInteractionCoefficientFluidComponent2Reference(coeffIndex) << std::endl; }
 					}
-					for (size_t propIndex = 0; propIndex < compoSpec->getFluidComponentPropertyCount(); ++propIndex) {
+					for (unsigned int propIndex = 0; propIndex < compoSpec->getFluidComponentPropertyCount(); ++propIndex) {
 						cout << "fluid compo ref: " << compoSpec->getFluidComponentPropertyFluidComponentReference(propIndex) << std::endl;
 						if (compoSpec->hasFluidComponentPropertyAcentricFactor(propIndex)) { cout << "AcentricFactor: " << compoSpec->getFluidComponentPropertyAcentricFactor(propIndex) << std::endl; }
 						if (compoSpec->hasFluidComponentPropertyCompactVolume(propIndex)) { cout << "CompactVolume: " << compoSpec->getFluidComponentPropertyCompactVolumeValue(propIndex) << " " << compoSpec->getFluidComponentPropertyCompactVolumeUom(propIndex)  << std::endl; }
@@ -2741,13 +2741,13 @@ void deserializeTimeSeriesData(COMMON_NS::DataObjectRepository & pck)
 		PRODML2_1_NS::TimeSeriesData* tsd = timeSeriesDataSet[timeSeriesDataSetIdx];
 		showAllMetadata(tsd);
 
-		for (size_t i = 0; i < tsd->getKeywordCount(); ++i) {
+		for (unsigned int i = 0; i < tsd->getKeywordCount(); ++i) {
 			std::cout << "KEYWORD " << tsd->getKeyword(i) << " : " << tsd->getKeywordValue(i) << std::endl;
 		}
 		std::cout << "UOM : " << tsd->getUomAsString() << std::endl;
 		std::cout << "Measure class : " << tsd->getMeasureClassAsString() << std::endl;
 
-		for (size_t i = 0; i < tsd->getValueCount(); ++i) {
+		for (unsigned int i = 0; i < tsd->getValueCount(); ++i) {
 			if (tsd->isStringValue(i)) {
 				std::cout << "String value: " << tsd->getStringValue(i) << " timestamp: " << tsd->getValueTimestamp(i) << std::endl;
 			}
