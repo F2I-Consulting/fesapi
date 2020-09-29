@@ -67,6 +67,8 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::
 
 void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & msg, int64_t correlationId)
 {
+	Energistics::Etp::v12::Protocol::Store::PutDataObjectsResponse objResponse;
+
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 	for (const auto & pair : msg.dataObjects) {
 		std::cout << "Store received data object : " << pair.second.resource.dataObjectType << " (" << pair.second.resource.uri << ")" << std::endl;
@@ -78,6 +80,8 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 			continue;
 		}
 
+		objResponse.success[pair.first] = Energistics::Etp::v12::Datatypes::Object::PutResponse();
+
 		importedObj->loadTargetRelationships();
 
 		if (pair.second.resource.dataObjectType == "resqml20.obj_IjkGridRepresentation") {
@@ -88,8 +92,6 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 			gcsr->pushBackSupportingGridRepresentation(static_cast<RESQML2_NS::AbstractGridRepresentation*>(importedObj));
 		}
 	}
-
-	Energistics::Etp::v12::Protocol::Store::PutDataObjectsResponse objResponse;
 
 	if (!pe.errors.empty()) {
 		session->send(objResponse, correlationId);
