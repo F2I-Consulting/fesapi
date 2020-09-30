@@ -67,6 +67,8 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::
 
 void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & msg, int64_t correlationId)
 {
+	Energistics::Etp::v12::Protocol::Store::PutDataObjectsResponse objResponse;
+
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 	for (const auto & pair : msg.dataObjects) {
 		std::cout << "Store received data object : " << pair.second.resource.dataObjectType << " (" << pair.second.resource.uri << ")" << std::endl;
@@ -77,6 +79,8 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 			pe.errors[pair.first].code = 4001;
 			continue;
 		}
+
+		objResponse.success[pair.first] = Energistics::Etp::v12::Datatypes::Object::PutResponse();
 
 		importedObj->loadTargetRelationships();
 
@@ -90,7 +94,12 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 	}
 
 	if (!pe.errors.empty()) {
+		session->send(objResponse, correlationId);
 		session->send(pe, correlationId, 0x02);
+	}
+	else
+	{
+		session->send(objResponse, correlationId, 0x02);
 	}
 }
 
