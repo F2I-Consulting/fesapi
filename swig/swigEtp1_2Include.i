@@ -373,7 +373,7 @@ namespace Energistics {
 						boost::optional<int32_t> targetCount;
 						int64_t lastChanged;
 						int64_t storeLastWrite;
-						std::map<std::string, std::string> customData;
+						std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue> customData;
 					};					
 				};				
 			};			

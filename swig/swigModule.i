@@ -373,6 +373,8 @@ namespace COMMON_NS
 #ifdef WITH_RESQML2_2
 		%template(getGraphicalInformationSets) getDataObjects<EML2_3_NS::GraphicalInformationSet>;
 #endif
+
+		std::vector<std::string> getUuids() const;
 		
 		EML2_NS::AbstractHdfProxy* createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess);
 
