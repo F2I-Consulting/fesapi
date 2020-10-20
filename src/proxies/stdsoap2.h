@@ -1,5 +1,5 @@
 /*
-        stdsoap2.h 2.8.106
+        stdsoap2.h 2.8.108
 
         gSOAP runtime engine
 
@@ -18,7 +18,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_VERSION 208106
+#define GSOAP_VERSION 208108
 
 #ifdef _WIN32
 #pragma warning(disable : 4458) /* declaration hides class member */
@@ -26,7 +26,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 
 #ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wcast-qual"
-#endif 
+#endif
 
 #ifdef WITH_SOAPDEFS_H
 # include "soapdefs.h"          /* include user-defined stuff in soapdefs.h */
@@ -629,6 +629,7 @@ extern intmax_t __strtoull(const char*, char**, int);
 
 #ifndef WITH_NOSTDLIB
 # include <stdlib.h>
+# include <stddef.h>
 # include <stdio.h>
 # include <string.h>
 # if !defined(HAVE_CONFIG_H) || defined(HAVE_CTYPE_H)
@@ -720,6 +721,7 @@ extern intmax_t __strtoull(const char*, char**, int);
 
 #ifdef __cplusplus
 # include <new>
+# include <iterator>
 # include <memory>
 # ifndef WITH_COMPAT
 #  include <string>
@@ -2081,29 +2083,24 @@ struct soap_cookie
 SOAP_FMAC1 struct soap_multipart* SOAP_FMAC2 soap_next_multipart(struct soap_multipart*);
 
 #ifdef __cplusplus
-
 class soap_multipart_iterator
 {
  public:
+  typedef ptrdiff_t difference_type;
+  typedef soap_multipart value_type;
+  typedef soap_multipart& reference;
+  typedef soap_multipart* pointer;
+  typedef std::forward_iterator_tag iterator_category;
   struct soap_multipart *content;
-  bool operator==(const soap_multipart_iterator& iter) const
-    { return (bool)(content == iter.content); }
-  bool operator!=(const soap_multipart_iterator& iter) const
-    { return (bool)(content != iter.content); }
-  struct soap_multipart& operator*() const
-    { return *content; }
-  struct soap_multipart *operator->() const
-    { return content; }
-  soap_multipart_iterator& operator++()
-    { content = soap_next_multipart(content); return *this; }
-  soap_multipart_iterator operator++(int)
-    { soap_multipart_iterator iter(*this); content = soap_next_multipart(content); return iter; }
-  soap_multipart_iterator() : content(NULL)
-    { }
-  soap_multipart_iterator(struct soap_multipart *p) : content(p)
-    { }
+  soap_multipart_iterator() : content(NULL)                      { }
+  soap_multipart_iterator(struct soap_multipart *p) : content(p) { }
+  bool operator==(const soap_multipart_iterator& iter) const     { return (bool)(content == iter.content); }
+  bool operator!=(const soap_multipart_iterator& iter) const     { return (bool)(content != iter.content); }
+  struct soap_multipart& operator*() const                       { return *content; }
+  struct soap_multipart *operator->() const                      { return content; }
+  soap_multipart_iterator& operator++()                          { content = soap_next_multipart(content); return *this; }
+  soap_multipart_iterator operator++(int)                        { soap_multipart_iterator iter(*this); content = soap_next_multipart(content); return iter; }
 };
-
 #endif
 
 #ifndef WITH_LEANER
@@ -2121,10 +2118,12 @@ struct soap_dime
   struct soap_multipart *list;          /* list of DIME attachments received */
   struct soap_multipart *first, *last;  /* temporary in/out queue */
 #ifdef __cplusplus
-  soap_multipart_iterator begin()
-    { soap_multipart_iterator iter(list); return iter; };
-  soap_multipart_iterator end()
-    { soap_multipart_iterator iter(NULL); return iter; };
+  typedef soap_multipart_iterator iterator;
+  typedef soap_multipart_iterator const_iterator;
+  const_iterator cbegin() const { soap_multipart_iterator iter(list); return iter; }
+  const_iterator cend() const   { soap_multipart_iterator iter(NULL); return iter; }
+  iterator begin()              { soap_multipart_iterator iter(list); return iter; }
+  iterator end()                { soap_multipart_iterator iter(NULL); return iter; }
 #endif
 };
 #endif
@@ -2137,10 +2136,12 @@ struct soap_mime
   struct soap_multipart *list;          /* list of MIME attachments received */
   struct soap_multipart *first, *last;  /* temporary in/out queue */
 #ifdef __cplusplus
-  soap_multipart_iterator begin()
-    { soap_multipart_iterator iter(list); return iter; };
-  soap_multipart_iterator end()
-    { soap_multipart_iterator iter(NULL); return iter; };
+  typedef soap_multipart_iterator iterator;
+  typedef soap_multipart_iterator const_iterator;
+  const_iterator cbegin() const { soap_multipart_iterator iter(list); return iter; }
+  const_iterator cend() const   { soap_multipart_iterator iter(NULL); return iter; }
+  iterator begin()              { soap_multipart_iterator iter(list); return iter; }
+  iterator end()                { soap_multipart_iterator iter(NULL); return iter; }
 #endif
 };
 #endif
@@ -2175,6 +2176,7 @@ struct soap_multipart
   const char *description;              /* MIME Content-Description (optional) */
 #ifdef __cplusplus
   typedef soap_multipart_iterator iterator;
+  typedef soap_multipart_iterator const_iterator;
 #endif
 };
 #endif
@@ -2334,6 +2336,11 @@ SOAP_FMAC1 struct soap_dom_element * SOAP_FMAC2 soap_dom_find_next(const struct 
 class SOAP_CMAC soap_dom_attribute_iterator
 {
  public:
+  typedef ptrdiff_t difference_type;
+  typedef soap_dom_attribute value_type;
+  typedef soap_dom_attribute& reference;
+  typedef soap_dom_attribute* pointer;
+  typedef std::forward_iterator_tag iterator_category;
   struct soap_dom_attribute *iter;
   const char *nstr;
   const char *name;
@@ -2360,6 +2367,7 @@ struct SOAP_CMAC soap_dom_attribute
   struct soap *soap;
 #ifdef __cplusplus
   typedef soap_dom_attribute_iterator iterator;
+  typedef soap_dom_attribute_iterator const_iterator;
   soap_dom_attribute(struct soap *soap = NULL);
   soap_dom_attribute(const soap_dom_attribute& att);
   soap_dom_attribute(struct soap *soap, const char *tag);
@@ -2418,12 +2426,16 @@ struct SOAP_CMAC soap_dom_attribute
   operator LONG64() const                                       { return soap_att_get_LONG64(this); }
   operator double() const                                       { return soap_att_get_double(this); }
   operator const char*() const                                  { return this->text; }
-  soap_dom_attribute_iterator att_begin()                       { return soap_dom_attribute_iterator(this); }
-  soap_dom_attribute_iterator att_end()                         { return soap_dom_attribute_iterator(NULL); }
-  soap_dom_attribute_iterator att_find(const char *patt)        { return att_find(NULL, patt); }
-  soap_dom_attribute_iterator att_find(const wchar_t *patt)     { return att_find(NULL, patt); }
-  soap_dom_attribute_iterator att_find(const char *ns, const char *patt);
-  soap_dom_attribute_iterator att_find(const char *ns, const wchar_t *patt);
+  const_iterator cbegin()                                       { return this->att_begin(); }
+  const_iterator cend()                                         { return this->att_end(); }
+  iterator begin()                                              { return this->att_begin(); }
+  iterator end()                                                { return this->att_end(); }
+  iterator att_begin()                                          { return soap_dom_attribute_iterator(this); }
+  iterator att_end()                                            { return soap_dom_attribute_iterator(NULL); }
+  iterator att_find(const char *patt)                           { return att_find(NULL, patt); }
+  iterator att_find(const wchar_t *patt)                        { return att_find(NULL, patt); }
+  iterator att_find(const char *ns, const char *patt);
+  iterator att_find(const char *ns, const wchar_t *patt);
   void unlink();
 #endif
 };
@@ -2434,6 +2446,11 @@ struct SOAP_CMAC soap_dom_attribute
 class SOAP_CMAC soap_dom_element_iterator
 {
  public:
+  typedef ptrdiff_t difference_type;
+  typedef soap_dom_element value_type;
+  typedef soap_dom_element& reference;
+  typedef soap_dom_element* pointer;
+  typedef std::forward_iterator_tag iterator_category;
   struct soap_dom_element *iter;
   struct soap_dom_element *stop;
   const char *nstr;
@@ -2471,6 +2488,7 @@ struct SOAP_CMAC soap_dom_element
   struct soap *soap;
 #ifdef __cplusplus
   typedef soap_dom_element_iterator iterator;
+  typedef soap_dom_element_iterator const_iterator;
   soap_dom_element(struct soap *soap = NULL);
   soap_dom_element(const soap_dom_element& elt);
   soap_dom_element(struct soap *soap, const char *tag);
@@ -2585,26 +2603,28 @@ struct SOAP_CMAC soap_dom_element
   operator LONG64() const                                               { return soap_elt_get_LONG64(this); }
   operator double() const                                               { return soap_elt_get_double(this); }
   operator const char*() const                                          { return this->text; }
-  soap_dom_element_iterator begin();
-  soap_dom_element_iterator end()                                       { return soap_dom_element_iterator(NULL); }
-  soap_dom_element_iterator elt_begin()                                 { return soap_dom_element_iterator(this->elts); }
-  soap_dom_element_iterator elt_end()                                   { return soap_dom_element_iterator(NULL); }
-  soap_dom_attribute_iterator att_begin()                               { return soap_dom_attribute_iterator(this->atts); }
-  soap_dom_attribute_iterator att_end()                                 { return soap_dom_attribute_iterator(NULL); }
-  soap_dom_element_iterator find(const char *pat, int typ = 0)          { return find(NULL, pat, typ); }
-  soap_dom_element_iterator find(const wchar_t *pat, int typ = 0)       { return find(NULL, pat, typ); }
-  soap_dom_element_iterator find(const char *ns, const char *pat, int typ = 0);
-  soap_dom_element_iterator find(const char *ns, const wchar_t *pat, int typ = 0);
-  soap_dom_element_iterator find(int typ);
-  soap_dom_element_iterator elt_find(const char *pat, int typ = 0)      { return elt_find(NULL, pat, typ); }
-  soap_dom_element_iterator elt_find(const wchar_t *pat, int typ = 0)   { return elt_find(NULL, pat, typ); }
-  soap_dom_element_iterator elt_find(const char *ns, const char *pat, int typ = 0);
-  soap_dom_element_iterator elt_find(const char *ns, const wchar_t *pat, int typ = 0);
-  soap_dom_element_iterator elt_find(int typ);
-  soap_dom_attribute_iterator att_find(const char *pat)                 { return att_find(NULL, pat); }
-  soap_dom_attribute_iterator att_find(const wchar_t *pat)              { return att_find(NULL, pat); }
-  soap_dom_attribute_iterator att_find(const char *ns, const char *pat);
-  soap_dom_attribute_iterator att_find(const char *ns, const wchar_t *pat);
+  const_iterator cbegin()                                               { return this->begin(); }
+  const_iterator cend()                                                 { return this->end(); }
+  iterator begin();
+  iterator end()                                                        { return soap_dom_element_iterator(NULL); }
+  iterator elt_begin()                                                  { return soap_dom_element_iterator(this->elts); }
+  iterator elt_end()                                                    { return soap_dom_element_iterator(NULL); }
+  soap_dom_attribute::iterator att_begin()                              { return soap_dom_attribute_iterator(this->atts); }
+  soap_dom_attribute::iterator att_end()                                { return soap_dom_attribute_iterator(NULL); }
+  iterator find(const char *pat, int typ = 0)                           { return find(NULL, pat, typ); }
+  iterator find(const wchar_t *pat, int typ = 0)                        { return find(NULL, pat, typ); }
+  iterator find(const char *ns, const char *pat, int typ = 0);
+  iterator find(const char *ns, const wchar_t *pat, int typ = 0);
+  iterator find(int typ);
+  iterator elt_find(const char *pat, int typ = 0)                       { return elt_find(NULL, pat, typ); }
+  iterator elt_find(const wchar_t *pat, int typ = 0)                    { return elt_find(NULL, pat, typ); }
+  iterator elt_find(const char *ns, const char *pat, int typ = 0);
+  iterator elt_find(const char *ns, const wchar_t *pat, int typ = 0);
+  iterator elt_find(int typ);
+  soap_dom_attribute::iterator att_find(const char *pat)                { return att_find(NULL, pat); }
+  soap_dom_attribute::iterator att_find(const wchar_t *pat)             { return att_find(NULL, pat); }
+  soap_dom_attribute::iterator att_find(const char *ns, const char *pat);
+  soap_dom_attribute::iterator att_find(const char *ns, const wchar_t *pat);
   void unlink();
 #endif
 };
@@ -3010,11 +3030,14 @@ struct soap_plugin
 extern SOAP_NMAC struct Namespace namespaces[];
 
 #ifndef WITH_LEAN
-# define soap_get0(soap) (((soap)->bufidx>=(soap)->buflen && soap_recv(soap)) ? EOF : (unsigned char)(soap)->buf[(soap)->bufidx])
-# define soap_get1(soap) (((soap)->bufidx>=(soap)->buflen && soap_recv(soap)) ? EOF : (unsigned char)(soap)->buf[(soap)->bufidx++])
+# define soap_get0(soap) (((soap)->bufidx>=(soap)->buflen && soap_recv((soap))) ? EOF : (unsigned char)(soap)->buf[(soap)->bufidx])
+# define soap_get1(soap) (((soap)->bufidx>=(soap)->buflen && soap_recv((soap))) ? EOF : (unsigned char)(soap)->buf[(soap)->bufidx++])
+# define soap_getchar(soap) ((soap)->ahead ? soap_getahead((soap)) : soap_get1((soap)))
+SOAP_FMAC1 soap_wchar SOAP_FMAC2 soap_getahead(struct soap*);
 #else
-soap_wchar soap_get0(struct soap*);
-soap_wchar soap_get1(struct soap*);
+SOAP_FMAC1 soap_wchar SOAP_FMAC2 soap_get0(struct soap*);
+SOAP_FMAC1 soap_wchar SOAP_FMAC2 soap_get1(struct soap*);
+SOAP_FMAC1 soap_wchar SOAP_FMAC2 soap_getchar(struct soap*);
 #endif
 
 #define soap_versioning_paste(name, ext) name##_REQUIRE_lib_v##ext
@@ -3157,7 +3180,6 @@ SOAP_FMAC1 void SOAP_FMAC2 soap_set_endpoint(struct soap*, const char*);
 SOAP_FMAC1 int SOAP_FMAC2 soap_flush_raw(struct soap*, const char*, size_t);
 SOAP_FMAC1 int SOAP_FMAC2 soap_flush(struct soap*);
 SOAP_FMAC1 soap_wchar SOAP_FMAC2 soap_get(struct soap*);
-SOAP_FMAC1 soap_wchar SOAP_FMAC2 soap_getchar(struct soap*);
 SOAP_FMAC1 int SOAP_FMAC2 soap_tag_cmp(const char*, const char*);
 SOAP_FMAC1 void SOAP_FMAC2 soap_set_fault(struct soap*);
 SOAP_FMAC1 int SOAP_FMAC2 soap_sender_fault(struct soap*, const char*, const char*);
@@ -3312,7 +3334,7 @@ SOAP_FMAC1 int SOAP_FMAC2 soap_array_begin_out(struct soap*, const char *tag, in
 SOAP_FMAC1 int SOAP_FMAC2 soap_element_ref(struct soap*, const char *tag, int id, int href);
 SOAP_FMAC1 int SOAP_FMAC2 soap_element_href(struct soap*, const char *tag, int id, const char *ref, const char *val);
 SOAP_FMAC1 int SOAP_FMAC2 soap_element_null(struct soap*, const char *tag, int id, const char *type);
-SOAP_FMAC1 int SOAP_FMAC2 soap_element_empty(struct soap*, const char *tag);
+SOAP_FMAC1 int SOAP_FMAC2 soap_element_empty(struct soap*, const char *tag, int id, const char *type);
 SOAP_FMAC1 int SOAP_FMAC2 soap_element_nil(struct soap*, const char *tag);
 SOAP_FMAC1 int SOAP_FMAC2 soap_element_id(struct soap*, const char *tag, int id, const void *p, const void *a, int n, const char *type, int t, char **mark);
 SOAP_FMAC1 int SOAP_FMAC2 soap_element_result(struct soap*, const char *tag);
