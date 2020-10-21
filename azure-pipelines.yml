@@ -34,9 +34,9 @@ jobs:
       - task: CMake@1
         displayName: 'CMake configure Minizip'
         inputs:
-          workingDirectory: C:/Minizip/build
+          workingDirectory: C:/Minizip-build
           cmakeArgs:
-            ..
+            ../Minizip
             $(Generator)
             -Wno-dev -Wno-deprecated
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
@@ -44,13 +44,13 @@ jobs:
       - task: CMake@1
         displayName: "CMake build Minizip --config $(BuildType)"
         inputs:
-          workingDirectory: C:/Minizip/build
+          workingDirectory: C:/Minizip-build
           cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
       - task: CMake@1
         displayName: "CMake Install Minizip --config $(BuildType)"
         inputs:
-          workingDirectory: C:/Minizip/build
-          cmakeArgs: --install . --config $(BuildType)
+          workingDirectory: C:/Minizip-build
+          cmakeArgs: --build . --config $(BuildType) --target INSTALL -- /verbosity:minimal
 
       # sourceforge and WebRequest incompatible
       - task: PowerShell@2
