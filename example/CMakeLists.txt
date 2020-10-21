@@ -2,6 +2,8 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.12)
 
 project (Fesapi_Example)
 
+find_package(FesapiCpp)
+
 # ============================================================================
 # build example
 # ============================================================================
@@ -31,8 +33,8 @@ target_sources(example PRIVATE
 
 target_include_directories (example PRIVATE ${FESAPI_ROOT_DIR}/src/)
 
-ADD_DEPENDENCIES (example ${CPP_LIBRARY_NAME})
-TARGET_LINK_LIBRARIES (example ${CPP_LIBRARY_NAME})
+target_link_libraries(example PRIVATE Fesapi::FesapiCpp)
+
 if (WIN32)
 	SET_TARGET_PROPERTIES (example PROPERTIES
 		LINK_FLAGS "/INCREMENTAL:NO"
@@ -47,7 +49,9 @@ if (WITH_RESQML2_2)
 	target_compile_definitions(example PRIVATE "-DWITH_RESQML2_2")
 endif(WITH_RESQML2_2)
 
+include(GNUInstallDirs)
+
 install (
 	TARGETS example
-	DESTINATION ${CMAKE_INSTALL_PREFIX}
+	DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
