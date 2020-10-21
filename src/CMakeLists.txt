@@ -430,7 +430,7 @@ export(TARGETS ${CPP_LIBRARY_NAME}
 export(PACKAGE ${CPP_LIBRARY_NAME})
 
 configure_package_config_file(
-	"${CMAKE_CURRENT_SOURCE_DIR}/${CPP_LIBRARY_NAME}Config.cmake.in"
+	"${FESAPI_ROOT_DIR}/cmake/${CPP_LIBRARY_NAME}Config.cmake.in"
 	"${CMAKE_BINARY_DIR}/lib/cmake/${CPP_LIBRARY_NAME}/${CPP_LIBRARY_NAME}Config.cmake"
 	INSTALL_DESTINATION "${CMAKE_BINARY_DIR}/lib/cmake/${CPP_LIBRARY_NAME}"
 	NO_SET_AND_CHECK_MACRO
@@ -465,7 +465,7 @@ install(EXPORT ${CPP_LIBRARY_NAME}Targets
 )
 
 configure_package_config_file(
-	"${CMAKE_CURRENT_SOURCE_DIR}/${CPP_LIBRARY_NAME}Config.cmake.in"
+	"${FESAPI_ROOT_DIR}/cmake/${CPP_LIBRARY_NAME}Config.cmake.in"
 	"${CMAKE_BINARY_DIR}/cmake/${CPP_LIBRARY_NAME}/${CPP_LIBRARY_NAME}Config.cmake"
 	INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${CPP_LIBRARY_NAME}"
 	NO_SET_AND_CHECK_MACRO
