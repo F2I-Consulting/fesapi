@@ -83,7 +83,7 @@ jobs:
             -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/hdf5.lib
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
-            -DWITH_EXAMPLE=TRUE
+            -DWITH_EXAMPLE=FALSE
             -DWITH_EXPERIMENTAL=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
             -DWITH_TEST=TRUE
