@@ -2,6 +2,8 @@ cmake_minimum_required (VERSION 3.12)
 
 project (Fesapi_SRC)
 
+find_package(Minizip)
+
 add_library (${CPP_LIBRARY_NAME} ${LIB_TYPE} "")
 
 # Create the version config header file in order for fesapi users to know the fesapi version at runtime.
@@ -92,15 +94,16 @@ if (WIN32)
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE bcrypt.lib)
 	endif (FESAPI_USE_BOOST_UUID)
 
-	if (EXISTS ${MINIZIP_LIBRARY_RELEASE} AND EXISTS ${MINIZIP_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${MINIZIP_LIBRARY_RELEASE} debug ${MINIZIP_LIBRARY_DEBUG})
-	elseif (EXISTS ${MINIZIP_LIBRARY_RELEASE})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE})
-	elseif (EXISTS ${MINIZIP_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_DEBUG})
-	else ()
-		message(ERROR "No minizip library has been set.")
-	endif ()
+	# if (EXISTS ${MINIZIP_LIBRARY_RELEASE} AND EXISTS ${MINIZIP_LIBRARY_DEBUG})
+	# 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${MINIZIP_LIBRARY_RELEASE} debug ${MINIZIP_LIBRARY_DEBUG})
+	# elseif (EXISTS ${MINIZIP_LIBRARY_RELEASE})
+	# 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE})
+	# elseif (EXISTS ${MINIZIP_LIBRARY_DEBUG})
+	# 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_DEBUG})
+	# else ()
+	# 	message(ERROR "No minizip library has been set.")
+	# endif ()
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE Minizip::Minizip)
 
 	if (EXISTS ${HDF5_C_LIBRARY_RELEASE} AND EXISTS ${HDF5_C_LIBRARY_DEBUG})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${HDF5_C_LIBRARY_RELEASE} debug ${HDF5_C_LIBRARY_DEBUG})
@@ -143,7 +146,8 @@ ELSEIF (UNIX)
 	if (NOT FESAPI_USE_BOOST_UUID)
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${UUID_LIBRARY_RELEASE})
 	endif ()
-	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
+	#target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE Minizip::Minizip ${HDF5_C_LIBRARY_RELEASE})
 # zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
 # zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
 	if (EXISTS ${ZLIB_LIBRARY_RELEASE})
