@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.12)
 
 project (Fesapi_SRC)
 
-find_package(Minizip)
+find_package(Minizip REQUIRED)
 
 if(NOT Minizip_FOUND)
 	message(WARNING "Minizip not found use user's variables")
