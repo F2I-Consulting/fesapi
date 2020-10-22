@@ -87,6 +87,7 @@ jobs:
             -DWITH_EXPERIMENTAL=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
             -DWITH_TEST=FALSE
+            -DCMAKE_FIND_DEBUG_MODE=ON
             -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
             
       - task: VSBuild@1
