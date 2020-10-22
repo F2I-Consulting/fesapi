@@ -126,128 +126,128 @@ jobs:
           $(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)\example.exe
         displayName: 'C# Example'
   - job:
-      displayName: Windows VS2017 - find_package hint
-      pool:
-        vmImage: 'vs2017-win2016'
-      strategy:
-        matrix:
-          # 64-bit Debug:
-          #   BuildType: Debug
-          #   Generator: '-G"Visual Studio 15 2017 Win64" -T host=x64'
-          #   JFlag: -j 4
+    displayName: Windows VS2017 - find_package hint
+    pool:
+      vmImage: 'vs2017-win2016'
+    strategy:
+      matrix:
+        # 64-bit Debug:
+        #   BuildType: Debug
+        #   Generator: '-G"Visual Studio 15 2017 Win64" -T host=x64'
+        #   JFlag: -j 4
 
-          64-bit Release:
-            BuildType: Release
-            Generator: '-G"Visual Studio 15 2017 Win64" -T host=x64'
-            JFlag: '-j 2'
-      timeoutInMinutes: 120
-      steps:
-        - powershell: |
-            Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.18/bin/windows/noszip/extra/hdf5-1.8.18-win64-vs2015-noszip.zip -OutFile C:\hdf5-1.8.18-win64-vs2015-noszip.zip
-            Expand-Archive C:\hdf5-1.8.18-win64-vs2015-noszip.zip -DestinationPath C:\
-            msiexec.exe /i "C:\hdf5\HDF5-1.8.18-win64.msi" /qn INSTALL_ROOT=C:\hdf5-1.8.18-win64-vs2015-noszip
-          displayName: 'Install HDF5 1.8.18'
+        64-bit Release:
+          BuildType: Release
+          Generator: '-G"Visual Studio 15 2017 Win64" -T host=x64'
+          JFlag: '-j 2'
+    timeoutInMinutes: 120
+    steps:
+      - powershell: |
+          Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.18/bin/windows/noszip/extra/hdf5-1.8.18-win64-vs2015-noszip.zip -OutFile C:\hdf5-1.8.18-win64-vs2015-noszip.zip
+          Expand-Archive C:\hdf5-1.8.18-win64-vs2015-noszip.zip -DestinationPath C:\
+          msiexec.exe /i "C:\hdf5\HDF5-1.8.18-win64.msi" /qn INSTALL_ROOT=C:\hdf5-1.8.18-win64-vs2015-noszip
+        displayName: 'Install HDF5 1.8.18'
 
-        # Minizip
-        - powershell: |
-            git clone --branch fix https://github.com/untereiner/Minizip.git C:/Minizip
-          displayName: 'Cloning Minizip'
-        - task: CMake@1
-          displayName: 'CMake configure Minizip'
-          inputs:
-            workingDirectory: C:/Minizip-build
-            cmakeArgs:
-              ../Minizip
-              $(Generator)
-              -Wno-dev -Wno-deprecated
-              -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
-              -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
-              -DCMAKE_INSTALL_PREFIX=c:/install
-        - task: CMake@1
-          displayName: "CMake build Minizip --config $(BuildType)"
-          inputs:
-            workingDirectory: C:/Minizip-build
-            cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
-        - task: CMake@1
-          displayName: "CMake Install Minizip --config $(BuildType)"
-          inputs:
-            workingDirectory: C:/Minizip-build
-            cmakeArgs: --build . --config $(BuildType) --target INSTALL -- /verbosity:minimal
+      # Minizip
+      - powershell: |
+          git clone --branch fix https://github.com/untereiner/Minizip.git C:/Minizip
+        displayName: 'Cloning Minizip'
+      - task: CMake@1
+        displayName: 'CMake configure Minizip'
+        inputs:
+          workingDirectory: C:/Minizip-build
+          cmakeArgs:
+            ../Minizip
+            $(Generator)
+            -Wno-dev -Wno-deprecated
+            -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
+            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+            -DCMAKE_INSTALL_PREFIX=c:/install
+      - task: CMake@1
+        displayName: "CMake build Minizip --config $(BuildType)"
+        inputs:
+          workingDirectory: C:/Minizip-build
+          cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
+      - task: CMake@1
+        displayName: "CMake Install Minizip --config $(BuildType)"
+        inputs:
+          workingDirectory: C:/Minizip-build
+          cmakeArgs: --build . --config $(BuildType) --target INSTALL -- /verbosity:minimal
 
-        # sourceforge and WebRequest incompatible
-        - task: PowerShell@2
-          inputs:
-              targetType: 'inline'
-              script: |
-                  Write-Host "Downloading SWIG..."
-                  $url = "http://prdownloads.sourceforge.net/swig/swigwin-4.0.2.zip"
-                  $output = [System.IO.Path]::Combine("C:/", "swigwin-4.0.2.zip")
-                  (new-object System.Net.WebClient).DownloadFile($url, $output)
-              errorActionPreference: 'stop'
-              failOnStderr: 'true'
-          displayName: Download SWIG from official repository
-        - task: ExtractFiles@1
-          inputs:
-            archiveFilePatterns: 'C:/swigwin-4.0.2.zip'
-            destinationFolder: 'C:/'
-            cleanDestinationFolder: false
-          displayName: Install SWIG
+      # sourceforge and WebRequest incompatible
+      - task: PowerShell@2
+        inputs:
+            targetType: 'inline'
+            script: |
+                Write-Host "Downloading SWIG..."
+                $url = "http://prdownloads.sourceforge.net/swig/swigwin-4.0.2.zip"
+                $output = [System.IO.Path]::Combine("C:/", "swigwin-4.0.2.zip")
+                (new-object System.Net.WebClient).DownloadFile($url, $output)
+            errorActionPreference: 'stop'
+            failOnStderr: 'true'
+        displayName: Download SWIG from official repository
+      - task: ExtractFiles@1
+        inputs:
+          archiveFilePatterns: 'C:/swigwin-4.0.2.zip'
+          destinationFolder: 'C:/'
+          cleanDestinationFolder: false
+        displayName: Install SWIG
 
-        - task: CMake@1
-          displayName: 'CMake .. $(Generator)'
-          inputs:
-            cmakeArgs:
-              ..
-              $(Generator)
-              -Wno-dev -Wno-deprecated
-              -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
-              -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
-              -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/hdf5.lib
-              -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
-              -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
-              -DMinizip_ROOT=c:/install/
-              -DWITH_EXAMPLE=FALSE
-              -DWITH_EXPERIMENTAL=TRUE
-              -DWITH_DOTNET_WRAPPING=TRUE
-              -DWITH_TEST=FALSE
-              -DCMAKE_FIND_DEBUG_MODE=ON
-              -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
-              
-        - task: VSBuild@1
-          displayName: "Build the C# example"
-          inputs:
-            platform: 'x64'
-            solution: 'cs/example/example.sln'
-            configuration: '$(BuildType)'
+      - task: CMake@1
+        displayName: 'CMake .. $(Generator)'
+        inputs:
+          cmakeArgs:
+            ..
+            $(Generator)
+            -Wno-dev -Wno-deprecated
+            -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
+            -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
+            -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/hdf5.lib
+            -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
+            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+            -DMinizip_ROOT=c:/install/
+            -DWITH_EXAMPLE=FALSE
+            -DWITH_EXPERIMENTAL=TRUE
+            -DWITH_DOTNET_WRAPPING=TRUE
+            -DWITH_TEST=FALSE
+            -DCMAKE_FIND_DEBUG_MODE=ON
+            -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
+            
+      - task: VSBuild@1
+        displayName: "Build the C# example"
+        inputs:
+          platform: 'x64'
+          solution: 'cs/example/example.sln'
+          configuration: '$(BuildType)'
 
-        - task: CMake@1
-          displayName: "Build --config $(BuildType)"
-          inputs:
-            cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
+      - task: CMake@1
+        displayName: "Build --config $(BuildType)"
+        inputs:
+          cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
 
-        - powershell: |
-            Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
-            Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
-            ctest -C $(BuildType) -V
-          failOnStderr: true
-          workingDirectory: $(Build.SourcesDirectory)\build
-          displayName: 'Test'
+      - powershell: |
+          Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
+          Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
+          ctest -C $(BuildType) -V
+        failOnStderr: true
+        workingDirectory: $(Build.SourcesDirectory)\build
+        displayName: 'Test'
 
-        - script: |
-            $(Build.SourcesDirectory)\build\$(BuildType)\example.exe
-          displayName: 'Example'
-          
-        - task: CopyFiles@2
-          displayName: 'Copy dependencies of C# Example'
-          inputs:
-              contents: |
-                  $(Build.SourcesDirectory)\build\$(BuildType)\*.dll
-              targetFolder: '$(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)'
-              flattenFolders: true
-          
-        - script: |
-            $(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)\example.exe
-          displayName: 'C# Example'
+      - script: |
+          $(Build.SourcesDirectory)\build\$(BuildType)\example.exe
+        displayName: 'Example'
+        
+      - task: CopyFiles@2
+        displayName: 'Copy dependencies of C# Example'
+        inputs:
+            contents: |
+                $(Build.SourcesDirectory)\build\$(BuildType)\*.dll
+            targetFolder: '$(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)'
+            flattenFolders: true
+        
+      - script: |
+          $(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)\example.exe
+        displayName: 'C# Example'
   - job:
     displayName: Windows VS2019
     pool:
