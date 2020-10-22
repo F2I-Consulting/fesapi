@@ -4,6 +4,10 @@ project (Fesapi_SRC)
 
 find_package(Minizip)
 
+if(NOT Minizip_FOUND)
+	message(WARNING "Minizip not found use user's variables")
+endif()
+
 add_library (${CPP_LIBRARY_NAME} ${LIB_TYPE} "")
 
 # Create the version config header file in order for fesapi users to know the fesapi version at runtime.
