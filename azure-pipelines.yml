@@ -29,7 +29,7 @@ jobs:
 
       # Minizip
       - powershell: |
-          git clone https://github.com/F2I-Consulting/Minizip.git C:/Minizip
+          git clone --branch fix https://github.com/untereiner/Minizip.git C:/Minizip
         displayName: 'Cloning Minizip'
       - task: CMake@1
         displayName: 'CMake configure Minizip'
