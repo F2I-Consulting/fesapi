@@ -89,6 +89,7 @@ jobs:
             -DWITH_TEST=FALSE
             -DCMAKE_FIND_DEBUG_MODE=OFF
             -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
+            -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON 
             
       - task: VSBuild@1
         displayName: "Build the C# example"
@@ -223,7 +224,7 @@ jobs:
       - task: CMake@1
         displayName: "Build --config $(BuildType)"
         inputs:
-          cmakeArgs: -v --build . --config $(BuildType) -- /verbosity:minimal
+          cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
 
       - powershell: |
           Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
