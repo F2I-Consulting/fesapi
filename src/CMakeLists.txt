@@ -371,8 +371,10 @@ if (UNIX AND NOT FESAPI_USE_BOOST_UUID)
 endif ()
 
 target_include_directories(${CPP_LIBRARY_NAME} INTERFACE
-	$<INSTALL_INTERFACE:include>
+	$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
+	$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
+
 
 # organizing sources and headers in the Visual Studio Project
 if (WIN32)
