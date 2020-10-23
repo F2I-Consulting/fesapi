@@ -119,7 +119,7 @@ if (WIN32)
 	# else ()
 	# 	message(ERROR "No minizip library has been set.")
 	# endif ()
-	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE Minizip::Minizip)
+	target_link_libraries (${CPP_LIBRARY_NAME} Minizip::Minizip)
 
 	if (EXISTS ${HDF5_C_LIBRARY_RELEASE} AND EXISTS ${HDF5_C_LIBRARY_DEBUG})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${HDF5_C_LIBRARY_RELEASE} debug ${HDF5_C_LIBRARY_DEBUG})
