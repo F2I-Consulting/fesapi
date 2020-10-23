@@ -46,7 +46,7 @@ set (EML_PREFIX_2_3 "eml2_3")
 set (ETP_PREFIX "etp")
 
 # Define the compile options according to the compiler
-target_compile_options(${CPP_LIBRARY_NAME}	PRIVATE
+target_compile_options(${CPP_LIBRARY_NAME} PRIVATE
 	$<$<CXX_COMPILER_ID:MSVC>:/bigobj>
 	$<$<CXX_COMPILER_ID:MSVC>:/MP>
 	$<$<CXX_COMPILER_ID:MSVC>:/W4>
@@ -119,7 +119,7 @@ if (WIN32)
 	# else ()
 	# 	message(ERROR "No minizip library has been set.")
 	# endif ()
-	target_link_libraries (${CPP_LIBRARY_NAME} Minizip::Minizip)
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE Minizip::Minizip)
 
 	if (EXISTS ${HDF5_C_LIBRARY_RELEASE} AND EXISTS ${HDF5_C_LIBRARY_DEBUG})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${HDF5_C_LIBRARY_RELEASE} debug ${HDF5_C_LIBRARY_DEBUG})
@@ -163,7 +163,9 @@ ELSEIF (UNIX)
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${UUID_LIBRARY_RELEASE})
 	endif ()
 	#target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
-	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE Minizip::Minizip ${HDF5_C_LIBRARY_RELEASE})
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${HDF5_C_LIBRARY_RELEASE})
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE Minizip::Minizip)
+
 # zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
 # zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
 	if (EXISTS ${ZLIB_LIBRARY_RELEASE})

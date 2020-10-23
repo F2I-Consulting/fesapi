@@ -87,7 +87,7 @@ jobs:
             -DWITH_EXPERIMENTAL=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
             -DWITH_TEST=FALSE
-            -DCMAKE_FIND_DEBUG_MODE=ON
+            -DCMAKE_FIND_DEBUG_MODE=OFF
             -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
             
       - task: VSBuild@1
@@ -210,7 +210,7 @@ jobs:
             -DWITH_EXPERIMENTAL=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
             -DWITH_TEST=FALSE
-            -DCMAKE_FIND_DEBUG_MODE=ON
+            -DCMAKE_FIND_DEBUG_MODE=OFF
             -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
             
       - task: VSBuild@1
@@ -223,7 +223,7 @@ jobs:
       - task: CMake@1
         displayName: "Build --config $(BuildType)"
         inputs:
-          cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
+          cmakeArgs: -v --build . --config $(BuildType) -- /verbosity:minimal
 
       - powershell: |
           Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
