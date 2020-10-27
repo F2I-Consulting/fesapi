@@ -2544,8 +2544,8 @@ namespace Energistics {
 			namespace Datatypes {			
 				namespace Object {				
 					enum RelationshipKind {					
-						Organizational=0,
-						Contextual=1,
+						Primary=0,
+						Secondary=1,
 						Both=2
 					};					
 				};				
@@ -2573,8 +2573,8 @@ namespace Energistics {
 						int32_t depth;
 						std::vector<std::string> dataObjectTypes;
 						Energistics::Etp::v12::Datatypes::Object::RelationshipKind navigableEdges;
-						bool includeContextualTargets=false;
-						bool includeContextualSources=false;
+						bool includeSecondaryTargets=false;
+						bool includeSecondarySources=false;
 					};					
 				};				
 			};			
@@ -2588,16 +2588,16 @@ namespace avro {
 			avro::encode(e, v.depth);
 			avro::encode(e, v.dataObjectTypes);
 			avro::encode(e, v.navigableEdges);
-			avro::encode(e, v.includeContextualTargets);
-			avro::encode(e, v.includeContextualSources);
+			avro::encode(e, v.includeSecondaryTargets);
+			avro::encode(e, v.includeSecondarySources);
 		}		
 		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::Object::ContextInfo& v) {		
 			avro::decode(e, v.uri);
 			avro::decode(e, v.depth);
 			avro::decode(e, v.dataObjectTypes);
 			avro::decode(e, v.navigableEdges);
-			avro::decode(e, v.includeContextualTargets);
-			avro::decode(e, v.includeContextualSources);
+			avro::decode(e, v.includeSecondaryTargets);
+			avro::decode(e, v.includeSecondarySources);
 		}		
 	};	
 }

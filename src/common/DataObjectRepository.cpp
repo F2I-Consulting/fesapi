@@ -2244,9 +2244,7 @@ RESQML2_NS::SealedVolumeFrameworkRepresentation* DataObjectRepository::createSea
 
 RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialIjkGridRepresentation(const std::string & guid, const std::string & title)
 {
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(getGsoapContext());
-	dor->UUID = guid;
-	dor->Title = title;
+	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(guid, title, "");
 	dor->ContentType = getDefaultResqmlVersion() == EnergisticsStandard::RESQML2_2
 		? "application/x-resqml+xml;version=2.2;type=obj_IjkGridRepresentation"
 		: "application/x-resqml+xml;version=2.0;type=obj_IjkGridRepresentation";
@@ -2257,9 +2255,7 @@ RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialIj
 
 RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialTruncatedIjkGridRepresentation(const std::string & guid, const std::string & title)
 {
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(getGsoapContext());
-	dor->UUID = guid;
-	dor->Title = title;
+	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(guid, title, "");
 	dor->ContentType = getDefaultResqmlVersion() == EnergisticsStandard::RESQML2_2
 		? "application/x-resqml+xml;version=2.2;type=obj_TruncatedIjkGridRepresentation"
 		: "application/x-resqml+xml;version=2.0;type=obj_TruncatedIjkGridRepresentation";
@@ -3678,7 +3674,8 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* DataObjectRepository::createDor(c
 		dor->UUID = guid;
 	}
 
-	dor->Title = title;
+	dor->Title = title.empty() ? "unknown" : title;
+
 	if (!version.empty()) {
 		dor->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapContext);
 		dor->VersionString->assign(version);
