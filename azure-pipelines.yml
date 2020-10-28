@@ -41,6 +41,7 @@ jobs:
             -Wno-dev -Wno-deprecated
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+            -DCMAKE_INSTALL_PREFIX=C:/Minizip/build/install
       - task: CMake@1
         displayName: "CMake build Minizip --config $(BuildType)"
         inputs:
@@ -164,6 +165,7 @@ jobs:
             -Wno-dev -Wno-deprecated
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+            -DCMAKE_INSTALL_PREFIX=C:/Minizip/build/install
       - task: CMake@1
         displayName: "CMake build Minizip --config $(BuildType)"
         inputs:
