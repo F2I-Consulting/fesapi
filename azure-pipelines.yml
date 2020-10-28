@@ -10,11 +10,6 @@ jobs:
       vmImage: 'vs2017-win2016'
     strategy:
       matrix:
-        # 64-bit Debug:
-        #   BuildType: Debug
-        #   Generator: '-G"Visual Studio 15 2017 Win64" -T host=x64'
-        #   JFlag: -j 4
-
         64-bit Release:
           BuildType: Release
           Generator: '-G"Visual Studio 15 2017 Win64" -T host=x64'
@@ -34,23 +29,24 @@ jobs:
       - task: CMake@1
         displayName: 'CMake configure Minizip'
         inputs:
-          workingDirectory: C:/Minizip/build
+          workingDirectory: C:/Minizip-build
           cmakeArgs:
-            ..
+            ../Minizip
             $(Generator)
             -Wno-dev -Wno-deprecated
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+            -DCMAKE_INSTALL_PREFIX=C:/Minizip-install
       - task: CMake@1
         displayName: "CMake build Minizip --config $(BuildType)"
         inputs:
-          workingDirectory: C:/Minizip/build
+          workingDirectory: C:/Minizip-build
           cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
       - task: CMake@1
         displayName: "CMake Install Minizip --config $(BuildType)"
         inputs:
-          workingDirectory: C:/Minizip/build
-          cmakeArgs: --install . --config $(BuildType)
+          workingDirectory: C:/Minizip-build
+          cmakeArgs: --build . --config $(BuildType) --target INSTALL -- /verbosity:minimal
 
       # sourceforge and WebRequest incompatible
       - task: PowerShell@2
@@ -81,8 +77,8 @@ jobs:
             -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
             -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/hdf5.lib
-            -DMINIZIP_INCLUDE_DIR=C:/Minizip/build/install/include
-            -DMINIZIP_LIBRARY_RELEASE=C:/Minizip/build/install/lib/minizip.lib
+            -DMINIZIP_INCLUDE_DIR=C:/Minizip-install/include
+            -DMINIZIP_LIBRARY_RELEASE=C:/Minizip-install/lib/minizip.lib
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
             -DWITH_EXAMPLE=TRUE
@@ -157,23 +153,24 @@ jobs:
       - task: CMake@1
         displayName: 'CMake configure Minizip'
         inputs:
-          workingDirectory: C:/Minizip/build
+          workingDirectory: C:/Minizip-build
           cmakeArgs:
-            ..
+            ../Minizip
             $(Generator)
             -Wno-dev -Wno-deprecated
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+            -DCMAKE_INSTALL_PREFIX=C:/Minizip-install
       - task: CMake@1
         displayName: "CMake build Minizip --config $(BuildType)"
         inputs:
-          workingDirectory: C:/Minizip/build
+          workingDirectory: C:/Minizip-build
           cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
       - task: CMake@1
         displayName: "CMake Install Minizip --config $(BuildType)"
         inputs:
-          workingDirectory: C:/Minizip/build
-          cmakeArgs: --install . --config $(BuildType)
+          workingDirectory: C:/Minizip-build
+          cmakeArgs: --build . --config $(BuildType) --target INSTALL -- /verbosity:minimal
 
       # sourceforge and WebRequest incompatible
       - task: PowerShell@2
@@ -204,8 +201,8 @@ jobs:
             -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
             -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/hdf5.lib
-            -DMINIZIP_INCLUDE_DIR=C:/Minizip/build/install/include
-            -DMINIZIP_LIBRARY_RELEASE=C:/Minizip/build/install/lib/minizip.lib
+            -DMINIZIP_INCLUDE_DIR=C:/Minizip-install/include
+            -DMINIZIP_LIBRARY_RELEASE=C:/Minizip-install/lib/minizip.lib
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
             -DWITH_EXAMPLE=TRUE
