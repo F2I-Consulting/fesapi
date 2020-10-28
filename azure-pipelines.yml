@@ -29,23 +29,23 @@ jobs:
       - task: CMake@1
         displayName: 'CMake configure Minizip'
         inputs:
-          workingDirectory: C:/Minizip/build
+          workingDirectory: C:/Minizip-build
           cmakeArgs:
             ..
             $(Generator)
             -Wno-dev -Wno-deprecated
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
-            -DCMAKE_INSTALL_PREFIX=C:/Minizip/build/install
+            -DCMAKE_INSTALL_PREFIX=C:/Minizip-install
       - task: CMake@1
         displayName: "CMake build Minizip --config $(BuildType)"
         inputs:
-          workingDirectory: C:/Minizip/build
+          workingDirectory: C:/Minizip-build
           cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
       - task: CMake@1
         displayName: "CMake Install Minizip --config $(BuildType)"
         inputs:
-          workingDirectory: C:/Minizip/build
+          workingDirectory: C:/Minizip-build
           cmakeArgs: --build . --config $(BuildType) --target INSTALL -- /verbosity:minimal
 
       # sourceforge and WebRequest incompatible
@@ -77,8 +77,8 @@ jobs:
             -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
             -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/hdf5.lib
-            -DMINIZIP_INCLUDE_DIR=C:/Minizip/build/install/include
-            -DMINIZIP_LIBRARY_RELEASE=C:/Minizip/build/install/lib/minizip.lib
+            -DMINIZIP_INCLUDE_DIR=C:/Minizip-install/include
+            -DMINIZIP_LIBRARY_RELEASE=C:/Minizip-install/lib/minizip.lib
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
             -DWITH_EXAMPLE=TRUE
@@ -153,23 +153,23 @@ jobs:
       - task: CMake@1
         displayName: 'CMake configure Minizip'
         inputs:
-          workingDirectory: C:/Minizip/build
+          workingDirectory: C:/Minizip-build
           cmakeArgs:
-            ..
+            ../Minizip
             $(Generator)
             -Wno-dev -Wno-deprecated
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
-            -DCMAKE_INSTALL_PREFIX=C:/Minizip/build/install
+            -DCMAKE_INSTALL_PREFIX=C:/Minizip-install
       - task: CMake@1
         displayName: "CMake build Minizip --config $(BuildType)"
         inputs:
-          workingDirectory: C:/Minizip/build
+          workingDirectory: C:/Minizip-build
           cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
       - task: CMake@1
         displayName: "CMake Install Minizip --config $(BuildType)"
         inputs:
-          workingDirectory: C:/Minizip/build
+          workingDirectory: C:/Minizip-build
           cmakeArgs: --build . --config $(BuildType) --target INSTALL -- /verbosity:minimal
 
       # sourceforge and WebRequest incompatible
@@ -201,8 +201,8 @@ jobs:
             -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
             -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/hdf5.lib
-            -DMINIZIP_INCLUDE_DIR=C:/Minizip/build/install/include
-            -DMINIZIP_LIBRARY_RELEASE=C:/Minizip/build/install/lib/minizip.lib
+            -DMINIZIP_INCLUDE_DIR=C:/Minizip-install/include
+            -DMINIZIP_LIBRARY_RELEASE=C:/Minizip-install/lib/minizip.lib
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
             -DWITH_EXAMPLE=TRUE
