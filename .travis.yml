@@ -15,8 +15,8 @@ jobs:
                 -DUUID_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libuuid.so
                 -DHDF5_C_INCLUDE_DIR=/usr/include
                 -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libhdf5.so
-                -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/Minizip/build/install/include
-                -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/Minizip/build/install/lib/libminizip.a
+                -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/Minizip/install/include
+                -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/Minizip/install/lib/libminizip.a
                 -DZLIB_INCLUDE_DIR=/usr/include
                 -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
                 -DWITH_EXAMPLE=TRUE
@@ -37,8 +37,8 @@ jobs:
                 -DUUID_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libuuid.so
                 -DHDF5_C_INCLUDE_DIR=/usr/include
                 -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libhdf5.so
-                -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/Minizip/build/install/include
-                -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/Minizip/build/install/lib/libminizip.a
+                -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/Minizip/install/include
+                -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/Minizip/install/lib/libminizip.a
                 -DZLIB_INCLUDE_DIR=/usr/include
                 -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
                 -DWITH_EXAMPLE=TRUE
@@ -66,7 +66,7 @@ install:
   - cd Minizip
   - mkdir build
   - cd build
-  - cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install ..
+  - cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=../install ..
   - cmake --build . --config Release --target INSTALL -- /verbosity:minimal
   - make install
   - cd ../..
