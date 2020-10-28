@@ -150,6 +150,7 @@ typedef long long 				time_t;
 	%nspace COMMON_NS::EnumStringMapper;
 	%nspace COMMON_NS::EpcDocument;
 	%nspace COMMON_NS::AbstractObject;
+	%nspace COMMON_NS::HdfProxyFactory;
 #endif
 
 namespace EML2_NS
@@ -157,6 +158,45 @@ namespace EML2_NS
 	class Activity;
 }
 
+%module(directors="1") fesapi
+%feature("director") COMMON_NS::HdfProxyFactory;
+
+/*
+Following %typemap(csbody) definitions force the target language to do not 
+manage the memory of the C++ part of wrapped COMMON_NS::HdfProxyFactory and 
+COMMON_NS::AbstractObject. This C++ parts will be free at the destruction
+of the COMMON_NS::DataObjectRepository thanks to the 
+DataObjectRepository::clear() method (called by DataObjectRepository 
+destructor).
+*/
+
+%typemap(csbody) COMMON_NS::HdfProxyFactory %{
+  private global::System.Runtime.InteropServices.HandleRef swigCPtr;
+  protected bool swigCMemOwn;
+
+  public HdfProxyFactory(global::System.IntPtr cPtr, bool cMemoryOwn) {
+    swigCMemOwn = false;
+    swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
+  }
+
+  public static global::System.Runtime.InteropServices.HandleRef getCPtr(HdfProxyFactory obj) {
+    return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
+  }
+%}
+%feature("director") COMMON_NS::AbstractObject;
+%typemap(csbody) COMMON_NS::AbstractObject %{
+  private global::System.Runtime.InteropServices.HandleRef swigCPtr;
+  protected bool swigCMemOwn;
+
+  public AbstractObject(global::System.IntPtr cPtr, bool cMemoryOwn) {
+    swigCMemOwn = false;
+    swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
+  }
+
+  public static global::System.Runtime.InteropServices.HandleRef getCPtr(AbstractObject obj) {
+    return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
+  }
+%}
 namespace COMMON_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
@@ -167,6 +207,8 @@ namespace COMMON_NS
 		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG_64 = 3, ULONG_64 = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
 	
 		COMMON_NS::DataObjectRepository* getRepository() const;
+	
+		virtual ~AbstractObject();
 	
 		bool isPartial() const;
 	
@@ -193,7 +235,7 @@ namespace COMMON_NS
 		void setVersion(const std::string & version);
 				
 		std::string getXmlTag() const;
-		std::string getXmlNamespace() const;
+		virtual std::string getXmlNamespace() const = 0;
 		std::string getXmlNamespaceVersion() const;
 		
 		void addAlias(const std::string & authority, const std::string & title);
@@ -210,6 +252,26 @@ namespace COMMON_NS
 		unsigned int getActivityCount() const;
 
 		EML2_NS::Activity * getActivity (unsigned int index) const;
+	};
+	
+	class HdfProxyFactory
+	{
+	public:
+		HdfProxyFactory() {}
+		virtual ~HdfProxyFactory();
+		
+		/*
+		The following method leads to a warning (473: Returning a pointer or reference
+		in a director method is not recommended) when it is processed by SWIG since
+		there is no guarantee as to the lifetime of the object returned 
+		in its target language redefinition. We ensure that the C++ part of all
+		COMMON_NS::AbstractObject created from the target language side is never garbage 
+		collected thanks to upper %typemap(csbody) COMMON_NS::AbstractObject definition.
+		Then it is always safe to make use of these objects in fesapi methods.
+		*/
+		virtual EML2_NS::AbstractHdfProxy* make(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+			const std::string & packageDirAbsolutePath, const std::string & externalFilePath,
+			COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
 	};
 }
 
@@ -236,7 +298,6 @@ namespace COMMON_NS
 %enddef
 
 %include "swigEml2Include.i"
-%include "swigEml2_0Include.i"
 %include "swigEml2_1Include.i"
 #ifdef WITH_RESQML2_2
 %include "swigEml2_3Include.i"
@@ -255,6 +316,7 @@ namespace COMMON_NS
 %{
 #include "../src/common/EnumStringMapper.h"
 #include "../src/common/EpcDocument.h"
+#include "../src/common/HdfProxyFactory.h"
 %}
 
 namespace COMMON_NS
@@ -297,6 +359,8 @@ namespace COMMON_NS
 		
 		EML2_NS::AbstractHdfProxy* getDefaultHdfProxy() const;
 		void setDefaultHdfProxy(EML2_NS::AbstractHdfProxy* hdfProxy);
+		
+		void setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory);
 		
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)

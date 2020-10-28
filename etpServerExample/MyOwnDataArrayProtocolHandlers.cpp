@@ -132,11 +132,11 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v1
 
 			auto hdfGroups = tokenize(pdat.second.uid.pathInResource, '/');
 
-			if (hdfGroups.size() != 3) {
+			if (hdfGroups.size() != 4) {
 				std::cout << "This server does not support putting a data array in a path which does not follow /RESQML/groupname/datasetname convention." << std::endl;
 				continue;
 			}
-			if (hdfGroups[0] != "RESQML") {
+			if (hdfGroups[1] != "RESQML") {
 				std::cout << "This server does not support putting a data array in another root group than RESQML group." << std::endl;
 				continue;
 			}

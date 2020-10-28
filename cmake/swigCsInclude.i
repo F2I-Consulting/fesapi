@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 /**********************************************************************
 This file add special SWIG management of the C++ polymorphic datatype.
-Basically this file add methods resqml2_0_instantiate* which will create the right Java instance according to what it is exactly.
+Basically this file add methods resqml2_0_instantiate* which will create the right C# instance according to what it is exactly.
 **********************************************************************/
 
 %pragma(csharp) imclasscode=%{
@@ -140,19 +140,9 @@ ${COMMENT_END}
 		return null;
 	}
 	
-	public static f2i.energisticsStandardsApi.${FESAPI_EML2_NS}.HdfProxy eml2_instantiateEpcExternalPartReference(global::System.IntPtr cPtr, bool owner)
+	public static f2i.energisticsStandardsApi.${FESAPI_EML2_NS}.AbstractHdfProxy eml2_instantiateEpcExternalPartReference(global::System.IntPtr cPtr, bool owner)
 	{
-		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
-		if (xmlNs.Equals("eml20")) {
-			return new f2i.energisticsStandardsApi.${FESAPI_EML2_0_NS}.HdfProxy(cPtr, owner);
-		}
-${COMMENT_START}
-		else if (xmlNs.Equals("eml23")) {
-			return new f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.HdfProxy(cPtr, owner);
-		}
-${COMMENT_END}
-		
-		return null;
+		return new f2i.energisticsStandardsApi.${FESAPI_EML2_NS}.AbstractHdfProxy(cPtr, owner);
 	}
 	
 	public static f2i.energisticsStandardsApi.${FESAPI_EML2_NS}.PropertyKind eml2_instantiatePropertyKind(global::System.IntPtr cPtr, bool owner)
@@ -1052,7 +1042,7 @@ namespace COMMON_NS
 
 namespace EML2_NS
 {
-	%typemap(csout, excode=SWIGEXCODE) 	Activity*, ActivityTemplate*, EpcExternalPartReference*, AbstractHdfProxy*, HdfProxy*, PropertyKind*, TimeSeries*
+	%typemap(csout, excode=SWIGEXCODE) 	Activity*, ActivityTemplate*, EpcExternalPartReference*, PropertyKind*, TimeSeries*
 #ifdef WITH_RESQML2_2
 										,GraphicalInformationSet*
 #endif

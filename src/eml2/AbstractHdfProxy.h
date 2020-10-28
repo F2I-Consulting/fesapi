@@ -33,7 +33,7 @@ namespace EML2_NS
 	{
 	public:  
 		/** Destructor */
-		virtual ~AbstractHdfProxy() {}
+		DLL_IMPORT_OR_EXPORT virtual ~AbstractHdfProxy() {}
 
 		/**
 		 * Sets the path of the directory containing the EPC file associated to this HDF5 file
@@ -79,7 +79,7 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT virtual bool isOpened() const = 0;
 
 		/** Closes the HDF5 file */
-		virtual void close() = 0;
+		DLL_IMPORT_OR_EXPORT virtual void close() = 0;
 
 		/**
 		 * Gets the native datatype of a dataset
@@ -89,7 +89,7 @@ namespace EML2_NS
 		 * @returns	The native HDF5 datatype identifier of the dataset if successful, otherwise returns a
 		 * 			negative value.
 		 */
-		virtual COMMON_NS::AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & datasetName) = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & datasetName) = 0;
 
 		/**
 		 * Gets the datatype class (@c H5T_INTEGER, @c H5T_FLOAT, @c H5T_STRING, etc.) of a dataset
@@ -98,7 +98,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The HDF5 datatype class identifier if successful, otherwise @c H5T_NO_CLASS (-1).
 		 */
-		virtual int getHdfDatatypeClassInDataset(const std::string & datasetName) = 0;
+		DLL_IMPORT_OR_EXPORT virtual int getHdfDatatypeClassInDataset(const std::string & datasetName) = 0;
 
 		/**
 		 * Writes an itemized list of lists into the HDF5 file by means of a single group containing two
@@ -118,7 +118,7 @@ namespace EML2_NS
 		 * 										individual lists contents.
 		 * @param 	elementsSize				Size of the elements array.
 		 */
-		virtual void writeItemizedListOfList(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT virtual void writeItemizedListOfList(const std::string & groupName,
 			const std::string & name,
 			hdf5_hid_t cumulativeLengthDatatype,
 			const void * cumulativeLength,
@@ -136,13 +136,13 @@ namespace EML2_NS
 		 * @returns	The number of dimensions of the dataset if successful, otherwise returns a negative
 		 * 			value.
 		 */
-		virtual unsigned int getDimensionCount(const std::string & datasetName) = 0;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getDimensionCount(const std::string & datasetName) = 0;
 
 		/**
 		 * Get the number of elements in each dimension in an HDF dataset of the proxy.
 		 * @param datasetName	The absolute name of the dataset we want to get the number of elements.
 		 */
-		virtual std::vector<unsigned long long> getElementCountPerDimension(const std::string & datasetName) = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<unsigned long long> getElementCountPerDimension(const std::string & datasetName) = 0;
 
 		/**
 		 * Gets the number of elements in an HDF5 dataset of the proxy. The number of elements is got
@@ -154,7 +154,7 @@ namespace EML2_NS
 		 * @returns	The number of elements of the dataset if successful, otherwise returns a negative
 		 * 			value.
 		 */
-		virtual signed long long getElementCount(const std::string & datasetName) = 0;
+		DLL_IMPORT_OR_EXPORT virtual signed long long getElementCount(const std::string & datasetName) = 0;
 
 		/**
 		 * Sets the new compression level which will be used for all data to be written
@@ -178,7 +178,7 @@ namespace EML2_NS
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of dimensions (n) of the nd array to write.
 		 */
-		virtual void writeArrayNdOfFloatValues(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT virtual void writeArrayNdOfFloatValues(const std::string & groupName,
 		  const std::string & name,
 		  const float * floatValues,
 		  const unsigned long long * numValuesInEachDimension,
@@ -198,7 +198,7 @@ namespace EML2_NS
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of dimensions (n) of the nd array to write.
 		 */
-		virtual void writeArrayNdOfDoubleValues(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT virtual void writeArrayNdOfDoubleValues(const std::string & groupName,
 		  const std::string & name,
 		  const double * dblValues,
 		  const unsigned long long * numValuesInEachDimension,
@@ -218,7 +218,7 @@ namespace EML2_NS
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
 		 */
-		virtual void writeArrayNdOfCharValues(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT virtual void writeArrayNdOfCharValues(const std::string & groupName,
 			const std::string & name,
 			const char * intValues,
 			const unsigned long long * numValuesInEachDimension,
@@ -238,7 +238,7 @@ namespace EML2_NS
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
 		 */
-		virtual void writeArrayNdOfIntValues(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT virtual void writeArrayNdOfIntValues(const std::string & groupName,
 		  const std::string & name,
 		  const int * intValues,
 		  const unsigned long long * numValuesInEachDimension,
@@ -259,7 +259,7 @@ namespace EML2_NS
  		 * 										write. They are ordered from fastest index to slowest index.
  		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
  		 */
- 		virtual void writeArrayNdOfGSoapULong64Values(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT virtual void writeArrayNdOfGSoapULong64Values(const std::string & groupName,
 			const std::string & name,
 			const ULONG64 * ulong64Values,
 			const unsigned long long * numValuesInEachDimension,
@@ -280,7 +280,7 @@ namespace EML2_NS
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
 		 */
-		virtual void writeArrayNd(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT virtual void writeArrayNd(const std::string & groupName,
 		  const std::string & name,
 		  hdf5_hid_t datatype,
 		  const void * values,
@@ -301,7 +301,7 @@ namespace EML2_NS
 		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to
 		 * 										create.
 		 */
-		virtual void createArrayNd(
+		DLL_IMPORT_OR_EXPORT virtual void createArrayNd(
 		  const std::string& groupName,
 		  const std::string& name,
 		  hdf5_hid_t datatype,
@@ -324,7 +324,7 @@ namespace EML2_NS
 		 * 										They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions			   	The number of the dimensions (n) of the nd array to write.
 		 */
-		virtual void writeArrayNdSlab(
+		DLL_IMPORT_OR_EXPORT virtual void writeArrayNdSlab(
 		  const std::string& groupName,
 		  const std::string& name,
 		  hdf5_hid_t datatype,
@@ -344,7 +344,7 @@ namespace EML2_NS
 		 * @param 	attributeNames	Vector of attributes names.
 		 * @param 	values		  	Vector of string values.
 		 */
-		virtual void writeGroupAttributes(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT virtual void writeGroupAttributes(const std::string & groupName,
 			const std::vector<std::string> & attributeNames,
 			const std::vector<std::string> & values) = 0;
 
@@ -355,7 +355,7 @@ namespace EML2_NS
 		 * @param 	attributeName	Name of the attribute.
 		 * @param 	values		 	Vector of string values.
 		 */
-		virtual void writeGroupAttribute(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT virtual void writeGroupAttribute(const std::string & groupName,
 			const std::string & attributeName,
 			const std::vector<std::string> & values) = 0;
 
@@ -369,7 +369,7 @@ namespace EML2_NS
 		 * @param 	attributeNames	Vector of attributes names.
 		 * @param 	values		  	Vector of double values.
 		 */
-		virtual void writeGroupAttributes(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT virtual void writeGroupAttributes(const std::string & groupName,
 			const std::vector<std::string> & attributeNames,
 			const std::vector<double> & values) = 0;
 
@@ -383,7 +383,7 @@ namespace EML2_NS
 		 * @param 	attributeNames	Vector of attributes names.
 		 * @param 	values		  	Vector of int values.
 		 */
-		virtual void writeGroupAttributes(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT virtual void writeGroupAttributes(const std::string & groupName,
 			const std::vector<std::string> & attributeNames,
 			const std::vector<int> & values) = 0;
 
@@ -397,7 +397,7 @@ namespace EML2_NS
 		 * @param 	attributeNames	Vector of attributes names.
 		 * @param 	values		  	Vector of string values.
 		 */
-		virtual void writeDatasetAttributes(const std::string & datasetName,
+		DLL_IMPORT_OR_EXPORT virtual void writeDatasetAttributes(const std::string & datasetName,
 			const std::vector<std::string> & attributeNames,
 			const std::vector<std::string> & values) = 0;
 
@@ -408,7 +408,7 @@ namespace EML2_NS
 		 * @param 	attributeName	Name of the attribute.
 		 * @param 	values		 	Vector of string values.
 		 */
-		virtual void writeDatasetAttribute(const std::string & datasetName,
+		DLL_IMPORT_OR_EXPORT virtual void writeDatasetAttribute(const std::string & datasetName,
 			const std::string & attributeName,
 			const std::vector<std::string> & values) = 0;
 
@@ -422,7 +422,7 @@ namespace EML2_NS
 		 * @param 	attributeNames	Vector of attributes names.
 		 * @param 	values		  	Vector of double values.
 		 */
-		virtual void writeDatasetAttributes(const std::string & datasetName,
+		DLL_IMPORT_OR_EXPORT virtual void writeDatasetAttributes(const std::string & datasetName,
 			const std::vector<std::string> & attributeNames,
 			const std::vector<double> & values) = 0;
 
@@ -436,7 +436,7 @@ namespace EML2_NS
 		 * @param 	attributeNames	Vector of attributes names.
 		 * @param 	values		  	Vector of int values.
 		 */
-		virtual void writeDatasetAttributes(const std::string & datasetName,
+		DLL_IMPORT_OR_EXPORT virtual void writeDatasetAttributes(const std::string & datasetName,
 			const std::vector<std::string> & attributeNames,
 			const std::vector<int> & values) = 0;
 
@@ -452,7 +452,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The attribute value.
 		 */
-		virtual std::string readStringAttribute(const std::string & obj_name,
+		DLL_IMPORT_OR_EXPORT virtual std::string readStringAttribute(const std::string & obj_name,
 			const std::string & attr_name) const = 0;
 
 		/**
@@ -467,7 +467,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The vector of attribute values.
 		 */
-		virtual std::vector<std::string> readStringArrayAttribute(const std::string & obj_name,
+		DLL_IMPORT_OR_EXPORT virtual std::vector<std::string> readStringArrayAttribute(const std::string & obj_name,
 			const std::string & attr_name) const = 0;
 
 		/**
@@ -482,7 +482,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The attribute value.
 		 */
-		virtual double readDoubleAttribute(const std::string & obj_name,
+		DLL_IMPORT_OR_EXPORT virtual double readDoubleAttribute(const std::string & obj_name,
 			const std::string & attr_name) const = 0;
 
 		/**
@@ -497,7 +497,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The attribute value.
 		 */
-		virtual LONG64 readLongAttribute(const std::string & obj_name,
+		DLL_IMPORT_OR_EXPORT virtual LONG64 readLongAttribute(const std::string & obj_name,
 			const std::string & attr_name) const = 0;
 
 		/**
@@ -509,7 +509,7 @@ namespace EML2_NS
 		 * @param [out]	values	   	1d array of double values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		virtual void readArrayNdOfDoubleValues(const std::string & datasetName, double* values) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfDoubleValues(const std::string & datasetName, double* values) = 0;
 
 		/**
 		 * Finds the nd array of double values associated with @p datasetName and reads from it
@@ -529,7 +529,7 @@ namespace EML2_NS
 		 * @param 	   	numDimensions				The number of the dimensions (n) of the nd array to
 		 * 											read.
 		 */
-		virtual void readArrayNdOfDoubleValues(
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfDoubleValues(
 		  const std::string & datasetName,
 		  double* values,
 		  unsigned long long const * numValuesInEachDimension,
@@ -560,7 +560,7 @@ namespace EML2_NS
 		 * @param 	   	numDimensions				The number of the dimensions (n) of the nd array to
 		 * 											read.
 		 */
-		virtual void readArrayNdOfDoubleValues(
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfDoubleValues(
 			const std::string & datasetName, 
 			double* values,
 			unsigned long long const * blockCountPerDimension,
@@ -599,7 +599,7 @@ namespace EML2_NS
 		 * 												output selected region ID if creating a new selected
 		 * 												region.
 		 */
-		virtual void selectArrayNdOfValues(
+		DLL_IMPORT_OR_EXPORT virtual void selectArrayNdOfValues(
 			const std::string & datasetName,
 			unsigned long long const* blockCountPerDimension,
 			unsigned long long const* offsetInEachDimension,
@@ -622,7 +622,7 @@ namespace EML2_NS
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 * @param 	   	slabSize 	Number of values to read.
 		 */
-		virtual void readArrayNdOfDoubleValues(
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfDoubleValues(
 			hdf5_hid_t dataset,
 			hdf5_hid_t filespace,
 			void* values,
@@ -637,7 +637,7 @@ namespace EML2_NS
 		 * @param [out]	values	   	1d array of float values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		virtual void readArrayNdOfFloatValues(const std::string & datasetName, float* values) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfFloatValues(const std::string & datasetName, float* values) = 0;
 
 		/**
 		 * Finds the nd array of float values associated with @p datasetName and reads from it
@@ -657,7 +657,7 @@ namespace EML2_NS
 		 * @param 	   	numDimensions				The number of the dimensions (n) of the nd array to
 		 * 											read.
 		 */
-		virtual void readArrayNdOfFloatValues(
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfFloatValues(
 		  const std::string & datasetName,
 		  float* values,
 		  unsigned long long const * numValuesInEachDimension,
@@ -674,7 +674,7 @@ namespace EML2_NS
 		 * @param [out]	values	   	1d array of long values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		virtual void readArrayNdOfLongValues(const std::string & datasetName, LONG64* values) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfLongValues(const std::string & datasetName, LONG64* values) = 0;
 
 		/**
 		 * Finds the nd array of long values associated with @p datasetName and reads from it
@@ -694,7 +694,7 @@ namespace EML2_NS
 		 * @param 	   	numDimensions				The number of the dimensions (n) of the nd array to
 		 * 											read.
 		 */
-		virtual void readArrayNdOfLongValues(
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfLongValues(
 			const std::string & datasetName,
 			LONG64* values,
 			unsigned long long const * numValuesInEachDimension,
@@ -711,7 +711,7 @@ namespace EML2_NS
 		 * 							direction. The values must be pre-allocated and won't be freed by
 		 * 							this method.
 		 */
-		virtual void readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values) = 0;
 
 		/**
 		 * Reads an nd array of int values stored in a specific dataset
@@ -722,7 +722,7 @@ namespace EML2_NS
 		 * @param [out]	values	   	1d array of int values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		virtual void readArrayNdOfIntValues(const std::string & datasetName, int* values) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfIntValues(const std::string & datasetName, int* values) = 0;
 
 		/**
 		 * Finds the nd array of int values associated with @p datasetName and reads from it
@@ -742,7 +742,7 @@ namespace EML2_NS
 		 * @param 	   	numDimensions				The number of the dimensions (n) of the nd array to
 		 * 											read.
 		 */
-		virtual void readArrayNdOfIntValues(
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfIntValues(
 			const std::string & datasetName,
 			int* values,
 			unsigned long long const * numValuesInEachDimension,
@@ -759,7 +759,7 @@ namespace EML2_NS
 		 * @param [out]	values	   	1d array of unsigned int values ordered firstly by fastest direction.
 		 * 							The values must be pre-allocated and won't be freed by this method.
 		 */
-		virtual void readArrayNdOfUIntValues(const std::string & datasetName, unsigned int* values) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfUIntValues(const std::string & datasetName, unsigned int* values) = 0;
 
 		/**
 		 * Reads an nd array of short values stored in a specific dataset
@@ -770,7 +770,7 @@ namespace EML2_NS
 		 * @param [out]	values	   	1d array of short values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		virtual void readArrayNdOfShortValues(const std::string & datasetName, short* values) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfShortValues(const std::string & datasetName, short* values) = 0;
 
 		/**
 		 * Reads an nd array of unsigned short values stored in a specific dataset
@@ -782,7 +782,7 @@ namespace EML2_NS
 		 * 							direction. The values must be pre-allocated and won't be freed by
 		 * 							this method.
 		 */
-		virtual void readArrayNdOfUShortValues(const std::string & datasetName, unsigned short* values) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfUShortValues(const std::string & datasetName, unsigned short* values) = 0;
 
 		/**
 		 * Reads an nd array of char values stored in a specific dataset
@@ -793,7 +793,7 @@ namespace EML2_NS
 		 * @param [out]	values	   	1d array of char values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		virtual void readArrayNdOfCharValues(const std::string & datasetName, char* values) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfCharValues(const std::string & datasetName, char* values) = 0;
 
 		/**
 		 * Reads an nd array of unsigned char values stored in a specific dataset
@@ -805,7 +805,7 @@ namespace EML2_NS
 		 * 							direction. The values must be pre-allocated and won't be freed by
 		 * 							this method.
 		 */
-		virtual void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) = 0;
 
 		/**
 		 * Reads the dimensions size of an nd array stored in a specific dataset
@@ -814,7 +814,7 @@ namespace EML2_NS
 		 *
 		 * @returns	A vector of dimensions size.
 		 */
-		virtual std::vector<unsigned long long> readArrayDimensions(const std::string & datasetName) = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<unsigned long long> readArrayDimensions(const std::string & datasetName) = 0;
 
 		/**
 		 * Checks whether an absolute path exists in the HDF5 file
@@ -823,7 +823,7 @@ namespace EML2_NS
 		 *
 		 * @returns	True if the absolute path exists, else false.
 		 */
-		virtual bool exist(const std::string & absolutePathInHdfFile) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool exist(const std::string & absolutePathInHdfFile) const = 0;
 
 		/**
 		 * Checks whether a dataset is compressed or not
@@ -834,7 +834,19 @@ namespace EML2_NS
 		 *
 		 * @returns	True if compressed, false if not.
 		 */
-		virtual bool isCompressed(const std::string & datasetName) = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isCompressed(const std::string & datasetName) = 0;
+
+		/**
+		 * Instantiate and initialize the gsoap proxy.
+		 * This method is defined in order to be used in derived class without having to link to generated gsoap files.
+		 * It is public in order for the user to be able to call it in other languages (C#, Java, etc.) thanks to Swig.
+		 *
+		 * @param [in,out]	repo		The repository where the underlying gsoap proxy is going to be initialized.
+		 * @param 		  	guid		The guid of the underlying gsoap proxy to be initialized.
+		 * @param 		  	title		The title of the underlying gsoap proxy to be initialized.
+		 * @param 			emlVersion	Desired eml Version such as 20 (for v2.0) or 23 (for v2.3) etc...
+		*/
+		DLL_IMPORT_OR_EXPORT void initGsoapProxy(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title, unsigned int emlVersion);
 
 	protected:
 
@@ -863,7 +875,7 @@ namespace EML2_NS
 		 *
 		 * 
 		 */
-		AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) :
+		DLL_IMPORT_OR_EXPORT AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) :
 			packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath), openingMode(hdfPermissionAccess) {}
 
 		AbstractHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
@@ -874,13 +886,5 @@ namespace EML2_NS
 
 		AbstractHdfProxy(gsoap_eml2_3::_eml23__EpcExternalPartReference* fromGsoap) :
 			EpcExternalPartReference(fromGsoap), openingMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {}
-
-		/**
-		 * Instantiate and initialize the gsoap proxy.
-		 * This method is defined in order to be used in derived class without having to link to generated gsoap files.
-		 *
-		 * @param 	emlVersion	  	Desired eml Version such as 20 (for v2.0) or 23 (for v2.3) etc...
-		*/
-		DLL_IMPORT_OR_EXPORT void initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, unsigned int emlVersion);
 	};
 }

@@ -20,7 +20,6 @@ under the License.
 #include "../src/eml2_3/Activity.h"
 #include "../src/eml2_3/ActivityTemplate.h"
 #include "../src/eml2_3/GraphicalInformationSet.h"
-#include "../src/eml2_3/HdfProxy.h"
 #include "../src/eml2_3/PropertyKind.h"
 #include "../src/eml2_3/TimeSeries.h"
 %}
@@ -29,7 +28,6 @@ under the License.
 	%nspace EML2_3_NS::Activity;
 	%nspace EML2_3_NS::ActivityTemplate;
 	%nspace EML2_3_NS::GraphicalInformationSet;
-	%nspace EML2_3_NS::HdfProxy;
 	%nspace EML2_3_NS::PropertyKind;
 	%nspace EML2_3_NS::TimeSeries;
 #endif
@@ -62,14 +60,6 @@ namespace EML2_3_NS
 	%rename(GraphicalInformationSet_eml23) GraphicalInformationSet;
 #endif
 	class GraphicalInformationSet : public EML2_NS::GraphicalInformationSet
-	{
-	public:
-	};
-
-#if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(HdfProxy_eml23) HdfProxy;
-#endif
-	class HdfProxy : public EML2_NS::HdfProxy
 	{
 	public:
 	};

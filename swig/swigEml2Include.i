@@ -20,7 +20,6 @@ under the License.
 #include "../src/eml2/Activity.h"
 #include "../src/eml2/ActivityTemplate.h"
 #include "../src/eml2/GraphicalInformationSet.h"
-#include "../src/eml2/HdfProxy.h"
 #include "../src/eml2/PropertyKind.h"
 #include "../src/eml2/TimeSeries.h"
 %}
@@ -31,10 +30,12 @@ under the License.
 	%nspace EML2_NS::ActivityTemplate;
 	%nspace EML2_NS::EpcExternalPartReference;
 	%nspace EML2_NS::GraphicalInformationSet;
-	%nspace EML2_NS::HdfProxy;
 	%nspace EML2_NS::PropertyKind;
 	%nspace EML2_NS::TimeSeries;
 #endif
+
+%module(directors="1") fesapi
+%feature("director") EML2_NS::AbstractHdfProxy;
 
 namespace EML2_NS
 {
@@ -42,20 +43,199 @@ namespace EML2_NS
 	
 	/************ HDF *******************/
 	class EpcExternalPartReference : public COMMON_NS::AbstractObject {};
-
+	
+	/*
+	No wrappers will be generated for fesapi AbstractHdfProxy specializations.
+	Wrapping AbstractHdfProxy suffices when no specialized HDF proxy is required 
+	in the target language. Example of specialized HDF proxy in C# and how it should 
+	be used is provided in the C# example (see HdfProxyFactoryExample.cs and
+	HdfProxyExample.cs).
+	*/
 	class AbstractHdfProxy : public EpcExternalPartReference
 	{
 	public:
-		virtual bool isOpened() = 0;
-		virtual void close() = 0;
-		
-		std::string getRelativePath();
-	};
+		virtual ~AbstractHdfProxy();
 
-	class HdfProxy : public AbstractHdfProxy
-	{
-	public:
-		void setCompressionLevel(unsigned int newCompressionLevel);
+		void setRootPath(const std::string& rootPath);
+		void setRelativePath(const std::string& relPath);
+		void setOpeningMode(COMMON_NS::DataObjectRepository::openingMode openingMode_);
+	
+		std::string getRelativePath();
+
+		virtual void open() = 0;
+		virtual bool isOpened() const = 0;
+		virtual void close() = 0;
+
+		virtual COMMON_NS::AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & datasetName) = 0;
+		virtual int getHdfDatatypeClassInDataset(const std::string & datasetName) = 0;
+
+		virtual void writeItemizedListOfList(const std::string & groupName,
+			const std::string & name,
+			hdf5_hid_t cumulativeLengthDatatype,
+			const void * cumulativeLength,
+			unsigned long long cumulativeLengthSize,
+			hdf5_hid_t elementsDatatype,
+			const void * elements,
+			unsigned long long elementsSize) = 0;
+		
+		virtual unsigned int getDimensionCount(const std::string & datasetName) = 0;
+		virtual std::vector<unsigned long long> getElementCountPerDimension(const std::string & datasetName) = 0;
+		virtual signed long long getElementCount(const std::string & datasetName) = 0;
+
+		virtual void setCompressionLevel(unsigned int newCompressionLevel) = 0;
+
+		virtual void writeArrayNdOfFloatValues(const std::string & groupName,
+		  const std::string & name,
+		  const float * floatValues,
+		  const unsigned long long * numValuesInEachDimension,
+		  unsigned int numDimensions) = 0;
+		virtual void writeArrayNdOfDoubleValues(const std::string & groupName,
+		  const std::string & name,
+		  const double * dblValues,
+		  const unsigned long long * numValuesInEachDimension,
+		  unsigned int numDimensions) = 0;
+		virtual void writeArrayNdOfCharValues(const std::string & groupName,
+			const std::string & name,
+			const char * intValues,
+			const unsigned long long * numValuesInEachDimension,
+			unsigned int numDimensions) = 0;
+		virtual void writeArrayNdOfIntValues(const std::string & groupName,
+		  const std::string & name,
+		  const int * intValues,
+		  const unsigned long long * numValuesInEachDimension,
+		  unsigned int numDimensions) = 0;
+ 		virtual void writeArrayNdOfGSoapULong64Values(const std::string & groupName,
+			const std::string & name,
+			const ULONG64 * ulong64Values,
+			const unsigned long long * numValuesInEachDimension,
+			unsigned int numDimensions) = 0;
+		virtual void writeArrayNd(const std::string & groupName,
+		  const std::string & name,
+		  hdf5_hid_t datatype,
+		  const void * values,
+		  const unsigned long long * numValuesInEachDimension,
+		  unsigned int numDimensions) = 0;
+		virtual void createArrayNd(
+		  const std::string& groupName,
+		  const std::string& name,
+		  hdf5_hid_t datatype,
+		  const unsigned long long* numValuesInEachDimension,
+		  unsigned int numDimensions
+		  ) = 0;
+		virtual void writeArrayNdSlab(
+		  const std::string& groupName,
+		  const std::string& name,
+		  hdf5_hid_t datatype,
+		  const void* values,
+		  const unsigned long long* numValuesInEachDimension,
+		  const unsigned long long* offsetValuesInEachDimension,
+		  unsigned int numDimensions
+		  ) = 0;
+		virtual void writeGroupAttributes(const std::string & groupName,
+			const std::vector<std::string> & attributeNames,
+			const std::vector<std::string> & values) = 0;
+		virtual void writeGroupAttribute(const std::string & groupName,
+			const std::string & attributeName,
+			const std::vector<std::string> & values) = 0;
+		virtual void writeGroupAttributes(const std::string & groupName,
+			const std::vector<std::string> & attributeNames,
+			const std::vector<double> & values) = 0;
+		virtual void writeGroupAttributes(const std::string & groupName,
+			const std::vector<std::string> & attributeNames,
+			const std::vector<int> & values) = 0;
+		virtual void writeDatasetAttributes(const std::string & datasetName,
+			const std::vector<std::string> & attributeNames,
+			const std::vector<std::string> & values) = 0;
+		virtual void writeDatasetAttribute(const std::string & datasetName,
+			const std::string & attributeName,
+			const std::vector<std::string> & values) = 0;
+		virtual void writeDatasetAttributes(const std::string & datasetName,
+			const std::vector<std::string> & attributeNames,
+			const std::vector<double> & values) = 0;
+		virtual void writeDatasetAttributes(const std::string & datasetName,
+			const std::vector<std::string> & attributeNames,
+			const std::vector<int> & values) = 0;
+
+		virtual std::string readStringAttribute(const std::string & obj_name,
+			const std::string & attr_name) const = 0;
+		virtual std::vector<std::string> readStringArrayAttribute(const std::string & obj_name,
+			const std::string & attr_name) const = 0;
+		virtual double readDoubleAttribute(const std::string & obj_name,
+			const std::string & attr_name) const = 0;
+		virtual LONG64 readLongAttribute(const std::string & obj_name,
+			const std::string & attr_name) const = 0;
+		virtual void readArrayNdOfDoubleValues(const std::string & datasetName, double* values) = 0;
+		virtual void readArrayNdOfDoubleValues(
+		  const std::string & datasetName,
+		  double* values,
+		  unsigned long long const * numValuesInEachDimension,
+		  unsigned long long const * offsetInEachDimension,
+		  unsigned int numDimensions
+		  ) = 0;
+		virtual void readArrayNdOfDoubleValues(
+			const std::string & datasetName, 
+			double* values,
+			unsigned long long const * blockCountPerDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned long long const * strideInEachDimension,
+			unsigned long long const * blockSizeInEachDimension,
+			unsigned int numDimensions) = 0;
+		virtual void selectArrayNdOfValues(
+			const std::string & datasetName,
+			unsigned long long const* blockCountPerDimension,
+			unsigned long long const* offsetInEachDimension,
+			unsigned long long const* strideInEachDimension,
+			unsigned long long const* blockSizeInEachDimension,
+			unsigned int numDimensions,
+			bool newSelection,
+			hdf5_hid_t & dataset,
+			hdf5_hid_t & filespace) = 0;
+		virtual void readArrayNdOfDoubleValues(
+			hdf5_hid_t dataset,
+			hdf5_hid_t filespace,
+			void* values,
+			unsigned long long slabSize) = 0;
+		virtual void readArrayNdOfFloatValues(const std::string & datasetName, float* values) = 0;
+		virtual void readArrayNdOfFloatValues(
+		  const std::string & datasetName,
+		  float* values,
+		  unsigned long long const * numValuesInEachDimension,
+		  unsigned long long const * offsetInEachDimension,
+		  unsigned int numDimensions
+		  ) = 0;
+		virtual void readArrayNdOfLongValues(const std::string & datasetName, LONG64* values) = 0;
+		virtual void readArrayNdOfLongValues(
+			const std::string & datasetName,
+			LONG64* values,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned int numDimensions) = 0;
+		virtual void readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values) = 0;
+		virtual void readArrayNdOfIntValues(const std::string & datasetName, int* values) = 0;
+		virtual void readArrayNdOfIntValues(
+			const std::string & datasetName,
+			int* values,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned int numDimensions
+		) = 0;
+		virtual void readArrayNdOfUIntValues(const std::string & datasetName, unsigned int* values) = 0;
+		virtual void readArrayNdOfShortValues(const std::string & datasetName, short* values) = 0;
+		virtual void readArrayNdOfUShortValues(const std::string & datasetName, unsigned short* values) = 0;
+		virtual void readArrayNdOfCharValues(const std::string & datasetName, char* values) = 0;
+		virtual void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) = 0;
+		virtual std::vector<unsigned long long> readArrayDimensions(const std::string & datasetName) = 0;
+		
+		virtual bool exist(const std::string & absolutePathInHdfFile) const = 0;
+		
+		virtual bool isCompressed(const std::string & datasetName) = 0;
+
+		void initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, unsigned int emlVersion);
+				
+	protected:
+	
+		AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
+		
 	};
 	
 	/************ GraphicalInformationSet **************/
