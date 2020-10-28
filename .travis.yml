@@ -67,7 +67,7 @@ install:
   - mkdir build
   - cd build
   - cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install ..
-  - cmake --build . --config Release
+  - cmake --build . --config Release --target INSTALL -- /verbosity:minimal
   - make install
   - cd ../..
   - wget http://prdownloads.sourceforge.net/swig/swig-4.0.2.tar.gz;
