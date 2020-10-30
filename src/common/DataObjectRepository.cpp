@@ -19,6 +19,7 @@ under the License.
 #include "DataObjectRepository.h"
 
 #include <algorithm>
+#include <array>
 #include <functional>
 #include <ctime>
 
@@ -792,7 +793,12 @@ COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuidAndVersion(c
 
 COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuidAndVersion(const std::array<uint8_t, 16> & uuid, const std::string & version) const
 {
+#if !defined(FESAPI_USE_BOOST_UUID)
 	return getDataObjectByUuidAndVersion(GuidTools::convertToString(uuid), version);
+#else
+	boost::uuids::uuid const* boostUuid = reinterpret_cast<boost::uuids::uuid const*>(uuid.data());
+	return getDataObjectByUuidAndVersion(boost::uuids::to_string(*boostUuid), version);
+#endif
 }
 
 void DataObjectRepository::addWarning(const std::string & warning)

@@ -105,7 +105,7 @@ ENDIF ()
 set (FESAPI_USE_BOOST_UUID OFF CACHE BOOL "Use the Boost uuid library instead of the windows API or the linux libuuid library.")
 if (FESAPI_USE_BOOST_UUID)
 	# Boost DEPENDENCY
-	find_package(Boost 1.44.0) # 1.44 because we cant boost::uuids::to_string method
+	find_package(Boost 1.44.0) # 1.44 because we want boost::uuids::to_string method
 elseif (UNIX)
 	SET (UUID_INCLUDE_DIR /usr/include CACHE PATH "Path to the directory which contains the uuid/uuid.h header file")
 	IF (NOT IS_DIRECTORY ${UUID_INCLUDE_DIR})
