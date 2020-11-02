@@ -183,6 +183,14 @@ destructor).
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 %}
+
+/* 
+AbstractHdfProxy may be inherited in target languages. In such case, overriding
+AbstractObject::getXmlNamespace() is required. Thus, AbstractObject needs to be
+a director base class. 
+Note: to not export the virtual destructor in a director base class leads to a 
+warning (205) during the Swig processing.
+*/
 %feature("director") COMMON_NS::AbstractObject;
 %typemap(csbody) COMMON_NS::AbstractObject %{
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;

@@ -206,6 +206,8 @@ ${COMMENT_START}
                     0,
                     localTime3dCrs);
                 w1i1SeismicFrameRep.setMdValues(logMds.cast(), 5);
+				GC.KeepAlive(logMds);
+				
                 DoubleArray logTimes = new DoubleArray(5);
                 logTimes.setitem(0, 0);
                 logTimes.setitem(1, 10);
@@ -213,6 +215,7 @@ ${COMMENT_START}
                 logTimes.setitem(3, 25);
                 logTimes.setitem(4, 30);
                 w1i1SeismicFrameRep.setTimeValues(logTimes.cast(), 5);
+				GC.KeepAlive(logTimes);
 
                 SeismicWellboreFrameRepresentation w1i1RegularSeismicFrameRep = repo.createSeismicWellboreFrameRepresentation(
                     wellbore1Interp1, "7f1b75ff-1226-4c0a-a531-8f71661da419", "Wellbore1 Interp1 Regular SeismicFrameRep",
@@ -238,8 +241,8 @@ ${COMMENT_END}
                 // (from its point of view, tmpHdfProxy is an AbstractHdfProxy), tmpHdfProxy needs
                 // to be cast in order to be able to use its non-derived methods.
                 // Please remember to provide a false cMemoryOwn parameter value in order for the
-                // C# garbage collector to do not manage the C++ part of hdfProxyExample. This C++
-                // part will be free at the destruction of the DataObjectRepository thanks to the
+                // C# garbage collector not to manage the C++ part of hdfProxyExample. This C++
+                // part will be freed at the destruction of the DataObjectRepository thanks to the
                 // DataObjectRepository::clear() method (called by DataObjectRepository destructor).
                 HdfProxyExample hdfProxyExample = new HdfProxyExample(AbstractHdfProxy.getCPtr(tmpHdfProxy).Handle, false);
                 hdfProxyExample.sayHello(); // sayHello() is a proper HdfProxyExample method
