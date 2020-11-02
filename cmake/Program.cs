@@ -14,7 +14,7 @@ namespace example
     {
 		private static void serializeIjkGrid(DataObjectRepository repo)
         {
-            AbstractIjkGridRepresentation ijkGrid = repo.createPartialIjkGridRepresentation("", "partial IJK Grid");
+            AbstractIjkGridRepresentation ijkGrid = repo.createPartialIjkGridRepresentation("6ac6c8c8-68c4-4c78-bae9-61b5832a8f53", "partial IJK Grid");
             f2i.energisticsStandardsApi.${FESAPI_EML2_NS}.PropertyKind propertyKind = repo.createPartialPropertyKind("", "Partial prop kind");
 
             // creating the continuous Property with computing min max
@@ -178,7 +178,10 @@ namespace example
                 trajectoryMds.setitem(1, 325);
                 trajectoryMds.setitem(2, 500);
                 trajectoryMds.setitem(3, 1000);
-                w1i1TrajRep.setGeometry(controlPoints.cast(), trajectoryTangentVectors.cast(), trajectoryMds.cast(), 4, 0, hdfProxy);
+                w1i1TrajRep.setGeometry(controlPoints.cast(), trajectoryTangentVectors.cast(), trajectoryMds.cast(), 4, 0);
+                GC.KeepAlive(controlPoints);
+                GC.KeepAlive(trajectoryTangentVectors);
+                GC.KeepAlive(trajectoryMds);
 
                 // WellboreFeature frame
                 f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation w1i1FrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "d873e243-d893-41ab-9a3e-d20b851c099f", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
@@ -188,7 +191,7 @@ namespace example
                 logMds.setitem(2, 500);
                 logMds.setitem(3, 750);
                 logMds.setitem(4, 1000);
-                w1i1FrameRep.setMdValues(logMds.cast(), 5, hdfProxy);
+                w1i1FrameRep.setMdValues(logMds.cast(), 5);
 
                 f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation w1i1RegularFrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
                 w1i1RegularFrameRep.setMdValues(0, 200, 6);
@@ -202,14 +205,17 @@ ${COMMENT_START}
                     0,
                     0,
                     localTime3dCrs);
-                w1i1SeismicFrameRep.setMdValues(logMds.cast(), 5, hdfProxy);
+                w1i1SeismicFrameRep.setMdValues(logMds.cast(), 5);
+				GC.KeepAlive(logMds);
+				
                 DoubleArray logTimes = new DoubleArray(5);
                 logTimes.setitem(0, 0);
                 logTimes.setitem(1, 10);
                 logTimes.setitem(2, 20);
                 logTimes.setitem(3, 25);
                 logTimes.setitem(4, 30);
-                w1i1SeismicFrameRep.setTimeValues(logTimes.cast(), 5, hdfProxy);
+                w1i1SeismicFrameRep.setTimeValues(logTimes.cast(), 5);
+				GC.KeepAlive(logTimes);
 
                 SeismicWellboreFrameRepresentation w1i1RegularSeismicFrameRep = repo.createSeismicWellboreFrameRepresentation(
                     wellbore1Interp1, "7f1b75ff-1226-4c0a-a531-8f71661da419", "Wellbore1 Interp1 Regular SeismicFrameRep",
@@ -223,6 +229,33 @@ ${COMMENT_END}
                 serializeIjkGrid(repo);
 
                 epc_file.serializeFrom(repo);
+
+                // **************************************
+                // **************************************
+                // Example of use of a custom C# HdfProxy
+                repo.setHdfProxyFactory(new HdfProxyFactoryExample());
+                AbstractHdfProxy tmpHdfProxy = repo.createHdfProxy("", "Dummy Exotic HDF proxy", "", "", DataObjectRepository.openingMode.OVERWRITE);
+                repo.setDefaultHdfProxy(tmpHdfProxy);
+
+                // Since fesapi does not know about the existence of the C# HdfProxyExample
+                // (from its point of view, tmpHdfProxy is an AbstractHdfProxy), tmpHdfProxy needs
+                // to be cast in order to be able to use its non-derived methods.
+                // Please remember to provide a false cMemoryOwn parameter value in order for the
+                // C# garbage collector not to manage the C++ part of hdfProxyExample. This C++
+                // part will be freed at the destruction of the DataObjectRepository thanks to the
+                // DataObjectRepository::clear() method (called by DataObjectRepository destructor).
+                HdfProxyExample hdfProxyExample = new HdfProxyExample(AbstractHdfProxy.getCPtr(tmpHdfProxy).Handle, false);
+                hdfProxyExample.sayHello(); // sayHello() is a proper HdfProxyExample method
+                
+                DoubleArray dummyPoints = new DoubleArray(3);
+                dummyPoints.setitem(0, 1.0);
+                dummyPoints.setitem(1, 2.0);
+                dummyPoints.setitem(2, 3.0);
+                repo.createPointSetRepresentation("", "").pushBackGeometryPatch(1, dummyPoints.cast());
+                GC.KeepAlive(dummyPoints);
+                // **************************************
+                // **************************************
+
                 epc_file.close();
             }
         }

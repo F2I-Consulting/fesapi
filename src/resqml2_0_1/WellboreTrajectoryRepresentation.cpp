@@ -155,6 +155,12 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, 
 	if (controlPointParameters == nullptr) {
 		throw invalid_argument("The control points parameters are missing.");
 	}
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
 
 	setGeometry(controlPoints, controlPointParameters[0], controlPointParameters[controlPointCount - 1], controlPointCount, lineKind, proxy, localCrs);
 	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
@@ -178,6 +184,12 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 {
 	if (tangentVectors == nullptr) {
 		throw invalid_argument("The tangent vectors parameter is missing.");
+	}
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 
 	setGeometry(controlPoints, controlPointParameters, controlPointCount, lineKind, proxy, localCrs);

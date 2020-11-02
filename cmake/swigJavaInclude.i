@@ -140,19 +140,9 @@ ${COMMENT_END}
 		return null;
 	}
 	
-	public static com.f2i.energisticsStandardsApi.${FESAPI_EML2_NS}.HdfProxy eml2_instantiateEpcExternalPartReference(long cPtr, boolean owner)
+	public static com.f2i.energisticsStandardsApi.${FESAPI_EML2_NS}.AbstractHdfProxy eml2_instantiateEpcExternalPartReference(long cPtr, boolean owner)
 	{
-		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
-		if ("eml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_0_NS}.HdfProxy_eml20(cPtr, owner);
-		}
-${COMMENT_START}
-		else if ("eml23".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.HdfProxy_eml23(cPtr, owner);
-		}
-${COMMENT_END}
-		
-		return null;
+		return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_NS}.AbstractHdfProxy(cPtr, owner);
 	}
 	
 	public static com.f2i.energisticsStandardsApi.${FESAPI_EML2_NS}.PropertyKind eml2_instantiatePropertyKind(long cPtr, boolean owner)
@@ -1056,7 +1046,7 @@ namespace COMMON_NS
 
 namespace EML2_NS
 {
-	%typemap(javaout) Activity*, ActivityTemplate*, EpcExternalPartReference*, AbstractHdfProxy*, HdfProxy*, PropertyKind*, TimeSeries* 
+	%typemap(javaout) Activity*, ActivityTemplate*, EpcExternalPartReference*, PropertyKind*, TimeSeries* 
 #ifdef WITH_RESQML2_2
 										,GraphicalInformationSet*
 #endif
