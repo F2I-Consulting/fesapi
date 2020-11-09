@@ -757,10 +757,6 @@ void AbstractObject::serializeIntoStream(ostream * stream)
 	}
 }
 
-gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* AbstractObject::getGsoapProxy() const {
-	return gsoapProxy2_0_1;
-}
-
 void AbstractObject::setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy) {
 	gsoapProxy2_0_1 = gsoapProxy;
 }
