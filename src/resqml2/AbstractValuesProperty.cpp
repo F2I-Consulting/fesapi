@@ -165,8 +165,9 @@ void AbstractValuesProperty::pushBackFacet(const gsoap_resqml2_0_1::resqml20__Fa
 		newFacet->Value = facetValue;
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet.push_back(newFacet);
 	}
-
-	throw logic_error("Not implemented yet");
+	else {
+		throw logic_error("Not implemented yet");
+	}
 }
 
 unsigned int AbstractValuesProperty::getFacetCount() const
@@ -180,10 +181,7 @@ unsigned int AbstractValuesProperty::getFacetCount() const
 
 		return static_cast<unsigned int>(result);
 	}
-	else
-	{
-		throw logic_error("Not implemented yet");
-	}
+	throw logic_error("Not implemented yet");
 }
 
 gsoap_resqml2_0_1::resqml20__Facet AbstractValuesProperty::getFacet(unsigned int index) const
