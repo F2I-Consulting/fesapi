@@ -180,8 +180,10 @@ unsigned int AbstractValuesProperty::getFacetCount() const
 
 		return static_cast<unsigned int>(result);
 	}
-
-	throw logic_error("Not implemented yet");
+	else
+	{
+		throw logic_error("Not implemented yet");
+	}
 }
 
 gsoap_resqml2_0_1::resqml20__Facet AbstractValuesProperty::getFacet(unsigned int index) const
