@@ -137,6 +137,15 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__PlaneAngleUom getDipAngleUom() const;
 
 		/**
+		 * Get the Dip angle uom as a string.
+		 *
+		 * @exception	std::logic_error	If the marker has not got any dip value.
+		 *
+		 * @return the Dip angle uom as a string.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getDipAngleUomAsString() const;
+
+		/**
 		 * Check wether this marker has got a dip direction or not.
 		 * FYI, Dip direction is store in the WITSML WellboreMarker companion if present.
 		 *
@@ -161,6 +170,15 @@ namespace RESQML2_NS
 		 * @return the Dip direction uom.
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__PlaneAngleUom getDipDirectionUom() const;
+
+		/**
+		 * Get the Dip direction uom as a string.
+		 *
+		 * @exception	std::logic_error	If the marker has not got any dip direction.
+		 *
+		 * @return the Dip direction uom as a string.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getDipDirectionUomAsString() const;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

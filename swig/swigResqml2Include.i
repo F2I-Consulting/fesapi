@@ -4850,6 +4850,16 @@ namespace RESQML2_NS
 		WellboreMarkerFrameRepresentation const * getWellboreMarkerFrameRepresentation() const;
 		BoundaryFeatureInterpretation* getBoundaryFeatureInterpretation() const;
 		void setBoundaryFeatureInterpretation(BoundaryFeatureInterpretation* interp);
+		WITSML2_0_NS::WellboreMarker* getWitsmlWellboreMarker() const;
+		virtual void setWitsmlWellboreMarker(WITSML2_0_NS::WellboreMarker * wellboreMarker) = 0;
+		bool hasDipAngle() const;
+		double getDipAngleValue() const;
+		gsoap_eml2_1::eml21__PlaneAngleUom getDipAngleUom() const;
+		std::string getDipAngleUomAsString() const;
+		bool hasDipDirection() const;
+		double getDipDirectionValue() const;
+		gsoap_eml2_1::eml21__PlaneAngleUom getDipDirectionUom() const;
+		std::string getDipDirectionUomAsString() const;
 	};
 
 #ifdef SWIGPYTHON
