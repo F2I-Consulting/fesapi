@@ -90,5 +90,5 @@ void WellboreMarker::setWellbore(Wellbore* witsmlWellbore)
 
 GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(WellboreMarker, Md, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
 
-GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(WellboreMarker, DipAngle, gsoap_eml2_1::eml21__PlaneAngleUom, gsoap_eml2_1::soap_new_eml21__PlaneAngleMeasure)
-GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(WellboreMarker, DipDirection, gsoap_eml2_1::eml21__PlaneAngleUom, gsoap_eml2_1::soap_new_eml21__PlaneAngleMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(WellboreMarker, DipAngle, gsoap_eml2_1::eml21__PlaneAngleUom, gsoap_eml2_1::soap_eml21__PlaneAngleUom2s, gsoap_eml2_1::soap_new_eml21__PlaneAngleMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(WellboreMarker, DipDirection, gsoap_eml2_1::eml21__PlaneAngleUom, gsoap_eml2_1::soap_eml21__PlaneAngleUom2s, gsoap_eml2_1::soap_new_eml21__PlaneAngleMeasure)

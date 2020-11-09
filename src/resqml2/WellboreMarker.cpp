@@ -80,6 +80,14 @@ gsoap_eml2_1::eml21__PlaneAngleUom WellboreMarker::getDipAngleUom() const
 
 	return getWitsmlWellboreMarker()->getDipAngleUom();
 }
+string WellboreMarker::getDipAngleUomAsString() const
+{
+	if (!hasDipAngle()) {
+		throw std::logic_error("There is no dip angle");
+	}
+
+	return getWitsmlWellboreMarker()->getDipAngleUomAsString();
+}
 
 bool WellboreMarker::hasDipDirection() const
 {
@@ -109,4 +117,13 @@ gsoap_eml2_1::eml21__PlaneAngleUom WellboreMarker::getDipDirectionUom() const
 	}
 
 	return getWitsmlWellboreMarker()->getDipDirectionUom();
+}
+
+string WellboreMarker::getDipDirectionUomAsString() const
+{
+	if (!hasDipDirection()) {
+		throw std::logic_error("There is no dip angle");
+	}
+
+	return getWitsmlWellboreMarker()->getDipDirectionUomAsString();
 }

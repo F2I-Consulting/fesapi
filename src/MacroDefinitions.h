@@ -438,7 +438,8 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 #define GETTER_AND_SETTER_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
 	DLL_IMPORT_OR_EXPORT void set##attributeName(double value, uomDatatype uom);\
 	DLL_IMPORT_OR_EXPORT double get##attributeName##Value() const;\
-	DLL_IMPORT_OR_EXPORT uomDatatype get##attributeName##Uom() const;
+	DLL_IMPORT_OR_EXPORT uomDatatype get##attributeName##Uom() const;\
+	DLL_IMPORT_OR_EXPORT std::string get##attributeName##UomAsString() const;
 
 /**
  * A macro that defines getter and setter measure optional attribute
@@ -545,6 +546,18 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 	}
 
 /**
+ * A macro that defines getter uom (as string) of measure attribute Implementation
+ *
+ * @param 	className	 	Name of the class.
+ * @param 	attributeName	Name of the attribute.
+ * @param 	uomDatatype  	The uom datatype.
+ */
+#define GETTER_UOM_OF_MEASURE_AS_STRING_ATTRIBUTE_IMPL(className, attributeName, uomDatatypeStringConversion)\
+	std::string GLUE(, className)::get##attributeName##UomAsString() const {\
+		return uomDatatypeStringConversion(gsoapProxy2_1->soap, get##attributeName##Uom());\
+	}
+
+/**
  * A macro that defines getter and setter measure attribute Implementation
  *
  * @param 	className	 	Name of the class.
@@ -552,7 +565,7 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
  * @param 	uomDatatype  	The uom datatype.
  * @param 	constructor  	The constructor.
  */
-#define GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IMPL(className, attributeName, uomDatatype, constructor)\
+#define GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IMPL(className, attributeName, uomDatatype, uomDatatypeStringConversion, constructor)\
 	void GLUE(,className)::set##attributeName(double value, uomDatatype uom) {\
 		if (value != value) { throw invalid_argument("You cannot set an undefined measure"); }\
 		CREATE_ATTRIBUTE_IF_NOT_PRESENT(className, attributeName, constructor)\
@@ -560,7 +573,8 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 		static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName->uom = uom;\
 	}\
 	GETTER_VALUE_OF_MEASURE_ATTRIBUTE_IMPL(className, attributeName)\
-	GETTER_UOM_OF_MEASURE_ATTRIBUTE_IMPL(className, attributeName, uomDatatype)
+	GETTER_UOM_OF_MEASURE_ATTRIBUTE_IMPL(className, attributeName, uomDatatype)\
+	GETTER_UOM_OF_MEASURE_AS_STRING_ATTRIBUTE_IMPL(className, attributeName, uomDatatypeStringConversion)
 
 /**
  * A macro that defines getter and setter depth measure attribute Implementation
@@ -593,8 +607,8 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
  * @param 	uomDatatype  	The uom datatype.
  * @param 	constructor  	The constructor.
  */
-#define GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(className, attributeName, uomDatatype, constructor)\
-	GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IMPL(className, attributeName, uomDatatype, constructor)\
+#define GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(className, attributeName, uomDatatype, uomDatatypeStringConversion, constructor)\
+	GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IMPL(className, attributeName, uomDatatype, uomDatatypeStringConversion, constructor)\
 	GETTER_PRESENCE_ATTRIBUTE_IMPL(className, attributeName)
 
 /**
