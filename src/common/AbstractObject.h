@@ -376,7 +376,7 @@ namespace COMMON_NS
 
 		/**
 		* Get the Date and time the document was created in the source application or, if that information is not available, when it was saved to the file.
-		* This is the equivalent of the ISO 19115 CI_Date where the CI_DateTypeCode = creation"
+		* This is the equivalent of the ISO 19115 CI_Date where the CI_DateTypeCode = "creation"
 		*/
 		DLL_IMPORT_OR_EXPORT time_t getCreation() const;
 
@@ -400,7 +400,7 @@ namespace COMMON_NS
 
 		/**
 		* Get the date and time the document was last modified in the source application or, if that information is not available, when it was last saved to the format file.
-		* This is the equivalent of the ISO 19115 CI_Date where the CI_DateTypeCode = lastUpdate"
+		* This is the equivalent of the ISO 19115 CI_Date where the CI_DateTypeCode = "lastUpdate"
 		*/
 		DLL_IMPORT_OR_EXPORT time_t getLastUpdate() const;
 
@@ -443,7 +443,7 @@ namespace COMMON_NS
 
 		/**
 		* Get the Date and time the document was created in the source application or, if that information is not available, when it was saved to the file.
-		* This is the equivalent of the ISO 19115 CI_Date where the CI_DateTypeCode = creation"
+		* This is the equivalent of the ISO 19115 CI_Date where the CI_DateTypeCode = "creation"
 		*/
 		DLL_IMPORT_OR_EXPORT void setCreation(time_t creation);
 
@@ -467,7 +467,7 @@ namespace COMMON_NS
 
 		/**
 		* Set the date and time the document was last modified in the source application or, if that information is not available, when it was last saved to the format file.
-		* This is the equivalent of the ISO 19115 CI_Date where the CI_DateTypeCode = lastUpdate"
+		* This is the equivalent of the ISO 19115 CI_Date where the CI_DateTypeCode = "lastUpdate"
 		*/
 		DLL_IMPORT_OR_EXPORT void setLastUpdate(time_t lastUpdate);
 
