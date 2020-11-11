@@ -90,6 +90,9 @@ bool IjkGridParametricRepresentation::isParametricLineKindConstant() const
 		{
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(paramLineArray->LineKindIndices)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			if (getPillarCount() != hdfProxy->getElementCount(dataset->PathInHdfFile)) {
+				throw std::logic_error("Size difference between values count in hdf and pillars count");
+			}
 			std::unique_ptr<short[]> pillarKind(new short[getPillarCount()]);
 			hdfProxy->readArrayNdOfShortValues(dataset->PathInHdfFile, pillarKind.get());
 			short firstPillarKind = pillarKind[0];

@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "LocalDepth3dCrsTest.h"
-#include "common/EpcDocument.h"
+#include "resqml2/LocalDepth3dCrs.h"
 #include "../catch.hpp"
 
 #include "resqml2/LocalDepth3dCrs.h"

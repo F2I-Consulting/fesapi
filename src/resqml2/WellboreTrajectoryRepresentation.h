@@ -30,7 +30,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~WellboreTrajectoryRepresentation() {}
+		virtual ~WellboreTrajectoryRepresentation() = default;
 
 		/**
 		 * Sets the minimal geometry of the representation by means of start and end MDs.
@@ -134,7 +134,7 @@ namespace RESQML2_NS
 		 * 										defined in the repository.
 		 *
 		 * @param [in]	  	controlPoints		  	All the control points of the cubic parametric line
-		 * 											in the order of the MDs. Count is
+		 * 											in the ascending order of the MDs. Count is
 		 * 											<tt>controlPointCount * 3</tt> and for each control
 		 * 											point <tt>(x,y, z) = (controlPoints[2i],
 		 * 											controlPoints[2i+1], controlPoints[2i+2])</tt>.
@@ -146,8 +146,7 @@ namespace RESQML2_NS
 		 * 											tangentVectors[2i+1], tangentVectors[2i+2])</tt>.
 		 * @param [in]	  	controlPointParameters	The arrays of control point parameters (ordered
 		 * 											regarding the control points). It corresponds to the
-		 * 											MD values in a WellboreFeature context. Count is @p
-		 * 											controlPointCount.
+		 * 											MD values in this context. Count is @p controlPointCount.
 		 * @param 		  	controlPointCount	  	The count of control points and control point
 		 * 											parameters and tangent vectors per cubic parametric
 		 * 											line.
@@ -170,6 +169,56 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* controlPoints,
 			double const* tangentVectors, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr) = 0;
+
+		/**
+		 * Sets the geometry of the representation by means of a parametric line with MD and tangent
+		 * vector information.
+		 *
+		 * @exception	std::invalid_argument	If @p controlPoints is @c nullptr.
+		 * @exception	std::invalid_argument	If @p tangentVectors is @c nullptr.
+		 * @exception	std::invalid_argument	If @p controlPointParameters is @c nullptr.
+		 * @exception	std::invalid_argument	If @p controlPointCount is 0.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default CRS is
+		 * 										defined in the repository.
+		 *
+		 * @param [in]	  	controlPoints		  	All the control points of the cubic parametric line
+		 * 											in the ascending order of the MDs. Count is
+		 * 											<tt>controlPointCount * 3</tt> and for each control
+		 * 											point <tt>(x,y, z) = (controlPoints[2i],
+		 * 											controlPoints[2i+1], controlPoints[2i+2])</tt>.
+		 * @param [in]	  	inclinations		  	All the inclinations (angle against vertical) in radians of all the trajectory stations
+		 *											of the cubic parametric line. They are ordered
+		 * 											according to the control points. Count is <tt>controlPointCount</tt>.
+		 * @param [in]	  	azimuths			  	All the azimuths (clockwise angle against grid north) in radians of all the trajectory stations
+		 *											of the cubic parametric line. They are ordered
+		 * 											according to the control points. Count is <tt>controlPointCount</tt>.
+		 * @param [in]	  	controlPointParameters	The arrays of control point parameters (ordered
+		 * 											regarding the control points). It corresponds to the
+		 * 											MD values in this context. Count is @p controlPointCount.
+		 * @param 		  	controlPointCount	  	The count of control points and control point
+		 * 											parameters and tangent vectors per cubic parametric
+		 * 											line. Control points correspond to the trajectory stations.
+		 * @param 		  	lineKind			  	Integer indicating the parametric line kind: 0 for
+		 * 											vertical, 1 for linear spline, 2 for natural cubic
+		 * 											spline, 3 for cubic spline, 4 for z linear cubic
+		 * 											spline, 5 for minimum-curvature spline, (-1) for
+		 * 											null: no line.
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy which indicates in which
+		 * 											HDF5 file the parameters and the tangent vectors will
+		 * 											be stored. It must be already opened for writing and
+		 * 											won't be closed. If null, then the default HDF Proxy
+		 * 											of the DataObject repository will be arbitrarily
+		 * 											selected for writing.
+		 * @param [in]	  	localCrs			  	(Optional) The local CRS where the control points are
+		 * 											given. If @c nullptr, then the default Local CRS of
+		 * 											the DataObject repository will be arbitrarily
+		 * 											selected.
+		 */
+		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints,
+			double const* inclinations, double const* azimuths, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		 * Gets the geometry kind.
@@ -255,7 +304,7 @@ namespace RESQML2_NS
 
 		/**
 		 * Indicates if the wellbore trajectory has got tangent vectors attached to each trajectory
-		 * station.
+		 * station. Tangent vectors ussually transport inclination and azimuth of a trajectory station.
 		 *
 		 * @exception	std::logic_error	If the geometry of this trajectory is not a parametric line.
 		 *
@@ -266,14 +315,30 @@ namespace RESQML2_NS
 		/**
 		 * Gets the tangent vectors associated to each trajectory station of this trajectory.
 		 *
-		 * @exception	std::invalid_argument	If this trajectory has no tanget vector.
+		 * @exception	std::invalid_argument	If this trajectory has no tangent vector.
 		 * @exception	std::invalid_argument	If the HDF proxy is missing.
 		 *
 		 * @param [out]	tangentVectors	A buffer for receiving the tangent vectors. It must be
 		 * 								preallocated with size of <tt>3 * </tt>
-		 * 								getXyzPointCountOfAllPatches().
+		 * 								getXyzPointCountOfAllPatches(). It won't be freed by FESAPI.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getTangentVectors(double* tangentVectors) = 0;
+
+		/**
+		 * Gets the inclination (angle against vertical) and the azimuths (clockwise angle against grid north)
+		 *both in radians for each trajectory station of this trajectory.
+		 *
+		 * @exception	std::invalid_argument	If this trajectory has no tangent vector.
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 *
+		 * @param [out]	inclinations	A buffer for receiving the inclinations. It must be
+		 * 								preallocated with size getXyzPointCountOfAllPatches().
+		 *								It won't be freed by FESAPI.
+		 * @param [out]	azimuths		A buffer for receiving the azimuths. It must be
+		 * 								preallocated with size getXyzPointCountOfAllPatches().
+		 *								It won't be freed by FESAPI.
+		 */
+		DLL_IMPORT_OR_EXPORT void getInclinationsAndAzimuths(double * inclinations, double * azimuths);
 
 		//*****************
 		//*** PARENTAGE ***

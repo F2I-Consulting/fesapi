@@ -17,7 +17,6 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "ActivityTemplateGenericCreationTest.h"
-#include "common/EpcDocument.h"
 #include "eml2/ActivityTemplate.h"
 #include "../catch.hpp"
 

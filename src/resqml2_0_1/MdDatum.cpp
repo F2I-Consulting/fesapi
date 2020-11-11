@@ -59,6 +59,9 @@ void MdDatum::setLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs)
 
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
 	}
 
 	_resqml20__MdDatum* mdDatum = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1);

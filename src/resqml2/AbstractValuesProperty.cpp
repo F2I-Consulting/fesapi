@@ -177,8 +177,9 @@ void AbstractValuesProperty::pushBackFacet(gsoap_eml2_3::eml23__FacetKind facet,
 		newFacet->Facet = facetValue;
 		static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet.push_back(newFacet);
 	}
-
-	throw logic_error("Not implemented yet");
+	else {
+		throw logic_error("Not implemented yet");
+	}
 }
 
 unsigned int AbstractValuesProperty::getFacetCount() const

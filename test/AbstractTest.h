@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include <iostream>
-
 #include "common/DataObjectRepository.h"
 
 namespace commontest {

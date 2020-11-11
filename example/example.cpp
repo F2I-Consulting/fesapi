@@ -4335,7 +4335,7 @@ void deserialize(const string & inputFile)
 	deserializeTimeSeriesData(repo);
 
 	std::vector<RESQML2_NS::BoundaryFeature*> faultSet = repo.getFaultSet();
-	std::vector<RESQML2_NS::PolylineSetRepresentation *> faultPolyRep = repo.getFaultPolylineSetRepSet();
+	std::vector<RESQML2_NS::PolylineSetRepresentation *> faultPolyRepSet = repo.getFaultPolylineSetRepSet();
 	std::vector<RESQML2_NS::TriangulatedSetRepresentation *> faultTriRepSet = repo.getFaultTriangulatedSetRepSet();
 	std::vector<RESQML2_NS::BoundaryFeature*> horizonSet = repo.getHorizonSet();
 	std::vector<RESQML2_NS::Grid2dRepresentation *> horizonGrid2dSet = repo.getHorizonGrid2dRepSet();
@@ -4349,49 +4349,48 @@ void deserialize(const string & inputFile)
 	std::vector<RESQML2_NS::StratigraphicColumn*> stratiColumnSet = repo.getStratigraphicColumnSet();
 	std::vector<RESQML2_NS::RepresentationSetRepresentation*> representationSetRepresentationSet = repo.getRepresentationSetRepresentationSet();
 	std::vector<RESQML2_NS::SubRepresentation*> subRepresentationSet = repo.getSubRepresentationSet();
-	std::vector<RESQML2_NS::PolylineSetRepresentation *> frontierPolyRep = repo.getCulturalPolylineSetRepSet();
+	std::vector<RESQML2_NS::PolylineSetRepresentation *> frontierPolyRepSet = repo.getCulturalPolylineSetRepSet();
 
 	std::cout << "RepresentationSetRepresentation" << endl;
-	for (size_t i = 0; i < representationSetRepresentationSet.size(); i++) {
-		showAllMetadata(representationSetRepresentationSet[i]);
-		std::cout << "Is homogeneous : " << representationSetRepresentationSet[i]->isHomogeneous() << std::endl;
-		std::cout << "Representation count : " << representationSetRepresentationSet[i]->getRepresentationCount() << std::endl;
-		showAllMetadata(representationSetRepresentationSet[i]->getRepresentation(0));
+	for (auto* representationSetRepresentation : representationSetRepresentationSet) {
+		showAllMetadata(representationSetRepresentation);
+		std::cout << "Is homogeneous : " << representationSetRepresentation->isHomogeneous() << std::endl;
+		std::cout << "Representation count : " << representationSetRepresentation->getRepresentationCount() << std::endl;
+		showAllMetadata(representationSetRepresentation->getRepresentation(0));
 		std::cout << "--------------------------------------------------" << std::endl;
 	}
 
 	std::cout << "FAULTS" << endl;
-	for (size_t i = 0; i < faultSet.size(); ++i) {
-		RESQML2_NS::BoundaryFeature const * faultFeature = faultSet[i];
+	for (auto* faultFeature : faultSet) {
 		showAllMetadata(faultFeature);
 		std::cout << "InterpretationCount : " << faultFeature->getInterpretationCount() << std::endl;
 	}
 
-	std::cout << faultPolyRep.size() << " FAULT POLYLINE SET REP" << endl;
-	for (size_t i = 0; i < faultPolyRep.size(); ++i) {
-		showAllMetadata(faultPolyRep[i]);
-		ULONG64 nodeCount = faultPolyRep[i]->getXyzPointCountOfAllPatches();
+	std::cout << faultPolyRepSet.size() << " FAULT POLYLINE SET REP" << endl;
+	for (auto* faultPolyRep : faultPolyRepSet) {
+		showAllMetadata(faultPolyRep);
+		ULONG64 nodeCount = faultPolyRep->getXyzPointCountOfAllPatches();
 		std::unique_ptr<double[]> allXyzPoints(new double[nodeCount * 3]);
-		faultPolyRep[i]->getXyzPointsOfAllPatchesInGlobalCrs(allXyzPoints.get());
+		faultPolyRep->getXyzPointsOfAllPatchesInGlobalCrs(allXyzPoints.get());
 		for (ULONG64 nodeIndex = 0; nodeIndex < 6; nodeIndex += 3) {
 			std::cout << allXyzPoints[nodeIndex] << " " << allXyzPoints[nodeIndex + 1] << " " << allXyzPoints[nodeIndex + 2] << endl;
 		}
-		deserializeActivity(faultPolyRep[i]);
+		deserializeActivity(faultPolyRep);
 
-		if (faultPolyRep[i]->areAllPolylinesClosedOfAllPatches()) {
+		if (faultPolyRep->areAllPolylinesClosedOfAllPatches()) {
 			std::cout << "All polylines of the fault are closed" << endl;
 		}
 		/*
 		std::cout << "\tSEISMIC INFO" << endl;
 		double* inlines = new double[nodeCount];
-		faultPolyRep[i]->getInlinesOfPointsOfPatch(0, inlines);
+		faultPolyRep->getInlinesOfPointsOfPatch(0, inlines);
 		for (unsigned int index = 0; index < nodeCount; index++)
 		{
 		std::cout << "\tinline : " << inlines[index] << std::endl;
 		}
 		delete [] inlines;
 		double* crosslines = new double[nodeCount];;
-		faultPolyRep[i]->getCrosslinesOfPointsOfPatch(0, crosslines);
+		faultPolyRep->getCrosslinesOfPointsOfPatch(0, crosslines);
 		for (unsigned int index = 0; index < nodeCount; index++)
 		{
 		std::cout << "\tcrossline : " << crosslines[index] << std::endl;
@@ -4399,51 +4398,50 @@ void deserialize(const string & inputFile)
 		delete [] crosslines;
 		*/
 
-		showAllProperties(faultPolyRep[i]);
+		showAllProperties(faultPolyRep);
 
-		for (size_t gsrIndex = 0; gsrIndex < faultPolyRep[i]->getInterpretation()->getGridConnectionSetRepresentationSet().size(); ++gsrIndex) {
+		for (size_t gsrIndex = 0; gsrIndex < faultPolyRep->getInterpretation()->getGridConnectionSetRepresentationSet().size(); ++gsrIndex) {
 			std::cout << "This fault polyline rep is linked to a grid connection set." << std::endl;
 		}
 	}
 
-	std::cout << faultPolyRep.size() << " FRONTIER POLYLINE SET REP" << endl;
-	for (size_t i = 0; i < frontierPolyRep.size(); ++i) {
-		showAllMetadata(frontierPolyRep[i]);
+	std::cout << frontierPolyRepSet.size() << " FRONTIER POLYLINE SET REP" << endl;
+	for (auto* frontierPolyRep : frontierPolyRepSet) {
+		showAllMetadata(frontierPolyRep);
 
-		std::unique_ptr<bool[]> closedFlag(new bool[frontierPolyRep[i]->getPolylineCountOfPatch(0)]);
-		frontierPolyRep[i]->getClosedFlagPerPolylineOfPatch(0, closedFlag.get());
-		for (unsigned int j = 0; j < frontierPolyRep[i]->getPolylineCountOfPatch(0); ++j) {
+		std::unique_ptr<bool[]> closedFlag(new bool[frontierPolyRep->getPolylineCountOfPatch(0)]);
+		frontierPolyRep->getClosedFlagPerPolylineOfPatch(0, closedFlag.get());
+		for (unsigned int j = 0; j < frontierPolyRep->getPolylineCountOfPatch(0); ++j) {
 			std::cout << "closed flag : " << closedFlag[j] << endl;
 		}
 	}
 
 	std::cout << "FAULTS TRI REP" << endl;
-	for (size_t i = 0; i < faultTriRepSet.size(); i++) {
-		showAllMetadata(faultTriRepSet[i]);
+	for (auto* faultTriRep : faultTriRepSet) {
+		showAllMetadata(faultTriRep);
 
-		ULONG64 pointCount = faultTriRepSet[i]->getXyzPointCountOfAllPatches();
-		unsigned int triangleCount = faultTriRepSet[i]->getTriangleCountOfAllPatches();
+		ULONG64 pointCount = faultTriRep->getXyzPointCountOfAllPatches();
+		unsigned int triangleCount = faultTriRep->getTriangleCountOfAllPatches();
 		cout << "point Count " << pointCount << endl;
 		cout << "triangle Count " << triangleCount << endl;
 
 		std::cout << "\tFAULTS TRI REP GEOMETRY" << endl;
 		std::unique_ptr<double[]> xyzPoints(new double[pointCount * 3]);
-		faultTriRepSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(xyzPoints.get());
+		faultTriRep->getXyzPointsOfAllPatchesInGlobalCrs(xyzPoints.get());
 		std::unique_ptr<unsigned int[]> triangleIndices(new unsigned int[triangleCount * 3]);
-		faultTriRepSet[i]->getTriangleNodeIndicesOfAllPatches(triangleIndices.get());
+		faultTriRep->getTriangleNodeIndicesOfAllPatches(triangleIndices.get());
 		for (size_t j = 0; j < 5; j++) {
 			std::cout << "\txyzPoints : " << xyzPoints[j] << std::endl;
 			std::cout << "\ttriangleIndices : " << triangleIndices[j] << std::endl;
 			std::cout << "\t--------------------------------------------------" << std::endl;
 		}
-		deserializeActivity(faultTriRepSet[i]);
+		deserializeActivity(faultTriRep);
 
-		showAllProperties(faultTriRepSet[i]);
+		showAllProperties(faultTriRep);
 	}
 
 	std::cout << "HORIZONS" << endl;
-	for (size_t i = 0; i < horizonSet.size(); i++) {
-		RESQML2_NS::BoundaryFeature * horFeature = horizonSet[i];
+	for (auto* horFeature : horizonSet) {
 		showAllMetadata(horFeature);
 		if (dynamic_cast<RESQML2_0_1_NS::Horizon*>(horFeature) != nullptr && static_cast<RESQML2_0_1_NS::Horizon*>(horFeature)->hasAnAge()) {
 			cout << "Age " << static_cast<RESQML2_0_1_NS::Horizon*>(horFeature)->getAge() << " years" << endl;
@@ -4453,64 +4451,64 @@ void deserialize(const string & inputFile)
 	}
 
 	std::cout << "HORIZONS GRID 2D REP" << endl;
-	for (size_t i = 0; i < horizonGrid2dSet.size(); i++) {
-		showAllMetadata(horizonGrid2dSet[i]);
+	for (auto* horizonGrid2d : horizonGrid2dSet) {
+		showAllMetadata(horizonGrid2d);
 
-		cout << "X origin " << horizonGrid2dSet[i]->getXOriginInGlobalCrs() << endl;
-		cout << "Y origin " << horizonGrid2dSet[i]->getYOriginInGlobalCrs() << endl;
+		cout << "X origin " << horizonGrid2d->getXOriginInGlobalCrs() << endl;
+		cout << "Y origin " << horizonGrid2d->getYOriginInGlobalCrs() << endl;
 
-		cout << "I Node Count " << horizonGrid2dSet[i]->getNodeCountAlongIAxis() << endl;
-		cout << "J Node Count " << horizonGrid2dSet[i]->getNodeCountAlongJAxis() << endl;
-		std::unique_ptr<double[]> zValues(new double[horizonGrid2dSet[i]->getNodeCountAlongIAxis() * horizonGrid2dSet[i]->getNodeCountAlongJAxis()]);
-		horizonGrid2dSet[i]->getZValuesInGlobalCrs(zValues.get());
+		cout << "I Node Count " << horizonGrid2d->getNodeCountAlongIAxis() << endl;
+		cout << "J Node Count " << horizonGrid2d->getNodeCountAlongJAxis() << endl;
+		std::unique_ptr<double[]> zValues(new double[horizonGrid2d->getNodeCountAlongIAxis() * horizonGrid2d->getNodeCountAlongJAxis()]);
+		horizonGrid2d->getZValuesInGlobalCrs(zValues.get());
 		std::cout << "First zValue is : " << zValues[0] << std::endl;
 		std::cout << "Second zValue is : " << zValues[1] << std::endl;
 		std::cout << "Third zValue is : " << zValues[2] << std::endl;
 		std::cout << "Fourth zValue is : " << zValues[3] << std::endl;
 		std::cout << "Fifth zValue is : " << zValues[4] << std::endl;
-		if (horizonGrid2dSet[i]->getSupportingRepresentation() != nullptr) {
-			horizonGrid2dSet[i]->getSupportingRepresentation()->getZValuesInGlobalCrs(zValues.get());
+		if (horizonGrid2d->getSupportingRepresentation() != nullptr) {
+			horizonGrid2d->getSupportingRepresentation()->getZValuesInGlobalCrs(zValues.get());
 			std::cout << "Supporting Representation first zValue is : " << zValues[0] << std::endl;
 			std::cout << "Supporting Representation second zValue is : " << zValues[1] << std::endl;
 			std::cout << "Supporting Representation third zValue is : " << zValues[2] << std::endl;
 			std::cout << "Supporting Representation fourth zValue is : " << zValues[3] << std::endl;
 			std::cout << "Supporting Representation fifth zValue is : " << zValues[4] << std::endl;
 		}
-		cout << "XIOffset : " << horizonGrid2dSet[i]->getXIOffsetInGlobalCrs() << endl;
-		cout << "YIOffset : " << horizonGrid2dSet[i]->getYIOffsetInGlobalCrs() << endl;
-		cout << "XJOffset : " << horizonGrid2dSet[i]->getXJOffsetInGlobalCrs() << endl;
-		cout << "YJOffset : " << horizonGrid2dSet[i]->getYJOffsetInGlobalCrs() << endl;
-		if (horizonGrid2dSet[i]->isISpacingConstant()) {
-			cout << "Spacing in I is constant : " << horizonGrid2dSet[i]->getISpacing() << endl;
+		cout << "XIOffset : " << horizonGrid2d->getXIOffsetInGlobalCrs() << endl;
+		cout << "YIOffset : " << horizonGrid2d->getYIOffsetInGlobalCrs() << endl;
+		cout << "XJOffset : " << horizonGrid2d->getXJOffsetInGlobalCrs() << endl;
+		cout << "YJOffset : " << horizonGrid2d->getYJOffsetInGlobalCrs() << endl;
+		if (horizonGrid2d->isISpacingConstant()) {
+			cout << "Spacing in I is constant : " << horizonGrid2d->getISpacing() << endl;
 		}
 		else {
 			cout << "Spacing in I is not constant." << endl;
 		}
-		if (horizonGrid2dSet[i]->isJSpacingConstant()) {
-			cout << "Spacing in J is constant : " << horizonGrid2dSet[i]->getJSpacing() << endl;
+		if (horizonGrid2d->isJSpacingConstant()) {
+			cout << "Spacing in J is constant : " << horizonGrid2d->getJSpacing() << endl;
 		}
 		else {
 			cout << "Spacing in J is not constant." << endl;
 		}
 
-		deserializeActivity(horizonGrid2dSet[i]);
-		showAllProperties(horizonGrid2dSet[i]);
+		deserializeActivity(horizonGrid2d);
+		showAllProperties(horizonGrid2d);
 	}
 
 	std::cout << "HORIZONS TRI REP" << endl;
-	for (size_t i = 0; i < horizonTriRepSet.size(); i++) {
-		showAllMetadata(horizonTriRepSet[i]);
+	for (auto* horizonTriRep : horizonTriRepSet) {
+		showAllMetadata(horizonTriRep);
 
-		const ULONG64 pointCount = horizonTriRepSet[i]->getXyzPointCountOfAllPatches();
-		unsigned int triangleCount = horizonTriRepSet[i]->getTriangleCountOfAllPatches();
+		const ULONG64 pointCount = horizonTriRep->getXyzPointCountOfAllPatches();
+		unsigned int triangleCount = horizonTriRep->getTriangleCountOfAllPatches();
 		cout << "point Count " << pointCount << endl;
 		cout << "triangle Count " << triangleCount << endl;
 
 		std::cout << "\tHORIZONS TRI REP GEOMETRY" << endl;
 		std::unique_ptr<double[]> xyzPoints(new double[pointCount * 3]);
-		horizonTriRepSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(xyzPoints.get());
+		horizonTriRep->getXyzPointsOfAllPatchesInGlobalCrs(xyzPoints.get());
 		std::unique_ptr<unsigned int[]> triangleIndices(new unsigned int[triangleCount * 3]);
-		horizonTriRepSet[i]->getTriangleNodeIndicesOfAllPatches(triangleIndices.get());
+		horizonTriRep->getTriangleNodeIndicesOfAllPatches(triangleIndices.get());
 		for (unsigned int j = 0; j < 5; j++)
 		{
 			std::cout << "\txyzPoints : " << xyzPoints[j] << std::endl;
@@ -4518,19 +4516,19 @@ void deserialize(const string & inputFile)
 			std::cout << "\t--------------------------------------------------" << std::endl;
 		}
 
-		const unsigned int patchCount = horizonTriRepSet[i]->getPatchCount();
+		const unsigned int patchCount = horizonTriRep->getPatchCount();
 		for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
-			RESQML2_NS::AbstractRepresentation* seismicSupport = horizonTriRepSet[i]->getSeismicSupportOfPatch(patchIndex);
+			RESQML2_NS::AbstractRepresentation* seismicSupport = horizonTriRep->getSeismicSupportOfPatch(patchIndex);
 			if (seismicSupport != nullptr) {
-				const ULONG64 pointCountForPatch = horizonTriRepSet[i]->getXyzPointCountOfPatch(patchIndex);
+				const ULONG64 pointCountForPatch = horizonTriRep->getXyzPointCountOfPatch(patchIndex);
 				cout << "Seismic support of patch " << patchIndex << " is : " << seismicSupport->getTitle() << endl;
 				std::unique_ptr<double[]> inlines(new double[pointCountForPatch]);
-				horizonTriRepSet[i]->getInlinesOfPointsOfPatch(patchIndex, inlines.get());
+				horizonTriRep->getInlinesOfPointsOfPatch(patchIndex, inlines.get());
 				for (unsigned int index = 0; index < pointCountForPatch; index++) {
 					std::cout << "\tinline : " << inlines[index] << std::endl;
 				}
 				std::unique_ptr<double[]> crosslines(new double[pointCountForPatch]);
-				horizonTriRepSet[i]->getCrosslinesOfPointsOfPatch(patchIndex, crosslines.get());
+				horizonTriRep->getCrosslinesOfPointsOfPatch(patchIndex, crosslines.get());
 				for (unsigned int index = 0; index < pointCountForPatch; index++) {
 					std::cout << "\tcrossline : " << crosslines[index] << std::endl;
 				}
@@ -4540,80 +4538,78 @@ void deserialize(const string & inputFile)
 			}
 		}
 
-		deserializeActivity(horizonTriRepSet[i]);
-		showAllProperties(horizonTriRepSet[i]);
+		deserializeActivity(horizonTriRep);
+		showAllProperties(horizonTriRep);
 	}
 
 	std::cout << "UNCLASSIFIED TRI REP" << endl;
-	for (size_t i = 0; i < unclassifiedTriRepSet.size(); i++) {
-		showAllMetadata(unclassifiedTriRepSet[i]);
-		deserializeActivity(unclassifiedTriRepSet[i]);
-		showAllProperties(unclassifiedTriRepSet[i]);
+	for (auto* unclassifiedTriRep : unclassifiedTriRepSet) {
+		showAllMetadata(unclassifiedTriRep);
+		deserializeActivity(unclassifiedTriRep);
+		showAllProperties(unclassifiedTriRep);
 	}
 
 	std::cout << "HORIZONS SINGLE POLYLINE REP" << endl;
-	for (size_t i = 0; i < horizonSinglePolylineRepSet.size(); i++)
+	for (auto* horizonSinglePolylineRep : horizonSinglePolylineRepSet)
 	{
-		showAllMetadata(horizonSinglePolylineRepSet[i]);
+		showAllMetadata(horizonSinglePolylineRep);
 
-		const unsigned int patchCount = horizonSinglePolylineRepSet[i]->getPatchCount();
+		const unsigned int patchCount = horizonSinglePolylineRep->getPatchCount();
 		for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
-			RESQML2_NS::AbstractRepresentation* seismicSupport = horizonSinglePolylineRepSet[i]->getSeismicSupportOfPatch(patchIndex);
+			RESQML2_NS::AbstractRepresentation* seismicSupport = horizonSinglePolylineRep->getSeismicSupportOfPatch(patchIndex);
 			if (seismicSupport != nullptr) {
 				cout << "Seismic support of patch " << patchIndex << " is : " << seismicSupport->getTitle() << endl;
-				std::unique_ptr<double[]> lineAbscissa(new double[horizonSinglePolylineRepSet[i]->getXyzPointCountOfPatch(patchIndex)]);
-				horizonSinglePolylineRepSet[i]->getSeismicLineAbscissaOfPointsOfPatch(patchIndex, lineAbscissa.get());
+				std::unique_ptr<double[]> lineAbscissa(new double[horizonSinglePolylineRep->getXyzPointCountOfPatch(patchIndex)]);
+				horizonSinglePolylineRep->getSeismicLineAbscissaOfPointsOfPatch(patchIndex, lineAbscissa.get());
 
-				for (ULONG64 j = 0; j < horizonSinglePolylineRepSet[i]->getXyzPointCountOfPatch(patchIndex); j++) {
+				for (ULONG64 j = 0; j < horizonSinglePolylineRep->getXyzPointCountOfPatch(patchIndex); j++) {
 					std::cout << "line Abscissa : " << lineAbscissa[j] << std::endl;
 				}
 			}
 		}
 
-		showAllProperties(horizonSinglePolylineRepSet[i]);
+		showAllProperties(horizonSinglePolylineRep);
 	}
 
 	deserializeSealedSurfaceFramework(repo);
 	deserializeSealedVolumeFramework(repo);
 
 	std::cout << "STRATI COLUMN" << endl;
-	for (size_t i = 0; i < stratiColumnSet.size(); i++)
-	{
-		deserializeStratiColumn(stratiColumnSet[i], enumStrMapper);
+	for (auto* stratiColumn : stratiColumnSet) {
+		deserializeStratiColumn(stratiColumn, enumStrMapper);
 	}
 
 	std::cout << "WELLBORES" << endl;
-	for (size_t i = 0; i < wellboreSet.size(); i++)
+	for (auto* wellbore : wellboreSet)
 	{
-		showAllMetadata(wellboreSet[i]);
-		witsmlWellbore = wellboreSet[i]->getWitsmlWellbore();
+		showAllMetadata(wellbore);
+		witsmlWellbore = wellbore->getWitsmlWellbore();
 		if (witsmlWellbore != nullptr) {
 			std::cout << "Associated with witsml well bore " << witsmlWellbore->getTitle()
 				<< " with GUID " << witsmlWellbore->getUuid() << " and witsml well " << witsmlWellbore->getWell()->getTitle()
 				<< " with GUID " << witsmlWellbore->getWell()->getUuid() << std::endl;
 		}
-		for (size_t j = 0; j < wellboreSet[i]->getInterpretationSet().size(); j++) {
-			for (size_t k = 0; k < wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet().size(); k++) {
-				if (wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]->getXmlTag() == RESQML2_NS::WellboreMarkerFrameRepresentation::XML_TAG) {
-					RESQML2_NS::WellboreMarkerFrameRepresentation const * wmf = static_cast<RESQML2_NS::WellboreMarkerFrameRepresentation const *>(wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]);
-					vector<RESQML2_NS::WellboreMarker *> marketSet = wmf->getWellboreMarkerSet();
-					for (size_t markerIndex = 0; markerIndex < marketSet.size(); ++markerIndex) {
-						std::cout << "marker : " << marketSet[markerIndex]->getTitle() << std::endl;
-						if (marketSet[markerIndex]->getBoundaryFeatureInterpretation() != nullptr) {
-							std::cout << "marker boundary feature : " << marketSet[markerIndex]->getBoundaryFeatureInterpretation()->getTitle() << std::endl;
+		for (auto* interp : wellbore->getInterpretationSet()) {
+			for (auto* rep : interp->getRepresentationSet()) {
+				if (rep->getXmlTag() == RESQML2_NS::WellboreMarkerFrameRepresentation::XML_TAG) {
+					RESQML2_NS::WellboreMarkerFrameRepresentation const * wmf = static_cast<RESQML2_NS::WellboreMarkerFrameRepresentation const *>(rep);
+					for (auto* marker : wmf->getWellboreMarkerSet()) {
+						std::cout << "marker : " << marker->getTitle() << std::endl;
+						if (marker->getBoundaryFeatureInterpretation() != nullptr) {
+							std::cout << "marker boundary feature : " << marker->getBoundaryFeatureInterpretation()->getTitle() << std::endl;
 						}
 					}
 
-					for (size_t l = 0; l < wmf->getPropertySet().size(); ++l) {
-						if (wmf->getPropertySet()[l]->getXmlTag() == RESQML2_NS::CategoricalProperty::XML_TAG) {
-							RESQML2_NS::CategoricalProperty const * catVal = static_cast<RESQML2_NS::CategoricalProperty const *>(wmf->getPropertySet()[l]);
+					for (auto* prop : wmf->getPropertySet()) {
+						if (prop->getXmlTag() == RESQML2_NS::CategoricalProperty::XML_TAG) {
+							RESQML2_NS::CategoricalProperty const * catVal = static_cast<RESQML2_NS::CategoricalProperty const *>(prop);
 							if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG_64) {
 								std::cout << "Hdf datatype is NATIVE LONG" << std::endl;
-								LONG64* tmp = new LONG64[wmf->getMdValuesCount()];
-								catVal->getLongValuesOfPatch(0, tmp);
-								for (size_t ind = 0; ind < 2; ind++)
+								std::unique_ptr<LONG64[]> tmp(new LONG64[wmf->getMdValuesCount()]);
+								catVal->getLongValuesOfPatch(0, tmp.get());
+								for (size_t ind = 0; ind < 2; ind++) {
 									std::cout << "Value " << ind << " : " << tmp[ind] << std::endl;
-								delete[] tmp;
+								}
 							}
 							else if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::INT) {
 								std::cout << "Hdf datatype is NATIVE INT" << std::endl;
@@ -4630,52 +4626,49 @@ void deserialize(const string & inputFile)
 	deserializeLog(repo);
 
 	std::cout << endl << "WELLBORES CUBIC TRAJ" << endl;
-	for (size_t i = 0; i < wellboreCubicTrajSet.size(); ++i)
+	for (auto* wellboreCubicTraj : wellboreCubicTrajSet)
 	{
-		showAllMetadata(wellboreCubicTrajSet[i]);
-		std::cout << "MD Datum is : " << wellboreCubicTrajSet[i]->getMdDatum()->getTitle() << std::endl;
+		showAllMetadata(wellboreCubicTraj);
+		std::cout << "MD Datum is : " << wellboreCubicTraj->getMdDatum()->getTitle() << std::endl;
 		std::cout << "--------------------------------------------------" << std::endl;
-		if (wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches() == 0) {
+		if (wellboreCubicTraj->getXyzPointCountOfAllPatches() == 0) {
 			break;
 		}
-		double* mdValues = new double[wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches()];
-		wellboreCubicTrajSet[i]->getMdValues(mdValues);
-		double* xyzPt = new double[wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches() * 3];
-		wellboreCubicTrajSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(xyzPt);
-		for (size_t j = 0; j < wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches() * 3 && j < 10; j += 3)
-		{
+		std::unique_ptr<double[]> mdValues(new double[wellboreCubicTraj->getXyzPointCountOfAllPatches()]);
+		wellboreCubicTraj->getMdValues(mdValues.get());
+		std::unique_ptr<double[]> xyzPt(new double[wellboreCubicTraj->getXyzPointCountOfAllPatches() * 3]);
+		wellboreCubicTraj->getXyzPointsOfAllPatchesInGlobalCrs(xyzPt.get());
+		for (size_t j = 0; j < wellboreCubicTraj->getXyzPointCountOfAllPatches() * 3 && j < 10; j += 3) {
 			cout << "Trajectory station : MD=" << mdValues[j / 3] << " X=" << xyzPt[j] << " Y=" << xyzPt[j + 1] << " Z=" << xyzPt[j + 2] << endl;
 		}
-		delete[] mdValues;
-		delete[] xyzPt;
 		std::cout << "LOGS" << endl;
 		std::cout << "--------------------------------------------------" << std::endl;
-		std::vector<RESQML2_NS::WellboreFrameRepresentation *> wellboreFrameSet = wellboreCubicTrajSet[i]->getWellboreFrameRepresentationSet();
-		for (size_t j = 0; j < wellboreFrameSet.size(); j++)
-		{
-			showAllMetadata(wellboreFrameSet[j]);
-			std::cout << "Value Count : " << wellboreFrameSet[j]->getMdValuesCount() << endl;
-			if (wellboreFrameSet[j]->areMdValuesRegularlySpaced())
-			{
+		std::vector<RESQML2_NS::WellboreFrameRepresentation *> wellboreFrameSet = wellboreCubicTraj->getWellboreFrameRepresentationSet();
+		for (auto* wellboreFrame : wellboreFrameSet) {
+			showAllMetadata(wellboreFrame);
+			std::cout << "Value Count : " << wellboreFrame->getMdValuesCount() << endl;
+			if (wellboreFrame->areMdValuesRegularlySpaced()) {
 				std::cout << "Regularly spaced" << std::endl;
-				std::cout << "First Value : " << wellboreFrameSet[j]->getMdFirstValue() << endl;
-				std::cout << "Increment : " << wellboreFrameSet[j]->getMdConstantIncrementValue() << endl;
+				std::cout << "First Value : " << wellboreFrame->getMdFirstValue() << endl;
+				std::cout << "Increment : " << wellboreFrame->getMdConstantIncrementValue() << endl;
 			}
-			else
-			{
+			else {
 				std::cout << "Iregularly spaced" << std::endl;
 			}
-			if (wellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE)
+			if (wellboreFrame->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE) {
 				std::cout << "Hdf datatype is NATIVE DOUBLE" << std::endl;
-			else if (wellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::FLOAT)
+			}
+			else if (wellboreFrame->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::FLOAT) {
 				std::cout << "Hdf datatype is NATIVE FLOAT" << std::endl;
-			else if (wellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
+			}
+			else if (wellboreFrame->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN) {
 				std::cout << "Hdf datatype is UNKNOWN" << std::endl;
+			}
 			std::cout << std::endl;
-			if (dynamic_cast<RESQML2_NS::WellboreMarkerFrameRepresentation*>(wellboreFrameSet[j]) != nullptr) {
-				auto markerFrame = static_cast<RESQML2_NS::WellboreMarkerFrameRepresentation*>(wellboreFrameSet[j]);
+			if (dynamic_cast<RESQML2_NS::WellboreMarkerFrameRepresentation*>(wellboreFrame) != nullptr) {
+				auto* markerFrame = static_cast<RESQML2_NS::WellboreMarkerFrameRepresentation*>(wellboreFrame);
 				showAllMetadata(markerFrame);
-				vector<RESQML2_NS::WellboreMarker *> markerSet = markerFrame->getWellboreMarkerSet();
+				vector<RESQML2_NS::WellboreMarker*> markerSet = markerFrame->getWellboreMarkerSet();
 				std::unique_ptr<double[]> doubleMds(new double[markerFrame->getMdValuesCount()]);
 				markerFrame->getMdAsDoubleValues(doubleMds.get());
 				for (size_t mIndex = 0; mIndex < markerSet.size(); ++mIndex) {
@@ -4694,26 +4687,27 @@ void deserialize(const string & inputFile)
 				}
 			}
 #if WITH_RESQML2_2
-			if (wellboreFrameSet[j]->getXmlTag() == "SeismicWellboreFrameRepresentation") {
-				RESQML2_2_NS::SeismicWellboreFrameRepresentation* seismicWellboreFrame = static_cast<RESQML2_2_NS::SeismicWellboreFrameRepresentation*>(wellboreFrameSet[j]);
+			if (wellboreFrame->getXmlTag() == "SeismicWellboreFrameRepresentation") {
+				RESQML2_2_NS::SeismicWellboreFrameRepresentation* seismicWellboreFrame = static_cast<RESQML2_2_NS::SeismicWellboreFrameRepresentation*>(wellboreFrame);
 				std::cout << "Seismic reference datum : " << seismicWellboreFrame->getSeismicReferenceDatum() << std::endl;
 				std::cout << "Weathering velocity : " << seismicWellboreFrame->getWeatheringVelocity() << std::endl;
-				if (seismicWellboreFrame->areTimeValuesRegularlySpaced())
-				{
+				if (seismicWellboreFrame->areTimeValuesRegularlySpaced()) {
 					std::cout << "Time values regularly spaced" << std::endl;
 					std::cout << "First Value : " << seismicWellboreFrame->getTimeFirstValue() << endl;
 					std::cout << "Increment : " << seismicWellboreFrame->getTimeConstantIncrementValue() << endl;
 				}
-				else
-				{
+				else {
 					std::cout << "Time values iregularly spaced" << std::endl;
 				}
-				if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE)
+				if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE) {
 					std::cout << "Hdf datatype is NATIVE DOUBLE" << std::endl;
-				else if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::FLOAT)
+				}
+				else if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::FLOAT) {
 					std::cout << "Hdf datatype is NATIVE FLOAT" << std::endl;
-				else if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
+				}
+				else if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN) {
 					std::cout << "Hdf datatype is UNKNOWN" << std::endl;
+				}
 				std::cout << std::endl;
 			}
 #endif
@@ -4723,87 +4717,85 @@ void deserialize(const string & inputFile)
 	deserializeIjkGrid(repo);
 
 	std::cout << endl << "UNSTRUCTURED GRID REP" << endl;
-	for (size_t i = 0; i < unstructuredGridRepSet.size(); ++i)
-	{
-		showAllMetadata(unstructuredGridRepSet[i]);
-		if (!unstructuredGridRepSet[i]->isPartial() && unstructuredGridRepSet[i]->hasGeometry())
-		{
-			std::cout << "Node count is : " << unstructuredGridRepSet[i]->getXyzPointCountOfPatch(0) << std::endl;
+	for (auto* unstructuredGridRep :  unstructuredGridRepSet) {
+		showAllMetadata(unstructuredGridRep);
+		if (!unstructuredGridRep->isPartial() && unstructuredGridRep->hasGeometry()) {
+			std::cout << "Node count is : " << unstructuredGridRep->getXyzPointCountOfPatch(0) << std::endl;
 
 			ULONG64 faceCount = 0;
-			if (!unstructuredGridRepSet[i]->isFaceCountOfCellsConstant()) {
-				std::unique_ptr<ULONG64[]> faceCountOfCells(new ULONG64[unstructuredGridRepSet[i]->getCellCount()]);
-				unstructuredGridRepSet[i]->getCumulativeFaceCountPerCell(faceCountOfCells.get());
+			if (!unstructuredGridRep->isFaceCountOfCellsConstant()) {
+				std::unique_ptr<ULONG64[]> faceCountOfCells(new ULONG64[unstructuredGridRep->getCellCount()]);
+				unstructuredGridRep->getCumulativeFaceCountPerCell(faceCountOfCells.get());
 				std::cout << "Face count of cell 0 is : " << faceCountOfCells[0] << std::endl;
-				if (unstructuredGridRepSet[i]->getCellCount() > 1)
+				if (unstructuredGridRep->getCellCount() > 1)
 					std::cout << "Face count of cell 1 is : " << faceCountOfCells[1] - faceCountOfCells[0] << std::endl;
-				faceCount = faceCountOfCells[unstructuredGridRepSet[i]->getCellCount() - 1];
+				faceCount = faceCountOfCells[unstructuredGridRep->getCellCount() - 1];
 			}
 			else {
-				std::cout << "Face count of cell is constant : " << unstructuredGridRepSet[i]->getConstantFaceCountOfCells() << std::endl;
-				faceCount = unstructuredGridRepSet[i]->getConstantFaceCountOfCells() * unstructuredGridRepSet[i]->getCellCount();
+				std::cout << "Face count of cell is constant : " << unstructuredGridRep->getConstantFaceCountOfCells() << std::endl;
+				faceCount = unstructuredGridRep->getConstantFaceCountOfCells() * unstructuredGridRep->getCellCount();
 			}
-			if (!unstructuredGridRepSet[i]->isNodeCountOfFacesConstant()) 	{
+			if (!unstructuredGridRep->isNodeCountOfFacesConstant()) 	{
 				std::unique_ptr<ULONG64[]> nodeCountOfFaces(new ULONG64[faceCount]);
-				unstructuredGridRepSet[i]->getCumulativeNodeCountPerFace(nodeCountOfFaces.get());
+				unstructuredGridRep->getCumulativeNodeCountPerFace(nodeCountOfFaces.get());
 				std::cout << "Node count of face 0 is : " << nodeCountOfFaces[0] << std::endl;
 				if (faceCount > 1)
 					std::cout << "Node count of face 1 is : " << nodeCountOfFaces[1] - nodeCountOfFaces[0] << std::endl;
 			}
 			else {
-				std::cout << "Node count of face is constant : " << unstructuredGridRepSet[i]->getConstantNodeCountOfFaces() << std::endl;
+				std::cout << "Node count of face is constant : " << unstructuredGridRep->getConstantNodeCountOfFaces() << std::endl;
 			}
 
 
 			std::cout << "Reading XYZ points" << std::endl;
-			std::unique_ptr<double[]> gridPoints(new double[unstructuredGridRepSet[i]->getXyzPointCountOfPatch(0) * 3]);
-			unstructuredGridRepSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(gridPoints.get());
+			std::unique_ptr<double[]> gridPoints(new double[unstructuredGridRep->getXyzPointCountOfPatch(0) * 3]);
+			unstructuredGridRep->getXyzPointsOfAllPatchesInGlobalCrs(gridPoints.get());
 			std::cout << "DONE" << std::endl;
 			std::cout << "--------------------------------------------------" << std::endl;
 
-			unstructuredGridRepSet[i]->loadGeometry();
+			unstructuredGridRep->loadGeometry();
 
 			std::cout << "In memory" << std::endl;
-			for (unsigned long cellIndex = 0; cellIndex < unstructuredGridRepSet[i]->getCellCount(); ++cellIndex) {
-				std::cout << "Face count of cell " << cellIndex << " is : " << unstructuredGridRepSet[i]->getFaceCountOfCell(cellIndex) << std::endl;
-				for (unsigned int faceIndex = 0; faceIndex < unstructuredGridRepSet[i]->getFaceCountOfCell(cellIndex); ++faceIndex) {
-					std::cout << "Node count of face " << faceIndex << " of cell " << cellIndex << " is : " << unstructuredGridRepSet[i]->getNodeCountOfFaceOfCell(cellIndex, faceIndex) << std::endl;
-					for (unsigned int nodeIndex = 0; nodeIndex < unstructuredGridRepSet[i]->getNodeCountOfFaceOfCell(cellIndex, faceIndex); ++nodeIndex) {
-						std::cout << "Node indice " << nodeIndex << " of face " << faceIndex << " of cell " << cellIndex << " is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] << std::endl;
-						std::cout << "X= " <<  gridPoints.get()[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3] << " Y= " <<  gridPoints.get()[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3+1 ] << " Z= " <<  gridPoints.get()[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3+ 2 ] << std::endl;
+			for (ULONG64 cellIndex = 0; cellIndex < unstructuredGridRep->getCellCount(); ++cellIndex) {
+				std::cout << "Face count of cell " << cellIndex << " is : " << unstructuredGridRep->getFaceCountOfCell(cellIndex) << std::endl;
+				for (unsigned int faceIndex = 0; faceIndex < unstructuredGridRep->getFaceCountOfCell(cellIndex); ++faceIndex) {
+					std::cout << "Node count of face " << faceIndex << " of cell " << cellIndex << " is : " << unstructuredGridRep->getNodeCountOfFaceOfCell(cellIndex, faceIndex) << std::endl;
+					for (unsigned int nodeIndex = 0; nodeIndex < unstructuredGridRep->getNodeCountOfFaceOfCell(cellIndex, faceIndex); ++nodeIndex) {
+						std::cout << "Node indice " << nodeIndex << " of face " << faceIndex << " of cell " << cellIndex << " is : " << unstructuredGridRep->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] << std::endl;
+						std::cout << "X= " <<  gridPoints.get()[unstructuredGridRep->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3] << " Y= " <<  gridPoints.get()[unstructuredGridRep->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3+1 ] << " Z= " <<  gridPoints.get()[unstructuredGridRep->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3+ 2 ] << std::endl;
 					}
 				}
 			}
 
-			unstructuredGridRepSet[i]->unloadGeometry();
+			unstructuredGridRep->unloadGeometry();
 
-			showAllProperties(unstructuredGridRepSet[i]);
+			showAllProperties(unstructuredGridRep);
 		}
 
-		showAllSubRepresentations(unstructuredGridRepSet[i]->getSubRepresentationSet());
+		showAllSubRepresentations(unstructuredGridRep->getSubRepresentationSet());
 	}
 
 	std::cout << endl << "ONLY PARTIAL SUBREPRESENTATIONS" << endl;
 	vector<RESQML2_NS::SubRepresentation *> onlyPartialSubReps;
-	for (size_t i = 0; i < subRepresentationSet.size(); ++i) {
-		if (subRepresentationSet[i]->isPartial()) {
-			onlyPartialSubReps.push_back(subRepresentationSet[i]);
+	for (auto* subRep : subRepresentationSet) {
+		if (subRep->isPartial()) {
+			onlyPartialSubReps.push_back(subRep);
 		}
 	}
 	showAllSubRepresentations(onlyPartialSubReps);
 
 	std::cout << endl << "TIME SERIES" << endl;
-	for (size_t i = 0; i < timeSeriesSet.size(); ++i) {
-		showAllMetadata(timeSeriesSet[i]);
-		for (unsigned int j = 0; j < timeSeriesSet[i]->getTimestampCount(); ++j) {
-			time_t creation = timeSeriesSet[i]->getTimestamp(j);
+	for (auto* timeSeries : timeSeriesSet) {
+		showAllMetadata(timeSeries);
+		for (unsigned int j = 0; j < timeSeries->getTimestampCount(); ++j) {
+			time_t creation = timeSeries->getTimestamp(j);
 			std::cout << "Timestamp " << j << " is (unix timestamp) : " << creation << std::endl;
-			tm creationTm = timeSeriesSet[i]->getTimestampAsTimeStructure(j);
+			tm creationTm = timeSeries->getTimestampAsTimeStructure(j);
 			std::cout << "Timestamp " << j << " is (struct tm) : " << 1900 + creationTm.tm_year << "-" << creationTm.tm_mon + 1 << "-" << creationTm.tm_mday << "T" << creationTm.tm_hour << ":" << creationTm.tm_min << ":" << creationTm.tm_sec << std::endl;
 		}
-		for (size_t j = 0; j < timeSeriesSet[i]->getPropertySet().size(); ++j) 	{
+		for (size_t j = 0; j < timeSeries->getPropertySet().size(); ++j) 	{
 			std::cout << endl << "\tPROPERTIES" << endl;
-			showAllMetadata(timeSeriesSet[i]->getPropertySet()[j]);
+			showAllMetadata(timeSeries->getPropertySet()[j]);
 		}
 	}
 
@@ -4818,34 +4810,6 @@ void deserialize(const string & inputFile)
 
 	pck.close();
 }
-
-/*
-#include <ctime>
-// Performance testing
-int main(int argc, char **argv)
-{
-string filePath("../../testingPackageCpp.epc");
-COMMON_NS::EpcDocument pck(filePath, COMMON_NS::EpcDocument::OVERWRITE);
-EML2_NS::AbstractHdfProxy* hdfProxy = pck.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5" );
-unsigned long long dims2[3] = {152, 1000, 1000};
-float * testingValues2 = new float[152000000];
-std::clock_t startClock;
-time_t startTime;
-double duration;
-for (unsigned int i = 0; i < 20; ++i) {
-startClock = std::clock();
-startTime = time(0);
-ostringstream datasetName;
-datasetName << "testingDataset"  << i;
-hdfProxy->writeArrayNdOfFloatValues("testingGroup", datasetName.str(), testingValues2, dims2, 3);
-std::cout<<"duration (clock) : "<< ( std::clock() - startClock ) / (double) CLOCKS_PER_SEC <<'\n';
-std::cout<<"duration (time) : "<< difftime(time(0), startTime)<<'\n';
-}
-pck.serialize();
-hdfProxy->close();
-delete [] testingValues2;
-}
-*/
 
 // filepath is defined in a macro to better check memory leak
 #define filePath "../../testingPackageCpp.epc"
@@ -4862,13 +4826,9 @@ int main()
 	return 1;
 	}*/
 
-	//cout << "Press enter to continue..." << endl;
-	//cin.get();
-
 #ifdef _WIN32
 	_CrtDumpMemoryLeaks();
 #endif
 
 	return 0;
 }
-

@@ -20,10 +20,9 @@ under the License.
 
 #include "catch.hpp"
 
-#include "resqml2_test/WellboreInterpretationTest.h"
 #include "resqml2_test/WellboreTrajectoryRepresentationTest.h"
 
-#include "resqml2/WellboreInterpretation.h"
+#include "resqml2_0_1/WellboreInterpretation.h"
 #include "resqml2/WellboreTrajectoryRepresentation.h"
 
 #include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
@@ -32,6 +31,8 @@ under the License.
 #include "resqml2_2/WellboreMarker.h"
 
 #include "witsml2_0/WellboreMarker.h"
+
+#include "tools/GuidTools.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -53,7 +54,7 @@ void WellboreMarkerFrameRepresentationTest::initRepoHandler() {
 	// creating dependencies
 	WellboreTrajectoryRepresentationTest trajTest(repo, true);
 
-	WellboreInterpretation * interp = repo->getDataObjectByUuid<WellboreInterpretation>(WellboreInterpretationTest::defaultUuid);
+	WellboreInterpretation* interp = repo->createPartial<RESQML2_0_1_NS::WellboreInterpretation>(GuidTools::generateUidAsString(), "");
 	WellboreTrajectoryRepresentation * traj = repo->getDataObjectByUuid<WellboreTrajectoryRepresentation>(WellboreTrajectoryRepresentationTest::defaultUuid);
 
 	// WellboreFeature marker frame
