@@ -70,8 +70,8 @@ void WellboreGeometry::setWellbore(Wellbore* witsmlWellbore)
 
 GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(WellboreGeometry, MdBase, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
 
-GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(WellboreGeometry, GapAir, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
-GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(WellboreGeometry, DepthWaterMean, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(WellboreGeometry, GapAir, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_eml21__LengthUom2s, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(WellboreGeometry, DepthWaterMean, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_eml21__LengthUom2s, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
 
 //***************************************
 //************** SECTION ****************
