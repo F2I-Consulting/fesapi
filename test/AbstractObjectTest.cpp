@@ -19,10 +19,8 @@ under the License.
 #include "AbstractObjectTest.h"
 
 #include "catch.hpp"
-#include "AbstractTest.h"
 
 #include "common/DataObjectRepository.h"
-#include "common/AbstractObject.h"
 
 using namespace std;
 using namespace commontest;

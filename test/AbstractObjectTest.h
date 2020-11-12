@@ -19,7 +19,6 @@ under the License.
 #pragma once
 
 #include "AbstractTest.h"
-#include <iostream>
 
 namespace COMMON_NS {
 	class DataObjectRepository;

@@ -22,7 +22,6 @@ under the License.
 #include "resqml2_test/ActivityTemplateGenericCreationTest.h"
 #include "resqml2_test/HorizonInterpretationTest.h"
 
-#include "common/EpcDocument.h"
 #include "eml2/ActivityTemplate.h"
 #include "eml2/Activity.h"
 #include "resqml2/HorizonInterpretation.h"
@@ -80,7 +79,7 @@ void ActivityCreationTest::readRepoHandler() {
 	REQUIRE( activity != nullptr );
 
 	// getting the horizon interpretation
-	RESQML2_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_NS::HorizonInterpretation*>(repo->getDataObjectByUuid(HorizonInterpretationTest::defaultUuid));
+	RESQML2_NS::HorizonInterpretation * horizonInterpretation = repo->getDataObjectByUuid<RESQML2_NS::HorizonInterpretation>(HorizonInterpretationTest::defaultUuid);
 	REQUIRE( horizonInterpretation != nullptr );
 
 	// testing the activity

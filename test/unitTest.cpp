@@ -40,6 +40,7 @@ under the License.
 #include "resqml2_test/CommentProperty.h"
 #include "resqml2_test/ContinuousPropertyOnWellFrameTest.h"
 #include "resqml2_test/GridConnectionSetOnPartialGridSet.h"
+#include "resqml2_test/WellboreTrajectoryRepresentationTest.h"
 #include "resqml2_test/WellboreMarkerFrameRepresentationTest.h"
 #include "resqml2_test/WellboreFrameRepresentationTest.h"
 #include "resqml2_test/WellboreRegularFrameRepresentationTest.h"
@@ -104,13 +105,7 @@ using namespace witsml2_test;
 #else
 	#define FESAPI_TEST(name, tags, classTest)  FESAPI_TEST2_0(name, tags, classTest)
 #endif
-/*
-TEST_CASE( "Deserialize an EPC document", "[epc]")
-{
-	EpcDocumentTest test("../../testingPackageCpp.epc");
-	test.deserialize();
-}
-*/
+
 #if WITH_RESQML2_2
 FESAPI_TEST2_2("Export and import graphical information set", "[graphical information]", GraphicalInformationSetTest)
 FESAPI_TEST2_2("Export and import discrete color map on a discrete property", "[graphical information][color map][discrete color map]", DiscreteColorMapTest)
@@ -120,7 +115,7 @@ FESAPI_TEST2_2("Export and import regular wellbore frame", "[well]", resqml2_2te
 FESAPI_TEST2_2("Export and import seismic wellbore frame", "[well]", SeismicWellboreFrameRepresentationTest)
 FESAPI_TEST2_2("Export and import regular seismic wellbore frame", "[well]", SeismicWellboreRegularFrameRepresentationTest)
 #endif
-TEST_CASE("Export and import an empty EPC document", "[repo]")
+TEST_CASE("Export and import an empty EPC document", "[epc]")
 {
 	EpcDocumentTest testIn("../../EpcDocumentTest");
 	testIn.serialize();
@@ -156,21 +151,32 @@ TEST_CASE("Test hdf5 opening mode", "[hdf]")
 
 FESAPI_TEST("Export and import a local depth 3d crs", "[crs]", LocalDepth3dCrsTest)
 
+// INTERPRETATION
 FESAPI_TEST("Export and import an horizon interpretation", "[interpretation]", HorizonInterpretationTest)
-
-FESAPI_TEST("Export and import a single patch triangulated set fault representation", "[representation]", FaultSinglePatchTriangulatedSetRepresentationTest)
-
-FESAPI_TEST("Export and import a multi patch triangulated set fault representation", "[representation]", FaultMultiPatchTriangulatedSetRepresentationTest)
-
 FESAPI_TEST("Export a multi domains interpreation", "[interpretation]", InterpretationDomain)
 
-FESAPI_TEST("Export and import a generic creation activity template", "[activity]", ActivityTemplateGenericCreationTest)
+// TRIANGULATION
+FESAPI_TEST("Export and import a single patch triangulated set fault representation", "[representation]", FaultSinglePatchTriangulatedSetRepresentationTest)
+FESAPI_TEST("Export and import a multi patch triangulated set fault representation", "[representation]", FaultMultiPatchTriangulatedSetRepresentationTest)
 
+// ACTIVITY
+FESAPI_TEST("Export and import a generic creation activity template", "[activity]", ActivityTemplateGenericCreationTest)
 FESAPI_TEST("Export and import an activity", "[activity]", ActivityCreationTest)
 
+// GRID
 FESAPI_TEST("Export and import a compressed ijk grid", "[grid]", CompressedIjkGridExplicitRepresentationTest)
 
 FESAPI_TEST("Export and import a 4*3*2 explicit right handed ijk grid", "[grid]", RightHanded4x3x2ExplicitIjkGrid)
+
+FESAPI_TEST("Export and import a LGR on a 4*3*2 explicit right handed ijk grid", "[grid]", LgrOnRightHanded4x3x2ExplicitIjkGrid)
+
+FESAPI_TEST("Export and import a singel tetra grid", "[grid]", OneTetrahedronUnstructuredGridRepresentationTest)
+FESAPI_TEST("Export and import an unstructured grid", "[grid]", UnstructuredGridTest)
+
+FESAPI_TEST("Export and import a subrepresentation on a partial grid connection set", "[grid]", SubRepresentationOnPartialGridConnectionSet)
+
+// fail
+//FESAPI_TEST("Export and import grid connection set on partial grid", "[grid]", GridConnectionSetOnPartialGridSet)
 
 TEST_CASE("Export and import a big explicit ijk grid", "[grid][property]")
 {
@@ -188,34 +194,24 @@ TEST_CASE("Export and import a big parametric ijk grid", "[grid][property]")
 	delete test;
 }
 
-FESAPI_TEST("Export and import a LGR on a 4*3*2 explicit right handed ijk grid", "[grid]", LgrOnRightHanded4x3x2ExplicitIjkGrid)
-
-FESAPI_TEST("Export and import a singel tetra grid", "[grid]", OneTetrahedronUnstructuredGridRepresentationTest)
-FESAPI_TEST("Export and import an unstructured grid", "[grid]", UnstructuredGridTest)
-
-FESAPI_TEST("Export and import a subrepresentation on a partial grid connection set", "[grid]", SubRepresentationOnPartialGridConnectionSet)
-
-
-// fail
-//FESAPI_TEST("Export and import grid connection set on partial grid", "[property]", GridConnectionSetOnPartialGridSet)
-
+// RESQML WELL
+FESAPI_TEST("Export and import a wellbore trajectory", "[well][trajectory]", WellboreTrajectoryRepresentationTest)
 FESAPI_TEST("Export and import a wellbore marker frame", "[well][stratigraphy]", WellboreMarkerFrameRepresentationTest)
-
 FESAPI_TEST("Export and import a wellbore frame (regular md spacings)", "[well]", resqml2_test::WellboreRegularFrameRepresentationTest)
 
 FESAPI_TEST("Export and import a wellbore frame (irregular md spacings) with a single continuous property on node", "[well][property]", ContinuousPropertyOnWellFrameTest)
 FESAPI_TEST("Export and import a wellbore frame (irregular md spacings) with a single comment property on node", "[well][property]", CommentProperty)
-
 FESAPI_TEST("Export and import a wellbore frame (irregular md spacings) with a single discrete property on node using a local property kind", "[well][property]", DiscretePropertyUsingLocalKindOnWellFrameTest)
-
-FESAPI_TEST("Export and import a seismic lattice feature", "[seismic]", SeismicLatticeRepresentationTest)
-FESAPI_TEST("Export and import a seismic horizon grid 2d rep", "[seismic]", Grid2dRepresentationTest)
-FESAPI_TEST("Export and import an horizon on a seismic line", "[seismic]", HorizonOnSeismicLine)
-
+// WITSML WELL
 FESAPI_TEST("Export and import a WITSML well", "[well]", WellTest)
 FESAPI_TEST("Export and import a WITSML trajectory", "[well]", Trajectory)
 FESAPI_TEST("Export and import a WITSML perforation", "[well]", Perforation)
 FESAPI_TEST("Export and import a WITSML Wellbore Geometry", "[well]", WellboreGeometryTest)
+
+// SEISMIC
+FESAPI_TEST("Export and import a seismic lattice feature", "[seismic]", SeismicLatticeRepresentationTest)
+FESAPI_TEST("Export and import a seismic horizon grid 2d rep", "[seismic]", Grid2dRepresentationTest)
+FESAPI_TEST("Export and import an horizon on a seismic line", "[seismic]", HorizonOnSeismicLine)
 
 FESAPI_TEST("Export and import some multi realization properties", "[property]", MultirealPropertyTest)
 FESAPI_TEST("Check categorical property", "[property]", CategoricalProperty)

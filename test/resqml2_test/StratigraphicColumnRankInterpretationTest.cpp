@@ -21,14 +21,12 @@ under the License.
 #include <stdexcept>
 
 #include "catch.hpp"
-#include "resqml2_test/StratigraphicOrganizationTest.h"
-#include "resqml2_test/StratigraphicUnitInterpretationTest.h"
 
-#include "common/EpcDocument.h"
-#include "resqml2/Model.h"
+#include "resqml2_0_1/OrganizationFeature.h"
+#include "resqml2_0_1/StratigraphicUnitInterpretation.h"
 #include "resqml2/StratigraphicColumnRankInterpretation.h"
-#include "resqml2/StratigraphicUnitInterpretation.h"
-#include <stdexcept>
+
+#include "tools/GuidTools.h"
 
 using namespace std;
 using namespace resqml2_test;
@@ -38,13 +36,9 @@ using namespace RESQML2_NS;
 const char* StratigraphicColumnRankInterpretationTest::defaultUuid = "51f39ab2-3b1f-4da3-8541-324632357dd7";
 const char* StratigraphicColumnRankInterpretationTest::defaultTitle = "Strati Column Rank";
 
-const char* StratigraphicColumnRankInterpretationTest::defaultOverburdenUuid = "91622a20-e2a0-4123-a8b5-6540a1ff4f8f";
-const char* StratigraphicColumnRankInterpretationTest::defaultOverburdenTitle = "Overburden";
 const char* StratigraphicColumnRankInterpretationTest::defaultOverburdenInterpUuid = "80ba46c8-86e7-42ef-ab30-4718958f3707";
 const char* StratigraphicColumnRankInterpretationTest::defaultOverburdenInterpTitle = "Overburden Interp";
 
-const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenUuid = "88575500-4f85-4bea-9245-530e71867945";
-const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenTitle = "Underburden";
 const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenInterpUuid = "1914478a-e50b-4808-ad62-11201992024d";
 const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenInterpTitle = "Underburden Interp";
 
@@ -61,16 +55,10 @@ StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretation
 }
 
 void StratigraphicColumnRankInterpretationTest::initRepoHandler() {
-	// creating dependencies
-	StratigraphicOrganizationTest stratiOrgtTest(repo, true);
-	StratigraphicUnitInterpretationTest overburdenInterpTest(repo, true);
-	StratigraphicUnitInterpretationTest stratiLayerInterpTest(repo, true);
-	StratigraphicUnitInterpretationTest underburdenInterpTest(repo, true);
-
-	Model* stratiOrg = repo->getDataObjectByUuid<Model>(StratigraphicOrganizationTest::defaultUuid);
-	StratigraphicUnitInterpretation* overburdenInterp = repo->getDataObjectByUuid<StratigraphicUnitInterpretation>(defaultOverburdenInterpUuid);
-	StratigraphicUnitInterpretation* stratiLayerInterp = repo->getDataObjectByUuid<StratigraphicUnitInterpretation>(StratigraphicUnitInterpretationTest::defaultUuid);
-	StratigraphicUnitInterpretation* underburdenInterp = repo->getDataObjectByUuid<StratigraphicUnitInterpretation>(defaultUnderburdenInterpUuid);
+	Model* stratiOrg = repo->createPartial<RESQML2_0_1_NS::OrganizationFeature>(GuidTools::generateUidAsString(), "");
+	StratigraphicUnitInterpretation* overburdenInterp = repo->createPartial<RESQML2_0_1_NS::StratigraphicUnitInterpretation>(defaultOverburdenInterpUuid, defaultOverburdenInterpTitle);
+	StratigraphicUnitInterpretation* stratiLayerInterp = repo->createPartial<RESQML2_0_1_NS::StratigraphicUnitInterpretation>(GuidTools::generateUidAsString(), "");
+	StratigraphicUnitInterpretation* underburdenInterp = repo->createPartial<RESQML2_0_1_NS::StratigraphicUnitInterpretation>(defaultUnderburdenInterpUuid, defaultUnderburdenInterpTitle);
 
 	StratigraphicColumnRankInterpretation* stratiColumnRank = repo->createStratigraphicColumnRankInterpretationInApparentDepth(stratiOrg, defaultUuid, defaultTitle, 0);
 	REQUIRE(stratiColumnRank != nullptr);

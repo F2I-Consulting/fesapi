@@ -36,7 +36,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~Model() {}
+		virtual ~Model() = default;
 
 	protected:
 

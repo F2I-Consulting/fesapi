@@ -18,11 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreTrajectoryRepresentation.h"
 
+#include <array>
 #include <stdexcept>
 #include <limits>
+#include <math.h>
 
-#include "H5public.h"
-
+#include "AbstractLocal3dCrs.h"
 #include "DeviationSurveyRepresentation.h"
 #include "MdDatum.h"
 #include "WellboreFrameRepresentation.h"
@@ -33,6 +34,107 @@ using namespace gsoap_eml2_3;
 using namespace COMMON_NS;
 
 const char* WellboreTrajectoryRepresentation::XML_TAG = "WellboreTrajectoryRepresentation";
+
+void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
+	double const* inclinations, double const* azimuths, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
+	EML2_NS::AbstractHdfProxy* proxy, AbstractLocal3dCrs* localCrs)
+{
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
+	if (localCrs->getAxisOrder() != gsoap_resqml2_0_1::eml20__AxisOrder2d__easting_x0020northing) {
+		throw std::invalid_argument("Cannot compute inclinations and azimuths if the local CRS is not an easting northing one.");
+	}
+
+	std::unique_ptr<double[]> tangentVectors(new double[controlPointCount *3]);
+
+	size_t j = 0;
+	for (size_t i = 0; i < controlPointCount; ++i) {
+		const auto sinIncl = sin(inclinations[i]);
+		tangentVectors[j++] = sin(azimuths[i]) * sinIncl;
+		tangentVectors[j++] = cos(azimuths[i]) * sinIncl;
+		tangentVectors[j++] = localCrs->isDepthOriented() ? cos(inclinations[i]) : -cos(inclinations[i]);
+	}
+
+	// Tangent vectors are computed in the same uom and must be converted in the local CRS uses some different uoms.
+	auto projectedUom = localCrs->getProjectedCrsUnit();
+	auto verticalUom = localCrs->getVerticalCrsUnit();
+	if (projectedUom != verticalUom) {
+		if (projectedUom == gsoap_resqml2_0_1::eml20__LengthUom__m &&
+			verticalUom == gsoap_resqml2_0_1::eml20__LengthUom__ft) {
+			for (size_t i = 0; i < controlPointCount; ++i) {
+				tangentVectors[i * 3 + 2] *= 3.2808;
+			}
+		}
+		else if (projectedUom == gsoap_resqml2_0_1::eml20__LengthUom__ft &&
+			verticalUom == gsoap_resqml2_0_1::eml20__LengthUom__m) {
+			for (size_t i = 0; i < controlPointCount; ++i) {
+				tangentVectors[i * 3 + 2] /= 3.2808;
+			}
+		}
+		else {
+			throw logic_error("Cannot compute inclinations and azimuths if the aeral and vertical CRS have not the same unit of measure adn are different than m and ft.");
+		}
+	}
+
+	setGeometry(controlPoints, tangentVectors.get(), controlPointParameters, controlPointCount, lineKind, proxy, localCrs);
+}
+
+void WellboreTrajectoryRepresentation::getInclinationsAndAzimuths(double * inclinations, double * azimuths)
+{
+	auto* localCrs = getLocalCrs(0);
+	if (localCrs->getAxisOrder() != gsoap_resqml2_0_1::eml20__AxisOrder2d__easting_x0020northing) {
+		throw std::invalid_argument("Cannot compute inclinations and azimuths if the local CRS is not an easting northing one.");
+	}
+
+	std::unique_ptr<double[]> tangentVectors(new double[getXyzPointCountOfAllPatches() * 3]);
+	getTangentVectors(tangentVectors.get());
+
+	// We also need to locate our tangent vectors in a same unit of measure coordinate system.
+	ULONG64 controlPointCount = getXyzPointCountOfAllPatches();
+	auto projectedUom = localCrs->getProjectedCrsUnit();
+	auto verticalUom = localCrs->getVerticalCrsUnit();
+	if (projectedUom != verticalUom) {
+		if (projectedUom == gsoap_resqml2_0_1::eml20__LengthUom__m &&
+			verticalUom == gsoap_resqml2_0_1::eml20__LengthUom__ft) {
+			for (size_t i = 0; i < controlPointCount; ++i) {
+				tangentVectors[i * 3 + 2] /= 3.2808;
+			}
+		}
+		else if (projectedUom == gsoap_resqml2_0_1::eml20__LengthUom__ft &&
+			verticalUom == gsoap_resqml2_0_1::eml20__LengthUom__m) {
+			for (size_t i = 0; i < controlPointCount; ++i) {
+				tangentVectors[i * 3 + 2] *= 3.2808;
+			}
+		}
+		else {
+			throw logic_error("Cannot compute inclinations and azimuths if the aeral and vertical CRS have not the same unit of measure adn are different than m and ft.");
+		}
+	}
+
+	for (size_t i = 0; i < controlPointCount; ++i) {
+		size_t vectorIndex = i * 3;
+
+		// Norm of the tangent vector
+		double norm = sqrt(
+			tangentVectors[vectorIndex] * tangentVectors[vectorIndex] +
+			tangentVectors[vectorIndex + 1] * tangentVectors[vectorIndex + 1] +
+			tangentVectors[vectorIndex + 2] * tangentVectors[vectorIndex + 2]);
+		inclinations[i] = acos((localCrs->isDepthOriented() ? tangentVectors[vectorIndex + 2] : -tangentVectors[vectorIndex + 2]) / norm);
+
+		// Norm of the tangent vector projected on XY plan
+		norm = sqrt(
+			tangentVectors[vectorIndex] * tangentVectors[vectorIndex] +
+			tangentVectors[vectorIndex + 1] * tangentVectors[vectorIndex + 1]);
+		azimuths[i] = norm > 0 ? acos(tangentVectors[vectorIndex + 1] / norm) : .0;
+		if (tangentVectors[vectorIndex] < 0) {
+			azimuths[i] *= -1;
+		}
+	}
+}
 
 void WellboreTrajectoryRepresentation::loadTargetRelationships()
 {

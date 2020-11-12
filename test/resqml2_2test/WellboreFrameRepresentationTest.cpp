@@ -20,13 +20,14 @@ under the License.
 
 #include "catch.hpp"
 
-#include "resqml2_test/WellboreInterpretationTest.h"
 #include "resqml2_test/WellboreTrajectoryRepresentationTest.h"
 
-#include "resqml2/WellboreInterpretation.h"
+#include "resqml2_2/WellboreInterpretation.h"
 #include "resqml2/WellboreTrajectoryRepresentation.h"
 #include "resqml2/WellboreFrameRepresentation.h"
 #include "eml2/AbstractHdfProxy.h"
+
+#include "tools/GuidTools.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -51,7 +52,7 @@ void WellboreFrameRepresentationTest::initRepoHandler() {
 	// creating dependencies
 	resqml2_test::WellboreTrajectoryRepresentationTest trajTest(repo, true);
 
-	RESQML2_NS::WellboreInterpretation * interp = repo->getDataObjectByUuid<RESQML2_NS::WellboreInterpretation>(resqml2_test::WellboreInterpretationTest::defaultUuid);
+	RESQML2_NS::WellboreInterpretation* interp = repo->createPartial<RESQML2_2_NS::WellboreInterpretation>(GuidTools::generateUidAsString(), "");
 	RESQML2_NS::WellboreTrajectoryRepresentation * traj = repo->getDataObjectByUuid<RESQML2_NS::WellboreTrajectoryRepresentation>(resqml2_test::WellboreTrajectoryRepresentationTest::defaultUuid);
 
 	// getting the hdf proxy

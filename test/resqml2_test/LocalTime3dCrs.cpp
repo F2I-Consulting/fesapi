@@ -17,7 +17,6 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "LocalTime3dCrs.h"
-#include "common/EpcDocument.h"
 #include "../catch.hpp"
 
 using namespace resqml2_test;

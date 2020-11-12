@@ -19,7 +19,6 @@ under the License.
 #pragma once
 
 #include "AbstractTest.h"
-#include <iostream>
 
 namespace commontest {
 	class EpcDocumentTest : public AbstractTest {
