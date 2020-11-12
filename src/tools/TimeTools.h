@@ -18,8 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include <ctime>
-#include <string>
+#include "date.h"
 
 namespace timeTools
 {
@@ -57,5 +56,36 @@ namespace timeTools
 	 * @returns	A time_t.
 	 */
 	time_t timegm(struct tm *tm);
+
+	/**
+	 * Converts a UTC time represented by a point in time to the same UTC time represented by tm``struct.
+	 * From https://github.com/HowardHinnant/date/wiki/Examples-and-Recipes#components_to_time_point
+	 *
+	 * @param [in,out]	tp	The point in time to convert.
+	 *
+	 * @returns	the same point in time in a tm``struct.
+	 */
+	template <typename Clock, typename Duration>
+	std::tm to_calendar_time(std::chrono::time_point<Clock, Duration> tp)
+	{
+		using namespace date;
+		auto date = floor<days>(tp);
+		auto ymd = year_month_day(date);
+		auto weekday = year_month_weekday(date).weekday_indexed().weekday();
+		auto tod = make_time(tp - date);
+		days daysSinceJan1 = date - sys_days(ymd.year() / 1 / 1);
+
+		std::tm result{};
+		result.tm_sec = tod.seconds().count();
+		result.tm_min = tod.minutes().count();
+		result.tm_hour = tod.hours().count();
+		result.tm_mday = (ymd.day() - 0_d).count();
+		result.tm_mon = (ymd.month() - January).count();
+		result.tm_year = (ymd.year() - 1900_y).count();
+		result.tm_wday = (weekday - Sunday).count();
+		result.tm_yday = daysSinceJan1.count();
+		result.tm_isdst = -1; // Information not available
+		return result;
+	}
 }
 

@@ -29,8 +29,6 @@ under the License.
 #include "resqml2_2/SeismicWellboreFrameRepresentation.h"
 #include "resqml2/LocalTime3dCrs.h"
 
-#include "tools/GuidTools.h"
-
 using namespace std;
 using namespace COMMON_NS;
 using namespace RESQML2_NS;
@@ -56,7 +54,7 @@ void SeismicWellboreFrameRepresentationTest::initRepoHandler() {
 	// creating dependencies
 	resqml2_test::WellboreTrajectoryRepresentationTest trajTest(repo, true);
 
-	WellboreInterpretation* interp = repo->createPartial<RESQML2_2_NS::WellboreInterpretation>(GuidTools::generateUidAsString(), "");
+	WellboreInterpretation* interp = repo->createPartial<RESQML2_2_NS::WellboreInterpretation>("", "");
 	RESQML2_NS::WellboreTrajectoryRepresentation * traj = repo->getDataObjectByUuid<RESQML2_NS::WellboreTrajectoryRepresentation>(resqml2_test::WellboreTrajectoryRepresentationTest::defaultUuid);
 
 	// getting the hdf proxy

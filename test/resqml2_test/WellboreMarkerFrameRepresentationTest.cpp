@@ -32,8 +32,6 @@ under the License.
 
 #include "witsml2_0/WellboreMarker.h"
 
-#include "tools/GuidTools.h"
-
 using namespace std;
 using namespace COMMON_NS;
 using namespace RESQML2_NS;
@@ -54,7 +52,7 @@ void WellboreMarkerFrameRepresentationTest::initRepoHandler() {
 	// creating dependencies
 	WellboreTrajectoryRepresentationTest trajTest(repo, true);
 
-	WellboreInterpretation* interp = repo->createPartial<RESQML2_0_1_NS::WellboreInterpretation>(GuidTools::generateUidAsString(), "");
+	WellboreInterpretation* interp = repo->createPartial<RESQML2_0_1_NS::WellboreInterpretation>("", "");
 	WellboreTrajectoryRepresentation * traj = repo->getDataObjectByUuid<WellboreTrajectoryRepresentation>(WellboreTrajectoryRepresentationTest::defaultUuid);
 
 	// WellboreFeature marker frame

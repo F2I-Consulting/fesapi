@@ -25,9 +25,6 @@ under the License.
 #include "resqml2/MdDatum.h"
 #include "resqml2_0_1/WellboreInterpretation.h"
 #include "resqml2/WellboreTrajectoryRepresentation.h"
-
-#include "tools/GuidTools.h"
-
 using namespace std;
 using namespace resqml2_test;
 using namespace COMMON_NS;
@@ -53,8 +50,8 @@ WellboreTrajectoryRepresentationTest::WellboreTrajectoryRepresentationTest(DataO
 }
 
 void WellboreTrajectoryRepresentationTest::initRepoHandler() {
-	WellboreInterpretation* interp = repo->createPartial<RESQML2_0_1_NS::WellboreInterpretation>(GuidTools::generateUidAsString(), "");
-	MdDatum* mdDatum = repo->createMdDatum(GuidTools::generateUidAsString(), "", nullptr, gsoap_eml2_3::eml23__WellboreDatumReference__mean_x0020sea_x0020level, 275, 75, 0);
+	WellboreInterpretation* interp = repo->createPartial<RESQML2_0_1_NS::WellboreInterpretation>("", "");
+	MdDatum* mdDatum = repo->createMdDatum("", "", nullptr, gsoap_eml2_3::eml23__WellboreDatumReference__mean_x0020sea_x0020level, 275, 75, 0);
 
 	// creating the WellboreTrajectoryRepresentation in m and ft and depth
 	WellboreTrajectoryRepresentation* rep = repo->createWellboreTrajectoryRepresentation(interp, defaultUuid, defaultTitle, mdDatum);

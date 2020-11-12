@@ -47,13 +47,8 @@ std::string timeTools::convertMicrosecondUnixTimestampToIso(long long ts)
 */
 std::string timeTools::convertUnixTimestampToIso(time_t ts)
 {
-	char buf[20]; // 19 for the string below +1 for the terminating char
-	strftime(buf, 20, "%Y-%m-%dT%H:%M:%S", gmtime(&ts));
-
-	ostringstream oss;
-	oss << buf << 'Z';
-
-	return oss.str();
+	auto tmp = std::chrono::system_clock::from_time_t(ts);
+	return date::format("%FT%TZ", date::floor<std::chrono::seconds>(tmp));
 }
 
 time_t timeTools::convertIsoToUnixTimestamp(const std::string & s)

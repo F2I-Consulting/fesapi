@@ -28,12 +28,8 @@ under the License.
 #endif
 #include <algorithm>
 
-#if !defined(FESAPI_USE_BOOST_UUID)
-#include "../tools/GuidTools.h"
-#else
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
-#endif
 
 #include "../tools/TimeTools.h"
 
@@ -336,12 +332,9 @@ void AbstractObject::setUuid(const std::string & uuid)
 	}
 
 	if (uuid.empty()) {
-#if defined(FESAPI_USE_BOOST_UUID)
 		boost::uuids::random_generator gen;
 		const std::string uuidStr = boost::uuids::to_string(gen());
-#else
-		const std::string uuidStr = GuidTools::generateUidAsString();
-#endif
+
 		if (gsoapProxy2_0_1 != nullptr) { gsoapProxy2_0_1->uuid = uuidStr; }
 		else if (gsoapProxy2_1 != nullptr) { gsoapProxy2_1->uuid = uuidStr; }
 		else if (gsoapProxy2_2 != nullptr) { gsoapProxy2_2->uuid = uuidStr; }
@@ -419,13 +412,14 @@ void AbstractObject::setEditor(const std::string & editor)
 
 void AbstractObject::setCreation(time_t creation)
 {
+	std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(creation));
 	if (creation > 0) {
-		setCreation(*gmtime(&creation));
+		setCreation(tmConversion);
 	}
 	else {
 		time_t now;
 		time(&now);
-		setCreation(*gmtime(&now));
+		setCreation(tmConversion);
 	}
 }
 
@@ -536,7 +530,8 @@ void AbstractObject::setLastUpdate(time_t lastUpdate)
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (lastUpdate > 0) {
-		setLastUpdate(*gmtime(&lastUpdate));
+		std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(lastUpdate));
+		setLastUpdate(tmConversion);
 	}
 }
 

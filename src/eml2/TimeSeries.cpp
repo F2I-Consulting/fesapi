@@ -31,7 +31,8 @@ const char* TimeSeries::XML_TAG = "TimeSeries";
 
 void TimeSeries::pushBackTimestamp(time_t timestamp)
 {
-	pushBackTimestamp(*gmtime(&timestamp));
+	std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(timestamp));
+	pushBackTimestamp(tmConversion);
 }
 
 time_t TimeSeries::getTimestamp(unsigned int index) const
