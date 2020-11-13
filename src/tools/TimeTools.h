@@ -75,7 +75,7 @@ namespace timeTools
 		auto tod = make_time(tp - date);
 		days daysSinceJan1 = date - sys_days(ymd.year() / 1 / 1);
 
-		std::tm result{};
+		std::tm result;
 		result.tm_sec = tod.seconds().count();
 		result.tm_min = tod.minutes().count();
 		result.tm_hour = tod.hours().count();

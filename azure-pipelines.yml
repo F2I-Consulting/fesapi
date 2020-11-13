@@ -81,7 +81,6 @@ jobs:
             -DMINIZIP_LIBRARY_RELEASE=C:/Minizip-install/lib/minizip.lib
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
-            -DFESAPI_USE_BOOST_UUID=ON
             -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_69_0)/include
             -DWITH_EXAMPLE=TRUE
             -DWITH_EXPERIMENTAL=TRUE
@@ -207,6 +206,7 @@ jobs:
             -DMINIZIP_LIBRARY_RELEASE=C:/Minizip-install/lib/minizip.lib
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+            -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_69_0)/include
             -DWITH_EXAMPLE=TRUE
             -DWITH_EXPERIMENTAL=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
