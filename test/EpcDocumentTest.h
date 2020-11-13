@@ -24,7 +24,6 @@ namespace commontest {
 	class EpcDocumentTest : public AbstractTest {
 	public:
 		EpcDocumentTest(const std::string & epcDocPath);
-		EpcDocumentTest(COMMON_NS::DataObjectRepository * repo);
 		void initRepo() {}
 		void readRepo() {}
 	};

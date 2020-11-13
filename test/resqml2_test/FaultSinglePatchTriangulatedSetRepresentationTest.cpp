@@ -19,7 +19,7 @@ under the License.
 #include "FaultSinglePatchTriangulatedSetRepresentationTest.h"
 #include "../catch.hpp"
 #include "resqml2/TriangulatedSetRepresentation.h"
-#include "resqml2/FaultInterpretation.h"
+#include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2/LocalDepth3dCrs.h"
 #include "eml2/AbstractHdfProxy.h"
 #include "FaultInterpretationTest.h"
@@ -34,25 +34,15 @@ const char* FaultSinglePatchTriangulatedSetRepresentationTest::defaultUuid = "11
 const char* FaultSinglePatchTriangulatedSetRepresentationTest::defaultTitle = "FaultSinglePatchTriangulatedSetRepresentationTest";
 
 FaultSinglePatchTriangulatedSetRepresentationTest::FaultSinglePatchTriangulatedSetRepresentationTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath)
+	: commontest::AbstractTest(repoPath)
 {
 }
 
-FaultSinglePatchTriangulatedSetRepresentationTest::FaultSinglePatchTriangulatedSetRepresentationTest(DataObjectRepository* repo, bool init)
-	: commontest::AbstractObjectTest(repo)
-{
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void FaultSinglePatchTriangulatedSetRepresentationTest::initRepoHandler()
+void FaultSinglePatchTriangulatedSetRepresentationTest::initRepo()
 {
 	FaultInterpretation * interp = repo->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	if (interp == nullptr) {
-		FaultInterpretationTest interpTest(repo, true);
-		interp = repo->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
+		interp = repo->createPartial<RESQML2_0_1_NS::FaultInterpretation>(FaultInterpretationTest::defaultUuid, "");
 	}
 
 	TriangulatedSetRepresentation* rep = repo->createTriangulatedSetRepresentation(interp, defaultUuid, defaultTitle);
@@ -85,6 +75,6 @@ void FaultSinglePatchTriangulatedSetRepresentationTest::initRepoHandler()
 	rep->pushBackTrianglePatch(18, nodesFaultSinglePatchTriangulatedSetRepresentation, 20, triangleNodeIndexFault, repo->getHdfProxySet()[0]);
 }
 
-void FaultSinglePatchTriangulatedSetRepresentationTest::readRepoHandler()
+void FaultSinglePatchTriangulatedSetRepresentationTest::readRepo()
 {
 }

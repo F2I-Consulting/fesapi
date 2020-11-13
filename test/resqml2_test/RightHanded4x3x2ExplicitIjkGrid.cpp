@@ -54,18 +54,10 @@ double RightHanded4x3x2ExplicitIjkGrid::nodesIjkGridRepresentation[] = {
 };
 
 RightHanded4x3x2ExplicitIjkGrid::RightHanded4x3x2ExplicitIjkGrid(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-RightHanded4x3x2ExplicitIjkGrid::RightHanded4x3x2ExplicitIjkGrid(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void RightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
+void RightHanded4x3x2ExplicitIjkGrid::initRepo() {
 	// creating the ijk grid
 	RESQML2_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 4, 3, 2);
 	REQUIRE(ijkGrid != nullptr);
@@ -123,7 +115,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 	continuousProp->pushBackDoubleHdf5Array3dOfValues(continuousPropValues, 4, 3, 2, nullptr);
 }
 
-void RightHanded4x3x2ExplicitIjkGrid::readRepoHandler() {
+void RightHanded4x3x2ExplicitIjkGrid::readRepo() {
 	// getting the subrep
 	RESQML2_NS::IjkGridExplicitRepresentation* ijkGrid = repo->getDataObjectByUuid<RESQML2_NS::IjkGridExplicitRepresentation>(defaultUuid);
 

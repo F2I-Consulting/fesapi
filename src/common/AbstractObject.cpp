@@ -412,14 +412,13 @@ void AbstractObject::setEditor(const std::string & editor)
 
 void AbstractObject::setCreation(time_t creation)
 {
-	std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(creation));
 	if (creation > 0) {
+		std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(creation));
 		setCreation(tmConversion);
 	}
 	else {
-		time_t now;
-		time(&now);
-		setCreation(tmConversion);
+		time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+		setCreation(now);
 	}
 }
 
@@ -526,10 +525,16 @@ void AbstractObject::setDescription(const std::string & description)
 
 void AbstractObject::setLastUpdate(time_t lastUpdate)
 {
-	if (isPartial())
+	if (isPartial()) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
+	}
 
 	if (lastUpdate > 0) {
+		
+		if (lastUpdate < getCreation()) {
+			throw invalid_argument("Last update cannot be inferior to creation date.");
+		}
+
 		std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(lastUpdate));
 		setLastUpdate(tmConversion);
 	}

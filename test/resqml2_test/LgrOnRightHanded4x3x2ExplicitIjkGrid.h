@@ -18,14 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractObjectTest.h"
-
-namespace COMMON_NS {
-	class DataObjectRepository;
-}
+#include "AbstractTest.h"
 
 namespace resqml2_test {
-	class LgrOnRightHanded4x3x2ExplicitIjkGrid : public commontest::AbstractObjectTest {
+	class LgrOnRightHanded4x3x2ExplicitIjkGrid : public commontest::AbstractTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;
@@ -39,15 +35,8 @@ namespace resqml2_test {
 		*/
 		LgrOnRightHanded4x3x2ExplicitIjkGrid(const std::string & repoPath);
 
-		/**
-		* Creation of a testing object from an existing EPC document.
-		* @param repo an existing EPC document
-		* @param init true if this object is created for initialization purpose else false if it is 
-		* created for reading purpose. According to init value a inirepo() or readRepo() is called.
-		*/
-		LgrOnRightHanded4x3x2ExplicitIjkGrid(COMMON_NS::DataObjectRepository* repo, bool init);
 	protected:
-		void initRepoHandler();
-		void readRepoHandler();
+		void initRepo();
+		void readRepo();
 	};
 }

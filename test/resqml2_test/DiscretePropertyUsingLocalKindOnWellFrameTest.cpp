@@ -22,10 +22,10 @@ under the License.
 #include "resqml2_test/WellboreFrameRepresentationTest.h"
 #include "resqml2_test/PropertyKindTest.h"
 
-#include "eml2/PropertyKind.h"
 #include "resqml2/DiscreteProperty.h"
-#include "resqml2/WellboreFrameRepresentation.h"
 #include "eml2/AbstractHdfProxy.h"
+#include "resqml2_0_1/WellboreFrameRepresentation.h"
+#include "resqml2_0_1/PropertyKind.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -36,24 +36,16 @@ const char* DiscretePropertyUsingLocalKindOnWellFrameTest::defaultUuid = "5aa6a9
 const char* DiscretePropertyUsingLocalKindOnWellFrameTest::defaultTitle = "Discrete Property Using Local Kind On Well Frame Test";
 
 DiscretePropertyUsingLocalKindOnWellFrameTest::DiscretePropertyUsingLocalKindOnWellFrameTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-DiscretePropertyUsingLocalKindOnWellFrameTest::DiscretePropertyUsingLocalKindOnWellFrameTest(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void DiscretePropertyUsingLocalKindOnWellFrameTest::initRepoHandler() {
+void DiscretePropertyUsingLocalKindOnWellFrameTest::initRepo()
+{
 	// creation
-	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(repo, true);
-	RESQML2_NS::WellboreFrameRepresentation * frame = repo->getDataObjectByUuid<RESQML2_NS::WellboreFrameRepresentation>(WellboreFrameRepresentationTest::defaultUuid);
+	RESQML2_NS::WellboreFrameRepresentation * frame = repo->createPartial<RESQML2_0_1_NS::WellboreFrameRepresentation>(WellboreFrameRepresentationTest::defaultUuid, "");
 
-	PropertyKindTest * pkTest = new PropertyKindTest(repo, true);
-	EML2_NS::PropertyKind * propertyKind = repo->getDataObjectByUuid<EML2_NS::PropertyKind>(PropertyKindTest::defaultUuid);
+	EML2_NS::PropertyKind* parentPropertyKind = repo->createPropertyKind("a48c9c25-1e3a-43c8-be6a-044224cc69cb", "property", gsoap_eml2_1::eml21__QuantityClassKind__unitless);
+	EML2_NS::PropertyKind* propertyKind = repo->createPropertyKind("", "", gsoap_eml2_1::eml21__QuantityClassKind__not_x0020a_x0020measure, false, parentPropertyKind);
 
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
@@ -67,17 +59,10 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::initRepoHandler() {
 	REQUIRE(discreteProperty != nullptr);
 	int values[5] = { 0, 1, 2, 3 };
 	discreteProperty->pushBackIntHdf5Array1dOfValues(values, 4, hdfProxy, -1);
-
-	// cleaning
-	delete frameTest;
-	delete pkTest;
 }
 
-void DiscretePropertyUsingLocalKindOnWellFrameTest::readRepoHandler() {
-	// reading dependencies
-	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(repo, false);
-	PropertyKindTest * pkTest = new PropertyKindTest(repo, false);
-
+void DiscretePropertyUsingLocalKindOnWellFrameTest::readRepo()
+{
 	// getting the DiscreteProperty
 	RESQML2_NS::DiscreteProperty* discreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultUuid);
 
@@ -102,8 +87,4 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::readRepoHandler() {
 	REQUIRE(values[1] == 1);
 	REQUIRE(values[2] == 2);
 	REQUIRE(values[3] == 3);
-
-	// cleaning
-	delete frameTest;
-	delete pkTest;
 }

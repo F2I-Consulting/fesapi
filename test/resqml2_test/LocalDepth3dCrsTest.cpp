@@ -31,25 +31,16 @@ const char* LocalDepth3dCrsTest::defaultUuid = "a8effb2c-c94f-4d88-ae76-581ff14a
 const char* LocalDepth3dCrsTest::defaultTitle = "Local Depth 3d Crs Test";
 
 LocalDepth3dCrsTest::LocalDepth3dCrsTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath)
+	: commontest::AbstractTest(repoPath)
 {
 }
 
-LocalDepth3dCrsTest::LocalDepth3dCrsTest(DataObjectRepository* repo, bool init)
-	: commontest::AbstractObjectTest(repo)
-{
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void LocalDepth3dCrsTest::initRepoHandler()
+void LocalDepth3dCrsTest::initRepo()
 {
 	repo->createLocalDepth3dCrs(defaultUuid, defaultTitle, 1000, 2000, 3000, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__ft, "Unknown", false);
 }
 
-void LocalDepth3dCrsTest::readRepoHandler()
+void LocalDepth3dCrsTest::readRepo()
 {
 	REQUIRE( repo->getLocalDepth3dCrsSet().size() == 2 );
 	LocalDepth3dCrs* crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(defaultUuid);

@@ -28,6 +28,7 @@ under the License.
 #include "eml2/AbstractHdfProxy.h"
 
 #include "EpcDocumentTest.h"
+#include "DateTimeTest.h"
 #include "resqml2_test/LocalDepth3dCrsTest.h"
 #include "resqml2_test/HorizonInterpretationTest.h"
 #include "resqml2_test/FaultSinglePatchTriangulatedSetRepresentationTest.h"
@@ -149,6 +150,8 @@ TEST_CASE("Test hdf5 opening mode", "[hdf]")
 	hdfProxy->close();
 }
 
+FESAPI_TEST("Export and import of date time", "[datetime]", DateTimeTest)
+
 FESAPI_TEST("Export and import a local depth 3d crs", "[crs]", LocalDepth3dCrsTest)
 
 // INTERPRETATION
@@ -180,18 +183,16 @@ FESAPI_TEST("Export and import a subrepresentation on a partial grid connection 
 
 TEST_CASE("Export and import a big explicit ijk grid", "[grid][property]")
 {
-	BigIjkGridExplicitRepresentationTest* test = new BigIjkGridExplicitRepresentationTest("../../BigIjkGridExplicitRepresentationTest.epc", 10, 10, 5, 9, 0., 100., 0., 100., 0., 50., 10);
-	test->serialize();
-	test->deserialize();
-	delete test;
+	BigIjkGridExplicitRepresentationTest test("../../BigIjkGridExplicitRepresentationTest.epc", 10, 10, 5, 9, 0., 100., 0., 100., 0., 50., 10);
+	test.serialize();
+	test.deserialize();
 }
 
 TEST_CASE("Export and import a big parametric ijk grid", "[grid][property]")
 {
-	BigIjkGridParametricRepresentationTest* test = new BigIjkGridParametricRepresentationTest("../../BigIjkGridParametricRepresentationTest.epc", 20, 20, 10, 10, 0., 100., 0., 100., 0., 50., 10);
-	test->serialize();
-	test->deserialize();
-	delete test;
+	BigIjkGridParametricRepresentationTest test("../../BigIjkGridParametricRepresentationTest.epc", 20, 20, 10, 10, 0., 100., 0., 100., 0., 50., 10);
+	test.serialize();
+	test.deserialize();
 }
 
 // RESQML WELL

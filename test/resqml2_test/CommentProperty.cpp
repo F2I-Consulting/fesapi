@@ -22,7 +22,7 @@ under the License.
 #include "resqml2_test/WellboreFrameRepresentationTest.h"
 
 #include "resqml2/CommentProperty.h"
-#include "resqml2/WellboreFrameRepresentation.h"
+#include "resqml2_0_1/WellboreFrameRepresentation.h"
 #include "eml2/AbstractHdfProxy.h"
 
 using namespace std;
@@ -34,21 +34,12 @@ const char* CommentProperty::defaultUuid = "3e01e290-7df3-450e-ad93-2f88e79fe2fe
 const char* CommentProperty::defaultTitle = "Comment Property on well frame Test";
 
 CommentProperty::CommentProperty(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-CommentProperty::CommentProperty(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void CommentProperty::initRepoHandler() {
+void CommentProperty::initRepo() {
 	// creating an IJK grid
-	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(repo, true);
-	RESQML2_NS::WellboreFrameRepresentation * frame = static_cast<RESQML2_NS::WellboreFrameRepresentation *>(repo->getDataObjectByUuid(WellboreFrameRepresentationTest::defaultUuid));
+	RESQML2_NS::WellboreFrameRepresentation * frame = repo->createPartial<RESQML2_0_1_NS::WellboreFrameRepresentation>(WellboreFrameRepresentationTest::defaultUuid, "");
 
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
@@ -68,15 +59,9 @@ void CommentProperty::initRepoHandler() {
 	values.push_back("");
 	values.push_back("test4End");
 	commentProperty->pushBackStringHdf5ArrayOfValues(values, hdfProxy);
-
-	// cleaning
-	delete frameTest;
 }
 
-void CommentProperty::readRepoHandler() {
-	// reading dependencies
-	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(repo, false);
-
+void CommentProperty::readRepo() {
 	// getting the ContinuousPropertySeries
 	RESQML2_NS::CommentProperty* commentProperty = repo->getDataObjectByUuid<RESQML2_NS::CommentProperty>(defaultUuid);
 
@@ -96,7 +81,4 @@ void CommentProperty::readRepoHandler() {
 	REQUIRE(values[2] == "test2");
 	REQUIRE(values[3].empty());
 	REQUIRE(values[4] == "test4End");
-
-	// cleaning
-	delete frameTest;
 }

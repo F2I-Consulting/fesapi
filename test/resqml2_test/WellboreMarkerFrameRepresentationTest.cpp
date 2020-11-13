@@ -23,7 +23,7 @@ under the License.
 #include "resqml2_test/WellboreTrajectoryRepresentationTest.h"
 
 #include "resqml2_0_1/WellboreInterpretation.h"
-#include "resqml2/WellboreTrajectoryRepresentation.h"
+#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
 
 #include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
 
@@ -41,19 +41,19 @@ const char* WellboreMarkerFrameRepresentationTest::defaultUuid = "8f1c7e38-afc7-
 const char* WellboreMarkerFrameRepresentationTest::defaultTitle = "Wellbore Marker Frame Representation";
 
 WellboreMarkerFrameRepresentationTest::WellboreMarkerFrameRepresentationTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-WellboreMarkerFrameRepresentationTest::WellboreMarkerFrameRepresentationTest(DataObjectRepository * repo)
-	: commontest::AbstractObjectTest(repo) {
-}
-
-void WellboreMarkerFrameRepresentationTest::initRepoHandler() {
-	// creating dependencies
-	WellboreTrajectoryRepresentationTest trajTest(repo, true);
-
+void WellboreMarkerFrameRepresentationTest::initRepo() {
 	WellboreInterpretation* interp = repo->createPartial<RESQML2_0_1_NS::WellboreInterpretation>("", "");
-	WellboreTrajectoryRepresentation * traj = repo->getDataObjectByUuid<WellboreTrajectoryRepresentation>(WellboreTrajectoryRepresentationTest::defaultUuid);
+	MdDatum* mdDatum = repo->createMdDatum("", "", nullptr, gsoap_eml2_3::eml23__WellboreDatumReference__mean_x0020sea_x0020level, 275, 75, 0);
+
+	// creating the WellboreTrajectoryRepresentation in m and ft and depth
+	WellboreTrajectoryRepresentation* traj = repo->createWellboreTrajectoryRepresentation(interp, "", "", mdDatum);
+	double controlPoints[12] = { 275, 75, 0, 275, 75, 325, 275, 75, 500, 275, 75, 1000 };
+	double trajectoryTangentVectors[12] = { 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 3.2808 };
+	double trajectoryMds[4] = { 0, 325, 500, 1000 };
+	traj->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, 0, repo->getHdfProxySet()[0]);
 
 	// WellboreFeature marker frame
 	WellboreMarkerFrameRepresentation* wmf = repo->createWellboreMarkerFrameRepresentation(interp, defaultUuid, defaultTitle, traj);
@@ -69,7 +69,7 @@ void WellboreMarkerFrameRepresentationTest::initRepoHandler() {
 	resqmlMarker->setWitsmlWellboreMarker(witsmlMarker);
 }
 
-void WellboreMarkerFrameRepresentationTest::readRepoHandler() {
+void WellboreMarkerFrameRepresentationTest::readRepo() {
 	WellboreMarkerFrameRepresentation* wmf = repo->getDataObjectByUuid<WellboreMarkerFrameRepresentation>(defaultUuid);
 	REQUIRE(wmf != nullptr);
 	const auto mdCount = wmf->getWellboreMarkerCount();

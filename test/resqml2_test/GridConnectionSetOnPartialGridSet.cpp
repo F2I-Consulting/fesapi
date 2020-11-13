@@ -34,18 +34,10 @@ const char* GridConnectionSetOnPartialGridSet::unstructuredGridUuid = "34073470-
 const char* GridConnectionSetOnPartialGridSet::unstructuredGridTitle = "Partial Unstructured Grid";
 
 GridConnectionSetOnPartialGridSet::GridConnectionSetOnPartialGridSet(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-GridConnectionSetOnPartialGridSet::GridConnectionSetOnPartialGridSet(COMMON_NS::DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-		if (init)
-			initRepo();
-		else
-			readRepo();
-}
-
-void GridConnectionSetOnPartialGridSet::initRepoHandler() {
+void GridConnectionSetOnPartialGridSet::initRepo() {
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
@@ -103,7 +95,7 @@ void GridConnectionSetOnPartialGridSet::initRepoHandler() {
 
 }
 
-void GridConnectionSetOnPartialGridSet::readRepoHandler() {
+void GridConnectionSetOnPartialGridSet::readRepo() {
 	// getting the ContinuousProperty
 	RESQML2_NS::GridConnectionSetRepresentation* gcsSingleGrid = repo->getDataObjectByUuid<RESQML2_NS::GridConnectionSetRepresentation>("c0214c71-eed8-4ea2-9de4-f7508caeb3c6");
 	RESQML2_NS::GridConnectionSetRepresentation* gcsMultiGrids = repo->getDataObjectByUuid<RESQML2_NS::GridConnectionSetRepresentation>(defaultUuid);

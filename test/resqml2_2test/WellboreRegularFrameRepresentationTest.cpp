@@ -23,7 +23,7 @@ under the License.
 #include "resqml2_test/WellboreTrajectoryRepresentationTest.h"
 
 #include "resqml2_2/WellboreInterpretation.h"
-#include "resqml2/WellboreTrajectoryRepresentation.h"
+#include "resqml2_2/WellboreTrajectoryRepresentation.h"
 #include "resqml2/WellboreFrameRepresentation.h"
 #include "eml2/AbstractHdfProxy.h"
 
@@ -35,19 +35,12 @@ const char* WellboreRegularFrameRepresentationTest::defaultUuid = "7cc1e441-ad2f
 const char* WellboreRegularFrameRepresentationTest::defaultTitle = "Wellbore Regular Frame Representation";
 
 WellboreRegularFrameRepresentationTest::WellboreRegularFrameRepresentationTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-WellboreRegularFrameRepresentationTest::WellboreRegularFrameRepresentationTest(DataObjectRepository * repo)
-	: commontest::AbstractObjectTest(repo) {
-}
-
-void WellboreRegularFrameRepresentationTest::initRepoHandler() {
-	// creating dependencies
-	resqml2_test::WellboreTrajectoryRepresentationTest trajTest(repo, true);
-
+void WellboreRegularFrameRepresentationTest::initRepo() {
 	RESQML2_NS::WellboreInterpretation* interp = repo->createPartial<RESQML2_2_NS::WellboreInterpretation>("", "");
-	RESQML2_NS::WellboreTrajectoryRepresentation * traj = repo->getDataObjectByUuid<RESQML2_NS::WellboreTrajectoryRepresentation>(resqml2_test::WellboreTrajectoryRepresentationTest::defaultUuid);
+	RESQML2_NS::WellboreTrajectoryRepresentation * traj = repo->createPartial<RESQML2_2_NS::WellboreTrajectoryRepresentation>(resqml2_test::WellboreTrajectoryRepresentationTest::defaultUuid, "");
 
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
@@ -58,7 +51,7 @@ void WellboreRegularFrameRepresentationTest::initRepoHandler() {
 	w1i1FrameRep->setMdValues(0, 200, 6);
 }
 
-void WellboreRegularFrameRepresentationTest::readRepoHandler() {
+void WellboreRegularFrameRepresentationTest::readRepo() {
 	RESQML2_NS::WellboreFrameRepresentation* w1i1FrameRep = repo->getDataObjectByUuid<RESQML2_NS::WellboreFrameRepresentation>(defaultUuid);
 	REQUIRE(w1i1FrameRep != nullptr);
 

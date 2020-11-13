@@ -32,12 +32,6 @@ AbstractTest::AbstractTest(const string & epcDocPath) :
 	epcDocPath(epcDocPath.find("::") == string::npos ? epcDocPath : epcDocPath.substr(0, epcDocPath.find("::")) + "__" + epcDocPath.substr(epcDocPath.find("::") + 2, epcDocPath.size() - epcDocPath.find("::"))) {
 }
 
-AbstractTest::AbstractTest(COMMON_NS::DataObjectRepository* repo_) :
-	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0),
-	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1),
-	repo(repo_) {
-}
-
 void AbstractTest::serialize() {
 	COMMON_NS::EpcDocument epcDocument(epcDocPath);
 	repo = new COMMON_NS::DataObjectRepository();

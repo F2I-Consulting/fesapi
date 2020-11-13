@@ -18,15 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractObjectTest.h"
+#include "AbstractTest.h"
 #include <string>
 
-namespace COMMON_NS {
-	class DataObjectRepository;
-}
-
 namespace resqml2_test {
-	class PropertyKindTest : public commontest::AbstractObjectTest {
+	class PropertyKindTest : public commontest::AbstractTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;
@@ -38,16 +34,8 @@ namespace resqml2_test {
 		*/
 		PropertyKindTest(const std::string & repoPath);
 
-		/**
-		* Creation of a testing object from an existing EPC document.
-		* @param repo an existing EPC document
-		* @param init true if this object is created for initialization purpose else false if it is 
-		* created for reading purpose. According to init value a inirepo() or readRepo() is called.
-		*/
-		PropertyKindTest(COMMON_NS::DataObjectRepository* repo, bool init);
 	protected:
-		void initRepoHandler();
-		void readRepoHandler();
+		void initRepo();
+		void readRepo();
 	};
 }
-

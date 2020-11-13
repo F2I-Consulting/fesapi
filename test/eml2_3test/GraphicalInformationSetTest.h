@@ -18,11 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractObjectTest.h"
-#include <iostream>
+#include "AbstractTest.h"
 
 namespace commontest {
-	class GraphicalInformationSetTest : public AbstractObjectTest {
+	class GraphicalInformationSetTest : public AbstractTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;
@@ -30,11 +29,10 @@ namespace commontest {
 		static const char* titleHorzon;
 
 		GraphicalInformationSetTest(const std::string & repoPath);
-		GraphicalInformationSetTest(COMMON_NS::DataObjectRepository* repo, bool init);
 
 	protected:
-		void initRepoHandler();
-		void readRepoHandler();
+		void initRepo();
+		void readRepo();
 	};
 }
 

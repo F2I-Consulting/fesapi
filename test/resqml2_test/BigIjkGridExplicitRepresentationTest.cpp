@@ -47,15 +47,7 @@ BigIjkGridExplicitRepresentationTest::BigIjkGridExplicitRepresentationTest(
 	: AbstractBigIjkGridRepresentationTest(repoPath, iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow) {
 }
 
-BigIjkGridExplicitRepresentationTest::BigIjkGridExplicitRepresentationTest(DataObjectRepository * repo, bool init,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount,
-	unsigned int faultCount,
-	double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
-	double faultThrow)
-	: AbstractBigIjkGridRepresentationTest(repo, init, iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow) {
-}
-
-void BigIjkGridExplicitRepresentationTest::initRepoHandler() {
+void BigIjkGridExplicitRepresentationTest::initRepo() {
 	// creating the ijk grid
 	RESQML2_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, iCount, jCount, kCount);
 	REQUIRE(ijkGrid != nullptr);
@@ -91,5 +83,5 @@ void BigIjkGridExplicitRepresentationTest::initRepoHandler() {
 	continuousProperty->pushBackDoubleHdf5Array1dOfValues(continuousPropertyValues.get(), iCount * jCount * kCount, nullptr);
 }
 
-void BigIjkGridExplicitRepresentationTest::readRepoHandler() {
+void BigIjkGridExplicitRepresentationTest::readRepo() {
 }

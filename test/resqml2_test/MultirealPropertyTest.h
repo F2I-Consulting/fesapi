@@ -18,15 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractObjectTest.h"
-#include <iostream>
-
-namespace COMMON_NS {
-	class DataObjectRepository;
-}
+#include "AbstractTest.h"
 
 namespace resqml2_test {
-	class MultirealPropertyTest : public commontest::AbstractObjectTest {
+	class MultirealPropertyTest : public commontest::AbstractTest {
 	public:
 		static const char* defaultUuidReal0;
 		static const char* defaultUuidReal1;
@@ -34,9 +29,9 @@ namespace resqml2_test {
 		static const char* defaultUuidReal15;
 
 		MultirealPropertyTest(const std::string & repoPath);
-		MultirealPropertyTest(COMMON_NS::DataObjectRepository * repo, bool init);
+
 	protected:
-		void initRepoHandler();
-		void readRepoHandler();
+		void initRepo();
+		void readRepo();
 	};
 }

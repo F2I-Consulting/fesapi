@@ -31,18 +31,10 @@ const char* WellboreGeometryTest::defaultUuid = "1e6c55f2-5250-4d1b-aceb-d2a707d
 const char* WellboreGeometryTest::defaultTitle = "WITSML Wellbore Geometry Test";
 
 WellboreGeometryTest::WellboreGeometryTest(const string & epcDocPath)
-	: AbstractObjectTest(epcDocPath) {
+	: AbstractTest(epcDocPath) {
 }
 
-WellboreGeometryTest::WellboreGeometryTest(DataObjectRepository* repo, bool init)
-	: AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void WellboreGeometryTest::initRepoHandler() {
+void WellboreGeometryTest::initRepo() {
 	WITSML2_0_NS::Wellbore* wellbore = repo->createPartial<WITSML2_0_NS::Wellbore>("", "");
 	WITSML2_0_NS::WellboreGeometry* witsmlWbGeom = repo->createWellboreGeometry(wellbore, defaultUuid, "WellboreGeometry TEST", gsoap_eml2_1::witsml20__ChannelStatus__closed);
 
@@ -64,7 +56,7 @@ void WellboreGeometryTest::initRepoHandler() {
 	witsmlWbGeom->setWellboreGeometrySectionTvdInterval(1, 0, 990, "d3ac5401-d3e7-4474-b846-070673b210ae", gsoap_eml2_1::eml21__LengthUom__m);
 }
 
-void WellboreGeometryTest::readRepoHandler() {
+void WellboreGeometryTest::readRepo() {
 	WITSML2_0_NS::WellboreGeometry* wbGeom = repo->getDataObjectByUuid<WITSML2_0_NS::WellboreGeometry>(defaultUuid);
 	REQUIRE (wbGeom != nullptr);
 

@@ -47,14 +47,6 @@ BigIjkGridParametricRepresentationTest::BigIjkGridParametricRepresentationTest(
 	: AbstractBigIjkGridRepresentationTest(repoPath, iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow) {
 }
 
-BigIjkGridParametricRepresentationTest::BigIjkGridParametricRepresentationTest(DataObjectRepository * repo, bool init,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount,
-	unsigned int faultCount,
-	double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
-	double faultThrow)
-	: AbstractBigIjkGridRepresentationTest(repo, init, iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow) {
-}
-
 void BigIjkGridParametricRepresentationTest::initParametersAndControlPoints(double * parameters, double * controlPoints)
 {
 	const ULONG64 nodeCount = initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount);
@@ -70,7 +62,7 @@ void BigIjkGridParametricRepresentationTest::initParametersAndControlPoints(doub
 	}
 }
 
-void BigIjkGridParametricRepresentationTest::initRepoHandler() {
+void BigIjkGridParametricRepresentationTest::initRepo() {
 	// creating the ijk grid
 	RESQML2_NS::IjkGridParametricRepresentation* ijkGrid = repo->createIjkGridParametricRepresentation(defaultUuid, defaultTitle, iCount, jCount, kCount);
 	REQUIRE(ijkGrid != nullptr);
@@ -110,6 +102,6 @@ void BigIjkGridParametricRepresentationTest::initRepoHandler() {
 	continuousProperty->pushBackDoubleHdf5Array1dOfValues(continuousPropertyValues.get(), iCount * jCount * kCount, nullptr);
 }
 
-void BigIjkGridParametricRepresentationTest::readRepoHandler() {
+void BigIjkGridParametricRepresentationTest::readRepo() {
 }
 

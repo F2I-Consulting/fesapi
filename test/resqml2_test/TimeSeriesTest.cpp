@@ -29,18 +29,10 @@ const char* TimeSeriesTest::defaultUuid = "0b8fc144-8e71-4f2a-a062-60c2d17fdc12"
 const char* TimeSeriesTest::inputTile = "Time Series";
 
 TimeSeriesTest::TimeSeriesTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath) {
+	: commontest::AbstractTest(epcDocPath) {
 }
 
-TimeSeriesTest::TimeSeriesTest(DataObjectRepository* repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void TimeSeriesTest::initRepoHandler() {
+void TimeSeriesTest::initRepo() {
 	TimeSeries* timeSeries = repo->createTimeSeries(defaultUuid, inputTile);
 	REQUIRE( timeSeries != nullptr );
 
@@ -49,7 +41,7 @@ void TimeSeriesTest::initRepoHandler() {
 	timeSeries->pushBackTimestamp(1441289895);
 }
 
-void TimeSeriesTest::readRepoHandler() {
+void TimeSeriesTest::readRepo() {
 	vector<TimeSeries*> timeSeriesSet = repo->getTimeSeriesSet();
 	REQUIRE(timeSeriesSet.size() == 1);
 

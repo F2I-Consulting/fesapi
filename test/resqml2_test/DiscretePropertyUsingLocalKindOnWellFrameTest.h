@@ -18,14 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractObjectTest.h"
-
-namespace COMMON_NS {
-	class DataObjectRepository;
-}
+#include "AbstractTest.h"
 
 namespace resqml2_test {
-	class DiscretePropertyUsingLocalKindOnWellFrameTest : public commontest::AbstractObjectTest {
+	class DiscretePropertyUsingLocalKindOnWellFrameTest : public commontest::AbstractTest {
 	public:
 
 		static const char* defaultUuid;
@@ -38,16 +34,8 @@ namespace resqml2_test {
 		*/
 		DiscretePropertyUsingLocalKindOnWellFrameTest(const std::string & repoPath);
 
-		/**
-		* Creation of a testing object from an existing EPC document.
-		* @param repo an existing EPC document
-		* @param init true if this object is created for initialization purpose else false if it is
-		* created for reading purpose. According to init value a inirepo() or readRepo() is called.
-		*/
-		DiscretePropertyUsingLocalKindOnWellFrameTest(COMMON_NS::DataObjectRepository * repo, bool init);
 	protected:
-		void initRepoHandler();
-		void readRepoHandler();
+		void initRepo();
+		void readRepo();
 	};
 }
-

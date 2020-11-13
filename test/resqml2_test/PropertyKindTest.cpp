@@ -31,24 +31,16 @@ const char* PropertyKindTest::defaultUuid = "f1effef1-6bc7-4e82-829b-797713b60cd
 const char* PropertyKindTest::defaultTitle = "Property Kind Test";
 
 PropertyKindTest::PropertyKindTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-PropertyKindTest::PropertyKindTest(DataObjectRepository* repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void PropertyKindTest::initRepoHandler() {
+void PropertyKindTest::initRepo() {
 	auto parentPropertyKind = repo->createPropertyKind("a48c9c25-1e3a-43c8-be6a-044224cc69cb", "property", gsoap_eml2_1::eml21__QuantityClassKind__unitless);
 	auto propertyKind = repo->createPropertyKind(defaultUuid, defaultTitle, gsoap_eml2_1::eml21__QuantityClassKind__not_x0020a_x0020measure, false, parentPropertyKind);
 	REQUIRE(propertyKind != nullptr);
 }
 
-void PropertyKindTest::readRepoHandler() {
+void PropertyKindTest::readRepo() {
 	// getting the PropertyKind
 	EML2_NS::PropertyKind* propertyKind = repo->getDataObjectByUuid<EML2_NS::PropertyKind>(defaultUuid);
 

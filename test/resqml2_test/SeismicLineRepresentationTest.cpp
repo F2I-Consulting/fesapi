@@ -39,20 +39,11 @@ const char* SeismicLineRepresentationTest::defaultUuid = "99bd4f3e-8f52-43ae-98f
 const char* SeismicLineRepresentationTest::defaultTitle = "Seismic Line Representation";
 
 SeismicLineRepresentationTest::SeismicLineRepresentationTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath)
+	: commontest::AbstractTest(repoPath)
 {
 }
 
-SeismicLineRepresentationTest::SeismicLineRepresentationTest(DataObjectRepository* repo, bool init)
-	: commontest::AbstractObjectTest(repo)
-{
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void SeismicLineRepresentationTest::initRepoHandler()
+void SeismicLineRepresentationTest::initRepo()
 {
 	RESQML2_NS::SeismicLineSetFeature* seismicLineSet = repo->createSeismicLineSet(defaultUuidFeatureSet, defaultTitleFeatureSet);
 
@@ -65,7 +56,7 @@ void SeismicLineRepresentationTest::initRepoHandler()
 	seismicLineRep->setGeometry(seismicLinePoints, 5, nullptr);
 }
 
-void SeismicLineRepresentationTest::readRepoHandler()
+void SeismicLineRepresentationTest::readRepo()
 {
 	// Feature
 	RESQML2_0_1_NS::SeismicLineFeature* feature = repo->getDataObjectByUuid<RESQML2_0_1_NS::SeismicLineFeature>(defaultUuidFeature);

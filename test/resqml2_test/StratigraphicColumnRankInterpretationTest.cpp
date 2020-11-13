@@ -41,18 +41,10 @@ const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenInterpU
 const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenInterpTitle = "Underburden Interp";
 
 StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(DataObjectRepository* repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void StratigraphicColumnRankInterpretationTest::initRepoHandler() {
+void StratigraphicColumnRankInterpretationTest::initRepo() {
 	Model* stratiOrg = repo->createPartial<RESQML2_0_1_NS::OrganizationFeature>("", "");
 	StratigraphicUnitInterpretation* overburdenInterp = repo->createPartial<RESQML2_0_1_NS::StratigraphicUnitInterpretation>(defaultOverburdenInterpUuid, defaultOverburdenInterpTitle);
 	StratigraphicUnitInterpretation* stratiLayerInterp = repo->createPartial<RESQML2_0_1_NS::StratigraphicUnitInterpretation>("", "");
@@ -65,7 +57,7 @@ void StratigraphicColumnRankInterpretationTest::initRepoHandler() {
 	stratiColumnRank->pushBackStratiUnitInterpretation(underburdenInterp);
 }
 
-void StratigraphicColumnRankInterpretationTest::readRepoHandler()
+void StratigraphicColumnRankInterpretationTest::readRepo()
 {
 	StratigraphicColumnRankInterpretation* stratiColumnRank = repo->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(defaultUuid);
 	REQUIRE(stratiColumnRank != nullptr);

@@ -56,18 +56,10 @@ char const* DiscreteColorMapTest::titlePropertyKindDiscreteColorMap = "Property 
 
 
 DiscreteColorMapTest::DiscreteColorMapTest(const string & repoPath)
-	: AbstractObjectTest(repoPath) {
+	: AbstractTest(repoPath) {
 }
 
-DiscreteColorMapTest::DiscreteColorMapTest(COMMON_NS::DataObjectRepository* repo, bool init)
-	: AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void DiscreteColorMapTest::initRepoHandler() {
+void DiscreteColorMapTest::initRepo() {
 	// creating an ijk grid
 	AbstractHdfProxy* hdfProxy =  repo->getHdfProxySet()[0];
 	Model* organizationFeature =  repo->createEarthModel(uuidOrganizationFeature, titleOrganizationFeature);
@@ -114,7 +106,7 @@ void DiscreteColorMapTest::initRepoHandler() {
 	REQUIRE(graphicalInformationSet->getDiscreteColorMapUuid(discreteProperty) == discreteColorMap2->getUuid());
 }
 
-void DiscreteColorMapTest::readRepoHandler() {
+void DiscreteColorMapTest::readRepo() {
 	GraphicalInformationSet * graphicalInformationSet = repo->getDataObjects<GraphicalInformationSet>()[0];
 	DiscreteProperty* discreteProperty = repo->getDataObjectByUuid<DiscreteProperty>(uuidDiscreteProperty);
 	REQUIRE(graphicalInformationSet->hasDiscreteColorMap(discreteProperty));

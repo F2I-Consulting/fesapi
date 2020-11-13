@@ -27,25 +27,16 @@ const char* LocalTime3dCrs::defaultUuid = "8f8285a7-f1e7-4964-a9e1-e815c82c65e0"
 const char* LocalTime3dCrs::defaultTitle = "Local Time 3d Crs Test";
 
 LocalTime3dCrs::LocalTime3dCrs(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath)
+	: commontest::AbstractTest(repoPath)
 {
 }
 
-LocalTime3dCrs::LocalTime3dCrs(DataObjectRepository* repo, bool init)
-	: commontest::AbstractObjectTest(repo)
-{
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void LocalTime3dCrs::initRepoHandler()
+void LocalTime3dCrs::initRepo()
 {
 	repo->createLocalTime3dCrs(defaultUuid, defaultTitle, 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__s, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
 }
 
-void LocalTime3dCrs::readRepoHandler()
+void LocalTime3dCrs::readRepo()
 {
 	REQUIRE( repo->getLocalTime3dCrsSet().size() == 1 );
 }

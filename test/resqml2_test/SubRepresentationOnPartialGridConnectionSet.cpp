@@ -31,18 +31,10 @@ const char* SubRepresentationOnPartialGridConnectionSet::defaultUuid = "4c698ca0
 const char* SubRepresentationOnPartialGridConnectionSet::defaultTitle = "SubRepresentation On Partial GridConnectionSet";
 
 SubRepresentationOnPartialGridConnectionSet::SubRepresentationOnPartialGridConnectionSet(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath) {
+	: commontest::AbstractTest(epcDocPath) {
 }
 
-SubRepresentationOnPartialGridConnectionSet::SubRepresentationOnPartialGridConnectionSet(COMMON_NS::DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void SubRepresentationOnPartialGridConnectionSet::initRepoHandler()
+void SubRepresentationOnPartialGridConnectionSet::initRepo()
 {
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
@@ -56,7 +48,7 @@ void SubRepresentationOnPartialGridConnectionSet::initRepoHandler()
 	subRep->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement__cells, 2, elements, hdfProxy);
 }
 
-void SubRepresentationOnPartialGridConnectionSet::readRepoHandler()
+void SubRepresentationOnPartialGridConnectionSet::readRepo()
 {
 	// getting the subrep
 	RESQML2_NS::SubRepresentation* subRep = repo->getDataObjectByUuid<RESQML2_NS::SubRepresentation>(defaultUuid);

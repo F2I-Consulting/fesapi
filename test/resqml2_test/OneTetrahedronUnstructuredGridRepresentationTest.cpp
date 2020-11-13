@@ -34,18 +34,10 @@ const char* OneTetrahedronUnstructuredGridRepresentationTest::defaultTitle = "On
 double OneTetrahedronUnstructuredGridRepresentationTest::nodes[] = { 0,0,300, 700,0,350, 0,150,300, 0,0,500 };
 
 OneTetrahedronUnstructuredGridRepresentationTest::OneTetrahedronUnstructuredGridRepresentationTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-OneTetrahedronUnstructuredGridRepresentationTest::OneTetrahedronUnstructuredGridRepresentationTest(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void OneTetrahedronUnstructuredGridRepresentationTest::initRepoHandler() {
+void OneTetrahedronUnstructuredGridRepresentationTest::initRepo() {
 	// creating the unstructured grid
 	RESQML2_NS::UnstructuredGridRepresentation* tetraGrid = repo->createUnstructuredGridRepresentation(defaultUuid, defaultTitle, 1);
 	REQUIRE(tetraGrid != nullptr);
@@ -55,7 +47,7 @@ void OneTetrahedronUnstructuredGridRepresentationTest::initRepoHandler() {
 	tetraGrid->setTetrahedraOnlyGeometry(faceRightHandness, nodes, 4, 4, nullptr, faceIndicesPerCell, nodeIndicesPerCell);
 }
 
-void OneTetrahedronUnstructuredGridRepresentationTest::readRepoHandler() {
+void OneTetrahedronUnstructuredGridRepresentationTest::readRepo() {
 	// getting the unstructured grid
 	RESQML2_NS::UnstructuredGridRepresentation * unstructuredGrid = repo->getDataObjectByUuid<RESQML2_NS::UnstructuredGridRepresentation>(defaultUuid);
 

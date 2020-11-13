@@ -16,29 +16,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "AbstractObjectTest.h"
+#pragma once
 
-#include "catch.hpp"
+#include "AbstractTest.h"
 
-#include "common/DataObjectRepository.h"
-
-using namespace std;
-using namespace commontest;
-
-AbstractObjectTest::AbstractObjectTest(const string & epcDocPath) :
-	AbstractTest(epcDocPath) {
-}
-
-AbstractObjectTest::AbstractObjectTest(COMMON_NS::DataObjectRepository* repo) :
-	AbstractTest(repo) {
-}
-
-void AbstractObjectTest::initRepo()
-{
-	REQUIRE(repo != nullptr);
-	initRepoHandler();
-}
-
-void AbstractObjectTest::readRepo() {
-	readRepoHandler();
+namespace commontest {
+	class DateTimeTest : public AbstractTest {
+	public:
+		DateTimeTest(const std::string & epcDocPath);
+		void initRepo();
+		void readRepo();
+	};
 }

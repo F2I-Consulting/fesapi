@@ -18,11 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../AbstractObjectTest.h"
+#include "../AbstractTest.h"
 #include <iostream>
 
 namespace resqml2_2test {
-	class ContinuousColorMapTest : public commontest::AbstractObjectTest {
+	class ContinuousColorMapTest : public commontest::AbstractTest {
 	public:
 		static char const* defaultUuid;
 		static char const* defaultTitle;
@@ -44,11 +44,10 @@ namespace resqml2_2test {
 		static char const* titleGraphicalInformationSet;
 
 		ContinuousColorMapTest(const std::string & repoPath);
-		ContinuousColorMapTest(COMMON_NS::DataObjectRepository* repo, bool init);
 
 	protected:
-		void initRepoHandler();
-		void readRepoHandler();
+		void initRepo();
+		void readRepo();
 	};
 }
 

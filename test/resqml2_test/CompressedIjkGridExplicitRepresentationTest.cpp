@@ -36,18 +36,10 @@ const unsigned long long CompressedIjkGridExplicitRepresentationTest::nodesCount
 double CompressedIjkGridExplicitRepresentationTest::nodesIjkGridRepresentation[] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350, /* SPLIT*/ 375, 0, 350, 375, 150, 350, 0, 0, 500, 375, 0, 500, 700, 0, 550, 0, 150, 500, 375, 150, 500, 700, 150, 550, /* SPLIT*/ 375, 0, 550, 375, 150, 550 };
 
 CompressedIjkGridExplicitRepresentationTest::CompressedIjkGridExplicitRepresentationTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-CompressedIjkGridExplicitRepresentationTest::CompressedIjkGridExplicitRepresentationTest(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void CompressedIjkGridExplicitRepresentationTest::initRepoHandler() {
+void CompressedIjkGridExplicitRepresentationTest::initRepo() {
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 	hdfProxy->setCompressionLevel(6);
@@ -62,7 +54,7 @@ void CompressedIjkGridExplicitRepresentationTest::initRepoHandler() {
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 }
 
-void CompressedIjkGridExplicitRepresentationTest::readRepoHandler() {
+void CompressedIjkGridExplicitRepresentationTest::readRepo() {
 	// checking number of points in the geometry
 	RESQML2_NS::AbstractIjkGridRepresentation* representation = repo->getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>(defaultUuid);
 	REQUIRE(representation->getXyzPointCountOfAllPatches() == nodesCountIjkGridRepresentation);

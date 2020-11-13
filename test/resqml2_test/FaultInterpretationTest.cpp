@@ -20,7 +20,7 @@ under the License.
 #include "resqml2/BoundaryFeature.h"
 #include "resqml2/FaultInterpretation.h"
 #include "../catch.hpp"
-#include "AbstractObjectTest.h"
+#include "AbstractTest.h"
 
 using namespace std;
 using namespace resqml2_test;
@@ -33,20 +33,11 @@ const char* FaultInterpretationTest::defaultUuid = "91f90343-2581-48c5-893f-667a
 const char* FaultInterpretationTest::defaultTitle = "FaultInterpretationTest";
 
 FaultInterpretationTest::FaultInterpretationTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath)
+	: commontest::AbstractTest(repoPath)
 {
 }
 
-FaultInterpretationTest::FaultInterpretationTest(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo)
-{
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void FaultInterpretationTest::initRepoHandler()
+void FaultInterpretationTest::initRepo()
 {
 	// creating dependencies
 	BoundaryFeature* fault = repo->createFault(faultUuid, faultTitle);
@@ -55,7 +46,7 @@ void FaultInterpretationTest::initRepoHandler()
 	REQUIRE(faultInterp != nullptr);
 }
 
-void FaultInterpretationTest::readRepoHandler()
+void FaultInterpretationTest::readRepo()
 {
 	// getting the fault interpretation
 	FaultInterpretation* faultInterp = repo->getDataObjectByUuid<FaultInterpretation>(defaultUuid);

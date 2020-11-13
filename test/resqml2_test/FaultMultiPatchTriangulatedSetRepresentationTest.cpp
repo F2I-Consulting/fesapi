@@ -19,7 +19,7 @@ under the License.
 #include "FaultMultiPatchTriangulatedSetRepresentationTest.h"
 #include "../catch.hpp"
 #include "resqml2/TriangulatedSetRepresentation.h"
-#include "resqml2/FaultInterpretation.h"
+#include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2/LocalDepth3dCrs.h"
 #include "eml2/AbstractHdfProxy.h"
 #include "resqml2_test/FaultInterpretationTest.h"
@@ -34,23 +34,13 @@ const char* FaultMultiPatchTriangulatedSetRepresentationTest::defaultUuid = "4b8
 const char* FaultMultiPatchTriangulatedSetRepresentationTest::defaultTitle = "FaultMultiPatchTriangulatedSetRepresentationTest";
 
 FaultMultiPatchTriangulatedSetRepresentationTest::FaultMultiPatchTriangulatedSetRepresentationTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath)
+	: commontest::AbstractTest(repoPath)
 {
 }
 
-FaultMultiPatchTriangulatedSetRepresentationTest::FaultMultiPatchTriangulatedSetRepresentationTest(DataObjectRepository* repo, bool init)
-	: commontest::AbstractObjectTest(repo)
+void FaultMultiPatchTriangulatedSetRepresentationTest::initRepo()
 {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void FaultMultiPatchTriangulatedSetRepresentationTest::initRepoHandler()
-{
-	FaultInterpretationTest * interpTest = new FaultInterpretationTest(repo, true);
-	FaultInterpretation* interp = repo->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
+	FaultInterpretation* interp = repo->createPartial<RESQML2_0_1_NS::FaultInterpretation>(FaultInterpretationTest::defaultUuid, "");
 
 	TriangulatedSetRepresentation* rep = repo->createTriangulatedSetRepresentation(interp, defaultUuid, defaultTitle);
 	REQUIRE( rep != nullptr );
@@ -80,11 +70,8 @@ void FaultMultiPatchTriangulatedSetRepresentationTest::initRepoHandler()
 		600, 0, 650, 600, 100, 650, 600, 200, 650};
 	unsigned int triangleNodeIndexFaultPatch4[12] = {24,28,27, 24,25,28, 25,26,28, 26,29,28};
 	rep->pushBackTrianglePatch(6, explicitPointsFault1Patch4, 4, triangleNodeIndexFaultPatch4, repo->getHdfProxySet()[0]);
-
-	// cleaning
-	delete interpTest;
 }
 
-void FaultMultiPatchTriangulatedSetRepresentationTest::readRepoHandler()
+void FaultMultiPatchTriangulatedSetRepresentationTest::readRepo()
 {
 }

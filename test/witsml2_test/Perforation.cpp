@@ -32,18 +32,10 @@ const char* Perforation::defaultUuid = "d5a528c8-73e7-4bf3-9441-118f8111d56a";
 const char* Perforation::defaultTitle = "WITSML Perforation Test";
 
 Perforation::Perforation(const string & epcDocPath)
-	: AbstractObjectTest(epcDocPath) {
+	: AbstractTest(epcDocPath) {
 }
 
-Perforation::Perforation(DataObjectRepository* repo, bool init)
-	: AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void Perforation::initRepoHandler() {
+void Perforation::initRepo() {
 	WITSML2_0_NS::Well* well = repo->createPartial<WITSML2_0_NS::Well>("", "");
 	WITSML2_0_NS::Wellbore* wellbore = repo->createPartial<WITSML2_0_NS::Wellbore>("", "");
 	WITSML2_0_NS::WellCompletion* wellCompletion = repo->createWellCompletion(well, "6593d580-2f44-4b18-97ce-8a9cf42a0414", "WellCompletion1");
@@ -60,7 +52,7 @@ void Perforation::initRepoHandler() {
 	wellboreCompletion->setPerforationHistoryComment(0, 0, "Comment");
 }
 
-void Perforation::readRepoHandler() {
+void Perforation::readRepo() {
 	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = repo->getDataObjectByUuid<WITSML2_0_NS::WellboreCompletion>("7bda8ecf-2037-4dc7-8c59-db6ca09f2008");
 	REQUIRE (wellboreCompletion != nullptr);
 

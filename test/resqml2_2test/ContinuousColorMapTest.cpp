@@ -57,18 +57,10 @@ char const* ContinuousColorMapTest::uuidGraphicalInformationSet = "3b5c1be9-d2a0
 char const* ContinuousColorMapTest::titleGraphicalInformationSet = "Graphical Information Set";
 
 ContinuousColorMapTest::ContinuousColorMapTest(const string & repoPath)
-	: AbstractObjectTest(repoPath) {
+	: AbstractTest(repoPath) {
 }
 
-ContinuousColorMapTest::ContinuousColorMapTest(COMMON_NS::DataObjectRepository* repo, bool init)
-	: AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void ContinuousColorMapTest::initRepoHandler() {
+void ContinuousColorMapTest::initRepo() {
 	// creating a grid 2d representation
 	BoundaryFeature* horizon = repo->createHorizon(uuidHorizon,titleHorizonInterpretation);
 	HorizonInterpretation* horizonInterpretation = repo->createHorizonInterpretation(horizon, uuidHorizonInterpretation, titleHorizonInterpretation);
@@ -106,7 +98,7 @@ void ContinuousColorMapTest::initRepoHandler() {
 	graphicalInformationSet->setValueVectorIndex(continuousProperty, 1);
 }
 
-void ContinuousColorMapTest::readRepoHandler() {
+void ContinuousColorMapTest::readRepo() {
 	GraphicalInformationSet * graphicalInformationSet = repo->getDataObjects<GraphicalInformationSet>()[0];
 	ContinuousProperty* continuousProperty = repo->getDataObjectByUuid<ContinuousProperty>(uuidContinuousProperty);
 	REQUIRE(graphicalInformationSet->hasContinuousColorMap(continuousProperty));

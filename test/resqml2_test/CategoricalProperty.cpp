@@ -39,18 +39,10 @@ const char* CategoricalProperty::defaultUuid = "5aa6a9d4-253e-43a8-bdf5-621e5df2
 const char* CategoricalProperty::defaultTitle = "Testing Categorical Prop";
 
 CategoricalProperty::CategoricalProperty(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-CategoricalProperty::CategoricalProperty(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void CategoricalProperty::initRepoHandler() {
+void CategoricalProperty::initRepo() {
 	RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo->createPartialIjkGridRepresentation("", "partial IJK Grid");
 	EML2_NS::PropertyKind * propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("", "Partial prop kind");
 
@@ -95,7 +87,7 @@ void CategoricalProperty::initRepoHandler() {
 	dblCategoricalProperty->pushBackDoubleHdf5Array3dOfValues(dblValues, 1, 2, 3, hdfProxy);
 }
 
-void CategoricalProperty::readRepoHandler() {
+void CategoricalProperty::readRepo() {
 	// getting the string CategoricalProperty
 	RESQML2_NS::CategoricalProperty* categoricalProperty = repo->getDataObjectByUuid<RESQML2_NS::CategoricalProperty>(defaultUuid);
 	auto strTableLookup = categoricalProperty->getStringLookup();

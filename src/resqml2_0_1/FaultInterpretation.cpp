@@ -34,7 +34,7 @@ FaultInterpretation::FaultInterpretation(RESQML2_NS::BoundaryFeature * fault, co
 	if (fault == nullptr) {
 		throw invalid_argument("The interpreted fault cannot be null.");
 	}
-	if (dynamic_cast<RESQML2_0_1_NS::TectonicBoundaryFeature*>(fault) != nullptr && static_cast<RESQML2_0_1_NS::TectonicBoundaryFeature*>(fault)->isAFracture()) {
+	if (!fault->isPartial() && dynamic_cast<RESQML2_0_1_NS::TectonicBoundaryFeature*>(fault) != nullptr && static_cast<RESQML2_0_1_NS::TectonicBoundaryFeature*>(fault)->isAFracture()) {
 		throw invalid_argument("The interpreted fault cannot be a fracture.");
 	}
 

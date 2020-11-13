@@ -34,18 +34,10 @@ using namespace resqml2_test;
 const char* PointsProperty::defaultUuid = "402ecb32-8c03-418f-98be-fe1bca069fb9";
 
 PointsProperty::PointsProperty(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-PointsProperty::PointsProperty(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void PointsProperty::initRepoHandler() {
+void PointsProperty::initRepo() {
 	RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo->createPartialIjkGridRepresentation("", "partial IJK Grid");
 
 	// getting the hdf proxy
@@ -61,7 +53,7 @@ void PointsProperty::initRepoHandler() {
 	pointsProperty->pushBackArray3dOfXyzPoints(coordValues, 2, 1, 1, hdfProxy);
 }
 
-void PointsProperty::readRepoHandler() {
+void PointsProperty::readRepo() {
 	// getting the PointsProperty
 	RESQML2_NS::PointsProperty* pointsProperty = repo->getDataObjectByUuid<RESQML2_NS::PointsProperty>(defaultUuid);
 	REQUIRE(pointsProperty->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE);

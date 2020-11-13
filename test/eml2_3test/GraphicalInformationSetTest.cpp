@@ -33,18 +33,10 @@ const char* GraphicalInformationSetTest::uuidHorizon = "6cd16ac5-e321-467c-9d1d-
 const char* GraphicalInformationSetTest::titleHorzon = "Horizon";
 
 GraphicalInformationSetTest::GraphicalInformationSetTest(const string & repoPath)
-	: AbstractObjectTest(repoPath) {
+	: AbstractTest(repoPath) {
 }
 
-GraphicalInformationSetTest::GraphicalInformationSetTest(COMMON_NS::DataObjectRepository* repo, bool init)
-	: AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void GraphicalInformationSetTest::initRepoHandler() {
+void GraphicalInformationSetTest::initRepo() {
 	BoundaryFeature* feature = repo->createHorizon(uuidHorizon, titleHorzon);
 
 	GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet(defaultUuid, defaultTitle);
@@ -59,7 +51,7 @@ void GraphicalInformationSetTest::initRepoHandler() {
 	graphicalInformationSet->setDefaultHsvColor(feature, 0., 1., 0.5, 1., "blue");
 }
 
-void GraphicalInformationSetTest::readRepoHandler() {
+void GraphicalInformationSetTest::readRepo() {
 	REQUIRE(repo->getDataObjects<GraphicalInformationSet>().size() == 1);
 	GraphicalInformationSet * graphicalInformationSet = repo->getDataObjects<GraphicalInformationSet>()[0];
 	REQUIRE(graphicalInformationSet->getUuid() == defaultUuid);

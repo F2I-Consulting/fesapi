@@ -22,7 +22,7 @@ under the License.
 #include "resqml2_test/WellboreFrameRepresentationTest.h"
 
 #include "resqml2/ContinuousProperty.h"
-#include "resqml2/WellboreFrameRepresentation.h"
+#include "resqml2_0_1/WellboreFrameRepresentation.h"
 #include "eml2/AbstractHdfProxy.h"
 
 using namespace std;
@@ -36,21 +36,12 @@ const char* ContinuousPropertyOnWellFrameTest::exoticUuid = "8535b08f-739f-470c-
 const char* ContinuousPropertyOnWellFrameTest::exoticTitle = "Continuous Property exotic uom on well frame Test";
 
 ContinuousPropertyOnWellFrameTest::ContinuousPropertyOnWellFrameTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-ContinuousPropertyOnWellFrameTest::ContinuousPropertyOnWellFrameTest(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void ContinuousPropertyOnWellFrameTest::initRepoHandler() {
+void ContinuousPropertyOnWellFrameTest::initRepo() {
 	// creating a wellbore frame
-	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(repo, true);
-	RESQML2_NS::WellboreFrameRepresentation * frame = static_cast<RESQML2_NS::WellboreFrameRepresentation *>(repo->getDataObjectByUuid(WellboreFrameRepresentationTest::defaultUuid));
+	RESQML2_NS::WellboreFrameRepresentation * frame = repo->createPartial<RESQML2_0_1_NS::WellboreFrameRepresentation>(WellboreFrameRepresentationTest::defaultUuid, "");
 
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
@@ -76,15 +67,10 @@ void ContinuousPropertyOnWellFrameTest::initRepoHandler() {
 		propertyKind);
 	REQUIRE(exoticContinuousProperty != nullptr);
 	exoticContinuousProperty->pushBackDoubleHdf5Array1dOfValues(values, 5, hdfProxy);
-
-	// cleaning
-	delete frameTest;
 }
 
-void ContinuousPropertyOnWellFrameTest::readRepoHandler() {
-	// reading dependencies
-	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(repo, false);
-
+void ContinuousPropertyOnWellFrameTest::readRepo()
+{
 	// getting the ContinuousPropertySeries
 	RESQML2_NS::ContinuousProperty* continuousProperty = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>(defaultUuid);
 	RESQML2_NS::ContinuousProperty* exoticContinuousProperty = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>(exoticUuid);
@@ -117,8 +103,5 @@ void ContinuousPropertyOnWellFrameTest::readRepoHandler() {
 	REQUIRE(values[2] == 2.3);
 	REQUIRE(values[3] == 3.4);
 	REQUIRE(values[4] == 4.5);
-
-	// cleaning
-	delete frameTest;
 }
 

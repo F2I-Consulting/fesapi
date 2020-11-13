@@ -18,15 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractObjectTest.h"
-#include <iostream>
-
-namespace COMMON_NS {
-	class DataObjectRepository;
-}
+#include "AbstractTest.h"
 
 namespace resqml2_test {
-	class AbstractBigIjkGridRepresentationTest : public commontest::AbstractObjectTest {
+	class AbstractBigIjkGridRepresentationTest : public commontest::AbstractTest {
 	public:
 		const unsigned int iCount;
 		const unsigned int jCount;
@@ -48,21 +43,12 @@ namespace resqml2_test {
 			double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
 			double faultThrow);
 
-		AbstractBigIjkGridRepresentationTest(COMMON_NS::DataObjectRepository * repo, bool init,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount,
-			unsigned int faultCount,
-			double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
-			double faultThrow);
-
 		~AbstractBigIjkGridRepresentationTest() {
 			if (nodesIjkGridRepresentation != nullptr) {
 				delete[] nodesIjkGridRepresentation;
 			}
 		}
 	protected:
-		virtual void initRepoHandler() = 0;
-		virtual void readRepoHandler() = 0;
-
 		/**
 		 * Get the number of nodes (including splitted ones) of the generated grid. 
 		 * @param iCount number of cells in the I direction.

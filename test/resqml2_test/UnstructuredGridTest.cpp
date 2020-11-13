@@ -32,18 +32,10 @@ double UnstructuredGridTest::nodes[] = { 0, 0, 300, 375, 0, 300, 0, 150, 300, //
 		0, 0, 0, 375, 0, 0, 0, 150, 0 }; // points for wedge
 
 UnstructuredGridTest::UnstructuredGridTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-UnstructuredGridTest::UnstructuredGridTest(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void UnstructuredGridTest::initRepoHandler() {
+void UnstructuredGridTest::initRepo() {
 	// creating the unstructured grid
 	RESQML2_NS::UnstructuredGridRepresentation* unstructuredGrid = repo->createUnstructuredGridRepresentation(defaultUuid, defaultTitle, 2);
 	REQUIRE(unstructuredGrid != nullptr);
@@ -69,7 +61,7 @@ void UnstructuredGridTest::initRepoHandler() {
 		gsoap_resqml2_0_1::resqml20__CellShape__prism);
 }
 
-void UnstructuredGridTest::readRepoHandler() {
+void UnstructuredGridTest::readRepo() {
 	// getting the unstructured grid
 	RESQML2_NS::UnstructuredGridRepresentation * unstructuredGrid = repo->getDataObjectByUuid<RESQML2_NS::UnstructuredGridRepresentation>(defaultUuid);
 

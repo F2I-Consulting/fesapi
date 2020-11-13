@@ -20,7 +20,7 @@ under the License.
 
 #include "catch.hpp"
 
-#include "AbstractObjectTest.h"
+#include "AbstractTest.h"
 
 #include "resqml2/BoundaryFeature.h"
 #include "resqml2/HorizonInterpretation.h"
@@ -36,21 +36,11 @@ const char* HorizonInterpretationTest::defaultUuid = "4b256b37-4013-47f9-b6c3-44
 const char* HorizonInterpretationTest::defaultTitle = "Horizon Interpretation";
 
 HorizonInterpretationTest::HorizonInterpretationTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath)
+	: commontest::AbstractTest(repoPath)
 {
 }
 
-HorizonInterpretationTest::HorizonInterpretationTest(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo)
-{
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-
-void HorizonInterpretationTest::initRepoHandler()
+void HorizonInterpretationTest::initRepo()
 {
 	// creating dependencies
 	BoundaryFeature* horizon = repo->getDataObjectByUuid<BoundaryFeature>(horizonUuid);
@@ -65,7 +55,7 @@ void HorizonInterpretationTest::initRepoHandler()
 	REQUIRE( horizonInterp != nullptr );
 }
 
-void HorizonInterpretationTest::readRepoHandler()
+void HorizonInterpretationTest::readRepo()
 {
 	// getting the horizon interpretation
 	HorizonInterpretation* horizonInterp = repo->getDataObjectByUuid<HorizonInterpretation>(defaultUuid);
