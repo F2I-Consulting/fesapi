@@ -106,7 +106,7 @@ using namespace witsml2_test;
 #else
 	#define FESAPI_TEST(name, tags, classTest)  FESAPI_TEST2_0(name, tags, classTest)
 #endif
-
+/*
 #if WITH_RESQML2_2
 FESAPI_TEST2_2("Export and import graphical information set", "[graphical information]", GraphicalInformationSetTest)
 FESAPI_TEST2_2("Export and import discrete color map on a discrete property", "[graphical information][color map][discrete color map]", DiscreteColorMapTest)
@@ -149,9 +149,9 @@ TEST_CASE("Test hdf5 opening mode", "[hdf]")
 	REQUIRE_NOTHROW(hdfProxy->open());
 	hdfProxy->close();
 }
-
+*/
 FESAPI_TEST("Export and import of date time", "[datetime]", DateTimeTest)
-
+/*
 FESAPI_TEST("Export and import a local depth 3d crs", "[crs]", LocalDepth3dCrsTest)
 
 // INTERPRETATION
@@ -220,3 +220,4 @@ FESAPI_TEST("Check discrete property datatypes", "[property]", DiscreteProperty)
 FESAPI_TEST("Check points property", "[property]", PointsProperty)
 FESAPI_TEST("Export and import properties using slab", "[property]", PropertyBySlab)
 FESAPI_TEST("Export and import a time series", "[property]", TimeSeriesTest)
+*/
