@@ -55,7 +55,7 @@ namespace timeTools
 	 *
 	 * @returns	A time_t.
 	 */
-	time_t timegm(struct tm *tm);
+	time_t timegm(std::tm const& t);
 
 	/**
 	 * Converts a UTC time represented by a point in time to the same UTC time represented by tm``struct.

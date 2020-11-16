@@ -193,7 +193,7 @@ time_t TimeSeriesData::getValueTimestamp(unsigned int index) const
 
 	return result == nullptr
 		? -1
-		: timeTools::timegm(result);
+		: timeTools::timegm(*result);
 }
 
 bool TimeSeriesData::hasValueStatus(unsigned int index) const

@@ -36,14 +36,14 @@ DateTimeTest::DateTimeTest(const string & epcDocPath)
 
 void DateTimeTest::initRepo()
 {
-	repo->getDefaultHdfProxy()->setCreation(3603); // one hour and 3 seconds after 1970-01-01T00:00:00Z
+	repo->getDefaultHdfProxy()->setCreation(36003); // ten hours and 3 seconds after 1970-01-01T00:00:00Z
 	REQUIRE_THROWS(repo->getDefaultHdfProxy()->setLastUpdate(3602));
 
 	std::tm tmDate;
 	tmDate.tm_year = 70;
 	tmDate.tm_mon = 0;
 	tmDate.tm_mday = 1;
-	tmDate.tm_hour = 1;
+	tmDate.tm_hour = 10;
 	tmDate.tm_min = 1;
 	tmDate.tm_sec = 33;
 	repo->getDefaultHdfProxy()->setLastUpdate(tmDate);
@@ -51,29 +51,29 @@ void DateTimeTest::initRepo()
 
 void DateTimeTest::readRepo()
 {
-	REQUIRE(repo->getDefaultHdfProxy()->getCreation() == 3603);
+	auto* localCrs = repo->getLocalDepth3dCrs(0);
+	time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+	REQUIRE(localCrs->getCreation() > now - 5);
+	REQUIRE(localCrs->getCreation() < now + 5);
+
+	REQUIRE(localCrs->getLastUpdate() < 0);
+	REQUIRE(localCrs->getLastUpdateAsTimeStructure().tm_year == 0);
+
+	REQUIRE(repo->getDefaultHdfProxy()->getCreation() == 36003);
 	std::tm tmDate = repo->getDefaultHdfProxy()->getCreationAsTimeStructure();
 	REQUIRE(tmDate.tm_year == 70);
 	REQUIRE(tmDate.tm_mon == 0);
 	REQUIRE(tmDate.tm_mday == 1);
-	REQUIRE(tmDate.tm_hour == 1);
+	REQUIRE(tmDate.tm_hour == 10);
 	REQUIRE(tmDate.tm_min == 0);
 	REQUIRE(tmDate.tm_sec == 3);
 
-	REQUIRE(repo->getDefaultHdfProxy()->getLastUpdate() == 3693);
+	REQUIRE(repo->getDefaultHdfProxy()->getLastUpdate() == 36093);
 	tmDate = repo->getDefaultHdfProxy()->getLastUpdateAsTimeStructure();
 	REQUIRE(tmDate.tm_year == 70);
 	REQUIRE(tmDate.tm_mon == 0);
 	REQUIRE(tmDate.tm_mday == 1);
-	REQUIRE(tmDate.tm_hour == 1);
+	REQUIRE(tmDate.tm_hour == 10);
 	REQUIRE(tmDate.tm_min == 1);
 	REQUIRE(tmDate.tm_sec == 33);
-
-	auto* localCrs = repo->getLocalDepth3dCrs(0);
-	time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-	REQUIRE(localCrs->getCreation() > now - 2);
-	REQUIRE(localCrs->getCreation() < now + 2);
-
-	REQUIRE(localCrs->getLastUpdate() < 0);
-	REQUIRE(localCrs->getLastUpdateAsTimeStructure().tm_year == 0);
 }

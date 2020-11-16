@@ -176,7 +176,7 @@ string AbstractObject::getEditor() const
 time_t AbstractObject::getCreation() const
 {
 	tm tmp = getCreationAsTimeStructure();
-	return timeTools::timegm(&tmp);
+	return timeTools::timegm(tmp);
 }
 
 tm AbstractObject::getCreationAsTimeStructure() const
@@ -238,7 +238,7 @@ time_t AbstractObject::getLastUpdate() const
 		return -1;
 	}
 
-	return timeTools::timegm(&result);
+	return timeTools::timegm(result);
 }
 
 tm AbstractObject::getLastUpdateAsTimeStructure() const

@@ -54,7 +54,7 @@ unsigned int TimeSeries::getTimestampIndex(time_t timestamp) const
 	gsoap_eml2_3::_eml23__TimeSeries* timeSeries = static_cast<gsoap_eml2_3::_eml23__TimeSeries*>(gsoapProxy2_3);
 
 	for (size_t result = 0; result < timeSeries->Time.size(); ++result) {
-		if (timeTools::timegm(&timeSeries->Time[result]->DateTime) == timestamp) {
+		if (timeTools::timegm(timeSeries->Time[result]->DateTime) == timestamp) {
 			return result;
 		}
 	}

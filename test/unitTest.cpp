@@ -81,7 +81,7 @@ using namespace commontest;
 using namespace resqml2_test;
 using namespace witsml2_test;
 
-#define FESAPI_TEST2_2(name, tags, classTest)  TEST_CASE(#name "2_2", tags)\
+#define FESAPI_TEST2_2(name, tags, classTest)  TEST_CASE(#name " 2_2", tags)\
 {\
 	classTest test("../../" #classTest "2_2.epc");\
 	test.defaultEmlVersion = COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3;\
@@ -90,7 +90,7 @@ using namespace witsml2_test;
 	test.deserialize();\
 }
 
-#define FESAPI_TEST2_0(name, tags, classTest)  TEST_CASE(#name "2_0", tags)\
+#define FESAPI_TEST2_0(name, tags, classTest)  TEST_CASE(#name " 2_0", tags)\
 {\
 	classTest test("../../" #classTest "2_0.epc");\
 	test.defaultEmlVersion = COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0;\

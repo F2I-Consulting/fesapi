@@ -38,7 +38,7 @@ void TimeSeries::pushBackTimestamp(time_t timestamp)
 time_t TimeSeries::getTimestamp(unsigned int index) const
 {
 	tm temp = getTimestampAsTimeStructure(index);
-	return timeTools::timegm(&temp);
+	return timeTools::timegm(temp);
 }
 
 std::vector<RESQML2_NS::AbstractProperty *> TimeSeries::getPropertySet() const
