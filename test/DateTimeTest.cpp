@@ -46,6 +46,7 @@ void DateTimeTest::initRepo()
 	tmDate.tm_hour = 10;
 	tmDate.tm_min = 1;
 	tmDate.tm_sec = 33;
+	tmDate.tm_isdst = -1; // Information not available
 	repo->getDefaultHdfProxy()->setLastUpdate(tmDate);
 }
 

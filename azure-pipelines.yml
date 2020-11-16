@@ -81,9 +81,9 @@ jobs:
             -DMINIZIP_LIBRARY_RELEASE=C:/Minizip-install/lib/minizip.lib
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
-            -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include #https://github.com/actions/virtual-environments/issues/1847
+            -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
             -DWITH_EXAMPLE=TRUE
-            -DWITH_EXPERIMENTAL=TRUE
+            -DWITH_RESQML2_2=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
             -DWITH_TEST=TRUE
             -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
@@ -206,9 +206,9 @@ jobs:
             -DMINIZIP_LIBRARY_RELEASE=C:/Minizip-install/lib/minizip.lib
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
-            -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include #https://github.com/actions/virtual-environments/issues/1847
+            -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
             -DWITH_EXAMPLE=TRUE
-            -DWITH_EXPERIMENTAL=TRUE
+            -DWITH_RESQML2_2=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
             -DWITH_TEST=TRUE
             -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
@@ -249,4 +249,37 @@ jobs:
           $(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)\example.exe
         displayName: 'C# Example'
         
-        
+  - job:
+    displayName: Ubuntu 16.04
+    pool:
+      vmImage: 'ubuntu-16.04'
+    timeoutInMinutes: 120
+    steps:
+      - script: |
+          apt-get -y install libhdf5-dev libminizip-dev
+
+      - task: CMake@1
+        displayName: 'CMake . $(Generator)'
+        inputs:
+          cmakeArgs:
+            ..
+            -Wno-dev -Wno-deprecated
+            -DHDF5_C_INCLUDE_DIR=/usr/include/hdf5/serial/
+            -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so
+            -DMINIZIP_INCLUDE_DIR=/usr/include/minizip
+            -DMINIZIP_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libminizip.so
+            -DZLIB_INCLUDE_DIR=/usr/include
+            -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
+            -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
+            -DWITH_EXAMPLE=TRUE
+            -DWITH_RESQML2_2=TRUE
+            -DWITH_TEST=TRUE
+
+      - task: CMake@1
+        displayName: "Build)"
+        inputs:
+          cmakeArgs: --build . -- /verbosity:minimal
+
+      - script: |
+          ./example
+        displayName: 'Example'
