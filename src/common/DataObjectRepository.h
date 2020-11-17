@@ -117,7 +117,6 @@ namespace RESQML2_0_1_NS
 	class CategoricalProperty;
 	class CategoricalPropertySeries;
 	class AbstractOrganizationInterpretation;
-	class AbstractGridRepresentation;
 	class OrganizationFeature;
 	class StratigraphicOccurrenceInterpretation;
 	class FrontierFeature;
