@@ -284,6 +284,7 @@ jobs:
           cmakeArgs: --build $(Build.BinariesDirectory)
 
       - script: |
+          ls $(Build.BinariesDirectory)
           $(Build.BinariesDirectory)/example/example
         displayName: 'Example'
         

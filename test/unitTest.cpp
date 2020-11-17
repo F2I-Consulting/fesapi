@@ -156,7 +156,7 @@ FESAPI_TEST("Export and import a local depth 3d crs", "[crs]", LocalDepth3dCrsTe
 
 // INTERPRETATION
 FESAPI_TEST("Export and import an horizon interpretation", "[interpretation]", HorizonInterpretationTest)
-FESAPI_TEST("Export a multi domains interpreation", "[interpretation]", InterpretationDomain)
+FESAPI_TEST("Export a multi domains interpretation", "[interpretation]", InterpretationDomain)
 
 // TRIANGULATION
 FESAPI_TEST("Export and import a single patch triangulated set fault representation", "[representation]", FaultSinglePatchTriangulatedSetRepresentationTest)

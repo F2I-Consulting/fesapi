@@ -65,7 +65,7 @@ void InterpretationDomain::initRepo()
 		RESQML2_NS::PolylineSetRepresentation* timeRep = repo->createPolylineSetRepresentation(faultInterp, "", "");
 		unsigned int numNodesPerPolylinePerPatch[] = { 1 };
 		double polylinePoints[3] = { 150, 0, 200 };
-		timeRep->pushBackGeometryPatch(numNodesPerPolylinePerPatch, polylinePoints, 2, false, nullptr, timeCrs);
+		timeRep->pushBackGeometryPatch(numNodesPerPolylinePerPatch, polylinePoints, 1, false, nullptr, timeCrs);
 		REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain__mixed);
 	}
 }
