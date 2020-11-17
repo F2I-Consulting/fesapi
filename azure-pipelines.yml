@@ -14,7 +14,7 @@ jobs:
           BuildType: Release
           Generator: '-G"Visual Studio 15 2017 Win64" -T host=x64'
           JFlag: '-j 2'
-    timeoutInMinutes: 120
+    timeoutInMinutes: 150
     steps:
       - powershell: |
           Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.18/bin/windows/noszip/extra/hdf5-1.8.18-win64-vs2015-noszip.zip -OutFile C:\hdf5-1.8.18-win64-vs2015-noszip.zip
@@ -128,7 +128,7 @@ jobs:
     displayName: Windows VS2019
     pool:
       vmImage: 'windows-2019'
-    timeoutInMinutes: 120
+    timeoutInMinutes: 150
     strategy:
       matrix:
         # 64-bit Debug:
@@ -257,6 +257,7 @@ jobs:
     steps:
       - script: |
           sudo apt install -y libhdf5-dev libminizip-dev valgrind
+        displayName: 'APT install'
 
       - task: CMake@1
         displayName: 'Configure FESAPI build'
@@ -273,6 +274,7 @@ jobs:
             -DWITH_EXAMPLE=TRUE
             -DWITH_RESQML2_2=TRUE
             -DWITH_TEST=TRUE
+            -DCMAKE_BUILD_TYPE=Debug \
             -S $(Build.SourcesDirectory)
             -B $(Build.BinariesDirectory)
 
@@ -282,5 +284,9 @@ jobs:
           cmakeArgs: --build $(Build.BinariesDirectory)
 
       - script: |
-          valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all $(Build.BinariesDirectory)/example/example
+          $(Build.BinariesDirectory)/example/example
         displayName: 'Example'
+        
+      - script: |
+          valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all $(Build.BinariesDirectory)/example/example
+        displayName: 'Valgrind on Example'
