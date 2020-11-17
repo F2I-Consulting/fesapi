@@ -272,7 +272,7 @@ jobs:
             -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
             -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
             -DWITH_EXAMPLE=TRUE
-            -DCMAKE_BUILD_TYPE=Debug
+            -DCMAKE_BUILD_TYPE=Release
             -S $(Build.SourcesDirectory)
             -B $(Build.BinariesDirectory)
 
