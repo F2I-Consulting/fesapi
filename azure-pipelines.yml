@@ -274,7 +274,7 @@ jobs:
             -DWITH_EXAMPLE=TRUE
 #            -DWITH_RESQML2_2=TRUE
 #            -DWITH_TEST=TRUE
-            -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_BUILD_TYPE=Debug
             -S $(Build.SourcesDirectory)
             -B $(Build.BinariesDirectory)
 
