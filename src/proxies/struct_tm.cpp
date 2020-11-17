@@ -71,7 +71,6 @@ SOAP_FMAC3 const char * SOAP_FMAC4 soap_xsd__dateTime2s(struct soap *soap, const
 #else
     strftime(soap->tmpbuf, sizeof(soap->tmpbuf), "%Y-%m-%dT%H:%M:%S", &b);
 #endif
-	std::cout << "ISDST : " << soap->tmpbuf << std::endl;
     return soap->tmpbuf;
   }
 #ifndef WITH_NOZONE
@@ -79,7 +78,6 @@ SOAP_FMAC3 const char * SOAP_FMAC4 soap_xsd__dateTime2s(struct soap *soap, const
 #else
   strftime(soap->tmpbuf, sizeof(soap->tmpbuf), "%Y-%m-%dT%H:%M:%S", &a);
 #endif
-  std::cout << " NO ISDST : " << soap->tmpbuf << std::endl;
   return soap->tmpbuf;
 }
 

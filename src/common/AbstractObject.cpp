@@ -238,16 +238,6 @@ time_t AbstractObject::getLastUpdate() const
 		return -1;
 	}
 
-	cerr << "tm_hour : " << result.tm_hour << endl;
-	cerr << "tm_isdst : " << result.tm_isdst << endl;
-	cerr << "tm_mday : " << result.tm_mday << endl;
-	cerr << "tm_min : " << result.tm_min << endl;
-	cerr << "tm_mon : " << result.tm_mon << endl;
-	cerr << "tm_sec : " << result.tm_sec << endl;
-	cerr << "tm_wday : " << result.tm_wday << endl;
-	cerr << "tm_yday : " << result.tm_yday << endl;
-	cerr << "tm_year : " << result.tm_year << endl;
-
 	return timeTools::timegm(result);
 }
 

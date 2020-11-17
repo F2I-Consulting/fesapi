@@ -37,8 +37,10 @@ jobs:
                 -DZLIB_INCLUDE_DIR=/usr/include
                 -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
                 -DWITH_EXAMPLE=TRUE
+                -DWITH_RESQML2_2=TRUE
                 -DWITH_TEST=TRUE
             - cmake --build . -- -j 2
+            - valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./example/example
             - ctest -V
 addons:
   apt:
