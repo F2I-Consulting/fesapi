@@ -97,9 +97,7 @@ void HdfProxy::open()
 	}
 	else if (openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_WRITE) {
 		hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
-#ifdef H5F_LIBVER_V18
 		H5Pset_libver_bounds (access_props, H5F_LIBVER_V18, H5F_LIBVER_V18);
-#endif
 
 		hdfFile = H5Fcreate(fullName.c_str(), H5F_ACC_EXCL, H5P_DEFAULT, access_props);
 
@@ -114,9 +112,7 @@ void HdfProxy::open()
 	}
 	else if (openingMode == COMMON_NS::DataObjectRepository::openingMode::OVERWRITE) {
 		hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
-#ifdef H5F_LIBVER_V18
 		H5Pset_libver_bounds (access_props, H5F_LIBVER_V18, H5F_LIBVER_V18);
-#endif
 
 		hdfFile = H5Fcreate(fullName.c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, access_props);
 		if (hdfFile < 0) {

@@ -58,7 +58,7 @@ ENDIF ()
 IF (WIN32)
 	set (HDF5_BUILT_AS_DYNAMIC_LIB ON CACHE BOOL "Is your HDF5 library built as a dynamic library ?")
 ENDIF (WIN32)
-set (HDF5_1_10 OFF CACHE BOOL "Is your HDF5 library version 1.10 or 1.8 ?")
+set (HDF5_1_8 OFF CACHE BOOL "Is your HDF5 library version 1.8 ?")
 
 # Zlib
 FIND_PACKAGE (ZLIB)
