@@ -13,7 +13,7 @@
 Download (build and install if necessary) third party libraries:
 - HDF5: All versions of 1.8.* starting from 1.8.18 and all versions of 1.10.* starting from 1.10.2 should be ok. https://support.hdfgroup.org/ftp/HDF5/releases/
 - MINIZIP : Version 1.1 is needed : it is the official version included in current zlib distribution https://www.zlib.net/ (look into "contrib" folder). You can directly install minizip development package on most of Linux distributions (https://packages.ubuntu.com/xenial/libminizip-dev). On Windows (or older Linux distributions), you can copy the CMakeLists.txt file from fesapi/cmake/minizip to the zlib minizip directory to help you to build minizip (we also provide a copy of minizip 1.1 with cmake files on github : https://github.com/F2I-Consulting/Minizip). It is also highly recommended to link minizip to the same zlib library than the one associated to your HDF5 library.
-- BOOST : Starting from version 1.44.0. FYI, on windows, boost uuid depends on bcrypt library.
+- BOOST : Starting from version 1.44.0 (and at least 1.67.0 if you don't want to face [valgrid false positives](https://www.boost.org/doc/libs/1_66_0/libs/uuid/doc/uuid.html#Design%20notes)). FYI, on windows, boost uuid depends on bcrypt library.
 
 We advise you to install these third party libraries respectively into
 - fesapiEnv/dependencies/hdf5-particularVersion
