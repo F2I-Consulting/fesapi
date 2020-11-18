@@ -32,27 +32,14 @@ const char* ActivityTemplateGenericCreationTest::defaultUuid = "a41c63bf-78cb-45
 const char* ActivityTemplateGenericCreationTest::defaultTitle = "GenericCreationActivity";
 
 ActivityTemplateGenericCreationTest::ActivityTemplateGenericCreationTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 		ParameterTest creationInput = {"CreationInput", true, false, 0, -1};
 		parameterMap.insert(std::pair<std::string, ParameterTest>("CreationInput", creationInput));
 		ParameterTest creationOutput = {"CreationOutput", false, true, 1, -1};
 		parameterMap.insert(std::pair<std::string, ParameterTest>("CreationOutput", creationOutput));
 }
 
-ActivityTemplateGenericCreationTest::ActivityTemplateGenericCreationTest(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-		ParameterTest creationInput = {"CreationInput", true, false, 0, -1};
-		parameterMap.insert(std::pair<std::string, ParameterTest>("CreationInput", creationInput));
-		ParameterTest creationOutput = {"CreationOutput", false, true, 1, -1};
-		parameterMap.insert(std::pair<std::string, ParameterTest>("CreationOutput", creationOutput));
-		
-		if (init)
-			initRepo();
-		else
-			readRepo();
-}
-
-void ActivityTemplateGenericCreationTest::initRepoHandler() {
+void ActivityTemplateGenericCreationTest::initRepo() {
 	ActivityTemplate*  genericCreationActivityTemplate = repo->createActivityTemplate(defaultUuid, defaultTitle);
 	REQUIRE(genericCreationActivityTemplate != nullptr);
 
@@ -62,7 +49,7 @@ void ActivityTemplateGenericCreationTest::initRepoHandler() {
 	}
 }
 
-void ActivityTemplateGenericCreationTest::readRepoHandler() {
+void ActivityTemplateGenericCreationTest::readRepo() {
 	ActivityTemplate* activityTemplate = static_cast<ActivityTemplate*>(repo->getDataObjectByUuid(defaultUuid));
 
 	REQUIRE(activityTemplate->getParameterCount() == parameterMap.size());

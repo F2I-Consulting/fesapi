@@ -37,20 +37,11 @@ const char* SeismicLatticeRepresentationTest::defaultUuid = "c218fe9a-5080-4322-
 const char* SeismicLatticeRepresentationTest::defaultTitle = "Seismic Grid 2d Representation";
 
 SeismicLatticeRepresentationTest::SeismicLatticeRepresentationTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath)
+	: commontest::AbstractTest(repoPath)
 {
 }
 
-SeismicLatticeRepresentationTest::SeismicLatticeRepresentationTest(DataObjectRepository* repo, bool init)
-	: commontest::AbstractObjectTest(repo)
-{
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void SeismicLatticeRepresentationTest::initRepoHandler()
+void SeismicLatticeRepresentationTest::initRepo()
 {
 	SeismicLatticeFeature* seismicLattice = repo->createSeismicLattice(defaultUuidFeature, defaultTitleFeature, 2, 2, 150, 152, 4, 2);
 	GenericFeatureInterpretation* seismicLatticeInterp = repo->createGenericFeatureInterpretation(seismicLattice, defaultUuidInterp, defaultTitleInterp);
@@ -58,7 +49,7 @@ void SeismicLatticeRepresentationTest::initRepoHandler()
 	seismicLatticeRep->setGeometryAsArray2dOfLatticePoints3d(4, 2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 250, 200);
 }
 
-void SeismicLatticeRepresentationTest::readRepoHandler()
+void SeismicLatticeRepresentationTest::readRepo()
 {
 	// Feature
 	RESQML2_NS::SeismicLatticeFeature* feature = repo->getDataObjectByUuid<RESQML2_NS::SeismicLatticeFeature>(defaultUuidFeature);

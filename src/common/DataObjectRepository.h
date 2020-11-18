@@ -3452,11 +3452,6 @@ namespace COMMON_NS
 		std::vector< std::tuple<std::chrono::time_point<std::chrono::system_clock>, DataObjectReference, CUD> > journal;
 
 		/**
-		* Necessary to avoid a dependency on GuidTools.h
-		*/
-		std::string generateRandomUuidAsString() const;
-
-		/**
 		* Set the stream of the curent gsoap context.
 		*/
 		void setGsoapStream(std::istream * inputStream) { gsoapContext->is = inputStream; }

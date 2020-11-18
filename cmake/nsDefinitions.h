@@ -62,8 +62,6 @@ under the License.
 
 /** @namespace	epc @brief The epc namespace. */
 
-/** @namespace	GuidTools @brief The GuidTools namespace. */
-
 /** @namespace	statistics @brief The statistics namespace. */
 
 /** @namespace	timeTools @brief The timeTools namespace. */

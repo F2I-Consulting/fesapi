@@ -54,7 +54,7 @@ unsigned int TimeSeries::getTimestampIndex(time_t timestamp) const
 	gsoap_resqml2_0_1::_resqml20__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1);
 
 	for (size_t result = 0; result < timeSeries->Time.size(); ++result) {
-		if (timeTools::timegm(&timeSeries->Time[result]->DateTime) == timestamp) {
+		if (timeTools::timegm(timeSeries->Time[result]->DateTime) == timestamp) {
 			return result;
 		}
 	}

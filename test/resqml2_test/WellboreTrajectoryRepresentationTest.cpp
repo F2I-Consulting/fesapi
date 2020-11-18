@@ -25,9 +25,6 @@ under the License.
 #include "resqml2/MdDatum.h"
 #include "resqml2_0_1/WellboreInterpretation.h"
 #include "resqml2/WellboreTrajectoryRepresentation.h"
-
-#include "tools/GuidTools.h"
-
 using namespace std;
 using namespace resqml2_test;
 using namespace COMMON_NS;
@@ -41,20 +38,12 @@ const char* WellboreTrajectoryRepresentationTest::defaultTitle = "Wellbore Repre
 #define TRAJ_MMELEV_INCL_AZI_UUID "4acc783a-3b06-4d1e-9c8f-97d9b1af7742"
 
 WellboreTrajectoryRepresentationTest::WellboreTrajectoryRepresentationTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-WellboreTrajectoryRepresentationTest::WellboreTrajectoryRepresentationTest(DataObjectRepository* repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void WellboreTrajectoryRepresentationTest::initRepoHandler() {
-	WellboreInterpretation* interp = repo->createPartial<RESQML2_0_1_NS::WellboreInterpretation>(GuidTools::generateUidAsString(), "");
-	MdDatum* mdDatum = repo->createMdDatum(GuidTools::generateUidAsString(), "", nullptr, gsoap_eml2_3::eml23__WellboreDatumReference__mean_x0020sea_x0020level, 275, 75, 0);
+void WellboreTrajectoryRepresentationTest::initRepo() {
+	WellboreInterpretation* interp = repo->createPartial<RESQML2_0_1_NS::WellboreInterpretation>("", "");
+	MdDatum* mdDatum = repo->createMdDatum("", "", nullptr, gsoap_eml2_3::eml23__WellboreDatumReference__mean_x0020sea_x0020level, 275, 75, 0);
 
 	// creating the WellboreTrajectoryRepresentation in m and ft and depth
 	WellboreTrajectoryRepresentation* rep = repo->createWellboreTrajectoryRepresentation(interp, defaultUuid, defaultTitle, mdDatum);
@@ -85,7 +74,7 @@ void WellboreTrajectoryRepresentationTest::initRepoHandler() {
 	rep4->setGeometry(controlPoints, inclinations2, azimuths2, trajectoryMds, 4, 0, repo->getHdfProxySet()[0]);
 }
 
-void WellboreTrajectoryRepresentationTest::readRepoHandler() {
+void WellboreTrajectoryRepresentationTest::readRepo() {
 	// getting the WellboreTrajectoryRepresentation
 	WellboreTrajectoryRepresentation* traj = repo->getDataObjectByUuid<WellboreTrajectoryRepresentation>(defaultUuid);
 

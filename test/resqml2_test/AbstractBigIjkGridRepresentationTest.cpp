@@ -37,7 +37,7 @@ AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(
 	unsigned int faultCount,
 	double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
 	double faultThrow) :
-	commontest::AbstractObjectTest(repoPath),
+	commontest::AbstractTest(repoPath),
 	iCount(iCount), jCount(jCount), kCount(kCount), faultCount(faultCount),
 	xMin(xMin), xMax(xMax), yMin(yMin), yMax(yMax), zMin(zMin), zMax(zMax), faultThrow(faultThrow)
 {
@@ -55,35 +55,6 @@ AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(
 	{
 		throw invalid_argument("In each dimension, grid length cannot be 0.");
 	}
-}
-
-AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(DataObjectRepository * repo, bool init,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount,
-	unsigned int faultCount,
-	double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
-	double faultThrow) :
-	commontest::AbstractObjectTest(repo),
-	iCount(iCount), jCount(jCount), kCount(kCount), faultCount(faultCount),
-	xMin(xMin), xMax(xMax), yMin(yMin), yMax(yMax), zMin(zMin), zMax(zMax), faultThrow(faultThrow) {
-	if ((iCount < 1) || (jCount < 1) || (kCount < 1))
-	{
-		throw invalid_argument("iCount, jCount and kCount must be >= 1.");
-	}
-
-	if (faultCount > (iCount - 1))
-	{
-		throw invalid_argument("faultCount must be strictly less than iCount.");
-	}
-
-	if ((xMin == xMax) || (yMin == yMax) || (zMin == zMax))
-	{
-		throw invalid_argument("In each dimension, grid length cannot be 0.");
-	}
-
-	if (init)
-		initRepo();
-	else
-		readRepo();
 }
 
 unsigned long long AbstractBigIjkGridRepresentationTest::initNodesCountIjkGridRepresentation(unsigned int iCount, unsigned int jCount, unsigned int kCount,

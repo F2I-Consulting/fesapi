@@ -53,24 +53,11 @@ double LgrOnRightHanded4x3x2ExplicitIjkGrid::nodesIjkGridRepresentation[] = {
 };
 
 LgrOnRightHanded4x3x2ExplicitIjkGrid::LgrOnRightHanded4x3x2ExplicitIjkGrid(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-LgrOnRightHanded4x3x2ExplicitIjkGrid::LgrOnRightHanded4x3x2ExplicitIjkGrid(DataObjectRepository* repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init) {
-		initRepo();
-	}
-	else {
-		readRepo();
-	}
-}
-
-void LgrOnRightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
-	// getting the parent grid
-	RightHanded4x3x2ExplicitIjkGrid parentGridTest(repo, true);
-
-	RESQML2_NS::IjkGridExplicitRepresentation* parentGrid = repo->getDataObjectByUuid<RESQML2_NS::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
+void LgrOnRightHanded4x3x2ExplicitIjkGrid::initRepo() {
+	auto* parentGrid = repo->createPartialIjkGridRepresentation(RightHanded4x3x2ExplicitIjkGrid::defaultUuid, "");
 
 	// creating the child ijk grid
 	RESQML2_NS::IjkGridExplicitRepresentation* childGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 3, 1, 4);
@@ -112,9 +99,7 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 	REQUIRE(childGrid->getRepresentationSetRepresentation(0)->getRepresentationCount() == 3);
 }
 
-void LgrOnRightHanded4x3x2ExplicitIjkGrid::readRepoHandler() {
-	RightHanded4x3x2ExplicitIjkGrid* parentGridTest = new RightHanded4x3x2ExplicitIjkGrid(repo, false);
-
+void LgrOnRightHanded4x3x2ExplicitIjkGrid::readRepo() {
 	// getting the childGrid
 	RESQML2_NS::AbstractIjkGridRepresentation* childGrid = repo->getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>(defaultUuid);
 	RESQML2_NS::AbstractIjkGridRepresentation* childGridHdf5 = repo->getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>("38930b30-1325-424e-a1e9-666fa50bfa4f");
@@ -192,6 +177,4 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::readRepoHandler() {
 	REQUIRE(rsr->getRepresentation(0) == childGrid);
 	REQUIRE(rsr->getRepresentation(1) == childGridHdf5);
 	REQUIRE(rsr->getRepresentation(2) == childGridNonConstant);
-
-	delete parentGridTest;
 }

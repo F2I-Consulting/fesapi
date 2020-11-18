@@ -14,7 +14,7 @@ jobs:
           BuildType: Release
           Generator: '-G"Visual Studio 15 2017 Win64" -T host=x64'
           JFlag: '-j 2'
-    timeoutInMinutes: 120
+    timeoutInMinutes: 150
     steps:
       - powershell: |
           Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.18/bin/windows/noszip/extra/hdf5-1.8.18-win64-vs2015-noszip.zip -OutFile C:\hdf5-1.8.18-win64-vs2015-noszip.zip
@@ -81,10 +81,9 @@ jobs:
             -DMINIZIP_LIBRARY_RELEASE=C:/Minizip-install/lib/minizip.lib
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
-            -DFESAPI_USE_BOOST_UUID=ON
-            -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_69_0)/include
+            -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
             -DWITH_EXAMPLE=TRUE
-            -DWITH_EXPERIMENTAL=TRUE
+            -DWITH_RESQML2_2=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
             -DWITH_TEST=TRUE
             -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
@@ -129,7 +128,7 @@ jobs:
     displayName: Windows VS2019
     pool:
       vmImage: 'windows-2019'
-    timeoutInMinutes: 120
+    timeoutInMinutes: 150
     strategy:
       matrix:
         # 64-bit Debug:
@@ -207,8 +206,9 @@ jobs:
             -DMINIZIP_LIBRARY_RELEASE=C:/Minizip-install/lib/minizip.lib
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+            -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
             -DWITH_EXAMPLE=TRUE
-            -DWITH_EXPERIMENTAL=TRUE
+            -DWITH_RESQML2_2=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
             -DWITH_TEST=TRUE
             -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
@@ -249,4 +249,44 @@ jobs:
           $(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)\example.exe
         displayName: 'C# Example'
         
+  - job:
+    displayName: Ubuntu 16.04
+    pool:
+      vmImage: 'ubuntu-16.04'
+    timeoutInMinutes: 120
+    steps:
+      - script: |
+          sudo apt install -y libhdf5-dev libminizip-dev valgrind
+        displayName: 'APT install'
+
+      - task: CMake@1
+        displayName: 'Configure FESAPI build'
+        inputs:
+          cmakeArgs:
+            -Wno-dev -Wno-deprecated
+            -DHDF5_C_INCLUDE_DIR=/usr/include/hdf5/serial/
+            -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so
+            -DMINIZIP_INCLUDE_DIR=/usr/include/minizip
+            -DMINIZIP_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libminizip.so
+            -DZLIB_INCLUDE_DIR=/usr/include
+            -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
+            -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
+            -DWITH_EXAMPLE=TRUE
+            -DWITH_RESQML2_2=TRUE
+            -DWITH_TEST=TRUE
+            -DCMAKE_BUILD_TYPE=Release
+            -S $(Build.SourcesDirectory)
+            -B $(Build.BinariesDirectory)
+
+      - task: CMake@1
+        displayName: "Build FESAPI"
+        inputs:
+          cmakeArgs: --build $(Build.BinariesDirectory)
         
+      - script: |
+          valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all $(Build.BinariesDirectory)/example/example
+        displayName: 'Valgrind on Example'
+
+      - script: |
+          $(Build.BinariesDirectory)/test/unitTest
+        displayName: 'Unit test'

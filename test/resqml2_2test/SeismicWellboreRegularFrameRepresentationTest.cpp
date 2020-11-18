@@ -24,12 +24,10 @@ under the License.
 #include "resqml2_test/LocalTime3dCrs.h"
 
 #include "resqml2_2/WellboreInterpretation.h"
-#include "resqml2/WellboreTrajectoryRepresentation.h"
+#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
 #include "eml2/AbstractHdfProxy.h"
 #include "resqml2_2/SeismicWellboreFrameRepresentation.h"
-#include "resqml2/LocalTime3dCrs.h"
-
-#include "tools/GuidTools.h"
+#include "resqml2_0_1/LocalTime3dCrs.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -41,23 +39,12 @@ const char* SeismicWellboreRegularFrameRepresentationTest::defaultUuid = "04a13a
 const char* SeismicWellboreRegularFrameRepresentationTest::defaultTitle = "SeismicWellbore Frame Representation";
 
 SeismicWellboreRegularFrameRepresentationTest::SeismicWellboreRegularFrameRepresentationTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath) {
+	: commontest::AbstractTest(epcDocPath) {
 }
 
-SeismicWellboreRegularFrameRepresentationTest::SeismicWellboreRegularFrameRepresentationTest(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void SeismicWellboreRegularFrameRepresentationTest::initRepoHandler() {
-	// creating dependencies
-	resqml2_test::WellboreTrajectoryRepresentationTest trajTest(repo, true);
-
-	WellboreInterpretation* interp = repo->createPartial<RESQML2_2_NS::WellboreInterpretation>(GuidTools::generateUidAsString(), "");
-	RESQML2_NS::WellboreTrajectoryRepresentation * traj = repo->getDataObjectByUuid<RESQML2_NS::WellboreTrajectoryRepresentation>(resqml2_test::WellboreTrajectoryRepresentationTest::defaultUuid);
+void SeismicWellboreRegularFrameRepresentationTest::initRepo() {
+	WellboreInterpretation* interp = repo->createPartial<RESQML2_2_NS::WellboreInterpretation>("", "");
+	WellboreTrajectoryRepresentation * traj = repo->createPartial<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>("", "");
 
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
@@ -66,8 +53,7 @@ void SeismicWellboreRegularFrameRepresentationTest::initRepoHandler() {
 	// getting the local time crs
 	RESQML2_NS::LocalTime3dCrs* crs = repo->getDataObjectByUuid<RESQML2_NS::LocalTime3dCrs>(resqml2_test::LocalTime3dCrs::defaultUuid);
 	if (crs == nullptr) {
-		resqml2_test::LocalTime3dCrs crsTest(repo, true);
-		crs = repo->getDataObjectByUuid<RESQML2_NS::LocalTime3dCrs>(resqml2_test::LocalTime3dCrs::defaultUuid);
+		crs = repo->createPartial<RESQML2_0_1_NS::LocalTime3dCrs>("", "");
 	}
 
 	// WellboreFeature frame
@@ -76,7 +62,7 @@ void SeismicWellboreRegularFrameRepresentationTest::initRepoHandler() {
 	w1i1RegularSeismicFrameRep->setTimeValues(0., 10., 6);
 }
 
-void SeismicWellboreRegularFrameRepresentationTest::readRepoHandler() {
+void SeismicWellboreRegularFrameRepresentationTest::readRepo() {
 	RESQML2_2_NS::SeismicWellboreFrameRepresentation* w1i1RegularSeismicFrameRep = repo->getDataObjectByUuid<RESQML2_2_NS::SeismicWellboreFrameRepresentation>(defaultUuid);
 	REQUIRE(w1i1RegularSeismicFrameRep != nullptr);
 

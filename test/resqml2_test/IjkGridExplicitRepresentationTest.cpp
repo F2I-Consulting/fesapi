@@ -33,18 +33,10 @@ const unsigned long long IjkGridExplicitRepresentationTest::nodesCountIjkGridRep
 double IjkGridExplicitRepresentationTest::nodesIjkGridRepresentation[] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350, /* SPLIT*/ 375, 0, 350, 375, 150, 350, 0, 0, 500, 375, 0, 500, 700, 0, 550, 0, 150, 500, 375, 150, 500, 700, 150, 550, /* SPLIT*/ 375, 0, 550, 375, 150, 550 };
 
 IjkGridExplicitRepresentationTest::IjkGridExplicitRepresentationTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-IjkGridExplicitRepresentationTest::IjkGridExplicitRepresentationTest(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void IjkGridExplicitRepresentationTest::initRepoHandler() {
+void IjkGridExplicitRepresentationTest::initRepo() {
 	// creating the ijk grid
 	RESQML2_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 2, 1, 1);
 	REQUIRE( ijkGrid != nullptr );
@@ -55,7 +47,7 @@ void IjkGridExplicitRepresentationTest::initRepoHandler() {
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 }
 
-void IjkGridExplicitRepresentationTest::readRepoHandler() {
+void IjkGridExplicitRepresentationTest::readRepo() {
 	// checking number of points in the geometry
 	RESQML2_NS::AbstractIjkGridRepresentation* representation = repo->getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>(defaultUuid);
 	REQUIRE(representation->getXyzPointCountOfAllPatches() == nodesCountIjkGridRepresentation);

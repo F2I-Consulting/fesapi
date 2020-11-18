@@ -37,18 +37,10 @@ const char* DiscreteProperty::defaultIntPropUuid = "a0721fbe-fb09-4d0f-aab3-315e
 const char* DiscreteProperty::defaultLongPropUuid = "eda57b20-4639-4541-87b9-c2b44b46c336";
 
 DiscreteProperty::DiscreteProperty(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-DiscreteProperty::DiscreteProperty(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void DiscreteProperty::initRepoHandler() {
+void DiscreteProperty::initRepo() {
 	RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo->createPartialIjkGridRepresentation("", "partial IJK Grid");
 	EML2_NS::PropertyKind * propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("", "Partial prop kind");
 
@@ -101,7 +93,7 @@ void DiscreteProperty::initRepoHandler() {
 	longDiscreteProperty->pushBackLongHdf5Array3dOfValues(longValues, 1, 2, 3, hdfProxy, -1);
 }
 
-void DiscreteProperty::readRepoHandler() {
+void DiscreteProperty::readRepo() {
 	// getting the DiscreteProperty
 	RESQML2_NS::DiscreteProperty* charDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultCharPropUuid);
 	REQUIRE(charDiscreteProperty->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::CHAR);

@@ -18,23 +18,19 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractObjectTest.h"
+#include "AbstractTest.h"
 #include <iostream>
 
-namespace COMMON_NS {
-	class DataObjectRepository;
-}
-
 namespace resqml2_test {
-	class WellboreMarkerFrameRepresentationTest : public commontest::AbstractObjectTest {
+	class WellboreMarkerFrameRepresentationTest : public commontest::AbstractTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;
 
 		WellboreMarkerFrameRepresentationTest(const std::string & repoPath);
-		WellboreMarkerFrameRepresentationTest(COMMON_NS::DataObjectRepository * repo);
+
 	protected:
-		void initRepoHandler();
-		void readRepoHandler();
+		void initRepo();
+		void readRepo();
 	};
 }

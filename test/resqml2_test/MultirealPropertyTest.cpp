@@ -35,21 +35,12 @@ const char* MultirealPropertyTest::defaultUuidReal10 = "aef9556b-b5c1-44e1-ad95-
 const char* MultirealPropertyTest::defaultUuidReal15 = "0efeafbf-17f7-4517-9457-c54dcb59524a";
 
 MultirealPropertyTest::MultirealPropertyTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-MultirealPropertyTest::MultirealPropertyTest(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void MultirealPropertyTest::initRepoHandler() {
+void MultirealPropertyTest::initRepo() {
 	// creating an IJK grid
-	IjkGridExplicitRepresentationTest ijkTest(repo, true);
-	RESQML2_NS::IjkGridExplicitRepresentation * ijkGrid = repo->getDataObjectByUuid<RESQML2_NS::IjkGridExplicitRepresentation>(IjkGridExplicitRepresentationTest::defaultUuid);
+	auto* ijkGrid = repo->createPartialIjkGridRepresentation(IjkGridExplicitRepresentationTest::defaultUuid, "");
 
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
@@ -107,5 +98,5 @@ void MultirealPropertyTest::initRepoHandler() {
 	continuousPropertyReal15->setRealizationIndices(0, 1);
 }
 
-void MultirealPropertyTest::readRepoHandler() {
+void MultirealPropertyTest::readRepo() {
 }

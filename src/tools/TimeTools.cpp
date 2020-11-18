@@ -47,13 +47,8 @@ std::string timeTools::convertMicrosecondUnixTimestampToIso(long long ts)
 */
 std::string timeTools::convertUnixTimestampToIso(time_t ts)
 {
-	char buf[20]; // 19 for the string below +1 for the terminating char
-	strftime(buf, 20, "%Y-%m-%dT%H:%M:%S", gmtime(&ts));
-
-	ostringstream oss;
-	oss << buf << 'Z';
-
-	return oss.str();
+	auto tmp = std::chrono::system_clock::from_time_t(ts);
+	return date::format("%FT%TZ", date::floor<std::chrono::seconds>(tmp));
 }
 
 time_t timeTools::convertIsoToUnixTimestamp(const std::string & s)
@@ -67,26 +62,21 @@ time_t timeTools::convertIsoToUnixTimestamp(const std::string & s)
 #endif
 	tm.tm_isdst = -1;
 	mktime(&tm);
-	return timeTools::timegm(&tm);
+	return timeTools::timegm(tm);
 }
 
-time_t timeTools::timegm(struct tm *tm)
+date::sys_seconds
+to_sys_time(std::tm const& t)
 {
-#if defined(__gnu_linux__) || defined(__APPLE__)
-	time_t ret;
-	char *tz;
+	using namespace date;
+	using namespace std::chrono;
+	return sys_days{ year{t.tm_year + 1900} / (t.tm_mon + 1) / t.tm_mday } +
+		hours{ t.tm_hour } +minutes{ t.tm_min } +seconds{ t.tm_sec };
+}
 
-	tz = getenv("TZ");
-	setenv("TZ", "", 1);
-	tzset();
-	ret = mktime(tm);
-	if (tz)
-		setenv("TZ", tz, 1);
-	else
-		unsetenv("TZ");
-	tzset();
-	return ret;
-#elif defined(_WIN32)
-	return _mkgmtime(tm);
-#endif
+time_t timeTools::timegm(std::tm const& t)
+{
+	date::sys_seconds tmp = date::sys_days{ date::year{t.tm_year + 1900} / (t.tm_mon + 1) / t.tm_mday } +
+		chrono::hours{ t.tm_hour } +chrono::minutes{ t.tm_min } + chrono::seconds{ t.tm_sec };
+	return std::chrono::system_clock::to_time_t(tmp);
 }

@@ -32,18 +32,10 @@ const char* WellTest::defaultTitle = "Witsml Well Test";
 const time_t WellTest::defaultTimestamp = 1553268493; // 2019-03-22T15:28:13+00:00
 
 WellTest::WellTest(const string & epcDocPath)
-	: AbstractObjectTest(epcDocPath) {
+	: AbstractTest(epcDocPath) {
 }
 
-WellTest::WellTest(DataObjectRepository* repo, bool init)
-	: AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void WellTest::initRepoHandler() {
+void WellTest::initRepo() {
 	Well* well = repo->createWell(defaultUuid, defaultTitle);
 	REQUIRE(well != nullptr);
 	well->setBlock("my Block");
@@ -56,7 +48,7 @@ void WellTest::initRepoHandler() {
 	well->setStatusWell(gsoap_eml2_1::eml21__WellStatus__active);
 }
 
-void WellTest::readRepoHandler() {
+void WellTest::readRepo() {
 	Well* well = repo->getDataObjectByUuid<Well>(defaultUuid);
 	REQUIRE(well != nullptr);
 	REQUIRE(well->hasBlock());

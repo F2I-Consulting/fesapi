@@ -20,11 +20,13 @@ under the License.
 #include "../catch.hpp"
 #include "resqml2/BoundaryFeature.h"
 #include "resqml2/HorizonInterpretation.h"
-#include "resqml2/Grid2dRepresentation.h"
+#include "resqml2_0_1/Grid2dRepresentation.h"
 #include "resqml2/LocalDepth3dCrs.h"
 #include "eml2/AbstractHdfProxy.h"
 #include "resqml2_test/SeismicLatticeRepresentationTest.h"
 #include "resqml2_test/LocalDepth3dCrsTest.h"
+#include "resqml2/SeismicLatticeFeature.h"
+#include "resqml2/GenericFeatureInterpretation.h"
 
 using namespace std;
 using namespace resqml2_test;
@@ -39,36 +41,27 @@ const char* Grid2dRepresentationTest::defaultUuid = "6cbfb84d-f5c8-4595-9e7f-b00
 const char* Grid2dRepresentationTest::defaultTitle = "Grid 2d Representation";
 
 Grid2dRepresentationTest::Grid2dRepresentationTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath)
+	: commontest::AbstractTest(repoPath)
 {
 }
 
-Grid2dRepresentationTest::Grid2dRepresentationTest(DataObjectRepository* repo, bool init)
-	: commontest::AbstractObjectTest(repo)
-{
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void Grid2dRepresentationTest::initRepoHandler()
+void Grid2dRepresentationTest::initRepo()
 {
 	BoundaryFeature* feature = repo->createHorizon(defaultUuidFeature, defaultTitleFeature);
 	HorizonInterpretation* interp = repo->createHorizonInterpretation(feature, defaultUuidInterp, defaultTitleInterp);
 	Grid2dRepresentation* rep = repo->createGrid2dRepresentation(interp, defaultUuid, defaultTitle);
 
-	Grid2dRepresentation* supportingRep = repo->getDataObjectByUuid<Grid2dRepresentation>(SeismicLatticeRepresentationTest::defaultUuid);
-	if (supportingRep == nullptr) {
-		SeismicLatticeRepresentationTest seisTest(repo, true);
-		supportingRep = repo->getDataObjectByUuid<Grid2dRepresentation>(SeismicLatticeRepresentationTest::defaultUuid);
-	}
+	// Supporting lattice
+	SeismicLatticeFeature* seismicLattice = repo->createSeismicLattice("", "", 2, 2, 150, 152, 4, 2);
+	GenericFeatureInterpretation* seismicLatticeInterp = repo->createGenericFeatureInterpretation(seismicLattice, "", "");
+	Grid2dRepresentation* supportingRep = repo->createGrid2dRepresentation(seismicLatticeInterp, "", "");
+	supportingRep->setGeometryAsArray2dOfLatticePoints3d(4, 2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 250, 200);
 
 	double zValues[8] = { 300, 300, 350, 350, 300, 300, 350, 350 };
 	rep->setGeometryAsArray2dOfExplicitZ(zValues, 4, 2, repo->getHdfProxySet()[0], supportingRep);
 }
 
-void Grid2dRepresentationTest::readRepoHandler()
+void Grid2dRepresentationTest::readRepo()
 {
 	// Grid 2D
 	RESQML2_NS::Grid2dRepresentation* rep = repo->getDataObjectByUuid<RESQML2_NS::Grid2dRepresentation>(defaultUuid);

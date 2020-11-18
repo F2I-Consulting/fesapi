@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../AbstractObjectTest.h"
+#include "../AbstractTest.h"
 #include <string>
 
 namespace COMMON_NS {
@@ -26,7 +26,7 @@ namespace COMMON_NS {
 }
 
 namespace witsml2_test {
-	class WellboreGeometryTest : public commontest::AbstractObjectTest {
+	class WellboreGeometryTest : public commontest::AbstractTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;
@@ -46,8 +46,8 @@ namespace witsml2_test {
 		*/
 		WellboreGeometryTest(COMMON_NS::DataObjectRepository* repo, bool init);
 	protected:
-		void initRepoHandler();
-		void readRepoHandler();
+		void initRepo();
+		void readRepo();
 	};
 }
 

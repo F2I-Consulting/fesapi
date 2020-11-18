@@ -63,18 +63,13 @@ if (WIN32)
 	endif ()
 endif (WIN32)
 
-if (WITH_ETP OR FESAPI_USE_BOOST_UUID)
-	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE BOOST_ALL_NO_LIB)
-	if (WITH_ETP)
-		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE WITH_ETP)
-		if (WITH_ETP_SSL)
-			target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE WITH_ETP_SSL)
-		endif ()
+target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE BOOST_ALL_NO_LIB)
+if (WITH_ETP)
+	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE WITH_ETP)
+	if (WITH_ETP_SSL)
+		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE WITH_ETP_SSL)
 	endif ()
-	if (FESAPI_USE_BOOST_UUID)
-		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE FESAPI_USE_BOOST_UUID)
-	endif (FESAPI_USE_BOOST_UUID)
-endif (WITH_ETP OR FESAPI_USE_BOOST_UUID)
+endif ()
 
 # Linker instructions
 if (WIN32)
@@ -88,9 +83,7 @@ if (WIN32)
 		set(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "" FORCE)
 	endif ()
 
-	if (FESAPI_USE_BOOST_UUID)
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE bcrypt.lib)
-	endif (FESAPI_USE_BOOST_UUID)
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE bcrypt.lib)
 
 	if (EXISTS ${MINIZIP_LIBRARY_RELEASE} AND EXISTS ${MINIZIP_LIBRARY_DEBUG})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${MINIZIP_LIBRARY_RELEASE} debug ${MINIZIP_LIBRARY_DEBUG})
@@ -140,9 +133,6 @@ if (WIN32)
 		VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}
 	)
 ELSEIF (UNIX)
-	if (NOT FESAPI_USE_BOOST_UUID)
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${UUID_LIBRARY_RELEASE})
-	endif ()
 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
 # zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
 # zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
@@ -221,10 +211,6 @@ file (GLOB FESAPI_COMMON_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/common/*.h)
 
 file (GLOB FESAPI_TOOLS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tools/*.cpp)
 file (GLOB FESAPI_TOOLS_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/tools/*.h)
-if (FESAPI_USE_BOOST_UUID)
-	list(REMOVE_ITEM FESAPI_TOOLS_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/tools/GuidTools.cpp")
-	list(REMOVE_ITEM FESAPI_TOOLS_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/tools/GuidTools.h")
-endif ()
 
 file (GLOB FESAPI_EPC_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/epc/*.cpp)
 file (GLOB FESAPI_EPC_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/epc/*.h)
@@ -339,20 +325,14 @@ endif (WITH_ETP)
 
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
 
-target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_INCLUDE_DIR} ${HDF5_C_INCLUDE_DIR} ${MINIZIP_INCLUDE_DIR})
+target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_INCLUDE_DIR} ${HDF5_C_INCLUDE_DIR} ${MINIZIP_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
 
 if (WITH_ETP)
-	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${AVRO_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
+	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${AVRO_INCLUDE_DIR})
 	if (WITH_ETP_SSL)
 		target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${OPENSSL_INCLUDE_DIR})
 	endif ()
-elseif (FESAPI_USE_BOOST_UUID)
-	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${Boost_INCLUDE_DIR})
 endif (WITH_ETP)
-
-if (UNIX AND NOT FESAPI_USE_BOOST_UUID)
-	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${UUID_INCLUDE_DIR})
-endif ()
 
 target_include_directories(${CPP_LIBRARY_NAME} INTERFACE
 	$<INSTALL_INTERFACE:include>

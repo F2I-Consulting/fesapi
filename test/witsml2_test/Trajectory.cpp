@@ -31,18 +31,10 @@ const char* Trajectory::defaultUuid = "b4f02547-9fca-49ef-83a9-c96a802c857e";
 const char* Trajectory::defaultTitle = "Witsml Trajectory Test";
 
 Trajectory::Trajectory(const string & epcDocPath)
-	: AbstractObjectTest(epcDocPath) {
+	: AbstractTest(epcDocPath) {
 }
 
-Trajectory::Trajectory(DataObjectRepository* repo, bool init)
-	: AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void Trajectory::initRepoHandler() {
+void Trajectory::initRepo() {
 	WITSML2_0_NS::Wellbore* wellbore = repo->createPartial<WITSML2_0_NS::Wellbore>("", "");
 	WITSML2_0_NS::Trajectory* traj = repo->createTrajectory(wellbore, defaultUuid, defaultTitle, gsoap_eml2_1::witsml20__ChannelStatus__inactive);
 	traj->pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType__unknown, 250, gsoap_eml2_1::eml21__LengthUom__m, "fake datum");
@@ -50,7 +42,7 @@ void Trajectory::initRepoHandler() {
 	traj->setTrajectoryStationAzi(1, 15, gsoap_eml2_1::eml21__PlaneAngleUom__dega);
 }
 
-void Trajectory::readRepoHandler() {
+void Trajectory::readRepo() {
 	WITSML2_0_NS::Trajectory* traj = repo->getDataObjectByUuid<WITSML2_0_NS::Trajectory>(defaultUuid);
 	REQUIRE(traj != nullptr);
 	REQUIRE(traj->getGrowingStatus() == gsoap_eml2_1::witsml20__ChannelStatus__inactive);

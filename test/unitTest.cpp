@@ -28,6 +28,7 @@ under the License.
 #include "eml2/AbstractHdfProxy.h"
 
 #include "EpcDocumentTest.h"
+#include "DateTimeTest.h"
 #include "resqml2_test/LocalDepth3dCrsTest.h"
 #include "resqml2_test/HorizonInterpretationTest.h"
 #include "resqml2_test/FaultSinglePatchTriangulatedSetRepresentationTest.h"
@@ -80,7 +81,7 @@ using namespace commontest;
 using namespace resqml2_test;
 using namespace witsml2_test;
 
-#define FESAPI_TEST2_2(name, tags, classTest)  TEST_CASE(#name "2_2", tags)\
+#define FESAPI_TEST2_2(name, tags, classTest)  TEST_CASE(#name " 2_2", tags)\
 {\
 	classTest test("../../" #classTest "2_2.epc");\
 	test.defaultEmlVersion = COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3;\
@@ -89,7 +90,7 @@ using namespace witsml2_test;
 	test.deserialize();\
 }
 
-#define FESAPI_TEST2_0(name, tags, classTest)  TEST_CASE(#name "2_0", tags)\
+#define FESAPI_TEST2_0(name, tags, classTest)  TEST_CASE(#name " 2_0", tags)\
 {\
 	classTest test("../../" #classTest "2_0.epc");\
 	test.defaultEmlVersion = COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0;\
@@ -149,11 +150,13 @@ TEST_CASE("Test hdf5 opening mode", "[hdf]")
 	hdfProxy->close();
 }
 
+FESAPI_TEST("Export and import of date time", "[datetime]", DateTimeTest)
+
 FESAPI_TEST("Export and import a local depth 3d crs", "[crs]", LocalDepth3dCrsTest)
 
 // INTERPRETATION
 FESAPI_TEST("Export and import an horizon interpretation", "[interpretation]", HorizonInterpretationTest)
-FESAPI_TEST("Export a multi domains interpreation", "[interpretation]", InterpretationDomain)
+FESAPI_TEST("Export a multi domains interpretation", "[interpretation]", InterpretationDomain)
 
 // TRIANGULATION
 FESAPI_TEST("Export and import a single patch triangulated set fault representation", "[representation]", FaultSinglePatchTriangulatedSetRepresentationTest)
@@ -180,18 +183,16 @@ FESAPI_TEST("Export and import a subrepresentation on a partial grid connection 
 
 TEST_CASE("Export and import a big explicit ijk grid", "[grid][property]")
 {
-	BigIjkGridExplicitRepresentationTest* test = new BigIjkGridExplicitRepresentationTest("../../BigIjkGridExplicitRepresentationTest.epc", 10, 10, 5, 9, 0., 100., 0., 100., 0., 50., 10);
-	test->serialize();
-	test->deserialize();
-	delete test;
+	BigIjkGridExplicitRepresentationTest test("../../BigIjkGridExplicitRepresentationTest.epc", 10, 10, 5, 9, 0., 100., 0., 100., 0., 50., 10);
+	test.serialize();
+	test.deserialize();
 }
 
 TEST_CASE("Export and import a big parametric ijk grid", "[grid][property]")
 {
-	BigIjkGridParametricRepresentationTest* test = new BigIjkGridParametricRepresentationTest("../../BigIjkGridParametricRepresentationTest.epc", 20, 20, 10, 10, 0., 100., 0., 100., 0., 50., 10);
-	test->serialize();
-	test->deserialize();
-	delete test;
+	BigIjkGridParametricRepresentationTest test("../../BigIjkGridParametricRepresentationTest.epc", 20, 20, 10, 10, 0., 100., 0., 100., 0., 50., 10);
+	test.serialize();
+	test.deserialize();
 }
 
 // RESQML WELL

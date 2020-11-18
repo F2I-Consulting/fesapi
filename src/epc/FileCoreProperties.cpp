@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "FileCoreProperties.h"
 
-#include <time.h>
 #include <sstream>
 #if defined(_WIN32)
 	#include <windows.h>
@@ -26,6 +25,8 @@ under the License.
 	#include <unistd.h>
 	#include <pwd.h>
 #endif
+
+#include "../tools/date.h"
 
 using namespace std; // in order not to prefix by "std::" for each class in the "std" namespace. Never use "using namespace" in *.h file but only in*.cpp file!!!
 using namespace epc; // in order not to prefix by "epc::" for each class in the "epc" namespace. Never use "using namespace" in *.h file but only in*.cpp file!!!
@@ -66,40 +67,8 @@ void FileCoreProperties::initDefaultCoreProperties()
 	// CREATED
 	if (properties[CoreProperty::created].isEmpty())
 	{
-		time_t timestamp;
-		struct tm * t;
-		timestamp = time(nullptr);
-		t = gmtime(&timestamp);
-		int year = 1900 + t->tm_year;
-		int month = 1 + t->tm_mon;
-		int day = t->tm_mday;
-		int hour = t->tm_hour;
-		int minute = t->tm_min;
-		int second = t->tm_sec;
-
-		ostringstream oss;
-		oss << year << "-";
-		if (month > 9)
-			oss << month<< "-";
-		else
-			oss << '0' << month<< "-";
-		if (day > 9)
-			oss << day << "T";
-		else
-			oss << '0' << day << "T";
-		if (hour > 9)
-			oss << hour << ":";
-		else
-			oss << '0' << hour << ":";
-		if (minute > 9)
-			oss << minute << ":";
-		else
-			oss << '0' << minute << ":";
-		if (second > 9)
-			oss << second << "Z";
-		else
-			oss << '0' << second << "Z";
-		setCreated(oss.str());
+		auto now = std::chrono::system_clock::now();
+		setCreated(date::format("%FT%TZ", date::floor<std::chrono::seconds>(now)));
 	}
 
 	// VERSION

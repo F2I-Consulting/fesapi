@@ -434,7 +434,8 @@ COMMON_NS::DataObjectReference WellboreFrameRepresentation::getWellboreTrajector
 
 COMMON_NS::DataObjectReference WellboreFrameRepresentation::getLocalCrsDor(unsigned int patchIndex) const
 {
-	return getWellboreTrajectory()->getLocalCrsDor(patchIndex);
+	auto* traj = getWellboreTrajectory();
+	return traj->isPartial() ? COMMON_NS::DataObjectReference() : getWellboreTrajectory()->getLocalCrsDor(patchIndex);
 }
 
 COMMON_NS::DataObjectReference WellboreFrameRepresentation::getHdfProxyDor() const
@@ -475,8 +476,6 @@ WellboreTrajectoryRepresentation* WellboreFrameRepresentation::getWellboreTrajec
 
 void WellboreFrameRepresentation::loadTargetRelationships()
 {
-	AbstractRepresentation::loadTargetRelationships();
-
 	COMMON_NS::DataObjectReference dor = getWellboreTrajectoryDor();
 	// todo the trajectory should be resqml2 instead of resqml2_0_1
 	WellboreTrajectoryRepresentation* traj = getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(dor.getUuid());
@@ -488,4 +487,6 @@ void WellboreFrameRepresentation::loadTargetRelationships()
 		throw invalid_argument("The DOR looks invalid.");
 	}
 	repository->addRelationship(this, traj);
+
+	AbstractRepresentation::loadTargetRelationships();
 }

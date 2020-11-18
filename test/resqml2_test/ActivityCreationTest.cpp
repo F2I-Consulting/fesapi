@@ -22,9 +22,9 @@ under the License.
 #include "resqml2_test/ActivityTemplateGenericCreationTest.h"
 #include "resqml2_test/HorizonInterpretationTest.h"
 
-#include "eml2/ActivityTemplate.h"
+#include "resqml2_0_1/ActivityTemplate.h"
 #include "eml2/Activity.h"
-#include "resqml2/HorizonInterpretation.h"
+#include "resqml2_0_1/HorizonInterpretation.h"
 
 using namespace std;
 using namespace resqml2_test;
@@ -37,25 +37,15 @@ const char* ActivityCreationTest::defaultUuid = "705cd6f5-8ee8-427b-adde-04b0b6a
 const char* ActivityCreationTest::defaultTitle = "Activity Creation";
 
 ActivityCreationTest::ActivityCreationTest(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-ActivityCreationTest::ActivityCreationTest(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void ActivityCreationTest::initRepoHandler() {
+void ActivityCreationTest::initRepo() {
 	// creation of an horizon interpretation
-	HorizonInterpretationTest * horizonInterpretationTest = new HorizonInterpretationTest(repo, true);
-	RESQML2_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_NS::HorizonInterpretation*>(repo->getDataObjectByUuid(HorizonInterpretationTest::defaultUuid));
+	RESQML2_NS::HorizonInterpretation * horizonInterpretation = repo->createPartial<RESQML2_0_1_NS::HorizonInterpretation>(HorizonInterpretationTest::defaultUuid, "");
 
 	// creation of the generic creation activity template
-	ActivityTemplateGenericCreationTest* activityTemplateTest = new ActivityTemplateGenericCreationTest(repo, true);
-	ActivityTemplate * activityTemplate = static_cast<ActivityTemplate*>(repo->getDataObjectByUuid(ActivityTemplateGenericCreationTest::defaultUuid));
+	ActivityTemplate * activityTemplate = repo->createPartial<RESQML2_0_1_NS::ActivityTemplate>(ActivityTemplateGenericCreationTest::defaultUuid, "");
 
 	// creation of the creation activity
 	Activity* activity = repo->createActivity(activityTemplate, defaultUuid, defaultTitle);
@@ -63,17 +53,9 @@ void ActivityCreationTest::initRepoHandler() {
 
 	// creation of activity parameters
 	activity->pushBackParameter("CreationOutput", horizonInterpretation);
-
-	// cleaning
-	delete horizonInterpretationTest;
-	delete activityTemplateTest;
 }
 
-void ActivityCreationTest::readRepoHandler() {
-	// reading dependencies
-	HorizonInterpretationTest horizonInterpretationTest(repo, false);
-	ActivityTemplateGenericCreationTest activityTemplateTest(repo, false);
-
+void ActivityCreationTest::readRepo() {
 	// getting the activity
 	Activity* activity = repo->getDataObjectByUuid<Activity>(defaultUuid);
 	REQUIRE( activity != nullptr );

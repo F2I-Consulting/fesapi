@@ -13,13 +13,12 @@
 Download (build and install if necessary) third party libraries:
 - HDF5: All versions of 1.8.* starting from 1.8.18 and all versions of 1.10.* starting from 1.10.2 should be ok. https://support.hdfgroup.org/ftp/HDF5/releases/
 - MINIZIP : Version 1.1 is needed : it is the official version included in current zlib distribution https://www.zlib.net/ (look into "contrib" folder). You can directly install minizip development package on most of Linux distributions (https://packages.ubuntu.com/xenial/libminizip-dev). On Windows (or older Linux distributions), you can copy the CMakeLists.txt file from fesapi/cmake/minizip to the zlib minizip directory to help you to build minizip (we also provide a copy of minizip 1.1 with cmake files on github : https://github.com/F2I-Consulting/Minizip). It is also highly recommended to link minizip to the same zlib library than the one associated to your HDF5 library.
-- BOOST (only uuid library, *ONLY if FESAPI_USE_BOOST_UUID cmake variable is set*) : Starting from version 1.44.0. FYI, on windows, boost uuid depends on bcrypt library.
-- UUID-DEV package *(ONLY FOR LINUX AND ONLY IF FESAPI_USE_BOOST_UUID cmake variable is not set)* : Source code can be found in https://www.kernel.org/pub/linux/utils/util-linux/
+- BOOST : Starting from version 1.44.0 (and at least 1.67.0 if you don't want to face [valgrid false positives](https://www.boost.org/doc/libs/1_66_0/libs/uuid/doc/uuid.html#Design%20notes)). FYI, on windows, boost uuid depends on bcrypt library.
 
 We advise you to install these third party libraries respectively into
 - fesapiEnv/dependencies/hdf5-particularVersion
 - fesapiEnv/dependencies/minizip-particularVersion
-- fesapiEnv/dependencies/uuid-particularVersion (or in system directory using : sudo apt-get install uuid-dev)
+- fesapiEnv/dependencies/boost-particularVersion
 # Configure the build
 Fesapi uses cmake as its build tool. A 3.12 version or later of cmake is required https://cmake.org/download/. We also recommend using cmake-gui (already included in the bin folder of the binary releases of cmake) which provides a graphical user interface on top of cmake. Follow the below instructions :
 
@@ -43,9 +42,6 @@ Fesapi uses cmake as its build tool. A 3.12 version or later of cmake is require
 		- ZLIB_LIBRARY_RELEASE : the ZLIB library you want to link to. It must be the same as the one which is linked to HDF5 library and MINIZIP library otherwise you will get a warning from CMake. If you use the HDF5 binaries downloaded from HDF Group website, use the zlib library which lies in the same directory as HDF5_C_LIBRARY_RELEASE. On Visual studio, it is used on Release configuration. With other compilers, it is the default ZLIB library to link to.
 	- SZIP (it is only required when you statically link to HDF5 AND when HDF5 has been built using SZIP)
 		- SZIP_LIBRARY_RELEASE : the SZIP library you want to link to. This warning can be ignored most of time but it can really create unpredictable bugs in some circumstances (static linking to HDF5 with HDF5 making use of szip).
-	- UUID (ONLY FOR LINUX AND ONLY IF FESAPI_USE_BOOST_UUID cmake variable is not set)
-		- UUID_INCLUDE_DIR : where the UUID headers are located
-		- UUID_LIBRARY_RELEASE : the UUID library you want to link to
 	- Boost (ONLY if FESAPI_USE_BOOST_UUID cmake variable is set)
 		- Boost_INCLUDE_DIR : where the Boost headers are located (generally the boost install folder)
 - Click again on "Configure" button. You should no more have errors so you can now click on "Generate" button.
@@ -67,4 +63,10 @@ As a first way to start, we advise people to look at examples provided with FESA
 
 You can also find Doxygen generated documentation [here](https://f2i-consulting.com/fesapi/doxygen/)
 # Credits
-This software was developed with the gSOAP toolkit from [Genivia Inc](http://genivia.com/)
+This software was developed with :
+- the gSOAP toolkit from [Genivia Inc](http://genivia.com/)
+- the date library from [Howard Hinnant](https://github.com/HowardHinnant/date)
+This software was tested with :
+- Catch2 from [Catch Org](https://github.com/catchorg/Catch2)
+- [Travis CI](https://travis-ci.org/)
+- [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/)

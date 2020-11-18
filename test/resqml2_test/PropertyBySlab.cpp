@@ -41,18 +41,10 @@ const char* PropertyBySlab::defaultPropNoComputeUuid = "459ab2a0-5f76-4c1e-ba70-
 const char* PropertyBySlab::defaultDiscretePropNoComputeUuid = "f66f0142-d4a1-48f6-9762-39ac00a4fcab";
 
 PropertyBySlab::PropertyBySlab(const string & repoPath)
-	: commontest::AbstractObjectTest(repoPath) {
+	: commontest::AbstractTest(repoPath) {
 }
 
-PropertyBySlab::PropertyBySlab(DataObjectRepository * repo, bool init)
-	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
-}
-
-void PropertyBySlab::initRepoHandler() {
+void PropertyBySlab::initRepo() {
 	RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo->createPartialIjkGridRepresentation("", "partial IJK Grid");
 	EML2_NS::PropertyKind * propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("", "Partial prop kind");
 
@@ -182,7 +174,7 @@ void PropertyBySlab::initRepoHandler() {
 	REQUIRE(discretePropertyNoCompute->getMaximumValue() == 102);
 }
 
-void PropertyBySlab::readRepoHandler()
+void PropertyBySlab::readRepo()
 {
 	RESQML2_NS::ContinuousProperty* propertyCompute = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>(defaultContinuousPropComputeUuid);
 	REQUIRE(propertyCompute->getValuesHdfDatatype() == AbstractValuesProperty::FLOAT);

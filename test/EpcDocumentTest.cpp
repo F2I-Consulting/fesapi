@@ -25,7 +25,3 @@ using namespace commontest;
 EpcDocumentTest::EpcDocumentTest(const string & epcDocPath)
 	: AbstractTest(epcDocPath) {
 }
-
-EpcDocumentTest::EpcDocumentTest(DataObjectRepository * repo)
-	: AbstractTest(repo) {
-}

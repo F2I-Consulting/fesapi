@@ -32,14 +32,8 @@ namespace commontest {
 		 * @param epcDocPath the path of the .epc file (including .epc extension)
 		 */
 		AbstractTest(const std::string & epcDocPath);
-		
-		/**
-		 * Creation of a testing object from an existing repository.
-		 * @param repo an existing repository
-		 */
-		AbstractTest(COMMON_NS::DataObjectRepository * repo);
 
-		virtual ~AbstractTest() {}
+		virtual ~AbstractTest() = default;
 
 		/**
 		 * This methods runs a serailization test. It handles the creation of an EPC document,

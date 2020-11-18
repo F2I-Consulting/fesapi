@@ -46,16 +46,18 @@ Activity::Activity(EML2_NS::ActivityTemplate* activityTemplate, const string & g
 void Activity::pushBackParameter(const std::string title, double value, resqml20__ResqmlUom uom)
 {
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
-	if (activityTemplate->isAnExistingParameter(title) == false)
-		throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-	LONG64 maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-	if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
-		throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
-	if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
-	{
-		vector<resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
-		if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind__floatingPoint) == allowedKinds.end())
-			throw invalid_argument("The parameter template " + title + " does not allow a double datatype.");
+	if (!activityTemplate->isPartial()) {
+		if (activityTemplate->isAnExistingParameter(title) == false)
+			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
+		LONG64 maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
+			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
+		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
+		{
+			vector<resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
+			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind__floatingPoint) == allowedKinds.end())
+				throw invalid_argument("The parameter template " + title + " does not allow a double datatype.");
+		}
 	}
 
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
@@ -70,16 +72,18 @@ void Activity::pushBackParameter(const std::string title, double value, resqml20
 void Activity::pushBackParameter(const std::string title, const std::string & value)
 {
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
-	if (activityTemplate->isAnExistingParameter(title) == false)
-		throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-	LONG64 maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-	if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
-		throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
-	if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
-	{
-		vector<resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
-		if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind__string) == allowedKinds.end())
-			throw invalid_argument("The parameter template " + title + " does not allow a string datatype.");
+	if (!activityTemplate->isPartial()) {
+		if (activityTemplate->isAnExistingParameter(title) == false)
+			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
+		LONG64 maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
+			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
+		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
+		{
+			vector<resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
+			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind__string) == allowedKinds.end())
+				throw invalid_argument("The parameter template " + title + " does not allow a string datatype.");
+		}
 	}
 
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
@@ -93,16 +97,18 @@ void Activity::pushBackParameter(const std::string title, const std::string & va
 void Activity::pushBackParameter(const std::string title, LONG64 value)
 {
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
-	if (activityTemplate->isAnExistingParameter(title) == false)
-		throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-	LONG64 maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-	if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
-		throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
-	if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
-	{
-		vector<resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
-		if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind__integer) == allowedKinds.end())
-			throw invalid_argument("The parameter template " + title + " does not allow an integer datatype.");
+	if (!activityTemplate->isPartial()) {
+		if (activityTemplate->isAnExistingParameter(title) == false)
+			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
+		LONG64 maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
+			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
+		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
+		{
+			vector<resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
+			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind__integer) == allowedKinds.end())
+				throw invalid_argument("The parameter template " + title + " does not allow an integer datatype.");
+		}
 	}
 
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
@@ -115,19 +121,27 @@ void Activity::pushBackParameter(const std::string title, LONG64 value)
 
 void Activity::pushBackParameter(const std::string title, AbstractObject* resqmlObject)
 {
-	if (resqmlObject == nullptr)
-		throw invalid_argument("The resqml object must be non null.");
+	if (resqmlObject == nullptr) {
+		throw invalid_argument("The RESQML object must be non null.");
+	}
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
-	if (activityTemplate->isAnExistingParameter(title) == false)
-		throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-	LONG64 maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-	if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
-		throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
-	if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
-	{
-		vector<resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
-		if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind__dataObject) == allowedKinds.end())
-			throw invalid_argument("The parameter template " + title + " does not allow a data object datatype.");
+	if (!activityTemplate->isPartial()) {
+		if (activityTemplate->isAnExistingParameter(title) == false) {
+			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
+		}
+
+		LONG64 maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title)) {
+			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
+		}
+
+		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
+		{
+			vector<resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
+			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind__dataObject) == allowedKinds.end()) {
+				throw invalid_argument("The parameter template " + title + " does not allow a data object datatype.");
+			}
+		}
 	}
 
 	getRepository()->addRelationship(this, resqmlObject);

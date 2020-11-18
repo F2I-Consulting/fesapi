@@ -3,16 +3,14 @@ language: cpp
 jobs:
     include:
         - os: linux
-          name: "FesapiCpp Debug with dynamic HDF5 (clang 5.0.0), RESQML2.2 and valgrind"
+          name: "FesapiCpp Debug with dynamic HDF5 (gcc 4.8) and valgrind"
           dist: trusty
-          compiler: clang
+          compiler: gcc
           script:
             - mkdir ../build
             - cd ../build
             - cmake $TRAVIS_BUILD_DIR
                 -DCMAKE_BUILD_TYPE=Debug
-                -DUUID_INCLUDE_DIR=/usr/include
-                -DUUID_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libuuid.so
                 -DHDF5_C_INCLUDE_DIR=/usr/include
                 -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libhdf5.so
                 -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/Minizip-install/include
@@ -20,9 +18,8 @@ jobs:
                 -DZLIB_INCLUDE_DIR=/usr/include
                 -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
                 -DWITH_EXAMPLE=TRUE
-                -DWITH_RESQML2_2=TRUE
             - cmake --build . -- -j 2
-            - valgrind --leak-check=full --show-leak-kinds=all ./example/exampled
+            - valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./example/exampled
             
         - os: linux
           name: "FesapiCpp Release with dynamic HDF5 (clang 5.0.0), unit test and RESQML2.2"
@@ -33,8 +30,6 @@ jobs:
             - cd ../build
             - cmake $TRAVIS_BUILD_DIR
                 -DCMAKE_BUILD_TYPE=Release
-                -DUUID_INCLUDE_DIR=/usr/include
-                -DUUID_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libuuid.so
                 -DHDF5_C_INCLUDE_DIR=/usr/include
                 -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libhdf5.so
                 -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/Minizip-install/include
@@ -45,12 +40,12 @@ jobs:
                 -DWITH_RESQML2_2=TRUE
                 -DWITH_TEST=TRUE
             - cmake --build . -- -j 2
-            - valgrind --leak-check=full --show-leak-kinds=all ./example/example
+            - valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./example/example
             - ctest -V
 addons:
   apt:
     packages:
-      - uuid-dev
+      - libboost-dev #1.54
       - libhdf5-dev #1.8.11
       - valgrind
 

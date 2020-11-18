@@ -118,20 +118,20 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_s2xsd__dateTime(struct soap *soap, const char *s,
       d = soap_strtoul(t + 1, &t, 10);
       if (*t == ':')
       {
-	/* Thh:mm:ss */
-	a->tm_hour = (int)d;
-	a->tm_min = (int)soap_strtoul(t + 1, &t, 10);
-	a->tm_sec = (int)soap_strtoul(t + 1, &t, 10);
+	    /* Thh:mm:ss */
+	    a->tm_hour = (int)d;
+	    a->tm_min = (int)soap_strtoul(t + 1, &t, 10);
+	    a->tm_sec = (int)soap_strtoul(t + 1, &t, 10);
       }
       else if (!(soap->mode & SOAP_XML_STRICT))
       {
-	/* Thhmmss */
+	    /* Thhmmss */
         a->tm_hour = (int)(d / 10000);
-	a->tm_min = (int)(d / 100 % 100);
-	a->tm_sec = (int)(d % 100);
+	    a->tm_min = (int)(d / 100 % 100);
+	    a->tm_sec = (int)(d % 100);
       }
       else
-	return soap->error = SOAP_TYPE;
+	    return soap->error = SOAP_TYPE;
     }
     if (a->tm_year == 1)
       a->tm_year = 70;
@@ -151,51 +151,51 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_s2xsd__dateTime(struct soap *soap, const char *s,
 #ifndef WITH_NOZONE
       if (*t == '+' || *t == '-')
       {
-	int h, m;
-	m = (int)soap_strtol(t, &t, 10);
+	    int h, m;
+	    m = (int)soap_strtol(t, &t, 10);
         if (*t == ':')
         {
-	  /* +hh:mm */
-	  h = m;
-	  m = (int)soap_strtol(t + 1, &t, 10);
-          if (h < 0)
-            m = -m;
+	    /* +hh:mm */
+	    h = m;
+	    m = (int)soap_strtol(t + 1, &t, 10);
+        if (h < 0)
+		  m = -m;
         }
         else if (!(soap->mode & SOAP_XML_STRICT))
-	{
-	  /* +hhmm */
+	    {
+	      /* +hhmm */
           h = m / 100;
           m = m % 100;
         }
         else
-	{
-	  /* +hh */
+	    {
+	      /* +hh */
           h = m;
-	  m = 0;
+	      m = 0;
         }
-	if (*t)
-	  return soap->error = SOAP_TYPE;
-        a->tm_min -= m;
+	    if (*t)
+	      return soap->error = SOAP_TYPE;
+		a->tm_min -= m;
         a->tm_hour -= h;
         /* put hour and min in range */
         a->tm_hour += a->tm_min / 60;
         a->tm_min %= 60;
         if (a->tm_min < 0)
         {
-	  a->tm_min += 60;
+	      a->tm_min += 60;
           a->tm_hour--;
         }
         a->tm_mday += a->tm_hour / 24;
         a->tm_hour %= 24;
         if (a->tm_hour < 0)
         {
-	  a->tm_hour += 24;
+	      a->tm_hour += 24;
           a->tm_mday--;
         }
         /* note: day of the month may be out of range, timegm() handles it */
       }
       else if (*t != 'Z')
-	return soap->error = SOAP_TYPE;
+	    return soap->error = SOAP_TYPE;
 #endif
     }
     else /* no UTC or timezone, so assume we got a localtime */
