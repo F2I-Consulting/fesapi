@@ -113,7 +113,7 @@ namespace RESQML2_0_1_NS
 		PropertyKind(gsoap_resqml2_0_1::_resqml20__PropertyKind* fromGsoap) :EML2_NS::PropertyKind(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~PropertyKind() {}
+		~PropertyKind() = default;
 
 		/**
 		 * Is child of the given standard property kind

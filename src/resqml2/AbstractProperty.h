@@ -37,7 +37,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context */
-		virtual ~AbstractProperty() {}
+		virtual ~AbstractProperty() = default;
 
 		/**
 		 * Sets the representation which is associated to the current property

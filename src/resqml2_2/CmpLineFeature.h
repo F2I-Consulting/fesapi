@@ -65,7 +65,7 @@ namespace RESQML2_2_NS
 			RESQML2_NS::CmpLineFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
-		~CmpLineFeature() {}
+		~CmpLineFeature() = default;
 
 		/**
 		* The standard XML namespace for serializing this data object.

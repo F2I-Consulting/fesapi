@@ -57,7 +57,7 @@ namespace RESQML2_0_1_NS
 		PlaneSetRepresentation(gsoap_resqml2_0_1::_resqml20__PlaneSetRepresentation* fromGsoap) : RESQML2_NS::PlaneSetRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~PlaneSetRepresentation() {}
+		~PlaneSetRepresentation() = default;
 
 		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const final;
 

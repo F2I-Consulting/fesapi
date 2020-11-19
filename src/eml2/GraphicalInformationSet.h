@@ -29,7 +29,7 @@ namespace EML2_NS
 		/**
 		 * Destructor does nothing since the memory is managed by the gsoap context.
 		 */
-		virtual ~GraphicalInformationSet() {}
+		virtual ~GraphicalInformationSet() = default;
 
 		/**
 		 * Gets the size of this graphical information set

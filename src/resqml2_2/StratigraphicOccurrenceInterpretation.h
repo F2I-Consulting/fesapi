@@ -54,7 +54,7 @@ namespace RESQML2_2_NS
 		StratigraphicOccurrenceInterpretation(gsoap_eml2_3::_resqml22__StratigraphicOccurrenceInterpretation* fromGsoap) : RESQML2_NS::StratigraphicOccurrenceInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~StratigraphicOccurrenceInterpretation() {}
+		~StratigraphicOccurrenceInterpretation() = default;
 
 		DLL_IMPORT_OR_EXPORT void setStratigraphicColumnRankInterpretation(RESQML2_NS::StratigraphicColumnRankInterpretation * stratiColumnRankInterp) final;
 

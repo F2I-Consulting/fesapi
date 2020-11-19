@@ -30,7 +30,7 @@ namespace RESQML2_NS
 	{
 	public:
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~RockFluidUnitInterpretation() {}
+		virtual ~RockFluidUnitInterpretation() = default;
 
 		/**
 		 * Indicates if this instance has a phase information.

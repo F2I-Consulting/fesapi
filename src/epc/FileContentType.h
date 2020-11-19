@@ -44,7 +44,7 @@ namespace epc
 		/** CONSTRUCTORS */
 		FileContentType();
 		/** Destructor */
-		~FileContentType() {};
+		~FileContentType() = default;;
 
 		/**
 		 * ACCESSORS

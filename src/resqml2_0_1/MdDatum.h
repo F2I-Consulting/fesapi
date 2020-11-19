@@ -65,7 +65,7 @@ namespace RESQML2_0_1_NS
 		MdDatum(gsoap_resqml2_0_1::_resqml20__MdDatum* fromGsoap) :RESQML2_NS::MdDatum(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~MdDatum() {}
+		~MdDatum() = default;
 
 		COMMON_NS::DataObjectReference getLocalCrsDor() const final;
 

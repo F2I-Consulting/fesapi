@@ -175,7 +175,7 @@ namespace RESQML2_2_NS
 		LocalTime3dCrs(gsoap_eml2_3::_resqml22__LocalTime3dCrs* fromGsoap): RESQML2_NS::LocalTime3dCrs(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
-		~LocalTime3dCrs() {}
+		~LocalTime3dCrs() = default;
 
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__TimeUom getUnit() const final;
 

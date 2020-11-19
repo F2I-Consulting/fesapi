@@ -42,7 +42,7 @@ namespace EML2_NS
 	{
 	public:  
 		/** Destructor */
-		DLL_IMPORT_OR_EXPORT virtual ~AbstractHdfProxy() {}
+		DLL_IMPORT_OR_EXPORT virtual ~AbstractHdfProxy() = default;
 
 		/**
 		 * Sets the path of the directory containing the EPC file associated to this HDF5 file

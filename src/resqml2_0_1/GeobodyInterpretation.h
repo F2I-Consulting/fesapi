@@ -57,7 +57,7 @@ namespace RESQML2_0_1_NS
 		GeobodyInterpretation(gsoap_resqml2_0_1::_resqml20__GeobodyInterpretation* fromGsoap) : RESQML2_NS::GeobodyInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~GeobodyInterpretation() {}
+		~GeobodyInterpretation() = default;
 
 		DLL_IMPORT_OR_EXPORT void set3dShape(gsoap_eml2_3::resqml22__Shape3d geobody3dShape) final;
 

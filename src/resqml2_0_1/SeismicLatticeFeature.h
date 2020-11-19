@@ -72,7 +72,7 @@ namespace RESQML2_0_1_NS
 		SeismicLatticeFeature(gsoap_resqml2_0_1::_resqml20__SeismicLatticeFeature* fromGsoap): RESQML2_NS::SeismicLatticeFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
-		~SeismicLatticeFeature() {}
+		~SeismicLatticeFeature() = default;
 
 		DLL_IMPORT_OR_EXPORT int getCrosslineIncrement() const final;
 

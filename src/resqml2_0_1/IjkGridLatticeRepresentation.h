@@ -74,7 +74,7 @@ namespace RESQML2_0_1_NS
 		IjkGridLatticeRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridLatticeRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~IjkGridLatticeRepresentation() {}
+		~IjkGridLatticeRepresentation() = default;
 
 		DLL_IMPORT_OR_EXPORT double getXOrigin() const final;
 

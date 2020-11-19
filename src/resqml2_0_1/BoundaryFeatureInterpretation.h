@@ -55,7 +55,7 @@ namespace RESQML2_0_1_NS
 		BoundaryFeatureInterpretation(gsoap_resqml2_0_1::_resqml20__BoundaryFeatureInterpretation* fromGsoap) : RESQML2_NS::BoundaryFeatureInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		~BoundaryFeatureInterpretation() {}
+		~BoundaryFeatureInterpretation() = default;
 
 		/**
 		* The standard XML tag without XML namespace for serializing this data object.

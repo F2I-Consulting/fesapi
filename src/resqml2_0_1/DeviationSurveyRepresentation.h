@@ -58,7 +58,7 @@ namespace RESQML2_0_1_NS
 		DeviationSurveyRepresentation(gsoap_resqml2_0_1::_resqml20__DeviationSurveyRepresentation* fromGsoap) : RESQML2_NS::DeviationSurveyRepresentation(fromGsoap) {}
 
 		/** Destructor */
-		~DeviationSurveyRepresentation() {}
+		~DeviationSurveyRepresentation() = default;
 
 		DLL_IMPORT_OR_EXPORT void setGeometry(double const* firstStationLocation, ULONG64 stationCount,
 			gsoap_resqml2_0_1::eml20__LengthUom mdUom, double const* mds,

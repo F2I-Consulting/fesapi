@@ -41,7 +41,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT DoubleTableLookup(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~DoubleTableLookup() {}
+		virtual ~DoubleTableLookup() = default;
 
 		/**
 		 * Checks whether a key is contained within this double table lookup.

@@ -54,7 +54,7 @@ namespace RESQML2_0_1_NS
 		DoubleTableLookup(gsoap_resqml2_0_1::_resqml20__DoubleTableLookup* fromGsoap) : RESQML2_NS::DoubleTableLookup(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~DoubleTableLookup() {}
+		~DoubleTableLookup() = default;
 
 		DLL_IMPORT_OR_EXPORT bool containsKey(double key) final;
 

@@ -30,7 +30,7 @@ namespace RESQML2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
-		virtual ~PointsProperty() {}
+		virtual ~PointsProperty() = default;
 		
 		/**
 		 * Get the xyz point count in a given patch of this property.

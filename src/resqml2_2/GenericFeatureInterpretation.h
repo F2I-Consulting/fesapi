@@ -56,7 +56,7 @@ namespace RESQML2_2_NS
 		GenericFeatureInterpretation(gsoap_eml2_3::_resqml22__GenericFeatureInterpretation* fromGsoap) : RESQML2_NS::GenericFeatureInterpretation(fromGsoap) {}
 
 		/** Destructor */
-		~GenericFeatureInterpretation() {}
+		~GenericFeatureInterpretation() = default;
 
 		/**
 		* The standard XML namespace for serializing this data object.

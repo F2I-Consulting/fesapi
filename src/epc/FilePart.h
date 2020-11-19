@@ -44,7 +44,7 @@ namespace epc
 		FilePart(std::string outputPartPath);
 		
 		/** @brief	Destructor */
-		~FilePart() {}
+		~FilePart() = default;
 
 		// ACCESSORS
 

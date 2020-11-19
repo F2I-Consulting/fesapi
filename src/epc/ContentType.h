@@ -70,7 +70,7 @@ namespace epc
 		 */
 		ContentType(bool isAssociatedToAnExt, const std::string & contentType, const std::string & extOrPartName);
 		/** Destructor */
-		~ContentType() {};
+		~ContentType() = default;;
 
 		/**
 		 * GETTTERS

@@ -60,7 +60,7 @@ namespace RESQML2_2_NS
 		WellboreMarkerFrameRepresentation(gsoap_eml2_3::_resqml22__WellboreMarkerFrameRepresentation* fromGsoap) : RESQML2_NS::WellboreMarkerFrameRepresentation(fromGsoap) {}
 
 		/** Cleans the owned markers. */
-		~WellboreMarkerFrameRepresentation() {}
+		~WellboreMarkerFrameRepresentation() = default;
 
 		DLL_IMPORT_OR_EXPORT void setStratigraphicOccurrenceInterpretation(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrenceInterp) final;
 

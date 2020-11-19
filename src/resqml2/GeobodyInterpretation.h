@@ -33,7 +33,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~GeobodyInterpretation() {}
+		virtual ~GeobodyInterpretation() = default;
 
 		/**
 		 * Sets the geobody 3d shape.

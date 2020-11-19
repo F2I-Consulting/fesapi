@@ -29,7 +29,7 @@ namespace WITSML2_0_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		virtual ~AbstractObject() {}
+		virtual ~AbstractObject() = default;
 
 		/**
 		 * Get the content type of the instance according to EPC recommendation

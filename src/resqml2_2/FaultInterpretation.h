@@ -71,7 +71,7 @@ namespace RESQML2_2_NS
 		FaultInterpretation(gsoap_eml2_3::_resqml22__FaultInterpretation* fromGsoap): RESQML2_NS::FaultInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~FaultInterpretation() {}
+		~FaultInterpretation() = default;
 
 		DLL_IMPORT_OR_EXPORT void pushBackThrowInterpretation(gsoap_resqml2_0_1::resqml20__ThrowKind throwKind) final;
 

@@ -55,7 +55,7 @@ namespace RESQML2_0_1_NS
 		TimeSeries(gsoap_resqml2_0_1::_resqml20__TimeSeries* fromGsoap) : EML2_NS::TimeSeries(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~TimeSeries() {}
+		~TimeSeries() = default;
 
 		/**
 		 * Pushes back an timestamp into this time series.

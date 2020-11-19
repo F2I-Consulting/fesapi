@@ -54,7 +54,7 @@ namespace RESQML2_2_NS
 		RockVolumeFeature(gsoap_eml2_3::_resqml22__RockVolumeFeature* fromGsoap): RESQML2_NS::RockVolumeFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
-		~RockVolumeFeature() {}
+		~RockVolumeFeature() = default;
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

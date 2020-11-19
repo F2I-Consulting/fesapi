@@ -76,7 +76,7 @@ namespace RESQML2_2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
-		~IjkGridLatticeRepresentation() {}
+		~IjkGridLatticeRepresentation() = default;
 
 		DLL_IMPORT_OR_EXPORT double getXOrigin() const final;
 

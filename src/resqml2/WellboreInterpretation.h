@@ -62,7 +62,7 @@ namespace RESQML2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gSOAP context.
 		*/
-		virtual ~WellboreInterpretation() {}
+		virtual ~WellboreInterpretation() = default;
 
 		/**
 		 * Indicates if the wellbore has been interpreted as drilled or not.

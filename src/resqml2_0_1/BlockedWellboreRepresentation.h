@@ -57,7 +57,7 @@ namespace RESQML2_0_1_NS
 		BlockedWellboreRepresentation(gsoap_resqml2_0_1::_resqml20__BlockedWellboreRepresentation* fromGsoap) : RESQML2_NS::BlockedWellboreRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~BlockedWellboreRepresentation() {}
+		~BlockedWellboreRepresentation() = default;
 
 		DLL_IMPORT_OR_EXPORT void setIntevalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
 			unsigned int cellCount, ULONG64 const* cellIndices,

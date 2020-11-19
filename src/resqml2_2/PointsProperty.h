@@ -67,7 +67,7 @@ namespace RESQML2_2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
-		~PointsProperty() {}
+		~PointsProperty() = default;
 
 		/**
 		 * Gets the number of patches in this values property. It should be the same count as the patch

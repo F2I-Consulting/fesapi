@@ -65,7 +65,7 @@ namespace EML2_3_NS
 		PropertyKind(gsoap_eml2_3::eml23__PropertyKind* fromGsoap) :EML2_NS::PropertyKind(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~PropertyKind() {}
+		~PropertyKind() = default;
 
 		/**
 		 * Query if this object is abstract

@@ -29,7 +29,7 @@ namespace RESQML2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
-		virtual ~ContinuousColorMap() {}
+		virtual ~ContinuousColorMap() = default;
 
 		/**
 		* https://en.wikipedia.org/wiki/HSV_color_space

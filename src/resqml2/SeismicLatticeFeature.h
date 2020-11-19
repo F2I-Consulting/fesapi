@@ -34,7 +34,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is manged by the gSOAP context. */
-		virtual ~SeismicLatticeFeature() {}
+		virtual ~SeismicLatticeFeature() = default;
 
 		/**
 		 * Gets the crossline index increment between two consecutive crosslines.

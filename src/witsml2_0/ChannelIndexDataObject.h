@@ -56,7 +56,7 @@ namespace WITSML2_0_NS
 		ChannelIndexDataObject(gsoap_eml2_1::eml21__AbstractObject* fromGsoap) : ChannelMetaDataObject<T>(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		virtual ~ChannelIndexDataObject() {}
+		virtual ~ChannelIndexDataObject() = default;
 
 		/**
 		 * Pushes a back channel index

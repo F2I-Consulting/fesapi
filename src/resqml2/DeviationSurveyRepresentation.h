@@ -42,7 +42,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~DeviationSurveyRepresentation() {}
+		virtual ~DeviationSurveyRepresentation() = default;
 
 		/**
 		 * Sets the geometry of this deviation survey representation.

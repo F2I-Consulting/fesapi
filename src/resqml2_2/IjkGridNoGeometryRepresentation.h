@@ -74,7 +74,7 @@ namespace RESQML2_2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
-		~IjkGridNoGeometryRepresentation() {}
+		~IjkGridNoGeometryRepresentation() = default;
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 

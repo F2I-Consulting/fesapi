@@ -59,7 +59,7 @@ namespace EML2_3_NS
 		/**
 		 * Destructor does nothing since the memory is managed by the gsoap context.
 		 */
-		~GraphicalInformationSet() {}
+		~GraphicalInformationSet() = default;
 
 		/**
 		* The standard XML namespace for serializing this data object.

@@ -28,7 +28,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		virtual ~AbstractColumnLayerGridRepresentation() {}
+		virtual ~AbstractColumnLayerGridRepresentation() = default;
 
 		/**
 		 * Gets the K layer count of this grid

@@ -81,7 +81,7 @@ namespace RESQML2_2_NS
 		/**
 		* Destructor clean pillarInformation memory when allocated
 		*/
-		~IjkGridParametricRepresentation() {}
+		~IjkGridParametricRepresentation() = default;
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 

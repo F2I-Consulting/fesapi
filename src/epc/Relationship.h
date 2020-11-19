@@ -62,7 +62,7 @@ namespace epc
 		 */
 		Relationship(const std::string & rsTarget, const std::string & rsType,const std::string & rsId, const bool & internalTarget = true);
 		/** Destructor */
-		~Relationship() {}
+		~Relationship() = default;
 
 		/**
 		 * Serialize the core property into an XML element embeded into a string.

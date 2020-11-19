@@ -68,7 +68,7 @@ namespace EML2_0_NS
 			EML2_NS::HdfProxy(fromGsoap) {}
 
 		/** Destructor */
-		DLL_IMPORT_OR_EXPORT ~HdfProxy() {}
+		DLL_IMPORT_OR_EXPORT ~HdfProxy() = default;
 
 		/**
 		* The standard XML namespace for serializing this data object.

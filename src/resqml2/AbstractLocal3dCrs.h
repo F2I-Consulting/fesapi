@@ -28,7 +28,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
-		virtual ~AbstractLocal3dCrs() {}
+		virtual ~AbstractLocal3dCrs() = default;
 
 		/**
 		 * Gets the first origin ordinal of this local CRS. This is the X location of the origin of the

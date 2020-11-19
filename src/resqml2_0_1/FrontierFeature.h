@@ -53,7 +53,7 @@ namespace RESQML2_0_1_NS
 		FrontierFeature(gsoap_resqml2_0_1::_resqml20__FrontierFeature* fromGsoap): RESQML2_NS::CulturalFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~FrontierFeature() {}
+		~FrontierFeature() = default;
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

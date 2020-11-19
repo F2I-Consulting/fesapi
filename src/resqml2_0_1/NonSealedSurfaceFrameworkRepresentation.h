@@ -56,7 +56,7 @@ namespace RESQML2_0_1_NS
 		NonSealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::_resqml20__NonSealedSurfaceFrameworkRepresentation* fromGsoap): RESQML2_NS::NonSealedSurfaceFrameworkRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~NonSealedSurfaceFrameworkRepresentation() {}
+		~NonSealedSurfaceFrameworkRepresentation() = default;
 
 		DLL_IMPORT_OR_EXPORT void pushBackNonSealedContactRepresentation(unsigned int pointCount, double const* points, EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
                 

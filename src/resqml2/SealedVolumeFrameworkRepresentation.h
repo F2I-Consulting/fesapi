@@ -38,7 +38,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~SealedVolumeFrameworkRepresentation() {}
+		virtual ~SealedVolumeFrameworkRepresentation() = default;
 
 		/**
 		 * Sets the sealed surface framework representation this sealed volume framework representation

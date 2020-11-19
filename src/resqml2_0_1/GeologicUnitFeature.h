@@ -54,7 +54,7 @@ namespace RESQML2_0_1_NS
 		GeologicUnitFeature(gsoap_resqml2_0_1::_resqml20__GeologicUnitFeature* fromGsoap): RESQML2_NS::RockVolumeFeature(fromGsoap) {}
 
 		/** Destructor */
-		virtual ~GeologicUnitFeature() {}
+		virtual ~GeologicUnitFeature() = default;
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

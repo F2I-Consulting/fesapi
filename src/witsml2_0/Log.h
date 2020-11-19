@@ -57,7 +57,7 @@ namespace WITSML2_0_NS
 		Log(gsoap_eml2_1::witsml20__Log* fromGsoap) : ChannelMetaDataObject(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~Log() {}
+		~Log() = default;
 
 		/**
 		 * Pushes a back channel set

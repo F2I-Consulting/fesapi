@@ -55,7 +55,7 @@ namespace RESQML2_2_NS
 		WellboreFeature(gsoap_eml2_3::_resqml22__WellboreFeature* fromGsoap): RESQML2_NS::WellboreFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~WellboreFeature() {}
+		~WellboreFeature() = default;
 
 		DLL_IMPORT_OR_EXPORT void setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore) final;
 

@@ -82,7 +82,7 @@ namespace RESQML2_0_1_NS
 		PolylineSetRepresentation(gsoap_resqml2_0_1::_resqml20__PolylineSetRepresentation* fromGsoap) : RESQML2_NS::PolylineSetRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~PolylineSetRepresentation() {}
+		~PolylineSetRepresentation() = default;
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 

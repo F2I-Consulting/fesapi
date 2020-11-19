@@ -63,7 +63,7 @@ namespace RESQML2_0_1_NS
 		RockFluidUnitFeature(gsoap_resqml2_0_1::_resqml20__RockFluidUnitFeature* fromGsoap): GeologicUnitFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
-		~RockFluidUnitFeature() {}
+		~RockFluidUnitFeature() = default;
 
 		/**
 		 * Sets a top

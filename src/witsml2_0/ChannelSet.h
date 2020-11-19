@@ -56,7 +56,7 @@ namespace WITSML2_0_NS
 		ChannelSet(gsoap_eml2_1::witsml20__ChannelSet* fromGsoap) : ChannelIndexDataObject<gsoap_eml2_1::witsml20__ChannelSet>(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~ChannelSet() {}
+		~ChannelSet() = default;
 
 		/**
 		 * Pushes a back channel index

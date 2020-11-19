@@ -56,7 +56,7 @@ namespace RESQML2_2_NS
 			RESQML2_NS::ShotPointLineFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
-		~ShotPointLineFeature() {}
+		~ShotPointLineFeature() = default;
 
 		/**
 		* The standard XML namespace for serializing this data object.

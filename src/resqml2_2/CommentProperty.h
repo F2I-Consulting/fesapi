@@ -64,7 +64,7 @@ namespace RESQML2_2_NS
 		CommentProperty(gsoap_eml2_3::_resqml22__CommentProperty* fromGsoap): RESQML2_NS::CommentProperty(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~CommentProperty() {}
+		~CommentProperty() = default;
 
 		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "") final;
 

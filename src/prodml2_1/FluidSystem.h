@@ -70,7 +70,7 @@ namespace PRODML2_1_NS
 		FluidSystem(gsoap_eml2_2::prodml21__FluidSystem* fromGsoap):AbstractObject(fromGsoap)  {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~FluidSystem() {}
+		~FluidSystem() = default;
 		
 		/**
 		* Get the kind of reservoir hydrocarbon fluid, in broad terms, by its phase behavior. 

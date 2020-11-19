@@ -36,7 +36,7 @@ namespace RESQML2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gSOAP context.
 		*/
-		virtual ~RockFluidOrganizationInterpretation() {}
+		virtual ~RockFluidOrganizationInterpretation() = default;
 
 		/**
 		 * Gets the set of grid representations associated to this rock fluid organization.

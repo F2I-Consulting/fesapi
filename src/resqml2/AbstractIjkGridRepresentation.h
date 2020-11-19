@@ -780,7 +780,7 @@ namespace RESQML2_NS
 			BlockInformation() {}
 
 			/** Destructor */
-			~BlockInformation() {}
+			~BlockInformation() = default;
 		};
 
 		/** Information describing the block */

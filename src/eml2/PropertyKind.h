@@ -33,7 +33,7 @@ namespace EML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context */
-		virtual ~PropertyKind() {}
+		virtual ~PropertyKind() = default;
 
 		/**
 		 * Gets (in read only mode) the naming system of this property type. It is the name of the

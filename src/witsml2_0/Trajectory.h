@@ -59,7 +59,7 @@ namespace WITSML2_0_NS
 		Trajectory(gsoap_eml2_1::witsml20__Trajectory* fromGsoap) :WellboreObject(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~Trajectory() {}
+		~Trajectory() = default;
 
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getWellboreDor() const;
 		DLL_IMPORT_OR_EXPORT void setWellbore(class Wellbore* witsmlWellbore);

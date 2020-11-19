@@ -36,7 +36,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~StratigraphicColumn() {}
+		virtual ~StratigraphicColumn() = default;
 
 		/**
 		 * Pushes a back a stratigraphic column rank interpretation into this stratigraphic column.

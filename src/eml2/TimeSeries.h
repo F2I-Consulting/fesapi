@@ -37,7 +37,7 @@ namespace EML2_NS
 	public:
 		
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~TimeSeries() {}
+		virtual ~TimeSeries() = default;
 
 		/**
 		 * Pushes back an timestamp into this time series.

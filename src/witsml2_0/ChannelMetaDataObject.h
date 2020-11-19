@@ -58,7 +58,7 @@ namespace WITSML2_0_NS
 		ChannelMetaDataObject(gsoap_eml2_1::eml21__AbstractObject* fromGsoap) : WITSML2_0_NS::WellboreObject(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		virtual ~ChannelMetaDataObject() {}
+		virtual ~ChannelMetaDataObject() = default;
 
 		/**
 		 * @brief	Gets wellbore dor

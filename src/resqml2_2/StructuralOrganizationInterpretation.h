@@ -54,7 +54,7 @@ namespace RESQML2_2_NS
 		StructuralOrganizationInterpretation(gsoap_eml2_3::_resqml22__StructuralOrganizationInterpretation* fromGsoap): RESQML2_NS::StructuralOrganizationInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~StructuralOrganizationInterpretation() {}
+		~StructuralOrganizationInterpretation() = default;
 
 		DLL_IMPORT_OR_EXPORT void pushBackFaultInterpretation(RESQML2_NS::FaultInterpretation * faultInterpretation) final;
 

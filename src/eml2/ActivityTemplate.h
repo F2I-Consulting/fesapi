@@ -55,7 +55,7 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT ActivityTemplate(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~ActivityTemplate() {}
+		virtual ~ActivityTemplate() = default;
 
 		/**
 		 * Pushes back a parameter in this activity template instance. This parameter has an

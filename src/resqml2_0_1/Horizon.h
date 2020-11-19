@@ -54,6 +54,6 @@ namespace RESQML2_0_1_NS
 		Horizon(gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature* fromGsoap): GeneticBoundaryFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
-		~Horizon() {}
+		~Horizon() = default;
 	};
 }

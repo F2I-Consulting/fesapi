@@ -39,7 +39,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~RockVolumeFeature() {}
+		virtual ~RockVolumeFeature() = default;
 
 	protected:
 

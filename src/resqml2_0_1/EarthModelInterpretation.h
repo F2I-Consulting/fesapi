@@ -56,7 +56,7 @@ namespace RESQML2_0_1_NS
 		EarthModelInterpretation(gsoap_resqml2_0_1::_resqml20__EarthModelInterpretation* fromGsoap) : RESQML2_NS::EarthModelInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~EarthModelInterpretation() {}
+		~EarthModelInterpretation() = default;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getStructuralOrganizationInterpretationCount() const final;
 

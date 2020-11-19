@@ -70,7 +70,7 @@ namespace RESQML2_2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
-		~UnstructuredGridRepresentation() {}
+		~UnstructuredGridRepresentation() = default;
 
 		DLL_IMPORT_OR_EXPORT bool hasGeometry() const final;
 

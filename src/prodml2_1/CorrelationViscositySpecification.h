@@ -34,7 +34,7 @@ namespace PRODML2_1_NS
 		CorrelationViscositySpecification(gsoap_eml2_2::prodml21__AbstractCorrelationViscosityModel* fromGsoap): PvtSpecification(fromGsoap){}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		virtual ~CorrelationViscositySpecification() {}
+		virtual ~CorrelationViscositySpecification() = default;
 
 		GETTER_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(gsoap_eml2_2::prodml21__AbstractCorrelationViscosityModel, gsoapProxy, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom)
 	};

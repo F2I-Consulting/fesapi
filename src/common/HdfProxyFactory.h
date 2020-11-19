@@ -28,7 +28,7 @@ namespace COMMON_NS
 	public:
 
 		/** Destructor */
-		DLL_IMPORT_OR_EXPORT virtual ~HdfProxyFactory() {}
+		DLL_IMPORT_OR_EXPORT virtual ~HdfProxyFactory() = default;
 
 		/**
 		 * @brief	Creates an instance of HDF5 file proxy. Only to be used in partial transfer context

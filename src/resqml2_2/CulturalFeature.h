@@ -55,7 +55,7 @@ namespace RESQML2_2_NS
 		CulturalFeature(gsoap_eml2_3::_resqml22__CulturalFeature* fromGsoap): RESQML2_NS::CulturalFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~CulturalFeature() {}
+		~CulturalFeature() = default;
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

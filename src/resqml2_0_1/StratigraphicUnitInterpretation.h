@@ -56,7 +56,7 @@ namespace RESQML2_0_1_NS
 		StratigraphicUnitInterpretation(gsoap_resqml2_0_1::_resqml20__StratigraphicUnitInterpretation* fromGsoap) : RESQML2_NS::StratigraphicUnitInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~StratigraphicUnitInterpretation() {}
+		~StratigraphicUnitInterpretation() = default;
 
 		DLL_IMPORT_OR_EXPORT bool hasDepositionMode() const final;
 

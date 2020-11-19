@@ -57,7 +57,7 @@ namespace RESQML2_0_1_NS
 		 */
 		TectonicBoundaryFeature(gsoap_resqml2_0_1::_resqml20__TectonicBoundaryFeature* fromGsoap): BoundaryFeature(fromGsoap) {}
 		/** Destructor */
-		virtual ~TectonicBoundaryFeature() {}
+		virtual ~TectonicBoundaryFeature() = default;
 
 		/**
 		 * Indicates wether the instance is a fracture (or a fault). This public method is especially

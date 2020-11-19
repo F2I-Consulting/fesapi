@@ -63,7 +63,7 @@ namespace EML2_3_NS
 		Activity(gsoap_eml2_3::_eml23__Activity* fromGsoap) : EML2_NS::Activity(fromGsoap) {}
 
 		/** Destructor */
-		~Activity() {}
+		~Activity() = default;
 
 		/**
 		 * Push back a double parameter in the instance. This parameter must exist in the associated

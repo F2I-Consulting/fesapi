@@ -57,7 +57,7 @@ namespace RESQML2_2_NS
 		HorizonInterpretation(gsoap_eml2_3::_resqml22__HorizonInterpretation* fromGsoap): RESQML2_NS::HorizonInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~HorizonInterpretation() {}
+		~HorizonInterpretation() = default;
 
 		/**
 		* The standard XML namespace for serializing this data object.

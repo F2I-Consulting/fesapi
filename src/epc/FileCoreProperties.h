@@ -34,7 +34,7 @@ namespace epc
 		/** Default constructor */
 		FileCoreProperties();
 		/** Destructor */
-		~FileCoreProperties() {}
+		~FileCoreProperties() = default;
 
 		/**
 		 * Gets a property

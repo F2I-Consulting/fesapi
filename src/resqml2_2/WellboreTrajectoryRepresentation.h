@@ -73,7 +73,7 @@ namespace RESQML2_2_NS
 		WellboreTrajectoryRepresentation(gsoap_eml2_3::_resqml22__WellboreTrajectoryRepresentation* fromGsoap) : RESQML2_NS::WellboreTrajectoryRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		~WellboreTrajectoryRepresentation() {}
+		~WellboreTrajectoryRepresentation() = default;
 
 		DLL_IMPORT_OR_EXPORT void setMinimalGeometry(double startMd, double endMd) final;
 

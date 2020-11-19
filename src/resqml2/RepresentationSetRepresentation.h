@@ -40,7 +40,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		virtual ~RepresentationSetRepresentation() {}
+		virtual ~RepresentationSetRepresentation() = default;
 
 		/**
 		 * Gets the data object reference of the HDF proxy which is used for storing the numerical
