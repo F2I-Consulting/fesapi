@@ -26,12 +26,6 @@ namespace epc
 	/** A content type. */
 	class ContentType
 	{
-	private:
-		/** The content type string */
-		std::string contentTypeString;
-		/** Name of the extension or part */
-		std::string extensionOrPartName;
-
 	public:
 		/** / if false, the content type is associated to a part and overrides another content type. */
 		bool isAssociatedToAnExtension;
@@ -59,7 +53,7 @@ namespace epc
 		 * *  A segment shall not end with a dot (?.?) character.
 		 * *  A segment shall include at least one non-dot character.
 		 */
-		ContentType(){};
+		ContentType() {};
 
 		/**
 		 * Constructor
@@ -69,8 +63,9 @@ namespace epc
 		 * @param 	extOrPartName	   	Name of the extent or part.
 		 */
 		ContentType(bool isAssociatedToAnExt, const std::string & contentType, const std::string & extOrPartName);
+
 		/** Destructor */
-		~ContentType() = default;;
+		~ContentType() = default;
 
 		/**
 		 * GETTTERS
@@ -106,6 +101,12 @@ namespace epc
 		 * @returns	A std::string that represents this object.
 		 */
 		std::string toString() const;
+
+	private:
+		/** The content type string */
+		std::string contentTypeString;
+		/** Name of the extension or part */
+		std::string extensionOrPartName;
 	};
 }
 
