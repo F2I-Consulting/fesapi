@@ -22,7 +22,7 @@ using namespace std; // in order not to prefix by "std::" for each class in the 
 using namespace epc; // in order not to prefix by "epc::" for each class in the "epc" namespace. Never use "using namespace" in *.h file but only in*.cpp file!!!
 
 ContentType::ContentType(bool isAssociatedToAnExt, const std::string & contentType, const std::string & extOrPartName):
-	contentTypeString(contentType), extensionOrPartName(extOrPartName), isAssociatedToAnExtension(isAssociatedToAnExt)
+	isAssociatedToAnExtension(isAssociatedToAnExt), contentTypeString(contentType), extensionOrPartName(extOrPartName)
 {
 	// Add the first character as slash if we forgot to add it
 	if (!isAssociatedToAnExtension && extensionOrPartName[0] != '/')

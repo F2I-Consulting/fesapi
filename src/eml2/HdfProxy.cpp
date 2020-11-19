@@ -930,10 +930,7 @@ hid_t HdfProxy::openOrCreateRootGroup(const std::string & rootGroup)
 		return openedGroups.at(rootGroup);
 	}
 
-	H5O_info_t info;
-	const herr_t status = H5Oget_info_by_name(hdfFile, rootGroup.c_str(), &info, H5P_DEFAULT);
-
-	const hid_t result = status >= 0
+	const hid_t result = H5Lexists(hdfFile, rootGroup.c_str(), H5P_DEFAULT) > 0
 		? H5Gopen(hdfFile, rootGroup.c_str(), H5P_DEFAULT)
 		: H5Gcreate(hdfFile, rootGroup.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 	openedGroups[rootGroup] = result;
@@ -970,10 +967,7 @@ hid_t HdfProxy::openOrCreateGroupInRootGroup(const string & rootSlashGroup)
 	while (std::getline(ss, group, '/')) {
 		if (group.empty()) continue;
 
-		H5O_info_t info;
-		herr_t status = H5Oget_info_by_name(subRootGroup, groupName.c_str(), &info, H5P_DEFAULT);
-
-		result = status >= 0
+		result = H5Lexists(subRootGroup, groupName.c_str(), H5P_DEFAULT) > 0
 			? H5Gopen(subRootGroup, group.c_str(), H5P_DEFAULT)
 			: H5Gcreate(subRootGroup, group.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 		if (subRootGroup != rootGroup) { // We don't want to close the rootGroup which is the file or a well known group which should be kept opened for performance reasons.
