@@ -5,7 +5,7 @@
 
 jobs:
   - job:
-    displayName: Windows VS2017 with HDF5 1.10.7
+    displayName: Windows VS2017 with HDF5 1.10.6
     pool:
       vmImage: 'vs2017-win2016'
     strategy:
@@ -18,10 +18,10 @@ jobs:
     steps:
       # HDF5
       - powershell: |
-          Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.7/bin/windows/hdf5-1.10.7-Std-win10_64-vs15.zip -OutFile C:\hdf5-1.10.7-Std-win10_64-vs15.zip
-          Expand-Archive C:\hdf5-1.10.7-Std-win10_64-vs15.zip -DestinationPath C:\
-          msiexec.exe /i "C:\hdf\HDF5-1.10.7-win64.msi" /qn INSTALL_ROOT=C:\hdf5-1.10.7-win64-vs2017
-        displayName: 'Install HDF5 1.10.7'
+          Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.6/bin/windows/hdf5-1.10.6-Std-win10_64-vs15.zip -OutFile C:\hdf5-1.10.6-Std-win10_64-vs15.zip
+          Expand-Archive C:\hdf5-1.10.6-Std-win10_64-vs15.zip -DestinationPath C:\
+          msiexec.exe /i "C:\hdf\HDF5-1.10.6-win64.msi" /qn INSTALL_ROOT=C:\hdf5-1.10.6-win64-vs2017
+        displayName: 'Install HDF5 1.10.6'
 
       # Minizip
       - powershell: |
@@ -35,8 +35,8 @@ jobs:
             ../Minizip
             $(Generator)
             -Wno-dev -Wno-deprecated
-            -DZLIB_INCLUDE_DIR=C:/hdf5-1.10.7-win64-vs2017/include
-            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.10.7-win64-vs2017/lib/zlib.lib
+            -DZLIB_INCLUDE_DIR=C:/hdf5-1.10.6-win64-vs2017/include
+            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.10.6-win64-vs2017/lib/hdf5.lib
             -DCMAKE_INSTALL_PREFIX=C:/Minizip-install
       - task: CMake@1
         displayName: "CMake build Minizip --config $(BuildType)"
@@ -76,13 +76,13 @@ jobs:
             $(Generator)
             -Wno-dev -Wno-deprecated
             -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
-            -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.10.7-win64-vs2017/include
-            -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.10.7-win64-vs2017/lib/hdf5.lib
+            -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.10.6-win64-vs2017/include
+            -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.10.6-win64-vs2017/lib/hdf5.lib
             -DMINIZIP_INCLUDE_DIR=C:/Minizip-install/include
             -DMINIZIP_LIBRARY_RELEASE=C:/Minizip-install/lib/minizip.lib
-            -DZLIB_INCLUDE_DIR=C:/hdf5-1.10.7-win64-vs2017/include
-            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.10.7-win64-vs2017/lib/zlib.lib
-            -DSZIP_LIBRARY_RELEASE=C:/hdf5-1.10.7-win64-vs2017/lib/szip.lib
+            -DZLIB_INCLUDE_DIR=C:/hdf5-1.10.6-win64-vs2017/include
+            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.10.6-win64-vs2017/lib/zlib.lib
+            -DSZIP_LIBRARY_RELEASE=C:/hdf5-1.10.6-win64-vs2017/lib/szip.lib
             -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
             -DWITH_EXAMPLE=TRUE
             -DWITH_RESQML2_2=TRUE
@@ -103,8 +103,8 @@ jobs:
           cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
 
       - powershell: |
-          Copy-Item C:\hdf5-1.10.7-win64-vs2017\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
-          Copy-Item C:\hdf5-1.10.7-win64-vs2017\bin\zlib.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
+          Copy-Item C:\hdf5-1.10.6-win64-vs2017\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
+          Copy-Item C:\hdf5-1.10.6-win64-vs2017\bin\zlib.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
           ctest -C $(BuildType) -V
         failOnStderr: true
         workingDirectory: $(Build.SourcesDirectory)\build
@@ -208,7 +208,7 @@ jobs:
             -DMINIZIP_LIBRARY_RELEASE=C:/Minizip-install/lib/minizip.lib
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.12.0-win64-vs2019/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2019/lib/zlib.lib
-            -DSZIP_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2017/lib/szip.lib
+            -DSZIP_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2019/lib/szip.lib
             -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
             -DWITH_EXAMPLE=TRUE
             -DWITH_RESQML2_2=TRUE

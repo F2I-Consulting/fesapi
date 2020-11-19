@@ -146,7 +146,7 @@ void IjkGridExplicitRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 		blockSizeInEachDimension[1] = blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1;
 		blockSizeInEachDimension[2] = 3;
 		
-		hid_t dataset, filespace;
+		hdf5_hid_t dataset, filespace;
 		hdfProxy->selectArrayNdOfValues(
 			datasetPathInExternalFile,
 			blockCountPerDimension.get(),
