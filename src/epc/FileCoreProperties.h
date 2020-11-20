@@ -32,18 +32,18 @@ namespace epc
 
 	public:
 		/** Default constructor */
-		FileCoreProperties();
+		FileCoreProperties() = default;
 		/** Destructor */
 		~FileCoreProperties() = default;
 
 		/**
 		 * Gets a property
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @param 	index	Zero-based index of the property.
 		 *
 		 * @returns	The property.
 		 */
-		CoreProperty getProperty(const CoreProperty::TypeProperty & index) const;
+		CoreProperty getProperty(CoreProperty::TypeProperty index) const;
 
 		/**
 		 * Convert this object into a string representation
