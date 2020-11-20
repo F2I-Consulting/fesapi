@@ -60,6 +60,8 @@ target_compile_definitions(etpServerExample PRIVATE BOOST_ALL_NO_LIB)
 add_dependencies (etpServerExample ${CPP_LIBRARY_NAME})
 target_link_libraries (etpServerExample PRIVATE ${CPP_LIBRARY_NAME} ${Boost_SYSTEM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT} ${AVRO_LIBRARY_RELEASE})
 if (WIN32)
+	target_link_libraries (etpServerExample PRIVATE bcrypt.lib)
+	
 	set_target_properties (etpServerExample PROPERTIES
 		LINK_FLAGS "/INCREMENTAL:NO"
 		RUNTIME_OUTPUT_DIRECTORY ${FESAPI_BINARY_DIR})

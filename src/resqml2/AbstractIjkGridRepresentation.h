@@ -38,7 +38,7 @@ namespace RESQML2_NS
 		enum geometryKind { UNKNOWN = 0, EXPLICIT = 1, PARAMETRIC = 2, LATTICE = 3, NO_GEOMETRY = 4}; // UNKNOWN exists in case of partial transfer
 
 		/**
-		 * Constructor.
+		 * Constructor of an IJK grid representation without link to an interpretation.
 		 *
 		 * @exception	std::invalid_argument	If @p repo is @c nullptr.
 		 *
@@ -62,7 +62,7 @@ namespace RESQML2_NS
 			bool withTruncatedPillars = false);
 
 		/**
-		 * Constructor.
+		 * Constructor of an IJK grid representation with a link to an interpretation.
 		 *
 		 * @exception	std::invalid_argument	If @p interp is @c nullptr.
 		 *
@@ -777,7 +777,7 @@ namespace RESQML2_NS
 			std::map<unsigned int, unsigned int> globalToLocalSplitCoordinateLinesIndex;
 
 			/** Default constructor */
-			BlockInformation() {}
+			BlockInformation() = default;
 
 			/** Destructor */
 			~BlockInformation() = default;

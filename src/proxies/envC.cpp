@@ -16,6 +16,10 @@ Product and source code licensed by Genivia Inc., contact@genivia.com
 
 #include "envH.h"
 
+#ifdef _WIN32
+#pragma warning(disable : 4706) /* assignment within conditional expression */
+#endif
+
 SOAP_SOURCE_STAMP("@(#) envC.cpp ver 2.8.109 2020-11-20 08:09:06 GMT")
 
 

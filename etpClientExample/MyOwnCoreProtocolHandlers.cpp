@@ -20,14 +20,15 @@ under the License.
 
 #include <thread>
 
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
+
 #include <etp/EtpHdfProxy.h>
 #include <etp/EtpHelpers.h>
 
 #include <resqml2/ContinuousProperty.h>
 #include <resqml2/LocalDepth3dCrs.h>
 #include <resqml2/IjkGridExplicitRepresentation.h>
-
-#include <tools/GuidTools.h>
 
 #include "MyOwnDiscoveryProtocolHandlers.h"
 
@@ -165,7 +166,9 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 			subscriptionInfo.scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
 			subscriptionInfo.context.depth = 1;
 			subscriptionInfo.startTime = std::time(nullptr);
-			subscriptionInfo.requestUuid.array = GuidTools::generateUidAsByteArray();
+			boost::uuids::random_generator gen;
+			boost::uuids::uuid uuid = gen();
+			std::move(std::begin(uuid.data), std::end(uuid.data), subscriptionInfo.requestUuid.array.begin());
 
 			if (commandTokens.size() > 2) {
 				if (commandTokens[2] == "self")
