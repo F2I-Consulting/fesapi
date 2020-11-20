@@ -207,22 +207,6 @@ COMMON_NS::DataObjectReference IjkGridParametricRepresentation::getHdfProxyDor()
 		throw std::logic_error("Not yet implemented");
 }
 
-ULONG64 IjkGridParametricRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
-{
-	ULONG64 result = getXyzPointCountOfKInterface() * (getKCellCount() + 1);
-
-	resqml22__IjkGridGeometry* geom = static_cast<resqml22__IjkGridGeometry*>(getPointGeometry2_2(patchIndex));
-	if (geom->SplitNodePatch != nullptr) {
-		result += geom->SplitNodePatch->Count;
-	}
-
-	if (isTruncated()) {
-		result += static_cast<_resqml22__TruncatedIjkGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationNodeCount;
-	}
-
-	return result;
-}
-
 void IjkGridParametricRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
 {
 	getXyzPointsFromParametricPoints(xyzPoints);

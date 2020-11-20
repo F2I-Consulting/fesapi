@@ -600,15 +600,13 @@ namespace RESQML2_NS
 	protected:
 		IjkGridParametricRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount,
-			bool withTruncatedPillars = false) :
-			AbstractIjkGridRepresentation(repo, guid, title, iCount, jCount, kCount, withTruncatedPillars), pillarInformation(nullptr) {}
+			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr) :
+			AbstractIjkGridRepresentation(repo, guid, title, iCount, jCount, kCount, kGaps, proxy), pillarInformation(nullptr) {}
 
 		IjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount,
-			bool withTruncatedPillars = false) :
-			AbstractIjkGridRepresentation(interp, guid, title, iCount, jCount, kCount, withTruncatedPillars), pillarInformation(nullptr) {}
+			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr) :
+			AbstractIjkGridRepresentation(interp, guid, title, iCount, jCount, kCount, kGaps, proxy), pillarInformation(nullptr) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

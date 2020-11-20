@@ -2263,12 +2263,12 @@ RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialTr
 }
 
 RESQML2_NS::IjkGridExplicitRepresentation* DataObjectRepository::createIjkGridExplicitRepresentation(const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount)
+	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
 {
 	switch (defaultResqmlVersion) {
-	case EnergisticsStandard::RESQML2_0_1 : return new RESQML2_0_1_NS::IjkGridExplicitRepresentation(this, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_0_1 : return new RESQML2_0_1_NS::IjkGridExplicitRepresentation(this, guid, title, iCount, jCount, kCount, kGaps, proxy);
 #ifdef WITH_RESQML2_2
-	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridExplicitRepresentation(this, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridExplicitRepresentation(this, guid, title, iCount, jCount, kCount, kGaps, proxy);
 #endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
@@ -2276,24 +2276,24 @@ RESQML2_NS::IjkGridExplicitRepresentation* DataObjectRepository::createIjkGridEx
 
 RESQML2_NS::IjkGridExplicitRepresentation* DataObjectRepository::createIjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount)
+	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
 {
 	switch (defaultResqmlVersion) {
-	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridExplicitRepresentation(interp, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridExplicitRepresentation(interp, guid, title, iCount, jCount, kCount, kGaps, proxy);
 #ifdef WITH_RESQML2_2
-	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridExplicitRepresentation(interp, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridExplicitRepresentation(interp, guid, title, iCount, jCount, kCount, kGaps, proxy);
 #endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
 
 RESQML2_NS::IjkGridParametricRepresentation* DataObjectRepository::createIjkGridParametricRepresentation(const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount)
+	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
 {
 	switch (defaultResqmlVersion) {
-	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridParametricRepresentation(this, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridParametricRepresentation(this, guid, title, iCount, jCount, kCount, kGaps, proxy);
 #ifdef WITH_RESQML2_2
-	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridParametricRepresentation(this, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridParametricRepresentation(this, guid, title, iCount, jCount, kCount, kGaps, proxy);
 #endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
@@ -2301,12 +2301,12 @@ RESQML2_NS::IjkGridParametricRepresentation* DataObjectRepository::createIjkGrid
 
 RESQML2_NS::IjkGridParametricRepresentation* DataObjectRepository::createIjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount)
+	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
 {
 	switch (defaultResqmlVersion) {
-	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridParametricRepresentation(interp, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridParametricRepresentation(interp, guid, title, iCount, jCount, kCount, kGaps, proxy);
 #ifdef WITH_RESQML2_2
-	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridParametricRepresentation(interp, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridParametricRepresentation(interp, guid, title, iCount, jCount, kCount, kGaps, proxy);
 #endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
@@ -2339,12 +2339,12 @@ RESQML2_NS::IjkGridLatticeRepresentation* DataObjectRepository::createIjkGridLat
 
 RESQML2_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGridNoGeometryRepresentation(
 	const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount)
+	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
 {
 	switch (defaultResqmlVersion) {
-	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridNoGeometryRepresentation(this, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridNoGeometryRepresentation(this, guid, title, iCount, jCount, kCount, kGaps, proxy);
 #ifdef WITH_RESQML2_2
-	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridNoGeometryRepresentation(this, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridNoGeometryRepresentation(this, guid, title, iCount, jCount, kCount, kGaps, proxy);
 #endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
@@ -2352,12 +2352,12 @@ RESQML2_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGrid
 
 RESQML2_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount)
+	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
 {
 	switch (defaultResqmlVersion) {
-	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridNoGeometryRepresentation(interp, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridNoGeometryRepresentation(interp, guid, title, iCount, jCount, kCount, kGaps, proxy);
 #ifdef WITH_RESQML2_2
-	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridNoGeometryRepresentation(interp, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridNoGeometryRepresentation(interp, guid, title, iCount, jCount, kCount, kGaps, proxy);
 #endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}

@@ -28,34 +28,48 @@ namespace RESQML2_2_NS
 	public:
 
 		/**
-		 * @brief	Constructor
+		 * @brief	Constructor wiht no interpretation
 		 *
 		 * @param [in]	repo  	If non-nullptr, the repo.
 		 * @param 	  	guid  	Unique identifier.
 		 * @param 	  	title 	The title.
-		 * @param 	  	iCount	Number of.
-		 * @param 	  	jCount	Number of.
-		 * @param 	  	kCount	Number of.
+		 * @param 	  	iCount	Number of cell in I direction.
+		 * @param 	  	jCount	Number of cell in J direction.
+		 * @param 	  	kCount	Number of cell in K direction.
+		 * @param 		kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *						TRUE if there is a gap after the corresponding layer.
+		 *						Won't be freed by FESAPI.
+		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 						values. If @c nullptr (default), then the default HDF proxy will be
+		 * 						used.
 		 */
 		IjkGridNoGeometryRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount) :
-			RESQML2_NS::IjkGridNoGeometryRepresentation(repo, guid, title, iCount, jCount, kCount) {}
+			unsigned int iCount, unsigned int jCount, unsigned int kCount,
+			bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr) :
+			RESQML2_NS::IjkGridNoGeometryRepresentation(repo, guid, title, iCount, jCount, kCount, kGaps, proxy) {}
 
 		/**
-		 * @brief	Constructor
+		 * @brief	Constructor with an interpretation
 		 *
 		 * @param [in]	interp	If non-nullptr, the interp.
 		 * @param 	  	guid  	Unique identifier.
 		 * @param 	  	title 	The title.
-		 * @param 	  	iCount	Number of.
-		 * @param 	  	jCount	Number of.
-		 * @param 	  	kCount	Number of.
+		 * @param 	  	iCount	Number of cell in I direction.
+		 * @param 	  	jCount	Number of cell in J direction.
+		 * @param 	  	kCount	Number of cell in K direction.
+		 * @param 		kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *						TRUE if there is a gap after the corresponding layer.
+		 *						Won't be freed by FESAPI.
+		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 						values. If @c nullptr (default), then the default HDF proxy will be
+		 * 						used.
 		 */
 		IjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount) :
-			RESQML2_NS::IjkGridNoGeometryRepresentation(interp, guid, title, iCount, jCount, kCount) {}
+			unsigned int iCount, unsigned int jCount, unsigned int kCount,
+			bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr) :
+			RESQML2_NS::IjkGridNoGeometryRepresentation(interp, guid, title, iCount, jCount, kCount, kGaps, proxy) {}
 
 		/**
 		 * @brief	Creates an instance of this class by wrapping a gsoap instance.

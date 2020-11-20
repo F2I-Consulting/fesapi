@@ -33,36 +33,46 @@ namespace RESQML2_2_NS
 		/**
 		 * @brief	Constructor
 		 *
-		 * @param [in]	repo					If non-nullptr, the repo.
-		 * @param 	  	guid					Unique identifier.
-		 * @param 	  	title					The title.
-		 * @param 	  	iCount					Number of.
-		 * @param 	  	jCount					Number of.
-		 * @param 	  	kCount					Number of.
-		 * @param 	  	withTruncatedPillars	(Optional) True to with truncated pillars.
+		 * @param [in]	repo	If non-nullptr, the repo.
+		 * @param 	  	guid	Unique identifier.
+		 * @param 	  	title	The title.
+		 * @param 	  	iCount	Number of cell in I direction.
+		 * @param 	  	jCount	Number of cell in J direction.
+		 * @param 	  	kCount	Number of cell in K direction.
+		 * @param 		kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *						TRUE if there is a gap after the corresponding layer.
+		 *						Won't be freed by FESAPI.
+		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 						values. If @c nullptr (default), then the default HDF proxy will be
+		 * 						used.
 		 */
 		IjkGridParametricRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount,
-			bool withTruncatedPillars = false) :
-			RESQML2_NS::IjkGridParametricRepresentation(repo, guid, title, iCount, jCount, kCount, withTruncatedPillars) {}
+			bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr) :
+			RESQML2_NS::IjkGridParametricRepresentation(repo, guid, title, iCount, jCount, kCount, kGaps, proxy) {}
 
 		/**
 		 * @brief	Constructor
 		 *
-		 * @param [in]	interp					If non-nullptr, the interp.
-		 * @param 	  	guid					Unique identifier.
-		 * @param 	  	title					The title.
-		 * @param 	  	iCount					Number of.
-		 * @param 	  	jCount					Number of.
-		 * @param 	  	kCount					Number of.
-		 * @param 	  	withTruncatedPillars	(Optional) True to with truncated pillars.
+		 * @param [in]	interp	If non-nullptr, the interp.
+		 * @param 	  	guid	Unique identifier.
+		 * @param 	  	title	The title.
+		 * @param 	  	iCount	Number of cell in I direction.
+		 * @param 	  	jCount	Number of cell in J direction.
+		 * @param 	  	kCount	Number of cell in K direction.
+		 * @param 		kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *						TRUE if there is a gap after the corresponding layer.
+		 *						Won't be freed by FESAPI.
+		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 						values. If @c nullptr (default), then the default HDF proxy will be
+		 * 						used.
 		 */
 		IjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount,
-			bool withTruncatedPillars = false) :
-			RESQML2_NS::IjkGridParametricRepresentation(interp, guid, title, iCount, jCount, kCount, withTruncatedPillars) {}
+			bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr) :
+			RESQML2_NS::IjkGridParametricRepresentation(interp, guid, title, iCount, jCount, kCount, kGaps, proxy) {}
 
 		/**
 		 * @brief	Creates an instance of this class by wrapping a gsoap instance.
@@ -84,8 +94,6 @@ namespace RESQML2_2_NS
 		~IjkGridParametricRepresentation() = default;
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
-
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
 		* @copybrief resqml2::AbstractRepresentation::getXyzPointsOfPatch

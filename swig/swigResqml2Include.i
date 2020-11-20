@@ -2777,6 +2777,9 @@ namespace RESQML2_NS
 		unsigned int getColumnCount() const;
 		unsigned int getPillarCount() const;
 		
+		unsigned int getKGapsCount() const;
+		void getKGaps(bool * kGaps) const;
+		
 		unsigned int getIPillarFromGlobalIndex(unsigned int globalIndex) const;
 		unsigned int getJPillarFromGlobalIndex(unsigned int globalIndex) const;
 		unsigned int getGlobalIndexPillarFromIjIndex(unsigned int iPillar, unsigned int jPillar) const;

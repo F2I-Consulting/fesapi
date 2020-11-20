@@ -847,7 +847,6 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	ijkgrid432->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, false, nodes432, hdfProxy,
 		4, pillarOfCoordinateLine432, splitCoordinateLineColumnCumulativeCount432, splitCoordinateLineColumns432);
 
-
 	// 4*3*2 explicit grid Right Handed
 	RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid432rh = pck->createIjkGridExplicitRepresentation("4fc004e1-0f7d-46a8-935e-588f790a6f84", "Four by Three by Two Right Handed", 4, 3, 2);
 	double nodes432rh[216] = {
@@ -877,6 +876,45 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0
 	};
 	ijkgrid432rh->setEnabledCells(enabledCells32rh);
+
+	// 4*3*2 explicit grid with gap layer
+	bool kgap[1] = { true };
+	RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid432gap = pck->createIjkGridExplicitRepresentation("c14755a5-e3b3-4272-99e5-fc20993b79a0", "Four by Three by Two with gap layer", 4, 3, 2, kgap);
+	double nodes432gap[288] = {
+		0, 150, 300, 150, 150, 300, 375, 150, 300, 550, 150, 350, 700, 150, 350, //IJ0K0
+		0, 100, 300, 150, 100, 300, 375, 100, 300, 550, 100, 350, 700, 100, 350, //IJ1K0
+		0, 50, 300, 150, 50, 300, 375, 50, 300, 550, 50, 350, 700, 50, 350, //IJ2K0
+		0, 0, 300, 150, 0, 300, 375, 0, 300, 550, 0, 350, 700, 0, 350, //IJ3K0
+		375, 0, 350, 375, 50, 350, 375, 100, 350, 375, 150, 350, // SPLIT K0
+		
+		0, 150, 360, 150, 150, 360, 375, 150, 360, 550, 150, 410, 700, 150, 410, //IJ0K1
+		0, 100, 360, 150, 100, 360, 375, 100, 360, 550, 100, 410, 700, 100, 410, //IJ1K1
+		0, 50, 360, 150, 50, 360, 375, 50, 360, 550, 50, 410, 700, 50, 410, //IJ2K1
+		0, 0, 360, 150, 0, 360, 375, 0, 360, 550, 0, 410, 700, 0, 410, //IJ3K1
+		375, 0, 410, 375, 50, 410, 375, 100, 410, 375, 150, 410, // SPLIT K1
+		// K Gap Layer
+		0, 150, 400, 150, 150, 400, 375, 150, 400, 550, 150, 450, 700, 150, 450, //IJ0K1
+		0, 100, 400, 150, 100, 400, 375, 100, 400, 550, 100, 450, 700, 100, 450, //IJ1K1
+		0, 50, 400, 150, 50, 400, 375, 50, 400, 550, 50, 450, 700, 50, 450, //IJ2K1
+		0, 0, 400, 150, 0, 400, 375, 0, 400, 550, 0, 450, 700, 0, 450, //IJ3K1
+		375, 0, 450, 375, 50, 450, 375, 100, 450, 375, 150, 450, // SPLIT K1
+
+		0, 150, 500, 150, 150, 500, 375, 150, 500, 550, 150, 550, 700, 150, 550, //IJ0K3
+		0, 100, 500, 150, 100, 500, 375, 100, 500, 550, 100, 550, 700, 100, 550, //IJ1K3
+		0, 50, 500, 150, 50, 500, 375, 50, 500, 550, 50, 550, 700, 50, 550, //IJ2K3
+		0, 0, 500, 150, 0, 500, 375, 0, 500, 550, 0, 550, 700, 0, 550, //IJ3K3
+		375, 0, 550, 375, 50, 550, 375, 100, 550, 375, 150, 550 // SPLIT K3
+	};
+	unsigned int pillarOfCoordinateLine432gap[4] = { 17, 12, 7, 2 };
+	unsigned int splitCoordinateLineColumnCumulativeCount432gap[4] = { 1, 3, 5, 6 };
+	unsigned int splitCoordinateLineColumns432gap[6] = { 10, 10, 6, 6, 2, 2 };
+	ijkgrid432gap->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, true, nodes432gap, hdfProxy,
+		4, pillarOfCoordinateLine432gap, splitCoordinateLineColumnCumulativeCount432gap, splitCoordinateLineColumns432gap);
+	unsigned char enabledCells32gap[24] = {
+		0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0
+	};
+	ijkgrid432gap->setEnabledCells(enabledCells32gap);
 
 	//**************
 	// Subrepresentations
@@ -4011,6 +4049,19 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 			}
 			std::cout << std::endl;
 
+			auto kGapCount = ijkGrid->getKGapsCount();
+			std::cout << " K Gap Count" << kGapCount << std::endl;
+			if (kGapCount > 0) {
+				std::unique_ptr<bool[]> kGapAfterLayer(new bool[ijkGrid->getKCellCount() - 1]);
+				for (size_t kIndex = 0; kIndex < ijkGrid->getKCellCount() - 1; ++kIndex) {
+					std::cout << "There is ";
+					if (!kGapAfterLayer[kIndex]) {
+						std::cout << "NOT ";
+					}
+					std::cout << "a K gap after K layer " << kIndex << std::endl;
+				}
+			}
+
 			if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::LATTICE) {
 				std::cout << "This 3d grid has a lattice geometry." << std::endl;
 			}
@@ -4068,13 +4119,32 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 					std::cout << "This 3d grid has an unknown geometry." << std::endl;
 				}
 
-				// read points
+				// read whole points
 				ULONG64 xyzPointCount = ijkGrid->getXyzPointCountOfAllPatches();
 				std::cout << "\t XYZ points count :" << xyzPointCount << std::endl;
 				std::cout << "\t Start reading XYZ points..." << std::endl;
 				std::unique_ptr<double[]> xyzPoints(new double[xyzPointCount * 3]);
 				ijkGrid->getXyzPointsOfAllPatches(xyzPoints.get());
 				std::cout << "\t Stop reading XYZ points :" << std::endl;
+
+				// read points by cell corner
+				ijkGrid->loadSplitInformation();
+
+				for (unsigned int cellCorner = 0; cellCorner < 8; ++cellCorner) {
+					auto ptIndex = ijkGrid->getXyzPointIndexFromCellCorner(0, 0, 0, cellCorner);
+					std::cout << " Cell 0,0,0 corner " << cellCorner << " is at index " << ptIndex << std::endl;
+					std::cout << " Cell 0,0,0 corner " << cellCorner << " is  " << xyzPoints[ptIndex*3] << " " << xyzPoints[ptIndex * 3 + 1] << " " << xyzPoints[ptIndex * 3 + 2] << std::endl;
+				}
+
+				if (ijkGrid->getKCellCount() > 1) {
+					for (unsigned int cellCorner = 0; cellCorner < 8; ++cellCorner) {
+						auto ptIndex = ijkGrid->getXyzPointIndexFromCellCorner(0, 0, 1, cellCorner);
+						std::cout << " Cell 0,0,1 corner " << cellCorner << " is at index " << ptIndex << std::endl;
+						std::cout << " Cell 0,0,1 corner " << cellCorner << " is  " << xyzPoints[ptIndex * 3] << " " << xyzPoints[ptIndex * 3 + 1] << " " << xyzPoints[ptIndex * 3 + 2] << std::endl;
+					}
+				}
+
+				ijkGrid->unloadSplitInformation();
 
 				std::cout << "Split coordinate line count is : " << ijkGrid->getSplitCoordinateLineCount() << std::endl;
 			}
