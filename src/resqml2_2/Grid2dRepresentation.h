@@ -56,7 +56,7 @@ namespace RESQML2_2_NS
 		Grid2dRepresentation(gsoap_eml2_3::_resqml22__Grid2dRepresentation* fromGsoap): RESQML2_NS::Grid2dRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		~Grid2dRepresentation() {}
+		~Grid2dRepresentation() = default;
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 

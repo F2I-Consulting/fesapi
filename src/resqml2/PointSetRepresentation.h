@@ -32,7 +32,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~PointSetRepresentation() {}
+		virtual ~PointSetRepresentation() = default;
 
 		/**
 		 * Pushes back a new patch of points.

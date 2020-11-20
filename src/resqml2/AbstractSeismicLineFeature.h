@@ -34,7 +34,7 @@ namespace RESQML2_NS
 	{
 	public:
 		/** Destructor does nothing since the memory is manged by the gSOAP context. */
-		virtual ~AbstractSeismicLineFeature() {}
+		virtual ~AbstractSeismicLineFeature() = default;
 
 		/**
 		 * Sets the seismic line set this seismic line belongs to.

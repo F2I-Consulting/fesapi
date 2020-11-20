@@ -49,7 +49,7 @@ namespace RESQML2_2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
-		~DiscreteColorMap() {}
+		~DiscreteColorMap() = default;
 
 		/**
 		* The standard XML namespace for serializing this data object.

@@ -52,7 +52,7 @@ namespace PRODML2_1_NS
 		PvtSpecification(gsoap_eml2_2::prodml21__AbstractPvtModel* fromGsoap): gsoapProxy(fromGsoap){}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		virtual ~PvtSpecification() {}
+		virtual ~PvtSpecification() = default;
 
 		/**
 		 * Gets coefficient count

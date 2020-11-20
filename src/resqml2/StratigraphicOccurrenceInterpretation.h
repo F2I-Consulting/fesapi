@@ -31,7 +31,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~StratigraphicOccurrenceInterpretation() {}
+		virtual ~StratigraphicOccurrenceInterpretation() = default;
 
 		/**
 		 * Sets the stratigraphic column rank interpretation this stratigraphic occurrence

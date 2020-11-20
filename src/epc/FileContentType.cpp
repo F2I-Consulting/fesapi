@@ -27,10 +27,6 @@ using namespace epc; // in order not to prefix by "epc::" for each class in the 
 const char* FileContentType::header = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\">";
 const char* FileContentType::footer = "</Types>";
 
-FileContentType::FileContentType()
-{
-}
-
 ContentType FileContentType::getContentType(const std::string& extensionOrPartName) const
 {
     ContentTypeMap::const_iterator it = contentTypeMap.find("/"+ extensionOrPartName);

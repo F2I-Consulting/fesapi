@@ -60,7 +60,7 @@ namespace RESQML2_2_NS
 		WellboreInterpretation(gsoap_eml2_3::_resqml22__WellboreInterpretation* fromGsoap) : RESQML2_NS::WellboreInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~WellboreInterpretation() {}
+		~WellboreInterpretation() = default;
 
 		bool isDrilled() const final;
 

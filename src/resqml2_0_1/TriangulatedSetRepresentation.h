@@ -71,7 +71,7 @@ namespace RESQML2_0_1_NS
 		TriangulatedSetRepresentation(gsoap_resqml2_0_1::_resqml20__TriangulatedSetRepresentation* fromGsoap): RESQML2_NS::TriangulatedSetRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~TriangulatedSetRepresentation() {}
+		~TriangulatedSetRepresentation() = default;
         
 		COMMON_NS::DataObjectReference getHdfProxyDor() const;
 

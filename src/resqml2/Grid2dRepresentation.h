@@ -27,7 +27,7 @@ namespace RESQML2_NS
 	{
 	public:
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~Grid2dRepresentation() {}
+		virtual ~Grid2dRepresentation() = default;
 
 		/**
 		 * Gets the number of nodes along the I (fastest) axis of this 2d grid representation.

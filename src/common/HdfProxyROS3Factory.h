@@ -41,7 +41,7 @@ namespace COMMON_NS
 		HdfProxyROS3Factory() {}
 
 		/** Destructor */
-		~HdfProxyROS3Factory() {}
+		~HdfProxyROS3Factory() = default;
 
 		/**
 		 * Creates an instance of a proxy for an HDF5 file located on an Amazon S3 cloud. Only to be

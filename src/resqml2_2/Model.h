@@ -54,7 +54,7 @@ namespace RESQML2_2_NS
 		Model(gsoap_eml2_3::_resqml22__Model* fromGsoap): RESQML2_NS::Model(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~Model() {}
+		~Model() = default;
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

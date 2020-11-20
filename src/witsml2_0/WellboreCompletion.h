@@ -59,7 +59,7 @@ namespace WITSML2_0_NS
 		WellboreCompletion(gsoap_eml2_1::witsml20__WellboreCompletion* fromGsoap) :WellboreObject(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~WellboreCompletion() {}
+		~WellboreCompletion() = default;
 
 		/**
 		* Get the Data Object Reference of the wellbore linked with this data object.

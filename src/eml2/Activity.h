@@ -55,7 +55,7 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT Activity(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~Activity() {}
+		virtual ~Activity() = default;
 
 		/**
 		 * Pushes back a string parameter in this instance. This parameter must exist in the associated

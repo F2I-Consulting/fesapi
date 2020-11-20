@@ -52,7 +52,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		virtual ~GridConnectionSetRepresentation() {}
+		virtual ~GridConnectionSetRepresentation() = default;
 
 		/**
 		 * Gets the cell index pair count of this grid connection set representation.

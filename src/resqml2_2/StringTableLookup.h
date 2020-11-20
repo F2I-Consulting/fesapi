@@ -54,7 +54,7 @@ namespace RESQML2_2_NS
 		StringTableLookup(gsoap_eml2_3::_resqml22__StringTableLookup* fromGsoap) : RESQML2_NS::StringTableLookup(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~StringTableLookup() {}
+		~StringTableLookup() = default;
 
 		DLL_IMPORT_OR_EXPORT bool containsKey(long longValue) final;
 

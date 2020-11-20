@@ -66,7 +66,7 @@ namespace RESQML2_2_NS
 		DiscreteProperty(gsoap_eml2_3::_resqml22__DiscreteProperty* fromGsoap): RESQML2_NS::DiscreteProperty(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~DiscreteProperty() {}
+		~DiscreteProperty() = default;
 
 		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue) final;
 		using AbstractValuesProperty::pushBackRefToExistingIntegerDataset;

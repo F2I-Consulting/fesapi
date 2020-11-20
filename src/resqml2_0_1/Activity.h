@@ -56,7 +56,7 @@ namespace RESQML2_0_1_NS
 		Activity(gsoap_resqml2_0_1::_resqml20__Activity* fromGsoap) : EML2_NS::Activity(fromGsoap) {}
 
 		/** Destructor */
-		~Activity() {}
+		~Activity() = default;
 
 		/**
 		 * Push back a double parameter in the instance. This parameter must exist in the associated

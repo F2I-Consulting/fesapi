@@ -100,7 +100,7 @@ namespace RESQML2_2_NS
 		ContinuousProperty(gsoap_eml2_3::_resqml22__ContinuousProperty* fromGsoap): RESQML2_NS::ContinuousProperty(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~ContinuousProperty() {}
+		~ContinuousProperty() = default;
 
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlUom getUom() const final;
 

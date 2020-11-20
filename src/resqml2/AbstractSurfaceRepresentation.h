@@ -34,7 +34,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~AbstractSurfaceRepresentation() {}
+		virtual ~AbstractSurfaceRepresentation() = default;
 
 		/**
 		 * Gets the count of boundaries.

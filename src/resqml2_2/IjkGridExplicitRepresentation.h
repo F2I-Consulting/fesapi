@@ -82,7 +82,7 @@ namespace RESQML2_2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
-		virtual ~IjkGridExplicitRepresentation() {}
+		virtual ~IjkGridExplicitRepresentation() = default;
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 

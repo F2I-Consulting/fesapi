@@ -44,7 +44,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT PropertySet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		virtual ~PropertySet() {}
+		virtual ~PropertySet() = default;
 
 		/**
 		 * Sets the parent property set of this instance.

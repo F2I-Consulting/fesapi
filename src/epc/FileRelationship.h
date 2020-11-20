@@ -52,7 +52,7 @@ namespace epc
 		 */
 		FileRelationship(const std::vector<Relationship> & frRelationship);
 		/** Destructor */
-		~FileRelationship() {}
+		~FileRelationship() = default;
 
 		/**
 		 * ACCESSORS

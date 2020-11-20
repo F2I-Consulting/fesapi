@@ -31,7 +31,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Cleans the owned markers. */
-		virtual ~WellboreMarkerFrameRepresentation() {}
+		virtual ~WellboreMarkerFrameRepresentation() = default;
 
 		GETTER_DATAOBJECTS(WellboreMarker, WellboreMarker)
 

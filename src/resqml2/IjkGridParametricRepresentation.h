@@ -644,7 +644,7 @@ namespace RESQML2_NS
 		public:
 			BSpline() {};
 			BSpline(const std::vector<double> & parametersAtControlPoint, const std::vector<double> & valuesAtControlPoint);
-			~BSpline() {}
+			~BSpline() = default;
 
 			double getValueFromParameter(double param) const;
 			void setParameterAndValueAtControlPoint(const std::vector<double> & parametersAtControlPoint, const std::vector<double> & valuesAtControlPoint);

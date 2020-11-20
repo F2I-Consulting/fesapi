@@ -50,7 +50,7 @@ namespace RESQML2_0_1_NS
 		RockFluidUnitInterpretation(gsoap_resqml2_0_1::_resqml20__RockFluidUnitInterpretation* fromGsoap) : RESQML2_NS::RockFluidUnitInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~RockFluidUnitInterpretation() {}
+		~RockFluidUnitInterpretation() = default;
 
 		DLL_IMPORT_OR_EXPORT bool hasPhase() const final;
 

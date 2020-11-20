@@ -39,7 +39,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT LocalDepth3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractLocal3dCrs(partialObject) {}
 
 		/** Destructor does nothing since the memory is manged by the gSOAP context. */
-		virtual ~LocalDepth3dCrs() {}
+		virtual ~LocalDepth3dCrs() = default;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

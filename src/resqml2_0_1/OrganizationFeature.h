@@ -55,7 +55,7 @@ namespace RESQML2_0_1_NS
 		OrganizationFeature(gsoap_resqml2_0_1::_resqml20__OrganizationFeature* fromGsoap): RESQML2_NS::Model(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~OrganizationFeature() {}
+		~OrganizationFeature() = default;
 
 		/**
 		 * Get the kind of the organization feature.

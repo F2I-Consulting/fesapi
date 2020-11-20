@@ -57,7 +57,7 @@ namespace RESQML2_0_1_NS
 		GeobodyBoundaryInterpretation(gsoap_resqml2_0_1::_resqml20__GeobodyBoundaryInterpretation* fromGsoap) : RESQML2_NS::GeobodyBoundaryInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~GeobodyBoundaryInterpretation() {}
+		~GeobodyBoundaryInterpretation() = default;
 
 		/**
 		* The standard XML namespace for serializing this data object.

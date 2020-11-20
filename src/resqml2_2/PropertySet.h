@@ -67,7 +67,7 @@ namespace RESQML2_2_NS
 		PropertySet(gsoap_eml2_3::_resqml22__PropertySet* fromGsoap) : RESQML2_NS::PropertySet(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~PropertySet() {}
+		~PropertySet() = default;
 
 		DLL_IMPORT_OR_EXPORT bool hasMultipleRealizations() const final;
 

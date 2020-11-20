@@ -82,7 +82,7 @@ namespace COMMON_NS
 		DataObjectReference(AbstractObject const * dataObj);
 
 		/** Destructor */
-		~DataObjectReference() {}
+		~DataObjectReference() = default;
 
 		/**
 		 * Checks if this reference is empty (i.e. it points to nothing)

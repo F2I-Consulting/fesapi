@@ -57,7 +57,7 @@ namespace EML2_0_NS
 		{}
 
 		/** Destructor */
-		~HdfProxyROS3() {}
+		~HdfProxyROS3() = default;
 
 		/** Open the file for reading. */
 		void open();

@@ -157,7 +157,7 @@ namespace RESQML2_0_1_NS
 		ContinuousProperty(gsoap_resqml2_0_1::_resqml20__ContinuousProperty* fromGsoap): RESQML2_NS::ContinuousProperty(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~ContinuousProperty() {}
+		~ContinuousProperty() = default;
 
 		/**
 		 * Gets the unit of measure of the values of this property. If <tt>

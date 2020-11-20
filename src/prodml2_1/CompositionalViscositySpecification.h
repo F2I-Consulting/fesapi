@@ -35,7 +35,7 @@ namespace PRODML2_1_NS
 		CompositionalViscositySpecification(gsoap_eml2_2::prodml21__AbstractCompositionalViscosityModel* fromGsoap) :CompositionalSpecification(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		virtual ~CompositionalViscositySpecification() {}
+		virtual ~CompositionalViscositySpecification() = default;
 
 		/**
 		 * Gets thermodynamic phase

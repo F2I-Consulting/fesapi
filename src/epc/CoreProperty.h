@@ -75,7 +75,7 @@ namespace epc
 		 */
 		CoreProperty(TypeProperty pType, const std::vector<std::string> & pValue);
 		/** Destructor */
-		~CoreProperty() {}
+		~CoreProperty() = default;
 
 		/**
 		 * Indicate wether a property has got a string value or not

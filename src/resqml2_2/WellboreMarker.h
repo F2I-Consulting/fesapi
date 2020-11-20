@@ -72,7 +72,7 @@ namespace RESQML2_2_NS
 		WellboreMarker(gsoap_eml2_3::resqml22__WellboreMarker* fromGsoap) : RESQML2_NS::WellboreMarker(fromGsoap)  {}
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		~WellboreMarker() {}
+		~WellboreMarker() = default;
 
 		DLL_IMPORT_OR_EXPORT bool hasAGeologicBoundaryKind() const final;
 

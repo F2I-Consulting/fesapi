@@ -31,7 +31,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~FaultInterpretation() {}
+		virtual ~FaultInterpretation() = default;
 
 		/**
 		 * Pushes back a new throw interpretation for this fault interpretation. More than one throw

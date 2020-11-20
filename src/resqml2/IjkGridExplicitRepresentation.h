@@ -33,7 +33,7 @@ namespace RESQML2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gSOAP context.
 		*/
-		virtual ~IjkGridExplicitRepresentation() {}
+		virtual ~IjkGridExplicitRepresentation() = default;
 
 		/**
 		* @copybrief AbstractIjkGridRepresentation::getXyzPointsOfKInterfaceSequence

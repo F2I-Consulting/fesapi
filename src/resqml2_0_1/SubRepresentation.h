@@ -68,7 +68,7 @@ namespace RESQML2_0_1_NS
 		SubRepresentation(gsoap_resqml2_0_1::_resqml20__SubRepresentation* fromGsoap) : RESQML2_NS::SubRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~SubRepresentation() {}
+		~SubRepresentation() = default;
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 

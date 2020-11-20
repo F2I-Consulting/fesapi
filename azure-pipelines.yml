@@ -5,7 +5,7 @@
 
 jobs:
   - job:
-    displayName: Windows VS2017
+    displayName: Windows VS2017 with HDF5 1.10.6
     pool:
       vmImage: 'vs2017-win2016'
     strategy:
@@ -16,11 +16,12 @@ jobs:
           JFlag: '-j 2'
     timeoutInMinutes: 150
     steps:
+      # HDF5
       - powershell: |
-          Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.18/bin/windows/noszip/extra/hdf5-1.8.18-win64-vs2015-noszip.zip -OutFile C:\hdf5-1.8.18-win64-vs2015-noszip.zip
-          Expand-Archive C:\hdf5-1.8.18-win64-vs2015-noszip.zip -DestinationPath C:\
-          msiexec.exe /i "C:\hdf5\HDF5-1.8.18-win64.msi" /qn INSTALL_ROOT=C:\hdf5-1.8.18-win64-vs2015-noszip
-        displayName: 'Install HDF5 1.8.18'
+          Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.6/bin/hdf5-1.10.6-Std-win10_64-vs15.zip -OutFile C:\hdf5-1.10.6-Std-win10_64-vs15.zip
+          Expand-Archive C:\hdf5-1.10.6-Std-win10_64-vs15.zip -DestinationPath C:\
+          msiexec.exe /i "C:\hdf\HDF5-1.10.6-win64.msi" /qn INSTALL_ROOT=C:\hdf5-1.10.6-win64-vs2017
+        displayName: 'Install HDF5 1.10.6'
 
       # Minizip
       - powershell: |
@@ -34,8 +35,8 @@ jobs:
             ../Minizip
             $(Generator)
             -Wno-dev -Wno-deprecated
-            -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
-            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+            -DZLIB_INCLUDE_DIR=C:/hdf5-1.10.6-win64-vs2017/include
+            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.10.6-win64-vs2017/lib/hdf5.lib
             -DCMAKE_INSTALL_PREFIX=C:/Minizip-install
       - task: CMake@1
         displayName: "CMake build Minizip --config $(BuildType)"
@@ -75,12 +76,13 @@ jobs:
             $(Generator)
             -Wno-dev -Wno-deprecated
             -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
-            -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
-            -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/hdf5.lib
+            -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.10.6-win64-vs2017/include
+            -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.10.6-win64-vs2017/lib/hdf5.lib
             -DMINIZIP_INCLUDE_DIR=C:/Minizip-install/include
             -DMINIZIP_LIBRARY_RELEASE=C:/Minizip-install/lib/minizip.lib
-            -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
-            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+            -DZLIB_INCLUDE_DIR=C:/hdf5-1.10.6-win64-vs2017/include
+            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.10.6-win64-vs2017/lib/zlib.lib
+            -DSZIP_LIBRARY_RELEASE=C:/hdf5-1.10.6-win64-vs2017/lib/szip.lib
             -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
             -DWITH_EXAMPLE=TRUE
             -DWITH_RESQML2_2=TRUE
@@ -101,8 +103,8 @@ jobs:
           cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
 
       - powershell: |
-          Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
-          Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
+          Copy-Item C:\hdf5-1.10.6-win64-vs2017\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
+          Copy-Item C:\hdf5-1.10.6-win64-vs2017\bin\zlib.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
           ctest -C $(BuildType) -V
         failOnStderr: true
         workingDirectory: $(Build.SourcesDirectory)\build
@@ -125,7 +127,7 @@ jobs:
         displayName: 'C# Example'
         
   - job:
-    displayName: Windows VS2019
+    displayName: Windows VS2019 with HDF5 1.12.0
     pool:
       vmImage: 'windows-2019'
     timeoutInMinutes: 150
@@ -142,10 +144,10 @@ jobs:
           JFlag: '-j 2'
     steps:
       - powershell: |
-          Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.18/bin/windows/noszip/extra/hdf5-1.8.18-win64-vs2015-noszip.zip -OutFile C:\hdf5-1.8.18-win64-vs2015-noszip.zip
-          Expand-Archive C:\hdf5-1.8.18-win64-vs2015-noszip.zip -DestinationPath C:\
-          msiexec.exe /i "C:\hdf5\HDF5-1.8.18-win64.msi" /qn INSTALL_ROOT=C:\hdf5-1.8.18-win64-vs2015-noszip
-        displayName: 'Install HDF5 1.8.18'
+          Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.0/bin/hdf5-1.12.0-Std-win10_64-vs16.zip -OutFile C:\hdf5-1.12.0-Std-win10_64-vs16.zip
+          Expand-Archive C:\hdf5-1.12.0-Std-win10_64-vs16.zip -DestinationPath C:\
+          msiexec.exe /i "C:\hdf\HDF5-1.12.0-win64.msi" /qn INSTALL_ROOT=C:\hdf5-1.12.0-win64-vs2019
+        displayName: 'Install HDF5 1.12.0'
 
       # Minizip
       - powershell: |
@@ -159,8 +161,8 @@ jobs:
             ../Minizip
             $(Generator)
             -Wno-dev -Wno-deprecated
-            -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
-            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+            -DZLIB_INCLUDE_DIR=C:/hdf5-1.12.0-win64-vs2019/include
+            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2019/lib/zlib.lib
             -DCMAKE_INSTALL_PREFIX=C:/Minizip-install
       - task: CMake@1
         displayName: "CMake build Minizip --config $(BuildType)"
@@ -200,12 +202,13 @@ jobs:
             $(Generator)
             -Wno-dev -Wno-deprecated
             -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
-            -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
-            -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/hdf5.lib
+            -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.12.0-win64-vs2019/include
+            -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2019/lib/hdf5.lib
             -DMINIZIP_INCLUDE_DIR=C:/Minizip-install/include
             -DMINIZIP_LIBRARY_RELEASE=C:/Minizip-install/lib/minizip.lib
-            -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
-            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+            -DZLIB_INCLUDE_DIR=C:/hdf5-1.12.0-win64-vs2019/include
+            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2019/lib/zlib.lib
+            -DSZIP_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2019/lib/szip.lib
             -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
             -DWITH_EXAMPLE=TRUE
             -DWITH_RESQML2_2=TRUE
@@ -226,8 +229,8 @@ jobs:
           cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
 
       - powershell: |
-          Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
-          Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
+          Copy-Item C:\hdf5-1.12.0-win64-vs2019\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
+          Copy-Item C:\hdf5-1.12.0-win64-vs2019\bin\zlib.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
           ctest -C $(BuildType) -V
         failOnStderr: true
         workingDirectory: $(Build.SourcesDirectory)\build
@@ -250,7 +253,7 @@ jobs:
         displayName: 'C# Example'
         
   - job:
-    displayName: Ubuntu 16.04
+    displayName: Ubuntu 16.04 with HDF5 1.8.16
     pool:
       vmImage: 'ubuntu-16.04'
     timeoutInMinutes: 120
@@ -264,6 +267,7 @@ jobs:
         inputs:
           cmakeArgs:
             -Wno-dev -Wno-deprecated
+            -DHDF5_1_8=TRUE
             -DHDF5_C_INCLUDE_DIR=/usr/include/hdf5/serial/
             -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so
             -DMINIZIP_INCLUDE_DIR=/usr/include/minizip

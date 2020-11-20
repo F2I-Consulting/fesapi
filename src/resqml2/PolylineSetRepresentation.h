@@ -35,7 +35,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~PolylineSetRepresentation() {}
+		virtual ~PolylineSetRepresentation() = default;
 
 		/**
 		 * Gets the number of polylines in a given patch.

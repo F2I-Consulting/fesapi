@@ -36,7 +36,7 @@ namespace RESQML2_0_1_NS
 		 */
 		PropertyKindMapper(COMMON_NS::DataObjectRepository* repository):dataObjRepo(repository) {}
 		/** Destructor */
-		~PropertyKindMapper() {}
+		~PropertyKindMapper() = default;
 
 		/**
 		 * Load in maps all the config files present in a particular directory. Config files are all xml

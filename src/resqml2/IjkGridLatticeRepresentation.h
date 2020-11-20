@@ -34,7 +34,7 @@ namespace RESQML2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gSOAP context.
 		*/
-		virtual ~IjkGridLatticeRepresentation() {}
+		virtual ~IjkGridLatticeRepresentation() = default;
 
 		/**
 		 * Indicates whether this instance corresponds to a seismic cube or not.

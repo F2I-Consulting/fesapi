@@ -79,7 +79,7 @@ namespace PRODML2_1_NS
 		CompositionalSpecification(gsoap_eml2_2::prodml21__AbstractCompositionalModel* fromGsoap):PvtSpecification(fromGsoap)  {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		virtual ~CompositionalSpecification() {}
+		virtual ~CompositionalSpecification() = default;
 
 		/**
 		 * Query if this object has mixing rule

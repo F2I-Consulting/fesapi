@@ -33,7 +33,7 @@ namespace RESQML2_NS
     public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~NonSealedSurfaceFrameworkRepresentation() {}
+		virtual ~NonSealedSurfaceFrameworkRepresentation() = default;
 
 		/**
 		 * Pushes back a contact representation in this structural framework

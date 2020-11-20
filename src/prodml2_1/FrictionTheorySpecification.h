@@ -37,7 +37,7 @@ namespace PRODML2_1_NS
 		FrictionTheorySpecification(gsoap_eml2_2::prodml21__FrictionTheory* fromGsoap): CompositionalViscositySpecification(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~FrictionTheorySpecification() {}
+		~FrictionTheorySpecification() = default;
 
 		/**
 		 * Gets prsv parameter count

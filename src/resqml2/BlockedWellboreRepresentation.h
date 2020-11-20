@@ -34,7 +34,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~BlockedWellboreRepresentation() {}
+		virtual ~BlockedWellboreRepresentation() = default;
 
 		/**
 		 * Sets all information about the intersected grid cells. You must first provide MD values of

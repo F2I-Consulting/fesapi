@@ -55,7 +55,7 @@ namespace EML2_3_NS
 		ActivityTemplate(gsoap_eml2_3::_eml23__ActivityTemplate* fromGsoap) : EML2_NS::ActivityTemplate(fromGsoap) {}
 
 		/** Destructor */
-		~ActivityTemplate() {}
+		~ActivityTemplate() = default;
 
 		/**
 		 * Push back a parameter in the activity template instance. This parameter has an unconstrained

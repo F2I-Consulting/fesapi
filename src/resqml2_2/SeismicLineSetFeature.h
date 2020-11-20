@@ -54,7 +54,7 @@ namespace RESQML2_2_NS
 		SeismicLineSetFeature(gsoap_eml2_3::_resqml22__SeismicLineSetFeature* fromGsoap): RESQML2_NS::SeismicLineSetFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
-		~SeismicLineSetFeature() {}
+		~SeismicLineSetFeature() = default;
 
 		/**
 		* The standard XML namespace for serializing this data object.

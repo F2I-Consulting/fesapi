@@ -55,7 +55,7 @@ namespace EML2_3_NS
 		TimeSeries(gsoap_eml2_3::_eml23__TimeSeries* fromGsoap) : EML2_NS::TimeSeries(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~TimeSeries() {}
+		~TimeSeries() = default;
 
 		/**
 		 * Pushes back an timestamp into this time series.

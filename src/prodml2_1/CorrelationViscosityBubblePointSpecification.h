@@ -34,7 +34,7 @@ namespace PRODML2_1_NS
 		CorrelationViscosityBubblePointSpecification(gsoap_eml2_2::prodml21__AbstractCorrelationViscosityBubblePointModel* fromGsoap): CorrelationViscositySpecification(fromGsoap){}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~CorrelationViscosityBubblePointSpecification() {}
+		~CorrelationViscosityBubblePointSpecification() = default;
 
 		GETTER_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(gsoap_eml2_2::prodml21__AbstractCorrelationViscosityBubblePointModel, gsoapProxy, DeadOilViscosity, gsoap_eml2_2::eml22__DynamicViscosityUom)
 		GETTER_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(gsoap_eml2_2::prodml21__AbstractCorrelationViscosityBubblePointModel, gsoapProxy, BubblePointOilViscosity, gsoap_eml2_2::eml22__DynamicViscosityUom)

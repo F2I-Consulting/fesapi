@@ -35,7 +35,7 @@ namespace RESQML2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gSOAP context.
 		*/
-		virtual ~IjkGridNoGeometryRepresentation() {}
+		virtual ~IjkGridNoGeometryRepresentation() = default;
 
 		/**
 		 * Get the XYZ point count in a given patch of this grid.

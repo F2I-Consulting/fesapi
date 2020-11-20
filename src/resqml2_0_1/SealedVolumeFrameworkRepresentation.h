@@ -61,7 +61,7 @@ namespace RESQML2_0_1_NS
 		SealedVolumeFrameworkRepresentation(gsoap_resqml2_0_1::_resqml20__SealedVolumeFrameworkRepresentation* fromGsoap) : RESQML2_NS::SealedVolumeFrameworkRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~SealedVolumeFrameworkRepresentation() {}
+		~SealedVolumeFrameworkRepresentation() = default;
 
 		DLL_IMPORT_OR_EXPORT void pushBackVolumeRegion(RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp,
 			unsigned int externalShellFaceCount,

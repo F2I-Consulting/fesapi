@@ -195,7 +195,7 @@ namespace RESQML2_0_1_NS
 		LocalDepth3dCrs(gsoap_resqml2_0_1::_resqml20__LocalDepth3dCrs* fromGsoap): RESQML2_NS::LocalDepth3dCrs(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
-		~LocalDepth3dCrs() {}
+		~LocalDepth3dCrs() = default;
 
 		/**
 		* The standard XML namespace for serializing this data object.

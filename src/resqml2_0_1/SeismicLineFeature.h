@@ -63,7 +63,7 @@ namespace RESQML2_0_1_NS
 			RESQML2_NS::AbstractSeismicLineFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
-		~SeismicLineFeature() {}
+		~SeismicLineFeature() = default;
 
 		/**
 		 * Get the trace index increment between two consecutive traces.

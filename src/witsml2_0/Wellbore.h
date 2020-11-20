@@ -92,7 +92,7 @@ namespace WITSML2_0_NS
 		Wellbore(gsoap_eml2_1::witsml20__Wellbore* fromGsoap):AbstractObject(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~Wellbore() {}
+		~Wellbore() = default;
 
 		/**
 		 * @brief	Gets well dor

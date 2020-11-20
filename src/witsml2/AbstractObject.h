@@ -29,7 +29,7 @@ namespace WITSML2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
-		virtual ~AbstractObject() {}
+		virtual ~AbstractObject() = default;
 
 		/**
 		* Get part name of this XML top level instance in the EPC document

@@ -67,7 +67,7 @@ namespace RESQML2_2_NS
 		GridConnectionSetRepresentation(gsoap_eml2_3::_resqml22__GridConnectionSetRepresentation* fromGsoap) : RESQML2_NS::GridConnectionSetRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~GridConnectionSetRepresentation() {}
+		~GridConnectionSetRepresentation() = default;
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 

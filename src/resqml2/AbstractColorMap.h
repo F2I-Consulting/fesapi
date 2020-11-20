@@ -26,7 +26,7 @@ namespace RESQML2_NS
 	class AbstractColorMap : public COMMON_NS::AbstractObject
 	{
 	public:
-		virtual ~AbstractColorMap() {}
+		virtual ~AbstractColorMap() = default;
 
 		/**
 		* https://en.wikipedia.org/wiki/HSV_color_space

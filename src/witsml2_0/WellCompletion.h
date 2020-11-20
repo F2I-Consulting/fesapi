@@ -60,7 +60,7 @@ namespace WITSML2_0_NS
 		WellCompletion(gsoap_eml2_1::witsml20__WellCompletion* fromGsoap) :AbstractObject(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~WellCompletion() {}
+		~WellCompletion() = default;
 
 		/**
 		* Get the Data Object Reference of the well linked with this data object.

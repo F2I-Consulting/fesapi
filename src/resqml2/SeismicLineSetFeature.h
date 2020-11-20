@@ -31,7 +31,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is manged by the gSOAP context. */
-		virtual ~SeismicLineSetFeature() {}
+		virtual ~SeismicLineSetFeature() = default;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

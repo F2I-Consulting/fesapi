@@ -97,7 +97,7 @@ void HdfProxy::open()
 	}
 	else if (openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_WRITE) {
 		hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
-#ifdef H5F_LIBVER_V18
+#if H5_VERSION_GE(1,10,0)
 		H5Pset_libver_bounds (access_props, H5F_LIBVER_V18, H5F_LIBVER_V18);
 #endif
 
@@ -114,7 +114,7 @@ void HdfProxy::open()
 	}
 	else if (openingMode == COMMON_NS::DataObjectRepository::openingMode::OVERWRITE) {
 		hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
-#ifdef H5F_LIBVER_V18
+#if H5_VERSION_GE(1,10,0)
 		H5Pset_libver_bounds (access_props, H5F_LIBVER_V18, H5F_LIBVER_V18);
 #endif
 
@@ -132,9 +132,9 @@ void HdfProxy::open()
 
 void HdfProxy::close()
 {
-	for (std::unordered_map< std::string, hid_t >::const_iterator it = openedGroups.begin(); it != openedGroups.end(); ++it) {
-		if (H5Gclose(it->second) < 0) {
-			throw invalid_argument("The HDF5 group " + it->first + " could not have been closed.");
+	for (auto it : openedGroups) {
+		if (H5Gclose(it.second) < 0) {
+			throw invalid_argument("The HDF5 group " + it.first + " could not have been closed.");
 		}
 	}
 	openedGroups.clear();
@@ -376,7 +376,7 @@ int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName)
 
 	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
 	hid_t datatype = H5Dget_type(dataset);
-	hid_t result = H5Tget_class(datatype);
+	H5T_class_t result = H5Tget_class(datatype);
 
 	H5Dclose(dataset);
 	H5Tclose(datatype);
@@ -922,22 +922,19 @@ void HdfProxy::readArrayNdOfUCharValues(const std::string & datasetName, unsigne
 
 hid_t HdfProxy::openOrCreateRootGroup(const std::string & rootGroup)
 {
-	if (!isOpened()) {
-		open();
-	}
-
 	if (openedGroups.find(rootGroup) != openedGroups.end()) {
 		return openedGroups.at(rootGroup);
 	}
 
-	H5O_info_t info;
-	const herr_t status = H5Oget_info_by_name(hdfFile, rootGroup.c_str(), &info, H5P_DEFAULT);
+	if (!isOpened()) {
+		open();
+	}
 
-	const hid_t result = status >= 0
+	openedGroups[rootGroup] = H5Lexists(hdfFile, rootGroup.c_str(), H5P_DEFAULT) > 0
 		? H5Gopen(hdfFile, rootGroup.c_str(), H5P_DEFAULT)
 		: H5Gcreate(hdfFile, rootGroup.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
-	openedGroups[rootGroup] = result;
-	return result;
+
+	return openedGroups[rootGroup];
 }
 
 hid_t HdfProxy::openOrCreateGroupInRootGroup(const string & rootSlashGroup)
@@ -970,10 +967,7 @@ hid_t HdfProxy::openOrCreateGroupInRootGroup(const string & rootSlashGroup)
 	while (std::getline(ss, group, '/')) {
 		if (group.empty()) continue;
 
-		H5O_info_t info;
-		herr_t status = H5Oget_info_by_name(subRootGroup, groupName.c_str(), &info, H5P_DEFAULT);
-
-		result = status >= 0
+		result = H5Lexists(subRootGroup, groupName.c_str(), H5P_DEFAULT) > 0
 			? H5Gopen(subRootGroup, group.c_str(), H5P_DEFAULT)
 			: H5Gcreate(subRootGroup, group.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 		if (subRootGroup != rootGroup) { // We don't want to close the rootGroup which is the file or a well known group which should be kept opened for performance reasons.

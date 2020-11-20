@@ -87,7 +87,7 @@ namespace RESQML2_2_NS
 		PolylineRepresentation(gsoap_eml2_3::_resqml22__PolylineRepresentation* fromGsoap) : RESQML2_NS::PolylineRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~PolylineRepresentation() {}
+		~PolylineRepresentation() = default;
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 

@@ -82,7 +82,7 @@ namespace WITSML2_0_NS
 		Well(gsoap_eml2_1::witsml20__Well* fromGsoap):AbstractObject(fromGsoap)  {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~Well() {}
+		~Well() = default;
 
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NameLegal)
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumLicense)

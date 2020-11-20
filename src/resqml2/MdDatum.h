@@ -40,7 +40,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT MdDatum(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractObject(partialObject) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		virtual ~MdDatum() {}
+		virtual ~MdDatum() = default;
 
 		/** 
 		 * Gets the local 3d CRS where the reference point ordinals are given.

@@ -39,7 +39,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT LocalTime3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractLocal3dCrs(partialObject) {}
 
 		/** Destructor does nothing since the memory is manged by the gSOAP context. */
-		virtual ~LocalTime3dCrs() {}
+		virtual ~LocalTime3dCrs() = default;
 
 		/**
 		 * Gets the unit of measure of this local time 3d CRS.

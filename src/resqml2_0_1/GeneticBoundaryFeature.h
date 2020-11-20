@@ -55,7 +55,7 @@ namespace RESQML2_0_1_NS
 		GeneticBoundaryFeature(gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature* fromGsoap): BoundaryFeature(fromGsoap) {}
 
 		/** Destructor */
-		virtual ~GeneticBoundaryFeature() {}
+		virtual ~GeneticBoundaryFeature() = default;
 
 		/**
 		 * Indicates wether the instance is an horizon (or a geobody boundary). This public method is

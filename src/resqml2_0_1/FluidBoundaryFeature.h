@@ -55,7 +55,7 @@ namespace RESQML2_0_1_NS
 		FluidBoundaryFeature(gsoap_resqml2_0_1::_resqml20__FluidBoundaryFeature* fromGsoap): BoundaryFeature(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~FluidBoundaryFeature() {}
+		~FluidBoundaryFeature() = default;
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

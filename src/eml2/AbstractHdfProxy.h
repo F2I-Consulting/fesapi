@@ -28,12 +28,21 @@ under the License.
 
 namespace EML2_NS
 {
-	/** @brief	An abstract proxy for reading and writing values into an HDF5 file. */
+	/** @brief	An abstract proxy for reading and writing values into an HDF5 file.
+	* It is possible to derive this class in a custom class in order for the FESAPI user
+	* to get change the FESAPI reads from and writes to HDF5 file.
+	* However, please note that the RESQML standard mandates so far a HDF5 1.8 backward compatibility.
+	* In ordre to achieve this backward compatibility please use
+	*	hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
+	*	H5Pset_libver_bounds (access_props, H5F_LIBVER_V18, H5F_LIBVER_V18);
+	* when you create an HDF5 file before to write into it.
+	* See https://confluence.hdfgroup.org/display/HDF5/H5P_SET_LIBVER_BOUNDS for more details.
+	*/
 	class AbstractHdfProxy : public EpcExternalPartReference
 	{
 	public:  
 		/** Destructor */
-		DLL_IMPORT_OR_EXPORT virtual ~AbstractHdfProxy() {}
+		DLL_IMPORT_OR_EXPORT virtual ~AbstractHdfProxy() = default;
 
 		/**
 		 * Sets the path of the directory containing the EPC file associated to this HDF5 file

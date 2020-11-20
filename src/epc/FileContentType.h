@@ -32,19 +32,11 @@ namespace epc
 		/** Defines an alias representing the content type map */
 		typedef std::unordered_map<std::string, ContentType> ContentTypeMap;
 
-	private:
-		/** The header */
-		static const char* header;
-		/** The content type map */
-		ContentTypeMap contentTypeMap;
-		/** The footer */
-		static const char* footer;
-
-	public:
 		/** CONSTRUCTORS */
-		FileContentType();
+		FileContentType() = default;
+
 		/** Destructor */
-		~FileContentType() {};
+		~FileContentType() = default;
 
 		/**
 		 * ACCESSORS
@@ -82,6 +74,14 @@ namespace epc
 		 * @param 	textInput	The text input.
 		 */
 		void readFromString(const std::string & textInput);
+
+	private:
+		/** The header */
+		static const char* header;
+		/** The content type map */
+		ContentTypeMap contentTypeMap;
+		/** The footer */
+		static const char* footer;
 	};
 }
 

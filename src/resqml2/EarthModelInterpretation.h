@@ -38,7 +38,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~EarthModelInterpretation() {}
+		virtual ~EarthModelInterpretation() = default;
 
 		 /**
 		 * Gets the count of structural organization interpretations associated to this earth model interpretation.

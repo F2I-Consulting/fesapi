@@ -653,7 +653,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 	std::unique_ptr<double[]> parameters(new double[getXyzPointCountOfBlock()]);
 	std::string datasetPathInExternalFile;
 	EML2_NS::AbstractHdfProxy* hdfProxy = getParameterDatasetPath(datasetPathInExternalFile);
-	hid_t dataset, filespace;
+	hdf5_hid_t dataset, filespace;
 
 	if (getSplitCoordinateLineCount() == 0)
 	{

@@ -28,7 +28,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
-		virtual ~ShotPointLineFeature() {}
+		virtual ~ShotPointLineFeature() = default;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getTraceCount() const final;
 	

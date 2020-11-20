@@ -62,7 +62,7 @@ namespace RESQML2_0_1_NS
 		SealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::_resqml20__SealedSurfaceFrameworkRepresentation* fromGsoap) : RESQML2_NS::SealedSurfaceFrameworkRepresentation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~SealedSurfaceFrameworkRepresentation() {}
+		~SealedSurfaceFrameworkRepresentation() = default;
 
 		DLL_IMPORT_OR_EXPORT void pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind kind) final;
 

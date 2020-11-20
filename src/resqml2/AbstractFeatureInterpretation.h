@@ -52,7 +52,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		virtual ~AbstractFeatureInterpretation() {}
+		virtual ~AbstractFeatureInterpretation() = default;
 
 		/**
 		 * Gets the interpreted feature data object reference.

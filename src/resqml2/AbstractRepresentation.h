@@ -36,7 +36,7 @@ namespace RESQML2_NS
 		enum indexableElement { NODE = 0, EDGE = 1, FACE = 2, VOLUME = 3, PILLAR = 4 };
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~AbstractRepresentation() {}
+		virtual ~AbstractRepresentation() = default;
 
 		/**
 		 * Gets the local 3d CRS associated to a given patch of this representation in read and write
