@@ -5,7 +5,7 @@
 	 - build
 	 - fesapi (Git clone this repository into this folder "fesapi". You should then have a path fesapiEnv/fesapi/src)
 	 - dependencies 
-  - The following compilers are known to work
+  - The following compilers are known to work (used in CI)
     - gcc from version 4.8
 	- visual studio from version 2017
 	- clang from version 5.0
@@ -20,7 +20,7 @@ We advise you to install these third party libraries respectively into
 - fesapiEnv/dependencies/minizip-particularVersion
 - fesapiEnv/dependencies/boost-particularVersion
 # Configure the build
-Fesapi uses cmake as its build tool. A 3.12 version or later of cmake is required https://cmake.org/download/. We also recommend using cmake-gui (already included in the bin folder of the binary releases of cmake) which provides a graphical user interface on top of cmake. Follow the below instructions :
+Fesapi uses cmake as its build tool. A 3.12 version or later of cmake is required https://cmake.org/download/. We also recommend using cmake-gui (already included in the bin folder of the binary releases of cmake) which provides a graphical user interface on top of cmake. If you want to use cmake in command line, you would find example in [Azure Pipeline file](./azure-pipelines.yml). Follow the below instructions :
 
 - yourPath/fesapiEnv/fesapi defines where is the source code folder
 - yourPath/fesapiEnv/build/theNameYouWant defines where to build the binaries
