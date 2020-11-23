@@ -35,7 +35,7 @@ using namespace RESQML2_NS;
 const char* RightHanded4x3x2ExplicitIjkGrid::defaultUuid = "f274d3d8-80ff-4860-90fb-609716303887";
 const char* RightHanded4x3x2ExplicitIjkGrid::defaultTitle = "Right Handed 4x3x2 Explicit Ijk Grid";
 const unsigned long long RightHanded4x3x2ExplicitIjkGrid::nodesCountIjkGridRepresentation = 72;
-double RightHanded4x3x2ExplicitIjkGrid::nodesIjkGridRepresentation[] = {
+double RightHanded4x3x2ExplicitIjkGrid::nodesIjkGridRepresentation[216] = {
 	0, 150, 300, 150, 150, 300, 375, 150, 300, 550, 150, 350, 700, 150, 350, //IJ0K0
 	0, 100, 300, 150, 100, 300, 375, 100, 300, 550, 100, 350, 700, 100, 350, //IJ1K0
 	0, 50, 300, 150, 50, 300, 375, 50, 300, 550, 50, 350, 700, 50, 350, //IJ2K0
@@ -121,6 +121,15 @@ void RightHanded4x3x2ExplicitIjkGrid::readRepo() {
 
 	REQUIRE(ijkGrid->getCellCount() == 24);
 	REQUIRE(ijkGrid->getPillarCount() == 20);
+
+	// checking values
+	const ULONG64 coordCount = 3 * nodesCountIjkGridRepresentation;
+	std::unique_ptr<double[]> xyzPoints(new double[coordCount]);
+	ijkGrid->getXyzPointsOfAllPatches(xyzPoints.get());
+	for (ULONG64 i = 0; i < coordCount; ++i) {
+		REQUIRE(nodesIjkGridRepresentation[i] == xyzPoints[i]);
+	}
+
 	REQUIRE(ijkGrid->getGridConnectionSetRepresentationCount() == 1);
 	REQUIRE(ijkGrid->getGridConnectionSetRepresentation(0)->getUuid() == "a3d1462a-04e3-4374-921b-a4a1e9ba3ea3");
 	REQUIRE(ijkGrid->getGridConnectionSetRepresentation(0)->getCellIndexPairCount() == 15);

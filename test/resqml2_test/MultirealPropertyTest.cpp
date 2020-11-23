@@ -19,7 +19,6 @@ under the License.
 #include "resqml2_test/MultirealPropertyTest.h"
 
 #include "catch.hpp"
-#include "resqml2_test/IjkGridExplicitRepresentationTest.h"
 
 #include "common/EpcDocument.h"
 #include "resqml2/IjkGridExplicitRepresentation.h"
@@ -40,7 +39,7 @@ MultirealPropertyTest::MultirealPropertyTest(const string & repoPath)
 
 void MultirealPropertyTest::initRepo() {
 	// creating an IJK grid
-	auto* ijkGrid = repo->createPartialIjkGridRepresentation(IjkGridExplicitRepresentationTest::defaultUuid, "");
+	auto* ijkGrid = repo->createPartialIjkGridRepresentation("", "");
 
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];

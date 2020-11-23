@@ -51,6 +51,7 @@ under the License.
 #include "resqml2_test/HorizonOnSeismicLine.h"
 #include "resqml2_test/CompressedIjkGridExplicitRepresentationTest.h"
 #include "resqml2_test/RightHanded4x3x2ExplicitIjkGrid.h"
+#include "resqml2_test/FourSugarsParametricIjkGridWithGap.h"
 #include "resqml2_test/BigIjkGridExplicitRepresentationTest.h"
 #include "resqml2_test/BigIjkGridParametricRepresentationTest.h"
 #include "resqml2_test/SubRepresentationOnPartialGridConnectionSet.h"
@@ -170,6 +171,7 @@ FESAPI_TEST("Export and import an activity", "[activity]", ActivityCreationTest)
 FESAPI_TEST("Export and import a compressed ijk grid", "[grid]", CompressedIjkGridExplicitRepresentationTest)
 
 FESAPI_TEST("Export and import a 4*3*2 explicit right handed ijk grid", "[grid]", RightHanded4x3x2ExplicitIjkGrid)
+FESAPI_TEST("Export and import a 2*1*2 parametric ijk grid with one gap layer", "[grid]", FourSugarsParametricIjkGridWithGap)
 
 FESAPI_TEST("Export and import a LGR on a 4*3*2 explicit right handed ijk grid", "[grid]", LgrOnRightHanded4x3x2ExplicitIjkGrid)
 

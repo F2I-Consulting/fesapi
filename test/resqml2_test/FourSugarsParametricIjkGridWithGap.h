@@ -21,18 +21,18 @@ under the License.
 #include "AbstractTest.h"
 
 namespace resqml2_test {
-	class IjkGridExplicitRepresentationTest : public commontest::AbstractTest {
+	class FourSugarsParametricIjkGridWithGap : public commontest::AbstractTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;
-		static const unsigned long long nodesCountIjkGridRepresentation;
-		static double nodesIjkGridRepresentation[];
+		static double parameters[];
+
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,
 		* exising .epc file will be erased. 
 		* @param repoPath the path of the .epc file (including .epc extension)
 		*/
-		IjkGridExplicitRepresentationTest(const std::string & repoPath);
+		FourSugarsParametricIjkGridWithGap(const std::string & repoPath);
 
 	protected:
 		void initRepo();
