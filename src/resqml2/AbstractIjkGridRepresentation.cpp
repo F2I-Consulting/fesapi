@@ -51,7 +51,7 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 		throw invalid_argument("The repo cannot be null.");
 	}
 
-	ULONG64 kGapCount = 0;
+	hsize_t kGapCount = 0;
 	if (kGaps != nullptr) {
 		for (size_t k = 0; k < kCount - 1; ++k) {
 			if (kGaps[k]) {
@@ -77,17 +77,17 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 					}
 				}
 
-				auto kGaps = gsoap_resqml2_0_1::soap_new_resqml20__KGaps(getGsoapContext());
-				kGaps->__KGaps_sequence = gsoap_resqml2_0_1::soap_new___resqml20__KGaps_sequence(getGsoapContext());
-				kGaps->__KGaps_sequence->Count = kGapCount;
+				auto xmlKGaps = gsoap_resqml2_0_1::soap_new_resqml20__KGaps(getGsoapContext());
+				xmlKGaps->__KGaps_sequence = gsoap_resqml2_0_1::soap_new___resqml20__KGaps_sequence(getGsoapContext());
+				xmlKGaps->__KGaps_sequence->Count = kGapCount;
 				
 				resqml20__BooleanHdf5Array* boolArray = soap_new_resqml20__BooleanHdf5Array(getGsoapContext());
 				boolArray->Values = soap_new_eml20__Hdf5Dataset(getGsoapContext());
 				boolArray->Values->HdfProxy = proxy->newResqmlReference();
 				boolArray->Values->PathInHdfFile = "/" + getXmlNamespace() + "/" + guid + "/GapAfterLayer";
-				kGaps->__KGaps_sequence->GapAfterLayer = boolArray;
+				xmlKGaps->__KGaps_sequence->GapAfterLayer = boolArray;
 
-				ijkGrid->KGaps = kGaps;
+				ijkGrid->KGaps = xmlKGaps;
 			}
 
 			break;
@@ -107,9 +107,9 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 					}
 				}
 
-				auto kGaps = gsoap_eml2_3::soap_new_resqml22__KGaps(getGsoapContext());
-				kGaps->__KGaps_sequence = gsoap_eml2_3::soap_new___resqml22__KGaps_sequence(getGsoapContext());
-				kGaps->__KGaps_sequence->Count = kGapCount;
+				auto xmlKGaps = gsoap_eml2_3::soap_new_resqml22__KGaps(getGsoapContext());
+				xmlKGaps->__KGaps_sequence = gsoap_eml2_3::soap_new___resqml22__KGaps_sequence(getGsoapContext());
+				xmlKGaps->__KGaps_sequence->Count = kGapCount;
 
 				gsoap_eml2_3::eml23__BooleanExternalArray* boolArray = gsoap_eml2_3::soap_new_eml23__BooleanExternalArray(getGsoapContext());
 				boolArray->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(getGsoapContext());
@@ -119,9 +119,9 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 				dsPart->StartIndex = 0;
 				dsPart->Count = getCellCount();
 				boolArray->Values->ExternalFileProxy.push_back(dsPart);
-				kGaps->__KGaps_sequence->GapAfterLayer = boolArray;
+				xmlKGaps->__KGaps_sequence->GapAfterLayer = boolArray;
 
-				ijkGrid->KGaps = kGaps;
+				ijkGrid->KGaps = xmlKGaps;
 			}
 
 			break;

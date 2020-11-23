@@ -372,12 +372,12 @@ namespace RESQML2_NS
 		IjkGridLatticeRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount) :
-			AbstractIjkGridRepresentation(repo, guid, title, iCount, jCount, kCount, false) {}
+			AbstractIjkGridRepresentation(repo, guid, title, iCount, jCount, kCount, nullptr) {}
 
 		IjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount) :
-			AbstractIjkGridRepresentation(interp, guid, title, iCount, jCount, kCount, false) {}
+			AbstractIjkGridRepresentation(interp, guid, title, iCount, jCount, kCount, nullptr) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
