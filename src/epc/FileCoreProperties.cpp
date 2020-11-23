@@ -26,16 +26,15 @@ under the License.
 	#include <pwd.h>
 #endif
 
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
+
 #include "../tools/date.h"
 
 using namespace std; // in order not to prefix by "std::" for each class in the "std" namespace. Never use "using namespace" in *.h file but only in*.cpp file!!!
 using namespace epc; // in order not to prefix by "epc::" for each class in the "epc" namespace. Never use "using namespace" in *.h file but only in*.cpp file!!!
 
-FileCoreProperties::FileCoreProperties()
-{
-}
-
-CoreProperty FileCoreProperties::getProperty(const CoreProperty::TypeProperty & index) const
+CoreProperty FileCoreProperties::getProperty(CoreProperty::TypeProperty index) const
 {
 	return properties[index];
 }
@@ -43,8 +42,7 @@ CoreProperty FileCoreProperties::getProperty(const CoreProperty::TypeProperty & 
 void FileCoreProperties::initDefaultCoreProperties()
 {
 	// CREATOR
-	if (properties[CoreProperty::creator].isEmpty())
-	{
+	if (properties[CoreProperty::creator].isEmpty()) {
 #if defined(__gnu_linux__) 
         struct passwd *pw;
         uid_t uid;
@@ -65,34 +63,20 @@ void FileCoreProperties::initDefaultCoreProperties()
 	}
 
 	// CREATED
-	if (properties[CoreProperty::created].isEmpty())
-	{
+	if (properties[CoreProperty::created].isEmpty()) {
 		auto now = std::chrono::system_clock::now();
 		setCreated(date::format("%FT%TZ", date::floor<std::chrono::seconds>(now)));
 	}
 
 	// VERSION
-	if (properties[CoreProperty::version].isEmpty())
-	{
+	if (properties[CoreProperty::version].isEmpty()) {
 		setVersion("1.0");
 	}
 
 	// Identifier
-	if (properties[CoreProperty::identifier].isEmpty())
-	{
-#if defined(_WIN32)
-		GUID sessionGUID = GUID_NULL;
-		CoCreateGuid(&sessionGUID);
-		wchar_t uuidWStr[39];
-		StringFromGUID2(sessionGUID, uuidWStr, 39);
-		uuidWStr[37] = '\0'; // Delete the closing bracket
-		char uuidStr[37];
-		wcstombs(uuidStr, uuidWStr+1, 39); // +1 in order not to take into account the opening bracket
-
-		ostringstream oss;
-		oss << "urn:uuid:" << uuidStr;
-		setIdentifier(oss.str());
-#endif
+	if (properties[CoreProperty::identifier].isEmpty()) {
+		boost::uuids::random_generator gen;
+		setIdentifier("urn:uuid:" + boost::uuids::to_string(gen()));
 	}
 }
 
@@ -220,5 +204,4 @@ void FileCoreProperties::readFromString(const string & textInput)
 			properties[CoreProperty::identifier].setIdentifier(textInput.substr(attStart, attEnd - attStart));
 		}
 	}
-	
 }

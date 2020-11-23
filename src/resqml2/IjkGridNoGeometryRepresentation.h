@@ -62,13 +62,13 @@ namespace RESQML2_NS
 	protected:
 		IjkGridNoGeometryRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount) :
-			AbstractIjkGridRepresentation(repo, guid, title, iCount, jCount, kCount) {}
+			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr) :
+			AbstractIjkGridRepresentation(repo, guid, title, iCount, jCount, kCount, kGaps, proxy) {}
 
 		IjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount) :
-			AbstractIjkGridRepresentation(interp, guid, title, iCount, jCount, kCount) {}
+			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr) :
+			AbstractIjkGridRepresentation(interp, guid, title, iCount, jCount, kCount, kGaps, proxy) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

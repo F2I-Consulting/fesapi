@@ -39,30 +39,6 @@ COMMON_NS::DataObjectReference IjkGridExplicitRepresentation::getHdfProxyDor() c
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_2(0));
 }
 
-ULONG64 IjkGridExplicitRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
-{
-	resqml22__IjkGridGeometry* geom = static_cast<resqml22__IjkGridGeometry*>(getPointGeometry2_2(patchIndex));
-	if (geom == nullptr) {
-		throw invalid_argument("There is no geometry on this grid.");
-	}
-
-	const unsigned int kNodeCount = getKCellCount() + 1;
-	ULONG64 result = (getICellCount() + 1) * (getJCellCount() + 1) * kNodeCount;
-
-	if (geom->ColumnLayerSplitCoordinateLines != nullptr) {
-		result += geom->ColumnLayerSplitCoordinateLines->Count * kNodeCount;
-	}
-	if (geom->SplitNodePatch != nullptr) {
-		result += geom->SplitNodePatch->Count;
-	}
-
-	if (isTruncated()) {
-		result += static_cast<_resqml22__TruncatedIjkGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationNodeCount;
-	}
-
-	return result;
-}
-
 EML2_NS::AbstractHdfProxy* IjkGridExplicitRepresentation::getPointDatasetPath(std::string & datasetPathInExternalFile, unsigned long & splitCoordinateLineCount) const
 {
 	resqml22__PointGeometry* pointGeom = getPointGeometry2_2(0);
@@ -261,12 +237,12 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodes(
 
 	if (splitCoordinateLineCount == 0) {
 		// Points
-		hsize_t numValues[4] = { getKCellCount() + 1, getJCellCount() + 1, getICellCount() + 1, 3 };
+		hsize_t numValues[4] = { getKCellCount() + 1 + getKGapsCount(), getJCellCount() + 1, getICellCount() + 1, 3 };
 		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "Points", points, numValues, 4);
 	}
 	else {
 		// Points
-		hsize_t numValues[3] = { getKCellCount() + 1, (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount, 3 };
+		hsize_t numValues[3] = { getKCellCount() + 1 + getKGapsCount(), (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount, 3 };
 		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "Points", points, numValues, 3);
 		
 		// split coordinate lines

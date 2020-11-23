@@ -39,30 +39,6 @@ COMMON_NS::DataObjectReference IjkGridExplicitRepresentation::getHdfProxyDor() c
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
-ULONG64 IjkGridExplicitRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
-{
-	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(patchIndex));
-	if (geom == nullptr) {
-		throw invalid_argument("There is no geometry on this grid.");
-	}
-
-	const unsigned int kNodeCount = getKCellCount() + 1;
-	ULONG64 result = (getICellCount() + 1) * (getJCellCount() + 1) * kNodeCount;
-
-	if (geom->SplitCoordinateLines != nullptr) {
-		result += geom->SplitCoordinateLines->Count * kNodeCount;
-	}
-	if (geom->SplitNodes != nullptr) {
-		result += geom->SplitNodes->Count;
-	}
-
-	if (isTruncated()) {
-		result += static_cast<gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationNodeCount;
-	}
-
-	return result;
-}
-
 EML2_NS::AbstractHdfProxy* IjkGridExplicitRepresentation::getPointDatasetPath(std::string & datasetPathInExternalFile, unsigned long & splitCoordinateLineCount) const
 {
 	resqml20__PointGeometry* pointGeom = getPointGeometry2_0_1(0);
@@ -251,12 +227,12 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodes(
 
 	if (splitCoordinateLineCount == 0) {
 		// Points
-		hsize_t numValues[4] = { getKCellCount() + 1, getJCellCount() + 1, getICellCount() + 1, 3 };
+		hsize_t numValues[4] = { getKCellCount() + 1 + getKGapsCount(), getJCellCount() + 1, getICellCount() + 1, 3 };
 		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "Points", points, numValues, 4);
 	}
 	else {
 		// Points
-		hsize_t numValues[3] = { getKCellCount() + 1, (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount, 3 };
+		hsize_t numValues[3] = { getKCellCount() + 1 + getKGapsCount(), (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount, 3 };
 		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "Points", points, numValues, 3);
 		
 		// split coordinate lines

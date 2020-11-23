@@ -38,7 +38,59 @@ namespace RESQML2_NS
 		enum geometryKind { UNKNOWN = 0, EXPLICIT = 1, PARAMETRIC = 2, LATTICE = 3, NO_GEOMETRY = 4}; // UNKNOWN exists in case of partial transfer
 
 		/**
-		 * Constructor.
+		 * Constructor of an IJK grid representation without link to an interpretation.
+		 *
+		 * @exception	std::invalid_argument	If @p repo is @c nullptr.
+		 *
+		 * @param [in,out]	repo				A repository which will manage the memory of this
+		 * 										instance. It cannot be null.
+		 * @param 		  	guid				The guid to set to the ijk grid with no geometry
+		 * 										representation. If empty then a new guid will be
+		 * 										generated.
+		 * @param 		  	title				The title to set to the ijk grid with no geometry
+		 * 										representation. If empty then \"unknown\" title will be
+		 * 										set.
+		 * @param 		  	iCount				Count of cells in the i-direction in the grid.
+		 * @param 		  	jCount				Count of cells in the j-direction in the grid.
+		 * @param 		  	kCount				Number of layers in the grid.
+		 * @param 		  	kGaps				(Optional) Boolean array of length KCellCount-1.
+		 *										TRUE if there is a gap after the corresponding layer.
+		 *										Won't be freed by FESAPI.
+		 * @param [in]		proxy				(Optional) The HDF proxy for writing the @p enabledCells
+		 * 										values. If @c nullptr (default), then the default HDF proxy will be
+		 * 										used.
+		 */
+		AbstractIjkGridRepresentation(COMMON_NS::DataObjectRepository * repo,
+			const std::string & guid, const std::string & title,
+			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * Constructor of an IJK grid representation with a link to an interpretation.
+		 *
+		 * @exception	std::invalid_argument	If @p interp is @c nullptr.
+		 *
+		 * @param [in]	interp					The interpretation this IJK grid represents. It cannot be
+		 * 										null.
+		 * @param 	  	guid					The guid to set to the ijk grid with no geometry
+		 * 										representation. If empty then a new guid will be generated.
+		 * @param 	  	title					The title to set to the ijk grid with no geometry
+		 * 										representation. If empty then \"unknown\" title will be set.
+		 * @param 	  	iCount					Count of cells in the I direction in the grid.
+		 * @param 	  	jCount					Count of cells in the J direction in the grid.
+		 * @param 	  	kCount					Number of layers in the grid.
+		 * @param 	  	kGaps					(Optional) Boolean array of length KCellCount-1.
+		 *										TRUE if there is a gap after the corresponding layer.
+		 *										Won't be freed by FESAPI.
+		 * @param [in]	proxy					(Optional) The HDF proxy for writing the @p enabledCells
+		 * 										values. If @c nullptr (default), then the default HDF proxy will be
+		 * 										used.
+		 */
+		AbstractIjkGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+			const std::string & guid, const std::string & title,
+			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * Constructor of a truncated IJK grid representation without link to an interpretation.
 		 *
 		 * @exception	std::invalid_argument	If @p repo is @c nullptr.
 		 *
@@ -53,16 +105,21 @@ namespace RESQML2_NS
 		 * @param 		  	iCount					Count of cells in the i-direction in the grid.
 		 * @param 		  	jCount					Count of cells in the j-direction in the grid.
 		 * @param 		  	kCount					Number of layers in the grid.
-		 * @param 		  	withTruncatedPillars	(Optional) True if this IJK grid has some truncated
-		 * 											pillars, else false (default).
+		 * @param 		  	truncationNodeCount		Number of additional nodes required for the truncation construction.
+		 * @param 		  	truncationFaceCount		Number of additional faces required for the split and truncation construction.
+		 *											The construction does not modify existing face definitions,
+		 *											but instead uses these new faces to redefine the truncated cell geometry. 
+		 * @param 		  	truncationCellCount		Number of additional cells required for the truncation construction.
+		 *											Parent cells are replaced.
 		 */
+		/*
 		AbstractIjkGridRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount,
-			bool withTruncatedPillars = false);
-
+			unsigned int truncationNodeCount, unsigned int truncationFaceCount, unsigned int truncationCellCount);
+			*/
 		/**
-		 * Constructor.
+		 * Constructor of truncated IJK grid representation with a link to an interpretation.
 		 *
 		 * @exception	std::invalid_argument	If @p interp is @c nullptr.
 		 *
@@ -78,11 +135,12 @@ namespace RESQML2_NS
 		 * @param 	  	withTruncatedPillars	(Optional) True if this IJK grid has some truncated
 		 * 										pillars, else false (default).
 		 */
+		/*
 		AbstractIjkGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount,
-			bool withTruncatedPillars = false);
-
+			unsigned int truncationNodeCount, unsigned int truncationFaceCount, unsigned int truncationCellCount);
+			*/
 		/**
 		 * Only to be used in partial transfer context.
 		 *
@@ -115,7 +173,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 	iCount	The count of cells to set in the I direction.
 		 */
-		DLL_IMPORT_OR_EXPORT void setICellCount(const unsigned int & iCount);
+		DLL_IMPORT_OR_EXPORT void setICellCount(unsigned int iCount);
 
 		/**
 		 * Gets the count of cells in the J direction.
@@ -134,9 +192,17 @@ namespace RESQML2_NS
 		 *
 		 * @param 	jCount	The count of cells to set in the J direction.
 		 */
-		DLL_IMPORT_OR_EXPORT void setJCellCount(const unsigned int & jCount);
+		DLL_IMPORT_OR_EXPORT void setJCellCount(unsigned int jCount);
 
-		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const final {return getICellCount() * getJCellCount() * getKCellCount();}
+		/**
+		 * Gets the total count of cells in the IJK grid.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error	If the count is strictly greater than unsigned int max.
+		 *
+		 * @returns	The total count of cells in the IJK grid.
+		*/
+		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const final { return getICellCount() * getJCellCount() * getKCellCount(); }
 
 		/**
 		 * Gets the count of columns in this grid.
@@ -147,7 +213,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The column count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getColumnCount() const {return getICellCount() * getJCellCount();}
+		DLL_IMPORT_OR_EXPORT unsigned int getColumnCount() const { return getICellCount() * getJCellCount(); }
 
 		/**
 		 * Gets the count of pillars in this grid.
@@ -158,7 +224,28 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The pillar count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPillarCount() const {return (getICellCount()+1) * (getJCellCount()+1);}
+		DLL_IMPORT_OR_EXPORT unsigned int getPillarCount() const { return (getICellCount()+1) * (getJCellCount()+1); }
+
+		/**
+		 * Gets the count of K layer gaps in this grid.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error	If the count of cells in I or J direction is
+		 * 									strictly greater than unsigned int max.
+		 *
+		 * @returns	The K Layer gaps count.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getKGapsCount() const;
+
+		/**
+		* For each K Layer except the last one, indicate wether there is a layer or not after it.
+		*
+		* @param [out]	kGaps	An array for receiving the information about kGaps.
+		*						It must have a count of getKGapsCount(). It won't be free. A false value in
+		* 						@p kGaps means that the corresponding k layer has no gaps just after it.
+		*						A true value means that the corresponding k layer has a gap just after it.
+		*/
+		DLL_IMPORT_OR_EXPORT void getKGaps(bool * kGaps) const;
 
 		/**
 		 * Gets the count of faces in this grid. This method requires you have already loaded the split
@@ -457,7 +544,7 @@ namespace RESQML2_NS
 		 * 									index ordering I then J then K. A zero value in @p enabledCells
 		 * 									means that the corresponding cell is disabled. A non zero value
 		 * 									means that the corresponding cell is enabled.
-		 * @param [in,out]	proxy			(Optional) The HDF proxy for writing the @p enabledCells
+		 * @param [in]		proxy			(Optional) The HDF proxy for writing the @p enabledCells
 		 * 									values. If @c nullptr (default), then the default HDF proxy will be
 		 * 									used.
 		 */
@@ -708,16 +795,16 @@ namespace RESQML2_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr) {}
 
 		/**
 		 * Constructor
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), blockInformation(nullptr) {}
-		AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), blockInformation(nullptr) {}
-		AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr) {}
 
 		gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* getSpecializedGsoapProxy2_0_1() const;
 		gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy2_0_1() const;
@@ -755,6 +842,12 @@ namespace RESQML2_NS
 		*/
 		std::vector< std::pair< unsigned int, std::vector<unsigned int> > >* splitInformation;
 
+		/**
+		* For each kCellIndex, indicate what is the corresponding K Cell index if K gap layer would be normal K layer.
+		* A kCellIndexWithGapLayer equal to nullptr means that it has not been initialized. An initialized kCellIndexWithGapLayer has always a size of getKCellCount().
+		*/
+		unsigned int* kCellIndexWithGapLayer;
+
 		/** Information about the block. */
 		class BlockInformation
 		{
@@ -777,7 +870,7 @@ namespace RESQML2_NS
 			std::map<unsigned int, unsigned int> globalToLocalSplitCoordinateLinesIndex;
 
 			/** Default constructor */
-			BlockInformation() {}
+			BlockInformation() = default;
 
 			/** Destructor */
 			~BlockInformation() = default;
@@ -795,12 +888,17 @@ namespace RESQML2_NS
 		 * 							created.
 		 * @param 		  	guid  	Unique identifier.
 		 * @param 		  	title 	The title.
-		 * @param 		  	iCount	Number of.
-		 * @param 		  	jCount	Number of.
-		 * @param 		  	kCount	Number of.
+		 * @param 		  	iCount	Count of cells in the i-direction in the grid.
+		 * @param 		  	jCount	Count of cells in the j-direction in the grid.
+		 * @param 		  	kCount	Number of layers in the grid.
+		 * @param 		  	kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *							TRUE if there is a gap after the corresponding layer.
+		 *							Won't be freed by FESAPI.
+		 * @param [in]		proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 							alues. If @c nullptr (default), then the default HDF proxy will be	used.
 		 */
 		void init(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 	};
 }

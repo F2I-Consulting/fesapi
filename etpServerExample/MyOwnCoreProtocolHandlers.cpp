@@ -18,10 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnCoreProtocolHandlers.h"
 
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
+
 #include "MyServerInitializationParameters.h"
 #include "etp/AbstractSession.h"
 #include "etp/EtpHelpers.h"
-#include "tools/GuidTools.h"
 
 void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession & rs, int64_t correlationId)
 {
@@ -55,7 +57,9 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 	Energistics::Etp::v12::Protocol::Core::OpenSession openSession;
 	openSession.applicationName = serverInitializationParams.getApplicationName();
 	openSession.applicationVersion = serverInitializationParams.getApplicationVersion();
-	openSession.serverInstanceId.array = GuidTools::generateUidAsByteArray();
+	boost::uuids::random_generator gen;
+	boost::uuids::uuid uuid = gen();
+	std::move(std::begin(uuid.data), std::end(uuid.data), openSession.serverInstanceId.array.begin());
 	openSession.supportedFormats.push_back("xml");
 	openSession.supportedProtocols = requestedAndSupportedProtocols;
 	openSession.endpointCapabilities = serverInitializationParams.makeEndpointCapabilities();

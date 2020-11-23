@@ -32,12 +32,12 @@ namespace RESQML2_2_NS
 		/**
 		 * @brief	Constructor
 		 *
-		 * @param [in]		repo  	If non-nullptr, the repo.
-		 * @param 		  	guid  	Unique identifier.
-		 * @param 		  	title 	The title.
-		 * @param 		  	iCount	Number of.
-		 * @param 		  	jCount	Number of.
-		 * @param 		  	kCount	Number of.
+		 * @param [in]	repo  	If non-nullptr, the repo.
+		 * @param 		guid  	Unique identifier.
+		 * @param 		title 	The title.
+		 * @param 	  	iCount	Number of cell in I direction.
+		 * @param 	  	jCount	Number of cell in J direction.
+		 * @param 	  	kCount	Number of cell in K direction.
 		 */
 		IjkGridLatticeRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
@@ -47,12 +47,12 @@ namespace RESQML2_2_NS
 		/**
 		 * @brief	Constructor
 		 *
-		 * @param [in]		interp	If non-nullptr, the interp.
-		 * @param 		  	guid  	Unique identifier.
-		 * @param 		  	title 	The title.
-		 * @param 		  	iCount	Number of.
-		 * @param 		  	jCount	Number of.
-		 * @param 		  	kCount	Number of.
+		 * @param [in]	interp	If non-nullptr, the interp.
+		 * @param 		guid  	Unique identifier.
+		 * @param 		title 	The title.
+		 * @param 	  	iCount	Number of cell in I direction.
+		 * @param 	  	jCount	Number of cell in J direction.
+		 * @param 	  	kCount	Number of cell in K direction.
 		 */
 		IjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 				const std::string & guid, const std::string & title,

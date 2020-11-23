@@ -335,9 +335,9 @@ void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, 
 	// Copy in order not to modify the controlPoints pointer
 	if (reverseIAxis || reverseJAxis || reverseKAxis)
 	{
-		const unsigned int iPillarCount = getICellCount()+1;
-		const unsigned int jPillarCount = getJCellCount()+1;
-		const unsigned int kNodeCount = getKCellCount()+1;
+		const unsigned int iPillarCount = getICellCount() + 1;
+		const unsigned int jPillarCount = getJCellCount() + 1;
+		const unsigned int kNodeCount = getKCellCount() + 1 + getKGapsCount();
 		const unsigned int arrayCount = iPillarCount * jPillarCount * kNodeCount + getSplitCoordinateLineCount()*kNodeCount;
 		std::unique_ptr<double[]> initialParameters(new double[arrayCount]);
 		for (unsigned int index = 0; index < arrayCount; ++index) {
@@ -387,7 +387,7 @@ void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, 
 
 void IjkGridParametricRepresentation::getParametersOfNodesOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * parameters)
 {
-	if (kInterfaceStart > getKCellCount() || kInterfaceEnd > getKCellCount()) {
+	if (kInterfaceStart > getKCellCount() + getKGapsCount() || kInterfaceEnd > getKCellCount() + getKGapsCount()) {
 		throw out_of_range("kInterfaceStart and/or kInterfaceEnd is/are out of boundaries.");
 	}
 	if (kInterfaceStart > kInterfaceEnd) {
@@ -418,7 +418,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequence(unsigned 
 	if (xyzPoints == nullptr) {
 		throw invalid_argument("xyzPoints must be allocated.");
 	}
-	if (kInterfaceStart > getKCellCount() || kInterfaceEnd > getKCellCount()) {
+	if (kInterfaceStart > getKCellCount() + getKGapsCount() || kInterfaceEnd > getKCellCount() + getKGapsCount()) {
 		throw out_of_range("kInterfaceStart and/or kInterfaceEnd is/are out of boundaries.");
 	}
 	if (kInterfaceEnd < kInterfaceStart) {
@@ -986,12 +986,12 @@ void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * paramete
 	unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (splitCoordinateLineCount == 0) {
-		hsize_t numValues[3] = { getKCellCount() + 1, getJCellCount() + 1, getICellCount() + 1 };
+		hsize_t numValues[3] = { getKCellCount() + 1 + getKGapsCount(), getJCellCount() + 1, getICellCount() + 1 };
 		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "PointParameters", parameters, numValues, 3);
 	}
 	else {
 		// PointParameters
-		hsize_t numValues[2] = { getKCellCount() + 1, (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount };
+		hsize_t numValues[2] = { getKCellCount() + 1 + getKGapsCount(), (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount };
 		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "PointParameters", parameters, numValues, 2);
 
 		// split coordinate lines
@@ -1154,7 +1154,7 @@ void IjkGridParametricRepresentation::getXyzPointsFromParametricPoints(double * 
 
 	//Mapping
 	size_t paramIndex = 0;
-	for (unsigned int kInterface = 0; kInterface < getKCellCount() + 1; ++kInterface) {
+	for (unsigned int kInterface = 0; kInterface < getKCellCount() + getKGapsCount() + 1; ++kInterface) {
 		for (unsigned int coordLineIndex = 0; coordLineIndex < pillarInfo.parametricLineCount; ++coordLineIndex) {
 			if (pillarInfo.pillarKind[coordLineIndex] == -1 || parameters[paramIndex] != parameters[paramIndex]) { // not defined line
 				xyzPoints[paramIndex*3] = std::numeric_limits<double>::quiet_NaN();

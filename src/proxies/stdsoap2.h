@@ -1,5 +1,5 @@
 /*
-        stdsoap2.h 2.8.108
+        stdsoap2.h 2.8.109
 
         gSOAP runtime engine
 
@@ -18,7 +18,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_VERSION 208108
+#define GSOAP_VERSION 208109
 
 #ifdef _WIN32
 #pragma warning(disable : 4458) /* declaration hides class member */

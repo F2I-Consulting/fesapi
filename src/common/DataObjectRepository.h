@@ -2196,18 +2196,24 @@ namespace COMMON_NS
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
-		 * @param 	guid  	The guid to set to the ijk grid explicit representation. If empty then a new
-		 * 					guid will be generated.
-		 * @param 	title 	The title to set to the ijk grid explicit representation. If empty then
-		 * 					\"unknown\" title will be set.
-		 * @param 	iCount	Count of cells in the I direction in the grid.
-		 * @param 	jCount	Count of cells in the J direction in the grid.
-		 * @param 	kCount	Number of layers in the grid.
+		 * @param		guid  	The guid to set to the ijk grid explicit representation. If empty then a new
+		 * 						guid will be generated.
+		 * @param		title 	The title to set to the ijk grid explicit representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 * @param		iCount	Count of cells in the I direction in the grid.
+		 * @param 		jCount	Count of cells in the J direction in the grid.
+		 * @param		kCount	Number of layers in the grid.
+		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *						TRUE if there is a gap after the corresponding layer.
+		 *						Won't be freed by FESAPI.
+		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 						values. If @c nullptr (default), then the default HDF proxy will be
+		 * 						used.
 		 *
 		 * @returns	A pointer to the new ijk grid explicit representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(const std::string& guid, const std::string& title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * @brief	Creates an ijk grid explicit representation into this repository
@@ -2223,30 +2229,42 @@ namespace COMMON_NS
 		 * @param 	  	iCount	Count of cells in the I direction in the grid.
 		 * @param 	  	jCount	Count of cells in the J direction in the grid.
 		 * @param 	  	kCount	Number of layers in the grid.
+		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *						TRUE if there is a gap after the corresponding layer.
+		 *						Won't be freed by FESAPI.
+		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 						values. If @c nullptr (default), then the default HDF proxy will be
+		 * 						used.
 		 *
 		 * @returns	A pointer to the new ijk grid explicit representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string& guid, const std::string& title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * @brief	Creates an ijk grid parametric representation into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
-		 * @param 	guid  	The guid to set to the ijk grid parametric representation. If empty then a
-		 * 					new guid will be generated.
-		 * @param 	title 	The title to set to the ijk grid parametric representation. If empty then
-		 * 					\"unknown\" title will be set.
-		 * @param 	iCount	Count of cells in the I direction in the grid.
-		 * @param 	jCount	Count of cells in the J direction in the grid.
-		 * @param 	kCount	Number of layers in the grid.
+		 * @param		guid  	The guid to set to the ijk grid parametric representation. If empty then a
+		 * 						new guid will be generated.
+		 * @param		title 	The title to set to the ijk grid parametric representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 * @param		iCount	Count of cells in the I direction in the grid.
+		 * @param		jCount	Count of cells in the J direction in the grid.
+		 * @param		kCount	Number of layers in the grid.
+		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *						TRUE if there is a gap after the corresponding layer.
+		 *						Won't be freed by FESAPI.
+		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 						values. If @c nullptr (default), then the default HDF proxy will be
+		 * 						used.
 		 *
 		 * @returns	A pointer to the new ijk grid parametric representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(const std::string& guid, const std::string& title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * @brief	Creates an ijk grid parametric representation into this repository
@@ -2262,12 +2280,18 @@ namespace COMMON_NS
 		 * @param 	  	iCount	Count of cells in the I direction in the grid.
 		 * @param 	  	jCount	Count of cells in the J direction in the grid.
 		 * @param 	  	kCount	Number of layers in the grid.
+		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *						TRUE if there is a gap after the corresponding layer.
+		 *						Won't be freed by FESAPI.
+		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 						values. If @c nullptr (default), then the default HDF proxy will be
+		 * 						used.
 		 *
 		 * @returns	A pointer to the new ijk grid parametric representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string& guid, const std::string& title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * @brief	Creates an ijk grid lattice representation into this repository
@@ -2313,19 +2337,25 @@ namespace COMMON_NS
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
-		 * @param 	guid  	The guid to set to the ijk grid with no geometry representation. If empty
-		 * 					then a new guid will be generated.
-		 * @param 	title 	The title to set to the ijk grid with no geometry representation. If empty
-		 * 					then \"unknown\" title will be set.
-		 * @param 	iCount	Count of cells in the I direction in the grid.
-		 * @param 	jCount	Count of cells in the J direction in the grid.
-		 * @param 	kCount	Number of layers in the grid.
+		 * @param		guid  	The guid to set to the ijk grid with no geometry representation. If empty
+		 * 						then a new guid will be generated.
+		 * @param		title 	The title to set to the ijk grid with no geometry representation. If empty
+		 * 						then \"unknown\" title will be set.
+		 * @param		iCount	Count of cells in the I direction in the grid.
+		 * @param		jCount	Count of cells in the J direction in the grid.
+		 * @param		kCount	Number of layers in the grid.
+		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *						TRUE if there is a gap after the corresponding layer.
+		 *						Won't be freed by FESAPI.
+		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 						values. If @c nullptr (default), then the default HDF proxy will be
+		 * 						used.
 		 *
 		 * @returns	A pointer to the new ijk grid with no geometry representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(
 			const std::string& guid, const std::string& title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * @brief	Creates an ijk grid with no geometry representation into this repository
@@ -2341,12 +2371,18 @@ namespace COMMON_NS
 		 * @param 	  	iCount	Count of cells in the I direction in the grid.
 		 * @param 	  	jCount	Count of cells in the J direction in the grid.
 		 * @param 	  	kCount	Number of layers in the grid.
+		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *						TRUE if there is a gap after the corresponding layer.
+		 *						Won't be freed by FESAPI.
+		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 						values. If @c nullptr (default), then the default HDF proxy will be
+		 * 						used.
 		 *
 		 * @returns	A pointer to the new ijk grid with no geometry representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string& guid, const std::string& title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * @brief	Creates an unstructured grid representation into this repository

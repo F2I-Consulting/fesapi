@@ -34,7 +34,7 @@ const char* AbstractIjkGridRepresentation::XML_TAG = "IjkGridRepresentation";
 const char* AbstractIjkGridRepresentation::XML_TAG_TRUNCATED = "TruncatedIjkGridRepresentation";
 
 AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars) :
-	AbstractColumnLayerGridRepresentation(partialObject, withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
+	AbstractColumnLayerGridRepresentation(partialObject, withTruncatedPillars), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr)
 {
 }
 
@@ -45,10 +45,19 @@ std::string AbstractIjkGridRepresentation::getXmlTag() const
 
 void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 	const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount)
+	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be null.");
+	}
+
+	hsize_t kGapCount = 0;
+	if (kGaps != nullptr) {
+		for (size_t k = 0; k < kCount - 1; ++k) {
+			if (kGaps[k]) {
+				++kGapCount;
+			}
+		}
 	}
 
 	if (!withTruncatedPillars) {
@@ -59,6 +68,28 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 			ijkGrid->Ni = iCount;
 			ijkGrid->Nj = jCount;
 			ijkGrid->Nk = kCount;
+
+			if (kGapCount > 0) {
+				if (proxy == nullptr) {
+					proxy = repo->getDefaultHdfProxy();
+					if (proxy == nullptr) {
+						throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+					}
+				}
+
+				auto xmlKGaps = gsoap_resqml2_0_1::soap_new_resqml20__KGaps(getGsoapContext());
+				xmlKGaps->__KGaps_sequence = gsoap_resqml2_0_1::soap_new___resqml20__KGaps_sequence(getGsoapContext());
+				xmlKGaps->__KGaps_sequence->Count = kGapCount;
+				
+				resqml20__BooleanHdf5Array* boolArray = soap_new_resqml20__BooleanHdf5Array(getGsoapContext());
+				boolArray->Values = soap_new_eml20__Hdf5Dataset(getGsoapContext());
+				boolArray->Values->HdfProxy = proxy->newResqmlReference();
+				boolArray->Values->PathInHdfFile = "/" + getXmlNamespace() + "/" + guid + "/GapAfterLayer";
+				xmlKGaps->__KGaps_sequence->GapAfterLayer = boolArray;
+
+				ijkGrid->KGaps = xmlKGaps;
+			}
+
 			break;
 		}
 		case COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_2: {
@@ -67,13 +98,52 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 			ijkGrid->Ni = iCount;
 			ijkGrid->Nj = jCount;
 			ijkGrid->Nk = kCount;
+
+			if (kGapCount > 0) {
+				if (proxy == nullptr) {
+					proxy = repo->getDefaultHdfProxy();
+					if (proxy == nullptr) {
+						throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+					}
+				}
+
+				auto xmlKGaps = gsoap_eml2_3::soap_new_resqml22__KGaps(getGsoapContext());
+				xmlKGaps->__KGaps_sequence = gsoap_eml2_3::soap_new___resqml22__KGaps_sequence(getGsoapContext());
+				xmlKGaps->__KGaps_sequence->Count = kGapCount;
+
+				gsoap_eml2_3::eml23__BooleanExternalArray* boolArray = gsoap_eml2_3::soap_new_eml23__BooleanExternalArray(getGsoapContext());
+				boolArray->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(getGsoapContext());
+				gsoap_eml2_3::eml23__ExternalDatasetPart* dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(getGsoapContext());
+				dsPart->EpcExternalPartReference = proxy->newEml23Reference();
+				dsPart->PathInExternalFile = "/" + getXmlNamespace() + "/" + guid + "/GapAfterLayer";
+				dsPart->StartIndex = 0;
+				dsPart->Count = getCellCount();
+				boolArray->Values->ExternalFileProxy.push_back(dsPart);
+				xmlKGaps->__KGaps_sequence->GapAfterLayer = boolArray;
+
+				ijkGrid->KGaps = xmlKGaps;
+			}
+
 			break;
 		}
 		default:
 			throw std::invalid_argument("Unrecognized Energistics standard.");
 		}
+
+		if (kGapCount > 0) {
+			// Need to copy the array since HDF5 do not support bool array and since sizeof bool is implementation dependent.
+			std::unique_ptr<unsigned char[]> tmp(new unsigned char[kCount - 1]);
+			for (size_t k = 0; k < kCount - 1; ++k) {
+				tmp[k] = kGaps[k] ? 1 : 0;
+			}
+			proxy->writeArrayNd("/" + getXmlNamespace() + "/" + guid, "GapAfterLayer", H5T_NATIVE_UCHAR, tmp.get(), &kGapCount, 1);
+		}
 	}
 	else {
+		if (kGaps != nullptr) {
+			throw std::invalid_argument("Truncated IJK grid representation cannot have K Gaps.");
+		}
+
 		switch (repo->getDefaultResqmlVersion()) {
 		case COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1: {
 			gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORETruncatedIjkGridRepresentation(repo->getGsoapContext());
@@ -104,24 +174,22 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 
 AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(COMMON_NS::DataObjectRepository * repo,
 	const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount,
-	bool withTruncatedPillars) :
-	RESQML2_NS::AbstractColumnLayerGridRepresentation(withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
+	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy) :
+	RESQML2_NS::AbstractColumnLayerGridRepresentation(false), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr)
 {
-	init(repo, guid, title, iCount, jCount, kCount);
+	init(repo, guid, title, iCount, jCount, kCount, kGaps, proxy);
 }
 
 AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount,
-	bool withTruncatedPillars) :
-	RESQML2_NS::AbstractColumnLayerGridRepresentation(withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
+	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy) :
+	RESQML2_NS::AbstractColumnLayerGridRepresentation(false), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The interpretation of the IJK grid cannot be null.");
 	}
 
-	init(interp->getRepository(), guid, title, iCount, jCount, kCount);
+	init(interp->getRepository(), guid, title, iCount, jCount, kCount, kGaps, proxy);
 
 	// relationhsips
 	setInterpretation(interp);
@@ -190,7 +258,7 @@ unsigned int AbstractIjkGridRepresentation::getICellCount() const
 	return static_cast<unsigned int>(iCellCount);
 }
 
-void AbstractIjkGridRepresentation::setICellCount(const unsigned int & iCount)
+void AbstractIjkGridRepresentation::setICellCount(unsigned int iCount)
 {
 	if (!isTruncated()) {
 		if (gsoapProxy2_0_1 != nullptr) {
@@ -223,7 +291,7 @@ unsigned int AbstractIjkGridRepresentation::getJCellCount() const
 	return static_cast<unsigned int>(jCellCount);
 }
 
-void AbstractIjkGridRepresentation::setJCellCount(const unsigned int & jCount)
+void AbstractIjkGridRepresentation::setJCellCount(unsigned int jCount)
 {
 	if (!isTruncated()) {
 		if (gsoapProxy2_0_1 != nullptr) {
@@ -430,6 +498,8 @@ unsigned long AbstractIjkGridRepresentation::getSplitCoordinateLineCount() const
 
 unsigned long AbstractIjkGridRepresentation::getBlockSplitCoordinateLineCount() const
 {
+	if (splitInformation == nullptr)
+		throw invalid_argument("The split information must have been loaded first.");
 	if (blockInformation == nullptr) {
 		throw invalid_argument("The block information must have been loaded first.");
 	}
@@ -794,27 +864,52 @@ void AbstractIjkGridRepresentation::loadSplitInformation()
 			splitInformation[splitPillars[splitCoordinateLineIndex]].push_back(splittedColumns);
 		}
 	}
+
+	auto kCount = getKCellCount();
+	kCellIndexWithGapLayer = new unsigned int[kCount];
+	for (size_t k = 0; k < kCount; ++k) {
+		kCellIndexWithGapLayer[k] = k;
+	}
+	const auto kGapCount = getKGapsCount();
+	if (kGapCount > 0) {
+		std::unique_ptr<bool[]> gapAfterLayer(new bool[kCount - 1]);
+		getKGaps(gapAfterLayer.get());
+		size_t offset = 0;
+		for (size_t k = 0; k < kCount - 1; ++k) {
+			kCellIndexWithGapLayer[k] += offset;
+			if (gapAfterLayer[k]) {
+				++offset;
+			}
+		}
+		kCellIndexWithGapLayer[kCount - 1] += offset;
+	}
 }
 
 void AbstractIjkGridRepresentation::loadBlockInformation(unsigned int iInterfaceStart, unsigned int iInterfaceEnd, unsigned int jInterfaceStart, unsigned int jInterfaceEnd, unsigned int kInterfaceStart, unsigned int kInterfaceEnd)
 {
-	if (splitInformation == nullptr)
+	if (splitInformation == nullptr || kCellIndexWithGapLayer == nullptr) {
 		throw invalid_argument("The split information must have been loaded first.");
-
-	if (iInterfaceEnd > getICellCount())
+	}
+	if (iInterfaceEnd > getICellCount()) {
 		throw out_of_range("iInterfaceEnd is out of boundaries.");
-	if (iInterfaceStart > iInterfaceEnd)
+	}
+	if (iInterfaceStart > iInterfaceEnd) {
 		throw range_error("iInterfaceStart > iInterfaceEnd");
+	}
 
-	if (jInterfaceEnd > getJCellCount())
+	if (jInterfaceEnd > getJCellCount()) {
 		throw out_of_range("jInterfaceEnd is out of boundaries.");
-	if (jInterfaceStart > jInterfaceEnd)
+	}
+	if (jInterfaceStart > jInterfaceEnd) {
 		throw range_error("jInterfaceStart > jInterfaceEnd");
+	}
 
-	if (kInterfaceEnd > getKCellCount())
+	if (kInterfaceEnd > getKCellCount()) {
 		throw out_of_range("kInterfaceEnd is out of boundaries.");
-	if (kInterfaceStart > kInterfaceEnd)
+	}
+	if (kInterfaceStart > kInterfaceEnd) {
 		throw range_error("kInterfaceStart > kInterfaceEnd");
+	}
 
 	if (blockInformation != nullptr) {
 		delete blockInformation;
@@ -850,7 +945,7 @@ void AbstractIjkGridRepresentation::loadBlockInformation(unsigned int iInterface
 							(blockInformation->globalToLocalSplitCoordinateLinesIndex)[splitInformation[pillarIndex][splitCoordinateLineIndex].first] = splitCoordinateLineHdfLocalIndex;
 							++splitCoordinateLineHdfLocalIndex;
 
-							break; // in order to be sure not adding twice a same coordinate line if it is adjacent to several columns within the bloc
+							break; // in order to be sure not adding twice a same coordinate line if it is adjacent to several columns within the block
 						}
 					}
 				}
@@ -864,6 +959,85 @@ void AbstractIjkGridRepresentation::unloadSplitInformation()
 	if (splitInformation != nullptr) {
 		delete [] splitInformation;
 		splitInformation = nullptr;
+	}
+	if (kCellIndexWithGapLayer != nullptr) {
+		delete [] kCellIndexWithGapLayer;
+		kCellIndexWithGapLayer = nullptr;
+	}
+}
+
+unsigned int AbstractIjkGridRepresentation::getKGapsCount() const
+{
+	if (isTruncated()) {
+		return 0;
+	}
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		auto ijkGrid = getSpecializedGsoapProxy2_0_1();
+		return ijkGrid->KGaps != nullptr && ijkGrid->KGaps->__KGaps_sequence != nullptr
+			? ijkGrid->KGaps->__KGaps_sequence->Count
+			: 0;
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		auto ijkGrid = getSpecializedGsoapProxy2_2();
+		return ijkGrid->KGaps != nullptr && ijkGrid->KGaps->__KGaps_sequence != nullptr
+			? ijkGrid->KGaps->__KGaps_sequence->Count
+			: 0;
+	}
+
+	throw logic_error("The IJK grid is a partial one.");
+}
+
+void AbstractIjkGridRepresentation::getKGaps(bool * kGaps) const
+{
+	if (getKGapsCount() <= 0) {
+		throw invalid_argument("The grid has no K Gaps.");
+	}
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		auto ijkGrid = getSpecializedGsoapProxy2_0_1();
+		if (ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
+			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer)->Values;
+			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			std::unique_ptr<char[]> tmp(new char[getKCellCount() - 1]);
+			hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, tmp.get());
+			for (ULONG64 k = 0; k < getKCellCount() - 1; ++k) {
+				kGaps[k] = tmp[k] != 0;
+			}
+		}
+		else if (ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray) {
+			const bool hasGap = static_cast<resqml20__BooleanConstantArray*>(ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer)->Value;
+			for (ULONG64 k = 0; k < getKCellCount() - 1; ++k) {
+				kGaps[k] = hasGap;
+			}
+		}
+		else {
+			throw std::logic_error("Not implemented yet");
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		auto ijkGrid = getSpecializedGsoapProxy2_2();
+		if (ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
+			gsoap_eml2_3::eml23__ExternalDataset const * dataset = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer)->Values;
+			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset->ExternalFileProxy[0]);
+			std::unique_ptr<char[]> tmp(new char[getKCellCount() - 1]);
+			hdfProxy->readArrayNdOfCharValues(dataset->ExternalFileProxy[0]->PathInExternalFile, tmp.get());
+			for (ULONG64 k = 0; k < getKCellCount() - 1; ++k) {
+				kGaps[k] = tmp[k] != 0;
+			}
+		}
+		else if (ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray) {
+			const bool hasGap = static_cast<gsoap_eml2_3::eml23__BooleanConstantArray*>(ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer)->Value;
+			for (ULONG64 k = 0; k < getKCellCount() - 1; ++k) {
+				kGaps[k] = hasGap;
+			}
+		}
+		else {
+			throw std::logic_error("Not implemented yet");
+		}
+	}
+	else {
+		throw logic_error("The IJK grid is a partial one.");
 	}
 }
 
@@ -1005,7 +1179,7 @@ bool AbstractIjkGridRepresentation::isColumnEdgeSplitted(unsigned int iColumn, u
 
 ULONG64 AbstractIjkGridRepresentation::getXyzPointIndexFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner) const
 {
-	if (splitInformation == nullptr) {
+	if (splitInformation == nullptr || kCellIndexWithGapLayer == nullptr) {
 		throw invalid_argument("The split information must have been loaded first.");
 	}
 	if (iCell > getICellCount()) {
@@ -1021,15 +1195,15 @@ ULONG64 AbstractIjkGridRepresentation::getXyzPointIndexFromCellCorner(unsigned i
 		throw out_of_range("Corner is out of range.");
 	}
 
-	unsigned int iPillarIndex = iCell;
-	if (corner == 1 || corner == 2 || corner == 5 || corner == 6)
-		++iPillarIndex;
-	unsigned int jPillarIndex = jCell;
-	if (corner == 2 || corner == 3 || corner == 6 || corner == 7)
-		++jPillarIndex;
-	unsigned int kPointIndex = kCell;
-	if (corner > 3)
-		++kPointIndex;
+	const unsigned int iPillarIndex = corner == 1 || corner == 2 || corner == 5 || corner == 6
+		? iCell + 1
+		: iCell;
+	const unsigned int jPillarIndex = corner == 2 || corner == 3 || corner == 6 || corner == 7
+		? jCell + 1
+		: jCell;
+	const unsigned int kPointIndex = corner > 3
+		? kCellIndexWithGapLayer[kCell] + 1
+		: kCellIndexWithGapLayer[kCell];
 
 	const unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
 	if (!splitInformation[pillarIndex].empty()) {
@@ -1068,18 +1242,15 @@ void AbstractIjkGridRepresentation::getXyzPointOfBlockFromCellCorner(unsigned in
 		throw out_of_range("Corner is out of the block.");
 	}
 
-	unsigned int iPillarIndex = iCell;
-	if (corner == 1 || corner == 2 || corner == 5 || corner == 6) {
-		++iPillarIndex;
-	}
-	unsigned int jPillarIndex = jCell;
-	if (corner == 2 || corner == 3 || corner == 6 || corner == 7) {
-		++jPillarIndex;
-	}
-	unsigned int kPointIndex = kCell;
-	if (corner > 3) {
-		++kPointIndex;
-	}
+	unsigned int iPillarIndex = corner == 1 || corner == 2 || corner == 5 || corner == 6
+		? iCell + 1
+		: iCell;
+	unsigned int jPillarIndex = corner == 2 || corner == 3 || corner == 6 || corner == 7
+		? jCell + 1
+		: jCell;
+	unsigned int kPointIndex = corner > 3
+		? kCellIndexWithGapLayer[kCell] + 1
+		: kCellIndexWithGapLayer[kCell];
 	kPointIndex -= blockInformation->kInterfaceStart;
 
 	ULONG64 pointIndex;
@@ -1201,7 +1372,20 @@ void AbstractIjkGridRepresentation::getXyzPointsOfBlock(double *)
 
 ULONG64 AbstractIjkGridRepresentation::getXyzPointCountOfPatch(unsigned int) const
 {
-	throw std::logic_error("Partial object");
+	const ULONG64 result = getXyzPointCountOfKInterface() * (getKCellCount() + 1 + getKGapsCount()) + getSplitNodeCount();
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		return isTruncated()
+			? result + static_cast<gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationNodeCount
+			: result;
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		return isTruncated()
+			? result + static_cast<gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationNodeCount
+			: result;
+	}
+
+	throw std::logic_error("The IJK Grid is in an unknown Energistics standard version.");
 }
 
 void AbstractIjkGridRepresentation::getXyzPointsOfPatch(unsigned int, double *) const
