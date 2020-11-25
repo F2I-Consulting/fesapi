@@ -38,7 +38,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 */
-		DiscreteColorMap(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::DiscreteColorMap(partialObject) {}
+		DLL_IMPORT_OR_EXPORT DiscreteColorMap(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::DiscreteColorMap(partialObject) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

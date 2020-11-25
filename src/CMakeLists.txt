@@ -182,6 +182,7 @@ endif (WITH_ETP)
 
 set (WITH_JAVA_WRAPPING OFF CACHE BOOL "Compile the swig cpp generated file for Java wrappers.")
 set (WITH_DOTNET_WRAPPING OFF CACHE BOOL "Compile the swig cpp generated file for .NET wrappers.")
+set (WITH_PYTHON_WRAPPING OFF CACHE BOOL "Compile the swig cpp generated file for Python wrappers.")
 
 # Namespaces definitions
 set (FESAPI_COMMON_NS common CACHE STRING "Namespace for common objects")
@@ -393,6 +394,10 @@ endif (WITH_JAVA_WRAPPING)
 if (WITH_DOTNET_WRAPPING)
 	include(${FESAPI_ROOT_DIR}/cs/CMakeLists.txt)
 endif (WITH_DOTNET_WRAPPING)
+
+if (WITH_PYTHON_WRAPPING)
+	include(${FESAPI_ROOT_DIR}/python/CMakeLists.txt)
+endif (WITH_PYTHON_WRAPPING)
 
 # ============================================================================
 # Install FesapiCpp library

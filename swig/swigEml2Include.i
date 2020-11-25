@@ -51,6 +51,9 @@ namespace EML2_NS
 	be used is provided in the C# example (see HdfProxyFactoryExample.cs and
 	HdfProxyExample.cs).
 	*/
+#if defined(SWIGPYTHON)
+	%rename(Eml2_AbstractHdfProxy) AbstractHdfProxy;
+#endif
 	class AbstractHdfProxy : public EpcExternalPartReference
 	{
 	public:
@@ -246,7 +249,7 @@ namespace EML2_NS
 	/************ GraphicalInformationSet **************/
 	
 #if defined(SWIGPYTHON)
-	%rename(GraphicalInformationSet_eml2) GraphicalInformationSet;
+	%rename(Eml2_GraphicalInformationSet) GraphicalInformationSet;
 #endif
 	class GraphicalInformationSet : public COMMON_NS::AbstractObject
 	{

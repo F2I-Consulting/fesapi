@@ -150,7 +150,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars = false);
 
 		/** Destructor. */
-		virtual ~AbstractIjkGridRepresentation() 
+		DLL_IMPORT_OR_EXPORT virtual ~AbstractIjkGridRepresentation()
 		{
 			if (blockInformation != nullptr)
 				delete blockInformation;

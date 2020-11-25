@@ -1,23 +1,13 @@
 from distutils.core import setup, Extension
 
 fesapi_module = Extension('_fesapi',
-	sources=['swigGeneratedPythonWrapper.cpp',
-	],
-	include_dirs=['../src',
-		'../src/epc',
-		'../src/proxies',
-		'../src/resqml2',
-		'../src/resqml2_0_1',
-		'../src/witsml2_0',
-		'../../../appli/minizip_unofficial/install/include',
-	],
-	library_dirs=['../../buildForFesapi/src'],
-	libraries=['FesapiCppUnderDev',],
-	extra_compile_args=['-std=c++11'],
+	sources=['swigGeneratedPythonWrapper.cpp'],
+	library_dirs=['../../build/v2.0.0.0/fesapiCpp-cs-staticHdf/install/lib'],
+	libraries=['FesapiCpp.2.0.0.0',],
 )
 
 setup (name = 'fesapi',
-	version = '0.1',
+	version = '2.0',
 	author      = "F2I-CONSULTING",
 	description = """An API for the Energistics standards""",
 	ext_modules = [fesapi_module],
