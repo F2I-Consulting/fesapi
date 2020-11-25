@@ -104,7 +104,12 @@ namespace EML2_NS
 		  const int * intValues,
 		  const unsigned long long * numValuesInEachDimension,
 		  unsigned int numDimensions) = 0;
- 		virtual void writeArrayNdOfGSoapULong64Values(const std::string & groupName,
+ 		virtual void writeArrayNdOfLong64Values(const std::string & groupName,
+			const std::string & name,
+			const ULONG64 * long64Values,
+			const unsigned long long * numValuesInEachDimension,
+			unsigned int numDimensions) = 0;
+ 		virtual void writeArrayNdOfULong64Values(const std::string & groupName,
 			const std::string & name,
 			const ULONG64 * ulong64Values,
 			const unsigned long long * numValuesInEachDimension,

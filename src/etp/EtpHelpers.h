@@ -80,5 +80,10 @@ namespace ETP_NS
 		* Build a protocol exception message which only contains a single error message (not a messsage map).
 		*/
 		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Protocol::Core::ProtocolException buildSingleMessageProtocolException(int32_t m_code, const std::string & m_message);
+
+		/**
+		* extract and return the uuid and the version of a dataobejct based on its URI.
+		*/
+		DLL_IMPORT_OR_EXPORT std::pair<std::string, std::string> getUuidAndVersionFromUri(const std::string & uri);
 	}
 }

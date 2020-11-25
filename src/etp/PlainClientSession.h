@@ -35,7 +35,7 @@ namespace ETP_NS
 			const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 			const std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject>& supportedDataObjects);
 
-		virtual ~PlainClientSession() {}
+		virtual ~PlainClientSession() = default;
 
 		// Called by the base class
 		DLL_IMPORT_OR_EXPORT websocket::stream<tcp::socket>& ws() { return ws_; }

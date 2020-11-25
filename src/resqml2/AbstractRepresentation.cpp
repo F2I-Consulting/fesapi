@@ -321,8 +321,12 @@ ULONG64 AbstractRepresentation::getXyzPointCountOfAllPatches() const
 	return result;
 }
 
-void AbstractRepresentation::getXyzPointsOfPatchInGlobalCrs(const unsigned int& patchIndex, double* xyzPoints) const
+void AbstractRepresentation::getXyzPointsOfPatchInGlobalCrs(unsigned int patchIndex, double* xyzPoints) const
 {
+	if (getLocalCrs(patchIndex)->isPartial()) {
+		throw invalid_argument("You cannot get the points in the global CRS if the lcoal CRS is partial");
+	}
+
 	getXyzPointsOfPatch(patchIndex, xyzPoints);
 
 	getLocalCrs(patchIndex)->convertXyzPointsToGlobalCrs(xyzPoints, getXyzPointCountOfPatch(patchIndex));

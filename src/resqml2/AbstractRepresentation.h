@@ -159,7 +159,7 @@ namespace RESQML2_NS
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatchInGlobalCrs(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatchInGlobalCrs(unsigned int patchIndex, double * xyzPoints) const;
 
 		/**
 		 * @brief Gets all the xyz points of all patches of this representation. xyz points are given in the

@@ -349,7 +349,7 @@ void AbstractGridRepresentation::setParentWindow(ULONG64 * cellIndices, ULONG64 
 		
 			// HDF
 			hsize_t numValues = cellIndexCount;
-			proxy->writeArrayNdOfGSoapULong64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &numValues, 1);
+			proxy->writeArrayNdOfULong64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &numValues, 1);
 		}
 		else { // cellIndexCount == 1
 			gsoap_resqml2_0_1::resqml20__IntegerConstantArray* xmlCellIndices = gsoap_resqml2_0_1::soap_new_resqml20__IntegerConstantArray(rep->soap);
@@ -386,7 +386,7 @@ void AbstractGridRepresentation::setParentWindow(ULONG64 * cellIndices, ULONG64 
 
 			// HDF
 			hsize_t numValues = cellIndexCount;
-			proxy->writeArrayNdOfGSoapULong64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &numValues, 1);
+			proxy->writeArrayNdOfULong64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &numValues, 1);
 		}
 		else { // cellIndexCount == 1
 			auto xmlCellIndices = gsoap_eml2_3::soap_new_eml23__IntegerConstantArray(rep->soap);
@@ -628,7 +628,7 @@ void AbstractGridRepresentation::setForcedNonRegridedParentCell(ULONG64 * cellIn
 			
 				// HDF
 				hsize_t numValues = cellIndexCount;
-				proxy->writeArrayNdOfGSoapULong64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &numValues, 1);
+				proxy->writeArrayNdOfULong64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &numValues, 1);
 			}
 			else if (cellIndexCount == 1)
 			{
@@ -672,7 +672,7 @@ void AbstractGridRepresentation::setForcedNonRegridedParentCell(ULONG64 * cellIn
 
 				// HDF
 				hsize_t numValues = cellIndexCount;
-				proxy->writeArrayNdOfGSoapULong64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &numValues, 1);
+				proxy->writeArrayNdOfULong64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &numValues, 1);
 			}
 			else if (cellIndexCount == 1)
 			{
@@ -764,7 +764,7 @@ void AbstractGridRepresentation::setCellOverlap(ULONG64 parentChildCellPairCount
 		
 				// HDF
 				hsize_t numValues[] = {parentChildCellPairCount, 2};
-				proxy->writeArrayNdOfGSoapULong64Values(getHdfGroup(), "ParentWindow_CellOverlap", parentChildCellPair, numValues, 2);
+				proxy->writeArrayNdOfULong64Values(getHdfGroup(), "ParentWindow_CellOverlap", parentChildCellPair, numValues, 2);
 			}
 			else if (parentChildCellPairCount == 0)
 				throw invalid_argument("Cannot give cell overlap information with an empty list of cell pairs.");
@@ -818,7 +818,7 @@ void AbstractGridRepresentation::setCellOverlap(ULONG64 parentChildCellPairCount
 
 				// HDF
 				hsize_t numValues[] = { parentChildCellPairCount, 2 };
-				proxy->writeArrayNdOfGSoapULong64Values(getHdfGroup(), "ParentWindow_CellOverlap", parentChildCellPair, numValues, 2);
+				proxy->writeArrayNdOfULong64Values(getHdfGroup(), "ParentWindow_CellOverlap", parentChildCellPair, numValues, 2);
 			}
 			else if (parentChildCellPairCount == 0)
 				throw invalid_argument("Cannot give cell overlap information with an empty list of cell pairs.");

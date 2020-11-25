@@ -28,12 +28,12 @@ private:
 	
 	MyDataObjectRepository* repo;
 
-	void on_GetDataObjects(const Energistics::Etp::v12::Protocol::Discovery::GetResources & msg, int64_t correlationId,
+	void getDataObjectResource(const Energistics::Etp::v12::Protocol::Discovery::GetResources & msg, int64_t correlationId,
 		std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result);
 
 public:
 	MyOwnDiscoveryProtocolHandlers(ETP_NS::AbstractSession* mySession, MyDataObjectRepository* repo_): ETP_NS::DiscoveryHandlers(mySession), repo(repo_) {}
-	~MyOwnDiscoveryProtocolHandlers() {}
+	~MyOwnDiscoveryProtocolHandlers() = default;
 
 	void on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources & msg, int64_t correlationId);
 };

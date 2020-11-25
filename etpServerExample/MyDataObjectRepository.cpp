@@ -29,24 +29,11 @@ under the License.
 
 COMMON_NS::AbstractObject* MyDataObjectRepository::getObjectFromUri(const std::string & uri) const
 {
-	Energistics::Etp::v12::Datatypes::ErrorInfo error = ETP_NS::EtpHelpers::validateDataObjectUri(uri);
-	if (error.code > -1) {
-		throw ETP_NS::EtpException(error.code, error.message);
-	}
+	std::pair<std::string, std::string> uuidAndVersion = ETP_NS::EtpHelpers::getUuidAndVersionFromUri(uri);
 
-	if (uri[6] != '/') {
-		throw ETP_NS::EtpException(2, "The URI " + uri + " uses some dataspaces. This agent does not support dataspace.");
-	}
-
-	const size_t openingParenthesisPos = uri.find('(');
-	const std::string uuid = uri.substr(openingParenthesisPos + 1, 36);
-	const size_t comma = uri.find(',');
-	const size_t closingParenthesisPos = comma == std::string::npos ? std::string::npos : uri.find(')');
-	const std::string version = (comma == std::string::npos || closingParenthesisPos == std::string::npos) ? "" : uri.substr(comma + 1, closingParenthesisPos - comma - 1);
-
-	COMMON_NS::AbstractObject* result = getDataObjectByUuidAndVersion(uuid, version);
+	COMMON_NS::AbstractObject* result = getDataObjectByUuidAndVersion(uuidAndVersion.first, uuidAndVersion.second);
 	if (result == nullptr) {
-		throw ETP_NS::EtpException(11, uuid + " version \"" + version + "\" cannot be resolved as a data object in this store.");
+		throw ETP_NS::EtpException(11, uuidAndVersion.first + " version \"" + uuidAndVersion.second + "\" cannot be resolved as a data object in this store.");
 	}
 
 	return result;

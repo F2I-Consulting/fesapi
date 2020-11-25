@@ -34,6 +34,18 @@ namespace ETP_NS
 
 	public:
 
+		/**
+		* Serialization context
+		*/
+
+		EtpHdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess) :
+			EML2_NS::AbstractHdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess) {
+			initGsoapProxy(repo, guid, title, 20);
+		}
+
+		/**
+		* Deserialization context
+		*/
 		EtpHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
 			EML2_NS::AbstractHdfProxy(fromGsoap), session(nullptr), compressionLevel(0) {}
 
@@ -46,11 +58,15 @@ namespace ETP_NS
 		EtpHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			EML2_NS::AbstractHdfProxy(partialObject), session(nullptr), compressionLevel(0) {}
 
+		EtpHdfProxy(const COMMON_NS::DataObjectReference& dor) :
+			EML2_NS::AbstractHdfProxy(dor), session(nullptr), compressionLevel(0) {}
+
+
 		/**
 		* Destructor.
 		* Close the hdf file.
 		*/
-		~EtpHdfProxy() {}
+		~EtpHdfProxy() = default;
 
 		std::shared_ptr<DataArrayBlockingSession> getSession() { return session; }
 		void setSession(boost::asio::io_context& ioc, const std::string & host, const std::string & port, const std::string & target);
@@ -178,6 +194,12 @@ namespace ETP_NS
 			const unsigned long long * numValuesInEachDimension,
 			unsigned int numDimensions);
 
+		void writeArrayNdOfLong64Values(const std::string & groupName,
+			const std::string & name,
+			const long long * long64Values,
+			const unsigned long long * numValuesInEachDimension,
+			unsigned int numDimensions);
+
 		/**
 		* Write an array (potentially with multi dimensions) of gSoap unsigned long 64 values into the HDF file by means of a single dataset.
 		* @param groupName						The name of the group where to create the array of int values.
@@ -187,9 +209,9 @@ namespace ETP_NS
 		* @param numValuesInEachDimension		Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
 		* @param numDimensions					The number of the dimensions of the array to write
 		*/
-		void writeArrayNdOfGSoapULong64Values(const std::string & groupName,
+		void writeArrayNdOfULong64Values(const std::string & groupName,
 			const std::string & name,
-			const ULONG64 * ulong64Values,
+			const unsigned long long * ulong64Values,
 			const unsigned long long * numValuesInEachDimension,
 			unsigned int numDimensions);
 
@@ -527,12 +549,21 @@ namespace ETP_NS
 		EML2_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) {
 			return new EtpHdfProxy(partialObject);
 		}
+		EML2_NS::AbstractHdfProxy* make(const COMMON_NS::DataObjectReference& dor) {
+			return new EtpHdfProxy(dor);
+		}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		EML2_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) {
 			return new EtpHdfProxy(fromGsoap);
+		}
+
+		EML2_NS::AbstractHdfProxy* make(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+			const std::string & packageDirAbsolutePath, const std::string & externalFilePath,
+			COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {
+			return new EtpHdfProxy(repo, guid, title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
 		}
 	};
 }

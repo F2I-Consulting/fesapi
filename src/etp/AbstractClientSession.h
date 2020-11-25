@@ -53,7 +53,9 @@ namespace ETP_NS
 			port(),
 			target(),
 			authorization(),
-			successfulConnection(false) {}
+			successfulConnection(false) {
+			messageId = 2; // The client side of the connection MUST use ONLY non-zero even-numbered messageIds. 
+		}
 
 	    /**
 	     * @param host		The IP address on which the server is listening for etp (websocket) connection
@@ -75,6 +77,8 @@ namespace ETP_NS
 			authorization(authorization),
 			successfulConnection(false)
 		{
+			messageId = 2; // The client side of the connection MUST use ONLY non-zero even-numbered messageIds. 
+
 			// Build the request session
 			requestSession.applicationName = "F2I ETP Client";
 			requestSession.applicationVersion = "0.0";
@@ -82,16 +86,16 @@ namespace ETP_NS
 			requestSession.supportedDataObjects = supportedDataObjects;
 		}
 
-		virtual ~AbstractClientSession() {}
+		virtual ~AbstractClientSession() = default;
 
 		boost::asio::io_context& getIoContext() {
 			return ioc;
 		}
 
-		DLL_IMPORT_OR_EXPORT const std::string& getHost() const { return host; }
-		DLL_IMPORT_OR_EXPORT const std::string& getPort() const { return port; }
-		DLL_IMPORT_OR_EXPORT const std::string& getTarget() const { return target; }
-		DLL_IMPORT_OR_EXPORT const std::string& getAuthorization() const { return authorization; }
+		const std::string& getHost() const { return host; }
+		const std::string& getPort() const { return port; }
+		const std::string& getTarget() const { return target; }
+		const std::string& getAuthorization() const { return authorization; }
 
 		bool run() {
 			// We run the io_service off in its own thread so that it operates completely asynchronously with respect to the rest of the program.

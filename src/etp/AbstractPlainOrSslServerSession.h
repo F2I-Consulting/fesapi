@@ -42,9 +42,12 @@ namespace ETP_NS
 		boost::asio::strand<boost::asio::io_context::executor_type> strand;
 
 	public:
-		AbstractPlainOrSslServerSession(boost::asio::io_context& ioc) : strand(ioc.get_executor()) {}
+		AbstractPlainOrSslServerSession(boost::asio::io_context& ioc) : strand(ioc.get_executor())
+		{
+			messageId = 1; // The client side of the connection MUST use ONLY non-zero even-numbered messageIds.
+		}
 
-		virtual ~AbstractPlainOrSslServerSession() {}
+		virtual ~AbstractPlainOrSslServerSession() = default;
 
 		boost::asio::io_context& getIoContext() {
 			return derived().ws().get_executor().context();

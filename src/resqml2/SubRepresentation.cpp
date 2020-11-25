@@ -46,7 +46,7 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 
 	// ************ HDF ************		
 	hsize_t numValues = elementCount;
-	proxy->writeArrayNdOfGSoapULong64Values(getHdfGroup(), ossForHdf.str(), elementIndices, &numValues, 1);
+	proxy->writeArrayNdOfULong64Values(getHdfGroup(), ossForHdf.str(), elementIndices, &numValues, 1);
 	if (supportingRepIndices != nullptr) {
 		proxy->writeArrayNd(getHdfGroup(), ossForHdfSupRep.str(), H5T_NATIVE_SHORT, supportingRepIndices, &numValues, 1);
 	}

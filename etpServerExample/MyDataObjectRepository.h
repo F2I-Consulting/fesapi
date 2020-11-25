@@ -20,14 +20,17 @@ under the License.
 
 #include "common/DataObjectRepository.h"
 
+#include <boost/filesystem.hpp>
+
 #include "etp/AbstractSession.h"
 
 class MyDataObjectRepository : public COMMON_NS::DataObjectRepository
 {
 public:
 	std::vector<ETP_NS::AbstractSession*> sessions;
+	std::string hdf5Folder = boost::filesystem::temp_directory_path().string();
 
-	~MyDataObjectRepository() {}
+	~MyDataObjectRepository() = default;
 
 	COMMON_NS::AbstractObject* getObjectFromUri(const std::string & uri) const;
 

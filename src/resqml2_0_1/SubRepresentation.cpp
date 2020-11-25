@@ -191,7 +191,7 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 
 	// ************ HDF ************		
 	hsize_t numValues = elementCount;
-	proxy->writeArrayNdOfGSoapULong64Values(getHdfGroup(), ossForHdf.str(), elementIndices1, &numValues, 1);
+	proxy->writeArrayNdOfULong64Values(getHdfGroup(), ossForHdf.str(), elementIndices1, &numValues, 1);
 }
 
 COMMON_NS::DataObjectReference SubRepresentation::getHdfProxyDor() const

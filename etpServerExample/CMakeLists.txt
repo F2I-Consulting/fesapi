@@ -8,6 +8,8 @@ if (WITH_EXPERIMENTAL)
 	target_compile_definitions(etpServerExample PRIVATE "-DWITH_EXPERIMENTAL")
 endif(WITH_EXPERIMENTAL)
 
+find_package(Boost 1.66.0 REQUIRED filesystem)
+
 # ============================================================================
 # include directories
 # ============================================================================
@@ -58,7 +60,7 @@ target_sources(etpServerExample PRIVATE ${ALL_CPP_FILES} ${ALL_H_FILES})
 target_compile_definitions(etpServerExample PRIVATE BOOST_ALL_NO_LIB)
 	
 add_dependencies (etpServerExample ${CPP_LIBRARY_NAME})
-target_link_libraries (etpServerExample PRIVATE ${CPP_LIBRARY_NAME} ${Boost_SYSTEM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT} ${AVRO_LIBRARY_RELEASE})
+target_link_libraries (etpServerExample PRIVATE ${CPP_LIBRARY_NAME} ${Boost_FILESYSTEM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT} ${AVRO_LIBRARY_RELEASE})
 if (WIN32)
 	target_link_libraries (etpServerExample PRIVATE bcrypt.lib)
 	

@@ -253,8 +253,29 @@ namespace EML2_NS
 		  const unsigned long long * numValuesInEachDimension,
 		  unsigned int numDimensions) = 0;
 
+		/**
+		 * Writes an nd array of long 64 values into the HDF5 file by means of a single
+		 * dataset
+		 *
+		 * @param 	groupName					The name of the group where to create the nd array of
+		 * 										gSOAP unsigned long 64 values. This name must not contain '/'
+		 * 										character and must be directly contained in RESQML group.
+		 * @param 	name						The name of the nd array HDF5 dataset. It must not
+		 * 										already exist.
+		 * @param 	long64Values				1d array of long 64 values ordered firstly
+		 * 										by fastest direction.
+		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
+		 * 										write. They are ordered from fastest index to slowest index.
+		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual void writeArrayNdOfLong64Values(const std::string & groupName,
+			const std::string & name,
+			const long long * long64Values,
+			const unsigned long long * numValuesInEachDimension,
+			unsigned int numDimensions) = 0;
+
  		/**
- 		 * Writes an nd array of gSOAP unsigned long 64 values into the HDF5 file by means of a single
+ 		 * Writes an nd array of unsigned long 64 values into the HDF5 file by means of a single
  		 * dataset
  		 *
  		 * @param 	groupName					The name of the group where to create the nd array of
@@ -262,15 +283,15 @@ namespace EML2_NS
  		 * 										character and must be directly contained in RESQML group.
  		 * @param 	name						The name of the nd array HDF5 dataset. It must not
  		 * 										already exist.
- 		 * @param 	ulong64Values				1d array of gSOAP unsigned long 64 values ordered firstly
+ 		 * @param 	ulong64Values				1d array of unsigned long 64 values ordered firstly
  		 * 										by fastest direction.
  		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
  		 * 										write. They are ordered from fastest index to slowest index.
  		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
  		 */
-		DLL_IMPORT_OR_EXPORT virtual void writeArrayNdOfGSoapULong64Values(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT virtual void writeArrayNdOfULong64Values(const std::string & groupName,
 			const std::string & name,
-			const ULONG64 * ulong64Values,
+			const unsigned long long * ulong64Values,
 			const unsigned long long * numValuesInEachDimension,
 			unsigned int numDimensions) = 0;
 
@@ -864,8 +885,8 @@ namespace EML2_NS
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
 		 */
-		AbstractHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EpcExternalPartReference(partialObject) {}
-		AbstractHdfProxy(const COMMON_NS::DataObjectReference& dor) : EpcExternalPartReference(dor) {}
+		AbstractHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EpcExternalPartReference(partialObject), openingMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {}
+		AbstractHdfProxy(const COMMON_NS::DataObjectReference& dor) : EpcExternalPartReference(dor), openingMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {}
 
 		/** / The directory where the EPC document is stored. */
 		std::string packageDirectoryAbsolutePath;

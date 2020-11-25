@@ -23,31 +23,37 @@ under the License.
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
+#include <common/EpcDocument.h>
+
 #include <etp/EtpHdfProxy.h>
 #include <etp/EtpHelpers.h>
+#include <etp/PlainClientSession.h>
 
 #include <resqml2/ContinuousProperty.h>
-#include <resqml2/LocalDepth3dCrs.h>
 #include <resqml2/IjkGridExplicitRepresentation.h>
+#include <resqml2/PointSetRepresentation.h>
+
+#include <resqml2_0_1/LocalDepth3dCrs.h>
 
 #include "MyOwnDiscoveryProtocolHandlers.h"
-
-MyOwnCoreProtocolHandlers::~MyOwnCoreProtocolHandlers() {
-}
+#include "MyOwnStoreProtocolHandlers.h"
 
 void printHelp()
 {
 	std::cout << "List of available commands :" << std::endl;
 	std::cout << "\tList" << std::endl << "\t\tList the objects which have been got from ETP to the in-memory epc" << std::endl << std::endl;
-	//std::cout << "\tGetDataspaces URI depth(default 1)" << std::endl << std::endl;
+	std::cout << "\tPutXmldAndHdfAtOnce" << std::endl << "\t\tPut a dummy point set representation to the store sending XML and HDF5 points at once." << std::endl << std::endl;
 	std::cout << "\tGetResources URI scope(default self) depth(default 1) countObjects(true or false, default is true) getObject(true or false, default is false) dataTypeFilter,dataTypeFilter,...(default noFilter)" << std::endl << std::endl;
 	std::cout << "\tGetDataObjects dataObjectURI,dataObjectURI,..." << std::endl << "\t\tGet the objects from an ETP store and store them into the in memory epc (only create partial TARGET relationships, not any SOURCE relationships)" << std::endl << std::endl;
-	std::cout << "\tPutDataObject" << std::endl << "\t\tCreate an IJK Grid on the fly and put/push it to the store" << std::endl << std::endl;
+	std::cout << "\tGetXYZPoints URI" << std::endl << "\t\tGet the XYZ points of a rep from store and print some of them." << std::endl << std::endl;
+	std::cout << "\tPutDataObject UUID" << std::endl << "\t\tPut the XML part of a dataobject which is on the client side (use \"Load\" command to laod some dataobjects on client side) to the store" << std::endl << std::endl;
 	std::cout << "\tGetSourceObjects dataObjectURI" << std::endl << "\t\tGet the source objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
 	std::cout << "\tGetTargetObjects dataObjectURI" << std::endl << "\t\tGet the target objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
 	std::cout << "\tGetResourceObjects dataObjectURI" << std::endl << "\t\tGet the object, its source and its target objects from an ETP store and put it into the in memory epc" << std::endl << std::endl;
-	std::cout << "\tGetDataArrays epcExternalPartURI datasetPathInEpcExternalPart" << std::endl << "\t\tGet the numerical values from a dataset included in an EpcExternalPart over ETP." << std::endl << std::endl;
+	std::cout << "\tGetDataArray epcExternalPartURI datasetPathInEpcExternalPart" << std::endl << "\t\tGet the numerical values from a dataset included in an EpcExternalPart over ETP." << std::endl << std::endl;
+	std::cout << "\tPutDataArray epcExternalPartURI datasetPathInEpcExternalPart" << std::endl << "\t\tPut a dummy {0,1,2,3,4,5,6,7,8,9} integer array in a particular store epcExternalPartURI at a particular dataset path" << std::endl << std::endl;
 	std::cout << "\tSubscribeNotif URI scope(default self) depth(default 1) receiveXML(true or false, default is true) startTime(default is now) dataTypeFilter,dataTypeFilter,...(default noFilter)" << std::endl << "\t\tSubscribe to notifications." << std::endl << std::endl;
+	std::cout << "\tLoad epcDocument" << std::endl << "\t\tLoad an EPC document into the DataObjectRepository." << std::endl << std::endl;
 	std::cout << "\tquit" << std::endl << "\t\tQuit the session." << std::endl << std::endl;
 }
 
@@ -69,20 +75,14 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 		if (commandTokens[0] == "quit") {
 			continue;
 		}
-		
-		/*
-		if (commandTokens[0] == "GetDataspaces") {
-			Energistics::Etp::v12::Protocol::Discovery::GetDataspaces mb;
-			mb.uri = commandTokens[1];
-			mb.depth = 1;
-			if (commandTokens.size() > 2) {
-				mb.depth = std::stoi(commandTokens[2]);
-			}
-			session->send(mb);
+			
+		if (commandTokens[0] == "Load") {
+			COMMON_NS::EpcDocument epcDoc(commandTokens[1]);
+			epcDoc.deserializeInto(*repo);
+			std::cout << "LOADED!" << std::endl;
 			continue;
 		}
-		else*/
-		if (commandTokens[0] == "GetResources") {
+		else if (commandTokens[0] == "GetResources") {
 			Energistics::Etp::v12::Protocol::Discovery::GetResources mb;
 			mb.context.uri = commandTokens[1];
 			mb.scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
@@ -134,30 +134,36 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 			getO.uris = tokenMaps;
 			session->send(getO);
 		}
-		else if (commandTokens[0] == "PutDataObject") {
-			Energistics::Etp::v12::Protocol::Store::PutDataObjects putDataObjects;
-			
-			// Fake the creation of an IJK Grid
-			COMMON_NS::DataObjectRepository repo;
-			EML2_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy", "../..", "fakeForIjkGrid.h5", COMMON_NS::DataObjectRepository::openingMode::OVERWRITE);
-			repo.setDefaultHdfProxy(hdfProxy);
+		else if (commandTokens[0] == "GetXYZPoints") {
+			/* This works in a blocking way i.e. getXyzPointCountOfPatch will return only when the store would have answered back.
+			HDF proxy factory and custom HDF proxy are used for that. See main.cpp for setting the custom HDF proxy factory.
+			You should also look at MyOwnStoreProtocolHandlers::on_GetDataObjectsResponse which allows to set the session information to the HDF proxy.
+			We could have hard set those information thanks to HDF proxy factory.
 
-			RESQML2_NS::LocalDepth3dCrs* local3dCrs = repo.createLocalDepth3dCrs("f951f4b7-684a-4c1b-bcd7-bc61d939b328", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
-			repo.setDefaultCrs(local3dCrs);
+			If you would want non blocking approach, please see GetDataArrays which require more work to fill in the arguments.
+			*/
+			std::string uuid = commandTokens[1].substr(commandTokens[1].find("(") + 1, 36);
+			auto* rep = repo->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(uuid);
+			if (rep == nullptr) {
+				std::cerr << " The URI " << commandTokens[1] << " does not correspond to a representation which is on client side. Please get first this dataobject from the store before to call GetXYZPoints on it." << std::endl;
+				continue;
+			}
+			auto xyzPointCount = rep->getXyzPointCountOfPatch(0);
+			std::unique_ptr<double[]> xyzPoints(new double[xyzPointCount * 3]);
+			rep->getXyzPointsOfPatch(0, xyzPoints.get());
+			for (auto xyzPointIndex = 0; xyzPointIndex < xyzPointCount && xyzPointIndex < 20; ++xyzPointIndex) {
+				std::cout << "XYZ Point Index " << xyzPointIndex << " : " << xyzPoints[xyzPointIndex * 3] << "," << xyzPoints[xyzPointIndex * 3 + 1] << "," << xyzPoints[xyzPointIndex * 3 + 2] << std::endl;
+			}
+		}
+		else if (commandTokens[0] == "PutDataObject") {		
+			auto* dataObj = repo->getDataObjectByUuid(commandTokens[1]);
+			if (dataObj != nullptr) {
+				Energistics::Etp::v12::Protocol::Store::PutDataObjects putDataObjects;
+				Energistics::Etp::v12::Datatypes::Object::DataObject dataObject = ETP_NS::EtpHelpers::buildEtpDataObjectFromEnergisticsObject(dataObj);
+				putDataObjects.dataObjects["0"] = dataObject;
 
-			RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid = repo.createIjkGridExplicitRepresentation("", "Put IJK Grid", 2, 1, 1);
-			double nodes[48] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350, /* SPLIT*/ 375, 0, 350, 375, 150, 350,
-				0, 0, 500, 375, 0, 500, 700, 0, 550, 0, 150, 500, 375, 150, 500, 700, 150, 550, /* SPLIT*/ 375, 0, 550, 375, 150, 550 };
-			unsigned int pillarOfCoordinateLine[2] = { 1, 4 };
-			unsigned int splitCoordinateLineColumnCumulativeCount[2] = { 1, 2 };
-			unsigned int splitCoordinateLineColumns[2] = { 1, 1 };
-			ijkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, false, nodes, hdfProxy,
-				2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
-
-			Energistics::Etp::v12::Datatypes::Object::DataObject dataObject = ETP_NS::EtpHelpers::buildEtpDataObjectFromEnergisticsObject(ijkgrid);
-			putDataObjects.dataObjects["0"] = dataObject;
-
-			session->send(putDataObjects, 0, 0x10); // 0x10 requires Acknowledge from the store
+				session->send(putDataObjects, 0, 0x10); // 0x10 requires Acknowledge from the store
+			}			
 		}
 		else if (commandTokens[0] == "SubscribeNotif") {
 			Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotifications mb;
@@ -209,63 +215,12 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 		}
 
 		if (commandTokens.size() == 1) {
-			if (commandTokens[0] == "GetXyzOfIjkGrids") {
-				//setSessionToEtpHdfProxy(session);
-				auto ijkGridSet = repo->getIjkGridRepresentationSet();
-				for (const auto & ijkGrid : ijkGridSet) {
-					if (ijkGrid->isPartial()) {
-						std::cout << "Partial Ijk Grid " << ijkGrid->getTitle() << " : " << ijkGrid->getUuid() << std::endl;
-						continue;
-					}
-					else {
-						std::cout << "Ijk Grid " << ijkGrid->getTitle() << " : " << ijkGrid->getUuid() << std::endl;
-						if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::NO_GEOMETRY) {
-							std::cout << "This IJK Grid has got no geometry." << std::endl;
-							continue;
-						}
-					}
-
-					//*****************
-					//*** GEOMETRY ****
-					//*****************
-					auto xyzPointCount = ijkGrid->getXyzPointCountOfPatch(0);
-					std::unique_ptr<double[]> xyzPoints(new double[xyzPointCount * 3]);
-					ijkGrid->getXyzPointsOfPatchInGlobalCrs(0, xyzPoints.get());
-					for (auto xyzPointIndex = 0; xyzPointIndex < xyzPointCount && xyzPointIndex < 20; ++xyzPointIndex) {
-						std::cout << "XYZ Point Index " << xyzPointIndex << " : " << xyzPoints[xyzPointIndex * 3] << "," << xyzPoints[xyzPointIndex * 3 + 1] << "," << xyzPoints[xyzPointIndex * 3 + 2] << std::endl;
-					}
-
-					//*****************
-					//*** PROPERTY ****
-					//*****************
-					auto propSet = ijkGrid->getPropertySet();
-					for (const auto & prop : propSet) {
-						RESQML2_NS::ContinuousProperty const * continuousProp = dynamic_cast<RESQML2_NS::ContinuousProperty const *>(prop);
-						if (continuousProp != nullptr &&
-							continuousProp->getAttachmentKind() == gsoap_resqml2_0_1::resqml20__IndexableElements::resqml20__IndexableElements__cells) {
-							std::cout << "Continuous property " << prop->getTitle() << " : " << prop->getUuid() << std::endl;
-							auto cellCount = ijkGrid->getCellCount();
-							std::unique_ptr<double[]> values(new double[cellCount * continuousProp->getElementCountPerValue()]);
-							continuousProp->getDoubleValuesOfPatch(0, values.get());
-							for (auto cellIndex = 0; cellIndex < cellCount; ++cellIndex) {
-								for (unsigned int elementIndex = 0; elementIndex < continuousProp->getElementCountPerValue(); ++elementIndex) {
-									std::cout << "Cell Index " << cellIndex << " : " << values[cellIndex] << std::endl;
-								}
-							}
-						}
-						else {
-							std::cout << "Non continuous property " << prop->getTitle() << " : " << prop->getUuid() << std::endl;
-						}
-					}
-					std::cout << std::endl;
-				}
-			}
-			else if (commandTokens[0] == "List") {
+			if (commandTokens[0] == "List") {
 				std::cout << "*** START LISTING ***" << std::endl;
 				for (const auto& entryPair : repo->getDataObjects()) {
-					for (const auto obj : entryPair.second) {
+					for (const auto* obj : entryPair.second) {
 						if (!obj->isPartial()) {
-							std::cout << entryPair.first << " : " << obj->getTitle() << std::endl;
+							std::cout << "******************" << entryPair.first << " : " << obj->getTitle() << "******************" << std::endl;
 							std::cout << "*** SOURCE REL ***" << std::endl;
 							for (auto srcObj : obj->getRepository()->getSourceObjects(obj)) {
 								std::cout << srcObj->getUuid() << " : " << srcObj->getXmlTag() << std::endl;
@@ -282,6 +237,32 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 					}
 				}
 				std::cout << "*** END LISTING ***" << std::endl;
+			}
+			else if (commandTokens[0] == "PutXmldAndHdfAtOnce") {
+				// Create the point set representation, an ETP HDF proxy if necessary and a partial crs
+				RESQML2_NS::PointSetRepresentation* h1i1PointSetRep = repo->createPointSetRepresentation("", "Horizon1 Interp1 PointSetRep");
+				auto* crs = repo->createPartial<RESQML2_0_1_NS::LocalDepth3dCrs>("", "");
+				if (repo->getDefaultHdfProxy() == nullptr) {
+					auto* etpHdfProxy = repo->createHdfProxy("", "", "", "", COMMON_NS::DataObjectRepository::openingMode::READ_WRITE);
+					auto* plainClientSession = dynamic_cast<ETP_NS::PlainClientSession*>(session);
+					if (plainClientSession != nullptr) {
+						(dynamic_cast<ETP_NS::EtpHdfProxy*>(etpHdfProxy))->setSession(plainClientSession->getIoContext(), plainClientSession->getHost(), plainClientSession->getPort(), plainClientSession->getTarget());
+					}
+					repo->setDefaultHdfProxy(etpHdfProxy);
+				}
+
+				// Create and push the numeical values to the store
+				// Internally it uses the ETP Hdf proxy set as the default HDF proxy of the repository in main.cpp.
+				// pushBackGeometryPatch is a blocking method. If you want non blopcking method, you need to use PutDataArray directly.
+				double pointCoords[18] = { 10, 70, 301, 11, 21, 299, 150, 30, 301, 400, 0, 351, 450, 75, 340, 475, 100, 350 };
+				h1i1PointSetRep->pushBackGeometryPatch(6, pointCoords, nullptr, crs);
+
+				// Now send the XML part
+				Energistics::Etp::v12::Protocol::Store::PutDataObjects putDataObjects;
+				Energistics::Etp::v12::Datatypes::Object::DataObject dataObject = ETP_NS::EtpHelpers::buildEtpDataObjectFromEnergisticsObject(h1i1PointSetRep);
+				putDataObjects.dataObjects["0"] = dataObject;
+
+				session->send(putDataObjects, 0, 0x10); // 0x10 requires Acknowledge from the store
 			}
 		}
 		else if (commandTokens.size() == 2) {
@@ -313,16 +294,35 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 			}
 		}
 		else if (commandTokens.size() == 3) {
-			if (commandTokens[0] == "GetDataArrays") {
+			if (commandTokens[0] == "GetDataArray") {
 				Energistics::Etp::v12::Protocol::DataArray::GetDataArrays gda;
 				gda.dataArrays["0"].uri = commandTokens[1];
 				gda.dataArrays["0"].pathInResource = commandTokens[2];
 				std::cout << gda.dataArrays["0"].pathInResource << std::endl;
 				session->send(gda);
 			}
+			else if (commandTokens[0] == "PutDataArray") {
+				Energistics::Etp::v12::Protocol::DataArray::PutDataArrays pda;
+				pda.dataArrays["0"].uid.uri = commandTokens[1];
+				pda.dataArrays["0"].uid.pathInResource = commandTokens[2];
+
+				std::vector<int64_t> dimensions = { 10 };
+				pda.dataArrays["0"].array.dimensions = dimensions;
+
+				Energistics::Etp::v12::Datatypes::AnyArray data;
+				Energistics::Etp::v12::Datatypes::ArrayOfInt arrayOfInt;
+				arrayOfInt.values = { 0,1,2,3,4,5,6,7,8,9 };
+				data.item.set_ArrayOfInt(arrayOfInt);
+				pda.dataArrays["0"].array.data = data;
+
+				session->send(pda);
+			}
 		}
 	}
 
+	for (auto* hdfProxy : repo->getHdfProxySet()) {
+		hdfProxy->close();
+	}
 	session->close();
 }
 

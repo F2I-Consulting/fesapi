@@ -96,7 +96,29 @@ void EtpHdfProxy::writeArrayNdOfDoubleValues(const string & groupName,
 	const unsigned long long * numValuesInEachDimension,
 	unsigned int numDimensions)
 {
-	throw logic_error("Not implemented yet");
+	if (!isOpened()) {
+		open();
+	}
+
+	Energistics::Etp::v12::Protocol::DataArray::PutDataArrays pda;
+	pda.dataArrays["0"].uid.uri = getUri();
+	pda.dataArrays["0"].uid.pathInResource = (groupName.back() == '/' ? groupName : groupName + '/') + name;
+
+	size_t totalCount = 1;
+	std::vector<int64_t> dimensions;
+	for (size_t i = 0; i < numDimensions; ++i) {
+		dimensions.push_back(numValuesInEachDimension[i]);
+		totalCount *= numValuesInEachDimension[i];
+	}
+	pda.dataArrays["0"].array.dimensions = dimensions;
+
+	Energistics::Etp::v12::Datatypes::AnyArray data;
+	Energistics::Etp::v12::Datatypes::ArrayOfDouble arrayOfDbl;
+	arrayOfDbl.values = std::vector<double>(dblValues, dblValues + totalCount);
+	data.item.set_ArrayOfDouble(arrayOfDbl);
+	pda.dataArrays["0"].array.data = data;
+
+	session->send(pda);
 }
 
 void EtpHdfProxy::writeArrayNdOfCharValues(const std::string & groupName,
@@ -117,9 +139,18 @@ void EtpHdfProxy::writeArrayNdOfIntValues(const string & groupName,
 	throw logic_error("Not implemented yet");
 }
 
-void EtpHdfProxy::writeArrayNdOfGSoapULong64Values(const std::string & groupName,
+void EtpHdfProxy::writeArrayNdOfLong64Values(const std::string & groupName,
 	const std::string & name,
-	const ULONG64 * ulong64Values,
+	const long long * long64Values,
+	const unsigned long long * numValuesInEachDimension,
+	unsigned int numDimensions)
+{
+	throw logic_error("Not implemented yet");
+}
+
+void EtpHdfProxy::writeArrayNdOfULong64Values(const std::string & groupName,
+	const std::string & name,
+	const unsigned long long * ulong64Values,
 	const unsigned long long * numValuesInEachDimension,
 	unsigned int numDimensions)
 {

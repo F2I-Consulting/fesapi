@@ -734,15 +734,14 @@ namespace COMMON_NS
 		 * 									guid will be generated.
 		 * @param 	title				  	The title to set to the HDF5 file proxy. If empty then
 		 * 									\"unknown\" title will be set.
-		 * @param 	packageDirAbsolutePath	Path of the directory containing the EPC file.
-		 * @param 	externalFilePath	  	Path of the HDF5 file relative to the directory where the EPC
-		 * 									document is stored.
+		 * @param 	packageDirAbsolutePath	Path of the directory where the HDF5 file must be created.
+		 * @param 	filePath	  			Path of the HDF5 file relative to packageDirAbsolutePath.
 		 * @param 	hdfPermissionAccess   	The HDF5 file permission access. It is read
 		 * 										only by default.
 		 *
 		 * @returns	A pointer to an instantiated HDF5 file proxy.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractHdfProxy* createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess);
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractHdfProxy* createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & filePath, DataObjectRepository::openingMode hdfPermissionAccess);
 
 		//************ CRS *******************
 

@@ -174,6 +174,14 @@ public:
 		const unsigned long long * numValuesInEachDimension,
 		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
 
+	void writeArrayNdOfLong64Values(const std::string & groupName,
+		const std::string & name,
+		const long long * long64Values,
+		const unsigned long long * numValuesInEachDimension,
+		unsigned int numDimensions) {
+		throw std::logic_error("Not implemented yet");
+	}
+
 	/**
 	* Write an array (potentially with multi dimensions) of gSoap unsigned long 64 values into the HDF file by means of a single dataset.
 	* @param groupName						The name of the group where to create the array of int values.
@@ -183,9 +191,9 @@ public:
 	* @param numValuesInEachDimension		Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
 	* @param numDimensions					The number of the dimensions of the array to write
 	*/
-	void writeArrayNdOfGSoapULong64Values(const std::string & groupName,
+	void writeArrayNdOfULong64Values(const std::string & groupName,
 		const std::string & name,
-		const ULONG64 * ulong64Values,
+		const unsigned long long * ulong64Values,
 		const unsigned long long * numValuesInEachDimension,
 		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
 

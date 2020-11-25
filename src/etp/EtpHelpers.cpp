@@ -22,7 +22,8 @@ under the License.
 #include <regex>
 #endif
 
-#include "../etp/AbstractSession.h"
+#include "AbstractSession.h"
+#include "EtpException.h"
 
 #include "../common/AbstractObject.h"
 
@@ -34,14 +35,14 @@ Energistics::Etp::v12::Datatypes::ErrorInfo ETP_NS::EtpHelpers::validateUri(cons
 	// https://stackoverflow.com/questions/12530406/is-gcc-4-8-or-earlier-buggy-about-regular-expressions
 #if (defined(_WIN32) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9))))
 	const bool result =
-		std::regex_match(uri, std::regex("^eml:/(//)?(dataspace[(].*[)])?", std::regex::ECMAScript)) ||
-		std::regex_match(uri, std::regex("^eml:/(//)?(dataspace[(].*[)]/)?(resqml20|eml20)\.obj_[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}(,.*)?[)]", std::regex::ECMAScript)) ||
-		std::regex_match(uri, std::regex("^eml:/(//)?(dataspace[(].*[)]/)?(witsml|resqml|prodml|eml)([0-9]{2})\.obj_[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}(,.*)?[)]", std::regex::ECMAScript));
+		std::regex_match(uri, std::regex("^eml:///(dataspace[(]'.*'[)])?", std::regex::ECMAScript)) ||
+		std::regex_match(uri, std::regex("^eml:///(dataspace[(]'.*'[)]/)?(resqml20|eml20)\.obj_[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}(,.*)?[)]", std::regex::ECMAScript)) ||
+		std::regex_match(uri, std::regex("^eml:///(dataspace[(]'.*'[)]/)?(witsml|resqml|prodml|eml)([0-9]{2})\[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}(,.*)?[)]", std::regex::ECMAScript));
 	if (!result) {
 		std::cerr << "The URI \"" + uri + "\"  is invalid." << std::endl;
 	}
 #else
-	const bool result = uri.find("eml:/") == 0;
+	const bool result = uri.find("eml:///") == 0;
 #endif
 
 	if (!result) {
@@ -67,13 +68,13 @@ Energistics::Etp::v12::Datatypes::ErrorInfo ETP_NS::EtpHelpers::validateDataObje
 	// https://stackoverflow.com/questions/12530406/is-gcc-4-8-or-earlier-buggy-about-regular-expressions
 #if (defined(_WIN32) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9))))
 	const bool result = (uri.find("resqml20") != std::string::npos || uri.find("eml20") != std::string::npos)
-		? std::regex_match(uri, std::regex("^eml:/(//)?(dataspace[(].*[)]/)?(resqml20|eml20)\.obj_[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}(,.*)?[)]", std::regex::ECMAScript))
-		: std::regex_match(uri, std::regex("^eml:/(//)?(dataspace[(].*[)]/)?(witsml|resqml|prodml|eml)([0-9]{2})\.[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}(,.*)?[)]", std::regex::ECMAScript));
+		? std::regex_match(uri, std::regex("^eml:///(dataspace[(]'.*'[)]/)?(resqml20|eml20)\.obj_[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}(,.*)?[)]", std::regex::ECMAScript))
+		: std::regex_match(uri, std::regex("^eml:///(dataspace[(]'.*'[)]/)?(witsml|resqml|prodml|eml)([0-9]{2})\.[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}(,.*)?[)]", std::regex::ECMAScript));
 	if (!result) {
 		std::cerr << "The data object URI \"" + uri + "\"  is invalid." << std::endl;
 	}
 #else
-	const bool result = uri.find("eml:/") == 0 && 
+	const bool result = uri.find("eml:///") == 0 && 
 		(uri.find("resqml20.obj_") != std::string::npos || uri.find("eml20.obj_") != std::string::npos ||
 		uri.find("witsml20.") != std::string::npos || uri.find("eml21.") != std::string::npos ||
 		uri.find("prodml21.") != std::string::npos || uri.find("eml22.") != std::string::npos ||
@@ -123,6 +124,8 @@ Energistics::Etp::v12::Datatypes::Object::Resource ETP_NS::EtpHelpers::buildEtpR
 		result.targetCount = obj->getRepository()->getTargetObjects(obj).size();
 	}
 
+	result.storeLastWrite = -1; // Not supported yet
+
 	return result;
 }
 
@@ -150,4 +153,26 @@ Energistics::Etp::v12::Protocol::Core::ProtocolException ETP_NS::EtpHelpers::bui
 	peMessage.error.emplace(errorInfo);
 
 	return peMessage;
+}
+
+std::pair<std::string, std::string> ETP_NS::EtpHelpers::getUuidAndVersionFromUri(const std::string & uri)
+{
+	std::pair<std::string, std::string> result;
+
+	Energistics::Etp::v12::Datatypes::ErrorInfo error = ETP_NS::EtpHelpers::validateDataObjectUri(uri);
+	if (error.code > -1) {
+		throw ETP_NS::EtpException(error.code, error.message);
+	}
+
+	if (uri[6] != '/') {
+		throw ETP_NS::EtpException(2, "The URI " + uri + " uses some dataspaces. This agent does not support dataspace.");
+	}
+
+	const size_t openingParenthesisPos = uri.find('(');
+	const std::string uuid = uri.substr(openingParenthesisPos + 1, 36);
+	const size_t comma = uri.find(',');
+	const size_t closingParenthesisPos = comma == std::string::npos ? std::string::npos : uri.find(')');
+	const std::string version = (comma == std::string::npos || closingParenthesisPos == std::string::npos) ? "" : uri.substr(comma + 1, closingParenthesisPos - comma - 1);
+
+	return std::pair<std::string, std::string>(uuid, version);
 }

@@ -448,7 +448,24 @@ namespace COMMON_NS
 
 		std::vector<std::string> getUuids() const;
 		
-		EML2_NS::AbstractHdfProxy* createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess);
+		/**
+		 * @brief	Creates a non parallel access to an HDF5 file for writing to it. Resulting HDF5 file
+		 * 			proxy is stored into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	guid				  	The guid to set to the HDF5 file proxy. If empty then a new
+		 * 									guid will be generated.
+		 * @param 	title				  	The title to set to the HDF5 file proxy. If empty then
+		 * 									\"unknown\" title will be set.
+		 * @param 	packageDirAbsolutePath	Path of the directory where the HDF5 file must be created.
+		 * @param 	filePath	  			Path of the HDF5 file relative to packageDirAbsolutePath.
+		 * @param 	hdfPermissionAccess   	The HDF5 file permission access. It is read
+		 * 										only by default.
+		 *
+		 * @returns	A pointer to an instantiated HDF5 file proxy.
+		 */
+		EML2_NS::AbstractHdfProxy* createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & filePath, DataObjectRepository::openingMode hdfPermissionAccess);
 
 		//************ CRS *******************/
 

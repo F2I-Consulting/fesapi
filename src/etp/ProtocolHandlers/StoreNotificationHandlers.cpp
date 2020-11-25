@@ -21,6 +21,8 @@ under the License.
 #include "../AbstractSession.h"
 #include "../EtpHelpers.h"
 
+#include "../../tools/date.h"
+
 using namespace ETP_NS;
 
 void StoreNotificationHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d)
@@ -123,7 +125,8 @@ void StoreNotificationHandlers::on_ObjectChanged(const Energistics::Etp::v12::Pr
 	case Energistics::Etp::v12::Datatypes::Object::ObjectChangeKind::update: std::cout << "update "; break;
 	}
 
-	std::cout << "on " << ctime(&msg.change.changeTime) << std::endl;
+	auto duration = std::chrono::microseconds(msg.change.changeTime);
+	std::cout << "on " << date::format("%FT%TZ", date::floor<std::chrono::microseconds>(duration)) << std::endl;
 
 	printDataObject(msg.change.dataObject);
 
