@@ -12,7 +12,7 @@ def fixFile(file):
     # replace "= '*'" with "= (int)'*'" in file
     with open (file, "r+" ) as f:
         content = f.read()
-        content_new = re.sub("= \'(\w{1})\'", r"= (int)'\1'", content, flags = re.M)
+        content_new = re.sub("= \'(\w{1})\'", lambda x: "= " + str(ord(x.group(1))), content, flags = re.M)
         f.seek(0) # set the position to the top of the file
         f.write(content_new)
         f.truncate() # truncates the file        

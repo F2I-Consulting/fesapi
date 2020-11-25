@@ -219,36 +219,36 @@ namespace gsoap_eml2_1
 		witsml20__ChannelIndexType__pressure = 6
 	};
 	enum eml21__UnitOfMeasure {
-		eml21__UnitOfMeasure__A = (int)'A',
-		eml21__UnitOfMeasure__a = (int)'a',
-		eml21__UnitOfMeasure__b = (int)'b',
-		eml21__UnitOfMeasure__B = (int)'B',
-		eml21__UnitOfMeasure__C = (int)'C',
-		eml21__UnitOfMeasure__D = (int)'D',
-		eml21__UnitOfMeasure__d = (int)'d',
-		eml21__UnitOfMeasure__F = (int)'F',
-		eml21__UnitOfMeasure__g = (int)'g',
-		eml21__UnitOfMeasure__H = (int)'H',
-		eml21__UnitOfMeasure__h = (int)'h',
-		eml21__UnitOfMeasure__J = (int)'J',
-		eml21__UnitOfMeasure__K = (int)'K',
-		eml21__UnitOfMeasure__L = (int)'L',
-		eml21__UnitOfMeasure__m = (int)'m',
-		eml21__UnitOfMeasure__N = (int)'N',
-		eml21__UnitOfMeasure__O = (int)'O',
-		eml21__UnitOfMeasure__P = (int)'P',
-		eml21__UnitOfMeasure__S = (int)'S',
-		eml21__UnitOfMeasure__s = (int)'s',
-		eml21__UnitOfMeasure__t = (int)'t',
-		eml21__UnitOfMeasure__T = (int)'T',
-		eml21__UnitOfMeasure__V = (int)'V',
-		eml21__UnitOfMeasure__W = (int)'W',
-		eml21__UnitOfMeasure___x0025 = (int)'u',
-		eml21__UnitOfMeasure___x0025_x005barea_x005d = (int)'v',
-		eml21__UnitOfMeasure___x0025_x005bmass_x005d = (int)'w',
-		eml21__UnitOfMeasure___x0025_x005bmolar_x005d = (int)'x',
-		eml21__UnitOfMeasure___x0025_x005bvol_x005d = (int)'y',
-		eml21__UnitOfMeasure___x0028bbl_x002fd_x0029_x002f_x0028bbl_x002fd_x0029 = (int)'z',
+		eml21__UnitOfMeasure__A = 65,
+		eml21__UnitOfMeasure__a = 97,
+		eml21__UnitOfMeasure__b = 98,
+		eml21__UnitOfMeasure__B = 66,
+		eml21__UnitOfMeasure__C = 67,
+		eml21__UnitOfMeasure__D = 68,
+		eml21__UnitOfMeasure__d = 100,
+		eml21__UnitOfMeasure__F = 70,
+		eml21__UnitOfMeasure__g = 103,
+		eml21__UnitOfMeasure__H = 72,
+		eml21__UnitOfMeasure__h = 104,
+		eml21__UnitOfMeasure__J = 74,
+		eml21__UnitOfMeasure__K = 75,
+		eml21__UnitOfMeasure__L = 76,
+		eml21__UnitOfMeasure__m = 109,
+		eml21__UnitOfMeasure__N = 78,
+		eml21__UnitOfMeasure__O = 79,
+		eml21__UnitOfMeasure__P = 80,
+		eml21__UnitOfMeasure__S = 83,
+		eml21__UnitOfMeasure__s = 115,
+		eml21__UnitOfMeasure__t = 116,
+		eml21__UnitOfMeasure__T = 84,
+		eml21__UnitOfMeasure__V = 86,
+		eml21__UnitOfMeasure__W = 87,
+		eml21__UnitOfMeasure___x0025 = 117,
+		eml21__UnitOfMeasure___x0025_x005barea_x005d = 118,
+		eml21__UnitOfMeasure___x0025_x005bmass_x005d = 119,
+		eml21__UnitOfMeasure___x0025_x005bmolar_x005d = 120,
+		eml21__UnitOfMeasure___x0025_x005bvol_x005d = 121,
+		eml21__UnitOfMeasure___x0028bbl_x002fd_x0029_x002f_x0028bbl_x002fd_x0029 = 122,
 		eml21__UnitOfMeasure___x0028m3_x002fd_x0029_x002f_x0028m3_x002fd_x0029 = 123,
 		eml21__UnitOfMeasure___x0028m3_x002fs_x0029_x002f_x0028m3_x002fs_x0029 = 124,
 		eml21__UnitOfMeasure__0_x002e001_x0020bbl_x002fft3 = 125,
@@ -1669,7 +1669,7 @@ namespace gsoap_eml2_1
 		eml21__AnglePerLengthUom__rev_x002fft = 7,
 		eml21__AnglePerLengthUom__rev_x002fm = 8
 	};
-	enum eml21__LengthUom { eml21__LengthUom__m = (int)'m', eml21__LengthUom__0_x002e1_x0020ft = (int)'n', eml21__LengthUom__0_x002e1_x0020ft_x005bUS_x005d = (int)'o', eml21__LengthUom__0_x002e1_x0020in = (int)'p', eml21__LengthUom__0_x002e1_x0020yd = (int)'q', eml21__LengthUom__1_x002f16_x0020in = (int)'r', eml21__LengthUom__1_x002f2_x0020ft = (int)'s', eml21__LengthUom__1_x002f32_x0020in = (int)'t', eml21__LengthUom__1_x002f64_x0020in = (int)'u', eml21__LengthUom__10_x0020ft = (int)'v', eml21__LengthUom__10_x0020in = (int)'w', eml21__LengthUom__10_x0020km = (int)'x', eml21__LengthUom__100_x0020ft = (int)'y', eml21__LengthUom__100_x0020km = (int)'z', eml21__LengthUom__1000_x0020ft = 123, eml21__LengthUom__30_x0020ft = 124, eml21__LengthUom__30_x0020m = 125, eml21__LengthUom__angstrom = 126, eml21__LengthUom__chain = 127, eml21__LengthUom__chain_x005bBnA_x005d = 128, eml21__LengthUom__chain_x005bBnB_x005d = 129, eml21__LengthUom__chain_x005bCla_x005d = 130, eml21__LengthUom__chain_x005bInd37_x005d = 131, eml21__LengthUom__chain_x005bSe_x005d = 132, eml21__LengthUom__chain_x005bSeT_x005d = 133, eml21__LengthUom__chain_x005bUS_x005d = 134, eml21__LengthUom__cm = 135, eml21__LengthUom__dam = 136, eml21__LengthUom__dm = 137, eml21__LengthUom__Em = 138, eml21__LengthUom__fathom = 139, eml21__LengthUom__fm = 140, eml21__LengthUom__ft = 141, eml21__LengthUom__ft_x005bBnA_x005d = 142, eml21__LengthUom__ft_x005bBnB_x005d = 143, eml21__LengthUom__ft_x005bBr36_x005d = 144, eml21__LengthUom__ft_x005bBr65_x005d = 145, eml21__LengthUom__ft_x005bCla_x005d = 146, eml21__LengthUom__ft_x005bGC_x005d = 147, eml21__LengthUom__ft_x005bInd_x005d = 148, eml21__LengthUom__ft_x005bInd37_x005d = 149, eml21__LengthUom__ft_x005bInd62_x005d = 150, eml21__LengthUom__ft_x005bInd75_x005d = 151, eml21__LengthUom__ft_x005bSe_x005d = 152, eml21__LengthUom__ft_x005bSeT_x005d = 153, eml21__LengthUom__ft_x005bUS_x005d = 154, eml21__LengthUom__fur_x005bUS_x005d = 155, eml21__LengthUom__Gm = 156, eml21__LengthUom__hm = 157, eml21__LengthUom__in = 158, eml21__LengthUom__in_x005bUS_x005d = 159, eml21__LengthUom__km = 160, eml21__LengthUom__link = 161, eml21__LengthUom__link_x005bBnA_x005d = 162, eml21__LengthUom__link_x005bBnB_x005d = 163, eml21__LengthUom__link_x005bCla_x005d = 164, eml21__LengthUom__link_x005bSe_x005d = 165, eml21__LengthUom__link_x005bSeT_x005d = 166, eml21__LengthUom__link_x005bUS_x005d = 167, eml21__LengthUom__m_x005bGer_x005d = 168, eml21__LengthUom__mi = 169, eml21__LengthUom__mi_x005bnaut_x005d = 170, eml21__LengthUom__mi_x005bnautUK_x005d = 171, eml21__LengthUom__mi_x005bUS_x005d = 172, eml21__LengthUom__mil = 173, eml21__LengthUom__mm = 174, eml21__LengthUom__Mm = 175, eml21__LengthUom__nm = 176, eml21__LengthUom__pm = 177, eml21__LengthUom__rod_x005bUS_x005d = 178, eml21__LengthUom__Tm = 179, eml21__LengthUom__um = 180, eml21__LengthUom__yd = 181, eml21__LengthUom__yd_x005bBnA_x005d = 182, eml21__LengthUom__yd_x005bBnB_x005d = 183, eml21__LengthUom__yd_x005bCla_x005d = 184, eml21__LengthUom__yd_x005bInd_x005d = 185, eml21__LengthUom__yd_x005bInd37_x005d = 186, eml21__LengthUom__yd_x005bInd62_x005d = 187, eml21__LengthUom__yd_x005bInd75_x005d = 188, eml21__LengthUom__yd_x005bSe_x005d = 189, eml21__LengthUom__yd_x005bSeT_x005d = 190, eml21__LengthUom__yd_x005bUS_x005d = 191 };
+	enum eml21__LengthUom { eml21__LengthUom__m = 109, eml21__LengthUom__0_x002e1_x0020ft = 110, eml21__LengthUom__0_x002e1_x0020ft_x005bUS_x005d = 111, eml21__LengthUom__0_x002e1_x0020in = 112, eml21__LengthUom__0_x002e1_x0020yd = 113, eml21__LengthUom__1_x002f16_x0020in = 114, eml21__LengthUom__1_x002f2_x0020ft = 115, eml21__LengthUom__1_x002f32_x0020in = 116, eml21__LengthUom__1_x002f64_x0020in = 117, eml21__LengthUom__10_x0020ft = 118, eml21__LengthUom__10_x0020in = 119, eml21__LengthUom__10_x0020km = 120, eml21__LengthUom__100_x0020ft = 121, eml21__LengthUom__100_x0020km = 122, eml21__LengthUom__1000_x0020ft = 123, eml21__LengthUom__30_x0020ft = 124, eml21__LengthUom__30_x0020m = 125, eml21__LengthUom__angstrom = 126, eml21__LengthUom__chain = 127, eml21__LengthUom__chain_x005bBnA_x005d = 128, eml21__LengthUom__chain_x005bBnB_x005d = 129, eml21__LengthUom__chain_x005bCla_x005d = 130, eml21__LengthUom__chain_x005bInd37_x005d = 131, eml21__LengthUom__chain_x005bSe_x005d = 132, eml21__LengthUom__chain_x005bSeT_x005d = 133, eml21__LengthUom__chain_x005bUS_x005d = 134, eml21__LengthUom__cm = 135, eml21__LengthUom__dam = 136, eml21__LengthUom__dm = 137, eml21__LengthUom__Em = 138, eml21__LengthUom__fathom = 139, eml21__LengthUom__fm = 140, eml21__LengthUom__ft = 141, eml21__LengthUom__ft_x005bBnA_x005d = 142, eml21__LengthUom__ft_x005bBnB_x005d = 143, eml21__LengthUom__ft_x005bBr36_x005d = 144, eml21__LengthUom__ft_x005bBr65_x005d = 145, eml21__LengthUom__ft_x005bCla_x005d = 146, eml21__LengthUom__ft_x005bGC_x005d = 147, eml21__LengthUom__ft_x005bInd_x005d = 148, eml21__LengthUom__ft_x005bInd37_x005d = 149, eml21__LengthUom__ft_x005bInd62_x005d = 150, eml21__LengthUom__ft_x005bInd75_x005d = 151, eml21__LengthUom__ft_x005bSe_x005d = 152, eml21__LengthUom__ft_x005bSeT_x005d = 153, eml21__LengthUom__ft_x005bUS_x005d = 154, eml21__LengthUom__fur_x005bUS_x005d = 155, eml21__LengthUom__Gm = 156, eml21__LengthUom__hm = 157, eml21__LengthUom__in = 158, eml21__LengthUom__in_x005bUS_x005d = 159, eml21__LengthUom__km = 160, eml21__LengthUom__link = 161, eml21__LengthUom__link_x005bBnA_x005d = 162, eml21__LengthUom__link_x005bBnB_x005d = 163, eml21__LengthUom__link_x005bCla_x005d = 164, eml21__LengthUom__link_x005bSe_x005d = 165, eml21__LengthUom__link_x005bSeT_x005d = 166, eml21__LengthUom__link_x005bUS_x005d = 167, eml21__LengthUom__m_x005bGer_x005d = 168, eml21__LengthUom__mi = 169, eml21__LengthUom__mi_x005bnaut_x005d = 170, eml21__LengthUom__mi_x005bnautUK_x005d = 171, eml21__LengthUom__mi_x005bUS_x005d = 172, eml21__LengthUom__mil = 173, eml21__LengthUom__mm = 174, eml21__LengthUom__Mm = 175, eml21__LengthUom__nm = 176, eml21__LengthUom__pm = 177, eml21__LengthUom__rod_x005bUS_x005d = 178, eml21__LengthUom__Tm = 179, eml21__LengthUom__um = 180, eml21__LengthUom__yd = 181, eml21__LengthUom__yd_x005bBnA_x005d = 182, eml21__LengthUom__yd_x005bBnB_x005d = 183, eml21__LengthUom__yd_x005bCla_x005d = 184, eml21__LengthUom__yd_x005bInd_x005d = 185, eml21__LengthUom__yd_x005bInd37_x005d = 186, eml21__LengthUom__yd_x005bInd62_x005d = 187, eml21__LengthUom__yd_x005bInd75_x005d = 188, eml21__LengthUom__yd_x005bSe_x005d = 189, eml21__LengthUom__yd_x005bSeT_x005d = 190, eml21__LengthUom__yd_x005bUS_x005d = 191 };
 	enum eml21__LinearAccelerationUom {
 		eml21__LinearAccelerationUom__cm_x002fs2 = 0,
 		eml21__LinearAccelerationUom__ft_x002fs2 = 1,
@@ -1681,31 +1681,31 @@ namespace gsoap_eml2_1
 		eml21__LinearAccelerationUom__mgn = 7
 	};
 	enum eml21__MagneticFluxDensityUom {
-		eml21__MagneticFluxDensityUom__T = (int)'T',
-		eml21__MagneticFluxDensityUom__cgauss = (int)'U',
-		eml21__MagneticFluxDensityUom__cT = (int)'V',
-		eml21__MagneticFluxDensityUom__dgauss = (int)'W',
-		eml21__MagneticFluxDensityUom__dT = (int)'X',
-		eml21__MagneticFluxDensityUom__Egauss = (int)'Y',
-		eml21__MagneticFluxDensityUom__ET = (int)'Z',
+		eml21__MagneticFluxDensityUom__T = 84,
+		eml21__MagneticFluxDensityUom__cgauss = 85,
+		eml21__MagneticFluxDensityUom__cT = 86,
+		eml21__MagneticFluxDensityUom__dgauss = 87,
+		eml21__MagneticFluxDensityUom__dT = 88,
+		eml21__MagneticFluxDensityUom__Egauss = 89,
+		eml21__MagneticFluxDensityUom__ET = 90,
 		eml21__MagneticFluxDensityUom__fgauss = 91,
 		eml21__MagneticFluxDensityUom__fT = 92,
 		eml21__MagneticFluxDensityUom__gauss = 93,
 		eml21__MagneticFluxDensityUom__Ggauss = 94,
 		eml21__MagneticFluxDensityUom__GT = 95,
 		eml21__MagneticFluxDensityUom__kgauss = 96,
-		eml21__MagneticFluxDensityUom__kT = (int)'a',
-		eml21__MagneticFluxDensityUom__mgauss = (int)'b',
-		eml21__MagneticFluxDensityUom__Mgauss = (int)'c',
-		eml21__MagneticFluxDensityUom__mT = (int)'d',
-		eml21__MagneticFluxDensityUom__ngauss = (int)'e',
-		eml21__MagneticFluxDensityUom__nT = (int)'f',
-		eml21__MagneticFluxDensityUom__pgauss = (int)'g',
-		eml21__MagneticFluxDensityUom__pT = (int)'h',
-		eml21__MagneticFluxDensityUom__Tgauss = (int)'i',
-		eml21__MagneticFluxDensityUom__TT = (int)'j',
-		eml21__MagneticFluxDensityUom__ugauss = (int)'k',
-		eml21__MagneticFluxDensityUom__uT = (int)'l'
+		eml21__MagneticFluxDensityUom__kT = 97,
+		eml21__MagneticFluxDensityUom__mgauss = 98,
+		eml21__MagneticFluxDensityUom__Mgauss = 99,
+		eml21__MagneticFluxDensityUom__mT = 100,
+		eml21__MagneticFluxDensityUom__ngauss = 101,
+		eml21__MagneticFluxDensityUom__nT = 102,
+		eml21__MagneticFluxDensityUom__pgauss = 103,
+		eml21__MagneticFluxDensityUom__pT = 104,
+		eml21__MagneticFluxDensityUom__Tgauss = 105,
+		eml21__MagneticFluxDensityUom__TT = 106,
+		eml21__MagneticFluxDensityUom__ugauss = 107,
+		eml21__MagneticFluxDensityUom__uT = 108
 	};
 	enum eml21__MassPerLengthUom {
 		eml21__MassPerLengthUom__kg_x002em_x002fcm2 = 0,
@@ -1715,7 +1715,7 @@ namespace gsoap_eml2_1
 		eml21__MassPerLengthUom__Mg_x002fin = 4
 	};
 	enum eml21__PlaneAngleUom { eml21__PlaneAngleUom__0_x002e001_x0020seca = 0, eml21__PlaneAngleUom__ccgr = 1, eml21__PlaneAngleUom__cgr = 2, eml21__PlaneAngleUom__dega = 3, eml21__PlaneAngleUom__gon = 4, eml21__PlaneAngleUom__krad = 5, eml21__PlaneAngleUom__mila = 6, eml21__PlaneAngleUom__mina = 7, eml21__PlaneAngleUom__Mrad = 8, eml21__PlaneAngleUom__mrad = 9, eml21__PlaneAngleUom__rad = 10, eml21__PlaneAngleUom__rev = 11, eml21__PlaneAngleUom__seca = 12, eml21__PlaneAngleUom__urad = 13 };
-	enum eml21__VerticalCoordinateUom { eml21__VerticalCoordinateUom__m = (int)'m', eml21__VerticalCoordinateUom__ft = (int)'n', eml21__VerticalCoordinateUom__ftUS = (int)'o', eml21__VerticalCoordinateUom__ftBr_x002865_x0029 = (int)'p' };
+	enum eml21__VerticalCoordinateUom { eml21__VerticalCoordinateUom__m = 109, eml21__VerticalCoordinateUom__ft = 110, eml21__VerticalCoordinateUom__ftUS = 111, eml21__VerticalCoordinateUom__ftBr_x002865_x0029 = 112 };
 }
 
 //#ifdef SWIGJAVA
