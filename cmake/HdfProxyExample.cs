@@ -216,17 +216,17 @@ namespace example
             throw new NotImplementedException();
         }
 
-        public override void readArrayNdOfLongValues(string datasetName, SWIGTYPE_p_long_long values)
+        public override void readArrayNdOfInt64Values(string datasetName, SWIGTYPE_p_long_long values)
         {
             throw new NotImplementedException();
         }
 
-        public override void readArrayNdOfLongValues(string datasetName, SWIGTYPE_p_long_long values, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, SWIGTYPE_p_unsigned_long_long offsetInEachDimension, uint numDimensions)
+        public override void readArrayNdOfInt64Values(string datasetName, SWIGTYPE_p_long_long values, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, SWIGTYPE_p_unsigned_long_long offsetInEachDimension, uint numDimensions)
         {
             throw new NotImplementedException();
         }
 
-        public override void readArrayNdOfULongValues(string datasetName, SWIGTYPE_p_unsigned_long_long values)
+        public override void readArrayNdOfUInt64Values(string datasetName, SWIGTYPE_p_unsigned_long_long values)
         {
             throw new NotImplementedException();
         }
