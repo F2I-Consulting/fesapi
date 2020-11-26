@@ -39,7 +39,7 @@ namespace RESQML2_NS
 		/**
 		* Please use std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "") instead. Notice the lack of null value parameter.
 		*/
-		std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy*, const std::string&, LONG64) final {
+		std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy*, const std::string&, int64_t) final {
 			throw std::logic_error("You cannot push back integer values in a Continuous Property.");
 		}
 

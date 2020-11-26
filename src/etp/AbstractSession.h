@@ -65,17 +65,16 @@ namespace ETP_NS
 	{
 	protected:
 		boost::beast::flat_buffer receivedBuffer;
-		int64_t messageId;
 	    std::vector<std::shared_ptr<ETP_NS::ProtocolHandlers>> protocolHandlers;
 		std::unordered_map<int64_t, std::shared_ptr<ETP_NS::ProtocolHandlers>> specificProtocolHandlers;
 	    bool webSocketSessionClosed; // open with the websocket handshake
 		bool etpSessionClosed; // open with the requestSession and openSession message
 		std::vector<std::vector<uint8_t> > sendingQueue;
+		int64_t messageId;
 
-	    AbstractSession() : receivedBuffer(), messageId(1), protocolHandlers(), specificProtocolHandlers(),
+	    AbstractSession() : receivedBuffer(), protocolHandlers(), specificProtocolHandlers(),
 			webSocketSessionClosed(true), etpSessionClosed(true),
-			sendingQueue() {
-	    }
+			sendingQueue() {}
 
 		/**
 		 * Write the current buffer on the web socket
@@ -88,6 +87,15 @@ namespace ETP_NS
 		 */
 		Energistics::Etp::v12::Datatypes::MessageHeader decodeMessageHeader(avro::DecoderPtr decoder);
 
+		/**
+		* Return the current message id and increment it for next call.
+		*/
+		int64_t incrementMessageId() {
+			int64_t result = messageId;
+			messageId += 2;
+			return  result;
+		}
+
 		template<typename T> int64_t encode(const T & mb, int64_t correlationId = 0, int32_t messageFlags = 0)
 		{
 			// Build message header
@@ -95,7 +103,7 @@ namespace ETP_NS
 			mh.protocol = mb.protocolId;
 			mh.messageType = mb.messageTypeId;
 			mh.correlationId = correlationId;
-			mh.messageId = messageId++;
+			mh.messageId = incrementMessageId();
 			mh.messageFlags = messageFlags;
 
 #ifndef NDEBUG
@@ -121,7 +129,7 @@ namespace ETP_NS
 
 	public:
 
-		virtual ~AbstractSession() {}
+		virtual ~AbstractSession() = default;
 
 		/**
 		* The list of subscriptions recorded by customers on this session.
@@ -170,6 +178,12 @@ namespace ETP_NS
 				protocolHandlers.push_back(nullptr);
 			}
 			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Store] = storeHandlers;
+		}
+
+		DLL_IMPORT_OR_EXPORT std::shared_ptr<ETP_NS::ProtocolHandlers> getStoreProtocolHandlers() {
+			return protocolHandlers.size() > Energistics::Etp::v12::Datatypes::Protocol::Store ?
+				protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Store] :
+				nullptr;
 		}
 
 		/**

@@ -20,6 +20,7 @@ under the License.
 
 #include "etp/AbstractSession.h"
 #include "etp/EtpException.h"
+#include "etp/EtpHelpers.h"
 
 #include "eml2/AbstractHdfProxy.h"
 
@@ -73,7 +74,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v1
 			{
 				Energistics::Etp::v12::Datatypes::ArrayOfLong avroArray;
 				avroArray.values = std::vector<LONG64>(globalElemCount);
-				hdfProxy->readArrayNdOfLongValues(dai.pathInResource, avroArray.values.data());
+				hdfProxy->readArrayNdOfInt64Values(dai.pathInResource, avroArray.values.data());
 				da.data.item.set_ArrayOfLong(avroArray);
 			}
 			else if (dt == COMMON_NS::AbstractObject::INT || dt == COMMON_NS::AbstractObject::UINT ||
@@ -112,8 +113,6 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v1
 
 void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v12::Protocol::DataArray::PutDataArrays & pda, int64_t correlationId)
 {
-	std::cout << "on_PutDataArray : DO ALMOST NOTHING FOR NOW" << std::endl;
-
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 	for (std::pair < std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::PutDataArraysType > pdat : pda.dataArrays) {
 		std::cout << "PutDataArray in resource " << pdat.second.uid.uri << " at path " << pdat.second.uid.pathInResource << std::endl;;
@@ -122,28 +121,71 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v1
 		}
 
 		try {
-			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(pdat.second.uid.uri);
-			EML2_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<EML2_NS::AbstractHdfProxy*>(obj);
+			const std::string uri = pdat.second.uid.uri;
+			std::pair<std::string, std::string> uuidAndVersion = ETP_NS::EtpHelpers::getUuidAndVersionFromUri(uri);
+
+			EML2_NS::AbstractHdfProxy* hdfProxy = repo->getDataObjectByUuidAndVersion<EML2_NS::AbstractHdfProxy>(uuidAndVersion.first, uuidAndVersion.second);
 			if (hdfProxy == nullptr) {
-				pe.errors[pdat.first].message = obj->getUuid() + " cannot be resolved as an HDF Proxy in this store";
-				pe.errors[pdat.first].code = 11;
+				std::cout << "Creating file " << uuidAndVersion.first << ".h5 in " << repo->hdf5Folder << std::endl;
+				hdfProxy = repo->createHdfProxy(uuidAndVersion.first, uuidAndVersion.first, repo->hdf5Folder, uuidAndVersion.first + ".h5", COMMON_NS::DataObjectRepository::openingMode::READ_WRITE);
+			}
+
+			size_t lastSlash = pdat.second.uid.pathInResource.rfind('/');
+			if (lastSlash == std::string::npos || lastSlash == pdat.second.uid.pathInResource.back()) {
+				pe.errors[pdat.first].message = "The pathInResource " + pdat.second.uid.pathInResource + " has got a bad syntax.";
+				pe.errors[pdat.first].code = 5;
 				continue;
 			}
 
-			auto hdfGroups = tokenize(pdat.second.uid.pathInResource, '/');
+			std::unique_ptr<unsigned long long[]> numValuesInEachDimension(new unsigned long long[pdat.second.array.dimensions.size()]());
+			for (size_t i = 0; i < pdat.second.array.dimensions.size(); ++i) {
+				numValuesInEachDimension[i] = pdat.second.array.dimensions[i];
+			}
+			if (pdat.second.array.data.item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfBoolean) {
+				std::unique_ptr<char[]> tmp(new char[pdat.second.array.data.item.get_ArrayOfBoolean().values.size()]());
+				for (size_t i = 0; i < pdat.second.array.data.item.get_ArrayOfBoolean().values.size(); ++i) {
+					tmp[i] = pdat.second.array.data.item.get_ArrayOfBoolean().values[i] ? 1 : 0;
+				}
+				hdfProxy->writeArrayNdOfCharValues(pdat.second.uid.pathInResource.substr(0, lastSlash), pdat.second.uid.pathInResource.substr(lastSlash + 1),
+					tmp.get(), numValuesInEachDimension.get(), pdat.second.array.dimensions.size());
+			}
+			else if (pdat.second.array.data.item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfInt) {
+				hdfProxy->writeArrayNdOfIntValues(pdat.second.uid.pathInResource.substr(0, lastSlash), pdat.second.uid.pathInResource.substr(lastSlash + 1),
+					pdat.second.array.data.item.get_ArrayOfInt().values.data(), numValuesInEachDimension.get(), pdat.second.array.dimensions.size());
+			}
+			else if (pdat.second.array.data.item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfLong) {
+				hdfProxy->writeArrayNdOfInt64Values(pdat.second.uid.pathInResource.substr(0, lastSlash), pdat.second.uid.pathInResource.substr(lastSlash + 1),
+					pdat.second.array.data.item.get_ArrayOfLong().values.data(), numValuesInEachDimension.get(), pdat.second.array.dimensions.size());
+			}
+			else if (pdat.second.array.data.item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfFloat) {
+				hdfProxy->writeArrayNdOfFloatValues(pdat.second.uid.pathInResource.substr(0, lastSlash), pdat.second.uid.pathInResource.substr(lastSlash + 1),
+					pdat.second.array.data.item.get_ArrayOfFloat().values.data(), numValuesInEachDimension.get(), pdat.second.array.dimensions.size());
+			}
+			else if (pdat.second.array.data.item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfDouble) {
+				hdfProxy->writeArrayNdOfDoubleValues(pdat.second.uid.pathInResource.substr(0, lastSlash), pdat.second.uid.pathInResource.substr(lastSlash + 1),
+					pdat.second.array.data.item.get_ArrayOfDouble().values.data(), numValuesInEachDimension.get(), pdat.second.array.dimensions.size());
+			}
+			else if (pdat.second.array.data.item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfString) {
+				pe.errors[pdat.first].message = "Putting a string array is not supported yet.";
+				pe.errors[pdat.first].code = 7;
+				continue;
+			}
+			else if (pdat.second.array.data.item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::bytes) {
+				std::unique_ptr<char[]> tmp(new char[pdat.second.array.data.item.get_bytes().size()]());
+				for (size_t i = 0; i < pdat.second.array.data.item.get_bytes().size(); ++i) {
+					tmp[i] = pdat.second.array.data.item.get_bytes()[i];
+				}
+				hdfProxy->writeArrayNdOfCharValues(pdat.second.uid.pathInResource.substr(0, lastSlash), pdat.second.uid.pathInResource.substr(lastSlash + 1),
+					tmp.get(), numValuesInEachDimension.get(), pdat.second.array.dimensions.size());
+			}
+			else {
+				pe.errors[pdat.first].message = "The index " + std::to_string(pdat.second.array.data.item.idx()) + " of the array is not supported yet.";
+				pe.errors[pdat.first].code = 7;
+				continue;
+			}
 
-			if (hdfGroups.size() != 4) {
-				std::cout << "This server does not support putting a data array in a path which does not follow /RESQML/groupname/datasetname convention." << std::endl;
-				continue;
-			}
-			if (hdfGroups[1] != "RESQML") {
-				std::cout << "This server does not support putting a data array in another root group than RESQML group." << std::endl;
-				continue;
-			}
-			/*
-			std::unique_ptr<unsigned long long[]> numValuesInEachDimension(new unsigned long long[pda.dimensions.size()]());
-			hdfProxy->writeArrayNd(hdfGroups[1], hdfGroups[2], , , numValuesInEachDimension.get(), pda.dimensions.size());
-			*/
+			// We need to close the HDF5 file in order to store the writte array
+			hdfProxy->close();
 		}
 		catch (ETP_NS::EtpException& ex)
 		{

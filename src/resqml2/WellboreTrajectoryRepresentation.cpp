@@ -94,7 +94,7 @@ void WellboreTrajectoryRepresentation::getInclinationsAndAzimuths(double * incli
 	getTangentVectors(tangentVectors.get());
 
 	// We also need to locate our tangent vectors in a same unit of measure coordinate system.
-	ULONG64 controlPointCount = getXyzPointCountOfAllPatches();
+	uint64_t controlPointCount = getXyzPointCountOfAllPatches();
 	auto projectedUom = localCrs->getProjectedCrsUnit();
 	auto verticalUom = localCrs->getVerticalCrsUnit();
 	if (projectedUom != verticalUom) {

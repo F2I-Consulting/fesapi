@@ -123,7 +123,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	Null if it fails, else the HDF Proxy of patch.
 		 */
-		EML2_NS::AbstractHdfProxy* getDatasetOfPatch(unsigned int patchIndex, LONG64 & nullValue, std::string & dsPath) const final;
+		EML2_NS::AbstractHdfProxy* getDatasetOfPatch(unsigned int patchIndex, int64_t & nullValue, std::string & dsPath) const final;
 
 		/**
 		 * Gets the data object reference of the HDF proxy which is associated to a particular

@@ -29,9 +29,9 @@ using namespace std;
 
 const char* PointsProperty::XML_TAG = "PointsProperty";
 
-ULONG64 PointsProperty::getXyzPointCountOfAllPatches() const
+uint64_t PointsProperty::getXyzPointCountOfAllPatches() const
 {
-	ULONG64 result = 0;
+	uint64_t result = 0;
 
 	const unsigned int patchCount = getPatchCount();
 	for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex)
@@ -81,19 +81,19 @@ void PointsProperty::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPo
 	hdfProxy->readArrayNdOfDoubleValues(datasetPath, xyzPoints);
 }
 
-void PointsProperty::pushBackArray1dOfXyzPoints(const double * points, ULONG64 pointCount, EML2_NS::AbstractHdfProxy * proxy)
+void PointsProperty::pushBackArray1dOfXyzPoints(const double * points, uint64_t pointCount, EML2_NS::AbstractHdfProxy * proxy)
 {
 	const hsize_t pointCountPerDimension = pointCount;
 	pushBackArrayOfXyzPoints(points, &pointCountPerDimension, 1, proxy);
 }
 
-void PointsProperty::pushBackArray2dOfXyzPoints(const double * points, ULONG64 pointCountInFastestDim, ULONG64 pointCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy)
+void PointsProperty::pushBackArray2dOfXyzPoints(const double * points, uint64_t pointCountInFastestDim, uint64_t pointCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy)
 {
 	const hsize_t pointCountPerDimension[2] = { pointCountInSlowestDim, pointCountInFastestDim };
 	pushBackArrayOfXyzPoints(points, pointCountPerDimension, 2, proxy);
 }
 
-void PointsProperty::pushBackArray3dOfXyzPoints(const double * points, ULONG64 pointCountInFastestDim, ULONG64 pointCountInMiddleDim, ULONG64 pointCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy)
+void PointsProperty::pushBackArray3dOfXyzPoints(const double * points, uint64_t pointCountInFastestDim, uint64_t pointCountInMiddleDim, uint64_t pointCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy)
 {
 	const hsize_t pointCountPerDimension[3] = { pointCountInSlowestDim, pointCountInMiddleDim, pointCountInFastestDim };
 	pushBackArrayOfXyzPoints(points, pointCountPerDimension, 3, proxy);

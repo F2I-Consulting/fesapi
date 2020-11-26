@@ -45,7 +45,7 @@ namespace ETP_NS
 		DataArrayBlockingSession(boost::asio::io_context& ioc,
 				const std::string & host, const std::string & port, const std::string & target);
 
-		virtual ~DataArrayBlockingSession() {}
+		virtual ~DataArrayBlockingSession() = default;
 
 		boost::asio::io_context& getIoContext() {
 			return ws.get_executor().context();
@@ -88,6 +88,7 @@ namespace ETP_NS
 			send(gda);
 
 			// Read a message into our buffer
+			// For now hoping that this message is the response for the above sent message
 			std::size_t bytes_transferred = future_bytes_transferred.get();
 
 			boost::ignore_unused(bytes_transferred);

@@ -426,7 +426,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequence(unsigned 
 	}
 
 	// Get the parameters
-	const ULONG64 xyzPointCount = getXyzPointCountOfKInterface();
+	const uint64_t xyzPointCount = getXyzPointCountOfKInterface();
 	std::unique_ptr<double[]> parameters(new double[xyzPointCount * (kInterfaceEnd - kInterfaceStart + 1)]);
 	getParametersOfNodesOfKInterfaceSequence(kInterfaceStart, kInterfaceEnd, parameters.get());
 
@@ -765,7 +765,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 	}
 
 	//Mapping
-	ULONG64 xyzPointCount = (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) * (blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1) + getBlockSplitCoordinateLineCount();
+	uint64_t xyzPointCount = (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) * (blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1) + getBlockSplitCoordinateLineCount();
 	size_t paramIndex = 0;
 	for (unsigned int j = blockInformation->jInterfaceStart; j <= blockInformation->jInterfaceEnd; ++j) {
 		for (unsigned int i = blockInformation->iInterfaceStart; i <= blockInformation->iInterfaceEnd; ++i) {

@@ -60,12 +60,12 @@ void PropertyBySlab::initRepo() {
 		propertyKind);
 	propertyCompute->pushBackFloatHdf5Array3dOfValues(2, 3, 4);
 
-	ULONG64 valueCountInFastestDim = 2;
-	ULONG64 valueCountInMiddleDim = 3;
-	ULONG64 valueCountInSlowestDim = 1;
-	ULONG64 offsetInFastestDim = 0;
-	ULONG64 offsetInMiddleDim = 0;
-	ULONG64 offsetInSlowestDim = 0;
+	uint64_t valueCountInFastestDim = 2;
+	uint64_t valueCountInMiddleDim = 3;
+	uint64_t valueCountInSlowestDim = 1;
+	uint64_t offsetInFastestDim = 0;
+	uint64_t offsetInMiddleDim = 0;
+	uint64_t offsetInSlowestDim = 0;
 	std::array<float, 6> k0LayerValues = { -123.0f, .01f, .02f, .03f, .04f, .05f };
 	propertyCompute->setValuesOfFloatHdf5Array3dOfValues(k0LayerValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
 		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, true);
@@ -124,7 +124,7 @@ void PropertyBySlab::initRepo() {
 	REQUIRE_THROWS(discretePropertyCompute->getMaximumValue() == 35);
 
 	offsetInSlowestDim = 0;
-	std::array<LONG64, 6> kLayerlongValues = { -10, 1, 2, 3, 4, 5 };
+	std::array<int64_t, 6> kLayerlongValues = { -10, 1, 2, 3, 4, 5 };
 	discretePropertyCompute->setValuesOfLongHdf5Array3dOfValues(kLayerlongValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
 		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, true);
 	kLayerlongValues[0] = 10;

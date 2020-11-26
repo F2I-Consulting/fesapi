@@ -112,7 +112,7 @@ void PlaneSetRepresentation::pushBackTiltedPlaneGeometryPatch(
 	getRepository()->addRelationship(this, localCrs);
 }
 
-ULONG64 PlaneSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t PlaneSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");

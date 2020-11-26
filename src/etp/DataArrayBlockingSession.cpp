@@ -54,8 +54,11 @@ DataArrayBlockingSession::DataArrayBlockingSession(boost::asio::io_context& ioc,
 	requestedProtocols.push_back(requestedProtocol);
 	requestSession.requestedProtocols = requestedProtocols;
 
-	std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject> supportedObjects;
-	requestSession.supportedDataObjects = supportedObjects;
+	Energistics::Etp::v12::Datatypes::SupportedDataObject supportedDataObject;
+	supportedDataObject.qualifiedType = "eml20.obj_EpcExternalPartReference";
+	std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject> supportedDataObjects;
+	supportedDataObjects.push_back(supportedDataObject);
+	requestSession.supportedDataObjects = supportedDataObjects;
 }
 
 bool DataArrayBlockingSession::run()

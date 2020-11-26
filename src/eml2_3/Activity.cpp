@@ -49,7 +49,7 @@ void Activity::pushBackParameter(const std::string title, double value, gsoap_re
 	if (!activityTemplate->isPartial()) {
 		if (!activityTemplate->isAnExistingParameter(title))
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-		LONG64 maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
 		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
@@ -75,7 +75,7 @@ void Activity::pushBackParameter(const std::string title, const std::string & va
 	if (!activityTemplate->isPartial()) {
 		if (activityTemplate->isAnExistingParameter(title) == false)
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-		LONG64 maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
 		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
@@ -94,13 +94,13 @@ void Activity::pushBackParameter(const std::string title, const std::string & va
 	activity->Parameter.push_back(sp);
 }
 
-void Activity::pushBackParameter(const std::string title, LONG64 value)
+void Activity::pushBackParameter(const std::string title, int64_t value)
 {
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
 	if (!activityTemplate->isPartial()) {
 		if (activityTemplate->isAnExistingParameter(title) == false)
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-		LONG64 maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
 		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
@@ -129,7 +129,7 @@ void Activity::pushBackParameter(const std::string title, AbstractObject* resqml
 	if (!activityTemplate->isPartial()) {
 		if (activityTemplate->isAnExistingParameter(title) == false)
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-		LONG64 maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
 		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
@@ -328,14 +328,14 @@ bool Activity::isAnIntegerQuantityParameter(unsigned int index) const
 	return activity->Parameter[index]->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerQuantityParameter;
 }
 
-vector<LONG64> Activity::getIntegerQuantityParameterValue(const std::string & paramTitle) const
+vector<int64_t> Activity::getIntegerQuantityParameterValue(const std::string & paramTitle) const
 {
 	vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
 
 	if (param.size() < 1)
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
-	vector<LONG64> result;
+	vector<int64_t> result;
 	for (unsigned int i = 0; i < param.size(); ++i)
 	{
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__IntegerQuantityParameter)
@@ -347,7 +347,7 @@ vector<LONG64> Activity::getIntegerQuantityParameterValue(const std::string & pa
 	return result;
 }
 
-LONG64 Activity::getIntegerQuantityParameterValue(unsigned int index) const
+int64_t Activity::getIntegerQuantityParameterValue(unsigned int index) const
 {
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
 

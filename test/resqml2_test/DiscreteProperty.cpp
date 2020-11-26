@@ -89,7 +89,7 @@ void DiscreteProperty::initRepo() {
 		1,
 		gsoap_eml2_3::resqml22__IndexableElement__cells,
 		propertyKind);
-	LONG64 longValues[6] = { 0, 1, 2, 3, 4, 5 };
+	int64_t longValues[6] = { 0, 1, 2, 3, 4, 5 };
 	longDiscreteProperty->pushBackLongHdf5Array3dOfValues(longValues, 1, 2, 3, hdfProxy, -1);
 }
 

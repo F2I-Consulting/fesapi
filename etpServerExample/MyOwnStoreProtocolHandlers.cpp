@@ -80,17 +80,9 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 			continue;
 		}
 
-		objResponse.success[pair.first] = Energistics::Etp::v12::Datatypes::Object::PutResponse();
-
 		importedObj->loadTargetRelationships();
 
-		if (pair.second.resource.dataObjectType == "resqml20.obj_IjkGridRepresentation") {
-			std::cout << "Create a dummy Grid Connection Set for received IJK Grid Representation." << std::endl;
-			RESQML2_NS::GridConnectionSetRepresentation* gcsr = repo->createGridConnectionSetRepresentation(std::string(), "Dummy GCSR");
-			ULONG64 cellIndexPair[] = { 0, 1 };
-			gcsr->setCellIndexPairs(1, cellIndexPair, (std::numeric_limits<unsigned int>::max)(), repo->getHdfProxy(0));
-			gcsr->pushBackSupportingGridRepresentation(static_cast<RESQML2_NS::AbstractGridRepresentation*>(importedObj));
-		}
+		objResponse.success[pair.first] = Energistics::Etp::v12::Datatypes::Object::PutResponse();
 	}
 
 	if (!pe.errors.empty()) {

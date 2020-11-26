@@ -33,7 +33,7 @@ const char* UnstructuredGridRepresentation::XML_NS = "resqml20";
 
 void UnstructuredGridRepresentation::init(COMMON_NS::DataObjectRepository* repo,
 	const std::string & guid, const std::string & title,
-	ULONG64 cellCount)
+	uint64_t cellCount)
 {
 	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be null.");
@@ -52,14 +52,14 @@ void UnstructuredGridRepresentation::init(COMMON_NS::DataObjectRepository* repo,
 
 UnstructuredGridRepresentation::UnstructuredGridRepresentation(COMMON_NS::DataObjectRepository* repo,
 	const std::string & guid, const std::string & title,
-	ULONG64 cellCount)
+	uint64_t cellCount)
 {
 	init(repo, guid, title, cellCount);
 }
 
 UnstructuredGridRepresentation::UnstructuredGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
-	ULONG64 cellCount)
+	uint64_t cellCount)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The interpretation of the unstructured grid cannot be null.");
@@ -95,12 +95,12 @@ COMMON_NS::DataObjectReference UnstructuredGridRepresentation::getHdfProxyDor() 
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
-ULONG64 UnstructuredGridRepresentation::getCellCount() const
+uint64_t UnstructuredGridRepresentation::getCellCount() const
 {
 	return getSpecializedGsoapProxy()->CellCount;
 }
 
-ULONG64 UnstructuredGridRepresentation::getFaceCount() const
+uint64_t UnstructuredGridRepresentation::getFaceCount() const
 {
 	_resqml20__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (grid->Geometry != nullptr) {
@@ -110,7 +110,7 @@ ULONG64 UnstructuredGridRepresentation::getFaceCount() const
 	return 0;
 }
 
-ULONG64 UnstructuredGridRepresentation::getNodeCount() const
+uint64_t UnstructuredGridRepresentation::getNodeCount() const
 {
 	_resqml20__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (grid->Geometry != nullptr) {
@@ -137,7 +137,7 @@ void UnstructuredGridRepresentation::getXyzPointsOfPatch(unsigned int patchIndex
 	}
 }
 
-void UnstructuredGridRepresentation::getFaceIndicesOfCells(ULONG64 * faceIndices) const
+void UnstructuredGridRepresentation::getFaceIndicesOfCells(uint64_t * faceIndices) const
 {
 	_resqml20__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (grid->Geometry == nullptr) {
@@ -146,14 +146,14 @@ void UnstructuredGridRepresentation::getFaceIndicesOfCells(ULONG64 * faceIndices
 	if (grid->Geometry->FacesPerCell->Elements->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(grid->Geometry->FacesPerCell->Elements)->Values;
 		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, faceIndices);
+		hdfProxy->readArrayNdOfUInt64Values(dataset->PathInHdfFile, faceIndices);
 	}
 	else {
 		throw logic_error("Not yet implemented");
 	}
 }
 
-void UnstructuredGridRepresentation::getCumulativeFaceCountPerCell(ULONG64 * cumulativeFaceCountPerCell_) const
+void UnstructuredGridRepresentation::getCumulativeFaceCountPerCell(uint64_t * cumulativeFaceCountPerCell_) const
 {
 	_resqml20__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (grid->Geometry == nullptr)
@@ -162,14 +162,14 @@ void UnstructuredGridRepresentation::getCumulativeFaceCountPerCell(ULONG64 * cum
 	{
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(grid->Geometry->FacesPerCell->CumulativeLength)->Values;
 		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, cumulativeFaceCountPerCell_);
+		hdfProxy->readArrayNdOfUInt64Values(dataset->PathInHdfFile, cumulativeFaceCountPerCell_);
 	}
 	else if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)
 	{
 		cumulativeFaceCountPerCell_[0] = static_cast<resqml20__IntegerLatticeArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->StartValue;
-		const LONG64 offsetValue = static_cast<resqml20__IntegerLatticeArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->Offset[0]->Value;
-		const ULONG64 cellCount = getCellCount();
-		for (ULONG64 cumulativeFaceCountPerCellIndex = 1; cumulativeFaceCountPerCellIndex < cellCount; ++cumulativeFaceCountPerCellIndex)
+		const int64_t offsetValue = static_cast<resqml20__IntegerLatticeArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->Offset[0]->Value;
+		const uint64_t cellCount = getCellCount();
+		for (uint64_t cumulativeFaceCountPerCellIndex = 1; cumulativeFaceCountPerCellIndex < cellCount; ++cumulativeFaceCountPerCellIndex)
 		{
 			cumulativeFaceCountPerCell_[cumulativeFaceCountPerCellIndex] = cumulativeFaceCountPerCell_[cumulativeFaceCountPerCellIndex - 1] + offsetValue;
 		}
@@ -234,7 +234,7 @@ unsigned int UnstructuredGridRepresentation::getConstantFaceCountOfCells() const
 		return 0;
 }
 
-void UnstructuredGridRepresentation::getNodeIndicesOfFaces(ULONG64 * nodeIndices) const
+void UnstructuredGridRepresentation::getNodeIndicesOfFaces(uint64_t * nodeIndices) const
 {
 	_resqml20__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (grid->Geometry == nullptr) {
@@ -244,13 +244,13 @@ void UnstructuredGridRepresentation::getNodeIndicesOfFaces(ULONG64 * nodeIndices
 	{
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(grid->Geometry->NodesPerFace->Elements)->Values;
 		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, nodeIndices);
+		hdfProxy->readArrayNdOfUInt64Values(dataset->PathInHdfFile, nodeIndices);
 	}
 	else
 		throw logic_error("Not yet implemented");
 }
 
-void UnstructuredGridRepresentation::getCumulativeNodeCountPerFace(ULONG64 * nodeCountPerFace) const
+void UnstructuredGridRepresentation::getCumulativeNodeCountPerFace(uint64_t * nodeCountPerFace) const
 {
 	_resqml20__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 		if (grid->Geometry == nullptr)
@@ -259,14 +259,14 @@ void UnstructuredGridRepresentation::getCumulativeNodeCountPerFace(ULONG64 * nod
 	{
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(grid->Geometry->NodesPerFace->CumulativeLength)->Values;
 		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, nodeCountPerFace);
+		hdfProxy->readArrayNdOfUInt64Values(dataset->PathInHdfFile, nodeCountPerFace);
 	}
 	else if (grid->Geometry->NodesPerFace->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)
 	{
 		nodeCountPerFace[0] = static_cast<resqml20__IntegerLatticeArray*>(grid->Geometry->NodesPerFace->CumulativeLength)->StartValue;
-		const LONG64 offsetValue = static_cast<resqml20__IntegerLatticeArray*>(grid->Geometry->NodesPerFace->CumulativeLength)->Offset[0]->Value;
-		const ULONG64 faceCount = getFaceCount();
-		for (ULONG64 nodeCountPerFaceIndex = 1; nodeCountPerFaceIndex < faceCount; ++nodeCountPerFaceIndex)
+		const int64_t offsetValue = static_cast<resqml20__IntegerLatticeArray*>(grid->Geometry->NodesPerFace->CumulativeLength)->Offset[0]->Value;
+		const uint64_t faceCount = getFaceCount();
+		for (uint64_t nodeCountPerFaceIndex = 1; nodeCountPerFaceIndex < faceCount; ++nodeCountPerFaceIndex)
 		{
 			nodeCountPerFace[nodeCountPerFaceIndex] = nodeCountPerFace[nodeCountPerFaceIndex - 1] + offsetValue;
 		}
@@ -339,9 +339,9 @@ void UnstructuredGridRepresentation::getCellFaceIsRightHanded(unsigned char* cel
 	  throw logic_error("Not yet implemented.");
 }
 
-void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, ULONG64 pointCount, EML2_NS::AbstractHdfProxy* proxy,
+void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 	const std::string& faceIndicesPerCell, const std::string&faceIndicesCumulativeCountPerCell,
-	ULONG64 faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
+	uint64_t faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
 	gsoap_resqml2_0_1::resqml20__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (cellFaceIsRightHanded.empty())
@@ -433,9 +433,9 @@ void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std:
 }
 
 void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
-	ULONG64 pointCount, ULONG64 faceCount, RESQML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
-	const std::string& faceIndicesPerCell, ULONG64 faceCountPerCell,
-	const std::string& nodeIndicesPerFace, ULONG64 nodeCountPerFace)
+	uint64_t pointCount, uint64_t faceCount, RESQML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
+	const std::string& faceIndicesPerCell, uint64_t faceCountPerCell,
+	const std::string& nodeIndicesPerFace, uint64_t nodeCountPerFace)
 {
 	if (cellFaceIsRightHanded.empty())
 		throw invalid_argument("The cellFaceIsRightHanded dataset path cannot be empty.");
@@ -458,7 +458,7 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 		}
 	}
 
-	const ULONG64 cellCount = getSpecializedGsoapProxy()->CellCount;
+	const uint64_t cellCount = getSpecializedGsoapProxy()->CellCount;
 
 	resqml20__UnstructuredGridGeometry* geom = soap_new_resqml20__UnstructuredGridGeometry(gsoapProxy2_0_1->soap);
 	getSpecializedGsoapProxy()->Geometry = geom;

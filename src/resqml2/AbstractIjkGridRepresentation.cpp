@@ -247,7 +247,7 @@ gsoap_eml2_3::resqml22__PointGeometry* AbstractIjkGridRepresentation::getPointGe
 
 unsigned int AbstractIjkGridRepresentation::getICellCount() const
 {
-	const ULONG64 iCellCount = gsoapProxy2_0_1 != nullptr
+	const uint64_t iCellCount = gsoapProxy2_0_1 != nullptr
 		? (isTruncated() ? getSpecializedTruncatedGsoapProxy2_0_1()->Ni : getSpecializedGsoapProxy2_0_1()->Ni)
 		: (isTruncated() ? getSpecializedTruncatedGsoapProxy2_2()->Ni : getSpecializedGsoapProxy2_2()->Ni);
 
@@ -280,7 +280,7 @@ void AbstractIjkGridRepresentation::setICellCount(unsigned int iCount)
 
 unsigned int AbstractIjkGridRepresentation::getJCellCount() const
 {
-	const ULONG64 jCellCount = gsoapProxy2_0_1 != nullptr
+	const uint64_t jCellCount = gsoapProxy2_0_1 != nullptr
 		? (isTruncated() ? getSpecializedTruncatedGsoapProxy2_0_1()->Nj : getSpecializedGsoapProxy2_0_1()->Nj)
 		: (isTruncated() ? getSpecializedTruncatedGsoapProxy2_2()->Nj : getSpecializedGsoapProxy2_2()->Nj);
 
@@ -469,7 +469,7 @@ void AbstractIjkGridRepresentation::getColumnCountOfSplitCoordinateLines(unsigne
 
 unsigned long AbstractIjkGridRepresentation::getSplitCoordinateLineCount() const
 {
-	ULONG64 splitCoordinateLineCount = 0;
+	uint64_t splitCoordinateLineCount = 0;
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 		if (geom == nullptr) {
@@ -533,7 +533,7 @@ unsigned long AbstractIjkGridRepresentation::getBlockSplitCoordinateLineCount() 
 }
 
 
-ULONG64 AbstractIjkGridRepresentation::getSplitNodeCount() const
+uint64_t AbstractIjkGridRepresentation::getSplitNodeCount() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
@@ -658,7 +658,7 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 		throw invalid_argument("The grid has no geometry or no information about enabled cells.");
 	}
 
-	const ULONG64 cellCount = getCellCount();
+	const uint64_t cellCount = getCellCount();
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 		if (geom == nullptr) {
@@ -669,13 +669,13 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 			std::unique_ptr<char[]> tmp(new char[cellCount]);
 			hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, tmp.get());
-			for (ULONG64 i = 0; i < cellCount; ++i) {
+			for (uint64_t i = 0; i < cellCount; ++i) {
 				enabledCells[i] = tmp[i] != 0;
 			}
 		}
 		else if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray) {
 			const bool enabled = static_cast<resqml20__BooleanConstantArray*>(geom->CellGeometryIsDefined)->Value;
-			for (ULONG64 i = 0; i < cellCount; ++i) {
+			for (uint64_t i = 0; i < cellCount; ++i) {
 				enabledCells[i] = enabled;
 			}
 		}
@@ -699,7 +699,7 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 		}
 		else if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray) {
 			const bool enabled = static_cast<gsoap_eml2_3::eml23__BooleanConstantArray*>(geom->CellGeometryIsDefined)->Value;
-			for (ULONG64 i = 0; i < cellCount; ++i) {
+			for (uint64_t i = 0; i < cellCount; ++i) {
 				enabledCells[i] = enabled;
 			}
 		}
@@ -710,9 +710,9 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 
 	// Copy in order not to modify the controlPoints pointer
 	if (reverseIAxis || reverseJAxis || reverseKAxis) {
-		const ULONG64 arrayCount = getCellCount();
+		const uint64_t arrayCount = getCellCount();
 		std::unique_ptr<bool[]> initialCellGeometryIsDefined(new bool[arrayCount]);
-		for (ULONG64 index = 0; index < arrayCount; ++index) {
+		for (uint64_t index = 0; index < arrayCount; ++index) {
 			initialCellGeometryIsDefined[index] = enabledCells[index];
 		}
 
@@ -1001,13 +1001,13 @@ void AbstractIjkGridRepresentation::getKGaps(bool * kGaps) const
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 			std::unique_ptr<char[]> tmp(new char[getKCellCount() - 1]);
 			hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, tmp.get());
-			for (ULONG64 k = 0; k < getKCellCount() - 1; ++k) {
+			for (uint64_t k = 0; k < getKCellCount() - 1; ++k) {
 				kGaps[k] = tmp[k] != 0;
 			}
 		}
 		else if (ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray) {
 			const bool hasGap = static_cast<resqml20__BooleanConstantArray*>(ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer)->Value;
-			for (ULONG64 k = 0; k < getKCellCount() - 1; ++k) {
+			for (uint64_t k = 0; k < getKCellCount() - 1; ++k) {
 				kGaps[k] = hasGap;
 			}
 		}
@@ -1022,13 +1022,13 @@ void AbstractIjkGridRepresentation::getKGaps(bool * kGaps) const
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset->ExternalFileProxy[0]);
 			std::unique_ptr<char[]> tmp(new char[getKCellCount() - 1]);
 			hdfProxy->readArrayNdOfCharValues(dataset->ExternalFileProxy[0]->PathInExternalFile, tmp.get());
-			for (ULONG64 k = 0; k < getKCellCount() - 1; ++k) {
+			for (uint64_t k = 0; k < getKCellCount() - 1; ++k) {
 				kGaps[k] = tmp[k] != 0;
 			}
 		}
 		else if (ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray) {
 			const bool hasGap = static_cast<gsoap_eml2_3::eml23__BooleanConstantArray*>(ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer)->Value;
-			for (ULONG64 k = 0; k < getKCellCount() - 1; ++k) {
+			for (uint64_t k = 0; k < getKCellCount() - 1; ++k) {
 				kGaps[k] = hasGap;
 			}
 		}
@@ -1177,7 +1177,7 @@ bool AbstractIjkGridRepresentation::isColumnEdgeSplitted(unsigned int iColumn, u
 	return result;
 }
 
-ULONG64 AbstractIjkGridRepresentation::getXyzPointIndexFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner) const
+uint64_t AbstractIjkGridRepresentation::getXyzPointIndexFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner) const
 {
 	if (splitInformation == nullptr || kCellIndexWithGapLayer == nullptr) {
 		throw invalid_argument("The split information must have been loaded first.");
@@ -1253,7 +1253,7 @@ void AbstractIjkGridRepresentation::getXyzPointOfBlockFromCellCorner(unsigned in
 		: kCellIndexWithGapLayer[kCell];
 	kPointIndex -= blockInformation->kInterfaceStart;
 
-	ULONG64 pointIndex;
+	uint64_t pointIndex;
 
 	const unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
 	if (!splitInformation[pillarIndex].empty()) {
@@ -1280,12 +1280,12 @@ void AbstractIjkGridRepresentation::getXyzPointOfBlockFromCellCorner(unsigned in
 	z = xyzPoints[3 * pointIndex + 2];
 }
 
-ULONG64 AbstractIjkGridRepresentation::getXyzPointCountOfKInterface() const
+uint64_t AbstractIjkGridRepresentation::getXyzPointCountOfKInterface() const
 {
 	return getPillarCount() + getSplitCoordinateLineCount();
 }
 
-ULONG64 AbstractIjkGridRepresentation::getXyzPointCountOfBlock() const
+uint64_t AbstractIjkGridRepresentation::getXyzPointCountOfBlock() const
 {
 	if (blockInformation == nullptr) {
 		throw invalid_argument("The block information must have been loaded first.");
@@ -1370,9 +1370,9 @@ void AbstractIjkGridRepresentation::getXyzPointsOfBlock(double *)
 	throw std::logic_error("Partial object");
 }
 
-ULONG64 AbstractIjkGridRepresentation::getXyzPointCountOfPatch(unsigned int) const
+uint64_t AbstractIjkGridRepresentation::getXyzPointCountOfPatch(unsigned int) const
 {
-	const ULONG64 result = getXyzPointCountOfKInterface() * (getKCellCount() + 1 + getKGapsCount()) + getSplitNodeCount();
+	const uint64_t result = getXyzPointCountOfKInterface() * (getKCellCount() + 1 + getKGapsCount()) + getSplitNodeCount();
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		return isTruncated()

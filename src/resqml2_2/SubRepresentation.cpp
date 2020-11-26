@@ -71,7 +71,7 @@ _resqml22__SubRepresentation* SubRepresentation::getSpecializedGsoapProxy() cons
 	return static_cast<_resqml22__SubRepresentation*>(gsoapProxy2_3);
 }
 
-void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 originIndex,
+void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t originIndex,
 	unsigned int elementCountInSlowestDimension,
 	unsigned int elementCountInMiddleDimension,
 	unsigned int elementCountInFastestDimension)
@@ -108,8 +108,8 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 	integerArray->Offset.push_back(offset);
 }
 
-void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 elementCount, const std::string & elementDataset,
-	LONG64 nullValue, EML2_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset)
+void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, const std::string & elementDataset,
+	int64_t nullValue, EML2_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -162,8 +162,8 @@ void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__Ind
 }
 
 void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind0, gsoap_eml2_3::resqml22__IndexableElement elementKind1,
-	ULONG64 elementCount,
-	ULONG64 * elementIndices0, ULONG64 * elementIndices1,
+	uint64_t elementCount,
+	uint64_t * elementIndices0, uint64_t * elementIndices1,
 	EML2_NS::AbstractHdfProxy * proxy)
 {
 	pushBackSubRepresentationPatch(elementKind0, elementCount, elementIndices0, proxy);
@@ -192,7 +192,7 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 
 	// ************ HDF ************		
 	hsize_t numValues = elementCount;
-	proxy->writeArrayNdOfGSoapULong64Values(getHdfGroup(), ossForHdf.str(), elementIndices1, &numValues, 1);
+	proxy->writeArrayNdOfUInt64Values(getHdfGroup(), ossForHdf.str(), elementIndices1, &numValues, 1);
 }
 
 COMMON_NS::DataObjectReference SubRepresentation::getHdfProxyDor() const
@@ -244,7 +244,7 @@ resqml22__SubRepresentationPatch* SubRepresentation::getSubRepresentationPatch(u
 	throw out_of_range("The patch does not exist at this index.");
 }
 
-ULONG64 SubRepresentation::getElementCountOfPatch(unsigned int patchIndex) const
+uint64_t SubRepresentation::getElementCountOfPatch(unsigned int patchIndex) const
 {
 	return getSubRepresentationPatch(patchIndex)->Count;
 }
@@ -259,7 +259,7 @@ bool SubRepresentation::areElementIndicesBasedOnLattice(unsigned int patchIndex,
 	return getSubRepresentationPatch(patchIndex)->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray;
 }
 
-LONG64 SubRepresentation::getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex) const
+int64_t SubRepresentation::getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex) const
 {
 	_resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
 
@@ -289,7 +289,7 @@ unsigned int SubRepresentation::getLatticeElementIndicesDimensionCount(unsigned 
 	return lattice->Offset.size();
 }
 
-LONG64 SubRepresentation::getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex) const
+int64_t SubRepresentation::getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex) const
 {
 	_resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
 
@@ -305,7 +305,7 @@ LONG64 SubRepresentation::getLatticeElementIndicesOffsetValue(unsigned int latti
 	return lattice->Offset[latticeDimensionIndex]->Value;
 }
 
-ULONG64 SubRepresentation::getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex) const
+uint64_t SubRepresentation::getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex) const
 {
 	_resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
 
@@ -324,7 +324,7 @@ ULONG64 SubRepresentation::getLatticeElementIndicesOffsetCount(unsigned int latt
 	return lattice->Offset[latticeDimensionIndex]->Count;
 }
 
-void SubRepresentation::getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, ULONG64 * elementIndices) const
+void SubRepresentation::getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, uint64_t * elementIndices) const
 {
 	_resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
 	if (rep->SubRepresentationPatch.size() <= patchIndex) {
@@ -336,7 +336,7 @@ void SubRepresentation::getElementIndicesOfPatch(unsigned int patchIndex, unsign
 
 	if (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
 		eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__IntegerExternalArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices)->Values->ExternalFileProxy[0];
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfULongValues(dsPart->PathInExternalFile, elementIndices);
+		getHdfProxyFromDataset(dsPart)->readArrayNdOfUInt64Values(dsPart->PathInExternalFile, elementIndices);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -351,8 +351,8 @@ void SubRepresentation::getSupportingRepresentationIndicesOfPatch(unsigned int p
 	}
 
 	if (getSupportingRepresentationCount() == 1 || rep->SubRepresentationPatch[patchIndex]->ElementIndices[0]->__ElementIndices_sequence->SupportingRepresentationIndex == nullptr) {
-		const ULONG64 elementCount = getElementCountOfPatch(patchIndex);
-		for (ULONG64 i = 0; i < elementCount; ++i) {
+		const uint64_t elementCount = getElementCountOfPatch(patchIndex);
+		for (uint64_t i = 0; i < elementCount; ++i) {
 			supportingRepresentationIndices[i] = 0;
 		}
 		return;

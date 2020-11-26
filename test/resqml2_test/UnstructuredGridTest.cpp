@@ -41,19 +41,19 @@ void UnstructuredGridTest::initRepo() {
 	REQUIRE(unstructuredGrid != nullptr);
 	
 	// The point indices of each face.
-	ULONG64 nodeIndicesPerFace[27] = { 0, 1, 2, // shared face
+	uint64_t nodeIndicesPerFace[27] = { 0, 1, 2, // shared face
 		1, 2, 3, 0, 1, 3, 0, 2, 3, // faces for tetra
 		0, 2, 6, 4, 2, 1, 5, 6, 0, 1, 5, 4, 4, 5, 6 //  faces for wedge
 	};
 	// The cumulative count of points per face i.e. first face contains 3 points, second face contains 6-3=3 points, third face contains 9-6=3 points etc...
-	ULONG64 nodeIndicesCumulativeCountPerFace[8] = { 3, // shared face
+	uint64_t nodeIndicesCumulativeCountPerFace[8] = { 3, // shared face
 		6, 9, 12, // faces for tetra
 		16, 20, 24, 27 //  faces for wedge
 	};
 	// The face indices of each cell. 
-	ULONG64 faceIndicesPerCell[9] = { 0, 1, 2, 3, // tetra
+	uint64_t faceIndicesPerCell[9] = { 0, 1, 2, 3, // tetra
 		0, 4, 5, 6, 7 }; //wedge
-	ULONG64 faceIndicesCumulativeCountPerCell[2] = { 4, 9 };
+	uint64_t faceIndicesCumulativeCountPerCell[2] = { 4, 9 };
 	// Exporting the right handness of each face of each cell is mandatory. However, it is often ignored by the readers. Dummy values
 	unsigned char faceRightHandness[9] = { 0, 0, 1, 1, 1, 0, 1, 0, 0 };
 
@@ -70,7 +70,7 @@ void UnstructuredGridTest::readRepo() {
 	REQUIRE(unstructuredGrid->getXyzPointCountOfPatch(0) == 7);
 
 	// getFaceIndicesOfCells
-	ULONG64 faceIndicesPerCell[9];
+	uint64_t faceIndicesPerCell[9];
 	unstructuredGrid->getFaceIndicesOfCells(faceIndicesPerCell);
 	REQUIRE(faceIndicesPerCell[0] == 0);
 	REQUIRE(faceIndicesPerCell[1] == 1);
@@ -83,13 +83,13 @@ void UnstructuredGridTest::readRepo() {
 	REQUIRE(faceIndicesPerCell[8] == 7);
 
 	// getCumulativeFaceCountPerCell
-	ULONG64 cumulativeFaceCountPerCell[2];
+	uint64_t cumulativeFaceCountPerCell[2];
 	unstructuredGrid->getCumulativeFaceCountPerCell(cumulativeFaceCountPerCell);
 	REQUIRE(cumulativeFaceCountPerCell[0] == 4);
 	REQUIRE(cumulativeFaceCountPerCell[1] == 9);
 
 	// getFaceCountPerCell
-	ULONG64 faceCountPerCell[2];
+	uint64_t faceCountPerCell[2];
 	unstructuredGrid->getFaceCountPerCell(faceCountPerCell);
 	REQUIRE(faceCountPerCell[0] == 4);
 	REQUIRE(faceCountPerCell[1] == 5);
@@ -101,7 +101,7 @@ void UnstructuredGridTest::readRepo() {
 	REQUIRE_THROWS(unstructuredGrid->getConstantFaceCountOfCells() == 4);
 
 	// getNodeIndicesOfFaces
-	ULONG64 nodeIndicesPerFace[27];
+	uint64_t nodeIndicesPerFace[27];
 	unstructuredGrid->getNodeIndicesOfFaces(nodeIndicesPerFace);
 	REQUIRE(nodeIndicesPerFace[0] == 0);
 	REQUIRE(nodeIndicesPerFace[1] == 1);
@@ -132,7 +132,7 @@ void UnstructuredGridTest::readRepo() {
 	REQUIRE(nodeIndicesPerFace[26] == 6);
 
 	// getCumulativeNodeCountPerFace
-	ULONG64 cumulativeNodeCountPerFace[8];
+	uint64_t cumulativeNodeCountPerFace[8];
 	unstructuredGrid->getCumulativeNodeCountPerFace(cumulativeNodeCountPerFace);
 	REQUIRE(cumulativeNodeCountPerFace[0] == 3);
 	REQUIRE(cumulativeNodeCountPerFace[1] == 6);
@@ -144,7 +144,7 @@ void UnstructuredGridTest::readRepo() {
 	REQUIRE(cumulativeNodeCountPerFace[7] == 27);
 
 	// getNodeCountPerFace
-	ULONG64 nodeCountPerFace[8];
+	uint64_t nodeCountPerFace[8];
 	unstructuredGrid->getNodeCountPerFace(nodeCountPerFace);
 	REQUIRE(nodeCountPerFace[0] == 3);
 	REQUIRE(nodeCountPerFace[1] == 3);
@@ -184,19 +184,19 @@ void UnstructuredGridTest::readRepo() {
 	REQUIRE(unstructuredGrid->getNodeCountOfFaceOfCell(1, 4) == 3);
 
 	// getNodeIndicesOfFaceOfCell
-	ULONG64 const* nodeIndicesOfFirstFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 0);
+	uint64_t const* nodeIndicesOfFirstFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 0);
 	REQUIRE(nodeIndicesOfFirstFace[0] == 0);
 	REQUIRE(nodeIndicesOfFirstFace[1] == 1);
 	REQUIRE(nodeIndicesOfFirstFace[2] == 2);
-	ULONG64 const* nodeIndicesOfSecondFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 1);
+	uint64_t const* nodeIndicesOfSecondFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 1);
 	REQUIRE(nodeIndicesOfSecondFace[0] == 1);
 	REQUIRE(nodeIndicesOfSecondFace[1] == 2);
 	REQUIRE(nodeIndicesOfSecondFace[2] == 3);
-	ULONG64 const* nodeIndicesOfThirdFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 2);
+	uint64_t const* nodeIndicesOfThirdFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 2);
 	REQUIRE(nodeIndicesOfThirdFace[0] == 0);
 	REQUIRE(nodeIndicesOfThirdFace[1] == 1);
 	REQUIRE(nodeIndicesOfThirdFace[2] == 3);
-	ULONG64 const* nodeIndicesOfFourthFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 3);
+	uint64_t const* nodeIndicesOfFourthFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 3);
 	REQUIRE(nodeIndicesOfFourthFace[0] == 0);
 	REQUIRE(nodeIndicesOfFourthFace[1] == 2);
 	REQUIRE(nodeIndicesOfFourthFace[2] == 3);
@@ -219,7 +219,7 @@ void UnstructuredGridTest::readRepo() {
 	REQUIRE(nodeIndicesOfFourthFace[1] == 1);
 	REQUIRE(nodeIndicesOfFourthFace[2] == 5);
 	REQUIRE(nodeIndicesOfFourthFace[3] == 4);
-	ULONG64 const* nodeIndicesOfFifthFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(1, 4);
+	uint64_t const* nodeIndicesOfFifthFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(1, 4);
 	REQUIRE(nodeIndicesOfFifthFace[0] == 4);
 	REQUIRE(nodeIndicesOfFifthFace[1] == 5);
 	REQUIRE(nodeIndicesOfFifthFace[2] == 6);

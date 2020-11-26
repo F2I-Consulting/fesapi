@@ -1061,9 +1061,9 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectR
 //************ HDF *******************
 //************************************
 
-EML2_NS::AbstractHdfProxy* DataObjectRepository::createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess)
+EML2_NS::AbstractHdfProxy* DataObjectRepository::createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & filePath, DataObjectRepository::openingMode hdfPermissionAccess)
 {
-	return hdfProxyFactory->make(this, guid, title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
+	return hdfProxyFactory->make(this, guid, title, packageDirAbsolutePath, filePath, hdfPermissionAccess);
 }
 
 //************************************
@@ -2364,7 +2364,7 @@ RESQML2_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGrid
 }
 
 RESQML2_NS::UnstructuredGridRepresentation* DataObjectRepository::createUnstructuredGridRepresentation(const std::string & guid, const std::string & title,
-	const ULONG64 & cellCount)
+	const uint64_t & cellCount)
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::UnstructuredGridRepresentation(this, guid, title, cellCount);

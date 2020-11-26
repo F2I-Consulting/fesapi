@@ -21,6 +21,8 @@ under the License.
 #include "../AbstractSession.h"
 #include "../EtpHelpers.h"
 
+#include "../../tools/date.h"
+
 using namespace ETP_NS;
 
 void ProtocolHandlers::sendExceptionCode3() {
@@ -45,7 +47,17 @@ void ProtocolHandlers::printDataObject(const Energistics::Etp::v12::Datatypes::O
 	if (dataObject.resource.targetCount) {
 		std::cout << "target count : " << dataObject.resource.targetCount.get() << std::endl;
 	}
-	std::cout << "lastChanged : " << (dataObject.resource.lastChanged >= 0 ? ctime(&dataObject.resource.lastChanged) : "unknown") << std::endl;
+
+	std::cout << "lastChanged : ";
+	if (dataObject.resource.lastChanged >= 0) {
+		auto duration = std::chrono::microseconds(dataObject.resource.lastChanged);
+		std::cout << date::format("%FT%TZ", date::floor<std::chrono::microseconds>(duration));
+	}
+	else {
+		std::cout << "unknown";
+	}
+	std::cout << std::endl;
+
 	std::cout << "*********** SERIALIZATION ***********************" << std::endl;
 	std::cout << dataObject.data << std::endl;
 	std::cout << "*************************************************" << std::endl;

@@ -44,7 +44,7 @@ namespace RESQML2_NS
 		/**
 		* Please use std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "") instead. Notice the lack of null value parameter.
 		*/
-		std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy*, const std::string&, LONG64) final {
+		std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy*, const std::string&, int64_t) final {
 			throw std::logic_error("You cannot push back integer values in a Continuous Property.");
 		}
 
@@ -85,7 +85,7 @@ namespace RESQML2_NS
 		 * 									method. If @c nullptr (default value), then a default HDF proxy
 		 * 									must be defined in the repository.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array1dOfValues(const double * values, ULONG64 valueCount,
+		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array1dOfValues(const double * values, uint64_t valueCount,
 			double minimumValue, double maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 		using AbstractValuesProperty::pushBackDoubleHdf5Array1dOfValues;
 
@@ -113,7 +113,7 @@ namespace RESQML2_NS
 		 * 											(default value), then a default HDF proxy must be
 		 * 											defined in the repository.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array2dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim,
+		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array2dOfValues(const double * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim,
 			double minimumValue, double maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 		using AbstractValuesProperty::pushBackDoubleHdf5Array2dOfValues;
 
@@ -143,7 +143,7 @@ namespace RESQML2_NS
 		 * 											(default value), then a default HDF proxy must be
 		 * 											defined in the repository.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array3dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim,
+		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array3dOfValues(const double * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim,
 			double minimumValue, double maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 		using AbstractValuesProperty::pushBackDoubleHdf5Array3dOfValues;
 
@@ -183,7 +183,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackDoubleHdf5Array1dOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array1dOfValues(const float * values, ULONG64 valueCount,
+		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array1dOfValues(const float * values, uint64_t valueCount,
 			float minimumValue, float maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 		using AbstractValuesProperty::pushBackFloatHdf5Array1dOfValues;
 
@@ -192,7 +192,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackDoubleHdf5Array2dOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array2dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim,
+		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array2dOfValues(const float * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim,
 			float minimumValue, float maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 		using AbstractValuesProperty::pushBackFloatHdf5Array2dOfValues;
 
@@ -201,7 +201,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackDoubleHdf5Array3dOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array3dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim,
+		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array3dOfValues(const float * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim,
 			float minimumValue, float maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 		using AbstractValuesProperty::pushBackFloatHdf5Array3dOfValues;
 
@@ -329,9 +329,9 @@ namespace RESQML2_NS
 		 * 											the data object repository.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array3dOfValues(
-			ULONG64 valueCountInFastestDim,
-			ULONG64 valueCountInMiddleDim,
-			ULONG64 valueCountInSlowestDim,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
 			float minimumValue, float maximumValue,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr
 		);
@@ -377,12 +377,12 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5Array3dOfValues(
 			float const * values,
-			ULONG64 valueCountInFastestDim,
-			ULONG64 valueCountInMiddleDim,
-			ULONG64 valueCountInSlowestDim,
-			ULONG64 offsetInFastestDim,
-			ULONG64 offsetInMiddleDim,
-			ULONG64 offsetInSlowestDim,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()
@@ -507,7 +507,7 @@ namespace RESQML2_NS
 			}
 			if (minimumValue != nullptr && maximumValue != nullptr) return; // No need to compute max or min value
 
-			ULONG64 nValues = numValuesInEachDimension[0];
+			uint64_t nValues = numValuesInEachDimension[0];
 			//If count > 1, the last (fastest) dimension has the number of properties per indexable element of the representation.
 			for (unsigned int dim = 1; dim < (elementCount == 1 ? numArrayDimensions : numArrayDimensions - 1); ++dim) {
 				nValues *= numValuesInEachDimension[dim];

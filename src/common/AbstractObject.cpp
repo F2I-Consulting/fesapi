@@ -1360,7 +1360,7 @@ void AbstractObject::readArrayNdOfUIntValues(gsoap_eml2_3::eml23__AbstractIntege
 	}
 }
 
-ULONG64 AbstractObject::getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const
+uint64_t AbstractObject::getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const
 {
 	long soapType = arrayInput->soap_type();
 	if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
@@ -1391,12 +1391,12 @@ ULONG64 AbstractObject::getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__Abst
 	throw invalid_argument("The integer array type is not supported yet.");
 }
 
-ULONG64 AbstractObject::getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractIntegerArray * arrayInput) const
+uint64_t AbstractObject::getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractIntegerArray * arrayInput) const
 {
 	long soapType = arrayInput->soap_type();
 	if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 	{
-		ULONG64 result = 0;
+		uint64_t result = 0;
 		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(arrayInput)->Values->ExternalFileProxy) {
 			result += dsPart->Count;
 		}

@@ -635,7 +635,7 @@ bool GraphicalInformationSet::hasValueVectorIndex(AbstractObject const* targetOb
 	return colorInformation->ValueVectorIndex != nullptr;
 }
 
-LONG64 GraphicalInformationSet::getValueVectorIndex(AbstractObject const* targetObject) {
+int64_t GraphicalInformationSet::getValueVectorIndex(AbstractObject const* targetObject) {
 	if (!hasValueVectorIndex(targetObject)) {
 		throw invalid_argument("The color information associated to the target object has no value vector index");
 	}
@@ -644,7 +644,7 @@ LONG64 GraphicalInformationSet::getValueVectorIndex(AbstractObject const* target
 	return *colorInformation->ValueVectorIndex;
 }
 
-void GraphicalInformationSet::setValueVectorIndex(AbstractObject const* targetObject, LONG64 valueVectorIndex) {
+void GraphicalInformationSet::setValueVectorIndex(AbstractObject const* targetObject, int64_t valueVectorIndex) {
 	resqml22__ColorInformation* colorInformation = getColorInformation(targetObject);
 
 	if (colorInformation == nullptr) {

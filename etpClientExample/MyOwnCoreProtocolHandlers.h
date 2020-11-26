@@ -29,7 +29,7 @@ private:
 
 public:
 	MyOwnCoreProtocolHandlers(ETP_NS::AbstractSession* mySession, COMMON_NS::DataObjectRepository* repo_): ETP_NS::CoreHandlers(mySession), repo(repo_) {}
-	~MyOwnCoreProtocolHandlers();
+	~MyOwnCoreProtocolHandlers() = default;
 
 	void on_OpenSession(const Energistics::Etp::v12::Protocol::Core::OpenSession & os, int64_t correlationId);
 };

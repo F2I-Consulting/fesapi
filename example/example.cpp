@@ -923,13 +923,13 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	{
 		RESQML2_NS::SubRepresentation * faultSubRep = pck->createSubRepresentation(fault1Interp1, "ff248280-fa3d-11e5-a35c-0002a5d5c51b", "Fault Subrep In Grid");
 		faultSubRep->pushBackSupportingRepresentation(ijkgrid);
-		ULONG64 faultPillar[2] = { 1, 4 };
+		uint64_t faultPillar[2] = { 1, 4 };
 		faultSubRep->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement__pillars, 2, faultPillar, hdfProxy);
 	}
 
 	RESQML2_NS::SubRepresentation * actnum = pck->createSubRepresentation("323001d0-468c-41d7-abec-7d12c3c9428b", "ACTNUM");
 	actnum->pushBackSupportingRepresentation(ijkgrid432);
-	ULONG64 actnumValues[21] = {
+	uint64_t actnumValues[21] = {
 		1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
 	};
@@ -939,7 +939,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	RESQML2_NS::SubRepresentation * doubleGridSubrep = pck->createSubRepresentation("f6d23b9c-e45d-4638-9601-ae3b682129a0", "TEST MULTI GRIDS SUBREP");
 	doubleGridSubrep->pushBackSupportingRepresentation(ijkgrid432);
 	doubleGridSubrep->pushBackSupportingRepresentation(ijkgrid);
-	ULONG64 doubleGridSubrepValues[23] = {
+	uint64_t doubleGridSubrepValues[23] = {
 		1, 4,
 		1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
@@ -957,7 +957,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	//**************
 	RESQML2_NS::GridConnectionSetRepresentation * gridConnSet = pck->createGridConnectionSetRepresentation("03bb6fc0-fa3e-11e5-8c09-0002a5d5c51b", "GridConnectionSetRepresentation");
 	gridConnSet->pushBackSupportingGridRepresentation(ijkgrid);
-	ULONG64 cellConn[6] = { 0, 9999, 0, 1, 9999, 1 };
+	uint64_t cellConn[6] = { 0, 9999, 0, 1, 9999, 1 };
 	gridConnSet->setCellIndexPairs(3, cellConn, 9999, hdfProxy);
 	int localFacePerCellIndexPairs[6] = { 3, 9999, 3, 5, 9999, 5 };
 	gridConnSet->setLocalFacePerCellIndexPairs(3, localFacePerCellIndexPairs, -1, hdfProxy);
@@ -972,7 +972,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 
 	RESQML2_NS::GridConnectionSetRepresentation * gridConnSet432 = pck->createGridConnectionSetRepresentation("20b480a8-5e3b-4336-8f6e-1b3099c2c60f", "GridConnectionSetRepresentation");
 	gridConnSet432->pushBackSupportingGridRepresentation(ijkgrid432);
-	ULONG64 cellConn432[30] = {
+	uint64_t cellConn432[30] = {
 		1, 9999, 5, 9999, 9, 9999,
 		1, 2, 5, 6, 9, 10,
 		13, 2, 17, 6, 21, 10,
@@ -1011,7 +1011,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	discreteProp1->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
 	RESQML2_NS::DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(ijkgrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex", 1,
 		gsoap_eml2_3::resqml22__IndexableElement__cells, propType1);
-	LONG64 prop2Values[2] = { 10, 11 };
+	int64_t prop2Values[2] = { 10, 11 };
 	discreteProp2->pushBackLongHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
 
 	RESQML2_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true,gsoap_eml2_3::resqml22__TimeSetKind__not_x0020a_x0020time_x0020set);
@@ -1126,7 +1126,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	//**************
 	// Stratigraphy
 	//**************
-	ULONG64 stratiUnitIndice = 0;
+	uint64_t stratiUnitIndice = 0;
 	ijkgrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank0);
 
 	// Partial transfer
@@ -1139,7 +1139,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	// sub rep of a partial unstructured grid
 	RESQML2_NS::SubRepresentation * subRepOfUnstructuredGrid = pck->createSubRepresentation("6b48c8d0-d60e-42b5-994c-2d4d4f3d0765", "Subrep On Partial grid");
 	subRepOfUnstructuredGrid->pushBackSupportingRepresentation(partialGrid);
-	ULONG64 nodeIndex[2] = { 0, 1 };
+	uint64_t nodeIndex[2] = { 0, 1 };
 	subRepOfUnstructuredGrid->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement__nodes, 2, nodeIndex, hdfProxy);
 
 	// creating the unstructured grid
@@ -1150,19 +1150,19 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		0, 0, 0, 375, 0, 0, 0, 150, 0 }; // points for wedge
 
 	// The point indices of each face.
-	ULONG64 nodeIndicesPerFace[27] = { 0, 1, 2, // shared face
+	uint64_t nodeIndicesPerFace[27] = { 0, 1, 2, // shared face
 		1, 2, 3, 0, 1, 3, 0, 2, 3, // faces for tetra
 		0, 2, 6, 4, 2, 1, 5, 6, 0, 1, 5, 4, 4, 5, 6 //  faces for wedge
 	};
 	// The cumulative count of points per face i.e. first face contains 3 points, second face contains 6-3=3 points, third face contains 9-6=3 points etc...
-	ULONG64 nodeIndicesCumulativeCountPerFace[8] = { 3, // shared face
+	uint64_t nodeIndicesCumulativeCountPerFace[8] = { 3, // shared face
 		6, 9, 12, // faces for tetra
 		16, 20, 24, 27 //  faces for wedge
 	};
 	// The face indices of each cell. 
-	ULONG64 faceIndicesPerCell[9] = { 0, 1, 2, 3, // tetra
+	uint64_t faceIndicesPerCell[9] = { 0, 1, 2, 3, // tetra
 		0, 4, 5, 6, 7 }; //wedge
-	ULONG64 faceIndicesCumulativeCountPerCell[2] = { 4, 9 };
+	uint64_t faceIndicesCumulativeCountPerCell[2] = { 4, 9 };
 	// Exporting the right handness of each face of each cell is mandatory. However, it is often ignored by the readers. Dummy values
 	unsigned char faceRightHandness[9] = { 0, 0, 1, 1, 1, 0, 1, 0, 0 };
 
@@ -2070,7 +2070,7 @@ void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, EML2_
 
 	// Link between ijk grid and rock fuid org
 	RESQML2_NS::IjkGridExplicitRepresentation* singleCellIjkgrid = pck.getDataObjectByUuid<RESQML2_NS::IjkGridExplicitRepresentation>("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b");
-	ULONG64 rockFluidUnitIndice = 0;
+	uint64_t rockFluidUnitIndice = 0;
 	singleCellIjkgrid->setCellAssociationWithRockFluidOrganizationInterpretation(&rockFluidUnitIndice, 1000, rockFluidOrgInterp);
 }
 
@@ -2173,7 +2173,7 @@ void deserializeActivity(COMMON_NS::AbstractObject const * resqmlObject)
 					}
 				}
 				else if (activity->isAnIntegerQuantityParameter(paramTitle)) {
-					vector<LONG64> vals = activity->getIntegerQuantityParameterValue(paramTitle);
+					vector<int64_t> vals = activity->getIntegerQuantityParameterValue(paramTitle);
 					for (size_t k = 0; k < vals.size(); ++k) {
 						cout << "Integer value : " << vals[k] << endl;
 					}
@@ -2374,7 +2374,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 						std::cout << stl->getKeyAtIndex(itemIndex) << "->" << stl->getStringValueAtIndex(itemIndex) << endl;
 					}
 				}
-				std::unique_ptr<LONG64[]> values(new LONG64[valueCount]);
+				std::unique_ptr<int64_t[]> values(new int64_t[valueCount]);
 				static_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getLongValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
@@ -2430,7 +2430,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 			else {
 				cerr << "\tERROR !!!!! The discrete or comment property is linked to a floating point HDF5 dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
-				std::unique_ptr<LONG64[]> values(new LONG64[valueCount]);
+				std::unique_ptr<int64_t[]> values(new int64_t[valueCount]);
 				dynamic_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getLongValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
@@ -2460,10 +2460,10 @@ void showAllSubRepresentations(const vector<RESQML2_NS::SubRepresentation *> & s
 	{
 		showAllMetadata(subRepSet[subRepIndex], "\t");
 		if (!subRepSet[subRepIndex]->isPartial()) {
-			const ULONG64 indiceCount = subRepSet[subRepIndex]->getElementCountOfPatch(0);
+			const uint64_t indiceCount = subRepSet[subRepIndex]->getElementCountOfPatch(0);
 
 			// element indices
-			std::unique_ptr<ULONG64[]> elementIndices(new ULONG64[indiceCount]);
+			std::unique_ptr<uint64_t[]> elementIndices(new uint64_t[indiceCount]);
 			subRepSet[subRepIndex]->getElementIndicesOfPatch(0, 0, elementIndices.get());
 			for (unsigned int i = 0; i < indiceCount && i < 10; ++i) {
 				std::cout << "Element indice at position " << i << " : " << elementIndices[i] << std::endl;
@@ -2665,7 +2665,7 @@ void deserializeFluidBoundary(COMMON_NS::DataObjectRepository & pck)
 		showAllMetadata(fluidBoundary->getInterpretation(0));
 		RESQML2_NS::PlaneSetRepresentation const * rep = static_cast<RESQML2_NS::PlaneSetRepresentation const*>(fluidBoundary->getInterpretation(0)->getRepresentation(0));
 		showAllMetadata(rep);
-		ULONG64 ptCount = rep->getXyzPointCountOfAllPatches();
+		uint64_t ptCount = rep->getXyzPointCountOfAllPatches();
 		std::unique_ptr<double[]> allXyzPoints(new double[ptCount * 3]);
 		rep->getXyzPointsOfAllPatchesInGlobalCrs(allXyzPoints.get());
 		for (size_t i = 0; i < ptCount; ++i) {
@@ -2839,9 +2839,9 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 						for (unsigned int i = 0; i < ijkGrid->getICellCount(); i++) {
 							cout << "CELL (" << i << ", " << j << ", " << kInterface << ")" << std::endl;
 
-							ULONG64 xyzPointIndex;
+							uint64_t xyzPointIndex;
 							double x, y, z;
-							ULONG64 indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterface() * 3;
+							uint64_t indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterface() * 3;
 
 							// Corner (0, 0, 0)
 							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 0) * 3 - indexShift;
@@ -2887,9 +2887,9 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 					{
 						cout << "CELL (" << i << ", " << j << ", " << ijkGrid->getKCellCount() - 1 << ")" << std::endl;
 
-						ULONG64 xyzPointIndex;
+						uint64_t xyzPointIndex;
 						double x, y, z;
-						ULONG64 indexShift = ijkGrid->getKCellCount() * ijkGrid->getXyzPointCountOfKInterface() * 3;
+						uint64_t indexShift = ijkGrid->getKCellCount() * ijkGrid->getXyzPointCountOfKInterface() * 3;
 
 						// Corner (0, 0, 1)
 						xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 4) * 3 - indexShift;
@@ -2939,9 +2939,9 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 						{
 							cout << "CELL (" << i << ", " << j << ", " << kInterface << ")" << std::endl;
 
-							ULONG64 xyzPointIndex;
+							uint64_t xyzPointIndex;
 							double x, y, z;
-							ULONG64 indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterface() * 3;
+							uint64_t indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterface() * 3;
 
 							// Corner (0, 0, 0)
 							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 0) * 3 - indexShift;
@@ -3111,7 +3111,7 @@ void deserializeGridHyperslabbingBlock(const COMMON_NS::DataObjectRepository & p
 
 	ijkGrid->loadBlockInformation(iInterfaceStart, iInterfaceEnd, jInterfaceStart, jInterfaceEnd, kInterfaceStart, kInterfaceEnd);
 
-	ULONG64 xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
+	uint64_t xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
 
 	std::unique_ptr<double[]> xyzPoints(new double[xyzPointCountOfBlock * 3]);
 	ijkGrid->getXyzPointsOfBlock(xyzPoints.get());
@@ -4091,7 +4091,7 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 
 					unsigned int patchCount = ijkGrid->getPatchCount();
 					for (unsigned int currentPatch = 0; currentPatch < patchCount; ++currentPatch) {
-						ULONG64 nbVertex = ijkGrid->getXyzPointCountOfPatch(currentPatch);
+						uint64_t nbVertex = ijkGrid->getXyzPointCountOfPatch(currentPatch);
 
 						std::unique_ptr<double[]> xyzPts(new double[nbVertex * 3]);
 						ijkGrid->getXyzPointsOfPatch(currentPatch, xyzPts.get());
@@ -4104,7 +4104,7 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 						}
 					}
 					/*
-					ULONG64 pointCountByInterface = paramIjkGrid->getXyzPointCountOfKInterfaceOfPatch(0);
+					uint64_t pointCountByInterface = paramIjkGrid->getXyzPointCountOfKInterfaceOfPatch(0);
 					double* interfaceXyzPoints = new double[pointCountByInterface * 3];
 					paramIjkGrid->getXyzPointsOfKInterfaceOfPatch(0, 0, interfaceXyzPoints);
 					delete[] interfaceXyzPoints;
@@ -4120,7 +4120,7 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 				}
 
 				// read whole points
-				ULONG64 xyzPointCount = ijkGrid->getXyzPointCountOfAllPatches();
+				uint64_t xyzPointCount = ijkGrid->getXyzPointCountOfAllPatches();
 				std::cout << "\t XYZ points count :" << xyzPointCount << std::endl;
 				std::cout << "\t Start reading XYZ points..." << std::endl;
 				std::unique_ptr<double[]> xyzPoints(new double[xyzPointCount * 3]);
@@ -4178,47 +4178,47 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 			std::cout << "Truncated face count : " << ijkGrid->getTruncatedFaceCount() << std::endl;
 			std::cout << "Truncated cell count : " << ijkGrid->getTruncatedCellCount() << std::endl;
 
-			ULONG64* cellIndices = new ULONG64[ijkGrid->getTruncatedCellCount()];
+			uint64_t* cellIndices = new uint64_t[ijkGrid->getTruncatedCellCount()];
 			ijkGrid->getTruncatedCellIndices(cellIndices);
-			for (ULONG64 index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
+			for (uint64_t index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
 				cout << "truncated cell Indices : " << cellIndices[index] << endl;
 			}
 			delete[] cellIndices;
 
-			ULONG64* cumNodeCount = new ULONG64[ijkGrid->getTruncatedFaceCount()];
+			uint64_t* cumNodeCount = new uint64_t[ijkGrid->getTruncatedFaceCount()];
 			ijkGrid->getCumulativeNodeCountPerTruncatedFace(cumNodeCount);
-			for (ULONG64 index = 0; index < ijkGrid->getTruncatedFaceCount() && index < 10; ++index) {
+			for (uint64_t index = 0; index < ijkGrid->getTruncatedFaceCount() && index < 10; ++index) {
 				cout << "CumulativeNodeCountPerTruncatedFace : " << cumNodeCount[index] << endl;
 			}
-			ULONG64* nodeIndicesPerTruncFace = new ULONG64[cumNodeCount[ijkGrid->getTruncatedFaceCount() - 1]];
+			uint64_t* nodeIndicesPerTruncFace = new uint64_t[cumNodeCount[ijkGrid->getTruncatedFaceCount() - 1]];
 			ijkGrid->getNodeIndicesOfTruncatedFaces(nodeIndicesPerTruncFace);
-			for (ULONG64 index = 0; index < cumNodeCount[ijkGrid->getTruncatedFaceCount() - 1] && index < 10; ++index) {
+			for (uint64_t index = 0; index < cumNodeCount[ijkGrid->getTruncatedFaceCount() - 1] && index < 10; ++index) {
 				cout << "nodeIndicesPerTruncFace : " << nodeIndicesPerTruncFace[index] << endl;
 			}
 			delete[] cumNodeCount;
 			delete[] nodeIndicesPerTruncFace;
 
-			ULONG64* cumFaceCount = new ULONG64[ijkGrid->getTruncatedCellCount()];
+			uint64_t* cumFaceCount = new uint64_t[ijkGrid->getTruncatedCellCount()];
 			ijkGrid->getCumulativeTruncatedFaceCountPerTruncatedCell(cumFaceCount);
-			for (ULONG64 index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
+			for (uint64_t index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
 				cout << "CumulativeTruncatedFaceCountPerTruncatedCell : " << cumFaceCount[index] << endl;
 			}
-			ULONG64* faceIndicesPerTruncCell = new ULONG64[cumFaceCount[ijkGrid->getTruncatedCellCount() - 1]];
+			uint64_t* faceIndicesPerTruncCell = new uint64_t[cumFaceCount[ijkGrid->getTruncatedCellCount() - 1]];
 			ijkGrid->getTruncatedFaceIndicesOfTruncatedCells(faceIndicesPerTruncCell);
-			for (ULONG64 index = 0; index < cumFaceCount[ijkGrid->getTruncatedCellCount() - 1] && index < 10; ++index) {
+			for (uint64_t index = 0; index < cumFaceCount[ijkGrid->getTruncatedCellCount() - 1] && index < 10; ++index) {
 				cout << "faceIndicesPerTruncCell : " << faceIndicesPerTruncCell[index] << endl;
 			}
 			delete[] cumFaceCount;
 			delete[] faceIndicesPerTruncCell;
 
-			ULONG64* cumNonTruncFaceCount = new ULONG64[ijkGrid->getTruncatedCellCount()];
+			uint64_t* cumNonTruncFaceCount = new uint64_t[ijkGrid->getTruncatedCellCount()];
 			ijkGrid->getCumulativeNonTruncatedFaceCountPerTruncatedCell(cumNonTruncFaceCount);
-			for (ULONG64 index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
+			for (uint64_t index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
 				cout << "CumulativeNonTruncatedFaceCountPerTruncatedCell : " << cumNonTruncFaceCount[index] << endl;
 			}
-			ULONG64* nonTruncfaceIndicesPerTruncCell = new ULONG64[cumNonTruncFaceCount[ijkGrid->getTruncatedCellCount() - 1]];
+			uint64_t* nonTruncfaceIndicesPerTruncCell = new uint64_t[cumNonTruncFaceCount[ijkGrid->getTruncatedCellCount() - 1]];
 			ijkGrid->getNonTruncatedFaceIndicesOfTruncatedCells(nonTruncfaceIndicesPerTruncCell);
-			for (ULONG64 index = 0; index < cumNonTruncFaceCount[ijkGrid->getTruncatedCellCount() - 1] && index < 10; ++index) {
+			for (uint64_t index = 0; index < cumNonTruncFaceCount[ijkGrid->getTruncatedCellCount() - 1] && index < 10; ++index) {
 				cout << "nonTruncfaceIndicesPerTruncCell : " << nonTruncfaceIndicesPerTruncCell[index] << endl;
 			}
 			delete[] cumNonTruncFaceCount;
@@ -4226,7 +4226,7 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 
 			unsigned char* rightHandnessTruncFace = new unsigned char[ijkGrid->getTruncatedFaceCount()];
 			ijkGrid->getTruncatedFaceIsRightHanded(rightHandnessTruncFace);
-			for (ULONG64 index = 0; index < ijkGrid->getTruncatedFaceCount() && index < 10; ++index) {
+			for (uint64_t index = 0; index < ijkGrid->getTruncatedFaceCount() && index < 10; ++index) {
 				cout << "rightHandnessTruncFace : " << rightHandnessTruncFace[index] << endl;
 			}
 			delete[] rightHandnessTruncFace;
@@ -4248,7 +4248,7 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 			}
 
 			int* localFacePerCellIndexPairs = new int[gridConnectionSet->getCellIndexPairCount() * 2];
-			LONG64 gcsNullValue = gridConnectionSet->getLocalFacePerCellIndexPairs(localFacePerCellIndexPairs);
+			int64_t gcsNullValue = gridConnectionSet->getLocalFacePerCellIndexPairs(localFacePerCellIndexPairs);
 			std::cout << "Null Value for LocalFacePerCellIndexPairs : " << gcsNullValue << endl;
 			delete[] localFacePerCellIndexPairs;
 		}
@@ -4296,7 +4296,7 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 		if (ijkGrid->hasIntervalStratigraphicUnitIndices())
 		{
 			cout << "\t\t Linked with strati : " << ijkGrid->getStratigraphicOrganizationInterpretation()->getTitle() << endl;
-			std::unique_ptr<ULONG64[]> stratiIndices(new ULONG64[ijkGrid->getKCellCount()]);
+			std::unique_ptr<uint64_t[]> stratiIndices(new uint64_t[ijkGrid->getKCellCount()]);
 			ijkGrid->getIntervalStratigraphicUnitIndices(stratiIndices.get());
 			for (size_t i = 0; i < ijkGrid->getKCellCount(); ++i) {
 				cout << "\t\t K layer " << i << " is linked to strati layer " << stratiIndices[i] << endl;
@@ -4439,10 +4439,10 @@ void deserialize(const string & inputFile)
 	std::cout << faultPolyRepSet.size() << " FAULT POLYLINE SET REP" << endl;
 	for (auto* faultPolyRep : faultPolyRepSet) {
 		showAllMetadata(faultPolyRep);
-		ULONG64 nodeCount = faultPolyRep->getXyzPointCountOfAllPatches();
+		uint64_t nodeCount = faultPolyRep->getXyzPointCountOfAllPatches();
 		std::unique_ptr<double[]> allXyzPoints(new double[nodeCount * 3]);
 		faultPolyRep->getXyzPointsOfAllPatchesInGlobalCrs(allXyzPoints.get());
-		for (ULONG64 nodeIndex = 0; nodeIndex < 6; nodeIndex += 3) {
+		for (uint64_t nodeIndex = 0; nodeIndex < 6; nodeIndex += 3) {
 			std::cout << allXyzPoints[nodeIndex] << " " << allXyzPoints[nodeIndex + 1] << " " << allXyzPoints[nodeIndex + 2] << endl;
 		}
 		deserializeActivity(faultPolyRep);
@@ -4490,7 +4490,7 @@ void deserialize(const string & inputFile)
 	for (auto* faultTriRep : faultTriRepSet) {
 		showAllMetadata(faultTriRep);
 
-		ULONG64 pointCount = faultTriRep->getXyzPointCountOfAllPatches();
+		uint64_t pointCount = faultTriRep->getXyzPointCountOfAllPatches();
 		unsigned int triangleCount = faultTriRep->getTriangleCountOfAllPatches();
 		cout << "point Count " << pointCount << endl;
 		cout << "triangle Count " << triangleCount << endl;
@@ -4569,7 +4569,7 @@ void deserialize(const string & inputFile)
 	for (auto* horizonTriRep : horizonTriRepSet) {
 		showAllMetadata(horizonTriRep);
 
-		const ULONG64 pointCount = horizonTriRep->getXyzPointCountOfAllPatches();
+		const uint64_t pointCount = horizonTriRep->getXyzPointCountOfAllPatches();
 		unsigned int triangleCount = horizonTriRep->getTriangleCountOfAllPatches();
 		cout << "point Count " << pointCount << endl;
 		cout << "triangle Count " << triangleCount << endl;
@@ -4590,7 +4590,7 @@ void deserialize(const string & inputFile)
 		for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
 			RESQML2_NS::AbstractRepresentation* seismicSupport = horizonTriRep->getSeismicSupportOfPatch(patchIndex);
 			if (seismicSupport != nullptr) {
-				const ULONG64 pointCountForPatch = horizonTriRep->getXyzPointCountOfPatch(patchIndex);
+				const uint64_t pointCountForPatch = horizonTriRep->getXyzPointCountOfPatch(patchIndex);
 				cout << "Seismic support of patch " << patchIndex << " is : " << seismicSupport->getTitle() << endl;
 				std::unique_ptr<double[]> inlines(new double[pointCountForPatch]);
 				horizonTriRep->getInlinesOfPointsOfPatch(patchIndex, inlines.get());
@@ -4632,7 +4632,7 @@ void deserialize(const string & inputFile)
 				std::unique_ptr<double[]> lineAbscissa(new double[horizonSinglePolylineRep->getXyzPointCountOfPatch(patchIndex)]);
 				horizonSinglePolylineRep->getSeismicLineAbscissaOfPointsOfPatch(patchIndex, lineAbscissa.get());
 
-				for (ULONG64 j = 0; j < horizonSinglePolylineRep->getXyzPointCountOfPatch(patchIndex); j++) {
+				for (uint64_t j = 0; j < horizonSinglePolylineRep->getXyzPointCountOfPatch(patchIndex); j++) {
 					std::cout << "line Abscissa : " << lineAbscissa[j] << std::endl;
 				}
 			}
@@ -4675,7 +4675,7 @@ void deserialize(const string & inputFile)
 							RESQML2_NS::CategoricalProperty const * catVal = static_cast<RESQML2_NS::CategoricalProperty const *>(prop);
 							if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG_64) {
 								std::cout << "Hdf datatype is NATIVE LONG" << std::endl;
-								std::unique_ptr<LONG64[]> tmp(new LONG64[wmf->getMdValuesCount()]);
+								std::unique_ptr<int64_t[]> tmp(new int64_t[wmf->getMdValuesCount()]);
 								catVal->getLongValuesOfPatch(0, tmp.get());
 								for (size_t ind = 0; ind < 2; ind++) {
 									std::cout << "Value " << ind << " : " << tmp[ind] << std::endl;
@@ -4792,9 +4792,9 @@ void deserialize(const string & inputFile)
 		if (!unstructuredGridRep->isPartial() && unstructuredGridRep->hasGeometry()) {
 			std::cout << "Node count is : " << unstructuredGridRep->getXyzPointCountOfPatch(0) << std::endl;
 
-			ULONG64 faceCount = 0;
+			uint64_t faceCount = 0;
 			if (!unstructuredGridRep->isFaceCountOfCellsConstant()) {
-				std::unique_ptr<ULONG64[]> faceCountOfCells(new ULONG64[unstructuredGridRep->getCellCount()]);
+				std::unique_ptr<uint64_t[]> faceCountOfCells(new uint64_t[unstructuredGridRep->getCellCount()]);
 				unstructuredGridRep->getCumulativeFaceCountPerCell(faceCountOfCells.get());
 				std::cout << "Face count of cell 0 is : " << faceCountOfCells[0] << std::endl;
 				if (unstructuredGridRep->getCellCount() > 1)
@@ -4806,7 +4806,7 @@ void deserialize(const string & inputFile)
 				faceCount = unstructuredGridRep->getConstantFaceCountOfCells() * unstructuredGridRep->getCellCount();
 			}
 			if (!unstructuredGridRep->isNodeCountOfFacesConstant()) 	{
-				std::unique_ptr<ULONG64[]> nodeCountOfFaces(new ULONG64[faceCount]);
+				std::unique_ptr<uint64_t[]> nodeCountOfFaces(new uint64_t[faceCount]);
 				unstructuredGridRep->getCumulativeNodeCountPerFace(nodeCountOfFaces.get());
 				std::cout << "Node count of face 0 is : " << nodeCountOfFaces[0] << std::endl;
 				if (faceCount > 1)
@@ -4826,7 +4826,7 @@ void deserialize(const string & inputFile)
 			unstructuredGridRep->loadGeometry();
 
 			std::cout << "In memory" << std::endl;
-			for (ULONG64 cellIndex = 0; cellIndex < unstructuredGridRep->getCellCount(); ++cellIndex) {
+			for (uint64_t cellIndex = 0; cellIndex < unstructuredGridRep->getCellCount(); ++cellIndex) {
 				std::cout << "Face count of cell " << cellIndex << " is : " << unstructuredGridRep->getFaceCountOfCell(cellIndex) << std::endl;
 				for (unsigned int faceIndex = 0; faceIndex < unstructuredGridRep->getFaceCountOfCell(cellIndex); ++faceIndex) {
 					std::cout << "Node count of face " << faceIndex << " of cell " << cellIndex << " is : " << unstructuredGridRep->getNodeCountOfFaceOfCell(cellIndex, faceIndex) << std::endl;

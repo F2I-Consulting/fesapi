@@ -44,7 +44,7 @@ void SubRepresentationOnPartialGridConnectionSet::initRepo()
 	RESQML2_NS::SubRepresentation* subRep = repo->createSubRepresentation(defaultUuid, defaultTitle);
 	subRep->pushBackSupportingRepresentation(partialGcsr);
 
-	ULONG64 elements[2] = { 1, 2 };
+	uint64_t elements[2] = { 1, 2 };
 	subRep->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement__cells, 2, elements, hdfProxy);
 }
 

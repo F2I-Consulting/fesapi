@@ -91,8 +91,8 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
 
 		/**
-		* Unzip the package (dataobjects + relationships) into a data repository by only creating partila objects.
-		* @return			An empty string if everything's ok otherwise the error string.
+		* Unzip the package (dataobjects + relationships) into a data repository by only creating partial objects.
+		* @return			An empty string if success otherwise the warning string.
 		*/
 		DLL_IMPORT_OR_EXPORT std::string deserializePartiallyInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
 

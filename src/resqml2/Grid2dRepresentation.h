@@ -34,16 +34,16 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The node count along the I (fastest) axis.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual ULONG64 getNodeCountAlongIAxis() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getNodeCountAlongIAxis() const = 0;
 
 		/**
 		 * Gets the number of nodes along the J (slowest) axis of this 2d grid representation.
 		 *
 		 * @returns	The node count along the J (slowest) axis.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual ULONG64 getNodeCountAlongJAxis() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getNodeCountAlongJAxis() const = 0;
 
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/** Please do note use: please compute x and y values with the lattice information. */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;

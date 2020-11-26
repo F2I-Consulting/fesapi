@@ -45,7 +45,7 @@ namespace RESQML2_2_NS
 		 */
 		UnstructuredGridRepresentation(COMMON_NS::DataObjectRepository* repo,
 			const std::string & guid, const std::string & title,
-			ULONG64 cellCount);
+			uint64_t cellCount);
 
 		/**
 		 * @brief	Constructor
@@ -57,7 +57,7 @@ namespace RESQML2_2_NS
 		 */
 		UnstructuredGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
-			ULONG64 cellCount);
+			uint64_t cellCount);
 
 		/**
 		 * @brief	Creates an instance of this class by wrapping a gsoap instance.
@@ -78,33 +78,33 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
-		DLL_IMPORT_OR_EXPORT void getFaceIndicesOfCells(ULONG64 * faceIndices) const final;
+		DLL_IMPORT_OR_EXPORT void getFaceIndicesOfCells(uint64_t * faceIndices) const final;
 
-		DLL_IMPORT_OR_EXPORT void getCumulativeFaceCountPerCell(ULONG64 * cumulativeFaceCountPerCell_) const final;
+		DLL_IMPORT_OR_EXPORT void getCumulativeFaceCountPerCell(uint64_t * cumulativeFaceCountPerCell_) const final;
 
 		DLL_IMPORT_OR_EXPORT bool isFaceCountOfCellsConstant() const final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getConstantFaceCountOfCells() const final;
 
-		DLL_IMPORT_OR_EXPORT void getNodeIndicesOfFaces(ULONG64 * nodeIndices) const final;
+		DLL_IMPORT_OR_EXPORT void getNodeIndicesOfFaces(uint64_t * nodeIndices) const final;
 
-		DLL_IMPORT_OR_EXPORT void getCumulativeNodeCountPerFace(ULONG64 * nodeCountPerFace) const final;
+		DLL_IMPORT_OR_EXPORT void getCumulativeNodeCountPerFace(uint64_t * nodeCountPerFace) const final;
 
 		DLL_IMPORT_OR_EXPORT bool isNodeCountOfFacesConstant() const final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getConstantNodeCountOfFaces() const final;
 
-		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getCellCount() const final;
 
-		DLL_IMPORT_OR_EXPORT ULONG64 getFaceCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getFaceCount() const final;
 
-		DLL_IMPORT_OR_EXPORT ULONG64 getNodeCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getNodeCount() const final;
 
     	DLL_IMPORT_OR_EXPORT void getCellFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const final;
 
-		DLL_IMPORT_OR_EXPORT void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, ULONG64 pointCount, EML2_NS::AbstractHdfProxy* proxy,
+		DLL_IMPORT_OR_EXPORT void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& faceIndicesCumulativeCountPerCell,
-			ULONG64 faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
+			uint64_t faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
 			gsoap_resqml2_0_1::resqml20__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 
 		/**
@@ -124,7 +124,7 @@ namespace RESQML2_2_NS
 		*/
 		void init(COMMON_NS::DataObjectRepository* repo,
 			const std::string & guid, const std::string & title,
-			ULONG64 cellCount);
+			uint64_t cellCount);
 
 		gsoap_eml2_3::_resqml22__UnstructuredGridRepresentation* getSpecializedGsoapProxy() const;
 
@@ -143,8 +143,8 @@ namespace RESQML2_2_NS
 		* @param nodeCountPerFace					The constant node count per face.
 		*/
 		void setConstantCellShapeGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
-			ULONG64 pointCount, ULONG64 faceCount, RESQML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
-			const std::string& faceIndicesPerCell, ULONG64 faceCountPerCell,
-			const std::string& nodeIndicesPerFace, ULONG64 nodeCountPerFace) final;
+			uint64_t pointCount, uint64_t faceCount, RESQML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
+			const std::string& faceIndicesPerCell, uint64_t faceCountPerCell,
+			const std::string& nodeIndicesPerFace, uint64_t nodeCountPerFace) final;
 	};
 }

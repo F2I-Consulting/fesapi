@@ -492,7 +492,7 @@ namespace RESQML2_0_1_NS
 		bool isAnHorizon() const;
 		void setAge(unsigned int age);
 		bool hasAnAge() const;
-		ULONG64 getAge() const;
+		uint64_t getAge() const;
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)

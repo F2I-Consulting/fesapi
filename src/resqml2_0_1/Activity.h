@@ -73,7 +73,7 @@ namespace RESQML2_0_1_NS
 			const std::string & value) final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
-			LONG64 value) final;
+			int64_t value) final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
 			AbstractObject* resqmlObject) final;
@@ -191,7 +191,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The integer quantity parameter value.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<LONG64> getIntegerQuantityParameterValue(const std::string & paramTitle) const final;
+		DLL_IMPORT_OR_EXPORT std::vector<int64_t> getIntegerQuantityParameterValue(const std::string & paramTitle) const final;
 
 		/**
 		 * Gets integer quantity parameter value
@@ -200,7 +200,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The integer quantity parameter value.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getIntegerQuantityParameterValue(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getIntegerQuantityParameterValue(unsigned int index) const final;
 
 		/**
 		 * Query if 'paramTitle' is a string parameter

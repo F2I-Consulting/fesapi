@@ -94,7 +94,7 @@ namespace EML2_3_NS
 		 * @param 	value	The value.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
-			LONG64 value);
+			int64_t value);
 
 		/**
 		 * Push back a resqml object parameter in the instance. This parameter must exist in the
@@ -219,7 +219,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The integer quantity parameter value.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<LONG64> getIntegerQuantityParameterValue(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT std::vector<int64_t> getIntegerQuantityParameterValue(const std::string & paramTitle) const;
 
 		/**
 		 * Gets integer quantity parameter value
@@ -228,7 +228,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The integer quantity parameter value.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getIntegerQuantityParameterValue(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT int64_t getIntegerQuantityParameterValue(unsigned int index) const;
 
 		/**
 		 * Query if 'paramTitle' is a string parameter

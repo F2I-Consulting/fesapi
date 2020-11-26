@@ -175,7 +175,7 @@ bool ActivityTemplate::getParameterIsOutput(const std::string & paramTitle) cons
 	return param->IsOutput;
 }
 
-LONG64 ActivityTemplate::getParameterMinOccurences(unsigned int index) const
+int64_t ActivityTemplate::getParameterMinOccurences(unsigned int index) const
 {
 	_resqml20__ActivityTemplate* activityTemplate = static_cast<_resqml20__ActivityTemplate*>(gsoapProxy2_0_1);
 
@@ -186,7 +186,7 @@ LONG64 ActivityTemplate::getParameterMinOccurences(unsigned int index) const
 	return activityTemplate->Parameter[index]->MinOccurs;
 }
 
-LONG64 ActivityTemplate::getParameterMinOccurences(const std::string & paramTitle) const
+int64_t ActivityTemplate::getParameterMinOccurences(const std::string & paramTitle) const
 {
 	resqml20__ParameterTemplate* param = getParameterFromTitle(paramTitle);
 
@@ -196,7 +196,7 @@ LONG64 ActivityTemplate::getParameterMinOccurences(const std::string & paramTitl
 	return param->MinOccurs;
 }
 
-LONG64 ActivityTemplate::getParameterMaxOccurences(unsigned int index) const
+int64_t ActivityTemplate::getParameterMaxOccurences(unsigned int index) const
 {
 	_resqml20__ActivityTemplate* activityTemplate = static_cast<_resqml20__ActivityTemplate*>(gsoapProxy2_0_1);
 
@@ -207,7 +207,7 @@ LONG64 ActivityTemplate::getParameterMaxOccurences(unsigned int index) const
 	return activityTemplate->Parameter[index]->MaxOccurs;
 }
 
-LONG64 ActivityTemplate::getParameterMaxOccurences(const std::string & paramTitle) const
+int64_t ActivityTemplate::getParameterMaxOccurences(const std::string & paramTitle) const
 {
 	resqml20__ParameterTemplate* param = getParameterFromTitle(paramTitle);
 

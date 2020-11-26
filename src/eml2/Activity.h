@@ -89,7 +89,7 @@ namespace EML2_NS
 		 * @param 	value	The value of the parameter to push back.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string title,
-			LONG64 value) = 0;
+			int64_t value) = 0;
 
 		/**
 		 * Pushes back a RESQML object parameter in this instance. This parameter must exist in the
@@ -236,7 +236,7 @@ namespace EML2_NS
 		 *
 		 * @returns	A vector of the value of all the @p paramTitle integer quantity parameters.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::vector<LONG64> getIntegerQuantityParameterValue(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<int64_t> getIntegerQuantityParameterValue(const std::string & paramTitle) const = 0;
 
 		/**
 		 * Gets the integer quantity value of a given parameter.
@@ -250,7 +250,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The integer quantity value of the parameter at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getIntegerQuantityParameterValue(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getIntegerQuantityParameterValue(unsigned int index) const = 0;
 
 		/**
 		 * @brief	Queries if all of the parameters sharing a given title are string parameters.

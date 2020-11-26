@@ -103,9 +103,15 @@ namespace EML2_NS
 			const unsigned long long* numValuesInEachDimension,
 			unsigned int numDimensions) final;
 
-		void writeArrayNdOfGSoapULong64Values(const std::string& groupName,
+		void writeArrayNdOfInt64Values(const std::string & groupName,
+			const std::string & name,
+			const int64_t * values,
+			const unsigned long long * numValuesInEachDimension,
+			unsigned int numDimensions) final;
+
+		void writeArrayNdOfUInt64Values(const std::string& groupName,
 			const std::string& name,
-			const ULONG64* ulong64Values,
+			const uint64_t * values,
 			const unsigned long long* numValuesInEachDimension,
 			unsigned int numDimensions) final;
 
@@ -175,7 +181,7 @@ namespace EML2_NS
 		double readDoubleAttribute(const std::string& obj_name,
 			const std::string& attr_name) const final;
 
-		LONG64 readLongAttribute(const std::string& obj_name,
+		int64_t readLongAttribute(const std::string& obj_name,
 			const std::string& attr_name) const final;
 
 		void readArrayNdOfDoubleValues(const std::string& datasetName, double* values) final;
@@ -223,16 +229,16 @@ namespace EML2_NS
 			unsigned int numDimensions
 		) final;
 
-		void readArrayNdOfLongValues(const std::string& datasetName, LONG64* values) final;
+		void readArrayNdOfInt64Values(const std::string& datasetName, int64_t* values) final;
 
-		void readArrayNdOfLongValues(
+		void readArrayNdOfInt64Values(
 			const std::string& datasetName,
-			LONG64* values,
+			int64_t* values,
 			unsigned long long const* numValuesInEachDimension,
 			unsigned long long const* offsetInEachDimension,
 			unsigned int numDimensions) final;
 
-		void readArrayNdOfULongValues(const std::string& datasetName, ULONG64* values) final;
+		void readArrayNdOfUInt64Values(const std::string& datasetName, uint64_t* values) final;
 
 		void readArrayNdOfIntValues(const std::string& datasetName, int* values) final;
 
@@ -395,24 +401,15 @@ namespace EML2_NS
 		void writeUuidAttribute();
 
 		/**
-		 * Allows to force a root group for all newly created groups in inherited HDF proxies.
-		 *
-		 * @param 	rootGroup	Group the root belongs to.
-		 *
-		 * @returns	A hdf5_hid_t.
-		 */
-		virtual hdf5_hid_t openOrCreateRootGroup(const std::string& rootGroup);
-
-		/**
-		 * Checks if an HDF group named as groupName exists in the root group. If it exists, it returns
+		 * Checks if an HDF group named as groupName exists in the HDF5 file. If it exists, it returns
 		 * the latter. If not, it creates this group and then returns it. Do not close opened or created
-		 * HDF5 group. They are automatically managed by fesapi.
+		 * HDF5 group. They are automatically managed by FESAPI.
 		 *
-		 * @param 	rootSlashGroup	Name of the group.
+		 * @param 	groupName	Name of the group. It must start with a slash.
 		 *
 		 * @returns	A hdf5_hid_t.
 		 */
-		hdf5_hid_t openOrCreateGroupInRootGroup(const std::string& rootSlashGroup);
+		hdf5_hid_t openOrCreateGroup(const std::string& groupName);
 
 		/** The hdf file */
 		hdf5_hid_t hdfFile;

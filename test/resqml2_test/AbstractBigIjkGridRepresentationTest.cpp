@@ -68,7 +68,7 @@ double * AbstractBigIjkGridRepresentationTest::initNodesIjkGridRepresentation(un
 	double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
 	double faultThrow)
 {
-	ULONG64 nodeCount = initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount);
+	uint64_t nodeCount = initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount);
 	
 	nodesIjkGridRepresentation = new double[nodeCount * 3];
 	

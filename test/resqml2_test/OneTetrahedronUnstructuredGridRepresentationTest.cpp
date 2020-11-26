@@ -42,8 +42,8 @@ void OneTetrahedronUnstructuredGridRepresentationTest::initRepo() {
 	RESQML2_NS::UnstructuredGridRepresentation* tetraGrid = repo->createUnstructuredGridRepresentation(defaultUuid, defaultTitle, 1);
 	REQUIRE(tetraGrid != nullptr);
 	unsigned char faceRightHandness[4] = { 0, 0, 1, 1 };
-	ULONG64 faceIndicesPerCell[4] = { 0, 1, 2, 3 };
-	ULONG64 nodeIndicesPerCell[12] = { 0, 1, 2, 1, 2, 3, 0, 1, 3, 0, 2, 3 };
+	uint64_t faceIndicesPerCell[4] = { 0, 1, 2, 3 };
+	uint64_t nodeIndicesPerCell[12] = { 0, 1, 2, 1, 2, 3, 0, 1, 3, 0, 2, 3 };
 	tetraGrid->setTetrahedraOnlyGeometry(faceRightHandness, nodes, 4, 4, nullptr, faceIndicesPerCell, nodeIndicesPerCell);
 }
 
@@ -56,7 +56,7 @@ void OneTetrahedronUnstructuredGridRepresentationTest::readRepo() {
 	REQUIRE( unstructuredGrid->getXyzPointCountOfPatch(0) == 4);
 	
 	// getFaceIndicesOfCells
-	ULONG64 faceIndicesPerCell[4];
+	uint64_t faceIndicesPerCell[4];
 	unstructuredGrid->getFaceIndicesOfCells(faceIndicesPerCell);
 	REQUIRE( faceIndicesPerCell[0] == 0 );
 	REQUIRE( faceIndicesPerCell[1] == 1 );
@@ -64,12 +64,12 @@ void OneTetrahedronUnstructuredGridRepresentationTest::readRepo() {
 	REQUIRE( faceIndicesPerCell[3] == 3 );
 
 	// getCumulativeFaceCountPerCell
-	ULONG64 cumulativeFaceCountPerCell[1];
+	uint64_t cumulativeFaceCountPerCell[1];
 	unstructuredGrid->getCumulativeFaceCountPerCell(cumulativeFaceCountPerCell);
 	REQUIRE( cumulativeFaceCountPerCell[0] == 4 );
 
 	// getFaceCountPerCell
-	ULONG64 faceCountPerCell[1];
+	uint64_t faceCountPerCell[1];
 	unstructuredGrid->getFaceCountPerCell(faceCountPerCell);
 	REQUIRE( faceCountPerCell[0] == 4 );
 
@@ -80,7 +80,7 @@ void OneTetrahedronUnstructuredGridRepresentationTest::readRepo() {
 	REQUIRE( unstructuredGrid->getConstantFaceCountOfCells() == 4);
 
 	// getNodeIndicesOfFaces
-	ULONG64 nodeIndicesPerCell[12];
+	uint64_t nodeIndicesPerCell[12];
 	unstructuredGrid->getNodeIndicesOfFaces(nodeIndicesPerCell);
 	REQUIRE( nodeIndicesPerCell[0] == 0 );
 	REQUIRE( nodeIndicesPerCell[1] == 1 );
@@ -96,7 +96,7 @@ void OneTetrahedronUnstructuredGridRepresentationTest::readRepo() {
 	REQUIRE( nodeIndicesPerCell[11] == 3 );
 
 	// getCumulativeNodeCountPerFace
-	ULONG64 cumulativeNodeCountPerFace[4];
+	uint64_t cumulativeNodeCountPerFace[4];
 	unstructuredGrid->getCumulativeNodeCountPerFace(cumulativeNodeCountPerFace);
 	REQUIRE( cumulativeNodeCountPerFace[0] == 3 );
 	REQUIRE( cumulativeNodeCountPerFace[1] == 6 );
@@ -104,7 +104,7 @@ void OneTetrahedronUnstructuredGridRepresentationTest::readRepo() {
 	REQUIRE( cumulativeNodeCountPerFace[3] == 12 );
 
 	// getNodeCountPerFace
-	ULONG64 nodeCountPerFace[4];
+	uint64_t nodeCountPerFace[4];
 	unstructuredGrid->getNodeCountPerFace(nodeCountPerFace);
 	REQUIRE( nodeCountPerFace[0] == 3 );
 	REQUIRE( nodeCountPerFace[1] == 3 );
@@ -134,19 +134,19 @@ void OneTetrahedronUnstructuredGridRepresentationTest::readRepo() {
 	REQUIRE( unstructuredGrid->getNodeCountOfFaceOfCell(0, 3) == 3 );
 
 	// getNodeIndicesOfFaceOfCell
-	ULONG64 const * nodeIndicesOfFirstFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 0);
+	uint64_t const * nodeIndicesOfFirstFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 0);
 	REQUIRE( nodeIndicesOfFirstFace[0] == 0 );
 	REQUIRE( nodeIndicesOfFirstFace[1] == 1 );
 	REQUIRE( nodeIndicesOfFirstFace[2] == 2 );
-	ULONG64 const* nodeIndicesOfSecondFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 1);
+	uint64_t const* nodeIndicesOfSecondFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 1);
 	REQUIRE( nodeIndicesOfSecondFace[0] == 1 );
 	REQUIRE( nodeIndicesOfSecondFace[1] == 2 );
 	REQUIRE( nodeIndicesOfSecondFace[2] == 3 );
-	ULONG64 const* nodeIndicesOfThirdFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 2);
+	uint64_t const* nodeIndicesOfThirdFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 2);
 	REQUIRE( nodeIndicesOfThirdFace[0] == 0 );
 	REQUIRE( nodeIndicesOfThirdFace[1] == 1 );
 	REQUIRE( nodeIndicesOfThirdFace[2] == 3 );
-	ULONG64 const* nodeIndicesOfFourthFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 3);
+	uint64_t const* nodeIndicesOfFourthFace = unstructuredGrid->getNodeIndicesOfFaceOfCell(0, 3);
 	REQUIRE( nodeIndicesOfFourthFace[0] == 0 );
 	REQUIRE( nodeIndicesOfFourthFace[1] == 2 );
 	REQUIRE( nodeIndicesOfFourthFace[2] == 3 );

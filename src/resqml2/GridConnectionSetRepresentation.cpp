@@ -88,9 +88,9 @@ void GridConnectionSetRepresentation::loadTargetRelationships()
 	}
 }
 
-void GridConnectionSetRepresentation::setCellIndexPairs(ULONG64 cellIndexPairCount, ULONG64 const* cellIndexPair, ULONG64 cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, unsigned short gridIndexPairNullValue, unsigned short * gridIndexPair)
+void GridConnectionSetRepresentation::setCellIndexPairs(uint64_t cellIndexPairCount, uint64_t const* cellIndexPair, uint64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, unsigned short gridIndexPairNullValue, unsigned short * gridIndexPair)
 {
-	if (cellIndexPairNullValue > static_cast<ULONG64>((std::numeric_limits<LONG64>::max)())) {
+	if (cellIndexPairNullValue > static_cast<uint64_t>((std::numeric_limits<int64_t>::max)())) {
 		throw std::invalid_argument("The XML null value cannot be greater than a 64 bits signed integer cause of gsoap mappings");
 	}
 	if (proxy == nullptr) {
@@ -103,13 +103,13 @@ void GridConnectionSetRepresentation::setCellIndexPairs(ULONG64 cellIndexPairCou
 
 	// ************ HDF ************		
 	hsize_t numValues[2] = { cellIndexPairCount, 2 };
-	proxy->writeArrayNd(getHdfGroup(), "CellIndexPairs", H5T_NATIVE_ULLONG, cellIndexPair, numValues, 2);
+	proxy->writeArrayNd(getHdfGroup(), "CellIndexPairs", H5T_NATIVE_UINT64, cellIndexPair, numValues, 2);
 	if (gridIndexPair != nullptr) {
 		proxy->writeArrayNd(getHdfGroup(), "GridIndexPairs", H5T_NATIVE_USHORT, gridIndexPair, numValues, 2);
 	}
 }
 
-void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(ULONG64 cellIndexPairCount, int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy)
+void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(uint64_t cellIndexPairCount, int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (gsoapProxy2_0_1 != nullptr && nullValue != -1) {
 		throw invalid_argument("The null value must be -1 in RESQML2.0.1");
@@ -128,7 +128,7 @@ void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(ULONG64 cell
 	proxy->writeArrayNd(getHdfGroup(), "LocalFacePerCellIndexPairs", H5T_NATIVE_INT, localFacePerCellIndexPair, numValues, 2);
 }
 
-ULONG64 GridConnectionSetRepresentation::getXyzPointCountOfPatch(unsigned int) const
+uint64_t GridConnectionSetRepresentation::getXyzPointCountOfPatch(unsigned int) const
 {
 	throw logic_error("Not implemented yet");
 }

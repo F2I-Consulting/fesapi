@@ -123,14 +123,14 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The xyz point count of the patch at position @p patchIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const = 0;
 
 		/**
 		 * Get the xyz point count of all patches of this representation.
 		 *
 		 * @returns	The xyz point count of all patches.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfAllPatches() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfAllPatches() const;
 
 		/**
 		 * @brief	Gets all the xyz points of a particular patch of this representation. xyz points are
@@ -159,7 +159,7 @@ namespace RESQML2_NS
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatchInGlobalCrs(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatchInGlobalCrs(unsigned int patchIndex, double * xyzPoints) const;
 
 		/**
 		 * @brief Gets all the xyz points of all patches of this representation. xyz points are given in the

@@ -95,8 +95,13 @@ namespace example
         {
             throw new NotImplementedException();
         }
+		
+		public override void writeArrayNdOfInt64Values(string groupName, string name, SWIGTYPE_p_long_long values, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, uint numDimensions)
+        {
+            throw new NotImplementedException();
+        }
 
-        public override void writeArrayNdOfGSoapULong64Values(string groupName, string name, SWIGTYPE_p_unsigned_long_long ulong64Values, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, uint numDimensions)
+        public override void writeArrayNdOfUInt64Values(string groupName, string name, SWIGTYPE_p_unsigned_long_long values, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, uint numDimensions)
         {
             throw new NotImplementedException();
         }
@@ -211,17 +216,17 @@ namespace example
             throw new NotImplementedException();
         }
 
-        public override void readArrayNdOfLongValues(string datasetName, SWIGTYPE_p_long_long values)
+        public override void readArrayNdOfInt64Values(string datasetName, SWIGTYPE_p_long_long values)
         {
             throw new NotImplementedException();
         }
 
-        public override void readArrayNdOfLongValues(string datasetName, SWIGTYPE_p_long_long values, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, SWIGTYPE_p_unsigned_long_long offsetInEachDimension, uint numDimensions)
+        public override void readArrayNdOfInt64Values(string datasetName, SWIGTYPE_p_long_long values, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, SWIGTYPE_p_unsigned_long_long offsetInEachDimension, uint numDimensions)
         {
             throw new NotImplementedException();
         }
 
-        public override void readArrayNdOfULongValues(string datasetName, SWIGTYPE_p_unsigned_long_long values)
+        public override void readArrayNdOfUInt64Values(string datasetName, SWIGTYPE_p_unsigned_long_long values)
         {
             throw new NotImplementedException();
         }

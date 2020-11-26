@@ -60,9 +60,9 @@ namespace RESQML2_2_NS
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
-		DLL_IMPORT_OR_EXPORT ULONG64 getNodeCountAlongIAxis() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getNodeCountAlongIAxis() const final;
 
-		DLL_IMPORT_OR_EXPORT ULONG64 getNodeCountAlongJAxis() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getNodeCountAlongJAxis() const final;
 
 		DLL_IMPORT_OR_EXPORT void getZValues(double * values) const final;
 

@@ -65,12 +65,12 @@ void FourSugarsParametricIjkGridWithGap::readRepo() {
 	REQUIRE(ijkGrid->getPillarCount() == 6);
 
 	// checking values
-	const ULONG64 pointCount = ijkGrid->getXyzPointCountOfAllPatches();
+	const uint64_t pointCount = ijkGrid->getXyzPointCountOfAllPatches();
 	REQUIRE(pointCount == 32);
 
 	std::unique_ptr<double[]> xyzPoints(new double[pointCount * 3]);
 	ijkGrid->getXyzPointsOfAllPatches(xyzPoints.get());
-	for (ULONG64 i = 0; i < pointCount; ++i) {
+	for (uint64_t i = 0; i < pointCount; ++i) {
 		REQUIRE(xyzPoints[i*3+2] == parameters[i]);
 	}
 

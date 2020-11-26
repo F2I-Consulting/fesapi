@@ -75,24 +75,25 @@ void HdfProxy::open()
 		close();
 	}
 
-	const std::string fullName = packageDirectoryAbsolutePath + relativeFilePath;
+	const std::string fullName = (packageDirectoryAbsolutePath.back() == '/' || packageDirectoryAbsolutePath.back() == '\\' ? packageDirectoryAbsolutePath : packageDirectoryAbsolutePath + '/')
+		+ relativeFilePath;
 	if (openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_ONLY || openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_WRITE_DO_NOT_CREATE) {
 		if (H5Fis_hdf5(fullName.c_str()) > 0) {
 			hdfFile = H5Fopen(fullName.c_str(),
 				openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_ONLY ? H5F_ACC_RDONLY : H5F_ACC_RDWR,
 				H5P_DEFAULT);
 			if (hdfFile < 0) {
-				throw invalid_argument("Can not open HDF5 file (in read only mode) : " + fullName);
+				throw invalid_argument("HDF5 library recognizes the HDF5 file but can not open it : " + fullName);
 			}
 
 			// Check the uuid
-			string hdfUuid = readStringAttribute(".", "uuid");
+			const string hdfUuid = readStringAttribute(".", "uuid");
 			if (getUuid() != hdfUuid) {
 				getRepository()->addWarning("The uuid \"" + hdfUuid + "\" attribute of the HDF5 file is not the same as the uuid \"" + getUuid() + "\" of the xml EpcExternalPart.");
 			}
 		}
 		else {
-			throw invalid_argument("The HDF5 file " + fullName + " does not exist or is not a valid HDF5 file.");
+			throw invalid_argument("The HDF5 file " + fullName + " does not exist or is not a valid HDF5 file or is not accessible.");
 		}
 	}
 	else if (openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_WRITE) {
@@ -348,9 +349,9 @@ COMMON_NS::AbstractObject::hdfDatatypeEnum HdfProxy::getHdfDatatypeInDataset(con
 		return COMMON_NS::AbstractObject::hdfDatatypeEnum::DOUBLE;
 	else if (H5Tequal(native_datatype, H5T_NATIVE_FLOAT) > 0)
 		return COMMON_NS::AbstractObject::hdfDatatypeEnum::FLOAT;
-	else if (H5Tequal(native_datatype, H5T_NATIVE_LLONG) > 0)
+	else if (H5Tequal(native_datatype, H5T_NATIVE_INT64) > 0)
 		return COMMON_NS::AbstractObject::hdfDatatypeEnum::LONG_64;
-	else if (H5Tequal(native_datatype, H5T_NATIVE_ULLONG) > 0)
+	else if (H5Tequal(native_datatype, H5T_NATIVE_UINT64) > 0)
 		return COMMON_NS::AbstractObject::hdfDatatypeEnum::ULONG_64;
 	else if (H5Tequal(native_datatype, H5T_NATIVE_INT) > 0)
 		return COMMON_NS::AbstractObject::hdfDatatypeEnum::INT;
@@ -450,7 +451,7 @@ void HdfProxy::writeItemizedListOfList(const string & groupName,
 		open();
 	}
 
-	hid_t parentGrp = openOrCreateGroupInRootGroup(groupName);
+	hid_t parentGrp = openOrCreateGroup(groupName);
 	hid_t grp = H5Gcreate(parentGrp, name.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
 	// ************* CUMULATIVE LENGTH *************
@@ -624,13 +625,22 @@ void HdfProxy::writeArrayNdOfIntValues(const string & groupName,
 	writeArrayNd(groupName, name, H5T_NATIVE_INT, intValues, numValuesInEachDimension, numDimensions);
 }
 
-void HdfProxy::writeArrayNdOfGSoapULong64Values(const std::string & groupName,
+void HdfProxy::writeArrayNdOfInt64Values(const std::string & groupName,
 	const std::string & name,
-	const ULONG64 * ulong64Values,
+	const int64_t * values,
 	const hsize_t * numValuesInEachDimension,
 	unsigned int numDimensions)
 {
-	writeArrayNd(groupName, name, H5T_NATIVE_ULLONG, ulong64Values, numValuesInEachDimension, numDimensions);
+	writeArrayNd(groupName, name, H5T_NATIVE_INT64, values, numValuesInEachDimension, numDimensions);
+}
+
+void HdfProxy::writeArrayNdOfUInt64Values(const std::string & groupName,
+	const std::string & name,
+	const uint64_t * values,
+	const hsize_t * numValuesInEachDimension,
+	unsigned int numDimensions)
+{
+	writeArrayNd(groupName, name, H5T_NATIVE_UINT64, values, numValuesInEachDimension, numDimensions);
 }
 
 void HdfProxy::writeArrayNd(const std::string & groupName,
@@ -644,7 +654,7 @@ void HdfProxy::writeArrayNd(const std::string & groupName,
 		open();
 	}
 
-	hid_t grp = openOrCreateGroupInRootGroup(groupName);
+	hid_t grp = openOrCreateGroup(groupName);
 	if (grp < 0) {
 		throw invalid_argument("The group " + groupName + " could not be created.");
 	}
@@ -702,7 +712,7 @@ void HdfProxy::createArrayNd(
 		open();
 	}
 
-	hid_t grp = openOrCreateGroupInRootGroup(groupName);
+	hid_t grp = openOrCreateGroup(groupName);
 	if (grp < 0) {
 		throw invalid_argument("The group " + groupName + " could not be created.");
 	}
@@ -758,7 +768,7 @@ void HdfProxy::writeArrayNdSlab(
 		open();
 	}
 
-	hid_t grp = openOrCreateGroupInRootGroup(groupName);
+	hid_t grp = openOrCreateGroup(groupName);
 	hid_t dataset = H5Dopen(grp, datasetName.c_str(), H5P_DEFAULT);
 	if (dataset < 0) {
 		throw invalid_argument("The resqml dataset " + datasetName + " could not be opened.");
@@ -858,25 +868,25 @@ void HdfProxy::readArrayNdOfFloatValues(
 			H5T_NATIVE_FLOAT);
 }
 
-void HdfProxy::readArrayNdOfLongValues(const std::string & datasetName, LONG64* values)
+void HdfProxy::readArrayNdOfInt64Values(const std::string & datasetName, int64_t* values)
 {
-	readArrayNdOfValues(datasetName, values, H5T_NATIVE_LLONG);
+	readArrayNdOfValues(datasetName, values, H5T_NATIVE_INT64);
 }
 
-void HdfProxy::readArrayNdOfLongValues(
-	const std::string& datasetName, LONG64* values,
+void HdfProxy::readArrayNdOfInt64Values(
+	const std::string& datasetName, int64_t* values,
 	hsize_t const * numValuesInEachDimension,
 	hsize_t const * offsetInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
 			numValuesInEachDimension, offsetInEachDimension, numDimensions,
-			H5T_NATIVE_LLONG);
+		H5T_NATIVE_INT64);
 }
 
-void HdfProxy::readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values)
+void HdfProxy::readArrayNdOfUInt64Values(const std::string & datasetName, uint64_t* values)
 {
-	readArrayNdOfValues(datasetName, values, H5T_NATIVE_ULLONG);
+	readArrayNdOfValues(datasetName, values, H5T_NATIVE_UINT64);
 }
 
 void HdfProxy::readArrayNdOfIntValues(const std::string & datasetName, int* values)
@@ -920,68 +930,53 @@ void HdfProxy::readArrayNdOfUCharValues(const std::string & datasetName, unsigne
 	readArrayNdOfValues(datasetName, values, H5T_NATIVE_UCHAR);
 }
 
-hid_t HdfProxy::openOrCreateRootGroup(const std::string & rootGroup)
+hid_t HdfProxy::openOrCreateGroup(const string & groupName)
 {
-	if (openedGroups.find(rootGroup) != openedGroups.end()) {
-		return openedGroups.at(rootGroup);
+	auto alreadyOpened = openedGroups.find(groupName);
+	if (alreadyOpened != openedGroups.end()) {
+		return alreadyOpened->second;
+	}
+
+	// The first char must be a slash
+	if (groupName.empty() || groupName[0] != '/') {
+		throw std::invalid_argument("The group to create is not correct. It must start with a slash and it is : " + groupName);
 	}
 
 	if (!isOpened()) {
 		open();
 	}
 
-	openedGroups[rootGroup] = H5Lexists(hdfFile, rootGroup.c_str(), H5P_DEFAULT) > 0
-		? H5Gopen(hdfFile, rootGroup.c_str(), H5P_DEFAULT)
-		: H5Gcreate(hdfFile, rootGroup.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
-
-	return openedGroups[rootGroup];
-}
-
-hid_t HdfProxy::openOrCreateGroupInRootGroup(const string & rootSlashGroup)
-{
-	if (openedGroups.find(rootSlashGroup) != openedGroups.end()) {
-		return openedGroups.at(rootSlashGroup);
+	std::string absoluteGroupName = "";
+	hid_t currentOpenedGroup = hdfFile;
+	size_t nextGroupStartIndex = 1;
+	size_t nextSlashIndex = groupName.find("/", nextGroupStartIndex);
+	if (nextSlashIndex == std::string::npos && nextGroupStartIndex < groupName.size()) {
+		nextSlashIndex = groupName.size();
 	}
-
-	// The first char must be a slash
-	if (rootSlashGroup.empty() || rootSlashGroup[0] != '/') {
-		throw std::invalid_argument("The group to create is not correct. It must be /rootGroup/groupName and it is : " + rootSlashGroup);
-	}
-
-	const size_t slashPos = rootSlashGroup.find("/", 1);
-	if (slashPos == std::string::npos){
-		throw std::invalid_argument("The group to create is not correct. It must be /rootGroup/groupName and it is : " + rootSlashGroup);
-	}
-	const std::string groupName = rootSlashGroup.substr(slashPos + 1);
-
-	const hid_t rootGroup = openOrCreateRootGroup(rootSlashGroup.substr(1, slashPos - 1));
-	if (rootGroup < 0) {
-		throw invalid_argument("The root group could not be opened or created in the hdf file.");
-	}
-
-	std::stringstream ss;
-	ss.str(groupName);
-	std::string group;
-	hid_t result = -1;
-	hid_t subRootGroup = rootGroup;
-	while (std::getline(ss, group, '/')) {
-		if (group.empty()) continue;
-
-		result = H5Lexists(subRootGroup, groupName.c_str(), H5P_DEFAULT) > 0
-			? H5Gopen(subRootGroup, group.c_str(), H5P_DEFAULT)
-			: H5Gcreate(subRootGroup, group.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
-		if (subRootGroup != rootGroup) { // We don't want to close the rootGroup which is the file or a well known group which should be kept opened for performance reasons.
-			H5Gclose(subRootGroup);
+	while (nextSlashIndex != std::string::npos) {
+		const std::string relativeGroupName = groupName.substr(nextGroupStartIndex, nextSlashIndex - nextGroupStartIndex);
+		absoluteGroupName += "/" + relativeGroupName;
+		alreadyOpened = openedGroups.find(absoluteGroupName);
+		if (alreadyOpened != openedGroups.end()) {
+			currentOpenedGroup = alreadyOpened->second;
 		}
-		subRootGroup = result;
-
-		if (result < 0) {
-			return result;
+		else {
+			currentOpenedGroup = H5Lexists(currentOpenedGroup, relativeGroupName.c_str(), H5P_DEFAULT) > 0
+				? H5Gopen(currentOpenedGroup, relativeGroupName.c_str(), H5P_DEFAULT)
+				: H5Gcreate(currentOpenedGroup, relativeGroupName.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+			if (currentOpenedGroup < 0) {
+				throw invalid_argument("The group " + absoluteGroupName + " could not be created.");
+			}
+			openedGroups[absoluteGroupName] = currentOpenedGroup;
+		}
+		nextGroupStartIndex = nextSlashIndex + 1;
+		nextSlashIndex = groupName.find("/", nextGroupStartIndex);
+		if (nextSlashIndex == std::string::npos && nextGroupStartIndex < groupName.size()) {
+			nextSlashIndex = groupName.size();
 		}
 	}
 
-	openedGroups[rootSlashGroup] = result;
-	return result;
+	return currentOpenedGroup;
 }
 
 std::vector<hsize_t> HdfProxy::readArrayDimensions(const std::string & datasetName)
@@ -1011,7 +1006,7 @@ void HdfProxy::writeGroupAttributes(const std::string & groupName,
 		throw std::invalid_argument("The attribute name vector must be the same size as the attritbute value vector.");
 	}
 
-	hid_t groupId = openOrCreateGroupInRootGroup(groupName);
+	hid_t groupId = openOrCreateGroup(groupName);
 
 	hid_t aid = H5Screate(H5S_SCALAR);
 	hid_t atype = H5Tcopy(H5T_C_S1);
@@ -1029,7 +1024,7 @@ void HdfProxy::writeGroupAttribute(const std::string & groupName,
 	const std::string & attributeName,
 	const std::vector<std::string> & values)
 {
-	const hid_t groupId = openOrCreateGroupInRootGroup(groupName);
+	const hid_t groupId = openOrCreateGroup(groupName);
 
 	size_t maxStringSize = 0;
 	for (size_t i = 0; i < values.size(); ++i) {
@@ -1062,7 +1057,7 @@ void HdfProxy::writeGroupAttributes(const std::string & groupName,
 		throw std::invalid_argument("The attribute name vector must be the same size as the attritbute value vector.");
 	}
 
-	hid_t groupId = openOrCreateGroupInRootGroup(groupName);
+	hid_t groupId = openOrCreateGroup(groupName);
 
 	hid_t aid = H5Screate(H5S_SCALAR);
 	for (size_t i = 0; i < attributeNames.size(); ++i) {
@@ -1081,7 +1076,7 @@ void HdfProxy::writeGroupAttributes(const std::string & groupName,
 		throw std::invalid_argument("The attribute name vector must be the same size as the attritbute value vector.");
 	}
 
-	hid_t groupId = openOrCreateGroupInRootGroup(groupName);
+	hid_t groupId = openOrCreateGroup(groupName);
 
 	hid_t aid = H5Screate(H5S_SCALAR);
 	for (size_t i = 0; i < attributeNames.size(); ++i) {
@@ -1346,7 +1341,7 @@ double HdfProxy::readDoubleAttribute(const std::string & obj_name,
 	return result;
 }
 
-LONG64 HdfProxy::readLongAttribute(const std::string & obj_name,
+int64_t HdfProxy::readLongAttribute(const std::string & obj_name,
 	const std::string & attr_name) const
 {
 	if (!isOpened()) {
@@ -1355,11 +1350,11 @@ LONG64 HdfProxy::readLongAttribute(const std::string & obj_name,
 
 	hid_t uuidAtt = H5Aopen_by_name(hdfFile, obj_name.c_str(), attr_name.c_str(), H5P_DEFAULT, H5P_DEFAULT);
 	if (uuidAtt < 0) {
-		return (numeric_limits<LONG64>::min)();
+		return (numeric_limits<int64_t>::min)();
 	}
 
-	LONG64 result;
-	hid_t readingError = H5Aread(uuidAtt, H5T_NATIVE_LLONG, &result);
+	int64_t result;
+	hid_t readingError = H5Aread(uuidAtt, H5T_NATIVE_INT64, &result);
 	if (readingError < 0) {
 		throw invalid_argument("Cannot read the \"" + attr_name + "\" attribute of \"" + obj_name + "\".");
 	}

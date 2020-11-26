@@ -91,26 +91,26 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~DiscreteProperty() = default;
 
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue) final;
+		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName, int64_t nullValue, int64_t minimumValue, int64_t maximumValue) final;
 		using AbstractValuesProperty::pushBackRefToExistingIntegerDataset;
 
 		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) final;
 
 		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) final;
 
-		DLL_IMPORT_OR_EXPORT LONG64 getNullValue(unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getNullValue(unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) const final;
 
 		DLL_IMPORT_OR_EXPORT bool hasMinimumValue(unsigned int index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT LONG64 getMinimumValue(unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getMinimumValue(unsigned int index = 0) const final;
 
 		DLL_IMPORT_OR_EXPORT bool hasMaximumValue(unsigned int index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT LONG64 getMaximumValue(unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getMaximumValue(unsigned int index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT void setMinimumValue(LONG64 value, unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT void setMinimumValue(int64_t value, unsigned int index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT void setMaximumValue(LONG64 value, unsigned int index = 0) const;
+		DLL_IMPORT_OR_EXPORT void setMaximumValue(int64_t value, unsigned int index = 0) const;
 
 		/**
 		 * Gets the Energistics property kind which is associated to this intance

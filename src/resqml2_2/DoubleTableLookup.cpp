@@ -116,7 +116,7 @@ double DoubleTableLookup::getMinimumValue()
 {
 	_resqml22__DoubleTableLookup* DoubleLookup = static_cast<_resqml22__DoubleTableLookup*>(gsoapProxy2_3);
 
-	LONG64 min = (std::numeric_limits<LONG64>::max)();
+	int64_t min = (std::numeric_limits<int64_t>::max)();
 	for (size_t i = 0; i < DoubleLookup->Value.size(); ++i) {
 		if (min > DoubleLookup->Value[i]->Key) {
 			min = DoubleLookup->Value[i]->Key;
@@ -130,7 +130,7 @@ double DoubleTableLookup::getMaximumValue()
 {
 	_resqml22__DoubleTableLookup* DoubleLookup = static_cast<_resqml22__DoubleTableLookup*>(gsoapProxy2_3);
 
-	LONG64 max = (std::numeric_limits<LONG64>::min)();
+	int64_t max = (std::numeric_limits<int64_t>::min)();
 	for (size_t i = 0; i < DoubleLookup->Value.size(); ++i) {
 		if (max < DoubleLookup->Value[i]->Key) {
 			max = DoubleLookup->Value[i]->Key;

@@ -239,7 +239,7 @@ gsoap_resqml2_0_1::resqml20__IdentityKind AbstractSurfaceFrameworkRepresentation
 
 unsigned int AbstractSurfaceFrameworkRepresentation::getContactCountInContactIdentity(unsigned int ciIndex) const
 {
-	ULONG64 result;
+	uint64_t result;
 	if (gsoapProxy2_0_1 != nullptr) {
 		result = getCountOfIntegerArray(getContactIdentity201(ciIndex)->ListOfContactRepresentations);
 	}
@@ -289,7 +289,7 @@ unsigned int AbstractSurfaceFrameworkRepresentation::getIdenticalContactNodeCoun
 		throw invalid_argument("The nodes are all identical");
 	}
 
-	ULONG64 result;
+	uint64_t result;
 	if (gsoapProxy2_0_1 != nullptr) {
 		result = getCountOfIntegerArray(getContactIdentity201(ciIndex)->ListOfIdenticalNodes);
 	}

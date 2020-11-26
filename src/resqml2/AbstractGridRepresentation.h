@@ -90,7 +90,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The cell count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual ULONG64 getCellCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getCellCount() const = 0;
 
 		//************************************************************
 		//****************** GRID CONNECTION SET *********************
@@ -200,7 +200,7 @@ namespace RESQML2_NS
 		 * 									cellIndexCount is 1 since no numerical value need to be store
 		 * 									in an HDF proxy (pure XML).
 		 */
-		DLL_IMPORT_OR_EXPORT void setParentWindow(ULONG64* cellIndices, ULONG64 cellIndexCount, class UnstructuredGridRepresentation* parentGrid, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void setParentWindow(uint64_t* cellIndices, uint64_t cellIndexCount, class UnstructuredGridRepresentation* parentGrid, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Indicates that this grid takes place into another column layer parent grid.
@@ -505,7 +505,7 @@ namespace RESQML2_NS
 		 * 								size is @p cellIndexCount.
 		 * @param 	  	cellIndexCount	Number of cells to be noted as non regridded.
 		 */
-		DLL_IMPORT_OR_EXPORT void setForcedNonRegridedParentCell(ULONG64* cellIndices, ULONG64 cellIndexCount);
+		DLL_IMPORT_OR_EXPORT void setForcedNonRegridedParentCell(uint64_t* cellIndices, uint64_t cellIndexCount);
 
 		/**
 		 * Set optional cell overlap information between the current grid (the child) and the parent
@@ -532,7 +532,7 @@ namespace RESQML2_NS
 		 * 											cell, child cell) that overlaps. Size is @p
 		 * 											parentChildCellPairCount. Default value is nullptr.
 		 */
-		DLL_IMPORT_OR_EXPORT void setCellOverlap(ULONG64 parentChildCellPairCount, ULONG64* parentChildCellPair,
+		DLL_IMPORT_OR_EXPORT void setCellOverlap(uint64_t parentChildCellPairCount, uint64_t* parentChildCellPair,
 			const std::string& volumeUom, double* overlapVolumes = nullptr);
 
 		/**
@@ -547,7 +547,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of parent grid cells which are regridded.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getParentCellIndexCount() const;
+		DLL_IMPORT_OR_EXPORT int64_t getParentCellIndexCount() const;
 
 		/**
 		 * Gets the indices of the parent grid cells which are regridded. Please only run this method
@@ -563,7 +563,7 @@ namespace RESQML2_NS
 		 * 									array must have been preallocated with a size of 
 		 * 									getParentCellIndexCount().
 		 */
-		DLL_IMPORT_OR_EXPORT void getParentCellIndices(ULONG64 * parentCellIndices) const;
+		DLL_IMPORT_OR_EXPORT void getParentCellIndices(uint64_t * parentCellIndices) const;
 
 		/**
 		 * Gets the count of parent grid columns which are regridded. Please only run this method for a
@@ -577,7 +577,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of parent grid columns which are regridded.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getParentColumnIndexCount() const;
+		DLL_IMPORT_OR_EXPORT int64_t getParentColumnIndexCount() const;
 
 		/**
 		 * Gets the indices of the parent grid columns which are regridded. Please only run this method
@@ -593,7 +593,7 @@ namespace RESQML2_NS
 		 * 									array must have been preallocated with a size of
 		 * 										getParentColumnIndexCount().
 		 */
-		DLL_IMPORT_OR_EXPORT void getParentColumnIndices(ULONG64 * parentColumnIndices) const;
+		DLL_IMPORT_OR_EXPORT void getParentColumnIndices(uint64_t * parentColumnIndices) const;
 
 		/**
 		 * Get the I, J or K index of the first parent grid cell to be regridded. Please only run this
@@ -614,7 +614,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The regrid start index on the parent grid in dimension @p dimension.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getRegridStartIndexOnParentGrid(char dimension) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getRegridStartIndexOnParentGrid(char dimension) const;
 
 		/**
 		 * Gets the count of intervals which are regridded on a particular dimension. Intervals are
@@ -636,7 +636,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The regrid interval count in dimension @p dimension.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getRegridIntervalCount(char dimension) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getRegridIntervalCount(char dimension) const;
 
 		/**
 		 * Checks if the cell count per interval (in the child grid or in the parent grid) is constant
@@ -695,7 +695,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The regrid constant cell count per interval in dimension @p dimension.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getRegridConstantCellCountPerInterval(char dimension, bool childVsParentCellCount) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getRegridConstantCellCountPerInterval(char dimension, bool childVsParentCellCount) const;
 
 		/**
 		 * Gets the regrid cell count per interval (in the child grid or in the parent grid) against a
@@ -727,7 +727,7 @@ namespace RESQML2_NS
 		 * @param 	  	childVsParentCellCount   	If true, gets the child cell count per interval. If
 		 * 											false, gets the parent cell count per interval.
 		 */
-		DLL_IMPORT_OR_EXPORT void getRegridCellCountPerInterval(char dimension, ULONG64* childCellCountPerInterval, bool childVsParentCellCount) const;
+		DLL_IMPORT_OR_EXPORT void getRegridCellCountPerInterval(char dimension, uint64_t* childCellCountPerInterval, bool childVsParentCellCount) const;
 
 		/**
 		 * Checks if regrid child cell weights have been defined for a given dimension. Please only run
@@ -812,7 +812,7 @@ namespace RESQML2_NS
 		 * @param [in]	stratiOrgInterp  	The stratigraphic organization interpretation which is
 		 * 									associated to this grid representation.
 		 */
-		DLL_IMPORT_OR_EXPORT void setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64* stratiUnitIndices, ULONG64 nullValue, class AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
+		DLL_IMPORT_OR_EXPORT void setCellAssociationWithStratigraphicOrganizationInterpretation(uint64_t* stratiUnitIndices, uint64_t nullValue, class AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
 		
 		/**
 		 * Gets the stratigraphic organization interpretation which is associated to this grid.
@@ -866,7 +866,7 @@ namespace RESQML2_NS
 		 * @returns	The null value. The null value is used to tell the association between a cell and
 		 * 			stratigraphic unit is unavailable.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getCellStratigraphicUnitIndices(ULONG64 * stratiUnitIndices);
+		DLL_IMPORT_OR_EXPORT uint64_t getCellStratigraphicUnitIndices(uint64_t * stratiUnitIndices);
 
 		//************************************************************
 		//**************** LINK WITH ROCKFLUID ********************
@@ -887,7 +887,7 @@ namespace RESQML2_NS
 		 * @param [in]	rockFluidOrgInterp  	The rock fluid organization interpretation which is
 		 * 										associated to this grid representation.
 		 */
-		DLL_IMPORT_OR_EXPORT void setCellAssociationWithRockFluidOrganizationInterpretation(ULONG64* rockFluidUnitIndices, ULONG64 nullValue, class RockFluidOrganizationInterpretation* rockFluidOrgInterp);
+		DLL_IMPORT_OR_EXPORT void setCellAssociationWithRockFluidOrganizationInterpretation(uint64_t* rockFluidUnitIndices, uint64_t nullValue, class RockFluidOrganizationInterpretation* rockFluidOrgInterp);
 		
 		/**
 		 * Gets rock fluid organization interpretation which is associated to this grid.
@@ -942,7 +942,7 @@ namespace RESQML2_NS
 		 * @returns	The null value. The null value is used to tell the association between a cell and
 		 * 			rock fluid unit is unavailable.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getCellFluidPhaseUnitIndices(ULONG64 * rockfluidUnitIndices);
+		DLL_IMPORT_OR_EXPORT uint64_t getCellFluidPhaseUnitIndices(uint64_t * rockfluidUnitIndices);
 
 
 		//************************************************************
@@ -965,7 +965,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The truncated face count.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getTruncatedFaceCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getTruncatedFaceCount() const;
 
 		/**
 		 * Gets all the node indices of the truncated faces.
@@ -979,7 +979,7 @@ namespace RESQML2_NS
 		 * 							be preallocated with the last value returned by
 		 * 							getCumulativeNodeCountOfTruncatedFaces().
 		 */
-		DLL_IMPORT_OR_EXPORT void getNodeIndicesOfTruncatedFaces(ULONG64 * nodeIndices) const;
+		DLL_IMPORT_OR_EXPORT void getNodeIndicesOfTruncatedFaces(uint64_t * nodeIndices) const;
 
 		/**
 		 * Gets the cumulative node count per truncated face. First value is the count of nodes in the
@@ -998,7 +998,7 @@ namespace RESQML2_NS
 		 * 									(equals to last value of
 		 * 									getCumulativeTruncatedFaceCountPerTruncatedCell())
 		 */
-		DLL_IMPORT_OR_EXPORT void getCumulativeNodeCountPerTruncatedFace(ULONG64 * nodeCountPerFace) const;
+		DLL_IMPORT_OR_EXPORT void getCumulativeNodeCountPerTruncatedFace(uint64_t * nodeCountPerFace) const;
 
 		/**
 		 * Get the node count per truncated face. This method is less efficient than
@@ -1014,7 +1014,7 @@ namespace RESQML2_NS
 		 * 									must be preallocated with getTruncatedFaceCount() (equals to last
 		 * 									value of getCumulativeTruncatedFaceCountPerTruncatedCell()).
 		 */
-		DLL_IMPORT_OR_EXPORT void getNodeCountPerTruncatedFace(ULONG64 * nodeCountPerFace) const;
+		DLL_IMPORT_OR_EXPORT void getNodeCountPerTruncatedFace(uint64_t * nodeCountPerFace) const;
 
 		/**
 		 * Gets the truncated cell count.
@@ -1024,7 +1024,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The truncated cell count.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getTruncatedCellCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getTruncatedCellCount() const;
 
 		/**
 		 * Gets the parent cell index for each of the truncation cells.
@@ -1037,7 +1037,7 @@ namespace RESQML2_NS
 		 * @param [out]	cellIndices	An array to receive the parent cell index of each truncation cell. It
 		 * 							must be preallocated with getTruncatedCellCount.
 		 */
-		DLL_IMPORT_OR_EXPORT void getTruncatedCellIndices(ULONG64* cellIndices) const;
+		DLL_IMPORT_OR_EXPORT void getTruncatedCellIndices(uint64_t* cellIndices) const;
 
 		/**
 		 * Gets all the truncated face indices of all the truncated cells. It does not get the non
@@ -1054,7 +1054,7 @@ namespace RESQML2_NS
 		 * 							cells. It must be preallocated with the last value returned by
 		 * 							getCumulativeTruncatedFaceCountPerTruncatedCell()
 		 */
-		DLL_IMPORT_OR_EXPORT void getTruncatedFaceIndicesOfTruncatedCells(ULONG64 * faceIndices) const;
+		DLL_IMPORT_OR_EXPORT void getTruncatedFaceIndicesOfTruncatedCells(uint64_t * faceIndices) const;
 
 		/**
 		 * Gets the cumulative truncated face count per truncated cell. It does not take into account
@@ -1074,7 +1074,7 @@ namespace RESQML2_NS
 		 * 											count per truncated cell. It must be pre allocated
 		 * 											with getTruncatedCellCount().
 		 */
-		DLL_IMPORT_OR_EXPORT void getCumulativeTruncatedFaceCountPerTruncatedCell(ULONG64 * cumulativeFaceCountPerCell) const;
+		DLL_IMPORT_OR_EXPORT void getCumulativeTruncatedFaceCountPerTruncatedCell(uint64_t * cumulativeFaceCountPerCell) const;
 
 		/**
 		 * Gets the truncated face count per truncated cell. This method is less efficient than
@@ -1090,7 +1090,7 @@ namespace RESQML2_NS
 		 * @param [out]	faceCountPerCell	An array to receive the truncated face count per truncated
 		 * 									cell. It must be preallocated with getTruncatedCellCount()
 		 */
-		DLL_IMPORT_OR_EXPORT void getTruncatedFaceCountPerTruncatedCell(ULONG64 * faceCountPerCell) const;
+		DLL_IMPORT_OR_EXPORT void getTruncatedFaceCountPerTruncatedCell(uint64_t * faceCountPerCell) const;
 
 		/**
 		 * Gets all the non truncated face indices of all the truncated cells. It does not get the
@@ -1107,7 +1107,7 @@ namespace RESQML2_NS
 		 * 							truncated cells.It must be pre allocated with the last value returned
 		 * 							by getCumulativeNonTruncatedFaceCountPerTruncatedCell()
 		 */
-		DLL_IMPORT_OR_EXPORT void getNonTruncatedFaceIndicesOfTruncatedCells(ULONG64 * faceIndices) const;
+		DLL_IMPORT_OR_EXPORT void getNonTruncatedFaceIndicesOfTruncatedCells(uint64_t * faceIndices) const;
 
 		/**
 		 * Get the cumulative non truncated face count per truncated cell. It does not take into account
@@ -1127,7 +1127,7 @@ namespace RESQML2_NS
 		 * 											count per truncated cell. It must be preallocated with
 		 * 												getTruncatedCellCount()
 		 */
-		DLL_IMPORT_OR_EXPORT void getCumulativeNonTruncatedFaceCountPerTruncatedCell(ULONG64 * cumulativeFaceCountPerCell) const;
+		DLL_IMPORT_OR_EXPORT void getCumulativeNonTruncatedFaceCountPerTruncatedCell(uint64_t * cumulativeFaceCountPerCell) const;
 
 		/**
 		 * Gets the non truncated face count per cell. This method is less efficient than
@@ -1144,7 +1144,7 @@ namespace RESQML2_NS
 		 * 									truncated cell. It must be pre allocated with
 		 * 									getTruncatedCellCount()
 		 */
-		DLL_IMPORT_OR_EXPORT void getNonTruncatedFaceCountPerTruncatedCell(ULONG64 * faceCountPerCell) const;
+		DLL_IMPORT_OR_EXPORT void getNonTruncatedFaceCountPerTruncatedCell(uint64_t * faceCountPerCell) const;
 
 		/**
 		 * Retrieves the orientation of each truncated face (i.e. if each truncated face is right handed

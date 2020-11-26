@@ -51,10 +51,10 @@ void GeneticBoundaryFeature::setAge(unsigned int age)
 		feature->AbsoluteAge->DateTime.tm_mday = 1;
 	}
 	if (feature->AbsoluteAge->YearOffset == nullptr) {
-		feature->AbsoluteAge->YearOffset = static_cast<LONG64*>(soap_malloc(getGsoapContext(), sizeof(LONG64)));
+		feature->AbsoluteAge->YearOffset = static_cast<int64_t*>(soap_malloc(getGsoapContext(), sizeof(int64_t)));
 	}
 
-	*(feature->AbsoluteAge->YearOffset) = -static_cast<LONG64>(age);
+	*(feature->AbsoluteAge->YearOffset) = -static_cast<int64_t>(age);
 }
 
 bool GeneticBoundaryFeature::hasAnAge() const
@@ -62,7 +62,7 @@ bool GeneticBoundaryFeature::hasAnAge() const
 	return static_cast<gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature*>(gsoapProxy2_0_1)->AbsoluteAge != nullptr;
 }
 
-ULONG64 GeneticBoundaryFeature::getAge() const
+uint64_t GeneticBoundaryFeature::getAge() const
 {
 	if (!hasAnAge()) {
 		throw invalid_argument("This feature has not an age.");

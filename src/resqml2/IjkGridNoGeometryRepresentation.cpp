@@ -25,33 +25,33 @@ using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_NS;
 
-ULONG64 IjkGridNoGeometryRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t IjkGridNoGeometryRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("An ijk grid has a maximum of one patch.");
 	}
 
 	if (getParentGrid() != nullptr && getParentGrid()->getXmlTag() == "IjkGridRepresentation") {
-		const ULONG64 kIntervalCount = getRegridIntervalCount('k');
-		std::unique_ptr<ULONG64[]> kChildCellCountPerInterval(new ULONG64[kIntervalCount]);
+		const uint64_t kIntervalCount = getRegridIntervalCount('k');
+		std::unique_ptr<uint64_t[]> kChildCellCountPerInterval(new uint64_t[kIntervalCount]);
 		getRegridCellCountPerInterval('k', kChildCellCountPerInterval.get(), true);
-		const ULONG64 jIntervalCount = getRegridIntervalCount('j');
-		std::unique_ptr<ULONG64[]> jChildCellCountPerInterval(new ULONG64[jIntervalCount]);
+		const uint64_t jIntervalCount = getRegridIntervalCount('j');
+		std::unique_ptr<uint64_t[]> jChildCellCountPerInterval(new uint64_t[jIntervalCount]);
 		getRegridCellCountPerInterval('j', jChildCellCountPerInterval.get(), true);
-		const ULONG64 iIntervalCount = getRegridIntervalCount('i');
-		std::unique_ptr<ULONG64[]> iChildCellCountPerInterval(new ULONG64[iIntervalCount]);
+		const uint64_t iIntervalCount = getRegridIntervalCount('i');
+		std::unique_ptr<uint64_t[]> iChildCellCountPerInterval(new uint64_t[iIntervalCount]);
 		getRegridCellCountPerInterval('i', iChildCellCountPerInterval.get(), true);
 
-		ULONG64 kCount = 1;
-		ULONG64 jCount = 1;
-		ULONG64 iCount = 1;
-		for (ULONG64 kInterval = 0; kInterval < kIntervalCount; ++kInterval) {
+		uint64_t kCount = 1;
+		uint64_t jCount = 1;
+		uint64_t iCount = 1;
+		for (uint64_t kInterval = 0; kInterval < kIntervalCount; ++kInterval) {
 			kCount += kChildCellCountPerInterval[kInterval];
 		}
-		for (ULONG64 jInterval = 0; jInterval < jIntervalCount; ++jInterval) {
+		for (uint64_t jInterval = 0; jInterval < jIntervalCount; ++jInterval) {
 			jCount += jChildCellCountPerInterval[jInterval];
 		}
-		for (ULONG64 iInterval = 0; iInterval < iIntervalCount; ++iInterval) {
+		for (uint64_t iInterval = 0; iInterval < iIntervalCount; ++iInterval) {
 			iCount += iChildCellCountPerInterval[iInterval];
 		}
 

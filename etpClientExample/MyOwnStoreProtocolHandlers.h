@@ -28,8 +28,8 @@ private:
 	COMMON_NS::DataObjectRepository* repo;
 
 public:
-	MyOwnStoreProtocolHandlers(ETP_NS::AbstractSession* mySession, COMMON_NS::DataObjectRepository* repo_): ETP_NS::StoreHandlers(mySession), repo(repo_) {}
-	~MyOwnStoreProtocolHandlers() {}
+	MyOwnStoreProtocolHandlers(ETP_NS::AbstractSession* mySession, COMMON_NS::DataObjectRepository* repo_) : ETP_NS::StoreHandlers(mySession), repo(repo_) {}
+	~MyOwnStoreProtocolHandlers() = default;
 
 	void on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & obj, int64_t correlationId);
 };

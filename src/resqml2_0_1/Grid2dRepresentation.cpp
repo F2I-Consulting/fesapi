@@ -65,12 +65,12 @@ COMMON_NS::DataObjectReference Grid2dRepresentation::getHdfProxyDor() const
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
-ULONG64 Grid2dRepresentation::getNodeCountAlongIAxis() const
+uint64_t Grid2dRepresentation::getNodeCountAlongIAxis() const
 {
 	return static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->FastestAxisCount;
 }
 
-ULONG64 Grid2dRepresentation::getNodeCountAlongJAxis() const
+uint64_t Grid2dRepresentation::getNodeCountAlongJAxis() const
 {
 	return static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->SlowestAxisCount;
 }
@@ -96,8 +96,8 @@ void Grid2dRepresentation::getZValues(double* values) const
 		double zJOffset = getZJOffset();
 
 		if (isISpacingConstant() && isJSpacingConstant()) {
-			const ULONG64 iNodeCount = getNodeCountAlongIAxis();
-			const ULONG64 jNodeCount = getNodeCountAlongJAxis();
+			const uint64_t iNodeCount = getNodeCountAlongIAxis();
+			const uint64_t jNodeCount = getNodeCountAlongJAxis();
 			for (size_t jNode = 0; jNode < jNodeCount; ++jNode) {
 				for (size_t iNode = 0; iNode < iNodeCount; ++iNode) {
 					values[iNode + jNode*iNodeCount] = zOrigin + zIOffset*iNode + zJOffset*jNode;
@@ -105,8 +105,8 @@ void Grid2dRepresentation::getZValues(double* values) const
 			}
 		}
 		else {
-			const ULONG64 iNodeCount = getNodeCountAlongIAxis();
-			const ULONG64 jNodeCount = getNodeCountAlongJAxis();
+			const uint64_t iNodeCount = getNodeCountAlongIAxis();
+			const uint64_t jNodeCount = getNodeCountAlongJAxis();
 			std::unique_ptr<double[]> iSpacings(new double[iNodeCount]); /// the size should rigourously be iNodeCount - 1. For optimization reason, we just have one extra item to avoid a range error in the later for loop where the last item is accessed but not used anyhow.
 			getISpacing(iSpacings.get());
 			std::unique_ptr<double[]> jSpacings(new double[jNodeCount]); /// the size should rigourously be jNodeCount - 1. For optimization reason, we just have one extra item to avoid a range error in the later for loop where the last item is accessed but not used anyhow.
@@ -390,12 +390,12 @@ void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 {
 	const resqml20__Point3dLatticeArray* const arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
-	const ULONG64 jSpacingCount = getNodeCountAlongJAxis() - 1;
+	const uint64_t jSpacingCount = getNodeCountAlongJAxis() - 1;
 
 	if (arrayLatticeOfPoints3d != nullptr) {
 		if (arrayLatticeOfPoints3d->Offset[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray) {
 			const double constantSpacing = static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Value;
-			for (ULONG64 j = 0; j < jSpacingCount; ++j) {
+			for (uint64_t j = 0; j < jSpacingCount; ++j) {
 				jSpacings[j] = constantSpacing;
 			}
 		}
@@ -418,7 +418,7 @@ void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 		std::unique_ptr<double[]> jSpacingsOnSupportingRep(new double[jSpacingCount]);
 		getSupportingRepresentation()->getJSpacing(jSpacingsOnSupportingRep.get());
 		
-		for (ULONG64 j = 0; j < jSpacingCount; ++j) {
+		for (uint64_t j = 0; j < jSpacingCount; ++j) {
 			jSpacings[j] = .0;
 			if (jIndexOffset > 0) {
 				for (int tmp = 0; tmp < jIndexOffset; ++tmp) {
@@ -461,12 +461,12 @@ void Grid2dRepresentation::getISpacing(double* const iSpacings) const
 {
 	const resqml20__Point3dLatticeArray* const arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
-	const ULONG64 iSpacingCount = getNodeCountAlongIAxis() - 1;
+	const uint64_t iSpacingCount = getNodeCountAlongIAxis() - 1;
 
 	if (arrayLatticeOfPoints3d != nullptr) {
 		if (arrayLatticeOfPoints3d->Offset[1]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray) {
 			const double constantSpacing = static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[1]->Spacing)->Value;
-			for (ULONG64 i = 0; i < iSpacingCount; ++i) {
+			for (uint64_t i = 0; i < iSpacingCount; ++i) {
 				iSpacings[i] = constantSpacing;
 			}
 		}
@@ -489,7 +489,7 @@ void Grid2dRepresentation::getISpacing(double* const iSpacings) const
 		std::unique_ptr<double[]> iSpacingsOnSupportingRep(new double[iSpacingCount]);
 		getSupportingRepresentation()->getISpacing(iSpacingsOnSupportingRep.get());
 
-		for (ULONG64 i = 0; i < iSpacingCount; ++i) {
+		for (uint64_t i = 0; i < iSpacingCount; ++i) {
 			iSpacings[i] = .0;
 			if (iIndexOffset > 0) {
 				for (int tmp = 0; tmp < iIndexOffset; ++tmp) {

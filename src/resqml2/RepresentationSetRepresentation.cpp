@@ -37,7 +37,7 @@ void RepresentationSetRepresentation::loadTargetRelationships()
 	}
 }
 
-ULONG64 RepresentationSetRepresentation::getXyzPointCountOfPatch(unsigned int) const
+uint64_t RepresentationSetRepresentation::getXyzPointCountOfPatch(unsigned int) const
 {
 	throw logic_error("Not implemented yet.");
 }

@@ -47,7 +47,7 @@ public:
 		initGsoapProxy(repo, guid, title, 20);
 	}
 
-	~HdfProxyExample() {}
+	~HdfProxyExample() = default;
 
 	/**
 		* Open the file for reading and writing.
@@ -174,6 +174,14 @@ public:
 		const unsigned long long * numValuesInEachDimension,
 		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
 
+	void writeArrayNdOfInt64Values(const std::string & groupName,
+		const std::string & name,
+		const int64_t * values,
+		const unsigned long long * numValuesInEachDimension,
+		unsigned int numDimensions) {
+		throw std::logic_error("Not implemented yet");
+	}
+
 	/**
 	* Write an array (potentially with multi dimensions) of gSoap unsigned long 64 values into the HDF file by means of a single dataset.
 	* @param groupName						The name of the group where to create the array of int values.
@@ -183,9 +191,9 @@ public:
 	* @param numValuesInEachDimension		Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
 	* @param numDimensions					The number of the dimensions of the array to write
 	*/
-	void writeArrayNdOfGSoapULong64Values(const std::string & groupName,
+	void writeArrayNdOfUInt64Values(const std::string & groupName,
 		const std::string & name,
-		const ULONG64 * ulong64Values,
+		const uint64_t * values,
 		const unsigned long long * numValuesInEachDimension,
 		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
 
@@ -319,7 +327,7 @@ public:
 	* Read a long which is stored as an HDF attribute in a file, group or dataset
 	* @param obj_name use '.' if the attribute to read is on the file otherwise the full path
 	*/
-	LONG64 readLongAttribute(const std::string & obj_name,
+	int64_t readLongAttribute(const std::string & obj_name,
 		const std::string & attr_name) const { throw std::logic_error("Not implemented yet"); }
 
 	/**
@@ -429,7 +437,7 @@ public:
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
-	void readArrayNdOfLongValues(const std::string & datasetName, LONG64* values) { throw std::logic_error("Not implemented yet"); }
+	void readArrayNdOfInt64Values(const std::string & datasetName, int64_t* values) final { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Find the array associated with datasetName and read from it.
@@ -439,19 +447,19 @@ public:
 	 * @param offsetValuesInEachDimension    Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
 	 * @param numDimensions                  The number of the dimensions of the array to read.
 	 */
-	void readArrayNdOfLongValues(
+	void readArrayNdOfInt64Values(
 		const std::string & datasetName,
-		LONG64* values,
+		int64_t* values,
 		unsigned long long const * numValuesInEachDimension,
 		unsigned long long const * offsetInEachDimension,
-		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
+		unsigned int numDimensions) final { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Read an array Nd of unsigned long values stored in a specific dataset.
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
-	void readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values) { throw std::logic_error("Not implemented yet"); }
+	void readArrayNdOfUInt64Values(const std::string & datasetName, uint64_t* values) final { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Read an array Nd of int values stored in a specific dataset.

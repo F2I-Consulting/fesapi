@@ -42,7 +42,7 @@ unsigned int IjkGridParametricRepresentation::getControlPointMaxCountPerPillar()
 	}
 	resqml20__Point3dParametricArray* points = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
 	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ParametricLineArray) {
-		const ULONG64 result = static_cast<resqml20__ParametricLineArray*>(points->ParametricLines)->KnotCount;
+		const uint64_t result = static_cast<resqml20__ParametricLineArray*>(points->ParametricLines)->KnotCount;
 		if (result > (std::numeric_limits<unsigned int>::max)())
 			throw std::range_error("There are too many knot counts");
 		return static_cast<unsigned int>(result);
@@ -129,14 +129,14 @@ short IjkGridParametricRepresentation::getConstantParametricLineKind() const
 	{
 		resqml20__ParametricLineArray* paramLineArray = static_cast<resqml20__ParametricLineArray*>(points->ParametricLines);
 		if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray) {
-			LONG64 result = static_cast<resqml20__IntegerLatticeArray*>(paramLineArray->LineKindIndices)->StartValue;
+			int64_t result = static_cast<resqml20__IntegerLatticeArray*>(paramLineArray->LineKindIndices)->StartValue;
 			if (result > (std::numeric_limits<short>::max)()) {
 				throw std::range_error("The constant parametric line kind is not a short one.");
 			}
 			return static_cast<short>(result);
 		}
 		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
-			LONG64 result = static_cast<resqml20__IntegerConstantArray*>(paramLineArray->LineKindIndices)->Value;
+			int64_t result = static_cast<resqml20__IntegerConstantArray*>(paramLineArray->LineKindIndices)->Value;
 			if (result > (std::numeric_limits<short>::max)()) {
 				throw std::range_error("The constant parametric line kind is not a short one.");
 			}
@@ -176,12 +176,12 @@ void IjkGridParametricRepresentation::getRawParametricLineKind(short * pillarKin
 		}
 		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray)
 		{
-			const LONG64 value = static_cast<resqml20__IntegerConstantArray*>(paramLineArray->LineKindIndices)->Value;
-			const ULONG64 lineKindCount = static_cast<resqml20__IntegerConstantArray*>(paramLineArray->LineKindIndices)->Count;
+			const int64_t value = static_cast<resqml20__IntegerConstantArray*>(paramLineArray->LineKindIndices)->Value;
+			const uint64_t lineKindCount = static_cast<resqml20__IntegerConstantArray*>(paramLineArray->LineKindIndices)->Count;
 			if( lineKindCount != getPillarCount() ) {
 				throw invalid_argument("The parametric line kind count is inconsistent with the pillar count.");
 			}
-			for (ULONG64 i = 0; i < lineKindCount; ++i) {
+			for (uint64_t i = 0; i < lineKindCount; ++i) {
 				pillarKind[i] = (short)value;
 			}
 		}
