@@ -66,6 +66,20 @@ under the License.
 #endif
 
 //************************/
+// PYTHON
+//************************/
+
+#ifdef SWIGPYTHON
+
+	%{
+	#define SWIG_FILE_WITH_INIT // In case we use Python Swig Wrapping
+	%}
+	%include "swigPythonInclude.i"
+
+#endif
+
+
+//************************/
 // POD C ARRAYS
 //************************/
 
@@ -274,10 +288,6 @@ namespace COMMON_NS
 			COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
 	};
 }
-
-%{
-#define SWIG_FILE_WITH_INIT // In case we use Python Swig Wrapping
-%}
 
 #define CHECKER_PRESENCE_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName) bool has##vectorName##attributeName(unsigned int index) const;
 

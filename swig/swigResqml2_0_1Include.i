@@ -17,8 +17,6 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 %{
-#define SWIG_FILE_WITH_INIT // In case we use Python Swig Wrapping
-
 #include "../src/resqml2_0_1/LocalDepth3dCrs.h"
 #include "../src/resqml2_0_1/LocalTime3dCrs.h"
 #include "../src/resqml2_0_1/MdDatum.h"

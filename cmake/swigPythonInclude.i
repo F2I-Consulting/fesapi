@@ -1,0 +1,166 @@
+/*-----------------------------------------------------------------------
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"; you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-----------------------------------------------------------------------*/
+/**********************************************************************
+This file add special SWIG management of the C++ polymorphic datatype.
+**********************************************************************/
+
+namespace COMMON_NS
+{
+	%typemap(out) AbstractObject* {
+		// XML namespace to C++ namespace
+		std::string cppNs;
+		const std::string xmlNs(result->getXmlNamespace());
+		if (xmlNs == "eml20") cppNs = "${FESAPI_EML2_0_NS}";
+		else if (xmlNs == "eml21") cppNs = "${FESAPI_EML2_1_NS}";
+		else if (xmlNs == "eml22") cppNs = "${FESAPI_EML2_2_NS}";
+		else if (xmlNs == "eml23") cppNs = "${FESAPI_EML2_3_NS}";
+		else if (xmlNs == "resqml20") cppNs = "${FESAPI_RESQML2_0_1_NS}";
+		else if (xmlNs == "resqml22") cppNs = "${FESAPI_RESQML2_2_NS}";
+		else if (xmlNs == "witsml20") cppNs = "${FESAPI_WITSML2_0_NS}";
+		else if (xmlNs == "witsml21") cppNs = "${FESAPI_WITSML2_1_NS}";
+		else if (xmlNs == "prodml21") cppNs = "${FESAPI_PRODML2_1_NS}";
+		
+		// Check potential downcasting
+		swig_type_info * const outtype = SWIG_TypeQuery((cppNs + "::" + result->getXmlTag() + " *").c_str());
+		resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), outtype, 0);
+	}
+}
+
+namespace EML2_NS
+{
+	%typemap(out) 	Activity*, ActivityTemplate*, EpcExternalPartReference*, PropertyKind*, TimeSeries*
+#ifdef WITH_RESQML2_2
+										,GraphicalInformationSet*
+#endif
+	{
+		// XML namespace to C++ namespace
+		std::string cppNs;
+		const std::string xmlNs(result->getXmlNamespace());
+		if (xmlNs == "eml20") cppNs = "${FESAPI_EML2_0_NS}";
+		else if (xmlNs == "eml21") cppNs = "${FESAPI_EML2_1_NS}";
+		else if (xmlNs == "eml22") cppNs = "${FESAPI_EML2_2_NS}";
+		else if (xmlNs == "eml23") cppNs = "${FESAPI_EML2_3_NS}";
+		else if (xmlNs == "resqml20") cppNs = "${FESAPI_RESQML2_0_1_NS}";
+		else if (xmlNs == "resqml22") cppNs = "${FESAPI_RESQML2_2_NS}";
+		else if (xmlNs == "witsml20") cppNs = "${FESAPI_WITSML2_0_NS}";
+		else if (xmlNs == "witsml21") cppNs = "${FESAPI_WITSML2_1_NS}";
+		else if (xmlNs == "prodml21") cppNs = "${FESAPI_PRODML2_1_NS}";
+		
+		// Check potential downcasting
+		swig_type_info * const outtype = SWIG_TypeQuery((cppNs + "::" + result->getXmlTag() + " *").c_str());
+		resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), outtype, 0);
+	}
+}
+
+namespace RESQML2_NS
+{		
+	%typemap(out)						AbstractFeature*, AbstractFeatureInterpretation*, AbstractRepresentation*, AbstractGridRepresentation*, AbstractLocal3dCrs*,
+										AbstractProperty*, AbstractValuesProperty*,
+										AbstractIjkGridRepresentation*, AbstractStratigraphicOrganizationInterpretation*,
+#ifdef WITH_RESQML2_2
+										AbstractColorMap*,
+#endif
+										BlockedWellboreRepresentation*,
+										BoundaryFeature*,
+										BoundaryFeatureInterpretation*,
+										CategoricalProperty*,
+#ifdef WITH_RESQML2_2
+										CmpLineFeature*,
+#endif
+										CommentProperty*,
+#ifdef WITH_RESQML2_2
+										ContinuousColorMap*,
+#endif
+										ContinuousProperty*,
+										CulturalFeature*,
+										DeviationSurveyRepresentation*,
+#ifdef WITH_RESQML2_2
+										DiscreteColorMap*,
+#endif
+										DiscreteProperty*,
+										DoubleTableLookup*,
+										EarthModelInterpretation*,
+										FaultInterpretation*,
+										GenericFeatureInterpretation*,
+										GeobodyBoundaryInterpretation*,
+										GeobodyInterpretation*,
+										Grid2dRepresentation*,
+										GridConnectionSetRepresentation*,
+										HorizonInterpretation*,
+										IjkGridExplicitRepresentation*,
+										IjkGridLatticeRepresentation*,
+										IjkGridNoGeometryRepresentation*,
+										IjkGridParametricRepresentation*,
+										LocalDepth3dCrs*,
+										LocalTime3dCrs*,
+										MdDatum*,
+										Model*,
+										NonSealedSurfaceFrameworkRepresentation*,
+										PlaneSetRepresentation*,
+										PointSetRepresentation*,
+										PointsProperty*,
+										PolylineRepresentation*,
+										PolylineSetRepresentation*,
+										PropertySet*,
+										RepresentationSetRepresentation*,
+										RockFluidOrganizationInterpretation*,
+										RockFluidUnitInterpretation*,
+										RockVolumeFeature*,
+										SealedSurfaceFrameworkRepresentation*,
+										SealedVolumeFrameworkRepresentation*,
+										SeismicLatticeFeature*,
+										SeismicLineSetFeature*,
+#ifdef WITH_RESQML2_2
+										SeismicWellboreFrameRepresentation*,
+										ShotPointLineFeature*,
+#endif
+										StratigraphicColumn*,
+										StratigraphicColumnRankInterpretation*,
+										StratigraphicOccurrenceInterpretation*,
+										StratigraphicUnitInterpretation*,
+										StringTableLookup*,
+										StructuralOrganizationInterpretation*,
+										SubRepresentation*,
+										TriangulatedSetRepresentation*,
+										UnstructuredGridRepresentation*,
+										WellboreFeature*,
+										WellboreFrameRepresentation*,
+										WellboreInterpretation*,
+										WellboreMarker*,
+										WellboreMarkerFrameRepresentation*,
+										WellboreTrajectoryRepresentation*
+	{
+		// XML namespace to C++ namespace
+		std::string cppNs;
+		const std::string xmlNs(result->getXmlNamespace());
+		if (xmlNs == "eml20") cppNs = "${FESAPI_EML2_0_NS}";
+		else if (xmlNs == "eml21") cppNs = "${FESAPI_EML2_1_NS}";
+		else if (xmlNs == "eml22") cppNs = "${FESAPI_EML2_2_NS}";
+		else if (xmlNs == "eml23") cppNs = "${FESAPI_EML2_3_NS}";
+		else if (xmlNs == "resqml20") cppNs = "${FESAPI_RESQML2_0_1_NS}";
+		else if (xmlNs == "resqml22") cppNs = "${FESAPI_RESQML2_2_NS}";
+		else if (xmlNs == "witsml20") cppNs = "${FESAPI_WITSML2_0_NS}";
+		else if (xmlNs == "witsml21") cppNs = "${FESAPI_WITSML2_1_NS}";
+		else if (xmlNs == "prodml21") cppNs = "${FESAPI_PRODML2_1_NS}";
+		
+		// Check potential downcasting
+		swig_type_info * const outtype = SWIG_TypeQuery((cppNs + "::" + result->getXmlTag() + " *").c_str());
+		resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), outtype, 0);
+	}
+}

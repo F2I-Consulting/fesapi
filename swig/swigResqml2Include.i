@@ -29,17 +29,6 @@ under the License.
 #include "../src/resqml2/UnstructuredGridRepresentation.h"
 %}
 
-#ifdef SWIGPYTHON
-namespace RESQML2_NS
-{
-	%typemap(out) COMMON_NS::AbstractObject*, EML2_NS::AbstractHdfProxy*,  AbstractFeature*, AbstractFeatureInterpretation*,  AbstractLocal3dCrs*, AbstractProperty*, AbstractValuesProperty*, AbstractRepresentation* {
-		// Check potential downcasting
-		swig_type_info * const outtype = SWIG_TypeQuery(("resqml2::" + result->getXmlTag() + " *").c_str());
-		resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), outtype, 0);
-	}
-}
-#endif
-
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
 	%nspace RESQML2_NS::AbstractColorMap;	
 	%nspace RESQML2_NS::AbstractColumnLayerGridRepresentation;

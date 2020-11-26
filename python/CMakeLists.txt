@@ -19,6 +19,7 @@ else (WITH_RESQML2_2)
 	set (COMMENT_START "/*")
 	set (COMMENT_END "*/")
 endif(WITH_RESQML2_2)
+configure_file(${FESAPI_ROOT_DIR}/cmake/swigPythonInclude.i ${FESAPI_ROOT_DIR}/swig/swigPythonInclude.i) # Overwrite if different
 
 set (SWIG_DEFINITIONS "")
 if (WITH_RESQML2_2)
@@ -30,10 +31,10 @@ endif (WITH_ETP)
 
 # SWIG execution
 if (WIN32)
-	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -Wall -v -c++ -python -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedPythonWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/python/src ${FESAPI_ROOT_DIR}/swig/swigModule.i")
+	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -Wall -v -c++ -python -builtin -py3 -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedPythonWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/python/src ${FESAPI_ROOT_DIR}/swig/swigModule.i")
 	execute_process(COMMAND powershell ${EXECUTE_COMMAND})
 elseif (UNIX)
-	set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -Wall -v -c++ -python -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedPythonWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/python/src ${FESAPI_ROOT_DIR}/swig/swigModule.i)
+	set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -Wall -v -c++ -python -builtin -py3 -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedPythonWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/python/src ${FESAPI_ROOT_DIR}/swig/swigModule.i)
 	execute_process(COMMAND ${EXECUTE_COMMAND})
 endif (WIN32)
 message("SWIG Python files have been generated.")

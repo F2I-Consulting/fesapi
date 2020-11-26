@@ -42,7 +42,9 @@ namespace EML2_NS
 	%nodefaultctor; // Disable creation of default constructors
 	
 	/************ HDF *******************/
-	class EpcExternalPartReference : public COMMON_NS::AbstractObject {};
+	class EpcExternalPartReference : public COMMON_NS::AbstractObject {
+	public:
+	};
 	
 	/*
 	No wrappers will be generated for fesapi AbstractHdfProxy specializations.

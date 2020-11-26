@@ -79,16 +79,6 @@ under the License.
 #include "../src/resqml2_2/WellboreTrajectoryRepresentation.h"
 %}
 
-#if defined(SWIGJAVA) || defined(SWIGPYTHON)
-namespace RESQML2_2_NS
-{
-	%typemap(out) WellboreFrameRepresentation* {
-		// Check potential downcasting
-		swig_type_info * const outtype = SWIG_TypeQuery(("resqml2_2::" + result->getXmlTag() + " *").c_str());
-		resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), outtype, 0);
-	}
-}
-#endif
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
 	%nspace RESQML2_2_NS::BoundaryFeature;
 	%nspace RESQML2_2_NS::BoundaryFeatureInterpretation;

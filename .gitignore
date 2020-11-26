@@ -9,6 +9,7 @@
 /cs/EtpClientExample/MyOwnStoreProtocolHandlers.cs
 /swig/swigCsInclude.i
 /swig/swigJavaInclude.i
+/swig/swigPythonInclude.i
 /src/nsDefinitions.h
 /src/version_config.h
 /src/common/HidtType.h
