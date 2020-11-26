@@ -204,7 +204,7 @@ namespace RESQML2_NS
 		 * @param 		  	withoutTranslation	(Optional) True to only compute the rotation (no
 		 * 										translation is computed). Default value if false.
 		 */
-		DLL_IMPORT_OR_EXPORT void convertXyzPointsToGlobalCrs(double * xyzPoints, ULONG64 xyzPointCount, bool withoutTranslation = false) const;
+		DLL_IMPORT_OR_EXPORT void convertXyzPointsToGlobalCrs(double * xyzPoints, uint64_t xyzPointCount, bool withoutTranslation = false) const;
 
 	protected:
 

@@ -44,7 +44,7 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 	_resqml22__CommentProperty* prop = static_cast<_resqml22__CommentProperty*>(gsoapProxy2_3);
 	prop->IndexableElement = attachmentKind;
 	if (dimension > 1) {
-		prop->ValueCountPerIndexableElement = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_3->soap, sizeof(ULONG64)));
+		prop->ValueCountPerIndexableElement = static_cast<uint64_t*>(soap_malloc(gsoapProxy2_3->soap, sizeof(uint64_t)));
 		*prop->ValueCountPerIndexableElement = dimension;
 	}
 

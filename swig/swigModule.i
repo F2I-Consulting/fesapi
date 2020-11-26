@@ -134,15 +134,6 @@ under the License.
     }
 }
 
-
-typedef long long					LONG64;
-
-#ifdef SWIGJAVA
-typedef long long					ULONG64; // We don't want to use BigInteger in java.
-#else
-typedef unsigned long long	ULONG64;
-#endif
-
 typedef long long 				time_t;
 
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
@@ -733,7 +724,7 @@ namespace COMMON_NS
 			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		RESQML2_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(const std::string & guid, const std::string & title,
-			const ULONG64 & cellCount);
+			uint64_t cellCount);
 
 		RESQML2_NS::SubRepresentation* createSubRepresentation(
 			const std::string & guid, const std::string & title);

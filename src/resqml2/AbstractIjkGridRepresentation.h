@@ -202,7 +202,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The total count of cells in the IJK grid.
 		*/
-		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const final { return getICellCount() * getJCellCount() * getKCellCount(); }
+		DLL_IMPORT_OR_EXPORT uint64_t getCellCount() const final { return getICellCount() * getJCellCount() * getKCellCount(); }
 
 		/**
 		 * Gets the count of columns in this grid.
@@ -483,7 +483,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The split nodes count.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getSplitNodeCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getSplitNodeCount() const;
 
 		/**
 		 * Tells for each pillar if its geometry is defined. This method only looks at the corresponding
@@ -628,7 +628,7 @@ namespace RESQML2_NS
 		 * 			cell. Keep in mind to multiply the result by 3 to get the X index since the points
 		 * 			are triplet of values.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointIndexFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointIndexFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner) const;
 
 		/**
 		 * @brief	Gets the x, y and z values of the corner of a cell of a given block. This method
@@ -668,7 +668,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The XYZ point count of each K layer interface.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfKInterface() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfKInterface() const;
 
 		/**
 		 * Gets the XYZ points count of the current block. Block information must be loaded.
@@ -677,7 +677,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The XYZ point count of the current block.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfBlock() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfBlock() const;
 
 		/*
 		 * Gets all the XYZ points of a particular K interface. XYZ points are given in the local CRS.
@@ -748,7 +748,7 @@ namespace RESQML2_NS
 
 		virtual COMMON_NS::DataObjectReference getHdfProxyDor() const override { throw std::logic_error("Partial object"); }
 
-		DLL_IMPORT_OR_EXPORT virtual ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const override;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const override;
 
 		/**
 		* @copybrief AbstractRepresentation::getXyzPointsOfPatch

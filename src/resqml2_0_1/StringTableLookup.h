@@ -70,9 +70,9 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT void setValue(const std::string & strValue, long longValue) final;
 
-		DLL_IMPORT_OR_EXPORT LONG64 getMinimumValue() final;
+		DLL_IMPORT_OR_EXPORT int64_t getMinimumValue() final;
 
-		DLL_IMPORT_OR_EXPORT LONG64 getMaximumValue() final;
+		DLL_IMPORT_OR_EXPORT int64_t getMaximumValue() final;
 
 		DLL_IMPORT_OR_EXPORT std::unordered_map<long, std::string> getMap() const final;
 

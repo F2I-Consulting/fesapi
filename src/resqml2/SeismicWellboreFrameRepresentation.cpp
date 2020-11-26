@@ -159,7 +159,7 @@ void SeismicWellboreFrameRepresentation::getTimeAsDoubleValues(double* values) c
 	{
 		values[0] = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->StartValue;
 		eml23__FloatingPointConstantArray* constantArray = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->Offset[0];
-		for (ULONG64 inc = 1; inc <= constantArray->Count; ++inc)
+		for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
 			values[inc] = values[0] + (inc * constantArray->Value);
 	}
 	else {
@@ -184,7 +184,7 @@ void SeismicWellboreFrameRepresentation::getTimeAsFloatValues(float* values) con
 	{
 		values[0] = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->StartValue;
 		eml23__FloatingPointConstantArray* constantArray = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->Offset[0];
-		for (ULONG64 inc = 1; inc <= constantArray->Count; ++inc)
+		for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
 			values[inc] = values[0] + (inc * constantArray->Value);
 	}
 	else {

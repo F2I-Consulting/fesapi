@@ -74,7 +74,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v1
 			{
 				Energistics::Etp::v12::Datatypes::ArrayOfLong avroArray;
 				avroArray.values = std::vector<LONG64>(globalElemCount);
-				hdfProxy->readArrayNdOfLongValues(dai.pathInResource, avroArray.values.data());
+				hdfProxy->readArrayNdOfInt64Values(dai.pathInResource, avroArray.values.data());
 				da.data.item.set_ArrayOfLong(avroArray);
 			}
 			else if (dt == COMMON_NS::AbstractObject::INT || dt == COMMON_NS::AbstractObject::UINT ||
@@ -154,7 +154,7 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v1
 					pdat.second.array.data.item.get_ArrayOfInt().values.data(), numValuesInEachDimension.get(), pdat.second.array.dimensions.size());
 			}
 			else if (pdat.second.array.data.item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfLong) {
-				hdfProxy->writeArrayNdOfLong64Values(pdat.second.uid.pathInResource.substr(0, lastSlash), pdat.second.uid.pathInResource.substr(lastSlash + 1),
+				hdfProxy->writeArrayNdOfInt64Values(pdat.second.uid.pathInResource.substr(0, lastSlash), pdat.second.uid.pathInResource.substr(lastSlash + 1),
 					pdat.second.array.data.item.get_ArrayOfLong().values.data(), numValuesInEachDimension.get(), pdat.second.array.dimensions.size());
 			}
 			else if (pdat.second.array.data.item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfFloat) {

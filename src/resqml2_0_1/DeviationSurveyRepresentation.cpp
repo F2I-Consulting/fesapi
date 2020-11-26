@@ -60,7 +60,7 @@ DeviationSurveyRepresentation::DeviationSurveyRepresentation(RESQML2_NS::Wellbor
 	setInterpretation(interp);
 }
 
-void DeviationSurveyRepresentation::setGeometry(double const* firstStationLocation, ULONG64 stationCount,
+void DeviationSurveyRepresentation::setGeometry(double const* firstStationLocation, uint64_t stationCount,
 	gsoap_resqml2_0_1::eml20__LengthUom mdUom, double const* mds,
 	gsoap_resqml2_0_1::eml20__PlaneAngleUom angleUom, double const* azimuths, double const* inclinations,
 	EML2_NS::AbstractHdfProxy* proxy)
@@ -119,7 +119,7 @@ void DeviationSurveyRepresentation::setGeometry(double const* firstStationLocati
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "inclinations", inclinations, &dim, 1);
 }
 
-ULONG64 DeviationSurveyRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t DeviationSurveyRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");

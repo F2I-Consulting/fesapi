@@ -136,7 +136,7 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	triRep->TrianglePatch.push_back(patch);
 }
 
-ULONG64 TriangulatedSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t TriangulatedSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount())
 		throw range_error("The index of the patch is not in the allowed range of patch.");

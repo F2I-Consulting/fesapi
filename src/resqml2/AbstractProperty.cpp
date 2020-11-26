@@ -181,7 +181,7 @@ COMMON_NS::DataObjectReference AbstractProperty::getTimeSeriesDor() const
 	return COMMON_NS::DataObjectReference();
 }
 
-void AbstractProperty::setTimeIndices(ULONG64 startTimeIndex, ULONG64 countTimeIndices, EML2_NS::TimeSeries * ts, bool useInterval)
+void AbstractProperty::setTimeIndices(uint64_t startTimeIndex, uint64_t countTimeIndices, EML2_NS::TimeSeries * ts, bool useInterval)
 {
 	if (countTimeIndices == 0) {
 		throw std::invalid_argument("You cannot set zero time index.");
@@ -213,7 +213,7 @@ void AbstractProperty::setTimeIndices(ULONG64 startTimeIndex, ULONG64 countTimeI
 
 unsigned int AbstractProperty::getTimeIndexStart() const
 {
-	ULONG64 result = 0;
+	uint64_t result = 0;
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {
@@ -268,7 +268,7 @@ bool AbstractProperty::useInterval() const
 
 unsigned int AbstractProperty::getElementCountPerValue() const
 {
-	ULONG64 result;
+	uint64_t result;
 	if (gsoapProxy2_0_1 != nullptr) {
 		result = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->Count;
 	}
@@ -522,7 +522,7 @@ std::vector<unsigned int> AbstractProperty::getRealizationIndices() const
 	}
 }
 
-void AbstractProperty::setRealizationIndices(ULONG64 startRealizationIndex, ULONG64 countRealizationIndices)
+void AbstractProperty::setRealizationIndices(uint64_t startRealizationIndex, uint64_t countRealizationIndices)
 {
 	if (countRealizationIndices == 0) {
 		throw std::invalid_argument("Cannot set zero realization index.");
@@ -534,7 +534,7 @@ void AbstractProperty::setRealizationIndices(ULONG64 startRealizationIndex, ULON
 		}
 		gsoap_resqml2_0_1::resqml20__AbstractProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1);
 		if (prop->RealizationIndex == nullptr) {
-			prop->RealizationIndex = static_cast<ULONG64*>(soap_malloc(prop->soap, sizeof(ULONG64)));
+			prop->RealizationIndex = static_cast<uint64_t*>(soap_malloc(prop->soap, sizeof(uint64_t)));
 		}
 		*prop->RealizationIndex = startRealizationIndex;
 	}
@@ -608,7 +608,7 @@ gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind AbstractProperty::getEnergistics
 
 COMMON_NS::AbstractObject::hdfDatatypeEnum AbstractProperty::getValuesHdfDatatype() const
 {
-	LONG64 nullValue = (numeric_limits<LONG64>::min)();
+	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
 	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(0, nullValue, dsPath);
 
@@ -617,7 +617,7 @@ COMMON_NS::AbstractObject::hdfDatatypeEnum AbstractProperty::getValuesHdfDatatyp
 
 unsigned int AbstractProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const
 {
-	LONG64 nullValue = (numeric_limits<LONG64>::min)();
+	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
 	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
@@ -632,7 +632,7 @@ unsigned int AbstractProperty::getValuesCountOfDimensionOfPatch(unsigned int dim
 
 unsigned int AbstractProperty::getDimensionsCountOfPatch(unsigned int patchIndex) const
 {
-	LONG64 nullValue = (numeric_limits<LONG64>::min)();
+	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
 	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
@@ -641,7 +641,7 @@ unsigned int AbstractProperty::getDimensionsCountOfPatch(unsigned int patchIndex
 
 unsigned int AbstractProperty::getValuesCountOfPatch(unsigned int patchIndex) const
 {
-	LONG64 nullValue = (numeric_limits<LONG64>::min)();
+	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
 	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 

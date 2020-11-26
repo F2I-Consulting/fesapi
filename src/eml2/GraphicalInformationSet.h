@@ -505,7 +505,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The value vector index.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getValueVectorIndex(COMMON_NS::AbstractObject const* targetObject);
+		DLL_IMPORT_OR_EXPORT int64_t getValueVectorIndex(COMMON_NS::AbstractObject const* targetObject);
 
 		/**
 		 * Sets the value vector index to look when mapping with a color map. It is especially useful
@@ -517,7 +517,7 @@ namespace EML2_NS
 		 * 								to look when mapping with a color map.
 		 * @param 	valueVectorIndex	The value vector index to set.
 		 */
-		DLL_IMPORT_OR_EXPORT void setValueVectorIndex(COMMON_NS::AbstractObject const* targetObject, LONG64 valueVectorIndex);
+		DLL_IMPORT_OR_EXPORT void setValueVectorIndex(COMMON_NS::AbstractObject const* targetObject, int64_t valueVectorIndex);
 
 		/**
 		 * Converts RGB to HSV color (using https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB

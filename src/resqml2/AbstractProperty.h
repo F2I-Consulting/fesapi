@@ -229,7 +229,7 @@ namespace RESQML2_NS
 		 * @param 	startRealizationIndex	The first realization index to set to this property.
 		 * @param 	countRealizationIndices	The count of realization indices to set to this property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setRealizationIndices(ULONG64 startRealizationIndex, ULONG64 countRealizationIndices);
+		DLL_IMPORT_OR_EXPORT void setRealizationIndices(uint64_t startRealizationIndex, uint64_t countRealizationIndices);
 
 		/**
 		 * @brief	Sets the realization indices of this property
@@ -293,7 +293,7 @@ namespace RESQML2_NS
 		 * 									the dimension of the value array corresponding to the time series
 		 * 									is the number of entry in the series minus one.
 		 */
-		DLL_IMPORT_OR_EXPORT void setTimeIndices(ULONG64 startTimeIndex, ULONG64 countTimeIndices, EML2_NS::TimeSeries* ts, bool useInterval = false);
+		DLL_IMPORT_OR_EXPORT void setTimeIndices(uint64_t startTimeIndex, uint64_t countTimeIndices, EML2_NS::TimeSeries* ts, bool useInterval = false);
 
 		/**
 		 * Get the time index of this property in its associated time series
@@ -452,7 +452,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the HDF Proxy of patch.
 		 */
-		virtual EML2_NS::AbstractHdfProxy* getDatasetOfPatch(unsigned int patchIndex, LONG64 & nullValue, std::string & dsPath) const = 0;
+		virtual EML2_NS::AbstractHdfProxy* getDatasetOfPatch(unsigned int patchIndex, int64_t & nullValue, std::string & dsPath) const = 0;
 
 		/**
 		 * Gets the data object reference of the HDF proxy which is associated to a particular

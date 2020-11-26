@@ -42,7 +42,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The xyz point count of the patch at position @p patchIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const {
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const {
 			return getValuesCountOfPatch(patchIndex) / 3;
 		}
 
@@ -51,7 +51,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The xyz point count of all patches.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfAllPatches() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfAllPatches() const;
 
 		/**
 		 * @brief	Gets all the xyz points of a particular patch of this property. xyz points are
@@ -118,7 +118,7 @@ namespace RESQML2_NS
 		 * 									method. If @c nullptr (default value), then a default HDF proxy
 		 * 									must be defined in the repository.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackArray1dOfXyzPoints(const double * xyzPoints, ULONG64 pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackArray1dOfXyzPoints(const double * xyzPoints, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * @brief Adds a 2d array of points (in local CRS) to the property.
@@ -138,7 +138,7 @@ namespace RESQML2_NS
 		 * 											(default value), then a default HDF proxy must be
 		 * 											defined in the repository.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackArray2dOfXyzPoints(const double * xyzPoints, ULONG64 pointCountInFastestDim, ULONG64 pointCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackArray2dOfXyzPoints(const double * xyzPoints, uint64_t pointCountInFastestDim, uint64_t pointCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * @brief Adds a 3d array of points (in local CRS) to the property.
@@ -160,7 +160,7 @@ namespace RESQML2_NS
 		 * 											(default value), then a default HDF proxy must be
 		 * 											defined in the repository.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackArray3dOfXyzPoints(const double * xyzPoints, ULONG64 pointCountInFastestDim, ULONG64 pointCountInMiddleDim, ULONG64 pointCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackArray3dOfXyzPoints(const double * xyzPoints, uint64_t pointCountInFastestDim, uint64_t pointCountInMiddleDim, uint64_t pointCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * @brief Adds an nd array of points (in local CRS) to the property.

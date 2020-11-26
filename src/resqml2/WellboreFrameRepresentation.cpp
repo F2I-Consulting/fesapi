@@ -259,7 +259,7 @@ double WellboreFrameRepresentation::getMdFirstValue() const
 
 unsigned int WellboreFrameRepresentation::getMdValuesCount() const
 {
-	ULONG64 result;
+	uint64_t result;
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		result = static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->NodeCount;
@@ -335,7 +335,7 @@ void WellboreFrameRepresentation::getMdAsDoubleValues(double* values) const
 		{
 			values[0] = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd)->StartValue;
 			resqml20__DoubleConstantArray* constantArray = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd)->Offset[0];
-			for (ULONG64 inc = 1; inc <= constantArray->Count; ++inc)
+			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
 				values[inc] = values[0] + (inc * constantArray->Value);
 		}
 		else {
@@ -357,7 +357,7 @@ void WellboreFrameRepresentation::getMdAsDoubleValues(double* values) const
 		{
 			values[0] = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd)->StartValue;
 			eml23__FloatingPointConstantArray* constantArray = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd)->Offset[0];
-			for (ULONG64 inc = 1; inc <= constantArray->Count; ++inc)
+			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
 				values[inc] = values[0] + (inc * constantArray->Value);
 		}
 		else {
@@ -386,7 +386,7 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 		{
 			values[0] = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd)->StartValue;
 			resqml20__DoubleConstantArray* constantArray = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd)->Offset[0];
-			for (ULONG64 inc = 1; inc <= constantArray->Count; ++inc)
+			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
 				values[inc] = values[0] + (inc * constantArray->Value);
 		}
 		else {
@@ -408,7 +408,7 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 		{
 			values[0] = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd)->StartValue;
 			eml23__FloatingPointConstantArray* constantArray = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd)->Offset[0];
-			for (ULONG64 inc = 1; inc <= constantArray->Count; ++inc)
+			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
 				values[inc] = values[0] + (inc * constantArray->Value);
 		}
 		else {
@@ -460,7 +460,7 @@ COMMON_NS::DataObjectReference WellboreFrameRepresentation::getHdfProxyDor() con
 	return COMMON_NS::DataObjectReference();
 }
 
-ULONG64 WellboreFrameRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t WellboreFrameRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The patch index is out of range");

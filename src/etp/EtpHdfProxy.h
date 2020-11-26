@@ -194,9 +194,9 @@ namespace ETP_NS
 			const unsigned long long * numValuesInEachDimension,
 			unsigned int numDimensions);
 
-		void writeArrayNdOfLong64Values(const std::string & groupName,
+		void writeArrayNdOfInt64Values(const std::string & groupName,
 			const std::string & name,
-			const long long * long64Values,
+			const int64_t * values,
 			const unsigned long long * numValuesInEachDimension,
 			unsigned int numDimensions);
 
@@ -205,13 +205,13 @@ namespace ETP_NS
 		* @param groupName						The name of the group where to create the array of int values.
 		*										This name must not contain '/' character and must be directly contained in RESQML group.
 		* @param name							The name of the array of gSoap unsigned long 64 values hdf dataset. It must not already exist.
-		* @param ulong64Values					1d array of gSoap unsigned long 64 values ordered firstly by fastest direction.
+		* @param uint64_tValues					1d array of gSoap unsigned long 64 values ordered firstly by fastest direction.
 		* @param numValuesInEachDimension		Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
 		* @param numDimensions					The number of the dimensions of the array to write
 		*/
-		void writeArrayNdOfULong64Values(const std::string & groupName,
+		void writeArrayNdOfUInt64Values(const std::string & groupName,
 			const std::string & name,
-			const unsigned long long * ulong64Values,
+			const uint64_t * values,
 			const unsigned long long * numValuesInEachDimension,
 			unsigned int numDimensions);
 
@@ -334,7 +334,7 @@ namespace ETP_NS
 		double readDoubleAttribute(const std::string & obj_name,
 			const std::string & attr_name) const;
 
-		LONG64 readLongAttribute(const std::string & obj_name,
+		int64_t readLongAttribute(const std::string & obj_name,
 			const std::string & attr_name) const;
 
 		/**
@@ -430,7 +430,7 @@ namespace ETP_NS
 		* @param datasetName	The absolute dataset name where to read the values
 		* @param values 		The values must be pre-allocated.
 		*/
-		void readArrayNdOfLongValues(const std::string & datasetName, LONG64* values);
+		void readArrayNdOfInt64Values(const std::string & datasetName, int64_t* values);
 
 		/**
 		* Find the array associated with datasetName and read from it.
@@ -440,9 +440,9 @@ namespace ETP_NS
 		* @param offsetValuesInEachDimension    Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
 		* @param numDimensions                  The number of the dimensions of the array to read.
 		*/
-		void readArrayNdOfLongValues(
+		void readArrayNdOfInt64Values(
 			const std::string & datasetName,
-			LONG64* values,
+			int64_t* values,
 			unsigned long long const * numValuesInEachDimension,
 			unsigned long long const * offsetInEachDimension,
 			unsigned int numDimensions
@@ -453,7 +453,7 @@ namespace ETP_NS
 		* @param datasetName	The absolute dataset name where to read the values
 		* @param values 		The values must be pre-allocated.
 		*/
-		void readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values);
+		void readArrayNdOfUInt64Values(const std::string & datasetName, uint64_t* values);
 
 		/**
 		* Read an array Nd of int values stored in a specific dataset.

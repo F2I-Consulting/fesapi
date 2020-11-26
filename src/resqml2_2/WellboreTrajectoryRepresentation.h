@@ -93,7 +93,7 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getMdDatumDor() const final;
 
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
 		 * @copybrief resqml2::AbstractRepresentation::getXyzPointsOfPatch

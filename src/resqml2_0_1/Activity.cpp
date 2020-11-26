@@ -49,7 +49,7 @@ void Activity::pushBackParameter(const std::string title, double value, resqml20
 	if (!activityTemplate->isPartial()) {
 		if (activityTemplate->isAnExistingParameter(title) == false)
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-		LONG64 maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
 		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
@@ -75,7 +75,7 @@ void Activity::pushBackParameter(const std::string title, const std::string & va
 	if (!activityTemplate->isPartial()) {
 		if (activityTemplate->isAnExistingParameter(title) == false)
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-		LONG64 maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
 		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
@@ -94,13 +94,13 @@ void Activity::pushBackParameter(const std::string title, const std::string & va
 	activity->Parameter.push_back(sp);
 }
 
-void Activity::pushBackParameter(const std::string title, LONG64 value)
+void Activity::pushBackParameter(const std::string title, int64_t value)
 {
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
 	if (!activityTemplate->isPartial()) {
 		if (activityTemplate->isAnExistingParameter(title) == false)
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-		LONG64 maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
 		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
@@ -130,7 +130,7 @@ void Activity::pushBackParameter(const std::string title, AbstractObject* resqml
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
 		}
 
-		LONG64 maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
 		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title)) {
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		}
@@ -328,14 +328,14 @@ bool Activity::isAnIntegerQuantityParameter(unsigned int index) const
 	return activity->Parameter[index]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerQuantityParameter;
 }
 
-vector<LONG64> Activity::getIntegerQuantityParameterValue(const std::string & paramTitle) const
+vector<int64_t> Activity::getIntegerQuantityParameterValue(const std::string & paramTitle) const
 {
 	vector<resqml20__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
 
 	if (param.size() < 1)
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
-	vector<LONG64> result;
+	vector<int64_t> result;
 	for (unsigned int i = 0; i < param.size(); ++i)
 	{
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerQuantityParameter)
@@ -347,7 +347,7 @@ vector<LONG64> Activity::getIntegerQuantityParameterValue(const std::string & pa
 	return result;
 }
 
-LONG64 Activity::getIntegerQuantityParameterValue(unsigned int index) const
+int64_t Activity::getIntegerQuantityParameterValue(unsigned int index) const
 {
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 

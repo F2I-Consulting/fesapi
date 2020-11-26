@@ -27,7 +27,7 @@ using namespace RESQML2_NS;
 
 const char* Grid2dRepresentation::XML_TAG = "Grid2dRepresentation";
 
-ULONG64 Grid2dRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t Grid2dRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");
@@ -54,7 +54,7 @@ void Grid2dRepresentation::getZValuesInGlobalCrs(double * values) const
 		: getLocalCrs(0);
 
 	if (localCrs != nullptr) {
-		const ULONG64 nodeCount = getXyzPointCountOfPatch(0);
+		const uint64_t nodeCount = getXyzPointCountOfPatch(0);
 		const double zOffset = localCrs->getOriginDepthOrElevation();
 		if (zOffset != .0) {
 			for (size_t index = 0; index < nodeCount; ++index)

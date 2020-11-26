@@ -112,11 +112,11 @@ void StringTableLookup::setValue(const string & strValue, long longValue)
 	}
 }
 
-LONG64 StringTableLookup::getMinimumValue()
+int64_t StringTableLookup::getMinimumValue()
 {
 	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
 
-	LONG64 min = (std::numeric_limits<LONG64>::max)();
+	int64_t min = (std::numeric_limits<int64_t>::max)();
 	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
 		if (min > stringLookup->Value[i]->Key) {
 			min = stringLookup->Value[i]->Key;
@@ -126,11 +126,11 @@ LONG64 StringTableLookup::getMinimumValue()
 	return min;
 }
 
-LONG64 StringTableLookup::getMaximumValue()
+int64_t StringTableLookup::getMaximumValue()
 {
 	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
 
-	LONG64 max = (std::numeric_limits<LONG64>::min)();
+	int64_t max = (std::numeric_limits<int64_t>::min)();
 	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
 		if (max < stringLookup->Value[i]->Key) {
 			max = stringLookup->Value[i]->Key;

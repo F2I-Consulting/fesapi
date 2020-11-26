@@ -104,14 +104,14 @@ namespace EML2_NS
 		  const int * intValues,
 		  const unsigned long long * numValuesInEachDimension,
 		  unsigned int numDimensions) = 0;
- 		virtual void writeArrayNdOfLong64Values(const std::string & groupName,
+ 		virtual void writeArrayNdOfInt64Values(const std::string & groupName,
 			const std::string & name,
-			const ULONG64 * long64Values,
+			const int64_t * values,
 			const unsigned long long * numValuesInEachDimension,
 			unsigned int numDimensions) = 0;
- 		virtual void writeArrayNdOfULong64Values(const std::string & groupName,
+ 		virtual void writeArrayNdOfUInt64Values(const std::string & groupName,
 			const std::string & name,
-			const ULONG64 * ulong64Values,
+			const uint64_t * values,
 			const unsigned long long * numValuesInEachDimension,
 			unsigned int numDimensions) = 0;
 		virtual void writeArrayNd(const std::string & groupName,
@@ -167,7 +167,7 @@ namespace EML2_NS
 			const std::string & attr_name) const = 0;
 		virtual double readDoubleAttribute(const std::string & obj_name,
 			const std::string & attr_name) const = 0;
-		virtual LONG64 readLongAttribute(const std::string & obj_name,
+		virtual int64_t readLongAttribute(const std::string & obj_name,
 			const std::string & attr_name) const = 0;
 		virtual void readArrayNdOfDoubleValues(const std::string & datasetName, double* values) = 0;
 		virtual void readArrayNdOfDoubleValues(
@@ -208,14 +208,14 @@ namespace EML2_NS
 		  unsigned long long const * offsetInEachDimension,
 		  unsigned int numDimensions
 		  ) = 0;
-		virtual void readArrayNdOfLongValues(const std::string & datasetName, LONG64* values) = 0;
-		virtual void readArrayNdOfLongValues(
+		virtual void readArrayNdOfInt64Values(const std::string & datasetName, int64_t* values) = 0;
+		virtual void readArrayNdOfInt64Values(
 			const std::string & datasetName,
-			LONG64* values,
+			int64_t* values,
 			unsigned long long const * numValuesInEachDimension,
 			unsigned long long const * offsetInEachDimension,
 			unsigned int numDimensions) = 0;
-		virtual void readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values) = 0;
+		virtual void readArrayNdOfUInt64Values(const std::string & datasetName, uint64_t* values) = 0;
 		virtual void readArrayNdOfIntValues(const std::string & datasetName, int* values) = 0;
 		virtual void readArrayNdOfIntValues(
 			const std::string & datasetName,
@@ -287,8 +287,8 @@ namespace EML2_NS
 		void setColorMapMinMax(COMMON_NS::AbstractObject const* targetObject, double min, double max) const;
 
 		bool hasValueVectorIndex(COMMON_NS::AbstractObject const* targetObject);
-		LONG64 getValueVectorIndex(COMMON_NS::AbstractObject const* targetObject);
-		void setValueVectorIndex(COMMON_NS::AbstractObject const* targetObject, LONG64 valueVectorIndex);
+		int64_t getValueVectorIndex(COMMON_NS::AbstractObject const* targetObject);
+		void setValueVectorIndex(COMMON_NS::AbstractObject const* targetObject, int64_t valueVectorIndex);
 
 		static void rgbToHsv(double red, double green, double blue, double& hue, double& saturation, double& value);
 		static void rgbToHsv(unsigned int red, unsigned int green, unsigned int blue, double& hue, double& saturation, double& value);
@@ -331,17 +331,17 @@ namespace EML2_NS
 		bool getParameterIsInput(const std::string & paramTitle) const;
 		bool getParameterIsOutput(unsigned int index) const;
 		bool getParameterIsOutput(const std::string & paramTitle) const;
-		LONG64 getParameterMinOccurences(unsigned int index) const;
-		LONG64 getParameterMinOccurences(const std::string & paramTitle) const;
-		LONG64 getParameterMaxOccurences(unsigned int index) const;
-		LONG64 getParameterMaxOccurences(const std::string & paramTitle) const;
+		int64_t getParameterMinOccurences(unsigned int index) const;
+		int64_t getParameterMinOccurences(const std::string & paramTitle) const;
+		int64_t getParameterMaxOccurences(unsigned int index) const;
+		int64_t getParameterMaxOccurences(const std::string & paramTitle) const;
 	};
 
 	class Activity : public COMMON_NS::AbstractObject
 	{
 	public:
 		void pushBackParameter(const std::string title, const std::string & value);
-		void pushBackParameter(const std::string title, LONG64 value);
+		void pushBackParameter(const std::string title, int64_t value);
 		void pushBackParameter(const std::string title, COMMON_NS::AbstractObject* resqmlObject);
 		
 		unsigned int getParameterCount() const;
@@ -355,7 +355,7 @@ namespace EML2_NS
 
 		bool isAnIntegerQuantityParameter(const std::string & paramTitle) const;
 		bool isAnIntegerQuantityParameter(unsigned int index) const;
-		LONG64 getIntegerQuantityParameterValue(unsigned int index) const;
+		int64_t getIntegerQuantityParameterValue(unsigned int index) const;
 
 		bool isAStringParameter(const std::string & paramTitle) const;
 		bool isAStringParameter(unsigned int index) const;

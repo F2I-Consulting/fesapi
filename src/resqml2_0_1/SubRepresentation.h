@@ -74,9 +74,9 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation::indexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT ULONG64 getElementCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getElementCountOfPatch(unsigned int patchIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT void getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, ULONG64 * elementIndices) const final;
+		DLL_IMPORT_OR_EXPORT void getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, uint64_t * elementIndices) const final;
 
 		DLL_IMPORT_OR_EXPORT void getSupportingRepresentationIndicesOfPatch(unsigned int patchIndex, short * supportingRepresentationIndices) const final;
 
@@ -84,25 +84,25 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT bool areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT LONG64 getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
+		DLL_IMPORT_OR_EXPORT int64_t getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
 		DLL_IMPORT_OR_EXPORT unsigned int getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const final;
-		DLL_IMPORT_OR_EXPORT LONG64 getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const final;
-		DLL_IMPORT_OR_EXPORT ULONG64 getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const final;
 
 		using RESQML2_NS::SubRepresentation::pushBackSubRepresentationPatch;
 
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 originIndex,
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t originIndex,
 			unsigned int elementCountInSlowestDimension,
 			unsigned int elementCountInMiddleDimension,
 			unsigned int elementCountInFastestDimension) final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind0, gsoap_eml2_3::resqml22__IndexableElement elementKind1,
-			ULONG64 elementCount,
-			ULONG64 * elementIndices0, ULONG64 * elementIndices1,
+			uint64_t elementCount,
+			uint64_t * elementIndices0, uint64_t * elementIndices1,
 			EML2_NS::AbstractHdfProxy* proxy) final;
 
-		DLL_IMPORT_OR_EXPORT void pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 elementCount, const std::string & elementDataset,
-			LONG64 nullValue, EML2_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset = "") final;
+		DLL_IMPORT_OR_EXPORT void pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, const std::string & elementDataset,
+			int64_t nullValue, EML2_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset = "") final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
 

@@ -116,7 +116,7 @@ namespace RESQML2_NS
 		 * @returns	The minimum key if some key/value pairs exists in this string table lookup, otherwise
 		 * 			the long maximum value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getMinimumValue() = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getMinimumValue() = 0;
 
 		/**
 		 * Gets the maximum key in this string table lookup. It reads it from file.
@@ -124,7 +124,7 @@ namespace RESQML2_NS
 		 * @returns	The maximum key if some key/value pairs exists in this string table lookup, otherwise
 		 * 			the long minimum value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getMaximumValue() = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getMaximumValue() = 0;
 
 		/**
 		 * Gets the underlying key/value map of this string table lookup.

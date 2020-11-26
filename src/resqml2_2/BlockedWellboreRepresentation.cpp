@@ -63,7 +63,7 @@ BlockedWellboreRepresentation::BlockedWellboreRepresentation(RESQML2_NS::Wellbor
 }
 
 void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
-	unsigned int cellCount, ULONG64 const* cellIndices,
+	unsigned int cellCount, uint64_t const* cellIndices,
 	unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy)
 {
 	// Preconditions
@@ -144,12 +144,12 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int const* grid
 		&dimLocalFacePerCellIndicesNullValue, 1);
 }
 
-ULONG64 BlockedWellboreRepresentation::getCellCount() const
+uint64_t BlockedWellboreRepresentation::getCellCount() const
 {
 	return static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->CellCount;
 }
 
-LONG64 BlockedWellboreRepresentation::getGridIndices(unsigned int * gridIndices) const
+int64_t BlockedWellboreRepresentation::getGridIndices(unsigned int * gridIndices) const
 {
 	auto xmlGridIndices = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->GridIndices;
 
@@ -159,8 +159,8 @@ LONG64 BlockedWellboreRepresentation::getGridIndices(unsigned int * gridIndices)
 		return static_cast<eml23__IntegerExternalArray*>(xmlGridIndices)->NullValue;
 	}
 	else if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
-		const LONG64 constantXmlValue = static_cast<eml23__IntegerConstantArray*>(xmlGridIndices)->Value;
-		if (constantXmlValue > (std::numeric_limits<LONG64>::max)()) {
+		const int64_t constantXmlValue = static_cast<eml23__IntegerConstantArray*>(xmlGridIndices)->Value;
+		if (constantXmlValue > (std::numeric_limits<int64_t>::max)()) {
 			throw std::range_error("The constant value is strictly superior than unsigned int maximum value.");
 		}
 
@@ -173,7 +173,7 @@ LONG64 BlockedWellboreRepresentation::getGridIndices(unsigned int * gridIndices)
 		throw std::logic_error("Not implemented yet");
 	}
 
-	return (numeric_limits<LONG64>::max)();
+	return (numeric_limits<int64_t>::max)();
 }
 
 void BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep)

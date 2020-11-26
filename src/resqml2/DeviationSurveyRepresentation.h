@@ -74,7 +74,7 @@ namespace RESQML2_NS
 		 * 											be closed. If @c nullptr, then the default HDF proxy of
 		 * 											the repository will be used.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* firstStationLocation, ULONG64 stationCount,
+		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* firstStationLocation, uint64_t stationCount,
 			gsoap_resqml2_0_1::eml20__LengthUom mdUom, double const* mds,
 			gsoap_resqml2_0_1::eml20__PlaneAngleUom angleUom, double const* azimuths, double const* inclinations,
 			EML2_NS::AbstractHdfProxy* proxy) = 0;

@@ -190,7 +190,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter minimum occurences.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getParameterMinOccurences(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT int64_t getParameterMinOccurences(unsigned int index) const;
 
 		/**
 		 * Gets parameter minimum occurences
@@ -199,7 +199,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter minimum occurences.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getParameterMinOccurences(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT int64_t getParameterMinOccurences(const std::string & paramTitle) const;
 
 		/**
 		 * Gets parameter maximum occurences
@@ -208,7 +208,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter maximum occurences.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getParameterMaxOccurences(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT int64_t getParameterMaxOccurences(unsigned int index) const;
 
 		/**
 		 * Gets parameter maximum occurences
@@ -217,7 +217,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter maximum occurences.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 getParameterMaxOccurences(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT int64_t getParameterMaxOccurences(const std::string & paramTitle) const;
 
 		/**
 		* The standard XML namespace for serializing this data object.

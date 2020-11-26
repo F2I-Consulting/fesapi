@@ -216,7 +216,7 @@ unsigned int SealedSurfaceFrameworkRepresentation::getIdenticalContactPatchNodeC
 		throw invalid_argument("The nodes are all identical");
 	}
 
-	ULONG64 result = getCountOfIntegerArray(getContact(crIndex)->IdenticalNodeIndices);
+	uint64_t result = getCountOfIntegerArray(getContact(crIndex)->IdenticalNodeIndices);
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("There are too much identical nodes for fesapi");
 	}
@@ -262,7 +262,7 @@ RESQML2_NS::AbstractRepresentation* SealedSurfaceFrameworkRepresentation::getRep
 
 unsigned int SealedSurfaceFrameworkRepresentation::getRepresentationIndexOfContactPatch(unsigned int contactIdx, unsigned int cpIndex) const
 {
-	const ULONG64 index = getContactPatch(contactIdx, cpIndex)->RepresentationIndex;
+	const uint64_t index = getContactPatch(contactIdx, cpIndex)->RepresentationIndex;
 
 	if (index > (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("The index of the representation is too big.");
@@ -273,7 +273,7 @@ unsigned int SealedSurfaceFrameworkRepresentation::getRepresentationIndexOfConta
 
 unsigned int SealedSurfaceFrameworkRepresentation::getContactPatchNodeCount(unsigned int crIndex, unsigned int cpIndex) const
 {
-	ULONG64 result = getCountOfIntegerArray(getContactPatch(crIndex, cpIndex)->SupportingRepresentationNodes);
+	uint64_t result = getCountOfIntegerArray(getContactPatch(crIndex, cpIndex)->SupportingRepresentationNodes);
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("There are too much nodes in this contact patch for fesapi");
 	}

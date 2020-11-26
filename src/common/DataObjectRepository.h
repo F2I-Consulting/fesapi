@@ -2397,7 +2397,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new unstructured grid representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(const std::string& guid, const std::string& title,
-			const ULONG64 & cellCount);
+			const uint64_t & cellCount);
 
 		/**
 		 * @brief	Creates a sub-representation into this repository

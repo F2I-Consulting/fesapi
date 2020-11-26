@@ -60,7 +60,7 @@ namespace RESQML2_2_NS
 		/** Destructor */
 		~DeviationSurveyRepresentation() = default;
 
-		DLL_IMPORT_OR_EXPORT void setGeometry(double const* firstStationLocation, ULONG64 stationCount,
+		DLL_IMPORT_OR_EXPORT void setGeometry(double const* firstStationLocation, uint64_t stationCount,
 			gsoap_resqml2_0_1::eml20__LengthUom mdUom, double const* mds,
 			gsoap_resqml2_0_1::eml20__PlaneAngleUom angleUom, double const* azimuths, double const* inclinations,
 			EML2_NS::AbstractHdfProxy* proxy) final;
@@ -71,7 +71,7 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT bool isFinal() const final;
 
-		ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const final;
+		uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 

@@ -308,9 +308,9 @@ std::vector<SubRepresentation*> AbstractRepresentation::getFaultSubRepresentatio
 	return result;
 }
 
-ULONG64 AbstractRepresentation::getXyzPointCountOfAllPatches() const
+uint64_t AbstractRepresentation::getXyzPointCountOfAllPatches() const
 {
-	ULONG64 result = 0;
+	uint64_t result = 0;
 
 	const unsigned int patchCount = getPatchCount();
 	for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex)
@@ -367,11 +367,11 @@ bool AbstractRepresentation::isInSingleGlobalCrs() const
 		return true;
 	}
 	AbstractLocal3dCrs const* localCrs = getLocalCrs(0);
-	const ULONG64 epsgCode = (localCrs != nullptr && localCrs->isProjectedCrsDefinedWithEpsg()) ? localCrs->getProjectedCrsEpsgCode() : (std::numeric_limits<ULONG64>::max)();
+	const uint64_t epsgCode = (localCrs != nullptr && localCrs->isProjectedCrsDefinedWithEpsg()) ? localCrs->getProjectedCrsEpsgCode() : (std::numeric_limits<uint64_t>::max)();
 
 	for (unsigned int patchIndex = 1; patchIndex < patchCount; ++patchIndex) {
 		localCrs = getLocalCrs(patchIndex);
-		if (epsgCode != ((localCrs != nullptr && localCrs->isProjectedCrsDefinedWithEpsg()) ? localCrs->getProjectedCrsEpsgCode() : (std::numeric_limits<ULONG64>::max)())) {
+		if (epsgCode != ((localCrs != nullptr && localCrs->isProjectedCrsDefinedWithEpsg()) ? localCrs->getProjectedCrsEpsgCode() : (std::numeric_limits<uint64_t>::max)())) {
 			return false;
 		}
 	}

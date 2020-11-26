@@ -59,7 +59,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The cell index pair count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual ULONG64 getCellIndexPairCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getCellIndexPairCount() const = 0;
 
 		/**
 		 * Gets the cell index pairs of this grid connection set representation
@@ -73,7 +73,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual ULONG64 getCellIndexPairs(ULONG64 * cellIndexPairs) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getCellIndexPairs(uint64_t * cellIndexPairs) const = 0;
 
 		/**
 		 * @brief	Gets the count of cell index pairs which correspond to a particular interpretation.
@@ -143,7 +143,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The interpretation index null value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getInterpretationIndexNullValue() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getInterpretationIndexNullValue() const = 0;
 
 		/**
 		 * Gets the cell index pairs, the grid index pairs (optional) and the local face index pairs
@@ -168,7 +168,7 @@ namespace RESQML2_NS
 		 * @param 		  	interpretationIndex	The index of an interpretation in the collection of
 		 * 										feature interpretation of this grid connection set.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getGridConnectionSetInformationFromInterpretationIndex(ULONG64 * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getGridConnectionSetInformationFromInterpretationIndex(uint64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const = 0;
 
 		/**
 		 * Gets the UUID of a particular (fault) interpretation of this grid connection set.
@@ -238,7 +238,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value used in @p localFacePerCellIndexPairs.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getLocalFacePerCellIndexPairs(int * localFacePerCellIndexPairs) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getLocalFacePerCellIndexPairs(int * localFacePerCellIndexPairs) const = 0;
 
 		/**
 		 * Indicates if this grid connection set representation is based on several grids.
@@ -291,7 +291,7 @@ namespace RESQML2_NS
 		 * 										index pair will be set and parameter @p
 		 * 										gridIndexPairNullValue will be unused.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setCellIndexPairsUsingExistingDataset(ULONG64 cellIndexPairCount, const std::string & cellIndexPair, LONG64 cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, LONG64 gridIndexPairNullValue = -1, const std::string & gridIndexPair = "") = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setCellIndexPairsUsingExistingDataset(uint64_t cellIndexPairCount, const std::string & cellIndexPair, int64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, int64_t gridIndexPairNullValue = -1, const std::string & gridIndexPair = "") = 0;
 
 		/**
 		 * @brief	Sets the cell index pairs of this grid connection set representation.
@@ -300,7 +300,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
 		 * @exception	std::invalid_argument	If @p cellIndexPairNullValue is strictly greater than
-		 * 										ULONG64 max. The XML null value cannot be greater than a
+		 * 										uint64_t max. The XML null value cannot be greater than a
 		 * 										64 bits signed integer cause of gSOAP mappings.
 		 *
 		 * @param 		  	cellIndexPairCount	  	The count of cell index pairs. It is half the size of
@@ -318,7 +318,7 @@ namespace RESQML2_NS
 		 * 											grid at an index must correspond to the cell at the
 		 * 											same index in the @p cellIndexPair array.
 		 */
-		DLL_IMPORT_OR_EXPORT void setCellIndexPairs(ULONG64 cellIndexPairCount, ULONG64 const* cellIndexPair, ULONG64 cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, unsigned short gridIndexPairNullValue = (std::numeric_limits<unsigned short>::max)(), unsigned short * gridIndexPair = nullptr);
+		DLL_IMPORT_OR_EXPORT void setCellIndexPairs(uint64_t cellIndexPairCount, uint64_t const* cellIndexPair, uint64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, unsigned short gridIndexPairNullValue = (std::numeric_limits<unsigned short>::max)(), unsigned short * gridIndexPair = nullptr);
 
 		/**
 		 * @brief	Sets the local face per cell index pairs of this grid connection set representation.
@@ -340,7 +340,7 @@ namespace RESQML2_NS
 		 * 												indices) are stored. if @c nullptr, then the
 		 * 												repository default HDF proxy will be used.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, LONG64 nullValue, EML2_NS::AbstractHdfProxy * proxy) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, int64_t nullValue, EML2_NS::AbstractHdfProxy * proxy) = 0;
 
 		/**
 		 * @brief Sets the local face per cell index pairs of this grid connection set representation. Local
@@ -363,7 +363,7 @@ namespace RESQML2_NS
 		 * 												indices) are stored. If @c nullptr, then the
 		 * 												default HDF proxy of the repository will be used.
 		 */
-		DLL_IMPORT_OR_EXPORT void setLocalFacePerCellIndexPairs(ULONG64 cellIndexPairCount, int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy);
+		DLL_IMPORT_OR_EXPORT void setLocalFacePerCellIndexPairs(uint64_t cellIndexPairCount, int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * For each connection in this grid connection set representation, allows to map zero or one
@@ -440,7 +440,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const = 0;
 
 		/** Please do note use: not implemented yet. */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const override;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const override;
 
 		/** Please do note use: not implemented yet. */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const override;

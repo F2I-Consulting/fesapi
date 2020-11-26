@@ -95,8 +95,13 @@ namespace example
         {
             throw new NotImplementedException();
         }
+		
+		public override void writeArrayNdOfInt64Values(string groupName, string name, SWIGTYPE_p_long_long values, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, uint numDimensions)
+        {
+            throw new NotImplementedException();
+        }
 
-        public override void writeArrayNdOfGSoapULong64Values(string groupName, string name, SWIGTYPE_p_unsigned_long_long ulong64Values, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, uint numDimensions)
+        public override void writeArrayNdOfUInt64Values(string groupName, string name, SWIGTYPE_p_unsigned_long_long values, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, uint numDimensions)
         {
             throw new NotImplementedException();
         }

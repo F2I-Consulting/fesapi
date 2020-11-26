@@ -75,7 +75,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of the selected elements.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual ULONG64 getElementCountOfPatch(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getElementCountOfPatch(unsigned int patchIndex) const = 0;
 
 		/**
 		 * Gets the indices of the selected elements for a particular patch of this sub-representation.
@@ -98,7 +98,7 @@ namespace RESQML2_NS
 		 * 									elements. It must be preallocated with
 		 * 									{@link getElementCountOfPatch()} size.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, ULONG64* elementIndices) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, uint64_t* elementIndices) const = 0;
 
 		/**
 		 * @brief	Gets the indices of the supporting representations that refer the selected elements
@@ -168,7 +168,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The lattice start value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
 
 		/**
 		 * Gets the dimension count of the lattice the element indices of a particular patch are based
@@ -214,7 +214,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The offset value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
 
 		/**
 		 * Gets the offset count at a given dimension of the lattice the element indices of a particular
@@ -238,7 +238,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The offset count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual ULONG64 getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
 
 		/**
 		 * Pushes back a new lattice-based patch (without pairwise elements) in this sub-representation.
@@ -254,7 +254,7 @@ namespace RESQML2_NS
 		 * @param 	elementCountInFastestDimension	The number of elements in the fastest dimension
 		 * 											(commonly in I dimension).
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 originIndex,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t originIndex,
 			unsigned int elementCountInSlowestDimension,
 			unsigned int elementCountInMiddleDimension,
 			unsigned int elementCountInFastestDimension) = 0;
@@ -274,7 +274,7 @@ namespace RESQML2_NS
 		 * 										corresponding to the element indices. The count must be
 		 * 										elementCount.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 elementCount, ULONG64* elementIndices, EML2_NS::AbstractHdfProxy* proxy, short* supportingRepIndices = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, uint64_t* elementIndices, EML2_NS::AbstractHdfProxy* proxy, short* supportingRepIndices = nullptr);
 		
 		/**
 		 * Pushes back a new patch in this sub-representation which is constituted by means of pairwise
@@ -293,8 +293,8 @@ namespace RESQML2_NS
 		 * @param [in,out]	proxy		   	The HDF proxy where the numerical values (indices) are stored.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind0, gsoap_eml2_3::resqml22__IndexableElement elementKind1,
-			ULONG64 elementCount,
-			ULONG64 * elementIndices0, ULONG64 * elementIndices1,
+			uint64_t elementCount,
+			uint64_t * elementIndices0, uint64_t * elementIndices1,
 			EML2_NS::AbstractHdfProxy* proxy) = 0;
 
 		/**
@@ -321,8 +321,8 @@ namespace RESQML2_NS
 		 * 										suppporting representation will be exported since there is
 		 * 										only one suppporting representation for this whole patch.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__IndexableElement elementKind, ULONG64 elementCount, const std::string& elementDataset,
-			LONG64 nullValue, EML2_NS::AbstractHdfProxy* proxy, const std::string& supportingRepDataset = "") = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, const std::string& elementDataset,
+			int64_t nullValue, EML2_NS::AbstractHdfProxy* proxy, const std::string& supportingRepDataset = "") = 0;
 
 		/**   
 		 * @copydoc AbstractRepresentation::getXyzPointCountOfPatch  
@@ -331,7 +331,7 @@ namespace RESQML2_NS
 		 * 							   pairwise) or if the kind of the left part of the pairs of elements is
 		 * 							    not node (pairwise case).
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(unsigned int patchIndex) const override;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const override;
 
 		/** Please do note use : not implemented yet. */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double* xyzPoints) const override;

@@ -77,7 +77,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepo() {
 	// Grid connection set representation
 	RESQML2_NS::GridConnectionSetRepresentation * gridConnSet432 = repo->createGridConnectionSetRepresentation("a3d1462a-04e3-4374-921b-a4a1e9ba3ea3", "GridConnectionSetRepresentation");
 	gridConnSet432->pushBackSupportingGridRepresentation(ijkGrid);
-	ULONG64 cellConn432[30] = {
+	uint64_t cellConn432[30] = {
 		1, 9999, 5, 9999, 9, 9999,
 		1, 2, 5, 6, 9, 10,
 		13, 2, 17, 6, 21, 10,
@@ -98,7 +98,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepo() {
 	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind__not_x0020a_x0020measure);
 	RESQML2_NS::DiscreteProperty* discreteProp = repo->createDiscreteProperty(ijkGrid, "0a8fb2aa-d1e1-4914-931c-e9e6bf2aabe5", "Cell index", 1,
 		gsoap_eml2_3::resqml22__IndexableElement__cells, propertyKind);
-	LONG64 discretePropValues[24] = {
+	int64_t discretePropValues[24] = {
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
 	};
@@ -123,10 +123,10 @@ void RightHanded4x3x2ExplicitIjkGrid::readRepo() {
 	REQUIRE(ijkGrid->getPillarCount() == 20);
 
 	// checking values
-	const ULONG64 coordCount = 3 * nodesCountIjkGridRepresentation;
+	const uint64_t coordCount = 3 * nodesCountIjkGridRepresentation;
 	std::unique_ptr<double[]> xyzPoints(new double[coordCount]);
 	ijkGrid->getXyzPointsOfAllPatches(xyzPoints.get());
-	for (ULONG64 i = 0; i < coordCount; ++i) {
+	for (uint64_t i = 0; i < coordCount; ++i) {
 		REQUIRE(nodesIjkGridRepresentation[i] == xyzPoints[i]);
 	}
 

@@ -221,7 +221,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The count of item in the array of integer.
 		 */
-		ULONG64 getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const;
+		uint64_t getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const;
 
 		/**
 		 * Get the count of item in an array of integer
@@ -230,7 +230,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The count of item in the array of integer.
 		 */
-		ULONG64 getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractIntegerArray * arrayInput) const;
+		uint64_t getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractIntegerArray * arrayInput) const;
 
 		/**
 		 * Converts a data object reference into a data object repository relationship.

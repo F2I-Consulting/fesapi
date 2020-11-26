@@ -26,7 +26,7 @@ class HdfProxyFactoryExample : public COMMON_NS::HdfProxyFactory
 {
 public:
 	HdfProxyFactoryExample() {}
-	~HdfProxyFactoryExample() {}
+	~HdfProxyFactoryExample() = default;
 
 	/**
 	* Only to be used in partial transfer context

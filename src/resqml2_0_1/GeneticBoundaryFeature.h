@@ -84,7 +84,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The age of the horizon.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getAge() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getAge() const;
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

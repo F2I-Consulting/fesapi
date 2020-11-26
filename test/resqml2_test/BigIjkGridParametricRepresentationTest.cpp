@@ -49,7 +49,7 @@ BigIjkGridParametricRepresentationTest::BigIjkGridParametricRepresentationTest(
 
 void BigIjkGridParametricRepresentationTest::initParametersAndControlPoints(double * parameters, double * controlPoints)
 {
-	const ULONG64 nodeCount = initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount);
+	const uint64_t nodeCount = initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount);
 
 	for (unsigned int index = 0; index < nodeCount; ++index)
 	{

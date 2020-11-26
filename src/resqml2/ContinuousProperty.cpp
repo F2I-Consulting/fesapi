@@ -29,7 +29,7 @@ using namespace RESQML2_NS;
 
 const char* ContinuousProperty::XML_TAG = "ContinuousProperty";
 
-void ContinuousProperty::pushBackDoubleHdf5Array1dOfValues(const double * values, ULONG64 valueCount,
+void ContinuousProperty::pushBackDoubleHdf5Array1dOfValues(const double * values, uint64_t valueCount,
 	double minimumValue, double maximumValue, EML2_NS::AbstractHdfProxy * proxy)
 {
 	const hsize_t valueCountPerDimension = valueCount;
@@ -41,7 +41,7 @@ void ContinuousProperty::pushBackDoubleHdf5Array1dOfValues(const double * values
 	}
 }
 
-void ContinuousProperty::pushBackDoubleHdf5Array2dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim,
+void ContinuousProperty::pushBackDoubleHdf5Array2dOfValues(const double * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim,
 	double minimumValue, double maximumValue, EML2_NS::AbstractHdfProxy * proxy)
 {
 	const hsize_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
@@ -53,7 +53,7 @@ void ContinuousProperty::pushBackDoubleHdf5Array2dOfValues(const double * values
 	}
 }
 
-void ContinuousProperty::pushBackDoubleHdf5Array3dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim,
+void ContinuousProperty::pushBackDoubleHdf5Array3dOfValues(const double * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim,
 	double minimumValue, double maximumValue, EML2_NS::AbstractHdfProxy * proxy)
 {
 	const hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
@@ -85,7 +85,7 @@ void ContinuousProperty::pushBackDoubleHdf5ArrayOfValues(double const * values, 
 		numValues, numArrayDimensions);
 }
 
-void ContinuousProperty::pushBackFloatHdf5Array1dOfValues(const float * values, ULONG64 valueCount,
+void ContinuousProperty::pushBackFloatHdf5Array1dOfValues(const float * values, uint64_t valueCount,
 	float minimumValue, float maximumValue, EML2_NS::AbstractHdfProxy * proxy)
 {
 	const hsize_t valueCountPerDimension = valueCount;
@@ -97,7 +97,7 @@ void ContinuousProperty::pushBackFloatHdf5Array1dOfValues(const float * values, 
 	}
 }
 
-void ContinuousProperty::pushBackFloatHdf5Array2dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim,
+void ContinuousProperty::pushBackFloatHdf5Array2dOfValues(const float * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim,
 	float minimumValue, float maximumValue, EML2_NS::AbstractHdfProxy * proxy)
 {
 	const hsize_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
@@ -109,7 +109,7 @@ void ContinuousProperty::pushBackFloatHdf5Array2dOfValues(const float * values, 
 	}
 }
 
-void ContinuousProperty::pushBackFloatHdf5Array3dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim,
+void ContinuousProperty::pushBackFloatHdf5Array3dOfValues(const float * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim,
 	float minimumValue, float maximumValue, EML2_NS::AbstractHdfProxy * proxy)
 {
 	const hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
@@ -122,9 +122,9 @@ void ContinuousProperty::pushBackFloatHdf5Array3dOfValues(const float * values, 
 }
 
 void ContinuousProperty::pushBackFloatHdf5Array3dOfValues(
-	ULONG64 valueCountInFastestDim,
-	ULONG64 valueCountInMiddleDim,
-	ULONG64 valueCountInSlowestDim,
+	uint64_t valueCountInFastestDim,
+	uint64_t valueCountInMiddleDim,
+	uint64_t valueCountInSlowestDim,
 	float minimumValue, float maximumValue,
 	EML2_NS::AbstractHdfProxy* proxy)
 {
@@ -139,12 +139,12 @@ void ContinuousProperty::pushBackFloatHdf5Array3dOfValues(
 
 void ContinuousProperty::setValuesOfFloatHdf5Array3dOfValues(
 	float const * values, 
-	ULONG64 valueCountInFastestDim,
-	ULONG64 valueCountInMiddleDim,
-	ULONG64 valueCountInSlowestDim,
-	ULONG64 offsetInFastestDim,
-	ULONG64 offsetInMiddleDim,
-	ULONG64 offsetInSlowestDim,
+	uint64_t valueCountInFastestDim,
+	uint64_t valueCountInMiddleDim,
+	uint64_t valueCountInSlowestDim,
+	uint64_t offsetInFastestDim,
+	uint64_t offsetInMiddleDim,
+	uint64_t offsetInSlowestDim,
 	bool computeMinMax,
 	EML2_NS::AbstractHdfProxy* proxy,
 	unsigned int patchIndex)

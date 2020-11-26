@@ -36,7 +36,7 @@ unsigned int AbstractColumnLayerGridRepresentation::getKCellCount() const
 		throw logic_error("This method cannot be called on a partial object");
 	}
 
-	const ULONG64 kCellCount = gsoapProxy2_0_1 != nullptr
+	const uint64_t kCellCount = gsoapProxy2_0_1 != nullptr
 		? (isTruncated() ? static_cast<resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->Nk : static_cast<resqml20__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->Nk)
 		: (isTruncated() ? static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->Nk : static_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_3)->Nk);
 		
@@ -70,7 +70,7 @@ void AbstractColumnLayerGridRepresentation::setKCellCount(unsigned int kCount)
 	}
 }
 
-void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, ULONG64 nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy * hdfProxy)
+void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigraphicOrganizationInterpretation(uint64_t * stratiUnitIndices, uint64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy * hdfProxy)
 {
 	if (isTruncated()) {
 		throw invalid_argument("A truncated grid cannot be linked to a strati column in Resqml2");
@@ -82,7 +82,7 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 		}
 	}
 	hsize_t dim = getKCellCount();
-	hdfProxy->writeArrayNd(getHdfGroup(), "IntervalStratigraphicUnits", H5T_NATIVE_ULLONG, stratiUnitIndices, &dim, 1);
+	hdfProxy->writeArrayNd(getHdfGroup(), "IntervalStratigraphicUnits", H5T_NATIVE_UINT64, stratiUnitIndices, &dim, 1);
 
 	getRepository()->addRelationship(this, hdfProxy);
 	getRepository()->addRelationship(this, stratiOrgInterp);
@@ -177,7 +177,7 @@ bool AbstractColumnLayerGridRepresentation::hasIntervalStratigraphicUnitIndices(
 	return false;
 }
 
-ULONG64 AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndices(ULONG64 * stratiUnitIndices)
+uint64_t AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndices(uint64_t * stratiUnitIndices)
 {
 	if (isTruncated()) {
 		throw invalid_argument("A truncated grid cannot be linked to a strati columnumn in Resqml v2.0");
@@ -191,7 +191,7 @@ ULONG64 AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 
 		if (rep->IntervalStratigraphicUnits->UnitIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->IntervalStratigraphicUnits->UnitIndices)->Values;
-			getHdfProxyFromDataset(dataset)->readArrayNdOfULongValues(dataset->PathInHdfFile, stratiUnitIndices);
+			getHdfProxyFromDataset(dataset)->readArrayNdOfUInt64Values(dataset->PathInHdfFile, stratiUnitIndices);
 			return static_cast<resqml20__IntegerHdf5Array*>(rep->IntervalStratigraphicUnits->UnitIndices)->NullValue;
 		}
 
@@ -206,7 +206,7 @@ ULONG64 AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 				static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(latticeArray->Offset[0])->Value == 1 &&
 				static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(latticeArray->Offset[0])->Count == getKCellCount() - 1) {
 				auto dsPart = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->IntervalStratigraphicUnits->UnitIndices->Elements)->Values->ExternalFileProxy[0];
-				getHdfProxyFromDataset(dsPart)->readArrayNdOfULongValues(dsPart->PathInExternalFile, stratiUnitIndices);
+				getHdfProxyFromDataset(dsPart)->readArrayNdOfUInt64Values(dsPart->PathInExternalFile, stratiUnitIndices);
 				return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->IntervalStratigraphicUnits->UnitIndices->Elements)->NullValue;
 			}
 		}

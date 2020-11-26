@@ -82,7 +82,7 @@ namespace RESQML2_NS
 		 * 										must be already opened for writing and won't be closed in
 		 * 										this method.
 		 */
-		DLL_IMPORT_OR_EXPORT void setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64* stratiUnitIndices, ULONG64 nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy* hdfProxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void setIntervalAssociationWithStratigraphicOrganizationInterpretation(uint64_t* stratiUnitIndices, uint64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy* hdfProxy = nullptr);
 
 		COMMON_NS::DataObjectReference getStratigraphicOrganizationInterpretationDor() const final;
 
@@ -112,7 +112,7 @@ namespace RESQML2_NS
 		 * @returns	The null value. The null value is used to tell the association between a grid
 		 * 			interval and a stratigraphic unit is unavailable.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getIntervalStratigraphicUnitIndices(ULONG64 * stratiUnitIndices);
+		DLL_IMPORT_OR_EXPORT uint64_t getIntervalStratigraphicUnitIndices(uint64_t * stratiUnitIndices);
 
 		/**
 		 * Gets the most complex pillar geometry we can find on this grid. The returned value is not

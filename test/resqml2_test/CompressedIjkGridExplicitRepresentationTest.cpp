@@ -61,10 +61,10 @@ void CompressedIjkGridExplicitRepresentationTest::readRepo() {
 	REQUIRE(representation->isNodeGeometryCompressed());
 
 	// checking values
-	const ULONG64 pointCount = 3 * nodesCountIjkGridRepresentation;
+	const uint64_t pointCount = 3 * nodesCountIjkGridRepresentation;
 	double * xyzPoint = new double[pointCount];
 	representation->getXyzPointsOfAllPatches(xyzPoint);
-	for (ULONG64 i = 0; i<pointCount; ++i) {
+	for (uint64_t i = 0; i<pointCount; ++i) {
 		REQUIRE(nodesIjkGridRepresentation[i] == xyzPoint[i]);
 	}
 	delete[] xyzPoint;

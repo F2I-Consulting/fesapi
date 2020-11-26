@@ -349,9 +349,9 @@ COMMON_NS::AbstractObject::hdfDatatypeEnum HdfProxy::getHdfDatatypeInDataset(con
 		return COMMON_NS::AbstractObject::hdfDatatypeEnum::DOUBLE;
 	else if (H5Tequal(native_datatype, H5T_NATIVE_FLOAT) > 0)
 		return COMMON_NS::AbstractObject::hdfDatatypeEnum::FLOAT;
-	else if (H5Tequal(native_datatype, H5T_NATIVE_LLONG) > 0)
+	else if (H5Tequal(native_datatype, H5T_NATIVE_INT64) > 0)
 		return COMMON_NS::AbstractObject::hdfDatatypeEnum::LONG_64;
-	else if (H5Tequal(native_datatype, H5T_NATIVE_ULLONG) > 0)
+	else if (H5Tequal(native_datatype, H5T_NATIVE_UINT64) > 0)
 		return COMMON_NS::AbstractObject::hdfDatatypeEnum::ULONG_64;
 	else if (H5Tequal(native_datatype, H5T_NATIVE_INT) > 0)
 		return COMMON_NS::AbstractObject::hdfDatatypeEnum::INT;
@@ -625,22 +625,22 @@ void HdfProxy::writeArrayNdOfIntValues(const string & groupName,
 	writeArrayNd(groupName, name, H5T_NATIVE_INT, intValues, numValuesInEachDimension, numDimensions);
 }
 
-void HdfProxy::writeArrayNdOfLong64Values(const std::string & groupName,
+void HdfProxy::writeArrayNdOfInt64Values(const std::string & groupName,
 	const std::string & name,
-	const long long * long64Values,
+	const int64_t * values,
 	const hsize_t * numValuesInEachDimension,
 	unsigned int numDimensions)
 {
-	writeArrayNd(groupName, name, H5T_NATIVE_LLONG, long64Values, numValuesInEachDimension, numDimensions);
+	writeArrayNd(groupName, name, H5T_NATIVE_INT64, values, numValuesInEachDimension, numDimensions);
 }
 
-void HdfProxy::writeArrayNdOfULong64Values(const std::string & groupName,
+void HdfProxy::writeArrayNdOfUInt64Values(const std::string & groupName,
 	const std::string & name,
-	const unsigned long long * ulong64Values,
+	const uint64_t * values,
 	const hsize_t * numValuesInEachDimension,
 	unsigned int numDimensions)
 {
-	writeArrayNd(groupName, name, H5T_NATIVE_ULLONG, ulong64Values, numValuesInEachDimension, numDimensions);
+	writeArrayNd(groupName, name, H5T_NATIVE_UINT64, values, numValuesInEachDimension, numDimensions);
 }
 
 void HdfProxy::writeArrayNd(const std::string & groupName,
@@ -868,25 +868,25 @@ void HdfProxy::readArrayNdOfFloatValues(
 			H5T_NATIVE_FLOAT);
 }
 
-void HdfProxy::readArrayNdOfLongValues(const std::string & datasetName, LONG64* values)
+void HdfProxy::readArrayNdOfInt64Values(const std::string & datasetName, int64_t* values)
 {
-	readArrayNdOfValues(datasetName, values, H5T_NATIVE_LLONG);
+	readArrayNdOfValues(datasetName, values, H5T_NATIVE_INT64);
 }
 
-void HdfProxy::readArrayNdOfLongValues(
-	const std::string& datasetName, LONG64* values,
+void HdfProxy::readArrayNdOfInt64Values(
+	const std::string& datasetName, int64_t* values,
 	hsize_t const * numValuesInEachDimension,
 	hsize_t const * offsetInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
 			numValuesInEachDimension, offsetInEachDimension, numDimensions,
-			H5T_NATIVE_LLONG);
+		H5T_NATIVE_INT64);
 }
 
-void HdfProxy::readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values)
+void HdfProxy::readArrayNdOfUInt64Values(const std::string & datasetName, uint64_t* values)
 {
-	readArrayNdOfValues(datasetName, values, H5T_NATIVE_ULLONG);
+	readArrayNdOfValues(datasetName, values, H5T_NATIVE_UINT64);
 }
 
 void HdfProxy::readArrayNdOfIntValues(const std::string & datasetName, int* values)
@@ -1341,7 +1341,7 @@ double HdfProxy::readDoubleAttribute(const std::string & obj_name,
 	return result;
 }
 
-LONG64 HdfProxy::readLongAttribute(const std::string & obj_name,
+int64_t HdfProxy::readLongAttribute(const std::string & obj_name,
 	const std::string & attr_name) const
 {
 	if (!isOpened()) {
@@ -1350,11 +1350,11 @@ LONG64 HdfProxy::readLongAttribute(const std::string & obj_name,
 
 	hid_t uuidAtt = H5Aopen_by_name(hdfFile, obj_name.c_str(), attr_name.c_str(), H5P_DEFAULT, H5P_DEFAULT);
 	if (uuidAtt < 0) {
-		return (numeric_limits<LONG64>::min)();
+		return (numeric_limits<int64_t>::min)();
 	}
 
-	LONG64 result;
-	hid_t readingError = H5Aread(uuidAtt, H5T_NATIVE_LLONG, &result);
+	int64_t result;
+	hid_t readingError = H5Aread(uuidAtt, H5T_NATIVE_INT64, &result);
 	if (readingError < 0) {
 		throw invalid_argument("Cannot read the \"" + attr_name + "\" attribute of \"" + obj_name + "\".");
 	}

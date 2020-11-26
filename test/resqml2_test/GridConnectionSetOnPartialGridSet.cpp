@@ -75,7 +75,7 @@ void GridConnectionSetOnPartialGridSet::initRepo() {
 	// Grid Connection Set on one grid
 	RESQML2_NS::GridConnectionSetRepresentation* gcs = repo->createGridConnectionSetRepresentation("c0214c71-eed8-4ea2-9de4-f7508caeb3c6", "Single grid gcs");
 	gcs->pushBackSupportingGridRepresentation(partialGrid);
-	ULONG64 cellConn[2] = {
+	uint64_t cellConn[2] = {
 		1, 2
 	};
 	gcs->setCellIndexPairs(1, cellConn, -1, hdfProxy);
@@ -85,7 +85,7 @@ void GridConnectionSetOnPartialGridSet::initRepo() {
 	gcsMultiGrids->pushBackSupportingGridRepresentation(partialGrid);
 	gcsMultiGrids->pushBackSupportingGridRepresentation(partialIjkGrid);
 	gcsMultiGrids->pushBackSupportingGridRepresentation(partialTruncIjkGrid);
-	ULONG64 cellConnMultiGrids[6] = {
+	uint64_t cellConnMultiGrids[6] = {
 		1, 2, 1, 2, 1, 2
 	};
 	unsigned short multiGridIndices[6] = {
@@ -106,7 +106,7 @@ void GridConnectionSetOnPartialGridSet::readRepo() {
 	REQUIRE(gcsSingleGrid->getSupportingGridRepresentation(0)->isPartial());
 	REQUIRE(gcsSingleGrid->getCellIndexPairCount() == 1);
 	{
-		ULONG64 cellIndexPair[2];
+		uint64_t cellIndexPair[2];
 		gcsSingleGrid->getCellIndexPairs(cellIndexPair);
 		REQUIRE(cellIndexPair[0] == 1);
 		REQUIRE(cellIndexPair[1] == 2);
@@ -119,7 +119,7 @@ void GridConnectionSetOnPartialGridSet::readRepo() {
 	REQUIRE(gcsMultiGrids->getSupportingGridRepresentation(2)->isPartial());
 	REQUIRE(gcsMultiGrids->getCellIndexPairCount() == 3);
 
-	ULONG64 cellIndexPair[6];
+	uint64_t cellIndexPair[6];
 	gcsMultiGrids->getCellIndexPairs(cellIndexPair);
 	REQUIRE(cellIndexPair[0] == 1);
 	REQUIRE(cellIndexPair[1] == 2);

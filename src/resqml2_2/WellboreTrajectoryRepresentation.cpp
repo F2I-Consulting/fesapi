@@ -77,7 +77,7 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 	RESQML2_NS::MdDatum * mdInfo = deviationSurvey->getMdDatum();
 	setMdDatum(mdInfo);
 
-	const ULONG64 stationCount = deviationSurvey->getXyzPointCountOfPatch(0);
+	const uint64_t stationCount = deviationSurvey->getXyzPointCountOfPatch(0);
 	std::unique_ptr<double[]> mdValues(new double[stationCount]);
 	deviationSurvey->getMdValues(mdValues.get());
 	rep->StartMd = mdValues[0];
@@ -247,7 +247,7 @@ double WellboreTrajectoryRepresentation::getParentTrajectoryMd() const
 	throw logic_error("This wellbore trajectory has no parent trajecory.");
 }
 
-ULONG64 WellboreTrajectoryRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t WellboreTrajectoryRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The index patch is not in the allowed range of patch.");

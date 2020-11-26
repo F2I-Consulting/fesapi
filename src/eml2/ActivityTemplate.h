@@ -193,7 +193,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The parameter minimum occurrences.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMinOccurences(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getParameterMinOccurences(unsigned int index) const = 0;
 
 		/**
 		 * Gets the minimum occurrences of a particular parameter.
@@ -205,7 +205,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The parameter minimum occurrences.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMinOccurences(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getParameterMinOccurences(const std::string & paramTitle) const = 0;
 
 		/**
 		 * Gets the maximum occurrences of a particular parameter.
@@ -216,7 +216,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The parameter maximum occurrences.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMaxOccurences(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getParameterMaxOccurences(unsigned int index) const = 0;
 
 		/**
 		 * Gets the maximum occurrences of a particular parameter.
@@ -228,7 +228,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The parameter maximum occurrences.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMaxOccurences(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getParameterMaxOccurences(const std::string & paramTitle) const = 0;
 
 		/**
 		 * Gets the set of activities which are based on this activity template within the repository.

@@ -98,7 +98,7 @@ void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(RESQML2
 	_resqml22__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3);
 
 	resqml22__BoundaryFeatureInterpretationPlusItsRank* horizonInterpPlusItsRank = soap_new_resqml22__BoundaryFeatureInterpretationPlusItsRank(gsoapProxy2_3->soap);
-	horizonInterpPlusItsRank->StratigraphicRank = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_3->soap, sizeof(ULONG64)));
+	horizonInterpPlusItsRank->StratigraphicRank = static_cast<uint64_t*>(soap_malloc(gsoapProxy2_3->soap, sizeof(uint64_t)));
 	*(horizonInterpPlusItsRank->StratigraphicRank) = stratigraphicRank;
 	horizonInterpPlusItsRank->BoundaryFeatureInterpretation = horizonInterpretation->newEml23Reference();
 	structuralOrganization->OrderedBoundaryFeatureInterpretation.push_back(horizonInterpPlusItsRank);

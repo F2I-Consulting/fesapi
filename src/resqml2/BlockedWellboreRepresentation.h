@@ -84,7 +84,7 @@ namespace RESQML2_NS
 		 * 															cannot be @c nullptr.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setIntevalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
-			unsigned int cellCount, ULONG64 const* cellIndices,
+			unsigned int cellCount, uint64_t const* cellIndices,
 			unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy) = 0;
 
 		/**
@@ -92,7 +92,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The cell count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual ULONG64 getCellCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getCellCount() const = 0;
 
 		/**
 		 * For each interval of the wellbore frame, gets the index of the grid it is associated to.
@@ -111,7 +111,7 @@ namespace RESQML2_NS
 		 * @returns	The null value used in @p gridIndices in order to indicate that an interval does not
 		 * 			correspond to any intersected grid.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getGridIndices(unsigned int * gridIndices) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getGridIndices(unsigned int * gridIndices) const = 0;
 
 		/**
 		 * Pushes back a grid representation which is one of the support of this representation.
