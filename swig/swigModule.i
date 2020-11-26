@@ -22,6 +22,7 @@ under the License.
 // STD STRING
 //************************/
 
+%include <stdint.i>
 %include "std_string.i"
 
 %include "../src/nsDefinitions.h"
