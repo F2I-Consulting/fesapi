@@ -267,7 +267,7 @@ namespace COMMON_NS
 
 		EML2_NS::Activity * getActivity (unsigned int index) const;
 	};
-	
+
 	class HdfProxyFactory
 	{
 	public:
@@ -330,7 +330,8 @@ namespace COMMON_NS
 %}
 
 namespace COMMON_NS
-{	
+{
+
 	class DataObjectRepository
 	{
 	public:

@@ -14,9 +14,17 @@ file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/python/src/__pycache__)
 
 # The name of the library is different on Windows because it includes the version
 if (WIN32)
-	set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_RELEASE_POSTFIX}.${Fesapi_VERSION})
+	if (SWIG_LINKED_TO_RELEASE)
+		set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_RELEASE_POSTFIX}.${Fesapi_VERSION})
+	else (SWIG_LINKED_TO_RELEASE)
+		set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_DEBUG_POSTFIX}.${Fesapi_VERSION})
+	endif (SWIG_LINKED_TO_RELEASE)
 else (WIN32)
-	set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_DEBUG_POSTFIX})
+	if (SWIG_LINKED_TO_RELEASE)
+		set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_RELEASE_POSTFIX})
+	else (SWIG_LINKED_TO_RELEASE)
+		set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_DEBUG_POSTFIX})
+	endif (SWIG_LINKED_TO_RELEASE)
 endif (WIN32)
 configure_file(${FESAPI_ROOT_DIR}/cmake/swigPythonInclude.i.in ${FESAPI_ROOT_DIR}/swig/swigPythonInclude.i) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/setup.py.in ${FESAPI_ROOT_DIR}/swig/setup.py) # Overwrite if different
