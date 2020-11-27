@@ -3,7 +3,7 @@ from distutils.core import setup, Extension
 fesapi_module = Extension('_fesapi',
 	sources=['swigGeneratedPythonWrapper.cpp'],
 	library_dirs=['${CMAKE_INSTALL_PREFIX}/lib'],
-	libraries=['FesapiCpp.2.0.0.0',],
+	libraries=['${ASSEMBLY_NAME}',],
 	extra_compile_args=['-std=c++11'],
 )
 

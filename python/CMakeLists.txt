@@ -12,13 +12,12 @@ endif (TO_DELETE)
 file (REMOVE ${FESAPI_ROOT_DIR}/python/src/fesapi.py)
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/python/src/__pycache__)
 
-if (WITH_RESQML2_2)
-	set (COMMENT_START "")
-	set (COMMENT_END "")
-else (WITH_RESQML2_2)
-	set (COMMENT_START "/*")
-	set (COMMENT_END "*/")
-endif(WITH_RESQML2_2)
+# The name of the library is different on Windows because it includes the version
+if (WIN32)
+	set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_RELEASE_POSTFIX}.${Fesapi_VERSION})
+else (WIN32)
+	set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_DEBUG_POSTFIX})
+endif (WIN32)
 configure_file(${FESAPI_ROOT_DIR}/cmake/swigPythonInclude.i.in ${FESAPI_ROOT_DIR}/swig/swigPythonInclude.i) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/setup.py.in ${FESAPI_ROOT_DIR}/swig/setup.py) # Overwrite if different
 

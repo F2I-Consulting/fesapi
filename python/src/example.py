@@ -1,4 +1,8 @@
-# Please add the fesapi librairy and its dependencies into the same directory than this file (Windows), or in the PATH.
+# You must run the following command (only once) in order to create the FESAPI Python extension. Run it from fesapi/cmake working directory
+# python setup.py build_ext --build-lib ../python/src
+
+# Then, be sure that the FesapiCpp library and its dependencies are accessible (i.e. are in the PATH) for this script
+# meaning for example on Windows that they are in the same directory than this file.
 
 from fesapi import *
 
@@ -12,9 +16,7 @@ def serialize():
 
     # HdfProxy
     hdfProxy = repo.createHdfProxy("798d47d8-0c7d-4f12-8c44-0f36b6d16c33", "Hdf Proxy", ".", "TestingPackagePython.h5", DataObjectRepository.openingMode_OVERWRITE)
-    print("The line 14 returns something odd")
     repo.setDefaultHdfProxy(hdfProxy)
-    print("If you see this message you win!")
     print(hdfProxy.getTitle())
 
     epc_file.serializeFrom(repo)
