@@ -342,5 +342,6 @@ jobs:
         displayName: 'Build FESAPI Python extension into ../python/src'
         
       - script: |
+          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(Build.BinariesDirectory)/install/lib
           python3 $(Build.SourcesDirectory)/python/src/example.py
         displayName: 'Run Python example'

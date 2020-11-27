@@ -481,6 +481,11 @@ void EpcDocument::setExtendedCoreProperty(const std::string & key, const std::st
 	package->getExtendedCoreProperty()[key] = value;
 }
 
+unsigned int EpcDocument::getExtendedCorePropertyCount() const
+{
+	return package->getExtendedCoreProperty().size();
+}
+
 std::string EpcDocument::getExtendedCoreProperty(const std::string & key)
 {
 	if (package->getExtendedCoreProperty().find(key) != package->getExtendedCoreProperty().end()) {

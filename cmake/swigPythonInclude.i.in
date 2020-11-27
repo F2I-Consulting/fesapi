@@ -72,7 +72,7 @@ namespace RESQML2_NS
 {		
 	%typemap(out)						AbstractFeature*, AbstractFeatureInterpretation*, AbstractRepresentation*, AbstractGridRepresentation*, AbstractLocal3dCrs*,
 										AbstractProperty*, AbstractValuesProperty*,
-										AbstractIjkGridRepresentation*, AbstractStratigraphicOrganizationInterpretation*,
+										AbstractStratigraphicOrganizationInterpretation*,
 #ifdef WITH_RESQML2_2
 										AbstractColorMap*,
 #endif
@@ -103,10 +103,6 @@ namespace RESQML2_NS
 										Grid2dRepresentation*,
 										GridConnectionSetRepresentation*,
 										HorizonInterpretation*,
-										IjkGridExplicitRepresentation*,
-										IjkGridLatticeRepresentation*,
-										IjkGridNoGeometryRepresentation*,
-										IjkGridParametricRepresentation*,
 										LocalDepth3dCrs*,
 										LocalTime3dCrs*,
 										MdDatum*,
@@ -161,6 +157,40 @@ namespace RESQML2_NS
 		
 		// Check potential downcasting
 		swig_type_info * const outtype = SWIG_TypeQuery((cppNs + "::" + result->getXmlTag() + " *").c_str());
+		resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), outtype, 0);
+	}
+	
+	%typemap(out)						AbstractIjkGridRepresentation*,
+										IjkGridExplicitRepresentation*,
+										IjkGridLatticeRepresentation*,
+										IjkGridNoGeometryRepresentation*,
+										IjkGridParametricRepresentation*
+	{
+		// XML namespace to C++ namespace
+		std::string cppNs;
+		const std::string xmlNs(result->getXmlNamespace());
+		if (xmlNs == "eml20") cppNs = "${FESAPI_EML2_0_NS}";
+		else if (xmlNs == "eml21") cppNs = "${FESAPI_EML2_1_NS}";
+		else if (xmlNs == "eml22") cppNs = "${FESAPI_EML2_2_NS}";
+		else if (xmlNs == "eml23") cppNs = "${FESAPI_EML2_3_NS}";
+		else if (xmlNs == "resqml20") cppNs = "${FESAPI_RESQML2_0_1_NS}";
+		else if (xmlNs == "resqml22") cppNs = "${FESAPI_RESQML2_2_NS}";
+		else if (xmlNs == "witsml20") cppNs = "${FESAPI_WITSML2_0_NS}";
+		else if (xmlNs == "witsml21") cppNs = "${FESAPI_WITSML2_1_NS}";
+		else if (xmlNs == "prodml21") cppNs = "${FESAPI_PRODML2_1_NS}";
+		
+		std::string cppClass;
+		auto geomKind = result->getGeometryKind();
+		if (geomKind == RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::EXPLICIT) cppClass = "IjkGridExplicitRepresentation";
+		else if (geomKind == RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::PARAMETRIC) cppClass = "IjkGridParametricRepresentation";
+		else if (geomKind == RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::LATTICE) cppClass = "IjkGridLatticeRepresentation";
+		else {
+			cppNs = "${FESAPI_RESQML2_NS}";
+			cppClass = "AbstractIjkGridRepresentation";
+		}
+		
+		// Check potential downcasting
+		swig_type_info * const outtype = SWIG_TypeQuery((cppNs + "::" + cppClass + " *").c_str());
 		resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), outtype, 0);
 	}
 }

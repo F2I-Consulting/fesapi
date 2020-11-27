@@ -4355,7 +4355,7 @@ void deserialize(const string & inputFile)
 	}
 
 	const unsigned int hdfProxyCount = repo.getHdfProxyCount();
-	cout << "There are " << repo.getHdfProxyCount() << " hdf files associated to this epc document." << endl;
+	cout << "There are " << hdfProxyCount << " hdf files associated to this epc document." << endl;
 	for (unsigned int hdfProxyIndex = 0; hdfProxyIndex < hdfProxyCount; ++hdfProxyIndex) {
 		cout << "Hdf file relative path : " << repo.getHdfProxy(hdfProxyIndex)->getRelativePath() << endl;
 	}
