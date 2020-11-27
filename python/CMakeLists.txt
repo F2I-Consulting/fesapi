@@ -19,7 +19,8 @@ else (WITH_RESQML2_2)
 	set (COMMENT_START "/*")
 	set (COMMENT_END "*/")
 endif(WITH_RESQML2_2)
-configure_file(${FESAPI_ROOT_DIR}/cmake/swigPythonInclude.i ${FESAPI_ROOT_DIR}/swig/swigPythonInclude.i) # Overwrite if different
+configure_file(${FESAPI_ROOT_DIR}/cmake/swigPythonInclude.i.in ${FESAPI_ROOT_DIR}/swig/swigPythonInclude.i) # Overwrite if different
+configure_file(${FESAPI_ROOT_DIR}/cmake/setup.py.in ${FESAPI_ROOT_DIR}/swig/setup.py) # Overwrite if different
 
 set (SWIG_DEFINITIONS "")
 if (WITH_RESQML2_2)

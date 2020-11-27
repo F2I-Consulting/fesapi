@@ -330,12 +330,17 @@ jobs:
         displayName: "Build FESAPI"
         inputs:
           cmakeArgs: --build $(Build.BinariesDirectory)
+         
+      - task: CMake@1
+        displayName: "Install FESAPI"
+        inputs:
+          cmakeArgs: --install $(Build.BinariesDirectory)
           
       - script: |
           cd $(Build.SourcesDirectory)/swig
           python3 setup.py build_ext --build-lib ../python/src
-        displayName: 'FESAPI Python extension'
+        displayName: 'Build FESAPI Python extension into ../python/src'
         
       - script: |
           python3 $(Build.SourcesDirectory)/python/src/example.py
-        displayName: 'Python Example'
+        displayName: 'Run Python example'

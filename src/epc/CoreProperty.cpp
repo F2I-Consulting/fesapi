@@ -87,8 +87,6 @@ string CoreProperty::toString() const
 		return "<dc:identifier>" + getValue() + "</dc:identifier>";
 	case keywords:
 		{
-			const vector<string> wk_Vector = getAllValue();
-
 			ostringstream oss;
 			oss << "<keywords xml:lang=\"" << getValue(0).substr(0,5) << "\"> " << getValue(0).substr(5, getValue(0).size()) << endl;
 		
