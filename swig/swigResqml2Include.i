@@ -1856,7 +1856,7 @@ namespace RESQML2_NS
 	%nodefaultctor; // Disable creation of default constructors
 
 #if defined(SWIGPYTHON)
-	%rename(AbstractColorMap_resqml2) AbstractColorMap;
+	%rename(resqml2_AbstractColorMap) AbstractColorMap;
 #endif
 	class AbstractColorMap : public COMMON_NS::AbstractObject
 	{
@@ -1881,7 +1881,7 @@ namespace RESQML2_NS
 	};
 	
 #if defined(SWIGPYTHON)
-	%rename(DiscreteColorMap_resqml2) DiscreteColorMap;
+	%rename(resqml2_DiscreteColorMap) DiscreteColorMap;
 #endif	
 	class DiscreteColorMap : public AbstractColorMap
 	{
@@ -1894,7 +1894,7 @@ namespace RESQML2_NS
 	};
 	
 #if defined(SWIGPYTHON)
-	%rename(ContinuousColorMap_resqml2) ContinuousColorMap;
+	%rename(resqml2_ContinuousColorMap) ContinuousColorMap;
 #endif	
 	class ContinuousColorMap : public AbstractColorMap 
 	{
@@ -1916,10 +1916,9 @@ namespace RESQML2_NS
 		void setNanRgbColor(unsigned int red, unsigned int green, unsigned int blue, double alpha = 1, std::string const& colorTitle = "");
 	};
 	
-
-	//************************************/
-	//************ CRS *******************/
-	//************************************/
+#if defined(SWIGPYTHON)
+	%rename(resqml2_AbstractLocal3dCrs) AbstractLocal3dCrs;
+#endif	
 	class AbstractLocal3dCrs : public COMMON_NS::AbstractObject
 	{
 	public:
@@ -1949,7 +1948,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_LocalDepth3dCrs) LocalDepth3dCrs;
+	%rename(resqml2_LocalDepth3dCrs) LocalDepth3dCrs;
 #endif
 	class LocalDepth3dCrs : public AbstractLocal3dCrs
 	{
@@ -1957,7 +1956,7 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_LocalTime3dCrs) LocalTime3dCrs;
+	%rename(resqml2_LocalTime3dCrs) LocalTime3dCrs;
 #endif
 	class LocalTime3dCrs : public AbstractLocal3dCrs
 	{
@@ -1967,7 +1966,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_MdDatum) LocalTime3dCrs;
+	%rename(resqml2_MdDatum) LocalTime3dCrs;
 #endif
 	class MdDatum : public COMMON_NS::AbstractObject
 	{
@@ -1985,6 +1984,9 @@ namespace RESQML2_NS
 	};
 
 	class AbstractFeatureInterpretation;
+#ifdef SWIGPYTHON
+	%rename(resqml2_AbstractFeature) AbstractFeature;
+#endif
 	class AbstractFeature : public COMMON_NS::AbstractObject
 	{
 	public:
@@ -1993,14 +1995,14 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_AbstractTechnicalFeature) AbstractTechnicalFeature;
+	%rename(resqml2_AbstractTechnicalFeature) AbstractTechnicalFeature;
 #endif
 	class AbstractTechnicalFeature : public AbstractFeature
 	{
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_BoundaryFeature) BoundaryFeature;
+	%rename(resqml2_BoundaryFeature) BoundaryFeature;
 #endif	
 	class BoundaryFeature : public AbstractFeature
 	{
@@ -2008,28 +2010,28 @@ namespace RESQML2_NS
 	
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_CulturalFeature) CulturalFeature;
+	%rename(resqml2_CulturalFeature) CulturalFeature;
 #endif	
 	class CulturalFeature : public AbstractTechnicalFeature
 	{
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_Model) Model;
+	%rename(resqml2_Model) Model;
 #endif	
 	class Model : public AbstractFeature
 	{
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_RockVolumeFeature) RockVolumeFeature;
+	%rename(resqml2_RockVolumeFeature) RockVolumeFeature;
 #endif	
 	class RockVolumeFeature : public AbstractFeature
 	{
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_SeismicLatticeFeature) SeismicLatticeFeature;
+	%rename(resqml2_SeismicLatticeFeature) SeismicLatticeFeature;
 #endif
 	class SeismicLatticeFeature : public AbstractTechnicalFeature
 	{
@@ -2041,14 +2043,14 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_SeismicLineSetFeature) SeismicLineSetFeature;
+	%rename(resqml2_SeismicLineSetFeature) SeismicLineSetFeature;
 #endif
 	class SeismicLineSetFeature : public AbstractTechnicalFeature
 	{
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_AbstractSeismicLineFeature) AbstractSeismicLineFeature;
+	%rename(resqml2_AbstractSeismicLineFeature) AbstractSeismicLineFeature;
 #endif	
 	class AbstractSeismicLineFeature : public AbstractTechnicalFeature
 	{
@@ -2081,7 +2083,7 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_WellboreFeature) WellboreFeature;
+	%rename(resqml2_WellboreFeature) WellboreFeature;
 #endif
 	class WellboreFeature : public AbstractTechnicalFeature
 	{
@@ -2103,35 +2105,35 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_GenericFeatureInterpretation) GenericFeatureInterpretation;
+	%rename(resqml2_GenericFeatureInterpretation) GenericFeatureInterpretation;
 #endif
 	class GenericFeatureInterpretation : public AbstractFeatureInterpretation
 	{
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_BoundaryFeatureInterpretation) BoundaryFeatureInterpretation;
+	%rename(resqml2_BoundaryFeatureInterpretation) BoundaryFeatureInterpretation;
 #endif
 	class BoundaryFeatureInterpretation : public AbstractFeatureInterpretation
 	{
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_GeobodyBoundaryInterpretation) GeobodyBoundaryInterpretation;
+	%rename(resqml2_GeobodyBoundaryInterpretation) GeobodyBoundaryInterpretation;
 #endif
 	class GeobodyBoundaryInterpretation : public BoundaryFeatureInterpretation
 	{
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_HorizonInterpretation) HorizonInterpretation;
+	%rename(resqml2_HorizonInterpretation) HorizonInterpretation;
 #endif
 	class HorizonInterpretation : public BoundaryFeatureInterpretation
 	{
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_FaultInterpretation) FaultInterpretation;
+	%rename(resqml2_FaultInterpretation) FaultInterpretation;
 #endif
 	class FaultInterpretation : public BoundaryFeatureInterpretation
 	{
@@ -2139,7 +2141,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_GeobodyInterpretation) GeobodyInterpretation;
+	%rename(resqml2_GeobodyInterpretation) GeobodyInterpretation;
 #endif
 	class GeobodyInterpretation : public AbstractFeatureInterpretation
 	{
@@ -2150,7 +2152,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_StratigraphicUnitInterpretation) StratigraphicUnitInterpretation;
+	%rename(resqml2_StratigraphicUnitInterpretation) StratigraphicUnitInterpretation;
 #endif
 	class StratigraphicUnitInterpretation : public AbstractFeatureInterpretation
 	{
@@ -2160,7 +2162,7 @@ namespace RESQML2_NS
 	};
 	
 	#ifdef SWIGPYTHON
-	%rename(Resqml2_AbstractOrganizationInterpretation) AbstractOrganizationInterpretation;
+	%rename(resqml2_AbstractOrganizationInterpretation) AbstractOrganizationInterpretation;
 	#endif
 	class AbstractOrganizationInterpretation : public AbstractFeatureInterpretation
 	{
@@ -2174,7 +2176,7 @@ namespace RESQML2_NS
 	};
 	
 	#ifdef SWIGPYTHON
-	%rename(Resqml2_AbstractStratigraphicOrganizationInterpretation) AbstractStratigraphicOrganizationInterpretation;
+	%rename(resqml2_AbstractStratigraphicOrganizationInterpretation) AbstractStratigraphicOrganizationInterpretation;
 	#endif
 	class AbstractGridRepresentation;
 	class AbstractStratigraphicOrganizationInterpretation : public AbstractOrganizationInterpretation
@@ -2187,7 +2189,7 @@ namespace RESQML2_NS
 	
 	class StratigraphicOccurrenceInterpretation;	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_StratigraphicColumnRankInterpretation) StratigraphicColumnRankInterpretation;
+	%rename(resqml2_StratigraphicColumnRankInterpretation) StratigraphicColumnRankInterpretation;
 #endif
 	class StratigraphicColumnRankInterpretation : public AbstractStratigraphicOrganizationInterpretation
 	{
@@ -2210,7 +2212,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_StratigraphicOccurrenceInterpretation) StratigraphicOccurrenceInterpretation;
+	%rename(resqml2_StratigraphicOccurrenceInterpretation) StratigraphicOccurrenceInterpretation;
 #endif
 	class StratigraphicOccurrenceInterpretation : public AbstractStratigraphicOrganizationInterpretation
 	{
@@ -2221,7 +2223,7 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_StratigraphicColumn) StratigraphicColumn;
+	%rename(resqml2_StratigraphicColumn) StratigraphicColumn;
 #endif
 	class StratigraphicColumn : public COMMON_NS::AbstractObject
 	{
@@ -2232,7 +2234,7 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_RockFluidUnitInterpretation) RockFluidUnitInterpretation;
+	%rename(resqml2_RockFluidUnitInterpretation) RockFluidUnitInterpretation;
 #endif	
 	class RockFluidUnitInterpretation : public AbstractFeatureInterpretation
 	{
@@ -2242,7 +2244,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_RockFluidOrganizationInterpretation) RockFluidOrganizationInterpretation;
+	%rename(resqml2_RockFluidOrganizationInterpretation) RockFluidOrganizationInterpretation;
 #endif
 	class RockFluidOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
@@ -2255,7 +2257,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_StructuralOrganizationInterpretation) StructuralOrganizationInterpretation;
+	%rename(resqml2_StructuralOrganizationInterpretation) StructuralOrganizationInterpretation;
 #endif
 	class StructuralOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
@@ -2271,7 +2273,7 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_EarthModelInterpretation) EarthModelInterpretation;
+	%rename(resqml2_EarthModelInterpretation) EarthModelInterpretation;
 #endif
 	class EarthModelInterpretation : public AbstractFeatureInterpretation
 	{
@@ -2294,7 +2296,7 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_WellboreInterpretation) WellboreInterpretation;
+	%rename(resqml2_WellboreInterpretation) WellboreInterpretation;
 #endif
 	class WellboreInterpretation : public AbstractFeatureInterpretation
 	{
@@ -2310,6 +2312,9 @@ namespace RESQML2_NS
 	class PointsProperty;
 	class RepresentationSetRepresentation;
 	class SubRepresentation;
+#ifdef SWIGPYTHON
+	%rename(resqml2_AbstractRepresentation) AbstractRepresentation;
+#endif
 	class AbstractRepresentation : public COMMON_NS::AbstractObject
 	{
 	public:
@@ -2351,11 +2356,10 @@ namespace RESQML2_NS
 		void pushBackIntoRepresentationSet(RepresentationSetRepresentation * repSet);
 	};
 	
-		
+	class PolylineRepresentation;	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_AbstractSurfaceRepresentation) AbstractSurfaceRepresentation;
+	%rename(resqml2_AbstractSurfaceRepresentation) AbstractSurfaceRepresentation;
 #endif
-	class PolylineRepresentation;
 	class AbstractSurfaceRepresentation : public AbstractRepresentation
 	{
 	public:
@@ -2365,7 +2369,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_Grid2dRepresentation) Grid2dRepresentation;
+	%rename(resqml2_Grid2dRepresentation) Grid2dRepresentation;
 #endif
 	class Grid2dRepresentation : public AbstractSurfaceRepresentation
 	{
@@ -2431,7 +2435,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_PolylineSetRepresentation) PolylineSetRepresentation;
+	%rename(resqml2_PolylineSetRepresentation) PolylineSetRepresentation;
 #endif
 	class PolylineSetRepresentation : public AbstractRepresentation
 	{
@@ -2462,7 +2466,7 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_PointSetRepresentation) PointSetRepresentation;
+	%rename(resqml2_PointSetRepresentation) PointSetRepresentation;
 #endif
 	class PointSetRepresentation : public AbstractRepresentation
 	{
@@ -2473,7 +2477,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_PlaneSetRepresentation) PlaneSetRepresentation;
+	%rename(resqml2_PlaneSetRepresentation) PlaneSetRepresentation;
 #endif
 	class PlaneSetRepresentation : public AbstractRepresentation
 	{
@@ -2488,7 +2492,7 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_PolylineRepresentation) PolylineRepresentation;
+	%rename(resqml2_PolylineRepresentation) PolylineRepresentation;
 #endif
 	class PolylineRepresentation : public AbstractRepresentation
 	{
@@ -2501,7 +2505,7 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_TriangulatedSetRepresentation) TriangulatedSetRepresentation;
+	%rename(resqml2_TriangulatedSetRepresentation) TriangulatedSetRepresentation;
 #endif
 	class TriangulatedSetRepresentation : public AbstractSurfaceRepresentation
 	{
@@ -2512,7 +2516,10 @@ namespace RESQML2_NS
 		void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const;
 		void pushBackTrianglePatch(unsigned int nodeCount, double * nodes, unsigned int triangleCount, unsigned int * triangleNodeIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
 	};
-	
+
+#ifdef SWIGPYTHON
+	%rename(resqml2_RepresentationSetRepresentation) RepresentationSetRepresentation;
+#endif	
 	class RepresentationSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
@@ -2522,7 +2529,7 @@ namespace RESQML2_NS
 	};
 		
 #ifdef SWIGPYTHON
-	%rename(Resqml2_AbstractSurfaceFrameworkRepresentation) AbstractSurfaceFrameworkRepresentation;
+	%rename(resqml2_AbstractSurfaceFrameworkRepresentation) AbstractSurfaceFrameworkRepresentation;
 #endif
 	class AbstractSurfaceFrameworkRepresentation : public RepresentationSetRepresentation
 	{
@@ -2530,7 +2537,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_NonSealedSurfaceFrameworkRepresentation) NonSealedSurfaceFrameworkRepresentation;
+	%rename(resqml2_NonSealedSurfaceFrameworkRepresentation) NonSealedSurfaceFrameworkRepresentation;
 #endif
 	class NonSealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
 	{
@@ -2538,6 +2545,9 @@ namespace RESQML2_NS
 		void pushBackNonSealedContactRepresentation(unsigned int pointCount, double * points, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
 	};
 	
+#ifdef SWIGPYTHON
+	%rename(resqml2_SubRepresentation) SubRepresentation;
+#endif
 	class SubRepresentation : public AbstractRepresentation
 	{
 	public:
@@ -2570,7 +2580,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_SealedSurfaceFrameworkRepresentation) SealedSurfaceFrameworkRepresentation;
+	%rename(resqml2_SealedSurfaceFrameworkRepresentation) SealedSurfaceFrameworkRepresentation;
 #endif
 	class SealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
 	{
@@ -2578,7 +2588,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_SealedVolumeFrameworkRepresentation) SealedVolumeFrameworkRepresentation;
+	%rename(resqml2_SealedVolumeFrameworkRepresentation) SealedVolumeFrameworkRepresentation;
 #endif
 	class SealedVolumeFrameworkRepresentation : public RepresentationSetRepresentation
 	{
@@ -2616,6 +2626,9 @@ namespace RESQML2_NS
 	class AbstractColumnLayerGridRepresentation;
 	class AbstractIjkGridRepresentation;
 	class UnstructuredGridRepresentation;
+#ifdef SWIGPYTHON
+	%rename(resqml2_AbstractGridRepresentation) AbstractGridRepresentation;
+#endif
 	class AbstractGridRepresentation : public AbstractRepresentation
 	{
 	public:
@@ -2683,7 +2696,7 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_UnstructuredGridRepresentation) UnstructuredGridRepresentation;
+	%rename(resqml2_UnstructuredGridRepresentation) UnstructuredGridRepresentation;
 #endif
 	class UnstructuredGridRepresentation : public AbstractGridRepresentation
 	{
@@ -2737,6 +2750,9 @@ namespace RESQML2_NS
 			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
 	};
 	
+#ifdef SWIGPYTHON
+	%rename(resqml2_AbstractColumnLayerGridRepresentation) AbstractColumnLayerGridRepresentation;
+#endif
 	class AbstractColumnLayerGridRepresentation : public AbstractGridRepresentation
 	{
 	public:
@@ -2751,7 +2767,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_AbstractIjkGridRepresentation) AbstractIjkGridRepresentation;
+	%rename(resqml2_AbstractIjkGridRepresentation) AbstractIjkGridRepresentation;
 #endif
 	class AbstractIjkGridRepresentation : public AbstractColumnLayerGridRepresentation
 	{
@@ -2805,7 +2821,7 @@ namespace RESQML2_NS
 	
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_IjkGridLatticeRepresentation) IjkGridLatticeRepresentation;
+	%rename(resqml2_IjkGridLatticeRepresentation) IjkGridLatticeRepresentation;
 #endif
 	class IjkGridLatticeRepresentation : public AbstractIjkGridRepresentation
 	{
@@ -2856,7 +2872,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_IjkGridExplicitRepresentation) IjkGridExplicitRepresentation;
+	%rename(resqml2_IjkGridExplicitRepresentation) IjkGridExplicitRepresentation;
 #endif
 	class IjkGridExplicitRepresentation : public AbstractIjkGridRepresentation
 	{
@@ -2877,7 +2893,7 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_IjkGridParametricRepresentation) IjkGridParametricRepresentation;
+	%rename(resqml2_IjkGridParametricRepresentation) IjkGridParametricRepresentation;
 #endif	
 	class IjkGridParametricRepresentation : public AbstractIjkGridRepresentation
 	{
@@ -2924,13 +2940,16 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_IjkGridNoGeometryRepresentation) IjkGridNoGeometryRepresentation;
+	%rename(resqml2_IjkGridNoGeometryRepresentation) IjkGridNoGeometryRepresentation;
 #endif	
 	class IjkGridNoGeometryRepresentation : public AbstractIjkGridRepresentation
 	{
 	public:
 	};
 	
+#ifdef SWIGPYTHON
+	%rename(resqml2_GridConnectionSetRepresentation) GridConnectionSetRepresentation;
+#endif
 	class GridConnectionSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
@@ -2966,6 +2985,9 @@ namespace RESQML2_NS
 	};
 	
 	class AbstractProperty;
+#ifdef SWIGPYTHON
+	%rename(resqml2_PropertySet) PropertySet;
+#endif
 	class PropertySet : public COMMON_NS::AbstractObject
 	{
 	public:
@@ -2985,6 +3007,9 @@ namespace RESQML2_NS
 		gsoap_eml2_3::resqml22__TimeSetKind getTimeSetKind() const;
 	};
 	
+#ifdef SWIGPYTHON
+	%rename(resqml2_AbstractProperty) AbstractProperty;
+#endif
 	class AbstractProperty: public COMMON_NS::AbstractObject
 	{
 	public:
@@ -3063,6 +3088,9 @@ namespace RESQML2_NS
 		bool useInterval() const;
 	};
 	
+#ifdef SWIGPYTHON
+	%rename(resqml2_AbstractValuesProperty) AbstractValuesProperty;
+#endif
 	class AbstractValuesProperty : public RESQML2_NS::AbstractProperty
 	{
 	public:
@@ -4041,7 +4069,7 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_CommentProperty) CommentProperty;
+	%rename(resqml2_CommentProperty) CommentProperty;
 #endif	
 	class CommentProperty : public AbstractValuesProperty
 	{
@@ -4069,7 +4097,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_ContinuousProperty) ContinuousProperty;
+	%rename(resqml2_ContinuousProperty) ContinuousProperty;
 #endif
 	class ContinuousProperty : public AbstractValuesProperty
 	{
@@ -4438,7 +4466,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_DiscreteProperty) DiscreteProperty;
+	%rename(resqml2_DiscreteProperty) DiscreteProperty;
 #endif
 	class DiscreteProperty : public AbstractValuesProperty
 	{
@@ -4509,7 +4537,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_DoubleTableLookup) DoubleTableLookup;
+	%rename(resqml2_DoubleTableLookup) DoubleTableLookup;
 #endif	
 	class DoubleTableLookup : public COMMON_NS::AbstractObject
 	{
@@ -4529,7 +4557,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_StringTableLookup) StringTableLookup;
+	%rename(resqml2_StringTableLookup) StringTableLookup;
 #endif	
 	class StringTableLookup : public COMMON_NS::AbstractObject
 	{
@@ -4549,7 +4577,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_CategoricalProperty) CategoricalProperty;
+	%rename(resqml2_CategoricalProperty) CategoricalProperty;
 #endif
 	class CategoricalProperty : public AbstractValuesProperty
 	{
@@ -4559,7 +4587,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_PointsProperty) PointsProperty;
+	%rename(resqml2_PointsProperty) PointsProperty;
 #endif
 	class PointsProperty : public RESQML2_NS::AbstractProperty
 	{
@@ -4732,14 +4760,14 @@ namespace RESQML2_NS
 		std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "");
 	};
 	
-	//************************************
-	//************** Well ****************
-	//************************************
+	/************************************
+	************** Well ****************
+	************************************/
 	
 	class WellboreFrameRepresentation;
 	class DeviationSurveyRepresentation;
 #ifdef SWIGPYTHON
-	%rename(Resqml2_WellboreTrajectoryRepresentation) WellboreTrajectoryRepresentation;
+	%rename(resqml2_WellboreTrajectoryRepresentation) WellboreTrajectoryRepresentation;
 #endif
 	class  WellboreTrajectoryRepresentation : public AbstractRepresentation
 	{
@@ -5063,7 +5091,7 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(WellboreFrameRepresentation_resqml2) WellboreFrameRepresentation;
+	%rename(resqml2_WellboreFrameRepresentation) WellboreFrameRepresentation;
 #endif
 	class WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
@@ -5083,7 +5111,7 @@ namespace RESQML2_NS
 	};
 	
 #if defined(SWIGPYTHON)
-	%rename(SeismicWellboreFrameRepresentation_resqml2) SeismicWellboreFrameRepresentation;
+	%rename(resqml2_SeismicWellboreFrameRepresentation) SeismicWellboreFrameRepresentation;
 #endif
 	class SeismicWellboreFrameRepresentation : public WellboreFrameRepresentation
 	{
@@ -5103,7 +5131,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(WellboreMarkerFrameRepresentation_resqml2) WellboreMarkerFrameRepresentation;
+	%rename(resqml2_WellboreMarkerFrameRepresentation) WellboreMarkerFrameRepresentation;
 #endif
 	class WellboreMarkerFrameRepresentation : public WellboreFrameRepresentation
 	{
@@ -5114,7 +5142,7 @@ namespace RESQML2_NS
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(Resqml2_WellboreMarker) WellboreMarker;
+	%rename(resqml2_WellboreMarker) WellboreMarker;
 #endif
 	class WellboreMarker : public COMMON_NS::AbstractObject
 	{
@@ -5137,7 +5165,7 @@ namespace RESQML2_NS
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_DeviationSurveyRepresentation) DeviationSurveyRepresentation;
+	%rename(resqml2_DeviationSurveyRepresentation) DeviationSurveyRepresentation;
 #endif
 	class DeviationSurveyRepresentation : public AbstractRepresentation
 	{

@@ -4346,6 +4346,12 @@ void deserialize(const string & inputFile)
 	COMMON_NS::EpcDocument pck(inputFile);
 	//COMMON_NS::EpcDocument pck(inputFile, "C:/Users/Philippe/dev/fesapiEnv/fesapi/resources");
 	//COMMON_NS::EpcDocument pck(inputFile, "/home/philippe/dev/fesapi/resources");
+	cout << "EXTENDED CORE PROPERTIES" << endl;
+	unordered_map<string, string> & extendedCoreProperty = pck.getExtendedCoreProperty();
+	for (unordered_map<string, string>::const_iterator it = extendedCoreProperty.begin(); it != extendedCoreProperty.end(); ++it) {
+		cout << it->first.c_str() << " " << it->second.c_str() << endl;
+	}
+
 	cout << "Start deserialization of " << pck.getName() << " in " << (pck.getStorageDirectory().empty() ? "working directory." : pck.getStorageDirectory()) << endl;
 	COMMON_NS::DataObjectRepository repo;
 	string resqmlResult = pck.deserializeInto(repo);
@@ -4353,6 +4359,7 @@ void deserialize(const string & inputFile)
 		cerr << resqmlResult << endl;
 		repo.clearWarnings();
 	}
+	pck.close();
 
 	const unsigned int hdfProxyCount = repo.getHdfProxyCount();
 	cout << "There are " << hdfProxyCount << " hdf files associated to this epc document." << endl;
@@ -4371,13 +4378,6 @@ void deserialize(const string & inputFile)
 	cout << "MAPPING ENUM VS STRING" << endl;
 	cout << "rock permeability == " << enumStrMapper.getEnergisticsPropertyKindName(enumStrMapper.getEnergisticsPropertyKind("rock permeability")) << endl;
 	cout << "m (meter) == " << enumStrMapper.getEnergisticsUnitOfMeasureName(enumStrMapper.getEnergisticsUnitOfMeasure("m")) << endl;
-
-	cout << "EXTENDED CORE PROPERTIES" << endl;
-
-	unordered_map<string, string> & extendedCoreProperty = pck.getExtendedCoreProperty();
-	for (unordered_map<string, string>::const_iterator it = extendedCoreProperty.begin(); it != extendedCoreProperty.end(); ++it) {
-		cout << it->first.c_str() << " " << it->second.c_str() << endl;
-	}
 
 	cout << "CRS" << endl;
 	vector<RESQML2_NS::LocalDepth3dCrs*> depthCrsSet = repo.getLocalDepth3dCrsSet();
@@ -4877,8 +4877,6 @@ void deserialize(const string & inputFile)
 	for (size_t i = 0; i < repo.getWarnings().size(); ++i) {
 		std::cout << i << " - " << repo.getWarnings()[i] << endl;
 	}
-
-	pck.close();
 }
 
 // filepath is defined in a macro to better check memory leak
