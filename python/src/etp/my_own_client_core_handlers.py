@@ -7,7 +7,7 @@ class MyOwnClientCoreHandlers(fesapi.CoreHandlers):
 
     def on_OpenSession(self, os, correlation_id):
         print("Opened a session")
-	
+
         print("Asking all dataobjects")
         mb = fesapi.GetResources()
         mb.context.uri = "eml:///"
