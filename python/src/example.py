@@ -112,7 +112,7 @@ def show_ijk_grid(ijk_grid):
 
         nb_xyz_points = ijk_grid.getXyzPointCountOfAllPatches()
         print("XYZ points count :", nb_xyz_points)
-        
+
         for patch_index in range(patch_count):
             nb_xyz_points_in_patch = ijk_grid.getXyzPointCountOfPatch(patch_index)
             xyz_points_in_patch = fesapi.DoubleArray(nb_xyz_points_in_patch * 3)
@@ -122,10 +122,10 @@ def show_ijk_grid(ijk_grid):
                 y = xyz_points_in_patch.getitem(vertex_index * 3 + 1)
                 z = xyz_points_in_patch.getitem(vertex_index * 3 + 2)
                 print("Vertex ", vertex_index, " : ", x, " ", y, " ", z)
-        
+
         xyz_points = fesapi.DoubleArray(nb_xyz_points * 3)
         ijk_grid.getXyzPointsOfAllPatches(xyz_points)
-        
+
         ijk_grid.loadSplitInformation()
         for cell_corner in range(8):
             pt_index = ijk_grid.getXyzPointIndexFromCellCorner(0, 0, 0, cell_corner)
