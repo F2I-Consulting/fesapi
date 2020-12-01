@@ -106,6 +106,33 @@ def show_ijk_grid(ijk_grid):
                     print("This 3d grid has an explicit geometry.")
                 else:
                     print("This 3d grid has an unknown geometry.")
+                    
+        patch_count = ijk_grid.getPatchCount()
+        print("Patch Count =", patch_count)
+
+        nb_xyz_points = ijk_grid.getXyzPointCountOfAllPatches()
+        print("XYZ points count :", nb_xyz_points)
+        
+        for patch_index in range(patch_count):
+            nb_xyz_points_in_patch = ijk_grid.getXyzPointCountOfPatch(patch_index)
+            xyz_points_in_patch = fesapi.DoubleArray(nb_xyz_points_in_patch * 3)
+            ijk_grid.getXyzPointsOfPatch(patch_index, xyz_points_in_patch)
+            for vertex_index in range(nb_xyz_points_in_patch):
+                x = xyz_points_in_patch.getitem(vertex_index * 3)
+                y = xyz_points_in_patch.getitem(vertex_index * 3 + 1)
+                z = xyz_points_in_patch.getitem(vertex_index * 3 + 2)
+                print("Vertex ", vertex_index, " : ", x, " ", y, " ", z)
+        
+        xyz_points = fesapi.DoubleArray(nb_xyz_points * 3)
+        ijk_grid.getXyzPointsOfAllPatches(xyz_points)
+        
+        ijk_grid.loadSplitInformation()
+        for cell_corner in range(8):
+            pt_index = ijk_grid.getXyzPointIndexFromCellCorner(0, 0, 0, cell_corner)
+            print("Cell 0,0,0 corner ", cell_corner, " is at index ", pt_index)
+            print("Cell 0,0,0 corner ", cell_corner, " is  ", xyz_points.getitem(pt_index * 3), " ", xyz_points.getitem(pt_index * 3 + 1), " ", xyz_points.getitem(pt_index * 3 + 2))
+        ijk_grid.unloadSplitInformation();
+
     else:
         print("This 3d grid has no geometry.")
 
@@ -160,5 +187,5 @@ def deserialize(file_name):
     for ijk_grid_index in range(ijk_grid_count):
         show_ijk_grid(repo.getIjkGridRepresentation(ijk_grid_index))
 
-serialize("TestingPackagePython")
-deserialize("TestingPackagePython")
+serialize("./TestingPackagePython")
+deserialize("./TestingPackagePython")

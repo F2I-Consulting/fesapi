@@ -27,7 +27,13 @@ else (WIN32)
 	endif (SWIG_LINKED_TO_RELEASE)
 endif (WIN32)
 configure_file(${FESAPI_ROOT_DIR}/cmake/swigPythonInclude.i.in ${FESAPI_ROOT_DIR}/swig/swigPythonInclude.i) # Overwrite if different
-configure_file(${FESAPI_ROOT_DIR}/cmake/setup.py.in ${FESAPI_ROOT_DIR}/swig/setup.py) # Overwrite if different
+if (WITH_ETP)
+	get_filename_component(AVRO_LIBRARY_DIR_RELEASE ${AVRO_LIBRARY_RELEASE} DIRECTORY)
+	get_filename_component(AVRO_LIBRARY_RELEASE_WLE ${AVRO_LIBRARY_RELEASE} NAME_WLE)
+	configure_file(${FESAPI_ROOT_DIR}/cmake/setup_etp.py.in ${FESAPI_ROOT_DIR}/swig/setup.py) # Overwrite if different
+else (WITH_ETP)
+	configure_file(${FESAPI_ROOT_DIR}/cmake/setup.py.in ${FESAPI_ROOT_DIR}/swig/setup.py) # Overwrite if different
+endif (WITH_ETP)
 
 set (SWIG_DEFINITIONS "")
 if (WITH_RESQML2_2)
