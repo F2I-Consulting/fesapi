@@ -106,7 +106,7 @@ def show_ijk_grid(ijk_grid):
                     print("This 3d grid has an explicit geometry.")
                 else:
                     print("This 3d grid has an unknown geometry.")
-                    
+
         patch_count = ijk_grid.getPatchCount()
         print("Patch Count =", patch_count)
 

@@ -4,7 +4,7 @@ class MyOwnClientCoreHandlers(fesapi.CoreHandlers):
 
     def __init__(self, my_session):
         fesapi.CoreHandlers.__init__(self, my_session)
-       
+
     def on_OpenSession(self, os, correlation_id):
         print("Opened a session")
 	
