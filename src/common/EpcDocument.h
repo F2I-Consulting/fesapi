@@ -126,6 +126,13 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void setExtendedCoreProperty(const std::string & key, const std::string & value);
 
 		/**
+		 * Gets extended core property count.
+		 *
+		 * @returns	The count of extended core properties in this EPC document
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getExtendedCorePropertyCount() const;
+
+		/**
 		 * Gets an extended core property value according to its key.
 		 *
 		 * @param 	key	The key of the property.

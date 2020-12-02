@@ -999,6 +999,107 @@ namespace Energistics {
 %feature("director") ETP_NS::StoreHandlers;
 %feature("director") ETP_NS::DataArrayHandlers;
 %feature("director") ETP_NS::ServerInitializationParameters;
+
+
+/* Following extensions aims at preventing the Python garbage collector from 
+   garbage collecting a protocol handler that may be still used by a session. */
+#ifdef SWIGPYTHON
+	%fragment("core_handler_reference_init", "init") {
+	  core_handler_reference();
+	}
+
+	%fragment("core_handler_reference_function", "header", fragment="core_handler_reference_init") {
+
+	static PyObject *core_handler_reference() {
+	  static PyObject *core_handler_reference_string = SWIG_Python_str_FromChar("__core_handler_reference");
+	  return core_handler_reference_string;
+	}
+
+	}
+
+	%extend ETP_NS::AbstractSession {
+	%typemap(ret, fragment="core_handler_reference_function") void setCoreProtocolHandlers(std::shared_ptr<ETP_NS::CoreHandlers> coreHandlers) %{
+	  PyObject_SetAttr($self, core_handler_reference(), args);
+	%}
+	}
+	
+	%fragment("discovery_handler_reference_init", "init") {
+	  discovery_handler_reference();
+	}
+
+	%fragment("discovery_handler_reference_function", "header", fragment="discovery_handler_reference_init") {
+
+	static PyObject *discovery_handler_reference() {
+	  static PyObject *discovery_handler_reference_string = SWIG_Python_str_FromChar("__discovery_handler_reference");
+	  return discovery_handler_reference_string;
+	}
+
+	}
+
+	%extend ETP_NS::AbstractSession {
+	%typemap(ret, fragment="discovery_handler_reference_function") void setDiscoveryProtocolHandlers(std::shared_ptr<DiscoveryHandlers> discoveryHandlers) %{
+	  PyObject_SetAttr($self, discovery_handler_reference(), args);
+	%}
+	}
+	
+	%fragment("store_handler_reference_init", "init") {
+	  store_handler_reference();
+	}
+
+	%fragment("store_handler_reference_function", "header", fragment="store_handler_reference_init") {
+
+	static PyObject *store_handler_reference() {
+	  static PyObject *store_handler_reference_string = SWIG_Python_str_FromChar("__store_handler_reference");
+	  return store_handler_reference_string;
+	}
+
+	}
+
+	%extend ETP_NS::AbstractSession {
+	%typemap(ret, fragment="store_handler_reference_function") void setStoreProtocolHandlers(std::shared_ptr<StoreHandlers> storeHandlers) %{
+	  PyObject_SetAttr($self, store_handler_reference(), args);
+	%}
+	}
+	
+	%fragment("store_notification_handler_reference_init", "init") {
+	  store_notification_handler_reference();
+	}
+
+	%fragment("store_notification_handler_reference_function", "header", fragment="store_notification_handler_reference_init") {
+
+	static PyObject *store_notification_handler_reference() {
+	  static PyObject *store_notification_handler_reference_string = SWIG_Python_str_FromChar("__store_notification_handler_reference");
+	  return store_notification_handler_reference_string;
+	}
+
+	}
+
+	%extend ETP_NS::AbstractSession {
+	%typemap(ret, fragment="store_notification_handler_reference_function") void setStoreNotificationProtocolHandlers(std::shared_ptr<ETP_NS::StoreNotificationHandlers> storeNotificationHandlers) %{
+	  PyObject_SetAttr($self, store_notification_handler_reference(), args);
+	%}
+	}
+	
+	%fragment("data_array_handler_reference_init", "init") {
+	  data_array_handler_reference();
+	}
+
+	%fragment("data_array_handler_reference_function", "header", fragment="data_array_handler_reference_init") {
+
+	static PyObject *data_array_handler_reference() {
+	  static PyObject *data_array_handler_reference_string = SWIG_Python_str_FromChar("__data_array_handler_reference");
+	  return data_array_handler_reference_string;
+	}
+
+	}
+
+	%extend ETP_NS::AbstractSession {
+	%typemap(ret, fragment="data_array_handler_reference_function") void setDataArrayProtocolHandlers(std::shared_ptr<DataArrayHandlers> dataArrayHandlers) %{
+	  PyObject_SetAttr($self, data_array_handler_reference(), args);
+	%}
+	}
+#endif
+
 namespace ETP_NS
 {
 	class AbstractSession;

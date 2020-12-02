@@ -17,8 +17,6 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 %{
-#define SWIG_FILE_WITH_INIT // In case we use Python Swig Wrapping
-
 #include "../src/resqml2_0_1/LocalDepth3dCrs.h"
 #include "../src/resqml2_0_1/LocalTime3dCrs.h"
 #include "../src/resqml2_0_1/MdDatum.h"
@@ -177,64 +175,64 @@ namespace gsoap_resqml2_0_1
 		resqml20__ResqmlPropertyKind__force_x0020length_x0020per_x0020length = 62,
 		resqml20__ResqmlPropertyKind__force_x0020per_x0020force = 63,
 		resqml20__ResqmlPropertyKind__force_x0020per_x0020length = 64,
-		resqml20__ResqmlPropertyKind__force_x0020per_x0020volume = 'A',
-		resqml20__ResqmlPropertyKind__formation_x0020volume_x0020factor = 'B',
-		resqml20__ResqmlPropertyKind__frequency = 'C',
-		resqml20__ResqmlPropertyKind__frequency_x0020interval = 'D',
-		resqml20__ResqmlPropertyKind__gamma_x0020ray_x0020API_x0020unit = 'E',
-		resqml20__ResqmlPropertyKind__heat_x0020capacity = 'F',
-		resqml20__ResqmlPropertyKind__heat_x0020flow_x0020rate = 'G',
-		resqml20__ResqmlPropertyKind__heat_x0020transfer_x0020coefficient = 'H',
-		resqml20__ResqmlPropertyKind__illuminance = 'I',
-		resqml20__ResqmlPropertyKind__index = 'J',
-		resqml20__ResqmlPropertyKind__irradiance = 'K',
-		resqml20__ResqmlPropertyKind__isothermal_x0020compressibility = 'L',
-		resqml20__ResqmlPropertyKind__kinematic_x0020viscosity = 'M',
-		resqml20__ResqmlPropertyKind__Lambda_x0020Rho = 'N',
-		resqml20__ResqmlPropertyKind__Lame_x0020constant = 'O',
-		resqml20__ResqmlPropertyKind__length = 'P',
-		resqml20__ResqmlPropertyKind__length_x0020per_x0020length = 'Q',
-		resqml20__ResqmlPropertyKind__length_x0020per_x0020temperature = 'R',
-		resqml20__ResqmlPropertyKind__length_x0020per_x0020volume = 'S',
-		resqml20__ResqmlPropertyKind__level_x0020of_x0020power_x0020intensity = 'T',
-		resqml20__ResqmlPropertyKind__light_x0020exposure = 'U',
-		resqml20__ResqmlPropertyKind__linear_x0020thermal_x0020expansion = 'V',
-		resqml20__ResqmlPropertyKind__luminance = 'W',
-		resqml20__ResqmlPropertyKind__luminous_x0020efficacy = 'X',
-		resqml20__ResqmlPropertyKind__luminous_x0020flux = 'Y',
-		resqml20__ResqmlPropertyKind__luminous_x0020intensity = 'Z',
+		resqml20__ResqmlPropertyKind__force_x0020per_x0020volume = 65,
+		resqml20__ResqmlPropertyKind__formation_x0020volume_x0020factor = 66,
+		resqml20__ResqmlPropertyKind__frequency = 67,
+		resqml20__ResqmlPropertyKind__frequency_x0020interval = 68,
+		resqml20__ResqmlPropertyKind__gamma_x0020ray_x0020API_x0020unit = 69,
+		resqml20__ResqmlPropertyKind__heat_x0020capacity = 70,
+		resqml20__ResqmlPropertyKind__heat_x0020flow_x0020rate = 71,
+		resqml20__ResqmlPropertyKind__heat_x0020transfer_x0020coefficient = 72,
+		resqml20__ResqmlPropertyKind__illuminance = 73,
+		resqml20__ResqmlPropertyKind__index = 74,
+		resqml20__ResqmlPropertyKind__irradiance = 75,
+		resqml20__ResqmlPropertyKind__isothermal_x0020compressibility = 76,
+		resqml20__ResqmlPropertyKind__kinematic_x0020viscosity = 77,
+		resqml20__ResqmlPropertyKind__Lambda_x0020Rho = 78,
+		resqml20__ResqmlPropertyKind__Lame_x0020constant = 79,
+		resqml20__ResqmlPropertyKind__length = 80,
+		resqml20__ResqmlPropertyKind__length_x0020per_x0020length = 81,
+		resqml20__ResqmlPropertyKind__length_x0020per_x0020temperature = 82,
+		resqml20__ResqmlPropertyKind__length_x0020per_x0020volume = 83,
+		resqml20__ResqmlPropertyKind__level_x0020of_x0020power_x0020intensity = 84,
+		resqml20__ResqmlPropertyKind__light_x0020exposure = 85,
+		resqml20__ResqmlPropertyKind__linear_x0020thermal_x0020expansion = 86,
+		resqml20__ResqmlPropertyKind__luminance = 87,
+		resqml20__ResqmlPropertyKind__luminous_x0020efficacy = 88,
+		resqml20__ResqmlPropertyKind__luminous_x0020flux = 89,
+		resqml20__ResqmlPropertyKind__luminous_x0020intensity = 90,
 		resqml20__ResqmlPropertyKind__magnetic_x0020dipole_x0020moment = 91,
 		resqml20__ResqmlPropertyKind__magnetic_x0020field_x0020strength = 92,
 		resqml20__ResqmlPropertyKind__magnetic_x0020flux = 93,
 		resqml20__ResqmlPropertyKind__magnetic_x0020induction = 94,
 		resqml20__ResqmlPropertyKind__magnetic_x0020permeability = 95,
 		resqml20__ResqmlPropertyKind__magnetic_x0020vector_x0020potential = 96,
-		resqml20__ResqmlPropertyKind__mass = 'a',
-		resqml20__ResqmlPropertyKind__mass_x0020attenuation_x0020coefficient = 'b',
-		resqml20__ResqmlPropertyKind__mass_x0020concentration = 'c',
-		resqml20__ResqmlPropertyKind__mass_x0020flow_x0020rate = 'd',
-		resqml20__ResqmlPropertyKind__mass_x0020length = 'e',
-		resqml20__ResqmlPropertyKind__mass_x0020per_x0020energy = 'f',
-		resqml20__ResqmlPropertyKind__mass_x0020per_x0020length = 'g',
-		resqml20__ResqmlPropertyKind__mass_x0020per_x0020time_x0020per_x0020area = 'h',
-		resqml20__ResqmlPropertyKind__mass_x0020per_x0020time_x0020per_x0020length = 'i',
-		resqml20__ResqmlPropertyKind__mass_x0020per_x0020volume_x0020per_x0020length = 'j',
-		resqml20__ResqmlPropertyKind__mobility = 'k',
-		resqml20__ResqmlPropertyKind__modulus_x0020of_x0020compression = 'l',
-		resqml20__ResqmlPropertyKind__molar_x0020concentration = 'm',
-		resqml20__ResqmlPropertyKind__molar_x0020heat_x0020capacity = 'n',
-		resqml20__ResqmlPropertyKind__molar_x0020volume = 'o',
-		resqml20__ResqmlPropertyKind__mole_x0020per_x0020area = 'p',
-		resqml20__ResqmlPropertyKind__mole_x0020per_x0020time = 'q',
-		resqml20__ResqmlPropertyKind__mole_x0020per_x0020time_x0020per_x0020area = 'r',
-		resqml20__ResqmlPropertyKind__moment_x0020of_x0020force = 's',
-		resqml20__ResqmlPropertyKind__moment_x0020of_x0020inertia = 't',
-		resqml20__ResqmlPropertyKind__moment_x0020of_x0020section = 'u',
-		resqml20__ResqmlPropertyKind__momentum = 'v',
-		resqml20__ResqmlPropertyKind__Mu_x0020Rho = 'w',
-		resqml20__ResqmlPropertyKind__net_x0020to_x0020gross_x0020ratio = 'x',
-		resqml20__ResqmlPropertyKind__neutron_x0020API_x0020unit = 'y',
-		resqml20__ResqmlPropertyKind__nonDarcy_x0020flow_x0020coefficient = 'z',
+		resqml20__ResqmlPropertyKind__mass = 97,
+		resqml20__ResqmlPropertyKind__mass_x0020attenuation_x0020coefficient = 98,
+		resqml20__ResqmlPropertyKind__mass_x0020concentration = 99,
+		resqml20__ResqmlPropertyKind__mass_x0020flow_x0020rate = 100,
+		resqml20__ResqmlPropertyKind__mass_x0020length = 101,
+		resqml20__ResqmlPropertyKind__mass_x0020per_x0020energy = 102,
+		resqml20__ResqmlPropertyKind__mass_x0020per_x0020length = 103,
+		resqml20__ResqmlPropertyKind__mass_x0020per_x0020time_x0020per_x0020area = 104,
+		resqml20__ResqmlPropertyKind__mass_x0020per_x0020time_x0020per_x0020length = 105,
+		resqml20__ResqmlPropertyKind__mass_x0020per_x0020volume_x0020per_x0020length = 106,
+		resqml20__ResqmlPropertyKind__mobility = 107,
+		resqml20__ResqmlPropertyKind__modulus_x0020of_x0020compression = 108,
+		resqml20__ResqmlPropertyKind__molar_x0020concentration = 109,
+		resqml20__ResqmlPropertyKind__molar_x0020heat_x0020capacity = 110,
+		resqml20__ResqmlPropertyKind__molar_x0020volume = 111,
+		resqml20__ResqmlPropertyKind__mole_x0020per_x0020area = 112,
+		resqml20__ResqmlPropertyKind__mole_x0020per_x0020time = 113,
+		resqml20__ResqmlPropertyKind__mole_x0020per_x0020time_x0020per_x0020area = 114,
+		resqml20__ResqmlPropertyKind__moment_x0020of_x0020force = 115,
+		resqml20__ResqmlPropertyKind__moment_x0020of_x0020inertia = 116,
+		resqml20__ResqmlPropertyKind__moment_x0020of_x0020section = 117,
+		resqml20__ResqmlPropertyKind__momentum = 118,
+		resqml20__ResqmlPropertyKind__Mu_x0020Rho = 119,
+		resqml20__ResqmlPropertyKind__net_x0020to_x0020gross_x0020ratio = 120,
+		resqml20__ResqmlPropertyKind__neutron_x0020API_x0020unit = 121,
+		resqml20__ResqmlPropertyKind__nonDarcy_x0020flow_x0020coefficient = 122,
 		resqml20__ResqmlPropertyKind__operations_x0020per_x0020time = 123,
 		resqml20__ResqmlPropertyKind__parachor = 124,
 		resqml20__ResqmlPropertyKind__per_x0020area = 125,
@@ -326,16 +324,6 @@ namespace WITSML2_0_NS {
 	class Wellbore;
 }
 
-#if defined(SWIGJAVA) || defined(SWIGPYTHON)
-namespace RESQML2_0_1_NS
-{
-	%typemap(out) WellboreFrameRepresentation* {
-		// Check potential downcasting
-		swig_type_info * const outtype = SWIG_TypeQuery(("resqml2_0_1::" + result->getXmlTag() + " *").c_str());
-		resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), outtype, 0);
-	}
-}
-#endif
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
 	%nspace RESQML2_0_1_NS::Activity;
 	%nspace RESQML2_0_1_NS::ActivityTemplate;
@@ -410,12 +398,12 @@ namespace RESQML2_0_1_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
 	
-	//***********************************/
-	//************ Activity *************/
-	//***********************************/
+	/*********************************
+	************ Activity ************
+	*********************************/
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(ActivityTemplate_resqml20) ActivityTemplate;
+	%rename(resqml20_ActivityTemplate) ActivityTemplate;
 #endif
 	class ActivityTemplate : public EML2_NS::ActivityTemplate
 	{
@@ -427,7 +415,7 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(Activity_resqml20) Activity;
+	%rename(resqml20_Activity) Activity;
 #endif
 	class Activity : public EML2_NS::Activity
 	{
@@ -442,7 +430,7 @@ namespace RESQML2_0_1_NS
 	//************ CRS *******************/
 	//************************************/
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(LocalDepth3dCrs_resqml20) LocalDepth3dCrs;
+	%rename(resqml20_LocalDepth3dCrs) LocalDepth3dCrs;
 #endif
 	class LocalDepth3dCrs : public RESQML2_NS::LocalDepth3dCrs
 	{
@@ -450,7 +438,7 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(LocalTime3dCrs_resqml20) LocalTime3dCrs;
+	%rename(resqml20_LocalTime3dCrs) LocalTime3dCrs;
 #endif
 	class LocalTime3dCrs : public RESQML2_NS::LocalTime3dCrs
 	{
@@ -458,7 +446,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(MdDatum_resqml20) MdDatum;
+	%rename(resqml20_MdDatum) MdDatum;
 #endif
 	class MdDatum : public RESQML2_NS::MdDatum
 	{
@@ -470,21 +458,21 @@ namespace RESQML2_0_1_NS
 	//************************************/
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(BoundaryFeature_resqml20) BoundaryFeature;
+	%rename(resqml20_BoundaryFeature) BoundaryFeature;
 #endif
 	class BoundaryFeature : public RESQML2_NS::BoundaryFeature
 	{
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(GeologicUnitFeature_resqml20) GeologicUnitFeature;
+	%rename(resqml20_GeologicUnitFeature) GeologicUnitFeature;
 #endif
 	class GeologicUnitFeature : public RESQML2_NS::RockVolumeFeature
 	{
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(GeneticBoundaryFeature_resqml20) GeneticBoundaryFeature;
+	%rename(resqml20_GeneticBoundaryFeature) GeneticBoundaryFeature;
 #endif
 	class GeneticBoundaryFeature : public BoundaryFeature
 	{
@@ -496,14 +484,14 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(Horizon_resqml20) Horizon;
+	%rename(resqml20_Horizon) Horizon;
 #endif
 	class Horizon : public GeneticBoundaryFeature
 	{
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(TectonicBoundaryFeature_resqml20) TectonicBoundaryFeature;
+	%rename(resqml20_TectonicBoundaryFeature) TectonicBoundaryFeature;
 #endif
 	class TectonicBoundaryFeature : public BoundaryFeature
 	{
@@ -512,14 +500,14 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(SeismicLineSetFeature_resqml20) SeismicLineSetFeature;
+	%rename(resqml20_SeismicLineSetFeature) SeismicLineSetFeature;
 #endif
 	class SeismicLineSetFeature : public RESQML2_NS::SeismicLineSetFeature
 	{
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(SeismicLineFeature_resqml20) SeismicLineFeature;
+	%rename(resqml20_SeismicLineFeature) SeismicLineFeature;
 #endif
 	class SeismicLineFeature : public RESQML2_NS::AbstractSeismicLineFeature
 	{
@@ -529,7 +517,7 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(SeismicLatticeFeature_resqml20) SeismicLatticeFeature;
+	%rename(resqml20_SeismicLatticeFeature) SeismicLatticeFeature;
 #endif
 	class SeismicLatticeFeature : public RESQML2_NS::SeismicLatticeFeature
 	{
@@ -537,7 +525,7 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(WellboreFeature_resqml20) WellboreFeature;
+	%rename(resqml20_WellboreFeature) WellboreFeature;
 #endif
 	class WellboreFeature : public RESQML2_NS::WellboreFeature
 	{
@@ -545,21 +533,21 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(OrganizationFeature_resqml20) OrganizationFeature;
+	%rename(resqml20_OrganizationFeature) OrganizationFeature;
 #endif
 	class OrganizationFeature : public RESQML2_NS::Model
 	{
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(FrontierFeature_resqml20) FrontierFeature;
+	%rename(resqml20_FrontierFeature) FrontierFeature;
 #endif
 	class FrontierFeature : public RESQML2_NS::CulturalFeature
 	{
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(StratigraphicUnitFeature_resqml20) StratigraphicUnitFeature;
+	%rename(resqml20_StratigraphicUnitFeature) StratigraphicUnitFeature;
 #endif
 	class StratigraphicUnitFeature : public GeologicUnitFeature
 	{
@@ -568,7 +556,7 @@ namespace RESQML2_0_1_NS
 	
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(GeobodyFeature_resqml20) GeobodyFeature;
+	%rename(resqml20_GeobodyFeature) GeobodyFeature;
 #endif
 	class GeobodyFeature : public GeologicUnitFeature
 	{
@@ -576,7 +564,7 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(FluidBoundaryFeature_resqml20) FluidBoundaryFeature;
+	%rename(resqml20_FluidBoundaryFeature) FluidBoundaryFeature;
 #endif
 	class FluidBoundaryFeature : public BoundaryFeature
 	{
@@ -587,21 +575,21 @@ namespace RESQML2_0_1_NS
 	//************ INTERPRETATION ********/
 	//************************************/
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(GenericFeatureInterpretation_resqml20) GenericFeatureInterpretation;
+	%rename(resqml20_GenericFeatureInterpretation) GenericFeatureInterpretation;
 #endif
 	class GenericFeatureInterpretation : public RESQML2_NS::GenericFeatureInterpretation
 	{
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(BoundaryFeatureInterpretation_resqml20) BoundaryFeatureInterpretation;
+	%rename(resqml20_BoundaryFeatureInterpretation) BoundaryFeatureInterpretation;
 #endif
 	class BoundaryFeatureInterpretation : public RESQML2_NS::BoundaryFeatureInterpretation
 	{
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(FaultInterpretation_resqml20) FaultInterpretation;
+	%rename(resqml20_FaultInterpretation) FaultInterpretation;
 #endif
 	class FaultInterpretation : public RESQML2_NS::FaultInterpretation
 	{
@@ -610,14 +598,14 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(HorizonInterpretation_resqml20) HorizonInterpretation;
+	%rename(resqml20_HorizonInterpretation) HorizonInterpretation;
 #endif
 	class HorizonInterpretation : public RESQML2_NS::HorizonInterpretation
 	{
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(GeobodyBoundaryInterpretation_resqml20) GeobodyBoundaryInterpretation;
+	%rename(resqml20_GeobodyBoundaryInterpretation) GeobodyBoundaryInterpretation;
 #endif
 	class GeobodyBoundaryInterpretation : public RESQML2_NS::GeobodyBoundaryInterpretation
 	{
@@ -625,7 +613,7 @@ namespace RESQML2_0_1_NS
 	
 	class WellboreTrajectoryRepresentation;
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(WellboreInterpretation_resqml20) WellboreInterpretation;
+	%rename(resqml20_WellboreInterpretation) WellboreInterpretation;
 #endif
 	class WellboreInterpretation : public RESQML2_NS::WellboreInterpretation
 	{
@@ -633,14 +621,14 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(StratigraphicUnitInterpretation_resqml20) StratigraphicUnitInterpretation;
+	%rename(resqml20_StratigraphicUnitInterpretation) StratigraphicUnitInterpretation;
 #endif
 	class StratigraphicUnitInterpretation : public RESQML2_NS::StratigraphicUnitInterpretation
 	{
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(GeobodyInterpretation_resqml20) GeobodyInterpretation;
+	%rename(resqml20_GeobodyInterpretation) GeobodyInterpretation;
 #endif
 	class GeobodyInterpretation : public RESQML2_NS::GeobodyInterpretation
 	{
@@ -648,7 +636,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(StructuralOrganizationInterpretation_resqml20) StructuralOrganizationInterpretation;
+	%rename(resqml20_StructuralOrganizationInterpretation) StructuralOrganizationInterpretation;
 #endif
 	class StructuralOrganizationInterpretation : public RESQML2_NS::StructuralOrganizationInterpretation
 	{
@@ -657,7 +645,7 @@ namespace RESQML2_0_1_NS
 	
 	class StratigraphicOccurrenceInterpretation;	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(StratigraphicColumnRankInterpretation_resqml20) StratigraphicColumnRankInterpretation;
+	%rename(resqml20_StratigraphicColumnRankInterpretation) StratigraphicColumnRankInterpretation;
 #endif
 	class StratigraphicColumnRankInterpretation : public RESQML2_NS::StratigraphicColumnRankInterpretation
 	{
@@ -665,7 +653,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(RockFluidUnitInterpretation_resqml20) RockFluidUnitInterpretation;
+	%rename(resqml20_RockFluidUnitInterpretation) RockFluidUnitInterpretation;
 #endif	
 	class RockFluidUnitInterpretation : public RESQML2_NS::RockFluidUnitInterpretation
 	{
@@ -673,7 +661,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(RockFluidOrganizationInterpretation_resqml20) RockFluidOrganizationInterpretation;
+	%rename(resqml20_RockFluidOrganizationInterpretation) RockFluidOrganizationInterpretation;
 #endif
 	class RockFluidOrganizationInterpretation : public RESQML2_NS::RockFluidOrganizationInterpretation
 	{
@@ -682,7 +670,7 @@ namespace RESQML2_0_1_NS
 	
 	class WellboreMarkerFrameRepresentation;	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(StratigraphicOccurrenceInterpretation_resqml20) StratigraphicOccurrenceInterpretation;
+	%rename(resqml20_StratigraphicOccurrenceInterpretation) StratigraphicOccurrenceInterpretation;
 #endif
 	class StratigraphicOccurrenceInterpretation : public RESQML2_NS::StratigraphicOccurrenceInterpretation
 	{
@@ -690,7 +678,7 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(StratigraphicColumn_resqml20) StratigraphicColumn;
+	%rename(resqml20_StratigraphicColumn) StratigraphicColumn;
 #endif
 	class StratigraphicColumn : public RESQML2_NS::StratigraphicColumn
 	{
@@ -698,7 +686,7 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(EarthModelInterpretation_resqml20) EarthModelInterpretation;
+	%rename(resqml20_EarthModelInterpretation) EarthModelInterpretation;
 #endif
 	class EarthModelInterpretation : public RESQML2_NS::EarthModelInterpretation
 	{
@@ -710,7 +698,7 @@ namespace RESQML2_0_1_NS
 	//************************************/
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(SubRepresentation_resqml20) SubRepresentation;
+	%rename(resqml20_SubRepresentation) SubRepresentation;
 #endif	
 	class SubRepresentation : public RESQML2_NS::SubRepresentation
 	{
@@ -718,7 +706,7 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(PolylineSetRepresentation_resqml20) PolylineSetRepresentation;
+	%rename(resqml20_PolylineSetRepresentation) PolylineSetRepresentation;
 #endif
 	class PolylineSetRepresentation : public RESQML2_NS::PolylineSetRepresentation
 	{
@@ -726,7 +714,7 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(PointSetRepresentation_resqml20) PointSetRepresentation;
+	%rename(resqml20_PointSetRepresentation) PointSetRepresentation;
 #endif
 	class PointSetRepresentation : public RESQML2_NS::PointSetRepresentation
 	{
@@ -734,7 +722,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(PlaneSetRepresentation_resqml20) PlaneSetRepresentation;
+	%rename(resqml20_PlaneSetRepresentation) PlaneSetRepresentation;
 #endif
 	class PlaneSetRepresentation : public RESQML2_NS::PlaneSetRepresentation
 	{
@@ -742,7 +730,7 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(PolylineRepresentation_resqml20) PolylineRepresentation;
+	%rename(resqml20_PolylineRepresentation) PolylineRepresentation;
 #endif
 	class PolylineRepresentation : public RESQML2_NS::PolylineRepresentation
 	{
@@ -750,7 +738,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(Grid2dRepresentation_resqml20) Grid2dRepresentation;
+	%rename(resqml20_Grid2dRepresentation) Grid2dRepresentation;
 #endif
 	class Grid2dRepresentation : public RESQML2_NS::Grid2dRepresentation
 	{
@@ -758,7 +746,7 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(TriangulatedSetRepresentation_resqml20) TriangulatedSetRepresentation;
+	%rename(resqml20_TriangulatedSetRepresentation) TriangulatedSetRepresentation;
 #endif
 	class TriangulatedSetRepresentation : public RESQML2_NS::TriangulatedSetRepresentation
 	{
@@ -767,7 +755,7 @@ namespace RESQML2_0_1_NS
 	
 	class WellboreFrameRepresentation;
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(WellboreTrajectoryRepresentation_resqml20) WellboreTrajectoryRepresentation;
+	%rename(resqml20_WellboreTrajectoryRepresentation) WellboreTrajectoryRepresentation;
 #endif
 	class  WellboreTrajectoryRepresentation : public RESQML2_NS::WellboreTrajectoryRepresentation
 	{
@@ -775,7 +763,7 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(DeviationSurveyRepresentation_resqml20) DeviationSurveyRepresentation;
+	%rename(resqml20_DeviationSurveyRepresentation) DeviationSurveyRepresentation;
 #endif
 	class DeviationSurveyRepresentation : public RESQML2_NS::DeviationSurveyRepresentation
 	{
@@ -783,7 +771,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(WellboreFrameRepresentation_resqml20) WellboreFrameRepresentation;
+	%rename(resqml20_WellboreFrameRepresentation) WellboreFrameRepresentation;
 #endif
 	class WellboreFrameRepresentation : public RESQML2_NS::WellboreFrameRepresentation
 	{
@@ -793,7 +781,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(WellboreMarker_resqml20) WellboreMarker;
+	%rename(resqml20_WellboreMarker) WellboreMarker;
 #endif
 	class WellboreMarker : public RESQML2_NS::WellboreMarker
 	{
@@ -801,7 +789,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(WellboreMarkerFrameRepresentation_resqml20) WellboreMarkerFrameRepresentation;
+	%rename(resqml20_WellboreMarkerFrameRepresentation) WellboreMarkerFrameRepresentation;
 #endif
 	class WellboreMarkerFrameRepresentation : public RESQML2_NS::WellboreMarkerFrameRepresentation
 	{
@@ -809,7 +797,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(RepresentationSetRepresentation_resqml20) RepresentationSetRepresentation;
+	%rename(resqml20_RepresentationSetRepresentation) RepresentationSetRepresentation;
 #endif
 	class RepresentationSetRepresentation : public RESQML2_NS::RepresentationSetRepresentation
 	{
@@ -817,7 +805,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(NonSealedSurfaceFrameworkRepresentation_resqml20) NonSealedSurfaceFrameworkRepresentation;
+	%rename(resqml20_NonSealedSurfaceFrameworkRepresentation) NonSealedSurfaceFrameworkRepresentation;
 #endif
 	class NonSealedSurfaceFrameworkRepresentation : public RESQML2_NS::NonSealedSurfaceFrameworkRepresentation
 	{
@@ -825,7 +813,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(SealedSurfaceFrameworkRepresentation_resqml20) SealedSurfaceFrameworkRepresentation;
+	%rename(resqml20_SealedSurfaceFrameworkRepresentation) SealedSurfaceFrameworkRepresentation;
 #endif
 	class SealedSurfaceFrameworkRepresentation : public RESQML2_NS::SealedSurfaceFrameworkRepresentation
 	{
@@ -833,7 +821,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(SealedVolumeFrameworkRepresentation_resqml20) SealedVolumeFrameworkRepresentation;
+	%rename(resqml20_SealedVolumeFrameworkRepresentation) SealedVolumeFrameworkRepresentation;
 #endif
 	class SealedVolumeFrameworkRepresentation : public RESQML2_NS::SealedVolumeFrameworkRepresentation
 	{
@@ -841,7 +829,7 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(UnstructuredGridRepresentation_resqml20) UnstructuredGridRepresentation;
+	%rename(resqml20_UnstructuredGridRepresentation) UnstructuredGridRepresentation;
 #endif
 	class UnstructuredGridRepresentation : public RESQML2_NS::UnstructuredGridRepresentation
 	{
@@ -849,7 +837,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(IjkGridLatticeRepresentation_resqml20) IjkGridLatticeRepresentation;
+	%rename(resqml20_IjkGridLatticeRepresentation) IjkGridLatticeRepresentation;
 #endif
 	class IjkGridLatticeRepresentation : public RESQML2_NS::IjkGridLatticeRepresentation
 	{
@@ -857,7 +845,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(IjkGridExplicitRepresentation_resqml20) IjkGridExplicitRepresentation;
+	%rename(resqml20_IjkGridExplicitRepresentation) IjkGridExplicitRepresentation;
 #endif
 	class IjkGridExplicitRepresentation : public RESQML2_NS::IjkGridExplicitRepresentation
 	{
@@ -865,7 +853,7 @@ namespace RESQML2_0_1_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(IjkGridParametricRepresentation_resqml20) IjkGridParametricRepresentation;
+	%rename(resqml20_IjkGridParametricRepresentation) IjkGridParametricRepresentation;
 #endif	
 	class IjkGridParametricRepresentation : public RESQML2_NS::IjkGridParametricRepresentation
 	{
@@ -873,7 +861,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(IjkGridNoGeometryRepresentation_resqml20) IjkGridNoGeometryRepresentation;
+	%rename(resqml20_IjkGridNoGeometryRepresentation) IjkGridNoGeometryRepresentation;
 #endif	
 	class IjkGridNoGeometryRepresentation : public RESQML2_NS::IjkGridNoGeometryRepresentation
 	{
@@ -881,7 +869,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(GridConnectionSetRepresentation_resqml20) GridConnectionSetRepresentation;
+	%rename(resqml20_GridConnectionSetRepresentation) GridConnectionSetRepresentation;
 #endif	
 	class GridConnectionSetRepresentation : public RESQML2_NS::GridConnectionSetRepresentation
 	{
@@ -892,7 +880,7 @@ namespace RESQML2_0_1_NS
 	//************** PROPERTY ************/
 	//************************************/
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(TimeSeries_resqml20) TimeSeries;
+	%rename(resqml20_TimeSeries) TimeSeries;
 #endif	
 	class TimeSeries : public EML2_NS::TimeSeries
 	{
@@ -900,7 +888,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(PropertyKind_resqml20) PropertyKind;
+	%rename(resqml20_PropertyKind) PropertyKind;
 #endif	
 	class PropertyKind : public EML2_NS::PropertyKind
 	{
@@ -908,7 +896,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(DoubleTableLookup_resqml20) DoubleTableLookup;
+	%rename(resqml20_DoubleTableLookup) DoubleTableLookup;
 #endif	
 	class DoubleTableLookup : public RESQML2_NS::DoubleTableLookup
 	{
@@ -916,7 +904,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(StringTableLookup_resqml20) StringTableLookup;
+	%rename(resqml20_StringTableLookup) StringTableLookup;
 #endif	
 	class StringTableLookup : public RESQML2_NS::StringTableLookup
 	{
@@ -924,7 +912,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(PropertySet_resqml20) PropertySet;
+	%rename(resqml20_PropertySet) PropertySet;
 #endif	
 	class PropertySet : public RESQML2_NS::PropertySet
 	{
@@ -932,7 +920,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(CommentProperty_resqml20) CommentProperty;
+	%rename(resqml20_CommentProperty) CommentProperty;
 #endif	
 	class CommentProperty : public RESQML2_NS::CommentProperty
 	{
@@ -941,7 +929,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(ContinuousProperty_resqml20) ContinuousProperty;
+	%rename(resqml20_ContinuousProperty) ContinuousProperty;
 #endif
 	class ContinuousProperty : public RESQML2_NS::ContinuousProperty
 	{
@@ -950,7 +938,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(DiscreteProperty_resqml20) DiscreteProperty;
+	%rename(resqml20_DiscreteProperty) DiscreteProperty;
 #endif
 	class DiscreteProperty : public RESQML2_NS::DiscreteProperty
 	{
@@ -959,7 +947,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(CategoricalProperty_resqml20) CategoricalProperty;
+	%rename(resqml20_CategoricalProperty) CategoricalProperty;
 #endif
 	class CategoricalProperty : public RESQML2_NS::CategoricalProperty
 	{
@@ -968,7 +956,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(PointsProperty_resqml20) PointsProperty;
+	%rename(resqml20_PointsProperty) PointsProperty;
 #endif
 	class PointsProperty : public RESQML2_NS::PointsProperty
 	{
@@ -977,7 +965,7 @@ namespace RESQML2_0_1_NS
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(PropertyKindMapper_resqml20) PropertyKindMapper;
+	%rename(resqml20_PropertyKindMapper) PropertyKindMapper;
 #endif
 	class PropertyKindMapper
 	{

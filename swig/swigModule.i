@@ -66,6 +66,20 @@ under the License.
 #endif
 
 //************************/
+// PYTHON
+//************************/
+
+#ifdef SWIGPYTHON
+
+	%{
+	#define SWIG_FILE_WITH_INIT // In case we use Python Swig Wrapping
+	%}
+	%include "swigPythonInclude.i"
+
+#endif
+
+
+//************************/
 // POD C ARRAYS
 //************************/
 
@@ -253,7 +267,7 @@ namespace COMMON_NS
 
 		EML2_NS::Activity * getActivity (unsigned int index) const;
 	};
-	
+
 	class HdfProxyFactory
 	{
 	public:
@@ -274,10 +288,6 @@ namespace COMMON_NS
 			COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
 	};
 }
-
-%{
-#define SWIG_FILE_WITH_INIT // In case we use Python Swig Wrapping
-%}
 
 #define CHECKER_PRESENCE_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName) bool has##vectorName##attributeName(unsigned int index) const;
 
@@ -320,7 +330,8 @@ namespace COMMON_NS
 %}
 
 namespace COMMON_NS
-{	
+{
+
 	class DataObjectRepository
 	{
 	public:
@@ -1266,7 +1277,29 @@ namespace COMMON_NS
 		std::string getStorageDirectory() const;
 		std::string getName() const;
 		
+		/**
+		 * Sets or adds an extended core property
+		 *
+		 * @param 	key  	The key of the property.
+		 * @param 	value	The value of the property.
+		 */
 		void setExtendedCoreProperty(const std::string & key, const std::string & value);
+		
+		/**
+		 * Gets extended core property count.
+		 *
+		 * @returns	The count of extended core properties in this EPC document
+		 */
+		unsigned int getExtendedCorePropertyCount() const;
+		
+		/**
+		 * Gets an extended core property value according to its key.
+		 *
+		 * @param 	key	The key of the property.
+		 *
+		 * @returns	An empty string if the extended core property does not exist. Or the extended core
+		 * 			property value if it exists.
+		 */
 		std::string getExtendedCoreProperty(const std::string & key);
 	};
 	

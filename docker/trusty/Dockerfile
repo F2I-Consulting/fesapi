@@ -21,7 +21,9 @@ ENV CFLAGS="-fPIC -O2"
 ENV CXXFLAGS="-fPIC -O2"
 
 RUN	apt-get update &&\
-	apt-get -y install build-essential uuid-dev libhdf5-dev wget git
+	apt-get install -y --no-install-recommends build-essential uuid-dev libhdf5-dev wget git &&\
+	apt-get clean &&\
+	rm -rf /var/lib/apt/lists/*
 
 RUN	apt-get purge cmake swig
 

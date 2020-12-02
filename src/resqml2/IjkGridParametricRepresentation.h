@@ -34,7 +34,7 @@ namespace RESQML2_NS
 		/**
 		* Destructor cleans the pillars information memory if allocated.
 		*/
-		virtual ~IjkGridParametricRepresentation() { 
+		DLL_IMPORT_OR_EXPORT virtual ~IjkGridParametricRepresentation() {
 			if (pillarInformation != nullptr) 
 				delete pillarInformation; 
 		}
