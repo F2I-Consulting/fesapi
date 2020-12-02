@@ -594,7 +594,7 @@ namespace RESQML2_2_NS
 #ifdef SWIGPYTHON
 	%rename(resqml22_StreamlinesFeature) StreamlinesFeature;
 #endif	
-	class StreamlinesFeature : public AbstractTechnicalFeature
+	class StreamlinesFeature : public RESQML2_NS::StreamlinesFeature
 	{
 	public:
 	};
@@ -602,7 +602,7 @@ namespace RESQML2_2_NS
 #ifdef SWIGPYTHON
 	%rename(resqml22_StreamlinesRepresentation) StreamlinesRepresentation;
 #endif	
-	class StreamlinesRepresentation : public AbstractRepresentation
+	class StreamlinesRepresentation : public RESQML2_NS::StreamlinesRepresentation
 	{
 	public:
 	};

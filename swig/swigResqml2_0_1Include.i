@@ -883,7 +883,7 @@ namespace RESQML2_0_1_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(resqml20_StreamlinesFeature) StreamlinesFeature;
 #endif	
-	class StreamlinesFeature : public AbstractTechnicalFeature
+	class StreamlinesFeature : public RESQML2_NS::StreamlinesFeature
 	{
 	public:
 	};
@@ -891,7 +891,7 @@ namespace RESQML2_0_1_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(resqml20_StreamlinesRepresentation) StreamlinesRepresentation;
 #endif	
-	class StreamlinesRepresentation : public AbstractRepresentation
+	class StreamlinesRepresentation : public RESQML2_NS::StreamlinesRepresentation
 	{
 	public:
 	};
