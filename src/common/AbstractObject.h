@@ -225,7 +225,7 @@ namespace COMMON_NS
 			{
 				gsoap_resqml2_0_1::resqml20__IntegerLatticeArray const* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray const*>(arrayInput);
 				if (latticeArray->Offset.size() > 1) {
-					throw invalid_argument("The integer lattice array contains more than one offset.");
+					throw std::invalid_argument("The integer lattice array contains more than one offset.");
 				}
 				for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
 					arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
@@ -233,7 +233,7 @@ namespace COMMON_NS
 				break;
 			}
 			default:
-				throw invalid_argument("The integer array type is not supported yet.");
+				throw std::invalid_argument("The integer array type is not supported yet.");
 			}
 		}
 
@@ -264,14 +264,14 @@ namespace COMMON_NS
 			{
 				gsoap_eml2_3::eml23__IntegerLatticeArray const* latticeArray = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray const*>(arrayInput);
 				if (latticeArray->Offset.size() > 1) {
-					throw invalid_argument("The integer lattice array contains more than one offset.");
+					throw std::invalid_argument("The integer lattice array contains more than one offset.");
 				}
 				for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
 					arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
 				}
 				break;
 			}
-			default: throw invalid_argument("The integer array type is not supported yet.");
+			default: throw std::invalid_argument("The integer array type is not supported yet.");
 			}
 		}
 
