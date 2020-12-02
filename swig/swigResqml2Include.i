@@ -3090,7 +3090,7 @@ namespace RESQML2_NS
 		 * 										line. Its size must be
 		 * 										<tt>getLineCount(patchIndex)</tt>.
 		 */
-		getNodeCountPerLine(uint32_t * nodeCountPerPolyline) const;
+		void getNodeCountPerLine(uint32_t * nodeCountPerPolyline) const;
 
 		/**
 		 * Gets the interval count per line.
