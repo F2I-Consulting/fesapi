@@ -32,6 +32,7 @@ under the License.
 #include "../src/resqml2_0_1/StratigraphicUnitFeature.h"
 #include "../src/resqml2_0_1/GeobodyFeature.h"
 #include "../src/resqml2_0_1/FluidBoundaryFeature.h"
+#include "../src/resqml2_0_1/StreamlinesFeature.h"
 
 #include "../src/resqml2_0_1/StratigraphicColumn.h"
 #include "../src/resqml2_0_1/BoundaryFeatureInterpretation.h"
@@ -72,6 +73,7 @@ under the License.
 #include "../src/resqml2_0_1/UnstructuredGridRepresentation.h"
 #include "../src/resqml2_0_1/SubRepresentation.h"
 #include "../src/resqml2_0_1/GridConnectionSetRepresentation.h"
+#include "../src/resqml2_0_1/StreamlinesRepresentation.h"
 
 #include "../src/resqml2_0_1/TimeSeries.h"
 
@@ -379,6 +381,8 @@ namespace WITSML2_0_NS {
 	%nspace RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation;
 	%nspace RESQML2_0_1_NS::StratigraphicUnitFeature;
 	%nspace RESQML2_0_1_NS::StratigraphicUnitInterpretation;
+	%nspace RESQML2_0_1_NS::StreamlinesFeature;
+	%nspace RESQML2_0_1_NS::StreamlinesRepresentation;
 	%nspace RESQML2_0_1_NS::StringTableLookup;
 	%nspace RESQML2_0_1_NS::StructuralOrganizationInterpretation;
 	%nspace RESQML2_0_1_NS::SubRepresentation;
@@ -872,6 +876,22 @@ namespace RESQML2_0_1_NS
 	%rename(resqml20_GridConnectionSetRepresentation) GridConnectionSetRepresentation;
 #endif	
 	class GridConnectionSetRepresentation : public RESQML2_NS::GridConnectionSetRepresentation
+	{
+	public:
+	};
+	
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(resqml20_StreamlinesFeature) StreamlinesFeature;
+#endif	
+	class StreamlinesFeature : public AbstractTechnicalFeature
+	{
+	public:
+	};
+	
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(resqml20_StreamlinesRepresentation) StreamlinesRepresentation;
+#endif	
+	class StreamlinesRepresentation : public AbstractRepresentation
 	{
 	public:
 	};

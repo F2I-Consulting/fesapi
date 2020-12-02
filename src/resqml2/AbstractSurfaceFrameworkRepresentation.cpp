@@ -260,10 +260,10 @@ unsigned int AbstractSurfaceFrameworkRepresentation::getContactCountInContactIde
 void AbstractSurfaceFrameworkRepresentation::getContactIndices(unsigned int ciIndex, unsigned int * contactRepIndices) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		readArrayNdOfUIntValues(getContactIdentity201(ciIndex)->ListOfContactRepresentations, contactRepIndices);
+		readArrayNdOfUInt32Values(getContactIdentity201(ciIndex)->ListOfContactRepresentations, contactRepIndices);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		readArrayNdOfUIntValues(getContactIdentity22(ciIndex)->ListOfContactRepresentations, contactRepIndices);
+		readArrayNdOfUInt32Values(getContactIdentity22(ciIndex)->ListOfContactRepresentations, contactRepIndices);
 	}
 	else {
 		throw std::logic_error("Unknown RESQML version");
@@ -314,10 +314,10 @@ void AbstractSurfaceFrameworkRepresentation::getIdenticalContactNodeIndices(unsi
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		readArrayNdOfUIntValues(getContactIdentity201(ciIndex)->ListOfIdenticalNodes, nodeIndices);
+		readArrayNdOfUInt32Values(getContactIdentity201(ciIndex)->ListOfIdenticalNodes, nodeIndices);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		readArrayNdOfUIntValues(getContactIdentity22(ciIndex)->ListOfIdenticalNodes, nodeIndices);
+		readArrayNdOfUInt32Values(getContactIdentity22(ciIndex)->ListOfIdenticalNodes, nodeIndices);
 	}
 	else {
 		throw std::logic_error("Unknown RESQML version");

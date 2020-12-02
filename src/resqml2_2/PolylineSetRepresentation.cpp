@@ -265,7 +265,7 @@ void PolylineSetRepresentation::getNodeCountPerPolylineInPatch(unsigned int patc
 	}
 
 	resqml22__PolylineSetPatch* patch = static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch[patchIndex];
-	readArrayNdOfUIntValues(patch->NodeCountPerPolyline, nodeCountPerPolyline);
+	readArrayNdOfUInt32Values(patch->NodeCountPerPolyline, nodeCountPerPolyline);
 }
 
 void PolylineSetRepresentation::getNodeCountPerPolylineOfAllPatches(unsigned int * NodeCountPerPolyline) const

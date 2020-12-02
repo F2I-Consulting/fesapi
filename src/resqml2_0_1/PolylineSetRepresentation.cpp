@@ -263,7 +263,7 @@ void PolylineSetRepresentation::getNodeCountPerPolylineInPatch(unsigned int patc
 		throw std::out_of_range("patchIndex id out of range.");
 	}
 	resqml20__PolylineSetPatch* patch = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch[patchIndex];
-	readArrayNdOfUIntValues(patch->NodeCountPerPolyline, nodeCountPerPolyline);
+	readArrayNdOfUInt32Values(patch->NodeCountPerPolyline, nodeCountPerPolyline);
 }
 
 void PolylineSetRepresentation::getNodeCountPerPolylineOfAllPatches(unsigned int * NodeCountPerPolyline) const

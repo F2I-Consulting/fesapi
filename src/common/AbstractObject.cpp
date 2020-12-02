@@ -1266,98 +1266,176 @@ void AbstractObject::readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloa
 	}
 }
 
-void AbstractObject::readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const
+uint8_t AbstractObject::readArrayNdOfUInt8Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint8_t * arrayOutput) const
 {
-	long soapType = arrayInput->soap_type();
-	if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
-	{
-		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(arrayInput)->Values->HdfProxy->UUID);
+	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+		auto const * hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
+		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(hdfArray->Values->HdfProxy->UUID);
 		if (hdfProxy == nullptr) {
-			throw invalid_argument("The hdf proxy " + static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(arrayInput)->Values->HdfProxy->UUID + " is not available.");
+			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
 		}
-		hdfProxy->readArrayNdOfUIntValues(static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(arrayInput)->Values->PathInHdfFile, arrayOutput);
+		hdfProxy->readArrayNdOfUCharValues(hdfArray->Values->PathInHdfFile, arrayOutput);
+		if (hdfArray->NullValue > (std::numeric_limits<uint8_t>::max)()) {
+			throw range_error("The null value is greater than uint8_t max.");
+		}
+		return static_cast<uint8_t>(hdfArray->NullValue);
 	}
-	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerRangeArray)
-	{
-		gsoap_resqml2_0_1::resqml20__IntegerRangeArray* rangeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerRangeArray*>(arrayInput);
-		if (rangeArray->Value + rangeArray->Count > (std::numeric_limits<unsigned int>::max)()) {
-			throw std::range_error("The range integer values are superior to unsigned int maximum value.");
-		}
-		for (unsigned int i = 0; i < static_cast<unsigned int>(rangeArray->Count); ++i) {
-			arrayOutput[i] = i + static_cast<unsigned int>(rangeArray->Value);
-		}
+	else {
+		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
 	}
-	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray)
-	{
-		gsoap_resqml2_0_1::resqml20__IntegerConstantArray* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray*>(arrayInput);
-		if (constantArray->Value > (std::numeric_limits<unsigned int>::max)()) {
-			throw std::range_error("The constant integer value is superior to unsigned int maximum value.");
-		}
-		for (size_t i = 0; i < constantArray->Count; ++i) {
-			arrayOutput[i] = static_cast<unsigned int>(constantArray->Value);
-		}
-	}
-	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)
-	{
-		gsoap_resqml2_0_1::resqml20__IntegerLatticeArray* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(arrayInput);
-		if (latticeArray->Offset.size() > 1) {
-			throw invalid_argument("The integer lattice array contains more than one offset.");
-		}
-		for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
-			arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
-		}
-	}
-	else
-		throw invalid_argument("The integer array type is not supported yet.");
+
+	return (std::numeric_limits<uint8_t>::max)();
 }
 
-void AbstractObject::readArrayNdOfUIntValues(gsoap_eml2_3::eml23__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const
+uint8_t AbstractObject::readArrayNdOfUInt8Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint8_t * arrayOutput) const
 {
-	switch (arrayInput->soap_type()) {
-	case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray:
-	{
-		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(arrayInput)->Values->ExternalFileProxy) {
+	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
+			if (hdfProxy == nullptr) {
+				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
+			}
+			hdfProxy->readArrayNdOfUCharValues(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		}
+		if (static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue > (std::numeric_limits<uint8_t>::max)()) {
+			throw range_error("The null value is greater than uint8_t max.");
+		}
+		return static_cast<uint8_t>(static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue);
+	}
+	else {
+		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
+	}
+
+	return (std::numeric_limits<uint8_t>::max)();
+}
+
+uint16_t AbstractObject::readArrayNdOfUInt16Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint16_t * arrayOutput) const
+{
+	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+		auto const * hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
+		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(hdfArray->Values->HdfProxy->UUID);
+		if (hdfProxy == nullptr) {
+			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
+		}
+		hdfProxy->readArrayNdOfUShortValues(hdfArray->Values->PathInHdfFile, arrayOutput);
+		if (hdfArray->NullValue > (std::numeric_limits<uint16_t>::max)()) {
+			throw range_error("The null value is greater than uint16_t max.");
+		}
+		return static_cast<uint16_t>(hdfArray->NullValue);
+	}
+	else {
+		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
+	}
+
+	return (std::numeric_limits<uint16_t>::max)();
+}
+
+uint16_t AbstractObject::readArrayNdOfUInt16Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint16_t * arrayOutput) const
+{
+	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
+			if (hdfProxy == nullptr) {
+				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
+			}
+			hdfProxy->readArrayNdOfUShortValues(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		}
+		if (static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue > (std::numeric_limits<uint16_t>::max)()) {
+			throw range_error("The null value is greater than uint16_t max.");
+		}
+		return static_cast<uint16_t>(static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue);
+	}
+	else {
+		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
+	}
+
+	return (std::numeric_limits<uint16_t>::max)();
+}
+
+uint32_t AbstractObject::readArrayNdOfUInt32Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint32_t * arrayOutput) const
+{
+	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+		auto const * hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
+		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(hdfArray->Values->HdfProxy->UUID);
+		if (hdfProxy == nullptr) {
+			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
+		}
+		hdfProxy->readArrayNdOfUIntValues(hdfArray->Values->PathInHdfFile, arrayOutput);
+		if (hdfArray->NullValue > (std::numeric_limits<uint32_t>::max)()) {
+			throw range_error("The null value is greater than uint32_t max.");
+		}
+		return static_cast<uint32_t>(hdfArray->NullValue);
+	}
+	else {
+		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
+	}
+
+	return (std::numeric_limits<uint32_t>::max)();
+}
+
+uint32_t AbstractObject::readArrayNdOfUInt32Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint32_t * arrayOutput) const
+{
+	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
 			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
 			}
 			hdfProxy->readArrayNdOfUIntValues(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
 		}
-		break;
-	}
-	case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerRangeArray:
-	{
-		gsoap_eml2_3::eml23__IntegerRangeArray* rangeArray = static_cast<gsoap_eml2_3::eml23__IntegerRangeArray*>(arrayInput);
-		if (rangeArray->Value + rangeArray->Count > (std::numeric_limits<unsigned int>::max)()) {
-			throw std::range_error("The range integer values are superior to unsigned int maximum value.");
+		if (static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue > (std::numeric_limits<uint32_t>::max)()) {
+			throw range_error("The null value is greater than uint32_t max.");
 		}
-		for (unsigned int i = 0; i < static_cast<unsigned int>(rangeArray->Count); ++i) {
-			arrayOutput[i] = i + static_cast<unsigned int>(rangeArray->Value);
-		}
-		break;
+		return static_cast<uint32_t>(static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue);
 	}
-	case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
-	{
-		gsoap_eml2_3::eml23__IntegerConstantArray* constantArray = static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(arrayInput);
-		if (constantArray->Value > (std::numeric_limits<unsigned int>::max)()) {
-			throw std::range_error("The constant integer value is superior to unsigned int maximum value.");
-		}
-		std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<unsigned int>(constantArray->Value));
-		break;
+	else {
+		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
 	}
-	case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray:
-	{
-		gsoap_eml2_3::eml23__IntegerLatticeArray* latticeArray = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(arrayInput);
-		if (latticeArray->Offset.size() > 1) {
-			throw invalid_argument("The integer lattice array contains more than one offset.");
+
+	return (std::numeric_limits<uint32_t>::max)();
+}
+
+uint64_t AbstractObject::readArrayNdOfUInt64Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint64_t * arrayOutput) const
+{
+	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+		auto const * hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
+		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(hdfArray->Values->HdfProxy->UUID);
+		if (hdfProxy == nullptr) {
+			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
 		}
-		for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
-			arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
+		hdfProxy->readArrayNdOfUInt64Values(hdfArray->Values->PathInHdfFile, arrayOutput);
+		if (hdfArray->NullValue > (std::numeric_limits<uint64_t>::max)()) {
+			throw range_error("The null value is greater than uint64_t max.");
 		}
-		break;
+		return static_cast<uint64_t>(hdfArray->NullValue);
 	}
-	default: throw invalid_argument("The integer array type is not supported yet.");
+	else {
+		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
 	}
+
+	return (std::numeric_limits<uint64_t>::max)();
+}
+
+uint64_t AbstractObject::readArrayNdOfUInt64Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint64_t * arrayOutput) const
+{
+	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
+			if (hdfProxy == nullptr) {
+				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
+			}
+			hdfProxy->readArrayNdOfUInt64Values(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		}
+		if (static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue > (std::numeric_limits<uint64_t>::max)()) {
+			throw range_error("The null value is greater than uint64_t max.");
+		}
+		return static_cast<uint64_t>(static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue);
+	}
+	else {
+		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
+	}
+
+	return (std::numeric_limits<uint64_t>::max)();
 }
 
 uint64_t AbstractObject::getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const

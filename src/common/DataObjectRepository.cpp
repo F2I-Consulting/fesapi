@@ -99,6 +99,8 @@ under the License.
 #include "../resqml2_0_1/IjkGridNoGeometryRepresentation.h"
 #include "../resqml2_0_1/IjkGridParametricRepresentation.h"
 #include "../resqml2_0_1/UnstructuredGridRepresentation.h"
+#include "../resqml2_0_1/StreamlinesFeature.h"
+#include "../resqml2_0_1/StreamlinesRepresentation.h"
 
 #include "../resqml2_0_1/Activity.h"
 #include "../resqml2_0_1/ActivityTemplate.h"
@@ -159,6 +161,8 @@ under the License.
 #include "../resqml2_2/StratigraphicColumnRankInterpretation.h"
 #include "../resqml2_2/StratigraphicOccurrenceInterpretation.h"
 #include "../resqml2_2/StratigraphicUnitInterpretation.h"
+#include "../resqml2_2/StreamlinesFeature.h"
+#include "../resqml2_2/StreamlinesRepresentation.h"
 #include "../resqml2_2/StringTableLookup.h"
 #include "../resqml2_2/StructuralOrganizationInterpretation.h"
 #include "../resqml2_2/SubRepresentation.h"
@@ -2421,6 +2425,28 @@ RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createGridCon
 	}
 }
 
+RESQML2_NS::StreamlinesFeature* DataObjectRepository::createStreamlinesFeature(const std::string & guid, const std::string & title, uint64_t timeIndex, EML2_NS::TimeSeries* timeSeries)
+{
+	switch (defaultResqmlVersion) {
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::StreamlinesFeature(this, guid, title, timeIndex, timeSeries);
+#ifdef WITH_RESQML2_2
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::StreamlinesFeature(this, guid, title, timeIndex, timeSeries);
+#endif
+	default: throw std::logic_error("The RESQML version is not supported.");
+	}
+}
+
+RESQML2_NS::StreamlinesRepresentation* DataObjectRepository::createStreamlinesRepresentation(RESQML2_NS::GenericFeatureInterpretation* interp, const std::string & guid, const std::string & title, uint64_t lineCount)
+{
+	switch (defaultResqmlVersion) {
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::StreamlinesRepresentation(interp, guid, title, lineCount);
+#ifdef WITH_RESQML2_2
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::StreamlinesRepresentation(interp, guid, title, lineCount);
+#endif
+	default: throw std::logic_error("The RESQML version is not supported.");
+	}
+}
+
 //************************************
 //************* PROPERTIES ***********
 //************************************
@@ -3332,6 +3358,9 @@ std::vector<RESQML2_NS::PointSetRepresentation*> DataObjectRepository::getPointS
 
 std::vector<EML2_NS::AbstractHdfProxy*> DataObjectRepository::getHdfProxySet() const { return getDataObjects<EML2_NS::AbstractHdfProxy>(); }
 
+std::vector<RESQML2_NS::StreamlinesFeature*> DataObjectRepository::getStreamlinesFeatureSet() const { return getDataObjects<RESQML2_NS::StreamlinesFeature>(); }
+std::vector<RESQML2_NS::StreamlinesRepresentation*> DataObjectRepository::getStreamlinesRepresentationSet() const { return getDataObjects<RESQML2_NS::StreamlinesRepresentation>(); }
+
 COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType)
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;
@@ -3433,6 +3462,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapC
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RockFluidOrganizationInterpretation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RockFluidUnitInterpretation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RockFluidUnitFeature)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StreamlinesFeature)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StreamlinesRepresentation)
 	else if (resqmlContentType.compare(EML2_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
@@ -3570,6 +3601,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StratigraphicColumnRankInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StratigraphicOccurrenceInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StratigraphicUnitInterpretation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StreamlinesFeature)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StreamlinesRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StringTableLookup)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StructuralOrganizationInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SubRepresentation)

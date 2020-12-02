@@ -66,6 +66,8 @@ under the License.
 #include "../src/resqml2_2/StratigraphicColumnRankInterpretation.h"
 #include "../src/resqml2_2/StratigraphicOccurrenceInterpretation.h"
 #include "../src/resqml2_2/StratigraphicUnitInterpretation.h"
+#include "../src/resqml2_2/StreamlinesFeature.h"
+#include "../src/resqml2_2/StreamlinesRepresentation.h"
 #include "../src/resqml2_2/StringTableLookup.h"
 #include "../src/resqml2_2/StructuralOrganizationInterpretation.h"
 #include "../src/resqml2_2/SubRepresentation.h"
@@ -129,6 +131,8 @@ under the License.
 	%nspace RESQML2_2_NS::StratigraphicColumnRankInterpretation;
 	%nspace RESQML2_2_NS::StratigraphicOccurrenceInterpretation;
 	%nspace RESQML2_2_NS::StratigraphicUnitInterpretation;
+	%nspace RESQML2_2_NS::StreamlinesFeature;
+	%nspace RESQML2_2_NS::StreamlinesRepresentation;
 	%nspace RESQML2_2_NS::StringTableLookup;
 	%nspace RESQML2_2_NS::StructuralOrganizationInterpretation;
 	%nspace RESQML2_2_NS::SubRepresentation;
@@ -583,6 +587,22 @@ namespace RESQML2_2_NS
 	%rename(resqml22_GridConnectionSetRepresentation) GridConnectionSetRepresentation;
 #endif	
 	class GridConnectionSetRepresentation : public RESQML2_NS::GridConnectionSetRepresentation
+	{
+	public:
+	};
+	
+#ifdef SWIGPYTHON
+	%rename(resqml22_StreamlinesFeature) StreamlinesFeature;
+#endif	
+	class StreamlinesFeature : public AbstractTechnicalFeature
+	{
+	public:
+	};
+	
+#ifdef SWIGPYTHON
+	%rename(resqml22_StreamlinesRepresentation) StreamlinesRepresentation;
+#endif	
+	class StreamlinesRepresentation : public AbstractRepresentation
 	{
 	public:
 	};

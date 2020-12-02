@@ -95,6 +95,8 @@ under the License.
 	%nspace RESQML2_NS::StratigraphicColumnRankInterpretation;
 	%nspace RESQML2_NS::StratigraphicOccurrenceInterpretation;
 	%nspace RESQML2_NS::StratigraphicUnitInterpretation;
+	%nspace RESQML2_NS::StreamlinesFeature;
+	%nspace RESQML2_NS::StreamlinesRepresentation;
 	%nspace RESQML2_NS::StringTableLookup;
 	%nspace RESQML2_NS::StructuralOrganizationInterpretation;
 	%nspace RESQML2_NS::SubRepresentation;
@@ -2982,6 +2984,229 @@ namespace RESQML2_NS
 		
 		unsigned int getSupportingGridRepresentationCount() const;
 		AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index);
+	};
+	
+	/**
+	 * @brief	Specification of the vector field upon which the streamlines are based.
+	 *
+	 * 			Streamlines are commonly used to trace the flow of phases (water / oil / gas / total)
+	 *			based upon their flux at a specified time. They may also be used for trace components
+	 *			for compositional simulation, e.g., CO2, or temperatures for thermal simulation.
+	 */
+#ifdef SWIGPYTHON
+	%rename(resqml2_StreamlinesFeature) StreamlinesFeature;
+#endif	
+	class StreamlinesFeature : public AbstractTechnicalFeature
+	{
+	public:
+		/**
+		 * Gets the Time series associated to this streamlines feature.
+		 *
+		 * @exception	std::logic_error	If this feature is partial or if this feature is standard invalid.
+		 *
+		 * @returns	The associated streamlines feature.
+		 */
+		EML2_NS::TimeSeries* getTimeSeries() const;
+
+		/**
+		 * Gets the time index in the Time series associated to this streamlines feature.
+		 *
+		 * @exception	std::logic_error	If this feature is partial.
+		 *
+		 * @returns	the time index in the Time series associated to this streamlines feature
+		 */
+		uint64_t getTimeIndex() const;
+	};
+	
+	/**
+	 * @brief	Representation of streamlines associated with a streamline feature and interpretation.
+	 *			Use the StreamlinesFeature to specify the vector field that supports the streamlines, i.e., describes what flux is being traced.
+	 *			Use the Generic Feature  Interpretation to distinguish between shared and differing interpretations.
+	 */
+#ifdef SWIGPYTHON
+	%rename(resqml2_StreamlinesRepresentation) StreamlinesRepresentation;
+#endif	
+	class StreamlinesRepresentation : public AbstractRepresentation
+	{
+	public:
+		/**
+		 * Gets the count of line contained in this streamlines representation.
+		 *
+		 * @exception	std::logic_error	If this feature is partial.
+		 *
+		 * @returns	The count of line contained in this streamlines representation.
+		*/
+		uint32_t getLineCount() const;
+
+		/**
+		 * Gets the count of wellbore trajectories of this streamlines representation.
+		 *
+		 * @exception	std::range_error	If the count of wellbore trajectories is strictly
+		 * 									greater than unsigned int max.
+		 *
+		 * @returns	The count of wellbore trajectories.
+		 */
+		uint16_t getWellboreTrajectoryCount() const;
+
+		/**
+		 * Gets the wellbore trajectory located at a specific index of this streamlines
+		 * representation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt>
+		 * 									getWellboreTrajectoryCount().
+		 *
+		 * @param 	index	Zero-based index of the wellbore trajectory we look for.
+		 *
+		 * @returns	The wellbore trajectory at position @p index.
+		 */
+		RESQML2_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory(uint16_t index);
+
+		/**
+		 * @brief	Gets all the wellbore indices which are injectors.
+		 *			Null values signify that that line does not initiate at an injector, e.g., it may come from fluid expansion or an aquifer.
+		 *
+		 * @param [in/out]	injectorPerLine 	The 0-based injector wellbore index defined by the order of the wellbore in the list of WellboreTrajectoryRepresentation references.
+		 *									It must be preallocated with a size getWellboreTrajectories().size() and it won't be freed by FESAPI.
+		 *
+		 * @returns	The null value used in injectorPerLine.
+		 */
+		uint32_t getInjectorPerLine(uint32_t* injectorPerLine) const;
+
+		/**
+		 * @brief	Gets all the wellbore indices which are producers.
+		 *			Null values signify that that line does not terminate at a producer, e.g., it may approach a stagnation area.
+		 *
+		 * @param [in/out]	injectorPerLine 	The 0-based injector wellbore index defined by the order of the wellbore in the list of WellboreTrajectoryRepresentation references.
+		 *									It must be preallocated with a size getWellboreTrajectories().size() and it won't be freed by FESAPI.
+		 *
+		 * @returns	The null value used in producerPerLine.
+		 */
+		uint32_t getProducerPerLine(uint32_t* producerPerLine) const;
+
+		/**
+		 * Gets the node count per line.
+		 *
+		 * @param [out]	nodeCountPerPolyline	A preallocated array to receive the node count per
+		 * 										line. Its size must be
+		 * 										<tt>getLineCount(patchIndex)</tt>.
+		 */
+		getNodeCountPerLine(uint32_t * nodeCountPerPolyline) const;
+
+		/**
+		 * Gets the interval count per line.
+		 *
+		 * @param [out]	intervalCountPerPolyline	A preallocated array to receive the interval count per
+		 * 											line. Its size must be
+		 * 											<tt>getLineCount(patchIndex)</tt>.
+		 */
+		void getIntervalCountPerLine(uint32_t * intervalCountPerPolyline) const;
+
+		/**
+		 * Gets the total interval count in this streamlines representation.
+		 *
+		 * @param [out]	nodeCountPerPolyline	A preallocated array to receive the node count per
+		 * 										line. Its size must be
+		 * 										<tt>getLineCount(patchIndex)</tt>.
+		 */
+		uint64_t getIntervalCount() const;
+
+		/**
+		 * Sets the geometry of the streamlines representation.
+		 *
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
+		 * 										id defined in the repository.
+		 *
+		 * @param [in]	  	nodeCountPerPolyline  	The node count per polyline in this representation. It is
+		 * 											ordered by polyline. There must be getLineCount()
+		 * 											values in this array.
+		 * @param [in]	  	xyzPoints			  	The xyz values of the nodes. Ordered by xyz, then by
+		 * 											node and then by polyline. It must be three times the
+		 * 											total count of nodes.
+		 *											If the streamlines are associated to grids then the there must be one point
+		 *											one each face intersected by the a line + the start and end point.
+		 * @param [in,out]	hdfProxy			  	(Optional) The HDF proxy which defines where the
+		 * 											nodes will be stored. If @c nullptr (default), then
+		 * 											the repository default HDF proxy will be used.
+		 * @param [in]	  	localCrs			  	(Optional) The local CRS where the points are
+		 * 											defined. If @c nullptr (default value), then the
+		 * 											repository default local CRS will be used.
+		 */
+		void setGeometry(
+			uint32_t const * nodeCountPerPolyline, double const * xyzPoints,
+			EML2_NS::AbstractHdfProxy* hdfProxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
+
+		/**
+		 * For each interval of the lines of the representation, gets the index of the grid it is associated to.
+		 *
+		 * @exception	std::range_error	If the grid indices are stored in an integer constant array
+		 * 									and if the the constant value is strictly superior than uint16_t maximum value.
+		 * @exception	std::logic_error	If the grid indices are neither stored in a HDF5 integer
+		 * 									array nor in an integer constant array.
+		 *
+		 * @param [out]	gridIndices	An array for receiving the grids indices. The size of this array is
+		 * 							getIntervalCount.
+		 *
+		 * @returns	The null value used in @p gridIndices in order to indicate that an interval does not
+		 * 			correspond to any intersected grid.
+		 */
+		uint16_t getGridIndices(uint16_t * gridIndices) const;
+
+		/**
+		 * For each interval of the lines of the representation, gets the index of the cell it is associated to.
+		 * Cell index in in the scope of the associated grid at the same index.
+		 *
+		 * @exception	std::range_error	If the cell indices are stored in an integer constant array
+		 * 									and if the the constant value is strictly superior than uint64_t maximum value.
+		 * @exception	std::logic_error	If the * indices are neither stored in a HDF5 integer
+		 * 									array nor in an integer constant array.
+		 *
+		 * @param [out]	cellIndices	An array for receiving the cell indices. The size of this array is
+		 * 							getIntervalCount.
+		 *
+		 * @returns	The null value used in @p cellIndices in order to indicate that an interval does not
+		 * 			correspond to any intersected grid.
+		 */
+		int64_t getCellIndices(uint64_t * cellIndices) const;
+
+		/**
+		 * For each interval of the lines of the representation, gets the entry and exit intersection faces of the line in the cell.
+		 *
+		 * @exception	std::range_error	If the grid indices are stored in an integer constant array
+		 * 									and if the the constant value is strictly superior than uint8_t maximum value.
+		 * @exception	std::logic_error	If the grid indices are neither stored in a HDF5 integer
+		 * 									array nor in an integer constant array.
+		 *
+		 * @param [out]	gridIndices	An array for receiving the local Face Pair Per Cell Indices. The size of this array is twice
+		 * 							getIntervalCount.
+		 *
+		 * @returns	The null value used in @p localFacePairPerCellIndices in order to indicate that a line interval does not intersect a face in this cell.
+		 */
+		uint8_t getLocalFacePairPerCellIndices(uint8_t * localFacePairPerCellIndices) const;
+
+		/**
+		 * Gets the count of grid representations of this streamlines representation.
+		 *
+		 * @exception	std::range_error	If the count of grid representations is strictly
+		 * 									greater than unsigned int max.
+		 *
+		 * @returns	The count of grid representation.
+		 */
+		uint16_t getGridRepresentationCount() const;
+
+		/**
+		 * Gets the grid representation located at a specific index of this streamlines
+		 * representation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt>
+		 * 									getGridRepresentationCount().
+		 *
+		 * @param 	index	Zero-based index of the grid representation we look for.
+		 *
+		 * @returns	The grid representation at position @p index.
+		 */
+		RESQML2_NS::AbstractGridRepresentation* getGridRepresentation(uint16_t index) const;
 	};
 	
 	class AbstractProperty;
