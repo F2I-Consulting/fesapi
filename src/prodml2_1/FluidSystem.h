@@ -46,9 +46,9 @@ namespace PRODML2_1_NS
 		 * @param 		  	guid			  	The guid to set to this instance. If empty then a new
 		 * 										guid will be generated.
 		 * @param 		  	title			  	The title.
-		 * @param 		  	temperatureValue  	The temperature value.
+		 * @param 		  	temperatureValue  	The temperature value in standard conditions.
 		 * @param 		  	temperatureUom	  	The temperature uom.
-		 * @param 		  	pressureValue	  	The pressure value.
+		 * @param 		  	pressureValue	  	The pressure value in standard conditions.
 		 * @param 		  	pressureUom		  	The pressure uom.
 		 * @param 		  	reservoirFluidKind	The reservoir fluid kind.
 		 * @param 		  	gasOilRatio		  	The gas oil ratio.
@@ -59,6 +59,28 @@ namespace PRODML2_1_NS
 			const std::string & title,
 			double temperatureValue, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom temperatureUom,
 			double pressureValue, gsoap_eml2_2::eml22__PressureUom pressureUom,
+			gsoap_eml2_2::prodml21__ReservoirFluidKind reservoirFluidKind,
+			double gasOilRatio, gsoap_eml2_2::eml22__VolumePerVolumeUom gasOilRatioUom);
+
+		/**
+		 * @brief	Creates an instance of this class in a gsoap context.
+		 *
+		 * @exception	std::invalid_argument	If <tt>repo == nullptr</tt>.
+		 *
+		 * @param [in,out]	repo			  	The dataobject repo where the underlying gsoap proxy is
+		 * 										going to be created.
+		 * @param 		  	guid			  	The guid to set to this instance. If empty then a new
+		 * 										guid will be generated.
+		 * @param 		  	title			  	The title.
+		 * @param 		  	referenceCondition	A wellknown couple of temperature-pressure in standard conditions.
+		 * @param 		  	reservoirFluidKind	The reservoir fluid kind.
+		 * @param 		  	gasOilRatio		  	The gas oil ratio.
+		 * @param 		  	gasOilRatioUom	  	The gas oil ratio uom.
+		 */
+		FluidSystem(COMMON_NS::DataObjectRepository * repo,
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_2::eml22__ReferenceCondition referenceCondition,
 			gsoap_eml2_2::prodml21__ReservoirFluidKind reservoirFluidKind,
 			double gasOilRatio, gsoap_eml2_2::eml22__VolumePerVolumeUom gasOilRatioUom);
 
@@ -81,6 +103,48 @@ namespace PRODML2_1_NS
 			}
 			return static_cast<gsoap_eml2_2::prodml21__FluidSystem*>(gsoapProxy2_2)->ReservoirFluidKind;
 		}
+
+		/**
+		 * Gets standard temperature value
+		 *
+		 * @returns	The standard temperature value.
+		 */
+		DLL_IMPORT_OR_EXPORT double getStandardTemperatureValue() const;
+
+		/**
+		 * Gets standard temperature uom
+		 *
+		 * @returns	The standard temperature uom.
+		 */
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::eml22__ThermodynamicTemperatureUom getStandardTemperatureUom() const;
+
+		/**
+		 * Gets standard pressure value
+		 *
+		 * @returns	The standard pressure value.
+		 */
+		DLL_IMPORT_OR_EXPORT double getStandardPressureValue() const;
+
+		/**
+		 * Gets standard pressure uom
+		 *
+		 * @returns	The standard pressure uom.
+		 */
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::eml22__PressureUom getStandardPressureUom() const;
+
+		/**
+		 * Gets solution gas-oil ratio value
+		 *
+		 * @returns	The solution gas-oil ratio value.
+		 */
+		DLL_IMPORT_OR_EXPORT double getSolutionGORValue() const;
+
+		/**
+		 * Gets solution gas-oil ratio uom
+		 *
+		 * @returns	The solution gas-oil ratio uom.
+		 */
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::eml22__VolumePerVolumeUom getSolutionGORUom() const;
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

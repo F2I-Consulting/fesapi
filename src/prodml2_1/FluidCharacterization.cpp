@@ -50,6 +50,10 @@ FluidCharacterization::FluidCharacterization(COMMON_NS::DataObjectRepository * r
 	repo->addOrReplaceDataObject(this);
 }
 
+SETTER_OPTIONAL_ATTRIBUTE_IMPL(FluidCharacterization, prodml21__FluidCharacterization, gsoapProxy2_2, FluidCharacterizationType, std::string, soap_new_std__string)
+SETTER_OPTIONAL_ATTRIBUTE_IMPL(FluidCharacterization, prodml21__FluidCharacterization, gsoapProxy2_2, IntendedUsage, std::string, soap_new_std__string)
+SETTER_OPTIONAL_ATTRIBUTE_IMPL(FluidCharacterization, prodml21__FluidCharacterization, gsoapProxy2_2, Remark, std::string, soap_new_std__string)
+
 void FluidCharacterization::setStandardConditions(double temperatureValue, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom temperatureUom,
 	double pressureValue, gsoap_eml2_2::eml22__PressureUom pressureUom)
 {
@@ -77,9 +81,14 @@ double FluidCharacterization::getStandardTemperatureValue() const
 	if (fc->StandardConditions->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__TemperaturePressure) {
 		return static_cast<eml22__TemperaturePressure*>(fc->StandardConditions)->Temperature->__item;
 	}
-	else {
-		throw logic_error("Reference conditions are not supported yet.");
+	else if (fc->StandardConditions->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__ReferenceTemperaturePressure) {
+		istringstream iss(*static_cast<eml22__ReferenceTemperaturePressure*>(fc->StandardConditions)->union_ReferenceTemperaturePressure_.ReferenceTempPres);
+		double result;
+		iss >> result;
+		return result;
 	}
+
+	throw logic_error("Unrecognized datatype for StandardConditions.");
 }
 
 gsoap_eml2_2::eml22__ThermodynamicTemperatureUom FluidCharacterization::getStandardTemperatureUom() const
@@ -92,9 +101,14 @@ gsoap_eml2_2::eml22__ThermodynamicTemperatureUom FluidCharacterization::getStand
 	if (fc->StandardConditions->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__TemperaturePressure) {
 		return static_cast<eml22__TemperaturePressure*>(fc->StandardConditions)->Temperature->uom;
 	}
-	else {
-		throw logic_error("Reference conditions are not supported yet.");
+	else if (fc->StandardConditions->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__ReferenceTemperaturePressure) {
+		const std::string str = *static_cast<eml22__ReferenceTemperaturePressure*>(fc->StandardConditions)->union_ReferenceTemperaturePressure_.ReferenceTempPres;
+		if (str.find("degC") != std::string::npos) return gsoap_eml2_2::eml22__ThermodynamicTemperatureUom__degC;
+		if (str.find("degF") != std::string::npos) return gsoap_eml2_2::eml22__ThermodynamicTemperatureUom__degF;
+		throw logic_error("Unrecognized temperature uom in " + str);
 	}
+
+	throw logic_error("Unrecognized datatype for StandardConditions.");
 }
 
 double FluidCharacterization::getStandardPressureValue() const
@@ -107,9 +121,19 @@ double FluidCharacterization::getStandardPressureValue() const
 	if (fc->StandardConditions->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__TemperaturePressure) {
 		return static_cast<eml22__TemperaturePressure*>(fc->StandardConditions)->Pressure->__item;
 	}
-	else {
-		throw logic_error("Reference conditions are not supported yet.");
+	else if (fc->StandardConditions->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__ReferenceTemperaturePressure) {
+		const std::string str = *static_cast<eml22__ReferenceTemperaturePressure*>(fc->StandardConditions)->union_ReferenceTemperaturePressure_.ReferenceTempPres;
+		istringstream iss(str);
+		int tempValue;
+		iss >> tempValue;
+		std::string  tempUom;
+		iss >> tempUom;
+		int pressureValue;
+		iss >> pressureValue;
+		return pressureValue;
 	}
+
+	throw logic_error("Unrecognized datatype for StandardConditions.");
 }
 
 gsoap_eml2_2::eml22__PressureUom FluidCharacterization::getStandardPressureUom() const
@@ -127,9 +151,15 @@ gsoap_eml2_2::eml22__PressureUom FluidCharacterization::getStandardPressureUom()
 		}
 		return result;
 	}
-	else {
-		throw logic_error("Reference conditions are not supported yet.");
+	else if (fc->StandardConditions->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__ReferenceTemperaturePressure) {
+		const std::string str = *static_cast<eml22__ReferenceTemperaturePressure*>(fc->StandardConditions)->union_ReferenceTemperaturePressure_.ReferenceTempPres;
+		if (str.find("bar") != std::string::npos) return gsoap_eml2_2::eml22__PressureUom__bar;
+		if (str.find("atm") != std::string::npos) return gsoap_eml2_2::eml22__PressureUom__atm;
+		if (str.find("degF") != std::string::npos && str.find("in Hg") != std::string::npos) return gsoap_eml2_2::eml22__PressureUom__inHg_x005b60degF_x005d;
+		throw logic_error("Unrecognized pressure uom in " + str);
 	}
+
+	throw logic_error("Unrecognized datatype for StandardConditions.");
 }
 
 void FluidCharacterization::setRockFluidUnit(RESQML2_NS::RockFluidUnitInterpretation* rockFluidUnit)

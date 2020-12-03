@@ -148,6 +148,10 @@ namespace PRODML2_1_NS
 			}
 		}
 
+		GETTER_SETTER_OPTIONAL_ATTRIBUTE(gsoap_eml2_2::prodml21__FluidCharacterization, gsoapProxy2_2, FluidCharacterizationType, std::string)
+		GETTER_SETTER_OPTIONAL_ATTRIBUTE(gsoap_eml2_2::prodml21__FluidCharacterization, gsoapProxy2_2, IntendedUsage, std::string)
+		GETTER_SETTER_OPTIONAL_ATTRIBUTE(gsoap_eml2_2::prodml21__FluidCharacterization, gsoapProxy2_2, Remark, std::string)
+
 		/**
 		 * Sets standard conditions
 		 *

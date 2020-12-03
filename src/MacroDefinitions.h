@@ -125,14 +125,14 @@ under the License.
 /**
  * A macro that defines setter optional attribute Implementation
  *
- * @param 	className	  	Name of the class.
- * @param 	gsoapClassName	Name of the gsoap class.
- * @param 	proxyVariable 	The proxy variable.
- * @param 	attributeName 	Name of the attribute.
- * @param 	uomDatatype   	The uom datatype.
- * @param 	constructor   	The constructor.
+ * @param 	className	  		Name of the class.
+ * @param 	gsoapClassName		Name of the gsoap class.
+ * @param 	proxyVariable 		The proxy variable.
+ * @param 	attributeName 		Name of the attribute.
+ * @param 	attributeDatatype	The attribute datatype.
+ * @param 	constructor   		The constructor.
  */
-#define SETTER_OPTIONAL_ATTRIBUTE_IMPL(className, gsoapClassName, proxyVariable, attributeName, uomDatatype, constructor)\
+#define SETTER_OPTIONAL_ATTRIBUTE_IMPL(className, gsoapClassName, proxyVariable, attributeName, attributeDatatype, constructor)\
 void className::set##attributeName(const attributeDatatype& value)\
 {\
 	static_cast<gsoapClassName*>(proxyVariable)->attributeName = constructor(proxyVariable->soap);\

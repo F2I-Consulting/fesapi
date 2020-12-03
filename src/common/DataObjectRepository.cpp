@@ -2855,6 +2855,19 @@ PRODML2_1_NS::FluidSystem* DataObjectRepository::createFluidSystem(const std::st
 		gasOilRatio, gasOilRatioUom);
 }
 
+PRODML2_1_NS::FluidSystem* DataObjectRepository::createFluidSystem(const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_2::eml22__ReferenceCondition referenceCondition,
+	gsoap_eml2_2::prodml21__ReservoirFluidKind reservoirFluidKind,
+	double gasOilRatio, gsoap_eml2_2::eml22__VolumePerVolumeUom gasOilRatioUom)
+{
+	return new PRODML2_1_NS::FluidSystem(this,
+		guid, title,
+		referenceCondition,
+		reservoirFluidKind,
+		gasOilRatio, gasOilRatioUom);
+}
+
 PRODML2_1_NS::FluidCharacterization* DataObjectRepository::createFluidCharacterization(const std::string & guid, const std::string & title)
 {
 	return new PRODML2_1_NS::FluidCharacterization(this, guid, title);
