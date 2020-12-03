@@ -110,9 +110,9 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	patch->PatchIndex = triRep->TrianglePatch.size();
 	triRep->TrianglePatch.push_back(patch);
 
-	hsize_t pointCountDims[] = {nodeCount};
+	uint64_t pointCountDims = nodeCount;
 	patch->NodeCount = nodeCount;
-	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, pointCountDims, 1, proxy);
+	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, &pointCountDims, 1, proxy);
 	getRepository()->addRelationship(this, localCrs);
 
 	getRepository()->addRelationship(this, proxy);
