@@ -206,7 +206,7 @@ void StreamlinesRepresentation::setGeometry(
 	uint64_t nodeCount = 0;
 	uint64_t intervalCount = 0;
 	const auto lineCount = getLineCount();
-	for (auto lineIndex = 0; lineIndex < lineCount; ++lineIndex) {
+	for (size_t lineIndex = 0; lineIndex < lineCount; ++lineIndex) {
 		nodeCount += nodeCountPerPolyline[lineIndex];
 		intervalCount += nodeCount - 1;
 	}
