@@ -105,8 +105,8 @@ gsoap_eml2_3::resqml22__Seismic3dCoordinates* AbstractRepresentation::getSeismic
 	return nullptr;
 }
 
-gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointGeometryPatch2_0_1(unsigned int patchIndex,
-	double const * points, AbstractLocal3dCrs const* localCrs, hsize_t const* numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy)
+gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointGeometryPatch2_0_1(uint32_t patchIndex,
+	double const * points, AbstractLocal3dCrs const* localCrs, hsize_t const* numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -151,8 +151,8 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointG
 	}
 }
 
-gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::createPointGeometryPatch2_2(unsigned int patchIndex,
-	double const * points, AbstractLocal3dCrs const* localCrs, hsize_t const* numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy)
+gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::createPointGeometryPatch2_2(uint32_t patchIndex,
+	double const * points, AbstractLocal3dCrs const* localCrs, hsize_t const* numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();

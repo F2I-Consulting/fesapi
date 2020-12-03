@@ -419,7 +419,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
 		 */
-		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(unsigned int patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, unsigned long long const * numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
+		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(uint32_t patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, uint64_t const * numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * Creates a v2.2 point geometry patch.
@@ -439,7 +439,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
 		 */
-		gsoap_eml2_3::resqml22__PointGeometry* createPointGeometryPatch2_2(unsigned int patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, unsigned long long const * numPoints, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
+		gsoap_eml2_3::resqml22__PointGeometry* createPointGeometryPatch2_2(uint32_t patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, uint64_t const * numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * Gets hdf proxy dor from point geometry patch

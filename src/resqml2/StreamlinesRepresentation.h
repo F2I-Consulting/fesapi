@@ -145,7 +145,7 @@ namespace RESQML2_NS
 		 * 										the repository default HDF proxy will be used.
 		 */
 		void virtual setWellboreInformation(uint32_t const* injectorPerLine, uint32_t const* producerPerLine, const std::vector<RESQML2_NS::WellboreTrajectoryRepresentation*> & wellboreTrajectories,
-			uint32_t nullValue = (std::numeric_limits<uint64_t>::max)(), EML2_NS::AbstractHdfProxy* hdfProxy = nullptr) = 0;
+			uint32_t nullValue = (std::numeric_limits<uint32_t>::max)(), EML2_NS::AbstractHdfProxy* hdfProxy = nullptr) = 0;
 
 		//********************************
 		//********** GEOMETRY ************
