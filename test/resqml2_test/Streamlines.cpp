@@ -40,9 +40,6 @@ Streamlines::Streamlines(const string & epcDocPath)
 
 void Streamlines::initRepo()
 {
-	// getting the hdf proxy
-	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
-
 	EML2_NS::TimeSeries* partialTimeSeries = repo->createPartial<RESQML2_0_1_NS::TimeSeries>("", "TimeSeries for streamline");
 
 	RESQML2_NS::WellboreTrajectoryRepresentation* partialInjectorTraj = repo->createPartial<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>("", "Injector");
@@ -92,7 +89,6 @@ void Streamlines::readRepo()
 	REQUIRE(streamlinesFeature->getInterpretationCount() == 1);
 	REQUIRE(streamlinesFeature->getInterpretation(0)->getRepresentationCount() == 1);
 	RESQML2_NS::StreamlinesRepresentation* streamlinesRep = repo->getDataObjectByUuid<RESQML2_NS::StreamlinesRepresentation>(streamlinesFeature->getInterpretation(0)->getRepresentation(0)->getUuid());
-	REQUIRE(streamlinesRep != nullptr);
 	REQUIRE(streamlinesRep->getLineCount() == 2);
 
 	// Well
