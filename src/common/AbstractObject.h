@@ -182,8 +182,8 @@ namespace COMMON_NS
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
 		 * preallocated output array in memory. It does not allocate or deallocate memory.
 		 *
-		 * @param [in,out]	arrayInput 	If non-null, the array input.
-		 * @param [in,out]	arrayOutput	If non-null, the array output.
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
 		 */
 		void readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray * arrayInput, double * arrayOutput) const;
 
@@ -191,28 +191,177 @@ namespace COMMON_NS
 		 * Read an input array which come from EML 2.3 (and potentially HDF5) and store it into a
 		 * preallocated output array in memory. It does not allocate or deallocate memory.
 		 *
-		 * @param [in,out]	arrayInput 	If non-null, the array input.
-		 * @param [in,out]	arrayOutput	If non-null, the array output.
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
 		 */
 		void readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloatingPointArray * arrayInput, double * arrayOutput) const;
+
+		template <class T>
+		void readArrayNdOfNonHdf5IntegerValues(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, T * arrayOutput) const {
+			switch (arrayInput->soap_type()) {
+			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerRangeArray:
+			{
+				gsoap_resqml2_0_1::resqml20__IntegerRangeArray const* rangeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerRangeArray const *>(arrayInput);
+				if (rangeArray->Value + rangeArray->Count > (std::numeric_limits<T>::max)()) {
+					throw std::range_error("The range integer values are superior to unsigned int maximum value.");
+				}
+				for (unsigned int i = 0; i < static_cast<T>(rangeArray->Count); ++i) {
+					arrayOutput[i] = i + static_cast<T>(rangeArray->Value);
+				}
+				break;
+			}
+			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray:
+			{
+				gsoap_resqml2_0_1::resqml20__IntegerConstantArray const* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(arrayInput);
+				if (constantArray->Value > (std::numeric_limits<T>::max)()) {
+					throw std::range_error("The constant integer value is superior to unsigned int maximum value.");
+				}
+				for (size_t i = 0; i < constantArray->Count; ++i) {
+					arrayOutput[i] = static_cast<T>(constantArray->Value);
+				}
+				break;
+			}
+			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray:
+			{
+				gsoap_resqml2_0_1::resqml20__IntegerLatticeArray const* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray const*>(arrayInput);
+				if (latticeArray->Offset.size() > 1) {
+					throw std::invalid_argument("The integer lattice array contains more than one offset.");
+				}
+				for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
+					arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
+				}
+				break;
+			}
+			default:
+				throw std::invalid_argument("The integer array type is not supported yet.");
+			}
+		}
+
+		template <class T>
+		void readArrayNdOfNonHdf5IntegerValues(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, T * arrayOutput) const {
+			switch (arrayInput->soap_type()) {
+			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerRangeArray:
+			{
+				gsoap_eml2_3::eml23__IntegerRangeArray const* rangeArray = static_cast<gsoap_eml2_3::eml23__IntegerRangeArray const*>(arrayInput);
+				if (rangeArray->Value + rangeArray->Count > (std::numeric_limits<T>::max)()) {
+					throw std::range_error("The range integer values are superior to unsigned int maximum value.");
+				}
+				for (unsigned int i = 0; i < static_cast<T>(rangeArray->Count); ++i) {
+					arrayOutput[i] = i + static_cast<T>(rangeArray->Value);
+				}
+				break;
+			}
+			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
+			{
+				gsoap_eml2_3::eml23__IntegerConstantArray const* constantArray = static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(arrayInput);
+				if (constantArray->Value > (std::numeric_limits<T>::max)()) {
+					throw std::range_error("The constant integer value is superior to unsigned int maximum value.");
+				}
+				std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<T>(constantArray->Value));
+				break;
+			}
+			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray:
+			{
+				gsoap_eml2_3::eml23__IntegerLatticeArray const* latticeArray = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray const*>(arrayInput);
+				if (latticeArray->Offset.size() > 1) {
+					throw std::invalid_argument("The integer lattice array contains more than one offset.");
+				}
+				for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
+					arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
+				}
+				break;
+			}
+			default: throw std::invalid_argument("The integer array type is not supported yet.");
+			}
+		}
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
 		 * preallocated output array in memory. It does not allocate or deallocate memory.
 		 *
-		 * @param [in,out]	arrayInput 	If non-null, the array input.
-		 * @param [in,out]	arrayOutput	If non-null, the array output.
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint8_t::max
 		 */
-		void readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const;
+		uint8_t readArrayNdOfUInt8Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint8_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint16_t::max
+		 */
+		uint8_t readArrayNdOfUInt8Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint8_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint16_t::max
+		 */
+		uint16_t readArrayNdOfUInt16Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint16_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint8_t::max
+		 */
+		uint16_t readArrayNdOfUInt16Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint16_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint32_t::max
+		 */
+		uint32_t readArrayNdOfUInt32Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint32_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.3 (and potentially HDF5) and store it into a
 		 * preallocated output array in memory. It does not allocate or deallocate memory.
 		 *
-		 * @param [in,out]	arrayInput 	If non-null, the array input.
-		 * @param [in,out]	arrayOutput	If non-null, the array output.
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint32_t::max
 		 */
-		void readArrayNdOfUIntValues(gsoap_eml2_3::eml23__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const;
+		uint32_t readArrayNdOfUInt32Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint32_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint64_t::max
+		 */
+		uint64_t readArrayNdOfUInt64Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint64_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint64_t::max
+		 */
+		uint64_t readArrayNdOfUInt64Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint64_t * arrayOutput) const;
 
 		/**
 		 * Get the count of item in an array of integer

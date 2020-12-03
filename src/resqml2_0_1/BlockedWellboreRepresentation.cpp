@@ -62,7 +62,7 @@ BlockedWellboreRepresentation::BlockedWellboreRepresentation(RESQML2_NS::Wellbor
 	}
 }
 
-void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
+void BlockedWellboreRepresentation::setIntervalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
 	unsigned int cellCount, uint64_t const* cellIndices,
 	unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy)
 {
@@ -86,6 +86,12 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int const* grid
 	_resqml20__BlockedWellboreRepresentation* rep = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 	rep->CellCount = cellCount;
 
+	if (hdfProxy == nullptr) {
+		hdfProxy = getRepository()->getDefaultHdfProxy();
+		if (hdfProxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
 	getRepository()->addRelationship(this, hdfProxy);
 
 	// gridIndices

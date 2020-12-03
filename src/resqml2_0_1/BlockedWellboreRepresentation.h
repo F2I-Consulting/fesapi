@@ -59,7 +59,7 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~BlockedWellboreRepresentation() = default;
 
-		DLL_IMPORT_OR_EXPORT void setIntevalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
+		DLL_IMPORT_OR_EXPORT void setIntervalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
 			unsigned int cellCount, uint64_t const* cellIndices,
 			unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy) final;
 

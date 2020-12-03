@@ -129,7 +129,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	unsigned int nodeCount = 0;
 	for (unsigned int i = 0; i < polylineCount; ++i)
 		nodeCount += nodeCountPerPolyline[i];
-	hsize_t pointCountDims = nodeCount;
+	uint64_t pointCountDims = nodeCount;
 	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, &pointCountDims, 1, proxy);
 
 	static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.push_back(patch);
@@ -191,10 +191,11 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 		&dim, 1);
 
 	// XYZ points
-	dim = 0;
-	for (unsigned int i = 0; i < polylineCount; ++i)
-		dim += nodeCountPerPolyline[i];
-	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, &dim, 1, proxy);
+	uint64_t xyzPtDim = 0;
+	for (unsigned int i = 0; i < polylineCount; ++i) {
+		xyzPtDim += nodeCountPerPolyline[i];
+	}
+	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, &xyzPtDim, 1, proxy);
 
 	static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.push_back(patch);
 	getRepository()->addRelationship(this, localCrs);
@@ -263,7 +264,7 @@ void PolylineSetRepresentation::getNodeCountPerPolylineInPatch(unsigned int patc
 		throw std::out_of_range("patchIndex id out of range.");
 	}
 	resqml20__PolylineSetPatch* patch = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch[patchIndex];
-	readArrayNdOfUIntValues(patch->NodeCountPerPolyline, nodeCountPerPolyline);
+	readArrayNdOfUInt32Values(patch->NodeCountPerPolyline, nodeCountPerPolyline);
 }
 
 void PolylineSetRepresentation::getNodeCountPerPolylineOfAllPatches(unsigned int * NodeCountPerPolyline) const

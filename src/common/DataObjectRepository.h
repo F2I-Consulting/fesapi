@@ -94,6 +94,8 @@ namespace RESQML2_NS
 	class StratigraphicColumnRankInterpretation;
 	class StratigraphicOccurrenceInterpretation;
 	class StratigraphicUnitInterpretation;
+	class StreamlinesFeature;
+	class StreamlinesRepresentation;
 	class StringTableLookup;
 	class StructuralOrganizationInterpretation;
 	class SubRepresentation;
@@ -562,6 +564,9 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(RESQML2_NS::Model, Model)
 		GETTER_DATAOBJECTS(RESQML2_NS::SubRepresentation, SubRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::PointSetRepresentation, PointSetRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::StreamlinesFeature, StreamlinesFeature)
+		GETTER_DATAOBJECTS(RESQML2_NS::StreamlinesRepresentation, StreamlinesRepresentation)
+
 
 		/**
 		 * Gets a data object from the repository by means of its uuid. If several data object
@@ -2465,6 +2470,38 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::GridConnectionSetRepresentation* createGridConnectionSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
+
+		/**
+		 * @brief	Creates a streamlines feature into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	guid 		The guid to set to the streamlines feature. If empty then a new guid will be
+		 * 						generated.
+		 * @param 	title		The title to set to the streamlines feature. If empty then \"unknown\" title
+		 * 						will be set.
+		 * @param 	timeIndex	The time index in the time series of the this streamlines feature.
+		 * @param 	timeSeries	The time series where the time index of this streamlines feature is given.
+		 *
+		 * @returns	A pointer to the new wellbore feature.
+		 */
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StreamlinesFeature* createStreamlinesFeature(const std::string & guid, const std::string & title, uint64_t timeIndex, EML2_NS::TimeSeries* timeSeries);
+
+		/**
+		 * @brief	Creates a streamlines representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param [in]	interp		The represented interpretation. It cannot be null.
+		 * @param [in]	guid 		The guid to set to the streamlines representation. If empty then a new guid will be
+		 * 							generated.
+		 * @param [in]	title		The title to set to the streamlines representation. If empty then \"unknown\" title
+		 * 							will be set.
+		 * @param [in]	lineCount	The count of line in this representation
+		 *
+		 * @returns	A pointer to the new wellbore feature.
+		 */
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StreamlinesRepresentation* createStreamlinesRepresentation(RESQML2_NS::GenericFeatureInterpretation* interp, const std::string & guid, const std::string & title, uint64_t lineCount);
 
 		//************* PROPERTIES ***********
 

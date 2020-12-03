@@ -108,9 +108,9 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 
 	resqml22__TrianglePatch* patch = soap_new_resqml22__TrianglePatch(gsoapProxy2_3->soap);
 
-	hsize_t pointCountDims[] = {nodeCount};
+	uint64_t pointCountDims = nodeCount;
 	patch->NodeCount = nodeCount;
-	patch->Geometry = createPointGeometryPatch2_2(triRep->TrianglePatch.size(), nodes, localCrs, pointCountDims, 1, proxy);
+	patch->Geometry = createPointGeometryPatch2_2(triRep->TrianglePatch.size(), nodes, localCrs, &pointCountDims, 1, proxy);
 	getRepository()->addRelationship(this, localCrs);
 
 	getRepository()->addRelationship(this, proxy);
@@ -189,7 +189,7 @@ void TriangulatedSetRepresentation::getTriangleNodeIndicesOfPatch(unsigned int p
 		throw out_of_range("The patchIndex is out of range");
 	}
 
-	readArrayNdOfUIntValues(triRep->TrianglePatch[patchIndex]->Triangles, triangleNodeIndices);
+	readArrayNdOfUInt32Values(triRep->TrianglePatch[patchIndex]->Triangles, triangleNodeIndices);
 }
 
 void TriangulatedSetRepresentation::getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const

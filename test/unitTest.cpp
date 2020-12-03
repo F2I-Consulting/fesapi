@@ -64,6 +64,7 @@ under the License.
 #include "resqml2_test/DiscreteProperty.h"
 #include "resqml2_test/PointsProperty.h"
 #include "resqml2_test/PropertyBySlab.h"
+#include "resqml2_test/Streamlines.h"
 #include "witsml2_test/WellTest.h"
 #include "witsml2_test/Trajectory.h"
 #include "witsml2_test/Perforation.h"
@@ -179,6 +180,8 @@ FESAPI_TEST("Export and import a singel tetra grid", "[grid]", OneTetrahedronUns
 FESAPI_TEST("Export and import an unstructured grid", "[grid]", UnstructuredGridTest)
 
 FESAPI_TEST("Export and import a subrepresentation on a partial grid connection set", "[grid]", SubRepresentationOnPartialGridConnectionSet)
+
+FESAPI_TEST("Export and import streamlines  on a partial grid", "[grid]", Streamlines)
 
 // fail
 //FESAPI_TEST("Export and import grid connection set on partial grid", "[grid]", GridConnectionSetOnPartialGridSet)

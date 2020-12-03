@@ -110,9 +110,9 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	patch->PatchIndex = triRep->TrianglePatch.size();
 	triRep->TrianglePatch.push_back(patch);
 
-	hsize_t pointCountDims[] = {nodeCount};
+	uint64_t pointCountDims = nodeCount;
 	patch->NodeCount = nodeCount;
-	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, pointCountDims, 1, proxy);
+	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, &pointCountDims, 1, proxy);
 	getRepository()->addRelationship(this, localCrs);
 
 	getRepository()->addRelationship(this, proxy);
@@ -188,7 +188,7 @@ void TriangulatedSetRepresentation::getTriangleNodeIndicesOfPatch(unsigned int p
 		throw out_of_range("The patchIndex is out of range");
 	}
 
-	readArrayNdOfUIntValues(triRep->TrianglePatch[patchIndex]->Triangles, triangleNodeIndices);
+	readArrayNdOfUInt32Values(triRep->TrianglePatch[patchIndex]->Triangles, triangleNodeIndices);
 }
 
 void TriangulatedSetRepresentation::getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const

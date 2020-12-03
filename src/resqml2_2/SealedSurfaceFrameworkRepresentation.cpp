@@ -230,7 +230,7 @@ void SealedSurfaceFrameworkRepresentation::getIdenticalContactPatchNodeIndices(u
 		throw invalid_argument("The nodes are all identical");
 	}
 
-	readArrayNdOfUIntValues(getContact(crIndex)->IdenticalNodeIndices, nodeIndices);
+	readArrayNdOfUInt32Values(getContact(crIndex)->IdenticalNodeIndices, nodeIndices);
 }
 
 unsigned int SealedSurfaceFrameworkRepresentation::getContactPatchCount(unsigned int crIndex) const
@@ -283,5 +283,5 @@ unsigned int SealedSurfaceFrameworkRepresentation::getContactPatchNodeCount(unsi
 
 void SealedSurfaceFrameworkRepresentation::getContactPatchNodeIndices(unsigned int crIndex, unsigned int cpIndex, unsigned int * nodeIndices) const
 {
-	readArrayNdOfUIntValues(getContactPatch(crIndex, cpIndex)->SupportingRepresentationNodes, nodeIndices);
+	readArrayNdOfUInt32Values(getContactPatch(crIndex, cpIndex)->SupportingRepresentationNodes, nodeIndices);
 }

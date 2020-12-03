@@ -88,6 +88,8 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		STRATIGRAPHICOCCURRENCEINTERPRETATION,
 		STRATIGRAPHICUNITFEATURE,
 		STRATIGRAPHICUNITINTERPRETATION,
+		STREAMLINESFEATURE,
+		STREAMLINESREPRESENTATION,
 		STRINGTABLELOOKUP,
 		STRUCTURALORGANIZATIONINTERPRETATION,
 		SUBREPRESENTATION,
@@ -913,6 +915,36 @@ ${COMMENT_END}
 		
 		return null;
 	}
+	
+	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.StreamlinesFeature resqml2_instantiateStreamlinesFeature(long cPtr, bool owner)
+	{
+		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
+		if ("resqml20".equals(xmlNs)) {
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_StreamlinesFeature(cPtr, owner);
+		}
+${COMMENT_START}
+		else if ("resqml22".equals(xmlNs)) {
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_StreamlinesFeature(cPtr, owner);
+		}
+${COMMENT_END}
+		
+		return null;
+	}
+	
+	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.StreamlinesRepresentation resqml2_instantiateStreamlinesRepresentation(long cPtr, bool owner)
+	{
+		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
+		if ("resqml20".equals(xmlNs)) {
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_StreamlinesRepresentation(cPtr, owner);
+		}
+${COMMENT_START}
+		else if ("resqml22".equals(xmlNs)) {
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_StreamlinesRepresentation(cPtr, owner);
+		}
+${COMMENT_END}
+		
+		return null;
+	}
 
   public static com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject eml2_instantiateConcreteObject(long cPtr, boolean owner)
   {
@@ -1006,6 +1038,8 @@ ${COMMENT_END}
 		case STRATIGRAPHICOCCURRENCEINTERPRETATION : return resqml2_instantiateStratigraphicOccurrenceInterpretation(cPtr, owner);
 		case STRATIGRAPHICUNITFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicUnitFeature_resqml20(cPtr, owner);
 		case STRATIGRAPHICUNITINTERPRETATION : return resqml2_instantiateStratigraphicUnitInterpretation(cPtr, owner);
+		case STREAMLINESFEATURE : return resqml2_instantiateStreamlinesFeature(cPtr, owner);
+		case STREAMLINESREPRESENTATION : return resqml2_instantiateStreamlinesRepresentation(cPtr, owner);
 		case STRINGTABLELOOKUP : return resqml2_instantiateStringTableLookup(cPtr, owner);
 		case STRUCTURALORGANIZATIONINTERPRETATION : return resqml2_instantiateStructuralOrganizationInterpretation(cPtr, owner);
 		case SUBREPRESENTATION : return resqml2_instantiateSubRepresentation(cPtr, owner);
@@ -1127,6 +1161,8 @@ namespace RESQML2_NS
 						StratigraphicColumnRankInterpretation*,
 						StratigraphicOccurrenceInterpretation*,
 						StratigraphicUnitInterpretation*,
+						StreamlinesFeature*,
+						StreamlinesRepresentation*,
 						StringTableLookup*,
 						StructuralOrganizationInterpretation*,
 						SubRepresentation*,

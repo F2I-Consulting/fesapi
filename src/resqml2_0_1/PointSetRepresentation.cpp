@@ -79,7 +79,7 @@ void PointSetRepresentation::pushBackGeometryPatch(
 	patch->Count = xyzPointCount;
 
 	// XYZ points
-	hsize_t pointCountDims = xyzPointCount;
+	uint64_t pointCountDims = xyzPointCount;
 	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, xyzPoints, localCrs, &pointCountDims, 1, proxy);
 
 	static_cast<_resqml20__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch.push_back(patch);

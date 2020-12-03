@@ -83,7 +83,7 @@ namespace RESQML2_NS
 		 * 															opened for writing and won't be closed.It
 		 * 															cannot be @c nullptr.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setIntevalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
+		DLL_IMPORT_OR_EXPORT virtual void setIntervalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
 			unsigned int cellCount, uint64_t const* cellIndices,
 			unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy) = 0;
 

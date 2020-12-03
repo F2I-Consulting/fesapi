@@ -127,7 +127,7 @@ void PolylineRepresentation::setGeometry(double const* points, unsigned int poin
 	polylineRep->NodePatch->Count = pointCount;
 	polylineRep->NodePatch->PatchIndex = 0;
 
-	hsize_t pointCountDims = pointCount;
+	uint64_t pointCountDims = pointCount;
 	polylineRep->NodePatch->Geometry = createPointGeometryPatch2_0_1(0, points, localCrs, &pointCountDims, 1, proxy);
 	getRepository()->addRelationship(this, localCrs);
 }

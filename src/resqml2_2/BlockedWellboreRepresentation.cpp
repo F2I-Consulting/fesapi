@@ -62,7 +62,7 @@ BlockedWellboreRepresentation::BlockedWellboreRepresentation(RESQML2_NS::Wellbor
 	}
 }
 
-void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
+void BlockedWellboreRepresentation::setIntervalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
 	unsigned int cellCount, uint64_t const* cellIndices,
 	unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy)
 {

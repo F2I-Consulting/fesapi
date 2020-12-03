@@ -141,7 +141,7 @@ namespace PRODML2_1_NS
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~FluidCharacterization() {
-			for (unsigned int i = 0; i < modelSpecifications.size(); ++i) {
+			for (size_t i = 0; i < modelSpecifications.size(); ++i) {
 				if (modelSpecifications[i] != nullptr) {
 					delete modelSpecifications[i];
 				}

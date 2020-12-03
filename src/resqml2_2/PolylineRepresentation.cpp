@@ -125,7 +125,7 @@ void PolylineRepresentation::setGeometry(double const* points, unsigned int poin
 	polylineRep->NodePatch = soap_new_resqml22__NodePatch(gsoapProxy2_3->soap);
 	polylineRep->NodePatch->Count = pointCount;
 
-	hsize_t pointCountDims = pointCount;
+	uint64_t pointCountDims = pointCount;
 	polylineRep->NodePatch->Geometry = createPointGeometryPatch2_2(0, points, localCrs, &pointCountDims, 1, proxy);
 	getRepository()->addRelationship(this, localCrs);
 }
