@@ -35,7 +35,7 @@ namespace RESQML2_NS
  * @param 	attributeName	 	Name of the attribute.
  * @param 	attributeDatatype	The attribute datatype.
  */
-#define GETTER_FLUID_COMPONENT_ATTRIBUTE(vectorName, attributeName, attributeDatatype)\
+#define GETTER_FLUID_CATALOG_COMPONENT_ATTRIBUTE(vectorName, attributeName, attributeDatatype)\
 	DLL_IMPORT_OR_EXPORT attributeDatatype get##vectorName##attributeName(unsigned int index) const {\
 		if (static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog == nullptr ||\
 			static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->vectorName.size() <= index) { throw std::out_of_range("The index is out of range"); }\
@@ -49,7 +49,7 @@ namespace RESQML2_NS
  * @param 	attributeName	 	Name of the attribute.
  * @param 	attributeDatatype	The attribute datatype.
  */
-#define GETTER_AND_SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE(vectorName, attributeName, attributeDatatype)\
+#define GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(vectorName, attributeName, attributeDatatype)\
 	DLL_IMPORT_OR_EXPORT void set##vectorName##attributeName(unsigned int index, const attributeDatatype& value);\
 	DLL_IMPORT_OR_EXPORT bool has##vectorName##attributeName(unsigned int index) const {\
 		return	static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog != nullptr &&\
@@ -68,9 +68,9 @@ namespace RESQML2_NS
  * @param 	attributeName	Name of the attribute.
  * @param 	uomDatatype  	The uom datatype.
  */
-#define GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(vectorName, attributeName, uomDatatype)\
+#define GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(vectorName, attributeName, uomDatatype)\
 	DLL_IMPORT_OR_EXPORT void set##vectorName##attributeName(unsigned int index, double value, uomDatatype uom);\
-	DLL_IMPORT_OR_EXPORT double has##vectorName##attributeName(unsigned int index) const {\
+	DLL_IMPORT_OR_EXPORT bool has##vectorName##attributeName(unsigned int index) const {\
 		return	static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog != nullptr &&\
 				static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->vectorName.size() > index &&\
 				static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->vectorName[index]->attributeName != nullptr;\
@@ -89,11 +89,11 @@ namespace RESQML2_NS
  *
  * @param 	vectorName	Name of the vector.
  */
-#define GETTER_AND_SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES(vectorName)\
-	GETTER_FLUID_COMPONENT_ATTRIBUTE(vectorName, uid, std::string)\
-	GETTER_AND_SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE(vectorName, Remark, std::string)\
-	GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(vectorName, MassFraction, gsoap_eml2_2::eml22__MassPerMassUom)\
-	GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(vectorName, MoleFraction, gsoap_eml2_2::eml22__AmountOfSubstancePerAmountOfSubstanceUom)
+#define GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES(vectorName)\
+	GETTER_FLUID_CATALOG_COMPONENT_ATTRIBUTE(vectorName, uid, std::string)\
+	GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(vectorName, Remark, std::string)\
+	GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(vectorName, MassFraction, gsoap_eml2_2::eml22__MassPerMassUom)\
+	GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(vectorName, MoleFraction, gsoap_eml2_2::eml22__AmountOfSubstancePerAmountOfSubstanceUom)
 
 namespace PRODML2_1_NS
 {
@@ -232,9 +232,9 @@ namespace PRODML2_1_NS
 		 * @param 	uid	The UID.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackFormationWater(const std::string & uid);
-		GETTER_AND_SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES(FormationWater)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(FormationWater, Salinity, gsoap_eml2_2::eml22__MassPerMassUom)
-		GETTER_AND_SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE(FormationWater, SpecificGravity, double)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES(FormationWater)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(FormationWater, Salinity, gsoap_eml2_2::eml22__MassPerMassUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(FormationWater, SpecificGravity, double)
 
 		/**
 		 * Gets pure fluid component count
@@ -251,10 +251,10 @@ namespace PRODML2_1_NS
 		 * @param 	hydrocarbonFlag	True to hydrocarbon flag.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackPureFluidComponent(const std::string & uid, gsoap_eml2_2::prodml21__PureComponentEnum kind, bool hydrocarbonFlag);
-		GETTER_AND_SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES(PureFluidComponent)
-		GETTER_FLUID_COMPONENT_ATTRIBUTE(PureFluidComponent, Kind, std::string)
-		GETTER_FLUID_COMPONENT_ATTRIBUTE(PureFluidComponent, HydrocarbonFlag, bool)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(PureFluidComponent, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES(PureFluidComponent)
+		GETTER_FLUID_CATALOG_COMPONENT_ATTRIBUTE(PureFluidComponent, Kind, std::string)
+		GETTER_FLUID_CATALOG_COMPONENT_ATTRIBUTE(PureFluidComponent, HydrocarbonFlag, bool)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(PureFluidComponent, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom)
 
 		/**
 		 * Gets plus fluid component count
@@ -270,12 +270,12 @@ namespace PRODML2_1_NS
 		 * @param 	kind	The kind.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackPlusFluidComponent(const std::string & uid, gsoap_eml2_2::prodml21__PlusComponentEnum kind);
-		GETTER_AND_SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES(PlusFluidComponent)
-		GETTER_AND_SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE(PlusFluidComponent, SpecificGravity, double)
-		GETTER_AND_SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE(PlusFluidComponent, StartingCarbonNumber, uint64_t)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(PlusFluidComponent, StartingBoilingPoint, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(PlusFluidComponent, AvgDensity, std::string)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(PlusFluidComponent, AvgMolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES(PlusFluidComponent)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(PlusFluidComponent, SpecificGravity, double)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(PlusFluidComponent, StartingCarbonNumber, uint64_t)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(PlusFluidComponent, StartingBoilingPoint, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(PlusFluidComponent, AvgDensity, std::string)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(PlusFluidComponent, AvgMolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom)
 
 		/**
 		 * Gets stock tank oil count
@@ -290,13 +290,13 @@ namespace PRODML2_1_NS
 		 * @param 	uid	The UID.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackStockTankOil(const std::string & uid);
-		GETTER_AND_SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES(StockTankOil)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, APIGravity, gsoap_eml2_2::eml22__APIGravityUom)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, GrossEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, NetEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, GrossEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, NetEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES(StockTankOil)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, APIGravity, gsoap_eml2_2::eml22__APIGravityUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, GrossEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, NetEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, GrossEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, NetEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom)
 
 		/**
 		 * Gets natural gas count
@@ -311,13 +311,13 @@ namespace PRODML2_1_NS
 		 * @param 	uid	The UID.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackNaturalGas(const std::string & uid);
-		GETTER_AND_SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES(NaturalGas)
-		GETTER_AND_SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE(NaturalGas, GasGravity, double)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(NaturalGas, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(NaturalGas, GrossEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(NaturalGas, NetEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(NaturalGas, GrossEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(NaturalGas, NetEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES(NaturalGas)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(NaturalGas, GasGravity, double)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(NaturalGas, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(NaturalGas, GrossEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(NaturalGas, NetEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(NaturalGas, GrossEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(NaturalGas, NetEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom)
 
 		/**
 		 * Gets pseudo fluid component count
@@ -333,15 +333,15 @@ namespace PRODML2_1_NS
 		 * @param 	kind	The kind.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackPseudoFluidComponent(const std::string & uid, gsoap_eml2_2::prodml21__PseudoComponentEnum kind);
-		GETTER_AND_SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES(PseudoFluidComponent)
-		GETTER_AND_SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE(PseudoFluidComponent, SpecificGravity, double)
-		GETTER_AND_SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE(PseudoFluidComponent, StartingCarbonNumber, uint64_t)
-		GETTER_AND_SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE(PseudoFluidComponent, EndingCarbonNumber, uint64_t)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(PseudoFluidComponent, StartingBoilingPoint, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(PseudoFluidComponent, EndingBoilingPoint, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(PseudoFluidComponent, AvgBoilingPoint, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(PseudoFluidComponent, AvgDensity, std::string)
-		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(PseudoFluidComponent, AvgMolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES(PseudoFluidComponent)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(PseudoFluidComponent, SpecificGravity, double)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(PseudoFluidComponent, StartingCarbonNumber, uint64_t)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(PseudoFluidComponent, EndingCarbonNumber, uint64_t)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(PseudoFluidComponent, StartingBoilingPoint, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(PseudoFluidComponent, EndingBoilingPoint, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(PseudoFluidComponent, AvgBoilingPoint, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(PseudoFluidComponent, AvgDensity, std::string)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(PseudoFluidComponent, AvgMolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom)
 
 		/** Values that represent model specifications */
 		enum ModelSpecification {

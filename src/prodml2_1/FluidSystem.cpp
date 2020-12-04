@@ -20,6 +20,8 @@ under the License.
 
 #include <stdexcept>
 
+#include "../resqml2/RockFluidOrganizationInterpretation.h"
+
 using namespace std;
 using namespace PRODML2_1_NS;
 using namespace gsoap_eml2_2;
@@ -93,6 +95,10 @@ FluidSystem::FluidSystem(COMMON_NS::DataObjectRepository * repo,
 
 	repo->addOrReplaceDataObject(this);
 }
+
+SETTER_OPTIONAL_ATTRIBUTE_IMPL(FluidSystem, gsoap_eml2_2::prodml21__FluidSystem, gsoapProxy2_2, PhasesPresent, gsoap_eml2_2::prodml21__PhasePresent, soap_new_prodml21__PhasePresent)
+SETTER_OPTIONAL_ATTRIBUTE_IMPL(FluidSystem, ::prodml21__FluidSystem, gsoapProxy2_2, ReservoirLifeCycleState, gsoap_eml2_2::prodml21__ReservoirLifeCycleState, soap_new_prodml21__ReservoirLifeCycleState)
+SETTER_OPTIONAL_ATTRIBUTE_IMPL(FluidSystem, gsoap_eml2_2::prodml21__FluidSystem, gsoapProxy2_2, Remark, std::string, soap_new_std__string)
 
 double FluidSystem::getStandardTemperatureValue() const
 {
@@ -173,12 +179,146 @@ double FluidSystem::getSolutionGORValue() const {
 	return static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->SolutionGOR->__item;
 }
 
-gsoap_eml2_2::eml22__VolumePerVolumeUom FluidSystem::getSolutionGORUom() const {
-	gsoap_eml2_2::eml22__VolumePerVolumeUom* result;
-	gsoap_eml2_2::soap_s2eml22__VolumePerVolumeUom(getGsoapContext(), static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->SolutionGOR->uom.c_str(), result);
-	if (result == nullptr) {
-		throw logic_error("Cannot recognize the exotic volume per volume uom : " + static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->SolutionGOR->uom);
+gsoap_eml2_2::eml22__VolumePerVolumeUom FluidSystem::getSolutionGORUom() const
+{
+	gsoap_eml2_2::eml22__VolumePerVolumeUom result;
+	if (gsoap_eml2_2::soap_s2eml22__VolumePerVolumeUom(getGsoapContext(), static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->SolutionGOR->uom.c_str(), &result) == SOAP_OK) {
+		return result;
+	}
+	throw logic_error("Cannot recognize the exotic volume per volume uom : " + static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->SolutionGOR->uom);
+}
+
+void FluidSystem::setSaturationPressure(double value, gsoap_eml2_2::eml22__PressureUom pressureUom, gsoap_eml2_2::prodml21__SaturationPointKind saturationPointKind)
+{
+	prodml21__FluidSystem* fs = static_cast<prodml21__FluidSystem*>(gsoapProxy2_2);
+	if (fs->SaturationPressure == nullptr) {
+		fs->SaturationPressure = soap_new_prodml21__SaturationPressure(getGsoapContext());
+	}
+	fs->SaturationPressure->kind = saturationPointKind;
+	fs->SaturationPressure->uom = soap_eml22__PressureUom2s(getGsoapContext(), pressureUom);
+	fs->SaturationPressure->__item = value;
+}
+
+bool FluidSystem::hasSaturationPressureValue() const
+{
+	return static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->SaturationPressure != nullptr;
+}
+
+double FluidSystem::getSaturationPressureValue() const
+{
+	if (!hasSaturationPressureValue()) {
+		throw logic_error("There is no saturation pressure value");
+	}
+	return static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->SaturationPressure->__item;
+}
+
+ gsoap_eml2_2::eml22__PressureUom FluidSystem::getSaturationPressureUom() const
+ {
+	 if (!hasSaturationPressureValue()) {
+		 throw logic_error("There is no saturation pressure value");
+	 }
+	 string uomStr = static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->SaturationPressure->uom;
+	 gsoap_eml2_2::eml22__PressureUom result;
+	 if (gsoap_eml2_2::soap_s2eml22__PressureUom(getGsoapContext(), uomStr.c_str(), &result) == SOAP_OK) {
+		 return result;
+	 }
+	 throw logic_error("The exotic saturation pressure uom is not recognized : " + uomStr);
+ }
+
+gsoap_eml2_2::prodml21__SaturationPointKind FluidSystem::getSaturationPressurePointKind() const
+{
+	if (!hasSaturationPressureValue()) {
+		throw logic_error("There is no saturation pressure value");
+	}
+	return static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->SaturationPressure->kind;
+}
+
+#define SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(componentName, attributeName, attributeDatatype, constructor)\
+void FluidSystem::set##componentName##attributeName(const attributeDatatype& value)\
+{\
+	if (static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->componentName == nullptr) {\
+		static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->componentName = soap_new_prodml21__##componentName(getGsoapContext());\
+		static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->componentName->uid = "0";\
+	}\
+	static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->componentName->attributeName = constructor(getGsoapContext());\
+	*static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->componentName->attributeName = value;\
+}
+
+#define SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(componentName, attributeName, uomDatatype, constructor)\
+void FluidSystem::set##componentName##attributeName( double value, uomDatatype uom)\
+{\
+	if (static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->componentName == nullptr) {\
+		static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->componentName = soap_new_prodml21__##componentName(getGsoapContext());\
+		static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->componentName->uid = "0";\
+	}\
+	static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->componentName->attributeName = constructor(getGsoapContext());\
+	static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->componentName->attributeName->__item = value;\
+	static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->componentName->attributeName->uom = uom;\
+}
+
+#define SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES_IMPL(componentName)\
+SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(componentName, Remark, std::string, soap_new_std__string)\
+SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(componentName, MassFraction, eml22__MassPerMassUom, soap_new_eml22__MassPerMassMeasure)\
+SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(componentName, MoleFraction, eml22__AmountOfSubstancePerAmountOfSubstanceUom, soap_new_eml22__AmountOfSubstancePerAmountOfSubstanceMeasure)
+
+SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES_IMPL(FormationWater)
+SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(FormationWater, Salinity, gsoap_eml2_2::eml22__MassPerMassUom, gsoap_eml2_2::soap_new_eml22__MassPerMassMeasure)
+SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(FormationWater, SpecificGravity, double, soap_new_double)
+
+SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES_IMPL(StockTankOil)
+SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, APIGravity, gsoap_eml2_2::eml22__APIGravityUom, gsoap_eml2_2::soap_new_eml22__APIGravityMeasure)
+SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom, gsoap_eml2_2::soap_new_eml22__MolecularWeightMeasure)
+SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, GrossEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom, gsoap_eml2_2::soap_new_eml22__EnergyPerMassMeasure)
+SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, NetEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom, gsoap_eml2_2::soap_new_eml22__EnergyPerMassMeasure)
+SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, GrossEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom, gsoap_eml2_2::soap_new_eml22__EnergyPerVolumeMeasure)
+SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, NetEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom, gsoap_eml2_2::soap_new_eml22__EnergyPerVolumeMeasure)
+
+SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES_IMPL(NaturalGas)
+SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(NaturalGas, GasGravity, double, soap_new_double)
+SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom, gsoap_eml2_2::soap_new_eml22__MolecularWeightMeasure)
+SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, GrossEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom, gsoap_eml2_2::soap_new_eml22__EnergyPerMassMeasure)
+SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, NetEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom, gsoap_eml2_2::soap_new_eml22__EnergyPerMassMeasure)
+SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, GrossEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom, gsoap_eml2_2::soap_new_eml22__EnergyPerVolumeMeasure)
+SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, NetEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom, gsoap_eml2_2::soap_new_eml22__EnergyPerVolumeMeasure)
+
+void FluidSystem::setRockFluidOrganization(RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrg)
+{
+	if (rockFluidOrg == nullptr) {
+		throw std::invalid_argument("Cannot set a null rockFluidOrg");
+	}
+	if (!static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->RockFluidUnitFeature.empty()) {
+		throw std::logic_error("A rock Fluid organization is already set for this fluid system.");
+	}
+	static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->RockFluidUnitFeature.push_back(rockFluidOrg->newEml22Reference());
+
+	getRepository()->addRelationship(this, rockFluidOrg);
+}
+
+COMMON_NS::DataObjectReference FluidSystem::getRockFluidOrganizationDor() const
+{
+	if (static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->RockFluidUnitFeature.empty()) {
+		return COMMON_NS::DataObjectReference();
+	}
+	else if (static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->RockFluidUnitFeature.size() > 1) {
+		throw std::logic_error("This fluid system is assocaited to more than one rock Fluid organization. This is not supported.");
 	}
 
-	return *result;
+	return COMMON_NS::DataObjectReference(static_cast<prodml21__FluidSystem*>(gsoapProxy2_2)->RockFluidUnitFeature[0]);
+}
+
+RESQML2_NS::RockFluidOrganizationInterpretation* FluidSystem::getRockFluidOrganization() const
+{
+	return getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidOrganizationInterpretation>(getRockFluidOrganizationDor().getUuid());
+}
+
+void FluidSystem::loadTargetRelationships()
+{
+	COMMON_NS::DataObjectReference dor = getRockFluidOrganizationDor();
+	if (!dor.isEmpty()) {
+		RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidORg = getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidOrganizationInterpretation>(dor.getUuid());
+		if (rockFluidORg == nullptr) {
+			convertDorIntoRel<RESQML2_NS::RockFluidOrganizationInterpretation>(dor);
+		}
+		getRepository()->addRelationship(this, rockFluidORg);
+	}
 }

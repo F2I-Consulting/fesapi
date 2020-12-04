@@ -20,6 +20,82 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
+#include "../MacroDefinitions.h"
+
+namespace RESQML2_NS
+{
+	/** A rock fluid unit feature. */
+	class RockFluidOrganizationInterpretation;
+}
+
+/**
+ * A macro that defines getter fluid component attribute
+ *
+ * @param 	componentName		Name of the component.
+ * @param 	attributeName	 	Name of the attribute.
+ * @param 	attributeDatatype	The attribute datatype.
+ */
+#define GETTER_FLUID_COMPONENT_ATTRIBUTE(componentName, attributeName, attributeDatatype)\
+	DLL_IMPORT_OR_EXPORT attributeDatatype get##componentName##attributeName() const {\
+		if (static_cast<gsoap_eml2_2::prodml21__FluidSystem*>(gsoapProxy2_2)->componentName == nullptr) { throw std::logic_error("The component does not exist"); }\
+		return static_cast<gsoap_eml2_2::prodml21__FluidSystem*>(gsoapProxy2_2)->componentName->attributeName;\
+	}
+
+ /**
+  * A macro that defines getter and setter fluid component optional attribute
+  *
+  * @param 	componentName		Name of the component.
+  * @param 	attributeName	 	Name of the attribute.
+  * @param 	attributeDatatype	The attribute datatype.
+  */
+#define GETTER_AND_SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE(componentName, attributeName, attributeDatatype)\
+	DLL_IMPORT_OR_EXPORT void set##componentName##attributeName(const attributeDatatype& value);\
+	DLL_IMPORT_OR_EXPORT bool has##componentName##attributeName() const {\
+		return	static_cast<gsoap_eml2_2::prodml21__FluidSystem*>(gsoapProxy2_2)->componentName != nullptr &&\
+				static_cast<gsoap_eml2_2::prodml21__FluidSystem*>(gsoapProxy2_2)->componentName->attributeName != nullptr;\
+	}\
+	DLL_IMPORT_OR_EXPORT attributeDatatype get##componentName##attributeName() const {\
+		if (!has##componentName##attributeName()) { throw std::logic_error("This attribute in this component attribute does not exist"); }\
+		return *static_cast<gsoap_eml2_2::prodml21__FluidSystem*>(gsoapProxy2_2)->componentName->attributeName;\
+	}
+
+  /**
+   * A macro that defines getter and setter fluid component measure attribute
+   *
+   * @param 	componentName   Name of the component.
+   * @param 	attributeName	Name of the attribute.
+   * @param 	uomDatatype  	The uom datatype.
+   */
+#define GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(componentName, attributeName, uomDatatype)\
+	DLL_IMPORT_OR_EXPORT void set##componentName##attributeName(double value, uomDatatype uom);\
+	DLL_IMPORT_OR_EXPORT bool has##componentName##attributeName() const {\
+		return	static_cast<gsoap_eml2_2::prodml21__FluidSystem*>(gsoapProxy2_2)->componentName != nullptr &&\
+				static_cast<gsoap_eml2_2::prodml21__FluidSystem*>(gsoapProxy2_2)->componentName->attributeName != nullptr;\
+	}\
+	DLL_IMPORT_OR_EXPORT double get##componentName##attributeName##Value() const {\
+		if (!has##componentName##attributeName()) { throw std::logic_error("This attribute in this component attribute does not exist"); }\
+		return static_cast<gsoap_eml2_2::prodml21__FluidSystem*>(gsoapProxy2_2)->componentName->attributeName->__item;\
+	}\
+	DLL_IMPORT_OR_EXPORT uomDatatype get##componentName##attributeName##Uom() const {\
+		if (!has##componentName##attributeName()) { throw std::logic_error("This attribute in this component attribute does not exist"); }\
+		return static_cast<gsoap_eml2_2::prodml21__FluidSystem*>(gsoapProxy2_2)->componentName->attributeName->uom;\
+	}
+
+   /**
+	* A macro that defines getter and setter fluid component common attributes
+	*
+	* @param 	componentName	Name of the component.
+	*/
+#define GETTER_AND_SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES(componentName)\
+	DLL_IMPORT_OR_EXPORT bool has##componentName() const {\
+		return	static_cast<gsoap_eml2_2::prodml21__FluidSystem*>(gsoapProxy2_2)->componentName != nullptr;\
+	}\
+	GETTER_FLUID_COMPONENT_ATTRIBUTE(componentName, uid, std::string)\
+	GETTER_AND_SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE(componentName, Remark, std::string)\
+	GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(componentName, MassFraction, gsoap_eml2_2::eml22__MassPerMassUom)\
+	GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(componentName, MoleFraction, gsoap_eml2_2::eml22__AmountOfSubstancePerAmountOfSubstanceUom)
+
+
 namespace PRODML2_1_NS
 {
 	/** A fluid system. */
@@ -94,15 +170,11 @@ namespace PRODML2_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~FluidSystem() = default;
 		
-		/**
-		* Get the kind of reservoir hydrocarbon fluid, in broad terms, by its phase behavior. 
-		*/
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::prodml21__ReservoirFluidKind getReservoirFluidKind() const {
-			if (isPartial()) {
-				throw std::logic_error("Cannot get the Reservoir fluid kind of a partial Fluid System.");
-			}
-			return static_cast<gsoap_eml2_2::prodml21__FluidSystem*>(gsoapProxy2_2)->ReservoirFluidKind;
-		}
+		GETTER_SETTER_ATTRIBUTE(gsoap_eml2_2::prodml21__FluidSystem, gsoapProxy2_2, ReservoirFluidKind, gsoap_eml2_2::prodml21__ReservoirFluidKind)
+
+		GETTER_SETTER_OPTIONAL_ATTRIBUTE(gsoap_eml2_2::prodml21__FluidSystem, gsoapProxy2_2, PhasesPresent, gsoap_eml2_2::prodml21__PhasePresent)
+		GETTER_SETTER_OPTIONAL_ATTRIBUTE(gsoap_eml2_2::prodml21__FluidSystem, gsoapProxy2_2, ReservoirLifeCycleState, gsoap_eml2_2::prodml21__ReservoirLifeCycleState)
+		GETTER_SETTER_OPTIONAL_ATTRIBUTE(gsoap_eml2_2::prodml21__FluidSystem, gsoapProxy2_2, Remark, std::string)
 
 		/**
 		 * Gets standard temperature value
@@ -147,6 +219,89 @@ namespace PRODML2_1_NS
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::eml22__VolumePerVolumeUom getSolutionGORUom() const;
 
 		/**
+		 * Sets the saturation pressure of this fluid system
+		 */
+		DLL_IMPORT_OR_EXPORT void setSaturationPressure(double value, gsoap_eml2_2::eml22__PressureUom pressureUom, gsoap_eml2_2::prodml21__SaturationPointKind saturationPointKind);
+
+		/**
+		 * Checks if this fluid system has a defined saturation pressure
+		 *
+		 * @returns	True if this fluid system has a defined saturation pressure else false.
+		 */
+		DLL_IMPORT_OR_EXPORT bool hasSaturationPressureValue() const;
+
+		/**
+		 * Gets the saturation pressure of this fluid system
+		 *
+		 * @returns	The saturation pressure of this fluid system.
+		 */
+		DLL_IMPORT_OR_EXPORT double getSaturationPressureValue() const;
+
+		/**
+		 * Gets the saturation pressure uom of this fluid system
+		 *
+		 * @returns	The saturation pressure uom of this fluid system.
+		 */
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::eml22__PressureUom getSaturationPressureUom() const;
+
+		/**
+		 * Gets the saturation pressure point kind of this fluid system
+		 *
+		 * @returns	The saturation pressure point kind of this fluid system.
+		 */
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::prodml21__SaturationPointKind getSaturationPressurePointKind() const;
+
+		/**
+		 * Formation water
+		 */
+		GETTER_AND_SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES(FormationWater)
+		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(FormationWater, Salinity, gsoap_eml2_2::eml22__MassPerMassUom)
+		GETTER_AND_SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE(FormationWater, SpecificGravity, double)
+
+		/**
+		 * Stock tank oil
+		 */
+		GETTER_AND_SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES(StockTankOil)
+		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, APIGravity, gsoap_eml2_2::eml22__APIGravityUom)
+		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom)
+		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, GrossEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom)
+		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, NetEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom)
+		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, GrossEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom)
+		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(StockTankOil, NetEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom)
+
+		/**
+		 * Natural gas
+		 */
+		GETTER_AND_SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES(NaturalGas)
+		GETTER_AND_SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE(NaturalGas, GasGravity, double)
+		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(NaturalGas, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom)
+		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(NaturalGas, GrossEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom)
+		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(NaturalGas, NetEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom)
+		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(NaturalGas, GrossEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom)
+		GETTER_AND_SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE(NaturalGas, NetEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom)
+
+		/**
+		* Sets the associated Rock fluid organization
+		*
+		* @param [in,out]	rockFluidUnit	If non-null, the rock fluid unit.
+		*/
+		DLL_IMPORT_OR_EXPORT void setRockFluidOrganization(RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrg);
+
+		/**
+		 * Gets the associated Rock fluid organization dor
+		 *
+		 * @returns	Empty if it fails, else the associated Rock fluid organization dor.
+		 */
+		COMMON_NS::DataObjectReference getRockFluidOrganizationDor() const;
+
+		/**
+		 * Gets the associated Rock fluid organization
+		 *
+		 * @returns	Null if it fails, else the associated Rock fluid organization.
+		 */
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockFluidOrganizationInterpretation* getRockFluidOrganization() const;
+
+		/**
 		 * The standard XML tag without XML namespace for serializing this data object.
 		 *
 		 * @returns	The XML tag.
@@ -171,6 +326,6 @@ namespace PRODML2_1_NS
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
 		/** Loads target relationships */
-		void loadTargetRelationships() {}
+		void loadTargetRelationships() final;
 	};
 }

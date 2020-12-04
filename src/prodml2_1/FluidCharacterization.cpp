@@ -182,7 +182,7 @@ RESQML2_NS::RockFluidUnitInterpretation* FluidCharacterization::getRockFluidUnit
 	return getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidUnitInterpretation>(getRockFluidUnitDor().getUuid());
 }
 
-#define SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(vectorName, attributeName, attributeDatatype, constructor)\
+#define SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(vectorName, attributeName, attributeDatatype, constructor)\
 void FluidCharacterization::set##vectorName##attributeName(unsigned int index, const attributeDatatype& value)\
 {\
 	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog == nullptr || index >= static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->vectorName.size()) {throw std::out_of_range("This index is out of range.");}\
@@ -190,7 +190,7 @@ void FluidCharacterization::set##vectorName##attributeName(unsigned int index, c
 	*static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->vectorName[index]->attributeName = value;\
 }
 
-#define SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(vectorName, attributeName, uomDatatype, constructor)\
+#define SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(vectorName, attributeName, uomDatatype, constructor)\
 void FluidCharacterization::set##vectorName##attributeName(unsigned int index, double value, uomDatatype uom)\
 {\
 	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog == nullptr || index >= static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->vectorName.size()) {throw std::out_of_range("This index is out of range.");}\
@@ -199,10 +199,10 @@ void FluidCharacterization::set##vectorName##attributeName(unsigned int index, d
 	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->vectorName[index]->attributeName->uom = uom;\
 }
 
-#define SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES_IMPL(vectorName)\
-SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(vectorName, Remark, std::string, soap_new_std__string)\
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(vectorName, MassFraction, eml22__MassPerMassUom, soap_new_eml22__MassPerMassMeasure)\
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(vectorName, MoleFraction, eml22__AmountOfSubstancePerAmountOfSubstanceUom, soap_new_eml22__AmountOfSubstancePerAmountOfSubstanceMeasure)
+#define SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES_IMPL(vectorName)\
+SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(vectorName, Remark, std::string, soap_new_std__string)\
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(vectorName, MassFraction, eml22__MassPerMassUom, soap_new_eml22__MassPerMassMeasure)\
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(vectorName, MoleFraction, eml22__AmountOfSubstancePerAmountOfSubstanceUom, soap_new_eml22__AmountOfSubstancePerAmountOfSubstanceMeasure)
 
 unsigned int FluidCharacterization::getFormationWaterCount() const
 {
@@ -226,9 +226,9 @@ void FluidCharacterization::pushBackFormationWater(const std::string & uid)
 	result->uid = uid;
 	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->FormationWater.push_back(result);
 }
-SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES_IMPL(FormationWater)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(FormationWater, Salinity, gsoap_eml2_2::eml22__MassPerMassUom, gsoap_eml2_2::soap_new_eml22__MassPerMassMeasure)
-SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(FormationWater, SpecificGravity, double, soap_new_double)
+SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES_IMPL(FormationWater)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(FormationWater, Salinity, gsoap_eml2_2::eml22__MassPerMassUom, gsoap_eml2_2::soap_new_eml22__MassPerMassMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(FormationWater, SpecificGravity, double, soap_new_double)
 
 unsigned int FluidCharacterization::getPureFluidComponentCount() const
 {
@@ -254,8 +254,8 @@ void FluidCharacterization::pushBackPureFluidComponent(const std::string & uid, 
 	result->HydrocarbonFlag = hydrocarbonFlag;
 	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->PureFluidComponent.push_back(result);
 }
-SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES_IMPL(PureFluidComponent)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PureFluidComponent, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom, gsoap_eml2_2::soap_new_eml22__MolecularWeightMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES_IMPL(PureFluidComponent)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PureFluidComponent, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom, gsoap_eml2_2::soap_new_eml22__MolecularWeightMeasure)
 
 unsigned int FluidCharacterization::getPlusFluidComponentCount() const
 {
@@ -280,12 +280,12 @@ void FluidCharacterization::pushBackPlusFluidComponent(const std::string & uid, 
 	result->Kind = gsoap_eml2_2::soap_prodml21__PlusComponentEnum2s(getGsoapContext(), kind);
 	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->PlusFluidComponent.push_back(result);
 }
-SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES_IMPL(PlusFluidComponent)
-SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(PlusFluidComponent, SpecificGravity, double, soap_new_double)
-SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(PlusFluidComponent, StartingCarbonNumber, uint64_t, soap_new_ULONG64)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PlusFluidComponent, StartingBoilingPoint, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom, gsoap_eml2_2::soap_new_eml22__ThermodynamicTemperatureMeasure)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PlusFluidComponent, AvgDensity, std::string, gsoap_eml2_2::soap_new_eml22__MassPerVolumeMeasure)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PlusFluidComponent, AvgMolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom, gsoap_eml2_2::soap_new_eml22__MolecularWeightMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES_IMPL(PlusFluidComponent)
+SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(PlusFluidComponent, SpecificGravity, double, soap_new_double)
+SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(PlusFluidComponent, StartingCarbonNumber, uint64_t, soap_new_ULONG64)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PlusFluidComponent, StartingBoilingPoint, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom, gsoap_eml2_2::soap_new_eml22__ThermodynamicTemperatureMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PlusFluidComponent, AvgDensity, std::string, gsoap_eml2_2::soap_new_eml22__MassPerVolumeMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PlusFluidComponent, AvgMolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom, gsoap_eml2_2::soap_new_eml22__MolecularWeightMeasure)
 
 unsigned int FluidCharacterization::getStockTankOilCount() const
 {
@@ -309,13 +309,13 @@ void FluidCharacterization::pushBackStockTankOil(const std::string & uid)
 	result->uid = uid;
 	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->StockTankOil.push_back(result);
 }
-SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES_IMPL(StockTankOil)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, APIGravity, gsoap_eml2_2::eml22__APIGravityUom, gsoap_eml2_2::soap_new_eml22__APIGravityMeasure)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom, gsoap_eml2_2::soap_new_eml22__MolecularWeightMeasure)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, GrossEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom, gsoap_eml2_2::soap_new_eml22__EnergyPerMassMeasure)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, NetEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom, gsoap_eml2_2::soap_new_eml22__EnergyPerMassMeasure)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, GrossEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom, gsoap_eml2_2::soap_new_eml22__EnergyPerVolumeMeasure)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, NetEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom, gsoap_eml2_2::soap_new_eml22__EnergyPerVolumeMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES_IMPL(StockTankOil)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, APIGravity, gsoap_eml2_2::eml22__APIGravityUom, gsoap_eml2_2::soap_new_eml22__APIGravityMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom, gsoap_eml2_2::soap_new_eml22__MolecularWeightMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, GrossEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom, gsoap_eml2_2::soap_new_eml22__EnergyPerMassMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, NetEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom, gsoap_eml2_2::soap_new_eml22__EnergyPerMassMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, GrossEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom, gsoap_eml2_2::soap_new_eml22__EnergyPerVolumeMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, NetEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom, gsoap_eml2_2::soap_new_eml22__EnergyPerVolumeMeasure)
 
 unsigned int FluidCharacterization::getNaturalGasCount() const
 {
@@ -339,13 +339,13 @@ void FluidCharacterization::pushBackNaturalGas(const std::string & uid)
 	result->uid = uid;
 	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->NaturalGas.push_back(result);
 }
-SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES_IMPL(NaturalGas)
-SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(NaturalGas, GasGravity, double, soap_new_double)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom, gsoap_eml2_2::soap_new_eml22__MolecularWeightMeasure)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, GrossEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom, gsoap_eml2_2::soap_new_eml22__EnergyPerMassMeasure)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, NetEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom, gsoap_eml2_2::soap_new_eml22__EnergyPerMassMeasure)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, GrossEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom, gsoap_eml2_2::soap_new_eml22__EnergyPerVolumeMeasure)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, NetEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom, gsoap_eml2_2::soap_new_eml22__EnergyPerVolumeMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES_IMPL(NaturalGas)
+SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(NaturalGas, GasGravity, double, soap_new_double)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, MolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom, gsoap_eml2_2::soap_new_eml22__MolecularWeightMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, GrossEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom, gsoap_eml2_2::soap_new_eml22__EnergyPerMassMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, NetEnergyContentPerUnitMass, gsoap_eml2_2::eml22__EnergyPerMassUom, gsoap_eml2_2::soap_new_eml22__EnergyPerMassMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, GrossEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom, gsoap_eml2_2::soap_new_eml22__EnergyPerVolumeMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, NetEnergyContentPerUnitVolume, gsoap_eml2_2::eml22__EnergyPerVolumeUom, gsoap_eml2_2::soap_new_eml22__EnergyPerVolumeMeasure)
 
 unsigned int FluidCharacterization::getPseudoFluidComponentCount() const
 {
@@ -370,15 +370,15 @@ void FluidCharacterization::pushBackPseudoFluidComponent(const std::string & uid
 	result->Kind = gsoap_eml2_2::soap_prodml21__PseudoComponentEnum2s(getGsoapContext(), kind);
 	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->PseudoFluidComponent.push_back(result);
 }
-SETTER_FLUID_COMPONENT_COMMON_ATTRIBUTES_IMPL(PseudoFluidComponent)
-SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(PseudoFluidComponent, SpecificGravity, double, soap_new_double)
-SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(PseudoFluidComponent, StartingCarbonNumber, uint64_t, soap_new_ULONG64)
-SETTER_FLUID_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(PseudoFluidComponent, EndingCarbonNumber, uint64_t, soap_new_ULONG64)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PseudoFluidComponent, StartingBoilingPoint, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom, gsoap_eml2_2::soap_new_eml22__ThermodynamicTemperatureMeasure)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PseudoFluidComponent, EndingBoilingPoint, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom, gsoap_eml2_2::soap_new_eml22__ThermodynamicTemperatureMeasure)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PseudoFluidComponent, AvgBoilingPoint, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom, gsoap_eml2_2::soap_new_eml22__ThermodynamicTemperatureMeasure)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PseudoFluidComponent, AvgDensity, std::string, gsoap_eml2_2::soap_new_eml22__MassPerVolumeMeasure)
-SETTER_FLUID_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PseudoFluidComponent, AvgMolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom, gsoap_eml2_2::soap_new_eml22__MolecularWeightMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES_IMPL(PseudoFluidComponent)
+SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(PseudoFluidComponent, SpecificGravity, double, soap_new_double)
+SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(PseudoFluidComponent, StartingCarbonNumber, uint64_t, soap_new_ULONG64)
+SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(PseudoFluidComponent, EndingCarbonNumber, uint64_t, soap_new_ULONG64)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PseudoFluidComponent, StartingBoilingPoint, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom, gsoap_eml2_2::soap_new_eml22__ThermodynamicTemperatureMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PseudoFluidComponent, EndingBoilingPoint, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom, gsoap_eml2_2::soap_new_eml22__ThermodynamicTemperatureMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PseudoFluidComponent, AvgBoilingPoint, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom, gsoap_eml2_2::soap_new_eml22__ThermodynamicTemperatureMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PseudoFluidComponent, AvgDensity, std::string, gsoap_eml2_2::soap_new_eml22__MassPerVolumeMeasure)
+SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PseudoFluidComponent, AvgMolecularWeight, gsoap_eml2_2::eml22__MolecularWeightUom, gsoap_eml2_2::soap_new_eml22__MolecularWeightMeasure)
 
 unsigned int FluidCharacterization::getModelCount() const
 {
