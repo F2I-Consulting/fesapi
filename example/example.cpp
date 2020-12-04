@@ -121,6 +121,7 @@ under the License.
 #include "witsml2_0/ChannelSet.h"
 #include "witsml2_0/Channel.h"
 
+#include "prodml2_1/FluidSystem.h"
 #include "prodml2_1/FluidCharacterization.h"
 #include "prodml2_1/FrictionTheorySpecification.h"
 #include "prodml2_1/TimeSeriesData.h"
@@ -2058,10 +2059,10 @@ void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, EML2_
 	repBottom->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
 
 	// Unit construction
-	RESQML2_NS::RockFluidUnitInterpretation *rockFluidUnit = pck.createRockFluidUnitInterpretation(rockFluidFeature, "4b73172a-4bf1-11e9-a9f6-9b2813cc56e1", "Rock Fluid Unit interp");
+	RESQML2_NS::RockFluidUnitInterpretation* rockFluidUnit = pck.createRockFluidUnitInterpretation(rockFluidFeature, "4b73172a-4bf1-11e9-a9f6-9b2813cc56e1", "Rock Fluid Unit interp");
 
 	// Feature
-	RESQML2_NS::Model * rockFluidOrgFeature = pck.createRockFluidModel("311587dd-7abc-425b-a364-908d0508ed61", "Rock Fluid Organization feature");
+	RESQML2_NS::Model* rockFluidOrgFeature = pck.createRockFluidModel("311587dd-7abc-425b-a364-908d0508ed61", "Rock Fluid Organization feature");
 	rockFluidOrgFeature->setOriginator("Geosiris");
 
 	// Interp
@@ -2074,9 +2075,24 @@ void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, EML2_
 	singleCellIjkgrid->setCellAssociationWithRockFluidOrganizationInterpretation(&rockFluidUnitIndice, 1000, rockFluidOrgInterp);
 }
 
-void serializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
+PRODML2_1_NS::FluidSystem* serializeFluidSystem(COMMON_NS::DataObjectRepository & pck)
 {
-	PRODML2_1_NS::FluidCharacterization* fluidCharac = pck.createFluidCharacterization("6f5f6146-6f8b-4222-b322-9dbef1e7e4cf", "my Fluid Characterization");
+	PRODML2_1_NS::FluidSystem* fluidSystem = pck.createFluidSystem("e8ae6cf8-c4a4-40bf-a3c7-5bf5d0a5b1dd", "my Fluid system",
+		60, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom__degF, 14.65, gsoap_eml2_2::eml22__PressureUom__psi,
+		gsoap_eml2_2::prodml21__ReservoirFluidKind__black_x0020oil, 600, gsoap_eml2_2::eml22__VolumePerVolumeUom__ft3_x002fbbl);
+
+	fluidSystem->setPhasesPresent(gsoap_eml2_2::prodml21__PhasePresent__oil_x0020and_x0020gas);
+	fluidSystem->setReservoirLifeCycleState(gsoap_eml2_2::prodml21__ReservoirLifeCycleState__primary_x0020production);
+	fluidSystem->setStockTankOilAPIGravity(40.5, gsoap_eml2_2::eml22__APIGravityUom__dAPI);
+	fluidSystem->setNaturalGasGasGravity(0.8);
+	fluidSystem->setRemark("This data comes from the official PRODML PVT Eenrgistics documentation");
+
+	return fluidSystem;
+}
+
+void serializeCompositionalFluidCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_1_NS::FluidSystem* fluidSystem = nullptr)
+{
+	PRODML2_1_NS::FluidCharacterization* fluidCharac = pck.createFluidCharacterization("6f5f6146-6f8b-4222-b322-9dbef1e7e4cf", "my compositional Fluid Characterization");
 
 	fluidCharac->pushBackFormationWater("h2o");
 	fluidCharac->setFormationWaterSpecificGravity(0, 1.02);
@@ -2105,6 +2121,49 @@ void serializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
 	srkEosSpec->setFluidComponentPropertyCriticalVolume(2, 2.607, gsoap_eml2_2::eml22__MolarVolumeUom__ft3_x002flbmol);
 	srkEosSpec->setFluidComponentPropertyAcentricFactor(2, 0.1140);
 	srkEosSpec->setFluidComponentPropertyParachor(2, 126.03);
+
+	if (fluidSystem != nullptr)
+		fluidCharac->setFluidSystem(fluidSystem);
+}
+
+void serializeTabularFluidCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_1_NS::FluidSystem* fluidSystem = nullptr)
+{
+	PRODML2_1_NS::FluidCharacterization* fluidCharac = pck.createFluidCharacterization("656aa27f-5373-4c7f-9469-a57890e2b5d8", "my tabular Fluid Characterization");
+
+	fluidCharac->pushBackModel();
+
+	// Black Oil Variation with Depth
+	fluidCharac->pushBackTableFormat();
+	fluidCharac->pushBackTableFormatColumn(0, "m", "Depth from MSL");
+	fluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_2::eml22__UnitOfMeasure__bar, gsoap_eml2_2::prodml21__OutputFluidProperty__Saturation_x0020Pressure);
+
+	fluidCharac->pushBackTable(0, "Black Oil Variation with Depth", std::to_string(fluidCharac->getTableFormatCount() - 1));
+	fluidCharac->pushBackTableRow(0, 0, {2600, 333.25});
+	fluidCharac->pushBackTableRow(0, 0, {2638.9, 320.6866});
+	fluidCharac->pushBackTableRow(0, 0, {2677.8, 309.6418});
+	fluidCharac->pushBackTableRow(0, 0, {2716.7, 299.7015});
+	fluidCharac->pushBackTableRow(0, 0, {2755.6, 290.8657});
+	fluidCharac->pushBackTableRow(0, 0, {2794.4, 282.7201});
+	fluidCharac->pushBackTableRow(0, 0, {2833.3, 275.2649});
+	fluidCharac->pushBackTableRow(0, 0, {2872, 268.5});
+	fluidCharac->pushBackTableRow(0, 0, {2872.2, 268.5});
+	fluidCharac->pushBackTableRow(0, 0, {2911.1, 262.1493});
+	fluidCharac->pushBackTableRow(0, 0, {2950, 256.2127});
+
+	// Saturated Oil Table
+	fluidCharac->pushBackTableFormat();
+	fluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_2::eml22__UnitOfMeasure__bar, gsoap_eml2_2::prodml21__OutputFluidProperty__Pressure);
+	fluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_2::eml22__UnitOfMeasure__m3_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty__Formation_x0020Volume_x0020Factor);
+	fluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_2::eml22__UnitOfMeasure__cP, gsoap_eml2_2::prodml21__OutputFluidProperty__Viscosity);
+	fluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_2::eml22__UnitOfMeasure__m3_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty__Solution_x0020GOR);
+
+	fluidCharac->pushBackTable(0, "Saturated Oil Table", std::to_string(fluidCharac->getTableFormatCount() - 1));
+	fluidCharac->pushBackTableRow(0, 1, { 268.5, 1.51746, 0.464, 156.9 });
+	fluidCharac->pushBackTableRow(0, 1, { 250, 1.48274, 0.502, 143.5});
+	fluidCharac->pushBackTableRow(0, 1, { 200, 1.39808, 0.618, 110.7});
+	fluidCharac->pushBackTableRow(0, 1, { 150, 1.32163, 0.763, 81.5});
+	fluidCharac->pushBackTableRow(0, 1, { 100, 1.24802, 0.953, 54.3});
+	fluidCharac->pushBackTableRow(0, 1, { 50, 1.17014, 1.224, 27.4});
 }
 
 void serializeTimeSeriesData(COMMON_NS::DataObjectRepository & pck)
@@ -2241,7 +2300,9 @@ bool serialize(const string & filePath)
 	serializeRepresentationSetRepresentation(&repo, hdfProxy);
 	serializeFluidBoundary(repo, hdfProxy);
 	serializeRockFluidOrganization(repo, hdfProxy);
-	serializeFluidCharacterization(repo);
+	PRODML2_1_NS::FluidSystem* fluidSystem = serializeFluidSystem(repo);
+	serializeCompositionalFluidCharacterization(repo, fluidSystem);
+	serializeTabularFluidCharacterization(repo);
 	serializeTimeSeriesData(repo);
 #if WITH_RESQML2_2
 	serializeGraphicalInformationSet(&repo, hdfProxy);

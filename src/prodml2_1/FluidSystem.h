@@ -302,6 +302,32 @@ namespace PRODML2_1_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockFluidOrganizationInterpretation* getRockFluidOrganization() const;
 
 		/**
+		 * Gets all the fluid characterizations of this fluid system.
+		 *
+		 * @returns	A vector of all the fluid characterizations of this fluid system.
+		 */
+		DLL_IMPORT_OR_EXPORT std::vector<class FluidCharacterization *> getFluidCharacterizationSet() const;
+
+		/**
+		 * Get the fluid characterizations count of this fluid system.
+		 *
+		 * @returns	The fluid characterizations count of this fluid system.
+		 */
+		DLL_IMPORT_OR_EXPORT uint64_t getFluidCharacterizationCount() const;
+
+		/**
+		 * Gets a particular fluid characterization of this fluid system according to its position in the
+		 * fluid characterizations ordering.
+		 *
+		 * @exception	std::out_of_range	If @p index is out of the range of the representation set.
+		 *
+		 * @param 	index	Zero-based index of the fluid characterization we look for.
+		 *
+		 * @returns	A pointer to the fluid characterization at @p index.
+		 */
+		DLL_IMPORT_OR_EXPORT class FluidCharacterization * getFluidCharacterization(uint64_t index) const;
+
+		/**
 		 * The standard XML tag without XML namespace for serializing this data object.
 		 *
 		 * @returns	The XML tag.

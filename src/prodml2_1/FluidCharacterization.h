@@ -220,6 +220,27 @@ namespace PRODML2_1_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockFluidUnitInterpretation* getRockFluidUnit() const;
 
 		/**
+		 * Sets the assocaited fluid system
+		 *
+		 * @param [in,out]	rockFluidUnit	If non-null, the rock fluid unit.
+		 */
+		DLL_IMPORT_OR_EXPORT void setFluidSystem(class FluidSystem* fluidSystem);
+
+		/**
+		 * Gets the associated FluidSystem dor
+		 *
+		 * @returns	Empty if it fails, else the FluidSystem dor.
+		 */
+		COMMON_NS::DataObjectReference getFluidSystemDor() const;
+
+		/**
+		 * Gets the associated FluidSystem
+		 *
+		 * @returns	Null if it fails, else the FluidSystem.
+		 */
+		DLL_IMPORT_OR_EXPORT class FluidSystem* getFluidSystem() const;
+
+		/**
 		 * Gets formation water count
 		 *
 		 * @returns	The formation water count.
@@ -415,6 +436,15 @@ namespace PRODML2_1_NS
 		DLL_IMPORT_OR_EXPORT void pushBackTableFormat(const std::string & uid = "");
 
 		/**
+		 * Gets the count of a table format column
+		 *
+		 * @param	tableFormatUid	The uid of the table format.
+		 * @param	columnIndex		The zero-based index of the column.
+		 * @returns	The uom of a table format column
+		 */
+		DLL_IMPORT_OR_EXPORT uint64_t getTableFormatColumnCount(const std::string & tableFormatUid) const;
+
+		/**
 		 * Gets the uom of a table format column
 		 *
 		 * @param	tableFormatUid	The uid of the table format.
@@ -439,7 +469,7 @@ namespace PRODML2_1_NS
 		* @param 	uom					The uom associated to the values of this column
 		* @param	fluidProperty		The property that this column contains
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackTableFormatColumn(unsigned int tableFormatIndex, const std::string & uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty);
+		DLL_IMPORT_OR_EXPORT void pushBackTableFormatColumn(unsigned int tableFormatIndex, gsoap_eml2_2::eml22__UnitOfMeasure uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty);
 
 		/**
 		* Pushes a table format colum
@@ -510,9 +540,9 @@ namespace PRODML2_1_NS
 		*
 		* @param	modelIndex		Zero-based index of the model in this fluid characterization.
 		* @param 	tableIndex		Zero-based index of the table in a model of this fluid characterization.
-		* @param 	rowContent		The string containing the content of the row in the table.
+		* @param 	rowContent		The values representing the content of the row in the table.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackTableRow(unsigned int modelIndex, unsigned int tableIndex, const std::string & rowContent);
+		DLL_IMPORT_OR_EXPORT void pushBackTableRow(unsigned int modelIndex, unsigned int tableIndex, const std::vector<double> & rowContent);
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

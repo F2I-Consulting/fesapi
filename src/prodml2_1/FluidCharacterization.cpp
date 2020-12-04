@@ -21,6 +21,7 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
+#include "FluidSystem.h"
 #include "FrictionTheorySpecification.h"
 #include "CorrelationViscosityBubblePointSpecification.h"
 
@@ -60,8 +61,10 @@ void FluidCharacterization::setStandardConditions(double temperatureValue, gsoap
 	prodml21__FluidCharacterization* fc = static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2);
 
 	fc->StandardConditions = soap_new_eml22__TemperaturePressure(getGsoapContext());
+	static_cast<eml22__TemperaturePressure*>(fc->StandardConditions)->Temperature = soap_new_eml22__ThermodynamicTemperatureMeasure(getGsoapContext());
 	static_cast<eml22__TemperaturePressure*>(fc->StandardConditions)->Temperature->__item = temperatureValue;
 	static_cast<eml22__TemperaturePressure*>(fc->StandardConditions)->Temperature->uom = temperatureUom;
+	static_cast<eml22__TemperaturePressure*>(fc->StandardConditions)->Pressure = soap_new_eml22__PressureMeasure(getGsoapContext());
 	static_cast<eml22__TemperaturePressure*>(fc->StandardConditions)->Pressure->__item = pressureValue;
 	static_cast<eml22__TemperaturePressure*>(fc->StandardConditions)->Pressure->uom = soap_eml22__PressureUom2s(getGsoapContext(), pressureUom);
 }
@@ -180,6 +183,29 @@ COMMON_NS::DataObjectReference FluidCharacterization::getRockFluidUnitDor() cons
 RESQML2_NS::RockFluidUnitInterpretation* FluidCharacterization::getRockFluidUnit() const
 {
 	return getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidUnitInterpretation>(getRockFluidUnitDor().getUuid());
+}
+
+void FluidCharacterization::setFluidSystem(FluidSystem* fluidSystem)
+{
+	if (fluidSystem == nullptr) {
+		throw std::invalid_argument("Cannot set a null fluidSystem");
+	}
+	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidSystem != nullptr) {
+		throw std::invalid_argument("There is already a fluid system set for this fluid characterization.");
+	}
+	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidSystem = fluidSystem->newEml22Reference();
+
+	getRepository()->addRelationship(this, fluidSystem);
+}
+
+COMMON_NS::DataObjectReference FluidCharacterization::getFluidSystemDor() const
+{
+	return static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidSystem;
+}
+
+FluidSystem* FluidCharacterization::getFluidSystem() const
+{
+	return getRepository()->getDataObjectByUuid<FluidSystem>(getFluidSystemDor().getUuid());
 }
 
 #define SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(vectorName, attributeName, attributeDatatype, constructor)\
@@ -472,6 +498,15 @@ void FluidCharacterization::loadTargetRelationships()
 		getRepository()->addRelationship(this, rockFluidUnit);
 	}
 
+	dor = getFluidSystemDor();
+	if (!dor.isEmpty()) {
+		FluidSystem* fluidSystem = getRepository()->getDataObjectByUuid<FluidSystem>(dor.getUuid());
+		if (fluidSystem == nullptr) {
+			convertDorIntoRel<FluidSystem>(dor);
+		}
+		getRepository()->addRelationship(this, fluidSystem);
+	}
+
 	std::vector<prodml21__FluidCharacterizationModel *> models = static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel;
 	for (size_t modelIndex = 0; modelIndex < models.size(); ++modelIndex) {
 		if (models[modelIndex]->ModelSpecification != nullptr) {
@@ -536,9 +571,22 @@ unsigned int FluidCharacterization::getTableFormatCount() const
 	return static_cast<unsigned int>(count);
 }
 
+uint64_t FluidCharacterization::getTableFormatColumnCount(const std::string & tableFormatUid) const
+{
+	for (const auto& tableFormat : static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationTableFormat) {
+		if (tableFormat->uid == tableFormatUid) {
+			return tableFormat->TableColumn.size();
+		}
+	}
+
+	throw out_of_range("The table format uid \"" + tableFormatUid + "\" has not been found.");
+}
+
 void FluidCharacterization::pushBackTableFormat(const std::string & uid)
 {
 	prodml21__FluidCharacterizationTableFormat* const result = soap_new_prodml21__FluidCharacterizationTableFormat(getGsoapContext());
+	result->Delimiter = soap_new_prodml21__TableDelimiter(getGsoapContext());
+	result->Delimiter->asciiCharacters = " ";
 	result->uid = uid.empty()
 		? std::to_string(static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationTableFormat.size())
 		: uid;
@@ -567,9 +615,11 @@ std::string FluidCharacterization::getTableFormatColumnProperty(const std::strin
 	throw out_of_range("The table format uid \"" + tableFormatUid + "\" has not been found.");
 }
 
-void FluidCharacterization::pushBackTableFormatColumn(unsigned int tableFormatIndex, const std::string & uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty)
+void FluidCharacterization::pushBackTableFormatColumn(unsigned int tableFormatIndex, gsoap_eml2_2::eml22__UnitOfMeasure uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty)
 {
-	pushBackTableFormatColumn(tableFormatIndex, uom, gsoap_eml2_2::soap_prodml21__OutputFluidProperty2s(getGsoapContext(), fluidProperty));
+	pushBackTableFormatColumn(tableFormatIndex,
+		gsoap_eml2_2::soap_eml22__UnitOfMeasure2s(getGsoapContext(), uom),
+		gsoap_eml2_2::soap_prodml21__OutputFluidProperty2s(getGsoapContext(), fluidProperty));
 }
 
 void FluidCharacterization::pushBackTableFormatColumn(unsigned int tableFormatIndex, const std::string & uom, const std::string & fluidProperty)
@@ -668,7 +718,7 @@ std::string FluidCharacterization::getTableRowContent(unsigned int modelIndex, u
 	return static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow[rowIndex]->__item;
 }
 
-void FluidCharacterization::pushBackTableRow(unsigned int modelIndex, unsigned int tableIndex, const std::string & rowContent)
+void FluidCharacterization::pushBackTableRow(unsigned int modelIndex, unsigned int tableIndex, const std::vector<double> & rowContent)
 {
 	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel.size() <= modelIndex) {
 		throw std::out_of_range("The model index is out of range.");
@@ -678,7 +728,18 @@ void FluidCharacterization::pushBackTableRow(unsigned int modelIndex, unsigned i
 		throw std::out_of_range("The table index is out of range.");
 	}
 
+	auto tableFormatUid = getTableFormatUid(modelIndex, tableIndex);
+	if (rowContent.size() != getTableFormatColumnCount(tableFormatUid)) {
+		throw std::out_of_range("you did not give the same number of values than the expected one.");
+	}
+
 	prodml21__FluidCharacterizationTableRow* const result = soap_new_prodml21__FluidCharacterizationTableRow(getGsoapContext());
-	result->__item = rowContent;
+	result->row = std::to_string(static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow.size());
+
+	std::ostringstream oss;
+	std::copy(rowContent.begin(), rowContent.end() - 1, std::ostream_iterator<double>(oss, " "));
+	oss << rowContent.back();	
+	result->__item = oss.str();
+
 	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow.push_back(result);
 }

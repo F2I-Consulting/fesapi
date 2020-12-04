@@ -20,6 +20,8 @@ under the License.
 
 #include <stdexcept>
 
+#include "FluidCharacterization.h"
+
 #include "../resqml2/RockFluidOrganizationInterpretation.h"
 
 using namespace std;
@@ -50,8 +52,10 @@ FluidSystem::FluidSystem(COMMON_NS::DataObjectRepository * repo,
 	prodml21__FluidSystem* fs = static_cast<prodml21__FluidSystem*>(gsoapProxy2_2);
 
 	fs->StandardConditions = soap_new_eml22__TemperaturePressure(repo->getGsoapContext());
+	static_cast<eml22__TemperaturePressure*>(fs->StandardConditions)->Temperature = soap_new_eml22__ThermodynamicTemperatureMeasure(repo->getGsoapContext());
 	static_cast<eml22__TemperaturePressure*>(fs->StandardConditions)->Temperature->__item = temperatureValue;
 	static_cast<eml22__TemperaturePressure*>(fs->StandardConditions)->Temperature->uom = temperatureUom;
+	static_cast<eml22__TemperaturePressure*>(fs->StandardConditions)->Pressure = soap_new_eml22__PressureMeasure(repo->getGsoapContext());
 	static_cast<eml22__TemperaturePressure*>(fs->StandardConditions)->Pressure->__item = pressureValue;
 	static_cast<eml22__TemperaturePressure*>(fs->StandardConditions)->Pressure->uom = gsoap_eml2_2::soap_eml22__PressureUom2s(repo->getGsoapContext(), pressureUom);
 
@@ -309,6 +313,27 @@ COMMON_NS::DataObjectReference FluidSystem::getRockFluidOrganizationDor() const
 RESQML2_NS::RockFluidOrganizationInterpretation* FluidSystem::getRockFluidOrganization() const
 {
 	return getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidOrganizationInterpretation>(getRockFluidOrganizationDor().getUuid());
+}
+
+std::vector<FluidCharacterization *> FluidSystem::getFluidCharacterizationSet() const
+{
+	return repository->getSourceObjects<FluidCharacterization>(this);
+}
+
+uint64_t FluidSystem::getFluidCharacterizationCount() const
+{
+	return repository->getSourceObjects<FluidCharacterization>(this).size();
+}
+
+FluidCharacterization * FluidSystem::getFluidCharacterization(uint64_t index) const
+{
+	const std::vector<FluidCharacterization*>& fluidCharacterizationSet = getFluidCharacterizationSet();
+
+	if (fluidCharacterizationSet.size() > index) {
+		return fluidCharacterizationSet[index];
+	}
+
+	throw out_of_range("The fluid Characterization index you are requesting is out of range.");
 }
 
 void FluidSystem::loadTargetRelationships()
