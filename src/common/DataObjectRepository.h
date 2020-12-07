@@ -3383,6 +3383,26 @@ namespace COMMON_NS
 			double gasOilRatio, gsoap_eml2_2::eml22__VolumePerVolumeUom gasOilRatioUom);
 
 		/**
+		 * Creates a fluid system into this repository
+		 *
+		 * @param 	guid			  	The guid to set to the fluid system. If empty then a new guid
+		 * 								will be generated.
+		 * @param 	title			  	The title to set to the fluid system. If empty then \"unknown\"
+		 * 								title will be set.
+		 * @param   referenceCondition	A wellknown couple of temperature-pressure.
+		 * @param 	reservoirFluidKind	The kind of the reservoir fluid.
+		 * @param 	gasOilRatio		  	The gas oil ratio.
+		 * @param 	gasOilRatioUom	  	The gas oil ratio unit of measure.
+		 *
+		 * @returns	A pointer to the new fluid system.
+		 */
+		DLL_IMPORT_OR_EXPORT PRODML2_1_NS::FluidSystem* createFluidSystem(const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_2::eml22__ReferenceCondition referenceCondition,
+			gsoap_eml2_2::prodml21__ReservoirFluidKind reservoirFluidKind,
+			double gasOilRatio, gsoap_eml2_2::eml22__VolumePerVolumeUom gasOilRatioUom);
+
+		/**
 		 * Creates a fluid characterization into this repository
 		 *
 		 * @param 	guid 	The guid to set to the fluid characterization. If empty then a new guid will

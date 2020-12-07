@@ -26,6 +26,24 @@ under the License.
  */
 #define CHECK_RANGE(vector, index) if (index >= vector.size()) { throw std::range_error("The index is out of range"); }
 
+ /**
+  * A macro that defines getter setter of a mandatory attribute
+  *
+  * @param 	gsoapClassName   	Name of the gsoap class.
+  * @param 	proxyVariable	 	The proxy variable.
+  * @param 	attributeName	 	Name of the attribute.
+  * @param 	attributeDatatype	The attribute datatype.
+  */
+#define GETTER_SETTER_ATTRIBUTE(gsoapClassName, proxyVariable, attributeName, attributeDatatype)\
+	DLL_IMPORT_OR_EXPORT void set##attributeName(const attributeDatatype& value) {\
+		if (isPartial()) { throw std::logic_error("Cannot set an attribute of a partial dataobject."); }\
+		static_cast<gsoapClassName*>(proxyVariable)->attributeName = value;\
+	}\
+	DLL_IMPORT_OR_EXPORT attributeDatatype get##attributeName() const {\
+		if (isPartial()) { throw std::logic_error("Cannot get an attribute of a partial dataobject."); }\
+		return static_cast<gsoapClassName*>(proxyVariable)->attributeName;\
+	}
+
 /**
  * A macro that defines checker presence attribute
  *
@@ -33,7 +51,10 @@ under the License.
  * @param 	proxyVariable 	The proxy variable.
  * @param 	attributeName 	Name of the attribute.
  */
-#define CHECKER_PRESENCE_ATTRIBUTE(gsoapClassName, proxyVariable, attributeName) DLL_IMPORT_OR_EXPORT bool has##attributeName() const { return static_cast<gsoapClassName*>(proxyVariable)->attributeName != nullptr; }
+#define CHECKER_PRESENCE_ATTRIBUTE(gsoapClassName, proxyVariable, attributeName)\
+	DLL_IMPORT_OR_EXPORT bool has##attributeName() const {\
+		return static_cast<gsoapClassName*>(proxyVariable)->attributeName != nullptr;\
+	}
 
 /**
  * A macro that defines checker presence attribute in vector
@@ -43,13 +64,14 @@ under the License.
  * @param 	vectorName	  	Name of the vector.
  * @param 	attributeName 	Name of the attribute.
  */
-#define CHECKER_PRESENCE_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName) DLL_IMPORT_OR_EXPORT bool has##vectorName##attributeName(unsigned int index) const {\
+#define CHECKER_PRESENCE_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName)\
+	DLL_IMPORT_OR_EXPORT bool has##vectorName##attributeName(unsigned int index) const {\
 	CHECK_RANGE(static_cast<gsoapClassName*>(proxyVariable)->vectorName, index)\
 	return static_cast<gsoapClassName*>(proxyVariable)->vectorName[index]->attributeName != nullptr;\
 }
 
 /**
- * A macro that defines getter setter optional attribute
+ * A macro that defines getter setter of an optional attribute
  *
  * @param 	gsoapClassName   	Name of the gsoap class.
  * @param 	proxyVariable	 	The proxy variable.
@@ -59,6 +81,7 @@ under the License.
 #define GETTER_SETTER_OPTIONAL_ATTRIBUTE(gsoapClassName, proxyVariable, attributeName, attributeDatatype)\
 	DLL_IMPORT_OR_EXPORT void set##attributeName(const attributeDatatype& value);\
 	DLL_IMPORT_OR_EXPORT attributeDatatype get##attributeName() const {\
+		if (isPartial()) { throw std::logic_error("Cannot get an attribute of a partial dataobject."); }\
 		if (!has##attributeName()) { throw std::invalid_argument("The attribute does not exist"); }\
 		return *static_cast<gsoapClassName*>(proxyVariable)->attributeName;\
 	}\
@@ -125,16 +148,17 @@ under the License.
 /**
  * A macro that defines setter optional attribute Implementation
  *
- * @param 	className	  	Name of the class.
- * @param 	gsoapClassName	Name of the gsoap class.
- * @param 	proxyVariable 	The proxy variable.
- * @param 	attributeName 	Name of the attribute.
- * @param 	uomDatatype   	The uom datatype.
- * @param 	constructor   	The constructor.
+ * @param 	className	  		Name of the class.
+ * @param 	gsoapClassName		Name of the gsoap class.
+ * @param 	proxyVariable 		The proxy variable.
+ * @param 	attributeName 		Name of the attribute.
+ * @param 	attributeDatatype	The attribute datatype.
+ * @param 	constructor   		The constructor.
  */
-#define SETTER_OPTIONAL_ATTRIBUTE_IMPL(className, gsoapClassName, proxyVariable, attributeName, uomDatatype, constructor)\
+#define SETTER_OPTIONAL_ATTRIBUTE_IMPL(className, gsoapClassName, proxyVariable, attributeName, attributeDatatype, constructor)\
 void className::set##attributeName(const attributeDatatype& value)\
 {\
+	if (isPartial()) { throw std::logic_error("Cannot set an attribute of a partial dataobject."); }\
 	static_cast<gsoapClassName*>(proxyVariable)->attributeName = constructor(proxyVariable->soap);\
 	*static_cast<gsoapClassName*>(proxyVariable)->attributeName = value;\
 }
