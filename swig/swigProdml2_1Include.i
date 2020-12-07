@@ -865,7 +865,7 @@ namespace PRODML2_1_NS
 		* @param 	uom					The uom associated to the values of this column
 		* @param	fluidProperty		The property that this column contains
 		*/
-		void pushBackTableFormatColumn(unsigned int tableFormatIndex, const std::string & uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty);
+		void pushBackTableFormatColumn(unsigned int tableFormatIndex, gsoap_eml2_2::eml22__UnitOfMeasure uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty);
 			
 		/**
 		* Pushes a table format colum
@@ -936,9 +936,9 @@ namespace PRODML2_1_NS
 		*
 		* @param	modelIndex		Zero-based index of the model in this fluid characterization.
 		* @param 	tableIndex		Zero-based index of the table in a model of this fluid characterization.
-		* @param 	rowContent		The string containing the content of the row in the table .
+		* @param 	rowContent		The values representing the content of the row in the table.
 		*/
-		void pushBackTableRow(unsigned int modelIndex, unsigned int tableIndex, const std::string & rowContent);
+		void pushBackTableRow(unsigned int modelIndex, unsigned int tableIndex, const std::vector<double> & rowContent);
 	};
 	
 	/** The time series data object is intended for use in transferring time series of data, e.g. from a historian. 
