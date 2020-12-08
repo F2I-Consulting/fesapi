@@ -116,11 +116,11 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.Activity_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_Activity(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("eml23".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.Activity_eml23(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.eml23_Activity(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -131,11 +131,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.ActivityTemplate_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_ActivityTemplate(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("eml23".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.ActivityTemplate_eml23(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.eml23_ActivityTemplate(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -151,14 +151,14 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PropertyKind_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_PropertyKind(cPtr, owner);
 		}
 		else if ("eml21".equals(xmlNs)) {
 			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_1_NS}.PropertyKind_eml21(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("eml23".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.PropertyKind_eml23(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.eml23_PropertyKind(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -169,11 +169,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.TimeSeries_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_TimeSeries(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("eml23".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.TimeSeries_eml23(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.eml23_TimeSeries(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -184,11 +184,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.BoundaryFeature_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_BoundaryFeature(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.BoundaryFeature_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_BoundaryFeature(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -199,11 +199,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreFeature_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_WellboreFeature(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.WellboreFeature_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_WellboreFeature(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -214,11 +214,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLatticeFeature_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_SeismicLatticeFeature(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SeismicLatticeFeature_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_SeismicLatticeFeature(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -229,11 +229,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLineSetFeature_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_SeismicLineSetFeature(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SeismicLineSetFeature_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_SeismicLineSetFeature(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -244,11 +244,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicColumn_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_StratigraphicColumn(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.StratigraphicColumn_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_StratigraphicColumn(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -259,11 +259,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.BoundaryFeatureInterpretation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_BoundaryFeatureInterpretation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.BoundaryFeatureInterpretation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_BoundaryFeatureInterpretation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -274,11 +274,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.EarthModelInterpretation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_EarthModelInterpretation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.EarthModelInterpretation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_EarthModelInterpretation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -289,11 +289,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.FaultInterpretation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_FaultInterpretation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.FaultInterpretation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_FaultInterpretation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -304,11 +304,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeobodyBoundaryInterpretation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_GeobodyBoundaryInterpretation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.GeobodyBoundaryInterpretation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_GeobodyBoundaryInterpretation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -319,11 +319,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeobodyInterpretation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_GeobodyInterpretation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.GeobodyInterpretation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_GeobodyInterpretation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -334,11 +334,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GenericFeatureInterpretation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_GenericFeatureInterpretation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.GenericFeatureInterpretation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_GenericFeatureInterpretation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -349,11 +349,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.HorizonInterpretation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_HorizonInterpretation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.HorizonInterpretation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_HorizonInterpretation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -364,11 +364,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicColumnRankInterpretation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_StratigraphicColumnRankInterpretation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.StratigraphicColumnRankInterpretation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_StratigraphicColumnRankInterpretation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -379,11 +379,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicOccurrenceInterpretation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_StratigraphicOccurrenceInterpretation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.StratigraphicOccurrenceInterpretation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_StratigraphicOccurrenceInterpretation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -394,11 +394,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicUnitInterpretation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_StratigraphicUnitInterpretation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.StratigraphicUnitInterpretation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_StratigraphicUnitInterpretation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -409,11 +409,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StructuralOrganizationInterpretation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_StructuralOrganizationInterpretation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.StructuralOrganizationInterpretation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_StructuralOrganizationInterpretation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -424,11 +424,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreInterpretation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_WellboreInterpretation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.WellboreInterpretation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_WellboreInterpretation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -439,11 +439,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.DeviationSurveyRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_DeviationSurveyRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DeviationSurveyRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_DeviationSurveyRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -454,11 +454,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.Grid2dRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_Grid2dRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.Grid2dRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_Grid2dRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -469,11 +469,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GridConnectionSetRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_GridConnectionSetRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.GridConnectionSetRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_GridConnectionSetRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -484,11 +484,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.NonSealedSurfaceFrameworkRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_NonSealedSurfaceFrameworkRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.NonSealedSurfaceFrameworkRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_NonSealedSurfaceFrameworkRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -499,11 +499,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SealedSurfaceFrameworkRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_SealedSurfaceFrameworkRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SealedSurfaceFrameworkRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_SealedSurfaceFrameworkRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -514,11 +514,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SealedVolumeFrameworkRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_SealedVolumeFrameworkRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SealedVolumeFrameworkRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_SealedVolumeFrameworkRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -529,11 +529,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PlaneSetRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_PlaneSetRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.PlaneSetRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_PlaneSetRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -544,11 +544,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PointSetRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_PointSetRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.PointSetRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_PointSetRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -559,11 +559,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PointsProperty_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_PointsProperty(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.PointsProperty_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_PointsProperty(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -574,11 +574,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PolylineRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_PolylineRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.PolylineRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_PolylineRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -589,11 +589,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PolylineSetRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_PolylineSetRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.PolylineSetRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_PolylineSetRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -604,11 +604,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.RepresentationSetRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_RepresentationSetRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.RepresentationSetRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_RepresentationSetRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -619,11 +619,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.RockFluidOrganizationInterpretation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_RockFluidOrganizationInterpretation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.RockFluidOrganizationInterpretation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_RockFluidOrganizationInterpretation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -634,11 +634,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.RockFluidUnitInterpretation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_RockFluidUnitInterpretation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.RockFluidUnitInterpretation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_RockFluidUnitInterpretation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -649,11 +649,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SubRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_SubRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SubRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_SubRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -664,11 +664,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.TriangulatedSetRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_TriangulatedSetRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.TriangulatedSetRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_TriangulatedSetRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -679,11 +679,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.UnstructuredGridRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_UnstructuredGridRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.UnstructuredGridRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_UnstructuredGridRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -694,11 +694,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreTrajectoryRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_WellboreTrajectoryRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.WellboreTrajectoryRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_WellboreTrajectoryRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -715,31 +715,31 @@ ${COMMENT_END}
 
 		if (type == com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractIjkGridRepresentation.geometryKind.EXPLICIT) {
 			if ("resqml20".equals(xmlNs)) {
-				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.IjkGridExplicitRepresentation_resqml20(cPtr, owner);
+				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_IjkGridExplicitRepresentation(cPtr, owner);
 			}
 ${COMMENT_START}
 			else if ("resqml22".equals(xmlNs)) {
-				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.IjkGridExplicitRepresentation_resqml22(cPtr, owner);
+				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_IjkGridExplicitRepresentation(cPtr, owner);
 			}
 ${COMMENT_END}
 		}
 		else if (type == com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractIjkGridRepresentation.geometryKind.PARAMETRIC) {
 			if ("resqml20".equals(xmlNs)) {
-				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.IjkGridParametricRepresentation_resqml20(cPtr, owner);
+				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_IjkGridParametricRepresentation(cPtr, owner);
 			}
 ${COMMENT_START}
 			else if ("resqml22".equals(xmlNs)) {
-				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.IjkGridParametricRepresentation_resqml22(cPtr, owner);
+				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_IjkGridParametricRepresentation(cPtr, owner);
 			}
 ${COMMENT_END}
 		}
 		else if (type == com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractIjkGridRepresentation.geometryKind.LATTICE) {
 			if ("resqml20".equals(xmlNs)) {
-				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.IjkGridLatticeRepresentation_resqml20(cPtr, owner);
+				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_IjkGridLatticeRepresentation(cPtr, owner);
 			}
 ${COMMENT_START}
 			else if ("resqml22".equals(xmlNs)) {
-				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.IjkGridLatticeRepresentation_resqml22(cPtr, owner);
+				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_IjkGridLatticeRepresentation(cPtr, owner);
 			}
 ${COMMENT_END}
 		}
@@ -755,11 +755,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.CategoricalProperty_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_CategoricalProperty(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.CategoricalProperty_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_CategoricalProperty(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -770,11 +770,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.CommentProperty_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_CommentProperty(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.CommentProperty_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_CommentProperty(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -785,11 +785,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.ContinuousProperty_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_ContinuousProperty(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.ContinuousProperty_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_ContinuousProperty(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -800,11 +800,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.DiscreteProperty_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_DiscreteProperty(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DiscreteProperty_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_DiscreteProperty(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -815,11 +815,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreFrameRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_WellboreFrameRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.WellboreFrameRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_WellboreFrameRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -830,11 +830,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreMarker_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_WellboreMarker(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.WellboreMarker_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_WellboreMarker(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -845,11 +845,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreMarkerFrameRepresentation_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_WellboreMarkerFrameRepresentation(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.WellboreMarkerFrameRepresentation_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_WellboreMarkerFrameRepresentation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -860,11 +860,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.LocalDepth3dCrs_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_LocalDepth3dCrs(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.LocalDepth3dCrs_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_LocalDepth3dCrs(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -875,11 +875,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.LocalTime3dCrs_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_LocalTime3dCrs(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.LocalTime3dCrs_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_LocalTime3dCrs(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -890,11 +890,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.DoubleTableLookup_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_DoubleTableLookup(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DoubleTableLookup_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_DoubleTableLookup(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -905,11 +905,11 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StringTableLookup_resqml20(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_StringTableLookup(cPtr, owner);
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.StringTableLookup_resqml22(cPtr, owner);
+			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_StringTableLookup(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -964,39 +964,39 @@ ${COMMENT_END}
 		case CHANNEL : return new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Channel(cPtr, owner);
 		case CHANNELSET : return new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.ChannelSet(cPtr, owner);
 ${COMMENT_START}
-		case CMPLINEFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.CmpLineFeature_resqml22(cPtr, owner);
+		case CMPLINEFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_CmpLineFeature(cPtr, owner);
 ${COMMENT_END}
 		case COMMENTPROPERTY : return resqml2_instantiateCommentProperty(cPtr, owner);
 ${COMMENT_START}
-		case CONTINUOUSCOLORMAP : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.ContinuousColorMap_resqml22(cPtr, owner);
+		case CONTINUOUSCOLORMAP : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_ContinuousColorMap(cPtr, owner);
 ${COMMENT_END}
 		case CONTINUOUSPROPERTY : return resqml2_instantiateContinuousProperty(cPtr, owner);
 ${COMMENT_START}
-		case CULTURALFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.CulturalFeature_resqml22(cPtr, owner);
+		case CULTURALFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_CulturalFeature(cPtr, owner);
 ${COMMENT_END}
 		case DEVIATIONSURVEYREPRESENTATION : return resqml2_instantiateDeviationSurveyRepresentation(cPtr, owner);
 ${COMMENT_START}
-		case DISCRETECOLORMAP : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DiscreteColorMap_resqml22(cPtr, owner);
+		case DISCRETECOLORMAP : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_DiscreteColorMap(cPtr, owner);
 ${COMMENT_END}
 		case DISCRETEPROPERTY : return resqml2_instantiateDiscreteProperty(cPtr, owner);
 		case DOUBLETABLELOOKUP : return resqml2_instantiateDoubleTableLookup(cPtr, owner);
 		case EARTHMODELINTERPRETATION : return resqml2_instantiateEarthModelInterpretation(cPtr, owner);
 		case EPCEXTERNALPARTREFERENCE : return eml2_instantiateEpcExternalPartReference(cPtr, owner);
 		case FAULTINTERPRETATION : return resqml2_instantiateFaultInterpretation(cPtr, owner);
-		case FLUIDBOUNDARYFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.FluidBoundaryFeature_resqml20(cPtr, owner);
+		case FLUIDBOUNDARYFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_FluidBoundaryFeature(cPtr, owner);
 		case FLUIDCHARACTERIZATION : return new com.f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.FluidCharacterization(cPtr, owner);
 		case FLUIDSYSTEM : return new com.f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.FluidSystem(cPtr, owner);
-		case FRONTIERFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.FrontierFeature_resqml20(cPtr, owner);
+		case FRONTIERFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_FrontierFeature(cPtr, owner);
 		case GENETICBOUNDARYFEATURE :
-			com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeneticBoundaryFeature_resqml20 result = new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeneticBoundaryFeature_resqml20(cPtr, owner);
-			return result.isAnHorizon() ? new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.Horizon_resqml20(cPtr, owner) : result;
-		case GEOBODYFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeobodyFeature_resqml20(cPtr, owner);
+			com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_GeneticBoundaryFeature_resqml20 result = new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeneticBoundaryFeature(cPtr, owner);
+			return result.isAnHorizon() ? new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_Horizon(cPtr, owner) : result;
+		case GEOBODYFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_GeobodyFeature(cPtr, owner);
 		case GEOBODYBOUNDARYINTERPRETATION : return resqml2_instantiateGeobodyBoundaryInterpretation(cPtr, owner);
 		case GEOBODYINTERPRETATION : return resqml2_instantiateGeobodyInterpretation(cPtr, owner);
 		case GENERICFEATUREINTERPRETATION : return resqml2_instantiateGenericFeatureInterpretation(cPtr, owner);
-		case GEOLOGICUNITFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeologicUnitFeature_resqml20(cPtr, owner);
+		case GEOLOGICUNITFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_GeologicUnitFeature(cPtr, owner);
 ${COMMENT_START}
-		case GRAPHICALINFORMATIONSET : return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.GraphicalInformationSet_eml23(cPtr, owner);
+		case GRAPHICALINFORMATIONSET : return new com.f2i.energisticsStandardsApi.${FESAPI_EML2_3_NS}.eml23_GraphicalInformationSet(cPtr, owner);
 ${COMMENT_END}
 		case GRID2DREPRESENTATION : return resqml2_instantiateGrid2dRepresentation(cPtr, owner);
 		case GRIDCONNECTIONSETREPRESENTATION : return resqml2_instantiateGridConnectionSetRepresentation(cPtr, owner);
@@ -1005,45 +1005,45 @@ ${COMMENT_END}
 		case LOCALDEPTH3DCRS : return resqml2_instantiateLocalDepth3dCrs(cPtr, owner);
 		case LOCALTIME3DCRS : return resqml2_instantiateLocalTime3dCrs(cPtr, owner);
 		case LOG : return new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Log(cPtr, owner);
-		case MDDATUM : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.MdDatum_resqml20(cPtr, owner);
+		case MDDATUM : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_MdDatum(cPtr, owner);
 ${COMMENT_START}
-		case MODEL : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.Model_resqml22(cPtr, owner);
+		case MODEL : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_Model(cPtr, owner);
 ${COMMENT_END}
 		case NONSEALEDSURFACEFRAMEWORKREPRESENTATION : return resqml2_instantiateNonSealedSurfaceFrameworkRepresentation(cPtr, owner);
-		case ORGANIZATIONFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.OrganizationFeature_resqml20(cPtr, owner);
+		case ORGANIZATIONFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_OrganizationFeature(cPtr, owner);
 		case PLANESETREPRESENTATION : return resqml2_instantiatePlaneSetRepresentation(cPtr, owner);
 		case POINTSETREPRESENTATION : return resqml2_instantiatePointSetRepresentation(cPtr, owner);
 		case POINTSPROPERTY : return resqml2_instantiatePointsProperty(cPtr, owner);
 		case POLYLINEREPRESENTATION : return resqml2_instantiatePolylineRepresentation(cPtr, owner);
 		case POLYLINESETREPRESENTATION : return resqml2_instantiatePolylineSetRepresentation(cPtr, owner);
 		case PROPERTYKIND : return eml2_instantiatePropertyKind(cPtr, owner);
-		case PROPERTYSET : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PropertySet_resqml20(cPtr, owner);
+		case PROPERTYSET : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_PropertySet(cPtr, owner);
 		case REPRESENTATIONSETREPRESENTATION : return resqml2_instantiateRepresentationSetRepresentation(cPtr, owner);
 		case ROCKFLUIDORGANIZATIONINTERPRETATION : return resqml2_instantiateRockFluidOrganizationInterpretation(cPtr, owner);
 		case ROCKFLUIDUNITINTERPRETATION : return resqml2_instantiateRockFluidUnitInterpretation(cPtr, owner);
 ${COMMENT_START}
-		case ROCKVOLUMEFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.RockVolumeFeature_resqml22(cPtr, owner);
+		case ROCKVOLUMEFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_RockVolumeFeature(cPtr, owner);
 ${COMMENT_END}
 		case SEALEDSURFACEFRAMEWORKREPRESENTATION : return resqml2_instantiateSealedSurfaceFrameworkRepresentation(cPtr, owner);
 		case SEALEDVOLUMEFRAMEWORKREPRESENTATION : return resqml2_instantiateSealedVolumeFrameworkRepresentation(cPtr, owner);
 		case SEISMICLATTICEFEATURE : return resqml2_instantiateSeismicLatticeFeature(cPtr, owner);
-		case SEISMICLINEFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLineFeature_resqml20(cPtr, owner);
+		case SEISMICLINEFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_SeismicLineFeature(cPtr, owner);
 		case SEISMICLINESETFEATURE : return resqml2_instantiateSeismicLineSetFeature(cPtr, owner);
 ${COMMENT_START}
-		case SEISMICWELLBOREFRAMEREPRESENTATION : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SeismicWellboreFrameRepresentation_resqml22(cPtr, owner);
-		case SHOTPOINTLINEFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.ShotPointLineFeature_resqml22(cPtr, owner);
+		case SEISMICWELLBOREFRAMEREPRESENTATION : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_SeismicWellboreFrameRepresentation(cPtr, owner);
+		case SHOTPOINTLINEFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.resqml22_ShotPointLineFeature(cPtr, owner);
 ${COMMENT_END}
 		case STRATIGRAPHICCOLUMN : return resqml2_instantiateStratigraphicColumn(cPtr, owner);
 		case STRATIGRAPHICCOLUMNRANKINTERPRETATION : return resqml2_instantiateStratigraphicColumnRankInterpretation(cPtr, owner);
 		case STRATIGRAPHICOCCURRENCEINTERPRETATION : return resqml2_instantiateStratigraphicOccurrenceInterpretation(cPtr, owner);
-		case STRATIGRAPHICUNITFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicUnitFeature_resqml20(cPtr, owner);
+		case STRATIGRAPHICUNITFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_StratigraphicUnitFeature(cPtr, owner);
 		case STRATIGRAPHICUNITINTERPRETATION : return resqml2_instantiateStratigraphicUnitInterpretation(cPtr, owner);
 		case STREAMLINESFEATURE : return resqml2_instantiateStreamlinesFeature(cPtr, owner);
 		case STREAMLINESREPRESENTATION : return resqml2_instantiateStreamlinesRepresentation(cPtr, owner);
 		case STRINGTABLELOOKUP : return resqml2_instantiateStringTableLookup(cPtr, owner);
 		case STRUCTURALORGANIZATIONINTERPRETATION : return resqml2_instantiateStructuralOrganizationInterpretation(cPtr, owner);
 		case SUBREPRESENTATION : return resqml2_instantiateSubRepresentation(cPtr, owner);
-		case TECTONICBOUNDARYFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.TectonicBoundaryFeature_resqml20(cPtr, owner);
+		case TECTONICBOUNDARYFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_TectonicBoundaryFeature(cPtr, owner);
 		case TIMESERIES : return eml2_instantiateTimeSeries(cPtr, owner);
 		case TIMESERIESDATA : return new com.f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.TimeSeriesData(cPtr, owner);
 		case TRAJECTORY : return new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);

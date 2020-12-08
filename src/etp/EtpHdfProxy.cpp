@@ -150,7 +150,7 @@ void EtpHdfProxy::writeArrayNdOfInt64Values(const std::string & groupName,
 
 void EtpHdfProxy::writeArrayNdOfUInt64Values(const std::string & groupName,
 	const std::string & name,
-	const unsigned long long * uint64_tValues,
+	const uint64_t * values,
 	const unsigned long long * numValuesInEachDimension,
 	unsigned int numDimensions)
 {
