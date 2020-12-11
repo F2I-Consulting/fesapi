@@ -375,11 +375,17 @@ ${COMMENT_END}
 		return null;
 	}
 	
-	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.StratigraphicOccurrenceInterpretation resqml2_instantiateStratigraphicOccurrenceInterpretation(long cPtr, boolean owner)
+	public static com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractOrganizationInterpretation resqml2_instantiateStratigraphicOccurrenceInterpretation(long cPtr, boolean owner)
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_StratigraphicOccurrenceInterpretation(cPtr, owner);
+			com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_StratigraphicOccurrenceInterpretation tmp = new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_StratigraphicOccurrenceInterpretation(cPtr, owner);
+			if (tmp.getStratigraphicColumnRankInterpretation() == null) {
+				return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_RockFluidOrganizationInterpretation(cPtr, owner);
+			}
+			else {
+				return tmp;
+			}
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
