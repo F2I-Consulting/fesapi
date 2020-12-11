@@ -60,6 +60,7 @@ under the License.
 	%nspace RESQML2_NS::DoubleTableLookup;
 	%nspace RESQML2_NS::EarthModelInterpretation;
 	%nspace RESQML2_NS::FaultInterpretation;
+	%nspace RESQML2_NS::FluidBoundaryInterpretation;
 	%nspace RESQML2_NS::GenericFeatureInterpretation;
 	%nspace RESQML2_NS::GeobodyBoundaryInterpretation;
 	%nspace RESQML2_NS::GeobodyInterpretation;
@@ -2141,6 +2142,14 @@ namespace RESQML2_NS
 	{
 	public:
 	};
+
+#ifdef SWIGPYTHON
+	%rename(resqml2_FluidBoundaryInterpretation) FluidBoundaryInterpretation;
+#endif
+	class FluidBoundaryInterpretation : public BoundaryFeatureInterpretation
+	{
+	public:
+	};
 	
 #ifdef SWIGPYTHON
 	%rename(resqml2_GeobodyInterpretation) GeobodyInterpretation;
@@ -2169,9 +2178,73 @@ namespace RESQML2_NS
 	class AbstractOrganizationInterpretation : public AbstractFeatureInterpretation
 	{
 	public:
+		
+
+		/**
+		 * Adds a binary contact to this organization interpretation by means of a simple sentence.
+		 *
+		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
+		 *
+		 * @param [in]	subject			The subject of the sentence that defines how the contact was
+		 * 								constructed.
+		 * @param 	  	verb			The verb of the sentence that defines how the contact was
+		 * 								constructed.
+		 * @param [in]	directObject	The direct object of the sentence that defines how the contact
+		 * 								was constructed.
+		 */
 		void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_3::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject);
+
+		/**
+		 * Adds a binary contact to this organization interpretation by means of a simple sentence.
+		 *
+		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
+		 *
+		 * @param [in]	subject			The subject of the sentence that defines how the contact was
+		 * 								constructed.
+		 * @param 	  	verb			The verb of the sentence that defines how the contact was
+		 * 								constructed.
+		 * @param [in]	directObject	The direct object of the sentence that defines how the contact
+		 * 								was constructed.
+		 * @param [in]	partOf			indicates the interpertation this contact is part of
+		 */
+		void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_3::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject, AbstractFeatureInterpretation* partOf);
+		
+		
+		/**
+		 * Adds a binary contact to the organization interpretation by means of a sentence where the
+		 * direct object can be qualified.
+		 *
+		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
+		 *
+		 * @param [in]	subject				 	The subject of the sentence that defines how the contact
+		 * 										was constructed.
+		 * @param 	  	verb				 	The verb of the sentence that defines how the contact was
+		 * 										constructed.
+		 * @param [in]	directObject		 	The direct object of the sentence that defines how the
+		 * 										contact was constructed.
+		 * @param 	  	directObjectQualifier	The direct object qualifier defining its contact side
+		 * 										(footwall, hanging wall, north, south, etc.).
+		 */
 		void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_3::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject,
 			gsoap_resqml2_0_1::resqml20__ContactSide directObjectQualifier);
+			
+		/**
+		 * Adds a binary contact to the organization interpretation by means of a sentence where both
+		 * the subject and the direct object can be qualified.
+		 *
+		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
+		 *
+		 * @param [in]	subject				 	The subject of the sentence that defines how the contact
+		 * 										was constructed.
+		 * @param 	  	subjectQualifier	 	The subject qualifier defining its contact side (footwall,
+		 * 										hanging wall, north, south, etc.).
+		 * @param 	  	verb				 	The verb of the sentence that defines how the contact was
+		 * 										constructed.
+		 * @param [in]	directObject		 	The direct object of the sentence that defines how the
+		 * 										contact was constructed.
+		 * @param 	  	directObjectQualifier	The direct object qualifier defining its contact side
+		 * 										(footwall, hanging wall, north, south, etc.).
+		 */
 		void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_resqml2_0_1::resqml20__ContactSide subjectQualifier,
 			gsoap_eml2_3::resqml22__ContactVerb verb,
 			AbstractFeatureInterpretation* directObject, gsoap_resqml2_0_1::resqml20__ContactSide directObjectQualifier);
@@ -2241,8 +2314,30 @@ namespace RESQML2_NS
 	class RockFluidUnitInterpretation : public AbstractFeatureInterpretation
 	{
 	public:
+		/**
+		 * Indicates if this instance has a phase information.
+		 *
+		 * @returns	True if there exists a phase information, false if not.
+		 */
 		bool hasPhase() const;
+
+		/**
+		 * Gets the phase information of this rock fluid unit interpretation.
+		 *
+		 * @exception	std::logic_error	If no phase information exists in this rock fluid unit
+		 * 									interpretation (please use hasPhase() before calling this
+		 * 									method).  
+		 *
+		 * @returns	The phase of this rock fluid unit interpretation.
+		 */
 		gsoap_eml2_3::resqml22__Phase getPhase() const;
+
+		/**
+		 * Sets the phase information of this rock fluid unit interpretation.
+		 *
+		 * @param phase	The phase of this rock fluid unit interpretation.
+		 */
+		void setPhase(gsoap_eml2_3::resqml22__Phase phase) const;
 	};
 	
 #ifdef SWIGPYTHON

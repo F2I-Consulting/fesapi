@@ -58,11 +58,11 @@ namespace {
 				return resqml20__ContactRelationship::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020tectonic_x0020boundary;
 			}
 		}
-		else if (dynamic_cast<RESQML2_0_1_NS::StratigraphicUnitFeature*>(subjectFeature) != nullptr) {
+		else if (dynamic_cast<RESQML2_NS::RockVolumeFeature*>(subjectFeature) != nullptr) {
 			if (dynamic_cast<CulturalFeature*>(directObjectFeature) != nullptr) {
 				return resqml20__ContactRelationship::resqml20__ContactRelationship__stratigraphic_x0020unit_x0020to_x0020frontier_x0020feature;
 			}
-			else if (dynamic_cast<RESQML2_0_1_NS::StratigraphicUnitFeature*>(directObjectFeature) != nullptr) {
+			else if (dynamic_cast<RESQML2_NS::RockVolumeFeature*>(directObjectFeature) != nullptr) {
 				return resqml20__ContactRelationship::resqml20__ContactRelationship__stratigraphic_x0020unit_x0020to_x0020stratigraphic_x0020unit;
 			}
 		}
@@ -126,6 +126,18 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureIn
 		contact->Subject = subject->newContactElementReference2_2(); // Not to add for EPC relationships since by business rule it must be present in the object listing/stack of the organization
 		contact->Verb = verb;
 		contact->DirectObject = directObject->newContactElementReference2_2(); // Not to add for EPC relationships since by business rule it must be present in the object listing/stack of the organization
+	}
+}
+
+void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_3::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject, AbstractFeatureInterpretation* partOf)
+{
+	pushBackBinaryContact(subject, verb, directObject);
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		static_cast<resqml20__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation.back()->PartOf = partOf->newResqmlReference();
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		static_cast<gsoap_eml2_3::resqml22__AbstractOrganizationInterpretation*>(gsoapProxy2_3)->ContactInterpretation.back()->PartOf = partOf->newEml23Reference();
 	}
 }
 

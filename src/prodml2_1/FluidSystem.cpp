@@ -340,10 +340,10 @@ void FluidSystem::loadTargetRelationships()
 {
 	COMMON_NS::DataObjectReference dor = getRockFluidOrganizationDor();
 	if (!dor.isEmpty()) {
-		RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidORg = getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidOrganizationInterpretation>(dor.getUuid());
-		if (rockFluidORg == nullptr) {
+		RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrg = getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidOrganizationInterpretation>(dor.getUuid());
+		if (rockFluidOrg == nullptr) {
 			convertDorIntoRel<RESQML2_NS::RockFluidOrganizationInterpretation>(dor);
 		}
-		getRepository()->addRelationship(this, rockFluidORg);
+		getRepository()->addRelationship(this, rockFluidOrg);
 	}
 }

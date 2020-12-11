@@ -63,6 +63,21 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_3::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject);
 
 		/**
+		 * Adds a binary contact to this organization interpretation by means of a simple sentence.
+		 *
+		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
+		 *
+		 * @param [in]	subject			The subject of the sentence that defines how the contact was
+		 * 								constructed.
+		 * @param 	  	verb			The verb of the sentence that defines how the contact was
+		 * 								constructed.
+		 * @param [in]	directObject	The direct object of the sentence that defines how the contact
+		 * 								was constructed.
+		 * @param [in]	partOf			indicates the interpertation this contact is part of
+		 */
+		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_3::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject, AbstractFeatureInterpretation* partOf);
+
+		/**
 		 * Adds a binary contact to the organization interpretation by means of a sentence where the
 		 * direct object can be qualified.
 		 *

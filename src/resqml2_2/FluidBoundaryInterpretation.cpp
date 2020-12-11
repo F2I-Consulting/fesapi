@@ -16,46 +16,31 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "RockFluidUnitInterpretation.h"
+#include "FluidBoundaryInterpretation.h"
 
-#include "../resqml2/RockVolumeFeature.h"
+#include <limits>
+#include <stdexcept>
+
+#include "../resqml2/BoundaryFeature.h"
 
 using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
-const char* RockFluidUnitInterpretation::XML_NS = "resqml22";
+const char* FluidBoundaryInterpretation::XML_NS = "resqml22";
 
-RockFluidUnitInterpretation::RockFluidUnitInterpretation(RESQML2_NS::RockVolumeFeature * feature, const string & guid, const string & title)
+FluidBoundaryInterpretation::FluidBoundaryInterpretation(RESQML2_NS::BoundaryFeature * feature, const string & guid, const string & title, gsoap_eml2_3::resqml22__FluidContact fluidContact)
 {
 	if (feature == nullptr) {
 		throw invalid_argument("The interpreted feature cannot be null.");
 	}
 
-	gsoapProxy2_3 = soap_new_resqml22__RockFluidUnitInterpretation(feature->getGsoapContext());
+	gsoapProxy2_3 = soap_new_resqml22__FluidBoundaryInterpretation(feature->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	static_cast<resqml22__FluidBoundaryInterpretation*>(gsoapProxy2_3)->FluidContact = fluidContact;
+
 	setInterpretedFeature(feature);
-}
-
-bool RockFluidUnitInterpretation::hasPhase() const
-{
-	return static_cast<_resqml22__RockFluidUnitInterpretation*>(gsoapProxy2_3)->Phase != nullptr;
-}
-
-gsoap_eml2_3::resqml22__Phase RockFluidUnitInterpretation::getPhase() const
-{
-	if (!hasPhase()) {
-		throw logic_error("The rock fluid unit interpretation has not any phase.");
-	}
-
-	return *static_cast<_resqml22__RockFluidUnitInterpretation*>(gsoapProxy2_3)->Phase;
-}
-
-void RockFluidUnitInterpretation::setPhase(gsoap_eml2_3::resqml22__Phase phase) const
-{
-	static_cast<_resqml22__RockFluidUnitInterpretation*>(gsoapProxy2_3)->Phase = soap_new_resqml22__Phase(getGsoapContext());
-	*static_cast<_resqml22__RockFluidUnitInterpretation*>(gsoapProxy2_3)->Phase = phase;
 }
