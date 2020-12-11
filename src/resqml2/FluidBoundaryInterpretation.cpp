@@ -16,8 +16,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#pragma once
-
 #include "FluidBoundaryInterpretation.h"
 
 const char* RESQML2_NS::FluidBoundaryInterpretation::XML_TAG = "FluidBoundaryInterpretation";
