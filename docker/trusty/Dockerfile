@@ -21,13 +21,9 @@ ENV CFLAGS="-fPIC -O2"
 ENV CXXFLAGS="-fPIC -O2"
 
 RUN	apt-get update &&\
-	apt-get install -y --no-install-recommends build-essential uuid-dev libhdf5-dev wget git &&\
+	apt-get install -y --no-install-recommends build-essential libboost-dev libhdf5-dev wget git &&\
 	apt-get clean &&\
 	rm -rf /var/lib/apt/lists/*
-
-RUN	apt-get purge cmake swig
-
-RUN rm -rf /usr/local/cmake-*
 
 WORKDIR /fesapiEnv
 
@@ -61,8 +57,6 @@ RUN git clone https://github.com/F2I-Consulting/fesapi.git && \
 		-DMINIZIP_LIBRARY_RELEASE=/fesapiEnv/dependencies/Minizip/build/install/lib/libminizip.a \
 		-DZLIB_INCLUDE_DIR=/usr/include \
 		-DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so \
-		-DUUID_INCLUDE_DIR=/usr/include \
-		-DUUID_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libuuid.so \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DWITH_EXAMPLE=TRUE \
 		-DWITH_RESQML2_2=TRUE \

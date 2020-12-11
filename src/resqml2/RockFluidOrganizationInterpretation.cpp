@@ -28,8 +28,6 @@ using namespace std;
 using namespace RESQML2_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* RockFluidOrganizationInterpretation::XML_TAG = "RockFluidOrganizationInterpretation";
-
 std::vector<AbstractGridRepresentation *> RockFluidOrganizationInterpretation::getGridRepresentationSet() const
 {
 	return getRepository()->getSourceObjects<AbstractGridRepresentation>(this);

@@ -59,6 +59,7 @@ namespace RESQML2_NS
 	class DoubleTableLookup;
 	class EarthModelInterpretation;
 	class FaultInterpretation;
+	class FluidBoundaryInterpretation;
 	class GenericFeatureInterpretation;
 	class GeobodyBoundaryInterpretation;
 	class GeobodyInterpretation;
@@ -1445,6 +1446,23 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new fault interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::FaultInterpretation* createFaultInterpretation(RESQML2_NS::BoundaryFeature * fault, const std::string & guid, const std::string & title);
+
+		/**
+		 * @brief	Creates a fluid Boundary interpretation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If <tt>fault == nullptr</tt>.
+		 *
+		 * @param [in]	boundary		The interpreted boundary. It cannot be null.
+		 * @param 	  	guid 			The guid to set to the interpretation. If empty then a new guid
+		 * 								will be generated.
+		 * @param 	  	title			The title to set to the interpretation. If empty then \"unknown\"
+		 * 								title will be set.
+		 * @param 	  	fluidContact	The fluid contact this boundary is.
+		 *
+		 * @returns	A pointer to the new interpretation.
+		 */
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::FluidBoundaryInterpretation* createFluidBoundaryInterpretation(RESQML2_NS::BoundaryFeature * boundary, const std::string & guid, const std::string & title, gsoap_eml2_3::resqml22__FluidContact fluidContact);
 
 		/**
 		 * @brief	Creates a wellbore interpretation into this repository

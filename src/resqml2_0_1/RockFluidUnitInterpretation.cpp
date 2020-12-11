@@ -53,3 +53,17 @@ gsoap_eml2_3::resqml22__Phase RockFluidUnitInterpretation::getPhase() const
 
 	return static_cast<gsoap_eml2_3::resqml22__Phase>(*static_cast<_resqml20__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase);
 }
+
+void RockFluidUnitInterpretation::setPhase(gsoap_eml2_3::resqml22__Phase phase) const
+{
+	static_cast<_resqml20__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase = soap_new_resqml20__Phase(getGsoapContext());
+	if (phase == gsoap_eml2_3::resqml22__Phase__aquifer) {
+		*static_cast<_resqml20__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase = resqml20__Phase__aquifer;
+	}
+	else if (phase == gsoap_eml2_3::resqml22__Phase__gas_x0020cap) {
+		*static_cast<_resqml20__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase = resqml20__Phase__gas_x0020cap;
+	}
+	else if (phase == gsoap_eml2_3::resqml22__Phase__oil_x0020column) {
+		*static_cast<_resqml20__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase = resqml20__Phase__oil_x0020column;
+	}
+}

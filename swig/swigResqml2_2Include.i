@@ -31,6 +31,7 @@ under the License.
 #include "../src/resqml2_2/DoubleTableLookup.h"
 #include "../src/resqml2_2/EarthModelInterpretation.h"
 #include "../src/resqml2_2/FaultInterpretation.h"
+#include "../src/resqml2_2/FluidBoundaryInterpretation.h"
 #include "../src/resqml2_2/GenericFeatureInterpretation.h"
 #include "../src/resqml2_2/GeobodyBoundaryInterpretation.h"
 #include "../src/resqml2_2/GeobodyInterpretation.h"
@@ -96,6 +97,7 @@ under the License.
 	%nspace RESQML2_2_NS::DoubleTableLookup;
 	%nspace RESQML2_2_NS::EarthModelInterpretation;
 	%nspace RESQML2_2_NS::FaultInterpretation;
+	%nspace RESQML2_2_NS::FluidBoundaryInterpretation;
 	%nspace RESQML2_2_NS::GenericFeatureInterpretation;
 	%nspace RESQML2_2_NS::GeobodyBoundaryInterpretation;
 	%nspace RESQML2_2_NS::GeobodyInterpretation;
@@ -156,6 +158,14 @@ namespace gsoap_eml2_3
 	enum resqml22__InterpolationMethod {
 		resqml22__InterpolationMethod__linear = 0,
 		resqml22__InterpolationMethod__logarithmic = 1
+	};
+	
+	enum resqml22__FluidContact {
+		resqml22__FluidContact__free_x0020water_x0020contact = 0,
+		resqml22__FluidContact__gas_x0020oil_x0020contact = 1,
+		resqml22__FluidContact__gas_x0020water_x0020contact = 2,
+		resqml22__FluidContact__seal = 3,
+		resqml22__FluidContact__water_x0020oil_x0020contact = 4
 	};
 }
 
@@ -304,6 +314,14 @@ namespace RESQML2_2_NS
 	{
 	public: 
 		void pushBackThrowInterpretation(gsoap_resqml2_0_1::resqml20__ThrowKind throwKind);
+	};
+
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(resqml22_FluidBoundaryInterpretation) FluidBoundaryInterpretation;
+#endif
+	class FluidBoundaryInterpretation : public RESQML2_NS::FluidBoundaryInterpretation
+	{
+	public:
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)

@@ -25,6 +25,7 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
+const char* RockFluidOrganizationInterpretation::XML_TAG = "RockFluidOrganizationInterpretation";
 const char* RockFluidOrganizationInterpretation::XML_NS = "resqml22";
 
 RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title)

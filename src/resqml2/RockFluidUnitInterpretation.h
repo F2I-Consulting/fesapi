@@ -49,6 +49,13 @@ namespace RESQML2_NS
 		 * @returns	The phase of this rock fluid unit interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::resqml22__Phase getPhase() const = 0;
+		
+		/**
+		 * Sets the phase information of this rock fluid unit interpretation.
+		 *
+		 * @param phase	The phase of this rock fluid unit interpretation.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual void setPhase(gsoap_eml2_3::resqml22__Phase phase) const = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

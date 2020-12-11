@@ -22,11 +22,6 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	/**
-	* This class is a container for rock fluid units.
-	* As a first step, This class only works for a single rock fluid unit container due to the fact that the workaround described here http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html is not implemented yet.
-	* Use with caution : ONLY IF YOU HAVE A SINGLE ROCK FLUID UNIT ORGANISATION !!!!
-	*/
 	class RockFluidOrganizationInterpretation final : public RESQML2_NS::RockFluidOrganizationInterpretation
 	{
 	public:
@@ -53,7 +48,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		RockFluidOrganizationInterpretation(gsoap_resqml2_0_1::_resqml20__RockFluidOrganizationInterpretation* fromGsoap) : RESQML2_NS::RockFluidOrganizationInterpretation(fromGsoap) {}
+		RockFluidOrganizationInterpretation(gsoap_resqml2_0_1::_resqml20__StratigraphicOccurrenceInterpretation* fromGsoap) : RESQML2_NS::RockFluidOrganizationInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~RockFluidOrganizationInterpretation() = default;
@@ -63,6 +58,11 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT unsigned int getRockFluidUnitInterpCount() const final;
 
 		COMMON_NS::DataObjectReference getRockFluidUnitInterpretationDor(unsigned int index) const final;
+
+		/** The standard XML tag without XML namespace for serializing this data object. */
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 		/**
 		* The standard XML namespace for serializing this data object.

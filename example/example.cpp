@@ -94,6 +94,7 @@ under the License.
 #include "eml2_3/GraphicalInformationSet.h"
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
+#include "resqml2_2/FluidBoundaryInterpretation.h"
 #include "resqml2_2/MdDatum.h"
 #include "resqml2_2/RockVolumeFeature.h"
 #include "resqml2_2/SeismicWellboreFrameRepresentation.h"
@@ -157,6 +158,10 @@ RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid = nullptr;
 EML2_NS::PropertyKind* propType1 = nullptr;
 RESQML2_NS::DiscreteProperty* discreteProp1 = nullptr;
 RESQML2_NS::ContinuousProperty* contColMapContProp = nullptr;
+RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp = nullptr;
+RESQML2_NS::RockFluidUnitInterpretation* gasCapInterp = nullptr;
+RESQML2_NS::RockFluidUnitInterpretation* oilColumnInterp = nullptr;
+RESQML2_NS::RockFluidUnitInterpretation* aquiferInterp = nullptr;
 
 WITSML2_0_NS::Well* witsmlWell = nullptr;
 WITSML2_0_NS::Wellbore* witsmlWellbore = nullptr;
@@ -2015,79 +2020,284 @@ void serializeActivities(COMMON_NS::DataObjectRepository * epcDoc)
 
 }
 
-void serializeFluidBoundary(COMMON_NS::DataObjectRepository & pck, EML2_NS::AbstractHdfProxy*)
-{
-	RESQML2_NS::BoundaryFeature* fluidBoundary = nullptr;
-	if (pck.getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-		fluidBoundary = pck.createFluidBoundaryFeature("44a4d87c-3c67-4f98-a314-9d91c4147061", "Fluid boundary", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
-	}
-	else {
-		fluidBoundary = pck.createBoundaryFeature("44a4d87c-3c67-4f98-a314-9d91c4147061", "Fluid boundary");
-	}
-	RESQML2_NS::GenericFeatureInterpretation* interp = pck.createGenericFeatureInterpretation(fluidBoundary, "d06df5e4-3c56-4abd-836f-2abb5e58e13b", "Fluid boundary interp");
-	RESQML2_NS::PlaneSetRepresentation* rep = pck.createPlaneSetRepresentation(interp, "4df87ed5-ea4d-4a00-99a2-828a56c9dd02", "Fluid boundary PlaneSetRep");
-	rep->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
-}
-
 void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, EML2_NS::AbstractHdfProxy*)
 {
-	RESQML2_NS::BoundaryFeature* fluidBoundaryTop = nullptr;
-	RESQML2_NS::BoundaryFeature* fluidBoundaryBottom = nullptr;
-	RESQML2_NS::RockVolumeFeature* rockFluidFeature = nullptr;
+	// Feature level
+	RESQML2_NS::BoundaryFeature* gasOilContactFeature = nullptr;
+	RESQML2_NS::BoundaryFeature* waterOilContactFeature = nullptr;
+	RESQML2_NS::RockVolumeFeature* gasCapFeature = nullptr;
+	RESQML2_NS::RockVolumeFeature* oilColumnFeature = nullptr;
+	RESQML2_NS::RockVolumeFeature* aquiferFeature = nullptr;
 	if (pck.getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-		fluidBoundaryTop = pck.createFluidBoundaryFeature("cd400fa2-4c8b-11e9-be79-3f8079258eaa", "Fluid boundary top", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
-		fluidBoundaryBottom = pck.createFluidBoundaryFeature("d332b298-4c8b-11e9-80d8-c760b2e2530d", "Fluid boundary bottom", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
-		rockFluidFeature = pck.createRockFluidUnit("18a714da-4bf2-11e9-a17e-e74cb7f87d2a", "Rock Fluid Unit", gsoap_resqml2_0_1::resqml20__Phase__oil_x0020column, 
-			static_cast<RESQML2_0_1_NS::FluidBoundaryFeature*>(fluidBoundaryTop), static_cast<RESQML2_0_1_NS::FluidBoundaryFeature*>(fluidBoundaryBottom));
+		gasOilContactFeature = pck.createFluidBoundaryFeature("cd400fa2-4c8b-11e9-be79-3f8079258eaa", "Gas Oil Contact Feature", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
+		waterOilContactFeature = pck.createFluidBoundaryFeature("d332b298-4c8b-11e9-80d8-c760b2e2530d", "Water Oil Contact Feature", gsoap_resqml2_0_1::resqml20__FluidContact__water_x0020oil_x0020contact);
+		gasCapFeature = pck.createRockFluidUnit("18a714da-4bf2-11e9-a17e-e74cb7f87d2a", "Gas Cap Feature", gsoap_resqml2_0_1::resqml20__Phase__gas_x0020cap,
+			pck.createPartial<RESQML2_0_1_NS::FluidBoundaryFeature>("", ""),
+			static_cast<RESQML2_0_1_NS::FluidBoundaryFeature*>(gasOilContactFeature));
+		oilColumnFeature = pck.createRockFluidUnit("7e7180c4-39df-42be-9ab4-03b054fd8d47", "Oil Column Feature", gsoap_resqml2_0_1::resqml20__Phase__oil_x0020column,
+			static_cast<RESQML2_0_1_NS::FluidBoundaryFeature*>(gasOilContactFeature),
+			static_cast<RESQML2_0_1_NS::FluidBoundaryFeature*>(waterOilContactFeature));
+		aquiferFeature = pck.createRockFluidUnit("ade43494-9e45-4497-9220-d0f82d1a1f56", "Aquifer Feature", gsoap_resqml2_0_1::resqml20__Phase__aquifer,
+			static_cast<RESQML2_0_1_NS::FluidBoundaryFeature*>(waterOilContactFeature),
+			pck.createPartial<RESQML2_0_1_NS::FluidBoundaryFeature>("", ""));
 	}
 #if WITH_RESQML2_2
 	else {
-		fluidBoundaryTop = pck.createBoundaryFeature("cd400fa2-4c8b-11e9-be79-3f8079258eaa", "Fluid boundary top");
-		fluidBoundaryBottom = pck.createBoundaryFeature("d332b298-4c8b-11e9-80d8-c760b2e2530d", "Fluid boundary bottom");
-		rockFluidFeature = pck.createRockVolumeFeature("18a714da-4bf2-11e9-a17e-e74cb7f87d2a", "Rock Fluid Unit");
+		gasOilContactFeature = pck.createBoundaryFeature("cd400fa2-4c8b-11e9-be79-3f8079258eaa", "Gas Oil Contact Feature");
+		waterOilContactFeature = pck.createBoundaryFeature("d332b298-4c8b-11e9-80d8-c760b2e2530d", "Water Oil Contact Feature");
+		gasCapFeature = pck.createRockVolumeFeature("18a714da-4bf2-11e9-a17e-e74cb7f87d2a", "Gas Cap Feature");
+		oilColumnFeature = pck.createRockVolumeFeature("7e7180c4-39df-42be-9ab4-03b054fd8d47", "Oil Column Feature");
+		aquiferFeature = pck.createRockVolumeFeature("ade43494-9e45-4497-9220-d0f82d1a1f56", "Aquifer Feature");
 	}
 #endif
 
-	//Top Boundary
-	RESQML2_NS::GenericFeatureInterpretation* interpTop = pck.createGenericFeatureInterpretation(fluidBoundaryTop, "0ab8f2f4-4c96-11e9-999e-c3449b44fef5", "Fluid boundary top interp");
-	RESQML2_NS::PlaneSetRepresentation* repTop = pck.createPlaneSetRepresentation(interpTop, "ae1d618c-4c96-11e9-8f12-cf7f4da2a08d", "Fluid boundary top PlaneSetRep");
-	repTop->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
+	// Interpretation level
+	gasCapInterp = pck.createRockFluidUnitInterpretation(gasCapFeature, "4b73172a-4bf1-11e9-a9f6-9b2813cc56e1", "Gas Cap Interp");
+	gasCapInterp->setPhase(gsoap_eml2_3::resqml22__Phase__gas_x0020cap);
+	oilColumnInterp = pck.createRockFluidUnitInterpretation(oilColumnFeature, "2491fbe5-bbaf-43f5-906e-6d8cbf033890", "Oil Column Interp");
+	gasCapInterp->setPhase(gsoap_eml2_3::resqml22__Phase__oil_x0020column);
+	aquiferInterp = pck.createRockFluidUnitInterpretation(aquiferFeature, "d2477e2e-8c50-4605-a80d-619e74e20f03", "Aquifer Interp");
+	gasCapInterp->setPhase(gsoap_eml2_3::resqml22__Phase__aquifer);
 
-	//Bottom Boundary
-	RESQML2_NS::GenericFeatureInterpretation* interpBottom = pck.createGenericFeatureInterpretation(fluidBoundaryBottom, "1371efae-4c96-11e9-bcdd-37d8112fd19e", "Fluid boundary bottom interp");
-	RESQML2_NS::PlaneSetRepresentation* repBottom = pck.createPlaneSetRepresentation(interpBottom, "b54cc3b2-4c96-11e9-b33d-ef2c41476266", "Fluid boundary bottom PlaneSetRep");
-	repBottom->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
+	// Gas Oil Contact interp
+	RESQML2_NS::AbstractFeatureInterpretation* gasOilContactInterp = nullptr;
+	if (pck.getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		gasOilContactInterp = pck.createGenericFeatureInterpretation(gasOilContactFeature, "0ab8f2f4-4c96-11e9-999e-c3449b44fef5", "Gas Oil Contact interp");
+	}
+#if WITH_RESQML2_2
+	else {
+		gasOilContactInterp = pck.createFluidBoundaryInterpretation(gasOilContactFeature, "0ab8f2f4-4c96-11e9-999e-c3449b44fef5", "Gas Oil Contact interp", gsoap_eml2_3::resqml22__FluidContact__gas_x0020oil_x0020contact);
+	}
+#endif
+	gasOilContactInterp->pushBackExtraMetadata("Capillary Pressure value", "0");
+	gasOilContactInterp->pushBackExtraMetadata("Capillary Pressure uom", "bar");
+	RESQML2_NS::PlaneSetRepresentation* gasOilContactRep = pck.createPlaneSetRepresentation(gasOilContactInterp, "ae1d618c-4c96-11e9-8f12-cf7f4da2a08d", "Gas Oil Contact Plane Rep");
+	gasOilContactRep->pushBackHorizontalPlaneGeometryPatch(500);
 
-	// Unit construction
-	RESQML2_NS::RockFluidUnitInterpretation* rockFluidUnit = pck.createRockFluidUnitInterpretation(rockFluidFeature, "4b73172a-4bf1-11e9-a9f6-9b2813cc56e1", "Rock Fluid Unit interp");
+	// Water Oil Contact interp
+	RESQML2_NS::AbstractFeatureInterpretation* waterOilContactInterp = nullptr;
+	if (pck.getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		waterOilContactInterp = pck.createGenericFeatureInterpretation(waterOilContactFeature, "1371efae-4c96-11e9-bcdd-37d8112fd19e", "Water Oil Contact interp");
+	}
+#if WITH_RESQML2_2
+	else {
+		waterOilContactInterp = pck.createFluidBoundaryInterpretation(waterOilContactFeature, "1371efae-4c96-11e9-bcdd-37d8112fd19e", "Water Oil Contact interp", gsoap_eml2_3::resqml22__FluidContact__water_x0020oil_x0020contact);
+	}
+#endif
+	waterOilContactInterp->pushBackExtraMetadata("Capillary Pressure value", "0");
+	waterOilContactInterp->pushBackExtraMetadata("Capillary Pressure uom", "bar");
+	RESQML2_NS::PlaneSetRepresentation* waterOilContactRep = pck.createPlaneSetRepresentation(waterOilContactInterp, "b54cc3b2-4c96-11e9-b33d-ef2c41476266", "Water Oil Contact Plane Rep");
+	waterOilContactRep->pushBackHorizontalPlaneGeometryPatch(3200);
 
-	// Feature
-	RESQML2_NS::Model* rockFluidOrgFeature = pck.createRockFluidModel("311587dd-7abc-425b-a364-908d0508ed61", "Rock Fluid Organization feature");
-	rockFluidOrgFeature->setOriginator("Geosiris");
-
-	// Interp
-	RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp = pck.createRockFluidOrganizationInterpretation(rockFluidOrgFeature, "b5bbfe42-4a63-11e9-9eeb-4f036e6e8141", "Rock Fluid org");
-	rockFluidOrgInterp->pushBackRockFluidUnitInterpretation(rockFluidUnit);
+	// Assemble all fluid units and fluid boundaries together in a model
+	RESQML2_NS::Model* rockFluidOrgFeature = pck.createRockFluidModel("311587dd-7abc-425b-a364-908d0508ed61", "Region 1");
+	rockFluidOrgInterp = pck.createRockFluidOrganizationInterpretation(rockFluidOrgFeature, "b5bbfe42-4a63-11e9-9eeb-4f036e6e8141", "Region 1 interp");
+	rockFluidOrgInterp->pushBackExtraMetadata("Initial Pressure value", "337");
+	rockFluidOrgInterp->pushBackExtraMetadata("Initial Pressure uom", "bar");
+	rockFluidOrgInterp->pushBackExtraMetadata("Datum depth value", "3060");
+	rockFluidOrgInterp->pushBackExtraMetadata("Datum depth uom", "m");
+	rockFluidOrgInterp->pushBackRockFluidUnitInterpretation(gasCapInterp);
+	rockFluidOrgInterp->pushBackRockFluidUnitInterpretation(oilColumnInterp);
+	rockFluidOrgInterp->pushBackRockFluidUnitInterpretation(aquiferInterp);
+	rockFluidOrgInterp->pushBackBinaryContact(gasCapInterp, gsoap_eml2_3::resqml22__ContactVerb__stops, oilColumnInterp, gasOilContactInterp);
+	rockFluidOrgInterp->pushBackBinaryContact(oilColumnInterp, gsoap_eml2_3::resqml22__ContactVerb__stops, aquiferInterp, waterOilContactInterp);
 
 	// Link between ijk grid and rock fuid org
+	/*
 	RESQML2_NS::IjkGridExplicitRepresentation* singleCellIjkgrid = pck.getDataObjectByUuid<RESQML2_NS::IjkGridExplicitRepresentation>("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b");
 	uint64_t rockFluidUnitIndice = 0;
 	singleCellIjkgrid->setCellAssociationWithRockFluidOrganizationInterpretation(&rockFluidUnitIndice, 1000, rockFluidOrgInterp);
+	*/
 }
 
 PRODML2_1_NS::FluidSystem* serializeFluidSystem(COMMON_NS::DataObjectRepository & pck)
 {
-	PRODML2_1_NS::FluidSystem* fluidSystem = pck.createFluidSystem("e8ae6cf8-c4a4-40bf-a3c7-5bf5d0a5b1dd", "my Fluid system",
-		60, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom__degF, 14.65, gsoap_eml2_2::eml22__PressureUom__psi,
-		gsoap_eml2_2::prodml21__ReservoirFluidKind__black_x0020oil, 600, gsoap_eml2_2::eml22__VolumePerVolumeUom__ft3_x002fbbl);
+	PRODML2_1_NS::FluidSystem* fluidSystem = pck.createFluidSystem("e8ae6cf8-c4a4-40bf-a3c7-5bf5d0a5b1dd", "Fluid system Region 1",
+		std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_2::eml22__ThermodynamicTemperatureUom__degF, std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_2::eml22__PressureUom__psi,
+		gsoap_eml2_2::prodml21__ReservoirFluidKind__black_x0020oil, std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_2::eml22__VolumePerVolumeUom__ft3_x002fbbl);
 
-	fluidSystem->setPhasesPresent(gsoap_eml2_2::prodml21__PhasePresent__oil_x0020and_x0020gas);
-	fluidSystem->setReservoirLifeCycleState(gsoap_eml2_2::prodml21__ReservoirLifeCycleState__primary_x0020production);
-	fluidSystem->setStockTankOilAPIGravity(40.5, gsoap_eml2_2::eml22__APIGravityUom__dAPI);
+	fluidSystem->setPhasesPresent(gsoap_eml2_2::prodml21__PhasePresent__gas_x0020and_x0020oil_x0020and_x0020water);
+	
+	//fluidSystem->setReservoirLifeCycleState(gsoap_eml2_2::prodml21__ReservoirLifeCycleState__primary_x0020production);
+	fluidSystem->setStockTankOilAPIGravity((141.5/0.8989209)-131.5, gsoap_eml2_2::eml22__APIGravityUom__dAPI);
+	/*
 	fluidSystem->setNaturalGasGasGravity(0.8);
 	fluidSystem->setRemark("This data comes from the official PRODML PVT Eenrgistics documentation");
+	*/
+
+	fluidSystem->setRockFluidOrganization(rockFluidOrgInterp);
 
 	return fluidSystem;
+}
+
+void serializeOilFluidCharacCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_1_NS::FluidSystem* fluidSystem = nullptr)
+{
+	PRODML2_1_NS::FluidCharacterization* oilFluidCharac = pck.createFluidCharacterization("656aa27f-5373-4c7f-9469-a57890e2b5d8", "Oil Fluid Characterization");
+	oilFluidCharac->setRockFluidUnit(oilColumnInterp);
+	oilFluidCharac->pushBackModel();
+
+	oilFluidCharac->pushBackParameter(0, 882, gsoap_eml2_2::eml22__UnitOfMeasure__kg_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty__Density, gsoap_eml2_2::prodml21__ThermodynamicPhase__oleic);
+
+	// Black Oil Variation with Depth
+	oilFluidCharac->pushBackTableFormat();
+	oilFluidCharac->pushBackTableFormatColumn(0, "m", "Depth from MSL");
+	oilFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_2::eml22__UnitOfMeasure__bar, gsoap_eml2_2::prodml21__OutputFluidProperty__Saturation_x0020Pressure);
+
+	oilFluidCharac->pushBackTable(0, "Black Oil Variation with Depth", std::to_string(oilFluidCharac->getTableFormatCount() - 1));
+	oilFluidCharac->pushBackTableRow(0, 0, { 2600, 333.25 });
+	oilFluidCharac->pushBackTableRow(0, 0, { 2638.9, 320.6866 });
+	oilFluidCharac->pushBackTableRow(0, 0, { 2677.8, 309.6418 });
+	oilFluidCharac->pushBackTableRow(0, 0, { 2716.7, 299.7015 });
+	oilFluidCharac->pushBackTableRow(0, 0, { 2755.6, 290.8657 });
+	oilFluidCharac->pushBackTableRow(0, 0, { 2794.4, 282.7201 });
+	oilFluidCharac->pushBackTableRow(0, 0, { 2833.3, 275.2649 });
+	oilFluidCharac->pushBackTableRow(0, 0, { 2872, 268.5 });
+	oilFluidCharac->pushBackTableRow(0, 0, { 2872.2, 268.5 });
+	oilFluidCharac->pushBackTableRow(0, 0, { 2911.1, 262.1493 });
+	oilFluidCharac->pushBackTableRow(0, 0, { 2950, 256.2127 });
+
+	// Saturated Oil Table
+	oilFluidCharac->pushBackTableFormat();
+	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_2::eml22__UnitOfMeasure__bar, gsoap_eml2_2::prodml21__OutputFluidProperty__Pressure);
+	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_2::eml22__UnitOfMeasure__m3_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty__Formation_x0020Volume_x0020Factor);
+	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_2::eml22__UnitOfMeasure__cP, gsoap_eml2_2::prodml21__OutputFluidProperty__Viscosity);
+	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_2::eml22__UnitOfMeasure__m3_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty__Solution_x0020GOR);
+
+	oilFluidCharac->pushBackTable(0, "Saturated Oil Table", std::to_string(oilFluidCharac->getTableFormatCount() - 1));
+	oilFluidCharac->pushBackTableRow(0, 1, { 268.5, 1.51746, 0.464, 156.9 }, true);
+	oilFluidCharac->pushBackTableRow(0, 1, { 250, 1.48274, 0.502, 143.5 }, true);
+	oilFluidCharac->pushBackTableRow(0, 1, { 200, 1.39808, 0.618, 110.7 }, true);
+	oilFluidCharac->pushBackTableRow(0, 1, { 150, 1.32163, 0.763, 81.5 }, true);
+	oilFluidCharac->pushBackTableRow(0, 1, { 100, 1.24802, 0.953, 54.3 }, true);
+	oilFluidCharac->pushBackTableRow(0, 1, { 50, 1.17014, 1.224, 27.4 }, true);
+
+	// Undersaturated Oil Table
+	oilFluidCharac->pushBackTableFormat();
+	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_2::eml22__UnitOfMeasure__bar, gsoap_eml2_2::prodml21__OutputFluidProperty__Saturation_x0020Pressure);
+	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_2::eml22__UnitOfMeasure__bar, gsoap_eml2_2::prodml21__OutputFluidProperty__Pressure);
+	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_2::eml22__UnitOfMeasure__m3_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty__Formation_x0020Volume_x0020Factor);
+	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_2::eml22__UnitOfMeasure__cP, gsoap_eml2_2::prodml21__OutputFluidProperty__Viscosity);
+
+	oilFluidCharac->pushBackTable(0, "Undersaturated Oil Table", std::to_string(oilFluidCharac->getTableFormatCount() - 1));
+	oilFluidCharac->pushBackTableRow(0, 2, { 50, 100, 1.16296, 1.31 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 50, 150, 1.15664, 1.393 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 50, 200, 1.15103, 1.472 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 50, 250, 1.14598, 1.548 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 50, 268.5, 1.14425, 1.576 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 50, 300, 1.14143, 1.621 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 50, 350, 1.13728, 1.692 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 50, 400, 1.13349, 1.76 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 50, 450, 1.13001, 1.826 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 50, 500, 1.12679, 1.889 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 50, 550, 1.12381, 1.95 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 50, 600, 1.12103, 2.01 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 50, 650, 1.11844, 2.067 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 100, 150, 1.23902, 1.027 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 100, 200, 1.23114, 1.099 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 100, 250, 1.22415, 1.169 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 100, 268.5, 1.22175, 1.194 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 100, 300, 1.21789, 1.236 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 100, 350, 1.21225, 1.301 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 100, 400, 1.20713, 1.364 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 100, 450, 1.20245, 1.425 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 100, 500, 1.19815, 1.485 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 100, 550, 1.19419, 1.542 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 100, 600, 1.19052, 1.598 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 100, 650, 1.18712, 1.652 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 150, 200, 1.31096, 0.826 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 150, 250, 1.30163, 0.888 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 150, 268.5, 1.29846, 0.91 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 150, 300, 1.29336, 0.947 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 150, 350, 1.28597, 1.005 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 150, 400, 1.27932, 1.062 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 150, 450, 1.27328, 1.117 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 150, 500, 1.26776, 1.171 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 150, 550, 1.26271, 1.223 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 150, 600, 1.25804, 1.274 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 150, 650, 1.25373, 1.323 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 200, 250, 1.38574, 0.671 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 200, 268.5, 1.38158, 0.69 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 200, 300, 1.37494, 0.723 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 200, 350, 1.36539, 0.774 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 200, 400, 1.35685, 0.823 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 200, 450, 1.34916, 0.871 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 200, 500, 1.34218, 0.919 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 200, 550, 1.33581, 0.965 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 200, 600, 1.32997, 1.01 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 200, 650, 1.32459, 1.055 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 250, 268.5, 1.47728, 0.519 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 250, 300, 1.4686, 0.546 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 250, 350, 1.45623, 0.589 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 250, 400, 1.44528, 0.631 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 250, 450, 1.43549, 0.673 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 250, 500, 1.42667, 0.714 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 250, 550, 1.41867, 0.754 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 250, 600, 1.41136, 0.793 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 250, 650, 1.40466, 0.832 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 268.5, 300, 1.50785, 0.49 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 268.5, 350, 1.49419, 0.53 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 268.5, 400, 1.48215, 0.57 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 268.5, 450, 1.47142, 0.609 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 268.5, 500, 1.46178, 0.647 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 268.5, 550, 1.45306, 0.685 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 268.5, 600, 1.44511, 0.722 }, false);
+	oilFluidCharac->pushBackTableRow(0, 2, { 268.5, 650, 1.43783, 0.758 }, false);
+
+	if (fluidSystem != nullptr) {
+		oilFluidCharac->setFluidSystem(fluidSystem);
+	}
+}
+
+void serializeGasFluidCharacCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_1_NS::FluidSystem* fluidSystem = nullptr)
+{
+	PRODML2_1_NS::FluidCharacterization* gasFluidCharac = pck.createFluidCharacterization("5ea0eeb2-a287-4a2e-9362-1d2491e491b2", "Gas Fluid Characterization");
+	gasFluidCharac->setRockFluidUnit(gasCapInterp);
+	gasFluidCharac->pushBackModel();
+
+	// Saturated Gas Table
+	gasFluidCharac->pushBackTableFormat();
+	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_2::eml22__UnitOfMeasure__bar, gsoap_eml2_2::prodml21__OutputFluidProperty__Pressure);
+	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_2::eml22__UnitOfMeasure__m3_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty__Formation_x0020Volume_x0020Factor);
+	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_2::eml22__UnitOfMeasure__cP, gsoap_eml2_2::prodml21__OutputFluidProperty__Viscosity);
+
+	gasFluidCharac->pushBackTable(0, "Saturated Gas Table", std::to_string(gasFluidCharac->getTableFormatCount() - 1));
+	gasFluidCharac->pushBackTableRow(0, 0, { 350, 0.003929, 0.034856 }, true);
+	gasFluidCharac->pushBackTableRow(0, 0, { 300, 0.004302, 0.031551 }, true);
+	gasFluidCharac->pushBackTableRow(0, 0, { 268.5, 0.004624, 0.029292 }, true);
+	gasFluidCharac->pushBackTableRow(0, 0, { 250, 0.00487, 0.027202 }, true);
+	gasFluidCharac->pushBackTableRow(0, 0, { 200, 0.005876, 0.02232 }, true);
+	gasFluidCharac->pushBackTableRow(0, 0, { 150, 0.007763, 0.018581 }, true);
+	gasFluidCharac->pushBackTableRow(0, 0, { 100, 0.011846, 0.015991 }, true);
+	gasFluidCharac->pushBackTableRow(0, 0, { 50, 0.024734, 0.014335 }, true);
+
+	if (fluidSystem != nullptr) {
+		gasFluidCharac->setFluidSystem(fluidSystem);
+	}
+}
+
+void serializeWaterFluidCharacCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_1_NS::FluidSystem* fluidSystem = nullptr)
+{
+	PRODML2_1_NS::FluidCharacterization* waterFluidCharac = pck.createFluidCharacterization("8bea1d3f-9599-4a45-b88c-8196aef3f397", "Water Fluid Characterization");
+	waterFluidCharac->setRockFluidUnit(aquiferInterp);
+	waterFluidCharac->pushBackModel();
+
+	waterFluidCharac->pushBackParameter(0, 1101.3, gsoap_eml2_2::eml22__UnitOfMeasure__kg_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty__Density, gsoap_eml2_2::prodml21__ThermodynamicPhase__aqueous);
+	waterFluidCharac->pushBackParameter(0, 313000, gsoap_eml2_2::eml22__UnitOfMeasure__1_x002fbar, gsoap_eml2_2::prodml21__OutputFluidProperty__Compressibility, gsoap_eml2_2::prodml21__ThermodynamicPhase__aqueous);
+	waterFluidCharac->pushBackParameter(0, 0.38509, gsoap_eml2_2::eml22__UnitOfMeasure__cP, gsoap_eml2_2::prodml21__OutputFluidProperty__Viscosity, gsoap_eml2_2::prodml21__ThermodynamicPhase__aqueous);
+	waterFluidCharac->pushBackParameter(0, 1.03382, gsoap_eml2_2::eml22__UnitOfMeasure__m3_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty__Formation_x0020Volume_x0020Factor, gsoap_eml2_2::prodml21__ThermodynamicPhase__aqueous);
+	waterFluidCharac->pushBackParameter(0, 978000, gsoap_eml2_2::eml22__UnitOfMeasure__1_x002fbar, gsoap_eml2_2::prodml21__OutputFluidProperty__Viscosity_x0020Compressibility, gsoap_eml2_2::prodml21__ThermodynamicPhase__aqueous);
+	waterFluidCharac->pushBackParameter(0, 268.5, gsoap_eml2_2::eml22__UnitOfMeasure__bar, gsoap_eml2_2::prodml21__OutputFluidProperty__Pressure, gsoap_eml2_2::prodml21__ThermodynamicPhase__aqueous);
+
+	if (fluidSystem != nullptr) {
+		waterFluidCharac->setFluidSystem(fluidSystem);
+	}
+}
+
+void serializeTabularFluidCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_1_NS::FluidSystem* fluidSystem = nullptr)
+{
+	serializeOilFluidCharacCharacterization(pck, fluidSystem);	
+	serializeGasFluidCharacCharacterization(pck, fluidSystem);	
+	serializeWaterFluidCharacCharacterization(pck, fluidSystem);	
 }
 
 void serializeCompositionalFluidCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_1_NS::FluidSystem* fluidSystem = nullptr)
@@ -2124,46 +2334,6 @@ void serializeCompositionalFluidCharacterization(COMMON_NS::DataObjectRepository
 
 	if (fluidSystem != nullptr)
 		fluidCharac->setFluidSystem(fluidSystem);
-}
-
-void serializeTabularFluidCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_1_NS::FluidSystem* fluidSystem = nullptr)
-{
-	PRODML2_1_NS::FluidCharacterization* fluidCharac = pck.createFluidCharacterization("656aa27f-5373-4c7f-9469-a57890e2b5d8", "my tabular Fluid Characterization");
-
-	fluidCharac->pushBackModel();
-
-	// Black Oil Variation with Depth
-	fluidCharac->pushBackTableFormat();
-	fluidCharac->pushBackTableFormatColumn(0, "m", "Depth from MSL");
-	fluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_2::eml22__UnitOfMeasure__bar, gsoap_eml2_2::prodml21__OutputFluidProperty__Saturation_x0020Pressure);
-
-	fluidCharac->pushBackTable(0, "Black Oil Variation with Depth", std::to_string(fluidCharac->getTableFormatCount() - 1));
-	fluidCharac->pushBackTableRow(0, 0, {2600, 333.25});
-	fluidCharac->pushBackTableRow(0, 0, {2638.9, 320.6866});
-	fluidCharac->pushBackTableRow(0, 0, {2677.8, 309.6418});
-	fluidCharac->pushBackTableRow(0, 0, {2716.7, 299.7015});
-	fluidCharac->pushBackTableRow(0, 0, {2755.6, 290.8657});
-	fluidCharac->pushBackTableRow(0, 0, {2794.4, 282.7201});
-	fluidCharac->pushBackTableRow(0, 0, {2833.3, 275.2649});
-	fluidCharac->pushBackTableRow(0, 0, {2872, 268.5});
-	fluidCharac->pushBackTableRow(0, 0, {2872.2, 268.5});
-	fluidCharac->pushBackTableRow(0, 0, {2911.1, 262.1493});
-	fluidCharac->pushBackTableRow(0, 0, {2950, 256.2127});
-
-	// Saturated Oil Table
-	fluidCharac->pushBackTableFormat();
-	fluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_2::eml22__UnitOfMeasure__bar, gsoap_eml2_2::prodml21__OutputFluidProperty__Pressure);
-	fluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_2::eml22__UnitOfMeasure__m3_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty__Formation_x0020Volume_x0020Factor);
-	fluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_2::eml22__UnitOfMeasure__cP, gsoap_eml2_2::prodml21__OutputFluidProperty__Viscosity);
-	fluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_2::eml22__UnitOfMeasure__m3_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty__Solution_x0020GOR);
-
-	fluidCharac->pushBackTable(0, "Saturated Oil Table", std::to_string(fluidCharac->getTableFormatCount() - 1));
-	fluidCharac->pushBackTableRow(0, 1, { 268.5, 1.51746, 0.464, 156.9 });
-	fluidCharac->pushBackTableRow(0, 1, { 250, 1.48274, 0.502, 143.5});
-	fluidCharac->pushBackTableRow(0, 1, { 200, 1.39808, 0.618, 110.7});
-	fluidCharac->pushBackTableRow(0, 1, { 150, 1.32163, 0.763, 81.5});
-	fluidCharac->pushBackTableRow(0, 1, { 100, 1.24802, 0.953, 54.3});
-	fluidCharac->pushBackTableRow(0, 1, { 50, 1.17014, 1.224, 27.4});
 }
 
 void serializeTimeSeriesData(COMMON_NS::DataObjectRepository & pck)
@@ -2298,16 +2468,14 @@ bool serialize(const string & filePath)
 	serializeGrid(&repo, hdfProxy);
 	serializeActivities(&repo);
 	serializeRepresentationSetRepresentation(&repo, hdfProxy);
-	serializeFluidBoundary(repo, hdfProxy);
 	serializeRockFluidOrganization(repo, hdfProxy);
 	PRODML2_1_NS::FluidSystem* fluidSystem = serializeFluidSystem(repo);
-	serializeCompositionalFluidCharacterization(repo, fluidSystem);
-	serializeTabularFluidCharacterization(repo);
+	serializeTabularFluidCharacterization(repo, fluidSystem);
+	serializeCompositionalFluidCharacterization(repo);
 	serializeTimeSeriesData(repo);
 #if WITH_RESQML2_2
 	serializeGraphicalInformationSet(&repo, hdfProxy);
 #endif
-
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
 
@@ -2723,16 +2891,18 @@ void deserializeFluidBoundary(COMMON_NS::DataObjectRepository & pck)
 		RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundary = fbfSet[fbfIndex];
 		if (fluidBoundary == nullptr) return;
 		showAllMetadata(fluidBoundary);
-		showAllMetadata(fluidBoundary->getInterpretation(0));
-		RESQML2_NS::PlaneSetRepresentation const * rep = static_cast<RESQML2_NS::PlaneSetRepresentation const*>(fluidBoundary->getInterpretation(0)->getRepresentation(0));
-		showAllMetadata(rep);
-		uint64_t ptCount = rep->getXyzPointCountOfAllPatches();
-		std::unique_ptr<double[]> allXyzPoints(new double[ptCount * 3]);
-		rep->getXyzPointsOfAllPatchesInGlobalCrs(allXyzPoints.get());
-		for (size_t i = 0; i < ptCount; ++i) {
-			std::cout << "Point " << i << " X=" << allXyzPoints[i * 3] << std::endl;
-			std::cout << "Point " << i << " Y=" << allXyzPoints[i * 3 + 1] << std::endl;
-			std::cout << "Point " << i << " Z=" << allXyzPoints[i * 3 + 2] << std::endl;
+		if (!fluidBoundary->isPartial()) {
+			showAllMetadata(fluidBoundary->getInterpretation(0));
+			RESQML2_NS::PlaneSetRepresentation const * rep = static_cast<RESQML2_NS::PlaneSetRepresentation const*>(fluidBoundary->getInterpretation(0)->getRepresentation(0));
+			showAllMetadata(rep);
+			uint64_t ptCount = rep->getXyzPointCountOfAllPatches();
+			std::unique_ptr<double[]> allXyzPoints(new double[ptCount * 3]);
+			rep->getXyzPointsOfAllPatchesInGlobalCrs(allXyzPoints.get());
+			for (size_t i = 0; i < ptCount; ++i) {
+				std::cout << "Point " << i << " X=" << allXyzPoints[i * 3] << std::endl;
+				std::cout << "Point " << i << " Y=" << allXyzPoints[i * 3 + 1] << std::endl;
+				std::cout << "Point " << i << " Z=" << allXyzPoints[i * 3 + 2] << std::endl;
+			}
 		}
 	}
 }

@@ -536,13 +536,44 @@ namespace PRODML2_1_NS
 		DLL_IMPORT_OR_EXPORT std::string getTableRowContent(unsigned int modelIndex, unsigned int tableIndex, unsigned int rowIndex) const;
 
 		/**
-		* Pushes back a row in a table of a model
+		* Pushes back a row in a table of a model without indicating if the data are either saturated or under-saturated.
 		*
 		* @param	modelIndex		Zero-based index of the model in this fluid characterization.
 		* @param 	tableIndex		Zero-based index of the table in a model of this fluid characterization.
 		* @param 	rowContent		The values representing the content of the row in the table.
 		*/
 		DLL_IMPORT_OR_EXPORT void pushBackTableRow(unsigned int modelIndex, unsigned int tableIndex, const std::vector<double> & rowContent);
+
+		/**
+		* Pushes back a row in a table of a model indicating if the data are either saturated or under-saturated.
+		*
+		* @param	modelIndex		Zero-based index of the model in this fluid characterization.
+		* @param 	tableIndex		Zero-based index of the table in a model of this fluid characterization.
+		* @param 	rowContent		The values representing the content of the row in the table.
+		* @param	isSaturated		True if the data correspond to saturated data, false if the data correspond to undersaturated data
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackTableRow(unsigned int modelIndex, unsigned int tableIndex, const std::vector<double> & rowContent, bool isSaturated);
+
+		/**
+		* Pushes back a phase-unrelated parameter in a model.
+		*
+		* @param	modelIndex		Zero-based index of the model in this fluid characterization.
+		* @param 	value			The value of the parameter
+		* @param 	uom				The uom associated to the value of this parameter
+		* @param	fluidProperty	The property kind of this value
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackParameter(unsigned int modelIndex, double value, gsoap_eml2_2::eml22__UnitOfMeasure uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty);
+
+		/**
+		* Pushes back a phase related parameter in a model.
+		*
+		* @param	modelIndex		Zero-based index of the model in this fluid characterization.
+		* @param 	value			The value of the parameter
+		* @param 	uom				The uom associated to the value of this parameter
+		* @param	fluidProperty	The property kind of this value
+		* @param	phase			The pahse associated to the parameter
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackParameter(unsigned int modelIndex, double value, gsoap_eml2_2::eml22__UnitOfMeasure uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty, gsoap_eml2_2::prodml21__ThermodynamicPhase phase);
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

@@ -743,3 +743,39 @@ void FluidCharacterization::pushBackTableRow(unsigned int modelIndex, unsigned i
 
 	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow.push_back(result);
 }
+
+void FluidCharacterization::pushBackTableRow(unsigned int modelIndex, unsigned int tableIndex, const std::vector<double> & rowContent, bool isSaturated)
+{
+	pushBackTableRow(modelIndex, tableIndex, rowContent);
+	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow.back()->kind = (gsoap_eml2_2::prodml21__saturationKind*)soap_malloc(getGsoapContext(), sizeof(gsoap_eml2_2::prodml21__saturationKind));
+	*static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow.back()->kind = isSaturated
+		? prodml21__saturationKind__saturated
+		: prodml21__saturationKind__undersaturated;
+}
+
+void FluidCharacterization::pushBackParameter(unsigned int modelIndex, double value, gsoap_eml2_2::eml22__UnitOfMeasure uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty)
+{
+	if (static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel.size() <= modelIndex) {
+		throw std::out_of_range("The model index is out of range.");
+	}
+
+	// Creates a parameter set if not already present
+	auto* model = static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex];
+	if (model->FluidCharacterizationParameterSet == nullptr) {
+		model->FluidCharacterizationParameterSet = soap_new_prodml21__FluidCharacterizationParameterSet(getGsoapContext());
+	}
+
+	auto* param = soap_new_prodml21__FluidCharacterizationParameter(getGsoapContext());
+	param->value = value;
+	param->uom = gsoap_eml2_2::soap_eml22__UnitOfMeasure2s(getGsoapContext(), uom);
+	param->Property = gsoap_eml2_2::soap_prodml21__OutputFluidProperty2s(getGsoapContext(), fluidProperty);
+
+	model->FluidCharacterizationParameterSet->FluidCharacterizationParameter.push_back(param);
+}
+
+void FluidCharacterization::pushBackParameter(unsigned int modelIndex, double value, gsoap_eml2_2::eml22__UnitOfMeasure uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty, gsoap_eml2_2::prodml21__ThermodynamicPhase phase)
+{
+	pushBackParameter(modelIndex, value, uom, fluidProperty);
+	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationParameterSet->FluidCharacterizationParameter.back()->Phase = (gsoap_eml2_2::prodml21__ThermodynamicPhase*)soap_malloc(getGsoapContext(), sizeof(gsoap_eml2_2::prodml21__ThermodynamicPhase));
+	*static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationParameterSet->FluidCharacterizationParameter.back()->Phase = phase;
+}

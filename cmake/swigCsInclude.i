@@ -375,11 +375,17 @@ ${COMMENT_END}
 		return null;
 	}
 	
-	public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.StratigraphicOccurrenceInterpretation resqml2_instantiateStratigraphicOccurrenceInterpretation(global::System.IntPtr cPtr, bool owner)
+	public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractOrganizationInterpretation resqml2_instantiateStratigraphicOccurrenceInterpretation(global::System.IntPtr cPtr, bool owner)
 	{
 		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
 		if (xmlNs.Equals("resqml20")) {
-			return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicOccurrenceInterpretation(cPtr, owner);
+			f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicOccurrenceInterpretation tmp = new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicOccurrenceInterpretation(cPtr, owner);
+			if (tmp.getStratigraphicColumnRankInterpretation() == null) {
+				return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.RockFluidOrganizationInterpretation(cPtr, owner);
+			}
+			else {
+				return tmp;
+			}
 		}
 ${COMMENT_START}
 		else if (xmlNs.Equals("resqml22")) {

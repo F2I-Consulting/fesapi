@@ -55,6 +55,13 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT bool hasPhase() const final;
 
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__Phase getPhase() const final;
+		
+		/**
+		 * Sets the phase information of this rock fluid unit interpretation.
+		 *
+		 * @param phase	The phase of this rock fluid unit interpretation.
+		 */
+		DLL_IMPORT_OR_EXPORT void setPhase(gsoap_eml2_3::resqml22__Phase phase) const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.
