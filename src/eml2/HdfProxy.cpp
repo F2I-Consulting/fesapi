@@ -75,7 +75,7 @@ void HdfProxy::open()
 		close();
 	}
 
-	const std::string fullName = (packageDirectoryAbsolutePath.back() == '/' || packageDirectoryAbsolutePath.back() == '\\' ? packageDirectoryAbsolutePath : packageDirectoryAbsolutePath + '/')
+	const std::string fullName = (packageDirectoryAbsolutePath.empty() || packageDirectoryAbsolutePath.back() == '/' || packageDirectoryAbsolutePath.back() == '\\' ? packageDirectoryAbsolutePath : packageDirectoryAbsolutePath + '/')
 		+ relativeFilePath;
 	if (openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_ONLY || openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_WRITE_DO_NOT_CREATE) {
 		if (H5Fis_hdf5(fullName.c_str()) > 0) {
