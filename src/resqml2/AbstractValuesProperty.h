@@ -797,9 +797,6 @@ namespace RESQML2_NS
 		/**
 		 * Adds an nd array of explicit float values to the property values.
 		 *
-		 * @exception std::invalid_argument If <tt> minimumValue == nullptr </tt> and <tt> maximumValue != nullptr </tt>.
-		 * @exception std::invalid_argument	If <tt> minimumValue != nullptr </tt> and <tt> maximumValue == nullptr </tt>.
-		 *
 		 * @copydetails	pushBackDoubleHdf5ArrayOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);

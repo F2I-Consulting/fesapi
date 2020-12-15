@@ -104,4 +104,3 @@ void ContinuousPropertyOnWellFrameTest::readRepo()
 	REQUIRE(values[3] == 3.4);
 	REQUIRE(values[4] == 4.5);
 }
-
