@@ -40,9 +40,6 @@ void ContinuousProperty::initRepo() {
 	// creating an IJK grid
 	RESQML2_NS::AbstractIjkGridRepresentation * rep = repo->createPartialIjkGridRepresentation("", "");
 
-	// getting the hdf proxy
-	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
-
 	// creating Float prop without min max
 	auto propertyKind = repo->createPropertyKind("", "Fake prop kind", gsoap_eml2_1::eml21__QuantityClassKind__pressure);
 	RESQML2_NS::ContinuousProperty* noMinMaxFltProperty = repo->createContinuousProperty(
