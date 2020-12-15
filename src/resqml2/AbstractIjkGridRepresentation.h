@@ -241,7 +241,7 @@ namespace RESQML2_NS
 		* For each K Layer except the last one, indicate wether there is a layer or not after it.
 		*
 		* @param [out]	kGaps	An array for receiving the information about kGaps.
-		*						It must have a count of getKGapsCount(). It won't be free. A false value in
+		*						It must have a count of getKCellCount() - 1. It won't be free. A false value in
 		* 						@p kGaps means that the corresponding k layer has no gaps just after it.
 		*						A true value means that the corresponding k layer has a gap just after it.
 		*/
@@ -565,7 +565,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If the split information is not loaded.
 		 * @exception	std::out_of_range	 	If @p iInterfaceEnd <tt>&gt;</tt> getICellCount(), @p
 		 * 										jInterfaceEnd <tt>&gt;</tt> getJCellCount() or @p
-		 * 										kInterfaceEnd <tt>&gt;</tt> getKCellCount().
+		 * 										kInterfaceEnd <tt>&gt;</tt> getKCellCount() + getKGapsCount().
 		 * @exception	std::range_error	 	If @p iInterfaceStart @c > @p iInterfaceEnd, @p
 		 * 										jInterfaceStart @c > @p jInterfaceEnd or @p
 		 * 										kInterfaceStart @c > @p kInterfaceEnd.
@@ -579,7 +579,7 @@ namespace RESQML2_NS
 		 * @param 	jInterfaceEnd  	The ending J interface index of the block taken from zero to
 		 * 							getJCellCount().
 		 * @param 	kInterfaceStart	The starting K interface index of the block taken from zero to
-		 * 							getKCellCount().
+		 * 							getKCellCount() + getKGapsCount().
 		 * @param 	kInterfaceEnd  	The ending K interface index of the block taken from zero to
 		 * 							getKCellCount().
 		 */
@@ -698,14 +698,14 @@ namespace RESQML2_NS
 		 * local CRS.
 		 *
 		 * @exception	std::out_of_range	 	If @p kInterfaceStart @c > getKCellCount() or @p
-		 * 										kInterfaceEnd @c > getKCellCount().
+		 * 										kInterfaceEnd @c > getKCellCount() + getKGapsCount().
 		 * @exception	std::range_error	 	If @p kInterfaceStart @c > @p kInterfaceEnd.
 		 * @exception	std::invalid_argument	If @p xyzPoints is @c nullptr.
 		 *
 		 * @param 	   	kInterfaceStart	The K index of the starting interface taken from zero to
 		 * 								getKCellCount().
 		 * @param 	   	kInterfaceEnd  	The K index of the ending interface taken from zero to
-		 * 								getKCellCount().
+		 * 								getKCellCount() + getKGapsCount().
 		 * @param [out]	xyzPoints	   	A linearized 2d array where the first (quickest) dimension is
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be preallocated with a size of

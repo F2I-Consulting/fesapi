@@ -3056,179 +3056,328 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 
 				ijkGrid->loadSplitInformation();
 
-				// here, we read a grid interface by interface. Each interface is read
-				// in i then j direction
-				cout << "INTERFACE BY INTERFACE" << std::endl;
+				if (ijkGrid->getKGapsCount() > 0) {
 
-				for (unsigned int kInterface = 0; kInterface < ijkGrid->getKCellCount(); kInterface++) {
-					cout << "INTERFACE: " << kInterface << std::endl;
+					// here, we read a grid interface by interface. Each interface is read
+					// in i then j direction
+					cout << "INTERFACE BY INTERFACE" << std::endl;
 
-					std::unique_ptr<double[]> interfaceXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3]);
-					ijkGrid->getXyzPointsOfKInterface(kInterface, interfaceXyzPoints.get());
+					std::unique_ptr<bool[]> gapAfterLayer(new bool[ijkGrid->getKCellCount() - 1]);
+					ijkGrid->getKGaps(gapAfterLayer.get());
+					
+					unsigned int kLayer = 0;
+					unsigned int cornerShift = 0;
 
-					for (unsigned int j = 0; j < ijkGrid->getJCellCount(); j++) {
-						for (unsigned int i = 0; i < ijkGrid->getICellCount(); i++) {
-							cout << "CELL (" << i << ", " << j << ", " << kInterface << ")" << std::endl;
+					for (unsigned int kInterface = 0; kInterface < ijkGrid->getKCellCount() + 1 + ijkGrid->getKGapsCount(); kInterface++) {
+						cout << "INTERFACE: " << kInterface << std::endl;
 
-							uint64_t xyzPointIndex;
-							double x, y, z;
-							uint64_t indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterface() * 3;
+						std::unique_ptr<double[]> interfaceXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3]);
+						ijkGrid->getXyzPointsOfKInterface(kInterface, interfaceXyzPoints.get());
 
-							// Corner (0, 0, 0)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 0) * 3 - indexShift;
-							x = interfaceXyzPoints[xyzPointIndex];
-							y = interfaceXyzPoints[xyzPointIndex + 1];
-							z = interfaceXyzPoints[xyzPointIndex + 2];
-							cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
+						for (unsigned int j = 0; j < ijkGrid->getJCellCount(); j++) {
+							for (unsigned int i = 0; i < ijkGrid->getICellCount(); i++) {
+								cout << "CELL (" << i << ", " << j << ", " << kLayer << ")" << std::endl;
 
-							// Corner (1, 0, 0)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 1) * 3 - indexShift;
-							x = interfaceXyzPoints[xyzPointIndex];
-							y = interfaceXyzPoints[xyzPointIndex + 1];
-							z = interfaceXyzPoints[xyzPointIndex + 2];
-							cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
+								uint64_t xyzPointIndex;
+								double x, y, z;
+								uint64_t indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterface() * 3;
 
-							// Corner (1, 1, 0)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 2) * 3 - indexShift;
-							x = interfaceXyzPoints[xyzPointIndex];
-							y = interfaceXyzPoints[xyzPointIndex + 1];
-							z = interfaceXyzPoints[xyzPointIndex + 2];
-							cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kLayer, 0 + cornerShift) * 3 - indexShift;
+								x = interfaceXyzPoints[xyzPointIndex];
+								y = interfaceXyzPoints[xyzPointIndex + 1];
+								z = interfaceXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (0, 0, " << ((cornerShift == 0) ? "0" : "1") << "): " << x << " " << y << " " << z << std::endl;
 
-							// Corner (0, 1, 0)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 3) * 3 - indexShift;
-							x = interfaceXyzPoints[xyzPointIndex];
-							y = interfaceXyzPoints[xyzPointIndex + 1];
-							z = interfaceXyzPoints[xyzPointIndex + 2];
-							cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kLayer, 1 + cornerShift) * 3 - indexShift;
+								x = interfaceXyzPoints[xyzPointIndex];
+								y = interfaceXyzPoints[xyzPointIndex + 1];
+								z = interfaceXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (1, 0, " << ((cornerShift == 0) ? "0" : "1") << "): " << x << " " << y << " " << z << std::endl;
 
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kLayer, 2 + cornerShift) * 3 - indexShift;
+								x = interfaceXyzPoints[xyzPointIndex];
+								y = interfaceXyzPoints[xyzPointIndex + 1];
+								z = interfaceXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (1, 1, " << ((cornerShift == 0) ? "0" : "1") << "): " << x << " " << y << " " << z << std::endl;
+
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kLayer, 3 + cornerShift) * 3 - indexShift;
+								x = interfaceXyzPoints[xyzPointIndex];
+								y = interfaceXyzPoints[xyzPointIndex + 1];
+								z = interfaceXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (0, 1, " << ((cornerShift == 0) ? "0" : "1") << "): " << x << " " << y << " " << z << std::endl;
+							}
+						}
+
+						if (cornerShift == 4 || !gapAfterLayer[kLayer] && kInterface != ijkGrid->getKCellCount() + ijkGrid->getKGapsCount() - 1) {
+							kLayer++;
+							cornerShift = 0;
+						}
+						else {
+							cornerShift = 4;
 						}
 					}
-				}
 
-				// last interface differs from the other because of  getXyzPointIndexFromCellCorner usage
-				cout << "INTERFACE: " << ijkGrid->getKCellCount() << std::endl;
+					// here, we read a grid layer by layer. Each layer is read in i,
+					// then j direction.
+					cout << "--------------------------------------------------" << std::endl;
+					cout << "LAYER BY LAYER" << std::endl;
 
-				std::unique_ptr<double[]> interfaceXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3]);
-				ijkGrid->getXyzPointsOfKInterface(ijkGrid->getKCellCount(), interfaceXyzPoints.get());
+					int kInterface = 0;
 
-				for (unsigned int i = 0; i < ijkGrid->getICellCount(); i++)
-				{
-					for (unsigned int j = 0; j < ijkGrid->getJCellCount(); j++)
+					for (unsigned int kLayer = 0; kLayer < ijkGrid->getKCellCount(); kLayer++)
 					{
-						cout << "CELL (" << i << ", " << j << ", " << ijkGrid->getKCellCount() - 1 << ")" << std::endl;
+						cout << "LAYER: " << kLayer << std::endl;
 
-						uint64_t xyzPointIndex;
-						double x, y, z;
-						uint64_t indexShift = ijkGrid->getKCellCount() * ijkGrid->getXyzPointCountOfKInterface() * 3;
+						std::unique_ptr<double[]> layerXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3 * 2]);
 
-						// Corner (0, 0, 1)
-						xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 4) * 3 - indexShift;
-						x = interfaceXyzPoints[xyzPointIndex];
-						y = interfaceXyzPoints[xyzPointIndex + 1];
-						z = interfaceXyzPoints[xyzPointIndex + 2];
-						cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
+						ijkGrid->getXyzPointsOfKInterfaceSequence(kInterface, kInterface + 1, layerXyzPoints.get());
 
-						// Corner (1, 0, 1)
-						xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 5) * 3 - indexShift;
-						x = interfaceXyzPoints[xyzPointIndex];
-						y = interfaceXyzPoints[xyzPointIndex + 1];
-						z = interfaceXyzPoints[xyzPointIndex + 2];
-						cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
+						for (unsigned int j = 0; j < ijkGrid->getJCellCount(); j++)
+						{
+							for (unsigned int i = 0; i < ijkGrid->getICellCount(); i++)
+							{
+								cout << "CELL (" << i << ", " << j << ", " << kLayer << ")" << std::endl;
 
-						// Corner (1, 1, 1)
-						xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 6) * 3 - indexShift;
-						x = interfaceXyzPoints[xyzPointIndex];
-						y = interfaceXyzPoints[xyzPointIndex + 1];
-						z = interfaceXyzPoints[xyzPointIndex + 2];
-						cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
+								uint64_t xyzPointIndex;
+								double x, y, z;
+								uint64_t indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterface() * 3;
 
-						// Corner (0, 1, 1)
-						xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 7) * 3 - indexShift;
-						x = interfaceXyzPoints[xyzPointIndex];
-						y = interfaceXyzPoints[xyzPointIndex + 1];
-						z = interfaceXyzPoints[xyzPointIndex + 2];
-						cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
+								// Corner (0, 0, 0)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kLayer, 0) * 3 - indexShift;
+								x = layerXyzPoints[xyzPointIndex];
+								y = layerXyzPoints[xyzPointIndex + 1];
+								z = layerXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (1, 0, 0)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kLayer, 1) * 3 - indexShift;
+								x = layerXyzPoints[xyzPointIndex];
+								y = layerXyzPoints[xyzPointIndex + 1];
+								z = layerXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (1, 1, 0)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kLayer, 2) * 3 - indexShift;
+								x = layerXyzPoints[xyzPointIndex];
+								y = layerXyzPoints[xyzPointIndex + 1];
+								z = layerXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (0, 1, 0)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kLayer, 3) * 3 - indexShift;
+								x = layerXyzPoints[xyzPointIndex];
+								y = layerXyzPoints[xyzPointIndex + 1];
+								z = layerXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (0, 0, 1)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kLayer, 4) * 3 - indexShift;
+								x = layerXyzPoints[xyzPointIndex];
+								y = layerXyzPoints[xyzPointIndex + 1];
+								z = layerXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (1, 0, 1)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kLayer, 5) * 3 - indexShift;
+								x = layerXyzPoints[xyzPointIndex];
+								y = layerXyzPoints[xyzPointIndex + 1];
+								z = layerXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (1, 1, 1)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kLayer, 6) * 3 - indexShift;
+								x = layerXyzPoints[xyzPointIndex];
+								y = layerXyzPoints[xyzPointIndex + 1];
+								z = layerXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (0, 1, 1)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kLayer, 7) * 3 - indexShift;
+								x = layerXyzPoints[xyzPointIndex];
+								y = layerXyzPoints[xyzPointIndex + 1];
+								z = layerXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
+							}
+						}
+
+						kInterface = gapAfterLayer[kLayer] ? kInterface + 2 : kInterface + 1;
 					}
 				}
+				else { // no K gap
+					// here, we read a grid interface by interface. Each interface is read
+					// in i then j direction
+					cout << "INTERFACE BY INTERFACE" << std::endl;
 
-				// here, we read a grid layer by layer. Each layer is read in i,
-				// then j direction.
-				cout << "--------------------------------------------------" << std::endl;
-				cout << "LAYER BY LAYER" << std::endl;
+					for (unsigned int kInterface = 0; kInterface < ijkGrid->getKCellCount(); kInterface++) {
+						cout << "INTERFACE: " << kInterface << std::endl;
 
-				for (unsigned int kInterface = 0; kInterface < ijkGrid->getKCellCount(); kInterface++)
-				{
-					cout << "LAYER: " << kInterface << std::endl;
+						std::unique_ptr<double[]> interfaceXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3]);
+						ijkGrid->getXyzPointsOfKInterface(kInterface, interfaceXyzPoints.get());
 
-					std::unique_ptr<double[]> layerXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3 * 2]);
-					ijkGrid->getXyzPointsOfKInterfaceSequence(kInterface, kInterface + 1, layerXyzPoints.get());
+						for (unsigned int j = 0; j < ijkGrid->getJCellCount(); j++) {
+							for (unsigned int i = 0; i < ijkGrid->getICellCount(); i++) {
+								cout << "CELL (" << i << ", " << j << ", " << kInterface << ")" << std::endl;
 
-					for (unsigned int j = 0; j < ijkGrid->getJCellCount(); j++)
+								uint64_t xyzPointIndex;
+								double x, y, z;
+								uint64_t indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterface() * 3;
+
+								// Corner (0, 0, 0)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 0) * 3 - indexShift;
+								x = interfaceXyzPoints[xyzPointIndex];
+								y = interfaceXyzPoints[xyzPointIndex + 1];
+								z = interfaceXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (1, 0, 0)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 1) * 3 - indexShift;
+								x = interfaceXyzPoints[xyzPointIndex];
+								y = interfaceXyzPoints[xyzPointIndex + 1];
+								z = interfaceXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (1, 1, 0)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 2) * 3 - indexShift;
+								x = interfaceXyzPoints[xyzPointIndex];
+								y = interfaceXyzPoints[xyzPointIndex + 1];
+								z = interfaceXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (0, 1, 0)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 3) * 3 - indexShift;
+								x = interfaceXyzPoints[xyzPointIndex];
+								y = interfaceXyzPoints[xyzPointIndex + 1];
+								z = interfaceXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
+
+							}
+						}
+					}
+
+					// last interface differs from the other because of  getXyzPointIndexFromCellCorner usage
+					cout << "INTERFACE: " << ijkGrid->getKCellCount() << std::endl;
+
+					std::unique_ptr<double[]> interfaceXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3]);
+					ijkGrid->getXyzPointsOfKInterface(ijkGrid->getKCellCount(), interfaceXyzPoints.get());
+
+					for (unsigned int i = 0; i < ijkGrid->getICellCount(); i++)
 					{
-						for (unsigned int i = 0; i < ijkGrid->getICellCount(); i++)
+						for (unsigned int j = 0; j < ijkGrid->getJCellCount(); j++)
 						{
-							cout << "CELL (" << i << ", " << j << ", " << kInterface << ")" << std::endl;
+							cout << "CELL (" << i << ", " << j << ", " << ijkGrid->getKCellCount() - 1 << ")" << std::endl;
 
 							uint64_t xyzPointIndex;
 							double x, y, z;
-							uint64_t indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterface() * 3;
-
-							// Corner (0, 0, 0)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 0) * 3 - indexShift;
-							x = layerXyzPoints[xyzPointIndex];
-							y = layerXyzPoints[xyzPointIndex + 1];
-							z = layerXyzPoints[xyzPointIndex + 2];
-							cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-							// Corner (1, 0, 0)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 1) * 3 - indexShift;
-							x = layerXyzPoints[xyzPointIndex];
-							y = layerXyzPoints[xyzPointIndex + 1];
-							z = layerXyzPoints[xyzPointIndex + 2];
-							cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-							// Corner (1, 1, 0)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 2) * 3 - indexShift;
-							x = layerXyzPoints[xyzPointIndex];
-							y = layerXyzPoints[xyzPointIndex + 1];
-							z = layerXyzPoints[xyzPointIndex + 2];
-							cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-							// Corner (0, 1, 0)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 3) * 3 - indexShift;
-							x = layerXyzPoints[xyzPointIndex];
-							y = layerXyzPoints[xyzPointIndex + 1];
-							z = layerXyzPoints[xyzPointIndex + 2];
-							cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
+							uint64_t indexShift = ijkGrid->getKCellCount() * ijkGrid->getXyzPointCountOfKInterface() * 3;
 
 							// Corner (0, 0, 1)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 4) * 3 - indexShift;
-							x = layerXyzPoints[xyzPointIndex];
-							y = layerXyzPoints[xyzPointIndex + 1];
-							z = layerXyzPoints[xyzPointIndex + 2];
+							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 4) * 3 - indexShift;
+							x = interfaceXyzPoints[xyzPointIndex];
+							y = interfaceXyzPoints[xyzPointIndex + 1];
+							z = interfaceXyzPoints[xyzPointIndex + 2];
 							cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
 
 							// Corner (1, 0, 1)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 5) * 3 - indexShift;
-							x = layerXyzPoints[xyzPointIndex];
-							y = layerXyzPoints[xyzPointIndex + 1];
-							z = layerXyzPoints[xyzPointIndex + 2];
+							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 5) * 3 - indexShift;
+							x = interfaceXyzPoints[xyzPointIndex];
+							y = interfaceXyzPoints[xyzPointIndex + 1];
+							z = interfaceXyzPoints[xyzPointIndex + 2];
 							cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
 
 							// Corner (1, 1, 1)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 6) * 3 - indexShift;
-							x = layerXyzPoints[xyzPointIndex];
-							y = layerXyzPoints[xyzPointIndex + 1];
-							z = layerXyzPoints[xyzPointIndex + 2];
+							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 6) * 3 - indexShift;
+							x = interfaceXyzPoints[xyzPointIndex];
+							y = interfaceXyzPoints[xyzPointIndex + 1];
+							z = interfaceXyzPoints[xyzPointIndex + 2];
 							cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
 
 							// Corner (0, 1, 1)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 7) * 3 - indexShift;
-							x = layerXyzPoints[xyzPointIndex];
-							y = layerXyzPoints[xyzPointIndex + 1];
-							z = layerXyzPoints[xyzPointIndex + 2];
+							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 7) * 3 - indexShift;
+							x = interfaceXyzPoints[xyzPointIndex];
+							y = interfaceXyzPoints[xyzPointIndex + 1];
+							z = interfaceXyzPoints[xyzPointIndex + 2];
 							cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
+						}
+					}
+
+					// here, we read a grid layer by layer. Each layer is read in i,
+					// then j direction.
+					cout << "--------------------------------------------------" << std::endl;
+					cout << "LAYER BY LAYER" << std::endl;
+
+					for (unsigned int kInterface = 0; kInterface < ijkGrid->getKCellCount(); kInterface++)
+					{
+						cout << "LAYER: " << kInterface << std::endl;
+
+						std::unique_ptr<double[]> layerXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3 * 2]);
+						ijkGrid->getXyzPointsOfKInterfaceSequence(kInterface, kInterface + 1, layerXyzPoints.get());
+
+						for (unsigned int j = 0; j < ijkGrid->getJCellCount(); j++)
+						{
+							for (unsigned int i = 0; i < ijkGrid->getICellCount(); i++)
+							{
+								cout << "CELL (" << i << ", " << j << ", " << kInterface << ")" << std::endl;
+
+								uint64_t xyzPointIndex;
+								double x, y, z;
+								uint64_t indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterface() * 3;
+
+								// Corner (0, 0, 0)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 0) * 3 - indexShift;
+								x = layerXyzPoints[xyzPointIndex];
+								y = layerXyzPoints[xyzPointIndex + 1];
+								z = layerXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (1, 0, 0)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 1) * 3 - indexShift;
+								x = layerXyzPoints[xyzPointIndex];
+								y = layerXyzPoints[xyzPointIndex + 1];
+								z = layerXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (1, 1, 0)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 2) * 3 - indexShift;
+								x = layerXyzPoints[xyzPointIndex];
+								y = layerXyzPoints[xyzPointIndex + 1];
+								z = layerXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (0, 1, 0)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 3) * 3 - indexShift;
+								x = layerXyzPoints[xyzPointIndex];
+								y = layerXyzPoints[xyzPointIndex + 1];
+								z = layerXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (0, 0, 1)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 4) * 3 - indexShift;
+								x = layerXyzPoints[xyzPointIndex];
+								y = layerXyzPoints[xyzPointIndex + 1];
+								z = layerXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (1, 0, 1)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 5) * 3 - indexShift;
+								x = layerXyzPoints[xyzPointIndex];
+								y = layerXyzPoints[xyzPointIndex + 1];
+								z = layerXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (1, 1, 1)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 6) * 3 - indexShift;
+								x = layerXyzPoints[xyzPointIndex];
+								y = layerXyzPoints[xyzPointIndex + 1];
+								z = layerXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
+
+								// Corner (0, 1, 1)
+								xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 7) * 3 - indexShift;
+								x = layerXyzPoints[xyzPointIndex];
+								y = layerXyzPoints[xyzPointIndex + 1];
+								z = layerXyzPoints[xyzPointIndex + 2];
+								cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
+							}
 						}
 					}
 				}
@@ -3263,7 +3412,80 @@ void displayBlockCellGeometry(RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid
 	if (xyzPoints == nullptr)
 		throw invalid_argument("xyzPoints == nullptr");
 
-	for (unsigned int k = kInterfaceStart; k < kInterfaceEnd; k++)
+	unsigned kLayerStart = kInterfaceStart;
+	unsigned kLayerEnd = kInterfaceEnd - 1;
+	unsigned int kInterfaceEndLayer;
+	bool kInterfaceEndIsTop;
+
+	if (ijkGrid->getKGapsCount() > 0) {
+		std::unique_ptr<bool[]> gapAfterLayer(new bool[ijkGrid->getKCellCount() - 1]);
+		ijkGrid->getKGaps(gapAfterLayer.get());
+
+		unsigned int kInterface = 0;
+		unsigned int kInterfaceStartLayer;
+		bool kInterfaceStartIsBottom;
+		for (unsigned int kLayer = 0; kLayer < ijkGrid->getKCellCount(); kLayer++) {
+			if (kInterfaceStart == kInterface) {
+				kInterfaceStartLayer = kLayer;
+				kInterfaceStartIsBottom = true;
+			}
+			else if (kInterfaceStart == kInterface + 1) {
+				kInterfaceStartLayer = kLayer;
+				kInterfaceStartIsBottom = false;
+			}
+
+			if (kInterfaceEnd == kInterface) {
+				kInterfaceEndLayer = kLayer;
+				kInterfaceEndIsTop = false;
+				break;
+			}
+			else if (kInterfaceEnd == kInterface + 1) {
+				kInterfaceEndLayer = kLayer;
+				kInterfaceEndIsTop = true;
+				break;
+			}
+
+			kInterface = gapAfterLayer[kLayer] ? kInterface + 2 : kInterface + 1;
+		}
+
+		kLayerStart = kInterfaceStartLayer;
+		if (!kInterfaceStartIsBottom) {
+			for (unsigned int j = jInterfaceStart; j < jInterfaceEnd; j++)
+			{
+				for (unsigned int i = iInterfaceStart; i < iInterfaceEnd; i++)
+				{
+					cout << "CELL (" << i << ", " << j << ", " << kInterfaceStartLayer << ")" << std::endl;
+
+					double x, y, z;
+
+					// Corner (0, 0, 1)
+					ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, kInterfaceStartLayer, 4, xyzPoints, x, y, z);
+					cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
+
+					// Corner (1, 0, 1)
+					ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, kInterfaceStartLayer, 5, xyzPoints, x, y, z);
+					cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
+
+					// Corner (1, 1, 1)
+					ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, kInterfaceStartLayer, 6, xyzPoints, x, y, z);
+					cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
+
+					// Corner (0, 1, 1)
+					ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, kInterfaceStartLayer, 7, xyzPoints, x, y, z);
+					cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
+				}
+			}
+
+			kLayerStart++;
+		}
+
+		kLayerEnd = kInterfaceEndLayer;
+		if (!kInterfaceEndIsTop) {
+			kLayerEnd--;
+		}
+	}
+
+	for (unsigned int k = kLayerStart; k <= kLayerEnd; k++)
 	{
 		cout << "LAYER: " << k << std::endl;
 
@@ -3306,6 +3528,34 @@ void displayBlockCellGeometry(RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid
 				// Corner (0, 1, 1)
 				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 7, xyzPoints, x, y, z);
 				cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
+			}
+		}
+	}
+
+	if (ijkGrid->getKGapsCount()>0 && !kInterfaceEndIsTop && kInterfaceEnd != kInterfaceStart) {
+		for (unsigned int j = jInterfaceStart; j < jInterfaceEnd; j++)
+		{
+			for (unsigned int i = iInterfaceStart; i < iInterfaceEnd; i++)
+			{
+				cout << "CELL (" << i << ", " << j << ", " << kInterfaceEndLayer << ")" << std::endl;
+
+				double x, y, z;
+
+				// Corner (0, 0, 0)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, kInterfaceEndLayer, 0, xyzPoints, x, y, z);
+				cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (1, 0, 0)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, kInterfaceEndLayer, 1, xyzPoints, x, y, z);
+				cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (1, 1, 0)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, kInterfaceEndLayer, 2, xyzPoints, x, y, z);
+				cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (0, 1, 0)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, kInterfaceEndLayer, 3, xyzPoints, x, y, z);
+				cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
 			}
 		}
 	}
@@ -3486,7 +3736,7 @@ void deserializeGridHyperslabbingBlock(const COMMON_NS::DataObjectRepository & p
 	// |  |  |  |  |
 	//  -- -- -- --
 
-	std::cout << "bloc 1*1*1" << std::endl;
+	std::cout << "block 1*1*1" << std::endl;
 
 	iInterfaceStart = 2;
 	iInterfaceEnd = 3;
@@ -3540,7 +3790,7 @@ void deserializeGridHyperslabbingBlock(const COMMON_NS::DataObjectRepository & p
 	// *  *  *  *  *
 	//  ** ** ** **
 
-	std::cout << "bloc 4*3*2" << std::endl;
+	std::cout << "block 4*3*2" << std::endl;
 
 	iInterfaceStart = 0;
 	iInterfaceEnd = 4;
@@ -3592,7 +3842,7 @@ void deserializeGridHyperslabbingBlock(const COMMON_NS::DataObjectRepository & p
 	// |  *  *
 	//  -- **
 
-	std::cout << "bloc 1*1*1" << std::endl;
+	std::cout << "block 1*1*1" << std::endl;
 
 	iInterfaceStart = 1;
 	iInterfaceEnd = 2;
@@ -3634,7 +3884,7 @@ void deserializeGridHyperslabbingBlock(const COMMON_NS::DataObjectRepository & p
 	// *  *  |
 	//  ** --
 
-	std::cout << "bloc 1*1*2" << std::endl;
+	std::cout << "block 1*1*2" << std::endl;
 
 	iInterfaceStart = 0;
 	iInterfaceEnd = 1;
@@ -3686,7 +3936,7 @@ void deserializeGridHyperslabbingBlock(const COMMON_NS::DataObjectRepository & p
 	// |  *  *
 	//  -- **
 
-	std::cout << "bloc 1*1*1" << std::endl;
+	std::cout << "block 1*1*1" << std::endl;
 
 	iInterfaceStart = 1;
 	iInterfaceEnd = 2;
@@ -3734,7 +3984,7 @@ void deserializeGridHyperslabbingBlock(const COMMON_NS::DataObjectRepository & p
 	// *  *  |
 	//  ** --
 
-	std::cout << "bloc 1*1*2" << std::endl;
+	std::cout << "block 1*1*2" << std::endl;
 
 	iInterfaceStart = 0;
 	iInterfaceEnd = 1;
@@ -3776,13 +4026,213 @@ void deserializeGridHyperslabbingBlock(const COMMON_NS::DataObjectRepository & p
 	// *  *  *
 	//  ** **
 
-	std::cout << "bloc 2*1*2" << std::endl;
+	std::cout << "block 2*1*2" << std::endl;
 
 	iInterfaceStart = 0;
 	iInterfaceEnd = 2;
 	jInterfaceStart = 0;
 	jInterfaceEnd = 1;
 	kInterfaceStart = 0;
+	kInterfaceEnd = 2;
+
+	ijkGrid->loadBlockInformation(iInterfaceStart, iInterfaceEnd, jInterfaceStart, jInterfaceEnd, kInterfaceStart, kInterfaceEnd);
+
+	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
+
+	xyzPoints = std::unique_ptr<double[]>(new double[xyzPointCountOfBlock * 3]);
+	ijkGrid->getXyzPointsOfBlock(xyzPoints.get());
+
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints.get()
+	);
+
+	ijkGrid->unloadSplitInformation();
+
+	// 4*3*2 explicit grid 4fc004e1-0f7d-46a8-935e-588f790a6f84
+	ijkGrid = (pck.getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>("4fc004e1-0f7d-46a8-935e-588f790a6f84"));
+
+	cout << std::endl;
+	cout << "--------------------------------------------------" << std::endl;
+	showAllMetadata(ijkGrid);
+	cout << "--------------------------------------------------" << std::endl;
+
+	ijkGrid->loadSplitInformation();
+
+	// 4*3*2 sized block with (complete grid):
+	//
+	// kInterface = 0
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	//
+	// kInterface = 1
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	//
+	// kInterface = 2
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+
+	std::cout << "block 4*3*2" << std::endl;
+
+	iInterfaceStart = 0;
+	iInterfaceEnd = 4;
+	jInterfaceStart = 0;
+	jInterfaceEnd = 3;
+	kInterfaceStart = 0;
+	kInterfaceEnd = 2;
+
+	ijkGrid->loadBlockInformation(iInterfaceStart, iInterfaceEnd, jInterfaceStart, jInterfaceEnd, kInterfaceStart, kInterfaceEnd);
+
+	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
+
+	xyzPoints = std::unique_ptr<double[]>(new double[xyzPointCountOfBlock * 3]);
+	ijkGrid->getXyzPointsOfBlock(xyzPoints.get());
+
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints.get()
+	);
+
+	ijkGrid->unloadSplitInformation();
+
+	// 4*3*2 explicit grid with gap layer c14755a5-e3b3-4272-99e5-fc20993b79a0
+	ijkGrid = (pck.getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>("c14755a5-e3b3-4272-99e5-fc20993b79a0"));
+
+	cout << std::endl;
+	cout << "--------------------------------------------------" << std::endl;
+	showAllMetadata(ijkGrid);
+	cout << "--------------------------------------------------" << std::endl;
+
+	ijkGrid->loadSplitInformation();
+
+	// 4*3*3 sized block with (complete grid):
+	//
+	// kInterface = 0
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	//
+	// kInterface = 1
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	//
+	// kInterface = 2
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	//
+	// kInterface = 3
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+
+	std::cout << "block 4*3*3" << std::endl;
+
+	iInterfaceStart = 0;
+	iInterfaceEnd = 4;
+	jInterfaceStart = 0;
+	jInterfaceEnd = 3;
+	kInterfaceStart = 0;
+	kInterfaceEnd = 3;
+
+	ijkGrid->loadBlockInformation(iInterfaceStart, iInterfaceEnd, jInterfaceStart, jInterfaceEnd, kInterfaceStart, kInterfaceEnd);
+
+	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
+
+	xyzPoints = std::unique_ptr<double[]>(new double[xyzPointCountOfBlock * 3]);
+	ijkGrid->getXyzPointsOfBlock(xyzPoints.get());
+
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints.get()
+	);
+
+	cout << "--------------------------------------------------" << std::endl;
+
+	// 2*1*1 sized block with
+	//
+	// kInterface = 0
+	//  -- -- -- --
+	// |  |  |  |  |
+	//  -- -- -- --
+	// |  |  |  |  |
+	//  -- -- -- --
+	// |  |  |  |  |
+	//  -- -- -- --
+	//
+	// kInterface = 1
+	//  -- -- -- --
+	// |  |  |  |  |
+	//  -- ** ** --
+	// |  *  *  *  |
+	//  -- ** ** --
+	// |  |  |  |  |
+	//  -- -- -- --
+	//
+	// kInterface = 2
+	//  -- -- -- --
+	// |  |  |  |  |
+	//  -- ** ** --
+	// |  *  *  *  |
+	//  -- ** ** --
+	// |  |  |  |  |
+	//  -- -- -- --
+	//
+	// kInterface = 3
+	//  -- -- -- --
+	// |  |  |  |  |
+	//  -- -- -- --
+	// |  |  |  |  |
+	//  -- -- -- --
+	// |  |  |  |  |
+	//  -- -- -- --
+
+	std::cout << "block 2*1*1" << std::endl;
+
+	iInterfaceStart = 1;
+	iInterfaceEnd = 3;
+	jInterfaceStart = 1;
+	jInterfaceEnd = 2;
+	kInterfaceStart = 1;
 	kInterfaceEnd = 2;
 
 	ijkGrid->loadBlockInformation(iInterfaceStart, iInterfaceEnd, jInterfaceStart, jInterfaceEnd, kInterfaceStart, kInterfaceEnd);

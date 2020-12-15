@@ -77,26 +77,75 @@ void FourSugarsParametricIjkGridWithGap::readRepo() {
 	// read points by cell corner
 	ijkGrid->loadSplitInformation();
 
+	ijkGrid->loadBlockInformation(0, 1, 0, 1, 0, 3);	// using block hyperslabbing
+	unsigned int xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
+	std::unique_ptr<double[]> blockXyzPoints = std::unique_ptr<double[]>(new double[xyzPointCountOfBlock * 3]);
+	ijkGrid->getXyzPointsOfBlock(blockXyzPoints.get());
+
+	std::unique_ptr<double[]> interfaceXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3]); // using interface hyperslabbing
+	unsigned int kInterface = 0;
+	ijkGrid->getXyzPointsOfKInterfaceSequence(kInterface, kInterface, interfaceXyzPoints.get());
+	
 	auto ptIndex = ijkGrid->getXyzPointIndexFromCellCorner(0, 0, 0, 1);
 	REQUIRE(xyzPoints[ptIndex * 3] == 375);
 	REQUIRE(xyzPoints[ptIndex * 3 + 1] == .0);
 	REQUIRE(xyzPoints[ptIndex * 3 + 2] == 300);
+	REQUIRE(interfaceXyzPoints[ptIndex * 3] == 375);
+	REQUIRE(interfaceXyzPoints[ptIndex * 3 + 1] == .0);
+	REQUIRE(interfaceXyzPoints[ptIndex * 3 + 2] == 300);
+	double x, y, z;
+	ijkGrid->getXyzPointOfBlockFromCellCorner(0, 0, 0, 1, blockXyzPoints.get(), x, y, z);
+	REQUIRE(x == 375);
+	REQUIRE(y == .0);
+	REQUIRE(z == 300);
+
+	kInterface = 1;
+	ijkGrid->getXyzPointsOfKInterfaceSequence(kInterface, kInterface, interfaceXyzPoints.get());  // using interface hyperslabbing
+	uint64_t indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterface() * 3;
 
 	ptIndex = ijkGrid->getXyzPointIndexFromCellCorner(0, 0, 0, 5);
 	REQUIRE(xyzPoints[ptIndex * 3] == 375);
 	REQUIRE(xyzPoints[ptIndex * 3 + 1] == .0);
 	REQUIRE(xyzPoints[ptIndex * 3 + 2] == 400);
+	REQUIRE(interfaceXyzPoints[ptIndex * 3 - indexShift] == 375);
+	REQUIRE(interfaceXyzPoints[ptIndex * 3 + 1 - indexShift] == .0);
+	REQUIRE(interfaceXyzPoints[ptIndex * 3 + 2 - indexShift] == 400);
+	ijkGrid->getXyzPointOfBlockFromCellCorner(0, 0, 0, 5, blockXyzPoints.get(), x, y, z);
+	REQUIRE(x == 375);
+	REQUIRE(y == .0);
+	REQUIRE(z == 400);
+
+	kInterface = 2;
+	ijkGrid->getXyzPointsOfKInterfaceSequence(kInterface, kInterface, interfaceXyzPoints.get());  // using interface hyperslabbing
+	indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterface() * 3;
 
 	ptIndex = ijkGrid->getXyzPointIndexFromCellCorner(0, 0, 1, 1);
 	REQUIRE(xyzPoints[ptIndex * 3] == 375);
 	REQUIRE(xyzPoints[ptIndex * 3 + 1] == .0);
 	REQUIRE(xyzPoints[ptIndex * 3 + 2] == 425);
+	REQUIRE(interfaceXyzPoints[ptIndex * 3 - indexShift] == 375);
+	REQUIRE(interfaceXyzPoints[ptIndex * 3 + 1 - indexShift] == .0);
+	REQUIRE(interfaceXyzPoints[ptIndex * 3 + 2 - indexShift] == 425);
+	ijkGrid->getXyzPointOfBlockFromCellCorner(0, 0, 1, 1, blockXyzPoints.get(), x, y, z);
+	REQUIRE(x == 375);
+	REQUIRE(y == .0);
+	REQUIRE(z == 425);
 
+	kInterface = 3;
+	ijkGrid->getXyzPointsOfKInterfaceSequence(kInterface, kInterface, interfaceXyzPoints.get());  // using interface hyperslabbing
+	indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterface() * 3;
+	
 	ptIndex = ijkGrid->getXyzPointIndexFromCellCorner(0, 0, 1, 5);
 	REQUIRE(xyzPoints[ptIndex * 3] == 375);
 	REQUIRE(xyzPoints[ptIndex * 3 + 1] == .0);
 	REQUIRE(xyzPoints[ptIndex * 3 + 2] == 500);
-
+	REQUIRE(interfaceXyzPoints[ptIndex * 3 - indexShift] == 375);
+	REQUIRE(interfaceXyzPoints[ptIndex * 3 + 1 - indexShift] == .0);
+	REQUIRE(interfaceXyzPoints[ptIndex * 3 + 2 - indexShift] == 500);
+	ijkGrid->getXyzPointOfBlockFromCellCorner(0, 0, 1, 5, blockXyzPoints.get(), x, y, z);
+	REQUIRE(x == 375);
+	REQUIRE(y == .0);
+	REQUIRE(z == 500);
+	
 	ijkGrid->unloadSplitInformation();
-
 }

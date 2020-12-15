@@ -904,7 +904,7 @@ void AbstractIjkGridRepresentation::loadBlockInformation(unsigned int iInterface
 		throw range_error("jInterfaceStart > jInterfaceEnd");
 	}
 
-	if (kInterfaceEnd > getKCellCount()) {
+	if (kInterfaceEnd > getKCellCount() + getKGapsCount()) {
 		throw out_of_range("kInterfaceEnd is out of boundaries.");
 	}
 	if (kInterfaceStart > kInterfaceEnd) {
@@ -924,8 +924,7 @@ void AbstractIjkGridRepresentation::loadBlockInformation(unsigned int iInterface
 	blockInformation->kInterfaceStart = kInterfaceStart;
 	blockInformation->kInterfaceEnd = kInterfaceEnd;
 
-	// seting mapping between global and local (to the block) split coordinate lines index
-	unsigned int splitCoordinateLineHdfLocalIndex = (iInterfaceEnd - iInterfaceStart + 1) * (jInterfaceEnd - jInterfaceStart + 1);
+	// setting mapping between global and local (to the block) split coordinate lines index
 	for (unsigned int jPillarIndex = jInterfaceStart; jPillarIndex <= jInterfaceEnd; ++jPillarIndex) {
 		for (unsigned int iPillarIndex = iInterfaceStart; iPillarIndex <= iInterfaceEnd; iPillarIndex++) {
 			const unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
@@ -942,8 +941,7 @@ void AbstractIjkGridRepresentation::loadBlockInformation(unsigned int iInterface
 
 						if ((iColumnIndex >= iInterfaceStart && iColumnIndex < iInterfaceEnd) && (jColumnIndex >= jInterfaceStart && jColumnIndex < jInterfaceEnd)) {
 							// here is a split coordinate line impacting the bloc
-							(blockInformation->globalToLocalSplitCoordinateLinesIndex)[splitInformation[pillarIndex][splitCoordinateLineIndex].first] = splitCoordinateLineHdfLocalIndex;
-							++splitCoordinateLineHdfLocalIndex;
+							(blockInformation->globalToLocalSplitCoordinateLinesIndex)[splitInformation[pillarIndex][splitCoordinateLineIndex].first] = -1;
 
 							break; // in order to be sure not adding twice a same coordinate line if it is adjacent to several columns within the block
 						}
@@ -951,6 +949,13 @@ void AbstractIjkGridRepresentation::loadBlockInformation(unsigned int iInterface
 				}
 			}
 		}
+	}
+
+	// we take advantage of the std::map order (by key) to set the split coordinate lines local indexes
+	unsigned int splitCoordinateLineHdfLocalIndex = (iInterfaceEnd - iInterfaceStart + 1) * (jInterfaceEnd - jInterfaceStart + 1);
+	for (std::map<unsigned int, unsigned int>::iterator it = blockInformation->globalToLocalSplitCoordinateLinesIndex.begin(); it != blockInformation->globalToLocalSplitCoordinateLinesIndex.end(); it++)
+	{
+		it->second = splitCoordinateLineHdfLocalIndex++;
 	}
 }
 
@@ -991,7 +996,7 @@ unsigned int AbstractIjkGridRepresentation::getKGapsCount() const
 void AbstractIjkGridRepresentation::getKGaps(bool * kGaps) const
 {
 	if (getKGapsCount() <= 0) {
-		throw invalid_argument("The grid has no K Gaps.");
+		throw invalid_argument("The grid has no K Gap.");
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
