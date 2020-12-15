@@ -30,7 +30,7 @@ using namespace RESQML2_NS;
 
 void IjkGridExplicitRepresentation::getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints)
 {
-	if (kInterfaceStart > getKCellCount() || kInterfaceEnd > getKCellCount()) {
+	if (kInterfaceStart > getKCellCount() + getKGapsCount() || kInterfaceEnd > getKCellCount() + getKGapsCount()) {
 		throw out_of_range("kInterfaceStart and/or kInterfaceEnd is/are out of boundaries.");
 	}
 	if (kInterfaceStart > kInterfaceEnd) {
