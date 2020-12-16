@@ -68,21 +68,13 @@ void ContinuousProperty::pushBackDoubleHdf5Array3dOfValues(const double * values
 void ContinuousProperty::pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions,
 	double * minimumValue, double * maximumValue, EML2_NS::AbstractHdfProxy * proxy)
 {
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-		if (proxy == nullptr) {
-			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-		}
+	if ((minimumValue == nullptr && maximumValue != nullptr) ||
+		(minimumValue != nullptr && maximumValue == nullptr)) {
+		throw std::invalid_argument("You cannot set the minimum value without the maximum value and viceversa.");
 	}
-	const string datasetName = pushBackRefToExistingFloatingPointDataset(proxy, "");
-	setPropertyMinMax(values, numValues, numArrayDimensions, minimumValue, maximumValue);
+	AbstractValuesProperty::pushBackDoubleHdf5ArrayOfValues(values, numValues, numArrayDimensions, proxy);
 
-	// HDF
-	proxy->writeArrayNd(getHdfGroup(),
-		datasetName,
-		H5T_NATIVE_DOUBLE,
-		values,
-		numValues, numArrayDimensions);
+	setPropertyMinMax(values, numValues, numArrayDimensions, minimumValue, maximumValue);
 }
 
 void ContinuousProperty::pushBackFloatHdf5Array1dOfValues(const float * values, uint64_t valueCount,
@@ -171,9 +163,7 @@ void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(float const * values, un
 	}
 	AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(values, numValues, numArrayDimensions, proxy);
 
-	if (minimumValue != nullptr) { // implies that maximumValue != nullptr as well.
-		setPropertyMinMax(values, numValues, numArrayDimensions, minimumValue, maximumValue);
-	}
+	setPropertyMinMax(values, numValues, numArrayDimensions, minimumValue, maximumValue);
 }
 
 void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(

@@ -61,6 +61,7 @@ under the License.
 #include "resqml2_2test/ContinuousColorMapTest.h"
 #include "resqml2_test/MultirealPropertyTest.h"
 #include "resqml2_test/CategoricalProperty.h"
+#include "resqml2_test/ContinuousProperty.h"
 #include "resqml2_test/DiscreteProperty.h"
 #include "resqml2_test/PointsProperty.h"
 #include "resqml2_test/PropertyBySlab.h"
@@ -181,7 +182,7 @@ FESAPI_TEST("Export and import an unstructured grid", "[grid]", UnstructuredGrid
 
 FESAPI_TEST("Export and import a subrepresentation on a partial grid connection set", "[grid]", SubRepresentationOnPartialGridConnectionSet)
 
-FESAPI_TEST("Export and import streamlines  on a partial grid", "[grid]", Streamlines)
+FESAPI_TEST("Export and import streamlines on a partial grid", "[grid]", Streamlines)
 
 // fail
 //FESAPI_TEST("Export and import grid connection set on partial grid", "[grid]", GridConnectionSetOnPartialGridSet)
@@ -199,6 +200,10 @@ TEST_CASE("Export and import a big parametric ijk grid", "[grid][property]")
 	test.serialize();
 	test.deserialize();
 }
+
+// PROPERTY
+FESAPI_TEST("Export and import continuous properties on a partial grid", "[property]", ContinuousProperty)
+
 
 // RESQML WELL
 FESAPI_TEST("Export and import a wellbore trajectory", "[well][trajectory]", WellboreTrajectoryRepresentationTest)
