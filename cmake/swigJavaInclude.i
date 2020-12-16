@@ -375,7 +375,7 @@ ${COMMENT_END}
 		return null;
 	}
 	
-	public static com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractOrganizationInterpretation resqml2_instantiateStratigraphicOccurrenceInterpretation(long cPtr, boolean owner)
+	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractOrganizationInterpretation resqml2_instantiateStratigraphicOccurrenceInterpretation(long cPtr, boolean owner)
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
@@ -922,7 +922,7 @@ ${COMMENT_END}
 		return null;
 	}
 	
-	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.StreamlinesFeature resqml2_instantiateStreamlinesFeature(long cPtr, bool owner)
+	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.StreamlinesFeature resqml2_instantiateStreamlinesFeature(long cPtr, boolean owner)
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
@@ -937,7 +937,7 @@ ${COMMENT_END}
 		return null;
 	}
 	
-	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.StreamlinesRepresentation resqml2_instantiateStreamlinesRepresentation(long cPtr, bool owner)
+	public static com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.StreamlinesRepresentation resqml2_instantiateStreamlinesRepresentation(long cPtr, boolean owner)
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
@@ -994,7 +994,7 @@ ${COMMENT_END}
 		case FLUIDSYSTEM : return new com.f2i.energisticsStandardsApi.${FESAPI_PRODML2_1_NS}.FluidSystem(cPtr, owner);
 		case FRONTIERFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_FrontierFeature(cPtr, owner);
 		case GENETICBOUNDARYFEATURE :
-			com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_GeneticBoundaryFeature_resqml20 result = new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GeneticBoundaryFeature(cPtr, owner);
+			com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_GeneticBoundaryFeature result = new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_GeneticBoundaryFeature(cPtr, owner);
 			return result.isAnHorizon() ? new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_Horizon(cPtr, owner) : result;
 		case GEOBODYFEATURE : return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.resqml20_GeobodyFeature(cPtr, owner);
 		case GEOBODYBOUNDARYINTERPRETATION : return resqml2_instantiateGeobodyBoundaryInterpretation(cPtr, owner);

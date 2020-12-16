@@ -41,7 +41,7 @@ namespace EML2_3_NS
 	%nodefaultctor; // Disable creation of default constructors
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(Activity_eml23) Activity;
+	%rename(eml23_Activity) Activity;
 #endif
 	class Activity : public EML2_NS::Activity
 	{
@@ -49,7 +49,7 @@ namespace EML2_3_NS
 	};	
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(ActivityTemplate_eml23) ActivityTemplate;
+	%rename(eml23_ActivityTemplate) ActivityTemplate;
 #endif
 	class ActivityTemplate : public EML2_NS::ActivityTemplate
 	{
@@ -57,7 +57,7 @@ namespace EML2_3_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(GraphicalInformationSet_eml23) GraphicalInformationSet;
+	%rename(eml23_GraphicalInformationSet) GraphicalInformationSet;
 #endif
 	class GraphicalInformationSet : public EML2_NS::GraphicalInformationSet
 	{
@@ -65,7 +65,7 @@ namespace EML2_3_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(PropertyKind_eml23) PropertyKind;
+	%rename(eml23_PropertyKind) PropertyKind;
 #endif
 	class PropertyKind : public EML2_NS::PropertyKind
 	{
@@ -73,7 +73,7 @@ namespace EML2_3_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(TimeSeries_eml23) TimeSeries;
+	%rename(eml23_TimeSeries) TimeSeries;
 #endif
 	class TimeSeries : public EML2_NS::TimeSeries
 	{

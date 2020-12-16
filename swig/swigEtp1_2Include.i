@@ -28,6 +28,7 @@ under the License.
 	%nspace ETP_NS::CoreHandlers;
 	%nspace ETP_NS::DiscoveryHandlers;
 	%nspace ETP_NS::StoreHandlers;
+	%nspace ETP_NS::StoreNotificationHandlers;
 	%nspace ETP_NS::DataArrayHandlers;
 	%nspace ETP_NS::AbstractSession;
 	%nspace ETP_NS::PlainClientSession;
@@ -988,6 +989,7 @@ namespace Energistics {
 %shared_ptr(ETP_NS::CoreHandlers)
 %shared_ptr(ETP_NS::DiscoveryHandlers)
 %shared_ptr(ETP_NS::StoreHandlers)
+%shared_ptr(ETP_NS::StoreNotificationHandlers)
 %shared_ptr(ETP_NS::DataArrayHandlers)
 %shared_ptr(ETP_NS::AbstractSession)
 %shared_ptr(ETP_NS::PlainClientSession)
@@ -997,6 +999,7 @@ namespace Energistics {
 %feature("director") ETP_NS::CoreHandlers;
 %feature("director") ETP_NS::DiscoveryHandlers;
 %feature("director") ETP_NS::StoreHandlers;
+%feature("director") ETP_NS::StoreNotificationHandlers;
 %feature("director") ETP_NS::DataArrayHandlers;
 %feature("director") ETP_NS::ServerInitializationParameters;
 
@@ -1098,6 +1101,66 @@ namespace Energistics {
 	  PyObject_SetAttr($self, data_array_handler_reference(), args);
 	%}
 	}
+#endif 
+	
+#ifdef SWIGCSHARP
+%typemap(cscode) ETP_NS::AbstractSession %{
+  private CoreHandlers coreHandlersReference;
+  private DiscoveryHandlers discoveryHandlersReference;
+  private StoreHandlers storeHandlersReference;
+  private StoreNotificationHandlers storeNotificationHandlersReference;
+  private DataArrayHandlers dataArrayHandlersReference;
+%}
+
+%typemap(csin,
+         post="      coreHandlersReference = $csinput;"
+         ) std::shared_ptr<ETP_NS::CoreHandlers> coreHandlers "CoreHandlers.getCPtr($csinput)"
+		 
+%typemap(csin,
+         post="      discoveryHandlersReference = $csinput;"
+         ) std::shared_ptr<ETP_NS::DiscoveryHandlers> discoveryHandlers "DiscoveryHandlers.getCPtr($csinput)"
+
+%typemap(csin,
+         post="      storeHandlersReference = $csinput;"
+         ) std::shared_ptr<ETP_NS::StoreHandlers> storeHandlers "StoreHandlers.getCPtr($csinput)"
+		 
+%typemap(csin,
+         post="      storeNotificationHandlersReference = $csinput;"
+         ) std::shared_ptr<ETP_NS::StoreNotificationHandlers> storeNotificationHandlers "StoreNotificationHandlers.getCPtr($csinput)"
+		 
+%typemap(csin,
+         post="      dataArrayHandlersReference = $csinput;"
+         ) std::shared_ptr<ETP_NS::DataArrayHandlers> dataArrayHandlers "DataArrayHandlers.getCPtr($csinput)"
+#endif	  
+	  
+#ifdef SWIGJAVA
+%typemap(javacode) ETP_NS::AbstractSession %{
+  private CoreHandlers coreHandlersReference;
+  private DiscoveryHandlers discoveryHandlersReference;
+  private StoreHandlers storeHandlersReference;
+  private StoreNotificationHandlers storeNotificationHandlersReference;
+  private DataArrayHandlers dataArrayHandlersReference;
+%}
+
+%typemap(javain, 
+         post="      coreHandlersReference = $javainput;"
+         ) std::shared_ptr<ETP_NS::CoreHandlers> coreHandlers "CoreHandlers.getCPtr($javainput)"
+		 
+%typemap(javain, 
+         post="      discoveryHandlersReference = $javainput;"
+         ) std::shared_ptr<ETP_NS::DiscoveryHandlers> discoveryHandlers "DiscoveryHandlers.getCPtr($javainput)"
+		 
+%typemap(javain, 
+         post="      storeHandlersReference = $javainput;"
+         ) std::shared_ptr<ETP_NS::StoreHandlers> storeHandlers "StoreHandlers.getCPtr($javainput)"
+		 
+%typemap(javain, 
+         post="      storeNotificationHandlersReference = $javainput;"
+         ) std::shared_ptr<ETP_NS::StoreNotificationHandlers> storeNotificationHandlers "StoreNotificationHandlers.getCPtr($javainput)"
+		 
+%typemap(javain, 
+         post="      dataArrayHandlersReference = $javainput;"
+         ) std::shared_ptr<ETP_NS::DataArrayHandlers> dataArrayHandlers "DataArrayHandlers.getCPtr($javainput)"
 #endif
 
 namespace ETP_NS
@@ -1146,6 +1209,21 @@ namespace ETP_NS
 		virtual void on_PutDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::PutDataObjectsResponse & msg, int64_t correlationId);
 	    virtual void on_DeleteDataObjects(const Energistics::Etp::v12::Protocol::Store::DeleteDataObjects & msg, int64_t correlationId);
 		virtual void on_DeleteDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::DeleteDataObjectsResponse & msg, int64_t correlationId);
+	};
+	
+	class StoreNotificationHandlers : public ProtocolHandlers
+	{
+	public:
+		StoreNotificationHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
+		virtual ~StoreNotificationHandlers() {}
+
+	    virtual void on_SubscribeNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotifications & msg, int64_t messageId);
+	    virtual void on_UnsubscribeNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::UnsubscribeNotifications & msg, int64_t messageId, int64_t correlationId);
+		virtual void on_UnsolicitedStoreNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::UnsolicitedStoreNotifications & msg, int64_t correlationId);
+		virtual void on_SubscriptionEnded(const Energistics::Etp::v12::Protocol::StoreNotification::SubscriptionEnded & msg, int64_t correlationId);
+	    virtual void on_ObjectChanged(const Energistics::Etp::v12::Protocol::StoreNotification::ObjectChanged & msg, int64_t correlationId);
+	    virtual void on_ObjectDeleted(const Energistics::Etp::v12::Protocol::StoreNotification::ObjectDeleted & msg, int64_t correlationId);
+		virtual void on_ObjectAccessRevoked(const Energistics::Etp::v12::Protocol::StoreNotification::ObjectAccessRevoked & msg, int64_t correlationId);
 	};
 	
 	class DataArrayHandlers : public ProtocolHandlers
