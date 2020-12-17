@@ -609,7 +609,7 @@ namespace RESQML2_2_NS
 	public:
 	};
 	
-#ifdef SWIGPYTHON
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(resqml22_StreamlinesFeature) StreamlinesFeature;
 #endif	
 	class StreamlinesFeature : public RESQML2_NS::StreamlinesFeature
@@ -617,7 +617,7 @@ namespace RESQML2_2_NS
 	public:
 	};
 	
-#ifdef SWIGPYTHON
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(resqml22_StreamlinesRepresentation) StreamlinesRepresentation;
 #endif	
 	class StreamlinesRepresentation : public RESQML2_NS::StreamlinesRepresentation
