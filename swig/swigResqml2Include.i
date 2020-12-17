@@ -21,6 +21,7 @@ under the License.
 #include "../src/resqml2/CmpLineFeature.h"
 #include "../src/resqml2/ContinuousColorMap.h"
 #include "../src/resqml2/DiscreteColorMap.h"
+#include "../src/resqml2/FluidBoundaryInterpretation.h"
 #include "../src/resqml2/RockFluidUnitInterpretation.h"
 #include "../src/resqml2/SeismicWellboreFrameRepresentation.h"
 #include "../src/resqml2/ShotPointLineFeature.h"

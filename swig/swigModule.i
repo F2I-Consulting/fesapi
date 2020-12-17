@@ -268,6 +268,7 @@ namespace COMMON_NS
 		EML2_NS::Activity * getActivity (unsigned int index) const;
 	};
 
+%warnfilter(473) HdfProxyFactory::make;
 	class HdfProxyFactory
 	{
 	public:

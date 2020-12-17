@@ -1,6 +1,6 @@
 # Included in ../src/CmakeLists.txt if java build is selected.
 
-find_package(SWIG REQUIRED)
+find_package(SWIG 3.0 REQUIRED)
 
 find_package(JNI REQUIRED)
 find_package(Java REQUIRED)
@@ -71,10 +71,10 @@ endif (WITH_ETP)
 
 # SWIG execution
 if (WIN32)
-	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -Wall -v -c++ -java -doxygen -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i")
+	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -v -c++ -java -doxygen -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i")
 	execute_process(COMMAND powershell ${EXECUTE_COMMAND})
 elseif (UNIX)
-	set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -Wall -v -c++ -java -doxygen -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i)
+	set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -v -c++ -java -doxygen -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i)
 	execute_process(COMMAND ${EXECUTE_COMMAND})
 endif (WIN32)
 message("SWIG Java files have been generated.")

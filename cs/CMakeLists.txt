@@ -1,6 +1,6 @@
 # Included in ../src/CmakeLists.txt if csharp build is selected.
 
-find_package(SWIG REQUIRED)
+find_package(SWIG 3.0 REQUIRED)
 
 set(SWIG_LINKED_TO_RELEASE ON CACHE BOOL "Is your SWIG generated library linked to the release or debug version of FesapiCpp ?")
 
