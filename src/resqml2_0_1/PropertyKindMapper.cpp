@@ -89,7 +89,7 @@ string PropertyKindMapper::loadMappingFilesFromDirectory(const string & director
 						throw domain_error("The PropertyKindMapping.xml file cannot be opened");
 					}
 				}
-				else {
+				else if (fileName.find("obj_PropertyKind_") != std::string::npos) {
 					std::ifstream file( (directory + "/" + fileName).c_str() );
 
 					if ( file ) {
