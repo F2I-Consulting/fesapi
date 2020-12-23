@@ -5035,7 +5035,7 @@ void deserialize(const string & inputFile)
 	// Comment the line above and uncomment one of the below lines depending on you OS if you want to check property kind validity
 	//COMMON_NS::DataObjectRepository repo("C:/Users/Philippe/dev/fesapiEnv/fesapi/resources");
 	//COMMON_NS::DataObjectRepository repo("/home/philippe/dev/fesapi/resources");
-	string resqmlResult = pck.deserializeInto(repo);
+	const string resqmlResult = pck.deserializeInto(repo);
 	if (!resqmlResult.empty()) {
 		cerr << resqmlResult << endl;
 		repo.clearWarnings();

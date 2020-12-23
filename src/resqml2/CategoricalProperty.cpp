@@ -35,10 +35,18 @@ void CategoricalProperty::loadTargetRelationships()
 
 StringTableLookup* CategoricalProperty::getStringLookup() const
 {
-	return getRepository()->getDataObjectByUuid<StringTableLookup>(getLookupDor().getUuid());
+	COMMON_NS::AbstractObject* const result = getRepository()->getDataObjectByUuid(getLookupDor().getUuid());
+
+	return result == nullptr
+		? nullptr
+		: dynamic_cast<StringTableLookup*>(result);
 }
 
 DoubleTableLookup* CategoricalProperty::getDoubleLookup() const
 {
-	return getRepository()->getDataObjectByUuid<DoubleTableLookup>(getLookupDor().getUuid());
+	COMMON_NS::AbstractObject* const result = getRepository()->getDataObjectByUuid(getLookupDor().getUuid());
+
+	return result == nullptr
+		? nullptr
+		: dynamic_cast<DoubleTableLookup*>(result);
 }
