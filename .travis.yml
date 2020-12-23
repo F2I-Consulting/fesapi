@@ -46,6 +46,12 @@ jobs:
             - cmake --build . -- -j 2
             - valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./example/example
             - ctest -V
+            - cmake --install . 
+            - javac -cp "./install/lib/fesapiJava-2.0.0.0.jar" $TRAVIS_BUILD_DIR/java/example/FesapiJavaExample.java
+            - mkdir -p $TRAVIS_BUILD_DIR/java/example/com/f2i/energisticsStandardsApi/example
+            - mv $TRAVIS_BUILD_DIR/java/example/FesapiJavaExample.class $TRAVIS_BUILD_DIR/java/example/com/f2i/energisticsStandardsApi/example
+            - java -Djava.library.path="./install/bin" -cp "$TRAVIS_BUILD_DIR/java/example:./src/fesapiJava-2.0.0.0.jar" com.f2i.energisticsStandardsApi.example.FesapiJavaExample
+            
 addons:
   apt:
     packages:

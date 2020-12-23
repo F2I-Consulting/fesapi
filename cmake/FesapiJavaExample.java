@@ -57,7 +57,7 @@ import com.f2i.energisticsStandardsApi.resqml2.AbstractIjkGridRepresentation;
 import com.f2i.energisticsStandardsApi.resqml2.AbstractRepresentation;
 import com.f2i.energisticsStandardsApi.resqml2.AbstractSeismicLineFeature;
 import com.f2i.energisticsStandardsApi.resqml2.AbstractValuesProperty;
-import com.f2i.energisticsStandardsApi.resqml2.AbstractValuesProperty.hdfDatatypeEnum;
+import com.f2i.energisticsStandardsApi.common.AbstractObject.hdfDatatypeEnum;
 import com.f2i.energisticsStandardsApi.resqml2.BoundaryFeature;
 import com.f2i.energisticsStandardsApi.resqml2.ContinuousProperty;
 import com.f2i.energisticsStandardsApi.resqml2.DiscreteProperty;
@@ -79,7 +79,7 @@ import com.f2i.energisticsStandardsApi.resqml2.WellboreFeature;
 import com.f2i.energisticsStandardsApi.resqml2.WellboreFrameRepresentation;
 import com.f2i.energisticsStandardsApi.resqml2.WellboreInterpretation;
 import com.f2i.energisticsStandardsApi.resqml2.WellboreTrajectoryRepresentation;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.Horizon_resqml20;
+import com.f2i.energisticsStandardsApi.resqml2_0_1.resqml20_Horizon;
 import com.f2i.energisticsStandardsApi.resqml2.ContinuousColorMap;
 import com.f2i.energisticsStandardsApi.resqml2.DiscreteColorMap;
 import com.f2i.energisticsStandardsApi.resqml2.SeismicWellboreFrameRepresentation;
@@ -296,8 +296,8 @@ ${COMMENT_END}
 
 		// Features
 		horizon1 = repo.createHorizon("35d7b57e-e5ff-4062-95af-ba2d7c4ce347", "Horizon1");
-		if (horizon1 instanceof Horizon_resqml20) {
-			((Horizon_resqml20)horizon1).setAge(300000000);
+		if (horizon1 instanceof resqml20_Horizon) {
+			((resqml20_Horizon)horizon1).setAge(300000000);
 		}
 
 		// Interpretations
