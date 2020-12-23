@@ -39,8 +39,10 @@ import com.f2i.energisticsStandardsApi.fesapi;
 import com.f2i.energisticsStandardsApi.resqml20__ResqmlPropertyKind;
 import com.f2i.energisticsStandardsApi.resqml20__ResqmlUom;
 import com.f2i.energisticsStandardsApi.resqml22__IndexableElement;
+${COMMENT_START}
 import com.f2i.energisticsStandardsApi.resqml22__InterpolationDomain;
 import com.f2i.energisticsStandardsApi.resqml22__InterpolationMethod;
+${COMMENT_END}
 import com.f2i.energisticsStandardsApi.resqml22__TimeSetKind;
 import com.f2i.energisticsStandardsApi.witsml20__ChannelStatus;
 import com.f2i.energisticsStandardsApi.witsml20__HoleCasingType;
