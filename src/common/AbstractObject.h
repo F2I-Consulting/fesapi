@@ -840,7 +840,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new EML2.1 data object reference.
 		 */
-		gsoap_eml2_1::eml21__DataObjectReference* newEmlReference() const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__DataObjectReference* newEmlReference() const;
 
 		/**
 		 * Creates an returns an EML2.2 data object reference which targets this data object

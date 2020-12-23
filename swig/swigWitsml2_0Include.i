@@ -2168,15 +2168,9 @@ namespace WITSML2_0_NS
 		void setPropertyKind(EML2_NS::PropertyKind* propKind);
 	};
 
-/*
-Following %template definitions lead to some linkage errors when building the
-Python extension.
-*/
-#ifndef SWIGPYTHON
 	%template(ChannelMetaDataLog) ChannelMetaDataObject<gsoap_eml2_1::witsml20__Log>;
 	%template(ChannelMetaDataChannelSet) ChannelMetaDataObject<gsoap_eml2_1::witsml20__ChannelSet>;
 	%template(ChannelMetaDataChannel) ChannelMetaDataObject<gsoap_eml2_1::witsml20__Channel>;
-#endif
 	
 	template <class T>
 	class ChannelIndexDataObject : public ChannelMetaDataObject<T>
