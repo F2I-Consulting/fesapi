@@ -16,15 +16,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-package com.f2i.energisticsStandardsApi.example;
+package com.f2i_consulting.fesapi.example;
 
-import com.f2i.energisticsStandardsApi.MapStringString;
-import com.f2i.energisticsStandardsApi.ResourceVector;
-import com.f2i.energisticsStandardsApi.Energistics.Etp.v12.Datatypes.Object.Resource;
-import com.f2i.energisticsStandardsApi.Energistics.Etp.v12.Protocol.Discovery.GetResourcesResponse;
-import com.f2i.energisticsStandardsApi.Energistics.Etp.v12.Protocol.Store.GetDataObjects;
-import com.f2i.energisticsStandardsApi.${FESAPI_ETP_NS}.AbstractSession;
-import com.f2i.energisticsStandardsApi.${FESAPI_ETP_NS}.DiscoveryHandlers;
+import com.f2i_consulting.fesapi.MapStringString;
+import com.f2i_consulting.fesapi.ResourceVector;
+import com.f2i_consulting.fesapi.Energistics.Etp.v12.Datatypes.Object.Resource;
+import com.f2i_consulting.fesapi.Energistics.Etp.v12.Protocol.Discovery.GetResourcesResponse;
+import com.f2i_consulting.fesapi.Energistics.Etp.v12.Protocol.Store.GetDataObjects;
+import com.f2i_consulting.fesapi.${FESAPI_ETP_NS}.AbstractSession;
+import com.f2i_consulting.fesapi.${FESAPI_ETP_NS}.DiscoveryHandlers;
 
 public class MyOwnDiscoveryProtocolHandlers extends DiscoveryHandlers {
 	public MyOwnDiscoveryProtocolHandlers(AbstractSession mySession) {

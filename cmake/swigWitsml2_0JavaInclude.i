@@ -17,37 +17,37 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 %pragma(java) jniclasscode=%{
-  public static com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.AbstractObject witsml2_0_instantiateConcreteObject(long cPtr, boolean owner)
+  public static com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.AbstractObject witsml2_0_instantiateConcreteObject(long cPtr, boolean owner)
   {
-    com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.AbstractObject ret = null;
+    com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.AbstractObject ret = null;
     if (cPtr == 0) {
       return ret;
     }
 	
-    String type = ${FESAPI_WITSML2_0_NS}_AbstractObject_getXmlTag(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.AbstractObject(cPtr, false));
+    String type = ${FESAPI_WITSML2_0_NS}_AbstractObject_getXmlTag(cPtr, new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.AbstractObject(cPtr, false));
     if (type.equals("coordinateReferenceSystems"))
     {
-        ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.CoordinateReferenceSystem(cPtr, owner);
+        ret = new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.CoordinateReferenceSystem(cPtr, owner);
     }
     else if (type.equals("formationMarkers"))
     {
-        ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.FormationMarker(cPtr, owner);
+        ret = new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.FormationMarker(cPtr, owner);
     }
     else if (type.equals("logs"))
     {
-        ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Log(cPtr, owner);
+        ret = new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.Log(cPtr, owner);
     }
     else if (type.equals("trajectorys"))
     {
-        ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);
+        ret = new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);
     }
     else if (type.equals("wells"))
     {
-        ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Well(cPtr, owner);
+        ret = new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.Well(cPtr, owner);
     }
     else if (type.equals("wellbores"))
     {
-        ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Wellbore(cPtr, owner);
+        ret = new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.Wellbore(cPtr, owner);
     }
 	else
 	{

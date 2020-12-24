@@ -16,14 +16,14 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-package com.f2i.energisticsStandardsApi.example;
+package com.f2i_consulting.fesapi.example;
 
-import com.f2i.energisticsStandardsApi.StringVector;
-import com.f2i.energisticsStandardsApi.uint8_t16Array;
-import com.f2i.energisticsStandardsApi.Energistics.Etp.v12.Datatypes.Uuid;
-import com.f2i.energisticsStandardsApi.Energistics.Etp.v12.Protocol.Core.OpenSession;
-import com.f2i.energisticsStandardsApi.${FESAPI_ETP_NS}.AbstractSession;
-import com.f2i.energisticsStandardsApi.${FESAPI_ETP_NS}.CoreHandlers;
+import com.f2i_consulting.fesapi.StringVector;
+import com.f2i_consulting.fesapi.uint8_t16Array;
+import com.f2i_consulting.fesapi.Energistics.Etp.v12.Datatypes.Uuid;
+import com.f2i_consulting.fesapi.Energistics.Etp.v12.Protocol.Core.OpenSession;
+import com.f2i_consulting.fesapi.${FESAPI_ETP_NS}.AbstractSession;
+import com.f2i_consulting.fesapi.${FESAPI_ETP_NS}.CoreHandlers;
 
 public class MyOwnServerCoreHandlers extends CoreHandlers {
 	public MyOwnServerCoreHandlers(AbstractSession mySession) {
@@ -31,7 +31,7 @@ public class MyOwnServerCoreHandlers extends CoreHandlers {
 	}
 
 	@Override
-	public void on_RequestSession(com.f2i.energisticsStandardsApi.Energistics.Etp.v12.Protocol.Core.RequestSession rs, long correlationId) {
+	public void on_RequestSession(com.f2i_consulting.fesapi.Energistics.Etp.v12.Protocol.Core.RequestSession rs, long correlationId) {
 		System.out.println("Requested a session");
 		
         MyServerInitializationParameters serverInitializationParams = new MyServerInitializationParameters();

@@ -16,10 +16,10 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-package com.f2i.energisticsStandardsApi.example;
+package com.f2i_consulting.fesapi.example;
 
-import com.f2i.energisticsStandardsApi.fesapi;
-import com.f2i.energisticsStandardsApi.${FESAPI_ETP_NS}.PlainClientSession;
+import com.f2i_consulting.fesapi.fesapi;
+import com.f2i_consulting.fesapi.${FESAPI_ETP_NS}.PlainClientSession;
 
 public class EtpClientExample {
 

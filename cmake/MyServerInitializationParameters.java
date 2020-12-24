@@ -16,9 +16,9 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-package com.f2i.energisticsStandardsApi.example;
+package com.f2i_consulting.fesapi.example;
 
-import com.f2i.energisticsStandardsApi.${FESAPI_ETP_NS}.ServerInitializationParameters;
+import com.f2i_consulting.fesapi.${FESAPI_ETP_NS}.ServerInitializationParameters;
 
 public class MyServerInitializationParameters extends ServerInitializationParameters {
 	public MyServerInitializationParameters() {
@@ -31,7 +31,7 @@ public class MyServerInitializationParameters extends ServerInitializationParame
 	}
 	
 	@Override
-	public void postSessionCreationOperation(com.f2i.energisticsStandardsApi.etp.AbstractSession session) {
+	public void postSessionCreationOperation(com.f2i_consulting.fesapi.etp.AbstractSession session) {
 		session.setCoreProtocolHandlers(new MyOwnServerCoreHandlers(session));
 	}
 }
