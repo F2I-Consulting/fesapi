@@ -16,76 +16,78 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-package com.f2i.energisticsStandardsApi.example;
+package com.f2i_consulting.example;
 
 import java.util.UUID;
 import java.util.stream.LongStream;
 
-import com.f2i.energisticsStandardsApi.SWIGTYPE_p_double;
-import com.f2i.energisticsStandardsApi.SWIGTYPE_p_unsigned_int;
-import com.f2i.energisticsStandardsApi.SWIGTYPE_p_unsigned_short;
-import com.f2i.energisticsStandardsApi.StringVector;
-import com.f2i.energisticsStandardsApi.WellVector;
-import com.f2i.energisticsStandardsApi.WellboreGeometryVector;
-import com.f2i.energisticsStandardsApi.WellboreVector;
-import com.f2i.energisticsStandardsApi.eml20__LengthUom;
-import com.f2i.energisticsStandardsApi.eml20__TimeUom;
-import com.f2i.energisticsStandardsApi.eml21__LengthUom;
-import com.f2i.energisticsStandardsApi.eml21__MassPerLengthUom;
-import com.f2i.energisticsStandardsApi.eml21__WellStatus;
-import com.f2i.energisticsStandardsApi.eml21__WellboreDatumReference;
-import com.f2i.energisticsStandardsApi.eml23__WellboreDatumReference;
-import com.f2i.energisticsStandardsApi.fesapi;
-import com.f2i.energisticsStandardsApi.resqml20__ResqmlPropertyKind;
-import com.f2i.energisticsStandardsApi.resqml20__ResqmlUom;
-import com.f2i.energisticsStandardsApi.resqml22__IndexableElement;
-import com.f2i.energisticsStandardsApi.resqml22__InterpolationDomain;
-import com.f2i.energisticsStandardsApi.resqml22__InterpolationMethod;
-import com.f2i.energisticsStandardsApi.resqml22__TimeSetKind;
-import com.f2i.energisticsStandardsApi.witsml20__ChannelStatus;
-import com.f2i.energisticsStandardsApi.witsml20__HoleCasingType;
-import com.f2i.energisticsStandardsApi.witsml20__WellboreShape;
-import com.f2i.energisticsStandardsApi.witsml20__WellboreType;
-import com.f2i.energisticsStandardsApi.common.AbstractObject;
-import com.f2i.energisticsStandardsApi.common.DataObjectRepository;
-import com.f2i.energisticsStandardsApi.common.DataObjectRepository.EnergisticsStandard;
-import com.f2i.energisticsStandardsApi.common.EpcDocument;
-import com.f2i.energisticsStandardsApi.eml2.AbstractHdfProxy;
-import com.f2i.energisticsStandardsApi.eml2.PropertyKind;
-import com.f2i.energisticsStandardsApi.eml2.GraphicalInformationSet;
-import com.f2i.energisticsStandardsApi.resqml2.AbstractIjkGridRepresentation;
-import com.f2i.energisticsStandardsApi.resqml2.AbstractRepresentation;
-import com.f2i.energisticsStandardsApi.resqml2.AbstractSeismicLineFeature;
-import com.f2i.energisticsStandardsApi.resqml2.AbstractValuesProperty;
-import com.f2i.energisticsStandardsApi.resqml2.AbstractValuesProperty.hdfDatatypeEnum;
-import com.f2i.energisticsStandardsApi.resqml2.BoundaryFeature;
-import com.f2i.energisticsStandardsApi.resqml2.ContinuousProperty;
-import com.f2i.energisticsStandardsApi.resqml2.DiscreteProperty;
-import com.f2i.energisticsStandardsApi.resqml2.EarthModelInterpretation;
-import com.f2i.energisticsStandardsApi.resqml2.GenericFeatureInterpretation;
-import com.f2i.energisticsStandardsApi.resqml2.Grid2dRepresentation;
-import com.f2i.energisticsStandardsApi.resqml2.HorizonInterpretation;
-import com.f2i.energisticsStandardsApi.resqml2.IjkGridExplicitRepresentation;
-import com.f2i.energisticsStandardsApi.resqml2.LocalDepth3dCrs;
-import com.f2i.energisticsStandardsApi.resqml2.LocalTime3dCrs;
-import com.f2i.energisticsStandardsApi.resqml2.MdDatum;
-import com.f2i.energisticsStandardsApi.resqml2.Model;
-import com.f2i.energisticsStandardsApi.resqml2.PolylineRepresentation;
-import com.f2i.energisticsStandardsApi.resqml2.PropertySet;
-import com.f2i.energisticsStandardsApi.resqml2.SeismicLatticeFeature;
-import com.f2i.energisticsStandardsApi.resqml2.SeismicLineSetFeature;
-import com.f2i.energisticsStandardsApi.resqml2.TriangulatedSetRepresentation;
-import com.f2i.energisticsStandardsApi.resqml2.WellboreFeature;
-import com.f2i.energisticsStandardsApi.resqml2.WellboreFrameRepresentation;
-import com.f2i.energisticsStandardsApi.resqml2.WellboreInterpretation;
-import com.f2i.energisticsStandardsApi.resqml2.WellboreTrajectoryRepresentation;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.Horizon_resqml20;
-import com.f2i.energisticsStandardsApi.resqml2.ContinuousColorMap;
-import com.f2i.energisticsStandardsApi.resqml2.DiscreteColorMap;
-import com.f2i.energisticsStandardsApi.resqml2.SeismicWellboreFrameRepresentation;
-import com.f2i.energisticsStandardsApi.witsml2_0.Well;
-import com.f2i.energisticsStandardsApi.witsml2_0.Wellbore;
-import com.f2i.energisticsStandardsApi.witsml2_0.WellboreGeometry;
+import com.f2i_consulting.fesapi.SWIGTYPE_p_double;
+import com.f2i_consulting.fesapi.SWIGTYPE_p_unsigned_int;
+import com.f2i_consulting.fesapi.SWIGTYPE_p_unsigned_short;
+import com.f2i_consulting.fesapi.StringVector;
+import com.f2i_consulting.fesapi.WellVector;
+import com.f2i_consulting.fesapi.WellboreGeometryVector;
+import com.f2i_consulting.fesapi.WellboreVector;
+import com.f2i_consulting.fesapi.eml20__LengthUom;
+import com.f2i_consulting.fesapi.eml20__TimeUom;
+import com.f2i_consulting.fesapi.eml21__LengthUom;
+import com.f2i_consulting.fesapi.eml21__MassPerLengthUom;
+import com.f2i_consulting.fesapi.eml21__WellStatus;
+import com.f2i_consulting.fesapi.eml21__WellboreDatumReference;
+import com.f2i_consulting.fesapi.eml23__WellboreDatumReference;
+import com.f2i_consulting.fesapi.fesapi;
+import com.f2i_consulting.fesapi.resqml20__ResqmlPropertyKind;
+import com.f2i_consulting.fesapi.resqml20__ResqmlUom;
+import com.f2i_consulting.fesapi.resqml22__IndexableElement;
+${COMMENT_START}
+import com.f2i_consulting.fesapi.resqml22__InterpolationDomain;
+import com.f2i_consulting.fesapi.resqml22__InterpolationMethod;
+${COMMENT_END}
+import com.f2i_consulting.fesapi.resqml22__TimeSetKind;
+import com.f2i_consulting.fesapi.witsml20__ChannelStatus;
+import com.f2i_consulting.fesapi.witsml20__HoleCasingType;
+import com.f2i_consulting.fesapi.witsml20__WellboreShape;
+import com.f2i_consulting.fesapi.witsml20__WellboreType;
+import com.f2i_consulting.fesapi.common.AbstractObject;
+import com.f2i_consulting.fesapi.common.DataObjectRepository;
+import com.f2i_consulting.fesapi.common.DataObjectRepository.EnergisticsStandard;
+import com.f2i_consulting.fesapi.common.EpcDocument;
+import com.f2i_consulting.fesapi.eml2.AbstractHdfProxy;
+import com.f2i_consulting.fesapi.eml2.PropertyKind;
+import com.f2i_consulting.fesapi.eml2.GraphicalInformationSet;
+import com.f2i_consulting.fesapi.resqml2.AbstractIjkGridRepresentation;
+import com.f2i_consulting.fesapi.resqml2.AbstractRepresentation;
+import com.f2i_consulting.fesapi.resqml2.AbstractSeismicLineFeature;
+import com.f2i_consulting.fesapi.resqml2.AbstractValuesProperty;
+import com.f2i_consulting.fesapi.common.AbstractObject.hdfDatatypeEnum;
+import com.f2i_consulting.fesapi.resqml2.BoundaryFeature;
+import com.f2i_consulting.fesapi.resqml2.ContinuousProperty;
+import com.f2i_consulting.fesapi.resqml2.DiscreteProperty;
+import com.f2i_consulting.fesapi.resqml2.EarthModelInterpretation;
+import com.f2i_consulting.fesapi.resqml2.GenericFeatureInterpretation;
+import com.f2i_consulting.fesapi.resqml2.Grid2dRepresentation;
+import com.f2i_consulting.fesapi.resqml2.HorizonInterpretation;
+import com.f2i_consulting.fesapi.resqml2.IjkGridExplicitRepresentation;
+import com.f2i_consulting.fesapi.resqml2.LocalDepth3dCrs;
+import com.f2i_consulting.fesapi.resqml2.LocalTime3dCrs;
+import com.f2i_consulting.fesapi.resqml2.MdDatum;
+import com.f2i_consulting.fesapi.resqml2.Model;
+import com.f2i_consulting.fesapi.resqml2.PolylineRepresentation;
+import com.f2i_consulting.fesapi.resqml2.PropertySet;
+import com.f2i_consulting.fesapi.resqml2.SeismicLatticeFeature;
+import com.f2i_consulting.fesapi.resqml2.SeismicLineSetFeature;
+import com.f2i_consulting.fesapi.resqml2.TriangulatedSetRepresentation;
+import com.f2i_consulting.fesapi.resqml2.WellboreFeature;
+import com.f2i_consulting.fesapi.resqml2.WellboreFrameRepresentation;
+import com.f2i_consulting.fesapi.resqml2.WellboreInterpretation;
+import com.f2i_consulting.fesapi.resqml2.WellboreTrajectoryRepresentation;
+import com.f2i_consulting.fesapi.resqml2_0_1.resqml20_Horizon;
+import com.f2i_consulting.fesapi.resqml2.ContinuousColorMap;
+import com.f2i_consulting.fesapi.resqml2.DiscreteColorMap;
+import com.f2i_consulting.fesapi.resqml2.SeismicWellboreFrameRepresentation;
+import com.f2i_consulting.fesapi.witsml2_0.Well;
+import com.f2i_consulting.fesapi.witsml2_0.Wellbore;
+import com.f2i_consulting.fesapi.witsml2_0.WellboreGeometry;
 
 public class FesapiJavaExample {
 	private static BoundaryFeature horizon1;
@@ -296,8 +298,8 @@ ${COMMENT_END}
 
 		// Features
 		horizon1 = repo.createHorizon("35d7b57e-e5ff-4062-95af-ba2d7c4ce347", "Horizon1");
-		if (horizon1 instanceof Horizon_resqml20) {
-			((Horizon_resqml20)horizon1).setAge(300000000);
+		if (horizon1 instanceof resqml20_Horizon) {
+			((resqml20_Horizon)horizon1).setAge(300000000);
 		}
 
 		// Interpretations

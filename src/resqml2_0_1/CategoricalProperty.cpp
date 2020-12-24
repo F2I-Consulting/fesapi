@@ -170,15 +170,12 @@ bool CategoricalProperty::validatePropertyKindAssociation(EML2_NS::PropertyKind*
 			}
 			auto pk201 = dynamic_cast<RESQML2_0_1_NS::PropertyKind*>(pk);
 			if (pk201 != nullptr) {
-				if (!pk201->isChildOf(resqml20__ResqmlPropertyKind__categorical)) {
-					if (!pk201->isChildOf(resqml20__ResqmlPropertyKind__discrete)) {
-						repository->addWarning("The categorical property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
-						changeToPartialObject();
-						return false;
-					}
-					else {
-						repository->addWarning("The categorical property " + getUuid() + " is associated to a discrete local property kind " + pk->getUuid() + ".");
-					}
+				if (getDoubleLookup() == nullptr &&
+					!pk201->isChildOf(resqml20__ResqmlPropertyKind__categorical) &&
+					!pk201->isChildOf(resqml20__ResqmlPropertyKind__discrete)) {
+					repository->addWarning("The categorical property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
+					changeToPartialObject();
+					return false;
 				}
 			}
 		}
@@ -205,17 +202,14 @@ bool CategoricalProperty::validatePropertyKindAssociation(gsoap_resqml2_0_1::res
 			changeToPartialObject();
 			return false;
 		}
-		if (!pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind__categorical)) {
-			if (!pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind__discrete)) {
-				repository->addWarning("The categorical property " + getUuid() + " cannot be associated to a resqml property kind \"" + pkName + "\" which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
-				changeToPartialObject();
-				return false;
-			}
-			else {
-				getRepository()->addWarning("The categorical property " + getUuid() + " is associated to a discrete resqml property kind \"" + pkName + "\".");
-			}
+		if (getDoubleLookup() == nullptr &&
+			!pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind__categorical) &&
+			!pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind__discrete)) {
+			repository->addWarning("The categorical property " + getUuid() + " cannot be associated to a resqml property kind \"" + pkName + "\" which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
+			changeToPartialObject();
+			return false;
 		}
-	}
+}
 	else {
 		repository->addWarning("Cannot verify if the resqml property kind \"" + pkName + "\" of the categorical property " + getUuid() + " is right because no property kind mapping files have been loaded.");
 	}

@@ -1,6 +1,6 @@
 # Included in ../src/CmakeLists.txt if java build is selected.
 
-find_package(SWIG REQUIRED)
+find_package(SWIG 3.0 REQUIRED)
 
 find_package(JNI REQUIRED)
 find_package(Java REQUIRED)
@@ -10,38 +10,47 @@ set(SWIG_LINKED_TO_RELEASE ON CACHE BOOL "Is your SWIG generated library linked 
 
 message("Generating SWIG Java files...")
 #Cleaning
-file (GLOB TO_DELETE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/*.java)
+file (GLOB TO_DELETE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/*.java)
 if (TO_DELETE)
 	file (REMOVE ${TO_DELETE})
 endif (TO_DELETE)
-file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/common)
+file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/common)
 
-file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/eml2)
-file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/eml2_0)
-file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/eml2_1)
-file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/eml2_3)
+file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/eml2)
+file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/eml2_0)
+file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/eml2_1)
+file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/eml2_3)
 
-file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2)
-file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2_0_1)
-file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2_2)
+file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/resqml2)
+file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/resqml2_0_1)
+file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/resqml2_2)
 
-file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2)
-file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2_0)
-file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2_1)
+file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/witsml2)
+file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/witsml2_0)
+file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/witsml2_1)
 
-file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/prodml2_1)
+file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/prodml2_1)
 
 if (WITH_ETP)
-	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/etp)
+	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/f2i_consulting/etp)
 endif ()
 
-# Create the dedicated swig files
-if (SWIG_LINKED_TO_RELEASE)
-	set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_RELEASE_POSTFIX}.${Fesapi_VERSION})
-else (SWIG_LINKED_TO_RELEASE)
-	set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_DEBUG_POSTFIX}.${Fesapi_VERSION})
-endif (SWIG_LINKED_TO_RELEASE)
+# The name of the library is different on Windows because it includes the version
+if (WIN32)
+	if (SWIG_LINKED_TO_RELEASE)
+		set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_RELEASE_POSTFIX}.${Fesapi_VERSION})
+	else (SWIG_LINKED_TO_RELEASE)
+		set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_DEBUG_POSTFIX}.${Fesapi_VERSION})
+	endif (SWIG_LINKED_TO_RELEASE)
+else (WIN32)
+	if (SWIG_LINKED_TO_RELEASE)
+		set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_RELEASE_POSTFIX})
+	else (SWIG_LINKED_TO_RELEASE)
+		set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_DEBUG_POSTFIX})
+	endif (SWIG_LINKED_TO_RELEASE)
+endif (WIN32)
 
+# Create the dedicated swig files
 if (WITH_RESQML2_2)
 	set (COMMENT_START "")
 	set (COMMENT_END "")
@@ -50,15 +59,15 @@ else (WITH_RESQML2_2)
 	set (COMMENT_END "*/")
 endif(WITH_RESQML2_2)
 configure_file(${FESAPI_ROOT_DIR}/cmake/swigJavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigJavaInclude.i) # Overwrite if different
-configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/example/FesapiJavaExample.java) # Overwrite if different
+configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/FesapiJavaExample.java) # Overwrite if different
 if (WITH_ETP)
-	configure_file(${FESAPI_ROOT_DIR}/cmake/EtpClientExample.java ${FESAPI_ROOT_DIR}/java/example/EtpClientExample.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/EtpServerExample.java ${FESAPI_ROOT_DIR}/java/example/EtpServerExample.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnClientCoreHandlers.java ${FESAPI_ROOT_DIR}/java/example/MyOwnClientCoreHandlers.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnServerCoreHandlers.java ${FESAPI_ROOT_DIR}/java/example/MyOwnServerCoreHandlers.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnDiscoveryProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/example/MyOwnDiscoveryProtocolHandlers.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnStoreProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/example/MyOwnStoreProtocolHandlers.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyServerInitializationParameters.java ${FESAPI_ROOT_DIR}/java/example/MyServerInitializationParameters.java) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/EtpClientExample.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/EtpClientExample.java) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/EtpServerExample.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/EtpServerExample.java) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnClientCoreHandlers.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/MyOwnClientCoreHandlers.java) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnServerCoreHandlers.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/MyOwnServerCoreHandlers.java) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnDiscoveryProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/MyOwnDiscoveryProtocolHandlers.java) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnStoreProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/MyOwnStoreProtocolHandlers.java) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/MyServerInitializationParameters.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/MyServerInitializationParameters.java) # Overwrite if different
 endif ()
 
 set (SWIG_DEFINITIONS "")
@@ -71,17 +80,25 @@ endif (WITH_ETP)
 
 # SWIG execution
 if (WIN32)
-	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -Wall -v -c++ -java -doxygen -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i")
+	if ("${SWIG_VERSION}" VERSION_GREATER_EQUAL "4.0.0")
+			set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -v -c++ -java -doxygen -package com.f2i_consulting.fesapi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i")
+	else ()
+			set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -v -c++ -java -package com.f2i_consulting.fesapi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i")
+	endif ()
 	execute_process(COMMAND powershell ${EXECUTE_COMMAND})
 elseif (UNIX)
-	set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -Wall -v -c++ -java -doxygen -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i)
+	if ("${SWIG_VERSION}" VERSION_GREATER_EQUAL "4.0.0")
+			set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -v -c++ -java -doxygen -package com.f2i_consulting.fesapi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i)
+	else ()
+			set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -v -c++ -java -package com.f2i_consulting.fesapi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i)
+	endif ()
 	execute_process(COMMAND ${EXECUTE_COMMAND})
 endif (WIN32)
 message("SWIG Java files have been generated.")
 
 # Building the jar
 set(CMAKE_JAVA_COMPILE_FLAGS -g)
-file (GLOB_RECURSE SWIG_JAVA_FILES ${FESAPI_ROOT_DIR}/java/src/*.java)
+file (GLOB_RECURSE SWIG_JAVA_FILES ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/*.java)
 if (SWIG_LINKED_TO_RELEASE)
 	add_jar(fesapiJava${CMAKE_RELEASE_POSTFIX} ${SWIG_JAVA_FILES} VERSION ${Fesapi_VERSION})
 else (SWIG_LINKED_TO_RELEASE)

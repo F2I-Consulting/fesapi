@@ -26,6 +26,7 @@ jobs:
           name: "FesapiCpp Release with dynamic HDF5 (clang 5.0.0), unit test and RESQML2.2"
           dist: trusty
           compiler: clang
+          jdk: openjdk8
           script:
             - mkdir ../build
             - cd ../build
@@ -38,12 +39,17 @@ jobs:
                 -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/Minizip-install/lib/libminizip.a
                 -DZLIB_INCLUDE_DIR=/usr/include
                 -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
+                -DWITH_JAVA_WRAPPING=TRUE
                 -DWITH_EXAMPLE=TRUE
                 -DWITH_RESQML2_2=TRUE
                 -DWITH_TEST=TRUE
             - cmake --build . -- -j 2
             - valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./example/example
             - ctest -V
+            - make install
+            - javac -cp "./install/lib/fesapiJava-2.0.0.0.jar" $TRAVIS_BUILD_DIR/java/src/com/f2i_consulting/example/FesapiJavaExample.java
+            - java -Djava.library.path="./install/lib" -cp "$TRAVIS_BUILD_DIR/java/src:./install/lib/fesapiJava-2.0.0.0.jar" com.f2i_consulting.example.FesapiJavaExample
+            
 addons:
   apt:
     packages:

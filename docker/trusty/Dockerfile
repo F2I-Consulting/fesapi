@@ -51,6 +51,7 @@ RUN git clone https://github.com/F2I-Consulting/fesapi.git && \
 	mkdir build && \
 	cd build && \
 	cmake \
+		-DHDF5_1_8=TRUE \
 		-DHDF5_C_INCLUDE_DIR=/usr/include \
 		-DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libhdf5.so \
 		-DMINIZIP_INCLUDE_DIR=/fesapiEnv/dependencies/Minizip/build/install/include \

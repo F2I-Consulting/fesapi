@@ -5025,17 +5025,17 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 void deserialize(const string & inputFile)
 {
 	COMMON_NS::EpcDocument pck(inputFile);
-	//COMMON_NS::EpcDocument pck(inputFile, "C:/Users/Philippe/dev/fesapiEnv/fesapi/resources");
-	//COMMON_NS::EpcDocument pck(inputFile, "/home/philippe/dev/fesapi/resources");
 	cout << "EXTENDED CORE PROPERTIES" << endl;
-	unordered_map<string, string> & extendedCoreProperty = pck.getExtendedCoreProperty();
-	for (unordered_map<string, string>::const_iterator it = extendedCoreProperty.begin(); it != extendedCoreProperty.end(); ++it) {
-		cout << it->first.c_str() << " " << it->second.c_str() << endl;
+	for (auto& pair : pck.getExtendedCoreProperty()) {
+		cout << pair.first.c_str() << " " << pair.second.c_str() << endl;
 	}
 
 	cout << "Start deserialization of " << pck.getName() << " in " << (pck.getStorageDirectory().empty() ? "working directory." : pck.getStorageDirectory()) << endl;
 	COMMON_NS::DataObjectRepository repo;
-	string resqmlResult = pck.deserializeInto(repo);
+	// Comment the line above and uncomment one of the below lines depending on you OS if you want to check property kind validity
+	//COMMON_NS::DataObjectRepository repo("C:/Users/Philippe/dev/fesapiEnv/fesapi/resources");
+	//COMMON_NS::DataObjectRepository repo("/home/philippe/dev/fesapi/resources");
+	const string resqmlResult = pck.deserializeInto(repo);
 	if (!resqmlResult.empty()) {
 		cerr << resqmlResult << endl;
 		repo.clearWarnings();
