@@ -1,10 +1,10 @@
 ﻿using System;
 
-using f2i.energisticsStandardsApi;
-using f2i.energisticsStandardsApi.${FESAPI_COMMON_NS};
-using f2i.energisticsStandardsApi.${FESAPI_EML2_NS};
+using F2iConsulting.Fesapi;
+using F2iConsulting.Fesapi.${FESAPI_COMMON_NS};
+using F2iConsulting.Fesapi.${FESAPI_EML2_NS};
 
-namespace example
+namespace Example
 {
     public class HdfProxyExample : AbstractHdfProxy
     {
@@ -41,7 +41,7 @@ namespace example
             throw new NotImplementedException();
         }
 
-        public override f2i.energisticsStandardsApi.common.AbstractObject.hdfDatatypeEnum getHdfDatatypeInDataset(string datasetName)
+        public override F2iConsulting.Fesapi.common.AbstractObject.hdfDatatypeEnum getHdfDatatypeInDataset(string datasetName)
         {
             throw new NotImplementedException();
         }

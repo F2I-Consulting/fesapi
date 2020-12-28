@@ -17,9 +17,9 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 %pragma(csharp) imclasscode=%{
-  public static f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.AbstractObject witsml2_0_instantiateConcreteObject(global::System.IntPtr cPtr, bool owner)
+  public static F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.AbstractObject witsml2_0_instantiateConcreteObject(global::System.IntPtr cPtr, bool owner)
   {
-    f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.AbstractObject ret = null;
+    F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.AbstractObject ret = null;
     if (cPtr == global::System.IntPtr.Zero) {
       return ret;
     }
@@ -27,27 +27,27 @@ under the License.
     string type = $modulePINVOKE.${FESAPI_WITSML2_0_NS}_AbstractObject_getXmlTag(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
 	if (type == "coordinateReferenceSystems")
     {
-        ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.CoordinateReferenceSystem(cPtr, owner);
+        ret = new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.CoordinateReferenceSystem(cPtr, owner);
     }
     else if (type == "formationMarkers")
     {
-        ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.FormationMarker(cPtr, owner);
+        ret = new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.FormationMarker(cPtr, owner);
     }
     else if (type == "logs")
     {
-        ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Log(cPtr, owner);
+        ret = new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.Log(cPtr, owner);
     }
     else if (type == "trajectorys")
     {
-        ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);
+        ret = new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);
     }
     else if (type == "wells")
     {
-        ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Well(cPtr, owner);
+        ret = new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.Well(cPtr, owner);
     }
     else if (type == "wellbores")
     {
-        ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Wellbore(cPtr, owner);
+        ret = new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.Wellbore(cPtr, owner);
     }
 	else
 	{

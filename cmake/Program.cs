@@ -1,21 +1,21 @@
 ﻿using System;
 
-using f2i.energisticsStandardsApi;
-using f2i.energisticsStandardsApi.${FESAPI_COMMON_NS};
-using f2i.energisticsStandardsApi.${FESAPI_EML2_NS};
-using f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS};
-using f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS};
+using F2iConsulting.Fesapi;
+using F2iConsulting.Fesapi.${FESAPI_COMMON_NS};
+using F2iConsulting.Fesapi.${FESAPI_EML2_NS};
+using F2iConsulting.Fesapi.${FESAPI_RESQML2_NS};
+using F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS};
 
 // Add the fesapi cpp and hdf5, szip, zlib dll into the executable directory.
 
-namespace example
+namespace Example
 {
     static class Program
     {
 		private static void serializeIjkGrid(DataObjectRepository repo)
         {
             AbstractIjkGridRepresentation ijkGrid = repo.createPartialIjkGridRepresentation("6ac6c8c8-68c4-4c78-bae9-61b5832a8f53", "partial IJK Grid");
-            f2i.energisticsStandardsApi.${FESAPI_EML2_NS}.PropertyKind propertyKind = repo.createPartialPropertyKind("", "Partial prop kind");
+            F2iConsulting.Fesapi.${FESAPI_EML2_NS}.PropertyKind propertyKind = repo.createPartialPropertyKind("", "Partial prop kind");
 
             // creating the continuous Property with computing min max
             ContinuousProperty propertyCompute = repo.createContinuousProperty(
@@ -143,7 +143,7 @@ namespace example
                 WellboreInterpretation wellbore1Interp1 = repo.createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
 
                 // Representation
-                f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.MdDatum mdInfo = repo.createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", repo.getDefaultCrs(), eml23__WellboreDatumReference.eml23__WellboreDatumReference__mean_x0020sea_x0020level, 275, 75, 0);
+                F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.MdDatum mdInfo = repo.createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", repo.getDefaultCrs(), eml23__WellboreDatumReference.eml23__WellboreDatumReference__mean_x0020sea_x0020level, 275, 75, 0);
 
                 //Geometry	
                 WellboreTrajectoryRepresentation w1i1TrajRep = repo.createWellboreTrajectoryRepresentation(wellbore1Interp1, "acd2cdcf-bb5d-48da-bd0e-9aeff3e52180", "Wellbore1 Interp1 TrajRep", mdInfo);
@@ -184,7 +184,7 @@ namespace example
                 GC.KeepAlive(trajectoryMds);
 
                 // WellboreFeature frame
-                f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation w1i1FrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "d873e243-d893-41ab-9a3e-d20b851c099f", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
+                F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation w1i1FrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "d873e243-d893-41ab-9a3e-d20b851c099f", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
                 DoubleArray logMds = new DoubleArray(5);
                 logMds.setitem(0, 0);
                 logMds.setitem(1, 250);
@@ -193,7 +193,7 @@ namespace example
                 logMds.setitem(4, 1000);
                 w1i1FrameRep.setMdValues(logMds.cast(), 5);
 
-                f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation w1i1RegularFrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
+                F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation w1i1RegularFrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
                 w1i1RegularFrameRep.setMdValues(0, 200, 6);
 ${COMMENT_START}
                 // WellboreFeature seismic frame
@@ -285,7 +285,7 @@ ${COMMENT_END}
 					WellboreTrajectoryRepresentation traj = repo.getWellboreTrajectoryRepresentation(trajIndex);
                     for (uint wbfIndex = 0; wbfIndex < traj.getWellboreFrameRepresentationCount(); wbfIndex++)
                     {
-                        f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation wbf = traj.getWellboreFrameRepresentation(wbfIndex);
+                        F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation wbf = traj.getWellboreFrameRepresentation(wbfIndex);
                         System.Console.WriteLine("Deserialize : WellboreFrameRepresentation title is " + wbf.getTitle());
                         System.Console.WriteLine("Deserialize : WellboreFrameRepresentation uuid is " + wbf.getUuid());
                         System.Console.WriteLine("Value Count : " + wbf.getMdValuesCount());

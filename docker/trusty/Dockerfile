@@ -39,7 +39,7 @@ RUN cd dependencies && \
     cd Minizip && \
     mkdir build && \
     cd build && \
-	cmake -G "Unix Makefiles" .. && \
+	cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/fesapiEnv/dependencies/Minizip/build/install .. && \
 	cmake --build . && \
 	make install
 
