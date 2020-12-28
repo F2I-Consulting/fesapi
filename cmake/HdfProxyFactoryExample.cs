@@ -1,6 +1,6 @@
 ﻿using F2iConsulting.Fesapi.${FESAPI_COMMON_NS};
 
-namespace example
+namespace Example
 {
     public class HdfProxyFactoryExample : HdfProxyFactory
     {

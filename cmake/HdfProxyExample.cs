@@ -4,7 +4,7 @@ using F2iConsulting.Fesapi;
 using F2iConsulting.Fesapi.${FESAPI_COMMON_NS};
 using F2iConsulting.Fesapi.${FESAPI_EML2_NS};
 
-namespace example
+namespace Example
 {
     public class HdfProxyExample : AbstractHdfProxy
     {
