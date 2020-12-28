@@ -33,13 +33,13 @@ RUN mkdir dependencies && \
     wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.sh && \
 	sh cmake-3.12.0-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir
 
-# Minizip install
+# install
 RUN cd dependencies && \
 	git clone https://github.com/F2I-Consulting/Minizip.git && \
     cd Minizip && \
     mkdir build && \
     cd build && \
-	cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/fesapiEnv/dependencies/Minizip/build/install .. && \
+	cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/fesapiEnv/dependencies/Minizip-install .. && \
 	cmake --build . && \
 	make install
 
@@ -54,8 +54,8 @@ RUN git clone https://github.com/F2I-Consulting/fesapi.git && \
 		-DHDF5_1_8=TRUE \
 		-DHDF5_C_INCLUDE_DIR=/usr/include \
 		-DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libhdf5.so \
-		-DMINIZIP_INCLUDE_DIR=/fesapiEnv/dependencies/Minizip/build/install/include \
-		-DMINIZIP_LIBRARY_RELEASE=/fesapiEnv/dependencies/Minizip/build/install/lib/libminizip.a \
+		-DMINIZIP_INCLUDE_DIR=/fesapiEnv/dependencies/Minizip-install/include \
+		-DMINIZIP_LIBRARY_RELEASE=/fesapiEnv/dependencies/Minizip-install/lib/libminizip.a \
 		-DZLIB_INCLUDE_DIR=/usr/include \
 		-DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so \
 		-DCMAKE_BUILD_TYPE=Release \
