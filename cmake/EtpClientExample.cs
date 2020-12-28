@@ -1,7 +1,7 @@
 ﻿using System;
 
-using f2i.energisticsStandardsApi;
-using f2i.energisticsStandardsApi.${FESAPI_ETP_NS};
+using F2iConsulting.Fesapi;
+using F2iConsulting.Fesapi.${FESAPI_ETP_NS};
 
 namespace EtpClientExample
 {

@@ -1,10 +1,10 @@
 using System;
 
-using f2i.energisticsStandardsApi;
-using f2i.energisticsStandardsApi.Energistics.Etp.v12.Datatypes.Object;
-using f2i.energisticsStandardsApi.Energistics.Etp.v12.Protocol.Discovery;
-using f2i.energisticsStandardsApi.Energistics.Etp.v12.Protocol.Store;
-using f2i.energisticsStandardsApi.${FESAPI_ETP_NS};
+using F2iConsulting.Fesapi;
+using F2iConsulting.Fesapi.Energistics.Etp.v12.Datatypes.Object;
+using F2iConsulting.Fesapi.Energistics.Etp.v12.Protocol.Discovery;
+using F2iConsulting.Fesapi.Energistics.Etp.v12.Protocol.Store;
+using F2iConsulting.Fesapi.${FESAPI_ETP_NS};
 
 public class MyOwnDiscoveryProtocolHandlers : DiscoveryHandlers
 {

@@ -45,10 +45,10 @@ endif (WITH_ETP)
 
 # SWIG execution
 if (WIN32)
-	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -Wall -v -c++ -python -builtin -py3 -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedPythonWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/python/src ${FESAPI_ROOT_DIR}/swig/swigModule.i")
+	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -v -c++ -python -builtin -py3 -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedPythonWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/python/src ${FESAPI_ROOT_DIR}/swig/swigModule.i")
 	execute_process(COMMAND powershell ${EXECUTE_COMMAND})
 elseif (UNIX)
-	set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -Wall -v -c++ -python -builtin -py3 -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedPythonWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/python/src ${FESAPI_ROOT_DIR}/swig/swigModule.i)
+	set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -v -c++ -python -builtin -py3 -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedPythonWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/python/src ${FESAPI_ROOT_DIR}/swig/swigModule.i)
 	execute_process(COMMAND ${EXECUTE_COMMAND})
 endif (WIN32)
 message("SWIG Python files have been generated.")
