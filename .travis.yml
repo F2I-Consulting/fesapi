@@ -47,8 +47,8 @@ jobs:
             - valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./example/example
             - ctest -V
             - make install
-            - javac -cp "./install/lib/fesapiJava-2.0.0.0.jar" $TRAVIS_BUILD_DIR/java/src/com/f2i_consulting/example/FesapiJavaExample.java
-            - java -Djava.library.path="./install/lib" -cp "$TRAVIS_BUILD_DIR/java/src:./install/lib/fesapiJava-2.0.0.0.jar" com.f2i_consulting.example.FesapiJavaExample
+            - javac -cp "./install/lib/fesapiJava-2.0.1.0.jar" $TRAVIS_BUILD_DIR/java/src/com/f2i_consulting/example/FesapiJavaExample.java
+            - java -Djava.library.path="./install/lib" -cp "$TRAVIS_BUILD_DIR/java/src:./install/lib/fesapiJava-2.0.1.0.jar" com.f2i_consulting.example.FesapiJavaExample
             
 addons:
   apt:
