@@ -48,18 +48,23 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	// Ask for Server capabilites
-	boost::asio::io_context ioc;
-	auto httpClientSession = std::make_shared<HttpClientSession>(ioc);
-	std::string etpServerCapTarget = std::string(argc == 3 ? "" : argv[3]) + "/.well-known/etp-server-capabilities?GetVersion=etp12.energistics.org";
-	httpClientSession->run(argv[1], argv[2], etpServerCapTarget.c_str(), 11);
-	// Run the I/O service. The call will return when the get operation is complete.
-	ioc.run();
-	std::cout << httpClientSession->getResponse() << std::endl;
-
 	std::cout << "Give your authorization to pass to the server (or hit enter if no authorization)" << std::endl;
 	std::string authorization;
 	std::getline(std::cin, authorization);
+
+	// Ask for Server capabilites
+	boost::asio::io_context ioc;
+	auto httpClientSession = std::make_shared<HttpClientSession>(ioc);
+	std::string etpServerCapTarget = "/";
+	if (argc >= 4) {
+		etpServerCapTarget += std::string(argv[3]) + "/";
+	}
+	etpServerCapTarget += ".well-known/etp-server-capabilities?GetVersion=etp12.energistics.org";
+	std::cout << "Requesting " << etpServerCapTarget << " to " << argv[1] << " on port " << argv[2] << std::endl;
+	httpClientSession->run(argv[1], argv[2], etpServerCapTarget.c_str(), 11, authorization);
+	// Run the I/O service. The call will return when the get operation is complete.
+	ioc.run();
+	std::cout << httpClientSession->getResponse() << std::endl;
 	
 	COMMON_NS::DataObjectRepository repo;
 	repo.setHdfProxyFactory(new EtpHdfProxyFactory());
