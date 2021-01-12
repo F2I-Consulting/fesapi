@@ -272,7 +272,7 @@ namespace ETP_NS
 				"	  }"
 				"	},"
 				"	{"
-				"	  \"name\": \"supportedObjects\","
+				"	  \"name\": \"supportedDataObjects\","
 				"	  \"type\": {"
 				"		\"type\": \"array\","
 				"		\"items\": {"
