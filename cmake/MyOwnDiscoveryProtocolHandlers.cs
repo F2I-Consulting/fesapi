@@ -31,6 +31,6 @@ public class MyOwnDiscoveryProtocolHandlers : DiscoveryHandlers
         MapStringString uriMap = new MapStringString();
         uriMap.Add("0", resources[0].uri);
         gdo.uris =uriMap;
-        getSession().send(gdo);
+        getSession().send(gdo, 0, 0x02);
     }
 }

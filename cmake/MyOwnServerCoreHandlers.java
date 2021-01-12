@@ -50,6 +50,6 @@ public class MyOwnServerCoreHandlers extends CoreHandlers {
 		openSession.setEndpointCapabilities(serverInitializationParams.makeEndpointCapabilities());
 		openSession.setSupportedDataObjects(serverInitializationParams.makeSupportedDataObjects());
 
-		getSession().send(openSession, correlationId);
+		getSession().send(openSession, correlationId, 0x02);
 	}
 }

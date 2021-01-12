@@ -35,6 +35,8 @@ namespace ETP_NS
 	    virtual void on_CloseSession(const Energistics::Etp::v12::Protocol::Core::CloseSession & cs, int64_t correlationId);
 	    virtual void on_ProtocolException(const Energistics::Etp::v12::Protocol::Core::ProtocolException & pe, int64_t correlationId);
 		virtual void on_Acknowledge(const Energistics::Etp::v12::Protocol::Core::Acknowledge & ack, int64_t correlationId);
+		virtual void on_Ping(const Energistics::Etp::v12::Protocol::Core::Ping & ping, int64_t correlationId);
+		virtual void on_Pong(const Energistics::Etp::v12::Protocol::Core::Pong & pong, int64_t correlationId);
 
 	};
 }

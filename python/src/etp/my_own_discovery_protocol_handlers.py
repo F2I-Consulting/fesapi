@@ -22,4 +22,4 @@ class MyOwnDiscoveryProtocolHandlers(fesapi.DiscoveryHandlers):
         uriMap = fesapi.MapStringString()
         uriMap["0"] = resources[0].uri
         gdo.uris =uriMap
-        self.getSession().send(gdo)
+        self.getSession().send(gdo, 0, 0x02)

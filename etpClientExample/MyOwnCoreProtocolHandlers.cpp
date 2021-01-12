@@ -41,6 +41,7 @@ under the License.
 void printHelp()
 {
 	std::cout << "List of available commands :" << std::endl;
+	std::cout << "\tPing" << std::endl << "\t\tPing the server" << std::endl << std::endl;
 	std::cout << "\tList" << std::endl << "\t\tList the objects which have been got from ETP to the in-memory epc" << std::endl << std::endl;
 	std::cout << "\tPutXmldAndHdfAtOnce" << std::endl << "\t\tPut a dummy point set representation to the store sending XML and HDF5 points at once." << std::endl << std::endl;
 	std::cout << "\tGetResources URI scope(default self) depth(default 1) countObjects(true or false, default is true) getObject(true or false, default is false) dataTypeFilter,dataTypeFilter,...(default noFilter)" << std::endl << std::endl;
@@ -117,10 +118,10 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 			}
 
 			if (commandTokens.size() > 5 && (commandTokens[5] == "true" || commandTokens[5] == "True" || commandTokens[5] == "TRUE")) {
-				std::static_pointer_cast<MyOwnDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb));
+				std::static_pointer_cast<MyOwnDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb, 0, 0x02));
 			}
 			else {
-				session->send(mb);
+				session->send(mb, 0, 0x02);
 			}
 			continue;
 		}
@@ -132,7 +133,7 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 				tokenMaps[std::to_string(i)] = tokens[i];
 			}
 			getO.uris = tokenMaps;
-			session->send(getO);
+			session->send(getO, 0, 0x02);
 		}
 		else if (commandTokens[0] == "GetXYZPoints") {
 			/* This works in a blocking way i.e. getXyzPointCountOfPatch will return only when the store would have answered back.
@@ -162,7 +163,7 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 				Energistics::Etp::v12::Datatypes::Object::DataObject dataObject = ETP_NS::EtpHelpers::buildEtpDataObjectFromEnergisticsObject(dataObj);
 				putDataObjects.dataObjects["0"] = dataObject;
 
-				session->send(putDataObjects, 0, 0x10); // 0x10 requires Acknowledge from the store
+				session->send(putDataObjects, 0, 0x10 | 0x02); // 0x10 requires Acknowledge from the store
 			}			
 		}
 		else if (commandTokens[0] == "SubscribeNotif") {
@@ -209,13 +210,19 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 
 			mb.request["0"] = subscriptionInfo;
 
-			session->send(mb);
+			session->send(mb, 0, 0x02);
 
 			continue;
 		}
 
 		if (commandTokens.size() == 1) {
-			if (commandTokens[0] == "List") {
+			if (commandTokens[0] == "Ping") {
+				Energistics::Etp::v12::Protocol::Core::Ping ping;
+				ping.currentDateTime = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+				session->send(ping, 0, 0x02); // 0x10 requires Acknowledge from the store
+				std::cout << "PING at " << ping.currentDateTime << std::endl;
+			}
+			else if (commandTokens[0] == "List") {
 				std::cout << "*** START LISTING ***" << std::endl;
 				for (const auto& entryPair : repo->getDataObjects()) {
 					for (const auto* obj : entryPair.second) {
@@ -262,7 +269,7 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 				Energistics::Etp::v12::Datatypes::Object::DataObject dataObject = ETP_NS::EtpHelpers::buildEtpDataObjectFromEnergisticsObject(h1i1PointSetRep);
 				putDataObjects.dataObjects["0"] = dataObject;
 
-				session->send(putDataObjects, 0, 0x10); // 0x10 requires Acknowledge from the store
+				session->send(putDataObjects, 0, 0x02 | 0x10); // 0x10 requires Acknowledge from the store
 			}
 		}
 		else if (commandTokens.size() == 2) {
@@ -272,7 +279,7 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 				mb.scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources;
 				mb.context.depth = 1;
 
-				std::static_pointer_cast<MyOwnDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb));
+				std::static_pointer_cast<MyOwnDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb, 0, 0x02));
 			}
 			else if (commandTokens[0] == "GetTargetObjects") {
 				Energistics::Etp::v12::Protocol::Discovery::GetResources mb;
@@ -280,17 +287,17 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 				mb.scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets;
 				mb.context.depth = 1;
 
-				std::static_pointer_cast<MyOwnDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb));
+				std::static_pointer_cast<MyOwnDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb, 0, 0x02));
 			}
 			else if (commandTokens[0] == "GetResourceObjects") {
 				Energistics::Etp::v12::Protocol::Discovery::GetResources mb;
 				mb.context.uri = commandTokens[1];
 				mb.scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
 				mb.context.depth = 1;
-				std::static_pointer_cast<MyOwnDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb));
+				std::static_pointer_cast<MyOwnDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb, 0, 0x02));
 
 				mb.scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources;
-				std::static_pointer_cast<MyOwnDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb));
+				std::static_pointer_cast<MyOwnDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb, 0, 0x02));
 			}
 		}
 		else if (commandTokens.size() == 3) {
@@ -315,7 +322,7 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 				data.item.set_ArrayOfInt(arrayOfInt);
 				pda.dataArrays["0"].array.data = data;
 
-				session->send(pda);
+				session->send(pda, 0, 0x02);
 			}
 		}
 	}
