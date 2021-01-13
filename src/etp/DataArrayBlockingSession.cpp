@@ -76,12 +76,23 @@ bool DataArrayBlockingSession::run()
 		results.end());
 
 	websocket::response_type responseType;
+#if BOOST_VERSION < 107000
 	ws.handshake_ex(responseType,
 		host + ":" + port, target,
 		[](websocket::request_type& m)
 		{
 			m.insert(boost::beast::http::field::sec_websocket_protocol, "etp12.energistics.org");
 		});
+#else
+	ws.set_option(websocket::stream_base::decorator(
+		[](websocket::request_type& m)
+		{
+			m.insert(boost::beast::http::field::sec_websocket_protocol, "etp12.energistics.org");
+		})
+	);
+
+	ws.handshake(responseType, host + ":" + port, target);
+#endif
 
 	if (!responseType.count(boost::beast::http::field::sec_websocket_protocol) ||
 		responseType[boost::beast::http::field::sec_websocket_protocol] != "etp12.energistics.org") {

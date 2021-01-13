@@ -50,7 +50,7 @@ namespace ETP_NS
 		virtual ~AbstractPlainOrSslServerSession() = default;
 
 		boost::asio::io_context& getIoContext() {
-			return derived().ws().get_executor().context();
+			return static_cast<boost::asio::io_context&> (derived().ws().get_executor().context());
 		}
 
 		/**
@@ -85,12 +85,22 @@ namespace ETP_NS
 			}
 
 			// Accept the websocket handshake
+#if BOOST_VERSION < 107000
 			derived().ws().async_accept_ex(req,
 				[](websocket::response_type& m)
 			{
 				m.insert(boost::beast::http::field::sec_websocket_protocol, "etp12.energistics.org");
 			},
-				boost::asio::bind_executor(
+#else
+			derived().ws().set_option(websocket::stream_base::decorator(
+				[](websocket::response_type& m)
+				{
+					m.insert(boost::beast::http::field::sec_websocket_protocol, "etp12.energistics.org");
+				})
+			);
+			derived().ws().async_accept(req,
+#endif
+			boost::asio::bind_executor(
 					strand,
 					std::bind(
 						&AbstractPlainOrSslServerSession::on_accept,
@@ -98,11 +108,21 @@ namespace ETP_NS
 						std::placeholders::_1)));
 #else
 			// does not show up the HTTP request
+#if BOOST_VERSION < 107000
 			derived().ws().async_accept_ex(
 				[](websocket::response_type& m)
 			{
 				m.insert(boost::beast::http::field::sec_websocket_protocol, "etp12.energistics.org");
 			},
+#else
+			derived().ws().set_option(websocket::stream_base::decorator(
+				[](websocket::response_type& m)
+				{
+					m.insert(boost::beast::http::field::sec_websocket_protocol, "etp12.energistics.org");
+				})
+			);
+			derived().ws().async_accept(
+#endif
 				boost::asio::bind_executor(
 					strand,
 					std::bind(

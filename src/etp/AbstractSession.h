@@ -31,6 +31,8 @@ under the License.
 #include "ProtocolHandlers/StoreNotificationHandlers.h"
 #include "ProtocolHandlers/DataArrayHandlers.h"
 
+#include <unordered_map>
+
 #if defined(_WIN32) && !defined(FESAPI_STATIC)
 	#ifndef DLL_IMPORT_OR_EXPORT
 		#if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
