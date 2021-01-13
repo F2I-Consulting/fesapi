@@ -132,18 +132,35 @@ namespace ETP_NS
 				std::cerr << "on_connect : " << ec.message() << std::endl;
 			}
 
+#if BOOST_VERSION < 107000
 			// Perform the websocket handshake
 			derived().ws().async_handshake_ex(responseType,
 				host + ":" + port, target,
 				[&](websocket::request_type& m)
-			{
-				m.insert(boost::beast::http::field::sec_websocket_protocol, "etp12.energistics.org");
-				m.insert(boost::beast::http::field::authorization, authorization);
-			},
+				{
+					m.insert(boost::beast::http::field::sec_websocket_protocol, "etp12.energistics.org");
+					m.insert(boost::beast::http::field::authorization, authorization);
+				},
 				std::bind(
 					&AbstractClientSession::on_handshake,
 					std::static_pointer_cast<AbstractClientSession>(shared_from_this()),
 					std::placeholders::_1));
+#else
+			derived().ws().set_option(websocket::stream_base::decorator(
+				[&](websocket::request_type& m)
+				{
+					m.insert(boost::beast::http::field::sec_websocket_protocol, "etp12.energistics.org");
+					m.insert(boost::beast::http::field::authorization, authorization);
+				})
+			);
+			// Perform the websocket handshake
+			derived().ws().async_handshake(responseType,
+				host + ":" + port, target,
+				std::bind(
+					&AbstractClientSession::on_handshake,
+					std::static_pointer_cast<AbstractClientSession>(shared_from_this()),
+					std::placeholders::_1));
+#endif
 		}
 
 		DLL_IMPORT_OR_EXPORT std::shared_ptr<DataArrayBlockingSession> createDataArrayBlockingSession() {

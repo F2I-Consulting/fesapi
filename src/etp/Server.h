@@ -570,9 +570,15 @@ namespace ETP_NS
 					std::vector< std::shared_ptr<T> >& sessions,
 					ServerInitializationParameters* serverInitializationParams)
 				: socket_(std::move(socket))
+#if BOOST_VERSION < 107000
 				, strand_(socket_.get_executor())
 				, timer_(socket_.get_executor().context(),
-				(std::chrono::steady_clock::time_point::max)())
+			        (std::chrono::steady_clock::time_point::max)())
+#else
+				, strand_(static_cast<boost::asio::io_context&>(socket_.get_executor().context()).get_executor())
+				, timer_(socket_.get_executor(),
+					(std::chrono::steady_clock::time_point::max)())
+#endif
 				, doc_root_(doc_root)
 				, queue_(*this)
 				, sessions_(sessions)

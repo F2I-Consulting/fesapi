@@ -48,7 +48,7 @@ namespace ETP_NS
 		virtual ~DataArrayBlockingSession() = default;
 
 		boost::asio::io_context& getIoContext() {
-			return ws.get_executor().context();
+			return static_cast<boost::asio::io_context&> (ws.get_executor().context());
 		}
 
 		bool run();
