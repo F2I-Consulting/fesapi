@@ -18,11 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/AbstractClientSession.h"
+#include "../AbstractClientSession.h"
 
 #include <boost/version.hpp>
 #if BOOST_VERSION < 106800
-#include "etp/ssl/ssl_stream.h"
+#include "ssl_stream.h"
 #elif BOOST_VERSION < 107000
 #include <boost/beast/experimental/core/ssl_stream.hpp>
 #else
@@ -38,10 +38,10 @@ namespace ETP_NS
 		websocket::stream<boost::beast::ssl_stream<tcp::socket>> ws_;
 
 	public:
-		DLL_IMPORT_OR_EXPORT SslClientSession(boost::asio::io_context& ioc, boost::asio::ssl::context& ctx,
+		DLL_IMPORT_OR_EXPORT SslClientSession(boost::asio::ssl::context& ctx,
 			const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
 			const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
-			const std::vector<std::string>& supportedObjects);
+			const std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject>& supportedObjects);
 
 		virtual ~SslClientSession() {}
 

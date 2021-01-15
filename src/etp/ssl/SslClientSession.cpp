@@ -17,17 +17,17 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "etp/ssl/SslClientSession.h"
+#include "SslClientSession.h"
 
 using namespace ETP_NS;
 
-SslClientSession::SslClientSession(boost::asio::io_context& ioc, boost::asio::ssl::context& ctx,
+SslClientSession::SslClientSession(boost::asio::ssl::context& ctx,
 	const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
 	const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
-	const std::vector<std::string>& supportedObjects)
-	: AbstractClientSession<SslClientSession>(ioc, host, port, target, authorization,
+	const std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject>& supportedObjects)
+	: AbstractClientSession<SslClientSession>(host, port, target, authorization,
 		requestedProtocols, supportedObjects),
-	ws_(ioc, ctx)
+		ws_(ioc, ctx)
 {
 	ws_.binary(true);
 }

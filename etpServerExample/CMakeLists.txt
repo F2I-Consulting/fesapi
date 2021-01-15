@@ -4,9 +4,10 @@ project (Fesapi_ETP_Server_Example)
 
 add_executable (etpServerExample "")
 
-if (WITH_EXPERIMENTAL)
-	target_compile_definitions(etpServerExample PRIVATE "-DWITH_EXPERIMENTAL")
-endif(WITH_EXPERIMENTAL)
+# Define the compile options according to the compiler
+target_compile_options(etpServerExample	PRIVATE
+	$<$<CXX_COMPILER_ID:MSVC>:/bigobj>
+)
 
 find_package(Boost 1.66.0 REQUIRED filesystem)
 

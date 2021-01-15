@@ -18,10 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/AbstractServerSession.h"
+#include "../AbstractPlainOrSslServerSession.h"
 
 #if BOOST_VERSION < 106800
-#include "etp/ssl/ssl_stream.h"
+#include "ssl_stream.h"
 #elif BOOST_VERSION < 107000
 #include <boost/beast/experimental/core/ssl_stream.hpp>
 #else
@@ -35,26 +35,17 @@ namespace ETP_NS
 	{
 	private:
 		websocket::stream<boost::beast::ssl_stream<tcp::socket>> ws_;
-		boost::asio::strand<boost::asio::io_context::executor_type> strand_;
 
 	public:
-		DLL_IMPORT_OR_EXPORT SslServerSession(tcp::socket socket, boost::asio::ssl::context& ctx);
+		DLL_IMPORT_OR_EXPORT SslServerSession(boost::beast::ssl_stream<tcp::socket> stream);
 
 		virtual ~SslServerSession() {}
 
 		// Called by the base class
 		DLL_IMPORT_OR_EXPORT websocket::stream<boost::beast::ssl_stream<tcp::socket>>& ws() { return ws_; }
 
-		DLL_IMPORT_OR_EXPORT bool run() {
-			// Perform the SSL handshake
-			ws_.next_layer().async_handshake(
-				boost::asio::ssl::stream_base::server,
-				boost::asio::bind_executor(
-					strand_,
-					std::bind(
-						&AbstractPlainOrSslServerSession::on_handshake,
-						std::static_pointer_cast<AbstractPlainOrSslServerSession>(shared_from_this()),
-						std::placeholders::_1)));
+		DLL_IMPORT_OR_EXPORT bool run(boost::beast::http::request<boost::beast::http::string_body> req) {
+			on_handshake(boost::system::error_code(), std::move(req));
 			return true;
 		}
 	};
