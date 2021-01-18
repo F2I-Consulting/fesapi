@@ -181,13 +181,12 @@ jobs:
       - task: ExtractFiles@1
         inputs:
           archiveFilePatterns: 'C:/avro-cpp-1.10.1.tar.gz'
-          destinationFolder: C:/
       - task: CMake@1
         displayName: 'CMake configure AVRO'
         inputs:
           workingDirectory: C:/build-avro-cpp-1.10.1
           cmakeArgs:
-            ../avro-cpp-1.10.1
+            $(Build.SourcesDirectory)/avro-cpp-1.10.1
             $(Generator)
             -Wno-dev -Wno-deprecated
             -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
