@@ -182,6 +182,10 @@ jobs:
         inputs:
           archiveFilePatterns: '$(Agent.TempDirectory)/avro-cpp-1.10.1.tar.gz'
           cleanDestinationFolder: false
+      - powershell: |
+          ((Get-Content -path $(Build.SourcesDirectory)/avro-cpp-1.10.1/CMakeLists.txt -Raw) -replace 'install (TARGETS avrocpp avrocpp_s','install (TARGETS avrocpp_s') | Set-Content -Path $(Build.SourcesDirectory)/avro-cpp-1.10.1/CMakeLists.txt
+          ((Get-Content -path $(Build.SourcesDirectory)/avro-cpp-1.10.1/CMakeLists.txt -Raw) -replace 'install (TARGETS avrogencpp RUNTIME DESTINATION bin)','') | Set-Content -Path $(Build.SourcesDirectory)/avro-cpp-1.10.1/CMakeLists.txt
+        displayName: 'Do not install avro non static' 
       - task: CMake@1
         displayName: 'CMake configure AVRO'
         inputs:
