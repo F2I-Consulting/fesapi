@@ -196,7 +196,7 @@ jobs:
         displayName: "CMake build AVRO --config $(BuildType)"
         inputs:
           workingDirectory: $(Agent.TempDirectory)/build-avro-cpp-1.10.1
-          cmakeArgs: --build . --config $(BuildType) --target avrocpp -- /verbosity:minimal
+          cmakeArgs: --build . --config $(BuildType) --target avrocpp_s -- /verbosity:minimal
       - task: CMake@1
         displayName: "CMake Install AVRO --config $(BuildType)"
         inputs:
@@ -220,7 +220,7 @@ jobs:
             -DSZIP_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2019/lib/szip.lib
             -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
             -DAVRO_INCLUDE_DIR=$(Agent.TempDirectory)/avro-cpp-1.10.1-install/include
-            -DAVRO_LIBRARY_RELEASE=$(Agent.TempDirectory)/avro-cpp-1.10.1-install/lib/avrocpp.lib
+            -DAVRO_LIBRARY_RELEASE=$(Agent.TempDirectory)/avro-cpp-1.10.1-install/lib/avrocpp_s.lib
             -DWITH_EXAMPLE=TRUE
             -DWITH_ETP=TRUE
 
