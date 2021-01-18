@@ -207,6 +207,11 @@ jobs:
           workingDirectory: $(Agent.TempDirectory)/build-avro-cpp-1.10.1
           cmakeArgs: --install .
 
+      # Patch about https://github.com/boostorg/beast/issues/1980
+      - powershell: |
+          ((Get-Content -path $(BOOST_ROOT_1_72_0)/include//beast/core/impl/file_stdio.ipp -Raw) -replace 'std::numeric_limits<long>::max','(std::numeric_limits<long>::max)') | Set-Content -Path $(BOOST_ROOT_1_72_0)/include//beast/core/impl/file_stdio.ipp
+        displayName: 'Patching Beast 1.72 for MSVC'
+          
       - task: CMake@1
         displayName: 'CMake .. $(Generator)'
         inputs:
