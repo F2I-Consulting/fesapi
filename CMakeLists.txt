@@ -135,6 +135,9 @@ if (WITH_ETP)
 
 	# Boost DEPENDENCY
 	find_package(Boost 1.66.0 REQUIRED system)
+	if (WIN32 AND (Boost_VERSION_MAJOR EQUAL 1) AND (Boost_VERSION_MINOR LESS 74) AND (Boost_VERSION_MINOR GREATER 71))
+		message(WARNING "You may experience min/max issue with this boost version : See https://github.com/boostorg/beast/issues/1980")
+	endif ()
 	
 	add_subdirectory (etpClientExample)
 	add_subdirectory (etpServerExample)
