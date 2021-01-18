@@ -201,7 +201,7 @@ jobs:
         displayName: "CMake Install AVRO --config $(BuildType)"
         inputs:
           workingDirectory: $(Agent.TempDirectory)/build-avro-cpp-1.10.1
-          cmakeArgs: --build . --config $(BuildType) --target INSTALL -- /verbosity:minimal
+          cmakeArgs: --install .
 
       - task: CMake@1
         displayName: 'CMake .. $(Generator)'
