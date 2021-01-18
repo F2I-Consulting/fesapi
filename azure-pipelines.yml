@@ -181,6 +181,7 @@ jobs:
       - task: ExtractFiles@1
         inputs:
           archiveFilePatterns: 'C:/avro-cpp-1.10.1.tar.gz'
+          cleanDestinationFolder: false
       - task: CMake@1
         displayName: 'CMake configure AVRO'
         inputs:

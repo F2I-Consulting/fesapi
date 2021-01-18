@@ -153,7 +153,7 @@ int main(int argc, char **argv)
 #endif
 		auto session = ClientSessionLaunchers::createWsClientSession(argv[1], argv[2], argc < 4 ? "/" : argv[3], authorization);
 		setProtocolHandlers(session, &repo);
-		bool successfulConnection = session->run();
+		successfulConnection = session->run();
 #ifdef WITH_ETP_SSL
 	}
 #endif
