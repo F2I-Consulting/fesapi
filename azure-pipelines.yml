@@ -177,30 +177,30 @@ jobs:
         
       # AVRO
       - powershell: |
-          Invoke-WebRequest https://mirroir.wptheme.fr/apache/avro/avro-1.10.1/cpp/avro-cpp-1.10.1.tar.gz -OutFile C:\avro-cpp-1.10.1.tar.gz
+          Invoke-WebRequest https://mirroir.wptheme.fr/apache/avro/avro-1.10.1/cpp/avro-cpp-1.10.1.tar.gz -OutFile $(Agent.TempDirectory)/avro-cpp-1.10.1.tar.gz
       - task: ExtractFiles@1
         inputs:
-          archiveFilePatterns: 'C:/avro-cpp-1.10.1.tar.gz'
+          archiveFilePatterns: '$(Agent.TempDirectory)/avro-cpp-1.10.1.tar.gz'
           cleanDestinationFolder: false
       - task: CMake@1
         displayName: 'CMake configure AVRO'
         inputs:
-          workingDirectory: C:/build-avro-cpp-1.10.1
+          workingDirectory: $(Agent.TempDirectory)/build-avro-cpp-1.10.1
           cmakeArgs:
             $(Build.SourcesDirectory)/avro-cpp-1.10.1
             $(Generator)
             -Wno-dev -Wno-deprecated
             -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
-            -DCMAKE_INSTALL_PREFIX=C:/avro-cpp-1.10.1-install
+            -DCMAKE_INSTALL_PREFIX=$(Agent.TempDirectory)/avro-cpp-1.10.1-install
       - task: CMake@1
         displayName: "CMake build AVRO --config $(BuildType)"
         inputs:
-          workingDirectory: C:/build-avro-cpp-1.10.1
-          cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
+          workingDirectory: $(Agent.TempDirectory)/build-avro-cpp-1.10.1
+          cmakeArgs: --build . --config $(BuildType) --target avrocpp -- /verbosity:minimal
       - task: CMake@1
         displayName: "CMake Install AVRO --config $(BuildType)"
         inputs:
-          workingDirectory: C:/build-avro-cpp-1.10.1
+          workingDirectory: $(Agent.TempDirectory)/build-avro-cpp-1.10.1
           cmakeArgs: --build . --config $(BuildType) --target INSTALL -- /verbosity:minimal
 
       - task: CMake@1
@@ -219,8 +219,8 @@ jobs:
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2019/lib/zlib.lib
             -DSZIP_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2019/lib/szip.lib
             -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
-            -DAVRO_INCLUDE_DIR=C:/avro-cpp-1.10.1-install/include
-            -DAVRO_LIBRARY_RELEASE=C:/avro-cpp-1.10.1-install/lib/avrocpp.lib
+            -DAVRO_INCLUDE_DIR=$(Agent.TempDirectory)/avro-cpp-1.10.1-install/include
+            -DAVRO_LIBRARY_RELEASE=$(Agent.TempDirectory)/avro-cpp-1.10.1-install/lib/avrocpp.lib
             -DWITH_EXAMPLE=TRUE
             -DWITH_ETP=TRUE
 
