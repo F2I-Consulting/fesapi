@@ -758,12 +758,21 @@ namespace ETP_NS
 				std::vector< std::shared_ptr<AbstractSession> >& sessions,
 				ServerInitializationParameters* serverInitializationParams)
 				: http_session<plain_http_session>(
+#if BOOST_VERSION < 107000
 					socket.get_executor().context(),
+#else
+					static_cast<boost::asio::io_context&>(socket_.get_executor().context()),
+#endif
 					doc_root,
 					sessions,
 					serverInitializationParams)
 				, socket_(std::move(socket))
+#if BOOST_VERSION < 107000
 				, strand_(socket_.get_executor())
+#else
+				, strand_(static_cast<boost::asio::io_context&>(socket_.get_executor().context()).get_executor())
+#endif
+
 			{
 			}
 
