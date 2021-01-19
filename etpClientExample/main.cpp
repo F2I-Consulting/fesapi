@@ -141,8 +141,8 @@ int main(int argc, char **argv)
 	COMMON_NS::DataObjectRepository repo;
 	repo.setHdfProxyFactory(new EtpHdfProxyFactory());
 
-#ifdef WITH_ETP_SSL
 	bool successfulConnection = false;
+#ifdef WITH_ETP_SSL
 	if (std::stoi(argv[2]) == 443) {
 		auto wssSession = ClientSessionLaunchers::createWssClientSession(argv[1], argv[2], argc < 4 ? "/" : argv[3], authorization,
 			additionalCertificates);
