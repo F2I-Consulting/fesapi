@@ -244,8 +244,7 @@ namespace {
 	wrapper = new RESQML2_0_1_NS::className(read);
 
 #define CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
-	(resqmlContentType.compare(RESQML2_0_1_NS::className::XML_TAG) == 0)\
-	{\
+	(resqmlContentType.compare(RESQML2_0_1_NS::className::XML_TAG) == 0) {\
 		GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
 	}
 
@@ -261,8 +260,7 @@ namespace {
 	wrapper = new RESQML2_2_NS::className(read);
 
 #define CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
-	(resqmlContentType.compare(RESQML2_2_NS::className::XML_TAG) == 0)\
-	{\
+	(resqmlContentType.compare(RESQML2_2_NS::className::XML_TAG) == 0) {\
 		GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
 	}
 
@@ -278,8 +276,7 @@ namespace {
 	wrapper = new classNamespace::className(read);
 
 #define CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
-	(datatype.compare(classNamespace::className::XML_TAG) == 0)\
-	{\
+	(datatype.compare(classNamespace::className::XML_TAG) == 0) {\
 		GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace);\
 	}
 
@@ -295,8 +292,7 @@ namespace {
 	wrapper = new classNamespace::className(read);
 
 #define CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
-	(datatype.compare(classNamespace::className::XML_TAG) == 0)\
-	{\
+	(datatype.compare(classNamespace::className::XML_TAG) == 0) {\
 		GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace);\
 	}
 
@@ -310,8 +306,7 @@ namespace {
 	GET_EML_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace, xmlNamespace)\
 	wrapper = new classNamespace::className(read);
 #define CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace, xmlNamespace)\
-	(datatype.compare(classNamespace::className::XML_TAG) == 0)\
-	{\
+	(datatype.compare(classNamespace::className::XML_TAG) == 0) {\
 		GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace, xmlNamespace);\
 	}
 
@@ -3678,6 +3673,27 @@ COMMON_NS::AbstractObject* DataObjectRepository::getEml2_3WrapperFromGsoapContex
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, GraphicalInformationSet, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, PropertyKind, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, TimeSeries, gsoap_eml2_3, eml23)
+	else if (datatype.compare("PropertyKindDictionary") == 0) {
+		GET_EML_GSOAP_PROXY_FROM_GSOAP_CONTEXT(PropertyKindDictionary, gsoap_eml2_3, eml23)
+
+		for (auto* propKind : read->PropertyKind) {
+			wrapper = new EML2_3_NS::PropertyKind(propKind);
+
+			if (wrapper != nullptr) {
+				if (gsoapContext->error != SOAP_OK) {
+					ostringstream oss;
+					soap_stream_fault(gsoapContext, oss);
+					addWarning(oss.str());
+					delete wrapper;
+				}
+				else {
+					return addOrReplaceDataObject(wrapper, true);
+				}
+			}
+		}
+
+		return nullptr; // We don't want to support PropertyKindDictionary
+	}
 
 	return wrapper;
 }

@@ -19,44 +19,73 @@ under the License.
 
 #include "ClientSessionLaunchers.h"
 
-std::shared_ptr<ETP_NS::PlainClientSession> ETP_NS::ClientSessionLaunchers::createClientSession(const std::string & host, const std::string & port, const std::string & target, const std::string & authorization)
+namespace
 {
-	Energistics::Etp::v12::Datatypes::Version protocolVersion;
-	protocolVersion.major = 1;
-	protocolVersion.minor = 2;
-	protocolVersion.patch = 0;
-	protocolVersion.revision = 0;
+	std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> getRequestedProtocols() {
+		Energistics::Etp::v12::Datatypes::Version protocolVersion;
+		protocolVersion.major = 1;
+		protocolVersion.minor = 2;
+		protocolVersion.patch = 0;
+		protocolVersion.revision = 0;
 
-	std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject> supportedDataObjects;
+		std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> requestedProtocols;
+		Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
 
-	// Requested protocol
-	std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> requestedProtocols;
-	Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
+		protocol.protocol = Energistics::Etp::v12::Datatypes::Protocol::Core;
+		protocol.protocolVersion = protocolVersion;
+		protocol.role = "server";
+		requestedProtocols.push_back(protocol);
 
-	protocol.protocol = Energistics::Etp::v12::Datatypes::Protocol::Core;
-	protocol.protocolVersion = protocolVersion;
-	protocol.role = "server";
-	requestedProtocols.push_back(protocol);
+		protocol.protocol = Energistics::Etp::v12::Datatypes::Protocol::Discovery;
+		protocol.protocolVersion = protocolVersion;
+		protocol.role = "store";
+		requestedProtocols.push_back(protocol);
 
-	protocol.protocol = Energistics::Etp::v12::Datatypes::Protocol::Discovery;
-	protocol.protocolVersion = protocolVersion;
-	protocol.role = "store";
-	requestedProtocols.push_back(protocol);
+		protocol.protocol = Energistics::Etp::v12::Datatypes::Protocol::Store;
+		protocol.protocolVersion = protocolVersion;
+		protocol.role = "store";
+		requestedProtocols.push_back(protocol);
 
-	protocol.protocol = Energistics::Etp::v12::Datatypes::Protocol::Store;
-	protocol.protocolVersion = protocolVersion;
-	protocol.role = "store";
-	requestedProtocols.push_back(protocol);
+		protocol.protocol = Energistics::Etp::v12::Datatypes::Protocol::DataArray;
+		protocol.protocolVersion = protocolVersion;
+		protocol.role = "store";
+		requestedProtocols.push_back(protocol);
 
-	protocol.protocol = Energistics::Etp::v12::Datatypes::Protocol::DataArray;
-	protocol.protocolVersion = protocolVersion;
-	protocol.role = "store";
-	requestedProtocols.push_back(protocol);
+		protocol.protocol = Energistics::Etp::v12::Datatypes::Protocol::StoreNotification;
+		protocol.protocolVersion = protocolVersion;
+		protocol.role = "store";
+		requestedProtocols.push_back(protocol);
 
-	protocol.protocol = Energistics::Etp::v12::Datatypes::Protocol::StoreNotification;
-	protocol.protocolVersion = protocolVersion;
-	protocol.role = "store";
-	requestedProtocols.push_back(protocol);
 
-	return std::make_shared<PlainClientSession>(host, port, target.empty() ? "/" : target, authorization, requestedProtocols, supportedDataObjects);
+		return requestedProtocols;
+	}
 }
+
+std::shared_ptr<ETP_NS::PlainClientSession> ETP_NS::ClientSessionLaunchers::createWsClientSession(const std::string & host, const std::string & port, const std::string & target, const std::string & authorization)
+{
+	return std::make_shared<PlainClientSession>(host, port, target.empty() ? "/" : target, authorization, getRequestedProtocols(), std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject>());
+}
+
+#ifdef WITH_ETP_SSL
+
+namespace ssl = boost::asio::ssl;               // from <boost/asio/ssl.hpp>
+
+std::shared_ptr<ETP_NS::SslClientSession> ETP_NS::ClientSessionLaunchers::createWssClientSession(const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
+	const std::string & additionalCertificates)
+{
+	// The SSL context is required, and holds certificates
+	ssl::context ctx{ ssl::context::sslv23_client };
+
+	if (!additionalCertificates.empty()) {
+		boost::system::error_code ec;
+		ctx.add_certificate_authority(
+			boost::asio::buffer(additionalCertificates.data(), additionalCertificates.size()), ec);
+		if (ec) {
+			std::cerr << "Cannot add certificates : " << additionalCertificates << std::endl;
+			return nullptr;
+		}
+	}
+
+	return std::make_shared<SslClientSession>(ctx, host, port, target.empty() ? "/" : target, authorization, getRequestedProtocols(), std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject>());
+}
+#endif

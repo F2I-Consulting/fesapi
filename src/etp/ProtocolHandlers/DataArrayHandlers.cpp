@@ -92,13 +92,13 @@ void DataArrayHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes
 	}
 	else {
 		session->flushReceivingBuffer();
-		sendExceptionCode3();
+		session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(3, "The message type ID " + std::to_string(mh.messageType) + " is invalid for the data array protocol."), mh.messageId, 0x02);
 	}
 }
 
-void DataArrayHandlers::on_GetDataArrays(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrays &, int64_t)
+void DataArrayHandlers::on_GetDataArrays(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrays &, int64_t correlationId)
 {
-	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_GetDataArrays method has not been overriden by the agent."));
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_GetDataArrays method has not been overriden by the agent."), correlationId, 0x02);
 }
 
 void DataArrayHandlers::on_GetDataArraysResponse(Energistics::Etp::v12::Protocol::DataArray::GetDataArraysResponse & gdar)
@@ -157,9 +157,9 @@ void DataArrayHandlers::on_GetDataArraysResponse(Energistics::Etp::v12::Protocol
 	}
 }
 
-void DataArrayHandlers::on_PutDataArrays(const Energistics::Etp::v12::Protocol::DataArray::PutDataArrays&, int64_t)
+void DataArrayHandlers::on_PutDataArrays(const Energistics::Etp::v12::Protocol::DataArray::PutDataArrays&, int64_t correlationId)
 {
-	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_PutDataArrays method has not been overriden by the agent."));
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_PutDataArrays method has not been overriden by the agent."), correlationId, 0x02);
 }
 
 void DataArrayHandlers::on_PutDataArraysResponse(const Energistics::Etp::v12::Protocol::DataArray::PutDataArraysResponse&, int64_t)
@@ -167,9 +167,9 @@ void DataArrayHandlers::on_PutDataArraysResponse(const Energistics::Etp::v12::Pr
 	std::cout << "Received PutDataArraysResponse." << std::endl;
 }
 
-void DataArrayHandlers::on_GetDataSubarrays(const Energistics::Etp::v12::Protocol::DataArray::GetDataSubarrays&, int64_t)
+void DataArrayHandlers::on_GetDataSubarrays(const Energistics::Etp::v12::Protocol::DataArray::GetDataSubarrays&, int64_t correlationId)
 {
-	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_GetDataArraySlice method has not been overriden by the agent."));
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_GetDataArraySlice method has not been overriden by the agent."), correlationId, 0x02);
 }
 
 void DataArrayHandlers::on_GetDataSubarraysResponse(const Energistics::Etp::v12::Protocol::DataArray::GetDataSubarraysResponse&)
@@ -177,9 +177,9 @@ void DataArrayHandlers::on_GetDataSubarraysResponse(const Energistics::Etp::v12:
 	std::cout << "on_GetDataArraySlicesResponse : not implemented yet" << std::endl;
 }
 
-void DataArrayHandlers::on_PutDataSubarrays(const Energistics::Etp::v12::Protocol::DataArray::PutDataSubarrays&, int64_t)
+void DataArrayHandlers::on_PutDataSubarrays(const Energistics::Etp::v12::Protocol::DataArray::PutDataSubarrays&, int64_t correlationId)
 {
-	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_PutDataArraySlices method has not been overriden by the agent."));
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_PutDataArraySlices method has not been overriden by the agent."), correlationId, 0x02);
 }
 
 void DataArrayHandlers::on_PutDataSubarraysResponse(const Energistics::Etp::v12::Protocol::DataArray::PutDataSubarraysResponse&, int64_t)
@@ -187,9 +187,9 @@ void DataArrayHandlers::on_PutDataSubarraysResponse(const Energistics::Etp::v12:
 	std::cout << "Received PutDataSubarraysResponse." << std::endl;
 }
 
-void DataArrayHandlers::on_GetDataArrayMetadata(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadata&, int64_t)
+void DataArrayHandlers::on_GetDataArrayMetadata(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadata&, int64_t correlationId)
 {
-	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_GetDataArrayMetadata method has not been overriden by the agent."));
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_GetDataArrayMetadata method has not been overriden by the agent."), correlationId, 0x02);
 }
 
 void DataArrayHandlers::on_GetDataArrayMetadataResponse(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadataResponse& gdamr)
@@ -216,9 +216,9 @@ void DataArrayHandlers::on_GetDataArrayMetadataResponse(const Energistics::Etp::
 	}
 }
 
-void DataArrayHandlers::on_PutUninitializedDataArrays(const Energistics::Etp::v12::Protocol::DataArray::PutUninitializedDataArrays&, int64_t)
+void DataArrayHandlers::on_PutUninitializedDataArrays(const Energistics::Etp::v12::Protocol::DataArray::PutUninitializedDataArrays&, int64_t correlationId)
 {
-	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_PutUninitializedDataArrays method has not been overriden by the agent."));
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_PutUninitializedDataArrays method has not been overriden by the agent."), correlationId, 0x02);
 }
 
 void DataArrayHandlers::on_PutUninitializedDataArraysResponse(const Energistics::Etp::v12::Protocol::DataArray::PutUninitializedDataArraysResponse&)

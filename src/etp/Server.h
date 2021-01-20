@@ -37,20 +37,23 @@ under the License.
 
 namespace beast = boost::beast;                 // from <boost/beast.hpp>
 namespace http = beast::http;                   // from <boost/beast/http.hpp>
+#ifdef WITH_ETP_SSL
+namespace ssl = boost::asio::ssl;       // from <boost/asio/ssl.hpp>
+#endif
 using tcp = boost::asio::ip::tcp;               // from <boost/asio/ip/tcp.hpp>
 
 namespace ETP_NS
 {
 	// Return a reasonable mime type based on the extension of a file.
-	boost::beast::string_view
-		mime_type(boost::beast::string_view path)
+	beast::string_view
+		mime_type(beast::string_view path)
 	{
-		using boost::beast::iequals;
+		using beast::iequals;
 		auto const ext = [&path]
 		{
 			auto const pos = path.rfind(".");
-			if (pos == boost::beast::string_view::npos)
-				return boost::beast::string_view{};
+			if (pos == beast::string_view::npos)
+				return beast::string_view{};
 			return path.substr(pos);
 		}();
 		if (iequals(ext, ".htm"))  return "text/html";
@@ -81,13 +84,13 @@ namespace ETP_NS
 	// The returned path is normalized for the platform.
 	std::string
 		path_cat(
-			boost::beast::string_view base,
-			boost::beast::string_view path)
+			beast::string_view base,
+			beast::string_view path)
 	{
 		if (base.empty())
 			return path.to_string();
 		std::string result = base.to_string();
-#if BOOST_MSVC
+#ifdef BOOST_MSVC
 		char constexpr path_separator = '\\';
 		if (result.back() == path_separator)
 			result.resize(result.size() - 1);
@@ -113,39 +116,39 @@ namespace ETP_NS
 		class Send>
 		void
 		handle_request(
-			boost::beast::string_view doc_root,
+			beast::string_view doc_root,
 			http::request<Body, http::basic_fields<Allocator>>&& req,
 			Send&& send, ServerInitializationParameters* serverInitializationParams)
 	{
 		// Returns a bad request response
 		auto const bad_request =
-			[&req, serverInitializationParams](boost::beast::string_view why)
+			[&req, serverInitializationParams](beast::string_view why)
 		{
 			http::response<http::string_body> res{ http::status::bad_request, req.version() };
 			res.set(http::field::server, serverInitializationParams->getApplicationName());
 			res.set(http::field::content_type, "text/html");
 			res.keep_alive(req.keep_alive());
-			res.body() = why.to_string();
+			res.body() = std::string(why);
 			res.prepare_payload();
 			return res;
 		};
 
 		// Returns a not found response
 		auto const not_found =
-			[&req, serverInitializationParams](boost::beast::string_view target)
+			[&req, serverInitializationParams](beast::string_view target)
 		{
 			http::response<http::string_body> res{ http::status::not_found, req.version() };
 			res.set(http::field::server, serverInitializationParams->getApplicationName());
 			res.set(http::field::content_type, "text/html");
 			res.keep_alive(req.keep_alive());
-			res.body() = "The resource '" + target.to_string() + "' was not found.";
+			res.body() = "The resource '" + std::string(target) + "' was not found.";
 			res.prepare_payload();
 			return res;
 		};
 
 		// Returns an unprocessable_entity response
 		auto const unprocessable_entity =
-			[&req, serverInitializationParams](boost::beast::string_view target)
+			[&req, serverInitializationParams](beast::string_view target)
 		{
 			http::response<http::string_body> res{ http::status::unprocessable_entity, req.version() };
 			res.set(http::field::server, serverInitializationParams->getApplicationName());
@@ -158,13 +161,13 @@ namespace ETP_NS
 
 		// Returns a server error response
 		auto const server_error =
-			[&req, serverInitializationParams](boost::beast::string_view what)
+			[&req, serverInitializationParams](beast::string_view what)
 		{
 			http::response<http::string_body> res{ http::status::internal_server_error, req.version() };
 			res.set(http::field::server, serverInitializationParams->getApplicationName());
 			res.set(http::field::content_type, "text/html");
 			res.keep_alive(req.keep_alive());
-			res.body() = "An error occurred: '" + what.to_string() + "'";
+			res.body() = "An error occurred: '" + std::string(what) + "'";
 			res.prepare_payload();
 			return res;
 		};
@@ -177,7 +180,7 @@ namespace ETP_NS
 		// Request path must be absolute and not contain "..".
 		if (req.target().empty() ||
 			req.target()[0] != '/' ||
-			req.target().find("..") != boost::beast::string_view::npos)
+			req.target().find("..") != beast::string_view::npos)
 			return send(bad_request("Illegal request-target"));
 
 		// Build the path to the requested file
@@ -186,10 +189,10 @@ namespace ETP_NS
 			path.append("index.html");
 
 		// Attempt to open the file
-		boost::beast::error_code ec;
+		beast::error_code ec;
 		http::string_body::value_type body;
 		/*
-		body.open(path.c_str(), boost::beast::file_mode::scan, ec);
+		body.open(path.c_str(), beast::file_mode::scan, ec);
 
 		// Handle the case where the file doesn't exist
 		if (ec == boost::system::errc::no_such_file_or_directory)
@@ -272,7 +275,7 @@ namespace ETP_NS
 				"	  }"
 				"	},"
 				"	{"
-				"	  \"name\": \"supportedObjects\","
+				"	  \"name\": \"supportedDataObjects\","
 				"	  \"type\": {"
 				"		\"type\": \"array\","
 				"		\"items\": {"
@@ -445,17 +448,60 @@ namespace ETP_NS
 		return send(std::move(res));
 	}
 
-	template <class T>
 	class Server
 	{
 	private:
 
 		ServerInitializationParameters* serverInitializationParams_;
-		std::vector< std::shared_ptr<T> > sessions_;
+		std::vector< std::shared_ptr<AbstractSession> > sessions_;
 
-		// Handles an HTTP server connection
-		class http_session : public std::enable_shared_from_this<http_session>
+		template<class Body, class Allocator>
+		static void
+			make_websocket_session(
+				tcp::socket socket,
+				http::request<Body, http::basic_fields<Allocator>> req,
+				std::vector< std::shared_ptr<AbstractSession> >& sessions,
+				ServerInitializationParameters* serverInitializationParams)
 		{
+			auto session = std::make_shared<PlainServerSession>(std::move(socket));
+			serverInitializationParams->postSessionCreationOperation(session.get());
+			session->run(std::move(req));
+			std::cout << "Opening the plain websocket session " << sessions.size() << std::endl;
+			sessions.push_back(session);
+		}
+
+#ifdef WITH_ETP_SSL
+		template<class Body, class Allocator>
+		static void
+			make_websocket_session(
+				boost::beast::ssl_stream<tcp::socket> stream,
+				http::request<Body, http::basic_fields<Allocator>> req,
+				std::vector< std::shared_ptr<AbstractSession> >& sessions,
+				ServerInitializationParameters* serverInitializationParams)
+		{
+			auto session = std::make_shared<SslServerSession>(std::move(stream));
+			serverInitializationParams->postSessionCreationOperation(session.get());
+			session->run(std::move(req));
+			std::cout << "Opening the secured websocket session " << sessions.size() << std::endl;
+			sessions.push_back(session);
+		}
+#endif
+
+		// Handles an HTTP server connection.
+		// This uses the Curiously Recurring Template Pattern so that
+		// the same code works with both SSL streams and regular sockets.
+		template<class Derived>
+		class http_session
+		{
+			// Access the derived class, this is part of
+			// the Curiously Recurring Template Pattern idiom.
+			Derived&
+				derived()
+			{
+				return static_cast<Derived&>(*this);
+			}
+
+
 			// This queue is used for HTTP pipelining.
 			class queue
 			{
@@ -527,13 +573,13 @@ namespace ETP_NS
 							operator()()
 						{
 							http::async_write(
-								self_.socket_,
+								self_.derived().stream(),
 								msg_,
 								boost::asio::bind_executor(
 									self_.strand_,
 									std::bind(
 										&http_session::on_write,
-										self_.shared_from_this(),
+										self_.derived().shared_from_this(),
 										std::placeholders::_1,
 										msg_.need_eof())));
 						}
@@ -549,61 +595,35 @@ namespace ETP_NS
 				}
 			};
 
-			tcp::socket socket_;
-			boost::asio::strand<
-				boost::asio::io_context::executor_type> strand_;
-			boost::asio::steady_timer timer_;
-			boost::beast::flat_buffer buffer_;
 			std::shared_ptr<std::string const> doc_root_;
 			http::request<http::string_body> req_;
 			queue queue_;
-
-			std::vector< std::shared_ptr<T> >& sessions_;
+			std::vector< std::shared_ptr<AbstractSession> >& sessions_;
 			ServerInitializationParameters* serverInitializationParams_;
+
+		protected:
+			boost::asio::steady_timer timer_;
+			boost::asio::strand<
+				boost::asio::io_context::executor_type> strand_;
+			beast::flat_buffer buffer_;
 
 		public:
 			// Take ownership of the socket
 			explicit
 				http_session(
-					tcp::socket socket,
+					boost::asio::io_context& ioc,
 					std::shared_ptr<std::string const> const& doc_root,
-					std::vector< std::shared_ptr<T> >& sessions,
-					ServerInitializationParameters* serverInitializationParams)
-				: socket_(std::move(socket))
-#if BOOST_VERSION < 107000
-				, strand_(socket_.get_executor())
-				, timer_(socket_.get_executor().context(),
-			        (std::chrono::steady_clock::time_point::max)())
-#else
-				, strand_(static_cast<boost::asio::io_context&>(socket_.get_executor().context()).get_executor())
-				, timer_(socket_.get_executor(),
-					(std::chrono::steady_clock::time_point::max)())
-#endif
-				, doc_root_(doc_root)
+					std::vector< std::shared_ptr<AbstractSession> >& sessions,
+					ServerInitializationParameters* serverInitializationParams
+				)
+				: doc_root_(doc_root)
 				, queue_(*this)
+				, timer_(ioc,
+					(std::chrono::steady_clock::time_point::max)())
+				, strand_(ioc.get_executor())
 				, sessions_(sessions)
 				, serverInitializationParams_(serverInitializationParams)
 			{
-			}
-
-			// Start the asynchronous operation
-			void
-				run()
-			{
-				// Make sure we run on the strand
-				if (!strand_.running_in_this_thread())
-					return boost::asio::post(
-						boost::asio::bind_executor(
-							strand_,
-							std::bind(
-								&http_session::run,
-								http_session::shared_from_this())));
-
-				// Run the timer. The timer is operated
-				// continuously, this simplifies the code.
-				on_timer({});
-
-				do_read();
 			}
 
 			void
@@ -617,12 +637,15 @@ namespace ETP_NS
 				req_ = {};
 
 				// Read a request
-				http::async_read(socket_, buffer_, req_,
+				http::async_read(
+					derived().stream(),
+					buffer_,
+					req_,
 					boost::asio::bind_executor(
 						strand_,
 						std::bind(
 							&http_session::on_read,
-							http_session::shared_from_this(),
+							derived().shared_from_this(),
 							std::placeholders::_1)));
 			}
 
@@ -641,13 +664,7 @@ namespace ETP_NS
 
 				// Verify that the timer really expired since the deadline may have moved.
 				if (timer_.expiry() <= std::chrono::steady_clock::now())
-				{
-					// Closing the socket cancels all outstanding operations. They
-					// will complete with boost::asio::error::operation_aborted
-					socket_.shutdown(tcp::socket::shutdown_both, ec);
-					socket_.close(ec);
-					return;
-				}
+					return derived().do_timeout();
 
 				// Wait on the timer
 				timer_.async_wait(
@@ -655,7 +672,7 @@ namespace ETP_NS
 						strand_,
 						std::bind(
 							&http_session::on_timer,
-							http_session::shared_from_this(),
+							derived().shared_from_this(),
 							std::placeholders::_1)));
 			}
 
@@ -668,32 +685,26 @@ namespace ETP_NS
 
 				// This means they closed the connection
 				if (ec == http::error::end_of_stream)
-					return do_close();
+					return derived().do_eof();
 
 				if (ec) {
-					std::cerr << "read : " << ec.message() << std::endl;
+					std::cerr << "HTTP server read issue : " << ec.message() << std::endl;
 					return;
 				}
 
 				// See if it is a WebSocket Upgrade
 				if (websocket::is_upgrade(req_))
 				{
-					// Create a websocket session, transferring ownership
-					// of both the socket and the HTTP request.
-					std::shared_ptr<T> session = std::make_shared<T>(std::move(socket_)
-#ifdef WITH_ETP_SSL
-						, ctx_
-#endif
-						);
+					// Make timer expire immediately, by setting expiry to time_point::min we can detect
+					// the upgrade to websocket in the timer handler
+					timer_.expires_at((std::chrono::steady_clock::time_point::min)());
 
-					// Set Handlers of the session
-					serverInitializationParams_->postSessionCreationOperation(session.get());
-
-					// Run session
-					session->run(std::move(req_));
-					sessions_.push_back(session);
-					std::cout << "Opening the websocket session " << sessions_.size() << std::endl;
-					return;
+					// Transfer the stream to a new WebSocket session
+					return make_websocket_session(
+						derived().release_stream(),
+						std::move(req_),
+						sessions_,
+						serverInitializationParams_);
 				}
 
 				// Send the response
@@ -720,7 +731,7 @@ namespace ETP_NS
 				{
 					// This means we should close the connection, usually because
 					// the response indicated the "Connection: close" semantic.
-					return do_close();
+					return derived().do_eof();
 				}
 
 				// Inform the queue that a write completed
@@ -730,9 +741,79 @@ namespace ETP_NS
 					do_read();
 				}
 			}
+		};
+
+		// Handles a plain HTTP connection
+		class plain_http_session
+			: public http_session<plain_http_session>
+			, public std::enable_shared_from_this<plain_http_session>
+		{
+			tcp::socket socket_;
+			boost::asio::strand<
+				boost::asio::io_context::executor_type> strand_;
+
+		public:
+			// Create the http_session
+			plain_http_session(
+				tcp::socket socket,
+				std::shared_ptr<std::string const> const& doc_root,
+				std::vector< std::shared_ptr<AbstractSession> >& sessions,
+				ServerInitializationParameters* serverInitializationParams)
+				: http_session<plain_http_session>(
+#if BOOST_VERSION < 107000
+					socket.get_executor().context(),
+#else
+					static_cast<boost::asio::io_context&>(socket.get_executor().context()),
+#endif
+					doc_root,
+					sessions,
+					serverInitializationParams)
+				, socket_(std::move(socket))
+#if BOOST_VERSION < 107000
+				, strand_(socket_.get_executor())
+#else
+				, strand_(static_cast<boost::asio::io_context&>(socket_.get_executor().context()).get_executor())
+#endif
+
+			{
+			}
+
+			// Called by the base class
+			tcp::socket&
+				stream()
+			{
+				return socket_;
+			}
+
+			// Called by the base class
+			tcp::socket
+				release_stream()
+			{
+				return std::move(socket_);
+			}
+
+			// Start the asynchronous operation
+			void
+				run()
+			{
+				// Make sure we run on the strand
+				if (!strand_.running_in_this_thread())
+					return boost::asio::post(
+						boost::asio::bind_executor(
+							strand_,
+							std::bind(
+								&plain_http_session::run,
+								shared_from_this())));
+
+				// Run the timer. The timer is operated
+				// continuously, this simplifies the code.
+				on_timer({});
+
+				do_read();
+			}
 
 			void
-				do_close()
+				do_eof()
 			{
 				// Send a TCP shutdown
 				boost::system::error_code ec;
@@ -740,37 +821,192 @@ namespace ETP_NS
 
 				// At this point the connection is closed gracefully
 			}
-		};
 
+			void
+				do_timeout()
+			{
+				// Closing the socket cancels all outstanding operations. They
+				// will complete with boost::asio::error::operation_aborted
+				boost::system::error_code ec;
+				socket_.shutdown(tcp::socket::shutdown_both, ec);
+				socket_.close(ec);
+			}
+		};
+#ifdef WITH_ETP_SSL
+		// Handles an SSL HTTP connection
+		class ssl_http_session
+			: public http_session<ssl_http_session>
+			, public std::enable_shared_from_this<ssl_http_session>
+		{
+			boost::beast::ssl_stream<tcp::socket> stream_;
+			boost::asio::strand<
+				boost::asio::io_context::executor_type> strand_;
+			bool eof_ = false;
+
+		public:
+			// Create the http_session
+			ssl_http_session(
+				tcp::socket socket,
+				ssl::context& ctx,
+				std::shared_ptr<std::string const> const& doc_root,
+				std::vector< std::shared_ptr<AbstractSession> >& sessions,
+				ServerInitializationParameters* serverInitializationParams)
+				: http_session<ssl_http_session>(
+					socket.get_executor().context(),
+					doc_root,
+					sessions,
+					serverInitializationParams)
+				, stream_(std::move(socket), ctx)
+				, strand_(stream_.get_executor())
+			{
+			}
+
+			// Called by the base class
+			boost::beast::ssl_stream<tcp::socket>&
+				stream()
+			{
+				return stream_;
+			}
+
+			// Called by the base class
+			boost::beast::ssl_stream<tcp::socket>
+				release_stream()
+			{
+				return std::move(stream_);
+			}
+
+			// Start the asynchronous operation
+			void
+				run()
+			{
+				// Make sure we run on the strand
+				if (!strand_.running_in_this_thread())
+					return boost::asio::post(
+						boost::asio::bind_executor(
+							strand_,
+							std::bind(
+								&ssl_http_session::run,
+								shared_from_this())));
+
+				// Run the timer. The timer is operated
+				// continuously, this simplifies the code.
+				on_timer({});
+
+				// Set the timer
+				timer_.expires_after(std::chrono::seconds(15));
+
+				// Perform the SSL handshake
+				// Note, this is the buffered version of the handshake.
+				stream_.async_handshake(
+					ssl::stream_base::server,
+					buffer_.data(),
+					boost::asio::bind_executor(
+						strand_,
+						std::bind(
+							&ssl_http_session::on_handshake,
+							shared_from_this(),
+							std::placeholders::_1,
+							std::placeholders::_2)));
+			}
+
+			void
+				on_handshake(
+					boost::system::error_code ec,
+					std::size_t bytes_used)
+			{
+				// Happens when the handshake times out
+				if (ec == boost::asio::error::operation_aborted)
+					return;
+
+				if (ec) {
+					std::cerr << "handshake : " << ec.message() << std::endl;
+					return;
+				}
+
+				// Consume the portion of the buffer used by the handshake
+				buffer_.consume(bytes_used);
+
+				do_read();
+			}
+
+			void
+				do_eof()
+			{
+				eof_ = true;
+
+				// Set the timer
+				timer_.expires_after(std::chrono::seconds(15));
+
+				// Perform the SSL shutdown
+				stream_.async_shutdown(
+					boost::asio::bind_executor(
+						strand_,
+						std::bind(
+							&ssl_http_session::on_shutdown,
+							shared_from_this(),
+							std::placeholders::_1)));
+			}
+
+			void
+				on_shutdown(boost::system::error_code ec)
+			{
+				// Happens when the shutdown times out
+				if (ec == boost::asio::error::operation_aborted)
+					return;
+
+				if (ec) {
+					std::cerr << "shutdown : " << ec.message() << std::endl;
+					return;
+				}
+
+				// At this point the connection is closed gracefully
+			}
+
+			void
+				do_timeout()
+			{
+				// If this is true it means we timed out performing the shutdown
+				if (eof_)
+					return;
+
+				// Start the timer again
+				timer_.expires_at(
+					(std::chrono::steady_clock::time_point::max)());
+				on_timer({});
+				do_eof();
+			}
+		};
+#endif
 		// Accepts incoming connections and launches the sessions
 		class listener : public std::enable_shared_from_this<listener>
 		{
 			tcp::acceptor acceptor_;
-#ifdef WITH_ETP_SSL
-			boost::asio::ssl::context& ctx_;
-#endif
 			tcp::socket socket_;
-			std::vector< std::shared_ptr<T> >& sessions_;
+			std::vector< std::shared_ptr<AbstractSession> >& sessions_;
 			ServerInitializationParameters* serverInitializationParams_;
+#ifdef WITH_ETP_SSL
+			ssl::context& ctx_;
+			bool useSsl_;
+#endif
 
 		public:
+#ifdef WITH_ETP_SSL
 			listener(
 				boost::asio::io_context& ioc,
-#ifdef WITH_ETP_SSL
-				boost::asio::ssl::context& ctx,
-#endif
 				tcp::endpoint endpoint,
-				std::vector< std::shared_ptr<T> >& sessions,
-				ServerInitializationParameters* serverInitializationParams)
+				std::vector< std::shared_ptr<AbstractSession> >& sessions,
+				ServerInitializationParameters* serverInitializationParams,
+				ssl::context& ctx,
+				bool useSsl
+			)
 				: acceptor_(ioc)
-#ifdef WITH_ETP_SSL
-				, ctx_(ctx)
-#endif
 				, socket_(ioc)
 				, sessions_(sessions)
 				, serverInitializationParams_(serverInitializationParams)
+				, ctx_(ctx)
+				, useSsl_(useSsl)
 			{
-				boost::beast::error_code ec;
+				beast::error_code ec;
 
 				// Open the acceptor
 				acceptor_.open(endpoint.protocol(), ec);
@@ -801,6 +1037,50 @@ namespace ETP_NS
 					return;
 				}
 			}
+#else
+			listener(
+				boost::asio::io_context& ioc,
+				tcp::endpoint endpoint,
+				std::vector< std::shared_ptr<AbstractSession> >& sessions,
+				ServerInitializationParameters* serverInitializationParams
+			)
+				: acceptor_(ioc)
+				, socket_(ioc)
+				, sessions_(sessions)
+				, serverInitializationParams_(serverInitializationParams)
+			{
+				beast::error_code ec;
+
+				// Open the acceptor
+				acceptor_.open(endpoint.protocol(), ec);
+				if (ec) {
+					std::cerr << "listener open : " << ec.message() << std::endl;
+					return;
+				}
+
+				// Allow address reuse
+				acceptor_.set_option(boost::asio::socket_base::reuse_address(true), ec);
+				if (ec) {
+					std::cerr << "listener set_option : " << ec.message() << std::endl;
+					return;
+				}
+
+				// Bind to the server address
+				acceptor_.bind(endpoint, ec);
+				if (ec) {
+					std::cerr << "listener bind : " << ec.message() << std::endl;
+					return;
+				}
+
+				// Start listening for connections
+				acceptor_.listen(
+					boost::asio::socket_base::max_listen_connections, ec);
+				if (ec) {
+					std::cerr << "listener listen : " << ec.message() << std::endl;
+					return;
+				}
+			}
+#endif
 
 			// Start accepting incoming connections
 			void run() {
@@ -823,7 +1103,13 @@ namespace ETP_NS
 				}
 				else {
 					// Create the http session and run it
-					std::make_shared<http_session>(std::move(socket_), std::make_shared<std::string>("."), sessions_, serverInitializationParams_)->run();
+#ifdef WITH_ETP_SSL
+					if (useSsl_) {
+						std::make_shared<ssl_http_session>(std::move(socket_), ctx_, std::make_shared<std::string>("."), sessions_, serverInitializationParams_)->run();
+					}
+					else 
+#endif
+						std::make_shared<plain_http_session>(std::move(socket_), std::make_shared<std::string>("."), sessions_, serverInitializationParams_)->run();
 				}
 
 				// Accept another connection
@@ -834,10 +1120,11 @@ namespace ETP_NS
 	public:
 		Server(ServerInitializationParameters* serverInitializationParams) : serverInitializationParams_(serverInitializationParams) {}
 
-		std::vector< std::shared_ptr<T> >& getSessions() { return sessions_; }
+		std::vector< std::shared_ptr<AbstractSession> >& getSessions() { return sessions_; }
 
 #ifdef WITH_ETP_SSL
-		void listen(const std::string & host, unsigned short port, int threadCount, boost::asio::ssl::context & sslContext) {
+		void listen(const std::string & host, unsigned short port, int threadCount,
+			const std::string & cert = "", const std::string & key = "", const std::string & dh = "") {
 #else
 		void listen(const std::string & host, unsigned short port, int threadCount) {
 #endif
@@ -850,17 +1137,49 @@ namespace ETP_NS
 			boost::asio::io_context ioc{ threadCount };
 
 #ifdef WITH_ETP_SSL
+			// The context life scope must the server life scope. That's why it is not inside the below condition.
+			ssl::context ctx{ ssl::context::tlsv12_server };
+
 			// Create and launch a listening port
-			std::make_shared<Server::listener>(ioc, sslContext, tcp::endpoint{ address, port }, sessions_, serverInitializationParams_)->run();
+			if (!dh.empty()) {
+
+				ctx.set_password_callback(
+					[](std::size_t,
+						boost::asio::ssl::context_base::password_purpose)
+				{
+					return "test";
+				});
+
+				ctx.set_options(
+					boost::asio::ssl::context::default_workarounds |
+					boost::asio::ssl::context::no_sslv2 |
+					boost::asio::ssl::context::no_sslv3 |
+					boost::asio::ssl::context::single_dh_use);
+
+				ctx.use_certificate_chain(
+					boost::asio::buffer(cert.data(), cert.size()));
+
+				ctx.use_private_key(
+					boost::asio::buffer(key.data(), key.size()),
+					boost::asio::ssl::context::file_format::pem);
+
+				ctx.use_tmp_dh(
+					boost::asio::buffer(dh.data(), dh.size()));
+
+				std::make_shared<Server::listener>(ioc, tcp::endpoint{ address, port }, sessions_, serverInitializationParams_, ctx, true)->run();
+			}
+			else {
+				std::make_shared<Server::listener>(ioc, tcp::endpoint{ address, port }, sessions_, serverInitializationParams_, ctx, false)->run();
+			}
 #else
-			// Create and launch a listening port
+				// Create and launch a listening port
 			std::make_shared<Server::listener>(ioc, tcp::endpoint{ address, port }, sessions_, serverInitializationParams_)->run();
 #endif
 
 			// Capture SIGINT and SIGTERM to perform a clean shutdown
 			boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
 			signals.async_wait(
-				[&](boost::beast::error_code const&, int)
+				[&](beast::error_code const&, int)
 			{
 				// Stop the `io_context`. This will cause `run()`
 				// to return immediately, eventually destroying the
@@ -883,4 +1202,3 @@ namespace ETP_NS
 		}
 	};
 }
-

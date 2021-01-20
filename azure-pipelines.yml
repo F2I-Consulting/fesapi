@@ -127,7 +127,7 @@ jobs:
         displayName: 'C# Example'
         
   - job:
-    displayName: Windows VS2019 with HDF5 1.12.0
+    displayName: Windows VS2019 with HDF5 1.12.0 with ETP
     pool:
       vmImage: 'windows-2019'
     timeoutInMinutes: 150
@@ -174,26 +174,44 @@ jobs:
         inputs:
           workingDirectory: C:/Minizip-build
           cmakeArgs: --build . --config $(BuildType) --target INSTALL -- /verbosity:minimal
-
-      # sourceforge and WebRequest incompatible
-      - task: PowerShell@2
-        inputs:
-            targetType: 'inline'
-            script: |
-                Write-Host "Downloading SWIG..."
-                $url = "http://prdownloads.sourceforge.net/swig/swigwin-4.0.2.zip"
-                $output = [System.IO.Path]::Combine("C:/", "swigwin-4.0.2.zip")
-                (new-object System.Net.WebClient).DownloadFile($url, $output)
-            errorActionPreference: 'stop'
-            failOnStderr: 'true'
-        displayName: Download SWIG from official repository
+        
+      # AVRO
+      - powershell: |
+          Invoke-WebRequest https://mirroir.wptheme.fr/apache/avro/avro-1.10.1/cpp/avro-cpp-1.10.1.tar.gz -OutFile $(Agent.TempDirectory)/avro-cpp-1.10.1.tar.gz
       - task: ExtractFiles@1
         inputs:
-          archiveFilePatterns: 'C:/swigwin-4.0.2.zip'
-          destinationFolder: 'C:/'
+          archiveFilePatterns: '$(Agent.TempDirectory)/avro-cpp-1.10.1.tar.gz'
           cleanDestinationFolder: false
-        displayName: Install SWIG
+      - powershell: |
+          ((Get-Content -path $(Build.SourcesDirectory)/avro-cpp-1.10.1/CMakeLists.txt -Raw) -replace 'install \(TARGETS avrocpp avrocpp_s','install (TARGETS avrocpp_s') | Set-Content -Path $(Build.SourcesDirectory)/avro-cpp-1.10.1/CMakeLists.txt
+          ((Get-Content -path $(Build.SourcesDirectory)/avro-cpp-1.10.1/CMakeLists.txt -Raw) -replace 'install \(TARGETS avrogencpp RUNTIME DESTINATION bin\)','') | Set-Content -Path $(Build.SourcesDirectory)/avro-cpp-1.10.1/CMakeLists.txt
+        displayName: 'Do not install avro non static' 
+      - task: CMake@1
+        displayName: 'CMake configure AVRO'
+        inputs:
+          workingDirectory: $(Agent.TempDirectory)/build-avro-cpp-1.10.1
+          cmakeArgs:
+            $(Build.SourcesDirectory)/avro-cpp-1.10.1
+            $(Generator)
+            -Wno-dev -Wno-deprecated
+            -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
+            -DCMAKE_INSTALL_PREFIX=$(Agent.TempDirectory)/avro-cpp-1.10.1-install
+      - task: CMake@1
+        displayName: "CMake build AVRO --config $(BuildType)"
+        inputs:
+          workingDirectory: $(Agent.TempDirectory)/build-avro-cpp-1.10.1
+          cmakeArgs: --build . --config $(BuildType) --target avrocpp_s -- /verbosity:minimal
+      - task: CMake@1
+        displayName: "CMake Install AVRO --config $(BuildType)"
+        inputs:
+          workingDirectory: $(Agent.TempDirectory)/build-avro-cpp-1.10.1
+          cmakeArgs: --install .
 
+      # Patch about https://github.com/boostorg/beast/issues/1980
+      - powershell: |
+          ((Get-Content -path $(BOOST_ROOT_1_72_0)/include/boost/beast/core/impl/file_stdio.ipp -Raw) -replace 'std::numeric_limits<long>::max','(std::numeric_limits<long>::max)') | Set-Content -Path $(BOOST_ROOT_1_72_0)/include/boost/beast/core/impl/file_stdio.ipp
+        displayName: 'Patching Beast 1.72 for MSVC'
+          
       - task: CMake@1
         displayName: 'CMake .. $(Generator)'
         inputs:
@@ -210,18 +228,10 @@ jobs:
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2019/lib/zlib.lib
             -DSZIP_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2019/lib/szip.lib
             -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
+            -DAVRO_INCLUDE_DIR=$(Agent.TempDirectory)/avro-cpp-1.10.1-install/include
+            -DAVRO_LIBRARY_RELEASE=$(Agent.TempDirectory)/avro-cpp-1.10.1-install/lib/avrocpp_s.lib
             -DWITH_EXAMPLE=TRUE
-            -DWITH_RESQML2_2=TRUE
-            -DWITH_DOTNET_WRAPPING=TRUE
-            -DWITH_TEST=TRUE
-            -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
-            
-      - task: VSBuild@1
-        displayName: "Build the C# example"
-        inputs:
-          platform: 'x64'
-          solution: 'cs/example/example.sln'
-          configuration: '$(BuildType)'
+            -DWITH_ETP=TRUE
 
       - task: CMake@1
         displayName: "Build --config $(BuildType)"
@@ -231,26 +241,12 @@ jobs:
       - powershell: |
           Copy-Item C:\hdf5-1.12.0-win64-vs2019\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
           Copy-Item C:\hdf5-1.12.0-win64-vs2019\bin\zlib.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
-          ctest -C $(BuildType) -V
         failOnStderr: true
         workingDirectory: $(Build.SourcesDirectory)\build
-        displayName: 'Test'
 
       - script: |
           $(Build.SourcesDirectory)\build\$(BuildType)\example.exe
         displayName: 'Example'
-        
-      - task: CopyFiles@2
-        displayName: 'Copy dependencies of C# Example'
-        inputs:
-            contents: |
-                $(Build.SourcesDirectory)\build\$(BuildType)\*.dll
-            targetFolder: '$(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)'
-            flattenFolders: true
-        
-      - script: |
-          $(Build.SourcesDirectory)\cs\example\bin\x64\$(BuildType)\example.exe
-        displayName: 'C# Example'
         
   - job:
     displayName: Ubuntu 16.04 with HDF5 1.8.16

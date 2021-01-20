@@ -54,7 +54,8 @@ namespace ETP_NS
 				char const* host,
 				char const* port,
 				char const* target,
-				int version)
+				int version,
+				std::string authorization = "")
 		{
 			// Set up an HTTP GET request message
 			req_.version(version);
@@ -62,6 +63,9 @@ namespace ETP_NS
 			req_.target(target);
 			req_.set(http::field::host, host);
 			req_.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+			if (!authorization.empty()) {
+				req_.set(http::field::authorization, authorization);
+			}
 
 			// Look up the domain name
 			resolver_.async_resolve(

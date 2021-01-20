@@ -43,13 +43,13 @@ void DiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes
 	}
 	else {
 		session->flushReceivingBuffer();
-		sendExceptionCode3();
+		session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(3, "The message type ID " + std::to_string(mh.messageType) + " is invalid for the discovery protocol."), mh.messageId, 0x02);
 	}
 }
 
-void DiscoveryHandlers::on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources &, int64_t)
+void DiscoveryHandlers::on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources &, int64_t correlationId)
 {
-	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The Discovery::on_GetResources method has not been overriden by the agent."));
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The Discovery::on_GetResources method has not been overriden by the agent."), correlationId, 0x02);
 }
 
 void DiscoveryHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse & msg, int64_t)

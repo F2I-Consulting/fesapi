@@ -19,16 +19,20 @@ under the License.
 #pragma once
 
 #include "PlainClientSession.h"
-
-#include "ProtocolHandlers/CoreHandlers.h"
-#include "ProtocolHandlers/DiscoveryHandlers.h"
-#include "ProtocolHandlers/StoreHandlers.h"
-#include "ProtocolHandlers/DataArrayHandlers.h"
+#ifdef WITH_ETP_SSL
+#include "ssl/SslClientSession.h"
+#endif
 
 namespace ETP_NS
 {
 	namespace ClientSessionLaunchers
 	{
-		DLL_IMPORT_OR_EXPORT std::shared_ptr<ETP_NS::PlainClientSession> createClientSession(const std::string & host, const std::string & port, const std::string & target, const std::string & authorization);
+		DLL_IMPORT_OR_EXPORT std::shared_ptr<ETP_NS::PlainClientSession> createWsClientSession(const std::string & host, const std::string & port, const std::string & target, const std::string & authorization);
+
+#ifdef WITH_ETP_SSL
+		DLL_IMPORT_OR_EXPORT std::shared_ptr<ETP_NS::SslClientSession> createWssClientSession(const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
+			const std::string & additionalCertificates = "");
+#endif
+
 	}
 }

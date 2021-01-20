@@ -14,4 +14,4 @@ class MyOwnClientCoreHandlers(fesapi.CoreHandlers):
         mb.context.depth = 1
         mb.scope = fesapi._self
         mb.countObjects = True
-        self.getSession().send(mb)
+        self.getSession().send(mb, 0, 0x02)

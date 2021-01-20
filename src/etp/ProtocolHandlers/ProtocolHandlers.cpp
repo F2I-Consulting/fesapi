@@ -25,10 +25,6 @@ under the License.
 
 using namespace ETP_NS;
 
-void ProtocolHandlers::sendExceptionCode3() {
-	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(3, "The message type ID is invalid for the given protocol."));
-}
-
 void ProtocolHandlers::printDataObject(const Energistics::Etp::v12::Datatypes::Object::DataObject & dataObject)
 {
 	std::cout << "uri : " << dataObject.resource.uri << std::endl;

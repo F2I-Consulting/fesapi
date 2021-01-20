@@ -22,6 +22,6 @@ public class MyOwnClientCoreHandlers : CoreHandlers {
 		mb.scope = ContextScopeKind.self;
 		mb.countObjects = true;
 
-		getSession().send(mb);
+		getSession().send(mb, 0, 0x02);
 	}
 }

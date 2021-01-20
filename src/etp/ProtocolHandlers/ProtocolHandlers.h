@@ -47,7 +47,6 @@ namespace ETP_NS
 		AbstractSession* session;
 
 		void printDataObject(const Energistics::Etp::v12::Datatypes::Object::DataObject & dataObject);
-		void sendExceptionCode3();
 
 	public:
 		virtual ~ProtocolHandlers() {}

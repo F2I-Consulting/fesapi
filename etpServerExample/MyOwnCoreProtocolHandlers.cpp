@@ -25,6 +25,8 @@ under the License.
 #include "etp/AbstractSession.h"
 #include "etp/EtpHelpers.h"
 
+#include "tools/date.h"
+
 void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession & rs, int64_t correlationId)
 {
 	MyServerInitializationParameters serverInitializationParams(nullptr);
@@ -49,7 +51,7 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 	}
 
 	if (requestedAndSupportedProtocols.empty()) {
-		session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The server does not support any of the requested protocols."));
+		session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The server does not support any of the requested protocols."), correlationId, 0x02);
 		return;
 	}
 
@@ -59,13 +61,16 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 	openSession.applicationVersion = serverInitializationParams.getApplicationVersion();
 	boost::uuids::random_generator gen;
 	boost::uuids::uuid uuid = gen();
-	std::move(std::begin(uuid.data), std::end(uuid.data), openSession.serverInstanceId.array.begin());
+	std::copy(std::begin(uuid.data), std::end(uuid.data), openSession.sessionId.array.begin());
+	uuid = gen();
+	std::copy(std::begin(uuid.data), std::end(uuid.data), openSession.serverInstanceId.array.begin());
 	openSession.supportedFormats.push_back("xml");
 	openSession.supportedProtocols = requestedAndSupportedProtocols;
 	openSession.endpointCapabilities = serverInitializationParams.makeEndpointCapabilities();
 	openSession.supportedDataObjects = serverInitializationParams.makeSupportedDataObjects();
+	openSession.currentDateTime = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
-	session->send(openSession, correlationId);
+	session->send(openSession, correlationId, 0x02);
 
 	std::cout << "New session" << std::endl;
 }

@@ -48,6 +48,6 @@ public class MyOwnDiscoveryProtocolHandlers extends DiscoveryHandlers {
         MapStringString uriMap = new MapStringString();
         uriMap.put("0", resources.get(0).getUri());
         gdo.setUris(uriMap);
-        getSession().send(gdo);
+        getSession().send(gdo, 0, 0x02);
 	}
 }

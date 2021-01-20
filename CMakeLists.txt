@@ -10,8 +10,8 @@ set (FESAPI_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 # version mechanism
 set (Fesapi_VERSION_MAJOR 2)
-set (Fesapi_VERSION_MINOR 0)
-set (Fesapi_VERSION_PATCH 1)
+set (Fesapi_VERSION_MINOR 1)
+set (Fesapi_VERSION_PATCH 0)
 set (Fesapi_VERSION_TWEAK 0)
 
 set (Fesapi_VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}.${Fesapi_VERSION_PATCH}.${Fesapi_VERSION_TWEAK})
@@ -135,6 +135,9 @@ if (WITH_ETP)
 
 	# Boost DEPENDENCY
 	find_package(Boost 1.66.0 REQUIRED system)
+	if (WIN32 AND (Boost_VERSION_MAJOR EQUAL 1) AND (Boost_VERSION_MINOR LESS 74) AND (Boost_VERSION_MINOR GREATER 71))
+		message(WARNING "You may experience min/max issue with this boost version : See https://github.com/boostorg/beast/issues/1980")
+	endif ()
 	
 	add_subdirectory (etpClientExample)
 	add_subdirectory (etpServerExample)

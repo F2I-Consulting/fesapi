@@ -17,14 +17,13 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "etp/ssl/SslServerSession.h"
+#include "SslServerSession.h"
 
 using namespace ETP_NS;
 
-SslServerSession::SslServerSession(tcp::socket socket, boost::asio::ssl::context& ctx)
-	: AbstractServerSession<SslServerSession>(socket.get_executor().context()),
-	ws_(std::move(socket), ctx),
-	strand_(ws_.get_executor())
+SslServerSession::SslServerSession(boost::beast::ssl_stream<tcp::socket> stream)
+	: AbstractPlainOrSslServerSession<SslServerSession>(stream.get_executor().context()),
+	ws_(std::move(stream))
 {
 	ws_.binary(true);
 }

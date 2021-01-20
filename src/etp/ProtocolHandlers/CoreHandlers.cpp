@@ -64,15 +64,27 @@ void CoreHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::Mes
 		session->flushReceivingBuffer();
 		on_Acknowledge(ack, mh.messageId);
 	}
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::Core::Ping::messageTypeId) {
+		Energistics::Etp::v12::Protocol::Core::Ping ping;
+		avro::decode(*d, ping);
+		session->flushReceivingBuffer();
+		on_Ping(ping, mh.messageId);
+	}
+	else if (mh.messageType == Energistics::Etp::v12::Protocol::Core::Pong::messageTypeId) {
+		Energistics::Etp::v12::Protocol::Core::Pong pong;
+		avro::decode(*d, pong);
+		session->flushReceivingBuffer();
+		on_Pong(pong, mh.messageId);
+	}
 	else {
 		session->flushReceivingBuffer();
-		sendExceptionCode3();
+		session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(3, "The message type ID " + std::to_string(mh.messageType) + " is invalid for the core protocol."), mh.messageId, 0x02);
 	}
 }
 
-void CoreHandlers::on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession &, int64_t)
+void CoreHandlers::on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession &, int64_t correlationId)
 {
-	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(2, "The Core::on_RequestSession method has not been overriden by the agent."));
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(2, "The Core::on_RequestSession method has not been overriden by the agent."), correlationId, 0x02);
 }
 
 void CoreHandlers::on_OpenSession(const Energistics::Etp::v12::Protocol::Core::OpenSession &, int64_t)
@@ -104,4 +116,17 @@ void CoreHandlers::on_ProtocolException(const Energistics::Etp::v12::Protocol::C
 void CoreHandlers::on_Acknowledge(const Energistics::Etp::v12::Protocol::Core::Acknowledge &, int64_t correlationId)
 {
 	std::cout << "Acknowledge message_id " << correlationId << std::endl;
+}
+
+void CoreHandlers::on_Ping(const Energistics::Etp::v12::Protocol::Core::Ping &, int64_t correlationId)
+{
+	Energistics::Etp::v12::Protocol::Core::Pong pong;
+	pong.currentDateTime = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+
+	session->send(pong, correlationId, 0x02);
+}
+
+void CoreHandlers::on_Pong(const Energistics::Etp::v12::Protocol::Core::Pong & pong, int64_t correlationId)
+{
+	std::cout << "Received Pong at " << pong.currentDateTime << " with message id " << correlationId << std::endl;
 }

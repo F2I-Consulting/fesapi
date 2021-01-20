@@ -40,6 +40,6 @@ public class MyOwnClientCoreHandlers extends CoreHandlers {
 		mb.setScope(ContextScopeKind.self);
 		mb.setCountObjects(true);
 
-		getSession().send(mb);
+		getSession().send(mb, 0, 0x02);
 	}
 }
