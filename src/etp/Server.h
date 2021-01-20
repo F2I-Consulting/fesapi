@@ -761,7 +761,7 @@ namespace ETP_NS
 #if BOOST_VERSION < 107000
 					socket.get_executor().context(),
 #else
-					static_cast<boost::asio::io_context&>(socket_.get_executor().context()),
+					static_cast<boost::asio::io_context&>(socket.get_executor().context()),
 #endif
 					doc_root,
 					sessions,
