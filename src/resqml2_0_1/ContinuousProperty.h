@@ -176,8 +176,8 @@ namespace RESQML2_0_1_NS
 		* @param numValues				The number of property values ordered by dimension of the array to write.
 		* @param numArrayDimensions		The number of dimensions of the array to write.
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param minimumValue			The minimum value (or value vector) of the values to add. If nullptr is provided and the dimension of value is 1 then the minimum value will be computed from the values.
-		* @param maximumValue			The maximum value (or value vector) of the values to add. If nullptr is provided and the dimension of value is 1 then the maximum value will be computed from the values.
+		* @param minimumValue			The minimum value (or value vector) of the values to add. If nullptr is provided then the minimum value will be computed from the values.
+		* @param maximumValue			The maximum value (or value vector) of the values to add. If nullptr is provided then the maximum value will be computed from the values.
 		*/
 		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			double * minimumValue = nullptr, double * maximumValue = nullptr);
@@ -224,8 +224,8 @@ namespace RESQML2_0_1_NS
 		* @param numValues				The number of property values ordered by dimension of the array to write.
 		* @param numArrayDimensions		The number of dimensions of the array to write.
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param minimumValue			The minimum value (or value vector) of the values to add. If nullptr is provided and the dimension of value is 1 then the minimum value will be computed from the values.
-		* @param maximumValue			The maximum value (or value vector) of the values to add. If nullptr is provided and the dimension of value is 1 then the maximum value will be computed from the values.
+		* @param minimumValue			The minimum value (or value vector) of the values to add. If nullptr is provided then the minimum value will be computed from the values.
+		* @param maximumValue			The maximum value (or value vector) of the values to add. If nullptr is provided then the maximum value will be computed from the values.
 		*/
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			float * minimumValue = nullptr, float * maximumValue = nullptr);

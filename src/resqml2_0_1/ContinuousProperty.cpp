@@ -144,6 +144,11 @@ void ContinuousProperty::pushBackDoubleHdf5Array3dOfValues(const double * values
 void ContinuousProperty::pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy * proxy,
 	double * minimumValue, double * maximumValue)
 {
+	if ((minimumValue == nullptr && maximumValue != nullptr) ||
+		(minimumValue != nullptr && maximumValue == nullptr)) {
+		throw std::invalid_argument("You cannot set the minimum value without the maximum value and viceversa.");
+	}
+
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
 		if (proxy == nullptr) {
@@ -289,9 +294,7 @@ void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(float const * values, un
 		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "");
-	if (minimumValue != nullptr) { // implies that maximumValue != nullptr as well.
-		setPropertyMinMax(values, numValues, numArrayDimensions, minimumValue, maximumValue);
-	}
+	setPropertyMinMax(values, numValues, numArrayDimensions, minimumValue, maximumValue);
 
 	// HDF
 	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
