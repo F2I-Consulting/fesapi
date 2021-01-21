@@ -2891,15 +2891,58 @@ namespace RESQML2_NS
 		unsigned int getGlobalIndexColumnFromIjIndex(unsigned int iColumn, unsigned int jColumn) const;
 		unsigned int getGlobalIndexCellFromIjkIndex(unsigned int iCell, unsigned int jCell, unsigned int kCell) const;
 
+		/**
+		 * Queries if this grid is right handed, as determined by the triple product of tangent vectors
+		 * in the I, J, and K directions.
+		 *
+		 * @exception	std::logic_error	If this grid has no geometry. Or, if it is in an unrecognized
+		 * 									version of RESQML.
+		 *
+		 * @returns	True if this grid is right handed, false if it is not.
+		 */
 		bool isRightHanded() const;
 
 		void getPillarsOfSplitCoordinateLines(unsigned int * pillarIndices, bool reverseIAxis = false, bool reverseJAxis = false) const;
 		void getColumnsOfSplitCoordinateLines(unsigned int * columnIndices, bool reverseIAxis = false, bool reverseJAxis = false) const;
 		void getColumnCountOfSplitCoordinateLines(unsigned int * columnIndexCountPerSplitCoordinateLine) const;
 		unsigned long getSplitCoordinateLineCount() const;
+		/**
+		 * Gets the split nodes count.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this IJK grid.
+		 *
+		 * @returns	The split nodes count.
+		 */
+		uint64_t getSplitNodeCount() const;
 		
+		/**
+		 * Loads the split information into memory to speed up processes. Be aware that you must unload
+		 * by yourself this memory thanks to unloadSplitInformation().
+		 */
 		void loadSplitInformation();
+		/** Unloads the split information from memory. */
 		void unloadSplitInformation();
+
+		/**
+		 * @brief	Gets the XYZ point index in the HDF dataset from the corner of a cell. This method
+		 * 			requires that you have already loaded the split information.
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::invalid_argument	If the split information is not loaded.
+		 * @exception	std::out_of_range	 	If @p iCell @c > getICellCount(), @p jCell @c >
+		 * 										getJCellCount() or @p kCell @c > getKCellCount().
+		 * @exception	std::out_of_range	 	If @p corner @c > 7.
+		 *
+		 * @param 	iCell 	The I index of the cell.
+		 * @param 	jCell 	The J index of the cell.
+		 * @param 	kCell 	The K index of the cell.
+		 * @param 	corner	Index of the corner: 0 for (0,0,0); 1 for (1,0,0); 2 for (1,1,0); 3 for (0,1,
+		 * 					0); 4 for (0,0,1); 5 for (1,0,1); 6 for (1,1,1); 7 for (0,1,1).
+		 *
+		 * @returns	The index of the XYZ point in the HDF dataset corresponding to the corner of the
+		 * 			cell. Keep in mind to multiply the result by 3 to get the X index since the points
+		 * 			are triplet of values.
+		 */
 		uint64_t getXyzPointIndexFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner) const;
 		
 		void getPillarGeometryIsDefined(bool * pillarGeometryIsDefined, bool reverseIAxis = false, bool reverseJAxis = false) const;
@@ -2907,7 +2950,50 @@ namespace RESQML2_NS
 		void getEnabledCells(bool * enabledCells, bool reverseIAxis = false, bool reverseJAxis= false, bool reverseKAxis= false) const;
 		void setEnabledCells(unsigned char* enabledCells, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 		
+		/**
+		 * Get the XYZ points count in each K layer interface.
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::range_error	 	If the count of cells in I or J direction is strictly
+		 * 										greater than unsigned int max.
+		 * @exception	std::invalid_argument	If there is no geometry on this IJK grid.
+		 * @exception	std::range_error	 	If the count of split coordinate lines is strictly
+		 * 										greater than unsigned int max.
+		 *
+		 * @returns	The XYZ point count of each K layer interface.
+		 */
+		uint64_t getXyzPointCountOfKInterface() const;
+		/*
+		 * Gets all the XYZ points of a particular K interface. XYZ points are given in the local CRS.
+		 * This method is not const since it is optimized in order not to recompute the pillar
+		 * information but to get it as input.
+		 *
+		 * @param 		  	kInterface	The K interface index starting from zero to kCellCount.
+		 * @param [out]	xyzPoints 		A linearized 2d array where the first (quickest) dimension is
+		 * 								coordinate dimension (XYZ) and second dimension is vertex
+		 * 								dimension. It must be pre allocated with a size of
+		 * 								<tt>3 * getXyzPointCountOfKInterface()</tt>.
+		 */
 		void getXyzPointsOfKInterface(unsigned int kInterface, double * xyzPoints);
+		/**
+		 * @brief Gets all the XYZ points of a particular sequence of K interfaces. XYZ points are given in the
+		 * local CRS.
+		 *
+		 * @exception	std::out_of_range	 	If @p kInterfaceStart @c > getKCellCount() or @p
+		 * 										kInterfaceEnd @c > getKCellCount() + getKGapsCount().
+		 * @exception	std::range_error	 	If @p kInterfaceStart @c > @p kInterfaceEnd.
+		 * @exception	std::invalid_argument	If @p xyzPoints is @c nullptr.
+		 *
+		 * @param 	   	kInterfaceStart	The K index of the starting interface taken from zero to
+		 * 								getKCellCount().
+		 * @param 	   	kInterfaceEnd  	The K index of the ending interface taken from zero to
+		 * 								getKCellCount() + getKGapsCount().
+		 * @param [out]	xyzPoints	   	A linearized 2d array where the first (quickest) dimension is
+		 * 								coordinate dimension (XYZ) and second dimension is vertex
+		 * 								dimension. It must be preallocated with a size of
+		 * 								<tt>3 *</tt> getXyzPointCountOfKInterface() <tt>*
+		 * 								(kInterfaceEnd - kInterfaceStart + 1)</tt>.
+		 */
 		void getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints);
 		
 		virtual bool isNodeGeometryCompressed() const;
