@@ -3001,6 +3001,20 @@ namespace RESQML2_0_1_NS
 		void getEnabledCells(bool * enabledCells, bool reverseIAxis = false, bool reverseJAxis= false, bool reverseKAxis= false) const;
 		void setEnabledCells(unsigned char* enabledCells, COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 		
+		/**
+		* Get the xyz point count in each K Layer interface in a given patch.
+		* @param patchIndex	The index of the patch. It is generally zero.
+		*/
+		ULONG64 getXyzPointCountOfKInterfaceOfPatch(unsigned int patchIndex) const;
+		
+		/**
+		* Get all the XYZ points of a particular K interface of a particular patch of this representation.
+		* XYZ points are given in the local CRS.
+		* This method is not const since it is optimized in order not to recompute the pillar information but to get it as input.
+		* @param kInterface	The K interface index starting from zero to kCellCount.
+		* @param patchIndex	The index of the patch. It is generally zero.
+		* @param xyzPoints 	A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated with a size of 3*getXyzPointCountOfKInterfaceOfPatch.
+		*/
 		void getXyzPointsOfKInterfaceOfPatch(const unsigned int & kInterface, const unsigned int & patchIndex, double * xyzPoints);
 		virtual void getXyzPointsOfKInterfaceSequenceOfPatch(const unsigned int & kInterfaceStart, const unsigned int & kInterfaceEnd, const unsigned int & patchIndex, double * xyzPoints);
 		
