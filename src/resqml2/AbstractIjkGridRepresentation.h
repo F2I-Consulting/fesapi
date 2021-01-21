@@ -690,7 +690,6 @@ namespace RESQML2_NS
 		 * 								dimension. It must be pre allocated with a size of
 		 * 								<tt>3 * getXyzPointCountOfKInterface()</tt>.
 		 */
-		/** Please do note use: not implemented yet. */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfKInterface(unsigned int kInterface, double * xyzPoints);
 
 		/**
