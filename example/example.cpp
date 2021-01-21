@@ -740,10 +740,10 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 		propType1 = pck->createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", gsoap_eml2_1::eml21__QuantityClassKind__length);
 	}
 #endif
-	RESQML2_NS::ContinuousProperty* contProp1 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,
+	RESQML2_NS::ContinuousProperty* contProp1 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 1,
 		gsoap_eml2_3::resqml22__IndexableElement__nodes, "exoticMeter", propType1);
-	double prop1Values[16] = { 301, 302, 301, 302, 351, 352, 351, 352, 301, 302, 301, 302, 351, 352, 351, 352 };
-	contProp1->pushBackDoubleHdf5Array2dOfValues(prop1Values, 2, 8, hdfProxy);
+	float prop1Values[16] = { 301, 302, 301, 302, 351, 352, 351, 352, 301, 302, 301, 302, 351, 352, 351, 352 };
+	contProp1->pushBackFloatHdf5Array2dOfValues(prop1Values, 2, 8, hdfProxy);
 
 	EML2_NS::PropertyKind * propType2 = nullptr;
 	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {

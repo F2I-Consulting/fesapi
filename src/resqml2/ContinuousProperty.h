@@ -152,6 +152,8 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
+		 * @exception std::invalid_argument		If <tt> minimumValue == nullptr </tt> and <tt> maximumValue != nullptr </tt>.
+		 * @exception std::invalid_argument		If <tt> minimumValue != nullptr </tt> and <tt> maximumValue == nullptr </tt>.
 		 *
 		 * @param 		  	values			  	All the property values to set ordered according the
 		 * 										topology of the representation it is based on.
@@ -165,14 +167,12 @@ namespace RESQML2_NS
 		 * 										repository.
 		 * @param [in]	  	minimumValue	  	The minimum value (or value vector) of the
 		 * 										values to add. If @c nullptr is provided for both @p
-		 * 										minimumValue and @p maximumValue and if the dimension of
-		 * 										value is 1 then both minimum and maximum values will be
-		 * 										computed from the values.
+		 * 										minimumValue and @p maximumValue then both minimum and
+		 *										maximum values will be computed from the values.
 		 * @param [in]	  	maximumValue	  	The maximum value (or value vector) of the
 		 * 										values to add. If @ nullptr is provided for both @p
-		 * 										maximumValue and @p minimumValue and if the dimension of
-		 * 										value is 1 then both maximum and minimum values will be
-		 * 										computed from the values.
+		 * 										maximumValue and @p minimumValue then both minimum and
+		 *										maximum values will be computed from the values.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions,
 			double * minimumValue, double * maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
