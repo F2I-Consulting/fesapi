@@ -239,6 +239,27 @@ namespace EML2_NS
 		virtual bool exist(const std::string & absolutePathInHdfFile) const = 0;
 		
 		virtual bool isCompressed(const std::string & datasetName) = 0;
+		
+		/**
+		* Set the maximum size for a chunk of a dataset only in case the HDF5 file is compressed.
+		* Chunk dimensions, and consequently actual size, will be computed from this maximum chunk memory size.
+		* Chunks dimensions are computed by reducing dataset dimensions from slowest to fastest until the max chunk size is honored.
+		*
+		* Example : Let's take a 3d property 4x3x2 (fastest from slowest) of double with a max chunk size of 100 bytes
+		* The total size of this property is 4*3*2*8 = 192 bytes which is greater than 100 bytes, the max chunk size.
+		* The computed chunk dimension will consequently be 4*3*1 = 96 which is lower than (not equal to) 100 bytes, the max chunk size.
+		* If we would have set a max chunk size of 20 bytes, the chunk dimension would have been computed as 2*1*1 (16 bytes), etc...
+		*
+		* @param newMaxChunkSize The maximum chunk size to set in bytes.
+		*/
+		void setMaxChunkSize(unsigned int newMaxChunkSize);
+		
+		/**
+		 * Get the number of elements in each chunk dimension of an HDF5 dataset.
+		 * If the dataset is not compressed, then it returns an empty vector.
+		 * @param datasetName	The absolute name of the dataset which we want to get the number of elements from.
+		 */
+		virtual std::vector<unsigned long long> getElementCountPerChunkDimension(const std::string & datasetName) = 0;
 
 		void initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, unsigned int emlVersion);
 				

@@ -26,9 +26,6 @@ under the License.
 
 #include <hdf5.h>
 
-// https://support.hdfgroup.org/HDF5/doc/Advanced/Chunking/index.html
-#define MAX_CHUNK_SIZE 0xffffffff // 2^32 - 1
-
 using namespace std;
 using namespace EML2_NS;
 
@@ -385,57 +382,46 @@ int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName)
 	return result;
 }
 
-static vector<unsigned long long> reduceForChunking(hid_t datatype,
+vector<unsigned long long> HdfProxy::reduceForChunking(hid_t datatype,
 	const unsigned long long * numValuesInEachDimension,
-	unsigned int numDimensions)
+	unsigned int numDimensions) const
 {
-	vector<unsigned long long> newValues(numDimensions);
-	for (unsigned int i = 0; i < numDimensions; ++i) {
-		newValues[i] = numValuesInEachDimension[i];
+	// Get size in bytes of this datatype.
+	const size_t elementSize = H5Tget_size(datatype);
+	if (maxChunkSize < elementSize) {
+		throw std::invalid_argument("The maximum chunk size cannot be inferior to the size of one element of the dataset.");
 	}
 
-#if 0
-	// Debug output
-	printf("Start from chunks of size %llu", newValues[0]);
-	for (unsigned int i = 1; i < numDimensions; ++i) {
-		printf(" x %llu", newValues[i]);
+	vector<unsigned long long> chunkDimensions(numDimensions);
+	for (unsigned int i = 0; i < numDimensions; ++i) {
+		chunkDimensions[i] = numValuesInEachDimension[i];
 	}
-	printf ("\n");
-#endif
 
 	// Compute product of all dimensions.
-	unsigned long long product =
-		std::accumulate (newValues.begin(),
-				 newValues.end(),
-				 1ULL,
-				 std::multiplies<unsigned long long>());
-	// Get size in bytes of this datatype.
-	size_t size = H5Tget_size(datatype);
+	unsigned long long dimensionProduct =
+		std::accumulate(chunkDimensions.begin(),
+			chunkDimensions.end(),
+			1ULL,
+			std::multiplies<unsigned long long>());
 
 	// If the total size exceeds the allowed maximum chunk size,
-	// reduce the largest dimension.
-	if (product * size > MAX_CHUNK_SIZE) {
-		// Find largest element.
-		vector<unsigned long long>::iterator it =
-			std::max_element (newValues.begin(),
-					    newValues.end());
-		// How many chunks are required?  Round up.
-		unsigned long long numChunks =
-			(product * size + MAX_CHUNK_SIZE - 1) / MAX_CHUNK_SIZE;
-		// Reduce the largest dimension.
-		*it /= numChunks;
-
-#if 0
-		// Debug output.
-		printf ("Try chunks of size %llu", newValues[0]);
-		for (unsigned int i = 1; i < numDimensions; ++i) {
-			printf(" x %llu", newValues[i]);
+	// reduce the chunk dimensions untill it is necessary
+	size_t totalSize = dimensionProduct * elementSize;
+	size_t dimensionToDivide = 0;
+	while (totalSize > maxChunkSize) {
+		while (chunkDimensions[dimensionToDivide] == 1) {
+			++dimensionToDivide;
 		}
-		printf ("\n");
-#endif
+
+		totalSize /= chunkDimensions[dimensionToDivide];
+		chunkDimensions[dimensionToDivide] = maxChunkSize / totalSize;
+		if (chunkDimensions[dimensionToDivide] == 0) {
+			chunkDimensions[dimensionToDivide] = 1;
+		}
+		// else the while loop must exit
 	}
 
-	return newValues;
+	return chunkDimensions;
 }
 
 void HdfProxy::writeItemizedListOfList(const string & groupName,
@@ -1376,7 +1362,7 @@ bool HdfProxy::isCompressed(const std::string & datasetName)
 
 	hid_t dataset_id = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
 	if (dataset_id < 0) {
-		throw invalid_argument("The resqml dataset " + datasetName + " could not be opened.");
+		throw invalid_argument("The HDF5 dataset " + datasetName + " could not be opened.");
 	}
 	/* Retrieve filter information. */
 	hid_t plist_id = H5Dget_create_plist(dataset_id);
@@ -1384,7 +1370,7 @@ bool HdfProxy::isCompressed(const std::string & datasetName)
 
 	int numfilt = H5Pget_nfilters(plist_id);
 	if (numfilt < 0) {
-		throw invalid_argument("The filters cannot be got on the resqml dataset " + datasetName);
+		throw invalid_argument("The filters cannot be got on the RESQML dataset " + datasetName);
 	}
 	for (unsigned i = 0; i < static_cast<unsigned>(numfilt); ++i) {
 		size_t nelmts = 0;
@@ -1404,4 +1390,52 @@ bool HdfProxy::isCompressed(const std::string & datasetName)
 	H5Pclose(plist_id);
 
 	return compressed;
+}
+
+std::vector<unsigned long long> HdfProxy::getElementCountPerChunkDimension(const std::string & datasetName)
+{
+	if (!isOpened()) {
+		open();
+	}
+
+	std::vector<unsigned long long> result;
+
+	hid_t dataset_id = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
+	if (dataset_id < 0) {
+		throw invalid_argument("The HDF5 dataset " + datasetName + " could not be opened.");
+	}
+	/*
+	 * Get creation properties list.
+	 */
+	hid_t plist_id = H5Dget_create_plist(dataset_id);/* Get properties handle first. */
+
+	if (H5D_CHUNKED == H5Pget_layout(plist_id)) {
+		/*
+		 * Get rank information
+		 */
+		hid_t dataspace = H5Dget_space(dataset_id);
+		int dsRank = H5Sget_simple_extent_ndims(dataspace);
+		H5Sclose(dataspace);
+
+		/*
+		 * Get chunking information: rank and dimensions
+		 */
+		std::unique_ptr<hsize_t[]> chunkDims(new hsize_t[dsRank]);
+		int chunkRank = H5Pget_chunk(plist_id, dsRank, chunkDims.get());
+		if (chunkRank < 0) {
+			throw invalid_argument("The chunk dimension cannot be retrieved in " + datasetName);
+		}
+		if (chunkRank != dsRank) {
+			throw invalid_argument("The chunk rank in " + datasetName + " is not the same as the dataset rank.");
+		}
+
+		for (auto i = 0; i < dsRank; ++i) {
+			result.push_back(chunkDims[i]);
+		}
+	}
+
+	H5Dclose(dataset_id);
+	H5Pclose(plist_id);
+
+	return result;
 }

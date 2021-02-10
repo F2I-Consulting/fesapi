@@ -29,6 +29,7 @@ under the License.
 
 #include "EpcDocumentTest.h"
 #include "DateTimeTest.h"
+#include "eml2_test/HdfProxy.h"
 #include "resqml2_test/LocalDepth3dCrsTest.h"
 #include "resqml2_test/HorizonInterpretationTest.h"
 #include "resqml2_test/FaultSinglePatchTriangulatedSetRepresentationTest.h"
@@ -81,6 +82,7 @@ under the License.
 using namespace resqml2_2test;
 #endif
 using namespace commontest;
+using namespace eml2_test;
 using namespace resqml2_test;
 using namespace witsml2_test;
 
@@ -154,6 +156,8 @@ TEST_CASE("Test hdf5 opening mode", "[hdf]")
 }
 
 FESAPI_TEST("Export and import of date time", "[datetime]", DateTimeTest)
+
+FESAPI_TEST("Test HDF5 compression and chunking", "[hdf]", HdfProxy)
 
 FESAPI_TEST("Export and import a local depth 3d crs", "[crs]", LocalDepth3dCrsTest)
 

@@ -528,6 +528,13 @@ namespace ETP_NS
 		* Check wether a dataset is compressed or not.
 		*/
 		bool isCompressed(const std::string & datasetName);
+		
+		/**
+		 * Get the number of elements in each chunk dimension of an HDF5 dataset.
+		 * If the dataset is not compressed, then it returns an empty vector.
+		 * @param datasetName	The absolute name of the dataset which we want to get the number of elements from.
+		 */
+		std::vector<unsigned long long> getElementCountPerChunkDimension(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
 
 		/**
 		* The standard XML namespace for serializing this data object.
