@@ -266,6 +266,8 @@ namespace EML2_NS
 
 		bool isCompressed(const std::string& datasetName) final;
 
+		std::vector<unsigned long long> getElementCountPerChunkDimension(const std::string & datasetName) final;
+
 	protected:
 
 		/**
@@ -419,5 +421,11 @@ namespace EML2_NS
 
 		/** Groups the opened belongs to */
 		std::unordered_map< std::string, hdf5_hid_t > openedGroups;
+
+	private:
+
+		std::vector<unsigned long long> reduceForChunking(hdf5_hid_t datatype,
+			const unsigned long long * numValuesInEachDimension,
+			unsigned int numDimensions) const;
 	};
 }

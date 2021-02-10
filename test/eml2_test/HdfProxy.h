@@ -20,15 +20,11 @@ under the License.
 
 #include "AbstractTest.h"
 
-namespace commontest {
-	class GraphicalInformationSetTest : public commontest::AbstractTest {
+namespace eml2_test {
+	class HdfProxy : public commontest::AbstractTest {
 	public:
-		static const char* defaultUuid;
-		static const char* defaultTitle;
-		static const char* uuidHorizon;
-		static const char* titleHorzon;
 
-		GraphicalInformationSetTest(const std::string & repoPath);
+		HdfProxy(const std::string & repoPath);
 
 	protected:
 		void initRepo();

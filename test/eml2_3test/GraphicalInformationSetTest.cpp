@@ -127,4 +127,3 @@ void GraphicalInformationSetTest::readRepo() {
 	REQUIRE(g == 0);
 	REQUIRE(b == 255);
 }
-

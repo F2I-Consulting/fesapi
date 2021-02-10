@@ -148,8 +148,8 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getDimensionCount(const std::string & datasetName) = 0;
 
 		/**
-		 * Get the number of elements in each dimension in an HDF dataset of the proxy.
-		 * @param datasetName	The absolute name of the dataset we want to get the number of elements.
+		 * Get the number of elements in each dimension of an HDF5 dataset.
+		 * @param datasetName	The absolute name of the dataset which we want to get the number of elements from.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::vector<unsigned long long> getElementCountPerDimension(const std::string & datasetName) = 0;
 
@@ -865,6 +865,27 @@ namespace EML2_NS
 		 * @returns	True if compressed, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isCompressed(const std::string & datasetName) = 0;
+		
+		/**
+		* Set the maximum size for a chunk of a dataset only in case the HDF5 file is compressed.
+		* Chunk dimensions, and consequently actual size, will be computed from this maximum chunk memory size.
+		* Chunks dimensions are computed by reducing dataset dimensions from slowest to fastest until the max chunk size is honored.
+		*
+		* Example : Let's take a 3d property 4x3x2 (fastest from slowest) of double with a max chunk size of 100 bytes
+		* The total size of this property is 4*3*2*8 = 192 bytes which is greater than 100 bytes, the max chunk size.
+		* The computed chunk dimension will consequently be 4*3*1 = 96 which is lower than (not equal to) 100 bytes, the max chunk size.
+		* If we would have set a max chunk size of 20 bytes, the chunk dimension would have been computed as 2*1*1 (16 bytes), etc...
+		*
+		* @param newMaxChunkSize The maximum chunk size to set in bytes.
+		*/
+		DLL_IMPORT_OR_EXPORT void setMaxChunkSize(unsigned int newMaxChunkSize) { maxChunkSize = newMaxChunkSize; }
+
+		/**
+		 * Get the number of elements in each chunk dimension of an HDF5 dataset.
+		 * If the dataset is not compressed, then it returns an empty vector.
+		 * @param datasetName	The absolute name of the dataset which we want to get the number of elements from.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual std::vector<unsigned long long> getElementCountPerChunkDimension(const std::string & datasetName) = 0;
 
 		/**
 		 * Instantiate and initialize the gsoap proxy.
@@ -894,6 +915,10 @@ namespace EML2_NS
 		std::string relativeFilePath;
 		/** The opening mode */
 		COMMON_NS::DataObjectRepository::openingMode openingMode;
+		/** The maximum size of an HDF5 to be written
+		About 1e6 See https://support.hdfgroup.org/HDF5/doc/RM/RM_H5P.html#Property-SetChunkCache
+		especially "In the absence of any cache settings, H5Dopen will by default create a 1 MB chunk cache for the opened dataset."*/
+		unsigned int maxChunkSize = 1000000;
 
 		/**
 		 * Abstract hdf proxy
