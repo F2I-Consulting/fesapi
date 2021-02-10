@@ -25,9 +25,6 @@ under the License.
 
 #include <hdf5.h>
 
-// https://support.hdfgroup.org/HDF5/doc/Advanced/Chunking/index.html
-#define MAX_CHUNK_SIZE 0xffffffff // 2^32 - 1
-
 using namespace std;
 using namespace COMMON_NS;
 
@@ -362,57 +359,46 @@ int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName)
 	return result;
 }
 
-static vector<unsigned long long> reduceForChunking(hid_t datatype,
+vector<unsigned long long> HdfProxy::reduceForChunking(hid_t datatype,
 	const unsigned long long * numValuesInEachDimension,
-	unsigned int numDimensions)
+	unsigned int numDimensions) const
 {
-	vector<unsigned long long> newValues(numDimensions);
-	for (unsigned int i = 0; i < numDimensions; ++i) {
-		newValues[i] = numValuesInEachDimension[i];
+	// Get size in bytes of this datatype.
+	const size_t elementSize = H5Tget_size(datatype);
+	if (maxChunkSize < elementSize) {
+		throw std::invalid_argument("The maximum chunk size cannot be inferior to the size of one element of the dataset.");
 	}
 
-#if 0
-	// Debug output
-	printf("Start from chunks of size %llu", newValues[0]);
-	for (unsigned int i = 1; i < numDimensions; ++i) {
-		printf(" x %llu", newValues[i]);
+	vector<unsigned long long> chunkDimensions(numDimensions);
+	for (unsigned int i = 0; i < numDimensions; ++i) {
+		chunkDimensions[i] = numValuesInEachDimension[i];
 	}
-	printf ("\n");
-#endif
 
 	// Compute product of all dimensions.
-	unsigned long long product =
-		std::accumulate (newValues.begin(),
-				 newValues.end(),
+	unsigned long long dimensionProduct =
+		std::accumulate (chunkDimensions.begin(),
+				 chunkDimensions.end(),
 				 1ULL,
 				 std::multiplies<unsigned long long>());
-	// Get size in bytes of this datatype.
-	size_t size = H5Tget_size(datatype);
 
 	// If the total size exceeds the allowed maximum chunk size,
-	// reduce the largest dimension.
-	if (product * size > MAX_CHUNK_SIZE) {
-		// Find largest element.
-		vector<unsigned long long>::iterator it =
-			std::max_element (newValues.begin(),
-					    newValues.end());
-		// How many chunks are required?  Round up.
-		unsigned long long numChunks =
-			(product * size + MAX_CHUNK_SIZE - 1) / MAX_CHUNK_SIZE;
-		// Reduce the largest dimension.
-		*it /= numChunks;
-
-#if 0
-		// Debug output.
-		printf ("Try chunks of size %llu", newValues[0]);
-		for (unsigned int i = 1; i < numDimensions; ++i) {
-			printf(" x %llu", newValues[i]);
+	// reduce the chunk dimensions untill it is necessary
+	size_t totalSize = dimensionProduct * elementSize;
+	size_t dimensionToDivide = 0;
+	while (totalSize > maxChunkSize) {
+		while (chunkDimensions[dimensionToDivide] == 1) {
+			++dimensionToDivide;
 		}
-		printf ("\n");
-#endif
+
+		totalSize /= chunkDimensions[dimensionToDivide];
+		chunkDimensions[dimensionToDivide] = maxChunkSize / totalSize;
+		if (chunkDimensions[dimensionToDivide] == 0) {
+			chunkDimensions[dimensionToDivide] = 1;
+		}
+		// else the while loop must exit
 	}
 
-	return newValues;
+	return chunkDimensions;
 }
 
 void HdfProxy::writeItemizedListOfList(const string & groupName,
@@ -445,7 +431,7 @@ void HdfProxy::writeItemizedListOfList(const string & groupName,
 			reduceForChunking (cumulativeLengthDatatype,
 					   &cumulativeLengthSize,
 					   1);
-		H5Pset_chunk (dcpl, 1, newValues.data());
+		H5Pset_chunk(dcpl, 1, newValues.data());
 
 		datasetCL = H5Dcreate(grp, CUMULATIVE_LENGTH_DS_NAME, cumulativeLengthDatatype, fspaceCL, H5P_DEFAULT, dcpl, H5P_DEFAULT);
 
@@ -473,6 +459,7 @@ void HdfProxy::writeItemizedListOfList(const string & groupName,
 			reduceForChunking (elementsDatatype,
 					   &elementsSize,
 					   1);
+		H5Pset_chunk(dcpl, 1, newValues.data());
 
 		H5Pset_chunk (dcpl, 1, newValues.data());
 
@@ -602,8 +589,7 @@ void HdfProxy::writeArrayNd(const std::string & groupName,
 			reduceForChunking (datatype,
 					   numValuesInEachDimension,
 					   numDimensions);
-
-		H5Pset_chunk (dcpl, numDimensions, newValues.data());
+		H5Pset_chunk(dcpl, numDimensions, newValues.data());
 
 		dataset = H5Dcreate(grp, name.c_str(), datatype, space, H5P_DEFAULT, dcpl, H5P_DEFAULT);
 		H5Pclose(dcpl);
@@ -660,8 +646,7 @@ void HdfProxy::createArrayNd(
 			reduceForChunking (datatype,
 			numValuesInEachDimension,
 			numDimensions);
-
-		H5Pset_chunk (dcpl, numDimensions, newValues.data());
+		H5Pset_chunk(dcpl, numDimensions, newValues.data());
 
 		dataset = H5Dcreate(grp, datasetName.c_str(), datatype, space, H5P_DEFAULT, dcpl, H5P_DEFAULT);
 		H5Pclose(dcpl);

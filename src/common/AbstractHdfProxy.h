@@ -37,6 +37,8 @@ namespace COMMON_NS
 		std::string packageDirectoryAbsolutePath;												/// The directory where the EPC document is stored.
 		std::string relativeFilePath;															/// Must be relative to the location of the package
 		DataObjectRepository::openingMode openingMode;
+		// https://support.hdfgroup.org/HDF5/doc/RM/RM_H5P.html#Property-SetChunkCache especially "In the absence of any cache settings, H5Dopen will by default create a 1 MB chunk cache for the opened dataset."
+		unsigned int maxChunkSize = 1000000;
 
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
@@ -552,5 +554,19 @@ namespace COMMON_NS
 		* Check wether a dataset is compressed or not.
 		*/
 		virtual bool isCompressed(const std::string & datasetName) = 0;
+
+		/**
+		* Set the maximum size for a chunk of a dataset only in case the HDF5 file is compressed.
+		* Chunk dimensions, and consequently actual size, will be computed from this maximum chunk memory size.
+		* Chunks dimensions are computed by reducing dataset dimensions from slowest to fastest until the max chunk size is honored.
+		*
+		* Example : Let's take a 3d property 4x3x2 (fastest from slowest) of double with a max chunk size of 100 bytes
+		* The total size of this property is 4*3*2*8 = 192 bytes which is greater than 100 bytes, the max chunk size.
+		* The computed chunk dimension will consequently be 4*3*1 = 96 which is lower than (not equal to) 100 bytes, the max chunk size.
+		* If we would have set a max chunk size of 20 bytes, the chunk dimension would have been computed as 2*1*1 (16 bytes), etc...
+		*
+		* @param newMaxChunkSize The maximum chunk size to set in bytes.
+		*/
+		DLL_IMPORT_OR_EXPORT void setMaxChunkSize(unsigned int newMaxChunkSize) { maxChunkSize = newMaxChunkSize; }
 	};
 }

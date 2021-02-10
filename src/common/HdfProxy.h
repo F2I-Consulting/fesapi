@@ -606,5 +606,11 @@ namespace COMMON_NS
 		unsigned int compressionLevel;
 
 		std::unordered_map< std::string, hdf5_hid_t > openedGroups;
+
+	private : 
+
+		std::vector<unsigned long long> reduceForChunking(hdf5_hid_t datatype,
+			const unsigned long long * numValuesInEachDimension,
+			unsigned int numDimensions) const;
 	};
 }

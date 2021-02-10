@@ -205,6 +205,20 @@ namespace COMMON_NS
 	public:
 		virtual bool isOpened() = 0;
 		virtual void close() = 0;
+		
+		/**
+		* Set the maximum size for a chunk of a dataset only in case the HDF5 file is compressed.
+		* Chunk dimensions, and consequently actual size, will be computed from this maximum chunk memory size.
+		* Chunks dimensions are computed by reducing dataset dimensions from slowest to fastest until the max chunk size is honored.
+		*
+		* Example : Let's take a 3d property 4x3x2 (fastest from slowest) of double with a max chunk size of 100 bytes
+		* The total size of this property is 4*3*2*8 = 192 bytes which is greater than 100 bytes, the max chunk size.
+		* The computed chunk dimension will consequently be 4*3*1 = 96 which is lower than (not equal to) 100 bytes, the max chunk size.
+		* If we would have set a max chun size of 20 bytes, the chunk dimension would have been computed as 2*1*1 (16 bytes), etc...
+		*
+		* @param newMaxChunkSize The maximum chunk size to set in bytes.
+		*/
+		void setMaxChunkSize(unsigned int newMaxChunkSize);
 	};
 
 	class HdfProxy : public AbstractHdfProxy
