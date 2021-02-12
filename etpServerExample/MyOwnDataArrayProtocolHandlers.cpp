@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnDataArrayProtocolHandlers.h"
 
+#include <boost/log/trivial.hpp>
+
 #include "etp/AbstractSession.h"
 #include "etp/EtpException.h"
 #include "etp/EtpHelpers.h"
@@ -33,7 +35,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v1
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 	for (std::pair < std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayIdentifier > element : gda.dataArrays) {
 		Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayIdentifier& dai = element.second;
-		std::cout << "Data array received uri : " << dai.uri << std::endl;
+		BOOST_LOG_TRIVIAL(trace) << "Data array received uri : " << dai.uri;
 
 		try
 		{
@@ -45,7 +47,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v1
 				continue;
 			}
 
-			std::cout << "Received pathInResource : " << dai.pathInResource << std::endl;
+			BOOST_LOG_TRIVIAL(trace) << "Received pathInResource : " << dai.pathInResource;
 			auto elemCountPerDim = hdfProxy->getElementCountPerDimension(dai.pathInResource);
 			Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArray da;
 			da.dimensions.reserve(elemCountPerDim.size());
@@ -115,9 +117,9 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v1
 {
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 	for (std::pair < std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::PutDataArraysType > pdat : pda.dataArrays) {
-		std::cout << "PutDataArray in resource " << pdat.second.uid.uri << " at path " << pdat.second.uid.pathInResource << std::endl;;
+		BOOST_LOG_TRIVIAL(trace) << "PutDataArray in resource " << pdat.second.uid.uri << " at path " << pdat.second.uid.pathInResource;
 		for (size_t i = 0; i < pdat.second.array.dimensions.size(); ++i) {
-			std::cout << "Dimension " << i << " with count : " << pdat.second.array.dimensions[i] << std::endl;
+			BOOST_LOG_TRIVIAL(trace) << "Dimension " << i << " with count : " << pdat.second.array.dimensions[i];
 		}
 
 		try {
@@ -126,7 +128,7 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v1
 
 			EML2_NS::AbstractHdfProxy* hdfProxy = repo->getDataObjectByUuidAndVersion<EML2_NS::AbstractHdfProxy>(uuidAndVersion.first, uuidAndVersion.second);
 			if (hdfProxy == nullptr) {
-				std::cout << "Creating file " << uuidAndVersion.first << ".h5 in " << repo->hdf5Folder << std::endl;
+				BOOST_LOG_TRIVIAL(trace) << "Creating file " << uuidAndVersion.first << ".h5 in " << repo->hdf5Folder;
 				hdfProxy = repo->createHdfProxy(uuidAndVersion.first, uuidAndVersion.first, repo->hdf5Folder, uuidAndVersion.first + ".h5", COMMON_NS::DataObjectRepository::openingMode::READ_WRITE);
 			}
 
@@ -207,7 +209,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrayMetadata(const Energistics::
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 	for (std::pair < std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayIdentifier > element : gdam.dataArrays) {
 		Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayIdentifier& dai = element.second;
-		std::cout << "GetDataArrayMetadata received uri : " << dai.uri << std::endl;
+		BOOST_LOG_TRIVIAL(trace) << "GetDataArrayMetadata received uri : " << dai.uri;
 
 		try {
 			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(dai.uri);
@@ -218,7 +220,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrayMetadata(const Energistics::
 				continue;
 			}
 
-			std::cout << "Received pathInResource : " << dai.pathInResource << std::endl;
+			BOOST_LOG_TRIVIAL(trace) << "Received pathInResource : " << dai.pathInResource;
 			Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayMetadata dam;
 			auto elemCountPerDim = hdfProxy->getElementCountPerDimension(dai.pathInResource);
 			dam.dimensions.reserve(elemCountPerDim.size());

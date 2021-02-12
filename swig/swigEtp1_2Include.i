@@ -1326,8 +1326,9 @@ namespace ETP_NS
 	class ServerInitializationParameters
 	{
 	public:
-		ServerInitializationParameters() {}
-		virtual ~ServerInitializationParameters() {}
+		ServerInitializationParameters();
+		ServerInitializationParameters(const std::string & serverUuid);
+		virtual ~ServerInitializationParameters();
 
 		virtual std::string getApplicationName();
 		virtual std::string getApplicationVersion();

@@ -21,6 +21,7 @@ under the License.
 #include <boost/beast/core.hpp>
 #include <boost/beast/websocket.hpp>
 #include <boost/asio/ip/tcp.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 #include "../nsDefinitions.h"
 
@@ -73,6 +74,7 @@ namespace ETP_NS
 		bool etpSessionClosed; // open with the requestSession and openSession message
 		std::vector<std::vector<uint8_t> > sendingQueue;
 		int64_t messageId;
+		boost::uuids::uuid identifier;
 
 	    AbstractSession() : receivedBuffer(), protocolHandlers(), specificProtocolHandlers(),
 			webSocketSessionClosed(true), etpSessionClosed(true),
@@ -133,6 +135,11 @@ namespace ETP_NS
 	public:
 
 		virtual ~AbstractSession() = default;
+
+		/**
+		* Return the identifier of the session which is an UUID.
+		*/
+		const boost::uuids::uuid& getIdentifier() const { return identifier; }
 
 		/**
 		* The list of subscriptions recorded by customers on this session.

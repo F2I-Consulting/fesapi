@@ -22,6 +22,8 @@ under the License.
 
 #include <vector>
 
+#include <boost/uuid/random_generator.hpp>
+
 #include "MyDataObjectRepository.h"
 #include "MyOwnCoreProtocolHandlers.h"
 #include "MyOwnDiscoveryProtocolHandlers.h"
@@ -35,11 +37,14 @@ private:
 	MyDataObjectRepository* repo_;
 
 public:
-	MyServerInitializationParameters(MyDataObjectRepository* repo): repo_(repo) {}
-	~MyServerInitializationParameters() {}
+	MyServerInitializationParameters(MyDataObjectRepository* repo): repo_(repo) {
+		boost::uuids::random_generator gen;
+		identifier = gen();
+	}
+	~MyServerInitializationParameters() = default;
 
-	void postSessionCreationOperation(ETP_NS::AbstractSession* session) final {
-		session->setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(session));
+	void postSessionCreationOperation(ETP_NS::AbstractSession* session) const final {
+		session->setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(session, this));
 		session->setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(session, repo_));
 		session->setStoreProtocolHandlers(std::make_shared<MyOwnStoreProtocolHandlers>(session, repo_));
 		session->setStoreNotificationProtocolHandlers(std::make_shared<MyOwnStoreNotificationProtocolHandlers>(session, repo_));

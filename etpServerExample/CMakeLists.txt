@@ -9,7 +9,7 @@ target_compile_options(etpServerExample	PRIVATE
 	$<$<CXX_COMPILER_ID:MSVC>:/bigobj>
 )
 
-find_package(Boost 1.66.0 REQUIRED filesystem)
+find_package(Boost 1.66.0 REQUIRED log filesystem)
 
 # ============================================================================
 # include directories
@@ -59,16 +59,20 @@ endif ()
 target_sources(etpServerExample PRIVATE ${ALL_CPP_FILES} ${ALL_H_FILES})
 
 target_compile_definitions(etpServerExample PRIVATE BOOST_ALL_NO_LIB)
-	
+
 add_dependencies (etpServerExample ${CPP_LIBRARY_NAME})
-target_link_libraries (etpServerExample PRIVATE ${CPP_LIBRARY_NAME} ${Boost_FILESYSTEM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT} ${AVRO_LIBRARY_RELEASE})
 if (WIN32)
 	target_link_libraries (etpServerExample PRIVATE bcrypt.lib)
 	
 	set_target_properties (etpServerExample PROPERTIES
 		LINK_FLAGS "/INCREMENTAL:NO"
-		RUNTIME_OUTPUT_DIRECTORY ${FESAPI_BINARY_DIR})
+		RUNTIME_OUTPUT_DIRECTORY ${FESAPI_BINARY_DIR})	
+	
+	# https://www.boost.org/doc/libs/1_75_0/libs/log/doc/html/log/rationale/namespace_mangling.html
+	target_compile_definitions(etpServerExample PRIVATE BOOST_LOG_DYN_LINK)
 endif (WIN32)
+target_link_libraries (etpServerExample PRIVATE ${CPP_LIBRARY_NAME} ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${AVRO_LIBRARY_RELEASE})
+
 
 install (
 	TARGETS etpServerExample

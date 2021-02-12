@@ -22,11 +22,16 @@ under the License.
 
 #include "etp/AbstractSession.h"
 
+class MyServerInitializationParameters;
+
 class MyOwnCoreProtocolHandlers : public ETP_NS::CoreHandlers
 {
+private:
+	MyServerInitializationParameters const * serverInitializationParams_;
 public:
-	MyOwnCoreProtocolHandlers(ETP_NS::AbstractSession* mySession): ETP_NS::CoreHandlers(mySession) {}
-	~MyOwnCoreProtocolHandlers() {}
+	MyOwnCoreProtocolHandlers(ETP_NS::AbstractSession* mySession, MyServerInitializationParameters const * serverInitializationParams):
+		ETP_NS::CoreHandlers(mySession), serverInitializationParams_(serverInitializationParams) {}
+	~MyOwnCoreProtocolHandlers() = default;
 
 	void on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession & rs, int64_t correlationId);
 };
