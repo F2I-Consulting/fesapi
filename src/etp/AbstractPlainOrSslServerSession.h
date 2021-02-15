@@ -24,6 +24,7 @@ under the License.
 
 #include <boost/asio/strand.hpp>
 #include <boost/asio/bind_executor.hpp>
+#include <boost/uuid/random_generator.hpp>
 
 #include "../common/AbstractObject.h"
 
@@ -45,6 +46,8 @@ namespace ETP_NS
 		AbstractPlainOrSslServerSession(boost::asio::io_context& ioc) : strand(ioc.get_executor())
 		{
 			messageId = 1; // The client side of the connection MUST use ONLY non-zero even-numbered messageIds.
+			boost::uuids::random_generator gen;
+			identifier = gen();
 		}
 
 		virtual ~AbstractPlainOrSslServerSession() = default;

@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnStoreProtocolHandlers.h"
 
+#include <boost/log/trivial.hpp>
+
 #include "etp/AbstractSession.h"
 #include "etp/EtpHelpers.h"
 #include "etp/EtpException.h"
@@ -36,7 +38,7 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::
 
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 	for (const auto & pair : msg.uris) {
-		std::cout << "Store received URI : " << pair.second << std::endl;
+		BOOST_LOG_TRIVIAL(trace) << "Store received URI : " << pair.second;
 
 		try
 		{
@@ -71,7 +73,7 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 	for (const auto & pair : msg.dataObjects) {
-		std::cout << "Store received data object : " << pair.second.resource.dataObjectType << " (" << pair.second.resource.uri << ")" << std::endl;
+		BOOST_LOG_TRIVIAL(trace) << "Store received data object : " << pair.second.resource.dataObjectType << " (" << pair.second.resource.uri << ")";
 
 		COMMON_NS::AbstractObject* importedObj = repo->addOrReplaceGsoapProxy(pair.second.data, pair.second.resource.dataObjectType);
 		if (importedObj == nullptr) {

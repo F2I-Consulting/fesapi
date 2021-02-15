@@ -695,20 +695,37 @@ namespace ETP_NS
 				// See if it is a WebSocket Upgrade
 				if (websocket::is_upgrade(req_))
 				{
-					// Make timer expire immediately, by setting expiry to time_point::min we can detect
-					// the upgrade to websocket in the timer handler
-					timer_.expires_at((std::chrono::steady_clock::time_point::min)());
+					if (req_.count(boost::beast::http::field::sec_websocket_protocol) != 1 ||
+						req_.at(boost::beast::http::field::sec_websocket_protocol).find("etp12.energistics.org") == std::string::npos) {
+						auto const precondition_failed = [this]()
+						{
+							http::response<http::string_body> res{ http::status::precondition_failed, req_.version() };
+							res.set(http::field::server, serverInitializationParams_->getApplicationName());
+							res.set(http::field::content_type, "text/html");
+							res.keep_alive(req_.keep_alive());
+							res.body() = "The sec-websocket-protocol HTTP header field does not contain etp12.energistics.org.";
+							res.prepare_payload();
+							return res;
+						};
+						queue_(precondition_failed());
+					}
+					else {
+						// Make timer expire immediately, by setting expiry to time_point::min we can detect
+						// the upgrade to websocket in the timer handler
+						timer_.expires_at((std::chrono::steady_clock::time_point::min)());
 
-					// Transfer the stream to a new WebSocket session
-					return make_websocket_session(
-						derived().release_stream(),
-						std::move(req_),
-						sessions_,
-						serverInitializationParams_);
+						// Transfer the stream to a new WebSocket session
+						return make_websocket_session(
+							derived().release_stream(),
+							std::move(req_),
+							sessions_,
+							serverInitializationParams_);
+					}
 				}
-
-				// Send the response
-				handle_request(*doc_root_, std::move(req_), queue_, serverInitializationParams_);
+				else {
+					// Send the response
+					handle_request(*doc_root_, std::move(req_), queue_, serverInitializationParams_);
+				}
 
 				// If we aren't at the queue limit, try to pipeline another request
 				if (!queue_.is_full())

@@ -20,7 +20,7 @@ under the License.
 
 using namespace ETP_NS;
 
-std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue> ServerInitializationParameters::makeEndpointCapabilities()
+std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue> ServerInitializationParameters::makeEndpointCapabilities() const
 {
 	std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue> result;
 
@@ -35,12 +35,12 @@ std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue> ServerInitial
 	return result;
 }
 
-std::vector<std::string> ServerInitializationParameters::makeSupportedEncodings()
+std::vector<std::string> ServerInitializationParameters::makeSupportedEncodings() const
 {
 	return std::vector<std::string>(1, "binary");
 }
 
-std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject> ServerInitializationParameters::makeSupportedDataObjects()
+std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject> ServerInitializationParameters::makeSupportedDataObjects() const
 {
 	std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject> result;
 
@@ -91,7 +91,7 @@ std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject> ServerInitial
 	return result;
 }
 
-std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> ServerInitializationParameters::makeSupportedProtocols()
+std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> ServerInitializationParameters::makeSupportedProtocols() const
 {
 	std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> result;
 	Energistics::Etp::v12::Datatypes::Version protocolVersion;

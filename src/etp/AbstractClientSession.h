@@ -140,6 +140,7 @@ namespace ETP_NS
 				{
 					m.insert(boost::beast::http::field::sec_websocket_protocol, "etp12.energistics.org");
 					m.insert(boost::beast::http::field::authorization, authorization);
+					m.insert("etp-encoding", "binary");
 				},
 				std::bind(
 					&AbstractClientSession::on_handshake,
@@ -211,14 +212,14 @@ namespace ETP_NS
 
 		void on_handshake(boost::system::error_code ec)
 		{
+#ifndef NDEBUG
+			std::cout << responseType << std::endl;
+#endif
+
 			if (ec) {
 				std::cerr << "on_handshake : " << ec.message() << std::endl;
 				return;
 			}
-
-#ifndef NDEBUG
-			std::cout << responseType << std::endl;
-#endif
 
 			if (!responseType.count(boost::beast::http::field::sec_websocket_protocol) ||
 				responseType[boost::beast::http::field::sec_websocket_protocol] != "etp12.energistics.org")

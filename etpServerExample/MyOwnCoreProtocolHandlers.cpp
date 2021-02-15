@@ -18,8 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnCoreProtocolHandlers.h"
 
-#include <boost/uuid/random_generator.hpp>
-#include <boost/uuid/uuid_io.hpp>
+#include <boost/log/trivial.hpp>
 
 #include "MyServerInitializationParameters.h"
 #include "etp/AbstractSession.h"
@@ -29,8 +28,7 @@ under the License.
 
 void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession & rs, int64_t correlationId)
 {
-	MyServerInitializationParameters serverInitializationParams(nullptr);
-	auto supportedProtocols = serverInitializationParams.makeSupportedProtocols();
+	auto supportedProtocols = serverInitializationParams_->makeSupportedProtocols();
 
 	// Check requested protocols
 	std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> requestedAndSupportedProtocols;
@@ -57,20 +55,17 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 
 	// Build Open Session message
 	Energistics::Etp::v12::Protocol::Core::OpenSession openSession;
-	openSession.applicationName = serverInitializationParams.getApplicationName();
-	openSession.applicationVersion = serverInitializationParams.getApplicationVersion();
-	boost::uuids::random_generator gen;
-	boost::uuids::uuid uuid = gen();
-	std::copy(std::begin(uuid.data), std::end(uuid.data), openSession.sessionId.array.begin());
-	uuid = gen();
-	std::copy(std::begin(uuid.data), std::end(uuid.data), openSession.serverInstanceId.array.begin());
+	openSession.applicationName = serverInitializationParams_->getApplicationName();
+	openSession.applicationVersion = serverInitializationParams_->getApplicationVersion();
+	std::copy(std::begin(session->getIdentifier().data), std::end(session->getIdentifier().data), openSession.sessionId.array.begin());
+	std::copy(std::begin(serverInitializationParams_->getServerInstanceId().data), std::end(serverInitializationParams_->getServerInstanceId().data), openSession.serverInstanceId.array.begin());
 	openSession.supportedFormats.push_back("xml");
 	openSession.supportedProtocols = requestedAndSupportedProtocols;
-	openSession.endpointCapabilities = serverInitializationParams.makeEndpointCapabilities();
-	openSession.supportedDataObjects = serverInitializationParams.makeSupportedDataObjects();
+	openSession.endpointCapabilities = serverInitializationParams_->makeEndpointCapabilities();
+	openSession.supportedDataObjects = serverInitializationParams_->makeSupportedDataObjects();
 	openSession.currentDateTime = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
 	session->send(openSession, correlationId, 0x02);
 
-	std::cout << "New session" << std::endl;
+	BOOST_LOG_TRIVIAL(trace) << "A new websocket session " + to_string(session->getIdentifier()) + " has been opened";
 }

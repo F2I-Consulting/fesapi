@@ -24,22 +24,40 @@ namespace ETP_NS
 {
 	class ServerInitializationParameters
 	{
+	protected:
+		boost::uuids::uuid identifier;
+
 	public:
+		/**
+		* Set the identifier of the server a default value.
+		* You should set the identifer as wanted in your own derived class.
+		*/
 		ServerInitializationParameters() {}
-		virtual ~ServerInitializationParameters() {}
+		/**
+		* Mainly for use with SWIG i.e. boost uuid structure is not easily portable whereas strings are.
+		*/
+		ServerInitializationParameters(const std::string & serverUuid) {
+			std::stringstream ss(serverUuid);
+			ss >> identifier;
+		}
+		virtual ~ServerInitializationParameters() = default;
 
-		DLL_IMPORT_OR_EXPORT virtual std::string getApplicationName() { return "F2I-CONSULTING ETP SERVER"; }
-		DLL_IMPORT_OR_EXPORT virtual std::string getApplicationVersion() { return "0.0"; }
-		DLL_IMPORT_OR_EXPORT virtual std::string getContactEmail() { return "name@f2i-consulting.com"; }
-		DLL_IMPORT_OR_EXPORT virtual std::string getContactName() { return "Philippe Verney"; }
-		DLL_IMPORT_OR_EXPORT virtual std::string getContactPhone() { return "Please use Zoom or Slack"; }
-		DLL_IMPORT_OR_EXPORT virtual std::string getOrganizationName() { return "F2I-CONSULTING"; }
+		DLL_IMPORT_OR_EXPORT virtual const boost::uuids::uuid& getServerInstanceId() const { return identifier; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getApplicationName() const { return "F2I-CONSULTING ETP SERVER"; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getApplicationVersion() const { return "0.0"; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getContactEmail() const { return "philippe.verney@f2i-consulting.com"; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getContactName() const { return "Philippe Verney"; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getContactPhone() const { return "Please use Zoom or Slack"; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getOrganizationName() const { return "F2I-CONSULTING"; }
 
-		DLL_IMPORT_OR_EXPORT virtual std::vector<std::string> makeSupportedEncodings();
-		DLL_IMPORT_OR_EXPORT virtual std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue> makeEndpointCapabilities();
-		DLL_IMPORT_OR_EXPORT virtual std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject> makeSupportedDataObjects();
-		DLL_IMPORT_OR_EXPORT virtual std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> makeSupportedProtocols();
+		DLL_IMPORT_OR_EXPORT virtual std::vector<std::string> makeSupportedEncodings() const;
+		DLL_IMPORT_OR_EXPORT virtual std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue> makeEndpointCapabilities() const;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<Energistics::Etp::v12::Datatypes::SupportedDataObject> makeSupportedDataObjects() const;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> makeSupportedProtocols() const;
 
-		DLL_IMPORT_OR_EXPORT virtual void postSessionCreationOperation(AbstractSession*) {}
+		/**
+		* Override this method in order to register some dedicated protocol handlers for a session.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual void postSessionCreationOperation (AbstractSession*) const {}
 	};
 }

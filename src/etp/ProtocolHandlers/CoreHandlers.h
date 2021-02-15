@@ -25,8 +25,9 @@ namespace ETP_NS
 	class DLL_IMPORT_OR_EXPORT CoreHandlers : public ProtocolHandlers
 	{
 	public:
-		CoreHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
-		virtual ~CoreHandlers() {}
+		CoreHandlers(AbstractSession* mySession):
+			ProtocolHandlers(mySession) {}
+		virtual ~CoreHandlers() = default;
 
 	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d) override;
 

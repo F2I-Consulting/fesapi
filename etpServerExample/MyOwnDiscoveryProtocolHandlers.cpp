@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnDiscoveryProtocolHandlers.h"
 
+#include <boost/log/trivial.hpp>
+
 #include "common/AbstractObject.h"
 #include "etp/EtpHelpers.h"
 
@@ -97,7 +99,7 @@ void MyOwnDiscoveryProtocolHandlers::getDataObjectResource(const Energistics::Et
 
 void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources & msg, int64_t correlationId)
 {
-	std::cout << "Discovery graph resource received uri : " << msg.context.uri << std::endl;
+	BOOST_LOG_TRIVIAL(trace) << "Discovery graph resource received uri : " << msg.context.uri;
 
 	if (msg.context.depth < 0) {
 		session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(5, "The requested depth cannot be inferior to zero."), correlationId, 0x02);

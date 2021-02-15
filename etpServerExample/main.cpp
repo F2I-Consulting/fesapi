@@ -17,6 +17,8 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
+#include <boost/log/trivial.hpp>
+
 #ifdef WITH_ETP_SSL
 #include "etp/ssl/SslServerSession.h"
 #endif
@@ -81,7 +83,7 @@ int main(int argc, char **argv)
 	MyServerInitializationParameters serverInitializationParams(&repo);
 
 	const int threadCount = 2;
-	std::cout << "Start listening on " << argv[1] << ":" << argv[2] << " with " << threadCount << " threads..." << std::endl;
+	BOOST_LOG_TRIVIAL(trace) << "Start listening on " << argv[1] << ":" << argv[2] << " with " << threadCount << " threads...";
 
 #ifdef WITH_ETP_SSL
 	if (std::stoi(argv[2]) == 443) {
