@@ -47,19 +47,6 @@ using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace COMMON_NS;
 
-const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
-
-EpcDocument::EpcDocument(const string& fileName)
-{
-	package = nullptr;
-	open(fileName);
-}
-
-EpcDocument::~EpcDocument()
-{
-	close();
-}
-
 void  EpcDocument::open(const std::string & fileName)
 {
 	if (fileName.empty()) {
@@ -71,17 +58,7 @@ void  EpcDocument::open(const std::string & fileName)
 
 	setFilePath(fileName);
 
-	package = new epc::Package();
-}
-
-void EpcDocument::close()
-{
-	if (package != nullptr) {
-		delete package;
-		package = nullptr;
-	}
-
-	filePath = "";
+	package.reset(new epc::Package());
 }
 
 void EpcDocument::setFilePath(const std::string & fp)
@@ -95,7 +72,7 @@ void EpcDocument::setFilePath(const std::string & fp)
 	}
 
 	// Add .epc extension if it is not already done in parameter
-	size_t dotPos = filePath.find_last_of('.');
+	const size_t dotPos = filePath.find_last_of('.');
 	if (dotPos != string::npos) {
 		if (filePath.substr(dotPos) != DOCUMENT_EXTENSION) {
 			filePath += DOCUMENT_EXTENSION;
@@ -261,8 +238,7 @@ void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64
 string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess)
 {
 	std::string result;
-	vector<string> warningsDuringReading = package->openForReading(filePath);
-	for (const auto& warning : warningsDuringReading) {
+	for (const auto& warning : package->openForReading(filePath)) {
 		result += warning + '\n';
 	}
 
@@ -350,9 +326,8 @@ namespace {
 std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess)
 {
 	std::string result;
-	vector<string> warningsDuringReading = package->openForReading(filePath);
-	for (size_t i = 0; i < warningsDuringReading.size(); ++i) {
-		result += warningsDuringReading[i] + '\n';
+	for (const auto& warning : package->openForReading(filePath)) {
+		result += warning + '\n';
 	}
 
 	// Read all RESQML objects
@@ -458,7 +433,7 @@ void EpcDocument::deserializeRelFiles(DataObjectRepository & repo)
 string EpcDocument::getStorageDirectory() const
 {
 	const size_t slashPos = filePath.find_last_of("/\\");
-	return slashPos != string::npos ? filePath.substr(0, slashPos + 1) : string();
+	return slashPos != string::npos ? filePath.substr(0, slashPos + 1) : "";
 }
 
 string EpcDocument::getName() const
@@ -492,10 +467,10 @@ std::string EpcDocument::getExtendedCoreProperty(const std::string & key)
 		return (package->getExtendedCoreProperty())[key];
 	}
 
-	return string();
+	return "";
 }
 
-std::string EpcDocument::resolvePartial(AbstractObject* partialObj) const
+std::string EpcDocument::resolvePartial(AbstractObject const * partialObj) const
 {
 	if (!package->isOpenedForReading()) {
 		package->openForReading(filePath);

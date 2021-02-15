@@ -18,7 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractObject.h"
+#include "../common/AbstractObject.h"
+
+#include "../MacroDefinitions.h"
 
 namespace RESQML2_0_1_NS {
 	/** A wellbore feature. */
@@ -37,7 +39,7 @@ namespace WITSML2_0_NS
 	class Log;
 
 	/** A wellbore. */
-	class Wellbore : public WITSML2_0_NS::AbstractObject
+	class Wellbore : public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -48,7 +50,7 @@ namespace WITSML2_0_NS
 		 *
 		 * 
 		 */
-		DLL_IMPORT_OR_EXPORT Wellbore(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT Wellbore(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		 * @brief	Creates an instance of this class in a gsoap context.
@@ -183,5 +185,15 @@ namespace WITSML2_0_NS
 		* Resolve all relationships of the object in the repository.
 		*/
 		void loadTargetRelationships();
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static constexpr char* XML_NS = "witsml20";
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

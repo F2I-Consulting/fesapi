@@ -20,8 +20,7 @@ under the License.
 
 #include "catch.hpp"
 
-#include "common/EpcDocument.h"
-#include "resqml2/IjkGridExplicitRepresentation.h"
+#include "resqml2/AbstractIjkGridRepresentation.h"
 #include "resqml2/ContinuousProperty.h"
 
 using namespace std;

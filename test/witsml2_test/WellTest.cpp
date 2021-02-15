@@ -17,10 +17,12 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "WellTest.h"
-#include "../catch.hpp"
-#include "common/EpcDocument.h"
-#include "witsml2_0/Well.h"
+
 #include <stdexcept>
+
+#include "../catch.hpp"
+
+#include "witsml2_0/Well.h"
 
 using namespace std;
 using namespace witsml2_test;

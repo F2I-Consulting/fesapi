@@ -19,9 +19,6 @@ under the License.
 #pragma once
 
 #include <string>
-#include <vector>
-#include <limits>
-#include <stdexcept>
 
 #include "../epc/Package.h"
 
@@ -40,10 +37,10 @@ namespace COMMON_NS
 		 *
 		 * @param 	fileName	Full pathname of the EPC document.
 		 */
-		DLL_IMPORT_OR_EXPORT EpcDocument(const std::string & fileName);
+		DLL_IMPORT_OR_EXPORT EpcDocument(const std::string & fileName) { open(fileName); }
 
 		/** The destructor frees all allocated ressources. */
-		DLL_IMPORT_OR_EXPORT virtual ~EpcDocument();
+		DLL_IMPORT_OR_EXPORT ~EpcDocument() { close(); }
 
 		/**
 		 * Opens an EPC document. If one is already opened, it must be closed before to open a new one.
@@ -57,7 +54,10 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void open(const std::string & fileName);
 	
 		/** Free all ressources contained in this package. */
-		DLL_IMPORT_OR_EXPORT void close();
+		DLL_IMPORT_OR_EXPORT void close() {
+			package.reset();
+			filePath = "";
+		}
 
 		/**
 		 * Sets the EPC document file path which will be used for future serialization and
@@ -142,15 +142,15 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getExtendedCoreProperty(const std::string & key);
 
-		DLL_IMPORT_OR_EXPORT std::string resolvePartial(AbstractObject* partialObj) const;
+		DLL_IMPORT_OR_EXPORT std::string resolvePartial(AbstractObject const * partialObj) const;
 
 	private :
-		static const char * DOCUMENT_EXTENSION;
+		static constexpr char * DOCUMENT_EXTENSION = ".epc";
 
 		void deserializeRelFiles(DataObjectRepository & repo);
 
 		/** The package */
-		epc::Package* package;
+		std::unique_ptr<epc::Package> package;
 		/** Full pathname of the file */
 		std::string filePath;
 	};

@@ -17,11 +17,13 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "Trajectory.h"
+
+#include <stdexcept>
+
 #include "../catch.hpp"
-#include "common/EpcDocument.h"
+
 #include "witsml2_0/Wellbore.h"
 #include "witsml2_0/Trajectory.h"
-#include <stdexcept>
 
 using namespace std;
 using namespace witsml2_test;

@@ -19,15 +19,13 @@ under the License.
 #include "ContinuousProperty.h"
 
 #include <limits>
-#include <sstream>
 
-#include <hdf5.h>
-
-#include "../eml2/AbstractHdfProxy.h"
 #include "../common/EnumStringMapper.h"
 
-#include "../resqml2/AbstractRepresentation.h"
+#include "../eml2/AbstractHdfProxy.h"
 #include "../eml2/PropertyKind.h"
+
+#include "../resqml2/AbstractRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_2_NS;

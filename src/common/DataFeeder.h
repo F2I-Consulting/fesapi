@@ -23,15 +23,18 @@ namespace COMMON_NS
 	class AbstractObject;
 
 	/**
-	* This class allows an access to a memory package representing an EPC document.
+	* This class abstracts the various sources of dataobjects contained in a DataObject Repository.
 	*/
 	class DataFeeder
 	{		
 	public:
 
 		/**
-		* Resolve a partial object to a non partial one.
+		* Ask this feeder to resolve a partial object to a non partial one.
+		*
+		* @param	The partial dataobject
+		* @return	The full XML content of the partial dataobject or empty string if the feeder could not resolve it.
 		*/
-		virtual std::string resolvePartial(AbstractObject* partialObj) const = 0;
+		virtual std::string resolvePartial(AbstractObject const * partialObj) const = 0;
 	};
 }

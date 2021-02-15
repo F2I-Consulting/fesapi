@@ -17,10 +17,12 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "PropertyKindTest.h"
-#include "../catch.hpp"
-#include "common/EpcDocument.h"
-#include "eml2/PropertyKind.h"
+
 #include <stdexcept>
+
+#include "../catch.hpp"
+
+#include "eml2/PropertyKind.h"
 
 using namespace std;
 using namespace resqml2_test;

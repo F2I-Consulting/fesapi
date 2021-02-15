@@ -18,7 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractObject.h"
+#include "../common/AbstractObject.h"
+
+#include "../MacroDefinitions.h"
 
 namespace WITSML2_0_NS
 {
@@ -28,7 +30,7 @@ namespace WITSML2_0_NS
 	class WellCompletion;
 
 	/** A well. */
-	class Well : public WITSML2_0_NS::AbstractObject
+	class Well : public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -36,10 +38,8 @@ namespace WITSML2_0_NS
 		 * Only to be used in partial transfer context
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * 
 		 */
-		DLL_IMPORT_OR_EXPORT Well(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT Well(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -79,7 +79,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		Well(gsoap_eml2_1::witsml20__Well* fromGsoap):AbstractObject(fromGsoap)  {}
+		Well(gsoap_eml2_1::witsml20__Well* fromGsoap): COMMON_NS::AbstractObject(fromGsoap)  {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~Well() = default;
@@ -289,6 +289,16 @@ namespace WITSML2_0_NS
 		 * @returns	The XML tag.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static constexpr char* XML_NS = "witsml20";
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
 	protected:
 

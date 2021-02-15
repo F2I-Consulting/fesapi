@@ -28,7 +28,7 @@ namespace WITSML2_0_NS
 	 * The class is the super class for all wellbore objects (all top level objects pointing to
 	 * Wellbore)
 	 */
-	class WellboreObject : public WITSML2_0_NS::AbstractObject
+	class WellboreObject : public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -65,19 +65,17 @@ namespace WITSML2_0_NS
 		 * Constructor for partial transfer
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 *
 		 */
-		DLL_IMPORT_OR_EXPORT WellboreObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT WellboreObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/** Creates an instance of this class in a gsoap context. */
-		WellboreObject() :WITSML2_0_NS::AbstractObject() {}
+		WellboreObject() : COMMON_NS::AbstractObject() {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		WellboreObject(gsoap_eml2_1::eml21__AbstractObject* fromGsoap) :WITSML2_0_NS::AbstractObject(fromGsoap) {}
+		WellboreObject(gsoap_eml2_1::eml21__AbstractObject* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 	};
 }
