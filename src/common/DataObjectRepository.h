@@ -1236,13 +1236,13 @@ namespace COMMON_NS
 		 * @param 	guid 	The guid to set to the cultural. If empty then a new guid will be generated.
 		 * @param 	title	The title to set to the cultural. If empty then \"unknown\" title will be set.
 		 * @param 	kind 	(Optional) The kind to set to the cultural. It is defaulted to
-		 * 					gsoap_eml2_3::resqml22__CulturalFeatureKind__project_x0020boundaries for
+		 * 					gsoap_eml2_3::resqml22__CulturalFeatureKind::project_x0020boundaries for
 		 * 					easing 2.0.1 compatibility.
 		 *
 		 * @returns	A pointer to the new cultural.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::CulturalFeature* createCultural(const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__CulturalFeatureKind kind = gsoap_eml2_3::resqml22__CulturalFeatureKind__project_x0020boundaries);
+			gsoap_eml2_3::resqml22__CulturalFeatureKind kind = gsoap_eml2_3::resqml22__CulturalFeatureKind::project_x0020boundaries);
 
 		/**
 		 * @brief	@deprecated Use {@link createRockVolumeFeature()} method for RESQML post v2.0.1
@@ -3038,7 +3038,7 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PointsProperty* createPointsProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
-			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind = gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind = gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 
 		/**
 		 * Creates a points property (which is of a local property kind) into this repository

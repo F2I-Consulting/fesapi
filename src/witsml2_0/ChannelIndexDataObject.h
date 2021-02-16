@@ -128,7 +128,7 @@ namespace WITSML2_0_NS
 			if (index >= getChannelIndexCount()) {
 				throw std::out_of_range("The channel index is out of range");
 			}
-			return static_cast<T*>(this->gsoapProxy2_1)->Index[index]->Direction == gsoap_eml2_1::witsml20__IndexDirection__increasing;
+			return static_cast<T*>(this->gsoapProxy2_1)->Index[index]->Direction == gsoap_eml2_1::witsml20__IndexDirection::increasing;
 		}
 
 		/**

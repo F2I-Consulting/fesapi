@@ -20,25 +20,11 @@ under the License.
 
 #include "../witsml2/Wellbore.h"
 
-#include "../MacroDefinitions.h"
-
-namespace RESQML2_0_1_NS {
-	/** A wellbore feature. */
-	class WellboreFeature;
-}
-
 namespace WITSML2_0_NS
 {
-	/** A trajectory. */
-	class Trajectory;
-	/** A wellbore completion. */
-	class WellboreCompletion;
-	/** A wellbore geometry. */
-	class WellboreGeometry;
-	/** A log. */
-	class Log;
-
-	/** A wellbore. */
+	/**
+	 * @brief	A wellbore represents the path from surface to a unique bottomhole location.
+	 */
 	class Wellbore : public WITSML2_NS::Wellbore
 	{
 	public:
@@ -47,8 +33,6 @@ namespace WITSML2_0_NS
 		 * Only to be used in partial transfer context
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * 
 		 */
 		DLL_IMPORT_OR_EXPORT Wellbore(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::Wellbore(partialObject) {}
 
@@ -110,55 +94,20 @@ namespace WITSML2_0_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setWell(WITSML2_NS::Well* witsmlWell) final;
 
-		/**
-		 * Gets resqml wellbore feature
-		 *
-		 * @returns	Null if it fails, else the resqml wellbore feature.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::WellboreFeature *> getResqmlWellboreFeature() const;
-
-		/**
-		 * Gets wellbore completions
-		 *
-		 * @returns	Null if it fails, else the wellbore completions.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<WellboreCompletion *> getWellboreCompletions() const;
-
-		/**
-		 * Gets the trajectories
-		 *
-		 * @returns	Null if it fails, else the trajectories.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<Trajectory *> getTrajectories() const;
-
-		/**
-		 * Gets wellbore geometries
-		 *
-		 * @returns	Null if it fails, else the wellbore geometries.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<WellboreGeometry *> getWellboreGeometries() const;
-
-		/**
-		 * Gets the logs
-		 *
-		 * @returns	Null if it fails, else the logs.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<Log *> getLogs() const;
-
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Number)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, SuffixAPI)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumGovt)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::eml21__WellStatus, StatusWellbore)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, IsActive)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellPurpose, PurposeWellbore)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellboreType, TypeWellbore)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellboreShape, Shape)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, AchievedTD)
-		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(Md, gsoap_eml2_1::eml21__LengthUom)
-		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdBit, gsoap_eml2_1::eml21__LengthUom)
-		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdKickoff, gsoap_eml2_1::eml21__LengthUom)
-		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdPlanned, gsoap_eml2_1::eml21__LengthUom)
-		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdSubSeaPlanned, gsoap_eml2_1::eml21__LengthUom)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Number)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, SuffixAPI)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumGovt)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::eml21__WellStatus, StatusWellbore)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, IsActive)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellPurpose, PurposeWellbore)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellboreType, TypeWellbore)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellboreShape, Shape)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, AchievedTD)
+		FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(Md, gsoap_eml2_1::eml21__LengthUom)
+		FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdBit, gsoap_eml2_1::eml21__LengthUom)
+		FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdKickoff, gsoap_eml2_1::eml21__LengthUom)
+		FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdPlanned, gsoap_eml2_1::eml21__LengthUom)
+		FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdSubSeaPlanned, gsoap_eml2_1::eml21__LengthUom)
 
 		/**
 		* The standard XML namespace for serializing this data object.

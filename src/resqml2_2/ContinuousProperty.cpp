@@ -79,7 +79,7 @@ gsoap_resqml2_0_1::resqml20__ResqmlUom ContinuousProperty::getUom() const
 	gsoap_resqml2_0_1::resqml20__ResqmlUom result;
 	const int tmp = gsoap_resqml2_0_1::soap_s2resqml20__ResqmlUom(gsoapProxy2_3->soap, static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3)->Uom.c_str(), &result);
 
-	return tmp != SOAP_OK ? gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc : result;
+	return tmp != SOAP_OK ? gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc : result;
 }
 
 std::string ContinuousProperty::getUomAsString() const

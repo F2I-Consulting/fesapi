@@ -28,6 +28,7 @@ SOAP_NMAC struct Namespace namespaces[] =
 	{"dc", "http://purl.org/dc/terms/", NULL, NULL},
 	{"resqml20", "http://www.energistics.org/energyml/data/resqmlv2", NULL, NULL},
 	{"resqml22", "http://www.energistics.org/energyml/data/resqmlv2", NULL, NULL},
+	{"witsml14", "http://www.witsml.org/schemas/1series", NULL, NULL},
 	{"witsml20", "http://www.energistics.org/energyml/data/witsmlv2", NULL, NULL},
 	{"witsml21", "http://www.energistics.org/energyml/data/witsmlv2", NULL, NULL},
 	{"prodml21", "http://www.energistics.org/energyml/data/prodmlv2", NULL, NULL},

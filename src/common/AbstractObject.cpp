@@ -1542,7 +1542,7 @@ gsoap_resqml2_0_1::resqml20__IndexableElements AbstractObject::mapIndexableEleme
 	if (intVal == 0) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__IndexableElements>(toMap);
 	}
-	else if (toMap == gsoap_eml2_3::resqml22__IndexableElement__intervals_x0020from_x0020datum || intVal == gsoap_eml2_3::resqml22__IndexableElement__lines) {
+	else if (toMap == gsoap_eml2_3::resqml22__IndexableElement::intervals_x0020from_x0020datum || intVal == static_cast<size_t>(gsoap_eml2_3::resqml22__IndexableElement::lines)) {
 		throw std::invalid_argument("There is no mapping for this indexable element in RESQML2.0.1");
 	}
 	else if (intVal < 18) {

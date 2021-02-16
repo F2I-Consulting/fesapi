@@ -38,14 +38,14 @@ StructuralOrganizationInterpretation::StructuralOrganizationInterpretation(RESQM
 		throw invalid_argument("The interpreted organization feature cannot be null.");
 	}
 	if (!orgFeat->isPartial() && dynamic_cast<RESQML2_0_1_NS::OrganizationFeature*>(orgFeat) != nullptr
-		&& static_cast<RESQML2_0_1_NS::OrganizationFeature*>(orgFeat)->getKind() != gsoap_resqml2_0_1::resqml20__OrganizationKind__structural) {
+		&& static_cast<RESQML2_0_1_NS::OrganizationFeature*>(orgFeat)->getKind() != gsoap_resqml2_0_1::resqml20__OrganizationKind::structural) {
 		throw invalid_argument("The kind of the v2.0.1 organization feature is not a structural organization.");
 	}
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStructuralOrganizationInterpretation(orgFeat->getGsoapContext());
 	
 	static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->OrderingCriteria = orderingCriteria;
-	static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
+	static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain::mixed;
 
     initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());

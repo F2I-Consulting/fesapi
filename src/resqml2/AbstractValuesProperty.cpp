@@ -164,10 +164,10 @@ void AbstractValuesProperty::pushBackFacet(gsoap_eml2_3::eml23__FacetKind facet,
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PropertyKindFacet* newFacet = gsoap_resqml2_0_1::soap_new_resqml20__PropertyKindFacet(gsoapProxy2_0_1->soap);
-		if (facet == gsoap_eml2_3::eml23__FacetKind__side) {
+		if (facet == gsoap_eml2_3::eml23__FacetKind::side) {
 			throw invalid_argument("The facet kind \"side\" is not supported in RESQML 2.0.1");
 		}
-		newFacet->Facet = facet == gsoap_eml2_3::eml23__FacetKind__conditions ? gsoap_resqml2_0_1::resqml20__Facet__conditions : static_cast<gsoap_resqml2_0_1::resqml20__Facet>(facet - 1);
+		newFacet->Facet = facet == gsoap_eml2_3::eml23__FacetKind::conditions ? gsoap_resqml2_0_1::resqml20__Facet::conditions : static_cast<gsoap_resqml2_0_1::resqml20__Facet>(static_cast<int>(facet) - 1);
 		newFacet->Value = facetValue;
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet.push_back(newFacet);
 	}
@@ -210,7 +210,7 @@ gsoap_eml2_3::eml23__FacetKind AbstractValuesProperty::getFacetKind(unsigned int
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		auto facetKind = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet[index];
-		return facetKind->Facet == gsoap_resqml2_0_1::resqml20__Facet__conditions ? gsoap_eml2_3::eml23__FacetKind__conditions : static_cast<gsoap_eml2_3::eml23__FacetKind>(facetKind->Facet + 1);
+		return facetKind->Facet == gsoap_resqml2_0_1::resqml20__Facet::conditions ? gsoap_eml2_3::eml23__FacetKind::conditions : static_cast<gsoap_eml2_3::eml23__FacetKind>(static_cast<int>(facetKind->Facet) + 1);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		return static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet[index]->Kind;

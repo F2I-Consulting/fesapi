@@ -47,7 +47,7 @@ void PointsProperty::initRepo() {
 	RESQML2_NS::PointsProperty* pointsProperty = repo->createPointsProperty(
 		ijkGrid, defaultUuid, "points prop",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement__cells,
+		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		repo->getDefaultCrs());
 	double coordValues[6] = { .0, .1, .2, .3, .4, .5 };
 	pointsProperty->pushBackArray3dOfXyzPoints(coordValues, 2, 1, 1, hdfProxy);

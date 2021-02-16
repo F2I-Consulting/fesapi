@@ -33,7 +33,7 @@ LocalTime3dCrs::LocalTime3dCrs(const string & repoPath)
 
 void LocalTime3dCrs::initRepo()
 {
-	repo->createLocalTime3dCrs(defaultUuid, defaultTitle, 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__s, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
+	repo->createLocalTime3dCrs(defaultUuid, defaultTitle, 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom::m, 23031, gsoap_resqml2_0_1::eml20__TimeUom::s, gsoap_resqml2_0_1::eml20__LengthUom::m, "Unknown", false);
 }
 
 void LocalTime3dCrs::readRepo()

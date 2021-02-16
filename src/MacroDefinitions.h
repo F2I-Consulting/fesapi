@@ -271,6 +271,20 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 		if (static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName == nullptr) { static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName = constructor(gsoapProxy2_1->soap); }
 
 /**
+* A macro that defines getter presence attribute
+*
+* @param 	attributeName	Name of the attribute.
+*/
+#define ABSTRACT_GETTER_PRESENCE_ATTRIBUTE(attributeName) DLL_IMPORT_OR_EXPORT virtual bool has##attributeName() const = 0;
+
+/**
+* A macro that defines getter presence attribute
+*
+* @param 	attributeName	Name of the attribute.
+*/
+#define FINAL_GETTER_PRESENCE_ATTRIBUTE(attributeName) DLL_IMPORT_OR_EXPORT bool has##attributeName() const final;
+
+/**
  * A macro that defines getter presence attribute
  *
  * @param 	attributeName	Name of the attribute.
@@ -284,6 +298,22 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
  * @param 	attributeName	Name of the attribute.
  */
 #define GETTER_PRESENCE_ATTRIBUTE_IMPL(className, attributeName) bool GLUE(,className)::has##attributeName() const { return static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName != nullptr; }
+
+/**
+* A macro that defines getter presence attribute in vector
+*
+* @param 	vectorName   	Name of the vector.
+* @param 	attributeName	Name of the attribute.
+*/
+#define ABSTRACT_GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName) DLL_IMPORT_OR_EXPORT virtual bool has##vectorName##attributeName(unsigned int index) const = 0;
+
+/**
+* A macro that defines getter presence attribute in vector
+*
+* @param 	vectorName   	Name of the vector.
+* @param 	attributeName	Name of the attribute.
+*/
+#define FINAL_GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName) DLL_IMPORT_OR_EXPORT bool has##vectorName##attributeName(unsigned int index) const final;
 
 /**
  * A macro that defines getter presence attribute in vector
@@ -305,6 +335,26 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 	return static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName != nullptr;\
 }
 
+ /**
+  * A macro that defines getter and setter generic attribute
+  *
+  * @param 	attributeDatatype	The attribute datatype.
+  * @param 	attributeName	 	Name of the attribute.
+  */
+#define ABSTRACT_GETTER_AND_SETTER_GENERIC_ATTRIBUTE(attributeDatatype, attributeName)\
+	DLL_IMPORT_OR_EXPORT virtual void set##attributeName(const attributeDatatype & value) = 0;\
+	DLL_IMPORT_OR_EXPORT virtual attributeDatatype get##attributeName() const = 0;
+
+/**
+* A macro that defines getter and setter generic attribute
+*
+* @param 	attributeDatatype	The attribute datatype.
+* @param 	attributeName	 	Name of the attribute.
+*/
+#define FINAL_GETTER_AND_SETTER_GENERIC_ATTRIBUTE(attributeDatatype, attributeName)\
+	DLL_IMPORT_OR_EXPORT void set##attributeName(const attributeDatatype & value) final;\
+	DLL_IMPORT_OR_EXPORT attributeDatatype get##attributeName() const final;
+
 /**
  * A macro that defines getter and setter generic attribute
  *
@@ -325,6 +375,28 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 #define GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IMPL(attributeDatatype, className, attributeName)\
 	void GLUE(,className)::set##attributeName(const attributeDatatype & value) { static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName = value; }\
 	attributeDatatype GLUE(,className)::get##attributeName() const { return static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName; }
+
+ /**
+  * A macro that defines getter and setter generic attribute in vector
+  *
+  * @param 	attributeDatatype	The attribute datatype.
+  * @param 	vectorName		 	Name of the vector.
+  * @param 	attributeName	 	Name of the attribute.
+  */
+#define ABSTRACT_GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(attributeDatatype, vectorName, attributeName)\
+	DLL_IMPORT_OR_EXPORT virtual void set##vectorName##attributeName(unsigned int index, const attributeDatatype & value) = 0;\
+	DLL_IMPORT_OR_EXPORT virtual attributeDatatype get##vectorName##attributeName(unsigned int index) const = 0;
+
+/**
+* A macro that defines getter and setter generic attribute in vector
+*
+* @param 	attributeDatatype	The attribute datatype.
+* @param 	vectorName		 	Name of the vector.
+* @param 	attributeName	 	Name of the attribute.
+*/
+#define FINAL_GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(attributeDatatype, vectorName, attributeName)\
+	DLL_IMPORT_OR_EXPORT void set##vectorName##attributeName(unsigned int index, const attributeDatatype & value) final;\
+	DLL_IMPORT_OR_EXPORT attributeDatatype get##vectorName##attributeName(unsigned int index) const final;
 
 /**
  * A macro that defines getter and setter generic attribute in vector
@@ -356,6 +428,26 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 	}
 
 /**
+* A macro that defines getter and setter generic optional attribute
+*
+* @param 	attributeDatatype	The attribute datatype.
+* @param 	attributeName	 	Name of the attribute.
+*/
+#define ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(attributeDatatype, attributeName)\
+	ABSTRACT_GETTER_AND_SETTER_GENERIC_ATTRIBUTE(attributeDatatype, attributeName)\
+	ABSTRACT_GETTER_PRESENCE_ATTRIBUTE(attributeName)
+
+/**
+* A macro that defines getter and setter generic optional attribute
+*
+* @param 	attributeDatatype	The attribute datatype.
+* @param 	attributeName	 	Name of the attribute.
+*/
+#define FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(attributeDatatype, attributeName)\
+	FINAL_GETTER_AND_SETTER_GENERIC_ATTRIBUTE(attributeDatatype, attributeName)\
+	FINAL_GETTER_PRESENCE_ATTRIBUTE(attributeName)
+
+/**
  * A macro that defines getter and setter generic optional attribute
  *
  * @param 	attributeDatatype	The attribute datatype.
@@ -384,6 +476,27 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 		return *static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName;\
 	}
 
+/**
+* A macro that defines getter and setter generic optional attribute in vector
+*
+* @param 	attributeDatatype	The attribute datatype.
+* @param 	vectorName		 	Name of the vector.
+* @param 	attributeName	 	Name of the attribute.
+*/
+#define ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(attributeDatatype, vectorName, attributeName)\
+	ABSTRACT_GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(attributeDatatype, vectorName, attributeName)\
+	ABSTRACT_GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)
+
+/**
+* A macro that defines getter and setter generic optional attribute in vector
+*
+* @param 	attributeDatatype	The attribute datatype.
+* @param 	vectorName		 	Name of the vector.
+* @param 	attributeName	 	Name of the attribute.
+*/
+#define FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(attributeDatatype, vectorName, attributeName)\
+	FINAL_GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(attributeDatatype, vectorName, attributeName)\
+	FINAL_GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)
 /**
  * A macro that defines getter and setter generic optional attribute in vector
  *
@@ -454,6 +567,30 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 	}
 
 /**
+* A macro that defines getter and setter measure attribute
+*
+* @param 	attributeName	Name of the attribute.
+* @param 	uomDatatype  	The uom datatype.
+*/
+#define ABSTRACT_GETTER_AND_SETTER_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
+	DLL_IMPORT_OR_EXPORT virtual void set##attributeName(double value, uomDatatype uom) = 0;\
+	DLL_IMPORT_OR_EXPORT virtual double get##attributeName##Value() const = 0;\
+	DLL_IMPORT_OR_EXPORT virtual uomDatatype get##attributeName##Uom() const = 0;\
+	DLL_IMPORT_OR_EXPORT virtual std::string get##attributeName##UomAsString() const = 0;
+
+/**
+* A macro that defines getter and setter measure attribute
+*
+* @param 	attributeName	Name of the attribute.
+* @param 	uomDatatype  	The uom datatype.
+*/
+#define FINAL_GETTER_AND_SETTER_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
+	DLL_IMPORT_OR_EXPORT void set##attributeName(double value, uomDatatype uom) final;\
+	DLL_IMPORT_OR_EXPORT double get##attributeName##Value() const final;\
+	DLL_IMPORT_OR_EXPORT uomDatatype get##attributeName##Uom() const final;\
+	DLL_IMPORT_OR_EXPORT std::string get##attributeName##UomAsString() const final;
+
+/**
  * A macro that defines getter and setter measure attribute
  *
  * @param 	attributeName	Name of the attribute.
@@ -466,6 +603,26 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 	DLL_IMPORT_OR_EXPORT std::string get##attributeName##UomAsString() const;
 
 /**
+* A macro that defines getter and setter measure optional attribute
+*
+* @param 	attributeName	Name of the attribute.
+* @param 	uomDatatype  	The uom datatype.
+*/
+#define ABSTRACT_GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(attributeName, uomDatatype)\
+	ABSTRACT_GETTER_AND_SETTER_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
+	ABSTRACT_GETTER_PRESENCE_ATTRIBUTE(attributeName)
+
+/**
+* A macro that defines getter and setter measure optional attribute
+*
+* @param 	attributeName	Name of the attribute.
+* @param 	uomDatatype  	The uom datatype.
+*/
+#define FINAL_GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(attributeName, uomDatatype)\
+	FINAL_GETTER_AND_SETTER_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
+	FINAL_GETTER_PRESENCE_ATTRIBUTE(attributeName)
+
+/**
  * A macro that defines getter and setter measure optional attribute
  *
  * @param 	attributeName	Name of the attribute.
@@ -474,6 +631,30 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 #define GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(attributeName, uomDatatype)\
 	GETTER_AND_SETTER_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
 	GETTER_PRESENCE_ATTRIBUTE(attributeName)
+
+/**
+* A macro that defines getter and setter depth measure attribute
+*
+* @param 	attributeName	Name of the attribute.
+* @param 	uomDatatype  	The uom datatype.
+*/
+#define ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
+	DLL_IMPORT_OR_EXPORT virtual void set##attributeName(double value, uomDatatype uom, const std::string & datum) = 0;\
+	DLL_IMPORT_OR_EXPORT virtual double get##attributeName##Value() const = 0;\
+	DLL_IMPORT_OR_EXPORT virtual uomDatatype get##attributeName##Uom() const = 0;\
+	DLL_IMPORT_OR_EXPORT virtual std::string get##attributeName##Datum() const = 0;
+
+/**
+* A macro that defines getter and setter depth measure attribute
+*
+* @param 	attributeName	Name of the attribute.
+* @param 	uomDatatype  	The uom datatype.
+*/
+#define FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
+	DLL_IMPORT_OR_EXPORT void set##attributeName(double value, uomDatatype uom, const std::string & datum) final;\
+	DLL_IMPORT_OR_EXPORT double get##attributeName##Value() const final;\
+	DLL_IMPORT_OR_EXPORT uomDatatype get##attributeName##Uom() const final;\
+	DLL_IMPORT_OR_EXPORT std::string get##attributeName##Datum() const final;
 
 /**
  * A macro that defines getter and setter depth measure attribute
@@ -488,6 +669,26 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 	DLL_IMPORT_OR_EXPORT std::string get##attributeName##Datum() const;
 
 /**
+* A macro that defines getter and setter depth measure optional attribute
+*
+* @param 	attributeName	Name of the attribute.
+* @param 	uomDatatype  	The uom datatype.
+*/
+#define ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(attributeName, uomDatatype)\
+	ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
+	ABSTRACT_GETTER_PRESENCE_ATTRIBUTE(attributeName)
+
+/**
+* A macro that defines getter and setter depth measure optional attribute
+*
+* @param 	attributeName	Name of the attribute.
+* @param 	uomDatatype  	The uom datatype.
+*/
+#define FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(attributeName, uomDatatype)\
+	FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
+	FINAL_GETTER_PRESENCE_ATTRIBUTE(attributeName)
+
+/**
  * A macro that defines getter and setter depth measure optional attribute
  *
  * @param 	attributeName	Name of the attribute.
@@ -496,6 +697,30 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 #define GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(attributeName, uomDatatype)\
 	GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
 	GETTER_PRESENCE_ATTRIBUTE(attributeName)
+
+/**
+* A macro that defines getter and setter measure attribute in vector
+*
+* @param 	vectorName   	Name of the vector.
+* @param 	attributeName	Name of the attribute.
+* @param 	uomDatatype  	The uom datatype.
+*/
+#define ABSTRACT_GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
+	DLL_IMPORT_OR_EXPORT virtual void set##vectorName##attributeName(unsigned int index, double value, uomDatatype uom) = 0;\
+	DLL_IMPORT_OR_EXPORT virtual double get##vectorName##attributeName##Value(unsigned int index) const = 0;\
+	DLL_IMPORT_OR_EXPORT virtual uomDatatype get##vectorName##attributeName##Uom(unsigned int index) const = 0;
+
+/**
+* A macro that defines getter and setter measure attribute in vector
+*
+* @param 	vectorName   	Name of the vector.
+* @param 	attributeName	Name of the attribute.
+* @param 	uomDatatype  	The uom datatype.
+*/
+#define FINAL_GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
+	DLL_IMPORT_OR_EXPORT void set##vectorName##attributeName(unsigned int index, double value, uomDatatype uom) final;\
+	DLL_IMPORT_OR_EXPORT double get##vectorName##attributeName##Value(unsigned int index) const final;\
+	DLL_IMPORT_OR_EXPORT uomDatatype get##vectorName##attributeName##Uom(unsigned int index) const final;
 
 /**
  * A macro that defines getter and setter measure attribute in vector
@@ -510,6 +735,28 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 	DLL_IMPORT_OR_EXPORT uomDatatype get##vectorName##attributeName##Uom(unsigned int index) const;
 
 /**
+* A macro that defines getter and setter measure optional attribute in vector
+*
+* @param 	vectorName   	Name of the vector.
+* @param 	attributeName	Name of the attribute.
+* @param 	uomDatatype  	The uom datatype.
+*/
+#define ABSTRACT_GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
+    ABSTRACT_GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
+	ABSTRACT_GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)
+
+/**
+* A macro that defines getter and setter measure optional attribute in vector
+*
+* @param 	vectorName   	Name of the vector.
+* @param 	attributeName	Name of the attribute.
+* @param 	uomDatatype  	The uom datatype.
+*/
+#define FINAL_GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
+    FINAL_GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
+	FINAL_GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)
+
+/**
  * A macro that defines getter and setter measure optional attribute in vector
  *
  * @param 	vectorName   	Name of the vector.
@@ -519,6 +766,32 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 #define GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
     GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
 	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)
+
+/**
+* A macro that defines getter and setter depth measure attribute in vector
+*
+* @param 	vectorName   	Name of the vector.
+* @param 	attributeName	Name of the attribute.
+* @param 	uomDatatype  	The uom datatype.
+*/
+#define ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
+	DLL_IMPORT_OR_EXPORT virtual void set##vectorName##attributeName(unsigned int index, double value, uomDatatype uom, const std::string & datum) = 0;\
+	DLL_IMPORT_OR_EXPORT virtual double get##vectorName##attributeName##Value(unsigned int index) const = 0;\
+	DLL_IMPORT_OR_EXPORT virtual uomDatatype get##vectorName##attributeName##Uom(unsigned int index) const = 0;\
+	DLL_IMPORT_OR_EXPORT virtual std::string get##vectorName##attributeName##Datum(unsigned int index) const = 0;
+
+/**
+* A macro that defines getter and setter depth measure attribute in vector
+*
+* @param 	vectorName   	Name of the vector.
+* @param 	attributeName	Name of the attribute.
+* @param 	uomDatatype  	The uom datatype.
+*/
+#define FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
+	DLL_IMPORT_OR_EXPORT void set##vectorName##attributeName(unsigned int index, double value, uomDatatype uom, const std::string & datum) final;\
+	DLL_IMPORT_OR_EXPORT double get##vectorName##attributeName##Value(unsigned int index) const final;\
+	DLL_IMPORT_OR_EXPORT uomDatatype get##vectorName##attributeName##Uom(unsigned int index) const final;\
+	DLL_IMPORT_OR_EXPORT std::string get##vectorName##attributeName##Datum(unsigned int index) const final;
 
 /**
  * A macro that defines getter and setter depth measure attribute in vector
@@ -532,6 +805,28 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 	DLL_IMPORT_OR_EXPORT double get##vectorName##attributeName##Value(unsigned int index) const;\
 	DLL_IMPORT_OR_EXPORT uomDatatype get##vectorName##attributeName##Uom(unsigned int index) const;\
 	DLL_IMPORT_OR_EXPORT std::string get##vectorName##attributeName##Datum(unsigned int index) const;
+
+/**
+* A macro that defines getter and setter depth measure optional attribute in vector
+*
+* @param 	vectorName   	Name of the vector.
+* @param 	attributeName	Name of the attribute.
+* @param 	uomDatatype  	The uom datatype.
+*/
+#define ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
+	ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
+	ABSTRACT_GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)
+
+/**
+* A macro that defines getter and setter depth measure optional attribute in vector
+*
+* @param 	vectorName   	Name of the vector.
+* @param 	attributeName	Name of the attribute.
+* @param 	uomDatatype  	The uom datatype.
+*/
+#define FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
+	FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
+	FINAL_GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)
 
 /**
  * A macro that defines getter and setter depth measure optional attribute in vector

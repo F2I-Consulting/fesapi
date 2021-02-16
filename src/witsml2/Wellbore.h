@@ -20,13 +20,27 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
+#include "../MacroDefinitions.h"
+
+namespace RESQML2_0_1_NS
+{
+	class WellboreFeature;
+}
+
+namespace WITSML2_0_NS
+{
+	class WellboreCompletion;
+	class WellboreGeometry;
+	class Log;
+}
+
 namespace WITSML2_NS
 {
+	class Trajectory;
 	class Well;
 
 	/** 
-	 * @brief	The trajectory object is used to capture information about a directional survey in a wellbore.
-	 *			It contains many trajectory stations to capture the information about individual survey points.
+	 * @brief	A wellbore represents the path from surface to a unique bottomhole location.
 	 */
 	class Wellbore : public COMMON_NS::AbstractObject
 	{
@@ -41,6 +55,21 @@ namespace WITSML2_NS
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~Wellbore() = default;
+
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Number)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, SuffixAPI)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumGovt)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::eml21__WellStatus, StatusWellbore)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, IsActive)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellPurpose, PurposeWellbore)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellboreType, TypeWellbore)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellboreShape, Shape)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, AchievedTD)
+		ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(Md, gsoap_eml2_1::eml21__LengthUom)
+		ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdBit, gsoap_eml2_1::eml21__LengthUom)
+		ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdKickoff, gsoap_eml2_1::eml21__LengthUom)
+		ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdPlanned, gsoap_eml2_1::eml21__LengthUom)
+		ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdSubSeaPlanned, gsoap_eml2_1::eml21__LengthUom)
 
 		/**
 		 * @brief	Gets the well
@@ -62,6 +91,41 @@ namespace WITSML2_NS
 		 * @param [in,out]	witsmlWell	If non-null, the witsml well.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setWell(Well* witsmlWell) = 0;
+
+		/**
+		 * Gets resqml wellbore feature
+		 *
+		 * @returns	Null if it fails, else the resqml wellbore feature.
+		 */
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::WellboreFeature *> getResqmlWellboreFeature() const;
+
+		/**
+		 * Gets wellbore completions
+		 *
+		 * @returns	Null if it fails, else the wellbore completions.
+		 */
+		DLL_IMPORT_OR_EXPORT std::vector<WITSML2_0_NS::WellboreCompletion *> getWellboreCompletions() const;
+
+		/**
+		 * Gets the trajectories
+		 *
+		 * @returns	Null if it fails, else the trajectories.
+		 */
+		DLL_IMPORT_OR_EXPORT std::vector<Trajectory *> getTrajectories() const;
+
+		/**
+		 * Gets wellbore geometries
+		 *
+		 * @returns	Null if it fails, else the wellbore geometries.
+		 */
+		DLL_IMPORT_OR_EXPORT std::vector<WITSML2_0_NS::WellboreGeometry *> getWellboreGeometries() const;
+
+		/**
+		 * Gets the logs
+		 *
+		 * @returns	Null if it fails, else the logs.
+		 */
+		DLL_IMPORT_OR_EXPORT std::vector<WITSML2_0_NS::Log *> getLogs() const;
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

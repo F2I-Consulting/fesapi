@@ -35,12 +35,12 @@ StratigraphicOccurrenceInterpretation::StratigraphicOccurrenceInterpretation(RES
 		throw invalid_argument("The interpreted organization feature cannot be null.");
 	}
 	if (!orgFeat->isPartial() && dynamic_cast<RESQML2_0_1_NS::OrganizationFeature*>(orgFeat) != nullptr
-		&& static_cast<RESQML2_0_1_NS::OrganizationFeature*>(orgFeat)->getKind() != gsoap_resqml2_0_1::resqml20__OrganizationKind__stratigraphic) {
+		&& static_cast<RESQML2_0_1_NS::OrganizationFeature*>(orgFeat)->getKind() != gsoap_resqml2_0_1::resqml20__OrganizationKind::stratigraphic) {
 		throw invalid_argument("The kind of an organization feature linked to a stratigraphic occurrence interpretation must be a stratigraphic one.");
 	}
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStratigraphicOccurrenceInterpretation(orgFeat->getGsoapContext());
-	static_cast<_resqml20__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
+	static_cast<_resqml20__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain::mixed;
 	static_cast<_resqml20__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->OrderingCriteria = orderingCriteria;
 
 	initMandatoryMetadata();

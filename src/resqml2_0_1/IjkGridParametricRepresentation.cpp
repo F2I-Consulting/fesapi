@@ -219,7 +219,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatch(unsigned int patchInde
 		}
 
 		resqml20__AbstractGridGeometry* truncatedGeom = static_cast<gsoap_resqml2_0_1::resqml20__AbstractGridGeometry*>(geom);
-		if (truncatedGeom->AdditionalGridPoints.size() == 1 && truncatedGeom->AdditionalGridPoints[0]->Attachment == resqml20__GridGeometryAttachment__nodes) {
+		if (truncatedGeom->AdditionalGridPoints.size() == 1 && truncatedGeom->AdditionalGridPoints[0]->Attachment == resqml20__GridGeometryAttachment::nodes) {
 			if (truncatedGeom->AdditionalGridPoints[0]->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array)
 			{
 				eml20__Hdf5Dataset const * xmlDataset = static_cast<resqml20__Point3dHdf5Array*>(truncatedGeom->AdditionalGridPoints[0]->Points)->Coordinates;
@@ -485,13 +485,13 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	}
 
 	if (pillarKind > 1 || controlPointCountPerPillar > 2) {
-		geom->PillarShape = resqml20__PillarShape__curved;
+		geom->PillarShape = resqml20__PillarShape::curved;
 	}
 	else if (pillarKind == 1) {
-		geom->PillarShape = resqml20__PillarShape__straight;
+		geom->PillarShape = resqml20__PillarShape::straight;
 	}
 	else {
-		geom->PillarShape = resqml20__PillarShape__vertical;
+		geom->PillarShape = resqml20__PillarShape::vertical;
 	}
 
 	// XML Pillar defined

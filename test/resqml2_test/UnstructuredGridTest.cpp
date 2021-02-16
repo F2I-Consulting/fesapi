@@ -58,7 +58,7 @@ void UnstructuredGridTest::initRepo() {
 	unsigned char faceRightHandness[9] = { 0, 0, 1, 1, 1, 0, 1, 0, 0 };
 
 	unstructuredGrid->setGeometry(faceRightHandness, nodes, 7, nullptr, faceIndicesPerCell, faceIndicesCumulativeCountPerCell, 8, nodeIndicesPerFace, nodeIndicesCumulativeCountPerFace,
-		gsoap_resqml2_0_1::resqml20__CellShape__prism);
+		gsoap_resqml2_0_1::resqml20__CellShape::prism);
 }
 
 void UnstructuredGridTest::readRepo() {

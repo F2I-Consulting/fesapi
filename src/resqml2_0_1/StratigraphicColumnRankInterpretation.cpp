@@ -36,12 +36,12 @@ StratigraphicColumnRankInterpretation::StratigraphicColumnRankInterpretation(RES
 		throw invalid_argument("The interpreted organization feature cannot be null.");
 	}
 	if (!orgFeat->isPartial() && dynamic_cast<RESQML2_0_1_NS::OrganizationFeature*>(orgFeat) != nullptr
-		&& static_cast<RESQML2_0_1_NS::OrganizationFeature*>(orgFeat)->getKind() != gsoap_resqml2_0_1::resqml20__OrganizationKind__stratigraphic) {
+		&& static_cast<RESQML2_0_1_NS::OrganizationFeature*>(orgFeat)->getKind() != gsoap_resqml2_0_1::resqml20__OrganizationKind::stratigraphic) {
 		throw invalid_argument("The kind of an organization feature linked to a stratigraphic column rank interpretation must be a stratigraphic one.");
 	}
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStratigraphicColumnRankInterpretation(orgFeat->getGsoapContext());
-	static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
+	static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain::mixed;
 	static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->Index = rank;
 	static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->OrderingCriteria = orderingCriteria;
 
@@ -64,7 +64,7 @@ void StratigraphicColumnRankInterpretation::pushBackStratiUnitInterpretation(RES
 
 bool StratigraphicColumnRankInterpretation::isAChronoStratiRank() const
 {
-	return static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->OrderingCriteria == resqml20__OrderingCriteria__age;
+	return static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->OrderingCriteria == resqml20__OrderingCriteria::age;
 }
 
 unsigned int StratigraphicColumnRankInterpretation::getContactCount() const
@@ -80,15 +80,15 @@ gsoap_eml2_3::resqml22__ContactMode StratigraphicColumnRankInterpretation::getSu
 	resqml20__BinaryContactInterpretationPart* contact = static_cast<resqml20__BinaryContactInterpretationPart*>(static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
 	if (contact->Subject->SecondaryQualifier != nullptr) {
 		switch (*contact->Subject->SecondaryQualifier) {
-		case gsoap_resqml2_0_1::resqml20__ContactMode__baselap:
-		case gsoap_resqml2_0_1::resqml20__ContactMode__erosion: return gsoap_eml2_3::resqml22__ContactMode__unconformable;
-		case gsoap_resqml2_0_1::resqml20__ContactMode__extended: return gsoap_eml2_3::resqml22__ContactMode__extended;
-		case gsoap_resqml2_0_1::resqml20__ContactMode__proportional: return gsoap_eml2_3::resqml22__ContactMode__conformable;
+		case gsoap_resqml2_0_1::resqml20__ContactMode::baselap:
+		case gsoap_resqml2_0_1::resqml20__ContactMode::erosion: return gsoap_eml2_3::resqml22__ContactMode::unconformable;
+		case gsoap_resqml2_0_1::resqml20__ContactMode::extended: return gsoap_eml2_3::resqml22__ContactMode::extended;
+		case gsoap_resqml2_0_1::resqml20__ContactMode::proportional: return gsoap_eml2_3::resqml22__ContactMode::conformable;
 		default: throw std::out_of_range("Not a supported enumerated value for contact mode.");
 		}
 	}
 
-	return gsoap_eml2_3::resqml22__ContactMode__conformable;
+	return gsoap_eml2_3::resqml22__ContactMode::conformable;
 }
 
 RESQML2_NS::StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getSubjectOfContact(unsigned int contactIndex) const
@@ -111,15 +111,15 @@ gsoap_eml2_3::resqml22__ContactMode StratigraphicColumnRankInterpretation::getDi
 	resqml20__BinaryContactInterpretationPart* contact = static_cast<resqml20__BinaryContactInterpretationPart*>(static_cast<_resqml20__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
 	if (contact->DirectObject->SecondaryQualifier != nullptr) {
 		switch (*contact->DirectObject->SecondaryQualifier) {
-		case gsoap_resqml2_0_1::resqml20__ContactMode__baselap:
-		case gsoap_resqml2_0_1::resqml20__ContactMode__erosion: return gsoap_eml2_3::resqml22__ContactMode__unconformable;
-		case gsoap_resqml2_0_1::resqml20__ContactMode__extended: return gsoap_eml2_3::resqml22__ContactMode__extended;
-		case gsoap_resqml2_0_1::resqml20__ContactMode__proportional: return gsoap_eml2_3::resqml22__ContactMode__conformable;
+		case gsoap_resqml2_0_1::resqml20__ContactMode::baselap:
+		case gsoap_resqml2_0_1::resqml20__ContactMode::erosion: return gsoap_eml2_3::resqml22__ContactMode::unconformable;
+		case gsoap_resqml2_0_1::resqml20__ContactMode::extended: return gsoap_eml2_3::resqml22__ContactMode::extended;
+		case gsoap_resqml2_0_1::resqml20__ContactMode::proportional: return gsoap_eml2_3::resqml22__ContactMode::conformable;
 		default: throw std::out_of_range("Not a supported enumerated value for contact mode.");
 		}
 	}
 
-	return gsoap_eml2_3::resqml22__ContactMode__conformable;
+	return gsoap_eml2_3::resqml22__ContactMode::conformable;
 }
 
 RESQML2_NS::StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getDirectObjectOfContact(unsigned int contactIndex) const
@@ -161,20 +161,20 @@ void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(R
 {
 	resqml20__AbstractOrganizationInterpretation* org = static_cast<resqml20__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
 
-	pushBackBinaryContact(subject, gsoap_eml2_3::resqml22__ContactVerb__stops, directObject);
+	pushBackBinaryContact(subject, gsoap_eml2_3::resqml22__ContactVerb::stops, directObject);
     resqml20__BinaryContactInterpretationPart* contact = static_cast<resqml20__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
     contact->DirectObject->SecondaryQualifier = static_cast<resqml20__ContactMode*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactMode)));
 	switch (directObjectMode) {
-	case gsoap_eml2_3::resqml22__ContactMode__conformable: *(contact->DirectObject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode__proportional; break;
-	case gsoap_eml2_3::resqml22__ContactMode__extended: *(contact->DirectObject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode__extended; break;
-	case gsoap_eml2_3::resqml22__ContactMode__unconformable: *(contact->DirectObject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode__erosion; break;
+	case gsoap_eml2_3::resqml22__ContactMode::conformable: *(contact->DirectObject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode::proportional; break;
+	case gsoap_eml2_3::resqml22__ContactMode::extended: *(contact->DirectObject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode::extended; break;
+	case gsoap_eml2_3::resqml22__ContactMode::unconformable: *(contact->DirectObject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode::erosion; break;
 	default: throw std::out_of_range("Not a supported enumerated value for contact mode.");
 	}
     contact->Subject->SecondaryQualifier = static_cast<resqml20__ContactMode*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactMode)));
 	switch (subjectContactMode) {
-	case gsoap_eml2_3::resqml22__ContactMode__conformable: *(contact->Subject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode__proportional; break;
-	case gsoap_eml2_3::resqml22__ContactMode__extended: *(contact->Subject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode__extended; break;
-	case gsoap_eml2_3::resqml22__ContactMode__unconformable: *(contact->Subject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode__baselap; break;
+	case gsoap_eml2_3::resqml22__ContactMode::conformable: *(contact->Subject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode::proportional; break;
+	case gsoap_eml2_3::resqml22__ContactMode::extended: *(contact->Subject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode::extended; break;
+	case gsoap_eml2_3::resqml22__ContactMode::unconformable: *(contact->Subject->SecondaryQualifier) = gsoap_resqml2_0_1::resqml20__ContactMode::baselap; break;
 	default : throw std::out_of_range("Not a supported enumerated value for contact mode.");
 	}
 

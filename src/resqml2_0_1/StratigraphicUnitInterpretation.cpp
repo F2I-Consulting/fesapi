@@ -35,7 +35,7 @@ StratigraphicUnitInterpretation::StratigraphicUnitInterpretation(RESQML2_NS::Roc
 	}
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStratigraphicUnitInterpretation(feature->getGsoapContext());
-	static_cast<_resqml20__StratigraphicUnitInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
+	static_cast<_resqml20__StratigraphicUnitInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain::mixed;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());

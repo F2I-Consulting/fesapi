@@ -99,31 +99,6 @@ void Wellbore::setWell(WITSML2_NS::Well* witsmlWell)
 	getRepository()->addRelationship(this, witsmlWell);
 }
 
-std::vector<RESQML2_0_1_NS::WellboreFeature *> Wellbore::getResqmlWellboreFeature() const
-{
-	return getRepository()->getSourceObjects<RESQML2_0_1_NS::WellboreFeature>(this);
-}
-
-std::vector<WellboreCompletion *> Wellbore::getWellboreCompletions() const
-{
-	return getRepository()->getSourceObjects<WellboreCompletion>(this);
-}
-
-std::vector<Trajectory *> Wellbore::getTrajectories() const
-{
-	return getRepository()->getSourceObjects<Trajectory>(this);
-}
-
-std::vector<WellboreGeometry *> Wellbore::getWellboreGeometries() const
-{
-	return getRepository()->getSourceObjects<WellboreGeometry>(this);
-}
-
-std::vector<Log *> Wellbore::getLogs() const
-{
-	return getRepository()->getSourceObjects<Log>(this);
-}
-
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Wellbore, Number, gsoap_eml2_1::soap_new_std__string)
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Wellbore, SuffixAPI, gsoap_eml2_1::soap_new_std__string)
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Wellbore, NumGovt, gsoap_eml2_1::soap_new_std__string)

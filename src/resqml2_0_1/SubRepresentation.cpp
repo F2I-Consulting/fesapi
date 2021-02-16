@@ -147,7 +147,7 @@ void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__Ind
 	elements->Indices = integerArray;
 
 	if (!supportingRepDataset.empty()) {
-		RESQML2_0_1_NS::DiscreteProperty* discreteProp = getRepository()->createDiscreteProperty(this, "", "SupportingRepresentationIndex", 1, elementKind, resqml20__ResqmlPropertyKind__index);
+		RESQML2_0_1_NS::DiscreteProperty* discreteProp = getRepository()->createDiscreteProperty(this, "", "SupportingRepresentationIndex", 1, elementKind, resqml20__ResqmlPropertyKind::index);
 		ostringstream oss;
 		oss << "SubRepresentationPatch[" << rep->SubRepresentationPatch.size() - 1 << "]/ElementIndices/SupportingRepresentationIndex";
 		pushBackExtraMetadata(oss.str(), discreteProp->getUuid());
@@ -215,12 +215,12 @@ RESQML2_NS::AbstractRepresentation::indexableElement SubRepresentation::getEleme
 	if (rep->SubRepresentationPatch.size() > patchIndex) {
 		if (rep->SubRepresentationPatch[patchIndex]->ElementIndices.size() > elementIndicesIndex) {
 			switch (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->IndexableElement) {
-			case resqml20__IndexableElements__nodes: return NODE;
-			case resqml20__IndexableElements__edges:
-			case resqml20__IndexableElements__intervals: return EDGE;
-			case resqml20__IndexableElements__faces: return FACE;
-			case resqml20__IndexableElements__cells: return VOLUME;
-			case resqml20__IndexableElements__pillars: return PILLAR;
+			case resqml20__IndexableElements::nodes: return NODE;
+			case resqml20__IndexableElements::edges:
+			case resqml20__IndexableElements::intervals: return EDGE;
+			case resqml20__IndexableElements::faces: return FACE;
+			case resqml20__IndexableElements::cells: return VOLUME;
+			case resqml20__IndexableElements::pillars: return PILLAR;
 			default: throw invalid_argument("The indexable element of the subrepresentation is not supported yet");
 			}
 		}

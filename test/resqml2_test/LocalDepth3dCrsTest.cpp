@@ -37,7 +37,7 @@ LocalDepth3dCrsTest::LocalDepth3dCrsTest(const string & repoPath)
 
 void LocalDepth3dCrsTest::initRepo()
 {
-	repo->createLocalDepth3dCrs(defaultUuid, defaultTitle, 1000, 2000, 3000, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__ft, "Unknown", false);
+	repo->createLocalDepth3dCrs(defaultUuid, defaultTitle, 1000, 2000, 3000, .0, gsoap_resqml2_0_1::eml20__LengthUom::m, 23031, gsoap_resqml2_0_1::eml20__LengthUom::ft, "Unknown", false);
 }
 
 void LocalDepth3dCrsTest::readRepo()
@@ -49,7 +49,7 @@ void LocalDepth3dCrsTest::readRepo()
 	REQUIRE(crs->getOriginDepthOrElevation() == 3000);
 	REQUIRE(crs->getProjectedCrsEpsgCode() == 23031);
 	REQUIRE(crs->isVerticalCrsUnknown());
-	REQUIRE(crs->getProjectedCrsUnit() == gsoap_resqml2_0_1::eml20__LengthUom__m);
-	REQUIRE(crs->getVerticalCrsUnit() == gsoap_resqml2_0_1::eml20__LengthUom__ft);
+	REQUIRE(crs->getProjectedCrsUnit() == gsoap_resqml2_0_1::eml20__LengthUom::m);
+	REQUIRE(crs->getVerticalCrsUnit() == gsoap_resqml2_0_1::eml20__LengthUom::ft);
 	REQUIRE(crs->isDepthOriented());
 }

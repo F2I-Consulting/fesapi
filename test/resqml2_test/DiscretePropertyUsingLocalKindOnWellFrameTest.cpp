@@ -44,8 +44,8 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::initRepo()
 	// creation
 	RESQML2_NS::WellboreFrameRepresentation * frame = repo->createPartial<RESQML2_0_1_NS::WellboreFrameRepresentation>(WellboreFrameRepresentationTest::defaultUuid, "");
 
-	EML2_NS::PropertyKind* parentPropertyKind = repo->createPropertyKind("a48c9c25-1e3a-43c8-be6a-044224cc69cb", "property", gsoap_eml2_1::eml21__QuantityClassKind__unitless);
-	EML2_NS::PropertyKind* propertyKind = repo->createPropertyKind("", "", gsoap_eml2_1::eml21__QuantityClassKind__not_x0020a_x0020measure, false, parentPropertyKind);
+	EML2_NS::PropertyKind* parentPropertyKind = repo->createPropertyKind("a48c9c25-1e3a-43c8-be6a-044224cc69cb", "property", gsoap_eml2_1::eml21__QuantityClassKind::unitless);
+	EML2_NS::PropertyKind* propertyKind = repo->createPropertyKind("", "", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure, false, parentPropertyKind);
 
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
@@ -54,7 +54,7 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::initRepo()
 	RESQML2_NS::DiscreteProperty* discreteProperty = repo->createDiscreteProperty(
 		frame, defaultUuid, defaultTitle,
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement__intervals,
+		gsoap_eml2_3::resqml22__IndexableElement::intervals,
 		propertyKind);
 	REQUIRE(discreteProperty != nullptr);
 	int values[5] = { 0, 1, 2, 3 };
@@ -73,7 +73,7 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::readRepo()
 	REQUIRE(discreteProperty->getElementCountPerValue() == 1);
 
 	// getAttachmentKind
-	REQUIRE(discreteProperty->getAttachmentKind() == gsoap_eml2_3::resqml22__IndexableElement__intervals);
+	REQUIRE(discreteProperty->getAttachmentKind() == gsoap_eml2_3::resqml22__IndexableElement::intervals);
 
 	// getEnergisticsPropertyKind
 	REQUIRE_FALSE(discreteProperty->isAssociatedToOneStandardEnergisticsPropertyKind());

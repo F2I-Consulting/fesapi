@@ -49,8 +49,9 @@ Grid2dRepresentation::Grid2dRepresentation(RESQML2_NS::AbstractFeatureInterpreta
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	// Surface role
-	if (interp->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_eml2_3_resqml22__SeismicLatticeFeature)
-		singleGrid2dRep->SurfaceRole = resqml22__SurfaceRole__pick;
+	if (interp->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_eml2_3_resqml22__SeismicLatticeFeature) {
+		singleGrid2dRep->SurfaceRole = resqml22__SurfaceRole::pick;
+	}
 
 	setInterpretation(interp);
 }

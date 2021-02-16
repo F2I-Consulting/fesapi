@@ -50,7 +50,7 @@ Grid2dRepresentation::Grid2dRepresentation(RESQML2_NS::AbstractFeatureInterpreta
 
 	// Surface role
 	if (interp->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORESeismicLatticeFeature)
-		singleGrid2dRep->SurfaceRole = resqml20__SurfaceRole__pick;
+		singleGrid2dRep->SurfaceRole = resqml20__SurfaceRole::pick;
 
 	setInterpretation(interp);
 }

@@ -30,7 +30,7 @@ GeneticBoundaryFeature::GeneticBoundaryFeature(COMMON_NS::DataObjectRepository *
 
 	gsoapProxy2_0_1 = gsoap_resqml2_0_1::soap_new_resqml20__obj_USCOREGeneticBoundaryFeature(repo->getGsoapContext());
 	gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature* horizon = static_cast<gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature*>(gsoapProxy2_0_1);
-	horizon->GeneticBoundaryKind = isAnHorizon ? gsoap_resqml2_0_1::resqml20__GeneticBoundaryKind__horizon : gsoap_resqml2_0_1::resqml20__GeneticBoundaryKind__geobody_x0020boundary;
+	horizon->GeneticBoundaryKind = isAnHorizon ? gsoap_resqml2_0_1::resqml20__GeneticBoundaryKind::horizon : gsoap_resqml2_0_1::resqml20__GeneticBoundaryKind::geobody_x0020boundary;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -40,7 +40,7 @@ GeneticBoundaryFeature::GeneticBoundaryFeature(COMMON_NS::DataObjectRepository *
 
 bool GeneticBoundaryFeature::isAnHorizon() const
 {
-	return static_cast<gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature*>(gsoapProxy2_0_1)->GeneticBoundaryKind == gsoap_resqml2_0_1::resqml20__GeneticBoundaryKind__horizon;
+	return static_cast<gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature*>(gsoapProxy2_0_1)->GeneticBoundaryKind == gsoap_resqml2_0_1::resqml20__GeneticBoundaryKind::horizon;
 }
 
 void GeneticBoundaryFeature::setAge(unsigned int age)

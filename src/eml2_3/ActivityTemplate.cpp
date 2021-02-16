@@ -73,7 +73,7 @@ void ActivityTemplate::pushBackParameter(const std::string & title,
 	unsigned int minOccurs, int maxOccurs,
 	std::string resqmlObjectContentType)
 {
-	pushBackParameter(title, gsoap_resqml2_0_1::resqml20__ParameterKind__dataObject, isInput, isOutput, minOccurs, maxOccurs);
+	pushBackParameter(title, gsoap_resqml2_0_1::resqml20__ParameterKind::dataObject, isInput, isOutput, minOccurs, maxOccurs);
 
 	if (!resqmlObjectContentType.empty())
 	{

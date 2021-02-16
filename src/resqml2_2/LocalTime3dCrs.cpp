@@ -41,8 +41,8 @@ void LocalTime3dCrs::init(COMMON_NS::DataObjectRepository * repo, const std::str
 	_resqml22__LocalTime3dCrs* local3dCrs = static_cast<_resqml22__LocalTime3dCrs*>(gsoapProxy2_3);
 	local3dCrs->ArealRotation = soap_new_eml23__PlaneAngleMeasure(gsoapProxy2_3->soap);
 	local3dCrs->ArealRotation->__item = arealRotation;
-	local3dCrs->ArealRotation->uom = eml23__PlaneAngleUom__rad;
-	local3dCrs->ProjectedAxisOrder = eml23__AxisOrder2d__easting_x0020northing;
+	local3dCrs->ArealRotation->uom = eml23__PlaneAngleUom::rad;
+	local3dCrs->ProjectedAxisOrder = eml23__AxisOrder2d::easting_x0020northing;
 	local3dCrs->XOffset = originOrdinal1;
 	local3dCrs->YOffset = originOrdinal2;
 	local3dCrs->ZOffset = originOrdinal3;

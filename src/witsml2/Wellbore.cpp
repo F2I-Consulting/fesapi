@@ -18,7 +18,14 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Wellbore.h"
 
+#include "../resqml2_0_1/WellboreFeature.h"
+
+#include "Trajectory.h"
 #include "Well.h"
+
+#include "../Witsml2_0/WellboreCompletion.h"
+#include "../Witsml2_0/WellboreGeometry.h"
+#include "../Witsml2_0/Log.h"
 
 using namespace WITSML2_NS;
 
@@ -30,4 +37,29 @@ Well* Wellbore::getWell() const
 void Wellbore::loadTargetRelationships()
 {
 	convertDorIntoRel<Well>(getWellDor());
+}
+
+std::vector<RESQML2_0_1_NS::WellboreFeature *> Wellbore::getResqmlWellboreFeature() const
+{
+	return getRepository()->getSourceObjects<RESQML2_0_1_NS::WellboreFeature>(this);
+}
+
+std::vector<WITSML2_0_NS::WellboreCompletion *> Wellbore::getWellboreCompletions() const
+{
+	return getRepository()->getSourceObjects<WITSML2_0_NS::WellboreCompletion>(this);
+}
+
+std::vector<Trajectory *> Wellbore::getTrajectories() const
+{
+	return getRepository()->getSourceObjects<Trajectory>(this);
+}
+
+std::vector<WITSML2_0_NS::WellboreGeometry *> Wellbore::getWellboreGeometries() const
+{
+	return getRepository()->getSourceObjects<WITSML2_0_NS::WellboreGeometry>(this);
+}
+
+std::vector<WITSML2_0_NS::Log *> Wellbore::getLogs() const
+{
+	return getRepository()->getSourceObjects<WITSML2_0_NS::Log>(this);
 }

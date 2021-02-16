@@ -79,7 +79,7 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 {
 	init(rep, guid, title, dimension, attachmentKind);
 
-	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc;
+	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc;
 	pushBackExtraMetadata("Uom", nonStandardUom);
 
 	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap);
@@ -92,7 +92,7 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 {
 	init(rep, guid, title, dimension, attachmentKind);
 
-	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc;
+	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc;
 	pushBackExtraMetadata("Uom", nonStandardUom);
 
 	setPropertyKind(localPropKind);
@@ -107,7 +107,7 @@ std::string ContinuousProperty::getUomAsString() const
 {
 	gsoap_resqml2_0_1::resqml20__ResqmlUom uom = getUom();
 
-	if (uom == gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc) {
+	if (uom == gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc) {
 		unsigned int emCount = getExtraMetadataCount();
 		for (unsigned int i = 0; i < emCount; ++i) {
 			if (getExtraMetadataKeyAtIndex(i) == "Uom") {
@@ -196,7 +196,7 @@ bool ContinuousProperty::validatePropertyKindAssociation(EML2_NS::PropertyKind* 
 			}
 			auto pk201 = dynamic_cast<RESQML2_0_1_NS::PropertyKind*>(pk);
 			if (pk201 != nullptr) {
-				if (!pk201->isChildOf(resqml20__ResqmlPropertyKind__continuous)) {
+				if (!pk201->isChildOf(resqml20__ResqmlPropertyKind::continuous)) {
 					repository->addWarning("The continuous property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the continuous standard property kind. This property will be assumed to be a partial one.");
 					changeToPartialObject();
 					return false;
@@ -226,7 +226,7 @@ bool ContinuousProperty::validatePropertyKindAssociation(gsoap_resqml2_0_1::resq
 			changeToPartialObject();
 			return false;
 		}
-		if (!pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind__continuous)) {
+		if (!pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind::continuous)) {
 			repository->addWarning("The continuous property " + getUuid() + " cannot be associated to a resqml property kind \"" + pkName + "\" which does not derive from the continuous standard property kind. This property will be assumed to be a partial one.");
 			changeToPartialObject();
 			return false;

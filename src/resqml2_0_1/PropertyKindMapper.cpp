@@ -175,13 +175,13 @@ gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind PropertyKindMapper::getResqmlSta
 	if (cit1 != applicationPropertyKindNameToResqmlStandardPropertyKindName.end())
 		value =  cit1->second;
 	else
-		return gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__RESQML_x0020root_x0020property;
+		return gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::RESQML_x0020root_x0020property;
 
 	std::unordered_map<std::string, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind>::const_iterator cit = value.find (applicationPropertyKindName);
 	if (cit != value.end())
 		return cit->second;
 	else
-		return gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__RESQML_x0020root_x0020property;
+		return gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::RESQML_x0020root_x0020property;
 }
 
 std::string PropertyKindMapper::getApplicationPropertyKindNameFromResqmlLocalPropertyKindUuid(const std::string & resqmlLocalPropertyKindUuid, const std::string & application) const
@@ -289,12 +289,12 @@ gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind PropertyKindMapper::getPropertyK
 		}
 	}
 
-	return gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__RESQML_x0020root_x0020property;
+	return gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::RESQML_x0020root_x0020property;
 }
 
 bool PropertyKindMapper::isChildOf(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind child, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parent) const
 {
-	if (child == gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__RESQML_x0020root_x0020property) {
+	if (child == gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::RESQML_x0020root_x0020property) {
 		return false;
 	}
 

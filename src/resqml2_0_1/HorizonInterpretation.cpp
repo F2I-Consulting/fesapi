@@ -36,7 +36,7 @@ HorizonInterpretation::HorizonInterpretation(RESQML2_NS::BoundaryFeature * horiz
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREHorizonInterpretation(horizon->getGsoapContext());
 
-	static_cast<_resqml20__HorizonInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
+	static_cast<_resqml20__HorizonInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain::mixed;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());

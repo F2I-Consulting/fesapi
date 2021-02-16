@@ -40,7 +40,7 @@ FaultInterpretation::FaultInterpretation(RESQML2_NS::BoundaryFeature * fault, co
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREFaultInterpretation(fault->getGsoapContext());
 	_resqml20__FaultInterpretation* interp = static_cast<_resqml20__FaultInterpretation*>(gsoapProxy2_0_1);
-	interp->Domain = resqml20__Domain__mixed;
+	interp->Domain = resqml20__Domain::mixed;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -60,7 +60,7 @@ FaultInterpretation::FaultInterpretation(RESQML2_NS::BoundaryFeature * fault, co
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREFaultInterpretation(fault->getGsoapContext());	
 	_resqml20__FaultInterpretation* interp = static_cast<_resqml20__FaultInterpretation*>(gsoapProxy2_0_1);
-	interp->Domain = resqml20__Domain__mixed;
+	interp->Domain = resqml20__Domain::mixed;
 
 	interp->HasOccuredDuring = soap_new_resqml20__TimeInterval(interp->soap);
 	interp->HasOccuredDuring->ChronoBottom = chronoBtm->newResqmlReference();

@@ -35,46 +35,46 @@ namespace {
 		auto directObjectFeature = directObject->getInterpretedFeature();
 		if (dynamic_cast<CulturalFeature*>(subjectFeature) != nullptr) {
 			if (dynamic_cast<CulturalFeature*>(directObjectFeature) != nullptr) {
-				return resqml20__ContactRelationship::resqml20__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature;
+				return resqml20__ContactRelationship::frontier_x0020feature_x0020to_x0020frontier_x0020feature;
 			}
 			else if (dynamic_cast<RESQML2_0_1_NS::GeneticBoundaryFeature*>(directObjectFeature) != nullptr) {
-				return resqml20__ContactRelationship::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature;
+				return resqml20__ContactRelationship::genetic_x0020boundary_x0020to_x0020frontier_x0020feature;
 			}
 			else if (dynamic_cast<RESQML2_0_1_NS::TectonicBoundaryFeature*>(directObjectFeature) != nullptr) {
-				return resqml20__ContactRelationship::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature;
+				return resqml20__ContactRelationship::genetic_x0020boundary_x0020to_x0020frontier_x0020feature;
 			}
 			else if (dynamic_cast<RESQML2_0_1_NS::StratigraphicUnitFeature*>(directObjectFeature) != nullptr) {
-				return resqml20__ContactRelationship::resqml20__ContactRelationship__stratigraphic_x0020unit_x0020to_x0020frontier_x0020feature;
+				return resqml20__ContactRelationship::stratigraphic_x0020unit_x0020to_x0020frontier_x0020feature;
 			}
 		}
 		else if (dynamic_cast<RESQML2_0_1_NS::GeneticBoundaryFeature*>(subjectFeature) != nullptr) {
 			if (dynamic_cast<CulturalFeature*>(directObjectFeature) != nullptr) {
-				return resqml20__ContactRelationship::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature;
+				return resqml20__ContactRelationship::genetic_x0020boundary_x0020to_x0020frontier_x0020feature;
 			}
 			else if (dynamic_cast<RESQML2_0_1_NS::GeneticBoundaryFeature*>(directObjectFeature) != nullptr) {
-				return resqml20__ContactRelationship::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020genetic_x0020boundary;
+				return resqml20__ContactRelationship::genetic_x0020boundary_x0020to_x0020genetic_x0020boundary;
 			}
 			else if (dynamic_cast<RESQML2_0_1_NS::TectonicBoundaryFeature*>(directObjectFeature) != nullptr) {
-				return resqml20__ContactRelationship::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020tectonic_x0020boundary;
+				return resqml20__ContactRelationship::genetic_x0020boundary_x0020to_x0020tectonic_x0020boundary;
 			}
 		}
 		else if (dynamic_cast<RESQML2_NS::RockVolumeFeature*>(subjectFeature) != nullptr) {
 			if (dynamic_cast<CulturalFeature*>(directObjectFeature) != nullptr) {
-				return resqml20__ContactRelationship::resqml20__ContactRelationship__stratigraphic_x0020unit_x0020to_x0020frontier_x0020feature;
+				return resqml20__ContactRelationship::stratigraphic_x0020unit_x0020to_x0020frontier_x0020feature;
 			}
 			else if (dynamic_cast<RESQML2_NS::RockVolumeFeature*>(directObjectFeature) != nullptr) {
-				return resqml20__ContactRelationship::resqml20__ContactRelationship__stratigraphic_x0020unit_x0020to_x0020stratigraphic_x0020unit;
+				return resqml20__ContactRelationship::stratigraphic_x0020unit_x0020to_x0020stratigraphic_x0020unit;
 			}
 		}
 		else if (dynamic_cast<RESQML2_0_1_NS::TectonicBoundaryFeature*>(subjectFeature) != nullptr) {
 			if (dynamic_cast<CulturalFeature*>(directObjectFeature) != nullptr) {
-				return resqml20__ContactRelationship::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature;
+				return resqml20__ContactRelationship::tectonic_x0020boundary_x0020to_x0020frontier_x0020feature;
 			}
 			else if (dynamic_cast<RESQML2_0_1_NS::GeneticBoundaryFeature*>(directObjectFeature) != nullptr) {
-				return resqml20__ContactRelationship::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary;
+				return resqml20__ContactRelationship::tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary;
 			}
 			else if (dynamic_cast<RESQML2_0_1_NS::TectonicBoundaryFeature*>(directObjectFeature) != nullptr) {
-				return resqml20__ContactRelationship::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020tectonic_x0020boundary;
+				return resqml20__ContactRelationship::tectonic_x0020boundary_x0020to_x0020tectonic_x0020boundary;
 			}
 		}
 
@@ -83,9 +83,9 @@ namespace {
 
 	resqml20__ContactVerb mapVerbFrom(gsoap_eml2_3::resqml22__ContactVerb verb) {
 		switch (verb) {
-		case gsoap_eml2_3::resqml22__ContactVerb::resqml22__ContactVerb__crosses : return resqml20__ContactVerb::resqml20__ContactVerb__crosses;
-		case gsoap_eml2_3::resqml22__ContactVerb::resqml22__ContactVerb__interrupts :return resqml20__ContactVerb::resqml20__ContactVerb__splits; // see https://energistics.atlassian.net/browse/RESQML-578
-		case gsoap_eml2_3::resqml22__ContactVerb::resqml22__ContactVerb__stops:return resqml20__ContactVerb::resqml20__ContactVerb__stops_x0020at;
+		case gsoap_eml2_3::resqml22__ContactVerb::crosses : return resqml20__ContactVerb::crosses;
+		case gsoap_eml2_3::resqml22__ContactVerb::interrupts :return resqml20__ContactVerb::splits; // see https://energistics.atlassian.net/browse/RESQML-578
+		case gsoap_eml2_3::resqml22__ContactVerb::stops:return resqml20__ContactVerb::stops_x0020at;
 		}
 
 		throw std::out_of_range("The enumerated verb is not supported");
@@ -109,11 +109,11 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureIn
 		org->ContactInterpretation.push_back(contact);
 
 		contact->ContactRelationship = computeFrom(subject, directObject);
-		contact->Subject = verb == gsoap_eml2_3::resqml22__ContactVerb::resqml22__ContactVerb__stops // stops is mapped with stops at in 2.0.1
+		contact->Subject = verb == gsoap_eml2_3::resqml22__ContactVerb::stops // stops is mapped with stops at in 2.0.1
 			? directObject->newContactElementReference2_0_1()
 			: subject->newContactElementReference2_0_1();
 		contact->Verb = mapVerbFrom(verb);
-		contact->DirectObject = verb == gsoap_eml2_3::resqml22__ContactVerb::resqml22__ContactVerb__stops // stops is mapped with stops at in 2.0.1
+		contact->DirectObject = verb == gsoap_eml2_3::resqml22__ContactVerb::stops // stops is mapped with stops at in 2.0.1
 			? subject->newContactElementReference2_0_1()
 			: directObject->newContactElementReference2_0_1();
 	}
@@ -149,7 +149,7 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureIn
 	if (gsoapProxy2_0_1 != nullptr) {
 		resqml20__AbstractOrganizationInterpretation* org = static_cast<resqml20__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
 		resqml20__BinaryContactInterpretationPart* contact = static_cast<resqml20__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
-		if (verb == gsoap_eml2_3::resqml22__ContactVerb::resqml22__ContactVerb__stops) { // stops is mapped with stops at in 2.0.1)
+		if (verb == gsoap_eml2_3::resqml22__ContactVerb::stops) { // stops is mapped with stops at in 2.0.1)
 			contact->Subject->Qualifier = static_cast<resqml20__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactSide)));
 			*(contact->Subject->Qualifier) = static_cast<resqml20__ContactSide>(directObjectQualifier);
 		}
@@ -175,7 +175,7 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(AbstractFeatureIn
 	if (gsoapProxy2_0_1 != nullptr) {
 		resqml20__AbstractOrganizationInterpretation* org = static_cast<resqml20__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
 		resqml20__BinaryContactInterpretationPart* contact = static_cast<resqml20__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
-		if (verb == gsoap_eml2_3::resqml22__ContactVerb::resqml22__ContactVerb__stops) { // stops is mapped with stops at in 2.0.1
+		if (verb == gsoap_eml2_3::resqml22__ContactVerb::stops) { // stops is mapped with stops at in 2.0.1
 			contact->DirectObject->Qualifier = static_cast<resqml20__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__ContactSide)));
 			*(contact->DirectObject->Qualifier) = static_cast<resqml20__ContactSide>(subjectQualifier);
 		}

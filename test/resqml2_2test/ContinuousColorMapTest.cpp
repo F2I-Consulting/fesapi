@@ -75,14 +75,14 @@ void ContinuousColorMapTest::initRepo() {
 		1., 1.);
 
 	// assotiating a Continuous property to the grid 2d representation
-	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind__not_x0020a_x0020measure);
+	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
 	ContinuousProperty* continuousProperty = repo->createContinuousProperty(grid2dRepresentation, uuidContinuousProperty, titleContinuousProperty, 2,
-		gsoap_eml2_3::resqml22__IndexableElement__nodes, "continuousColorMapIndex", propertyKind);
+		gsoap_eml2_3::resqml22__IndexableElement::nodes, "continuousColorMapIndex", propertyKind);
 	double values[2] = { 0., 1. };
 	continuousProperty->pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 
 	// creating the continuous color map
-	RESQML2_NS::ContinuousColorMap* continuousColorMap = repo->createContinuousColorMap(defaultUuid, defaultTitle, gsoap_eml2_3::resqml22__InterpolationDomain__rgb, gsoap_eml2_3::resqml22__InterpolationMethod__linear);
+	RESQML2_NS::ContinuousColorMap* continuousColorMap = repo->createContinuousColorMap(defaultUuid, defaultTitle, gsoap_eml2_3::resqml22__InterpolationDomain::rgb, gsoap_eml2_3::resqml22__InterpolationMethod::linear);
 	REQUIRE(continuousColorMap != nullptr);
 	unsigned int rgbColors[6] = { 0, 256, 0, 255, 0, 0 };
 	vector<string> titles = { "green", "red" };

@@ -46,7 +46,7 @@ WellboreMarkerFrameRepresentationTest::WellboreMarkerFrameRepresentationTest(con
 
 void WellboreMarkerFrameRepresentationTest::initRepo() {
 	WellboreInterpretation* interp = repo->createPartial<RESQML2_0_1_NS::WellboreInterpretation>("", "");
-	MdDatum* mdDatum = repo->createMdDatum("", "", nullptr, gsoap_eml2_3::eml23__WellboreDatumReference__mean_x0020sea_x0020level, 275, 75, 0);
+	MdDatum* mdDatum = repo->createMdDatum("", "", nullptr, gsoap_eml2_3::eml23__WellboreDatumReference::mean_x0020sea_x0020level, 275, 75, 0);
 
 	// creating the WellboreTrajectoryRepresentation in m and ft and depth
 	WellboreTrajectoryRepresentation* traj = repo->createWellboreTrajectoryRepresentation(interp, "", "", mdDatum);
@@ -59,13 +59,13 @@ void WellboreMarkerFrameRepresentationTest::initRepo() {
 	WellboreMarkerFrameRepresentation* wmf = repo->createWellboreMarkerFrameRepresentation(interp, defaultUuid, defaultTitle, traj);
 	double markerMdValues[2] = { 350, 550 };
 	wmf->setMdValues(markerMdValues, 2, repo->getHdfProxySet()[0]);
-	auto resqmlMarker = repo->createWellboreMarker(wmf, "dfc5292d-88cd-4c20-977f-e808f5a1d56e", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
-	repo->createWellboreMarker(wmf, "0f35ddef-d13e-4921-ab5b-3ee68b24a714", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
+	auto resqmlMarker = repo->createWellboreMarker(wmf, "dfc5292d-88cd-4c20-977f-e808f5a1d56e", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind::horizon);
+	repo->createWellboreMarker(wmf, "0f35ddef-d13e-4921-ab5b-3ee68b24a714", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind::fault);
 
 	// WITSML link for dip and azimuth
-	WITSML2_0_NS::WellboreMarker* witsmlMarker = repo->createWellboreMarker("c08339bc-acf7-49e7-90c8-cf4e275705bd", "WITSML marker", 350, gsoap_eml2_1::eml21__LengthUom__m, "my datum");
-	witsmlMarker->setDipAngle(5, gsoap_eml2_1::eml21__PlaneAngleUom__dega);
-	witsmlMarker->setDipDirection(10, gsoap_eml2_1::eml21__PlaneAngleUom__dega);
+	WITSML2_0_NS::WellboreMarker* witsmlMarker = repo->createWellboreMarker("c08339bc-acf7-49e7-90c8-cf4e275705bd", "WITSML marker", 350, gsoap_eml2_1::eml21__LengthUom::m, "my datum");
+	witsmlMarker->setDipAngle(5, gsoap_eml2_1::eml21__PlaneAngleUom::dega);
+	witsmlMarker->setDipDirection(10, gsoap_eml2_1::eml21__PlaneAngleUom::dega);
 	resqmlMarker->setWitsmlWellboreMarker(witsmlMarker);
 }
 
@@ -77,28 +77,28 @@ void WellboreMarkerFrameRepresentationTest::readRepo() {
 	
 	auto resqmlMarker = wmf->getWellboreMarkerSet()[0];
 	REQUIRE(resqmlMarker->getWellboreMarkerFrameRepresentation() == wmf);
-	REQUIRE(resqmlMarker->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
+	REQUIRE(resqmlMarker->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind::horizon);
 	REQUIRE(resqmlMarker->getWitsmlWellboreMarker() != nullptr);
 	REQUIRE(resqmlMarker->hasDipAngle());
 	REQUIRE(resqmlMarker->getDipAngleValue() == 5);
-	REQUIRE(resqmlMarker->getDipAngleUom() == gsoap_eml2_1::eml21__PlaneAngleUom__dega);
+	REQUIRE(resqmlMarker->getDipAngleUom() == gsoap_eml2_1::eml21__PlaneAngleUom::dega);
 	REQUIRE(resqmlMarker->getDipAngleUomAsString() == "dega");
 	REQUIRE(resqmlMarker->hasDipDirection());
 	REQUIRE(resqmlMarker->getDipDirectionValue() == 10);
-	REQUIRE(resqmlMarker->getDipDirectionUom() == gsoap_eml2_1::eml21__PlaneAngleUom__dega);
+	REQUIRE(resqmlMarker->getDipDirectionUom() == gsoap_eml2_1::eml21__PlaneAngleUom::dega);
 	REQUIRE(resqmlMarker->getDipDirectionUomAsString() == "dega");
 
 	resqmlMarker = wmf->getWellboreMarkerSet()[1];
 	REQUIRE(resqmlMarker->getWellboreMarkerFrameRepresentation() == wmf);
-	REQUIRE(resqmlMarker->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
+	REQUIRE(resqmlMarker->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind::fault);
 	REQUIRE(resqmlMarker->getWitsmlWellboreMarker() == nullptr);
 	REQUIRE(!resqmlMarker->hasDipAngle());
 	REQUIRE_THROWS(resqmlMarker->getDipAngleValue() == 5);
-	REQUIRE_THROWS(resqmlMarker->getDipAngleUom() == gsoap_eml2_1::eml21__PlaneAngleUom__dega);
+	REQUIRE_THROWS(resqmlMarker->getDipAngleUom() == gsoap_eml2_1::eml21__PlaneAngleUom::dega);
 	REQUIRE_THROWS(resqmlMarker->getDipAngleUomAsString() == "dega");
 	REQUIRE(!resqmlMarker->hasDipDirection());
 	REQUIRE_THROWS(resqmlMarker->getDipDirectionValue() == 10);
-	REQUIRE_THROWS(resqmlMarker->getDipDirectionUom() == gsoap_eml2_1::eml21__PlaneAngleUom__dega);
+	REQUIRE_THROWS(resqmlMarker->getDipDirectionUom() == gsoap_eml2_1::eml21__PlaneAngleUom::dega);
 	REQUIRE_THROWS(resqmlMarker->getDipDirectionUomAsString() == "dega");
 
 	std::unique_ptr<double[]> xyzPoints(new double[mdCount*3]);

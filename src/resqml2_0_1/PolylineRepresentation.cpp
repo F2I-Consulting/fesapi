@@ -153,7 +153,7 @@ gsoap_eml2_3::resqml22__LineRole PolylineRepresentation::getLineRole() const
 
 void PolylineRepresentation::setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole)
 {
-	if (lineRole == gsoap_eml2_3::resqml22__LineRole__break_x0020line) {
+	if (lineRole == gsoap_eml2_3::resqml22__LineRole::break_x0020line) {
 		throw invalid_argument("Break line enumerated value is not supported in RESQML2.0.1");
 	}
 

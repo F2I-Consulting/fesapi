@@ -45,7 +45,7 @@ void SubRepresentationOnPartialGridConnectionSet::initRepo()
 	subRep->pushBackSupportingRepresentation(partialGcsr);
 
 	uint64_t elements[2] = { 1, 2 };
-	subRep->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement__cells, 2, elements, hdfProxy);
+	subRep->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement::cells, 2, elements, hdfProxy);
 }
 
 void SubRepresentationOnPartialGridConnectionSet::readRepo()

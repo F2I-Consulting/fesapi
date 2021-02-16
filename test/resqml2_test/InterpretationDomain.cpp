@@ -47,16 +47,16 @@ void InterpretationDomain::initRepo()
 	BoundaryFeature* fault = repo->createPartial<RESQML2_0_1_NS::TectonicBoundaryFeature>("", "");
 	FaultInterpretation* faultInterp = repo->createFaultInterpretation(fault, FaultInterpretationTest::defaultUuid, "");
 
-	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain__mixed);
-	faultInterp->initDomain(gsoap_resqml2_0_1::resqml20__Domain__time);
-	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain__time);
+	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain::mixed);
+	faultInterp->initDomain(gsoap_resqml2_0_1::resqml20__Domain::time);
+	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain::time);
 
 	if (dynamic_cast<RESQML2_0_1_NS::FaultInterpretation*>(faultInterp) != nullptr) {
 		TriangulatedSetRepresentation* depthRep = repo->createTriangulatedSetRepresentation(faultInterp, "", "");
 		double nodesFaultSinglePatchTriangulatedSetRepresentation[9] = { 0,0,0,1,1,1,2,2,2 };
 		unsigned int triangleNodeIndexFault[3] = { 0,1,2, };
 		depthRep->pushBackTrianglePatch(3, nodesFaultSinglePatchTriangulatedSetRepresentation, 1, triangleNodeIndexFault, repo->getHdfProxySet()[0]);
-		REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain__depth);
+		REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain::depth);
 
 		RESQML2_NS::LocalTime3dCrs * timeCrs = repo->getDataObjectByUuid<RESQML2_NS::LocalTime3dCrs>("");
 		if (timeCrs == nullptr) {
@@ -66,7 +66,7 @@ void InterpretationDomain::initRepo()
 		unsigned int numNodesPerPolylinePerPatch[] = { 1 };
 		double polylinePoints[3] = { 150, 0, 200 };
 		timeRep->pushBackGeometryPatch(numNodesPerPolylinePerPatch, polylinePoints, 1, false, nullptr, timeCrs);
-		REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain__mixed);
+		REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain::mixed);
 	}
 }
 

@@ -28,33 +28,33 @@ using namespace std;
 
 double trigonometry::convertToRadians(const double & angleValue, const gsoap_resqml2_0_1::eml20__PlaneAngleUom & angleUom)
 {
-	if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom__rad)
+	if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom::rad)
 		return angleValue;
-	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom__0_x002e001_x0020seca)
+	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom::_0_x002e001_x0020seca)
 		return angleValue * M_PI / 648000000;
-	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom__ccgr)
+	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom::ccgr)
 		return angleValue * M_PI / 2000000;
-	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom__cgr)
+	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom::cgr)
 		return angleValue * M_PI / 20000;
-	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom__dega)
+	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom::dega)
 		return angleValue * M_PI / 180;
-	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom__gon)
+	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom::gon)
 		return angleValue * M_PI / 200;
-	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom__krad)
+	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom::krad)
 		return angleValue * 1000;
-	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom__mila)
+	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom::mila)
 		return angleValue * M_PI / 3200;
-	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom__mina)
+	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom::mina)
 		return angleValue * M_PI / 10800;
-	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom__Mrad)
+	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom::Mrad)
 		return angleValue * 1000000;
-	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom__mrad)
+	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom::mrad)
 		return angleValue / 1000;
-	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom__rev)
+	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom::rev)
 		return angleValue * M_PI * 2;
-	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom__seca)
+	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom::seca)
 		return angleValue * M_PI / 648000;
-	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom__urad)
+	else if (angleUom == gsoap_resqml2_0_1::eml20__PlaneAngleUom::urad)
 		return angleValue / 1000000;
 	else
 		throw invalid_argument("The uom of the angle has not been recognized.");

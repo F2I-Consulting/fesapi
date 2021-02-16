@@ -22,12 +22,12 @@ under the License.
 
 #include "../catch.hpp"
 
-#include "witsml2_0/Well.h"
+#include "witsml2/Well.h"
 
 using namespace std;
 using namespace witsml2_test;
 using namespace COMMON_NS;
-using namespace WITSML2_0_NS;
+using namespace WITSML2_NS;
 
 const char* WellTest::defaultUuid = "4b4ef814-a891-46f5-bf10-3cc30be396a5";
 const char* WellTest::defaultTitle = "Witsml Well Test";
@@ -43,11 +43,11 @@ void WellTest::initRepo() {
 	well->setBlock("my Block");
 	// No county
 	well->setDTimLicense(defaultTimestamp);
-	well->setGroundElevation(10, gsoap_eml2_1::eml21__LengthUom__m, "MSL");
-	REQUIRE_THROWS(well->setTimeZone(true, 24));
+	well->setGroundElevation(10, gsoap_eml2_1::eml21__LengthUom::m, "MSL");
+	REQUIRE_THROWS(well->setTimeZone(true, 24, 0));
 	REQUIRE_THROWS(well->setTimeZone(true, 22, 65));
-	well->setTimeZone(true, 0); // time zone == 'Z'
-	well->setStatusWell(gsoap_eml2_1::eml21__WellStatus__active);
+	well->setTimeZone(true, 0, 0); // time zone == 'Z'
+	well->setStatusWell(gsoap_eml2_1::eml21__WellStatus::active);
 }
 
 void WellTest::readRepo() {
@@ -58,10 +58,10 @@ void WellTest::readRepo() {
 	REQUIRE_FALSE(well->hasCounty());
 	REQUIRE(well->getDTimLicense() == defaultTimestamp);
 	REQUIRE(well->getGroundElevationValue() == 10);
-	REQUIRE(well->getGroundElevationUom() == gsoap_eml2_1::eml21__LengthUom__m);
+	REQUIRE(well->getGroundElevationUom() == gsoap_eml2_1::eml21__LengthUom::m);
 	REQUIRE(well->getGroundElevationDatum() == "MSL");
 	REQUIRE(well->getTimeZoneDirection() == true);
 	REQUIRE(well->getTimeZoneHours() == 0);
 	REQUIRE(well->getTimeZoneMinutes() == 0);
-	REQUIRE(well->getStatusWell() == gsoap_eml2_1::eml21__WellStatus__active);
+	REQUIRE(well->getStatusWell() == gsoap_eml2_1::eml21__WellStatus::active);
 }

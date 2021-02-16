@@ -55,7 +55,7 @@ void Activity::pushBackParameter(const std::string title, double value, resqml20
 		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
 		{
 			vector<resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
-			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind__floatingPoint) == allowedKinds.end())
+			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind::floatingPoint) == allowedKinds.end())
 				throw invalid_argument("The parameter template " + title + " does not allow a double datatype.");
 		}
 	}
@@ -81,7 +81,7 @@ void Activity::pushBackParameter(const std::string title, const std::string & va
 		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
 		{
 			vector<resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
-			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind__string) == allowedKinds.end())
+			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind::string) == allowedKinds.end())
 				throw invalid_argument("The parameter template " + title + " does not allow a string datatype.");
 		}
 	}
@@ -106,7 +106,7 @@ void Activity::pushBackParameter(const std::string title, int64_t value)
 		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
 		{
 			vector<resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
-			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind__integer) == allowedKinds.end())
+			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind::integer) == allowedKinds.end())
 				throw invalid_argument("The parameter template " + title + " does not allow an integer datatype.");
 		}
 	}
@@ -138,7 +138,7 @@ void Activity::pushBackParameter(const std::string title, AbstractObject* resqml
 		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
 		{
 			vector<resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
-			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind__dataObject) == allowedKinds.end()) {
+			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind::dataObject) == allowedKinds.end()) {
 				throw invalid_argument("The parameter template " + title + " does not allow a data object datatype.");
 			}
 		}

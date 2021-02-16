@@ -1046,7 +1046,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	}
 
 	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind = pillarKind == -1
-		? gsoap_resqml2_0_1::resqml20__KDirection__down
+		? gsoap_resqml2_0_1::resqml20__KDirection::down
 		: computeKDirection(controlPoints, controlPointCountPerPillar, nullptr, localCrs);
 
 	const std::string hdfDatasetPrefix = getHdfGroup();
@@ -1320,9 +1320,6 @@ AbstractIjkGridRepresentation::geometryKind IjkGridParametricRepresentation::get
 }
 
 namespace {
-	/**
-	* @param controlPointIndex The index of the first control point of the studied pillar in the controlPoints array
-	*/
 	short computeKDirectionOnASinglePillar(unsigned int pillarIndex, unsigned int pillarCount, double const * controlPoints, unsigned int controlPointCountOnPillar, bool isCrsDepthOriented) {
 		short result = -1;
 
@@ -1342,23 +1339,23 @@ namespace {
 				continue;
 			}
 
-			gsoap_resqml2_0_1::resqml20__KDirection tmp = gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__not_x0020monotonic;
+			gsoap_resqml2_0_1::resqml20__KDirection tmp = gsoap_resqml2_0_1::resqml20__KDirection::not_x0020monotonic;
 			if (isCrsDepthOriented) {
 				tmp = controlPoints[controlPointIndex] > firstZ
-					? gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__down
-					: gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__up;
+					? gsoap_resqml2_0_1::resqml20__KDirection::down
+					: gsoap_resqml2_0_1::resqml20__KDirection::up;
 			}
 			else {
 				tmp = controlPoints[controlPointIndex] > firstZ
-					? gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__up
-					: gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__down;
+					? gsoap_resqml2_0_1::resqml20__KDirection::up
+					: gsoap_resqml2_0_1::resqml20__KDirection::down;
 			}
 
 			if (result == -1) {
-				result = tmp;
+				result = static_cast<short>(tmp);
 			}
-			else if (result != tmp) {
-				return gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__not_x0020monotonic;
+			else if (result != static_cast<short>(tmp)) {
+				return static_cast<short>(gsoap_resqml2_0_1::resqml20__KDirection::not_x0020monotonic);
 			}
 		}
 
@@ -1374,7 +1371,7 @@ gsoap_resqml2_0_1::resqml20__KDirection IjkGridParametricRepresentation::compute
 		throw invalid_argument("The max count of control points per coordinate line of the ijk grid cannot be less than one.");
 	}
 	if (controlPointCountPerPillar == 1) {
-		return gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__down; // arbitrary default
+		return gsoap_resqml2_0_1::resqml20__KDirection::down; // arbitrary default
 	}
 	
 	// CRS
@@ -1388,8 +1385,8 @@ gsoap_resqml2_0_1::resqml20__KDirection IjkGridParametricRepresentation::compute
 			result = computeKDirectionOnASinglePillar(pillarIndex, getPillarCount(), controlPoints, controlPointCountPerPillar, isCrsDepthOriented);
 		}
 	}
-	if (result == gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__not_x0020monotonic)
-		return gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__not_x0020monotonic;
+	if (result == static_cast<short>(gsoap_resqml2_0_1::resqml20__KDirection::not_x0020monotonic))
+		return gsoap_resqml2_0_1::resqml20__KDirection::not_x0020monotonic;
 
 	// Loop
 	for (; pillarIndex < getPillarCount(); ++pillarIndex) {
@@ -1397,13 +1394,13 @@ gsoap_resqml2_0_1::resqml20__KDirection IjkGridParametricRepresentation::compute
 			const short tmp = computeKDirectionOnASinglePillar(pillarIndex, getPillarCount(), controlPoints, controlPointCountPerPillar, isCrsDepthOriented);
 
 			if (tmp != -1 && tmp != result) {
-				return gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__not_x0020monotonic;
+				return gsoap_resqml2_0_1::resqml20__KDirection::not_x0020monotonic;
 			}
 		}
 	}
 
 	return result < 0
-		? gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__down  // arbitrary default
+		? gsoap_resqml2_0_1::resqml20__KDirection::down  // arbitrary default
 		: static_cast<gsoap_resqml2_0_1::resqml20__KDirection>(result);
 }
 

@@ -38,7 +38,7 @@ GeobodyInterpretation::GeobodyInterpretation(RESQML2_NS::RockVolumeFeature * fea
 	}
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGeobodyInterpretation(feature->getGsoapContext());
-	static_cast<_resqml20__GeobodyInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
+	static_cast<_resqml20__GeobodyInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain::mixed;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -55,15 +55,15 @@ void GeobodyInterpretation::set3dShape(gsoap_eml2_3::resqml22__Shape3d geobody3d
 	}
 
 	switch (geobody3dShape) {
-	case gsoap_eml2_3::resqml22__Shape3d__channel: *interp->Geobody3dShape = resqml20__Geobody3dShape__channel; break;
-	case gsoap_eml2_3::resqml22__Shape3d__delta: *interp->Geobody3dShape = resqml20__Geobody3dShape__delta; break;
-	case gsoap_eml2_3::resqml22__Shape3d__dome: *interp->Geobody3dShape = resqml20__Geobody3dShape__dome; break;
-	case gsoap_eml2_3::resqml22__Shape3d__dune: *interp->Geobody3dShape = resqml20__Geobody3dShape__dune; break;
-	case gsoap_eml2_3::resqml22__Shape3d__dyke: *interp->Geobody3dShape = resqml20__Geobody3dShape__dyke; break;
-	case gsoap_eml2_3::resqml22__Shape3d__fan: *interp->Geobody3dShape = resqml20__Geobody3dShape__fan; break;
-	case gsoap_eml2_3::resqml22__Shape3d__reef: *interp->Geobody3dShape = resqml20__Geobody3dShape__reef; break;
-	case gsoap_eml2_3::resqml22__Shape3d__sheet: *interp->Geobody3dShape = resqml20__Geobody3dShape__sheeth; break;
-	case gsoap_eml2_3::resqml22__Shape3d__wedge: *interp->Geobody3dShape = resqml20__Geobody3dShape__wedge; break;
+	case gsoap_eml2_3::resqml22__Shape3d::channel: *interp->Geobody3dShape = resqml20__Geobody3dShape::channel; break;
+	case gsoap_eml2_3::resqml22__Shape3d::delta: *interp->Geobody3dShape = resqml20__Geobody3dShape::delta; break;
+	case gsoap_eml2_3::resqml22__Shape3d::dome: *interp->Geobody3dShape = resqml20__Geobody3dShape::dome; break;
+	case gsoap_eml2_3::resqml22__Shape3d::dune: *interp->Geobody3dShape = resqml20__Geobody3dShape::dune; break;
+	case gsoap_eml2_3::resqml22__Shape3d::dyke: *interp->Geobody3dShape = resqml20__Geobody3dShape::dyke; break;
+	case gsoap_eml2_3::resqml22__Shape3d::fan: *interp->Geobody3dShape = resqml20__Geobody3dShape::fan; break;
+	case gsoap_eml2_3::resqml22__Shape3d::reef: *interp->Geobody3dShape = resqml20__Geobody3dShape::reef; break;
+	case gsoap_eml2_3::resqml22__Shape3d::sheet: *interp->Geobody3dShape = resqml20__Geobody3dShape::sheeth; break;
+	case gsoap_eml2_3::resqml22__Shape3d::wedge: *interp->Geobody3dShape = resqml20__Geobody3dShape::wedge; break;
 	default : throw invalid_argument("Unrecognized enum for v2.0.1");
 	}
 }
@@ -90,15 +90,15 @@ gsoap_eml2_3::resqml22__Shape3d GeobodyInterpretation::get3dShape() const
 		throw invalid_argument("The geobody interpretation has not any 3d shape.");
 	}
 	switch (*static_cast<_resqml20__GeobodyInterpretation*>(gsoapProxy2_0_1)->Geobody3dShape) {
-	case resqml20__Geobody3dShape__channel : return gsoap_eml2_3::resqml22__Shape3d__channel;
-	case resqml20__Geobody3dShape__delta: return gsoap_eml2_3::resqml22__Shape3d__delta;
-	case resqml20__Geobody3dShape__dome: return gsoap_eml2_3::resqml22__Shape3d__dome;
-	case resqml20__Geobody3dShape__dune: return gsoap_eml2_3::resqml22__Shape3d__dune;
-	case resqml20__Geobody3dShape__dyke: return gsoap_eml2_3::resqml22__Shape3d__dyke;
-	case resqml20__Geobody3dShape__fan: return gsoap_eml2_3::resqml22__Shape3d__fan;
-	case resqml20__Geobody3dShape__reef: return gsoap_eml2_3::resqml22__Shape3d__reef;
-	case resqml20__Geobody3dShape__sheeth: return gsoap_eml2_3::resqml22__Shape3d__sheet;
-	case resqml20__Geobody3dShape__wedge: return gsoap_eml2_3::resqml22__Shape3d__wedge;
+	case resqml20__Geobody3dShape::channel : return gsoap_eml2_3::resqml22__Shape3d::channel;
+	case resqml20__Geobody3dShape::delta: return gsoap_eml2_3::resqml22__Shape3d::delta;
+	case resqml20__Geobody3dShape::dome: return gsoap_eml2_3::resqml22__Shape3d::dome;
+	case resqml20__Geobody3dShape::dune: return gsoap_eml2_3::resqml22__Shape3d::dune;
+	case resqml20__Geobody3dShape::dyke: return gsoap_eml2_3::resqml22__Shape3d::dyke;
+	case resqml20__Geobody3dShape::fan: return gsoap_eml2_3::resqml22__Shape3d::fan;
+	case resqml20__Geobody3dShape::reef: return gsoap_eml2_3::resqml22__Shape3d::reef;
+	case resqml20__Geobody3dShape::sheeth: return gsoap_eml2_3::resqml22__Shape3d::sheet;
+	case resqml20__Geobody3dShape::wedge: return gsoap_eml2_3::resqml22__Shape3d::wedge;
 	default: throw invalid_argument("Unrecognized enum for v2.2");
 	}
 }
