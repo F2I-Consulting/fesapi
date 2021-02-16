@@ -18,19 +18,14 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../common/AbstractObject.h"
+#include "../witsml2/Well.h"
 
 #include "../MacroDefinitions.h"
 
 namespace WITSML2_0_NS
 {
-	/** A wellbore. */
-	class Wellbore;
-	/** A well completion. */
-	class WellCompletion;
-
 	/** A well. */
-	class Well : public COMMON_NS::AbstractObject
+	class Well : public WITSML2_NS::Well
 	{
 	public:
 
@@ -39,7 +34,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
 		 */
-		DLL_IMPORT_OR_EXPORT Well(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT Well(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::Well(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -79,7 +74,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		Well(gsoap_eml2_1::witsml20__Well* fromGsoap): COMMON_NS::AbstractObject(fromGsoap)  {}
+		Well(gsoap_eml2_1::witsml20__Well* fromGsoap): WITSML2_NS::Well(fromGsoap)  {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~Well() = default;
@@ -256,41 +251,6 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT unsigned int getDatumCount() const;
 
 		/**
-		 * Gets resqml wellbore features
-		 *
-		 * @returns	Null if it fails, else the resqml wellbore features.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::WellboreFeature *> getResqmlWellboreFeatures() const;
-
-		/**
-		 * Gets the wellbores
-		 *
-		 * @returns	Null if it fails, else the wellbores.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<Wellbore *> getWellbores() const;
-
-		/**
-		 * Gets the wellcompletions
-		 *
-		 * @returns	Null if it fails, else the wellcompletions.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<WellCompletion *> getWellcompletions() const;
-
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
-
-		/**
 		* The standard XML namespace for serializing this data object.
 		*/
 		DLL_IMPORT_OR_EXPORT static constexpr char* XML_NS = "witsml20";
@@ -299,10 +259,5 @@ namespace WITSML2_0_NS
 		* Get the standard XML namespace for serializing this data object.
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
-
-	protected:
-
-		/** Loads target relationships */
-		void loadTargetRelationships();
 	};
 }

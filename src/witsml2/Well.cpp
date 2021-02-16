@@ -16,26 +16,27 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "WellboreObject.h"
+#include "Well.h"
+
+#include "../resqml2/WellboreFeature.h"
+
+#include "../witsml2_0/WellCompletion.h"
 
 #include "Wellbore.h"
 
-#include <stdexcept>
+using namespace WITSML2_NS;
 
-using namespace std;
-using namespace WITSML2_0_NS;
-using namespace gsoap_eml2_1;
-
-Wellbore* WellboreObject::getWellbore() const
+std::vector<RESQML2_NS::WellboreFeature *> Well::getResqmlWellboreFeatures() const
 {
-	COMMON_NS::DataObjectReference dor = getWellboreDor();
-	return getRepository()->getDataObjectByUuid<Wellbore>(dor.getUuid());
+	return getRepository()->getSourceObjects<RESQML2_NS::WellboreFeature>(this);
 }
 
-void WellboreObject::loadTargetRelationships()
+std::vector<Wellbore *> Well::getWellbores() const
 {
-	COMMON_NS::DataObjectReference dor = getWellboreDor();
-	if (!dor.isEmpty()) {
-		convertDorIntoRel<Wellbore>(dor);
-	}
+	return getRepository()->getSourceObjects<Wellbore>(this);
+}
+
+std::vector<WITSML2_0_NS::WellCompletion *> Well::getWellcompletions() const
+{
+	return getRepository()->getSourceObjects<WITSML2_0_NS::WellCompletion>(this);
 }

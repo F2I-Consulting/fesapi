@@ -163,8 +163,8 @@ RESQML2_NS::RockFluidUnitInterpretation* gasCapInterp = nullptr;
 RESQML2_NS::RockFluidUnitInterpretation* oilColumnInterp = nullptr;
 RESQML2_NS::RockFluidUnitInterpretation* aquiferInterp = nullptr;
 
-WITSML2_0_NS::Well* witsmlWell = nullptr;
-WITSML2_0_NS::Wellbore* witsmlWellbore = nullptr;
+WITSML2_NS::Well* witsmlWell = nullptr;
+WITSML2_NS::Wellbore* witsmlWellbore = nullptr;
 WITSML2_0_NS::WellboreMarker* witsmlWellboreMarker = nullptr;
 
 void serializeWitsmlWells(COMMON_NS::DataObjectRepository * pck)

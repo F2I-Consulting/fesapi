@@ -45,7 +45,7 @@ namespace WITSML2_0_NS
 		 * @param 	  	guid		  	Unique identifier.
 		 * @param 	  	title		  	The title.
 		 */
-		Log(class Wellbore* witsmlWellbore,
+		Log(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title);
 

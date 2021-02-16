@@ -20,6 +20,8 @@ under the License.
 
 #include "ChannelIndexDataObject.h"
 
+#include "../MacroDefinitions.h"
+
 namespace WITSML2_0_NS
 {
 	/** Channels are the fundamental unit of organization for WITSML logs. */
@@ -31,8 +33,6 @@ namespace WITSML2_0_NS
 		 * Only to be used in partial transfer context
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * 
 		 */
 		DLL_IMPORT_OR_EXPORT Channel(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : ChannelIndexDataObject<gsoap_eml2_1::witsml20__Channel>(partialObject) {}
 

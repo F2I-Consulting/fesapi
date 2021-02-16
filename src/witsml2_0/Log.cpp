@@ -31,7 +31,7 @@ using namespace gsoap_eml2_1;
 
 const char* Log::XML_TAG = "Log";
 
-Log::Log(Wellbore* witsmlWellbore,
+Log::Log(WITSML2_NS::Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title)
 {

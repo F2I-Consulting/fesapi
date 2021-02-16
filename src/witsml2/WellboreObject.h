@@ -20,7 +20,7 @@ under the License.
 
 #include "Wellbore.h"
 
-namespace WITSML2_0_NS
+namespace WITSML2_NS
 {
 	class Wellbore;
 
@@ -69,7 +69,7 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT WellboreObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/** Creates an instance of this class in a gsoap context. */
-		WellboreObject() : COMMON_NS::AbstractObject() {}
+		WellboreObject() = default;
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.

@@ -2739,13 +2739,13 @@ EML2_NS::Activity* DataObjectRepository::createActivity(EML2_NS::ActivityTemplat
 //*************** WITSML *************
 //************************************
 
-WITSML2_0_NS::Well* DataObjectRepository::createWell(const std::string & guid,
+WITSML2_NS::Well* DataObjectRepository::createWell(const std::string & guid,
 	const std::string & title)
 {
 	return new WITSML2_0_NS::Well(this, guid, title);
 }
 
-WITSML2_0_NS::Well* DataObjectRepository::createWell(const std::string & guid,
+WITSML2_NS::Well* DataObjectRepository::createWell(const std::string & guid,
 	const std::string & title,
 	const std::string & operator_,
 	gsoap_eml2_1::eml21__WellStatus statusWell,
@@ -2754,14 +2754,14 @@ WITSML2_0_NS::Well* DataObjectRepository::createWell(const std::string & guid,
 	return new WITSML2_0_NS::Well(this, guid, title, operator_, statusWell, directionWell);
 }
 
-WITSML2_0_NS::Wellbore* DataObjectRepository::createWellbore(WITSML2_0_NS::Well* witsmlWell,
+WITSML2_NS::Wellbore* DataObjectRepository::createWellbore(WITSML2_NS::Well* witsmlWell,
 	const std::string & guid,
 	const std::string & title)
 {
 	return new WITSML2_0_NS::Wellbore(witsmlWell, guid, title);
 }
 
-WITSML2_0_NS::Wellbore* DataObjectRepository::createWellbore(WITSML2_0_NS::Well* witsmlWell,
+WITSML2_NS::Wellbore* DataObjectRepository::createWellbore(WITSML2_NS::Well* witsmlWell,
 	const std::string & guid,
 	const std::string & title,
 	gsoap_eml2_1::eml21__WellStatus statusWellbore,
@@ -2771,14 +2771,14 @@ WITSML2_0_NS::Wellbore* DataObjectRepository::createWellbore(WITSML2_0_NS::Well*
 	return new WITSML2_0_NS::Wellbore(witsmlWell, guid, title, statusWellbore, isActive, achievedTD);
 }
 
-WITSML2_0_NS::WellCompletion* DataObjectRepository::createWellCompletion(WITSML2_0_NS::Well* witsmlWell,
+WITSML2_0_NS::WellCompletion* DataObjectRepository::createWellCompletion(WITSML2_NS::Well* witsmlWell,
 	const std::string & guid,
 	const std::string & title)
 {
 	return new WITSML2_0_NS::WellCompletion(witsmlWell, guid, title);
 }
 
-WITSML2_0_NS::WellboreCompletion* DataObjectRepository::createWellboreCompletion(WITSML2_0_NS::Wellbore* witsmlWellbore,
+WITSML2_0_NS::WellboreCompletion* DataObjectRepository::createWellboreCompletion(WITSML2_NS::Wellbore* witsmlWellbore,
 	WITSML2_0_NS::WellCompletion* wellCompletion,
 	const std::string & guid,
 	const std::string & title,
@@ -2787,7 +2787,7 @@ WITSML2_0_NS::WellboreCompletion* DataObjectRepository::createWellboreCompletion
 	return new WITSML2_0_NS::WellboreCompletion(witsmlWellbore, wellCompletion, guid, title, wellCompletionName);
 }
 
-WITSML2_0_NS::WellboreGeometry* DataObjectRepository::createWellboreGeometry(WITSML2_0_NS::Wellbore* witsmlWellbore,
+WITSML2_0_NS::WellboreGeometry* DataObjectRepository::createWellboreGeometry(WITSML2_NS::Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title,
 	gsoap_eml2_1::witsml20__ChannelStatus channelStatus)
@@ -2795,7 +2795,7 @@ WITSML2_0_NS::WellboreGeometry* DataObjectRepository::createWellboreGeometry(WIT
 	return new WellboreGeometry(witsmlWellbore, guid, title, channelStatus);
 }
 
-WITSML2_0_NS::Trajectory* DataObjectRepository::createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
+WITSML2_NS::Trajectory* DataObjectRepository::createTrajectory(WITSML2_NS::Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title,
 	gsoap_eml2_1::witsml20__ChannelStatus channelStatus)
@@ -2803,7 +2803,7 @@ WITSML2_0_NS::Trajectory* DataObjectRepository::createTrajectory(WITSML2_0_NS::W
 	return new WITSML2_0_NS::Trajectory(witsmlWellbore, guid, title, channelStatus);
 }
 
-WITSML2_0_NS::Log* DataObjectRepository::createLog(WITSML2_0_NS::Wellbore* witsmlWellbore,
+WITSML2_0_NS::Log* DataObjectRepository::createLog(WITSML2_NS::Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title)
 {
@@ -2835,7 +2835,7 @@ WITSML2_0_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(
 		md, mdUom, mdDatum);
 }
 
-WITSML2_0_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(WITSML2_0_NS::Wellbore* witsmlWellbore,
+WITSML2_0_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(WITSML2_NS::Wellbore* witsmlWellbore,
 	const std::string & guid, const std::string & title,
 	double md, gsoap_eml2_1::eml21__LengthUom mdUom, const std::string & mdDatum)
 {

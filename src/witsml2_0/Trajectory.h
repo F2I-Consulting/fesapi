@@ -18,12 +18,17 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "WellboreObject.h"
+#include "../witsml2/Trajectory.h"
+
+#include "../MacroDefinitions.h"
 
 namespace WITSML2_0_NS
 {
-	/** A trajectory. */
-	class Trajectory : public WellboreObject
+	/**
+	 * @brief	The trajectory object is used to capture information about a directional survey in a wellbore.
+	 *			It contains many trajectory stations to capture the information about individual survey points.
+	 */
+	class Trajectory : public WITSML2_NS::Trajectory
 	{
 	public:
 
@@ -34,7 +39,7 @@ namespace WITSML2_0_NS
 		 *
 		 * 
 		 */
-		DLL_IMPORT_OR_EXPORT Trajectory(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WellboreObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT Trajectory(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::Trajectory(partialObject) {}
 
 		/**
 		 * @brief	Constructor
@@ -46,7 +51,7 @@ namespace WITSML2_0_NS
 		 * @param 	  	title		  	The title.
 		 * @param 	  	channelStatus 	The channel status.
 		 */
-		Trajectory(class Wellbore* witsmlWellbore,
+		Trajectory(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
@@ -56,13 +61,13 @@ namespace WITSML2_0_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		Trajectory(gsoap_eml2_1::witsml20__Trajectory* fromGsoap) :WellboreObject(fromGsoap) {}
+		Trajectory(gsoap_eml2_1::witsml20__Trajectory* fromGsoap) : WITSML2_NS::Trajectory(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~Trajectory() = default;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getWellboreDor() const;
-		DLL_IMPORT_OR_EXPORT void setWellbore(class Wellbore* witsmlWellbore);
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getWellboreDor() const final;
+		DLL_IMPORT_OR_EXPORT void setWellbore(WITSML2_NS::Wellbore* witsmlWellbore) final;
 
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(gsoap_eml2_1::witsml20__ChannelStatus, GrowingStatus)
 
@@ -171,20 +176,6 @@ namespace WITSML2_0_NS
 		 * @returns	the count of trajectory stations in this trajectory.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getTrajectoryStationCount() const;
-
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 		/**
 		* The standard XML namespace for serializing this data object.

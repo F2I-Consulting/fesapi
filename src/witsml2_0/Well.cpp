@@ -34,8 +34,6 @@ using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
 using namespace COMMON_NS;
 
-const char* Well::XML_TAG = "Well";
-
 Well::Well(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid,
 			const std::string & title)
@@ -296,22 +294,4 @@ unsigned int Well::getDatumCount() const
 	}
 
 	return static_cast<unsigned int>(result);
-}
-
-void Well::loadTargetRelationships()
-{}
-
-std::vector<RESQML2_NS::WellboreFeature *> Well::getResqmlWellboreFeatures() const
-{
-	return getRepository()->getSourceObjects<RESQML2_NS::WellboreFeature>(this);
-}
-
-std::vector<Wellbore *> Well::getWellbores() const
-{
-	return getRepository()->getSourceObjects<Wellbore>(this);
-}
-
-std::vector<WellCompletion *> Well::getWellcompletions() const
-{
-	return getRepository()->getSourceObjects<WellCompletion>(this);
 }

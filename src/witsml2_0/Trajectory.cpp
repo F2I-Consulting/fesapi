@@ -30,9 +30,7 @@ using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
 
-const char* Trajectory::XML_TAG = "Trajectory";
-
-Trajectory::Trajectory(Wellbore* witsmlWellbore,
+Trajectory::Trajectory(WITSML2_NS::Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title,
 	gsoap_eml2_1::witsml20__ChannelStatus channelStatus)
@@ -54,7 +52,7 @@ COMMON_NS::DataObjectReference Trajectory::getWellboreDor() const
 	return COMMON_NS::DataObjectReference(static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->Wellbore);
 }
 
-void Trajectory::setWellbore(Wellbore* witsmlWellbore)
+void Trajectory::setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 {
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml wellbore to a witsml trajectory");

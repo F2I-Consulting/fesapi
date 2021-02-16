@@ -49,7 +49,7 @@ namespace WITSML2_0_NS
 		 * @param 	  	guid	  	Unique identifier.
 		 * @param 	  	title	  	The title.
 		 */
-		WellCompletion(class Well* witsmlWell,
+		WellCompletion(WITSML2_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);
 
@@ -69,14 +69,14 @@ namespace WITSML2_0_NS
 		COMMON_NS::DataObjectReference getWellDor() const;
 		
 		/** Get the well of this well completion. */
-		DLL_IMPORT_OR_EXPORT class Well* getWell() const;
+		DLL_IMPORT_OR_EXPORT WITSML2_NS::Well* getWell() const;
 
 		/**
 		 * Set the well of this well completion.
 		 *
 		 * @param [in,out]	witsmlWell	If non-null, the witsml well.
 		 */
-		DLL_IMPORT_OR_EXPORT void setWell(class Well* witsmlWell);
+		DLL_IMPORT_OR_EXPORT void setWell(WITSML2_NS::Well* witsmlWell);
 
 		/**
 		 * Get all welbore completions linked with this well completion.

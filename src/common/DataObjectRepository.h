@@ -128,16 +128,19 @@ namespace RESQML2_0_1_NS
 	class TectonicBoundaryFeature;
 }
 
+namespace WITSML2_NS
+{
+	class Trajectory;
+	class Well;
+	class Wellbore;
+}
+
 namespace WITSML2_0_NS
 {
-	class AbstractObject;
-	class Well;
 	class WellCompletion;
-	class Wellbore;
 	class WellboreCompletion;
 	class WellboreGeometry;
 	class WellboreMarker;
-	class Trajectory;
 	class Log;
 	class ChannelSet;
 	class Channel;
@@ -3134,7 +3137,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new well.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Well* createWell(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT WITSML2_NS::Well* createWell(const std::string & guid,
 			const std::string & title);
 
 		/**
@@ -3151,7 +3154,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new well.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Well* createWell(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT WITSML2_NS::Well* createWell(const std::string & guid,
 			const std::string & title,
 			const std::string & operator_,
 			gsoap_eml2_1::eml21__WellStatus statusWell,
@@ -3171,7 +3174,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new wellbore.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
+		DLL_IMPORT_OR_EXPORT WITSML2_NS::Wellbore* createWellbore(WITSML2_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);
 
@@ -3192,7 +3195,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new wellbore.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
+		DLL_IMPORT_OR_EXPORT WITSML2_NS::Wellbore* createWellbore(WITSML2_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::eml21__WellStatus statusWellbore,
@@ -3213,7 +3216,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new well completion.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellCompletion* createWellCompletion(WITSML2_0_NS::Well* witsmlWell,
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellCompletion* createWellCompletion(WITSML2_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);
 
@@ -3233,7 +3236,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new wellbore completion.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreCompletion* createWellboreCompletion(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreCompletion* createWellboreCompletion(WITSML2_NS::Wellbore* witsmlWellbore,
 			WITSML2_0_NS::WellCompletion* wellCompletion,
 			const std::string & guid,
 			const std::string & title,
@@ -3256,7 +3259,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new wellbore geometry.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreGeometry* createWellboreGeometry(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreGeometry* createWellboreGeometry(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
@@ -3277,7 +3280,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new trajectory.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Trajectory* createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		DLL_IMPORT_OR_EXPORT WITSML2_NS::Trajectory* createTrajectory(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
@@ -3295,7 +3298,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new log.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Log* createLog(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Log* createLog(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title);
 
@@ -3370,7 +3373,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new Wellbore Marker.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreMarker* createWellboreMarker(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreMarker* createWellboreMarker(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid, const std::string & title,
 			double md, gsoap_eml2_1::eml21__LengthUom mdUom, const std::string & mdDatum);
 
