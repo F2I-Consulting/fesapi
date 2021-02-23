@@ -85,7 +85,7 @@ namespace ETP_NS
 			dai.uri = uri;
 			dai.pathInResource = datasetName;
 			gda.dataArrays["0"] = dai;
-			send(gda);
+			send(gda, 0, 0x02);
 
 			// Read a message into our buffer
 			// For now hoping that this message is the response for the above sent message

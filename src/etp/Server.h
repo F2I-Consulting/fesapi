@@ -18,6 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
+#include <regex>
+#include <thread>
+#include <stdexcept>
+#include <vector>
+#include <fstream>
+
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/signal_set.hpp>
 #include <boost/asio/strand.hpp>
@@ -25,11 +31,6 @@ under the License.
 #include <boost/asio/ssl.hpp>
 #endif
 #include <boost/beast/http/file_body.hpp>
-
-#include <thread>
-#include <stdexcept>
-#include <vector>
-#include <fstream>
 
 #include "avro/Compiler.hh"
 
@@ -198,6 +199,14 @@ namespace ETP_NS
 		if (ec == boost::system::errc::no_such_file_or_directory)
 			return send(not_found(req.target()));
 			*/
+
+		while (path.find("//") != std::string::npos) {
+			path = std::regex_replace(path, std::regex("//"), "/");
+		}
+		while (path.find("\\\\") != std::string::npos) {
+			// See https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex
+			path = std::regex_replace(path, std::regex("\\\\\\\\"), "\\");
+		}
 
 		if (path == "./.well-known/etp-server-capabilities" ||
 			path == ".\\.well-known\\etp-server-capabilities") {
