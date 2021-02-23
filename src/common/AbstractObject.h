@@ -1069,10 +1069,10 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
 		
 		/**
-		* Build and return an URI from an Energistics object.
-		* @return	The URI built from the Energistics object
+		* Build and return an ETP1.2 URI from an Energistics dataobject.
+		* @return	The ETP1.2 URI built from the Energistics dataobject
 		*/
-		DLL_IMPORT_OR_EXPORT std::string buildUri() const;
+		DLL_IMPORT_OR_EXPORT std::string buildEtp12Uri() const;
 
 		/**
 		 * Reads the forward relationships of this data object and update the <tt>.rels</tt> of the

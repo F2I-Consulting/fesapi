@@ -294,7 +294,7 @@ namespace COMMON_NS
 		std::string getExtraMetadataKeyAtIndex(unsigned int index) const;
 		std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
 
-		std::string buildUri() const;
+		std::string buildEtp12Uri() const;
 
 		unsigned int getActivityCount() const;
 

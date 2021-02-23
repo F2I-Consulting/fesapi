@@ -161,7 +161,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12
 
 		for (const auto & pair : groupedDataObj) {
 			for (const auto* obj : pair.second) {
-				nextGr.context.uri = obj->buildUri();
+				nextGr.context.uri = obj->buildEtp12Uri();
 				getDataObjectResource(nextGr, correlationId, mb.resources);
 			}
 		}

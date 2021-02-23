@@ -1197,7 +1197,7 @@ std::string AbstractObject::getExtraMetadataStringValueAtIndex(unsigned int inde
 	throw logic_error("Not implemented yet.");
 }
 
-std::string AbstractObject::buildUri() const
+std::string AbstractObject::buildEtp12Uri() const
 {
 	return "eml:///" + getQualifiedType() + "(" + getUuid() + ")";
 }

@@ -104,7 +104,7 @@ Energistics::Etp::v12::Datatypes::Object::Resource ETP_NS::EtpHelpers::buildEtpR
 	Energistics::Etp::v12::Datatypes::Object::Resource result;
 
 	result.dataObjectType = obj->getQualifiedType();
-	result.uri = obj->buildUri();
+	result.uri = obj->buildEtp12Uri();
 	result.name = obj->getTitle();
 	if (obj->isPartial()) {
 		result.lastChanged = -1;
