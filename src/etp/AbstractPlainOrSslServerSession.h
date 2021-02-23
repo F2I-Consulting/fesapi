@@ -26,8 +26,6 @@ under the License.
 #include <boost/asio/bind_executor.hpp>
 #include <boost/uuid/random_generator.hpp>
 
-#include "../common/AbstractObject.h"
-
 namespace ETP_NS
 {
 	// Echoes back all received WebSocket messages.

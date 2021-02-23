@@ -55,13 +55,6 @@ namespace ETP_NS
 		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Datatypes::ErrorInfo validateDataObjectUri(const std::string & uri, AbstractSession* session = nullptr);
 
 		/**
-		* Build and return an URI from an Energistics object.
-		* @param obj		The input Energistics obj
-		* @return			The URI built from the Energistics object
-		*/
-		DLL_IMPORT_OR_EXPORT std::string buildUriFromEnergisticsObject(const COMMON_NS::AbstractObject * const obj);
-
-		/**
 		* Build and return an ETP resource from an Energistics object.
 		* @param obj		The input Energistics obj
 		* @param countRels	Indicate if the returned resource contain the count of source or target relationships.
