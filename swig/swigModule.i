@@ -294,9 +294,11 @@ namespace COMMON_NS
 		std::string getExtraMetadataKeyAtIndex(unsigned int index) const;
 		std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
 
+		std::string buildUri() const;
+
 		unsigned int getActivityCount() const;
 
-		EML2_NS::Activity * getActivity (unsigned int index) const;
+		EML2_NS::Activity * getActivity (unsigned int index) const;		
 	};
 
 %warnfilter(473) HdfProxyFactory::make;

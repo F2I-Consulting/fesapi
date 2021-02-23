@@ -95,11 +95,6 @@ Energistics::Etp::v12::Datatypes::ErrorInfo ETP_NS::EtpHelpers::validateDataObje
 	return errorInfo;
 }
 
-std::string ETP_NS::EtpHelpers::buildUriFromEnergisticsObject(const COMMON_NS::AbstractObject * const obj)
-{
-	return "eml:///" + obj->getQualifiedType() + "(" + obj->getUuid() + ")";
-}
-
 Energistics::Etp::v12::Datatypes::Object::Resource ETP_NS::EtpHelpers::buildEtpResourceFromEnergisticsObject(const COMMON_NS::AbstractObject * const obj, bool countRels)
 {
 	if (obj == nullptr) {
@@ -109,7 +104,7 @@ Energistics::Etp::v12::Datatypes::Object::Resource ETP_NS::EtpHelpers::buildEtpR
 	Energistics::Etp::v12::Datatypes::Object::Resource result;
 
 	result.dataObjectType = obj->getQualifiedType();
-	result.uri = buildUriFromEnergisticsObject(obj);
+	result.uri = obj->buildUri();
 	result.name = obj->getTitle();
 	if (obj->isPartial()) {
 		result.lastChanged = -1;
