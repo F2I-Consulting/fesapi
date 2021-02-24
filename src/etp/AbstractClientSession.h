@@ -21,6 +21,8 @@ under the License.
 #include "AbstractSession.h"
 
 #include <boost/asio/connect.hpp>
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 #include "DataArrayBlockingSession.h"
 
@@ -84,6 +86,12 @@ namespace ETP_NS
 			requestSession.applicationVersion = "0.0";
 			requestSession.requestedProtocols = requestedProtocols;
 			requestSession.supportedDataObjects = supportedDataObjects;
+			requestSession.currentDateTime = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+			requestSession.supportedFormats.push_back("xml");
+
+			boost::uuids::random_generator gen;
+			auto instanceUuid = gen();
+			std::copy(std::begin(instanceUuid.data), std::end(instanceUuid.data), requestSession.clientInstanceId.array.begin());
 		}
 
 		virtual ~AbstractClientSession() = default;
@@ -228,7 +236,7 @@ namespace ETP_NS
 			successfulConnection = true;
 			webSocketSessionClosed = false;
 
-			send(requestSession);
+			send(requestSession, 0, 0x02);
 			do_read();
 		}
 	};

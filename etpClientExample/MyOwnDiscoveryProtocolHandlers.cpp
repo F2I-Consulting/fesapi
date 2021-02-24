@@ -55,6 +55,6 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energistics::
 	}
 
 	if (!getO.uris.empty()) {
-		session->send(getO);
+		session->send(getO, 0, 0x02);
 	}
 }

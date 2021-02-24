@@ -23,6 +23,9 @@ under the License.
 
 #include <boost/asio/connect.hpp>
 #include <boost/beast/http.hpp>
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
+
 
 using namespace ETP_NS;
 
@@ -39,6 +42,12 @@ DataArrayBlockingSession::DataArrayBlockingSession(boost::asio::io_context& ioc,
 	// Build the request session
 	requestSession.applicationName = "F2I ETP Client";
 	requestSession.applicationVersion = "0.0";
+	requestSession.currentDateTime = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	requestSession.supportedFormats.push_back("xml");
+
+	boost::uuids::random_generator gen;
+	auto instanceUuid = gen();
+	std::copy(std::begin(instanceUuid.data), std::end(instanceUuid.data), requestSession.clientInstanceId.array.begin());
 
 	Energistics::Etp::v12::Datatypes::Version protocolVersion;
 	protocolVersion.major = 1;
@@ -102,7 +111,7 @@ bool DataArrayBlockingSession::run()
 
 	webSocketSessionClosed = false;
 
-	send(requestSession);
+	send(requestSession, 0, 0x02);
 	do_read();
 	std::size_t bytes_transferred = future_bytes_transferred.get();
 	boost::ignore_unused(bytes_transferred);

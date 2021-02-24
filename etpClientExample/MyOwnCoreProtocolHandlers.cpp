@@ -88,6 +88,7 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 			mb.context.uri = commandTokens[1];
 			mb.scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
 			mb.context.depth = 1;
+			mb.context.navigableEdges = Energistics::Etp::v12::Datatypes::Object::RelationshipKind::Primary;
 			mb.countObjects = true;
 
 			if (commandTokens.size() > 2) {
@@ -278,6 +279,8 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 				mb.context.uri = commandTokens[1];
 				mb.scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources;
 				mb.context.depth = 1;
+				mb.context.navigableEdges = Energistics::Etp::v12::Datatypes::Object::RelationshipKind::Primary;
+				mb.countObjects = true;
 
 				std::static_pointer_cast<MyOwnDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb, 0, 0x02));
 			}
@@ -286,6 +289,8 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 				mb.context.uri = commandTokens[1];
 				mb.scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets;
 				mb.context.depth = 1;
+				mb.context.navigableEdges = Energistics::Etp::v12::Datatypes::Object::RelationshipKind::Primary;
+				mb.countObjects = true;
 
 				std::static_pointer_cast<MyOwnDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb, 0, 0x02));
 			}
@@ -294,6 +299,8 @@ void askUser(ETP_NS::AbstractSession* session, COMMON_NS::DataObjectRepository* 
 				mb.context.uri = commandTokens[1];
 				mb.scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
 				mb.context.depth = 1;
+				mb.context.navigableEdges = Energistics::Etp::v12::Datatypes::Object::RelationshipKind::Primary;
+				mb.countObjects = true;
 				std::static_pointer_cast<MyOwnDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb, 0, 0x02));
 
 				mb.scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources;

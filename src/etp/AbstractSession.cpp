@@ -70,7 +70,7 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 	if ((receivedMh.messageFlags & 0x10) != 0) {
 		Energistics::Etp::v12::Protocol::Core::Acknowledge acknowledge;
 		acknowledge.protocolId = receivedMh.protocol;
-		send(acknowledge, receivedMh.messageId);
+		send(acknowledge, receivedMh.messageId, 0x02);
 	}
 
 	auto specificProtocolHandlerIt = specificProtocolHandlers.find(receivedMh.correlationId);
@@ -89,7 +89,7 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 	}
 	else {
 		flushReceivingBuffer();
-		send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(4, "The agent does not support the protocol " + std::to_string(receivedMh.protocol) + " identified in a message header."));
+		send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(4, "The agent does not support the protocol " + std::to_string(receivedMh.protocol) + " identified in a message header."), receivedMh.messageId, 0x02);
 	}
 
 	do_read();
@@ -100,5 +100,5 @@ void AbstractSession::close()
 	// Build Open Session message
 	Energistics::Etp::v12::Protocol::Core::CloseSession closeSession;
 
-	send(closeSession);
+	send(closeSession, 0, 0x02);
 }

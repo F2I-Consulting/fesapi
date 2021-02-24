@@ -126,8 +126,8 @@ namespace ETP_NS
 			e->init(*out);
 			avro::encode(*e, mh);
 			avro::encode(*e, mb);
-			sendingQueue.push_back(*avro::snapshot(*out).get());
 			e->flush();
+			sendingQueue.push_back(*avro::snapshot(*out).get());
 
 			return mh.messageId;
 		}

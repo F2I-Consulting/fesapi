@@ -46,8 +46,8 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	if (argc == 4 && (argv[3][0] != '/' || argv[3][strlen(argv[3]) - 1] != '/')) {
-		std::cerr << "Please put a slash at the start and at the end of the target " << argv[3] << std::endl;
+	if (argc == 4 && (argv[3][0] != '/')) {
+		std::cerr << "Please put a slash at the start of the target " << argv[3] << std::endl;
 		return 1;
 	}
 
@@ -114,6 +114,9 @@ int main(int argc, char **argv)
 
 		auto httpsClientSession = std::make_shared<HttpsClientSession>(ioc, ctx);
 		std::string etpServerCapTarget = argc >= 4 ? argv[3] : "/";
+		if (etpServerCapTarget[etpServerCapTarget.size() - 1] != '/') {
+			etpServerCapTarget += '/';
+		}
 		etpServerCapTarget += ".well-known/etp-server-capabilities?GetVersion=etp12.energistics.org";
 		std::cout << "Requesting " << etpServerCapTarget << " to " << argv[1] << " on port " << argv[2] << std::endl;
 		httpsClientSession->run(argv[1], argv[2], etpServerCapTarget.c_str(), 11, authorization);
@@ -125,6 +128,9 @@ int main(int argc, char **argv)
 #endif
 		auto httpClientSession = std::make_shared<HttpClientSession>(ioc);
 		std::string etpServerCapTarget = argc >= 4 ? argv[3] : "/";
+		if (etpServerCapTarget[etpServerCapTarget.size() - 1] != '/') {
+			etpServerCapTarget += '/';
+		}
 		etpServerCapTarget += ".well-known/etp-server-capabilities?GetVersion=etp12.energistics.org";
 		std::cout << "Requesting " << etpServerCapTarget << " to " << argv[1] << " on port " << argv[2] << std::endl;
 		httpClientSession->run(argv[1], argv[2], etpServerCapTarget.c_str(), 11, authorization);
