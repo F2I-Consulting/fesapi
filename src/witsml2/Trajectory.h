@@ -180,6 +180,6 @@ namespace WITSML2_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		//Trajectory(gsoap_eml2_3::_resqml22__Trajectory* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		Trajectory(gsoap_witsml1_4::witsml14__obj_USCOREtrajectory* fromGsoap) : WellboreObject(fromGsoap) {}
 	};
 }

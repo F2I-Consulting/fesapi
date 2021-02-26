@@ -77,5 +77,12 @@ namespace WITSML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		WellboreObject(gsoap_eml2_1::eml21__AbstractObject* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		WellboreObject(gsoap_witsml1_4::witsml14__obj_USCOREtrajectory* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 	};
 }

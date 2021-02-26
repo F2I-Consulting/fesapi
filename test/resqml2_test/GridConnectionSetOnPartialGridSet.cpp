@@ -106,7 +106,7 @@ void GridConnectionSetOnPartialGridSet::readRepo() {
 	REQUIRE(gcsSingleGrid->getSupportingGridRepresentation(0)->isPartial());
 	REQUIRE(gcsSingleGrid->getCellIndexPairCount() == 1);
 	{
-		uint64_t cellIndexPair[2];
+		int64_t cellIndexPair[2];
 		gcsSingleGrid->getCellIndexPairs(cellIndexPair);
 		REQUIRE(cellIndexPair[0] == 1);
 		REQUIRE(cellIndexPair[1] == 2);
@@ -119,7 +119,7 @@ void GridConnectionSetOnPartialGridSet::readRepo() {
 	REQUIRE(gcsMultiGrids->getSupportingGridRepresentation(2)->isPartial());
 	REQUIRE(gcsMultiGrids->getCellIndexPairCount() == 3);
 
-	uint64_t cellIndexPair[6];
+	int64_t cellIndexPair[6];
 	gcsMultiGrids->getCellIndexPairs(cellIndexPair);
 	REQUIRE(cellIndexPair[0] == 1);
 	REQUIRE(cellIndexPair[1] == 2);

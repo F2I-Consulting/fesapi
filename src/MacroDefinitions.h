@@ -519,13 +519,11 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
  */
 #define GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(attributeDatatype, className, vectorName, attributeName, constructor)\
 	void GLUE(,className)::set##vectorName##attributeName(unsigned int index, const attributeDatatype & value) {\
-		CHECK_RANGE(static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName, index)\
 		CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT(className, vectorName, attributeName, constructor)\
 		*static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName = value;\
 	}\
 	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)\
 	attributeDatatype GLUE(,className)::get##vectorName##attributeName(unsigned int index) const {\
-		CHECK_RANGE(static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName, index)\
 		CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE(className, vectorName, attributeName)\
 		return *static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName;\
 	}

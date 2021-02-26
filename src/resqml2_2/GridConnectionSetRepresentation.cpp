@@ -243,7 +243,7 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 {
 	//load global information into memory
 	const uint64_t totalCellIndexPairCount = getCellIndexPairCount();
-	std::unique_ptr<uint64_t[]> const totalCellIndexPairs(new uint64_t[totalCellIndexPairCount*2]);
+	std::unique_ptr<int64_t[]> const totalCellIndexPairs(new int64_t[totalCellIndexPairCount*2]);
 	getCellIndexPairs(totalCellIndexPairs.get());
 	std::unique_ptr<unsigned short[]> totalGridIndexPairs;
 	if (gridIndexPairs != nullptr)
@@ -263,7 +263,7 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 	if (rep->ConnectionInterpretations != nullptr)
 	{
 		// Get the fault indices information
-		std::unique_ptr<unsigned int[]> cumulativeCount = nullptr;
+		std::unique_ptr<unsigned int[]> cumulativeCount;
 		if (rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 		{
 			cumulativeCount = std::unique_ptr<unsigned int[]>(new unsigned int[totalCellIndexPairCount]);
@@ -275,7 +275,7 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 			throw std::logic_error("Not yet implemented");
 		}
 
-		std::unique_ptr<unsigned int[]> faultIndices = nullptr;
+		std::unique_ptr<unsigned int[]> faultIndices;
 		if (rep->ConnectionInterpretations->InterpretationIndices->Elements->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 		{
 			faultIndices = std::unique_ptr<unsigned int[]>(new unsigned int[cumulativeCount[totalCellIndexPairCount-1]]);
@@ -359,13 +359,13 @@ unsigned int GridConnectionSetRepresentation::getInterpretationCount() const
 	return 0;
 }
 
-uint64_t GridConnectionSetRepresentation::getCellIndexPairs(uint64_t * cellIndexPairs) const
+int64_t GridConnectionSetRepresentation::getCellIndexPairs(int64_t * cellIndexPairs) const
 {
 	_resqml22__GridConnectionSetRepresentation* rep = static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3);
 
 	if (rep->CellIndexPairs->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
 		eml23__ExternalDatasetPart * dsPart = static_cast<eml23__IntegerExternalArray*>(rep->CellIndexPairs)->Values->ExternalFileProxy[0];
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfUInt64Values(dsPart->PathInExternalFile, cellIndexPairs);
+		getHdfProxyFromDataset(dsPart)->readArrayNdOfInt64Values(dsPart->PathInExternalFile, cellIndexPairs);
 		return static_cast<eml23__IntegerExternalArray*>(rep->CellIndexPairs)->NullValue;
 	}
 	else {

@@ -22,7 +22,7 @@ under the License.
 #include <sstream>
 #include <stdexcept>
 
-#include "Wellbore.h"
+#include "../witsml2/Wellbore.h"
 
 #include "../tools/TimeTools.h"
 
@@ -40,7 +40,7 @@ Trajectory::Trajectory(WITSML2_NS::Wellbore* witsmlWellbore,
 	gsoapProxy2_1 = soap_new_witsml20__Trajectory(witsmlWellbore->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setWellbore(witsmlWellbore);
 
@@ -156,7 +156,7 @@ GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, Trajecto
 
 void Trajectory::pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType kind, double mdValue, gsoap_eml2_1::eml21__LengthUom uom, const std::string & datum, const std::string & uid)
 {
-	static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->TrajectoryStation.push_back(gsoap_eml2_1::soap_new_witsml20__TrajectoryStation(gsoapProxy2_1->soap, 1));
+	static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->TrajectoryStation.push_back(gsoap_eml2_1::soap_new_witsml20__TrajectoryStation(gsoapProxy2_1->soap));
 	unsigned int index = getTrajectoryStationCount() - 1;
 	if (uid.empty()) {
 		std::ostringstream oss;

@@ -73,7 +73,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getCellIndexPairs(uint64_t * cellIndexPairs) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getCellIndexPairs(int64_t * cellIndexPairs) const = 0;
 
 		/**
 		 * @brief	Gets the count of cell index pairs which correspond to a particular interpretation.

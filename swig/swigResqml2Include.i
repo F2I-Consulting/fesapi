@@ -3145,7 +3145,7 @@ namespace RESQML2_NS
 		uint64_t getCellIndexPairCount() const;
 		unsigned int getCellIndexPairCountFromInterpretationIndex(unsigned int interpretationIndex) const;
 		
-		uint64_t getCellIndexPairs(uint64_t * cellIndexPairs) const;
+		int64_t getCellIndexPairs(int64_t * cellIndexPairs) const;
 		void getGridConnectionSetInformationFromInterpretationIndex(uint64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const;
 		bool hasLocalFacePerCell() const;
 		int64_t getLocalFacePerCellIndexPairs(int * localFacePerCellIndexPairs) const;
