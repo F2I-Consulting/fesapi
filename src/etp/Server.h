@@ -201,11 +201,11 @@ namespace ETP_NS
 			*/
 
 		while (path.find("//") != std::string::npos) {
-			path = std::regex_replace(path, std::regex("//"), "/");
+			path = std::regex_replace(path, std::regex("//"), std::string("/"));
 		}
 		while (path.find("\\\\") != std::string::npos) {
 			// See https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex
-			path = std::regex_replace(path, std::regex("\\\\\\\\"), "\\");
+			path = std::regex_replace(path, std::regex("\\\\\\\\"), std::string("\\"));
 		}
 
 		if (path == "./.well-known/etp-server-capabilities" ||
