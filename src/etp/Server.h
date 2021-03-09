@@ -27,6 +27,7 @@ under the License.
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/signal_set.hpp>
 #include <boost/asio/strand.hpp>
+#include <boost/asio/bind_executor.hpp>
 #ifdef WITH_ETP_SSL
 #include <boost/asio/ssl.hpp>
 #endif

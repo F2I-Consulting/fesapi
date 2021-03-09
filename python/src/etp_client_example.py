@@ -16,7 +16,7 @@ import my_own_client_core_handlers
 import my_own_discovery_protocol_handlers
 import my_own_store_protocol_handlers
 
-session = fesapi.createClientSession("127.0.0.1", "8080", "/", "")
+session = fesapi.createWsClientSession("127.0.0.1", "8080", "/", "")
 session.setCoreProtocolHandlers(my_own_client_core_handlers.MyOwnClientCoreHandlers(session))
 session.setDiscoveryProtocolHandlers(my_own_discovery_protocol_handlers.MyOwnDiscoveryProtocolHandlers(session))
 session.setStoreProtocolHandlers(my_own_store_protocol_handlers.MyOwnStoreProtocolHandlers(session))
