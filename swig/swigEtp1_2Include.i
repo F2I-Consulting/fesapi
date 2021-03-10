@@ -1357,6 +1357,5 @@ namespace ETP_NS
 		std::vector< std::shared_ptr<AbstractSession> >& getSessions() { return sessions_; }
 		void listen(const std::string & host, unsigned short port, int threadCount);
 	};
-	%template(PlainServer) ETP_NS::Server<ETP_NS::PlainServerSession>;
 
 }
