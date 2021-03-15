@@ -91,7 +91,7 @@ jobs:
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.10.6-win64-vs2017/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.10.6-win64-vs2017/lib/zlib.lib
             -DSZIP_LIBRARY_RELEASE=C:/hdf5-1.10.6-win64-vs2017/lib/szip.lib
-            -DBoost_INCLUDE_DIR=C:/hostedtoolcache/windows/Boost/1.75.0/x86_64/include
+            -DBoost_INCLUDE_DIR=C:/hostedtoolcache/windows/Boost/1.75.0/x86_64
             -DWITH_EXAMPLE=TRUE
             -DWITH_RESQML2_2=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
@@ -210,7 +210,7 @@ jobs:
             $(Build.SourcesDirectory)/avro-cpp-1.10.1
             $(Generator)
             -Wno-dev -Wno-deprecated
-            -DBoost_INCLUDE_DIR=C:/hostedtoolcache/windows/Boost/1.75.0/x86_64/include
+            -DBoost_INCLUDE_DIR=C:/hostedtoolcache/windows/Boost/1.75.0/x86_64
             -DCMAKE_INSTALL_PREFIX=$(Agent.TempDirectory)/avro-cpp-1.10.1-install
       - task: CMake@1
         displayName: "CMake build AVRO --config $(BuildType)"
@@ -243,7 +243,7 @@ jobs:
             -DZLIB_INCLUDE_DIR=C:/hdf5-1.12.0-win64-vs2019/include
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2019/lib/zlib.lib
             -DSZIP_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2019/lib/szip.lib
-            -DBoost_INCLUDE_DIR=C:/hostedtoolcache/windows/Boost/1.75.0/x86_64/include
+            -DBoost_INCLUDE_DIR=C:/hostedtoolcache/windows/Boost/1.75.0/x86_64
             -DAVRO_INCLUDE_DIR=$(Agent.TempDirectory)/avro-cpp-1.10.1-install/include
             -DAVRO_LIBRARY_RELEASE=$(Agent.TempDirectory)/avro-cpp-1.10.1-install/lib/avrocpp_s.lib
             -DWITH_EXAMPLE=TRUE
@@ -274,6 +274,17 @@ jobs:
           sudo apt install -y libhdf5-dev libminizip-dev valgrind
         displayName: 'APT install'
 
+      # Boost
+      # Use the boost-1.73.0-linux-16.04-gcc-x64.tar.gz for Ubuntu 16.04
+      - powershell: |
+          $url = "https://github.com/actions/boost-versions/releases/download/1.73.0-20200608.5/boost-1.73.0-linux-16.04-gcc-x64.tar.gz"
+          (New-Object System.Net.WebClient).DownloadFile($url, "/tmp/boost.tar.gz")
+          mkdir "/tmp/boost"
+          tar -xzf "/tmp/boost.tar.gz" -C "/tmp/boost"
+          Push-Location -Path "/tmp/boost"
+          Invoke-Expression "bash ./setup.sh"
+        displayName: 'Install Boost 1.73'
+
       - task: CMake@1
         displayName: 'Configure FESAPI build'
         inputs:
@@ -286,7 +297,7 @@ jobs:
             -DMINIZIP_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libminizip.so
             -DZLIB_INCLUDE_DIR=/usr/include
             -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
-            -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
+            -DBoost_INCLUDE_DIR=/opt/hostedtoolcache/boost/1.73.0/x64
             -DWITH_EXAMPLE=TRUE
             -DWITH_RESQML2_2=TRUE
             -DWITH_TEST=TRUE
@@ -322,14 +333,12 @@ jobs:
         inputs:
           cmakeArgs:
             -Wno-dev -Wno-deprecated
-            -DHDF5_1_8=TRUE
             -DHDF5_C_INCLUDE_DIR=/usr/include/hdf5/serial/
             -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so
             -DMINIZIP_INCLUDE_DIR=/usr/include/minizip
             -DMINIZIP_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libminizip.so
             -DZLIB_INCLUDE_DIR=/usr/include
             -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
-            -DBoost_INCLUDE_DIR=$(BOOST_ROOT_1_72_0)/include
             -DWITH_EXAMPLE=TRUE
             -DWITH_RESQML2_2=TRUE
             -DWITH_PYTHON_WRAPPING=TRUE
