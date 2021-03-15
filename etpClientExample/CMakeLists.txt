@@ -32,23 +32,6 @@ if (WIN32)
 	source_group ("src" FILES ${ALL_CPP_FILES} ${ALL_H_FILES})
 endif (WIN32)
 
-if (WITH_ETP_SSL)
-	file (GLOB SSL_CPP_FILES ${CMAKE_CURRENT_SOURCE_DIR}/ssl/*.cpp)
-	set (ALL_CPP_FILES
-		${ALL_CPP_FILES}
-		${SSL_CPP_FILES}
-	)
-	if (WIN32)
-		file (GLOB SSL_H_FILES ${CMAKE_CURRENT_SOURCE_DIR}/ssl/*.h)
-		
-		set (ALL_H_FILES
-			${ALL_H_FILES}
-			${SSL_H_FILES}
-		)
-		source_group ("src\\ssl" FILES ${SSL_CPP_FILES} ${SSL_H_FILES})
-	endif (WIN32)
-endif ()
-
 target_sources(etpClientExample PRIVATE ${ALL_CPP_FILES} ${ALL_H_FILES})
 
 target_compile_definitions(etpClientExample PRIVATE BOOST_ALL_NO_LIB)
