@@ -266,19 +266,8 @@ jobs:
     timeoutInMinutes: 120
     steps:
       - script: |
-          sudo apt install -y libhdf5-dev libminizip-dev valgrind
+          sudo apt install -y libhdf5-dev libminizip-dev libboost-all-dev valgrind
         displayName: 'APT install'
-
-      # Boost
-      # Use the boost-1.73.0-linux-16.04-gcc-x64.tar.gz for Ubuntu 16.04
-      - powershell: |
-          $url = "https://github.com/actions/boost-versions/releases/download/1.73.0-20200608.5/boost-1.73.0-linux-16.04-gcc-x64.tar.gz"
-          (New-Object System.Net.WebClient).DownloadFile($url, "/tmp/boost.tar.gz")
-          mkdir "/tmp/boost"
-          tar -xzf "/tmp/boost.tar.gz" -C "/tmp/boost"
-          Push-Location -Path "/tmp/boost"
-          Invoke-Expression "bash ./setup.sh"
-        displayName: 'Install Boost 1.73'
 
       - task: CMake@1
         displayName: 'Configure FESAPI build'
@@ -292,7 +281,6 @@ jobs:
             -DMINIZIP_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libminizip.so
             -DZLIB_INCLUDE_DIR=/usr/include
             -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
-            -DBoost_INCLUDE_DIR=/opt/hostedtoolcache/boost/1.73.0/x64
             -DWITH_EXAMPLE=TRUE
             -DWITH_RESQML2_2=TRUE
             -DWITH_TEST=TRUE
