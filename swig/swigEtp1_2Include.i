@@ -1317,7 +1317,7 @@ namespace ETP_NS
 
 	namespace ClientSessionLaunchers
 	{
-		std::shared_ptr<ETP_NS::PlainClientSession> createClientSession(const std::string & host, const std::string & port, const std::string & target, const std::string & authorization);
+		std::shared_ptr<ETP_NS::PlainClientSession> createWsClientSession(const std::string & host, const std::string & port, const std::string & target, const std::string & authorization);
 	}
 	
 	/******************* SERVER ***************************/
@@ -1350,14 +1350,12 @@ namespace ETP_NS
 	public:
 	};
 
-	template <class T>
 	class Server
 	{
 	public:
 		Server(ServerInitializationParameters* serverInitializationParams) : serverInitializationParams_(serverInitializationParams) {}
-		std::vector< std::shared_ptr<T> >& getSessions() { return sessions_; }
+		std::vector< std::shared_ptr<AbstractSession> >& getSessions() { return sessions_; }
 		void listen(const std::string & host, unsigned short port, int threadCount);
 	};
-	%template(PlainServer) ETP_NS::Server<ETP_NS::PlainServerSession>;
 
 }

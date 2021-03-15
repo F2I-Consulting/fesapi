@@ -27,6 +27,7 @@ under the License.
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/signal_set.hpp>
 #include <boost/asio/strand.hpp>
+#include <boost/asio/bind_executor.hpp>
 #ifdef WITH_ETP_SSL
 #include <boost/asio/ssl.hpp>
 #endif
@@ -201,11 +202,11 @@ namespace ETP_NS
 			*/
 
 		while (path.find("//") != std::string::npos) {
-			path = std::regex_replace(path, std::regex("//"), "/");
+			path = std::regex_replace(path, std::regex("//"), std::string("/"));
 		}
 		while (path.find("\\\\") != std::string::npos) {
 			// See https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex
-			path = std::regex_replace(path, std::regex("\\\\\\\\"), "\\");
+			path = std::regex_replace(path, std::regex("\\\\\\\\"), std::string("\\"));
 		}
 
 		if (path == "./.well-known/etp-server-capabilities" ||

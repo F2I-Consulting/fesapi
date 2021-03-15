@@ -39,3 +39,34 @@ DataObjectReference::DataObjectReference(AbstractObject const * dataObj)
 		dor23 = dataObj->newEml23Reference();
 	}
 }
+
+gsoap_resqml2_0_1::eml20__DataObjectReference* DataObjectReference::toDor20() const {
+	if (dor20 != nullptr) {
+		return dor20;
+	}
+
+	gsoap_resqml2_0_1::eml20__DataObjectReference* result = nullptr;
+	if (dor21 != nullptr) {
+		result = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(dor21->soap);
+	}
+	else if (dor22 != nullptr) {
+		result = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(dor22->soap);
+	}
+	else if (dor23 != nullptr) {
+		result = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(dor23->soap);
+	}
+	else {
+		throw std::logic_error("The instance is in an inconsistent state.");
+	}
+
+	result->ContentType = getContentType();
+	result->Title = getTitle();
+	result->UUID = getUuid();
+	const std::string version = getVersion();
+	if (!version.empty()) {
+		result->VersionString = gsoap_resqml2_0_1::soap_new_std__string(result->soap);
+		result->VersionString->assign(version);
+	}
+
+	return result;
+}
