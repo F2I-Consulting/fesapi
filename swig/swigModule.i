@@ -342,15 +342,7 @@ namespace COMMON_NS
 %enddef
 
 %include "swigEml2Include.i"
-%include "swigEml2_1Include.i"
-#ifdef WITH_RESQML2_2
-%include "swigEml2_3Include.i"
-#endif
 %include "swigResqml2Include.i"
-%include "swigResqml2_0_1Include.i"
-#ifdef WITH_RESQML2_2
-%include "swigResqml2_2Include.i"
-#endif
 %include "swigWitsml2_0Include.i"
 %include "swigProdml2_1Include.i"
 #ifdef WITH_ETP
