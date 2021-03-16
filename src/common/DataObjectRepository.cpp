@@ -176,6 +176,8 @@ under the License.
 #include "../resqml2_2/WellboreTrajectoryRepresentation.h"
 #endif
 
+#include "../witsml1_4/Trajectory.h"
+
 #include "../witsml2_0/Well.h"
 #include "../witsml2_0/Wellbore.h"
 #include "../witsml2_0/Trajectory.h"
@@ -702,6 +704,24 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 	*/
 	else if (ns == "eml23") {
 		wrapper = getEml2_3WrapperFromGsoapContext(datatype);
+	}
+	else if (ns == "witsml14") {
+		if (datatype == "trajectorys") {
+			gsoap_witsml1_4::_witsml14__trajectorys* read = gsoap_witsml1_4::soap_new_witsml14__obj_USCOREtrajectorys(gsoapContext);
+			gsoap_witsml1_4::soap_read_witsml14__obj_USCOREtrajectorys(gsoapContext, read);
+			if (gsoapContext->error != SOAP_OK) {
+				ostringstream oss;
+				soap_stream_fault(gsoapContext, oss);
+				addWarning(oss.str());
+				return nullptr;
+			}
+			for (auto traj : read->trajectory) {
+				wrapper = new WITSML1_4_NS::Trajectory(traj);
+				addOrReplaceDataObject(wrapper, true);
+			}
+
+			return wrapper; // arbitrarily returns the last trajectory of the document
+		}
 	}
 
 	if (wrapper != nullptr) {
@@ -3497,6 +3517,21 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapC
 	else if (resqmlContentType.compare(EML2_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
+	}
+
+	return wrapper;
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::getWitsml1_4WrapperFromGsoapContext(const std::string & datatype)
+{
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+
+	if (datatype == "obj_trajectorys") {
+		gsoap_witsml1_4::_witsml14__trajectorys* read = gsoap_witsml1_4::soap_new_witsml14__obj_USCOREtrajectorys(gsoapContext);
+		gsoap_witsml1_4::soap_read_witsml14__obj_USCOREtrajectorys(gsoapContext, read);
+		for (auto traj : read->trajectory) {
+			wrapper = new WITSML1_4_NS::Trajectory(traj);
+		}
 	}
 
 	return wrapper;
