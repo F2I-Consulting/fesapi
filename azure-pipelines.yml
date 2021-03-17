@@ -193,34 +193,34 @@ jobs:
         
       # AVRO
       - powershell: |
-          Invoke-WebRequest https://mirroir.wptheme.fr/apache/avro/avro-1.10.1/cpp/avro-cpp-1.10.1.tar.gz -OutFile $(Agent.TempDirectory)/avro-cpp-1.10.1.tar.gz
+          Invoke-WebRequest https://mirroir.wptheme.fr/apache/avro/stable/cpp/avro-cpp-1.10.2.tar.gz -OutFile $(Agent.TempDirectory)/avro-cpp-1.10.2.tar.gz
       - task: ExtractFiles@1
         inputs:
-          archiveFilePatterns: '$(Agent.TempDirectory)/avro-cpp-1.10.1.tar.gz'
+          archiveFilePatterns: '$(Agent.TempDirectory)/avro-cpp-1.10.2.tar.gz'
           cleanDestinationFolder: false
       - powershell: |
-          ((Get-Content -path $(Build.SourcesDirectory)/avro-cpp-1.10.1/CMakeLists.txt -Raw) -replace 'install \(TARGETS avrocpp avrocpp_s','install (TARGETS avrocpp_s') | Set-Content -Path $(Build.SourcesDirectory)/avro-cpp-1.10.1/CMakeLists.txt
-          ((Get-Content -path $(Build.SourcesDirectory)/avro-cpp-1.10.1/CMakeLists.txt -Raw) -replace 'install \(TARGETS avrogencpp RUNTIME DESTINATION bin\)','') | Set-Content -Path $(Build.SourcesDirectory)/avro-cpp-1.10.1/CMakeLists.txt
+          ((Get-Content -path $(Build.SourcesDirectory)/avro-cpp-1.10.2/CMakeLists.txt -Raw) -replace 'install \(TARGETS avrocpp avrocpp_s','install (TARGETS avrocpp_s') | Set-Content -Path $(Build.SourcesDirectory)/avro-cpp-1.10.2/CMakeLists.txt
+          ((Get-Content -path $(Build.SourcesDirectory)/avro-cpp-1.10.2/CMakeLists.txt -Raw) -replace 'install \(TARGETS avrogencpp RUNTIME DESTINATION bin\)','') | Set-Content -Path $(Build.SourcesDirectory)/avro-cpp-1.10.2/CMakeLists.txt
         displayName: 'Do not install avro non static' 
       - task: CMake@1
         displayName: 'CMake configure AVRO'
         inputs:
-          workingDirectory: $(Agent.TempDirectory)/build-avro-cpp-1.10.1
+          workingDirectory: $(Agent.TempDirectory)/build-avro-cpp-1.10.2
           cmakeArgs:
-            $(Build.SourcesDirectory)/avro-cpp-1.10.1
+            $(Build.SourcesDirectory)/avro-cpp-1.10.2
             $(Generator)
             -Wno-dev -Wno-deprecated
             -DBoost_INCLUDE_DIR=C:/hostedtoolcache/windows/Boost/1.75.0/x86_64
-            -DCMAKE_INSTALL_PREFIX=$(Agent.TempDirectory)/avro-cpp-1.10.1-install
+            -DCMAKE_INSTALL_PREFIX=$(Agent.TempDirectory)/avro-cpp-1.10.2-install
       - task: CMake@1
         displayName: "CMake build AVRO --config $(BuildType)"
         inputs:
-          workingDirectory: $(Agent.TempDirectory)/build-avro-cpp-1.10.1
+          workingDirectory: $(Agent.TempDirectory)/build-avro-cpp-1.10.2
           cmakeArgs: --build . --config $(BuildType) --target avrocpp_s -- /verbosity:minimal
       - task: CMake@1
         displayName: "CMake Install AVRO --config $(BuildType)"
         inputs:
-          workingDirectory: $(Agent.TempDirectory)/build-avro-cpp-1.10.1
+          workingDirectory: $(Agent.TempDirectory)/build-avro-cpp-1.10.2
           cmakeArgs: --install .
           
       - task: CMake@1
@@ -239,8 +239,8 @@ jobs:
             -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2019/lib/zlib.lib
             -DSZIP_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2019/lib/szip.lib
             -DBoost_INCLUDE_DIR=C:/hostedtoolcache/windows/Boost/1.75.0/x86_64
-            -DAVRO_INCLUDE_DIR=$(Agent.TempDirectory)/avro-cpp-1.10.1-install/include
-            -DAVRO_LIBRARY_RELEASE=$(Agent.TempDirectory)/avro-cpp-1.10.1-install/lib/avrocpp_s.lib
+            -DAVRO_INCLUDE_DIR=$(Agent.TempDirectory)/avro-cpp-1.10.2-install/include
+            -DAVRO_LIBRARY_RELEASE=$(Agent.TempDirectory)/avro-cpp-1.10.2-install/lib/avrocpp_s.lib
             -DWITH_EXAMPLE=TRUE
             -DWITH_ETP=TRUE
 
