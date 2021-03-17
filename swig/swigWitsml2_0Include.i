@@ -98,7 +98,7 @@ namespace WITSML2_0_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
 	
-#if defined(SWIGPYTHON)
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(witsml20_Well) Well;
 #endif	
 	class Well : public WITSML2_NS::Well
@@ -106,7 +106,7 @@ namespace WITSML2_0_NS
 	public:
 	};
 	
-#if defined(SWIGPYTHON)
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(witsml20_Wellbore) Wellbore;
 #endif
 	class Wellbore : public WITSML2_NS::Wellbore 
@@ -114,7 +114,7 @@ namespace WITSML2_0_NS
 	public:
 	};
 	
-#if defined(SWIGPYTHON)
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(witsml20_WellCompletion) WellCompletion;
 #endif
 	class WellCompletion : public COMMON_NS::AbstractObject
@@ -124,7 +124,7 @@ namespace WITSML2_0_NS
 		void setWell(Well* witsmlWell);
 	};
 		
-#if defined(SWIGPYTHON)
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(witsml20_WellboreCompletion) WellboreCompletion;
 #endif
 	class WellboreCompletion : public WITSML2_NS::WellboreObject
@@ -252,7 +252,7 @@ namespace WITSML2_0_NS
 			const std::string & comment);
 	};
 
-#if defined(SWIGPYTHON)
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(witsml20_WellboreGeometry) WellboreGeometry;
 #endif
 	class WellboreGeometry : public WITSML2_NS::WellboreObject
@@ -310,7 +310,7 @@ namespace WITSML2_0_NS
 		unsigned int getSectionCount() const;
 	};
 	
-#if defined(SWIGPYTHON)
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(witsml20_Trajectory) Trajectory;
 #endif
 	class Trajectory : public WITSML2_NS::Trajectory
@@ -380,7 +380,7 @@ namespace WITSML2_0_NS
 	%template(ChannelIndexDataChannel) ChannelIndexDataObject<gsoap_eml2_1::witsml20__Channel>;
 	
 	class ChannelSet;
-#if defined(SWIGPYTHON)
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(witsml20_Log) Log;
 #endif
 	class Log : public ChannelMetaDataObject<gsoap_eml2_1::witsml20__Log>
@@ -391,7 +391,7 @@ namespace WITSML2_0_NS
 	};
 	
 	class Channel;
-#if defined(SWIGPYTHON)
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(witsml20_ChannelSet) ChannelSet;
 #endif
 	class ChannelSet : public ChannelIndexDataObject<gsoap_eml2_1::witsml20__ChannelSet>
@@ -412,7 +412,7 @@ namespace WITSML2_0_NS
 		std::vector<class Channel*> getChannels() const;
 	};
 	
-#if defined(SWIGPYTHON)
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(witsml20_Channel) Channel;
 #endif
 	class Channel : public ChannelIndexDataObject<gsoap_eml2_1::witsml20__Channel>
@@ -427,7 +427,7 @@ namespace WITSML2_0_NS
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(gsoap_eml2_1::witsml20__ChannelStatus, GrowingStatus)
 	};
 	
-#if defined(SWIGPYTHON)
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(witsml20_WellboreMarker) WellboreMarker;
 #endif
 	class WellboreMarker : public WITSML2_NS::WellboreObject

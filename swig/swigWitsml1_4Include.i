@@ -28,7 +28,7 @@ namespace WITSML1_4_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
 	
-#if defined(SWIGPYTHON)
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(witsml14_Trajectory) Trajectory;
 #endif
 	/**
