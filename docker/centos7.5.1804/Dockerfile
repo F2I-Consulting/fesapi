@@ -29,8 +29,8 @@ RUN	yum install -y \
 	gcc-c++ \		
 	# make is used to process Unix Makefiles
 	make \				
-	# libuuid is a dependence of fesapi
-	libuuid-devel \
+	# boost is used for UUID management
+	boost-devel \
 	# wget is used to download ressources. We use it instead of ADD in order to
 	# minimize the size of the docker image by limitating the number of layers
 	wget 
@@ -82,11 +82,8 @@ RUN git clone https://github.com/F2I-Consulting/fesapi.git && \
 		-DMINIZIP_LIBRARY_RELEASE=/usr/lib64/libminizip.so \
 		-DZLIB_INCLUDE_DIR=/usr/include \
 		-DZLIB_LIBRARY_RELEASE=/usr/lib64/libz.so \
-		-DUUID_INCLUDE_DIR=/usr/include \
-		-DUUID_LIBRARY_RELEASE=/lib64/libuuid.so.1 \
 		-DWITH_EXAMPLE=TRUE \
 		-DCMAKE_BUILD_TYPE=Release \
-		-DHDF5_1_10=ON \
 		../fesapi && \
 	make VERBOSE=OFF && \
 	make install

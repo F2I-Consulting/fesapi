@@ -16,27 +16,27 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "Well.h"
+%{
+#include "../src/witsml1_4/Trajectory.h"
+%}
 
-#include "../resqml2/WellboreFeature.h"
+#if defined(SWIGJAVA) || defined(SWIGCSHARP)	
+	%nspace WITSML1_4_NS::Trajectory;
+#endif
 
-#include "../witsml2_0/WellCompletion.h"
-
-#include "Wellbore.h"
-
-using namespace WITSML2_NS;
-
-std::vector<RESQML2_NS::WellboreFeature *> Well::getResqmlWellboreFeatures() const
+namespace WITSML1_4_NS
 {
-	return getRepository()->getSourceObjects<RESQML2_NS::WellboreFeature>(this);
-}
-
-std::vector<Wellbore *> Well::getWellboreSet() const
-{
-	return getRepository()->getSourceObjects<Wellbore>(this);
-}
-
-std::vector<WITSML2_0_NS::WellCompletion *> Well::getWellcompletionSet() const
-{
-	return getRepository()->getSourceObjects<WITSML2_0_NS::WellCompletion>(this);
+	%nodefaultctor; // Disable creation of default constructors
+	
+#if defined(SWIGPYTHON)
+	%rename(witsml14_Trajectory) Trajectory;
+#endif
+	/**
+	 * @brief	It contains many trajectory stations to capture the information about individual survey points.
+	 *			This class can only be used in import mode for now.
+	 */
+	class Trajectory : public WITSML2_NS::Trajectory
+	{
+	public:
+	};
 }

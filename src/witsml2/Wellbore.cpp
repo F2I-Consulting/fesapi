@@ -44,22 +44,22 @@ std::vector<RESQML2_0_1_NS::WellboreFeature *> Wellbore::getResqmlWellboreFeatur
 	return getRepository()->getSourceObjects<RESQML2_0_1_NS::WellboreFeature>(this);
 }
 
-std::vector<WITSML2_0_NS::WellboreCompletion *> Wellbore::getWellboreCompletions() const
+std::vector<WITSML2_0_NS::WellboreCompletion *> Wellbore::getWellboreCompletionSet() const
 {
 	return getRepository()->getSourceObjects<WITSML2_0_NS::WellboreCompletion>(this);
 }
 
-std::vector<Trajectory *> Wellbore::getTrajectories() const
+std::vector<Trajectory *> Wellbore::getTrajectorySet() const
 {
 	return getRepository()->getSourceObjects<Trajectory>(this);
 }
 
-std::vector<WITSML2_0_NS::WellboreGeometry *> Wellbore::getWellboreGeometries() const
+std::vector<WITSML2_0_NS::WellboreGeometry *> Wellbore::getWellboreGeometrySet() const
 {
 	return getRepository()->getSourceObjects<WITSML2_0_NS::WellboreGeometry>(this);
 }
 
-std::vector<WITSML2_0_NS::Log *> Wellbore::getLogs() const
+std::vector<WITSML2_0_NS::Log *> Wellbore::getLogSet() const
 {
 	return getRepository()->getSourceObjects<WITSML2_0_NS::Log>(this);
 }

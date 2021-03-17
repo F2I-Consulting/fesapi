@@ -2990,11 +2990,46 @@ WITSML2_1_NS::WeightingFunctionDictionary* DataObjectRepository::createWeighting
 	return new WITSML2_1_NS::WeightingFunctionDictionary(this, guid, title);
 }
 */
-std::vector<RESQML2_NS::LocalDepth3dCrs*> DataObjectRepository::getLocalDepth3dCrsSet() const { return getDataObjects<RESQML2_NS::LocalDepth3dCrs>(); }
+#define GETTER_DATAOBJECTS_IMPL(returnedDataType, dataObjectName)\
+std::vector<returnedDataType*> DataObjectRepository::get##dataObjectName##Set() const { return getDataObjects<returnedDataType>(); }
 
-std::vector<RESQML2_NS::LocalTime3dCrs*> DataObjectRepository::getLocalTime3dCrsSet() const { return getDataObjects<RESQML2_NS::LocalTime3dCrs>(); }
+GETTER_DATAOBJECTS_IMPL(EML2_NS::TimeSeries, TimeSeries)
+GETTER_DATAOBJECTS_IMPL(EML2_NS::AbstractHdfProxy, HdfProxy)
 
-std::vector<RESQML2_NS::StratigraphicColumn*> DataObjectRepository::getStratigraphicColumnSet() const { return getDataObjects<RESQML2_NS::StratigraphicColumn>(); }
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::AbstractSeismicLineFeature, SeismicLine)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::AbstractIjkGridRepresentation, IjkGridRepresentation)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::BlockedWellboreRepresentation, BlockedWellboreRepresentation)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::CmpLineFeature, CmpLine)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::CulturalFeature, Cultural)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::DeviationSurveyRepresentation, DeviationSurveyRepresentation)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::DoubleTableLookup, DoubleTableLookup)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::Grid2dRepresentation, AllGrid2dRepresentation)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::IjkGridParametricRepresentation, IjkGridParametricRepresentation)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::IjkGridExplicitRepresentation, IjkGridExplicitRepresentation)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::LocalDepth3dCrs, LocalDepth3dCrs)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::LocalTime3dCrs, LocalTime3dCrs)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::Model, Model)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::PointSetRepresentation, PointSetRepresentation)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::PolylineRepresentation, AllPolylineRepresentation)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::PolylineSetRepresentation, AllPolylineSetRepresentation)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::RepresentationSetRepresentation, RepresentationSetRepresentation)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::RockVolumeFeature, RockVolume)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::SeismicLatticeFeature, SeismicLattice)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::SeismicLineSetFeature, SeismicLineSet)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::ShotPointLineFeature, ShotPointLine)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::StratigraphicColumn, StratigraphicColumn)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::StreamlinesFeature, StreamlinesFeature)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::StreamlinesRepresentation, StreamlinesRepresentation)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::SubRepresentation, SubRepresentation)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::TriangulatedSetRepresentation, AllTriangulatedSetRepresentation)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::UnstructuredGridRepresentation, UnstructuredGridRepresentation)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::WellboreFeature, Wellbore)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::WellboreTrajectoryRepresentation, WellboreTrajectoryRepresentation)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::WellboreFrameRepresentation, WellboreFrameRepresentation)
+
+GETTER_DATAOBJECTS_IMPL(WITSML2_NS::Well, WitsmlWell)
+GETTER_DATAOBJECTS_IMPL(WITSML2_NS::Wellbore, WitsmlWellbore)
+GETTER_DATAOBJECTS_IMPL(WITSML2_NS::Trajectory, WitsmlTrajectory)
 
 std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getFaultSet() const
 {
@@ -3030,7 +3065,7 @@ std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getFractureSet()
 	return result;
 }
 
-vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getFaultPolylineSetRepSet() const
+vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getFaultPolylineSetRepresentationSet() const
 {
 	const std::vector<RESQML2_NS::BoundaryFeature*> faultSet = getFaultSet();
 
@@ -3051,7 +3086,7 @@ vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getFaultPo
 	return result;
 }
 
-vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getFracturePolylineSetRepSet() const
+vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getFracturePolylineSetRepresentationSet() const
 {
 	const std::vector<RESQML2_NS::BoundaryFeature*> fractureSet = getFractureSet();
 
@@ -3072,7 +3107,7 @@ vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getFractur
 	return result;
 }
 
-vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getCulturalPolylineSetRepSet() const
+vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getCulturalPolylineSetRepresentationSet() const
 {
 	const std::vector<RESQML2_NS::CulturalFeature*> frontierSet = getCulturalSet();
 
@@ -3093,7 +3128,7 @@ vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getCultura
 	return result;
 }
 
-vector<RESQML2_NS::TriangulatedSetRepresentation *> DataObjectRepository::getFaultTriangulatedSetRepSet() const
+vector<RESQML2_NS::TriangulatedSetRepresentation *> DataObjectRepository::getFaultTriangulatedSetRepresentationSet() const
 {
 	const std::vector<RESQML2_NS::BoundaryFeature*> faultSet = getFaultSet();
 	vector<RESQML2_NS::TriangulatedSetRepresentation *> result;
@@ -3113,7 +3148,7 @@ vector<RESQML2_NS::TriangulatedSetRepresentation *> DataObjectRepository::getFau
 	return result;
 }
 
-vector<RESQML2_NS::TriangulatedSetRepresentation *> DataObjectRepository::getFractureTriangulatedSetRepSet() const
+vector<RESQML2_NS::TriangulatedSetRepresentation *> DataObjectRepository::getFractureTriangulatedSetRepresentationSet() const
 {
 	const std::vector<RESQML2_NS::BoundaryFeature*> fractureSet = getFractureSet();
 
@@ -3179,7 +3214,7 @@ std::vector<RESQML2_NS::RockVolumeFeature*> DataObjectRepository::getGeobodySet(
 	return result;
 }
 
-vector<RESQML2_NS::Grid2dRepresentation *> DataObjectRepository::getHorizonGrid2dRepSet() const
+vector<RESQML2_NS::Grid2dRepresentation *> DataObjectRepository::getHorizonGrid2dRepresentationSet() const
 {
 	vector<RESQML2_NS::Grid2dRepresentation *> result;
 
@@ -3199,7 +3234,7 @@ vector<RESQML2_NS::Grid2dRepresentation *> DataObjectRepository::getHorizonGrid2
 	return result;
 }
 
-std::vector<RESQML2_NS::PolylineRepresentation *> DataObjectRepository::getHorizonPolylineRepSet() const
+std::vector<RESQML2_NS::PolylineRepresentation *> DataObjectRepository::getHorizonPolylineRepresentationSet() const
 {
 	vector<RESQML2_NS::PolylineRepresentation *> result;
 
@@ -3219,7 +3254,7 @@ std::vector<RESQML2_NS::PolylineRepresentation *> DataObjectRepository::getHoriz
 	return result;
 }
 
-std::vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getHorizonPolylineSetRepSet() const
+std::vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getHorizonPolylineSetRepresentationSet() const
 {
 	vector<RESQML2_NS::PolylineSetRepresentation *> result;
 
@@ -3239,7 +3274,7 @@ std::vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getHo
 	return result;
 }
 
-vector<RESQML2_NS::TriangulatedSetRepresentation *> DataObjectRepository::getHorizonTriangulatedSetRepSet() const
+vector<RESQML2_NS::TriangulatedSetRepresentation *> DataObjectRepository::getHorizonTriangulatedSetRepresentationSet() const
 {
 	vector<RESQML2_NS::TriangulatedSetRepresentation *> result;
 
@@ -3258,12 +3293,6 @@ vector<RESQML2_NS::TriangulatedSetRepresentation *> DataObjectRepository::getHor
 
 	return result;
 }
-
-std::vector<RESQML2_NS::TriangulatedSetRepresentation*> DataObjectRepository::getAllTriangulatedSetRepSet() const { return getDataObjects<RESQML2_NS::TriangulatedSetRepresentation>(); }
-
-std::vector<RESQML2_NS::Grid2dRepresentation*> DataObjectRepository::getAllGrid2dRepresentationSet() const { return getDataObjects<RESQML2_NS::Grid2dRepresentation>(); }
-
-std::vector<RESQML2_NS::PolylineSetRepresentation*> DataObjectRepository::getAllPolylineSetRepSet() const { return getDataObjects<RESQML2_NS::PolylineSetRepresentation>(); }
 
 namespace {
 	bool isClassified(RESQML2_NS::TriangulatedSetRepresentation* tsr) {
@@ -3290,7 +3319,7 @@ namespace {
 	}
 }
 
-std::vector<RESQML2_NS::TriangulatedSetRepresentation*> DataObjectRepository::getUnclassifiedTriangulatedSetRepSet() const
+std::vector<RESQML2_NS::TriangulatedSetRepresentation*> DataObjectRepository::getUnclassifiedTriangulatedSetRepresentationSet() const
 {
 	std::vector<RESQML2_NS::TriangulatedSetRepresentation*> result = getDataObjects<RESQML2_NS::TriangulatedSetRepresentation>();
 
@@ -3299,63 +3328,13 @@ std::vector<RESQML2_NS::TriangulatedSetRepresentation*> DataObjectRepository::ge
 	return result;
 }
 
-std::vector<RESQML2_NS::AbstractSeismicLineFeature*> DataObjectRepository::getSeismicLineSet() const { return getDataObjects<RESQML2_NS::AbstractSeismicLineFeature>(); }
-
-std::vector<RESQML2_NS::WellboreFeature*> DataObjectRepository::getWellboreSet() const { return getDataObjects<RESQML2_NS::WellboreFeature>(); }
-
-vector<RESQML2_NS::WellboreTrajectoryRepresentation *> DataObjectRepository::getWellboreTrajectoryRepresentationSet() const
-{
-	vector<RESQML2_NS::WellboreTrajectoryRepresentation *> result;
-
-	const std::vector<RESQML2_NS::WellboreFeature*> wellboreSet = getWellboreSet();
-
-	for (size_t featureIndex = 0; featureIndex < wellboreSet.size(); ++featureIndex) {
-		const std::vector<RESQML2_NS::AbstractFeatureInterpretation *> interpSet = wellboreSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
-			const std::vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (dynamic_cast<RESQML2_NS::WellboreTrajectoryRepresentation*>(repSet[repIndex]) != nullptr) {
-					result.push_back(static_cast<RESQML2_NS::WellboreTrajectoryRepresentation*>(repSet[repIndex]));
-				}
-			}
-		}
-	}
-
-	return result;
-}
-
-vector<RESQML2_NS::DeviationSurveyRepresentation *> DataObjectRepository::getDeviationSurveyRepresentationSet() const
-{
-	vector<RESQML2_NS::DeviationSurveyRepresentation *> result;
-
-	const std::vector<RESQML2_NS::WellboreFeature*> wellboreSet = getWellboreSet();
-
-	for (size_t featureIndex = 0; featureIndex < wellboreSet.size(); ++featureIndex) {
-		const std::vector<RESQML2_NS::AbstractFeatureInterpretation *> interpSet = wellboreSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
-			const std::vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (dynamic_cast<RESQML2_NS::DeviationSurveyRepresentation*>(repSet[repIndex]) != nullptr) {
-					result.push_back(static_cast<RESQML2_NS::DeviationSurveyRepresentation*>(repSet[repIndex]));
-				}
-			}
-		}
-	}
-
-	return result;
-}
-
-std::vector<RESQML2_NS::RepresentationSetRepresentation*> DataObjectRepository::getRepresentationSetRepresentationSet() const { return getDataObjects<RESQML2_NS::RepresentationSetRepresentation>(); }
-
-std::vector<RESQML2_NS::PolylineRepresentation*> DataObjectRepository::getAllPolylineRepresentationSet() const { return getDataObjects<RESQML2_NS::PolylineRepresentation>(); }
-
 namespace {
 	bool isSeismicOrFaciesLine(RESQML2_NS::PolylineRepresentation* pr) {
 		return pr->isASeismicLine() || pr->isAFaciesLine();
 	}
 }
 
-std::vector<RESQML2_NS::PolylineRepresentation*> DataObjectRepository::getSeismicLinePolylineRepSet() const
+std::vector<RESQML2_NS::PolylineRepresentation*> DataObjectRepository::getSeismicLinePolylineRepresentationSet() const
 {
 	std::vector<RESQML2_NS::PolylineRepresentation*> result = getDataObjects<RESQML2_NS::PolylineRepresentation>();
 
@@ -3363,12 +3342,6 @@ std::vector<RESQML2_NS::PolylineRepresentation*> DataObjectRepository::getSeismi
 
 	return result;
 }
-
-std::vector<RESQML2_NS::AbstractIjkGridRepresentation*> DataObjectRepository::getIjkGridRepresentationSet() const { return getDataObjects<RESQML2_NS::AbstractIjkGridRepresentation>(); }
-
-std::vector<RESQML2_NS::IjkGridParametricRepresentation*> DataObjectRepository::getIjkGridParametricRepresentationSet() const { return getDataObjects<RESQML2_NS::IjkGridParametricRepresentation>(); }
-
-std::vector<RESQML2_NS::IjkGridExplicitRepresentation*> DataObjectRepository::getIjkGridExplicitRepresentationSet() const { return getDataObjects<RESQML2_NS::IjkGridExplicitRepresentation>(); }
 
 namespace {
 	bool isSeismicOrFaciesCube(RESQML2_NS::IjkGridLatticeRepresentation* Ijkglr) {
@@ -3384,23 +3357,6 @@ vector<RESQML2_NS::IjkGridLatticeRepresentation*> DataObjectRepository::getIjkSe
 
 	return result;
 }
-
-std::vector<RESQML2_NS::UnstructuredGridRepresentation*> DataObjectRepository::getUnstructuredGridRepresentationSet() const { return getDataObjects<RESQML2_NS::UnstructuredGridRepresentation>(); }
-
-std::vector<RESQML2_NS::CulturalFeature*> DataObjectRepository::getCulturalSet() const { return getDataObjects<RESQML2_NS::CulturalFeature>(); }
-
-std::vector<RESQML2_NS::Model*> DataObjectRepository::getModelSet() const { return getDataObjects<RESQML2_NS::Model>(); }
-
-std::vector<EML2_NS::TimeSeries*> DataObjectRepository::getTimeSeriesSet() const { return getDataObjects<EML2_NS::TimeSeries>(); }
-
-std::vector<RESQML2_NS::SubRepresentation*> DataObjectRepository::getSubRepresentationSet() const { return getDataObjects<RESQML2_NS::SubRepresentation>(); }
-
-std::vector<RESQML2_NS::PointSetRepresentation*> DataObjectRepository::getPointSetRepresentationSet() const { return getDataObjects<RESQML2_NS::PointSetRepresentation>(); }
-
-std::vector<EML2_NS::AbstractHdfProxy*> DataObjectRepository::getHdfProxySet() const { return getDataObjects<EML2_NS::AbstractHdfProxy>(); }
-
-std::vector<RESQML2_NS::StreamlinesFeature*> DataObjectRepository::getStreamlinesFeatureSet() const { return getDataObjects<RESQML2_NS::StreamlinesFeature>(); }
-std::vector<RESQML2_NS::StreamlinesRepresentation*> DataObjectRepository::getStreamlinesRepresentationSet() const { return getDataObjects<RESQML2_NS::StreamlinesRepresentation>(); }
 
 COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType)
 {

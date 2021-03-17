@@ -99,33 +99,10 @@ namespace WITSML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::WellboreFeature *> getResqmlWellboreFeature() const;
 
-		/**
-		 * Gets wellbore completions
-		 *
-		 * @returns	Null if it fails, else the wellbore completions.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<WITSML2_0_NS::WellboreCompletion *> getWellboreCompletions() const;
-
-		/**
-		 * Gets the trajectories
-		 *
-		 * @returns	Null if it fails, else the trajectories.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<Trajectory *> getTrajectories() const;
-
-		/**
-		 * Gets wellbore geometries
-		 *
-		 * @returns	Null if it fails, else the wellbore geometries.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<WITSML2_0_NS::WellboreGeometry *> getWellboreGeometries() const;
-
-		/**
-		 * Gets the logs
-		 *
-		 * @returns	Null if it fails, else the logs.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<WITSML2_0_NS::Log *> getLogs() const;
+		GETTER_DATAOBJECTS(WITSML2_NS::Trajectory, Trajectory)
+		GETTER_DATAOBJECTS(WITSML2_0_NS::WellboreCompletion, WellboreCompletion)
+		GETTER_DATAOBJECTS(WITSML2_0_NS::WellboreGeometry, WellboreGeometry)
+		GETTER_DATAOBJECTS(WITSML2_0_NS::Log, Log)
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

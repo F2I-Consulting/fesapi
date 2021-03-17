@@ -4462,10 +4462,10 @@ void deserializeLog(COMMON_NS::DataObjectRepository & repo)
 	std::vector<WITSML2_NS::Well*> witsmlWells = repo.getDataObjects<WITSML2_NS::Well>();
 	for (size_t wellIdx = 0; wellIdx < witsmlWells.size(); ++wellIdx) {
 		cout << "witsml well: " << witsmlWells[wellIdx]->getTitle() << " (" << witsmlWells[wellIdx]->getUuid() << ")" << std::endl;
-		std::vector<WITSML2_NS::Wellbore*> witsmlWellbores = witsmlWells[wellIdx]->getWellbores();
+		std::vector<WITSML2_NS::Wellbore*> witsmlWellbores = witsmlWells[wellIdx]->getWellboreSet();
 		for (size_t wellboreIdx = 0; wellboreIdx < witsmlWellbores.size(); ++wellboreIdx) {
 			cout << "witsml wellbore: " << witsmlWellbores[wellboreIdx]->getTitle() << " (" << witsmlWellbores[wellboreIdx]->getUuid() << ")" << std::endl;
-			std::vector<WITSML2_0_NS::Log*> wbLogs = witsmlWellbores[wellboreIdx]->getLogs();
+			std::vector<WITSML2_0_NS::Log*> wbLogs = witsmlWellbores[wellboreIdx]->getLogSet();
 			for (size_t wbLogIdx = 0; wbLogIdx < wbLogs.size(); ++wbLogIdx) {
 				WITSML2_0_NS::Log* wbLog = wbLogs[wbLogIdx];
 				cout << "witsml log: " << wbLog->getTitle() << " (" << wbLog->getUuid() << ")" << std::endl;
@@ -4523,10 +4523,10 @@ void deserializeWbGeometry(COMMON_NS::DataObjectRepository & repo)
 	std::vector<WITSML2_NS::Well*> witsmlWells = repo.getDataObjects<WITSML2_NS::Well>();
 	for (size_t wellIdx = 0; wellIdx < witsmlWells.size(); ++wellIdx) {
 		cout << "witsml well: " << witsmlWells[wellIdx]->getTitle() << " (" << witsmlWells[wellIdx]->getUuid() << ")" << std::endl;
-		std::vector<WITSML2_NS::Wellbore*> witsmlWellbores = witsmlWells[wellIdx]->getWellbores();
+		std::vector<WITSML2_NS::Wellbore*> witsmlWellbores = witsmlWells[wellIdx]->getWellboreSet();
 		for (size_t wellboreIdx = 0; wellboreIdx < witsmlWellbores.size(); ++wellboreIdx) {
 			cout << "witsml wellbore: " << witsmlWellbores[wellboreIdx]->getTitle() << " (" << witsmlWellbores[wellboreIdx]->getUuid() << ")" << std::endl;
-			std::vector<WITSML2_0_NS::WellboreGeometry*> wbGeoms = witsmlWellbores[wellboreIdx]->getWellboreGeometries();
+			std::vector<WITSML2_0_NS::WellboreGeometry*> wbGeoms = witsmlWellbores[wellboreIdx]->getWellboreGeometrySet();
 			for (size_t wbGeomIdx = 0; wbGeomIdx < wbGeoms.size(); ++wbGeomIdx) {
 				WITSML2_0_NS::WellboreGeometry* wbGeom = wbGeoms[wbGeomIdx];
 				cout << "witsml wellbore geom: " << wbGeom->getTitle() << " (" << wbGeom->getUuid() << ")" << std::endl;
@@ -5095,13 +5095,13 @@ void deserialize(const string & inputFile)
 	deserializeTimeSeriesData(repo);
 
 	std::vector<RESQML2_NS::BoundaryFeature*> faultSet = repo.getFaultSet();
-	std::vector<RESQML2_NS::PolylineSetRepresentation *> faultPolyRepSet = repo.getFaultPolylineSetRepSet();
-	std::vector<RESQML2_NS::TriangulatedSetRepresentation *> faultTriRepSet = repo.getFaultTriangulatedSetRepSet();
+	std::vector<RESQML2_NS::PolylineSetRepresentation *> faultPolyRepSet = repo.getFaultPolylineSetRepresentationSet();
+	std::vector<RESQML2_NS::TriangulatedSetRepresentation *> faultTriRepSet = repo.getFaultTriangulatedSetRepresentationSet();
 	std::vector<RESQML2_NS::BoundaryFeature*> horizonSet = repo.getHorizonSet();
-	std::vector<RESQML2_NS::Grid2dRepresentation *> horizonGrid2dSet = repo.getHorizonGrid2dRepSet();
-	std::vector<RESQML2_NS::TriangulatedSetRepresentation *> horizonTriRepSet = repo.getHorizonTriangulatedSetRepSet();
-	std::vector<RESQML2_NS::TriangulatedSetRepresentation*> unclassifiedTriRepSet = repo.getUnclassifiedTriangulatedSetRepSet();
-	std::vector<RESQML2_NS::PolylineRepresentation *> horizonSinglePolylineRepSet = repo.getHorizonPolylineRepSet();
+	std::vector<RESQML2_NS::Grid2dRepresentation *> horizonGrid2dSet = repo.getHorizonGrid2dRepresentationSet();
+	std::vector<RESQML2_NS::TriangulatedSetRepresentation *> horizonTriRepSet = repo.getHorizonTriangulatedSetRepresentationSet();
+	std::vector<RESQML2_NS::TriangulatedSetRepresentation*> unclassifiedTriRepSet = repo.getUnclassifiedTriangulatedSetRepresentationSet();
+	std::vector<RESQML2_NS::PolylineRepresentation *> horizonSinglePolylineRepSet = repo.getHorizonPolylineRepresentationSet();
 	std::vector<RESQML2_NS::WellboreFeature*> wellboreSet = repo.getWellboreSet();
 	std::vector<RESQML2_NS::WellboreTrajectoryRepresentation *> wellboreCubicTrajSet = repo.getWellboreTrajectoryRepresentationSet();
 	std::vector<RESQML2_NS::UnstructuredGridRepresentation*> unstructuredGridRepSet = repo.getUnstructuredGridRepresentationSet();
@@ -5109,7 +5109,7 @@ void deserialize(const string & inputFile)
 	std::vector<RESQML2_NS::StratigraphicColumn*> stratiColumnSet = repo.getStratigraphicColumnSet();
 	std::vector<RESQML2_NS::RepresentationSetRepresentation*> representationSetRepresentationSet = repo.getRepresentationSetRepresentationSet();
 	std::vector<RESQML2_NS::SubRepresentation*> subRepresentationSet = repo.getSubRepresentationSet();
-	std::vector<RESQML2_NS::PolylineSetRepresentation *> frontierPolyRepSet = repo.getCulturalPolylineSetRepSet();
+	std::vector<RESQML2_NS::PolylineSetRepresentation *> frontierPolyRepSet = repo.getCulturalPolylineSetRepresentationSet();
 
 	std::cout << "RepresentationSetRepresentation" << endl;
 	for (auto* representationSetRepresentation : representationSetRepresentationSet) {

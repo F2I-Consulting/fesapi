@@ -2929,9 +2929,9 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::logic_error	 	If this grid is partial.
 		 * @exception	std::invalid_argument	If the split information is not loaded.
-		 * @exception	std::out_of_range	 	If @p iCell @c > getICellCount(), @p jCell @c >
-		 * 										getJCellCount() or @p kCell @c > getKCellCount().
-		 * @exception	std::out_of_range	 	If @p corner @c > 7.
+		 * @exception	std::out_of_range	 	If @p iCell > getICellCount(), @p jCell >
+		 * 										getJCellCount() or @p kCell > getKCellCount().
+		 * @exception	std::out_of_range	 	If @p corner > 7.
 		 *
 		 * @param 	iCell 	The I index of the cell.
 		 * @param 	jCell 	The J index of the cell.
@@ -2979,10 +2979,10 @@ namespace RESQML2_NS
 		 * @brief Gets all the XYZ points of a particular sequence of K interfaces. XYZ points are given in the
 		 * local CRS.
 		 *
-		 * @exception	std::out_of_range	 	If @p kInterfaceStart @c > getKCellCount() or @p
-		 * 										kInterfaceEnd @c > getKCellCount() + getKGapsCount().
-		 * @exception	std::range_error	 	If @p kInterfaceStart @c > @p kInterfaceEnd.
-		 * @exception	std::invalid_argument	If @p xyzPoints is @c nullptr.
+		 * @exception	std::out_of_range	 	If @p kInterfaceStart > getKCellCount() or @p
+		 * 										kInterfaceEnd > getKCellCount() + getKGapsCount().
+		 * @exception	std::range_error	 	If @p kInterfaceStart > @p kInterfaceEnd.
+		 * @exception	std::invalid_argument	If @p xyzPoints is nullptr.
 		 *
 		 * @param 	   	kInterfaceStart	The K index of the starting interface taken from zero to
 		 * 								getKCellCount().
