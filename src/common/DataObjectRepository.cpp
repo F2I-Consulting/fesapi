@@ -174,6 +174,11 @@ under the License.
 #include "../resqml2_2/WellboreInterpretation.h"
 #include "../resqml2_2/WellboreMarkerFrameRepresentation.h"
 #include "../resqml2_2/WellboreTrajectoryRepresentation.h"
+#else
+#include "../resqml2/CmpLineFeature.h"
+#include "../resqml2/Model.h"
+#include "../resqml2/SeismicWellboreFrameRepresentation.h"
+#include "../resqml2/ShotPointLineFeature.h"
 #endif
 
 #include "../witsml1_4/Trajectory.h"

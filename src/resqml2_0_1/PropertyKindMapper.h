@@ -140,8 +140,19 @@ namespace RESQML2_0_1_NS
 		/** The data object repo */
 		COMMON_NS::DataObjectRepository * dataObjRepo;
 
+		/**
+		* Only C++14 defines hash function for scoped enums : https://cplusplus.github.io/LWG/issue2148
+		*/
+		struct MyHash
+		{
+			std::size_t operator()(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind const& propKind) const noexcept
+			{
+				return std::hash<std::underlying_type<gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind>::type>()(static_cast<std::underlying_type<gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind>::type>(propKind));
+			}
+		};
+
 		/** Name of the RESQML standard property kind name to application property kind */
-		std::unordered_map<gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*> resqmlStandardPropertyKindNameToApplicationPropertyKindName;
+		std::unordered_map<gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, MyHash> resqmlStandardPropertyKindNameToApplicationPropertyKindName;
 
 		/**
 		 * First key string is the application name,
