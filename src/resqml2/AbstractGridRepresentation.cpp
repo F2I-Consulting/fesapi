@@ -1261,7 +1261,7 @@ gsoap_resqml2_0_1::resqml20__AbstractIntegerArray* AbstractGridRepresentation::g
 
 	if (parentWindow != nullptr) {
 		if (parentWindow->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IjkParentWindow) {
-			gsoap_resqml2_0_1::resqml20__IjkParentWindow const * const ijkpw = static_cast<const gsoap_resqml2_0_1::resqml20__IjkParentWindow*>(parentWindow);
+			gsoap_resqml2_0_1::resqml20__IjkParentWindow const * const ijkpw = static_cast<gsoap_resqml2_0_1::resqml20__IjkParentWindow const*>(parentWindow);
 			gsoap_resqml2_0_1::resqml20__Regrid const * regrid = nullptr;
 			if (dimension == 'i' || dimension == 'I') {
 				regrid = ijkpw->IRegrid;
@@ -1312,7 +1312,7 @@ gsoap_eml2_3::eml23__AbstractIntegerArray* AbstractGridRepresentation::getCellCo
 
 	if (parentWindow != nullptr) {
 		if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__IjkParentWindow) {
-			gsoap_eml2_3::resqml22__IjkParentWindow const * const ijkpw = static_cast<const gsoap_eml2_3::resqml22__IjkParentWindow*>(parentWindow);
+			gsoap_eml2_3::resqml22__IjkParentWindow const * const ijkpw = static_cast<gsoap_eml2_3::resqml22__IjkParentWindow const*>(parentWindow);
 			gsoap_eml2_3::resqml22__Regrid const * regrid = nullptr;
 			if (dimension == 'i' || dimension == 'I') {
 				regrid = ijkpw->IRegrid;
@@ -1336,7 +1336,7 @@ gsoap_eml2_3::eml23__AbstractIntegerArray* AbstractGridRepresentation::getCellCo
 		}
 		else if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__ColumnLayerParentWindow) {
 			if (dimension == 'k' || dimension == 'K') {
-				gsoap_eml2_3::resqml22__ColumnLayerParentWindow const* const clpw = static_cast<const gsoap_eml2_3::resqml22__ColumnLayerParentWindow const*>(parentWindow);
+				gsoap_eml2_3::resqml22__ColumnLayerParentWindow const* const clpw = static_cast<gsoap_eml2_3::resqml22__ColumnLayerParentWindow const*>(parentWindow);
 				if (clpw->KRegrid->Intervals != nullptr) {
 					return childVsParentCellCount ? clpw->KRegrid->Intervals->ChildCountPerInterval : clpw->KRegrid->Intervals->ParentCountPerInterval;
 				}

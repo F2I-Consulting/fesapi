@@ -1668,7 +1668,7 @@ RESQML2_NS::FluidBoundaryInterpretation* DataObjectRepository::createFluidBounda
 {
 	return new RESQML2_2_NS::FluidBoundaryInterpretation(boundary, guid, title, fluidContact);
 #else
-RESQML2_NS::FluidBoundaryInterpretation* DataObjectRepository::createFluidBoundaryInterpretation(RESQML2_NS::BoundaryFeature * boundary, const std::string & guid, const std::string & title, gsoap_eml2_3::resqml22__FluidContact fluidContact)
+RESQML2_NS::FluidBoundaryInterpretation* DataObjectRepository::createFluidBoundaryInterpretation(RESQML2_NS::BoundaryFeature *, const std::string &, const std::string &, gsoap_eml2_3::resqml22__FluidContact)
 {
 	throw std::logic_error("RESQML2.2 support has not been built in this library.");
 #endif
