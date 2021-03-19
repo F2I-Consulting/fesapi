@@ -44,14 +44,14 @@ COMMON_NS::DataObjectReference AbstractRepresentation::getHdfProxyDorFromPointGe
 	if (patch != nullptr) {
 		switch (patch->Points->soap_type()) {
 		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dZValueArray: {
-			gsoap_resqml2_0_1::resqml20__Point3dZValueArray* const tmp = static_cast<gsoap_resqml2_0_1::resqml20__Point3dZValueArray * const>(patch->Points);
+			gsoap_resqml2_0_1::resqml20__Point3dZValueArray* const tmp = static_cast<gsoap_resqml2_0_1::resqml20__Point3dZValueArray *>(patch->Points);
 			if (tmp->ZValues->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
-				return COMMON_NS::DataObjectReference(static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array * const>(tmp->ZValues)->Values->HdfProxy);
+				return COMMON_NS::DataObjectReference(static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array *>(tmp->ZValues)->Values->HdfProxy);
 			}
 			break;
 		}
 		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array:
-			return COMMON_NS::DataObjectReference(static_cast<gsoap_resqml2_0_1::resqml20__Point3dHdf5Array * const>(patch->Points)->Coordinates->HdfProxy);
+			return COMMON_NS::DataObjectReference(static_cast<gsoap_resqml2_0_1::resqml20__Point3dHdf5Array *>(patch->Points)->Coordinates->HdfProxy);
 		}
 	}
 
@@ -63,14 +63,14 @@ COMMON_NS::DataObjectReference AbstractRepresentation::getHdfProxyDorFromPointGe
 	if (patch != nullptr) {
 		switch (patch->Points->soap_type()) {
 		case SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dZValueArray: {
-			auto const tmp = static_cast<gsoap_eml2_3::resqml22__Point3dZValueArray * const>(patch->Points);
+			auto const tmp = static_cast<gsoap_eml2_3::resqml22__Point3dZValueArray *>(patch->Points);
 			if (tmp->ZValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray * const>(tmp->ZValues)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+				return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray *>(tmp->ZValues)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
 			}
 			break;
 		}
 		case SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray:
-			return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_3::resqml22__Point3dExternalArray * const>(patch->Points)->Coordinates->ExternalFileProxy[0]->EpcExternalPartReference);
+			return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_3::resqml22__Point3dExternalArray *>(patch->Points)->Coordinates->ExternalFileProxy[0]->EpcExternalPartReference);
 		}
 	}
 

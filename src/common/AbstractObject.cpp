@@ -1422,9 +1422,6 @@ uint64_t AbstractObject::readArrayNdOfUInt64Values(gsoap_resqml2_0_1::resqml20__
 			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
 		}
 		hdfProxy->readArrayNdOfUInt64Values(hdfArray->Values->PathInHdfFile, arrayOutput);
-		if (hdfArray->NullValue > (std::numeric_limits<uint64_t>::max)()) {
-			throw range_error("The null value is greater than uint64_t max.");
-		}
 		return static_cast<uint64_t>(hdfArray->NullValue);
 	}
 	else {
@@ -1443,9 +1440,6 @@ uint64_t AbstractObject::readArrayNdOfUInt64Values(gsoap_eml2_3::eml23__Abstract
 				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
 			}
 			hdfProxy->readArrayNdOfUInt64Values(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
-		}
-		if (static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue > (std::numeric_limits<uint64_t>::max)()) {
-			throw range_error("The null value is greater than uint64_t max.");
 		}
 		return static_cast<uint64_t>(static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue);
 	}

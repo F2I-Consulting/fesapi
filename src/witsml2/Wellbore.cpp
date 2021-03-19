@@ -20,12 +20,12 @@ under the License.
 
 #include "../resqml2_0_1/WellboreFeature.h"
 
+#include "../witsml2_0/WellboreCompletion.h"
+#include "../witsml2_0/WellboreGeometry.h"
+#include "../witsml2_0/Log.h"
+
 #include "Trajectory.h"
 #include "Well.h"
-
-#include "../Witsml2_0/WellboreCompletion.h"
-#include "../Witsml2_0/WellboreGeometry.h"
-#include "../Witsml2_0/Log.h"
 
 using namespace WITSML2_NS;
 

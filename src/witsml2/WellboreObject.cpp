@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreObject.h"
 
-#include "Wellbore.h"
-
 #include <stdexcept>
+
+#include "Wellbore.h"
 
 using namespace std;
 using namespace WITSML2_NS;
