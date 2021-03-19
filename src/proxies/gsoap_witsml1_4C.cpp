@@ -16,7 +16,10 @@ Product and source code licensed by Genivia Inc., contact@genivia.com
 
 #include "gsoap_witsml1_4H.h"
 
-#ifdef _WIN32
+#if defined(__clang__)
+#elif defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic ignored "-Wcast-qual"
+#elif defined(_MSC_VER)
 #pragma warning(disable : 4706) /* assignment within conditional expression */
 #pragma warning(disable : 4458) /* eclaration hides class member */
 #endif

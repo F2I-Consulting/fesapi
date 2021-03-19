@@ -145,7 +145,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT std::string resolvePartial(AbstractObject const * partialObj) const;
 
 	private :
-		static constexpr char DOCUMENT_EXTENSION[] = ".epc";
+		static constexpr char const* DOCUMENT_EXTENSION = ".epc";
 
 		void deserializeRelFiles(DataObjectRepository & repo);
 

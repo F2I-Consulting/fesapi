@@ -3083,8 +3083,8 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 						std::unique_ptr<double[]> interfaceXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3]);
 						ijkGrid->getXyzPointsOfKInterface(kInterface, interfaceXyzPoints.get());
 
-						for (unsigned int j = 0; j < ijkGrid->getJCellCount(); j++) {
-							for (unsigned int i = 0; i < ijkGrid->getICellCount(); i++) {
+						for (unsigned int j = 0; j < ijkGrid->getJCellCount(); ++j) {
+							for (unsigned int i = 0; i < ijkGrid->getICellCount(); ++i) {
 								cout << "CELL (" << i << ", " << j << ", " << kLayer << ")" << std::endl;
 
 								uint64_t xyzPointIndex;
@@ -3117,7 +3117,7 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 							}
 						}
 
-						if (cornerShift == 4 || !gapAfterLayer[kLayer] && kInterface != ijkGrid->getKCellCount() + ijkGrid->getKGapsCount() - 1) {
+						if (cornerShift == 4 || (!gapAfterLayer[kLayer] && kInterface != ijkGrid->getKCellCount() + ijkGrid->getKGapsCount() - 1)) {
 							kLayer++;
 							cornerShift = 0;
 						}
