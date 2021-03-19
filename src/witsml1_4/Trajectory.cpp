@@ -139,13 +139,13 @@ GETTER_AND_SETTER_ENUM_ATTRIBUTE_IN_VECTOR_IMPL_1_4(gsoap_eml2_1::witsml20__Traj
 	gsoap_eml2_1::soap_witsml20__TrajStationType2s, gsoap_eml2_1::soap_s2witsml20__TrajStationType, gsoap_witsml1_4::soap_witsml14__TrajStationType2s, gsoap_witsml1_4::soap_s2witsml14__TrajStationType)
 GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(Trajectory, TrajectoryStation, trajectoryStation, Md, md, gsoap_eml2_1::eml21__LengthUom, gsoap_witsml1_4::soap_new_witsml14__measuredDepthCoord)
 
-void Trajectory::setTrajectoryStationManuallyEntered(unsigned int index, const bool & value) {
-	throw logic_error("WITSML1.4.1.1 has not this kinf of information");
+void Trajectory::setTrajectoryStationManuallyEntered(unsigned int, const bool &) {
+	throw logic_error("WITSML1.4.1.1 has not this kind of information");
 }
 
-bool Trajectory::hasTrajectoryStationManuallyEntered(unsigned int index) const { return false; }
+bool Trajectory::hasTrajectoryStationManuallyEntered(unsigned int) const { return false; }
 
-bool Trajectory::getTrajectoryStationManuallyEntered(unsigned int index) const {
+bool Trajectory::getTrajectoryStationManuallyEntered(unsigned int) const {
 	throw logic_error("WITSML1.4.1.1 has not this kind of information");
 }
 
@@ -300,6 +300,7 @@ void Trajectory::pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationTy
 
 	static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation.push_back(soap_new_witsml14__cs_USCOREtrajectoryStation(gsoapProxyTraj1_4->soap));
 	unsigned int index = getTrajectoryStationCount() - 1;
+	if (!uid.empty()) { setTrajectoryStationuid(index, uid); }
 	setTrajectoryStationTypeTrajStation(index, kind);
 	setTrajectoryStationMd(index, mdValue, uom, datum);
 }

@@ -134,7 +134,7 @@ namespace WITSML2_NS
 		 *
 		 * @returns	The XML tag.
 		 */
-		DLL_IMPORT_OR_EXPORT static constexpr char* XML_TAG = "Trajectory";
+		DLL_IMPORT_OR_EXPORT static constexpr char XML_TAG[] = "Trajectory";
 
 		/**
 		 * Get the standard XML tag without XML namespace for serializing this data object.
