@@ -296,15 +296,19 @@ namespace gsoap_eml2_1
 		tubing = 7
 	};
 	enum class witsml20__EtpDataType {
-		boolean_ = 0,
-		bytes_ = 1,
+		boolean = 0,
+		bytes = 1,
 		double_ = 2,
 		float_ = 3,
 		int_ = 4,
 		long_ = 5,
-		null_ = 6,
+#if defined(SWIGJAVA)
+		_null = 6,
+#else
+		null = 6,
+#endif
 		string_ = 7,
-		vector_ = 8
+		vector = 8
 	};
 	enum class witsml20__ChannelIndexType {
 		measured_x0020depth = 0,
