@@ -307,7 +307,7 @@ namespace gsoap_eml2_1
 #else
 		null = 6,
 #endif
-		string_ = 7,
+		string = 7,
 		vector = 8
 	};
 	enum class witsml20__ChannelIndexType {
