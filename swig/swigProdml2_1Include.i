@@ -28,15 +28,6 @@ namespace std {
 	%template(TimeSeriesDataVector) vector<PRODML2_1_NS::TimeSeriesData*>;
 }
 
-//#ifdef SWIGJAVA
-//	%include "swigWitsml2_0JavaInclude.i"
-//#endif
-#ifdef SWIGPYTHON
-
-#endif
-//#ifdef SWIGCSHARP
-//	%include "swigWitsml2_0CsInclude.i"
-//#endif
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
 	%nspace PRODML2_1_NS::FluidSystem;
 	%nspace PRODML2_1_NS::FluidCharacterization;
@@ -55,10 +46,26 @@ namespace gsoap_eml2_2
 		ppm = 6
 	};
 	enum class eml22__ThermodynamicTemperatureUom {
-		K = (int)'K',
-		degC = (int)'L',
-		degF = (int)'M',
-		degR = (int)'N'
+		K = 
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'K',
+		degC = 
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'L',
+		degF = 
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'M',
+		degR = 
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'N'
 	};
 	enum class eml22__PressureUom {
 		_0_x002e01_x0020lbf_x002fft2 = 0,
@@ -434,64 +441,272 @@ namespace gsoap_eml2_2
 		frequency_x0020interval = 62,
 		heat_x0020capacity = 63,
 		heat_x0020flow_x0020rate = 64,
-		heat_x0020transfer_x0020coefficient = (int)'A',
-		illuminance = (int)'B',
-		inductance = (int)'C',
-		isothermal_x0020compressibility = (int)'D',
-		kinematic_x0020viscosity = (int)'E',
-		length = (int)'F',
-		length_x0020per_x0020length = (int)'G',
-		length_x0020per_x0020mass = (int)'H',
-		length_x0020per_x0020pressure = (int)'I',
-		length_x0020per_x0020temperature = (int)'J',
-		length_x0020per_x0020time = (int)'K',
-		length_x0020per_x0020volume = (int)'L',
-		light_x0020exposure = (int)'M',
-		linear_x0020acceleration = (int)'N',
-		linear_x0020thermal_x0020expansion = (int)'O',
-		logarithmic_x0020power_x0020ratio = (int)'P',
-		logarithmic_x0020power_x0020ratio_x0020per_x0020length = (int)'Q',
-		luminance = (int)'R',
-		luminous_x0020efficacy = (int)'S',
-		luminous_x0020flux = (int)'T',
-		luminous_x0020intensity = (int)'U',
-		magnetic_x0020dipole_x0020moment = (int)'V',
-		magnetic_x0020field_x0020strength = (int)'W',
-		magnetic_x0020flux = (int)'X',
-		magnetic_x0020flux_x0020density = (int)'Y',
-		magnetic_x0020flux_x0020density_x0020per_x0020length = (int)'Z',
+		heat_x0020transfer_x0020coefficient =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'A',
+		illuminance =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'B',
+		inductance =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'C',
+		isothermal_x0020compressibility =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'D',
+		kinematic_x0020viscosity =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'E',
+		length =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'F',
+		length_x0020per_x0020length =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'G',
+		length_x0020per_x0020mass =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'H',
+		length_x0020per_x0020pressure =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'I',
+		length_x0020per_x0020temperature =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'J',
+		length_x0020per_x0020time =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'K',
+		length_x0020per_x0020volume =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'L',
+		light_x0020exposure =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'M',
+		linear_x0020acceleration =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'N',
+		linear_x0020thermal_x0020expansion =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'O',
+		logarithmic_x0020power_x0020ratio =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'P',
+		logarithmic_x0020power_x0020ratio_x0020per_x0020length =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'Q',
+		luminance =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'R',
+		luminous_x0020efficacy =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'S',
+		luminous_x0020flux =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'T',
+		luminous_x0020intensity =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'U',
+		magnetic_x0020dipole_x0020moment =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'V',
+		magnetic_x0020field_x0020strength =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'W',
+		magnetic_x0020flux =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'X',
+		magnetic_x0020flux_x0020density =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'Y',
+		magnetic_x0020flux_x0020density_x0020per_x0020length =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'Z',
 		magnetic_x0020permeability = 91,
 		magnetic_x0020vector_x0020potential = 92,
 		mass = 93,
 		mass_x0020length = 94,
 		mass_x0020per_x0020area = 95,
 		mass_x0020per_x0020energy = 96,
-		mass_x0020per_x0020length = (int)'a',
-		mass_x0020per_x0020mass = (int)'b',
-		mass_x0020per_x0020time = (int)'c',
-		mass_x0020per_x0020time_x0020per_x0020area = (int)'d',
-		mass_x0020per_x0020time_x0020per_x0020length = (int)'e',
-		mass_x0020per_x0020volume = (int)'f',
-		mass_x0020per_x0020volume_x0020per_x0020length = (int)'g',
-		mass_x0020per_x0020volume_x0020per_x0020pressure = (int)'h',
-		mass_x0020per_x0020volume_x0020per_x0020temperature = (int)'i',
-		mobility = (int)'j',
-		molar_x0020energy = (int)'k',
-		molar_x0020heat_x0020capacity = (int)'l',
-		molar_x0020volume = (int)'m',
-		molecular_x0020weight = (int)'n',
-		moment_x0020of_x0020force = (int)'o',
-		moment_x0020of_x0020inertia = (int)'p',
-		momentum = (int)'q',
-		normalized_x0020power = (int)'r',
-		permeability_x0020length = (int)'s',
-		permeability_x0020rock = (int)'t',
-		permittivity = (int)'u',
-		plane_x0020angle = (int)'v',
-		potential_x0020difference_x0020per_x0020power_x0020drop = (int)'w',
-		power = (int)'x',
-		power_x0020per_x0020area = (int)'y',
-		power_x0020per_x0020power = (int)'z',
+		mass_x0020per_x0020length =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'a',
+		mass_x0020per_x0020mass =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'b',
+		mass_x0020per_x0020time =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'c',
+		mass_x0020per_x0020time_x0020per_x0020area =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'd',
+		mass_x0020per_x0020time_x0020per_x0020length =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'e',
+		mass_x0020per_x0020volume =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'f',
+		mass_x0020per_x0020volume_x0020per_x0020length =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'g',
+		mass_x0020per_x0020volume_x0020per_x0020pressure =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'h',
+		mass_x0020per_x0020volume_x0020per_x0020temperature =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'i',
+		mobility =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'j',
+		molar_x0020energy =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'k',
+		molar_x0020heat_x0020capacity =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'l',
+		molar_x0020volume =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'm',
+		molecular_x0020weight =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'n',
+		moment_x0020of_x0020force =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'o',
+		moment_x0020of_x0020inertia =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'p',
+		momentum =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'q',
+		normalized_x0020power =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'r',
+		permeability_x0020length =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			's',
+		permeability_x0020rock =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			't',
+		permittivity =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'u',
+		plane_x0020angle =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'v',
+		potential_x0020difference_x0020per_x0020power_x0020drop =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'w',
+		power =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'x',
+		power_x0020per_x0020area =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'y',
+		power_x0020per_x0020power =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'z',
 		power_x0020per_x0020volume = 123,
 		pressure = 124,
 		pressure_x0020per_x0020pressure = 125,

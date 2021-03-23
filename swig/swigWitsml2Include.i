@@ -320,36 +320,156 @@ namespace gsoap_eml2_1
 		pressure = 6
 	};
 	enum class eml21__UnitOfMeasure {
-		A = (int)'A',
-		a = (int)'a',
-		b = (int)'b',
-		B = (int)'B',
-		C = (int)'C',
-		D = (int)'D',
-		d = (int)'d',
-		F = (int)'F',
-		g = (int)'g',
-		H = (int)'H',
-		h = (int)'h',
-		J = (int)'J',
-		K = (int)'K',
-		L = (int)'L',
-		m = (int)'m',
-		N = (int)'N',
-		O = (int)'O',
-		P = (int)'P',
-		S = (int)'S',
-		s = (int)'s',
-		t = (int)'t',
-		T = (int)'T',
-		V = (int)'V',
-		W = (int)'W',
-		_x0025 = (int)'u',
-		_x0025_x005barea_x005d = (int)'v',
-		_x0025_x005bmass_x005d = (int)'w',
-		_x0025_x005bmolar_x005d = (int)'x',
-		_x0025_x005bvol_x005d = (int)'y',
-		_x0028bbl_x002fd_x0029_x002f_x0028bbl_x002fd_x0029 = (int)'z',
+		A =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'A',
+		a =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'a',
+		b =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'b',
+		B =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'B',
+		C =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'C',
+		D =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'D',
+		d =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'd',
+		F =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'F',
+		g =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'g',
+		H =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'H',
+		h =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'h',
+		J =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'J',
+		K =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'K',
+		L =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'L',
+		m =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'm',
+		N =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'N',
+		O =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'O',
+		P =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'P',
+		S =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'S',
+		s =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			's',
+		t =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			't',
+		T =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'T',
+		V =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'V',
+		W =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'W',
+		_x0025 =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'u',
+		_x0025_x005barea_x005d =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'v',
+		_x0025_x005bmass_x005d =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'w',
+		_x0025_x005bmolar_x005d =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'x',
+		_x0025_x005bvol_x005d =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'y',
+		_x0028bbl_x002fd_x0029_x002f_x0028bbl_x002fd_x0029 =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'z',
 		_x0028m3_x002fd_x0029_x002f_x0028m3_x002fd_x0029 = 123,
 		_x0028m3_x002fs_x0029_x002f_x0028m3_x002fs_x0029 = 124,
 		_0_x002e001_x0020bbl_x002fft3 = 125,
@@ -1771,20 +1891,76 @@ namespace gsoap_eml2_1
 		rev_x002fm = 8
 	};
 	enum class eml21__LengthUom {
-		m = (int)'m',
-		_0_x002e1_x0020ft = (int)'n',
-		_0_x002e1_x0020ft_x005bUS_x005d = (int)'o',
-		_0_x002e1_x0020in = (int)'p',
-		_0_x002e1_x0020yd = (int)'q',
-		_1_x002f16_x0020in = (int)'r',
-		_1_x002f2_x0020ft = (int)'s',
-		_1_x002f32_x0020in = (int)'t',
-		_1_x002f64_x0020in = (int)'u',
-		_10_x0020ft = (int)'v',
-		_10_x0020in = (int)'w',
-		_10_x0020km = (int)'x',
-		_100_x0020ft = (int)'y',
-		_100_x0020km = (int)'z',
+		m =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'm',
+		_0_x002e1_x0020ft =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'n',
+		_0_x002e1_x0020ft_x005bUS_x005d =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'o',
+		_0_x002e1_x0020in =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'p',
+		_0_x002e1_x0020yd =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'q',
+		_1_x002f16_x0020in =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'r',
+		_1_x002f2_x0020ft =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			's',
+		_1_x002f32_x0020in =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			't',
+		_1_x002f64_x0020in =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'u',
+		_10_x0020ft =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'v',
+		_10_x0020in =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'w',
+		_10_x0020km =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'x',
+		_100_x0020ft =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'y',
+		_100_x0020km =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'z',
 		_1000_x0020ft = 123,
 		_30_x0020ft = 124,
 		_30_x0020m = 125,
@@ -1866,31 +2042,107 @@ namespace gsoap_eml2_1
 		mgn = 7
 	};
 	enum class eml21__MagneticFluxDensityUom {
-		T = (int)'T',
-		cgauss = (int)'U',
-		cT = (int)'V',
-		dgauss = (int)'W',
-		dT = (int)'X',
-		Egauss = (int)'Y',
-		ET = (int)'Z',
+		T =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'T',
+		cgauss =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'U',
+		cT =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'V',
+		dgauss =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'W',
+		dT =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'X',
+		Egauss =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'Y',
+		ET =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'Z',
 		fgauss = 91,
 		fT = 92,
 		gauss = 93,
 		Ggauss = 94,
 		GT = 95,
 		kgauss = 96,
-		kT = (int)'a',
-		mgauss = (int)'b',
-		Mgauss = (int)'c',
-		mT = (int)'d',
-		ngauss = (int)'e',
-		nT = (int)'f',
-		pgauss = (int)'g',
-		pT = (int)'h',
-		Tgauss = (int)'i',
-		TT = (int)'j',
-		ugauss = (int)'k',
-		uT = (int)'l'
+		kT =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'a',
+		mgauss =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'b',
+		Mgauss =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'c',
+		mT =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'd',
+		ngauss =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'e',
+		nT =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'f',
+		pgauss =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'g',
+		pT =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'h',
+		Tgauss =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'i',
+		TT =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'j',
+		ugauss =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'k',
+		uT =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'l'
 	};
 	enum class eml21__MassPerLengthUom {
 		kg_x002em_x002fcm2 = 0,
@@ -1916,10 +2168,26 @@ namespace gsoap_eml2_1
 		urad = 13
 	};
 	enum class eml21__VerticalCoordinateUom {
-		m = (int)'m',
-		ft = (int)'n',
-		ftUS = (int)'o',
-		ftBr_x002865_x0029 = (int)'p'
+		m =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'm',
+		ft =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'n',
+		ftUS =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'o',
+		ftBr_x002865_x0029 =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'p'
 	};
 }
 

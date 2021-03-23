@@ -177,64 +177,272 @@ namespace gsoap_resqml2_0_1
 		force_x0020length_x0020per_x0020length = 62,
 		force_x0020per_x0020force = 63,
 		force_x0020per_x0020length = 64,
-		force_x0020per_x0020volume = (int)'A',
-		formation_x0020volume_x0020factor = (int)'B',
-		frequency = (int)'C',
-		frequency_x0020interval = (int)'D',
-		gamma_x0020ray_x0020API_x0020unit = (int)'E',
-		heat_x0020capacity = (int)'F',
-		heat_x0020flow_x0020rate = (int)'G',
-		heat_x0020transfer_x0020coefficient = (int)'H',
-		illuminance = (int)'I',
-		index = (int)'J',
-		irradiance = (int)'K',
-		isothermal_x0020compressibility = (int)'L',
-		kinematic_x0020viscosity = (int)'M',
-		Lambda_x0020Rho = (int)'N',
-		Lame_x0020constant = (int)'O',
-		length = (int)'P',
-		length_x0020per_x0020length = (int)'Q',
-		length_x0020per_x0020temperature = (int)'R',
-		length_x0020per_x0020volume = (int)'S',
-		level_x0020of_x0020power_x0020intensity = (int)'T',
-		light_x0020exposure = (int)'U',
-		linear_x0020thermal_x0020expansion = (int)'V',
-		luminance = (int)'W',
-		luminous_x0020efficacy = (int)'X',
-		luminous_x0020flux = (int)'Y',
-		luminous_x0020intensity = (int)'Z',
+		force_x0020per_x0020volume =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'A',
+		formation_x0020volume_x0020factor =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'B',
+		frequency =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'C',
+		frequency_x0020interval =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'D',
+		gamma_x0020ray_x0020API_x0020unit =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'E',
+		heat_x0020capacity =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'F',
+		heat_x0020flow_x0020rate =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'G',
+		heat_x0020transfer_x0020coefficient =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'H',
+		illuminance =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'I',
+		index =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'J',
+		irradiance =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'K',
+		isothermal_x0020compressibility =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'L',
+		kinematic_x0020viscosity =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'M',
+		Lambda_x0020Rho =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'N',
+		Lame_x0020constant =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'O',
+		length =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'P',
+		length_x0020per_x0020length =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'Q',
+		length_x0020per_x0020temperature =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'R',
+		length_x0020per_x0020volume =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'S',
+		level_x0020of_x0020power_x0020intensity =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'T',
+		light_x0020exposure =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'U',
+		linear_x0020thermal_x0020expansion =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'V',
+		luminance =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'W',
+		luminous_x0020efficacy =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'X',
+		luminous_x0020flux =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'Y',
+		luminous_x0020intensity =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'Z',
 		magnetic_x0020dipole_x0020moment = 91,
 		magnetic_x0020field_x0020strength = 92,
 		magnetic_x0020flux = 93,
 		magnetic_x0020induction = 94,
 		magnetic_x0020permeability = 95,
 		magnetic_x0020vector_x0020potential = 96,
-		mass = (int)'a',
-		mass_x0020attenuation_x0020coefficient = (int)'b',
-		mass_x0020concentration = (int)'c',
-		mass_x0020flow_x0020rate = (int)'d',
-		mass_x0020length = (int)'e',
-		mass_x0020per_x0020energy = (int)'f',
-		mass_x0020per_x0020length = (int)'g',
-		mass_x0020per_x0020time_x0020per_x0020area = (int)'h',
-		mass_x0020per_x0020time_x0020per_x0020length = (int)'i',
-		mass_x0020per_x0020volume_x0020per_x0020length = (int)'j',
-		mobility = (int)'k',
-		modulus_x0020of_x0020compression = (int)'l',
-		molar_x0020concentration = (int)'m',
-		molar_x0020heat_x0020capacity = (int)'n',
-		molar_x0020volume = (int)'o',
-		mole_x0020per_x0020area = (int)'p',
-		mole_x0020per_x0020time = (int)'q',
-		mole_x0020per_x0020time_x0020per_x0020area = (int)'r',
-		moment_x0020of_x0020force = (int)'s',
-		moment_x0020of_x0020inertia = (int)'t',
-		moment_x0020of_x0020section = (int)'u',
-		momentum = (int)'v',
-		Mu_x0020Rho = (int)'w',
-		net_x0020to_x0020gross_x0020ratio = (int)'x',
-		neutron_x0020API_x0020unit = (int)'y',
-		nonDarcy_x0020flow_x0020coefficient = (int)'z',
+		mass =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'a',
+		mass_x0020attenuation_x0020coefficient =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'b',
+		mass_x0020concentration =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'c',
+		mass_x0020flow_x0020rate =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'd',
+		mass_x0020length =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'e',
+		mass_x0020per_x0020energy =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'f',
+		mass_x0020per_x0020length =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'g',
+		mass_x0020per_x0020time_x0020per_x0020area =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'h',
+		mass_x0020per_x0020time_x0020per_x0020length =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'i',
+		mass_x0020per_x0020volume_x0020per_x0020length =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'j',
+		mobility =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'k',
+		modulus_x0020of_x0020compression =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'l',
+		molar_x0020concentration =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'm',
+		molar_x0020heat_x0020capacity =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'n',
+		molar_x0020volume =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'o',
+		mole_x0020per_x0020area =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'p',
+		mole_x0020per_x0020time =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'q',
+		mole_x0020per_x0020time_x0020per_x0020area =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'r',
+		moment_x0020of_x0020force =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			's',
+		moment_x0020of_x0020inertia =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			't',
+		moment_x0020of_x0020section =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'u',
+		momentum =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'v',
+		Mu_x0020Rho =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'w',
+		net_x0020to_x0020gross_x0020ratio =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'x',
+		neutron_x0020API_x0020unit =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'y',
+		nonDarcy_x0020flow_x0020coefficient =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'z',
 		operations_x0020per_x0020time = 123,
 		parachor = 124,
 		per_x0020area = 125,

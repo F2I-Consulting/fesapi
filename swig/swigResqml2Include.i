@@ -115,36 +115,156 @@ under the License.
 namespace gsoap_resqml2_0_1
 {	
 	enum class resqml20__ResqmlUom {
-		A = (int)'A',
-		a = (int)'a',
-		b = (int)'b',
-		B = (int)'B',
-		C = (int)'C',
-		d = (int)'d',
-		D = (int)'D',
-		F = (int)'F',
-		g = (int)'g',
-		H = (int)'H',
-		h = (int)'h',
-		J = (int)'J',
-		K = (int)'K',
-		L = (int)'L',
-		m = (int)'m',
-		N = (int)'N',
-		O = (int)'O',
-		P = (int)'P',
-		S = (int)'S',
-		s = (int)'s',
-		t = (int)'t',
-		T = (int)'T',
-		V = (int)'V',
-		W = (int)'W',
-		_x0025 = (int)'u',
-		_x0025_x005barea_x005d = (int)'v',
-		_x0025_x005bmass_x005d = (int)'w',
-		_x0025_x005bmolar_x005d = (int)'x',
-		_x0025_x005bvol_x005d = (int)'y',
-		_x0028bbl_x002fd_x0029_x002f_x0028bbl_x002fd_x0029 = (int)'z',
+		A =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'A',
+		a =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'a',
+		b =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'b',
+		B =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'B',
+		C =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'C',
+		d =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'd',
+		D =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'D',
+		F =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'F',
+		g =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'g',
+		H =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'H',
+		h =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'h',
+		J =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'J',
+		K =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'K',
+		L =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'L',
+		m =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'm',
+		N =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'N',
+		O =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'O',
+		P =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'P',
+		S =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'S',
+		s =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			's',
+		t =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			't',
+		T =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'T',
+		V =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'V',
+		W =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'W',
+		_x0025 =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'u',
+		_x0025_x005barea_x005d =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'v',
+		_x0025_x005bmass_x005d =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'w',
+		_x0025_x005bmolar_x005d =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'x',
+		_x0025_x005bvol_x005d =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'y',
+		_x0028bbl_x002fd_x0029_x002f_x0028bbl_x002fd_x0029 =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'z',
 		_x0028m3_x002fd_x0029_x002f_x0028m3_x002fd_x0029 = 123,
 		_x0028m3_x002fs_x0029_x002f_x0028m3_x002fs_x0029 = 124,
 		_0_x002e001_x0020bbl_x002fft3 = 125,
@@ -1571,20 +1691,76 @@ namespace gsoap_resqml2_0_1
 		urad = 13
 	};
 	enum class eml20__LengthUom {
-		m = (int)'m',
-		_0_x002e1_x0020ft = (int)'n',
-		_0_x002e1_x0020ft_x005bUS_x005d = (int)'o',
-		_0_x002e1_x0020in = (int)'p',
-		_0_x002e1_x0020yd = (int)'q',
-		_1_x002f16_x0020in = (int)'r',
-		_1_x002f2_x0020ft = (int)'s',
-		_1_x002f32_x0020in = (int)'t',
-		_1_x002f64_x0020in = (int)'u',
-		_10_x0020ft = (int)'v',
-		_10_x0020in = (int)'w',
-		_10_x0020km = (int)'x',
-		_100_x0020ft = (int)'y',
-		_100_x0020km = (int)'z',
+		m =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'm',
+		_0_x002e1_x0020ft =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'n',
+		_0_x002e1_x0020ft_x005bUS_x005d =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'o',
+		_0_x002e1_x0020in =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'p',
+		_0_x002e1_x0020yd =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'q',
+		_1_x002f16_x0020in =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'r',
+		_1_x002f2_x0020ft =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			's',
+		_1_x002f32_x0020in =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			't',
+		_1_x002f64_x0020in =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'u',
+		_10_x0020ft =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'v',
+		_10_x0020in =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'w',
+		_10_x0020km =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'x',
+		_100_x0020ft =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'y',
+		_100_x0020km =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'z',
 		_1000_x0020ft = 123,
 		_30_x0020ft = 124,
 		_30_x0020m = 125,
@@ -1656,17 +1832,61 @@ namespace gsoap_resqml2_0_1
 		yd_x005bUS_x005d = 191
 	};
 	enum class eml20__TimeUom {
-		a = (int)'a',
-		d = (int)'d',
-		h = (int)'h',
-		s = (int)'s',
-		_1_x002f2_x0020ms = (int)'t',
-		_100_x0020ka_x005bt_x005d = (int)'u',
-		a_x005bt_x005d = (int)'v',
-		ca = (int)'w',
-		cs = (int)'x',
-		ds = (int)'y',
-		Ea_x005bt_x005d = (int)'z',
+		a =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'a',
+		d =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'd',
+		h =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'h',
+		s =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			's',
+		_1_x002f2_x0020ms =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			't',
+		_100_x0020ka_x005bt_x005d =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'u',
+		a_x005bt_x005d =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'v',
+		ca =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'w',
+		cs =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'x',
+		ds =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'y',
+		Ea_x005bt_x005d =
+#ifdef SWIGPYTHON
+(int)
+#endif
+			'z',
 		fa = 123,
 		Ga_x005bt_x005d = 124,
 		hs = 125,
