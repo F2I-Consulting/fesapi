@@ -28,7 +28,7 @@ def serialize_grid(repo):
     for i, value in enumerate(python_points):
         resqml_points.setitem(i, value)
     single_cell_ijk_grid.setGeometryAsCoordinateLineNodes(
-        fesapi.resqml20__PillarShape__vertical, fesapi.resqml20__KDirection__down, False,
+        fesapi.resqml20__PillarShape_vertical, fesapi.resqml20__KDirection_down, False,
         resqml_points)
 
 def serialize(file_name):
@@ -39,15 +39,16 @@ def serialize(file_name):
     repo = fesapi.DataObjectRepository()
 
     # CRS
+    print(type(fesapi.eml20__LengthUom_m))
     local_3d_crs = repo.createLocalDepth3dCrs("798d47d8-0c7d-4f12-8c44-0f36b6d16c32", "Default CRS",
                                               0.0, 0.0, 0.0, 0.0,
-                                              fesapi.eml20__LengthUom__m, 5215,
-                                              fesapi.eml20__LengthUom__m, "Unknown",
+                                              fesapi.eml20__LengthUom_m, 5215,
+                                              fesapi.eml20__LengthUom_m, "Unknown",
                                               False)
     repo.createLocalTime3dCrs("", "Default local time CRS",
                               1.0, 0.1, 15, .0,
-                              fesapi.eml20__LengthUom__m, 23031,
-                              fesapi.eml20__TimeUom__s, fesapi.eml20__LengthUom__m, "Unknown",
+                              fesapi.eml20__LengthUom_m, 23031,
+                              fesapi.eml20__TimeUom_s, fesapi.eml20__LengthUom_m, "Unknown",
                               False)
     repo.setDefaultCrs(local_3d_crs)
 
@@ -82,13 +83,13 @@ def show_ijk_grid(ijk_grid):
 
     if ijk_grid.getGeometryKind() != fesapi.resqml2_AbstractIjkGridRepresentation.NO_GEOMETRY:
         most_complex_pillar_geom = ijk_grid.getMostComplexPillarGeometry()
-        if most_complex_pillar_geom == fesapi.resqml20__PillarShape__vertical:
+        if most_complex_pillar_geom == fesapi.resqml20__PillarShape_vertical:
             print("Most complex pillar geometry is vertical")
         else:
-            if most_complex_pillar_geom == fesapi.resqml20__PillarShape__straight:
+            if most_complex_pillar_geom == fesapi.resqml20__PillarShape_straight:
                 print("Most complex pillar geometry is straight")
             else:
-                if most_complex_pillar_geom == fesapi.resqml20__PillarShape__curved:
+                if most_complex_pillar_geom == fesapi.resqml20__PillarShape_curved:
                     print("Most complex pillar geometry is curved")
 
         k_gap_count = ijk_grid.getKGapsCount()

@@ -8,7 +8,7 @@ fesapi_module = Extension('_fesapi',
 )
 
 setup (name = 'fesapi',
-	version = '2.0',
+	version = '2.1',
 	author      = "F2I-CONSULTING",
 	description = """An API for the Energistics standards""",
 	ext_modules = [fesapi_module],
