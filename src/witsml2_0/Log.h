@@ -45,7 +45,7 @@ namespace WITSML2_0_NS
 		 * @param 	  	guid		  	Unique identifier.
 		 * @param 	  	title		  	The title.
 		 */
-		Log(class Wellbore* witsmlWellbore,
+		Log(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title);
 
@@ -106,5 +106,15 @@ namespace WITSML2_0_NS
 
 		/** Loads target relationships */
 		void loadTargetRelationships();
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "witsml20";
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

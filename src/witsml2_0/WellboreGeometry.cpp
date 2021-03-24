@@ -32,7 +32,7 @@ using namespace gsoap_eml2_1;
 
 const char* WellboreGeometry::XML_TAG = "WellboreGeometry";
 
-WellboreGeometry::WellboreGeometry(Wellbore* witsmlWellbore,
+WellboreGeometry::WellboreGeometry(WITSML2_NS::Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title,
 	gsoap_eml2_1::witsml20__ChannelStatus channelStatus)
@@ -54,7 +54,7 @@ COMMON_NS::DataObjectReference WellboreGeometry::getWellboreDor() const
 	return COMMON_NS::DataObjectReference(static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->Wellbore);
 }
 
-void WellboreGeometry::setWellbore(Wellbore* witsmlWellbore)
+void WellboreGeometry::setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 {
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml wellbore to a witsml trajectory");

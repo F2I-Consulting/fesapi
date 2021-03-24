@@ -292,7 +292,7 @@ void GraphicalInformationSet::setDefaultHsvColor(AbstractObject * targetObject, 
 		defaultGraphicalInformationForAllIndexableElements = soap_new_resqml22__DefaultGraphicalInformation(gsoapProxy2_3->soap, 1);
 		getRepository()->addRelationship(this, targetObject);
 		defaultGraphicalInformationForAllIndexableElements->TargetObject = targetObject->newEml23Reference();
-		defaultGraphicalInformationForAllIndexableElements->ViewerKind = soap_resqml22__ViewerKind2s(gsoapProxy2_3->soap, resqml22__ViewerKind__3d);
+		defaultGraphicalInformationForAllIndexableElements->ViewerKind = soap_resqml22__ViewerKind2s(gsoapProxy2_3->soap, resqml22__ViewerKind::_3d);
 		gis->GraphicalInformation.push_back(defaultGraphicalInformationForAllIndexableElements);
 		resqml22__GraphicalInformationForWholeObject* giwo = soap_new_resqml22__GraphicalInformationForWholeObject(gsoapProxy2_3->soap, 1);
 		giwo->IsVisible = true;

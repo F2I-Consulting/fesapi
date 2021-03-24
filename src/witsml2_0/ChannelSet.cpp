@@ -48,7 +48,7 @@ void ChannelSet::pushBackChannelIndex(gsoap_eml2_1::witsml20__ChannelIndexType i
 	index->IndexType = indexType;
 	index->Uom = gsoap_eml2_1::soap_eml21__UnitOfMeasure2s(getGsoapContext(), uom);
 	index->Mnemonic = mnemonic;
-	index->Direction = isIncreasing ? gsoap_eml2_1::witsml20__IndexDirection__increasing : gsoap_eml2_1::witsml20__IndexDirection__decreasing;
+	index->Direction = isIncreasing ? gsoap_eml2_1::witsml20__IndexDirection::increasing : gsoap_eml2_1::witsml20__IndexDirection::decreasing;
 	if (!datum.empty()) {
 		index->DatumReference = soap_new_std__string(getGsoapContext());
 		index->DatumReference->assign(datum);

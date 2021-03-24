@@ -56,7 +56,7 @@ void StratigraphicColumnRankInterpretation::pushBackStratiUnitInterpretation(RES
 
 bool StratigraphicColumnRankInterpretation::isAChronoStratiRank() const
 {
-	return static_cast<_resqml22__StratigraphicColumnRankInterpretation*>(gsoapProxy2_3)->OrderingCriteria == resqml22__OrderingCriteria__age;
+	return static_cast<_resqml22__StratigraphicColumnRankInterpretation*>(gsoapProxy2_3)->OrderingCriteria == resqml22__OrderingCriteria::age;
 }
 
 unsigned int StratigraphicColumnRankInterpretation::getContactCount() const
@@ -70,10 +70,9 @@ gsoap_eml2_3::resqml22__ContactMode StratigraphicColumnRankInterpretation::getSu
 		throw out_of_range("The contact index is out of range in the context of the StratigraphicColumnRankInterpretation");
 
 	resqml22__BinaryContactInterpretationPart* contact = static_cast<resqml22__BinaryContactInterpretationPart*>(static_cast<_resqml22__StratigraphicColumnRankInterpretation*>(gsoapProxy2_3)->ContactInterpretation[contactIndex]);
-	if (contact->Subject->SecondaryQualifier != nullptr)
-		return *contact->Subject->SecondaryQualifier;
-	else
-		return gsoap_eml2_3::resqml22__ContactMode__conformable;
+	return contact->Subject->SecondaryQualifier != nullptr 
+		? *contact->Subject->SecondaryQualifier
+		: gsoap_eml2_3::resqml22__ContactMode::conformable;
 }
 
 RESQML2_NS::StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getSubjectOfContact(unsigned int contactIndex) const
@@ -97,7 +96,7 @@ gsoap_eml2_3::resqml22__ContactMode StratigraphicColumnRankInterpretation::getDi
 	if (contact->DirectObject->SecondaryQualifier)
 		return *contact->DirectObject->SecondaryQualifier;
 	else
-		return gsoap_eml2_3::resqml22__ContactMode__conformable;
+		return gsoap_eml2_3::resqml22__ContactMode::conformable;
 }
 
 RESQML2_NS::StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getDirectObjectOfContact(unsigned int contactIndex) const
@@ -139,7 +138,7 @@ void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(R
 {
 	resqml22__AbstractOrganizationInterpretation* org = static_cast<resqml22__AbstractOrganizationInterpretation*>(gsoapProxy2_3);
 
-	pushBackBinaryContact(subject, gsoap_eml2_3::resqml22__ContactVerb__stops, directObject);
+	pushBackBinaryContact(subject, gsoap_eml2_3::resqml22__ContactVerb::stops, directObject);
     resqml22__BinaryContactInterpretationPart* contact = static_cast<resqml22__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
     contact->DirectObject->SecondaryQualifier = static_cast<resqml22__ContactMode*>(soap_malloc(gsoapProxy2_3->soap, sizeof(resqml22__ContactMode)));
     *(contact->DirectObject->SecondaryQualifier) = directObjectMode;

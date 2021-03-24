@@ -36,7 +36,7 @@ GenericFeatureInterpretation::GenericFeatureInterpretation(RESQML2_NS::AbstractF
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGenericFeatureInterpretation(feature->getGsoapContext());
 
-	static_cast<_resqml20__GenericFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
+	static_cast<_resqml20__GenericFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain::mixed;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");

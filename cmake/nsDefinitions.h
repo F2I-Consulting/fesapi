@@ -33,6 +33,9 @@ under the License.
 /** @namespace	${FESAPI_WITSML2_NS} @brief The ${FESAPI_WITSML2_NS} namespace.  This namespaces contains classes to handle data objects that exist in various WITSML v2.*. The classes of this namespace should be favored, when possible, instead of the classes of the lower level namespaces. */
 #define WITSML2_NS ${FESAPI_WITSML2_NS}
 
+/** @namespace	${FESAPI_WITSML1_4_NS} @brief The ${FESAPI_WITSML1_4_NS} namespace. */
+#define WITSML1_4_NS ${FESAPI_WITSML1_4_NS}
+
 /** @namespace	${FESAPI_WITSML2_0_NS} @brief The ${FESAPI_WITSML2_0_NS} namespace. */
 #define WITSML2_0_NS ${FESAPI_WITSML2_0_NS}
 

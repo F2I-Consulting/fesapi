@@ -38,7 +38,7 @@ void generateProperties(RESQML2_NS::AbstractRepresentation* ijkgrid)
 	for (unsigned short i = 0; i < (std::numeric_limits<unsigned short>::max)(); ++i) {
 		auto name = "Two faulted sugar cubes timestamp " + std::to_string(i);
 		RESQML2_NS::ContinuousProperty* continuousProp = ijkgrid->getRepository()->createContinuousProperty(ijkgrid, "", name, 1,
-			gsoap_eml2_3::resqml22__IndexableElement__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 
 		double prop1Values[2] = { i, i };
 		continuousProp->pushBackDoubleHdf5Array3dOfValues(prop1Values, 2, 1, 1, nullptr);

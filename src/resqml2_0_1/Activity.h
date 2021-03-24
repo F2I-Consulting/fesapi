@@ -67,7 +67,7 @@ namespace RESQML2_0_1_NS
 		 * @param 	uom  	(Optional) The uom.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
-			double value, gsoap_resqml2_0_1::resqml20__ResqmlUom uom = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc);
+			double value, gsoap_resqml2_0_1::resqml20__ResqmlUom uom = gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc);
 
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
 			const std::string & value) final;

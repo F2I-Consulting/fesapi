@@ -395,3 +395,8 @@ namespace EML2_NS
 		ActivityTemplate* getActivityTemplate() const;
 	};
 }
+
+%include "swigEml2_1Include.i"
+#ifdef WITH_RESQML2_2
+%include "swigEml2_3Include.i"
+#endif

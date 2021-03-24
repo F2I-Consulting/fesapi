@@ -106,8 +106,8 @@ gsoap_eml2_2::eml22__ThermodynamicTemperatureUom FluidCharacterization::getStand
 	}
 	else if (fc->StandardConditions->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__ReferenceTemperaturePressure) {
 		const std::string str = *static_cast<eml22__ReferenceTemperaturePressure*>(fc->StandardConditions)->union_ReferenceTemperaturePressure_.ReferenceTempPres;
-		if (str.find("degC") != std::string::npos) return gsoap_eml2_2::eml22__ThermodynamicTemperatureUom__degC;
-		if (str.find("degF") != std::string::npos) return gsoap_eml2_2::eml22__ThermodynamicTemperatureUom__degF;
+		if (str.find("degC") != std::string::npos) return gsoap_eml2_2::eml22__ThermodynamicTemperatureUom::degC;
+		if (str.find("degF") != std::string::npos) return gsoap_eml2_2::eml22__ThermodynamicTemperatureUom::degF;
 		throw logic_error("Unrecognized temperature uom in " + str);
 	}
 
@@ -156,9 +156,9 @@ gsoap_eml2_2::eml22__PressureUom FluidCharacterization::getStandardPressureUom()
 	}
 	else if (fc->StandardConditions->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__ReferenceTemperaturePressure) {
 		const std::string str = *static_cast<eml22__ReferenceTemperaturePressure*>(fc->StandardConditions)->union_ReferenceTemperaturePressure_.ReferenceTempPres;
-		if (str.find("bar") != std::string::npos) return gsoap_eml2_2::eml22__PressureUom__bar;
-		if (str.find("atm") != std::string::npos) return gsoap_eml2_2::eml22__PressureUom__atm;
-		if (str.find("degF") != std::string::npos && str.find("in Hg") != std::string::npos) return gsoap_eml2_2::eml22__PressureUom__inHg_x005b60degF_x005d;
+		if (str.find("bar") != std::string::npos) return gsoap_eml2_2::eml22__PressureUom::bar;
+		if (str.find("atm") != std::string::npos) return gsoap_eml2_2::eml22__PressureUom::atm;
+		if (str.find("degF") != std::string::npos && str.find("in Hg") != std::string::npos) return gsoap_eml2_2::eml22__PressureUom::inHg_x005b60degF_x005d;
 		throw logic_error("Unrecognized pressure uom in " + str);
 	}
 
@@ -749,8 +749,8 @@ void FluidCharacterization::pushBackTableRow(unsigned int modelIndex, unsigned i
 	pushBackTableRow(modelIndex, tableIndex, rowContent);
 	static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow.back()->kind = (gsoap_eml2_2::prodml21__saturationKind*)soap_malloc(getGsoapContext(), sizeof(gsoap_eml2_2::prodml21__saturationKind));
 	*static_cast<prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow.back()->kind = isSaturated
-		? prodml21__saturationKind__saturated
-		: prodml21__saturationKind__undersaturated;
+		? prodml21__saturationKind::saturated
+		: prodml21__saturationKind::undersaturated;
 }
 
 void FluidCharacterization::pushBackParameter(unsigned int modelIndex, double value, gsoap_eml2_2::eml22__UnitOfMeasure uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty)

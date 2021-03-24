@@ -342,16 +342,8 @@ namespace COMMON_NS
 %enddef
 
 %include "swigEml2Include.i"
-%include "swigEml2_1Include.i"
-#ifdef WITH_RESQML2_2
-%include "swigEml2_3Include.i"
-#endif
 %include "swigResqml2Include.i"
-%include "swigResqml2_0_1Include.i"
-#ifdef WITH_RESQML2_2
-%include "swigResqml2_2Include.i"
-#endif
-%include "swigWitsml2_0Include.i"
+%include "swigWitsml2Include.i"
 %include "swigProdml2_1Include.i"
 #ifdef WITH_ETP
 %include "swigEtp1_2Include.i"
@@ -410,43 +402,57 @@ namespace COMMON_NS
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)
 
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::LocalDepth3dCrs, LocalDepth3dCrs)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::LocalTime3dCrs, LocalTime3dCrs)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicColumn, StratigraphicColumn)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::AbstractSeismicLineFeature, SeismicLine)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::AbstractIjkGridRepresentation, IjkGridRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::BlockedWellboreRepresentation, BlockedWellboreRepresentation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Fault)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Fracture)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Horizon)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, GeobodyBoundary)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::RockVolumeFeature, Geobody)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, FaultPolylineSetRep)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, FracturePolylineSetRep)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, CulturalPolylineSetRep)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, FaultTriangulatedSetRep)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, FractureTriangulatedSetRep)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, HorizonGrid2dRep)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, HorizonPolylineRep)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, HorizonPolylineSetRep)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, HorizonTriangulatedSetRep)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, UnclassifiedTriangulatedSetRep)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, AllTriangulatedSetRep)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, AllGrid2dRepresentation)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, AllPolylineRepresentation)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, AllPolylineSetRep)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::AbstractSeismicLineFeature, SeismicLine)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, SeismicLinePolylineRep)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreFeature, Wellbore)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreTrajectoryRepresentation, WellboreTrajectoryRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Horizon)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::CmpLineFeature, CmpLine)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::CulturalFeature, Cultural)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::DeviationSurveyRepresentation, DeviationSurveyRepresentation)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::RepresentationSetRepresentation, RepresentationSetRepresentation)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::AbstractIjkGridRepresentation, IjkGridRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::DoubleTableLookup, DoubleTableLookup)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, AllGrid2dRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, HorizonGrid2dRepresentation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::IjkGridParametricRepresentation, IjkGridParametricRepresentation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::IjkGridExplicitRepresentation, IjkGridExplicitRepresentation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::IjkGridLatticeRepresentation, IjkSeismicCubeGridRepresentation)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::UnstructuredGridRepresentation, UnstructuredGridRepresentation)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::CulturalFeature, Cultural)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::LocalDepth3dCrs, LocalDepth3dCrs)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::LocalTime3dCrs, LocalTime3dCrs)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::Model, Model)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::SubRepresentation, SubRepresentation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PointSetRepresentation, PointSetRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, AllPolylineRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, HorizonPolylineRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, SeismicLinePolylineRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, AllPolylineSetRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, HorizonPolylineSetRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, FaultPolylineSetRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, FracturePolylineSetRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, CulturalPolylineSetRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::RepresentationSetRepresentation, RepresentationSetRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::RockVolumeFeature, RockVolume)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::RockVolumeFeature, Geobody)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::SeismicLatticeFeature, SeismicLattice)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::SeismicLineSetFeature, SeismicLineSet)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::ShotPointLineFeature, ShotPointLine)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicColumn, StratigraphicColumn)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::StreamlinesFeature, StreamlinesFeature)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::StreamlinesRepresentation, StreamlinesRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::SubRepresentation, SubRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, AllTriangulatedSetRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, UnclassifiedTriangulatedSetRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, FaultTriangulatedSetRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, FractureTriangulatedSetRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, HorizonTriangulatedSetRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::UnstructuredGridRepresentation, UnstructuredGridRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreFeature, Wellbore)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreTrajectoryRepresentation, WellboreTrajectoryRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreFrameRepresentation, WellboreFrameRepresentation)
+
+		SWIG_GETTER_DATAOBJECTS(WITSML2_NS::Well, WitsmlWell)
+		SWIG_GETTER_DATAOBJECTS(WITSML2_NS::Wellbore, WitsmlWellbore)
+		SWIG_GETTER_DATAOBJECTS(WITSML2_NS::Trajectory, WitsmlTrajectory)
 		
 		AbstractObject* getDataObjectByUuid(const std::string & uuid) const;
 		AbstractObject* getDataObjectByUuidAndVersion(const std::string & uuid, const std::string & version) const;
@@ -466,9 +472,6 @@ namespace COMMON_NS
 
 			return result;
 		}
-		%template(getWells) getDataObjects<WITSML2_0_NS::Well>;
-		%template(getWellbores) getDataObjects<WITSML2_0_NS::Wellbore>;
-		%template(getTrajectories) getDataObjects<WITSML2_0_NS::Trajectory>;
 		%template(getWellCompletions) getDataObjects<WITSML2_0_NS::WellCompletion>;
 		%template(getWellboreCompletions) getDataObjects<WITSML2_0_NS::WellboreCompletion>;
 		%template(getWellboreGeometries) getDataObjects<WITSML2_0_NS::WellboreGeometry>;
@@ -1053,21 +1056,21 @@ namespace COMMON_NS
 
 		//*************** WITSML *************/
 
-		WITSML2_0_NS::Well* createWell(const std::string & guid,
+		WITSML2_NS::Well* createWell(const std::string & guid,
 			const std::string & title);
 
-		WITSML2_0_NS::Well* createWell(const std::string & guid,
+		WITSML2_NS::Well* createWell(const std::string & guid,
 			const std::string & title,
 			const std::string & operator_,
 			gsoap_eml2_1::eml21__WellStatus statusWell,
 			gsoap_eml2_1::witsml20__WellDirection directionWell
 		);
 
-		WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
+		WITSML2_NS::Wellbore* createWellbore(WITSML2_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);
 
-		WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
+		WITSML2_NS::Wellbore* createWellbore(WITSML2_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::eml21__WellStatus statusWellbore,
@@ -1075,27 +1078,27 @@ namespace COMMON_NS
 			bool achievedTD
 		);
 
-		WITSML2_0_NS::WellCompletion* createWellCompletion(WITSML2_0_NS::Well* witsmlWell,
+		WITSML2_0_NS::WellCompletion* createWellCompletion(WITSML2_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);
 
-		WITSML2_0_NS::WellboreCompletion* createWellboreCompletion(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		WITSML2_0_NS::WellboreCompletion* createWellboreCompletion(WITSML2_NS::Wellbore* witsmlWellbore,
 			WITSML2_0_NS::WellCompletion* wellCompletion,
 			const std::string & guid,
 			const std::string & title,
 			const std::string & wellCompletionName);
 
-		WITSML2_0_NS::WellboreGeometry* createWellboreGeometry(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		WITSML2_0_NS::WellboreGeometry* createWellboreGeometry(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
 
-		WITSML2_0_NS::Trajectory* createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		WITSML2_0_NS::Trajectory* createTrajectory(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
 
-		WITSML2_0_NS::Log* createLog(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		WITSML2_0_NS::Log* createLog(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title);
 
@@ -1141,7 +1144,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new Wellbore Marker.
 		 */
-		WITSML2_0_NS::WellboreMarker* createWellboreMarker(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		WITSML2_0_NS::WellboreMarker* createWellboreMarker(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid, const std::string & title,
 			double md, gsoap_eml2_1::eml21__LengthUom mdUom, const std::string & mdDatum);
 			

@@ -58,10 +58,7 @@ void AbstractObject::cannotBePartial() const
 bool AbstractObject::isPartial() const {
 	return partialObject != nullptr
 		&& gsoapProxy2_0_1 == nullptr && gsoapProxy2_1 == nullptr
-#if WITH_RESQML2_2
-		&& gsoapProxy2_2 == nullptr
-#endif
-		;
+		&& gsoapProxy2_2 == nullptr;
 }
 
 void AbstractObject::changeToPartialObject()
@@ -90,6 +87,9 @@ soap* AbstractObject::getGsoapContext() const
 	else if (gsoapProxy2_3 != nullptr) {
 		 return gsoapProxy2_3->soap;
 	}
+	else if (gsoapProxyTraj1_4 != nullptr) {
+		 return gsoapProxyTraj1_4->soap;
+	 }
 	else if (isPartial()) {
 		return partialObject->soap;
 	}
@@ -111,6 +111,9 @@ int AbstractObject::getGsoapType() const {
 	else if (gsoapProxy2_3 != nullptr) {
 		return gsoapProxy2_3->soap_type();
 	}
+	else if (gsoapProxyTraj1_4 != nullptr) {
+		return gsoapProxyTraj1_4->soap_type();
+	}
 	else {
 		return partialObject->soap_type();
 	}
@@ -130,6 +133,9 @@ string AbstractObject::getUuid() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return gsoapProxy2_3->uuid;
 	}
+	else if (gsoapProxyTraj1_4 != nullptr) {
+		return gsoapProxyTraj1_4->uid == nullptr ? "00000000-0000-0000-0000-000000000000" : *gsoapProxyTraj1_4->uid;
+	}
 	else if (isPartial()) { // partial transfer
 		return partialObject->UUID;
 	}
@@ -139,15 +145,20 @@ string AbstractObject::getUuid() const
 
 string AbstractObject::getTitle() const
 {
-	if (gsoapProxy2_0_1 != nullptr)
+	if (gsoapProxy2_0_1 != nullptr) {
 		return gsoapProxy2_0_1->Citation->Title;
-	else if (gsoapProxy2_1 != nullptr)
+	}
+	else if (gsoapProxy2_1 != nullptr) {
 		return gsoapProxy2_1->Citation->Title;
+	}
 	else if (gsoapProxy2_2 != nullptr) {
 		return gsoapProxy2_2->Citation->Title;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		return gsoapProxy2_3->Citation->Title;
+	}
+	else if (gsoapProxyTraj1_4 != nullptr) {
+		return gsoapProxyTraj1_4->name;
 	}
 	else if (isPartial()) { // partial transfer
 		return partialObject->Title;
@@ -368,12 +379,14 @@ void AbstractObject::setTitle(const std::string & title)
 		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Title = "unknown";
 		else if (gsoapProxy2_2 != nullptr) gsoapProxy2_2->Citation->Title = "unknown";
 		else if (gsoapProxy2_3 != nullptr) gsoapProxy2_3->Citation->Title = "unknown";
+		else if (gsoapProxyTraj1_4 != nullptr) { gsoapProxyTraj1_4->name = "unknown"; }
 	}
 	else {
 		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->Citation->Title = title;
 		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Title = title;
 		else if (gsoapProxy2_2 != nullptr) gsoapProxy2_2->Citation->Title = title;
 		else if (gsoapProxy2_3 != nullptr) gsoapProxy2_3->Citation->Title = title;
+		else if (gsoapProxyTraj1_4 != nullptr) { gsoapProxyTraj1_4->name = title; }
 	}
 }
 
@@ -773,7 +786,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractObject::newResqmlReferenc
 	result->UUID = getUuid();
 	result->Title = getTitle();
 	result->ContentType = getContentType();
-	if (gsoapProxy2_0_1 != nullptr && !getVersion().empty()) {
+	if (!getVersion().empty()) {
 		result->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapProxy2_0_1->soap);
 		result->VersionString->assign(getVersion());
 	}
@@ -787,9 +800,9 @@ gsoap_eml2_1::eml21__DataObjectReference* AbstractObject::newEmlReference() cons
 	result->Uuid = getUuid();
 	result->Title = getTitle();
 	result->ContentType = getContentType();
-	if (gsoapProxy2_0_1 != nullptr && !getVersion().empty()) // Not partial transfer
+	if (!getVersion().empty())
 	{
-		result->VersionString = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_0_1->soap);
+		result->VersionString = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_1->soap);
 		result->VersionString->assign(getVersion());
 	}
 
@@ -804,7 +817,7 @@ gsoap_eml2_2::eml22__DataObjectReference* AbstractObject::newEml22Reference() co
 	result->Uuid = getUuid();
 	result->Title = getTitle();
 	result->ContentType = getContentType();
-	if (gsoapProxy2_2 != nullptr && !getVersion().empty()) // Not partial transfer
+	if (!getVersion().empty()) 
 	{
 		result->ObjectVersion = gsoap_eml2_2::soap_new_std__string(gsoapProxy2_2->soap);
 		result->ObjectVersion->assign(getVersion());
@@ -821,7 +834,7 @@ gsoap_eml2_3::eml23__DataObjectReference* AbstractObject::newEml23Reference() co
 	result->Uuid = getUuid();
 	result->Title = getTitle();
 	result->ContentType = getContentType();
-	if (gsoapProxy2_3 != nullptr && !getVersion().empty()) // Not partial transfer
+	if (!getVersion().empty()) // Not partial transfer
 	{
 		result->ObjectVersion = gsoap_eml2_3::soap_new_std__string(gsoapProxy2_3->soap);
 		result->ObjectVersion->assign(getVersion());
@@ -1409,9 +1422,6 @@ uint64_t AbstractObject::readArrayNdOfUInt64Values(gsoap_resqml2_0_1::resqml20__
 			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
 		}
 		hdfProxy->readArrayNdOfUInt64Values(hdfArray->Values->PathInHdfFile, arrayOutput);
-		if (hdfArray->NullValue > (std::numeric_limits<uint64_t>::max)()) {
-			throw range_error("The null value is greater than uint64_t max.");
-		}
 		return static_cast<uint64_t>(hdfArray->NullValue);
 	}
 	else {
@@ -1430,9 +1440,6 @@ uint64_t AbstractObject::readArrayNdOfUInt64Values(gsoap_eml2_3::eml23__Abstract
 				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
 			}
 			hdfProxy->readArrayNdOfUInt64Values(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
-		}
-		if (static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue > (std::numeric_limits<uint64_t>::max)()) {
-			throw range_error("The null value is greater than uint64_t max.");
 		}
 		return static_cast<uint64_t>(static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue);
 	}
@@ -1542,7 +1549,7 @@ gsoap_resqml2_0_1::resqml20__IndexableElements AbstractObject::mapIndexableEleme
 	if (intVal == 0) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__IndexableElements>(toMap);
 	}
-	else if (toMap == gsoap_eml2_3::resqml22__IndexableElement__intervals_x0020from_x0020datum || intVal == gsoap_eml2_3::resqml22__IndexableElement__lines) {
+	else if (toMap == gsoap_eml2_3::resqml22__IndexableElement::intervals_x0020from_x0020datum || intVal == static_cast<size_t>(gsoap_eml2_3::resqml22__IndexableElement::lines)) {
 		throw std::invalid_argument("There is no mapping for this indexable element in RESQML2.0.1");
 	}
 	else if (intVal < 18) {

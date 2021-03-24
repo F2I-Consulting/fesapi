@@ -150,22 +150,20 @@ under the License.
 
 namespace gsoap_eml2_3
 {
-	enum resqml22__InterpolationDomain {
-		resqml22__InterpolationDomain__hsv = 0,
-		resqml22__InterpolationDomain__rgb = 1
+	enum class resqml22__InterpolationDomain {
+		hsv = 0,
+		rgb = 1
 	};
-	
-	enum resqml22__InterpolationMethod {
-		resqml22__InterpolationMethod__linear = 0,
-		resqml22__InterpolationMethod__logarithmic = 1
+	enum class resqml22__InterpolationMethod {
+		linear = 0,
+		logarithmic = 1
 	};
-	
-	enum resqml22__FluidContact {
-		resqml22__FluidContact__free_x0020water_x0020contact = 0,
-		resqml22__FluidContact__gas_x0020oil_x0020contact = 1,
-		resqml22__FluidContact__gas_x0020water_x0020contact = 2,
-		resqml22__FluidContact__seal = 3,
-		resqml22__FluidContact__water_x0020oil_x0020contact = 4
+	enum class resqml22__FluidContact {
+		free_x0020water_x0020contact = 0,
+		gas_x0020oil_x0020contact = 1,
+		gas_x0020water_x0020contact = 2,
+		seal = 3,
+		water_x0020oil_x0020contact = 4
 	};
 }
 

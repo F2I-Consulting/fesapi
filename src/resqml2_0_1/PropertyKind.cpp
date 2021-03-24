@@ -74,7 +74,7 @@ PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string 
 	const string & namingSystem, const std::string & nonStandardUom, resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind)
 {
 	init(repo, guid, title, namingSystem);
-	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc;
+	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc;
 	pushBackExtraMetadata("Uom", nonStandardUom);
 
 	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap);
@@ -86,7 +86,7 @@ PropertyKind::PropertyKind(const string & guid, const string & title,
 	const string & namingSystem, const std::string & nonStandardUom, EML2_NS::PropertyKind * parentPropType)
 {
 	init(parentPropType->getRepository(), guid, title, namingSystem);
-	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc;
+	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc;
 	pushBackExtraMetadata("Uom", nonStandardUom);
 
 	setParentPropertyKind(parentPropType);
@@ -162,7 +162,7 @@ std::string PropertyKind::getBaseUomAsString() const
 {
 	gsoap_resqml2_0_1::resqml20__ResqmlUom representativeUom = getSpecializedGsoapProxy()->RepresentativeUom;
 
-	if (representativeUom == gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc) {
+	if (representativeUom == gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc) {
 		unsigned int emCount = getExtraMetadataCount();
 		for (unsigned int i = 0; i < emCount; ++i) {
 			if (getExtraMetadataKeyAtIndex(i) == "Uom") {

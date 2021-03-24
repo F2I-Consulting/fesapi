@@ -38,9 +38,9 @@ MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, co
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREMdDatum(repo->getGsoapContext());
 	_resqml20__MdDatum* mdInfo = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1);
 
-	mdInfo->MdReference = originKind < 5
-		? static_cast<resqml20__MdReference>(originKind)
-		: static_cast<resqml20__MdReference>(originKind + 1);
+	mdInfo->MdReference = static_cast<std::underlying_type<gsoap_eml2_3::eml23__WellboreDatumReference>::type>(originKind) < 5
+		? static_cast<resqml20__MdReference>(static_cast<std::underlying_type<gsoap_eml2_3::eml23__WellboreDatumReference>::type>(originKind))
+		: static_cast<resqml20__MdReference>(static_cast<std::underlying_type<gsoap_eml2_3::eml23__WellboreDatumReference>::type>(originKind) + 1);
 	mdInfo->Location = soap_new_resqml20__Point3d(repo->getGsoapContext());
 	mdInfo->Location->Coordinate1 = referenceLocationOrdinal1;
 	mdInfo->Location->Coordinate2 = referenceLocationOrdinal2;
@@ -87,15 +87,15 @@ double MdDatum::getZ() const
 
 gsoap_eml2_3::eml23__WellboreDatumReference MdDatum::getOriginKind() const
 {
-	auto mdRef = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1)->MdReference;
-	if (mdRef < 5) {
+	resqml20__MdReference mdRef = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1)->MdReference;
+	if (static_cast<std::underlying_type<resqml20__MdReference>::type>(mdRef) < 5) {
 		return static_cast<gsoap_eml2_3::eml23__WellboreDatumReference>(mdRef);
 	}
-	else if (mdRef == 5) {
+	else if (static_cast<std::underlying_type<resqml20__MdReference>::type>(mdRef) == 5) {
 		throw std::logic_error("This 2.0.1 enum value is no more supported.");
 	}
 	else {
-		return static_cast<gsoap_eml2_3::eml23__WellboreDatumReference>(mdRef - 1);
+		return static_cast<gsoap_eml2_3::eml23__WellboreDatumReference>(static_cast<std::underlying_type<resqml20__MdReference>::type>(mdRef) - 1);
 	}
 }
 

@@ -20,21 +20,21 @@ under the License.
 
 #include <stdexcept>
 
-#include "Well.h"
+#include "../witsml2/Well.h"
+
+#include "../resqml2_0_1/WellboreFeature.h"
+
 #include "WellboreCompletion.h"
 #include "WellboreGeometry.h"
 #include "Trajectory.h"
 #include "Log.h"
 
-#include "../resqml2_0_1/WellboreFeature.h"
 
 using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
 
-const char* Wellbore::XML_TAG = "Wellbore";
-
-Wellbore::Wellbore( Well* witsmlWell, const std::string & guid, const std::string & title)
+Wellbore::Wellbore(WITSML2_NS::Well* witsmlWell, const std::string & guid, const std::string & title)
 {
 	if (witsmlWell == nullptr) {
 		throw invalid_argument("A wellbore must be associated to a well.");
@@ -49,13 +49,12 @@ Wellbore::Wellbore( Well* witsmlWell, const std::string & guid, const std::strin
 }
 
 Wellbore::Wellbore(
-		Well* witsmlWell,
-		const std::string & guid,
-		const std::string & title,
-		gsoap_eml2_1::eml21__WellStatus statusWellbore,
-		bool isActive,
-		bool achievedTD
-	)
+	WITSML2_NS::Well* witsmlWell,
+	const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_1::eml21__WellStatus statusWellbore,
+	bool isActive,
+	bool achievedTD)
 {
 	if (witsmlWell == nullptr) {
 		throw invalid_argument("A wellbore must be associated to a well.");
@@ -85,12 +84,7 @@ COMMON_NS::DataObjectReference Wellbore::getWellDor() const
 	return COMMON_NS::DataObjectReference(static_cast<witsml20__Wellbore*>(gsoapProxy2_1)->Well);
 }
 
-class Well* Wellbore::getWell() const
-{
-	return getRepository()->getDataObjectByUuid<Well>(getWellDor().getUuid());
-}
-
-void Wellbore::setWell(Well* witsmlWell)
+void Wellbore::setWell(WITSML2_NS::Well* witsmlWell)
 {
 	if (witsmlWell == nullptr) {
 		throw invalid_argument("Cannot set a null witsml Well to a witsml wellbore");
@@ -103,36 +97,6 @@ void Wellbore::setWell(Well* witsmlWell)
 	wellbore->Well = witsmlWell->newEmlReference();
 
 	getRepository()->addRelationship(this, witsmlWell);
-}
-
-void Wellbore::loadTargetRelationships()
-{
-	convertDorIntoRel<Well>(getWellDor());
-}
-
-std::vector<RESQML2_0_1_NS::WellboreFeature *> Wellbore::getResqmlWellboreFeature() const
-{
-	return getRepository()->getSourceObjects<RESQML2_0_1_NS::WellboreFeature>(this);
-}
-
-std::vector<WellboreCompletion *> Wellbore::getWellboreCompletions() const
-{
-	return getRepository()->getSourceObjects<WellboreCompletion>(this);
-}
-
-std::vector<Trajectory *> Wellbore::getTrajectories() const
-{
-	return getRepository()->getSourceObjects<Trajectory>(this);
-}
-
-std::vector<WellboreGeometry *> Wellbore::getWellboreGeometries() const
-{
-	return getRepository()->getSourceObjects<WellboreGeometry>(this);
-}
-
-std::vector<Log *> Wellbore::getLogs() const
-{
-	return getRepository()->getSourceObjects<Log>(this);
 }
 
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Wellbore, Number, gsoap_eml2_1::soap_new_std__string)

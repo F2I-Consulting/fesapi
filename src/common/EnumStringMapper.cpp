@@ -44,7 +44,7 @@ std::string EnumStringMapper::getEnergisticsPropertyKindName(gsoap_resqml2_0_1::
 gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind EnumStringMapper::getEnergisticsPropertyKind(const std::string & energisticsPropertyKindName) const
 {
 	gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind result;
-	return gsoap_resqml2_0_1::soap_s2resqml20__ResqmlPropertyKind(gsoapContext, energisticsPropertyKindName.c_str(), &result) == SOAP_OK ? result : gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__RESQML_x0020root_x0020property;
+	return gsoap_resqml2_0_1::soap_s2resqml20__ResqmlPropertyKind(gsoapContext, energisticsPropertyKindName.c_str(), &result) == SOAP_OK ? result : gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::RESQML_x0020root_x0020property;
 }
 
 std::string EnumStringMapper::getEnergisticsUnitOfMeasureName(gsoap_resqml2_0_1::resqml20__ResqmlUom energisticsUom) const
@@ -55,7 +55,7 @@ std::string EnumStringMapper::getEnergisticsUnitOfMeasureName(gsoap_resqml2_0_1:
 gsoap_resqml2_0_1::resqml20__ResqmlUom EnumStringMapper::getEnergisticsUnitOfMeasure(const std::string & energisticsUomName) const
 {
 	gsoap_resqml2_0_1::resqml20__ResqmlUom result;
-	return gsoap_resqml2_0_1::soap_s2resqml20__ResqmlUom(gsoapContext, energisticsUomName.c_str(), &result) == SOAP_OK ? result : gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc;
+	return gsoap_resqml2_0_1::soap_s2resqml20__ResqmlUom(gsoapContext, energisticsUomName.c_str(), &result) == SOAP_OK ? result : gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc;
 }
 
 std::string EnumStringMapper::getFacet(gsoap_resqml2_0_1::resqml20__Facet facet) const
@@ -66,7 +66,7 @@ std::string EnumStringMapper::getFacet(gsoap_resqml2_0_1::resqml20__Facet facet)
 gsoap_resqml2_0_1::resqml20__Facet EnumStringMapper::getFacet(const std::string & facet) const
 {
 	gsoap_resqml2_0_1::resqml20__Facet result;
-	return gsoap_resqml2_0_1::soap_s2resqml20__Facet(gsoapContext, facet.c_str(), &result) == SOAP_OK ? result : gsoap_resqml2_0_1::resqml20__Facet__what;
+	return gsoap_resqml2_0_1::soap_s2resqml20__Facet(gsoapContext, facet.c_str(), &result) == SOAP_OK ? result : gsoap_resqml2_0_1::resqml20__Facet::what;
 }
 
 std::string EnumStringMapper::lengthUomToString(gsoap_eml2_1::eml21__LengthUom witsmlUom) const

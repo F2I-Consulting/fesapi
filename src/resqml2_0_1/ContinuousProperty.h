@@ -161,7 +161,7 @@ namespace RESQML2_0_1_NS
 
 		/**
 		 * Gets the unit of measure of the values of this property. If <tt>
-		 * resqml20__ResqmlUom::resqml20__ResqmlUom__Euc </tt> is returned and if your instance is a 2.0.1 one, you should check if an
+		 * resqml20__ResqmlUom::resqml20__ResqmlUom::Euc </tt> is returned and if your instance is a 2.0.1 one, you should check if an
 		 * extrametadata called "Uom" also exists. If so, it would mean that the property uses a non
 		 * standard unit of measure. This is an official workaround for a known issue of Resqml 2.0.1.
 		 *

@@ -62,7 +62,7 @@ void CategoricalProperty::initRepo() {
 	RESQML2_NS::CategoricalProperty* charCategoricalProperty = repo->createCategoricalProperty(
 		ijkGrid, defaultUuid, defaultTitle,
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement__cells,
+		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		stringTableLookup,
 		propertyKind);
 	char charValues[6] = { 0, 1, 2, 3, 4, 5 };
@@ -80,7 +80,7 @@ void CategoricalProperty::initRepo() {
 	RESQML2_NS::CategoricalProperty* dblCategoricalProperty = repo->createCategoricalProperty(
 		ijkGrid, "3de7a1d8-8b5b-45f3-b90c-6c14b2dcb43e", "Continuous Categorical Property",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement__cells,
+		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		dblTableLookup,
 		propertyKind);
 	double dblValues[6] = { .0, .1, .2, .3, .4, .5 };

@@ -34,7 +34,7 @@ RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(RESQML2
 		throw invalid_argument("The interpreted organization feature cannot be null.");
 	}
 	if (!orgFeat->isPartial() && dynamic_cast<RESQML2_0_1_NS::OrganizationFeature*>(orgFeat) != nullptr
-		&& static_cast<RESQML2_0_1_NS::OrganizationFeature*>(orgFeat)->getKind() != gsoap_resqml2_0_1::resqml20__OrganizationKind__fluid) {
+		&& static_cast<RESQML2_0_1_NS::OrganizationFeature*>(orgFeat)->getKind() != gsoap_resqml2_0_1::resqml20__OrganizationKind::fluid) {
 		throw invalid_argument("The kind of the v2.0.1 organization feature is not a fluid organization.");
 	}
 

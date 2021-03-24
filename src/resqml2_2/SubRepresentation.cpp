@@ -216,12 +216,12 @@ RESQML2_NS::AbstractRepresentation::indexableElement SubRepresentation::getEleme
 	if (rep->SubRepresentationPatch.size() > patchIndex) {
 		if (rep->SubRepresentationPatch[patchIndex]->ElementIndices.size() > elementIndicesIndex) {
 			switch (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->IndexableElement) {
-			case resqml22__IndexableElement__nodes: return NODE;
-			case resqml22__IndexableElement__edges:
-			case resqml22__IndexableElement__intervals: return EDGE;
-			case resqml22__IndexableElement__faces: return FACE;
-			case resqml22__IndexableElement__cells: return VOLUME;
-			case resqml22__IndexableElement__pillars: return PILLAR;
+			case resqml22__IndexableElement::nodes: return NODE;
+			case resqml22__IndexableElement::edges:
+			case resqml22__IndexableElement::intervals: return EDGE;
+			case resqml22__IndexableElement::faces: return FACE;
+			case resqml22__IndexableElement::cells: return VOLUME;
+			case resqml22__IndexableElement::pillars: return PILLAR;
 			default: throw invalid_argument("The indexable element of the subrepresentation is not supported yet");
 			}
 		}

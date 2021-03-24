@@ -18,17 +18,14 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractObject.h"
+#include "../witsml2/Well.h"
 
 namespace WITSML2_0_NS
 {
-	/** A wellbore. */
-	class Wellbore;
-	/** A well completion. */
-	class WellCompletion;
-
-	/** A well. */
-	class Well : public WITSML2_0_NS::AbstractObject
+	/**
+	 * @brief	Contains all information that is the same for all wellbores (sidetracks).
+	 */
+	class Well : public WITSML2_NS::Well
 	{
 	public:
 
@@ -36,10 +33,8 @@ namespace WITSML2_0_NS
 		 * Only to be used in partial transfer context
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * 
 		 */
-		DLL_IMPORT_OR_EXPORT Well(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT Well(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::Well(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -79,40 +74,40 @@ namespace WITSML2_0_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		Well(gsoap_eml2_1::witsml20__Well* fromGsoap):AbstractObject(fromGsoap)  {}
+		Well(gsoap_eml2_1::witsml20__Well* fromGsoap): WITSML2_NS::Well(fromGsoap)  {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~Well() = default;
 
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NameLegal)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumLicense)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumGovt)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Field)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Country)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, State)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, County)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Region)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, District)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Block)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Operator)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, OperatorDiv)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, OriginalOperator)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumAPI)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NameLegal)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumLicense)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumGovt)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Field)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Country)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, State)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, County)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Region)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, District)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Block)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Operator)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, OperatorDiv)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, OriginalOperator)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumAPI)
 
 		// Optional enum
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::eml21__WellStatus, StatusWell)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellPurpose, PurposeWell)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellFluid, FluidWell)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellDirection, DirectionWell)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::eml21__WellStatus, StatusWell)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellPurpose, PurposeWell)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellFluid, FluidWell)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellDirection, DirectionWell)
 
-		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(WaterDepth, gsoap_eml2_1::eml21__LengthUom)
-		GETTER_PRESENCE_ATTRIBUTE(GroundElevation)
+		FINAL_GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(WaterDepth, gsoap_eml2_1::eml21__LengthUom)
+		FINAL_GETTER_PRESENCE_ATTRIBUTE(GroundElevation)
 
-		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(PcInterest, gsoap_eml2_1::eml21__DimensionlessUom)
+		FINAL_GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(PcInterest, gsoap_eml2_1::eml21__DimensionlessUom)
 
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimLicense)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimSpud)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimPa)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimLicense)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimSpud)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimPa)
 
 		/**
 		 * @brief	Sets the ground level elevation (land rigs)
@@ -123,7 +118,7 @@ namespace WITSML2_0_NS
 		 * @param 	uom  	The elevation unit of measure.
 		 * @param 	datum	The elevation datum.
 		 */
-		DLL_IMPORT_OR_EXPORT void setGroundElevation(double value, gsoap_eml2_1::eml21__LengthUom uom, const std::string& datum);
+		DLL_IMPORT_OR_EXPORT void setGroundElevation(double value, gsoap_eml2_1::eml21__LengthUom uom, const std::string& datum) final;
 
 		/**
 		 * @brief	Gets the ground level elevation value
@@ -132,7 +127,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The ground level elevation value.
 		 */
-		DLL_IMPORT_OR_EXPORT double getGroundElevationValue() const;
+		DLL_IMPORT_OR_EXPORT double getGroundElevationValue() const final;
 
 		/**
 		 * @brief	Gets the ground level elevation unit of measure
@@ -141,7 +136,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The ground level elevation unit of measure.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getGroundElevationUom() const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getGroundElevationUom() const final;
 
 		/**
 		 * @brief	Gets the ground level elevation datum
@@ -150,7 +145,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The ground level elevation datum.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getGroundElevationDatum() const;
+		DLL_IMPORT_OR_EXPORT std::string getGroundElevationDatum() const final;
 
 		/**
 		* Set the time zone in which the well is located.It is the deviation in hours and minutes from
@@ -159,11 +154,11 @@ namespace WITSML2_0_NS
 		*
 		* @param 	direction	True means the time zone is a positive offset from UTC, false means the
 		* 						time zone is a negative offset from UTC.
-		* @param 	hours	 	the deviation hours from UTC.
-		* @param 	minutes(Optional) the deviation minutes from UTC.
+		* @param 	hours	 	The deviation hours from UTC.
+		* @param 	minutes		The deviation minutes from UTC.
 		*/
-		DLL_IMPORT_OR_EXPORT void setTimeZone(bool direction, unsigned short hours, unsigned short minutes = 0);
-		GETTER_PRESENCE_ATTRIBUTE(TimeZone)
+		DLL_IMPORT_OR_EXPORT void setTimeZone(bool direction, unsigned short hours, unsigned short minutes) final;
+		FINAL_GETTER_PRESENCE_ATTRIBUTE(TimeZone)
 
 		/**
 		 * Get the time zone direction in which the well is located.
@@ -171,7 +166,7 @@ namespace WITSML2_0_NS
 		 * @returns	True means the time zone is a positive offset from UTC, false means the time zone is
 		 * 			a negative offset from UTC. If the time zone is Z then an arbitrary '+' is returned.
 		 */
-		DLL_IMPORT_OR_EXPORT bool getTimeZoneDirection() const;
+		DLL_IMPORT_OR_EXPORT bool getTimeZoneDirection() const final;
 
 		/**
 		 * Get the time zone hour(s) in which the well is located. Must be used with
@@ -179,7 +174,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	the deviation hour(s) from UTC.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned short getTimeZoneHours() const;
+		DLL_IMPORT_OR_EXPORT unsigned short getTimeZoneHours() const final;
 
 		/**
 		 * Get the time zone minute(s) in which the well is located. Must be used with
@@ -187,7 +182,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	the deviation minute(s) from UTC.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned short getTimeZoneMinutes() const;
+		DLL_IMPORT_OR_EXPORT unsigned short getTimeZoneMinutes() const final;
 
 		/**
 		 * Gets location projected x coordinate
@@ -196,7 +191,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The location projected x coordinate.
 		 */
-		DLL_IMPORT_OR_EXPORT double getLocationProjectedX(unsigned int locationIndex);
+		DLL_IMPORT_OR_EXPORT double getLocationProjectedX(unsigned int locationIndex) final;
 
 		/**
 		 * Gets location projected y coordinate
@@ -205,7 +200,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The location projected y coordinate.
 		 */
-		DLL_IMPORT_OR_EXPORT double getLocationProjectedY(unsigned int locationIndex);
+		DLL_IMPORT_OR_EXPORT double getLocationProjectedY(unsigned int locationIndex) final;
 
 		/**
 		 * Pushes a back location
@@ -219,14 +214,14 @@ namespace WITSML2_0_NS
 			const std::string & guid,
 			double projectedX,
 			double projectedY,
-			unsigned int projectedCrsEpsgCode);
+			unsigned int projectedCrsEpsgCode) final;
 
 		/**
 		 * Ge location count
 		 *
 		 * @returns	An int.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int geLocationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int geLocationCount() const final;
 
 		/**
 		 * Pushes a back datum
@@ -246,53 +241,23 @@ namespace WITSML2_0_NS
 			const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom elevationUnit,
 			double elevation,
-			unsigned int verticalCrsEpsgCode);
+			unsigned int verticalCrsEpsgCode) final;
 
 		/**
 		 * Gets datum count
 		 *
 		 * @returns	The datum count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getDatumCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getDatumCount() const final;
 
 		/**
-		 * Gets resqml wellbore features
-		 *
-		 * @returns	Null if it fails, else the resqml wellbore features.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::WellboreFeature *> getResqmlWellboreFeatures() const;
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "witsml20";
 
 		/**
-		 * Gets the wellbores
-		 *
-		 * @returns	Null if it fails, else the wellbores.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<Wellbore *> getWellbores() const;
-
-		/**
-		 * Gets the wellcompletions
-		 *
-		 * @returns	Null if it fails, else the wellcompletions.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<WellCompletion *> getWellcompletions() const;
-
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
-
-	protected:
-
-		/** Loads target relationships */
-		void loadTargetRelationships();
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

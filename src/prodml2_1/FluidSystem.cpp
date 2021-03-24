@@ -128,8 +128,8 @@ gsoap_eml2_2::eml22__ThermodynamicTemperatureUom FluidSystem::getStandardTempera
 	}
 	else if (fs->StandardConditions->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__ReferenceTemperaturePressure) {
 		const std::string str = *static_cast<eml22__ReferenceTemperaturePressure*>(fs->StandardConditions)->union_ReferenceTemperaturePressure_.ReferenceTempPres;
-		if (str.find("degC") != std::string::npos) return gsoap_eml2_2::eml22__ThermodynamicTemperatureUom__degC;
-		if (str.find("degF") != std::string::npos) return gsoap_eml2_2::eml22__ThermodynamicTemperatureUom__degF;
+		if (str.find("degC") != std::string::npos) return gsoap_eml2_2::eml22__ThermodynamicTemperatureUom::degC;
+		if (str.find("degF") != std::string::npos) return gsoap_eml2_2::eml22__ThermodynamicTemperatureUom::degF;
 		throw logic_error("Unrecognized temperature uom in " + str);
 	}
 
@@ -170,9 +170,9 @@ gsoap_eml2_2::eml22__PressureUom FluidSystem::getStandardPressureUom() const
 	}
 	else if (fs->StandardConditions->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__ReferenceTemperaturePressure) {
 		const std::string str = *static_cast<eml22__ReferenceTemperaturePressure*>(fs->StandardConditions)->union_ReferenceTemperaturePressure_.ReferenceTempPres;
-		if (str.find("bar") != std::string::npos) return gsoap_eml2_2::eml22__PressureUom__bar;
-		if (str.find("atm") != std::string::npos) return gsoap_eml2_2::eml22__PressureUom__atm;
-		if (str.find("Hg") != std::string::npos) return gsoap_eml2_2::eml22__PressureUom__inHg_x005b60degF_x005d;
+		if (str.find("bar") != std::string::npos) return gsoap_eml2_2::eml22__PressureUom::bar;
+		if (str.find("atm") != std::string::npos) return gsoap_eml2_2::eml22__PressureUom::atm;
+		if (str.find("Hg") != std::string::npos) return gsoap_eml2_2::eml22__PressureUom::inHg_x005b60degF_x005d;
 		throw logic_error("Unrecognized pressure uom in " + str);
 	}
 

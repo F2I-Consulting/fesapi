@@ -75,7 +75,7 @@ void Streamlines::initRepo()
 	uint16_t gridIndices[3] = { 0, 0, 0 };
 	uint64_t cellIndices[3] = { 0, 1, 2 };
 	uint8_t localfacePairs[6] = { 7, 7, 7, 5, 3, 7 };
-	streamlinesRep->setIntervalGridCells(gridIndices, (std::numeric_limits<uint32_t>::max)(),
+	streamlinesRep->setIntervalGridCells(gridIndices, (std::numeric_limits<uint16_t>::max)(),
 		cellIndices, (std::numeric_limits<uint64_t>::max)(),
 		localfacePairs, 7,
 		gridVector);

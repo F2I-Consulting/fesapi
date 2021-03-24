@@ -4,7 +4,7 @@ using F2iConsulting.Fesapi;
 using F2iConsulting.Fesapi.${FESAPI_COMMON_NS};
 using F2iConsulting.Fesapi.${FESAPI_EML2_NS};
 using F2iConsulting.Fesapi.${FESAPI_RESQML2_NS};
-using F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS};
+using F2iConsulting.Fesapi.${FESAPI_WITSML2_NS};
 
 // Add the fesapi cpp and hdf5, szip, zlib dll into the executable directory.
 
@@ -21,8 +21,8 @@ namespace Example
             ContinuousProperty propertyCompute = repo.createContinuousProperty(
                 ijkGrid, "9d0a717f-2cd3-4d43-9cbf-3484105ed384", "slab prop compute min max",
                 1,
-                resqml22__IndexableElement.resqml22__IndexableElement__cells,
-                resqml20__ResqmlUom.resqml20__ResqmlUom__m,
+                resqml22__IndexableElement.cells,
+                resqml20__ResqmlUom.m,
                 propertyKind);
             propertyCompute.pushBackFloatHdf5Array3dOfValues(2, 3, 4);
 
@@ -74,8 +74,8 @@ namespace Example
             DiscreteProperty discretePropertyCompute = repo.createDiscreteProperty(
                 ijkGrid, "50935c31-93ec-4084-8891-6e9f130c49c3", "testing discrete prop",
                 1,
-                resqml22__IndexableElement.resqml22__IndexableElement__cells,
-                resqml20__ResqmlPropertyKind.resqml20__ResqmlPropertyKind__index);
+                resqml22__IndexableElement.cells,
+                resqml20__ResqmlPropertyKind.index);
             discretePropertyCompute.pushBackLongHdf5Array3dOfValues(2, 3, 4, 9999);
 
             offsetInSlowestDim = 0;
@@ -123,13 +123,13 @@ namespace Example
             EpcDocument epc_file = new EpcDocument("TestingPackageCs.epc");
             using (DataObjectRepository repo = new DataObjectRepository())
             {
-                LocalDepth3dCrs crs = repo.createLocalDepth3dCrs(Guid.NewGuid().ToString(), "UTF8 Crs title : éàç : олег1", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.eml20__LengthUom__m, 5215, eml20__LengthUom.eml20__LengthUom__m, "Unknown", false);
+                LocalDepth3dCrs crs = repo.createLocalDepth3dCrs(Guid.NewGuid().ToString(), "UTF8 Crs title : éàç : олег1", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.m, 5215, eml20__LengthUom.m, "Unknown", false);
                 repo.setDefaultCrs(crs);
                 System.Console.WriteLine("Serialize : CRS title is " + crs.getTitle());
                 Well well = repo.createWell("1425632e-3c22-4845-b431-ecd36da0671e", "Well");
                 well.setNameLegal("Legal Name");
-                well.setWaterDepth(0.0, eml21__LengthUom.eml21__LengthUom__0_x002e1_x0020ft);
-                well.setTimeZone(true, 0);
+                well.setWaterDepth(0.0, eml21__LengthUom._0_x002e1_x0020ft);
+                well.setTimeZone(true, 0, 0);
                 System.Console.WriteLine("Serialize : Well title is " + well.getTitle());
 
                 // HdfProxy
@@ -143,7 +143,7 @@ namespace Example
                 WellboreInterpretation wellbore1Interp1 = repo.createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
 
                 // Representation
-                F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.MdDatum mdInfo = repo.createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", repo.getDefaultCrs(), eml23__WellboreDatumReference.eml23__WellboreDatumReference__mean_x0020sea_x0020level, 275, 75, 0);
+                F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.MdDatum mdInfo = repo.createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", repo.getDefaultCrs(), eml23__WellboreDatumReference.mean_x0020sea_x0020level, 275, 75, 0);
 
                 //Geometry	
                 WellboreTrajectoryRepresentation w1i1TrajRep = repo.createWellboreTrajectoryRepresentation(wellbore1Interp1, "acd2cdcf-bb5d-48da-bd0e-9aeff3e52180", "Wellbore1 Interp1 TrajRep", mdInfo);
@@ -197,7 +197,7 @@ namespace Example
                 w1i1RegularFrameRep.setMdValues(0, 200, 6);
 ${COMMENT_START}
                 // WellboreFeature seismic frame
-                LocalTime3dCrs localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, eml20__LengthUom.eml20__LengthUom__m, 23031, eml20__TimeUom.eml20__TimeUom__s, eml20__LengthUom.eml20__LengthUom__m, "Unknown", false);
+                LocalTime3dCrs localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, eml20__LengthUom.m, 23031, eml20__TimeUom.s, eml20__LengthUom.m, "Unknown", false);
 
                 SeismicWellboreFrameRepresentation w1i1SeismicFrameRep = repo.createSeismicWellboreFrameRepresentation(
                     wellbore1Interp1, "dcbeea2e-8327-4c5b-97e3-bdced0680de5", "Wellbore1 Interp1 SeismicFrameRep",

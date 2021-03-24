@@ -1261,7 +1261,7 @@ gsoap_resqml2_0_1::resqml20__AbstractIntegerArray* AbstractGridRepresentation::g
 
 	if (parentWindow != nullptr) {
 		if (parentWindow->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IjkParentWindow) {
-			gsoap_resqml2_0_1::resqml20__IjkParentWindow const * const ijkpw = static_cast<const gsoap_resqml2_0_1::resqml20__IjkParentWindow*>(parentWindow);
+			gsoap_resqml2_0_1::resqml20__IjkParentWindow const * const ijkpw = static_cast<gsoap_resqml2_0_1::resqml20__IjkParentWindow const*>(parentWindow);
 			gsoap_resqml2_0_1::resqml20__Regrid const * regrid = nullptr;
 			if (dimension == 'i' || dimension == 'I') {
 				regrid = ijkpw->IRegrid;
@@ -1285,7 +1285,7 @@ gsoap_resqml2_0_1::resqml20__AbstractIntegerArray* AbstractGridRepresentation::g
 		}
 		else if (parentWindow->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ColumnLayerParentWindow) {
 			if (dimension == 'k' || dimension == 'K') {
-				const gsoap_resqml2_0_1::resqml20__ColumnLayerParentWindow* const clpw = static_cast<const gsoap_resqml2_0_1::resqml20__ColumnLayerParentWindow* const>(parentWindow);
+				gsoap_resqml2_0_1::resqml20__ColumnLayerParentWindow const* const clpw = static_cast<gsoap_resqml2_0_1::resqml20__ColumnLayerParentWindow const*>(parentWindow);
 				if (clpw->KRegrid->Intervals != nullptr) {
 					return childVsParentCellCount ? clpw->KRegrid->Intervals->ChildCountPerInterval : clpw->KRegrid->Intervals->ParentCountPerInterval;
 				}
@@ -1312,7 +1312,7 @@ gsoap_eml2_3::eml23__AbstractIntegerArray* AbstractGridRepresentation::getCellCo
 
 	if (parentWindow != nullptr) {
 		if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__IjkParentWindow) {
-			gsoap_eml2_3::resqml22__IjkParentWindow const * const ijkpw = static_cast<const gsoap_eml2_3::resqml22__IjkParentWindow*>(parentWindow);
+			gsoap_eml2_3::resqml22__IjkParentWindow const * const ijkpw = static_cast<gsoap_eml2_3::resqml22__IjkParentWindow const*>(parentWindow);
 			gsoap_eml2_3::resqml22__Regrid const * regrid = nullptr;
 			if (dimension == 'i' || dimension == 'I') {
 				regrid = ijkpw->IRegrid;
@@ -1336,7 +1336,7 @@ gsoap_eml2_3::eml23__AbstractIntegerArray* AbstractGridRepresentation::getCellCo
 		}
 		else if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__ColumnLayerParentWindow) {
 			if (dimension == 'k' || dimension == 'K') {
-				const gsoap_eml2_3::resqml22__ColumnLayerParentWindow* const clpw = static_cast<const gsoap_eml2_3::resqml22__ColumnLayerParentWindow* const>(parentWindow);
+				gsoap_eml2_3::resqml22__ColumnLayerParentWindow const* const clpw = static_cast<gsoap_eml2_3::resqml22__ColumnLayerParentWindow const*>(parentWindow);
 				if (clpw->KRegrid->Intervals != nullptr) {
 					return childVsParentCellCount ? clpw->KRegrid->Intervals->ChildCountPerInterval : clpw->KRegrid->Intervals->ParentCountPerInterval;
 				}
@@ -1407,7 +1407,7 @@ uint64_t AbstractGridRepresentation::getRegridConstantCellCountPerInterval(char 
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* const cellCountPerInterval = getCellCountPerInterval2_0_1(dimension, childVsParentCellCount);
 		switch (cellCountPerInterval->soap_type()) {
-		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray : return static_cast<const gsoap_resqml2_0_1::resqml20__IntegerConstantArray* const>(cellCountPerInterval)->Value;
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray : return static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(cellCountPerInterval)->Value;
 		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array: {
 			const uint64_t intervalCount = getRegridIntervalCount(dimension);
 			std::unique_ptr<uint64_t[]> values(new uint64_t[intervalCount]);
@@ -1421,7 +1421,7 @@ uint64_t AbstractGridRepresentation::getRegridConstantCellCountPerInterval(char 
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::eml23__AbstractIntegerArray const* cellCountPerInterval = getCellCountPerInterval2_2(dimension, childVsParentCellCount);
 		switch (cellCountPerInterval->soap_type()) {
-		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray : return static_cast<const gsoap_eml2_3::eml23__IntegerConstantArray* const>(cellCountPerInterval)->Value;
+		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray : return static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(cellCountPerInterval)->Value;
 		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray: {
 			const uint64_t intervalCount = getRegridIntervalCount(dimension);
 			std::unique_ptr<uint64_t[]> values(new uint64_t[intervalCount]);
@@ -1443,8 +1443,8 @@ void AbstractGridRepresentation::getRegridCellCountPerInterval(char dimension, u
 		gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * childCountPerInterval = getCellCountPerInterval2_0_1(dimension, childVsParentCellCount);
 		switch (childCountPerInterval->soap_type()) {
 		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray:
-			for (uint64_t i = 0; i < static_cast<const gsoap_resqml2_0_1::resqml20__IntegerConstantArray* const>(childCountPerInterval)->Count; ++i) {
-				childCellCountPerInterval[i] = static_cast<const gsoap_resqml2_0_1::resqml20__IntegerConstantArray* const>(childCountPerInterval)->Value;
+			for (uint64_t i = 0; i < static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(childCountPerInterval)->Count; ++i) {
+				childCellCountPerInterval[i] = static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(childCountPerInterval)->Value;
 			}
 			break;
 		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array: {

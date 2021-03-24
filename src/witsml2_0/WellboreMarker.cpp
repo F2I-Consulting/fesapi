@@ -49,7 +49,7 @@ WellboreMarker::WellboreMarker(COMMON_NS::DataObjectRepository * repo,
 	repo->addOrReplaceDataObject(this);
 }
 
-WellboreMarker::WellboreMarker(Wellbore* witsmlWellbore,
+WellboreMarker::WellboreMarker(WITSML2_NS::Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title,
 	double md, gsoap_eml2_1::eml21__LengthUom mdUom, const std::string & mdDatum)
@@ -74,7 +74,7 @@ COMMON_NS::DataObjectReference WellboreMarker::getWellboreDor() const
 	return COMMON_NS::DataObjectReference(static_cast<witsml20__WellboreMarker*>(gsoapProxy2_1)->Wellbore);
 }
 
-void WellboreMarker::setWellbore(Wellbore* witsmlWellbore)
+void WellboreMarker::setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 {
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml wellbore to a witsml WellboreMarker");

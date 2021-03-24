@@ -40,8 +40,8 @@ void LocalDepth3dCrs::init(COMMON_NS::DataObjectRepository * repo, const std::st
 	_resqml20__LocalDepth3dCrs* local3dCrs = static_cast<_resqml20__LocalDepth3dCrs*>(gsoapProxy2_0_1);
 	local3dCrs->ArealRotation = soap_new_eml20__PlaneAngleMeasure(gsoapProxy2_0_1->soap);
 	local3dCrs->ArealRotation->__item = arealRotation;
-	local3dCrs->ArealRotation->uom = eml20__PlaneAngleUom__rad;
-	local3dCrs->ProjectedAxisOrder = eml20__AxisOrder2d__easting_x0020northing;
+	local3dCrs->ArealRotation->uom = eml20__PlaneAngleUom::rad;
+	local3dCrs->ProjectedAxisOrder = eml20__AxisOrder2d::easting_x0020northing;
 	local3dCrs->XOffset = originOrdinal1;
 	local3dCrs->YOffset = originOrdinal2;
 	local3dCrs->ZOffset = originOrdinal3;

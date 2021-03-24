@@ -128,16 +128,19 @@ namespace RESQML2_0_1_NS
 	class TectonicBoundaryFeature;
 }
 
+namespace WITSML2_NS
+{
+	class Trajectory;
+	class Well;
+	class Wellbore;
+}
+
 namespace WITSML2_0_NS
 {
-	class AbstractObject;
-	class Well;
 	class WellCompletion;
-	class Wellbore;
 	class WellboreCompletion;
 	class WellboreGeometry;
 	class WellboreMarker;
-	class Trajectory;
 	class Log;
 	class ChannelSet;
 	class Channel;
@@ -528,46 +531,57 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 		GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)
 
-		GETTER_DATAOBJECTS(RESQML2_NS::LocalDepth3dCrs, LocalDepth3dCrs)
-		GETTER_DATAOBJECTS(RESQML2_NS::LocalTime3dCrs, LocalTime3dCrs)
-		GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicColumn, StratigraphicColumn)
+		GETTER_DATAOBJECTS(RESQML2_NS::AbstractSeismicLineFeature, SeismicLine)
+		GETTER_DATAOBJECTS(RESQML2_NS::AbstractIjkGridRepresentation, IjkGridRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::BlockedWellboreRepresentation, BlockedWellboreRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Fault)
 		GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Fracture)
-		GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Horizon)
 		GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, GeobodyBoundary)
-		GETTER_DATAOBJECTS(RESQML2_NS::RockVolumeFeature, Geobody)
-		GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, FaultPolylineSetRep)
-		GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, FracturePolylineSetRep)
-		GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, CulturalPolylineSetRep)
-		GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, FaultTriangulatedSetRep)
-		GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, FractureTriangulatedSetRep)
-		GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, HorizonGrid2dRep)
-		GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, HorizonPolylineRep)
-		GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, HorizonPolylineSetRep)
-		GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, HorizonTriangulatedSetRep)
-		GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, UnclassifiedTriangulatedSetRep)
-		GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, AllTriangulatedSetRep)
-		GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, AllGrid2dRepresentation)
-		GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, AllPolylineRepresentation)
-		GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, AllPolylineSetRep)
-		GETTER_DATAOBJECTS(RESQML2_NS::AbstractSeismicLineFeature, SeismicLine)
-		GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, SeismicLinePolylineRep)
-		GETTER_DATAOBJECTS(RESQML2_NS::WellboreFeature, Wellbore)
-		GETTER_DATAOBJECTS(RESQML2_NS::WellboreTrajectoryRepresentation, WellboreTrajectoryRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Horizon)
+		GETTER_DATAOBJECTS(RESQML2_NS::CmpLineFeature, CmpLine)
+		GETTER_DATAOBJECTS(RESQML2_NS::CulturalFeature, Cultural)
 		GETTER_DATAOBJECTS(RESQML2_NS::DeviationSurveyRepresentation, DeviationSurveyRepresentation)
-		GETTER_DATAOBJECTS(RESQML2_NS::RepresentationSetRepresentation, RepresentationSetRepresentation)
-		GETTER_DATAOBJECTS(RESQML2_NS::AbstractIjkGridRepresentation, IjkGridRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::DoubleTableLookup, DoubleTableLookup)
+		GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, AllGrid2dRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, HorizonGrid2dRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::IjkGridParametricRepresentation, IjkGridParametricRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::IjkGridExplicitRepresentation, IjkGridExplicitRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::IjkGridLatticeRepresentation, IjkSeismicCubeGridRepresentation)
-		GETTER_DATAOBJECTS(RESQML2_NS::UnstructuredGridRepresentation, UnstructuredGridRepresentation)
-		GETTER_DATAOBJECTS(RESQML2_NS::CulturalFeature, Cultural)
+		GETTER_DATAOBJECTS(RESQML2_NS::LocalDepth3dCrs, LocalDepth3dCrs)
+		GETTER_DATAOBJECTS(RESQML2_NS::LocalTime3dCrs, LocalTime3dCrs)
 		GETTER_DATAOBJECTS(RESQML2_NS::Model, Model)
-		GETTER_DATAOBJECTS(RESQML2_NS::SubRepresentation, SubRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::PointSetRepresentation, PointSetRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, AllPolylineRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, HorizonPolylineRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, SeismicLinePolylineRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, AllPolylineSetRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, HorizonPolylineSetRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, FaultPolylineSetRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, FracturePolylineSetRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::PolylineSetRepresentation, CulturalPolylineSetRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::RepresentationSetRepresentation, RepresentationSetRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::RockVolumeFeature, RockVolume)
+		GETTER_DATAOBJECTS(RESQML2_NS::RockVolumeFeature, Geobody)
+		GETTER_DATAOBJECTS(RESQML2_NS::SeismicLatticeFeature, SeismicLattice)
+		GETTER_DATAOBJECTS(RESQML2_NS::SeismicLineSetFeature, SeismicLineSet)
+		GETTER_DATAOBJECTS(RESQML2_NS::ShotPointLineFeature, ShotPointLine)
+		GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicColumn, StratigraphicColumn)
 		GETTER_DATAOBJECTS(RESQML2_NS::StreamlinesFeature, StreamlinesFeature)
 		GETTER_DATAOBJECTS(RESQML2_NS::StreamlinesRepresentation, StreamlinesRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::SubRepresentation, SubRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, AllTriangulatedSetRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, UnclassifiedTriangulatedSetRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, FaultTriangulatedSetRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, FractureTriangulatedSetRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::TriangulatedSetRepresentation, HorizonTriangulatedSetRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::UnstructuredGridRepresentation, UnstructuredGridRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::WellboreFeature, Wellbore)
+		GETTER_DATAOBJECTS(RESQML2_NS::WellboreTrajectoryRepresentation, WellboreTrajectoryRepresentation)
+		GETTER_DATAOBJECTS(RESQML2_NS::WellboreFrameRepresentation, WellboreFrameRepresentation)
 
+		GETTER_DATAOBJECTS(WITSML2_NS::Well, WitsmlWell)
+		GETTER_DATAOBJECTS(WITSML2_NS::Wellbore, WitsmlWellbore)
+		GETTER_DATAOBJECTS(WITSML2_NS::Trajectory, WitsmlTrajectory)
 
 		/**
 		 * Gets a data object from the repository by means of its uuid. If several data object
@@ -1233,13 +1247,13 @@ namespace COMMON_NS
 		 * @param 	guid 	The guid to set to the cultural. If empty then a new guid will be generated.
 		 * @param 	title	The title to set to the cultural. If empty then \"unknown\" title will be set.
 		 * @param 	kind 	(Optional) The kind to set to the cultural. It is defaulted to
-		 * 					gsoap_eml2_3::resqml22__CulturalFeatureKind__project_x0020boundaries for
+		 * 					gsoap_eml2_3::resqml22__CulturalFeatureKind::project_x0020boundaries for
 		 * 					easing 2.0.1 compatibility.
 		 *
 		 * @returns	A pointer to the new cultural.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::CulturalFeature* createCultural(const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__CulturalFeatureKind kind = gsoap_eml2_3::resqml22__CulturalFeatureKind__project_x0020boundaries);
+			gsoap_eml2_3::resqml22__CulturalFeatureKind kind = gsoap_eml2_3::resqml22__CulturalFeatureKind::project_x0020boundaries);
 
 		/**
 		 * @brief	@deprecated Use {@link createRockVolumeFeature()} method for RESQML post v2.0.1
@@ -3035,7 +3049,7 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PointsProperty* createPointsProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
-			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind = gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind = gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 
 		/**
 		 * Creates a points property (which is of a local property kind) into this repository
@@ -3134,7 +3148,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new well.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Well* createWell(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT WITSML2_NS::Well* createWell(const std::string & guid,
 			const std::string & title);
 
 		/**
@@ -3151,7 +3165,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new well.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Well* createWell(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT WITSML2_NS::Well* createWell(const std::string & guid,
 			const std::string & title,
 			const std::string & operator_,
 			gsoap_eml2_1::eml21__WellStatus statusWell,
@@ -3171,7 +3185,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new wellbore.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
+		DLL_IMPORT_OR_EXPORT WITSML2_NS::Wellbore* createWellbore(WITSML2_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);
 
@@ -3192,7 +3206,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new wellbore.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
+		DLL_IMPORT_OR_EXPORT WITSML2_NS::Wellbore* createWellbore(WITSML2_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::eml21__WellStatus statusWellbore,
@@ -3213,7 +3227,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new well completion.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellCompletion* createWellCompletion(WITSML2_0_NS::Well* witsmlWell,
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellCompletion* createWellCompletion(WITSML2_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);
 
@@ -3233,7 +3247,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new wellbore completion.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreCompletion* createWellboreCompletion(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreCompletion* createWellboreCompletion(WITSML2_NS::Wellbore* witsmlWellbore,
 			WITSML2_0_NS::WellCompletion* wellCompletion,
 			const std::string & guid,
 			const std::string & title,
@@ -3256,7 +3270,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new wellbore geometry.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreGeometry* createWellboreGeometry(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreGeometry* createWellboreGeometry(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
@@ -3277,7 +3291,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new trajectory.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Trajectory* createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		DLL_IMPORT_OR_EXPORT WITSML2_NS::Trajectory* createTrajectory(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
@@ -3295,7 +3309,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new log.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Log* createLog(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Log* createLog(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title);
 
@@ -3370,7 +3384,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new Wellbore Marker.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreMarker* createWellboreMarker(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreMarker* createWellboreMarker(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid, const std::string & title,
 			double md, gsoap_eml2_1::eml21__LengthUom mdUom, const std::string & mdDatum);
 
@@ -3577,6 +3591,7 @@ namespace COMMON_NS
 		COMMON_NS::AbstractObject* getEml2_1WrapperFromGsoapContext(const std::string & datatype);
 		COMMON_NS::AbstractObject* getEml2_3WrapperFromGsoapContext(const std::string & datatype);
 
+		COMMON_NS::AbstractObject* getWitsml1_4WrapperFromGsoapContext(const std::string & datatype);
 		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
 		COMMON_NS::AbstractObject* getProdml2_1WrapperFromGsoapContext(const std::string & datatype);
 

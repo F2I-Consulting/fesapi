@@ -614,9 +614,9 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::logic_error	 	If this grid is partial.
 		 * @exception	std::invalid_argument	If the split information is not loaded.
-		 * @exception	std::out_of_range	 	If @p iCell @c > getICellCount(), @p jCell @c >
-		 * 										getJCellCount() or @p kCell @c > getKCellCount().
-		 * @exception	std::out_of_range	 	If @p corner @c > 7.
+		 * @exception	std::out_of_range	 	If @p iCell > getICellCount(), @p jCell >
+		 * 										getJCellCount() or @p kCell > getKCellCount().
+		 * @exception	std::out_of_range	 	If @p corner > 7.
 		 *
 		 * @param 	iCell 	The I index of the cell.
 		 * @param 	jCell 	The J index of the cell.
@@ -637,9 +637,9 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::logic_error	 	If this grid is partial.
 		 * @exception	std::invalid_argument	If the split or block information is not loaded.
-		 * @exception	std::out_of_range	 	If @p iCell @c > getICellCount(), @p jCell @c >
-		 * 										getJCellCount() or @p kCell @c > getKCellCount().
-		 * @exception	std::out_of_range	 	If @p corner @c > 7.
+		 * @exception	std::out_of_range	 	If @p iCell > getICellCount(), @p jCell >
+		 * 										getJCellCount() or @p kCell > getKCellCount().
+		 * @exception	std::out_of_range	 	If @p corner > 7.
 		 *
 		 * @param 	   	iCell	 	The I index of the cell.
 		 * @param 	   	jCell	 	The J index of the cell.

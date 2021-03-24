@@ -74,7 +74,7 @@ namespace EML2_3_NS
 		 * @param 	uom  	(Optional) The uom.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
-			double value, gsoap_resqml2_0_1::resqml20__ResqmlUom uom = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc);
+			double value, gsoap_resqml2_0_1::resqml20__ResqmlUom uom = gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc);
 
 		/**
 		 * Push back a string parameter in the instance. This parameter must exist in the associated

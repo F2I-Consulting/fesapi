@@ -18,7 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "WellboreObject.h"
+#include "../witsml2/WellboreObject.h"
+
+#include "../MacroDefinitions.h"
 
 namespace WITSML2_0_NS
 {
@@ -27,7 +29,7 @@ namespace WITSML2_0_NS
 	 * wellbore. It does not define the transient drilling strings (see the Tubular object) or the
 	 * hanging production components (see the Completion object).
 	 */
-	class WellboreGeometry : public WellboreObject
+	class WellboreGeometry : public WITSML2_NS::WellboreObject
 	{
 	public:
 
@@ -38,7 +40,7 @@ namespace WITSML2_0_NS
 		 *
 		 * 
 		 */
-		DLL_IMPORT_OR_EXPORT WellboreGeometry(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WellboreObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT WellboreGeometry(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::WellboreObject(partialObject) {}
 
 		/**
 		 * @brief	Constructor
@@ -50,7 +52,7 @@ namespace WITSML2_0_NS
 		 * @param 	  	title		  	The title.
 		 * @param 	  	channelStatus 	The channel status.
 		 */
-		WellboreGeometry(class Wellbore* witsmlWellbore,
+		WellboreGeometry(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
@@ -60,13 +62,13 @@ namespace WITSML2_0_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		WellboreGeometry(gsoap_eml2_1::witsml20__WellboreGeometry* fromGsoap) :WellboreObject(fromGsoap) {}
+		WellboreGeometry(gsoap_eml2_1::witsml20__WellboreGeometry* fromGsoap) : WITSML2_NS::WellboreObject(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~WellboreGeometry() = default;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getWellboreDor() const;
-		DLL_IMPORT_OR_EXPORT void setWellbore(class Wellbore* witsmlWellbore);
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getWellboreDor() const final;
+		DLL_IMPORT_OR_EXPORT void setWellbore(WITSML2_NS::Wellbore* witsmlWellbore) final;
 
 		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdBase, gsoap_eml2_1::eml21__LengthUom)
 
@@ -257,5 +259,15 @@ namespace WITSML2_0_NS
 		 * @returns	The XML tag.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "witsml20";
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

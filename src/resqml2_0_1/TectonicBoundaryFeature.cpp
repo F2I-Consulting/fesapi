@@ -31,7 +31,7 @@ TectonicBoundaryFeature::TectonicBoundaryFeature(COMMON_NS::DataObjectRepository
 	}
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORETectonicBoundaryFeature(repo->getGsoapContext());
-	static_cast<gsoap_resqml2_0_1::_resqml20__TectonicBoundaryFeature*>(gsoapProxy2_0_1)->TectonicBoundaryKind = isAFracture ? gsoap_resqml2_0_1::resqml20__TectonicBoundaryKind__fracture : gsoap_resqml2_0_1::resqml20__TectonicBoundaryKind__fault;
+	static_cast<gsoap_resqml2_0_1::_resqml20__TectonicBoundaryFeature*>(gsoapProxy2_0_1)->TectonicBoundaryKind = isAFracture ? gsoap_resqml2_0_1::resqml20__TectonicBoundaryKind::fracture : gsoap_resqml2_0_1::resqml20__TectonicBoundaryKind::fault;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -41,5 +41,5 @@ TectonicBoundaryFeature::TectonicBoundaryFeature(COMMON_NS::DataObjectRepository
 
 bool TectonicBoundaryFeature::isAFracture() const
 {
-	return static_cast<gsoap_resqml2_0_1::_resqml20__TectonicBoundaryFeature*>(gsoapProxy2_0_1)->TectonicBoundaryKind == gsoap_resqml2_0_1::resqml20__TectonicBoundaryKind__fracture;
+	return static_cast<gsoap_resqml2_0_1::_resqml20__TectonicBoundaryFeature*>(gsoapProxy2_0_1)->TectonicBoundaryKind == gsoap_resqml2_0_1::resqml20__TectonicBoundaryKind::fracture;
 }

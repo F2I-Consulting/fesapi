@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "WellboreObject.h"
+#include "../witsml2/WellboreObject.h"
 
 #include <stdexcept>
 
@@ -34,7 +34,7 @@ namespace WITSML2_0_NS
 	 * @tparam	T	Generic type parameter.
 	 */
 	template <class T>
-	class ChannelMetaDataObject : public WellboreObject
+	class ChannelMetaDataObject : public WITSML2_NS::WellboreObject
 	{
 	public:
 
@@ -48,14 +48,14 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT ChannelMetaDataObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WellboreObject(partialObject) {}
 
 		/** Creates an instance of this class in a gsoap context. */
-		ChannelMetaDataObject() : WITSML2_0_NS::WellboreObject() {}
+		ChannelMetaDataObject() : WITSML2_NS::WellboreObject() {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		ChannelMetaDataObject(gsoap_eml2_1::eml21__AbstractObject* fromGsoap) : WITSML2_0_NS::WellboreObject(fromGsoap) {}
+		ChannelMetaDataObject(gsoap_eml2_1::eml21__AbstractObject* fromGsoap) : WITSML2_NS::WellboreObject(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~ChannelMetaDataObject() = default;
@@ -77,7 +77,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @param [in,out]	witsmlWellbore	If non-null, the witsml wellbore.
 		 */
-		DLL_IMPORT_OR_EXPORT void setWellbore(Wellbore* witsmlWellbore)
+		DLL_IMPORT_OR_EXPORT void setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 		{
 			if (witsmlWellbore == nullptr) {
 				throw std::invalid_argument("Cannot set a null witsml wellbore to a witsml trajectory");

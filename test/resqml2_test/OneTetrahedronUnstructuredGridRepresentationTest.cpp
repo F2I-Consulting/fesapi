@@ -17,11 +17,12 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "OneTetrahedronUnstructuredGridRepresentationTest.h"
+
 #include "../catch.hpp"
+
 #include "LocalDepth3dCrsTest.h"
-#include "resqml2/LocalDepth3dCrs.h"
-#include "common/EpcDocument.h"
 #include "eml2/AbstractHdfProxy.h"
+#include "resqml2/LocalDepth3dCrs.h"
 #include "resqml2/UnstructuredGridRepresentation.h"
 
 using namespace std;

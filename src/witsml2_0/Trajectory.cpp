@@ -22,7 +22,7 @@ under the License.
 #include <sstream>
 #include <stdexcept>
 
-#include "Wellbore.h"
+#include "../witsml2/Wellbore.h"
 
 #include "../tools/TimeTools.h"
 
@@ -30,9 +30,7 @@ using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
 
-const char* Trajectory::XML_TAG = "Trajectory";
-
-Trajectory::Trajectory(Wellbore* witsmlWellbore,
+Trajectory::Trajectory(WITSML2_NS::Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title,
 	gsoap_eml2_1::witsml20__ChannelStatus channelStatus)
@@ -42,7 +40,7 @@ Trajectory::Trajectory(Wellbore* witsmlWellbore,
 	gsoapProxy2_1 = soap_new_witsml20__Trajectory(witsmlWellbore->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setWellbore(witsmlWellbore);
 
@@ -54,7 +52,7 @@ COMMON_NS::DataObjectReference Trajectory::getWellboreDor() const
 	return COMMON_NS::DataObjectReference(static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->Wellbore);
 }
 
-void Trajectory::setWellbore(Wellbore* witsmlWellbore)
+void Trajectory::setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 {
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml wellbore to a witsml trajectory");
@@ -158,7 +156,7 @@ GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, Trajecto
 
 void Trajectory::pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType kind, double mdValue, gsoap_eml2_1::eml21__LengthUom uom, const std::string & datum, const std::string & uid)
 {
-	static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->TrajectoryStation.push_back(gsoap_eml2_1::soap_new_witsml20__TrajectoryStation(gsoapProxy2_1->soap, 1));
+	static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->TrajectoryStation.push_back(gsoap_eml2_1::soap_new_witsml20__TrajectoryStation(gsoapProxy2_1->soap));
 	unsigned int index = getTrajectoryStationCount() - 1;
 	if (uid.empty()) {
 		std::ostringstream oss;

@@ -180,6 +180,19 @@ ${COMMENT_END}
 		return null;
 	}
 	
+	public static com.f2i_consulting.fesapi.${FESAPI_WITSML2_NS}.Trajectory witsml2_instantiateTrajectory(long cPtr, boolean owner)
+	{
+		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i_consulting.fesapi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
+		if ("witsml14".equals(xmlNs)) {
+			return new com.f2i_consulting.fesapi.${FESAPI_WITSML1_4_NS}.witsml14_Trajectory(cPtr, owner);
+		}
+		else if ("witsml20".equals(xmlNs)) {
+			return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.witsml20_Trajectory(cPtr, owner);
+		}
+		
+		return null;
+	}
+	
 	public static com.f2i_consulting.fesapi.${FESAPI_RESQML2_NS}.BoundaryFeature resqml2_instantiateBoundaryFeature(long cPtr, boolean owner)
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i_consulting.fesapi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
@@ -967,8 +980,8 @@ ${COMMENT_END}
 		case BOUNDARYFEATURE : return resqml2_instantiateBoundaryFeature(cPtr, owner);
 		case BOUNDARYFEATUREINTERPRETATION : return resqml2_instantiateBoundaryFeatureInterpretation(cPtr, owner);
 		case CATEGORICALPROPERTY : return resqml2_instantiateCategoricalProperty(cPtr, owner);
-		case CHANNEL : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.Channel(cPtr, owner);
-		case CHANNELSET : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.ChannelSet(cPtr, owner);
+		case CHANNEL : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.witsml20_Channel(cPtr, owner);
+		case CHANNELSET : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.witsml20_ChannelSet(cPtr, owner);
 ${COMMENT_START}
 		case CMPLINEFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_2_NS}.resqml22_CmpLineFeature(cPtr, owner);
 ${COMMENT_END}
@@ -1010,7 +1023,7 @@ ${COMMENT_END}
 		case IJKGRIDREPRESENTATION : return resqml2_instantiateConcreteIjkGridRepresentation(cPtr, owner);
 		case LOCALDEPTH3DCRS : return resqml2_instantiateLocalDepth3dCrs(cPtr, owner);
 		case LOCALTIME3DCRS : return resqml2_instantiateLocalTime3dCrs(cPtr, owner);
-		case LOG : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.Log(cPtr, owner);
+		case LOG : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.witsml20_Log(cPtr, owner);
 		case MDDATUM : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.resqml20_MdDatum(cPtr, owner);
 ${COMMENT_START}
 		case MODEL : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_2_NS}.resqml22_Model(cPtr, owner);
@@ -1052,20 +1065,20 @@ ${COMMENT_END}
 		case TECTONICBOUNDARYFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.resqml20_TectonicBoundaryFeature(cPtr, owner);
 		case TIMESERIES : return eml2_instantiateTimeSeries(cPtr, owner);
 		case TIMESERIESDATA : return new com.f2i_consulting.fesapi.${FESAPI_PRODML2_1_NS}.TimeSeriesData(cPtr, owner);
-		case TRAJECTORY : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);
+		case TRAJECTORY : return witsml2_instantiateTrajectory(cPtr, owner);
 		case TRIANGULATEDSETREPRESENTATION : return resqml2_instantiateTriangulatedSetRepresentation(cPtr, owner);
 		case UNSTRUCTUREDGRIDREPRESENTATION : return resqml2_instantiateUnstructuredGridRepresentation(cPtr, owner);
-		case WELL : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.Well(cPtr, owner);
-		case WELLBORE : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.Wellbore(cPtr, owner);
-		case WELLBORECOMPLETION : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.WellboreCompletion(cPtr, owner);
+		case WELL : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.witsml20_Well(cPtr, owner);
+		case WELLBORE : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.witsml20_Wellbore(cPtr, owner);
+		case WELLBORECOMPLETION : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.witsml20_WellboreCompletion(cPtr, owner);
 		case WELLBOREFEATURE : return resqml2_instantiateWellboreFeature(cPtr, owner);
 		case WELLBOREFRAMEREPRESENTATION : return resqml2_instantiateWellboreFrameRepresentation(cPtr, owner);
-		case WELLBOREGEOMETRY : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.WellboreGeometry(cPtr, owner);
+		case WELLBOREGEOMETRY : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.witsml20_WellboreGeometry(cPtr, owner);
 		case WELLBOREINTERPRETATION : return resqml2_instantiateWellboreInterpretation(cPtr, owner);
 		case WELLBOREMARKER : return resqml2_instantiateWellboreMarker(cPtr, owner);
 		case WELLBOREMARKERFRAMEREPRESENTATION : return resqml2_instantiateWellboreMarkerFrameRepresentation(cPtr, owner);
 		case WELLBORETRAJECTORYREPRESENTATION : return resqml2_instantiateWellboreTrajectoryRepresentation(cPtr, owner);
-		case WELLCOMPLETION : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.WellCompletion(cPtr, owner);
+		case WELLCOMPLETION : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.witsml20_WellCompletion(cPtr, owner);
 		default : throw new IllegalArgumentException("Encountered type " + type + " that is not known to be a RESQML or WITSML concrete class");
     }
   }
@@ -1090,6 +1103,20 @@ namespace EML2_NS
 #ifdef WITH_RESQML2_2
 										,GraphicalInformationSet*
 #endif
+	{
+		long cPtr = $jnicall;
+		$javaclassname ret = ($javaclassname) fesapiJNI.eml2_instantiateConcreteObject(cPtr, $owner);
+		return ret;
+	}
+	
+	%typemap(javaimports) SWIGTYPE %{
+		import com.f2i_consulting.fesapi.*;
+	%}
+}
+
+namespace WITSML2_NS
+{
+	%typemap(javaout) Trajectory*, Well*, Wellbore*, WellboreObject*
 	{
 		long cPtr = $jnicall;
 		$javaclassname ret = ($javaclassname) fesapiJNI.eml2_instantiateConcreteObject(cPtr, $owner);

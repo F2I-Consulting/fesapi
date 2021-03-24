@@ -22,6 +22,8 @@ under the License.
 #include <vector>
 #include <stdexcept>
 
+#include "../proxies/gsoap_witsml1_4H.h"
+
 #include "DataObjectRepository.h"
 
 namespace COMMON_NS
@@ -29,423 +31,6 @@ namespace COMMON_NS
 	/** @brief	An abstract data object. */
 	class AbstractObject
 	{
-	private:
-		/** The variable which holds the format for all exported Energistics DataObjects. */
-		static char citationFormat[];
-
-		/**
-		 * Set a uuid. If the input uuid is empty then a random uuid will be set. It is too dangerous
-		 * for now to modify the uuid because too much things depend on it. That's why this method is
-		 * private.
-		 *
-		 * @param 	uuid	The uuid.
-		 */
-		void setUuid(const std::string & uuid);
-
-	protected:
-		/** Should be instantiated when the object is (or was) a partial object. */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject;
-
-		/** The underlying generated gSoap proxy for a EML 2.0 dataobject. */
-		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
-
-		/** The underlying generated gSoap proxy for a EML 2.1 dataobject. */
-		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1;
-
-		/** The underlying generated gSoap proxy for a EML 2.2 dataobject. */
-		gsoap_eml2_2::eml22__AbstractObject* gsoapProxy2_2;
-
-		/** The underlying generated gSoap proxy for a EML 2.3 dataobject. */
-		gsoap_eml2_3::eml23__AbstractObject* gsoapProxy2_3;
-
-		/** The repository which contains this data object. */
-		COMMON_NS::DataObjectRepository* repository;
-
-		/**
-		* Default constructor
-		*/
-		AbstractObject() :
-			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
-
-		/**
-		 * Constructor for partial transfer
-		 *
-		 * @param [in,out]	partialObject_	If non-null, the partial object.
-		 */
-		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_) :
-			partialObject(partialObject_), gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
-		AbstractObject(const DataObjectReference& dor) :
-			partialObject(dor.toDor20()), gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
-
-		/**
-		 * Constructor when importing EML 2.0 (i.e RESQML2.0.1) dataobjects
-		 *
-		 * @param [in,out]	proxy	If non-null, the proxy.
-		 */
-		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy) :
-			partialObject(nullptr), gsoapProxy2_0_1(proxy),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
-
-		/**
-		 * Constructor when importing EML 2.1 dataobjects
-		 *
-		 * @param [in,out]	proxy	If non-null, the proxy.
-		 */
-		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) :
-			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(proxy),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
-
-		/**
-		 * Constructor when importing EML 2.2 dataobjects
-		 *
-		 * @param [in,out]	proxy	If non-null, the proxy.
-		 */
-		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) :
-			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(proxy),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
-
-		/**
-		 * Constructor when importing EML 2.3 dataobjects
-		 *
-		 * @param [in,out]	proxy	If non-null, the proxy.
-		 */
-		AbstractObject(gsoap_eml2_3::eml23__AbstractObject* proxy) :
-			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(proxy),
-			repository(nullptr) {}
-
-		/**
-		 * Adds an or replace data object
-		 *
-		 * @param [in,out]	proxy				If non-null, the proxy.
-		 * @param [in,out]	replaceOnlyContent	If true, only replace the content of corresponding object, not the object itself.
-		 *
-		 * @returns	The new DataObject.
-		 */
-		friend COMMON_NS::AbstractObject* COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy, bool replaceOnlyContent);
-
-		/**
-		 * Initialize all mandatory attributes of an AbstractObject (not the attributes of a
-		 * specialization) with some valid values.
-		 */
-		void initMandatoryMetadata();
-
-		/**
-		 * It is too dangerous for now to modify the uuid because too much things depend on it. That's
-		 * why this method is only protected : it is only used by derived class constructor. Set a title
-		 * and other common metadata for the resqml instance. Set to empty string or zero if you don't
-		 * want to use.
-		 *
-		 * @param 	guid			   	Unique identifier.
-		 * @param 	title			   	The title to set to the resqml instance. Set to empty string if
-		 * 								you don't want to set it.
-		 * @param 	editor			   	The editor.
-		 * @param 	creation		   	The creation.
-		 * @param 	originator		   	The originator.
-		 * @param 	description		   	The description.
-		 * @param 	lastUpdate		   	The last update.
-		 * @param 	descriptiveKeywords	The descriptive keywords.
-		 */
-		void setMetadata(const std::string & guid, const std::string & title, const std::string & editor, time_t creation, const std::string & originator,
-			const std::string & description, time_t lastUpdate, const std::string & descriptiveKeywords);
-
-		/** Throw an exception if the instance if partial. */
-		void cannotBePartial() const;
-
-		/** Transform a non partial object into a partial one */
-		void changeToPartialObject();
-
-		/**
-		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
-		 * preallocated output array in memory. It does not allocate or deallocate memory.
-		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
-		 */
-		void readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray * arrayInput, double * arrayOutput) const;
-
-		/**
-		 * Read an input array which come from EML 2.3 (and potentially HDF5) and store it into a
-		 * preallocated output array in memory. It does not allocate or deallocate memory.
-		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
-		 */
-		void readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloatingPointArray * arrayInput, double * arrayOutput) const;
-
-		template <class T>
-		void readArrayNdOfNonHdf5IntegerValues(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, T * arrayOutput) const {
-			switch (arrayInput->soap_type()) {
-			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerRangeArray:
-			{
-				gsoap_resqml2_0_1::resqml20__IntegerRangeArray const* rangeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerRangeArray const *>(arrayInput);
-				if (rangeArray->Value + rangeArray->Count > (std::numeric_limits<T>::max)()) {
-					throw std::range_error("The range integer values are superior to unsigned int maximum value.");
-				}
-				for (unsigned int i = 0; i < static_cast<T>(rangeArray->Count); ++i) {
-					arrayOutput[i] = i + static_cast<T>(rangeArray->Value);
-				}
-				break;
-			}
-			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray:
-			{
-				gsoap_resqml2_0_1::resqml20__IntegerConstantArray const* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(arrayInput);
-				if (constantArray->Value > (std::numeric_limits<T>::max)()) {
-					throw std::range_error("The constant integer value is superior to unsigned int maximum value.");
-				}
-				for (size_t i = 0; i < constantArray->Count; ++i) {
-					arrayOutput[i] = static_cast<T>(constantArray->Value);
-				}
-				break;
-			}
-			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray:
-			{
-				gsoap_resqml2_0_1::resqml20__IntegerLatticeArray const* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray const*>(arrayInput);
-				if (latticeArray->Offset.size() > 1) {
-					throw std::invalid_argument("The integer lattice array contains more than one offset.");
-				}
-				for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
-					arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
-				}
-				break;
-			}
-			default:
-				throw std::invalid_argument("The integer array type is not supported yet.");
-			}
-		}
-
-		template <class T>
-		void readArrayNdOfNonHdf5IntegerValues(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, T * arrayOutput) const {
-			switch (arrayInput->soap_type()) {
-			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerRangeArray:
-			{
-				gsoap_eml2_3::eml23__IntegerRangeArray const* rangeArray = static_cast<gsoap_eml2_3::eml23__IntegerRangeArray const*>(arrayInput);
-				if (rangeArray->Value + rangeArray->Count > (std::numeric_limits<T>::max)()) {
-					throw std::range_error("The range integer values are superior to unsigned int maximum value.");
-				}
-				for (unsigned int i = 0; i < static_cast<T>(rangeArray->Count); ++i) {
-					arrayOutput[i] = i + static_cast<T>(rangeArray->Value);
-				}
-				break;
-			}
-			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
-			{
-				gsoap_eml2_3::eml23__IntegerConstantArray const* constantArray = static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(arrayInput);
-				if (constantArray->Value > (std::numeric_limits<T>::max)()) {
-					throw std::range_error("The constant integer value is superior to unsigned int maximum value.");
-				}
-				std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<T>(constantArray->Value));
-				break;
-			}
-			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray:
-			{
-				gsoap_eml2_3::eml23__IntegerLatticeArray const* latticeArray = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray const*>(arrayInput);
-				if (latticeArray->Offset.size() > 1) {
-					throw std::invalid_argument("The integer lattice array contains more than one offset.");
-				}
-				for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
-					arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
-				}
-				break;
-			}
-			default: throw std::invalid_argument("The integer array type is not supported yet.");
-			}
-		}
-
-		/**
-		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
-		 * preallocated output array in memory. It does not allocate or deallocate memory.
-		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
-		 *
-		 * @returns	The null value of this array. Default returned value is uint8_t::max
-		 */
-		uint8_t readArrayNdOfUInt8Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint8_t * arrayOutput) const;
-
-		/**
-		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
-		 * preallocated output array in memory. It does not allocate or deallocate memory.
-		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
-		 *
-		 * @returns	The null value of this array. Default returned value is uint16_t::max
-		 */
-		uint8_t readArrayNdOfUInt8Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint8_t * arrayOutput) const;
-
-		/**
-		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
-		 * preallocated output array in memory. It does not allocate or deallocate memory.
-		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
-		 *
-		 * @returns	The null value of this array. Default returned value is uint16_t::max
-		 */
-		uint16_t readArrayNdOfUInt16Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint16_t * arrayOutput) const;
-
-		/**
-		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
-		 * preallocated output array in memory. It does not allocate or deallocate memory.
-		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
-		 *
-		 * @returns	The null value of this array. Default returned value is uint8_t::max
-		 */
-		uint16_t readArrayNdOfUInt16Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint16_t * arrayOutput) const;
-
-		/**
-		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
-		 * preallocated output array in memory. It does not allocate or deallocate memory.
-		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
-		 *
-		 * @returns	The null value of this array. Default returned value is uint32_t::max
-		 */
-		uint32_t readArrayNdOfUInt32Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint32_t * arrayOutput) const;
-
-		/**
-		 * Read an input array which come from EML 2.3 (and potentially HDF5) and store it into a
-		 * preallocated output array in memory. It does not allocate or deallocate memory.
-		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
-		 *
-		 * @returns	The null value of this array. Default returned value is uint32_t::max
-		 */
-		uint32_t readArrayNdOfUInt32Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint32_t * arrayOutput) const;
-
-		/**
-		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
-		 * preallocated output array in memory. It does not allocate or deallocate memory.
-		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
-		 *
-		 * @returns	The null value of this array. Default returned value is uint64_t::max
-		 */
-		uint64_t readArrayNdOfUInt64Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint64_t * arrayOutput) const;
-
-		/**
-		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
-		 * preallocated output array in memory. It does not allocate or deallocate memory.
-		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
-		 *
-		 * @returns	The null value of this array. Default returned value is uint64_t::max
-		 */
-		uint64_t readArrayNdOfUInt64Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint64_t * arrayOutput) const;
-
-		/**
-		 * Get the count of item in an array of integer
-		 *
-		 * @param [in,out]	arrayInput	The array of integer.
-		 *
-		 * @returns	The count of item in the array of integer.
-		 */
-		uint64_t getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const;
-
-		/**
-		 * Get the count of item in an array of integer
-		 *
-		 * @param [in,out]	arrayInput	The array of integer.
-		 *
-		 * @returns	The count of item in the array of integer.
-		 */
-		uint64_t getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractIntegerArray * arrayInput) const;
-
-		/**
-		 * Converts a data object reference into a data object repository relationship.
-		 *
-		 * @param dor The data object reference to convert.
-		 */
-		void convertDorIntoRel(const DataObjectReference& dor);
-
-		/**
-		 * Same as convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor). Also
-		 * check that the content type of the DOR is OK with the target datatype in memory.
-		 *
-		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
-		 *
-		 * @tparam	valueType	Type of the value type.
-		 * @param 	dor	The dor.
-		 */
-		template <class valueType>
-		void convertDorIntoRel(const DataObjectReference& dor)
-		{
-			valueType * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor.getUuid());
-			if (targetObj == nullptr) { // partial transfer
-				getRepository()->createPartial(dor);
-				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor.getUuid());
-				if (targetObj == nullptr) {
-					throw std::invalid_argument("The DOR looks invalid.");
-				}
-			}
-			getRepository()->addRelationship(this, targetObj);
-		}
-
-		/**
-		 * Gets an Hdf Proxy from a EML 2.0 dataset.
-		 *
-		 * @exception	std::invalid_argument	If <tt>throwException == true</tt> and the HDF proxy is
-		 * 										missing.
-		 *
-		 * @param 	dataset		  	The dataset.
-		 * @param 	throwException	(Optional) True to throw exception.
-		 *
-		 * @returns	Null if it fails, else the HDF proxy from dataset.
-		 */
-		EML2_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset, bool throwException = true) const;
-
-		/**
-		 * Gets an Hdf Proxy from a EML 2.2 dataset.
-		 *
-		 * @exception	std::invalid_argument	If <tt>throwException == true</tt> and the HDF proxy is
-		 * 										missing.
-		 *
-		 * @param 	dataset		  	The dataset.
-		 * @param 	throwException	(Optional) True to throw exception.
-		 *
-		 * @returns	Null if it fails, else the HDF proxy from dataset.
-		 */
-		EML2_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_eml2_3::eml23__ExternalDatasetPart const * dataset, bool throwException = true) const;
-
-		/**
-		* @return the HDF group where to write the numerical values associated to this object.
-		*/
-		std::string getHdfGroup() const {
-			return "/" + getXmlNamespace() + "/" + getUuid();
-		}
-
-		gsoap_resqml2_0_1::resqml20__IndexableElements mapIndexableElement(gsoap_eml2_3::resqml22__IndexableElement toMap) const;
-
 	public:
 
 		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG_64 = 3, ULONG_64 = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
@@ -779,20 +364,17 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void serializeIntoStream(std::ostream * stream);
 
 		/**
-		 * Sets the underlying RESQML2.0 gSOAP proxy of this data object
-		 *
-		 * @param [in]	gsoapProxy	If non-null, the gSOAP proxy.
-		 */
-		void setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy) { gsoapProxy2_0_1 = gsoapProxy; }
-
-		void setGsoapProxy(gsoap_eml2_1::eml21__AbstractObject* gsoapProxy) { gsoapProxy2_1 = gsoapProxy; }
-
-		/**
 		 * Get the EML2.0 gSOAP proxy which is wrapped by this entity
 		 *
 		 * @returns	A pointer to the EML2.0 gSOAP proxy.
 		 */
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* getEml20GsoapProxy() const { return gsoapProxy2_0_1; }
+		/**
+		 * Sets the underlying RESQML2.0 gSOAP proxy of this data object
+		 *
+		 * @param [in]	gsoapProxy	If non-null, the gSOAP proxy.
+		 */
+		void setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy) { gsoapProxy2_0_1 = gsoapProxy; }
 
 		/**
 		 * Get the EML2.1 gSOAP proxy which is wrapped by this entity
@@ -800,8 +382,24 @@ namespace COMMON_NS
 		 * @returns	A pointer to the EML2.1 gSOAP proxy.
 		 */
 		gsoap_eml2_1::eml21__AbstractObject* getEml21GsoapProxy() const { return gsoapProxy2_1; }
+		/**
+		 * Sets the underlying EML2.1 gSOAP proxy of this data object
+		 *
+		 * @param [in]	gsoapProxy	If non-null, the gSOAP proxy.
+		 */
+		void setGsoapProxy(gsoap_eml2_1::eml21__AbstractObject* gsoapProxy) { gsoapProxy2_1 = gsoapProxy; }
 
+		/**
+		 * Get the EML2.2 gSOAP proxy which is wrapped by this entity
+		 *
+		 * @returns	A pointer to the EML2.1 gSOAP proxy.
+		 */
 		gsoap_eml2_2::eml22__AbstractObject* getEml22GsoapProxy() const { return gsoapProxy2_2; }
+		/**
+		 * Sets the underlying EML2.2 gSOAP proxy of this data object
+		 *
+		 * @param [in]	gsoapProxy	If non-null, the gSOAP proxy.
+		 */
 		void setGsoapProxy(gsoap_eml2_2::eml22__AbstractObject* gsoapProxy) { gsoapProxy2_2 = gsoapProxy; }
 
 		/**
@@ -810,6 +408,11 @@ namespace COMMON_NS
 		 * @returns	A pointer to the EML2.3 gSOAP proxy.
 		 */
 		gsoap_eml2_3::eml23__AbstractObject* getEml23GsoapProxy() const { return gsoapProxy2_3; }
+		/**
+		 * Sets the underlying EML2.3 gSOAP proxy of this data object
+		 *
+		 * @param [in]	gsoapProxy	If non-null, the gSOAP proxy.
+		 */
 		void setGsoapProxy(gsoap_eml2_3::eml23__AbstractObject* gsoapProxy) { gsoapProxy2_3 = gsoapProxy; }
 
 		/**
@@ -1073,11 +676,451 @@ namespace COMMON_NS
 		* @return	The ETP1.2 URI built from the Energistics dataobject
 		*/
 		DLL_IMPORT_OR_EXPORT std::string buildEtp12Uri() const;
-
+		
 		/**
 		 * Reads the forward relationships of this data object and update the <tt>.rels</tt> of the
 		 * associated data repository.
 		 */
 		virtual void loadTargetRelationships() = 0;
+
+	protected:
+		/** Should be instantiated when the object is (or was) a partial object. */
+		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject;
+
+		/** The underlying generated gSoap proxy for a EML 2.0 dataobject. */
+		gsoap_witsml1_4::witsml14__obj_USCOREtrajectory* gsoapProxyTraj1_4;
+
+		/** The underlying generated gSoap proxy for a EML 2.0 dataobject. */
+		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
+
+		/** The underlying generated gSoap proxy for a EML 2.1 dataobject. */
+		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1;
+
+		/** The underlying generated gSoap proxy for a EML 2.2 dataobject. */
+		gsoap_eml2_2::eml22__AbstractObject* gsoapProxy2_2;
+
+		/** The underlying generated gSoap proxy for a EML 2.3 dataobject. */
+		gsoap_eml2_3::eml23__AbstractObject* gsoapProxy2_3;
+
+		/** The repository which contains this data object. */
+		COMMON_NS::DataObjectRepository* repository;
+
+		/**
+		* Default constructor
+		*/
+		AbstractObject() :
+			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
+			gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
+
+		/**
+		 * Constructor for partial transfer
+		 *
+		 * @param [in,out]	partialObject_	If non-null, the partial object.
+		 */
+		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_) :
+			partialObject(partialObject_), gsoapProxyTraj1_4(nullptr),
+			gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
+		AbstractObject(const DataObjectReference& dor) :
+			partialObject(dor.toDor20()), gsoapProxyTraj1_4(nullptr),
+			gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
+
+		/**
+		 * Constructor when importing a WITSML1.4 trajectory
+		 *
+		 * @param [in,out]	proxy	If non-null, the proxy.
+		 */
+		AbstractObject(gsoap_witsml1_4::witsml14__obj_USCOREtrajectory* proxy) :
+			partialObject(nullptr), gsoapProxyTraj1_4(proxy),
+			gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
+
+		/**
+		 * Constructor when importing EML 2.0 (i.e RESQML2.0.1) dataobjects
+		 *
+		 * @param [in,out]	proxy	If non-null, the proxy.
+		 */
+		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy) :
+			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
+			gsoapProxy2_0_1(proxy),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
+
+		/**
+		 * Constructor when importing EML 2.1 dataobjects
+		 *
+		 * @param [in,out]	proxy	If non-null, the proxy.
+		 */
+		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) :
+			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
+			gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(proxy),
+			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
+
+		/**
+		 * Constructor when importing EML 2.2 dataobjects
+		 *
+		 * @param [in,out]	proxy	If non-null, the proxy.
+		 */
+		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) :
+			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
+			gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(proxy),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
+
+		/**
+		 * Constructor when importing EML 2.3 dataobjects
+		 *
+		 * @param [in,out]	proxy	If non-null, the proxy.
+		 */
+		AbstractObject(gsoap_eml2_3::eml23__AbstractObject* proxy) :
+			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
+			gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			gsoapProxy2_3(proxy),
+			repository(nullptr) {}
+
+		/**
+		 * Adds an or replace data object
+		 *
+		 * @param [in,out]	proxy				If non-null, the proxy.
+		 * @param [in,out]	replaceOnlyContent	If true, only replace the content of corresponding object, not the object itself.
+		 *
+		 * @returns	The new DataObject.
+		 */
+		friend COMMON_NS::AbstractObject* COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy, bool replaceOnlyContent);
+
+		/**
+		 * Initialize all mandatory attributes of an AbstractObject (not the attributes of a
+		 * specialization) with some valid values.
+		 */
+		void initMandatoryMetadata();
+
+		/**
+		 * It is too dangerous for now to modify the uuid because too much things depend on it. That's
+		 * why this method is only protected : it is only used by derived class constructor. Set a title
+		 * and other common metadata for the resqml instance. Set to empty string or zero if you don't
+		 * want to use.
+		 *
+		 * @param 	guid			   	Unique identifier.
+		 * @param 	title			   	The title to set to the resqml instance. Set to empty string if
+		 * 								you don't want to set it.
+		 * @param 	editor			   	The editor.
+		 * @param 	creation		   	The creation.
+		 * @param 	originator		   	The originator.
+		 * @param 	description		   	The description.
+		 * @param 	lastUpdate		   	The last update.
+		 * @param 	descriptiveKeywords	The descriptive keywords.
+		 */
+		void setMetadata(const std::string & guid, const std::string & title, const std::string & editor, time_t creation, const std::string & originator,
+			const std::string & description, time_t lastUpdate, const std::string & descriptiveKeywords);
+
+		/** Throw an exception if the instance if partial. */
+		void cannotBePartial() const;
+
+		/** Transform a non partial object into a partial one */
+		void changeToPartialObject();
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 */
+		void readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray * arrayInput, double * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.3 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 */
+		void readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloatingPointArray * arrayInput, double * arrayOutput) const;
+
+		template <class T>
+		void readArrayNdOfNonHdf5IntegerValues(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, T * arrayOutput) const {
+			switch (arrayInput->soap_type()) {
+			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerRangeArray:
+			{
+				gsoap_resqml2_0_1::resqml20__IntegerRangeArray const* rangeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerRangeArray const *>(arrayInput);
+				if (rangeArray->Value + rangeArray->Count > (std::numeric_limits<T>::max)()) {
+					throw std::range_error("The range integer values are superior to unsigned int maximum value.");
+				}
+				for (unsigned int i = 0; i < static_cast<T>(rangeArray->Count); ++i) {
+					arrayOutput[i] = i + static_cast<T>(rangeArray->Value);
+				}
+				break;
+			}
+			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray:
+			{
+				gsoap_resqml2_0_1::resqml20__IntegerConstantArray const* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(arrayInput);
+				if (constantArray->Value > (std::numeric_limits<T>::max)()) {
+					throw std::range_error("The constant integer value is superior to unsigned int maximum value.");
+				}
+				for (size_t i = 0; i < constantArray->Count; ++i) {
+					arrayOutput[i] = static_cast<T>(constantArray->Value);
+				}
+				break;
+			}
+			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray:
+			{
+				gsoap_resqml2_0_1::resqml20__IntegerLatticeArray const* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray const*>(arrayInput);
+				if (latticeArray->Offset.size() > 1) {
+					throw std::invalid_argument("The integer lattice array contains more than one offset.");
+				}
+				for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
+					arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
+				}
+				break;
+			}
+			default:
+				throw std::invalid_argument("The integer array type is not supported yet.");
+			}
+		}
+
+		template <class T>
+		void readArrayNdOfNonHdf5IntegerValues(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, T * arrayOutput) const {
+			switch (arrayInput->soap_type()) {
+			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerRangeArray:
+			{
+				gsoap_eml2_3::eml23__IntegerRangeArray const* rangeArray = static_cast<gsoap_eml2_3::eml23__IntegerRangeArray const*>(arrayInput);
+				if (rangeArray->Value + rangeArray->Count > (std::numeric_limits<T>::max)()) {
+					throw std::range_error("The range integer values are superior to unsigned int maximum value.");
+				}
+				for (unsigned int i = 0; i < static_cast<T>(rangeArray->Count); ++i) {
+					arrayOutput[i] = i + static_cast<T>(rangeArray->Value);
+				}
+				break;
+			}
+			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
+			{
+				gsoap_eml2_3::eml23__IntegerConstantArray const* constantArray = static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(arrayInput);
+				if (constantArray->Value > (std::numeric_limits<T>::max)()) {
+					throw std::range_error("The constant integer value is superior to unsigned int maximum value.");
+				}
+				std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<T>(constantArray->Value));
+				break;
+			}
+			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray:
+			{
+				gsoap_eml2_3::eml23__IntegerLatticeArray const* latticeArray = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray const*>(arrayInput);
+				if (latticeArray->Offset.size() > 1) {
+					throw std::invalid_argument("The integer lattice array contains more than one offset.");
+				}
+				for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
+					arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
+				}
+				break;
+			}
+			default: throw std::invalid_argument("The integer array type is not supported yet.");
+			}
+		}
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint8_t::max
+		 */
+		uint8_t readArrayNdOfUInt8Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint8_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint16_t::max
+		 */
+		uint8_t readArrayNdOfUInt8Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint8_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint16_t::max
+		 */
+		uint16_t readArrayNdOfUInt16Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint16_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint8_t::max
+		 */
+		uint16_t readArrayNdOfUInt16Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint16_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint32_t::max
+		 */
+		uint32_t readArrayNdOfUInt32Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint32_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.3 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint32_t::max
+		 */
+		uint32_t readArrayNdOfUInt32Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint32_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint64_t::max
+		 */
+		uint64_t readArrayNdOfUInt64Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint64_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint64_t::max
+		 */
+		uint64_t readArrayNdOfUInt64Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint64_t * arrayOutput) const;
+
+		/**
+		 * Get the count of item in an array of integer
+		 *
+		 * @param [in,out]	arrayInput	The array of integer.
+		 *
+		 * @returns	The count of item in the array of integer.
+		 */
+		uint64_t getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const;
+
+		/**
+		 * Get the count of item in an array of integer
+		 *
+		 * @param [in,out]	arrayInput	The array of integer.
+		 *
+		 * @returns	The count of item in the array of integer.
+		 */
+		uint64_t getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractIntegerArray * arrayInput) const;
+
+		/**
+		 * Converts a data object reference into a data object repository relationship.
+		 *
+		 * @param dor The data object reference to convert.
+		 */
+		void convertDorIntoRel(const DataObjectReference& dor);
+
+		/**
+		 * Same as convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor). Also
+		 * check that the content type of the DOR is OK with the target datatype in memory.
+		 *
+		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @tparam	valueType	Type of the value type.
+		 * @param 	dor	The dor.
+		 */
+		template <class valueType>
+		void convertDorIntoRel(const DataObjectReference& dor)
+		{
+			valueType * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor.getUuid());
+			if (targetObj == nullptr) { // partial transfer
+				getRepository()->createPartial(dor);
+				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor.getUuid());
+				if (targetObj == nullptr) {
+					throw std::invalid_argument("The DOR looks invalid.");
+				}
+			}
+			getRepository()->addRelationship(this, targetObj);
+		}
+
+		/**
+		 * Gets an Hdf Proxy from a EML 2.0 dataset.
+		 *
+		 * @exception	std::invalid_argument	If <tt>throwException == true</tt> and the HDF proxy is
+		 * 										missing.
+		 *
+		 * @param 	dataset		  	The dataset.
+		 * @param 	throwException	(Optional) True to throw exception.
+		 *
+		 * @returns	Null if it fails, else the HDF proxy from dataset.
+		 */
+		EML2_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset, bool throwException = true) const;
+
+		/**
+		 * Gets an Hdf Proxy from a EML 2.2 dataset.
+		 *
+		 * @exception	std::invalid_argument	If <tt>throwException == true</tt> and the HDF proxy is
+		 * 										missing.
+		 *
+		 * @param 	dataset		  	The dataset.
+		 * @param 	throwException	(Optional) True to throw exception.
+		 *
+		 * @returns	Null if it fails, else the HDF proxy from dataset.
+		 */
+		EML2_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_eml2_3::eml23__ExternalDatasetPart const * dataset, bool throwException = true) const;
+
+		/**
+		* @return the HDF group where to write the numerical values associated to this object.
+		*/
+		std::string getHdfGroup() const {
+			return "/" + getXmlNamespace() + "/" + getUuid();
+		}
+
+		gsoap_resqml2_0_1::resqml20__IndexableElements mapIndexableElement(gsoap_eml2_3::resqml22__IndexableElement toMap) const;
+
+	private:
+		/** The variable which holds the format for all exported Energistics DataObjects. */
+		static char citationFormat[];
+
+		/**
+		 * Set a uuid. If the input uuid is empty then a random uuid will be set. It is too dangerous
+		 * for now to modify the uuid because too much things depend on it. That's why this method is
+		 * private.
+		 *
+		 * @param 	uuid	The uuid.
+		 */
+		void setUuid(const std::string & uuid);
 	};
 }

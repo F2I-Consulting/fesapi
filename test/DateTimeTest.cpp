@@ -20,10 +20,10 @@ under the License.
 
 #include "catch.hpp"
 
-#include "common/EpcDocument.h"
 #include "common/DataObjectRepository.h"
 
 #include "eml2/AbstractHdfProxy.h"
+
 #include "resqml2/LocalDepth3dCrs.h"
 
 using namespace std;

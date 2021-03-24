@@ -18,15 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/PolylineSetRepresentation.h"
 
+#include <stdexcept>
+
 #include "../catch.hpp"
-#include "common/EpcDocument.h"
+
 #include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2_0_1/LocalTime3dCrs.h"
 #include "resqml2/PolylineSetRepresentation.h"
 #include "resqml2_test/FaultInterpretationTest.h"
 #include "resqml2_test/LocalTime3dCrs.h"
-
-#include <stdexcept>
 
 using namespace std;
 using namespace resqml2_test;

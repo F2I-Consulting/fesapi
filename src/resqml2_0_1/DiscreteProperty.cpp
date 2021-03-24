@@ -124,8 +124,8 @@ bool DiscreteProperty::validatePropertyKindAssociation(EML2_NS::PropertyKind* pk
 			}
 			auto pk201 = dynamic_cast<RESQML2_0_1_NS::PropertyKind*>(pk);
 			if (pk201 != nullptr) {
-				if (!pk201->isChildOf(resqml20__ResqmlPropertyKind__discrete) &&
-					!pk201->isChildOf(resqml20__ResqmlPropertyKind__categorical)) {
+				if (!pk201->isChildOf(resqml20__ResqmlPropertyKind::discrete) &&
+					!pk201->isChildOf(resqml20__ResqmlPropertyKind::categorical)) {
 					repository->addWarning("The discrete property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
 					changeToPartialObject();
 					return false;
@@ -155,8 +155,8 @@ bool DiscreteProperty::validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml
 			changeToPartialObject();
 			return false;
 		}
-		if (!pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind__discrete) &&
-			!pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind__categorical)) {
+		if (!pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind::discrete) &&
+			!pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind::categorical)) {
 			repository->addWarning("The discrete property " + getUuid() + " cannot be associated to a resqml property kind \"" + pkName + "\" which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
 			changeToPartialObject();
 			return false;

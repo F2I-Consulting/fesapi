@@ -18,7 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractObject.h"
+#include "../common/AbstractObject.h"
+
 
 namespace WITSML2_0_NS
 {
@@ -26,7 +27,7 @@ namespace WITSML2_0_NS
 	class WellboreCompletion;
 
 	/** A well completion. */
-	class WellCompletion : public WITSML2_0_NS::AbstractObject
+	class WellCompletion : public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -37,7 +38,7 @@ namespace WITSML2_0_NS
 		 *
 		 * 
 		 */
-		DLL_IMPORT_OR_EXPORT WellCompletion(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT WellCompletion(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		 * @brief	Constructor
@@ -48,7 +49,7 @@ namespace WITSML2_0_NS
 		 * @param 	  	guid	  	Unique identifier.
 		 * @param 	  	title	  	The title.
 		 */
-		WellCompletion(class Well* witsmlWell,
+		WellCompletion(WITSML2_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);
 
@@ -57,7 +58,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		WellCompletion(gsoap_eml2_1::witsml20__WellCompletion* fromGsoap) :AbstractObject(fromGsoap) {}
+		WellCompletion(gsoap_eml2_1::witsml20__WellCompletion* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~WellCompletion() = default;
@@ -68,14 +69,14 @@ namespace WITSML2_0_NS
 		COMMON_NS::DataObjectReference getWellDor() const;
 		
 		/** Get the well of this well completion. */
-		DLL_IMPORT_OR_EXPORT class Well* getWell() const;
+		DLL_IMPORT_OR_EXPORT WITSML2_NS::Well* getWell() const;
 
 		/**
 		 * Set the well of this well completion.
 		 *
 		 * @param [in,out]	witsmlWell	If non-null, the witsml well.
 		 */
-		DLL_IMPORT_OR_EXPORT void setWell(class Well* witsmlWell);
+		DLL_IMPORT_OR_EXPORT void setWell(WITSML2_NS::Well* witsmlWell);
 
 		/**
 		 * Get all welbore completions linked with this well completion.
@@ -102,5 +103,15 @@ namespace WITSML2_0_NS
 		* Resolve all relationships of the object in the repository.
 		*/
 		void loadTargetRelationships();
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "witsml20";
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

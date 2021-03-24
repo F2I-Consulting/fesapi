@@ -169,15 +169,14 @@ void UnstructuredGridRepresentation::getCumulativeFaceCountPerCell(uint64_t * cu
 		cumulativeFaceCountPerCell_[0] = static_cast<eml23__IntegerLatticeArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->StartValue;
 		const int64_t offsetValue = static_cast<eml23__IntegerLatticeArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->Offset[0]->Value;
 		const uint64_t cellCount = getCellCount();
-		for (uint64_t cumulativeFaceCountPerCellIndex = 1; cumulativeFaceCountPerCellIndex < cellCount; ++cumulativeFaceCountPerCellIndex)
-		{
+		for (uint64_t cumulativeFaceCountPerCellIndex = 1; cumulativeFaceCountPerCellIndex < cellCount; ++cumulativeFaceCountPerCellIndex) {
 			cumulativeFaceCountPerCell_[cumulativeFaceCountPerCellIndex] = cumulativeFaceCountPerCell_[cumulativeFaceCountPerCellIndex - 1] + offsetValue;
 		}
 	}
-	else if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray)
-	{
-		if (getCellCount() > 1)
+	else if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
+		if (getCellCount() > 1) {
 			throw range_error("The cumulative length of faces count per cell cannot be constant if there is more than one cell in the grid");
+		}
 		cumulativeFaceCountPerCell_[0] = static_cast<eml23__IntegerConstantArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->Value;
 	}
 }
@@ -185,21 +184,21 @@ void UnstructuredGridRepresentation::getCumulativeFaceCountPerCell(uint64_t * cu
 bool UnstructuredGridRepresentation::isFaceCountOfCellsConstant() const
 {
 	_resqml22__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
-	if (grid->Geometry == nullptr)
+	if (grid->Geometry == nullptr) {
 		throw invalid_argument("There is no geometry in this grid.");
-	if (grid->Geometry->CellShape == resqml22__CellShape__hexahedral || grid->Geometry->CellShape == resqml22__CellShape__tetrahedral)
-	{
+	}
+	if (grid->Geometry->CellShape == resqml22__CellShape::hexahedral || grid->Geometry->CellShape == resqml22__CellShape::tetrahedral) {
 		return true;
 	}
-	else if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray)
-	{
-		if (static_cast<eml23__IntegerLatticeArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->StartValue == static_cast<eml23__IntegerLatticeArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->Offset[0]->Value)
+	else if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray) {
+		if (static_cast<eml23__IntegerLatticeArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->StartValue == static_cast<eml23__IntegerLatticeArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->Offset[0]->Value) {
 			return true;
+		}
 	}
-	else if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray)
-	{
-		if (getCellCount() > 1)
+	else if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
+		if (getCellCount() > 1) {
 			throw range_error("The cumulative length of faces count per cells cannot be constant if there is more than one cell in the grid");
+		}
 		return true;
 	}
 
@@ -212,26 +211,24 @@ unsigned int UnstructuredGridRepresentation::getConstantFaceCountOfCells() const
 	if (!isFaceCountOfCellsConstant())
 		throw logic_error("The face count per cell is not constant.");
 
-	if (grid->Geometry->CellShape == resqml22__CellShape__hexahedral)
-	{
+	if (grid->Geometry->CellShape == resqml22__CellShape::hexahedral) {
 		return 6;
 	}
-	else if (grid->Geometry->CellShape == resqml22__CellShape__tetrahedral)
-	{
+	else if (grid->Geometry->CellShape == resqml22__CellShape::tetrahedral) {
 		return 4;
 	}
-	else if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray)
-	{
+	else if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray) {
 		return static_cast<eml23__IntegerLatticeArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->StartValue;
 	}
-	else if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray)
-	{
-		if (getCellCount() > 1)
+	else if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
+		if (getCellCount() > 1) {
 			throw range_error("The cumulative length of faces count per cells cannot be constant if there is more than one cell in the grid");
+		}
 		return static_cast<eml23__IntegerConstantArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->Value;
 	}
-	else
+	else {
 		return 0;
+	}
 }
 
 void UnstructuredGridRepresentation::getNodeIndicesOfFaces(uint64_t * nodeIndices) const
@@ -282,7 +279,7 @@ bool UnstructuredGridRepresentation::isNodeCountOfFacesConstant() const
 	_resqml22__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (grid->Geometry == nullptr)
 		throw invalid_argument("There is no geometry in this grid.");
-	if (grid->Geometry->CellShape == resqml22__CellShape__hexahedral || grid->Geometry->CellShape == resqml22__CellShape__tetrahedral)
+	if (grid->Geometry->CellShape == resqml22__CellShape::hexahedral || grid->Geometry->CellShape == resqml22__CellShape::tetrahedral)
 	{
 		return true;
 	}
@@ -301,11 +298,11 @@ unsigned int UnstructuredGridRepresentation::getConstantNodeCountOfFaces() const
 	if (isNodeCountOfFacesConstant() == false)
 		throw invalid_argument("The node count per cell is not constant.");
 
-	if (grid->Geometry->CellShape == resqml22__CellShape__hexahedral)
+	if (grid->Geometry->CellShape == resqml22__CellShape::hexahedral)
 	{
 		return 4;
 	}
-	else if (grid->Geometry->CellShape == resqml22__CellShape__tetrahedral)
+	else if (grid->Geometry->CellShape == resqml22__CellShape::tetrahedral)
 	{
 		return 3;
 	}
@@ -476,13 +473,13 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 	geom->FaceCount = faceCount;
 	geom->NodeCount = pointCount;
 	if (nodeCountPerFace == 3 && faceCountPerCell == 4) {
-		geom->CellShape = resqml22__CellShape__tetrahedral;
+		geom->CellShape = resqml22__CellShape::tetrahedral;
 	}
 	else if (nodeCountPerFace == 4 && faceCountPerCell == 6) {
-		geom->CellShape = resqml22__CellShape__hexahedral;
+		geom->CellShape = resqml22__CellShape::hexahedral;
 	}
 	else {
-		geom->CellShape = resqml22__CellShape__polyhedral;
+		geom->CellShape = resqml22__CellShape::polyhedral;
 	}
 
 	getRepository()->addRelationship(this, proxy);

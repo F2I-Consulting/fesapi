@@ -291,11 +291,11 @@ unsigned int AbstractProperty::getElementCountPerValue() const
 gsoap_eml2_3::resqml22__IndexableElement AbstractProperty::getAttachmentKind() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		auto ie201 = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->IndexableElement;
-		if (ie201 == 0) {
-			return gsoap_eml2_3::resqml22__IndexableElement__cells;
+		gsoap_resqml2_0_1::resqml20__IndexableElements ie201 = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->IndexableElement;
+		if (ie201 == gsoap_resqml2_0_1::resqml20__IndexableElements::cells) {
+			return gsoap_eml2_3::resqml22__IndexableElement::cells;
 		}
-		else if (ie201 < 17) {
+		else if (static_cast<int>(ie201) < 17) {
 			return static_cast<gsoap_eml2_3::resqml22__IndexableElement>(static_cast<int>(ie201) + 1);
 		}
 		else {

@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellCompletion.h"
 
-#include "Well.h"
+#include "../witsml2/Well.h"
 #include "WellboreCompletion.h"
 
 #include <stdexcept>
@@ -29,11 +29,13 @@ using namespace gsoap_eml2_1;
 
 const char* WellCompletion::XML_TAG = "WellCompletion";
 
-WellCompletion::WellCompletion(Well* witsmlWell,
+WellCompletion::WellCompletion(WITSML2_NS::Well* witsmlWell,
 	const std::string & guid,
 	const std::string & title)
 {
-	if (witsmlWell == nullptr) throw invalid_argument("A well must be associated to a well completion.");
+	if (witsmlWell == nullptr) {
+		throw invalid_argument("A well must be associated to a well completion.");
+	}
 
 	gsoapProxy2_1 = soap_new_witsml20__WellCompletion(witsmlWell->getGsoapContext());
 
@@ -48,12 +50,12 @@ COMMON_NS::DataObjectReference WellCompletion::getWellDor() const
 	return COMMON_NS::DataObjectReference(static_cast<witsml20__WellCompletion*>(gsoapProxy2_1)->Well);
 }
 
-class Well* WellCompletion::getWell() const
+WITSML2_NS::Well* WellCompletion::getWell() const
 {
-	return getRepository()->getDataObjectByUuid<Well>(getWellDor().getUuid());
+	return getRepository()->getDataObjectByUuid<WITSML2_NS::Well>(getWellDor().getUuid());
 }
 
-void WellCompletion::setWell(Well* witsmlWell)
+void WellCompletion::setWell(WITSML2_NS::Well* witsmlWell)
 {
 	if (witsmlWell == nullptr) {
 		throw invalid_argument("Cannot set a null witsml Well to a witsml well completion");
@@ -75,5 +77,5 @@ std::vector<WellboreCompletion *> WellCompletion::getWellboreCompletions() const
 
 void WellCompletion::loadTargetRelationships()
 {
-	convertDorIntoRel<Well>(getWellDor());
+	convertDorIntoRel<WITSML2_NS::Well>(getWellDor());
 }

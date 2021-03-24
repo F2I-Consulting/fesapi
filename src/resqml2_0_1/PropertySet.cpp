@@ -32,7 +32,7 @@ PropertySet::PropertySet(COMMON_NS::DataObjectRepository* repo, const std::strin
 	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be NULL.");
 	}
-	if (timeSetKind == gsoap_eml2_3::resqml22__TimeSetKind__single_x0020time_x0020series) {
+	if (timeSetKind == gsoap_eml2_3::resqml22__TimeSetKind::single_x0020time_x0020series) {
 		throw invalid_argument("The single time series time set kind is not supported in V2.0.1");
 	}
 
@@ -40,9 +40,9 @@ PropertySet::PropertySet(COMMON_NS::DataObjectRepository* repo, const std::strin
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREPropertySet(repo->getGsoapContext());
 	static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->HasMultipleRealizations = hasMultipleRealizations;
 	static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->HasSinglePropertyKind = hasSinglePropertyKind;
-	static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->TimeSetKind = timeSetKind == gsoap_eml2_3::resqml22__TimeSetKind__single_x0020time
-		? gsoap_resqml2_0_1::resqml20__TimeSetKind__single_x0020time
-		: static_cast<resqml20__TimeSetKind>(timeSetKind-1);
+	static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->TimeSetKind = timeSetKind == gsoap_eml2_3::resqml22__TimeSetKind::single_x0020time
+		? gsoap_resqml2_0_1::resqml20__TimeSetKind::single_x0020time
+		: static_cast<resqml20__TimeSetKind>(static_cast<std::underlying_type<gsoap_eml2_3::resqml22__TimeSetKind>::type>(timeSetKind) - 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -83,10 +83,10 @@ bool PropertySet::hasSinglePropertyKind() const
 
 gsoap_eml2_3::resqml22__TimeSetKind PropertySet::getTimeSetKind() const
 {
-	auto kind = static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->TimeSetKind;
-	return kind == gsoap_resqml2_0_1::resqml20__TimeSetKind__single_x0020time
-		? gsoap_eml2_3::resqml22__TimeSetKind__single_x0020time
-		: static_cast<gsoap_eml2_3::resqml22__TimeSetKind>(kind+1);
+	resqml20__TimeSetKind kind = static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->TimeSetKind;
+	return kind == gsoap_resqml2_0_1::resqml20__TimeSetKind::single_x0020time
+		? gsoap_eml2_3::resqml22__TimeSetKind::single_x0020time
+		: static_cast<gsoap_eml2_3::resqml22__TimeSetKind>(static_cast<std::underlying_type<resqml20__TimeSetKind>::type>(kind) + 1);
 }
 
 std::vector<COMMON_NS::DataObjectReference> PropertySet::getAllPropertiesDors() const

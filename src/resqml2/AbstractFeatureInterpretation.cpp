@@ -119,16 +119,16 @@ gsoap_resqml2_0_1::resqml20__Domain AbstractFeatureInterpretation::initDomain(gs
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		if (isTimeDomain && isDepthDomain) {
-			static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = gsoap_resqml2_0_1::resqml20__Domain__mixed;
+			static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = gsoap_resqml2_0_1::resqml20__Domain::mixed;
 		}
 		else if (!isTimeDomain && !isDepthDomain) {
 			static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = defaultDomain;
 		}
 		else if (isTimeDomain) {
-			static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = gsoap_resqml2_0_1::resqml20__Domain__time;
+			static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = gsoap_resqml2_0_1::resqml20__Domain::time;
 		}
 		else {
-			static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = gsoap_resqml2_0_1::resqml20__Domain__depth;
+			static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = gsoap_resqml2_0_1::resqml20__Domain::depth;
 		}
 
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->Domain;
@@ -140,21 +140,21 @@ gsoap_resqml2_0_1::resqml20__Domain AbstractFeatureInterpretation::initDomain(gs
 		}
 
 		if (isTimeDomain && isDepthDomain) {
-			*static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain = gsoap_eml2_3::resqml22__Domain__mixed;
+			*static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain = gsoap_eml2_3::resqml22__Domain::mixed;
 		}
 		else if (!isTimeDomain && !isDepthDomain) {
 			*static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain = static_cast<gsoap_eml2_3::resqml22__Domain>(defaultDomain);
 		}
 		else if (isTimeDomain) {
-			*static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain = gsoap_eml2_3::resqml22__Domain__time;
+			*static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain = gsoap_eml2_3::resqml22__Domain::time;
 		}
 		else {
-			*static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain = gsoap_eml2_3::resqml22__Domain__depth;
+			*static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain = gsoap_eml2_3::resqml22__Domain::depth;
 		}
 
 		return static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain != nullptr
 			? static_cast<gsoap_resqml2_0_1::resqml20__Domain>(*static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain)
-			: gsoap_resqml2_0_1::resqml20__Domain__mixed;
+			: gsoap_resqml2_0_1::resqml20__Domain::mixed;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -168,7 +168,7 @@ gsoap_resqml2_0_1::resqml20__Domain AbstractFeatureInterpretation::getDomain() c
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		return static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain == nullptr
-			? gsoap_resqml2_0_1::resqml20__Domain__mixed
+			? gsoap_resqml2_0_1::resqml20__Domain::mixed
 			: static_cast<gsoap_resqml2_0_1::resqml20__Domain>(*static_cast<gsoap_eml2_3::resqml22__AbstractFeatureInterpretation*>(gsoapProxy2_3)->Domain);
 	}
 	else {

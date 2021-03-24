@@ -53,7 +53,7 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	if (mdInfo->getLocalCrs() != nullptr) {
-		rep->MdUom = mdInfo->getLocalCrs()->getVerticalCrsUnit();
+		rep->MdUom = mdInfo->getLocalCrs()->getVerticalCrsUnitAsString();
 	}
 	rep->StartMd = std::numeric_limits<double>::quiet_NaN();
 	rep->FinishMd = std::numeric_limits<double>::quiet_NaN();
@@ -89,7 +89,7 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	if (mdInfo->getLocalCrs() != nullptr) {
-		rep->MdUom = mdInfo->getLocalCrs()->getVerticalCrsUnit();
+		rep->MdUom = mdInfo->getLocalCrs()->getVerticalCrsUnitAsString();
 	}
 }
 

@@ -46,7 +46,7 @@ WellboreTrajectoryRepresentationTest::WellboreTrajectoryRepresentationTest(const
 
 void WellboreTrajectoryRepresentationTest::initRepo() {
 	WellboreInterpretation* interp = repo->createPartial<RESQML2_0_1_NS::WellboreInterpretation>("", "");
-	MdDatum* mdDatum = repo->createMdDatum("", "", nullptr, gsoap_eml2_3::eml23__WellboreDatumReference__mean_x0020sea_x0020level, 275, 75, 0);
+	MdDatum* mdDatum = repo->createMdDatum("", "", nullptr, gsoap_eml2_3::eml23__WellboreDatumReference::mean_x0020sea_x0020level, 275, 75, 0);
 
 	// creating the WellboreTrajectoryRepresentation in m and ft and depth
 	WellboreTrajectoryRepresentation* rep = repo->createWellboreTrajectoryRepresentation(interp, defaultUuid, defaultTitle, mdDatum);
@@ -56,12 +56,12 @@ void WellboreTrajectoryRepresentationTest::initRepo() {
 	rep->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, 0, repo->getHdfProxySet()[0]);
 
 	// creating the WellboreTrajectoryRepresentation in m and m and Time
-	auto* timeCrs = repo->createLocalTime3dCrs(CRS_MMTIME_UUID, "", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__ms, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", true);
+	auto* timeCrs = repo->createLocalTime3dCrs(CRS_MMTIME_UUID, "", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom::m, 23031, gsoap_resqml2_0_1::eml20__TimeUom::ms, gsoap_resqml2_0_1::eml20__LengthUom::m, "Unknown", true);
 	WellboreTrajectoryRepresentation* timeRep = repo->createWellboreTrajectoryRepresentation(interp, TRAJ_MMTIME_UUID, "m m time", mdDatum);
 	timeRep->setGeometry(controlPoints, trajectoryMds, 4, 0, repo->getHdfProxySet()[0], timeCrs);
 
 	// creating the WellboreTrajectoryRepresentation in m and m and elevation
-	auto* crs = repo->createLocalDepth3dCrs(CRS_MMELEV_UUID, "", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", true);
+	auto* crs = repo->createLocalDepth3dCrs(CRS_MMELEV_UUID, "", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom::m, 23031, gsoap_resqml2_0_1::eml20__LengthUom::m, "Unknown", true);
 	WellboreTrajectoryRepresentation* rep2 = repo->createWellboreTrajectoryRepresentation(interp, TRAJ_MMELEV_UUID, "m m elevation", mdDatum);
 	double controlPoints2[12] = { 275, 75, 0, 275, 75, -325, 275, 75, -500, 275, 75, -1000 };
 	double trajectoryTangentVectors2[12] = { 0, 0, -1, -1, 0, 0, 0, 1, 0, 1, 0, 1 };

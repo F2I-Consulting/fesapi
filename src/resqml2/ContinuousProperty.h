@@ -50,7 +50,7 @@ namespace RESQML2_NS
 
 		/**
 		 * Gets the unit of measure of the values of this property. If <tt>
-		 * resqml20__ResqmlUom::resqml20__ResqmlUom__Euc </tt> is returned, you should check if
+		 * resqml20__ResqmlUom::resqml20__ResqmlUom::Euc </tt> is returned, you should check if
 		 * getUomAsString() gives you another result: it would be that the writer would have used a non
 		 * standard unit of measure.
 		 *

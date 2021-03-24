@@ -69,7 +69,7 @@ PolylineSetRepresentation::PolylineSetRepresentation(RESQML2_NS::AbstractFeature
 	if (interp == nullptr) {
 		throw invalid_argument("You must provide an interpretation");
 	}
-	if (roleKind == gsoap_eml2_3::resqml22__LineRole__break_x0020line) {
+	if (roleKind == gsoap_eml2_3::resqml22__LineRole::break_x0020line) {
 		throw invalid_argument("Break line role is not supported in v2.0.1");
 	}
 
@@ -419,7 +419,7 @@ gsoap_eml2_3::resqml22__LineRole PolylineSetRepresentation::getLineRole() const
 
 void PolylineSetRepresentation::setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole)
 {
-	if (lineRole == gsoap_eml2_3::resqml22__LineRole__break_x0020line) {
+	if (lineRole == gsoap_eml2_3::resqml22__LineRole::break_x0020line) {
 		throw std::invalid_argument("Break line enumerated value is not part of RESQML 2.0.1");
 	}
 	if (!hasALineRole()) {

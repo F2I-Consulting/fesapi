@@ -34,7 +34,7 @@ WellboreInterpretation::WellboreInterpretation(RESQML2_NS::WellboreFeature * wel
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreInterpretation(wellboreFeature->getGsoapContext());
 	_resqml20__WellboreInterpretation* wbInterp = static_cast<_resqml20__WellboreInterpretation*>(gsoapProxy2_0_1);
-	wbInterp->Domain = resqml20__Domain__mixed;
+	wbInterp->Domain = resqml20__Domain::mixed;
 
 	wbInterp->IsDrilled = isDrilled;
 

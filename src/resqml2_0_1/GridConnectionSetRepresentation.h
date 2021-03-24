@@ -73,7 +73,7 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT uint64_t getCellIndexPairCount() const final;
 
-		DLL_IMPORT_OR_EXPORT uint64_t getCellIndexPairs(uint64_t * cellIndexPairs) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getCellIndexPairs(int64_t * cellIndexPairs) const final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getCellIndexPairCountFromInterpretationIndex(unsigned int interpretationIndex) const final;
 

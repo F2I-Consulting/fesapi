@@ -45,7 +45,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 			throw std::invalid_argument("A (default) CRS must be provided.");
 		}
 	}
-	if (localCrs->getAxisOrder() != gsoap_resqml2_0_1::eml20__AxisOrder2d__easting_x0020northing) {
+	if (localCrs->getAxisOrder() != gsoap_resqml2_0_1::eml20__AxisOrder2d::easting_x0020northing) {
 		throw std::invalid_argument("Cannot compute inclinations and azimuths if the local CRS is not an easting northing one.");
 	}
 
@@ -63,14 +63,14 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 	auto projectedUom = localCrs->getProjectedCrsUnit();
 	auto verticalUom = localCrs->getVerticalCrsUnit();
 	if (projectedUom != verticalUom) {
-		if (projectedUom == gsoap_resqml2_0_1::eml20__LengthUom__m &&
-			verticalUom == gsoap_resqml2_0_1::eml20__LengthUom__ft) {
+		if (projectedUom == gsoap_resqml2_0_1::eml20__LengthUom::m &&
+			verticalUom == gsoap_resqml2_0_1::eml20__LengthUom::ft) {
 			for (size_t i = 0; i < controlPointCount; ++i) {
 				tangentVectors[i * 3 + 2] *= 3.2808;
 			}
 		}
-		else if (projectedUom == gsoap_resqml2_0_1::eml20__LengthUom__ft &&
-			verticalUom == gsoap_resqml2_0_1::eml20__LengthUom__m) {
+		else if (projectedUom == gsoap_resqml2_0_1::eml20__LengthUom::ft &&
+			verticalUom == gsoap_resqml2_0_1::eml20__LengthUom::m) {
 			for (size_t i = 0; i < controlPointCount; ++i) {
 				tangentVectors[i * 3 + 2] /= 3.2808;
 			}
@@ -86,7 +86,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 void WellboreTrajectoryRepresentation::getInclinationsAndAzimuths(double * inclinations, double * azimuths)
 {
 	auto* localCrs = getLocalCrs(0);
-	if (localCrs->getAxisOrder() != gsoap_resqml2_0_1::eml20__AxisOrder2d__easting_x0020northing) {
+	if (localCrs->getAxisOrder() != gsoap_resqml2_0_1::eml20__AxisOrder2d::easting_x0020northing) {
 		throw std::invalid_argument("Cannot compute inclinations and azimuths if the local CRS is not an easting northing one.");
 	}
 
@@ -98,14 +98,14 @@ void WellboreTrajectoryRepresentation::getInclinationsAndAzimuths(double * incli
 	auto projectedUom = localCrs->getProjectedCrsUnit();
 	auto verticalUom = localCrs->getVerticalCrsUnit();
 	if (projectedUom != verticalUom) {
-		if (projectedUom == gsoap_resqml2_0_1::eml20__LengthUom__m &&
-			verticalUom == gsoap_resqml2_0_1::eml20__LengthUom__ft) {
+		if (projectedUom == gsoap_resqml2_0_1::eml20__LengthUom::m &&
+			verticalUom == gsoap_resqml2_0_1::eml20__LengthUom::ft) {
 			for (size_t i = 0; i < controlPointCount; ++i) {
 				tangentVectors[i * 3 + 2] /= 3.2808;
 			}
 		}
-		else if (projectedUom == gsoap_resqml2_0_1::eml20__LengthUom__ft &&
-			verticalUom == gsoap_resqml2_0_1::eml20__LengthUom__m) {
+		else if (projectedUom == gsoap_resqml2_0_1::eml20__LengthUom::ft &&
+			verticalUom == gsoap_resqml2_0_1::eml20__LengthUom::m) {
 			for (size_t i = 0; i < controlPointCount; ++i) {
 				tangentVectors[i * 3 + 2] *= 3.2808;
 			}

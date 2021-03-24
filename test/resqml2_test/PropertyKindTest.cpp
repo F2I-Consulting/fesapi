@@ -17,10 +17,12 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "PropertyKindTest.h"
-#include "../catch.hpp"
-#include "common/EpcDocument.h"
-#include "eml2/PropertyKind.h"
+
 #include <stdexcept>
+
+#include "../catch.hpp"
+
+#include "eml2/PropertyKind.h"
 
 using namespace std;
 using namespace resqml2_test;
@@ -35,8 +37,8 @@ PropertyKindTest::PropertyKindTest(const string & repoPath)
 }
 
 void PropertyKindTest::initRepo() {
-	auto parentPropertyKind = repo->createPropertyKind("a48c9c25-1e3a-43c8-be6a-044224cc69cb", "property", gsoap_eml2_1::eml21__QuantityClassKind__unitless);
-	auto propertyKind = repo->createPropertyKind(defaultUuid, defaultTitle, gsoap_eml2_1::eml21__QuantityClassKind__not_x0020a_x0020measure, false, parentPropertyKind);
+	auto parentPropertyKind = repo->createPropertyKind("a48c9c25-1e3a-43c8-be6a-044224cc69cb", "property", gsoap_eml2_1::eml21__QuantityClassKind::unitless);
+	auto propertyKind = repo->createPropertyKind(defaultUuid, defaultTitle, gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure, false, parentPropertyKind);
 	REQUIRE(propertyKind != nullptr);
 }
 

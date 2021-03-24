@@ -18,12 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "WellboreObject.h"
+#include "../witsml2/WellboreObject.h"
 
 namespace WITSML2_0_NS
 {
 	/** The location/interval of the perforation set and its history. */
-	class WellboreCompletion : public WITSML2_0_NS::WellboreObject
+	class WellboreCompletion : public WITSML2_NS::WellboreObject
 	{
 	public:
 
@@ -34,7 +34,7 @@ namespace WITSML2_0_NS
 		 *
 		 * 
 		 */
-		DLL_IMPORT_OR_EXPORT WellboreCompletion(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::WellboreObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT WellboreCompletion(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::WellboreObject(partialObject) {}
 
 		/**
 		 * Constructor
@@ -45,7 +45,7 @@ namespace WITSML2_0_NS
 		 * @param 		  	title			  	The title.
 		 * @param 		  	wellCompletionName	Name of the well completion.
 		 */
-		WellboreCompletion(class Wellbore* witsmlWellbore,
+		WellboreCompletion(WITSML2_NS::Wellbore* witsmlWellbore,
 			class WellCompletion* wellCompletion,
 			const std::string & guid,
 			const std::string & title,
@@ -64,7 +64,7 @@ namespace WITSML2_0_NS
 		/**
 		* Get the Data Object Reference of the wellbore linked with this data object.
 		*/
-		COMMON_NS::DataObjectReference getWellboreDor() const;
+		COMMON_NS::DataObjectReference getWellboreDor() const final;
 
 		/**
 		* Get the Data Object Reference of the well completion linked with this data object.
@@ -79,7 +79,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @param [in,out]	witsmlWellbore	If non-null, the witsml wellbore.
 		 */
-		DLL_IMPORT_OR_EXPORT void setWellbore(class Wellbore* witsmlWellbore);
+		DLL_IMPORT_OR_EXPORT void setWellbore(WITSML2_NS::Wellbore* witsmlWellbore) final;
 
 		/**
 		 * Set the well completion linked with this data object
@@ -525,6 +525,16 @@ namespace WITSML2_0_NS
 		* Resolve all relationships of the object in an epc document.
 		*/
 		void loadTargetRelationships();
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "witsml20";
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
 	private:
 

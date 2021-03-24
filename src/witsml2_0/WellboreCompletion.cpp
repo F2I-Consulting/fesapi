@@ -29,7 +29,7 @@ using namespace gsoap_eml2_1;
 
 const char* WellboreCompletion::XML_TAG = "WellboreCompletion";
 
-WellboreCompletion::WellboreCompletion(Wellbore* witsmlWellbore,
+WellboreCompletion::WellboreCompletion(WITSML2_NS::Wellbore* witsmlWellbore,
 	class WellCompletion* wellCompletion,
 	const string & guid,
 	const string & title,
@@ -68,7 +68,7 @@ class WellCompletion* WellboreCompletion::getWellCompletion() const
 	return getRepository()->getDataObjectByUuid<WellCompletion>(getWellCompletionDor().getUuid());
 }
 
-void WellboreCompletion::setWellbore(Wellbore* witsmlWellbore)
+void WellboreCompletion::setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 {
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml well bore to a witsml wellbore completion");

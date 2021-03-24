@@ -140,7 +140,7 @@ string PropertyKindMapper::loadMappingFilesFromDirectory(const string & director
 
 std::string PropertyKindMapper::getDescriptionOfResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind resqmlStandardPropertyKindName) const
 {
-	std::unordered_map<gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::hash<int> >::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
+	auto cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
 
 	if (cit != resqmlStandardPropertyKindNameToApplicationPropertyKindName.end())
 	{
@@ -153,7 +153,7 @@ std::string PropertyKindMapper::getDescriptionOfResqmlStandardPropertyKindName(g
 
 std::string PropertyKindMapper::getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind resqmlStandardPropertyKindName, const std::string & application) const
 {
-	std::unordered_map<gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::hash<int> >::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
+	auto cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
 	if (cit != resqmlStandardPropertyKindNameToApplicationPropertyKindName.end())
 	{
 		for (unsigned int equivalentPropIndex = 0; equivalentPropIndex < cit->second->equivalentPropertyType.size(); ++equivalentPropIndex)
@@ -175,13 +175,13 @@ gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind PropertyKindMapper::getResqmlSta
 	if (cit1 != applicationPropertyKindNameToResqmlStandardPropertyKindName.end())
 		value =  cit1->second;
 	else
-		return gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__RESQML_x0020root_x0020property;
+		return gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::RESQML_x0020root_x0020property;
 
 	std::unordered_map<std::string, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind>::const_iterator cit = value.find (applicationPropertyKindName);
 	if (cit != value.end())
 		return cit->second;
 	else
-		return gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__RESQML_x0020root_x0020property;
+		return gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::RESQML_x0020root_x0020property;
 }
 
 std::string PropertyKindMapper::getApplicationPropertyKindNameFromResqmlLocalPropertyKindUuid(const std::string & resqmlLocalPropertyKindUuid, const std::string & application) const
@@ -281,7 +281,7 @@ PropertyKind* PropertyKindMapper::addResqmlLocalPropertyKindToEpcDocumentFromApp
 
 gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind PropertyKindMapper::getPropertyKindParentOfResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind resqmlStandardPropertyKindName) const
 {
-	std::unordered_map<gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::hash<int> >::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
+	auto cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
 
 	if (cit != resqmlStandardPropertyKindNameToApplicationPropertyKindName.end()) {
 		if (cit->second->parentKind != nullptr) {
@@ -289,12 +289,12 @@ gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind PropertyKindMapper::getPropertyK
 		}
 	}
 
-	return gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__RESQML_x0020root_x0020property;
+	return gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::RESQML_x0020root_x0020property;
 }
 
 bool PropertyKindMapper::isChildOf(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind child, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parent) const
 {
-	if (child == gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__RESQML_x0020root_x0020property) {
+	if (child == gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::RESQML_x0020root_x0020property) {
 		return false;
 	}
 
@@ -307,7 +307,7 @@ bool PropertyKindMapper::isChildOf(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKi
 
 bool PropertyKindMapper::isAbstract(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind resqmlStandardPropertyKindName) const
 {
-	std::unordered_map<gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::hash<int> >::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find(resqmlStandardPropertyKindName);
+	auto cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find(resqmlStandardPropertyKindName);
 
 	if (cit != resqmlStandardPropertyKindNameToApplicationPropertyKindName.end()) {
 		if (cit->second->isAbstract != nullptr) {

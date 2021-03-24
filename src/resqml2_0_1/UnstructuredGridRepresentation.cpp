@@ -187,7 +187,7 @@ bool UnstructuredGridRepresentation::isFaceCountOfCellsConstant() const
 	_resqml20__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (grid->Geometry == nullptr)
 		throw invalid_argument("There is no geometry in this grid.");
-	if (grid->Geometry->CellShape == resqml20__CellShape__hexahedral || grid->Geometry->CellShape == resqml20__CellShape__tetrahedral)
+	if (grid->Geometry->CellShape == resqml20__CellShape::hexahedral || grid->Geometry->CellShape == resqml20__CellShape::tetrahedral)
 	{
 		return true;
 	}
@@ -212,11 +212,11 @@ unsigned int UnstructuredGridRepresentation::getConstantFaceCountOfCells() const
 	if (!isFaceCountOfCellsConstant())
 		throw logic_error("The face count per cell is not constant.");
 
-	if (grid->Geometry->CellShape == resqml20__CellShape__hexahedral)
+	if (grid->Geometry->CellShape == resqml20__CellShape::hexahedral)
 	{
 		return 6;
 	}
-	else if (grid->Geometry->CellShape == resqml20__CellShape__tetrahedral)
+	else if (grid->Geometry->CellShape == resqml20__CellShape::tetrahedral)
 	{
 		return 4;
 	}
@@ -282,7 +282,7 @@ bool UnstructuredGridRepresentation::isNodeCountOfFacesConstant() const
 	_resqml20__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (grid->Geometry == nullptr)
 		throw invalid_argument("There is no geometry in this grid.");
-	if (grid->Geometry->CellShape == resqml20__CellShape__hexahedral || grid->Geometry->CellShape == resqml20__CellShape__tetrahedral)
+	if (grid->Geometry->CellShape == resqml20__CellShape::hexahedral || grid->Geometry->CellShape == resqml20__CellShape::tetrahedral)
 	{
 		return true;
 	}
@@ -301,11 +301,11 @@ unsigned int UnstructuredGridRepresentation::getConstantNodeCountOfFaces() const
 	if (isNodeCountOfFacesConstant() == false)
 		throw invalid_argument("The node count per cell is not constant.");
 
-	if (grid->Geometry->CellShape == resqml20__CellShape__hexahedral)
+	if (grid->Geometry->CellShape == resqml20__CellShape::hexahedral)
 	{
 		return 4;
 	}
-	else if (grid->Geometry->CellShape == resqml20__CellShape__tetrahedral)
+	else if (grid->Geometry->CellShape == resqml20__CellShape::tetrahedral)
 	{
 		return 3;
 	}
@@ -467,13 +467,13 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 	geom->FaceCount = faceCount;
 	geom->NodeCount = pointCount;
 	if (nodeCountPerFace == 3 && faceCountPerCell == 4) {
-		geom->CellShape = resqml20__CellShape__tetrahedral;
+		geom->CellShape = resqml20__CellShape::tetrahedral;
 	}
 	else if (nodeCountPerFace == 4 && faceCountPerCell == 6) {
-		geom->CellShape = resqml20__CellShape__hexahedral;
+		geom->CellShape = resqml20__CellShape::hexahedral;
 	}
 	else {
-		geom->CellShape = resqml20__CellShape__polyhedral;
+		geom->CellShape = resqml20__CellShape::polyhedral;
 	}
 
 	getRepository()->addRelationship(this, proxy);
