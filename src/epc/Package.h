@@ -234,7 +234,7 @@ namespace epc
 		 *
 		 * @returns	The extracted file.
 		 */
-		std::string extractFile(const std::string & filename, const std::string & password = "");
+		std::string extractFile(const std::string & filename);
 
 		/** Writes the package */
 		void writePackage();
