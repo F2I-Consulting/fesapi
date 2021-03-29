@@ -182,7 +182,7 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 				continue;
 			}
 
-			std::istringstream iss(extractFile(target, ""));
+			std::istringstream iss(extractFile(target));
 			std::string line;
 			while (std::getline(iss, line)) {
 				if (line[0] == '\t') { // To find a better condition
@@ -200,7 +200,7 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 	}
 
 	// Package content type
-	d_ptr->fileContentType.readFromString(extractFile("[Content_Types].xml", ""));
+	d_ptr->fileContentType.readFromString(extractFile("[Content_Types].xml"));
 
 	return result;
 }
@@ -398,7 +398,7 @@ void Package::writeStringIntoNewPart(const std::string &input, const std::string
 		Z_DEFAULT_COMPRESSION,				// level
 		d_ptr->isZip64);								// Zip64
 	if (err != ZIP_OK) {
-		throw invalid_argument("Could not open " + partPath + " in the zipfile");
+		throw invalid_argument("Could not open " + partPath + " in the zipfile. Code = " + std::to_string(err));
 	}
 
 	// Write the content of the content type part
@@ -407,13 +407,13 @@ void Package::writeStringIntoNewPart(const std::string &input, const std::string
 	}
 	err = zipWriteInFileInZip(d_ptr->zf, input.c_str(), static_cast<unsigned int>(input.size()));
 	if (err < 0) {
-		throw invalid_argument("Could not write " + partPath + " in the zipfile");
+		throw invalid_argument("Could not write " + partPath + " in the zipfile. Code = " + std::to_string(err));
 	}
 
 	// Close the content type part
 	err = zipCloseFileInZip(d_ptr->zf);
 	if (err != ZIP_OK) {
-		throw invalid_argument("Could not close " + partPath + " in the zipfile");
+		throw invalid_argument("Could not close " + partPath + " in the zipfile. Code = " + std::to_string(err));
 	}
 }
 
@@ -465,11 +465,11 @@ void Package::writePackage()
 	// Close the zip archive
 	int err = zipClose(d_ptr->zf, "");
 	if (err != ZIP_OK) {
-		throw invalid_argument("Could not close " + d_ptr->pathName.substr(0, d_ptr->pathName.size() - 4));
+		throw invalid_argument("Could not close " + d_ptr->pathName.substr(0, d_ptr->pathName.size() - 4) + ". Code = " + std::to_string(err));
 	}
 }
 
-string do_extract_currentfile(unzFile uf, const char* password)
+string do_extract_currentfile(unzFile uf)
 {
     int err=UNZ_OK;
     void* buf;
@@ -482,11 +482,11 @@ string do_extract_currentfile(unzFile uf, const char* password)
 		throw invalid_argument(oss.str());
     }
 
-    err = unzOpenCurrentFilePassword(uf,password);
+    err = unzOpenCurrentFile(uf);
     if (err != UNZ_OK)
     {
 		free(buf);
-		throw invalid_argument("Error with zipfile in unzOpenCurrentFilePassword");
+		throw invalid_argument("Error with zipfile in unzOpenCurrentFile. Code = " + std::to_string(err));
     }
 
 	ostringstream oss;
@@ -494,7 +494,7 @@ string do_extract_currentfile(unzFile uf, const char* password)
         err = unzReadCurrentFile(uf,buf,size_buf);
         if (err < 0)  {
 			free(buf);
-			throw invalid_argument("Error with zipfile in unzReadCurrentFile");
+			throw invalid_argument("Error with zipfile in unzReadCurrentFile. Code = " + std::to_string(err));
         }
 		if (err > 0) {
 			oss.write((char*)buf, err);
@@ -506,7 +506,7 @@ string do_extract_currentfile(unzFile uf, const char* password)
         err = unzCloseCurrentFile (uf);
         if (err != UNZ_OK)  {
 			free(buf);
-			throw invalid_argument("Error with zipfile in unzCloseCurrentFile");
+			throw invalid_argument("Error with zipfile in unzCloseCurrentFile. Code = " + std::to_string(err));
         }
     }
 	else {
@@ -537,13 +537,11 @@ bool Package::fileExists(const string & filename) const
 	return true;
 }
 
-string Package::extractFile(const string & filename, const string & password)
+string Package::extractFile(const string & filename)
 {
 	if (!fileExists(filename))  {
 		throw invalid_argument("The file " + filename + " does not exist in the EPC document.");
     }
-
-	return password.empty()
-		? do_extract_currentfile(d_ptr->unzipped, nullptr)
-		: do_extract_currentfile(d_ptr->unzipped, password.c_str());
+	
+	return do_extract_currentfile(d_ptr->unzipped);
 }
