@@ -38,7 +38,6 @@ set (EML_PREFIX_2_0 "eml2_0")
 set (EML_PREFIX_2_1 "eml2_1")
 set (EML_PREFIX_2_2 "eml2_2")
 set (EML_PREFIX_2_3 "eml2_3")
-set (ETP_PREFIX "etp")
 
 # Define the compile options according to the compiler
 target_compile_options(${CPP_LIBRARY_NAME}	PRIVATE
@@ -65,12 +64,6 @@ if (WIN32)
 endif (WIN32)
 
 target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE BOOST_ALL_NO_LIB)
-if (WITH_ETP)
-	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE WITH_ETP)
-	if (WITH_ETP_SSL)
-		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE WITH_ETP_SSL)
-	endif ()
-endif ()
 
 # Linker instructions
 if (WIN32)
@@ -155,28 +148,6 @@ ELSEIF (UNIX)
 		SOVERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
 endif (WIN32)
 
-if (WITH_ETP)
-	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${Boost_SYSTEM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT})
-	if (WIN32)
-		if (EXISTS ${AVRO_LIBRARY_RELEASE} AND EXISTS ${AVRO_LIBRARY_DEBUG})
-			target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${AVRO_LIBRARY_RELEASE} debug ${AVRO_LIBRARY_DEBUG})
-		elseif (EXISTS ${AVRO_LIBRARY_RELEASE})
-			target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${AVRO_LIBRARY_RELEASE})
-		elseif (EXISTS ${AVRO_LIBRARY_DEBUG})
-			target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${AVRO_LIBRARY_DEBUG})
-		endif ()
-	else (WIN32)
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${AVRO_LIBRARY_RELEASE})
-	endif (WIN32)
-
-	if (WITH_ETP_SSL)
-		if (NOT TARGET OpenSSL::SSL OR NOT TARGET OpenSSL::Crypto)
-			find_package(OpenSSL REQUIRED)
-		endif()
-		target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE OpenSSL::SSL OpenSSL::Crypto)
-	endif ()
-endif (WITH_ETP)
-
 # ============================================================================
 # Getting source files
 # ============================================================================
@@ -204,8 +175,6 @@ set (FESAPI_EML2_0_NS eml2_0 CACHE STRING "Namespace for eml2_0 objects")
 set (FESAPI_EML2_1_NS eml2_1 CACHE STRING "Namespace for eml2_1 objects")
 set (FESAPI_EML2_2_NS eml2_2 CACHE STRING "Namespace for eml2_2 objects")
 set (FESAPI_EML2_3_NS eml2_3 CACHE STRING "Namespace for eml2_3 objects")
-
-set (FESAPI_ETP_NS etp CACHE STRING "Namespace for etp objects")
 
 configure_file(${FESAPI_ROOT_DIR}/cmake/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/nsDefinitions.h) # Overwrite if different
 
@@ -305,42 +274,9 @@ if (WITH_WITSML2_1)
 	)
 endif (WITH_WITSML2_1)
 
-if (WITH_ETP)	
-	file (GLOB FESAPI_ETP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etp/*.cpp)
-	file (GLOB FESAPI_ETP_PROTOCOL_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etp/ProtocolHandlers/*.cpp)
-	file (GLOB FESAPI_ETP_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/etp/*.h)
-	file (GLOB FESAPI_ETP_PROTOCOL_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/etp/ProtocolHandlers/*.h)
-
-	set (ALL_SOURCES_AND_HEADERS
-		${ALL_SOURCES_AND_HEADERS}
-		${FESAPI_ETP_SOURCES}
-		${FESAPI_ETP_PROTOCOL_SOURCES}
-		${FESAPI_ETP_HEADERS}	
-		${FESAPI_ETP_PROTOCOL_HEADERS}	
-	)
-	
-	if (WITH_ETP_SSL)
-		file (GLOB FESAPI_ETP_SSL_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etp/ssl/*.cpp)
-		file (GLOB FESAPI_ETP_SSL_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/etp/ssl/*.h)
-		
-		set (ALL_SOURCES_AND_HEADERS
-			${ALL_SOURCES_AND_HEADERS}
-			${FESAPI_ETP_SSL_SOURCES}
-			${FESAPI_ETP_SSL_HEADERS}
-		)
-	endif ()
-endif (WITH_ETP)
-
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
 
 target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_INCLUDE_DIR} ${HDF5_C_INCLUDE_DIR} ${MINIZIP_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
-
-if (WITH_ETP)
-	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${AVRO_INCLUDE_DIR})
-	if (WITH_ETP_SSL)
-		target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${OPENSSL_INCLUDE_DIR})
-	endif ()
-endif (WITH_ETP)
 
 target_include_directories(${CPP_LIBRARY_NAME} INTERFACE
 	$<INSTALL_INTERFACE:include>
@@ -382,14 +318,6 @@ if (WIN32)
 	source_group ("${EML_PREFIX_2_2}" FILES ${FESAPI_EML_2_2_SOURCES} ${FESAPI_EML_2_2_HEADERS})
 
 	source_group ("proxies" FILES ${FESAPI_PROXIES_SOURCES} ${FESAPI_PROXIES_HEADERS})
-	
-	if (WITH_ETP)
-		source_group ("${ETP_PREFIX}" FILES ${FESAPI_ETP_SOURCES} ${FESAPI_ETP_HEADERS})
-		source_group ("${ETP_PREFIX}\\ProtocolHandlers" FILES ${FESAPI_ETP_PROTOCOL_SOURCES} ${FESAPI_ETP_PROTOCOL_HEADERS})
-		if (WITH_ETP_SSL)
-			source_group ("${ETP_PREFIX}\\ssl" FILES ${FESAPI_ETP_SSL_SOURCES} ${FESAPI_ETP_SSL_HEADERS})
-		endif ()
-	endif (WITH_ETP)
 	
 endif (WIN32)
 
@@ -525,15 +453,6 @@ INSTALL (
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${PRODML_PREFIX_2_1}/
 	COMPONENT fesapi_headers
 )
-
-# etp header
-IF (WITH_ETP)
-	INSTALL (
-		DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/etp
-		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/
-		FILES_MATCHING PATTERN "*.h"
-	)
-endif (WITH_ETP)
 
 # EML headers
 INSTALL (

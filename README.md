@@ -52,7 +52,6 @@ Fesapi uses cmake as its build tool. A 3.12 version or later of cmake is require
 	- You will then have to also provide the path to the SWIG (version 3 as a mininum version) executable http://swig.org/download.html in the SWIG_EXECUTABLE variable (and click again on "Configure" button)
 	- FOR Java and only for JAVA, you'll also have to provide various path to some java executables. Still only for Java, it is highly recommended to lower the optimization level of the C++ compilation by setting O1 instead of O2 in the variables called CMAKE_CXX_FLAGS_RELEASE and CMAKE_CXX_FLAGS_RELWITHDEBINFO
 	- you will find the wrappers in fesapi/java/src or fesapi/cs/src (fesapi/cs also contains a VS2015 project for the wrappers) or fesapi/python/src
-- OPTIONALLY, for ETP1.2 support, you can also set the variable WITH_ETP which is documented [here](https://github.com/F2I-Consulting/fesapi/tree/etp/src/etp)
 
 Remark : you can choose where fesapi will be installed (using "make install" on Linux or by generating the "INSTALL" project on Visual Studio) by setting the cmake variable called CMAKE_INSTALL_PREFIX
 # How to start
