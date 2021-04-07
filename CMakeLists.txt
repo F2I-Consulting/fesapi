@@ -114,35 +114,6 @@ else (BUILD_SHARED_LIBS)
 	set (LIB_TYPE STATIC)
 endif (BUILD_SHARED_LIBS)
 
-set (WITH_ETP OFF CACHE BOOL "Build Fesapi with ETP support.")
-set (WITH_ETP_SSL OFF CACHE BOOL "Build Fesapi with ETP SSL support.")
-if (WITH_ETP)
-	find_package (Threads)
-
-	# avro DEPENDENCY
-	set (AVRO_INCLUDE_DIR AVRO_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the avro header files")
-	if (NOT IS_DIRECTORY ${AVRO_INCLUDE_DIR})
-		message(WARNING "The Avro include dir (AVRO_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
-	endif ()
-	set (AVRO_LIBRARY_RELEASE AVRO_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path to the file which contains the avro library release")
-	if (NOT EXISTS ${AVRO_LIBRARY_RELEASE})
-		message(WARNING "The avro library (AVRO_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
-	endif ()
-	set (AVRO_LIBRARY_DEBUG AVRO_LIBRARY_DEBUG-NOTFOUND CACHE FILEPATH "Path to the file which contains the AVRO library DEBUG")
-	if (NOT EXISTS ${AVRO_LIBRARY_DEBUG})
-		message(WARNING "The AVRO library (AVRO_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
-	endif ()
-
-	# Boost DEPENDENCY
-	find_package(Boost 1.66.0 REQUIRED system)
-	if (WIN32 AND (Boost_VERSION_MAJOR EQUAL 1) AND (Boost_VERSION_MINOR LESS 74) AND (Boost_VERSION_MINOR GREATER 71))
-		message(WARNING "You may experience min/max issue with this boost version : See https://github.com/boostorg/beast/issues/1980")
-	endif ()
-	
-	add_subdirectory (etpClientExample)
-	add_subdirectory (etpServerExample)
-endif (WITH_ETP)
-
 set (WITH_RESQML2_2 OFF CACHE BOOL "Compile RESQML2.2 experimental support. Don't use it in production.")
 
 # ============================================================================

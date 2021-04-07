@@ -60,9 +60,6 @@ under the License.
 /** @namespace	${FESAPI_EML2_3_NS} @brief The ${FESAPI_EML2_3_NS} namespace. */
 #define EML2_3_NS ${FESAPI_EML2_3_NS}
 
-/** @namespace	${FESAPI_ETP_NS} @brief The ${FESAPI_ETP_NS} namespace. */
-#define ETP_NS ${FESAPI_ETP_NS}
-
 /** @namespace	epc @brief The epc namespace. */
 
 /** @namespace	statistics @brief The statistics namespace. */
