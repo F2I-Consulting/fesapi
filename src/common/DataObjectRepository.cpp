@@ -549,7 +549,7 @@ void DataObjectRepository::replaceDataObjectInRels(COMMON_NS::AbstractObject* da
 	replaceDataObjectInARelMap(dataObjToReplace, newDataObj, backwardRels);
 }
 
-COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy, bool replaceOnlyContent)
+bool DataObjectRepository::addDataObject(COMMON_NS::AbstractObject* proxy)
 {
 	proxy->repository = this;
 
@@ -565,8 +565,16 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 		auto now = std::chrono::system_clock::now();
 		journal.push_back(std::make_tuple(now, DataObjectReference(proxy), CREATED));
 		on_CreateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
+
+		return true;
 	}
-	else {
+
+	return false;
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy, bool replaceOnlyContent)
+{
+	if (!addDataObject(proxy)) {
 		std::vector< COMMON_NS::AbstractObject* >& versions = dataObjects[proxy->getUuid()];
 		std::vector< COMMON_NS::AbstractObject* >::iterator same = std::find_if(versions.begin(), versions.end(), SameVersion(proxy->getVersion()));
 
@@ -636,11 +644,17 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 				}
 #endif
 				delete proxy;
+				if (!(*same)->isPartial()) {
+					(*same)->loadTargetRelationships();
+				}
 				return *same;
 			}
 		}
 	}
 
+	if (!proxy->isPartial()) {
+		proxy->loadTargetRelationships();
+	}
 	return proxy;
 }
 
@@ -955,6 +969,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StratigraphicUnitFeature)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StratigraphicUnitInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StreamlinesFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StreamlinesRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StringTableLookup)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::StructuralOrganizationInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::SubRepresentation)
@@ -1030,6 +1046,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::StratigraphicColumnRankInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::StratigraphicOccurrenceInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::StratigraphicUnitInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::StreamlinesFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::StreamlinesRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::StringTableLookup)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::StructuralOrganizationInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::SubRepresentation)

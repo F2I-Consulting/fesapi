@@ -90,12 +90,6 @@ void AbstractProperty::setRepresentation(AbstractRepresentation * rep)
 		}
 	}
 
-	rep->getRepository()->addRelationship(this, rep);
-
-	if (getRepository() == nullptr) {
-		rep->getRepository()->addOrReplaceDataObject(this);
-	}
-
 	// XML
 	if (gsoapProxy2_0_1 != nullptr) {
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->SupportingRepresentation = rep->newResqmlReference();
@@ -106,6 +100,8 @@ void AbstractProperty::setRepresentation(AbstractRepresentation * rep)
 	else {
 		throw logic_error("Not implemented yet");
 	}
+
+	getRepository()->addRelationship(this, rep);
 }
 
 AbstractRepresentation* AbstractProperty::getRepresentation() const
@@ -136,11 +132,6 @@ void AbstractProperty::setTimeSeries(EML2_NS::TimeSeries * ts)
 	if (ts == nullptr) {
 		throw invalid_argument("The time series of this property values cannot be null.");
 	}
-	if (getRepository() == nullptr) {
-		ts->getRepository()->addOrReplaceDataObject(this);
-	}
-
-	getRepository()->addRelationship(this, ts);
 
 	// XML
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -162,6 +153,8 @@ void AbstractProperty::setTimeSeries(EML2_NS::TimeSeries * ts)
 	else {
 		throw logic_error("Not implemented yet");
 	}
+
+	getRepository()->addRelationship(this, ts);
 }
 
 COMMON_NS::DataObjectReference AbstractProperty::getTimeSeriesDor() const
@@ -341,11 +334,6 @@ void AbstractProperty::setLocalCrs(AbstractLocal3dCrs * crs)
 	if (crs == nullptr) {
 		throw invalid_argument("The crs of this property values cannot be null.");
 	}
-	if (getRepository() == nullptr) {
-		crs->getRepository()->addOrReplaceDataObject(this);
-	}
-
-	getRepository()->addRelationship(this, crs);
 
 	// XML
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -357,6 +345,8 @@ void AbstractProperty::setLocalCrs(AbstractLocal3dCrs * crs)
 	else {
 		throw logic_error("Not implemented yet");
 	}
+
+	getRepository()->addRelationship(this, crs);
 }
 
 AbstractLocal3dCrs* AbstractProperty::getLocalCrs() const
@@ -435,9 +425,6 @@ void AbstractProperty::setPropertyKind(EML2_NS::PropertyKind* propKind)
 	if (propKind == nullptr) {
 		throw invalid_argument("The local property kind of this property cannot be null.");
 	}
-	if (getRepository() == nullptr) {
-		propKind->getRepository()->addOrReplaceDataObject(this);
-	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->PropertyKind != nullptr &&
@@ -451,8 +438,6 @@ void AbstractProperty::setPropertyKind(EML2_NS::PropertyKind* propKind)
 		}
 	}
 
-	getRepository()->addRelationship(this, propKind);
-
 	// XML
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__LocalPropertyKind* xmlLocalPropKind = gsoap_resqml2_0_1::soap_new_resqml20__LocalPropertyKind(gsoapProxy2_0_1->soap);
@@ -465,6 +450,8 @@ void AbstractProperty::setPropertyKind(EML2_NS::PropertyKind* propKind)
 	else {
 		throw logic_error("Unrecognized RESQML version");
 	}
+
+	getRepository()->addRelationship(this, propKind);
 }
 
 COMMON_NS::DataObjectReference AbstractProperty::getPropertyKindDor() const

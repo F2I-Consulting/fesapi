@@ -47,7 +47,7 @@ void UnstructuredGridRepresentation::init(COMMON_NS::DataObjectRepository* repo,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 UnstructuredGridRepresentation::UnstructuredGridRepresentation(COMMON_NS::DataObjectRepository* repo,

@@ -40,6 +40,7 @@ StratigraphicUnitInterpretation::StratigraphicUnitInterpretation(RESQML2_NS::Roc
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
+	feature->getRepository()->addDataObject(this);
 	setInterpretedFeature(feature);
 }
 

@@ -54,6 +54,7 @@ WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(RESQML2_NS:
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
+	interp->getRepository()->addDataObject(this);
 	setInterpretation(interp);
 
 	frame->Trajectory = traj->newEml23Reference();
@@ -133,7 +134,7 @@ void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned i
 	frame->IntervalStratigraphiUnits[0]->UnitIndices = xmlJaggedArray;
 
 	// ************ HDF *************
-	hsize_t dim = frame->NodeCount - 1;
+	const hsize_t dim = frame->NodeCount - 1;
 	proxy->writeArrayNd(getHdfGroup(), "IntervalStratigraphicUnits", H5T_NATIVE_UINT, stratiUnitIndices, &dim, 1);
 }
 
@@ -143,16 +144,16 @@ void WellboreMarkerFrameRepresentation::loadTargetRelationships()
 
 	_resqml22__WellboreMarkerFrameRepresentation* rep = static_cast<_resqml22__WellboreMarkerFrameRepresentation*>(gsoapProxy2_3);
 
-	for (size_t i = 0; i < rep->WellboreMarker.size(); ++i) {
-		WellboreMarker* marker = getRepository()->getDataObjectByUuid<WellboreMarker>(rep->WellboreMarker[i]->uuid);
+	for (auto* gsoapMarker : rep->WellboreMarker) {
+		WellboreMarker* marker = getRepository()->getDataObjectByUuid<WellboreMarker>(gsoapMarker->uuid);
 		if (marker == nullptr) {
-			marker = new WellboreMarker(rep->WellboreMarker[i]);
+			marker = new WellboreMarker(gsoapMarker);
 			getRepository()->addOrReplaceDataObject(marker);
-			if (rep->WellboreMarker[i]->Interpretation != nullptr) {
-				getRepository()->addRelationship(marker, getRepository()->getDataObjectByUuid<RESQML2_NS::BoundaryFeatureInterpretation>(rep->WellboreMarker[i]->Interpretation->Uuid));
+			if (gsoapMarker->Interpretation != nullptr) {
+				getRepository()->addRelationship(marker, getRepository()->getDataObjectByUuid<RESQML2_NS::BoundaryFeatureInterpretation>(gsoapMarker->Interpretation->Uuid));
 			}
-			if (rep->WellboreMarker[i]->WitsmlFormationMarker != nullptr) {
-				getRepository()->addRelationship(marker, getRepository()->getDataObjectByUuid<WITSML2_0_NS::WellboreMarker>(rep->WellboreMarker[i]->WitsmlFormationMarker->Uuid));
+			if (gsoapMarker->WitsmlFormationMarker != nullptr) {
+				getRepository()->addRelationship(marker, getRepository()->getDataObjectByUuid<WITSML2_0_NS::WellboreMarker>(gsoapMarker->WitsmlFormationMarker->Uuid));
 			}
 		}
 		getRepository()->addRelationship(marker, this);

@@ -43,6 +43,7 @@ WellboreFrameRepresentation::WellboreFrameRepresentation(RESQML2_NS::WellboreInt
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	interp->getRepository()->addDataObject(this);
 	setInterpretation(interp);
 
 	frame->Trajectory = traj->newEml23Reference();

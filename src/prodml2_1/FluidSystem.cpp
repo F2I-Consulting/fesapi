@@ -65,7 +65,7 @@ FluidSystem::FluidSystem(COMMON_NS::DataObjectRepository * repo,
 	fs->SolutionGOR->__item = gasOilRatio;
 	fs->SolutionGOR->uom = gsoap_eml2_2::soap_eml22__VolumePerVolumeUom2s(repo->getGsoapContext(), gasOilRatioUom);
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 FluidSystem::FluidSystem(COMMON_NS::DataObjectRepository * repo,
@@ -97,7 +97,7 @@ FluidSystem::FluidSystem(COMMON_NS::DataObjectRepository * repo,
 	fs->SolutionGOR->__item = gasOilRatio;
 	fs->SolutionGOR->uom = gsoap_eml2_2::soap_eml22__VolumePerVolumeUom2s(repo->getGsoapContext(), gasOilRatioUom);
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 SETTER_OPTIONAL_ATTRIBUTE_IMPL(FluidSystem, gsoap_eml2_2::prodml21__FluidSystem, gsoapProxy2_2, PhasesPresent, gsoap_eml2_2::prodml21__PhasePresent, soap_new_prodml21__PhasePresent)
@@ -343,6 +343,7 @@ void FluidSystem::loadTargetRelationships()
 		RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrg = getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidOrganizationInterpretation>(dor.getUuid());
 		if (rockFluidOrg == nullptr) {
 			convertDorIntoRel<RESQML2_NS::RockFluidOrganizationInterpretation>(dor);
+			rockFluidOrg = getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidOrganizationInterpretation>(dor.getUuid());
 		}
 		getRepository()->addRelationship(this, rockFluidOrg);
 	}

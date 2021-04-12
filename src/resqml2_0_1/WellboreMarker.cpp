@@ -64,6 +64,7 @@ WellboreMarker::WellboreMarker(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation
 
 bool WellboreMarker::hasAGeologicBoundaryKind() const
 {
+	cannotBePartial();
 	return static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1)->GeologicBoundaryKind != nullptr;
 }
 
@@ -78,22 +79,34 @@ resqml20__GeologicBoundaryKind WellboreMarker::getGeologicBoundaryKind() const
 
 COMMON_NS::DataObjectReference WellboreMarker::getBoundaryFeatureInterpretationDor() const
 {
-	if (static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1)->Interpretation != nullptr)
-		return COMMON_NS::DataObjectReference(static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1)->Interpretation);
+	cannotBePartial();
 
-	return COMMON_NS::DataObjectReference();
+	return static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1)->Interpretation != nullptr
+		? COMMON_NS::DataObjectReference(static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1)->Interpretation)
+		: COMMON_NS::DataObjectReference();
 }
 
 void WellboreMarker::setBoundaryFeatureInterpretation(RESQML2_NS::BoundaryFeatureInterpretation* interp)
 {
+	cannotBePartial();
 	getRepository()->addRelationship(this, interp);
 
     resqml20__WellboreMarker* marker = static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1);
 	marker->Interpretation = interp->newResqmlReference();
 }
 
+COMMON_NS::DataObjectReference WellboreMarker::getWitsmlWellboreMarkerDor() const
+{
+	cannotBePartial();
+
+	return static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1)->WitsmlFormationMarker != nullptr
+		? COMMON_NS::DataObjectReference(static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1)->WitsmlFormationMarker)
+		: COMMON_NS::DataObjectReference();
+}
+
 void WellboreMarker::setWitsmlWellboreMarker(WITSML2_0_NS::WellboreMarker * wellboreMarker)
 {
+	cannotBePartial();
 	getRepository()->addRelationship(this, wellboreMarker);
 	static_cast<resqml20__WellboreMarker*>(gsoapProxy2_0_1)->WitsmlFormationMarker = wellboreMarker->newResqmlReference();
 }

@@ -70,7 +70,7 @@ void GridConnectionSetRepresentation::loadTargetRelationships()
 			getRepository()->createPartial(dor);
 			supportingGridRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor.getUuid());
 			if (supportingGridRep == nullptr) {
-				throw invalid_argument("The DOR looks invalid.");
+				throw invalid_argument("The DOR of the supporting grid looks invalid.");
 			}
 		}
 		getRepository()->addRelationship(this, supportingGridRep);
@@ -79,9 +79,14 @@ void GridConnectionSetRepresentation::loadTargetRelationships()
 	if (isAssociatedToInterpretations()) {
 		unsigned int interpCount = getInterpretationCount();
 		for (unsigned int i = 0; i < interpCount; ++i) {
-			RESQML2_NS::AbstractFeatureInterpretation* interp = getRepository()->getDataObjectByUuid<AbstractFeatureInterpretation>(getInterpretationUuidFromIndex(i));
+			COMMON_NS::DataObjectReference dor = getInterpretationDorFromIndex(i);
+			RESQML2_NS::AbstractFeatureInterpretation* interp = getRepository()->getDataObjectByUuid<AbstractFeatureInterpretation>(dor.getUuid());
 			if (interp == nullptr) {
-				throw logic_error("The referenced interpretation is either not a resqml grid interpretation or it is partial and not implemented yet");
+				getRepository()->createPartial(dor);
+				interp = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractFeatureInterpretation>(dor.getUuid());
+				if (interp == nullptr) {
+					throw invalid_argument("The DOR of the interpretation looks invalid.");
+				}
 			}
 			getRepository()->addRelationship(this, interp);
 		}

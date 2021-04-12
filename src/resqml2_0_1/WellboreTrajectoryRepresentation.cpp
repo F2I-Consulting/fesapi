@@ -58,6 +58,7 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 	rep->StartMd = std::numeric_limits<double>::quiet_NaN();
 	rep->FinishMd = std::numeric_limits<double>::quiet_NaN();
 
+	interp->getRepository()->addDataObject(this);
 	setMdDatum(mdInfo);
 	setInterpretation(interp);
 }
@@ -74,6 +75,10 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreTrajectoryRepresentation(interp->getGsoapContext());
 	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 
+	initMandatoryMetadata();
+	setMetadata(guid, title, "", -1, "", "", -1, "");
+	interp->getRepository()->addDataObject(this);
+
 	RESQML2_NS::MdDatum * mdInfo = deviationSurvey->getMdDatum();
 	setMdDatum(mdInfo);
 
@@ -84,9 +89,6 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 	rep->FinishMd = mdValues[stationCount-1];
 
 	setInterpretation(interp);
-
-	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	if (mdInfo->getLocalCrs() != nullptr) {
 		rep->MdUom = mdInfo->getLocalCrs()->getVerticalCrsUnit();
@@ -366,13 +368,10 @@ void WellboreTrajectoryRepresentation::setMdDatum(RESQML2_NS::MdDatum * mdDatum)
 	if (mdDatum == nullptr) {
 		throw invalid_argument("The md Datum is missing.");
 	}
-	if (getRepository() == nullptr) {
-		mdDatum->getRepository()->addOrReplaceDataObject(this);
-	}
-
-	getRepository()->addRelationship(this, mdDatum);
 
 	static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1)->MdDatum = mdDatum->newResqmlReference();
+
+	getRepository()->addRelationship(this, mdDatum);
 }
 
 COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getMdDatumDor() const

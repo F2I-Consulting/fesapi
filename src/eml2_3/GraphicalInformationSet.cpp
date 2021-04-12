@@ -34,5 +34,5 @@ GraphicalInformationSet::GraphicalInformationSet(COMMON_NS::DataObjectRepository
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }

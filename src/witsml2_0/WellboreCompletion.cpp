@@ -49,6 +49,7 @@ WellboreCompletion::WellboreCompletion(WITSML2_NS::Wellbore* witsmlWellbore,
 
 	static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1)->NameWellCompletion = wellCompletionName;
 
+	witsmlWellbore->getRepository()->addDataObject(this);
 	setWellbore(witsmlWellbore);
 	setWellCompletion(wellCompletion);
 }
@@ -73,9 +74,6 @@ void WellboreCompletion::setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml well bore to a witsml wellbore completion");
 	}
-	if (getRepository() == nullptr) {
-		witsmlWellbore->getRepository()->addOrReplaceDataObject(this);
-	}
 
 	static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1)->ReferenceWellbore = witsmlWellbore->newEmlReference();
 
@@ -87,15 +85,12 @@ void WellboreCompletion::setWellCompletion(WellCompletion* wellCompletion)
 	if (wellCompletion == nullptr) {
 		throw invalid_argument("Cannot set a null witsml well completion to a witsml wellbore completion");
 	}
-	if (getRepository() == nullptr) {
-		wellCompletion->getRepository()->addOrReplaceDataObject(this);
-	}
-
-	getRepository()->addRelationship(this, wellCompletion);
 
 	// XML
 	witsml20__WellboreCompletion* wellboreCompletion = static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1);
 	wellboreCompletion->WellCompletion = wellCompletion->newEmlReference();
+
+	getRepository()->addRelationship(this, wellCompletion);
 }
 
 void WellboreCompletion::pushBackPerforation(const string & datum,

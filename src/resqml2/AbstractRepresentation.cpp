@@ -255,12 +255,6 @@ void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation* in
 		}
 	}
 
-	interp->getRepository()->addRelationship(this, interp);
-
-	if (getRepository() == nullptr) {
-		interp->getRepository()->addOrReplaceDataObject(this);
-	}
-
 	if (gsoapProxy2_0_1 != nullptr) {
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation = interp->newResqmlReference();
 	}
@@ -269,6 +263,8 @@ void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation* in
 	}
 	else
 		throw logic_error("Not implemented yet");
+
+	getRepository()->addRelationship(this, interp);
 }
 
 AbstractFeatureInterpretation* AbstractRepresentation::getInterpretation() const

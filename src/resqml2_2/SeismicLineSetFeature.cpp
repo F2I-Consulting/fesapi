@@ -34,5 +34,5 @@ SeismicLineSetFeature::SeismicLineSetFeature(COMMON_NS::DataObjectRepository* re
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }

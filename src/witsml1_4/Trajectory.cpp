@@ -36,7 +36,7 @@ using namespace gsoap_witsml1_4;
 COMMON_NS::DataObjectReference Trajectory::getWellboreDor() const
 {
 	auto* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapProxyTraj1_4->soap);
-	dor->ContentType = "application/x-witsml+xml;version=1.4;type=obj_trajectory";
+	dor->ContentType = "application/x-witsml+xml;version=2.0;type=Wellbore";
 	dor->UUID = static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->uidWellbore != nullptr
 		? *static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->uidWellbore
 		: static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->nameWellbore;
@@ -49,9 +49,6 @@ void Trajectory::setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml wellbore to a witsml trajectory");
 	}
-	if (getRepository() == nullptr) {
-		witsmlWellbore->getRepository()->addOrReplaceDataObject(this);
-	}
 
 	// Wellbore
 	static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->uidWellbore = soap_new_std__string(gsoapProxyTraj1_4->soap);
@@ -63,7 +60,6 @@ void Trajectory::setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 	static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->uidWell = soap_new_std__string(gsoapProxyTraj1_4->soap);
 	static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->uidWell->assign(well->getUuid());
 	static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->nameWell = well->getTitle();
-
 
 	getRepository()->addRelationship(this, witsmlWellbore);
 }

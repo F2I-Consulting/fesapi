@@ -44,6 +44,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		EPCEXTERNALPARTREFERENCE,
 		FAULTINTERPRETATION,
 		FLUIDBOUNDARYFEATURE,
+		FLUIDBOUNDARYINTERPRETATION,
 		FLUIDCHARACTERIZATION,
 		FLUIDSYSTEM,
 		FRONTIERFEATURE,
@@ -1003,6 +1004,9 @@ ${COMMENT_END}
 		case EPCEXTERNALPARTREFERENCE : return eml2_instantiateEpcExternalPartReference(cPtr, owner);
 		case FAULTINTERPRETATION : return resqml2_instantiateFaultInterpretation(cPtr, owner);
 		case FLUIDBOUNDARYFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.resqml20_FluidBoundaryFeature(cPtr, owner);
+${COMMENT_START}
+		case FLUIDBOUNDARYINTERPRETATION : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_2_NS}.resqml22_FluidBoundaryInterpretation(cPtr, owner);
+${COMMENT_END}
 		case FLUIDCHARACTERIZATION : return new com.f2i_consulting.fesapi.${FESAPI_PRODML2_1_NS}.FluidCharacterization(cPtr, owner);
 		case FLUIDSYSTEM : return new com.f2i_consulting.fesapi.${FESAPI_PRODML2_1_NS}.FluidSystem(cPtr, owner);
 		case FRONTIERFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.resqml20_FrontierFeature(cPtr, owner);
@@ -1157,6 +1161,9 @@ namespace RESQML2_NS
 						DoubleTableLookup*,
 						EarthModelInterpretation*,
 						FaultInterpretation*,
+#ifdef WITH_RESQML2_2
+						FluidBoundaryInterpretation*,
+#endif
 						GenericFeatureInterpretation*,
 						GeobodyBoundaryInterpretation*,
 						GeobodyInterpretation*,

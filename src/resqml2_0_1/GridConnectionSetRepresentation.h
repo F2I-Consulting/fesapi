@@ -87,7 +87,7 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT void getGridConnectionSetInformationFromInterpretationIndex(uint64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT std::string getInterpretationUuidFromIndex(unsigned int interpretationIndex) const final;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getInterpretationDorFromIndex(unsigned int interpretationIndex) const final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getInterpretationCount() const final;
 

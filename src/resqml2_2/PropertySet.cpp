@@ -42,7 +42,7 @@ PropertySet::PropertySet(COMMON_NS::DataObjectRepository* repo, const std::strin
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 void PropertySet::setXmlParent(RESQML2_NS::PropertySet * parent)

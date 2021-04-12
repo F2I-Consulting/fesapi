@@ -50,6 +50,7 @@ SealedVolumeFrameworkRepresentation::SealedVolumeFrameworkRepresentation(RESQML2
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
+	interp->getRepository()->addDataObject(this);
 	// XML relationships
 	setInterpretation(interp);
 	setSealedSurfaceFramework(ssf);

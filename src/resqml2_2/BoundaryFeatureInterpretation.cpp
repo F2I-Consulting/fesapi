@@ -39,5 +39,6 @@ BoundaryFeatureInterpretation::BoundaryFeatureInterpretation(RESQML2_NS::Boundar
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	feature->getRepository()->addDataObject(this);
 	setInterpretedFeature(feature);
 }

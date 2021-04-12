@@ -42,7 +42,7 @@ void GridConnectionSetRepresentation::init(COMMON_NS::DataObjectRepository * rep
     initMandatoryMetadata();
     setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 GridConnectionSetRepresentation::GridConnectionSetRepresentation(COMMON_NS::DataObjectRepository * repo,
@@ -315,14 +315,14 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 	}
 }
 
-std::string GridConnectionSetRepresentation::getInterpretationUuidFromIndex(unsigned int interpretationIndex) const
+COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getInterpretationDorFromIndex(unsigned int interpretationIndex) const
 {
 	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
 	if (rep->ConnectionInterpretations != nullptr) {
 		if (rep->ConnectionInterpretations->FeatureInterpretation.size() > interpretationIndex) {
 			if (rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]->ContentType.find("FaultInterpretation") != string::npos) {
-				return rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]->UUID;
+				return COMMON_NS::DataObjectReference(rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]);
 			}
 			else {
 				throw invalid_argument("The associated feature interpretation is not a fault one. Legal but not yet implemented.");

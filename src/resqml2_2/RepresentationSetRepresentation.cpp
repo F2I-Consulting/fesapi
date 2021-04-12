@@ -38,7 +38,8 @@ RepresentationSetRepresentation::RepresentationSetRepresentation(RESQML2_NS::Abs
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
-	
+
+	interp->getRepository()->addDataObject(this);
 	// XML relationships
 	setInterpretation(interp);
 }
@@ -56,5 +57,5 @@ RepresentationSetRepresentation::RepresentationSetRepresentation(COMMON_NS::Data
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }

@@ -43,12 +43,7 @@ WellboreMarkerFrameRepresentation const * WellboreMarker::getWellboreMarkerFrame
 
 WITSML2_0_NS::WellboreMarker* WellboreMarker::getWitsmlWellboreMarker() const
 {
-	const auto& witsmlWellboreMarkers = getRepository()->getTargetObjects<WITSML2_0_NS::WellboreMarker>(this);
-	switch (witsmlWellboreMarkers.size()) {
-	case 0: return nullptr;
-	case 1: return witsmlWellboreMarkers[0];
-	default: throw std::logic_error("There are too much associated WITSML WellboreMarkers.");
-	}
+	return getWellboreMarkerFrameRepresentation()->getRepository()->getDataObjectByUuid<WITSML2_0_NS::WellboreMarker>(getWitsmlWellboreMarkerDor().getUuid());
 }
 
 bool WellboreMarker::hasDipAngle() const
@@ -126,4 +121,17 @@ string WellboreMarker::getDipDirectionUomAsString() const
 	}
 
 	return getWitsmlWellboreMarker()->getDipDirectionUomAsString();
+}
+
+void WellboreMarker::loadTargetRelationships()
+{
+	COMMON_NS::DataObjectReference dor = getBoundaryFeatureInterpretationDor();
+	if (!dor.isEmpty()) {
+		convertDorIntoRel<BoundaryFeatureInterpretation>(dor);
+	}
+
+	dor = getWitsmlWellboreMarkerDor();
+	if (!dor.isEmpty()) {
+		convertDorIntoRel<WITSML2_0_NS::WellboreMarker>(dor);
+	}
 }

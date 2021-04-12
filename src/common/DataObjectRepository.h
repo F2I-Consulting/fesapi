@@ -398,20 +398,32 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void updateAllRelationships();
 
 		/**
-		 * Adds or replaces (based on UUID and version) a data object in the repository. It does not
+		* CAUTION : not to use outside of the construction time of a dataobject. It does not update the relationships of the added or replaced data object.
+		* It is sometimes necessary to add an invalid dataobject to the DataObject Repository.
+		* For example, at construction time of the dataobjects, we may have to put the dataobject into the repo even if it is not complete yet (geometry is not part of construction time).
+		* We may have to put it into the repo in order to create relationships with this dataobject.
+		* Longer term, a staging phase should be created in FESAPI
+		*
+		* @param [in]	proxy		The data object to add.
+		* @return True if the addition has been done, false if it already exists a same UUID in the repository
+		*/
+		bool addDataObject(COMMON_NS::AbstractObject* proxy);
+
+		/**
+		 * Adds or replaces (based on UUID and version) a data object in the repository. It does also
 		 * update the relationships of the added or replaced data object
 		 *
 		 * @exception	std::invalid_argument	If, during a replacement, the content type of the data
 		 * 										object has changed.
 		 *
-		 * @param [in, out]	proxy	The data object to add or to replace.
+		 * @param [in]	proxy			The data object to add or to replace.
 		 * @param replaceOnlyContent	If true, it does not replace the full object(not the pointer) but only replace the content of the object.
 		 */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy, bool replaceOnlyContent = false);
 
 		/**
 		 * Adds or replaces (based on Energistics XML definition) a data object in the repository. It
-		 * does not update the relationships of the added or replaced data object
+		 * does also update the relationships of the added or replaced data object
 		 *
 		 * @exception	std::invalid_argument	If, during a replacement, the content type of the data
 		 * 										object has changed.

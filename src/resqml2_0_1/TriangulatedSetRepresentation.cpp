@@ -46,7 +46,7 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(COMMON_NS::DataObje
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
@@ -61,6 +61,7 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::Abstrac
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	interp->getRepository()->addDataObject(this);
 	// relationhsips
 	setInterpretation(interp);
 }

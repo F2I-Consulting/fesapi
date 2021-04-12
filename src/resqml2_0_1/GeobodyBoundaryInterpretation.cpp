@@ -40,5 +40,6 @@ GeobodyBoundaryInterpretation::GeobodyBoundaryInterpretation(RESQML2_NS::Boundar
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	geobodyBoundary->getRepository()->addDataObject(this);
 	setInterpretedFeature(geobodyBoundary);
 }

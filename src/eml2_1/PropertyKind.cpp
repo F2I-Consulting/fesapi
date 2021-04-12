@@ -39,6 +39,7 @@ PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::st
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
+	repo->addDataObject(this);
 
 	if (parentPropertyKind == nullptr) {
 		parentPropertyKind = repo->getDataObjectByUuid<EML2_NS::PropertyKind>("a48c9c25-1e3a-43c8-be6a-044224cc69cb");

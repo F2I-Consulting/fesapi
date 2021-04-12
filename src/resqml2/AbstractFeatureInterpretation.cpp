@@ -48,12 +48,6 @@ void AbstractFeatureInterpretation::setInterpretedFeature(AbstractFeature * feat
 		}
 	}
 
-	feature->getRepository()->addRelationship(this, feature);
-
-	if (getRepository() == nullptr) {
-		feature->getRepository()->addOrReplaceDataObject(this);
-	}
-
 	if (gsoapProxy2_0_1 != nullptr) {
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->InterpretedFeature = feature->newResqmlReference();
 	}
@@ -63,6 +57,8 @@ void AbstractFeatureInterpretation::setInterpretedFeature(AbstractFeature * feat
 	else {
 		throw logic_error("Not implemented yet");
 	}
+
+	getRepository()->addRelationship(this, feature);
 }
 
 void AbstractFeatureInterpretation::loadTargetRelationships()

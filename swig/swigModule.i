@@ -399,6 +399,22 @@ namespace COMMON_NS
 		
 		void setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory);
 		
+		/**
+		 * Adds or replaces (based on Energistics XML definition) a data object in the repository. It
+		 * does not update the relationships of the added or replaced data object
+		 *
+		 * @exception	std::invalid_argument	If, during a replacement, the content type of the data
+		 * 										object has changed.
+		 *
+		 * @param 	xml		   	The XML which is the serialization of the Energistics data object to add
+		 * 						or to replace.
+		 * @param 	contentOrDataType	The content or qualified data type of the Energistics dataobject to add or to replace.
+		 *
+		 * @returns	Null if the content type of the data object cannot be wrapped by fesapi, else a
+		 * 			pointer the added or replaced data object.
+		 */
+		COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentType);
+		
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)
 

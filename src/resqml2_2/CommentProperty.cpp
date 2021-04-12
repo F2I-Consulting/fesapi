@@ -51,6 +51,7 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	rep->getRepository()->addDataObject(this);
 	setRepresentation(rep);
 
 	setPropertyKind(propKind);

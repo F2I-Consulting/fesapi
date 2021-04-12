@@ -42,6 +42,7 @@ Log::Log(WITSML2_NS::Wellbore* witsmlWellbore,
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
+	witsmlWellbore->getRepository()->addDataObject(this);
 	setWellbore(witsmlWellbore);
 }
 

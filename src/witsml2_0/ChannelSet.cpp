@@ -38,7 +38,7 @@ ChannelSet::ChannelSet(COMMON_NS::DataObjectRepository* repo, const std::string 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 void ChannelSet::pushBackChannelIndex(gsoap_eml2_1::witsml20__ChannelIndexType indexType, gsoap_eml2_1::eml21__UnitOfMeasure uom, const std::string & mnemonic, bool isIncreasing, const std::string & datum)

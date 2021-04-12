@@ -41,6 +41,7 @@ StratigraphicOccurrenceInterpretation::StratigraphicOccurrenceInterpretation(RES
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	orgFeat->getRepository()->addDataObject(this);
 	setInterpretedFeature(orgFeat);
 }
 

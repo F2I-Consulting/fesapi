@@ -82,9 +82,6 @@ namespace WITSML2_0_NS
 			if (witsmlWellbore == nullptr) {
 				throw std::invalid_argument("Cannot set a null witsml wellbore to a witsml trajectory");
 			}
-			if (getRepository() == nullptr) {
-				witsmlWellbore->getRepository()->addOrReplaceDataObject(this);
-			}
 
 			static_cast<T*>(gsoapProxy2_1)->Wellbore = witsmlWellbore->newEmlReference();
 
@@ -120,9 +117,6 @@ namespace WITSML2_0_NS
 		{
 			if (propKind == nullptr) {
 				throw std::invalid_argument("Cannot set a null witsml propKind to a witsml log/channelset/channel");
-			}
-			if (getRepository() == nullptr) {
-				propKind->getRepository()->addOrReplaceDataObject(this);
 			}
 
 			static_cast<T*>(gsoapProxy2_1)->ChannelClass = propKind->newEmlReference();

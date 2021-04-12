@@ -46,6 +46,7 @@ StreamlinesRepresentation::StreamlinesRepresentation(RESQML2_NS::GenericFeatureI
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	interp->getRepository()->addDataObject(this);
 	// relationhsips
 	setInterpretation(interp);
 }

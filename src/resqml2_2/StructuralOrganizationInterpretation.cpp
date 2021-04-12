@@ -45,6 +45,7 @@ StructuralOrganizationInterpretation::StructuralOrganizationInterpretation(RESQM
     initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
+	orgFeat->getRepository()->addDataObject(this);
 	setInterpretedFeature(orgFeat);
 }
 

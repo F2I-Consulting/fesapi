@@ -43,7 +43,7 @@ TimeSeriesData::TimeSeriesData(COMMON_NS::DataObjectRepository * repo,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 void TimeSeriesData::pushBackKeywordValue(gsoap_eml2_2::prodml21__TimeSeriesKeyword keyword, const std::string & value)

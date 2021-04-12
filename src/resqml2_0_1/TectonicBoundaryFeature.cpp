@@ -36,7 +36,7 @@ TectonicBoundaryFeature::TectonicBoundaryFeature(COMMON_NS::DataObjectRepository
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 bool TectonicBoundaryFeature::isAFracture() const

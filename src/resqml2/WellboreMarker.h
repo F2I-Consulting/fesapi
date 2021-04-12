@@ -73,10 +73,10 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT BoundaryFeatureInterpretation* getBoundaryFeatureInterpretation() const;
 
 		/**
-		 * Gets the UUID of the boundary feature interpretation linked to this well marker. Especially
+		 * Gets the DOR of the boundary feature interpretation linked to this well marker. Especially
 		 * useful in partial transfer mode.
 		 *
-		 * @returns	The boundary feature interpretation UUID, or empty string if it fails.
+		 * @returns	The boundary feature interpretation DOR, or empty DOR if it fails.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getBoundaryFeatureInterpretationDor() const = 0;
 
@@ -100,6 +100,14 @@ namespace RESQML2_NS
 		 * 			associated WITSML wellbore marker.
 		 */
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreMarker* getWitsmlWellboreMarker() const;
+
+		/**
+		 * Gets the DOR of the WITSML wellbore marker linked to this well marker. Especially
+		 * useful in partial transfer mode.
+		 *
+		 * @returns	The WITSML wellbore marker DOR, or empty DOR if it fails.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getWitsmlWellboreMarkerDor() const = 0;
 
 		/**
 		 * Sets the WITSML wellbore marker associated to this instance.
@@ -207,6 +215,6 @@ namespace RESQML2_NS
 		WellboreMarker(gsoap_eml2_3::resqml22__WellboreMarker* fromGsoap) : AbstractObject(fromGsoap) {}
 
 		/** Loads target relationships */
-		void loadTargetRelationships() final {}
+		void loadTargetRelationships() final;
 	};
 }

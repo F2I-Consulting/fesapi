@@ -39,5 +39,5 @@ FluidBoundaryFeature::FluidBoundaryFeature(COMMON_NS::DataObjectRepository * rep
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }

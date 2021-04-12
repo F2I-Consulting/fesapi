@@ -40,7 +40,7 @@ StreamlinesFeature::StreamlinesFeature(COMMON_NS::DataObjectRepository* repo, co
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 
 	// relationhsips
 	sf->TimeIndex->TimeSeries = timeSeries->newResqmlReference();

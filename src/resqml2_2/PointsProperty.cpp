@@ -47,6 +47,7 @@ PointsProperty::PointsProperty(RESQML2_NS::AbstractRepresentation * rep, const s
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	rep->getRepository()->addDataObject(this);
 	setRepresentation(rep);
 	setLocalCrs(localCrs);
 	setPropertyKind(localPropKind);

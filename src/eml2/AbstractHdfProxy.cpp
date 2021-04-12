@@ -45,5 +45,5 @@ void AbstractHdfProxy::initGsoapProxy(COMMON_NS::DataObjectRepository * repo, co
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }

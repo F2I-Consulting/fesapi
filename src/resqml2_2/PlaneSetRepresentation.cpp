@@ -44,6 +44,7 @@ PlaneSetRepresentation::PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterp
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	interp->getRepository()->addDataObject(this);
 	setInterpretation(interp);
 }
 
