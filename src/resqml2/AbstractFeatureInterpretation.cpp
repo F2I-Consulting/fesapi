@@ -99,6 +99,9 @@ gsoap_resqml2_0_1::resqml20__Domain AbstractFeatureInterpretation::initDomain(gs
 	bool isDepthDomain = false;
 	for (unsigned int repIndex = 0; repIndex < repCount && (!isTimeDomain || !isDepthDomain); ++repIndex) {
 		AbstractRepresentation const * rep = getRepresentation(repIndex);
+		if (rep->isPartial()) {
+			continue;
+		}
 		const unsigned int patchCount = rep->getPatchCount();
 		for (unsigned int patchIndex = 0; patchIndex < patchCount && (!isTimeDomain || !isDepthDomain); ++patchIndex) {
 			AbstractLocal3dCrs* local3dCrs = rep->getLocalCrs(patchIndex);
@@ -181,6 +184,9 @@ namespace {
 
 		bool operator()(AbstractRepresentation const * rep) const
 		{
+			if (rep->isPartial()) {
+				return false; // We arbitrariy assume that because we cannot know if the rep is in rel with the interp from the FIPR hierarchy or not...
+			}
 			COMMON_NS::DataObjectReference dor = rep->getInterpretationDor();
 			return dor.isEmpty()
 				|| dor.getUuid() != interp->getUuid()
@@ -192,6 +198,7 @@ namespace {
 vector<AbstractRepresentation *> AbstractFeatureInterpretation::getRepresentationSet() const
 {
 	std::vector<AbstractRepresentation *> result = repository->getSourceObjects<AbstractRepresentation>(this);
+	// Erase in case we have a rel to interp relationhsip which is not the one from the FIRP hierarchy.
 	result.erase(std::remove_if(result.begin(), result.end(), DifferentInterp(this)), result.end());
 
 	return result;
