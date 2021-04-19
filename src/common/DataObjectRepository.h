@@ -633,7 +633,7 @@ namespace COMMON_NS
 				return static_cast<valueType*>(result);
 			}
 
-			throw std::invalid_argument("The uuid " + uuid + " does not resolve to the expected datatype");
+			throw std::invalid_argument("The uuid " + uuid + " does not resolve to the expected datatype but to " + result->getQualifiedType());
 		}
 
 		/**
@@ -682,7 +682,7 @@ namespace COMMON_NS
 				return static_cast<valueType*>(result);
 			}
 
-			throw std::invalid_argument("The uuid " + uuid + " does not resolve to the expected datatype");
+			throw std::invalid_argument("The uuid " + uuid + " does not resolve to the expected datatype but to " + result->getQualifiedType());
 		}
 
 		/**

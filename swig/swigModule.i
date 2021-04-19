@@ -183,10 +183,11 @@ typedef unsigned long long int	uint64_t;
 typedef long long 				time_t;
 
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
+	%nspace COMMON_NS::AbstractObject;
+	%nspace COMMON_NS::DataObjectReference;
 	%nspace COMMON_NS::DataObjectRepository;
 	%nspace COMMON_NS::EnumStringMapper;
 	%nspace COMMON_NS::EpcDocument;
-	%nspace COMMON_NS::AbstractObject;
 	%nspace COMMON_NS::HdfProxyFactory;
 #endif
 
@@ -199,7 +200,7 @@ namespace EML2_NS
 %feature("director") COMMON_NS::HdfProxyFactory;
 
 /*
-Following %typemap(csbody) definitions force the target language to do not 
+Following %typemap(csbody) definitions force the target language to not 
 manage the memory of the C++ part of wrapped COMMON_NS::HdfProxyFactory and 
 COMMON_NS::AbstractObject. This C++ parts will be free at the destruction
 of the COMMON_NS::DataObjectRepository thanks to the 
@@ -245,6 +246,45 @@ warning (205) during the Swig processing.
 namespace COMMON_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
+	
+	class DataObjectReference
+	{
+	public:
+		/**
+		 * Checks if this reference is empty (i.e. it points to nothing)
+		 *
+		 * @returns	True if this reference empty, false if it is not.
+		 */
+		bool isEmpty() const;
+		
+		/**
+		 * Gets the referenced data object UUID
+		 *
+		 * @returns	The UUID of the referenced data object if it exists, otherwise empty string.
+		 */
+		std::string getUuid() const;
+		
+		/**
+		 * Gets the referenced data object title (i.e. its name)
+		 *
+		 * @returns	The title of the referenced data object if it exists, otherwise empty string.
+		 */
+		std::string getTitle() const;
+		
+		/**
+		 * Gets the referenced data object version
+		 *
+		 * @returns	The version of the referenced data object if it exists, otherwise empty string.
+		 */
+		std::string getVersion() const;
+		
+		/**
+		 * Gets the referenced data object type
+		 *
+		 * @returns	The content type of the referenced data object if it exists, otherwise empty string.
+		 */
+		std::string getContentType() const;
+	};
 	
 	class AbstractObject
 	{
@@ -307,6 +347,8 @@ namespace COMMON_NS
 	public:
 		HdfProxyFactory() {}
 		virtual ~HdfProxyFactory();
+		
+		virtual EML2_NS::AbstractHdfProxy* make(const DataObjectReference& dor);
 		
 		/*
 		The following method leads to a warning (473: Returning a pointer or reference

@@ -266,6 +266,7 @@ namespace EML2_NS
 	protected:
 	
 		AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
+		AbstractHdfProxy(const COMMON_NS::DataObjectReference& dor);
 		
 	};
 	
