@@ -51,6 +51,7 @@ SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
     initMandatoryMetadata();
     setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
+	interp->getRepository()->addDataObject(this);
     setInterpretation(interp);
 }
 

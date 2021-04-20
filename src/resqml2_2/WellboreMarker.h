@@ -82,6 +82,8 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT void setBoundaryFeatureInterpretation(RESQML2_NS::BoundaryFeatureInterpretation* interp) final;
 
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getWitsmlWellboreMarkerDor() const final;
+
 		DLL_IMPORT_OR_EXPORT void setWitsmlWellboreMarker(WITSML2_0_NS::WellboreMarker * wellboreMarker) final;
 
 		/**

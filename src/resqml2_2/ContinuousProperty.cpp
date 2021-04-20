@@ -51,6 +51,7 @@ void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const st
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	rep->getRepository()->addDataObject(this);
 	setRepresentation(rep);
 }
 

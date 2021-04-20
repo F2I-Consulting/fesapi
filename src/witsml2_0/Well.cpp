@@ -47,7 +47,7 @@ Well::Well(COMMON_NS::DataObjectRepository * repo,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 Well::Well(COMMON_NS::DataObjectRepository * repo,
@@ -77,7 +77,7 @@ Well::Well(COMMON_NS::DataObjectRepository * repo,
 	well->DirectionWell = (witsml20__WellDirection *)soap_malloc(gsoapProxy2_1->soap, sizeof(witsml20__WellDirection));
 	*well->DirectionWell = directionWell;
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, NameLegal, soap_new_std__string)

@@ -45,6 +45,7 @@ Wellbore::Wellbore(WITSML2_NS::Well* witsmlWell, const std::string & guid, const
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	witsmlWell->getRepository()->addDataObject(this);
 	setWell(witsmlWell);
 }
 
@@ -76,6 +77,7 @@ Wellbore::Wellbore(
 	wellbore->AchievedTD = (bool *)soap_malloc(wellbore->soap, sizeof(bool));
 	*wellbore->AchievedTD = achievedTD;
 
+	witsmlWell->getRepository()->addDataObject(this);
 	setWell(witsmlWell);
 }
 
@@ -89,10 +91,6 @@ void Wellbore::setWell(WITSML2_NS::Well* witsmlWell)
 	if (witsmlWell == nullptr) {
 		throw invalid_argument("Cannot set a null witsml Well to a witsml wellbore");
 	}
-	if (getRepository() == nullptr) {
-		witsmlWell->getRepository()->addOrReplaceDataObject(this);
-	}
-
 	witsml20__Wellbore* wellbore = static_cast<witsml20__Wellbore*>(gsoapProxy2_1);
 	wellbore->Well = witsmlWell->newEmlReference();
 

@@ -801,14 +801,8 @@ namespace COMMON_NS
 			gsoapProxy2_3(proxy),
 			repository(nullptr) {}
 
-		/**
-		 * Adds an or replace data object
-		 *
-		 * @param [in,out]	proxy				If non-null, the proxy.
-		 * @param [in,out]	replaceOnlyContent	If true, only replace the content of corresponding object, not the object itself.
-		 *
-		 * @returns	The new DataObject.
-		 */
+		
+		friend bool COMMON_NS::DataObjectRepository::addDataObject(COMMON_NS::AbstractObject* proxy);
 		friend COMMON_NS::AbstractObject* COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy, bool replaceOnlyContent);
 
 		/**

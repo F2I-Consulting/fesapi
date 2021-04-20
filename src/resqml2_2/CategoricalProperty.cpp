@@ -54,6 +54,7 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	rep->getRepository()->addDataObject(this);
 	setRepresentation(rep);
 
 	setPropertyKind(propKind);
@@ -84,6 +85,7 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	rep->getRepository()->addDataObject(this);
 	setRepresentation(rep);
 
 	setPropertyKind(propKind);

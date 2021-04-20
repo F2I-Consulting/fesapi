@@ -46,6 +46,7 @@ WellboreGeometry::WellboreGeometry(WITSML2_NS::Wellbore* witsmlWellbore,
 
 	static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->GrowingStatus = channelStatus;
 
+	witsmlWellbore->getRepository()->addDataObject(this);
 	setWellbore(witsmlWellbore);
 }
 
@@ -58,9 +59,6 @@ void WellboreGeometry::setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 {
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml wellbore to a witsml trajectory");
-	}
-	if (getRepository() == nullptr) {
-		witsmlWellbore->getRepository()->addOrReplaceDataObject(this);
 	}
 
 	static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->Wellbore = witsmlWellbore->newEmlReference();

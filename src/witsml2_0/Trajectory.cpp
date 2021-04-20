@@ -42,6 +42,7 @@ Trajectory::Trajectory(WITSML2_NS::Wellbore* witsmlWellbore,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	witsmlWellbore->getRepository()->addDataObject(this);
 	setWellbore(witsmlWellbore);
 
 	static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->GrowingStatus = channelStatus;
@@ -56,9 +57,6 @@ void Trajectory::setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 {
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml wellbore to a witsml trajectory");
-	}
-	if (getRepository() == nullptr) {
-		witsmlWellbore->getRepository()->addOrReplaceDataObject(this);
 	}
 
 	static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->Wellbore = witsmlWellbore->newEmlReference();

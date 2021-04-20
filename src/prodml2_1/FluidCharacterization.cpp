@@ -48,7 +48,7 @@ FluidCharacterization::FluidCharacterization(COMMON_NS::DataObjectRepository * r
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 SETTER_OPTIONAL_ATTRIBUTE_IMPL(FluidCharacterization, prodml21__FluidCharacterization, gsoapProxy2_2, FluidCharacterizationType, std::string, soap_new_std__string)
@@ -494,6 +494,7 @@ void FluidCharacterization::loadTargetRelationships()
 		RESQML2_NS::RockFluidUnitInterpretation* rockFluidUnit = getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidUnitInterpretation>(dor.getUuid());
 		if (rockFluidUnit == nullptr) {
 			convertDorIntoRel<RESQML2_NS::RockFluidUnitInterpretation>(dor);
+			rockFluidUnit = getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidUnitInterpretation>(dor.getUuid());
 		}
 		getRepository()->addRelationship(this, rockFluidUnit);
 	}
@@ -503,6 +504,7 @@ void FluidCharacterization::loadTargetRelationships()
 		FluidSystem* fluidSystem = getRepository()->getDataObjectByUuid<FluidSystem>(dor.getUuid());
 		if (fluidSystem == nullptr) {
 			convertDorIntoRel<FluidSystem>(dor);
+			fluidSystem = getRepository()->getDataObjectByUuid<FluidSystem>(dor.getUuid());
 		}
 		getRepository()->addRelationship(this, fluidSystem);
 	}

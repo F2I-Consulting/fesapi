@@ -33,7 +33,7 @@ ActivityTemplate::ActivityTemplate(COMMON_NS::DataObjectRepository * repo, const
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 void ActivityTemplate::pushBackParameter(const std::string & title,

@@ -46,7 +46,7 @@ void BlockedWellboreRepresentation::init(const std::string & guid, const std::st
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	traj->getRepository()->addOrReplaceDataObject(this);
+	traj->getRepository()->addDataObject(this);
 
 	frame->Trajectory = traj->newEml23Reference();
 	getRepository()->addRelationship(this, traj);

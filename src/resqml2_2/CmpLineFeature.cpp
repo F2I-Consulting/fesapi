@@ -44,5 +44,5 @@ CmpLineFeature::CmpLineFeature(COMMON_NS::DataObjectRepository* repo, const std:
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }

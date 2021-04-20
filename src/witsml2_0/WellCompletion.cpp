@@ -42,6 +42,7 @@ WellCompletion::WellCompletion(WITSML2_NS::Well* witsmlWell,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	witsmlWell->getRepository()->addDataObject(this);
 	setWell(witsmlWell);
 }
 
@@ -60,14 +61,11 @@ void WellCompletion::setWell(WITSML2_NS::Well* witsmlWell)
 	if (witsmlWell == nullptr) {
 		throw invalid_argument("Cannot set a null witsml Well to a witsml well completion");
 	}
-	if (getRepository() == nullptr) {
-		witsmlWell->getRepository()->addOrReplaceDataObject(this);
-	}
-
-	getRepository()->addRelationship(this, witsmlWell);
 
 	witsml20__WellCompletion* wellCompletion = static_cast<witsml20__WellCompletion*>(gsoapProxy2_1);
 	wellCompletion->Well = witsmlWell->newEmlReference();
+
+	getRepository()->addRelationship(this, witsmlWell);
 }
 
 std::vector<WellboreCompletion *> WellCompletion::getWellboreCompletions() const

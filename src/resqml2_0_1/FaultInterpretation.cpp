@@ -45,6 +45,7 @@ FaultInterpretation::FaultInterpretation(RESQML2_NS::BoundaryFeature * fault, co
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
+	fault->getRepository()->addDataObject(this);
 	setInterpretedFeature(fault);
 }
 
@@ -69,6 +70,7 @@ FaultInterpretation::FaultInterpretation(RESQML2_NS::BoundaryFeature * fault, co
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
+	fault->getRepository()->addDataObject(this);
 	setInterpretedFeature(fault);
 }
 

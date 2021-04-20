@@ -39,6 +39,7 @@ RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(RESQML2
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	orgFeat->getRepository()->addDataObject(this);
 	setInterpretedFeature(orgFeat);
 }
 

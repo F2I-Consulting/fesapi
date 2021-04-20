@@ -37,5 +37,5 @@ ShotPointLineFeature::ShotPointLineFeature(COMMON_NS::DataObjectRepository* repo
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }

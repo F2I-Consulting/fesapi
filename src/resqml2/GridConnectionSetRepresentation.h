@@ -185,7 +185,26 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The UUID of the (fault) interpretation at index @p interpretationIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getInterpretationUuidFromIndex(unsigned int interpretationIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT std::string getInterpretationUuidFromIndex(unsigned int interpretationIndex) const {
+			return getInterpretationDorFromIndex(interpretationIndex).getUuid();
+		}
+
+		/**
+		 * Gets the DOR of a particular (fault) interpretation of this grid connection set.
+		 *
+		 * @exception	std::invalid_argument	If this grid connection set representation does not
+		 * 										contain fault interpretation association.
+		 * @exception	std::invalid_argument	If the associated feature interpretation at position @p
+		 * 										interpretationIndex is not a fault one. This is legal but
+		 * 										not yet implemented.
+		 * @exception	std::out_of_range	 	If @p interpretationIndex is out of range.
+		 *
+		 * @param 	interpretationIndex	The index of a (fault) interpretation in the collection of
+		 * 								feature interpretation of this grid connection set.
+		 *
+		 * @returns	The DOR of the (fault) interpretation at index @p interpretationIndex.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getInterpretationDorFromIndex(unsigned int interpretationIndex) const = 0;
 
 		/**
 		 * Gets a particular (fault) interpretation of this grid connection set.

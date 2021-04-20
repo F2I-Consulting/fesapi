@@ -40,6 +40,8 @@ Activity::Activity(EML2_NS::ActivityTemplate* activityTemplate, const string & g
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
+	activityTemplate->getRepository()->addDataObject(this);
+
 	setActivityTemplate(activityTemplate);
 }
 
@@ -488,15 +490,12 @@ COMMON_NS::AbstractObject* Activity::getResqmlObjectParameterValue(unsigned int 
 void Activity::setActivityTemplate(EML2_NS::ActivityTemplate * activityTemplate)
 {
 	if (activityTemplate == nullptr) {
-		return;
+		throw invalid_argument("The activity template of an activity must be not null.");
 	}
-	if (getRepository() == nullptr) {
-		activityTemplate->getRepository()->addOrReplaceDataObject(this);
-	}
-
-	getRepository()->addRelationship(this, activityTemplate);
 
 	static_cast<_eml23__Activity*>(gsoapProxy2_3)->ActivityDescriptor = activityTemplate->newEml23Reference();
+
+	getRepository()->addRelationship(this, activityTemplate);
 }
 
 COMMON_NS::DataObjectReference Activity::getActivityTemplateDor() const

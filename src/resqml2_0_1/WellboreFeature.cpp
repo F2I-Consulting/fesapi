@@ -40,7 +40,7 @@ WellboreFeature::WellboreFeature(COMMON_NS::DataObjectRepository* repo, const st
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 void WellboreFeature::setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore)

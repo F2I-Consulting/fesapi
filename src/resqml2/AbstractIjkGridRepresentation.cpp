@@ -169,7 +169,7 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(COMMON_NS::DataObjectRepository * repo,

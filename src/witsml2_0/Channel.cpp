@@ -52,6 +52,7 @@ Channel::Channel(EML2_NS::PropertyKind * propertyKind,
 	static_cast<witsml20__Channel*>(gsoapProxy2_1)->TimeDepth = timeDepth;
 	static_cast<witsml20__Channel*>(gsoapProxy2_1)->LoggingCompanyName = loggingCompanyName;
 
+	propertyKind->getRepository()->addDataObject(this);
 	setPropertyKind(propertyKind);
 }
 

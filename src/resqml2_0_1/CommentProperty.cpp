@@ -52,6 +52,7 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
+	rep->getRepository()->addDataObject(this);
 	setRepresentation(rep);
 }
 
@@ -70,6 +71,7 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
+	rep->getRepository()->addDataObject(this);
 	setRepresentation(rep);
 
 	setPropertyKind(localPropKind);

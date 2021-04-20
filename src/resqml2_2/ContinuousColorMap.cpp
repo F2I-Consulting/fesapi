@@ -40,5 +40,5 @@ ContinuousColorMap::ContinuousColorMap(COMMON_NS::DataObjectRepository* repo, st
 	continuousColorMap->InterpolationDomain = interpolationDomain;
 	continuousColorMap->InterpolationMethod = interpolationMethod;
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }

@@ -55,8 +55,8 @@ DeviationSurveyRepresentation::DeviationSurveyRepresentation(RESQML2_NS::Wellbor
 		rep->MdUom = static_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
 	}
 
+	interp->getRepository()->addDataObject(this);
 	setMdDatum(mdInfo);
-
 	setInterpretation(interp);
 }
 
@@ -182,13 +182,10 @@ void DeviationSurveyRepresentation::setMdDatum(RESQML2_NS::MdDatum * mdDatum)
 	if (mdDatum == nullptr) {
 		throw invalid_argument("The md Datum is missing.");
 	}
-	if (getRepository() == nullptr) {
-		mdDatum->getRepository()->addOrReplaceDataObject(this);
-	}
-
-	getRepository()->addRelationship(this, mdDatum);
 
 	static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1)->MdDatum = mdDatum->newResqmlReference();
+
+	getRepository()->addRelationship(this, mdDatum);
 }
 
 COMMON_NS::DataObjectReference DeviationSurveyRepresentation::getMdDatumDor() const

@@ -38,7 +38,7 @@ StringTableLookup::StringTableLookup(COMMON_NS::DataObjectRepository* repo, cons
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 unsigned int StringTableLookup::getItemCount() const

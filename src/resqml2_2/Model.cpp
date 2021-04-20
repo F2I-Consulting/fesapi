@@ -38,5 +38,5 @@ Model::Model(COMMON_NS::DataObjectRepository * repo, const std::string & guid, c
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }

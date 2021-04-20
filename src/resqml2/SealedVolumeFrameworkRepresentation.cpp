@@ -31,13 +31,10 @@ void SealedVolumeFrameworkRepresentation::setSealedSurfaceFramework(SealedSurfac
 	if (ssf == nullptr) {
 		throw invalid_argument("Cannot set a null SealedSurfaceFrameworkRepresentation");
 	}
-	if (getRepository() == nullptr) {
-		ssf->getRepository()->addOrReplaceDataObject(this);
-	}
-
-	getRepository()->addRelationship(this, ssf);
 
 	setXmlSealedSurfaceFramework(ssf);
+
+	getRepository()->addRelationship(this, ssf);
 }
 
 void SealedVolumeFrameworkRepresentation::setInterpretationOfVolumeRegion(unsigned int regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp)

@@ -47,7 +47,7 @@ void UnstructuredGridRepresentation::init(COMMON_NS::DataObjectRepository* repo,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 UnstructuredGridRepresentation::UnstructuredGridRepresentation(COMMON_NS::DataObjectRepository* repo,
@@ -92,7 +92,7 @@ gsoap_eml2_3::resqml22__PointGeometry* UnstructuredGridRepresentation::getPointG
 
 COMMON_NS::DataObjectReference UnstructuredGridRepresentation::getHdfProxyDor() const
 {
-	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
+	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_2(0));
 }
 
 uint64_t UnstructuredGridRepresentation::getCellCount() const

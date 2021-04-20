@@ -46,7 +46,7 @@ WellboreMarker::WellboreMarker(COMMON_NS::DataObjectRepository * repo,
 	static_cast<witsml20__WellboreMarker*>(gsoapProxy2_1)->Md->uom = mdUom;
 	static_cast<witsml20__WellboreMarker*>(gsoapProxy2_1)->Md->datum = mdDatum;
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 WellboreMarker::WellboreMarker(WITSML2_NS::Wellbore* witsmlWellbore,
@@ -61,6 +61,7 @@ WellboreMarker::WellboreMarker(WITSML2_NS::Wellbore* witsmlWellbore,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
+	witsmlWellbore->getRepository()->addDataObject(this);
 	setWellbore(witsmlWellbore);
 
 	static_cast<witsml20__WellboreMarker*>(gsoapProxy2_1)->Md = soap_new_witsml20__MeasuredDepthCoord(witsmlWellbore->getGsoapContext());
@@ -78,9 +79,6 @@ void WellboreMarker::setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 {
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml wellbore to a witsml WellboreMarker");
-	}
-	if (getRepository() == nullptr) {
-		witsmlWellbore->getRepository()->addOrReplaceDataObject(this);
 	}
 
 	static_cast<witsml20__WellboreMarker*>(gsoapProxy2_1)->Wellbore = witsmlWellbore->newEmlReference();

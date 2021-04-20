@@ -37,7 +37,7 @@ StratigraphicColumn::StratigraphicColumn(COMMON_NS::DataObjectRepository* repo, 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
 
 void StratigraphicColumn::pushBackStratiColumnRank(RESQML2_NS::StratigraphicColumnRankInterpretation * stratiColumnRank)

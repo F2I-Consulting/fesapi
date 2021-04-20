@@ -39,5 +39,5 @@ CulturalFeature::CulturalFeature(COMMON_NS::DataObjectRepository * repo, const s
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addDataObject(this);
 }
