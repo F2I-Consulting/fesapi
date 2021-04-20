@@ -200,14 +200,13 @@ namespace EML2_NS
 %feature("director") COMMON_NS::HdfProxyFactory;
 
 /*
-Following %typemap(csbody) definitions force the target language to not 
+Following csbody and javabody typemap definitions force the target language to not 
 manage the memory of the C++ part of wrapped COMMON_NS::HdfProxyFactory and 
 COMMON_NS::AbstractObject. This C++ parts will be free at the destruction
 of the COMMON_NS::DataObjectRepository thanks to the 
 DataObjectRepository::clear() method (called by DataObjectRepository 
 destructor).
 */
-
 %typemap(csbody) COMMON_NS::HdfProxyFactory %{
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -219,6 +218,19 @@ destructor).
 
   public static global::System.Runtime.InteropServices.HandleRef getCPtr(HdfProxyFactory obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
+  }
+%}
+%typemap(javabody) COMMON_NS::HdfProxyFactory %{
+  private transient long swigCPtr;
+  protected transient boolean swigCMemOwn;
+
+  public HdfProxyFactory(long cPtr, boolean cMemoryOwn) {
+    swigCMemOwn = false;
+    swigCPtr = cPtr;
+  }
+
+  public static long getCPtr(HdfProxyFactory obj) {
+    return (obj == null) ? 0 : obj.swigCPtr;
   }
 %}
 
