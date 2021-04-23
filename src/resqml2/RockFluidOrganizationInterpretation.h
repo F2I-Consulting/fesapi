@@ -38,6 +38,8 @@ namespace RESQML2_NS
 		*/
 		virtual ~RockFluidOrganizationInterpretation() = default;
 
+		bool isRockFluid() const final { return true; }
+
 		/**
 		 * Gets the set of grid representations associated to this rock fluid organization.
 		 *

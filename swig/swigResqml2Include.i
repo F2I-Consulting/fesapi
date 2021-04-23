@@ -2399,8 +2399,21 @@ namespace RESQML2_NS
 	class AbstractOrganizationInterpretation : public AbstractFeatureInterpretation
 	{
 	public:
-		
+		/**
+		* Indicates if this instance is a structural one.
+		*/
+		virtual bool isStructural() const;
 
+		/**
+		* Indicates if this instance is a structural one.
+		*/
+		virtual bool isStratigraphic() const;
+
+		/**
+		* Indicates if this instance is a structural one.
+		*/
+		virtual bool isRockFluid() const;
+		
 		/**
 		 * Adds a binary contact to this organization interpretation by means of a simple sentence.
 		 *

@@ -75,6 +75,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		PROPERTYSET,
 		REPRESENTATIONSETREPRESENTATION,
 		ROCKFLUIDORGANIZATIONINTERPRETATION,
+		ROCKFLUIDUNITFEATURE,
 		ROCKFLUIDUNITINTERPRETATION,
 		ROCKVOLUMEFEATURE,
 		SEALEDSURFACEFRAMEWORKREPRESENTATION,
@@ -393,12 +394,12 @@ ${COMMENT_END}
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i_consulting.fesapi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
 		if ("resqml20".equals(xmlNs)) {
-			com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.resqml20_StratigraphicOccurrenceInterpretation tmp = new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.resqml20_StratigraphicOccurrenceInterpretation(cPtr, owner);
-			if (tmp.getStratigraphicColumnRankInterpretation() == null) {
+			com.f2i_consulting.fesapi.${FESAPI_RESQML2_NS}.AbstractOrganizationInterpretation tmp = new com.f2i_consulting.fesapi.${FESAPI_RESQML2_NS}.AbstractOrganizationInterpretation(cPtr, owner);
+			if (tmp.isRockFluid()) {
 				return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.resqml20_RockFluidOrganizationInterpretation(cPtr, owner);
 			}
 			else {
-				return tmp;
+				return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.resqml20_StratigraphicOccurrenceInterpretation(cPtr, owner);
 			}
 		}
 ${COMMENT_START}
@@ -1043,6 +1044,7 @@ ${COMMENT_END}
 		case PROPERTYSET : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.resqml20_PropertySet(cPtr, owner);
 		case REPRESENTATIONSETREPRESENTATION : return resqml2_instantiateRepresentationSetRepresentation(cPtr, owner);
 		case ROCKFLUIDORGANIZATIONINTERPRETATION : return resqml2_instantiateRockFluidOrganizationInterpretation(cPtr, owner);
+		case ROCKFLUIDUNITFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.resqml20_RockFluidUnitFeature(cPtr, owner);
 		case ROCKFLUIDUNITINTERPRETATION : return resqml2_instantiateRockFluidUnitInterpretation(cPtr, owner);
 ${COMMENT_START}
 		case ROCKVOLUMEFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_2_NS}.resqml22_RockVolumeFeature(cPtr, owner);
