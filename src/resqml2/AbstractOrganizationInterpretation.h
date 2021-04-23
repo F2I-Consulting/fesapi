@@ -27,26 +27,28 @@ namespace RESQML2_NS
 	/** @brief	This class defines the behaviour of all RESQML2 organizations */
 	class AbstractOrganizationInterpretation : public AbstractFeatureInterpretation
 	{
-	protected:
-
-		/**
-		* Only to be used in partial transfer context
-		*/
-		DLL_IMPORT_OR_EXPORT AbstractOrganizationInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractFeatureInterpretation(partialObject) {}
-
-		/** Default constructor */
-		AbstractOrganizationInterpretation() {}
-
-		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		AbstractOrganizationInterpretation(gsoap_resqml2_0_1::resqml20__AbstractOrganizationInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
-		AbstractOrganizationInterpretation(gsoap_eml2_3::resqml22__AbstractOrganizationInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
-
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~AbstractOrganizationInterpretation() = default;
+
+		/**
+		* Indicates if this instance is a structural one.
+		* Needed by SWIG wrappers.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual bool isStructural() const { return false; }
+
+		/**
+		* Indicates if this instance is a structural one.
+		* Needed by SWIG wrappers.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual bool isStratigraphic() const { return false; }
+
+		/**
+		* Indicates if this instance is a structural one.
+		* Needed by SWIG wrappers.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual bool isRockFluid() const { return false; }
 
 		/**
 		 * Adds a binary contact to this organization interpretation by means of a simple sentence.
@@ -115,5 +117,21 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_resqml2_0_1::resqml20__ContactSide subjectQualifier,
 			gsoap_eml2_3::resqml22__ContactVerb verb,
 			AbstractFeatureInterpretation* directObject, gsoap_resqml2_0_1::resqml20__ContactSide directObjectQualifier);
+
+	protected:
+
+		/**
+		* Only to be used in partial transfer context
+		*/
+		DLL_IMPORT_OR_EXPORT AbstractOrganizationInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractFeatureInterpretation(partialObject) {}
+
+		/** Default constructor */
+		AbstractOrganizationInterpretation() {}
+
+		/**
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*/
+		AbstractOrganizationInterpretation(gsoap_resqml2_0_1::resqml20__AbstractOrganizationInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
+		AbstractOrganizationInterpretation(gsoap_eml2_3::resqml22__AbstractOrganizationInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
 	};
 }

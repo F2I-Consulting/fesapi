@@ -47,6 +47,7 @@ under the License.
 #include "../src/resqml2_0_1/EarthModelInterpretation.h"
 #include "../src/resqml2_0_1/GeobodyBoundaryInterpretation.h"
 #include "../src/resqml2_0_1/GeobodyInterpretation.h"
+#include "../src/resqml2_0_1/RockFluidUnitFeature.h"
 #include "../src/resqml2_0_1/RockFluidUnitInterpretation.h"
 #include "../src/resqml2_0_1/RockFluidOrganizationInterpretation.h"
 
@@ -577,6 +578,7 @@ namespace WITSML2_0_NS {
 	%nspace RESQML2_0_1_NS::PropertyKindMapper;
 	%nspace RESQML2_0_1_NS::PropertySet;
 	%nspace RESQML2_0_1_NS::RepresentationSetRepresentation;
+	%nspace RESQML2_0_1_NS::RockFluidUnitFeature;
 	%nspace RESQML2_0_1_NS::RockFluidUnitInterpretation;
 	%nspace RESQML2_0_1_NS::RockFluidOrganizationInterpretation;
 	%nspace RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation;
@@ -860,6 +862,14 @@ namespace RESQML2_0_1_NS
 	%rename(resqml20_StratigraphicColumnRankInterpretation) StratigraphicColumnRankInterpretation;
 #endif
 	class StratigraphicColumnRankInterpretation : public RESQML2_NS::StratigraphicColumnRankInterpretation
+	{
+	public:
+	};
+	
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(resqml20_RockFluidUnitFeature) RockFluidUnitFeature;
+#endif	
+	class RockFluidUnitFeature : public GeologicUnitFeature
 	{
 	public:
 	};

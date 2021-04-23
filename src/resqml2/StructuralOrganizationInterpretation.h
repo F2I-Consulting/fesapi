@@ -38,6 +38,8 @@ namespace RESQML2_NS
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~StructuralOrganizationInterpretation() = default;
 
+		bool isStructural() const final { return true; }
+
 		/**
 		 * Adds a fault interpretation to this structural organization interpretation.
 		 *

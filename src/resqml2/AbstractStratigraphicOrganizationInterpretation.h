@@ -35,32 +35,12 @@ namespace RESQML2_NS
 	 */
 	class AbstractStratigraphicOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
-	protected:
-
-		/**
-		 * Only to be used in partial transfer context
-		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * 
-		 */
-		DLL_IMPORT_OR_EXPORT AbstractStratigraphicOrganizationInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractOrganizationInterpretation(partialObject) {}
-
-		/** Default constructor */
-		AbstractStratigraphicOrganizationInterpretation() {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		AbstractStratigraphicOrganizationInterpretation(gsoap_resqml2_0_1::resqml20__AbstractStratigraphicOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
-		AbstractStratigraphicOrganizationInterpretation(gsoap_eml2_3::resqml22__AbstractStratigraphicOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
-
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~AbstractStratigraphicOrganizationInterpretation() = default;
+
+		bool isStratigraphic() const final { return true; }
 
 		/**
 		 * Gets the grid representations associated to this stratigraphic organization interpretation.
@@ -105,5 +85,27 @@ namespace RESQML2_NS
 		 * 			false if it is not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool isAssociatedToGridRepresentation(AbstractGridRepresentation* gridRep) const;
+
+	protected:
+
+		/**
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 *
+		 */
+		DLL_IMPORT_OR_EXPORT AbstractStratigraphicOrganizationInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractOrganizationInterpretation(partialObject) {}
+
+		/** Default constructor */
+		AbstractStratigraphicOrganizationInterpretation() {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		AbstractStratigraphicOrganizationInterpretation(gsoap_resqml2_0_1::resqml20__AbstractStratigraphicOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
+		AbstractStratigraphicOrganizationInterpretation(gsoap_eml2_3::resqml22__AbstractStratigraphicOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
 	};
 }
