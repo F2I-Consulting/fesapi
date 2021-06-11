@@ -119,7 +119,7 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	patch->Count = triangleCount;
 	eml23__IntegerExternalArray* hdfTriangles = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	patch->Triangles = hdfTriangles;
-	hdfTriangles->NullValue = (std::numeric_limits<int>::max)();
+	hdfTriangles->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write triangle node index null value in this method
 	hdfTriangles->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
 	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
 	dsPart->EpcExternalPartReference = proxy->newEml23Reference();

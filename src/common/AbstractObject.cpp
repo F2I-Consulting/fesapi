@@ -1451,6 +1451,43 @@ uint64_t AbstractObject::readArrayNdOfUInt64Values(gsoap_eml2_3::eml23__Abstract
 	return (std::numeric_limits<uint64_t>::max)();
 }
 
+int64_t AbstractObject::readArrayNdOfInt64Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, int64_t * arrayOutput) const
+{
+	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+		auto const * hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
+		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(hdfArray->Values->HdfProxy->UUID);
+		if (hdfProxy == nullptr) {
+			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
+		}
+		hdfProxy->readArrayNdOfInt64Values(hdfArray->Values->PathInHdfFile, arrayOutput);
+		return hdfArray->NullValue;
+	}
+	else {
+		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
+	}
+
+	return (std::numeric_limits<int64_t>::max)();
+}
+
+int64_t AbstractObject::readArrayNdOfInt64Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, int64_t * arrayOutput) const
+{
+	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
+			if (hdfProxy == nullptr) {
+				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
+			}
+			hdfProxy->readArrayNdOfInt64Values(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		}
+		return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue;
+	}
+	else {
+		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
+	}
+
+	return (std::numeric_limits<int64_t>::max)();
+}
+
 uint64_t AbstractObject::getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const
 {
 	long soapType = arrayInput->soap_type();

@@ -274,7 +274,7 @@ namespace RESQML2_NS
 		 * 										corresponding to the element indices. The count must be
 		 * 										elementCount.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, uint64_t* elementIndices, EML2_NS::AbstractHdfProxy* proxy, short* supportingRepIndices = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, uint64_t* elementIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, short* supportingRepIndices = nullptr);
 		
 		/**
 		 * Pushes back a new patch in this sub-representation which is constituted by means of pairwise
@@ -295,7 +295,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind0, gsoap_eml2_3::resqml22__IndexableElement elementKind1,
 			uint64_t elementCount,
 			uint64_t * elementIndices0, uint64_t * elementIndices1,
-			EML2_NS::AbstractHdfProxy* proxy) = 0;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr) = 0;
 
 		/**
 		 * Pushes back a new patch (without pairwise elements) in this sub-representation where the

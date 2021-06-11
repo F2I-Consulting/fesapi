@@ -52,7 +52,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 
 		// ListOfContactRepresentations handling
 		resqml20__IntegerHdf5Array * xmlListOfContactRepresentations = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
-		xmlListOfContactRepresentations->NullValue = (std::numeric_limits<unsigned int>::max)();
+		xmlListOfContactRepresentations->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write index null value in this method
 		xmlListOfContactRepresentations->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		xmlListOfContactRepresentations->Values->HdfProxy = proxy->newResqmlReference();
 		ossForHdfContactRepresentations << "contactIdentity_listOfContactRep_" << orgRep->ContactIdentity.size();
@@ -68,7 +68,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 
 		// ListOfContactRepresentations handling
 		eml23__IntegerExternalArray * xmlListOfContactRepresentations = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
-		xmlListOfContactRepresentations->NullValue = (std::numeric_limits<unsigned int>::max)();
+		xmlListOfContactRepresentations->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write index null value in this method
 		xmlListOfContactRepresentations->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
 		auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
 		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
@@ -113,7 +113,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 
 		// ListOfContactRepresentations handling
 		resqml20__IntegerHdf5Array * xmlListOfContactRepresentations = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
-		xmlListOfContactRepresentations->NullValue = (std::numeric_limits<unsigned int>::max)();
+		xmlListOfContactRepresentations->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to cell index null value in this method
 		xmlListOfContactRepresentations->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		xmlListOfContactRepresentations->Values->HdfProxy = proxy->newResqmlReference();
 		ossForHdfContactRepresentations << "contactIdentity_listOfContactRep_" << orgRep->ContactIdentity.size();
@@ -122,7 +122,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 
 		// ListOfIdenticalNodes handling
 		resqml20__IntegerHdf5Array * xmlListOfIdenticalNodes = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
-		xmlListOfIdenticalNodes->NullValue = (std::numeric_limits<unsigned int>::max)();
+		xmlListOfIdenticalNodes->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write index null value in this method
 		xmlListOfIdenticalNodes->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		xmlListOfIdenticalNodes->Values->HdfProxy = proxy->newResqmlReference();
 		ossForHdfIdenticalNodes << "contactIdentity_listOfIdenticalNodes_" << orgRep->ContactIdentity.size();
@@ -139,7 +139,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 
 		// ListOfContactRepresentations handling
 		eml23__IntegerExternalArray * xmlListOfContactRepresentations = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
-		xmlListOfContactRepresentations->NullValue = (std::numeric_limits<unsigned int>::max)();
+		xmlListOfContactRepresentations->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write index null value in this method
 		xmlListOfContactRepresentations->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
 		auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
 		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
@@ -151,7 +151,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 
 		// ListOfIdenticalNodes handling
 		eml23__IntegerExternalArray * xmlListOfIdenticalNodes = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
-		xmlListOfIdenticalNodes->NullValue = (std::numeric_limits<unsigned int>::max)();
+		xmlListOfIdenticalNodes->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write index null value in this method
 		xmlListOfIdenticalNodes->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
 		dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
 		dsPart->EpcExternalPartReference = proxy->newEml23Reference();

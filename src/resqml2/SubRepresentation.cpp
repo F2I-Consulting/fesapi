@@ -33,6 +33,13 @@ const char* SubRepresentation::XML_TAG = "SubRepresentation";
 
 void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, uint64_t * elementIndices, EML2_NS::AbstractHdfProxy * proxy, short * supportingRepIndices)
 {
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+
 	std::string supportingRepDataset = "";
 	ostringstream ossForHdfSupRep;
 	if (supportingRepIndices != nullptr) {
@@ -42,7 +49,8 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 	ostringstream ossForHdf;
 	ossForHdf << "subrepresentation_elementIndices0_patch" << getPatchCount();
 
-	pushBackRefToExistingDataset(elementKind, elementCount, getHdfGroup() + "/" + ossForHdf.str(), (std::numeric_limits<unsigned int>::max)(), proxy, supportingRepDataset);
+	// Arbitrarily set null value to -1 since it has no interest to write element index null value in this method
+	pushBackRefToExistingDataset(elementKind, elementCount, getHdfGroup() + "/" + ossForHdf.str(), -1, proxy, supportingRepDataset);
 
 	// ************ HDF ************		
 	hsize_t numValues = elementCount;

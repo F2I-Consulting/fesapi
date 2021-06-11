@@ -73,10 +73,10 @@ void Streamlines::initRepo()
 
 	// Grid
 	uint16_t gridIndices[3] = { 0, 0, 0 };
-	uint64_t cellIndices[3] = { 0, 1, 2 };
+	int64_t cellIndices[3] = { 0, 1, 2 };
 	uint8_t localfacePairs[6] = { 7, 7, 7, 5, 3, 7 };
 	streamlinesRep->setIntervalGridCells(gridIndices, (std::numeric_limits<uint16_t>::max)(),
-		cellIndices, (std::numeric_limits<uint64_t>::max)(),
+		cellIndices,
 		localfacePairs, 7,
 		gridVector);
 }
@@ -131,7 +131,7 @@ void Streamlines::readRepo()
 	// Grid
 	REQUIRE(streamlinesRep->getGridRepresentationCount() == 1);
 	REQUIRE(streamlinesRep->getGridRepresentation(0)->getTitle() == "Grid for streamline");
-	uint64_t cellIndices[3];
+	int64_t cellIndices[3];
 	streamlinesRep->getCellIndices(cellIndices);
 	REQUIRE(cellIndices[0] == 0);
 	REQUIRE(cellIndices[1] == 1);

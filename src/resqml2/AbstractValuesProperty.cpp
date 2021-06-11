@@ -345,7 +345,7 @@ std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(EML2_NS:
 		gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
 
 		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = gsoap_resqml2_0_1::soap_new_resqml20__PatchOfValues(gsoapProxy2_0_1->soap);
-		patch->RepresentationPatchIndex = static_cast<uint64_t*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(uint64_t)));
+		patch->RepresentationPatchIndex = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(ULONG64)));
 		*(patch->RepresentationPatchIndex) = prop->PatchOfValues.size();
 
 		// XML
@@ -411,7 +411,7 @@ std::string AbstractValuesProperty::pushBackRefToExistingFloatingPointDataset(EM
 		gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
 
 		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = gsoap_resqml2_0_1::soap_new_resqml20__PatchOfValues(gsoapProxy2_0_1->soap);
-		patch->RepresentationPatchIndex = static_cast<uint64_t*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(uint64_t)));
+		patch->RepresentationPatchIndex = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(ULONG64)));
 		*(patch->RepresentationPatchIndex) = prop->PatchOfValues.size();
 
 		// XML
@@ -580,17 +580,6 @@ int64_t AbstractValuesProperty::getNullValueOfPatch(unsigned int patchIndex) con
 	}
 }
 
-uint64_t AbstractValuesProperty::getULongValuesOfPatch(unsigned int patchIndex, uint64_t * values) const
-{
-	int64_t nullValue = (numeric_limits<int64_t>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
-
-	hdfProxy->readArrayNdOfUInt64Values(dsPath, values);
-
-	return nullValue;
-}
-
 int AbstractValuesProperty::getIntValuesOfPatch(unsigned int patchIndex, int * values) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
@@ -709,7 +698,7 @@ void AbstractValuesProperty::pushBackLongHdf5ArrayOfValues(
 		gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
 
 		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = gsoap_resqml2_0_1::soap_new_resqml20__PatchOfValues(gsoapProxy2_0_1->soap);
-		patch->RepresentationPatchIndex = static_cast<uint64_t*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(uint64_t)));
+		patch->RepresentationPatchIndex = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(ULONG64)));
 		*(patch->RepresentationPatchIndex) = prop->PatchOfValues.size();
 
 		// XML

@@ -963,7 +963,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	//**************
 	RESQML2_NS::GridConnectionSetRepresentation * gridConnSet = pck->createGridConnectionSetRepresentation("03bb6fc0-fa3e-11e5-8c09-0002a5d5c51b", "GridConnectionSetRepresentation");
 	gridConnSet->pushBackSupportingGridRepresentation(ijkgrid);
-	uint64_t cellConn[6] = { 0, 9999, 0, 1, 9999, 1 };
+	int64_t cellConn[6] = { 0, 9999, 0, 1, 9999, 1 };
 	gridConnSet->setCellIndexPairs(3, cellConn, 9999, hdfProxy);
 	int localFacePerCellIndexPairs[6] = { 3, 9999, 3, 5, 9999, 5 };
 	gridConnSet->setLocalFacePerCellIndexPairs(3, localFacePerCellIndexPairs, -1, hdfProxy);
@@ -978,7 +978,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 
 	RESQML2_NS::GridConnectionSetRepresentation * gridConnSet432 = pck->createGridConnectionSetRepresentation("20b480a8-5e3b-4336-8f6e-1b3099c2c60f", "GridConnectionSetRepresentation");
 	gridConnSet432->pushBackSupportingGridRepresentation(ijkgrid432);
-	uint64_t cellConn432[30] = {
+	int64_t cellConn432[30] = {
 		1, 9999, 5, 9999, 9, 9999,
 		1, 2, 5, 6, 9, 10,
 		13, 2, 17, 6, 21, 10,
@@ -1139,7 +1139,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	//**************
 	// Stratigraphy
 	//**************
-	uint64_t stratiUnitIndice = 0;
+	int64_t stratiUnitIndice = 0;
 	ijkgrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank0);
 
 	// Partial transfer
@@ -4986,7 +4986,7 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 		if (ijkGrid->hasIntervalStratigraphicUnitIndices())
 		{
 			cout << "\t\t Linked with strati : " << ijkGrid->getStratigraphicOrganizationInterpretation()->getTitle() << endl;
-			std::unique_ptr<uint64_t[]> stratiIndices(new uint64_t[ijkGrid->getKCellCount()]);
+			std::unique_ptr<int64_t[]> stratiIndices(new int64_t[ijkGrid->getKCellCount()]);
 			ijkGrid->getIntervalStratigraphicUnitIndices(stratiIndices.get());
 			for (size_t i = 0; i < ijkGrid->getKCellCount(); ++i) {
 				cout << "\t\t K layer " << i << " is linked to strati layer " << stratiIndices[i] << endl;

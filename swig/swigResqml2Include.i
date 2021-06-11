@@ -2886,11 +2886,11 @@ namespace RESQML2_NS
 			unsigned int elementCountInSlowestDimension,
 			unsigned int elementCountInMiddleDimension,
 			unsigned int elementCountInFastestDimension);
-		void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, uint64_t* elementIndices, EML2_NS::AbstractHdfProxy* proxy, short* supportingRepIndices = nullptr);
+		void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, uint64_t* elementIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, short* supportingRepIndices = nullptr);
 		void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind0, gsoap_eml2_3::resqml22__IndexableElement elementKind1,
 			uint64_t elementCount,
 			uint64_t * elementIndices0, uint64_t * elementIndices1,
-			EML2_NS::AbstractHdfProxy* proxy) = 0;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr) = 0;
 		
 		bool areElementIndicesPairwise(unsigned int patchIndex) const;
 		bool areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
@@ -3005,10 +3005,10 @@ namespace RESQML2_NS
 		void getRegridChildCellWeights(char dimension, double * childCellWeights) const;
 		bool hasForcedNonRegridedParentCell() const;
 
-		void setCellAssociationWithStratigraphicOrganizationInterpretation(uint64_t * stratiUnitIndices, uint64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
+		void setCellAssociationWithStratigraphicOrganizationInterpretation(int64_t * stratiUnitIndices, int64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
 		RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
 		bool hasCellStratigraphicUnitIndices() const;
-		uint64_t getCellStratigraphicUnitIndices(uint64_t * stratiUnitIndices);
+		int64_t getCellStratigraphicUnitIndices(int64_t * stratiUnitIndices);
 		
 		bool isTruncated() const;
 		uint64_t getTruncatedFaceCount() const;
@@ -3090,10 +3090,10 @@ namespace RESQML2_NS
 		unsigned int getKCellCount() const;
 		void setKCellCount(unsigned int kCount);
 		
-		void setIntervalAssociationWithStratigraphicOrganizationInterpretation(uint64_t * stratiUnitIndices, uint64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy * hdfProxy);
+		void setIntervalAssociationWithStratigraphicOrganizationInterpretation(int64_t * stratiUnitIndices, int64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy * hdfProxy);
 		RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
 		bool hasIntervalStratigraphicUnitIndices() const;
-		uint64_t getIntervalStratigraphicUnitIndices(uint64_t * stratiUnitIndices);
+		int64_t getIntervalStratigraphicUnitIndices(int64_t * stratiUnitIndices);
 		gsoap_resqml2_0_1::resqml20__PillarShape getMostComplexPillarGeometry() const;
 	};
 	
@@ -3379,7 +3379,7 @@ namespace RESQML2_NS
 		unsigned int getCellIndexPairCountFromInterpretationIndex(unsigned int interpretationIndex) const;
 		
 		int64_t getCellIndexPairs(int64_t * cellIndexPairs) const;
-		void getGridConnectionSetInformationFromInterpretationIndex(uint64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const;
+		void getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const;
 		bool hasLocalFacePerCell() const;
 		int64_t getLocalFacePerCellIndexPairs(int * localFacePerCellIndexPairs) const;
 		bool isBasedOnMultiGrids() const;
@@ -3387,8 +3387,8 @@ namespace RESQML2_NS
 		
 		void pushBackSupportingGridRepresentation(AbstractGridRepresentation * supportingGridRep);
 		
-		void setCellIndexPairs(uint64_t cellIndexPairCount, uint64_t * cellIndexPair, uint64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy);
-		void setCellIndexPairs(uint64_t cellIndexPairCount, uint64_t * cellIndexPair, uint64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, unsigned short gridIndexPairNullValue, unsigned short * gridIndexPair);
+		void setCellIndexPairs(uint64_t cellIndexPairCount, int64_t * cellIndexPair, int64_t cellIndexPairNullValue = -1, EML2_NS::AbstractHdfProxy * proxy = nullptr);
+		void setCellIndexPairs(uint64_t cellIndexPairCount, int64_t * cellIndexPair, int64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, uint16_t gridIndexPairNullValue, uint16_t const * gridIndexPair);
 		void setLocalFacePerCellIndexPairs(uint64_t cellIndexPairCount, int * localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy);
 		void setConnectionInterpretationIndices(unsigned int * interpretationIndices, unsigned int interpretationIndiceCount, unsigned int nullValue, EML2_NS::AbstractHdfProxy * proxy);
 		void pushBackInterpretation(AbstractFeatureInterpretation* interp);
@@ -3583,7 +3583,7 @@ namespace RESQML2_NS
 		 * @returns	The null value used in @p cellIndices in order to indicate that an interval does not
 		 * 			correspond to any intersected grid.
 		 */
-		int64_t getCellIndices(uint64_t * cellIndices) const;
+		int64_t getCellIndices(int64_t * cellIndices) const;
 
 		/**
 		 * For each interval of the lines of the representation, gets the entry and exit intersection faces of the line in the cell.
@@ -3717,7 +3717,7 @@ namespace RESQML2_NS
 		
 		bool hasRealizationIndices() const;
 		std::vector<unsigned int> getRealizationIndices() const;
-		void setRealizationIndices(uint64_t startRealizationIndex, uint64_t countRealizationIndices);
+		void setRealizationIndices(int64_t startRealizationIndex, int64_t countRealizationIndices);
 		void setRealizationIndices(const std::vector<unsigned int> & realizationIndices, EML2_NS::AbstractHdfProxy* hdfProxy = nullptr);
 		
 		void setTimeSeries(EML2_NS::TimeSeries * ts);
@@ -3980,21 +3980,6 @@ namespace RESQML2_NS
 		 * @returns	the null value.
 		 */
 		int64_t getNullValueOfPatch(unsigned int patchIndex) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
-		 * long ones.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		uint64_t getULongValuesOfPatch(unsigned int patchIndex, uint64_t * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be integer ones.

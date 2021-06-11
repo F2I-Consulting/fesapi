@@ -77,7 +77,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepo() {
 	// Grid connection set representation
 	RESQML2_NS::GridConnectionSetRepresentation * gridConnSet432 = repo->createGridConnectionSetRepresentation("a3d1462a-04e3-4374-921b-a4a1e9ba3ea3", "GridConnectionSetRepresentation");
 	gridConnSet432->pushBackSupportingGridRepresentation(ijkGrid);
-	uint64_t cellConn432[30] = {
+	int64_t cellConn432[30] = {
 		1, 9999, 5, 9999, 9, 9999,
 		1, 2, 5, 6, 9, 10,
 		13, 2, 17, 6, 21, 10,

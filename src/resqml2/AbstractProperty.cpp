@@ -509,7 +509,7 @@ std::vector<unsigned int> AbstractProperty::getRealizationIndices() const
 	}
 }
 
-void AbstractProperty::setRealizationIndices(uint64_t startRealizationIndex, uint64_t countRealizationIndices)
+void AbstractProperty::setRealizationIndices(int64_t startRealizationIndex, int64_t countRealizationIndices)
 {
 	if (countRealizationIndices == 0) {
 		throw std::invalid_argument("Cannot set zero realization index.");
@@ -521,7 +521,7 @@ void AbstractProperty::setRealizationIndices(uint64_t startRealizationIndex, uin
 		}
 		gsoap_resqml2_0_1::resqml20__AbstractProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1);
 		if (prop->RealizationIndex == nullptr) {
-			prop->RealizationIndex = static_cast<uint64_t*>(soap_malloc(prop->soap, sizeof(uint64_t)));
+			prop->RealizationIndex = static_cast<ULONG64*>(soap_malloc(prop->soap, sizeof(ULONG64)));
 		}
 		*prop->RealizationIndex = startRealizationIndex;
 	}
@@ -558,7 +558,7 @@ void AbstractProperty::setRealizationIndices(const std::vector<unsigned int> & r
 		getRepository()->addRelationship(this, hdfProxy);
 
 		auto externalArray = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
-		externalArray->NullValue = (std::numeric_limits<unsigned int>::max)();
+		externalArray->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write realization index null value in this method
 		externalArray->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
 		auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
 		dsPart->Count = realizationIndices.size();

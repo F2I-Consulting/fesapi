@@ -60,7 +60,7 @@ namespace RESQML2_2_NS
 		~BlockedWellboreRepresentation() = default;
 
 		DLL_IMPORT_OR_EXPORT void setIntervalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
-			unsigned int cellCount, uint64_t const* cellIndices,
+			unsigned int cellCount, int64_t const* cellIndices,
 			unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy) final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getCellCount() const final;

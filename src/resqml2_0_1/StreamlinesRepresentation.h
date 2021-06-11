@@ -214,10 +214,9 @@ namespace RESQML2_0_1_NS
 		 * 															cell index. They are ordered according
 		 * 															to geoemtry intervals and @p gridIndices.
 		 * 															The array length must equal the getIntervalCount.
-		 * @param 		  	cellIndicesNullValue					The null value used in @p cellIndices
-		 * 															in order to indicate that an interval
-		 * 															does not correspond to any intersected
-		 * 															grid.
+		 *															The null value is arbitrarily set to -1 since
+		 *															it has no interest. Indeed corresponding gridIndex
+		 *															already informs about the presence or not of a cell.
 		 * @param 		  	localFacePairPerCellIndices				An array containing, for each cell,
 		 * 															the entry and exit intersection faces of
 		 * 															the line in the cell. The array
@@ -233,7 +232,7 @@ namespace RESQML2_0_1_NS
 		 * 															cannot be @c nullptr.
 		 */
 		DLL_IMPORT_OR_EXPORT void setIntervalGridCells(uint16_t const* gridIndices, uint16_t gridIndicesNullValue,
-			uint64_t const* cellIndices, uint64_t cellIndicesNullValue,
+			int64_t const* cellIndices,
 			uint8_t const* localFacePairPerCellIndices, uint8_t localFacePairPerCellIndicesNullValue,
 			const std::vector<RESQML2_NS::AbstractGridRepresentation*> & supportingGrids,
 			EML2_NS::AbstractHdfProxy * hdfProxy = nullptr)  final;
@@ -269,7 +268,7 @@ namespace RESQML2_0_1_NS
 		 * @returns	The null value used in @p cellIndices in order to indicate that an interval does not
 		 * 			correspond to any intersected grid.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getCellIndices(uint64_t * cellIndices) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getCellIndices(int64_t * cellIndices) const final;
 
 		/**
 		 * For each interval of the lines of the representation, gets the entry and exit intersection faces of the line in the cell.

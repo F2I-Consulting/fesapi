@@ -93,11 +93,8 @@ void GridConnectionSetRepresentation::loadTargetRelationships()
 	}
 }
 
-void GridConnectionSetRepresentation::setCellIndexPairs(uint64_t cellIndexPairCount, uint64_t const* cellIndexPair, uint64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, unsigned short gridIndexPairNullValue, unsigned short * gridIndexPair)
+void GridConnectionSetRepresentation::setCellIndexPairs(uint64_t cellIndexPairCount, int64_t const* cellIndexPair, int64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, uint16_t gridIndexPairNullValue, uint16_t const* gridIndexPair)
 {
-	if (cellIndexPairNullValue > static_cast<uint64_t>((std::numeric_limits<int64_t>::max)())) {
-		throw std::invalid_argument("The XML null value cannot be greater than a 64 bits signed integer cause of gsoap mappings");
-	}
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
 		if (proxy == nullptr) {
@@ -108,9 +105,9 @@ void GridConnectionSetRepresentation::setCellIndexPairs(uint64_t cellIndexPairCo
 
 	// ************ HDF ************		
 	hsize_t numValues[2] = { cellIndexPairCount, 2 };
-	proxy->writeArrayNd(getHdfGroup(), "CellIndexPairs", H5T_NATIVE_UINT64, cellIndexPair, numValues, 2);
+	proxy->writeArrayNd(getHdfGroup(), "CellIndexPairs", H5T_NATIVE_INT64, cellIndexPair, numValues, 2);
 	if (gridIndexPair != nullptr) {
-		proxy->writeArrayNd(getHdfGroup(), "GridIndexPairs", H5T_NATIVE_USHORT, gridIndexPair, numValues, 2);
+		proxy->writeArrayNd(getHdfGroup(), "GridIndexPairs", H5T_NATIVE_UINT16, gridIndexPair, numValues, 2);
 	}
 }
 

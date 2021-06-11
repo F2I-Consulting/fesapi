@@ -229,7 +229,7 @@ namespace RESQML2_NS
 		 * @param 	startRealizationIndex	The first realization index to set to this property.
 		 * @param 	countRealizationIndices	The count of realization indices to set to this property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setRealizationIndices(uint64_t startRealizationIndex, uint64_t countRealizationIndices);
+		DLL_IMPORT_OR_EXPORT void setRealizationIndices(int64_t startRealizationIndex, int64_t countRealizationIndices);
 
 		/**
 		 * @brief	Sets the realization indices of this property

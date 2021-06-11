@@ -168,7 +168,7 @@ namespace RESQML2_NS
 		 * @param 		  	interpretationIndex	The index of an interpretation in the collection of
 		 * 										feature interpretation of this grid connection set.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getGridConnectionSetInformationFromInterpretationIndex(uint64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const = 0;
 
 		/**
 		 * Gets the UUID of a particular (fault) interpretation of this grid connection set.
@@ -297,7 +297,7 @@ namespace RESQML2_NS
 		 * 										the pair.
 		 * @param 	  	cellIndexPairNullValue	The integer null value used in the HDF cell index pair
 		 * 										dataset.
-		 * @param [in]	proxy				  	The HDF proxy where the numerical values (cell indices)
+		 * @param [in]	proxy				  	(Optional) The HDF proxy where the numerical values (cell indices)
 		 * 										are stored. If @c nullptr, then the default HDF proxy of
 		 * 										the repository will be used.
 		 * @param 	  	gridIndexPairNullValue	(Optional) The integer null value used in the HDF grid
@@ -310,10 +310,12 @@ namespace RESQML2_NS
 		 * 										index pair will be set and parameter @p
 		 * 										gridIndexPairNullValue will be unused.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setCellIndexPairsUsingExistingDataset(uint64_t cellIndexPairCount, const std::string & cellIndexPair, int64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, int64_t gridIndexPairNullValue = -1, const std::string & gridIndexPair = "") = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setCellIndexPairsUsingExistingDataset(uint64_t cellIndexPairCount, const std::string & cellIndexPair, int64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy = nullptr, int64_t gridIndexPairNullValue = -1, const std::string & gridIndexPair = "") = 0;
 
 		/**
 		 * @brief	Sets the cell index pairs of this grid connection set representation.
+		 *			If this instance is supported by a single grid, then optional gridIndex* parameters are not needed.
+		 *			Default cell index null value is set to -1.
 		 *
 		 * @exception	std::invalid_argument	If @p cellIndexPairCount is 0.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -326,18 +328,18 @@ namespace RESQML2_NS
 		 * 											@p cellIndexPair (and of @p gridIndexPair if used).
 		 * @param [in]	  	cellIndexPair		  	All the cell index pair in a 1d array where the cell
 		 * 											indices go faster than the pair.
-		 * @param 		  	cellIndexPairNullValue	The integer null value used in @p cellIndexPair.
-		 * @param [in,out]	proxy				  	The HDF proxy where the numerical values (cell
+		 * @param 		  	cellIndexPairNullValue	(Optional) The integer null value used in @p cellIndexPair.
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where the numerical values (cell
 		 * 											indices) are stored. If @c nullptr, then the default
 		 * 											HDF proxy of the repository will be used.
 		 * @param 		  	gridIndexPairNullValue	(Optional) The integer null value used in @p
-		 * 											gridIndexPair.
+		 * 											gridIndexPair. 
 		 * @param [in]	  	gridIndexPair		  	(Optional) All the grid index pair in a 1d array
 		 * 											where the grid indices go faster than the pair. The
 		 * 											grid at an index must correspond to the cell at the
 		 * 											same index in the @p cellIndexPair array.
 		 */
-		DLL_IMPORT_OR_EXPORT void setCellIndexPairs(uint64_t cellIndexPairCount, uint64_t const* cellIndexPair, uint64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, unsigned short gridIndexPairNullValue = (std::numeric_limits<unsigned short>::max)(), unsigned short * gridIndexPair = nullptr);
+		DLL_IMPORT_OR_EXPORT void setCellIndexPairs(uint64_t cellIndexPairCount, int64_t const* cellIndexPair, int64_t cellIndexPairNullValue = -1, EML2_NS::AbstractHdfProxy * proxy = nullptr, uint16_t gridIndexPairNullValue = (std::numeric_limits<uint16_t>::max)(), uint16_t const* gridIndexPair = nullptr);
 
 		/**
 		 * @brief	Sets the local face per cell index pairs of this grid connection set representation.

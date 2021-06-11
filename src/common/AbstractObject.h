@@ -1022,6 +1022,28 @@ namespace COMMON_NS
 		uint64_t readArrayNdOfUInt64Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint64_t * arrayOutput) const;
 
 		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint64_t::max
+		 */
+		int64_t readArrayNdOfInt64Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, int64_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint64_t::max
+		 */
+		int64_t readArrayNdOfInt64Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, int64_t * arrayOutput) const;
+
+		/**
 		 * Get the count of item in an array of integer
 		 *
 		 * @param [in,out]	arrayInput	The array of integer.
