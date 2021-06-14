@@ -545,6 +545,18 @@ const std::vector<std::string> & DataObjectRepository::getWarnings() const
 	return warnings;
 }
 
+std::vector<std::string> DataObjectRepository::getUuids() const
+{
+	std::vector<std::string> keys;
+	keys.reserve(dataObjects.size());
+
+	for (auto kv : dataObjects) {
+		keys.push_back(kv.first);
+	}
+
+	return keys;
+}
+
 COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor)
 {
 	std::string contentType = dor->ContentType;

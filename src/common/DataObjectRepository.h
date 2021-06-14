@@ -692,6 +692,13 @@ namespace COMMON_NS
 		}
 
 		/**
+		 * Gets all the data object uuids which are part of this repository
+		 *
+		 * @returns	A vector of uuids.
+		 */
+		DLL_IMPORT_OR_EXPORT std::vector<std::string> getUuids() const;
+
+		/**
 		* Create a partial object in this repository based on a RESQML2.0 Data Object Reference
 		*/
 		COMMON_NS::AbstractObject* createPartial(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor);

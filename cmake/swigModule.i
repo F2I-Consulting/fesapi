@@ -394,6 +394,8 @@ namespace COMMON_NS
 		%template(getChannelSets) getDataObjects<WITSML2_0_NS::ChannelSet>;
 		%template(getChannels) getDataObjects<WITSML2_0_NS::Channel>;
 		
+		std::vector<std::string> getUuids() const;
+		
 		COMMON_NS::AbstractHdfProxy* createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess);
 
 
