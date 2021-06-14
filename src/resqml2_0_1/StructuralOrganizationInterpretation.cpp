@@ -91,7 +91,7 @@ void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(RESQML2
 	_resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 
 	resqml20__HorizonInterpretationIndex* horizonInterpListElement = soap_new_resqml20__HorizonInterpretationIndex(gsoapProxy2_0_1->soap);
-	horizonInterpListElement->StratigraphicRank = static_cast<uint64_t*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(uint64_t)));
+	horizonInterpListElement->StratigraphicRank = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(ULONG64)));
 	*(horizonInterpListElement->StratigraphicRank) = stratigraphicRank;
 	horizonInterpListElement->Index = structuralOrganization->Horizons.size();
     eml20__DataObjectReference* horizonInterpRef = horizonInterpretation->newResqmlReference();

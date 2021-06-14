@@ -812,7 +812,7 @@ namespace RESQML2_NS
 		 * @param [in]	stratiOrgInterp  	The stratigraphic organization interpretation which is
 		 * 									associated to this grid representation.
 		 */
-		DLL_IMPORT_OR_EXPORT void setCellAssociationWithStratigraphicOrganizationInterpretation(uint64_t* stratiUnitIndices, uint64_t nullValue, class AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
+		DLL_IMPORT_OR_EXPORT void setCellAssociationWithStratigraphicOrganizationInterpretation(int64_t* stratiUnitIndices, int64_t nullValue, class AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
 		
 		/**
 		 * Gets the stratigraphic organization interpretation which is associated to this grid.
@@ -866,7 +866,7 @@ namespace RESQML2_NS
 		 * @returns	The null value. The null value is used to tell the association between a cell and
 		 * 			stratigraphic unit is unavailable.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getCellStratigraphicUnitIndices(uint64_t * stratiUnitIndices);
+		DLL_IMPORT_OR_EXPORT int64_t getCellStratigraphicUnitIndices(int64_t * stratiUnitIndices);
 
 		//************************************************************
 		//**************** LINK WITH ROCKFLUID ********************
@@ -887,7 +887,7 @@ namespace RESQML2_NS
 		 * @param [in]	rockFluidOrgInterp  	The rock fluid organization interpretation which is
 		 * 										associated to this grid representation.
 		 */
-		DLL_IMPORT_OR_EXPORT void setCellAssociationWithRockFluidOrganizationInterpretation(uint64_t* rockFluidUnitIndices, uint64_t nullValue, class RockFluidOrganizationInterpretation* rockFluidOrgInterp);
+		DLL_IMPORT_OR_EXPORT void setCellAssociationWithRockFluidOrganizationInterpretation(int64_t* rockFluidUnitIndices, int64_t nullValue, class RockFluidOrganizationInterpretation* rockFluidOrgInterp);
 		
 		/**
 		 * Gets rock fluid organization interpretation which is associated to this grid.
@@ -942,7 +942,7 @@ namespace RESQML2_NS
 		 * @returns	The null value. The null value is used to tell the association between a cell and
 		 * 			rock fluid unit is unavailable.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getCellFluidPhaseUnitIndices(uint64_t * rockfluidUnitIndices);
+		DLL_IMPORT_OR_EXPORT int64_t getCellFluidPhaseUnitIndices(int64_t * rockfluidUnitIndices);
 
 
 		//************************************************************

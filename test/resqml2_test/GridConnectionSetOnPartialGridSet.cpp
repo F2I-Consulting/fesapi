@@ -75,7 +75,7 @@ void GridConnectionSetOnPartialGridSet::initRepo() {
 	// Grid Connection Set on one grid
 	RESQML2_NS::GridConnectionSetRepresentation* gcs = repo->createGridConnectionSetRepresentation("c0214c71-eed8-4ea2-9de4-f7508caeb3c6", "Single grid gcs");
 	gcs->pushBackSupportingGridRepresentation(partialGrid);
-	uint64_t cellConn[2] = {
+	int64_t cellConn[2] = {
 		1, 2
 	};
 	gcs->setCellIndexPairs(1, cellConn, -1, hdfProxy);
@@ -85,10 +85,10 @@ void GridConnectionSetOnPartialGridSet::initRepo() {
 	gcsMultiGrids->pushBackSupportingGridRepresentation(partialGrid);
 	gcsMultiGrids->pushBackSupportingGridRepresentation(partialIjkGrid);
 	gcsMultiGrids->pushBackSupportingGridRepresentation(partialTruncIjkGrid);
-	uint64_t cellConnMultiGrids[6] = {
+	int64_t cellConnMultiGrids[6] = {
 		1, 2, 1, 2, 1, 2
 	};
-	unsigned short multiGridIndices[6] = {
+	uint16_t multiGridIndices[6] = {
 		0, 0, 1, 1, 1, 2
 	};
 	gcsMultiGrids->setCellIndexPairs(3, cellConnMultiGrids, -1, hdfProxy, (std::numeric_limits<unsigned short>::max)(), multiGridIndices);

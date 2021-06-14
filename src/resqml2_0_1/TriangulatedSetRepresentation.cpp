@@ -121,7 +121,7 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	patch->Count = triangleCount;
 	resqml20__IntegerHdf5Array* hdfTriangles = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	patch->Triangles = hdfTriangles;
-	hdfTriangles->NullValue = (std::numeric_limits<int>::max)();
+	hdfTriangles->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write triangle node index null value in this method
 	hdfTriangles->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	hdfTriangles->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream ossForHdf;

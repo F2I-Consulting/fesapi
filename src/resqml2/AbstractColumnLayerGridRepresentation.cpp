@@ -70,7 +70,7 @@ void AbstractColumnLayerGridRepresentation::setKCellCount(unsigned int kCount)
 	}
 }
 
-void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigraphicOrganizationInterpretation(uint64_t * stratiUnitIndices, uint64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy * hdfProxy)
+void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigraphicOrganizationInterpretation(int64_t * stratiUnitIndices, int64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy * hdfProxy)
 {
 	if (isTruncated()) {
 		throw invalid_argument("A truncated grid cannot be linked to a strati column in Resqml2");
@@ -82,7 +82,7 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 		}
 	}
 	hsize_t dim = getKCellCount();
-	hdfProxy->writeArrayNd(getHdfGroup(), "IntervalStratigraphicUnits", H5T_NATIVE_UINT64, stratiUnitIndices, &dim, 1);
+	hdfProxy->writeArrayNd(getHdfGroup(), "IntervalStratigraphicUnits", H5T_NATIVE_INT64, stratiUnitIndices, &dim, 1);
 
 	getRepository()->addRelationship(this, hdfProxy);
 	getRepository()->addRelationship(this, stratiOrgInterp);
@@ -177,7 +177,7 @@ bool AbstractColumnLayerGridRepresentation::hasIntervalStratigraphicUnitIndices(
 	return false;
 }
 
-uint64_t AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndices(uint64_t * stratiUnitIndices)
+int64_t AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndices(int64_t * stratiUnitIndices)
 {
 	if (isTruncated()) {
 		throw invalid_argument("A truncated grid cannot be linked to a strati columnumn in Resqml v2.0");
@@ -191,7 +191,7 @@ uint64_t AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndi
 
 		if (rep->IntervalStratigraphicUnits->UnitIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->IntervalStratigraphicUnits->UnitIndices)->Values;
-			getHdfProxyFromDataset(dataset)->readArrayNdOfUInt64Values(dataset->PathInHdfFile, stratiUnitIndices);
+			getHdfProxyFromDataset(dataset)->readArrayNdOfInt64Values(dataset->PathInHdfFile, stratiUnitIndices);
 			return static_cast<resqml20__IntegerHdf5Array*>(rep->IntervalStratigraphicUnits->UnitIndices)->NullValue;
 		}
 
@@ -206,7 +206,7 @@ uint64_t AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndi
 				static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(latticeArray->Offset[0])->Value == 1 &&
 				static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(latticeArray->Offset[0])->Count == getKCellCount() - 1) {
 				auto dsPart = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->IntervalStratigraphicUnits->UnitIndices->Elements)->Values->ExternalFileProxy[0];
-				getHdfProxyFromDataset(dsPart)->readArrayNdOfUInt64Values(dsPart->PathInExternalFile, stratiUnitIndices);
+				getHdfProxyFromDataset(dsPart)->readArrayNdOfInt64Values(dsPart->PathInExternalFile, stratiUnitIndices);
 				return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->IntervalStratigraphicUnits->UnitIndices->Elements)->NullValue;
 			}
 		}

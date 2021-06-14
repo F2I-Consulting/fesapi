@@ -186,7 +186,7 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 	resqmlHDF5dataset->HdfProxy = proxy->newResqmlReference();
 	resqmlHDF5dataset->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 	integerArray->Values = resqmlHDF5dataset;
-	integerArray->NullValue = (std::numeric_limits<unsigned int>::max)();
+	integerArray->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write index null value in this method
 	elements->Indices = integerArray;
 
 	// ************ HDF ************		

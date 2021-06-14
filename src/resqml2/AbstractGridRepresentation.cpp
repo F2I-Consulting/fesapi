@@ -185,14 +185,14 @@ gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid2_0
 
 		gsoap_resqml2_0_1::resqml20__IntegerHdf5Array* hdf5ChildCountPerInterval = gsoap_resqml2_0_1::soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 		regrid->Intervals->ChildCountPerInterval = hdf5ChildCountPerInterval;
-		hdf5ChildCountPerInterval->NullValue = (numeric_limits<unsigned int>::max)();
+		hdf5ChildCountPerInterval->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write count null value in this method
 		hdf5ChildCountPerInterval->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		hdf5ChildCountPerInterval->Values->HdfProxy = proxy->newResqmlReference();
 		hdf5ChildCountPerInterval->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_" + dimension + "Regrid_ChildCountPerInterval";
 
 		gsoap_resqml2_0_1::resqml20__IntegerHdf5Array* hdf5ParentCountPerInterval = gsoap_resqml2_0_1::soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 		regrid->Intervals->ParentCountPerInterval = hdf5ParentCountPerInterval;
-		hdf5ParentCountPerInterval->NullValue = (numeric_limits<unsigned int>::max)();
+		hdf5ParentCountPerInterval->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write count null value in this method
 		hdf5ParentCountPerInterval->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		hdf5ParentCountPerInterval->Values->HdfProxy = proxy->newResqmlReference();
 		hdf5ParentCountPerInterval->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_" + dimension + "Regrid_ParentCountPerInterval";
@@ -267,7 +267,7 @@ gsoap_eml2_3::resqml22__Regrid* AbstractGridRepresentation::createRegrid2_2(unsi
 
 		gsoap_eml2_3::eml23__IntegerExternalArray* hdf5ChildCountPerInterval = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		regrid->Intervals->ChildCountPerInterval = hdf5ChildCountPerInterval;
-		hdf5ChildCountPerInterval->NullValue = (numeric_limits<unsigned int>::max)();
+		hdf5ChildCountPerInterval->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write count null value in this method
 		hdf5ChildCountPerInterval->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
 		auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
 		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
@@ -276,7 +276,7 @@ gsoap_eml2_3::resqml22__Regrid* AbstractGridRepresentation::createRegrid2_2(unsi
 
 		gsoap_eml2_3::eml23__IntegerExternalArray* hdf5ParentCountPerInterval = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		regrid->Intervals->ParentCountPerInterval = hdf5ParentCountPerInterval;
-		hdf5ParentCountPerInterval->NullValue = (numeric_limits<unsigned int>::max)();
+		hdf5ParentCountPerInterval->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write count null value in this method
 		hdf5ParentCountPerInterval->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
 		dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
 		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
@@ -342,7 +342,7 @@ void AbstractGridRepresentation::setParentWindow(uint64_t * cellIndices, uint64_
 			gsoap_resqml2_0_1::resqml20__IntegerHdf5Array* hdf5CellIndices = gsoap_resqml2_0_1::soap_new_resqml20__IntegerHdf5Array(rep->soap);
 			cpw->CellIndices = hdf5CellIndices;
 
-			hdf5CellIndices->NullValue = (numeric_limits<uint64_t>::max)();
+			hdf5CellIndices->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write cell index null value in this method
 			hdf5CellIndices->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(rep->soap);
 			hdf5CellIndices->Values->HdfProxy = proxy->newResqmlReference();
 			hdf5CellIndices->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_CellIndices";
@@ -377,7 +377,7 @@ void AbstractGridRepresentation::setParentWindow(uint64_t * cellIndices, uint64_
 			auto hdf5CellIndices = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(rep->soap);
 			cpw->CellIndices = hdf5CellIndices;
 
-			hdf5CellIndices->NullValue = (numeric_limits<uint64_t>::max)();
+			hdf5CellIndices->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write cell index null value in this method
 			hdf5CellIndices->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(rep->soap);
 			auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(rep->soap);
 			dsPart->EpcExternalPartReference = proxy->newEml23Reference();
@@ -435,7 +435,7 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, u
 			gsoap_resqml2_0_1::resqml20__IntegerHdf5Array* hdf5ColumnIndices = gsoap_resqml2_0_1::soap_new_resqml20__IntegerHdf5Array(rep->soap);
 			clpw->ColumnIndices = hdf5ColumnIndices;
 
-			hdf5ColumnIndices->NullValue = (numeric_limits<unsigned int>::max)();
+			hdf5ColumnIndices->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write column index null value in this method
 			hdf5ColumnIndices->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(rep->soap);
 			hdf5ColumnIndices->Values->HdfProxy = proxy->newResqmlReference();
 			hdf5ColumnIndices->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_ColumnIndices";
@@ -477,7 +477,7 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, u
 			gsoap_eml2_3::eml23__IntegerExternalArray* hdf5ColumnIndices = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(rep->soap);
 			clpw->ColumnIndices = hdf5ColumnIndices;
 
-			hdf5ColumnIndices->NullValue = (numeric_limits<unsigned int>::max)();
+			hdf5ColumnIndices->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write column index null value in this method
 			hdf5ColumnIndices->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(rep->soap);
 			auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(rep->soap);
 			dsPart->EpcExternalPartReference = proxy->newEml23Reference();
@@ -621,7 +621,7 @@ void AbstractGridRepresentation::setForcedNonRegridedParentCell(uint64_t * cellI
 			{
 				getRepository()->addRelationship(this, proxy);
 				xmlCellIndices = gsoap_resqml2_0_1::soap_new_resqml20__IntegerHdf5Array(parentWindow->soap);
-				static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(xmlCellIndices)->NullValue = (numeric_limits<uint64_t>::max)();
+				static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(xmlCellIndices)->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write cell index null value in this method
 				static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(xmlCellIndices)->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(parentWindow->soap);
 				static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(xmlCellIndices)->Values->HdfProxy = proxy->newResqmlReference();
 				static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(xmlCellIndices)->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_CellIndices";
@@ -663,7 +663,7 @@ void AbstractGridRepresentation::setForcedNonRegridedParentCell(uint64_t * cellI
 			{
 				getRepository()->addRelationship(this, proxy);
 				xmlCellIndices = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(parentWindow->soap);
-				static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(xmlCellIndices)->NullValue = (numeric_limits<uint64_t>::max)();
+				static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(xmlCellIndices)->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write cell index null value in this method
 				static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(xmlCellIndices)->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(parentWindow->soap);
 				auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(parentWindow->soap);
 				dsPart->EpcExternalPartReference = proxy->newEml23Reference();
@@ -757,7 +757,7 @@ void AbstractGridRepresentation::setCellOverlap(uint64_t parentChildCellPairCoun
 				parentWindow->CellOverlap->__CellOverlap_sequence = gsoap_resqml2_0_1::soap_new___resqml20__CellOverlap_sequence(parentWindow->soap);
 				parentWindow->CellOverlap->__CellOverlap_sequence->Count = parentChildCellPairCount;
 				parentWindow->CellOverlap->__CellOverlap_sequence->ParentChildCellPairs = hdf5CellPairs;
-				hdf5CellPairs->NullValue = (numeric_limits<uint64_t>::max)();
+				hdf5CellPairs->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write cell index null value in this method
 				hdf5CellPairs->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(parentWindow->soap);
 				hdf5CellPairs->Values->HdfProxy = proxy->newResqmlReference();
 				hdf5CellPairs->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_CellOverlap";
@@ -809,7 +809,7 @@ void AbstractGridRepresentation::setCellOverlap(uint64_t parentChildCellPairCoun
 				parentWindow->CellOverlap->__CellOverlap_sequence = gsoap_eml2_3::soap_new___resqml22__CellOverlap_sequence(parentWindow->soap);
 				parentWindow->CellOverlap->__CellOverlap_sequence->Count = parentChildCellPairCount;
 				parentWindow->CellOverlap->__CellOverlap_sequence->ParentChildCellPairs = hdf5CellPairs;
-				hdf5CellPairs->NullValue = (numeric_limits<uint64_t>::max)();
+				hdf5CellPairs->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write cell index null value in this method
 				hdf5CellPairs->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(parentWindow->soap);
 				auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(parentWindow->soap);
 				dsPart->EpcExternalPartReference = proxy->newEml23Reference();
@@ -1763,7 +1763,7 @@ void AbstractGridRepresentation::loadTargetRelationships()
 	}
 }
 
-void AbstractGridRepresentation::setCellAssociationWithStratigraphicOrganizationInterpretation(uint64_t * stratiUnitIndices, uint64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation * stratiOrgInterp)
+void AbstractGridRepresentation::setCellAssociationWithStratigraphicOrganizationInterpretation(int64_t * stratiUnitIndices, int64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation * stratiOrgInterp)
 {
 	if (stratiOrgInterp == nullptr) {
 		throw invalid_argument("The stratigraphic organization interpretation cannot be null.");
@@ -1787,14 +1787,14 @@ void AbstractGridRepresentation::setCellAssociationWithStratigraphicOrganization
 
 		// ************ HDF *************
 		const hsize_t dim = getCellCount();
-		proxy->writeArrayNd(getHdfGroup(), "CellStratigraphicUnits", H5T_NATIVE_UINT64, stratiUnitIndices, &dim, 1);
+		proxy->writeArrayNd(getHdfGroup(), "CellStratigraphicUnits", H5T_NATIVE_INT64, stratiUnitIndices, &dim, 1);
 	}
 	else {
 		throw logic_error("Only RESQML 2.0.1 allows to assocaite cells with Stratigraphic Organization Interpretation. Use IntervalStratigraphicUnits instead.");
 	}
 }
 
-void AbstractGridRepresentation::setCellAssociationWithRockFluidOrganizationInterpretation(uint64_t * rockFluidUnitIndices, uint64_t nullValue, RESQML2_NS::RockFluidOrganizationInterpretation* rockfluidOrgInterp)
+void AbstractGridRepresentation::setCellAssociationWithRockFluidOrganizationInterpretation(int64_t * rockFluidUnitIndices, int64_t nullValue, RESQML2_NS::RockFluidOrganizationInterpretation* rockfluidOrgInterp)
 {
 	EML2_NS::AbstractHdfProxy * proxy = getRepository()->getDefaultHdfProxy();
 	if (proxy == nullptr) {
@@ -1803,7 +1803,7 @@ void AbstractGridRepresentation::setCellAssociationWithRockFluidOrganizationInte
 
 	// ************ HDF *************
 	const hsize_t dim = getCellCount();
-	proxy->writeArrayNd(getHdfGroup(), "CellFluidPhaseUnits", H5T_NATIVE_UINT64, rockFluidUnitIndices, &dim, 1);
+	proxy->writeArrayNd(getHdfGroup(), "CellFluidPhaseUnits", H5T_NATIVE_INT64, rockFluidUnitIndices, &dim, 1);
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation*>(gsoapProxy2_0_1);
@@ -1909,7 +1909,7 @@ bool AbstractGridRepresentation::hasCellFluidPhaseUnitIndices() const
 	}
 }
 
-uint64_t AbstractGridRepresentation::getCellStratigraphicUnitIndices(uint64_t * stratiUnitIndices)
+int64_t AbstractGridRepresentation::getCellStratigraphicUnitIndices(int64_t * stratiUnitIndices)
 {
 	if (!hasCellStratigraphicUnitIndices()) {
 		throw invalid_argument("This grid has no CellStratigraphicUnits information");
@@ -1921,7 +1921,7 @@ uint64_t AbstractGridRepresentation::getCellStratigraphicUnitIndices(uint64_t * 
 		{
 			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->CellStratigraphicUnits->UnitIndices)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfUInt64Values(dataset->PathInHdfFile, stratiUnitIndices);
+			hdfProxy->readArrayNdOfInt64Values(dataset->PathInHdfFile, stratiUnitIndices);
 			return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->CellStratigraphicUnits->UnitIndices)->NullValue;
 		}
 
@@ -1932,7 +1932,7 @@ uint64_t AbstractGridRepresentation::getCellStratigraphicUnitIndices(uint64_t * 
 	}
 }
 
-uint64_t AbstractGridRepresentation::getCellFluidPhaseUnitIndices(uint64_t * rockFluidUnitIndices)
+int64_t AbstractGridRepresentation::getCellFluidPhaseUnitIndices(int64_t * rockFluidUnitIndices)
 {
 	if (!hasCellFluidPhaseUnitIndices()) {
 		throw invalid_argument("This grid has no CellFluidPhaseUnits information");
@@ -1944,7 +1944,7 @@ uint64_t AbstractGridRepresentation::getCellFluidPhaseUnitIndices(uint64_t * roc
 		{
 			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->CellFluidPhaseUnits->PhaseUnitIndices)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfUInt64Values(dataset->PathInHdfFile, rockFluidUnitIndices);
+			hdfProxy->readArrayNdOfInt64Values(dataset->PathInHdfFile, rockFluidUnitIndices);
 			return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->CellFluidPhaseUnits->PhaseUnitIndices)->NullValue;
 		}
 
@@ -1960,7 +1960,7 @@ uint64_t AbstractGridRepresentation::getCellFluidPhaseUnitIndices(uint64_t * roc
 				static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(latticeArray->Offset[0])->Count == getCellCount()) {
 				auto dsPart = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->CellFluidPhaseUnits->PhaseUnitIndices->Elements)->Values->ExternalFileProxy[0];
 				EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dsPart);
-				hdfProxy->readArrayNdOfUInt64Values(dsPart->PathInExternalFile, rockFluidUnitIndices);
+				hdfProxy->readArrayNdOfInt64Values(dsPart->PathInExternalFile, rockFluidUnitIndices);
 				return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->CellFluidPhaseUnits->PhaseUnitIndices->Elements)->NullValue;
 			}
 		}

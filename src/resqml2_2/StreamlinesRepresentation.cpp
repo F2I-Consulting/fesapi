@@ -274,7 +274,7 @@ void StreamlinesRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, dou
 }
 
 void StreamlinesRepresentation::setIntervalGridCells(uint16_t const* gridIndices, uint16_t gridIndicesNullValue,
-	uint64_t const* cellIndices, uint64_t cellIndicesNullValue,
+	int64_t const* cellIndices,
 	uint8_t const* localFacePairPerCellIndices, uint8_t localFacePairPerCellIndicesNullValue,
 	const std::vector<RESQML2_NS::AbstractGridRepresentation*> & supportingGrids,
 	EML2_NS::AbstractHdfProxy * hdfProxy)
@@ -329,7 +329,7 @@ void StreamlinesRepresentation::setIntervalGridCells(uint16_t const* gridIndices
 	// CellIndices
 	// XML
 	eml23__IntegerExternalArray* xmlCellIndices = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
-	xmlCellIndices->NullValue = cellIndicesNullValue;
+	xmlCellIndices->NullValue = -1;
 	xmlCellIndices->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
 	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
 	dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
@@ -340,7 +340,7 @@ void StreamlinesRepresentation::setIntervalGridCells(uint16_t const* gridIndices
 	datasetDim = igc->CellCount;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"CellIndices",
-		H5T_NATIVE_UINT64,
+		H5T_NATIVE_INT64,
 		cellIndices,
 		&datasetDim, 1);
 
@@ -382,7 +382,7 @@ uint16_t StreamlinesRepresentation::getGridIndices(uint16_t * gridIndices) const
 	return readArrayNdOfUInt16Values(gridLink->GridIndices, gridIndices);
 }
 
-int64_t StreamlinesRepresentation::getCellIndices(uint64_t * cellIndices) const
+int64_t StreamlinesRepresentation::getCellIndices(int64_t * cellIndices) const
 {
 	auto const* geometry = static_cast<resqml22__StreamlinesRepresentation*>(gsoapProxy2_3)->Geometry;
 	if (geometry == nullptr) {
@@ -393,7 +393,7 @@ int64_t StreamlinesRepresentation::getCellIndices(uint64_t * cellIndices) const
 		throw std::logic_error("There is no grid associated to this streamlines representation");
 	}
 
-	return readArrayNdOfUInt64Values(gridLink->CellIndices, cellIndices);
+	return readArrayNdOfInt64Values(gridLink->CellIndices, cellIndices);
 }
 
 uint8_t StreamlinesRepresentation::getLocalFacePairPerCellIndices(uint8_t * localFacePairPerCellIndices) const

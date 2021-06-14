@@ -323,21 +323,6 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT int64_t getNullValueOfPatch(unsigned int patchIndex) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
-		 * long ones.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getULongValuesOfPatch(unsigned int patchIndex, uint64_t * values) const;
-
-		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be integer ones.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.

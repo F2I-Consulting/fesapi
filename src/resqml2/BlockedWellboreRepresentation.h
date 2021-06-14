@@ -68,6 +68,9 @@ namespace RESQML2_NS
 		 * 															gridIndices. They are ordered according
 		 * 															to non-null entries of @p gridIndices.
 		 * 															The array length must equal @p cellCount.
+		 *															The null value is arbitrarily set to -1 since
+		 *															it has no interest. Indeed corresponding gridIndex
+		 *															already informs about the presence or not of a cell.
 		 * @param 		  	localFacePairPerCellIndices				An array containing, for each cell,
 		 * 															the entry and exit intersection faces of
 		 * 															the trajectory in the cell. The array
@@ -84,7 +87,7 @@ namespace RESQML2_NS
 		 * 															cannot be @c nullptr.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setIntervalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
-			unsigned int cellCount, uint64_t const* cellIndices,
+			unsigned int cellCount, int64_t const* cellIndices,
 			unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy) = 0;
 
 		/**

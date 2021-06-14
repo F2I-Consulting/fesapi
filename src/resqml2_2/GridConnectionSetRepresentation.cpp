@@ -239,7 +239,7 @@ unsigned int GridConnectionSetRepresentation::getCellIndexPairCountFromInterpret
 	return result;
 }
 
-void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpretationIndex(uint64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const
+void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const
 {
 	//load global information into memory
 	const uint64_t totalCellIndexPairCount = getCellIndexPairCount();

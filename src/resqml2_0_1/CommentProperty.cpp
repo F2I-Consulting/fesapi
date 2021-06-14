@@ -83,7 +83,7 @@ std::string CommentProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfPr
 	_resqml20__CommentProperty* prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);
 
 	resqml20__PatchOfValues* patch = soap_new_resqml20__PatchOfValues(gsoapProxy2_0_1->soap);
-	patch->RepresentationPatchIndex = static_cast<uint64_t*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(uint64_t)));
+	patch->RepresentationPatchIndex = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(ULONG64)));
 	*(patch->RepresentationPatchIndex) = prop->PatchOfValues.size();
 
 	// XML

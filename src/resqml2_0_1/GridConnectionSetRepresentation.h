@@ -85,7 +85,7 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT int64_t getInterpretationIndexNullValue() const final;
 
-		DLL_IMPORT_OR_EXPORT void getGridConnectionSetInformationFromInterpretationIndex(uint64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const final;
+		DLL_IMPORT_OR_EXPORT void getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const final;
 
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getInterpretationDorFromIndex(unsigned int interpretationIndex) const final;
 
@@ -100,7 +100,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void getGridIndexPairs(unsigned short * gridIndexPairs) const final;
 
 		DLL_IMPORT_OR_EXPORT void setCellIndexPairsUsingExistingDataset(uint64_t cellIndexPairCount, const std::string & cellIndexPair, int64_t cellIndexPairNullValue,
-			EML2_NS::AbstractHdfProxy * proxy, int64_t gridIndexPairNullValue = -1, const std::string & gridIndexPair = "") final;
+			EML2_NS::AbstractHdfProxy * proxy = nullptr, int64_t gridIndexPairNullValue = -1, const std::string & gridIndexPair = "") final;
 
 		DLL_IMPORT_OR_EXPORT void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, int64_t nullValue, EML2_NS::AbstractHdfProxy * proxy) final;
 

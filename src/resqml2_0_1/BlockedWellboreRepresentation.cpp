@@ -63,7 +63,7 @@ BlockedWellboreRepresentation::BlockedWellboreRepresentation(RESQML2_NS::Wellbor
 }
 
 void BlockedWellboreRepresentation::setIntervalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
-	unsigned int cellCount, uint64_t const* cellIndices,
+	unsigned int cellCount, int64_t const* cellIndices,
 	unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy)
 {
 	// Preconditions
@@ -122,7 +122,7 @@ void BlockedWellboreRepresentation::setIntervalGridCells(unsigned int const* gri
 	hsize_t dimCellIndices = cellCount;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"CellIndices",
-		H5T_NATIVE_UINT64,
+		H5T_NATIVE_INT64,
 		cellIndices,
 		&dimCellIndices, 1);
 
