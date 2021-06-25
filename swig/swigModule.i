@@ -411,7 +411,18 @@ namespace COMMON_NS
 
 namespace COMMON_NS
 {
-
+%typemap(javaimports) COMMON_NS::DataObjectRepository %{
+import java.lang.AutoCloseable;
+import com.f2i_consulting.fesapi.*;
+%}
+%typemap(javainterfaces) COMMON_NS::DataObjectRepository "AutoCloseable"
+%typemap(javacode) COMMON_NS::DataObjectRepository %{
+  @Override
+  public void close() {
+	clear();
+    delete();
+  }
+%}
 	class DataObjectRepository
 	{
 	public:
@@ -523,7 +534,17 @@ namespace COMMON_NS
 		SWIG_GETTER_DATAOBJECTS(WITSML2_NS::Well, WitsmlWell)
 		SWIG_GETTER_DATAOBJECTS(WITSML2_NS::Wellbore, WitsmlWellbore)
 		SWIG_GETTER_DATAOBJECTS(WITSML2_NS::Trajectory, WitsmlTrajectory)
-		
+				
+		SWIG_GETTER_DATAOBJECTS(WITSML2_0_NS::WellCompletion, WellCompletion)
+		SWIG_GETTER_DATAOBJECTS(WITSML2_0_NS::WellboreCompletion, WellboreCompletion)
+		SWIG_GETTER_DATAOBJECTS(WITSML2_0_NS::WellboreGeometry, WellboreGeometry)
+		SWIG_GETTER_DATAOBJECTS(WITSML2_0_NS::Log, Log)
+		SWIG_GETTER_DATAOBJECTS(WITSML2_0_NS::ChannelSet, ChannelSet)
+		SWIG_GETTER_DATAOBJECTS(WITSML2_0_NS::Channel, Channel)
+				
+		SWIG_GETTER_DATAOBJECTS(PRODML2_1_NS::FluidSystem, FluidSystem)
+		SWIG_GETTER_DATAOBJECTS(PRODML2_1_NS::FluidCharacterization, FluidCharacterization)
+
 		AbstractObject* getDataObjectByUuid(const std::string & uuid) const;
 		AbstractObject* getDataObjectByUuidAndVersion(const std::string & uuid, const std::string & version) const;
 		
@@ -542,15 +563,6 @@ namespace COMMON_NS
 
 			return result;
 		}
-		%template(getWellCompletions) getDataObjects<WITSML2_0_NS::WellCompletion>;
-		%template(getWellboreCompletions) getDataObjects<WITSML2_0_NS::WellboreCompletion>;
-		%template(getWellboreGeometries) getDataObjects<WITSML2_0_NS::WellboreGeometry>;
-		%template(getLogs) getDataObjects<WITSML2_0_NS::Log>;
-		%template(getChannelSets) getDataObjects<WITSML2_0_NS::ChannelSet>;
-		%template(getChannels) getDataObjects<WITSML2_0_NS::Channel>;
-		
-		%template(getFluidSystems) getDataObjects<PRODML2_1_NS::FluidSystem>;
-		%template(getFluidCharacterizations) getDataObjects<PRODML2_1_NS::FluidCharacterization>;
 		
 #ifdef WITH_RESQML2_2
 		%template(getGraphicalInformationSets) getDataObjects<EML2_3_NS::GraphicalInformationSet>;
@@ -1387,6 +1399,17 @@ namespace COMMON_NS
 		%template(createPartialChannel) createPartial<WITSML2_0_NS::Channel>;
 	};
 	
+%typemap(javaimports) COMMON_NS::EpcDocument %{
+import java.lang.AutoCloseable;
+%}
+%typemap(javainterfaces) COMMON_NS::EpcDocument "AutoCloseable"
+%typemap(javacode) COMMON_NS::EpcDocument %{
+  @Override
+  public void close() {
+	closeNativeResource();
+    delete();
+  }
+%}
 	class EpcDocument
 	{
 	public:
@@ -1397,7 +1420,14 @@ namespace COMMON_NS
 
 		virtual void serializeFrom(const DataObjectRepository & repo, bool useZip64 = false);
 		virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
+
+// JAVA uses autocloseable and consequently cannot use a second "close" method
+#ifdef SWIGJAVA
+		%javamethodmodifiers close() "private";
+		%rename(closeNativeResource) close();
+#endif
 		void close();
+
 		std::string getStorageDirectory() const;
 		std::string getName() const;
 		

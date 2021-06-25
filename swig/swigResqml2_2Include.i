@@ -17,6 +17,7 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 %{
+#include "../src/resqml2_2/BlockedWellboreRepresentation.h"
 #include "../src/resqml2_2/BoundaryFeature.h"
 #include "../src/resqml2_2/BoundaryFeatureInterpretation.h"
 #include "../src/resqml2_2/CategoricalProperty.h"
@@ -83,6 +84,7 @@ under the License.
 %}
 
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
+	%nspace RESQML2_2_NS::BlockedWellboreRepresentation;
 	%nspace RESQML2_2_NS::BoundaryFeature;
 	%nspace RESQML2_2_NS::BoundaryFeatureInterpretation;
 	%nspace RESQML2_2_NS::CategoricalProperty;
@@ -607,6 +609,14 @@ namespace RESQML2_2_NS
 	public:
 	};
 	
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(resqml22_BlockedWellboreRepresentation) BlockedWellboreRepresentation;
+#endif	
+	class BlockedWellboreRepresentation : public RESQML2_NS::BlockedWellboreRepresentation
+	{
+	public:
+	};
+
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(resqml22_StreamlinesFeature) StreamlinesFeature;
 #endif	

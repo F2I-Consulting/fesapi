@@ -47,6 +47,7 @@ under the License.
 	%nspace RESQML2_NS::AbstractSurfaceRepresentation;
 	%nspace RESQML2_NS::AbstractTechnicalFeature;
 	%nspace RESQML2_NS::AbstractValuesProperty;
+	%nspace RESQML2_NS::BlockedWellboreRepresentation;
 	%nspace RESQML2_NS::BoundaryFeature;
 	%nspace RESQML2_NS::BoundaryFeatureInterpretation;
 	%nspace RESQML2_NS::CategoricalProperty;
@@ -5753,6 +5754,143 @@ namespace RESQML2_NS
 		void getTimeAsFloatValues(float* values) const;
 		double getSeismicReferenceDatum() const;
 		double getWeatheringVelocity() const;
+	};
+
+	/**
+	 * @brief	A blocked wellbore representation. This is the information that allows you to locate,
+	 * 			on one or several grids (existing or planned), the intersection of volume (cells) and
+	 * 			surface (faces) elements with a wellbore trajectory (existing or planned).
+	 */
+#ifdef SWIGPYTHON
+	%rename(resqml2_BlockedWellboreRepresentation) BlockedWellboreRepresentation;
+#endif
+	class BlockedWellboreRepresentation : public RESQML2_NS::WellboreFrameRepresentation
+	{
+	public:
+		/**
+		 * Sets all information about the intersected grid cells. You must first provide MD values of
+		 * the frame before to use this method.
+		 *
+		 * @exception	std::invalid_argument	If @p gridIndices, @p cellIndices, @p
+		 * 										localFacePairPerCellIndices or @p hdfProxy is @c nullptr.
+		 * @exception	std::invalid_argument	If <tt>cellCount == 0</tt>.
+		 * @exception	std::logic_error	 	If MD values of the frame have not been provided before
+		 * 										using this method.
+		 *
+		 * @param 		  	gridIndices								An array containing for each interval
+		 * 															of the wellbore frame, the index of the
+		 * 															grid it is associated to. The size of
+		 * 															this array is the interval count of the
+		 * 															wellbore frame representation. @p
+		 * 															cellCount must equal the number of non-
+		 * 															null entries in this array. The
+		 * 															associated grids (and there indices) are
+		 * 															defined using
+		 * 															pushBackSupportingGridRepresentation()
+		 * 															method.
+		 * @param 		  	gridIndicesNullValue					The null value used in @p gridIndices
+		 * 															in order to indicate that an interval
+		 * 															does not correspond to any intersected
+		 * 															grid.
+		 * @param 		  	cellCount								The number of non-null entries in @p
+		 * 															gridIndices.
+		 * @param 		  	cellIndices								An array containing the intersected
+		 * 															cell index for each non-null entry in @p
+		 * 															gridIndices. They are ordered according
+		 * 															to non-null entries of @p gridIndices.
+		 * 															The array length must equal @p cellCount.
+		 *															The null value is arbitrarily set to -1 since
+		 *															it has no interest. Indeed corresponding gridIndex
+		 *															already informs about the presence or not of a cell.
+		 * @param 		  	localFacePairPerCellIndices				An array containing, for each cell,
+		 * 															the entry and exit intersection faces of
+		 * 															the trajectory in the cell. The array
+		 * 															dimension must equal <tt>2 *
+		 * 															cellCount</tt>.
+		 * @param 		  	localFacePairPerCellIndicesNullValue	The null value used in @p
+		 * 															localFacePerCellIndices in order to
+		 * 															indicate that it corresponds to a missing
+		 * 															intersection, e.g., when a trajectory
+		 * 															originates or terminates within a cell.
+		 * @param [in,out]	hdfProxy								The HDF proxy where the numerical
+		 * 															values will be stored. It must be already
+		 * 															opened for writing and won't be closed.It
+		 * 															cannot be @c nullptr.
+		 */
+		void setIntervalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
+			unsigned int cellCount, int64_t const* cellIndices,
+			unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy);
+
+		/**
+		 * Gets the cell count, that is to say the number of non-null entries in the grid indices array.
+		 *
+		 * @returns	The cell count.
+		 */
+		uint64_t getCellCount() const;
+
+		/**
+		 * For each interval of the wellbore frame, gets the index of the grid it is associated to.
+		 *
+		 * @exception	std::range_error	If the grid indices are stored in an integer constant array
+		 * 									and if the the constant value is strictly superior than unsigned
+		 * 									int maximum value.
+		 * @exception	std::logic_error	If the grid indices are neither stored in a HDF5 integer
+		 * 									array nor in an integer constant array.
+		 *
+		 * @param [out]	gridIndices	An array for receiving the grids indices. The size of this array is
+		 * 							the interval count of the wellbore frame representation. The
+		 * 							associated grids (and there indices) are defined using
+		 * 							pushBackSupportingGridRepresentation() method.
+		 *
+		 * @returns	The null value used in @p gridIndices in order to indicate that an interval does not
+		 * 			correspond to any intersected grid.
+		 */
+		int64_t getGridIndices(unsigned int * gridIndices) const;
+
+		/**
+		 * Pushes back a grid representation which is one of the support of this representation.
+		 *
+		 * @exception	std::invalid_argument	If <tt>supportingGridRep == nullptr</tt>.
+		 *
+		 * @param [in]	supportingGridRep	The supporting grid representation to push back.
+		 */
+		void pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep);
+
+		/**
+		 * Gets the count of supporting grid representations of this blocked wellbore representation.
+		 *
+		 * @exception	std::range_error	If the count of supporting grid representations is strictly
+		 * 									greater than unsigned int max.
+		 *
+		 * @returns	The count of supporting grid representation.
+		 */
+		unsigned int getSupportingGridRepresentationCount() const;
+
+		/**
+		 * Gets the supporting grid representation located at a specific index of this blocked wellbore
+		 * representation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt>
+		 * 									getSupportingGridRepresentationCount().
+		 *
+		 * @param 	index	Zero-based index of the supporting grid representation we look for.
+		 *
+		 * @returns	The supporting grid representation at position @p index.
+		 */
+		RESQML2_NS::AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index) const;
+
+		/**
+		 * Get the DOR of the supporting grid representation located at a specific index of this blocked
+		 * wellbore representation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt>
+		 * 									getSupportingGridRepresentationCount().
+		 *
+		 * @param 	index	Zero-based index of the supporting grid representation we look for.
+		 *
+		 * @returns	The DOR of the supporting grid representation at position @p index.
+		 */
+		COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const;
 	};
 	
 #ifdef SWIGPYTHON

@@ -17,6 +17,8 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 %{
+#include "../src/resqml2_0_1/BlockedWellboreRepresentation.h"
+
 #include "../src/resqml2_0_1/LocalDepth3dCrs.h"
 #include "../src/resqml2_0_1/LocalTime3dCrs.h"
 #include "../src/resqml2_0_1/MdDatum.h"
@@ -538,6 +540,7 @@ namespace WITSML2_0_NS {
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
 	%nspace RESQML2_0_1_NS::Activity;
 	%nspace RESQML2_0_1_NS::ActivityTemplate;
+	%nspace RESQML2_0_1_NS::BlockedWellboreRepresentation;
 	%nspace RESQML2_0_1_NS::BoundaryFeature;
 	%nspace RESQML2_0_1_NS::BoundaryFeatureInterpretation;
 	%nspace RESQML2_0_1_NS::CategoricalProperty;
@@ -1094,6 +1097,14 @@ namespace RESQML2_0_1_NS
 	%rename(resqml20_GridConnectionSetRepresentation) GridConnectionSetRepresentation;
 #endif	
 	class GridConnectionSetRepresentation : public RESQML2_NS::GridConnectionSetRepresentation
+	{
+	public:
+	};
+	
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(resqml20_BlockedWellboreRepresentation) BlockedWellboreRepresentation;
+#endif	
+	class BlockedWellboreRepresentation : public RESQML2_NS::BlockedWellboreRepresentation
 	{
 	public:
 	};
