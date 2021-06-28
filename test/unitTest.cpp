@@ -134,6 +134,12 @@ TEST_CASE("Export and import an empty EPC document", "[epc]")
 	testOut.deserialize();	
 }
 
+TEST_CASE("Set a wrong UUID", "[UUID]")
+{
+	COMMON_NS::DataObjectRepository repo;
+	REQUIRE_THROWS(repo.createBoundaryFeature("My non standard UUID", "MyTitle"));
+}
+
 TEST_CASE("Test hdf5 opening mode", "[hdf]")
 {
 	std::remove("../../testingFile.h5");

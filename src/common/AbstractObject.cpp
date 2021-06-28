@@ -25,6 +25,8 @@ under the License.
 #include <sstream>
 #if (defined(_WIN32) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9))))
 #include <regex>
+#else
+#include <boost/regex.hpp>
 #endif
 #include <algorithm>
 
@@ -357,7 +359,11 @@ void AbstractObject::setUuid(const std::string & uuid)
 #if (defined(_WIN32) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9))))
 		if (!regex_match(uuid, regex("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"))) {
 			throw invalid_argument("The uuid does not match the official uuid regular expression : " + uuid);
-	}
+		}
+#else // https://stackoverflow.com/questions/12530406/is-gcc-4-8-or-earlier-buggy-about-regular-expressions
+		if (!boost::regex_match(uuid, regex("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"))) {
+			throw invalid_argument("The uuid does not match the official uuid regular expression : " + uuid);
+		}
 #endif
 		if (gsoapProxy2_0_1 != nullptr) { gsoapProxy2_0_1->uuid = uuid; }
 		else if (gsoapProxy2_1 != nullptr) { gsoapProxy2_1->uuid = uuid; }
