@@ -26,6 +26,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 	private enum DataObjectName {
         ACTIVITY,
 		ACTIVITYTEMPLATE,
+		BLOCKEDWELLBOREREPRESENTATION,
 		BOUNDARYFEATURE,
 		BOUNDARYFEATUREINTERPRETATION,		
 		CATEGORICALPROPERTY,
@@ -191,6 +192,21 @@ ${COMMENT_END}
 		else if (xmlNs.Equals("witsml20")) {
 			return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);
 		}
+		
+		return null;
+	}
+	
+	public static F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.BlockedWellboreRepresentation resqml2_instantiateBlockedWellboreRepresentation(global::System.IntPtr cPtr, bool owner)
+	{
+		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
+		if (xmlNs.Equals("resqml20")) {
+			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.BlockedWellboreRepresentation(cPtr, owner);
+		}
+${COMMENT_START}
+		else if (xmlNs.Equals("resqml22")) {
+			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.BlockedWellboreRepresentation(cPtr, owner);
+		}
+${COMMENT_END}
 		
 		return null;
 	}
@@ -979,6 +995,7 @@ ${COMMENT_END}
 	switch (dataObjName) {
 		case DataObjectName.ACTIVITY : return eml2_instantiateActivity(cPtr, owner);
 		case DataObjectName.ACTIVITYTEMPLATE : return eml2_instantiateActivityTemplate(cPtr, owner);
+		case DataObjectName.BLOCKEDWELLBOREREPRESENTATION : return resqml2_instantiateBlockedWellboreRepresentation(cPtr, owner);
 		case DataObjectName.BOUNDARYFEATURE : return resqml2_instantiateBoundaryFeature(cPtr, owner);
 		case DataObjectName.BOUNDARYFEATUREINTERPRETATION : return resqml2_instantiateBoundaryFeatureInterpretation(cPtr, owner);
 		case DataObjectName.CATEGORICALPROPERTY : return resqml2_instantiateCategoricalProperty(cPtr, owner);

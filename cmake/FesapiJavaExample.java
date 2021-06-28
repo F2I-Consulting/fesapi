@@ -18,6 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 package com.f2i_consulting.example;
 
+import java.io.File;
 import java.util.UUID;
 import java.util.stream.LongStream;
 
@@ -87,6 +88,9 @@ import com.f2i_consulting.fesapi.witsml2.Wellbore;
 import com.f2i_consulting.fesapi.witsml2_0.witsml20_WellboreGeometry;
 
 public class FesapiJavaExample {
+	private static String storageDirectory = System.getProperty("user.dir"); 
+	private static String epcName = "testingPackageJava"; 
+	
 	private static BoundaryFeature horizon1;
 	private static IjkGridExplicitRepresentation ijkgrid;
 	private static PropertyKind cellIndexPropKind;
@@ -635,14 +639,11 @@ ${COMMENT_START}
 	}
 ${COMMENT_END}
 	private static void serialize()
-	{
-		EpcDocument pck = new EpcDocument("testingPackageJava.epc");
-		DataObjectRepository repo = new DataObjectRepository();
-		
-		try {
+	{		
+		try (DataObjectRepository repo = new DataObjectRepository()) {
 			LocalDepth3dCrs crs = repo.createLocalDepth3dCrs(UUID.randomUUID().toString(), "UTF8 Crs title", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.m, 5215, eml20__LengthUom.m, "Unknown", false);
 			repo.setDefaultCrs(crs);
-			AbstractHdfProxy hdfProxy = repo.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5", DataObjectRepository.openingMode.OVERWRITE);
+			AbstractHdfProxy hdfProxy = repo.createHdfProxy("", "Hdf Proxy", storageDirectory, epcName + ".h5", DataObjectRepository.openingMode.OVERWRITE);
 			repo.setDefaultHdfProxy(hdfProxy);
 			
 			// WITSML
@@ -655,23 +656,20 @@ ${COMMENT_START}
 			serializeGraphicalInformationSet(repo, hdfProxy);
 ${COMMENT_END}
 
-			pck.serializeFrom(repo);
-		}
-		finally {
-			pck.close();
-			repo.clear();
+			try (EpcDocument pck = new EpcDocument(storageDirectory + File.separator + epcName + ".epc")) {
+				pck.serializeFrom(repo);
+			}
 		}
 	}
 
 	private static void deserialize()
 	{
-		EpcDocument pck = new EpcDocument("testingPackageJava.epc");
-		DataObjectRepository repo = new DataObjectRepository();
-
-		try {
-			String status = pck.deserializeInto(repo);
-			if (!status.isEmpty()) {
-				System.out.println("Status : " + status);
+		try (DataObjectRepository repo = new DataObjectRepository()) {
+			try (EpcDocument pck = new EpcDocument(storageDirectory + File.separator + epcName + ".epc")) {
+				String status = pck.deserializeInto(repo);
+				if (!status.isEmpty()) {
+					System.out.println("Status : " + status);
+				}
 			}
 
 			LongStream.range(0, repo.getLocalDepth3dCrsCount()).forEach(index -> System.out.println("CRS title is " + repo.getLocalDepth3dCrs(index).getTitle()));
@@ -773,10 +771,6 @@ ${COMMENT_START}
 				}
 			}
 ${COMMENT_END}			
-		}
-		finally {
-			pck.close();
-			repo.clear();
 		}
 	}
 	

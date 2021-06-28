@@ -595,6 +595,16 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(WITSML2_NS::Wellbore, WitsmlWellbore)
 		GETTER_DATAOBJECTS(WITSML2_NS::Trajectory, WitsmlTrajectory)
 
+		GETTER_DATAOBJECTS(WITSML2_0_NS::WellCompletion, WellCompletion)
+		GETTER_DATAOBJECTS(WITSML2_0_NS::WellboreCompletion, WellboreCompletion)
+		GETTER_DATAOBJECTS(WITSML2_0_NS::WellboreGeometry, WellboreGeometry)
+		GETTER_DATAOBJECTS(WITSML2_0_NS::Log, Log)
+		GETTER_DATAOBJECTS(WITSML2_0_NS::ChannelSet, ChannelSet)
+		GETTER_DATAOBJECTS(WITSML2_0_NS::Channel, Channel)
+
+		GETTER_DATAOBJECTS(PRODML2_1_NS::FluidSystem, FluidSystem)
+		GETTER_DATAOBJECTS(PRODML2_1_NS::FluidCharacterization, FluidCharacterization)
+
 		/**
 		 * Gets a data object from the repository by means of its uuid. If several data object
 		 * correspond to this uuid in the repository, the first one in memory will be arbitrarily

@@ -3054,6 +3054,16 @@ GETTER_DATAOBJECTS_IMPL(WITSML2_NS::Well, WitsmlWell)
 GETTER_DATAOBJECTS_IMPL(WITSML2_NS::Wellbore, WitsmlWellbore)
 GETTER_DATAOBJECTS_IMPL(WITSML2_NS::Trajectory, WitsmlTrajectory)
 
+GETTER_DATAOBJECTS_IMPL(WITSML2_0_NS::WellCompletion, WellCompletion)
+GETTER_DATAOBJECTS_IMPL(WITSML2_0_NS::WellboreCompletion, WellboreCompletion)
+GETTER_DATAOBJECTS_IMPL(WITSML2_0_NS::WellboreGeometry, WellboreGeometry)
+GETTER_DATAOBJECTS_IMPL(WITSML2_0_NS::Log, Log)
+GETTER_DATAOBJECTS_IMPL(WITSML2_0_NS::ChannelSet, ChannelSet)
+GETTER_DATAOBJECTS_IMPL(WITSML2_0_NS::Channel, Channel)
+
+GETTER_DATAOBJECTS_IMPL(PRODML2_1_NS::FluidSystem, FluidSystem)
+GETTER_DATAOBJECTS_IMPL(PRODML2_1_NS::FluidCharacterization, FluidCharacterization)
+
 std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getFaultSet() const
 {
 	std::vector<RESQML2_NS::FaultInterpretation*> faultInterps = getDataObjects<RESQML2_NS::FaultInterpretation>();
