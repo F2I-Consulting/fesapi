@@ -147,6 +147,11 @@ ELSEIF (UNIX)
 		COMPILE_FLAGS "-fPIC"
 		VERSION ${Fesapi_VERSION}
 		SOVERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
+		
+	# We need to use Boost regex instead of std regex for gcc < 4.9
+	if (NOT CAN_USE_STD_REGEX)
+        target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE ${Boost_REGEX_LIBRARY})
+	endif()
 endif (WIN32)
 
 # ============================================================================

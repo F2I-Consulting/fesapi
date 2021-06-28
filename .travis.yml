@@ -54,6 +54,7 @@ addons:
   apt:
     packages:
       - libboost-dev #1.54
+      - libboost-regex-dev
       - libhdf5-dev #1.8.11
       - valgrind
 

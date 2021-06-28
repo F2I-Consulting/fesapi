@@ -21,7 +21,7 @@ ENV CFLAGS="-fPIC -O2"
 ENV CXXFLAGS="-fPIC -O2"
 
 RUN	apt-get update &&\
-	apt-get install -y --no-install-recommends build-essential libboost-dev libhdf5-dev wget git &&\
+	apt-get install -y --no-install-recommends build-essential libboost-dev libboost-regex-dev libhdf5-dev wget git &&\
 	apt-get clean &&\
 	rm -rf /var/lib/apt/lists/*
 

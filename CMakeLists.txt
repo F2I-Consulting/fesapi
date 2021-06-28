@@ -101,8 +101,33 @@ IF (NOT EXISTS ${SZIP_LIBRARY_DEBUG} AND WIN32 AND NOT ${HDF5_BUILT_AS_DYNAMIC_L
 	MESSAGE(WARNING "The Szip library (SZIP_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
 ENDIF ()
 
-# Boost DEPENDENCY : Uuid
-find_package(Boost 1.44.0) # 1.44 because we want boost::uuids::to_string method
+# Boost DEPENDENCY : Uuid (and potentially regex)
+unset(CAN_USE_STD_REGEX CACHE)
+include(CheckCXXSourceCompiles)
+check_cxx_source_compiles(
+   "#include <iostream>
+
+	//https://gcc.gnu.org/develop.html#timeline
+	int a =
+	#if !defined(__GLIBCXX__) || __GLIBCXX__ > 20150623 || __GLIBCXX__ == 20140422 || __GLIBCXX__ == 20140716 || __GLIBCXX__ == 20141030
+		1;
+	#else
+		fgsfds;
+	#endif
+
+    int main ()
+    {
+      return 0;
+
+    }"
+
+	CAN_USE_STD_REGEX
+)
+if (NOT CAN_USE_STD_REGEX)
+	find_package(Boost 1.44.0 REQUIRED regex) # 1.44 because we want boost::uuids::to_string method
+else ()
+	find_package(Boost 1.44.0) # 1.44 because we want boost::uuids::to_string method
+endif()
 
 # ============================================================================
 # some useful variables
