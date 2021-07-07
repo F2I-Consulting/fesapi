@@ -65,11 +65,11 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT void pushBackVolumeRegion(RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp,
 			unsigned int externalShellFaceCount,
-			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide) final;
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide) final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackInternalShell(unsigned int regionIndex,
 			unsigned int externalShellFaceCount,
-			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide) final;
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide) final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getRegionCount() const final;
 
@@ -79,17 +79,17 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT unsigned int getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const final;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) final;
 
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const final;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const final;
+		DLL_IMPORT_OR_EXPORT unsigned int getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const final;
+		DLL_IMPORT_OR_EXPORT unsigned int getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) final;
 
-		DLL_IMPORT_OR_EXPORT bool getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const final;
+		DLL_IMPORT_OR_EXPORT bool getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) final;
 
-		DLL_IMPORT_OR_EXPORT bool getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const final;
+		DLL_IMPORT_OR_EXPORT bool getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) final;
 
 		/**
 		* The standard XML namespace for serializing this data object.
@@ -103,19 +103,31 @@ namespace RESQML2_2_NS
 
 	private:
 
+		std::pair<unsigned int, unsigned int> loadedShell_ = std::make_pair((std::numeric_limits<unsigned int>::max)(), (std::numeric_limits<unsigned int>::max)());
+		std::unique_ptr<unsigned int[]> faceRepresentationIndices_;
+		std::unique_ptr<unsigned int[]> faceRepPatchIndices_;
+		std::unique_ptr<char[]> faceSide_;
+
+		/**
+		* internalShellIndex = (std::numeric_limits<unsigned int>::max)() means that we load the external shell
+		*/
+		void loadShell(unsigned int regionIndex, unsigned int internalShellIndex = (std::numeric_limits<unsigned int>::max)());
+
 		/**
 		 * Creates volume shell
 		 *
+		 * @param			shellIndex					The region index which is needed to create non conflicting HDF datasets
+		 * @param			shellIndex					The shell index within the region which is needed to create non conflicting HDF datasets
 		 * @param 		  	shellFaceCount			 	Number of shell faces.
-		 * @param [in,out]	faceRepresentationIndices	If non-null, the face representation indices.
-		 * @param [in,out]	faceRepPatchIndices		 	If non-null, the face rep patch indices.
-		 * @param [in,out]	faceSide				 	If non-null, true to face side.
+		 * @param [in,out]	faceRepresentationIndices	The face representation indices.
+		 * @param [in,out]	faceRepPatchIndices		 	The face rep patch indices.
+		 * @param [in,out]	faceSide				 	The face sides.
 		 *
 		 * @returns	Null if it fails, else the new volume shell.
 		 */
-		gsoap_eml2_3::resqml22__VolumeShell* createVolumeShell(
+		gsoap_eml2_3::resqml22__VolumeShell* createVolumeShell(size_t regionIndex, size_t shellIndex,
 			unsigned int shellFaceCount,
-			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide);
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide);
 
 		/**
 		 * Gets a region
@@ -144,27 +156,6 @@ namespace RESQML2_2_NS
 		 * @returns	Null if it fails, else the region internal shell.
 		 */
 		gsoap_eml2_3::resqml22__VolumeShell* getRegionInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const;
-
-		/**
-		 * Gets region external shell face
-		 *
-		 * @param 	regionIndex	Zero-based index of the region.
-		 * @param 	faceIndex  	Zero-based index of the face.
-		 *
-		 * @returns	Null if it fails, else the region external shell face.
-		 */
-		gsoap_eml2_3::resqml22__OrientedMacroFace* getRegionExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const;
-
-		/**
-		 * Gets region internal shell face
-		 *
-		 * @param 	regionIndex		  	Zero-based index of the region.
-		 * @param 	internalShellIndex	Zero-based index of the internal shell.
-		 * @param 	faceIndex		  	Zero-based index of the face.
-		 *
-		 * @returns	Null if it fails, else the region internal shell face.
-		 */
-		gsoap_eml2_3::resqml22__OrientedMacroFace* getRegionInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const;
 
 		COMMON_NS::DataObjectReference getSealedStructuralFrameworkDor() const final;
 

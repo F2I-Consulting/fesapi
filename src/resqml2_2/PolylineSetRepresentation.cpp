@@ -20,7 +20,6 @@ under the License.
 
 #include <algorithm>
 #include <limits>
-#include <sstream>
 #include <stdexcept>
 
 #include <hdf5.h>
@@ -101,18 +100,14 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	// node count
 	eml23__IntegerExternalArray* xmlNodeCountPerPolyline = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	xmlNodeCountPerPolyline->NullValue = (std::numeric_limits<int>::max)();
-	xmlNodeCountPerPolyline->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	ostringstream ossForHdf;
-	ossForHdf << "NodeCountPerPolyline_patch" << static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size();
-	dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
-	xmlNodeCountPerPolyline->Values->ExternalFileProxy.push_back(dsPart);
+	xmlNodeCountPerPolyline->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	std::string datasetName = "NodeCountPerPolyline_patch" + std::to_string(static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size());
+	xmlNodeCountPerPolyline->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/" + datasetName, polylineCount, proxy));
 	patch->NodeCountPerPolyline = xmlNodeCountPerPolyline;
 	// ************ HDF *************
 	hsize_t dim = polylineCount;
 	proxy->writeArrayNd(getHdfGroup(),
-		ossForHdf.str(), H5T_NATIVE_UINT,
+		datasetName, H5T_NATIVE_UINT,
 		nodeCountPerPolyline,
 		&dim, 1);
 
@@ -159,35 +154,26 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	// node count
 	eml23__IntegerExternalArray* xmlNodeCountPerPolyline = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	xmlNodeCountPerPolyline->NullValue = (std::numeric_limits<int>::max)();
-	xmlNodeCountPerPolyline->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	ostringstream ossForHdf;
-	ossForHdf << "NodeCountPerPolyline_patch" << static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size();
-	dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
-	xmlNodeCountPerPolyline->Values->ExternalFileProxy.push_back(dsPart);
+	xmlNodeCountPerPolyline->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	std::string datasetName = "NodeCountPerPolyline_patch" + std::to_string(static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size());
+	xmlNodeCountPerPolyline->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/" + datasetName, polylineCount, proxy));
 	patch->NodeCountPerPolyline = xmlNodeCountPerPolyline;
 	// ************ HDF *************
 	hsize_t dim = polylineCount;
 	proxy->writeArrayNd(getHdfGroup(),
-		ossForHdf.str(), H5T_NATIVE_UINT,
+		datasetName, H5T_NATIVE_UINT,
 		nodeCountPerPolyline,
 		&dim, 1);
 
 	// closed polylines
 	eml23__BooleanExternalArray* xmlClosedPolylines = soap_new_eml23__BooleanExternalArray(gsoapProxy2_3->soap);
-	xmlClosedPolylines->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	ossForHdf.str("");
-	ossForHdf.clear();
-	ossForHdf << "ClosedPolylines_patch" << static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size();
-	dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
-	xmlClosedPolylines->Values->ExternalFileProxy.push_back(dsPart);
+	xmlClosedPolylines->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	datasetName = "ClosedPolylines_patch" + std::to_string(static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size());
+	xmlClosedPolylines->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/" + datasetName, polylineCount, proxy));
 	patch->ClosedPolylines = xmlClosedPolylines;
 	// ************ HDF *************
 	proxy->writeArrayNd(getHdfGroup(),
-		ossForHdf.str(), H5T_NATIVE_UCHAR,
+		datasetName, H5T_NATIVE_UCHAR,
 		polylineClosedFlags,
 		&dim, 1);
 
@@ -207,12 +193,12 @@ COMMON_NS::DataObjectReference PolylineSetRepresentation::getHdfProxyDor() const
 	resqml22__PolylineSetPatch* patch = static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch[0];
 	if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray) {
 		if (patch->NodeCountPerPolyline->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(patch->NodeCountPerPolyline)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(patch->NodeCountPerPolyline)->Values->ExternalDataArrayPart[0]));
 		}
 	}
 	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray)
 	{
-		return COMMON_NS::DataObjectReference(static_cast<eml23__BooleanExternalArray*>(patch->ClosedPolylines)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+		return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__BooleanExternalArray*>(patch->ClosedPolylines)->Values->ExternalDataArrayPart[0]));
 	}
 
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
@@ -240,8 +226,8 @@ unsigned int PolylineSetRepresentation::getPolylineCountOfPatch(unsigned int pat
 	}
 	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray)
 	{
-		auto dsPart = static_cast<eml23__BooleanExternalArray*>(patch->ClosedPolylines)->Values->ExternalFileProxy[0];
-		return getHdfProxyFromDataset(dsPart) ->getElementCount(dsPart->PathInExternalFile);
+		auto const* daPart = static_cast<eml23__BooleanExternalArray*>(patch->ClosedPolylines)->Values->ExternalDataArrayPart[0];
+		return getOrCreateHdfProxyFromDataArrayPart(daPart) ->getElementCount(daPart->PathInExternalFile);
 	}
 
 	return 0;
@@ -287,8 +273,8 @@ void PolylineSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, dou
 	resqml22__PointGeometry* pointGeom = getPointGeometry2_2(patchIndex);
 	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray)
 	{
-		auto dsPart = static_cast<resqml22__Point3dExternalArray*>(pointGeom->Points)->Coordinates->ExternalFileProxy[0];
-		getHdfProxyFromDataset(dsPart) ->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, xyzPoints);
+		auto const* daPart = static_cast<resqml22__Point3dExternalArray*>(pointGeom->Points)->Coordinates->ExternalDataArrayPart[0];
+		getOrCreateHdfProxyFromDataArrayPart(daPart) ->readArrayNdOfDoubleValues(daPart->PathInExternalFile, xyzPoints);
 	}
 	else
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
@@ -313,10 +299,10 @@ bool PolylineSetRepresentation::areAllPolylinesClosedOfPatch(unsigned int patchI
 	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray)
 	{
 		const unsigned int polylineCount = getPolylineCountOfPatch(patchIndex);
-		eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__BooleanExternalArray*>(patch->ClosedPolylines)->Values->ExternalFileProxy[0];
+		eml23__ExternalDataArrayPart const * daPart = static_cast<eml23__BooleanExternalArray*>(patch->ClosedPolylines)->Values->ExternalDataArrayPart[0];
 
 		std::unique_ptr<char[]> tmp(new char[polylineCount]);
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfCharValues(dsPart->PathInExternalFile, tmp.get());
+		getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfCharValues(daPart->PathInExternalFile, tmp.get());
 		const bool result = find(tmp.get(), tmp.get() + polylineCount, 0) == tmp.get() + polylineCount;
 
 		return result;
@@ -351,10 +337,10 @@ bool PolylineSetRepresentation::areAllPolylinesNonClosedOfPatch(unsigned int pat
 	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray)
 	{
 		const unsigned int polylineCount = getPolylineCountOfPatch(patchIndex);
-		eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__BooleanExternalArray*>(patch->ClosedPolylines)->Values->ExternalFileProxy[0];
+		eml23__ExternalDataArrayPart const * daPart = static_cast<eml23__BooleanExternalArray*>(patch->ClosedPolylines)->Values->ExternalDataArrayPart[0];
 
 		std::unique_ptr<char[]> tmp(new char[polylineCount]);
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfCharValues(dsPart->PathInExternalFile, tmp.get());
+		getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfCharValues(daPart->PathInExternalFile, tmp.get());
 		return find_if(tmp.get(), tmp.get() + polylineCount, [](char i) {return i != 0; }) == tmp.get() + polylineCount;
 	}
 	else
@@ -381,10 +367,10 @@ void PolylineSetRepresentation::getClosedFlagPerPolylineOfPatch(unsigned int pat
 		fill(closedFlagPerPolyline, closedFlagPerPolyline + polylineCount, static_cast<eml23__BooleanConstantArray*>(patch->ClosedPolylines)->Value);
 	}
 	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
-		eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__BooleanExternalArray*>(patch->ClosedPolylines)->Values->ExternalFileProxy[0];
+		eml23__ExternalDataArrayPart const * daPart = static_cast<eml23__BooleanExternalArray*>(patch->ClosedPolylines)->Values->ExternalDataArrayPart[0];
 
 		std::unique_ptr<char[]> tmp(new char[polylineCount]);
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfCharValues(dsPart->PathInExternalFile, tmp.get());
+		getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfCharValues(daPart->PathInExternalFile, tmp.get());
 		for (size_t i = 0; i < polylineCount; ++i) {
 			closedFlagPerPolyline[i] = tmp[i];
 		}

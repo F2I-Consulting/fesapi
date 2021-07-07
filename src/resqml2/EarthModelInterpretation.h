@@ -24,7 +24,7 @@ namespace RESQML2_NS
 {
 	class RockFluidOrganizationInterpretation;
 	class StratigraphicColumn;
-	class StratigraphicOccurrenceInterpretation;
+	class GeologicUnitOccurrenceInterpretation;
 	class StructuralOrganizationInterpretation;
 
 	/**
@@ -117,48 +117,48 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT StratigraphicColumn* getStratiColumn() const;
 
 		/**
-		 * @brief	Gets the count of stratigraphic occurrence interpretations associated to this earth
+		 * @brief	Gets the count of geologic unit occurrence interpretations associated to this earth
 		 * 			model interpretation.
 		 *
-		 * @exception	std::range_error	If the count of stratigraphic occurrence interpretations is
+		 * @exception	std::range_error	If the count of geologic unit occurrence interpretations is
 		 * 									strictly greater than unsigned int max.
 		 *
-		 * @returns	The count of associated stratigraphic occurrence interpretations.
+		 * @returns	The count of associated geologic unit occurrence interpretations.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getStratiOccurrenceCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getGeologicUnitOccurrenceCount() const = 0;
 
 		/**
-		 * Gets the DOR of a given associated stratigraphic occurrence interpretation.
+		 * Gets the DOR of a given associated geologic unit occurrence interpretation.
 		 *
-		 * @exception	std::out_of_range	If <tt>index &gt;= getStratiOccurrenceCount()</tt>.
+		 * @exception	std::out_of_range	If <tt>index &gt;= getGeologicUnitOccurrenceCount()</tt>.
 		 *
-		 * @param 	index	Zero-based index of the associated stratigraphic occurrence interpretation we
+		 * @param 	index	Zero-based index of the associated geologic unit occurrence interpretation we
 		 * 					look for the DOR.
 		 *
-		 * @returns	The DOR of the stratigraphic occurrence interpretation at position @p index.
+		 * @returns	The DOR of the geologic unit occurrence interpretation at position @p index.
 		 */
-		virtual COMMON_NS::DataObjectReference getStratiOccurrenceDor(unsigned int index) const = 0;
+		virtual COMMON_NS::DataObjectReference getGeologicUnitOccurrenceDor(unsigned int index) const = 0;
 
 		/**
-		 * Gets a given associated stratigraphic occurrence interpretation.
+		 * Gets a given associated geologic unit occurrence interpretation.
 		 *
-		 * @exception	std::out_of_range	If <tt>index &gt;= getStratiOccurrenceCount()</tt>.
+		 * @exception	std::out_of_range	If <tt>index &gt;= getGeologicUnitOccurrenceCount()</tt>.
 		 *
-		 * @param 	index	Zero-based index of the associated stratigraphic occurrence interpretation we
+		 * @param 	index	Zero-based index of the associated geologic unit occurrence interpretation we
 		 * 					look for.
 		 *
-		 * @returns	The stratigraphic occurrence interpretation at position @p index.
+		 * @returns	The geologic unit occurrence interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT StratigraphicOccurrenceInterpretation* getStratiOccurrence(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT GeologicUnitOccurrenceInterpretation* getGeologicUnitOccurrence(unsigned int index) const;
 
 		/**
-		 * @brief	Pushes back a stratigraphic occurrence interpretation.
+		 * @brief	Pushes back a geologic unit occurrence interpretation.
 		 *
-		 * @exception	std::invalid_argument	If <tt>stratiOccurrence == nullptr</tt>.
+		 * @exception	std::invalid_argument	If <tt>occurrence == nullptr</tt>.
 		 *
-		 * @param [in]	stratiOccurence	The stratigraphic occurrence interpretation to push back.
+		 * @param [in]	occurence	The geologic unit occurrence interpretation to push back.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackStratiOccurrence(StratigraphicOccurrenceInterpretation * stratiOccurence) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackGeologicUnitOccurrence(GeologicUnitOccurrenceInterpretation * occurence) = 0;
 
 		 /**
 		  * Gets the count of rock fluid organization interpretations associated to this earth model

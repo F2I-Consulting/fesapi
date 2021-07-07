@@ -36,25 +36,8 @@ namespace RESQML2_2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT CommentProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::CommentProperty(partialObject) {}
 
-		/**
-		 * Creates a comment property which is of a local property kind.
-		 *
-		 * @exception	std::invalid_argument	If @p rep or @p propKind is null.. If @p dimension is zero.
-		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
-		 * 								cannot be null.
-		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
-		 * 								generated.
-		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
-		 * 								will be set.
-		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
-		 * 								a scalar property.
-		 * @param 	  	attachmentKind	The topological element on which the property values are attached
-		 * 								to.
-		 * @param [in]	propKind		The property kind of these property values. It cannot be null.
-		 */
 		CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * propKind);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * propKind);
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.

@@ -22,7 +22,7 @@ under the License.
 
 #include "StratigraphicUnitInterpretation.h"
 #include "HorizonInterpretation.h"
-#include "StratigraphicOccurrenceInterpretation.h"
+#include "GeologicUnitOccurrenceInterpretation.h"
 #include "StratigraphicColumn.h"
 
 using namespace std;
@@ -50,9 +50,9 @@ std::vector<StratigraphicUnitInterpretation *> StratigraphicColumnRankInterpreta
 	return getRepository()->getTargetObjects<StratigraphicUnitInterpretation>(this);
 }
 
-std::vector<StratigraphicOccurrenceInterpretation *> StratigraphicColumnRankInterpretation::getStratigraphicOccurrenceInterpretationSet() const
+std::vector<GeologicUnitOccurrenceInterpretation *> StratigraphicColumnRankInterpretation::getGeologicUnitOccurrenceInterpretationSet() const
 {
-	return getRepository()->getSourceObjects<StratigraphicOccurrenceInterpretation>(this);
+	return getRepository()->getSourceObjects<GeologicUnitOccurrenceInterpretation>(this);
 }
 
 HorizonInterpretation* StratigraphicColumnRankInterpretation::getHorizonInterpretation(unsigned int index) const

@@ -41,39 +41,53 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT unsigned int getGraphicalInformationSetCount() const;
 
 		/**
-		 * Gets the data object reference of the object which receives some graphical information at a
-		 * particular index of the graphical information set
+		 * Gets the count of data objects which are targeted by a graphical information at @p graphicalInformationIndex.
 		 *
 		 * @exception	std::range_error	If @p index is out of range.
 		 *
-		 * @param 	index	Zero-based index of the data object we look for.
+		 * @param 	graphicalInformationIndex	Zero-based index of the graphical information in the GraphicalInformationSet
 		 *
-		 * @returns	The data object reference of the object which receives some graphical information at
-		 * 			@p index.
+		 * @returns	the count of data objects which are targeted by a graphical information at @p graphicalInformationIndex.
 		 */
-		gsoap_eml2_3::eml23__DataObjectReference* getTargetObjectDor(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getTargetObjectCount(unsigned int graphicalInformationIndex) const;
+
+		/**
+		 * Gets a data object reference to the data object which receives some graphical information at a
+		 * particular index of the graphical information set and at a particular target index.
+		 *
+		 * @exception	std::range_error	If @p index is out of range.
+		 *
+		 * @param 	graphicalInformationIndex	Zero-based index of the graphical information in the GraphicalInformationSet
+		 * @param	targetIndex					Zero-based index of the data object reference in the graphical information
+		 *
+		 * @returns	The data object reference to the dato object which receives some graphical information at
+		 * 			@p graphicalInformationIndex and target @p targetIndex.
+		 */
+		gsoap_eml2_3::eml23__DataObjectReference* getTargetObjectDor(unsigned int graphicalInformationIndex, unsigned int targetIndex) const;
 
 		/**
 		 * Gets the UUID of the object which receives some graphical information at a particular index
-		 * of the graphical information set
+		 * of the graphical information set and at a particular target index.
 		 *
 		 * @exception	std::range_error	If @p index is out of range.
 		 *
-		 * @param 	index	Zero-based index of the data object we look for.
+		 * @param 	graphicalInformationIndex	Zero-based index of the graphical information in the GraphicalInformationSet
+		 * @param	targetIndex					Zero-based index of the data object reference in the graphical information
 		 *
-		 * @returns	The UUUID of the object which receives some graphical information at @p index.
+		 * @returns	The UUUID of the object which receives some graphical information at @p graphicalInformationIndex and target @p targetIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getTargetObjectUuid(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getTargetObjectUuid(unsigned int graphicalInformationIndex, unsigned int targetIndex) const;
 
 		/**
 		 * Gets the data object which receives some graphical information at a particular index of the
-		 * graphical information set
+		 * graphical information set and at a particular target index.
 		 *
-		 * @param 	index	Zero-based index of the data object we look for.
+		 * @param 	graphicalInformationIndex	Zero-based index of the graphical information in the GraphicalInformationSet
+		 * @param	targetIndex					Zero-based index of the data object reference in the graphical information
 		 *
-		 * @returns	The data object which receives some graphical information at @p index.
+		 * @returns	The data object which receives some graphical information at @p graphicalInformationIndex and target @p targetIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractObject* getTargetObject(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractObject* getTargetObject(unsigned int graphicalInformationIndex, unsigned int targetIndex) const;
 
 		/**
 		 * Query if a given data object has some direct graphical information, that is to say if there exists

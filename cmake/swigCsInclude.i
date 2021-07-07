@@ -55,6 +55,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		GEOBODYFEATURE,
 		GEOBODYINTERPRETATION,
 		GEOLOGICUNITFEATURE,
+		GEOLOGICUNITOCCURRENCEINTERPRETATION,
 		GRAPHICALINFORMATIONSET,
 		GRID2DREPRESENTATION,
 		GRIDCONNECTIONSETREPRESENTATION,
@@ -420,7 +421,7 @@ ${COMMENT_END}
 		}
 ${COMMENT_START}
 		else if (xmlNs.Equals("resqml22")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.StratigraphicOccurrenceInterpretation(cPtr, owner);
+			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.GeologicUnitOccurrenceInterpretation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -1036,6 +1037,8 @@ ${COMMENT_END}
 		case DataObjectName.GEOBODYINTERPRETATION : return resqml2_instantiateGeobodyInterpretation(cPtr, owner);
 		case DataObjectName.GENERICFEATUREINTERPRETATION : return resqml2_instantiateGenericFeatureInterpretation(cPtr, owner);
 		case DataObjectName.GEOLOGICUNITFEATURE : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.GeologicUnitFeature(cPtr, owner);
+		case DataObjectName.GEOLOGICUNITOCCURRENCEINTERPRETATION :
+		case DataObjectName.STRATIGRAPHICOCCURRENCEINTERPRETATION : return resqml2_instantiateStratigraphicOccurrenceInterpretation(cPtr, owner);
 ${COMMENT_START}
 		case DataObjectName.GRAPHICALINFORMATIONSET : return new F2iConsulting.Fesapi.${FESAPI_EML2_3_NS}.GraphicalInformationSet(cPtr, owner);
 ${COMMENT_END}
@@ -1077,7 +1080,6 @@ ${COMMENT_START}
 ${COMMENT_END}
 		case DataObjectName.STRATIGRAPHICCOLUMN : return resqml2_instantiateStratigraphicColumn(cPtr, owner);
 		case DataObjectName.STRATIGRAPHICCOLUMNRANKINTERPRETATION : return resqml2_instantiateStratigraphicColumnRankInterpretation(cPtr, owner);
-		case DataObjectName.STRATIGRAPHICOCCURRENCEINTERPRETATION : return resqml2_instantiateStratigraphicOccurrenceInterpretation(cPtr, owner);
 		case DataObjectName.STRATIGRAPHICUNITFEATURE : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.StratigraphicUnitFeature(cPtr, owner);
 		case DataObjectName.STRATIGRAPHICUNITINTERPRETATION : return resqml2_instantiateStratigraphicUnitInterpretation(cPtr, owner);
 		case DataObjectName.STREAMLINESFEATURE : return resqml2_instantiateStreamlinesFeature(cPtr, owner);
@@ -1174,6 +1176,7 @@ namespace RESQML2_NS
 										GenericFeatureInterpretation*,
 										GeobodyBoundaryInterpretation*,
 										GeobodyInterpretation*,
+										GeologicUnitOccurrenceInterpretation*,
 										Grid2dRepresentation*,
 										GridConnectionSetRepresentation*,
 										HorizonInterpretation*,
@@ -1206,7 +1209,6 @@ namespace RESQML2_NS
 #endif
 										StratigraphicColumn*,
 										StratigraphicColumnRankInterpretation*,
-										StratigraphicOccurrenceInterpretation*,
 										StratigraphicUnitInterpretation*,
 										StreamlinesFeature*,
 										StreamlinesRepresentation*,

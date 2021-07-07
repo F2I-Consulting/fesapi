@@ -32,10 +32,6 @@ file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/witsm
 
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/prodml2_1)
 
-if (WITH_ETP)
-	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/f2i_consulting/etp)
-endif ()
-
 # The name of the library is different on Windows because it includes the version
 if (WIN32)
 	if (SWIG_LINKED_TO_RELEASE)
@@ -104,6 +100,7 @@ else (SWIG_LINKED_TO_RELEASE)
 endif (SWIG_LINKED_TO_RELEASE)
 
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp)
+target_sources(${CPP_LIBRARY_NAME} PRIVATE ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.h)
 
 target_include_directories(${CPP_LIBRARY_NAME} PUBLIC ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2})
 

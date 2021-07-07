@@ -49,16 +49,17 @@ namespace RESQML2_0_1_NS
 		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
-		 * 										is 1 for a scalar property.
 		 * @param 	  	attachmentKind		   	The topological element on which the property values are
 		 * 										attached to.
 		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
 		 * 										defined in the standard Energistics property type
 		 * 										dictionary.
+		 * @param 	  	dimensions			 	The dimensions of each value of this property. If this parameter
+		 *										is empty, then it is assumed this property is a scalar one.
 		 */
 		DiscreteProperty(RESQML2_NS::AbstractRepresentation* rep, const std::string& guid, const std::string& title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
+			std::vector<int> dimensions = std::vector<int>());
 
 		/**
 		 * Creates a discrete property which is of a local property kind.
@@ -71,15 +72,16 @@ namespace RESQML2_0_1_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
-		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
 		 * @param [in]	localPropKind 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
+		 * @param 	  	dimensions	  	The dimensions of each value of this property. If this parameter
+		 *								is empty, then it is assumed this property is a scalar one.
 		 */
 		DiscreteProperty(RESQML2_NS::AbstractRepresentation* rep, const std::string& guid, const std::string& title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind* localPropKind);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind* localPropKind,
+			std::vector<int> dimensions = std::vector<int>());
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.

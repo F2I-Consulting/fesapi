@@ -72,8 +72,7 @@ void HdfProxy::open()
 		close();
 	}
 
-	const std::string fullName = (packageDirectoryAbsolutePath.empty() || packageDirectoryAbsolutePath.back() == '/' || packageDirectoryAbsolutePath.back() == '\\' ? packageDirectoryAbsolutePath : packageDirectoryAbsolutePath + '/')
-		+ relativeFilePath;
+	const std::string& fullName = getAbsolutePath();
 	if (openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_ONLY || openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_WRITE_DO_NOT_CREATE) {
 		if (H5Fis_hdf5(fullName.c_str()) > 0) {
 			hdfFile = H5Fopen(fullName.c_str(),
@@ -106,7 +105,7 @@ void HdfProxy::open()
 			open();
 			openingMode = COMMON_NS::DataObjectRepository::openingMode::READ_WRITE;
 		}
-		else {
+		else if (!getUuid().empty()) { // Starting from EML2.3, HdfProxy is no more a top level element
 			writeUuidAttribute();
 		}
 	}
@@ -121,7 +120,9 @@ void HdfProxy::open()
 			throw invalid_argument("Can not create HDF5 file : " + fullName);
 		}
 
-		writeUuidAttribute();
+		if (!getUuid().empty()) { // Starting from EML2.3, HdfProxy is no more a top level element
+			writeUuidAttribute();
+		}
 	}
 	else {
 		throw invalid_argument("The HDF5 permission access is unknown.");

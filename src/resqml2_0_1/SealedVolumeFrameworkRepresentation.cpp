@@ -90,7 +90,7 @@ void SealedVolumeFrameworkRepresentation::setXmlInterpretationOfVolumeRegion(uns
 
 gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::createVolumeShell(
 	unsigned int shellFaceCount,
-	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide)
+	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide)
 {
 	if (shellFaceCount == 0) {
 		throw invalid_argument("Cannot create a shell with has got a face count of zero.");
@@ -113,7 +113,7 @@ gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::c
 
 void SealedVolumeFrameworkRepresentation::pushBackVolumeRegion(RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp,
 	unsigned int externalShellFaceCount,
-	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide)
+	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide)
 {
 	// Region
 	resqml20__VolumeRegion* region = soap_new_resqml20__VolumeRegion(gsoapProxy2_0_1->soap);
@@ -128,7 +128,7 @@ void SealedVolumeFrameworkRepresentation::pushBackVolumeRegion(RESQML2_NS::Strat
 
 void SealedVolumeFrameworkRepresentation::pushBackInternalShell(unsigned int regionIndex,
 	unsigned int internalShellFaceCount,
-	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide)
+	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide)
 {
 	getRegion(regionIndex)->InternalShells.push_back(createVolumeShell(internalShellFaceCount,
 		faceRepresentationIndices, faceRepPatchIndices, faceSide));
@@ -224,32 +224,32 @@ gsoap_resqml2_0_1::resqml20__OrientedMacroFace* SealedVolumeFrameworkRepresentat
 	return getRegionInternalShell(regionIndex, internalShellIndex)->MacroFaces[faceIndex];
 }
 
-RESQML2_NS::AbstractRepresentation* SealedVolumeFrameworkRepresentation::getRepOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const
+RESQML2_NS::AbstractRepresentation* SealedVolumeFrameworkRepresentation::getRepOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex)
 {
 	return getRepresentation(getRegionExternalShellFace(regionIndex, faceIndex)->RepresentationIndex);
 }
 
-RESQML2_NS::AbstractRepresentation* SealedVolumeFrameworkRepresentation::getRepOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const
+RESQML2_NS::AbstractRepresentation* SealedVolumeFrameworkRepresentation::getRepOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex)
 {
 	return getRepresentation(getRegionInternalShellFace(regionIndex, internalShellIndex, faceIndex)->RepresentationIndex);
 }
 
-unsigned int SealedVolumeFrameworkRepresentation::getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const
+unsigned int SealedVolumeFrameworkRepresentation::getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex)
 {
 	return getRegionExternalShellFace(regionIndex, faceIndex)->PatchIndexOfRepresentation;
 }
 
-unsigned int SealedVolumeFrameworkRepresentation::getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const
+unsigned int SealedVolumeFrameworkRepresentation::getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex)
 {
 	return getRegionInternalShellFace(regionIndex, internalShellIndex, faceIndex)->PatchIndexOfRepresentation;
 }
 
-bool SealedVolumeFrameworkRepresentation::getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const
+bool SealedVolumeFrameworkRepresentation::getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex)
 {
 	return getRegionExternalShellFace(regionIndex, faceIndex)->SideIsPlus;
 }
 
-bool SealedVolumeFrameworkRepresentation::getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const
+bool SealedVolumeFrameworkRepresentation::getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex)
 {
 	return getRegionInternalShellFace(regionIndex, internalShellIndex, faceIndex)->SideIsPlus;
 }

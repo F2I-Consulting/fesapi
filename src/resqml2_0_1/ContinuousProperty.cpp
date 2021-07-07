@@ -35,7 +35,8 @@ using namespace gsoap_resqml2_0_1;
 const char* ContinuousProperty::XML_NS = "resqml20";
 
 void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind)
+	gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+	std::vector<int> dimensions)
 {
 	if (rep == nullptr) {
 		throw invalid_argument("The representation of this property values cannot be null.");
@@ -44,7 +45,11 @@ void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const st
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREContinuousProperty(rep->getGsoapContext());
 	_resqml20__ContinuousProperty* prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = mapIndexableElement(attachmentKind);
-	prop->Count = dimension;
+	LONG64 valueCountPerIndexableElement = 1;
+	for (auto dim : dimensions) {
+		valueCountPerIndexableElement *= dim;
+	}
+	prop->Count = valueCountPerIndexableElement;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -54,9 +59,10 @@ void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const st
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, resqml20__ResqmlPropertyKind energisticsPropertyKind)
+	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, resqml20__ResqmlPropertyKind energisticsPropertyKind,
+	std::vector<int> dimensions)
 {
-	init(rep, guid, title, dimension, attachmentKind);
+	init(rep, guid, title, attachmentKind, dimensions);
 
 	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = uom;
 
@@ -66,9 +72,10 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropKind)
+	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropKind,
+	std::vector<int> dimensions)
 {
-	init(rep, guid, title, dimension, attachmentKind);
+	init(rep, guid, title, attachmentKind, dimensions);
 
 	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = uom;
 
@@ -76,9 +83,10 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, resqml20__ResqmlPropertyKind energisticsPropertyKind)
+	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, resqml20__ResqmlPropertyKind energisticsPropertyKind,
+	std::vector<int> dimensions)
 {
-	init(rep, guid, title, dimension, attachmentKind);
+	init(rep, guid, title, attachmentKind, dimensions);
 
 	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc;
 	pushBackExtraMetadata("Uom", nonStandardUom);
@@ -89,9 +97,10 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropKind)
+	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropKind,
+	std::vector<int> dimensions)
 {
-	init(rep, guid, title, dimension, attachmentKind);
+	init(rep, guid, title, attachmentKind, dimensions);
 
 	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc;
 	pushBackExtraMetadata("Uom", nonStandardUom);

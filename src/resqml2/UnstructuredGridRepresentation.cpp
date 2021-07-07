@@ -108,8 +108,8 @@ void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRight
 	}
 
 	setGeometryUsingExistingDatasets(getHdfGroup() + "/CellFaceIsRightHanded", getHdfGroup() + "/Points", pointCount, proxy,
-		getHdfGroup() + "/FacesPerCell/" + ELEMENTS_DS_NAME, getHdfGroup() + "/FacesPerCell/" + CUMULATIVE_LENGTH_DS_NAME,
-		faceCount, getHdfGroup() + "/NodesPerFace/" + ELEMENTS_DS_NAME, getHdfGroup() + "/NodesPerFace/" + CUMULATIVE_LENGTH_DS_NAME,
+		getHdfGroup() + "/FacesPerCell/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, getHdfGroup() + "/FacesPerCell/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME,
+		faceCount, getHdfGroup() + "/NodesPerFace/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, getHdfGroup() + "/NodesPerFace/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME,
 		cellShape, localCrs);
 
 	const uint64_t cellCount = getCellCount();

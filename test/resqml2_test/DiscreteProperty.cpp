@@ -50,7 +50,6 @@ void DiscreteProperty::initRepo() {
 	// creating the char DiscreteProperty
 	RESQML2_NS::DiscreteProperty* charDiscreteProperty = repo->createDiscreteProperty(
 		ijkGrid, defaultCharPropUuid, "char prop",
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		propertyKind);
 	char charValues[6] = { 0, 1, 2, 3, 4, 5 };
@@ -59,7 +58,6 @@ void DiscreteProperty::initRepo() {
 	// creating the short DiscreteProperty
 	RESQML2_NS::DiscreteProperty* shortDiscreteProperty = repo->createDiscreteProperty(
 		ijkGrid, defaultShortPropUuid, "short prop",
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		propertyKind);
 	short shortValues[6] = { 0, 1, 2, 3, 4, 5 };
@@ -68,7 +66,6 @@ void DiscreteProperty::initRepo() {
 	// creating the ushort DiscreteProperty
 	RESQML2_NS::DiscreteProperty* ushortDiscreteProperty = repo->createDiscreteProperty(
 		ijkGrid, defaultUShortPropUuid, "ushort prop",
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		propertyKind);
 	unsigned short ushortValues[6] = { 0, 1, 2, 3, 4, 5 };
@@ -77,7 +74,6 @@ void DiscreteProperty::initRepo() {
 	// creating the int DiscreteProperty
 	RESQML2_NS::DiscreteProperty* intDiscreteProperty = repo->createDiscreteProperty(
 		ijkGrid, defaultIntPropUuid, "int prop",
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		propertyKind);
 	int intValues[6] = { 0, 1, 2, 3, 4, 5 };
@@ -86,7 +82,6 @@ void DiscreteProperty::initRepo() {
 	// creating the long DiscreteProperty
 	RESQML2_NS::DiscreteProperty* longDiscreteProperty = repo->createDiscreteProperty(
 		ijkGrid, defaultLongPropUuid, "long prop",
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		propertyKind);
 	int64_t longValues[6] = { 0, 1, 2, 3, 4, 5 };

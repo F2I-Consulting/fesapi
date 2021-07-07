@@ -41,21 +41,15 @@ void SeismicWellboreFrameRepresentation::setTimeValues(double const * timeValues
 	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3);
 
 	// XML
-
 	eml23__FloatingPointExternalArray* xmlTimeValues = soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
-	xmlTimeValues->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	xmlTimeValues->Values->ExternalFileProxy.push_back(soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap, 1));
-	xmlTimeValues->Values->ExternalFileProxy[0]->Count = timeValueCount;
-	xmlTimeValues->Values->ExternalFileProxy[0]->StartIndex = 0;
-	xmlTimeValues->Values->ExternalFileProxy[0]->PathInExternalFile = getHdfGroup() + "/timeValues";
-	xmlTimeValues->Values->ExternalFileProxy[0]->EpcExternalPartReference = proxy->newEml23Reference();
+	xmlTimeValues->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlTimeValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/timeValues", timeValueCount, proxy));
 
 	frame->NodeTimeValues = xmlTimeValues;
-
 	frame->NodeCount = timeValueCount;
 
 	// HDF
-	hsize_t dim = timeValueCount;
+	const hsize_t dim = timeValueCount;
 	proxy->writeArrayNd(getHdfGroup(),
 		"timeValues",
 		H5T_NATIVE_DOUBLE,
@@ -98,17 +92,14 @@ double SeismicWellboreFrameRepresentation::getTimeFirstValue() const
 	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3);
 	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
 	{
-		eml23__ExternalDataset const* dataset = static_cast<eml23__FloatingPointExternalArray*>(frame->NodeTimeValues)->Values;
-		EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
+		EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeTimeValues)->Values->ExternalDataArrayPart[0]);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
 		}
-		double* values = new double[getTimeValuesCount()];
-		hdfProxy->readArrayNdOfDoubleValues(dataset->ExternalFileProxy[0]->PathInExternalFile, values);
-		double result = values[0];
-		delete[] values;
+		std::unique_ptr<double[]> values(new double[getTimeValuesCount()]);
+		hdfProxy->readArrayNdOfDoubleValues(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeTimeValues)->Values->ExternalDataArrayPart[0]->PathInExternalFile, values.get());
 
-		return result;
+		return values[0];
 	}
 	else if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 	{
@@ -128,12 +119,11 @@ COMMON_NS::AbstractObject::hdfDatatypeEnum SeismicWellboreFrameRepresentation::g
 	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3);
 	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
 	{
-		eml23__ExternalDataset const* dataset = static_cast<eml23__FloatingPointExternalArray*>(frame->NodeTimeValues)->Values;
-		EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
+		EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeTimeValues)->Values->ExternalDataArrayPart[0]);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
 		}
-		return hdfProxy->getHdfDatatypeInDataset(dataset->ExternalFileProxy[0]->PathInExternalFile);
+		return hdfProxy->getHdfDatatypeInDataset(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeTimeValues)->Values->ExternalDataArrayPart[0]->PathInExternalFile);
 	}
 	else if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 	{
@@ -148,12 +138,11 @@ void SeismicWellboreFrameRepresentation::getTimeAsDoubleValues(double* values) c
 	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3);
 	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
 	{
-		eml23__ExternalDataset const* dataset = static_cast<eml23__FloatingPointExternalArray*>(frame->NodeTimeValues)->Values;
-		EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
+		EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeTimeValues)->Values->ExternalDataArrayPart[0]);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
 		}
-		hdfProxy->readArrayNdOfDoubleValues(dataset->ExternalFileProxy[0]->PathInExternalFile, values);
+		hdfProxy->readArrayNdOfDoubleValues(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeTimeValues)->Values->ExternalDataArrayPart[0]->PathInExternalFile, values);
 	}
 	else if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 	{
@@ -173,12 +162,11 @@ void SeismicWellboreFrameRepresentation::getTimeAsFloatValues(float* values) con
 	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3);
 	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
 	{
-		eml23__ExternalDataset const* dataset = static_cast<eml23__FloatingPointExternalArray*>(frame->NodeTimeValues)->Values;
-		EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
+		EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeTimeValues)->Values->ExternalDataArrayPart[0]);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
 		}
-		hdfProxy->readArrayNdOfFloatValues(dataset->ExternalFileProxy[0]->PathInExternalFile, values);
+		hdfProxy->readArrayNdOfFloatValues(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeTimeValues)->Values->ExternalDataArrayPart[0]->PathInExternalFile, values);
 	}
 	else if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 	{

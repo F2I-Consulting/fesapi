@@ -22,7 +22,7 @@ under the License.
 
 #include "StructuralOrganizationInterpretation.h"
 #include "StratigraphicColumn.h"
-#include "StratigraphicOccurrenceInterpretation.h"
+#include "GeologicUnitOccurrenceInterpretation.h"
 #include "RockFluidOrganizationInterpretation.h"
 
 using namespace std;
@@ -40,9 +40,9 @@ StratigraphicColumn* EarthModelInterpretation::getStratiColumn() const
 	return repository->getDataObjectByUuid<StratigraphicColumn>(getStratiColumnDor().getUuid());
 }
 
-StratigraphicOccurrenceInterpretation* EarthModelInterpretation::getStratiOccurrence(unsigned int index) const
+GeologicUnitOccurrenceInterpretation* EarthModelInterpretation::getGeologicUnitOccurrence(unsigned int index) const
 {
-	return repository->getDataObjectByUuid<StratigraphicOccurrenceInterpretation>(getStratiOccurrenceDor(index).getUuid());
+	return repository->getDataObjectByUuid<GeologicUnitOccurrenceInterpretation>(getGeologicUnitOccurrenceDor(index).getUuid());
 }
 
 RockFluidOrganizationInterpretation* EarthModelInterpretation::getRockFluidOrganizationInterpretation(unsigned int index) const
@@ -64,9 +64,9 @@ void EarthModelInterpretation::loadTargetRelationships()
 		convertDorIntoRel<StructuralOrganizationInterpretation>(getStructuralOrganizationInterpertationDor(i));
 	}
 
-	count = getStratiOccurrenceCount();
+	count = getGeologicUnitOccurrenceCount();
 	for (unsigned int i = 0; i < count; ++i) {
-		convertDorIntoRel<StratigraphicOccurrenceInterpretation>(getStratiOccurrenceDor(i));
+		convertDorIntoRel<GeologicUnitOccurrenceInterpretation>(getGeologicUnitOccurrenceDor(i));
 	}
 
 	count = getRockFluidOrganizationInterpretationCount();

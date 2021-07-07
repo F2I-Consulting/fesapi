@@ -287,14 +287,6 @@ namespace EML2_NS
 			AbstractHdfProxy(fromGsoap), hdfFile(-1), compressionLevel(0), openedGroups() {}
 
 		/**
-		 * Constructor
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		HdfProxy(gsoap_eml2_3::_eml23__EpcExternalPartReference* fromGsoap) :
-			AbstractHdfProxy(fromGsoap), hdfFile(-1), compressionLevel(0), openedGroups() {}
-
-		/**
 		 * Creates an instance of this class in a gsoap context.
 		 * @packageDirAbsolutePath	The directory where the EPC document is stored. Must end with a slash
 		 * or back-slash

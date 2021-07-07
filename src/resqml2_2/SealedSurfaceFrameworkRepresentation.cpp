@@ -20,7 +20,6 @@ under the License.
 
 #include <limits>
 #include <stdexcept>
-#include <sstream>
 
 #include "H5Tpublic.h"
 
@@ -59,10 +58,10 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(gsoap_resqml2_0_1::re
 {
     _resqml22__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml22__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_3);
 
-    resqml22__SealedContactRepresentationPart* contactRep = soap_new_resqml22__SealedContactRepresentationPart(gsoapProxy2_3->soap);
-    contactRep->Index = orgRep->SealedContactRepresentation.size();
+    resqml22__SealedContact* contactRep = soap_new_resqml22__SealedContact(gsoapProxy2_3->soap);
+    contactRep->Index = orgRep->Contacts.size();
     contactRep->IdentityKind = static_cast<resqml22__IdentityKind>(kind);
-    orgRep->SealedContactRepresentation.push_back(contactRep);
+    orgRep->Contacts.push_back(contactRep);
 }
 
 void SealedSurfaceFrameworkRepresentation::pushBackContact(
@@ -90,23 +89,17 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
 	getRepository()->addRelationship(this, proxy);
 
 	pushBackContact(kind);
-	resqml22__SealedContactRepresentationPart* contactRep = static_cast<_resqml22__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_3)->SealedContactRepresentation.back();
+	resqml22__SealedContact* contactRep = static_cast<_resqml22__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_3)->Contacts.back();
 
     eml23__IntegerExternalArray * xmlListOfIdenticalNodes = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
     xmlListOfIdenticalNodes->NullValue = (std::numeric_limits<int>::max)();
-    xmlListOfIdenticalNodes->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-    dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-    ostringstream ossForHdf;
-    ossForHdf << "listOfIdenticalNodes_contact" << contactRep->Index;
-    dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
-	dsPart->Count = identicalNodesCount * patchCount;
-	xmlListOfIdenticalNodes->Values->ExternalFileProxy.push_back(dsPart);
+    xmlListOfIdenticalNodes->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlListOfIdenticalNodes->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/listOfIdenticalNodes_contact" + std::to_string(contactRep->Index), identicalNodesCount * patchCount, proxy));
     contactRep->IdenticalNodeIndices = xmlListOfIdenticalNodes;
     // ************ HDF *************
     hsize_t dim[2] = {identicalNodesCount, patchCount};
     proxy->writeArrayNd(getHdfGroup(),
-        ossForHdf.str(), H5T_NATIVE_UINT,
+		"listOfIdenticalNodes_contact" + std::to_string(contactRep->Index), H5T_NATIVE_UINT,
         identicalNodes,
         dim, 2);
 }
@@ -136,11 +129,11 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
 
     _resqml22__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml22__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_3);
 
-	if (contactIndex >= orgRep->SealedContactRepresentation.size()) {
+	if (contactIndex >= orgRep->Contacts.size()) {
 		throw invalid_argument("Invalid contact index.");
 	}
 
-    resqml22__SealedContactRepresentationPart* contactRep = static_cast<resqml22__SealedContactRepresentationPart*>(orgRep->SealedContactRepresentation[contactIndex]);
+    resqml22__SealedContact* contactRep = static_cast<resqml22__SealedContact*>(orgRep->Contacts[contactIndex]);
 
     // we look for the supporting representation index
     int representationIndex = -1;
@@ -161,44 +154,38 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
 
     eml23__IntegerExternalArray* xmlSupportingRepresentationNodes = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
     xmlSupportingRepresentationNodes->NullValue = (std::numeric_limits<int>::max)();
-    xmlSupportingRepresentationNodes->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-    dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-    ostringstream ossForHdf;
-    ossForHdf << "SupportingRepresentationNodes_contact" << contactIndex << "_patch" << contactRep->Contact.size();
-    dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
-	dsPart->Count = nodeCount;
-	xmlSupportingRepresentationNodes->Values->ExternalFileProxy.push_back(dsPart);
+    xmlSupportingRepresentationNodes->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlSupportingRepresentationNodes->Values->ExternalDataArrayPart.push_back(
+		createExternalDataArrayPart(getHdfGroup() +"/SupportingRepresentationNodes_contact" + std::to_string(contactIndex) + "_patch" + std::to_string(contactRep->Patches.size()), nodeCount, proxy));
     contactPatch->SupportingRepresentationNodes = xmlSupportingRepresentationNodes;
     // ************ HDF *************
     hsize_t dim = nodeCount;
     proxy->writeArrayNd(getHdfGroup(),
-                        ossForHdf.str(), H5T_NATIVE_UINT,
-                        nodeIndicesOnSupportingRepresentation,
-                        &dim, 1);
+		"SupportingRepresentationNodes_contact" + std::to_string(contactIndex) + "_patch" + std::to_string(contactRep->Patches.size()), H5T_NATIVE_UINT,
+		nodeIndicesOnSupportingRepresentation, &dim, 1);
 
     // adding the contact patch to the contact representation
-    contactRep->Contact.push_back(contactPatch);
+    contactRep->Patches.push_back(contactPatch);
 }
 
 unsigned int SealedSurfaceFrameworkRepresentation::getContactCount() const
 {
 	_resqml22__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml22__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_3);
 
-	if (orgRep->SealedContactRepresentation.size() > (std::numeric_limits<unsigned int>::max)()) {
+	if (orgRep->Contacts.size() > (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("There are too much contact representations for fesapi");
 	}
 
-	return static_cast<unsigned int>(orgRep->SealedContactRepresentation.size());
+	return static_cast<unsigned int>(orgRep->Contacts.size());
 }
 
-resqml22__SealedContactRepresentationPart* SealedSurfaceFrameworkRepresentation::getContact(unsigned int crIndex) const
+resqml22__SealedContact* SealedSurfaceFrameworkRepresentation::getContact(unsigned int crIndex) const
 {
 	if (crIndex >= getContactCount()) {
 		throw range_error("The index of the contact representation is out of range.");
 	}
 
-	return static_cast<_resqml22__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_3)->SealedContactRepresentation[crIndex];
+	return static_cast<_resqml22__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_3)->Contacts[crIndex];
 }
 
 gsoap_resqml2_0_1::resqml20__IdentityKind SealedSurfaceFrameworkRepresentation::getContactPatchIdentityKind(unsigned int crIndex) const
@@ -236,24 +223,24 @@ void SealedSurfaceFrameworkRepresentation::getIdenticalContactPatchNodeIndices(u
 
 unsigned int SealedSurfaceFrameworkRepresentation::getContactPatchCount(unsigned int crIndex) const
 {
-	resqml22__SealedContactRepresentationPart* contactRep = getContact(crIndex);
+	resqml22__SealedContact* contactRep = getContact(crIndex);
 
-	if (contactRep->Contact.size() > (std::numeric_limits<unsigned int>::max)()) {
+	if (contactRep->Patches.size() > (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("There are too much contact patches for fesapi");
 	}
 
-	return static_cast<unsigned int>(contactRep->Contact.size());
+	return static_cast<unsigned int>(contactRep->Patches.size());
 }
 
 resqml22__ContactPatch* SealedSurfaceFrameworkRepresentation::getContactPatch(unsigned int crIndex, unsigned int cpIndex) const
 {
-	resqml22__SealedContactRepresentationPart* contactRep = getContact(crIndex);
+	resqml22__SealedContact* contactRep = getContact(crIndex);
 
 	if (cpIndex >= getContactPatchCount(crIndex)) {
 		throw range_error("The index of the contact patch is out of range.");
 	}
 
-	return contactRep->Contact[cpIndex];
+	return contactRep->Patches[cpIndex];
 }
 
 RESQML2_NS::AbstractRepresentation* SealedSurfaceFrameworkRepresentation::getRepresentationOfContactPatch(unsigned int contactIdx, unsigned int cpIndex) const

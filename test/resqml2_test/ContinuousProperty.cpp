@@ -44,7 +44,6 @@ void ContinuousProperty::initRepo() {
 	auto propertyKind = repo->createPropertyKind("", "Fake prop kind", gsoap_eml2_1::eml21__QuantityClassKind::pressure);
 	RESQML2_NS::ContinuousProperty* noMinMaxFltProperty = repo->createContinuousProperty(
 		rep, defaultUuid, "Float prop without min max",
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
@@ -55,7 +54,6 @@ void ContinuousProperty::initRepo() {
 	// creating Float prop without min max
 	RESQML2_NS::ContinuousProperty* noMinMaxDblProperty = repo->createContinuousProperty(
 		rep, "f2c1c3de-0986-485a-9d09-d0edeadf0d1e", "Double prop without min max",
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
@@ -66,7 +64,6 @@ void ContinuousProperty::initRepo() {
 	// creating Float prop with min max computation
 	RESQML2_NS::ContinuousProperty* computedMinMaxFltProperty = repo->createContinuousProperty(
 		rep, "3d31a87a-2715-4d23-b455-ff9980a08819", "Float prop with min max computation",
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
@@ -75,7 +72,6 @@ void ContinuousProperty::initRepo() {
 	// creating Float prop with min max computation
 	RESQML2_NS::ContinuousProperty* computedMinMaxDblProperty = repo->createContinuousProperty(
 		rep, "1398c2f8-3d95-4d29-87a8-8bb5fc334db0", "Double prop with min max computation",
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
@@ -84,7 +80,6 @@ void ContinuousProperty::initRepo() {
 	// creating Float prop with min max forcing
 	RESQML2_NS::ContinuousProperty* forcingMinMaxFltProperty = repo->createContinuousProperty(
 		rep, "f46f8407-1bfb-43b8-b822-863ba656cfe7", "Float prop with min max forcing",
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
@@ -93,7 +88,6 @@ void ContinuousProperty::initRepo() {
 	// creating Float prop with min max forcing
 	RESQML2_NS::ContinuousProperty* forcingMinMaxDblProperty = repo->createContinuousProperty(
 		rep, "ad589326-dfc7-4af2-a6ed-08c81657b72b", "Double prop with min max forcing",
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);

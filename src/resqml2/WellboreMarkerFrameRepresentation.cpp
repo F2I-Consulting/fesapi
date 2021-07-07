@@ -21,26 +21,26 @@ under the License.
 #include <stdexcept>
 
 #include "WellboreMarker.h"
-#include "StratigraphicOccurrenceInterpretation.h"
+#include "GeologicUnitOccurrenceInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_NS;
 
 const char* WellboreMarkerFrameRepresentation::XML_TAG = "WellboreMarkerFrameRepresentation";
 
-StratigraphicOccurrenceInterpretation* WellboreMarkerFrameRepresentation::getStratigraphicOccurrenceInterpretation() const
+GeologicUnitOccurrenceInterpretation* WellboreMarkerFrameRepresentation::getGeologicUnitOccurrenceInterpretation() const
 {
-	return getRepository()->getDataObjectByUuid<StratigraphicOccurrenceInterpretation>(getStratigraphicOccurrenceInterpretationDor().getUuid());
+	return getRepository()->getDataObjectByUuid<GeologicUnitOccurrenceInterpretation>(getGeologicUnitOccurrenceInterpretationDor().getUuid());
 }
 
 void WellboreMarkerFrameRepresentation::loadTargetRelationships()
 {
 	WellboreFrameRepresentation::loadTargetRelationships();
 
-	COMMON_NS::DataObjectReference dor = getStratigraphicOccurrenceInterpretationDor();
+	COMMON_NS::DataObjectReference dor = getGeologicUnitOccurrenceInterpretationDor();
 
 	if (!dor.isEmpty()) {
-		convertDorIntoRel<StratigraphicOccurrenceInterpretation>(dor);
+		convertDorIntoRel<GeologicUnitOccurrenceInterpretation>(dor);
 	}
 }
 

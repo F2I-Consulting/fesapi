@@ -34,19 +34,12 @@ using namespace gsoap_eml2_3;
 const char* CommentProperty::XML_NS = "resqml22";
 
 CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * propKind)
+	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * propKind)
 {
-	if (dimension == 0) {
-		throw invalid_argument("The dimension cannot be zero.");
-	}
-
 	gsoapProxy2_3 = soap_new_resqml22__CommentProperty(rep->getGsoapContext());	
 	_resqml22__CommentProperty* prop = static_cast<_resqml22__CommentProperty*>(gsoapProxy2_3);
 	prop->IndexableElement = attachmentKind;
-	if (dimension > 1) {
-		prop->ValueCountPerIndexableElement = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_3->soap, sizeof(ULONG64)));
-		*prop->ValueCountPerIndexableElement = dimension;
-	}
+	prop->ValueCountPerIndexableElement.push_back(1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -71,26 +64,18 @@ std::string CommentProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfPr
 	// XML
 	ostringstream oss;
 	eml23__StringExternalArray* xmlValues = soap_new_eml23__StringExternalArray(gsoapProxy2_3->soap);
-	xmlValues->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
-
-	if (datasetName.empty()) {
-		ostringstream ossForHdf;
-		ossForHdf << "values_patch" << prop->ValuesForPatch.size();
-		dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
-	}
-	else {
-		dsPart->PathInExternalFile = datasetName;
-	}
-	xmlValues->Values->ExternalFileProxy.push_back(dsPart);
+	xmlValues->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	std::string actualDataArrayName = datasetName.empty()
+		? getHdfGroup() + "/values_patch" + std::to_string(prop->ValuesForPatch.size())
+		: datasetName;
+	xmlValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(actualDataArrayName, hdfProxy->getElementCount(actualDataArrayName), hdfProxy));
 
 	prop->ValuesForPatch.push_back(xmlValues);
 
-	return dsPart->PathInExternalFile;
+	return actualDataArrayName;
 }
 
-EML2_NS::AbstractHdfProxy* CommentProperty::getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const
+EML2_NS::AbstractHdfProxy* CommentProperty::getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string& datasetPath) const
 {
 	// Look for the hdf where the comments are stored.
 	_resqml22__CommentProperty* prop = static_cast<_resqml22__CommentProperty*>(gsoapProxy2_3);
@@ -100,9 +85,8 @@ EML2_NS::AbstractHdfProxy* CommentProperty::getValuesHdfProxyAndDatasetPathOfPat
 	}
 
 	if (prop->ValuesForPatch[patchIndex]->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__StringExternalArray) {
-		eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__StringExternalArray*>(prop->ValuesForPatch[patchIndex])->Values->ExternalFileProxy[0];
-		datasetPath = dsPart->PathInExternalFile;
-		return getHdfProxyFromDataset(dsPart);
+		datasetPath = static_cast<eml23__StringExternalArray*>(prop->ValuesForPatch[patchIndex])->Values->ExternalDataArrayPart[0]->PathInExternalFile;
+		return getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__StringExternalArray*>(prop->ValuesForPatch[patchIndex])->Values->ExternalDataArrayPart[0]);
 	}
 
 	return nullptr;

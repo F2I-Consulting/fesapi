@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "StratigraphicOccurrenceInterpretation.h"
+#include "GeologicUnitOccurrenceInterpretation.h"
 
 #include <stdexcept>
 
@@ -26,19 +26,17 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* StratigraphicOccurrenceInterpretation::XML_TAG = "StratigraphicOccurrenceInterpretation";
-
-StratigraphicColumnRankInterpretation * StratigraphicOccurrenceInterpretation::getStratigraphicColumnRankInterpretation() const
+StratigraphicColumnRankInterpretation * GeologicUnitOccurrenceInterpretation::getStratigraphicColumnRankInterpretation() const
 {
 	return getRepository()->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(getStratigraphicColumnRankInterpretationDor().getUuid());
 }
 
-std::vector<class WellboreMarkerFrameRepresentation *> StratigraphicOccurrenceInterpretation::getWellboreMarkerFrameRepresentationSet() const
+std::vector<class WellboreMarkerFrameRepresentation *> GeologicUnitOccurrenceInterpretation::getWellboreMarkerFrameRepresentationSet() const
 {
 	return getRepository()->getSourceObjects<WellboreMarkerFrameRepresentation>(this);
 }
 	
-void StratigraphicOccurrenceInterpretation::loadTargetRelationships()
+void GeologicUnitOccurrenceInterpretation::loadTargetRelationships()
 {
 	AbstractStratigraphicOrganizationInterpretation::loadTargetRelationships();
 

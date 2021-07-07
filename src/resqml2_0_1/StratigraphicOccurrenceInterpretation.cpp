@@ -28,6 +28,7 @@ using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* StratigraphicOccurrenceInterpretation::XML_NS = "resqml20";
+const char* StratigraphicOccurrenceInterpretation::XML_TAG = "StratigraphicOccurrenceInterpretation";
 
 StratigraphicOccurrenceInterpretation::StratigraphicOccurrenceInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria)
 {

@@ -55,7 +55,6 @@ namespace RESQML2_NS
 	class CulturalFeature;
 	class DiscreteColorMap;
 	class DiscreteProperty;
-	class DeviationSurveyRepresentation;
 	class DoubleTableLookup;
 	class EarthModelInterpretation;
 	class FaultInterpretation;
@@ -63,6 +62,7 @@ namespace RESQML2_NS
 	class GenericFeatureInterpretation;
 	class GeobodyBoundaryInterpretation;
 	class GeobodyInterpretation;
+	class GeologicUnitOccurrenceInterpretation;
 	class GridConnectionSetRepresentation;
 	class Grid2dRepresentation;
 	class HorizonInterpretation;
@@ -80,7 +80,6 @@ namespace RESQML2_NS
 	class PointsProperty;
 	class PolylineRepresentation;
 	class PolylineSetRepresentation;
-	class PropertySet;
 	class RepresentationSetRepresentation;
 	class RockFluidOrganizationInterpretation;
 	class RockFluidUnitInterpretation;
@@ -93,7 +92,6 @@ namespace RESQML2_NS
 	class ShotPointLineFeature;
 	class StratigraphicColumn;
 	class StratigraphicColumnRankInterpretation;
-	class StratigraphicOccurrenceInterpretation;
 	class StratigraphicUnitInterpretation;
 	class StreamlinesFeature;
 	class StreamlinesRepresentation;
@@ -116,6 +114,7 @@ namespace RESQML2_0_1_NS
 	class CategoricalProperty;
 	class CommentProperty;
 	class ContinuousProperty;
+	class DeviationSurveyRepresentation;
 	class DiscreteProperty;
 	class FluidBoundaryFeature;
 	class GeneticBoundaryFeature;
@@ -123,9 +122,11 @@ namespace RESQML2_0_1_NS
 	class Horizon;
 	class PointsProperty;
 	class PropertyKind;
+	class PropertySet;
 	class RockFluidUnitFeature;
 	class SeismicLineFeature;
 	class TectonicBoundaryFeature;
+	class WellboreTrajectoryRepresentation;
 }
 
 namespace WITSML2_NS
@@ -543,6 +544,8 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 		GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)
 
+		GETTER_DATAOBJECTS(RESQML2_0_1_NS::DeviationSurveyRepresentation, DeviationSurveyRepresentation)
+
 		GETTER_DATAOBJECTS(RESQML2_NS::AbstractSeismicLineFeature, SeismicLine)
 		GETTER_DATAOBJECTS(RESQML2_NS::AbstractIjkGridRepresentation, IjkGridRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::BlockedWellboreRepresentation, BlockedWellboreRepresentation)
@@ -552,7 +555,6 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Horizon)
 		GETTER_DATAOBJECTS(RESQML2_NS::CmpLineFeature, CmpLine)
 		GETTER_DATAOBJECTS(RESQML2_NS::CulturalFeature, Cultural)
-		GETTER_DATAOBJECTS(RESQML2_NS::DeviationSurveyRepresentation, DeviationSurveyRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::DoubleTableLookup, DoubleTableLookup)
 		GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, AllGrid2dRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, HorizonGrid2dRepresentation)
@@ -1720,7 +1722,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new stratigraphic occurrence interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::GeologicUnitOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
 		/**
 		 * @brief	Creates a stratigraphic occurrence interpretation ordered by apparent depth into this
@@ -1738,7 +1740,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new stratigraphic occurrence interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::GeologicUnitOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
 		//************ REPRESENTATION ********
 
@@ -1989,7 +1991,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new wellbore trajectory representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::DeviationSurveyRepresentation* deviationSurvey);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_0_1_NS::DeviationSurveyRepresentation* deviationSurvey);
 
 		/**
 		 * @brief	Creates a deviation survey representation into this repository
@@ -2010,7 +2012,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new deviation survey representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, const bool& isFinal, RESQML2_NS::MdDatum* mdInfo);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, const bool& isFinal, RESQML2_NS::MdDatum* mdInfo);
 
 		/**
 		 * @brief	Creates a wellbore frame representation into this repository
@@ -2722,7 +2724,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new property set.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertySet* createPropertySet(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertySet* createPropertySet(const std::string & guid, const std::string & title,
 			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_eml2_3::resqml22__TimeSetKind timeSetKind);
 
 		/**
@@ -2737,8 +2739,6 @@ namespace COMMON_NS
 		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
-		 * 										is 1 for a scalar property.
 		 * @param 	  	attachmentKind		   	The topological element on which the property values are
 		 * 										attached to.
 		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
@@ -2748,7 +2748,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new comment property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
 		 * Creates a comment property (which is of a local property kind) into this repository
@@ -2762,8 +2762,6 @@ namespace COMMON_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
-		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
 		 * @param [in]	localPropType 	The property kind of these property values which must be defined
@@ -2772,7 +2770,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new comment property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropType);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropType);
 
 		/**
 		 * Creates a continuous property (which is of well known Energistics unit of measure and
@@ -2786,8 +2784,6 @@ namespace COMMON_NS
 		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
-		 * 										is 1 for a scalar property.
 		 * @param 	  	attachmentKind		   	The topological element on which the property values are
 		 * 										attached to.
 		 * @param 	  	uom					   	The property unit of measure taken from the standard
@@ -2798,11 +2794,14 @@ namespace COMMON_NS
 		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
 		 * 										defined in the standard Energistics property type
 		 * 										dictionary.
+		 * @param 	  	dimensions			   	The dimensions of each value of this property. If this parameter
+		 *										is empty, then it is assumed this property is a scalar one.
 		 *
 		 * @returns	A pointer to the new continuous property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
+			std::vector<int> dimensions = std::vector<int>());
 
 		/**
 		 * Creates a continuous property (which is of a well known unit of measure and a local property
@@ -2817,8 +2816,6 @@ namespace COMMON_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
-		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
 		 * @param 	  	uom			  	The property unit of measure taken from the standard Energistics
@@ -2827,11 +2824,14 @@ namespace COMMON_NS
 		 * 								to minimize the use of non standard unit of measure.
 		 * @param [in]	localPropType 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
+		 * @param 	  	dimensions	   	The dimensions of each value of this property. If this parameter
+		 *								is empty, then it is assumed this property is a scalar one.
 		 *
 		 * @returns	A pointer to the new continuous property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropType);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropType,
+			std::vector<int> dimensions = std::vector<int>());
 
 		/**
 		 * Creates a continuous property (which is of a local unit of measure and a well known property
@@ -2845,8 +2845,6 @@ namespace COMMON_NS
 		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
-		 * 										is 1 for a scalar property.
 		 * @param 	  	attachmentKind		   	The topological element on which the property values are
 		 * 										attached to.
 		 * @param 	  	nonStandardUom		   	The property unit of measure. Please check
@@ -2856,11 +2854,14 @@ namespace COMMON_NS
 		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
 		 * 										defined in the standard Energistics property type
 		 * 										dictionary.
+		 * @param 	  	dimensions	   			The dimensions of each value of this property. If this parameter
+		 *										is empty, then it is assumed this property is a scalar one.
 		 *
 		 * @returns	A pointer to the new continuous property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, std::string nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, std::string nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
+			std::vector<int> dimensions = std::vector<int>());
 
 		/**
 		 * Creates a continuous property (which is of local unit of measure and property kind) into this
@@ -2875,8 +2876,6 @@ namespace COMMON_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
-		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
 		 * @param 	  	nonStandardUom	The property unit of measure. Please check
@@ -2884,11 +2883,14 @@ namespace COMMON_NS
 		 * 								to minimize the use of non standard unit of measure.
 		 * @param [in]	localPropType 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
+		 * @param 	  	dimensions	   			The dimensions of each value of this property. If this parameter
+		 *										is empty, then it is assumed this property is a scalar one.
 		 *
 		 * @returns	A pointer to the new continuous property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropType);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropType,
+			std::vector<int> dimensions = std::vector<int>());
 
 		/**
 		 * Creates a discrete property (which is of a well known Energistics property kind) into this
@@ -2902,18 +2904,19 @@ namespace COMMON_NS
 		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
-		 * 										is 1 for a scalar property.
 		 * @param 	  	attachmentKind		   	The topological element on which the property values are
 		 * 										attached to.
 		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
 		 * 										defined in the standard Energistics property type
 		 * 										dictionary.
+		 * @param 	  	dimensions	   			The dimensions of each value of this property. If this parameter
+		 *										is empty, then it is assumed this property is a scalar one.
 		 *
 		 * @returns	A pointer to the new discrete property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
+			std::vector<int> dimensions = std::vector<int>());
 
 		/**
 		 * Creates a discrete property (which is of a local property kind) into this repository
@@ -2927,17 +2930,18 @@ namespace COMMON_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
-		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
 		 * @param [in]	localPropType 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
+		 * @param 	  	dimensions	   	The dimensions of each value of this property. If this parameter
+		 *								is empty, then it is assumed this property is a scalar one.
 		 *
 		 * @returns	A pointer to the new discrete property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropType);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropType,
+			std::vector<int> dimensions = std::vector<int>());
 
 		/**
 		 * Creates a categorical property (which is of a standard Energistics property kind) into this
@@ -2951,8 +2955,6 @@ namespace COMMON_NS
 		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
-		 * 										is 1 for a scalar property.
 		 * @param 	  	attachmentKind		   	The topological element on which the property values are
 		 * 										attached to.
 		 * @param [in]	strLookup			   	The string lookup which defines the possible string
@@ -2960,12 +2962,14 @@ namespace COMMON_NS
 		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
 		 * 										defined in the standard Energistics property type
 		 * 										dictionary.
+		 * @param 	  	dimensions	   			The dimensions of each value of this property. If this parameter
+		 *										is empty, then it is assumed this property is a scalar one.
 		 *
 		 * @returns A pointer to new categorical property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
-			RESQML2_NS::StringTableLookup* strLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::StringTableLookup* strLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
+			std::vector<int> dimensions = std::vector<int>());
 
 		/**
 		 * Creates a categorical property (which is of a standard Energistics property kind) into this
@@ -2979,20 +2983,20 @@ namespace COMMON_NS
 		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
-		 * 										is 1 for a scalar property.
 		 * @param 	  	attachmentKind		   	The topological element on which the property values are
 		 * 										attached to.
 		 * @param [in]	dblLookup			   	The double lookup which defines a discrete function associated with the property values.
 		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
 		 * 										defined in the standard Energistics property type
 		 * 										dictionary.
+		 * @param 	  	dimensions	   			The dimensions of each value of this property. If this parameter
+		 *										is empty, then it is assumed this property is a scalar one.
 		 *
 		 * @returns A pointer to new categorical property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
-			RESQML2_NS::DoubleTableLookup* dblLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::DoubleTableLookup* dblLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
+			std::vector<int> dimensions = std::vector<int>());
 
 		/**
 		 * Creates a categorical property (which is of a local property kind) into this repository
@@ -3006,20 +3010,20 @@ namespace COMMON_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
-		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
 		 * @param [in]	strLookup	  	The string lookup which defines the possible string values and
 		 * 								their keys. It cannot be null.
 		 * @param [in]	localPropType 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
+		 * @param 	  	dimensions	  	The dimensions of each value of this property. If this parameter
+		 *								is empty, then it is assumed this property is a scalar one.
 		 *
 		 * @returns	A pointer to the new categorical property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
-			RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropType);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropType,
+			std::vector<int> dimensions = std::vector<int>());
 
 		/**
 		 * Creates a categorical property (which is of a local property kind) into this repository
@@ -3040,16 +3044,18 @@ namespace COMMON_NS
 		 * @param [in]	dblLookup		The double lookup which defines a discrete function associated with the property values.
 		 * @param [in]	localPropType 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
+		 * @param 	  	dimensions	  	The dimensions of each value of this property. If this parameter
+		 *								is empty, then it is assumed this property is a scalar one.
 		 *
 		 * @returns	A pointer to the new categorical property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
-			RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * localPropType);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * localPropType,
+			std::vector<int> dimensions = std::vector<int>());
 
 		/**
-		 * Creates a points property (which is of a well known Energistics property kind) into this
-		 * repository
+		 * Creates a 2.0.1 only points property (which is of a well known RESQML 2.0.1 property kind) into this
+		 * repository. Only a single point per indexable element is supported.
 		 *
 		 * @exception	std::invalid_argument	If @p rep is null.
 		 *
@@ -3059,22 +3065,21 @@ namespace COMMON_NS
 		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
-		 * 										is 1 for a scalar property.
 		 * @param 	  	attachmentKind		   	The topological element on which the property values are
 		 * 										attached to.
 		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
 		 * 										defined in the standard Energistics property type
-		 * 										dictionary. Defautl is length
+		 * 										dictionary. length is a good candidate
 		 *
 		 * @returns	A pointer to the new points property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PointsProperty* createPointsProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
-			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind = gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
-		 * Creates a points property (which is of a local property kind) into this repository
+		 * Creates a points property (which is of a property kind) into this repository.
+		 * Only a single point per indexable element is supported.
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p or @p localPropKind is null.
@@ -3085,17 +3090,15 @@ namespace COMMON_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
-		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
 		 * @param [in]	localPropType 	The property kind of these property values which must be defined
-		 * 								in the EPC document as a local property kind. It cannot be null.
+		 * 								in the EPC document. It cannot be null.
 		 *
 		 * @returns	A pointer to the new points property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::PointsProperty* createPointsProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
 			EML2_NS::PropertyKind * localPropType);
 
 		//************* ACTIVITIES ***********

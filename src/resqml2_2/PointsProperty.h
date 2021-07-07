@@ -35,7 +35,7 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT PointsProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::PointsProperty(partialObject) {}
 
 		/**
-		 * Creates a discrete property which is of a local property kind.
+		 * Creates a points property which is of a local property kind.
 		 *
 		 * @exception	std::invalid_argument	If @p or @p localPropKind is null.
 		 *
@@ -45,16 +45,14 @@ namespace RESQML2_2_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
-		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
-		 * @param 	  	localCrs			   	The local CRS where the points are defined.
+		 * @param 	  	localCrs		The local CRS where the points are defined.
 		 * @param [in]	localPropKind 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 */
 		PointsProperty(RESQML2_NS::AbstractRepresentation* rep, const std::string& guid, const std::string& title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
 			EML2_NS::PropertyKind* localPropKind);
 
 		/**

@@ -83,7 +83,6 @@ under the License.
 	%nspace RESQML2_NS::PointsProperty;
 	%nspace RESQML2_NS::PolylineRepresentation;
 	%nspace RESQML2_NS::PolylineSetRepresentation;
-	%nspace RESQML2_NS::PropertySet;
 	%nspace RESQML2_NS::RepresentationSetRepresentation;
 	%nspace RESQML2_NS::RockFluidOrganizationInterpretation;
 	%nspace RESQML2_NS::RockFluidUnitInterpretation;
@@ -96,7 +95,7 @@ under the License.
 	%nspace RESQML2_NS::ShotPointLineFeature;
 	%nspace RESQML2_NS::StratigraphicColumn;
 	%nspace RESQML2_NS::StratigraphicColumnRankInterpretation;
-	%nspace RESQML2_NS::StratigraphicOccurrenceInterpretation;
+	%nspace RESQML2_NS::GeologicUnitOccurrenceInterpretation;
 	%nspace RESQML2_NS::StratigraphicUnitInterpretation;
 	%nspace RESQML2_NS::StreamlinesFeature;
 	%nspace RESQML2_NS::StreamlinesRepresentation;
@@ -2497,7 +2496,7 @@ namespace RESQML2_NS
 		bool isAssociatedToGridRepresentation(AbstractGridRepresentation* gridRep) const;
 	};
 	
-	class StratigraphicOccurrenceInterpretation;	
+	class GeologicUnitOccurrenceInterpretation;	
 #ifdef SWIGPYTHON
 	%rename(resqml2_StratigraphicColumnRankInterpretation) StratigraphicColumnRankInterpretation;
 #endif
@@ -2516,15 +2515,15 @@ namespace RESQML2_NS
 		bool isAChronoStratiRank() const;
 		StratigraphicUnitInterpretation* getSubjectOfContact(unsigned int contactIndex) const;
 		StratigraphicUnitInterpretation* getDirectObjectOfContact(unsigned int contactIndex) const;
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicOccurrenceInterpretation, StratigraphicOccurrenceInterpretation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::GeologicUnitOccurrenceInterpretation, GeologicUnitOccurrenceInterpretation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::HorizonInterpretation, HorizonInterpretation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicColumn, StratigraphicColumn)
 	};
 	
 #ifdef SWIGPYTHON
-	%rename(resqml2_StratigraphicOccurrenceInterpretation) StratigraphicOccurrenceInterpretation;
+	%rename(resqml2_GeologicUnitOccurrenceInterpretation) GeologicUnitOccurrenceInterpretation;
 #endif
-	class StratigraphicOccurrenceInterpretation : public AbstractStratigraphicOrganizationInterpretation
+	class GeologicUnitOccurrenceInterpretation : public AbstractStratigraphicOrganizationInterpretation
 	{
 	public:
 		void setStratigraphicColumnRankInterpretation(StratigraphicColumnRankInterpretation * stratiColumnRankInterp);
@@ -2618,9 +2617,9 @@ namespace RESQML2_NS
 		void setStratiColumn(StratigraphicColumn * stratiColumn);
 		StratigraphicColumn* getStratiColumn() const;
 		
-		unsigned int getStratiOccurrenceCount() const;
-		StratigraphicOccurrenceInterpretation* getStratiOccurrence(unsigned int index) const;
-		void pushBackStratiOccurrence(StratigraphicOccurrenceInterpretation * stratiOccurence);
+		unsigned int getGeologicUnitOccurrenceCount() const;
+		GeologicUnitOccurrenceInterpretation* getGeologicUnitOccurrence(unsigned int index) const;
+		void pushBackGeologicUnitOccurrence(GeologicUnitOccurrenceInterpretation * occurence);
 		
 		unsigned int getRockFluidOrganizationInterpretationCount() const;
 		void pushBackRockFluidOrganizationInterpretation(RockFluidOrganizationInterpretation* rockFluid);
@@ -2932,26 +2931,26 @@ namespace RESQML2_NS
 		
 		void pushBackVolumeRegion(StratigraphicUnitInterpretation * stratiUnitInterp,
 			unsigned int externalShellFaceCount,
-			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide);
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide);
 		pushBackInternalShell(unsigned int regionIndex,
 			unsigned int internalShellFaceCount,
-			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide);
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide);
 			
-		unsigned int getRegionCount() const final;
+		unsigned int getRegionCount() const;
 
-		unsigned int getInternalShellCount(unsigned int regionIndex) const final;
+		unsigned int getInternalShellCount(unsigned int regionIndex) const;
 
-		unsigned int getFaceCountOfExternalShell(unsigned int regionIndex) const final;
-		unsigned int getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const final;
+		unsigned int getFaceCountOfExternalShell(unsigned int regionIndex) const;
+		unsigned int getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const;
 
-		RESQML2_NS::AbstractRepresentation* getRepOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const final;
-		RESQML2_NS::AbstractRepresentation* getRepOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const final;
+		RESQML2_NS::AbstractRepresentation* getRepOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex);
+		RESQML2_NS::AbstractRepresentation* getRepOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex);
 
-		unsigned int getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const final;
-		unsigned int getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const final;
+		unsigned int getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex);
+		unsigned int getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex);
 
-		bool getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const final;
-		bool getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const final;
+		bool getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex);
+		bool getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex);
 	};
 	
 	class GridConnectionSetRepresentation;
@@ -3623,29 +3622,6 @@ namespace RESQML2_NS
 		 * @returns	The grid representation at position @p index.
 		 */
 		RESQML2_NS::AbstractGridRepresentation* getGridRepresentation(uint16_t index) const;
-	};
-	
-	class AbstractProperty;
-#ifdef SWIGPYTHON
-	%rename(resqml2_PropertySet) PropertySet;
-#endif
-	class PropertySet : public COMMON_NS::AbstractObject
-	{
-	public:
-		void setParent(PropertySet * parent);
-		PropertySet * getParent() const;
-
-		unsigned int getChildrenCount() const;
-		PropertySet* getChildren(unsigned int index) const;
-
-		void pushBackProperty(RESQML2_NS::AbstractProperty * prop);
-
-		unsigned int getPropertyCount() const;
-		AbstractProperty* getProperty(unsigned int index) const;
-
-		bool hasMultipleRealizations() const;
-		bool hasSinglePropertyKind() const;
-		gsoap_eml2_3::resqml22__TimeSetKind getTimeSetKind() const;
 	};
 	
 #ifdef SWIGPYTHON
@@ -5900,8 +5876,8 @@ namespace RESQML2_NS
 	{
 	public:		
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreMarker, WellboreMarker)
-		void setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, unsigned int nullValue, class StratigraphicOccurrenceInterpretation* stratiOccurrenceInterp, EML2_NS::AbstractHdfProxy* proxy);
-		StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation();
+		void setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, unsigned int nullValue, class GeologicUnitOccurrenceInterpretation* occurrenceInterp, EML2_NS::AbstractHdfProxy* proxy);
+		GeologicUnitOccurrenceInterpretation* getGeologicUnitOccurrenceInterpretation();
 	};
 	
 #ifdef SWIGPYTHON

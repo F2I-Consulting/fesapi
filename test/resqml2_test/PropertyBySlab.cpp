@@ -54,7 +54,6 @@ void PropertyBySlab::initRepo() {
 	// creating the continuous Property with computing min max
 	RESQML2_NS::ContinuousProperty* propertyCompute = repo->createContinuousProperty(
 		ijkGrid, defaultContinuousPropComputeUuid, "slab prop compute min max",
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
@@ -85,7 +84,6 @@ void PropertyBySlab::initRepo() {
 	// creating the continuous Property without computing min max
 	RESQML2_NS::ContinuousProperty* propertyNoCompute = repo->createContinuousProperty(
 		ijkGrid, defaultPropNoComputeUuid, "slab prop no compute min max",
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
@@ -116,7 +114,6 @@ void PropertyBySlab::initRepo() {
 	auto discPropertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
 	RESQML2_NS::DiscreteProperty* discretePropertyCompute = repo->createDiscreteProperty(
 		ijkGrid, defaultDiscretePropComputeUuid, "testing discrete prop",
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		discPropertyKind);
 	discretePropertyCompute->pushBackLongHdf5Array3dOfValues(2, 3, 4, 9999);
@@ -158,7 +155,6 @@ void PropertyBySlab::initRepo() {
 	// creating the discrete Property without computing min max
 	RESQML2_NS::DiscreteProperty* discretePropertyNoCompute = repo->createDiscreteProperty(
 		ijkGrid, defaultDiscretePropNoComputeUuid, "testing discrete prop no min max",
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		propertyKind);
 	discretePropertyNoCompute->pushBackLongHdf5Array3dOfValues(2, 3, 4, 9999);

@@ -21,11 +21,6 @@ under the License.
 #include "EpcExternalPartReference.h"
 #include "../common/HidtType.h"
 
-/** A macro that defines cumulative length ds name */
-#define CUMULATIVE_LENGTH_DS_NAME "cumulativeLength"
-/** A macro that defines elements ds name */
-#define ELEMENTS_DS_NAME "elements"
-
 namespace EML2_NS
 {
 	/** @brief	An abstract proxy for reading and writing values into an HDF5 file.
@@ -40,7 +35,13 @@ namespace EML2_NS
 	*/
 	class AbstractHdfProxy : public EpcExternalPartReference
 	{
-	public:  
+	public:
+
+		/** Defines cumulative length ds name */
+		static constexpr char const* CUMULATIVE_LENGTH_DS_NAME = "cumulativeLength";
+		/** Defines elements ds name */
+		static constexpr char const* ELEMENTS_DS_NAME = "elements";
+
 		/** Destructor */
 		DLL_IMPORT_OR_EXPORT virtual ~AbstractHdfProxy() = default;
 
@@ -73,6 +74,16 @@ namespace EML2_NS
 		 * @returns	The relative path of the HDF5 file.
 		 */
 		DLL_IMPORT_OR_EXPORT const std::string& getRelativePath() const { return relativeFilePath; }
+
+		/**
+		 * Gets the absolute path of the HDF5 file
+		 *
+		 * @returns	The absolute path of the HDF5 file.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getAbsolutePath() const {
+			return (packageDirectoryAbsolutePath.empty() || packageDirectoryAbsolutePath.back() == '/' || packageDirectoryAbsolutePath.back() == '\\' ? packageDirectoryAbsolutePath : packageDirectoryAbsolutePath + '/')
+				+ relativeFilePath;
+		}
 
 		/**
 		 * Opens the HDF5 file for reading and writing. The read and write rights are determined by the EPC
@@ -899,8 +910,9 @@ namespace EML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void initGsoapProxy(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title, unsigned int emlVersion);
 
-	protected:
+		static constexpr char const* MIME_TYPE = "application/x-hdf5";
 
+	protected:
 		/**
 		 * Only to be used in partial transfer context
 		 *
@@ -937,9 +949,6 @@ namespace EML2_NS
 			EpcExternalPartReference(fromGsoap), openingMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {}
 
 		AbstractHdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
-			EpcExternalPartReference(fromGsoap), openingMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {}
-
-		AbstractHdfProxy(gsoap_eml2_3::_eml23__EpcExternalPartReference* fromGsoap) :
 			EpcExternalPartReference(fromGsoap), openingMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {}
 	};
 }

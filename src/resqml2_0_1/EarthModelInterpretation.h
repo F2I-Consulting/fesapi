@@ -72,11 +72,11 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiColumnDor() const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getStratiOccurrenceCount() const final;
+		DLL_IMPORT_OR_EXPORT unsigned int getGeologicUnitOccurrenceCount() const final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiOccurrenceDor(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getGeologicUnitOccurrenceDor(unsigned int index) const final;
 
-		DLL_IMPORT_OR_EXPORT void pushBackStratiOccurrence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrence) final;
+		DLL_IMPORT_OR_EXPORT void pushBackGeologicUnitOccurrence(RESQML2_NS::GeologicUnitOccurrenceInterpretation * occurence) final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getRockFluidOrganizationInterpretationCount() const final;
 

@@ -24,7 +24,7 @@ under the License.
 #include "../resqml2/Model.h"
 #include "../resqml2/StructuralOrganizationInterpretation.h"
 #include "../resqml2/StratigraphicColumn.h"
-#include "../resqml2/StratigraphicOccurrenceInterpretation.h"
+#include "../resqml2/GeologicUnitOccurrenceInterpretation.h"
 #include "../resqml2/RockFluidOrganizationInterpretation.h"
 
 using namespace std;
@@ -42,7 +42,7 @@ EarthModelInterpretation::EarthModelInterpretation(RESQML2_NS::Model * orgFeat, 
 	gsoapProxy2_3 = soap_new_resqml22__EarthModelInterpretation(orgFeat->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	orgFeat->getRepository()->addDataObject(this);
 	setInterpretedFeature(orgFeat);
@@ -95,7 +95,7 @@ COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiColumnDor() co
 		: COMMON_NS::DataObjectReference();
 }
 
-unsigned int EarthModelInterpretation::getStratiOccurrenceCount() const
+unsigned int EarthModelInterpretation::getGeologicUnitOccurrenceCount() const
 {
 	const size_t result = static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->StratigraphicOccurrences.size();
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
@@ -105,7 +105,7 @@ unsigned int EarthModelInterpretation::getStratiOccurrenceCount() const
 	return static_cast<unsigned int>(result);
 }
 
-COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiOccurrenceDor(unsigned int index) const
+COMMON_NS::DataObjectReference EarthModelInterpretation::getGeologicUnitOccurrenceDor(unsigned int index) const
 {
 	_resqml22__EarthModelInterpretation* earthModelInterpretation = static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3);
 	if (index < earthModelInterpretation->StratigraphicOccurrences.size()) {
@@ -116,11 +116,11 @@ COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiOccurrenceDor(
 	}
 }
 
-void EarthModelInterpretation::pushBackStratiOccurrence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrence)
+void EarthModelInterpretation::pushBackGeologicUnitOccurrence(RESQML2_NS::GeologicUnitOccurrenceInterpretation * occurrence)
 {
-	getRepository()->addRelationship(this, stratiOccurrence);
+	getRepository()->addRelationship(this, occurrence);
 		
-	static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->StratigraphicOccurrences.push_back(stratiOccurrence->newEml23Reference());
+	static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->StratigraphicOccurrences.push_back(occurrence->newEml23Reference());
 }
 
 unsigned int EarthModelInterpretation::getRockFluidOrganizationInterpretationCount() const

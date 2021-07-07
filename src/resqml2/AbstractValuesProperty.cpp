@@ -84,22 +84,22 @@ EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(unsigned i
 		nullValue = (numeric_limits<long>::min)();
 		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
 		if (dynamic_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch) != nullptr) {
-			dsPath = static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalFileProxy[0]->PathInExternalFile;
-			return getHdfProxyFromDataset(static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalFileProxy[0]);
+			dsPath = static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalDataArrayPart[0]->PathInExternalFile;
+			return getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalDataArrayPart[0]);
 		}
 		int valuesType = patch->soap_type();
 		if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
-			dsPath = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(patch)->Values->ExternalFileProxy[0]->PathInExternalFile;
-			return getHdfProxyFromDataset(static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(patch)->Values->ExternalFileProxy[0]);
+			dsPath = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(patch)->Values->ExternalDataArrayPart[0]->PathInExternalFile;
+			return getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(patch)->Values->ExternalDataArrayPart[0]);
 		}
 		else if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			dsPath = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(patch)->Values->ExternalFileProxy[0]->PathInExternalFile;
+			dsPath = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(patch)->Values->ExternalDataArrayPart[0]->PathInExternalFile;
 			nullValue = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(patch)->NullValue;
-			return getHdfProxyFromDataset(static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(patch)->Values->ExternalFileProxy[0]);
+			return getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(patch)->Values->ExternalDataArrayPart[0]);
 		}
 		else if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__StringExternalArray) {
-			dsPath = static_cast<gsoap_eml2_3::eml23__StringExternalArray*>(patch)->Values->ExternalFileProxy[0]->PathInExternalFile;
-			return getHdfProxyFromDataset(static_cast<gsoap_eml2_3::eml23__StringExternalArray*>(patch)->Values->ExternalFileProxy[0]);
+			dsPath = static_cast<gsoap_eml2_3::eml23__StringExternalArray*>(patch)->Values->ExternalDataArrayPart[0]->PathInExternalFile;
+			return getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__StringExternalArray*>(patch)->Values->ExternalDataArrayPart[0]);
 		}
 		else {
 			throw logic_error("The type of the property values is not implemented yet.");
@@ -139,17 +139,17 @@ COMMON_NS::DataObjectReference AbstractValuesProperty::getHdfProxyDor(unsigned i
 	else if (gsoapProxy2_3 != nullptr) {
 		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
 		if (dynamic_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch) != nullptr) {
-			return static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalFileProxy[0]->EpcExternalPartReference;
+			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalDataArrayPart[0]));
 		}
 		int valuesType = patch->soap_type();
 		if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
-			return static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(patch)->Values->ExternalFileProxy[0]->EpcExternalPartReference;
+			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(patch)->Values->ExternalDataArrayPart[0]));
 		}
 		else if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(patch)->Values->ExternalFileProxy[0]->EpcExternalPartReference;
+			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(patch)->Values->ExternalDataArrayPart[0]));
 		}
 		else if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__StringExternalArray) {
-			return static_cast<gsoap_eml2_3::eml23__StringExternalArray*>(patch)->Values->ExternalFileProxy[0]->EpcExternalPartReference;
+			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__StringExternalArray*>(patch)->Values->ExternalDataArrayPart[0]));
 		}
 		else {
 			throw logic_error("The type of the property values is not implemented yet.");
@@ -375,24 +375,15 @@ std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(EML2_NS:
 		// XML
 		gsoap_eml2_3::eml23__IntegerExternalArray* xmlValues = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		xmlValues->NullValue = nullValue;
-		xmlValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-		auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-		dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
+		xmlValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
 
-		if (datasetName.empty()) {
-			ostringstream ossForHdf;
-			ossForHdf << "values_patch" << getPatchCount();
-			dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
-		}
-		else {
-			dsPart->PathInExternalFile = datasetName;
-		}
-
-		xmlValues->Values->ExternalFileProxy.push_back(dsPart);
+		string actualDatasetName = datasetName.empty() ? getHdfGroup() + "/values_patch" + std::to_string(getPatchCount()) : datasetName;
+		auto* daPart = createExternalDataArrayPart(actualDatasetName, hdfProxy->getElementCount(actualDatasetName), hdfProxy);
+		xmlValues->Values->ExternalDataArrayPart.push_back(daPart);
 
 		prop->ValuesForPatch.push_back(xmlValues);
 
-		return dsPart->PathInExternalFile;
+		return daPart->PathInExternalFile;
 	}
 
 	throw logic_error("Unrecognized RESQML version");
@@ -440,23 +431,15 @@ std::string AbstractValuesProperty::pushBackRefToExistingFloatingPointDataset(EM
 		// XML
 		ostringstream oss;
 		gsoap_eml2_3::eml23__FloatingPointExternalArray* xmlValues = gsoap_eml2_3::soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
-		xmlValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-		auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
+		xmlValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
 
-		if (datasetName.empty()) {
-			ostringstream ossForHdf;
-			ossForHdf << "values_patch" << prop->ValuesForPatch.size();
-			dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
-		}
-		else {
-			dsPart->PathInExternalFile = datasetName;
-		}
-		xmlValues->Values->ExternalFileProxy.push_back(dsPart);
+		string actualDatasetName = datasetName.empty() ? getHdfGroup() + "/values_patch" + std::to_string(getPatchCount()) : datasetName;
+		auto* daPart = createExternalDataArrayPart(actualDatasetName, proxy->getElementCount(actualDatasetName), proxy);
+		xmlValues->Values->ExternalDataArrayPart.push_back(daPart);
 
 		prop->ValuesForPatch.push_back(xmlValues);
 
-		return dsPart->PathInExternalFile;
+		return daPart->PathInExternalFile;
 	}
 
 	throw logic_error("Unrecognized RESQML version");
@@ -716,16 +699,17 @@ void AbstractValuesProperty::pushBackLongHdf5ArrayOfValues(
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::resqml22__AbstractValuesProperty* prop = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3);
 
+		size_t valueCount = numValues[0];
+		for (size_t dimIndex = 1; dimIndex < numArrayDimensions; ++dimIndex) {
+			valueCount *= numValues[dimIndex];
+		}
+
 		// XML
 		gsoap_eml2_3::eml23__IntegerExternalArray* xmlValues = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		xmlValues->NullValue = nullValue;
-		xmlValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-		auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-		std::ostringstream ossForHdf;
-		ossForHdf << "values_patch" << getPatchCount();
-		dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
-		xmlValues->Values->ExternalFileProxy.push_back(dsPart);
+		xmlValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+		auto* daPart = createExternalDataArrayPart(getHdfGroup() +"/values_patch" + std::to_string(getPatchCount()), valueCount, proxy);
+		xmlValues->Values->ExternalDataArrayPart.push_back(daPart);
 
 		prop->ValuesForPatch.push_back(xmlValues);
 	}

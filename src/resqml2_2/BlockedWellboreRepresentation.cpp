@@ -93,11 +93,8 @@ void BlockedWellboreRepresentation::setIntervalGridCells(unsigned int const* gri
 	// XML
 	eml23__IntegerExternalArray* xmlGridIndices = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	xmlGridIndices->NullValue = gridIndicesNullValue;
-	xmlGridIndices->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/GridIndices";
-	xmlGridIndices->Values->ExternalFileProxy.push_back(dsPart);
+	xmlGridIndices->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlGridIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/GridIndices", rep->NodeCount, hdfProxy));
 	rep->IntervalGridCells->GridIndices = xmlGridIndices;
 	// HDF
 	hsize_t dimGridIndices = rep->NodeCount;
@@ -111,11 +108,8 @@ void BlockedWellboreRepresentation::setIntervalGridCells(unsigned int const* gri
 	// XML
 	eml23__IntegerExternalArray* xmlCellIndices = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	xmlCellIndices->NullValue = -1;
-	xmlCellIndices->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/CellIndices";
-	xmlCellIndices->Values->ExternalFileProxy.push_back(dsPart);
+	xmlCellIndices->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlCellIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/CellIndices", cellCount, hdfProxy));
 	rep->IntervalGridCells->CellIndices = xmlCellIndices;
 	// HDF
 	hsize_t dimCellIndices = cellCount;
@@ -129,11 +123,8 @@ void BlockedWellboreRepresentation::setIntervalGridCells(unsigned int const* gri
 	// XML
 	eml23__IntegerExternalArray* xmlLocalFacePairPerCellIndices = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	xmlLocalFacePairPerCellIndices->NullValue = localFacePairPerCellIndicesNullValue;
-	xmlLocalFacePairPerCellIndices->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/LocalFacePairPerCellIndices";
-	xmlLocalFacePairPerCellIndices->Values->ExternalFileProxy.push_back(dsPart);
+	xmlLocalFacePairPerCellIndices->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlLocalFacePairPerCellIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/LocalFacePairPerCellIndices", cellCount*2, hdfProxy));
 	rep->IntervalGridCells->LocalFacePairPerCellIndices = xmlLocalFacePairPerCellIndices;
 	// HDF
 	hsize_t dimLocalFacePerCellIndicesNullValue = cellCount*2;
@@ -154,8 +145,8 @@ int64_t BlockedWellboreRepresentation::getGridIndices(unsigned int * gridIndices
 	auto xmlGridIndices = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->GridIndices;
 
 	if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__IntegerExternalArray*>(xmlGridIndices)->Values->ExternalFileProxy[0];
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfUIntValues(dsPart->PathInExternalFile, gridIndices);
+		eml23__ExternalDataArrayPart const * daPart = static_cast<eml23__IntegerExternalArray*>(xmlGridIndices)->Values->ExternalDataArrayPart[0];
+		getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfUIntValues(daPart->PathInExternalFile, gridIndices);
 		return static_cast<eml23__IntegerExternalArray*>(xmlGridIndices)->NullValue;
 	}
 	else if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {

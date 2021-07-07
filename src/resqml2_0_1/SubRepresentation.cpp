@@ -19,7 +19,6 @@ under the License.
 #include "SubRepresentation.h"
 
 #include <limits>
-#include <sstream>
 #include <stdexcept>
 
 #include <hdf5.h>
@@ -135,9 +134,7 @@ void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__Ind
 	eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	resqmlHDF5dataset->HdfProxy = proxy->newResqmlReference();
 	if (elementDataset.empty()) {
-		ostringstream ossForHdf;
-		ossForHdf << "subrepresentation_elementIndices0_patch" << patch->PatchIndex;
-		resqmlHDF5dataset->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
+		resqmlHDF5dataset->PathInHdfFile = getHdfGroup() + "/subrepresentation_elementIndices0_patch" + std::to_string(patch->PatchIndex);
 	}
 	else {
 		resqmlHDF5dataset->PathInHdfFile = elementDataset;
@@ -147,19 +144,15 @@ void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__Ind
 	elements->Indices = integerArray;
 
 	if (!supportingRepDataset.empty()) {
-		RESQML2_0_1_NS::DiscreteProperty* discreteProp = getRepository()->createDiscreteProperty(this, "", "SupportingRepresentationIndex", 1, elementKind, resqml20__ResqmlPropertyKind::index);
-		ostringstream oss;
-		oss << "SubRepresentationPatch[" << rep->SubRepresentationPatch.size() - 1 << "]/ElementIndices/SupportingRepresentationIndex";
-		pushBackExtraMetadata(oss.str(), discreteProp->getUuid());
+		RESQML2_0_1_NS::DiscreteProperty* discreteProp = getRepository()->createDiscreteProperty(this, "", "SupportingRepresentationIndex", elementKind, resqml20__ResqmlPropertyKind::index);
+		pushBackExtraMetadata("SubRepresentationPatch[" + std::to_string(rep->SubRepresentationPatch.size() - 1) + "]/ElementIndices/SupportingRepresentationIndex", discreteProp->getUuid());
 		discreteProp->pushBackRefToExistingIntegerDataset(proxy, supportingRepDataset, nullValue);
 	}
 }
 
 DiscreteProperty* SubRepresentation::getSupportingRepresentationIndicesDiscretePropOfPatch(unsigned int patchIndex) const
 {
-	ostringstream oss;
-	oss << "SubRepresentationPatch[" << patchIndex << "]/ElementIndices/SupportingRepresentationIndex";
-	vector<string> uuid = getExtraMetadata(oss.str());
+	vector<string> uuid = getExtraMetadata("SubRepresentationPatch[" + std::to_string(patchIndex) + "]/ElementIndices/SupportingRepresentationIndex");
 	return getRepository()->getDataObjectByUuid<DiscreteProperty>(uuid[0]);
 }
 
@@ -179,19 +172,17 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 	patch->ElementIndices.push_back(elements);
 	elements->IndexableElement = mapIndexableElement(elementKind1);
 
-	ostringstream ossForHdf;
-	ossForHdf << "subrepresentation_elementIndices1_patch" << patch->PatchIndex;
 	resqml20__IntegerHdf5Array * integerArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	resqmlHDF5dataset->HdfProxy = proxy->newResqmlReference();
-	resqmlHDF5dataset->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
+	resqmlHDF5dataset->PathInHdfFile = getHdfGroup() + "/subrepresentation_elementIndices1_patch" + std::to_string(patch->PatchIndex);
 	integerArray->Values = resqmlHDF5dataset;
 	integerArray->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write index null value in this method
 	elements->Indices = integerArray;
 
 	// ************ HDF ************		
 	hsize_t numValues = elementCount;
-	proxy->writeArrayNdOfUInt64Values(getHdfGroup(), ossForHdf.str(), elementIndices1, &numValues, 1);
+	proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "subrepresentation_elementIndices1_patch" + std::to_string(patch->PatchIndex), elementIndices1, &numValues, 1);
 }
 
 COMMON_NS::DataObjectReference SubRepresentation::getHdfProxyDor() const

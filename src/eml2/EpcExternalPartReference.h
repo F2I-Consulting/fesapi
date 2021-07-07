@@ -67,14 +67,6 @@ namespace EML2_NS
 		EpcExternalPartReference(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
 			COMMON_NS::AbstractObject(fromGsoap) {}
 
-		/**
-		 * Creates an instance of this class by wrapping an EML2.3 gSOAP instance
-		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
-		 */
-		EpcExternalPartReference(gsoap_eml2_3::_eml23__EpcExternalPartReference* fromGsoap) :
-			COMMON_NS::AbstractObject(fromGsoap) {}
-
 		/** Loads target relationships */
 		void loadTargetRelationships() final {};
 	};

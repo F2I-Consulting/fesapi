@@ -52,37 +52,53 @@ unsigned int GraphicalInformationSet::getGraphicalInformationSetCount() const
 	return static_cast<unsigned int>(count);
 }
 
-eml23__DataObjectReference* GraphicalInformationSet::getTargetObjectDor(unsigned int index) const
+unsigned int GraphicalInformationSet::getTargetObjectCount(unsigned int graphicalInformationIndex) const
 {
 	_eml23__GraphicalInformationSet const * gis = static_cast<_eml23__GraphicalInformationSet*>(gsoapProxy2_3);
 
-	if (index >= gis->GraphicalInformation.size()) {
-		throw range_error("The index is out of range.");
+	if (graphicalInformationIndex >= gis->GraphicalInformation.size()) {
+		throw range_error("The graphicalInformationIndex is out of range.");
 	}
 
-	return gis->GraphicalInformation[index]->TargetObject;
+	return gis->GraphicalInformation[graphicalInformationIndex]->TargetObject.size();
 }
 
-string GraphicalInformationSet::getTargetObjectUuid(unsigned int index) const
+eml23__DataObjectReference* GraphicalInformationSet::getTargetObjectDor(unsigned int graphicalInformationIndex, unsigned int targetIndex) const
 {
-	return getTargetObjectDor(index)->Uuid;
+	_eml23__GraphicalInformationSet const * gis = static_cast<_eml23__GraphicalInformationSet*>(gsoapProxy2_3);
+
+	if (graphicalInformationIndex >= gis->GraphicalInformation.size()) {
+		throw range_error("The graphicalInformationIndex is out of range.");
+	}
+	if (targetIndex >= gis->GraphicalInformation[graphicalInformationIndex]->TargetObject.size()) {
+		throw range_error("The targetIndex is out of range.");
+	}
+
+	return gis->GraphicalInformation[graphicalInformationIndex]->TargetObject[targetIndex];
 }
 
-AbstractObject* GraphicalInformationSet::getTargetObject(unsigned int index) const
+string GraphicalInformationSet::getTargetObjectUuid(unsigned int graphicalInformationIndex, unsigned int targetIndex) const
 {
-	return getRepository()->getDataObjectByUuid(getTargetObjectUuid(index));
+	return getTargetObjectDor(graphicalInformationIndex, targetIndex)->Uuid;
+}
+
+AbstractObject* GraphicalInformationSet::getTargetObject(unsigned int graphicalInformationIndex, unsigned int targetIndex) const
+{
+	return getRepository()->getDataObjectByUuid(getTargetObjectUuid(graphicalInformationIndex, targetIndex));
 }
 
 resqml22__DefaultGraphicalInformation* GraphicalInformationSet::getDefaultGraphicalInformationForAllIndexableElements(AbstractObject const* targetObject) const
 {
 	_eml23__GraphicalInformationSet* gis = static_cast<_eml23__GraphicalInformationSet*>(gsoapProxy2_3);
 
-	string targetUuid = targetObject->getUuid();
+	const string targetUuid = targetObject->getUuid();
 	for (size_t giIndex = 0; giIndex < gis->GraphicalInformation.size(); ++giIndex) {
-		string uuid = getTargetObjectUuid(giIndex);
-		if (uuid.compare(targetUuid) == 0 &&
-			gis->GraphicalInformation[giIndex]->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__DefaultGraphicalInformation) {
-			return static_cast<resqml22__DefaultGraphicalInformation*>(gis->GraphicalInformation[giIndex]);
+		for (size_t targetIndex = 0; targetIndex < gis->GraphicalInformation[giIndex]->TargetObject.size(); ++targetIndex) {
+			const string uuid = getTargetObjectUuid(giIndex, targetIndex);
+			if (uuid == targetUuid &&
+				gis->GraphicalInformation[giIndex]->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__DefaultGraphicalInformation) {
+				return static_cast<resqml22__DefaultGraphicalInformation*>(gis->GraphicalInformation[giIndex]);
+			}
 		}
 	}
 
@@ -124,9 +140,11 @@ resqml22__ColorInformation* GraphicalInformationSet::getColorInformation(Abstrac
 	_eml23__GraphicalInformationSet const* gis = static_cast<_eml23__GraphicalInformationSet*>(gsoapProxy2_3);
 
 	for (size_t giIndex = 0; giIndex < gis->GraphicalInformation.size(); ++giIndex) {
-		if (getTargetObjectUuid(giIndex).compare(targetObject->getUuid()) == 0 &&
-			gis->GraphicalInformation[giIndex]->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__ColorInformation) {
-			return static_cast<resqml22__ColorInformation*>(gis->GraphicalInformation[giIndex]);
+		for (size_t targetIndex = 0; targetIndex < gis->GraphicalInformation[giIndex]->TargetObject.size(); ++targetIndex) {
+			if (getTargetObjectUuid(giIndex, targetIndex) == targetObject->getUuid() &&
+				gis->GraphicalInformation[giIndex]->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__ColorInformation) {
+				return static_cast<resqml22__ColorInformation*>(gis->GraphicalInformation[giIndex]);
+			}
 		}
 	}
 
@@ -147,8 +165,10 @@ bool GraphicalInformationSet::hasDirectGraphicalInformation(AbstractObject const
 		throw std::range_error("There are too much Graphical Informations");
 	}
 	for (size_t giIndex = 0; giIndex < static_cast<unsigned int>(gis->GraphicalInformation.size()); ++giIndex) {
-		if (getTargetObjectUuid(giIndex).compare(targetUuid) == 0) {
-			return true;
+		for (size_t targetIndex = 0; targetIndex < gis->GraphicalInformation[giIndex]->TargetObject.size(); ++targetIndex) {
+			if (getTargetObjectUuid(giIndex, targetIndex).compare(targetUuid) == 0) {
+				return true;
+			}
 		}
 	}
 
@@ -291,7 +311,7 @@ void GraphicalInformationSet::setDefaultHsvColor(AbstractObject * targetObject, 
 		_eml23__GraphicalInformationSet* gis = static_cast<_eml23__GraphicalInformationSet*>(gsoapProxy2_3);
 		defaultGraphicalInformationForAllIndexableElements = soap_new_resqml22__DefaultGraphicalInformation(gsoapProxy2_3->soap, 1);
 		getRepository()->addRelationship(this, targetObject);
-		defaultGraphicalInformationForAllIndexableElements->TargetObject = targetObject->newEml23Reference();
+		defaultGraphicalInformationForAllIndexableElements->TargetObject.push_back(targetObject->newEml23Reference());
 		defaultGraphicalInformationForAllIndexableElements->ViewerKind = soap_resqml22__ViewerKind2s(gsoapProxy2_3->soap, resqml22__ViewerKind::_3d);
 		gis->GraphicalInformation.push_back(defaultGraphicalInformationForAllIndexableElements);
 		resqml22__GraphicalInformationForWholeObject* giwo = soap_new_resqml22__GraphicalInformationForWholeObject(gsoapProxy2_3->soap, 1);
@@ -472,7 +492,7 @@ void GraphicalInformationSet::setDiscreteColorMap(AbstractObject* targetObject, 
 	if (colorInformation == nullptr) {
 		colorInformation = soap_new_resqml22__ColorInformation(gsoapProxy2_3->soap, 1);
 		getRepository()->addRelationship(this, targetObject);
-		colorInformation->TargetObject = targetObject->newEml23Reference();
+		colorInformation->TargetObject.push_back(targetObject->newEml23Reference());
 		gis->GraphicalInformation.push_back(colorInformation);
 	}
 
@@ -561,7 +581,7 @@ void GraphicalInformationSet::setContinuousColorMap(AbstractObject* targetObject
 	if (colorInformation == nullptr) {
 		colorInformation = soap_new_resqml22__ColorInformation(gsoapProxy2_3->soap, 1);
 		getRepository()->addRelationship(this, targetObject);
-		colorInformation->TargetObject = targetObject->newEml23Reference();
+		colorInformation->TargetObject.push_back(targetObject->newEml23Reference());
 		gis->GraphicalInformation.push_back(colorInformation);
 	}
 
@@ -759,11 +779,13 @@ void GraphicalInformationSet::loadTargetRelationships()
 	_eml23__GraphicalInformationSet const* gis = static_cast<_eml23__GraphicalInformationSet*>(gsoapProxy2_3);
 
 	for (size_t giIndex = 0; giIndex < gis->GraphicalInformation.size(); ++giIndex) {
-		convertDorIntoRel(getTargetObjectDor(giIndex));
-		if (gis->GraphicalInformation[giIndex]->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__ColorInformation) {
-			resqml22__ColorInformation const* colorInformation = static_cast<resqml22__ColorInformation*>(gis->GraphicalInformation[giIndex]);
-			if (colorInformation->ColorMap != nullptr) {
-				convertDorIntoRel(colorInformation->ColorMap);
+		for (size_t targetIndex = 0; targetIndex < gis->GraphicalInformation[giIndex]->TargetObject.size(); ++targetIndex) {
+			convertDorIntoRel(getTargetObjectDor(giIndex, targetIndex));
+			if (gis->GraphicalInformation[giIndex]->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__ColorInformation) {
+				resqml22__ColorInformation const* colorInformation = static_cast<resqml22__ColorInformation*>(gis->GraphicalInformation[giIndex]);
+				if (colorInformation->ColorMap != nullptr) {
+					convertDorIntoRel(colorInformation->ColorMap);
+				}
 			}
 		}
 	}

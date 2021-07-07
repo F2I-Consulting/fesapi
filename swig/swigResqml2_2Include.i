@@ -53,7 +53,6 @@ under the License.
 #include "../src/resqml2_2/PointsProperty.h"
 #include "../src/resqml2_2/PolylineRepresentation.h"
 #include "../src/resqml2_2/PolylineSetRepresentation.h"
-#include "../src/resqml2_2/PropertySet.h"
 #include "../src/resqml2_2/RepresentationSetRepresentation.h"
 #include "../src/resqml2_2/RockFluidUnitInterpretation.h"
 #include "../src/resqml2_2/RockFluidOrganizationInterpretation.h"
@@ -66,7 +65,7 @@ under the License.
 #include "../src/resqml2_2/ShotPointLineFeature.h"
 #include "../src/resqml2_2/StratigraphicColumn.h"
 #include "../src/resqml2_2/StratigraphicColumnRankInterpretation.h"
-#include "../src/resqml2_2/StratigraphicOccurrenceInterpretation.h"
+#include "../src/resqml2_2/GeologicUnitOccurrenceInterpretation.h"
 #include "../src/resqml2_2/StratigraphicUnitInterpretation.h"
 #include "../src/resqml2_2/StreamlinesFeature.h"
 #include "../src/resqml2_2/StreamlinesRepresentation.h"
@@ -120,7 +119,6 @@ under the License.
 	%nspace RESQML2_2_NS::PointsProperty;
 	%nspace RESQML2_2_NS::PolylineRepresentation;
 	%nspace RESQML2_2_NS::PolylineSetRepresentation;
-	%nspace RESQML2_2_NS::PropertySet;
 	%nspace RESQML2_2_NS::RepresentationSetRepresentation;
 	%nspace RESQML2_2_NS::RockFluidUnitInterpretation;
 	%nspace RESQML2_2_NS::RockFluidOrganizationInterpretation;
@@ -133,7 +131,7 @@ under the License.
 	%nspace RESQML2_2_NS::ShotPointLineFeature;
 	%nspace RESQML2_2_NS::StratigraphicColumn;
 	%nspace RESQML2_2_NS::StratigraphicColumnRankInterpretation;
-	%nspace RESQML2_2_NS::StratigraphicOccurrenceInterpretation;
+	%nspace RESQML2_2_NS::GeologicUnitOccurrenceInterpretation;
 	%nspace RESQML2_2_NS::StratigraphicUnitInterpretation;
 	%nspace RESQML2_2_NS::StreamlinesFeature;
 	%nspace RESQML2_2_NS::StreamlinesRepresentation;
@@ -370,7 +368,6 @@ namespace RESQML2_2_NS
 	public:
 	};
 	
-	class StratigraphicOccurrenceInterpretation;	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(resqml22_StratigraphicColumnRankInterpretation) StratigraphicColumnRankInterpretation;
 #endif
@@ -397,9 +394,9 @@ namespace RESQML2_2_NS
 	
 	class WellboreMarkerFrameRepresentation;	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(resqml22_StratigraphicOccurrenceInterpretation) StratigraphicOccurrenceInterpretation;
+	%rename(resqml22_GeologicUnitOccurrenceInterpretation) GeologicUnitOccurrenceInterpretation;
 #endif
-	class StratigraphicOccurrenceInterpretation : public RESQML2_NS::StratigraphicOccurrenceInterpretation
+	class GeologicUnitOccurrenceInterpretation : public RESQML2_NS::GeologicUnitOccurrenceInterpretation
 	{
 	public:
 	};
@@ -649,14 +646,6 @@ namespace RESQML2_2_NS
 	%rename(resqml22_StringTableLookup) StringTableLookup;
 #endif	
 	class StringTableLookup : public RESQML2_NS::StringTableLookup
-	{
-	public:
-	};
-	
-#if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(resqml22_PropertySet) PropertySet;
-#endif	
-	class PropertySet : public RESQML2_NS::PropertySet
 	{
 	public:
 	};

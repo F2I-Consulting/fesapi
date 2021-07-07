@@ -24,7 +24,6 @@ under the License.
 #include "H5public.h"
 
 #include "../resqml2/AbstractLocal3dCrs.h"
-#include "../resqml2/DeviationSurveyRepresentation.h"
 #include "../resqml2/MdDatum.h"
 #include "../resqml2/WellboreFrameRepresentation.h"
 #include "../resqml2/WellboreInterpretation.h"
@@ -61,39 +60,6 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 	interp->getRepository()->addDataObject(this);
 	setMdDatum(mdInfo);
 	setInterpretation(interp);
-}
-
-WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const string & guid, const std::string & title, RESQML2_NS::DeviationSurveyRepresentation * deviationSurvey)
-{
-	if (interp == nullptr) {
-		throw invalid_argument("The represented wellbore interpretation cannot be null.");
-	}
-	if (deviationSurvey == nullptr) {
-		throw invalid_argument("The deviation survey cannot be null.");
-	}
-
-	gsoapProxy2_3 = soap_new_resqml22__WellboreTrajectoryRepresentation(interp->getGsoapContext());
-	_resqml22__WellboreTrajectoryRepresentation* rep = static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3);
-
-	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "");
-
-	interp->getRepository()->addDataObject(this);
-
-	RESQML2_NS::MdDatum * mdInfo = deviationSurvey->getMdDatum();
-	setMdDatum(mdInfo);
-
-	const uint64_t stationCount = deviationSurvey->getXyzPointCountOfPatch(0);
-	std::unique_ptr<double[]> mdValues(new double[stationCount]);
-	deviationSurvey->getMdValues(mdValues.get());
-	rep->StartMd = mdValues[0];
-	rep->FinishMd = mdValues[stationCount-1];
-
-	setInterpretation(interp);
-
-	if (mdInfo->getLocalCrs() != nullptr) {
-		rep->MdUom = mdInfo->getLocalCrs()->getVerticalCrsUnitAsString();
-	}
 }
 
 void WellboreTrajectoryRepresentation::setMinimalGeometry(double startMd, double endMd)
@@ -140,11 +106,8 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, 
 
 	// XML control points
 	resqml22__Point3dExternalArray* xmlControlPoints = soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
-	xmlControlPoints->Coordinates = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/controlPoints";
-	xmlControlPoints->Coordinates->ExternalFileProxy.push_back(dsPart);
+	xmlControlPoints->Coordinates = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlControlPoints->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/controlPoints", controlPointCount*3, proxy));
 	paramLine->ControlPoints = xmlControlPoints;
 
 	// HDF control points
@@ -173,11 +136,8 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, 
 
 	// XML control point parameters
 	eml23__FloatingPointExternalArray* xmlControlPointParameters = soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
-	xmlControlPointParameters->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/controlPointParameters";
-	xmlControlPointParameters->Values->ExternalFileProxy.push_back(dsPart);
+	xmlControlPointParameters->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlControlPointParameters->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/controlPointParameters", controlPointCount, proxy));
 	paramLine->ControlPointParameters = xmlControlPointParameters;
 
 	// HDF control point parameters
@@ -206,11 +166,8 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 	resqml22__ParametricLineGeometry* paramLine = static_cast<resqml22__ParametricLineGeometry*>(rep->Geometry);
 	// XML tangent vectors
 	resqml22__Point3dExternalArray* xmlTangentVectors = soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
-	xmlTangentVectors->Coordinates = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/tangentVectors";
-	xmlTangentVectors->Coordinates->ExternalFileProxy.push_back(dsPart);
+	xmlTangentVectors->Coordinates = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlTangentVectors->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/tangentVectors", controlPointCount * 3, proxy));
 	paramLine->TangentVectors = xmlTangentVectors;
 
 	// HDF tangent vectors
@@ -272,12 +229,12 @@ void WellboreTrajectoryRepresentation::getXyzPointsOfPatch(unsigned int patchInd
 	_resqml22__WellboreTrajectoryRepresentation* rep = static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3);
 	if (rep->Geometry != nullptr) {
 		resqml22__ParametricLineGeometry* paramLine = static_cast<resqml22__ParametricLineGeometry*>(rep->Geometry);
-		eml23__ExternalDatasetPart const * dsPart = static_cast<resqml22__Point3dExternalArray*>(paramLine->ControlPoints)->Coordinates->ExternalFileProxy[0];	
-		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dsPart);
+		eml23__ExternalDataArrayPart const * daPart = static_cast<resqml22__Point3dExternalArray*>(paramLine->ControlPoints)->Coordinates->ExternalDataArrayPart[0];
+		EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
 		}
-		hdfProxy->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, xyzPoints);
+		hdfProxy->readArrayNdOfDoubleValues(daPart->PathInExternalFile, xyzPoints);
 	}
 	else {
 		throw invalid_argument("The wellbore trajectory has no geometry.");
@@ -328,12 +285,12 @@ void WellboreTrajectoryRepresentation::getMdValues(double * values) const
 		
 	_resqml22__WellboreTrajectoryRepresentation* rep = static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3);
 	if (dynamic_cast<eml23__FloatingPointExternalArray*>(static_cast<resqml22__ParametricLineGeometry*>(rep->Geometry)->ControlPointParameters) != nullptr) {
-		eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__FloatingPointExternalArray*>(static_cast<resqml22__ParametricLineGeometry*>(rep->Geometry)->ControlPointParameters)->Values->ExternalFileProxy[0];
-		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dsPart);
+		eml23__ExternalDataArrayPart const * daPart = static_cast<eml23__FloatingPointExternalArray*>(static_cast<resqml22__ParametricLineGeometry*>(rep->Geometry)->ControlPointParameters)->Values->ExternalDataArrayPart[0];
+		EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
 		}
-		hdfProxy->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, values);
+		hdfProxy->readArrayNdOfDoubleValues(daPart->PathInExternalFile, values);
 	}
 	else {
 		throw invalid_argument("Mds can only be defined using FloatingPointExternalArray for now in fesapi.");
@@ -369,12 +326,12 @@ void WellboreTrajectoryRepresentation::getTangentVectors(double* tangentVectors)
 	}
 		
 	_resqml22__WellboreTrajectoryRepresentation* rep = static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3);
-	eml23__ExternalDatasetPart const * dsPart = static_cast<resqml22__Point3dExternalArray*>(static_cast<resqml22__ParametricLineGeometry*>(rep->Geometry)->TangentVectors)->Coordinates->ExternalFileProxy[0];
-	EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dsPart);
+	eml23__ExternalDataArrayPart const * daPart = static_cast<resqml22__Point3dExternalArray*>(static_cast<resqml22__ParametricLineGeometry*>(rep->Geometry)->TangentVectors)->Coordinates->ExternalDataArrayPart[0];
+	EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
 	if (hdfProxy == nullptr) {
 		throw invalid_argument("The HDF proxy is missing.");
 	}
-	hdfProxy->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, tangentVectors);
+	hdfProxy->readArrayNdOfDoubleValues(daPart->PathInExternalFile, tangentVectors);
 }
 
 void WellboreTrajectoryRepresentation::setMdDatum(RESQML2_NS::MdDatum * mdDatum)
@@ -398,7 +355,7 @@ COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getHdfProxyDor(
 	_resqml22__WellboreTrajectoryRepresentation* rep = static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3);
 	if (rep->Geometry != nullptr) {
 		resqml22__ParametricLineGeometry* paramLine = static_cast<resqml22__ParametricLineGeometry*>(rep->Geometry);
-		return COMMON_NS::DataObjectReference(static_cast<resqml22__Point3dExternalArray*>(paramLine->ControlPoints)->Coordinates->ExternalFileProxy[0]->EpcExternalPartReference);
+		return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<resqml22__Point3dExternalArray*>(paramLine->ControlPoints)->Coordinates->ExternalDataArrayPart[0]));
 	}
 	
 	return COMMON_NS::DataObjectReference();
@@ -423,21 +380,7 @@ COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getLocalCrsDor(
 		: COMMON_NS::DataObjectReference();
 }
 
-COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getDeviationSurveyDor() const
-{
-	return getSpecializedGsoapProxy()->DeviationSurvey != nullptr
-		? COMMON_NS::DataObjectReference(getSpecializedGsoapProxy()->DeviationSurvey)
-		: COMMON_NS::DataObjectReference();
-}
-
 bool WellboreTrajectoryRepresentation::hasGeometry() const
 {
 	return getSpecializedGsoapProxy()->Geometry != nullptr;
-}
-
-void WellboreTrajectoryRepresentation::setDeviationSurvey(RESQML2_NS::DeviationSurveyRepresentation* deviationSurvey)
-{
-	getRepository()->addRelationship(this, deviationSurvey);
-
-	getSpecializedGsoapProxy()->DeviationSurvey = deviationSurvey->newEml23Reference();
 }

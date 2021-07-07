@@ -48,7 +48,6 @@ void CommentProperty::initRepo() {
 	auto propertyKind = repo->createPropertyKind("", "comment", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
 	RESQML2_NS::CommentProperty* commentProperty = repo->createCommentProperty(
 		frame, defaultUuid, defaultTitle,
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::nodes,
 		propertyKind);
 	REQUIRE(commentProperty != nullptr);

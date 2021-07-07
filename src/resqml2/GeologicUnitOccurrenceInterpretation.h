@@ -26,12 +26,12 @@ namespace RESQML2_NS
 	class WellboreMarkerFrameRepresentation;
 
 	/** @brief	This class is a container for stratigraphic organizations described along a wellbore. */
-	class StratigraphicOccurrenceInterpretation : public AbstractStratigraphicOrganizationInterpretation
+	class GeologicUnitOccurrenceInterpretation : public AbstractStratigraphicOrganizationInterpretation
 	{
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		virtual ~StratigraphicOccurrenceInterpretation() = default;
+		virtual ~GeologicUnitOccurrenceInterpretation() = default;
 
 		/**
 		 * Sets the stratigraphic column rank interpretation this stratigraphic occurrence
@@ -67,32 +67,27 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStratigraphicColumnRankInterpretationDor() const = 0;
 
-		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
-
 	protected:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		DLL_IMPORT_OR_EXPORT StratigraphicOccurrenceInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractStratigraphicOrganizationInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT GeologicUnitOccurrenceInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractStratigraphicOrganizationInterpretation(partialObject) {}
 
 		/**
 		* Defautl constructor
 		*/
-		StratigraphicOccurrenceInterpretation() {}
+		GeologicUnitOccurrenceInterpretation() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		StratigraphicOccurrenceInterpretation(gsoap_resqml2_0_1::_resqml20__StratigraphicOccurrenceInterpretation* fromGsoap) : AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
+		GeologicUnitOccurrenceInterpretation(gsoap_resqml2_0_1::_resqml20__StratigraphicOccurrenceInterpretation* fromGsoap) : AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		StratigraphicOccurrenceInterpretation(gsoap_eml2_3::_resqml22__StratigraphicOccurrenceInterpretation* fromGsoap) : AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
+		GeologicUnitOccurrenceInterpretation(gsoap_eml2_3::_resqml22__GeologicUnitOccurrenceInterpretation* fromGsoap) : AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
 
 		/** Loads target relationships */
 		void loadTargetRelationships();

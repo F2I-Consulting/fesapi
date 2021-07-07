@@ -82,7 +82,6 @@ void BigIjkGridParametricRepresentationTest::initRepo() {
 	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
 	RESQML2_NS::DiscreteProperty* discreteProperty = repo->createDiscreteProperty(
 		ijkGrid, discretePropertyUuid, discretePropertyTitle,
-		1, 
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		propertyKind);
 	std::unique_ptr<unsigned short[]> discretePropertyValues(new unsigned short[iCount * jCount * kCount]);
@@ -93,7 +92,6 @@ void BigIjkGridParametricRepresentationTest::initRepo() {
 	propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
 	RESQML2_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(
 		ijkGrid, continuousPropertyUuid, continuousPropertyTitle,
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
@@ -104,4 +102,3 @@ void BigIjkGridParametricRepresentationTest::initRepo() {
 
 void BigIjkGridParametricRepresentationTest::readRepo() {
 }
-

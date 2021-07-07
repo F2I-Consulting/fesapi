@@ -25,9 +25,11 @@ under the License.
 #include "eml2/AbstractHdfProxy.h"
 
 #include "resqml2/LocalDepth3dCrs.h"
+#include "resqml2/BoundaryFeature.h"
 
 using namespace std;
 using namespace COMMON_NS;
+using namespace RESQML2_NS;
 using namespace commontest;
 
 DateTimeTest::DateTimeTest(const string & epcDocPath)
@@ -36,8 +38,9 @@ DateTimeTest::DateTimeTest(const string & epcDocPath)
 
 void DateTimeTest::initRepo()
 {
-	repo->getDefaultHdfProxy()->setCreation(36003); // ten hours and 3 seconds after 1970-01-01T00:00:00Z
-	REQUIRE_THROWS(repo->getDefaultHdfProxy()->setLastUpdate(3602));
+	BoundaryFeature* fault = repo->createFault("606df008-78dc-4949-993d-c70d8c7e766d", "testingFault");
+	fault->setCreation(36003); // ten hours and 3 seconds after 1970-01-01T00:00:00Z
+	REQUIRE_THROWS(fault->setLastUpdate(3602));
 
 	std::tm tmDate;
 	tmDate.tm_year = 70;
@@ -47,7 +50,7 @@ void DateTimeTest::initRepo()
 	tmDate.tm_min = 1;
 	tmDate.tm_sec = 33;
 	tmDate.tm_isdst = -1; // Information not available
-	repo->getDefaultHdfProxy()->setLastUpdate(tmDate);
+	fault->setLastUpdate(tmDate);
 }
 
 void DateTimeTest::readRepo()
@@ -60,8 +63,9 @@ void DateTimeTest::readRepo()
 	REQUIRE(localCrs->getLastUpdate() < 0);
 	REQUIRE(localCrs->getLastUpdateAsTimeStructure().tm_year == 0);
 
-	REQUIRE(repo->getDefaultHdfProxy()->getCreation() == 36003);
-	std::tm tmDate = repo->getDefaultHdfProxy()->getCreationAsTimeStructure();
+	auto const* fault = repo->getDataObjectByUuid("606df008-78dc-4949-993d-c70d8c7e766d");
+	REQUIRE(fault->getCreation() == 36003);
+	std::tm tmDate = fault->getCreationAsTimeStructure();
 	REQUIRE(tmDate.tm_year == 70);
 	REQUIRE(tmDate.tm_mon == 0);
 	REQUIRE(tmDate.tm_mday == 1);
@@ -69,8 +73,8 @@ void DateTimeTest::readRepo()
 	REQUIRE(tmDate.tm_min == 0);
 	REQUIRE(tmDate.tm_sec == 3);
 
-	REQUIRE(repo->getDefaultHdfProxy()->getLastUpdate() == 36093);
-	tmDate = repo->getDefaultHdfProxy()->getLastUpdateAsTimeStructure();
+	REQUIRE(fault->getLastUpdate() == 36093);
+	tmDate = fault->getLastUpdateAsTimeStructure();
 	REQUIRE(tmDate.tm_year == 70);
 	REQUIRE(tmDate.tm_mon == 0);
 	REQUIRE(tmDate.tm_mday == 1);

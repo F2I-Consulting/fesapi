@@ -88,7 +88,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackVolumeRegion(StratigraphicUnitInterpretation * stratiUnitInterp,
 			unsigned int externalShellFaceCount,
-			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide) = 0;
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide) = 0;
 
 		/**
 		 * Pushes back an internal shell in a particular volume region of this sealed volume framework.
@@ -115,7 +115,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackInternalShell(unsigned int regionIndex,
 			unsigned int internalShellFaceCount,
-			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide) = 0;
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide) = 0;
 
 		/** 
 		 * Gets the sealed structural framework this sealed volume framework is based on.
@@ -200,7 +200,7 @@ namespace RESQML2_NS
 		 * @returns	The representation which contains the face @p faceIndex of the external shell of the
 		 * 			region @p regionIndex of this framework.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual RESQML2_NS::AbstractRepresentation* getRepOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual RESQML2_NS::AbstractRepresentation* getRepOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) = 0;
 
 		/**
 		 * Gets the representation (for instance the triangulated surface) which contains a particular
@@ -221,7 +221,7 @@ namespace RESQML2_NS
 		 * @returns	The representation which contains the face @p faceIndex of the internal shell @p
 		 * 			internalShellIndex of the region @p regionIndex of this framework.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual RESQML2_NS::AbstractRepresentation* getRepOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual RESQML2_NS::AbstractRepresentation* getRepOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) = 0;
 
 		/**
 		 * Get the representation patch index corresponding to a particular face of the external shell
@@ -238,7 +238,7 @@ namespace RESQML2_NS
 		 * 			<tt>getRepOfExternalShellFace(regionIndex, faceIndex)</tt>) which is the face @p
 		 * 			faceIndex of the external shell of the region @p regionIndex of this framework.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) = 0;
 
 		/**
 		 * Get the representation patch index corresponding to a particular face of particular internal
@@ -260,7 +260,7 @@ namespace RESQML2_NS
 		 * 			is the face @p faceIndex of the internal shell @p internalShellIndex of the region @p
 		 * 			regionIndex of this framework.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) = 0;
 
 		/**
 		 * Get the orientation (the side flag) of a particular face of the external shell of a
@@ -276,7 +276,7 @@ namespace RESQML2_NS
 		 * @returns	The side flag of the face @p faceIndex of the external shell of the region @p
 		 * 			regionIndex of this framework.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) = 0;
 
 		/**
 		 * Get the orientation (the side flag) of a particular face of a particular internal shell of a
@@ -296,7 +296,7 @@ namespace RESQML2_NS
 		 * @returns	The side flag of the face @p faceIndex of the internal shell @p internalShellIndex of
 		 * 			the region @p regionIndex of this framework.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

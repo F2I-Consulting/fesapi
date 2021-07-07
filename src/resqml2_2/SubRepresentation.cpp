@@ -19,14 +19,16 @@ under the License.
 #include "SubRepresentation.h"
 
 #include <limits>
-#include <sstream>
 #include <stdexcept>
 
 #include <hdf5.h>
 
 #include "../eml2/AbstractHdfProxy.h"
+
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractIjkGridRepresentation.h"
+
+#include "../resqml2_2/GenericFeatureInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_2_NS;
@@ -39,7 +41,7 @@ void SubRepresentation::init(COMMON_NS::DataObjectRepository* repo, const string
 	gsoapProxy2_3 = soap_new_resqml22__SubRepresentation(repo->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
 }
@@ -47,6 +49,7 @@ void SubRepresentation::init(COMMON_NS::DataObjectRepository* repo, const string
 SubRepresentation::SubRepresentation(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {
 	init(repo, guid, title);
+	setInterpretation(repo->createPartial<RESQML2_2_NS::GenericFeatureInterpretation>("", "Unknown interp"));
 }
 
 SubRepresentation::SubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
@@ -85,11 +88,10 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 	patch->Count = elementCountInSlowestDimension * elementCountInMiddleDimension * elementCountInFastestDimension;
 	resqml22__ElementIndices* elements = soap_new_resqml22__ElementIndices(gsoapProxy2_3->soap);
 	patch->ElementIndices.push_back(elements);
-	elements->__ElementIndices_sequence = soap_new___resqml22__ElementIndices_sequence(gsoapProxy2_3->soap);
-	elements->__ElementIndices_sequence->IndexableElement = elementKind;
+	elements->IndexableElement = elementKind;
 
 	eml23__IntegerLatticeArray * integerArray = soap_new_eml23__IntegerLatticeArray(gsoapProxy2_3->soap);
-	elements->__ElementIndices_sequence->Indices = integerArray;
+	elements->Indices = integerArray;
 	integerArray->StartValue = originIndex;
 
 	eml23__IntegerConstantArray * offset = soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap);
@@ -126,36 +128,23 @@ void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__Ind
 	patch->Count = elementCount;
 	resqml22__ElementIndices* elements = soap_new_resqml22__ElementIndices(gsoapProxy2_3->soap);
 	patch->ElementIndices.push_back(elements);
-	elements->__ElementIndices_sequence = soap_new___resqml22__ElementIndices_sequence(gsoapProxy2_3->soap);
-	elements->__ElementIndices_sequence->IndexableElement = elementKind;
+	elements->IndexableElement = elementKind;
 
 	eml23__IntegerExternalArray * integerArray = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
-	eml23__ExternalDataset * resqmlHDF5dataset = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	eml23__ExternalDatasetPart * dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	if (elementDataset.empty()) {
-		ostringstream ossForHdf;
-		ossForHdf << "subrepresentation_elementIndices0_patch" << getPatchCount();
-		dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
-	}
-	else {
-		dsPart->PathInExternalFile = elementDataset;
-	}
-	resqmlHDF5dataset->ExternalFileProxy.push_back(dsPart);
-	integerArray->Values = resqmlHDF5dataset;
 	integerArray->NullValue = nullValue;
-	elements->__ElementIndices_sequence->Indices = integerArray;
+	integerArray->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	std::string actualDatasetName = elementDataset.empty()
+		? getHdfGroup() + "/subrepresentation_elementIndices0_patch" + std::to_string(getPatchCount())
+		: elementDataset;
+	integerArray->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(actualDatasetName, proxy->getElementCount(actualDatasetName), proxy));
+	elements->Indices = integerArray;
 
 	if (!supportingRepDataset.empty()) {
 		integerArray = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
-		resqmlHDF5dataset = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-		dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-		dsPart->PathInExternalFile = supportingRepDataset;
-		resqmlHDF5dataset->ExternalFileProxy.push_back(dsPart);
-		integerArray->Values = resqmlHDF5dataset;
 		integerArray->NullValue = nullValue;
-		elements->__ElementIndices_sequence->SupportingRepresentationIndex = integerArray;
+		integerArray->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+		integerArray->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(supportingRepDataset, proxy->getElementCount(supportingRepDataset), proxy));
+		elements->SupportingRepresentationIndex = integerArray;
 	}
 
 	rep->SubRepresentationPatch.push_back(patch);
@@ -175,24 +164,17 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 	// XML
 	resqml22__ElementIndices* elements = soap_new_resqml22__ElementIndices(gsoapProxy2_3->soap);
 	patch->ElementIndices.push_back(elements);
-	elements->__ElementIndices_sequence = soap_new___resqml22__ElementIndices_sequence(gsoapProxy2_3->soap);
-	elements->__ElementIndices_sequence->IndexableElement = elementKind1;
+	elements->IndexableElement = elementKind1;
 
-	ostringstream ossForHdf;
-	ossForHdf << "subrepresentation_elementIndices1_patch" << getPatchCount() - 1;
 	eml23__IntegerExternalArray * integerArray = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
-	eml23__ExternalDataset * resqmlHDF5dataset = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	eml23__ExternalDatasetPart * dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
-	resqmlHDF5dataset->ExternalFileProxy.push_back(dsPart);
-	integerArray->Values = resqmlHDF5dataset;
 	integerArray->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write element index null value in this method
-	elements->__ElementIndices_sequence->Indices = integerArray;
+	integerArray->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	integerArray->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/subrepresentation_elementIndices1_patch" + std::to_string(getPatchCount() - 1), elementCount, proxy));
+	elements->Indices = integerArray;
 
 	// ************ HDF ************		
 	hsize_t numValues = elementCount;
-	proxy->writeArrayNdOfUInt64Values(getHdfGroup(), ossForHdf.str(), elementIndices1, &numValues, 1);
+	proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "subrepresentation_elementIndices1_patch" + std::to_string(getPatchCount() - 1), elementIndices1, &numValues, 1);
 }
 
 COMMON_NS::DataObjectReference SubRepresentation::getHdfProxyDor() const
@@ -201,8 +183,8 @@ COMMON_NS::DataObjectReference SubRepresentation::getHdfProxyDor() const
 
 	if (!rep->SubRepresentationPatch.empty()) {
 		if (!rep->SubRepresentationPatch[0]->ElementIndices.empty()) {
-			if (rep->SubRepresentationPatch[0]->ElementIndices[0]->__ElementIndices_sequence->Indices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(rep->SubRepresentationPatch[0]->ElementIndices[0]->__ElementIndices_sequence->Indices)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+			if (rep->SubRepresentationPatch[0]->ElementIndices[0]->Indices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+				return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(rep->SubRepresentationPatch[0]->ElementIndices[0]->Indices)->Values->ExternalDataArrayPart[0]));
 			}
 		}
 	}
@@ -215,7 +197,7 @@ RESQML2_NS::AbstractRepresentation::indexableElement SubRepresentation::getEleme
 	_resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
 	if (rep->SubRepresentationPatch.size() > patchIndex) {
 		if (rep->SubRepresentationPatch[patchIndex]->ElementIndices.size() > elementIndicesIndex) {
-			switch (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->IndexableElement) {
+			switch (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->IndexableElement) {
 			case resqml22__IndexableElement::nodes: return NODE;
 			case resqml22__IndexableElement::edges:
 			case resqml22__IndexableElement::intervals: return EDGE;
@@ -256,7 +238,7 @@ bool SubRepresentation::areElementIndicesPairwise(unsigned int patchIndex) const
 
 bool SubRepresentation::areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex) const
 {
-	return getSubRepresentationPatch(patchIndex)->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray;
+	return getSubRepresentationPatch(patchIndex)->ElementIndices[elementIndicesIndex]->Indices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray;
 }
 
 int64_t SubRepresentation::getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex) const
@@ -270,7 +252,7 @@ int64_t SubRepresentation::getLatticeElementIndicesStartValue(unsigned int patch
 		throw out_of_range("The element indices index is out of range.");
 	}
 
-	eml23__IntegerLatticeArray* lattice = static_cast<eml23__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices);
+	eml23__IntegerLatticeArray* lattice = static_cast<eml23__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices);
 	return lattice->StartValue;
 }
 
@@ -285,7 +267,7 @@ unsigned int SubRepresentation::getLatticeElementIndicesDimensionCount(unsigned 
 		throw out_of_range("The element indices index is out of range.");
 	}
 
-	eml23__IntegerLatticeArray* lattice = static_cast<eml23__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices);
+	eml23__IntegerLatticeArray* lattice = static_cast<eml23__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices);
 	return lattice->Offset.size();
 }
 
@@ -298,7 +280,7 @@ int64_t SubRepresentation::getLatticeElementIndicesOffsetValue(unsigned int latt
 	if (rep->SubRepresentationPatch[patchIndex]->ElementIndices.size() <= elementIndicesIndex)
 		throw out_of_range("The element indices index is out of range.");
 
-	eml23__IntegerLatticeArray* lattice = static_cast<eml23__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices);
+	eml23__IntegerLatticeArray* lattice = static_cast<eml23__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices);
 	if (lattice->Offset.size() <= latticeDimensionIndex)
 		throw out_of_range("The lattice dimension index is out of range.");
 
@@ -316,7 +298,7 @@ uint64_t SubRepresentation::getLatticeElementIndicesOffsetCount(unsigned int lat
 		throw out_of_range("The element indices index is out of range.");
 	}
 
-	eml23__IntegerLatticeArray* lattice = static_cast<eml23__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices);
+	eml23__IntegerLatticeArray* lattice = static_cast<eml23__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices);
 	if (lattice->Offset.size() <= latticeDimensionIndex) {
 		throw out_of_range("The lattice dimension index is out of range.");
 	}
@@ -334,9 +316,9 @@ void SubRepresentation::getElementIndicesOfPatch(unsigned int patchIndex, unsign
 		throw out_of_range("The elementIndices does not exist at this index.");
 	}
 
-	if (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__IntegerExternalArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->Indices)->Values->ExternalFileProxy[0];
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfUInt64Values(dsPart->PathInExternalFile, elementIndices);
+	if (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+		eml23__ExternalDataArrayPart const * daPart = static_cast<eml23__IntegerExternalArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices)->Values->ExternalDataArrayPart[0];
+		getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfUInt64Values(daPart->PathInExternalFile, elementIndices);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -350,7 +332,7 @@ void SubRepresentation::getSupportingRepresentationIndicesOfPatch(unsigned int p
 		throw out_of_range("The patch does not exist at this index.");
 	}
 
-	if (getSupportingRepresentationCount() == 1 || rep->SubRepresentationPatch[patchIndex]->ElementIndices[0]->__ElementIndices_sequence->SupportingRepresentationIndex == nullptr) {
+	if (getSupportingRepresentationCount() == 1 || rep->SubRepresentationPatch[patchIndex]->ElementIndices[0]->SupportingRepresentationIndex == nullptr) {
 		const uint64_t elementCount = getElementCountOfPatch(patchIndex);
 		for (uint64_t i = 0; i < elementCount; ++i) {
 			supportingRepresentationIndices[i] = 0;
@@ -358,9 +340,9 @@ void SubRepresentation::getSupportingRepresentationIndicesOfPatch(unsigned int p
 		return;
 	}
 	else {
-		if (rep->SubRepresentationPatch[patchIndex]->ElementIndices[0]->__ElementIndices_sequence->SupportingRepresentationIndex->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__IntegerExternalArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[0]->__ElementIndices_sequence->SupportingRepresentationIndex)->Values->ExternalFileProxy[0];
-			getHdfProxyFromDataset(dsPart)->readArrayNdOfShortValues(dsPart->PathInExternalFile, supportingRepresentationIndices);
+		if (rep->SubRepresentationPatch[patchIndex]->ElementIndices[0]->SupportingRepresentationIndex->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+			eml23__ExternalDataArrayPart const * daPart = static_cast<eml23__IntegerExternalArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[0]->SupportingRepresentationIndex)->Values->ExternalDataArrayPart[0];
+			getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfShortValues(daPart->PathInExternalFile, supportingRepresentationIndices);
 		}
 		else {
 			throw invalid_argument("Not implemented yet.");

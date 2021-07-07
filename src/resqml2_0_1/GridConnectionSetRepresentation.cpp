@@ -436,14 +436,14 @@ void GridConnectionSetRepresentation::setConnectionInterpretationIndices(unsigne
 	cumulativeLength->NullValue = nullValue;
 	cumulativeLength->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	cumulativeLength->Values->HdfProxy = proxy->newResqmlReference();
-	cumulativeLength->Values->PathInHdfFile = getHdfGroup() + "/InterpretationIndices/" + CUMULATIVE_LENGTH_DS_NAME;
+	cumulativeLength->Values->PathInHdfFile = getHdfGroup() + "/InterpretationIndices/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME;
 	// Elements
 	resqml20__IntegerHdf5Array* elements = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	rep->ConnectionInterpretations->InterpretationIndices->Elements = elements;
 	elements->NullValue = nullValue;
 	elements->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	elements->Values->HdfProxy = proxy->newResqmlReference();
-	elements->Values->PathInHdfFile = getHdfGroup() + "/InterpretationIndices/" + ELEMENTS_DS_NAME;
+	elements->Values->PathInHdfFile = getHdfGroup() + "/InterpretationIndices/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME;
 
 	// HDF
 	std::unique_ptr<unsigned int[]> cumulative(new unsigned int[interpretationIndiceCount]);

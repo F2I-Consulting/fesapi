@@ -22,15 +22,18 @@ under the License.
 
 #include "H5public.h"
 
-#include "../resqml2/WellboreInterpretation.h"
-#include "../resqml2/MdDatum.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
+
+#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../resqml2/MdDatum.h"
+#include "../resqml2/WellboreTrajectoryRepresentation.h"
+#include "../resqml2/WellboreInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* DeviationSurveyRepresentation::XML_TAG = "DeviationSurveyRepresentation";
 const char* DeviationSurveyRepresentation::XML_NS = "resqml20";
 
 DeviationSurveyRepresentation::DeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const string& guid, const std::string& title, bool isFinal, RESQML2_NS::MdDatum* mdInfo)
@@ -117,6 +120,11 @@ void DeviationSurveyRepresentation::setGeometry(double const* firstStationLocati
 	rep->Inclinations = xmlIncls;
 	// HDF inclinations
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "inclinations", inclinations, &dim, 1);
+}
+
+RESQML2_NS::MdDatum* DeviationSurveyRepresentation::getMdDatum() const
+{
+	return getRepository()->getDataObjectByUuid<RESQML2_NS::MdDatum>(getMdDatumDor().getUuid());
 }
 
 uint64_t DeviationSurveyRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
@@ -228,4 +236,84 @@ COMMON_NS::DataObjectReference DeviationSurveyRepresentation::getHdfProxyDor() c
 	}
 
 	return COMMON_NS::DataObjectReference();
+}
+
+vector<RESQML2_NS::WellboreFrameRepresentation*> DeviationSurveyRepresentation::getWellboreFrameRepresentationSet() const
+{
+	vector<RESQML2_NS::WellboreFrameRepresentation*> result;
+
+	const vector<RESQML2_NS::WellboreTrajectoryRepresentation *>& trajectories = getWellboreTrajectoryRepresentationSet();
+	for (size_t index = 0; index < trajectories.size(); ++index) {
+		if (trajectories[index]->getMdDatumDor().getUuid() == getMdDatumDor().getUuid() && trajectories[index]->getMdUom() == getMdUom()) {
+			vector<RESQML2_NS::WellboreFrameRepresentation*> tmp = trajectories[index]->getWellboreFrameRepresentationSet();
+			result.insert(result.end(), tmp.begin(), tmp.end());
+		}
+	}
+
+	return result;
+}
+
+unsigned int DeviationSurveyRepresentation::getWellboreFrameRepresentationCount() const
+{
+	const vector<RESQML2_NS::WellboreTrajectoryRepresentation *>& trajectories = getWellboreTrajectoryRepresentationSet();
+	unsigned int result = 0;
+	for (size_t index = 0; index < trajectories.size(); ++index) {
+		if (trajectories[index]->getMdDatumDor().getUuid() == getMdDatumDor().getUuid() && trajectories[index]->getMdUom() == getMdUom()) {
+			result += trajectories[index]->getWellboreFrameRepresentationCount();
+		}
+	}
+
+	return result;
+}
+
+RESQML2_NS::WellboreFrameRepresentation * DeviationSurveyRepresentation::getWellboreFrameRepresentation(unsigned int index) const
+{
+	const vector<RESQML2_NS::WellboreTrajectoryRepresentation *>& trajectories = getWellboreTrajectoryRepresentationSet();
+	for (RESQML2_NS::WellboreTrajectoryRepresentation const* traj : trajectories) {
+		if (traj->getMdDatumDor().getUuid() == getMdDatumDor().getUuid() && traj->getMdUom() == getMdUom()) {
+			unsigned int count = traj->getWellboreFrameRepresentationCount();
+			if (index < count) {
+				return traj->getWellboreFrameRepresentation(index);
+			}
+			else {
+				index -= count;
+			}
+		}
+	}
+
+	throw out_of_range("The index is out of range");
+}
+
+std::vector<RESQML2_NS::WellboreTrajectoryRepresentation *> DeviationSurveyRepresentation::getWellboreTrajectoryRepresentationSet() const
+{
+	return getRepository()->getSourceObjects<RESQML2_NS::WellboreTrajectoryRepresentation>(this);
+}
+
+unsigned int DeviationSurveyRepresentation::getWellboreTrajectoryRepresentationCount() const
+{
+	const size_t result = getWellboreTrajectoryRepresentationSet().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("There are too many associated WellboreTrajectoryRepresentation.");
+	}
+
+	return static_cast<unsigned int>(result);
+}
+
+RESQML2_NS::WellboreTrajectoryRepresentation* DeviationSurveyRepresentation::getWellboreTrajectoryRepresentation(unsigned int index) const
+{
+	const std::vector<RESQML2_NS::WellboreTrajectoryRepresentation*>& wbTrajectoryRepSet = getWellboreTrajectoryRepresentationSet();
+
+	if (index >= wbTrajectoryRepSet.size()) {
+		throw out_of_range("The index is out of range");
+	}
+
+	return wbTrajectoryRepSet[index];
+}
+
+void DeviationSurveyRepresentation::loadTargetRelationships()
+{
+	AbstractRepresentation::loadTargetRelationships();
+
+	convertDorIntoRel<RESQML2_NS::MdDatum>(getMdDatumDor());
 }

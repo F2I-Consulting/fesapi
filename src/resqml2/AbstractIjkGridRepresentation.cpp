@@ -24,6 +24,9 @@ under the License.
 #include <hdf5.h>
 
 #include "../eml2/AbstractHdfProxy.h"
+
+#include "../resqml2_2/EarthModelInterpretation.h"
+
 #include "AbstractFeatureInterpretation.h"
 
 using namespace std;
@@ -108,18 +111,12 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 				}
 
 				auto xmlKGaps = gsoap_eml2_3::soap_new_resqml22__KGaps(getGsoapContext());
-				xmlKGaps->__KGaps_sequence = gsoap_eml2_3::soap_new___resqml22__KGaps_sequence(getGsoapContext());
-				xmlKGaps->__KGaps_sequence->Count = kGapCount;
+				xmlKGaps->Count = kGapCount;
 
 				gsoap_eml2_3::eml23__BooleanExternalArray* boolArray = gsoap_eml2_3::soap_new_eml23__BooleanExternalArray(getGsoapContext());
-				boolArray->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(getGsoapContext());
-				gsoap_eml2_3::eml23__ExternalDatasetPart* dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(getGsoapContext());
-				dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-				dsPart->PathInExternalFile = "/" + getXmlNamespace() + "/" + guid + "/GapAfterLayer";
-				dsPart->StartIndex = 0;
-				dsPart->Count = getCellCount();
-				boolArray->Values->ExternalFileProxy.push_back(dsPart);
-				xmlKGaps->__KGaps_sequence->GapAfterLayer = boolArray;
+				boolArray->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(getGsoapContext());
+				boolArray->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart("/" + getXmlNamespace() + "/" + guid + "/GapAfterLayer", getCellCount(), proxy));
+				xmlKGaps->GapAfterLayer = boolArray;
 
 				ijkGrid->KGaps = xmlKGaps;
 			}
@@ -178,6 +175,10 @@ AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(COMMON_NS::DataObje
 	RESQML2_NS::AbstractColumnLayerGridRepresentation(false), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr)
 {
 	init(repo, guid, title, iCount, jCount, kCount, kGaps, proxy);
+
+	if (gsoapProxy2_3 != nullptr) {
+		setInterpretation(repo->createPartial<RESQML2_2_NS::EarthModelInterpretation>("", "Unknown interp"));
+	}
 }
 
 AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
@@ -351,9 +352,9 @@ void AbstractIjkGridRepresentation::getPillarsOfSplitCoordinateLines(unsigned in
 			throw invalid_argument("There is no geometry or no split coordinate line in this grid.");
 		}
 		if (geom->ColumnLayerSplitCoordinateLines->PillarIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			gsoap_eml2_3::eml23__ExternalDataset const * dataset = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(geom->ColumnLayerSplitCoordinateLines->PillarIndices)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset->ExternalFileProxy[0]);
-			hdfProxy->readArrayNdOfUIntValues(dataset->ExternalFileProxy[0]->PathInExternalFile, pillarIndices);
+			gsoap_eml2_3::eml23__ExternalDataArray const * dataset = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(geom->ColumnLayerSplitCoordinateLines->PillarIndices)->Values;
+			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset->ExternalDataArrayPart[0]);
+			hdfProxy->readArrayNdOfUIntValues(dataset->ExternalDataArrayPart[0]->PathInExternalFile, pillarIndices);
 		}
 		else {
 			throw std::logic_error("Not implemented yet");
@@ -405,11 +406,11 @@ void AbstractIjkGridRepresentation::getColumnsOfSplitCoordinateLines(unsigned in
 			throw invalid_argument("There is no geometry or no split coordinate line in this IJK grid.");
 		}
 		if (geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			gsoap_eml2_3::eml23__ExternalDataset const * dataset = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset->ExternalFileProxy[0]);
-			hdfProxy->readArrayNdOfUIntValues(dataset->ExternalFileProxy[0]->PathInExternalFile, columnIndices);
+			gsoap_eml2_3::eml23__ExternalDataArray const * dataset = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements)->Values;
+			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset->ExternalDataArrayPart[0]);
+			hdfProxy->readArrayNdOfUIntValues(dataset->ExternalDataArrayPart[0]->PathInExternalFile, columnIndices);
 			if (reverseIAxis || reverseJAxis) {
-				datasetValueCount = hdfProxy->getElementCount(dataset->ExternalFileProxy[0]->PathInExternalFile);
+				datasetValueCount = hdfProxy->getElementCount(dataset->ExternalDataArrayPart[0]->PathInExternalFile);
 			}
 		}
 		else {
@@ -457,9 +458,9 @@ void AbstractIjkGridRepresentation::getColumnCountOfSplitCoordinateLines(unsigne
 			throw invalid_argument("There is no geometry or no split coordinate line in this IJK grid.");
 		}
 		if (geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			gsoap_eml2_3::eml23__ExternalDataset const * dataset = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset->ExternalFileProxy[0]);
-			hdfProxy->readArrayNdOfUIntValues(dataset->ExternalFileProxy[0]->PathInExternalFile, columnIndexCountPerSplitCoordinateLine);
+			gsoap_eml2_3::eml23__ExternalDataArray const * dataset = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength)->Values;
+			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset->ExternalDataArrayPart[0]);
+			hdfProxy->readArrayNdOfUIntValues(dataset->ExternalDataArrayPart[0]->PathInExternalFile, columnIndexCountPerSplitCoordinateLine);
 		}
 		else {
 			throw std::logic_error("Not implemented yet");
@@ -587,10 +588,10 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 		}
 		if (geom->PillarGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray)
 		{
-			gsoap_eml2_3::eml23__ExternalDataset const * dataset = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(geom->PillarGeometryIsDefined)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset->ExternalFileProxy[0]);
+			gsoap_eml2_3::eml23__ExternalDataArray const * dataset = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(geom->PillarGeometryIsDefined)->Values;
+			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset->ExternalDataArrayPart[0]);
 			std::unique_ptr<char[]> tmp(new char[pillarCount]);
-			hdfProxy->readArrayNdOfCharValues(dataset->ExternalFileProxy[0]->PathInExternalFile, tmp.get());
+			hdfProxy->readArrayNdOfCharValues(dataset->ExternalDataArrayPart[0]->PathInExternalFile, tmp.get());
 			for (unsigned int i = 0; i < pillarCount; ++i) {
 				pillarGeometryIsDefined[i] = tmp[i] != 0;
 			}
@@ -689,10 +690,10 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 			throw invalid_argument("There is no geometry on this IJK grid.");
 		}
 		if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
-			gsoap_eml2_3::eml23__ExternalDataset const * dataset = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(geom->CellGeometryIsDefined)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset->ExternalFileProxy[0]);
+			gsoap_eml2_3::eml23__ExternalDataArray const * dataset = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(geom->CellGeometryIsDefined)->Values;
+			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset->ExternalDataArrayPart[0]);
 			std::unique_ptr<char[]> tmp(new char[cellCount]);
-			hdfProxy->readArrayNdOfCharValues(dataset->ExternalFileProxy[0]->PathInExternalFile, tmp.get());
+			hdfProxy->readArrayNdOfCharValues(dataset->ExternalDataArrayPart[0]->PathInExternalFile, tmp.get());
 			for (unsigned int i = 0; i < cellCount; ++i) {
 				enabledCells[i] = tmp[i] != 0;
 			}
@@ -985,8 +986,8 @@ unsigned int AbstractIjkGridRepresentation::getKGapsCount() const
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		auto ijkGrid = getSpecializedGsoapProxy2_2();
-		return ijkGrid->KGaps != nullptr && ijkGrid->KGaps->__KGaps_sequence != nullptr
-			? ijkGrid->KGaps->__KGaps_sequence->Count
+		return ijkGrid->KGaps != nullptr && ijkGrid->KGaps != nullptr
+			? ijkGrid->KGaps->Count
 			: 0;
 	}
 
@@ -1022,17 +1023,17 @@ void AbstractIjkGridRepresentation::getKGaps(bool * kGaps) const
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		auto ijkGrid = getSpecializedGsoapProxy2_2();
-		if (ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
-			gsoap_eml2_3::eml23__ExternalDataset const * dataset = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset->ExternalFileProxy[0]);
+		if (ijkGrid->KGaps->GapAfterLayer->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
+			gsoap_eml2_3::eml23__ExternalDataArray const * dataset = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(ijkGrid->KGaps->GapAfterLayer)->Values;
+			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset->ExternalDataArrayPart[0]);
 			std::unique_ptr<char[]> tmp(new char[getKCellCount() - 1]);
-			hdfProxy->readArrayNdOfCharValues(dataset->ExternalFileProxy[0]->PathInExternalFile, tmp.get());
+			hdfProxy->readArrayNdOfCharValues(dataset->ExternalDataArrayPart[0]->PathInExternalFile, tmp.get());
 			for (uint64_t k = 0; k < getKCellCount() - 1; ++k) {
 				kGaps[k] = tmp[k] != 0;
 			}
 		}
-		else if (ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray) {
-			const bool hasGap = static_cast<gsoap_eml2_3::eml23__BooleanConstantArray*>(ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer)->Value;
+		else if (ijkGrid->KGaps->GapAfterLayer->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray) {
+			const bool hasGap = static_cast<gsoap_eml2_3::eml23__BooleanConstantArray*>(ijkGrid->KGaps->GapAfterLayer)->Value;
 			for (uint64_t k = 0; k < getKCellCount() - 1; ++k) {
 				kGaps[k] = hasGap;
 			}
@@ -1332,13 +1333,8 @@ void AbstractIjkGridRepresentation::setEnabledCells(unsigned char* enabledCells,
 		}
 
 		gsoap_eml2_3::eml23__BooleanExternalArray* boolArray = gsoap_eml2_3::soap_new_eml23__BooleanExternalArray(gsoapProxy2_3->soap);
-		boolArray->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(boolArray->soap);
-		gsoap_eml2_3::eml23__ExternalDatasetPart* dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(boolArray->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-		dsPart->PathInExternalFile = getHdfGroup() + "/CellGeometryIsDefined";
-		dsPart->StartIndex = 0;
-		dsPart->Count = getCellCount();
-		boolArray->Values->ExternalFileProxy.push_back(dsPart);
+		boolArray->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(boolArray->soap);
+		boolArray->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/CellGeometryIsDefined", getCellCount(), proxy));
 		geom->CellGeometryIsDefined = boolArray;
 	}
 

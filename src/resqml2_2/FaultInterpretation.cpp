@@ -38,7 +38,7 @@ FaultInterpretation::FaultInterpretation(RESQML2_NS::BoundaryFeature * fault, co
 	gsoapProxy2_3 = soap_new_resqml22__FaultInterpretation(fault->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	fault->getRepository()->addDataObject(this);
 	setInterpretedFeature(fault);
@@ -60,7 +60,7 @@ FaultInterpretation::FaultInterpretation(RESQML2_NS::BoundaryFeature * fault, co
 	interp->HasOccurredDuring = interval;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	fault->getRepository()->addDataObject(this);
 	setInterpretedFeature(fault);

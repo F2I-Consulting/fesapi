@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT PointsProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::PointsProperty(partialObject) {}
 
 		/**
-		 * Creates a discrete property which is of a well known Energistics property kind.
+		 * Creates a points property which is of a well known Energistics property kind.
 		 *
 		 * @exception	std::invalid_argument	If @p rep is null.
 		 *
@@ -45,8 +45,6 @@ namespace RESQML2_0_1_NS
 		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
-		 * 										is 1 for a scalar property.
 		 * @param 	  	attachmentKind		   	The topological element on which the property values are
 		 * 										attached to.
 		 * @param 	  	localCrs			   	The local CRS where the points are defined.
@@ -55,11 +53,11 @@ namespace RESQML2_0_1_NS
 		 * 										dictionary. Defatul is a length kind
 		 */
 		PointsProperty(RESQML2_NS::AbstractRepresentation* rep, const std::string& guid, const std::string& title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
 			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind = gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 
 		/**
-		 * Creates a discrete property which is of a local property kind.
+		 * Creates a points property which is of a local property kind.
 		 *
 		 * @exception	std::invalid_argument	If @p or @p localPropKind is null.
 		 *
@@ -69,8 +67,6 @@ namespace RESQML2_0_1_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
-		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
 		 * @param 	  	localCrs			   	The local CRS where the points are defined.
@@ -78,7 +74,7 @@ namespace RESQML2_0_1_NS
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 */
 		PointsProperty(RESQML2_NS::AbstractRepresentation* rep, const std::string& guid, const std::string& title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
 			EML2_NS::PropertyKind* localPropKind);
 
 		/**

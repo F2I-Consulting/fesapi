@@ -30,19 +30,12 @@ using namespace gsoap_eml2_3;
 const char* PointsProperty::XML_NS = "resqml22";
 
 PointsProperty::PointsProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs, EML2_NS::PropertyKind * localPropKind)
+	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs, EML2_NS::PropertyKind * localPropKind)
 {
-	if (dimension == 0) {
-		throw invalid_argument("The dimension cannot be zero.");
-	}
-
 	gsoapProxy2_3 = soap_new_resqml22__PointsProperty(rep->getGsoapContext());
 	_resqml22__PointsProperty* prop = static_cast<_resqml22__PointsProperty*>(gsoapProxy2_3);
 	prop->IndexableElement = attachmentKind;
-	if (dimension > 1) {
-		prop->ValueCountPerIndexableElement = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_3->soap, sizeof(ULONG64)));
-		*prop->ValueCountPerIndexableElement = dimension;
-	}
+	prop->ValueCountPerIndexableElement = { 1 };
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -55,7 +48,7 @@ PointsProperty::PointsProperty(RESQML2_NS::AbstractRepresentation * rep, const s
 
 unsigned int PointsProperty::getPatchCount() const
 {
-	size_t result = static_cast<_resqml22__PointsProperty*>(gsoapProxy2_3)->PatchOfPoints.size();
+	size_t result = static_cast<_resqml22__PointsProperty*>(gsoapProxy2_3)->PointsForPatch.size();
 
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
 		throw out_of_range("The count of the patches is too big.");
@@ -72,11 +65,10 @@ EML2_NS::AbstractHdfProxy * PointsProperty::getDatasetOfPatch(unsigned int patch
 	}
 
 	nullValue = (numeric_limits<long>::min)();
-	auto patch = static_cast<_resqml22__PointsProperty*>(gsoapProxy2_3)->PatchOfPoints[patchIndex]->Points;
-	int valuesType = patch->soap_type();
-	if (valuesType == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray) {
-		dsPath = static_cast<gsoap_eml2_3::resqml22__Point3dExternalArray*>(patch)->Coordinates->ExternalFileProxy[0]->PathInExternalFile;
-		return getHdfProxyFromDataset(static_cast<gsoap_eml2_3::resqml22__Point3dExternalArray*>(patch)->Coordinates->ExternalFileProxy[0]);
+	auto const* patch = static_cast<_resqml22__PointsProperty*>(gsoapProxy2_3)->PointsForPatch[patchIndex];
+	if (patch->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray) {
+		dsPath = static_cast<gsoap_eml2_3::resqml22__Point3dExternalArray const*>(patch)->Coordinates->ExternalDataArrayPart[0]->PathInExternalFile;
+		return getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::resqml22__Point3dExternalArray const*>(patch)->Coordinates->ExternalDataArrayPart[0]);
 	}
 	else {
 		throw logic_error("Points property only support points given by means of a Point3dExternalArray for now.");
@@ -89,10 +81,9 @@ COMMON_NS::DataObjectReference PointsProperty::getHdfProxyDor(unsigned int patch
 		throw out_of_range("The values property patch is out of range");
 	}
 
-	auto patch = static_cast<_resqml22__PointsProperty*>(gsoapProxy2_3)->PatchOfPoints[patchIndex]->Points;
-	int valuesType = patch->soap_type();
-	if (valuesType == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray) {
-		return static_cast<gsoap_eml2_3::resqml22__Point3dExternalArray*>(patch)->Coordinates->ExternalFileProxy[0]->EpcExternalPartReference;
+	auto const* patch = static_cast<_resqml22__PointsProperty*>(gsoapProxy2_3)->PointsForPatch[patchIndex];
+	if (patch->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray) {
+		return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::resqml22__Point3dExternalArray const*>(patch)->Coordinates->ExternalDataArrayPart[0]));
 	}
 	else {
 		throw logic_error("Points property only support points given by means of a Point3dExternalArray for now.");
@@ -105,11 +96,11 @@ EML2_NS::AbstractHdfProxy* PointsProperty::getValuesHdfProxyAndDatasetPathOfPatc
 		throw out_of_range("The values property patch is out of range");
 	}
 
-	_resqml22__PointsProperty* prop = static_cast<_resqml22__PointsProperty*>(gsoapProxy2_3);
-	if (prop->PatchOfPoints[patchIndex]->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray) {
-		eml23__ExternalDatasetPart * dsPart = static_cast<resqml22__Point3dExternalArray*>(prop->PatchOfPoints[patchIndex]->Points)->Coordinates->ExternalFileProxy[0];
-		datasetPath = dsPart->PathInExternalFile;
-		return getHdfProxyFromDataset(dsPart);
+	_resqml22__PointsProperty const* prop = static_cast<_resqml22__PointsProperty*>(gsoapProxy2_3);
+	if (prop->PointsForPatch[patchIndex]->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray) {
+		eml23__ExternalDataArrayPart const* daPart = static_cast<resqml22__Point3dExternalArray const*>(prop->PointsForPatch[patchIndex])->Coordinates->ExternalDataArrayPart[0];
+		datasetPath = daPart->PathInExternalFile;
+		return getOrCreateHdfProxyFromDataArrayPart(daPart);
 	}
 
 	return nullptr;
@@ -127,25 +118,14 @@ std::string PointsProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfPro
 	_resqml22__PointsProperty* prop = static_cast<_resqml22__PointsProperty*>(gsoapProxy2_3);
 
 	// XML
-	ostringstream oss;
-	resqml22__PatchOfPoints* pathOfPts = soap_new_resqml22__PatchOfPoints(gsoapProxy2_3->soap);
-	auto externalArray = soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
-	externalArray->Coordinates = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	pathOfPts->Points = externalArray;
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
+	auto* externalArray = soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
+	externalArray->Coordinates = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	std::string actualDatasetName = datasetName.empty()
+		? getHdfGroup() + "/points_patch" + std::to_string(prop->PointsForPatch.size())
+		: datasetName;
+	externalArray->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(actualDatasetName, proxy->getElementCount(actualDatasetName), proxy));
 
-	if (datasetName.empty()) {
-		ostringstream ossForHdf;
-		ossForHdf << "points_patch" << prop->PatchOfPoints.size();
-		dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
-	}
-	else {
-		dsPart->PathInExternalFile = datasetName;
-	}
-	externalArray->Coordinates->ExternalFileProxy.push_back(dsPart);
+	prop->PointsForPatch.push_back(externalArray);
 
-	prop->PatchOfPoints.push_back(pathOfPts);
-
-	return dsPart->PathInExternalFile;
+	return actualDatasetName;
 }

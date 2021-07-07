@@ -84,9 +84,9 @@ void Grid2dRepresentation::getZValues(double* values) const
 	if (rep->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dZValueArray) {
 		eml23__AbstractFloatingPointArray* zValues = static_cast<resqml22__Point3dZValueArray*>(rep->Geometry->Points)->ZValues;
 		if (dynamic_cast<eml23__FloatingPointExternalArray*>(zValues) != nullptr) {
-			eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__FloatingPointExternalArray*>(zValues)->Values->ExternalFileProxy[0];
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dsPart);
-			hdfProxy->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, values);
+			eml23__ExternalDataArrayPart const* daPart = static_cast<eml23__FloatingPointExternalArray*>(zValues)->Values->ExternalDataArrayPart[0];
+			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
+			hdfProxy->readArrayNdOfDoubleValues(daPart->PathInExternalFile, values);
 		}
 		else {
 			throw std::logic_error("The Z values can only be retrieved if they are described as a FloatingPointExternalArray.");
@@ -402,12 +402,12 @@ void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 			}
 		}
 		else if (dynamic_cast<eml23__FloatingPointExternalArray*>(arrayLatticeOfPoints3d->Dimension[0]->Spacing) != nullptr) {
-			eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__FloatingPointExternalArray*>(arrayLatticeOfPoints3d->Dimension[0]->Spacing)->Values->ExternalFileProxy[0];
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dsPart);
+			eml23__ExternalDataArrayPart const* daPart = static_cast<eml23__FloatingPointExternalArray*>(arrayLatticeOfPoints3d->Dimension[0]->Spacing)->Values->ExternalDataArrayPart[0];
+			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
 			if (hdfProxy == nullptr) {
 				throw logic_error("The HDF proxy is missing.");
 			}
-			hdfProxy->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, jSpacings);
+			hdfProxy->readArrayNdOfDoubleValues(daPart->PathInExternalFile, jSpacings);
 		}
 		else {
 			throw logic_error("Not implemented yet.");
@@ -473,12 +473,12 @@ void Grid2dRepresentation::getISpacing(double* iSpacings) const
 			}
 		}
 		else if (dynamic_cast<eml23__FloatingPointExternalArray*>(arrayLatticeOfPoints3d->Dimension[1]->Spacing) != nullptr) {
-			eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__FloatingPointExternalArray*>(arrayLatticeOfPoints3d->Dimension[1]->Spacing)->Values->ExternalFileProxy[0];
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dsPart);
+			eml23__ExternalDataArrayPart const* daPart = static_cast<eml23__FloatingPointExternalArray*>(arrayLatticeOfPoints3d->Dimension[1]->Spacing)->Values->ExternalDataArrayPart[0];
+			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
-			hdfProxy->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, iSpacings);
+			hdfProxy->readArrayNdOfDoubleValues(daPart->PathInExternalFile, iSpacings);
 		}
 		else {
 			throw logic_error("Not implemented yet.");
@@ -781,19 +781,14 @@ resqml22__PointGeometry* Grid2dRepresentation::createArray2dOfExplicitZ(
 
 	// Z Values
 	eml23__FloatingPointExternalArray* xmlZValues = soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
-	xmlZValues->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	ostringstream oss3;
-	oss3 << "points_patch" << patchIndex;
-	dsPart->PathInExternalFile = getHdfGroup() + "/" + oss3.str();
-	xmlZValues->Values->ExternalFileProxy.push_back(dsPart);
+	xmlZValues->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlZValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/points_patch" + std::to_string(patchIndex), numJ*numI, proxy));
 	xmlPoints->ZValues = xmlZValues;
 
 	// HDF
 	hsize_t dim[2] = { numJ, numI };
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(),
-		oss3.str(),
+		"points_patch" + std::to_string(patchIndex),
 		zValues,
 		dim, 2);
 
@@ -862,19 +857,14 @@ resqml22__PointGeometry* Grid2dRepresentation::createArray2dOfExplicitZ(
 
 	// Z Values
 	eml23__FloatingPointExternalArray* xmlZValues = soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
-	xmlZValues->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	ostringstream oss3;
-	oss3 << "points_patch" << patchIndex;
-	dsPart->PathInExternalFile = getHdfGroup() + "/" + oss3.str();
-	xmlZValues->Values->ExternalFileProxy.push_back(dsPart);
+	xmlZValues->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlZValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/points_patch" + std::to_string(patchIndex), numJ * numI, proxy));
 	xmlPoints->ZValues = xmlZValues;
 
 	// HDF
 	hsize_t dim[2] = { numJ, numI };
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(),
-		oss3.str(),
+		"points_patch" + std::to_string(patchIndex),
 		zValues,
 		dim, 2);
 

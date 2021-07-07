@@ -57,7 +57,8 @@ void GraphicalInformationSetTest::readRepo() {
 	REQUIRE(graphicalInformationSet->getUuid() == defaultUuid);
 	
 	REQUIRE(graphicalInformationSet->getGraphicalInformationSetCount() == 1);
-	BoundaryFeature* feature = static_cast<BoundaryFeature *>(graphicalInformationSet->getTargetObject(0));
+	REQUIRE(graphicalInformationSet->getTargetObjectCount(0) == 1);
+	BoundaryFeature* feature = static_cast<BoundaryFeature *>(graphicalInformationSet->getTargetObject(0, 0));
 	REQUIRE(feature->getUuid() == uuidHorizon);
 	REQUIRE(graphicalInformationSet->hasGraphicalInformation(feature) == true);
 	REQUIRE(graphicalInformationSet->hasDefaultColor(feature) == true);

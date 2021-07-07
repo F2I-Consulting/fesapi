@@ -50,7 +50,6 @@ void ContinuousPropertyOnWellFrameTest::initRepo() {
 	auto propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
 	RESQML2_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(
 		frame, defaultUuid, defaultTitle,
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::nodes,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
@@ -61,7 +60,6 @@ void ContinuousPropertyOnWellFrameTest::initRepo() {
 	// creating the exotic ContinuousProperty
 	RESQML2_NS::ContinuousProperty* exoticContinuousProperty = repo->createContinuousProperty(
 		frame, exoticUuid, exoticTitle,
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::nodes,
 		"My exotic Uom",
 		propertyKind);

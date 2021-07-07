@@ -24,7 +24,7 @@ namespace RESQML2_NS
 {
 	class HorizonInterpretation;
 	class StratigraphicColumn;
-	class StratigraphicOccurrenceInterpretation;
+	class GeologicUnitOccurrenceInterpretation;
 }
 
 namespace RESQML2_NS
@@ -198,7 +198,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<StratigraphicUnitInterpretation *> getStratigraphicUnitInterpretationSet() const;
 
-		GETTER_DATAOBJECTS(StratigraphicOccurrenceInterpretation, StratigraphicOccurrenceInterpretation)
+		GETTER_DATAOBJECTS(GeologicUnitOccurrenceInterpretation, GeologicUnitOccurrenceInterpretation)
 		
 		/**
 		 * Gets the count of all the contact horizon interpretations which are contained in this

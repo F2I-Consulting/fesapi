@@ -860,7 +860,6 @@ namespace RESQML2_0_1_NS
 	public:
 	};
 	
-	class StratigraphicOccurrenceInterpretation;	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(resqml20_StratigraphicColumnRankInterpretation) StratigraphicColumnRankInterpretation;
 #endif
@@ -897,7 +896,7 @@ namespace RESQML2_0_1_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(resqml20_StratigraphicOccurrenceInterpretation) StratigraphicOccurrenceInterpretation;
 #endif
-	class StratigraphicOccurrenceInterpretation : public RESQML2_NS::StratigraphicOccurrenceInterpretation
+	class StratigraphicOccurrenceInterpretation : public RESQML2_NS::GeologicUnitOccurrenceInterpretation
 	{
 	public:
 	};
@@ -1163,9 +1162,23 @@ namespace RESQML2_0_1_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(resqml20_PropertySet) PropertySet;
 #endif	
-	class PropertySet : public RESQML2_NS::PropertySet
+	class PropertySet : public COMMON_NS::AbstractObject
 	{
 	public:
+		void setParent(PropertySet * parent);
+		PropertySet * getParent() const;
+
+		unsigned int getChildrenCount() const;
+		PropertySet* getChildren(unsigned int index) const;
+
+		void pushBackProperty(RESQML2_NS::AbstractProperty * prop);
+
+		unsigned int getPropertyCount() const;
+		AbstractProperty* getProperty(unsigned int index) const;
+
+		bool hasMultipleRealizations() const;
+		bool hasSinglePropertyKind() const;
+		gsoap_eml2_3::resqml22__TimeSetKind getTimeSetKind() const;
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)

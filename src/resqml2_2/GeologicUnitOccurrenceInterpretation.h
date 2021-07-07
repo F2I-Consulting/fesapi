@@ -18,21 +18,21 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/StratigraphicOccurrenceInterpretation.h"
+#include "../resqml2/GeologicUnitOccurrenceInterpretation.h"
 
 namespace RESQML2_2_NS
 {
 	/**
 	* This class is a container for other organizations that are consistent to each others.
 	*/
-	class StratigraphicOccurrenceInterpretation final : public RESQML2_NS::StratigraphicOccurrenceInterpretation
+	class GeologicUnitOccurrenceInterpretation final : public RESQML2_NS::GeologicUnitOccurrenceInterpretation
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		DLL_IMPORT_OR_EXPORT StratigraphicOccurrenceInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::StratigraphicOccurrenceInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT GeologicUnitOccurrenceInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::GeologicUnitOccurrenceInterpretation(partialObject) {}
 
 		/**
 		 * @brief	Creates an instance of this class in a gsoap context.
@@ -46,15 +46,15 @@ namespace RESQML2_2_NS
 		 * @param 	  	title				A title for the instance to create.
 		 * @param 	  	orderingCriteria	The ordering criteria.
 		 */
-		StratigraphicOccurrenceInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria);
+		GeologicUnitOccurrenceInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		StratigraphicOccurrenceInterpretation(gsoap_eml2_3::_resqml22__StratigraphicOccurrenceInterpretation* fromGsoap) : RESQML2_NS::StratigraphicOccurrenceInterpretation(fromGsoap) {}
+		GeologicUnitOccurrenceInterpretation(gsoap_eml2_3::_resqml22__GeologicUnitOccurrenceInterpretation* fromGsoap) : RESQML2_NS::GeologicUnitOccurrenceInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		~StratigraphicOccurrenceInterpretation() = default;
+		~GeologicUnitOccurrenceInterpretation() = default;
 
 		DLL_IMPORT_OR_EXPORT void setStratigraphicColumnRankInterpretation(RESQML2_NS::StratigraphicColumnRankInterpretation * stratiColumnRankInterp) final;
 
@@ -69,5 +69,10 @@ namespace RESQML2_2_NS
 		* Get the standard XML namespace for serializing this data object.
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
+
+		/** The standard XML tag without XML namespace for serializing this data object. */
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};
 }

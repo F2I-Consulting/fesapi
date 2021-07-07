@@ -31,10 +31,10 @@ under the License.
 #include "../eml2/TimeSeries.h"
 
 #include "AbstractRepresentation.h"
-#include "PropertySet.h"
 #include "AbstractLocal3dCrs.h"
 
 #include "../resqml2_0_1/PropertyKindMapper.h"
+#include "../resqml2_0_1/PropertySet.h"
 
 using namespace RESQML2_NS;
 using namespace std;
@@ -266,9 +266,10 @@ unsigned int AbstractProperty::getElementCountPerValue() const
 		result = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->Count;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		result = static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->ValueCountPerIndexableElement != nullptr
-			? *static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->ValueCountPerIndexableElement
-			: 1;
+		result = static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->ValueCountPerIndexableElement[0];
+		for (size_t dimIndex = 1; dimIndex < static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->ValueCountPerIndexableElement.size(); ++dimIndex) {
+			result *= static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->ValueCountPerIndexableElement[dimIndex];
+		}
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -302,14 +303,14 @@ gsoap_eml2_3::resqml22__IndexableElement AbstractProperty::getAttachmentKind() c
 	throw logic_error("Not implemented yet");
 }
 
-std::vector<RESQML2_NS::PropertySet *> AbstractProperty::getPropertySets() const
+std::vector<RESQML2_0_1_NS::PropertySet *> AbstractProperty::getPropertySets() const
 {
-	return repository->getSourceObjects<RESQML2_NS::PropertySet>(this);
+	return repository->getSourceObjects<RESQML2_0_1_NS::PropertySet>(this);
 }
 
 unsigned int AbstractProperty::getPropertySetCount() const
 {
-	const std::vector<RESQML2_NS::PropertySet *> & propSets = getPropertySets();
+	const std::vector<RESQML2_0_1_NS::PropertySet*>& propSets = getPropertySets();
 
 	if (propSets.size() > (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("Too much property set containing this property");
@@ -318,9 +319,9 @@ unsigned int AbstractProperty::getPropertySetCount() const
 	return static_cast<unsigned int>(propSets.size());
 }
 
-RESQML2_NS::PropertySet * AbstractProperty::getPropertySet(unsigned int index) const
+RESQML2_0_1_NS::PropertySet * AbstractProperty::getPropertySet(unsigned int index) const
 {
-	const std::vector<RESQML2_NS::PropertySet *> & propSets = getPropertySets();
+	const std::vector<RESQML2_0_1_NS::PropertySet*>& propSets = getPropertySets();
 
 	if (index < propSets.size()) {
 		return propSets[index];
@@ -559,13 +560,8 @@ void AbstractProperty::setRealizationIndices(const std::vector<unsigned int> & r
 
 		auto externalArray = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		externalArray->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write realization index null value in this method
-		externalArray->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-		auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-		dsPart->Count = realizationIndices.size();
-		dsPart->StartIndex = 0;
-		dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
-		dsPart->PathInExternalFile = getHdfGroup() + "/RealizationIndices";
-		externalArray->Values->ExternalFileProxy.push_back(dsPart);
+		externalArray->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+		externalArray->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/RealizationIndices", realizationIndices.size(), hdfProxy));
 		static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices = externalArray;
 
 		// HDF

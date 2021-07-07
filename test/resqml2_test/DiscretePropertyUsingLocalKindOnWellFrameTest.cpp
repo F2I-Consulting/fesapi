@@ -53,7 +53,6 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::initRepo()
 	// creating the DiscreteProperty
 	RESQML2_NS::DiscreteProperty* discreteProperty = repo->createDiscreteProperty(
 		frame, defaultUuid, defaultTitle,
-		1,
 		gsoap_eml2_3::resqml22__IndexableElement::intervals,
 		propertyKind);
 	REQUIRE(discreteProperty != nullptr);

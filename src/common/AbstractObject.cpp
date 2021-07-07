@@ -44,12 +44,16 @@ under the License.
 #include "../version_config.h"
 
 #include "../eml2/Activity.h"
-#include "../eml2/AbstractHdfProxy.h"
+#if WITH_RESQML2_2
+	#include "../eml2_3/HdfProxy.h"
+#else
+	#include "../eml2/AbstractHdfProxy.h"
+#endif
 
 using namespace std;
 using namespace COMMON_NS;
 
-char AbstractObject::citationFormat[257] = "[F2I-CONSULTING:fesapi " FESAPI_VERSION "]";
+char AbstractObject::citationFormat[257] = "[F2I-CONSULTING:FESAPI " FESAPI_VERSION "]";
 
 void AbstractObject::cannotBePartial() const
 {
@@ -1260,15 +1264,12 @@ void AbstractObject::readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloa
 {
 	switch (arrayInput->soap_type()) {
 	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray:
-	case SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray:
-	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatExternalArray:
 	{
-		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(arrayInput)->Values->ExternalFileProxy) {
-			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
-			if (hdfProxy == nullptr) {
-				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
-			}
-			hdfProxy->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		size_t offset = 0;
+		for (auto dataArrayPart : static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(arrayInput)->Values->ExternalDataArrayPart) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataArrayPart);
+			hdfProxy->readArrayNdOfDoubleValues(dataArrayPart->PathInExternalFile, arrayOutput + offset);
+			offset += dataArrayPart->Count;
 		}
 		break;
 	}
@@ -1293,6 +1294,16 @@ void AbstractObject::readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloa
 	}
 }
 
+void AbstractObject::readArrayNdOfBooleanValues(gsoap_eml2_3::eml23__BooleanExternalArray const * arrayInput, char * arrayOutput) const
+{
+	size_t offset = 0;
+	for (auto const* dataArrayPart : arrayInput->Values->ExternalDataArrayPart) {
+		EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataArrayPart);
+		hdfProxy->readArrayNdOfCharValues(dataArrayPart->PathInExternalFile, arrayOutput + offset);
+		offset += dataArrayPart->Count;
+	}
+}
+
 uint8_t AbstractObject::readArrayNdOfUInt8Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint8_t * arrayOutput) const
 {
 	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
@@ -1314,15 +1325,14 @@ uint8_t AbstractObject::readArrayNdOfUInt8Values(gsoap_resqml2_0_1::resqml20__Ab
 	return (std::numeric_limits<uint8_t>::max)();
 }
 
-uint8_t AbstractObject::readArrayNdOfUInt8Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint8_t * arrayOutput) const
+uint8_t AbstractObject::readArrayNdOfUInt8Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, uint8_t * arrayOutput) const
 {
 	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
-			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
-			if (hdfProxy == nullptr) {
-				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
-			}
-			hdfProxy->readArrayNdOfUCharValues(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		size_t offset = 0;
+		for (auto const* dataArrayPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataArrayPart);
+			hdfProxy->readArrayNdOfUCharValues(dataArrayPart->PathInExternalFile, arrayOutput + offset);
+			offset += dataArrayPart->Count;
 		}
 		if (static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue > (std::numeric_limits<uint8_t>::max)()) {
 			throw range_error("The null value is greater than uint8_t max.");
@@ -1360,12 +1370,11 @@ uint16_t AbstractObject::readArrayNdOfUInt16Values(gsoap_resqml2_0_1::resqml20__
 uint16_t AbstractObject::readArrayNdOfUInt16Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint16_t * arrayOutput) const
 {
 	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
-			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
-			if (hdfProxy == nullptr) {
-				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
-			}
-			hdfProxy->readArrayNdOfUShortValues(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		size_t offset = 0;
+		for (auto const* dataArrayPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataArrayPart);
+			hdfProxy->readArrayNdOfUShortValues(dataArrayPart->PathInExternalFile, arrayOutput + offset);
+			offset += dataArrayPart->Count;
 		}
 		if (static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue > (std::numeric_limits<uint16_t>::max)()) {
 			throw range_error("The null value is greater than uint16_t max.");
@@ -1382,7 +1391,7 @@ uint16_t AbstractObject::readArrayNdOfUInt16Values(gsoap_eml2_3::eml23__Abstract
 uint32_t AbstractObject::readArrayNdOfUInt32Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint32_t * arrayOutput) const
 {
 	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-		auto const * hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
+		auto const* hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
 		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(hdfArray->Values->HdfProxy->UUID);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
@@ -1403,12 +1412,11 @@ uint32_t AbstractObject::readArrayNdOfUInt32Values(gsoap_resqml2_0_1::resqml20__
 uint32_t AbstractObject::readArrayNdOfUInt32Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint32_t * arrayOutput) const
 {
 	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
-			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
-			if (hdfProxy == nullptr) {
-				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
-			}
-			hdfProxy->readArrayNdOfUIntValues(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		size_t offset = 0;
+		for (auto const* dataArrayPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataArrayPart);
+			hdfProxy->readArrayNdOfUIntValues(dataArrayPart->PathInExternalFile, arrayOutput + offset);
+			offset += dataArrayPart->Count;
 		}
 		if (static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue > (std::numeric_limits<uint32_t>::max)()) {
 			throw range_error("The null value is greater than uint32_t max.");
@@ -1425,7 +1433,7 @@ uint32_t AbstractObject::readArrayNdOfUInt32Values(gsoap_eml2_3::eml23__Abstract
 uint64_t AbstractObject::readArrayNdOfUInt64Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint64_t * arrayOutput) const
 {
 	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-		auto const * hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
+		auto const* hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
 		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(hdfArray->Values->HdfProxy->UUID);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
@@ -1443,12 +1451,11 @@ uint64_t AbstractObject::readArrayNdOfUInt64Values(gsoap_resqml2_0_1::resqml20__
 uint64_t AbstractObject::readArrayNdOfUInt64Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint64_t * arrayOutput) const
 {
 	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
-			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
-			if (hdfProxy == nullptr) {
-				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
-			}
-			hdfProxy->readArrayNdOfUInt64Values(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		size_t offset = 0;
+		for (auto const* dataArrayPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataArrayPart);
+			hdfProxy->readArrayNdOfUInt64Values(dataArrayPart->PathInExternalFile, arrayOutput + offset);
+			offset += dataArrayPart->Count;
 		}
 		return static_cast<uint64_t>(static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue);
 	}
@@ -1462,7 +1469,7 @@ uint64_t AbstractObject::readArrayNdOfUInt64Values(gsoap_eml2_3::eml23__Abstract
 int64_t AbstractObject::readArrayNdOfInt64Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, int64_t * arrayOutput) const
 {
 	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-		auto const * hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
+		auto const* hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
 		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(hdfArray->Values->HdfProxy->UUID);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
@@ -1480,12 +1487,11 @@ int64_t AbstractObject::readArrayNdOfInt64Values(gsoap_resqml2_0_1::resqml20__Ab
 int64_t AbstractObject::readArrayNdOfInt64Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, int64_t * arrayOutput) const
 {
 	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
-			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
-			if (hdfProxy == nullptr) {
-				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
-			}
-			hdfProxy->readArrayNdOfInt64Values(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		size_t offset = 0;
+		for (auto const* dataArrayPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataArrayPart);
+			hdfProxy->readArrayNdOfInt64Values(dataArrayPart->PathInExternalFile, arrayOutput + offset);
+			offset += dataArrayPart->Count;
 		}
 		return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue;
 	}
@@ -1533,8 +1539,8 @@ uint64_t AbstractObject::getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractInt
 	if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 	{
 		uint64_t result = 0;
-		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(arrayInput)->Values->ExternalFileProxy) {
-			result += dsPart->Count;
+		for (auto dataArrayPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(arrayInput)->Values->ExternalDataArrayPart) {
+			result += dataArrayPart->Count;
 		}
 		return result;
 	}
@@ -1580,12 +1586,17 @@ EML2_NS::AbstractHdfProxy* AbstractObject::getHdfProxyFromDataset(gsoap_resqml2_
 	return hdfProxy;
 }
 
-EML2_NS::AbstractHdfProxy* AbstractObject::getHdfProxyFromDataset(gsoap_eml2_3::eml23__ExternalDatasetPart const * dataset, bool throwException) const
+EML2_NS::AbstractHdfProxy* AbstractObject::getOrCreateHdfProxyFromDataArrayPart(gsoap_eml2_3::eml23__ExternalDataArrayPart const * dataArrayPart) const
 {
-	EML2_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->EpcExternalPartReference->Uuid);
-	if (throwException && hdfProxy == nullptr) {
-		throw invalid_argument("The HDF proxy is missing.");
+	EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataArrayPart->URI);
+
+#if WITH_RESQML2_2
+	if (hdfProxy == nullptr) {
+		hdfProxy = new EML2_3_NS::HdfProxy(getRepository(), dataArrayPart->URI, "Fake eml23 HDF Proxy", getEpcSourceFolder(), dataArrayPart->URI);
+		getRepository()->addDataObject(hdfProxy);
 	}
+#endif
+
 	return hdfProxy;
 }
 
@@ -1607,4 +1618,23 @@ gsoap_resqml2_0_1::resqml20__IndexableElements AbstractObject::mapIndexableEleme
 	else {
 		throw std::invalid_argument("The RESQML2.2 indexable element is not part of the RESQML2.2 enumeration.");
 	}
+}
+
+gsoap_eml2_3::eml23__ExternalDataArrayPart* AbstractObject::createExternalDataArrayPart(const std::string& datasetName, ULONG64 count, EML2_NS::AbstractHdfProxy* proxy) const
+{
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+
+	auto dataArrayPart = gsoap_eml2_3::soap_new_eml23__ExternalDataArrayPart(getGsoapContext());
+	dataArrayPart->URI = proxy->getAbsolutePath();
+	dataArrayPart->MimeType = gsoap_eml2_3::soap_new_std__string(gsoapProxy2_3->soap);
+	dataArrayPart->MimeType->assign(EML2_NS::AbstractHdfProxy::MIME_TYPE);
+	dataArrayPart->PathInExternalFile = datasetName;
+	dataArrayPart->StartIndex = 0;
+	dataArrayPart->Count = count;
+	return dataArrayPart;
 }

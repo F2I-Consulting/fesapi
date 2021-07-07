@@ -34,8 +34,8 @@ unsigned int CmpLineFeature::getTraceCount() const
 	}
 	else if (cmpLine->NearestShotPointIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
 		unsigned int result = 0;
-		for (size_t i = 0; i < static_cast<eml23__IntegerExternalArray*>(cmpLine->NearestShotPointIndices)->Values->ExternalFileProxy.size(); ++i) {
-			result += static_cast<eml23__IntegerExternalArray*>(cmpLine->NearestShotPointIndices)->Values->ExternalFileProxy[i]->Count;
+		for (size_t i = 0; i < static_cast<eml23__IntegerExternalArray*>(cmpLine->NearestShotPointIndices)->Values->ExternalDataArrayPart.size(); ++i) {
+			result += static_cast<eml23__IntegerExternalArray*>(cmpLine->NearestShotPointIndices)->Values->ExternalDataArrayPart[i]->Count;
 		}
 		return result;
 	}

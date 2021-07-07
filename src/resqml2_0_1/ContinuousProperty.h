@@ -68,9 +68,12 @@ namespace RESQML2_0_1_NS
 		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
 		 * 										defined in the standard Energistics property type
 		 * 										dictionary.
+		 * @param 	  	dimensions	  			The dimensions of each value of this property. If this parameter
+		 *										is empty, then it is assumed this property is a scalar one.
 		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
+			std::vector<int> dimensions = std::vector<int>());
 
 		/**
 		 * Creates a continuous property which is of a well known unit of measure and a local property
@@ -94,9 +97,12 @@ namespace RESQML2_0_1_NS
 		 * 								to minimize the use of non standard unit of measure.
 		 * @param [in]	localPropKind 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
+		 * @param 	  	dimensions	  	The dimensions of each value of this property. If this parameter
+		 *								is empty, then it is assumed this property is a scalar one.
 		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropKind);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropKind,
+			std::vector<int> dimensions = std::vector<int>());
 
 		/**
 		 * Creates a continuous property which is of a local unit of measure and a well known property
@@ -110,8 +116,6 @@ namespace RESQML2_0_1_NS
 		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
-		 * 										is 1 for a scalar property.
 		 * @param 	  	attachmentKind		   	The topological element on which the property values are
 		 * 										attached to.
 		 * @param 	  	nonStandardUom		   	The property unit of measure. Please check
@@ -121,9 +125,12 @@ namespace RESQML2_0_1_NS
 		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
 		 * 										defined in the standard Energistics property type
 		 * 										dictionary.
+		 * @param 	  	dimensions				The dimensions of each value of this property. If this parameter
+		 *										is empty, then it is assumed this property is a scalar one.
 		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
+			std::vector<int> dimensions = std::vector<int>());
 
 		/**
 		 * Creates a continuous property which is of local unit of measure and property kind.
@@ -136,8 +143,6 @@ namespace RESQML2_0_1_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
-		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
 		 * @param 	  	nonStandardUom	The property unit of measure. Please check
@@ -145,9 +150,12 @@ namespace RESQML2_0_1_NS
 		 * 								to minimize the use of non standard unit of measure.
 		 * @param [in]	localPropKind 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
+		 * @param 	  	dimensions	  	The dimensions of each value of this property. If this parameter
+		 *								is empty, then it is assumed this property is a scalar one.
 		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropKind);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropKind,
+			std::vector<int> dimensions = std::vector<int>());
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
@@ -220,11 +228,13 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	guid		  	The guid to set to the fault. If empty then a new guid will
 		 * 									be generated.
 		 * @param 		  	title		  	A title for the instance to create.
-		 * @param 		  	dimension	  	The dimension of each value (scalar properties == 1).
 		 * @param 		  	attachmentKind	The topological orbit which supports each value.
+		 * @param 	  		dimensions	  	The dimensions of each value of this property. If this parameter
+		 *									is empty, then it is assumed this property is a scalar one.
 		 */
 		void init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind);
+			gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+			std::vector<int> dimensions = std::vector<int>());
 
 		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const;
 

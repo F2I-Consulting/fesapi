@@ -676,6 +676,30 @@ namespace COMMON_NS
 		* @return	The ETP1.2 URI built from the Energistics dataobject
 		*/
 		DLL_IMPORT_OR_EXPORT std::string buildEtp12Uri() const;
+
+		/**
+		* Set the EPC document absolute path or the ETP dataspace URI where this dataobject comes from.
+		*/
+		void setUriSource(const std::string & uriSource) { uriSource_ = uriSource; }
+
+		/**
+		* Get the EPC document absolute path or the ETP dataspace URI where this dataobject comes from.
+		*/
+		DLL_IMPORT_OR_EXPORT const std::string& getUriSource() const { return uriSource_; }
+
+		/**
+		* Get the absolute folder path where the source EPC document is located.
+		* Returns empty if this dataobject does not come from an EPC document.
+		*/
+		std::string getEpcSourceFolder() const {
+			if (uriSource_.find(".epc") != uriSource_.size() - 4 &&
+				uriSource_.find(".EPC") != uriSource_.size() - 4) {
+				return "";
+			}
+
+			const size_t slashPos = uriSource_.find_last_of("/\\");
+			return slashPos != std::string::npos ? uriSource_.substr(0, slashPos + 1) : "";
+		}
 		
 		/**
 		 * Reads the forward relationships of this data object and update the <tt>.rels</tt> of the
@@ -940,6 +964,17 @@ namespace COMMON_NS
 		 * @param [in]	arrayInput 	If non-null, the array input.
 		 * @param [out]	arrayOutput	If non-null, the array output.
 		 *
+		 * @returns	The null value of this array. Default returned value is uint16_t::max
+		 */
+		void readArrayNdOfBooleanValues(gsoap_eml2_3::eml23__BooleanExternalArray const * arrayInput, char * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
 		 * @returns	The null value of this array. Default returned value is uint8_t::max
 		 */
 		uint8_t readArrayNdOfUInt8Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint8_t * arrayOutput) const;
@@ -1105,17 +1140,16 @@ namespace COMMON_NS
 		EML2_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset, bool throwException = true) const;
 
 		/**
-		 * Gets an Hdf Proxy from a EML 2.2 dataset.
+		 * Get or reate an Hdf Proxy from a EML 2.3 data array part.
 		 *
 		 * @exception	std::invalid_argument	If <tt>throwException == true</tt> and the HDF proxy is
 		 * 										missing.
 		 *
-		 * @param 	dataset		  	The dataset.
-		 * @param 	throwException	(Optional) True to throw exception.
+		 * @param 	dataArrayPart  	The EML 2.3 data array part.
 		 *
-		 * @returns	Null if it fails, else the HDF proxy from dataset.
+		 * @returns	The Hdf Proxy from a EML 2.3 data array part.
 		 */
-		EML2_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_eml2_3::eml23__ExternalDatasetPart const * dataset, bool throwException = true) const;
+		EML2_NS::AbstractHdfProxy* getOrCreateHdfProxyFromDataArrayPart(gsoap_eml2_3::eml23__ExternalDataArrayPart const * dataArrayPart) const;
 
 		/**
 		* @return the HDF group where to write the numerical values associated to this object.
@@ -1124,11 +1158,21 @@ namespace COMMON_NS
 			return "/" + getXmlNamespace() + "/" + getUuid();
 		}
 
+		/**
+		* Create an external data array part pointing to a named dataset in an HDF proxy
+		*/
+		gsoap_eml2_3::eml23__ExternalDataArrayPart* createExternalDataArrayPart(const std::string& datasetName, ULONG64 count, EML2_NS::AbstractHdfProxy* proxy = nullptr) const;
+
 		gsoap_resqml2_0_1::resqml20__IndexableElements mapIndexableElement(gsoap_eml2_3::resqml22__IndexableElement toMap) const;
 
 	private:
 		/** The variable which holds the format for all exported Energistics DataObjects. */
 		static char citationFormat[];
+
+		/**
+		* Store either the EPC document absolute path or the ETP dataspace uri where the serialized data object comes from.
+		*/
+		std::string uriSource_;
 
 		/**
 		 * Set a uuid. If the input uuid is empty then a random uuid will be set. It is too dangerous

@@ -33,22 +33,24 @@ using namespace gsoap_eml2_3;
 const char* CategoricalProperty::XML_NS = "resqml22";
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
-	RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * propKind)
+	gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+	RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * propKind,
+	std::vector<int> dimensions)
 {
 	if (strLookup == nullptr) {
 		throw invalid_argument("The string lookup table cannot be null.");
-	}
-	if (dimension == 0) {
-		throw invalid_argument("The dimension cannot be zero.");
 	}
 
 	gsoapProxy2_3 = soap_new_resqml22__CategoricalProperty(rep->getGsoapContext());	
 	_resqml22__CategoricalProperty* prop = static_cast<_resqml22__CategoricalProperty*>(gsoapProxy2_3);
 	prop->IndexableElement = attachmentKind;
-	if (dimension > 1) {
-		prop->ValueCountPerIndexableElement = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_3->soap, sizeof(ULONG64)));
-		*prop->ValueCountPerIndexableElement = dimension;
+	if (dimensions.empty()) {
+		prop->ValueCountPerIndexableElement = { 1 };
+	}
+	else {
+		for (auto dim : dimensions) {
+			prop->ValueCountPerIndexableElement.push_back(dim);
+		}
 	}
 
 	initMandatoryMetadata();
@@ -64,22 +66,24 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 }
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
-	RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * propKind)
+	gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+	RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * propKind,
+	std::vector<int> dimensions)
 {
 	if (dblLookup == nullptr) {
 		throw invalid_argument("The double lookup table cannot be null.");
-	}
-	if (dimension == 0) {
-		throw invalid_argument("The dimension cannot be zero.");
 	}
 
 	gsoapProxy2_3 = soap_new_resqml22__CategoricalProperty(rep->getGsoapContext());
 	_resqml22__CategoricalProperty* prop = static_cast<_resqml22__CategoricalProperty*>(gsoapProxy2_3);
 	prop->IndexableElement = attachmentKind;
-	if (dimension > 1) {
-		prop->ValueCountPerIndexableElement = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_3->soap, sizeof(ULONG64)));
-		*prop->ValueCountPerIndexableElement = dimension;
+	if (dimensions.empty()) {
+		prop->ValueCountPerIndexableElement = { 1 };
+	}
+	else {
+		for (auto dim : dimensions) {
+			prop->ValueCountPerIndexableElement.push_back(dim);
+		}
 	}
 
 	initMandatoryMetadata();

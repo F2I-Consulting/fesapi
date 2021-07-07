@@ -105,7 +105,7 @@ under the License.
 #include "resqml2/SealedVolumeFrameworkRepresentation.h"
 #include "resqml2/StratigraphicColumn.h"
 #include "resqml2/StratigraphicColumnRankInterpretation.h"
-#include "resqml2/StratigraphicOccurrenceInterpretation.h"
+#include "resqml2/GeologicUnitOccurrenceInterpretation.h"
 
 #include "eml2/AbstractHdfProxy.h"
 #include "eml2/PropertyKind.h"
@@ -303,7 +303,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfP
 	}
 #endif
 
-	RESQML2_NS::DiscreteProperty* discreteProp = pck->createDiscreteProperty(w1i1FrameRep, "61c2917c-2334-4205-824e-d4f4a0cf6d8e", "Wellbore1 Interp1 FrameRep IntervalIndex", 1,
+	RESQML2_NS::DiscreteProperty* discreteProp = pck->createDiscreteProperty(w1i1FrameRep, "61c2917c-2334-4205-824e-d4f4a0cf6d8e", "Wellbore1 Interp1 FrameRep IntervalIndex",
 		gsoap_eml2_3::resqml22__IndexableElement::intervals, unitNumberPropType);
 	char unitNumbers[5] = { 0, 1, 2, 3, 4 };
 	discreteProp->pushBackCharHdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
@@ -411,7 +411,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 
 	// creating a new discrete property of type propType1 without associating it to a discrete color map.
 	// Thus, its associated discrete color map remains the one associated to propType1
-	RESQML2_NS::DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(ijkgrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex", 1,
+	RESQML2_NS::DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(ijkgrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex",
 		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
 	unsigned short prop2Values[2] = { 0, 1 };
 	discreteProp2->pushBackUShortHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, -1);
@@ -432,8 +432,8 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 		1., 1.);
 
 	auto standardOrientationPropKind = repo->createPropertyKind("b8e9afa0-7930-483b-931f-e5cf2008d03b", "orientation", gsoap_eml2_1::eml21__QuantityClassKind::plane_x0020angle);
-	contColMapContProp = repo->createContinuousProperty(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map", 2,
-		gsoap_eml2_3::resqml22__IndexableElement::nodes, "continuousColorMapIndex", standardOrientationPropKind);
+	contColMapContProp = repo->createContinuousProperty(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map",
+		gsoap_eml2_3::resqml22__IndexableElement::nodes, "continuousColorMapIndex", standardOrientationPropKind, { (int)numPointsInSlowestDirection , (int)numPointInFastestDirection });
 	std::unique_ptr<double[]> values(new double[numPointInFastestDirection * numPointsInSlowestDirection]);
 	for (size_t slowestIndex = 0; slowestIndex < numPointsInSlowestDirection; ++slowestIndex) {
 		for (size_t fastestIndex = 0; fastestIndex < numPointInFastestDirection; ++fastestIndex) {
@@ -530,13 +530,13 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, EML2_NS:
 	//Region 2
 	std::vector<unsigned int> region2RepIndices = { 1, 0, 0, 2, 3, 5, 6 }; // face order => top, x plus, btm, x minus, y minus, y plus
 	std::vector<unsigned int> region2PatchIndices = { 0, 1, 2, 0, 0, 0, 0 };
-	bool region2Sides[7] = { false, false, false, true, true, true, true }; //Top face is true, bottom face is false and Frontiers are always on true side flag in this example.
+	char region2Sides[7] = { false, false, false, true, true, true, true }; //Top face is true, bottom face is false and Frontiers are always on true side flag in this example.
 	svf->pushBackVolumeRegion(stratiUnitB1Interp, 7, region2RepIndices.data(), region2PatchIndices.data(), region2Sides);
 
 	//Region 5
 	std::vector<unsigned int> region5RepIndices = { 1, 4, 2, 0, 0, 5, 6 };
 	std::vector<unsigned int> region5PatchIndices = { 1, 0, 1, 3, 2, 1, 1 };
-	bool region5Sides[7] = { false, true, true, true, true, true, true };
+	char region5Sides[7] = { false, true, true, true, true, true, true };
 	svf->pushBackVolumeRegion(stratiUnitB1Interp, 7, region5RepIndices.data(), region5PatchIndices.data(), region5Sides);
 }
 
@@ -740,7 +740,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 		propType1 = pck->createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", gsoap_eml2_1::eml21__QuantityClassKind::length);
 	}
 #endif
-	RESQML2_NS::ContinuousProperty* contProp1 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 1,
+	RESQML2_NS::ContinuousProperty* contProp1 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1",
 		gsoap_eml2_3::resqml22__IndexableElement::nodes, "exoticMeter", propType1);
 	float prop1Values[16] = { 301, 302, 301, 302, 351, 352, 351, 352, 301, 302, 301, 302, 351, 352, 351, 352 };
 	contProp1->pushBackFloatHdf5Array2dOfValues(prop1Values, 2, 8, hdfProxy);
@@ -754,7 +754,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 		propType2 = pck->createPropertyKind("7372f8f6-b1fd-4263-b9a8-699d9cbf7da6", "propType2", gsoap_eml2_1::eml21__QuantityClassKind::thermodynamic_x0020temperature);
 	}
 #endif
-	RESQML2_NS::ContinuousProperty* contProp2 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "d3efb337-19f8-4b91-8b4f-3698afe17f01", "Horizon1 Interp1 Grid2dRep Prop2", 1,
+	RESQML2_NS::ContinuousProperty* contProp2 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "d3efb337-19f8-4b91-8b4f-3698afe17f01", "Horizon1 Interp1 Grid2dRep Prop2",
 		gsoap_eml2_3::resqml22__IndexableElement::nodes, gsoap_resqml2_0_1::resqml20__ResqmlUom::ft, propType2);
 	double prop2Values[8] = { 302, 302, 352, 352, 302, 302, 352, 352 };
 	contProp2->pushBackDoubleHdf5Array1dOfValues(prop2Values, 8, hdfProxy);
@@ -826,7 +826,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	ijkgridParametricNotSameLineKindCopy->setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(gsoap_resqml2_0_1::resqml20__PillarShape::straight, gsoap_resqml2_0_1::resqml20__KDirection::down, false,
 		hdfDatasetPrefix + "/PointParameters", hdfDatasetPrefix + "/ControlPoints", hdfDatasetPrefix + "/controlPointParameters", 3, hdfDatasetPrefix + "/LineKindIndices", hdfDatasetPrefix + "/PillarGeometryIsDefined", hdfProxy,
 		2, hdfDatasetPrefix + "/PillarIndices",
-		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + ELEMENTS_DS_NAME);
+		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME);
 
 	// 4*3*2 explicit grid Left Handed
 	RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid432 = pck->createIjkGridExplicitRepresentation("e96c2bde-e3ae-4d51-b078-a8e57fb1e667", "Four by Three by Two Left Handed", 4, 3, 2);
@@ -1011,27 +1011,29 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
 	}
 #endif
-	discreteProp1 = pck->createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
+	discreteProp1 = pck->createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex",
 		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
 	unsigned short prop1Values[2] = { 0, 1 };
 	discreteProp1->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
-	RESQML2_NS::DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(ijkgrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex", 1,
+	RESQML2_NS::DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(ijkgrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex",
 		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
 	int64_t prop2Values[2] = { 10, 11 };
 	discreteProp2->pushBackLongHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
 
-	RESQML2_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true,gsoap_eml2_3::resqml22__TimeSetKind::not_x0020a_x0020time_x0020set);
-	propSet->pushBackProperty(discreteProp1);
-	propSet->pushBackProperty(discreteProp2);
+	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		RESQML2_0_1_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true, gsoap_eml2_3::resqml22__TimeSetKind::not_x0020a_x0020time_x0020set);
+		propSet->pushBackProperty(discreteProp1);
+		propSet->pushBackProperty(discreteProp2);
+	}
 
-	RESQML2_NS::DiscreteProperty* discreteProp1OnIjkgridParametric = pck->createDiscreteProperty(ijkgridParametric, "eb3dbf6c-5745-4e41-9d09-672f6fbab414", "Four sugar cubes cellIndex", 1,
+	RESQML2_NS::DiscreteProperty* discreteProp1OnIjkgridParametric = pck->createDiscreteProperty(ijkgridParametric, "eb3dbf6c-5745-4e41-9d09-672f6fbab414", "Four sugar cubes cellIndex",
 		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
 	unsigned short prop1ValuesOnIjkgridParametric[4] = { 0, 1, 2, 3 };
 	discreteProp1OnIjkgridParametric->pushBackUShortHdf5Array3dOfValues(prop1ValuesOnIjkgridParametric, 2, 1, 2, hdfProxy, 1111, 0, 3);
 	//Move this prop to another same ninjnk ijk grid
 	discreteProp1OnIjkgridParametric->setRepresentation(ijkgridParametricNotSameLineKind);
 
-	RESQML2_NS::DiscreteProperty* discreteProp432 = pck->createDiscreteProperty(ijkgrid432, "f9447f76-34c5-4967-a3ee-4f400f96dba6", "4x3x2 grid cellIndex", 1,
+	RESQML2_NS::DiscreteProperty* discreteProp432 = pck->createDiscreteProperty(ijkgrid432, "f9447f76-34c5-4967-a3ee-4f400f96dba6", "4x3x2 grid cellIndex",
 		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
 	LONG64 discreteProp432Values[24] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
@@ -1055,11 +1057,11 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	timeSeries->pushBackTimestamp(1409753895);
 	timeSeries->pushBackTimestamp(1441289895);
 	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-		RESQML2_NS::ContinuousProperty* continuousPropTime0 = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
+		RESQML2_NS::ContinuousProperty* continuousPropTime0 = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property",
 			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
-		RESQML2_NS::ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
+		RESQML2_NS::ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property",
 			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
-		RESQML2_NS::ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property ", 1,
+		RESQML2_NS::ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property ",
 			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 		continuousPropTime0->setTimeIndices(0, 1, timeSeries);
 		double valuesTime0[2] = { 0, 1 };
@@ -1081,7 +1083,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 			standardLengthPropKind = pck->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
 		}
 #endif
-		RESQML2_NS::ContinuousProperty* dynamicContinuousProp = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
+		RESQML2_NS::ContinuousProperty* dynamicContinuousProp = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property",
 			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, standardLengthPropKind);
 		dynamicContinuousProp->setTimeIndices(0, 3, timeSeries);
 		double valuesTime[6] = { 0, 1, 2, 3, 3, 4 };
@@ -1097,12 +1099,12 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	RESQML2_NS::StringTableLookup* stringTableLookup = pck->createStringTableLookup("62245eb4-dbf4-4871-97de-de9e4f4597be", "My String Table Lookup");
 	stringTableLookup->addValue("Cell index 0", 0);
 	stringTableLookup->addValue("Cell index 1", 1);
-	RESQML2_NS::CategoricalProperty* categoricalProp = pck->createCategoricalProperty(ijkgrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)", 1,
+	RESQML2_NS::CategoricalProperty* categoricalProp = pck->createCategoricalProperty(ijkgrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)",
 		gsoap_eml2_3::resqml22__IndexableElement::cells, stringTableLookup, propType1);
 	categoricalProp->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
 
 	// Relative permeability
-	RESQML2_NS::ContinuousProperty* waterSat = pck->createContinuousProperty(ijkgrid, "cbbc24b1-9a4b-4088-9d0e-e254088d3840", "Water saturation", 1,
+	RESQML2_NS::ContinuousProperty* waterSat = pck->createContinuousProperty(ijkgrid, "cbbc24b1-9a4b-4088-9d0e-e254088d3840", "Water saturation",
 		gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::_x0025, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::saturation);
 	double waterSatValues[2] = { 0.35, 0.85 };
 	waterSat->pushBackDoubleHdf5Array3dOfValues(waterSatValues, 2, 1, 1, hdfProxy);
@@ -1112,7 +1114,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	waterRelPermTable->addValue(0.22, 0.005);
 	waterRelPermTable->addValue(0.75, 0.46);
 	waterRelPermTable->addValue(1.0, 1.0);
-	RESQML2_NS::CategoricalProperty* waterRelPerm = pck->createCategoricalProperty(ijkgrid, "dd4eae66-fe52-4086-a023-5b2c423543d5", "Water Relative Permeability", 1,
+	RESQML2_NS::CategoricalProperty* waterRelPerm = pck->createCategoricalProperty(ijkgrid, "dd4eae66-fe52-4086-a023-5b2c423543d5", "Water Relative Permeability",
 		gsoap_eml2_3::resqml22__IndexableElement::cells, waterRelPermTable, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::relative_x0020permeability);
 	waterRelPerm->pushBackRefToExistingFloatingPointDataset(nullptr, "/resqml20/cbbc24b1-9a4b-4088-9d0e-e254088d3840/values_patch0");
 
@@ -1120,8 +1122,8 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	// Points Properties
 	//**************
 
-	RESQML2_NS::PointsProperty* pointsProp = pck->createPointsProperty(ijkgrid, "fdf3e92b-1ac2-4589-832d-69ee7c167db7", "Cell center", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, local3dCrs);
+	RESQML2_NS::PointsProperty* pointsProp = pck->createPointsProperty(ijkgrid, "fdf3e92b-1ac2-4589-832d-69ee7c167db7", "Cell center",
+		gsoap_eml2_3::resqml22__IndexableElement::cells, local3dCrs, propType1);
 	double cellCenters[6] = { 185, 75, 400, 560, 75, 450 };
 	pointsProp->pushBackArray3dOfXyzPoints(cellCenters, 2, 1, 1, hdfProxy);
 
@@ -1144,7 +1146,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 
 	// Partial transfer
 	RESQML2_NS::UnstructuredGridRepresentation* partialGrid = pck->createPartial<RESQML2_0_1_NS::UnstructuredGridRepresentation>("5cc3ee47-4bd5-4d82-ae3e-ed64e6d8d1eb", "Partial Grid");
-	RESQML2_NS::ContinuousProperty* continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "Testing partial property", 1,
+	RESQML2_NS::ContinuousProperty* continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "Testing partial property",
 		gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
 	continuousProp1->pushBackDoubleHdf5Array1dOfValues(continuousProp1Values, 6, hdfProxy);
@@ -1185,7 +1187,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
 
 		// Create the property
-		RESQML2_NS::ContinuousProperty* unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyhedra property", 1,
+		RESQML2_NS::ContinuousProperty* unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyhedra property",
 			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 
 		// Fill the property
@@ -1202,7 +1204,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 			standardLengthPropKind = pck->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
 		}
 #endif
-		RESQML2_NS::ContinuousProperty* unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyhedra property", 1,
+		RESQML2_NS::ContinuousProperty* unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyhedra property",
 			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, standardLengthPropKind);
 
 		// Fill the property
@@ -2539,9 +2541,9 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 		RESQML2_NS::AbstractProperty const * prop = propertySet[propIndex];
 		showAllMetadata(prop, "\t");
 
-		std::vector<RESQML2_NS::PropertySet *> propSets = prop->getPropertySets();
+		std::vector<RESQML2_0_1_NS::PropertySet *> propSets = prop->getPropertySets();
 		for (size_t propSetIndex = 0; propSetIndex < propSets.size(); ++propSetIndex) {
-			RESQML2_NS::PropertySet* propSet = propSets[propSetIndex];
+			RESQML2_0_1_NS::PropertySet* propSet = propSets[propSetIndex];
 			std::cout << "\tContained in property set : ";
 			showAllMetadata(propSet, "\t");
 		}
@@ -2743,7 +2745,7 @@ void deserializeStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn, con
 			showAllMetadata(stratiColumnRankInterp->getDirectObjectOfContact(contactIndex));
 		}
 
-		vector<RESQML2_NS::StratigraphicOccurrenceInterpretation*> soiSet = stratiColumnRankInterp->getStratigraphicOccurrenceInterpretationSet();
+		vector<RESQML2_NS::GeologicUnitOccurrenceInterpretation*> soiSet = stratiColumnRankInterp->getGeologicUnitOccurrenceInterpretationSet();
 		for (size_t soiIndex = 0; soiIndex < soiSet.size(); ++soiIndex) {
 			vector<RESQML2_NS::WellboreMarkerFrameRepresentation *> markerFrameSet = soiSet[soiIndex]->getWellboreMarkerFrameRepresentationSet();
 			for (size_t markerFrameIndex = 0; markerFrameIndex < markerFrameSet.size(); ++markerFrameIndex) {
@@ -4643,61 +4645,64 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 		EML2_3_NS::GraphicalInformationSet* graphicalInformationSet = gisSet[gisIndex];
 		for (unsigned int i = 0; i < graphicalInformationSet->getGraphicalInformationSetCount(); ++i)
 		{
-			COMMON_NS::AbstractObject* targetObject = graphicalInformationSet->getTargetObject(i);
+			for (unsigned int targetIndex = 0; targetIndex < graphicalInformationSet->getTargetObjectCount(i); ++targetIndex)
+			{
+				COMMON_NS::AbstractObject const* targetObject = graphicalInformationSet->getTargetObject(i, targetIndex);
 
-			std::cout << "graphical information for: " << targetObject->getTitle() << std::endl;
+				std::cout << "graphical information for: " << targetObject->getTitle() << std::endl;
 
-			if (graphicalInformationSet->hasDefaultColor(targetObject)) {
-				std::cout << "default hue: " << graphicalInformationSet->getDefaultHue(targetObject) << std::endl;
-				std::cout << "default saturation: " << graphicalInformationSet->getDefaultSaturation(targetObject) << std::endl;
-				std::cout << "default value: " << graphicalInformationSet->getDefaultValue(targetObject) << std::endl;
-				std::cout << "default alpha: " << graphicalInformationSet->getDefaultAlpha(targetObject) << std::endl;
-				if (graphicalInformationSet->hasDefaultColorTitle(targetObject)) {
-					std::cout << "default color title: " << graphicalInformationSet->getDefaultColorTitle(targetObject) << std::endl;
-				}
-			}
-
-			if (graphicalInformationSet->hasDiscreteColorMap(targetObject)) {
-				RESQML2_NS::DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(targetObject);
-				std::cout << "discrete color map title: " << discreteColorMap->getTitle() << std::endl;
-				unsigned int r, g, b;
-				for (unsigned int colorIndex = 0; colorIndex < discreteColorMap->getColorCount(); ++colorIndex) {
-					discreteColorMap->getRgbColor(colorIndex, r, g, b);
-					std::cout << colorIndex << ": (" << r << ", " << g << ", " << b << ", ";
-					std::cout << discreteColorMap->getAlpha(colorIndex);
-					if (discreteColorMap->hasColorTitle(colorIndex)) {
-						std::cout << ", " << discreteColorMap->getColorTitle(colorIndex);
+				if (graphicalInformationSet->hasDefaultColor(targetObject)) {
+					std::cout << "default hue: " << graphicalInformationSet->getDefaultHue(targetObject) << std::endl;
+					std::cout << "default saturation: " << graphicalInformationSet->getDefaultSaturation(targetObject) << std::endl;
+					std::cout << "default value: " << graphicalInformationSet->getDefaultValue(targetObject) << std::endl;
+					std::cout << "default alpha: " << graphicalInformationSet->getDefaultAlpha(targetObject) << std::endl;
+					if (graphicalInformationSet->hasDefaultColorTitle(targetObject)) {
+						std::cout << "default color title: " << graphicalInformationSet->getDefaultColorTitle(targetObject) << std::endl;
 					}
-					std::cout << ")" << std::endl;
 				}
-				if (graphicalInformationSet->hasColorMapMinMax(targetObject)) {
-					std::cout << "min: " << graphicalInformationSet->getColorMapMin(targetObject) << std::endl;
-					std::cout << "max: " << graphicalInformationSet->getColorMapMax(targetObject) << std::endl;
-				}
-				if (graphicalInformationSet->hasValueVectorIndex(targetObject)) {
-					std::cout << "value vector index: " << graphicalInformationSet->getValueVectorIndex(targetObject) << std::endl;
-				}
-			}
 
-			if (graphicalInformationSet->hasContinuousColorMap(targetObject)) {
-				RESQML2_NS::ContinuousColorMap* continuousColorMap = graphicalInformationSet->getContinuousColorMap(targetObject);
-				std::cout << "continuous color map title: " << continuousColorMap->getTitle() << std::endl;
-				unsigned int r, g, b;
-				for (unsigned int mapIndex = 0; mapIndex < continuousColorMap->getColorCount(); ++mapIndex) {
-					continuousColorMap->getRgbColor(mapIndex, r, g, b);
-					std::cout << mapIndex << ": (" << r << ", " << g << ", " << b << ", ";
-					std::cout << continuousColorMap->getAlpha(mapIndex);
-					if (continuousColorMap->hasColorTitle(mapIndex)) {
-						std::cout << ", " << continuousColorMap->getColorTitle(mapIndex);
+				if (graphicalInformationSet->hasDiscreteColorMap(targetObject)) {
+					RESQML2_NS::DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(targetObject);
+					std::cout << "discrete color map title: " << discreteColorMap->getTitle() << std::endl;
+					unsigned int r, g, b;
+					for (unsigned int colorIndex = 0; colorIndex < discreteColorMap->getColorCount(); ++colorIndex) {
+						discreteColorMap->getRgbColor(colorIndex, r, g, b);
+						std::cout << colorIndex << ": (" << r << ", " << g << ", " << b << ", ";
+						std::cout << discreteColorMap->getAlpha(colorIndex);
+						if (discreteColorMap->hasColorTitle(colorIndex)) {
+							std::cout << ", " << discreteColorMap->getColorTitle(colorIndex);
+						}
+						std::cout << ")" << std::endl;
 					}
-					std::cout << ")" << std::endl;
+					if (graphicalInformationSet->hasColorMapMinMax(targetObject)) {
+						std::cout << "min: " << graphicalInformationSet->getColorMapMin(targetObject) << std::endl;
+						std::cout << "max: " << graphicalInformationSet->getColorMapMax(targetObject) << std::endl;
+					}
+					if (graphicalInformationSet->hasValueVectorIndex(targetObject)) {
+						std::cout << "value vector index: " << graphicalInformationSet->getValueVectorIndex(targetObject) << std::endl;
+					}
 				}
-				if (graphicalInformationSet->hasColorMapMinMax(targetObject)) {
-					std::cout << "min: " << graphicalInformationSet->getColorMapMin(targetObject) << std::endl;
-					std::cout << "max: " << graphicalInformationSet->getColorMapMax(targetObject) << std::endl;
-				}
-				if (graphicalInformationSet->hasValueVectorIndex(targetObject)) {
-					std::cout << "value vector index: " << graphicalInformationSet->getValueVectorIndex(targetObject) << std::endl;
+
+				if (graphicalInformationSet->hasContinuousColorMap(targetObject)) {
+					RESQML2_NS::ContinuousColorMap* continuousColorMap = graphicalInformationSet->getContinuousColorMap(targetObject);
+					std::cout << "continuous color map title: " << continuousColorMap->getTitle() << std::endl;
+					unsigned int r, g, b;
+					for (unsigned int mapIndex = 0; mapIndex < continuousColorMap->getColorCount(); ++mapIndex) {
+						continuousColorMap->getRgbColor(mapIndex, r, g, b);
+						std::cout << mapIndex << ": (" << r << ", " << g << ", " << b << ", ";
+						std::cout << continuousColorMap->getAlpha(mapIndex);
+						if (continuousColorMap->hasColorTitle(mapIndex)) {
+							std::cout << ", " << continuousColorMap->getColorTitle(mapIndex);
+						}
+						std::cout << ")" << std::endl;
+					}
+					if (graphicalInformationSet->hasColorMapMinMax(targetObject)) {
+						std::cout << "min: " << graphicalInformationSet->getColorMapMin(targetObject) << std::endl;
+						std::cout << "max: " << graphicalInformationSet->getColorMapMax(targetObject) << std::endl;
+					}
+					if (graphicalInformationSet->hasValueVectorIndex(targetObject)) {
+						std::cout << "value vector index: " << graphicalInformationSet->getValueVectorIndex(targetObject) << std::endl;
+					}
 				}
 			}
 		}
@@ -4842,16 +4847,22 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 		else
 			std::cout << "This 3d grid has no geometry." << std::endl;
 
-		if (ijkGrid->getInterpretation())
+		if (ijkGrid->getInterpretation() != nullptr)
 		{
 			std::cout << "Interpretation is : " << ijkGrid->getInterpretation()->getTitle() << std::endl;
-			if (ijkGrid->getInterpretation()->getInterpretedFeature())
-				std::cout << "Feature is : " << ijkGrid->getInterpretation()->getInterpretedFeature()->getTitle() << std::endl;
-			else
-				std::cout << " NO Feature" << std::endl;
+			if (!ijkGrid->getInterpretation()->isPartial()) {
+				if (ijkGrid->getInterpretation()->getInterpretedFeature())
+					std::cout << "Feature is : " << ijkGrid->getInterpretation()->getInterpretedFeature()->getTitle() << std::endl;
+				else
+					std::cout << "NO Feature" << std::endl;
+			}
+			else {
+				std::cout << "Feature is partial" << std::endl;
+			}
 		}
-		else
+		else {
 			std::cout << " NO interpretation" << std::endl;
+		}
 
 		for (unsigned int subRepIndex = 0; subRepIndex < ijkGrid->getFaultSubRepresentationCount(); ++subRepIndex)
 		{

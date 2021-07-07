@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "StratigraphicOccurrenceInterpretation.h"
+#include "GeologicUnitOccurrenceInterpretation.h"
 
 #include <stdexcept>
 
@@ -27,16 +27,17 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
-const char* StratigraphicOccurrenceInterpretation::XML_NS = "resqml22";
+const char* GeologicUnitOccurrenceInterpretation::XML_NS = "resqml22";
+const char* GeologicUnitOccurrenceInterpretation::XML_TAG = "GeologicUnitOccurrenceInterpretation";
 
-StratigraphicOccurrenceInterpretation::StratigraphicOccurrenceInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria)
+GeologicUnitOccurrenceInterpretation::GeologicUnitOccurrenceInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria)
 {
 	if (orgFeat == nullptr) {
 		throw invalid_argument("The interpreted organization feature cannot be null.");
 	}
 
-	gsoapProxy2_3 = soap_new_resqml22__StratigraphicOccurrenceInterpretation(orgFeat->getGsoapContext());
-	static_cast<_resqml22__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_3)->OrderingCriteria = static_cast<resqml22__OrderingCriteria>(orderingCriteria);
+	gsoapProxy2_3 = soap_new_resqml22__GeologicUnitOccurrenceInterpretation(orgFeat->getGsoapContext());
+	static_cast<_resqml22__GeologicUnitOccurrenceInterpretation*>(gsoapProxy2_3)->AscendingOrderingCriteria = static_cast<resqml22__OrderingCriteria>(orderingCriteria);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -45,15 +46,15 @@ StratigraphicOccurrenceInterpretation::StratigraphicOccurrenceInterpretation(RES
 	setInterpretedFeature(orgFeat);
 }
 
-void StratigraphicOccurrenceInterpretation::setStratigraphicColumnRankInterpretation(RESQML2_NS::StratigraphicColumnRankInterpretation * stratiColumnRankInterp)
+void GeologicUnitOccurrenceInterpretation::setStratigraphicColumnRankInterpretation(RESQML2_NS::StratigraphicColumnRankInterpretation * stratiColumnRankInterp)
 {
 	getRepository()->addRelationship(this, stratiColumnRankInterp);
 
-	_resqml22__StratigraphicOccurrenceInterpretation* interp = static_cast<_resqml22__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_3);
+	_resqml22__GeologicUnitOccurrenceInterpretation* interp = static_cast<_resqml22__GeologicUnitOccurrenceInterpretation*>(gsoapProxy2_3);
 	interp->IsOccurrenceOf = stratiColumnRankInterp->newEml23Reference();
 }
 
-COMMON_NS::DataObjectReference StratigraphicOccurrenceInterpretation::getStratigraphicColumnRankInterpretationDor() const
+COMMON_NS::DataObjectReference GeologicUnitOccurrenceInterpretation::getStratigraphicColumnRankInterpretationDor() const
 {
-	return COMMON_NS::DataObjectReference(static_cast<_resqml22__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_3)->IsOccurrenceOf);
+	return COMMON_NS::DataObjectReference(static_cast<_resqml22__GeologicUnitOccurrenceInterpretation*>(gsoapProxy2_3)->IsOccurrenceOf);
 }

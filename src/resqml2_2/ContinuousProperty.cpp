@@ -34,18 +34,19 @@ using namespace gsoap_eml2_3;
 const char* ContinuousProperty::XML_NS = "resqml22";
 
 void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind)
+	gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+	std::vector<int> dimensions)
 {
-	if (dimension == 0) {
-		throw invalid_argument("The dimension cannot be zero.");
-	}
-
 	gsoapProxy2_3 = soap_new_resqml22__ContinuousProperty(rep->getGsoapContext());
 	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
 	prop->IndexableElement = attachmentKind;
-	if (dimension > 1) {
-		prop->ValueCountPerIndexableElement = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_3->soap, sizeof(ULONG64)));
-		*prop->ValueCountPerIndexableElement = dimension;
+	if (dimensions.empty()) {
+		prop->ValueCountPerIndexableElement = { 1 };
+	}
+	else {
+		for (auto dim : dimensions) {
+			prop->ValueCountPerIndexableElement.push_back(dim);
+		}
 	}
 
 	initMandatoryMetadata();
@@ -56,9 +57,10 @@ void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const st
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropKind)
+	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropKind,
+	std::vector<int> dimensions)
 {
-	init(rep, guid, title, dimension, attachmentKind);
+	init(rep, guid, title, attachmentKind, dimensions);
 
 	static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3)->Uom = gsoap_resqml2_0_1::soap_resqml20__ResqmlUom2s(gsoapProxy2_3->soap, uom);
 
@@ -66,9 +68,10 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropKind)
+	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropKind,
+	std::vector<int> dimensions)
 {
-	init(rep, guid, title, dimension, attachmentKind);
+	init(rep, guid, title, attachmentKind, dimensions);
 
 	static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3)->Uom = nonStandardUom;
 

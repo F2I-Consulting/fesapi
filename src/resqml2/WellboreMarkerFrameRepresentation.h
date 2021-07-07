@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	class StratigraphicOccurrenceInterpretation;
+	class GeologicUnitOccurrenceInterpretation;
 	class WellboreMarker;
 
 	/** @brief	A well log frame where each entry represents a well marker. */
@@ -36,14 +36,14 @@ namespace RESQML2_NS
 		GETTER_DATAOBJECTS(WellboreMarker, WellboreMarker)
 
 		/**
-		 * @brief	Sets stratigraphic occurrence interpretation associated to this wellbore marker frame
+		 * @brief	Sets geologic unit occurrence occurrence interpretation associated to this wellbore marker frame
 		 * 			representation.
 		 *
-		 * @exception	std::invalid_argument	If @p stratiOccurenceInterp is @c nullptr.
+		 * @exception	std::invalid_argument	If @p occurrenceInterp is @c nullptr.
 		 *
-		 * @param [in]	stratiOccurrenceInterp	The stratigraphic occurrence interpretation to set.
+		 * @param [in]	occurrenceInterp	The geologic unit occurrence occurrence interpretation to set.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setStratigraphicOccurrenceInterpretation(StratigraphicOccurrenceInterpretation * stratiOccurrenceInterp) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setGeologicUnitOccurrenceInterpretation(GeologicUnitOccurrenceInterpretation * occurrenceInterp) = 0;
 
 		/**
 		 * @brief	Sets the correspondence between the intervals of this wellbore marker frame
@@ -62,31 +62,31 @@ namespace RESQML2_NS
 		 * 											correspondence between stratigraphic units and a
 		 * 											particular interval (e.g., within salt, use this null
 		 * 											value).
-		 * @param [in]	  	stratiOccurrenceInterp	The stratigraphic occurrence interpretation to
+		 * @param [in]	  	occurrenceInterp		The geologic unit occurrence interpretation to
 		 * 											associate to this wellbore marker frame
 		 * 											representation.
 		 * @param [in,out]	proxy				  	The HDF proxy where the numerical values (indices)
 		 * 											are stored.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, StratigraphicOccurrenceInterpretation* stratiOccurrenceInterp, EML2_NS::AbstractHdfProxy* proxy) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, GeologicUnitOccurrenceInterpretation* occurrenceInterp, EML2_NS::AbstractHdfProxy* proxy) = 0;
 
 		/**
-		 * Gets the DOR of the stratigraphic occurrence interpretation associated to this wellbore
+		 * Gets the DOR of the geologic unit occurrence interpretation associated to this wellbore
 		 * marker frame representation.
 		 *
-		 * @returns	The DOR of the associated stratigraphic occurrence interpretation if there is one,
+		 * @returns	The DOR of the associated geologic unit occurrence interpretation if there is one,
 		 * 			else empty DOR if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStratigraphicOccurrenceInterpretationDor() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getGeologicUnitOccurrenceInterpretationDor() const = 0;
 
 		/**
-		 * Gets the stratigraphic occurrence interpretation associated to this wellbore marker frame
+		 * Gets the geologic unit occurrence interpretation associated to this wellbore marker frame
 		 * representation.
 		 *
-		 * @returns	The associated stratigraphic occurrence interpretation if there is one, else @c
+		 * @returns	The associated geologic unit occurrence interpretation if there is one, else @c
 		 * 			nullptr if not.
 		 */
-		DLL_IMPORT_OR_EXPORT StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation() const;
+		DLL_IMPORT_OR_EXPORT GeologicUnitOccurrenceInterpretation* getGeologicUnitOccurrenceInterpretation() const;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

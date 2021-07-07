@@ -29,23 +29,9 @@ EML2_NS::AbstractHdfProxy* HdfProxyFactory::make(const DataObjectReference& dor)
 	const std::string contentType = dor.getContentType();
 	if (contentType.find("version=2.0") != std::string::npos) {
 		return new EML2_0_NS::HdfProxy(dor);
-}
-#if WITH_RESQML2_2
-	else if (contentType.find("version=2.3") != std::string::npos) {
-		return new EML2_3_NS::HdfProxy(dor);
 	}
-#endif
 
 	throw std::logic_error("Not implemented yet.");
-}
-
-EML2_NS::AbstractHdfProxy* HdfProxyFactory::make(gsoap_eml2_3::_eml23__EpcExternalPartReference* fromGsoap)
-{
-#if WITH_RESQML2_2
-	return new EML2_3_NS::HdfProxy(fromGsoap);
-#else
-	throw std::logic_error("No support for EML2.3 has been built");
-#endif
 }
 
 EML2_NS::AbstractHdfProxy* HdfProxyFactory::make(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
@@ -61,7 +47,11 @@ EML2_NS::AbstractHdfProxy* HdfProxyFactory::make(COMMON_NS::DataObjectRepository
 		return new EML2_0_NS::HdfProxy(repo, guid, title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
 #if WITH_RESQML2_2
 	case COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3:
-		return new EML2_3_NS::HdfProxy(repo, guid, title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
+	{
+		auto* result = new EML2_3_NS::HdfProxy(repo, "", title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
+		repo->addDataObject(result);
+		return result;
+	}
 #endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");

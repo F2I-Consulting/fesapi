@@ -38,18 +38,19 @@ using namespace gsoap_eml2_3;
 const char* DiscreteProperty::XML_NS = "resqml22";
 
 DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropKind)
+	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropKind,
+	std::vector<int> dimensions)
 {
-	if (dimension == 0) {
-		throw invalid_argument("The dimension cannot be zero.");
-	}
-
 	gsoapProxy2_3 = soap_new_resqml22__DiscreteProperty(rep->getGsoapContext());	
 	_resqml22__DiscreteProperty* prop = static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3);
 	prop->IndexableElement = attachmentKind;
-	if (dimension > 1) {
-		prop->ValueCountPerIndexableElement = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_3->soap, sizeof(ULONG64)));
-		*prop->ValueCountPerIndexableElement = dimension;
+	if (dimensions.empty()) {
+		prop->ValueCountPerIndexableElement = { 1 };
+	}
+	else {
+		for (auto dim : dimensions) {
+			prop->ValueCountPerIndexableElement.push_back(dim);
+		}
 	}
 
 	initMandatoryMetadata();
@@ -67,7 +68,7 @@ std::string DiscreteProperty::pushBackRefToExistingIntegerDataset(EML2_NS::Abstr
 
 	_resqml22__DiscreteProperty* prop = static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3);
 
-	if (prop->ValueCountPerIndexableElement == nullptr || *prop->ValueCountPerIndexableElement == 1)
+	if (prop->ValueCountPerIndexableElement.empty() || (prop->ValueCountPerIndexableElement.size() == 1 && prop->ValueCountPerIndexableElement[0] == 1))
 	{
 		if (prop->MinimumValue.empty())
 			prop->MinimumValue.push_back(minimumValue);

@@ -30,16 +30,12 @@ using namespace gsoap_resqml2_0_1;
 const char* PointsProperty::XML_NS = "resqml20";
 
 PointsProperty::PointsProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs, resqml20__ResqmlPropertyKind energisticsPropertyKind)
+	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs, resqml20__ResqmlPropertyKind energisticsPropertyKind)
 {
-	if (dimension == 0) {
-		throw invalid_argument("The dimension cannot be zero.");
-	}
-
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREPointsProperty(rep->getGsoapContext());
 	_resqml20__PointsProperty* prop = static_cast<_resqml20__PointsProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = mapIndexableElement(attachmentKind);
-	prop->Count = dimension;
+	prop->Count = 1;
 
 	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap);
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
@@ -54,16 +50,12 @@ PointsProperty::PointsProperty(RESQML2_NS::AbstractRepresentation * rep, const s
 }
 
 PointsProperty::PointsProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs, EML2_NS::PropertyKind * localPropKind)
+	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs, EML2_NS::PropertyKind * localPropKind)
 {
-	if (dimension == 0) {
-		throw invalid_argument("The dimension cannot be zero.");
-	}
-
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREPointsProperty(rep->getGsoapContext());
 	_resqml20__PointsProperty* prop = static_cast<_resqml20__PointsProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = mapIndexableElement(attachmentKind);
-	prop->Count = dimension;
+	prop->Count = 1;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -146,6 +138,10 @@ std::string PointsProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfPro
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
+	if (proxy->getXmlNamespace() == "eml23") {
+		throw std::invalid_argument("You cannot asociate a RESQML 2.0.1 dataobject to an EML 2.3 HDF proxy (which is no more a dataobject by the way).");
+	}
+
 	getRepository()->addRelationship(this, proxy);
 	_resqml20__PointsProperty* prop = static_cast<_resqml20__PointsProperty*>(gsoapProxy2_0_1);
 
