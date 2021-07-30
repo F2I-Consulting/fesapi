@@ -71,21 +71,39 @@ void IjkGridExplicitRepresentation::getXyzPointsOfKInterfaceSequence(unsigned in
 			4);
 	}
 	else {
-		std::unique_ptr<unsigned long long[]> valueCountPerDimension(new unsigned long long[3]);
-		valueCountPerDimension[0] = kInterfaceEnd - kInterfaceStart + 1;
-		valueCountPerDimension[1] = (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount;
-		valueCountPerDimension[2] = 3;
-		std::unique_ptr<unsigned long long[]> offsetPerDimension(new unsigned long long[3]);
-		offsetPerDimension[0] = kInterfaceStart;
-		offsetPerDimension[1] = 0;
-		offsetPerDimension[2] = 0;
+		const auto dimCount = hdfProxy->getDimensionCount(datasetPathInExternalFile);
+		if (dimCount == 3) {
+			std::unique_ptr<unsigned long long[]> valueCountPerDimension(new unsigned long long[3]);
+			valueCountPerDimension[0] = kInterfaceEnd - kInterfaceStart + 1;
+			valueCountPerDimension[1] = getPillarCount() + splitCoordinateLineCount;
+			valueCountPerDimension[2] = 3;
+			std::unique_ptr<unsigned long long[]> offsetPerDimension(new unsigned long long[3]);
+			offsetPerDimension[0] = kInterfaceStart;
+			offsetPerDimension[1] = 0;
+			offsetPerDimension[2] = 0;
 
-		hdfProxy->readArrayNdOfDoubleValues(
-			datasetPathInExternalFile,
-			xyzPoints,
-			valueCountPerDimension.get(),
-			offsetPerDimension.get(),
-			3);
+			hdfProxy->readArrayNdOfDoubleValues(
+				datasetPathInExternalFile,
+				xyzPoints,
+				valueCountPerDimension.get(),
+				offsetPerDimension.get(),
+				3);
+		}
+		else if (dimCount == 2) {
+			std::unique_ptr<unsigned long long[]> valueCountPerDimension(new unsigned long long[2]);
+			valueCountPerDimension[0] = (kInterfaceEnd - kInterfaceStart + 1) * (getPillarCount() + splitCoordinateLineCount);
+			valueCountPerDimension[1] = 3;
+			std::unique_ptr<unsigned long long[]> offsetPerDimension(new unsigned long long[2]);
+			offsetPerDimension[0] = kInterfaceStart * (getPillarCount() + splitCoordinateLineCount);
+			offsetPerDimension[1] = 0;
+
+			hdfProxy->readArrayNdOfDoubleValues(
+				datasetPathInExternalFile,
+				xyzPoints,
+				valueCountPerDimension.get(),
+				offsetPerDimension.get(),
+				2);
+		}
 	}
 }
 
