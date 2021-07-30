@@ -600,7 +600,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 			// New version of an existing UUID
 			dataObjects[proxy->getUuid()].push_back(proxy);
 			auto now = std::chrono::system_clock::now();
-			journal.push_back(std::make_tuple(now, DataObjectReference(*same), CREATED));
+			journal.push_back(std::make_tuple(now, DataObjectReference(proxy), CREATED));
 			on_CreateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
 		}
 		else {
