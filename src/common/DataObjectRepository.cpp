@@ -996,6 +996,14 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 			addOrReplaceDataObject(result);
 			return result;
 		}
+		else if (dataType.compare(EML2_NS::EpcExternalPartReference::XML_TAG) == 0)
+		{
+			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(uuid, title, version);
+			dor->ContentType = contentType;
+			COMMON_NS::AbstractObject* result = hdfProxyFactory->make(dor);
+			addOrReplaceDataObject(result);
+			return result;
+		}
 	}
 #if WITH_RESQML2_2
 	else if (ns == "resqml22") {
