@@ -53,13 +53,7 @@ ActivityTemplate* Activity::getActivityTemplate() const
 void Activity::loadTargetRelationships()
 {
 	COMMON_NS::DataObjectReference dor = getActivityTemplateDor();
-	EML2_NS::ActivityTemplate* targetObj = getRepository()->getDataObjectByUuid<EML2_NS::ActivityTemplate>(dor.getUuid());
-	if (targetObj == nullptr) { // partial transfer
-		getRepository()->createPartial(dor);
-		targetObj = getRepository()->getDataObjectByUuid<EML2_NS::ActivityTemplate>(dor.getUuid());
-		if (targetObj == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
+	if (!dor.isEmpty()) {
+		convertDorIntoRel(dor);
 	}
-	repository->addRelationship(this, targetObj);
 }

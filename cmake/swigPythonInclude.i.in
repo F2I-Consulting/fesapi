@@ -89,7 +89,6 @@ namespace RESQML2_NS
 #endif
 										ContinuousProperty*,
 										CulturalFeature*,
-										DeviationSurveyRepresentation*,
 #ifdef WITH_RESQML2_2
 										DiscreteColorMap*,
 #endif
@@ -100,6 +99,7 @@ namespace RESQML2_NS
 										GenericFeatureInterpretation*,
 										GeobodyBoundaryInterpretation*,
 										GeobodyInterpretation*,
+										GeologicUnitOccurrenceInterpretation*,
 										Grid2dRepresentation*,
 										GridConnectionSetRepresentation*,
 										HorizonInterpretation*,
@@ -128,7 +128,6 @@ namespace RESQML2_NS
 #endif
 										StratigraphicColumn*,
 										StratigraphicColumnRankInterpretation*,
-										StratigraphicOccurrenceInterpretation*,
 										StratigraphicUnitInterpretation*,
 										StringTableLookup*,
 										StructuralOrganizationInterpretation*,

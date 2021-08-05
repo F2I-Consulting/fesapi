@@ -101,7 +101,7 @@ void PointsProperty::pushBackArray3dOfXyzPoints(const double * points, uint64_t 
 
 void PointsProperty::pushBackArrayOfXyzPoints(double const * points, unsigned long long const * pointCountByDimension, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const string datasetName = pushBackRefToExistingDataset(proxy, "");
+	const string datasetName = "points_patch" + std::to_string(getPatchCount());
 
 	// HDF
 	std::unique_ptr<unsigned long long[]> coordinateCountByDimension(new unsigned long long[numArrayDimensions + 1]);
@@ -114,4 +114,6 @@ void PointsProperty::pushBackArrayOfXyzPoints(double const * points, unsigned lo
 		H5T_NATIVE_DOUBLE,
 		points,
 		coordinateCountByDimension.get(), numArrayDimensions + 1);
+
+	pushBackRefToExistingDataset(proxy, getHdfGroup() + "/" + datasetName);
 }

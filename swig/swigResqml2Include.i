@@ -3699,7 +3699,7 @@ namespace RESQML2_NS
 		
 		void setTimeSeries(EML2_NS::TimeSeries * ts);
 		EML2_NS::TimeSeries* getTimeSeries() const;
-		void setTimeIndices(uint64_t startTimeIndex, uint64_t countTimeIndices, EML2_NS::TimeSeries* ts, bool useInterval = false);
+		void setTimeIndices(unsigned int startTimeIndex, unsigned int countTimeIndices, EML2_NS::TimeSeries* ts, bool useInterval = false);
 		unsigned int getTimeIndexStart() const;
 		unsigned int getTimeIndicesCount() const;
 		bool useInterval() const;

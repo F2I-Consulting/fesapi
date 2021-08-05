@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "EpcDocument.h"
 
-#include <sstream>
 #include <stdexcept>
 
 #include "H5Epublic.h"
@@ -44,7 +43,6 @@ under the License.
 #include "../witsml2_0/ChannelSet.h"
 
 using namespace std;
-using namespace gsoap_resqml2_0_1;
 using namespace COMMON_NS;
 
 void  EpcDocument::open(const std::string & fileName)
@@ -205,29 +203,27 @@ void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64
 	// 0 means APPEND_STATUS_CREATE
 	package->openForWriting(filePath, 0, useZip64);
 
-	const std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects = repo.getDataObjects();
-	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
-	{
-		for (size_t i = 0; i < it->second.size(); ++i) {
-			if (!it->second[i]->isPartial() &&
-				dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(it->second[i]) == nullptr &&
+	//const std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects = repo.getDataObjects();
+	//for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
+	for (auto const& uuidDataobjectPair : repo.getDataObjects()) {
+		for (auto* dataobject : uuidDataobjectPair.second) {
+			if (!dataobject->isPartial() &&
+				dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(dataobject) == nullptr &&
 #if WITH_RESQML2_2
-				dynamic_cast<RESQML2_2_NS::WellboreMarker*>(it->second[i]) == nullptr &&
+				dynamic_cast<RESQML2_2_NS::WellboreMarker*>(dataobject) == nullptr &&
 #endif
-				(dynamic_cast<WITSML2_0_NS::ChannelSet*>(it->second[i]) == nullptr || static_cast<WITSML2_0_NS::ChannelSet*>(it->second[i])->getLogs().empty()) &&
-				(dynamic_cast<WITSML2_0_NS::Channel*>(it->second[i]) == nullptr || static_cast<WITSML2_0_NS::Channel*>(it->second[i])->getChannelSets().empty())) {
+				(dynamic_cast<WITSML2_0_NS::ChannelSet*>(dataobject) == nullptr || static_cast<WITSML2_0_NS::ChannelSet*>(dataobject)->getLogs().empty()) &&
+				(dynamic_cast<WITSML2_0_NS::Channel*>(dataobject) == nullptr || static_cast<WITSML2_0_NS::Channel*>(dataobject)->getChannelSets().empty())) {
 				// Dataobject
-				const string str = it->second[i]->serializeIntoString();
-				epc::FilePart* const fp = package->createPart(str, it->second[i]->getPartNameInEpcDocument());
+				epc::FilePart* const fp = package->createPart(dataobject->serializeIntoString(), dataobject->getPartNameInEpcDocument());
 
 				// Relationships
-				const std::vector<epc::Relationship>& relSet = getAllEpcRelationships(repo, it->second[i]);
-				for (size_t relIndex = 0; relIndex < relSet.size(); ++relIndex) {
-					fp->addRelationship(relSet[relIndex]);
+				for (const auto& rel : getAllEpcRelationships(repo, dataobject)) {
+					fp->addRelationship(rel);
 				}
 
 				// Content Type entry
-				package->addContentType(epc::ContentType(false, it->second[i]->getContentType(), it->second[i]->getPartNameInEpcDocument()));
+				package->addContentType(epc::ContentType(false, dataobject->getContentType(), dataobject->getPartNameInEpcDocument()));
 			}
 		}
 	}
@@ -268,15 +264,14 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 				}
 				epc::FileRelationship relFile;
 				relFile.readFromString(package->extractFile(relFilePath));
-				const vector<epc::Relationship>& allRels = relFile.getAllRelationship();
 				std::string target;
-				for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
-					if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
-						target = allRels[relIndex].getTarget();
+				for (const auto& rel : relFile.getAllRelationship()) {
+					if (rel.getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
+						target = rel.getTarget();
 						if (target.find("http://") == 0 || target.find("https://") == 0) {
 							repo.setHdfProxyFactory(new HdfProxyROS3Factory());
 						}
-						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(contentTypeEntry.second.getExtensionOrPartName().substr(1)), contentType);
+						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(contentTypeEntry.second.getExtensionOrPartName().substr(1)), contentType, filePath);
 						break;
 					}
 				}
@@ -292,11 +287,7 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 				}
 			}
 			else {
-				wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(contentTypeEntry.second.getExtensionOrPartName().substr(1)), contentType);
-			}
-
-			if (wrapper != nullptr) {
-				wrapper->setUriSource(filePath);
+				wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(contentTypeEntry.second.getExtensionOrPartName().substr(1)), contentType, filePath);
 			}
 		}
 	}
@@ -304,9 +295,8 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 	repo.updateAllRelationships();
 
 	// Validate properties
-	const vector<RESQML2_NS::AbstractProperty*> allprops = repo.getDataObjects<RESQML2_NS::AbstractProperty>();
-	for (size_t propIndex = 0; propIndex < allprops.size(); ++propIndex) {
-		allprops[propIndex]->validate();
+	for (auto* prop : repo.getDataObjects<RESQML2_NS::AbstractProperty>()) {
+		prop->validate();
 	}
 
 	for (const auto& warning : repo.getWarnings()) {
@@ -358,17 +348,16 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 					}
 					epc::FileRelationship relFile;
 					relFile.readFromString(package->extractFile(relFilePath));
-					const vector<epc::Relationship>& allRels = relFile.getAllRelationship();
-					for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
-						if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
-							const std::string target = allRels[relIndex].getTarget();
+					for (const auto& rel : relFile.getAllRelationship()) {
+						if (rel.getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
+							const std::string target = rel.getTarget();
 							if (target.find("http://") == 0 || target.find("https://") == 0) {
 								repo.setHdfProxyFactory(new HdfProxyROS3Factory());
 							}
 							else {
 								repo.setHdfProxyFactory(new HdfProxyFactory());
 							}
-							wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(contentTypeEntry.second.getExtensionOrPartName().substr(1)), contentType);
+							wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(contentTypeEntry.second.getExtensionOrPartName().substr(1)), contentType, filePath);
 							static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setRelativePath(target);
 							break;
 						}
@@ -382,10 +371,6 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 				else {
 					repo.createPartial(extractUuidFromFileName(contentTypeEntry.first), "Partial title", contentType);
 				}
-
-				if (wrapper != nullptr) {
-					wrapper->setUriSource(filePath);
-				}
 			}
 		}
 	}
@@ -397,32 +382,27 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 
 void EpcDocument::deserializeRelFiles(DataObjectRepository & repo)
 {
-	// Read all RESQML objects
-	const epc::FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
 	// 14 equals "application/x-".size()
-	for (epc::FileContentType::ContentTypeMap::const_iterator it = contentTypes.begin(); it != contentTypes.end(); ++it)
+	for (const auto& fileContentTypePair : package->getFileContentType().getAllContentType())
 	{
-		std::string contentType = it->second.getContentTypeString();
+		std::string contentType = fileContentTypePair.second.getContentTypeString();
 		if (contentType.find("resqml", 14) != std::string::npos ||
 			contentType.find("eml", 14) != std::string::npos ||
-			contentType.find("witsml", 14) != std::string::npos)
-		{
+			contentType.find("witsml", 14) != std::string::npos) {
 			// Look for the relative path of the file
 			string relFilePath = "";
-			const size_t slashPos = it->second.getExtensionOrPartName().substr(1).find_last_of("/\\");
+			const size_t slashPos = fileContentTypePair.second.getExtensionOrPartName().substr(1).find_last_of("/\\");
 			if (slashPos != string::npos) {
-				relFilePath = it->second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
+				relFilePath = fileContentTypePair.second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
 			}
-			relFilePath += "_rels" + it->second.getExtensionOrPartName().substr(it->second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
+			relFilePath += "_rels" + fileContentTypePair.second.getExtensionOrPartName().substr(fileContentTypePair.second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
 			if (package->fileExists(relFilePath)) {
 				// Read Relationshsips
 				epc::FileRelationship relFile;
 				relFile.readFromString(package->extractFile(relFilePath));
-				const vector<epc::Relationship>& allRels = relFile.getAllRelationship();
-				for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
-					const epc::Relationship& rel = allRels[relIndex];
+				for (const auto& rel : relFile.getAllRelationship()) {
 					if (rel.getType() == "http://schemas.energistics.org/package/2012/relationships/destinationObject") {
-						COMMON_NS::AbstractObject* source = repo.getDataObjectByUuid(extractUuidFromFileName(it->first));
+						COMMON_NS::AbstractObject* source = repo.getDataObjectByUuid(extractUuidFromFileName(fileContentTypePair.first));
 						COMMON_NS::AbstractObject* destination = repo.getDataObjectByUuid(extractUuidFromFileName(rel.getTarget()));
 						repo.addRelationship(source, destination);
 					}
@@ -480,11 +460,9 @@ std::string EpcDocument::resolvePartial(AbstractObject const * partialObj) const
 
 	const epc::FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
 	// 14 equals "application/x-".size()
-	for (epc::FileContentType::ContentTypeMap::const_iterator it = contentTypes.begin(); it != contentTypes.end(); ++it)
-	{
-		if (it->first.find(partialObj->getUuid()) != std::string::npos)
-		{
-			return package->extractFile(it->second.getExtensionOrPartName().substr(1));
+	for (auto const& fileContentTypePair : package->getFileContentType().getAllContentType()) {
+		if (fileContentTypePair.first.find(partialObj->getUuid()) != std::string::npos) {
+			return package->extractFile(fileContentTypePair.second.getExtensionOrPartName().substr(1));
 		}
 	}
 

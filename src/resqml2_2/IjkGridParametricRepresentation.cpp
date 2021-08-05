@@ -261,16 +261,16 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 
 	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind = computeKDirection(controlPoints, controlPointMaxCountPerPillar, pillarKind, localCrs);
 
+	writeGeometryOnHdf(parameters,
+		controlPoints, controlPointParameters, controlPointMaxCountPerPillar,
+		splitCoordinateLineCount, pillarOfCoordinateLine,
+		splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns, proxy);
+
 	const std::string hdfDatasetPrefix = getHdfGroup();
 	setGeometryAsParametricSplittedPillarNodesWithoutPillarKindUsingExistingDatasets(kDirectionKind, isRightHanded,
 		hdfDatasetPrefix + "/PointParameters", hdfDatasetPrefix + "/ControlPoints", controlPointParameters != nullptr ? hdfDatasetPrefix + "/controlPointParameters" : "", controlPointMaxCountPerPillar, proxy,
 		splitCoordinateLineCount, hdfDatasetPrefix + "/PillarIndices",
 		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, localCrs);
-
-	writeGeometryOnHdf(parameters,
-		controlPoints, controlPointParameters, controlPointMaxCountPerPillar,
-		splitCoordinateLineCount, pillarOfCoordinateLine,
-		splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns, proxy);
 
 	resqml22__IjkGridGeometry* geom = static_cast<resqml22__IjkGridGeometry*>(getPointGeometry2_2(0));
 	if (geom == nullptr) {

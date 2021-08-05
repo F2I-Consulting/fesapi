@@ -1161,7 +1161,7 @@ namespace COMMON_NS
 		/**
 		* Create an external data array part pointing to a named dataset in an HDF proxy
 		*/
-		gsoap_eml2_3::eml23__ExternalDataArrayPart* createExternalDataArrayPart(const std::string& datasetName, ULONG64 count, EML2_NS::AbstractHdfProxy* proxy = nullptr) const;
+		gsoap_eml2_3::eml23__ExternalDataArrayPart* createExternalDataArrayPart(const std::string& datasetName, LONG64 count, EML2_NS::AbstractHdfProxy* proxy = nullptr) const;
 
 		gsoap_resqml2_0_1::resqml20__IndexableElements mapIndexableElement(gsoap_eml2_3::resqml22__IndexableElement toMap) const;
 

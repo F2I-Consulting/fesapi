@@ -96,9 +96,9 @@ enum class eml23__IntegerType {
 };
 #endif
 
-/* eml2_3ForGsoap.h:2291 */
+/* eml2_3ForGsoap.h:2297 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AxisDirectionKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AxisDirectionKind (-925)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AxisDirectionKind (-924)
 
 /* eml23:AxisDirectionKind */
 enum class eml23__AxisDirectionKind {
@@ -143,9 +143,9 @@ enum class eml23__AxisDirectionKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:2386 */
+/* eml2_3ForGsoap.h:2392 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LegacyUnitOfMeasure
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyUnitOfMeasure (-932)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyUnitOfMeasure (-931)
 
 /* eml23:LegacyUnitOfMeasure */
 enum class eml23__LegacyUnitOfMeasure {
@@ -220,9 +220,9 @@ enum class eml23__LegacyUnitOfMeasure {
 };
 #endif
 
-/* eml2_3ForGsoap.h:2464 */
+/* eml2_3ForGsoap.h:2470 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__UnitOfMeasure
-#define SOAP_TYPE_gsoap_eml2_3_eml23__UnitOfMeasure (-933)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__UnitOfMeasure (-932)
 
 /* eml23:UnitOfMeasure */
 enum class eml23__UnitOfMeasure {
@@ -1667,9 +1667,9 @@ enum class eml23__UnitOfMeasure {
 };
 #endif
 
-/* eml2_3ForGsoap.h:3925 */
+/* eml2_3ForGsoap.h:3931 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AbsorbedDoseUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AbsorbedDoseUom (-936)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AbsorbedDoseUom (-935)
 
 /* eml23:AbsorbedDoseUom */
 enum class eml23__AbsorbedDoseUom {
@@ -1702,9 +1702,9 @@ enum class eml23__AbsorbedDoseUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4061 */
+/* eml2_3ForGsoap.h:4067 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ActivityOfRadioactivityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ActivityOfRadioactivityUom (-937)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ActivityOfRadioactivityUom (-936)
 
 /* eml23:ActivityOfRadioactivityUom */
 enum class eml23__ActivityOfRadioactivityUom {
@@ -1720,9 +1720,9 @@ enum class eml23__ActivityOfRadioactivityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4112 */
+/* eml2_3ForGsoap.h:4118 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerAmountOfSubstanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerAmountOfSubstanceUom (-938)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerAmountOfSubstanceUom (-937)
 
 /* eml23:AmountOfSubstancePerAmountOfSubstanceUom */
 enum class eml23__AmountOfSubstancePerAmountOfSubstanceUom {
@@ -1736,9 +1736,9 @@ enum class eml23__AmountOfSubstancePerAmountOfSubstanceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4153 */
+/* eml2_3ForGsoap.h:4159 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerAreaUom (-939)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerAreaUom (-938)
 
 /* eml23:AmountOfSubstancePerAreaUom */
 enum class eml23__AmountOfSubstancePerAreaUom {
@@ -1746,9 +1746,9 @@ enum class eml23__AmountOfSubstancePerAreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4164 */
+/* eml2_3ForGsoap.h:4170 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerTimePerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerTimePerAreaUom (-940)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerTimePerAreaUom (-939)
 
 /* eml23:AmountOfSubstancePerTimePerAreaUom */
 enum class eml23__AmountOfSubstancePerTimePerAreaUom {
@@ -1758,9 +1758,9 @@ enum class eml23__AmountOfSubstancePerTimePerAreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4185 */
+/* eml2_3ForGsoap.h:4191 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerTimeUom (-941)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerTimeUom (-940)
 
 /* eml23:AmountOfSubstancePerTimeUom */
 enum class eml23__AmountOfSubstancePerTimeUom {
@@ -1773,9 +1773,9 @@ enum class eml23__AmountOfSubstancePerTimeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4221 */
+/* eml2_3ForGsoap.h:4227 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerVolumeUom (-942)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerVolumeUom (-941)
 
 /* eml23:AmountOfSubstancePerVolumeUom */
 enum class eml23__AmountOfSubstancePerVolumeUom {
@@ -1787,9 +1787,9 @@ enum class eml23__AmountOfSubstancePerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4252 */
+/* eml2_3ForGsoap.h:4258 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstanceUom (-943)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstanceUom (-942)
 
 /* eml23:AmountOfSubstanceUom */
 enum class eml23__AmountOfSubstanceUom {
@@ -1801,9 +1801,9 @@ enum class eml23__AmountOfSubstanceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4283 */
+/* eml2_3ForGsoap.h:4289 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AnglePerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AnglePerLengthUom (-944)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AnglePerLengthUom (-943)
 
 /* eml23:AnglePerLengthUom */
 enum class eml23__AnglePerLengthUom {
@@ -1819,9 +1819,9 @@ enum class eml23__AnglePerLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4334 */
+/* eml2_3ForGsoap.h:4340 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AnglePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AnglePerVolumeUom (-945)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AnglePerVolumeUom (-944)
 
 /* eml23:AnglePerVolumeUom */
 enum class eml23__AnglePerVolumeUom {
@@ -1830,9 +1830,9 @@ enum class eml23__AnglePerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4350 */
+/* eml2_3ForGsoap.h:4356 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AngularAccelerationUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AngularAccelerationUom (-946)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AngularAccelerationUom (-945)
 
 /* eml23:AngularAccelerationUom */
 enum class eml23__AngularAccelerationUom {
@@ -1841,9 +1841,9 @@ enum class eml23__AngularAccelerationUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4366 */
+/* eml2_3ForGsoap.h:4372 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AngularVelocityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AngularVelocityUom (-947)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AngularVelocityUom (-946)
 
 /* eml23:AngularVelocityUom */
 enum class eml23__AngularVelocityUom {
@@ -1856,9 +1856,9 @@ enum class eml23__AngularVelocityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4402 */
+/* eml2_3ForGsoap.h:4408 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__APIGammaRayUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__APIGammaRayUom (-948)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__APIGammaRayUom (-947)
 
 /* eml23:APIGammaRayUom */
 enum class eml23__APIGammaRayUom {
@@ -1866,9 +1866,9 @@ enum class eml23__APIGammaRayUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4413 */
+/* eml2_3ForGsoap.h:4419 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__APIGravityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__APIGravityUom (-949)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__APIGravityUom (-948)
 
 /* eml23:APIGravityUom */
 enum class eml23__APIGravityUom {
@@ -1876,9 +1876,9 @@ enum class eml23__APIGravityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4424 */
+/* eml2_3ForGsoap.h:4430 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__APINeutronUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__APINeutronUom (-950)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__APINeutronUom (-949)
 
 /* eml23:APINeutronUom */
 enum class eml23__APINeutronUom {
@@ -1886,9 +1886,9 @@ enum class eml23__APINeutronUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4435 */
+/* eml2_3ForGsoap.h:4441 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerAmountOfSubstanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerAmountOfSubstanceUom (-951)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerAmountOfSubstanceUom (-950)
 
 /* eml23:AreaPerAmountOfSubstanceUom */
 enum class eml23__AreaPerAmountOfSubstanceUom {
@@ -1896,9 +1896,9 @@ enum class eml23__AreaPerAmountOfSubstanceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4446 */
+/* eml2_3ForGsoap.h:4452 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerAreaUom (-952)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerAreaUom (-951)
 
 /* eml23:AreaPerAreaUom */
 enum class eml23__AreaPerAreaUom {
@@ -1913,9 +1913,9 @@ enum class eml23__AreaPerAreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4492 */
+/* eml2_3ForGsoap.h:4498 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerCountUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerCountUom (-953)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerCountUom (-952)
 
 /* eml23:AreaPerCountUom */
 enum class eml23__AreaPerCountUom {
@@ -1923,9 +1923,9 @@ enum class eml23__AreaPerCountUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4499 */
+/* eml2_3ForGsoap.h:4505 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerMassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerMassUom (-954)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerMassUom (-953)
 
 /* eml23:AreaPerMassUom */
 enum class eml23__AreaPerMassUom {
@@ -1936,9 +1936,9 @@ enum class eml23__AreaPerMassUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4525 */
+/* eml2_3ForGsoap.h:4531 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerTimeUom (-955)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerTimeUom (-954)
 
 /* eml23:AreaPerTimeUom */
 enum class eml23__AreaPerTimeUom {
@@ -1953,9 +1953,9 @@ enum class eml23__AreaPerTimeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4571 */
+/* eml2_3ForGsoap.h:4577 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerVolumeUom (-956)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerVolumeUom (-955)
 
 /* eml23:AreaPerVolumeUom */
 enum class eml23__AreaPerVolumeUom {
@@ -1968,9 +1968,9 @@ enum class eml23__AreaPerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4607 */
+/* eml2_3ForGsoap.h:4613 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaUom (-957)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaUom (-956)
 
 /* eml23:AreaUom */
 enum class eml23__AreaUom {
@@ -1991,9 +1991,9 @@ enum class eml23__AreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4683 */
+/* eml2_3ForGsoap.h:4689 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AttenuationPerFrequencyIntervalUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AttenuationPerFrequencyIntervalUom (-958)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AttenuationPerFrequencyIntervalUom (-957)
 
 /* eml23:AttenuationPerFrequencyIntervalUom */
 enum class eml23__AttenuationPerFrequencyIntervalUom {
@@ -2002,9 +2002,9 @@ enum class eml23__AttenuationPerFrequencyIntervalUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4699 */
+/* eml2_3ForGsoap.h:4705 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__CapacitanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__CapacitanceUom (-959)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__CapacitanceUom (-958)
 
 /* eml23:CapacitanceUom */
 enum class eml23__CapacitanceUom {
@@ -2024,9 +2024,9 @@ enum class eml23__CapacitanceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4770 */
+/* eml2_3ForGsoap.h:4776 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__CationExchangeCapacityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__CationExchangeCapacityUom (-960)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__CationExchangeCapacityUom (-959)
 
 /* eml23:CationExchangeCapacityUom */
 enum class eml23__CationExchangeCapacityUom {
@@ -2034,9 +2034,9 @@ enum class eml23__CationExchangeCapacityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4777 */
+/* eml2_3ForGsoap.h:4783 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__DataTransferSpeedUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__DataTransferSpeedUom (-961)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__DataTransferSpeedUom (-960)
 
 /* eml23:DataTransferSpeedUom */
 enum class eml23__DataTransferSpeedUom {
@@ -2045,9 +2045,9 @@ enum class eml23__DataTransferSpeedUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4793 */
+/* eml2_3ForGsoap.h:4799 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__DiffusionCoefficientUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__DiffusionCoefficientUom (-962)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__DiffusionCoefficientUom (-961)
 
 /* eml23:DiffusionCoefficientUom */
 enum class eml23__DiffusionCoefficientUom {
@@ -2055,9 +2055,9 @@ enum class eml23__DiffusionCoefficientUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4804 */
+/* eml2_3ForGsoap.h:4810 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__DiffusiveTimeOfFlightUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__DiffusiveTimeOfFlightUom (-963)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__DiffusiveTimeOfFlightUom (-962)
 
 /* eml23:DiffusiveTimeOfFlightUom */
 enum class eml23__DiffusiveTimeOfFlightUom {
@@ -2066,9 +2066,9 @@ enum class eml23__DiffusiveTimeOfFlightUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4816 */
+/* eml2_3ForGsoap.h:4822 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__DigitalStorageUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__DigitalStorageUom (-964)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__DigitalStorageUom (-963)
 
 /* eml23:DigitalStorageUom */
 enum class eml23__DigitalStorageUom {
@@ -2079,9 +2079,9 @@ enum class eml23__DigitalStorageUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4842 */
+/* eml2_3ForGsoap.h:4848 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__DimensionlessUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__DimensionlessUom (-965)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__DimensionlessUom (-964)
 
 /* eml23:DimensionlessUom */
 enum class eml23__DimensionlessUom {
@@ -2104,9 +2104,9 @@ enum class eml23__DimensionlessUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4928 */
+/* eml2_3ForGsoap.h:4934 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__DipoleMomentUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__DipoleMomentUom (-966)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__DipoleMomentUom (-965)
 
 /* eml23:DipoleMomentUom */
 enum class eml23__DipoleMomentUom {
@@ -2114,9 +2114,9 @@ enum class eml23__DipoleMomentUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4939 */
+/* eml2_3ForGsoap.h:4945 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__DoseEquivalentUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__DoseEquivalentUom (-967)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__DoseEquivalentUom (-966)
 
 /* eml23:DoseEquivalentUom */
 enum class eml23__DoseEquivalentUom {
@@ -2127,9 +2127,9 @@ enum class eml23__DoseEquivalentUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:4965 */
+/* eml2_3ForGsoap.h:4971 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__DynamicViscosityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__DynamicViscosityUom (-968)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__DynamicViscosityUom (-967)
 
 /* eml23:DynamicViscosityUom */
 enum class eml23__DynamicViscosityUom {
@@ -2157,9 +2157,9 @@ enum class eml23__DynamicViscosityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5076 */
+/* eml2_3ForGsoap.h:5082 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricalResistivityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricalResistivityUom (-969)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricalResistivityUom (-968)
 
 /* eml23:ElectricalResistivityUom */
 enum class eml23__ElectricalResistivityUom {
@@ -2172,9 +2172,9 @@ enum class eml23__ElectricalResistivityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5112 */
+/* eml2_3ForGsoap.h:5118 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerAreaUom (-970)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerAreaUom (-969)
 
 /* eml23:ElectricChargePerAreaUom */
 enum class eml23__ElectricChargePerAreaUom {
@@ -2185,9 +2185,9 @@ enum class eml23__ElectricChargePerAreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5138 */
+/* eml2_3ForGsoap.h:5144 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerMassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerMassUom (-971)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerMassUom (-970)
 
 /* eml23:ElectricChargePerMassUom */
 enum class eml23__ElectricChargePerMassUom {
@@ -2197,9 +2197,9 @@ enum class eml23__ElectricChargePerMassUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5159 */
+/* eml2_3ForGsoap.h:5165 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerVolumeUom (-972)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerVolumeUom (-971)
 
 /* eml23:ElectricChargePerVolumeUom */
 enum class eml23__ElectricChargePerVolumeUom {
@@ -2210,9 +2210,9 @@ enum class eml23__ElectricChargePerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5185 */
+/* eml2_3ForGsoap.h:5191 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargeUom (-973)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargeUom (-972)
 
 /* eml23:ElectricChargeUom */
 enum class eml23__ElectricChargeUom {
@@ -2234,9 +2234,9 @@ enum class eml23__ElectricChargeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5266 */
+/* eml2_3ForGsoap.h:5272 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricConductanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricConductanceUom (-974)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricConductanceUom (-973)
 
 /* eml23:ElectricConductanceUom */
 enum class eml23__ElectricConductanceUom {
@@ -2256,9 +2256,9 @@ enum class eml23__ElectricConductanceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5337 */
+/* eml2_3ForGsoap.h:5343 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricConductivityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricConductivityUom (-975)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricConductivityUom (-974)
 
 /* eml23:ElectricConductivityUom */
 enum class eml23__ElectricConductivityUom {
@@ -2269,9 +2269,9 @@ enum class eml23__ElectricConductivityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5363 */
+/* eml2_3ForGsoap.h:5369 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricCurrentDensityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricCurrentDensityUom (-976)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricCurrentDensityUom (-975)
 
 /* eml23:ElectricCurrentDensityUom */
 enum class eml23__ElectricCurrentDensityUom {
@@ -2286,9 +2286,9 @@ enum class eml23__ElectricCurrentDensityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5409 */
+/* eml2_3ForGsoap.h:5415 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricCurrentUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricCurrentUom (-977)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricCurrentUom (-976)
 
 /* eml23:ElectricCurrentUom */
 enum class eml23__ElectricCurrentUom {
@@ -2308,9 +2308,9 @@ enum class eml23__ElectricCurrentUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5480 */
+/* eml2_3ForGsoap.h:5486 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricFieldStrengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricFieldStrengthUom (-978)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricFieldStrengthUom (-977)
 
 /* eml23:ElectricFieldStrengthUom */
 enum class eml23__ElectricFieldStrengthUom {
@@ -2322,9 +2322,9 @@ enum class eml23__ElectricFieldStrengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5511 */
+/* eml2_3ForGsoap.h:5517 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricPotentialDifferenceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricPotentialDifferenceUom (-979)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricPotentialDifferenceUom (-978)
 
 /* eml23:ElectricPotentialDifferenceUom */
 enum class eml23__ElectricPotentialDifferenceUom {
@@ -2343,9 +2343,9 @@ enum class eml23__ElectricPotentialDifferenceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5577 */
+/* eml2_3ForGsoap.h:5583 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricResistancePerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricResistancePerLengthUom (-980)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricResistancePerLengthUom (-979)
 
 /* eml23:ElectricResistancePerLengthUom */
 enum class eml23__ElectricResistancePerLengthUom {
@@ -2355,9 +2355,9 @@ enum class eml23__ElectricResistancePerLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5598 */
+/* eml2_3ForGsoap.h:5604 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricResistanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricResistanceUom (-981)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricResistanceUom (-980)
 
 /* eml23:ElectricResistanceUom */
 enum class eml23__ElectricResistanceUom {
@@ -2377,9 +2377,9 @@ enum class eml23__ElectricResistanceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5669 */
+/* eml2_3ForGsoap.h:5675 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectromagneticMomentUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectromagneticMomentUom (-982)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectromagneticMomentUom (-981)
 
 /* eml23:ElectromagneticMomentUom */
 enum class eml23__ElectromagneticMomentUom {
@@ -2387,9 +2387,9 @@ enum class eml23__ElectromagneticMomentUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5680 */
+/* eml2_3ForGsoap.h:5686 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnergyLengthPerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyLengthPerAreaUom (-983)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyLengthPerAreaUom (-982)
 
 /* eml23:EnergyLengthPerAreaUom */
 enum class eml23__EnergyLengthPerAreaUom {
@@ -2398,9 +2398,9 @@ enum class eml23__EnergyLengthPerAreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5696 */
+/* eml2_3ForGsoap.h:5702 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnergyLengthPerTimeAreaTemperatureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyLengthPerTimeAreaTemperatureUom (-984)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyLengthPerTimeAreaTemperatureUom (-983)
 
 /* eml23:EnergyLengthPerTimeAreaTemperatureUom */
 enum class eml23__EnergyLengthPerTimeAreaTemperatureUom {
@@ -2411,9 +2411,9 @@ enum class eml23__EnergyLengthPerTimeAreaTemperatureUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5722 */
+/* eml2_3ForGsoap.h:5728 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerAreaUom (-985)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerAreaUom (-984)
 
 /* eml23:EnergyPerAreaUom */
 enum class eml23__EnergyPerAreaUom {
@@ -2428,9 +2428,9 @@ enum class eml23__EnergyPerAreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5768 */
+/* eml2_3ForGsoap.h:5774 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerLengthUom (-986)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerLengthUom (-985)
 
 /* eml23:EnergyPerLengthUom */
 enum class eml23__EnergyPerLengthUom {
@@ -2439,9 +2439,9 @@ enum class eml23__EnergyPerLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5784 */
+/* eml2_3ForGsoap.h:5790 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerMassPerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerMassPerTimeUom (-987)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerMassPerTimeUom (-986)
 
 /* eml23:EnergyPerMassPerTimeUom */
 enum class eml23__EnergyPerMassPerTimeUom {
@@ -2453,9 +2453,9 @@ enum class eml23__EnergyPerMassPerTimeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5815 */
+/* eml2_3ForGsoap.h:5821 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerMassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerMassUom (-988)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerMassUom (-987)
 
 /* eml23:EnergyPerMassUom */
 enum class eml23__EnergyPerMassUom {
@@ -2478,9 +2478,9 @@ enum class eml23__EnergyPerMassUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:5901 */
+/* eml2_3ForGsoap.h:5907 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerVolumeUom (-989)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerVolumeUom (-988)
 
 /* eml23:EnergyPerVolumeUom */
 enum class eml23__EnergyPerVolumeUom {
@@ -2510,9 +2510,9 @@ enum class eml23__EnergyPerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:6022 */
+/* eml2_3ForGsoap.h:6028 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnergyUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyUom (-990)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyUom (-989)
 
 /* eml23:EnergyUom */
 enum class eml23__EnergyUom {
@@ -2575,9 +2575,9 @@ enum class eml23__EnergyUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:6308 */
+/* eml2_3ForGsoap.h:6314 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ForceAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ForceAreaUom (-991)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ForceAreaUom (-990)
 
 /* eml23:ForceAreaUom */
 enum class eml23__ForceAreaUom {
@@ -2593,9 +2593,9 @@ enum class eml23__ForceAreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:6359 */
+/* eml2_3ForGsoap.h:6365 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ForceLengthPerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ForceLengthPerLengthUom (-992)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ForceLengthPerLengthUom (-991)
 
 /* eml23:ForceLengthPerLengthUom */
 enum class eml23__ForceLengthPerLengthUom {
@@ -2607,9 +2607,9 @@ enum class eml23__ForceLengthPerLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:6390 */
+/* eml2_3ForGsoap.h:6396 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerForceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerForceUom (-993)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerForceUom (-992)
 
 /* eml23:ForcePerForceUom */
 enum class eml23__ForcePerForceUom {
@@ -2621,9 +2621,9 @@ enum class eml23__ForcePerForceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:6421 */
+/* eml2_3ForGsoap.h:6427 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerLengthUom (-994)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerLengthUom (-993)
 
 /* eml23:ForcePerLengthUom */
 enum class eml23__ForcePerLengthUom {
@@ -2644,9 +2644,9 @@ enum class eml23__ForcePerLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:6497 */
+/* eml2_3ForGsoap.h:6503 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerVolumeUom (-995)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerVolumeUom (-994)
 
 /* eml23:ForcePerVolumeUom */
 enum class eml23__ForcePerVolumeUom {
@@ -2670,9 +2670,9 @@ enum class eml23__ForcePerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:6588 */
+/* eml2_3ForGsoap.h:6594 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ForceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ForceUom (-996)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ForceUom (-995)
 
 /* eml23:ForceUom */
 enum class eml23__ForceUom {
@@ -2706,9 +2706,9 @@ enum class eml23__ForceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:6729 */
+/* eml2_3ForGsoap.h:6735 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__FrequencyIntervalUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__FrequencyIntervalUom (-997)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__FrequencyIntervalUom (-996)
 
 /* eml23:FrequencyIntervalUom */
 enum class eml23__FrequencyIntervalUom {
@@ -2716,9 +2716,9 @@ enum class eml23__FrequencyIntervalUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:6740 */
+/* eml2_3ForGsoap.h:6746 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__FrequencyUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__FrequencyUom (-998)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__FrequencyUom (-997)
 
 /* eml23:FrequencyUom */
 enum class eml23__FrequencyUom {
@@ -2738,9 +2738,9 @@ enum class eml23__FrequencyUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:6811 */
+/* eml2_3ForGsoap.h:6817 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__HeatCapacityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__HeatCapacityUom (-999)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__HeatCapacityUom (-998)
 
 /* eml23:HeatCapacityUom */
 enum class eml23__HeatCapacityUom {
@@ -2748,9 +2748,9 @@ enum class eml23__HeatCapacityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:6822 */
+/* eml2_3ForGsoap.h:6828 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__HeatFlowRateUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__HeatFlowRateUom (-1000)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__HeatFlowRateUom (-999)
 
 /* eml23:HeatFlowRateUom */
 enum class eml23__HeatFlowRateUom {
@@ -2780,9 +2780,9 @@ enum class eml23__HeatFlowRateUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:6943 */
+/* eml2_3ForGsoap.h:6949 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__HeatTransferCoefficientUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__HeatTransferCoefficientUom (-1001)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__HeatTransferCoefficientUom (-1000)
 
 /* eml23:HeatTransferCoefficientUom */
 enum class eml23__HeatTransferCoefficientUom {
@@ -2800,9 +2800,9 @@ enum class eml23__HeatTransferCoefficientUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:7004 */
+/* eml2_3ForGsoap.h:7010 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__IlluminanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__IlluminanceUom (-1002)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__IlluminanceUom (-1001)
 
 /* eml23:IlluminanceUom */
 enum class eml23__IlluminanceUom {
@@ -2813,9 +2813,9 @@ enum class eml23__IlluminanceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:7030 */
+/* eml2_3ForGsoap.h:7036 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__InductanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__InductanceUom (-1003)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__InductanceUom (-1002)
 
 /* eml23:InductanceUom */
 enum class eml23__InductanceUom {
@@ -2834,9 +2834,9 @@ enum class eml23__InductanceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:7096 */
+/* eml2_3ForGsoap.h:7102 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__IsothermalCompressibilityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__IsothermalCompressibilityUom (-1004)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__IsothermalCompressibilityUom (-1003)
 
 /* eml23:IsothermalCompressibilityUom */
 enum class eml23__IsothermalCompressibilityUom {
@@ -2849,9 +2849,9 @@ enum class eml23__IsothermalCompressibilityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:7132 */
+/* eml2_3ForGsoap.h:7138 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__KinematicViscosityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__KinematicViscosityUom (-1005)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__KinematicViscosityUom (-1004)
 
 /* eml23:KinematicViscosityUom */
 enum class eml23__KinematicViscosityUom {
@@ -2868,9 +2868,9 @@ enum class eml23__KinematicViscosityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:7188 */
+/* eml2_3ForGsoap.h:7194 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerLengthUom (-1006)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerLengthUom (-1005)
 
 /* eml23:LengthPerLengthUom */
 enum class eml23__LengthPerLengthUom {
@@ -2890,9 +2890,9 @@ enum class eml23__LengthPerLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:7259 */
+/* eml2_3ForGsoap.h:7265 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerMassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerMassUom (-1007)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerMassUom (-1006)
 
 /* eml23:LengthPerMassUom */
 enum class eml23__LengthPerMassUom {
@@ -2901,9 +2901,9 @@ enum class eml23__LengthPerMassUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:7275 */
+/* eml2_3ForGsoap.h:7281 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerPressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerPressureUom (-1008)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerPressureUom (-1007)
 
 /* eml23:LengthPerPressureUom */
 enum class eml23__LengthPerPressureUom {
@@ -2913,9 +2913,9 @@ enum class eml23__LengthPerPressureUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:7296 */
+/* eml2_3ForGsoap.h:7302 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerTemperatureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerTemperatureUom (-1009)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerTemperatureUom (-1008)
 
 /* eml23:LengthPerTemperatureUom */
 enum class eml23__LengthPerTemperatureUom {
@@ -2924,9 +2924,9 @@ enum class eml23__LengthPerTemperatureUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:7312 */
+/* eml2_3ForGsoap.h:7318 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerTimeUom (-1010)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerTimeUom (-1009)
 
 /* eml23:LengthPerTimeUom */
 enum class eml23__LengthPerTimeUom {
@@ -2961,9 +2961,9 @@ enum class eml23__LengthPerTimeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:7458 */
+/* eml2_3ForGsoap.h:7464 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerVolumeUom (-1011)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerVolumeUom (-1010)
 
 /* eml23:LengthPerVolumeUom */
 enum class eml23__LengthPerVolumeUom {
@@ -2978,9 +2978,9 @@ enum class eml23__LengthPerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:7504 */
+/* eml2_3ForGsoap.h:7510 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthUom (-1012)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthUom (-1011)
 
 /* eml23:LengthUom */
 enum class eml23__LengthUom {
@@ -3070,9 +3070,9 @@ enum class eml23__LengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:7925 */
+/* eml2_3ForGsoap.h:7931 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LightExposureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LightExposureUom (-1013)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LightExposureUom (-1012)
 
 /* eml23:LightExposureUom */
 enum class eml23__LightExposureUom {
@@ -3081,9 +3081,9 @@ enum class eml23__LightExposureUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:7941 */
+/* eml2_3ForGsoap.h:7947 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LinearAccelerationUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LinearAccelerationUom (-1014)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LinearAccelerationUom (-1013)
 
 /* eml23:LinearAccelerationUom */
 enum class eml23__LinearAccelerationUom {
@@ -3098,9 +3098,9 @@ enum class eml23__LinearAccelerationUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:7987 */
+/* eml2_3ForGsoap.h:7993 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LinearThermalExpansionUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LinearThermalExpansionUom (-1015)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LinearThermalExpansionUom (-1014)
 
 /* eml23:LinearThermalExpansionUom */
 enum class eml23__LinearThermalExpansionUom {
@@ -3111,9 +3111,9 @@ enum class eml23__LinearThermalExpansionUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8013 */
+/* eml2_3ForGsoap.h:8019 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LogarithmicPowerRatioPerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LogarithmicPowerRatioPerLengthUom (-1016)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LogarithmicPowerRatioPerLengthUom (-1015)
 
 /* eml23:LogarithmicPowerRatioPerLengthUom */
 enum class eml23__LogarithmicPowerRatioPerLengthUom {
@@ -3124,9 +3124,9 @@ enum class eml23__LogarithmicPowerRatioPerLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8039 */
+/* eml2_3ForGsoap.h:8045 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LogarithmicPowerRatioUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LogarithmicPowerRatioUom (-1017)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LogarithmicPowerRatioUom (-1016)
 
 /* eml23:LogarithmicPowerRatioUom */
 enum class eml23__LogarithmicPowerRatioUom {
@@ -3135,9 +3135,9 @@ enum class eml23__LogarithmicPowerRatioUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8055 */
+/* eml2_3ForGsoap.h:8061 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LuminanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LuminanceUom (-1018)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LuminanceUom (-1017)
 
 /* eml23:LuminanceUom */
 enum class eml23__LuminanceUom {
@@ -3145,9 +3145,9 @@ enum class eml23__LuminanceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8066 */
+/* eml2_3ForGsoap.h:8072 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LuminousEfficacyUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LuminousEfficacyUom (-1019)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LuminousEfficacyUom (-1018)
 
 /* eml23:LuminousEfficacyUom */
 enum class eml23__LuminousEfficacyUom {
@@ -3155,9 +3155,9 @@ enum class eml23__LuminousEfficacyUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8077 */
+/* eml2_3ForGsoap.h:8083 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LuminousFluxUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LuminousFluxUom (-1020)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LuminousFluxUom (-1019)
 
 /* eml23:LuminousFluxUom */
 enum class eml23__LuminousFluxUom {
@@ -3165,9 +3165,9 @@ enum class eml23__LuminousFluxUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8088 */
+/* eml2_3ForGsoap.h:8094 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LuminousIntensityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LuminousIntensityUom (-1021)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LuminousIntensityUom (-1020)
 
 /* eml23:LuminousIntensityUom */
 enum class eml23__LuminousIntensityUom {
@@ -3176,9 +3176,9 @@ enum class eml23__LuminousIntensityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8104 */
+/* eml2_3ForGsoap.h:8110 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MagneticDipoleMomentUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticDipoleMomentUom (-1022)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticDipoleMomentUom (-1021)
 
 /* eml23:MagneticDipoleMomentUom */
 enum class eml23__MagneticDipoleMomentUom {
@@ -3186,9 +3186,9 @@ enum class eml23__MagneticDipoleMomentUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8115 */
+/* eml2_3ForGsoap.h:8121 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFieldStrengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFieldStrengthUom (-1023)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFieldStrengthUom (-1022)
 
 /* eml23:MagneticFieldStrengthUom */
 enum class eml23__MagneticFieldStrengthUom {
@@ -3198,9 +3198,9 @@ enum class eml23__MagneticFieldStrengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8136 */
+/* eml2_3ForGsoap.h:8142 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxDensityPerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxDensityPerLengthUom (-1024)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxDensityPerLengthUom (-1023)
 
 /* eml23:MagneticFluxDensityPerLengthUom */
 enum class eml23__MagneticFluxDensityPerLengthUom {
@@ -3210,9 +3210,9 @@ enum class eml23__MagneticFluxDensityPerLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8157 */
+/* eml2_3ForGsoap.h:8163 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxDensityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxDensityUom (-1025)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxDensityUom (-1024)
 
 /* eml23:MagneticFluxDensityUom */
 enum class eml23__MagneticFluxDensityUom {
@@ -3244,9 +3244,9 @@ enum class eml23__MagneticFluxDensityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8288 */
+/* eml2_3ForGsoap.h:8294 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxUom (-1026)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxUom (-1025)
 
 /* eml23:MagneticFluxUom */
 enum class eml23__MagneticFluxUom {
@@ -3266,9 +3266,9 @@ enum class eml23__MagneticFluxUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8359 */
+/* eml2_3ForGsoap.h:8365 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MagneticPermeabilityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticPermeabilityUom (-1027)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticPermeabilityUom (-1026)
 
 /* eml23:MagneticPermeabilityUom */
 enum class eml23__MagneticPermeabilityUom {
@@ -3277,9 +3277,9 @@ enum class eml23__MagneticPermeabilityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8375 */
+/* eml2_3ForGsoap.h:8381 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MagneticVectorPotentialUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticVectorPotentialUom (-1028)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticVectorPotentialUom (-1027)
 
 /* eml23:MagneticVectorPotentialUom */
 enum class eml23__MagneticVectorPotentialUom {
@@ -3288,9 +3288,9 @@ enum class eml23__MagneticVectorPotentialUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8391 */
+/* eml2_3ForGsoap.h:8397 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassLengthUom (-1029)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassLengthUom (-1028)
 
 /* eml23:MassLengthUom */
 enum class eml23__MassLengthUom {
@@ -3299,9 +3299,9 @@ enum class eml23__MassLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8407 */
+/* eml2_3ForGsoap.h:8413 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerAreaUom (-1030)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerAreaUom (-1029)
 
 /* eml23:MassPerAreaUom */
 enum class eml23__MassPerAreaUom {
@@ -3313,9 +3313,9 @@ enum class eml23__MassPerAreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8438 */
+/* eml2_3ForGsoap.h:8444 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerEnergyUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerEnergyUom (-1031)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerEnergyUom (-1030)
 
 /* eml23:MassPerEnergyUom */
 enum class eml23__MassPerEnergyUom {
@@ -3327,9 +3327,9 @@ enum class eml23__MassPerEnergyUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8469 */
+/* eml2_3ForGsoap.h:8475 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerLengthUom (-1032)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerLengthUom (-1031)
 
 /* eml23:MassPerLengthUom */
 enum class eml23__MassPerLengthUom {
@@ -3341,9 +3341,9 @@ enum class eml23__MassPerLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8500 */
+/* eml2_3ForGsoap.h:8506 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerMassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerMassUom (-1033)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerMassUom (-1032)
 
 /* eml23:MassPerMassUom */
 enum class eml23__MassPerMassUom {
@@ -3367,9 +3367,9 @@ enum class eml23__MassPerMassUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8591 */
+/* eml2_3ForGsoap.h:8597 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimePerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimePerAreaUom (-1034)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimePerAreaUom (-1033)
 
 /* eml23:MassPerTimePerAreaUom */
 enum class eml23__MassPerTimePerAreaUom {
@@ -3383,9 +3383,9 @@ enum class eml23__MassPerTimePerAreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8632 */
+/* eml2_3ForGsoap.h:8638 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimePerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimePerLengthUom (-1035)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimePerLengthUom (-1034)
 
 /* eml23:MassPerTimePerLengthUom */
 enum class eml23__MassPerTimePerLengthUom {
@@ -3396,9 +3396,9 @@ enum class eml23__MassPerTimePerLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8658 */
+/* eml2_3ForGsoap.h:8664 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimeUom (-1036)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimeUom (-1035)
 
 /* eml23:MassPerTimeUom */
 enum class eml23__MassPerTimeUom {
@@ -3431,9 +3431,9 @@ enum class eml23__MassPerTimeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8794 */
+/* eml2_3ForGsoap.h:8800 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerLengthUom (-1037)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerLengthUom (-1036)
 
 /* eml23:MassPerVolumePerLengthUom */
 enum class eml23__MassPerVolumePerLengthUom {
@@ -3447,9 +3447,9 @@ enum class eml23__MassPerVolumePerLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8835 */
+/* eml2_3ForGsoap.h:8841 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerPressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerPressureUom (-1038)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerPressureUom (-1037)
 
 /* eml23:MassPerVolumePerPressureUom */
 enum class eml23__MassPerVolumePerPressureUom {
@@ -3458,9 +3458,9 @@ enum class eml23__MassPerVolumePerPressureUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8843 */
+/* eml2_3ForGsoap.h:8849 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerTemperatureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerTemperatureUom (-1039)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerTemperatureUom (-1038)
 
 /* eml23:MassPerVolumePerTemperatureUom */
 enum class eml23__MassPerVolumePerTemperatureUom {
@@ -3470,9 +3470,9 @@ enum class eml23__MassPerVolumePerTemperatureUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:8852 */
+/* eml2_3ForGsoap.h:8858 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumeUom (-1040)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumeUom (-1039)
 
 /* eml23:MassPerVolumeUom */
 enum class eml23__MassPerVolumeUom {
@@ -3508,9 +3508,9 @@ enum class eml23__MassPerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9003 */
+/* eml2_3ForGsoap.h:9009 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassUom (-1041)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassUom (-1040)
 
 /* eml23:MassUom */
 enum class eml23__MassUom {
@@ -3543,9 +3543,9 @@ enum class eml23__MassUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9139 */
+/* eml2_3ForGsoap.h:9145 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MobilityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MobilityUom (-1042)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MobilityUom (-1041)
 
 /* eml23:MobilityUom */
 enum class eml23__MobilityUom {
@@ -3559,9 +3559,9 @@ enum class eml23__MobilityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9180 */
+/* eml2_3ForGsoap.h:9186 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MolarEnergyUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MolarEnergyUom (-1043)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MolarEnergyUom (-1042)
 
 /* eml23:MolarEnergyUom */
 enum class eml23__MolarEnergyUom {
@@ -3573,9 +3573,9 @@ enum class eml23__MolarEnergyUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9211 */
+/* eml2_3ForGsoap.h:9217 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MolarHeatCapacityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MolarHeatCapacityUom (-1044)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MolarHeatCapacityUom (-1043)
 
 /* eml23:MolarHeatCapacityUom */
 enum class eml23__MolarHeatCapacityUom {
@@ -3586,9 +3586,9 @@ enum class eml23__MolarHeatCapacityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9237 */
+/* eml2_3ForGsoap.h:9243 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MolarVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MolarVolumeUom (-1045)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MolarVolumeUom (-1044)
 
 /* eml23:MolarVolumeUom */
 enum class eml23__MolarVolumeUom {
@@ -3601,9 +3601,9 @@ enum class eml23__MolarVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9273 */
+/* eml2_3ForGsoap.h:9279 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MolecularWeightUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MolecularWeightUom (-1046)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MolecularWeightUom (-1045)
 
 /* eml23:MolecularWeightUom */
 enum class eml23__MolecularWeightUom {
@@ -3613,9 +3613,9 @@ enum class eml23__MolecularWeightUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9294 */
+/* eml2_3ForGsoap.h:9300 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MomentOfForceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MomentOfForceUom (-1047)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MomentOfForceUom (-1046)
 
 /* eml23:MomentOfForceUom */
 enum class eml23__MomentOfForceUom {
@@ -3635,9 +3635,9 @@ enum class eml23__MomentOfForceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9365 */
+/* eml2_3ForGsoap.h:9371 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MomentOfInertiaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MomentOfInertiaUom (-1048)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MomentOfInertiaUom (-1047)
 
 /* eml23:MomentOfInertiaUom */
 enum class eml23__MomentOfInertiaUom {
@@ -3646,9 +3646,9 @@ enum class eml23__MomentOfInertiaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9381 */
+/* eml2_3ForGsoap.h:9387 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MomentumUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MomentumUom (-1049)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MomentumUom (-1048)
 
 /* eml23:MomentumUom */
 enum class eml23__MomentumUom {
@@ -3657,9 +3657,9 @@ enum class eml23__MomentumUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9397 */
+/* eml2_3ForGsoap.h:9403 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__NormalizedPowerUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__NormalizedPowerUom (-1050)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__NormalizedPowerUom (-1049)
 
 /* eml23:NormalizedPowerUom */
 enum class eml23__NormalizedPowerUom {
@@ -3670,9 +3670,9 @@ enum class eml23__NormalizedPowerUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9423 */
+/* eml2_3ForGsoap.h:9429 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PermeabilityLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PermeabilityLengthUom (-1051)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PermeabilityLengthUom (-1050)
 
 /* eml23:PermeabilityLengthUom */
 enum class eml23__PermeabilityLengthUom {
@@ -3684,9 +3684,9 @@ enum class eml23__PermeabilityLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9454 */
+/* eml2_3ForGsoap.h:9460 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PermeabilityRockUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PermeabilityRockUom (-1052)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PermeabilityRockUom (-1051)
 
 /* eml23:PermeabilityRockUom */
 enum class eml23__PermeabilityRockUom {
@@ -3697,9 +3697,9 @@ enum class eml23__PermeabilityRockUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9480 */
+/* eml2_3ForGsoap.h:9486 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PermittivityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PermittivityUom (-1053)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PermittivityUom (-1052)
 
 /* eml23:PermittivityUom */
 enum class eml23__PermittivityUom {
@@ -3708,9 +3708,9 @@ enum class eml23__PermittivityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9496 */
+/* eml2_3ForGsoap.h:9502 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PlaneAngleUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PlaneAngleUom (-1054)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PlaneAngleUom (-1053)
 
 /* eml23:PlaneAngleUom */
 enum class eml23__PlaneAngleUom {
@@ -3731,9 +3731,9 @@ enum class eml23__PlaneAngleUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9572 */
+/* eml2_3ForGsoap.h:9578 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PotentialDifferencePerPowerDropUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PotentialDifferencePerPowerDropUom (-1055)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PotentialDifferencePerPowerDropUom (-1054)
 
 /* eml23:PotentialDifferencePerPowerDropUom */
 enum class eml23__PotentialDifferencePerPowerDropUom {
@@ -3742,9 +3742,9 @@ enum class eml23__PotentialDifferencePerPowerDropUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9588 */
+/* eml2_3ForGsoap.h:9594 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerAreaUom (-1056)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerAreaUom (-1055)
 
 /* eml23:PowerPerAreaUom */
 enum class eml23__PowerPerAreaUom {
@@ -3763,9 +3763,9 @@ enum class eml23__PowerPerAreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9654 */
+/* eml2_3ForGsoap.h:9660 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerPowerUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerPowerUom (-1057)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerPowerUom (-1056)
 
 /* eml23:PowerPerPowerUom */
 enum class eml23__PowerPerPowerUom {
@@ -3777,9 +3777,9 @@ enum class eml23__PowerPerPowerUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9685 */
+/* eml2_3ForGsoap.h:9691 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerVolumeUom (-1058)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerVolumeUom (-1057)
 
 /* eml23:PowerPerVolumeUom */
 enum class eml23__PowerPerVolumeUom {
@@ -3794,9 +3794,9 @@ enum class eml23__PowerPerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9731 */
+/* eml2_3ForGsoap.h:9737 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PowerUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PowerUom (-1059)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PowerUom (-1058)
 
 /* eml23:PowerUom */
 enum class eml23__PowerUom {
@@ -3821,9 +3821,9 @@ enum class eml23__PowerUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9827 */
+/* eml2_3ForGsoap.h:9833 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerPressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerPressureUom (-1060)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerPressureUom (-1059)
 
 /* eml23:PressurePerPressureUom */
 enum class eml23__PressurePerPressureUom {
@@ -3837,9 +3837,9 @@ enum class eml23__PressurePerPressureUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9868 */
+/* eml2_3ForGsoap.h:9874 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerTimeUom (-1061)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerTimeUom (-1060)
 
 /* eml23:PressurePerTimeUom */
 enum class eml23__PressurePerTimeUom {
@@ -3855,9 +3855,9 @@ enum class eml23__PressurePerTimeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9919 */
+/* eml2_3ForGsoap.h:9925 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerVolumeUom (-1062)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerVolumeUom (-1061)
 
 /* eml23:PressurePerVolumeUom */
 enum class eml23__PressurePerVolumeUom {
@@ -3866,9 +3866,9 @@ enum class eml23__PressurePerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9935 */
+/* eml2_3ForGsoap.h:9941 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PressureSquaredPerForceTimePerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PressureSquaredPerForceTimePerAreaUom (-1063)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PressureSquaredPerForceTimePerAreaUom (-1062)
 
 /* eml23:PressureSquaredPerForceTimePerAreaUom */
 enum class eml23__PressureSquaredPerForceTimePerAreaUom {
@@ -3880,9 +3880,9 @@ enum class eml23__PressureSquaredPerForceTimePerAreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:9966 */
+/* eml2_3ForGsoap.h:9972 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PressureSquaredUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PressureSquaredUom (-1064)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PressureSquaredUom (-1063)
 
 /* eml23:PressureSquaredUom */
 enum class eml23__PressureSquaredUom {
@@ -3895,9 +3895,9 @@ enum class eml23__PressureSquaredUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10002 */
+/* eml2_3ForGsoap.h:10008 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PressureTimePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PressureTimePerVolumeUom (-1065)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PressureTimePerVolumeUom (-1064)
 
 /* eml23:PressureTimePerVolumeUom */
 enum class eml23__PressureTimePerVolumeUom {
@@ -3906,9 +3906,9 @@ enum class eml23__PressureTimePerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10018 */
+/* eml2_3ForGsoap.h:10024 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PressureUom (-1066)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PressureUom (-1065)
 
 /* eml23:PressureUom */
 enum class eml23__PressureUom {
@@ -3958,9 +3958,9 @@ enum class eml23__PressureUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10239 */
+/* eml2_3ForGsoap.h:10245 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__QuantityOfLightUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__QuantityOfLightUom (-1067)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__QuantityOfLightUom (-1066)
 
 /* eml23:QuantityOfLightUom */
 enum class eml23__QuantityOfLightUom {
@@ -3968,9 +3968,9 @@ enum class eml23__QuantityOfLightUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10250 */
+/* eml2_3ForGsoap.h:10256 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__RadianceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__RadianceUom (-1068)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__RadianceUom (-1067)
 
 /* eml23:RadianceUom */
 enum class eml23__RadianceUom {
@@ -3978,9 +3978,9 @@ enum class eml23__RadianceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10261 */
+/* eml2_3ForGsoap.h:10267 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__RadiantIntensityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__RadiantIntensityUom (-1069)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__RadiantIntensityUom (-1068)
 
 /* eml23:RadiantIntensityUom */
 enum class eml23__RadiantIntensityUom {
@@ -3988,9 +3988,9 @@ enum class eml23__RadiantIntensityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10272 */
+/* eml2_3ForGsoap.h:10278 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalAreaUom (-1070)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalAreaUom (-1069)
 
 /* eml23:ReciprocalAreaUom */
 enum class eml23__ReciprocalAreaUom {
@@ -4001,9 +4001,9 @@ enum class eml23__ReciprocalAreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10298 */
+/* eml2_3ForGsoap.h:10304 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalElectricPotentialDifferenceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalElectricPotentialDifferenceUom (-1071)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalElectricPotentialDifferenceUom (-1070)
 
 /* eml23:ReciprocalElectricPotentialDifferenceUom */
 enum class eml23__ReciprocalElectricPotentialDifferenceUom {
@@ -4012,9 +4012,9 @@ enum class eml23__ReciprocalElectricPotentialDifferenceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10314 */
+/* eml2_3ForGsoap.h:10320 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalForceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalForceUom (-1072)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalForceUom (-1071)
 
 /* eml23:ReciprocalForceUom */
 enum class eml23__ReciprocalForceUom {
@@ -4023,9 +4023,9 @@ enum class eml23__ReciprocalForceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10330 */
+/* eml2_3ForGsoap.h:10336 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalLengthUom (-1073)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalLengthUom (-1072)
 
 /* eml23:ReciprocalLengthUom */
 enum class eml23__ReciprocalLengthUom {
@@ -4042,9 +4042,9 @@ enum class eml23__ReciprocalLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10386 */
+/* eml2_3ForGsoap.h:10392 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalMassTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalMassTimeUom (-1074)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalMassTimeUom (-1073)
 
 /* eml23:ReciprocalMassTimeUom */
 enum class eml23__ReciprocalMassTimeUom {
@@ -4054,9 +4054,9 @@ enum class eml23__ReciprocalMassTimeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10407 */
+/* eml2_3ForGsoap.h:10413 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalMassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalMassUom (-1075)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalMassUom (-1074)
 
 /* eml23:ReciprocalMassUom */
 enum class eml23__ReciprocalMassUom {
@@ -4066,9 +4066,9 @@ enum class eml23__ReciprocalMassUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10428 */
+/* eml2_3ForGsoap.h:10434 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalPressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalPressureUom (-1076)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalPressureUom (-1075)
 
 /* eml23:ReciprocalPressureUom */
 enum class eml23__ReciprocalPressureUom {
@@ -4081,9 +4081,9 @@ enum class eml23__ReciprocalPressureUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10464 */
+/* eml2_3ForGsoap.h:10470 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalTimeUom (-1077)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalTimeUom (-1076)
 
 /* eml23:ReciprocalTimeUom */
 enum class eml23__ReciprocalTimeUom {
@@ -4098,9 +4098,9 @@ enum class eml23__ReciprocalTimeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10510 */
+/* eml2_3ForGsoap.h:10516 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalVolumeUom (-1078)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalVolumeUom (-1077)
 
 /* eml23:ReciprocalVolumeUom */
 enum class eml23__ReciprocalVolumeUom {
@@ -4113,9 +4113,9 @@ enum class eml23__ReciprocalVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10546 */
+/* eml2_3ForGsoap.h:10552 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReluctanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReluctanceUom (-1079)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReluctanceUom (-1078)
 
 /* eml23:ReluctanceUom */
 enum class eml23__ReluctanceUom {
@@ -4123,9 +4123,9 @@ enum class eml23__ReluctanceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10557 */
+/* eml2_3ForGsoap.h:10563 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__SecondMomentOfAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__SecondMomentOfAreaUom (-1080)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__SecondMomentOfAreaUom (-1079)
 
 /* eml23:SecondMomentOfAreaUom */
 enum class eml23__SecondMomentOfAreaUom {
@@ -4135,9 +4135,9 @@ enum class eml23__SecondMomentOfAreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10578 */
+/* eml2_3ForGsoap.h:10584 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__SignalingEventPerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__SignalingEventPerTimeUom (-1081)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__SignalingEventPerTimeUom (-1080)
 
 /* eml23:SignalingEventPerTimeUom */
 enum class eml23__SignalingEventPerTimeUom {
@@ -4145,9 +4145,9 @@ enum class eml23__SignalingEventPerTimeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10589 */
+/* eml2_3ForGsoap.h:10595 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__SolidAngleUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__SolidAngleUom (-1082)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__SolidAngleUom (-1081)
 
 /* eml23:SolidAngleUom */
 enum class eml23__SolidAngleUom {
@@ -4155,9 +4155,9 @@ enum class eml23__SolidAngleUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10600 */
+/* eml2_3ForGsoap.h:10606 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__SpecificHeatCapacityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__SpecificHeatCapacityUom (-1083)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__SpecificHeatCapacityUom (-1082)
 
 /* eml23:SpecificHeatCapacityUom */
 enum class eml23__SpecificHeatCapacityUom {
@@ -4172,9 +4172,9 @@ enum class eml23__SpecificHeatCapacityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10646 */
+/* eml2_3ForGsoap.h:10652 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerLengthUom (-1084)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerLengthUom (-1083)
 
 /* eml23:TemperatureIntervalPerLengthUom */
 enum class eml23__TemperatureIntervalPerLengthUom {
@@ -4190,9 +4190,9 @@ enum class eml23__TemperatureIntervalPerLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10697 */
+/* eml2_3ForGsoap.h:10703 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerPressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerPressureUom (-1085)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerPressureUom (-1084)
 
 /* eml23:TemperatureIntervalPerPressureUom */
 enum class eml23__TemperatureIntervalPerPressureUom {
@@ -4202,9 +4202,9 @@ enum class eml23__TemperatureIntervalPerPressureUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10718 */
+/* eml2_3ForGsoap.h:10724 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerTimeUom (-1086)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerTimeUom (-1085)
 
 /* eml23:TemperatureIntervalPerTimeUom */
 enum class eml23__TemperatureIntervalPerTimeUom {
@@ -4218,9 +4218,9 @@ enum class eml23__TemperatureIntervalPerTimeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10759 */
+/* eml2_3ForGsoap.h:10765 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalUom (-1087)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalUom (-1086)
 
 /* eml23:TemperatureIntervalUom */
 enum class eml23__TemperatureIntervalUom {
@@ -4231,9 +4231,9 @@ enum class eml23__TemperatureIntervalUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10785 */
+/* eml2_3ForGsoap.h:10791 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ThermalConductanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalConductanceUom (-1088)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalConductanceUom (-1087)
 
 /* eml23:ThermalConductanceUom */
 enum class eml23__ThermalConductanceUom {
@@ -4241,9 +4241,9 @@ enum class eml23__ThermalConductanceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10796 */
+/* eml2_3ForGsoap.h:10802 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ThermalConductivityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalConductivityUom (-1089)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalConductivityUom (-1088)
 
 /* eml23:ThermalConductivityUom */
 enum class eml23__ThermalConductivityUom {
@@ -4255,9 +4255,9 @@ enum class eml23__ThermalConductivityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10827 */
+/* eml2_3ForGsoap.h:10833 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ThermalDiffusivityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalDiffusivityUom (-1090)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalDiffusivityUom (-1089)
 
 /* eml23:ThermalDiffusivityUom */
 enum class eml23__ThermalDiffusivityUom {
@@ -4271,9 +4271,9 @@ enum class eml23__ThermalDiffusivityUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10868 */
+/* eml2_3ForGsoap.h:10874 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ThermalInsulanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalInsulanceUom (-1091)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalInsulanceUom (-1090)
 
 /* eml23:ThermalInsulanceUom */
 enum class eml23__ThermalInsulanceUom {
@@ -4284,9 +4284,9 @@ enum class eml23__ThermalInsulanceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10894 */
+/* eml2_3ForGsoap.h:10900 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ThermalResistanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalResistanceUom (-1092)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalResistanceUom (-1091)
 
 /* eml23:ThermalResistanceUom */
 enum class eml23__ThermalResistanceUom {
@@ -4294,9 +4294,9 @@ enum class eml23__ThermalResistanceUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10905 */
+/* eml2_3ForGsoap.h:10911 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ThermodynamicTemperaturePerThermodynamicTemperatureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermodynamicTemperaturePerThermodynamicTemperatureUom (-1093)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermodynamicTemperaturePerThermodynamicTemperatureUom (-1092)
 
 /* eml23:ThermodynamicTemperaturePerThermodynamicTemperatureUom */
 enum class eml23__ThermodynamicTemperaturePerThermodynamicTemperatureUom {
@@ -4308,9 +4308,9 @@ enum class eml23__ThermodynamicTemperaturePerThermodynamicTemperatureUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10936 */
+/* eml2_3ForGsoap.h:10942 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ThermodynamicTemperatureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermodynamicTemperatureUom (-1094)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermodynamicTemperatureUom (-1093)
 
 /* eml23:ThermodynamicTemperatureUom */
 enum class eml23__ThermodynamicTemperatureUom {
@@ -4321,9 +4321,9 @@ enum class eml23__ThermodynamicTemperatureUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:10962 */
+/* eml2_3ForGsoap.h:10968 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TimePerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TimePerLengthUom (-1095)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TimePerLengthUom (-1094)
 
 /* eml23:TimePerLengthUom */
 enum class eml23__TimePerLengthUom {
@@ -4347,9 +4347,9 @@ enum class eml23__TimePerLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11053 */
+/* eml2_3ForGsoap.h:11059 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TimePerMassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TimePerMassUom (-1096)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TimePerMassUom (-1095)
 
 /* eml23:TimePerMassUom */
 enum class eml23__TimePerMassUom {
@@ -4357,9 +4357,9 @@ enum class eml23__TimePerMassUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11064 */
+/* eml2_3ForGsoap.h:11070 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TimePerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TimePerTimeUom (-1097)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TimePerTimeUom (-1096)
 
 /* eml23:TimePerTimeUom */
 enum class eml23__TimePerTimeUom {
@@ -4370,9 +4370,9 @@ enum class eml23__TimePerTimeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11090 */
+/* eml2_3ForGsoap.h:11096 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TimePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TimePerVolumeUom (-1098)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TimePerVolumeUom (-1097)
 
 /* eml23:TimePerVolumeUom */
 enum class eml23__TimePerVolumeUom {
@@ -4390,9 +4390,9 @@ enum class eml23__TimePerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11151 */
+/* eml2_3ForGsoap.h:11157 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TimeUom (-1099)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TimeUom (-1098)
 
 /* eml23:TimeUom */
 enum class eml23__TimeUom {
@@ -4423,9 +4423,9 @@ enum class eml23__TimeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11281 */
+/* eml2_3ForGsoap.h:11287 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VerticalCoordinateUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VerticalCoordinateUom (-1100)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VerticalCoordinateUom (-1099)
 
 /* eml23:VerticalCoordinateUom */
 enum class eml23__VerticalCoordinateUom {
@@ -4436,9 +4436,9 @@ enum class eml23__VerticalCoordinateUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11307 */
+/* eml2_3ForGsoap.h:11313 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumeFlowRatePerVolumeFlowRateUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumeFlowRatePerVolumeFlowRateUom (-1101)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumeFlowRatePerVolumeFlowRateUom (-1100)
 
 /* eml23:VolumeFlowRatePerVolumeFlowRateUom */
 enum class eml23__VolumeFlowRatePerVolumeFlowRateUom {
@@ -4451,9 +4451,9 @@ enum class eml23__VolumeFlowRatePerVolumeFlowRateUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11343 */
+/* eml2_3ForGsoap.h:11349 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerAreaUom (-1102)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerAreaUom (-1101)
 
 /* eml23:VolumePerAreaUom */
 enum class eml23__VolumePerAreaUom {
@@ -4464,9 +4464,9 @@ enum class eml23__VolumePerAreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11369 */
+/* eml2_3ForGsoap.h:11375 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerLengthUom (-1103)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerLengthUom (-1102)
 
 /* eml23:VolumePerLengthUom */
 enum class eml23__VolumePerLengthUom {
@@ -4487,9 +4487,9 @@ enum class eml23__VolumePerLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11445 */
+/* eml2_3ForGsoap.h:11451 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerMassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerMassUom (-1104)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerMassUom (-1103)
 
 /* eml23:VolumePerMassUom */
 enum class eml23__VolumePerMassUom {
@@ -4518,9 +4518,9 @@ enum class eml23__VolumePerMassUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11561 */
+/* eml2_3ForGsoap.h:11567 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerPressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerPressureUom (-1105)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerPressureUom (-1104)
 
 /* eml23:VolumePerPressureUom */
 enum class eml23__VolumePerPressureUom {
@@ -4530,9 +4530,9 @@ enum class eml23__VolumePerPressureUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11582 */
+/* eml2_3ForGsoap.h:11588 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerRotationUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerRotationUom (-1106)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerRotationUom (-1105)
 
 /* eml23:VolumePerRotationUom */
 enum class eml23__VolumePerRotationUom {
@@ -4542,9 +4542,9 @@ enum class eml23__VolumePerRotationUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11603 */
+/* eml2_3ForGsoap.h:11609 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimeLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimeLengthUom (-1107)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimeLengthUom (-1106)
 
 /* eml23:VolumePerTimeLengthUom */
 enum class eml23__VolumePerTimeLengthUom {
@@ -4554,9 +4554,9 @@ enum class eml23__VolumePerTimeLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11624 */
+/* eml2_3ForGsoap.h:11630 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerAreaUom (-1108)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerAreaUom (-1107)
 
 /* eml23:VolumePerTimePerAreaUom */
 enum class eml23__VolumePerTimePerAreaUom {
@@ -4572,9 +4572,9 @@ enum class eml23__VolumePerTimePerAreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11675 */
+/* eml2_3ForGsoap.h:11681 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerLengthUom (-1109)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerLengthUom (-1108)
 
 /* eml23:VolumePerTimePerLengthUom */
 enum class eml23__VolumePerTimePerLengthUom {
@@ -4596,9 +4596,9 @@ enum class eml23__VolumePerTimePerLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11756 */
+/* eml2_3ForGsoap.h:11762 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerPressureLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerPressureLengthUom (-1110)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerPressureLengthUom (-1109)
 
 /* eml23:VolumePerTimePerPressureLengthUom */
 enum class eml23__VolumePerTimePerPressureLengthUom {
@@ -4609,9 +4609,9 @@ enum class eml23__VolumePerTimePerPressureLengthUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11782 */
+/* eml2_3ForGsoap.h:11788 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerPressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerPressureUom (-1111)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerPressureUom (-1110)
 
 /* eml23:VolumePerTimePerPressureUom */
 enum class eml23__VolumePerTimePerPressureUom {
@@ -4629,9 +4629,9 @@ enum class eml23__VolumePerTimePerPressureUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11843 */
+/* eml2_3ForGsoap.h:11849 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerTimeUom (-1112)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerTimeUom (-1111)
 
 /* eml23:VolumePerTimePerTimeUom */
 enum class eml23__VolumePerTimePerTimeUom {
@@ -4652,9 +4652,9 @@ enum class eml23__VolumePerTimePerTimeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11919 */
+/* eml2_3ForGsoap.h:11925 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerVolumeUom (-1113)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerVolumeUom (-1112)
 
 /* eml23:VolumePerTimePerVolumeUom */
 enum class eml23__VolumePerTimePerVolumeUom {
@@ -4663,9 +4663,9 @@ enum class eml23__VolumePerTimePerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:11935 */
+/* eml2_3ForGsoap.h:11941 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimeUom (-1114)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimeUom (-1113)
 
 /* eml23:VolumePerTimeUom */
 enum class eml23__VolumePerTimeUom {
@@ -4704,9 +4704,9 @@ enum class eml23__VolumePerTimeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12101 */
+/* eml2_3ForGsoap.h:12107 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerVolumeUom (-1115)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerVolumeUom (-1114)
 
 /* eml23:VolumePerVolumeUom */
 enum class eml23__VolumePerVolumeUom {
@@ -4760,9 +4760,9 @@ enum class eml23__VolumePerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12342 */
+/* eml2_3ForGsoap.h:12348 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumetricHeatTransferCoefficientUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumetricHeatTransferCoefficientUom (-1116)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumetricHeatTransferCoefficientUom (-1115)
 
 /* eml23:VolumetricHeatTransferCoefficientUom */
 enum class eml23__VolumetricHeatTransferCoefficientUom {
@@ -4773,9 +4773,9 @@ enum class eml23__VolumetricHeatTransferCoefficientUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12368 */
+/* eml2_3ForGsoap.h:12374 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumetricThermalExpansionUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumetricThermalExpansionUom (-1117)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumetricThermalExpansionUom (-1116)
 
 /* eml23:VolumetricThermalExpansionUom */
 enum class eml23__VolumetricThermalExpansionUom {
@@ -4791,9 +4791,9 @@ enum class eml23__VolumetricThermalExpansionUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12419 */
+/* eml2_3ForGsoap.h:12425 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumeUom (-1118)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumeUom (-1117)
 
 /* eml23:VolumeUom */
 enum class eml23__VolumeUom {
@@ -4836,9 +4836,9 @@ enum class eml23__VolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12605 */
+/* eml2_3ForGsoap.h:12611 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LegacyMassPerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyMassPerVolumeUom (-1119)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyMassPerVolumeUom (-1118)
 
 /* eml23:LegacyMassPerVolumeUom */
 enum class eml23__LegacyMassPerVolumeUom {
@@ -4848,9 +4848,9 @@ enum class eml23__LegacyMassPerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12614 */
+/* eml2_3ForGsoap.h:12620 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LegacyPressurePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyPressurePerVolumeUom (-1120)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyPressurePerVolumeUom (-1119)
 
 /* eml23:LegacyPressurePerVolumeUom */
 enum class eml23__LegacyPressurePerVolumeUom {
@@ -4860,9 +4860,9 @@ enum class eml23__LegacyPressurePerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12623 */
+/* eml2_3ForGsoap.h:12629 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LegacyPressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyPressureUom (-1121)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyPressureUom (-1120)
 
 /* eml23:LegacyPressureUom */
 enum class eml23__LegacyPressureUom {
@@ -4871,9 +4871,9 @@ enum class eml23__LegacyPressureUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12631 */
+/* eml2_3ForGsoap.h:12637 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerAreaUom (-1122)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerAreaUom (-1121)
 
 /* eml23:LegacyVolumePerAreaUom */
 enum class eml23__LegacyVolumePerAreaUom {
@@ -4884,9 +4884,9 @@ enum class eml23__LegacyVolumePerAreaUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12641 */
+/* eml2_3ForGsoap.h:12647 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerTimeUom (-1123)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerTimeUom (-1122)
 
 /* eml23:LegacyVolumePerTimeUom */
 enum class eml23__LegacyVolumePerTimeUom {
@@ -4912,9 +4912,9 @@ enum class eml23__LegacyVolumePerTimeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12666 */
+/* eml2_3ForGsoap.h:12672 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerVolumeUom (-1124)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerVolumeUom (-1123)
 
 /* eml23:LegacyVolumePerVolumeUom */
 enum class eml23__LegacyVolumePerVolumeUom {
@@ -4948,9 +4948,9 @@ enum class eml23__LegacyVolumePerVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12699 */
+/* eml2_3ForGsoap.h:12705 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumeUom (-1125)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumeUom (-1124)
 
 /* eml23:LegacyVolumeUom */
 enum class eml23__LegacyVolumeUom {
@@ -4967,9 +4967,9 @@ enum class eml23__LegacyVolumeUom {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12742 */
+/* eml2_3ForGsoap.h:12748 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__CollectionKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__CollectionKind (-1129)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__CollectionKind (-1128)
 
 /* resqml22:CollectionKind */
 enum class resqml22__CollectionKind {
@@ -4981,9 +4981,9 @@ enum class resqml22__CollectionKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12757 */
+/* eml2_3ForGsoap.h:12763 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__CulturalFeatureKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__CulturalFeatureKind (-1130)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__CulturalFeatureKind (-1129)
 
 /* resqml22:CulturalFeatureKind */
 enum class resqml22__CulturalFeatureKind {
@@ -4995,9 +4995,9 @@ enum class resqml22__CulturalFeatureKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12772 */
+/* eml2_3ForGsoap.h:12778 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__LineRole
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__LineRole (-1131)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__LineRole (-1130)
 
 /* resqml22:LineRole */
 enum class resqml22__LineRole {
@@ -5016,9 +5016,9 @@ enum class resqml22__LineRole {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12839 */
+/* eml2_3ForGsoap.h:12845 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__SurfaceRole
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__SurfaceRole (-1132)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__SurfaceRole (-1131)
 
 /* resqml22:SurfaceRole */
 enum class resqml22__SurfaceRole {
@@ -5027,9 +5027,9 @@ enum class resqml22__SurfaceRole {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12859 */
+/* eml2_3ForGsoap.h:12865 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__BoundaryRelation
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__BoundaryRelation (-1133)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__BoundaryRelation (-1132)
 
 /* resqml22:BoundaryRelation */
 enum class resqml22__BoundaryRelation {
@@ -5040,9 +5040,9 @@ enum class resqml22__BoundaryRelation {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12886 */
+/* eml2_3ForGsoap.h:12892 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__ContactMode
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__ContactMode (-1134)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__ContactMode (-1133)
 
 /* resqml22:ContactMode */
 enum class resqml22__ContactMode {
@@ -5052,9 +5052,9 @@ enum class resqml22__ContactMode {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12900 */
+/* eml2_3ForGsoap.h:12906 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__ContactSide
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__ContactSide (-1135)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__ContactSide (-1134)
 
 /* resqml22:ContactSide */
 enum class resqml22__ContactSide {
@@ -5070,9 +5070,9 @@ enum class resqml22__ContactSide {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12951 */
+/* eml2_3ForGsoap.h:12957 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__ContactVerb
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__ContactVerb (-1136)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__ContactVerb (-1135)
 
 /* resqml22:ContactVerb */
 enum class resqml22__ContactVerb {
@@ -5082,9 +5082,9 @@ enum class resqml22__ContactVerb {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12972 */
+/* eml2_3ForGsoap.h:12978 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__DepositionMode
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__DepositionMode (-1137)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__DepositionMode (-1136)
 
 /* resqml22:DepositionMode */
 enum class resqml22__DepositionMode {
@@ -5095,9 +5095,9 @@ enum class resqml22__DepositionMode {
 };
 #endif
 
-/* eml2_3ForGsoap.h:12986 */
+/* eml2_3ForGsoap.h:12992 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__Domain
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__Domain (-1138)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__Domain (-1137)
 
 /* resqml22:Domain */
 enum class resqml22__Domain {
@@ -5107,9 +5107,9 @@ enum class resqml22__Domain {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13011 */
+/* eml2_3ForGsoap.h:13017 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__FluidContact
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__FluidContact (-1139)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__FluidContact (-1138)
 
 /* resqml22:FluidContact */
 enum class resqml22__FluidContact {
@@ -5121,9 +5121,9 @@ enum class resqml22__FluidContact {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13046 */
+/* eml2_3ForGsoap.h:13052 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__GeologicUnitMaterialEmplacement
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__GeologicUnitMaterialEmplacement (-1140)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__GeologicUnitMaterialEmplacement (-1139)
 
 /* resqml22:GeologicUnitMaterialEmplacement */
 enum class resqml22__GeologicUnitMaterialEmplacement {
@@ -5132,9 +5132,9 @@ enum class resqml22__GeologicUnitMaterialEmplacement {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13059 */
+/* eml2_3ForGsoap.h:13065 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__HorizonStratigraphicRole
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__HorizonStratigraphicRole (-1141)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__HorizonStratigraphicRole (-1140)
 
 /* resqml22:HorizonStratigraphicRole */
 enum class resqml22__HorizonStratigraphicRole {
@@ -5147,9 +5147,9 @@ enum class resqml22__HorizonStratigraphicRole {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13075 */
+/* eml2_3ForGsoap.h:13081 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__OrderingCriteria
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__OrderingCriteria (-1142)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__OrderingCriteria (-1141)
 
 /* resqml22:OrderingCriteria */
 enum class resqml22__OrderingCriteria {
@@ -5158,9 +5158,9 @@ enum class resqml22__OrderingCriteria {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13096 */
+/* eml2_3ForGsoap.h:13102 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__Phase
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__Phase (-1143)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__Phase (-1142)
 
 /* resqml22:Phase */
 enum class resqml22__Phase {
@@ -5171,9 +5171,9 @@ enum class resqml22__Phase {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13126 */
+/* eml2_3ForGsoap.h:13132 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__SequenceStratigraphySurface
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__SequenceStratigraphySurface (-1144)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__SequenceStratigraphySurface (-1143)
 
 /* resqml22:SequenceStratigraphySurface */
 enum class resqml22__SequenceStratigraphySurface {
@@ -5184,9 +5184,9 @@ enum class resqml22__SequenceStratigraphySurface {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13140 */
+/* eml2_3ForGsoap.h:13146 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__Shape3d
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__Shape3d (-1145)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__Shape3d (-1144)
 
 /* resqml22:Shape3d */
 enum class resqml22__Shape3d {
@@ -5203,9 +5203,9 @@ enum class resqml22__Shape3d {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13160 */
+/* eml2_3ForGsoap.h:13166 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__StratigraphicUnitKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__StratigraphicUnitKind (-1146)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__StratigraphicUnitKind (-1145)
 
 /* resqml22:StratigraphicUnitKind */
 enum class resqml22__StratigraphicUnitKind {
@@ -5215,9 +5215,9 @@ enum class resqml22__StratigraphicUnitKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13173 */
+/* eml2_3ForGsoap.h:13179 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__ThrowKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__ThrowKind (-1147)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__ThrowKind (-1146)
 
 /* resqml22:ThrowKind */
 enum class resqml22__ThrowKind {
@@ -5230,9 +5230,9 @@ enum class resqml22__ThrowKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13193 */
+/* eml2_3ForGsoap.h:13199 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__IdentityKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__IdentityKind (-1148)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__IdentityKind (-1147)
 
 /* resqml22:IdentityKind */
 enum class resqml22__IdentityKind {
@@ -5243,9 +5243,9 @@ enum class resqml22__IdentityKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13229 */
+/* eml2_3ForGsoap.h:13235 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__IndexableElement
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__IndexableElement (-1149)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__IndexableElement (-1148)
 
 /* resqml22:IndexableElement */
 enum class resqml22__IndexableElement {
@@ -5281,9 +5281,9 @@ enum class resqml22__IndexableElement {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13298 */
+/* eml2_3ForGsoap.h:13304 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__CellShape
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__CellShape (-1150)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__CellShape (-1149)
 
 /* resqml22:CellShape */
 enum class resqml22__CellShape {
@@ -5295,9 +5295,9 @@ enum class resqml22__CellShape {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13335 */
+/* eml2_3ForGsoap.h:13341 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__ColumnShape
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__ColumnShape (-1151)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__ColumnShape (-1150)
 
 /* resqml22:ColumnShape */
 enum class resqml22__ColumnShape {
@@ -5307,9 +5307,9 @@ enum class resqml22__ColumnShape {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13360 */
+/* eml2_3ForGsoap.h:13366 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__GridGeometryAttachment
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__GridGeometryAttachment (-1152)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__GridGeometryAttachment (-1151)
 
 /* resqml22:GridGeometryAttachment */
 enum class resqml22__GridGeometryAttachment {
@@ -5323,9 +5323,9 @@ enum class resqml22__GridGeometryAttachment {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13409 */
+/* eml2_3ForGsoap.h:13415 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__KDirection
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__KDirection (-1153)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__KDirection (-1152)
 
 /* resqml22:KDirection */
 enum class resqml22__KDirection {
@@ -5335,9 +5335,9 @@ enum class resqml22__KDirection {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13437 */
+/* eml2_3ForGsoap.h:13443 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__PillarShape
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__PillarShape (-1154)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__PillarShape (-1153)
 
 /* resqml22:PillarShape */
 enum class resqml22__PillarShape {
@@ -5347,9 +5347,9 @@ enum class resqml22__PillarShape {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13462 */
+/* eml2_3ForGsoap.h:13468 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__SubnodeNodeObject
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__SubnodeNodeObject (-1155)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__SubnodeNodeObject (-1154)
 
 /* resqml22:SubnodeNodeObject */
 enum class resqml22__SubnodeNodeObject {
@@ -5359,9 +5359,9 @@ enum class resqml22__SubnodeNodeObject {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13484 */
+/* eml2_3ForGsoap.h:13490 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__DisplaySpace
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__DisplaySpace (-1156)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__DisplaySpace (-1155)
 
 /* resqml22:DisplaySpace */
 enum class resqml22__DisplaySpace {
@@ -5370,9 +5370,9 @@ enum class resqml22__DisplaySpace {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13492 */
+/* eml2_3ForGsoap.h:13498 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__EdgePattern
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__EdgePattern (-1157)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__EdgePattern (-1156)
 
 /* resqml22:EdgePattern */
 enum class resqml22__EdgePattern {
@@ -5383,9 +5383,9 @@ enum class resqml22__EdgePattern {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13502 */
+/* eml2_3ForGsoap.h:13508 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__InterpolationDomain
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__InterpolationDomain (-1158)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__InterpolationDomain (-1157)
 
 /* resqml22:InterpolationDomain */
 enum class resqml22__InterpolationDomain {
@@ -5394,9 +5394,9 @@ enum class resqml22__InterpolationDomain {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13510 */
+/* eml2_3ForGsoap.h:13516 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__InterpolationMethod
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__InterpolationMethod (-1159)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__InterpolationMethod (-1158)
 
 /* resqml22:InterpolationMethod */
 enum class resqml22__InterpolationMethod {
@@ -5405,9 +5405,9 @@ enum class resqml22__InterpolationMethod {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13518 */
+/* eml2_3ForGsoap.h:13524 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__NodeSymbol
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__NodeSymbol (-1160)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__NodeSymbol (-1159)
 
 /* resqml22:NodeSymbol */
 enum class resqml22__NodeSymbol {
@@ -5424,9 +5424,9 @@ enum class resqml22__NodeSymbol {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13534 */
+/* eml2_3ForGsoap.h:13540 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__ViewerKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__ViewerKind (-1161)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__ViewerKind (-1160)
 
 /* resqml22:ViewerKind */
 enum class resqml22__ViewerKind {
@@ -5437,9 +5437,9 @@ enum class resqml22__ViewerKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:13548 */
+/* eml2_3ForGsoap.h:13554 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__ResqmlPropertyKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__ResqmlPropertyKind (-1162)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__ResqmlPropertyKind (-1161)
 
 /* resqml22:ResqmlPropertyKind */
 enum class resqml22__ResqmlPropertyKind {
@@ -5657,9 +5657,9 @@ enum class resqml22__ResqmlPropertyKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:14013 */
+/* eml2_3ForGsoap.h:14019 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__TimeSetKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__TimeSetKind (-1163)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__TimeSetKind (-1162)
 
 /* resqml22:TimeSetKind */
 enum class resqml22__TimeSetKind {
@@ -5670,9 +5670,9 @@ enum class resqml22__TimeSetKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:14043 */
+/* eml2_3ForGsoap.h:14049 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__StreamlineFlux
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__StreamlineFlux (-1164)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__StreamlineFlux (-1163)
 
 /* resqml22:StreamlineFlux */
 enum class resqml22__StreamlineFlux {
@@ -5684,9 +5684,9 @@ enum class resqml22__StreamlineFlux {
 };
 #endif
 
-/* eml2_3ForGsoap.h:14079 */
+/* eml2_3ForGsoap.h:14085 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__FluidMarker
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__FluidMarker (-1165)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__FluidMarker (-1164)
 
 /* resqml22:FluidMarker */
 enum class resqml22__FluidMarker {
@@ -5699,9 +5699,9 @@ enum class resqml22__FluidMarker {
 };
 #endif
 
-/* eml2_3ForGsoap.h:14095 */
+/* eml2_3ForGsoap.h:14101 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__GeologicBoundaryKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__GeologicBoundaryKind (-1166)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__GeologicBoundaryKind (-1165)
 
 /* resqml22:GeologicBoundaryKind */
 enum class resqml22__GeologicBoundaryKind {
@@ -5711,9 +5711,9 @@ enum class resqml22__GeologicBoundaryKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:14108 */
+/* eml2_3ForGsoap.h:14114 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__MdDomain
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__MdDomain (-1167)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__MdDomain (-1166)
 
 /* resqml22:MdDomain */
 enum class resqml22__MdDomain {
@@ -5722,9 +5722,9 @@ enum class resqml22__MdDomain {
 };
 #endif
 
-/* eml2_3ForGsoap.h:14136 */
+/* eml2_3ForGsoap.h:14142 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ExistenceKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ExistenceKind (-1168)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ExistenceKind (-1167)
 
 /* eml23:ExistenceKind */
 enum class eml23__ExistenceKind {
@@ -5735,9 +5735,9 @@ enum class eml23__ExistenceKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:14150 */
+/* eml2_3ForGsoap.h:14156 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ChannelStatusKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ChannelStatusKind (-1169)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ChannelStatusKind (-1168)
 
 /* eml23:ChannelStatusKind */
 enum class eml23__ChannelStatusKind {
@@ -5747,9 +5747,9 @@ enum class eml23__ChannelStatusKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:14175 */
+/* eml2_3ForGsoap.h:14181 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__GeochronologicalRank
-#define SOAP_TYPE_gsoap_eml2_3_eml23__GeochronologicalRank (-1170)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__GeochronologicalRank (-1169)
 
 /* eml23:GeochronologicalRank */
 enum class eml23__GeochronologicalRank {
@@ -5762,9 +5762,9 @@ enum class eml23__GeochronologicalRank {
 };
 #endif
 
-/* eml2_3ForGsoap.h:14191 */
+/* eml2_3ForGsoap.h:14197 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LithologyKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LithologyKind (-1171)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LithologyKind (-1170)
 
 /* eml23:LithologyKind */
 enum class eml23__LithologyKind {
@@ -5912,9 +5912,9 @@ enum class eml23__LithologyKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:14338 */
+/* eml2_3ForGsoap.h:14344 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LithologyQualifierKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LithologyQualifierKind (-1172)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LithologyQualifierKind (-1171)
 
 /* eml23:LithologyQualifierKind */
 enum class eml23__LithologyQualifierKind {
@@ -6222,9 +6222,9 @@ enum class eml23__LithologyQualifierKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:14649 */
+/* eml2_3ForGsoap.h:14655 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LithostratigraphicRank
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LithostratigraphicRank (-1173)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LithostratigraphicRank (-1172)
 
 /* eml23:LithostratigraphicRank */
 enum class eml23__LithostratigraphicRank {
@@ -6235,9 +6235,9 @@ enum class eml23__LithostratigraphicRank {
 };
 #endif
 
-/* eml2_3ForGsoap.h:14697 */
+/* eml2_3ForGsoap.h:14703 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MatrixCementKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MatrixCementKind (-1174)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MatrixCementKind (-1173)
 
 /* eml23:MatrixCementKind */
 enum class eml23__MatrixCementKind {
@@ -6253,9 +6253,9 @@ enum class eml23__MatrixCementKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:14716 */
+/* eml2_3ForGsoap.h:14722 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MeasureClass
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MeasureClass (-1175)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MeasureClass (-1174)
 
 /* eml23:MeasureClass */
 enum class eml23__MeasureClass {
@@ -6446,9 +6446,9 @@ enum class eml23__MeasureClass {
 };
 #endif
 
-/* eml2_3ForGsoap.h:14906 */
+/* eml2_3ForGsoap.h:14912 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__QuantityClassKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__QuantityClassKind (-1176)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__QuantityClassKind (-1175)
 
 /* eml23:QuantityClassKind */
 enum class eml23__QuantityClassKind {
@@ -6640,9 +6640,9 @@ enum class eml23__QuantityClassKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:15111 */
+/* eml2_3ForGsoap.h:15117 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReferenceCondition
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReferenceCondition (-1177)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReferenceCondition (-1176)
 
 /* eml23:ReferenceCondition */
 enum class eml23__ReferenceCondition {
@@ -6659,9 +6659,9 @@ enum class eml23__ReferenceCondition {
 };
 #endif
 
-/* eml2_3ForGsoap.h:15144 */
+/* eml2_3ForGsoap.h:15150 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__WellboreDatumReference
-#define SOAP_TYPE_gsoap_eml2_3_eml23__WellboreDatumReference (-1178)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__WellboreDatumReference (-1177)
 
 /* eml23:WellboreDatumReference */
 enum class eml23__WellboreDatumReference {
@@ -6684,9 +6684,9 @@ enum class eml23__WellboreDatumReference {
 };
 #endif
 
-/* eml2_3ForGsoap.h:15206 */
+/* eml2_3ForGsoap.h:15212 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__WellStatus
-#define SOAP_TYPE_gsoap_eml2_3_eml23__WellStatus (-1179)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__WellStatus (-1178)
 
 /* eml23:WellStatus */
 enum class eml23__WellStatus {
@@ -6710,9 +6710,9 @@ enum class eml23__WellStatus {
 };
 #endif
 
-/* eml2_3ForGsoap.h:15299 */
+/* eml2_3ForGsoap.h:15305 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__Facet
-#define SOAP_TYPE_gsoap_eml2_3_eml23__Facet (-1180)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__Facet (-1179)
 
 /* eml23:Facet */
 enum class eml23__Facet {
@@ -6753,9 +6753,9 @@ enum class eml23__Facet {
 };
 #endif
 
-/* eml2_3ForGsoap.h:15471 */
+/* eml2_3ForGsoap.h:15477 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__FacetKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__FacetKind (-1181)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__FacetKind (-1180)
 
 /* eml23:FacetKind */
 enum class eml23__FacetKind {
@@ -6769,9 +6769,9 @@ enum class eml23__FacetKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:15512 */
+/* eml2_3ForGsoap.h:15518 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ActivityParameterKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ActivityParameterKind (-1182)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ActivityParameterKind (-1181)
 
 /* eml23:ActivityParameterKind */
 enum class eml23__ActivityParameterKind {
@@ -6784,9 +6784,9 @@ enum class eml23__ActivityParameterKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:15528 */
+/* eml2_3ForGsoap.h:15534 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReferencePressureKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReferencePressureKind (-1183)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReferencePressureKind (-1182)
 
 /* eml23:ReferencePressureKind */
 enum class eml23__ReferencePressureKind {
@@ -6796,9 +6796,9 @@ enum class eml23__ReferencePressureKind {
 };
 #endif
 
-/* eml2_3ForGsoap.h:15549 */
+/* eml2_3ForGsoap.h:15555 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AxisOrder2d
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AxisOrder2d (-1184)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AxisOrder2d (-1183)
 
 /* eml23:AxisOrder2d */
 enum class eml23__AxisOrder2d {
@@ -6811,9 +6811,9 @@ enum class eml23__AxisOrder2d {
 };
 #endif
 
-/* eml2_3ForGsoap.h:15589 */
+/* eml2_3ForGsoap.h:15595 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EastOrWest
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EastOrWest (-1185)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EastOrWest (-1184)
 
 /* eml23:EastOrWest */
 enum class eml23__EastOrWest {
@@ -6822,9 +6822,9 @@ enum class eml23__EastOrWest {
 };
 #endif
 
-/* eml2_3ForGsoap.h:15609 */
+/* eml2_3ForGsoap.h:15615 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__NorthOrSouth
-#define SOAP_TYPE_gsoap_eml2_3_eml23__NorthOrSouth (-1186)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__NorthOrSouth (-1185)
 
 /* eml23:NorthOrSouth */
 enum class eml23__NorthOrSouth {
@@ -6833,9 +6833,9 @@ enum class eml23__NorthOrSouth {
 };
 #endif
 
-/* eml2_3ForGsoap.h:15629 */
+/* eml2_3ForGsoap.h:15635 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PrincipalMeridian
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PrincipalMeridian (-1187)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PrincipalMeridian (-1186)
 
 /* eml23:PrincipalMeridian */
 enum class eml23__PrincipalMeridian {
@@ -6878,9 +6878,9 @@ enum class eml23__PrincipalMeridian {
 };
 #endif
 
-/* eml2_3ForGsoap.h:15815 */
+/* eml2_3ForGsoap.h:15821 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VerticalDirection
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VerticalDirection (-1188)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VerticalDirection (-1187)
 
 /* eml23:VerticalDirection */
 enum class eml23__VerticalDirection {
@@ -6991,7 +6991,7 @@ class eml23__AbstractActivityParameter;	/* eml2_3ForGsoap.h:1427 */
 class eml23__AbstractParameterKey;	/* eml2_3ForGsoap.h:1429 */
 class eml23__ParameterTemplate;	/* eml2_3ForGsoap.h:1443 */
 class eml23__AbstractPressureValue;	/* eml2_3ForGsoap.h:1453 */
-union _eml23__union_AbstractTemperaturePressure;	/* eml2_3ForGsoap.h:19014 */
+union _eml23__union_AbstractTemperaturePressure;	/* eml2_3ForGsoap.h:19020 */
 class eml23__AbstractTemperaturePressure;	/* eml2_3ForGsoap.h:1455 */
 class eml23__DensityValue;	/* eml2_3ForGsoap.h:1457 */
 class eml23__FlowRateValue;	/* eml2_3ForGsoap.h:1459 */
@@ -7093,7 +7093,7 @@ class eml23__TimeIndexParameter;	/* eml2_3ForGsoap.h:1447 */
 class eml23__TimeIndexParameterKey;	/* eml2_3ForGsoap.h:1449 */
 class eml23__AbsolutePressure;	/* eml2_3ForGsoap.h:1451 */
 class eml23__GaugePressure;	/* eml2_3ForGsoap.h:1461 */
-union _eml23__union_ReferenceTemperaturePressure_;	/* eml2_3ForGsoap.h:23395 */
+union _eml23__union_ReferenceTemperaturePressure_;	/* eml2_3ForGsoap.h:23401 */
 class eml23__ReferenceTemperaturePressure;	/* eml2_3ForGsoap.h:1467 */
 class eml23__RelativePressure;	/* eml2_3ForGsoap.h:1469 */
 class eml23__TemperaturePressure;	/* eml2_3ForGsoap.h:1471 */
@@ -7780,8 +7780,8 @@ class SOAP_CMAC resqml22__AbstractPoint3dArray {
 /* complex XML schema type 'resqml22:ParametricLineIntersections': */
 class SOAP_CMAC resqml22__ParametricLineIntersections {
       public:
-        /// Required element 'resqml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'resqml22:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
         /// Required element 'resqml22:IntersectionLinePairs' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *IntersectionLinePairs;
         /// Required element 'resqml22:ParameterValuePairs' of XML schema type 'eml23:AbstractValueArray'
@@ -7970,8 +7970,8 @@ class SOAP_CMAC resqml22__AbstractSeismicCoordinates {
 /* complex XML schema type 'resqml22:AbstractSurfaceFrameworkContact': */
 class SOAP_CMAC resqml22__AbstractSurfaceFrameworkContact {
       public:
-        /// Required element 'resqml22:Index' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Index;
+        /// Required element 'resqml22:Index' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 Index;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -8046,8 +8046,8 @@ class SOAP_CMAC resqml22__ContactIdentity {
 /* complex XML schema type 'resqml22:PatchBoundaries': */
 class SOAP_CMAC resqml22__PatchBoundaries {
       public:
-        /// Required element 'resqml22:ReferencedPatch' of XML schema type 'xsd:unsignedLong'
-        ULONG64 ReferencedPatch;
+        /// Required element 'resqml22:ReferencedPatch' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 ReferencedPatch;
         /// Optional element 'resqml22:InnerRing' of XML schema type 'eml23:DataObjectReference'
         std::vector<eml23__DataObjectReference *> InnerRing;
         /// Optional element 'resqml22:OuterRing' of XML schema type 'eml23:DataObjectReference'
@@ -8196,8 +8196,8 @@ class SOAP_CMAC resqml22__AbstractTimeInterval {
 /* complex XML schema type 'resqml22:BoundaryFeatureInterpretationPlusItsRank': */
 class SOAP_CMAC resqml22__BoundaryFeatureInterpretationPlusItsRank {
       public:
-        /// Optional element 'resqml22:StratigraphicRank' of XML schema type 'xsd:unsignedLong'
-        ULONG64 *StratigraphicRank;
+        /// Optional element 'resqml22:StratigraphicRank' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 *StratigraphicRank;
         /// Optional element 'resqml22:BoundaryFeatureInterpretation' of XML schema type 'eml23:DataObjectReference'
         eml23__DataObjectReference *BoundaryFeatureInterpretation;
         /// Optional element 'resqml22:FeatureInterpretationSet' of XML schema type 'eml23:DataObjectReference'
@@ -8394,8 +8394,8 @@ class SOAP_CMAC resqml22__Patch {
 /* complex XML schema type 'resqml22:RepresentationIdentity': */
 class SOAP_CMAC resqml22__RepresentationIdentity {
       public:
-        /// Required element 'resqml22:IdenticalElementCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 IdenticalElementCount;
+        /// Required element 'resqml22:IdenticalElementCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 IdenticalElementCount;
         /// Required element 'resqml22:ElementIdentity' of XML schema type 'resqml22:ElementIdentity'
         std::vector<resqml22__ElementIdentity *> ElementIdentity;
         /// Optional element 'resqml22:AdditionalGridTopology' of XML schema type 'resqml22:AdditionalGridTopology'
@@ -8508,8 +8508,8 @@ class SOAP_CMAC resqml22__Activation {
 /* complex XML schema type 'resqml22:AdditionalGridPoints': */
 class SOAP_CMAC resqml22__AdditionalGridPoints {
       public:
-        /// Optional element 'resqml22:RepresentationPatchIndex' of XML schema type 'xsd:unsignedLong'
-        ULONG64 *RepresentationPatchIndex;
+        /// Optional element 'resqml22:RepresentationPatchIndex' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 *RepresentationPatchIndex;
         /// Required element 'resqml22:Attachment' of XML schema type 'resqml22:GridGeometryAttachment'
         resqml22__GridGeometryAttachment Attachment;
         /// Required element 'resqml22:Points' of XML schema type 'resqml22:AbstractPoint3dArray'
@@ -8674,8 +8674,8 @@ class SOAP_CMAC resqml22__CellFluidPhaseUnits {
 /* complex XML schema type 'resqml22:CellOverlap': */
 class SOAP_CMAC resqml22__CellOverlap {
       public:
-        /// Required element 'resqml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'resqml22:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
         /// Required element 'resqml22:ParentChildCellPairs' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *ParentChildCellPairs;
         /// Optional element 'resqml22:OverlapVolume' of XML schema type 'resqml22:OverlapVolume'
@@ -8714,8 +8714,8 @@ class SOAP_CMAC resqml22__CellOverlap {
 /* complex XML schema type 'resqml22:ColumnLayerGpGrid': */
 class SOAP_CMAC resqml22__ColumnLayerGpGrid {
       public:
-        /// Required element 'resqml22:Nk' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Nk;
+        /// Required element 'resqml22:Nk' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 Nk;
         /// Optional element 'resqml22:KGaps' of XML schema type 'resqml22:KGaps'
         resqml22__KGaps *KGaps;
         /// Optional element 'resqml22:IjkGpGridPatch' of XML schema type 'resqml22:IjkGpGridPatch'
@@ -8756,8 +8756,8 @@ class SOAP_CMAC resqml22__ColumnLayerGpGrid {
 /* complex XML schema type 'resqml22:ColumnLayerSplitCoordinateLines': */
 class SOAP_CMAC resqml22__ColumnLayerSplitCoordinateLines {
       public:
-        /// Required element 'resqml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'resqml22:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
         /// Required element 'resqml22:PillarIndices' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *PillarIndices;
         /// Required element 'resqml22:ColumnsPerSplitCoordinateLine' of XML schema type 'eml23:JaggedArray'
@@ -8834,8 +8834,8 @@ class SOAP_CMAC resqml22__ConnectionInterpretations {
 /* complex XML schema type 'resqml22:Edges': */
 class SOAP_CMAC resqml22__Edges {
       public:
-        /// Required element 'resqml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'resqml22:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
         /// Required element 'resqml22:NodesPerEdge' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *NodesPerEdge;
         /// Context that manages this object
@@ -8872,8 +8872,8 @@ class SOAP_CMAC resqml22__Edges {
 /* complex XML schema type 'resqml22:IjGaps': */
 class SOAP_CMAC resqml22__IjGaps {
       public:
-        /// Required element 'resqml22:SplitPillarCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 SplitPillarCount;
+        /// Required element 'resqml22:SplitPillarCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 SplitPillarCount;
         /// Required element 'resqml22:ParentPillarIndices' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *ParentPillarIndices;
         /// Required element 'resqml22:ColumnsPerSplitPillar' of XML schema type 'eml23:JaggedArray'
@@ -8912,8 +8912,8 @@ class SOAP_CMAC resqml22__IjGaps {
 /* complex XML schema type 'resqml22:IntervalGridCells': */
 class SOAP_CMAC resqml22__IntervalGridCells {
       public:
-        /// Required element 'resqml22:CellCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 CellCount;
+        /// Required element 'resqml22:CellCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 CellCount;
         /// Required element 'resqml22:GridIndices' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *GridIndices;
         /// Required element 'resqml22:CellIndices' of XML schema type 'eml23:AbstractIntegerArray'
@@ -8960,8 +8960,8 @@ class SOAP_CMAC resqml22__Intervals {
         eml23__AbstractFloatingPointArray *ChildCellWeights;
         /// Required element 'resqml22:ChildCountPerInterval' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *ChildCountPerInterval;
-        /// Required element 'resqml22:IntervalCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 IntervalCount;
+        /// Required element 'resqml22:IntervalCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 IntervalCount;
         /// Required element 'resqml22:ParentCountPerInterval' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *ParentCountPerInterval;
         /// Context that manages this object
@@ -9036,8 +9036,8 @@ class SOAP_CMAC resqml22__IntervalStratigraphicUnits {
 /* complex XML schema type 'resqml22:KGaps': */
 class SOAP_CMAC resqml22__KGaps {
       public:
-        /// Required element 'resqml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'resqml22:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
         /// Required element 'resqml22:GapAfterLayer' of XML schema type 'eml23:AbstractBooleanArray'
         eml23__AbstractBooleanArray *GapAfterLayer;
         /// Context that manages this object
@@ -9112,8 +9112,8 @@ class SOAP_CMAC resqml22__OverlapVolume {
 /* complex XML schema type 'resqml22:Regrid': */
 class SOAP_CMAC resqml22__Regrid {
       public:
-        /// Required element 'resqml22:InitialIndexOnParentGrid' of XML schema type 'xsd:unsignedLong'
-        ULONG64 InitialIndexOnParentGrid;
+        /// Required element 'resqml22:InitialIndexOnParentGrid' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 InitialIndexOnParentGrid;
         /// Optional element 'resqml22:Intervals' of XML schema type 'resqml22:Intervals'
         resqml22__Intervals *Intervals;
         /// Context that manages this object
@@ -9150,8 +9150,8 @@ class SOAP_CMAC resqml22__Regrid {
 /* complex XML schema type 'resqml22:SplitColumnEdges': */
 class SOAP_CMAC resqml22__SplitColumnEdges {
       public:
-        /// Required element 'resqml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'resqml22:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
         /// Required element 'resqml22:ParentColumnEdgeIndices' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *ParentColumnEdgeIndices;
         /// Required element 'resqml22:ColumnPerSplitColumnEdge' of XML schema type 'eml23:AbstractIntegerArray'
@@ -9190,8 +9190,8 @@ class SOAP_CMAC resqml22__SplitColumnEdges {
 /* complex XML schema type 'resqml22:SplitEdges': */
 class SOAP_CMAC resqml22__SplitEdges {
       public:
-        /// Required element 'resqml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'resqml22:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
         /// Required element 'resqml22:ParentEdgeIndices' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *ParentEdgeIndices;
         /// Required element 'resqml22:FacesPerSplitEdge' of XML schema type 'eml23:JaggedArray'
@@ -9230,8 +9230,8 @@ class SOAP_CMAC resqml22__SplitEdges {
 /* complex XML schema type 'resqml22:SplitFaces': */
 class SOAP_CMAC resqml22__SplitFaces {
       public:
-        /// Required element 'resqml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'resqml22:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
         /// Required element 'resqml22:ParentFaceIndices' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *ParentFaceIndices;
         /// Required element 'resqml22:CellPerSplitFace' of XML schema type 'eml23:AbstractIntegerArray'
@@ -9310,8 +9310,8 @@ class SOAP_CMAC resqml22__SubnodeTopology {
 /* complex XML schema type 'resqml22:UnstructuredColumnEdges': */
 class SOAP_CMAC resqml22__UnstructuredColumnEdges {
       public:
-        /// Required element 'resqml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'resqml22:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
         /// Required element 'resqml22:PillarsPerColumnEdge' of XML schema type 'eml23:JaggedArray'
         eml23__JaggedArray *PillarsPerColumnEdge;
         /// Context that manages this object
@@ -9348,8 +9348,8 @@ class SOAP_CMAC resqml22__UnstructuredColumnEdges {
 /* complex XML schema type 'resqml22:UnstructuredGridHingeNodeFaces': */
 class SOAP_CMAC resqml22__UnstructuredGridHingeNodeFaces {
       public:
-        /// Required element 'resqml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'resqml22:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
         /// Required element 'resqml22:FaceIndices' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *FaceIndices;
         /// Context that manages this object
@@ -10409,12 +10409,12 @@ class SOAP_CMAC eml23__ExternalDataArray {
 /* complex XML schema type 'eml23:ExternalDataArrayPart': */
 class SOAP_CMAC eml23__ExternalDataArrayPart {
       public:
-        /// Required element 'eml23:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml23:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
         /// Required element 'eml23:PathInExternalFile' of XML schema type 'eml23:String2000'
         std::string PathInExternalFile;
-        /// Required element 'eml23:StartIndex' of XML schema type 'xsd:unsignedLong'
-        ULONG64 StartIndex;
+        /// Required element 'eml23:StartIndex' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 StartIndex;
         /// Required element 'eml23:URI' of XML schema type 'eml23:String2000'
         std::string URI;
         /// Optional element 'eml23:MimeType' of XML schema type 'eml23:String2000'
@@ -10569,8 +10569,8 @@ class SOAP_CMAC eml23__PropertyKindFacet {
 /* complex XML schema type 'eml23:TimeIndex': */
 class SOAP_CMAC eml23__TimeIndex {
       public:
-        /// Required element 'eml23:Index' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Index;
+        /// Required element 'eml23:Index' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 Index;
         /// Required element 'eml23:TimeSeries' of XML schema type 'eml23:DataObjectReference'
         eml23__DataObjectReference *TimeSeries;
         /// Context that manages this object
@@ -10607,10 +10607,10 @@ class SOAP_CMAC eml23__TimeIndex {
 /* complex XML schema type 'eml23:TimeIndices': */
 class SOAP_CMAC eml23__TimeIndices {
       public:
-        /// Required element 'eml23:TimeIndexCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TimeIndexCount;
-        /// Optional element 'eml23:TimeIndexStart' of XML schema type 'xsd:unsignedLong'
-        ULONG64 *TimeIndexStart;
+        /// Required element 'eml23:TimeIndexCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 TimeIndexCount;
+        /// Optional element 'eml23:TimeIndexStart' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 *TimeIndexStart;
         /// Optional element 'eml23:SimulatorTimeStep' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *SimulatorTimeStep;
         /// Required element 'eml23:UseInterval' of XML schema type 'xsd:boolean'
@@ -10911,9 +10911,9 @@ class SOAP_CMAC eml23__AbstractPressureValue {
 };
 #endif
 
-/* eml2_3ForGsoap.h:19014 */
+/* eml2_3ForGsoap.h:19020 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__eml23__union_AbstractTemperaturePressure
-#define SOAP_TYPE_gsoap_eml2_3__eml23__union_AbstractTemperaturePressure (-1261)
+#define SOAP_TYPE_gsoap_eml2_3__eml23__union_AbstractTemperaturePressure (-1260)
 /* union serializable only when used as a member of a struct or class with a union variant selector */
 union _eml23__union_AbstractTemperaturePressure
 {
@@ -11704,8 +11704,8 @@ class SOAP_CMAC resqml22__ParametricLineArray : public resqml22__AbstractParamet
         eml23__AbstractFloatingPointArray *ControlPointParameters;
         /// Required element 'resqml22:ControlPoints' of XML schema type 'resqml22:AbstractPoint3dArray'
         resqml22__AbstractPoint3dArray *ControlPoints;
-        /// Required element 'resqml22:KnotCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 KnotCount;
+        /// Required element 'resqml22:KnotCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 KnotCount;
         /// Required element 'resqml22:LineKindIndices' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *LineKindIndices;
         /// Optional element 'resqml22:TangentVectors' of XML schema type 'resqml22:AbstractPoint3dArray'
@@ -12482,8 +12482,8 @@ class SOAP_CMAC resqml22__GeologicTimeBasedTimeInterval : public resqml22__Abstr
 /* complex XML schema type 'resqml22:MultipleContactInterpretationPart': */
 class SOAP_CMAC resqml22__MultipleContactInterpretationPart : public resqml22__AbstractContactInterpretationPart {
       public:
-        /// Required element 'resqml22:With' of XML schema type 'xsd:unsignedLong'
-        std::vector<ULONG64> With;
+        /// Required element 'resqml22:With' of XML schema type 'eml23:NonNegativeLong'
+        std::vector<LONG64> With;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_3_resqml22__MultipleContactInterpretationPart
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_3_resqml22__MultipleContactInterpretationPart; }
@@ -12584,8 +12584,8 @@ class SOAP_CMAC resqml22__StratigraphicUnitDictionary : public eml23__AbstractOb
 /* complex XML schema type 'resqml22:AbstractRepresentation': */
 class SOAP_CMAC resqml22__AbstractRepresentation : public eml23__AbstractObject {
       public:
-        /// Optional element 'resqml22:RealizationIndex' of XML schema type 'xsd:unsignedLong'
-        ULONG64 *RealizationIndex;
+        /// Optional element 'resqml22:RealizationIndex' of XML schema type 'eml23:PositiveLong'
+        LONG64 *RealizationIndex;
         /// Required element 'resqml22:RepresentedObject' of XML schema type 'eml23:DataObjectReference'
         eml23__DataObjectReference *RepresentedObject;
       public:
@@ -12620,8 +12620,8 @@ class SOAP_CMAC resqml22__AbstractRepresentation : public eml23__AbstractObject 
 /* complex XML schema type 'resqml22:Patch1d': */
 class SOAP_CMAC resqml22__Patch1d : public resqml22__Patch {
       public:
-        /// Required element 'resqml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'resqml22:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_3_resqml22__Patch1d
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_3_resqml22__Patch1d; }
@@ -12654,10 +12654,10 @@ class SOAP_CMAC resqml22__Patch1d : public resqml22__Patch {
 /* complex XML schema type 'resqml22:PolylineSetPatch': */
 class SOAP_CMAC resqml22__PolylineSetPatch : public resqml22__Patch {
       public:
-        /// Required element 'resqml22:NodeCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 NodeCount;
-        /// Required element 'resqml22:IntervalCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 IntervalCount;
+        /// Required element 'resqml22:NodeCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 NodeCount;
+        /// Required element 'resqml22:IntervalCount' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 IntervalCount;
         /// Required element 'resqml22:NodeCountPerPolyline' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *NodeCountPerPolyline;
         /// Required element 'resqml22:ClosedPolylines' of XML schema type 'eml23:AbstractBooleanArray'
@@ -12842,10 +12842,10 @@ class SOAP_CMAC resqml22__ColumnLayerSubnodeTopology : public resqml22__SubnodeT
 /* complex XML schema type 'resqml22:IjkGpGridPatch': */
 class SOAP_CMAC resqml22__IjkGpGridPatch : public resqml22__Patch {
       public:
-        /// Required element 'resqml22:Ni' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Ni;
-        /// Required element 'resqml22:Nj' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Nj;
+        /// Required element 'resqml22:Ni' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 Ni;
+        /// Required element 'resqml22:Nj' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 Nj;
         /// Optional element 'resqml22:RadialGridIsComplete' of XML schema type 'xsd:boolean'
         bool *RadialGridIsComplete;
         /// Optional element 'resqml22:Geometry' of XML schema type 'resqml22:IjkGridGeometry'
@@ -12962,8 +12962,8 @@ class SOAP_CMAC resqml22__LocalGridSet : public eml23__AbstractObject {
 /* complex XML schema type 'resqml22:SplitNodePatch': */
 class SOAP_CMAC resqml22__SplitNodePatch : public resqml22__Patch {
       public:
-        /// Required element 'resqml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'resqml22:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
         /// Required element 'resqml22:ParentNodeIndices' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *ParentNodeIndices;
         /// Required element 'resqml22:CellsPerSplitNode' of XML schema type 'eml23:JaggedArray'
@@ -13044,16 +13044,16 @@ class SOAP_CMAC resqml22__TruncationCellPatch : public resqml22__Patch {
         eml23__JaggedArray *NodesPerTruncationFace;
         /// Required element 'resqml22:ParentCellIndices' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *ParentCellIndices;
-        /// Required element 'resqml22:TruncationCellCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TruncationCellCount;
+        /// Required element 'resqml22:TruncationCellCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 TruncationCellCount;
         /// Required element 'resqml22:TruncationCellFaceIsRightHanded' of XML schema type 'eml23:AbstractBooleanArray'
         eml23__AbstractBooleanArray *TruncationCellFaceIsRightHanded;
-        /// Required element 'resqml22:TruncationFaceCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TruncationFaceCount;
+        /// Required element 'resqml22:TruncationFaceCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 TruncationFaceCount;
         /// Required element 'resqml22:TruncationFacesPerCell' of XML schema type 'eml23:JaggedArray'
         eml23__JaggedArray *TruncationFacesPerCell;
-        /// Required element 'resqml22:TruncationNodeCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TruncationNodeCount;
+        /// Required element 'resqml22:TruncationNodeCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 TruncationNodeCount;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_3_resqml22__TruncationCellPatch
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_3_resqml22__TruncationCellPatch; }
@@ -13086,8 +13086,8 @@ class SOAP_CMAC resqml22__TruncationCellPatch : public resqml22__Patch {
 /* complex XML schema type 'resqml22:UnstructuredColumnLayerGpGridPatch': */
 class SOAP_CMAC resqml22__UnstructuredColumnLayerGpGridPatch : public resqml22__Patch {
       public:
-        /// Required element 'resqml22:UnstructuredColumnCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 UnstructuredColumnCount;
+        /// Required element 'resqml22:UnstructuredColumnCount' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 UnstructuredColumnCount;
         /// Optional element 'resqml22:Geometry' of XML schema type 'resqml22:UnstructuredColumnLayerGridGeometry'
         resqml22__UnstructuredColumnLayerGridGeometry *Geometry;
         /// Optional element 'resqml22:TruncationCellPatch' of XML schema type 'resqml22:TruncationCellPatch'
@@ -13124,8 +13124,8 @@ class SOAP_CMAC resqml22__UnstructuredColumnLayerGpGridPatch : public resqml22__
 /* complex XML schema type 'resqml22:UnstructuredGpGridPatch': */
 class SOAP_CMAC resqml22__UnstructuredGpGridPatch : public resqml22__Patch {
       public:
-        /// Required element 'resqml22:UnstructuredCellCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 UnstructuredCellCount;
+        /// Required element 'resqml22:UnstructuredCellCount' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 UnstructuredCellCount;
         /// Optional element 'resqml22:Geometry' of XML schema type 'resqml22:UnstructuredGridGeometry'
         resqml22__UnstructuredGridGeometry *Geometry;
       public:
@@ -13764,8 +13764,8 @@ class SOAP_CMAC resqml22__AbstractProperty : public eml23__AbstractObject {
         resqml22__IndexableElement IndexableElement;
         /// Optional element 'resqml22:RealizationIndices' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *RealizationIndices;
-        /// Required element 'resqml22:ValueCountPerIndexableElement' of XML schema type 'xsd:unsignedLong'
-        std::vector<ULONG64> ValueCountPerIndexableElement;
+        /// Required element 'resqml22:ValueCountPerIndexableElement' of XML schema type 'eml23:PositiveLong'
+        std::vector<LONG64> ValueCountPerIndexableElement;
         /// Required element 'resqml22:PropertyKind' of XML schema type 'eml23:DataObjectReference'
         eml23__DataObjectReference *PropertyKind;
         /// Optional element 'resqml22:LabelPerComponent' of XML schema type 'eml23:String64'
@@ -14668,9 +14668,9 @@ class SOAP_CMAC eml23__GaugePressure : public eml23__AbstractPressureValue {
 };
 #endif
 
-/* eml2_3ForGsoap.h:23395 */
+/* eml2_3ForGsoap.h:23401 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__eml23__union_ReferenceTemperaturePressure_
-#define SOAP_TYPE_gsoap_eml2_3__eml23__union_ReferenceTemperaturePressure_ (-1344)
+#define SOAP_TYPE_gsoap_eml2_3__eml23__union_ReferenceTemperaturePressure_ (-1345)
 /* union serializable only when used as a member of a struct or class with a union variant selector */
 union _eml23__union_ReferenceTemperaturePressure_
 {
@@ -14826,8 +14826,8 @@ class SOAP_CMAC eml23__GeodeticCrs : public eml23__AbstractObject {
 /* complex XML schema type 'eml23:GeodeticEpsgCrs': */
 class SOAP_CMAC eml23__GeodeticEpsgCrs : public eml23__AbstractGeodeticCrs {
       public:
-        /// Required element 'eml23:EpsgCode' of XML schema type 'xsd:unsignedLong'
-        ULONG64 EpsgCode;
+        /// Required element 'eml23:EpsgCode' of XML schema type 'eml23:PositiveLong'
+        LONG64 EpsgCode;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_3_eml23__GeodeticEpsgCrs
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_3_eml23__GeodeticEpsgCrs; }
@@ -15052,8 +15052,8 @@ class SOAP_CMAC eml23__ProjectedCrs : public eml23__AbstractObject {
 /* complex XML schema type 'eml23:ProjectedEpsgCrs': */
 class SOAP_CMAC eml23__ProjectedEpsgCrs : public eml23__AbstractProjectedCrs {
       public:
-        /// Required element 'eml23:EpsgCode' of XML schema type 'xsd:unsignedLong'
-        ULONG64 EpsgCode;
+        /// Required element 'eml23:EpsgCode' of XML schema type 'eml23:PositiveLong'
+        LONG64 EpsgCode;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_3_eml23__ProjectedEpsgCrs
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_3_eml23__ProjectedEpsgCrs; }
@@ -15226,8 +15226,8 @@ class SOAP_CMAC eml23__VerticalCrs : public eml23__AbstractObject {
 /* complex XML schema type 'eml23:VerticalEpsgCrs': */
 class SOAP_CMAC eml23__VerticalEpsgCrs : public eml23__AbstractVerticalCrs {
       public:
-        /// Required element 'eml23:EpsgCode' of XML schema type 'xsd:unsignedLong'
-        ULONG64 EpsgCode;
+        /// Required element 'eml23:EpsgCode' of XML schema type 'eml23:PositiveLong'
+        LONG64 EpsgCode;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_3_eml23__VerticalEpsgCrs
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_3_eml23__VerticalEpsgCrs; }
@@ -15655,8 +15655,8 @@ class SOAP_CMAC resqml22__HorizontalPlaneGeometry : public resqml22__AbstractPla
 /* complex XML schema type 'resqml22:ParametricLineFromRepresentationGeometry': */
 class SOAP_CMAC resqml22__ParametricLineFromRepresentationGeometry : public resqml22__AbstractParametricLineGeometry {
       public:
-        /// Required element 'resqml22:LineIndexOnSupportingRepresentation' of XML schema type 'xsd:unsignedLong'
-        ULONG64 LineIndexOnSupportingRepresentation;
+        /// Required element 'resqml22:LineIndexOnSupportingRepresentation' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 LineIndexOnSupportingRepresentation;
         /// Required element 'resqml22:SupportingRepresentation' of XML schema type 'eml23:DataObjectReference'
         eml23__DataObjectReference *SupportingRepresentation;
       public:
@@ -15695,8 +15695,8 @@ class SOAP_CMAC resqml22__ParametricLineGeometry : public resqml22__AbstractPara
         eml23__AbstractFloatingPointArray *ControlPointParameters;
         /// Required element 'resqml22:ControlPoints' of XML schema type 'resqml22:AbstractPoint3dArray'
         resqml22__AbstractPoint3dArray *ControlPoints;
-        /// Required element 'resqml22:KnotCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 KnotCount;
+        /// Required element 'resqml22:KnotCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 KnotCount;
         /// Required element 'resqml22:LineKindIndex' of XML schema type 'xsd:long'
         LONG64 LineKindIndex;
         /// Optional element 'resqml22:TangentVectors' of XML schema type 'resqml22:AbstractPoint3dArray'
@@ -15843,8 +15843,8 @@ class SOAP_CMAC resqml22__AbstractSurfaceRepresentation : public resqml22__Abstr
 /* complex XML schema type 'resqml22:ContactPatch': */
 class SOAP_CMAC resqml22__ContactPatch : public resqml22__Patch1d {
       public:
-        /// Required element 'resqml22:RepresentationIndex' of XML schema type 'xsd:unsignedLong'
-        ULONG64 RepresentationIndex;
+        /// Required element 'resqml22:RepresentationIndex' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 RepresentationIndex;
         /// Required element 'resqml22:SupportingRepresentationNodes' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *SupportingRepresentationNodes;
       public:
@@ -16055,8 +16055,8 @@ class SOAP_CMAC resqml22__PolylineSetRepresentation : public resqml22__AbstractR
 /* complex XML schema type 'resqml22:TrianglePatch': */
 class SOAP_CMAC resqml22__TrianglePatch : public resqml22__Patch1d {
       public:
-        /// Required element 'resqml22:NodeCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 NodeCount;
+        /// Required element 'resqml22:NodeCount' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 NodeCount;
         /// Required element 'resqml22:Triangles' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *Triangles;
         /// Optional element 'resqml22:SplitEdgePatch' of XML schema type 'resqml22:EdgePatch'
@@ -16492,8 +16492,8 @@ class SOAP_CMAC resqml22__ColumnSubnodePatch : public resqml22__SubnodePatch {
 /* complex XML schema type 'resqml22:GridConnectionSetRepresentation': */
 class SOAP_CMAC resqml22__GridConnectionSetRepresentation : public resqml22__AbstractRepresentation {
       public:
-        /// Required element 'resqml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'resqml22:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
         /// Required element 'resqml22:CellIndexPairs' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *CellIndexPairs;
         /// Optional element 'resqml22:GridIndexPairs' of XML schema type 'eml23:AbstractIntegerArray'
@@ -16536,8 +16536,8 @@ class SOAP_CMAC resqml22__GridConnectionSetRepresentation : public resqml22__Abs
 /* complex XML schema type 'resqml22:UniformSubnodePatch': */
 class SOAP_CMAC resqml22__UniformSubnodePatch : public resqml22__SubnodePatch {
       public:
-        /// Required element 'resqml22:SubnodeCountPerObject' of XML schema type 'xsd:unsignedLong'
-        ULONG64 SubnodeCountPerObject;
+        /// Required element 'resqml22:SubnodeCountPerObject' of XML schema type 'eml23:PositiveLong'
+        LONG64 SubnodeCountPerObject;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_3_resqml22__UniformSubnodePatch
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_3_resqml22__UniformSubnodePatch; }
@@ -16919,8 +16919,8 @@ class SOAP_CMAC resqml22__StringTableLookup : public resqml22__AbstractPropertyL
 /* complex XML schema type 'resqml22:StreamlinesRepresentation': */
 class SOAP_CMAC resqml22__StreamlinesRepresentation : public resqml22__AbstractRepresentation {
       public:
-        /// Required element 'resqml22:LineCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 LineCount;
+        /// Required element 'resqml22:LineCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 LineCount;
         /// Optional element 'resqml22:StreamlineWellbores' of XML schema type 'resqml22:StreamlineWellbores'
         resqml22__StreamlineWellbores *StreamlineWellbores;
         /// Optional element 'resqml22:Geometry' of XML schema type 'resqml22:PolylineSetPatch'
@@ -16957,8 +16957,8 @@ class SOAP_CMAC resqml22__StreamlinesRepresentation : public resqml22__AbstractR
 /* complex XML schema type 'resqml22:WellboreFrameRepresentation': */
 class SOAP_CMAC resqml22__WellboreFrameRepresentation : public resqml22__AbstractRepresentation {
       public:
-        /// Required element 'resqml22:NodeCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 NodeCount;
+        /// Required element 'resqml22:NodeCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 NodeCount;
         /// Required element 'resqml22:NodeMd' of XML schema type 'eml23:AbstractFloatingPointArray'
         eml23__AbstractFloatingPointArray *NodeMd;
         /// Optional element 'resqml22:WitsmlLog' of XML schema type 'eml23:DataObjectReference'
@@ -17147,8 +17147,8 @@ class SOAP_CMAC eml23__AbstractIntegerArray : public eml23__AbstractNumericArray
 /* complex XML schema type 'eml23:BooleanArrayFromIndexArray': */
 class SOAP_CMAC eml23__BooleanArrayFromIndexArray : public eml23__AbstractBooleanArray {
       public:
-        /// Required element 'eml23:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml23:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
         /// Required element 'eml23:Indices' of XML schema type 'eml23:AbstractIntegerArray'
         eml23__AbstractIntegerArray *Indices;
         /// Required element 'eml23:IndexIsTrue' of XML schema type 'xsd:boolean'
@@ -17187,8 +17187,8 @@ class SOAP_CMAC eml23__BooleanConstantArray : public eml23__AbstractBooleanArray
       public:
         /// Required element 'eml23:Value' of XML schema type 'xsd:boolean'
         bool Value;
-        /// Required element 'eml23:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml23:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray; }
@@ -17373,8 +17373,8 @@ class SOAP_CMAC eml23__StringConstantArray : public eml23__AbstractStringArray {
       public:
         /// Required element 'eml23:Value' of XML schema type 'eml23:String2000'
         std::string Value;
-        /// Required element 'eml23:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml23:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_3_eml23__StringConstantArray
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_3_eml23__StringConstantArray; }
@@ -32243,8 +32243,8 @@ class SOAP_CMAC resqml22__AbstractColumnLayerGridGeometry : public resqml22__Abs
 /* complex XML schema type 'resqml22:AbstractColumnLayerGridRepresentation': */
 class SOAP_CMAC resqml22__AbstractColumnLayerGridRepresentation : public resqml22__AbstractGridRepresentation {
       public:
-        /// Required element 'resqml22:Nk' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Nk;
+        /// Required element 'resqml22:Nk' of XML schema type 'eml23:PositiveLong'
+        LONG64 Nk;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_3_resqml22__AbstractColumnLayerGridRepresentation
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_3_resqml22__AbstractColumnLayerGridRepresentation; }
@@ -32277,8 +32277,8 @@ class SOAP_CMAC resqml22__AbstractColumnLayerGridRepresentation : public resqml2
 /* complex XML schema type 'resqml22:AbstractTruncatedColumnLayerGridRepresentation': */
 class SOAP_CMAC resqml22__AbstractTruncatedColumnLayerGridRepresentation : public resqml22__AbstractGridRepresentation {
       public:
-        /// Required element 'resqml22:Nk' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Nk;
+        /// Required element 'resqml22:Nk' of XML schema type 'eml23:PositiveLong'
+        LONG64 Nk;
         /// Required element 'resqml22:TruncationCellPatch' of XML schema type 'resqml22:TruncationCellPatch'
         resqml22__TruncationCellPatch *TruncationCellPatch;
       public:
@@ -32349,10 +32349,10 @@ class SOAP_CMAC resqml22__GpGridRepresentation : public resqml22__AbstractGridRe
 /* complex XML schema type 'resqml22:Grid2dRepresentation': */
 class SOAP_CMAC resqml22__Grid2dRepresentation : public resqml22__AbstractSurfaceRepresentation {
       public:
-        /// Required element 'resqml22:FastestAxisCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 FastestAxisCount;
-        /// Required element 'resqml22:SlowestAxisCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 SlowestAxisCount;
+        /// Required element 'resqml22:FastestAxisCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 FastestAxisCount;
+        /// Required element 'resqml22:SlowestAxisCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 SlowestAxisCount;
         /// Required element 'resqml22:Geometry' of XML schema type 'resqml22:PointGeometry'
         resqml22__PointGeometry *Geometry;
       public:
@@ -32391,12 +32391,12 @@ class SOAP_CMAC resqml22__UnstructuredGridGeometry : public resqml22__AbstractGr
         eml23__AbstractBooleanArray *CellFaceIsRightHanded;
         /// Required element 'resqml22:CellShape' of XML schema type 'resqml22:CellShape'
         resqml22__CellShape CellShape;
-        /// Required element 'resqml22:FaceCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 FaceCount;
+        /// Required element 'resqml22:FaceCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 FaceCount;
         /// Required element 'resqml22:FacesPerCell' of XML schema type 'eml23:JaggedArray'
         eml23__JaggedArray *FacesPerCell;
-        /// Required element 'resqml22:NodeCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 NodeCount;
+        /// Required element 'resqml22:NodeCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 NodeCount;
         /// Required element 'resqml22:NodesPerFace' of XML schema type 'eml23:JaggedArray'
         eml23__JaggedArray *NodesPerFace;
         /// Optional element 'resqml22:UnstructuredGridHingeNodeFaces' of XML schema type 'resqml22:UnstructuredGridHingeNodeFaces'
@@ -32435,8 +32435,8 @@ class SOAP_CMAC resqml22__UnstructuredGridGeometry : public resqml22__AbstractGr
 /* complex XML schema type 'resqml22:UnstructuredGridRepresentation': */
 class SOAP_CMAC resqml22__UnstructuredGridRepresentation : public resqml22__AbstractGridRepresentation {
       public:
-        /// Required element 'resqml22:CellCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 CellCount;
+        /// Required element 'resqml22:CellCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 CellCount;
         /// Optional element 'resqml22:OriginalCellIndex' of XML schema type 'resqml22:AlternateCellIndex'
         resqml22__AlternateCellIndex *OriginalCellIndex;
         /// Optional element 'resqml22:Geometry' of XML schema type 'resqml22:UnstructuredGridGeometry'
@@ -32887,8 +32887,8 @@ class SOAP_CMAC eml23__FloatingPointConstantArray : public eml23__AbstractFloati
       public:
         /// Required element 'eml23:Value' of XML schema type 'xsd:double'
         double Value;
-        /// Required element 'eml23:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml23:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray; }
@@ -32993,8 +32993,8 @@ class SOAP_CMAC eml23__FloatingPointLatticeArray : public eml23__AbstractFloatin
 /* complex XML schema type 'eml23:IntegerArrayFromBooleanMaskArray': */
 class SOAP_CMAC eml23__IntegerArrayFromBooleanMaskArray : public eml23__AbstractIntegerArray {
       public:
-        /// Required element 'eml23:TotalIndexCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TotalIndexCount;
+        /// Required element 'eml23:TotalIndexCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 TotalIndexCount;
         /// Required element 'eml23:Mask' of XML schema type 'eml23:AbstractBooleanArray'
         eml23__AbstractBooleanArray *Mask;
       public:
@@ -33031,8 +33031,8 @@ class SOAP_CMAC eml23__IntegerConstantArray : public eml23__AbstractIntegerArray
       public:
         /// Required element 'eml23:Value' of XML schema type 'xsd:long'
         LONG64 Value;
-        /// Required element 'eml23:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml23:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray; }
@@ -33139,8 +33139,8 @@ class SOAP_CMAC eml23__IntegerLatticeArray : public eml23__AbstractIntegerArray 
 /* complex XML schema type 'eml23:IntegerRangeArray': */
 class SOAP_CMAC eml23__IntegerRangeArray : public eml23__AbstractIntegerArray {
       public:
-        /// Required element 'eml23:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml23:Count' of XML schema type 'eml23:PositiveLong'
+        LONG64 Count;
         /// Required element 'eml23:Value' of XML schema type 'xsd:long'
         LONG64 Value;
       public:
@@ -33453,8 +33453,8 @@ class SOAP_CMAC resqml22__GeologicUnitOccurrenceInterpretation : public resqml22
 /* complex XML schema type 'resqml22:StratigraphicColumnRankInterpretation': */
 class SOAP_CMAC resqml22__StratigraphicColumnRankInterpretation : public resqml22__AbstractGeologicUnitOrganizationInterpretation {
       public:
-        /// Required element 'resqml22:RankInStratigraphicColumn' of XML schema type 'xsd:unsignedLong'
-        ULONG64 RankInStratigraphicColumn;
+        /// Required element 'resqml22:RankInStratigraphicColumn' of XML schema type 'eml23:NonNegativeLong'
+        LONG64 RankInStratigraphicColumn;
         /// Required element 'resqml22:StratigraphicUnits' of XML schema type 'eml23:DataObjectReference'
         std::vector<eml23__DataObjectReference *> StratigraphicUnits;
       public:
@@ -33525,10 +33525,10 @@ class SOAP_CMAC resqml22__IjkGridGeometry : public resqml22__AbstractColumnLayer
 /* complex XML schema type 'resqml22:IjkGridRepresentation': */
 class SOAP_CMAC resqml22__IjkGridRepresentation : public resqml22__AbstractColumnLayerGridRepresentation {
       public:
-        /// Required element 'resqml22:Ni' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Ni;
-        /// Required element 'resqml22:Nj' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Nj;
+        /// Required element 'resqml22:Ni' of XML schema type 'eml23:PositiveLong'
+        LONG64 Ni;
+        /// Required element 'resqml22:Nj' of XML schema type 'eml23:PositiveLong'
+        LONG64 Nj;
         /// Optional element 'resqml22:RadialGridIsComplete' of XML schema type 'xsd:boolean'
         bool *RadialGridIsComplete;
         /// Optional element 'resqml22:KGaps' of XML schema type 'resqml22:KGaps'
@@ -33567,10 +33567,10 @@ class SOAP_CMAC resqml22__IjkGridRepresentation : public resqml22__AbstractColum
 /* complex XML schema type 'resqml22:TruncatedIjkGridRepresentation': */
 class SOAP_CMAC resqml22__TruncatedIjkGridRepresentation : public resqml22__AbstractTruncatedColumnLayerGridRepresentation {
       public:
-        /// Required element 'resqml22:Ni' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Ni;
-        /// Required element 'resqml22:Nj' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Nj;
+        /// Required element 'resqml22:Ni' of XML schema type 'eml23:PositiveLong'
+        LONG64 Ni;
+        /// Required element 'resqml22:Nj' of XML schema type 'eml23:PositiveLong'
+        LONG64 Nj;
         /// Required element 'resqml22:Geometry' of XML schema type 'resqml22:IjkGridGeometry'
         resqml22__IjkGridGeometry *Geometry;
       public:
@@ -33605,8 +33605,8 @@ class SOAP_CMAC resqml22__TruncatedIjkGridRepresentation : public resqml22__Abst
 /* complex XML schema type 'resqml22:TruncatedUnstructuredColumnLayerGridRepresentation': */
 class SOAP_CMAC resqml22__TruncatedUnstructuredColumnLayerGridRepresentation : public resqml22__AbstractTruncatedColumnLayerGridRepresentation {
       public:
-        /// Required element 'resqml22:ColumnCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 ColumnCount;
+        /// Required element 'resqml22:ColumnCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 ColumnCount;
         /// Required element 'resqml22:Geometry' of XML schema type 'resqml22:UnstructuredColumnLayerGridGeometry'
         resqml22__UnstructuredColumnLayerGridGeometry *Geometry;
       public:
@@ -33645,8 +33645,8 @@ class SOAP_CMAC resqml22__UnstructuredColumnLayerGridGeometry : public resqml22_
         eml23__AbstractBooleanArray *ColumnIsRightHanded;
         /// Required element 'resqml22:ColumnShape' of XML schema type 'resqml22:ColumnShape'
         resqml22__ColumnShape ColumnShape;
-        /// Required element 'resqml22:PillarCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 PillarCount;
+        /// Required element 'resqml22:PillarCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 PillarCount;
         /// Required element 'resqml22:PillarsPerColumn' of XML schema type 'eml23:JaggedArray'
         eml23__JaggedArray *PillarsPerColumn;
         /// Optional element 'resqml22:UnstructuredColumnEdges' of XML schema type 'resqml22:UnstructuredColumnEdges'
@@ -33683,8 +33683,8 @@ class SOAP_CMAC resqml22__UnstructuredColumnLayerGridGeometry : public resqml22_
 /* complex XML schema type 'resqml22:UnstructuredColumnLayerGridRepresentation': */
 class SOAP_CMAC resqml22__UnstructuredColumnLayerGridRepresentation : public resqml22__AbstractColumnLayerGridRepresentation {
       public:
-        /// Required element 'resqml22:ColumnCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 ColumnCount;
+        /// Required element 'resqml22:ColumnCount' of XML schema type 'eml23:PositiveLong'
+        LONG64 ColumnCount;
         /// Optional element 'resqml22:Geometry' of XML schema type 'resqml22:UnstructuredColumnLayerGridGeometry'
         resqml22__UnstructuredColumnLayerGridGeometry *Geometry;
       public:
@@ -33780,7 +33780,7 @@ class SOAP_CMAC resqml22__ShotPointLineFeature : public resqml22__AbstractSeismi
 };
 #endif
 
-/* eml2_3ForGsoap.h:41606 */
+/* eml2_3ForGsoap.h:41612 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_gsoap_eml2_3_SOAP_ENV__Header
 #define SOAP_TYPE_gsoap_eml2_3_SOAP_ENV__Header (-845615104)
@@ -33797,7 +33797,7 @@ struct SOAP_CMAC SOAP_ENV__Header {
 #endif
 #endif
 
-/* eml2_3ForGsoap.h:41606 */
+/* eml2_3ForGsoap.h:41612 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_gsoap_eml2_3_SOAP_ENV__Code
 #define SOAP_TYPE_gsoap_eml2_3_SOAP_ENV__Code (-845615105)
@@ -33820,7 +33820,7 @@ struct SOAP_CMAC SOAP_ENV__Code {
 #endif
 #endif
 
-/* eml2_3ForGsoap.h:41606 */
+/* eml2_3ForGsoap.h:41612 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_gsoap_eml2_3_SOAP_ENV__Detail
 #define SOAP_TYPE_gsoap_eml2_3_SOAP_ENV__Detail (-845615107)
@@ -33843,7 +33843,7 @@ struct SOAP_CMAC SOAP_ENV__Detail {
 #endif
 #endif
 
-/* eml2_3ForGsoap.h:41606 */
+/* eml2_3ForGsoap.h:41612 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_gsoap_eml2_3_SOAP_ENV__Reason
 #define SOAP_TYPE_gsoap_eml2_3_SOAP_ENV__Reason (-845615110)
@@ -33863,7 +33863,7 @@ struct SOAP_CMAC SOAP_ENV__Reason {
 #endif
 #endif
 
-/* eml2_3ForGsoap.h:41606 */
+/* eml2_3ForGsoap.h:41612 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_gsoap_eml2_3_SOAP_ENV__Fault
 #define SOAP_TYPE_gsoap_eml2_3_SOAP_ENV__Fault (-845615111)
@@ -35390,674 +35390,674 @@ typedef double eml23__AbstractMeasure;
 typedef std::string eml23__AbstractString;
 #endif
 
-/* eml2_3ForGsoap.h:2266 */
-#ifndef SOAP_TYPE_gsoap_eml2_3_eml23__NonNegativeInteger
-#define SOAP_TYPE_gsoap_eml2_3_eml23__NonNegativeInteger (-919)
+/* eml2_3ForGsoap.h:2268 */
+#ifndef SOAP_TYPE_gsoap_eml2_3_eml23__NonNegativeLong
+#define SOAP_TYPE_gsoap_eml2_3_eml23__NonNegativeLong (-918)
 
-typedef ULONG64 eml23__NonNegativeInteger;
+typedef LONG64 eml23__NonNegativeLong;
 #endif
 
-/* eml2_3ForGsoap.h:2270 */
+/* eml2_3ForGsoap.h:2273 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PositiveDouble
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PositiveDouble (-920)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PositiveDouble (-919)
 
 typedef double eml23__PositiveDouble;
 #endif
 
-/* eml2_3ForGsoap.h:2275 */
+/* eml2_3ForGsoap.h:2278 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PositiveFloat
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PositiveFloat (-922)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PositiveFloat (-921)
 
 typedef float eml23__PositiveFloat;
 #endif
 
-/* eml2_3ForGsoap.h:2278 */
-#ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PositiveInteger
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PositiveInteger (-923)
+/* eml2_3ForGsoap.h:2283 */
+#ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PositiveLong
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PositiveLong (-922)
 
-typedef ULONG64 eml23__PositiveInteger;
+typedef LONG64 eml23__PositiveLong;
 #endif
 
-/* eml2_3ForGsoap.h:2282 */
+/* eml2_3ForGsoap.h:2288 */
 #ifndef SOAP_TYPE_eml23__TimeStamp
-#define SOAP_TYPE_eml23__TimeStamp (-924)
+#define SOAP_TYPE_eml23__TimeStamp (-923)
 
 typedef struct tm eml23__TimeStamp;
 #endif
 
-/* eml2_3ForGsoap.h:2343 */
+/* eml2_3ForGsoap.h:2349 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnumExtensionPattern
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnumExtensionPattern (-926)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnumExtensionPattern (-925)
 
 typedef std::string eml23__EnumExtensionPattern;
 #endif
 
-/* eml2_3ForGsoap.h:2348 */
+/* eml2_3ForGsoap.h:2354 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__String2000
-#define SOAP_TYPE_gsoap_eml2_3_eml23__String2000 (-927)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__String2000 (-926)
 
 typedef std::string eml23__String2000;
 #endif
 
-/* eml2_3ForGsoap.h:2353 */
+/* eml2_3ForGsoap.h:2359 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__String256
-#define SOAP_TYPE_gsoap_eml2_3_eml23__String256 (-928)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__String256 (-927)
 
 typedef std::string eml23__String256;
 #endif
 
-/* eml2_3ForGsoap.h:2358 */
+/* eml2_3ForGsoap.h:2364 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__String64
-#define SOAP_TYPE_gsoap_eml2_3_eml23__String64 (-929)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__String64 (-928)
 
 typedef std::string eml23__String64;
 #endif
 
-/* eml2_3ForGsoap.h:2368 */
+/* eml2_3ForGsoap.h:2374 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__UomEnum
-#define SOAP_TYPE_gsoap_eml2_3_eml23__UomEnum (-930)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__UomEnum (-929)
 
 typedef std::string eml23__UomEnum;
 #endif
 
-/* eml2_3ForGsoap.h:2373 */
+/* eml2_3ForGsoap.h:2379 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__UuidString
-#define SOAP_TYPE_gsoap_eml2_3_eml23__UuidString (-931)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__UuidString (-930)
 
 typedef std::string eml23__UuidString;
 #endif
 
-/* eml2_3ForGsoap.h:3912 */
+/* eml2_3ForGsoap.h:3918 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TimeZone
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TimeZone (-934)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TimeZone (-933)
 
 typedef std::string eml23__TimeZone;
 #endif
 
-/* eml2_3ForGsoap.h:3920 */
+/* eml2_3ForGsoap.h:3926 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TypeEnum
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TypeEnum (-935)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TypeEnum (-934)
 
 typedef eml23__String64 eml23__TypeEnum;
 #endif
 
-/* eml2_3ForGsoap.h:12719 */
+/* eml2_3ForGsoap.h:12725 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PublicLandSurveySystemQuarterSection
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PublicLandSurveySystemQuarterSection (-1126)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PublicLandSurveySystemQuarterSection (-1125)
 
 typedef std::string eml23__PublicLandSurveySystemQuarterSection;
 #endif
 
-/* eml2_3ForGsoap.h:12728 */
+/* eml2_3ForGsoap.h:12734 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PublicLandSurveySystemQuarterTownship
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PublicLandSurveySystemQuarterTownship (-1127)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PublicLandSurveySystemQuarterTownship (-1126)
 
 typedef std::string eml23__PublicLandSurveySystemQuarterTownship;
 #endif
 
-/* eml2_3ForGsoap.h:12737 */
+/* eml2_3ForGsoap.h:12743 */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__SectionNumber
-#define SOAP_TYPE_gsoap_eml2_3_eml23__SectionNumber (-1128)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__SectionNumber (-1127)
 
 typedef std::string eml23__SectionNumber;
 #endif
 
-/* eml2_3ForGsoap.h:40082 */
+/* eml2_3ForGsoap.h:40088 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__CollectionsToDataobjectsAssociationSet
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__CollectionsToDataobjectsAssociationSet (-1451)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__CollectionsToDataobjectsAssociationSet (-1452)
 
 typedef resqml22__CollectionsToDataobjectsAssociationSet _resqml22__CollectionsToDataobjectsAssociationSet;
 #endif
 
-/* eml2_3ForGsoap.h:40085 */
+/* eml2_3ForGsoap.h:40091 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__DataobjectCollection
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__DataobjectCollection (-1452)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__DataobjectCollection (-1453)
 
 typedef resqml22__DataobjectCollection _resqml22__DataobjectCollection;
 #endif
 
-/* eml2_3ForGsoap.h:40088 */
+/* eml2_3ForGsoap.h:40094 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__BoundaryFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__BoundaryFeature (-1453)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__BoundaryFeature (-1454)
 
 typedef resqml22__BoundaryFeature _resqml22__BoundaryFeature;
 #endif
 
-/* eml2_3ForGsoap.h:40091 */
+/* eml2_3ForGsoap.h:40097 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__CulturalFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__CulturalFeature (-1454)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__CulturalFeature (-1455)
 
 typedef resqml22__CulturalFeature _resqml22__CulturalFeature;
 #endif
 
-/* eml2_3ForGsoap.h:40094 */
+/* eml2_3ForGsoap.h:40100 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__Model
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__Model (-1455)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__Model (-1456)
 
 typedef resqml22__Model _resqml22__Model;
 #endif
 
-/* eml2_3ForGsoap.h:40097 */
+/* eml2_3ForGsoap.h:40103 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__RockVolumeFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__RockVolumeFeature (-1456)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__RockVolumeFeature (-1457)
 
 typedef resqml22__RockVolumeFeature _resqml22__RockVolumeFeature;
 #endif
 
-/* eml2_3ForGsoap.h:40100 */
+/* eml2_3ForGsoap.h:40106 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__RockVolumeFeatureDictionary
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__RockVolumeFeatureDictionary (-1457)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__RockVolumeFeatureDictionary (-1458)
 
 typedef resqml22__RockVolumeFeatureDictionary _resqml22__RockVolumeFeatureDictionary;
 #endif
 
-/* eml2_3ForGsoap.h:40103 */
+/* eml2_3ForGsoap.h:40109 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__CmpLineFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__CmpLineFeature (-1458)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__CmpLineFeature (-1459)
 
 typedef resqml22__CmpLineFeature _resqml22__CmpLineFeature;
 #endif
 
-/* eml2_3ForGsoap.h:40106 */
+/* eml2_3ForGsoap.h:40112 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__Seismic2dPostStackRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__Seismic2dPostStackRepresentation (-1459)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__Seismic2dPostStackRepresentation (-1460)
 
 typedef resqml22__Seismic2dPostStackRepresentation _resqml22__Seismic2dPostStackRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40109 */
+/* eml2_3ForGsoap.h:40115 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__Seismic3dPostStackRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__Seismic3dPostStackRepresentation (-1460)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__Seismic3dPostStackRepresentation (-1461)
 
 typedef resqml22__Seismic3dPostStackRepresentation _resqml22__Seismic3dPostStackRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40112 */
+/* eml2_3ForGsoap.h:40118 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicLatticeFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicLatticeFeature (-1461)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicLatticeFeature (-1462)
 
 typedef resqml22__SeismicLatticeFeature _resqml22__SeismicLatticeFeature;
 #endif
 
-/* eml2_3ForGsoap.h:40115 */
+/* eml2_3ForGsoap.h:40121 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicLineSetFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicLineSetFeature (-1462)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicLineSetFeature (-1463)
 
 typedef resqml22__SeismicLineSetFeature _resqml22__SeismicLineSetFeature;
 #endif
 
-/* eml2_3ForGsoap.h:40118 */
+/* eml2_3ForGsoap.h:40124 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__ShotPointLineFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__ShotPointLineFeature (-1463)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__ShotPointLineFeature (-1464)
 
 typedef resqml22__ShotPointLineFeature _resqml22__ShotPointLineFeature;
 #endif
 
-/* eml2_3ForGsoap.h:40121 */
+/* eml2_3ForGsoap.h:40127 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__NonSealedSurfaceFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__NonSealedSurfaceFrameworkRepresentation (-1464)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__NonSealedSurfaceFrameworkRepresentation (-1465)
 
 typedef resqml22__NonSealedSurfaceFrameworkRepresentation _resqml22__NonSealedSurfaceFrameworkRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40124 */
+/* eml2_3ForGsoap.h:40130 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__PlaneSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__PlaneSetRepresentation (-1465)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__PlaneSetRepresentation (-1466)
 
 typedef resqml22__PlaneSetRepresentation _resqml22__PlaneSetRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40127 */
+/* eml2_3ForGsoap.h:40133 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__PointSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__PointSetRepresentation (-1466)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__PointSetRepresentation (-1467)
 
 typedef resqml22__PointSetRepresentation _resqml22__PointSetRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40130 */
+/* eml2_3ForGsoap.h:40136 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__PolylineRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__PolylineRepresentation (-1467)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__PolylineRepresentation (-1468)
 
 typedef resqml22__PolylineRepresentation _resqml22__PolylineRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40133 */
+/* eml2_3ForGsoap.h:40139 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__PolylineSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__PolylineSetRepresentation (-1468)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__PolylineSetRepresentation (-1469)
 
 typedef resqml22__PolylineSetRepresentation _resqml22__PolylineSetRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40136 */
+/* eml2_3ForGsoap.h:40142 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__SealedSurfaceFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__SealedSurfaceFrameworkRepresentation (-1469)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__SealedSurfaceFrameworkRepresentation (-1470)
 
 typedef resqml22__SealedSurfaceFrameworkRepresentation _resqml22__SealedSurfaceFrameworkRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40139 */
+/* eml2_3ForGsoap.h:40145 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__SealedVolumeFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__SealedVolumeFrameworkRepresentation (-1470)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__SealedVolumeFrameworkRepresentation (-1471)
 
 typedef resqml22__SealedVolumeFrameworkRepresentation _resqml22__SealedVolumeFrameworkRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40142 */
+/* eml2_3ForGsoap.h:40148 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__TriangulatedSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__TriangulatedSetRepresentation (-1471)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__TriangulatedSetRepresentation (-1472)
 
 typedef resqml22__TriangulatedSetRepresentation _resqml22__TriangulatedSetRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40145 */
+/* eml2_3ForGsoap.h:40151 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__BoundaryFeatureInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__BoundaryFeatureInterpretation (-1472)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__BoundaryFeatureInterpretation (-1473)
 
 typedef resqml22__BoundaryFeatureInterpretation _resqml22__BoundaryFeatureInterpretation;
 #endif
 
-/* eml2_3ForGsoap.h:40148 */
+/* eml2_3ForGsoap.h:40154 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__EarthModelInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__EarthModelInterpretation (-1473)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__EarthModelInterpretation (-1474)
 
 typedef resqml22__EarthModelInterpretation _resqml22__EarthModelInterpretation;
 #endif
 
-/* eml2_3ForGsoap.h:40151 */
+/* eml2_3ForGsoap.h:40157 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__FaultInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__FaultInterpretation (-1474)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__FaultInterpretation (-1475)
 
 typedef resqml22__FaultInterpretation _resqml22__FaultInterpretation;
 #endif
 
-/* eml2_3ForGsoap.h:40154 */
+/* eml2_3ForGsoap.h:40160 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__FluidBoundaryInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__FluidBoundaryInterpretation (-1475)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__FluidBoundaryInterpretation (-1476)
 
 typedef resqml22__FluidBoundaryInterpretation _resqml22__FluidBoundaryInterpretation;
 #endif
 
-/* eml2_3ForGsoap.h:40157 */
+/* eml2_3ForGsoap.h:40163 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__GenericFeatureInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__GenericFeatureInterpretation (-1476)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__GenericFeatureInterpretation (-1477)
 
 typedef resqml22__GenericFeatureInterpretation _resqml22__GenericFeatureInterpretation;
 #endif
 
-/* eml2_3ForGsoap.h:40160 */
+/* eml2_3ForGsoap.h:40166 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__GeobodyBoundaryInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__GeobodyBoundaryInterpretation (-1477)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__GeobodyBoundaryInterpretation (-1478)
 
 typedef resqml22__GeobodyBoundaryInterpretation _resqml22__GeobodyBoundaryInterpretation;
 #endif
 
-/* eml2_3ForGsoap.h:40163 */
+/* eml2_3ForGsoap.h:40169 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__GeobodyInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__GeobodyInterpretation (-1478)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__GeobodyInterpretation (-1479)
 
 typedef resqml22__GeobodyInterpretation _resqml22__GeobodyInterpretation;
 #endif
 
-/* eml2_3ForGsoap.h:40166 */
+/* eml2_3ForGsoap.h:40172 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__GeologicUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__GeologicUnitInterpretation (-1479)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__GeologicUnitInterpretation (-1480)
 
 typedef resqml22__GeologicUnitInterpretation _resqml22__GeologicUnitInterpretation;
 #endif
 
-/* eml2_3ForGsoap.h:40169 */
+/* eml2_3ForGsoap.h:40175 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__GeologicUnitOccurrenceInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__GeologicUnitOccurrenceInterpretation (-1480)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__GeologicUnitOccurrenceInterpretation (-1481)
 
 typedef resqml22__GeologicUnitOccurrenceInterpretation _resqml22__GeologicUnitOccurrenceInterpretation;
 #endif
 
-/* eml2_3ForGsoap.h:40172 */
+/* eml2_3ForGsoap.h:40178 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__HorizonInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__HorizonInterpretation (-1481)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__HorizonInterpretation (-1482)
 
 typedef resqml22__HorizonInterpretation _resqml22__HorizonInterpretation;
 #endif
 
-/* eml2_3ForGsoap.h:40175 */
+/* eml2_3ForGsoap.h:40181 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__RockFluidOrganizationInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__RockFluidOrganizationInterpretation (-1482)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__RockFluidOrganizationInterpretation (-1483)
 
 typedef resqml22__RockFluidOrganizationInterpretation _resqml22__RockFluidOrganizationInterpretation;
 #endif
 
-/* eml2_3ForGsoap.h:40178 */
+/* eml2_3ForGsoap.h:40184 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__RockFluidUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__RockFluidUnitInterpretation (-1483)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__RockFluidUnitInterpretation (-1484)
 
 typedef resqml22__RockFluidUnitInterpretation _resqml22__RockFluidUnitInterpretation;
 #endif
 
-/* eml2_3ForGsoap.h:40181 */
+/* eml2_3ForGsoap.h:40187 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicColumn
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicColumn (-1484)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicColumn (-1485)
 
 typedef resqml22__StratigraphicColumn _resqml22__StratigraphicColumn;
 #endif
 
-/* eml2_3ForGsoap.h:40184 */
+/* eml2_3ForGsoap.h:40190 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicColumnRankInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicColumnRankInterpretation (-1485)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicColumnRankInterpretation (-1486)
 
 typedef resqml22__StratigraphicColumnRankInterpretation _resqml22__StratigraphicColumnRankInterpretation;
 #endif
 
-/* eml2_3ForGsoap.h:40187 */
+/* eml2_3ForGsoap.h:40193 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicUnitDictionary
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicUnitDictionary (-1486)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicUnitDictionary (-1487)
 
 typedef resqml22__StratigraphicUnitDictionary _resqml22__StratigraphicUnitDictionary;
 #endif
 
-/* eml2_3ForGsoap.h:40190 */
+/* eml2_3ForGsoap.h:40196 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicUnitInterpretation (-1487)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicUnitInterpretation (-1488)
 
 typedef resqml22__StratigraphicUnitInterpretation _resqml22__StratigraphicUnitInterpretation;
 #endif
 
-/* eml2_3ForGsoap.h:40193 */
+/* eml2_3ForGsoap.h:40199 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__StructuralOrganizationInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__StructuralOrganizationInterpretation (-1488)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__StructuralOrganizationInterpretation (-1489)
 
 typedef resqml22__StructuralOrganizationInterpretation _resqml22__StructuralOrganizationInterpretation;
 #endif
 
-/* eml2_3ForGsoap.h:40196 */
+/* eml2_3ForGsoap.h:40202 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__RepresentationIdentitySet
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__RepresentationIdentitySet (-1489)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__RepresentationIdentitySet (-1490)
 
 typedef resqml22__RepresentationIdentitySet _resqml22__RepresentationIdentitySet;
 #endif
 
-/* eml2_3ForGsoap.h:40199 */
+/* eml2_3ForGsoap.h:40205 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__RepresentationSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__RepresentationSetRepresentation (-1490)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__RepresentationSetRepresentation (-1491)
 
 typedef resqml22__RepresentationSetRepresentation _resqml22__RepresentationSetRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40202 */
+/* eml2_3ForGsoap.h:40208 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__SubRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__SubRepresentation (-1491)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__SubRepresentation (-1492)
 
 typedef resqml22__SubRepresentation _resqml22__SubRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40205 */
+/* eml2_3ForGsoap.h:40211 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__GpGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__GpGridRepresentation (-1492)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__GpGridRepresentation (-1493)
 
 typedef resqml22__GpGridRepresentation _resqml22__GpGridRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40208 */
+/* eml2_3ForGsoap.h:40214 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__Grid2dRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__Grid2dRepresentation (-1493)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__Grid2dRepresentation (-1494)
 
 typedef resqml22__Grid2dRepresentation _resqml22__Grid2dRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40211 */
+/* eml2_3ForGsoap.h:40217 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__GridConnectionSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__GridConnectionSetRepresentation (-1494)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__GridConnectionSetRepresentation (-1495)
 
 typedef resqml22__GridConnectionSetRepresentation _resqml22__GridConnectionSetRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40214 */
+/* eml2_3ForGsoap.h:40220 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__IjkGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__IjkGridRepresentation (-1495)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__IjkGridRepresentation (-1496)
 
 typedef resqml22__IjkGridRepresentation _resqml22__IjkGridRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40217 */
+/* eml2_3ForGsoap.h:40223 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__LocalGridSet
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__LocalGridSet (-1496)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__LocalGridSet (-1497)
 
 typedef resqml22__LocalGridSet _resqml22__LocalGridSet;
 #endif
 
-/* eml2_3ForGsoap.h:40220 */
+/* eml2_3ForGsoap.h:40226 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__TruncatedIjkGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__TruncatedIjkGridRepresentation (-1497)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__TruncatedIjkGridRepresentation (-1498)
 
 typedef resqml22__TruncatedIjkGridRepresentation _resqml22__TruncatedIjkGridRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40223 */
+/* eml2_3ForGsoap.h:40229 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__TruncatedUnstructuredColumnLayerGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__TruncatedUnstructuredColumnLayerGridRepresentation (-1498)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__TruncatedUnstructuredColumnLayerGridRepresentation (-1499)
 
 typedef resqml22__TruncatedUnstructuredColumnLayerGridRepresentation _resqml22__TruncatedUnstructuredColumnLayerGridRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40226 */
+/* eml2_3ForGsoap.h:40232 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__UnstructuredColumnLayerGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__UnstructuredColumnLayerGridRepresentation (-1499)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__UnstructuredColumnLayerGridRepresentation (-1500)
 
 typedef resqml22__UnstructuredColumnLayerGridRepresentation _resqml22__UnstructuredColumnLayerGridRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40229 */
+/* eml2_3ForGsoap.h:40235 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__UnstructuredGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__UnstructuredGridRepresentation (-1500)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__UnstructuredGridRepresentation (-1501)
 
 typedef resqml22__UnstructuredGridRepresentation _resqml22__UnstructuredGridRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40232 */
+/* eml2_3ForGsoap.h:40238 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__LocalDepth3dCrs
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__LocalDepth3dCrs (-1501)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__LocalDepth3dCrs (-1502)
 
 typedef resqml22__LocalDepth3dCrs _resqml22__LocalDepth3dCrs;
 #endif
 
-/* eml2_3ForGsoap.h:40235 */
+/* eml2_3ForGsoap.h:40241 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__LocalTime3dCrs
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__LocalTime3dCrs (-1502)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__LocalTime3dCrs (-1503)
 
 typedef resqml22__LocalTime3dCrs _resqml22__LocalTime3dCrs;
 #endif
 
-/* eml2_3ForGsoap.h:40238 */
+/* eml2_3ForGsoap.h:40244 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__ColorMapDictionary
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__ColorMapDictionary (-1503)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__ColorMapDictionary (-1504)
 
 typedef resqml22__ColorMapDictionary _resqml22__ColorMapDictionary;
 #endif
 
-/* eml2_3ForGsoap.h:40241 */
+/* eml2_3ForGsoap.h:40247 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__ContinuousColorMap
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__ContinuousColorMap (-1504)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__ContinuousColorMap (-1505)
 
 typedef resqml22__ContinuousColorMap _resqml22__ContinuousColorMap;
 #endif
 
-/* eml2_3ForGsoap.h:40244 */
+/* eml2_3ForGsoap.h:40250 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__DiscreteColorMap
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__DiscreteColorMap (-1505)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__DiscreteColorMap (-1506)
 
 typedef resqml22__DiscreteColorMap _resqml22__DiscreteColorMap;
 #endif
 
-/* eml2_3ForGsoap.h:40247 */
+/* eml2_3ForGsoap.h:40253 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__BooleanProperty
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__BooleanProperty (-1506)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__BooleanProperty (-1507)
 
 typedef resqml22__BooleanProperty _resqml22__BooleanProperty;
 #endif
 
-/* eml2_3ForGsoap.h:40250 */
+/* eml2_3ForGsoap.h:40256 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__CategoricalProperty
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__CategoricalProperty (-1507)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__CategoricalProperty (-1508)
 
 typedef resqml22__CategoricalProperty _resqml22__CategoricalProperty;
 #endif
 
-/* eml2_3ForGsoap.h:40253 */
+/* eml2_3ForGsoap.h:40259 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__CommentProperty
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__CommentProperty (-1508)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__CommentProperty (-1509)
 
 typedef resqml22__CommentProperty _resqml22__CommentProperty;
 #endif
 
-/* eml2_3ForGsoap.h:40256 */
+/* eml2_3ForGsoap.h:40262 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__ContinuousProperty
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__ContinuousProperty (-1509)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__ContinuousProperty (-1510)
 
 typedef resqml22__ContinuousProperty _resqml22__ContinuousProperty;
 #endif
 
-/* eml2_3ForGsoap.h:40259 */
+/* eml2_3ForGsoap.h:40265 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__DiscreteProperty
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__DiscreteProperty (-1510)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__DiscreteProperty (-1511)
 
 typedef resqml22__DiscreteProperty _resqml22__DiscreteProperty;
 #endif
 
-/* eml2_3ForGsoap.h:40262 */
+/* eml2_3ForGsoap.h:40268 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__DoubleTableLookup
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__DoubleTableLookup (-1511)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__DoubleTableLookup (-1512)
 
 typedef resqml22__DoubleTableLookup _resqml22__DoubleTableLookup;
 #endif
 
-/* eml2_3ForGsoap.h:40265 */
+/* eml2_3ForGsoap.h:40271 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__PointsProperty
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__PointsProperty (-1512)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__PointsProperty (-1513)
 
 typedef resqml22__PointsProperty _resqml22__PointsProperty;
 #endif
 
-/* eml2_3ForGsoap.h:40268 */
+/* eml2_3ForGsoap.h:40274 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__StringTableLookup
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__StringTableLookup (-1513)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__StringTableLookup (-1514)
 
 typedef resqml22__StringTableLookup _resqml22__StringTableLookup;
 #endif
 
-/* eml2_3ForGsoap.h:40271 */
+/* eml2_3ForGsoap.h:40277 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__StreamlinesFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__StreamlinesFeature (-1514)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__StreamlinesFeature (-1515)
 
 typedef resqml22__StreamlinesFeature _resqml22__StreamlinesFeature;
 #endif
 
-/* eml2_3ForGsoap.h:40274 */
+/* eml2_3ForGsoap.h:40280 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__StreamlinesRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__StreamlinesRepresentation (-1515)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__StreamlinesRepresentation (-1516)
 
 typedef resqml22__StreamlinesRepresentation _resqml22__StreamlinesRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40277 */
+/* eml2_3ForGsoap.h:40283 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__BlockedWellboreRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__BlockedWellboreRepresentation (-1516)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__BlockedWellboreRepresentation (-1517)
 
 typedef resqml22__BlockedWellboreRepresentation _resqml22__BlockedWellboreRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40280 */
+/* eml2_3ForGsoap.h:40286 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__MdDatum
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__MdDatum (-1517)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__MdDatum (-1518)
 
 typedef resqml22__MdDatum _resqml22__MdDatum;
 #endif
 
-/* eml2_3ForGsoap.h:40283 */
+/* eml2_3ForGsoap.h:40289 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicWellboreFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicWellboreFrameRepresentation (-1518)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicWellboreFrameRepresentation (-1519)
 
 typedef resqml22__SeismicWellboreFrameRepresentation _resqml22__SeismicWellboreFrameRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40286 */
+/* eml2_3ForGsoap.h:40292 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreFeature (-1519)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreFeature (-1520)
 
 typedef resqml22__WellboreFeature _resqml22__WellboreFeature;
 #endif
 
-/* eml2_3ForGsoap.h:40289 */
+/* eml2_3ForGsoap.h:40295 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreFrameRepresentation (-1520)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreFrameRepresentation (-1521)
 
 typedef resqml22__WellboreFrameRepresentation _resqml22__WellboreFrameRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40292 */
+/* eml2_3ForGsoap.h:40298 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreInterpretation (-1521)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreInterpretation (-1522)
 
 typedef resqml22__WellboreInterpretation _resqml22__WellboreInterpretation;
 #endif
 
-/* eml2_3ForGsoap.h:40295 */
+/* eml2_3ForGsoap.h:40301 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreMarkerFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreMarkerFrameRepresentation (-1522)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreMarkerFrameRepresentation (-1523)
 
 typedef resqml22__WellboreMarkerFrameRepresentation _resqml22__WellboreMarkerFrameRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40298 */
+/* eml2_3ForGsoap.h:40304 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreTrajectoryRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreTrajectoryRepresentation (-1523)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreTrajectoryRepresentation (-1524)
 
 typedef resqml22__WellboreTrajectoryRepresentation _resqml22__WellboreTrajectoryRepresentation;
 #endif
 
-/* eml2_3ForGsoap.h:40317 */
+/* eml2_3ForGsoap.h:40323 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__eml23__PropertyKind
-#define SOAP_TYPE_gsoap_eml2_3__eml23__PropertyKind (-1524)
+#define SOAP_TYPE_gsoap_eml2_3__eml23__PropertyKind (-1525)
 
 typedef eml23__PropertyKind _eml23__PropertyKind;
 #endif
 
-/* eml2_3ForGsoap.h:40320 */
+/* eml2_3ForGsoap.h:40326 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__eml23__PropertyKindDictionary
-#define SOAP_TYPE_gsoap_eml2_3__eml23__PropertyKindDictionary (-1525)
+#define SOAP_TYPE_gsoap_eml2_3__eml23__PropertyKindDictionary (-1526)
 
 typedef eml23__PropertyKindDictionary _eml23__PropertyKindDictionary;
 #endif
 
-/* eml2_3ForGsoap.h:40323 */
+/* eml2_3ForGsoap.h:40329 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__eml23__TimeSeries
-#define SOAP_TYPE_gsoap_eml2_3__eml23__TimeSeries (-1526)
+#define SOAP_TYPE_gsoap_eml2_3__eml23__TimeSeries (-1527)
 
 typedef eml23__TimeSeries _eml23__TimeSeries;
 #endif
 
-/* eml2_3ForGsoap.h:40326 */
+/* eml2_3ForGsoap.h:40332 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__eml23__Activity
-#define SOAP_TYPE_gsoap_eml2_3__eml23__Activity (-1527)
+#define SOAP_TYPE_gsoap_eml2_3__eml23__Activity (-1528)
 
 typedef eml23__Activity _eml23__Activity;
 #endif
 
-/* eml2_3ForGsoap.h:40329 */
+/* eml2_3ForGsoap.h:40335 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__eml23__ActivityTemplate
-#define SOAP_TYPE_gsoap_eml2_3__eml23__ActivityTemplate (-1528)
+#define SOAP_TYPE_gsoap_eml2_3__eml23__ActivityTemplate (-1529)
 
 typedef eml23__ActivityTemplate _eml23__ActivityTemplate;
 #endif
 
-/* eml2_3ForGsoap.h:40332 */
+/* eml2_3ForGsoap.h:40338 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__eml23__DataAssuranceRecord
-#define SOAP_TYPE_gsoap_eml2_3__eml23__DataAssuranceRecord (-1529)
+#define SOAP_TYPE_gsoap_eml2_3__eml23__DataAssuranceRecord (-1530)
 
 typedef eml23__DataAssuranceRecord _eml23__DataAssuranceRecord;
 #endif
 
-/* eml2_3ForGsoap.h:40335 */
+/* eml2_3ForGsoap.h:40341 */
 #ifndef SOAP_TYPE_gsoap_eml2_3__eml23__GraphicalInformationSet
-#define SOAP_TYPE_gsoap_eml2_3__eml23__GraphicalInformationSet (-1530)
+#define SOAP_TYPE_gsoap_eml2_3__eml23__GraphicalInformationSet (-1531)
 
 typedef eml23__GraphicalInformationSet _eml23__GraphicalInformationSet;
 #endif
@@ -36081,6 +36081,18 @@ typedef eml23__GraphicalInformationSet _eml23__GraphicalInformationSet;
 
 #endif
 
+/* eml23__PositiveLong has binding name 'eml23__PositiveLong' for type 'eml23:PositiveLong' */
+#ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PositiveLong
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PositiveLong (-922)
+
+#endif
+
+/* eml23__NonNegativeLong has binding name 'eml23__NonNegativeLong' for type 'eml23:NonNegativeLong' */
+#ifndef SOAP_TYPE_gsoap_eml2_3_eml23__NonNegativeLong
+#define SOAP_TYPE_gsoap_eml2_3_eml23__NonNegativeLong (-918)
+
+#endif
+
 /* xsd__integer has binding name 'xsd__integer' for type 'xsd:integer' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_xsd__integer
 #define SOAP_TYPE_gsoap_eml2_3_xsd__integer (-11)
@@ -36095,19 +36107,19 @@ typedef eml23__GraphicalInformationSet _eml23__GraphicalInformationSet;
 
 /* eml23__PositiveFloat has binding name 'eml23__PositiveFloat' for type 'eml23:PositiveFloat' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PositiveFloat
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PositiveFloat (-922)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PositiveFloat (-921)
 
 #endif
 
 /* float has binding name 'float' for type 'xsd:float' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_float
-#define SOAP_TYPE_gsoap_eml2_3_float (-921)
+#define SOAP_TYPE_gsoap_eml2_3_float (-920)
 
 #endif
 
 /* eml23__PositiveDouble has binding name 'eml23__PositiveDouble' for type 'eml23:PositiveDouble' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PositiveDouble
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PositiveDouble (-920)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PositiveDouble (-919)
 
 #endif
 
@@ -36123,1545 +36135,1527 @@ typedef eml23__GraphicalInformationSet _eml23__GraphicalInformationSet;
 
 #endif
 
-/* eml23__PositiveInteger has binding name 'eml23__PositiveInteger' for type 'eml23:PositiveInteger' */
-#ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PositiveInteger
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PositiveInteger (-923)
-
-#endif
-
-/* eml23__NonNegativeInteger has binding name 'eml23__NonNegativeInteger' for type 'eml23:NonNegativeInteger' */
-#ifndef SOAP_TYPE_gsoap_eml2_3_eml23__NonNegativeInteger
-#define SOAP_TYPE_gsoap_eml2_3_eml23__NonNegativeInteger (-919)
-
-#endif
-
-/* ULONG64 has binding name 'ULONG64' for type 'xsd:unsignedLong' */
-#ifndef SOAP_TYPE_gsoap_eml2_3_ULONG64
-#define SOAP_TYPE_gsoap_eml2_3_ULONG64 (-918)
-
-#endif
-
 /* bool has binding name 'bool' for type 'xsd:boolean' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_bool
-#define SOAP_TYPE_gsoap_eml2_3_bool (-1231)
+#define SOAP_TYPE_gsoap_eml2_3_bool (-1230)
 
 #endif
 
 /* eml23__VerticalDirection has binding name 'eml23__VerticalDirection' for type 'eml23:VerticalDirection' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VerticalDirection
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VerticalDirection (-1188)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VerticalDirection (-1187)
 
 #endif
 
 /* eml23__PrincipalMeridian has binding name 'eml23__PrincipalMeridian' for type 'eml23:PrincipalMeridian' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PrincipalMeridian
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PrincipalMeridian (-1187)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PrincipalMeridian (-1186)
 
 #endif
 
 /* eml23__NorthOrSouth has binding name 'eml23__NorthOrSouth' for type 'eml23:NorthOrSouth' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__NorthOrSouth
-#define SOAP_TYPE_gsoap_eml2_3_eml23__NorthOrSouth (-1186)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__NorthOrSouth (-1185)
 
 #endif
 
 /* eml23__EastOrWest has binding name 'eml23__EastOrWest' for type 'eml23:EastOrWest' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EastOrWest
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EastOrWest (-1185)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EastOrWest (-1184)
 
 #endif
 
 /* eml23__AxisOrder2d has binding name 'eml23__AxisOrder2d' for type 'eml23:AxisOrder2d' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AxisOrder2d
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AxisOrder2d (-1184)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AxisOrder2d (-1183)
 
 #endif
 
 /* eml23__ReferencePressureKind has binding name 'eml23__ReferencePressureKind' for type 'eml23:ReferencePressureKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReferencePressureKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReferencePressureKind (-1183)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReferencePressureKind (-1182)
 
 #endif
 
 /* eml23__ActivityParameterKind has binding name 'eml23__ActivityParameterKind' for type 'eml23:ActivityParameterKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ActivityParameterKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ActivityParameterKind (-1182)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ActivityParameterKind (-1181)
 
 #endif
 
 /* eml23__FacetKind has binding name 'eml23__FacetKind' for type 'eml23:FacetKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__FacetKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__FacetKind (-1181)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__FacetKind (-1180)
 
 #endif
 
 /* eml23__Facet has binding name 'eml23__Facet' for type 'eml23:Facet' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__Facet
-#define SOAP_TYPE_gsoap_eml2_3_eml23__Facet (-1180)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__Facet (-1179)
 
 #endif
 
 /* eml23__WellStatus has binding name 'eml23__WellStatus' for type 'eml23:WellStatus' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__WellStatus
-#define SOAP_TYPE_gsoap_eml2_3_eml23__WellStatus (-1179)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__WellStatus (-1178)
 
 #endif
 
 /* eml23__WellboreDatumReference has binding name 'eml23__WellboreDatumReference' for type 'eml23:WellboreDatumReference' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__WellboreDatumReference
-#define SOAP_TYPE_gsoap_eml2_3_eml23__WellboreDatumReference (-1178)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__WellboreDatumReference (-1177)
 
 #endif
 
 /* eml23__ReferenceCondition has binding name 'eml23__ReferenceCondition' for type 'eml23:ReferenceCondition' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReferenceCondition
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReferenceCondition (-1177)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReferenceCondition (-1176)
 
 #endif
 
 /* eml23__QuantityClassKind has binding name 'eml23__QuantityClassKind' for type 'eml23:QuantityClassKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__QuantityClassKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__QuantityClassKind (-1176)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__QuantityClassKind (-1175)
 
 #endif
 
 /* eml23__MeasureClass has binding name 'eml23__MeasureClass' for type 'eml23:MeasureClass' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MeasureClass
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MeasureClass (-1175)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MeasureClass (-1174)
 
 #endif
 
 /* eml23__MatrixCementKind has binding name 'eml23__MatrixCementKind' for type 'eml23:MatrixCementKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MatrixCementKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MatrixCementKind (-1174)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MatrixCementKind (-1173)
 
 #endif
 
 /* eml23__LithostratigraphicRank has binding name 'eml23__LithostratigraphicRank' for type 'eml23:LithostratigraphicRank' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LithostratigraphicRank
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LithostratigraphicRank (-1173)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LithostratigraphicRank (-1172)
 
 #endif
 
 /* eml23__LithologyQualifierKind has binding name 'eml23__LithologyQualifierKind' for type 'eml23:LithologyQualifierKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LithologyQualifierKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LithologyQualifierKind (-1172)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LithologyQualifierKind (-1171)
 
 #endif
 
 /* eml23__LithologyKind has binding name 'eml23__LithologyKind' for type 'eml23:LithologyKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LithologyKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LithologyKind (-1171)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LithologyKind (-1170)
 
 #endif
 
 /* eml23__GeochronologicalRank has binding name 'eml23__GeochronologicalRank' for type 'eml23:GeochronologicalRank' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__GeochronologicalRank
-#define SOAP_TYPE_gsoap_eml2_3_eml23__GeochronologicalRank (-1170)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__GeochronologicalRank (-1169)
 
 #endif
 
 /* eml23__ChannelStatusKind has binding name 'eml23__ChannelStatusKind' for type 'eml23:ChannelStatusKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ChannelStatusKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ChannelStatusKind (-1169)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ChannelStatusKind (-1168)
 
 #endif
 
 /* eml23__ExistenceKind has binding name 'eml23__ExistenceKind' for type 'eml23:ExistenceKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ExistenceKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ExistenceKind (-1168)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ExistenceKind (-1167)
 
 #endif
 
 /* resqml22__MdDomain has binding name 'resqml22__MdDomain' for type 'resqml22:MdDomain' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__MdDomain
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__MdDomain (-1167)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__MdDomain (-1166)
 
 #endif
 
 /* resqml22__GeologicBoundaryKind has binding name 'resqml22__GeologicBoundaryKind' for type 'resqml22:GeologicBoundaryKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__GeologicBoundaryKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__GeologicBoundaryKind (-1166)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__GeologicBoundaryKind (-1165)
 
 #endif
 
 /* resqml22__FluidMarker has binding name 'resqml22__FluidMarker' for type 'resqml22:FluidMarker' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__FluidMarker
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__FluidMarker (-1165)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__FluidMarker (-1164)
 
 #endif
 
 /* resqml22__StreamlineFlux has binding name 'resqml22__StreamlineFlux' for type 'resqml22:StreamlineFlux' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__StreamlineFlux
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__StreamlineFlux (-1164)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__StreamlineFlux (-1163)
 
 #endif
 
 /* resqml22__TimeSetKind has binding name 'resqml22__TimeSetKind' for type 'resqml22:TimeSetKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__TimeSetKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__TimeSetKind (-1163)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__TimeSetKind (-1162)
 
 #endif
 
 /* resqml22__ResqmlPropertyKind has binding name 'resqml22__ResqmlPropertyKind' for type 'resqml22:ResqmlPropertyKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__ResqmlPropertyKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__ResqmlPropertyKind (-1162)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__ResqmlPropertyKind (-1161)
 
 #endif
 
 /* resqml22__ViewerKind has binding name 'resqml22__ViewerKind' for type 'resqml22:ViewerKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__ViewerKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__ViewerKind (-1161)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__ViewerKind (-1160)
 
 #endif
 
 /* resqml22__NodeSymbol has binding name 'resqml22__NodeSymbol' for type 'resqml22:NodeSymbol' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__NodeSymbol
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__NodeSymbol (-1160)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__NodeSymbol (-1159)
 
 #endif
 
 /* resqml22__InterpolationMethod has binding name 'resqml22__InterpolationMethod' for type 'resqml22:InterpolationMethod' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__InterpolationMethod
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__InterpolationMethod (-1159)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__InterpolationMethod (-1158)
 
 #endif
 
 /* resqml22__InterpolationDomain has binding name 'resqml22__InterpolationDomain' for type 'resqml22:InterpolationDomain' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__InterpolationDomain
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__InterpolationDomain (-1158)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__InterpolationDomain (-1157)
 
 #endif
 
 /* resqml22__EdgePattern has binding name 'resqml22__EdgePattern' for type 'resqml22:EdgePattern' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__EdgePattern
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__EdgePattern (-1157)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__EdgePattern (-1156)
 
 #endif
 
 /* resqml22__DisplaySpace has binding name 'resqml22__DisplaySpace' for type 'resqml22:DisplaySpace' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__DisplaySpace
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__DisplaySpace (-1156)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__DisplaySpace (-1155)
 
 #endif
 
 /* resqml22__SubnodeNodeObject has binding name 'resqml22__SubnodeNodeObject' for type 'resqml22:SubnodeNodeObject' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__SubnodeNodeObject
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__SubnodeNodeObject (-1155)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__SubnodeNodeObject (-1154)
 
 #endif
 
 /* resqml22__PillarShape has binding name 'resqml22__PillarShape' for type 'resqml22:PillarShape' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__PillarShape
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__PillarShape (-1154)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__PillarShape (-1153)
 
 #endif
 
 /* resqml22__KDirection has binding name 'resqml22__KDirection' for type 'resqml22:KDirection' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__KDirection
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__KDirection (-1153)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__KDirection (-1152)
 
 #endif
 
 /* resqml22__GridGeometryAttachment has binding name 'resqml22__GridGeometryAttachment' for type 'resqml22:GridGeometryAttachment' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__GridGeometryAttachment
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__GridGeometryAttachment (-1152)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__GridGeometryAttachment (-1151)
 
 #endif
 
 /* resqml22__ColumnShape has binding name 'resqml22__ColumnShape' for type 'resqml22:ColumnShape' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__ColumnShape
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__ColumnShape (-1151)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__ColumnShape (-1150)
 
 #endif
 
 /* resqml22__CellShape has binding name 'resqml22__CellShape' for type 'resqml22:CellShape' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__CellShape
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__CellShape (-1150)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__CellShape (-1149)
 
 #endif
 
 /* resqml22__IndexableElement has binding name 'resqml22__IndexableElement' for type 'resqml22:IndexableElement' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__IndexableElement
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__IndexableElement (-1149)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__IndexableElement (-1148)
 
 #endif
 
 /* resqml22__IdentityKind has binding name 'resqml22__IdentityKind' for type 'resqml22:IdentityKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__IdentityKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__IdentityKind (-1148)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__IdentityKind (-1147)
 
 #endif
 
 /* resqml22__ThrowKind has binding name 'resqml22__ThrowKind' for type 'resqml22:ThrowKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__ThrowKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__ThrowKind (-1147)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__ThrowKind (-1146)
 
 #endif
 
 /* resqml22__StratigraphicUnitKind has binding name 'resqml22__StratigraphicUnitKind' for type 'resqml22:StratigraphicUnitKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__StratigraphicUnitKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__StratigraphicUnitKind (-1146)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__StratigraphicUnitKind (-1145)
 
 #endif
 
 /* resqml22__Shape3d has binding name 'resqml22__Shape3d' for type 'resqml22:Shape3d' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__Shape3d
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__Shape3d (-1145)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__Shape3d (-1144)
 
 #endif
 
 /* resqml22__SequenceStratigraphySurface has binding name 'resqml22__SequenceStratigraphySurface' for type 'resqml22:SequenceStratigraphySurface' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__SequenceStratigraphySurface
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__SequenceStratigraphySurface (-1144)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__SequenceStratigraphySurface (-1143)
 
 #endif
 
 /* resqml22__Phase has binding name 'resqml22__Phase' for type 'resqml22:Phase' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__Phase
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__Phase (-1143)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__Phase (-1142)
 
 #endif
 
 /* resqml22__OrderingCriteria has binding name 'resqml22__OrderingCriteria' for type 'resqml22:OrderingCriteria' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__OrderingCriteria
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__OrderingCriteria (-1142)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__OrderingCriteria (-1141)
 
 #endif
 
 /* resqml22__HorizonStratigraphicRole has binding name 'resqml22__HorizonStratigraphicRole' for type 'resqml22:HorizonStratigraphicRole' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__HorizonStratigraphicRole
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__HorizonStratigraphicRole (-1141)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__HorizonStratigraphicRole (-1140)
 
 #endif
 
 /* resqml22__GeologicUnitMaterialEmplacement has binding name 'resqml22__GeologicUnitMaterialEmplacement' for type 'resqml22:GeologicUnitMaterialEmplacement' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__GeologicUnitMaterialEmplacement
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__GeologicUnitMaterialEmplacement (-1140)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__GeologicUnitMaterialEmplacement (-1139)
 
 #endif
 
 /* resqml22__FluidContact has binding name 'resqml22__FluidContact' for type 'resqml22:FluidContact' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__FluidContact
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__FluidContact (-1139)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__FluidContact (-1138)
 
 #endif
 
 /* resqml22__Domain has binding name 'resqml22__Domain' for type 'resqml22:Domain' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__Domain
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__Domain (-1138)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__Domain (-1137)
 
 #endif
 
 /* resqml22__DepositionMode has binding name 'resqml22__DepositionMode' for type 'resqml22:DepositionMode' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__DepositionMode
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__DepositionMode (-1137)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__DepositionMode (-1136)
 
 #endif
 
 /* resqml22__ContactVerb has binding name 'resqml22__ContactVerb' for type 'resqml22:ContactVerb' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__ContactVerb
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__ContactVerb (-1136)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__ContactVerb (-1135)
 
 #endif
 
 /* resqml22__ContactSide has binding name 'resqml22__ContactSide' for type 'resqml22:ContactSide' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__ContactSide
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__ContactSide (-1135)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__ContactSide (-1134)
 
 #endif
 
 /* resqml22__ContactMode has binding name 'resqml22__ContactMode' for type 'resqml22:ContactMode' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__ContactMode
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__ContactMode (-1134)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__ContactMode (-1133)
 
 #endif
 
 /* resqml22__BoundaryRelation has binding name 'resqml22__BoundaryRelation' for type 'resqml22:BoundaryRelation' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__BoundaryRelation
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__BoundaryRelation (-1133)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__BoundaryRelation (-1132)
 
 #endif
 
 /* resqml22__SurfaceRole has binding name 'resqml22__SurfaceRole' for type 'resqml22:SurfaceRole' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__SurfaceRole
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__SurfaceRole (-1132)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__SurfaceRole (-1131)
 
 #endif
 
 /* resqml22__LineRole has binding name 'resqml22__LineRole' for type 'resqml22:LineRole' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__LineRole
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__LineRole (-1131)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__LineRole (-1130)
 
 #endif
 
 /* resqml22__CulturalFeatureKind has binding name 'resqml22__CulturalFeatureKind' for type 'resqml22:CulturalFeatureKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__CulturalFeatureKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__CulturalFeatureKind (-1130)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__CulturalFeatureKind (-1129)
 
 #endif
 
 /* resqml22__CollectionKind has binding name 'resqml22__CollectionKind' for type 'resqml22:CollectionKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_resqml22__CollectionKind
-#define SOAP_TYPE_gsoap_eml2_3_resqml22__CollectionKind (-1129)
+#define SOAP_TYPE_gsoap_eml2_3_resqml22__CollectionKind (-1128)
 
 #endif
 
 /* eml23__LegacyVolumeUom has binding name 'eml23__LegacyVolumeUom' for type 'eml23:LegacyVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumeUom (-1125)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumeUom (-1124)
 
 #endif
 
 /* eml23__LegacyVolumePerVolumeUom has binding name 'eml23__LegacyVolumePerVolumeUom' for type 'eml23:LegacyVolumePerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerVolumeUom (-1124)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerVolumeUom (-1123)
 
 #endif
 
 /* eml23__LegacyVolumePerTimeUom has binding name 'eml23__LegacyVolumePerTimeUom' for type 'eml23:LegacyVolumePerTimeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerTimeUom (-1123)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerTimeUom (-1122)
 
 #endif
 
 /* eml23__LegacyVolumePerAreaUom has binding name 'eml23__LegacyVolumePerAreaUom' for type 'eml23:LegacyVolumePerAreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerAreaUom (-1122)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyVolumePerAreaUom (-1121)
 
 #endif
 
 /* eml23__LegacyPressureUom has binding name 'eml23__LegacyPressureUom' for type 'eml23:LegacyPressureUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LegacyPressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyPressureUom (-1121)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyPressureUom (-1120)
 
 #endif
 
 /* eml23__LegacyPressurePerVolumeUom has binding name 'eml23__LegacyPressurePerVolumeUom' for type 'eml23:LegacyPressurePerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LegacyPressurePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyPressurePerVolumeUom (-1120)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyPressurePerVolumeUom (-1119)
 
 #endif
 
 /* eml23__LegacyMassPerVolumeUom has binding name 'eml23__LegacyMassPerVolumeUom' for type 'eml23:LegacyMassPerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LegacyMassPerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyMassPerVolumeUom (-1119)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyMassPerVolumeUom (-1118)
 
 #endif
 
 /* eml23__VolumeUom has binding name 'eml23__VolumeUom' for type 'eml23:VolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumeUom (-1118)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumeUom (-1117)
 
 #endif
 
 /* eml23__VolumetricThermalExpansionUom has binding name 'eml23__VolumetricThermalExpansionUom' for type 'eml23:VolumetricThermalExpansionUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumetricThermalExpansionUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumetricThermalExpansionUom (-1117)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumetricThermalExpansionUom (-1116)
 
 #endif
 
 /* eml23__VolumetricHeatTransferCoefficientUom has binding name 'eml23__VolumetricHeatTransferCoefficientUom' for type 'eml23:VolumetricHeatTransferCoefficientUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumetricHeatTransferCoefficientUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumetricHeatTransferCoefficientUom (-1116)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumetricHeatTransferCoefficientUom (-1115)
 
 #endif
 
 /* eml23__VolumePerVolumeUom has binding name 'eml23__VolumePerVolumeUom' for type 'eml23:VolumePerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerVolumeUom (-1115)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerVolumeUom (-1114)
 
 #endif
 
 /* eml23__VolumePerTimeUom has binding name 'eml23__VolumePerTimeUom' for type 'eml23:VolumePerTimeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimeUom (-1114)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimeUom (-1113)
 
 #endif
 
 /* eml23__VolumePerTimePerVolumeUom has binding name 'eml23__VolumePerTimePerVolumeUom' for type 'eml23:VolumePerTimePerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerVolumeUom (-1113)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerVolumeUom (-1112)
 
 #endif
 
 /* eml23__VolumePerTimePerTimeUom has binding name 'eml23__VolumePerTimePerTimeUom' for type 'eml23:VolumePerTimePerTimeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerTimeUom (-1112)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerTimeUom (-1111)
 
 #endif
 
 /* eml23__VolumePerTimePerPressureUom has binding name 'eml23__VolumePerTimePerPressureUom' for type 'eml23:VolumePerTimePerPressureUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerPressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerPressureUom (-1111)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerPressureUom (-1110)
 
 #endif
 
 /* eml23__VolumePerTimePerPressureLengthUom has binding name 'eml23__VolumePerTimePerPressureLengthUom' for type 'eml23:VolumePerTimePerPressureLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerPressureLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerPressureLengthUom (-1110)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerPressureLengthUom (-1109)
 
 #endif
 
 /* eml23__VolumePerTimePerLengthUom has binding name 'eml23__VolumePerTimePerLengthUom' for type 'eml23:VolumePerTimePerLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerLengthUom (-1109)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerLengthUom (-1108)
 
 #endif
 
 /* eml23__VolumePerTimePerAreaUom has binding name 'eml23__VolumePerTimePerAreaUom' for type 'eml23:VolumePerTimePerAreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerAreaUom (-1108)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimePerAreaUom (-1107)
 
 #endif
 
 /* eml23__VolumePerTimeLengthUom has binding name 'eml23__VolumePerTimeLengthUom' for type 'eml23:VolumePerTimeLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimeLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimeLengthUom (-1107)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerTimeLengthUom (-1106)
 
 #endif
 
 /* eml23__VolumePerRotationUom has binding name 'eml23__VolumePerRotationUom' for type 'eml23:VolumePerRotationUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerRotationUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerRotationUom (-1106)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerRotationUom (-1105)
 
 #endif
 
 /* eml23__VolumePerPressureUom has binding name 'eml23__VolumePerPressureUom' for type 'eml23:VolumePerPressureUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerPressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerPressureUom (-1105)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerPressureUom (-1104)
 
 #endif
 
 /* eml23__VolumePerMassUom has binding name 'eml23__VolumePerMassUom' for type 'eml23:VolumePerMassUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerMassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerMassUom (-1104)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerMassUom (-1103)
 
 #endif
 
 /* eml23__VolumePerLengthUom has binding name 'eml23__VolumePerLengthUom' for type 'eml23:VolumePerLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerLengthUom (-1103)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerLengthUom (-1102)
 
 #endif
 
 /* eml23__VolumePerAreaUom has binding name 'eml23__VolumePerAreaUom' for type 'eml23:VolumePerAreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerAreaUom (-1102)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumePerAreaUom (-1101)
 
 #endif
 
 /* eml23__VolumeFlowRatePerVolumeFlowRateUom has binding name 'eml23__VolumeFlowRatePerVolumeFlowRateUom' for type 'eml23:VolumeFlowRatePerVolumeFlowRateUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VolumeFlowRatePerVolumeFlowRateUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumeFlowRatePerVolumeFlowRateUom (-1101)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VolumeFlowRatePerVolumeFlowRateUom (-1100)
 
 #endif
 
 /* eml23__VerticalCoordinateUom has binding name 'eml23__VerticalCoordinateUom' for type 'eml23:VerticalCoordinateUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__VerticalCoordinateUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__VerticalCoordinateUom (-1100)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__VerticalCoordinateUom (-1099)
 
 #endif
 
 /* eml23__TimeUom has binding name 'eml23__TimeUom' for type 'eml23:TimeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TimeUom (-1099)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TimeUom (-1098)
 
 #endif
 
 /* eml23__TimePerVolumeUom has binding name 'eml23__TimePerVolumeUom' for type 'eml23:TimePerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TimePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TimePerVolumeUom (-1098)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TimePerVolumeUom (-1097)
 
 #endif
 
 /* eml23__TimePerTimeUom has binding name 'eml23__TimePerTimeUom' for type 'eml23:TimePerTimeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TimePerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TimePerTimeUom (-1097)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TimePerTimeUom (-1096)
 
 #endif
 
 /* eml23__TimePerMassUom has binding name 'eml23__TimePerMassUom' for type 'eml23:TimePerMassUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TimePerMassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TimePerMassUom (-1096)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TimePerMassUom (-1095)
 
 #endif
 
 /* eml23__TimePerLengthUom has binding name 'eml23__TimePerLengthUom' for type 'eml23:TimePerLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TimePerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TimePerLengthUom (-1095)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TimePerLengthUom (-1094)
 
 #endif
 
 /* eml23__ThermodynamicTemperatureUom has binding name 'eml23__ThermodynamicTemperatureUom' for type 'eml23:ThermodynamicTemperatureUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ThermodynamicTemperatureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermodynamicTemperatureUom (-1094)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermodynamicTemperatureUom (-1093)
 
 #endif
 
 /* eml23__ThermodynamicTemperaturePerThermodynamicTemperatureUom has binding name 'eml23__ThermodynamicTemperaturePerThermodynamicTemperatureUom' for type 'eml23:ThermodynamicTemperaturePerThermodynamicTemperatureUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ThermodynamicTemperaturePerThermodynamicTemperatureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermodynamicTemperaturePerThermodynamicTemperatureUom (-1093)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermodynamicTemperaturePerThermodynamicTemperatureUom (-1092)
 
 #endif
 
 /* eml23__ThermalResistanceUom has binding name 'eml23__ThermalResistanceUom' for type 'eml23:ThermalResistanceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ThermalResistanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalResistanceUom (-1092)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalResistanceUom (-1091)
 
 #endif
 
 /* eml23__ThermalInsulanceUom has binding name 'eml23__ThermalInsulanceUom' for type 'eml23:ThermalInsulanceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ThermalInsulanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalInsulanceUom (-1091)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalInsulanceUom (-1090)
 
 #endif
 
 /* eml23__ThermalDiffusivityUom has binding name 'eml23__ThermalDiffusivityUom' for type 'eml23:ThermalDiffusivityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ThermalDiffusivityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalDiffusivityUom (-1090)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalDiffusivityUom (-1089)
 
 #endif
 
 /* eml23__ThermalConductivityUom has binding name 'eml23__ThermalConductivityUom' for type 'eml23:ThermalConductivityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ThermalConductivityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalConductivityUom (-1089)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalConductivityUom (-1088)
 
 #endif
 
 /* eml23__ThermalConductanceUom has binding name 'eml23__ThermalConductanceUom' for type 'eml23:ThermalConductanceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ThermalConductanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalConductanceUom (-1088)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ThermalConductanceUom (-1087)
 
 #endif
 
 /* eml23__TemperatureIntervalUom has binding name 'eml23__TemperatureIntervalUom' for type 'eml23:TemperatureIntervalUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalUom (-1087)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalUom (-1086)
 
 #endif
 
 /* eml23__TemperatureIntervalPerTimeUom has binding name 'eml23__TemperatureIntervalPerTimeUom' for type 'eml23:TemperatureIntervalPerTimeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerTimeUom (-1086)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerTimeUom (-1085)
 
 #endif
 
 /* eml23__TemperatureIntervalPerPressureUom has binding name 'eml23__TemperatureIntervalPerPressureUom' for type 'eml23:TemperatureIntervalPerPressureUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerPressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerPressureUom (-1085)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerPressureUom (-1084)
 
 #endif
 
 /* eml23__TemperatureIntervalPerLengthUom has binding name 'eml23__TemperatureIntervalPerLengthUom' for type 'eml23:TemperatureIntervalPerLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerLengthUom (-1084)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TemperatureIntervalPerLengthUom (-1083)
 
 #endif
 
 /* eml23__SpecificHeatCapacityUom has binding name 'eml23__SpecificHeatCapacityUom' for type 'eml23:SpecificHeatCapacityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__SpecificHeatCapacityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__SpecificHeatCapacityUom (-1083)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__SpecificHeatCapacityUom (-1082)
 
 #endif
 
 /* eml23__SolidAngleUom has binding name 'eml23__SolidAngleUom' for type 'eml23:SolidAngleUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__SolidAngleUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__SolidAngleUom (-1082)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__SolidAngleUom (-1081)
 
 #endif
 
 /* eml23__SignalingEventPerTimeUom has binding name 'eml23__SignalingEventPerTimeUom' for type 'eml23:SignalingEventPerTimeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__SignalingEventPerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__SignalingEventPerTimeUom (-1081)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__SignalingEventPerTimeUom (-1080)
 
 #endif
 
 /* eml23__SecondMomentOfAreaUom has binding name 'eml23__SecondMomentOfAreaUom' for type 'eml23:SecondMomentOfAreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__SecondMomentOfAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__SecondMomentOfAreaUom (-1080)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__SecondMomentOfAreaUom (-1079)
 
 #endif
 
 /* eml23__ReluctanceUom has binding name 'eml23__ReluctanceUom' for type 'eml23:ReluctanceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReluctanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReluctanceUom (-1079)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReluctanceUom (-1078)
 
 #endif
 
 /* eml23__ReciprocalVolumeUom has binding name 'eml23__ReciprocalVolumeUom' for type 'eml23:ReciprocalVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalVolumeUom (-1078)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalVolumeUom (-1077)
 
 #endif
 
 /* eml23__ReciprocalTimeUom has binding name 'eml23__ReciprocalTimeUom' for type 'eml23:ReciprocalTimeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalTimeUom (-1077)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalTimeUom (-1076)
 
 #endif
 
 /* eml23__ReciprocalPressureUom has binding name 'eml23__ReciprocalPressureUom' for type 'eml23:ReciprocalPressureUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalPressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalPressureUom (-1076)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalPressureUom (-1075)
 
 #endif
 
 /* eml23__ReciprocalMassUom has binding name 'eml23__ReciprocalMassUom' for type 'eml23:ReciprocalMassUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalMassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalMassUom (-1075)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalMassUom (-1074)
 
 #endif
 
 /* eml23__ReciprocalMassTimeUom has binding name 'eml23__ReciprocalMassTimeUom' for type 'eml23:ReciprocalMassTimeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalMassTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalMassTimeUom (-1074)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalMassTimeUom (-1073)
 
 #endif
 
 /* eml23__ReciprocalLengthUom has binding name 'eml23__ReciprocalLengthUom' for type 'eml23:ReciprocalLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalLengthUom (-1073)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalLengthUom (-1072)
 
 #endif
 
 /* eml23__ReciprocalForceUom has binding name 'eml23__ReciprocalForceUom' for type 'eml23:ReciprocalForceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalForceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalForceUom (-1072)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalForceUom (-1071)
 
 #endif
 
 /* eml23__ReciprocalElectricPotentialDifferenceUom has binding name 'eml23__ReciprocalElectricPotentialDifferenceUom' for type 'eml23:ReciprocalElectricPotentialDifferenceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalElectricPotentialDifferenceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalElectricPotentialDifferenceUom (-1071)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalElectricPotentialDifferenceUom (-1070)
 
 #endif
 
 /* eml23__ReciprocalAreaUom has binding name 'eml23__ReciprocalAreaUom' for type 'eml23:ReciprocalAreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalAreaUom (-1070)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ReciprocalAreaUom (-1069)
 
 #endif
 
 /* eml23__RadiantIntensityUom has binding name 'eml23__RadiantIntensityUom' for type 'eml23:RadiantIntensityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__RadiantIntensityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__RadiantIntensityUom (-1069)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__RadiantIntensityUom (-1068)
 
 #endif
 
 /* eml23__RadianceUom has binding name 'eml23__RadianceUom' for type 'eml23:RadianceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__RadianceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__RadianceUom (-1068)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__RadianceUom (-1067)
 
 #endif
 
 /* eml23__QuantityOfLightUom has binding name 'eml23__QuantityOfLightUom' for type 'eml23:QuantityOfLightUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__QuantityOfLightUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__QuantityOfLightUom (-1067)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__QuantityOfLightUom (-1066)
 
 #endif
 
 /* eml23__PressureUom has binding name 'eml23__PressureUom' for type 'eml23:PressureUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PressureUom (-1066)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PressureUom (-1065)
 
 #endif
 
 /* eml23__PressureTimePerVolumeUom has binding name 'eml23__PressureTimePerVolumeUom' for type 'eml23:PressureTimePerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PressureTimePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PressureTimePerVolumeUom (-1065)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PressureTimePerVolumeUom (-1064)
 
 #endif
 
 /* eml23__PressureSquaredUom has binding name 'eml23__PressureSquaredUom' for type 'eml23:PressureSquaredUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PressureSquaredUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PressureSquaredUom (-1064)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PressureSquaredUom (-1063)
 
 #endif
 
 /* eml23__PressureSquaredPerForceTimePerAreaUom has binding name 'eml23__PressureSquaredPerForceTimePerAreaUom' for type 'eml23:PressureSquaredPerForceTimePerAreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PressureSquaredPerForceTimePerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PressureSquaredPerForceTimePerAreaUom (-1063)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PressureSquaredPerForceTimePerAreaUom (-1062)
 
 #endif
 
 /* eml23__PressurePerVolumeUom has binding name 'eml23__PressurePerVolumeUom' for type 'eml23:PressurePerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerVolumeUom (-1062)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerVolumeUom (-1061)
 
 #endif
 
 /* eml23__PressurePerTimeUom has binding name 'eml23__PressurePerTimeUom' for type 'eml23:PressurePerTimeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerTimeUom (-1061)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerTimeUom (-1060)
 
 #endif
 
 /* eml23__PressurePerPressureUom has binding name 'eml23__PressurePerPressureUom' for type 'eml23:PressurePerPressureUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerPressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerPressureUom (-1060)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PressurePerPressureUom (-1059)
 
 #endif
 
 /* eml23__PowerUom has binding name 'eml23__PowerUom' for type 'eml23:PowerUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PowerUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PowerUom (-1059)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PowerUom (-1058)
 
 #endif
 
 /* eml23__PowerPerVolumeUom has binding name 'eml23__PowerPerVolumeUom' for type 'eml23:PowerPerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerVolumeUom (-1058)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerVolumeUom (-1057)
 
 #endif
 
 /* eml23__PowerPerPowerUom has binding name 'eml23__PowerPerPowerUom' for type 'eml23:PowerPerPowerUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerPowerUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerPowerUom (-1057)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerPowerUom (-1056)
 
 #endif
 
 /* eml23__PowerPerAreaUom has binding name 'eml23__PowerPerAreaUom' for type 'eml23:PowerPerAreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerAreaUom (-1056)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PowerPerAreaUom (-1055)
 
 #endif
 
 /* eml23__PotentialDifferencePerPowerDropUom has binding name 'eml23__PotentialDifferencePerPowerDropUom' for type 'eml23:PotentialDifferencePerPowerDropUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PotentialDifferencePerPowerDropUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PotentialDifferencePerPowerDropUom (-1055)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PotentialDifferencePerPowerDropUom (-1054)
 
 #endif
 
 /* eml23__PlaneAngleUom has binding name 'eml23__PlaneAngleUom' for type 'eml23:PlaneAngleUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PlaneAngleUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PlaneAngleUom (-1054)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PlaneAngleUom (-1053)
 
 #endif
 
 /* eml23__PermittivityUom has binding name 'eml23__PermittivityUom' for type 'eml23:PermittivityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PermittivityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PermittivityUom (-1053)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PermittivityUom (-1052)
 
 #endif
 
 /* eml23__PermeabilityRockUom has binding name 'eml23__PermeabilityRockUom' for type 'eml23:PermeabilityRockUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PermeabilityRockUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PermeabilityRockUom (-1052)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PermeabilityRockUom (-1051)
 
 #endif
 
 /* eml23__PermeabilityLengthUom has binding name 'eml23__PermeabilityLengthUom' for type 'eml23:PermeabilityLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PermeabilityLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PermeabilityLengthUom (-1051)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PermeabilityLengthUom (-1050)
 
 #endif
 
 /* eml23__NormalizedPowerUom has binding name 'eml23__NormalizedPowerUom' for type 'eml23:NormalizedPowerUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__NormalizedPowerUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__NormalizedPowerUom (-1050)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__NormalizedPowerUom (-1049)
 
 #endif
 
 /* eml23__MomentumUom has binding name 'eml23__MomentumUom' for type 'eml23:MomentumUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MomentumUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MomentumUom (-1049)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MomentumUom (-1048)
 
 #endif
 
 /* eml23__MomentOfInertiaUom has binding name 'eml23__MomentOfInertiaUom' for type 'eml23:MomentOfInertiaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MomentOfInertiaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MomentOfInertiaUom (-1048)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MomentOfInertiaUom (-1047)
 
 #endif
 
 /* eml23__MomentOfForceUom has binding name 'eml23__MomentOfForceUom' for type 'eml23:MomentOfForceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MomentOfForceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MomentOfForceUom (-1047)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MomentOfForceUom (-1046)
 
 #endif
 
 /* eml23__MolecularWeightUom has binding name 'eml23__MolecularWeightUom' for type 'eml23:MolecularWeightUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MolecularWeightUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MolecularWeightUom (-1046)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MolecularWeightUom (-1045)
 
 #endif
 
 /* eml23__MolarVolumeUom has binding name 'eml23__MolarVolumeUom' for type 'eml23:MolarVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MolarVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MolarVolumeUom (-1045)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MolarVolumeUom (-1044)
 
 #endif
 
 /* eml23__MolarHeatCapacityUom has binding name 'eml23__MolarHeatCapacityUom' for type 'eml23:MolarHeatCapacityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MolarHeatCapacityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MolarHeatCapacityUom (-1044)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MolarHeatCapacityUom (-1043)
 
 #endif
 
 /* eml23__MolarEnergyUom has binding name 'eml23__MolarEnergyUom' for type 'eml23:MolarEnergyUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MolarEnergyUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MolarEnergyUom (-1043)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MolarEnergyUom (-1042)
 
 #endif
 
 /* eml23__MobilityUom has binding name 'eml23__MobilityUom' for type 'eml23:MobilityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MobilityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MobilityUom (-1042)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MobilityUom (-1041)
 
 #endif
 
 /* eml23__MassUom has binding name 'eml23__MassUom' for type 'eml23:MassUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassUom (-1041)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassUom (-1040)
 
 #endif
 
 /* eml23__MassPerVolumeUom has binding name 'eml23__MassPerVolumeUom' for type 'eml23:MassPerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumeUom (-1040)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumeUom (-1039)
 
 #endif
 
 /* eml23__MassPerVolumePerTemperatureUom has binding name 'eml23__MassPerVolumePerTemperatureUom' for type 'eml23:MassPerVolumePerTemperatureUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerTemperatureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerTemperatureUom (-1039)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerTemperatureUom (-1038)
 
 #endif
 
 /* eml23__MassPerVolumePerPressureUom has binding name 'eml23__MassPerVolumePerPressureUom' for type 'eml23:MassPerVolumePerPressureUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerPressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerPressureUom (-1038)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerPressureUom (-1037)
 
 #endif
 
 /* eml23__MassPerVolumePerLengthUom has binding name 'eml23__MassPerVolumePerLengthUom' for type 'eml23:MassPerVolumePerLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerLengthUom (-1037)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerVolumePerLengthUom (-1036)
 
 #endif
 
 /* eml23__MassPerTimeUom has binding name 'eml23__MassPerTimeUom' for type 'eml23:MassPerTimeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimeUom (-1036)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimeUom (-1035)
 
 #endif
 
 /* eml23__MassPerTimePerLengthUom has binding name 'eml23__MassPerTimePerLengthUom' for type 'eml23:MassPerTimePerLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimePerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimePerLengthUom (-1035)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimePerLengthUom (-1034)
 
 #endif
 
 /* eml23__MassPerTimePerAreaUom has binding name 'eml23__MassPerTimePerAreaUom' for type 'eml23:MassPerTimePerAreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimePerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimePerAreaUom (-1034)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerTimePerAreaUom (-1033)
 
 #endif
 
 /* eml23__MassPerMassUom has binding name 'eml23__MassPerMassUom' for type 'eml23:MassPerMassUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerMassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerMassUom (-1033)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerMassUom (-1032)
 
 #endif
 
 /* eml23__MassPerLengthUom has binding name 'eml23__MassPerLengthUom' for type 'eml23:MassPerLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerLengthUom (-1032)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerLengthUom (-1031)
 
 #endif
 
 /* eml23__MassPerEnergyUom has binding name 'eml23__MassPerEnergyUom' for type 'eml23:MassPerEnergyUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerEnergyUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerEnergyUom (-1031)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerEnergyUom (-1030)
 
 #endif
 
 /* eml23__MassPerAreaUom has binding name 'eml23__MassPerAreaUom' for type 'eml23:MassPerAreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassPerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerAreaUom (-1030)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassPerAreaUom (-1029)
 
 #endif
 
 /* eml23__MassLengthUom has binding name 'eml23__MassLengthUom' for type 'eml23:MassLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MassLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MassLengthUom (-1029)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MassLengthUom (-1028)
 
 #endif
 
 /* eml23__MagneticVectorPotentialUom has binding name 'eml23__MagneticVectorPotentialUom' for type 'eml23:MagneticVectorPotentialUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MagneticVectorPotentialUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticVectorPotentialUom (-1028)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticVectorPotentialUom (-1027)
 
 #endif
 
 /* eml23__MagneticPermeabilityUom has binding name 'eml23__MagneticPermeabilityUom' for type 'eml23:MagneticPermeabilityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MagneticPermeabilityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticPermeabilityUom (-1027)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticPermeabilityUom (-1026)
 
 #endif
 
 /* eml23__MagneticFluxUom has binding name 'eml23__MagneticFluxUom' for type 'eml23:MagneticFluxUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxUom (-1026)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxUom (-1025)
 
 #endif
 
 /* eml23__MagneticFluxDensityUom has binding name 'eml23__MagneticFluxDensityUom' for type 'eml23:MagneticFluxDensityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxDensityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxDensityUom (-1025)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxDensityUom (-1024)
 
 #endif
 
 /* eml23__MagneticFluxDensityPerLengthUom has binding name 'eml23__MagneticFluxDensityPerLengthUom' for type 'eml23:MagneticFluxDensityPerLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxDensityPerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxDensityPerLengthUom (-1024)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFluxDensityPerLengthUom (-1023)
 
 #endif
 
 /* eml23__MagneticFieldStrengthUom has binding name 'eml23__MagneticFieldStrengthUom' for type 'eml23:MagneticFieldStrengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFieldStrengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFieldStrengthUom (-1023)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticFieldStrengthUom (-1022)
 
 #endif
 
 /* eml23__MagneticDipoleMomentUom has binding name 'eml23__MagneticDipoleMomentUom' for type 'eml23:MagneticDipoleMomentUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__MagneticDipoleMomentUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticDipoleMomentUom (-1022)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__MagneticDipoleMomentUom (-1021)
 
 #endif
 
 /* eml23__LuminousIntensityUom has binding name 'eml23__LuminousIntensityUom' for type 'eml23:LuminousIntensityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LuminousIntensityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LuminousIntensityUom (-1021)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LuminousIntensityUom (-1020)
 
 #endif
 
 /* eml23__LuminousFluxUom has binding name 'eml23__LuminousFluxUom' for type 'eml23:LuminousFluxUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LuminousFluxUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LuminousFluxUom (-1020)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LuminousFluxUom (-1019)
 
 #endif
 
 /* eml23__LuminousEfficacyUom has binding name 'eml23__LuminousEfficacyUom' for type 'eml23:LuminousEfficacyUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LuminousEfficacyUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LuminousEfficacyUom (-1019)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LuminousEfficacyUom (-1018)
 
 #endif
 
 /* eml23__LuminanceUom has binding name 'eml23__LuminanceUom' for type 'eml23:LuminanceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LuminanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LuminanceUom (-1018)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LuminanceUom (-1017)
 
 #endif
 
 /* eml23__LogarithmicPowerRatioUom has binding name 'eml23__LogarithmicPowerRatioUom' for type 'eml23:LogarithmicPowerRatioUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LogarithmicPowerRatioUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LogarithmicPowerRatioUom (-1017)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LogarithmicPowerRatioUom (-1016)
 
 #endif
 
 /* eml23__LogarithmicPowerRatioPerLengthUom has binding name 'eml23__LogarithmicPowerRatioPerLengthUom' for type 'eml23:LogarithmicPowerRatioPerLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LogarithmicPowerRatioPerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LogarithmicPowerRatioPerLengthUom (-1016)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LogarithmicPowerRatioPerLengthUom (-1015)
 
 #endif
 
 /* eml23__LinearThermalExpansionUom has binding name 'eml23__LinearThermalExpansionUom' for type 'eml23:LinearThermalExpansionUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LinearThermalExpansionUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LinearThermalExpansionUom (-1015)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LinearThermalExpansionUom (-1014)
 
 #endif
 
 /* eml23__LinearAccelerationUom has binding name 'eml23__LinearAccelerationUom' for type 'eml23:LinearAccelerationUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LinearAccelerationUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LinearAccelerationUom (-1014)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LinearAccelerationUom (-1013)
 
 #endif
 
 /* eml23__LightExposureUom has binding name 'eml23__LightExposureUom' for type 'eml23:LightExposureUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LightExposureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LightExposureUom (-1013)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LightExposureUom (-1012)
 
 #endif
 
 /* eml23__LengthUom has binding name 'eml23__LengthUom' for type 'eml23:LengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthUom (-1012)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthUom (-1011)
 
 #endif
 
 /* eml23__LengthPerVolumeUom has binding name 'eml23__LengthPerVolumeUom' for type 'eml23:LengthPerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerVolumeUom (-1011)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerVolumeUom (-1010)
 
 #endif
 
 /* eml23__LengthPerTimeUom has binding name 'eml23__LengthPerTimeUom' for type 'eml23:LengthPerTimeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerTimeUom (-1010)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerTimeUom (-1009)
 
 #endif
 
 /* eml23__LengthPerTemperatureUom has binding name 'eml23__LengthPerTemperatureUom' for type 'eml23:LengthPerTemperatureUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerTemperatureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerTemperatureUom (-1009)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerTemperatureUom (-1008)
 
 #endif
 
 /* eml23__LengthPerPressureUom has binding name 'eml23__LengthPerPressureUom' for type 'eml23:LengthPerPressureUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerPressureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerPressureUom (-1008)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerPressureUom (-1007)
 
 #endif
 
 /* eml23__LengthPerMassUom has binding name 'eml23__LengthPerMassUom' for type 'eml23:LengthPerMassUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerMassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerMassUom (-1007)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerMassUom (-1006)
 
 #endif
 
 /* eml23__LengthPerLengthUom has binding name 'eml23__LengthPerLengthUom' for type 'eml23:LengthPerLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerLengthUom (-1006)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LengthPerLengthUom (-1005)
 
 #endif
 
 /* eml23__KinematicViscosityUom has binding name 'eml23__KinematicViscosityUom' for type 'eml23:KinematicViscosityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__KinematicViscosityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__KinematicViscosityUom (-1005)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__KinematicViscosityUom (-1004)
 
 #endif
 
 /* eml23__IsothermalCompressibilityUom has binding name 'eml23__IsothermalCompressibilityUom' for type 'eml23:IsothermalCompressibilityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__IsothermalCompressibilityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__IsothermalCompressibilityUom (-1004)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__IsothermalCompressibilityUom (-1003)
 
 #endif
 
 /* eml23__InductanceUom has binding name 'eml23__InductanceUom' for type 'eml23:InductanceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__InductanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__InductanceUom (-1003)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__InductanceUom (-1002)
 
 #endif
 
 /* eml23__IlluminanceUom has binding name 'eml23__IlluminanceUom' for type 'eml23:IlluminanceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__IlluminanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__IlluminanceUom (-1002)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__IlluminanceUom (-1001)
 
 #endif
 
 /* eml23__HeatTransferCoefficientUom has binding name 'eml23__HeatTransferCoefficientUom' for type 'eml23:HeatTransferCoefficientUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__HeatTransferCoefficientUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__HeatTransferCoefficientUom (-1001)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__HeatTransferCoefficientUom (-1000)
 
 #endif
 
 /* eml23__HeatFlowRateUom has binding name 'eml23__HeatFlowRateUom' for type 'eml23:HeatFlowRateUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__HeatFlowRateUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__HeatFlowRateUom (-1000)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__HeatFlowRateUom (-999)
 
 #endif
 
 /* eml23__HeatCapacityUom has binding name 'eml23__HeatCapacityUom' for type 'eml23:HeatCapacityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__HeatCapacityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__HeatCapacityUom (-999)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__HeatCapacityUom (-998)
 
 #endif
 
 /* eml23__FrequencyUom has binding name 'eml23__FrequencyUom' for type 'eml23:FrequencyUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__FrequencyUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__FrequencyUom (-998)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__FrequencyUom (-997)
 
 #endif
 
 /* eml23__FrequencyIntervalUom has binding name 'eml23__FrequencyIntervalUom' for type 'eml23:FrequencyIntervalUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__FrequencyIntervalUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__FrequencyIntervalUom (-997)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__FrequencyIntervalUom (-996)
 
 #endif
 
 /* eml23__ForceUom has binding name 'eml23__ForceUom' for type 'eml23:ForceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ForceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ForceUom (-996)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ForceUom (-995)
 
 #endif
 
 /* eml23__ForcePerVolumeUom has binding name 'eml23__ForcePerVolumeUom' for type 'eml23:ForcePerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerVolumeUom (-995)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerVolumeUom (-994)
 
 #endif
 
 /* eml23__ForcePerLengthUom has binding name 'eml23__ForcePerLengthUom' for type 'eml23:ForcePerLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerLengthUom (-994)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerLengthUom (-993)
 
 #endif
 
 /* eml23__ForcePerForceUom has binding name 'eml23__ForcePerForceUom' for type 'eml23:ForcePerForceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerForceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerForceUom (-993)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ForcePerForceUom (-992)
 
 #endif
 
 /* eml23__ForceLengthPerLengthUom has binding name 'eml23__ForceLengthPerLengthUom' for type 'eml23:ForceLengthPerLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ForceLengthPerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ForceLengthPerLengthUom (-992)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ForceLengthPerLengthUom (-991)
 
 #endif
 
 /* eml23__ForceAreaUom has binding name 'eml23__ForceAreaUom' for type 'eml23:ForceAreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ForceAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ForceAreaUom (-991)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ForceAreaUom (-990)
 
 #endif
 
 /* eml23__EnergyUom has binding name 'eml23__EnergyUom' for type 'eml23:EnergyUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnergyUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyUom (-990)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyUom (-989)
 
 #endif
 
 /* eml23__EnergyPerVolumeUom has binding name 'eml23__EnergyPerVolumeUom' for type 'eml23:EnergyPerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerVolumeUom (-989)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerVolumeUom (-988)
 
 #endif
 
 /* eml23__EnergyPerMassUom has binding name 'eml23__EnergyPerMassUom' for type 'eml23:EnergyPerMassUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerMassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerMassUom (-988)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerMassUom (-987)
 
 #endif
 
 /* eml23__EnergyPerMassPerTimeUom has binding name 'eml23__EnergyPerMassPerTimeUom' for type 'eml23:EnergyPerMassPerTimeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerMassPerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerMassPerTimeUom (-987)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerMassPerTimeUom (-986)
 
 #endif
 
 /* eml23__EnergyPerLengthUom has binding name 'eml23__EnergyPerLengthUom' for type 'eml23:EnergyPerLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerLengthUom (-986)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerLengthUom (-985)
 
 #endif
 
 /* eml23__EnergyPerAreaUom has binding name 'eml23__EnergyPerAreaUom' for type 'eml23:EnergyPerAreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerAreaUom (-985)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyPerAreaUom (-984)
 
 #endif
 
 /* eml23__EnergyLengthPerTimeAreaTemperatureUom has binding name 'eml23__EnergyLengthPerTimeAreaTemperatureUom' for type 'eml23:EnergyLengthPerTimeAreaTemperatureUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnergyLengthPerTimeAreaTemperatureUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyLengthPerTimeAreaTemperatureUom (-984)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyLengthPerTimeAreaTemperatureUom (-983)
 
 #endif
 
 /* eml23__EnergyLengthPerAreaUom has binding name 'eml23__EnergyLengthPerAreaUom' for type 'eml23:EnergyLengthPerAreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnergyLengthPerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyLengthPerAreaUom (-983)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnergyLengthPerAreaUom (-982)
 
 #endif
 
 /* eml23__ElectromagneticMomentUom has binding name 'eml23__ElectromagneticMomentUom' for type 'eml23:ElectromagneticMomentUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectromagneticMomentUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectromagneticMomentUom (-982)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectromagneticMomentUom (-981)
 
 #endif
 
 /* eml23__ElectricResistanceUom has binding name 'eml23__ElectricResistanceUom' for type 'eml23:ElectricResistanceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricResistanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricResistanceUom (-981)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricResistanceUom (-980)
 
 #endif
 
 /* eml23__ElectricResistancePerLengthUom has binding name 'eml23__ElectricResistancePerLengthUom' for type 'eml23:ElectricResistancePerLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricResistancePerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricResistancePerLengthUom (-980)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricResistancePerLengthUom (-979)
 
 #endif
 
 /* eml23__ElectricPotentialDifferenceUom has binding name 'eml23__ElectricPotentialDifferenceUom' for type 'eml23:ElectricPotentialDifferenceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricPotentialDifferenceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricPotentialDifferenceUom (-979)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricPotentialDifferenceUom (-978)
 
 #endif
 
 /* eml23__ElectricFieldStrengthUom has binding name 'eml23__ElectricFieldStrengthUom' for type 'eml23:ElectricFieldStrengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricFieldStrengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricFieldStrengthUom (-978)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricFieldStrengthUom (-977)
 
 #endif
 
 /* eml23__ElectricCurrentUom has binding name 'eml23__ElectricCurrentUom' for type 'eml23:ElectricCurrentUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricCurrentUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricCurrentUom (-977)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricCurrentUom (-976)
 
 #endif
 
 /* eml23__ElectricCurrentDensityUom has binding name 'eml23__ElectricCurrentDensityUom' for type 'eml23:ElectricCurrentDensityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricCurrentDensityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricCurrentDensityUom (-976)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricCurrentDensityUom (-975)
 
 #endif
 
 /* eml23__ElectricConductivityUom has binding name 'eml23__ElectricConductivityUom' for type 'eml23:ElectricConductivityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricConductivityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricConductivityUom (-975)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricConductivityUom (-974)
 
 #endif
 
 /* eml23__ElectricConductanceUom has binding name 'eml23__ElectricConductanceUom' for type 'eml23:ElectricConductanceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricConductanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricConductanceUom (-974)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricConductanceUom (-973)
 
 #endif
 
 /* eml23__ElectricChargeUom has binding name 'eml23__ElectricChargeUom' for type 'eml23:ElectricChargeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargeUom (-973)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargeUom (-972)
 
 #endif
 
 /* eml23__ElectricChargePerVolumeUom has binding name 'eml23__ElectricChargePerVolumeUom' for type 'eml23:ElectricChargePerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerVolumeUom (-972)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerVolumeUom (-971)
 
 #endif
 
 /* eml23__ElectricChargePerMassUom has binding name 'eml23__ElectricChargePerMassUom' for type 'eml23:ElectricChargePerMassUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerMassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerMassUom (-971)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerMassUom (-970)
 
 #endif
 
 /* eml23__ElectricChargePerAreaUom has binding name 'eml23__ElectricChargePerAreaUom' for type 'eml23:ElectricChargePerAreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerAreaUom (-970)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricChargePerAreaUom (-969)
 
 #endif
 
 /* eml23__ElectricalResistivityUom has binding name 'eml23__ElectricalResistivityUom' for type 'eml23:ElectricalResistivityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ElectricalResistivityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricalResistivityUom (-969)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ElectricalResistivityUom (-968)
 
 #endif
 
 /* eml23__DynamicViscosityUom has binding name 'eml23__DynamicViscosityUom' for type 'eml23:DynamicViscosityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__DynamicViscosityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__DynamicViscosityUom (-968)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__DynamicViscosityUom (-967)
 
 #endif
 
 /* eml23__DoseEquivalentUom has binding name 'eml23__DoseEquivalentUom' for type 'eml23:DoseEquivalentUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__DoseEquivalentUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__DoseEquivalentUom (-967)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__DoseEquivalentUom (-966)
 
 #endif
 
 /* eml23__DipoleMomentUom has binding name 'eml23__DipoleMomentUom' for type 'eml23:DipoleMomentUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__DipoleMomentUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__DipoleMomentUom (-966)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__DipoleMomentUom (-965)
 
 #endif
 
 /* eml23__DimensionlessUom has binding name 'eml23__DimensionlessUom' for type 'eml23:DimensionlessUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__DimensionlessUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__DimensionlessUom (-965)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__DimensionlessUom (-964)
 
 #endif
 
 /* eml23__DigitalStorageUom has binding name 'eml23__DigitalStorageUom' for type 'eml23:DigitalStorageUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__DigitalStorageUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__DigitalStorageUom (-964)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__DigitalStorageUom (-963)
 
 #endif
 
 /* eml23__DiffusiveTimeOfFlightUom has binding name 'eml23__DiffusiveTimeOfFlightUom' for type 'eml23:DiffusiveTimeOfFlightUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__DiffusiveTimeOfFlightUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__DiffusiveTimeOfFlightUom (-963)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__DiffusiveTimeOfFlightUom (-962)
 
 #endif
 
 /* eml23__DiffusionCoefficientUom has binding name 'eml23__DiffusionCoefficientUom' for type 'eml23:DiffusionCoefficientUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__DiffusionCoefficientUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__DiffusionCoefficientUom (-962)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__DiffusionCoefficientUom (-961)
 
 #endif
 
 /* eml23__DataTransferSpeedUom has binding name 'eml23__DataTransferSpeedUom' for type 'eml23:DataTransferSpeedUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__DataTransferSpeedUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__DataTransferSpeedUom (-961)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__DataTransferSpeedUom (-960)
 
 #endif
 
 /* eml23__CationExchangeCapacityUom has binding name 'eml23__CationExchangeCapacityUom' for type 'eml23:CationExchangeCapacityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__CationExchangeCapacityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__CationExchangeCapacityUom (-960)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__CationExchangeCapacityUom (-959)
 
 #endif
 
 /* eml23__CapacitanceUom has binding name 'eml23__CapacitanceUom' for type 'eml23:CapacitanceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__CapacitanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__CapacitanceUom (-959)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__CapacitanceUom (-958)
 
 #endif
 
 /* eml23__AttenuationPerFrequencyIntervalUom has binding name 'eml23__AttenuationPerFrequencyIntervalUom' for type 'eml23:AttenuationPerFrequencyIntervalUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AttenuationPerFrequencyIntervalUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AttenuationPerFrequencyIntervalUom (-958)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AttenuationPerFrequencyIntervalUom (-957)
 
 #endif
 
 /* eml23__AreaUom has binding name 'eml23__AreaUom' for type 'eml23:AreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaUom (-957)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaUom (-956)
 
 #endif
 
 /* eml23__AreaPerVolumeUom has binding name 'eml23__AreaPerVolumeUom' for type 'eml23:AreaPerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerVolumeUom (-956)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerVolumeUom (-955)
 
 #endif
 
 /* eml23__AreaPerTimeUom has binding name 'eml23__AreaPerTimeUom' for type 'eml23:AreaPerTimeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerTimeUom (-955)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerTimeUom (-954)
 
 #endif
 
 /* eml23__AreaPerMassUom has binding name 'eml23__AreaPerMassUom' for type 'eml23:AreaPerMassUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerMassUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerMassUom (-954)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerMassUom (-953)
 
 #endif
 
 /* eml23__AreaPerCountUom has binding name 'eml23__AreaPerCountUom' for type 'eml23:AreaPerCountUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerCountUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerCountUom (-953)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerCountUom (-952)
 
 #endif
 
 /* eml23__AreaPerAreaUom has binding name 'eml23__AreaPerAreaUom' for type 'eml23:AreaPerAreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerAreaUom (-952)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerAreaUom (-951)
 
 #endif
 
 /* eml23__AreaPerAmountOfSubstanceUom has binding name 'eml23__AreaPerAmountOfSubstanceUom' for type 'eml23:AreaPerAmountOfSubstanceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerAmountOfSubstanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerAmountOfSubstanceUom (-951)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AreaPerAmountOfSubstanceUom (-950)
 
 #endif
 
 /* eml23__APINeutronUom has binding name 'eml23__APINeutronUom' for type 'eml23:APINeutronUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__APINeutronUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__APINeutronUom (-950)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__APINeutronUom (-949)
 
 #endif
 
 /* eml23__APIGravityUom has binding name 'eml23__APIGravityUom' for type 'eml23:APIGravityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__APIGravityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__APIGravityUom (-949)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__APIGravityUom (-948)
 
 #endif
 
 /* eml23__APIGammaRayUom has binding name 'eml23__APIGammaRayUom' for type 'eml23:APIGammaRayUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__APIGammaRayUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__APIGammaRayUom (-948)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__APIGammaRayUom (-947)
 
 #endif
 
 /* eml23__AngularVelocityUom has binding name 'eml23__AngularVelocityUom' for type 'eml23:AngularVelocityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AngularVelocityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AngularVelocityUom (-947)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AngularVelocityUom (-946)
 
 #endif
 
 /* eml23__AngularAccelerationUom has binding name 'eml23__AngularAccelerationUom' for type 'eml23:AngularAccelerationUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AngularAccelerationUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AngularAccelerationUom (-946)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AngularAccelerationUom (-945)
 
 #endif
 
 /* eml23__AnglePerVolumeUom has binding name 'eml23__AnglePerVolumeUom' for type 'eml23:AnglePerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AnglePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AnglePerVolumeUom (-945)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AnglePerVolumeUom (-944)
 
 #endif
 
 /* eml23__AnglePerLengthUom has binding name 'eml23__AnglePerLengthUom' for type 'eml23:AnglePerLengthUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AnglePerLengthUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AnglePerLengthUom (-944)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AnglePerLengthUom (-943)
 
 #endif
 
 /* eml23__AmountOfSubstanceUom has binding name 'eml23__AmountOfSubstanceUom' for type 'eml23:AmountOfSubstanceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstanceUom (-943)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstanceUom (-942)
 
 #endif
 
 /* eml23__AmountOfSubstancePerVolumeUom has binding name 'eml23__AmountOfSubstancePerVolumeUom' for type 'eml23:AmountOfSubstancePerVolumeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerVolumeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerVolumeUom (-942)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerVolumeUom (-941)
 
 #endif
 
 /* eml23__AmountOfSubstancePerTimeUom has binding name 'eml23__AmountOfSubstancePerTimeUom' for type 'eml23:AmountOfSubstancePerTimeUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerTimeUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerTimeUom (-941)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerTimeUom (-940)
 
 #endif
 
 /* eml23__AmountOfSubstancePerTimePerAreaUom has binding name 'eml23__AmountOfSubstancePerTimePerAreaUom' for type 'eml23:AmountOfSubstancePerTimePerAreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerTimePerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerTimePerAreaUom (-940)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerTimePerAreaUom (-939)
 
 #endif
 
 /* eml23__AmountOfSubstancePerAreaUom has binding name 'eml23__AmountOfSubstancePerAreaUom' for type 'eml23:AmountOfSubstancePerAreaUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerAreaUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerAreaUom (-939)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerAreaUom (-938)
 
 #endif
 
 /* eml23__AmountOfSubstancePerAmountOfSubstanceUom has binding name 'eml23__AmountOfSubstancePerAmountOfSubstanceUom' for type 'eml23:AmountOfSubstancePerAmountOfSubstanceUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerAmountOfSubstanceUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerAmountOfSubstanceUom (-938)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AmountOfSubstancePerAmountOfSubstanceUom (-937)
 
 #endif
 
 /* eml23__ActivityOfRadioactivityUom has binding name 'eml23__ActivityOfRadioactivityUom' for type 'eml23:ActivityOfRadioactivityUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__ActivityOfRadioactivityUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__ActivityOfRadioactivityUom (-937)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__ActivityOfRadioactivityUom (-936)
 
 #endif
 
 /* eml23__AbsorbedDoseUom has binding name 'eml23__AbsorbedDoseUom' for type 'eml23:AbsorbedDoseUom' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AbsorbedDoseUom
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AbsorbedDoseUom (-936)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AbsorbedDoseUom (-935)
 
 #endif
 
 /* eml23__UnitOfMeasure has binding name 'eml23__UnitOfMeasure' for type 'eml23:UnitOfMeasure' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__UnitOfMeasure
-#define SOAP_TYPE_gsoap_eml2_3_eml23__UnitOfMeasure (-933)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__UnitOfMeasure (-932)
 
 #endif
 
 /* eml23__LegacyUnitOfMeasure has binding name 'eml23__LegacyUnitOfMeasure' for type 'eml23:LegacyUnitOfMeasure' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__LegacyUnitOfMeasure
-#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyUnitOfMeasure (-932)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__LegacyUnitOfMeasure (-931)
 
 #endif
 
 /* eml23__AxisDirectionKind has binding name 'eml23__AxisDirectionKind' for type 'eml23:AxisDirectionKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__AxisDirectionKind
-#define SOAP_TYPE_gsoap_eml2_3_eml23__AxisDirectionKind (-925)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__AxisDirectionKind (-924)
 
 #endif
 
@@ -37691,547 +37685,547 @@ typedef eml23__GraphicalInformationSet _eml23__GraphicalInformationSet;
 
 /* _eml23__GraphicalInformationSet has binding name '_eml23__GraphicalInformationSet' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__eml23__GraphicalInformationSet
-#define SOAP_TYPE_gsoap_eml2_3__eml23__GraphicalInformationSet (-1530)
+#define SOAP_TYPE_gsoap_eml2_3__eml23__GraphicalInformationSet (-1531)
 
 #endif
 
 /* _eml23__DataAssuranceRecord has binding name '_eml23__DataAssuranceRecord' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__eml23__DataAssuranceRecord
-#define SOAP_TYPE_gsoap_eml2_3__eml23__DataAssuranceRecord (-1529)
+#define SOAP_TYPE_gsoap_eml2_3__eml23__DataAssuranceRecord (-1530)
 
 #endif
 
 /* _eml23__ActivityTemplate has binding name '_eml23__ActivityTemplate' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__eml23__ActivityTemplate
-#define SOAP_TYPE_gsoap_eml2_3__eml23__ActivityTemplate (-1528)
+#define SOAP_TYPE_gsoap_eml2_3__eml23__ActivityTemplate (-1529)
 
 #endif
 
 /* _eml23__Activity has binding name '_eml23__Activity' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__eml23__Activity
-#define SOAP_TYPE_gsoap_eml2_3__eml23__Activity (-1527)
+#define SOAP_TYPE_gsoap_eml2_3__eml23__Activity (-1528)
 
 #endif
 
 /* _eml23__TimeSeries has binding name '_eml23__TimeSeries' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__eml23__TimeSeries
-#define SOAP_TYPE_gsoap_eml2_3__eml23__TimeSeries (-1526)
+#define SOAP_TYPE_gsoap_eml2_3__eml23__TimeSeries (-1527)
 
 #endif
 
 /* _eml23__PropertyKindDictionary has binding name '_eml23__PropertyKindDictionary' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__eml23__PropertyKindDictionary
-#define SOAP_TYPE_gsoap_eml2_3__eml23__PropertyKindDictionary (-1525)
+#define SOAP_TYPE_gsoap_eml2_3__eml23__PropertyKindDictionary (-1526)
 
 #endif
 
 /* _eml23__PropertyKind has binding name '_eml23__PropertyKind' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__eml23__PropertyKind
-#define SOAP_TYPE_gsoap_eml2_3__eml23__PropertyKind (-1524)
+#define SOAP_TYPE_gsoap_eml2_3__eml23__PropertyKind (-1525)
 
 #endif
 
 /* _resqml22__WellboreTrajectoryRepresentation has binding name '_resqml22__WellboreTrajectoryRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreTrajectoryRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreTrajectoryRepresentation (-1523)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreTrajectoryRepresentation (-1524)
 
 #endif
 
 /* _resqml22__WellboreMarkerFrameRepresentation has binding name '_resqml22__WellboreMarkerFrameRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreMarkerFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreMarkerFrameRepresentation (-1522)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreMarkerFrameRepresentation (-1523)
 
 #endif
 
 /* _resqml22__WellboreInterpretation has binding name '_resqml22__WellboreInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreInterpretation (-1521)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreInterpretation (-1522)
 
 #endif
 
 /* _resqml22__WellboreFrameRepresentation has binding name '_resqml22__WellboreFrameRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreFrameRepresentation (-1520)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreFrameRepresentation (-1521)
 
 #endif
 
 /* _resqml22__WellboreFeature has binding name '_resqml22__WellboreFeature' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreFeature (-1519)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__WellboreFeature (-1520)
 
 #endif
 
 /* _resqml22__SeismicWellboreFrameRepresentation has binding name '_resqml22__SeismicWellboreFrameRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicWellboreFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicWellboreFrameRepresentation (-1518)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicWellboreFrameRepresentation (-1519)
 
 #endif
 
 /* _resqml22__MdDatum has binding name '_resqml22__MdDatum' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__MdDatum
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__MdDatum (-1517)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__MdDatum (-1518)
 
 #endif
 
 /* _resqml22__BlockedWellboreRepresentation has binding name '_resqml22__BlockedWellboreRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__BlockedWellboreRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__BlockedWellboreRepresentation (-1516)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__BlockedWellboreRepresentation (-1517)
 
 #endif
 
 /* _resqml22__StreamlinesRepresentation has binding name '_resqml22__StreamlinesRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__StreamlinesRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__StreamlinesRepresentation (-1515)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__StreamlinesRepresentation (-1516)
 
 #endif
 
 /* _resqml22__StreamlinesFeature has binding name '_resqml22__StreamlinesFeature' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__StreamlinesFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__StreamlinesFeature (-1514)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__StreamlinesFeature (-1515)
 
 #endif
 
 /* _resqml22__StringTableLookup has binding name '_resqml22__StringTableLookup' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__StringTableLookup
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__StringTableLookup (-1513)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__StringTableLookup (-1514)
 
 #endif
 
 /* _resqml22__PointsProperty has binding name '_resqml22__PointsProperty' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__PointsProperty
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__PointsProperty (-1512)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__PointsProperty (-1513)
 
 #endif
 
 /* _resqml22__DoubleTableLookup has binding name '_resqml22__DoubleTableLookup' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__DoubleTableLookup
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__DoubleTableLookup (-1511)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__DoubleTableLookup (-1512)
 
 #endif
 
 /* _resqml22__DiscreteProperty has binding name '_resqml22__DiscreteProperty' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__DiscreteProperty
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__DiscreteProperty (-1510)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__DiscreteProperty (-1511)
 
 #endif
 
 /* _resqml22__ContinuousProperty has binding name '_resqml22__ContinuousProperty' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__ContinuousProperty
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__ContinuousProperty (-1509)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__ContinuousProperty (-1510)
 
 #endif
 
 /* _resqml22__CommentProperty has binding name '_resqml22__CommentProperty' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__CommentProperty
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__CommentProperty (-1508)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__CommentProperty (-1509)
 
 #endif
 
 /* _resqml22__CategoricalProperty has binding name '_resqml22__CategoricalProperty' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__CategoricalProperty
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__CategoricalProperty (-1507)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__CategoricalProperty (-1508)
 
 #endif
 
 /* _resqml22__BooleanProperty has binding name '_resqml22__BooleanProperty' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__BooleanProperty
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__BooleanProperty (-1506)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__BooleanProperty (-1507)
 
 #endif
 
 /* _resqml22__DiscreteColorMap has binding name '_resqml22__DiscreteColorMap' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__DiscreteColorMap
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__DiscreteColorMap (-1505)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__DiscreteColorMap (-1506)
 
 #endif
 
 /* _resqml22__ContinuousColorMap has binding name '_resqml22__ContinuousColorMap' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__ContinuousColorMap
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__ContinuousColorMap (-1504)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__ContinuousColorMap (-1505)
 
 #endif
 
 /* _resqml22__ColorMapDictionary has binding name '_resqml22__ColorMapDictionary' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__ColorMapDictionary
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__ColorMapDictionary (-1503)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__ColorMapDictionary (-1504)
 
 #endif
 
 /* _resqml22__LocalTime3dCrs has binding name '_resqml22__LocalTime3dCrs' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__LocalTime3dCrs
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__LocalTime3dCrs (-1502)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__LocalTime3dCrs (-1503)
 
 #endif
 
 /* _resqml22__LocalDepth3dCrs has binding name '_resqml22__LocalDepth3dCrs' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__LocalDepth3dCrs
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__LocalDepth3dCrs (-1501)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__LocalDepth3dCrs (-1502)
 
 #endif
 
 /* _resqml22__UnstructuredGridRepresentation has binding name '_resqml22__UnstructuredGridRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__UnstructuredGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__UnstructuredGridRepresentation (-1500)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__UnstructuredGridRepresentation (-1501)
 
 #endif
 
 /* _resqml22__UnstructuredColumnLayerGridRepresentation has binding name '_resqml22__UnstructuredColumnLayerGridRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__UnstructuredColumnLayerGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__UnstructuredColumnLayerGridRepresentation (-1499)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__UnstructuredColumnLayerGridRepresentation (-1500)
 
 #endif
 
 /* _resqml22__TruncatedUnstructuredColumnLayerGridRepresentation has binding name '_resqml22__TruncatedUnstructuredColumnLayerGridRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__TruncatedUnstructuredColumnLayerGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__TruncatedUnstructuredColumnLayerGridRepresentation (-1498)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__TruncatedUnstructuredColumnLayerGridRepresentation (-1499)
 
 #endif
 
 /* _resqml22__TruncatedIjkGridRepresentation has binding name '_resqml22__TruncatedIjkGridRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__TruncatedIjkGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__TruncatedIjkGridRepresentation (-1497)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__TruncatedIjkGridRepresentation (-1498)
 
 #endif
 
 /* _resqml22__LocalGridSet has binding name '_resqml22__LocalGridSet' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__LocalGridSet
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__LocalGridSet (-1496)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__LocalGridSet (-1497)
 
 #endif
 
 /* _resqml22__IjkGridRepresentation has binding name '_resqml22__IjkGridRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__IjkGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__IjkGridRepresentation (-1495)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__IjkGridRepresentation (-1496)
 
 #endif
 
 /* _resqml22__GridConnectionSetRepresentation has binding name '_resqml22__GridConnectionSetRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__GridConnectionSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__GridConnectionSetRepresentation (-1494)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__GridConnectionSetRepresentation (-1495)
 
 #endif
 
 /* _resqml22__Grid2dRepresentation has binding name '_resqml22__Grid2dRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__Grid2dRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__Grid2dRepresentation (-1493)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__Grid2dRepresentation (-1494)
 
 #endif
 
 /* _resqml22__GpGridRepresentation has binding name '_resqml22__GpGridRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__GpGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__GpGridRepresentation (-1492)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__GpGridRepresentation (-1493)
 
 #endif
 
 /* _resqml22__SubRepresentation has binding name '_resqml22__SubRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__SubRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__SubRepresentation (-1491)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__SubRepresentation (-1492)
 
 #endif
 
 /* _resqml22__RepresentationSetRepresentation has binding name '_resqml22__RepresentationSetRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__RepresentationSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__RepresentationSetRepresentation (-1490)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__RepresentationSetRepresentation (-1491)
 
 #endif
 
 /* _resqml22__RepresentationIdentitySet has binding name '_resqml22__RepresentationIdentitySet' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__RepresentationIdentitySet
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__RepresentationIdentitySet (-1489)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__RepresentationIdentitySet (-1490)
 
 #endif
 
 /* _resqml22__StructuralOrganizationInterpretation has binding name '_resqml22__StructuralOrganizationInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__StructuralOrganizationInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__StructuralOrganizationInterpretation (-1488)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__StructuralOrganizationInterpretation (-1489)
 
 #endif
 
 /* _resqml22__StratigraphicUnitInterpretation has binding name '_resqml22__StratigraphicUnitInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicUnitInterpretation (-1487)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicUnitInterpretation (-1488)
 
 #endif
 
 /* _resqml22__StratigraphicUnitDictionary has binding name '_resqml22__StratigraphicUnitDictionary' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicUnitDictionary
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicUnitDictionary (-1486)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicUnitDictionary (-1487)
 
 #endif
 
 /* _resqml22__StratigraphicColumnRankInterpretation has binding name '_resqml22__StratigraphicColumnRankInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicColumnRankInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicColumnRankInterpretation (-1485)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicColumnRankInterpretation (-1486)
 
 #endif
 
 /* _resqml22__StratigraphicColumn has binding name '_resqml22__StratigraphicColumn' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicColumn
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicColumn (-1484)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__StratigraphicColumn (-1485)
 
 #endif
 
 /* _resqml22__RockFluidUnitInterpretation has binding name '_resqml22__RockFluidUnitInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__RockFluidUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__RockFluidUnitInterpretation (-1483)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__RockFluidUnitInterpretation (-1484)
 
 #endif
 
 /* _resqml22__RockFluidOrganizationInterpretation has binding name '_resqml22__RockFluidOrganizationInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__RockFluidOrganizationInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__RockFluidOrganizationInterpretation (-1482)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__RockFluidOrganizationInterpretation (-1483)
 
 #endif
 
 /* _resqml22__HorizonInterpretation has binding name '_resqml22__HorizonInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__HorizonInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__HorizonInterpretation (-1481)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__HorizonInterpretation (-1482)
 
 #endif
 
 /* _resqml22__GeologicUnitOccurrenceInterpretation has binding name '_resqml22__GeologicUnitOccurrenceInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__GeologicUnitOccurrenceInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__GeologicUnitOccurrenceInterpretation (-1480)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__GeologicUnitOccurrenceInterpretation (-1481)
 
 #endif
 
 /* _resqml22__GeologicUnitInterpretation has binding name '_resqml22__GeologicUnitInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__GeologicUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__GeologicUnitInterpretation (-1479)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__GeologicUnitInterpretation (-1480)
 
 #endif
 
 /* _resqml22__GeobodyInterpretation has binding name '_resqml22__GeobodyInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__GeobodyInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__GeobodyInterpretation (-1478)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__GeobodyInterpretation (-1479)
 
 #endif
 
 /* _resqml22__GeobodyBoundaryInterpretation has binding name '_resqml22__GeobodyBoundaryInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__GeobodyBoundaryInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__GeobodyBoundaryInterpretation (-1477)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__GeobodyBoundaryInterpretation (-1478)
 
 #endif
 
 /* _resqml22__GenericFeatureInterpretation has binding name '_resqml22__GenericFeatureInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__GenericFeatureInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__GenericFeatureInterpretation (-1476)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__GenericFeatureInterpretation (-1477)
 
 #endif
 
 /* _resqml22__FluidBoundaryInterpretation has binding name '_resqml22__FluidBoundaryInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__FluidBoundaryInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__FluidBoundaryInterpretation (-1475)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__FluidBoundaryInterpretation (-1476)
 
 #endif
 
 /* _resqml22__FaultInterpretation has binding name '_resqml22__FaultInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__FaultInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__FaultInterpretation (-1474)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__FaultInterpretation (-1475)
 
 #endif
 
 /* _resqml22__EarthModelInterpretation has binding name '_resqml22__EarthModelInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__EarthModelInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__EarthModelInterpretation (-1473)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__EarthModelInterpretation (-1474)
 
 #endif
 
 /* _resqml22__BoundaryFeatureInterpretation has binding name '_resqml22__BoundaryFeatureInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__BoundaryFeatureInterpretation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__BoundaryFeatureInterpretation (-1472)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__BoundaryFeatureInterpretation (-1473)
 
 #endif
 
 /* _resqml22__TriangulatedSetRepresentation has binding name '_resqml22__TriangulatedSetRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__TriangulatedSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__TriangulatedSetRepresentation (-1471)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__TriangulatedSetRepresentation (-1472)
 
 #endif
 
 /* _resqml22__SealedVolumeFrameworkRepresentation has binding name '_resqml22__SealedVolumeFrameworkRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__SealedVolumeFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__SealedVolumeFrameworkRepresentation (-1470)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__SealedVolumeFrameworkRepresentation (-1471)
 
 #endif
 
 /* _resqml22__SealedSurfaceFrameworkRepresentation has binding name '_resqml22__SealedSurfaceFrameworkRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__SealedSurfaceFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__SealedSurfaceFrameworkRepresentation (-1469)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__SealedSurfaceFrameworkRepresentation (-1470)
 
 #endif
 
 /* _resqml22__PolylineSetRepresentation has binding name '_resqml22__PolylineSetRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__PolylineSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__PolylineSetRepresentation (-1468)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__PolylineSetRepresentation (-1469)
 
 #endif
 
 /* _resqml22__PolylineRepresentation has binding name '_resqml22__PolylineRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__PolylineRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__PolylineRepresentation (-1467)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__PolylineRepresentation (-1468)
 
 #endif
 
 /* _resqml22__PointSetRepresentation has binding name '_resqml22__PointSetRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__PointSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__PointSetRepresentation (-1466)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__PointSetRepresentation (-1467)
 
 #endif
 
 /* _resqml22__PlaneSetRepresentation has binding name '_resqml22__PlaneSetRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__PlaneSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__PlaneSetRepresentation (-1465)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__PlaneSetRepresentation (-1466)
 
 #endif
 
 /* _resqml22__NonSealedSurfaceFrameworkRepresentation has binding name '_resqml22__NonSealedSurfaceFrameworkRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__NonSealedSurfaceFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__NonSealedSurfaceFrameworkRepresentation (-1464)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__NonSealedSurfaceFrameworkRepresentation (-1465)
 
 #endif
 
 /* _resqml22__ShotPointLineFeature has binding name '_resqml22__ShotPointLineFeature' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__ShotPointLineFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__ShotPointLineFeature (-1463)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__ShotPointLineFeature (-1464)
 
 #endif
 
 /* _resqml22__SeismicLineSetFeature has binding name '_resqml22__SeismicLineSetFeature' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicLineSetFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicLineSetFeature (-1462)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicLineSetFeature (-1463)
 
 #endif
 
 /* _resqml22__SeismicLatticeFeature has binding name '_resqml22__SeismicLatticeFeature' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicLatticeFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicLatticeFeature (-1461)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__SeismicLatticeFeature (-1462)
 
 #endif
 
 /* _resqml22__Seismic3dPostStackRepresentation has binding name '_resqml22__Seismic3dPostStackRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__Seismic3dPostStackRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__Seismic3dPostStackRepresentation (-1460)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__Seismic3dPostStackRepresentation (-1461)
 
 #endif
 
 /* _resqml22__Seismic2dPostStackRepresentation has binding name '_resqml22__Seismic2dPostStackRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__Seismic2dPostStackRepresentation
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__Seismic2dPostStackRepresentation (-1459)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__Seismic2dPostStackRepresentation (-1460)
 
 #endif
 
 /* _resqml22__CmpLineFeature has binding name '_resqml22__CmpLineFeature' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__CmpLineFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__CmpLineFeature (-1458)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__CmpLineFeature (-1459)
 
 #endif
 
 /* _resqml22__RockVolumeFeatureDictionary has binding name '_resqml22__RockVolumeFeatureDictionary' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__RockVolumeFeatureDictionary
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__RockVolumeFeatureDictionary (-1457)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__RockVolumeFeatureDictionary (-1458)
 
 #endif
 
 /* _resqml22__RockVolumeFeature has binding name '_resqml22__RockVolumeFeature' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__RockVolumeFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__RockVolumeFeature (-1456)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__RockVolumeFeature (-1457)
 
 #endif
 
 /* _resqml22__Model has binding name '_resqml22__Model' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__Model
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__Model (-1455)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__Model (-1456)
 
 #endif
 
 /* _resqml22__CulturalFeature has binding name '_resqml22__CulturalFeature' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__CulturalFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__CulturalFeature (-1454)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__CulturalFeature (-1455)
 
 #endif
 
 /* _resqml22__BoundaryFeature has binding name '_resqml22__BoundaryFeature' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__BoundaryFeature
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__BoundaryFeature (-1453)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__BoundaryFeature (-1454)
 
 #endif
 
 /* _resqml22__DataobjectCollection has binding name '_resqml22__DataobjectCollection' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__DataobjectCollection
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__DataobjectCollection (-1452)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__DataobjectCollection (-1453)
 
 #endif
 
 /* _resqml22__CollectionsToDataobjectsAssociationSet has binding name '_resqml22__CollectionsToDataobjectsAssociationSet' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3__resqml22__CollectionsToDataobjectsAssociationSet
-#define SOAP_TYPE_gsoap_eml2_3__resqml22__CollectionsToDataobjectsAssociationSet (-1451)
+#define SOAP_TYPE_gsoap_eml2_3__resqml22__CollectionsToDataobjectsAssociationSet (-1452)
 
 #endif
 
 /* eml23__SectionNumber has binding name 'eml23__SectionNumber' for type 'eml23:SectionNumber' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__SectionNumber
-#define SOAP_TYPE_gsoap_eml2_3_eml23__SectionNumber (-1128)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__SectionNumber (-1127)
 
 #endif
 
 /* eml23__PublicLandSurveySystemQuarterTownship has binding name 'eml23__PublicLandSurveySystemQuarterTownship' for type 'eml23:PublicLandSurveySystemQuarterTownship' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PublicLandSurveySystemQuarterTownship
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PublicLandSurveySystemQuarterTownship (-1127)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PublicLandSurveySystemQuarterTownship (-1126)
 
 #endif
 
 /* eml23__PublicLandSurveySystemQuarterSection has binding name 'eml23__PublicLandSurveySystemQuarterSection' for type 'eml23:PublicLandSurveySystemQuarterSection' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__PublicLandSurveySystemQuarterSection
-#define SOAP_TYPE_gsoap_eml2_3_eml23__PublicLandSurveySystemQuarterSection (-1126)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__PublicLandSurveySystemQuarterSection (-1125)
 
 #endif
 
 /* eml23__TypeEnum has binding name 'eml23__TypeEnum' for type 'eml23:TypeEnum' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TypeEnum
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TypeEnum (-935)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TypeEnum (-934)
 
 #endif
 
 /* eml23__TimeZone has binding name 'eml23__TimeZone' for type 'eml23:TimeZone' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__TimeZone
-#define SOAP_TYPE_gsoap_eml2_3_eml23__TimeZone (-934)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__TimeZone (-933)
 
 #endif
 
 /* eml23__UuidString has binding name 'eml23__UuidString' for type 'eml23:UuidString' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__UuidString
-#define SOAP_TYPE_gsoap_eml2_3_eml23__UuidString (-931)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__UuidString (-930)
 
 #endif
 
 /* eml23__UomEnum has binding name 'eml23__UomEnum' for type 'eml23:UomEnum' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__UomEnum
-#define SOAP_TYPE_gsoap_eml2_3_eml23__UomEnum (-930)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__UomEnum (-929)
 
 #endif
 
 /* eml23__String64 has binding name 'eml23__String64' for type 'eml23:String64' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__String64
-#define SOAP_TYPE_gsoap_eml2_3_eml23__String64 (-929)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__String64 (-928)
 
 #endif
 
 /* eml23__String256 has binding name 'eml23__String256' for type 'eml23:String256' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__String256
-#define SOAP_TYPE_gsoap_eml2_3_eml23__String256 (-928)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__String256 (-927)
 
 #endif
 
 /* eml23__String2000 has binding name 'eml23__String2000' for type 'eml23:String2000' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__String2000
-#define SOAP_TYPE_gsoap_eml2_3_eml23__String2000 (-927)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__String2000 (-926)
 
 #endif
 
 /* eml23__EnumExtensionPattern has binding name 'eml23__EnumExtensionPattern' for type 'eml23:EnumExtensionPattern' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_eml23__EnumExtensionPattern
-#define SOAP_TYPE_gsoap_eml2_3_eml23__EnumExtensionPattern (-926)
+#define SOAP_TYPE_gsoap_eml2_3_eml23__EnumExtensionPattern (-925)
 
 #endif
 
@@ -43667,7 +43661,7 @@ typedef eml23__GraphicalInformationSet _eml23__GraphicalInformationSet;
 
 /* eml23__TimeStamp has binding name 'eml23__TimeStamp' for type 'eml23:TimeStamp' */
 #ifndef SOAP_TYPE_eml23__TimeStamp
-#define SOAP_TYPE_eml23__TimeStamp (-924)
+#define SOAP_TYPE_eml23__TimeStamp (-923)
 
 #endif
 
@@ -43703,499 +43697,499 @@ typedef eml23__GraphicalInformationSet _eml23__GraphicalInformationSet;
 
 /* resqml22__IjGaps * has binding name 'PointerToresqml22__IjGaps' for type 'resqml22:IjGaps' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__IjGaps
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__IjGaps (-1450)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__IjGaps (-1451)
 
 #endif
 
 /* resqml22__SealedContact * has binding name 'PointerToresqml22__SealedContact' for type 'resqml22:SealedContact' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SealedContact
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SealedContact (-1448)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SealedContact (-1449)
 
 #endif
 
 /* resqml22__AbstractSurfaceFrameworkContact * has binding name 'PointerToresqml22__AbstractSurfaceFrameworkContact' for type 'resqml22:AbstractSurfaceFrameworkContact' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractSurfaceFrameworkContact
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractSurfaceFrameworkContact (-1446)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractSurfaceFrameworkContact (-1447)
 
 #endif
 
 /* resqml22__SeismicLatticeSetFeature * has binding name 'PointerToresqml22__SeismicLatticeSetFeature' for type 'resqml22:SeismicLatticeSetFeature' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SeismicLatticeSetFeature
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SeismicLatticeSetFeature (-1445)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SeismicLatticeSetFeature (-1446)
 
 #endif
 
 /* eml23__StringExternalArray * has binding name 'PointerToeml23__StringExternalArray' for type 'eml23:StringExternalArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__StringExternalArray
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__StringExternalArray (-1444)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__StringExternalArray (-1445)
 
 #endif
 
 /* std::string * has binding name 'PointerToeml23__UnitOfMeasureExt' for type 'eml23:UnitOfMeasureExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__UnitOfMeasureExt
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__UnitOfMeasureExt (-1443)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__UnitOfMeasureExt (-1444)
 
 #endif
 
 /* eml23__IntegerConstantArray * has binding name 'PointerToeml23__IntegerConstantArray' for type 'eml23:IntegerConstantArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__IntegerConstantArray
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__IntegerConstantArray (-1441)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__IntegerConstantArray (-1442)
 
 #endif
 
 /* eml23__FloatingPointConstantArray * has binding name 'PointerToeml23__FloatingPointConstantArray' for type 'eml23:FloatingPointConstantArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__FloatingPointConstantArray
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__FloatingPointConstantArray (-1439)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__FloatingPointConstantArray (-1440)
 
 #endif
 
 /* resqml22__WellboreMarker * has binding name 'PointerToresqml22__WellboreMarker' for type 'resqml22:WellboreMarker' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__WellboreMarker
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__WellboreMarker (-1437)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__WellboreMarker (-1438)
 
 #endif
 
 /* resqml22__WitsmlWellWellbore * has binding name 'PointerToresqml22__WitsmlWellWellbore' for type 'resqml22:WitsmlWellWellbore' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__WitsmlWellWellbore
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__WitsmlWellWellbore (-1436)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__WitsmlWellWellbore (-1437)
 
 #endif
 
 /* resqml22__CorrectionInformation * has binding name 'PointerToresqml22__CorrectionInformation' for type 'resqml22:CorrectionInformation' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__CorrectionInformation
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__CorrectionInformation (-1435)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__CorrectionInformation (-1436)
 
 #endif
 
 /* resqml22__TvdInformation * has binding name 'PointerToresqml22__TvdInformation' for type 'resqml22:TvdInformation' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__TvdInformation
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__TvdInformation (-1434)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__TvdInformation (-1435)
 
 #endif
 
 /* resqml22__AlternateCellIndex * has binding name 'PointerToresqml22__AlternateCellIndex' for type 'resqml22:AlternateCellIndex' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AlternateCellIndex
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AlternateCellIndex (-1431)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AlternateCellIndex (-1432)
 
 #endif
 
 /* resqml22__UnstructuredGridHingeNodeFaces * has binding name 'PointerToresqml22__UnstructuredGridHingeNodeFaces' for type 'resqml22:UnstructuredGridHingeNodeFaces' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UnstructuredGridHingeNodeFaces
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UnstructuredGridHingeNodeFaces (-1430)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UnstructuredGridHingeNodeFaces (-1431)
 
 #endif
 
 /* resqml22__UnstructuredGpGridPatch * has binding name 'PointerToresqml22__UnstructuredGpGridPatch' for type 'resqml22:UnstructuredGpGridPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UnstructuredGpGridPatch
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UnstructuredGpGridPatch (-1428)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UnstructuredGpGridPatch (-1429)
 
 #endif
 
 /* resqml22__ColumnLayerGpGrid * has binding name 'PointerToresqml22__ColumnLayerGpGrid' for type 'resqml22:ColumnLayerGpGrid' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ColumnLayerGpGrid
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ColumnLayerGpGrid (-1426)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ColumnLayerGpGrid (-1427)
 
 #endif
 
 /* resqml22__ColumnLayerSplitCoordinateLines * has binding name 'PointerToresqml22__ColumnLayerSplitCoordinateLines' for type 'resqml22:ColumnLayerSplitCoordinateLines' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ColumnLayerSplitCoordinateLines
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ColumnLayerSplitCoordinateLines (-1425)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ColumnLayerSplitCoordinateLines (-1426)
 
 #endif
 
 /* resqml22__BoundaryFeatureInterpretationPlusItsRank * has binding name 'PointerToresqml22__BoundaryFeatureInterpretationPlusItsRank' for type 'resqml22:BoundaryFeatureInterpretationPlusItsRank' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__BoundaryFeatureInterpretationPlusItsRank
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__BoundaryFeatureInterpretationPlusItsRank (-1423)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__BoundaryFeatureInterpretationPlusItsRank (-1424)
 
 #endif
 
 /* resqml22__StratigraphicUnitKind * has binding name 'PointerToresqml22__StratigraphicUnitKind' for type 'resqml22:StratigraphicUnitKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__StratigraphicUnitKind
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__StratigraphicUnitKind (-1422)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__StratigraphicUnitKind (-1423)
 
 #endif
 
 /* resqml22__DepositionMode * has binding name 'PointerToresqml22__DepositionMode' for type 'resqml22:DepositionMode' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__DepositionMode
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__DepositionMode (-1421)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__DepositionMode (-1422)
 
 #endif
 
 /* resqml22__Phase * has binding name 'PointerToresqml22__Phase' for type 'resqml22:Phase' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Phase
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Phase (-1420)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Phase (-1421)
 
 #endif
 
 /* resqml22__SequenceStratigraphySurface * has binding name 'PointerToresqml22__SequenceStratigraphySurface' for type 'resqml22:SequenceStratigraphySurface' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SequenceStratigraphySurface
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SequenceStratigraphySurface (-1419)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SequenceStratigraphySurface (-1420)
 
 #endif
 
 /* resqml22__FaultThrow * has binding name 'PointerToresqml22__FaultThrow' for type 'resqml22:FaultThrow' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__FaultThrow
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__FaultThrow (-1415)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__FaultThrow (-1416)
 
 #endif
 
 /* resqml22__TrianglePatch * has binding name 'PointerToresqml22__TrianglePatch' for type 'resqml22:TrianglePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__TrianglePatch
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__TrianglePatch (-1413)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__TrianglePatch (-1414)
 
 #endif
 
 /* resqml22__VolumeRegion * has binding name 'PointerToresqml22__VolumeRegion' for type 'resqml22:VolumeRegion' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__VolumeRegion
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__VolumeRegion (-1411)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__VolumeRegion (-1412)
 
 #endif
 
 /* resqml22__AbstractPlaneGeometry * has binding name 'PointerToresqml22__AbstractPlaneGeometry' for type 'resqml22:AbstractPlaneGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractPlaneGeometry
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractPlaneGeometry (-1409)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractPlaneGeometry (-1410)
 
 #endif
 
 /* resqml22__ContactIdentity * has binding name 'PointerToresqml22__ContactIdentity' for type 'resqml22:ContactIdentity' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContactIdentity
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContactIdentity (-1407)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContactIdentity (-1408)
 
 #endif
 
 /* eml23__ReferencePressureKind * has binding name 'PointerToeml23__ReferencePressureKind' for type 'eml23:ReferencePressureKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ReferencePressureKind
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ReferencePressureKind (-1406)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ReferencePressureKind (-1407)
 
 #endif
 
 /* resqml22__AbstractParametricLineGeometry * has binding name 'PointerToresqml22__AbstractParametricLineGeometry' for type 'resqml22:AbstractParametricLineGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractParametricLineGeometry
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractParametricLineGeometry (-1405)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractParametricLineGeometry (-1406)
 
 #endif
 
 /* resqml22__WellboreTrajectoryParentIntersection * has binding name 'PointerToresqml22__WellboreTrajectoryParentIntersection' for type 'resqml22:WellboreTrajectoryParentIntersection' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__WellboreTrajectoryParentIntersection
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__WellboreTrajectoryParentIntersection (-1404)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__WellboreTrajectoryParentIntersection (-1405)
 
 #endif
 
 /* resqml22__MdDomain * has binding name 'PointerToresqml22__MdDomain' for type 'resqml22:MdDomain' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__MdDomain
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__MdDomain (-1403)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__MdDomain (-1404)
 
 #endif
 
 /* resqml22__StreamlineWellbores * has binding name 'PointerToresqml22__StreamlineWellbores' for type 'resqml22:StreamlineWellbores' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__StreamlineWellbores
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__StreamlineWellbores (-1401)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__StreamlineWellbores (-1402)
 
 #endif
 
 /* resqml22__StringLookup * has binding name 'PointerToresqml22__StringLookup' for type 'resqml22:StringLookup' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__StringLookup
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__StringLookup (-1399)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__StringLookup (-1400)
 
 #endif
 
 /* resqml22__DoubleLookup * has binding name 'PointerToresqml22__DoubleLookup' for type 'resqml22:DoubleLookup' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__DoubleLookup
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__DoubleLookup (-1396)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__DoubleLookup (-1397)
 
 #endif
 
 /* eml23__PropertyKindFacet * has binding name 'PointerToeml23__PropertyKindFacet' for type 'eml23:PropertyKindFacet' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PropertyKindFacet
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PropertyKindFacet (-1394)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PropertyKindFacet (-1395)
 
 #endif
 
 /* resqml22__DiscreteColorMapEntry * has binding name 'PointerToresqml22__DiscreteColorMapEntry' for type 'resqml22:DiscreteColorMapEntry' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__DiscreteColorMapEntry
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__DiscreteColorMapEntry (-1391)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__DiscreteColorMapEntry (-1392)
 
 #endif
 
 /* resqml22__ContinuousColorMapEntry * has binding name 'PointerToresqml22__ContinuousColorMapEntry' for type 'resqml22:ContinuousColorMapEntry' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContinuousColorMapEntry
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContinuousColorMapEntry (-1389)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContinuousColorMapEntry (-1390)
 
 #endif
 
 /* resqml22__ConnectionInterpretations * has binding name 'PointerToresqml22__ConnectionInterpretations' for type 'resqml22:ConnectionInterpretations' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ConnectionInterpretations
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ConnectionInterpretations (-1388)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ConnectionInterpretations (-1389)
 
 #endif
 
 /* resqml22__IntervalStratigraphicUnits * has binding name 'PointerToresqml22__IntervalStratigraphicUnits' for type 'resqml22:IntervalStratigraphicUnits' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__IntervalStratigraphicUnits
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__IntervalStratigraphicUnits (-1387)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__IntervalStratigraphicUnits (-1388)
 
 #endif
 
 /* resqml22__AbstractParentWindow * has binding name 'PointerToresqml22__AbstractParentWindow' for type 'resqml22:AbstractParentWindow' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractParentWindow
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractParentWindow (-1386)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractParentWindow (-1387)
 
 #endif
 
 /* resqml22__CellFluidPhaseUnits * has binding name 'PointerToresqml22__CellFluidPhaseUnits' for type 'resqml22:CellFluidPhaseUnits' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__CellFluidPhaseUnits
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__CellFluidPhaseUnits (-1385)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__CellFluidPhaseUnits (-1386)
 
 #endif
 
 /* resqml22__AdditionalGridPoints * has binding name 'PointerToresqml22__AdditionalGridPoints' for type 'resqml22:AdditionalGridPoints' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AdditionalGridPoints
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AdditionalGridPoints (-1383)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AdditionalGridPoints (-1384)
 
 #endif
 
 /* resqml22__ElementIndices * has binding name 'PointerToresqml22__ElementIndices' for type 'resqml22:ElementIndices' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ElementIndices
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ElementIndices (-1381)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ElementIndices (-1382)
 
 #endif
 
 /* resqml22__SubRepresentationPatch * has binding name 'PointerToresqml22__SubRepresentationPatch' for type 'resqml22:SubRepresentationPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SubRepresentationPatch
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SubRepresentationPatch (-1379)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SubRepresentationPatch (-1380)
 
 #endif
 
 /* std::string * has binding name 'PointerToresqml22__Shape3dExt' for type 'resqml22:Shape3dExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Shape3dExt
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Shape3dExt (-1378)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Shape3dExt (-1379)
 
 #endif
 
 /* resqml22__GeologicUnitMaterialEmplacement * has binding name 'PointerToresqml22__GeologicUnitMaterialEmplacement' for type 'resqml22:GeologicUnitMaterialEmplacement' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__GeologicUnitMaterialEmplacement
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__GeologicUnitMaterialEmplacement (-1377)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__GeologicUnitMaterialEmplacement (-1378)
 
 #endif
 
 /* std::string * has binding name 'PointerToeml23__LithologyKindExt' for type 'eml23:LithologyKindExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__LithologyKindExt
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__LithologyKindExt (-1376)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__LithologyKindExt (-1377)
 
 #endif
 
 /* resqml22__AbstractContactInterpretationPart * has binding name 'PointerToresqml22__AbstractContactInterpretationPart' for type 'resqml22:AbstractContactInterpretationPart' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractContactInterpretationPart
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractContactInterpretationPart (-1374)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractContactInterpretationPart (-1375)
 
 #endif
 
 /* resqml22__EdgePatch * has binding name 'PointerToresqml22__EdgePatch' for type 'resqml22:EdgePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__EdgePatch
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__EdgePatch (-1372)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__EdgePatch (-1373)
 
 #endif
 
 /* resqml22__PolylineSetPatch * has binding name 'PointerToresqml22__PolylineSetPatch' for type 'resqml22:PolylineSetPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__PolylineSetPatch
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__PolylineSetPatch (-1370)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__PolylineSetPatch (-1371)
 
 #endif
 
 /* resqml22__LineRole * has binding name 'PointerToresqml22__LineRole' for type 'resqml22:LineRole' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__LineRole
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__LineRole (-1369)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__LineRole (-1370)
 
 #endif
 
 /* resqml22__NodePatch * has binding name 'PointerToresqml22__NodePatch' for type 'resqml22:NodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__NodePatch
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__NodePatch (-1367)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__NodePatch (-1368)
 
 #endif
 
 /* resqml22__PatchBoundaries * has binding name 'PointerToresqml22__PatchBoundaries' for type 'resqml22:PatchBoundaries' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__PatchBoundaries
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__PatchBoundaries (-1365)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__PatchBoundaries (-1366)
 
 #endif
 
 /* eml23__FloatingPointLatticeArray * has binding name 'PointerToeml23__FloatingPointLatticeArray' for type 'eml23:FloatingPointLatticeArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__FloatingPointLatticeArray
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__FloatingPointLatticeArray (-1364)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__FloatingPointLatticeArray (-1365)
 
 #endif
 
 /* resqml22__ThreePoint3d * has binding name 'PointerToresqml22__ThreePoint3d' for type 'resqml22:ThreePoint3d' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ThreePoint3d
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ThreePoint3d (-1362)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ThreePoint3d (-1363)
 
 #endif
 
 /* eml23__AbstractGraphicalInformation * has binding name 'PointerToeml23__AbstractGraphicalInformation' for type 'eml23:AbstractGraphicalInformation' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractGraphicalInformation
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractGraphicalInformation (-1360)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractGraphicalInformation (-1361)
 
 #endif
 
 /* eml23__FailingRule * has binding name 'PointerToeml23__FailingRule' for type 'eml23:FailingRule' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__FailingRule
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__FailingRule (-1358)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__FailingRule (-1359)
 
 #endif
 
 /* eml23__IndexRange * has binding name 'PointerToeml23__IndexRange' for type 'eml23:IndexRange' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__IndexRange
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__IndexRange (-1357)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__IndexRange (-1358)
 
 #endif
 
 /* std::string * has binding name 'PointerToeml23__LengthUomExt' for type 'eml23:LengthUomExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__LengthUomExt
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__LengthUomExt (-1356)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__LengthUomExt (-1357)
 
 #endif
 
 /* eml23__ProjectedCrs * has binding name 'PointerToeml23__ProjectedCrs' for type 'eml23:ProjectedCrs' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ProjectedCrs
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ProjectedCrs (-1355)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ProjectedCrs (-1356)
 
 #endif
 
 /* eml23__Vector * has binding name 'PointerToeml23__Vector' for type 'eml23:Vector' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__Vector
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__Vector (-1354)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__Vector (-1355)
 
 #endif
 
 /* eml23__VerticalCrs * has binding name 'PointerToeml23__VerticalCrs' for type 'eml23:VerticalCrs' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__VerticalCrs
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__VerticalCrs (-1353)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__VerticalCrs (-1354)
 
 #endif
 
 /* eml23__HorizontalAxes * has binding name 'PointerToeml23__HorizontalAxes' for type 'eml23:HorizontalAxes' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__HorizontalAxes
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__HorizontalAxes (-1352)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__HorizontalAxes (-1353)
 
 #endif
 
 /* eml23__VerticalAxis * has binding name 'PointerToeml23__VerticalAxis' for type 'eml23:VerticalAxis' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__VerticalAxis
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__VerticalAxis (-1351)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__VerticalAxis (-1352)
 
 #endif
 
 /* eml23__PlaneAngleMeasureExt * has binding name 'PointerToeml23__PlaneAngleMeasureExt' for type 'eml23:PlaneAngleMeasureExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PlaneAngleMeasureExt
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PlaneAngleMeasureExt (-1350)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PlaneAngleMeasureExt (-1351)
 
 #endif
 
 /* eml23__AuthorityQualifiedName * has binding name 'PointerToeml23__AuthorityQualifiedName' for type 'eml23:AuthorityQualifiedName' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AuthorityQualifiedName
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AuthorityQualifiedName (-1349)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AuthorityQualifiedName (-1350)
 
 #endif
 
 /* eml23__AbstractGeodeticCrs * has binding name 'PointerToeml23__AbstractGeodeticCrs' for type 'eml23:AbstractGeodeticCrs' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractGeodeticCrs
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractGeodeticCrs (-1348)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractGeodeticCrs (-1349)
 
 #endif
 
 /* eml23__ThermodynamicTemperatureMeasure * has binding name 'PointerToeml23__ThermodynamicTemperatureMeasure' for type 'eml23:ThermodynamicTemperatureMeasure' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ThermodynamicTemperatureMeasure
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ThermodynamicTemperatureMeasure (-1347)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ThermodynamicTemperatureMeasure (-1348)
 
 #endif
 
 /* eml23__PressureMeasure * has binding name 'PointerToeml23__PressureMeasure' for type 'eml23:PressureMeasure' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PressureMeasure
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PressureMeasure (-1346)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PressureMeasure (-1347)
 
 #endif
 
 /* std::string * has binding name 'PointerToeml23__ReferenceConditionExt' for type 'eml23:ReferenceConditionExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ReferenceConditionExt
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ReferenceConditionExt (-1345)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ReferenceConditionExt (-1346)
 
 #endif
 
 /* eml23__ReferencePressure * has binding name 'PointerToeml23__ReferencePressure' for type 'eml23:ReferencePressure' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ReferencePressure
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ReferencePressure (-1343)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ReferencePressure (-1344)
 
 #endif
 
 /* eml23__PressureMeasureExt * has binding name 'PointerToeml23__PressureMeasureExt' for type 'eml23:PressureMeasureExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PressureMeasureExt
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PressureMeasureExt (-1342)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PressureMeasureExt (-1343)
 
 #endif
 
 /* eml23__ParameterTemplate * has binding name 'PointerToeml23__ParameterTemplate' for type 'eml23:ParameterTemplate' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ParameterTemplate
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ParameterTemplate (-1340)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ParameterTemplate (-1341)
 
 #endif
 
 /* eml23__TimeSeriesParentage * has binding name 'PointerToeml23__TimeSeriesParentage' for type 'eml23:TimeSeriesParentage' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__TimeSeriesParentage
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__TimeSeriesParentage (-1339)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__TimeSeriesParentage (-1340)
 
 #endif
 
 /* eml23__PropertyKind * has binding name 'PointerToeml23__PropertyKind' for type 'eml23:PropertyKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PropertyKind
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PropertyKind (-1336)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PropertyKind (-1337)
 
 #endif
 
 /* eml23__DateTimeInterval * has binding name 'PointerToeml23__DateTimeInterval' for type 'eml23:DateTimeInterval' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__DateTimeInterval
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__DateTimeInterval (-1335)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__DateTimeInterval (-1336)
 
 #endif
 
 /* eml23__MdInterval * has binding name 'PointerToeml23__MdInterval' for type 'eml23:MdInterval' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__MdInterval
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__MdInterval (-1334)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__MdInterval (-1335)
 
 #endif
 
 /* eml23__MeasuredDepthCoord * has binding name 'PointerToeml23__MeasuredDepthCoord' for type 'eml23:MeasuredDepthCoord' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__MeasuredDepthCoord
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__MeasuredDepthCoord (-1333)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__MeasuredDepthCoord (-1334)
 
 #endif
 
 /* resqml22__GeologicBoundaryKind * has binding name 'PointerToresqml22__GeologicBoundaryKind' for type 'resqml22:GeologicBoundaryKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__GeologicBoundaryKind
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__GeologicBoundaryKind (-1332)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__GeologicBoundaryKind (-1333)
 
 #endif
 
 /* resqml22__FluidMarker * has binding name 'PointerToresqml22__FluidMarker' for type 'resqml22:FluidMarker' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__FluidMarker
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__FluidMarker (-1331)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__FluidMarker (-1332)
 
 #endif
 
 /* resqml22__FluidContact * has binding name 'PointerToresqml22__FluidContact' for type 'resqml22:FluidContact' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__FluidContact
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__FluidContact (-1330)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__FluidContact (-1331)
 
 #endif
 
 /* resqml22__SinglePointGeometry * has binding name 'PointerToresqml22__SinglePointGeometry' for type 'resqml22:SinglePointGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SinglePointGeometry
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SinglePointGeometry (-1329)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SinglePointGeometry (-1330)
 
 #endif
 
 /* eml23__TimeIndices * has binding name 'PointerToeml23__TimeIndices' for type 'eml23:TimeIndices' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__TimeIndices
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__TimeIndices (-1328)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__TimeIndices (-1329)
 
 #endif
 
@@ -44319,519 +44313,525 @@ typedef eml23__GraphicalInformationSet _eml23__GraphicalInformationSet;
 
 #endif
 
+/* LONG64 * has binding name 'PointerToeml23__PositiveLong' for type 'eml23:PositiveLong' */
+#ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PositiveLong
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PositiveLong (-1301)
+
+#endif
+
 /* resqml22__StratigraphicUnitInterpretation * has binding name 'PointerToresqml22__StratigraphicUnitInterpretation' for type 'resqml22:StratigraphicUnitInterpretation' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__StratigraphicUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__StratigraphicUnitInterpretation (-1300)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__StratigraphicUnitInterpretation (-1299)
 
 #endif
 
 /* eml23__GeologicTime * has binding name 'PointerToeml23__GeologicTime' for type 'eml23:GeologicTime' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__GeologicTime
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__GeologicTime (-1298)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__GeologicTime (-1297)
 
 #endif
 
 /* resqml22__ContactMode * has binding name 'PointerToresqml22__ContactMode' for type 'resqml22:ContactMode' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContactMode
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContactMode (-1297)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContactMode (-1296)
 
 #endif
 
 /* resqml22__ContactSide * has binding name 'PointerToresqml22__ContactSide' for type 'resqml22:ContactSide' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContactSide
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContactSide (-1296)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContactSide (-1295)
 
 #endif
 
 /* resqml22__ContactElement * has binding name 'PointerToresqml22__ContactElement' for type 'resqml22:ContactElement' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContactElement
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContactElement (-1295)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContactElement (-1294)
 
 #endif
 
 /* resqml22__Domain * has binding name 'PointerToresqml22__Domain' for type 'resqml22:Domain' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Domain
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Domain (-1294)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Domain (-1293)
 
 #endif
 
 /* resqml22__VolumeShell * has binding name 'PointerToresqml22__VolumeShell' for type 'resqml22:VolumeShell' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__VolumeShell
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__VolumeShell (-1292)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__VolumeShell (-1291)
 
 #endif
 
 /* resqml22__AbstractGeometry * has binding name 'PointerToresqml22__AbstractGeometry' for type 'resqml22:AbstractGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractGeometry
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractGeometry (-1291)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractGeometry (-1290)
 
 #endif
 
 /* resqml22__ContactPatch * has binding name 'PointerToresqml22__ContactPatch' for type 'resqml22:ContactPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContactPatch
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContactPatch (-1289)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ContactPatch (-1288)
 
 #endif
 
 /* resqml22__AbstractSeismicCoordinates * has binding name 'PointerToresqml22__AbstractSeismicCoordinates' for type 'resqml22:AbstractSeismicCoordinates' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractSeismicCoordinates
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractSeismicCoordinates (-1288)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractSeismicCoordinates (-1287)
 
 #endif
 
 /* resqml22__AbstractParametricLineArray * has binding name 'PointerToresqml22__AbstractParametricLineArray' for type 'resqml22:AbstractParametricLineArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractParametricLineArray
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractParametricLineArray (-1287)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractParametricLineArray (-1286)
 
 #endif
 
 /* resqml22__Point3dLatticeDimension * has binding name 'PointerToresqml22__Point3dLatticeDimension' for type 'resqml22:Point3dLatticeDimension' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Point3dLatticeDimension
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Point3dLatticeDimension (-1285)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Point3dLatticeDimension (-1284)
 
 #endif
 
 /* eml23__ExternalDataArray * has binding name 'PointerToeml23__ExternalDataArray' for type 'eml23:ExternalDataArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ExternalDataArray
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ExternalDataArray (-1284)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ExternalDataArray (-1283)
 
 #endif
 
 /* eml23__IntegerLatticeArray * has binding name 'PointerToeml23__IntegerLatticeArray' for type 'eml23:IntegerLatticeArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__IntegerLatticeArray
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__IntegerLatticeArray (-1283)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__IntegerLatticeArray (-1282)
 
 #endif
 
 /* resqml22__ParametricLineIntersections * has binding name 'PointerToresqml22__ParametricLineIntersections' for type 'resqml22:ParametricLineIntersections' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ParametricLineIntersections
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ParametricLineIntersections (-1282)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ParametricLineIntersections (-1281)
 
 #endif
 
 /* resqml22__RockVolumeFeature * has binding name 'PointerToresqml22__RockVolumeFeature' for type 'resqml22:RockVolumeFeature' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__RockVolumeFeature
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__RockVolumeFeature (-1280)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__RockVolumeFeature (-1279)
 
 #endif
 
 /* std::string * has binding name 'PointerToresqml22__CollectionKindExt' for type 'resqml22:CollectionKindExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__CollectionKindExt
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__CollectionKindExt (-1279)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__CollectionKindExt (-1278)
 
 #endif
 
 /* resqml22__SingleCollectionAssociation * has binding name 'PointerToresqml22__SingleCollectionAssociation' for type 'resqml22:SingleCollectionAssociation' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SingleCollectionAssociation
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SingleCollectionAssociation (-1277)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SingleCollectionAssociation (-1276)
 
 #endif
 
 /* eml23__DistanceNorthSouth * has binding name 'PointerToeml23__DistanceNorthSouth' for type 'eml23:DistanceNorthSouth' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__DistanceNorthSouth
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__DistanceNorthSouth (-1276)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__DistanceNorthSouth (-1275)
 
 #endif
 
 /* eml23__DistanceEastWest * has binding name 'PointerToeml23__DistanceEastWest' for type 'eml23:DistanceEastWest' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__DistanceEastWest
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__DistanceEastWest (-1275)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__DistanceEastWest (-1274)
 
 #endif
 
 /* std::string * has binding name 'PointerToeml23__PublicLandSurveySystemQuarterTownship' for type 'eml23:PublicLandSurveySystemQuarterTownship' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PublicLandSurveySystemQuarterTownship
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PublicLandSurveySystemQuarterTownship (-1274)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PublicLandSurveySystemQuarterTownship (-1273)
 
 #endif
 
 /* std::string * has binding name 'PointerToeml23__PublicLandSurveySystemQuarterSection' for type 'eml23:PublicLandSurveySystemQuarterSection' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PublicLandSurveySystemQuarterSection
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PublicLandSurveySystemQuarterSection (-1273)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PublicLandSurveySystemQuarterSection (-1272)
 
 #endif
 
 /* std::string * has binding name 'PointerToeml23__SectionNumber' for type 'eml23:SectionNumber' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__SectionNumber
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__SectionNumber (-1272)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__SectionNumber (-1271)
 
 #endif
 
 /* eml23__NorthOrSouth * has binding name 'PointerToeml23__NorthOrSouth' for type 'eml23:NorthOrSouth' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__NorthOrSouth
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__NorthOrSouth (-1271)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__NorthOrSouth (-1270)
 
 #endif
 
 /* eml23__EastOrWest * has binding name 'PointerToeml23__EastOrWest' for type 'eml23:EastOrWest' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__EastOrWest
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__EastOrWest (-1270)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__EastOrWest (-1269)
 
 #endif
 
 /* int * has binding name 'PointerToint' for type 'xsd:int' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToint
-#define SOAP_TYPE_gsoap_eml2_3_PointerToint (-1269)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToint (-1268)
 
 #endif
 
 /* eml23__PrincipalMeridian * has binding name 'PointerToeml23__PrincipalMeridian' for type 'eml23:PrincipalMeridian' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PrincipalMeridian
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PrincipalMeridian (-1268)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PrincipalMeridian (-1267)
 
 #endif
 
 /* eml23__LengthMeasureExt * has binding name 'PointerToeml23__LengthMeasureExt' for type 'eml23:LengthMeasureExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__LengthMeasureExt
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__LengthMeasureExt (-1267)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__LengthMeasureExt (-1266)
 
 #endif
 
 /* eml23__VolumeMeasure * has binding name 'PointerToeml23__VolumeMeasure' for type 'eml23:VolumeMeasure' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__VolumeMeasure
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__VolumeMeasure (-1266)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__VolumeMeasure (-1265)
 
 #endif
 
 /* eml23__AbstractPressureValue * has binding name 'PointerToeml23__AbstractPressureValue' for type 'eml23:AbstractPressureValue' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractPressureValue
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractPressureValue (-1265)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractPressureValue (-1264)
 
 #endif
 
 /* eml23__VolumePerTimeMeasure * has binding name 'PointerToeml23__VolumePerTimeMeasure' for type 'eml23:VolumePerTimeMeasure' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__VolumePerTimeMeasure
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__VolumePerTimeMeasure (-1264)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__VolumePerTimeMeasure (-1263)
 
 #endif
 
 /* eml23__AbstractTemperaturePressure * has binding name 'PointerToeml23__AbstractTemperaturePressure' for type 'eml23:AbstractTemperaturePressure' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractTemperaturePressure
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractTemperaturePressure (-1263)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractTemperaturePressure (-1262)
 
 #endif
 
 /* eml23__MassPerVolumeMeasure * has binding name 'PointerToeml23__MassPerVolumeMeasure' for type 'eml23:MassPerVolumeMeasure' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__MassPerVolumeMeasure
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__MassPerVolumeMeasure (-1262)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__MassPerVolumeMeasure (-1261)
 
 #endif
 
 /* eml23__AbstractActivityParameter * has binding name 'PointerToeml23__AbstractActivityParameter' for type 'eml23:AbstractActivityParameter' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractActivityParameter
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractActivityParameter (-1259)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractActivityParameter (-1258)
 
 #endif
 
 /* eml23__AbstractParameterKey * has binding name 'PointerToeml23__AbstractParameterKey' for type 'eml23:AbstractParameterKey' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractParameterKey
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractParameterKey (-1255)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractParameterKey (-1254)
 
 #endif
 
 /* eml23__PlaneAngleMeasure * has binding name 'PointerToeml23__PlaneAngleMeasure' for type 'eml23:PlaneAngleMeasure' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PlaneAngleMeasure
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PlaneAngleMeasure (-1254)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__PlaneAngleMeasure (-1253)
 
 #endif
 
 /* eml23__ExternalDataArrayPart * has binding name 'PointerToeml23__ExternalDataArrayPart' for type 'eml23:ExternalDataArrayPart' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ExternalDataArrayPart
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ExternalDataArrayPart (-1251)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ExternalDataArrayPart (-1250)
 
 #endif
 
 /* std::string * has binding name 'PointerToxsd__anyURI' for type 'xsd:anyURI' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToxsd__anyURI
-#define SOAP_TYPE_gsoap_eml2_3_PointerToxsd__anyURI (-1250)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToxsd__anyURI (-1249)
 
 #endif
 
 /* eml23__LengthMeasure * has binding name 'PointerToeml23__LengthMeasure' for type 'eml23:LengthMeasure' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__LengthMeasure
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__LengthMeasure (-1249)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__LengthMeasure (-1248)
 
 #endif
 
 /* LONG64 * has binding name 'PointerToLONG64' for type 'xsd:long' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToLONG64
-#define SOAP_TYPE_gsoap_eml2_3_PointerToLONG64 (-1248)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToLONG64 (-1247)
 
 #endif
 
 /* eml23__MeasureClass * has binding name 'PointerToeml23__MeasureClass' for type 'eml23:MeasureClass' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__MeasureClass
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__MeasureClass (-1247)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__MeasureClass (-1246)
 
 #endif
 
 /* eml23__StringMeasure * has binding name 'PointerToeml23__StringMeasure' for type 'eml23:StringMeasure' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__StringMeasure
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__StringMeasure (-1246)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__StringMeasure (-1245)
 
 #endif
 
 /* std::string * has binding name 'PointerToeml23__String2000' for type 'eml23:String2000' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__String2000
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__String2000 (-1244)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__String2000 (-1243)
 
 #endif
 
 /* struct tm * has binding name 'PointerToeml23__TimeStamp' for type 'eml23:TimeStamp' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__TimeStamp
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__TimeStamp (-1243)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__TimeStamp (-1242)
 
 #endif
 
 /* eml23__CustomData * has binding name 'PointerToeml23__CustomData' for type 'eml23:CustomData' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__CustomData
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__CustomData (-1241)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__CustomData (-1240)
 
 #endif
 
 /* eml23__OSDUIntegration * has binding name 'PointerToeml23__OSDUIntegration' for type 'eml23:OSDUIntegration' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__OSDUIntegration
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__OSDUIntegration (-1240)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__OSDUIntegration (-1239)
 
 #endif
 
 /* std::string * has binding name 'PointerToeml23__ExistenceKindExt' for type 'eml23:ExistenceKindExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ExistenceKindExt
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ExistenceKindExt (-1239)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ExistenceKindExt (-1238)
 
 #endif
 
 /* eml23__Citation * has binding name 'PointerToeml23__Citation' for type 'eml23:Citation' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__Citation
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__Citation (-1238)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__Citation (-1237)
 
 #endif
 
 /* eml23__ObjectAlias * has binding name 'PointerToeml23__ObjectAlias' for type 'eml23:ObjectAlias' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ObjectAlias
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ObjectAlias (-1236)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ObjectAlias (-1235)
 
 #endif
 
 /* std::string * has binding name 'PointerToeml23__String64' for type 'eml23:String64' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__String64
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__String64 (-1235)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__String64 (-1234)
 
 #endif
 
 /* eml23__ExtensionNameValue * has binding name 'PointerToeml23__ExtensionNameValue' for type 'eml23:ExtensionNameValue' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ExtensionNameValue
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ExtensionNameValue (-1234)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__ExtensionNameValue (-1233)
 
 #endif
 
 /* resqml22__HsvColor * has binding name 'PointerToresqml22__HsvColor' for type 'resqml22:HsvColor' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__HsvColor
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__HsvColor (-1233)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__HsvColor (-1232)
 
 #endif
 
 /* bool * has binding name 'PointerTobool' for type 'xsd:boolean' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerTobool
-#define SOAP_TYPE_gsoap_eml2_3_PointerTobool (-1232)
+#define SOAP_TYPE_gsoap_eml2_3_PointerTobool (-1231)
 
 #endif
 
 /* double * has binding name 'PointerTodouble' for type 'xsd:double' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerTodouble
-#define SOAP_TYPE_gsoap_eml2_3_PointerTodouble (-1230)
+#define SOAP_TYPE_gsoap_eml2_3_PointerTodouble (-1229)
 
 #endif
 
 /* LONG64 * has binding name 'PointerToxsd__integer' for type 'xsd:integer' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToxsd__integer
-#define SOAP_TYPE_gsoap_eml2_3_PointerToxsd__integer (-1229)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToxsd__integer (-1228)
 
 #endif
 
 /* resqml22__UniformSubnodePatch * has binding name 'PointerToresqml22__UniformSubnodePatch' for type 'resqml22:UniformSubnodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UniformSubnodePatch
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UniformSubnodePatch (-1227)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UniformSubnodePatch (-1226)
 
 #endif
 
 /* resqml22__VariableSubnodePatch * has binding name 'PointerToresqml22__VariableSubnodePatch' for type 'resqml22:VariableSubnodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__VariableSubnodePatch
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__VariableSubnodePatch (-1225)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__VariableSubnodePatch (-1224)
 
 #endif
 
 /* resqml22__Intervals * has binding name 'PointerToresqml22__Intervals' for type 'resqml22:Intervals' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Intervals
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Intervals (-1224)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Intervals (-1223)
 
 #endif
 
 /* eml23__AbstractBooleanArray * has binding name 'PointerToeml23__AbstractBooleanArray' for type 'eml23:AbstractBooleanArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractBooleanArray
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractBooleanArray (-1223)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractBooleanArray (-1222)
 
 #endif
 
 /* resqml22__UnstructuredColumnLayerGpGridPatch * has binding name 'PointerToresqml22__UnstructuredColumnLayerGpGridPatch' for type 'resqml22:UnstructuredColumnLayerGpGridPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UnstructuredColumnLayerGpGridPatch
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UnstructuredColumnLayerGpGridPatch (-1221)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UnstructuredColumnLayerGpGridPatch (-1220)
 
 #endif
 
 /* resqml22__IjkGpGridPatch * has binding name 'PointerToresqml22__IjkGpGridPatch' for type 'resqml22:IjkGpGridPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__IjkGpGridPatch
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__IjkGpGridPatch (-1219)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__IjkGpGridPatch (-1218)
 
 #endif
 
 /* resqml22__KGaps * has binding name 'PointerToresqml22__KGaps' for type 'resqml22:KGaps' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__KGaps
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__KGaps (-1218)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__KGaps (-1217)
 
 #endif
 
 /* resqml22__OverlapVolume * has binding name 'PointerToresqml22__OverlapVolume' for type 'resqml22:OverlapVolume' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__OverlapVolume
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__OverlapVolume (-1217)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__OverlapVolume (-1216)
 
 #endif
 
 /* eml23__JaggedArray * has binding name 'PointerToeml23__JaggedArray' for type 'eml23:JaggedArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__JaggedArray
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__JaggedArray (-1216)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__JaggedArray (-1215)
 
 #endif
 
 /* resqml22__ColumnLayerSubnodeTopology * has binding name 'PointerToresqml22__ColumnLayerSubnodeTopology' for type 'resqml22:ColumnLayerSubnodeTopology' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ColumnLayerSubnodeTopology
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ColumnLayerSubnodeTopology (-1215)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ColumnLayerSubnodeTopology (-1214)
 
 #endif
 
 /* resqml22__UnstructuredSubnodeTopology * has binding name 'PointerToresqml22__UnstructuredSubnodeTopology' for type 'resqml22:UnstructuredSubnodeTopology' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UnstructuredSubnodeTopology
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UnstructuredSubnodeTopology (-1214)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UnstructuredSubnodeTopology (-1213)
 
 #endif
 
 /* resqml22__SplitFaces * has binding name 'PointerToresqml22__SplitFaces' for type 'resqml22:SplitFaces' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SplitFaces
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SplitFaces (-1213)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SplitFaces (-1212)
 
 #endif
 
 /* resqml22__UnstructuredColumnEdges * has binding name 'PointerToresqml22__UnstructuredColumnEdges' for type 'resqml22:UnstructuredColumnEdges' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UnstructuredColumnEdges
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UnstructuredColumnEdges (-1212)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__UnstructuredColumnEdges (-1211)
 
 #endif
 
 /* resqml22__SplitColumnEdges * has binding name 'PointerToresqml22__SplitColumnEdges' for type 'resqml22:SplitColumnEdges' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SplitColumnEdges
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SplitColumnEdges (-1211)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SplitColumnEdges (-1210)
 
 #endif
 
 /* resqml22__SplitNodePatch * has binding name 'PointerToresqml22__SplitNodePatch' for type 'resqml22:SplitNodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SplitNodePatch
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SplitNodePatch (-1210)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SplitNodePatch (-1209)
 
 #endif
 
 /* resqml22__SplitEdges * has binding name 'PointerToresqml22__SplitEdges' for type 'resqml22:SplitEdges' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SplitEdges
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SplitEdges (-1209)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__SplitEdges (-1208)
 
 #endif
 
 /* resqml22__AbstractPoint3dArray * has binding name 'PointerToresqml22__AbstractPoint3dArray' for type 'resqml22:AbstractPoint3dArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractPoint3dArray
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractPoint3dArray (-1208)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractPoint3dArray (-1207)
 
 #endif
 
 /* resqml22__CellOverlap * has binding name 'PointerToresqml22__CellOverlap' for type 'resqml22:CellOverlap' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__CellOverlap
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__CellOverlap (-1207)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__CellOverlap (-1206)
 
 #endif
 
 /* resqml22__AdditionalGridTopology * has binding name 'PointerToresqml22__AdditionalGridTopology' for type 'resqml22:AdditionalGridTopology' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AdditionalGridTopology
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AdditionalGridTopology (-1206)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AdditionalGridTopology (-1205)
 
 #endif
 
 /* resqml22__ElementIdentity * has binding name 'PointerToresqml22__ElementIdentity' for type 'resqml22:ElementIdentity' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ElementIdentity
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ElementIdentity (-1204)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__ElementIdentity (-1203)
 
 #endif
 
 /* resqml22__AbstractTimeInterval * has binding name 'PointerToresqml22__AbstractTimeInterval' for type 'resqml22:AbstractTimeInterval' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractTimeInterval
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractTimeInterval (-1203)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__AbstractTimeInterval (-1202)
 
 #endif
 
-/* ULONG64 * has binding name 'PointerToULONG64' for type 'xsd:unsignedLong' */
-#ifndef SOAP_TYPE_gsoap_eml2_3_PointerToULONG64
-#define SOAP_TYPE_gsoap_eml2_3_PointerToULONG64 (-1201)
+/* LONG64 * has binding name 'PointerToeml23__NonNegativeLong' for type 'eml23:NonNegativeLong' */
+#ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__NonNegativeLong
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__NonNegativeLong (-1200)
 
 #endif
 
 /* eml23__BooleanExternalArray * has binding name 'PointerToeml23__BooleanExternalArray' for type 'eml23:BooleanExternalArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__BooleanExternalArray
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__BooleanExternalArray (-1200)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__BooleanExternalArray (-1199)
 
 #endif
 
 /* eml23__IntegerExternalArray * has binding name 'PointerToeml23__IntegerExternalArray' for type 'eml23:IntegerExternalArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__IntegerExternalArray
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__IntegerExternalArray (-1199)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__IntegerExternalArray (-1198)
 
 #endif
 
 /* eml23__AbstractFloatingPointArray * has binding name 'PointerToeml23__AbstractFloatingPointArray' for type 'eml23:AbstractFloatingPointArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractFloatingPointArray
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractFloatingPointArray (-1197)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractFloatingPointArray (-1196)
 
 #endif
 
 /* resqml22__Point3d * has binding name 'PointerToresqml22__Point3d' for type 'resqml22:Point3d' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Point3d
-#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Point3d (-1196)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToresqml22__Point3d (-1195)
 
 #endif
 
 /* eml23__AbstractValueArray * has binding name 'PointerToeml23__AbstractValueArray' for type 'eml23:AbstractValueArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractValueArray
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractValueArray (-1195)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractValueArray (-1194)
 
 #endif
 
 /* eml23__AbstractIntegerArray * has binding name 'PointerToeml23__AbstractIntegerArray' for type 'eml23:AbstractIntegerArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractIntegerArray
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractIntegerArray (-1194)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__AbstractIntegerArray (-1193)
 
 #endif
 
 /* eml23__TimeIndex * has binding name 'PointerToeml23__TimeIndex' for type 'eml23:TimeIndex' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__TimeIndex
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__TimeIndex (-1193)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__TimeIndex (-1192)
 
 #endif
 
 /* eml23__DataObjectReference * has binding name 'PointerToeml23__DataObjectReference' for type 'eml23:DataObjectReference' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerToeml23__DataObjectReference
-#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__DataObjectReference (-1190)
+#define SOAP_TYPE_gsoap_eml2_3_PointerToeml23__DataObjectReference (-1189)
 
 #endif
 
 /* std::string * has binding name 'PointerTostd__string' for type 'xsd:string' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_PointerTostd__string
-#define SOAP_TYPE_gsoap_eml2_3_PointerTostd__string (-1189)
+#define SOAP_TYPE_gsoap_eml2_3_PointerTostd__string (-1188)
 
 #endif
 
@@ -44855,241 +44855,247 @@ typedef eml23__GraphicalInformationSet _eml23__GraphicalInformationSet;
 
 /* std::vector<resqml22__SealedContact *>  has binding name 'std__vectorTemplateOfPointerToresqml22__SealedContact' for type 'resqml22:SealedContact' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__SealedContact
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__SealedContact (-1449)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__SealedContact (-1450)
 
 #endif
 
 /* std::vector<resqml22__AbstractSurfaceFrameworkContact *>  has binding name 'std__vectorTemplateOfPointerToresqml22__AbstractSurfaceFrameworkContact' for type 'resqml22:AbstractSurfaceFrameworkContact' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__AbstractSurfaceFrameworkContact
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__AbstractSurfaceFrameworkContact (-1447)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__AbstractSurfaceFrameworkContact (-1448)
 
 #endif
 
 /* std::vector<eml23__IntegerConstantArray *>  has binding name 'std__vectorTemplateOfPointerToeml23__IntegerConstantArray' for type 'eml23:IntegerConstantArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__IntegerConstantArray
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__IntegerConstantArray (-1442)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__IntegerConstantArray (-1443)
 
 #endif
 
 /* std::vector<eml23__FloatingPointConstantArray *>  has binding name 'std__vectorTemplateOfPointerToeml23__FloatingPointConstantArray' for type 'eml23:FloatingPointConstantArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__FloatingPointConstantArray
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__FloatingPointConstantArray (-1440)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__FloatingPointConstantArray (-1441)
 
 #endif
 
 /* std::vector<resqml22__WellboreMarker *>  has binding name 'std__vectorTemplateOfPointerToresqml22__WellboreMarker' for type 'resqml22:WellboreMarker' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__WellboreMarker
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__WellboreMarker (-1438)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__WellboreMarker (-1439)
 
 #endif
 
 /* std::vector<LONG64>  has binding name 'std__vectorTemplateOfLONG64' for type 'xsd:long' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfLONG64
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfLONG64 (-1433)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfLONG64 (-1434)
 
 #endif
 
 /* std::vector<bool>  has binding name 'std__vectorTemplateOfbool' for type 'xsd:boolean' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfbool
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfbool (-1432)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfbool (-1433)
 
 #endif
 
 /* std::vector<resqml22__UnstructuredGpGridPatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__UnstructuredGpGridPatch' for type 'resqml22:UnstructuredGpGridPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__UnstructuredGpGridPatch
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__UnstructuredGpGridPatch (-1429)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__UnstructuredGpGridPatch (-1430)
 
 #endif
 
 /* std::vector<resqml22__ColumnLayerGpGrid *>  has binding name 'std__vectorTemplateOfPointerToresqml22__ColumnLayerGpGrid' for type 'resqml22:ColumnLayerGpGrid' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ColumnLayerGpGrid
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ColumnLayerGpGrid (-1427)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ColumnLayerGpGrid (-1428)
 
 #endif
 
 /* std::vector<resqml22__BoundaryFeatureInterpretationPlusItsRank *>  has binding name 'std__vectorTemplateOfPointerToresqml22__BoundaryFeatureInterpretationPlusItsRank' for type 'resqml22:BoundaryFeatureInterpretationPlusItsRank' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__BoundaryFeatureInterpretationPlusItsRank
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__BoundaryFeatureInterpretationPlusItsRank (-1424)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__BoundaryFeatureInterpretationPlusItsRank (-1425)
 
 #endif
 
 /* std::vector<resqml22__HorizonStratigraphicRole>  has binding name 'std__vectorTemplateOfresqml22__HorizonStratigraphicRole' for type 'resqml22:HorizonStratigraphicRole' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfresqml22__HorizonStratigraphicRole
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfresqml22__HorizonStratigraphicRole (-1418)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfresqml22__HorizonStratigraphicRole (-1419)
 
 #endif
 
 /* std::vector<resqml22__BoundaryRelation>  has binding name 'std__vectorTemplateOfresqml22__BoundaryRelation' for type 'resqml22:BoundaryRelation' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfresqml22__BoundaryRelation
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfresqml22__BoundaryRelation (-1417)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfresqml22__BoundaryRelation (-1418)
 
 #endif
 
 /* std::vector<resqml22__FaultThrow *>  has binding name 'std__vectorTemplateOfPointerToresqml22__FaultThrow' for type 'resqml22:FaultThrow' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__FaultThrow
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__FaultThrow (-1416)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__FaultThrow (-1417)
 
 #endif
 
 /* std::vector<resqml22__TrianglePatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__TrianglePatch' for type 'resqml22:TrianglePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__TrianglePatch
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__TrianglePatch (-1414)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__TrianglePatch (-1415)
 
 #endif
 
 /* std::vector<resqml22__VolumeRegion *>  has binding name 'std__vectorTemplateOfPointerToresqml22__VolumeRegion' for type 'resqml22:VolumeRegion' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__VolumeRegion
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__VolumeRegion (-1412)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__VolumeRegion (-1413)
 
 #endif
 
 /* std::vector<resqml22__AbstractPlaneGeometry *>  has binding name 'std__vectorTemplateOfPointerToresqml22__AbstractPlaneGeometry' for type 'resqml22:AbstractPlaneGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__AbstractPlaneGeometry
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__AbstractPlaneGeometry (-1410)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__AbstractPlaneGeometry (-1411)
 
 #endif
 
 /* std::vector<resqml22__ContactIdentity *>  has binding name 'std__vectorTemplateOfPointerToresqml22__ContactIdentity' for type 'resqml22:ContactIdentity' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ContactIdentity
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ContactIdentity (-1408)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ContactIdentity (-1409)
 
 #endif
 
 /* std::vector<resqml22__IntervalStratigraphicUnits *>  has binding name 'std__vectorTemplateOfPointerToresqml22__IntervalStratigraphicUnits' for type 'resqml22:IntervalStratigraphicUnits' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__IntervalStratigraphicUnits
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__IntervalStratigraphicUnits (-1402)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__IntervalStratigraphicUnits (-1403)
 
 #endif
 
 /* std::vector<resqml22__StringLookup *>  has binding name 'std__vectorTemplateOfPointerToresqml22__StringLookup' for type 'resqml22:StringLookup' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__StringLookup
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__StringLookup (-1400)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__StringLookup (-1401)
 
 #endif
 
 /* std::vector<resqml22__AbstractPoint3dArray *>  has binding name 'std__vectorTemplateOfPointerToresqml22__AbstractPoint3dArray' for type 'resqml22:AbstractPoint3dArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__AbstractPoint3dArray
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__AbstractPoint3dArray (-1398)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__AbstractPoint3dArray (-1399)
 
 #endif
 
 /* std::vector<resqml22__DoubleLookup *>  has binding name 'std__vectorTemplateOfPointerToresqml22__DoubleLookup' for type 'resqml22:DoubleLookup' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__DoubleLookup
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__DoubleLookup (-1397)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__DoubleLookup (-1398)
 
 #endif
 
 /* std::vector<eml23__PropertyKindFacet *>  has binding name 'std__vectorTemplateOfPointerToeml23__PropertyKindFacet' for type 'eml23:PropertyKindFacet' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__PropertyKindFacet
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__PropertyKindFacet (-1395)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__PropertyKindFacet (-1396)
 
 #endif
 
 /* std::vector<eml23__AbstractValueArray *>  has binding name 'std__vectorTemplateOfPointerToeml23__AbstractValueArray' for type 'eml23:AbstractValueArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__AbstractValueArray
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__AbstractValueArray (-1393)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__AbstractValueArray (-1394)
 
 #endif
 
 /* std::vector<resqml22__DiscreteColorMapEntry *>  has binding name 'std__vectorTemplateOfPointerToresqml22__DiscreteColorMapEntry' for type 'resqml22:DiscreteColorMapEntry' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__DiscreteColorMapEntry
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__DiscreteColorMapEntry (-1392)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__DiscreteColorMapEntry (-1393)
 
 #endif
 
 /* std::vector<resqml22__ContinuousColorMapEntry *>  has binding name 'std__vectorTemplateOfPointerToresqml22__ContinuousColorMapEntry' for type 'resqml22:ContinuousColorMapEntry' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ContinuousColorMapEntry
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ContinuousColorMapEntry (-1390)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ContinuousColorMapEntry (-1391)
 
 #endif
 
 /* std::vector<resqml22__AdditionalGridPoints *>  has binding name 'std__vectorTemplateOfPointerToresqml22__AdditionalGridPoints' for type 'resqml22:AdditionalGridPoints' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__AdditionalGridPoints
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__AdditionalGridPoints (-1384)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__AdditionalGridPoints (-1385)
 
 #endif
 
 /* std::vector<resqml22__ElementIndices *>  has binding name 'std__vectorTemplateOfPointerToresqml22__ElementIndices' for type 'resqml22:ElementIndices' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ElementIndices
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ElementIndices (-1382)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ElementIndices (-1383)
 
 #endif
 
 /* std::vector<resqml22__SubRepresentationPatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__SubRepresentationPatch' for type 'resqml22:SubRepresentationPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__SubRepresentationPatch
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__SubRepresentationPatch (-1380)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__SubRepresentationPatch (-1381)
 
 #endif
 
 /* std::vector<resqml22__AbstractContactInterpretationPart *>  has binding name 'std__vectorTemplateOfPointerToresqml22__AbstractContactInterpretationPart' for type 'resqml22:AbstractContactInterpretationPart' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__AbstractContactInterpretationPart
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__AbstractContactInterpretationPart (-1375)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__AbstractContactInterpretationPart (-1376)
 
 #endif
 
 /* std::vector<resqml22__EdgePatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__EdgePatch' for type 'resqml22:EdgePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__EdgePatch
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__EdgePatch (-1373)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__EdgePatch (-1374)
 
 #endif
 
 /* std::vector<resqml22__PolylineSetPatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__PolylineSetPatch' for type 'resqml22:PolylineSetPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__PolylineSetPatch
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__PolylineSetPatch (-1371)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__PolylineSetPatch (-1372)
 
 #endif
 
 /* std::vector<resqml22__NodePatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__NodePatch' for type 'resqml22:NodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__NodePatch
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__NodePatch (-1368)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__NodePatch (-1369)
 
 #endif
 
 /* std::vector<resqml22__PatchBoundaries *>  has binding name 'std__vectorTemplateOfPointerToresqml22__PatchBoundaries' for type 'resqml22:PatchBoundaries' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__PatchBoundaries
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__PatchBoundaries (-1366)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__PatchBoundaries (-1367)
 
 #endif
 
 /* std::vector<resqml22__ThreePoint3d *>  has binding name 'std__vectorTemplateOfPointerToresqml22__ThreePoint3d' for type 'resqml22:ThreePoint3d' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ThreePoint3d
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ThreePoint3d (-1363)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ThreePoint3d (-1364)
 
 #endif
 
 /* std::vector<eml23__AbstractGraphicalInformation *>  has binding name 'std__vectorTemplateOfPointerToeml23__AbstractGraphicalInformation' for type 'eml23:AbstractGraphicalInformation' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__AbstractGraphicalInformation
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__AbstractGraphicalInformation (-1361)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__AbstractGraphicalInformation (-1362)
 
 #endif
 
 /* std::vector<eml23__FailingRule *>  has binding name 'std__vectorTemplateOfPointerToeml23__FailingRule' for type 'eml23:FailingRule' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__FailingRule
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__FailingRule (-1359)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__FailingRule (-1360)
 
 #endif
 
 /* std::vector<eml23__ParameterTemplate *>  has binding name 'std__vectorTemplateOfPointerToeml23__ParameterTemplate' for type 'eml23:ParameterTemplate' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__ParameterTemplate
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__ParameterTemplate (-1341)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__ParameterTemplate (-1342)
 
 #endif
 
 /* std::vector<eml23__GeologicTime *>  has binding name 'std__vectorTemplateOfPointerToeml23__GeologicTime' for type 'eml23:GeologicTime' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__GeologicTime
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__GeologicTime (-1338)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__GeologicTime (-1339)
 
 #endif
 
 /* std::vector<eml23__PropertyKind *>  has binding name 'std__vectorTemplateOfPointerToeml23__PropertyKind' for type 'eml23:PropertyKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__PropertyKind
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__PropertyKind (-1337)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__PropertyKind (-1338)
 
 #endif
 
 /* std::vector<std::string>  has binding name 'std__vectorTemplateOfeml23__String64' for type 'eml23:String64' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfeml23__String64
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfeml23__String64 (-1327)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfeml23__String64 (-1328)
+
+#endif
+
+/* std::vector<LONG64>  has binding name 'std__vectorTemplateOfeml23__PositiveLong' for type 'eml23:PositiveLong' */
+#ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfeml23__PositiveLong
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfeml23__PositiveLong (-1327)
 
 #endif
 
@@ -45125,145 +45131,145 @@ typedef eml23__GraphicalInformationSet _eml23__GraphicalInformationSet;
 
 /* std::vector<resqml22__StratigraphicUnitInterpretation *>  has binding name 'std__vectorTemplateOfPointerToresqml22__StratigraphicUnitInterpretation' for type 'resqml22:StratigraphicUnitInterpretation' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__StratigraphicUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__StratigraphicUnitInterpretation (-1301)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__StratigraphicUnitInterpretation (-1300)
 
 #endif
 
-/* std::vector<ULONG64>  has binding name 'std__vectorTemplateOfULONG64' for type 'xsd:unsignedLong' */
-#ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfULONG64
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfULONG64 (-1299)
+/* std::vector<LONG64>  has binding name 'std__vectorTemplateOfeml23__NonNegativeLong' for type 'eml23:NonNegativeLong' */
+#ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfeml23__NonNegativeLong
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfeml23__NonNegativeLong (-1298)
 
 #endif
 
 /* std::vector<resqml22__VolumeShell *>  has binding name 'std__vectorTemplateOfPointerToresqml22__VolumeShell' for type 'resqml22:VolumeShell' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__VolumeShell
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__VolumeShell (-1293)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__VolumeShell (-1292)
 
 #endif
 
 /* std::vector<resqml22__ContactPatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__ContactPatch' for type 'resqml22:ContactPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ContactPatch
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ContactPatch (-1290)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ContactPatch (-1289)
 
 #endif
 
 /* std::vector<resqml22__Point3dLatticeDimension *>  has binding name 'std__vectorTemplateOfPointerToresqml22__Point3dLatticeDimension' for type 'resqml22:Point3dLatticeDimension' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__Point3dLatticeDimension
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__Point3dLatticeDimension (-1286)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__Point3dLatticeDimension (-1285)
 
 #endif
 
 /* std::vector<resqml22__RockVolumeFeature *>  has binding name 'std__vectorTemplateOfPointerToresqml22__RockVolumeFeature' for type 'resqml22:RockVolumeFeature' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__RockVolumeFeature
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__RockVolumeFeature (-1281)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__RockVolumeFeature (-1280)
 
 #endif
 
 /* std::vector<resqml22__SingleCollectionAssociation *>  has binding name 'std__vectorTemplateOfPointerToresqml22__SingleCollectionAssociation' for type 'resqml22:SingleCollectionAssociation' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__SingleCollectionAssociation
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__SingleCollectionAssociation (-1278)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__SingleCollectionAssociation (-1277)
 
 #endif
 
 /* std::vector<eml23__AbstractActivityParameter *>  has binding name 'std__vectorTemplateOfPointerToeml23__AbstractActivityParameter' for type 'eml23:AbstractActivityParameter' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__AbstractActivityParameter
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__AbstractActivityParameter (-1260)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__AbstractActivityParameter (-1259)
 
 #endif
 
 /* std::vector<std::string>  has binding name 'std__vectorTemplateOfeml23__String2000' for type 'eml23:String2000' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfeml23__String2000
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfeml23__String2000 (-1258)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfeml23__String2000 (-1257)
 
 #endif
 
 /* std::vector<eml23__ActivityParameterKind>  has binding name 'std__vectorTemplateOfeml23__ActivityParameterKind' for type 'eml23:ActivityParameterKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfeml23__ActivityParameterKind
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfeml23__ActivityParameterKind (-1257)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfeml23__ActivityParameterKind (-1256)
 
 #endif
 
 /* std::vector<eml23__AbstractParameterKey *>  has binding name 'std__vectorTemplateOfPointerToeml23__AbstractParameterKey' for type 'eml23:AbstractParameterKey' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__AbstractParameterKey
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__AbstractParameterKey (-1256)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__AbstractParameterKey (-1255)
 
 #endif
 
 /* std::vector<std::string>  has binding name 'std__vectorTemplateOfstd__string' for type 'xsd:string' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfstd__string
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfstd__string (-1253)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfstd__string (-1252)
 
 #endif
 
 /* std::vector<eml23__ExternalDataArrayPart *>  has binding name 'std__vectorTemplateOfPointerToeml23__ExternalDataArrayPart' for type 'eml23:ExternalDataArrayPart' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__ExternalDataArrayPart
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__ExternalDataArrayPart (-1252)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__ExternalDataArrayPart (-1251)
 
 #endif
 
 /* std::vector<char *>  has binding name 'std__vectorTemplateOf_XML' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOf_XML
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOf_XML (-1245)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOf_XML (-1244)
 
 #endif
 
 /* std::vector<eml23__ExtensionNameValue *>  has binding name 'std__vectorTemplateOfPointerToeml23__ExtensionNameValue' for type 'eml23:ExtensionNameValue' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__ExtensionNameValue
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__ExtensionNameValue (-1242)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__ExtensionNameValue (-1241)
 
 #endif
 
 /* std::vector<eml23__ObjectAlias *>  has binding name 'std__vectorTemplateOfPointerToeml23__ObjectAlias' for type 'eml23:ObjectAlias' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__ObjectAlias
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__ObjectAlias (-1237)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__ObjectAlias (-1236)
 
 #endif
 
 /* std::vector<resqml22__UniformSubnodePatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__UniformSubnodePatch' for type 'resqml22:UniformSubnodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__UniformSubnodePatch
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__UniformSubnodePatch (-1228)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__UniformSubnodePatch (-1227)
 
 #endif
 
 /* std::vector<resqml22__VariableSubnodePatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__VariableSubnodePatch' for type 'resqml22:VariableSubnodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__VariableSubnodePatch
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__VariableSubnodePatch (-1226)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__VariableSubnodePatch (-1225)
 
 #endif
 
 /* std::vector<resqml22__UnstructuredColumnLayerGpGridPatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__UnstructuredColumnLayerGpGridPatch' for type 'resqml22:UnstructuredColumnLayerGpGridPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__UnstructuredColumnLayerGpGridPatch
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__UnstructuredColumnLayerGpGridPatch (-1222)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__UnstructuredColumnLayerGpGridPatch (-1221)
 
 #endif
 
 /* std::vector<resqml22__IjkGpGridPatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__IjkGpGridPatch' for type 'resqml22:IjkGpGridPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__IjkGpGridPatch
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__IjkGpGridPatch (-1220)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__IjkGpGridPatch (-1219)
 
 #endif
 
 /* std::vector<resqml22__ElementIdentity *>  has binding name 'std__vectorTemplateOfPointerToresqml22__ElementIdentity' for type 'resqml22:ElementIdentity' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ElementIdentity
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ElementIdentity (-1205)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__ElementIdentity (-1204)
 
 #endif
 
 /* std::vector<std::string>  has binding name 'std__vectorTemplateOfresqml22__ThrowKindExt' for type 'resqml22:ThrowKindExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfresqml22__ThrowKindExt
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfresqml22__ThrowKindExt (-1202)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfresqml22__ThrowKindExt (-1201)
 
 #endif
 
 /* std::vector<resqml22__Point3d *>  has binding name 'std__vectorTemplateOfPointerToresqml22__Point3d' for type 'resqml22:Point3d' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__Point3d
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__Point3d (-1198)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToresqml22__Point3d (-1197)
 
 #endif
 
 /* std::vector<eml23__DataObjectReference *>  has binding name 'std__vectorTemplateOfPointerToeml23__DataObjectReference' for type 'eml23:DataObjectReference' */
 #ifndef SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__DataObjectReference
-#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__DataObjectReference (-1191)
+#define SOAP_TYPE_gsoap_eml2_3_std__vectorTemplateOfPointerToeml23__DataObjectReference (-1190)
 
 #endif
 

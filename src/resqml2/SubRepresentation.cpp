@@ -19,7 +19,6 @@ under the License.
 #include "SubRepresentation.h"
 
 #include <limits>
-#include <sstream>
 #include <stdexcept>
 
 #include <hdf5.h>
@@ -40,24 +39,16 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 		}
 	}
 
-	std::string supportingRepDataset = "";
-	ostringstream ossForHdfSupRep;
-	if (supportingRepIndices != nullptr) {
-		ossForHdfSupRep << "subrepresentation_supportingRepresentationIndices_patch" << getPatchCount();
-		supportingRepDataset = getHdfGroup() + "/" + ossForHdfSupRep.str();
-	}
-	ostringstream ossForHdf;
-	ossForHdf << "subrepresentation_elementIndices0_patch" << getPatchCount();
-
-	// Arbitrarily set null value to -1 since it has no interest to write element index null value in this method
-	pushBackRefToExistingDataset(elementKind, elementCount, getHdfGroup() + "/" + ossForHdf.str(), -1, proxy, supportingRepDataset);
-
 	// ************ HDF ************		
 	hsize_t numValues = elementCount;
-	proxy->writeArrayNdOfUInt64Values(getHdfGroup(), ossForHdf.str(), elementIndices, &numValues, 1);
+	proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "subrepresentation_elementIndices0_patch" + std::to_string(getPatchCount()), elementIndices, &numValues, 1);
 	if (supportingRepIndices != nullptr) {
-		proxy->writeArrayNd(getHdfGroup(), ossForHdfSupRep.str(), H5T_NATIVE_SHORT, supportingRepIndices, &numValues, 1);
+		proxy->writeArrayNd(getHdfGroup(), "subrepresentation_supportingRepresentationIndices_patch" + std::to_string(getPatchCount()), H5T_NATIVE_SHORT, supportingRepIndices, &numValues, 1);
 	}
+
+	const std::string supportingRepDataset = supportingRepIndices != nullptr ? getHdfGroup() + "/subrepresentation_supportingRepresentationIndices_patch" + std::to_string(getPatchCount()) : "";
+	// Arbitrarily set null value to -1 since it has no interest to write element index null value in this method
+	pushBackRefToExistingDataset(elementKind, elementCount, getHdfGroup() + "/subrepresentation_elementIndices0_patch" + std::to_string(getPatchCount()), -1, proxy, supportingRepDataset);
 }
 
 void SubRepresentation::loadTargetRelationships()

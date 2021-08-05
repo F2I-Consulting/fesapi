@@ -60,7 +60,7 @@ enum class eml22__NorthReferenceKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:2756 */
+/* eml2_2ForGsoap.h:2762 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AxisDirectionKind
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AxisDirectionKind (-1155)
 
@@ -107,7 +107,7 @@ enum class eml22__AxisDirectionKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:2860 */
+/* eml2_2ForGsoap.h:2866 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LegacyUnitOfMeasure
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LegacyUnitOfMeasure (-1163)
 
@@ -184,7 +184,7 @@ enum class eml22__LegacyUnitOfMeasure {
 };
 #endif
 
-/* eml2_2ForGsoap.h:2938 */
+/* eml2_2ForGsoap.h:2944 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__UnitOfMeasure
 #define SOAP_TYPE_gsoap_eml2_2_eml22__UnitOfMeasure (-1164)
 
@@ -1631,7 +1631,7 @@ enum class eml22__UnitOfMeasure {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4399 */
+/* eml2_2ForGsoap.h:4405 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AbsorbedDoseUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AbsorbedDoseUom (-1167)
 
@@ -1666,7 +1666,7 @@ enum class eml22__AbsorbedDoseUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4535 */
+/* eml2_2ForGsoap.h:4541 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ActivityOfRadioactivityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ActivityOfRadioactivityUom (-1168)
 
@@ -1684,7 +1684,7 @@ enum class eml22__ActivityOfRadioactivityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4586 */
+/* eml2_2ForGsoap.h:4592 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AmountOfSubstancePerAmountOfSubstanceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AmountOfSubstancePerAmountOfSubstanceUom (-1169)
 
@@ -1700,7 +1700,7 @@ enum class eml22__AmountOfSubstancePerAmountOfSubstanceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4627 */
+/* eml2_2ForGsoap.h:4633 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AmountOfSubstancePerAreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AmountOfSubstancePerAreaUom (-1170)
 
@@ -1710,7 +1710,7 @@ enum class eml22__AmountOfSubstancePerAreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4638 */
+/* eml2_2ForGsoap.h:4644 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AmountOfSubstancePerTimePerAreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AmountOfSubstancePerTimePerAreaUom (-1171)
 
@@ -1722,7 +1722,7 @@ enum class eml22__AmountOfSubstancePerTimePerAreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4659 */
+/* eml2_2ForGsoap.h:4665 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AmountOfSubstancePerTimeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AmountOfSubstancePerTimeUom (-1172)
 
@@ -1737,7 +1737,7 @@ enum class eml22__AmountOfSubstancePerTimeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4695 */
+/* eml2_2ForGsoap.h:4701 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AmountOfSubstancePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AmountOfSubstancePerVolumeUom (-1173)
 
@@ -1751,7 +1751,7 @@ enum class eml22__AmountOfSubstancePerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4726 */
+/* eml2_2ForGsoap.h:4732 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AmountOfSubstanceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AmountOfSubstanceUom (-1174)
 
@@ -1765,7 +1765,7 @@ enum class eml22__AmountOfSubstanceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4757 */
+/* eml2_2ForGsoap.h:4763 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AnglePerLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AnglePerLengthUom (-1175)
 
@@ -1783,7 +1783,7 @@ enum class eml22__AnglePerLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4808 */
+/* eml2_2ForGsoap.h:4814 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AnglePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AnglePerVolumeUom (-1176)
 
@@ -1794,7 +1794,7 @@ enum class eml22__AnglePerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4824 */
+/* eml2_2ForGsoap.h:4830 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AngularAccelerationUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AngularAccelerationUom (-1177)
 
@@ -1805,7 +1805,7 @@ enum class eml22__AngularAccelerationUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4840 */
+/* eml2_2ForGsoap.h:4846 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AngularVelocityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AngularVelocityUom (-1178)
 
@@ -1820,7 +1820,7 @@ enum class eml22__AngularVelocityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4876 */
+/* eml2_2ForGsoap.h:4882 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__APIGammaRayUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__APIGammaRayUom (-1179)
 
@@ -1830,7 +1830,7 @@ enum class eml22__APIGammaRayUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4887 */
+/* eml2_2ForGsoap.h:4893 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__APIGravityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__APIGravityUom (-1180)
 
@@ -1840,7 +1840,7 @@ enum class eml22__APIGravityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4898 */
+/* eml2_2ForGsoap.h:4904 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__APINeutronUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__APINeutronUom (-1181)
 
@@ -1850,7 +1850,7 @@ enum class eml22__APINeutronUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4909 */
+/* eml2_2ForGsoap.h:4915 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AreaPerAmountOfSubstanceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AreaPerAmountOfSubstanceUom (-1182)
 
@@ -1860,7 +1860,7 @@ enum class eml22__AreaPerAmountOfSubstanceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4920 */
+/* eml2_2ForGsoap.h:4926 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AreaPerAreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AreaPerAreaUom (-1183)
 
@@ -1877,7 +1877,7 @@ enum class eml22__AreaPerAreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4966 */
+/* eml2_2ForGsoap.h:4972 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AreaPerCountUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AreaPerCountUom (-1184)
 
@@ -1887,7 +1887,7 @@ enum class eml22__AreaPerCountUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4973 */
+/* eml2_2ForGsoap.h:4979 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AreaPerMassUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AreaPerMassUom (-1185)
 
@@ -1900,7 +1900,7 @@ enum class eml22__AreaPerMassUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:4999 */
+/* eml2_2ForGsoap.h:5005 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AreaPerTimeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AreaPerTimeUom (-1186)
 
@@ -1917,7 +1917,7 @@ enum class eml22__AreaPerTimeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5045 */
+/* eml2_2ForGsoap.h:5051 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AreaPerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AreaPerVolumeUom (-1187)
 
@@ -1932,7 +1932,7 @@ enum class eml22__AreaPerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5081 */
+/* eml2_2ForGsoap.h:5087 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AreaUom (-1188)
 
@@ -1955,7 +1955,7 @@ enum class eml22__AreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5157 */
+/* eml2_2ForGsoap.h:5163 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AttenuationPerFrequencyIntervalUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AttenuationPerFrequencyIntervalUom (-1189)
 
@@ -1966,7 +1966,7 @@ enum class eml22__AttenuationPerFrequencyIntervalUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5173 */
+/* eml2_2ForGsoap.h:5179 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__CapacitanceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__CapacitanceUom (-1190)
 
@@ -1988,7 +1988,7 @@ enum class eml22__CapacitanceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5244 */
+/* eml2_2ForGsoap.h:5250 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__CationExchangeCapacityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__CationExchangeCapacityUom (-1191)
 
@@ -1998,7 +1998,7 @@ enum class eml22__CationExchangeCapacityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5251 */
+/* eml2_2ForGsoap.h:5257 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__DataTransferSpeedUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__DataTransferSpeedUom (-1192)
 
@@ -2009,7 +2009,7 @@ enum class eml22__DataTransferSpeedUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5267 */
+/* eml2_2ForGsoap.h:5273 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__DiffusionCoefficientUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__DiffusionCoefficientUom (-1193)
 
@@ -2019,7 +2019,7 @@ enum class eml22__DiffusionCoefficientUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5278 */
+/* eml2_2ForGsoap.h:5284 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__DiffusiveTimeOfFlightUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__DiffusiveTimeOfFlightUom (-1194)
 
@@ -2030,7 +2030,7 @@ enum class eml22__DiffusiveTimeOfFlightUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5290 */
+/* eml2_2ForGsoap.h:5296 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__DigitalStorageUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__DigitalStorageUom (-1195)
 
@@ -2043,7 +2043,7 @@ enum class eml22__DigitalStorageUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5316 */
+/* eml2_2ForGsoap.h:5322 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__DimensionlessUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__DimensionlessUom (-1196)
 
@@ -2068,7 +2068,7 @@ enum class eml22__DimensionlessUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5402 */
+/* eml2_2ForGsoap.h:5408 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__DipoleMomentUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__DipoleMomentUom (-1197)
 
@@ -2078,7 +2078,7 @@ enum class eml22__DipoleMomentUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5413 */
+/* eml2_2ForGsoap.h:5419 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__DoseEquivalentUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__DoseEquivalentUom (-1198)
 
@@ -2091,7 +2091,7 @@ enum class eml22__DoseEquivalentUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5439 */
+/* eml2_2ForGsoap.h:5445 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__DynamicViscosityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__DynamicViscosityUom (-1199)
 
@@ -2121,7 +2121,7 @@ enum class eml22__DynamicViscosityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5550 */
+/* eml2_2ForGsoap.h:5556 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ElectricalResistivityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ElectricalResistivityUom (-1200)
 
@@ -2136,7 +2136,7 @@ enum class eml22__ElectricalResistivityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5586 */
+/* eml2_2ForGsoap.h:5592 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ElectricChargePerAreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ElectricChargePerAreaUom (-1201)
 
@@ -2149,7 +2149,7 @@ enum class eml22__ElectricChargePerAreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5612 */
+/* eml2_2ForGsoap.h:5618 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ElectricChargePerMassUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ElectricChargePerMassUom (-1202)
 
@@ -2161,7 +2161,7 @@ enum class eml22__ElectricChargePerMassUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5633 */
+/* eml2_2ForGsoap.h:5639 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ElectricChargePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ElectricChargePerVolumeUom (-1203)
 
@@ -2174,7 +2174,7 @@ enum class eml22__ElectricChargePerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5659 */
+/* eml2_2ForGsoap.h:5665 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ElectricChargeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ElectricChargeUom (-1204)
 
@@ -2198,7 +2198,7 @@ enum class eml22__ElectricChargeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5740 */
+/* eml2_2ForGsoap.h:5746 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ElectricConductanceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ElectricConductanceUom (-1205)
 
@@ -2220,7 +2220,7 @@ enum class eml22__ElectricConductanceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5811 */
+/* eml2_2ForGsoap.h:5817 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ElectricConductivityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ElectricConductivityUom (-1206)
 
@@ -2233,7 +2233,7 @@ enum class eml22__ElectricConductivityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5837 */
+/* eml2_2ForGsoap.h:5843 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ElectricCurrentDensityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ElectricCurrentDensityUom (-1207)
 
@@ -2250,7 +2250,7 @@ enum class eml22__ElectricCurrentDensityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5883 */
+/* eml2_2ForGsoap.h:5889 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ElectricCurrentUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ElectricCurrentUom (-1208)
 
@@ -2272,7 +2272,7 @@ enum class eml22__ElectricCurrentUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5954 */
+/* eml2_2ForGsoap.h:5960 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ElectricFieldStrengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ElectricFieldStrengthUom (-1209)
 
@@ -2286,7 +2286,7 @@ enum class eml22__ElectricFieldStrengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:5985 */
+/* eml2_2ForGsoap.h:5991 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ElectricPotentialDifferenceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ElectricPotentialDifferenceUom (-1210)
 
@@ -2307,7 +2307,7 @@ enum class eml22__ElectricPotentialDifferenceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:6051 */
+/* eml2_2ForGsoap.h:6057 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ElectricResistancePerLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ElectricResistancePerLengthUom (-1211)
 
@@ -2319,7 +2319,7 @@ enum class eml22__ElectricResistancePerLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:6072 */
+/* eml2_2ForGsoap.h:6078 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ElectricResistanceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ElectricResistanceUom (-1212)
 
@@ -2341,7 +2341,7 @@ enum class eml22__ElectricResistanceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:6143 */
+/* eml2_2ForGsoap.h:6149 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ElectromagneticMomentUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ElectromagneticMomentUom (-1213)
 
@@ -2351,7 +2351,7 @@ enum class eml22__ElectromagneticMomentUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:6154 */
+/* eml2_2ForGsoap.h:6160 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__EnergyLengthPerAreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__EnergyLengthPerAreaUom (-1214)
 
@@ -2362,7 +2362,7 @@ enum class eml22__EnergyLengthPerAreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:6170 */
+/* eml2_2ForGsoap.h:6176 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__EnergyLengthPerTimeAreaTemperatureUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__EnergyLengthPerTimeAreaTemperatureUom (-1215)
 
@@ -2375,7 +2375,7 @@ enum class eml22__EnergyLengthPerTimeAreaTemperatureUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:6196 */
+/* eml2_2ForGsoap.h:6202 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__EnergyPerAreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__EnergyPerAreaUom (-1216)
 
@@ -2392,7 +2392,7 @@ enum class eml22__EnergyPerAreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:6242 */
+/* eml2_2ForGsoap.h:6248 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__EnergyPerLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__EnergyPerLengthUom (-1217)
 
@@ -2403,7 +2403,7 @@ enum class eml22__EnergyPerLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:6258 */
+/* eml2_2ForGsoap.h:6264 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__EnergyPerMassPerTimeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__EnergyPerMassPerTimeUom (-1218)
 
@@ -2417,7 +2417,7 @@ enum class eml22__EnergyPerMassPerTimeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:6289 */
+/* eml2_2ForGsoap.h:6295 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__EnergyPerMassUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__EnergyPerMassUom (-1219)
 
@@ -2442,7 +2442,7 @@ enum class eml22__EnergyPerMassUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:6375 */
+/* eml2_2ForGsoap.h:6381 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__EnergyPerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__EnergyPerVolumeUom (-1220)
 
@@ -2474,7 +2474,7 @@ enum class eml22__EnergyPerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:6496 */
+/* eml2_2ForGsoap.h:6502 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__EnergyUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__EnergyUom (-1221)
 
@@ -2539,7 +2539,7 @@ enum class eml22__EnergyUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:6782 */
+/* eml2_2ForGsoap.h:6788 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ForceAreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ForceAreaUom (-1222)
 
@@ -2557,7 +2557,7 @@ enum class eml22__ForceAreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:6833 */
+/* eml2_2ForGsoap.h:6839 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ForceLengthPerLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ForceLengthPerLengthUom (-1223)
 
@@ -2571,7 +2571,7 @@ enum class eml22__ForceLengthPerLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:6864 */
+/* eml2_2ForGsoap.h:6870 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ForcePerForceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ForcePerForceUom (-1224)
 
@@ -2585,7 +2585,7 @@ enum class eml22__ForcePerForceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:6895 */
+/* eml2_2ForGsoap.h:6901 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ForcePerLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ForcePerLengthUom (-1225)
 
@@ -2608,7 +2608,7 @@ enum class eml22__ForcePerLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:6971 */
+/* eml2_2ForGsoap.h:6977 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ForcePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ForcePerVolumeUom (-1226)
 
@@ -2634,7 +2634,7 @@ enum class eml22__ForcePerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7062 */
+/* eml2_2ForGsoap.h:7068 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ForceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ForceUom (-1227)
 
@@ -2670,7 +2670,7 @@ enum class eml22__ForceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7203 */
+/* eml2_2ForGsoap.h:7209 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__FrequencyIntervalUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__FrequencyIntervalUom (-1228)
 
@@ -2680,7 +2680,7 @@ enum class eml22__FrequencyIntervalUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7214 */
+/* eml2_2ForGsoap.h:7220 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__FrequencyUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__FrequencyUom (-1229)
 
@@ -2702,7 +2702,7 @@ enum class eml22__FrequencyUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7285 */
+/* eml2_2ForGsoap.h:7291 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__HeatCapacityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__HeatCapacityUom (-1230)
 
@@ -2712,7 +2712,7 @@ enum class eml22__HeatCapacityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7296 */
+/* eml2_2ForGsoap.h:7302 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__HeatFlowRateUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__HeatFlowRateUom (-1231)
 
@@ -2744,7 +2744,7 @@ enum class eml22__HeatFlowRateUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7417 */
+/* eml2_2ForGsoap.h:7423 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__HeatTransferCoefficientUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__HeatTransferCoefficientUom (-1232)
 
@@ -2764,7 +2764,7 @@ enum class eml22__HeatTransferCoefficientUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7478 */
+/* eml2_2ForGsoap.h:7484 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__IlluminanceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__IlluminanceUom (-1233)
 
@@ -2777,7 +2777,7 @@ enum class eml22__IlluminanceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7504 */
+/* eml2_2ForGsoap.h:7510 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__InductanceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__InductanceUom (-1234)
 
@@ -2798,7 +2798,7 @@ enum class eml22__InductanceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7570 */
+/* eml2_2ForGsoap.h:7576 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__IsothermalCompressibilityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__IsothermalCompressibilityUom (-1235)
 
@@ -2813,7 +2813,7 @@ enum class eml22__IsothermalCompressibilityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7606 */
+/* eml2_2ForGsoap.h:7612 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__KinematicViscosityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__KinematicViscosityUom (-1236)
 
@@ -2832,7 +2832,7 @@ enum class eml22__KinematicViscosityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7662 */
+/* eml2_2ForGsoap.h:7668 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LengthPerLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LengthPerLengthUom (-1237)
 
@@ -2854,7 +2854,7 @@ enum class eml22__LengthPerLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7733 */
+/* eml2_2ForGsoap.h:7739 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LengthPerMassUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LengthPerMassUom (-1238)
 
@@ -2865,7 +2865,7 @@ enum class eml22__LengthPerMassUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7749 */
+/* eml2_2ForGsoap.h:7755 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LengthPerPressureUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LengthPerPressureUom (-1239)
 
@@ -2877,7 +2877,7 @@ enum class eml22__LengthPerPressureUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7770 */
+/* eml2_2ForGsoap.h:7776 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LengthPerTemperatureUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LengthPerTemperatureUom (-1240)
 
@@ -2888,7 +2888,7 @@ enum class eml22__LengthPerTemperatureUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7786 */
+/* eml2_2ForGsoap.h:7792 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LengthPerTimeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LengthPerTimeUom (-1241)
 
@@ -2925,7 +2925,7 @@ enum class eml22__LengthPerTimeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7932 */
+/* eml2_2ForGsoap.h:7938 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LengthPerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LengthPerVolumeUom (-1242)
 
@@ -2942,7 +2942,7 @@ enum class eml22__LengthPerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:7978 */
+/* eml2_2ForGsoap.h:7984 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LengthUom (-1243)
 
@@ -3034,7 +3034,7 @@ enum class eml22__LengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8399 */
+/* eml2_2ForGsoap.h:8405 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LightExposureUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LightExposureUom (-1244)
 
@@ -3045,7 +3045,7 @@ enum class eml22__LightExposureUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8415 */
+/* eml2_2ForGsoap.h:8421 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LinearAccelerationUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LinearAccelerationUom (-1245)
 
@@ -3062,7 +3062,7 @@ enum class eml22__LinearAccelerationUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8461 */
+/* eml2_2ForGsoap.h:8467 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LinearThermalExpansionUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LinearThermalExpansionUom (-1246)
 
@@ -3075,7 +3075,7 @@ enum class eml22__LinearThermalExpansionUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8487 */
+/* eml2_2ForGsoap.h:8493 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LogarithmicPowerRatioPerLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LogarithmicPowerRatioPerLengthUom (-1247)
 
@@ -3088,7 +3088,7 @@ enum class eml22__LogarithmicPowerRatioPerLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8513 */
+/* eml2_2ForGsoap.h:8519 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LogarithmicPowerRatioUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LogarithmicPowerRatioUom (-1248)
 
@@ -3099,7 +3099,7 @@ enum class eml22__LogarithmicPowerRatioUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8529 */
+/* eml2_2ForGsoap.h:8535 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LuminanceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LuminanceUom (-1249)
 
@@ -3109,7 +3109,7 @@ enum class eml22__LuminanceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8540 */
+/* eml2_2ForGsoap.h:8546 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LuminousEfficacyUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LuminousEfficacyUom (-1250)
 
@@ -3119,7 +3119,7 @@ enum class eml22__LuminousEfficacyUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8551 */
+/* eml2_2ForGsoap.h:8557 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LuminousFluxUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LuminousFluxUom (-1251)
 
@@ -3129,7 +3129,7 @@ enum class eml22__LuminousFluxUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8562 */
+/* eml2_2ForGsoap.h:8568 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LuminousIntensityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LuminousIntensityUom (-1252)
 
@@ -3140,7 +3140,7 @@ enum class eml22__LuminousIntensityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8578 */
+/* eml2_2ForGsoap.h:8584 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MagneticDipoleMomentUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MagneticDipoleMomentUom (-1253)
 
@@ -3150,7 +3150,7 @@ enum class eml22__MagneticDipoleMomentUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8589 */
+/* eml2_2ForGsoap.h:8595 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MagneticFieldStrengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MagneticFieldStrengthUom (-1254)
 
@@ -3162,7 +3162,7 @@ enum class eml22__MagneticFieldStrengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8610 */
+/* eml2_2ForGsoap.h:8616 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MagneticFluxDensityPerLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MagneticFluxDensityPerLengthUom (-1255)
 
@@ -3174,7 +3174,7 @@ enum class eml22__MagneticFluxDensityPerLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8631 */
+/* eml2_2ForGsoap.h:8637 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MagneticFluxDensityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MagneticFluxDensityUom (-1256)
 
@@ -3208,7 +3208,7 @@ enum class eml22__MagneticFluxDensityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8762 */
+/* eml2_2ForGsoap.h:8768 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MagneticFluxUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MagneticFluxUom (-1257)
 
@@ -3230,7 +3230,7 @@ enum class eml22__MagneticFluxUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8833 */
+/* eml2_2ForGsoap.h:8839 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MagneticPermeabilityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MagneticPermeabilityUom (-1258)
 
@@ -3241,7 +3241,7 @@ enum class eml22__MagneticPermeabilityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8849 */
+/* eml2_2ForGsoap.h:8855 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MagneticVectorPotentialUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MagneticVectorPotentialUom (-1259)
 
@@ -3252,7 +3252,7 @@ enum class eml22__MagneticVectorPotentialUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8865 */
+/* eml2_2ForGsoap.h:8871 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MassLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MassLengthUom (-1260)
 
@@ -3263,7 +3263,7 @@ enum class eml22__MassLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8881 */
+/* eml2_2ForGsoap.h:8887 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MassPerAreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MassPerAreaUom (-1261)
 
@@ -3277,7 +3277,7 @@ enum class eml22__MassPerAreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8912 */
+/* eml2_2ForGsoap.h:8918 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MassPerEnergyUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MassPerEnergyUom (-1262)
 
@@ -3291,7 +3291,7 @@ enum class eml22__MassPerEnergyUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8943 */
+/* eml2_2ForGsoap.h:8949 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MassPerLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MassPerLengthUom (-1263)
 
@@ -3305,7 +3305,7 @@ enum class eml22__MassPerLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:8974 */
+/* eml2_2ForGsoap.h:8980 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MassPerMassUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MassPerMassUom (-1264)
 
@@ -3331,7 +3331,7 @@ enum class eml22__MassPerMassUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9065 */
+/* eml2_2ForGsoap.h:9071 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MassPerTimePerAreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MassPerTimePerAreaUom (-1265)
 
@@ -3347,7 +3347,7 @@ enum class eml22__MassPerTimePerAreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9106 */
+/* eml2_2ForGsoap.h:9112 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MassPerTimePerLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MassPerTimePerLengthUom (-1266)
 
@@ -3360,7 +3360,7 @@ enum class eml22__MassPerTimePerLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9132 */
+/* eml2_2ForGsoap.h:9138 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MassPerTimeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MassPerTimeUom (-1267)
 
@@ -3395,7 +3395,7 @@ enum class eml22__MassPerTimeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9268 */
+/* eml2_2ForGsoap.h:9274 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MassPerVolumePerLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MassPerVolumePerLengthUom (-1268)
 
@@ -3411,7 +3411,7 @@ enum class eml22__MassPerVolumePerLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9309 */
+/* eml2_2ForGsoap.h:9315 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MassPerVolumePerPressureUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MassPerVolumePerPressureUom (-1269)
 
@@ -3422,7 +3422,7 @@ enum class eml22__MassPerVolumePerPressureUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9317 */
+/* eml2_2ForGsoap.h:9323 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MassPerVolumePerTemperatureUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MassPerVolumePerTemperatureUom (-1270)
 
@@ -3434,7 +3434,7 @@ enum class eml22__MassPerVolumePerTemperatureUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9326 */
+/* eml2_2ForGsoap.h:9332 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MassPerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MassPerVolumeUom (-1271)
 
@@ -3472,7 +3472,7 @@ enum class eml22__MassPerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9477 */
+/* eml2_2ForGsoap.h:9483 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MassUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MassUom (-1272)
 
@@ -3507,7 +3507,7 @@ enum class eml22__MassUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9613 */
+/* eml2_2ForGsoap.h:9619 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MobilityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MobilityUom (-1273)
 
@@ -3523,7 +3523,7 @@ enum class eml22__MobilityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9654 */
+/* eml2_2ForGsoap.h:9660 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MolarEnergyUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MolarEnergyUom (-1274)
 
@@ -3537,7 +3537,7 @@ enum class eml22__MolarEnergyUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9685 */
+/* eml2_2ForGsoap.h:9691 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MolarHeatCapacityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MolarHeatCapacityUom (-1275)
 
@@ -3550,7 +3550,7 @@ enum class eml22__MolarHeatCapacityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9711 */
+/* eml2_2ForGsoap.h:9717 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MolarVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MolarVolumeUom (-1276)
 
@@ -3565,7 +3565,7 @@ enum class eml22__MolarVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9747 */
+/* eml2_2ForGsoap.h:9753 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MolecularWeightUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MolecularWeightUom (-1277)
 
@@ -3577,7 +3577,7 @@ enum class eml22__MolecularWeightUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9768 */
+/* eml2_2ForGsoap.h:9774 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MomentOfForceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MomentOfForceUom (-1278)
 
@@ -3599,7 +3599,7 @@ enum class eml22__MomentOfForceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9839 */
+/* eml2_2ForGsoap.h:9845 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MomentOfInertiaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MomentOfInertiaUom (-1279)
 
@@ -3610,7 +3610,7 @@ enum class eml22__MomentOfInertiaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9855 */
+/* eml2_2ForGsoap.h:9861 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MomentumUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MomentumUom (-1280)
 
@@ -3621,7 +3621,7 @@ enum class eml22__MomentumUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9871 */
+/* eml2_2ForGsoap.h:9877 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__NormalizedPowerUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__NormalizedPowerUom (-1281)
 
@@ -3634,7 +3634,7 @@ enum class eml22__NormalizedPowerUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9897 */
+/* eml2_2ForGsoap.h:9903 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PermeabilityLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PermeabilityLengthUom (-1282)
 
@@ -3648,7 +3648,7 @@ enum class eml22__PermeabilityLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9928 */
+/* eml2_2ForGsoap.h:9934 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PermeabilityRockUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PermeabilityRockUom (-1283)
 
@@ -3661,7 +3661,7 @@ enum class eml22__PermeabilityRockUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9954 */
+/* eml2_2ForGsoap.h:9960 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PermittivityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PermittivityUom (-1284)
 
@@ -3672,7 +3672,7 @@ enum class eml22__PermittivityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:9970 */
+/* eml2_2ForGsoap.h:9976 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PlaneAngleUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PlaneAngleUom (-1285)
 
@@ -3695,7 +3695,7 @@ enum class eml22__PlaneAngleUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10046 */
+/* eml2_2ForGsoap.h:10052 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PotentialDifferencePerPowerDropUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PotentialDifferencePerPowerDropUom (-1286)
 
@@ -3706,7 +3706,7 @@ enum class eml22__PotentialDifferencePerPowerDropUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10062 */
+/* eml2_2ForGsoap.h:10068 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PowerPerAreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PowerPerAreaUom (-1287)
 
@@ -3727,7 +3727,7 @@ enum class eml22__PowerPerAreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10128 */
+/* eml2_2ForGsoap.h:10134 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PowerPerPowerUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PowerPerPowerUom (-1288)
 
@@ -3741,7 +3741,7 @@ enum class eml22__PowerPerPowerUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10159 */
+/* eml2_2ForGsoap.h:10165 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PowerPerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PowerPerVolumeUom (-1289)
 
@@ -3758,7 +3758,7 @@ enum class eml22__PowerPerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10205 */
+/* eml2_2ForGsoap.h:10211 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PowerUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PowerUom (-1290)
 
@@ -3785,7 +3785,7 @@ enum class eml22__PowerUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10301 */
+/* eml2_2ForGsoap.h:10307 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PressurePerPressureUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PressurePerPressureUom (-1291)
 
@@ -3801,7 +3801,7 @@ enum class eml22__PressurePerPressureUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10342 */
+/* eml2_2ForGsoap.h:10348 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PressurePerTimeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PressurePerTimeUom (-1292)
 
@@ -3819,7 +3819,7 @@ enum class eml22__PressurePerTimeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10393 */
+/* eml2_2ForGsoap.h:10399 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PressurePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PressurePerVolumeUom (-1293)
 
@@ -3830,7 +3830,7 @@ enum class eml22__PressurePerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10409 */
+/* eml2_2ForGsoap.h:10415 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PressureSquaredPerForceTimePerAreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PressureSquaredPerForceTimePerAreaUom (-1294)
 
@@ -3844,7 +3844,7 @@ enum class eml22__PressureSquaredPerForceTimePerAreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10440 */
+/* eml2_2ForGsoap.h:10446 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PressureSquaredUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PressureSquaredUom (-1295)
 
@@ -3859,7 +3859,7 @@ enum class eml22__PressureSquaredUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10476 */
+/* eml2_2ForGsoap.h:10482 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PressureTimePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PressureTimePerVolumeUom (-1296)
 
@@ -3870,7 +3870,7 @@ enum class eml22__PressureTimePerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10492 */
+/* eml2_2ForGsoap.h:10498 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PressureUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PressureUom (-1297)
 
@@ -3922,7 +3922,7 @@ enum class eml22__PressureUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10713 */
+/* eml2_2ForGsoap.h:10719 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__QuantityOfLightUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__QuantityOfLightUom (-1298)
 
@@ -3932,7 +3932,7 @@ enum class eml22__QuantityOfLightUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10724 */
+/* eml2_2ForGsoap.h:10730 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__RadianceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__RadianceUom (-1299)
 
@@ -3942,7 +3942,7 @@ enum class eml22__RadianceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10735 */
+/* eml2_2ForGsoap.h:10741 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__RadiantIntensityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__RadiantIntensityUom (-1300)
 
@@ -3952,7 +3952,7 @@ enum class eml22__RadiantIntensityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10746 */
+/* eml2_2ForGsoap.h:10752 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalAreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalAreaUom (-1301)
 
@@ -3965,7 +3965,7 @@ enum class eml22__ReciprocalAreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10772 */
+/* eml2_2ForGsoap.h:10778 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalElectricPotentialDifferenceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalElectricPotentialDifferenceUom (-1302)
 
@@ -3976,7 +3976,7 @@ enum class eml22__ReciprocalElectricPotentialDifferenceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10788 */
+/* eml2_2ForGsoap.h:10794 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalForceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalForceUom (-1303)
 
@@ -3987,7 +3987,7 @@ enum class eml22__ReciprocalForceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10804 */
+/* eml2_2ForGsoap.h:10810 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalLengthUom (-1304)
 
@@ -4006,7 +4006,7 @@ enum class eml22__ReciprocalLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10860 */
+/* eml2_2ForGsoap.h:10866 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalMassTimeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalMassTimeUom (-1305)
 
@@ -4018,7 +4018,7 @@ enum class eml22__ReciprocalMassTimeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10881 */
+/* eml2_2ForGsoap.h:10887 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalMassUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalMassUom (-1306)
 
@@ -4030,7 +4030,7 @@ enum class eml22__ReciprocalMassUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10902 */
+/* eml2_2ForGsoap.h:10908 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalPressureUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalPressureUom (-1307)
 
@@ -4045,7 +4045,7 @@ enum class eml22__ReciprocalPressureUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10938 */
+/* eml2_2ForGsoap.h:10944 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalTimeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalTimeUom (-1308)
 
@@ -4062,7 +4062,7 @@ enum class eml22__ReciprocalTimeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:10984 */
+/* eml2_2ForGsoap.h:10990 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ReciprocalVolumeUom (-1309)
 
@@ -4077,7 +4077,7 @@ enum class eml22__ReciprocalVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11020 */
+/* eml2_2ForGsoap.h:11026 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ReluctanceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ReluctanceUom (-1310)
 
@@ -4087,7 +4087,7 @@ enum class eml22__ReluctanceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11031 */
+/* eml2_2ForGsoap.h:11037 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__SecondMomentOfAreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__SecondMomentOfAreaUom (-1311)
 
@@ -4099,7 +4099,7 @@ enum class eml22__SecondMomentOfAreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11052 */
+/* eml2_2ForGsoap.h:11058 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__SignalingEventPerTimeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__SignalingEventPerTimeUom (-1312)
 
@@ -4109,7 +4109,7 @@ enum class eml22__SignalingEventPerTimeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11063 */
+/* eml2_2ForGsoap.h:11069 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__SolidAngleUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__SolidAngleUom (-1313)
 
@@ -4119,7 +4119,7 @@ enum class eml22__SolidAngleUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11074 */
+/* eml2_2ForGsoap.h:11080 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__SpecificHeatCapacityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__SpecificHeatCapacityUom (-1314)
 
@@ -4136,7 +4136,7 @@ enum class eml22__SpecificHeatCapacityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11120 */
+/* eml2_2ForGsoap.h:11126 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__TemperatureIntervalPerLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__TemperatureIntervalPerLengthUom (-1315)
 
@@ -4154,7 +4154,7 @@ enum class eml22__TemperatureIntervalPerLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11171 */
+/* eml2_2ForGsoap.h:11177 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__TemperatureIntervalPerPressureUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__TemperatureIntervalPerPressureUom (-1316)
 
@@ -4166,7 +4166,7 @@ enum class eml22__TemperatureIntervalPerPressureUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11192 */
+/* eml2_2ForGsoap.h:11198 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__TemperatureIntervalPerTimeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__TemperatureIntervalPerTimeUom (-1317)
 
@@ -4182,7 +4182,7 @@ enum class eml22__TemperatureIntervalPerTimeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11233 */
+/* eml2_2ForGsoap.h:11239 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__TemperatureIntervalUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__TemperatureIntervalUom (-1318)
 
@@ -4195,7 +4195,7 @@ enum class eml22__TemperatureIntervalUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11259 */
+/* eml2_2ForGsoap.h:11265 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ThermalConductanceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ThermalConductanceUom (-1319)
 
@@ -4205,7 +4205,7 @@ enum class eml22__ThermalConductanceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11270 */
+/* eml2_2ForGsoap.h:11276 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ThermalConductivityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ThermalConductivityUom (-1320)
 
@@ -4219,7 +4219,7 @@ enum class eml22__ThermalConductivityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11301 */
+/* eml2_2ForGsoap.h:11307 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ThermalDiffusivityUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ThermalDiffusivityUom (-1321)
 
@@ -4235,7 +4235,7 @@ enum class eml22__ThermalDiffusivityUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11342 */
+/* eml2_2ForGsoap.h:11348 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ThermalInsulanceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ThermalInsulanceUom (-1322)
 
@@ -4248,7 +4248,7 @@ enum class eml22__ThermalInsulanceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11368 */
+/* eml2_2ForGsoap.h:11374 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ThermalResistanceUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ThermalResistanceUom (-1323)
 
@@ -4258,7 +4258,7 @@ enum class eml22__ThermalResistanceUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11379 */
+/* eml2_2ForGsoap.h:11385 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ThermodynamicTemperaturePerThermodynamicTemperatureUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ThermodynamicTemperaturePerThermodynamicTemperatureUom (-1324)
 
@@ -4272,7 +4272,7 @@ enum class eml22__ThermodynamicTemperaturePerThermodynamicTemperatureUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11410 */
+/* eml2_2ForGsoap.h:11416 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ThermodynamicTemperatureUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ThermodynamicTemperatureUom (-1325)
 
@@ -4285,7 +4285,7 @@ enum class eml22__ThermodynamicTemperatureUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11436 */
+/* eml2_2ForGsoap.h:11442 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__TimePerLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__TimePerLengthUom (-1326)
 
@@ -4311,7 +4311,7 @@ enum class eml22__TimePerLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11527 */
+/* eml2_2ForGsoap.h:11533 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__TimePerMassUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__TimePerMassUom (-1327)
 
@@ -4321,7 +4321,7 @@ enum class eml22__TimePerMassUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11538 */
+/* eml2_2ForGsoap.h:11544 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__TimePerTimeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__TimePerTimeUom (-1328)
 
@@ -4334,7 +4334,7 @@ enum class eml22__TimePerTimeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11564 */
+/* eml2_2ForGsoap.h:11570 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__TimePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__TimePerVolumeUom (-1329)
 
@@ -4354,7 +4354,7 @@ enum class eml22__TimePerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11625 */
+/* eml2_2ForGsoap.h:11631 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__TimeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__TimeUom (-1330)
 
@@ -4387,7 +4387,7 @@ enum class eml22__TimeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11755 */
+/* eml2_2ForGsoap.h:11761 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VerticalCoordinateUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VerticalCoordinateUom (-1331)
 
@@ -4400,7 +4400,7 @@ enum class eml22__VerticalCoordinateUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11781 */
+/* eml2_2ForGsoap.h:11787 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumeFlowRatePerVolumeFlowRateUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumeFlowRatePerVolumeFlowRateUom (-1332)
 
@@ -4415,7 +4415,7 @@ enum class eml22__VolumeFlowRatePerVolumeFlowRateUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11817 */
+/* eml2_2ForGsoap.h:11823 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerAreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerAreaUom (-1333)
 
@@ -4428,7 +4428,7 @@ enum class eml22__VolumePerAreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11843 */
+/* eml2_2ForGsoap.h:11849 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerLengthUom (-1334)
 
@@ -4451,7 +4451,7 @@ enum class eml22__VolumePerLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:11919 */
+/* eml2_2ForGsoap.h:11925 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerMassUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerMassUom (-1335)
 
@@ -4482,7 +4482,7 @@ enum class eml22__VolumePerMassUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:12035 */
+/* eml2_2ForGsoap.h:12041 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerPressureUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerPressureUom (-1336)
 
@@ -4494,7 +4494,7 @@ enum class eml22__VolumePerPressureUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:12056 */
+/* eml2_2ForGsoap.h:12062 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerRotationUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerRotationUom (-1337)
 
@@ -4506,7 +4506,7 @@ enum class eml22__VolumePerRotationUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:12077 */
+/* eml2_2ForGsoap.h:12083 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerTimeLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerTimeLengthUom (-1338)
 
@@ -4518,7 +4518,7 @@ enum class eml22__VolumePerTimeLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:12098 */
+/* eml2_2ForGsoap.h:12104 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerTimePerAreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerTimePerAreaUom (-1339)
 
@@ -4536,7 +4536,7 @@ enum class eml22__VolumePerTimePerAreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:12149 */
+/* eml2_2ForGsoap.h:12155 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerTimePerLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerTimePerLengthUom (-1340)
 
@@ -4560,7 +4560,7 @@ enum class eml22__VolumePerTimePerLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:12230 */
+/* eml2_2ForGsoap.h:12236 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerTimePerPressureLengthUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerTimePerPressureLengthUom (-1341)
 
@@ -4573,7 +4573,7 @@ enum class eml22__VolumePerTimePerPressureLengthUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:12256 */
+/* eml2_2ForGsoap.h:12262 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerTimePerPressureUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerTimePerPressureUom (-1342)
 
@@ -4593,7 +4593,7 @@ enum class eml22__VolumePerTimePerPressureUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:12317 */
+/* eml2_2ForGsoap.h:12323 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerTimePerTimeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerTimePerTimeUom (-1343)
 
@@ -4616,7 +4616,7 @@ enum class eml22__VolumePerTimePerTimeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:12393 */
+/* eml2_2ForGsoap.h:12399 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerTimePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerTimePerVolumeUom (-1344)
 
@@ -4627,7 +4627,7 @@ enum class eml22__VolumePerTimePerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:12409 */
+/* eml2_2ForGsoap.h:12415 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerTimeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerTimeUom (-1345)
 
@@ -4668,7 +4668,7 @@ enum class eml22__VolumePerTimeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:12575 */
+/* eml2_2ForGsoap.h:12581 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumePerVolumeUom (-1346)
 
@@ -4724,7 +4724,7 @@ enum class eml22__VolumePerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:12816 */
+/* eml2_2ForGsoap.h:12822 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumetricHeatTransferCoefficientUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumetricHeatTransferCoefficientUom (-1347)
 
@@ -4737,7 +4737,7 @@ enum class eml22__VolumetricHeatTransferCoefficientUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:12842 */
+/* eml2_2ForGsoap.h:12848 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumetricThermalExpansionUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumetricThermalExpansionUom (-1348)
 
@@ -4755,7 +4755,7 @@ enum class eml22__VolumetricThermalExpansionUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:12893 */
+/* eml2_2ForGsoap.h:12899 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VolumeUom (-1349)
 
@@ -4800,7 +4800,7 @@ enum class eml22__VolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13079 */
+/* eml2_2ForGsoap.h:13085 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LegacyMassPerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LegacyMassPerVolumeUom (-1350)
 
@@ -4812,7 +4812,7 @@ enum class eml22__LegacyMassPerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13088 */
+/* eml2_2ForGsoap.h:13094 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LegacyPressurePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LegacyPressurePerVolumeUom (-1351)
 
@@ -4824,7 +4824,7 @@ enum class eml22__LegacyPressurePerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13097 */
+/* eml2_2ForGsoap.h:13103 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LegacyPressureUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LegacyPressureUom (-1352)
 
@@ -4835,7 +4835,7 @@ enum class eml22__LegacyPressureUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13105 */
+/* eml2_2ForGsoap.h:13111 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LegacyVolumePerAreaUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LegacyVolumePerAreaUom (-1353)
 
@@ -4848,7 +4848,7 @@ enum class eml22__LegacyVolumePerAreaUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13115 */
+/* eml2_2ForGsoap.h:13121 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LegacyVolumePerTimeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LegacyVolumePerTimeUom (-1354)
 
@@ -4876,7 +4876,7 @@ enum class eml22__LegacyVolumePerTimeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13140 */
+/* eml2_2ForGsoap.h:13146 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LegacyVolumePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LegacyVolumePerVolumeUom (-1355)
 
@@ -4912,7 +4912,7 @@ enum class eml22__LegacyVolumePerVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13173 */
+/* eml2_2ForGsoap.h:13179 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LegacyVolumeUom
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LegacyVolumeUom (-1356)
 
@@ -4931,7 +4931,7 @@ enum class eml22__LegacyVolumeUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13220 */
+/* eml2_2ForGsoap.h:13226 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__MixingRule
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__MixingRule (-1360)
 
@@ -4942,7 +4942,7 @@ enum class prodml21__MixingRule {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13240 */
+/* eml2_2ForGsoap.h:13246 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__OutputFluidProperty
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__OutputFluidProperty (-1361)
 
@@ -4985,7 +4985,7 @@ enum class prodml21__OutputFluidProperty {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13420 */
+/* eml2_2ForGsoap.h:13426 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__PvtModelParameterKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__PvtModelParameterKind (-1362)
 
@@ -5026,7 +5026,7 @@ enum class prodml21__PvtModelParameterKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13590 */
+/* eml2_2ForGsoap.h:13596 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__saturationKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__saturationKind (-1363)
 
@@ -5037,7 +5037,7 @@ enum class prodml21__saturationKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13610 */
+/* eml2_2ForGsoap.h:13616 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__AddressKindEnum
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__AddressKindEnum (-1364)
 
@@ -5049,7 +5049,7 @@ enum class prodml21__AddressKindEnum {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13627 */
+/* eml2_2ForGsoap.h:13633 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__AddressQualifier
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__AddressQualifier (-1365)
 
@@ -5061,7 +5061,7 @@ enum class prodml21__AddressQualifier {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13648 */
+/* eml2_2ForGsoap.h:13654 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__BusinessUnitKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__BusinessUnitKind (-1366)
 
@@ -5077,7 +5077,7 @@ enum class prodml21__BusinessUnitKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13665 */
+/* eml2_2ForGsoap.h:13671 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__EndpointQualifier
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__EndpointQualifier (-1367)
 
@@ -5090,7 +5090,7 @@ enum class prodml21__EndpointQualifier {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13696 */
+/* eml2_2ForGsoap.h:13702 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__EndpointQualifierInterval
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__EndpointQualifierInterval (-1368)
 
@@ -5102,7 +5102,7 @@ enum class prodml21__EndpointQualifierInterval {
 };
 #endif
 
-/* eml2_2ForGsoap.h:13721 */
+/* eml2_2ForGsoap.h:13727 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__FacilityParameter
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__FacilityParameter (-1369)
 
@@ -5356,7 +5356,7 @@ enum class prodml21__FacilityParameter {
 };
 #endif
 
-/* eml2_2ForGsoap.h:14957 */
+/* eml2_2ForGsoap.h:14963 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__FiberMode
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__FiberMode (-1370)
 
@@ -5368,7 +5368,7 @@ enum class prodml21__FiberMode {
 };
 #endif
 
-/* eml2_2ForGsoap.h:14970 */
+/* eml2_2ForGsoap.h:14976 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__FlowQualifier
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__FlowQualifier (-1371)
 
@@ -5397,7 +5397,7 @@ enum class prodml21__FlowQualifier {
 };
 #endif
 
-/* eml2_2ForGsoap.h:15000 */
+/* eml2_2ForGsoap.h:15006 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__FlowSubQualifier
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__FlowSubQualifier (-1372)
 
@@ -5415,7 +5415,7 @@ enum class prodml21__FlowSubQualifier {
 };
 #endif
 
-/* eml2_2ForGsoap.h:15019 */
+/* eml2_2ForGsoap.h:15025 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__GeologyType
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__GeologyType (-1373)
 
@@ -5426,7 +5426,7 @@ enum class prodml21__GeologyType {
 };
 #endif
 
-/* eml2_2ForGsoap.h:15039 */
+/* eml2_2ForGsoap.h:15045 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__PhoneType
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__PhoneType (-1374)
 
@@ -5442,7 +5442,7 @@ enum class prodml21__PhoneType {
 };
 #endif
 
-/* eml2_2ForGsoap.h:15056 */
+/* eml2_2ForGsoap.h:15062 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__PlusComponentEnum
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__PlusComponentEnum (-1375)
 
@@ -5463,7 +5463,7 @@ enum class prodml21__PlusComponentEnum {
 };
 #endif
 
-/* eml2_2ForGsoap.h:15074 */
+/* eml2_2ForGsoap.h:15080 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__PressurePerFlowrateSquaredUom
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__PressurePerFlowrateSquaredUom (-1376)
 
@@ -5479,7 +5479,7 @@ enum class prodml21__PressurePerFlowrateSquaredUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:15087 */
+/* eml2_2ForGsoap.h:15093 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__PressurePerFlowrateUom
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__PressurePerFlowrateUom (-1377)
 
@@ -5495,7 +5495,7 @@ enum class prodml21__PressurePerFlowrateUom {
 };
 #endif
 
-/* eml2_2ForGsoap.h:15104 */
+/* eml2_2ForGsoap.h:15110 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__ProductFlowPortType
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__ProductFlowPortType (-1378)
 
@@ -5507,7 +5507,7 @@ enum class prodml21__ProductFlowPortType {
 };
 #endif
 
-/* eml2_2ForGsoap.h:15117 */
+/* eml2_2ForGsoap.h:15123 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__ProductFluidKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__ProductFluidKind (-1379)
 
@@ -5539,7 +5539,7 @@ enum class prodml21__ProductFluidKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:15150 */
+/* eml2_2ForGsoap.h:15156 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__PseudoComponentEnum
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__PseudoComponentEnum (-1380)
 
@@ -5581,7 +5581,7 @@ enum class prodml21__PseudoComponentEnum {
 };
 #endif
 
-/* eml2_2ForGsoap.h:15197 */
+/* eml2_2ForGsoap.h:15203 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__PureComponentEnum
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__PureComponentEnum (-1381)
 
@@ -5630,7 +5630,7 @@ enum class prodml21__PureComponentEnum {
 };
 #endif
 
-/* eml2_2ForGsoap.h:15251 */
+/* eml2_2ForGsoap.h:15257 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__ReportingDurationKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__ReportingDurationKind (-1382)
 
@@ -5647,7 +5647,7 @@ enum class prodml21__ReportingDurationKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:15269 */
+/* eml2_2ForGsoap.h:15275 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__ReportingEntityKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__ReportingEntityKind (-1383)
 
@@ -5686,7 +5686,7 @@ enum class prodml21__ReportingEntityKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:15429 */
+/* eml2_2ForGsoap.h:15435 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__ReportingFacility
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__ReportingFacility (-1384)
 
@@ -5755,7 +5755,7 @@ enum class prodml21__ReportingFacility {
 };
 #endif
 
-/* eml2_2ForGsoap.h:15739 */
+/* eml2_2ForGsoap.h:15745 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__ReportingFlow
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__ReportingFlow (-1385)
 
@@ -5789,7 +5789,7 @@ enum class prodml21__ReportingFlow {
 };
 #endif
 
-/* eml2_2ForGsoap.h:15874 */
+/* eml2_2ForGsoap.h:15880 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__ReportingProduct
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__ReportingProduct (-1386)
 
@@ -5883,7 +5883,7 @@ enum class prodml21__ReportingProduct {
 };
 #endif
 
-/* eml2_2ForGsoap.h:16309 */
+/* eml2_2ForGsoap.h:16315 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__ReservoirFluidKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__ReservoirFluidKind (-1387)
 
@@ -5899,7 +5899,7 @@ enum class prodml21__ReservoirFluidKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:16354 */
+/* eml2_2ForGsoap.h:16360 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__SafetyType
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__SafetyType (-1388)
 
@@ -5929,7 +5929,7 @@ enum class prodml21__SafetyType {
 };
 #endif
 
-/* eml2_2ForGsoap.h:16469 */
+/* eml2_2ForGsoap.h:16475 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__SaturationPointKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__SaturationPointKind (-1389)
 
@@ -5942,7 +5942,7 @@ enum class prodml21__SaturationPointKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:16499 */
+/* eml2_2ForGsoap.h:16505 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__ServiceFluidKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__ServiceFluidKind (-1390)
 
@@ -5978,7 +5978,7 @@ enum class prodml21__ServiceFluidKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:16644 */
+/* eml2_2ForGsoap.h:16650 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__TimeSeriesKeyword
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__TimeSeriesKeyword (-1391)
 
@@ -5993,7 +5993,7 @@ enum class prodml21__TimeSeriesKeyword {
 };
 #endif
 
-/* eml2_2ForGsoap.h:16684 */
+/* eml2_2ForGsoap.h:16690 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__ValueStatus
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__ValueStatus (-1392)
 
@@ -6016,7 +6016,7 @@ enum class prodml21__ValueStatus {
 };
 #endif
 
-/* eml2_2ForGsoap.h:16764 */
+/* eml2_2ForGsoap.h:16770 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__WellDirection
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__WellDirection (-1393)
 
@@ -6029,7 +6029,7 @@ enum class prodml21__WellDirection {
 };
 #endif
 
-/* eml2_2ForGsoap.h:16794 */
+/* eml2_2ForGsoap.h:16800 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__WellFluid
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__WellFluid (-1394)
 
@@ -6052,7 +6052,7 @@ enum class prodml21__WellFluid {
 };
 #endif
 
-/* eml2_2ForGsoap.h:16874 */
+/* eml2_2ForGsoap.h:16880 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__BalanceDestinationType
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__BalanceDestinationType (-1395)
 
@@ -6064,7 +6064,7 @@ enum class prodml21__BalanceDestinationType {
 };
 #endif
 
-/* eml2_2ForGsoap.h:16899 */
+/* eml2_2ForGsoap.h:16905 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__BalanceEventKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__BalanceEventKind (-1396)
 
@@ -6076,7 +6076,7 @@ enum class prodml21__BalanceEventKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:16924 */
+/* eml2_2ForGsoap.h:16930 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__BalanceFlowPart
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__BalanceFlowPart (-1397)
 
@@ -6107,7 +6107,7 @@ enum class prodml21__BalanceFlowPart {
 };
 #endif
 
-/* eml2_2ForGsoap.h:17044 */
+/* eml2_2ForGsoap.h:17050 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__CalculationMethod
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__CalculationMethod (-1398)
 
@@ -6119,7 +6119,7 @@ enum class prodml21__CalculationMethod {
 };
 #endif
 
-/* eml2_2ForGsoap.h:17069 */
+/* eml2_2ForGsoap.h:17075 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__FluidComponentBasis
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__FluidComponentBasis (-1399)
 
@@ -6224,7 +6224,7 @@ enum class prodml21__FluidComponentBasis {
 };
 #endif
 
-/* eml2_2ForGsoap.h:17559 */
+/* eml2_2ForGsoap.h:17565 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__WellOperationMethod
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__WellOperationMethod (-1400)
 
@@ -6244,7 +6244,7 @@ enum class prodml21__WellOperationMethod {
 };
 #endif
 
-/* eml2_2ForGsoap.h:17624 */
+/* eml2_2ForGsoap.h:17630 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__PhasePresent
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__PhasePresent (-1401)
 
@@ -6260,7 +6260,7 @@ enum class prodml21__PhasePresent {
 };
 #endif
 
-/* eml2_2ForGsoap.h:17669 */
+/* eml2_2ForGsoap.h:17675 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__ReservoirLifeCycleState
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__ReservoirLifeCycleState (-1402)
 
@@ -6275,7 +6275,7 @@ enum class prodml21__ReservoirLifeCycleState {
 };
 #endif
 
-/* eml2_2ForGsoap.h:17681 */
+/* eml2_2ForGsoap.h:17687 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__CompressibilityKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__CompressibilityKind (-1403)
 
@@ -6286,7 +6286,7 @@ enum class prodml21__CompressibilityKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:17693 */
+/* eml2_2ForGsoap.h:17699 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__FluidAnalysisStepCondition
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__FluidAnalysisStepCondition (-1404)
 
@@ -6299,7 +6299,7 @@ enum class prodml21__FluidAnalysisStepCondition {
 };
 #endif
 
-/* eml2_2ForGsoap.h:17723 */
+/* eml2_2ForGsoap.h:17729 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__FluidContaminant
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__FluidContaminant (-1405)
 
@@ -6318,7 +6318,7 @@ enum class prodml21__FluidContaminant {
 };
 #endif
 
-/* eml2_2ForGsoap.h:17783 */
+/* eml2_2ForGsoap.h:17789 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__SampleQuality
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__SampleQuality (-1406)
 
@@ -6330,7 +6330,7 @@ enum class prodml21__SampleQuality {
 };
 #endif
 
-/* eml2_2ForGsoap.h:17808 */
+/* eml2_2ForGsoap.h:17814 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__ThermodynamicPhase
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__ThermodynamicPhase (-1407)
 
@@ -6343,7 +6343,7 @@ enum class prodml21__ThermodynamicPhase {
 };
 #endif
 
-/* eml2_2ForGsoap.h:17838 */
+/* eml2_2ForGsoap.h:17844 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__VolumeReferenceKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__VolumeReferenceKind (-1408)
 
@@ -6367,7 +6367,7 @@ enum class prodml21__VolumeReferenceKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:17923 */
+/* eml2_2ForGsoap.h:17929 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__FluidSampleKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__FluidSampleKind (-1409)
 
@@ -6385,7 +6385,7 @@ enum class prodml21__FluidSampleKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:17978 */
+/* eml2_2ForGsoap.h:17984 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__SampleAction
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__SampleAction (-1410)
 
@@ -6400,7 +6400,7 @@ enum class prodml21__SampleAction {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18018 */
+/* eml2_2ForGsoap.h:18024 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__WftEventKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__WftEventKind (-1411)
 
@@ -6412,7 +6412,7 @@ enum class prodml21__WftEventKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18043 */
+/* eml2_2ForGsoap.h:18049 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__WftFlowingIntervalKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__WftFlowingIntervalKind (-1412)
 
@@ -6424,7 +6424,7 @@ enum class prodml21__WftFlowingIntervalKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18068 */
+/* eml2_2ForGsoap.h:18074 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__WftStationKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__WftStationKind (-1413)
 
@@ -6436,7 +6436,7 @@ enum class prodml21__WftStationKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18093 */
+/* eml2_2ForGsoap.h:18099 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__WftTestDataRole
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__WftTestDataRole (-1414)
 
@@ -6448,7 +6448,7 @@ enum class prodml21__WftTestDataRole {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18118 */
+/* eml2_2ForGsoap.h:18124 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__WftTestKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__WftTestKind (-1415)
 
@@ -6460,7 +6460,7 @@ enum class prodml21__WftTestKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18143 */
+/* eml2_2ForGsoap.h:18149 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__WftTestResultKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__WftTestResultKind (-1416)
 
@@ -6472,7 +6472,7 @@ enum class prodml21__WftTestResultKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18168 */
+/* eml2_2ForGsoap.h:18174 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__DeferredKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__DeferredKind (-1417)
 
@@ -6483,7 +6483,7 @@ enum class prodml21__DeferredKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18180 */
+/* eml2_2ForGsoap.h:18186 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__DispositionKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__DispositionKind (-1418)
 
@@ -6502,7 +6502,7 @@ enum class prodml21__DispositionKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18240 */
+/* eml2_2ForGsoap.h:18246 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__EstimationMethod
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__EstimationMethod (-1419)
 
@@ -6522,7 +6522,7 @@ enum class prodml21__EstimationMethod {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18305 */
+/* eml2_2ForGsoap.h:18311 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__QuantityMethod
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__QuantityMethod (-1420)
 
@@ -6539,7 +6539,7 @@ enum class prodml21__QuantityMethod {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18355 */
+/* eml2_2ForGsoap.h:18361 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__TransferKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__TransferKind (-1421)
 
@@ -6550,7 +6550,7 @@ enum class prodml21__TransferKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18375 */
+/* eml2_2ForGsoap.h:18381 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__DataConditioning
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__DataConditioning (-1422)
 
@@ -6577,7 +6577,7 @@ enum class prodml21__DataConditioning {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18403 */
+/* eml2_2ForGsoap.h:18409 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__FluidPhaseMeasuredKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__FluidPhaseMeasuredKind (-1423)
 
@@ -6591,7 +6591,7 @@ enum class prodml21__FluidPhaseMeasuredKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18418 */
+/* eml2_2ForGsoap.h:18424 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__TestPeriodKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__TestPeriodKind (-1424)
 
@@ -6610,7 +6610,7 @@ enum class prodml21__TestPeriodKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18438 */
+/* eml2_2ForGsoap.h:18444 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__TimeSeriesPointRepresentation
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__TimeSeriesPointRepresentation (-1425)
 
@@ -6621,7 +6621,7 @@ enum class prodml21__TimeSeriesPointRepresentation {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18446 */
+/* eml2_2ForGsoap.h:18452 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__FluidPhaseKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__FluidPhaseKind (-1426)
 
@@ -6637,7 +6637,7 @@ enum class prodml21__FluidPhaseKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18463 */
+/* eml2_2ForGsoap.h:18469 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__LogLogPressureTransform
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__LogLogPressureTransform (-1427)
 
@@ -6651,7 +6651,7 @@ enum class prodml21__LogLogPressureTransform {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18494 */
+/* eml2_2ForGsoap.h:18500 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__LogLogTimeTransform
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__LogLogTimeTransform (-1428)
 
@@ -6664,7 +6664,7 @@ enum class prodml21__LogLogTimeTransform {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18508 */
+/* eml2_2ForGsoap.h:18514 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__PressureNonLinearTransformKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__PressureNonLinearTransformKind (-1429)
 
@@ -6678,7 +6678,7 @@ enum class prodml21__PressureNonLinearTransformKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18523 */
+/* eml2_2ForGsoap.h:18529 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__PseudoPressureEffectApplied
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__PseudoPressureEffectApplied (-1430)
 
@@ -6692,7 +6692,7 @@ enum class prodml21__PseudoPressureEffectApplied {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18538 */
+/* eml2_2ForGsoap.h:18544 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__TimeNonLinearTransformKind
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__TimeNonLinearTransformKind (-1431)
 
@@ -6704,7 +6704,7 @@ enum class prodml21__TimeNonLinearTransformKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18547 */
+/* eml2_2ForGsoap.h:18553 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__Boundary1Type
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__Boundary1Type (-1432)
 
@@ -6715,7 +6715,7 @@ enum class prodml21__Boundary1Type {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18555 */
+/* eml2_2ForGsoap.h:18561 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__Boundary2Type
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__Boundary2Type (-1433)
 
@@ -6726,7 +6726,7 @@ enum class prodml21__Boundary2Type {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18563 */
+/* eml2_2ForGsoap.h:18569 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__Boundary3Type
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__Boundary3Type (-1434)
 
@@ -6737,7 +6737,7 @@ enum class prodml21__Boundary3Type {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18571 */
+/* eml2_2ForGsoap.h:18577 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__Boundary4Type
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__Boundary4Type (-1435)
 
@@ -6748,7 +6748,7 @@ enum class prodml21__Boundary4Type {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18579 */
+/* eml2_2ForGsoap.h:18585 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__FractureModelType
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__FractureModelType (-1436)
 
@@ -6761,7 +6761,7 @@ enum class prodml21__FractureModelType {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18589 */
+/* eml2_2ForGsoap.h:18595 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__LowerBoundaryType
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__LowerBoundaryType (-1437)
 
@@ -6772,7 +6772,7 @@ enum class prodml21__LowerBoundaryType {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18601 */
+/* eml2_2ForGsoap.h:18607 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__ParameterDirection
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__ParameterDirection (-1438)
 
@@ -6783,7 +6783,7 @@ enum class prodml21__ParameterDirection {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18609 */
+/* eml2_2ForGsoap.h:18615 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__UpperBoundaryType
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__UpperBoundaryType (-1439)
 
@@ -6794,7 +6794,7 @@ enum class prodml21__UpperBoundaryType {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18617 */
+/* eml2_2ForGsoap.h:18623 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__WellboreStorageMechanismType
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__WellboreStorageMechanismType (-1440)
 
@@ -6806,7 +6806,7 @@ enum class prodml21__WellboreStorageMechanismType {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18634 */
+/* eml2_2ForGsoap.h:18640 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__Facet
 #define SOAP_TYPE_gsoap_eml2_2_eml22__Facet (-1441)
 
@@ -6849,7 +6849,7 @@ enum class eml22__Facet {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18806 */
+/* eml2_2ForGsoap.h:18812 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__FacetKind
 #define SOAP_TYPE_gsoap_eml2_2_eml22__FacetKind (-1442)
 
@@ -6865,7 +6865,7 @@ enum class eml22__FacetKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18851 */
+/* eml2_2ForGsoap.h:18857 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ChannelStatusKind
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ChannelStatusKind (-1443)
 
@@ -6877,7 +6877,7 @@ enum class eml22__ChannelStatusKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18876 */
+/* eml2_2ForGsoap.h:18882 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ExistenceKind
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ExistenceKind (-1444)
 
@@ -6889,7 +6889,7 @@ enum class eml22__ExistenceKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18901 */
+/* eml2_2ForGsoap.h:18907 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__GeochronologicalRank
 #define SOAP_TYPE_gsoap_eml2_2_eml22__GeochronologicalRank (-1445)
 
@@ -6904,7 +6904,7 @@ enum class eml22__GeochronologicalRank {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18917 */
+/* eml2_2ForGsoap.h:18923 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LithologyKind
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LithologyKind (-1446)
 
@@ -7054,7 +7054,7 @@ enum class eml22__LithologyKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:19064 */
+/* eml2_2ForGsoap.h:19070 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LithologyQualifierKind
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LithologyQualifierKind (-1447)
 
@@ -7364,7 +7364,7 @@ enum class eml22__LithologyQualifierKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:19375 */
+/* eml2_2ForGsoap.h:19381 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__LithostratigraphicRank
 #define SOAP_TYPE_gsoap_eml2_2_eml22__LithostratigraphicRank (-1448)
 
@@ -7377,7 +7377,7 @@ enum class eml22__LithostratigraphicRank {
 };
 #endif
 
-/* eml2_2ForGsoap.h:19423 */
+/* eml2_2ForGsoap.h:19429 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MatrixCementKind
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MatrixCementKind (-1449)
 
@@ -7395,7 +7395,7 @@ enum class eml22__MatrixCementKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:19442 */
+/* eml2_2ForGsoap.h:19448 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__MeasureClass
 #define SOAP_TYPE_gsoap_eml2_2_eml22__MeasureClass (-1450)
 
@@ -7588,7 +7588,7 @@ enum class eml22__MeasureClass {
 };
 #endif
 
-/* eml2_2ForGsoap.h:19632 */
+/* eml2_2ForGsoap.h:19638 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__QuantityClassKind
 #define SOAP_TYPE_gsoap_eml2_2_eml22__QuantityClassKind (-1451)
 
@@ -7782,7 +7782,7 @@ enum class eml22__QuantityClassKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:19837 */
+/* eml2_2ForGsoap.h:19843 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ReferenceCondition
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ReferenceCondition (-1452)
 
@@ -7801,7 +7801,7 @@ enum class eml22__ReferenceCondition {
 };
 #endif
 
-/* eml2_2ForGsoap.h:19870 */
+/* eml2_2ForGsoap.h:19876 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__WellboreDatumReference
 #define SOAP_TYPE_gsoap_eml2_2_eml22__WellboreDatumReference (-1453)
 
@@ -7826,7 +7826,7 @@ enum class eml22__WellboreDatumReference {
 };
 #endif
 
-/* eml2_2ForGsoap.h:19932 */
+/* eml2_2ForGsoap.h:19938 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__WellStatus
 #define SOAP_TYPE_gsoap_eml2_2_eml22__WellStatus (-1454)
 
@@ -7852,7 +7852,7 @@ enum class eml22__WellStatus {
 };
 #endif
 
-/* eml2_2ForGsoap.h:20025 */
+/* eml2_2ForGsoap.h:20031 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ActivityParameterKind
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ActivityParameterKind (-1455)
 
@@ -7867,7 +7867,7 @@ enum class eml22__ActivityParameterKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:20041 */
+/* eml2_2ForGsoap.h:20047 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__ReferencePressureKind
 #define SOAP_TYPE_gsoap_eml2_2_eml22__ReferencePressureKind (-1456)
 
@@ -7879,7 +7879,7 @@ enum class eml22__ReferencePressureKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:20062 */
+/* eml2_2ForGsoap.h:20068 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__AxisOrder2d
 #define SOAP_TYPE_gsoap_eml2_2_eml22__AxisOrder2d (-1457)
 
@@ -7894,7 +7894,7 @@ enum class eml22__AxisOrder2d {
 };
 #endif
 
-/* eml2_2ForGsoap.h:20102 */
+/* eml2_2ForGsoap.h:20108 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__EastOrWest
 #define SOAP_TYPE_gsoap_eml2_2_eml22__EastOrWest (-1458)
 
@@ -7905,7 +7905,7 @@ enum class eml22__EastOrWest {
 };
 #endif
 
-/* eml2_2ForGsoap.h:20122 */
+/* eml2_2ForGsoap.h:20128 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__NorthOrSouth
 #define SOAP_TYPE_gsoap_eml2_2_eml22__NorthOrSouth (-1459)
 
@@ -7916,7 +7916,7 @@ enum class eml22__NorthOrSouth {
 };
 #endif
 
-/* eml2_2ForGsoap.h:20142 */
+/* eml2_2ForGsoap.h:20148 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PrincipalMeridian
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PrincipalMeridian (-1460)
 
@@ -7961,7 +7961,7 @@ enum class eml22__PrincipalMeridian {
 };
 #endif
 
-/* eml2_2ForGsoap.h:20328 */
+/* eml2_2ForGsoap.h:20334 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__VerticalDirection
 #define SOAP_TYPE_gsoap_eml2_2_eml22__VerticalDirection (-1461)
 
@@ -8040,11 +8040,11 @@ class prodml21__WellElevationCoord;	/* eml2_2ForGsoap.h:369 */
 class prodml21__WellVerticalDepthCoord;	/* eml2_2ForGsoap.h:371 */
 class prodml21__CommonPropertiesProductVolume;	/* eml2_2ForGsoap.h:373 */
 class prodml21__AbstractMeasureData;	/* eml2_2ForGsoap.h:375 */
-union _prodml21__union_AbstractRefProductFlow;	/* eml2_2ForGsoap.h:22806 */
+union _prodml21__union_AbstractRefProductFlow;	/* eml2_2ForGsoap.h:22812 */
 class prodml21__AbstractRefProductFlow;	/* eml2_2ForGsoap.h:377 */
 class prodml21__AbstractRelatedFacilityObject;	/* eml2_2ForGsoap.h:379 */
 class prodml21__CurveDefinition;	/* eml2_2ForGsoap.h:383 */
-union _prodml21__union_OwnershipBusinessAcct;	/* eml2_2ForGsoap.h:22924 */
+union _prodml21__union_OwnershipBusinessAcct;	/* eml2_2ForGsoap.h:22930 */
 class prodml21__OwnershipBusinessAcct;	/* eml2_2ForGsoap.h:391 */
 class prodml21__ProductVolumeAlert;	/* eml2_2ForGsoap.h:397 */
 class prodml21__ProductVolumeBalanceDetail;	/* eml2_2ForGsoap.h:399 */
@@ -8071,7 +8071,7 @@ class prodml21__ProductFlowNetworkPlan;	/* eml2_2ForGsoap.h:445 */
 class prodml21__ProductFlowPort;	/* eml2_2ForGsoap.h:447 */
 class prodml21__ProductFlowUnit;	/* eml2_2ForGsoap.h:451 */
 class prodml21__RelativeCoordinate;	/* eml2_2ForGsoap.h:455 */
-union _prodml21__union_AbstractGasProducedRatioVolume;	/* eml2_2ForGsoap.h:24556 */
+union _prodml21__union_AbstractGasProducedRatioVolume;	/* eml2_2ForGsoap.h:24562 */
 class prodml21__AbstractGasProducedRatioVolume;	/* eml2_2ForGsoap.h:459 */
 class prodml21__AbstractLiquidDropoutPercVolume;	/* eml2_2ForGsoap.h:461 */
 class prodml21__AbstractOilVolShrinkage;	/* eml2_2ForGsoap.h:463 */
@@ -8159,18 +8159,18 @@ class prodml21__CompressibilityParameters;	/* eml2_2ForGsoap.h:719 */
 class prodml21__DeconvolutionOutput;	/* eml2_2ForGsoap.h:723 */
 class prodml21__DistributedParametersSubModel;	/* eml2_2ForGsoap.h:731 */
 class prodml21__InterferingFlowTestInterval;	/* eml2_2ForGsoap.h:733 */
-struct __prodml21__InternalFaultSubModel_sequence;	/* eml2_2ForGsoap.h:30465 */
+struct __prodml21__InternalFaultSubModel_sequence;	/* eml2_2ForGsoap.h:30471 */
 class prodml21__InternalFaultSubModel;	/* eml2_2ForGsoap.h:735 */
 class prodml21__LayerModel;	/* eml2_2ForGsoap.h:737 */
 class prodml21__LayerToLayerConnection;	/* eml2_2ForGsoap.h:739 */
 class prodml21__LocationIn2D;	/* eml2_2ForGsoap.h:741 */
-struct __prodml21__LogLogAnalysis_sequence;	/* eml2_2ForGsoap.h:30697 */
+struct __prodml21__LogLogAnalysis_sequence;	/* eml2_2ForGsoap.h:30703 */
 class prodml21__LogLogAnalysis;	/* eml2_2ForGsoap.h:743 */
 class prodml21__ReservoirZoneSubModel;	/* eml2_2ForGsoap.h:765 */
 class prodml21__ResqmlModelRef;	/* eml2_2ForGsoap.h:767 */
-struct __prodml21__SingleBoundarySubModel_sequence;	/* eml2_2ForGsoap.h:30834 */
+struct __prodml21__SingleBoundarySubModel_sequence;	/* eml2_2ForGsoap.h:30840 */
 class prodml21__SingleBoundarySubModel;	/* eml2_2ForGsoap.h:771 */
-struct __prodml21__SingleFractureSubModel_sequence;	/* eml2_2ForGsoap.h:30875 */
+struct __prodml21__SingleFractureSubModel_sequence;	/* eml2_2ForGsoap.h:30881 */
 class prodml21__SingleFractureSubModel;	/* eml2_2ForGsoap.h:775 */
 class prodml21__SpecializedAnalysis;	/* eml2_2ForGsoap.h:777 */
 class prodml21__AbstractModelSection;	/* eml2_2ForGsoap.h:781 */
@@ -8202,7 +8202,7 @@ class eml22__AbstractActivityParameter;	/* eml2_2ForGsoap.h:1881 */
 class eml22__AbstractParameterKey;	/* eml2_2ForGsoap.h:1883 */
 class eml22__ParameterTemplate;	/* eml2_2ForGsoap.h:1897 */
 class eml22__AbstractPressureValue;	/* eml2_2ForGsoap.h:1907 */
-union _eml22__union_AbstractTemperaturePressure;	/* eml2_2ForGsoap.h:32296 */
+union _eml22__union_AbstractTemperaturePressure;	/* eml2_2ForGsoap.h:32302 */
 class eml22__AbstractTemperaturePressure;	/* eml2_2ForGsoap.h:1909 */
 class eml22__DensityValue;	/* eml2_2ForGsoap.h:1911 */
 class eml22__FlowRateValue;	/* eml2_2ForGsoap.h:1913 */
@@ -8382,7 +8382,7 @@ class eml22__TimeIndexParameter;	/* eml2_2ForGsoap.h:1901 */
 class eml22__TimeIndexParameterKey;	/* eml2_2ForGsoap.h:1903 */
 class eml22__AbsolutePressure;	/* eml2_2ForGsoap.h:1905 */
 class eml22__GaugePressure;	/* eml2_2ForGsoap.h:1915 */
-union _eml22__union_ReferenceTemperaturePressure_;	/* eml2_2ForGsoap.h:41479 */
+union _eml22__union_ReferenceTemperaturePressure_;	/* eml2_2ForGsoap.h:41485 */
 class eml22__ReferenceTemperaturePressure;	/* eml2_2ForGsoap.h:1921 */
 class eml22__RelativePressure;	/* eml2_2ForGsoap.h:1923 */
 class eml22__TemperaturePressure;	/* eml2_2ForGsoap.h:1925 */
@@ -9403,8 +9403,8 @@ class SOAP_CMAC prodml21__FluidCharacterizationTableColumn {
         std::string *fluidComponentReference;
         /// Optional attribute 'name' of XML schema type 'eml22:String64'
         std::string *name;
-        /// Optional attribute 'sequence' of XML schema type 'xsd:unsignedLong'
-        ULONG64 *sequence;
+        /// Optional attribute 'sequence' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 *sequence;
         /// Required attribute 'uom' of XML schema type 'eml22:String64'
         std::string uom;
         /// Context that manages this object
@@ -9677,8 +9677,8 @@ class SOAP_CMAC prodml21__ReferenceSeparatorStage {
         eml22__AbstractPressureValue *SeparatorPressure;
         /// Optional element 'prodml21:SeparatorTemperature' of XML schema type 'eml22:ThermodynamicTemperatureMeasureExt'
         eml22__ThermodynamicTemperatureMeasureExt *SeparatorTemperature;
-        /// Optional element 'prodml21:SeparatorNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 *SeparatorNumber;
+        /// Optional element 'prodml21:SeparatorNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 *SeparatorNumber;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -11020,7 +11020,7 @@ class SOAP_CMAC prodml21__AbstractMeasureData {
 };
 #endif
 
-/* eml2_2ForGsoap.h:22806 */
+/* eml2_2ForGsoap.h:22812 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__union_AbstractRefProductFlow
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__union_AbstractRefProductFlow (-1576)
 /* union serializable only when used as a member of a struct or class with a union variant selector */
@@ -11108,8 +11108,8 @@ class SOAP_CMAC prodml21__AbstractRelatedFacilityObject {
 /* complex XML schema type 'prodml21:CurveDefinition': */
 class SOAP_CMAC prodml21__CurveDefinition {
       public:
-        /// Required element 'prodml21:Order' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Order;
+        /// Required element 'prodml21:Order' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 Order;
         /// Required element 'prodml21:Parameter' of XML schema type 'eml22:String64'
         std::string Parameter;
         /// Optional element 'prodml21:IsIndex' of XML schema type 'xsd:boolean'
@@ -11148,7 +11148,7 @@ class SOAP_CMAC prodml21__CurveDefinition {
 };
 #endif
 
-/* eml2_2ForGsoap.h:22924 */
+/* eml2_2ForGsoap.h:22930 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__union_OwnershipBusinessAcct
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__union_OwnershipBusinessAcct (-1580)
 /* union serializable only when used as a member of a struct or class with a union variant selector */
@@ -12396,7 +12396,7 @@ class SOAP_CMAC prodml21__RelativeCoordinate {
 };
 #endif
 
-/* eml2_2ForGsoap.h:24556 */
+/* eml2_2ForGsoap.h:24562 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__union_AbstractGasProducedRatioVolume
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__union_AbstractGasProducedRatioVolume (-1643)
 /* union serializable only when used as a member of a struct or class with a union variant selector */
@@ -12516,8 +12516,8 @@ class SOAP_CMAC prodml21__AbstractOilVolShrinkage {
 /* complex XML schema type 'prodml21:AtmosphericFlashTestAndCompositionalAnalysis': */
 class SOAP_CMAC prodml21__AtmosphericFlashTestAndCompositionalAnalysis {
       public:
-        /// Required element 'prodml21:TestNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TestNumber;
+        /// Required element 'prodml21:TestNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 TestNumber;
         /// Optional element 'prodml21:Date' of XML schema type 'xsd:date'
         std::string *Date;
         /// Optional element 'prodml21:FlashToPressure' of XML schema type 'eml22:AbstractPressureValue'
@@ -12580,8 +12580,8 @@ class SOAP_CMAC prodml21__AtmosphericFlashTestAndCompositionalAnalysis {
 /* complex XML schema type 'prodml21:ConstantCompositionExpansionTest': */
 class SOAP_CMAC prodml21__ConstantCompositionExpansionTest {
       public:
-        /// Required element 'prodml21:TestNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TestNumber;
+        /// Required element 'prodml21:TestNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 TestNumber;
         /// Required element 'prodml21:TestTemperature' of XML schema type 'eml22:ThermodynamicTemperatureMeasure'
         eml22__ThermodynamicTemperatureMeasure *TestTemperature;
         /// Optional element 'prodml21:SaturationPressure' of XML schema type 'prodml21:SaturationPressure'
@@ -12630,8 +12630,8 @@ class SOAP_CMAC prodml21__ConstantCompositionExpansionTest {
 /* complex XML schema type 'prodml21:ConstantCompositionExpansionTestStep': */
 class SOAP_CMAC prodml21__ConstantCompositionExpansionTestStep {
       public:
-        /// Required element 'prodml21:StepNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 StepNumber;
+        /// Required element 'prodml21:StepNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 StepNumber;
         /// Required element 'prodml21:StepPressure' of XML schema type 'eml22:PressureMeasure'
         eml22__PressureMeasure *StepPressure;
         /// Optional element 'prodml21:LiquidFraction' of XML schema type 'prodml21:RelativeVolumeRatio'
@@ -12704,8 +12704,8 @@ class SOAP_CMAC prodml21__ConstantCompositionExpansionTestStep {
 /* complex XML schema type 'prodml21:ConstantVolumeDepletionTest': */
 class SOAP_CMAC prodml21__ConstantVolumeDepletionTest {
       public:
-        /// Required element 'prodml21:TestNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TestNumber;
+        /// Required element 'prodml21:TestNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 TestNumber;
         /// Required element 'prodml21:TestTemperature' of XML schema type 'eml22:ThermodynamicTemperatureMeasure'
         eml22__ThermodynamicTemperatureMeasure *TestTemperature;
         /// Optional element 'prodml21:CumulativeGasProducedReferenceStd' of XML schema type 'eml22:VolumeMeasure'
@@ -12754,8 +12754,8 @@ class SOAP_CMAC prodml21__ConstantVolumeDepletionTest {
 /* complex XML schema type 'prodml21:DifferentialLiberationTest': */
 class SOAP_CMAC prodml21__DifferentialLiberationTest {
       public:
-        /// Required element 'prodml21:TestNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TestNumber;
+        /// Required element 'prodml21:TestNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 TestNumber;
         /// Required element 'prodml21:TestTemperature' of XML schema type 'eml22:ThermodynamicTemperatureMeasure'
         eml22__ThermodynamicTemperatureMeasure *TestTemperature;
         /// Required element 'prodml21:SaturationPressure' of XML schema type 'prodml21:SaturationPressure'
@@ -12938,8 +12938,8 @@ class SOAP_CMAC prodml21__FluidAnalysisReport {
 /* complex XML schema type 'prodml21:FluidCvdTestStep': */
 class SOAP_CMAC prodml21__FluidCvdTestStep {
       public:
-        /// Required element 'prodml21:StepNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 StepNumber;
+        /// Required element 'prodml21:StepNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 StepNumber;
         /// Required element 'prodml21:StepPressure' of XML schema type 'eml22:PressureMeasure'
         eml22__PressureMeasure *StepPressure;
         /// Optional element 'prodml21:OilViscosity' of XML schema type 'eml22:DynamicViscosityMeasure'
@@ -13010,8 +13010,8 @@ class SOAP_CMAC prodml21__FluidCvdTestStep {
 /* complex XML schema type 'prodml21:FluidDifferentialLiberationTestStep': */
 class SOAP_CMAC prodml21__FluidDifferentialLiberationTestStep {
       public:
-        /// Required element 'prodml21:StepNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 StepNumber;
+        /// Required element 'prodml21:StepNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 StepNumber;
         /// Required element 'prodml21:StepPressure' of XML schema type 'eml22:PressureMeasure'
         eml22__PressureMeasure *StepPressure;
         /// Optional element 'prodml21:StepTemperature' of XML schema type 'eml22:ThermodynamicTemperatureMeasure'
@@ -13096,8 +13096,8 @@ class SOAP_CMAC prodml21__FluidDifferentialLiberationTestStep {
 /* complex XML schema type 'prodml21:FluidSeparatorTest': */
 class SOAP_CMAC prodml21__FluidSeparatorTest {
       public:
-        /// Required element 'prodml21:TestNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TestNumber;
+        /// Required element 'prodml21:TestNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 TestNumber;
         /// Optional element 'prodml21:ReservoirTemperature' of XML schema type 'eml22:ThermodynamicTemperatureMeasure'
         eml22__ThermodynamicTemperatureMeasure *ReservoirTemperature;
         /// Optional element 'prodml21:SaturationPressure' of XML schema type 'prodml21:SaturationPressure'
@@ -13152,8 +13152,8 @@ class SOAP_CMAC prodml21__FluidSeparatorTest {
 /* complex XML schema type 'prodml21:FluidSeparatorTestStep': */
 class SOAP_CMAC prodml21__FluidSeparatorTestStep {
       public:
-        /// Required element 'prodml21:StepNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 StepNumber;
+        /// Required element 'prodml21:StepNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 StepNumber;
         /// Required element 'prodml21:StepTemperature' of XML schema type 'eml22:ThermodynamicTemperatureMeasure'
         eml22__ThermodynamicTemperatureMeasure *StepTemperature;
         /// Required element 'prodml21:StepPressure' of XML schema type 'eml22:PressureMeasure'
@@ -13320,8 +13320,8 @@ class SOAP_CMAC prodml21__InjectedGas {
 /* complex XML schema type 'prodml21:InterfacialTensionTest': */
 class SOAP_CMAC prodml21__InterfacialTensionTest {
       public:
-        /// Required element 'prodml21:TestNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TestNumber;
+        /// Required element 'prodml21:TestNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 TestNumber;
         /// Required element 'prodml21:WettingPhase' of XML schema type 'prodml21:ThermodynamicPhase'
         prodml21__ThermodynamicPhase WettingPhase;
         /// Required element 'prodml21:nonWettingPhase' of XML schema type 'prodml21:ThermodynamicPhase'
@@ -13368,8 +13368,8 @@ class SOAP_CMAC prodml21__InterfacialTensionTest {
 /* complex XML schema type 'prodml21:InterfacialTensionTestStep': */
 class SOAP_CMAC prodml21__InterfacialTensionTestStep {
       public:
-        /// Required element 'prodml21:StepNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 StepNumber;
+        /// Required element 'prodml21:StepNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 StepNumber;
         /// Optional element 'prodml21:StepPressure' of XML schema type 'eml22:PressureMeasure'
         eml22__PressureMeasure *StepPressure;
         /// Optional element 'prodml21:StepTemperature' of XML schema type 'eml22:ThermodynamicTemperatureMeasure'
@@ -13546,8 +13546,8 @@ class SOAP_CMAC prodml21__MassOut {
 /* complex XML schema type 'prodml21:MultipleContactMiscibilityTest': */
 class SOAP_CMAC prodml21__MultipleContactMiscibilityTest {
       public:
-        /// Required element 'prodml21:TestNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TestNumber;
+        /// Required element 'prodml21:TestNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 TestNumber;
         /// Optional element 'prodml21:GasSolventCompositionReference' of XML schema type 'eml22:String64'
         std::string *GasSolventCompositionReference;
         /// Optional element 'prodml21:MixRatio' of XML schema type 'eml22:DimensionlessMeasure'
@@ -13588,8 +13588,8 @@ class SOAP_CMAC prodml21__MultipleContactMiscibilityTest {
 /* complex XML schema type 'prodml21:OtherMeasurementTest': */
 class SOAP_CMAC prodml21__OtherMeasurementTest {
       public:
-        /// Required element 'prodml21:TestNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TestNumber;
+        /// Required element 'prodml21:TestNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 TestNumber;
         /// Optional element 'prodml21:Remark' of XML schema type 'eml22:String2000'
         std::string *Remark;
         /// Optional element 'prodml21:FluidCharacterizationTable' of XML schema type 'prodml21:FluidCharacterizationTable'
@@ -13634,8 +13634,8 @@ class SOAP_CMAC prodml21__OtherMeasurementTest {
 /* complex XML schema type 'prodml21:OtherMeasurementTestStep': */
 class SOAP_CMAC prodml21__OtherMeasurementTestStep {
       public:
-        /// Required element 'prodml21:StepNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 StepNumber;
+        /// Required element 'prodml21:StepNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 StepNumber;
         /// Optional element 'prodml21:StepPressure' of XML schema type 'eml22:PressureMeasure'
         eml22__PressureMeasure *StepPressure;
         /// Optional element 'prodml21:StepTemperature' of XML schema type 'eml22:ThermodynamicTemperatureMeasure'
@@ -14116,8 +14116,8 @@ class SOAP_CMAC prodml21__Sara {
 /* complex XML schema type 'prodml21:SaturationTest': */
 class SOAP_CMAC prodml21__SaturationTest {
       public:
-        /// Required element 'prodml21:TestNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TestNumber;
+        /// Required element 'prodml21:TestNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 TestNumber;
         /// Required element 'prodml21:TestTemperature' of XML schema type 'eml22:ThermodynamicTemperatureMeasure'
         eml22__ThermodynamicTemperatureMeasure *TestTemperature;
         /// Required element 'prodml21:SaturationPressure' of XML schema type 'prodml21:SaturationPressure'
@@ -14252,8 +14252,8 @@ class SOAP_CMAC prodml21__SlimTubeSpecification {
 /* complex XML schema type 'prodml21:SlimTubeTest': */
 class SOAP_CMAC prodml21__SlimTubeTest {
       public:
-        /// Required element 'prodml21:TestNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TestNumber;
+        /// Required element 'prodml21:TestNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 TestNumber;
         /// Required element 'prodml21:TestTemperature' of XML schema type 'eml22:ThermodynamicTemperatureMeasure'
         eml22__ThermodynamicTemperatureMeasure *TestTemperature;
         /// Optional element 'prodml21:PumpTemperature' of XML schema type 'eml22:ThermodynamicTemperatureMeasure'
@@ -14300,8 +14300,8 @@ class SOAP_CMAC prodml21__SlimTubeTest {
 /* complex XML schema type 'prodml21:SlimTubeTestStep': */
 class SOAP_CMAC prodml21__SlimTubeTestStep {
       public:
-        /// Required element 'prodml21:StepNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 StepNumber;
+        /// Required element 'prodml21:StepNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 StepNumber;
         /// Optional element 'prodml21:StepAveragePressure' of XML schema type 'eml22:PressureMeasure'
         eml22__PressureMeasure *StepAveragePressure;
         /// Optional element 'prodml21:Remark' of XML schema type 'eml22:String2000'
@@ -14344,8 +14344,8 @@ class SOAP_CMAC prodml21__SlimTubeTestStep {
 /* complex XML schema type 'prodml21:SlimTubeTestVolumeStep': */
 class SOAP_CMAC prodml21__SlimTubeTestVolumeStep {
       public:
-        /// Required element 'prodml21:StepNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 StepNumber;
+        /// Required element 'prodml21:StepNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 StepNumber;
         /// Optional element 'prodml21:DifferentialPressure' of XML schema type 'eml22:PressureMeasure'
         eml22__PressureMeasure *DifferentialPressure;
         /// Optional element 'prodml21:RunTime' of XML schema type 'eml22:String64'
@@ -14540,8 +14540,8 @@ class SOAP_CMAC prodml21__STOFlashedLiquid {
 /* complex XML schema type 'prodml21:SwellingTest': */
 class SOAP_CMAC prodml21__SwellingTest {
       public:
-        /// Required element 'prodml21:TestNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TestNumber;
+        /// Required element 'prodml21:TestNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 TestNumber;
         /// Required element 'prodml21:TestTemperature' of XML schema type 'eml22:ThermodynamicTemperatureMeasure'
         eml22__ThermodynamicTemperatureMeasure *TestTemperature;
         /// Optional element 'prodml21:InjectedGas' of XML schema type 'prodml21:InjectedGas'
@@ -14586,8 +14586,8 @@ class SOAP_CMAC prodml21__SwellingTest {
 /* complex XML schema type 'prodml21:SwellingTestStep': */
 class SOAP_CMAC prodml21__SwellingTestStep {
       public:
-        /// Required element 'prodml21:StepNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 StepNumber;
+        /// Required element 'prodml21:StepNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 StepNumber;
         /// Optional element 'prodml21:IncrementalGasAdded' of XML schema type 'prodml21:RefInjectedGasAdded'
         std::vector<prodml21__RefInjectedGasAdded *> IncrementalGasAdded;
         /// Optional element 'prodml21:CumulativeGasAdded' of XML schema type 'prodml21:RefInjectedGasAdded'
@@ -14644,8 +14644,8 @@ class SOAP_CMAC prodml21__SwellingTestStep {
 /* complex XML schema type 'prodml21:VaporLiquidEquilibriumTest': */
 class SOAP_CMAC prodml21__VaporLiquidEquilibriumTest {
       public:
-        /// Required element 'prodml21:TestNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TestNumber;
+        /// Required element 'prodml21:TestNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 TestNumber;
         /// Required element 'prodml21:TestTemperature' of XML schema type 'eml22:ThermodynamicTemperatureMeasure'
         eml22__ThermodynamicTemperatureMeasure *TestTemperature;
         /// Optional element 'prodml21:TestPressure' of XML schema type 'eml22:PressureMeasure'
@@ -14762,8 +14762,8 @@ class SOAP_CMAC prodml21__ViscosityAtTemperature {
 /* complex XML schema type 'prodml21:WaterAnalysisTest': */
 class SOAP_CMAC prodml21__WaterAnalysisTest {
       public:
-        /// Required element 'prodml21:TestNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TestNumber;
+        /// Required element 'prodml21:TestNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 TestNumber;
         /// Optional element 'prodml21:LiquidGravity' of XML schema type 'xsd:double'
         double *LiquidGravity;
         /// Optional element 'prodml21:Salinity' of XML schema type 'eml22:MassPerMassMeasure'
@@ -14818,8 +14818,8 @@ class SOAP_CMAC prodml21__WaterAnalysisTest {
 /* complex XML schema type 'prodml21:WaterAnalysisTestStep': */
 class SOAP_CMAC prodml21__WaterAnalysisTestStep {
       public:
-        /// Required element 'prodml21:StepNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 StepNumber;
+        /// Required element 'prodml21:StepNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 StepNumber;
         /// Required element 'prodml21:StepPressure' of XML schema type 'eml22:PressureMeasure'
         eml22__PressureMeasure *StepPressure;
         /// Required element 'prodml21:StepTemperature' of XML schema type 'eml22:ThermodynamicTemperatureMeasure'
@@ -16699,7 +16699,7 @@ class SOAP_CMAC prodml21__InterferingFlowTestInterval {
 };
 #endif
 
-/* eml2_2ForGsoap.h:30465 */
+/* eml2_2ForGsoap.h:30471 */
 #ifndef SOAP_TYPE_gsoap_eml2_2___prodml21__InternalFaultSubModel_sequence
 #define SOAP_TYPE_gsoap_eml2_2___prodml21__InternalFaultSubModel_sequence (-1775)
 /* Wrapper: */
@@ -16898,7 +16898,7 @@ class SOAP_CMAC prodml21__LocationIn2D {
 };
 #endif
 
-/* eml2_2ForGsoap.h:30697 */
+/* eml2_2ForGsoap.h:30703 */
 #ifndef SOAP_TYPE_gsoap_eml2_2___prodml21__LogLogAnalysis_sequence
 #define SOAP_TYPE_gsoap_eml2_2___prodml21__LogLogAnalysis_sequence (-1788)
 /* Wrapper: */
@@ -17039,7 +17039,7 @@ class SOAP_CMAC prodml21__ResqmlModelRef {
 };
 #endif
 
-/* eml2_2ForGsoap.h:30834 */
+/* eml2_2ForGsoap.h:30840 */
 #ifndef SOAP_TYPE_gsoap_eml2_2___prodml21__SingleBoundarySubModel_sequence
 #define SOAP_TYPE_gsoap_eml2_2___prodml21__SingleBoundarySubModel_sequence (-1798)
 /* Wrapper: */
@@ -17094,7 +17094,7 @@ class SOAP_CMAC prodml21__SingleBoundarySubModel {
 };
 #endif
 
-/* eml2_2ForGsoap.h:30875 */
+/* eml2_2ForGsoap.h:30881 */
 #ifndef SOAP_TYPE_gsoap_eml2_2___prodml21__SingleFractureSubModel_sequence
 #define SOAP_TYPE_gsoap_eml2_2___prodml21__SingleFractureSubModel_sequence (-1800)
 /* Wrapper: */
@@ -17753,8 +17753,8 @@ class SOAP_CMAC eml22__PropertyKindFacet {
 /* complex XML schema type 'eml22:TimeIndex': */
 class SOAP_CMAC eml22__TimeIndex {
       public:
-        /// Required element 'eml22:Index' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Index;
+        /// Required element 'eml22:Index' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 Index;
         /// Required element 'eml22:TimeSeries' of XML schema type 'eml22:DataObjectReference'
         eml22__DataObjectReference *TimeSeries;
         /// Context that manages this object
@@ -17791,10 +17791,10 @@ class SOAP_CMAC eml22__TimeIndex {
 /* complex XML schema type 'eml22:TimeIndices': */
 class SOAP_CMAC eml22__TimeIndices {
       public:
-        /// Required element 'eml22:TimeIndexCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TimeIndexCount;
-        /// Optional element 'eml22:TimeIndexStart' of XML schema type 'xsd:unsignedLong'
-        ULONG64 *TimeIndexStart;
+        /// Required element 'eml22:TimeIndexCount' of XML schema type 'eml22:PositiveLong'
+        LONG64 TimeIndexCount;
+        /// Optional element 'eml22:TimeIndexStart' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 *TimeIndexStart;
         /// Optional element 'eml22:SimulatorTimeStep' of XML schema type 'eml22:AbstractIntegerArray'
         eml22__AbstractIntegerArray *SimulatorTimeStep;
         /// Required element 'eml22:UseInterval' of XML schema type 'xsd:boolean'
@@ -18183,12 +18183,12 @@ class SOAP_CMAC eml22__ExternalDataset {
 /* complex XML schema type 'eml22:ExternalDatasetPart': */
 class SOAP_CMAC eml22__ExternalDatasetPart {
       public:
-        /// Required element 'eml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml22:Count' of XML schema type 'eml22:PositiveLong'
+        LONG64 Count;
         /// Required element 'eml22:PathInExternalFile' of XML schema type 'eml22:String2000'
         std::string PathInExternalFile;
-        /// Required element 'eml22:StartIndex' of XML schema type 'xsd:unsignedLong'
-        ULONG64 StartIndex;
+        /// Required element 'eml22:StartIndex' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 StartIndex;
         /// Required element 'eml22:EpcExternalPartReference' of XML schema type 'eml22:DataObjectReference'
         eml22__DataObjectReference *EpcExternalPartReference;
         /// Context that manages this object
@@ -18383,7 +18383,7 @@ class SOAP_CMAC eml22__AbstractPressureValue {
 };
 #endif
 
-/* eml2_2ForGsoap.h:32296 */
+/* eml2_2ForGsoap.h:32302 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__eml22__union_AbstractTemperaturePressure
 #define SOAP_TYPE_gsoap_eml2_2__eml22__union_AbstractTemperaturePressure (-1831)
 /* union serializable only when used as a member of a struct or class with a union variant selector */
@@ -19294,8 +19294,8 @@ class SOAP_CMAC prodml21__PlusFluidComponent : public prodml21__AbstractFluidCom
         std::string Kind;
         /// Optional element 'prodml21:SpecificGravity' of XML schema type 'xsd:double'
         double *SpecificGravity;
-        /// Optional element 'prodml21:StartingCarbonNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 *StartingCarbonNumber;
+        /// Optional element 'prodml21:StartingCarbonNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 *StartingCarbonNumber;
         /// Optional element 'prodml21:StartingBoilingPoint' of XML schema type 'eml22:ThermodynamicTemperatureMeasure'
         eml22__ThermodynamicTemperatureMeasure *StartingBoilingPoint;
         /// Optional element 'prodml21:AvgDensity' of XML schema type 'eml22:MassPerVolumeMeasure'
@@ -19340,10 +19340,10 @@ class SOAP_CMAC prodml21__PseudoFluidComponent : public prodml21__AbstractFluidC
         std::string Kind;
         /// Optional element 'prodml21:SpecificGravity' of XML schema type 'xsd:double'
         double *SpecificGravity;
-        /// Optional element 'prodml21:StartingCarbonNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 *StartingCarbonNumber;
-        /// Optional element 'prodml21:EndingCarbonNumber' of XML schema type 'xsd:unsignedLong'
-        ULONG64 *EndingCarbonNumber;
+        /// Optional element 'prodml21:StartingCarbonNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 *StartingCarbonNumber;
+        /// Optional element 'prodml21:EndingCarbonNumber' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 *EndingCarbonNumber;
         /// Optional element 'prodml21:AvgMolecularWeight' of XML schema type 'eml22:MolecularWeightMeasure'
         eml22__MolecularWeightMeasure *AvgMolecularWeight;
         /// Optional element 'prodml21:AvgDensity' of XML schema type 'eml22:MassPerVolumeMeasure'
@@ -19546,8 +19546,8 @@ class SOAP_CMAC prodml21__StockTankOil : public prodml21__AbstractFluidComponent
 /* complex XML schema type 'prodml21:CurveData': */
 class SOAP_CMAC prodml21__CurveData : public prodml21__AbstractMeasureData {
       public:
-        /// Required element 'prodml21:Index' of XML schema type 'xsd:unsignedLong'
-        std::vector<ULONG64> Index;
+        /// Required element 'prodml21:Index' of XML schema type 'eml22:PositiveLong'
+        std::vector<LONG64> Index;
         /// Required element 'prodml21:Value' of XML schema type 'xsd:double'
         std::vector<double> Value;
         /// Required attribute 'uid' of XML schema type 'eml22:String64'
@@ -20425,8 +20425,8 @@ class SOAP_CMAC prodml21__DownholeSampleAcquisition : public prodml21__FluidSamp
         eml22__LengthMeasure *BaseMD;
         /// Optional element 'prodml21:ToolKind' of XML schema type 'eml22:String64'
         std::string *ToolKind;
-        /// Required element 'prodml21:SamplingRun' of XML schema type 'xsd:unsignedLong'
-        ULONG64 SamplingRun;
+        /// Required element 'prodml21:SamplingRun' of XML schema type 'eml22:NonNegativeLong'
+        LONG64 SamplingRun;
         /// Required element 'prodml21:Wellbore' of XML schema type 'eml22:DataObjectReference'
         eml22__DataObjectReference *Wellbore;
         /// Optional element 'prodml21:WellboreCompletion' of XML schema type 'eml22:DataObjectReference'
@@ -25212,7 +25212,7 @@ class SOAP_CMAC eml22__GaugePressure : public eml22__AbstractPressureValue {
 };
 #endif
 
-/* eml2_2ForGsoap.h:41479 */
+/* eml2_2ForGsoap.h:41485 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__eml22__union_ReferenceTemperaturePressure_
 #define SOAP_TYPE_gsoap_eml2_2__eml22__union_ReferenceTemperaturePressure_ (-1955)
 /* union serializable only when used as a member of a struct or class with a union variant selector */
@@ -25370,8 +25370,8 @@ class SOAP_CMAC eml22__GeodeticCrs : public eml22__AbstractObject {
 /* complex XML schema type 'eml22:GeodeticEpsgCrs': */
 class SOAP_CMAC eml22__GeodeticEpsgCrs : public eml22__AbstractGeodeticCrs {
       public:
-        /// Required element 'eml22:EpsgCode' of XML schema type 'xsd:unsignedLong'
-        ULONG64 EpsgCode;
+        /// Required element 'eml22:EpsgCode' of XML schema type 'eml22:PositiveLong'
+        LONG64 EpsgCode;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_2_eml22__GeodeticEpsgCrs
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_eml22__GeodeticEpsgCrs; }
@@ -25596,8 +25596,8 @@ class SOAP_CMAC eml22__ProjectedCrs : public eml22__AbstractObject {
 /* complex XML schema type 'eml22:ProjectedEpsgCrs': */
 class SOAP_CMAC eml22__ProjectedEpsgCrs : public eml22__AbstractProjectedCrs {
       public:
-        /// Required element 'eml22:EpsgCode' of XML schema type 'xsd:unsignedLong'
-        ULONG64 EpsgCode;
+        /// Required element 'eml22:EpsgCode' of XML schema type 'eml22:PositiveLong'
+        LONG64 EpsgCode;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_2_eml22__ProjectedEpsgCrs
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_eml22__ProjectedEpsgCrs; }
@@ -25770,8 +25770,8 @@ class SOAP_CMAC eml22__VerticalCrs : public eml22__AbstractObject {
 /* complex XML schema type 'eml22:VerticalEpsgCrs': */
 class SOAP_CMAC eml22__VerticalEpsgCrs : public eml22__AbstractVerticalCrs {
       public:
-        /// Required element 'eml22:EpsgCode' of XML schema type 'xsd:unsignedLong'
-        ULONG64 EpsgCode;
+        /// Required element 'eml22:EpsgCode' of XML schema type 'eml22:PositiveLong'
+        LONG64 EpsgCode;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_2_eml22__VerticalEpsgCrs
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_eml22__VerticalEpsgCrs; }
@@ -29132,8 +29132,8 @@ class SOAP_CMAC eml22__AbstractIntegerArray : public eml22__AbstractNumericArray
 /* complex XML schema type 'eml22:BooleanArrayFromIndexArray': */
 class SOAP_CMAC eml22__BooleanArrayFromIndexArray : public eml22__AbstractBooleanArray {
       public:
-        /// Required element 'eml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml22:Count' of XML schema type 'eml22:PositiveLong'
+        LONG64 Count;
         /// Required element 'eml22:Indices' of XML schema type 'eml22:AbstractIntegerArray'
         eml22__AbstractIntegerArray *Indices;
         /// Required element 'eml22:IndexIsTrue' of XML schema type 'xsd:boolean'
@@ -29172,8 +29172,8 @@ class SOAP_CMAC eml22__BooleanConstantArray : public eml22__AbstractBooleanArray
       public:
         /// Required element 'eml22:Value' of XML schema type 'xsd:boolean'
         bool Value;
-        /// Required element 'eml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml22:Count' of XML schema type 'eml22:PositiveLong'
+        LONG64 Count;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_2_eml22__BooleanConstantArray
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_eml22__BooleanConstantArray; }
@@ -29320,8 +29320,8 @@ class SOAP_CMAC eml22__StringConstantArray : public eml22__AbstractStringArray {
       public:
         /// Required element 'eml22:Value' of XML schema type 'eml22:String2000'
         std::string Value;
-        /// Required element 'eml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml22:Count' of XML schema type 'eml22:PositiveLong'
+        LONG64 Count;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_2_eml22__StringConstantArray
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_eml22__StringConstantArray; }
@@ -44186,8 +44186,8 @@ class SOAP_CMAC eml22__FloatingPointConstantArray : public eml22__AbstractFloati
       public:
         /// Required element 'eml22:Value' of XML schema type 'xsd:double'
         double Value;
-        /// Required element 'eml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml22:Count' of XML schema type 'eml22:PositiveLong'
+        LONG64 Count;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_2_eml22__FloatingPointConstantArray
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_eml22__FloatingPointConstantArray; }
@@ -44290,8 +44290,8 @@ class SOAP_CMAC eml22__FloatingPointLatticeArray : public eml22__AbstractFloatin
 /* complex XML schema type 'eml22:IntegerArrayFromBooleanMaskArray': */
 class SOAP_CMAC eml22__IntegerArrayFromBooleanMaskArray : public eml22__AbstractIntegerArray {
       public:
-        /// Required element 'eml22:TotalIndexCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TotalIndexCount;
+        /// Required element 'eml22:TotalIndexCount' of XML schema type 'eml22:PositiveLong'
+        LONG64 TotalIndexCount;
         /// Required element 'eml22:Mask' of XML schema type 'eml22:AbstractBooleanArray'
         eml22__AbstractBooleanArray *Mask;
       public:
@@ -44328,8 +44328,8 @@ class SOAP_CMAC eml22__IntegerConstantArray : public eml22__AbstractIntegerArray
       public:
         /// Required element 'eml22:Value' of XML schema type 'xsd:long'
         LONG64 Value;
-        /// Required element 'eml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml22:Count' of XML schema type 'eml22:PositiveLong'
+        LONG64 Count;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_2_eml22__IntegerConstantArray
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_eml22__IntegerConstantArray; }
@@ -44434,8 +44434,8 @@ class SOAP_CMAC eml22__IntegerLatticeArray : public eml22__AbstractIntegerArray 
 /* complex XML schema type 'eml22:IntegerRangeArray': */
 class SOAP_CMAC eml22__IntegerRangeArray : public eml22__AbstractIntegerArray {
       public:
-        /// Required element 'eml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml22:Count' of XML schema type 'eml22:PositiveLong'
+        LONG64 Count;
         /// Required element 'eml22:Value' of XML schema type 'xsd:long'
         LONG64 Value;
       public:
@@ -45219,7 +45219,7 @@ class SOAP_CMAC eml22__FloatExternalArray : public eml22__FloatingPointExternalA
 };
 #endif
 
-/* eml2_2ForGsoap.h:59300 */
+/* eml2_2ForGsoap.h:59306 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_gsoap_eml2_2_SOAP_ENV__Header
 #define SOAP_TYPE_gsoap_eml2_2_SOAP_ENV__Header (-845619200)
@@ -45236,7 +45236,7 @@ struct SOAP_CMAC SOAP_ENV__Header {
 #endif
 #endif
 
-/* eml2_2ForGsoap.h:59300 */
+/* eml2_2ForGsoap.h:59306 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_gsoap_eml2_2_SOAP_ENV__Code
 #define SOAP_TYPE_gsoap_eml2_2_SOAP_ENV__Code (-845619201)
@@ -45259,7 +45259,7 @@ struct SOAP_CMAC SOAP_ENV__Code {
 #endif
 #endif
 
-/* eml2_2ForGsoap.h:59300 */
+/* eml2_2ForGsoap.h:59306 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_gsoap_eml2_2_SOAP_ENV__Detail
 #define SOAP_TYPE_gsoap_eml2_2_SOAP_ENV__Detail (-845619203)
@@ -45282,7 +45282,7 @@ struct SOAP_CMAC SOAP_ENV__Detail {
 #endif
 #endif
 
-/* eml2_2ForGsoap.h:59300 */
+/* eml2_2ForGsoap.h:59306 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_gsoap_eml2_2_SOAP_ENV__Reason
 #define SOAP_TYPE_gsoap_eml2_2_SOAP_ENV__Reason (-845619206)
@@ -45302,7 +45302,7 @@ struct SOAP_CMAC SOAP_ENV__Reason {
 #endif
 #endif
 
-/* eml2_2ForGsoap.h:59300 */
+/* eml2_2ForGsoap.h:59306 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_gsoap_eml2_2_SOAP_ENV__Fault
 #define SOAP_TYPE_gsoap_eml2_2_SOAP_ENV__Fault (-845619207)
@@ -46899,357 +46899,357 @@ typedef double eml22__AbstractMeasure;
 typedef std::string eml22__AbstractString;
 #endif
 
-/* eml2_2ForGsoap.h:2731 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_eml22__NonNegativeInteger
-#define SOAP_TYPE_gsoap_eml2_2_eml22__NonNegativeInteger (-1150)
+/* eml2_2ForGsoap.h:2733 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_eml22__NonNegativeLong
+#define SOAP_TYPE_gsoap_eml2_2_eml22__NonNegativeLong (-1150)
 
-typedef ULONG64 eml22__NonNegativeInteger;
+typedef LONG64 eml22__NonNegativeLong;
 #endif
 
-/* eml2_2ForGsoap.h:2735 */
+/* eml2_2ForGsoap.h:2738 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PositiveDouble
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PositiveDouble (-1151)
 
 typedef double eml22__PositiveDouble;
 #endif
 
-/* eml2_2ForGsoap.h:2740 */
+/* eml2_2ForGsoap.h:2743 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PositiveFloat
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PositiveFloat (-1152)
 
 typedef float eml22__PositiveFloat;
 #endif
 
-/* eml2_2ForGsoap.h:2743 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PositiveInteger
-#define SOAP_TYPE_gsoap_eml2_2_eml22__PositiveInteger (-1153)
+/* eml2_2ForGsoap.h:2748 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PositiveLong
+#define SOAP_TYPE_gsoap_eml2_2_eml22__PositiveLong (-1153)
 
-typedef ULONG64 eml22__PositiveInteger;
+typedef LONG64 eml22__PositiveLong;
 #endif
 
-/* eml2_2ForGsoap.h:2747 */
+/* eml2_2ForGsoap.h:2753 */
 #ifndef SOAP_TYPE_eml22__TimeStamp
 #define SOAP_TYPE_eml22__TimeStamp (-1154)
 
 typedef struct tm eml22__TimeStamp;
 #endif
 
-/* eml2_2ForGsoap.h:2808 */
+/* eml2_2ForGsoap.h:2814 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__EnumExtensionPattern
 #define SOAP_TYPE_gsoap_eml2_2_eml22__EnumExtensionPattern (-1156)
 
 typedef std::string eml22__EnumExtensionPattern;
 #endif
 
-/* eml2_2ForGsoap.h:2813 */
+/* eml2_2ForGsoap.h:2819 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__String2000
 #define SOAP_TYPE_gsoap_eml2_2_eml22__String2000 (-1157)
 
 typedef std::string eml22__String2000;
 #endif
 
-/* eml2_2ForGsoap.h:2818 */
+/* eml2_2ForGsoap.h:2824 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__String256
 #define SOAP_TYPE_gsoap_eml2_2_eml22__String256 (-1158)
 
 typedef std::string eml22__String256;
 #endif
 
-/* eml2_2ForGsoap.h:2823 */
+/* eml2_2ForGsoap.h:2829 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__String64
 #define SOAP_TYPE_gsoap_eml2_2_eml22__String64 (-1159)
 
 typedef std::string eml22__String64;
 #endif
 
-/* eml2_2ForGsoap.h:2833 */
+/* eml2_2ForGsoap.h:2839 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__UomEnum
 #define SOAP_TYPE_gsoap_eml2_2_eml22__UomEnum (-1160)
 
 typedef std::string eml22__UomEnum;
 #endif
 
-/* eml2_2ForGsoap.h:2838 */
+/* eml2_2ForGsoap.h:2844 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__UuidString
 #define SOAP_TYPE_gsoap_eml2_2_eml22__UuidString (-1161)
 
 typedef std::string eml22__UuidString;
 #endif
 
-/* eml2_2ForGsoap.h:2847 */
+/* eml2_2ForGsoap.h:2853 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_prodml21__CalendarMonth
 #define SOAP_TYPE_gsoap_eml2_2_prodml21__CalendarMonth (-1162)
 
 typedef std::string prodml21__CalendarMonth;
 #endif
 
-/* eml2_2ForGsoap.h:4386 */
+/* eml2_2ForGsoap.h:4392 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__TimeZone
 #define SOAP_TYPE_gsoap_eml2_2_eml22__TimeZone (-1165)
 
 typedef std::string eml22__TimeZone;
 #endif
 
-/* eml2_2ForGsoap.h:4394 */
+/* eml2_2ForGsoap.h:4400 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__TypeEnum
 #define SOAP_TYPE_gsoap_eml2_2_eml22__TypeEnum (-1166)
 
 typedef eml22__String64 eml22__TypeEnum;
 #endif
 
-/* eml2_2ForGsoap.h:13193 */
+/* eml2_2ForGsoap.h:13199 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PublicLandSurveySystemQuarterSection
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PublicLandSurveySystemQuarterSection (-1357)
 
 typedef std::string eml22__PublicLandSurveySystemQuarterSection;
 #endif
 
-/* eml2_2ForGsoap.h:13202 */
+/* eml2_2ForGsoap.h:13208 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PublicLandSurveySystemQuarterTownship
 #define SOAP_TYPE_gsoap_eml2_2_eml22__PublicLandSurveySystemQuarterTownship (-1358)
 
 typedef std::string eml22__PublicLandSurveySystemQuarterTownship;
 #endif
 
-/* eml2_2ForGsoap.h:13211 */
+/* eml2_2ForGsoap.h:13217 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_eml22__SectionNumber
 #define SOAP_TYPE_gsoap_eml2_2_eml22__SectionNumber (-1359)
 
 typedef std::string eml22__SectionNumber;
 #endif
 
-/* eml2_2ForGsoap.h:58604 */
+/* eml2_2ForGsoap.h:58610 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__FluidCharacterization
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__FluidCharacterization (-2071)
 
 typedef prodml21__FluidCharacterization _prodml21__FluidCharacterization;
 #endif
 
-/* eml2_2ForGsoap.h:58607 */
+/* eml2_2ForGsoap.h:58613 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__ProductVolume
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__ProductVolume (-2072)
 
 typedef prodml21__ProductVolume _prodml21__ProductVolume;
 #endif
 
-/* eml2_2ForGsoap.h:58610 */
+/* eml2_2ForGsoap.h:58616 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__ProductFlowModel
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__ProductFlowModel (-2073)
 
 typedef prodml21__ProductFlowModel _prodml21__ProductFlowModel;
 #endif
 
-/* eml2_2ForGsoap.h:58613 */
+/* eml2_2ForGsoap.h:58619 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__FluidSystem
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__FluidSystem (-2074)
 
 typedef prodml21__FluidSystem _prodml21__FluidSystem;
 #endif
 
-/* eml2_2ForGsoap.h:58616 */
+/* eml2_2ForGsoap.h:58622 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__FluidAnalysis
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__FluidAnalysis (-2075)
 
 typedef prodml21__FluidAnalysis _prodml21__FluidAnalysis;
 #endif
 
-/* eml2_2ForGsoap.h:58619 */
+/* eml2_2ForGsoap.h:58625 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__HydrocarbonAnalysis
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__HydrocarbonAnalysis (-2076)
 
 typedef prodml21__HydrocarbonAnalysis _prodml21__HydrocarbonAnalysis;
 #endif
 
-/* eml2_2ForGsoap.h:58622 */
+/* eml2_2ForGsoap.h:58628 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__WaterAnalysis
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__WaterAnalysis (-2077)
 
 typedef prodml21__WaterAnalysis _prodml21__WaterAnalysis;
 #endif
 
-/* eml2_2ForGsoap.h:58625 */
+/* eml2_2ForGsoap.h:58631 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__FluidSample
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__FluidSample (-2078)
 
 typedef prodml21__FluidSample _prodml21__FluidSample;
 #endif
 
-/* eml2_2ForGsoap.h:58628 */
+/* eml2_2ForGsoap.h:58634 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__FluidSampleContainer
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__FluidSampleContainer (-2079)
 
 typedef prodml21__FluidSampleContainer _prodml21__FluidSampleContainer;
 #endif
 
-/* eml2_2ForGsoap.h:58631 */
+/* eml2_2ForGsoap.h:58637 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__FluidSampleAcquisitionJob
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__FluidSampleAcquisitionJob (-2080)
 
 typedef prodml21__FluidSampleAcquisitionJob _prodml21__FluidSampleAcquisitionJob;
 #endif
 
-/* eml2_2ForGsoap.h:58634 */
+/* eml2_2ForGsoap.h:58640 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__WftRun
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__WftRun (-2081)
 
 typedef prodml21__WftRun _prodml21__WftRun;
 #endif
 
-/* eml2_2ForGsoap.h:58637 */
+/* eml2_2ForGsoap.h:58643 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__AssetProductionVolumes
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__AssetProductionVolumes (-2082)
 
 typedef prodml21__AssetProductionVolumes _prodml21__AssetProductionVolumes;
 #endif
 
-/* eml2_2ForGsoap.h:58640 */
+/* eml2_2ForGsoap.h:58646 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__ProductionWellTests
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__ProductionWellTests (-2083)
 
 typedef prodml21__ProductionWellTests _prodml21__ProductionWellTests;
 #endif
 
-/* eml2_2ForGsoap.h:58643 */
+/* eml2_2ForGsoap.h:58649 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__TerminalLifting
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__TerminalLifting (-2084)
 
 typedef prodml21__TerminalLifting _prodml21__TerminalLifting;
 #endif
 
-/* eml2_2ForGsoap.h:58646 */
+/* eml2_2ForGsoap.h:58652 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__Transfer
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__Transfer (-2085)
 
 typedef prodml21__Transfer _prodml21__Transfer;
 #endif
 
-/* eml2_2ForGsoap.h:58649 */
+/* eml2_2ForGsoap.h:58655 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__WellProductionParameters
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__WellProductionParameters (-2086)
 
 typedef prodml21__WellProductionParameters _prodml21__WellProductionParameters;
 #endif
 
-/* eml2_2ForGsoap.h:58652 */
+/* eml2_2ForGsoap.h:58658 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__Channel
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__Channel (-2087)
 
 typedef prodml21__Channel _prodml21__Channel;
 #endif
 
-/* eml2_2ForGsoap.h:58655 */
+/* eml2_2ForGsoap.h:58661 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__ChannelSet
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__ChannelSet (-2088)
 
 typedef prodml21__ChannelSet _prodml21__ChannelSet;
 #endif
 
-/* eml2_2ForGsoap.h:58658 */
+/* eml2_2ForGsoap.h:58664 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__FlowTestActivity
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__FlowTestActivity (-2089)
 
 typedef prodml21__FlowTestActivity _prodml21__FlowTestActivity;
 #endif
 
-/* eml2_2ForGsoap.h:58661 */
+/* eml2_2ForGsoap.h:58667 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__PressureTransientAnalysis
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__PressureTransientAnalysis (-2090)
 
 typedef prodml21__PressureTransientAnalysis _prodml21__PressureTransientAnalysis;
 #endif
 
-/* eml2_2ForGsoap.h:58664 */
+/* eml2_2ForGsoap.h:58670 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__PtaDataPreProcess
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__PtaDataPreProcess (-2091)
 
 typedef prodml21__PtaDataPreProcess _prodml21__PtaDataPreProcess;
 #endif
 
-/* eml2_2ForGsoap.h:58667 */
+/* eml2_2ForGsoap.h:58673 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__PtaDeconvolution
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__PtaDeconvolution (-2092)
 
 typedef prodml21__PtaDeconvolution _prodml21__PtaDeconvolution;
 #endif
 
-/* eml2_2ForGsoap.h:58670 */
+/* eml2_2ForGsoap.h:58676 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__Facility
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__Facility (-2093)
 
 typedef prodml21__Facility _prodml21__Facility;
 #endif
 
-/* eml2_2ForGsoap.h:58673 */
+/* eml2_2ForGsoap.h:58679 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__ReportingEntity
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__ReportingEntity (-2094)
 
 typedef prodml21__ReportingEntity _prodml21__ReportingEntity;
 #endif
 
-/* eml2_2ForGsoap.h:58676 */
+/* eml2_2ForGsoap.h:58682 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__ReportingHierarchy
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__ReportingHierarchy (-2095)
 
 typedef prodml21__ReportingHierarchy _prodml21__ReportingHierarchy;
 #endif
 
-/* eml2_2ForGsoap.h:58679 */
+/* eml2_2ForGsoap.h:58685 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__prodml21__TimeSeriesData
 #define SOAP_TYPE_gsoap_eml2_2__prodml21__TimeSeriesData (-2096)
 
 typedef prodml21__TimeSeriesData _prodml21__TimeSeriesData;
 #endif
 
-/* eml2_2ForGsoap.h:58698 */
+/* eml2_2ForGsoap.h:58704 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__eml22__PropertyKind
 #define SOAP_TYPE_gsoap_eml2_2__eml22__PropertyKind (-2097)
 
 typedef eml22__PropertyKind _eml22__PropertyKind;
 #endif
 
-/* eml2_2ForGsoap.h:58701 */
+/* eml2_2ForGsoap.h:58707 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__eml22__PropertyKindDictionary
 #define SOAP_TYPE_gsoap_eml2_2__eml22__PropertyKindDictionary (-2098)
 
 typedef eml22__PropertyKindDictionary _eml22__PropertyKindDictionary;
 #endif
 
-/* eml2_2ForGsoap.h:58704 */
+/* eml2_2ForGsoap.h:58710 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__eml22__TimeSeries
 #define SOAP_TYPE_gsoap_eml2_2__eml22__TimeSeries (-2099)
 
 typedef eml22__TimeSeries _eml22__TimeSeries;
 #endif
 
-/* eml2_2ForGsoap.h:58707 */
+/* eml2_2ForGsoap.h:58713 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__eml22__EpcExternalPartReference
 #define SOAP_TYPE_gsoap_eml2_2__eml22__EpcExternalPartReference (-2100)
 
 typedef eml22__EpcExternalPartReference _eml22__EpcExternalPartReference;
 #endif
 
-/* eml2_2ForGsoap.h:58710 */
+/* eml2_2ForGsoap.h:58716 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__eml22__Activity
 #define SOAP_TYPE_gsoap_eml2_2__eml22__Activity (-2101)
 
 typedef eml22__Activity _eml22__Activity;
 #endif
 
-/* eml2_2ForGsoap.h:58713 */
+/* eml2_2ForGsoap.h:58719 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__eml22__ActivityTemplate
 #define SOAP_TYPE_gsoap_eml2_2__eml22__ActivityTemplate (-2102)
 
 typedef eml22__ActivityTemplate _eml22__ActivityTemplate;
 #endif
 
-/* eml2_2ForGsoap.h:58716 */
+/* eml2_2ForGsoap.h:58722 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__eml22__DataAssuranceRecord
 #define SOAP_TYPE_gsoap_eml2_2__eml22__DataAssuranceRecord (-2103)
 
 typedef eml22__DataAssuranceRecord _eml22__DataAssuranceRecord;
 #endif
 
-/* eml2_2ForGsoap.h:58719 */
+/* eml2_2ForGsoap.h:58725 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__eml22__GraphicalInformationSet
 #define SOAP_TYPE_gsoap_eml2_2__eml22__GraphicalInformationSet (-2104)
 
@@ -47272,6 +47272,18 @@ typedef eml22__GraphicalInformationSet _eml22__GraphicalInformationSet;
 /* int has binding name 'int' for type 'xsd:int' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_int
 #define SOAP_TYPE_gsoap_eml2_2_int (-1)
+
+#endif
+
+/* eml22__PositiveLong has binding name 'eml22__PositiveLong' for type 'eml22:PositiveLong' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PositiveLong
+#define SOAP_TYPE_gsoap_eml2_2_eml22__PositiveLong (-1153)
+
+#endif
+
+/* eml22__NonNegativeLong has binding name 'eml22__NonNegativeLong' for type 'eml22:NonNegativeLong' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_eml22__NonNegativeLong
+#define SOAP_TYPE_gsoap_eml2_2_eml22__NonNegativeLong (-1150)
 
 #endif
 
@@ -47326,18 +47338,6 @@ typedef eml22__GraphicalInformationSet _eml22__GraphicalInformationSet;
 /* double has binding name 'double' for type 'xsd:double' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_double
 #define SOAP_TYPE_gsoap_eml2_2_double (-1147)
-
-#endif
-
-/* eml22__PositiveInteger has binding name 'eml22__PositiveInteger' for type 'eml22:PositiveInteger' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_eml22__PositiveInteger
-#define SOAP_TYPE_gsoap_eml2_2_eml22__PositiveInteger (-1153)
-
-#endif
-
-/* eml22__NonNegativeInteger has binding name 'eml22__NonNegativeInteger' for type 'eml22:NonNegativeInteger' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_eml22__NonNegativeInteger
-#define SOAP_TYPE_gsoap_eml2_2_eml22__NonNegativeInteger (-1150)
 
 #endif
 
@@ -58741,9 +58741,9 @@ typedef eml22__GraphicalInformationSet _eml22__GraphicalInformationSet;
 
 #endif
 
-/* ULONG64 * has binding name 'PointerToULONG64' for type 'xsd:unsignedLong' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToULONG64
-#define SOAP_TYPE_gsoap_eml2_2_PointerToULONG64 (-1491)
+/* LONG64 * has binding name 'PointerToeml22__NonNegativeLong' for type 'eml22:NonNegativeLong' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToeml22__NonNegativeLong
+#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__NonNegativeLong (-1491)
 
 #endif
 
@@ -59197,9 +59197,9 @@ typedef eml22__GraphicalInformationSet _eml22__GraphicalInformationSet;
 
 #endif
 
-/* std::vector<ULONG64>  has binding name 'std__vectorTemplateOfULONG64' for type 'xsd:unsignedLong' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfULONG64
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfULONG64 (-1853)
+/* std::vector<LONG64>  has binding name 'std__vectorTemplateOfeml22__PositiveLong' for type 'eml22:PositiveLong' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfeml22__PositiveLong
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfeml22__PositiveLong (-1853)
 
 #endif
 

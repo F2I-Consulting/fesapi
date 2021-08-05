@@ -114,18 +114,19 @@ std::string PointsProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfPro
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
+	if (datasetName.empty()) {
+		throw std::invalid_argument("The dataset name wher to store of the points property cannot be empty.");
+	}
+
 	getRepository()->addRelationship(this, proxy);
 	_resqml22__PointsProperty* prop = static_cast<_resqml22__PointsProperty*>(gsoapProxy2_3);
 
 	// XML
 	auto* externalArray = soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
 	externalArray->Coordinates = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
-	std::string actualDatasetName = datasetName.empty()
-		? getHdfGroup() + "/points_patch" + std::to_string(prop->PointsForPatch.size())
-		: datasetName;
-	externalArray->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(actualDatasetName, proxy->getElementCount(actualDatasetName), proxy));
+	externalArray->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(datasetName, proxy->getElementCount(datasetName), proxy));
 
 	prop->PointsForPatch.push_back(externalArray);
 
-	return actualDatasetName;
+	return datasetName;
 }

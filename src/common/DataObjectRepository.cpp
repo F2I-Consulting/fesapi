@@ -606,6 +606,9 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 			if (proxy->getContentType() != (*same)->getContentType()) {
 				throw invalid_argument("Cannot replace " + proxy->getUuid() + " with a different content type : " + proxy->getContentType() + " vs " + (*same)->getContentType());
 			}
+			if (proxy->isPartial() && !(*same)->isPartial()) {
+				throw invalid_argument("Cannot replace " + proxy->getUuid() + " which is not partial with a partial dataobject");
+			}
 
 			if (!replaceOnlyContent || dynamic_cast<RESQML2_NS::AbstractIjkGridRepresentation*>(*same) != nullptr) {
 				replaceDataObjectInRels(*same, proxy);
@@ -641,6 +644,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 					(*same)->setGsoapProxy(proxy->getEml23GsoapProxy());
 				}
 #endif
+				(*same)->setUriSource(proxy->getUriSource());
 				delete proxy;
 				if (!(*same)->isPartial()) {
 					(*same)->loadTargetRelationships();
@@ -656,7 +660,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 	return proxy;
 }
 
-COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const std::string & xml, const string & contentOrDataType)
+COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const std::string& xml, const string& contentOrDataType, const std::string& uriSource)
 {
 	istringstream iss(xml);
 	setGsoapStream(&iss);
@@ -729,6 +733,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 			}
 			for (auto traj : read->trajectory) {
 				wrapper = new WITSML1_4_NS::Trajectory(traj);
+				wrapper->setUriSource(uriSource);
 				addOrReplaceDataObject(wrapper, true);
 			}
 
@@ -744,11 +749,12 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 			delete wrapper;
 		}
 		else {
+			wrapper->setUriSource(uriSource);
 			return addOrReplaceDataObject(wrapper, true);
 		}
 	}
 
-	addWarning("The content or data type " + contentOrDataType + " could not be wrapped by fesapi. The related instance will be ignored.");
+	addWarning("The content or data type " + contentOrDataType + " could not be wrapped by FESAPI. The related instance will be ignored.");
 	return nullptr;
 }
 
@@ -847,7 +853,7 @@ std::vector<std::string> DataObjectRepository::getUuids() const
 	return keys;
 }
 
-COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string & uuid, const std::string & title, const std::string & contentType, const std::string & version)
+COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string& uuid, const std::string& title, const std::string& contentType, const std::string& version)
 {
 	size_t characterPos = contentType.find_last_of('_'); // The XML tag is after "obj_"
 	if (characterPos == string::npos) { characterPos = contentType.find_last_of('='); }
@@ -873,10 +879,14 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	if (ns == "eml20") {
 		if (dataType.compare(EML2_NS::EpcExternalPartReference::XML_TAG) == 0)
 		{
+			if (getDataObjectByUuid(uuid) != nullptr) {
+				throw std::invalid_argument("You cannot create a partial dataobject " + uuid + " which already exists in the repository.");
+			}
+
 			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(uuid, title, version);
 			dor->ContentType = contentType;
 			COMMON_NS::AbstractObject* result = hdfProxyFactory->make(dor);
-			addOrReplaceDataObject(result);
+			addDataObject(result);
 			return result;
 		}
 	}
@@ -889,6 +899,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::ActivityTemplate)
 		else if (dataType.compare(EML2_NS::EpcExternalPartReference::XML_TAG) == 0)
 		{
+			if (getDataObjectByUuid(uuid) != nullptr) {
+				throw std::invalid_argument("You cannot create a partial dataobject " + uuid + " which already exists in the repository.");
+			}
+
 			gsoap_eml2_3::eml23__DataObjectReference* dor = gsoap_eml2_3::soap_new_eml23__DataObjectReference(gsoapContext);
 			dor->Uuid = uuid;
 			dor->Title = title;
@@ -898,7 +912,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 				dor->ObjectVersion->assign(version);
 			}
 			COMMON_NS::AbstractObject* result = hdfProxyFactory->make(dor);
-			addOrReplaceDataObject(result);
+			addDataObject(result);
 			return result;
 		}
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::GraphicalInformationSet)
@@ -977,6 +991,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreTrajectoryRepresentation)
 		else if (dataType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG) == 0) {
+			if (getDataObjectByUuid(uuid) != nullptr) {
+				throw std::invalid_argument("You cannot create a partial dataobject " + uuid + " which already exists in the repository.");
+			}
+
 			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext);
 			dor->UUID = uuid;
 			dor->Title = title;
@@ -986,15 +1004,19 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 			}
 			dor->ContentType = contentType;
 			RESQML2_NS::AbstractIjkGridRepresentation* result = new RESQML2_NS::AbstractIjkGridRepresentation(dor);
-			addOrReplaceDataObject(result);
+			addDataObject(result);
 			return result;
 		}
 		else if (dataType.compare(EML2_NS::EpcExternalPartReference::XML_TAG) == 0)
 		{
+			if (getDataObjectByUuid(uuid) != nullptr) {
+				throw std::invalid_argument("You cannot create a partial dataobject " + uuid + " which already exists in the repository.");
+			}
+
 			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(uuid, title, version);
 			dor->ContentType = contentType;
 			COMMON_NS::AbstractObject* result = hdfProxyFactory->make(dor);
-			addOrReplaceDataObject(result);
+			addDataObject(result);
 			return result;
 		}
 	}
@@ -1058,6 +1080,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::WellboreMarkerFrameRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::WellboreTrajectoryRepresentation)
 		else if (dataType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG) == 0) {
+			if (getDataObjectByUuid(uuid) != nullptr) {
+				throw std::invalid_argument("You cannot create a partial dataobject " + uuid + " which already exists in the repository.");
+			}
+
 			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext);
 			dor->UUID = uuid;
 			dor->Title = title;
@@ -1067,7 +1093,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 			}
 			dor->ContentType = contentType;
 			RESQML2_NS::AbstractIjkGridRepresentation* result = new RESQML2_NS::AbstractIjkGridRepresentation(dor);
-			addOrReplaceDataObject(result);
+			addDataObject(result);
 			return result;
 		}
 	}
@@ -2282,8 +2308,12 @@ RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialIj
 	dor->ContentType = getDefaultResqmlVersion() == EnergisticsStandard::RESQML2_2
 		? "application/x-resqml+xml;version=2.2;type=obj_IjkGridRepresentation"
 		: "application/x-resqml+xml;version=2.0;type=obj_IjkGridRepresentation";
-	auto result = new RESQML2_NS::AbstractIjkGridRepresentation(dor, false);
-	addOrReplaceDataObject(result);
+	auto* result = new RESQML2_NS::AbstractIjkGridRepresentation(dor, false);
+	if (!addDataObject(result)) {
+		delete result;
+		result == nullptr;
+		throw std::invalid_argument("You cannot create a partial IJK grid rep " + guid + " which already exists.");
+	}
 	return result;
 }
 
@@ -2293,8 +2323,12 @@ RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialTr
 	dor->ContentType = getDefaultResqmlVersion() == EnergisticsStandard::RESQML2_2
 		? "application/x-resqml+xml;version=2.2;type=obj_TruncatedIjkGridRepresentation"
 		: "application/x-resqml+xml;version=2.0;type=obj_TruncatedIjkGridRepresentation";
-	auto result = new RESQML2_NS::AbstractIjkGridRepresentation(dor, true);
-	addOrReplaceDataObject(result);
+	auto* result = new RESQML2_NS::AbstractIjkGridRepresentation(dor, true);
+	if (!addDataObject(result)) {
+		delete result;
+		result == nullptr;
+		throw std::invalid_argument("You cannot create a partial truncated IJK grid rep " + guid + " which already exists.");
+	}
 	return result;
 }
 
@@ -3741,10 +3775,11 @@ void DataObjectRepository::setHdfProxyFactory(COMMON_NS::HdfProxyFactory * facto
 
 COMMON_NS::AbstractObject* DataObjectRepository::resolvePartial(COMMON_NS::AbstractObject * partialObj)
 {
-	for (size_t i = 0; i < dataFeeders.size(); ++i) {
-		const std::string xml = dataFeeders[i]->resolvePartial(partialObj);
+	for (auto const* dataFeeder : dataFeeders) {
+		const std::string xml = dataFeeder->resolvePartial(partialObj);
 		if (!xml.empty()) {
-			return addOrReplaceGsoapProxy(xml, partialObj->getContentType());
+			// TODO : Set the URI source
+			return addOrReplaceGsoapProxy(xml, partialObj->getContentType(), "");
 		}
 	}
 

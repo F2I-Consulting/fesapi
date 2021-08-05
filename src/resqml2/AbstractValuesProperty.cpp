@@ -138,12 +138,13 @@ COMMON_NS::DataObjectReference AbstractValuesProperty::getHdfProxyDor(unsigned i
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
-		if (dynamic_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch) != nullptr) {
-			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalDataArrayPart[0]));
-		}
+
 		int valuesType = patch->soap_type();
 		if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
 			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(patch)->Values->ExternalDataArrayPart[0]));
+		}
+		else if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
+			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalDataArrayPart[0]));
 		}
 		else if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
 			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(patch)->Values->ExternalDataArrayPart[0]));
@@ -340,6 +341,13 @@ std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(EML2_NS:
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
+	if (datasetName.empty()) {
+		throw std::invalid_argument("The property dataset name cannot be empty.");
+	}
+	if (gsoapProxy2_0_1 != nullptr && hdfProxy->getXmlNamespace() == "eml23") {
+		throw std::invalid_argument("You cannot associate a RESQML 2.0.1 dataobject to an EML 2.3 HDF proxy (which is no more a dataobject by the way).");
+	}
+
 	getRepository()->addRelationship(this, hdfProxy);
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
@@ -353,15 +361,7 @@ std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(EML2_NS:
 		xmlValues->NullValue = nullValue;
 		xmlValues->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		xmlValues->Values->HdfProxy = hdfProxy->newResqmlReference();
-
-		if (datasetName.empty()) {
-			ostringstream ossForHdf;
-			ossForHdf << "values_patch" << *(patch->RepresentationPatchIndex);
-			xmlValues->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
-		}
-		else {
-			xmlValues->Values->PathInHdfFile = datasetName;
-		}
+		xmlValues->Values->PathInHdfFile = datasetName;
 
 		patch->Values = xmlValues;
 
@@ -377,8 +377,7 @@ std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(EML2_NS:
 		xmlValues->NullValue = nullValue;
 		xmlValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
 
-		string actualDatasetName = datasetName.empty() ? getHdfGroup() + "/values_patch" + std::to_string(getPatchCount()) : datasetName;
-		auto* daPart = createExternalDataArrayPart(actualDatasetName, hdfProxy->getElementCount(actualDatasetName), hdfProxy);
+		auto* daPart = createExternalDataArrayPart(datasetName, hdfProxy->getElementCount(datasetName), hdfProxy);
 		xmlValues->Values->ExternalDataArrayPart.push_back(daPart);
 
 		prop->ValuesForPatch.push_back(xmlValues);
@@ -397,6 +396,13 @@ std::string AbstractValuesProperty::pushBackRefToExistingFloatingPointDataset(EM
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
+	if (datasetName.empty()) {
+		throw std::invalid_argument("The property dataset name cannot be empty.");
+	}
+	if (gsoapProxy2_0_1 != nullptr && proxy->getXmlNamespace() == "eml23") {
+		throw std::invalid_argument("You cannot associate a RESQML 2.0.1 dataobject to an EML 2.3 HDF proxy (which is no more a dataobject by the way).");
+	}
+
 	getRepository()->addRelationship(this, proxy);
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
@@ -409,15 +415,7 @@ std::string AbstractValuesProperty::pushBackRefToExistingFloatingPointDataset(EM
 		gsoap_resqml2_0_1::resqml20__DoubleHdf5Array* xmlValues = gsoap_resqml2_0_1::soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
 		xmlValues->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		xmlValues->Values->HdfProxy = proxy->newResqmlReference();
-
-		if (datasetName.empty()) {
-			ostringstream ossForHdf;
-			ossForHdf << "values_patch" << *(patch->RepresentationPatchIndex);
-			xmlValues->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
-		}
-		else {
-			xmlValues->Values->PathInHdfFile = datasetName;
-		}
+		xmlValues->Values->PathInHdfFile = datasetName;
 
 		patch->Values = xmlValues;
 
@@ -429,12 +427,10 @@ std::string AbstractValuesProperty::pushBackRefToExistingFloatingPointDataset(EM
 		gsoap_eml2_3::_resqml22__ContinuousProperty* prop = static_cast<gsoap_eml2_3::_resqml22__ContinuousProperty*>(gsoapProxy2_3);
 
 		// XML
-		ostringstream oss;
 		gsoap_eml2_3::eml23__FloatingPointExternalArray* xmlValues = gsoap_eml2_3::soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
 		xmlValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
 
-		string actualDatasetName = datasetName.empty() ? getHdfGroup() + "/values_patch" + std::to_string(getPatchCount()) : datasetName;
-		auto* daPart = createExternalDataArrayPart(actualDatasetName, proxy->getElementCount(actualDatasetName), proxy);
+		auto* daPart = createExternalDataArrayPart(datasetName, proxy->getElementCount(datasetName), proxy);
 		xmlValues->Values->ExternalDataArrayPart.push_back(daPart);
 
 		prop->ValuesForPatch.push_back(xmlValues);
@@ -454,11 +450,15 @@ void AbstractValuesProperty::pushBackLongHdf5ArrayOfValues(const int64_t * value
 		}
 	}
 
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue),
+		datasetName,
 		H5T_NATIVE_INT64,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
 void AbstractValuesProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue)
@@ -470,11 +470,15 @@ void AbstractValuesProperty::pushBackIntHdf5ArrayOfValues(const int * values, un
 		}
 	}
 
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue),
+		datasetName,
 		H5T_NATIVE_INT,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
 void AbstractValuesProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue)
@@ -486,11 +490,15 @@ void AbstractValuesProperty::pushBackShortHdf5ArrayOfValues(const short * values
 		}
 	}
 
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue),
+		datasetName,
 		H5T_NATIVE_SHORT,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
 void AbstractValuesProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
@@ -502,11 +510,15 @@ void AbstractValuesProperty::pushBackUShortHdf5ArrayOfValues(const unsigned shor
 		}
 	}
 
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue),
+		datasetName,
 		H5T_NATIVE_USHORT,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
 void AbstractValuesProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue)
@@ -518,11 +530,15 @@ void AbstractValuesProperty::pushBackCharHdf5ArrayOfValues(const char * values, 
 		}
 	}
 
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue),
+		datasetName,
 		H5T_NATIVE_CHAR,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
 int64_t AbstractValuesProperty::getLongValuesOfPatch(unsigned int patchIndex, int64_t * values) const
@@ -689,9 +705,7 @@ void AbstractValuesProperty::pushBackLongHdf5ArrayOfValues(
 		xmlValues->NullValue = nullValue;
 		xmlValues->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		xmlValues->Values->HdfProxy = proxy->newResqmlReference();
-		std::ostringstream ossForHdf;
-		ossForHdf << "values_patch" << *(patch->RepresentationPatchIndex);
-		xmlValues->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
+		xmlValues->Values->PathInHdfFile = getHdfGroup() + "/values_patch" + std::to_string(getPatchCount());
 		patch->Values = xmlValues;
 
 		prop->PatchOfValues.push_back(patch);
@@ -718,10 +732,8 @@ void AbstractValuesProperty::pushBackLongHdf5ArrayOfValues(
 	}
 
 	// HDF
-	ostringstream oss;
-	oss << "values_patch" << getPatchCount() - 1;
 	proxy->createArrayNd(getHdfGroup(),
-		oss.str(),
+		"values_patch" + std::to_string(getPatchCount() - 1),
 		H5T_NATIVE_INT64,
 		numValues, numArrayDimensions);
 }
@@ -744,18 +756,9 @@ void AbstractValuesProperty::setValuesOfLongHdf5ArrayOfValues(
 	}
 	getRepository()->addRelationship(this, proxy);
 
-	ostringstream oss;
-	oss << "values_patch";
-	if (patchIndex == (numeric_limits<unsigned int>::max)()) {
-		oss << getPatchCount() - 1;
-	}
-	else {
-		oss << patchIndex;
-	}
-
 	// HDF
 	proxy->writeArrayNdSlab(getHdfGroup(),
-		oss.str(),
+		"values_patch" + std::to_string(patchIndex == (numeric_limits<unsigned int>::max)() ? getPatchCount() - 1 : patchIndex),
 		H5T_NATIVE_INT64,
 		values,
 		numValuesInEachDimension,
@@ -877,7 +880,7 @@ void AbstractValuesProperty::pushBackDoubleHdf5ArrayOfValues(double const * valu
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	const string datasetName = pushBackRefToExistingFloatingPointDataset(proxy, "");
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
 	// HDF
 	proxy->writeArrayNd(getHdfGroup(),
@@ -885,6 +888,8 @@ void AbstractValuesProperty::pushBackDoubleHdf5ArrayOfValues(double const * valu
 		H5T_NATIVE_DOUBLE,
 		values,
 		numValues, numArrayDimensions);
+
+	pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
 }
 
 void AbstractValuesProperty::pushBackFloatHdf5Array1dOfValues(const float * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy)
@@ -946,7 +951,7 @@ void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(float const * values
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	const string datasetName = pushBackRefToExistingFloatingPointDataset(proxy, "");
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
 	// HDF
 	proxy->writeArrayNd(getHdfGroup(),
@@ -954,6 +959,8 @@ void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(float const * values
 		H5T_NATIVE_FLOAT,
 		values,
 		numValues, numArrayDimensions);
+
+	pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
 }
 
 void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(
@@ -967,13 +974,15 @@ void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	const string datasetName = pushBackRefToExistingFloatingPointDataset(proxy, "");
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
 	// HDF
 	proxy->createArrayNd(getHdfGroup(),
 		datasetName,
 		H5T_NATIVE_FLOAT,
 		numValues, numArrayDimensions);
+
+	pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
 }
 
 void AbstractValuesProperty::setValuesOfFloatHdf5ArrayOfValues(
@@ -986,15 +995,6 @@ void AbstractValuesProperty::setValuesOfFloatHdf5ArrayOfValues(
 		throw out_of_range("The values property patch is out of range");
 	}
 
-	ostringstream oss;
-	oss << "values_patch";
-	if (patchIndex == (numeric_limits<unsigned int>::max)()) {
-		oss << getPatchCount() - 1;
-	}
-	else {
-		oss << patchIndex;
-	}
-
 	// HDF
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -1004,7 +1004,7 @@ void AbstractValuesProperty::setValuesOfFloatHdf5ArrayOfValues(
 	}
 	proxy->writeArrayNdSlab(
 		getHdfGroup(),
-		oss.str(),
+		"values_patch" + std::to_string(patchIndex == (numeric_limits<unsigned int>::max)() ? getPatchCount() - 1 : patchIndex),
 		H5T_NATIVE_FLOAT,
 		values,
 		numValuesInEachDimension,

@@ -408,7 +408,7 @@ namespace COMMON_NS
 		* @param [in]	proxy		The data object to add.
 		* @return True if the addition has been done, false if it already exists a same UUID in the repository
 		*/
-		bool addDataObject(COMMON_NS::AbstractObject* proxy);
+		DLL_IMPORT_OR_EXPORT bool addDataObject(COMMON_NS::AbstractObject* proxy);
 
 		/**
 		 * Adds or replaces (based on UUID and version) a data object in the repository. It does also
@@ -429,14 +429,15 @@ namespace COMMON_NS
 		 * @exception	std::invalid_argument	If, during a replacement, the content type of the data
 		 * 										object has changed.
 		 *
-		 * @param 	xml		   	The XML which is the serialization of the Energistics data object to add
-		 * 						or to replace.
+		 * @param 	xml		   			The XML which is the serialization of the Energistics data object to add
+		 * 								or to replace.
 		 * @param 	contentOrDataType	The content or qualified data type of the Energistics dataobject to add or to replace.
+		 * @param	uriSource			The EPC document absolute path or the ETP dataspace URI where this dataobject comes from
 		 *
 		 * @returns	Null if the content type of the data object cannot be wrapped by fesapi, else a
 		 * 			pointer the added or replaced data object.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentType);
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string& xml, const std::string& contentType, const std::string& uriSource);
 
 		/**
 		 * Gets all the data objects which are part of this repository
@@ -727,7 +728,7 @@ namespace COMMON_NS
 		 * lot of limitations when we want to access the data object.
 		 *
 		 * @tparam	valueType	The data type of the partial object to create.
-		 * @param 	guid   	The guid to set to the partial object. If empty then a new guid
+		 * @param 	uuid   	The uuid to set to the partial object. If empty then a new uuid
 		 * 					will be generated.
 		 * @param 	title  	The title of the partial object to create.
 		 * @param 	version	(Optional) The version of the partial object to create.
@@ -735,12 +736,16 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new partial object.
 		 */
 		template <class valueType>
-		valueType* createPartial(const std::string & guid, const std::string & title, const std::string & version = "")
+		valueType* createPartial(const std::string & uuid, const std::string & title, const std::string & version = "")
 		{
-			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(guid, title, version);
+			if (getDataObjectByUuid(uuid) != nullptr) {
+				throw std::invalid_argument("You cannot create a partial dataobject " + uuid + " which already exists in the repository.");
+			}
+
+			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(uuid, title, version);
 			valueType* result = new valueType(dor);
 			dor->ContentType = result->getContentType();
-			addOrReplaceDataObject(result);
+			addDataObject(result);
 			return result;
 		}
 

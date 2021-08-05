@@ -293,7 +293,7 @@ namespace RESQML2_NS
 		 * 									the dimension of the value array corresponding to the time series
 		 * 									is the number of entry in the series minus one.
 		 */
-		DLL_IMPORT_OR_EXPORT void setTimeIndices(uint64_t startTimeIndex, uint64_t countTimeIndices, EML2_NS::TimeSeries* ts, bool useInterval = false);
+		DLL_IMPORT_OR_EXPORT void setTimeIndices(unsigned int startTimeIndex, unsigned int countTimeIndices, EML2_NS::TimeSeries* ts, bool useInterval = false);
 
 		/**
 		 * Get the time index of this property in its associated time series

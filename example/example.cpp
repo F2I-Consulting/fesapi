@@ -108,8 +108,9 @@ under the License.
 #include "resqml2/GeologicUnitOccurrenceInterpretation.h"
 
 #include "eml2/AbstractHdfProxy.h"
-#include "eml2/PropertyKind.h"
 #include "eml2/TimeSeries.h"
+
+#include "eml2_3/PropertyKind.h"
 
 #include "witsml2_0/Well.h"
 #include "witsml2_0/Wellbore.h"
@@ -156,6 +157,7 @@ RESQML2_NS::StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
 RESQML2_NS::SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
 RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid = nullptr;
 EML2_NS::PropertyKind* propType1 = nullptr;
+EML2_NS::PropertyKind* pwls3Length = nullptr;
 RESQML2_NS::DiscreteProperty* discreteProp1 = nullptr;
 RESQML2_NS::ContinuousProperty* contColMapContProp = nullptr;
 RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp = nullptr;
@@ -788,7 +790,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	unsigned int splitCoordinateLineColumns[2] = { 1, 1 };
 	ijkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape::vertical, gsoap_resqml2_0_1::resqml20__KDirection::down, false, nodes, hdfProxy,
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
-
+	
 	// FOUR SUGARS PARAMETRIC
 	RESQML2_NS::IjkGridParametricRepresentation* ijkgridParametric = pck->createIjkGridParametricRepresentation(earthModelInterp, "37c45c00-fa3e-11e5-a21e-0002a5d5c51b", "Four faulted sugar cubes (parametric geometry)", 2, 1, 2);
 	double parameters[24] = { 300, 300, 350, 300, 300, 350, /* SPLIT*/ 350, 350,
@@ -1039,7 +1041,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
 	//hdfProxy->setMaxChunkSize(192/2); // Create two chunks
 	discreteProp432->pushBackLongHdf5Array3dOfValues(discreteProp432Values, 4, 3, 2, hdfProxy, 1111);
-
+	
 	//**************
 	// Time Series
 	//**************
@@ -1074,17 +1076,17 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		continuousPropTime2->pushBackDoubleHdf5Array3dOfValues(valuesTime2, 2, 1, 1, hdfProxy);
 	}
 	else {
-		EML2_NS::PropertyKind * standardLengthPropKind = nullptr;
+		RESQML2_NS::ContinuousProperty* dynamicContinuousProp = nullptr;
 		if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-			standardLengthPropKind = pck->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+			dynamicContinuousProp = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property",
+				gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 		}
-#if WITH_RESQML2_2
 		else {
-			standardLengthPropKind = pck->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
+			pwls3Length = pck->createPartial<EML2_3_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
+			dynamicContinuousProp = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property",
+				gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
 		}
-#endif
-		RESQML2_NS::ContinuousProperty* dynamicContinuousProp = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property",
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, standardLengthPropKind);
+
 		dynamicContinuousProp->setTimeIndices(0, 3, timeSeries);
 		double valuesTime[6] = { 0, 1, 2, 3, 3, 4 };
 		unsigned long long dimensions[4] = { 2, 1, 1, 3 };
@@ -1104,20 +1106,37 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	categoricalProp->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
 
 	// Relative permeability
-	RESQML2_NS::ContinuousProperty* waterSat = pck->createContinuousProperty(ijkgrid, "cbbc24b1-9a4b-4088-9d0e-e254088d3840", "Water saturation",
-		gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::_x0025, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::saturation);
+	RESQML2_NS::ContinuousProperty* waterSat = nullptr;
+	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		waterSat = pck->createContinuousProperty(ijkgrid, "cbbc24b1-9a4b-4088-9d0e-e254088d3840", "Water saturation",
+			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::_x0025, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::saturation);
+	}
+	else {
+		EML2_NS::PropertyKind* pwls3Saturation = pck->createPartial<EML2_3_NS::PropertyKind>("cfe9293f-d5a9-486d-815a-a957cace90b6", "saturation");
+		waterSat = pck->createContinuousProperty(ijkgrid, "cbbc24b1-9a4b-4088-9d0e-e254088d3840", "Water saturation",
+			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::_x0025, pwls3Saturation);
+	}
 	double waterSatValues[2] = { 0.35, 0.85 };
 	waterSat->pushBackDoubleHdf5Array3dOfValues(waterSatValues, 2, 1, 1, hdfProxy);
 
-	RESQML2_NS::DoubleTableLookup* waterRelPermTable = pck->createDoubleTableLookup("c51039fb-3178-41d3-86d7-5e5a74c5a46b", "My String Table Lookup");
+	RESQML2_NS::DoubleTableLookup* waterRelPermTable = pck->createDoubleTableLookup("c51039fb-3178-41d3-86d7-5e5a74c5a46b", "My Double Table Lookup");
 	waterRelPermTable->addValue(.0, .0);
 	waterRelPermTable->addValue(0.22, 0.005);
 	waterRelPermTable->addValue(0.75, 0.46);
 	waterRelPermTable->addValue(1.0, 1.0);
-	RESQML2_NS::CategoricalProperty* waterRelPerm = pck->createCategoricalProperty(ijkgrid, "dd4eae66-fe52-4086-a023-5b2c423543d5", "Water Relative Permeability",
-		gsoap_eml2_3::resqml22__IndexableElement::cells, waterRelPermTable, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::relative_x0020permeability);
-	waterRelPerm->pushBackRefToExistingFloatingPointDataset(nullptr, "/resqml20/cbbc24b1-9a4b-4088-9d0e-e254088d3840/values_patch0");
-
+	RESQML2_NS::CategoricalProperty* waterRelPerm = nullptr;
+	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		waterRelPerm = pck->createCategoricalProperty(ijkgrid, "dd4eae66-fe52-4086-a023-5b2c423543d5", "Water Relative Permeability",
+			gsoap_eml2_3::resqml22__IndexableElement::cells, waterRelPermTable, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::relative_x0020permeability);
+	}
+	else {
+		EML2_NS::PropertyKind* pwls3RelPerm = pck->createPartial<EML2_3_NS::PropertyKind>("8e3c5579-7efd-40d0-ab03-bc79452dd2db", "relative permeability");
+		waterRelPerm = pck->createCategoricalProperty(ijkgrid, "dd4eae66-fe52-4086-a023-5b2c423543d5", "Water Relative Permeability",
+			gsoap_eml2_3::resqml22__IndexableElement::cells, waterRelPermTable, pwls3RelPerm);
+	}
+	double relPermValues[2] = { 0.2, 0.5 };
+	waterRelPerm->pushBackDoubleHdf5Array3dOfValues(relPermValues, 2, 1, 1, hdfProxy);
+	
 	//**************
 	// Points Properties
 	//**************
@@ -1126,7 +1145,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		gsoap_eml2_3::resqml22__IndexableElement::cells, local3dCrs, propType1);
 	double cellCenters[6] = { 185, 75, 400, 560, 75, 450 };
 	pointsProp->pushBackArray3dOfXyzPoints(cellCenters, 2, 1, 1, hdfProxy);
-
+	
 	//**************
 	// LGR
 	//**************
@@ -1141,13 +1160,22 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	//**************
 	// Stratigraphy
 	//**************
-	int64_t stratiUnitIndice = 0;
-	ijkgrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank0);
+	if (stratiColumnRank0 != nullptr) {
+		int64_t stratiUnitIndice = 0;
+		ijkgrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank0);
+	}
 
 	// Partial transfer
 	RESQML2_NS::UnstructuredGridRepresentation* partialGrid = pck->createPartial<RESQML2_0_1_NS::UnstructuredGridRepresentation>("5cc3ee47-4bd5-4d82-ae3e-ed64e6d8d1eb", "Partial Grid");
-	RESQML2_NS::ContinuousProperty* continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "Testing partial property",
-		gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+	RESQML2_NS::ContinuousProperty* continuousProp1 = nullptr;
+	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "A length property",
+			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+	}
+	else {
+		continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "A length property",
+			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
+	}
 	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
 	continuousProp1->pushBackDoubleHdf5Array1dOfValues(continuousProp1Values, 6, hdfProxy);
 
@@ -1195,17 +1223,15 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		unstructuredGridProp->pushBackDoubleHdf5Array1dOfValues(propValues, 2);
 	}
 	else {
-		EML2_NS::PropertyKind * standardLengthPropKind = nullptr;
+		RESQML2_NS::ContinuousProperty* unstructuredGridProp = nullptr;
 		if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-			standardLengthPropKind = pck->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+			unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyhedra property",
+				gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 		}
-#if WITH_RESQML2_2
 		else {
-			standardLengthPropKind = pck->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
+			unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyhedra property",
+				gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
 		}
-#endif
-		RESQML2_NS::ContinuousProperty* unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyhedra property",
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, standardLengthPropKind);
 
 		// Fill the property
 		double propValues[2] = { 12.3, 45.6 };
@@ -2487,6 +2513,7 @@ bool serialize(const string & filePath)
 #if WITH_RESQML2_2
 	serializeGraphicalInformationSet(&repo, hdfProxy);
 #endif
+
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
 
@@ -2560,7 +2587,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				std::cout << "\t\tProperty kind parent is an Energistics one" << std::endl;
 				std::cout << "\t\tProperty kind parent is : " << pk->getParentAsString() << std::endl;
 			}
-			else {
+			else if (!pk->isPartial()) {
 				std::cout << "\t\tProperty kind parent is not an Energistics one" << std::endl;
 				std::cout << "\t\tProperty kind parent is : " << pk->getParentPropertyKind()->getTitle() << std::endl;
 			}

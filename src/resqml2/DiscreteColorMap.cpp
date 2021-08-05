@@ -79,9 +79,9 @@ resqml22__HsvColor* DiscreteColorMap::getColor(double colorIndex) const
 {
 	resqml22__DiscreteColorMap const* const discreteColorMap = static_cast<resqml22__DiscreteColorMap*>(gsoapProxy2_3);
 
-	for (size_t i = 0; i < discreteColorMap->Entry.size(); ++i) {
-		if (discreteColorMap->Entry[i]->index == colorIndex) {
-			return discreteColorMap->Entry[i]->Hsv;
+	for (const auto& entry : discreteColorMap->Entry) {
+		if (entry->index == colorIndex) {
+			return entry->Hsv;
 		}
 	}
 

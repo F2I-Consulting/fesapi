@@ -149,7 +149,7 @@ void Witsml14Trajectory::test()
 {
 	COMMON_NS::DataObjectRepository repo;
 
-	auto addedWrapper = repo.addOrReplaceGsoapProxy(MY_WITSML_FILE, "witsml14.obj_trajectorys");
+	auto addedWrapper = repo.addOrReplaceGsoapProxy(MY_WITSML_FILE, "witsml14.obj_trajectorys", "Witsml14Trajectory.epc");
 	if (addedWrapper == nullptr) {
 		vector<string> warningSet = repo.getWarnings();
 		if (!warningSet.empty()) {

@@ -20,7 +20,6 @@ namespace Example
             // creating the continuous Property with computing min max
             ContinuousProperty propertyCompute = repo.createContinuousProperty(
                 ijkGrid, "9d0a717f-2cd3-4d43-9cbf-3484105ed384", "slab prop compute min max",
-                1,
                 resqml22__IndexableElement.cells,
                 resqml20__ResqmlUom.m,
                 propertyKind);
@@ -73,7 +72,6 @@ namespace Example
             // creating the discrete Property with computing min max
             DiscreteProperty discretePropertyCompute = repo.createDiscreteProperty(
                 ijkGrid, "50935c31-93ec-4084-8891-6e9f130c49c3", "testing discrete prop",
-                1,
                 resqml22__IndexableElement.cells,
                 resqml20__ResqmlPropertyKind.index);
             discretePropertyCompute.pushBackLongHdf5Array3dOfValues(2, 3, 4, 9999);

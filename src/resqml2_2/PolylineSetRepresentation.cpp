@@ -220,12 +220,10 @@ unsigned int PolylineSetRepresentation::getPolylineCountOfPatch(unsigned int pat
 	}
 
 	resqml22__PolylineSetPatch* patch = static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch[patchIndex];
-	if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray)
-	{
+	if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray) {
 		return static_cast<eml23__BooleanConstantArray*>(patch->ClosedPolylines)->Count;
 	}
-	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray)
-	{
+	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
 		auto const* daPart = static_cast<eml23__BooleanExternalArray*>(patch->ClosedPolylines)->Values->ExternalDataArrayPart[0];
 		return getOrCreateHdfProxyFromDataArrayPart(daPart) ->getElementCount(daPart->PathInExternalFile);
 	}

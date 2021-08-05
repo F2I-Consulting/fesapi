@@ -194,11 +194,15 @@ void DiscreteProperty::pushBackLongHdf5ArrayOfValues(const int64_t * values, uns
 		}
 	}
 
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
+		datasetName,
 		H5T_NATIVE_INT64,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue, minimumValue, maximumValue);
 }
 
 void DiscreteProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int  minimumValue, int  maximumValue)
@@ -210,11 +214,15 @@ void DiscreteProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned
 		}
 	}
 
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
+		datasetName,
 		H5T_NATIVE_INT,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue, minimumValue, maximumValue);
 }
 
 void DiscreteProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short  minimumValue, short  maximumValue)
@@ -226,11 +234,15 @@ void DiscreteProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsi
 		}
 	}
 
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
+		datasetName,
 		H5T_NATIVE_SHORT,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue, minimumValue, maximumValue);
 }
 
 void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short  minimumValue, unsigned short  maximumValue)
@@ -242,11 +254,15 @@ void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * va
 		}
 	}
 
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
+		datasetName,
 		H5T_NATIVE_USHORT,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue, minimumValue, maximumValue);
 }
 
 void DiscreteProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue, char  minimumValue, char  maximumValue)
@@ -258,11 +274,15 @@ void DiscreteProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsign
 		}
 	}
 
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
+		datasetName,
 		H5T_NATIVE_CHAR,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue, minimumValue, maximumValue);
 }
 
 void DiscreteProperty::pushBackLongHdf5Array3dOfValues(

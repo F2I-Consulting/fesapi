@@ -34,7 +34,7 @@ namespace gsoap_eml2_1 {
 \******************************************************************************/
 
 
-/* eml2_1ForGsoap.h:1980 */
+/* eml2_1ForGsoap.h:1986 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ParameterKind
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ParameterKind (-809)
 
@@ -49,7 +49,7 @@ enum class eml21__ParameterKind {
 };
 #endif
 
-/* eml2_1ForGsoap.h:1996 */
+/* eml2_1ForGsoap.h:2002 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AxisOrder2d
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AxisOrder2d (-810)
 
@@ -64,7 +64,7 @@ enum class eml21__AxisOrder2d {
 };
 #endif
 
-/* eml2_1ForGsoap.h:2032 */
+/* eml2_1ForGsoap.h:2038 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VerticalDirection
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VerticalDirection (-811)
 
@@ -75,7 +75,7 @@ enum class eml21__VerticalDirection {
 };
 #endif
 
-/* eml2_1ForGsoap.h:2135 */
+/* eml2_1ForGsoap.h:2141 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__UnitOfMeasure
 #define SOAP_TYPE_gsoap_eml2_1_eml21__UnitOfMeasure (-822)
 
@@ -1522,7 +1522,7 @@ enum class eml21__UnitOfMeasure {
 };
 #endif
 
-/* eml2_1ForGsoap.h:3596 */
+/* eml2_1ForGsoap.h:3602 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AbsorbedDoseUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AbsorbedDoseUom (-825)
 
@@ -1557,7 +1557,7 @@ enum class eml21__AbsorbedDoseUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:3732 */
+/* eml2_1ForGsoap.h:3738 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ActivityOfRadioactivityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ActivityOfRadioactivityUom (-826)
 
@@ -1575,7 +1575,7 @@ enum class eml21__ActivityOfRadioactivityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:3783 */
+/* eml2_1ForGsoap.h:3789 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AmountOfSubstancePerAmountOfSubstanceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AmountOfSubstancePerAmountOfSubstanceUom (-827)
 
@@ -1591,7 +1591,7 @@ enum class eml21__AmountOfSubstancePerAmountOfSubstanceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:3824 */
+/* eml2_1ForGsoap.h:3830 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AmountOfSubstancePerAreaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AmountOfSubstancePerAreaUom (-828)
 
@@ -1601,7 +1601,7 @@ enum class eml21__AmountOfSubstancePerAreaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:3835 */
+/* eml2_1ForGsoap.h:3841 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AmountOfSubstancePerTimePerAreaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AmountOfSubstancePerTimePerAreaUom (-829)
 
@@ -1613,7 +1613,7 @@ enum class eml21__AmountOfSubstancePerTimePerAreaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:3856 */
+/* eml2_1ForGsoap.h:3862 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AmountOfSubstancePerTimeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AmountOfSubstancePerTimeUom (-830)
 
@@ -1628,7 +1628,7 @@ enum class eml21__AmountOfSubstancePerTimeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:3892 */
+/* eml2_1ForGsoap.h:3898 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AmountOfSubstancePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AmountOfSubstancePerVolumeUom (-831)
 
@@ -1642,7 +1642,7 @@ enum class eml21__AmountOfSubstancePerVolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:3923 */
+/* eml2_1ForGsoap.h:3929 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AmountOfSubstanceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AmountOfSubstanceUom (-832)
 
@@ -1656,7 +1656,7 @@ enum class eml21__AmountOfSubstanceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:3954 */
+/* eml2_1ForGsoap.h:3960 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AnglePerLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AnglePerLengthUom (-833)
 
@@ -1674,7 +1674,7 @@ enum class eml21__AnglePerLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4005 */
+/* eml2_1ForGsoap.h:4011 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AnglePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AnglePerVolumeUom (-834)
 
@@ -1685,7 +1685,7 @@ enum class eml21__AnglePerVolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4021 */
+/* eml2_1ForGsoap.h:4027 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AngularAccelerationUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AngularAccelerationUom (-835)
 
@@ -1696,7 +1696,7 @@ enum class eml21__AngularAccelerationUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4037 */
+/* eml2_1ForGsoap.h:4043 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AngularVelocityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AngularVelocityUom (-836)
 
@@ -1711,7 +1711,7 @@ enum class eml21__AngularVelocityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4073 */
+/* eml2_1ForGsoap.h:4079 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__APIGammaRayUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__APIGammaRayUom (-837)
 
@@ -1721,7 +1721,7 @@ enum class eml21__APIGammaRayUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4084 */
+/* eml2_1ForGsoap.h:4090 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__APIGravityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__APIGravityUom (-838)
 
@@ -1731,7 +1731,7 @@ enum class eml21__APIGravityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4095 */
+/* eml2_1ForGsoap.h:4101 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__APINeutronUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__APINeutronUom (-839)
 
@@ -1741,7 +1741,7 @@ enum class eml21__APINeutronUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4106 */
+/* eml2_1ForGsoap.h:4112 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AreaPerAmountOfSubstanceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AreaPerAmountOfSubstanceUom (-840)
 
@@ -1751,7 +1751,7 @@ enum class eml21__AreaPerAmountOfSubstanceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4117 */
+/* eml2_1ForGsoap.h:4123 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AreaPerAreaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AreaPerAreaUom (-841)
 
@@ -1768,7 +1768,7 @@ enum class eml21__AreaPerAreaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4163 */
+/* eml2_1ForGsoap.h:4169 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AreaPerCountUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AreaPerCountUom (-842)
 
@@ -1778,7 +1778,7 @@ enum class eml21__AreaPerCountUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4170 */
+/* eml2_1ForGsoap.h:4176 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AreaPerMassUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AreaPerMassUom (-843)
 
@@ -1791,7 +1791,7 @@ enum class eml21__AreaPerMassUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4196 */
+/* eml2_1ForGsoap.h:4202 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AreaPerTimeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AreaPerTimeUom (-844)
 
@@ -1808,7 +1808,7 @@ enum class eml21__AreaPerTimeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4242 */
+/* eml2_1ForGsoap.h:4248 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AreaPerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AreaPerVolumeUom (-845)
 
@@ -1823,7 +1823,7 @@ enum class eml21__AreaPerVolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4278 */
+/* eml2_1ForGsoap.h:4284 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AreaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AreaUom (-846)
 
@@ -1846,7 +1846,7 @@ enum class eml21__AreaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4354 */
+/* eml2_1ForGsoap.h:4360 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__AttenuationPerFrequencyIntervalUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__AttenuationPerFrequencyIntervalUom (-847)
 
@@ -1857,7 +1857,7 @@ enum class eml21__AttenuationPerFrequencyIntervalUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4370 */
+/* eml2_1ForGsoap.h:4376 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__CapacitanceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__CapacitanceUom (-848)
 
@@ -1879,7 +1879,7 @@ enum class eml21__CapacitanceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4441 */
+/* eml2_1ForGsoap.h:4447 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__CationExchangeCapacityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__CationExchangeCapacityUom (-849)
 
@@ -1889,7 +1889,7 @@ enum class eml21__CationExchangeCapacityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4448 */
+/* eml2_1ForGsoap.h:4454 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__DataTransferSpeedUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__DataTransferSpeedUom (-850)
 
@@ -1900,7 +1900,7 @@ enum class eml21__DataTransferSpeedUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4464 */
+/* eml2_1ForGsoap.h:4470 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__DiffusionCoefficientUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__DiffusionCoefficientUom (-851)
 
@@ -1910,7 +1910,7 @@ enum class eml21__DiffusionCoefficientUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4475 */
+/* eml2_1ForGsoap.h:4481 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__DiffusiveTimeOfFlightUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__DiffusiveTimeOfFlightUom (-852)
 
@@ -1921,7 +1921,7 @@ enum class eml21__DiffusiveTimeOfFlightUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4487 */
+/* eml2_1ForGsoap.h:4493 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__DigitalStorageUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__DigitalStorageUom (-853)
 
@@ -1934,7 +1934,7 @@ enum class eml21__DigitalStorageUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4513 */
+/* eml2_1ForGsoap.h:4519 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__DimensionlessUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__DimensionlessUom (-854)
 
@@ -1959,7 +1959,7 @@ enum class eml21__DimensionlessUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4599 */
+/* eml2_1ForGsoap.h:4605 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__DipoleMomentUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__DipoleMomentUom (-855)
 
@@ -1969,7 +1969,7 @@ enum class eml21__DipoleMomentUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4610 */
+/* eml2_1ForGsoap.h:4616 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__DoseEquivalentUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__DoseEquivalentUom (-856)
 
@@ -1982,7 +1982,7 @@ enum class eml21__DoseEquivalentUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4636 */
+/* eml2_1ForGsoap.h:4642 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__DynamicViscosityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__DynamicViscosityUom (-857)
 
@@ -2012,7 +2012,7 @@ enum class eml21__DynamicViscosityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4747 */
+/* eml2_1ForGsoap.h:4753 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ElectricalResistivityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ElectricalResistivityUom (-858)
 
@@ -2027,7 +2027,7 @@ enum class eml21__ElectricalResistivityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4783 */
+/* eml2_1ForGsoap.h:4789 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ElectricChargePerAreaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ElectricChargePerAreaUom (-859)
 
@@ -2040,7 +2040,7 @@ enum class eml21__ElectricChargePerAreaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4809 */
+/* eml2_1ForGsoap.h:4815 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ElectricChargePerMassUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ElectricChargePerMassUom (-860)
 
@@ -2052,7 +2052,7 @@ enum class eml21__ElectricChargePerMassUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4830 */
+/* eml2_1ForGsoap.h:4836 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ElectricChargePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ElectricChargePerVolumeUom (-861)
 
@@ -2065,7 +2065,7 @@ enum class eml21__ElectricChargePerVolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4856 */
+/* eml2_1ForGsoap.h:4862 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ElectricChargeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ElectricChargeUom (-862)
 
@@ -2089,7 +2089,7 @@ enum class eml21__ElectricChargeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:4937 */
+/* eml2_1ForGsoap.h:4943 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ElectricConductanceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ElectricConductanceUom (-863)
 
@@ -2111,7 +2111,7 @@ enum class eml21__ElectricConductanceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5008 */
+/* eml2_1ForGsoap.h:5014 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ElectricConductivityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ElectricConductivityUom (-864)
 
@@ -2124,7 +2124,7 @@ enum class eml21__ElectricConductivityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5034 */
+/* eml2_1ForGsoap.h:5040 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ElectricCurrentDensityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ElectricCurrentDensityUom (-865)
 
@@ -2141,7 +2141,7 @@ enum class eml21__ElectricCurrentDensityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5080 */
+/* eml2_1ForGsoap.h:5086 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ElectricCurrentUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ElectricCurrentUom (-866)
 
@@ -2163,7 +2163,7 @@ enum class eml21__ElectricCurrentUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5151 */
+/* eml2_1ForGsoap.h:5157 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ElectricFieldStrengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ElectricFieldStrengthUom (-867)
 
@@ -2177,7 +2177,7 @@ enum class eml21__ElectricFieldStrengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5182 */
+/* eml2_1ForGsoap.h:5188 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ElectricPotentialDifferenceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ElectricPotentialDifferenceUom (-868)
 
@@ -2198,7 +2198,7 @@ enum class eml21__ElectricPotentialDifferenceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5248 */
+/* eml2_1ForGsoap.h:5254 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ElectricResistancePerLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ElectricResistancePerLengthUom (-869)
 
@@ -2210,7 +2210,7 @@ enum class eml21__ElectricResistancePerLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5269 */
+/* eml2_1ForGsoap.h:5275 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ElectricResistanceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ElectricResistanceUom (-870)
 
@@ -2232,7 +2232,7 @@ enum class eml21__ElectricResistanceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5340 */
+/* eml2_1ForGsoap.h:5346 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ElectromagneticMomentUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ElectromagneticMomentUom (-871)
 
@@ -2242,7 +2242,7 @@ enum class eml21__ElectromagneticMomentUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5351 */
+/* eml2_1ForGsoap.h:5357 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__EnergyLengthPerAreaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__EnergyLengthPerAreaUom (-872)
 
@@ -2253,7 +2253,7 @@ enum class eml21__EnergyLengthPerAreaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5367 */
+/* eml2_1ForGsoap.h:5373 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__EnergyLengthPerTimeAreaTemperatureUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__EnergyLengthPerTimeAreaTemperatureUom (-873)
 
@@ -2266,7 +2266,7 @@ enum class eml21__EnergyLengthPerTimeAreaTemperatureUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5393 */
+/* eml2_1ForGsoap.h:5399 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__EnergyPerAreaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__EnergyPerAreaUom (-874)
 
@@ -2283,7 +2283,7 @@ enum class eml21__EnergyPerAreaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5439 */
+/* eml2_1ForGsoap.h:5445 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__EnergyPerLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__EnergyPerLengthUom (-875)
 
@@ -2294,7 +2294,7 @@ enum class eml21__EnergyPerLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5455 */
+/* eml2_1ForGsoap.h:5461 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__EnergyPerMassPerTimeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__EnergyPerMassPerTimeUom (-876)
 
@@ -2308,7 +2308,7 @@ enum class eml21__EnergyPerMassPerTimeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5486 */
+/* eml2_1ForGsoap.h:5492 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__EnergyPerMassUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__EnergyPerMassUom (-877)
 
@@ -2333,7 +2333,7 @@ enum class eml21__EnergyPerMassUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5572 */
+/* eml2_1ForGsoap.h:5578 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__EnergyPerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__EnergyPerVolumeUom (-878)
 
@@ -2365,7 +2365,7 @@ enum class eml21__EnergyPerVolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5693 */
+/* eml2_1ForGsoap.h:5699 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__EnergyUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__EnergyUom (-879)
 
@@ -2430,7 +2430,7 @@ enum class eml21__EnergyUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:5979 */
+/* eml2_1ForGsoap.h:5985 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ForceAreaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ForceAreaUom (-880)
 
@@ -2448,7 +2448,7 @@ enum class eml21__ForceAreaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6030 */
+/* eml2_1ForGsoap.h:6036 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ForceLengthPerLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ForceLengthPerLengthUom (-881)
 
@@ -2462,7 +2462,7 @@ enum class eml21__ForceLengthPerLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6061 */
+/* eml2_1ForGsoap.h:6067 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ForcePerForceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ForcePerForceUom (-882)
 
@@ -2476,7 +2476,7 @@ enum class eml21__ForcePerForceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6092 */
+/* eml2_1ForGsoap.h:6098 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ForcePerLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ForcePerLengthUom (-883)
 
@@ -2499,7 +2499,7 @@ enum class eml21__ForcePerLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6168 */
+/* eml2_1ForGsoap.h:6174 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ForcePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ForcePerVolumeUom (-884)
 
@@ -2525,7 +2525,7 @@ enum class eml21__ForcePerVolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6259 */
+/* eml2_1ForGsoap.h:6265 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ForceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ForceUom (-885)
 
@@ -2561,7 +2561,7 @@ enum class eml21__ForceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6400 */
+/* eml2_1ForGsoap.h:6406 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__FrequencyIntervalUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__FrequencyIntervalUom (-886)
 
@@ -2571,7 +2571,7 @@ enum class eml21__FrequencyIntervalUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6411 */
+/* eml2_1ForGsoap.h:6417 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__FrequencyUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__FrequencyUom (-887)
 
@@ -2593,7 +2593,7 @@ enum class eml21__FrequencyUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6482 */
+/* eml2_1ForGsoap.h:6488 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__HeatCapacityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__HeatCapacityUom (-888)
 
@@ -2603,7 +2603,7 @@ enum class eml21__HeatCapacityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6493 */
+/* eml2_1ForGsoap.h:6499 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__HeatFlowRateUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__HeatFlowRateUom (-889)
 
@@ -2635,7 +2635,7 @@ enum class eml21__HeatFlowRateUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6614 */
+/* eml2_1ForGsoap.h:6620 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__HeatTransferCoefficientUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__HeatTransferCoefficientUom (-890)
 
@@ -2655,7 +2655,7 @@ enum class eml21__HeatTransferCoefficientUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6675 */
+/* eml2_1ForGsoap.h:6681 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__IlluminanceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__IlluminanceUom (-891)
 
@@ -2668,7 +2668,7 @@ enum class eml21__IlluminanceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6701 */
+/* eml2_1ForGsoap.h:6707 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__InductanceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__InductanceUom (-892)
 
@@ -2689,7 +2689,7 @@ enum class eml21__InductanceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6767 */
+/* eml2_1ForGsoap.h:6773 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__IsothermalCompressibilityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__IsothermalCompressibilityUom (-893)
 
@@ -2704,7 +2704,7 @@ enum class eml21__IsothermalCompressibilityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6803 */
+/* eml2_1ForGsoap.h:6809 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__KinematicViscosityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__KinematicViscosityUom (-894)
 
@@ -2723,7 +2723,7 @@ enum class eml21__KinematicViscosityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6859 */
+/* eml2_1ForGsoap.h:6865 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LengthPerLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LengthPerLengthUom (-895)
 
@@ -2745,7 +2745,7 @@ enum class eml21__LengthPerLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6930 */
+/* eml2_1ForGsoap.h:6936 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LengthPerMassUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LengthPerMassUom (-896)
 
@@ -2756,7 +2756,7 @@ enum class eml21__LengthPerMassUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6946 */
+/* eml2_1ForGsoap.h:6952 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LengthPerPressureUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LengthPerPressureUom (-897)
 
@@ -2768,7 +2768,7 @@ enum class eml21__LengthPerPressureUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6967 */
+/* eml2_1ForGsoap.h:6973 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LengthPerTemperatureUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LengthPerTemperatureUom (-898)
 
@@ -2779,7 +2779,7 @@ enum class eml21__LengthPerTemperatureUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:6983 */
+/* eml2_1ForGsoap.h:6989 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LengthPerTimeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LengthPerTimeUom (-899)
 
@@ -2816,7 +2816,7 @@ enum class eml21__LengthPerTimeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:7129 */
+/* eml2_1ForGsoap.h:7135 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LengthPerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LengthPerVolumeUom (-900)
 
@@ -2833,7 +2833,7 @@ enum class eml21__LengthPerVolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:7175 */
+/* eml2_1ForGsoap.h:7181 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LengthUom (-901)
 
@@ -2925,7 +2925,7 @@ enum class eml21__LengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:7596 */
+/* eml2_1ForGsoap.h:7602 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LightExposureUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LightExposureUom (-902)
 
@@ -2936,7 +2936,7 @@ enum class eml21__LightExposureUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:7612 */
+/* eml2_1ForGsoap.h:7618 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LinearAccelerationUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LinearAccelerationUom (-903)
 
@@ -2953,7 +2953,7 @@ enum class eml21__LinearAccelerationUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:7658 */
+/* eml2_1ForGsoap.h:7664 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LinearThermalExpansionUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LinearThermalExpansionUom (-904)
 
@@ -2966,7 +2966,7 @@ enum class eml21__LinearThermalExpansionUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:7684 */
+/* eml2_1ForGsoap.h:7690 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LogarithmicPowerRatioPerLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LogarithmicPowerRatioPerLengthUom (-905)
 
@@ -2979,7 +2979,7 @@ enum class eml21__LogarithmicPowerRatioPerLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:7710 */
+/* eml2_1ForGsoap.h:7716 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LogarithmicPowerRatioUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LogarithmicPowerRatioUom (-906)
 
@@ -2990,7 +2990,7 @@ enum class eml21__LogarithmicPowerRatioUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:7726 */
+/* eml2_1ForGsoap.h:7732 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LuminanceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LuminanceUom (-907)
 
@@ -3000,7 +3000,7 @@ enum class eml21__LuminanceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:7737 */
+/* eml2_1ForGsoap.h:7743 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LuminousEfficacyUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LuminousEfficacyUom (-908)
 
@@ -3010,7 +3010,7 @@ enum class eml21__LuminousEfficacyUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:7748 */
+/* eml2_1ForGsoap.h:7754 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LuminousFluxUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LuminousFluxUom (-909)
 
@@ -3020,7 +3020,7 @@ enum class eml21__LuminousFluxUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:7759 */
+/* eml2_1ForGsoap.h:7765 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LuminousIntensityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LuminousIntensityUom (-910)
 
@@ -3031,7 +3031,7 @@ enum class eml21__LuminousIntensityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:7775 */
+/* eml2_1ForGsoap.h:7781 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MagneticDipoleMomentUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MagneticDipoleMomentUom (-911)
 
@@ -3041,7 +3041,7 @@ enum class eml21__MagneticDipoleMomentUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:7786 */
+/* eml2_1ForGsoap.h:7792 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MagneticFieldStrengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MagneticFieldStrengthUom (-912)
 
@@ -3053,7 +3053,7 @@ enum class eml21__MagneticFieldStrengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:7807 */
+/* eml2_1ForGsoap.h:7813 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MagneticFluxDensityPerLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MagneticFluxDensityPerLengthUom (-913)
 
@@ -3065,7 +3065,7 @@ enum class eml21__MagneticFluxDensityPerLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:7828 */
+/* eml2_1ForGsoap.h:7834 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MagneticFluxDensityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MagneticFluxDensityUom (-914)
 
@@ -3099,7 +3099,7 @@ enum class eml21__MagneticFluxDensityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:7959 */
+/* eml2_1ForGsoap.h:7965 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MagneticFluxUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MagneticFluxUom (-915)
 
@@ -3121,7 +3121,7 @@ enum class eml21__MagneticFluxUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8030 */
+/* eml2_1ForGsoap.h:8036 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MagneticPermeabilityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MagneticPermeabilityUom (-916)
 
@@ -3132,7 +3132,7 @@ enum class eml21__MagneticPermeabilityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8046 */
+/* eml2_1ForGsoap.h:8052 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MagneticVectorPotentialUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MagneticVectorPotentialUom (-917)
 
@@ -3143,7 +3143,7 @@ enum class eml21__MagneticVectorPotentialUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8062 */
+/* eml2_1ForGsoap.h:8068 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MassLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MassLengthUom (-918)
 
@@ -3154,7 +3154,7 @@ enum class eml21__MassLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8078 */
+/* eml2_1ForGsoap.h:8084 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MassPerAreaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MassPerAreaUom (-919)
 
@@ -3168,7 +3168,7 @@ enum class eml21__MassPerAreaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8109 */
+/* eml2_1ForGsoap.h:8115 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MassPerEnergyUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MassPerEnergyUom (-920)
 
@@ -3182,7 +3182,7 @@ enum class eml21__MassPerEnergyUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8140 */
+/* eml2_1ForGsoap.h:8146 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MassPerLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MassPerLengthUom (-921)
 
@@ -3196,7 +3196,7 @@ enum class eml21__MassPerLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8171 */
+/* eml2_1ForGsoap.h:8177 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MassPerMassUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MassPerMassUom (-922)
 
@@ -3222,7 +3222,7 @@ enum class eml21__MassPerMassUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8262 */
+/* eml2_1ForGsoap.h:8268 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MassPerTimePerAreaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MassPerTimePerAreaUom (-923)
 
@@ -3238,7 +3238,7 @@ enum class eml21__MassPerTimePerAreaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8303 */
+/* eml2_1ForGsoap.h:8309 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MassPerTimePerLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MassPerTimePerLengthUom (-924)
 
@@ -3251,7 +3251,7 @@ enum class eml21__MassPerTimePerLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8329 */
+/* eml2_1ForGsoap.h:8335 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MassPerTimeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MassPerTimeUom (-925)
 
@@ -3286,7 +3286,7 @@ enum class eml21__MassPerTimeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8465 */
+/* eml2_1ForGsoap.h:8471 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MassPerVolumePerLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MassPerVolumePerLengthUom (-926)
 
@@ -3302,7 +3302,7 @@ enum class eml21__MassPerVolumePerLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8506 */
+/* eml2_1ForGsoap.h:8512 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MassPerVolumePerPressureUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MassPerVolumePerPressureUom (-927)
 
@@ -3313,7 +3313,7 @@ enum class eml21__MassPerVolumePerPressureUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8514 */
+/* eml2_1ForGsoap.h:8520 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MassPerVolumePerTemperatureUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MassPerVolumePerTemperatureUom (-928)
 
@@ -3325,7 +3325,7 @@ enum class eml21__MassPerVolumePerTemperatureUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8523 */
+/* eml2_1ForGsoap.h:8529 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MassPerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MassPerVolumeUom (-929)
 
@@ -3363,7 +3363,7 @@ enum class eml21__MassPerVolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8674 */
+/* eml2_1ForGsoap.h:8680 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MassUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MassUom (-930)
 
@@ -3398,7 +3398,7 @@ enum class eml21__MassUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8810 */
+/* eml2_1ForGsoap.h:8816 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MobilityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MobilityUom (-931)
 
@@ -3414,7 +3414,7 @@ enum class eml21__MobilityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8851 */
+/* eml2_1ForGsoap.h:8857 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MolarEnergyUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MolarEnergyUom (-932)
 
@@ -3428,7 +3428,7 @@ enum class eml21__MolarEnergyUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8882 */
+/* eml2_1ForGsoap.h:8888 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MolarHeatCapacityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MolarHeatCapacityUom (-933)
 
@@ -3441,7 +3441,7 @@ enum class eml21__MolarHeatCapacityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8908 */
+/* eml2_1ForGsoap.h:8914 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MolarVolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MolarVolumeUom (-934)
 
@@ -3456,7 +3456,7 @@ enum class eml21__MolarVolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8944 */
+/* eml2_1ForGsoap.h:8950 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MolecularWeightUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MolecularWeightUom (-935)
 
@@ -3468,7 +3468,7 @@ enum class eml21__MolecularWeightUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:8965 */
+/* eml2_1ForGsoap.h:8971 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MomentOfForceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MomentOfForceUom (-936)
 
@@ -3490,7 +3490,7 @@ enum class eml21__MomentOfForceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9036 */
+/* eml2_1ForGsoap.h:9042 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MomentOfInertiaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MomentOfInertiaUom (-937)
 
@@ -3501,7 +3501,7 @@ enum class eml21__MomentOfInertiaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9052 */
+/* eml2_1ForGsoap.h:9058 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MomentumUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MomentumUom (-938)
 
@@ -3512,7 +3512,7 @@ enum class eml21__MomentumUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9068 */
+/* eml2_1ForGsoap.h:9074 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__NormalizedPowerUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__NormalizedPowerUom (-939)
 
@@ -3525,7 +3525,7 @@ enum class eml21__NormalizedPowerUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9094 */
+/* eml2_1ForGsoap.h:9100 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PermeabilityLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__PermeabilityLengthUom (-940)
 
@@ -3539,7 +3539,7 @@ enum class eml21__PermeabilityLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9125 */
+/* eml2_1ForGsoap.h:9131 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PermeabilityRockUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__PermeabilityRockUom (-941)
 
@@ -3552,7 +3552,7 @@ enum class eml21__PermeabilityRockUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9151 */
+/* eml2_1ForGsoap.h:9157 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PermittivityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__PermittivityUom (-942)
 
@@ -3563,7 +3563,7 @@ enum class eml21__PermittivityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9167 */
+/* eml2_1ForGsoap.h:9173 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PlaneAngleUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__PlaneAngleUom (-943)
 
@@ -3586,7 +3586,7 @@ enum class eml21__PlaneAngleUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9243 */
+/* eml2_1ForGsoap.h:9249 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PotentialDifferencePerPowerDropUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__PotentialDifferencePerPowerDropUom (-944)
 
@@ -3597,7 +3597,7 @@ enum class eml21__PotentialDifferencePerPowerDropUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9259 */
+/* eml2_1ForGsoap.h:9265 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PowerPerAreaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__PowerPerAreaUom (-945)
 
@@ -3618,7 +3618,7 @@ enum class eml21__PowerPerAreaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9325 */
+/* eml2_1ForGsoap.h:9331 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PowerPerPowerUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__PowerPerPowerUom (-946)
 
@@ -3632,7 +3632,7 @@ enum class eml21__PowerPerPowerUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9356 */
+/* eml2_1ForGsoap.h:9362 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PowerPerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__PowerPerVolumeUom (-947)
 
@@ -3649,7 +3649,7 @@ enum class eml21__PowerPerVolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9402 */
+/* eml2_1ForGsoap.h:9408 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PowerUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__PowerUom (-948)
 
@@ -3676,7 +3676,7 @@ enum class eml21__PowerUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9498 */
+/* eml2_1ForGsoap.h:9504 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PressurePerPressureUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__PressurePerPressureUom (-949)
 
@@ -3692,7 +3692,7 @@ enum class eml21__PressurePerPressureUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9539 */
+/* eml2_1ForGsoap.h:9545 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PressurePerTimeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__PressurePerTimeUom (-950)
 
@@ -3710,7 +3710,7 @@ enum class eml21__PressurePerTimeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9590 */
+/* eml2_1ForGsoap.h:9596 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PressurePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__PressurePerVolumeUom (-951)
 
@@ -3721,7 +3721,7 @@ enum class eml21__PressurePerVolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9606 */
+/* eml2_1ForGsoap.h:9612 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PressureSquaredPerForceTimePerAreaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__PressureSquaredPerForceTimePerAreaUom (-952)
 
@@ -3735,7 +3735,7 @@ enum class eml21__PressureSquaredPerForceTimePerAreaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9637 */
+/* eml2_1ForGsoap.h:9643 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PressureSquaredUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__PressureSquaredUom (-953)
 
@@ -3750,7 +3750,7 @@ enum class eml21__PressureSquaredUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9673 */
+/* eml2_1ForGsoap.h:9679 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PressureTimePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__PressureTimePerVolumeUom (-954)
 
@@ -3761,7 +3761,7 @@ enum class eml21__PressureTimePerVolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9689 */
+/* eml2_1ForGsoap.h:9695 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PressureUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__PressureUom (-955)
 
@@ -3813,7 +3813,7 @@ enum class eml21__PressureUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9910 */
+/* eml2_1ForGsoap.h:9916 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__QuantityOfLightUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__QuantityOfLightUom (-956)
 
@@ -3823,7 +3823,7 @@ enum class eml21__QuantityOfLightUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9921 */
+/* eml2_1ForGsoap.h:9927 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__RadianceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__RadianceUom (-957)
 
@@ -3833,7 +3833,7 @@ enum class eml21__RadianceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9932 */
+/* eml2_1ForGsoap.h:9938 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__RadiantIntensityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__RadiantIntensityUom (-958)
 
@@ -3843,7 +3843,7 @@ enum class eml21__RadiantIntensityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9943 */
+/* eml2_1ForGsoap.h:9949 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalAreaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalAreaUom (-959)
 
@@ -3856,7 +3856,7 @@ enum class eml21__ReciprocalAreaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9969 */
+/* eml2_1ForGsoap.h:9975 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalElectricPotentialDifferenceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalElectricPotentialDifferenceUom (-960)
 
@@ -3867,7 +3867,7 @@ enum class eml21__ReciprocalElectricPotentialDifferenceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:9985 */
+/* eml2_1ForGsoap.h:9991 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalForceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalForceUom (-961)
 
@@ -3878,7 +3878,7 @@ enum class eml21__ReciprocalForceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10001 */
+/* eml2_1ForGsoap.h:10007 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalLengthUom (-962)
 
@@ -3897,7 +3897,7 @@ enum class eml21__ReciprocalLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10057 */
+/* eml2_1ForGsoap.h:10063 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalMassTimeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalMassTimeUom (-963)
 
@@ -3909,7 +3909,7 @@ enum class eml21__ReciprocalMassTimeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10078 */
+/* eml2_1ForGsoap.h:10084 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalMassUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalMassUom (-964)
 
@@ -3921,7 +3921,7 @@ enum class eml21__ReciprocalMassUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10099 */
+/* eml2_1ForGsoap.h:10105 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalPressureUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalPressureUom (-965)
 
@@ -3936,7 +3936,7 @@ enum class eml21__ReciprocalPressureUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10135 */
+/* eml2_1ForGsoap.h:10141 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalTimeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalTimeUom (-966)
 
@@ -3953,7 +3953,7 @@ enum class eml21__ReciprocalTimeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10181 */
+/* eml2_1ForGsoap.h:10187 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalVolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ReciprocalVolumeUom (-967)
 
@@ -3968,7 +3968,7 @@ enum class eml21__ReciprocalVolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10217 */
+/* eml2_1ForGsoap.h:10223 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ReluctanceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ReluctanceUom (-968)
 
@@ -3978,7 +3978,7 @@ enum class eml21__ReluctanceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10228 */
+/* eml2_1ForGsoap.h:10234 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__SecondMomentOfAreaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__SecondMomentOfAreaUom (-969)
 
@@ -3990,7 +3990,7 @@ enum class eml21__SecondMomentOfAreaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10249 */
+/* eml2_1ForGsoap.h:10255 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__SignalingEventPerTimeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__SignalingEventPerTimeUom (-970)
 
@@ -4000,7 +4000,7 @@ enum class eml21__SignalingEventPerTimeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10260 */
+/* eml2_1ForGsoap.h:10266 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__SolidAngleUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__SolidAngleUom (-971)
 
@@ -4010,7 +4010,7 @@ enum class eml21__SolidAngleUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10271 */
+/* eml2_1ForGsoap.h:10277 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__SpecificHeatCapacityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__SpecificHeatCapacityUom (-972)
 
@@ -4027,7 +4027,7 @@ enum class eml21__SpecificHeatCapacityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10317 */
+/* eml2_1ForGsoap.h:10323 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__TemperatureIntervalPerLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__TemperatureIntervalPerLengthUom (-973)
 
@@ -4045,7 +4045,7 @@ enum class eml21__TemperatureIntervalPerLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10368 */
+/* eml2_1ForGsoap.h:10374 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__TemperatureIntervalPerPressureUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__TemperatureIntervalPerPressureUom (-974)
 
@@ -4057,7 +4057,7 @@ enum class eml21__TemperatureIntervalPerPressureUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10389 */
+/* eml2_1ForGsoap.h:10395 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__TemperatureIntervalPerTimeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__TemperatureIntervalPerTimeUom (-975)
 
@@ -4073,7 +4073,7 @@ enum class eml21__TemperatureIntervalPerTimeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10430 */
+/* eml2_1ForGsoap.h:10436 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__TemperatureIntervalUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__TemperatureIntervalUom (-976)
 
@@ -4086,7 +4086,7 @@ enum class eml21__TemperatureIntervalUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10456 */
+/* eml2_1ForGsoap.h:10462 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ThermalConductanceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ThermalConductanceUom (-977)
 
@@ -4096,7 +4096,7 @@ enum class eml21__ThermalConductanceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10467 */
+/* eml2_1ForGsoap.h:10473 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ThermalConductivityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ThermalConductivityUom (-978)
 
@@ -4110,7 +4110,7 @@ enum class eml21__ThermalConductivityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10498 */
+/* eml2_1ForGsoap.h:10504 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ThermalDiffusivityUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ThermalDiffusivityUom (-979)
 
@@ -4126,7 +4126,7 @@ enum class eml21__ThermalDiffusivityUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10539 */
+/* eml2_1ForGsoap.h:10545 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ThermalInsulanceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ThermalInsulanceUom (-980)
 
@@ -4139,7 +4139,7 @@ enum class eml21__ThermalInsulanceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10565 */
+/* eml2_1ForGsoap.h:10571 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ThermalResistanceUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ThermalResistanceUom (-981)
 
@@ -4149,7 +4149,7 @@ enum class eml21__ThermalResistanceUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10576 */
+/* eml2_1ForGsoap.h:10582 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ThermodynamicTemperaturePerThermodynamicTemperatureUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ThermodynamicTemperaturePerThermodynamicTemperatureUom (-982)
 
@@ -4163,7 +4163,7 @@ enum class eml21__ThermodynamicTemperaturePerThermodynamicTemperatureUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10607 */
+/* eml2_1ForGsoap.h:10613 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ThermodynamicTemperatureUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ThermodynamicTemperatureUom (-983)
 
@@ -4176,7 +4176,7 @@ enum class eml21__ThermodynamicTemperatureUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10633 */
+/* eml2_1ForGsoap.h:10639 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__TimePerLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__TimePerLengthUom (-984)
 
@@ -4202,7 +4202,7 @@ enum class eml21__TimePerLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10724 */
+/* eml2_1ForGsoap.h:10730 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__TimePerMassUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__TimePerMassUom (-985)
 
@@ -4212,7 +4212,7 @@ enum class eml21__TimePerMassUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10735 */
+/* eml2_1ForGsoap.h:10741 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__TimePerTimeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__TimePerTimeUom (-986)
 
@@ -4225,7 +4225,7 @@ enum class eml21__TimePerTimeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10761 */
+/* eml2_1ForGsoap.h:10767 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__TimePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__TimePerVolumeUom (-987)
 
@@ -4245,7 +4245,7 @@ enum class eml21__TimePerVolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10822 */
+/* eml2_1ForGsoap.h:10828 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__TimeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__TimeUom (-988)
 
@@ -4278,7 +4278,7 @@ enum class eml21__TimeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10952 */
+/* eml2_1ForGsoap.h:10958 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VerticalCoordinateUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VerticalCoordinateUom (-989)
 
@@ -4291,7 +4291,7 @@ enum class eml21__VerticalCoordinateUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:10978 */
+/* eml2_1ForGsoap.h:10984 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumeFlowRatePerVolumeFlowRateUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumeFlowRatePerVolumeFlowRateUom (-990)
 
@@ -4306,7 +4306,7 @@ enum class eml21__VolumeFlowRatePerVolumeFlowRateUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:11014 */
+/* eml2_1ForGsoap.h:11020 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerAreaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerAreaUom (-991)
 
@@ -4319,7 +4319,7 @@ enum class eml21__VolumePerAreaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:11040 */
+/* eml2_1ForGsoap.h:11046 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerLengthUom (-992)
 
@@ -4342,7 +4342,7 @@ enum class eml21__VolumePerLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:11116 */
+/* eml2_1ForGsoap.h:11122 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerMassUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerMassUom (-993)
 
@@ -4373,7 +4373,7 @@ enum class eml21__VolumePerMassUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:11232 */
+/* eml2_1ForGsoap.h:11238 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerPressureUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerPressureUom (-994)
 
@@ -4385,7 +4385,7 @@ enum class eml21__VolumePerPressureUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:11253 */
+/* eml2_1ForGsoap.h:11259 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerRotationUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerRotationUom (-995)
 
@@ -4397,7 +4397,7 @@ enum class eml21__VolumePerRotationUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:11274 */
+/* eml2_1ForGsoap.h:11280 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerTimeLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerTimeLengthUom (-996)
 
@@ -4409,7 +4409,7 @@ enum class eml21__VolumePerTimeLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:11295 */
+/* eml2_1ForGsoap.h:11301 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerTimePerAreaUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerTimePerAreaUom (-997)
 
@@ -4427,7 +4427,7 @@ enum class eml21__VolumePerTimePerAreaUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:11346 */
+/* eml2_1ForGsoap.h:11352 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerTimePerLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerTimePerLengthUom (-998)
 
@@ -4451,7 +4451,7 @@ enum class eml21__VolumePerTimePerLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:11427 */
+/* eml2_1ForGsoap.h:11433 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerTimePerPressureLengthUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerTimePerPressureLengthUom (-999)
 
@@ -4464,7 +4464,7 @@ enum class eml21__VolumePerTimePerPressureLengthUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:11453 */
+/* eml2_1ForGsoap.h:11459 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerTimePerPressureUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerTimePerPressureUom (-1000)
 
@@ -4484,7 +4484,7 @@ enum class eml21__VolumePerTimePerPressureUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:11514 */
+/* eml2_1ForGsoap.h:11520 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerTimePerTimeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerTimePerTimeUom (-1001)
 
@@ -4507,7 +4507,7 @@ enum class eml21__VolumePerTimePerTimeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:11590 */
+/* eml2_1ForGsoap.h:11596 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerTimePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerTimePerVolumeUom (-1002)
 
@@ -4518,7 +4518,7 @@ enum class eml21__VolumePerTimePerVolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:11606 */
+/* eml2_1ForGsoap.h:11612 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerTimeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerTimeUom (-1003)
 
@@ -4559,7 +4559,7 @@ enum class eml21__VolumePerTimeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:11772 */
+/* eml2_1ForGsoap.h:11778 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerVolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumePerVolumeUom (-1004)
 
@@ -4615,7 +4615,7 @@ enum class eml21__VolumePerVolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12013 */
+/* eml2_1ForGsoap.h:12019 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumetricHeatTransferCoefficientUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumetricHeatTransferCoefficientUom (-1005)
 
@@ -4628,7 +4628,7 @@ enum class eml21__VolumetricHeatTransferCoefficientUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12039 */
+/* eml2_1ForGsoap.h:12045 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumetricThermalExpansionUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumetricThermalExpansionUom (-1006)
 
@@ -4646,7 +4646,7 @@ enum class eml21__VolumetricThermalExpansionUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12090 */
+/* eml2_1ForGsoap.h:12096 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__VolumeUom
 #define SOAP_TYPE_gsoap_eml2_1_eml21__VolumeUom (-1007)
 
@@ -4691,7 +4691,7 @@ enum class eml21__VolumeUom {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12280 */
+/* eml2_1ForGsoap.h:12286 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__PrincipalMeridian
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__PrincipalMeridian (-1008)
 
@@ -4736,7 +4736,7 @@ enum class witsml20__PrincipalMeridian {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12470 */
+/* eml2_1ForGsoap.h:12476 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__EastOrWest
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__EastOrWest (-1009)
 
@@ -4747,7 +4747,7 @@ enum class witsml20__EastOrWest {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12490 */
+/* eml2_1ForGsoap.h:12496 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__NorthOrSouth
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__NorthOrSouth (-1010)
 
@@ -4758,7 +4758,7 @@ enum class witsml20__NorthOrSouth {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12510 */
+/* eml2_1ForGsoap.h:12516 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__WellPurpose
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__WellPurpose (-1011)
 
@@ -4791,7 +4791,7 @@ enum class witsml20__WellPurpose {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12640 */
+/* eml2_1ForGsoap.h:12646 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__WellFluid
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__WellFluid (-1012)
 
@@ -4814,7 +4814,7 @@ enum class witsml20__WellFluid {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12720 */
+/* eml2_1ForGsoap.h:12726 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__WellDirection
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__WellDirection (-1013)
 
@@ -4827,7 +4827,7 @@ enum class witsml20__WellDirection {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12750 */
+/* eml2_1ForGsoap.h:12756 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__ElevCodeEnum
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__ElevCodeEnum (-1014)
 
@@ -4853,7 +4853,7 @@ enum class witsml20__ElevCodeEnum {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12845 */
+/* eml2_1ForGsoap.h:12851 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__NameTagNumberingScheme
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__NameTagNumberingScheme (-1015)
 
@@ -4872,7 +4872,7 @@ enum class witsml20__NameTagNumberingScheme {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12865 */
+/* eml2_1ForGsoap.h:12871 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__NameTagTechnology
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__NameTagTechnology (-1016)
 
@@ -4887,7 +4887,7 @@ enum class witsml20__NameTagTechnology {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12881 */
+/* eml2_1ForGsoap.h:12887 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__NameTagLocation
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__NameTagLocation (-1017)
 
@@ -4900,7 +4900,7 @@ enum class witsml20__NameTagLocation {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12895 */
+/* eml2_1ForGsoap.h:12901 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__WellboreType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__WellboreType (-1018)
 
@@ -4915,7 +4915,7 @@ enum class witsml20__WellboreType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12935 */
+/* eml2_1ForGsoap.h:12941 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__WellboreShape
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__WellboreShape (-1019)
 
@@ -4930,7 +4930,7 @@ enum class witsml20__WellboreShape {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12975 */
+/* eml2_1ForGsoap.h:12981 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__PhysicalStatus
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__PhysicalStatus (-1020)
 
@@ -4942,7 +4942,7 @@ enum class witsml20__PhysicalStatus {
 };
 #endif
 
-/* eml2_1ForGsoap.h:12988 */
+/* eml2_1ForGsoap.h:12994 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__PerforationStatus
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__PerforationStatus (-1021)
 
@@ -4954,7 +4954,7 @@ enum class witsml20__PerforationStatus {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13001 */
+/* eml2_1ForGsoap.h:13007 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__CasingConnectionTypes
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__CasingConnectionTypes (-1022)
 
@@ -4966,7 +4966,7 @@ enum class witsml20__CasingConnectionTypes {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13014 */
+/* eml2_1ForGsoap.h:13020 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__TubingConnectionTypes
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__TubingConnectionTypes (-1023)
 
@@ -4982,7 +4982,7 @@ enum class witsml20__TubingConnectionTypes {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13031 */
+/* eml2_1ForGsoap.h:13037 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__RodConnectionTypes
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__RodConnectionTypes (-1024)
 
@@ -4997,7 +4997,7 @@ enum class witsml20__RodConnectionTypes {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13047 */
+/* eml2_1ForGsoap.h:13053 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__OtherConnectionTypes
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__OtherConnectionTypes (-1025)
 
@@ -5008,7 +5008,7 @@ enum class witsml20__OtherConnectionTypes {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13059 */
+/* eml2_1ForGsoap.h:13065 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__ConnectionFormType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__ConnectionFormType (-1026)
 
@@ -5022,7 +5022,7 @@ enum class witsml20__ConnectionFormType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13074 */
+/* eml2_1ForGsoap.h:13080 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__EquipmentType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__EquipmentType (-1027)
 
@@ -5149,7 +5149,7 @@ enum class witsml20__EquipmentType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13202 */
+/* eml2_1ForGsoap.h:13208 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__GradeType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__GradeType (-1028)
 
@@ -5292,7 +5292,7 @@ enum class witsml20__GradeType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13346 */
+/* eml2_1ForGsoap.h:13352 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__BoreholeType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__BoreholeType (-1029)
 
@@ -5305,7 +5305,7 @@ enum class witsml20__BoreholeType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13360 */
+/* eml2_1ForGsoap.h:13366 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__Coating
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__Coating (-1030)
 
@@ -5399,7 +5399,7 @@ enum class witsml20__Coating {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13455 */
+/* eml2_1ForGsoap.h:13461 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__DownholeStringType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__DownholeStringType (-1031)
 
@@ -5413,7 +5413,7 @@ enum class witsml20__DownholeStringType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13470 */
+/* eml2_1ForGsoap.h:13476 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__SubStringType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__SubStringType (-1032)
 
@@ -5437,7 +5437,7 @@ enum class witsml20__SubStringType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13495 */
+/* eml2_1ForGsoap.h:13501 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__GeologyType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__GeologyType (-1033)
 
@@ -5448,7 +5448,7 @@ enum class witsml20__GeologyType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13507 */
+/* eml2_1ForGsoap.h:13513 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__PerforationToolType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__PerforationToolType (-1034)
 
@@ -5467,7 +5467,7 @@ enum class witsml20__PerforationToolType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13527 */
+/* eml2_1ForGsoap.h:13533 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__TubularAssembly
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__TubularAssembly (-1035)
 
@@ -5490,7 +5490,7 @@ enum class witsml20__TubularAssembly {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13555 */
+/* eml2_1ForGsoap.h:13561 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__BoxPinConfig
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__BoxPinConfig (-1036)
 
@@ -5504,7 +5504,7 @@ enum class witsml20__BoxPinConfig {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13570 */
+/* eml2_1ForGsoap.h:13576 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__MaterialType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__MaterialType (-1037)
 
@@ -5523,7 +5523,7 @@ enum class witsml20__MaterialType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13590 */
+/* eml2_1ForGsoap.h:13596 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__BitType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__BitType (-1038)
 
@@ -5538,7 +5538,7 @@ enum class witsml20__BitType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13630 */
+/* eml2_1ForGsoap.h:13636 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__BitDullCode
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__BitDullCode (-1039)
 
@@ -5573,7 +5573,7 @@ enum class witsml20__BitDullCode {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13770 */
+/* eml2_1ForGsoap.h:13776 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__BitReasonPulled
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__BitReasonPulled (-1040)
 
@@ -5600,7 +5600,7 @@ enum class witsml20__BitReasonPulled {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13870 */
+/* eml2_1ForGsoap.h:13876 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__NozzleType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__NozzleType (-1041)
 
@@ -5611,7 +5611,7 @@ enum class witsml20__NozzleType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13882 */
+/* eml2_1ForGsoap.h:13888 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__ConnectionPosition
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__ConnectionPosition (-1042)
 
@@ -5623,7 +5623,7 @@ enum class witsml20__ConnectionPosition {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13907 */
+/* eml2_1ForGsoap.h:13913 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__JarType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__JarType (-1043)
 
@@ -5635,7 +5635,7 @@ enum class witsml20__JarType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13920 */
+/* eml2_1ForGsoap.h:13926 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__JarAction
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__JarAction (-1044)
 
@@ -5648,7 +5648,7 @@ enum class witsml20__JarAction {
 };
 #endif
 
-/* eml2_1ForGsoap.h:13934 */
+/* eml2_1ForGsoap.h:13940 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__MeasurementType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__MeasurementType (-1045)
 
@@ -5950,7 +5950,7 @@ enum class witsml20__MeasurementType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15393 */
+/* eml2_1ForGsoap.h:15399 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__BearingType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__BearingType (-1046)
 
@@ -5962,7 +5962,7 @@ enum class witsml20__BearingType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15406 */
+/* eml2_1ForGsoap.h:15412 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__BladeShapeType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__BladeShapeType (-1047)
 
@@ -5976,7 +5976,7 @@ enum class witsml20__BladeShapeType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15421 */
+/* eml2_1ForGsoap.h:15427 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__BladeType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__BladeType (-1048)
 
@@ -5989,7 +5989,7 @@ enum class witsml20__BladeType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15435 */
+/* eml2_1ForGsoap.h:15441 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__HoleOpenerType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__HoleOpenerType (-1049)
 
@@ -6000,7 +6000,7 @@ enum class witsml20__HoleOpenerType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15447 */
+/* eml2_1ForGsoap.h:15453 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__DeflectionMethod
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__DeflectionMethod (-1050)
 
@@ -6012,7 +6012,7 @@ enum class witsml20__DeflectionMethod {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15472 */
+/* eml2_1ForGsoap.h:15478 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__TubularComponentType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__TubularComponentType (-1051)
 
@@ -6172,7 +6172,7 @@ enum class witsml20__TubularComponentType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15633 */
+/* eml2_1ForGsoap.h:15639 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__IadcBearingWearCode
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__IadcBearingWearCode (-1052)
 
@@ -6194,7 +6194,7 @@ enum class witsml20__IadcBearingWearCode {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15656 */
+/* eml2_1ForGsoap.h:15662 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__IadcIntegerCode
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__IadcIntegerCode (-1053)
 
@@ -6212,7 +6212,7 @@ enum class witsml20__IadcIntegerCode {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15675 */
+/* eml2_1ForGsoap.h:15681 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__CompletionStatus
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__CompletionStatus (-1054)
 
@@ -6228,7 +6228,7 @@ enum class witsml20__CompletionStatus {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15692 */
+/* eml2_1ForGsoap.h:15698 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__HoleCasingType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__HoleCasingType (-1055)
 
@@ -6245,7 +6245,7 @@ enum class witsml20__HoleCasingType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15710 */
+/* eml2_1ForGsoap.h:15716 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__IndexDirection
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__IndexDirection (-1056)
 
@@ -6256,7 +6256,7 @@ enum class witsml20__IndexDirection {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15730 */
+/* eml2_1ForGsoap.h:15736 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__LoggingMethod
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__LoggingMethod (-1057)
 
@@ -6272,7 +6272,7 @@ enum class witsml20__LoggingMethod {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15775 */
+/* eml2_1ForGsoap.h:15781 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__ChannelIndexType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__ChannelIndexType (-1058)
 
@@ -6288,7 +6288,7 @@ enum class witsml20__ChannelIndexType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15820 */
+/* eml2_1ForGsoap.h:15826 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__ChannelState
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__ChannelState (-1059)
 
@@ -6302,7 +6302,7 @@ enum class witsml20__ChannelState {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15855 */
+/* eml2_1ForGsoap.h:15861 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__EtpDataType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__EtpDataType (-1060)
 
@@ -6320,7 +6320,7 @@ enum class witsml20__EtpDataType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15910 */
+/* eml2_1ForGsoap.h:15916 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__ChannelStatus
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__ChannelStatus (-1061)
 
@@ -6332,7 +6332,7 @@ enum class witsml20__ChannelStatus {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15935 */
+/* eml2_1ForGsoap.h:15941 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__ChannelDerivation
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__ChannelDerivation (-1062)
 
@@ -6346,7 +6346,7 @@ enum class witsml20__ChannelDerivation {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15970 */
+/* eml2_1ForGsoap.h:15976 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__BhaStatus
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__BhaStatus (-1063)
 
@@ -6358,7 +6358,7 @@ enum class witsml20__BhaStatus {
 };
 #endif
 
-/* eml2_1ForGsoap.h:15983 */
+/* eml2_1ForGsoap.h:15989 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__MudSubClass
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__MudSubClass (-1064)
 
@@ -6407,7 +6407,7 @@ enum class witsml20__MudSubClass {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16033 */
+/* eml2_1ForGsoap.h:16039 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__MudClass
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__MudClass (-1065)
 
@@ -6420,7 +6420,7 @@ enum class witsml20__MudClass {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16055 */
+/* eml2_1ForGsoap.h:16061 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__GasPeakType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__GasPeakType (-1066)
 
@@ -6438,7 +6438,7 @@ enum class witsml20__GasPeakType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16074 */
+/* eml2_1ForGsoap.h:16080 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__OpsReportVersion
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__OpsReportVersion (-1067)
 
@@ -6450,7 +6450,7 @@ enum class witsml20__OpsReportVersion {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16099 */
+/* eml2_1ForGsoap.h:16105 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__PresTestType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__PresTestType (-1068)
 
@@ -6461,7 +6461,7 @@ enum class witsml20__PresTestType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16119 */
+/* eml2_1ForGsoap.h:16125 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__ReadingKind
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__ReadingKind (-1069)
 
@@ -6473,7 +6473,7 @@ enum class witsml20__ReadingKind {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16144 */
+/* eml2_1ForGsoap.h:16150 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__DrillActivityCode
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__DrillActivityCode (-1070)
 
@@ -6688,7 +6688,7 @@ enum class witsml20__DrillActivityCode {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16360 */
+/* eml2_1ForGsoap.h:16366 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__DrillActivityClassType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__DrillActivityClassType (-1071)
 
@@ -6700,7 +6700,7 @@ enum class witsml20__DrillActivityClassType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16373 */
+/* eml2_1ForGsoap.h:16379 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__StateDetailActivity
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__StateDetailActivity (-1072)
 
@@ -6718,7 +6718,7 @@ enum class witsml20__StateDetailActivity {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16428 */
+/* eml2_1ForGsoap.h:16434 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__ItemState
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__ItemState (-1073)
 
@@ -6730,7 +6730,7 @@ enum class witsml20__ItemState {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16453 */
+/* eml2_1ForGsoap.h:16459 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__InnerBarrelType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__InnerBarrelType (-1074)
 
@@ -6743,7 +6743,7 @@ enum class witsml20__InnerBarrelType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16483 */
+/* eml2_1ForGsoap.h:16489 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__WellTestType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__WellTestType (-1075)
 
@@ -6754,7 +6754,7 @@ enum class witsml20__WellTestType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16503 */
+/* eml2_1ForGsoap.h:16509 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__WellControlIncidentType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__WellControlIncidentType (-1076)
 
@@ -6767,7 +6767,7 @@ enum class witsml20__WellControlIncidentType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16533 */
+/* eml2_1ForGsoap.h:16539 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__WellKillingProcedureType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__WellKillingProcedureType (-1077)
 
@@ -6782,7 +6782,7 @@ enum class witsml20__WellKillingProcedureType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16575 */
+/* eml2_1ForGsoap.h:16581 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__ShowFluorescence
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__ShowFluorescence (-1078)
 
@@ -6794,7 +6794,7 @@ enum class witsml20__ShowFluorescence {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16588 */
+/* eml2_1ForGsoap.h:16594 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__ShowSpeed
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__ShowSpeed (-1079)
 
@@ -6808,7 +6808,7 @@ enum class witsml20__ShowSpeed {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16603 */
+/* eml2_1ForGsoap.h:16609 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__ShowLevel
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__ShowLevel (-1080)
 
@@ -6819,7 +6819,7 @@ enum class witsml20__ShowLevel {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16615 */
+/* eml2_1ForGsoap.h:16621 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__ShowRating
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__ShowRating (-1081)
 
@@ -6834,7 +6834,7 @@ enum class witsml20__ShowRating {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16631 */
+/* eml2_1ForGsoap.h:16637 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__ShowFluid
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__ShowFluid (-1082)
 
@@ -6845,7 +6845,7 @@ enum class witsml20__ShowFluid {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16643 */
+/* eml2_1ForGsoap.h:16649 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__AziRef
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__AziRef (-1083)
 
@@ -6857,7 +6857,7 @@ enum class witsml20__AziRef {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16668 */
+/* eml2_1ForGsoap.h:16674 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__TrajStationType
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__TrajStationType (-1084)
 
@@ -6914,7 +6914,7 @@ enum class witsml20__TrajStationType {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16918 */
+/* eml2_1ForGsoap.h:16924 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__TypeSurveyTool
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__TypeSurveyTool (-1085)
 
@@ -6929,7 +6929,7 @@ enum class witsml20__TypeSurveyTool {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16934 */
+/* eml2_1ForGsoap.h:16940 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__TrajStnCalcAlgorithm
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__TrajStnCalcAlgorithm (-1086)
 
@@ -6946,7 +6946,7 @@ enum class witsml20__TrajStnCalcAlgorithm {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16952 */
+/* eml2_1ForGsoap.h:16958 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__TrajStationStatus
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__TrajStationStatus (-1087)
 
@@ -6958,7 +6958,7 @@ enum class witsml20__TrajStationStatus {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16977 */
+/* eml2_1ForGsoap.h:16983 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__SurveyToolOperatingMode
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__SurveyToolOperatingMode (-1088)
 
@@ -6972,7 +6972,7 @@ enum class witsml20__SurveyToolOperatingMode {
 };
 #endif
 
-/* eml2_1ForGsoap.h:16996 */
+/* eml2_1ForGsoap.h:17002 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__ErrorModelMisalignmentMode
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__ErrorModelMisalignmentMode (-1089)
 
@@ -6985,7 +6985,7 @@ enum class witsml20__ErrorModelMisalignmentMode {
 };
 #endif
 
-/* eml2_1ForGsoap.h:17022 */
+/* eml2_1ForGsoap.h:17028 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__ErrorPropagationMode
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__ErrorPropagationMode (-1090)
 
@@ -6999,7 +6999,7 @@ enum class witsml20__ErrorPropagationMode {
 };
 #endif
 
-/* eml2_1ForGsoap.h:17057 */
+/* eml2_1ForGsoap.h:17063 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__AuthorizationStatus
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__AuthorizationStatus (-1091)
 
@@ -7012,7 +7012,7 @@ enum class witsml20__AuthorizationStatus {
 };
 #endif
 
-/* eml2_1ForGsoap.h:17095 */
+/* eml2_1ForGsoap.h:17101 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ExistenceKind
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ExistenceKind (-1092)
 
@@ -7024,7 +7024,7 @@ enum class eml21__ExistenceKind {
 };
 #endif
 
-/* eml2_1ForGsoap.h:17120 */
+/* eml2_1ForGsoap.h:17126 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__GeochronologicalRank
 #define SOAP_TYPE_gsoap_eml2_1_eml21__GeochronologicalRank (-1093)
 
@@ -7039,7 +7039,7 @@ enum class eml21__GeochronologicalRank {
 };
 #endif
 
-/* eml2_1ForGsoap.h:17136 */
+/* eml2_1ForGsoap.h:17142 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LithologyKind
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LithologyKind (-1094)
 
@@ -7189,7 +7189,7 @@ enum class eml21__LithologyKind {
 };
 #endif
 
-/* eml2_1ForGsoap.h:17283 */
+/* eml2_1ForGsoap.h:17289 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LithologyQualifierKind
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LithologyQualifierKind (-1095)
 
@@ -7499,7 +7499,7 @@ enum class eml21__LithologyQualifierKind {
 };
 #endif
 
-/* eml2_1ForGsoap.h:17594 */
+/* eml2_1ForGsoap.h:17600 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__LithostratigraphicRank
 #define SOAP_TYPE_gsoap_eml2_1_eml21__LithostratigraphicRank (-1096)
 
@@ -7512,7 +7512,7 @@ enum class eml21__LithostratigraphicRank {
 };
 #endif
 
-/* eml2_1ForGsoap.h:17642 */
+/* eml2_1ForGsoap.h:17648 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MatrixCementKind
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MatrixCementKind (-1097)
 
@@ -7530,7 +7530,7 @@ enum class eml21__MatrixCementKind {
 };
 #endif
 
-/* eml2_1ForGsoap.h:17661 */
+/* eml2_1ForGsoap.h:17667 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__MeasureClass
 #define SOAP_TYPE_gsoap_eml2_1_eml21__MeasureClass (-1098)
 
@@ -7723,7 +7723,7 @@ enum class eml21__MeasureClass {
 };
 #endif
 
-/* eml2_1ForGsoap.h:17851 */
+/* eml2_1ForGsoap.h:17857 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__QuantityClassKind
 #define SOAP_TYPE_gsoap_eml2_1_eml21__QuantityClassKind (-1099)
 
@@ -7917,7 +7917,7 @@ enum class eml21__QuantityClassKind {
 };
 #endif
 
-/* eml2_1ForGsoap.h:18056 */
+/* eml2_1ForGsoap.h:18062 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ReferenceCondition
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ReferenceCondition (-1100)
 
@@ -7936,7 +7936,7 @@ enum class eml21__ReferenceCondition {
 };
 #endif
 
-/* eml2_1ForGsoap.h:18089 */
+/* eml2_1ForGsoap.h:18095 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__WellboreDatumReference
 #define SOAP_TYPE_gsoap_eml2_1_eml21__WellboreDatumReference (-1101)
 
@@ -7961,7 +7961,7 @@ enum class eml21__WellboreDatumReference {
 };
 #endif
 
-/* eml2_1ForGsoap.h:18151 */
+/* eml2_1ForGsoap.h:18157 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__WellStatus
 #define SOAP_TYPE_gsoap_eml2_1_eml21__WellStatus (-1102)
 
@@ -7987,7 +7987,7 @@ enum class eml21__WellStatus {
 };
 #endif
 
-/* eml2_1ForGsoap.h:18248 */
+/* eml2_1ForGsoap.h:18254 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__ReferencePressureKind
 #define SOAP_TYPE_gsoap_eml2_1_eml21__ReferencePressureKind (-1103)
 
@@ -8096,7 +8096,7 @@ class witsml20__DrillReportControlIncidentInfo;	/* eml2_1ForGsoap.h:371 */
 class witsml20__DrillReportStratInfo;	/* eml2_1ForGsoap.h:373 */
 class witsml20__DrillReportPerfInfo;	/* eml2_1ForGsoap.h:375 */
 class witsml20__DrillReportGasReadingInfo;	/* eml2_1ForGsoap.h:377 */
-struct __witsml20__AbstractBottomHoleTemperature_sequence;	/* eml2_1ForGsoap.h:25005 */
+struct __witsml20__AbstractBottomHoleTemperature_sequence;	/* eml2_1ForGsoap.h:25011 */
 class witsml20__AbstractBottomHoleTemperature;	/* eml2_1ForGsoap.h:379 */
 class witsml20__CuttingsIntervalShow;	/* eml2_1ForGsoap.h:389 */
 class witsml20__LithologyQualifier;	/* eml2_1ForGsoap.h:399 */
@@ -8133,7 +8133,7 @@ class eml21__TimeIndex;	/* eml2_1ForGsoap.h:1279 */
 class eml21__TimeIndices;	/* eml2_1ForGsoap.h:1281 */
 class eml21__TimeSeriesParentage;	/* eml2_1ForGsoap.h:1285 */
 class eml21__AbstractPressureValue;	/* eml2_1ForGsoap.h:1289 */
-union _eml21__union_AbstractTemperaturePressure;	/* eml2_1ForGsoap.h:27390 */
+union _eml21__union_AbstractTemperaturePressure;	/* eml2_1ForGsoap.h:27396 */
 class eml21__AbstractTemperaturePressure;	/* eml2_1ForGsoap.h:1291 */
 class eml21__DensityValue;	/* eml2_1ForGsoap.h:1293 */
 class eml21__FlowRateValue;	/* eml2_1ForGsoap.h:1295 */
@@ -8157,9 +8157,9 @@ class witsml20__TubingConnectionType;	/* eml2_1ForGsoap.h:257 */
 class witsml20__RodConnectionType;	/* eml2_1ForGsoap.h:259 */
 class witsml20__OtherConnectionType;	/* eml2_1ForGsoap.h:261 */
 class witsml20__Tubular;	/* eml2_1ForGsoap.h:263 */
-struct __witsml20__BendAngle_sequence;	/* eml2_1ForGsoap.h:28714 */
+struct __witsml20__BendAngle_sequence;	/* eml2_1ForGsoap.h:28720 */
 class witsml20__BendAngle;	/* eml2_1ForGsoap.h:291 */
-struct __witsml20__BendOffset_sequence;	/* eml2_1ForGsoap.h:28748 */
+struct __witsml20__BendOffset_sequence;	/* eml2_1ForGsoap.h:28754 */
 class witsml20__BendOffset;	/* eml2_1ForGsoap.h:293 */
 class witsml20__WellCompletion;	/* eml2_1ForGsoap.h:295 */
 class witsml20__WellboreGeometry;	/* eml2_1ForGsoap.h:299 */
@@ -8175,9 +8175,9 @@ class witsml20__ChannelValueContext;	/* eml2_1ForGsoap.h:331 */
 class witsml20__BhaRun;	/* eml2_1ForGsoap.h:333 */
 class witsml20__FluidsReport;	/* eml2_1ForGsoap.h:341 */
 class witsml20__DrillReport;	/* eml2_1ForGsoap.h:343 */
-struct __witsml20__BottomHoleCirculatingTemperature_sequence_;	/* eml2_1ForGsoap.h:29944 */
+struct __witsml20__BottomHoleCirculatingTemperature_sequence_;	/* eml2_1ForGsoap.h:29950 */
 class witsml20__BottomHoleCirculatingTemperature;	/* eml2_1ForGsoap.h:381 */
-struct __witsml20__BottomHoleStaticTemperature_sequence_;	/* eml2_1ForGsoap.h:29983 */
+struct __witsml20__BottomHoleStaticTemperature_sequence_;	/* eml2_1ForGsoap.h:29989 */
 class witsml20__BottomHoleStaticTemperature;	/* eml2_1ForGsoap.h:383 */
 class witsml20__WellboreMarker;	/* eml2_1ForGsoap.h:385 */
 class witsml20__WellboreMarkerSet;	/* eml2_1ForGsoap.h:387 */
@@ -8208,7 +8208,7 @@ class eml21__PropertyKindDictionary;	/* eml2_1ForGsoap.h:1277 */
 class eml21__TimeSeries;	/* eml2_1ForGsoap.h:1283 */
 class eml21__AbsolutePressure;	/* eml2_1ForGsoap.h:1287 */
 class eml21__GaugePressure;	/* eml2_1ForGsoap.h:1297 */
-union _eml21__union_ReferenceTemperaturePressure_;	/* eml2_1ForGsoap.h:31600 */
+union _eml21__union_ReferenceTemperaturePressure_;	/* eml2_1ForGsoap.h:31606 */
 class eml21__ReferenceTemperaturePressure;	/* eml2_1ForGsoap.h:1303 */
 class eml21__RelativePressure;	/* eml2_1ForGsoap.h:1305 */
 class eml21__TemperaturePressure;	/* eml2_1ForGsoap.h:1307 */
@@ -11553,8 +11553,8 @@ class SOAP_CMAC witsml20__LogChannelAxis {
         double AxisStart;
         /// Required element 'witsml20:AxisSpacing' of XML schema type 'xsd:double'
         double AxisSpacing;
-        /// Required element 'witsml20:AxisCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 AxisCount;
+        /// Required element 'witsml20:AxisCount' of XML schema type 'eml21:PositiveLong'
+        LONG64 AxisCount;
         /// Optional element 'witsml20:AxisName' of XML schema type 'eml21:String64'
         std::string *AxisName;
         /// Required element 'witsml20:AxisPropertyKind' of XML schema type 'eml21:String64'
@@ -13013,7 +13013,7 @@ class SOAP_CMAC witsml20__DrillReportGasReadingInfo {
 };
 #endif
 
-/* eml2_1ForGsoap.h:25005 */
+/* eml2_1ForGsoap.h:25011 */
 #ifndef SOAP_TYPE_gsoap_eml2_1___witsml20__AbstractBottomHoleTemperature_sequence
 #define SOAP_TYPE_gsoap_eml2_1___witsml20__AbstractBottomHoleTemperature_sequence (-1279)
 /* Wrapper: */
@@ -14401,12 +14401,12 @@ class SOAP_CMAC eml21__ExternalDataset {
 /* complex XML schema type 'eml21:ExternalDatasetPart': */
 class SOAP_CMAC eml21__ExternalDatasetPart {
       public:
-        /// Required element 'eml21:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml21:Count' of XML schema type 'eml21:PositiveLong'
+        LONG64 Count;
         /// Required element 'eml21:PathInExternalFile' of XML schema type 'eml21:String2000'
         std::string PathInExternalFile;
-        /// Required element 'eml21:StartIndex' of XML schema type 'xsd:unsignedLong'
-        ULONG64 StartIndex;
+        /// Required element 'eml21:StartIndex' of XML schema type 'eml21:NonNegativeLong'
+        LONG64 StartIndex;
         /// Required element 'eml21:EpcExternalPartReference' of XML schema type 'eml21:DataObjectReference'
         eml21__DataObjectReference *EpcExternalPartReference;
         /// Context that manages this object
@@ -14611,8 +14611,8 @@ class SOAP_CMAC eml21__GeologicTime {
 /* complex XML schema type 'eml21:TimeIndex': */
 class SOAP_CMAC eml21__TimeIndex {
       public:
-        /// Required element 'eml21:Index' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Index;
+        /// Required element 'eml21:Index' of XML schema type 'eml21:NonNegativeLong'
+        LONG64 Index;
         /// Required element 'eml21:TimeSeries' of XML schema type 'eml21:DataObjectReference'
         eml21__DataObjectReference *TimeSeries;
         /// Context that manages this object
@@ -14649,10 +14649,10 @@ class SOAP_CMAC eml21__TimeIndex {
 /* complex XML schema type 'eml21:TimeIndices': */
 class SOAP_CMAC eml21__TimeIndices {
       public:
-        /// Required element 'eml21:TimeIndexCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TimeIndexCount;
-        /// Optional element 'eml21:TimeIndexStart' of XML schema type 'xsd:unsignedLong'
-        ULONG64 *TimeIndexStart;
+        /// Required element 'eml21:TimeIndexCount' of XML schema type 'eml21:PositiveLong'
+        LONG64 TimeIndexCount;
+        /// Optional element 'eml21:TimeIndexStart' of XML schema type 'eml21:NonNegativeLong'
+        LONG64 *TimeIndexStart;
         /// Optional element 'eml21:SimulatorTimeStep' of XML schema type 'eml21:AbstractIntegerArray'
         eml21__AbstractIntegerArray *SimulatorTimeStep;
         /// Required element 'eml21:UseInterval' of XML schema type 'xsd:boolean'
@@ -14759,9 +14759,9 @@ class SOAP_CMAC eml21__AbstractPressureValue {
 };
 #endif
 
-/* eml2_1ForGsoap.h:27390 */
+/* eml2_1ForGsoap.h:27396 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__union_AbstractTemperaturePressure
-#define SOAP_TYPE_gsoap_eml2_1__eml21__union_AbstractTemperaturePressure (-1321)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__union_AbstractTemperaturePressure (-1320)
 /* union serializable only when used as a member of a struct or class with a union variant selector */
 union _eml21__union_AbstractTemperaturePressure
 {
@@ -15751,9 +15751,9 @@ class SOAP_CMAC witsml20__Tubular : public eml21__AbstractObject {
 };
 #endif
 
-/* eml2_1ForGsoap.h:28714 */
+/* eml2_1ForGsoap.h:28720 */
 #ifndef SOAP_TYPE_gsoap_eml2_1___witsml20__BendAngle_sequence
-#define SOAP_TYPE_gsoap_eml2_1___witsml20__BendAngle_sequence (-1353)
+#define SOAP_TYPE_gsoap_eml2_1___witsml20__BendAngle_sequence (-1352)
 /* Wrapper: */
 struct SOAP_CMAC __witsml20__BendAngle_sequence {
       public:
@@ -15802,9 +15802,9 @@ class SOAP_CMAC witsml20__BendAngle : public witsml20__AbstractRotarySteerableTo
 };
 #endif
 
-/* eml2_1ForGsoap.h:28748 */
+/* eml2_1ForGsoap.h:28754 */
 #ifndef SOAP_TYPE_gsoap_eml2_1___witsml20__BendOffset_sequence
-#define SOAP_TYPE_gsoap_eml2_1___witsml20__BendOffset_sequence (-1355)
+#define SOAP_TYPE_gsoap_eml2_1___witsml20__BendOffset_sequence (-1354)
 /* Wrapper: */
 struct SOAP_CMAC __witsml20__BendOffset_sequence {
       public:
@@ -16571,9 +16571,9 @@ class SOAP_CMAC witsml20__DrillReport : public eml21__AbstractObject {
 };
 #endif
 
-/* eml2_1ForGsoap.h:29944 */
+/* eml2_1ForGsoap.h:29950 */
 #ifndef SOAP_TYPE_gsoap_eml2_1___witsml20__BottomHoleCirculatingTemperature_sequence_
-#define SOAP_TYPE_gsoap_eml2_1___witsml20__BottomHoleCirculatingTemperature_sequence_ (-1414)
+#define SOAP_TYPE_gsoap_eml2_1___witsml20__BottomHoleCirculatingTemperature_sequence_ (-1413)
 /* Wrapper: */
 struct SOAP_CMAC __witsml20__BottomHoleCirculatingTemperature_sequence_ {
       public:
@@ -16619,9 +16619,9 @@ class SOAP_CMAC witsml20__BottomHoleCirculatingTemperature : public witsml20__Ab
 };
 #endif
 
-/* eml2_1ForGsoap.h:29983 */
+/* eml2_1ForGsoap.h:29989 */
 #ifndef SOAP_TYPE_gsoap_eml2_1___witsml20__BottomHoleStaticTemperature_sequence_
-#define SOAP_TYPE_gsoap_eml2_1___witsml20__BottomHoleStaticTemperature_sequence_ (-1416)
+#define SOAP_TYPE_gsoap_eml2_1___witsml20__BottomHoleStaticTemperature_sequence_ (-1415)
 /* Wrapper: */
 struct SOAP_CMAC __witsml20__BottomHoleStaticTemperature_sequence_ {
       public:
@@ -17803,9 +17803,9 @@ class SOAP_CMAC eml21__GaugePressure : public eml21__AbstractPressureValue {
 };
 #endif
 
-/* eml2_1ForGsoap.h:31600 */
+/* eml2_1ForGsoap.h:31606 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__union_ReferenceTemperaturePressure_
-#define SOAP_TYPE_gsoap_eml2_1__eml21__union_ReferenceTemperaturePressure_ (-1457)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__union_ReferenceTemperaturePressure_ (-1456)
 /* union serializable only when used as a member of a struct or class with a union variant selector */
 union _eml21__union_ReferenceTemperaturePressure_
 {
@@ -17961,8 +17961,8 @@ class SOAP_CMAC eml21__GeodeticCrs : public eml21__AbstractObject {
 /* complex XML schema type 'eml21:GeodeticEpsgCrs': */
 class SOAP_CMAC eml21__GeodeticEpsgCrs : public eml21__AbstractGeodeticCrs {
       public:
-        /// Required element 'eml21:EpsgCode' of XML schema type 'xsd:unsignedLong'
-        ULONG64 EpsgCode;
+        /// Required element 'eml21:EpsgCode' of XML schema type 'eml21:PositiveLong'
+        LONG64 EpsgCode;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_1_eml21__GeodeticEpsgCrs
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_1_eml21__GeodeticEpsgCrs; }
@@ -18135,8 +18135,8 @@ class SOAP_CMAC eml21__ProjectedCrs : public eml21__AbstractObject {
 /* complex XML schema type 'eml21:ProjectedEpsgCrs': */
 class SOAP_CMAC eml21__ProjectedEpsgCrs : public eml21__AbstractProjectedCrs {
       public:
-        /// Required element 'eml21:EpsgCode' of XML schema type 'xsd:unsignedLong'
-        ULONG64 EpsgCode;
+        /// Required element 'eml21:EpsgCode' of XML schema type 'eml21:PositiveLong'
+        LONG64 EpsgCode;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_1_eml21__ProjectedEpsgCrs
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_1_eml21__ProjectedEpsgCrs; }
@@ -18309,8 +18309,8 @@ class SOAP_CMAC eml21__VerticalCrs : public eml21__AbstractObject {
 /* complex XML schema type 'eml21:VerticalEpsgCrs': */
 class SOAP_CMAC eml21__VerticalEpsgCrs : public eml21__AbstractVerticalCrs {
       public:
-        /// Required element 'eml21:EpsgCode' of XML schema type 'xsd:unsignedLong'
-        ULONG64 EpsgCode;
+        /// Required element 'eml21:EpsgCode' of XML schema type 'eml21:PositiveLong'
+        LONG64 EpsgCode;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_1_eml21__VerticalEpsgCrs
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_1_eml21__VerticalEpsgCrs; }
@@ -18833,8 +18833,8 @@ class SOAP_CMAC eml21__AbstractIntegerArray : public eml21__AbstractNumericArray
 /* complex XML schema type 'eml21:BooleanArrayFromIndexArray': */
 class SOAP_CMAC eml21__BooleanArrayFromIndexArray : public eml21__AbstractBooleanArray {
       public:
-        /// Required element 'eml21:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml21:Count' of XML schema type 'eml21:PositiveLong'
+        LONG64 Count;
         /// Required element 'eml21:Indices' of XML schema type 'eml21:AbstractIntegerArray'
         eml21__AbstractIntegerArray *Indices;
         /// Required element 'eml21:IndexIsTrue' of XML schema type 'xsd:boolean'
@@ -18873,8 +18873,8 @@ class SOAP_CMAC eml21__BooleanConstantArray : public eml21__AbstractBooleanArray
       public:
         /// Required element 'eml21:Value' of XML schema type 'xsd:boolean'
         bool Value;
-        /// Required element 'eml21:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml21:Count' of XML schema type 'eml21:PositiveLong'
+        LONG64 Count;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_1_eml21__BooleanConstantArray
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_1_eml21__BooleanConstantArray; }
@@ -18981,8 +18981,8 @@ class SOAP_CMAC eml21__StringConstantArray : public eml21__AbstractStringArray {
       public:
         /// Required element 'eml21:Value' of XML schema type 'eml21:String2000'
         std::string Value;
-        /// Required element 'eml21:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml21:Count' of XML schema type 'eml21:PositiveLong'
+        LONG64 Count;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_1_eml21__StringConstantArray
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_1_eml21__StringConstantArray; }
@@ -33193,8 +33193,8 @@ class SOAP_CMAC eml21__FloatingPointConstantArray : public eml21__AbstractFloati
       public:
         /// Required element 'eml21:Value' of XML schema type 'xsd:double'
         double Value;
-        /// Required element 'eml21:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml21:Count' of XML schema type 'eml21:PositiveLong'
+        LONG64 Count;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_1_eml21__FloatingPointConstantArray
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_1_eml21__FloatingPointConstantArray; }
@@ -33297,8 +33297,8 @@ class SOAP_CMAC eml21__FloatingPointLatticeArray : public eml21__AbstractFloatin
 /* complex XML schema type 'eml21:IntegerArrayFromBooleanMaskArray': */
 class SOAP_CMAC eml21__IntegerArrayFromBooleanMaskArray : public eml21__AbstractIntegerArray {
       public:
-        /// Required element 'eml21:TotalIndexCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 TotalIndexCount;
+        /// Required element 'eml21:TotalIndexCount' of XML schema type 'eml21:PositiveLong'
+        LONG64 TotalIndexCount;
         /// Required element 'eml21:Mask' of XML schema type 'eml21:AbstractBooleanArray'
         eml21__AbstractBooleanArray *Mask;
       public:
@@ -33335,8 +33335,8 @@ class SOAP_CMAC eml21__IntegerConstantArray : public eml21__AbstractIntegerArray
       public:
         /// Required element 'eml21:Value' of XML schema type 'xsd:long'
         LONG64 Value;
-        /// Required element 'eml21:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml21:Count' of XML schema type 'eml21:PositiveLong'
+        LONG64 Count;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_1_eml21__IntegerConstantArray
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_1_eml21__IntegerConstantArray; }
@@ -33441,8 +33441,8 @@ class SOAP_CMAC eml21__IntegerLatticeArray : public eml21__AbstractIntegerArray 
 /* complex XML schema type 'eml21:IntegerRangeArray': */
 class SOAP_CMAC eml21__IntegerRangeArray : public eml21__AbstractIntegerArray {
       public:
-        /// Required element 'eml21:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
+        /// Required element 'eml21:Count' of XML schema type 'eml21:PositiveLong'
+        LONG64 Count;
         /// Required element 'eml21:Value' of XML schema type 'xsd:long'
         LONG64 Value;
       public:
@@ -33571,7 +33571,7 @@ class SOAP_CMAC eml21__FloatExternalArray : public eml21__FloatingPointExternalA
 };
 #endif
 
-/* eml2_1ForGsoap.h:42471 */
+/* eml2_1ForGsoap.h:42477 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_gsoap_eml2_1_SOAP_ENV__Header
 #define SOAP_TYPE_gsoap_eml2_1_SOAP_ENV__Header (-845623296)
@@ -33588,7 +33588,7 @@ struct SOAP_CMAC SOAP_ENV__Header {
 #endif
 #endif
 
-/* eml2_1ForGsoap.h:42471 */
+/* eml2_1ForGsoap.h:42477 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_gsoap_eml2_1_SOAP_ENV__Code
 #define SOAP_TYPE_gsoap_eml2_1_SOAP_ENV__Code (-845623297)
@@ -33611,7 +33611,7 @@ struct SOAP_CMAC SOAP_ENV__Code {
 #endif
 #endif
 
-/* eml2_1ForGsoap.h:42471 */
+/* eml2_1ForGsoap.h:42477 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_gsoap_eml2_1_SOAP_ENV__Detail
 #define SOAP_TYPE_gsoap_eml2_1_SOAP_ENV__Detail (-845623299)
@@ -33634,7 +33634,7 @@ struct SOAP_CMAC SOAP_ENV__Detail {
 #endif
 #endif
 
-/* eml2_1ForGsoap.h:42471 */
+/* eml2_1ForGsoap.h:42477 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_gsoap_eml2_1_SOAP_ENV__Reason
 #define SOAP_TYPE_gsoap_eml2_1_SOAP_ENV__Reason (-845623302)
@@ -33654,7 +33654,7 @@ struct SOAP_CMAC SOAP_ENV__Reason {
 #endif
 #endif
 
-/* eml2_1ForGsoap.h:42471 */
+/* eml2_1ForGsoap.h:42477 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_gsoap_eml2_1_SOAP_ENV__Fault
 #define SOAP_TYPE_gsoap_eml2_1_SOAP_ENV__Fault (-845623303)
@@ -35069,352 +35069,352 @@ typedef double eml21__AbstractMeasure;
 typedef std::string eml21__AbstractString;
 #endif
 
-/* eml2_1ForGsoap.h:1974 */
-#ifndef SOAP_TYPE_gsoap_eml2_1_eml21__NonNegativeInteger
-#define SOAP_TYPE_gsoap_eml2_1_eml21__NonNegativeInteger (-807)
-
-typedef ULONG64 eml21__NonNegativeInteger;
-#endif
-
 /* eml2_1ForGsoap.h:1976 */
-#ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PositiveInteger
-#define SOAP_TYPE_gsoap_eml2_1_eml21__PositiveInteger (-808)
+#ifndef SOAP_TYPE_gsoap_eml2_1_eml21__NonNegativeLong
+#define SOAP_TYPE_gsoap_eml2_1_eml21__NonNegativeLong (-807)
 
-typedef ULONG64 eml21__PositiveInteger;
+typedef LONG64 eml21__NonNegativeLong;
 #endif
 
-/* eml2_1ForGsoap.h:2056 */
+/* eml2_1ForGsoap.h:1981 */
+#ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PositiveLong
+#define SOAP_TYPE_gsoap_eml2_1_eml21__PositiveLong (-808)
+
+typedef LONG64 eml21__PositiveLong;
+#endif
+
+/* eml2_1ForGsoap.h:2062 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__EnumExtensionPattern
 #define SOAP_TYPE_gsoap_eml2_1_eml21__EnumExtensionPattern (-812)
 
 typedef std::string eml21__EnumExtensionPattern;
 #endif
 
-/* eml2_1ForGsoap.h:2061 */
+/* eml2_1ForGsoap.h:2067 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__String2000
 #define SOAP_TYPE_gsoap_eml2_1_eml21__String2000 (-813)
 
 typedef std::string eml21__String2000;
 #endif
 
-/* eml2_1ForGsoap.h:2066 */
+/* eml2_1ForGsoap.h:2072 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__String64
 #define SOAP_TYPE_gsoap_eml2_1_eml21__String64 (-814)
 
 typedef std::string eml21__String64;
 #endif
 
-/* eml2_1ForGsoap.h:2071 */
+/* eml2_1ForGsoap.h:2077 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__TimeStamp
 #define SOAP_TYPE_gsoap_eml2_1_eml21__TimeStamp (-815)
 
 typedef std::string eml21__TimeStamp;
 #endif
 
-/* eml2_1ForGsoap.h:2081 */
+/* eml2_1ForGsoap.h:2087 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__UomEnum
 #define SOAP_TYPE_gsoap_eml2_1_eml21__UomEnum (-816)
 
 typedef std::string eml21__UomEnum;
 #endif
 
-/* eml2_1ForGsoap.h:2086 */
+/* eml2_1ForGsoap.h:2092 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__UuidString
 #define SOAP_TYPE_gsoap_eml2_1_eml21__UuidString (-817)
 
 typedef std::string eml21__UuidString;
 #endif
 
-/* eml2_1ForGsoap.h:2095 */
+/* eml2_1ForGsoap.h:2101 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__SectionNumber
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__SectionNumber (-818)
 
 typedef std::string witsml20__SectionNumber;
 #endif
 
-/* eml2_1ForGsoap.h:2104 */
+/* eml2_1ForGsoap.h:2110 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__PublicLandSurveySystemQuarterSection
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__PublicLandSurveySystemQuarterSection (-819)
 
 typedef std::string witsml20__PublicLandSurveySystemQuarterSection;
 #endif
 
-/* eml2_1ForGsoap.h:2113 */
+/* eml2_1ForGsoap.h:2119 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__PublicLandSurveySystemQuarterTownship
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__PublicLandSurveySystemQuarterTownship (-820)
 
 typedef std::string witsml20__PublicLandSurveySystemQuarterTownship;
 #endif
 
-/* eml2_1ForGsoap.h:2118 */
+/* eml2_1ForGsoap.h:2124 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_witsml20__AbstractUidString
 #define SOAP_TYPE_gsoap_eml2_1_witsml20__AbstractUidString (-821)
 
 typedef std::string witsml20__AbstractUidString;
 #endif
 
-/* eml2_1ForGsoap.h:3583 */
+/* eml2_1ForGsoap.h:3589 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__TimeZone
 #define SOAP_TYPE_gsoap_eml2_1_eml21__TimeZone (-823)
 
 typedef std::string eml21__TimeZone;
 #endif
 
-/* eml2_1ForGsoap.h:3591 */
+/* eml2_1ForGsoap.h:3597 */
 #ifndef SOAP_TYPE_gsoap_eml2_1_eml21__TypeEnum
 #define SOAP_TYPE_gsoap_eml2_1_eml21__TypeEnum (-824)
 
 typedef eml21__String64 eml21__TypeEnum;
 #endif
 
-/* eml2_1ForGsoap.h:41727 */
+/* eml2_1ForGsoap.h:41733 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__Well
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__Well (-1474)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__Well (-1473)
 
 typedef witsml20__Well _witsml20__Well;
 #endif
 
-/* eml2_1ForGsoap.h:41730 */
+/* eml2_1ForGsoap.h:41736 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__Wellbore
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__Wellbore (-1475)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__Wellbore (-1474)
 
 typedef witsml20__Wellbore _witsml20__Wellbore;
 #endif
 
-/* eml2_1ForGsoap.h:41733 */
+/* eml2_1ForGsoap.h:41739 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreCompletion
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreCompletion (-1476)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreCompletion (-1475)
 
 typedef witsml20__WellboreCompletion _witsml20__WellboreCompletion;
 #endif
 
-/* eml2_1ForGsoap.h:41736 */
+/* eml2_1ForGsoap.h:41742 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__DownholeComponent
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__DownholeComponent (-1477)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__DownholeComponent (-1476)
 
 typedef witsml20__DownholeComponent _witsml20__DownholeComponent;
 #endif
 
-/* eml2_1ForGsoap.h:41739 */
+/* eml2_1ForGsoap.h:41745 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__Tubular
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__Tubular (-1478)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__Tubular (-1477)
 
 typedef witsml20__Tubular _witsml20__Tubular;
 #endif
 
-/* eml2_1ForGsoap.h:41742 */
+/* eml2_1ForGsoap.h:41748 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__WellCompletion
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellCompletion (-1479)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellCompletion (-1478)
 
 typedef witsml20__WellCompletion _witsml20__WellCompletion;
 #endif
 
-/* eml2_1ForGsoap.h:41749 */
+/* eml2_1ForGsoap.h:41755 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__part_USCOREWellboreGeometrySection
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__part_USCOREWellboreGeometrySection (-1480)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__part_USCOREWellboreGeometrySection (-1479)
 
 typedef witsml20__WellboreGeometrySection _witsml20__part_USCOREWellboreGeometrySection;
 #endif
 
-/* eml2_1ForGsoap.h:41752 */
+/* eml2_1ForGsoap.h:41758 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreGeometry
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreGeometry (-1481)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreGeometry (-1480)
 
 typedef witsml20__WellboreGeometry _witsml20__WellboreGeometry;
 #endif
 
-/* eml2_1ForGsoap.h:41755 */
+/* eml2_1ForGsoap.h:41761 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__ChannelSet
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__ChannelSet (-1482)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__ChannelSet (-1481)
 
 typedef witsml20__ChannelSet _witsml20__ChannelSet;
 #endif
 
-/* eml2_1ForGsoap.h:41758 */
+/* eml2_1ForGsoap.h:41764 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__Log
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__Log (-1483)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__Log (-1482)
 
 typedef witsml20__Log _witsml20__Log;
 #endif
 
-/* eml2_1ForGsoap.h:41761 */
+/* eml2_1ForGsoap.h:41767 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__Channel
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__Channel (-1484)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__Channel (-1483)
 
 typedef witsml20__Channel _witsml20__Channel;
 #endif
 
-/* eml2_1ForGsoap.h:41764 */
+/* eml2_1ForGsoap.h:41770 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__BhaRun
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__BhaRun (-1485)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__BhaRun (-1484)
 
 typedef witsml20__BhaRun _witsml20__BhaRun;
 #endif
 
-/* eml2_1ForGsoap.h:41767 */
+/* eml2_1ForGsoap.h:41773 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__FluidsReport
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__FluidsReport (-1486)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__FluidsReport (-1485)
 
 typedef witsml20__FluidsReport _witsml20__FluidsReport;
 #endif
 
-/* eml2_1ForGsoap.h:41770 */
+/* eml2_1ForGsoap.h:41776 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__DrillReport
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__DrillReport (-1487)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__DrillReport (-1486)
 
 typedef witsml20__DrillReport _witsml20__DrillReport;
 #endif
 
-/* eml2_1ForGsoap.h:41773 */
+/* eml2_1ForGsoap.h:41779 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreMarker
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreMarker (-1488)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreMarker (-1487)
 
 typedef witsml20__WellboreMarker _witsml20__WellboreMarker;
 #endif
 
-/* eml2_1ForGsoap.h:41776 */
+/* eml2_1ForGsoap.h:41782 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreMarkerSet
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreMarkerSet (-1489)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreMarkerSet (-1488)
 
 typedef witsml20__WellboreMarkerSet _witsml20__WellboreMarkerSet;
 #endif
 
-/* eml2_1ForGsoap.h:41779 */
+/* eml2_1ForGsoap.h:41785 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreGeology
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreGeology (-1490)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreGeology (-1489)
 
 typedef witsml20__WellboreGeology _witsml20__WellboreGeology;
 #endif
 
-/* eml2_1ForGsoap.h:41782 */
+/* eml2_1ForGsoap.h:41788 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__ShowEvaluation
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__ShowEvaluation (-1491)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__ShowEvaluation (-1490)
 
 typedef witsml20__ShowEvaluation _witsml20__ShowEvaluation;
 #endif
 
-/* eml2_1ForGsoap.h:41785 */
+/* eml2_1ForGsoap.h:41791 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__InterpretedGeology
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__InterpretedGeology (-1492)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__InterpretedGeology (-1491)
 
 typedef witsml20__InterpretedGeology _witsml20__InterpretedGeology;
 #endif
 
-/* eml2_1ForGsoap.h:41788 */
+/* eml2_1ForGsoap.h:41794 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__ShowEvaluationInterval
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__ShowEvaluationInterval (-1493)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__ShowEvaluationInterval (-1492)
 
 typedef witsml20__ShowEvaluationInterval _witsml20__ShowEvaluationInterval;
 #endif
 
-/* eml2_1ForGsoap.h:41791 */
+/* eml2_1ForGsoap.h:41797 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__CuttingsGeologyInterval
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__CuttingsGeologyInterval (-1494)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__CuttingsGeologyInterval (-1493)
 
 typedef witsml20__CuttingsGeologyInterval _witsml20__CuttingsGeologyInterval;
 #endif
 
-/* eml2_1ForGsoap.h:41794 */
+/* eml2_1ForGsoap.h:41800 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__CuttingsGeology
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__CuttingsGeology (-1495)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__CuttingsGeology (-1494)
 
 typedef witsml20__CuttingsGeology _witsml20__CuttingsGeology;
 #endif
 
-/* eml2_1ForGsoap.h:41797 */
+/* eml2_1ForGsoap.h:41803 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__InterpretedGeologyInterval
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__InterpretedGeologyInterval (-1496)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__InterpretedGeologyInterval (-1495)
 
 typedef witsml20__InterpretedGeologyInterval _witsml20__InterpretedGeologyInterval;
 #endif
 
-/* eml2_1ForGsoap.h:41800 */
+/* eml2_1ForGsoap.h:41806 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__Trajectory
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__Trajectory (-1497)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__Trajectory (-1496)
 
 typedef witsml20__Trajectory _witsml20__Trajectory;
 #endif
 
-/* eml2_1ForGsoap.h:41807 */
+/* eml2_1ForGsoap.h:41813 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__part_USCORETrajectoryStation
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__part_USCORETrajectoryStation (-1498)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__part_USCORETrajectoryStation (-1497)
 
 typedef witsml20__TrajectoryStation _witsml20__part_USCORETrajectoryStation;
 #endif
 
-/* eml2_1ForGsoap.h:41810 */
+/* eml2_1ForGsoap.h:41816 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__ToolErrorModel
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__ToolErrorModel (-1499)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__ToolErrorModel (-1498)
 
 typedef witsml20__ToolErrorModel _witsml20__ToolErrorModel;
 #endif
 
-/* eml2_1ForGsoap.h:41833 */
+/* eml2_1ForGsoap.h:41839 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__AbstractContextualObject
-#define SOAP_TYPE_gsoap_eml2_1__eml21__AbstractContextualObject (-1500)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__AbstractContextualObject (-1499)
 
 typedef eml21__AbstractObject _eml21__AbstractContextualObject;
 #endif
 
-/* eml2_1ForGsoap.h:41840 */
+/* eml2_1ForGsoap.h:41846 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__AbstractDataObject
-#define SOAP_TYPE_gsoap_eml2_1__eml21__AbstractDataObject (-1501)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__AbstractDataObject (-1500)
 
 typedef eml21__AbstractObject _eml21__AbstractDataObject;
 #endif
 
-/* eml2_1ForGsoap.h:41843 */
+/* eml2_1ForGsoap.h:41849 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__EpcExternalPartReference
-#define SOAP_TYPE_gsoap_eml2_1__eml21__EpcExternalPartReference (-1502)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__EpcExternalPartReference (-1501)
 
 typedef eml21__EpcExternalPartReference _eml21__EpcExternalPartReference;
 #endif
 
-/* eml2_1ForGsoap.h:41846 */
+/* eml2_1ForGsoap.h:41852 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__Activity
-#define SOAP_TYPE_gsoap_eml2_1__eml21__Activity (-1503)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__Activity (-1502)
 
 typedef eml21__Activity _eml21__Activity;
 #endif
 
-/* eml2_1ForGsoap.h:41849 */
+/* eml2_1ForGsoap.h:41855 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__ActivityTemplate
-#define SOAP_TYPE_gsoap_eml2_1__eml21__ActivityTemplate (-1504)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__ActivityTemplate (-1503)
 
 typedef eml21__ActivityTemplate _eml21__ActivityTemplate;
 #endif
 
-/* eml2_1ForGsoap.h:41852 */
+/* eml2_1ForGsoap.h:41858 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__PropertyKind
-#define SOAP_TYPE_gsoap_eml2_1__eml21__PropertyKind (-1505)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__PropertyKind (-1504)
 
 typedef eml21__PropertyKind _eml21__PropertyKind;
 #endif
 
-/* eml2_1ForGsoap.h:41855 */
+/* eml2_1ForGsoap.h:41861 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__PropertyKindDictionary
-#define SOAP_TYPE_gsoap_eml2_1__eml21__PropertyKindDictionary (-1506)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__PropertyKindDictionary (-1505)
 
 typedef eml21__PropertyKindDictionary _eml21__PropertyKindDictionary;
 #endif
 
-/* eml2_1ForGsoap.h:41858 */
+/* eml2_1ForGsoap.h:41864 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__TimeSeries
-#define SOAP_TYPE_gsoap_eml2_1__eml21__TimeSeries (-1507)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__TimeSeries (-1506)
 
 typedef eml21__TimeSeries _eml21__TimeSeries;
 #endif
 
-/* eml2_1ForGsoap.h:41861 */
+/* eml2_1ForGsoap.h:41867 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__DataAssuranceRecord
-#define SOAP_TYPE_gsoap_eml2_1__eml21__DataAssuranceRecord (-1508)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__DataAssuranceRecord (-1507)
 
 typedef eml21__DataAssuranceRecord _eml21__DataAssuranceRecord;
 #endif
 
-/* eml2_1ForGsoap.h:41864 */
+/* eml2_1ForGsoap.h:41870 */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__GraphicalInformationSet
-#define SOAP_TYPE_gsoap_eml2_1__eml21__GraphicalInformationSet (-1509)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__GraphicalInformationSet (-1508)
 
 typedef eml21__GraphicalInformationSet _eml21__GraphicalInformationSet;
 #endif
@@ -35438,15 +35438,27 @@ typedef eml21__GraphicalInformationSet _eml21__GraphicalInformationSet;
 
 #endif
 
+/* eml21__PositiveLong has binding name 'eml21__PositiveLong' for type 'eml21:PositiveLong' */
+#ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PositiveLong
+#define SOAP_TYPE_gsoap_eml2_1_eml21__PositiveLong (-808)
+
+#endif
+
+/* eml21__NonNegativeLong has binding name 'eml21__NonNegativeLong' for type 'eml21:NonNegativeLong' */
+#ifndef SOAP_TYPE_gsoap_eml2_1_eml21__NonNegativeLong
+#define SOAP_TYPE_gsoap_eml2_1_eml21__NonNegativeLong (-807)
+
+#endif
+
 /* LONG64 has binding name 'LONG64' for type 'xsd:long' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_LONG64
-#define SOAP_TYPE_gsoap_eml2_1_LONG64 (-1311)
+#define SOAP_TYPE_gsoap_eml2_1_LONG64 (-806)
 
 #endif
 
 /* float has binding name 'float' for type 'xsd:float' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_float
-#define SOAP_TYPE_gsoap_eml2_1_float (-1370)
+#define SOAP_TYPE_gsoap_eml2_1_float (-1369)
 
 #endif
 
@@ -35465,24 +35477,6 @@ typedef eml21__GraphicalInformationSet _eml21__GraphicalInformationSet;
 /* double has binding name 'double' for type 'xsd:double' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_double
 #define SOAP_TYPE_gsoap_eml2_1_double (-802)
-
-#endif
-
-/* eml21__PositiveInteger has binding name 'eml21__PositiveInteger' for type 'eml21:PositiveInteger' */
-#ifndef SOAP_TYPE_gsoap_eml2_1_eml21__PositiveInteger
-#define SOAP_TYPE_gsoap_eml2_1_eml21__PositiveInteger (-808)
-
-#endif
-
-/* eml21__NonNegativeInteger has binding name 'eml21__NonNegativeInteger' for type 'eml21:NonNegativeInteger' */
-#ifndef SOAP_TYPE_gsoap_eml2_1_eml21__NonNegativeInteger
-#define SOAP_TYPE_gsoap_eml2_1_eml21__NonNegativeInteger (-807)
-
-#endif
-
-/* ULONG64 has binding name 'ULONG64' for type 'xsd:unsignedLong' */
-#ifndef SOAP_TYPE_gsoap_eml2_1_ULONG64
-#define SOAP_TYPE_gsoap_eml2_1_ULONG64 (-806)
 
 #endif
 
@@ -37192,217 +37186,217 @@ typedef eml21__GraphicalInformationSet _eml21__GraphicalInformationSet;
 
 /* _eml21__GraphicalInformationSet has binding name '_eml21__GraphicalInformationSet' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__GraphicalInformationSet
-#define SOAP_TYPE_gsoap_eml2_1__eml21__GraphicalInformationSet (-1509)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__GraphicalInformationSet (-1508)
 
 #endif
 
 /* _eml21__DataAssuranceRecord has binding name '_eml21__DataAssuranceRecord' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__DataAssuranceRecord
-#define SOAP_TYPE_gsoap_eml2_1__eml21__DataAssuranceRecord (-1508)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__DataAssuranceRecord (-1507)
 
 #endif
 
 /* _eml21__TimeSeries has binding name '_eml21__TimeSeries' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__TimeSeries
-#define SOAP_TYPE_gsoap_eml2_1__eml21__TimeSeries (-1507)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__TimeSeries (-1506)
 
 #endif
 
 /* _eml21__PropertyKindDictionary has binding name '_eml21__PropertyKindDictionary' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__PropertyKindDictionary
-#define SOAP_TYPE_gsoap_eml2_1__eml21__PropertyKindDictionary (-1506)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__PropertyKindDictionary (-1505)
 
 #endif
 
 /* _eml21__PropertyKind has binding name '_eml21__PropertyKind' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__PropertyKind
-#define SOAP_TYPE_gsoap_eml2_1__eml21__PropertyKind (-1505)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__PropertyKind (-1504)
 
 #endif
 
 /* _eml21__ActivityTemplate has binding name '_eml21__ActivityTemplate' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__ActivityTemplate
-#define SOAP_TYPE_gsoap_eml2_1__eml21__ActivityTemplate (-1504)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__ActivityTemplate (-1503)
 
 #endif
 
 /* _eml21__Activity has binding name '_eml21__Activity' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__Activity
-#define SOAP_TYPE_gsoap_eml2_1__eml21__Activity (-1503)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__Activity (-1502)
 
 #endif
 
 /* _eml21__EpcExternalPartReference has binding name '_eml21__EpcExternalPartReference' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__EpcExternalPartReference
-#define SOAP_TYPE_gsoap_eml2_1__eml21__EpcExternalPartReference (-1502)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__EpcExternalPartReference (-1501)
 
 #endif
 
 /* _eml21__AbstractDataObject has binding name '_eml21__AbstractDataObject' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__AbstractDataObject
-#define SOAP_TYPE_gsoap_eml2_1__eml21__AbstractDataObject (-1501)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__AbstractDataObject (-1500)
 
 #endif
 
 /* _eml21__AbstractContextualObject has binding name '_eml21__AbstractContextualObject' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__eml21__AbstractContextualObject
-#define SOAP_TYPE_gsoap_eml2_1__eml21__AbstractContextualObject (-1500)
+#define SOAP_TYPE_gsoap_eml2_1__eml21__AbstractContextualObject (-1499)
 
 #endif
 
 /* _witsml20__ToolErrorModel has binding name '_witsml20__ToolErrorModel' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__ToolErrorModel
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__ToolErrorModel (-1499)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__ToolErrorModel (-1498)
 
 #endif
 
 /* _witsml20__part_USCORETrajectoryStation has binding name '_witsml20__part_USCORETrajectoryStation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__part_USCORETrajectoryStation
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__part_USCORETrajectoryStation (-1498)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__part_USCORETrajectoryStation (-1497)
 
 #endif
 
 /* _witsml20__Trajectory has binding name '_witsml20__Trajectory' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__Trajectory
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__Trajectory (-1497)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__Trajectory (-1496)
 
 #endif
 
 /* _witsml20__InterpretedGeologyInterval has binding name '_witsml20__InterpretedGeologyInterval' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__InterpretedGeologyInterval
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__InterpretedGeologyInterval (-1496)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__InterpretedGeologyInterval (-1495)
 
 #endif
 
 /* _witsml20__CuttingsGeology has binding name '_witsml20__CuttingsGeology' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__CuttingsGeology
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__CuttingsGeology (-1495)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__CuttingsGeology (-1494)
 
 #endif
 
 /* _witsml20__CuttingsGeologyInterval has binding name '_witsml20__CuttingsGeologyInterval' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__CuttingsGeologyInterval
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__CuttingsGeologyInterval (-1494)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__CuttingsGeologyInterval (-1493)
 
 #endif
 
 /* _witsml20__ShowEvaluationInterval has binding name '_witsml20__ShowEvaluationInterval' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__ShowEvaluationInterval
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__ShowEvaluationInterval (-1493)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__ShowEvaluationInterval (-1492)
 
 #endif
 
 /* _witsml20__InterpretedGeology has binding name '_witsml20__InterpretedGeology' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__InterpretedGeology
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__InterpretedGeology (-1492)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__InterpretedGeology (-1491)
 
 #endif
 
 /* _witsml20__ShowEvaluation has binding name '_witsml20__ShowEvaluation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__ShowEvaluation
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__ShowEvaluation (-1491)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__ShowEvaluation (-1490)
 
 #endif
 
 /* _witsml20__WellboreGeology has binding name '_witsml20__WellboreGeology' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreGeology
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreGeology (-1490)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreGeology (-1489)
 
 #endif
 
 /* _witsml20__WellboreMarkerSet has binding name '_witsml20__WellboreMarkerSet' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreMarkerSet
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreMarkerSet (-1489)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreMarkerSet (-1488)
 
 #endif
 
 /* _witsml20__WellboreMarker has binding name '_witsml20__WellboreMarker' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreMarker
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreMarker (-1488)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreMarker (-1487)
 
 #endif
 
 /* _witsml20__DrillReport has binding name '_witsml20__DrillReport' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__DrillReport
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__DrillReport (-1487)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__DrillReport (-1486)
 
 #endif
 
 /* _witsml20__FluidsReport has binding name '_witsml20__FluidsReport' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__FluidsReport
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__FluidsReport (-1486)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__FluidsReport (-1485)
 
 #endif
 
 /* _witsml20__BhaRun has binding name '_witsml20__BhaRun' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__BhaRun
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__BhaRun (-1485)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__BhaRun (-1484)
 
 #endif
 
 /* _witsml20__Channel has binding name '_witsml20__Channel' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__Channel
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__Channel (-1484)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__Channel (-1483)
 
 #endif
 
 /* _witsml20__Log has binding name '_witsml20__Log' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__Log
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__Log (-1483)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__Log (-1482)
 
 #endif
 
 /* _witsml20__ChannelSet has binding name '_witsml20__ChannelSet' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__ChannelSet
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__ChannelSet (-1482)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__ChannelSet (-1481)
 
 #endif
 
 /* _witsml20__WellboreGeometry has binding name '_witsml20__WellboreGeometry' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreGeometry
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreGeometry (-1481)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreGeometry (-1480)
 
 #endif
 
 /* _witsml20__part_USCOREWellboreGeometrySection has binding name '_witsml20__part_USCOREWellboreGeometrySection' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__part_USCOREWellboreGeometrySection
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__part_USCOREWellboreGeometrySection (-1480)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__part_USCOREWellboreGeometrySection (-1479)
 
 #endif
 
 /* _witsml20__WellCompletion has binding name '_witsml20__WellCompletion' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__WellCompletion
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellCompletion (-1479)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellCompletion (-1478)
 
 #endif
 
 /* _witsml20__Tubular has binding name '_witsml20__Tubular' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__Tubular
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__Tubular (-1478)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__Tubular (-1477)
 
 #endif
 
 /* _witsml20__DownholeComponent has binding name '_witsml20__DownholeComponent' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__DownholeComponent
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__DownholeComponent (-1477)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__DownholeComponent (-1476)
 
 #endif
 
 /* _witsml20__WellboreCompletion has binding name '_witsml20__WellboreCompletion' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreCompletion
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreCompletion (-1476)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__WellboreCompletion (-1475)
 
 #endif
 
 /* _witsml20__Wellbore has binding name '_witsml20__Wellbore' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__Wellbore
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__Wellbore (-1475)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__Wellbore (-1474)
 
 #endif
 
 /* _witsml20__Well has binding name '_witsml20__Well' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_1__witsml20__Well
-#define SOAP_TYPE_gsoap_eml2_1__witsml20__Well (-1474)
+#define SOAP_TYPE_gsoap_eml2_1__witsml20__Well (-1473)
 
 #endif
 
@@ -42298,637 +42292,637 @@ typedef eml21__GraphicalInformationSet _eml21__GraphicalInformationSet;
 
 /* eml21__UnitOfMeasure * has binding name 'PointerToeml21__UnitOfMeasure' for type 'eml21:UnitOfMeasure' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__UnitOfMeasure
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__UnitOfMeasure (-1473)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__UnitOfMeasure (-1472)
 
 #endif
 
 /* eml21__IntegerConstantArray * has binding name 'PointerToeml21__IntegerConstantArray' for type 'eml21:IntegerConstantArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__IntegerConstantArray
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__IntegerConstantArray (-1471)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__IntegerConstantArray (-1470)
 
 #endif
 
 /* eml21__AbstractBooleanArray * has binding name 'PointerToeml21__AbstractBooleanArray' for type 'eml21:AbstractBooleanArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractBooleanArray
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractBooleanArray (-1470)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractBooleanArray (-1469)
 
 #endif
 
 /* eml21__FloatingPointConstantArray * has binding name 'PointerToeml21__FloatingPointConstantArray' for type 'eml21:FloatingPointConstantArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__FloatingPointConstantArray
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__FloatingPointConstantArray (-1468)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__FloatingPointConstantArray (-1467)
 
 #endif
 
 /* eml21__ReferencePressureKind * has binding name 'PointerToeml21__ReferencePressureKind' for type 'eml21:ReferencePressureKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__ReferencePressureKind
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__ReferencePressureKind (-1467)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__ReferencePressureKind (-1466)
 
 #endif
 
 /* eml21__ExternalDataset * has binding name 'PointerToeml21__ExternalDataset' for type 'eml21:ExternalDataset' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__ExternalDataset
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__ExternalDataset (-1466)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__ExternalDataset (-1465)
 
 #endif
 
 /* eml21__AbstractGraphicalInformation * has binding name 'PointerToeml21__AbstractGraphicalInformation' for type 'eml21:AbstractGraphicalInformation' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractGraphicalInformation
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractGraphicalInformation (-1464)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractGraphicalInformation (-1463)
 
 #endif
 
 /* eml21__IndexRange * has binding name 'PointerToeml21__IndexRange' for type 'eml21:IndexRange' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__IndexRange
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__IndexRange (-1463)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__IndexRange (-1462)
 
 #endif
 
 /* eml21__FailingRule * has binding name 'PointerToeml21__FailingRule' for type 'eml21:FailingRule' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__FailingRule
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__FailingRule (-1461)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__FailingRule (-1460)
 
 #endif
 
 /* std::string * has binding name 'PointerToeml21__LengthUomExt' for type 'eml21:LengthUomExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__LengthUomExt
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__LengthUomExt (-1460)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__LengthUomExt (-1459)
 
 #endif
 
 /* eml21__AuthorityQualifiedName * has binding name 'PointerToeml21__AuthorityQualifiedName' for type 'eml21:AuthorityQualifiedName' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AuthorityQualifiedName
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AuthorityQualifiedName (-1459)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AuthorityQualifiedName (-1458)
 
 #endif
 
 /* std::string * has binding name 'PointerToeml21__ReferenceConditionExt' for type 'eml21:ReferenceConditionExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__ReferenceConditionExt
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__ReferenceConditionExt (-1458)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__ReferenceConditionExt (-1457)
 
 #endif
 
 /* eml21__ReferencePressure * has binding name 'PointerToeml21__ReferencePressure' for type 'eml21:ReferencePressure' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__ReferencePressure
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__ReferencePressure (-1456)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__ReferencePressure (-1455)
 
 #endif
 
 /* eml21__PressureMeasureExt * has binding name 'PointerToeml21__PressureMeasureExt' for type 'eml21:PressureMeasureExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__PressureMeasureExt
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__PressureMeasureExt (-1455)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__PressureMeasureExt (-1454)
 
 #endif
 
 /* eml21__TimeSeriesParentage * has binding name 'PointerToeml21__TimeSeriesParentage' for type 'eml21:TimeSeriesParentage' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__TimeSeriesParentage
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__TimeSeriesParentage (-1454)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__TimeSeriesParentage (-1453)
 
 #endif
 
 /* eml21__GeologicTime * has binding name 'PointerToeml21__GeologicTime' for type 'eml21:GeologicTime' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__GeologicTime
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__GeologicTime (-1452)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__GeologicTime (-1451)
 
 #endif
 
 /* eml21__PropertyKind * has binding name 'PointerToeml21__PropertyKind' for type 'eml21:PropertyKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__PropertyKind
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__PropertyKind (-1450)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__PropertyKind (-1449)
 
 #endif
 
 /* eml21__ParameterTemplate * has binding name 'PointerToeml21__ParameterTemplate' for type 'eml21:ParameterTemplate' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__ParameterTemplate
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__ParameterTemplate (-1448)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__ParameterTemplate (-1447)
 
 #endif
 
 /* witsml20__IscwsaErrorTermValue * has binding name 'PointerTowitsml20__IscwsaErrorTermValue' for type 'witsml20:IscwsaErrorTermValue' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__IscwsaErrorTermValue
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__IscwsaErrorTermValue (-1446)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__IscwsaErrorTermValue (-1445)
 
 #endif
 
 /* witsml20__IscwsaModelParameters * has binding name 'PointerTowitsml20__IscwsaModelParameters' for type 'witsml20:IscwsaModelParameters' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__IscwsaModelParameters
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__IscwsaModelParameters (-1445)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__IscwsaModelParameters (-1444)
 
 #endif
 
 /* witsml20__IscwsaSurveyToolOperatingInterval * has binding name 'PointerTowitsml20__IscwsaSurveyToolOperatingInterval' for type 'witsml20:IscwsaSurveyToolOperatingInterval' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__IscwsaSurveyToolOperatingInterval
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__IscwsaSurveyToolOperatingInterval (-1443)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__IscwsaSurveyToolOperatingInterval (-1442)
 
 #endif
 
 /* witsml20__IscwsaSurveyToolOperatingCondition * has binding name 'PointerTowitsml20__IscwsaSurveyToolOperatingCondition' for type 'witsml20:IscwsaSurveyToolOperatingCondition' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__IscwsaSurveyToolOperatingCondition
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__IscwsaSurveyToolOperatingCondition (-1441)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__IscwsaSurveyToolOperatingCondition (-1440)
 
 #endif
 
 /* witsml20__IscwsaAuthorizationData * has binding name 'PointerTowitsml20__IscwsaAuthorizationData' for type 'witsml20:IscwsaAuthorizationData' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__IscwsaAuthorizationData
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__IscwsaAuthorizationData (-1440)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__IscwsaAuthorizationData (-1439)
 
 #endif
 
 /* witsml20__TrajectoryStation * has binding name 'PointerTowitsml20__TrajectoryStation' for type 'witsml20:TrajectoryStation' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__TrajectoryStation
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__TrajectoryStation (-1438)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__TrajectoryStation (-1437)
 
 #endif
 
 /* witsml20__AziRef * has binding name 'PointerTowitsml20__AziRef' for type 'witsml20:AziRef' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__AziRef
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__AziRef (-1437)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__AziRef (-1436)
 
 #endif
 
 /* witsml20__InterpretedIntervalLithology * has binding name 'PointerTowitsml20__InterpretedIntervalLithology' for type 'witsml20:InterpretedIntervalLithology' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__InterpretedIntervalLithology
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__InterpretedIntervalLithology (-1436)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__InterpretedIntervalLithology (-1435)
 
 #endif
 
 /* witsml20__CuttingsGeologyInterval * has binding name 'PointerTowitsml20__CuttingsGeologyInterval' for type 'witsml20:CuttingsGeologyInterval' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__CuttingsGeologyInterval
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__CuttingsGeologyInterval (-1432)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__CuttingsGeologyInterval (-1431)
 
 #endif
 
 /* witsml20__CuttingsIntervalLithology * has binding name 'PointerTowitsml20__CuttingsIntervalLithology' for type 'witsml20:CuttingsIntervalLithology' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__CuttingsIntervalLithology
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__CuttingsIntervalLithology (-1430)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__CuttingsIntervalLithology (-1429)
 
 #endif
 
 /* eml21__IlluminanceMeasure * has binding name 'PointerToeml21__IlluminanceMeasure' for type 'eml21:IlluminanceMeasure' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__IlluminanceMeasure
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__IlluminanceMeasure (-1429)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__IlluminanceMeasure (-1428)
 
 #endif
 
 /* witsml20__InterpretedGeologyInterval * has binding name 'PointerTowitsml20__InterpretedGeologyInterval' for type 'witsml20:InterpretedGeologyInterval' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__InterpretedGeologyInterval
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__InterpretedGeologyInterval (-1427)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__InterpretedGeologyInterval (-1426)
 
 #endif
 
 /* witsml20__ShowEvaluationInterval * has binding name 'PointerTowitsml20__ShowEvaluationInterval' for type 'witsml20:ShowEvaluationInterval' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ShowEvaluationInterval
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ShowEvaluationInterval (-1425)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ShowEvaluationInterval (-1424)
 
 #endif
 
 /* witsml20__CuttingsGeology * has binding name 'PointerTowitsml20__CuttingsGeology' for type 'witsml20:CuttingsGeology' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__CuttingsGeology
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__CuttingsGeology (-1424)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__CuttingsGeology (-1423)
 
 #endif
 
 /* witsml20__InterpretedGeology * has binding name 'PointerTowitsml20__InterpretedGeology' for type 'witsml20:InterpretedGeology' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__InterpretedGeology
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__InterpretedGeology (-1423)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__InterpretedGeology (-1422)
 
 #endif
 
 /* witsml20__ShowEvaluation * has binding name 'PointerTowitsml20__ShowEvaluation' for type 'witsml20:ShowEvaluation' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ShowEvaluation
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ShowEvaluation (-1422)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ShowEvaluation (-1421)
 
 #endif
 
 /* witsml20__WellboreMarker * has binding name 'PointerTowitsml20__WellboreMarker' for type 'witsml20:WellboreMarker' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellboreMarker
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellboreMarker (-1420)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellboreMarker (-1419)
 
 #endif
 
 /* witsml20__LithostratigraphicUnit * has binding name 'PointerTowitsml20__LithostratigraphicUnit' for type 'witsml20:LithostratigraphicUnit' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__LithostratigraphicUnit
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__LithostratigraphicUnit (-1419)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__LithostratigraphicUnit (-1418)
 
 #endif
 
 /* witsml20__GeochronologicalUnit * has binding name 'PointerTowitsml20__GeochronologicalUnit' for type 'witsml20:GeochronologicalUnit' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__GeochronologicalUnit
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__GeochronologicalUnit (-1418)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__GeochronologicalUnit (-1417)
 
 #endif
 
 /* struct __witsml20__BottomHoleStaticTemperature_sequence_ * has binding name 'PointerTo__witsml20__BottomHoleStaticTemperature_sequence_' for type '-witsml20:BottomHoleStaticTemperature-sequence' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTo__witsml20__BottomHoleStaticTemperature_sequence_
-#define SOAP_TYPE_gsoap_eml2_1_PointerTo__witsml20__BottomHoleStaticTemperature_sequence_ (-1417)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTo__witsml20__BottomHoleStaticTemperature_sequence_ (-1416)
 
 #endif
 
 /* struct __witsml20__BottomHoleCirculatingTemperature_sequence_ * has binding name 'PointerTo__witsml20__BottomHoleCirculatingTemperature_sequence_' for type '-witsml20:BottomHoleCirculatingTemperature-sequence' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTo__witsml20__BottomHoleCirculatingTemperature_sequence_
-#define SOAP_TYPE_gsoap_eml2_1_PointerTo__witsml20__BottomHoleCirculatingTemperature_sequence_ (-1415)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTo__witsml20__BottomHoleCirculatingTemperature_sequence_ (-1414)
 
 #endif
 
 /* witsml20__DrillReportSurveyStation * has binding name 'PointerTowitsml20__DrillReportSurveyStation' for type 'witsml20:DrillReportSurveyStation' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportSurveyStation
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportSurveyStation (-1412)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportSurveyStation (-1411)
 
 #endif
 
 /* witsml20__TimestampedCommentString * has binding name 'PointerTowitsml20__TimestampedCommentString' for type 'witsml20:TimestampedCommentString' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__TimestampedCommentString
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__TimestampedCommentString (-1411)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__TimestampedCommentString (-1410)
 
 #endif
 
 /* witsml20__DrillReportPorePressure * has binding name 'PointerTowitsml20__DrillReportPorePressure' for type 'witsml20:DrillReportPorePressure' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportPorePressure
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportPorePressure (-1409)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportPorePressure (-1408)
 
 #endif
 
 /* witsml20__DrillReportStatusInfo * has binding name 'PointerTowitsml20__DrillReportStatusInfo' for type 'witsml20:DrillReportStatusInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportStatusInfo
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportStatusInfo (-1407)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportStatusInfo (-1406)
 
 #endif
 
 /* witsml20__DrillReportWellboreInfo * has binding name 'PointerTowitsml20__DrillReportWellboreInfo' for type 'witsml20:DrillReportWellboreInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportWellboreInfo
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportWellboreInfo (-1406)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportWellboreInfo (-1405)
 
 #endif
 
 /* witsml20__DrillReportGasReadingInfo * has binding name 'PointerTowitsml20__DrillReportGasReadingInfo' for type 'witsml20:DrillReportGasReadingInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportGasReadingInfo
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportGasReadingInfo (-1404)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportGasReadingInfo (-1403)
 
 #endif
 
 /* witsml20__DrillReportPerfInfo * has binding name 'PointerTowitsml20__DrillReportPerfInfo' for type 'witsml20:DrillReportPerfInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportPerfInfo
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportPerfInfo (-1402)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportPerfInfo (-1401)
 
 #endif
 
 /* witsml20__DrillReportStratInfo * has binding name 'PointerTowitsml20__DrillReportStratInfo' for type 'witsml20:DrillReportStratInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportStratInfo
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportStratInfo (-1400)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportStratInfo (-1399)
 
 #endif
 
 /* witsml20__DrillReportControlIncidentInfo * has binding name 'PointerTowitsml20__DrillReportControlIncidentInfo' for type 'witsml20:DrillReportControlIncidentInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportControlIncidentInfo
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportControlIncidentInfo (-1398)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportControlIncidentInfo (-1397)
 
 #endif
 
 /* witsml20__DrillReportEquipFailureInfo * has binding name 'PointerTowitsml20__DrillReportEquipFailureInfo' for type 'witsml20:DrillReportEquipFailureInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportEquipFailureInfo
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportEquipFailureInfo (-1396)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportEquipFailureInfo (-1395)
 
 #endif
 
 /* witsml20__DrillReportLithShowInfo * has binding name 'PointerTowitsml20__DrillReportLithShowInfo' for type 'witsml20:DrillReportLithShowInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportLithShowInfo
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportLithShowInfo (-1394)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportLithShowInfo (-1393)
 
 #endif
 
 /* witsml20__DrillReportFormTestInfo * has binding name 'PointerTowitsml20__DrillReportFormTestInfo' for type 'witsml20:DrillReportFormTestInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportFormTestInfo
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportFormTestInfo (-1392)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportFormTestInfo (-1391)
 
 #endif
 
 /* witsml20__DrillReportWellTestInfo * has binding name 'PointerTowitsml20__DrillReportWellTestInfo' for type 'witsml20:DrillReportWellTestInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportWellTestInfo
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportWellTestInfo (-1390)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportWellTestInfo (-1389)
 
 #endif
 
 /* witsml20__DrillReportCoreInfo * has binding name 'PointerTowitsml20__DrillReportCoreInfo' for type 'witsml20:DrillReportCoreInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportCoreInfo
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportCoreInfo (-1388)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportCoreInfo (-1387)
 
 #endif
 
 /* witsml20__DrillReportLogInfo * has binding name 'PointerTowitsml20__DrillReportLogInfo' for type 'witsml20:DrillReportLogInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportLogInfo
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportLogInfo (-1386)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillReportLogInfo (-1385)
 
 #endif
 
 /* witsml20__DrillActivity * has binding name 'PointerTowitsml20__DrillActivity' for type 'witsml20:DrillActivity' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillActivity
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillActivity (-1384)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillActivity (-1383)
 
 #endif
 
 /* witsml20__OpsReportVersion * has binding name 'PointerTowitsml20__OpsReportVersion' for type 'witsml20:OpsReportVersion' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__OpsReportVersion
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__OpsReportVersion (-1382)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__OpsReportVersion (-1381)
 
 #endif
 
 /* witsml20__Fluid * has binding name 'PointerTowitsml20__Fluid' for type 'witsml20:Fluid' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__Fluid
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__Fluid (-1380)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__Fluid (-1379)
 
 #endif
 
 /* witsml20__DrillingParams * has binding name 'PointerTowitsml20__DrillingParams' for type 'witsml20:DrillingParams' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillingParams
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillingParams (-1378)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DrillingParams (-1377)
 
 #endif
 
 /* witsml20__BhaStatus * has binding name 'PointerTowitsml20__BhaStatus' for type 'witsml20:BhaStatus' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__BhaStatus
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__BhaStatus (-1377)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__BhaStatus (-1376)
 
 #endif
 
 /* witsml20__PointMetadata * has binding name 'PointerTowitsml20__PointMetadata' for type 'witsml20:PointMetadata' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__PointMetadata
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__PointMetadata (-1375)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__PointMetadata (-1374)
 
 #endif
 
 /* witsml20__LogChannelAxis * has binding name 'PointerTowitsml20__LogChannelAxis' for type 'witsml20:LogChannelAxis' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__LogChannelAxis
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__LogChannelAxis (-1373)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__LogChannelAxis (-1372)
 
 #endif
 
 /* witsml20__ChannelSet * has binding name 'PointerTowitsml20__ChannelSet' for type 'witsml20:ChannelSet' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ChannelSet
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ChannelSet (-1371)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ChannelSet (-1370)
 
 #endif
 
 /* witsml20__AbstractLogDataContext * has binding name 'PointerTowitsml20__AbstractLogDataContext' for type 'witsml20:AbstractLogDataContext' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__AbstractLogDataContext
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__AbstractLogDataContext (-1369)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__AbstractLogDataContext (-1368)
 
 #endif
 
 /* eml21__LengthMeasureExt * has binding name 'PointerToeml21__LengthMeasureExt' for type 'eml21:LengthMeasureExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__LengthMeasureExt
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__LengthMeasureExt (-1368)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__LengthMeasureExt (-1367)
 
 #endif
 
 /* witsml20__LoggingMethod * has binding name 'PointerTowitsml20__LoggingMethod' for type 'witsml20:LoggingMethod' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__LoggingMethod
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__LoggingMethod (-1367)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__LoggingMethod (-1366)
 
 #endif
 
 /* witsml20__ChannelDerivation * has binding name 'PointerTowitsml20__ChannelDerivation' for type 'witsml20:ChannelDerivation' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ChannelDerivation
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ChannelDerivation (-1366)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ChannelDerivation (-1365)
 
 #endif
 
 /* witsml20__AbstractIndexValue * has binding name 'PointerTowitsml20__AbstractIndexValue' for type 'witsml20:AbstractIndexValue' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__AbstractIndexValue
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__AbstractIndexValue (-1365)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__AbstractIndexValue (-1364)
 
 #endif
 
 /* witsml20__ChannelState * has binding name 'PointerTowitsml20__ChannelState' for type 'witsml20:ChannelState' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ChannelState
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ChannelState (-1364)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ChannelState (-1363)
 
 #endif
 
 /* witsml20__ChannelData * has binding name 'PointerTowitsml20__ChannelData' for type 'witsml20:ChannelData' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ChannelData
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ChannelData (-1363)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ChannelData (-1362)
 
 #endif
 
 /* witsml20__Channel * has binding name 'PointerTowitsml20__Channel' for type 'witsml20:Channel' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__Channel
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__Channel (-1361)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__Channel (-1360)
 
 #endif
 
 /* witsml20__ChannelIndex * has binding name 'PointerTowitsml20__ChannelIndex' for type 'witsml20:ChannelIndex' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ChannelIndex
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ChannelIndex (-1359)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ChannelIndex (-1358)
 
 #endif
 
 /* witsml20__WellboreGeometrySection * has binding name 'PointerTowitsml20__WellboreGeometrySection' for type 'witsml20:WellboreGeometrySection' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellboreGeometrySection
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellboreGeometrySection (-1357)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellboreGeometrySection (-1356)
 
 #endif
 
 /* struct __witsml20__BendOffset_sequence * has binding name 'PointerTo__witsml20__BendOffset_sequence' for type '-witsml20:BendOffset-sequence' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTo__witsml20__BendOffset_sequence
-#define SOAP_TYPE_gsoap_eml2_1_PointerTo__witsml20__BendOffset_sequence (-1356)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTo__witsml20__BendOffset_sequence (-1355)
 
 #endif
 
 /* struct __witsml20__BendAngle_sequence * has binding name 'PointerTo__witsml20__BendAngle_sequence' for type '-witsml20:BendAngle-sequence' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTo__witsml20__BendAngle_sequence
-#define SOAP_TYPE_gsoap_eml2_1_PointerTo__witsml20__BendAngle_sequence (-1354)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTo__witsml20__BendAngle_sequence (-1353)
 
 #endif
 
 /* witsml20__TubularComponent * has binding name 'PointerTowitsml20__TubularComponent' for type 'witsml20:TubularComponent' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__TubularComponent
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__TubularComponent (-1351)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__TubularComponent (-1350)
 
 #endif
 
 /* witsml20__AbstractConnectionType * has binding name 'PointerTowitsml20__AbstractConnectionType' for type 'witsml20:AbstractConnectionType' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__AbstractConnectionType
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__AbstractConnectionType (-1350)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__AbstractConnectionType (-1349)
 
 #endif
 
 /* witsml20__ConnectionFormType * has binding name 'PointerTowitsml20__ConnectionFormType' for type 'witsml20:ConnectionFormType' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ConnectionFormType
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ConnectionFormType (-1349)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ConnectionFormType (-1348)
 
 #endif
 
 /* witsml20__BoreholeStringSet * has binding name 'PointerTowitsml20__BoreholeStringSet' for type 'witsml20:BoreholeStringSet' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__BoreholeStringSet
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__BoreholeStringSet (-1348)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__BoreholeStringSet (-1347)
 
 #endif
 
 /* witsml20__EquipmentSet * has binding name 'PointerTowitsml20__EquipmentSet' for type 'witsml20:EquipmentSet' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__EquipmentSet
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__EquipmentSet (-1347)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__EquipmentSet (-1346)
 
 #endif
 
 /* witsml20__PerforationSets * has binding name 'PointerTowitsml20__PerforationSets' for type 'witsml20:PerforationSets' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__PerforationSets
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__PerforationSets (-1346)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__PerforationSets (-1345)
 
 #endif
 
 /* witsml20__DownholeStringSet * has binding name 'PointerTowitsml20__DownholeStringSet' for type 'witsml20:DownholeStringSet' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DownholeStringSet
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DownholeStringSet (-1345)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__DownholeStringSet (-1344)
 
 #endif
 
 /* witsml20__ContactIntervalSet * has binding name 'PointerTowitsml20__ContactIntervalSet' for type 'witsml20:ContactIntervalSet' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ContactIntervalSet
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ContactIntervalSet (-1344)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ContactIntervalSet (-1343)
 
 #endif
 
 /* witsml20__CompletionStatusHistory * has binding name 'PointerTowitsml20__CompletionStatusHistory' for type 'witsml20:CompletionStatusHistory' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__CompletionStatusHistory
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__CompletionStatusHistory (-1342)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__CompletionStatusHistory (-1341)
 
 #endif
 
 /* witsml20__WellboreShape * has binding name 'PointerTowitsml20__WellboreShape' for type 'witsml20:WellboreShape' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellboreShape
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellboreShape (-1341)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellboreShape (-1340)
 
 #endif
 
 /* witsml20__WellDatum * has binding name 'PointerTowitsml20__WellDatum' for type 'witsml20:WellDatum' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellDatum
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellDatum (-1339)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellDatum (-1338)
 
 #endif
 
 /* witsml20__ReferencePoint * has binding name 'PointerTowitsml20__ReferencePoint' for type 'witsml20:ReferencePoint' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ReferencePoint
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ReferencePoint (-1337)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__ReferencePoint (-1336)
 
 #endif
 
 /* witsml20__PublicLandSurveySystem * has binding name 'PointerTowitsml20__PublicLandSurveySystem' for type 'witsml20:PublicLandSurveySystem' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__PublicLandSurveySystem
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__PublicLandSurveySystem (-1336)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__PublicLandSurveySystem (-1335)
 
 #endif
 
 /* witsml20__GeodeticWellLocation * has binding name 'PointerTowitsml20__GeodeticWellLocation' for type 'witsml20:GeodeticWellLocation' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__GeodeticWellLocation
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__GeodeticWellLocation (-1335)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__GeodeticWellLocation (-1334)
 
 #endif
 
 /* witsml20__WellDirection * has binding name 'PointerTowitsml20__WellDirection' for type 'witsml20:WellDirection' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellDirection
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellDirection (-1334)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellDirection (-1333)
 
 #endif
 
 /* witsml20__WellFluid * has binding name 'PointerTowitsml20__WellFluid' for type 'witsml20:WellFluid' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellFluid
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellFluid (-1333)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellFluid (-1332)
 
 #endif
 
 /* witsml20__WellPurpose * has binding name 'PointerTowitsml20__WellPurpose' for type 'witsml20:WellPurpose' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellPurpose
-#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellPurpose (-1332)
+#define SOAP_TYPE_gsoap_eml2_1_PointerTowitsml20__WellPurpose (-1331)
 
 #endif
 
 /* eml21__WellStatus * has binding name 'PointerToeml21__WellStatus' for type 'eml21:WellStatus' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__WellStatus
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__WellStatus (-1331)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__WellStatus (-1330)
 
 #endif
 
 /* eml21__DimensionlessMeasure * has binding name 'PointerToeml21__DimensionlessMeasure' for type 'eml21:DimensionlessMeasure' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__DimensionlessMeasure
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__DimensionlessMeasure (-1330)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__DimensionlessMeasure (-1329)
 
 #endif
 
 /* std::string * has binding name 'PointerToeml21__TimeZone' for type 'eml21:TimeZone' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__TimeZone
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__TimeZone (-1329)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__TimeZone (-1328)
 
 #endif
 
 /* eml21__AbstractProjectedCrs * has binding name 'PointerToeml21__AbstractProjectedCrs' for type 'eml21:AbstractProjectedCrs' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractProjectedCrs
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractProjectedCrs (-1328)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractProjectedCrs (-1327)
 
 #endif
 
 /* eml21__AbstractGeodeticCrs * has binding name 'PointerToeml21__AbstractGeodeticCrs' for type 'eml21:AbstractGeodeticCrs' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractGeodeticCrs
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractGeodeticCrs (-1327)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractGeodeticCrs (-1326)
 
 #endif
 
 /* eml21__VolumeMeasureExt * has binding name 'PointerToeml21__VolumeMeasureExt' for type 'eml21:VolumeMeasureExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__VolumeMeasureExt
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__VolumeMeasureExt (-1326)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__VolumeMeasureExt (-1325)
 
 #endif
 
 /* eml21__AbstractPressureValue * has binding name 'PointerToeml21__AbstractPressureValue' for type 'eml21:AbstractPressureValue' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractPressureValue
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractPressureValue (-1325)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractPressureValue (-1324)
 
 #endif
 
 /* eml21__VolumePerTimeMeasureExt * has binding name 'PointerToeml21__VolumePerTimeMeasureExt' for type 'eml21:VolumePerTimeMeasureExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__VolumePerTimeMeasureExt
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__VolumePerTimeMeasureExt (-1324)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__VolumePerTimeMeasureExt (-1323)
 
 #endif
 
 /* eml21__AbstractTemperaturePressure * has binding name 'PointerToeml21__AbstractTemperaturePressure' for type 'eml21:AbstractTemperaturePressure' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractTemperaturePressure
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractTemperaturePressure (-1323)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractTemperaturePressure (-1322)
 
 #endif
 
 /* eml21__MassPerVolumeMeasureExt * has binding name 'PointerToeml21__MassPerVolumeMeasureExt' for type 'eml21:MassPerVolumeMeasureExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__MassPerVolumeMeasureExt
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__MassPerVolumeMeasureExt (-1322)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__MassPerVolumeMeasureExt (-1321)
 
 #endif
 
 /* eml21__TimeIndex * has binding name 'PointerToeml21__TimeIndex' for type 'eml21:TimeIndex' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__TimeIndex
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__TimeIndex (-1320)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__TimeIndex (-1319)
 
 #endif
 
-/* ULONG64 * has binding name 'PointerToULONG64' for type 'xsd:unsignedLong' */
-#ifndef SOAP_TYPE_gsoap_eml2_1_PointerToULONG64
-#define SOAP_TYPE_gsoap_eml2_1_PointerToULONG64 (-1319)
+/* LONG64 * has binding name 'PointerToeml21__NonNegativeLong' for type 'eml21:NonNegativeLong' */
+#ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__NonNegativeLong
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__NonNegativeLong (-1318)
 
 #endif
 
 /* eml21__AbstractActivityParameter * has binding name 'PointerToeml21__AbstractActivityParameter' for type 'eml21:AbstractActivityParameter' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractActivityParameter
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractActivityParameter (-1317)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractActivityParameter (-1316)
 
 #endif
 
 /* eml21__AbstractParameterKey * has binding name 'PointerToeml21__AbstractParameterKey' for type 'eml21:AbstractParameterKey' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractParameterKey
-#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractParameterKey (-1313)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToeml21__AbstractParameterKey (-1312)
 
 #endif
 
 /* LONG64 * has binding name 'PointerToLONG64' for type 'xsd:long' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_PointerToLONG64
-#define SOAP_TYPE_gsoap_eml2_1_PointerToLONG64 (-1312)
+#define SOAP_TYPE_gsoap_eml2_1_PointerToLONG64 (-1311)
 
 #endif
 
@@ -43960,295 +43954,295 @@ typedef eml21__GraphicalInformationSet _eml21__GraphicalInformationSet;
 
 /* std::vector<eml21__IntegerConstantArray *>  has binding name 'std__vectorTemplateOfPointerToeml21__IntegerConstantArray' for type 'eml21:IntegerConstantArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__IntegerConstantArray
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__IntegerConstantArray (-1472)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__IntegerConstantArray (-1471)
 
 #endif
 
 /* std::vector<eml21__FloatingPointConstantArray *>  has binding name 'std__vectorTemplateOfPointerToeml21__FloatingPointConstantArray' for type 'eml21:FloatingPointConstantArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__FloatingPointConstantArray
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__FloatingPointConstantArray (-1469)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__FloatingPointConstantArray (-1468)
 
 #endif
 
 /* std::vector<eml21__AbstractGraphicalInformation *>  has binding name 'std__vectorTemplateOfPointerToeml21__AbstractGraphicalInformation' for type 'eml21:AbstractGraphicalInformation' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__AbstractGraphicalInformation
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__AbstractGraphicalInformation (-1465)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__AbstractGraphicalInformation (-1464)
 
 #endif
 
 /* std::vector<eml21__FailingRule *>  has binding name 'std__vectorTemplateOfPointerToeml21__FailingRule' for type 'eml21:FailingRule' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__FailingRule
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__FailingRule (-1462)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__FailingRule (-1461)
 
 #endif
 
 /* std::vector<eml21__GeologicTime *>  has binding name 'std__vectorTemplateOfPointerToeml21__GeologicTime' for type 'eml21:GeologicTime' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__GeologicTime
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__GeologicTime (-1453)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__GeologicTime (-1452)
 
 #endif
 
 /* std::vector<eml21__PropertyKind *>  has binding name 'std__vectorTemplateOfPointerToeml21__PropertyKind' for type 'eml21:PropertyKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__PropertyKind
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__PropertyKind (-1451)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__PropertyKind (-1450)
 
 #endif
 
 /* std::vector<eml21__ParameterTemplate *>  has binding name 'std__vectorTemplateOfPointerToeml21__ParameterTemplate' for type 'eml21:ParameterTemplate' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__ParameterTemplate
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__ParameterTemplate (-1449)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__ParameterTemplate (-1448)
 
 #endif
 
 /* std::vector<witsml20__IscwsaErrorTermValue *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__IscwsaErrorTermValue' for type 'witsml20:IscwsaErrorTermValue' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__IscwsaErrorTermValue
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__IscwsaErrorTermValue (-1447)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__IscwsaErrorTermValue (-1446)
 
 #endif
 
 /* std::vector<witsml20__IscwsaSurveyToolOperatingInterval *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__IscwsaSurveyToolOperatingInterval' for type 'witsml20:IscwsaSurveyToolOperatingInterval' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__IscwsaSurveyToolOperatingInterval
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__IscwsaSurveyToolOperatingInterval (-1444)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__IscwsaSurveyToolOperatingInterval (-1443)
 
 #endif
 
 /* std::vector<witsml20__IscwsaSurveyToolOperatingCondition *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__IscwsaSurveyToolOperatingCondition' for type 'witsml20:IscwsaSurveyToolOperatingCondition' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__IscwsaSurveyToolOperatingCondition
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__IscwsaSurveyToolOperatingCondition (-1442)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__IscwsaSurveyToolOperatingCondition (-1441)
 
 #endif
 
 /* std::vector<witsml20__TrajectoryStation *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__TrajectoryStation' for type 'witsml20:TrajectoryStation' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__TrajectoryStation
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__TrajectoryStation (-1439)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__TrajectoryStation (-1438)
 
 #endif
 
 /* std::vector<witsml20__LithostratigraphicUnit *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__LithostratigraphicUnit' for type 'witsml20:LithostratigraphicUnit' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__LithostratigraphicUnit
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__LithostratigraphicUnit (-1435)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__LithostratigraphicUnit (-1434)
 
 #endif
 
 /* std::vector<witsml20__GeochronologicalUnit *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__GeochronologicalUnit' for type 'witsml20:GeochronologicalUnit' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__GeochronologicalUnit
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__GeochronologicalUnit (-1434)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__GeochronologicalUnit (-1433)
 
 #endif
 
 /* std::vector<witsml20__CuttingsGeologyInterval *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__CuttingsGeologyInterval' for type 'witsml20:CuttingsGeologyInterval' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__CuttingsGeologyInterval
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__CuttingsGeologyInterval (-1433)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__CuttingsGeologyInterval (-1432)
 
 #endif
 
 /* std::vector<witsml20__CuttingsIntervalLithology *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__CuttingsIntervalLithology' for type 'witsml20:CuttingsIntervalLithology' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__CuttingsIntervalLithology
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__CuttingsIntervalLithology (-1431)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__CuttingsIntervalLithology (-1430)
 
 #endif
 
 /* std::vector<witsml20__InterpretedGeologyInterval *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__InterpretedGeologyInterval' for type 'witsml20:InterpretedGeologyInterval' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__InterpretedGeologyInterval
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__InterpretedGeologyInterval (-1428)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__InterpretedGeologyInterval (-1427)
 
 #endif
 
 /* std::vector<witsml20__ShowEvaluationInterval *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__ShowEvaluationInterval' for type 'witsml20:ShowEvaluationInterval' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__ShowEvaluationInterval
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__ShowEvaluationInterval (-1426)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__ShowEvaluationInterval (-1425)
 
 #endif
 
 /* std::vector<witsml20__WellboreMarker *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__WellboreMarker' for type 'witsml20:WellboreMarker' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__WellboreMarker
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__WellboreMarker (-1421)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__WellboreMarker (-1420)
 
 #endif
 
 /* std::vector<witsml20__DrillReportSurveyStation *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__DrillReportSurveyStation' for type 'witsml20:DrillReportSurveyStation' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportSurveyStation
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportSurveyStation (-1413)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportSurveyStation (-1412)
 
 #endif
 
 /* std::vector<witsml20__DrillReportPorePressure *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__DrillReportPorePressure' for type 'witsml20:DrillReportPorePressure' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportPorePressure
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportPorePressure (-1410)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportPorePressure (-1409)
 
 #endif
 
 /* std::vector<witsml20__DrillReportStatusInfo *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__DrillReportStatusInfo' for type 'witsml20:DrillReportStatusInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportStatusInfo
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportStatusInfo (-1408)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportStatusInfo (-1407)
 
 #endif
 
 /* std::vector<witsml20__DrillReportGasReadingInfo *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__DrillReportGasReadingInfo' for type 'witsml20:DrillReportGasReadingInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportGasReadingInfo
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportGasReadingInfo (-1405)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportGasReadingInfo (-1404)
 
 #endif
 
 /* std::vector<witsml20__DrillReportPerfInfo *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__DrillReportPerfInfo' for type 'witsml20:DrillReportPerfInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportPerfInfo
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportPerfInfo (-1403)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportPerfInfo (-1402)
 
 #endif
 
 /* std::vector<witsml20__DrillReportStratInfo *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__DrillReportStratInfo' for type 'witsml20:DrillReportStratInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportStratInfo
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportStratInfo (-1401)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportStratInfo (-1400)
 
 #endif
 
 /* std::vector<witsml20__DrillReportControlIncidentInfo *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__DrillReportControlIncidentInfo' for type 'witsml20:DrillReportControlIncidentInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportControlIncidentInfo
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportControlIncidentInfo (-1399)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportControlIncidentInfo (-1398)
 
 #endif
 
 /* std::vector<witsml20__DrillReportEquipFailureInfo *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__DrillReportEquipFailureInfo' for type 'witsml20:DrillReportEquipFailureInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportEquipFailureInfo
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportEquipFailureInfo (-1397)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportEquipFailureInfo (-1396)
 
 #endif
 
 /* std::vector<witsml20__DrillReportLithShowInfo *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__DrillReportLithShowInfo' for type 'witsml20:DrillReportLithShowInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportLithShowInfo
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportLithShowInfo (-1395)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportLithShowInfo (-1394)
 
 #endif
 
 /* std::vector<witsml20__DrillReportFormTestInfo *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__DrillReportFormTestInfo' for type 'witsml20:DrillReportFormTestInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportFormTestInfo
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportFormTestInfo (-1393)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportFormTestInfo (-1392)
 
 #endif
 
 /* std::vector<witsml20__DrillReportWellTestInfo *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__DrillReportWellTestInfo' for type 'witsml20:DrillReportWellTestInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportWellTestInfo
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportWellTestInfo (-1391)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportWellTestInfo (-1390)
 
 #endif
 
 /* std::vector<witsml20__DrillReportCoreInfo *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__DrillReportCoreInfo' for type 'witsml20:DrillReportCoreInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportCoreInfo
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportCoreInfo (-1389)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportCoreInfo (-1388)
 
 #endif
 
 /* std::vector<witsml20__DrillReportLogInfo *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__DrillReportLogInfo' for type 'witsml20:DrillReportLogInfo' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportLogInfo
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportLogInfo (-1387)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillReportLogInfo (-1386)
 
 #endif
 
 /* std::vector<witsml20__DrillActivity *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__DrillActivity' for type 'witsml20:DrillActivity' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillActivity
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillActivity (-1385)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillActivity (-1384)
 
 #endif
 
 /* std::vector<witsml20__BitRecord *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__BitRecord' for type 'witsml20:BitRecord' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__BitRecord
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__BitRecord (-1383)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__BitRecord (-1382)
 
 #endif
 
 /* std::vector<witsml20__Fluid *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__Fluid' for type 'witsml20:Fluid' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__Fluid
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__Fluid (-1381)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__Fluid (-1380)
 
 #endif
 
 /* std::vector<witsml20__DrillingParams *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__DrillingParams' for type 'witsml20:DrillingParams' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillingParams
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillingParams (-1379)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__DrillingParams (-1378)
 
 #endif
 
 /* std::vector<witsml20__PointMetadata *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__PointMetadata' for type 'witsml20:PointMetadata' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__PointMetadata
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__PointMetadata (-1376)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__PointMetadata (-1375)
 
 #endif
 
 /* std::vector<witsml20__LogChannelAxis *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__LogChannelAxis' for type 'witsml20:LogChannelAxis' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__LogChannelAxis
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__LogChannelAxis (-1374)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__LogChannelAxis (-1373)
 
 #endif
 
 /* std::vector<witsml20__ChannelSet *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__ChannelSet' for type 'witsml20:ChannelSet' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__ChannelSet
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__ChannelSet (-1372)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__ChannelSet (-1371)
 
 #endif
 
 /* std::vector<witsml20__Channel *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__Channel' for type 'witsml20:Channel' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__Channel
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__Channel (-1362)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__Channel (-1361)
 
 #endif
 
 /* std::vector<witsml20__ChannelIndex *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__ChannelIndex' for type 'witsml20:ChannelIndex' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__ChannelIndex
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__ChannelIndex (-1360)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__ChannelIndex (-1359)
 
 #endif
 
 /* std::vector<witsml20__WellboreGeometrySection *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__WellboreGeometrySection' for type 'witsml20:WellboreGeometrySection' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__WellboreGeometrySection
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__WellboreGeometrySection (-1358)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__WellboreGeometrySection (-1357)
 
 #endif
 
 /* std::vector<witsml20__TubularComponent *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__TubularComponent' for type 'witsml20:TubularComponent' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__TubularComponent
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__TubularComponent (-1352)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__TubularComponent (-1351)
 
 #endif
 
 /* std::vector<witsml20__CompletionStatusHistory *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__CompletionStatusHistory' for type 'witsml20:CompletionStatusHistory' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__CompletionStatusHistory
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__CompletionStatusHistory (-1343)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__CompletionStatusHistory (-1342)
 
 #endif
 
 /* std::vector<witsml20__WellDatum *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__WellDatum' for type 'witsml20:WellDatum' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__WellDatum
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__WellDatum (-1340)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__WellDatum (-1339)
 
 #endif
 
 /* std::vector<witsml20__ReferencePoint *>  has binding name 'std__vectorTemplateOfPointerTowitsml20__ReferencePoint' for type 'witsml20:ReferencePoint' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__ReferencePoint
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__ReferencePoint (-1338)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerTowitsml20__ReferencePoint (-1337)
 
 #endif
 
 /* std::vector<eml21__AbstractActivityParameter *>  has binding name 'std__vectorTemplateOfPointerToeml21__AbstractActivityParameter' for type 'eml21:AbstractActivityParameter' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__AbstractActivityParameter
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__AbstractActivityParameter (-1318)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__AbstractActivityParameter (-1317)
 
 #endif
 
 /* std::vector<std::string>  has binding name 'std__vectorTemplateOfeml21__String2000' for type 'eml21:String2000' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfeml21__String2000
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfeml21__String2000 (-1316)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfeml21__String2000 (-1315)
 
 #endif
 
 /* std::vector<eml21__ParameterKind>  has binding name 'std__vectorTemplateOfeml21__ParameterKind' for type 'eml21:ParameterKind' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfeml21__ParameterKind
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfeml21__ParameterKind (-1315)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfeml21__ParameterKind (-1314)
 
 #endif
 
 /* std::vector<eml21__AbstractParameterKey *>  has binding name 'std__vectorTemplateOfPointerToeml21__AbstractParameterKey' for type 'eml21:AbstractParameterKey' */
 #ifndef SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__AbstractParameterKey
-#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__AbstractParameterKey (-1314)
+#define SOAP_TYPE_gsoap_eml2_1_std__vectorTemplateOfPointerToeml21__AbstractParameterKey (-1313)
 
 #endif
 

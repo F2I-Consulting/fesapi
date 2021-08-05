@@ -64,15 +64,9 @@ void AbstractFeatureInterpretation::setInterpretedFeature(AbstractFeature * feat
 void AbstractFeatureInterpretation::loadTargetRelationships()
 {
 	COMMON_NS::DataObjectReference dor = getInterpretedFeatureDor();
-	AbstractFeature* interpretedFeature = getRepository()->getDataObjectByUuid<AbstractFeature>(dor.getUuid());
-	if (interpretedFeature == nullptr) { // partial transfer
-		getRepository()->createPartial(dor);
-		interpretedFeature = getRepository()->getDataObjectByUuid<AbstractFeature>(dor.getUuid());
+	if (!dor.isEmpty()) {
+		convertDorIntoRel(dor);
 	}
-	if (interpretedFeature == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-	repository->addRelationship(this, interpretedFeature);
 }
 
 COMMON_NS::DataObjectReference AbstractFeatureInterpretation::getInterpretedFeatureDor() const

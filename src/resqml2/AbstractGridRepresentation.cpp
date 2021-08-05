@@ -1702,41 +1702,18 @@ void AbstractGridRepresentation::loadTargetRelationships()
 	// LGR backward relationships
 	auto dor = getParentGridDor();
 	if (!dor.isEmpty()) {
-		RESQML2_NS::AbstractGridRepresentation* parentGrid = repository->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor.getUuid());
-		if (parentGrid == nullptr) { // partial transfer
-			getRepository()->createPartial(dor);
-			parentGrid = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor.getUuid());
-		}
-		if (parentGrid == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
-		repository->addRelationship(this, parentGrid);
+		convertDorIntoRel(dor);
 	}
+
 	// Strati org backward relationships
 	dor = getStratigraphicOrganizationInterpretationDor();
 	if (!dor.isEmpty()) {
-		RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = repository->getDataObjectByUuid<RESQML2_NS::AbstractStratigraphicOrganizationInterpretation>(dor.getUuid());
-		if (stratiOrg == nullptr) { // partial transfer
-			getRepository()->createPartial(dor);
-			stratiOrg = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractStratigraphicOrganizationInterpretation>(dor.getUuid());
-		}
-		if (stratiOrg == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
-		repository->addRelationship(this, stratiOrg);
+		convertDorIntoRel(dor);
 	}
 
 	dor = getRockFluidOrganizationInterpretationDor();
-	if(!dor.isEmpty()) {
-		RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrg = repository->getDataObjectByUuid<RESQML2_NS::RockFluidOrganizationInterpretation>(dor.getUuid());
-		if(rockFluidOrg == nullptr) {
-			getRepository()->createPartial(dor);
-			rockFluidOrg = getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidOrganizationInterpretation>(dor.getUuid());
-		}
-		if(rockFluidOrg == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
-		repository->addRelationship(this, rockFluidOrg);
+	if (!dor.isEmpty()) {
+		convertDorIntoRel(dor);
 	}
 }
 

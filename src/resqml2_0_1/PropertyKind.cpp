@@ -225,13 +225,7 @@ void PropertyKind::loadTargetRelationships()
 	}
 
 	COMMON_NS::DataObjectReference dor = getParentPropertyKindDor();
-	EML2_NS::PropertyKind* parentPk = getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(dor.getUuid());
-	if (parentPk == nullptr) {
-		getRepository()->createPartial(dor);
-		parentPk = getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(dor.getUuid());
-		if (parentPk == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
+	if (!dor.isEmpty()) {
+		convertDorIntoRel(dor);
 	}
-	getRepository()->addRelationship(this, parentPk);
 }

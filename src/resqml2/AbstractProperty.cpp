@@ -174,7 +174,7 @@ COMMON_NS::DataObjectReference AbstractProperty::getTimeSeriesDor() const
 	return COMMON_NS::DataObjectReference();
 }
 
-void AbstractProperty::setTimeIndices(uint64_t startTimeIndex, uint64_t countTimeIndices, EML2_NS::TimeSeries * ts, bool useInterval)
+void AbstractProperty::setTimeIndices(unsigned int startTimeIndex, unsigned int countTimeIndices, EML2_NS::TimeSeries * ts, bool useInterval)
 {
 	if (countTimeIndices == 0) {
 		throw std::invalid_argument("You cannot set zero time index.");
@@ -191,7 +191,7 @@ void AbstractProperty::setTimeIndices(uint64_t startTimeIndex, uint64_t countTim
 	else if (gsoapProxy2_3 != nullptr) {
 		static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices = gsoap_eml2_3::soap_new_eml23__TimeIndices(gsoapProxy2_3->soap);
 		if (startTimeIndex != 0) {
-			static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices->TimeIndexStart = gsoap_eml2_3::soap_new_ULONG64(gsoapProxy2_3->soap);
+			static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices->TimeIndexStart = gsoap_eml2_3::soap_new_LONG64(gsoapProxy2_3->soap);
 			*static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices->TimeIndexStart = startTimeIndex;
 		}
 		static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->TimeIndices->TimeIndexCount = countTimeIndices;
@@ -374,10 +374,11 @@ bool AbstractProperty::isAssociatedToOneStandardEnergisticsPropertyKind() const
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		auto propKind = getPropertyKind();
+		// We should find instead if the uuid is part of PWLS3. It would no more require the check on "partial"
 		if (!propKind->isPartial()) {
 			return propKind->getOriginator() == "Energistics";
 		}
-		throw logic_error("The associated prop kind is partial.");
+		return false;
 	}
 
 	throw logic_error("Unrecognized RESQML version");

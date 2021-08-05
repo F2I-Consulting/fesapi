@@ -468,16 +468,9 @@ WellboreTrajectoryRepresentation* WellboreFrameRepresentation::getWellboreTrajec
 void WellboreFrameRepresentation::loadTargetRelationships()
 {
 	COMMON_NS::DataObjectReference dor = getWellboreTrajectoryDor();
-	// todo the trajectory should be resqml2 instead of resqml2_0_1
-	WellboreTrajectoryRepresentation* traj = getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(dor.getUuid());
-	if (traj == nullptr) { // partial transfer
-		getRepository()->createPartial(dor);
-		traj = getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(dor.getUuid());
+	if (!dor.isEmpty()) {
+		convertDorIntoRel(dor);
 	}
-	if (traj == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-	repository->addRelationship(this, traj);
 
 	AbstractRepresentation::loadTargetRelationships();
 }

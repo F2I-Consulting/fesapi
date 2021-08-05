@@ -135,29 +135,13 @@ void PropertySet::loadTargetRelationships()
 {
 	COMMON_NS::DataObjectReference dor = getParentDor();
 	if (!dor.isEmpty()) {
-		PropertySet* propertySet = getRepository()->getDataObjectByUuid<PropertySet>(dor.getUuid());
-		if (propertySet == nullptr) { // partial transfer
-			getRepository()->createPartial(dor);
-			propertySet = getRepository()->getDataObjectByUuid<PropertySet>(dor.getUuid());
-			if (propertySet == nullptr) {
-				throw invalid_argument("The DOR looks invalid.");
-			}
-		}
-		repository->addRelationship(this, propertySet);
+		convertDorIntoRel(dor);
 	}
 
-	const std::vector<COMMON_NS::DataObjectReference>& propDors = getAllPropertiesDors();
-	for (size_t i = 0; i < propDors.size(); ++i) {
-		dor = propDors[i];
-		RESQML2_NS::AbstractProperty* prop = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractProperty>(dor.getUuid());
-		if (prop == nullptr) { // partial transfer
-			getRepository()->createPartial(dor);
-			prop = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractProperty>(dor.getUuid());
-			if (prop == nullptr) {
-				throw invalid_argument("The DOR looks invalid.");
-			}
+	for (auto dor2 : getAllPropertiesDors()) {
+		if (!dor2.isEmpty()) {
+			convertDorIntoRel(dor2);
 		}
-		repository->addRelationship(this, prop);
 	}
 }
 

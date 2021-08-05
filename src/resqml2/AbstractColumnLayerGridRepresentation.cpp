@@ -223,15 +223,9 @@ void AbstractColumnLayerGridRepresentation::loadTargetRelationships()
 	// Strati org backward relationships
 	if (hasIntervalStratigraphicUnitIndices()) {
 		COMMON_NS::DataObjectReference dor = getStratigraphicOrganizationInterpretationDor();
-		RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractStratigraphicOrganizationInterpretation>(dor.getUuid());
-		if (stratiOrg == nullptr) { // partial transfer
-			getRepository()->createPartial(dor);
-			stratiOrg = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractStratigraphicOrganizationInterpretation>(dor.getUuid());
-			if (stratiOrg == nullptr) {
-				throw invalid_argument("The DOR looks invalid.");
-			}
+		if (!dor.isEmpty()) {
+			convertDorIntoRel(dor);
 		}
-		repository->addRelationship(this, stratiOrg);
 	}
 }
 

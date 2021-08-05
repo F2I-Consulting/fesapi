@@ -65,30 +65,18 @@ void GridConnectionSetRepresentation::loadTargetRelationships()
 	unsigned int supportingGridCount = getSupportingGridRepresentationCount();
 	for (unsigned int i = 0; i < supportingGridCount; ++i) {
 		COMMON_NS::DataObjectReference dor = getSupportingGridRepresentationDor(i);
-		RESQML2_NS::AbstractGridRepresentation* supportingGridRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor.getUuid());
-		if (supportingGridRep == nullptr) { // partial transfer
-			getRepository()->createPartial(dor);
-			supportingGridRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor.getUuid());
-			if (supportingGridRep == nullptr) {
-				throw invalid_argument("The DOR of the supporting grid looks invalid.");
-			}
+		if (!dor.isEmpty()) {
+			convertDorIntoRel(dor);
 		}
-		getRepository()->addRelationship(this, supportingGridRep);
 	}
 
 	if (isAssociatedToInterpretations()) {
 		unsigned int interpCount = getInterpretationCount();
 		for (unsigned int i = 0; i < interpCount; ++i) {
 			COMMON_NS::DataObjectReference dor = getInterpretationDorFromIndex(i);
-			RESQML2_NS::AbstractFeatureInterpretation* interp = getRepository()->getDataObjectByUuid<AbstractFeatureInterpretation>(dor.getUuid());
-			if (interp == nullptr) {
-				getRepository()->createPartial(dor);
-				interp = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractFeatureInterpretation>(dor.getUuid());
-				if (interp == nullptr) {
-					throw invalid_argument("The DOR of the interpretation looks invalid.");
-				}
+			if (!dor.isEmpty()) {
+				convertDorIntoRel(dor);
 			}
-			getRepository()->addRelationship(this, interp);
 		}
 	}
 }
@@ -101,7 +89,6 @@ void GridConnectionSetRepresentation::setCellIndexPairs(uint64_t cellIndexPairCo
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	setCellIndexPairsUsingExistingDataset(cellIndexPairCount, getHdfGroup() + "/CellIndexPairs", cellIndexPairNullValue, proxy, gridIndexPairNullValue, gridIndexPair != nullptr ? getHdfGroup() + "/GridIndexPairs" : "");
 
 	// ************ HDF ************		
 	hsize_t numValues[2] = { cellIndexPairCount, 2 };
@@ -109,6 +96,8 @@ void GridConnectionSetRepresentation::setCellIndexPairs(uint64_t cellIndexPairCo
 	if (gridIndexPair != nullptr) {
 		proxy->writeArrayNd(getHdfGroup(), "GridIndexPairs", H5T_NATIVE_UINT16, gridIndexPair, numValues, 2);
 	}
+
+	setCellIndexPairsUsingExistingDataset(cellIndexPairCount, getHdfGroup() + "/CellIndexPairs", cellIndexPairNullValue, proxy, gridIndexPairNullValue, gridIndexPair != nullptr ? getHdfGroup() + "/GridIndexPairs" : "");
 }
 
 void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(uint64_t cellIndexPairCount, int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy)
@@ -123,11 +112,12 @@ void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(uint64_t cel
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	setLocalFacePerCellIndexPairsUsingExistingDataset(getHdfGroup() + "/LocalFacePerCellIndexPairs", nullValue, proxy);
 
 	// ************ HDF ************		
 	hsize_t numValues[2] = { cellIndexPairCount,2 };
 	proxy->writeArrayNd(getHdfGroup(), "LocalFacePerCellIndexPairs", H5T_NATIVE_INT, localFacePerCellIndexPair, numValues, 2);
+
+	setLocalFacePerCellIndexPairsUsingExistingDataset(getHdfGroup() + "/LocalFacePerCellIndexPairs", nullValue, proxy);
 }
 
 uint64_t GridConnectionSetRepresentation::getXyzPointCountOfPatch(unsigned int) const

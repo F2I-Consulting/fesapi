@@ -139,7 +139,10 @@ std::string PointsProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfPro
 		}
 	}
 	if (proxy->getXmlNamespace() == "eml23") {
-		throw std::invalid_argument("You cannot asociate a RESQML 2.0.1 dataobject to an EML 2.3 HDF proxy (which is no more a dataobject by the way).");
+		throw std::invalid_argument("You cannot associate a RESQML 2.0.1 dataobject to an EML 2.3 HDF proxy (which is no more a dataobject by the way).");
+	}
+	if (datasetName.empty()) {
+		throw std::invalid_argument("The dataset name wher to store of the points property cannot be empty.");
 	}
 
 	getRepository()->addRelationship(this, proxy);
@@ -153,16 +156,7 @@ std::string PointsProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfPro
 	gsoap_resqml2_0_1::resqml20__Point3dHdf5Array* xmlValues = gsoap_resqml2_0_1::soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap);
 	xmlValues->Coordinates = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlValues->Coordinates->HdfProxy = proxy->newResqmlReference();
-
-	if (datasetName.empty()) {
-		ostringstream ossForHdf;
-		ossForHdf << "points_patch" << *(patch->RepresentationPatchIndex);
-		xmlValues->Coordinates->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
-	}
-	else {
-		xmlValues->Coordinates->PathInHdfFile = datasetName;
-	}
-
+	xmlValues->Coordinates->PathInHdfFile = datasetName;
 	patch->Points = xmlValues;
 
 	prop->PatchOfPoints.push_back(patch);

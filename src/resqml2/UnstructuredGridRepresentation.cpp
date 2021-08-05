@@ -107,11 +107,6 @@ void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRight
 		}
 	}
 
-	setGeometryUsingExistingDatasets(getHdfGroup() + "/CellFaceIsRightHanded", getHdfGroup() + "/Points", pointCount, proxy,
-		getHdfGroup() + "/FacesPerCell/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, getHdfGroup() + "/FacesPerCell/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME,
-		faceCount, getHdfGroup() + "/NodesPerFace/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, getHdfGroup() + "/NodesPerFace/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME,
-		cellShape, localCrs);
-
 	const uint64_t cellCount = getCellCount();
 
 	// HDF Face Right handness
@@ -125,10 +120,13 @@ void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRight
 	proxy->writeItemizedListOfList(getHdfGroup(), "NodesPerFace", H5T_NATIVE_UINT64, nodeIndicesCumulativeCountPerFace, faceCount, H5T_NATIVE_UINT64, nodeIndicesPerFace, nodeIndicesCumulativeCountPerFace[faceCount - 1]);
 
 	// HDF points
-	hsize_t numValues[2];
-	numValues[0] = pointCount;
-	numValues[1] = 3; // 3 for X, Y and Z
+	hsize_t numValues[2] = { pointCount, 3 };
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "Points", points, numValues, 2);
+
+	setGeometryUsingExistingDatasets(getHdfGroup() + "/CellFaceIsRightHanded", getHdfGroup() + "/Points", pointCount, proxy,
+		getHdfGroup() + "/FacesPerCell/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, getHdfGroup() + "/FacesPerCell/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME,
+		faceCount, getHdfGroup() + "/NodesPerFace/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, getHdfGroup() + "/NodesPerFace/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME,
+		cellShape, localCrs);
 }
 
 void UnstructuredGridRepresentation::setConstantCellShapeGeometry(unsigned char * cellFaceIsRightHanded, double * points,
@@ -155,11 +153,6 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometry(unsigned char 
 		}
 	}
 
-	setConstantCellShapeGeometryUsingExistingDatasets(getHdfGroup() + "/CellFaceIsRightHanded", getHdfGroup() + "/Points",
-		pointCount, faceCount, localCrs, proxy,
-		getHdfGroup() + "/FacesPerCell", faceCountPerCell,
-		getHdfGroup() + "/NodesPerFace", nodeCountPerFace);
-
 	const uint64_t cellCount = getCellCount();
 
 	// HDF Face Right handness
@@ -167,9 +160,7 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometry(unsigned char 
 	proxy->writeArrayNd(getHdfGroup(), "CellFaceIsRightHanded", H5T_NATIVE_UCHAR, cellFaceIsRightHanded, &faceCountTmp, 1);
 
 	// HDF Face indices
-	hsize_t numValues[2];
-	numValues[0] = cellCount;
-	numValues[1] = faceCountPerCell;
+	hsize_t numValues[2] = { cellCount, faceCountPerCell };
 	proxy->writeArrayNd(getHdfGroup(), "FacesPerCell", H5T_NATIVE_UINT64, faceIndicesPerCell, numValues, 2);
 
 	// HDF Node indices
@@ -181,6 +172,11 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometry(unsigned char 
 	numValues[0] = pointCount;
 	numValues[1] = 3; // 3 for X, Y and Z
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "Points", points, numValues, 2);
+
+	setConstantCellShapeGeometryUsingExistingDatasets(getHdfGroup() + "/CellFaceIsRightHanded", getHdfGroup() + "/Points",
+		pointCount, faceCount, localCrs, proxy,
+		getHdfGroup() + "/FacesPerCell", faceCountPerCell,
+		getHdfGroup() + "/NodesPerFace", nodeCountPerFace);
 }
 
 void UnstructuredGridRepresentation::setTetrahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
@@ -225,25 +221,21 @@ void UnstructuredGridRepresentation::loadGeometry()
 {
 	unloadGeometry();
 
-	if (isNodeCountOfFacesConstant() == true)
-	{
+	if (isNodeCountOfFacesConstant()) {
 		constantNodeCountPerFace = getConstantNodeCountOfFaces();
 		nodeIndicesOfFaces.reset(new uint64_t[constantNodeCountPerFace * getFaceCount()]);
 	}
-	else
-	{
+	else {
 		cumulativeNodeCountPerFace.reset(new uint64_t[getFaceCount()]);
 		getCumulativeNodeCountPerFace(cumulativeNodeCountPerFace.get());
 		nodeIndicesOfFaces.reset(new uint64_t[cumulativeNodeCountPerFace[getFaceCount() - 1]]);
 	}
 
-	if (isFaceCountOfCellsConstant() == true)
-	{
+	if (isFaceCountOfCellsConstant()) {
 		constantFaceCountPerCell = getConstantFaceCountOfCells();
 		faceIndicesOfCells.reset(new uint64_t[constantFaceCountPerCell * getCellCount()]);
 	}
-	else
-	{
+	else {
 		cumulativeFaceCountPerCell.reset(new uint64_t[getCellCount()]);
 		getCumulativeFaceCountPerCell(cumulativeFaceCountPerCell.get());
 		faceIndicesOfCells.reset(new uint64_t[cumulativeFaceCountPerCell[getCellCount() - 1]]);

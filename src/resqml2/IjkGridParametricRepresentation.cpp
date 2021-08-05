@@ -294,12 +294,13 @@ void IjkGridParametricRepresentation::getParametricLineKind(short * pillarKind, 
 	getRawParametricLineKind(pillarKind);
 
 	if (reverseIAxis || reverseJAxis) {
-		const unsigned int iPillarCount = getICellCount()+1;
+		const unsigned int iCellCount = getICellCount();
+		const unsigned int jCellCount = getJCellCount();
+		const unsigned int iPillarCount = iCellCount +1;
 		const unsigned int jPillarCount = getJCellCount()+1;
 		const unsigned int arrayCount = iPillarCount * jPillarCount;
 
-		// Copy in order not to modify the controlPoints pointer
-		std::unique_ptr<double[]> initialPillarKind(new double [arrayCount]);
+		std::unique_ptr<short[]> initialPillarKind(new short[arrayCount]);
 		for (unsigned int index = 0; index < arrayCount; ++index) {
 			initialPillarKind[index] = pillarKind[index];
 		}
@@ -308,7 +309,7 @@ void IjkGridParametricRepresentation::getParametricLineKind(short * pillarKind, 
 			unsigned int pillarIndex = 0;
 			for (unsigned int j = 0; j < jPillarCount; ++j) {
 				for (unsigned int i = 0; i < iPillarCount; ++i) {
-					pillarKind[pillarIndex] = initialPillarKind[getICellCount() - i + j*iPillarCount];
+					pillarKind[pillarIndex] = initialPillarKind[iCellCount - i + j*iPillarCount];
 					++pillarIndex;
 				}
 			}
@@ -318,7 +319,7 @@ void IjkGridParametricRepresentation::getParametricLineKind(short * pillarKind, 
 			unsigned int pillarIndex = 0;
 			for (unsigned int j = 0; j < jPillarCount; ++j) {
 				for (unsigned int i = 0; i < iPillarCount; ++i) {
-					pillarKind[pillarIndex] = initialPillarKind[i + (getJCellCount() - j)*iPillarCount];
+					pillarKind[pillarIndex] = initialPillarKind[i + (jCellCount - j)*iPillarCount];
 					++pillarIndex;
 				}
 			}
@@ -335,10 +336,14 @@ void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, 
 	// Copy in order not to modify the controlPoints pointer
 	if (reverseIAxis || reverseJAxis || reverseKAxis)
 	{
-		const unsigned int iPillarCount = getICellCount() + 1;
-		const unsigned int jPillarCount = getJCellCount() + 1;
-		const unsigned int kNodeCount = getKCellCount() + 1 + getKGapsCount();
-		const unsigned int arrayCount = iPillarCount * jPillarCount * kNodeCount + getSplitCoordinateLineCount()*kNodeCount;
+		const unsigned int iCellCount = getICellCount();
+		const unsigned int jCellCount = getJCellCount();
+		const unsigned int kCellCount = getKCellCount();
+		const unsigned int iPillarCount = iCellCount + 1;
+		const unsigned int jPillarCount = jCellCount + 1;
+		const unsigned int kNodeCount = kCellCount + 1 + getKGapsCount();
+		const unsigned int splitCoordinateLineCount = getSplitCoordinateLineCount();
+		const unsigned int arrayCount = iPillarCount * jPillarCount * kNodeCount + splitCoordinateLineCount *kNodeCount;
 		std::unique_ptr<double[]> initialParameters(new double[arrayCount]);
 		for (unsigned int index = 0; index < arrayCount; ++index) {
 			initialParameters[index] = parameters[index];
@@ -349,11 +354,11 @@ void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, 
 			for (unsigned int k = 0; k < kNodeCount; ++k) {
 				for (unsigned int j = 0; j < jPillarCount; ++j) {
 					for (unsigned int i = 0; i < iPillarCount; ++i) {
-						parameters[nodeIndex] = initialParameters[getICellCount() - i + j*iPillarCount + k*(jPillarCount*iPillarCount+getSplitCoordinateLineCount())];
+						parameters[nodeIndex] = initialParameters[iCellCount - i + j*iPillarCount + k*(jPillarCount*iPillarCount+ splitCoordinateLineCount)];
 						++nodeIndex;
 					}
 				}
-				nodeIndex += getSplitCoordinateLineCount();
+				nodeIndex += splitCoordinateLineCount;
 			}
 		}
 
@@ -362,11 +367,11 @@ void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, 
 			for (unsigned int k = 0; k < kNodeCount; ++k) {
 				for (unsigned int j = 0; j < jPillarCount; ++j) {
 					for (unsigned int i = 0; i < iPillarCount; ++i) {
-						parameters[nodeIndex] = initialParameters[i + (getJCellCount() -j)*iPillarCount + k*(jPillarCount*iPillarCount+getSplitCoordinateLineCount())];
+						parameters[nodeIndex] = initialParameters[i + (jCellCount -j)*iPillarCount + k*(jPillarCount*iPillarCount+ splitCoordinateLineCount)];
 						++nodeIndex;
 					}
 				}
-				nodeIndex += getSplitCoordinateLineCount();
+				nodeIndex += splitCoordinateLineCount;
 			}
 		}
 
@@ -375,11 +380,11 @@ void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, 
 			for (unsigned int k = 0; k < kNodeCount; ++k) {
 				for (unsigned int j = 0; j < jPillarCount; ++j) {
 					for (unsigned int i = 0; i < iPillarCount; ++i) {
-						parameters[nodeIndex] = initialParameters[i + j*iPillarCount + (getKCellCount() - k)*(jPillarCount*iPillarCount+getSplitCoordinateLineCount())];
+						parameters[nodeIndex] = initialParameters[i + j*iPillarCount + (kCellCount - k)*(jPillarCount*iPillarCount+ splitCoordinateLineCount)];
 						++nodeIndex;
 					}
 				}
-				nodeIndex += getSplitCoordinateLineCount();
+				nodeIndex += splitCoordinateLineCount;
 			}
 		}
 	}
@@ -985,13 +990,17 @@ void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * paramete
 	unsigned long splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
 	unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, EML2_NS::AbstractHdfProxy * proxy)
 {
+	const hsize_t kNodeCountPluskGapCount = getKCellCount() + 1 + getKGapsCount();
+	const hsize_t jNodeCount = getJCellCount() + 1;
+	const hsize_t iNodeCount = getICellCount() + 1;
+
 	if (splitCoordinateLineCount == 0) {
-		hsize_t numValues[3] = { getKCellCount() + 1 + getKGapsCount(), getJCellCount() + 1, getICellCount() + 1 };
+		hsize_t numValues[3] = { kNodeCountPluskGapCount, jNodeCount, iNodeCount };
 		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "PointParameters", parameters, numValues, 3);
 	}
 	else {
 		// PointParameters
-		hsize_t numValues[2] = { getKCellCount() + 1 + getKGapsCount(), (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount };
+		hsize_t numValues[2] = { kNodeCountPluskGapCount, jNodeCount * iNodeCount + splitCoordinateLineCount };
 		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "PointParameters", parameters, numValues, 2);
 
 		// split coordinate lines
@@ -1005,16 +1014,14 @@ void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * paramete
 	// Parametric coordinate lines
 	// *********************************
 	// HDF control points
-	hsize_t controlPointCount[4] = { controlPointCountPerPillar, getJCellCount() + 1, getICellCount() + 1, 3 };
+	hsize_t controlPointCount[4] = { controlPointCountPerPillar, jNodeCount, iNodeCount, 3 };
 	proxy->writeArrayNd(getHdfGroup(), "ControlPoints", H5T_NATIVE_DOUBLE, controlPoints, controlPointCount, 4);
 
 	// *********************************
 	// Control point parameters are defined
 	// *********************************
 	if (controlPointParameters != nullptr) {
-		// HDF control points parameters
-		hsize_t controlPointParamCount[3] = { controlPointCountPerPillar, getJCellCount() + 1, getICellCount() + 1 };
-		proxy->writeArrayNd(getHdfGroup(), "controlPointParameters", H5T_NATIVE_DOUBLE, controlPointParameters, controlPointParamCount, 3);
+		proxy->writeArrayNd(getHdfGroup(), "controlPointParameters", H5T_NATIVE_DOUBLE, controlPointParameters, controlPointCount, 3);
 	}
 }
 
@@ -1049,16 +1056,16 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		? gsoap_resqml2_0_1::resqml20__KDirection::down
 		: computeKDirection(controlPoints, controlPointCountPerPillar, nullptr, localCrs);
 
+	writeGeometryOnHdf(parameters,
+		controlPoints, controlPointParameters, controlPointCountPerPillar,
+		splitCoordinateLineCount, pillarOfCoordinateLine,
+		splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns, proxy);
+
 	const std::string hdfDatasetPrefix = getHdfGroup();
 	setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(kDirectionKind, isRightHanded,
 		hdfDatasetPrefix + "/PointParameters", hdfDatasetPrefix + "/ControlPoints", controlPointParameters != nullptr ? hdfDatasetPrefix + "/controlPointParameters" : "", controlPointCountPerPillar, pillarKind, proxy,
 		splitCoordinateLineCount, hdfDatasetPrefix + "/PillarIndices",
 		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, localCrs);
-
-	writeGeometryOnHdf(parameters,
-		controlPoints, controlPointParameters, controlPointCountPerPillar,
-		splitCoordinateLineCount, pillarOfCoordinateLine,
-		splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns, proxy);
 }
 
 void IjkGridParametricRepresentation::loadPillarInformation(IjkGridParametricRepresentation::PillarInformation & pillarInfo) const

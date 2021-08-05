@@ -1592,7 +1592,12 @@ EML2_NS::AbstractHdfProxy* AbstractObject::getOrCreateHdfProxyFromDataArrayPart(
 
 #if WITH_RESQML2_2
 	if (hdfProxy == nullptr) {
-		hdfProxy = new EML2_3_NS::HdfProxy(getRepository(), dataArrayPart->URI, "Fake eml23 HDF Proxy", getEpcSourceFolder(), dataArrayPart->URI);
+		std::string hdfFullPath = getEpcSourceFolder();
+		if (!hdfFullPath.empty() && hdfFullPath.back() != '/' && hdfFullPath.back() != '\\') {
+			hdfFullPath += '/';
+		}
+		hdfFullPath += dataArrayPart->URI;
+		hdfProxy = new EML2_3_NS::HdfProxy(getRepository(), hdfFullPath, "Fake eml23 HDF Proxy", getEpcSourceFolder(), dataArrayPart->URI);
 		getRepository()->addDataObject(hdfProxy);
 	}
 #endif
@@ -1620,7 +1625,7 @@ gsoap_resqml2_0_1::resqml20__IndexableElements AbstractObject::mapIndexableEleme
 	}
 }
 
-gsoap_eml2_3::eml23__ExternalDataArrayPart* AbstractObject::createExternalDataArrayPart(const std::string& datasetName, ULONG64 count, EML2_NS::AbstractHdfProxy* proxy) const
+gsoap_eml2_3::eml23__ExternalDataArrayPart* AbstractObject::createExternalDataArrayPart(const std::string& datasetName, LONG64 count, EML2_NS::AbstractHdfProxy* proxy) const
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -1628,9 +1633,15 @@ gsoap_eml2_3::eml23__ExternalDataArrayPart* AbstractObject::createExternalDataAr
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
+	if (count <= 0) {
+		throw std::invalid_argument("You cannot create an external data array part whose count <= 0.");
+	}
+	if (datasetName.size() > 2000) {
+		throw std::invalid_argument("The ExternalDataArrayPart.PathInExternalFile attribute cannot be longer than 2000 chars.");
+	}
 
 	auto dataArrayPart = gsoap_eml2_3::soap_new_eml23__ExternalDataArrayPart(getGsoapContext());
-	dataArrayPart->URI = proxy->getAbsolutePath();
+	dataArrayPart->URI = proxy->getRelativePath();
 	dataArrayPart->MimeType = gsoap_eml2_3::soap_new_std__string(gsoapProxy2_3->soap);
 	dataArrayPart->MimeType->assign(EML2_NS::AbstractHdfProxy::MIME_TYPE);
 	dataArrayPart->PathInExternalFile = datasetName;
