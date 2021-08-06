@@ -483,6 +483,8 @@ import com.f2i_consulting.fesapi.*;
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)
 
+		SWIG_GETTER_DATAOBJECTS(RESQML2_0_1_NS::DeviationSurveyRepresentation, DeviationSurveyRepresentation)
+		
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::AbstractSeismicLineFeature, SeismicLine)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::AbstractIjkGridRepresentation, IjkGridRepresentation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::BlockedWellboreRepresentation, BlockedWellboreRepresentation)
@@ -492,7 +494,6 @@ import com.f2i_consulting.fesapi.*;
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Horizon)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::CmpLineFeature, CmpLine)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::CulturalFeature, Cultural)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::DeviationSurveyRepresentation, DeviationSurveyRepresentation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::DoubleTableLookup, DoubleTableLookup)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, AllGrid2dRepresentation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, HorizonGrid2dRepresentation)
@@ -789,10 +790,64 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::Grid2dRepresentation* createGrid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
-		RESQML2_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
-		RESQML2_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::DeviationSurveyRepresentation * deviationSurvey);
+		/**
+		 * @brief	Creates a wellbore trajectory representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If @p interp or @p mdInfo is @c nullptr.
+		 *
+		 * @param [in]	interp	The represented wellbore interpretation. It cannot be null.
+		 * @param 	  	guid  	The guid to set to the wellbore trajectory representation. If empty then
+		 * 						a new guid will be generated.
+		 * @param 	  	title 	The title to set to the wellbore trajectory representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 * @param [in]	mdInfo	The MD information of the trajectory, mainly the well reference point.
+		 * 						The unit of measure used for the mdInfo coordinates must also be used for
+		 * 						the start and end MD of the trajectory. It cannot be null.
+		 *
+		 * @returns	A pointer to the new wellbore trajectory representation.
+		 */
+		RESQML2_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::MdDatum* mdInfo);
 
-		RESQML2_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
+		/**
+		 * Creates a wellbore trajectory representation (with an existing deviation survey as its
+		 * origin) into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If @p interp or @p deviationSurvey is @c nullptr.
+		 *
+		 * @param [in]	interp		   	The represented interpretation. It cannot be null.
+		 * @param 	  	guid		   	The guid to set to the wellbore trajectory representation. If
+		 * 								empty then a new guid will be generated.
+		 * @param 	  	title		   	The title to set to the wellbore trajectory representation. If
+		 * 								empty then \"unknown\" title will be set.
+		 * @param [in]	deviationSurvey	The deviation survey on which this wellbore trajectory relies on.
+		 * 								MD data will be retrieve from it. It cannot be null.
+		 *
+		 * @returns	A pointer to the new wellbore trajectory representation.
+		 */
+		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_0_1_NS::DeviationSurveyRepresentation* deviationSurvey);
+
+		/**
+		 * @brief	Creates a deviation survey representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt> or <tt>mdInfo ==
+		 * 												nullptr</tt>.
+		 *
+		 * @param [in]	interp 	The represented interpretation. It cannot be null.
+		 * @param 	  	guid   	The guid to set to the deviation survey representation. If empty then a
+		 * 						new guid will be generated.
+		 * @param 	  	title  	The title to set to the deviation survey representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 * @param 	  	isFinal	Used to indicate that this is a final version of the deviation survey
+		 * 						(true), as distinct from the interim interpretations (false).
+		 * @param [in]	mdInfo 	The MD datum that refers this deviation survey representation. It
+		 * 							cannot be null.
+		 *
+		 * @returns	A pointer to the new deviation survey representation.
+		 */
+		RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, const bool& isFinal, RESQML2_NS::MdDatum* mdInfo);
 
 		RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj);
 #ifdef WITH_RESQML2_2

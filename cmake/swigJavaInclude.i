@@ -473,21 +473,6 @@ ${COMMENT_END}
 		return null;
 	}
 	
-	public static com.f2i_consulting.fesapi.${FESAPI_RESQML2_NS}.DeviationSurveyRepresentation resqml2_instantiateDeviationSurveyRepresentation(long cPtr, boolean owner)
-	{
-		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i_consulting.fesapi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
-		if ("resqml20".equals(xmlNs)) {
-			return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.resqml20_DeviationSurveyRepresentation(cPtr, owner);
-		}
-${COMMENT_START}
-		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_2_NS}.resqml22_DeviationSurveyRepresentation(cPtr, owner);
-		}
-${COMMENT_END}
-		
-		return null;
-	}
-	
 	public static com.f2i_consulting.fesapi.${FESAPI_RESQML2_NS}.Grid2dRepresentation resqml2_instantiateGrid2dRepresentation(long cPtr, boolean owner)
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i_consulting.fesapi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
@@ -1013,7 +998,7 @@ ${COMMENT_END}
 ${COMMENT_START}
 		case CULTURALFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_2_NS}.resqml22_CulturalFeature(cPtr, owner);
 ${COMMENT_END}
-		case DEVIATIONSURVEYREPRESENTATION : return resqml2_instantiateDeviationSurveyRepresentation(cPtr, owner);
+		case DEVIATIONSURVEYREPRESENTATION : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.resqml20_DeviationSurveyRepresentation(cPtr, owner);
 ${COMMENT_START}
 		case DISCRETECOLORMAP : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_2_NS}.resqml22_DiscreteColorMap(cPtr, owner);
 ${COMMENT_END}
@@ -1174,7 +1159,6 @@ namespace RESQML2_NS
 #endif
 						ContinuousProperty*,
 						CulturalFeature*,
-						DeviationSurveyRepresentation*,
 #ifdef WITH_RESQML2_2
 						DiscreteColorMap*,
 #endif

@@ -26,7 +26,6 @@ under the License.
 #include "../src/resqml2_2/ContinuousColorMap.h"
 #include "../src/resqml2_2/ContinuousProperty.h"
 #include "../src/resqml2_2/CulturalFeature.h"
-#include "../src/resqml2_2/DeviationSurveyRepresentation.h"
 #include "../src/resqml2_2/DiscreteColorMap.h"
 #include "../src/resqml2_2/DiscreteProperty.h"
 #include "../src/resqml2_2/DoubleTableLookup.h"
@@ -92,7 +91,6 @@ under the License.
 	%nspace RESQML2_2_NS::ContinuousColorMap;
 	%nspace RESQML2_2_NS::ContinuousProperty;
 	%nspace RESQML2_2_NS::CulturalFeature;
-	%nspace RESQML2_2_NS::DeviationSurveyRepresentation;
 	%nspace RESQML2_2_NS::DiscreteColorMap;
 	%nspace RESQML2_2_NS::DiscreteProperty;
 	%nspace RESQML2_2_NS::DoubleTableLookup;
@@ -482,14 +480,6 @@ namespace RESQML2_2_NS
 	%rename(resqml22_WellboreTrajectoryRepresentation) WellboreTrajectoryRepresentation;
 #endif
 	class  WellboreTrajectoryRepresentation : public RESQML2_NS::WellboreTrajectoryRepresentation
-	{
-	public:
-	};
-
-#if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(resqml22_DeviationSurveyRepresentation) DeviationSurveyRepresentation;
-#endif
-	class DeviationSurveyRepresentation : public RESQML2_NS::DeviationSurveyRepresentation
 	{
 	public:
 	};

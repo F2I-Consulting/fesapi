@@ -473,20 +473,6 @@ ${COMMENT_END}
 		return null;
 	}
 	
-	public static F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.DeviationSurveyRepresentation resqml2_instantiateDeviationSurveyRepresentation(global::System.IntPtr cPtr, bool owner)
-	{
-		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
-		if (xmlNs.Equals("resqml20")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.DeviationSurveyRepresentation(cPtr, owner);
-		}
-${COMMENT_START}
-		else if (xmlNs.Equals("resqml22")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.DeviationSurveyRepresentation(cPtr, owner);
-		}
-${COMMENT_END}
-		
-		return null;
-	}
 	
 	public static F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.Grid2dRepresentation resqml2_instantiateGrid2dRepresentation(global::System.IntPtr cPtr, bool owner)
 	{
@@ -1013,7 +999,7 @@ ${COMMENT_END}
 ${COMMENT_START}
 		case DataObjectName.CULTURALFEATURE : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.CulturalFeature(cPtr, owner);
 ${COMMENT_END}
-		case DataObjectName.DEVIATIONSURVEYREPRESENTATION : return resqml2_instantiateDeviationSurveyRepresentation(cPtr, owner);
+		case DataObjectName.DEVIATIONSURVEYREPRESENTATION : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.DeviationSurveyRepresentation(cPtr, owner);
 ${COMMENT_START}
 		case DataObjectName.DISCRETECOLORMAP : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.DiscreteColorMap(cPtr, owner);
 ${COMMENT_END}
@@ -1162,7 +1148,6 @@ namespace RESQML2_NS
 #endif
 										ContinuousProperty*,
 										CulturalFeature*,
-										DeviationSurveyRepresentation*,
 #ifdef WITH_RESQML2_2
 										DiscreteColorMap*,
 #endif
