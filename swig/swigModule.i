@@ -471,14 +471,15 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If, during a replacement, the content type of the data
 		 * 										object has changed.
 		 *
-		 * @param 	xml		   	The XML which is the serialization of the Energistics data object to add
-		 * 						or to replace.
+		 * @param 	xml					The XML which is the serialization of the Energistics data object to add
+		 * 								or to replace.
 		 * @param 	contentOrDataType	The content or qualified data type of the Energistics dataobject to add or to replace.
+		 * @param	uriSource			The EPC document absolute path or the ETP dataspace URI where this dataobject comes from
 		 *
 		 * @returns	Null if the content type of the data object cannot be wrapped by fesapi, else a
 		 * 			pointer the added or replaced data object.
 		 */
-		COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentType);
+		COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string& xml, const std::string& contentType, const std::string& uriSource);
 		
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)
@@ -753,8 +754,8 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::StratigraphicColumn* createStratigraphicColumn(const std::string & guid, const std::string & title);
 		RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, unsigned long rank);
 		RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, unsigned long rank);
-		RESQML2_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
-		RESQML2_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
+		RESQML2_NS::GeologicUnitOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
+		RESQML2_NS::GeologicUnitOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
 		/* REPRESENTATION */
 

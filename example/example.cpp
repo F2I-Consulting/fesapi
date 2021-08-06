@@ -1081,11 +1081,13 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 			dynamicContinuousProp = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property",
 				gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 		}
+#if WITH_RESQML2_2
 		else {
 			pwls3Length = pck->createPartial<EML2_3_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
 			dynamicContinuousProp = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property",
 				gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
 		}
+#endif
 
 		dynamicContinuousProp->setTimeIndices(0, 3, timeSeries);
 		double valuesTime[6] = { 0, 1, 2, 3, 3, 4 };
@@ -1111,11 +1113,13 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		waterSat = pck->createContinuousProperty(ijkgrid, "cbbc24b1-9a4b-4088-9d0e-e254088d3840", "Water saturation",
 			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::_x0025, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::saturation);
 	}
+#if WITH_RESQML2_2
 	else {
 		EML2_NS::PropertyKind* pwls3Saturation = pck->createPartial<EML2_3_NS::PropertyKind>("cfe9293f-d5a9-486d-815a-a957cace90b6", "saturation");
 		waterSat = pck->createContinuousProperty(ijkgrid, "cbbc24b1-9a4b-4088-9d0e-e254088d3840", "Water saturation",
 			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::_x0025, pwls3Saturation);
 	}
+#endif
 	double waterSatValues[2] = { 0.35, 0.85 };
 	waterSat->pushBackDoubleHdf5Array3dOfValues(waterSatValues, 2, 1, 1, hdfProxy);
 
@@ -1129,11 +1133,13 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		waterRelPerm = pck->createCategoricalProperty(ijkgrid, "dd4eae66-fe52-4086-a023-5b2c423543d5", "Water Relative Permeability",
 			gsoap_eml2_3::resqml22__IndexableElement::cells, waterRelPermTable, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::relative_x0020permeability);
 	}
+#if WITH_RESQML2_2
 	else {
 		EML2_NS::PropertyKind* pwls3RelPerm = pck->createPartial<EML2_3_NS::PropertyKind>("8e3c5579-7efd-40d0-ab03-bc79452dd2db", "relative permeability");
 		waterRelPerm = pck->createCategoricalProperty(ijkgrid, "dd4eae66-fe52-4086-a023-5b2c423543d5", "Water Relative Permeability",
 			gsoap_eml2_3::resqml22__IndexableElement::cells, waterRelPermTable, pwls3RelPerm);
 	}
+#endif
 	double relPermValues[2] = { 0.2, 0.5 };
 	waterRelPerm->pushBackDoubleHdf5Array3dOfValues(relPermValues, 2, 1, 1, hdfProxy);
 	

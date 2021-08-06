@@ -323,21 +323,194 @@ namespace EML2_NS
 		 * @returns	True if @p targetObject (or its property kind) has some graphical information, else false.
 		 */
 		bool hasGraphicalInformation(COMMON_NS::AbstractObject const* targetObject) const;
-		
-		bool hasDefaultColor(COMMON_NS::AbstractObject const* targetObject) const;
-		double getDefaultHue(COMMON_NS::AbstractObject const* targetObject) const;
-		double getDefaultSaturation(COMMON_NS::AbstractObject const* targetObject) const;
-		double getDefaultValue(COMMON_NS::AbstractObject const* targetObject) const;
-		double getDefaultAlpha(COMMON_NS::AbstractObject const* targetObject) const;
-		void getDefaultRgbColor(COMMON_NS::AbstractObject const* targetObject, double& red, double& green, double& blue) const;
-		void getDefaultRgbColor(COMMON_NS::AbstractObject const* targetObject, unsigned int& red, unsigned int& green, unsigned int& blue) const;
-		bool hasDefaultColorTitle(COMMON_NS::AbstractObject const* targetObject) const;
-		std::string getDefaultColorTitle(COMMON_NS::AbstractObject const* targetObject) const;
-		void setDefaultHsvColor(COMMON_NS::AbstractObject * targetObject, double hue, double saturation, double value, double alpha = 1.0, std::string const& colorTitle = "");
-		void setDefaultRgbColor(COMMON_NS::AbstractObject * targetObject, double red, double green, double blue, double alpha = 1.0, std::string const& colorTitle = "");
-		void setDefaultRgbColor(COMMON_NS::AbstractObject * targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string const& colorTitle = "");
 
+		/**
+		 * Query if a given data object has a default color. It only looks at direct color association (see
+		 * {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If the target object is null.
+		 *
+		 * @param 	targetObject	The data object we want to test for having a default color.
+		 *
+		 * @returns	True @p targetObject has one default color, else false.
+		 */
+		bool hasDefaultColor(COMMON_NS::AbstractObject const* targetObject) const;
+
+		/**
+		 * Gets the default hue of a given data object. It only looks at direct color association (see
+		 * {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no default color.
+		 *
+		 * @param 	targetObject	The data object for which we look for the default hue.
+		 *
+		 * @returns	The default hue of @p targetObject in the range [0, 360].
+		 */
+		double getDefaultHue(COMMON_NS::AbstractObject const* targetObject) const;
+
+		/**
+		 * Gets the default saturation of a given data object. It only looks at direct color association
+		 * (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no default color.
+		 *
+		 * @param 	targetObject	The data object for which we look for the default saturation.
+		 *
+		 * @returns	The default saturation of @p targetObject in the range [0, 1].
+		 */
+		double getDefaultSaturation(COMMON_NS::AbstractObject const* targetObject) const;
+
+		/**
+		 * Gets the default color value of a given data object. It only looks at direct color
+		 * association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no default color.
+		 *
+		 * @param 	targetObject	The data object for which we look for the default color value.
+		 *
+		 * @returns	The default color value of @p targetObject in the range [0, 1].
+		 */
+		double getDefaultValue(COMMON_NS::AbstractObject const* targetObject) const;
+
+		/**
+		 * Gets the default alpha value of a given data object. It only looks at direct color
+		 * association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no default color.
+		 *
+		 * @param 	targetObject	The data object for which we look for the default alpha value.
+		 *
+		 * @returns	The default alpha value in the range [0, 1] (0 means transparent and 1 means opaque).
+		 */
+		double getDefaultAlpha(COMMON_NS::AbstractObject const* targetObject) const;
+
+		/**
+		 * Gets the default RGB color (https://en.wikipedia.org/wiki/RGB_color_space) of a given data
+		 * object. It only looks at direct color association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no default color.
+		 *
+		 * @param 	   	targetObject	The data object for which we look for the default RGB color.
+		 * @param [out]	red				Red value in the range [0, 1].
+		 * @param [out]	green			Green value in the range [0, 1].
+		 * @param [out]	blue			Blue value in the range [0, 1].
+		 */
+		void getDefaultRgbColor(COMMON_NS::AbstractObject const* targetObject, double& red, double& green, double& blue) const;
+
+		/**
+		 * Gets the default RGB color (https://en.wikipedia.org/wiki/RGB_color_space) of a given data
+		 * object. It only looks at direct color association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no default color.
+		 *
+		 * @param 	   	targetObject	The data object for which we look for the default RGB color.
+		 * @param [out]	red				Red value in the range [0, 255].
+		 * @param [out]	green			Green value in the range [0, 255].
+		 * @param [out]	blue			Blue value in the range [0, 255].
+		 */
+		void getDefaultRgbColor(COMMON_NS::AbstractObject const* targetObject, unsigned int& red, unsigned int& green, unsigned int& blue) const;
+
+		/**
+		 * Query if a given data object has a default color title. It only looks at direct color
+		 * association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no default color.
+		 *
+		 * @param 	targetObject	The data object for which we look for a default color title.
+		 *
+		 * @returns	True if @p targetObject has a default color title, else false.
+		 */
+		bool hasDefaultColorTitle(COMMON_NS::AbstractObject const* targetObject) const;
+
+		/**
+		 * Gets the default color title of a given data object. It only looks at direct color
+		 * association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no default color or if its default
+		 * 										color has no title.
+		 *
+		 * @param 	targetObject	The data object for which we look for the default color title.
+		 *
+		 * @returns	The default title.
+		 */
+		std::string getDefaultColorTitle(COMMON_NS::AbstractObject const* targetObject) const;
+
+		/**
+		 * Sets the default HSV color (https://en.wikipedia.org/wiki/HSV_color_space) of a given data
+		 * object
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it is not a feature,
+		 * 										interpretation, representation or wellbore marker.
+		 * @exception	std::invalid_argument	If @p hue is out of range [0, 360].
+		 * @exception	std::invalid_argument	If @p saturation, @p value or @p alpha is out of range [0,
+		 * 										1].
+		 *
+		 * @param [in]	targetObject	The data object which receives the color.
+		 * @param 	  	hue				The hue angle in degrees in range [0, 360].
+		 * @param 	  	saturation  	The saturation value in range [0, 1].
+		 * @param 	  	value			The color value in range [0, 1].
+		 * @param 	  	alpha			(Optional) The alpha value in range [0, 1] for transparency
+		 * 								channel (0 means transparent and 1 means opaque). Default value is 1.
+		 * @param 	  	colorTitle  	(Optional) The title of the given HSV color. It is not set if
+		 * 								title is empty (default).
+		 */
+		void setDefaultHsvColor(COMMON_NS::AbstractObject* targetObject, double hue, double saturation, double value, double alpha = 1.0, std::string const& colorTitle = "");
+
+		/**
+		 * Sets the default RGB color https://en.wikipedia.org/wiki/RGB_color_space of a given data
+		 * object
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it is not a feature,
+		 * 										interpretation, representation or wellbore marker.
+		 * @exception	std::invalid_argument	If @p red, @p green, @p blue or @p alpha is out of range
+		 * 										[0,
+		 * 										1].
+		 *
+		 * @param [in]	targetObject	The data object which receives the color.
+		 * @param 	  	red				Red value in range [0, 1].
+		 * @param 	  	green			Green value in range [0, 1].
+		 * @param 	  	blue			Blue value in range [0, 1].
+		 * @param 	  	alpha			(Optional) The alpha value in range [0, 1] for transparency
+		 * 								channel (0 means transparent and 1 means opaque). Default value is 1.
+		 * @param 	  	colorTitle  	(Optional) The title of the given HSV color. It is not set if
+		 * 								title is empty (default).
+		 */
+		void setDefaultRgbColor(COMMON_NS::AbstractObject* targetObject, double red, double green, double blue, double alpha = 1.0, std::string const& colorTitle = "");
+
+		/**
+		 * Sets the default RGB color https://en.wikipedia.org/wiki/RGB_color_space of a given data
+		 * object
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it is not a feature,
+		 * 										interpretation, representation or wellbore marker.
+		 * @exception	std::invalid_argument	If @p red, @p green, @p blue or @p alpha is out of range
+		 * 										[0,
+		 * 										255].
+		 * @exception	std::invalid_argument	If @p alpha is out of range [0,1].
+		 *
+		 * @param [in]	targetObject	The data object which receives the color.
+		 * @param 	  	red				Red value in range [0, 255].
+		 * @param 	  	green			Green value in range [0, 255].
+		 * @param 	  	blue			Blue value in range [0, 255].
+		 * @param 	  	alpha			(Optional) The alpha value in range [0, 1] for transparency
+		 * 								channel (0 means transparent and 1 means opaque). Default value is 1.
+		 * @param 	  	colorTitle  	(Optional) The title of the given HSV color. It is not set if
+		 * 								title is empty (default).
+		 */
+		void setDefaultRgbColor(COMMON_NS::AbstractObject* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string const& colorTitle = "");
+
+		/**
+		 * Query if a given data object has a discrete color map. If it has not and it is a property, we
+		 * also look for its property kind discrete color map
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null.
+		 *
+		 * @param 	targetObject	The data object for which we look for a discrete color map.
+		 *
+		 * @returns	True if @p targetObject (or its property kind) has a discrete color map, else false.
+		 */
 		bool hasDiscreteColorMap(COMMON_NS::AbstractObject const* targetObject) const;
+		
 		std::string getDiscreteColorMapUuid(COMMON_NS::AbstractObject const* targetObject) const;
 		RESQML2_NS::DiscreteColorMap* getDiscreteColorMap(COMMON_NS::AbstractObject const* targetObject) const;
 		void setDiscreteColorMap(COMMON_NS::AbstractObject * targetObject, RESQML2_NS::DiscreteColorMap* discreteColorMap,
