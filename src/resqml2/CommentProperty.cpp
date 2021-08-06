@@ -39,23 +39,23 @@ void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::str
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	const string datasetName = pushBackRefToExistingDataset(proxy, "");
 
 	// Build the CHAR array
 	hsize_t dimTwo = 0;
-	for (std::vector<std::string>::const_iterator it = values.begin() ; it!= values.end() ; ++it){
-		if ((*it).length() > dimTwo)
-			dimTwo = (*it).length();
+	for (auto const& str : values){
+		if (str.length() > dimTwo) {
+			dimTwo = str.length();
+		}
 	}
 
 	hsize_t strNb = values.size();
 	std::unique_ptr<unsigned char[]> cTab(new unsigned char[strNb*dimTwo]);
 
 	int indStr = 0;
-	for (std::vector<std::string>::const_iterator it = values.begin() ; it!= values.end() ; ++it){
+	for (auto const& str : values) {
 		for (unsigned int indCha = 0 ; indCha < dimTwo ; indCha++) {
-			if (indCha < (*it).length())
-				cTab[(indStr*dimTwo)+indCha] = (*it)[indCha];
+			if (indCha < str.length())
+				cTab[(indStr*dimTwo)+indCha] = str[indCha];
 			else
 				cTab[(indStr*dimTwo)+indCha] = '\0';
 		}
@@ -67,11 +67,13 @@ void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::str
 
     // HDF
 	proxy->writeArrayNd(getHdfGroup(),
-		datasetName,
+		"values_patch" + std::to_string(getPatchCount()),
         H5T_NATIVE_UCHAR,
         cTab.get(),
         nbValPerDim,   // 0 = number of strings, 1 = length of the longest string 
 		nbDimensions); // 2
+
+	const string datasetName = pushBackRefToExistingDataset(proxy, getHdfGroup() + "/values_patch" + std::to_string(getPatchCount()));
 }
 
 std::vector<std::string> CommentProperty::getStringValuesOfPatch(unsigned int patchIndex)

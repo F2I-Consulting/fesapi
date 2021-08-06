@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "CommentProperty.h"
 
-#include <sstream>
 #include <list>
 
 #include "../eml2/AbstractHdfProxy.h"
@@ -77,8 +76,12 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 	setPropertyKind(localPropKind);
 }
 
-std::string CommentProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName)
+std::string CommentProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string& datasetName)
 {
+	if (datasetName.empty()) {
+		throw std::invalid_argument("The dataset must be named.");
+	}
+
 	getRepository()->addRelationship(this, hdfProxy);
 	_resqml20__CommentProperty* prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);
 
@@ -87,19 +90,10 @@ std::string CommentProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfPr
 	*(patch->RepresentationPatchIndex) = prop->PatchOfValues.size();
 
 	// XML
-	ostringstream oss;
 	resqml20__StringHdf5Array* xmlValues = soap_new_resqml20__StringHdf5Array(gsoapProxy2_0_1->soap);
 	xmlValues->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlValues->Values->HdfProxy = hdfProxy->newResqmlReference();
-
-	if (datasetName.empty()) {
-		ostringstream ossForHdf;
-		ossForHdf << "values_patch" << *(patch->RepresentationPatchIndex);
-		xmlValues->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
-	}
-	else {
-		xmlValues->Values->PathInHdfFile = datasetName;
-	}
+	xmlValues->Values->PathInHdfFile = datasetName;
 
 	patch->Values = xmlValues;
 

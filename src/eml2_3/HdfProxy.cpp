@@ -29,6 +29,6 @@ HdfProxy::HdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & g
 	EML2_NS::HdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess)
 {
 	partialObject = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(repo->getGsoapContext());
-	partialObject->UUID = guid.empty() ? getAbsolutePath() : guid;
+	partialObject->UUID = guid.empty() ? getRelativePath() : guid;
 	partialObject->Title = title;
 }

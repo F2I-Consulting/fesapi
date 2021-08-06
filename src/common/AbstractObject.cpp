@@ -1592,12 +1592,7 @@ EML2_NS::AbstractHdfProxy* AbstractObject::getOrCreateHdfProxyFromDataArrayPart(
 
 #if WITH_RESQML2_2
 	if (hdfProxy == nullptr) {
-		std::string hdfFullPath = getEpcSourceFolder();
-		if (!hdfFullPath.empty() && hdfFullPath.back() != '/' && hdfFullPath.back() != '\\') {
-			hdfFullPath += '/';
-		}
-		hdfFullPath += dataArrayPart->URI;
-		hdfProxy = new EML2_3_NS::HdfProxy(getRepository(), hdfFullPath, "Fake eml23 HDF Proxy", getEpcSourceFolder(), dataArrayPart->URI);
+		hdfProxy = new EML2_3_NS::HdfProxy(getRepository(), "", "Fake eml23 HDF Proxy", getEpcSourceFolder(), dataArrayPart->URI);
 		getRepository()->addDataObject(hdfProxy);
 	}
 #endif
