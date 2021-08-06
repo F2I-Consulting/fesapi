@@ -176,9 +176,11 @@ AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(COMMON_NS::DataObje
 {
 	init(repo, guid, title, iCount, jCount, kCount, kGaps, proxy);
 
+#if WITH_RESQML2_2
 	if (gsoapProxy2_3 != nullptr) {
 		setInterpretation(repo->createPartial<RESQML2_2_NS::EarthModelInterpretation>("", "Unknown interp"));
 	}
+#endif
 }
 
 AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,

@@ -239,6 +239,6 @@ namespace RESQML2_NS
 		EarthModelInterpretation(gsoap_eml2_3::_resqml22__EarthModelInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
 
 		/** Loads target relationships */
-        	void loadTargetRelationships() override;
+        void loadTargetRelationships() override;
 	};
 }
