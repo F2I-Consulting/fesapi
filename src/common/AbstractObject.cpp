@@ -53,7 +53,7 @@ under the License.
 using namespace std;
 using namespace COMMON_NS;
 
-char AbstractObject::citationFormat[257] = "[F2I-CONSULTING:FESAPI " FESAPI_VERSION "]";
+char AbstractObject::citationFormat[2001] = "[F2I-CONSULTING:FESAPI " FESAPI_VERSION "]";
 
 void AbstractObject::cannotBePartial() const
 {
@@ -606,8 +606,8 @@ void AbstractObject::setFormat(const std::string & vendor, const std::string & a
 	format += ' ';
 	format += applicationVersionNumber;
 	format += ']';
-	if (vendor.size() + applicationName.size() + applicationVersionNumber.size() > 256) {
-		throw range_error("The format cannot be more than 256 chars long");
+	if (vendor.size() + applicationName.size() + applicationVersionNumber.size() > 1996) {
+		throw range_error("The format cannot be more than 2000 chars long");
 	}
 
 	format.copy(citationFormat, format.size());
@@ -729,8 +729,9 @@ void AbstractObject::setMetadata(const std::string & guid, const std::string & t
 void AbstractObject::setMetadata(const std::string & title, const std::string & editor, time_t creation, const std::string & originator,
 	const std::string & description, time_t lastUpdate, const std::string & descriptiveKeywords)
 {
-	if (isPartial())
+	if (isPartial()) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
+	}
 
 	setTitle(title);
 
@@ -746,10 +747,21 @@ void AbstractObject::setMetadata(const std::string & title, const std::string & 
 
 	setDescriptiveKeywords(descriptiveKeywords);
 
-	if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->Citation->Format = citationFormat;
-	else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Format = citationFormat;
-	else if (gsoapProxy2_2 != nullptr) gsoapProxy2_2->Citation->Format = citationFormat;
-	else if (gsoapProxy2_3 != nullptr) gsoapProxy2_3->Citation->Format = citationFormat;
+	if (strcmp(citationFormat, "[F2I-CONSULTING:FESAPI " FESAPI_VERSION "]") == 0) {
+		throw std::logic_error("Please first set the exporting vendor application version before to create dataobjects. You just have to call once AbstractObject.setFormat. This information is mandatory per the standard.");
+	}
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoapProxy2_0_1->Citation->Format = citationFormat;
+	}
+	else if (gsoapProxy2_1 != nullptr) {
+		gsoapProxy2_1->Citation->Format = citationFormat;
+	}
+	else if (gsoapProxy2_2 != nullptr) {
+		gsoapProxy2_2->Citation->Format = citationFormat;
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoapProxy2_3->Citation->Format = citationFormat;
+	}
 }
 
 void AbstractObject::serializeIntoStream(ostream * stream)

@@ -87,7 +87,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The data object which receives some graphical information at @p graphicalInformationIndex and target @p targetIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractObject* getTargetObject(unsigned int graphicalInformationIndex, unsigned int targetIndex) const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* getTargetObject(unsigned int graphicalInformationIndex, unsigned int targetIndex) const;
 
 		/**
 		 * Query if a given data object has some direct graphical information, that is to say if there exists

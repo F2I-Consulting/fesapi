@@ -2485,7 +2485,7 @@ bool serialize(const string & filePath)
 	repo.setDefaultStandard(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3);
 #endif
 
-	COMMON_NS::AbstractObject::setFormat("F2I-CONSULTING", "Fesapi Example", FESAPI_VERSION);
+	COMMON_NS::AbstractObject::setFormat("F2I-CONSULTING", "FESAPI Example", FESAPI_VERSION);
 
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5", COMMON_NS::DataObjectRepository::openingMode::OVERWRITE);
 	//hdfProxy->setCompressionLevel(6);

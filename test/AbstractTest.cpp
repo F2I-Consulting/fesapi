@@ -22,6 +22,8 @@ under the License.
 #include "catch.hpp"
 #include "resqml2/LocalDepth3dCrs.h"
 
+#include "version_config.h"
+
 using namespace std;
 using namespace commontest;
 
@@ -34,6 +36,7 @@ AbstractTest::AbstractTest(const string & epcDocPath) :
 
 void AbstractTest::serialize() {
 	COMMON_NS::EpcDocument epcDocument(epcDocPath);
+	COMMON_NS::AbstractObject::setFormat("F2I-CONSULTING", "FESAPI Unit test", FESAPI_VERSION);
 	repo = new COMMON_NS::DataObjectRepository();
 	repo->setDefaultStandard(defaultEmlVersion);
 	repo->setDefaultStandard(defaultResqmlVersion);

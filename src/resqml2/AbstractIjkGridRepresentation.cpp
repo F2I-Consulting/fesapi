@@ -25,7 +25,9 @@ under the License.
 
 #include "../eml2/AbstractHdfProxy.h"
 
+#if WITH_RESQML2_2
 #include "../resqml2_2/EarthModelInterpretation.h"
+#endif
 
 #include "AbstractFeatureInterpretation.h"
 

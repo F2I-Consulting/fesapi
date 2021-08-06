@@ -278,9 +278,50 @@ namespace EML2_NS
 	class GraphicalInformationSet : public COMMON_NS::AbstractObject
 	{
 	public:
+		/**
+		 * Gets the size of this graphical information set
+		 *
+		 * @exception	std::range_error	If the size is strictly greater than unsigned int max.
+		 *
+		 * @returns	The size of this graphical information set.
+		 */
 		unsigned int getGraphicalInformationSetCount() const;
-		std::string getTargetObjectUuid(unsigned int index) const;
-		COMMON_NS::AbstractObject* getTargetObject(unsigned int index) const;
+		
+		/**
+		 * Gets the UUID of the object which receives some graphical information at a particular index
+		 * of the graphical information set and at a particular target index.
+		 *
+		 * @exception	std::range_error	If @p index is out of range.
+		 *
+		 * @param 	graphicalInformationIndex	Zero-based index of the graphical information in the GraphicalInformationSet
+		 * @param	targetIndex					Zero-based index of the data object reference in the graphical information
+		 *
+		 * @returns	The UUUID of the object which receives some graphical information at @p graphicalInformationIndex and target @p targetIndex.
+		 */
+		std::string getTargetObjectUuid(unsigned int graphicalInformationIndex, unsigned int targetIndex) const;
+
+		/**
+		 * Gets the data object which receives some graphical information at a particular index of the
+		 * graphical information set and at a particular target index.
+		 *
+		 * @param 	graphicalInformationIndex	Zero-based index of the graphical information in the GraphicalInformationSet
+		 * @param	targetIndex					Zero-based index of the data object reference in the graphical information
+		 *
+		 * @returns	The data object which receives some graphical information at @p graphicalInformationIndex and target @p targetIndex.
+		 */
+		COMMON_NS::AbstractObject* getTargetObject(unsigned int graphicalInformationIndex, unsigned int targetIndex) const;
+
+		/**
+		 * Query if a given data object has some graphical information. If it has no direct graphical
+		 * information (see {@link hasDirectGraphicalInformation}) and it is a property, we also check
+		 * that its property kind has some
+		 *
+		 * @exception	std::invalid_argument	If the target object is null.
+		 *
+		 * @param 	targetObject	The data object we want to test for having some graphical information.
+		 *
+		 * @returns	True if @p targetObject (or its property kind) has some graphical information, else false.
+		 */
 		bool hasGraphicalInformation(COMMON_NS::AbstractObject const* targetObject) const;
 		
 		bool hasDefaultColor(COMMON_NS::AbstractObject const* targetObject) const;

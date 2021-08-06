@@ -140,9 +140,9 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT bool isFinal() const;
 
-		uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const;
+		uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Gets the unit of measure of the MDs along this deviation survey.
@@ -194,6 +194,7 @@ namespace RESQML2_0_1_NS
 		 * 						a count of <tt>getXyzPointCountOfPatch(0)</tt>.
 		 */
 		DLL_IMPORT_OR_EXPORT void getAzimuths(double* values) const;
+
 		/**
 		 * Gets all the wellbore frame representations of the associated wellbore trajectory which share
 		 * the same MD datum and MD uom than this deviation survey representation.
