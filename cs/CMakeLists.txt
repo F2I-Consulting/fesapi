@@ -21,20 +21,11 @@ configure_file(${FESAPI_ROOT_DIR}/cmake/swigCsInclude.i ${FESAPI_ROOT_DIR}/swig/
 configure_file(${FESAPI_ROOT_DIR}/cmake/Program.cs ${FESAPI_ROOT_DIR}/cs/example/Program.cs) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/HdfProxyFactoryExample.cs ${FESAPI_ROOT_DIR}/cs/example/HdfProxyFactoryExample.cs) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/HdfProxyExample.cs ${FESAPI_ROOT_DIR}/cs/example/HdfProxyExample.cs) # Overwrite if different
-if (WITH_ETP)
-	configure_file(${FESAPI_ROOT_DIR}/cmake/EtpClientExample.cs ${FESAPI_ROOT_DIR}/cs/EtpClientExample/EtpClientExample.cs) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnClientCoreHandlers.cs ${FESAPI_ROOT_DIR}/cs/EtpClientExample/MyOwnClientCoreHandlers.cs) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnDiscoveryProtocolHandlers.cs ${FESAPI_ROOT_DIR}/cs/EtpClientExample/MyOwnDiscoveryProtocolHandlers.cs) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnStoreProtocolHandlers.cs ${FESAPI_ROOT_DIR}/cs/EtpClientExample/MyOwnStoreProtocolHandlers.cs) # Overwrite if different
-endif ()
 
 set (SWIG_DEFINITION "")
 if (WITH_RESQML2_2)
 	string(APPEND SWIG_DEFINITION "-DWITH_RESQML2_2")
 endif (WITH_RESQML2_2)
-if (WITH_ETP)
-	string(APPEND SWIG_DEFINITION " -DWITH_ETP")
-endif (WITH_ETP)
 
 # SWIG execution
 if (SWIG_LINKED_TO_RELEASE)
@@ -47,6 +38,7 @@ message("SWIG C# files have been generated.")
 
 #Add the swig cpp file to the FesapiCpp
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp)
+target_sources(${CPP_LIBRARY_NAME} PRIVATE ${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.h)
 
 # Create the Visual Studio project from a template file
 if (SWIG_LINKED_TO_RELEASE)
