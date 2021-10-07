@@ -68,13 +68,10 @@ bool AbstractObject::isPartial() const {
 void AbstractObject::changeToPartialObject()
 {
 	cannotBePartial();
-	string uuid = getUuid();
-	string title = getTitle();
-	string contentType = getContentType();
-	partialObject = gsoapProxy2_0_1 != nullptr ? gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapProxy2_0_1->soap, 1) : gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapProxy2_1->soap);
-	partialObject->UUID = uuid;
-	partialObject->Title = title;
-	partialObject->ContentType = contentType;
+	partialObject = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(getGsoapContext());
+	partialObject->UUID = getUuid();
+	partialObject->Title = getTitle();
+	partialObject->ContentType = getContentType();
 }
 
 soap* AbstractObject::getGsoapContext() const
@@ -796,7 +793,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractObject::newResqmlReferenc
 	result->Title = getTitle();
 	result->ContentType = getContentType();
 	if (!getVersion().empty()) {
-		result->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapProxy2_0_1 != nullptr ? gsoapProxy2_0_1->soap : partialObject->soap);
+		result->VersionString = gsoap_resqml2_0_1::soap_new_std__string(getGsoapContext());
 		result->VersionString->assign(getVersion());
 	}
 
@@ -811,7 +808,7 @@ gsoap_eml2_1::eml21__DataObjectReference* AbstractObject::newEmlReference() cons
 	result->ContentType = getContentType();
 	if (!getVersion().empty())
 	{
-		result->VersionString = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_1 != nullptr ? gsoapProxy2_1->soap : partialObject->soap);
+		result->VersionString = gsoap_eml2_1::soap_new_std__string(getGsoapContext());
 		result->VersionString->assign(getVersion());
 	}
 
@@ -828,7 +825,7 @@ gsoap_eml2_2::eml22__DataObjectReference* AbstractObject::newEml22Reference() co
 	result->ContentType = getContentType();
 	if (!getVersion().empty()) 
 	{
-		result->ObjectVersion = gsoap_eml2_2::soap_new_std__string(gsoapProxy2_2 != nullptr ? gsoapProxy2_2->soap : partialObject->soap);
+		result->ObjectVersion = gsoap_eml2_2::soap_new_std__string(getGsoapContext());
 		result->ObjectVersion->assign(getVersion());
 	}
 
@@ -845,7 +842,7 @@ gsoap_eml2_3::eml23__DataObjectReference* AbstractObject::newEml23Reference() co
 	result->ContentType = getContentType();
 	if (!getVersion().empty()) // Not partial transfer
 	{
-		result->ObjectVersion = gsoap_eml2_3::soap_new_std__string(gsoapProxy2_3 != nullptr ? gsoapProxy2_3->soap : partialObject->soap);
+		result->ObjectVersion = gsoap_eml2_3::soap_new_std__string(getGsoapContext());
 		result->ObjectVersion->assign(getVersion());
 	}
 

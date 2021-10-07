@@ -32,6 +32,7 @@ under the License.
 #include "Witsml14Trajectory.h"
 
 #include "eml2_test/HdfProxy.h"
+#include "resqml2_test/BlockedWellbore.h"
 #include "resqml2_test/LocalDepth3dCrsTest.h"
 #include "resqml2_test/HorizonInterpretationTest.h"
 #include "resqml2_test/FaultSinglePatchTriangulatedSetRepresentationTest.h"
@@ -196,6 +197,8 @@ FESAPI_TEST("Export and import a subrepresentation on a partial grid connection 
 
 FESAPI_TEST("Export and import streamlines on a partial grid", "[grid]", Streamlines)
 
+FESAPI_TEST("Export and import Blocked wellbore", "[grid][well]", BlockedWellbore)
+
 // fail
 //FESAPI_TEST("Export and import grid connection set on partial grid", "[grid]", GridConnectionSetOnPartialGridSet)
 
@@ -215,7 +218,6 @@ TEST_CASE("Export and import a big parametric ijk grid", "[grid][property]")
 
 // PROPERTY
 FESAPI_TEST("Export and import continuous properties on a partial grid", "[property]", ContinuousProperty)
-
 
 // RESQML WELL
 FESAPI_TEST("Export and import a wellbore trajectory", "[well][trajectory]", WellboreTrajectoryRepresentationTest)
