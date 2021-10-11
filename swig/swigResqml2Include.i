@@ -5763,7 +5763,6 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p gridIndices, @p cellIndices, @p
 		 * 										localFacePairPerCellIndices or @p hdfProxy is @c nullptr.
-		 * @exception	std::invalid_argument	If <tt>cellCount == 0</tt>.
 		 * @exception	std::logic_error	 	If MD values of the frame have not been provided before
 		 * 										using this method.
 		 *
@@ -5781,35 +5780,29 @@ namespace RESQML2_NS
 		 * @param 		  	gridIndicesNullValue					The null value used in @p gridIndices
 		 * 															in order to indicate that an interval
 		 * 															does not correspond to any intersected
-		 * 															grid.
-		 * @param 		  	cellCount								The number of non-null entries in @p
-		 * 															gridIndices.
+		 * 															grid. Generally -1.
 		 * @param 		  	cellIndices								An array containing the intersected
-		 * 															cell index for each non-null entry in @p
-		 * 															gridIndices. They are ordered according
-		 * 															to non-null entries of @p gridIndices.
-		 * 															The array length must equal @p cellCount.
-		 *															The null value is arbitrarily set to -1 since
-		 *															it has no interest. Indeed corresponding gridIndex
+		 * 															cell index for each entry in @p gridIndices.
+		 * 															The size of this array is the interval count of the
+		 * 															wellbore frame representation.
+		 *															The null value will be set to @p gridIndicesNullValue
 		 *															already informs about the presence or not of a cell.
 		 * @param 		  	localFacePairPerCellIndices				An array containing, for each cell,
 		 * 															the entry and exit intersection faces of
 		 * 															the trajectory in the cell. The array
 		 * 															dimension must equal <tt>2 *
-		 * 															cellCount</tt>.
+		 * 															intervalCount</tt>.
 		 * @param 		  	localFacePairPerCellIndicesNullValue	The null value used in @p
 		 * 															localFacePerCellIndices in order to
 		 * 															indicate that it corresponds to a missing
 		 * 															intersection, e.g., when a trajectory
 		 * 															originates or terminates within a cell.
 		 * @param [in,out]	hdfProxy								The HDF proxy where the numerical
-		 * 															values will be stored. It must be already
-		 * 															opened for writing and won't be closed.It
-		 * 															cannot be @c nullptr.
+		 * 															values will be stored. If set to nullptr,
+		 *															the default HdfProxy will be used instead.
 		 */
-		void setIntervalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
-			unsigned int cellCount, int64_t const* cellIndices,
-			unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy);
+		void setIntervalGridCells(char const* gridIndices, char gridIndicesNullValue, int64_t const* cellIndices,
+			char const* localFacePairPerCellIndices, char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy = nullptr);
 
 		/**
 		 * Gets the cell count, that is to say the number of non-null entries in the grid indices array.
@@ -5835,7 +5828,40 @@ namespace RESQML2_NS
 		 * @returns	The null value used in @p gridIndices in order to indicate that an interval does not
 		 * 			correspond to any intersected grid.
 		 */
-		int64_t getGridIndices(unsigned int * gridIndices) const;
+		char getGridIndices(char * gridIndices) const;
+
+		/**
+		 * For each interval of the wellbore frame, gets the index of the cell it is associated to.
+		 *
+		 * @exception	std::range_error	If the cell indices are stored in an integer constant array
+		 * 									and if the the constant value is strictly superior than
+		 * 									int64_t maximum value.
+		 * @exception	std::logic_error	If the cell indices are neither stored in a HDF5 integer
+		 * 									array nor in an integer constant array.
+		 *
+		 * @param [out]	gridIndices	An array for receiving the cell indices. The size of this array is
+		 * 							the interval count of the wellbore frame representation.
+		 *
+		 * @returns	The null value used in @p cellIndices in order to indicate that an interval does not
+		 * 			correspond to any intersected cell.
+		 */
+		int64_t getCellIndices(int64_t* cellIndices) const;
+
+		/**
+		 * For each interval of the wellbore frame, gets the index of the entry and exit local face it is associated to.
+		 *
+		 * @exception	std::range_error	If the local face indices are stored in an integer constant array
+		 * 									and if the the constant value is strictly superior than
+		 * 									char maximum value.
+		 * @exception	std::logic_error	If the local face indices are neither stored in a HDF5 integer
+		 * 									array nor in an integer constant array.
+		 *
+		 * @param [out]	gridIndices	An array for receiving the local face indices. The size of this array is twice
+		 * 							the interval count of the wellbore frame representation.
+		 *
+		 * @returns	The null value used in @p localFacePairPerCellIndices in order to indicate that no face is intersected.
+		 */
+		char getLocalFacePairPerCellIndices(char* localFacePairPerCellIndices) const;
 
 		/**
 		 * Pushes back a grid representation which is one of the support of this representation.

@@ -62,9 +62,8 @@ BlockedWellboreRepresentation::BlockedWellboreRepresentation(RESQML2_NS::Wellbor
 	}
 }
 
-void BlockedWellboreRepresentation::setIntervalGridCells(unsigned int const* gridIndices, unsigned int gridIndicesNullValue,
-	unsigned int cellCount, int64_t const* cellIndices,
-	unsigned char const* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy)
+void BlockedWellboreRepresentation::setIntervalGridCells(char const* gridIndices, char gridIndicesNullValue, int64_t const* cellIndices,
+	char const* localFacePairPerCellIndices, char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy)
 {
 	// Preconditions
 	if (getXyzPointCountOfAllPatches() == 0) {
@@ -72,9 +71,6 @@ void BlockedWellboreRepresentation::setIntervalGridCells(unsigned int const* gri
 	}
 	if (gridIndices == nullptr) {
 		throw invalid_argument("The grid indices cannot be null.");
-	}
-	if (cellCount == 0) {
-		throw invalid_argument("The intersected cell count must not be zero.");
 	}
 	if (cellIndices == nullptr) {
 		throw invalid_argument("The cell indices cannot be null.");
@@ -84,6 +80,12 @@ void BlockedWellboreRepresentation::setIntervalGridCells(unsigned int const* gri
 	}
 
 	_resqml20__BlockedWellboreRepresentation* rep = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
+	ULONG64 cellCount = 0;
+	for (ULONG64 intervalIndex = 0; intervalIndex < rep->NodeCount - 1; ++intervalIndex) {
+		if (gridIndices[intervalIndex] != gridIndicesNullValue) {
+			++cellCount;
+		}
+	}
 	rep->CellCount = cellCount;
 
 	if (hdfProxy == nullptr) {
@@ -103,12 +105,12 @@ void BlockedWellboreRepresentation::setIntervalGridCells(unsigned int const* gri
 	xmlGridIndices->Values->PathInHdfFile = getHdfGroup() + "/GridIndices";
 	rep->GridIndices = xmlGridIndices;
 	// HDF
-	hsize_t dimGridIndices = rep->NodeCount;
+	hsize_t intervalCount = rep->NodeCount - 1;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"GridIndices",
-		H5T_NATIVE_UINT,
+		H5T_NATIVE_CHAR,
 		gridIndices,
-		&dimGridIndices, 1);
+		&intervalCount, 1);
 
 	// cellIndices
 	// XML
@@ -120,11 +122,28 @@ void BlockedWellboreRepresentation::setIntervalGridCells(unsigned int const* gri
 	rep->CellIndices = xmlCellIndices;
 	// HDF
 	hsize_t dimCellIndices = cellCount;
-	hdfProxy->writeArrayNd(getHdfGroup(),
-		"CellIndices",
-		H5T_NATIVE_INT64,
-		cellIndices,
-		&dimCellIndices, 1);
+	if (cellCount == intervalCount) {
+		hdfProxy->writeArrayNd(getHdfGroup(),
+			"CellIndices",
+			H5T_NATIVE_INT64,
+			cellIndices,
+			&dimCellIndices, 1);
+	}
+	else {
+		std::unique_ptr<int64_t[]> nonNullCellIndices(new int64_t[cellCount]);
+		size_t tmp = 0;
+		for (ULONG64 intervalIndex = 0; intervalIndex < intervalCount; ++intervalIndex) {
+			if (gridIndices[intervalIndex] != gridIndicesNullValue) {
+				nonNullCellIndices[tmp] = cellIndices[intervalIndex];
+				++tmp;
+			}
+		}
+		hdfProxy->writeArrayNd(getHdfGroup(),
+			"CellIndices",
+			H5T_NATIVE_INT64,
+			nonNullCellIndices.get(),
+			&dimCellIndices, 1);
+	}
 
 	// localFacePairPerCellIndices
 	// XML
@@ -135,12 +154,30 @@ void BlockedWellboreRepresentation::setIntervalGridCells(unsigned int const* gri
 	xmlLocalFacePairPerCellIndices->Values->PathInHdfFile = getHdfGroup() + "/LocalFacePairPerCellIndices";
 	rep->LocalFacePairPerCellIndices = xmlLocalFacePairPerCellIndices;
 	// HDF
-	hsize_t dimLocalFacePerCellIndicesNullValue = cellCount*2;
-	hdfProxy->writeArrayNd(getHdfGroup(),
-		"LocalFacePairPerCellIndices",
-		H5T_NATIVE_UCHAR,
-		localFacePairPerCellIndices,
-		&dimLocalFacePerCellIndicesNullValue, 1);
+	hsize_t dimLocalFacePerCellIndicesNullValue = cellCount * 2;
+	if (cellCount == intervalCount) {
+		hdfProxy->writeArrayNd(getHdfGroup(),
+			"LocalFacePairPerCellIndices",
+			H5T_NATIVE_CHAR,
+			localFacePairPerCellIndices,
+			&dimLocalFacePerCellIndicesNullValue, 1);
+	}
+	else {
+		std::unique_ptr<char[]> nonNullLocalFacePairPerCellIndices(new char[cellCount*2]);
+		size_t tmp = 0;
+		for (ULONG64 intervalIndex = 0; intervalIndex < intervalCount; ++intervalIndex) {
+			if (gridIndices[intervalIndex] != gridIndicesNullValue) {
+				nonNullLocalFacePairPerCellIndices[tmp * 2] = localFacePairPerCellIndices[intervalIndex * 2];
+				nonNullLocalFacePairPerCellIndices[tmp * 2 + 1] = localFacePairPerCellIndices[intervalIndex * 2 + 1];
+				++tmp;
+			}
+		}
+		hdfProxy->writeArrayNd(getHdfGroup(),
+			"LocalFacePairPerCellIndices",
+			H5T_NATIVE_CHAR,
+			nonNullLocalFacePairPerCellIndices.get(),
+			&dimLocalFacePerCellIndicesNullValue, 1);
+	}
 }
 
 uint64_t BlockedWellboreRepresentation::getCellCount() const
@@ -148,32 +185,111 @@ uint64_t BlockedWellboreRepresentation::getCellCount() const
 	return static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->CellCount;
 }
 
-int64_t BlockedWellboreRepresentation::getGridIndices(unsigned int * gridIndices) const
+char BlockedWellboreRepresentation::getGridIndices(char* gridIndices) const
 {
 	auto xmlGridIndices = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->GridIndices;
 
 	if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(xmlGridIndices)->Values;
 		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfUIntValues(dataset->PathInHdfFile, gridIndices);
+		hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, gridIndices);
 		return static_cast<resqml20__IntegerHdf5Array*>(xmlGridIndices)->NullValue;
 	}
 	else if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
 		const int64_t constantXmlValue = static_cast<resqml20__IntegerConstantArray*>(xmlGridIndices)->Value;
-		if (constantXmlValue > (std::numeric_limits<int64_t>::max)()) {
-			throw std::range_error("The constant value is strictly superior than unsigned int maximum value.");
+		if (constantXmlValue > (std::numeric_limits<char>::max)()) {
+			throw std::range_error("The constant value is strictly superior than char maximum value.");
 		}
-
-		const unsigned int intervalCount = getMdValuesCount() - 1;
-		for (unsigned int i = 0; i < intervalCount; ++i) {
-			gridIndices[i] = static_cast<unsigned int>(constantXmlValue);
-		}
+		std::fill_n(gridIndices, getMdValuesCount() - 1, static_cast<char>(constantXmlValue));
 	}
 	else {
 		throw std::logic_error("Not implemented yet");
 	}
 
-	return (numeric_limits<int64_t>::max)();
+	return (numeric_limits<char>::max)();
+}
+
+int64_t BlockedWellboreRepresentation::getCellIndices(int64_t* cellIndices) const
+{
+	auto xmlCellIndices = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->CellIndices;
+	auto intervalCount = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->NodeCount - 1;
+	auto cellCount = getCellCount();
+
+	if (xmlCellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+		LONG64 nullvalue = static_cast<resqml20__IntegerHdf5Array*>(xmlCellIndices)->NullValue;
+		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(xmlCellIndices)->Values;
+		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		if (cellCount == intervalCount) {
+			hdfProxy->readArrayNdOfInt64Values(dataset->PathInHdfFile, cellIndices);
+		}
+		else {
+			std::unique_ptr<int64_t[]> nonNullCellIndices(new int64_t[cellCount]);
+			hdfProxy->readArrayNdOfInt64Values(dataset->PathInHdfFile, nonNullCellIndices.get());
+			std::unique_ptr<char[]> gridIndices(new char[intervalCount]);
+			char gridIndexNullvalue = getGridIndices(gridIndices.get());
+			size_t tmp = 0;
+			for (ULONG64 intervalIndex = 0; intervalIndex < intervalCount; ++intervalIndex) {
+				cellIndices[intervalIndex] = gridIndices[intervalIndex] != gridIndexNullvalue
+					? nonNullCellIndices[tmp++]
+					: nullvalue;
+			}
+		}
+		return nullvalue;
+	}
+	else if (xmlCellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
+		std::fill_n(cellIndices, intervalCount, static_cast<resqml20__IntegerConstantArray*>(xmlCellIndices)->Value);
+	}
+	else {
+		throw std::logic_error("Not implemented yet");
+	}
+
+	return (numeric_limits<char>::max)();
+}
+
+char BlockedWellboreRepresentation::getLocalFacePairPerCellIndices(char* localFacePairPerCellIndices) const
+{
+	auto xmlLocalFacePairPerCellIndices = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->LocalFacePairPerCellIndices;
+	auto intervalCount = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->NodeCount - 1;
+	auto cellCount = getCellCount();
+
+	if (xmlLocalFacePairPerCellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+		LONG64 nullvalue = static_cast<resqml20__IntegerHdf5Array*>(xmlLocalFacePairPerCellIndices)->NullValue;
+		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(xmlLocalFacePairPerCellIndices)->Values;
+		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		if (cellCount == intervalCount) {
+			hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, localFacePairPerCellIndices);
+		}
+		else {
+			std::unique_ptr<char[]> nonNullCellLocalFacePairPerCellIndices(new char[cellCount*2]);
+			hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, nonNullCellLocalFacePairPerCellIndices.get());
+			std::unique_ptr<char[]> gridIndices(new char[intervalCount]);
+			char gridIndexNullvalue = getGridIndices(gridIndices.get());
+			size_t tmp = 0;
+			for (ULONG64 intervalIndex = 0; intervalIndex < intervalCount; ++intervalIndex) {
+				if (gridIndices[intervalIndex] != gridIndexNullvalue) {
+					localFacePairPerCellIndices[intervalIndex * 2] = nonNullCellLocalFacePairPerCellIndices[tmp++];
+					localFacePairPerCellIndices[intervalIndex * 2 + 1] = nonNullCellLocalFacePairPerCellIndices[tmp++];
+				}
+				else {
+					localFacePairPerCellIndices[intervalIndex * 2] = nullvalue;
+					localFacePairPerCellIndices[intervalIndex * 2 + 1] = nullvalue;
+				}
+			}
+		}
+		return nullvalue;
+	}
+	else if (xmlLocalFacePairPerCellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
+		const int64_t constantXmlValue = static_cast<resqml20__IntegerConstantArray*>(xmlLocalFacePairPerCellIndices)->Value;
+		if (constantXmlValue > (std::numeric_limits<char>::max)()) {
+			throw std::range_error("The constant value is strictly superior than char maximum value.");
+		}
+		std::fill_n(localFacePairPerCellIndices, intervalCount * 2, static_cast<char>(constantXmlValue));
+	}
+	else {
+		throw std::logic_error("Not implemented yet");
+	}
+
+	return (numeric_limits<char>::max)();
 }
 
 void BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep)

@@ -95,7 +95,6 @@ jobs:
             -DWITH_EXAMPLE=TRUE
             -DWITH_RESQML2_2=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
-            -DWITH_TEST=TRUE
             -DSWIG_EXECUTABLE=C:/swigwin-4.0.2/swig.exe
             
       - task: VSBuild@1
@@ -113,10 +112,8 @@ jobs:
       - powershell: |
           Copy-Item C:\hdf5-1.10.6-win64-vs2017\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
           Copy-Item C:\hdf5-1.10.6-win64-vs2017\bin\zlib.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
-          ctest -C $(BuildType) -V
         failOnStderr: true
         workingDirectory: $(Build.SourcesDirectory)\build
-        displayName: 'Test'
 
       - script: |
           $(Build.SourcesDirectory)\build\$(BuildType)\example.exe
@@ -208,6 +205,8 @@ jobs:
             -DSZIP_LIBRARY_RELEASE=C:/hdf5-1.12.0-win64-vs2019/lib/szip.lib
             -DBoost_INCLUDE_DIR=$(Agent.TempDirectory)/Boost/1.75.0/x86_64
             -DWITH_EXAMPLE=TRUE
+            -DWITH_RESQML2_2=TRUE
+            -DWITH_TEST=TRUE
 
       - task: CMake@1
         displayName: "Build --config $(BuildType)"
@@ -217,8 +216,10 @@ jobs:
       - powershell: |
           Copy-Item C:\hdf5-1.12.0-win64-vs2019\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
           Copy-Item C:\hdf5-1.12.0-win64-vs2019\bin\zlib.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
+          ctest -C $(BuildType) -V
         failOnStderr: true
         workingDirectory: $(Build.SourcesDirectory)\build
+        displayName: 'Test'
 
       - script: |
           $(Build.SourcesDirectory)\build\$(BuildType)\example.exe
