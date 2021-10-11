@@ -26,7 +26,7 @@ under the License.
 #include "../eml2/AbstractHdfProxy.h"
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 
 #include "../resqml2_2/GenericFeatureInterpretation.h"
 
@@ -49,7 +49,6 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(COMMON_NS::DataObje
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
-	setInterpretation(repo->createPartial<RESQML2_2_NS::GenericFeatureInterpretation>("", "Unknown interp"));
 }
 
 TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
@@ -93,7 +92,7 @@ resqml22__PointGeometry* TriangulatedSetRepresentation::getPointGeometry2_2(unsi
 void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	unsigned int nodeCount, double const * nodes,
 	unsigned int triangleCount, unsigned int const * triangleNodeIndices,
-	EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+	EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();

@@ -54,7 +54,7 @@ namespace RESQML2_0_1_NS
 		 * 										dictionary.
 		 */
 		CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
 		 * Creates a comment property which is of a local property kind.
@@ -73,7 +73,7 @@ namespace RESQML2_0_1_NS
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 */
 		CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropKind);
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropKind);
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.

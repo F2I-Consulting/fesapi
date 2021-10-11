@@ -21,7 +21,7 @@ under the License.
 #include <hdf5.h>
 
 #include "../eml2/AbstractHdfProxy.h"
-#include "../resqml2/LocalTime3dCrs.h"
+#include "../eml2/LocalTime3dCrs.h"
 #include "../resqml2/WellboreInterpretation.h"
 #include "../resqml2/WellboreTrajectoryRepresentation.h"
 

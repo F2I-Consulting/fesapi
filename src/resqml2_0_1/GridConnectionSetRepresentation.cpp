@@ -27,7 +27,7 @@ under the License.
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractGridRepresentation.h"
 #include "../eml2/AbstractHdfProxy.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

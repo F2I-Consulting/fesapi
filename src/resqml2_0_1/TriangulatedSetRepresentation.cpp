@@ -25,7 +25,7 @@ under the License.
 #include <hdf5.h>
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
@@ -90,7 +90,7 @@ resqml20__PointGeometry* TriangulatedSetRepresentation::getPointGeometry2_0_1(un
 void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	unsigned int nodeCount, double const * nodes,
 	unsigned int triangleCount, unsigned int const * triangleNodeIndices,
-	EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+	EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();

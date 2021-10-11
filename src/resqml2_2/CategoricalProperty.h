@@ -59,7 +59,7 @@ namespace RESQML2_2_NS
 		 *								is empty, then it is assumed this property is a scalar one.
 		 */
 		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind,
 			RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropKind,
 			std::vector<int> dimensions = std::vector<int>());
 
@@ -83,7 +83,7 @@ namespace RESQML2_2_NS
 		 *								is empty, then it is assumed this property is a scalar one.
 		 */
 		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind,
 			RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * localPropKind,
 			std::vector<int> dimensions = std::vector<int>());
 

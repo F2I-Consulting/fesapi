@@ -29,10 +29,10 @@ using namespace EML2_NS;
 
 const char* TimeSeries::XML_TAG = "TimeSeries";
 
-void TimeSeries::pushBackTimestamp(time_t timestamp)
+void TimeSeries::pushBackTimestamp(time_t timestamp, LONG64 yearOffset = 0)
 {
 	std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(timestamp));
-	pushBackTimestamp(tmConversion);
+	pushBackTimestamp(tmConversion, yearOffset);
 }
 
 time_t TimeSeries::getTimestamp(unsigned int index) const

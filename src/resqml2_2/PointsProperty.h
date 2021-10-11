@@ -52,7 +52,7 @@ namespace RESQML2_2_NS
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 */
 		PointsProperty(RESQML2_NS::AbstractRepresentation* rep, const std::string& guid, const std::string& title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::AbstractLocal3dCrs* localCrs,
 			EML2_NS::PropertyKind* localPropKind);
 
 		/**

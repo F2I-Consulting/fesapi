@@ -76,7 +76,7 @@ namespace RESQML2_2_NS
 		COMMON_NS::DataObjectReference getHdfProxyDor() const;
 
 		DLL_IMPORT_OR_EXPORT void pushBackTrianglePatch(unsigned int nodeCount, double const * nodes, unsigned int triangleCount, unsigned int const * triangleNodeIndices,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 

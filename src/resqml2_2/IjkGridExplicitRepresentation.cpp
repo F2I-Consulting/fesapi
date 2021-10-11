@@ -24,7 +24,7 @@ under the License.
 #include <hdf5.h>
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 #include "../resqml2/AbstractValuesProperty.h"
 #include "../eml2/AbstractHdfProxy.h"
 
@@ -79,7 +79,7 @@ void IjkGridExplicitRepresentation::getXyzPointsOfPatch(unsigned int patchIndex,
 			if (truncatedGeom->AdditionalGridPoints[0]->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray) {
 				auto daPart = static_cast<resqml22__Point3dExternalArray*>(truncatedGeom->AdditionalGridPoints[0]->Points)->Coordinates->ExternalDataArrayPart[0];
 				EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
-				xyzPoints += getXyzPointCountOfPatch(patchIndex) - static_cast<_resqml22__TruncatedIjkGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationNodeCount;
+				xyzPoints += (getXyzPointCountOfPatch(patchIndex) - static_cast<_resqml22__TruncatedIjkGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationNodeCount)*3;
 				hdfProxy->readArrayNdOfDoubleValues(daPart->PathInExternalFile, xyzPoints);
 			}
 			else {
@@ -97,7 +97,7 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodesUsingExistin
 	const std::string & points, EML2_NS::AbstractHdfProxy* proxy,
 	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns,
-	const std::string & definedPillars, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	const std::string & definedPillars, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (points.empty()) {
 		throw invalid_argument("The points HDF dataset of the ijk grid cannot be empty.");
@@ -191,7 +191,7 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodes(
 	double * points, EML2_NS::AbstractHdfProxy * proxy,
 	unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 	unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns,
-	char * definedPillars, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	char * definedPillars, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (points == nullptr) {
 		throw invalid_argument("The points of the ijk grid cannot be null.");

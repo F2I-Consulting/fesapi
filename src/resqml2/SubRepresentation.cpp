@@ -30,7 +30,7 @@ using namespace RESQML2_NS;
 
 const char* SubRepresentation::XML_TAG = "SubRepresentation";
 
-void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, uint64_t * elementIndices, EML2_NS::AbstractHdfProxy * proxy, short * supportingRepIndices)
+void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount, uint64_t * elementIndices, EML2_NS::AbstractHdfProxy * proxy, short * supportingRepIndices)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();

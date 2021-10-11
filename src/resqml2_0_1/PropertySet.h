@@ -66,7 +66,7 @@ namespace RESQML2_0_1_NS
 		 * @param 	  	timeSetKind			   	the time set kind of this property set.
 		 */
 		PropertySet(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
-			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_eml2_3::resqml22__TimeSetKind timeSetKind);
+			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml20__TimeSetKind timeSetKind);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
@@ -174,7 +174,7 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT bool hasSinglePropertyKind() const;
 
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__TimeSetKind getTimeSetKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__TimeSetKind getTimeSetKind() const;
 
 		/**
 		* The standard XML namespace for serializing this data object.

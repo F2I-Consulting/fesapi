@@ -95,7 +95,7 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
-		DLL_IMPORT_OR_EXPORT void setGeometry(double const* points, unsigned int pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+		DLL_IMPORT_OR_EXPORT void setGeometry(double const* points, unsigned int pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT bool isClosed() const final;
 

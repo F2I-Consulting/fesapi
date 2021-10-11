@@ -28,7 +28,7 @@ under the License.
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractGridRepresentation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 
 #include "../resqml2_2/GenericFeatureInterpretation.h"
 
@@ -52,8 +52,6 @@ GridConnectionSetRepresentation::GridConnectionSetRepresentation(COMMON_NS::Data
 	const std::string & guid, const std::string & title)
 {
 	init(repo, guid, title);
-
-	setInterpretation(repo->createPartial<RESQML2_2_NS::GenericFeatureInterpretation>("", "Unknown interp"));
 }
 
 GridConnectionSetRepresentation::GridConnectionSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,

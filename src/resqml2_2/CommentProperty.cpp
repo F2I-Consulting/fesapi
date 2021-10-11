@@ -34,7 +34,7 @@ using namespace gsoap_eml2_3;
 const char* CommentProperty::XML_NS = "resqml22";
 
 CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * propKind)
+	gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::PropertyKind * propKind)
 {
 	gsoapProxy2_3 = soap_new_resqml22__CommentProperty(rep->getGsoapContext());	
 	_resqml22__CommentProperty* prop = static_cast<_resqml22__CommentProperty*>(gsoapProxy2_3);

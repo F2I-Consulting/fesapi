@@ -18,12 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/StringTableLookup.h"
+#include "../eml2/ColumnBasedTable.h"
 
 namespace RESQML2_0_1_NS
 {
 	/** A string table lookup. */
-	class StringTableLookup final : public RESQML2_NS::StringTableLookup
+	class StringTableLookup final : public EML2_NS::ColumnBasedTable
 	{
 	public:
 
@@ -34,7 +34,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * 
 		 */
-		DLL_IMPORT_OR_EXPORT StringTableLookup(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::StringTableLookup(partialObject) {}
+		DLL_IMPORT_OR_EXPORT StringTableLookup(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EML2_NS::ColumnBasedTable(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -51,30 +51,83 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		StringTableLookup(gsoap_resqml2_0_1::_resqml20__StringTableLookup* fromGsoap) : RESQML2_NS::StringTableLookup(fromGsoap) {}
+		StringTableLookup(gsoap_resqml2_0_1::_resqml20__StringTableLookup* fromGsoap) : EML2_NS::ColumnBasedTable(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~StringTableLookup() = default;
 
-		DLL_IMPORT_OR_EXPORT bool containsKey(long longValue) final;
+		/**
+		 * Gets the row count of this table
+		 */
+		DLL_IMPORT_OR_EXPORT uint32_t getRowCount() const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getItemCount() const final;
+		/**
+		 * Gets the column count of this table
+		 */
+		DLL_IMPORT_OR_EXPORT uint32_t getColumnCount() const final { return 2; }
 
-		DLL_IMPORT_OR_EXPORT long getKeyAtIndex(unsigned int index) const final;
+		/**
+		 * Gets the property kind DOR associated to a particular column count of this table
+		 *
+		 * @param columnIndex	The index of the column which we want the associated property kind DOR from
+		 *
+		 * @return				The associated property kind DOR.
+		 */
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getPropertyKindDor(uint32_t columnIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT std::string getStringValueAtIndex(unsigned int index) const final;
+		/**
+		 * @return				Empty since DoubleTableLookup has not got any uom never
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getUomAsString(uint32_t) const final { return ""; }
 
-		DLL_IMPORT_OR_EXPORT std::string getStringValue(long longValue) final;
+		/**
+		 * @return				1 since StringTableLookup has only one value per column
+		 */
+		DLL_IMPORT_OR_EXPORT uint32_t getValueCountPerRow(uint32_t) const final { return 1; }
 
-		DLL_IMPORT_OR_EXPORT void addValue(const std::string & strValue, long longValue) final;
+		/**
+		 * Gets the datatype of a column
+		 *
+		 * @param columnIndex	The index of the column which we want the datatype from
+		 *
+		 * @return				The datatype which is used for values in this column
+		 */
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::hdfDatatypeEnum getDatatype(uint32_t columnIndex) const final
+		{
+			return columnIndex == 0 ? COMMON_NS::AbstractObject::hdfDatatypeEnum::LONG_64 : COMMON_NS::AbstractObject::hdfDatatypeEnum::STRING;
+		}
 
-		DLL_IMPORT_OR_EXPORT void setValue(const std::string & strValue, long longValue) final;
+		/**
+		 * Gets the values of a column as string values
+		 *
+		 * @param columnIndex	The index of the column which we want the values from
+		 *
+		 * @return				The string values
+		 */
+		DLL_IMPORT_OR_EXPORT std::vector<std::string> getStringValues(uint32_t columnIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT int64_t getMinimumValue() final;
+		/**
+		 * Gets the values of a column as double values
+		 *
+		 * @param columnIndex	The index of the column which we want the values from
+		 *
+		 * @return				The double values
+		 */
+		DLL_IMPORT_OR_EXPORT std::vector<double> getDoubleValues(uint32_t columnIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT int64_t getMaximumValue() final;
+		/**
+		 * Gets the values of a column as int64 values
+		 *
+		 * @param columnIndex	The index of the column which we want the values from
+		 *
+		 * @return				The int64 values
+		 */
+		DLL_IMPORT_OR_EXPORT std::vector<int64_t> getInt64Values(uint32_t columnIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT std::unordered_map<long, std::string> getMap() const final;
+		/** The standard XML tag without XML namespace for serializing this data object. */
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 		/**
 		* The standard XML namespace for serializing this data object.
@@ -85,5 +138,11 @@ namespace RESQML2_0_1_NS
 		* Get the standard XML namespace for serializing this data object.
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
+
+	private:
+		/**
+		*Does nothing since this class has no forward relationship
+		*/
+		void loadTargetRelationships() final {}
 	};
 }

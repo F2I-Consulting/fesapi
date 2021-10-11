@@ -1545,9 +1545,10 @@ uint64_t AbstractObject::getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__Abs
 	throw invalid_argument("The integer array type is not supported yet.");
 }
 
-uint64_t AbstractObject::getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractIntegerArray * arrayInput) const
+uint64_t AbstractObject::getCountOfArray(gsoap_eml2_3::eml23__AbstractValueArray * arrayInput) const
 {
 	long soapType = arrayInput->soap_type();
+	// *********** INTEGER ********
 	if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 	{
 		uint64_t result = 0;
@@ -1555,10 +1556,6 @@ uint64_t AbstractObject::getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractInt
 			result += dataArrayPart->Count;
 		}
 		return result;
-	}
-	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerRangeArray)
-	{
-		return static_cast<gsoap_eml2_3::eml23__IntegerRangeArray*>(arrayInput)->Count;
 	}
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray)
 	{
@@ -1568,12 +1565,63 @@ uint64_t AbstractObject::getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractInt
 	{
 		gsoap_eml2_3::eml23__IntegerLatticeArray* latticeArray = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(arrayInput);
 		if (latticeArray->Offset.size() > 1) {
-			throw invalid_argument("The integer lattice array contains more than one offset.");
+			throw invalid_argument("The lattice array contains more than one offset.");
 		}
 		return static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(arrayInput)->Offset[0]->Count + 1;
 	}
+	// *********** FLOATING POINT ********
+	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
+	{
+		uint64_t result = 0;
+		for (auto dataArrayPart : static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(arrayInput)->Values->ExternalDataArrayPart) {
+			result += dataArrayPart->Count;
+		}
+		return result;
+	}
+	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray)
+	{
+		return static_cast<gsoap_eml2_3::eml23__FloatingPointConstantArray*>(arrayInput)->Count;
+	}
+	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
+	{
+		gsoap_eml2_3::eml23__FloatingPointLatticeArray* latticeArray = static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray*>(arrayInput);
+		if (latticeArray->Offset.size() > 1) {
+			throw invalid_argument("The lattice array contains more than one offset.");
+		}
+		return static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray*>(arrayInput)->Offset[0]->Count + 1;
+	}
+	// *********** BOOLEAN ********
+	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray)
+	{
+		uint64_t result = 0;
+		for (auto dataArrayPart : static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(arrayInput)->Values->ExternalDataArrayPart) {
+			result += dataArrayPart->Count;
+		}
+		return result;
+	}
+	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray)
+	{
+		return static_cast<gsoap_eml2_3::eml23__BooleanConstantArray*>(arrayInput)->Count;
+	}
+	// *********** STRING ********
+	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__StringExternalArray)
+	{
+		uint64_t result = 0;
+		for (auto dataArrayPart : static_cast<gsoap_eml2_3::eml23__StringExternalArray*>(arrayInput)->Values->ExternalDataArrayPart) {
+			result += dataArrayPart->Count;
+		}
+		return result;
+	}
+	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__StringConstantArray)
+	{
+		return static_cast<gsoap_eml2_3::eml23__StringConstantArray*>(arrayInput)->Count;
+	}
+	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__StringXmlArray)
+	{
+		return static_cast<gsoap_eml2_3::eml23__StringXmlArray*>(arrayInput)->Value.size();
+	}
 
-	throw invalid_argument("The integer array type is not supported yet.");
+	throw invalid_argument("The array type is not supported yet.");
 }
 
 void AbstractObject::convertDorIntoRel(const DataObjectReference& dor)
@@ -1612,13 +1660,13 @@ EML2_NS::AbstractHdfProxy* AbstractObject::getOrCreateHdfProxyFromDataArrayPart(
 	return hdfProxy;
 }
 
-gsoap_resqml2_0_1::resqml20__IndexableElements AbstractObject::mapIndexableElement(gsoap_eml2_3::resqml22__IndexableElement toMap) const
+gsoap_resqml2_0_1::resqml20__IndexableElements AbstractObject::mapIndexableElement(gsoap_eml2_3::eml23__IndexableElement toMap) const
 {
 	size_t intVal = static_cast<size_t>(toMap);
 	if (intVal == 0) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__IndexableElements>(toMap);
 	}
-	else if (toMap == gsoap_eml2_3::resqml22__IndexableElement::intervals_x0020from_x0020datum || intVal == static_cast<size_t>(gsoap_eml2_3::resqml22__IndexableElement::lines)) {
+	else if (toMap == gsoap_eml2_3::eml23__IndexableElement::intervals_x0020from_x0020datum || intVal == static_cast<size_t>(gsoap_eml2_3::eml23__IndexableElement::lines)) {
 		throw std::invalid_argument("There is no mapping for this indexable element in RESQML2.0.1");
 	}
 	else if (intVal < 18) {

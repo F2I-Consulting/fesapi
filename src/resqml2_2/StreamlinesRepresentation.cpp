@@ -23,7 +23,7 @@ under the License.
 #include "../eml2/AbstractHdfProxy.h"
 
 #include "../resqml2/AbstractGridRepresentation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 #include "../resqml2/GenericFeatureInterpretation.h"
 #include "../resqml2/WellboreTrajectoryRepresentation.h"
 
@@ -177,7 +177,7 @@ void StreamlinesRepresentation::getNodeCountPerLine(uint32_t * nodeCountPerPolyl
 
 void StreamlinesRepresentation::setGeometry(
 	uint32_t const * nodeCountPerPolyline, double const * xyzPoints,
-	EML2_NS::AbstractHdfProxy* hdfProxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+	EML2_NS::AbstractHdfProxy* hdfProxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (nodeCountPerPolyline == nullptr) {
 		throw invalid_argument("The nodeCountPerPolyline cannot be null.");

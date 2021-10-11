@@ -28,22 +28,17 @@ const char* PropertySet::XML_NS = "resqml20";
 const char* PropertySet::XML_TAG = "PropertySet";
 
 PropertySet::PropertySet(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
-	bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_eml2_3::resqml22__TimeSetKind timeSetKind)
+	bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml20__TimeSetKind timeSetKind)
 {
 	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be NULL.");
-	}
-	if (timeSetKind == gsoap_eml2_3::resqml22__TimeSetKind::single_x0020time_x0020series) {
-		throw invalid_argument("The single time series time set kind is not supported in V2.0.1");
 	}
 
 	// proxy constructor
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREPropertySet(repo->getGsoapContext());
 	static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->HasMultipleRealizations = hasMultipleRealizations;
 	static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->HasSinglePropertyKind = hasSinglePropertyKind;
-	static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->TimeSetKind = timeSetKind == gsoap_eml2_3::resqml22__TimeSetKind::single_x0020time
-		? gsoap_resqml2_0_1::resqml20__TimeSetKind::single_x0020time
-		: static_cast<resqml20__TimeSetKind>(static_cast<std::underlying_type<gsoap_eml2_3::resqml22__TimeSetKind>::type>(timeSetKind) - 1);
+	static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->TimeSetKind = timeSetKind;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -176,19 +171,16 @@ bool PropertySet::hasSinglePropertyKind() const
 	return static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->HasSinglePropertyKind;
 }
 
-gsoap_eml2_3::resqml22__TimeSetKind PropertySet::getTimeSetKind() const
+gsoap_resqml2_0_1::resqml20__TimeSetKind PropertySet::getTimeSetKind() const
 {
-	resqml20__TimeSetKind kind = static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->TimeSetKind;
-	return kind == gsoap_resqml2_0_1::resqml20__TimeSetKind::single_x0020time
-		? gsoap_eml2_3::resqml22__TimeSetKind::single_x0020time
-		: static_cast<gsoap_eml2_3::resqml22__TimeSetKind>(static_cast<std::underlying_type<resqml20__TimeSetKind>::type>(kind) + 1);
+	return static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->TimeSetKind;
 }
 
 std::vector<COMMON_NS::DataObjectReference> PropertySet::getAllPropertiesDors() const
 {
 	std::vector<COMMON_NS::DataObjectReference> result;
-	for (size_t i = 0; i < static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->Properties.size(); ++i) {
-		result.push_back(COMMON_NS::DataObjectReference(static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->Properties[i]));
+	for (auto* dor : static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->Properties) {
+		result.push_back(COMMON_NS::DataObjectReference(dor));
 	}
 
 	return result;

@@ -23,7 +23,8 @@ under the License.
 #include <limits>
 #include <math.h>
 
-#include "AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
+
 #include "MdDatum.h"
 #include "WellboreFrameRepresentation.h"
 
@@ -36,7 +37,7 @@ const char* WellboreTrajectoryRepresentation::XML_TAG = "WellboreTrajectoryRepre
 
 void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 	double const* inclinations, double const* azimuths, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
-	EML2_NS::AbstractHdfProxy* proxy, AbstractLocal3dCrs* localCrs)
+	EML2_NS::AbstractHdfProxy* proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();

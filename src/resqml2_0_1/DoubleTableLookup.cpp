@@ -21,10 +21,13 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
+#include "PropertyKind.h"
+
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* DoubleTableLookup::XML_TAG = "DoubleTableLookup";
 const char* DoubleTableLookup::XML_NS = "resqml20";
 
 DoubleTableLookup::DoubleTableLookup(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
@@ -41,114 +44,55 @@ DoubleTableLookup::DoubleTableLookup(COMMON_NS::DataObjectRepository* repo, cons
 	repo->addDataObject(this);
 }
 
-unsigned int DoubleTableLookup::getItemCount() const
+uint32_t DoubleTableLookup::getRowCount() const
 {
 	return static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1)->Value.size();
 }
 
-double DoubleTableLookup::getKeyAtIndex(unsigned int index) const
+COMMON_NS::DataObjectReference DoubleTableLookup::getPropertyKindDor(uint32_t columnIndex) const
 {
-	if (getItemCount() <= index) {
-		throw out_of_range("The index is out of range.");
+	RESQML2_0_1_NS::PropertyKind* proKind = nullptr;
+	if (columnIndex == 0) {
+		proKind = getRepository()->createPartial<RESQML2_0_1_NS::PropertyKind>("323df361-784e-4062-a346-ff4ba80a78f0", "ordinal number");
 	}
-
-	return (static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1)->Value)[index]->Key;
+	else if (columnIndex == 1) {
+		proKind = getRepository()->createPartial<RESQML2_0_1_NS::PropertyKind>("a818e404-dbc9-41e0-adc8-455eafc5b8d1", "None");
+	}
+	else {
+		throw out_of_range("The column index is out of range");
+	}
+	return COMMON_NS::DataObjectReference(proKind->newResqmlReference());
 }
 
-double DoubleTableLookup::getValueAtIndex(unsigned int index) const
+std::vector<std::string> DoubleTableLookup::getStringValues(uint32_t columnIndex) const
 {
-	if (getItemCount() <= index) {
-		throw out_of_range("The index is out of range.");
-	}
-
-	return (static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1)->Value)[index]->Value;
+	throw logic_error("The column does not contain string values");
 }
 
-bool DoubleTableLookup::containsKey(double key)
+std::vector<double> DoubleTableLookup::getDoubleValues(uint32_t columnIndex) const
 {
-	_resqml20__DoubleTableLookup* stringLookup = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1);
+	std::vector<double> result;
 
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (stringLookup->Value[i]->Key == key) {
-			return true;
+	_resqml20__DoubleTableLookup* doubleTableLookup = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1);
+
+	if (columnIndex == 0) {
+		for (auto* pair : doubleTableLookup->Value) {
+			result.push_back(pair->Key);
 		}
 	}
-
-	return false;
-}
-
-double DoubleTableLookup::getValueAtKey(double key)
-{
-	_resqml20__DoubleTableLookup* stringLookup = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1);
-
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (stringLookup->Value[i]->Key == key) {
-			return stringLookup->Value[i]->Value;
+	else if (columnIndex == 1) {
+		for (auto* pair : doubleTableLookup->Value) {
+			result.push_back(pair->Value);
 		}
 	}
-
-	return std::numeric_limits<double>::quiet_NaN();
-}
-
-void DoubleTableLookup::addValue(double key, double value)
-{
-	_resqml20__DoubleTableLookup* stringLookup = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1);
-
-	resqml20__DoubleLookup* xmlValue = soap_new_resqml20__DoubleLookup(gsoapProxy2_0_1->soap);
-	xmlValue->Key = key;
-	xmlValue->Value = value;
-	stringLookup->Value.push_back(xmlValue);
-}
-
-void DoubleTableLookup::setValue(double key, double value)
-{
-	_resqml20__DoubleTableLookup* stringLookup = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1);
-
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (stringLookup->Value[i]->Key == key) {
-			stringLookup->Value[i]->Value = value;
-			return;
-		}
-	}
-}
-
-double DoubleTableLookup::getMinimumValue()
-{
-	_resqml20__DoubleTableLookup* stringLookup = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1);
-
-	int64_t min = (std::numeric_limits<int64_t>::max)();
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (min > stringLookup->Value[i]->Key) {
-			min = stringLookup->Value[i]->Key;
-		}
-	}
-
-	return min;
-}
-
-double DoubleTableLookup::getMaximumValue()
-{
-	_resqml20__DoubleTableLookup* stringLookup = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1);
-
-	int64_t max = (std::numeric_limits<int64_t>::min)();
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (max < stringLookup->Value[i]->Key) {
-			max = stringLookup->Value[i]->Key;
-		}
-	}
-
-	return max;
-}
-
-std::map<double, double> DoubleTableLookup::getMap() const
-{
-	map<double, double> result;
-
-	_resqml20__DoubleTableLookup* stringLookup = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1);
-
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		result[stringLookup->Value[i]->Key] = stringLookup->Value[i]->Value;
+	else {
+		throw out_of_range("The column index is out of range");
 	}
 
 	return result;
+}
+
+std::vector<int64_t> DoubleTableLookup::getInt64Values(uint32_t columnIndex) const
+{
+	throw logic_error("The column does not contain integer values");
 }

@@ -23,9 +23,9 @@ under the License.
 #include "H5public.h"
 
 #include "../eml2/AbstractHdfProxy.h"
+#include "../eml2/AbstractLocal3dCrs.h"
+#include "../eml2/ReferencePointInALocalEngineeringCompoundCrs.h"
 
-#include "../resqml2/AbstractLocal3dCrs.h"
-#include "../resqml2/MdDatum.h"
 #include "../resqml2/WellboreTrajectoryRepresentation.h"
 #include "../resqml2/WellboreInterpretation.h"
 
@@ -36,7 +36,7 @@ using namespace gsoap_resqml2_0_1;
 const char* DeviationSurveyRepresentation::XML_TAG = "DeviationSurveyRepresentation";
 const char* DeviationSurveyRepresentation::XML_NS = "resqml20";
 
-DeviationSurveyRepresentation::DeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const string& guid, const std::string& title, bool isFinal, RESQML2_NS::MdDatum* mdInfo)
+DeviationSurveyRepresentation::DeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const string& guid, const std::string& title, bool isFinal, EML2_NS::ReferencePointInALocalEngineeringCompoundCrs* mdInfo)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The interpretation cannot be nullptr.");
@@ -54,8 +54,8 @@ DeviationSurveyRepresentation::DeviationSurveyRepresentation(RESQML2_NS::Wellbor
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	if (dynamic_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
-		rep->MdUom = static_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
+	if (dynamic_cast<EML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
+		rep->MdUom = static_cast<EML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
 	}
 
 	interp->getRepository()->addDataObject(this);
@@ -122,9 +122,9 @@ void DeviationSurveyRepresentation::setGeometry(double const* firstStationLocati
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "inclinations", inclinations, &dim, 1);
 }
 
-RESQML2_NS::MdDatum* DeviationSurveyRepresentation::getMdDatum() const
+EML2_NS::ReferencePointInALocalEngineeringCompoundCrs* DeviationSurveyRepresentation::getMdDatum() const
 {
-	return getRepository()->getDataObjectByUuid<RESQML2_NS::MdDatum>(getMdDatumDor().getUuid());
+	return getRepository()->getDataObjectByUuid<EML2_NS::ReferencePointInALocalEngineeringCompoundCrs>(getMdDatumDor().getUuid());
 }
 
 uint64_t DeviationSurveyRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
@@ -185,7 +185,7 @@ void DeviationSurveyRepresentation::getAzimuths(double* values) const
 	}
 }
 
-void DeviationSurveyRepresentation::setMdDatum(RESQML2_NS::MdDatum * mdDatum)
+void DeviationSurveyRepresentation::setMdDatum(EML2_NS::ReferencePointInALocalEngineeringCompoundCrs * mdDatum)
 {
 	if (mdDatum == nullptr) {
 		throw invalid_argument("The md Datum is missing.");
@@ -315,5 +315,5 @@ void DeviationSurveyRepresentation::loadTargetRelationships()
 {
 	AbstractRepresentation::loadTargetRelationships();
 
-	convertDorIntoRel<RESQML2_NS::MdDatum>(getMdDatumDor());
+	convertDorIntoRel<EML2_NS::ReferencePointInALocalEngineeringCompoundCrs>(getMdDatumDor());
 }

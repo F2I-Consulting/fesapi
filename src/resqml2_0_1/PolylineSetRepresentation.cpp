@@ -26,7 +26,7 @@ under the License.
 #include <hdf5.h>
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
@@ -83,7 +83,7 @@ PolylineSetRepresentation::PolylineSetRepresentation(RESQML2_NS::AbstractFeature
 void PolylineSetRepresentation::pushBackGeometryPatch(
 				unsigned int const* nodeCountPerPolyline, double const* nodes,
 				unsigned int polylineCount, bool allPolylinesClosedFlag,
-				EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+				EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -139,7 +139,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 void PolylineSetRepresentation::pushBackGeometryPatch(
 				unsigned int const* nodeCountPerPolyline, double const* nodes,
 				unsigned int polylineCount, bool * polylineClosedFlags,
-				EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+				EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();

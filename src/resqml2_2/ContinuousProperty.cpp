@@ -19,6 +19,7 @@ under the License.
 #include "ContinuousProperty.h"
 
 #include <limits>
+#include <algorithm>
 
 #include "../common/EnumStringMapper.h"
 
@@ -34,7 +35,7 @@ using namespace gsoap_eml2_3;
 const char* ContinuousProperty::XML_NS = "resqml22";
 
 void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+	gsoap_eml2_3::eml23__IndexableElement attachmentKind,
 	std::vector<int> dimensions)
 {
 	gsoapProxy2_3 = soap_new_resqml22__ContinuousProperty(rep->getGsoapContext());
@@ -57,7 +58,7 @@ void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const st
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropKind,
+	gsoap_eml2_3::eml23__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropKind,
 	std::vector<int> dimensions)
 {
 	init(rep, guid, title, attachmentKind, dimensions);
@@ -68,7 +69,7 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropKind,
+	gsoap_eml2_3::eml23__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropKind,
 	std::vector<int> dimensions)
 {
 	init(rep, guid, title, attachmentKind, dimensions);
@@ -95,14 +96,42 @@ double ContinuousProperty::getMinimumValue(unsigned int index) const
 {
 	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
 
-	return prop->MinimumValue.size() <= index ? std::numeric_limits<double>::quiet_NaN() : prop->MinimumValue[index];
+	if (index > 0) {
+		return std::numeric_limits<double>::quiet_NaN();
+	}
+
+	double result = (std::numeric_limits<double>::max)();
+	for (auto const* patch : prop->ValuesForPatch) {
+		if (patch->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
+			return std::numeric_limits<double>::quiet_NaN();
+		}
+		if (static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray const*>(patch)->MinimumValue == nullptr) {
+			return std::numeric_limits<double>::quiet_NaN();
+		}
+		result = (std::min)(result, *(static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray const*>(patch)->MinimumValue));
+	}
+	return result;
 }
 
 double ContinuousProperty::getMaximumValue(unsigned int index) const
 {
 	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
 
-	return prop->MaximumValue.size() <= index ? std::numeric_limits<double>::quiet_NaN() : prop->MaximumValue[index];
+	if (index > 0) {
+		return std::numeric_limits<double>::quiet_NaN();
+	}
+
+	double result = -(std::numeric_limits<double>::max)();
+	for (auto const* patch : prop->ValuesForPatch) {
+		if (patch->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
+			return std::numeric_limits<double>::quiet_NaN();
+		}
+		if (static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray const*>(patch)->MaximumValue == nullptr) {
+			return std::numeric_limits<double>::quiet_NaN();
+		}
+		result = (std::max)(result, *(static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray const*>(patch)->MaximumValue));
+	}
+	return result;
 }
 
 void ContinuousProperty::setMinimumValue(double value, unsigned int index) const
@@ -129,10 +158,30 @@ void ContinuousProperty::setMaximumValue(double value, unsigned int index) const
 
 size_t ContinuousProperty::getMinimumValueSize() const
 {
-	return static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3)->MinimumValue.size();
+	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
+
+	for (auto const* patch : prop->ValuesForPatch) {
+		if (patch->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
+			return 0;
+		}
+		if (static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray const*>(patch)->MinimumValue == nullptr) {
+			return 0;
+		}
+	}
+	return 1;
 }
 
 size_t ContinuousProperty::getMaximumValueSize() const
 {
-	return static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3)->MaximumValue.size();
+	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
+
+	for (auto const* patch : prop->ValuesForPatch) {
+		if (patch->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
+			return 0;
+		}
+		if (static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray const*>(patch)->MaximumValue == nullptr) {
+			return 0;
+		}
+	}
+	return 1;
 }

@@ -33,7 +33,7 @@ namespace COMMON_NS
 	{
 	public:
 
-		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG_64 = 3, ULONG_64 = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
+		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG_64 = 3, ULONG_64 = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10, STRING = 11 };
 
 		DLL_IMPORT_OR_EXPORT virtual ~AbstractObject() = default;
 
@@ -922,17 +922,6 @@ namespace COMMON_NS
 		template <class T>
 		void readArrayNdOfNonHdf5IntegerValues(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, T * arrayOutput) const {
 			switch (arrayInput->soap_type()) {
-			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerRangeArray:
-			{
-				gsoap_eml2_3::eml23__IntegerRangeArray const* rangeArray = static_cast<gsoap_eml2_3::eml23__IntegerRangeArray const*>(arrayInput);
-				if (rangeArray->Value + rangeArray->Count > (std::numeric_limits<T>::max)()) {
-					throw std::range_error("The range integer values are superior to unsigned int maximum value.");
-				}
-				for (unsigned int i = 0; i < static_cast<T>(rangeArray->Count); ++i) {
-					arrayOutput[i] = i + static_cast<T>(rangeArray->Value);
-				}
-				break;
-			}
 			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
 			{
 				gsoap_eml2_3::eml23__IntegerConstantArray const* constantArray = static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(arrayInput);
@@ -1088,13 +1077,13 @@ namespace COMMON_NS
 		uint64_t getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const;
 
 		/**
-		 * Get the count of item in an array of integer
+		 * Get the count of item in an array
 		 *
-		 * @param [in,out]	arrayInput	The array of integer.
+		 * @param [in,out]	arrayInput	The array.
 		 *
-		 * @returns	The count of item in the array of integer.
+		 * @returns	The count of item in the array.
 		 */
-		uint64_t getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractIntegerArray * arrayInput) const;
+		uint64_t getCountOfArray(gsoap_eml2_3::eml23__AbstractValueArray * arrayInput) const;
 
 		/**
 		 * Converts a data object reference into a data object repository relationship.
@@ -1163,7 +1152,7 @@ namespace COMMON_NS
 		*/
 		gsoap_eml2_3::eml23__ExternalDataArrayPart* createExternalDataArrayPart(const std::string& datasetName, LONG64 count, EML2_NS::AbstractHdfProxy* proxy = nullptr) const;
 
-		gsoap_resqml2_0_1::resqml20__IndexableElements mapIndexableElement(gsoap_eml2_3::resqml22__IndexableElement toMap) const;
+		gsoap_resqml2_0_1::resqml20__IndexableElements mapIndexableElement(gsoap_eml2_3::eml23__IndexableElement toMap) const;
 
 	private:
 		/** The variable which holds the format for all exported Energistics DataObjects. */

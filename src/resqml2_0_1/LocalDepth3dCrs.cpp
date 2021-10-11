@@ -25,6 +25,7 @@ using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* LocalDepth3dCrs::XML_NS = "resqml20";
+const char* LocalDepth3dCrs::XML_TAG = "LocalDepth3dCrs";
 
 void LocalDepth3dCrs::init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,

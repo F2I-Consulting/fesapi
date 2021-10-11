@@ -67,7 +67,7 @@ namespace RESQML2_2_NS
 		 *								is empty, then it is assumed this property is a scalar one.
 		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * propKind,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * propKind,
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**
@@ -91,7 +91,7 @@ namespace RESQML2_2_NS
 		 *								is empty, then it is assumed this property is a scalar one.
 		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * propKind,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * propKind,
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**
@@ -144,7 +144,7 @@ namespace RESQML2_2_NS
 		 *									is empty, then it is assumed this property is a scalar one.
 		 */
 		void init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, std::vector<int> dimensions = std::vector<int>());
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, std::vector<int> dimensions = std::vector<int>());
 
 		size_t getMinimumValueSize() const;
 		size_t getMaximumValueSize() const;

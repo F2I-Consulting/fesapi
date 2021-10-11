@@ -26,13 +26,13 @@ under the License.
 #include "H5public.h"
 
 #include "../eml2/AbstractHdfProxy.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 
 #include "AbstractFeatureInterpretation.h"
 #include "RepresentationSetRepresentation.h"
 #include "AbstractValuesProperty.h"
 #include "PointsProperty.h"
 #include "SubRepresentation.h"
-#include "AbstractLocal3dCrs.h"
 
 using namespace RESQML2_NS;
 using namespace std;
@@ -106,7 +106,7 @@ gsoap_eml2_3::resqml22__Seismic3dCoordinates* AbstractRepresentation::getSeismic
 }
 
 gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointGeometryPatch2_0_1(uint32_t patchIndex,
-	double const * points, AbstractLocal3dCrs const* localCrs, uint64_t const* numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy)
+	double const * points, EML2_NS::AbstractLocal3dCrs const* localCrs, uint64_t const* numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -152,7 +152,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointG
 }
 
 gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::createPointGeometryPatch2_2(uint32_t patchIndex,
-	double const * points, AbstractLocal3dCrs const* localCrs, uint64_t const* numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy)
+	double const * points, EML2_NS::AbstractLocal3dCrs const* localCrs, uint64_t const* numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -198,10 +198,10 @@ gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::createPointGeomet
 	}
 }
 
-AbstractLocal3dCrs* AbstractRepresentation::getLocalCrs(unsigned int patchIndex) const
+EML2_NS::AbstractLocal3dCrs* AbstractRepresentation::getLocalCrs(unsigned int patchIndex) const
 {
 	auto dor = getLocalCrsDor(patchIndex);
-	return dor.isEmpty() ? nullptr : getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(dor.getUuid());
+	return dor.isEmpty() ? nullptr : getRepository()->getDataObjectByUuid<EML2_NS::AbstractLocal3dCrs>(dor.getUuid());
 }
 
 COMMON_NS::DataObjectReference AbstractRepresentation::getLocalCrsDor(unsigned int patchIndex) const
@@ -344,7 +344,7 @@ bool AbstractRepresentation::isInSingleLocalCrs() const
 	if (patchCount < 2) {
 		return true;
 	}
-	AbstractLocal3dCrs const* localCrsRef = getLocalCrs(0);
+	EML2_NS::AbstractLocal3dCrs const* localCrsRef = getLocalCrs(0);
 
 	for (unsigned int patchIndex = 1; patchIndex < patchCount; ++patchIndex) {
 		if (getLocalCrs(patchIndex) != localCrsRef) {
@@ -361,7 +361,7 @@ bool AbstractRepresentation::isInSingleGlobalCrs() const
 	if (patchCount < 2) {
 		return true;
 	}
-	AbstractLocal3dCrs const* localCrs = getLocalCrs(0);
+	EML2_NS::AbstractLocal3dCrs const* localCrs = getLocalCrs(0);
 	const uint64_t epsgCode = (localCrs != nullptr && localCrs->isProjectedCrsDefinedWithEpsg()) ? localCrs->getProjectedCrsEpsgCode() : (std::numeric_limits<uint64_t>::max)();
 
 	for (unsigned int patchIndex = 1; patchIndex < patchCount; ++patchIndex) {
@@ -450,7 +450,7 @@ void AbstractRepresentation::loadTargetRelationships()
 	for (unsigned int patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
 		dor = getLocalCrsDor(patchIndex);
 		if (!dor.isEmpty()) {
-			convertDorIntoRel<RESQML2_NS::AbstractLocal3dCrs>(dor);
+			convertDorIntoRel<EML2_NS::AbstractLocal3dCrs>(dor);
 		}
 	}
 

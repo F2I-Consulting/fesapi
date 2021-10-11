@@ -37,7 +37,7 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT CommentProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::CommentProperty(partialObject) {}
 
 		CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * propKind);
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::PropertyKind * propKind);
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.

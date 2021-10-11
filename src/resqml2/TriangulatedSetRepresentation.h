@@ -62,7 +62,7 @@ namespace RESQML2_NS
 		 * 										@c nullptr (default value), then the repository default
 		 * 										local CRS will be used.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackTrianglePatch(unsigned int nodeCount, double const * nodes, unsigned int triangleCount, unsigned int const * triangleNodeIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackTrianglePatch(unsigned int nodeCount, double const * nodes, unsigned int triangleCount, unsigned int const * triangleNodeIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
 		 * Gets the triangle count in a given patch of this representation.

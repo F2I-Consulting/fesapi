@@ -23,8 +23,8 @@ under the License.
 #include "common/DataObjectRepository.h"
 
 #include "eml2/AbstractHdfProxy.h"
+#include "eml2/LocalDepth3dCrs.h"
 
-#include "resqml2/LocalDepth3dCrs.h"
 #include "resqml2/BoundaryFeature.h"
 
 using namespace std;

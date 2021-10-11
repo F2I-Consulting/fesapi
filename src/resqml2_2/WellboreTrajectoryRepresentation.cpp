@@ -23,11 +23,12 @@ under the License.
 
 #include "H5public.h"
 
-#include "../resqml2/AbstractLocal3dCrs.h"
-#include "../resqml2/MdDatum.h"
+#include "../eml2/AbstractHdfProxy.h"
+#include "../eml2/AbstractLocal3dCrs.h"
+#include "../eml2/ReferencePointInALocalEngineeringCompoundCrs.h"
+
 #include "../resqml2/WellboreFrameRepresentation.h"
 #include "../resqml2/WellboreInterpretation.h"
-#include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_2_NS;
@@ -36,7 +37,7 @@ using namespace COMMON_NS;
 
 const char* WellboreTrajectoryRepresentation::XML_NS = "resqml22";
 
-WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo)
+WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const string & guid, const std::string & title, EML2_NS::ReferencePointInALocalEngineeringCompoundCrs * mdInfo)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The represented wellbore interpretation cannot be null.");
@@ -69,7 +70,7 @@ void WellboreTrajectoryRepresentation::setMinimalGeometry(double startMd, double
 	rep->FinishMd = endMd;
 }
 
-void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (controlPoints == nullptr) {
 		throw invalid_argument("The control points are missing.");
@@ -118,7 +119,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, 
 }
 
 void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
-	EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+	EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (controlPointParameters == nullptr) {
 		throw invalid_argument("The control points parameters are missing.");
@@ -147,7 +148,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, 
 
 void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 	double const* tangentVectors, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
-	EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+	EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (tangentVectors == nullptr) {
 		throw invalid_argument("The tangent vectors parameter is missing.");
@@ -334,10 +335,10 @@ void WellboreTrajectoryRepresentation::getTangentVectors(double* tangentVectors)
 	hdfProxy->readArrayNdOfDoubleValues(daPart->PathInExternalFile, tangentVectors);
 }
 
-void WellboreTrajectoryRepresentation::setMdDatum(RESQML2_NS::MdDatum * mdDatum)
+void WellboreTrajectoryRepresentation::setMdDatum(EML2_NS::ReferencePointInALocalEngineeringCompoundCrs * mdDatum)
 {
 	if (mdDatum == nullptr) {
-		throw invalid_argument("The md Datum is missing.");
+		throw invalid_argument("The MD Datum is missing.");
 	}
 
 	static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3)->MdDatum = mdDatum->newEml23Reference();

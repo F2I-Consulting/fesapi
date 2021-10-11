@@ -35,7 +35,7 @@ using namespace gsoap_resqml2_0_1;
 const char* ContinuousProperty::XML_NS = "resqml20";
 
 void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+	gsoap_eml2_3::eml23__IndexableElement attachmentKind,
 	std::vector<int> dimensions)
 {
 	if (rep == nullptr) {
@@ -59,7 +59,7 @@ void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const st
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, resqml20__ResqmlPropertyKind energisticsPropertyKind,
+	gsoap_eml2_3::eml23__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, resqml20__ResqmlPropertyKind energisticsPropertyKind,
 	std::vector<int> dimensions)
 {
 	init(rep, guid, title, attachmentKind, dimensions);
@@ -72,7 +72,7 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropKind,
+	gsoap_eml2_3::eml23__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropKind,
 	std::vector<int> dimensions)
 {
 	init(rep, guid, title, attachmentKind, dimensions);
@@ -83,7 +83,7 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, resqml20__ResqmlPropertyKind energisticsPropertyKind,
+	gsoap_eml2_3::eml23__IndexableElement attachmentKind, const std::string & nonStandardUom, resqml20__ResqmlPropertyKind energisticsPropertyKind,
 	std::vector<int> dimensions)
 {
 	init(rep, guid, title, attachmentKind, dimensions);
@@ -97,7 +97,7 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropKind,
+	gsoap_eml2_3::eml23__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropKind,
 	std::vector<int> dimensions)
 {
 	init(rep, guid, title, attachmentKind, dimensions);

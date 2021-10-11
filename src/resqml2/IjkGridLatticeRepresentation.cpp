@@ -23,7 +23,7 @@ under the License.
 
 #include "AbstractFeature.h"
 #include "AbstractFeatureInterpretation.h"
-#include "AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 #include "AbstractValuesProperty.h"
 
 using namespace std;
@@ -111,7 +111,7 @@ double IjkGridLatticeRepresentation::getZOriginInGlobalCrs() const
 		return result;
 	}
 	// Only one patch is allowed for an IJK Grid lattice
-	RESQML2_NS::AbstractLocal3dCrs const * localCrs = getLocalCrs(0);
+	EML2_NS::AbstractLocal3dCrs const * localCrs = getLocalCrs(0);
 	if (localCrs->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORELocalTime3dCrs) {
 		return result;
 	}

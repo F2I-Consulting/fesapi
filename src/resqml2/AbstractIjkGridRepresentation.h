@@ -828,7 +828,7 @@ namespace RESQML2_NS
 		*  - first : the split coordinate line index
 		*  - second : all grid columns (identified by their indices: i fastest, j slowest) which are incident to (and consequently affected by) this split coordinate line
 		*
-		* Example : split info set to => {empty, empty, ..., {{10, {51, 23}}}, empty, {{12, {51, 23}}, {15, {22}}}, empty}
+		* Example : split info set to => {empty, empty, {{10, {51, 23}}}, empty, {{12, {51, 23}}, {15, {22}}}, empty}
 		* This grid has 3 split coordinate lines (10, 12 and 15) which are related to two pillars (2 and 4).
 		* On the pillar 2, only a single split coordinate line (10) affects two columns (51, 23).
 		* On the pillar 4, two split coordinate lines exist (12 and 15). The split coordinate line 12 affects two columns (51 and 23). The split coordinate line 15 affects a single column (22).

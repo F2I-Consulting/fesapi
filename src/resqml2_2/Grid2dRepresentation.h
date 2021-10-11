@@ -101,12 +101,12 @@ namespace RESQML2_2_NS
 			double xOrigin, double yOrigin, double zOrigin,
 			double xOffsetInFastestDirection, double yOffsetInFastestDirection, double zOffsetInFastestDirection,
 			double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
-			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
+			double spacingInFastestDirection, double spacingInSlowestDirection, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT void setGeometryAsArray2dOfExplicitZ(
 			double * zValues,
 			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
-			RESQML2_NS::Grid2dRepresentation * supportingGrid2dRepresentation, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr,
+			RESQML2_NS::Grid2dRepresentation * supportingGrid2dRepresentation, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr,
 			unsigned int startIndexI = 0, unsigned int startIndexJ = 0,
 			int indexIncrementI = 1, int indexIncrementJ = 1) final;
 
@@ -115,7 +115,7 @@ namespace RESQML2_2_NS
 			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
 			double originX, double originY, double originZ,
 			double offsetIX, double offsetIY, double offsetIZ, double spacingI,
-			double offsetJX, double offsetJY, double offsetJZ, double spacingJ, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
+			double offsetJX, double offsetJY, double offsetJZ, double spacingJ, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 
 		COMMON_NS::DataObjectReference getSupportingRepresentationDor() const final;
 
@@ -183,7 +183,7 @@ namespace RESQML2_2_NS
 			double xOrigin, double yOrigin, double zOrigin,
 			double xOffsetInFastestDirection, double yOffsetInFastestDirection, double zOffsetInFastestDirection,
 			double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
-			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs * localCrs);
+			double spacingInFastestDirection, double spacingInSlowestDirection, EML2_NS::AbstractLocal3dCrs * localCrs);
 
 		/**
 		 * Creates a geometry for a grid 2d representation which derives from another existing grid 2d
@@ -216,7 +216,7 @@ namespace RESQML2_2_NS
 		 * @returns	Null if it fails, else the new array 2D of explicit z coordinate.
 		 */
 		gsoap_eml2_3::resqml22__PointGeometry* createArray2dOfExplicitZ(
-			unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs * localCrs,
+			unsigned int patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
 			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
 			RESQML2_NS::Grid2dRepresentation * supportingRepresentation,
 			unsigned int startGlobalIndex = 0,
@@ -248,7 +248,7 @@ namespace RESQML2_2_NS
 		 * @returns	Null if it fails, else the new array 2D of explicit z coordinate.
 		 */
 		gsoap_eml2_3::resqml22__PointGeometry* createArray2dOfExplicitZ(
-			unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs * localCrs,
+			unsigned int patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
 			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
 			double originX, double originY, double originZ,
 			double offsetIX, double offsetIY, double offsetIZ, double spacingI,

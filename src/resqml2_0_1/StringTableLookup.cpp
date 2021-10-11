@@ -21,10 +21,13 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
+#include "PropertyKind.h"
+
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* StringTableLookup::XML_TAG = "StringTableLookup";
 const char* StringTableLookup::XML_NS = "resqml20";
 
 StringTableLookup::StringTableLookup(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
@@ -41,113 +44,58 @@ StringTableLookup::StringTableLookup(COMMON_NS::DataObjectRepository* repo, cons
 	repo->addDataObject(this);
 }
 
-unsigned int StringTableLookup::getItemCount() const
+uint32_t StringTableLookup::getRowCount() const
 {
 	return static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1)->Value.size();
 }
 
-long StringTableLookup::getKeyAtIndex(unsigned int index) const
+COMMON_NS::DataObjectReference StringTableLookup::getPropertyKindDor(uint32_t columnIndex) const
 {
-	if (getItemCount() <= index) {
-		throw out_of_range("The index is out of range.");
+	RESQML2_0_1_NS::PropertyKind* proKind = nullptr;
+	if (columnIndex == 0) {
+		proKind = getRepository()->createPartial<RESQML2_0_1_NS::PropertyKind>("323df361-784e-4062-a346-ff4ba80a78f0", "ordinal number");
+	}
+	else if (columnIndex == 1) {
+		proKind = getRepository()->createPartial<RESQML2_0_1_NS::PropertyKind>("c1bb9d28-6d72-4690-a233-285bf7cf24d8", "value string");
+	}
+	else {
+		throw out_of_range("The column index is out of range");
+	}
+	return COMMON_NS::DataObjectReference(proKind->newResqmlReference());
+}
+
+std::vector<std::string> StringTableLookup::getStringValues(uint32_t columnIndex) const
+{
+	if (columnIndex != 1) {
+		throw logic_error("Only the column at index 1 does contain string values");
 	}
 
-	return (static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1)->Value)[index]->Key;
-}
+	std::vector<std::string> result;
 
-std::string StringTableLookup::getStringValueAtIndex(unsigned int index) const
-{
-	if (getItemCount() <= index) {
-		throw out_of_range("The index is out of range.");
+	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
+	for (auto const* pair : stringLookup->Value) {
+		result.push_back(pair->Value);
 	}
 
-	return (static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1)->Value)[index]->Value;
+	return result;
 }
 
-bool StringTableLookup::containsKey(long longValue)
+std::vector<double> StringTableLookup::getDoubleValues(uint32_t columnIndex) const
 {
-	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
+	throw logic_error("The column does not contain floating point values");
+}
 
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (stringLookup->Value[i]->Key == longValue) {
-			return true;
-		}
+std::vector<int64_t> StringTableLookup::getInt64Values(uint32_t columnIndex) const
+{
+	if (columnIndex != 0) {
+		throw logic_error("Only the column at index 0 does contain string values");
 	}
 
-	return false;
-}
-
-std::string StringTableLookup::getStringValue(long longValue)
-{
-	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
-
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (stringLookup->Value[i]->Key == longValue) {
-			return stringLookup->Value[i]->Value;
-		}
-	}
-
-	return "";
-}
-
-void StringTableLookup::addValue(const string & strValue, long longValue)
-{
-	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
-
-	resqml20__StringLookup* xmlValue = soap_new_resqml20__StringLookup(gsoapProxy2_0_1->soap);
-	xmlValue->Key = longValue;
-	xmlValue->Value = strValue;
-	stringLookup->Value.push_back(xmlValue);
-}
-
-void StringTableLookup::setValue(const string & strValue, long longValue)
-{
-	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
-
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (stringLookup->Value[i]->Key == longValue) {
-			stringLookup->Value[i]->Value = strValue;
-			return;
-		}
-	}
-}
-
-int64_t StringTableLookup::getMinimumValue()
-{
-	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
-
-	int64_t min = (std::numeric_limits<int64_t>::max)();
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (min > stringLookup->Value[i]->Key) {
-			min = stringLookup->Value[i]->Key;
-		}
-	}
-
-	return min;
-}
-
-int64_t StringTableLookup::getMaximumValue()
-{
-	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
-
-	int64_t max = (std::numeric_limits<int64_t>::min)();
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (max < stringLookup->Value[i]->Key) {
-			max = stringLookup->Value[i]->Key;
-		}
-	}
-
-	return max;
-}
-
-unordered_map<long, string> StringTableLookup::getMap() const
-{
-	unordered_map<long, string> result;
+	std::vector<int64_t> result;
 
 	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
-
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		result[stringLookup->Value[i]->Key] = stringLookup->Value[i]->Value;
+	for (auto const* pair : stringLookup->Value) {
+		result.push_back(pair->Key);
 	}
 
 	return result;

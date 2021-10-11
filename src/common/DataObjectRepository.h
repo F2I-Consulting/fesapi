@@ -28,10 +28,15 @@ under the License.
 namespace EML2_NS
 {
 	class AbstractHdfProxy;
+	class AbstractLocal3dCrs;
 	class Activity;
 	class ActivityTemplate;
+	class ColumnBasedTable;
 	class GraphicalInformationSet;
+	class LocalDepth3dCrs;
+	class LocalTime3dCrs;
 	class PropertyKind;
+	class ReferencePointInALocalEngineeringCompoundCrs;
 	class TimeSeries;
 }
 
@@ -40,7 +45,6 @@ namespace RESQML2_NS
 	class AbstractFeature;
 	class AbstractFeatureInterpretation;
 	class AbstractIjkGridRepresentation;
-	class AbstractLocal3dCrs;
 	class AbstractOrganizationInterpretation;
 	class AbstractRepresentation;
 	class AbstractSeismicLineFeature;
@@ -70,9 +74,6 @@ namespace RESQML2_NS
 	class IjkGridLatticeRepresentation;
 	class IjkGridNoGeometryRepresentation;
 	class IjkGridParametricRepresentation;
-	class LocalDepth3dCrs;
-	class LocalTime3dCrs;
-	class MdDatum;
 	class Model;
 	class NonSealedSurfaceFrameworkRepresentation;
 	class PlaneSetRepresentation;
@@ -500,7 +501,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the default CRS if it is defined, else null.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractLocal3dCrs* getDefaultCrs() const { return defaultCrs; }
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* getDefaultCrs() const { return defaultCrs; }
 
 		/**
 		 * Sets a default CRS for writing. It will be used in all writing methods if no explicit CRS is
@@ -508,7 +509,7 @@ namespace COMMON_NS
 		 *
 		 * @param [in]	crs	If non-null, the default CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT void setDefaultCrs(RESQML2_NS::AbstractLocal3dCrs* crs) { defaultCrs = crs; }
+		DLL_IMPORT_OR_EXPORT void setDefaultCrs(EML2_NS::AbstractLocal3dCrs* crs) { defaultCrs = crs; }
 
 		/**
 		 * Gets the default HDF5 file proxy for writing. It is used in all writing methods if no
@@ -542,6 +543,8 @@ namespace COMMON_NS
 			return all[index];\
 		}
 
+		GETTER_DATAOBJECTS(EML2_NS::LocalDepth3dCrs, LocalDepth3dCrs)
+		GETTER_DATAOBJECTS(EML2_NS::LocalTime3dCrs, LocalTime3dCrs)
 		GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 		GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)
 
@@ -562,8 +565,6 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(RESQML2_NS::IjkGridParametricRepresentation, IjkGridParametricRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::IjkGridExplicitRepresentation, IjkGridExplicitRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::IjkGridLatticeRepresentation, IjkSeismicCubeGridRepresentation)
-		GETTER_DATAOBJECTS(RESQML2_NS::LocalDepth3dCrs, LocalDepth3dCrs)
-		GETTER_DATAOBJECTS(RESQML2_NS::LocalTime3dCrs, LocalTime3dCrs)
 		GETTER_DATAOBJECTS(RESQML2_NS::Model, Model)
 		GETTER_DATAOBJECTS(RESQML2_NS::PointSetRepresentation, PointSetRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, AllPolylineRepresentation)
@@ -820,7 +821,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local depth 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
@@ -852,7 +853,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local depth 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
@@ -885,7 +886,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local depth 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
@@ -918,7 +919,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local depth 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
@@ -951,7 +952,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local time 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
@@ -985,7 +986,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local time 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
@@ -1020,7 +1021,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local time 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
@@ -1055,7 +1056,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local time 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
@@ -1063,17 +1064,17 @@ namespace COMMON_NS
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
 
 		/**
-		 * @brief	Creates a measured depth (MD) datum into this repository
+		 * @brief	Creates a reference point (such as a MD datum) into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
-		 * @param 	  	guid					 	The guid to set to the MD datum. If empty then a new
+		 * @param 	  	guid					 	The guid to set to the reference point. If empty then a new
 		 * 											guid will be generated.
-		 * @param 	  	title					 	The title to set to the MD datum. If empty then
+		 * @param 	  	title					 	The title to set to the reference point. If empty then
 		 * 											\"unknown\" title will be set.
-		 * @param [in]	locCrs					 	The local 3d CRS associated to this datum if non-null,
+		 * @param [in]	locCrs					 	The local 3d CRS associated to this reference point if non-null,
 		 * 											else the default local 3d CRS.
-		 * @param 	  	originKind				 	The reference location of the MD datum.
+		 * @param 	  	originKind				 	The reference location of the reference point.
 		 * @param 	  	referenceLocationOrdinal1	The first reference location ordinal relative to the
 		 * 											local 3d CRS.
 		 * @param 	  	referenceLocationOrdinal2	The second reference location ordinal relative to the
@@ -1081,10 +1082,10 @@ namespace COMMON_NS
 		 * @param 	  	referenceLocationOrdinal3	The third reference location ordinal relative to the
 		 * 											local 3d CRS.
 		 *
-		 * @returns	A pointer to the new MD datum.
+		 * @returns	A pointer to the new reference point.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::MdDatum* createMdDatum(const std::string & guid, const std::string & title,
-			RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__WellboreDatumReference originKind,
+		DLL_IMPORT_OR_EXPORT EML2_NS::ReferencePointInALocalEngineeringCompoundCrs* createReferencePointInALocalEngineeringCompoundCrs(const std::string & guid, const std::string & title,
+			EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__WellboreDatumReference originKind,
 			double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3);
 
 		//************ FEATURE ***************
@@ -1966,18 +1967,16 @@ namespace COMMON_NS
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p interp or @p mdInfo is @c nullptr.
 		 *
-		 * @param [in]	interp	The represented wellbore interpretation. It cannot be null.
-		 * @param 	  	guid  	The guid to set to the wellbore trajectory representation. If empty then
-		 * 						a new guid will be generated.
-		 * @param 	  	title 	The title to set to the wellbore trajectory representation. If empty then
-		 * 						\"unknown\" title will be set.
-		 * @param [in]	mdInfo	The MD information of the trajectory, mainly the well reference point.
-		 * 						The unit of measure used for the mdInfo coordinates must also be used for
-		 * 						the start and end MD of the trajectory. It cannot be null.
+		 * @param [in]	interp		The represented wellbore interpretation. It cannot be null.
+		 * @param 	  	guid  		The guid to set to the wellbore trajectory representation. If empty then
+		 * 							a new guid will be generated.
+		 * @param 	  	title 		The title to set to the wellbore trajectory representation. If empty then
+		 * 							\"unknown\" title will be set.
+		 * @param [in]	mdDatum		The MD datum of the trajectory, mainly the well reference point. It cannot be null.
 		 *
 		 * @returns	A pointer to the new wellbore trajectory representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::MdDatum* mdInfo);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, EML2_NS::ReferencePointInALocalEngineeringCompoundCrs* mdDatum);
 
 		/**
 		 * Creates a wellbore trajectory representation (with an existing deviation survey as its
@@ -2005,19 +2004,19 @@ namespace COMMON_NS
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt> or <tt>mdInfo ==
 		 * 												nullptr</tt>.
 		 *
-		 * @param [in]	interp 	The represented interpretation. It cannot be null.
-		 * @param 	  	guid   	The guid to set to the deviation survey representation. If empty then a
-		 * 						new guid will be generated.
-		 * @param 	  	title  	The title to set to the deviation survey representation. If empty then
-		 * 						\"unknown\" title will be set.
-		 * @param 	  	isFinal	Used to indicate that this is a final version of the deviation survey
-		 * 						(true), as distinct from the interim interpretations (false).
-		 * @param [in]	mdInfo 	The MD datum that refers this deviation survey representation. It
-		 * 							cannot be null.
+		 * @param [in]	interp 		The represented interpretation. It cannot be null.
+		 * @param 	  	guid   		The guid to set to the deviation survey representation. If empty then a
+		 * 							new guid will be generated.
+		 * @param 	  	title  		The title to set to the deviation survey representation. If empty then
+		 * 							\"unknown\" title will be set.
+		 * @param 	  	isFinal		Used to indicate that this is a final version of the deviation survey
+		 * 							(true), as distinct from the interim interpretations (false).
+		 * @param [in]	refPoint 	The reference point which acts as a datum for this deviation survey representation.
+		 *							It canot be null.
 		 *
 		 * @returns	A pointer to the new deviation survey representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, const bool& isFinal, RESQML2_NS::MdDatum* mdInfo);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, bool isFinal, EML2_NS::ReferencePointInALocalEngineeringCompoundCrs* refPoint);
 
 		/**
 		 * @brief	Creates a wellbore frame representation into this repository
@@ -2066,7 +2065,7 @@ namespace COMMON_NS
 			RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 			double seismicReferenceDatum,
 			double weatheringVelocity,
-			RESQML2_NS::LocalTime3dCrs* crs);
+			EML2_NS::LocalTime3dCrs* crs);
 
 		/**
 		 * Creates a wellbore marker frame representation into this repository
@@ -2592,7 +2591,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new double table lookup.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::DoubleTableLookup* createDoubleTableLookup(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT EML2_NS::ColumnBasedTable* createDoubleTableLookup(const std::string & guid, const std::string & title);
 
 		/**
 		 * @brief	Creates a string table lookup into this repository
@@ -2606,10 +2605,10 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new string table lookup.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::StringTableLookup* createStringTableLookup(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT EML2_NS::ColumnBasedTable* createStringTableLookup(const std::string & guid, const std::string & title);
 
 		/**
-		 * Creates a property kind into this repository
+		 * Creates a RESQML2.0.1 only property kind into this repository
 		 *
 		 * @param 	guid						 	The guid to set to the property kind. If empty then a
 		 * 											new guid will be generated.
@@ -2630,7 +2629,7 @@ namespace COMMON_NS
 			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
-		 * @brief	Creates a property kind into this repository
+		 * @brief	Creates a RESQML2.0.1 only property kind into this repository
 		 *
 		 * @exception	std::invalid_argument	If <tt>parentPropType == nullptr</tt>.
 		 *
@@ -2651,7 +2650,7 @@ namespace COMMON_NS
 			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * parentPropType);
 
 		/**
-		 * Creates a property kind into this repository.
+		 * Creates a RESQML2.0.1 only property kind into this repository.
 		 *
 		 * @param 	guid						 	The guid to set to the property kind. If empty then a
 		 * 											new guid will be generated.
@@ -2671,7 +2670,7 @@ namespace COMMON_NS
 			const std::string & namingSystem, const std::string & nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
-		 * Creates a property kind into this repository
+		 * Creates a RESQML2.0.1 only property kind into this repository
 		 *
 		 * @param 	  	guid		  	The guid to set to the property kind. If empty then a new guid
 		 * 								will be generated.
@@ -2689,7 +2688,8 @@ namespace COMMON_NS
 			const std::string & namingSystem, const std::string & nonStandardUom, EML2_NS::PropertyKind * parentPropType);
 
 		/**
-		 * @brief	Creates an EML2.1 property kind into this repository
+		 * @brief	Creates a property kind starting with EML2.1 version into this repository.
+		 *			Don't use it at all if you want a full RESQML2.0.1 EPC!!! Use other same name methods instead please.
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
@@ -2730,7 +2730,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new property set.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertySet* createPropertySet(const std::string & guid, const std::string & title,
-			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_eml2_3::resqml22__TimeSetKind timeSetKind);
+			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml20__TimeSetKind timeSetKind);
 
 		/**
 		 * Creates a comment property (which is of a well known Energistics property kind) into this
@@ -2753,7 +2753,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new comment property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
 		 * Creates a comment property (which is of a local property kind) into this repository
@@ -2775,7 +2775,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new comment property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropType);
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropType);
 
 		/**
 		 * Creates a continuous property (which is of well known Energistics unit of measure and
@@ -2805,7 +2805,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new continuous property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**
@@ -2835,7 +2835,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new continuous property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropType,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * localPropType,
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**
@@ -2865,7 +2865,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new continuous property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, std::string nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, std::string nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**
@@ -2894,7 +2894,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new continuous property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropType,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, const std::string & nonStandardUom, EML2_NS::PropertyKind * localPropType,
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**
@@ -2920,7 +2920,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new discrete property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**
@@ -2945,7 +2945,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new discrete property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropType,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropType,
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**
@@ -2973,7 +2973,7 @@ namespace COMMON_NS
 		 * @returns A pointer to new categorical property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::StringTableLookup* strLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, RESQML2_NS::StringTableLookup* strLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**
@@ -3000,7 +3000,7 @@ namespace COMMON_NS
 		 * @returns A pointer to new categorical property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::DoubleTableLookup* dblLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, RESQML2_NS::DoubleTableLookup* dblLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**
@@ -3027,7 +3027,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new categorical property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropType,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropType,
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**
@@ -3055,7 +3055,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new categorical property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * localPropType,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * localPropType,
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**
@@ -3079,7 +3079,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new points property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PointsProperty* createPointsProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::AbstractLocal3dCrs* localCrs,
 			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
@@ -3103,7 +3103,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new points property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::PointsProperty* createPointsProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::AbstractLocal3dCrs* localCrs,
 			EML2_NS::PropertyKind * localPropType);
 
 		//************* ACTIVITIES ***********
@@ -3592,7 +3592,7 @@ namespace COMMON_NS
 		std::unique_ptr<RESQML2_0_1_NS::PropertyKindMapper> propertyKindMapper;
 
 		EML2_NS::AbstractHdfProxy* defaultHdfProxy;
-		RESQML2_NS::AbstractLocal3dCrs* defaultCrs;
+		EML2_NS::AbstractLocal3dCrs* defaultCrs;
 
 		std::vector<COMMON_NS::DataFeeder*> dataFeeders;
 

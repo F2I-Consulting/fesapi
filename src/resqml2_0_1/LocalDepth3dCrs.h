@@ -18,12 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/LocalDepth3dCrs.h"
+#include "../eml2/LocalDepth3dCrs.h"
 
 namespace RESQML2_0_1_NS
 {
 	/** A local depth 3D crs. */
-	class LocalDepth3dCrs final : public RESQML2_NS::LocalDepth3dCrs
+	class LocalDepth3dCrs final : public EML2_NS::LocalDepth3dCrs
 	{
 	private:
 
@@ -63,7 +63,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * 
 		 */
-		DLL_IMPORT_OR_EXPORT LocalDepth3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::LocalDepth3dCrs(partialObject) {}
+		DLL_IMPORT_OR_EXPORT LocalDepth3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EML2_NS::LocalDepth3dCrs(partialObject) {}
 
 		/**
 		 * Creates a local depth 3d CRS which is fully identified by means of EPSG code.
@@ -192,7 +192,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		LocalDepth3dCrs(gsoap_resqml2_0_1::_resqml20__LocalDepth3dCrs* fromGsoap): RESQML2_NS::LocalDepth3dCrs(fromGsoap) {}
+		LocalDepth3dCrs(gsoap_resqml2_0_1::_resqml20__LocalDepth3dCrs* fromGsoap): EML2_NS::LocalDepth3dCrs(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
 		~LocalDepth3dCrs() = default;
@@ -206,5 +206,10 @@ namespace RESQML2_0_1_NS
 		* Get the standard XML namespace for serializing this data object.
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
+
+		/** The standard XML tag without XML namespace for serializing this data object. */
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};
 }

@@ -105,7 +105,7 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& faceIndicesCumulativeCountPerCell,
 			uint64_t faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
-			gsoap_resqml2_0_1::resqml20__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
+			gsoap_resqml2_0_1::resqml20__CellShape cellShape, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 
 		/**
 		* The standard XML namespace for serializing this data object.
@@ -143,7 +143,7 @@ namespace RESQML2_2_NS
 		* @param nodeCountPerFace					The constant node count per face.
 		*/
 		void setConstantCellShapeGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
-			uint64_t pointCount, uint64_t faceCount, RESQML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
+			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, uint64_t faceCountPerCell,
 			const std::string& nodeIndicesPerFace, uint64_t nodeCountPerFace) final;
 	};

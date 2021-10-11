@@ -3154,6 +3154,26 @@ namespace RESQML2_NS
 		void loadSplitInformation();
 		/** Unloads the split information from memory. */
 		void unloadSplitInformation();
+		
+		/**
+		 * @brief	Checks either a given column edge is splitted or not. This method requires that you
+		 * 			have already loaded the split information.
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::invalid_argument	If the split information is not loaded.
+		 * @exception	std::out_of_range	 	If @p iColumn is strictly greater than getICellCount().
+		 * @exception	std::out_of_range	 	If @p iColumn is strictly greater than getJCellCount().
+		 * @exception	std::out_of_range	 	If @p edge is strictly greater than 3.
+		 *
+		 * @param 	iColumn	The I index of the column.
+		 * @param 	jColumn	The J index of the column.
+		 * @param 	edge   	0 for edge from i to i+1, lower j connection; 1 for edge from j to j+1, upper
+		 * 					i connection; 2 for edge from i+1 to i, upper j connection; 3 for edge from
+		 * 					j+1 to j, lower i connection.
+		 *
+		 * @returns	True if the column edge is splitted, false if not.
+		 */
+		bool isColumnEdgeSplitted(unsigned int iColumn, unsigned int jColumn, unsigned int edge) const;
 
 		/**
 		 * @brief	Gets the XYZ point index in the HDF dataset from the corner of a cell. This method

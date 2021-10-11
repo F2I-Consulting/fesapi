@@ -63,8 +63,9 @@ namespace RESQML2_0_1_NS
 		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 *
 		 * @param 	timestamp	The timestamp to push back.
+		 * @param 	yearOffset	Indicates that the dateTime attribute must be translated according to this value.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackTimestamp(const tm & timestamp) final;
+		DLL_IMPORT_OR_EXPORT void pushBackTimestamp(const tm & timestamp, LONG64 yearOffset = 0) final;
 		
 		/**
 		 * Gets the index of a given timestamp in this time series.
@@ -73,10 +74,11 @@ namespace RESQML2_0_1_NS
 		 * @exception	std::out_of_range	If @p timestamp has not been found in this time series.
 		 *
 		 * @param 	timestamp	The timestamp we look for.
+		 * @param 	yearOffset	Indicates that the dateTime attribute must be translated according to this value.
 		 *
 		 * @returns	The index of @p timestamp in this time series.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(time_t timestamp) const final;
+		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(time_t timestamp, LONG64 yearOffset = 0) const final;
 
 		/**
 		 * Gets the index of a given timestamp in this time series.
@@ -85,10 +87,11 @@ namespace RESQML2_0_1_NS
 		 * @exception	std::out_of_range	If @p timestamp has not been found in this time series.
 		 *
 		 * @param 	timestamp	The timestamp we look for.
+		 * @param 	yearOffset	Indicates that the dateTime attribute must be translated according to this value.
 		 *
 		 * @returns	The index of @p timestamp in this time series.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(const tm & timestamp) const final;
+		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(const tm & timestamp, LONG64 yearOffset = 0) const final;
 
 		/**
 		 * Get the count of timestamps in this time series.

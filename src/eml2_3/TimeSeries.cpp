@@ -42,19 +42,24 @@ TimeSeries::TimeSeries(COMMON_NS::DataObjectRepository* repo, const string & gui
 	repo->addDataObject(this);
 }
 
-void TimeSeries::pushBackTimestamp(const tm & timestamp)
+void TimeSeries::pushBackTimestamp(const tm & timestamp, LONG64 yearOffset)
 {
 	gsoap_eml2_3::eml23__GeologicTime* ts = gsoap_eml2_3::soap_new_eml23__GeologicTime(gsoapProxy2_3->soap);
 	ts->DateTime = timestamp;
+	if (yearOffset != 0) {
+		ts->AgeOffsetAttribute = (LONG64*)soap_malloc(gsoapProxy2_3->soap, sizeof(LONG64));
+		*ts->AgeOffsetAttribute = yearOffset;
+	}
 	static_cast<gsoap_eml2_3::_eml23__TimeSeries*>(gsoapProxy2_3)->Time.push_back(ts);
 }
 
-unsigned int TimeSeries::getTimestampIndex(time_t timestamp) const
+unsigned int TimeSeries::getTimestampIndex(time_t timestamp, LONG64 yearOffset) const
 {
 	gsoap_eml2_3::_eml23__TimeSeries* timeSeries = static_cast<gsoap_eml2_3::_eml23__TimeSeries*>(gsoapProxy2_3);
 
 	for (size_t result = 0; result < timeSeries->Time.size(); ++result) {
-		if (timeTools::timegm(timeSeries->Time[result]->DateTime) == timestamp) {
+		if (timeTools::timegm(timeSeries->Time[result]->DateTime) == timestamp &&
+			((yearOffset == 0 && timeSeries->Time[result]->AgeOffsetAttribute == nullptr) || (timeSeries->Time[result]->AgeOffsetAttribute!= nullptr && *timeSeries->Time[result]->AgeOffsetAttribute == yearOffset))) {
 			return result;
 		}
 	}
@@ -62,18 +67,19 @@ unsigned int TimeSeries::getTimestampIndex(time_t timestamp) const
 	throw out_of_range("The timestamp has not been found in the allowed range.");
 }
 
-unsigned int TimeSeries::getTimestampIndex(const tm & timestamp) const
+unsigned int TimeSeries::getTimestampIndex(const tm & timestamp, LONG64 yearOffset) const
 {
 	gsoap_eml2_3::_eml23__TimeSeries* timeSeries = static_cast<gsoap_eml2_3::_eml23__TimeSeries*>(gsoapProxy2_3);
 
 	for (size_t result = 0; result < timeSeries->Time.size(); ++result) {
 		// Very basic equality check between two tm
-		if (timeSeries->Time[result]->DateTime.tm_year == timestamp.tm_year &&
+		if ((timeSeries->Time[result]->DateTime.tm_year == timestamp.tm_year &&
 			timeSeries->Time[result]->DateTime.tm_mon == timestamp.tm_mon &&
 			timeSeries->Time[result]->DateTime.tm_mday == timestamp.tm_mday &&
 			timeSeries->Time[result]->DateTime.tm_hour == timestamp.tm_hour &&
 			timeSeries->Time[result]->DateTime.tm_min == timestamp.tm_min &&
-			timeSeries->Time[result]->DateTime.tm_sec == timestamp.tm_sec) {
+			timeSeries->Time[result]->DateTime.tm_sec == timestamp.tm_sec) &&
+			((yearOffset == 0 && timeSeries->Time[result]->AgeOffsetAttribute == nullptr) || (timeSeries->Time[result]->AgeOffsetAttribute != nullptr && *timeSeries->Time[result]->AgeOffsetAttribute == yearOffset))) {
 			return result;
 		}
 	}

@@ -24,7 +24,7 @@ under the License.
 #include <hdf5.h>
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 #include "../resqml2/AbstractValuesProperty.h"
 #include "../eml2/AbstractHdfProxy.h"
 
@@ -224,7 +224,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatch(unsigned int patchInde
 			{
 				auto const* daPart = static_cast<resqml22__Point3dExternalArray*>(truncatedGeom->AdditionalGridPoints[0]->Points)->Coordinates->ExternalDataArrayPart[0];
 				EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
-				xyzPoints += getXyzPointCountOfPatch(patchIndex) - static_cast<_resqml22__TruncatedIjkGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationNodeCount;
+				xyzPoints += (getXyzPointCountOfPatch(patchIndex) - static_cast<_resqml22__TruncatedIjkGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationNodeCount) * 3;
 				hdfProxy->readArrayNdOfDoubleValues(daPart->PathInExternalFile, xyzPoints);
 			}
 			else {
@@ -241,7 +241,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 	double const * parameters, double const * controlPoints, double const * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short const * pillarKind, EML2_NS::AbstractHdfProxy * proxy,
 	unsigned long splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
-	unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (pillarKind == nullptr) {
 		throw invalid_argument("The kind of the coordinate lines cannot be null.");
@@ -317,7 +317,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, EML2_NS::AbstractHdfProxy* proxy,
 	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (pillarKind.empty())
 		throw invalid_argument("The kind of the coordinate lines cannot be null.");
@@ -360,7 +360,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, EML2_NS::AbstractHdfProxy* proxy,
 	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (controlPointCountPerPillar < 1) {
 		throw invalid_argument("The max count of control points per coordinate line of the ijk grid cannot be less than one.");
@@ -458,7 +458,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy* proxy,
 	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (pillarKind < 0 || pillarKind > 5) {
 		throw range_error("The kind of the coordinate lines is out of range.");

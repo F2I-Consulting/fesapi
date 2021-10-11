@@ -450,7 +450,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& faceIndicesCumulativeCountPerCell,
 			uint64_t faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
-			gsoap_resqml2_0_1::resqml20__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
+			gsoap_resqml2_0_1::resqml20__CellShape cellShape, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
 		/**
 		 * Sets the geometry and creates corresponding HDF5 datasets.
@@ -515,7 +515,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void setGeometry(unsigned char * cellFaceIsRightHanded, double * points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t * faceIndicesCumulativeCountPerCell,
 			uint64_t faceCount, uint64_t * nodeIndicesPerFace, uint64_t * nodeIndicesCumulativeCountPerFace,
-			gsoap_resqml2_0_1::resqml20__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
+			gsoap_resqml2_0_1::resqml20__CellShape cellShape, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		 * @brief Sets a geometry which is only defined by means of tetrahedra using some existing HDF5 dataset.
@@ -558,7 +558,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setTetrahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
-			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		 * @brief Sets a geometry which is only defined by means of tetrahedra and creates corresponding HDF5
@@ -598,7 +598,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setTetrahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
-			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
+			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		* Sets a geometry which is only defined by means of hexahedra using some existing HDF5 dataset.
@@ -607,7 +607,7 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void setHexahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
-			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		* Sets a geometry which is only defined by means of hexahedra and creates corresponding HDF5 datasets.
@@ -616,7 +616,7 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void setHexahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
-			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
+			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final {return 1;}
 
@@ -639,7 +639,7 @@ namespace RESQML2_NS
 		* @param nodeCountPerFace					The constant node count per face.
 		*/
 		void virtual setConstantCellShapeGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
-			uint64_t pointCount, uint64_t faceCount, RESQML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
+			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, uint64_t faceCountPerCell,
 			const std::string& nodeIndicesPerFace, uint64_t nodeCountPerFace) = 0;
 
@@ -657,7 +657,7 @@ namespace RESQML2_NS
 		* @param nodeCountPerFace					The constant node count per face.
 		*/
 		void setConstantCellShapeGeometry(unsigned char * cellFaceIsRightHanded, double * points,
-			uint64_t pointCount, uint64_t faceCount, RESQML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
+			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t faceCountPerCell,
 			uint64_t * nodeIndicesPerFace, uint64_t nodeCountPerFace);
 

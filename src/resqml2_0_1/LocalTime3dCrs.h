@@ -18,12 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/LocalTime3dCrs.h"
+#include "../eml2/LocalTime3dCrs.h"
 
 namespace RESQML2_0_1_NS
 {
 	/** A local time 3D crs. */
-	class LocalTime3dCrs final : public RESQML2_NS::LocalTime3dCrs
+	class LocalTime3dCrs final : public EML2_NS::LocalTime3dCrs
 	{
 	private:
 
@@ -65,7 +65,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * 
 		 */
-		DLL_IMPORT_OR_EXPORT LocalTime3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::LocalTime3dCrs(partialObject) {}
+		DLL_IMPORT_OR_EXPORT LocalTime3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EML2_NS::LocalTime3dCrs(partialObject) {}
 
 		/**
 		 * @brief	Creates a local depth 3d CRS which is fully identified by means of EPSG code.
@@ -203,7 +203,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		LocalTime3dCrs(gsoap_resqml2_0_1::_resqml20__LocalTime3dCrs* fromGsoap): RESQML2_NS::LocalTime3dCrs(fromGsoap) {}
+		LocalTime3dCrs(gsoap_resqml2_0_1::_resqml20__LocalTime3dCrs* fromGsoap): EML2_NS::LocalTime3dCrs(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
 		~LocalTime3dCrs() = default;
@@ -221,5 +221,10 @@ namespace RESQML2_0_1_NS
 		* Get the standard XML namespace for serializing this data object.
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
+
+		/** The standard XML tag without XML namespace for serializing this data object. */
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};
 }

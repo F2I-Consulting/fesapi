@@ -57,7 +57,7 @@ namespace RESQML2_0_1_NS
 		 * 						The unit of measure used for the mdInfo coordinates must also be used for
 		 * 						the start and end MD of the trajectory. It cannot be null.
 		 */
-		WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::MdDatum* mdInfo);
+		WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, EML2_NS::ReferencePointInALocalEngineeringCompoundCrs* mdInfo);
 
 		/**
 		 * Creates an instance with an existing deviation survey as its origin.
@@ -89,18 +89,18 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints,
 			double startMd, double endMd,
 			unsigned int controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+			EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 		
 		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints,
 			double const* tangentVectors, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT int getGeometryKind() const final;
 
-		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum * mdDatum) final;
+		DLL_IMPORT_OR_EXPORT void setMdDatum(EML2_NS::ReferencePointInALocalEngineeringCompoundCrs * mdDatum) final;
 
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getMdDatumDor() const final;
 

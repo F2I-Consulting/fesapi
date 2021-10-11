@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "SeismicWellboreFrameRepresentation.h"
 
-#include "../resqml2/LocalTime3dCrs.h"
+#include "../eml2/LocalTime3dCrs.h"
 #include "../resqml2/WellboreInterpretation.h"
 #include "../resqml2/WellboreTrajectoryRepresentation.h"
 
@@ -34,7 +34,7 @@ SeismicWellboreFrameRepresentation::SeismicWellboreFrameRepresentation(
 	RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 	double seismicReferenceDatum,
 	double weatheringVelocity,
-	RESQML2_NS::LocalTime3dCrs* crs)
+	EML2_NS::LocalTime3dCrs* crs)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The wellbore interpretation cannot be null.");

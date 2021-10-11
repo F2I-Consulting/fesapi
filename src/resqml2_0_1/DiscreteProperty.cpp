@@ -42,7 +42,7 @@ using namespace gsoap_resqml2_0_1;
 const char* DiscreteProperty::XML_NS = "resqml20";
 
 DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, resqml20__ResqmlPropertyKind energisticsPropertyKind,
+	gsoap_eml2_3::eml23__IndexableElement attachmentKind, resqml20__ResqmlPropertyKind energisticsPropertyKind,
 	std::vector<int> dimensions)
 {
 	if (rep == nullptr) {
@@ -70,7 +70,7 @@ DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, con
 }
 
 DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropKind,
+	gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropKind,
 	std::vector<int> dimensions)
 {
 	if (rep == nullptr) {

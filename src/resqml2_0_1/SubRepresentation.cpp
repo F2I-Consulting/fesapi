@@ -71,7 +71,7 @@ _resqml20__SubRepresentation* SubRepresentation::getSpecializedGsoapProxy() cons
 	return static_cast<_resqml20__SubRepresentation*>(gsoapProxy2_0_1);
 }
 
-void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t originIndex,
+void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t originIndex,
 	unsigned int elementCountInSlowestDimension,
 	unsigned int elementCountInMiddleDimension,
 	unsigned int elementCountInFastestDimension)
@@ -108,7 +108,7 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 	integerArray->Offset.push_back(offset);
 }
 
-void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, const std::string & elementDataset,
+void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount, const std::string & elementDataset,
 	int64_t nullValue, EML2_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset)
 {
 	if (proxy == nullptr) {
@@ -156,7 +156,7 @@ DiscreteProperty* SubRepresentation::getSupportingRepresentationIndicesDiscreteP
 	return getRepository()->getDataObjectByUuid<DiscreteProperty>(uuid[0]);
 }
 
-void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind0, gsoap_eml2_3::resqml22__IndexableElement elementKind1,
+void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind0, gsoap_eml2_3::eml23__IndexableElement elementKind1,
 	uint64_t elementCount,
 	uint64_t * elementIndices0, uint64_t * elementIndices1,
 	EML2_NS::AbstractHdfProxy * proxy)

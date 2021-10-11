@@ -30,7 +30,7 @@ using namespace gsoap_eml2_3;
 const char* PointsProperty::XML_NS = "resqml22";
 
 PointsProperty::PointsProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs, EML2_NS::PropertyKind * localPropKind)
+	gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::AbstractLocal3dCrs* localCrs, EML2_NS::PropertyKind * localPropKind)
 {
 	gsoapProxy2_3 = soap_new_resqml22__PointsProperty(rep->getGsoapContext());
 	_resqml22__PointsProperty* prop = static_cast<_resqml22__PointsProperty*>(gsoapProxy2_3);

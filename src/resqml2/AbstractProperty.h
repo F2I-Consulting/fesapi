@@ -23,6 +23,7 @@ under the License.
 namespace EML2_NS
 {
 	class AbstractHdfProxy;
+	class AbstractLocal3dCrs;
 	class PropertyKind;
 	class TimeSeries;
 }
@@ -80,7 +81,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The kind of elements on which the property values are attached to.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__IndexableElement getAttachmentKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__IndexableElement getAttachmentKind() const;
 
 		/**
 		 * Gets the number of patches in this values property. It should be the same count as the patch
@@ -181,7 +182,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	crs	The local CRS to associate with the current property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setLocalCrs(class AbstractLocal3dCrs * crs);
+		DLL_IMPORT_OR_EXPORT void setLocalCrs(EML2_NS::AbstractLocal3dCrs * crs);
 
 		/**
 		 * Gets the local CRS which is associated to this property.
@@ -189,7 +190,7 @@ namespace RESQML2_NS
 		 * @returns The local CRS which is associated to the current property if exists, null if not 
 		 * 			(usually for a property which is not CRS related).
 		 */
-		DLL_IMPORT_OR_EXPORT class AbstractLocal3dCrs* getLocalCrs() const;
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* getLocalCrs() const;
 
 		/**
 		 * Gets the data object reference of the local CRS which is associated to this property
@@ -263,6 +264,16 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void setTimeSeries(EML2_NS::TimeSeries * ts);
 
 		/**
+		 * Set a single associated timestamp for this property.
+		 *
+		 * @exception	invalid_argument	Regarding RESQML2.0.1, this method cannot be called if setTimeSeries has not been called before.
+		 *
+		 * @param [in]	timestamp	The singel timestamps to associate to this property
+		 * @param [in]	yearOffset	Indicates that the dateTime attribute must be translated according to this value.
+		 */
+		DLL_IMPORT_OR_EXPORT void setSingleTimestamp(time_t timestamp, LONG64 yearOffset = 0);
+
+		/**
 		 * Gets the time series which is associated to this property
 		 *
 		 * @returns	Null pointer if no time series is associated to this property. Otherwise returns the
@@ -277,39 +288,6 @@ namespace RESQML2_NS
 		 * 			data object reference of the associated time series.
 		 */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getTimeSeriesDor() const;
-
-		/**
-		 * @brief	Sets the timestamps of this property by means of an index in a time series
-		 *
-		 * @exception	invalid_argument	If @p ts is null or if the current property has no time index.
-		 *
-		 * @param [in]	startTimeIndex  	The first time index to set to this property.
-		 * @param [in]	countTimeIndices	The count of time indices to set to this property.
-		 * @param [in]	ts					The time series which contains the timestamps of this
-		 * 									property.
-		 * @param [in]	useInterval			(Optional) When UseInterval is true, the values are
-		 * 									associated with each time intervals between two consecutive time
-		 * 									entries instead of each individual time entry. As a consequence
-		 * 									the dimension of the value array corresponding to the time series
-		 * 									is the number of entry in the series minus one.
-		 */
-		DLL_IMPORT_OR_EXPORT void setTimeIndices(unsigned int startTimeIndex, unsigned int countTimeIndices, EML2_NS::TimeSeries* ts, bool useInterval = false);
-
-		/**
-		 * Get the time index of this property in its associated time series
-		 *
-		 * @exception	std::invalid_argument	If this property does not have any time index.
-		 *
-		 * @returns	The time index of this property.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTimeIndexStart() const;
-
-		/**
-		 * Get the time indices count of this property in its associated time series
-		 *
-		 * @returns	The time indices count of this property.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTimeIndicesCount() const;
 
 		/**
 		 * Check if the values are given at each time index or between each time index.

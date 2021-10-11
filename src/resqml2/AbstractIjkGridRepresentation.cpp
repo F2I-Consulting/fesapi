@@ -177,12 +177,6 @@ AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(COMMON_NS::DataObje
 	RESQML2_NS::AbstractColumnLayerGridRepresentation(false), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr)
 {
 	init(repo, guid, title, iCount, jCount, kCount, kGaps, proxy);
-
-#if WITH_RESQML2_2
-	if (gsoapProxy2_3 != nullptr) {
-		setInterpretation(repo->createPartial<RESQML2_2_NS::EarthModelInterpretation>("", "Unknown interp"));
-	}
-#endif
 }
 
 AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
@@ -1191,12 +1185,6 @@ uint64_t AbstractIjkGridRepresentation::getXyzPointIndexFromCellCorner(unsigned 
 {
 	if (splitInformation == nullptr || kCellIndexWithGapLayer == nullptr) {
 		throw invalid_argument("The split information must have been loaded first.");
-	}
-	if (iCell > getICellCount()) {
-		throw out_of_range("I Cell is out of range.");
-	}
-	if (jCell > getJCellCount()) {
-		throw out_of_range("J Cell is out of range.");
 	}
 	if (kCell > getKCellCount()) {
 		throw out_of_range("K Cell is out of range.");

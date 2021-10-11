@@ -16,17 +16,9 @@ Product and source code licensed by Genivia Inc., contact@genivia.com
 
 #include "gsoap_witsml1_4H.h"
 
-#if defined(__clang__)
-#elif defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic ignored "-Wcast-qual"
-#elif defined(_MSC_VER)
-#pragma warning(disable : 4706) /* assignment within conditional expression */
-#pragma warning(disable : 4458) /* eclaration hides class member */
-#endif
-
 namespace gsoap_witsml1_4 {
 
-SOAP_SOURCE_STAMP("@(#) gsoap_witsml1_4C.cpp ver 2.8.111E 2021-08-04 09:36:05 GMT")
+SOAP_SOURCE_STAMP("@(#) gsoap_witsml1_4C.cpp ver 2.8.111E 2021-09-09 15:15:42 GMT")
 
 
 #ifndef WITH_NOGLOBAL

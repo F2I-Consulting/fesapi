@@ -56,7 +56,7 @@ namespace RESQML2_2_NS
 			RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 			double seismicReferenceDatum,
 			double weatheringVelocity,
-			RESQML2_NS::LocalTime3dCrs* crs);
+			EML2_NS::LocalTime3dCrs* crs);
 
 		/**
 		* The standard XML namespace for serializing this data object.

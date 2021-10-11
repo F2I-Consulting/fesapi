@@ -21,8 +21,7 @@ under the License.
 #include <hdf5.h>
 
 #include "../eml2/AbstractHdfProxy.h"
-
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 
 using namespace RESQML2_NS;
 using namespace std;
@@ -34,8 +33,7 @@ uint64_t PointsProperty::getXyzPointCountOfAllPatches() const
 	uint64_t result = 0;
 
 	const unsigned int patchCount = getPatchCount();
-	for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex)
-	{
+	for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
 		result += getXyzPointCountOfPatch(patchIndex);
 	}
 
@@ -56,8 +54,7 @@ void PointsProperty::getXyzPointsOfAllPatches(double* xyzPoints) const
 {
 	const unsigned int patchCount = getPatchCount();
 	getXyzPointsOfPatch(0, xyzPoints);
-	for (unsigned int patchIndex = 1; patchIndex < patchCount; patchIndex++)
-	{
+	for (unsigned int patchIndex = 1; patchIndex < patchCount; patchIndex++) {
 		xyzPoints += getXyzPointCountOfPatch(patchIndex - 1) * 3;
 		getXyzPointsOfPatch(patchIndex, xyzPoints);
 	}

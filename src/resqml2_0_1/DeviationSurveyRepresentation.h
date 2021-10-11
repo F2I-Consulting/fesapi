@@ -62,7 +62,7 @@ namespace RESQML2_0_1_NS
 		 * 						distinct from the interim interpretations.
 		 * @param [in]	mdInfo 	The MD information of the survey, mainly the well reference point.
 		 */
-		DeviationSurveyRepresentation(class RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum * mdInfo);
+		DeviationSurveyRepresentation(class RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, bool isFinal, EML2_NS::ReferencePointInALocalEngineeringCompoundCrs * mdInfo);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
@@ -116,7 +116,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in]	mdDatum	The MD datum to set.
 		 */
-		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum * mdDatum);
+		DLL_IMPORT_OR_EXPORT void setMdDatum(EML2_NS::ReferencePointInALocalEngineeringCompoundCrs * mdDatum);
 
 		/**
 		 * Gets the DOR of the MD datum of this deviation survey representation.
@@ -130,7 +130,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns The MD datum of this deviation survey representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::MdDatum* getMdDatum() const;
+		DLL_IMPORT_OR_EXPORT EML2_NS::ReferencePointInALocalEngineeringCompoundCrs* getMdDatum() const;
 
 		/**
 		 * Checks whether this is a final version of the deviation survey, as distinct from the

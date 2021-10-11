@@ -184,7 +184,7 @@ namespace RESQML2_2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setGeometry(
 			uint32_t const * nodeCountPerPolyline, double const * xyzPoints,
-			EML2_NS::AbstractHdfProxy* hdfProxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr)  final;
+			EML2_NS::AbstractHdfProxy* hdfProxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr)  final;
 
 		//********************************
 		//*******  GRID INFO *************

@@ -24,7 +24,7 @@ under the License.
 #include <sstream>
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace RESQML2_2_NS;
@@ -60,7 +60,7 @@ COMMON_NS::DataObjectReference PlaneSetRepresentation::getLocalCrsDor(unsigned i
 	return COMMON_NS::DataObjectReference(result);
 }
 
-void PlaneSetRepresentation::pushBackHorizontalPlaneGeometryPatch(double zCoordinate, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+void PlaneSetRepresentation::pushBackHorizontalPlaneGeometryPatch(double zCoordinate, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -82,7 +82,7 @@ void PlaneSetRepresentation::pushBackTiltedPlaneGeometryPatch(
 	double x1, double y1, double z1,
 	double x2, double y2, double z2,
 	double x3, double y3, double z3,
-	RESQML2_NS::AbstractLocal3dCrs* localCrs)
+	EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();

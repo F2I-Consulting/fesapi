@@ -89,7 +89,7 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
 			unsigned int xyzPointCount, double const * xyzPoints,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 
 		/**
 		* The standard XML namespace for serializing this data object.
