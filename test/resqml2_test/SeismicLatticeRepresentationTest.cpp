@@ -17,11 +17,10 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/SeismicLatticeRepresentationTest.h"
-#include "../catch.hpp"
+
 #include "resqml2/SeismicLatticeFeature.h"
 #include "resqml2/GenericFeatureInterpretation.h"
 #include "resqml2/Grid2dRepresentation.h"
-#include "resqml2/LocalDepth3dCrs.h"
 #include "resqml2_test/LocalDepth3dCrsTest.h"
 
 using namespace std;

@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/HorizonInterpretationTest.h"
 
-#include "catch.hpp"
-
 #include "AbstractTest.h"
 
 #include "resqml2/BoundaryFeature.h"

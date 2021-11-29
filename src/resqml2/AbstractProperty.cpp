@@ -72,7 +72,7 @@ bool AbstractProperty::validate()
 		return validatePropertyKindAssociation(getEnergisticsPropertyKind201());
 	}
 	
-	return  validatePropertyKindAssociation(getPropertyKind());
+	return validatePropertyKindAssociation(getPropertyKind());
 }
 
 void AbstractProperty::setRepresentation(AbstractRepresentation * rep)
@@ -160,7 +160,7 @@ void AbstractProperty::setSingleTimestamp(time_t timestamp, LONG64 yearOffset)
 	if (gsoapProxy2_0_1 != nullptr) {
 		auto const* timeSeries = getTimeSeries();
 		if (timeSeries == nullptr) {
-			throw invalid_argument("When writing RESQML2.0 dataobject, you must first set the associated Time Series of this property first.");
+			throw invalid_argument("When writing RESQML2.0 dataobject, you must first set the associated Time Series of this property.");
 		}
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index = getTimeSeries()->getTimestampIndex(tmConversion, yearOffset);
 	}
@@ -171,6 +171,30 @@ void AbstractProperty::setSingleTimestamp(time_t timestamp, LONG64 yearOffset)
 			static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->Time->AgeOffsetAttribute = (LONG64*)soap_malloc(gsoapProxy2_3->soap, sizeof(LONG64));
 			*static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->Time->AgeOffsetAttribute = yearOffset;
 		}
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}
+
+time_t AbstractProperty::getSingleTimestamp() const
+{
+	if (gsoapProxy2_0_1 != nullptr) {
+		if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex == nullptr) {
+			return -1;
+		}
+
+		auto const* timeSeries = getTimeSeries();
+		if (timeSeries == nullptr) {
+			throw invalid_argument("There is no time series associated to this property although it has a time index. This is not allowed by the RESQML2.0 standard.");
+		}
+
+		return getTimeSeries()->getTimestamp(static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index);
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		return static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->Time == nullptr
+			? -1
+			: timeTools::timegm(static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->Time->DateTime);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -443,18 +467,22 @@ bool AbstractProperty::hasRealizationIndices() const
 	}
 }
 
-std::vector<unsigned int> AbstractProperty::getRealizationIndices() const
+std::vector<int64_t> AbstractProperty::getRealizationIndices() const
 {
 	if (!hasRealizationIndices()) {
 		throw invalid_argument("This property has not got any realization index");
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		return std::vector<unsigned int> {static_cast<unsigned int>(*static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->RealizationIndex)};
+		ULONG64 tmp = *static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->RealizationIndex;
+		if (tmp > static_cast<ULONG64>((std::numeric_limits<int64_t>::max)())) {
+			throw std::range_error("The realization index \"" + std::to_string(tmp) + "\" is out of the int64 range");
+		}
+		return std::vector<int64_t> {static_cast<int64_t>(tmp)};
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		std::vector<unsigned int> result(getCountOfArray(static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices));
-		readArrayNdOfUInt32Values(static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices, result.data());
+		std::vector<int64_t> result(getCountOfArray(static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices));
+		readArrayNdOfInt64Values(static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices, result.data());
 		return result;
 	}
 	else {
@@ -462,65 +490,35 @@ std::vector<unsigned int> AbstractProperty::getRealizationIndices() const
 	}
 }
 
-void AbstractProperty::setRealizationIndices(int64_t startRealizationIndex, int64_t countRealizationIndices)
+void AbstractProperty::setRealizationIndices(std::vector<int64_t> realizationIndices)
 {
-	if (countRealizationIndices == 0) {
-		throw std::invalid_argument("Cannot set zero realization index.");
-	}
-
-	if (gsoapProxy2_0_1 != nullptr) {
-		if (countRealizationIndices > 1) {
-			throw std::invalid_argument("RESQML 2.0.1 does not support more than one realization index per property.");
-		}
-		gsoap_resqml2_0_1::resqml20__AbstractProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1);
-		if (prop->RealizationIndex == nullptr) {
-			prop->RealizationIndex = static_cast<ULONG64*>(soap_malloc(prop->soap, sizeof(ULONG64)));
-		}
-		*prop->RealizationIndex = startRealizationIndex;
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		auto rangeArray = gsoap_eml2_3::soap_new_eml23__IntegerLatticeArray(gsoapProxy2_3->soap);
-		rangeArray->StartValue = startRealizationIndex;
-		rangeArray->Offset.push_back(gsoap_eml2_3::soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap));
-		rangeArray->Offset[0]->Value = 1;
-		rangeArray->Offset[0]->Count = countRealizationIndices - 1;
-		static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices = rangeArray;
-	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
-}
-
-void AbstractProperty::setRealizationIndices(const std::vector<unsigned int> & realizationIndices, EML2_NS::AbstractHdfProxy* hdfProxy)
-{
-	if (realizationIndices.empty()) {
-		throw std::invalid_argument("Cannot set zero realization index.");
-	}
-
 	if (gsoapProxy2_0_1 != nullptr) {
 		if (realizationIndices.size() > 1) {
 			throw std::invalid_argument("RESQML 2.0.1 does not support more than one realization index per property.");
 		}
-		setRealizationIndices(realizationIndices[0], 1);
+		gsoap_resqml2_0_1::resqml20__AbstractProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1);
+		if (realizationIndices.empty()) {
+			prop->RealizationIndex = nullptr;
+			return;
+		}
+		if (prop->RealizationIndex == nullptr) {
+			prop->RealizationIndex = static_cast<ULONG64*>(soap_malloc(prop->soap, sizeof(ULONG64)));
+		}
+		*prop->RealizationIndex = realizationIndices[0];
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		if (hdfProxy == nullptr) {
-			hdfProxy = getRepository()->getDefaultHdfProxy();
-			if (hdfProxy == nullptr) {
-				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-			}
+		gsoap_eml2_3::resqml22__AbstractProperty* prop = static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3);
+		if (realizationIndices.empty()) {
+			prop->RealizationIndices = nullptr;
+			return;
 		}
-		getRepository()->addRelationship(this, hdfProxy);
 
-		auto externalArray = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
-		externalArray->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write realization index null value in this method
-		externalArray->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
-		externalArray->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/RealizationIndices", realizationIndices.size(), hdfProxy));
-		static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices = externalArray;
-
-		// HDF
-		hsize_t numValues = realizationIndices.size();
-		hdfProxy->writeArrayNd(getHdfGroup(), "RealizationIndices", H5T_NATIVE_UINT, realizationIndices.data(), &numValues, 1);
+		auto* xmlArray = gsoap_eml2_3::soap_new_eml23__IntegerXmlArray(gsoapProxy2_3->soap);
+		xmlArray->CountPerValue = 1;
+		xmlArray->Values = std::to_string(realizationIndices[0]);
+		for (size_t i = 1; i < realizationIndices.size(); ++i) {
+			xmlArray->Values += " " + std::to_string(realizationIndices[i]);
+		}
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -552,7 +550,7 @@ COMMON_NS::AbstractObject::hdfDatatypeEnum AbstractProperty::getValuesHdfDatatyp
 	return hdfProxy->getHdfDatatypeInDataset(dsPath);
 }
 
-unsigned int AbstractProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const
+uint64_t AbstractProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
@@ -576,7 +574,7 @@ unsigned int AbstractProperty::getDimensionsCountOfPatch(unsigned int patchIndex
 	return hdfProxy->getDimensionCount(dsPath);
 }
 
-unsigned int AbstractProperty::getValuesCountOfPatch(unsigned int patchIndex) const
+int64_t AbstractProperty::getValuesCountOfPatch(unsigned int patchIndex) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;

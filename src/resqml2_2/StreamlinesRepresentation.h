@@ -77,7 +77,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The count of line contained in this streamlines representation.
 		*/
-		DLL_IMPORT_OR_EXPORT uint32_t getLineCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getLineCount() const final;
 
 		//********************************
 		//****  WELLBORE INFO ************
@@ -91,7 +91,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The count of wellbore trajectories.
 		 */
-		DLL_IMPORT_OR_EXPORT uint16_t getWellboreTrajectoryCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getWellboreTrajectoryCount() const final;
 
 		/**
 		 * Get the DOR of the wellbore trajectory located at a specific index of this streamlines representation.
@@ -103,7 +103,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The DOR of the wellbore trajectory at position @p index.
 		 */
-		COMMON_NS::DataObjectReference getWellboreTrajectoryDor(uint16_t index) const final;
+		COMMON_NS::DataObjectReference getWellboreTrajectoryDor(uint64_t index) const final;
 
 		/**
 		 * @brief	Gets all the wellbore indices which are injectors.
@@ -291,7 +291,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The count of grid representation.
 		 */
-		DLL_IMPORT_OR_EXPORT uint16_t getGridRepresentationCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getGridRepresentationCount() const final;
 
 		/**
 		 * Get the DOR of the grid representation located at a specific index of this streamlines representation.
@@ -303,7 +303,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The DOR of the grid representation at position @p index.
 		 */
-		COMMON_NS::DataObjectReference getGridRepresentationDor(uint16_t index) const final;
+		COMMON_NS::DataObjectReference getGridRepresentationDor(uint64_t index) const final;
 
 		/**
 		 * @copybrief AbstractRepresentation::getHdfProxyDor()

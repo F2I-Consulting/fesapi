@@ -64,7 +64,6 @@ under the License.
 #include "resqml2_0_1/WellboreFeature.h"
 #include "resqml2_0_1/WellboreInterpretation.h"
 #include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
-#include "resqml2_0_1/MdDatum.h"
 #include "resqml2_0_1/PolylineRepresentation.h"
 #include "resqml2_0_1/PropertyKind.h"
 #include "resqml2_0_1/WellboreMarker.h"
@@ -93,19 +92,21 @@ under the License.
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
 #include "resqml2_2/FluidBoundaryInterpretation.h"
-#include "resqml2_2/MdDatum.h"
 #include "resqml2_2/RockVolumeFeature.h"
 #include "resqml2_2/SeismicWellboreFrameRepresentation.h"
 #include "resqml2_2/ShotPointLineFeature.h"
 #include "resqml2_2/WellboreMarker.h"
 #include "resqml2_2/WellboreMarkerFrameRepresentation.h"
 #endif
+
 #include "resqml2/SealedVolumeFrameworkRepresentation.h"
 #include "resqml2/StratigraphicColumn.h"
 #include "resqml2/StratigraphicColumnRankInterpretation.h"
 #include "resqml2/GeologicUnitOccurrenceInterpretation.h"
 
 #include "eml2/AbstractHdfProxy.h"
+#include "eml2/ColumnBasedTable.h"
+#include "eml2/ReferencePointInALocalEngineeringCompoundCrs.h"
 #include "eml2/TimeSeries.h"
 
 #include "eml2_3/PropertyKind.h"
@@ -130,6 +131,11 @@ under the License.
 
 using namespace std;
 
+EML2_NS::AbstractLocal3dCrs* local3dCrs = nullptr;
+EML2_NS::AbstractLocal3dCrs* localTime3dCrs = nullptr;
+EML2_NS::PropertyKind* propType1 = nullptr;
+EML2_NS::PropertyKind* pwls3Length = nullptr;
+
 RESQML2_NS::BoundaryFeature* horizon1 = nullptr;
 RESQML2_NS::BoundaryFeature* horizon2 = nullptr;
 RESQML2_NS::BoundaryFeature* fault1 = nullptr;
@@ -147,15 +153,11 @@ RESQML2_NS::TriangulatedSetRepresentation* xPlusFrontierRep = nullptr;
 RESQML2_NS::TriangulatedSetRepresentation* yMinusFrontierRep = nullptr;
 RESQML2_NS::TriangulatedSetRepresentation* yPlusFrontierRep = nullptr;
 RESQML2_NS::WellboreTrajectoryRepresentation* w1i1TrajRep = nullptr;
-RESQML2_NS::LocalDepth3dCrs* local3dCrs = nullptr;
-RESQML2_NS::LocalTime3dCrs* localTime3dCrs = nullptr;
 RESQML2_NS::WellboreFeature* wellbore1 = nullptr;
 RESQML2_NS::WellboreInterpretation* wellbore1Interp1 = nullptr;
 RESQML2_NS::StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
 RESQML2_NS::SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
 RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid = nullptr;
-EML2_NS::PropertyKind* propType1 = nullptr;
-EML2_NS::PropertyKind* pwls3Length = nullptr;
 RESQML2_NS::DiscreteProperty* discreteProp1 = nullptr;
 RESQML2_NS::ContinuousProperty* contColMapContProp = nullptr;
 RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp = nullptr;
@@ -276,7 +278,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfP
 	wellbore1Interp1 = pck->createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
 
 	// Representation
-	RESQML2_NS::MdDatum* mdInfo = pck->createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", local3dCrs, gsoap_eml2_3::eml23__WellboreDatumReference::mean_x0020sea_x0020level, 275, 75, 0);
+	EML2_NS::ReferencePointInALocalEngineeringCompoundCrs* mdInfo = pck->createReferencePointInALocalEngineeringCompoundCrs("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", local3dCrs, gsoap_eml2_3::eml23__WellboreDatumReference::mean_x0020sea_x0020level, 275, 75, 0);
 
 	//Geometry	
 	w1i1TrajRep = pck->createWellboreTrajectoryRepresentation(wellbore1Interp1, "acd2cdcf-bb5d-48da-bd0e-9aeff3e52180", "Wellbore1 Interp1 TrajRep", mdInfo);
@@ -304,7 +306,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfP
 #endif
 
 	RESQML2_NS::DiscreteProperty* discreteProp = pck->createDiscreteProperty(w1i1FrameRep, "61c2917c-2334-4205-824e-d4f4a0cf6d8e", "Wellbore1 Interp1 FrameRep IntervalIndex",
-		gsoap_eml2_3::resqml22__IndexableElement::intervals, unitNumberPropType);
+		gsoap_eml2_3::eml23__IndexableElement::intervals, unitNumberPropType);
 	char unitNumbers[5] = { 0, 1, 2, 3, 4 };
 	discreteProp->pushBackCharHdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
 #if WITH_RESQML2_2
@@ -412,7 +414,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 	// creating a new discrete property of type propType1 without associating it to a discrete color map.
 	// Thus, its associated discrete color map remains the one associated to propType1
 	RESQML2_NS::DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(ijkgrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex",
-		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
+		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	unsigned short prop2Values[2] = { 0, 1 };
 	discreteProp2->pushBackUShortHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, -1);
 
@@ -433,7 +435,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 
 	auto standardOrientationPropKind = repo->createPropertyKind("b8e9afa0-7930-483b-931f-e5cf2008d03b", "orientation", gsoap_eml2_1::eml21__QuantityClassKind::plane_x0020angle);
 	contColMapContProp = repo->createContinuousProperty(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map",
-		gsoap_eml2_3::resqml22__IndexableElement::nodes, "continuousColorMapIndex", standardOrientationPropKind, { (int)numPointsInSlowestDirection , (int)numPointInFastestDirection });
+		gsoap_eml2_3::eml23__IndexableElement::nodes, "continuousColorMapIndex", standardOrientationPropKind, { (int)numPointsInSlowestDirection , (int)numPointInFastestDirection });
 	std::unique_ptr<double[]> values(new double[numPointInFastestDirection * numPointsInSlowestDirection]);
 	for (size_t slowestIndex = 0; slowestIndex < numPointsInSlowestDirection; ++slowestIndex) {
 		for (size_t fastestIndex = 0; fastestIndex < numPointInFastestDirection; ++fastestIndex) {
@@ -741,7 +743,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	}
 #endif
 	RESQML2_NS::ContinuousProperty* contProp1 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1",
-		gsoap_eml2_3::resqml22__IndexableElement::nodes, "exoticMeter", propType1);
+		gsoap_eml2_3::eml23__IndexableElement::nodes, "exoticMeter", propType1);
 	float prop1Values[16] = { 301, 302, 301, 302, 351, 352, 351, 352, 301, 302, 301, 302, 351, 352, 351, 352 };
 	contProp1->pushBackFloatHdf5Array2dOfValues(prop1Values, 2, 8, hdfProxy);
 
@@ -755,7 +757,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	}
 #endif
 	RESQML2_NS::ContinuousProperty* contProp2 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "d3efb337-19f8-4b91-8b4f-3698afe17f01", "Horizon1 Interp1 Grid2dRep Prop2",
-		gsoap_eml2_3::resqml22__IndexableElement::nodes, gsoap_resqml2_0_1::resqml20__ResqmlUom::ft, propType2);
+		gsoap_eml2_3::eml23__IndexableElement::nodes, gsoap_resqml2_0_1::resqml20__ResqmlUom::ft, propType2);
 	double prop2Values[8] = { 302, 302, 352, 352, 302, 302, 352, 352 };
 	contProp2->pushBackDoubleHdf5Array1dOfValues(prop2Values, 8, hdfProxy);
 }
@@ -927,36 +929,17 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	//**************
 	if (fault1Interp1 != nullptr)
 	{
-		RESQML2_NS::SubRepresentation * faultSubRep = pck->createSubRepresentation(fault1Interp1, "ff248280-fa3d-11e5-a35c-0002a5d5c51b", "Fault Subrep In Grid");
-		faultSubRep->pushBackSupportingRepresentation(ijkgrid);
-		uint64_t faultPillar[2] = { 1, 4 };
-		faultSubRep->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement::pillars, 2, faultPillar, hdfProxy);
+		RESQML2_NS::SubRepresentation* faultSubRep = pck->createSubRepresentation(fault1Interp1, "ff248280-fa3d-11e5-a35c-0002a5d5c51b", "Fault Subrep In Grid", gsoap_eml2_3::eml23__IndexableElement::pillars);
+		int64_t faultPillar[2] = { 1, 4 };
+		faultSubRep->pushBackSubRepresentationPatch(2, faultPillar, ijkgrid, hdfProxy);
 	}
 
-	RESQML2_NS::SubRepresentation * actnum = pck->createSubRepresentation("323001d0-468c-41d7-abec-7d12c3c9428b", "ACTNUM");
-	actnum->pushBackSupportingRepresentation(ijkgrid432);
-	uint64_t actnumValues[21] = {
+	RESQML2_NS::SubRepresentation* actnum = pck->createSubRepresentation("323001d0-468c-41d7-abec-7d12c3c9428b", "ACTNUM", gsoap_eml2_3::eml23__IndexableElement::cells);
+	int64_t actnumValues[21] = {
 		1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
 	};
-	actnum->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement::cells, 21, actnumValues, hdfProxy);
-
-	// Double grid subrep
-	RESQML2_NS::SubRepresentation * doubleGridSubrep = pck->createSubRepresentation("f6d23b9c-e45d-4638-9601-ae3b682129a0", "TEST MULTI GRIDS SUBREP");
-	doubleGridSubrep->pushBackSupportingRepresentation(ijkgrid432);
-	doubleGridSubrep->pushBackSupportingRepresentation(ijkgrid);
-	uint64_t doubleGridSubrepValues[23] = {
-		1, 4,
-		1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
-	};
-	short doubleGridSubrepSupportingRepIndices[23] = {
-		0, 0,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-	};
-
-	doubleGridSubrep->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement::cells, 23, doubleGridSubrepValues, hdfProxy, doubleGridSubrepSupportingRepIndices);
+	actnum->pushBackSubRepresentationPatch(21, actnumValues, ijkgrid432, hdfProxy);
 
 	//**************
 	// Grid Connection
@@ -1012,29 +995,31 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	}
 #endif
 	discreteProp1 = pck->createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex",
-		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
+		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	unsigned short prop1Values[2] = { 0, 1 };
 	discreteProp1->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
 	RESQML2_NS::DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(ijkgrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex",
-		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
+		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	int64_t prop2Values[2] = { 10, 11 };
 	discreteProp2->pushBackLongHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
 
 	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-		RESQML2_0_1_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true, gsoap_eml2_3::resqml22__TimeSetKind::not_x0020a_x0020time_x0020set);
+		RESQML2_0_1_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true, gsoap_resqml2_0_1::resqml20__TimeSetKind::not_x0020a_x0020time_x0020set);
 		propSet->pushBackProperty(discreteProp1);
 		propSet->pushBackProperty(discreteProp2);
 	}
 
 	RESQML2_NS::DiscreteProperty* discreteProp1OnIjkgridParametric = pck->createDiscreteProperty(ijkgridParametric, "eb3dbf6c-5745-4e41-9d09-672f6fbab414", "Four sugar cubes cellIndex",
-		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
+		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	unsigned short prop1ValuesOnIjkgridParametric[4] = { 0, 1, 2, 3 };
-	discreteProp1OnIjkgridParametric->pushBackUShortHdf5Array3dOfValues(prop1ValuesOnIjkgridParametric, 2, 1, 2, hdfProxy, 1111, 0, 3);
+	discreteProp1OnIjkgridParametric->pushBackUShortHdf5Array3dOfValues(prop1ValuesOnIjkgridParametric, 2, 1, 2, hdfProxy, 1111);
+	discreteProp1OnIjkgridParametric->setMinimumValue(0);
+	discreteProp1OnIjkgridParametric->setMaximumValue(3);
 	//Move this prop to another same ninjnk ijk grid
 	discreteProp1OnIjkgridParametric->setRepresentation(ijkgridParametricNotSameLineKind);
 
 	RESQML2_NS::DiscreteProperty* discreteProp432 = pck->createDiscreteProperty(ijkgrid432, "f9447f76-34c5-4967-a3ee-4f400f96dba6", "4x3x2 grid cellIndex",
-		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
+		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	LONG64 discreteProp432Values[24] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
 	//hdfProxy->setMaxChunkSize(192/2); // Create two chunks
@@ -1057,96 +1042,62 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	timeSeries->pushBackTimestamp(1409753895);
 	timeSeries->pushBackTimestamp(1441289895);
 	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		// RESQML2.0 forces to export values at each timestamp of the a whole time series in a single property
+
 		RESQML2_NS::ContinuousProperty* continuousPropTime0 = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property",
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
-		RESQML2_NS::ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property",
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
-		RESQML2_NS::ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property ",
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
-		continuousPropTime0->setTimeIndices(0, 1, timeSeries);
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		continuousPropTime0->setTimeSeries(timeSeries);
+		continuousPropTime0->setSingleTimestamp(timeSeries->getTimestamp(0));
 		double valuesTime0[2] = { 0, 1 };
 		continuousPropTime0->pushBackDoubleHdf5Array3dOfValues(valuesTime0, 2, 1, 1, hdfProxy);
-		continuousPropTime1->setTimeIndices(1, 1, timeSeries);
+
+		RESQML2_NS::ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property",
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		continuousPropTime1->setTimeSeries(timeSeries);
+		continuousPropTime1->setSingleTimestamp(1409753895);
 		double valuesTime1[2] = { 2, 3 };
 		continuousPropTime1->pushBackDoubleHdf5Array3dOfValues(valuesTime1, 2, 1, 1, hdfProxy);
-		continuousPropTime2->setTimeIndices(2, 1, timeSeries);
+
+		RESQML2_NS::ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property ",
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		continuousPropTime2->setTimeSeries(timeSeries);
+		continuousPropTime2->setSingleTimestamp(1441289895);
 		double valuesTime2[2] = { 3, 4 };
 		continuousPropTime2->pushBackDoubleHdf5Array3dOfValues(valuesTime2, 2, 1, 1, hdfProxy);
 	}
-	else {
-		RESQML2_NS::ContinuousProperty* dynamicContinuousProp = nullptr;
-		if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-			dynamicContinuousProp = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property",
-				gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
-		}
 #if WITH_RESQML2_2
-		else {
-			pwls3Length = pck->createPartial<EML2_3_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
-			dynamicContinuousProp = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property",
-				gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
-		}
-#endif
+	else {
+		// RESQML2.2 encourages to export values for the whole time series in a single property
 
-		dynamicContinuousProp->setTimeIndices(0, 3, timeSeries);
+		pwls3Length = pck->createPartial<EML2_3_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
+		RESQML2_NS::ContinuousProperty* dynamicContinuousProp = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property",
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
+
+		dynamicContinuousProp->setTimeSeries(timeSeries);
 		double valuesTime[6] = { 0, 1, 2, 3, 3, 4 };
-		unsigned long long dimensions[4] = { 2, 1, 1, 3 };
+		uint64_t dimensions[4] = { 2, 1, 1, 3 };
 		dynamicContinuousProp->pushBackDoubleHdf5ArrayOfValues(
 			valuesTime, dimensions, 4, hdfProxy);
 	}
+#endif
 
 	//**************
 	// Categorical Properties
 	//**************
 
-	RESQML2_NS::StringTableLookup* stringTableLookup = pck->createStringTableLookup("62245eb4-dbf4-4871-97de-de9e4f4597be", "My String Table Lookup");
-	stringTableLookup->addValue("Cell index 0", 0);
-	stringTableLookup->addValue("Cell index 1", 1);
-	RESQML2_NS::CategoricalProperty* categoricalProp = pck->createCategoricalProperty(ijkgrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)",
-		gsoap_eml2_3::resqml22__IndexableElement::cells, stringTableLookup, propType1);
+	EML2_NS::ColumnBasedTable* stringTableLookup = pck->createFaciesTable("62245eb4-dbf4-4871-97de-de9e4f4597be", "My String Table Lookup");
+	stringTableLookup->setInt64Values(0, { 0, 1 });
+	stringTableLookup->setStringValues(1, { "Cell index 0", "Cell index 1" });
+	RESQML2_NS::DiscreteProperty* categoricalProp = pck->createCategoricalProperty(ijkgrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)",
+		gsoap_eml2_3::eml23__IndexableElement::cells, stringTableLookup, propType1);
 	categoricalProp->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
-
-	// Relative permeability
-	RESQML2_NS::ContinuousProperty* waterSat = nullptr;
-	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-		waterSat = pck->createContinuousProperty(ijkgrid, "cbbc24b1-9a4b-4088-9d0e-e254088d3840", "Water saturation",
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::_x0025, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::saturation);
-	}
-#if WITH_RESQML2_2
-	else {
-		EML2_NS::PropertyKind* pwls3Saturation = pck->createPartial<EML2_3_NS::PropertyKind>("cfe9293f-d5a9-486d-815a-a957cace90b6", "saturation");
-		waterSat = pck->createContinuousProperty(ijkgrid, "cbbc24b1-9a4b-4088-9d0e-e254088d3840", "Water saturation",
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::_x0025, pwls3Saturation);
-	}
-#endif
-	double waterSatValues[2] = { 0.35, 0.85 };
-	waterSat->pushBackDoubleHdf5Array3dOfValues(waterSatValues, 2, 1, 1, hdfProxy);
-
-	RESQML2_NS::DoubleTableLookup* waterRelPermTable = pck->createDoubleTableLookup("c51039fb-3178-41d3-86d7-5e5a74c5a46b", "My Double Table Lookup");
-	waterRelPermTable->addValue(.0, .0);
-	waterRelPermTable->addValue(0.22, 0.005);
-	waterRelPermTable->addValue(0.75, 0.46);
-	waterRelPermTable->addValue(1.0, 1.0);
-	RESQML2_NS::CategoricalProperty* waterRelPerm = nullptr;
-	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-		waterRelPerm = pck->createCategoricalProperty(ijkgrid, "dd4eae66-fe52-4086-a023-5b2c423543d5", "Water Relative Permeability",
-			gsoap_eml2_3::resqml22__IndexableElement::cells, waterRelPermTable, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::relative_x0020permeability);
-	}
-#if WITH_RESQML2_2
-	else {
-		EML2_NS::PropertyKind* pwls3RelPerm = pck->createPartial<EML2_3_NS::PropertyKind>("8e3c5579-7efd-40d0-ab03-bc79452dd2db", "relative permeability");
-		waterRelPerm = pck->createCategoricalProperty(ijkgrid, "dd4eae66-fe52-4086-a023-5b2c423543d5", "Water Relative Permeability",
-			gsoap_eml2_3::resqml22__IndexableElement::cells, waterRelPermTable, pwls3RelPerm);
-	}
-#endif
-	double relPermValues[2] = { 0.2, 0.5 };
-	waterRelPerm->pushBackDoubleHdf5Array3dOfValues(relPermValues, 2, 1, 1, hdfProxy);
 	
 	//**************
 	// Points Properties
 	//**************
 
 	RESQML2_NS::PointsProperty* pointsProp = pck->createPointsProperty(ijkgrid, "fdf3e92b-1ac2-4589-832d-69ee7c167db7", "Cell center",
-		gsoap_eml2_3::resqml22__IndexableElement::cells, local3dCrs, propType1);
+		gsoap_eml2_3::eml23__IndexableElement::cells, local3dCrs, propType1);
 	double cellCenters[6] = { 185, 75, 400, 560, 75, 450 };
 	pointsProp->pushBackArray3dOfXyzPoints(cellCenters, 2, 1, 1, hdfProxy);
 	
@@ -1174,20 +1125,19 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	RESQML2_NS::ContinuousProperty* continuousProp1 = nullptr;
 	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
 		continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "A length property",
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 	}
 	else {
 		continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "A length property",
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
 	}
 	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
 	continuousProp1->pushBackDoubleHdf5Array1dOfValues(continuousProp1Values, 6, hdfProxy);
 
 	// sub rep of a partial unstructured grid
-	RESQML2_NS::SubRepresentation * subRepOfUnstructuredGrid = pck->createSubRepresentation("6b48c8d0-d60e-42b5-994c-2d4d4f3d0765", "Subrep On Partial grid");
-	subRepOfUnstructuredGrid->pushBackSupportingRepresentation(partialGrid);
-	uint64_t nodeIndex[2] = { 0, 1 };
-	subRepOfUnstructuredGrid->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement::nodes, 2, nodeIndex, hdfProxy);
+	RESQML2_NS::SubRepresentation * subRepOfUnstructuredGrid = pck->createSubRepresentation("6b48c8d0-d60e-42b5-994c-2d4d4f3d0765", "Subrep On Partial grid", gsoap_eml2_3::eml23__IndexableElement::nodes);
+	int64_t nodeIndex[2] = { 0, 1 };
+	subRepOfUnstructuredGrid->pushBackSubRepresentationPatch(2, nodeIndex, partialGrid, hdfProxy);
 
 	// creating the unstructured grid
 	RESQML2_NS::UnstructuredGridRepresentation* unstructuredGrid = pck->createUnstructuredGridRepresentation("9283cd33-5e52-4110-b7b1-616abde2b303", "One tetrahedron + prism grid", 2);
@@ -1220,7 +1170,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 
 		// Create the property
 		RESQML2_NS::ContinuousProperty* unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyhedra property",
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 
 		// Fill the property
 		double propValues[2] = { 12.3, 45.6 };
@@ -1230,11 +1180,11 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		RESQML2_NS::ContinuousProperty* unstructuredGridProp = nullptr;
 		if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
 			unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyhedra property",
-				gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+				gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 		}
 		else {
 			unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyhedra property",
-				gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
+				gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
 		}
 
 		// Fill the property
@@ -1305,19 +1255,19 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, EML2_NS::Ab
 
 	// Contact 0: fault1Interp1 HANGING_WALL_SIDE STOPS horizon1Interp1 BOTH_SIDES
 	structuralOrganizationInterpretation->pushBackBinaryContact(fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide::hanging_x0020wall,
-		gsoap_eml2_3::resqml22__ContactVerb::interrupts,
+		gsoap_eml2_3::resqml22__ContactVerb::stops,
 		horizon1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide::both);
 	// Contact 1: fault1Interp1 FOOT_WALL_SIDE STOPS horizon1Interp1 BOTH_SIDES
 	structuralOrganizationInterpretation->pushBackBinaryContact(fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide::footwall,
-		gsoap_eml2_3::resqml22__ContactVerb::interrupts,
+		gsoap_eml2_3::resqml22__ContactVerb::stops,
 		horizon1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide::both);
 	// Contact 2: fault1Interp1 HANGING_WALL_SIDE STOPS horizon2Interp1 BOTH_SIDES
 	structuralOrganizationInterpretation->pushBackBinaryContact(fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide::hanging_x0020wall,
-		gsoap_eml2_3::resqml22__ContactVerb::interrupts,
+		gsoap_eml2_3::resqml22__ContactVerb::stops,
 		horizon2Interp1, gsoap_resqml2_0_1::resqml20__ContactSide::both);
 	// Contact 3: fault1Interp1 FOOT_WALL_SIDE STOPS horizon2Interp1 BOTH_SIDES
 	structuralOrganizationInterpretation->pushBackBinaryContact(fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide::footwall,
-		gsoap_eml2_3::resqml22__ContactVerb::interrupts,
+		gsoap_eml2_3::resqml22__ContactVerb::stops,
 		horizon2Interp1, gsoap_resqml2_0_1::resqml20__ContactSide::both);
 
 	// Contact 4: horizon1Interp1 STOPS AT yMinusFrontierInterp
@@ -2603,7 +2553,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 		for (unsigned int dimIndex = 0; dimIndex < dimCount; ++dimIndex) {
 			std::cout << "\tValues count in dimension " << dimIndex << " is : " << prop->getValuesCountOfDimensionOfPatch(dimIndex, 0) << std::endl;
 		}
-		unsigned int valueCount = prop->getValuesCountOfPatch(0);
+		int64_t valueCount = prop->getValuesCountOfPatch(0);
 		std::cout << "\tValues count in all dimensions is : " << valueCount << std::endl;
 
 		// Datatype
@@ -2614,7 +2564,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 			cin.get();
 		}
 		else if (prop->getValuesHdfDatatype() > 2) {
-			if (dynamic_cast<RESQML2_NS::DiscreteProperty const *>(prop) == nullptr && dynamic_cast<RESQML2_NS::CategoricalProperty const *>(prop) == nullptr) {
+			if (dynamic_cast<RESQML2_NS::DiscreteProperty const *>(prop) == nullptr) {
 				cerr << "\tERROR !!!!! Only categorical or Discrete properties should be associated to an integer dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
 				std::unique_ptr<double[]> values(new double[valueCount]);
@@ -2631,18 +2581,15 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 						std::cout << "\tMax value is " << discreteProp->getMaximumValue() << endl;
 						std::cout << "\tMin value is " << discreteProp->getMinimumValue() << endl;
 					}
-				}
-				else { //RESQML2_NS::CategoricalProperty
-					RESQML2_NS::StringTableLookup* stl = static_cast<RESQML2_NS::CategoricalProperty const *>(prop)->getStringLookup();
-					if (stl == nullptr) {
-						cerr << "\tERROR !!!!! An integer categorical property should be associated to a string table lookup." << endl;
-						cout << "\tPress enter to continue..." << endl;
-						cin.get();
-					}
-					const unsigned int itemCount = stl->getItemCount();
-					std::cout << "\tAssociated String Table lookup" << endl;
-					for (unsigned int itemIndex = 0; itemIndex < itemCount; ++itemIndex) {
-						std::cout << stl->getKeyAtIndex(itemIndex) << "->" << stl->getStringValueAtIndex(itemIndex) << endl;
+					auto* lookup = discreteProp->getLookup();
+					if (lookup != nullptr) {
+						const uint64_t itemCount = lookup->getRowCount();
+						std::cout << "\tAssociated String Table lookup" << endl;
+						auto keys = lookup->getInt64Values(0);
+						auto values = lookup->getStringValues(1);
+						for (uint64_t itemIndex = 0; itemIndex < itemCount; ++itemIndex) {
+							std::cout << keys[itemIndex] << "->" << values[itemIndex] << endl;
+						}
 					}
 				}
 				std::unique_ptr<int64_t[]> values(new int64_t[valueCount]);
@@ -2681,23 +2628,6 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				std::cout << "\tFirst point is " << values[0] << ", " << values[1] << ", " << values[2] << endl;
 				std::cout << "\tSecond point is " << values[3] << ", " << values[4] << ", " << values[5] << endl;
 			}
-			else if (dynamic_cast<RESQML2_NS::CategoricalProperty const *>(prop) != nullptr) {
-				RESQML2_NS::DoubleTableLookup* stl = static_cast<RESQML2_NS::CategoricalProperty const *>(prop)->getDoubleLookup();
-				if (stl == nullptr) {
-					cerr << "\tERROR !!!!! A floating point categorical property should be associated to a double table lookup." << endl;
-					cout << "\tPress enter to continue..." << endl;
-					cin.get();
-				}
-				const unsigned int itemCount = stl->getItemCount();
-				std::cout << "\tAssociated Double Table lookup" << endl;
-				for (unsigned int itemIndex = 0; itemIndex < itemCount; ++itemIndex) {
-					std::cout << stl->getKeyAtIndex(itemIndex) << "->" << stl->getValueAtIndex(itemIndex) << endl;
-				}
-				std::unique_ptr<double[]> values(new double[valueCount]);
-				static_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getDoubleValuesOfPatch(0, values.get());
-				std::cout << "\tFirst value is " << values[0] << endl;
-				std::cout << "\tSecond value is " << values[1] << endl;
-			}
 			else {
 				cerr << "\tERROR !!!!! The discrete or comment property is linked to a floating point HDF5 dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
@@ -2711,63 +2641,69 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 		}
 
 		// Time Series
-		if (prop->getTimeIndicesCount() != 0) {
-			std::cout << "\tThis property is a dynamic one" << std::endl;
-			std::cout << "\tTime index start is " << prop->getTimeIndexStart() << std::endl;
-			std::cout << "\tTime index count is " << prop->getTimeIndicesCount() << std::endl;
+		auto singleTs = prop->getSingleTimestamp();
+		if (prop->getTimeSeries() != nullptr || singleTs != -1) {
+			std::cout << "\tThis property is a time related one" << std::endl;
+			if (singleTs != -1) {
+				std::cout << "\tThis property is a related to single timestamp " << std::endl;
+				if (prop->getTimeSeries() != nullptr) {
+					std::cout << "which is part of a time series at index " << prop->getTimeSeries()->getTimestampIndex(singleTs) << std::endl;
+				}
+				else {
+					std::cout << "which is not part of a time series." << std::endl;
+				}
+			}
+			else {
+				std::cout << "\tThis property is a related to a whole time series" << std::endl;
+			}
 		}
 	}
 
 	std::cout << "\t--------------------------------------------------" << std::endl;
 }
 
-void showAllSubRepresentations(const vector<RESQML2_NS::SubRepresentation *> & subRepSet)
+void showAllSubRepresentations(const vector<RESQML2_NS::SubRepresentation*>& subRepSet)
 {
 	if (!subRepSet.empty()) {
 		cout << "SUBREPRESENTATIONS" << std::endl;
 	}
 	std::cout << "\t--------------------------------------------------" << std::endl;
-	for (size_t subRepIndex = 0; subRepIndex < subRepSet.size(); ++subRepIndex)
+	for (auto const* subRep : subRepSet)
 	{
-		showAllMetadata(subRepSet[subRepIndex], "\t");
-		if (!subRepSet[subRepIndex]->isPartial()) {
-			const uint64_t indiceCount = subRepSet[subRepIndex]->getElementCountOfPatch(0);
+		showAllMetadata(subRep, "\t");
+		if (!subRep->isPartial()) {
+			const uint64_t indiceCount = subRep->getElementCountOfPatch(0);
+
+			auto* supportingRep = subRep->getSupportingRepresentationOfPatch(0);
 
 			// element indices
-			std::unique_ptr<uint64_t[]> elementIndices(new uint64_t[indiceCount]);
-			subRepSet[subRepIndex]->getElementIndicesOfPatch(0, 0, elementIndices.get());
-			for (unsigned int i = 0; i < indiceCount && i < 10; ++i) {
-				std::cout << "Element indice at position " << i << " : " << elementIndices[i] << std::endl;
+			std::unique_ptr<int64_t[]> elementIndices(new int64_t[indiceCount]);
+			subRep->getElementIndicesOfPatch(0, elementIndices.get());
+			for (size_t i = 0; i < indiceCount && i < 10; ++i) {
+				std::cout << "SubRep patch 0 : Element indice at position " << i << " : " << elementIndices[i] << " on rep " << supportingRep->getUuid() << std::endl;
 			}
-
-			// Supporting rep indices
-			std::unique_ptr<short[]> supRepIndices (new short[indiceCount]);
-			subRepSet[subRepIndex]->getSupportingRepresentationIndicesOfPatch(0, supRepIndices.get());
-			for (unsigned int i = 0; i < indiceCount && i < 10; ++i) {
-				std::cout << "Supporting rep indice at position " << i << " : " << supRepIndices[i] << std::endl;
-			}
-
 		}
 		else {
 			std::cout << "IS PARTIAL!" << std::endl;
 		}
 
-		showAllProperties(subRepSet[subRepIndex]);
+		showAllProperties(subRep);
 	}
 }
 
 void deserializeStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn, const COMMON_NS::EnumStringMapper & enumStrMapper)
 {
 	showAllMetadata(stratiColumn);
-	for (size_t i = 0; i < stratiColumn->getStratigraphicColumnRankInterpretationSet().size(); ++i)
+	for (RESQML2_NS::StratigraphicColumnRankInterpretation const* stratiColumnRankInterp : stratiColumn->getStratigraphicColumnRankInterpretationSet())
 	{
 		std::cout << "\tCOLUMN RANK INTERP" << std::endl;
-		RESQML2_NS::StratigraphicColumnRankInterpretation const * stratiColumnRankInterp = stratiColumn->getStratigraphicColumnRankInterpretationSet()[i];
 		showAllMetadata(stratiColumnRankInterp);
-		if (stratiColumnRankInterp->isAChronoStratiRank())
+		if (stratiColumnRankInterp->isAChronoStratiRank()) {
 			cout << "This is a chrono rank!" << endl;
-		else
+		}
+		else {
 			cout << "This is not a chrono rank!" << endl;
+		}
 		unsigned int contactCount = stratiColumnRankInterp->getContactCount();
 		for (unsigned int contactIndex = 0; contactIndex < contactCount; ++contactIndex) {
 			cout << "SUBJECT : " << endl;
@@ -2777,14 +2713,13 @@ void deserializeStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn, con
 		}
 
 		vector<RESQML2_NS::GeologicUnitOccurrenceInterpretation*> soiSet = stratiColumnRankInterp->getGeologicUnitOccurrenceInterpretationSet();
-		for (size_t soiIndex = 0; soiIndex < soiSet.size(); ++soiIndex) {
-			vector<RESQML2_NS::WellboreMarkerFrameRepresentation *> markerFrameSet = soiSet[soiIndex]->getWellboreMarkerFrameRepresentationSet();
-			for (size_t markerFrameIndex = 0; markerFrameIndex < markerFrameSet.size(); ++markerFrameIndex) {
-				RESQML2_NS::WellboreMarkerFrameRepresentation * markerFrame = markerFrameSet[markerFrameIndex];
-				showAllMetadata(markerFrame);
-				vector<RESQML2_NS::WellboreMarker *> markerSet = markerFrame->getWellboreMarkerSet();
-				std::unique_ptr<double[]> doubleMds(new double[markerFrame->getMdValuesCount()]);
-				markerFrame->getMdAsDoubleValues(doubleMds.get());
+		for (auto const* guoi : soiSet) {
+			vector<RESQML2_NS::WellboreMarkerFrameRepresentation *> markerFrameSet = guoi->getWellboreMarkerFrameRepresentationSet();
+			for (auto const* wmfr : markerFrameSet) {
+				showAllMetadata(wmfr);
+				vector<RESQML2_NS::WellboreMarker *> markerSet = wmfr->getWellboreMarkerSet();
+				std::unique_ptr<double[]> doubleMds(new double[wmfr->getMdValuesCount()]);
+				wmfr->getMdAsDoubleValues(doubleMds.get());
 				for (size_t mIndex = 0; mIndex < markerSet.size(); ++mIndex) {
 					if (doubleMds[mIndex] == doubleMds[mIndex]) {
 						cout << doubleMds[mIndex] << endl;
@@ -2899,8 +2834,8 @@ void deserializeSealedVolumeFramework(const COMMON_NS::DataObjectRepository & pc
 		for (unsigned int regionIdx = 0; regionIdx < regionCount; ++regionIdx) {
 			showAllMetadata(svf->getStratiUnitInterp(regionIdx));
 
-			const unsigned int faceCount = svf->getFaceCountOfExternalShell(regionIdx);
-			for (unsigned int faceIdx = 0; faceIdx < faceCount; ++faceIdx) {
+			const uint64_t faceCount = svf->getFaceCountOfExternalShell(regionIdx);
+			for (uint64_t faceIdx = 0; faceIdx < faceCount; ++faceIdx) {
 				std::cout << "\t\tFace index " << faceIdx << " is the patch " << svf->getRepPatchIndexOfExternalShellFace(regionIdx, faceIdx) << " with side " << svf->getSideFlagOfExternalShellFace(regionIdx, faceIdx) << " of surface representation" << std::endl;
 				showAllMetadata(svf->getRepOfExternalShellFace(regionIdx, faceIdx));
 			}
@@ -4553,16 +4488,12 @@ void deserializeWbGeometry(COMMON_NS::DataObjectRepository & repo)
 {
 	cout << endl << "WELLBORE GEOMETRY" << endl;
 
-	std::vector<WITSML2_NS::Well*> witsmlWells = repo.getDataObjects<WITSML2_NS::Well>();
-	for (size_t wellIdx = 0; wellIdx < witsmlWells.size(); ++wellIdx) {
-		cout << "witsml well: " << witsmlWells[wellIdx]->getTitle() << " (" << witsmlWells[wellIdx]->getUuid() << ")" << std::endl;
-		std::vector<WITSML2_NS::Wellbore*> witsmlWellbores = witsmlWells[wellIdx]->getWellboreSet();
-		for (size_t wellboreIdx = 0; wellboreIdx < witsmlWellbores.size(); ++wellboreIdx) {
-			cout << "witsml wellbore: " << witsmlWellbores[wellboreIdx]->getTitle() << " (" << witsmlWellbores[wellboreIdx]->getUuid() << ")" << std::endl;
-			std::vector<WITSML2_0_NS::WellboreGeometry*> wbGeoms = witsmlWellbores[wellboreIdx]->getWellboreGeometrySet();
-			for (size_t wbGeomIdx = 0; wbGeomIdx < wbGeoms.size(); ++wbGeomIdx) {
-				WITSML2_0_NS::WellboreGeometry* wbGeom = wbGeoms[wbGeomIdx];
-				cout << "witsml wellbore geom: " << wbGeom->getTitle() << " (" << wbGeom->getUuid() << ")" << std::endl;
+	for (auto const* witsmlWell : repo.getDataObjects<WITSML2_NS::Well>()) {
+		cout << "WITSML well: " << witsmlWell->getTitle() << " (" << witsmlWell->getUuid() << ")" << std::endl;
+		for (auto const* witsmlWellbore : witsmlWell->getWellboreSet()) {
+			cout << "WITSML wellbore: " << witsmlWellbore->getTitle() << " (" << witsmlWellbore->getUuid() << ")" << std::endl;
+			for (auto const* wbGeom : witsmlWellbore->getWellboreGeometrySet()) {
+				cout << "WITSML wellbore geom: " << wbGeom->getTitle() << " (" << wbGeom->getUuid() << ")" << std::endl;
 				if (wbGeom->hasDepthWaterMean()) { cout << "DepthWaterMean: " << wbGeom->getDepthWaterMeanValue() << " " << static_cast<int>(wbGeom->getDepthWaterMeanUom()) << std::endl; }
 				if (wbGeom->hasGapAir()) { cout << "GapAir: " << wbGeom->getGapAirValue() << " " << static_cast<int>(wbGeom->getGapAirUom()) << std::endl; }
 				if (wbGeom->hasMdBase()) { cout << "MdBase: " << wbGeom->getMdBaseValue() << " " << static_cast<int>(wbGeom->getMdBaseUom()) << " datum=" << wbGeom->getMdBaseDatum() << std::endl; }
@@ -5112,22 +5043,24 @@ void deserialize(const string & inputFile)
 	cout << "m (meter) == " << enumStrMapper.getEnergisticsUnitOfMeasureName(enumStrMapper.getEnergisticsUnitOfMeasure("m")) << endl;
 
 	cout << "CRS" << endl;
-	vector<RESQML2_NS::LocalDepth3dCrs*> depthCrsSet = repo.getLocalDepth3dCrsSet();
-	for (size_t i = 0; i < depthCrsSet.size(); ++i) {
-		cout << "Title is : " << depthCrsSet[i]->getTitle() << endl;
-		if (depthCrsSet[i]->isProjectedCrsDefinedWithEpsg())
-			cout << "Projected : EPSG " << depthCrsSet[i]->getProjectedCrsEpsgCode() << endl;
-		else if (depthCrsSet[i]->isProjectedCrsUnknown())
-			cout << "Projected : Unknown." << "Reason is:" << depthCrsSet[i]->getProjectedCrsUnknownReason() << endl;
-	}
-	vector<RESQML2_NS::LocalTime3dCrs*> timeCrsSet = repo.getLocalTime3dCrsSet();
-	for (size_t i = 0; i < timeCrsSet.size(); ++i) {
-		cout << "Title is : " << timeCrsSet[i]->getTitle() << endl;
-		if (timeCrsSet[i]->isVerticalCrsDefinedWithEpsg())
+	vector<EML2_NS::AbstractLocal3dCrs*> crsSet = repo.getLocal3dCrsSet();
+	for (auto* crs :crsSet) {
+		cout << "Title is : " << crs->getTitle() << endl;
+		if (crs->isProjectedCrsDefinedWithEpsg())
+			cout << "Projected : EPSG " << crs->getProjectedCrsEpsgCode() << endl;
+		else if (crs->isProjectedCrsUnknown())
+			cout << "Projected : Unknown." << "Reason is:" << crs->getProjectedCrsUnknownReason() << endl;
+
+		if (crs->isVerticalCrsDefinedWithEpsg())
 			cout << "Vertical : EPSG one" << endl;
-		else if (timeCrsSet[i]->isVerticalCrsUnknown())
-			cout << "Vertical : Unknown." << "Reason is:" << timeCrsSet[i]->getVerticalCrsUnknownReason() << endl;
+		else if (crs->isVerticalCrsUnknown())
+			cout << "Vertical : Unknown." << "Reason is:" << crs->getVerticalCrsUnknownReason() << endl;
+
+		if (crs->isATimeCrs()) {
+			cout << "Time Unit of measure is : " << crs->getTimeUomAsString() << endl;
+		}
 	}
+
 	cout << endl;
 
 	deserializeGeobody(&repo);
@@ -5202,7 +5135,7 @@ void deserialize(const string & inputFile)
 
 		showAllProperties(faultPolyRep);
 
-		for (size_t gsrIndex = 0; gsrIndex < faultPolyRep->getInterpretation()->getGridConnectionSetRepresentationSet().size(); ++gsrIndex) {
+		for (auto* gcsr : faultPolyRep->getInterpretation()->getGridConnectionSetRepresentationSet()) {
 			std::cout << "This fault polyline rep is linked to a grid connection set." << std::endl;
 		}
 	}
@@ -5393,8 +5326,8 @@ void deserialize(const string & inputFile)
 		}
 		for (auto* interp : wellbore->getInterpretationSet()) {
 			for (auto* rep : interp->getRepresentationSet()) {
-				if (rep->getXmlTag() == RESQML2_NS::WellboreMarkerFrameRepresentation::XML_TAG) {
-					RESQML2_NS::WellboreMarkerFrameRepresentation const * wmf = static_cast<RESQML2_NS::WellboreMarkerFrameRepresentation const *>(rep);
+				RESQML2_NS::WellboreMarkerFrameRepresentation const* wmf = dynamic_cast<RESQML2_NS::WellboreMarkerFrameRepresentation const*>(rep);
+				if (wmf != nullptr) {
 					for (auto* marker : wmf->getWellboreMarkerSet()) {
 						std::cout << "marker : " << marker->getTitle() << std::endl;
 						if (marker->getBoundaryFeatureInterpretation() != nullptr) {
@@ -5403,19 +5336,11 @@ void deserialize(const string & inputFile)
 					}
 
 					for (auto* prop : wmf->getPropertySet()) {
-						if (prop->getXmlTag() == RESQML2_NS::CategoricalProperty::XML_TAG) {
-							RESQML2_NS::CategoricalProperty const * catVal = static_cast<RESQML2_NS::CategoricalProperty const *>(prop);
-							if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG_64) {
-								std::cout << "Hdf datatype is NATIVE LONG" << std::endl;
-								std::unique_ptr<int64_t[]> tmp(new int64_t[wmf->getMdValuesCount()]);
-								catVal->getLongValuesOfPatch(0, tmp.get());
-								for (size_t ind = 0; ind < 2; ind++) {
-									std::cout << "Value " << ind << " : " << tmp[ind] << std::endl;
-								}
-							}
-							else if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::INT) {
-								std::cout << "Hdf datatype is NATIVE INT" << std::endl;
-							}
+						if (prop->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG_64) {
+							std::cout << "Hdf datatype is NATIVE LONG" << std::endl;
+						}
+						else if (prop->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::INT) {
+							std::cout << "Hdf datatype is NATIVE INT" << std::endl;
 						}
 					}
 				}
@@ -5606,8 +5531,8 @@ void deserialize(const string & inputFile)
 #endif
 
 	std::cout << endl << repo.getWarnings().size() << " WARNING(S)" << endl;
-	for (size_t i = 0; i < repo.getWarnings().size(); ++i) {
-		std::cout << i << " - " << repo.getWarnings()[i] << endl;
+	for (const std::string& warning : repo.getWarnings()) {
+		std::cout << "Warning : " << warning << endl;
 	}
 }
 

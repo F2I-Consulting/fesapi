@@ -111,7 +111,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values of the @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getValuesCountOfPatch(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT int64_t getValuesCountOfPatch(unsigned int patchIndex) const;
 
 		/**
 		 * Gets the count of values on a specific dimension of the underlying HDF5 dataset of a given
@@ -125,7 +125,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values in the @p dimIndex dimension of @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const;
 
 		/**
 		 * Gets the count of dimensions of the underlying HDF5 dataset of a given patch of this property.
@@ -222,32 +222,18 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The realization index.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<unsigned int> getRealizationIndices() const;
+		DLL_IMPORT_OR_EXPORT std::vector<int64_t> getRealizationIndices() const;
 
 		/**
 		 * Sets the realization indices of this property
 		 *
-		 * @param 	startRealizationIndex	The first realization index to set to this property.
-		 * @param 	countRealizationIndices	The count of realization indices to set to this property.
-		 */
-		DLL_IMPORT_OR_EXPORT void setRealizationIndices(int64_t startRealizationIndex, int64_t countRealizationIndices);
-
-		/**
-		 * @brief	Sets the realization indices of this property
-		 *
-		 * @exception	std::invalid_argument	If @p realizationIndices is empty.
 		 * @exception	std::invalid_argument	If the @p realizationIndices size is strictly greater
 		 * 										than 1 in a RESQML 2.0.1 context.
-		 * @exception	std::invalid_argument	If, in a RESQML 2.2 context, <tt>hdfProxy == nullptr</tt>
-		 * 										and no default HDF proxy is defined in the repository.
 		 * @exception	std::logic_error	 	If no supported gSOAP proxy is available.
 		 *
-		 * @param 		  	realizationIndices	The realization indices to set to this property.
-		 * @param [in,out]	hdfProxy		  	(Optional) The HDF proxy where to store @p
-		 * 										realizationIndices values. If @p nullptr (default), then
-		 * 										the repository default HDF proxy will be used.
+		 * @param 		  	realizationIndices	The realization indices to set to this property. If empty, remove all realization indices from the property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setRealizationIndices(const std::vector<unsigned int> & realizationIndices, EML2_NS::AbstractHdfProxy* hdfProxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void setRealizationIndices(std::vector<int64_t> realizationIndices);
 
 		//*********************************************
 		//************ TIME DIMENSION *****************
@@ -255,6 +241,9 @@ namespace RESQML2_NS
 
 		/**
 		 * Sets the time series associated to the current property
+		 * RESQML2.0.1	:	Must be used with and before to call setSingleTimestamp.
+							Properties in v2.0.1 cannot contain values for a whole time series but only for a single timestamp of a time series.
+		 * RESQML2.2	:	If, used the property must contain values for the whole time series. It cannot be used with setSingleTimestamp.
 		 *
 		 * @exception	invalid_argument	If @p ts is null or if the current property has no time
 		 * 									indices.
@@ -265,13 +254,22 @@ namespace RESQML2_NS
 
 		/**
 		 * Set a single associated timestamp for this property.
+		 * RESQML2.0.1	: Must be used with and after setTimeSeries.
+		 * RESQML2.2	: If, used the property must contain values for a single timestamp (as in 2.0.1). It cannot be used with setTimeSeries.
 		 *
 		 * @exception	invalid_argument	Regarding RESQML2.0.1, this method cannot be called if setTimeSeries has not been called before.
 		 *
-		 * @param [in]	timestamp	The singel timestamps to associate to this property
+		 * @param [in]	timestamp	The single timestamps to associate to this property
 		 * @param [in]	yearOffset	Indicates that the dateTime attribute must be translated according to this value.
 		 */
 		DLL_IMPORT_OR_EXPORT void setSingleTimestamp(time_t timestamp, LONG64 yearOffset = 0);
+
+		/**
+		 * Get a single associated timestamp for this property.
+		 *
+		 * @return	-1 if there is not a single timestamp related to this property meaning that no timestamp is present or more than one (i.e. a whole time series)
+		 */
+		DLL_IMPORT_OR_EXPORT time_t getSingleTimestamp() const;
 
 		/**
 		 * Gets the time series which is associated to this property

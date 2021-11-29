@@ -18,11 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "HdfProxy.h"
 
-#include <stdexcept>
-
 using namespace EML2_0_NS;
-
-const char* HdfProxy::XML_NS = "eml20";
 
 HdfProxy::HdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess) :
 	EML2_NS::HdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess)

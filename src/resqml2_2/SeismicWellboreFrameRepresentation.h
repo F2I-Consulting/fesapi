@@ -56,12 +56,12 @@ namespace RESQML2_2_NS
 			RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 			double seismicReferenceDatum,
 			double weatheringVelocity,
-			EML2_NS::LocalTime3dCrs* crs);
+			EML2_NS::AbstractLocal3dCrs* crs);
 
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml22";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.

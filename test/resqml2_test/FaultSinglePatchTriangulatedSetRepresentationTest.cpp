@@ -17,13 +17,15 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "FaultSinglePatchTriangulatedSetRepresentationTest.h"
-#include "../catch.hpp"
-#include "resqml2/TriangulatedSetRepresentation.h"
-#include "resqml2_0_1/FaultInterpretation.h"
-#include "resqml2/LocalDepth3dCrs.h"
-#include "eml2/AbstractHdfProxy.h"
+
 #include "FaultInterpretationTest.h"
 #include "LocalDepth3dCrsTest.h"
+
+#include "eml2/AbstractHdfProxy.h"
+
+#include "resqml2/TriangulatedSetRepresentation.h"
+
+#include "resqml2_0_1/FaultInterpretation.h"
 
 using namespace std;
 using namespace resqml2_test;

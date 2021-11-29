@@ -85,12 +85,12 @@ unsigned int RepresentationSetRepresentation::getRepresentationCount() const
 	return static_cast<unsigned int>(count);
 }
 
-RESQML2_NS::AbstractRepresentation* RepresentationSetRepresentation::getRepresentation(unsigned int index) const
+RESQML2_NS::AbstractRepresentation* RepresentationSetRepresentation::getRepresentation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(getRepresentationDor(index).getUuid());
 }
 
-COMMON_NS::DataObjectReference RepresentationSetRepresentation::getRepresentationDor(unsigned int index) const
+COMMON_NS::DataObjectReference RepresentationSetRepresentation::getRepresentationDor(uint64_t index) const
 {
 	if (index >= getRepresentationCount()) {
 		throw out_of_range("The index of the representation to get is out of range in this representaiton set representation");

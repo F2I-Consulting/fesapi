@@ -204,7 +204,7 @@ unsigned int SealedSurfaceFrameworkRepresentation::getIdenticalContactPatchNodeC
 		throw invalid_argument("The nodes are all identical");
 	}
 
-	uint64_t result = getCountOfIntegerArray(getContact(crIndex)->IdenticalNodeIndices);
+	uint64_t result = getCountOfArray(getContact(crIndex)->IdenticalNodeIndices);
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("There are too much identical nodes for fesapi");
 	}
@@ -261,7 +261,7 @@ unsigned int SealedSurfaceFrameworkRepresentation::getRepresentationIndexOfConta
 
 unsigned int SealedSurfaceFrameworkRepresentation::getContactPatchNodeCount(unsigned int crIndex, unsigned int cpIndex) const
 {
-	uint64_t result = getCountOfIntegerArray(getContactPatch(crIndex, cpIndex)->SupportingRepresentationNodes);
+	uint64_t result = getCountOfArray(getContactPatch(crIndex, cpIndex)->SupportingRepresentationNodes);
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("There are too much nodes in this contact patch for fesapi");
 	}

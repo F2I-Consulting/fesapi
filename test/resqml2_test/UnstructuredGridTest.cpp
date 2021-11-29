@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "UnstructuredGridTest.h"
 
-#include "../catch.hpp"
 #include "resqml2/UnstructuredGridRepresentation.h"
 
 using namespace std;

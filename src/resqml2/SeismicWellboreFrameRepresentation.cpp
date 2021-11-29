@@ -21,9 +21,8 @@ under the License.
 #include <hdf5.h>
 
 #include "../eml2/AbstractHdfProxy.h"
-#include "../eml2/LocalTime3dCrs.h"
-#include "../resqml2/WellboreInterpretation.h"
-#include "../resqml2/WellboreTrajectoryRepresentation.h"
+
+#include "AbstractValuesProperty.h"
 
 using namespace std;
 using namespace RESQML2_NS;
@@ -148,14 +147,13 @@ void SeismicWellboreFrameRepresentation::getTimeAsDoubleValues(double* values) c
 	{
 		values[0] = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->StartValue;
 		eml23__FloatingPointConstantArray* constantArray = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->Offset[0];
-		for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
+		for (auto inc = 1; inc <= constantArray->Count; ++inc)
 			values[inc] = values[0] + (inc * constantArray->Value);
 	}
 	else {
 		throw logic_error("The array structure of time values is not supported?");
 	}
 }
-
 
 void SeismicWellboreFrameRepresentation::getTimeAsFloatValues(float* values) const
 {
@@ -172,8 +170,9 @@ void SeismicWellboreFrameRepresentation::getTimeAsFloatValues(float* values) con
 	{
 		values[0] = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->StartValue;
 		eml23__FloatingPointConstantArray* constantArray = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->Offset[0];
-		for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
+		for (int64_t inc = 1; inc <= constantArray->Count; ++inc) {
 			values[inc] = values[0] + (inc * constantArray->Value);
+		}
 	}
 	else {
 		throw logic_error("The array structure of time values is not supported?");

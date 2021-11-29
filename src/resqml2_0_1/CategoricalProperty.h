@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/CategoricalProperty.h"
+#include "../resqml2/DiscreteProperty.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -27,7 +27,7 @@ namespace RESQML2_0_1_NS
 	 * is associated either: as an internally stored index to a string through a lookup mapping, or
 	 * as an internally stored double to another double value through an explicitly provided table.
 	 */
-	class CategoricalProperty final : public RESQML2_NS::CategoricalProperty
+	class CategoricalProperty final : public RESQML2_NS::DiscreteProperty
 	{
 	public:
 
@@ -36,7 +36,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in]	partialObject	If non-null, the partial object.
 		 */
-		DLL_IMPORT_OR_EXPORT CategoricalProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::CategoricalProperty(partialObject) {}
+		DLL_IMPORT_OR_EXPORT CategoricalProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::DiscreteProperty(partialObject) {}
 
 		/**
 		 * Creates a categorical property which is of an Energistics standard property kind
@@ -61,32 +61,7 @@ namespace RESQML2_0_1_NS
 		 */
 		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			gsoap_eml2_3::eml23__IndexableElement attachmentKind,
-			RESQML2_NS::StringTableLookup* strLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
-			std::vector<int> dimensions = std::vector<int>());
-
-		/**
-		 * Creates a categorical property which is of an Energistics standard property kind
-		 *
-		 * @exception	std::invalid_argument	If @p rep or @p strLookup is null.
-		 *
-		 * @param [in]	rep			  			The representation on which this property is attached to. It
-		 * 										cannot be null.
-		 * @param 	  	guid		  			The guid to set to the property. If empty then a new guid will be
-		 * 										generated.
-		 * @param 	  	title		  			The title to set to the property. If empty then \"unknown\" title
-		 * 										will be set.
-		 * @param 	  	attachmentKind			The topological element on which the property values are attached
-		 * 										to.
-		 * @param [in]	dblLookup	  			The double table lookup which associate a discrete function to the property values.
-		 * @param [in]	energisticsPropertyKind	The property kind of these property values which must be
-		 * 										defined in the standard Energistics property type
-		 * 										dictionary.
-		 * @param 	  	dimensions	  			The dimensions of each value of this property. If this parameter
-		 *										is empty, then it is assumed this property is a scalar one.
-		 */
-		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::eml23__IndexableElement attachmentKind,
-			RESQML2_NS::DoubleTableLookup* dblLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
+			EML2_NS::ColumnBasedTable* strLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**
@@ -111,31 +86,7 @@ namespace RESQML2_0_1_NS
 		 */
 		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			gsoap_eml2_3::eml23__IndexableElement attachmentKind,
-			RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropKind,
-			std::vector<int> dimensions = std::vector<int>());
-
-		/**
-		 * Creates a categorical property which is of a local property kind
-		 *
-		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p localPropKind is null.
-		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
-		 * 								cannot be null.
-		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
-		 * 								generated.
-		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
-		 * 								will be set.
-		 * @param 	  	attachmentKind	The topological element on which the property values are attached
-		 * 								to.
-		 * @param [in]	dblLookup	  	The double table lookup which associate a discrete function to the property values.
-		 * @param [in]	localPropKind 	The property kind of these property values which must be defined
-		 * 								in the EPC document as a local property kind. It cannot be null.
-		 * @param 	  	dimensions	  	The dimensions of each value of this property. If this parameter
-		 *								is empty, then it is assumed this property is a scalar one.
-		 */
-		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::eml23__IndexableElement attachmentKind,
-			RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * localPropKind,
+			EML2_NS::ColumnBasedTable* strLookup, EML2_NS::PropertyKind * localPropKind,
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**
@@ -143,7 +94,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		CategoricalProperty(gsoap_resqml2_0_1::_resqml20__CategoricalProperty* fromGsoap): RESQML2_NS::CategoricalProperty(fromGsoap) {}
+		CategoricalProperty(gsoap_resqml2_0_1::_resqml20__CategoricalProperty* fromGsoap): RESQML2_NS::DiscreteProperty(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~CategoricalProperty() = default;
@@ -170,6 +121,20 @@ namespace RESQML2_0_1_NS
 		*/
 		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) final;
 
+		DLL_IMPORT_OR_EXPORT int64_t getNullValue(unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) const final;
+
+		DLL_IMPORT_OR_EXPORT bool hasMinimumValue(unsigned int = 0) const final { return false; }
+
+		DLL_IMPORT_OR_EXPORT int64_t getMinimumValue(unsigned int = 0) const final { throw std::logic_error("A RESQML2.0.1 cannot have a minimum value."); }
+
+		DLL_IMPORT_OR_EXPORT bool hasMaximumValue(unsigned int = 0) const final { return false; }
+
+		DLL_IMPORT_OR_EXPORT int64_t getMaximumValue(unsigned int = 0) const final { throw std::logic_error("A RESQML2.0.1 cannot have a maximum value."); }
+
+		DLL_IMPORT_OR_EXPORT void setMinimumValue(int64_t, unsigned int = 0) const final { throw std::logic_error("A RESQML2.0.1 cannot have a minimum value."); }
+
+		DLL_IMPORT_OR_EXPORT void setMaximumValue(int64_t, unsigned int = 0) const final { throw std::logic_error("A RESQML2.0.1 cannot have a maximum value."); }
+
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
@@ -179,5 +144,10 @@ namespace RESQML2_0_1_NS
 		* Get the standard XML namespace for serializing this data object.
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
+
+		/** The standard XML tag without XML namespace for serializing this data object. */
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};
 }

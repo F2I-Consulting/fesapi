@@ -40,7 +40,7 @@ StructuralOrganizationInterpretation::StructuralOrganizationInterpretation(RESQM
 
 	gsoapProxy2_3 = soap_new_resqml22__StructuralOrganizationInterpretation(orgFeat->getGsoapContext());
 	
-	static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3)->OrderingCriteria = static_cast<resqml22__OrderingCriteria>(orderingCriteria);
+	static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3)->AscendingOrderingCriteria = static_cast<resqml22__OrderingCriteria>(orderingCriteria);
 
     initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");

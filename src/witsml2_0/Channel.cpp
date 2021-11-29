@@ -29,8 +29,6 @@ using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
 
-const char* Channel::XML_TAG = "Channel";
-
 Channel::Channel(EML2_NS::PropertyKind * propertyKind,
 	const std::string & guid, const std::string & title,
 	const std::string & mnemonic, gsoap_eml2_1::eml21__UnitOfMeasure uom, gsoap_eml2_1::witsml20__EtpDataType dataType, gsoap_eml2_1::witsml20__ChannelStatus growingStatus,
@@ -99,7 +97,7 @@ void Channel::set##attributeName(const attributeDatatype & attributeName) {\
 
 #define SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(attributeDatatype, attributeName, constructor)\
 void Channel::set##attributeName(const attributeDatatype & attributeName) {\
-	if (static_cast<witsml20__Channel*>(gsoapProxy2_1)->attributeName == nullptr) { static_cast<witsml20__Channel*>(gsoapProxy2_1)->attributeName = constructor(gsoapProxy2_1->soap, 1); }\
+	if (static_cast<witsml20__Channel*>(gsoapProxy2_1)->attributeName == nullptr) { static_cast<witsml20__Channel*>(gsoapProxy2_1)->attributeName = constructor(gsoapProxy2_1->soap); }\
 	*static_cast<witsml20__Channel*>(gsoapProxy2_1)->attributeName = attributeName;\
 }
 

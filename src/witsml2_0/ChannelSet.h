@@ -152,7 +152,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The XML tag.
 		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "ChannelSet";
 
 		/**
 		 * Get the standard XML tag without XML namespace for serializing this data object.

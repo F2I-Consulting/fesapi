@@ -235,7 +235,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The K Layer gaps count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getKGapsCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getKGapsCount() const;
 
 		/**
 		* For each K Layer except the last one, indicate wether there is a layer or not after it.

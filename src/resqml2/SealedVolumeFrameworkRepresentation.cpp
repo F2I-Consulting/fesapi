@@ -37,7 +37,7 @@ void SealedVolumeFrameworkRepresentation::setSealedSurfaceFramework(SealedSurfac
 	getRepository()->addRelationship(this, ssf);
 }
 
-void SealedVolumeFrameworkRepresentation::setInterpretationOfVolumeRegion(unsigned int regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp)
+void SealedVolumeFrameworkRepresentation::setInterpretationOfVolumeRegion(uint64_t regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp)
 {
 	if (stratiUnitInterp == nullptr) {
 		throw invalid_argument("Cannot set a null strati Unit Interpretation");

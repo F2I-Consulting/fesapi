@@ -24,9 +24,6 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* LocalTime3dCrs::XML_NS = "resqml20";
-const char* LocalTime3dCrs::XML_TAG = "LocalTime3dCrs";
-
 void LocalTime3dCrs::init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
@@ -151,13 +148,7 @@ LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std
 	vertCrs->EpsgCode = verticalEpsgCode;
 }
 
-gsoap_resqml2_0_1::eml20__TimeUom LocalTime3dCrs::getUnit() const
+gsoap_resqml2_0_1::eml20__TimeUom LocalTime3dCrs::getTimeUom() const
 {
 	return static_cast<_resqml20__LocalTime3dCrs*>(gsoapProxy2_0_1)->TimeUom;
 }
-
-std::string LocalTime3dCrs::getUnitAsString() const
-{
-	return gsoap_resqml2_0_1::soap_eml20__TimeUom2s(gsoapProxy2_0_1->soap, static_cast<_resqml20__LocalTime3dCrs*>(gsoapProxy2_0_1)->TimeUom);
-}
-

@@ -218,32 +218,26 @@ namespace RESQML2_NS
 		using AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues;
 
 		/**
-		 * @brief	Gets the minimum value of a non vector property or the minimum value of one given
-		 * 			value of a vector property. This minimum value is read (it is not computed).
+		 * @brief	Gets the minimum value of a property. This minimum value is read (it is not computed).
 		 *
 		 * @param 	index	(Optional) @c 0 (default value, corresponding to the non vector property case) or
 		 * 					zero-based index of the vector value for which we look for the minimum value
 		 * 					(vector property case).
 		 *
 		 * @returns	The minimum value of the non vector property or the minimum value at position @p
-		 * 			index of the vector value or @c NaN if @p index is out of range (strictly
-		 * 			greater than @p 0 for a non vector property or greater than the vector size for a
-		 * 			vector property).
+		 * 			index of the vector value or @c NaN if @p index is out of range of if no minimum is present.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getMinimumValue(unsigned int index = 0) const = 0;
 
 		/**
-		 * @brief	Gets the maximum value of a non vector property or the maximum value of one given
-		 * 			value of a vector property. This maximum value is read (it is not computed).
+		 * @brief	Gets the maximum value of a property. This maximum value is read (it is not computed).
 		 *
 		 * @param 	index	(Optional) @c 0 (default value, corresponding to the non vector property case) or
 		 * 					zero-based index of the vector value for which we look for the maximum value
 		 * 					(vector property case).
 		 *
 		 * @returns	The maximum value of the non vector property or the maximum value at position @p
-		 * 			index of the vector value or @c NaN if @p index is out of range (strictly
-		 * 			greater than @p 0 for a non vector property or greater than the vector size for a
-		 * 			vector property).
+		 * 			index of the vector value or @c NaN if @p index is out of range of if no maximum is present.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getMaximumValue(unsigned int index = 0) const = 0;
 
@@ -464,9 +458,6 @@ namespace RESQML2_NS
 		 */
 		ContinuousProperty(gsoap_eml2_3::_resqml22__ContinuousProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 
-		virtual size_t getMinimumValueSize() const = 0;
-		virtual size_t getMaximumValueSize() const = 0;
-
 	private:
 
 		/**
@@ -492,20 +483,22 @@ namespace RESQML2_NS
 			unsigned int numArrayDimensions,
 			T * minimumValue = nullptr, T * maximumValue = nullptr)
 		{
+			if ((minimumValue == nullptr) != (maximumValue == nullptr)) {
+				throw std::logic_error("You cannot set min without max and vice versa.");
+			}
+
 			const unsigned int elementCount = getElementCountPerValue();
 
 			// Some minimum and maximum values are given : No need to compute them.
 			if (minimumValue != nullptr) {
-				for (size_t propIndex = 0; propIndex < elementCount; ++propIndex) {
-					setMinimumValue(getMinimumValueSize() > propIndex ? fmin(getMinimumValue(propIndex), minimumValue[propIndex]) : minimumValue[propIndex], propIndex);
+				for (unsigned int componentIndex = 0; componentIndex < elementCount; ++componentIndex) {
+					const double currentMinimumValue = getMinimumValue(componentIndex);
+					const double currentMaximumValue = getMaximumValue(componentIndex);
+					setMinimumValue(fmin(currentMinimumValue, minimumValue[componentIndex]), componentIndex);
+					setMaximumValue(fmax(currentMaximumValue, maximumValue[componentIndex]), componentIndex);
 				}
+				return; // No need to compute max or min value
 			}
-			if (maximumValue != nullptr) {
-				for (size_t propIndex = 0; propIndex < elementCount; ++propIndex) {
-					setMaximumValue(getMaximumValueSize() > propIndex ? fmax(getMaximumValue(propIndex), maximumValue[propIndex]) : maximumValue[propIndex], propIndex);
-				}
-			}
-			if (minimumValue != nullptr && maximumValue != nullptr) return; // No need to compute max or min value
 
 			uint64_t nValues = numValuesInEachDimension[0];
 			//If count > 1, the last (fastest) dimension has the number of properties per indexable element of the representation.
@@ -516,10 +509,10 @@ namespace RESQML2_NS
 			// Minimum or maximum values are not given : Need to compute them.
 			std::unique_ptr<T[]> allComputedMin(new T[elementCount]);
 			std::unique_ptr<T[]> allComputedMax(new T[elementCount]);
-			for (size_t propIndex = 0; propIndex < elementCount; ++propIndex) {
+			for (unsigned int propIndex = 0; propIndex < elementCount; ++propIndex) {
 				allComputedMin[propIndex] = std::numeric_limits<T>::quiet_NaN();
 				allComputedMax[propIndex] = std::numeric_limits<T>::quiet_NaN();
-				for (size_t i = 0; i < nValues; i += elementCount) {
+				for (auto i = 0; i < nValues; i += elementCount) {
 					allComputedMin[propIndex] = fmin(allComputedMin[propIndex], values[i]);
 					allComputedMax[propIndex] = fmax(allComputedMax[propIndex], values[i]);
 				}

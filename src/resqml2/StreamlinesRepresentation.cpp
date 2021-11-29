@@ -25,12 +25,12 @@ using namespace RESQML2_NS;
 
 const char* StreamlinesRepresentation::XML_TAG = "StreamlinesRepresentation";
 
-RESQML2_NS::WellboreTrajectoryRepresentation* StreamlinesRepresentation::getWellboreTrajectory(uint16_t index) const
+RESQML2_NS::WellboreTrajectoryRepresentation* StreamlinesRepresentation::getWellboreTrajectory(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<RESQML2_NS::WellboreTrajectoryRepresentation>(getWellboreTrajectoryDor(index).getUuid());
 }
 
-RESQML2_NS::AbstractGridRepresentation* StreamlinesRepresentation::getGridRepresentation(uint16_t index) const
+RESQML2_NS::AbstractGridRepresentation* StreamlinesRepresentation::getGridRepresentation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(getGridRepresentationDor(index).getUuid());
 }
@@ -39,14 +39,14 @@ void StreamlinesRepresentation::loadTargetRelationships()
 {
 	AbstractRepresentation::loadTargetRelationships();
 
-	unsigned int relCount = getWellboreTrajectoryCount();
-	for (unsigned int i = 0; i < relCount; ++i) {
+	uint64_t relCount = getWellboreTrajectoryCount();
+	for (uint64_t i = 0; i < relCount; ++i) {
 		COMMON_NS::DataObjectReference dor = getWellboreTrajectoryDor(i);
 		convertDorIntoRel(dor);
 	}
 
 	relCount = getGridRepresentationCount();
-	for (unsigned int i = 0; i < relCount; ++i) {
+	for (uint64_t i = 0; i < relCount; ++i) {
 		COMMON_NS::DataObjectReference dor = getGridRepresentationDor(i);
 		convertDorIntoRel(dor);
 	}

@@ -75,5 +75,3 @@ int SeismicLatticeFeature::getOriginInline() const
 {
 	return static_cast<_resqml22__SeismicLatticeFeature*>(gsoapProxy2_3)->InlineLabels->StartValue;
 }
-
-

@@ -26,12 +26,11 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* RockFluidUnitFeature::XML_TAG = "RockFluidUnitFeature";
-
 RockFluidUnitFeature::RockFluidUnitFeature(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title, gsoap_resqml2_0_1::resqml20__Phase phase, BoundaryFeature* top, BoundaryFeature* bottom)
 {
-	if (repo == nullptr)
+	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be null.");
+	}
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERockFluidUnitFeature(repo->getGsoapContext());
 	_resqml20__RockFluidUnitFeature* rfuf = static_cast<_resqml20__RockFluidUnitFeature*>(gsoapProxy2_0_1);

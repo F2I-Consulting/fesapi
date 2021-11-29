@@ -37,8 +37,6 @@ using namespace gsoap_eml2_3;
 using namespace COMMON_NS;
 using namespace RESQML2_NS;
 
-const char* GraphicalInformationSet::XML_TAG = "GraphicalInformationSet";
-
 unsigned int GraphicalInformationSet::getGraphicalInformationSetCount() const
 {
 	_eml23__GraphicalInformationSet const * gis = static_cast<_eml23__GraphicalInformationSet*>(gsoapProxy2_3);
@@ -52,7 +50,7 @@ unsigned int GraphicalInformationSet::getGraphicalInformationSetCount() const
 	return static_cast<unsigned int>(count);
 }
 
-unsigned int GraphicalInformationSet::getTargetObjectCount(unsigned int graphicalInformationIndex) const
+uint64_t GraphicalInformationSet::getTargetObjectCount(uint64_t graphicalInformationIndex) const
 {
 	_eml23__GraphicalInformationSet const * gis = static_cast<_eml23__GraphicalInformationSet*>(gsoapProxy2_3);
 
@@ -63,7 +61,7 @@ unsigned int GraphicalInformationSet::getTargetObjectCount(unsigned int graphica
 	return gis->GraphicalInformation[graphicalInformationIndex]->TargetObject.size();
 }
 
-eml23__DataObjectReference* GraphicalInformationSet::getTargetObjectDor(unsigned int graphicalInformationIndex, unsigned int targetIndex) const
+eml23__DataObjectReference* GraphicalInformationSet::getTargetObjectDor(uint64_t graphicalInformationIndex, uint64_t targetIndex) const
 {
 	_eml23__GraphicalInformationSet const * gis = static_cast<_eml23__GraphicalInformationSet*>(gsoapProxy2_3);
 
@@ -77,12 +75,12 @@ eml23__DataObjectReference* GraphicalInformationSet::getTargetObjectDor(unsigned
 	return gis->GraphicalInformation[graphicalInformationIndex]->TargetObject[targetIndex];
 }
 
-string GraphicalInformationSet::getTargetObjectUuid(unsigned int graphicalInformationIndex, unsigned int targetIndex) const
+string GraphicalInformationSet::getTargetObjectUuid(uint64_t graphicalInformationIndex, uint64_t targetIndex) const
 {
 	return getTargetObjectDor(graphicalInformationIndex, targetIndex)->Uuid;
 }
 
-AbstractObject* GraphicalInformationSet::getTargetObject(unsigned int graphicalInformationIndex, unsigned int targetIndex) const
+AbstractObject* GraphicalInformationSet::getTargetObject(uint64_t graphicalInformationIndex, uint64_t targetIndex) const
 {
 	return getRepository()->getDataObjectByUuid(getTargetObjectUuid(graphicalInformationIndex, targetIndex));
 }
@@ -309,31 +307,31 @@ void GraphicalInformationSet::setDefaultHsvColor(AbstractObject * targetObject, 
 	resqml22__DefaultGraphicalInformation* defaultGraphicalInformationForAllIndexableElements = getDefaultGraphicalInformationForAllIndexableElements(targetObject);
 	if (defaultGraphicalInformationForAllIndexableElements == nullptr) {
 		_eml23__GraphicalInformationSet* gis = static_cast<_eml23__GraphicalInformationSet*>(gsoapProxy2_3);
-		defaultGraphicalInformationForAllIndexableElements = soap_new_resqml22__DefaultGraphicalInformation(gsoapProxy2_3->soap, 1);
+		defaultGraphicalInformationForAllIndexableElements = soap_new_resqml22__DefaultGraphicalInformation(gsoapProxy2_3->soap);
 		getRepository()->addRelationship(this, targetObject);
 		defaultGraphicalInformationForAllIndexableElements->TargetObject.push_back(targetObject->newEml23Reference());
 		defaultGraphicalInformationForAllIndexableElements->ViewerKind = soap_resqml22__ViewerKind2s(gsoapProxy2_3->soap, resqml22__ViewerKind::_3d);
 		gis->GraphicalInformation.push_back(defaultGraphicalInformationForAllIndexableElements);
-		resqml22__GraphicalInformationForWholeObject* giwo = soap_new_resqml22__GraphicalInformationForWholeObject(gsoapProxy2_3->soap, 1);
+		resqml22__GraphicalInformationForWholeObject* giwo = soap_new_resqml22__GraphicalInformationForWholeObject(gsoapProxy2_3->soap);
 		giwo->IsVisible = true;
 		defaultGraphicalInformationForAllIndexableElements->IndexableElementInfo.push_back(giwo);
-		color = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap, 1);
+		color = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap);
 		giwo->ConstantColor = color;
 	}
 	else {
 		resqml22__GraphicalInformationForWholeObject* giwo = getDefaultGraphicalInformation(targetObject);
 		if (giwo == nullptr) {
-			giwo = soap_new_resqml22__GraphicalInformationForWholeObject(gsoapProxy2_3->soap, 1);
+			giwo = soap_new_resqml22__GraphicalInformationForWholeObject(gsoapProxy2_3->soap);
 			giwo->IsVisible = true;
 			defaultGraphicalInformationForAllIndexableElements->IndexableElementInfo.push_back(giwo);
-			color = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap, 1);
+			color = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap);
 			giwo->ConstantColor = color;
 			return;
 		}
 		else {
 			color = giwo->ConstantColor;
 			if (color == nullptr) {
-				color = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap, 1);
+				color = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap);
 				giwo->ConstantColor = color;
 			}
 		}
@@ -345,7 +343,7 @@ void GraphicalInformationSet::setDefaultHsvColor(AbstractObject * targetObject, 
 	color->Alpha = alpha;
 
 	if (!colorTitle.empty()) {
-		color->Title = gsoap_eml2_3::soap_new_std__string(gsoapProxy2_3->soap, 1);
+		color->Title = gsoap_eml2_3::soap_new_std__string(gsoapProxy2_3->soap);
 		*color->Title = colorTitle;
 	}
 }
@@ -490,7 +488,7 @@ void GraphicalInformationSet::setDiscreteColorMap(AbstractObject* targetObject, 
 
 	resqml22__ColorInformation* colorInformation = getColorInformation(targetObject);
 	if (colorInformation == nullptr) {
-		colorInformation = soap_new_resqml22__ColorInformation(gsoapProxy2_3->soap, 1);
+		colorInformation = soap_new_resqml22__ColorInformation(gsoapProxy2_3->soap);
 		getRepository()->addRelationship(this, targetObject);
 		colorInformation->TargetObject.push_back(targetObject->newEml23Reference());
 		gis->GraphicalInformation.push_back(colorInformation);
@@ -579,7 +577,7 @@ void GraphicalInformationSet::setContinuousColorMap(AbstractObject* targetObject
 
 	resqml22__ColorInformation* colorInformation = getColorInformation(targetObject);
 	if (colorInformation == nullptr) {
-		colorInformation = soap_new_resqml22__ColorInformation(gsoapProxy2_3->soap, 1);
+		colorInformation = soap_new_resqml22__ColorInformation(gsoapProxy2_3->soap);
 		getRepository()->addRelationship(this, targetObject);
 		colorInformation->TargetObject.push_back(targetObject->newEml23Reference());
 		gis->GraphicalInformation.push_back(colorInformation);
@@ -634,7 +632,7 @@ void GraphicalInformationSet::setColorMapMinMax(AbstractObject const* targetObje
 	}
 
 	if (colorInformation->MinMax == nullptr) {
-		colorInformation->MinMax = soap_new_resqml22__MinMax(gsoapProxy2_3->soap, 1);
+		colorInformation->MinMax = soap_new_resqml22__MinMax(gsoapProxy2_3->soap);
 	}
 	colorInformation->MinMax->Minimum = min;
 	colorInformation->MinMax->Maximum = max;

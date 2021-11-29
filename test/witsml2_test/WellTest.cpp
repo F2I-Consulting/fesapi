@@ -20,8 +20,6 @@ under the License.
 
 #include <stdexcept>
 
-#include "../catch.hpp"
-
 #include "witsml2/Well.h"
 
 using namespace std;

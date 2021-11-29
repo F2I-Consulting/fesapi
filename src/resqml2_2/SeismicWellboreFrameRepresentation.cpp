@@ -18,7 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "SeismicWellboreFrameRepresentation.h"
 
-#include "../eml2/LocalTime3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
+
 #include "../resqml2/WellboreInterpretation.h"
 #include "../resqml2/WellboreTrajectoryRepresentation.h"
 
@@ -26,15 +27,13 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
-const char* SeismicWellboreFrameRepresentation::XML_NS = "resqml22";
-
 SeismicWellboreFrameRepresentation::SeismicWellboreFrameRepresentation(
 	RESQML2_NS::WellboreInterpretation* interp,
 	const std::string& guid, const std::string& title,
 	RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 	double seismicReferenceDatum,
 	double weatheringVelocity,
-	EML2_NS::LocalTime3dCrs* crs)
+	EML2_NS::AbstractLocal3dCrs* crs)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The wellbore interpretation cannot be null.");
@@ -42,8 +41,8 @@ SeismicWellboreFrameRepresentation::SeismicWellboreFrameRepresentation(
 	if (traj == nullptr) {
 		throw invalid_argument("The trajectory cannot be null.");
 	}
-	if (crs == nullptr) {
-		throw invalid_argument("The local time crs cannot be null.");
+	if (crs == nullptr || !crs->isATimeCrs()) {
+		throw invalid_argument("The local 3d crs cannot be null and must be a time one.");
 	}
 
 	gsoapProxy2_3 = soap_new_resqml22__SeismicWellboreFrameRepresentation(interp->getGsoapContext());

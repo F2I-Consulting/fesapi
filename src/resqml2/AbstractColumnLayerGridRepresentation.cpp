@@ -75,19 +75,20 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 	if (isTruncated()) {
 		throw invalid_argument("A truncated grid cannot be linked to a strati column in Resqml2");
 	}
-	if (hdfProxy == nullptr) {
-		hdfProxy = getRepository()->getDefaultHdfProxy();
-		if (hdfProxy == nullptr) {
-			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-		}
-	}
-	hsize_t dim = getKCellCount();
-	hdfProxy->writeArrayNd(getHdfGroup(), "IntervalStratigraphicUnits", H5T_NATIVE_INT64, stratiUnitIndices, &dim, 1);
 
-	getRepository()->addRelationship(this, hdfProxy);
 	getRepository()->addRelationship(this, stratiOrgInterp);
 
 	if (gsoapProxy2_0_1 != nullptr) {
+		if (hdfProxy == nullptr) {
+			hdfProxy = getRepository()->getDefaultHdfProxy();
+			if (hdfProxy == nullptr) {
+				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+			}
+		}
+		getRepository()->addRelationship(this, hdfProxy);
+		hsize_t dim = getKCellCount();
+		hdfProxy->writeArrayNd(getHdfGroup(), "IntervalStratigraphicUnits", H5T_NATIVE_INT64, stratiUnitIndices, &dim, 1);
+
 		resqml20__AbstractColumnLayerGridRepresentation* rep = static_cast<resqml20__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
 		rep->IntervalStratigraphicUnits = soap_new_resqml20__IntervalStratigraphicUnits(rep->soap);
 		rep->IntervalStratigraphicUnits->StratigraphicOrganization = stratiOrgInterp->newResqmlReference();
@@ -106,20 +107,21 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 
 		rep->IntervalStratigraphicUnits->UnitIndices = gsoap_eml2_3::soap_new_eml23__JaggedArray(rep->soap);
 		// element XML
-		gsoap_eml2_3::eml23__IntegerExternalArray* elementDataset = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(rep->soap);
-		elementDataset->NullValue = nullValue;
-		elementDataset->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
-		auto* daPart = createExternalDataArrayPart(getHdfGroup() +"/IntervalStratigraphicUnits", dim, hdfProxy);
-		elementDataset->Values->ExternalDataArrayPart.push_back(daPart);
+		gsoap_eml2_3::eml23__IntegerXmlArray* elementDataset = gsoap_eml2_3::soap_new_eml23__IntegerXmlArray(rep->soap);
+		elementDataset->CountPerValue = nullValue;
+		elementDataset->Values = std::to_string(stratiUnitIndices[0]);
+		for (hsize_t i = 1; i < getKCellCount(); ++i) {
+			elementDataset->Values += " " + std::to_string(stratiUnitIndices[i]);
+		}
 		rep->IntervalStratigraphicUnits->UnitIndices->Elements = elementDataset;
 
 		// cumulative XML
-		gsoap_eml2_3::eml23__IntegerLatticeArray* cumulativeDataset = gsoap_eml2_3::soap_new_eml23__IntegerLatticeArray(rep->soap);
-		cumulativeDataset->StartValue = 1;
-		gsoap_eml2_3::eml23__IntegerConstantArray* constantArray = gsoap_eml2_3::soap_new_eml23__IntegerConstantArray(rep->soap);
-		constantArray->Count = dim - 1;
-		constantArray->Value = 1;
-		cumulativeDataset->Offset.push_back(constantArray);
+		gsoap_eml2_3::eml23__IntegerXmlArray* cumulativeDataset = gsoap_eml2_3::soap_new_eml23__IntegerXmlArray(rep->soap);
+		cumulativeDataset->CountPerValue = 1;
+		cumulativeDataset->Values = "1";
+		for (hsize_t i = 1; i < getKCellCount(); ++i) {
+			cumulativeDataset->Values += " " + std::to_string(i+1);
+		}
 		rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength = cumulativeDataset;
 	}
 	else {
@@ -207,6 +209,19 @@ int64_t AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 				getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfInt64Values(daPart->PathInExternalFile, stratiUnitIndices);
 				return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->IntervalStratigraphicUnits->UnitIndices->Elements)->NullValue;
 			}
+			throw logic_error("FESAPI does not support an association of more than one strati unit for a single K layer for now.");
+		}
+		else if (rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerXmlArray) {
+			std::unique_ptr<int64_t[]> cumulativeLength(new int64_t[getKCellCount()]);
+			readArrayNdOfInt64Values(rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength, cumulativeLength.get());
+			if (cumulativeLength[0] == 1 && cumulativeLength[getKCellCount() - 1] == getKCellCount()) {
+				auto* elements = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray*>(rep->IntervalStratigraphicUnits->UnitIndices->Elements);
+				if (elements != nullptr) {
+					return readArrayNdOfInt64Values(elements, stratiUnitIndices);
+				}
+				throw logic_error("The stratigraphic unit indices associated to K layer must be integers only.");
+			}
+			throw logic_error("FESAPI does not support an association of more than one strati unit for a single K layer for now.");
 		}
 
 		throw logic_error("Not implemented yet.");

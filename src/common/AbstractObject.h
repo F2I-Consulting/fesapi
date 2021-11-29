@@ -879,7 +879,7 @@ namespace COMMON_NS
 		void readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloatingPointArray * arrayInput, double * arrayOutput) const;
 
 		template <class T>
-		void readArrayNdOfNonHdf5IntegerValues(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, T * arrayOutput) const {
+		T readArrayNdOfNonHdf5IntegerValues(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, T * arrayOutput) const {
 			switch (arrayInput->soap_type()) {
 			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerRangeArray:
 			{
@@ -887,10 +887,10 @@ namespace COMMON_NS
 				if (rangeArray->Value + rangeArray->Count > (std::numeric_limits<T>::max)()) {
 					throw std::range_error("The range integer values are superior to unsigned int maximum value.");
 				}
-				for (unsigned int i = 0; i < static_cast<T>(rangeArray->Count); ++i) {
+				for (T i = 0; i < static_cast<T>(rangeArray->Count); ++i) {
 					arrayOutput[i] = i + static_cast<T>(rangeArray->Value);
 				}
-				break;
+				return (std::numeric_limits<T>::max)();
 			}
 			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray:
 			{
@@ -901,7 +901,7 @@ namespace COMMON_NS
 				for (size_t i = 0; i < constantArray->Count; ++i) {
 					arrayOutput[i] = static_cast<T>(constantArray->Value);
 				}
-				break;
+				return (std::numeric_limits<T>::max)();
 			}
 			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray:
 			{
@@ -912,7 +912,7 @@ namespace COMMON_NS
 				for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
 					arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
 				}
-				break;
+				return (std::numeric_limits<T>::max)();
 			}
 			default:
 				throw std::invalid_argument("The integer array type is not supported yet.");
@@ -920,7 +920,7 @@ namespace COMMON_NS
 		}
 
 		template <class T>
-		void readArrayNdOfNonHdf5IntegerValues(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, T * arrayOutput) const {
+		T readArrayNdOfNonHdf5IntegerValues(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, T * arrayOutput) const {
 			switch (arrayInput->soap_type()) {
 			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
 			{
@@ -929,7 +929,7 @@ namespace COMMON_NS
 					throw std::range_error("The constant integer value is superior to unsigned int maximum value.");
 				}
 				std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<T>(constantArray->Value));
-				break;
+				return (std::numeric_limits<T>::max)();
 			}
 			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray:
 			{
@@ -937,10 +937,22 @@ namespace COMMON_NS
 				if (latticeArray->Offset.size() > 1) {
 					throw std::invalid_argument("The integer lattice array contains more than one offset.");
 				}
-				for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
+				for (LONG64 i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
 					arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
 				}
-				break;
+				return (std::numeric_limits<T>::max)();
+			}
+			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerXmlArray:
+			{
+				gsoap_eml2_3::eml23__IntegerXmlArray const * xmlArray = static_cast<gsoap_eml2_3::eml23__IntegerXmlArray const*>(arrayInput);
+				const std::regex ws_re("\\s+"); // whitespace
+				std::sregex_token_iterator it(xmlArray->Values.begin(), xmlArray->Values.end(), ws_re, -1);
+				std::sregex_token_iterator endToken;
+				size_t index = 0;
+				while (it != endToken) {
+					arrayOutput[index++] = std::stoll(*it++);
+				}
+				return (std::numeric_limits<T>::max)();
 			}
 			default: throw std::invalid_argument("The integer array type is not supported yet.");
 			}

@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "TimeSeriesTest.h"
-#include "../catch.hpp"
+
 #include "eml2/TimeSeries.h"
 
 using namespace std;

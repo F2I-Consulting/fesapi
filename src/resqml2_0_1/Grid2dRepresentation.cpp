@@ -167,8 +167,8 @@ double Grid2dRepresentation::getXOrigin() const
 	}
 
 	if (!getSupportingRepresentationDor().isEmpty()) {
-		const int iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
-		const int jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
+		const uint64_t iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
+		const uint64_t jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
 
 		RESQML2_NS::Grid2dRepresentation const * supportingRepresentation = getSupportingRepresentation();
 		return iOrigin == 0 && jOrigin == 0 ? supportingRepresentation->getXOrigin() :
@@ -188,8 +188,8 @@ double Grid2dRepresentation::getYOrigin() const
 	}
 	
 	if (!getSupportingRepresentationDor().isEmpty()) {
-		const int iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
-		const int jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
+		const uint64_t iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
+		const uint64_t jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
 
 		RESQML2_NS::Grid2dRepresentation const * supportingRepresentation = getSupportingRepresentation();
 		return iOrigin == 0 && jOrigin == 0 ? supportingRepresentation->getYOrigin() :
@@ -208,8 +208,8 @@ double Grid2dRepresentation::getZOrigin() const
 	}
 	
 	if (!getSupportingRepresentationDor().isEmpty()) {
-		const int iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
-		const int jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
+		const uint64_t iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
+		const uint64_t jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
 
 		RESQML2_NS::Grid2dRepresentation const * supportingRepresentation = getSupportingRepresentation();
 		return iOrigin == 0 && jOrigin == 0 ? supportingRepresentation->getZOrigin() :
@@ -381,7 +381,7 @@ double Grid2dRepresentation::getJSpacing() const
 		return static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Value;
 	}
 
-	const int jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
+	const uint64_t jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
 	const double jSpacingOnSupportingRep = getSupportingRepresentation()->getJSpacing();
 
 	return jIndexOffset * jSpacingOnSupportingRep;
@@ -414,8 +414,8 @@ void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 	}
 	else if (!getSupportingRepresentationDor().isEmpty())
 	{
-		const int jIndexOrigin = getIndexOriginOnSupportingRepresentation(0);
-		const int jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
+		const uint64_t jIndexOrigin = getIndexOriginOnSupportingRepresentation(0);
+		const uint64_t jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
 		std::unique_ptr<double[]> jSpacingsOnSupportingRep(new double[jSpacingCount]);
 		getSupportingRepresentation()->getJSpacing(jSpacingsOnSupportingRep.get());
 		
@@ -452,7 +452,7 @@ double Grid2dRepresentation::getISpacing() const
 		return static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[1]->Spacing)->Value;
 	}
 
-	const int iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
+	const uint64_t iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
 	const double iSpacingOnSupportingRep = getSupportingRepresentation()->getISpacing();
 
 	return iIndexOffset * iSpacingOnSupportingRep;
@@ -485,8 +485,8 @@ void Grid2dRepresentation::getISpacing(double* const iSpacings) const
 	}
 	else if (!getSupportingRepresentationDor().isEmpty())
 	{
-		const int iIndexOrigin = getIndexOriginOnSupportingRepresentation(1);
-		const int iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
+		const uint64_t iIndexOrigin = getIndexOriginOnSupportingRepresentation(1);
+		const uint64_t iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
 		std::unique_ptr<double[]> iSpacingsOnSupportingRep(new double[iSpacingCount]);
 		getSupportingRepresentation()->getISpacing(iSpacingsOnSupportingRep.get());
 
@@ -619,7 +619,7 @@ COMMON_NS::DataObjectReference Grid2dRepresentation::getSupportingRepresentation
 	return COMMON_NS::DataObjectReference();
 }
 
-int Grid2dRepresentation::getIndexOriginOnSupportingRepresentation() const
+uint64_t Grid2dRepresentation::getIndexOriginOnSupportingRepresentation() const
 {
 	resqml20__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry);
 
@@ -630,23 +630,25 @@ int Grid2dRepresentation::getIndexOriginOnSupportingRepresentation() const
 	throw logic_error("It does not exist supporting representation for this representation.");
 }
 
-int Grid2dRepresentation::getIndexOriginOnSupportingRepresentation(unsigned int dimension) const
+uint64_t Grid2dRepresentation::getIndexOriginOnSupportingRepresentation(unsigned int dimension) const
 {
 	resqml20__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry);
 
 	if (geom != nullptr)
 	{
-		if (dimension == 0) // J dimension : slowest
+		if (dimension == 0) { // J dimension : slowest
 			return geom->NodeIndicesOnSupportingRepresentation->StartValue / getSupportingRepresentation()->getNodeCountAlongIAxis();
-		else if (dimension == 1) // I dimension : fastest
+		}
+		else if (dimension == 1) { // I dimension : fastest
 			return geom->NodeIndicesOnSupportingRepresentation->StartValue % getSupportingRepresentation()->getNodeCountAlongIAxis();
+		}
 		throw invalid_argument("There cannot be more than 2 dimensions for a grid 2d representation.");
 	}
 
 	throw logic_error("It does not exist supporting representation for this representation.");
 }
 
-int Grid2dRepresentation::getNodeCountOnSupportingRepresentation(unsigned int dimension) const
+uint64_t Grid2dRepresentation::getNodeCountOnSupportingRepresentation(unsigned int dimension) const
 {
 	resqml20__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry);
 
@@ -662,7 +664,7 @@ int Grid2dRepresentation::getNodeCountOnSupportingRepresentation(unsigned int di
 	throw logic_error("It does not exist supporting representation for this representation.");
 }
 
-int Grid2dRepresentation::getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const
+uint64_t Grid2dRepresentation::getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const
 {
 	resqml20__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry);
 
@@ -753,7 +755,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* Grid2dRepresentation::createArray2dO
 	unsigned int patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
 	unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy * proxy,
 	RESQML2_NS::Grid2dRepresentation * supportingRepresentation,
-	unsigned int startGlobalIndex,
+	uint64_t startGlobalIndex,
 	int indexIncrementI, int indexIncrementJ)
 {
 	if (localCrs == nullptr) {

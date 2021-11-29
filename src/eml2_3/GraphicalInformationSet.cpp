@@ -18,18 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "GraphicalInformationSet.h"
 
-using namespace std;
 using namespace EML2_3_NS;
 
-const char* GraphicalInformationSet::XML_NS = "eml23";
-
-GraphicalInformationSet::GraphicalInformationSet(COMMON_NS::DataObjectRepository* repo, string const& guid, string const& title)
+GraphicalInformationSet::GraphicalInformationSet(COMMON_NS::DataObjectRepository* repo, std::string const& guid, std::string const& title)
 {
 	if (repo == nullptr) {
 		throw std::invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_3 = gsoap_eml2_3::soap_new_eml23__GraphicalInformationSet(repo->getGsoapContext(), 1);
+	gsoapProxy2_3 = gsoap_eml2_3::soap_new_eml23__GraphicalInformationSet(repo->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");

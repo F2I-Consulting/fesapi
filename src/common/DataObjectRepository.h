@@ -33,8 +33,6 @@ namespace EML2_NS
 	class ActivityTemplate;
 	class ColumnBasedTable;
 	class GraphicalInformationSet;
-	class LocalDepth3dCrs;
-	class LocalTime3dCrs;
 	class PropertyKind;
 	class ReferencePointInALocalEngineeringCompoundCrs;
 	class TimeSeries;
@@ -51,7 +49,6 @@ namespace RESQML2_NS
 	class BlockedWellboreRepresentation;
 	class BoundaryFeature;
 	class BoundaryFeatureInterpretation;
-	class CategoricalProperty;
 	class CmpLineFeature;
 	class CommentProperty;
 	class ContinuousColorMap;
@@ -59,7 +56,6 @@ namespace RESQML2_NS
 	class CulturalFeature;
 	class DiscreteColorMap;
 	class DiscreteProperty;
-	class DoubleTableLookup;
 	class EarthModelInterpretation;
 	class FaultInterpretation;
 	class FluidBoundaryInterpretation;
@@ -96,7 +92,6 @@ namespace RESQML2_NS
 	class StratigraphicUnitInterpretation;
 	class StreamlinesFeature;
 	class StreamlinesRepresentation;
-	class StringTableLookup;
 	class StructuralOrganizationInterpretation;
 	class SubRepresentation;
 	class TriangulatedSetRepresentation;
@@ -117,6 +112,7 @@ namespace RESQML2_0_1_NS
 	class ContinuousProperty;
 	class DeviationSurveyRepresentation;
 	class DiscreteProperty;
+	class DoubleTableLookup;
 	class FluidBoundaryFeature;
 	class GeneticBoundaryFeature;
 	class GeobodyFeature;
@@ -543,10 +539,15 @@ namespace COMMON_NS
 			return all[index];\
 		}
 
-		GETTER_DATAOBJECTS(EML2_NS::LocalDepth3dCrs, LocalDepth3dCrs)
-		GETTER_DATAOBJECTS(EML2_NS::LocalTime3dCrs, LocalTime3dCrs)
-		GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 		GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)
+		GETTER_DATAOBJECTS(EML2_NS::AbstractLocal3dCrs, Local3dCrs)
+		GETTER_DATAOBJECTS(EML2_NS::Activity, Activity)
+		GETTER_DATAOBJECTS(EML2_NS::ActivityTemplate, ActivityTemplate)
+		GETTER_DATAOBJECTS(EML2_NS::ColumnBasedTable, ColumnBasedTable)
+		GETTER_DATAOBJECTS(EML2_NS::GraphicalInformationSet, GraphicalInformationSet)
+		GETTER_DATAOBJECTS(EML2_NS::PropertyKind, PropertyKind)
+		GETTER_DATAOBJECTS(EML2_NS::ReferencePointInALocalEngineeringCompoundCrs, ReferencePointInALocalEngineeringCompoundCrs)
+		GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 
 		GETTER_DATAOBJECTS(RESQML2_0_1_NS::DeviationSurveyRepresentation, DeviationSurveyRepresentation)
 
@@ -559,7 +560,6 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Horizon)
 		GETTER_DATAOBJECTS(RESQML2_NS::CmpLineFeature, CmpLine)
 		GETTER_DATAOBJECTS(RESQML2_NS::CulturalFeature, Cultural)
-		GETTER_DATAOBJECTS(RESQML2_NS::DoubleTableLookup, DoubleTableLookup)
 		GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, AllGrid2dRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, HorizonGrid2dRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::IjkGridParametricRepresentation, IjkGridParametricRepresentation)
@@ -821,7 +821,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local depth 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
@@ -853,7 +853,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local depth 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
@@ -886,7 +886,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local depth 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
@@ -919,7 +919,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local depth 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
@@ -952,7 +952,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local time 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
@@ -986,7 +986,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local time 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
@@ -1021,7 +1021,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local time 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
@@ -1056,7 +1056,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local time 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
@@ -2065,7 +2065,7 @@ namespace COMMON_NS
 			RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 			double seismicReferenceDatum,
 			double weatheringVelocity,
-			EML2_NS::LocalTime3dCrs* crs);
+			EML2_NS::AbstractLocal3dCrs* crs);
 
 		/**
 		 * Creates a wellbore marker frame representation into this repository
@@ -2473,11 +2473,12 @@ namespace COMMON_NS
 		 * 					generated.
 		 * @param 	title	The title to set to the sub-representation. If empty then \"unknown\" title
 		 * 					will be set.
+		 * @param 	defaultElementKind	The indexable element which will be by default used for selecting the subrepresentation of a supporting representation.
 		 *
 		 * @returns	A pointer to the new sub-representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::SubRepresentation* createSubRepresentation(
-			const std::string & guid, const std::string & title);
+			const std::string & guid, const std::string & title, gsoap_eml2_3::eml23__IndexableElement elementKind);
 
 		/**
 		 * @brief	Creates a sub-representation into this repository
@@ -2492,11 +2493,12 @@ namespace COMMON_NS
 		 * 						be generated.
 		 * @param 	  	title 	The title to set to the sub-representation. If empty then \"unknown\"
 		 * 						title will be set.
+		 * @param 		defaultElementKind	The indexable element which will be by default used for selecting the subrepresentation of a supporting representation.
 		 *
 		 * @returns	A pointer to the new sub-representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::SubRepresentation* createSubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-			const std::string & guid, const std::string & title);
+			const std::string & guid, const std::string & title, gsoap_eml2_3::eml23__IndexableElement elementKind);
 
 		/**
 		 * @brief	Creates a grid connection set representation into this repository
@@ -2591,21 +2593,25 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new double table lookup.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::ColumnBasedTable* createDoubleTableLookup(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DoubleTableLookup* createDoubleTableLookup(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	Creates a string table lookup into this repository
+		 * @brief	Creates a facies table into this repository
+		 *			A facies table is a column based table which already has got two column headers :
+		 *				column 0 is a key column (ordinal number prop kind) and must contain integer
+		 *				column 1 is a normal column (facies prop kind) and must contain string
+		 *			You need to set the values of the column after creation
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
-		 * @param 	guid 	The guid to set to the string table lookup. If empty then a new guid will be
+		 * @param 	guid 	The guid to set to the facies table. If empty then a new guid will be
 		 * 					generated.
-		 * @param 	title	The title to set to the string table lookup. If empty then \"unknown\" title
+		 * @param 	title	The title to set to the facies table. If empty then \"unknown\" title
 		 * 					will be set.
 		 *
-		 * @returns	A pointer to the new string table lookup.
+		 * @returns	A pointer to the new facies table.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::ColumnBasedTable* createStringTableLookup(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT EML2_NS::ColumnBasedTable* createFaciesTable(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a RESQML2.0.1 only property kind into this repository
@@ -2973,34 +2979,7 @@ namespace COMMON_NS
 		 * @returns A pointer to new categorical property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::eml23__IndexableElement attachmentKind, RESQML2_NS::StringTableLookup* strLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
-			std::vector<int> dimensions = std::vector<int>());
-
-		/**
-		 * Creates a categorical property (which is of a standard Energistics property kind) into this
-		 * repository
-		 *
-		 * @exception	std::invalid_argument	If @p rep or @p strLookup is null.
-		 *
-		 * @param [in]	rep					   	The representation on which this property is attached to.
-		 * 										It cannot be null.
-		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
-		 * 										will be generated.
-		 * @param 	  	title				   	The title to set to the property. If empty then
-		 * 										\"unknown\" title will be set.
-		 * @param 	  	attachmentKind		   	The topological element on which the property values are
-		 * 										attached to.
-		 * @param [in]	dblLookup			   	The double lookup which defines a discrete function associated with the property values.
-		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
-		 * 										defined in the standard Energistics property type
-		 * 										dictionary.
-		 * @param 	  	dimensions	   			The dimensions of each value of this property. If this parameter
-		 *										is empty, then it is assumed this property is a scalar one.
-		 *
-		 * @returns A pointer to new categorical property.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::eml23__IndexableElement attachmentKind, RESQML2_NS::DoubleTableLookup* dblLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::ColumnBasedTable* strLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**
@@ -3026,36 +3005,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new categorical property.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::eml23__IndexableElement attachmentKind, RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropType,
-			std::vector<int> dimensions = std::vector<int>());
-
-		/**
-		 * Creates a categorical property (which is of a local property kind) into this repository
-		 *
-		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
-		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p localPropKind is null.
-		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
-		 * 								cannot be null.
-		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
-		 * 								generated.
-		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
-		 * 								will be set.
-		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
-		 * 								a scalar property.
-		 * @param 	  	attachmentKind	The topological element on which the property values are attached
-		 * 								to.
-		 * @param [in]	dblLookup		The double lookup which defines a discrete function associated with the property values.
-		 * @param [in]	localPropType 	The property kind of these property values which must be defined
-		 * 								in the EPC document as a local property kind. It cannot be null.
-		 * @param 	  	dimensions	  	The dimensions of each value of this property. If this parameter
-		 *								is empty, then it is assumed this property is a scalar one.
-		 *
-		 * @returns	A pointer to the new categorical property.
-		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			gsoap_eml2_3::eml23__IndexableElement attachmentKind, RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * localPropType,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::DiscreteProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::ColumnBasedTable* strLookup, EML2_NS::PropertyKind * localPropType,
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**

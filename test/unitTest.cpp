@@ -22,8 +22,6 @@ under the License.
 
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 
-#include "catch.hpp"
-
 #include "common/DataObjectRepository.h"
 #include "eml2/AbstractHdfProxy.h"
 
@@ -32,48 +30,51 @@ under the License.
 #include "Witsml14Trajectory.h"
 
 #include "eml2_test/HdfProxy.h"
-#include "resqml2_test/BlockedWellbore.h"
-#include "resqml2_test/LocalDepth3dCrsTest.h"
-#include "resqml2_test/HorizonInterpretationTest.h"
-#include "resqml2_test/FaultSinglePatchTriangulatedSetRepresentationTest.h"
-#include "resqml2_test/FaultMultiPatchTriangulatedSetRepresentationTest.h"
-#include "resqml2_test/ActivityTemplateGenericCreationTest.h"
 #include "resqml2_test/ActivityCreationTest.h"
-#include "resqml2_test/OneTetrahedronUnstructuredGridRepresentationTest.h"
-#include "resqml2_test/UnstructuredGridTest.h"
-#include "resqml2_test/TimeSeriesTest.h"
+#include "resqml2_test/ActivityTemplateGenericCreationTest.h"
+#include "resqml2_test/BigIjkGridExplicitRepresentationTest.h"
+#include "resqml2_test/BigIjkGridParametricRepresentationTest.h"
+#include "resqml2_test/BlockedWellbore.h"
+#include "resqml2_test/CategoricalProperty.h"
 #include "resqml2_test/CommentProperty.h"
+#include "resqml2_test/CompressedIjkGridExplicitRepresentationTest.h"
+#include "resqml2_2test/ContinuousColorMapTest.h"
+#include "resqml2_test/ContinuousProperty.h"
 #include "resqml2_test/ContinuousPropertyOnWellFrameTest.h"
+#include "resqml2_2test/DiscreteColorMapTest.h"
+#include "resqml2_test/DiscreteProperty.h"
+#include "resqml2_test/DiscretePropertyUsingLocalKindOnWellFrameTest.h"
+#include "resqml2_test/FaultMultiPatchTriangulatedSetRepresentationTest.h"
+#include "resqml2_test/FaultSinglePatchTriangulatedSetRepresentationTest.h"
+#include "resqml2_test/FourSugarsParametricIjkGridWithGap.h"
+#include "resqml2_test/Grid2dRepresentationTest.h"
 #include "resqml2_test/GridConnectionSetOnPartialGridSet.h"
+#include "resqml2_test/HorizonInterpretationTest.h"
+#include "resqml2_test/HorizonOnSeismicLine.h"
+#include "resqml2_test/InterpretationDomain.h"
+#include "resqml2_test/LgrOnRightHanded4x3x2ExplicitIjkGrid.h"
+#include "resqml2_test/LocalDepth3dCrsTest.h"
+#include "resqml2_test/MultirealPropertyTest.h"
+#include "resqml2_test/OneTetrahedronUnstructuredGridRepresentationTest.h"
+#include "resqml2_test/PointsProperty.h"
+#include "resqml2_test/PolylineSetRepresentation.h"
+#include "resqml2_test/PropertyBySlab.h"
+#include "resqml2_test/RightHanded4x3x2ExplicitIjkGrid.h"
+#include "resqml2_test/SeismicLatticeRepresentationTest.h"
+#include "resqml2_test/Streamlines.h"
+#include "resqml2_test/SubRepresentationOnPartialGridConnectionSet.h"
+#include "resqml2_test/TimeSeriesTest.h"
+#include "resqml2_test/UnstructuredGridTest.h"
 #include "resqml2_test/WellboreTrajectoryRepresentationTest.h"
 #include "resqml2_test/WellboreMarkerFrameRepresentationTest.h"
 #include "resqml2_test/WellboreFrameRepresentationTest.h"
 #include "resqml2_test/WellboreRegularFrameRepresentationTest.h"
-#include "resqml2_test/DiscretePropertyUsingLocalKindOnWellFrameTest.h"
-#include "resqml2_test/SeismicLatticeRepresentationTest.h"
-#include "resqml2_test/Grid2dRepresentationTest.h"
-#include "resqml2_test/HorizonOnSeismicLine.h"
-#include "resqml2_test/CompressedIjkGridExplicitRepresentationTest.h"
-#include "resqml2_test/RightHanded4x3x2ExplicitIjkGrid.h"
-#include "resqml2_test/FourSugarsParametricIjkGridWithGap.h"
-#include "resqml2_test/BigIjkGridExplicitRepresentationTest.h"
-#include "resqml2_test/BigIjkGridParametricRepresentationTest.h"
-#include "resqml2_test/SubRepresentationOnPartialGridConnectionSet.h"
-#include "resqml2_test/LgrOnRightHanded4x3x2ExplicitIjkGrid.h"
-#include "resqml2_test/InterpretationDomain.h"
-#include "resqml2_2test/DiscreteColorMapTest.h"
-#include "resqml2_2test/ContinuousColorMapTest.h"
-#include "resqml2_test/MultirealPropertyTest.h"
-#include "resqml2_test/CategoricalProperty.h"
-#include "resqml2_test/ContinuousProperty.h"
-#include "resqml2_test/DiscreteProperty.h"
-#include "resqml2_test/PointsProperty.h"
-#include "resqml2_test/PropertyBySlab.h"
-#include "resqml2_test/Streamlines.h"
-#include "witsml2_test/WellTest.h"
-#include "witsml2_test/Trajectory.h"
+
 #include "witsml2_test/Perforation.h"
+#include "witsml2_test/Trajectory.h"
 #include "witsml2_test/WellboreGeometryTest.h"
+#include "witsml2_test/WellTest.h"
+
 #if WITH_RESQML2_2
 #include "eml2_3test/GraphicalInformationSetTest.h"
 #include "resqml2_2test/DiscreteColorMapTest.h"
@@ -177,6 +178,9 @@ FESAPI_TEST("Export a multi domains interpretation", "[interpretation]", Interpr
 // TRIANGULATION
 FESAPI_TEST("Export and import a single patch triangulated set fault representation", "[representation]", FaultSinglePatchTriangulatedSetRepresentationTest)
 FESAPI_TEST("Export and import a multi patch triangulated set fault representation", "[representation]", FaultMultiPatchTriangulatedSetRepresentationTest)
+
+// POLYLINE SET
+FESAPI_TEST("Export and import a single patch polyline set fault representation", "[representation]", PolylineSetRepresentation)
 
 // ACTIVITY
 FESAPI_TEST("Export and import a generic creation activity template", "[activity]", ActivityTemplateGenericCreationTest)

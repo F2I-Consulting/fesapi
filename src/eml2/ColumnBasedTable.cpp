@@ -16,37 +16,21 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "CategoricalProperty.h"
+#include "ColumnBasedTable.h"
 
-#include "DoubleTableLookup.h"
-#include "StringTableLookup.h"
+#include "PropertyKind.h"
 
-using namespace std;
-using namespace RESQML2_NS;
+using namespace EML2_NS;
 
-const char* CategoricalProperty::XML_TAG = "CategoricalProperty";
-
-void CategoricalProperty::loadTargetRelationships()
+PropertyKind* ColumnBasedTable::getPropertyKind(uint64_t columnIndex) const
 {
-	AbstractValuesProperty::loadTargetRelationships();
-
-	convertDorIntoRel(getLookupDor());
+	return getRepository()->getDataObjectByUuid<PropertyKind>(getPropertyKindDor(columnIndex).getUuid());
 }
 
-StringTableLookup* CategoricalProperty::getStringLookup() const
+gsoap_eml2_3::eml23__UnitOfMeasure ColumnBasedTable::getUom(uint64_t columnIndex) const
 {
-	COMMON_NS::AbstractObject* const result = getRepository()->getDataObjectByUuid(getLookupDor().getUuid());
-
-	return result == nullptr
-		? nullptr
-		: dynamic_cast<StringTableLookup*>(result);
-}
-
-DoubleTableLookup* CategoricalProperty::getDoubleLookup() const
-{
-	COMMON_NS::AbstractObject* const result = getRepository()->getDataObjectByUuid(getLookupDor().getUuid());
-
-	return result == nullptr
-		? nullptr
-		: dynamic_cast<DoubleTableLookup*>(result);
+	gsoap_eml2_3::eml23__UnitOfMeasure result;
+	return gsoap_eml2_3::soap_s2eml23__UnitOfMeasure(getGsoapContext(), getUomAsString(columnIndex).c_str(), &result) == SOAP_OK
+		? result
+		: gsoap_eml2_3::eml23__UnitOfMeasure::Euc;
 }

@@ -144,14 +144,19 @@ gsoap_eml2_3::resqml22__LineRole PolylineRepresentation::getLineRole() const
 		throw logic_error("The polyline doesn't have any role");
 	}
 
-	return *static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole;
+	gsoap_eml2_3::resqml22__LineRole result;
+	if (soap_s2resqml22__LineRole(gsoapProxy2_3->soap, static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole->c_str(), &result) == SOAP_OK) {
+		return result;
+	}
+
+	throw logic_error("The linerole is not recognized and extended line roel is not supported yet.");
 }
 
 void PolylineRepresentation::setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole)
 {
 	if (!hasALineRole()) {
-		static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole = (resqml22__LineRole*)soap_malloc(gsoapProxy2_3->soap, sizeof(resqml22__LineRole));
+		static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole = soap_new_std__string(gsoapProxy2_3->soap);
 	}
 
-	*static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole = lineRole;
+	*static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole = soap_resqml22__LineRole2s(gsoapProxy2_3->soap, lineRole);
 }

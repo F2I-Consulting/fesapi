@@ -145,8 +145,5 @@ namespace RESQML2_2_NS
 		 */
 		void init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			gsoap_eml2_3::eml23__IndexableElement attachmentKind, std::vector<int> dimensions = std::vector<int>());
-
-		size_t getMinimumValueSize() const;
-		size_t getMaximumValueSize() const;
 	};
 }

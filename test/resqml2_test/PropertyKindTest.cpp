@@ -20,8 +20,6 @@ under the License.
 
 #include <stdexcept>
 
-#include "../catch.hpp"
-
 #include "eml2/PropertyKind.h"
 
 using namespace std;

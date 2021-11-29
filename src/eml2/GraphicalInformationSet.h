@@ -49,7 +49,7 @@ namespace EML2_NS
 		 *
 		 * @returns	the count of data objects which are targeted by a graphical information at @p graphicalInformationIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTargetObjectCount(unsigned int graphicalInformationIndex) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getTargetObjectCount(uint64_t graphicalInformationIndex) const;
 
 		/**
 		 * Gets a data object reference to the data object which receives some graphical information at a
@@ -60,10 +60,10 @@ namespace EML2_NS
 		 * @param 	graphicalInformationIndex	Zero-based index of the graphical information in the GraphicalInformationSet
 		 * @param	targetIndex					Zero-based index of the data object reference in the graphical information
 		 *
-		 * @returns	The data object reference to the dato object which receives some graphical information at
+		 * @returns	The data object reference to the data object which receives some graphical information at
 		 * 			@p graphicalInformationIndex and target @p targetIndex.
 		 */
-		gsoap_eml2_3::eml23__DataObjectReference* getTargetObjectDor(unsigned int graphicalInformationIndex, unsigned int targetIndex) const;
+		gsoap_eml2_3::eml23__DataObjectReference* getTargetObjectDor(uint64_t graphicalInformationIndex, uint64_t targetIndex) const;
 
 		/**
 		 * Gets the UUID of the object which receives some graphical information at a particular index
@@ -76,7 +76,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The UUUID of the object which receives some graphical information at @p graphicalInformationIndex and target @p targetIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getTargetObjectUuid(unsigned int graphicalInformationIndex, unsigned int targetIndex) const;
+		DLL_IMPORT_OR_EXPORT std::string getTargetObjectUuid(uint64_t graphicalInformationIndex, uint64_t targetIndex) const;
 
 		/**
 		 * Gets the data object which receives some graphical information at a particular index of the
@@ -87,7 +87,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The data object which receives some graphical information at @p graphicalInformationIndex and target @p targetIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* getTargetObject(unsigned int graphicalInformationIndex, unsigned int targetIndex) const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* getTargetObject(uint64_t graphicalInformationIndex, uint64_t targetIndex) const;
 
 		/**
 		 * Query if a given data object has some direct graphical information, that is to say if there exists
@@ -587,7 +587,7 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT static void hsvToRgb(double hue, double saturation, double value, unsigned int& red, unsigned int& green, unsigned int& blue);
 
 		/** The standard XML tag without XML namespace for serializing this data object */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "GraphicalInformationSet";
 
 		/**
 		 * Get the standard XML tag without XML namespace for serializing this data object
@@ -595,15 +595,6 @@ namespace EML2_NS
 		 * @returns	The XML tag.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const { return XML_TAG; }
-
-		/**
-		 * Gets the XML namespace for the tags for the XML serialization of this instance
-		 *
-		 * @returns	The XML namespace of this instance.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const {
-			return "eml23";
-		}
 
 		/**
 		 * Reads the forward relationships of this data object and update the <tt>.rels</tt> of the

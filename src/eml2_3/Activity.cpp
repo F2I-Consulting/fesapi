@@ -27,8 +27,6 @@ using namespace std;
 using namespace EML2_3_NS;
 using namespace gsoap_eml2_3;
 
-const char* Activity::XML_NS = "eml23";
-
 Activity::Activity(EML2_NS::ActivityTemplate* activityTemplate, const string & guid, const string & title)
 {
 	if (activityTemplate == nullptr) {
@@ -155,12 +153,12 @@ void Activity::pushBackParameter(const std::string title, AbstractObject* resqml
 	activity->Parameter.push_back(dop);
 }
 
-unsigned int Activity::getParameterCount() const
+uint64_t Activity::getParameterCount() const
 {
 	return static_cast<_eml23__Activity*>(gsoapProxy2_3)->Parameter.size();
 }
 
-unsigned int Activity::getParameterCount(const std::string & paramTitle) const
+uint64_t Activity::getParameterCount(const std::string & paramTitle) const
 {
 	return getParameterFromTitle(paramTitle).size();
 }
@@ -180,10 +178,8 @@ std::vector<unsigned int> Activity::getParameterIndexOfTitle(const std::string &
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
 
 	vector<unsigned int> paramIndex;
-	for (unsigned int i = 0; i < activity->Parameter.size(); ++i)
-	{
-		if (activity->Parameter[i]->Title == paramTitle)
-		{
+	for (unsigned int i = 0; i < activity->Parameter.size(); ++i) {
+		if (activity->Parameter[i]->Title == paramTitle) {
 			paramIndex.push_back(i);
 		}
 	}
@@ -196,11 +192,9 @@ std::vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> Activity::getParame
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
 
 	std::vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> params;
-	for (unsigned int i = 0; i < activity->Parameter.size(); ++i)
-	{
-		if (activity->Parameter[i]->Title == paramTitle)
-		{
-			params.push_back(activity->Parameter[i]);
+	for (auto* param : activity->Parameter) {
+		if (param->Title == paramTitle) {
+			params.push_back(param);
 		}
 	}
 
@@ -212,15 +206,16 @@ std::vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> Activity::getParame
 *****************************/
 bool Activity::isAFloatingPointQuantityParameter(const std::string & paramTitle) const
 {
-	std::vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
+	std::vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> params = getParameterFromTitle(paramTitle);
 
-	if (param.size() < 1)
+	if (params.size() < 1) {
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
+	}
 
-	for (unsigned int i = 0; i < param.size(); ++i)
-	{
-		if (param[i]->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__DoubleQuantityParameter)
+	for (auto const* param : params) {
+		if (param->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__DoubleQuantityParameter) {
 			return false;
+		}
 	}
 
 	return true;

@@ -18,11 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/CompressedIjkGridExplicitRepresentationTest.h"
 
-#include "catch.hpp"
 #include "resqml2_test/LocalDepth3dCrsTest.h"
 
 #include "eml2/AbstractHdfProxy.h"
-#include "resqml2/LocalDepth3dCrs.h"
+
 #include "resqml2/IjkGridExplicitRepresentation.h"
 
 using namespace std;

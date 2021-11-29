@@ -29,8 +29,6 @@ using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
 
-const char* Log::XML_TAG = "Log";
-
 Log::Log(WITSML2_NS::Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title)
@@ -63,7 +61,7 @@ std::vector<ChannelSet*> Log::getChannelSets() const
 
 #define SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(attributeDatatype, attributeName, constructor)\
 void Log::set##attributeName(const attributeDatatype & attributeName) {\
-	if (static_cast<witsml20__Log*>(gsoapProxy2_1)->attributeName == nullptr) { static_cast<witsml20__Log*>(gsoapProxy2_1)->attributeName = constructor(gsoapProxy2_1->soap, 1); }\
+	if (static_cast<witsml20__Log*>(gsoapProxy2_1)->attributeName == nullptr) { static_cast<witsml20__Log*>(gsoapProxy2_1)->attributeName = constructor(gsoapProxy2_1->soap); }\
 	*static_cast<witsml20__Log*>(gsoapProxy2_1)->attributeName = attributeName;\
 }
 

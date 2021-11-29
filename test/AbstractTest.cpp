@@ -18,9 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractTest.h"
 
+#include "common/AbstractObject.h"
 #include "common/EpcDocument.h"
-#include "catch.hpp"
-#include "resqml2/LocalDepth3dCrs.h"
 
 #include "version_config.h"
 
@@ -57,13 +56,11 @@ void AbstractTest::deserialize() {
 
 	std::string validationResult = epcDocument.deserializeInto(*repo);
 	if (!validationResult.empty()) {
-		cout << "Validation error: " << validationResult << endl;
+		cerr << "Validation error: " << validationResult << endl;
 	}
 	//REQUIRE( validationResult.empty() );
 
-	//REQUIRE( repo->getHdfProxySet().size() == 1 );
-
-	vector<string> warningSet = repo->getWarnings();
+	std::vector<std::string> warningSet = repo->getWarnings();
 	if (!warningSet.empty()) {
 		cout << "EPC document " << epcDocument.getName() << ".epc deserialized with " << warningSet.size() << " warning(s)" << endl;
 		for (size_t i=0; i < warningSet.size(); ++i){

@@ -27,15 +27,13 @@ under the License.
 using namespace std;
 using namespace EML2_NS;
 
-const char* TimeSeries::XML_TAG = "TimeSeries";
-
-void TimeSeries::pushBackTimestamp(time_t timestamp, LONG64 yearOffset = 0)
+void TimeSeries::pushBackTimestamp(time_t timestamp, LONG64 yearOffset)
 {
 	std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(timestamp));
 	pushBackTimestamp(tmConversion, yearOffset);
 }
 
-time_t TimeSeries::getTimestamp(unsigned int index) const
+time_t TimeSeries::getTimestamp(uint64_t index) const
 {
 	tm temp = getTimestampAsTimeStructure(index);
 	return timeTools::timegm(temp);

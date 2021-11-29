@@ -66,7 +66,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The trace count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getTraceCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getTraceCount() const = 0;
 
 		/**
 		 * Gets the trace labels in this seismic line.

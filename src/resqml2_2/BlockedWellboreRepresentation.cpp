@@ -81,7 +81,7 @@ void BlockedWellboreRepresentation::setIntervalGridCells(char const* gridIndices
 
 	_resqml22__BlockedWellboreRepresentation* rep = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3);
 	ULONG64 cellCount = 0;
-	for (ULONG64 intervalIndex = 0; intervalIndex < rep->NodeCount - 1; ++intervalIndex) {
+	for (LONG64 intervalIndex = 0; intervalIndex < rep->NodeCount - 1; ++intervalIndex) {
 		if (gridIndices[intervalIndex] != gridIndicesNullValue) {
 			++cellCount;
 		}
@@ -156,7 +156,13 @@ char BlockedWellboreRepresentation::getGridIndices(char * gridIndices) const
 	if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
 		eml23__ExternalDataArrayPart const * daPart = static_cast<eml23__IntegerExternalArray*>(xmlGridIndices)->Values->ExternalDataArrayPart[0];
 		getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfCharValues(daPart->PathInExternalFile, gridIndices);
-		return static_cast<eml23__IntegerExternalArray*>(xmlGridIndices)->NullValue;
+
+		const LONG64 nullValue = static_cast<eml23__IntegerExternalArray*>(xmlGridIndices)->NullValue;
+		if (nullValue < (std::numeric_limits<char>::lowest)() || nullValue >(std::numeric_limits<char>::max)()) {
+			throw range_error("The null value is not in the char range");
+		}
+
+		return static_cast<char>(nullValue);
 	}
 	else if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
 		const int64_t constantXmlValue = static_cast<eml23__IntegerConstantArray*>(xmlGridIndices)->Value;
@@ -177,8 +183,8 @@ int64_t BlockedWellboreRepresentation::getCellIndices(int64_t* cellIndices) cons
 	auto xmlCellIndices = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->CellIndices;
 
 	if (xmlCellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		eml23__ExternalDatasetPart const* dsPart = static_cast<eml23__IntegerExternalArray*>(xmlCellIndices)->Values->ExternalFileProxy[0];
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfInt64Values(dsPart->PathInExternalFile, cellIndices);
+		eml23__ExternalDataArrayPart const* dsPart = static_cast<eml23__IntegerExternalArray*>(xmlCellIndices)->Values->ExternalDataArrayPart[0];
+		getOrCreateHdfProxyFromDataArrayPart(dsPart)->readArrayNdOfInt64Values(dsPart->PathInExternalFile, cellIndices);
 		return static_cast<eml23__IntegerExternalArray*>(xmlCellIndices)->NullValue;
 	}
 	else if (xmlCellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
@@ -196,9 +202,15 @@ char BlockedWellboreRepresentation::getLocalFacePairPerCellIndices(char* localFa
 	auto xmlLocalFacePairPerCellIndices = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->LocalFacePairPerCellIndices;
 
 	if (xmlLocalFacePairPerCellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		eml23__ExternalDatasetPart const* dsPart = static_cast<eml23__IntegerExternalArray*>(xmlLocalFacePairPerCellIndices)->Values->ExternalFileProxy[0];
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfCharValues(dsPart->PathInExternalFile, localFacePairPerCellIndices);
-		return static_cast<eml23__IntegerExternalArray*>(xmlLocalFacePairPerCellIndices)->NullValue;
+		eml23__ExternalDataArrayPart const* dsPart = static_cast<eml23__IntegerExternalArray*>(xmlLocalFacePairPerCellIndices)->Values->ExternalDataArrayPart[0];
+		getOrCreateHdfProxyFromDataArrayPart(dsPart)->readArrayNdOfCharValues(dsPart->PathInExternalFile, localFacePairPerCellIndices);
+
+		const LONG64 nullValue = static_cast<eml23__IntegerExternalArray*>(xmlLocalFacePairPerCellIndices)->NullValue;
+		if (nullValue < (std::numeric_limits<char>::lowest)() || nullValue >(std::numeric_limits<char>::max)()) {
+			throw range_error("The null value is not in the char range");
+		}
+
+		return static_cast<char>(nullValue);
 	}
 	else if (xmlLocalFacePairPerCellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
 		const int64_t constantXmlValue = static_cast<eml23__IntegerConstantArray*>(xmlLocalFacePairPerCellIndices)->Value;

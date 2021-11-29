@@ -177,6 +177,12 @@ AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(COMMON_NS::DataObje
 	RESQML2_NS::AbstractColumnLayerGridRepresentation(false), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr)
 {
 	init(repo, guid, title, iCount, jCount, kCount, kGaps, proxy);
+
+#if WITH_RESQML2_2
+	if (gsoapProxy2_3 != nullptr) {
+		setInterpretation(repo->createPartial<RESQML2_2_NS::EarthModelInterpretation>("", "Unknown interp"));
+	}
+#endif
 }
 
 AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
@@ -866,15 +872,15 @@ void AbstractIjkGridRepresentation::loadSplitInformation()
 
 	auto kCount = getKCellCount();
 	kCellIndexWithGapLayer = new unsigned int[kCount];
-	for (size_t k = 0; k < kCount; ++k) {
+	for (unsigned int k = 0; k < kCount; ++k) {
 		kCellIndexWithGapLayer[k] = k;
 	}
 	const auto kGapCount = getKGapsCount();
 	if (kGapCount > 0) {
 		std::unique_ptr<bool[]> gapAfterLayer(new bool[kCount - 1]);
 		getKGaps(gapAfterLayer.get());
-		size_t offset = 0;
-		for (size_t k = 0; k < kCount - 1; ++k) {
+		unsigned int offset = 0;
+		for (unsigned int k = 0; k < kCount - 1; ++k) {
 			kCellIndexWithGapLayer[k] += offset;
 			if (gapAfterLayer[k]) {
 				++offset;
@@ -939,7 +945,7 @@ void AbstractIjkGridRepresentation::loadBlockInformation(unsigned int iInterface
 						const unsigned int jColumnIndex = getJColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
 
 						if ((iColumnIndex >= iInterfaceStart && iColumnIndex < iInterfaceEnd) && (jColumnIndex >= jInterfaceStart && jColumnIndex < jInterfaceEnd)) {
-							// here is a split coordinate line impacting the bloc
+							// here is a split coordinate line impacting the block
 							(blockInformation->globalToLocalSplitCoordinateLinesIndex)[splitInformation[pillarIndex][splitCoordinateLineIndex].first] = -1;
 
 							break; // in order to be sure not adding twice a same coordinate line if it is adjacent to several columns within the block
@@ -970,7 +976,7 @@ void AbstractIjkGridRepresentation::unloadSplitInformation()
 	}
 }
 
-unsigned int AbstractIjkGridRepresentation::getKGapsCount() const
+uint64_t AbstractIjkGridRepresentation::getKGapsCount() const
 {
 	if (isTruncated()) {
 		return 0;

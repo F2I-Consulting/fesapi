@@ -75,17 +75,17 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT unsigned int getInternalShellCount(unsigned int regionIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getFaceCountOfExternalShell(unsigned int regionIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getFaceCountOfExternalShell(unsigned int regionIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const final;
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) final;
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) final;
+		DLL_IMPORT_OR_EXPORT uint64_t getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) final;
+		DLL_IMPORT_OR_EXPORT uint64_t getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) final;
 
 		DLL_IMPORT_OR_EXPORT bool getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) final;
 
@@ -183,6 +183,6 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	regionIndex			Zero-based index of the region.
 		 * @param [in,out]	stratiUnitInterp	If non-null, the strati unit interp.
 		 */
-		void setXmlInterpretationOfVolumeRegion(unsigned int regionIndex, RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp) final;
+		void setXmlInterpretationOfVolumeRegion(uint64_t regionIndex, RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp) final;
 	};
 }

@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "CmpLineFeature.h"
 
+#include <numeric>
+
 #include "ShotPointLineFeature.h"
 
 using namespace std;
@@ -26,16 +28,17 @@ using namespace gsoap_eml2_3;
 
 const char* CmpLineFeature::XML_TAG = "CmpLineFeature";
 		
-unsigned int CmpLineFeature::getTraceCount() const
+uint64_t CmpLineFeature::getTraceCount() const
 {
 	_resqml22__CmpLineFeature* cmpLine = static_cast<_resqml22__CmpLineFeature*>(gsoapProxy2_3);
 	if (cmpLine->NearestShotPointIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray) {
 		return static_cast<eml23__IntegerLatticeArray*>(cmpLine->NearestShotPointIndices)->Offset[0]->Count + 1;
 	}
 	else if (cmpLine->NearestShotPointIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		unsigned int result = 0;
-		for (size_t i = 0; i < static_cast<eml23__IntegerExternalArray*>(cmpLine->NearestShotPointIndices)->Values->ExternalDataArrayPart.size(); ++i) {
-			result += static_cast<eml23__IntegerExternalArray*>(cmpLine->NearestShotPointIndices)->Values->ExternalDataArrayPart[i]->Count;
+		uint64_t result = 0;
+		for (const auto& dataArrayPart : static_cast<eml23__IntegerExternalArray*>(cmpLine->NearestShotPointIndices)->Values->ExternalDataArrayPart) {
+			// It is safe to cast to unsigned since a Count cannot be < 0
+			result += static_cast<uint64_t>(std::accumulate(std::begin(dataArrayPart->Count), std::end(dataArrayPart->Count), static_cast<uint64_t>(1), std::multiplies<LONG64>()));
 		}
 		return result;
 	}

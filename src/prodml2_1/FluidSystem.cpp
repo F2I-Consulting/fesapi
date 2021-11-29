@@ -29,9 +29,6 @@ using namespace PRODML2_1_NS;
 using namespace gsoap_eml2_2;
 using namespace COMMON_NS;
 
-const char* FluidSystem::XML_TAG = "FluidSystem";
-const char* FluidSystem::XML_NS = "prodml21";
-
 FluidSystem::FluidSystem(COMMON_NS::DataObjectRepository * repo,
 	const std::string & guid,
 	const std::string & title,

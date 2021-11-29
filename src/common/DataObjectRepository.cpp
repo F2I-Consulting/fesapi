@@ -109,16 +109,16 @@ under the License.
 #include "../eml2_3/ActivityTemplate.h"
 #include "../eml2_3/ColumnBasedTable.h"
 #include "../eml2_3/GraphicalInformationSet.h"
-#include "../eml2_3/LocalDepth3dCrs.h"
-#include "../eml2_3/LocalTime3dCrs.h"
+#include "../eml2_3/LocalEngineeringCompoundCrs.h"
+#include "../eml2_3/LocalEngineering2dCrs.h"
 #include "../eml2_3/PropertyKind.h"
 #include "../eml2_3/ReferencePointInALocalEngineeringCompoundCrs.h"
 #include "../eml2_3/TimeSeries.h"
+#include "../eml2_3/VerticalCrs.h"
 
 #include "../resqml2_2/BlockedWellboreRepresentation.h"
 #include "../resqml2_2/BoundaryFeature.h"
 #include "../resqml2_2/BoundaryFeatureInterpretation.h"
-#include "../resqml2_2/CategoricalProperty.h"
 #include "../resqml2_2/CmpLineFeature.h"
 #include "../resqml2_2/CommentProperty.h"
 #include "../resqml2_2/ContinuousProperty.h"
@@ -138,7 +138,7 @@ under the License.
 #include "../resqml2_2/IjkGridExplicitRepresentation.h"
 #include "../resqml2_2/IjkGridLatticeRepresentation.h"
 #include "../resqml2_2/IjkGridNoGeometryRepresentation.h"
-#include "../resqml2_2/IjkGridParametricRepresentation.h""
+#include "../resqml2_2/IjkGridParametricRepresentation.h"
 #include "../resqml2_2/Model.h"
 #include "../resqml2_2/NonSealedSurfaceFrameworkRepresentation.h"
 #include "../resqml2_2/PlaneSetRepresentation.h"
@@ -740,11 +740,12 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 		}
 	}
 
+	string message;
 	if (wrapper != nullptr) {
 		if (gsoapContext->error != SOAP_OK) {
 			ostringstream oss;
 			soap_stream_fault(gsoapContext, oss);
-			addWarning(oss.str());
+			message = oss.str() + "\n";
 			delete wrapper;
 		}
 		else {
@@ -752,8 +753,12 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 			return addOrReplaceDataObject(wrapper, true);
 		}
 	}
-
-	addWarning("The content or data type " + contentOrDataType + " could not be wrapped by FESAPI. The related instance will be ignored.");
+	size_t endOfXmlInfo = xml.find("Format>");
+	if (endOfXmlInfo != string::npos) {
+		endOfXmlInfo += 7;
+	}
+	message += xml.substr(0, endOfXmlInfo);
+	addWarning(message + "\nThe above dataobject could not be wrapped by FESAPI. The related instance will be ignored or considered as partial if referenced.");
 	return nullptr;
 }
 
@@ -761,8 +766,8 @@ std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataO
 {
 	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
 	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
-		for (size_t i = 0; i < it->second.size(); ++i) {
-			result[it->second[i]->getQualifiedType()].push_back(it->second[i]);
+		for (COMMON_NS::AbstractObject* dataobj : it->second) {
+			result[dataobj->getQualifiedType()].push_back(dataobj);
 		}
 	}
 
@@ -773,10 +778,10 @@ std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataO
 {
 	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
 	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
-		for (size_t i = 0; i < it->second.size(); ++i) {
-			std::string datatype = it->second[i]->getQualifiedType();
+		for (COMMON_NS::AbstractObject* dataobj : it->second) {
+			std::string datatype = dataobj->getQualifiedType();
 			if (datatype.find(filter) != std::string::npos) {
-				result[datatype].push_back(it->second[i]);
+				result[datatype].push_back(dataobj);
 			}
 		}
 	}
@@ -790,9 +795,9 @@ std::vector<COMMON_NS::AbstractObject*> DataObjectRepository::getDataObjectsByCo
 	std::vector<COMMON_NS::AbstractObject*> result;
 
 	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
-		for (size_t i = 0; i < it->second.size(); ++i) {
-			if (it->second[i]->getContentType() == contentType) {
-				result.push_back(it->second[i]);
+		for (COMMON_NS::AbstractObject* dataobj : it->second) {
+			if (dataobj->getContentType() == contentType) {
+				result.push_back(dataobj);
 			}
 		}
 	}
@@ -896,6 +901,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if (ns == "eml23") {
 		if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::Activity)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::ActivityTemplate)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::ColumnBasedTable)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::LocalEngineering2dCrs)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::LocalEngineeringCompoundCrs)
+			/*
 		else if (dataType.compare(EML2_NS::EpcExternalPartReference::XML_TAG) == 0)
 		{
 			if (getDataObjectByUuid(uuid) != nullptr) {
@@ -914,10 +923,12 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 			addDataObject(result);
 			return result;
 		}
+		*/
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::GraphicalInformationSet)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::PropertyKind)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::ReferencePointInALocalEngineeringCompoundCrs)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::TimeSeries)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::VerticalCrs)
 	}
 #endif
 	else if (ns == "prodml21") {
@@ -1025,7 +1036,6 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::BlockedWellboreRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::BoundaryFeature)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::BoundaryFeatureInterpretation)
-		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::CategoricalProperty)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::CmpLineFeature)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::CommentProperty)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::ContinuousColorMap)
@@ -1134,7 +1144,7 @@ EML2_NS::AbstractHdfProxy* DataObjectRepository::createHdfProxy(const std::strin
 //************ CRS *******************
 //************************************
 
-EML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
@@ -1147,7 +1157,7 @@ EML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std:
 			verticalUom, verticalEpsgCode, isUpOriented);
 #ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
-		return new EML2_3_NS::LocalDepth3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
+		return new EML2_3_NS::LocalEngineeringCompoundCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedEpsgCode,
 			verticalUom, verticalEpsgCode, isUpOriented);
 #endif
@@ -1156,7 +1166,7 @@ EML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std:
 	}
 }
 
-EML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
@@ -1169,7 +1179,7 @@ EML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std:
 			verticalUom, verticalUnknownReason, isUpOriented);
 #ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
-		return new EML2_3_NS::LocalDepth3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
+		return new EML2_3_NS::LocalEngineeringCompoundCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedUnknownReason,
 			verticalUom, verticalUnknownReason, isUpOriented);
 #endif
@@ -1178,7 +1188,7 @@ EML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std:
 	}
 }
 
-EML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
@@ -1191,7 +1201,7 @@ EML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std:
 			verticalUom, verticalUnknownReason, isUpOriented);
 #ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
-		return new EML2_3_NS::LocalDepth3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
+		return new EML2_3_NS::LocalEngineeringCompoundCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedEpsgCode,
 			verticalUom, verticalUnknownReason, isUpOriented);
 #endif
@@ -1200,7 +1210,7 @@ EML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std:
 	}
 }
 
-EML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
@@ -1213,7 +1223,7 @@ EML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std:
 			verticalUom, verticalEpsgCode, isUpOriented);
 #ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
-		return new EML2_3_NS::LocalDepth3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
+		return new EML2_3_NS::LocalEngineeringCompoundCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedUnknownReason,
 			verticalUom, verticalEpsgCode, isUpOriented);
 #endif
@@ -1222,7 +1232,7 @@ EML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std:
 	}
 }
 
-EML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::string & guid, const std::string & title,
+EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
@@ -1237,7 +1247,7 @@ EML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::s
 			verticalUom, verticalEpsgCode, isUpOriented);
 #ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
-		return new EML2_3_NS::LocalTime3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
+		return new EML2_3_NS::LocalEngineeringCompoundCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedEpsgCode,
 			timeUom,
 			verticalUom, verticalEpsgCode, isUpOriented);
@@ -1247,7 +1257,7 @@ EML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::s
 	}
 }
 
-EML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::string & guid, const std::string & title,
+EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
@@ -1262,7 +1272,7 @@ EML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::s
 			verticalUom, verticalUnknownReason, isUpOriented);
 #ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
-		return new EML2_3_NS::LocalTime3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
+		return new EML2_3_NS::LocalEngineeringCompoundCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedUnknownReason,
 			timeUom,
 			verticalUom, verticalUnknownReason, isUpOriented);
@@ -1272,7 +1282,7 @@ EML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::s
 	}
 }
 
-EML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::string & guid, const std::string & title,
+EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
@@ -1288,7 +1298,7 @@ EML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::s
 
 #ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
-		return new EML2_3_NS::LocalTime3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
+		return new EML2_3_NS::LocalEngineeringCompoundCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedEpsgCode,
 			timeUom,
 			verticalUom, verticalUnknownReason, isUpOriented);
@@ -1299,7 +1309,7 @@ EML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::s
 	}
 }
 
-EML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::string & guid, const std::string & title,
+EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
@@ -1315,7 +1325,7 @@ EML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::s
 
 #ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
-		return new EML2_3_NS::LocalTime3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
+		return new EML2_3_NS::LocalEngineeringCompoundCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedUnknownReason,
 			timeUom,
 			verticalUom, verticalEpsgCode, isUpOriented);
@@ -2133,7 +2143,7 @@ RESQML2_NS::SeismicWellboreFrameRepresentation* DataObjectRepository::createSeis
 	RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 	double seismicReferenceDatum,
 	double weatheringVelocity,
-	EML2_NS::LocalTime3dCrs* crs)
+	EML2_NS::AbstractLocal3dCrs* crs)
 {
 	return new RESQML2_2_NS::SeismicWellboreFrameRepresentation(interp, guid, title, traj, seismicReferenceDatum, weatheringVelocity, crs);
 #else
@@ -2143,7 +2153,7 @@ RESQML2_NS::SeismicWellboreFrameRepresentation* DataObjectRepository::createSeis
 	RESQML2_NS::WellboreTrajectoryRepresentation*,
 	double,
 	double,
-	EML2_NS::LocalTime3dCrs*)
+	EML2_NS::AbstractLocal3dCrs*)
 {
 	throw std::logic_error("RESQML2.2 support has not been built in this library.");
 #endif
@@ -2306,7 +2316,6 @@ RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialIj
 	auto* result = new RESQML2_NS::AbstractIjkGridRepresentation(dor, false);
 	if (!addDataObject(result)) {
 		delete result;
-		result == nullptr;
 		throw std::invalid_argument("You cannot create a partial IJK grid rep " + guid + " which already exists.");
 	}
 	return result;
@@ -2321,7 +2330,6 @@ RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialTr
 	auto* result = new RESQML2_NS::AbstractIjkGridRepresentation(dor, true);
 	if (!addDataObject(result)) {
 		delete result;
-		result == nullptr;
 		throw std::invalid_argument("You cannot create a partial truncated IJK grid rep " + guid + " which already exists.");
 	}
 	return result;
@@ -2440,24 +2448,24 @@ RESQML2_NS::UnstructuredGridRepresentation* DataObjectRepository::createUnstruct
 	}
 }
 
-RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(const std::string & guid, const std::string & title)
+RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(const std::string & guid, const std::string & title, gsoap_eml2_3::eml23__IndexableElement elementKind)
 {
 	switch (defaultResqmlVersion) {
-	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::SubRepresentation(this, guid, title);
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::SubRepresentation(this, guid, title, elementKind);
 #ifdef WITH_RESQML2_2
-	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::SubRepresentation(this, guid, title);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::SubRepresentation(this, guid, title, elementKind);
 #endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
 
 RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-	const std::string & guid, const std::string & title)
+	const std::string & guid, const std::string & title, gsoap_eml2_3::eml23__IndexableElement elementKind)
 {
 	switch (defaultResqmlVersion) {
-	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::SubRepresentation(interp, guid, title);
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::SubRepresentation(interp, guid, title, elementKind);
 #ifdef WITH_RESQML2_2
-	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::SubRepresentation(interp, guid, title);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::SubRepresentation(interp, guid, title, elementKind);
 #endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
@@ -2526,23 +2534,30 @@ EML2_NS::TimeSeries* DataObjectRepository::createTimeSeries(const std::string & 
 	}
 }
 
-EML2_NS::ColumnBasedTable* DataObjectRepository::createDoubleTableLookup(const std::string & guid, const std::string & title)
+RESQML2_0_1_NS::DoubleTableLookup* DataObjectRepository::createDoubleTableLookup(const std::string & guid, const std::string & title)
 {
-	switch (defaultResqmlVersion) {
-	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::DoubleTableLookup(this, guid, title);
-#ifdef WITH_RESQML2_2
-	case EnergisticsStandard::RESQML2_2: return new EML2_3_NS::ColumnBasedTable(this, guid, title);
-#endif
-	default: throw std::logic_error("The RESQML version is not supported.");
-	}
+	return new RESQML2_0_1_NS::DoubleTableLookup(this, guid, title);
 }
 
-EML2_NS::ColumnBasedTable* DataObjectRepository::createStringTableLookup(const std::string & guid, const std::string & title)
+EML2_NS::ColumnBasedTable* DataObjectRepository::createFaciesTable(const std::string & guid, const std::string & title)
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::StringTableLookup(this, guid, title);
 #ifdef WITH_RESQML2_2
-	case EnergisticsStandard::RESQML2_2: return new EML2_3_NS::ColumnBasedTable(this, guid, title);
+	case EnergisticsStandard::RESQML2_2: {
+		auto* result = new EML2_3_NS::ColumnBasedTable(this, guid, title);
+		EML2_NS::PropertyKind* pwlsPropKind = getDataObjectByUuid<EML2_NS::PropertyKind>("323df361-784e-4062-a346-ff4ba80a78f0");
+		if (pwlsPropKind == nullptr) {
+			pwlsPropKind = createPartial<EML2_3_NS::PropertyKind>("323df361-784e-4062-a346-ff4ba80a78f0", "ordinal number");
+		}
+		result->pushBackColumnHeader(true, pwlsPropKind);
+		pwlsPropKind = getDataObjectByUuid<EML2_NS::PropertyKind>("838b1a9b-2fca-4e2e-aae3-323ef1bc59c7");
+		if (pwlsPropKind == nullptr) {
+			pwlsPropKind = createPartial<EML2_3_NS::PropertyKind>("838b1a9b-2fca-4e2e-aae3-323ef1bc59c7", "facies type");
+		}
+		result->pushBackColumnHeader(false, pwlsPropKind);
+		return result;
+	}
 #endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
@@ -2691,23 +2706,15 @@ RESQML2_NS::DiscreteProperty* DataObjectRepository::createDiscreteProperty(RESQM
 
 RESQML2_0_1_NS::CategoricalProperty* DataObjectRepository::createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 	 gsoap_eml2_3::eml23__IndexableElement attachmentKind,
-	RESQML2_NS::StringTableLookup* strLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
+	EML2_NS::ColumnBasedTable* strLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
 	std::vector<int> dimensions)
 {
 	return new RESQML2_0_1_NS::CategoricalProperty(rep, guid, title, attachmentKind, strLookup, energisticsPropertyKind, dimensions);
 }
 
-RESQML2_0_1_NS::CategoricalProperty* DataObjectRepository::createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+RESQML2_NS::DiscreteProperty* DataObjectRepository::createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 	gsoap_eml2_3::eml23__IndexableElement attachmentKind,
-	RESQML2_NS::DoubleTableLookup* dblLookup, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind,
-	std::vector<int> dimensions)
-{
-	return new RESQML2_0_1_NS::CategoricalProperty(rep, guid, title, attachmentKind, dblLookup, energisticsPropertyKind, dimensions);
-}
-
-RESQML2_NS::CategoricalProperty* DataObjectRepository::createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	gsoap_eml2_3::eml23__IndexableElement attachmentKind,
-	RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropType,
+	EML2_NS::ColumnBasedTable* strLookup, EML2_NS::PropertyKind * localPropType,
 	std::vector<int> dimensions)
 {
 	switch (defaultResqmlVersion) {
@@ -2715,24 +2722,7 @@ RESQML2_NS::CategoricalProperty* DataObjectRepository::createCategoricalProperty
 		return new RESQML2_0_1_NS::CategoricalProperty(rep, guid, title, attachmentKind, strLookup, localPropType, dimensions);
 #ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
-		return new RESQML2_2_NS::CategoricalProperty(rep, guid, title, attachmentKind, strLookup, localPropType, dimensions);
-#endif
-	default:
-		throw std::invalid_argument("Unrecognized Energistics standard.");
-	}
-}
-
-RESQML2_NS::CategoricalProperty* DataObjectRepository::createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	gsoap_eml2_3::eml23__IndexableElement attachmentKind,
-	RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * localPropType,
-	std::vector<int> dimensions)
-{
-	switch (defaultResqmlVersion) {
-	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
-		return new RESQML2_0_1_NS::CategoricalProperty(rep, guid, title, attachmentKind, dblLookup, localPropType, dimensions);
-#ifdef WITH_RESQML2_2
-	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
-		return new RESQML2_2_NS::CategoricalProperty(rep, guid, title, attachmentKind, dblLookup, localPropType, dimensions);
+		return new RESQML2_2_NS::DiscreteProperty(rep, guid, title, attachmentKind, strLookup, localPropType, dimensions);
 #endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
@@ -3033,8 +3023,13 @@ WITSML2_1_NS::WeightingFunctionDictionary* DataObjectRepository::createWeighting
 std::vector<returnedDataType*> DataObjectRepository::get##dataObjectName##Set() const { return getDataObjects<returnedDataType>(); }
 
 GETTER_DATAOBJECTS_IMPL(EML2_NS::AbstractHdfProxy, HdfProxy)
-GETTER_DATAOBJECTS_IMPL(EML2_NS::LocalDepth3dCrs, LocalDepth3dCrs)
-GETTER_DATAOBJECTS_IMPL(EML2_NS::LocalTime3dCrs, LocalTime3dCrs)
+GETTER_DATAOBJECTS_IMPL(EML2_NS::AbstractLocal3dCrs, Local3dCrs)
+GETTER_DATAOBJECTS_IMPL(EML2_NS::Activity, Activity)
+GETTER_DATAOBJECTS_IMPL(EML2_NS::ActivityTemplate, ActivityTemplate)
+GETTER_DATAOBJECTS_IMPL(EML2_NS::ColumnBasedTable, ColumnBasedTable)
+GETTER_DATAOBJECTS_IMPL(EML2_NS::GraphicalInformationSet, GraphicalInformationSet)
+GETTER_DATAOBJECTS_IMPL(EML2_NS::PropertyKind, PropertyKind)
+GETTER_DATAOBJECTS_IMPL(EML2_NS::ReferencePointInALocalEngineeringCompoundCrs, ReferencePointInALocalEngineeringCompoundCrs)
 GETTER_DATAOBJECTS_IMPL(EML2_NS::TimeSeries, TimeSeries)
 
 GETTER_DATAOBJECTS_IMPL(RESQML2_0_1_NS::DeviationSurveyRepresentation, DeviationSurveyRepresentation)
@@ -3044,7 +3039,6 @@ GETTER_DATAOBJECTS_IMPL(RESQML2_NS::AbstractIjkGridRepresentation, IjkGridRepres
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::BlockedWellboreRepresentation, BlockedWellboreRepresentation)
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::CmpLineFeature, CmpLine)
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::CulturalFeature, Cultural)
-GETTER_DATAOBJECTS_IMPL(RESQML2_NS::DoubleTableLookup, DoubleTableLookup)
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::Grid2dRepresentation, AllGrid2dRepresentation)
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::IjkGridParametricRepresentation, IjkGridParametricRepresentation)
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::IjkGridExplicitRepresentation, IjkGridExplicitRepresentation)
@@ -3594,7 +3588,6 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 	if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BlockedWellboreRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BoundaryFeature)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BoundaryFeatureInterpretation)
-	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CategoricalProperty)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CmpLineFeature)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CommentProperty)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousProperty)
@@ -3707,19 +3700,12 @@ COMMON_NS::AbstractObject* DataObjectRepository::getEml2_3WrapperFromGsoapContex
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, ActivityTemplate, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, ColumnBasedTable, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, GraphicalInformationSet, gsoap_eml2_3, eml23)
-	else if (datatype.compare("LocalEngineeringCompoundCrs") == 0) {
-		gsoap_eml2_3::_eml23__LocalEngineeringCompoundCrs* read = gsoap_eml2_3::soap_new__eml23__LocalEngineeringCompoundCrs(gsoapContext);
-		gsoap_eml2_3::soap_read_eml23__LocalEngineeringCompoundCrs(gsoapContext, read);
-		if (read->VerticalAxis->IsTime) {
-			wrapper = new EML2_3_NS::LocalTime3dCrs(read);
-		}
-		else {
-			wrapper = new EML2_3_NS::LocalDepth3dCrs(read);
-		}
-	}
+	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, LocalEngineering2dCrs, gsoap_eml2_3, eml23)
+	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, LocalEngineeringCompoundCrs, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, PropertyKind, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, ReferencePointInALocalEngineeringCompoundCrs, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, TimeSeries, gsoap_eml2_3, eml23)
+	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, VerticalCrs, gsoap_eml2_3, eml23)
 	else if (datatype.compare("PropertyKindDictionary") == 0) {
 		GET_EML_GSOAP_PROXY_FROM_GSOAP_CONTEXT(PropertyKindDictionary, gsoap_eml2_3, eml23)
 

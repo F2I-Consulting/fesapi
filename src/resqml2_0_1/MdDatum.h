@@ -75,7 +75,19 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT double getZ() const final;
 
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__WellboreDatumReference getOriginKind() const final;
+		/**
+		 * Check if this reference point has a defined kind.
+		 *
+		 * @returns	True if this reference point has a defined kind.
+		 */
+		DLL_IMPORT_OR_EXPORT bool hasKind() const final;
+
+		/**
+		 * Gets the kind of this reference point.
+		 *
+		 * @returns	The kind of this reference point.
+		 */
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__ReferencePointKind getKind() const final;
 
 		/** Loads target relationships */
 		void loadTargetRelationships() final;
@@ -83,7 +95,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml20";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.
@@ -91,7 +103,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
 		/** The standard XML tag without XML namespace for serializing this data object */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "MdDatum";
 
 		/**
 		 * Gets the standard XML tag without XML namespace for serializing this data object

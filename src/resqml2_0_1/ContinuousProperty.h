@@ -237,8 +237,5 @@ namespace RESQML2_0_1_NS
 			std::vector<int> dimensions = std::vector<int>());
 
 		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const;
-
-		size_t getMinimumValueSize() const;
-		size_t getMaximumValueSize() const;
 	};
 }

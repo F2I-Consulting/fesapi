@@ -39,11 +39,11 @@ namespace RESQML2_NS
 		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
 		* @param indices		array (of size solorCount) of color indices. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
 		*/
-		DLL_IMPORT_OR_EXPORT void setHsvColors(unsigned int colorCount,
+		DLL_IMPORT_OR_EXPORT void setHsvColors(uint64_t colorCount,
 			double const* hsvColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
 			double const* indices = nullptr);
 
-		DLL_IMPORT_OR_EXPORT unsigned int getColorCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getColorCount() const;
 
 		/**
 		 * @brief	Gets interpolation domain

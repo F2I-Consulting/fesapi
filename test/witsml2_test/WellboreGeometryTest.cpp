@@ -17,11 +17,12 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreGeometryTest.h"
-#include "../catch.hpp"
+
+#include <stdexcept>
+
 #include "witsml2_0/Well.h"
 #include "witsml2_0/Wellbore.h"
 #include "witsml2_0/WellboreGeometry.h"
-#include <stdexcept>
 
 using namespace std;
 using namespace witsml2_test;

@@ -24,9 +24,9 @@ namespace resqml2_test {
 	class PropertyBySlab : public commontest::AbstractTest {
 	public:
 		static const char* defaultContinuousPropComputeUuid;
-		static const char* defaultDiscretePropComputeUuid;
-		static const char* defaultPropNoComputeUuid;
 		static const char* defaultDiscretePropNoComputeUuid;
+		static const char* defaultPropNoComputeUuid;
+		static const char* defaultOtherDiscretePropNoComputeUuid;
 
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,

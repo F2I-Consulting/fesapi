@@ -17,14 +17,13 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "DiscreteColorMapTest.h"
-#include "catch.hpp"
+
 #include "eml2/AbstractHdfProxy.h"
 #include "eml2/GraphicalInformationSet.h"
 #include "eml2/PropertyKind.h"
 #include "resqml2/IjkGridExplicitRepresentation.h"
 #include "resqml2/Model.h"
 #include "resqml2/EarthModelInterpretation.h"
-#include "resqml2/LocalDepth3dCrs.h"
 #include "resqml2/DiscreteProperty.h"
 #include "resqml2_2/DiscreteColorMap.h"
 
@@ -43,8 +42,6 @@ char const* DiscreteColorMapTest::uuidOrganizationFeature = "ceefeac1-21b1-4a31-
 char const* DiscreteColorMapTest::titleOrganizationFeature = "Organization Feature";
 char const* DiscreteColorMapTest::uuidEarthModelInterpretation = "8f6afd90-71e1-4a1e-891f-9c628feeb980";
 char const* DiscreteColorMapTest::titleEarthModelInterpretation = "Earth Model Interpretation";
-char const* DiscreteColorMapTest::uuidLocalDepth3dCrs = "69aa7e50-1538-4818-93a4-11fcfdc2292e";
-char const* DiscreteColorMapTest::titleLocalDepth3dCrs = "Loacl Depth 3d Crs";
 char const* DiscreteColorMapTest::uuidIjkGridExplicitRepresentation = "fd0e5b96-ca00-4f8e-bf7a-a5609b511044";
 char const* DiscreteColorMapTest::titleIjkGridExplicitRepresentation = "Ijk Grid Explicit Representation";
 char const* DiscreteColorMapTest::uuidDiscreteProperty = "7594850b-ab54-4c95-af9c-06f6a1175ad6";
@@ -76,7 +73,7 @@ void DiscreteColorMapTest::initRepo() {
 	// assotiating a discrete property to the ijk grid
 	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
 	DiscreteProperty* discreteProperty = repo->createDiscreteProperty(ijkgrid, uuidDiscreteProperty, titleDiscreteProperty,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, propertyKind);
+		gsoap_eml2_3::eml23__IndexableElement::cells, propertyKind);
 	unsigned short prop1Values[2] = { 0, 1 };
 	discreteProperty->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, -1);
 

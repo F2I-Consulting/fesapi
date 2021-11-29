@@ -52,8 +52,8 @@ COMMON_NS::DataObjectReference PlaneSetRepresentation::getLocalCrsDor(unsigned i
 {
 	_resqml22__PlaneSetRepresentation* rep = static_cast<_resqml22__PlaneSetRepresentation*>(gsoapProxy2_3);
 	eml23__DataObjectReference* result = rep->Planes[patchIndex]->LocalCrs;
-	for (size_t geomIndex = 1; geomIndex < rep->Planes.size(); ++geomIndex) {
-		if (result->Uuid != rep->Planes[geomIndex]->LocalCrs->Uuid) {
+	for (auto const* plane : rep->Planes) {
+		if (result->Uuid != plane->LocalCrs->Uuid) {
 			throw std::invalid_argument("A multi CRS plane set representation is not supported yet");
 		}
 	}

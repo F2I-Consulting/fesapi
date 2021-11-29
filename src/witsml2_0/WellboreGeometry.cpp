@@ -30,8 +30,6 @@ using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
 
-const char* WellboreGeometry::XML_TAG = "WellboreGeometry";
-
 WellboreGeometry::WellboreGeometry(WITSML2_NS::Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title,
@@ -214,16 +212,9 @@ bool WellboreGeometry::hasWellboreGeometrySectionTvdInterval(unsigned int index)
 
 void WellboreGeometry::pushBackSection(const std::string & uid)
 {
-	static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.push_back(gsoap_eml2_1::soap_new_witsml20__WellboreGeometrySection(gsoapProxy2_1->soap, 1));
+	static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.push_back(gsoap_eml2_1::soap_new_witsml20__WellboreGeometrySection(gsoapProxy2_1->soap));
 	unsigned int index = getSectionCount() - 1;
-	if (uid.empty()) {
-		std::ostringstream oss;
-		oss << index;
-		setWellboreGeometrySectionuid(index, oss.str());
-	}
-	else {
-		setWellboreGeometrySectionuid(index, uid);
-	}
+	setWellboreGeometrySectionuid(index, uid.empty() ? std::to_string(index) : uid);
 }
 
 unsigned int WellboreGeometry::getSectionCount() const

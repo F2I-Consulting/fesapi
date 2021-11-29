@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/ActivityCreationTest.h"
 
-#include "catch.hpp"
 #include "resqml2_test/ActivityTemplateGenericCreationTest.h"
 #include "resqml2_test/HorizonInterpretationTest.h"
 

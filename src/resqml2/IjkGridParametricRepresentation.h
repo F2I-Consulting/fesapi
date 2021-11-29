@@ -35,8 +35,6 @@ namespace RESQML2_NS
 		* Destructor cleans the pillars information memory if allocated.
 		*/
 		DLL_IMPORT_OR_EXPORT virtual ~IjkGridParametricRepresentation() {
-			if (pillarInformation != nullptr) 
-				delete pillarInformation; 
 		}
 
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints) final;
@@ -601,20 +599,20 @@ namespace RESQML2_NS
 		IjkGridParametricRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr) :
-			AbstractIjkGridRepresentation(repo, guid, title, iCount, jCount, kCount, kGaps, proxy), pillarInformation(nullptr) {}
+			AbstractIjkGridRepresentation(repo, guid, title, iCount, jCount, kCount, kGaps, proxy) {}
 
 		IjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr) :
-			AbstractIjkGridRepresentation(interp, guid, title, iCount, jCount, kCount, kGaps, proxy), pillarInformation(nullptr) {}
+			AbstractIjkGridRepresentation(interp, guid, title, iCount, jCount, kCount, kGaps, proxy) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		IjkGridParametricRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap), pillarInformation(nullptr) {}
-		IjkGridParametricRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap), pillarInformation(nullptr) {}
-		IjkGridParametricRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap), pillarInformation(nullptr) {}
-		IjkGridParametricRepresentation(gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap), pillarInformation(nullptr) {}
+		IjkGridParametricRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap) {}
+		IjkGridParametricRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap) {}
+		IjkGridParametricRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap) {}
+		IjkGridParametricRepresentation(gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap) {}
 
 		/**
 		* Compute the K Direction of the gid according to its control points.
@@ -697,6 +695,6 @@ namespace RESQML2_NS
 		*/
 		void loadPillarInformation(PillarInformation & pillarInfo) const;
 
-		class PillarInformation* pillarInformation;
+		std::unique_ptr<PillarInformation> pillarInformation;
 	};
 }

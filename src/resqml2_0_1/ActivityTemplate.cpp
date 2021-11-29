@@ -87,9 +87,8 @@ bool ActivityTemplate::isAnExistingParameter(const std::string & paramTitle) con
 {
 	_resqml20__ActivityTemplate* activityTemplate = static_cast<_resqml20__ActivityTemplate*>(gsoapProxy2_0_1);
 
-	for (size_t i = 0; i < activityTemplate->Parameter.size(); ++i)
-	{
-		if (activityTemplate->Parameter[i]->Title == paramTitle) {
+	for (const auto* param : activityTemplate->Parameter) {
+		if (param->Title == paramTitle) {
 			return true;
 		}
 	}
@@ -97,7 +96,7 @@ bool ActivityTemplate::isAnExistingParameter(const std::string & paramTitle) con
 	return false;
 }
 
-unsigned int ActivityTemplate::getParameterCount() const
+uint64_t ActivityTemplate::getParameterCount() const
 {
 	return static_cast<_resqml20__ActivityTemplate*>(gsoapProxy2_0_1)->Parameter.size();
 }
@@ -106,8 +105,9 @@ const std::string & ActivityTemplate::getParameterTitle(unsigned int index) cons
 {
 	_resqml20__ActivityTemplate* activityTemplate = static_cast<_resqml20__ActivityTemplate*>(gsoapProxy2_0_1);
 
-	if (activityTemplate->Parameter.size() <= index)
+	if (activityTemplate->Parameter.size() <= index) {
 		throw out_of_range("The parameter template index is not in the parameter range.");
+	}
 
 	return activityTemplate->Parameter[index]->Title;
 }
@@ -138,8 +138,9 @@ bool ActivityTemplate::getParameterIsInput(unsigned int index) const
 {
 	_resqml20__ActivityTemplate* activityTemplate = static_cast<_resqml20__ActivityTemplate*>(gsoapProxy2_0_1);
 
-	if (activityTemplate->Parameter.size() <= index)
+	if (activityTemplate->Parameter.size() <= index) {
 		throw out_of_range("The parameter template index is not in the parameter range.");
+	}
 
 	return activityTemplate->Parameter[index]->IsInput;
 }
@@ -148,8 +149,9 @@ bool ActivityTemplate::getParameterIsInput(const std::string & paramTitle) const
 {
 	resqml20__ParameterTemplate* param = getParameterFromTitle(paramTitle);
 
-	if (param == nullptr)
+	if (param == nullptr) {
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
+	}
 
 	return param->IsInput;
 }
@@ -169,8 +171,9 @@ bool ActivityTemplate::getParameterIsOutput(const std::string & paramTitle) cons
 {
 	resqml20__ParameterTemplate* param = getParameterFromTitle(paramTitle);
 
-	if (param == nullptr)
+	if (param == nullptr) {
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
+	}
 
 	return param->IsOutput;
 }
@@ -190,8 +193,9 @@ int64_t ActivityTemplate::getParameterMinOccurences(const std::string & paramTit
 {
 	resqml20__ParameterTemplate* param = getParameterFromTitle(paramTitle);
 
-	if (param == nullptr)
+	if (param == nullptr) {
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
+	}
 
 	return param->MinOccurs;
 }
@@ -211,8 +215,9 @@ int64_t ActivityTemplate::getParameterMaxOccurences(const std::string & paramTit
 {
 	resqml20__ParameterTemplate* param = getParameterFromTitle(paramTitle);
 
-	if (param == nullptr)
+	if (param == nullptr) {
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
+	}
 
 	return param->MaxOccurs;
 }
@@ -227,9 +232,9 @@ resqml20__ParameterTemplate* ActivityTemplate::getParameterFromTitle(const std::
 	_resqml20__ActivityTemplate* activityTemplate = static_cast<_resqml20__ActivityTemplate*>(gsoapProxy2_0_1);
 
 	resqml20__ParameterTemplate* param = nullptr;
-	for (size_t i = 0; i < activityTemplate->Parameter.size(); ++i) {
-		if (activityTemplate->Parameter[i]->Title == paramTitle) {
-			param = activityTemplate->Parameter[i];
+	for (auto* paramTmp :  activityTemplate->Parameter) {
+		if (paramTmp->Title == paramTitle) {
+			param = paramTmp;
 			break;
 		}
 	}

@@ -444,7 +444,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The index of the origin on the supporting representation.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int getIndexOriginOnSupportingRepresentation() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getIndexOriginOnSupportingRepresentation() const = 0;
 
 		/**
 		 * Gets the index of the origin of the current geometry on a particular dimension of the
@@ -459,7 +459,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The index of the origin on the supporting representation on the dimension @p dimension.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int getIndexOriginOnSupportingRepresentation(unsigned int dimension) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getIndexOriginOnSupportingRepresentation(unsigned int dimension) const = 0;
 
 		/**
 		 * Gets the number of nodes of the current geometry which is extracted from a particular
@@ -473,7 +473,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The number of nodes on the dimension @p dimension.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int getNodeCountOnSupportingRepresentation(unsigned int dimension) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getNodeCountOnSupportingRepresentation(unsigned int dimension) const = 0;
 
 		/**
 		 * @brief	Gets the index offset of the nodes of the current geometry on a particular dimension
@@ -487,7 +487,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The index offset on the dimension @p dimension.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const = 0;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final {return 1;}
 

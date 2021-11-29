@@ -23,8 +23,6 @@ under the License.
 using namespace std;
 using namespace EML2_NS;
 
-const char* PropertyKind::XML_TAG = "PropertyKind";
-
 std::string PropertyKind::getNamingSystem() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -50,7 +48,6 @@ void PropertyKind::setParentPropertyKind(PropertyKind* parentPropertyKind)
 	}
 
 	setXmlParentPropertyKind(parentPropertyKind);
-
 
 	getRepository()->addRelationship(this, parentPropertyKind);
 }

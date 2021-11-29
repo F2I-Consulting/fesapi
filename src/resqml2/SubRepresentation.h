@@ -42,28 +42,14 @@ namespace RESQML2_NS
 		virtual ~SubRepresentation() = default;
 
 		/**
-		 * Gets the kind of the selected elements for a particular patch of this sub-representation.
+		 * Gets the kind of the selected elements for all patches of this sub-representation.
 		 *
-		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
-		 * @exception	std::out_of_range	 	If @p elementIndicesIndex is out of range. Must be: 0 for
-		 * 										non pairwise element indices; 0 or 1 for pairwise element
-		 * 										indices (0 for the left and 1 for the right part of the
-		 * 										pairs).
-		 * @exception	std::invalid_argument	If the kind of the selected elements we look for is not
-		 * 										supported (the kind is neither a node, edge, face, volume
-		 * 										nor pillar).
-		 *
-		 * @param 	patchIndex		   	Zero-based index of the patch.
-		 * @param 	elementIndicesIndex	Must be equal to 0 if the element indices are not pairwise. This
-		 * 								method must be called twice if the element indices are pairwise:
-		 * 								one call with <tt>elementIndicesIndex = 0</tt> for getting the
-		 * 								kind of the left elements of the pair; one call with
-		 * 								<tt>elementIndices = 1</tt> for getting the kind of the right
-		 * 								elements of the pair.
+		 * @exception	std::invalid_argument	If the RESQML instance has got various selected element kinds
+		 *										as RESQML2.0 allows.
 		 *
 		 * @returns	The kind of the selected elements.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual indexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::eml23__IndexableElement getElementKind() const = 0;
 
 		/**
 		 * Gets the count of the selected elements of a particular patch of this sub-representation.
@@ -81,94 +67,39 @@ namespace RESQML2_NS
 		 * Gets the indices of the selected elements for a particular patch of this sub-representation.
 		 *
 		 * @exception	std::out_of_range	If @p patchIndex is out of range.
-		 * @exception	std::out_of_range	If @p elementIndicesIndex is out of range. Must be: 0 for non
-		 * 									pairwise element indices; 0 or 1 for pairwise element indices
-		 * 									(0 for the left and 1 for the right part of the pairs).
 		 * @exception	logic_error		 	If the selected elements indices of the patch are not stored
 		 * 									in a HDF5 integer array.
 		 *
 		 * @param 	   	patchIndex		   	Zero-based index of the patch.
-		 * @param 	   	elementIndicesIndex	Must be equal to 0 if the element indices are not pairwise.
-		 * 									This method must be called twice if the element indices are
-		 * 									pairwise: one call with <tt>elementIndicesIndex = 0</tt> for
-		 * 									getting the indices of the left elements of the pair;
-		 * 									one call with <tt>elementIndices = 1</tt> for getting the
-		 * 									indices of the right elements of the pair.  
 		 * @param [out]	elementIndices	   	Output array for collecting the indices of the selected
 		 * 									elements. It must be preallocated with
 		 * 									{@link getElementCountOfPatch()} size.
+		 * @return The null value
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, uint64_t* elementIndices) const = 0;
-
-		/**
-		 * @brief	Gets the indices of the supporting representations that refer the selected elements
-		 * 			indices of a particular patch of this sub-representation.
-		 *
-		 * @exception	std::out_of_range	If @p patchIndex is out of range.
-		 *
-		 * @param 	   	patchIndex					   	Zero-based index of the patch.
-		 * @param [out]	supportingRepresentationIndices	Output array for collecting the supporting
-		 * 												representations indices. This array must be
-		 * 												preallocated with getElementCountOfPatch()
-		 * 												size. The index at a given position is the index
-		 * 												of the supporting representation associated to
-		 * 												the selected element (or the selected pair of
-		 * 												elements) at the same position in the sub-
-		 * 												elements) at the same position in the sub-
-		 * 												representation patch.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual void getSupportingRepresentationIndicesOfPatch(unsigned int patchIndex, short* supportingRepresentationIndices) const = 0;
-
-		/**
-		 * Checks if the element indices of a particular patch are pairwise or not.
-		 *
-		 * @exception	std::out_of_range	If @p patchIndex is out of range.
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	True if the elements indices are pairwise, false if not.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesPairwise(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getElementIndicesOfPatch(unsigned int patchIndex, int64_t* elementIndices) const = 0;
 
 		/**
 		 * Checks if the element indices of a particular patch are based on a lattice or not.
 		 *
 		 * @exception	std::out_of_range	If @p patchIndex is out of range.
-		 * @exception	std::out_of_range	If @p elementIndicesIndex is out of range. Must be: 0 for non
-		 * 									pairwise element indices; 0 or 1 for pairwise element indices
-		 * 									(0 for the left and 1 for the right part of the pairs).
 		 *
 		 * @param 	patchIndex		   	Zero-based index of the patch.
-		 * @param 	elementIndicesIndex	(Optional) In case of pairwise elements, allows to select the
-		 * 								first (<tt>elementIndicesIndex = 0</tt>)
-		 * 								or second (<tt>elementIndicesIndex = 1</tt>) element index of the
-		 * 								pair. Default value is @c 0, corresponding to both non-pairwise
-		 * 								elements and first element of a pair.
 		 *
 		 * @returns	True if element indices based on lattice, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesBasedOnLattice(unsigned int patchIndex) const = 0;
 
 		/**
 		 * Gets the start value of the lattice the element indices of a particular patch are based on.
 		 *
 		 * @exception	std::invalid_argument	If the element indices are not based on a lattice.
 		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
-		 * @exception	std::out_of_range	 	If @p elementIndicesIndex is out of range. Must be: 0 for
-		 * 										non pairwise element indices; 0 or 1 for pairwise element
-		 * 										indices (0 for the left and 1 for the right part of the
-		 * 										pairs).
 		 *
 		 * @param 	patchIndex		   	Zero-based index of the patch.
-		 * @param 	elementIndicesIndex	(Optional) In case of pairwise elements, allow to select the
-		 * 								first (<tt>elementIndicesIndex = 0</tt>)
-		 * 								or second (<tt>elementIndicesIndex = 1</tt>) element index of the
-		 * 								pair. Default value is @c 0, corresponding to both non-pairwise
-		 * 								elements and first element of a pair.
 		 *
 		 * @returns	The lattice start value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int64_t getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getLatticeElementIndicesStartValue(unsigned int patchIndex) const = 0;
 
 		/**
 		 * Gets the dimension count of the lattice the element indices of a particular patch are based
@@ -176,21 +107,12 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If the element indices are not based on a lattice.
 		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
-		 * @exception	std::out_of_range	 	If @p elementIndicesIndex is out of range. Must be: 0 for
-		 * 										non pairwise element indices; 0 or 1 for pairwise element
-		 * 										indices (0 for the left and 1 for the right part of the
-		 * 										pairs).
 		 *
 		 * @param 	patchIndex		   	Zero-based index of the patch.
-		 * @param 	elementIndicesIndex	(Optional) In case of pairwise elements, allow to select the
-		 * 								first (<tt>elementIndicesIndex = 0</tt>)
-		 * 								or second (<tt>elementIndicesIndex = 1</tt>) element index of the
-		 * 								pair. Default value is @c 0, corresponding to both non-pairwise
-		 * 								elements and first element of a pair.
 		 *
 		 * @returns	The lattice dimension count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getLatticeElementIndicesDimensionCount(unsigned int patchIndex) const = 0;
 
 		/**
 		 * Gets the offset value at a given dimension of the lattice the element indices of a particular
@@ -214,7 +136,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The offset value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex) const = 0;
 
 		/**
 		 * Gets the offset count at a given dimension of the lattice the element indices of a particular
@@ -223,29 +145,18 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If the element indices are not based on a lattice.
 		 * @exception	std::out_of_range	 	If @p latticeDimensionIndex is out of range.
 		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
-		 * @exception	std::out_of_range	 	If @p elementIndicesIndex is out of range. Must be: 0 for
-		 * 										non pairwise element indices; 0 or 1 for pairwise element
-		 * 										indices (0 for the left and 1 for the right part of the
-		 * 										pairs).
 		 *
 		 * @param 	latticeDimensionIndex	Zero-based index of the lattice dimension.
 		 * @param 	patchIndex			 	Zero-based index of the patch.
-		 * @param 	elementIndicesIndex  	(Optional) In case of pairwise elements, allow to select the
-		 * 									first (<tt>elementIndicesIndex = 0</tt>)
-		 * 									or second (<tt>elementIndicesIndex = 1</tt>) element index of
-		 * 									the pair. Default value is @c 0, corresponding to both non-
-		 * 									pairwise elements and first element of a pair.
 		 *
 		 * @returns	The offset count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex) const = 0;
 
 		/**
 		 * Pushes back a new lattice-based patch (without pairwise elements) in this sub-representation.
 		 * The offset value is set to 1 in each dimension of the lattice.
 		 *
-		 * @param 	elementKind					  	The kind of (indexable) elements which constitutes
-		 * 											the sub-representation patch.
 		 * @param 	originIndex					  	The index of the origin (its start value).
 		 * @param 	elementCountInSlowestDimension	The number of elements in the slowest dimension
 		 * 											(commonly in K dimension).
@@ -253,58 +164,34 @@ namespace RESQML2_NS
 		 * 											(commonly in J dimension).
 		 * @param 	elementCountInFastestDimension	The number of elements in the fastest dimension
 		 * 											(commonly in I dimension).
+		 * @param	ijkGrid							The supporting IJK grid representation.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t originIndex,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(uint64_t originIndex,
 			unsigned int elementCountInSlowestDimension,
 			unsigned int elementCountInMiddleDimension,
-			unsigned int elementCountInFastestDimension) = 0;
+			unsigned int elementCountInFastestDimension, RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid) = 0;
 
 		/**
-		 * Pushes back a new patch (without pairwise elements) in this sub-representation.
+		 * Pushes back a new patch in this sub-representation.
 		 *
-		 * @param 	  	elementKind				The kind of (indexable) elements which constitutes the
-		 * 										sub-representation patch.
 		 * @param 	  	elementCount			The count of elements which constitutes the sub-
 		 * 										representation patch.
 		 * @param [in]	elementIndices			The indices of the elements in the supporting
 		 * 										representation.
-		 * @param [in]	proxy					The HDF proxy where the numerical values (indices)
+		 * @param [in]	supportingRep			The supporting representation
+		 * 										corresponding to the element indices.
+		 * @param [in]	proxy					(Optional) The HDF proxy where the numerical values (indices)
 		 * 										are stored.
-		 * @param [in]	supportingRepIndices	(Optional) The indices of the supporting representation
-		 * 										corresponding to the element indices. The count must be
-		 * 										elementCount.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount, uint64_t* elementIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, short* supportingRepIndices = nullptr);
-		
-		/**
-		 * Pushes back a new patch in this sub-representation which is constituted by means of pairwise
-		 * elements.
-		 *
-		 * @param 		  	elementKind0   	The kind of (indexable) elements which constitutes the first
-		 * 									part of the pair of elements of the sub-representation patch.
-		 * @param 		  	elementKind1   	The kind of (indexable) elements which constitutes the second
-		 * 									part of the pair of elements of the sub-representation patch.
-		 * @param 		  	elementCount   	The count of elements which constitutes the sub-
-		 * 									representation patch.
-		 * @param [in,out]	elementIndices0	The indices of the first part of the element pairs in the
-		 * 									supporting representation.
-		 * @param [in,out]	elementIndices1	The indices of the second part of the element pairs in the
-		 * 									supporting representation.
-		 * @param [in,out]	proxy		   	The HDF proxy where the numerical values (indices) are stored.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind0, gsoap_eml2_3::eml23__IndexableElement elementKind1,
-			uint64_t elementCount,
-			uint64_t * elementIndices0, uint64_t * elementIndices1,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(uint64_t elementCount, int64_t* elementIndices,
+			RESQML2_NS::AbstractRepresentation* supportingRep, EML2_NS::AbstractHdfProxy* proxy = nullptr) = 0;
 
 		/**
-		 * Pushes back a new patch (without pairwise elements) in this sub-representation where the
+		 * Pushes back a new patch in this sub-representation where the
 		 * indices values have not to yet been written in the HDF5 file. The reason can be that the
 		 * indices values already exist in an external file (only HDF5 for now) or that the writing of
 		 * these indices values in the external file is postponed in time.
 		 *
-		 * @param 	  	elementKind				The kind of (indexable) elements which constitutes the
-		 * 										sub-representation patch.
 		 * @param 	  	elementCount			The count of elements which constitutes the sub-
 		 * 										representation patch.
 		 * @param 	  	elementDataset			The HDF5 dataset name where the element indices are
@@ -314,15 +201,13 @@ namespace RESQML2_NS
 		 * 										patchIndex;</tt>
 		 * @param 	  	nullValue				The null value which has been chosen in the referenced
 		 * 										HDF5 dataset.
-		 * @param [in]	proxy					The HDF5 proxy where the values are already stored or
+		 * @param [in]	supportingRep			The supporting representation
+		 * 										corresponding to the element indices.
+		 * @param [in]	proxy					(Optional) The HDF5 proxy where the values are already stored or
 		 * 										will be stored.
-		 * @param 	  	supportingRepDataset	(Optional) The HDF5 dataset name where the element
-		 * 										indices are stored. If empty (default), no information about
-		 * 										suppporting representation will be exported since there is
-		 * 										only one suppporting representation for this whole patch.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackRefToExistingDataset(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount, const std::string& elementDataset,
-			int64_t nullValue, EML2_NS::AbstractHdfProxy* proxy, const std::string& supportingRepDataset = "") = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackRefToExistingDataset(uint64_t elementCount, const std::string& elementDataset,
+			int64_t nullValue, RESQML2_NS::AbstractRepresentation* supportingRep, EML2_NS::AbstractHdfProxy* proxy = nullptr) = 0;
 
 		/**   
 		 * @copydoc AbstractRepresentation::getXyzPointCountOfPatch  
@@ -339,60 +224,35 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getPatchCount() const override = 0;
 
 		/**
-		 * Pushes back a representation which is one of the support of this sub-representation. And push
-		 * back this sub-representation as a subrepresentation of the representation as well.
-		 *
-		 * @exception	std::invalid_argument	If @p supportingRep is nullptr.
-		 *
-		 * @param [in]	supportingRep	If representation to set as a supporting representation of this
-		 * 								sub-representation.
-		 */
-		DLL_IMPORT_OR_EXPORT void pushBackSupportingRepresentation(AbstractRepresentation * supportingRep);
-
-		/**
-		 * Gets the count of supporting representations of this sub-representation.
-		 *
-		 * @returns	The supporting representation count if successful, otherwise 0 if no supporting
-		 * 			representation is associated to this sub-representation. This should not happened in
-		 * 			a serialized state but can occur after creating a sub-representation and before
-		 * 			associating any supporting representation to it.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getSupportingRepresentationCount() const = 0;
-
-		/**
-		 * Gets the supporting representation located at a specific index of this sub-representation.
+		 * Gets the supporting representation of a specific patch of this sub-representation.
 		 *
 		 * @exception	std::invalid_argument	If no supporting representation is already associated to
 		 * 										this sub-representation.
-		 * @exception	std::out_of_range	 	If @p index is out of range.
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
 		 *
-		 * @param 	index	Zero-based index of the supporting representation we look for.
+		 * @param 	patchIndex	Zero-based index of the patch of the subrepresentation.
 		 *
-		 * @returns	The supporting representation at position @p index.
+		 * @returns	The supporting representation of patch @p patchIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractRepresentation* getSupportingRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractRepresentation* getSupportingRepresentationOfPatch(unsigned int patchIndex = 0) const;
 
 		/**
-		 * Gets the data object reference of the supporting representation located at a specific index
-		 * of this sub-representation.
+		 * Gets the data object reference of the supporting representation of a specific patch of this sub-representation.
 		 *
 		 * @exception	std::invalid_argument	If no supporting representation is already associated to
 		 * 										this sub-representation.
-		 * @exception	std::out_of_range	 	If @p index is out of range.
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
 		 *
-		 * @param 	index	Zero-based index of the supporting representation we look for.
+		 * @param 	patchIndex	Zero-based index of the patch of the subrepresentation.
 		 *
-		 * @returns	The data object reference of the supporting representation at position @p index.
+		 * @returns	The data object reference of the supporting representation of patch @p patchIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSupportingRepresentationDor(unsigned int index) const = 0;
+		virtual COMMON_NS::DataObjectReference getSupportingRepresentationOfPatchDor(unsigned int patchIndex = 0) const = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
-
-		/** Loads target relationships */
-		void loadTargetRelationships() final;
 
 	protected:
 
@@ -400,8 +260,6 @@ namespace RESQML2_NS
 		 * Only to be used in partial transfer context
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * 
 		 */
 		DLL_IMPORT_OR_EXPORT SubRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			RESQML2_NS::AbstractRepresentation(partialObject) {}
@@ -422,12 +280,5 @@ namespace RESQML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		SubRepresentation(gsoap_eml2_3::_resqml22__SubRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
-
-		/**
-		 * Pushes a back XML supporting representation
-		 *
-		 * @param 	supportingRep	The supporting rep.
-		 */
-		virtual void pushBackXmlSupportingRepresentation(AbstractRepresentation const * supportingRep) = 0;
 	};
 }

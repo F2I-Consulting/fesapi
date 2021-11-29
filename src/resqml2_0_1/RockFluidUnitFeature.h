@@ -95,7 +95,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The XML tag.
 		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "RockFluidUnitFeature";
 
 		/**
 		 * Get the standard XML tag without XML namespace for serializing this data object.

@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/WellboreMarkerFrameRepresentationTest.h"
 
-#include "catch.hpp"
-
 #include "resqml2_test/WellboreTrajectoryRepresentationTest.h"
+
+#include "eml2/ReferencePointInALocalEngineeringCompoundCrs.h"
 
 #include "resqml2_0_1/WellboreInterpretation.h"
 #include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
@@ -46,7 +46,7 @@ WellboreMarkerFrameRepresentationTest::WellboreMarkerFrameRepresentationTest(con
 
 void WellboreMarkerFrameRepresentationTest::initRepo() {
 	WellboreInterpretation* interp = repo->createPartial<RESQML2_0_1_NS::WellboreInterpretation>("", "");
-	MdDatum* mdDatum = repo->createMdDatum("", "", nullptr, gsoap_eml2_3::eml23__WellboreDatumReference::mean_x0020sea_x0020level, 275, 75, 0);
+	auto* mdDatum = repo->createReferencePointInALocalEngineeringCompoundCrs("", "", nullptr, gsoap_eml2_3::eml23__WellboreDatumReference::mean_x0020sea_x0020level, 275, 75, 0);
 
 	// creating the WellboreTrajectoryRepresentation in m and ft and depth
 	WellboreTrajectoryRepresentation* traj = repo->createWellboreTrajectoryRepresentation(interp, "", "", mdDatum);

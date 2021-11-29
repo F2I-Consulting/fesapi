@@ -26,7 +26,7 @@ using namespace RESQML2_NS;
 
 const char* ContinuousColorMap::XML_TAG = "ContinuousColorMap";
 
-void ContinuousColorMap::setHsvColors(unsigned int colorCount,
+void ContinuousColorMap::setHsvColors(uint64_t colorCount,
 	double const* hsvColors, double const* alphas, vector<string> const& colorTitles,
 	double const* indices)
 {
@@ -53,16 +53,16 @@ void ContinuousColorMap::setHsvColors(unsigned int colorCount,
 			throw invalid_argument("alpha must be in range [0, 1]");
 		}
 
-		resqml22__ContinuousColorMapEntry* continuousColorMapEntry = soap_new_resqml22__ContinuousColorMapEntry(gsoapProxy2_3->soap, 1);
-		indices != nullptr ? continuousColorMapEntry->Index = indices[colorIndex] : continuousColorMapEntry->Index = colorIndex;
-		resqml22__HsvColor* color = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap, 1);
+		resqml22__ContinuousColorMapEntry* continuousColorMapEntry = soap_new_resqml22__ContinuousColorMapEntry(gsoapProxy2_3->soap);
+		continuousColorMapEntry->Index = indices != nullptr ? indices[colorIndex] : colorIndex;
+		resqml22__HsvColor* color = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap);
 		color->Hue = hsvColors[3 * colorIndex];
 		color->Saturation = hsvColors[3 * colorIndex + 1];
 		color->Value = hsvColors[3 * colorIndex + 2];
 		color->Alpha = alphas != nullptr ? alphas[colorIndex] : 1.0;
 
 		if (!colorTitles.empty()) {
-			color->Title = soap_new_std__string(gsoapProxy2_3->soap, 1);
+			color->Title = soap_new_std__string(gsoapProxy2_3->soap);
 			*color->Title = colorTitles[colorIndex];
 		}
 
@@ -71,7 +71,7 @@ void ContinuousColorMap::setHsvColors(unsigned int colorCount,
 	}
 }
 
-unsigned int ContinuousColorMap::getColorCount() const
+uint64_t ContinuousColorMap::getColorCount() const
 {
 	resqml22__ContinuousColorMap const* const continuousColorMap = static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_3);
 	return continuousColorMap->Entry.size();
@@ -120,7 +120,7 @@ void ContinuousColorMap::setNanHsvColor(double hue, double saturation, double va
 	resqml22__ContinuousColorMap * const continuousColorMap = static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_3);
 
 	if (continuousColorMap->NaNColor == nullptr) {
-		continuousColorMap->NaNColor = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap, 1);
+		continuousColorMap->NaNColor = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap);
 	}
 
 	continuousColorMap->NaNColor->Hue = hue;
@@ -128,7 +128,7 @@ void ContinuousColorMap::setNanHsvColor(double hue, double saturation, double va
 	continuousColorMap->NaNColor->Value = value;
 	continuousColorMap->NaNColor->Alpha = alpha;
 	if (!colorTitle.empty()) {
-		continuousColorMap->NaNColor->Title = soap_new_std__string(gsoapProxy2_3->soap, 1);
+		continuousColorMap->NaNColor->Title = soap_new_std__string(gsoapProxy2_3->soap);
 		*continuousColorMap->NaNColor->Title = colorTitle;
 	}
 }

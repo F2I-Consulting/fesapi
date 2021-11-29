@@ -24,8 +24,6 @@ using namespace std;
 using namespace EML2_3_NS;
 using namespace gsoap_eml2_3;
 
-const char* ActivityTemplate::XML_NS = "eml23";
-
 ActivityTemplate::ActivityTemplate(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title)
 {
 	gsoapProxy2_3 = soap_new_eml23__ActivityTemplate(repo->getGsoapContext());
@@ -87,15 +85,16 @@ bool ActivityTemplate::isAnExistingParameter(const std::string & paramTitle) con
 {
 	eml23__ActivityTemplate* activityTemplate = static_cast<eml23__ActivityTemplate*>(gsoapProxy2_3);
 
-	for (size_t i = 0; i < activityTemplate->Parameter.size(); ++i) {
-		if (activityTemplate->Parameter[i]->Title == paramTitle)
+	for (auto const* param : activityTemplate->Parameter) {
+		if (param->Title == paramTitle) {
 			return true;
+		}
 	}
 
 	return false;
 }
 
-unsigned int ActivityTemplate::getParameterCount() const
+uint64_t ActivityTemplate::getParameterCount() const
 {
 	return static_cast<eml23__ActivityTemplate*>(gsoapProxy2_3)->Parameter.size();
 }
@@ -104,8 +103,9 @@ const std::string & ActivityTemplate::getParameterTitle(unsigned int index) cons
 {
 	eml23__ActivityTemplate* activityTemplate = static_cast<eml23__ActivityTemplate*>(gsoapProxy2_3);
 
-	if (activityTemplate->Parameter.size() <= index)
+	if (activityTemplate->Parameter.size() <= index) {
 		throw out_of_range("The parameter template index is not in the parameter range.");
+	}
 
 	return activityTemplate->Parameter[index]->Title;
 }

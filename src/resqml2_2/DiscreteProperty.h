@@ -39,7 +39,7 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT DiscreteProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::DiscreteProperty(partialObject) {}
 
 		/**
-		 * Creates a discrete property which is of a local property kind.
+		 * Creates a discrete property without lookup table associated.
 		 *
 		 * @exception	std::invalid_argument	If @p or @p localPropKind is null. If @p dimension is zero.
 		 *
@@ -60,6 +60,30 @@ namespace RESQML2_2_NS
 			std::vector<int> dimensions = std::vector<int>());
 
 		/**
+		 * Creates a discrete property with a lookup table associated.
+		 *
+		 * @exception	std::invalid_argument	If @p or @p localPropKind is null. If @p dimension is zero.
+		 *
+		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * 								cannot be null.
+		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
+		 * 								will be set.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
+		 * @param [in]	strLookup	  	The string lookup which defines the possible string values and
+		 * 								their keys. It cannot be null.
+		 * @param [in]	propKind	 	The property kind of these property values. It cannot be null.
+		 * @param 	  	dimensions		The dimensions of each value of this property. If this parameter
+		 *								is empty, then it is assumed this property is a scalar one.
+		 */
+		DiscreteProperty(RESQML2_NS::AbstractRepresentation* rep, const std::string& guid, const std::string& title,
+			gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::ColumnBasedTable* strLookup,
+			EML2_NS::PropertyKind* propKind,
+			std::vector<int> dimensions = std::vector<int>());
+
+		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
@@ -69,8 +93,9 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~DiscreteProperty() = default;
 
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName, int64_t nullValue, int64_t minimumValue, int64_t maximumValue) final;
-		using AbstractValuesProperty::pushBackRefToExistingIntegerDataset;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getLookupDor() const final {
+			return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_3::resqml22__DiscreteProperty*>(gsoapProxy2_3)->Lookup);
+		}
 
 		DLL_IMPORT_OR_EXPORT int64_t getNullValue(unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) const final;
 
@@ -100,9 +125,9 @@ namespace RESQML2_2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
-	private:
+		/** The standard XML tag without XML namespace for serializing this data object. */
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		size_t getMinimumValueSize() const;
-		size_t getMaximumValueSize() const;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};
 }

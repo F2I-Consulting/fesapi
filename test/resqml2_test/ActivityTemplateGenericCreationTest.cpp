@@ -17,8 +17,8 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "ActivityTemplateGenericCreationTest.h"
+
 #include "eml2/ActivityTemplate.h"
-#include "../catch.hpp"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -40,7 +40,7 @@ ActivityTemplateGenericCreationTest::ActivityTemplateGenericCreationTest(const s
 }
 
 void ActivityTemplateGenericCreationTest::initRepo() {
-	ActivityTemplate*  genericCreationActivityTemplate = repo->createActivityTemplate(defaultUuid, defaultTitle);
+	ActivityTemplate* genericCreationActivityTemplate = repo->createActivityTemplate(defaultUuid, defaultTitle);
 	REQUIRE(genericCreationActivityTemplate != nullptr);
 
 	for (std::map<string, ParameterTest>::iterator it = parameterMap.begin(); it != parameterMap.end(); ++it)

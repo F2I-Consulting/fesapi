@@ -87,23 +87,23 @@ namespace {
 
 		// Special case for WellboreMarkerFrameRepresentation and byValue rel.
 		if (dynamic_cast<RESQML2_NS::WellboreMarkerFrameRepresentation const *>(dataObj) != nullptr) {
-			for (const auto srcMarkerFrame : repo.getSourceObjects(dataObj)) {
-				if (dynamic_cast<RESQML2_NS::WellboreMarker*>(srcMarkerFrame) == nullptr) {
+			for (const auto* srcMarkerFrame : repo.getSourceObjects(dataObj)) {
+				if (dynamic_cast<RESQML2_NS::WellboreMarker const*>(srcMarkerFrame) == nullptr) {
 					epc::Relationship relRep("../" + srcMarkerFrame->getPartNameInEpcDocument(), "", srcMarkerFrame->getUuid());
 					relRep.setSourceObjectType();
 					result.push_back(relRep);
 				}
 				else {
-					for (const auto srcMarker : repo.getSourceObjects(srcMarkerFrame)) {
+					for (const auto* srcMarker : repo.getSourceObjects(srcMarkerFrame)) {
 						if (!srcMarker->isPartial()) {
 							epc::Relationship relRep("../" + srcMarker->getPartNameInEpcDocument(), "", srcMarker->getUuid());
 							relRep.setSourceObjectType();
 							result.push_back(relRep);
 						}
 					}
-					for (const auto targetMarker : repo.getTargetObjects(srcMarkerFrame)) {
+					for (const auto* targetMarker : repo.getTargetObjects(srcMarkerFrame)) {
 						if (!targetMarker->isPartial() &&
-							dynamic_cast<RESQML2_NS::WellboreMarkerFrameRepresentation*>(targetMarker) == nullptr) {
+							dynamic_cast<RESQML2_NS::WellboreMarkerFrameRepresentation const*>(targetMarker) == nullptr) {
 							epc::Relationship relRep("../" + targetMarker->getPartNameInEpcDocument(), "", targetMarker->getUuid());
 							relRep.setDestinationObjectType();
 							result.push_back(relRep);
@@ -112,7 +112,7 @@ namespace {
 				}
 			}
 
-			for (const auto targetMarkerFrame : repo.getTargetObjects(dataObj)) {
+			for (const auto* targetMarkerFrame : repo.getTargetObjects(dataObj)) {
 				if (!targetMarkerFrame->isPartial()) {
 					epc::Relationship relRep("../" + targetMarkerFrame->getPartNameInEpcDocument(), "", targetMarkerFrame->getUuid());
 					relRep.setDestinationObjectType();
@@ -141,7 +141,7 @@ namespace {
 							result.push_back(relRep);
 						}
 					}
-					auto markerFrame = static_cast<RESQML2_NS::WellboreMarker*>(srcObj[index])->getWellboreMarkerFrameRepresentation();
+					auto* markerFrame = static_cast<RESQML2_NS::WellboreMarker*>(srcObj[index])->getWellboreMarkerFrameRepresentation();
 					epc::Relationship relRep("../" + markerFrame->getPartNameInEpcDocument(), "", markerFrame->getUuid());
 					relRep.setSourceObjectType();
 					result.push_back(relRep);
@@ -231,7 +231,7 @@ void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64
 	package->writePackage();
 }
 
-string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess)
+std::string EpcDocument::deserializeInto(DataObjectRepository& repo, DataObjectRepository::openingMode hdfPermissionAccess)
 {
 	std::string result;
 	for (const auto& warning : package->openForReading(filePath)) {
@@ -296,7 +296,9 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 
 	// Validate properties
 	for (auto* prop : repo.getDataObjects<RESQML2_NS::AbstractProperty>()) {
-		prop->validate();
+		if (!prop->isPartial()) {
+			prop->validate();
+		}
 	}
 
 	for (const auto& warning : repo.getWarnings()) {
@@ -438,7 +440,7 @@ void EpcDocument::setExtendedCoreProperty(const std::string & key, const std::st
 	package->getExtendedCoreProperty()[key] = value;
 }
 
-unsigned int EpcDocument::getExtendedCorePropertyCount() const
+uint64_t EpcDocument::getExtendedCorePropertyCount() const
 {
 	return package->getExtendedCoreProperty().size();
 }

@@ -47,14 +47,14 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The polyline count of patch @p patchIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getPolylineCountOfPatch(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getPolylineCountOfPatch(uint64_t patchIndex) const = 0;
 
 		/**
 		 * Gets the polyline count of all patches.
 		 *
 		 * @returns	The polyline count of all patches.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getPolylineCountOfAllPatches() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getPolylineCountOfAllPatches() const = 0;
 
 		/**
 		 * Gets the node count per polyline in a given patch.
@@ -68,7 +68,7 @@ namespace RESQML2_NS
 		 * 										patchIndex. Its size must be
 		 * 										<tt>getPolylineCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getNodeCountPerPolylineInPatch(unsigned int patchIndex, unsigned int * nodeCountPerPolyline) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getNodeCountPerPolylineInPatch(uint64_t patchIndex, unsigned int * nodeCountPerPolyline) const = 0;
 
 		/**
 		 * Gets all the node count per polyline for all the patches of this representation.
@@ -151,7 +151,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if all polylines of patch @p patchIndex are closed, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool virtual areAllPolylinesClosedOfPatch(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT bool virtual areAllPolylinesClosedOfPatch(uint64_t patchIndex) const = 0;
 
 		/**
 		 * Checks if all polylines of all patches are closed. Notice that a returned "false" does not
@@ -174,7 +174,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if all polylines of patch @p patchIndex are not closed, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool areAllPolylinesNonClosedOfPatch(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool areAllPolylinesNonClosedOfPatch(uint64_t patchIndex) const = 0;
 
 		/**
 		 * Checks if all polylines of all patches are not closed. Notice that a returned "false" does
@@ -196,7 +196,7 @@ namespace RESQML2_NS
 		 * 										ordered by polyline. Its size must be
 		 * 										<tt>getPolylineCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getClosedFlagPerPolylineOfPatch(unsigned int patchIndex, bool * closedFlagPerPolyline) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getClosedFlagPerPolylineOfPatch(uint64_t patchIndex, bool * closedFlagPerPolyline) const = 0;
 
 		/**
 		 * Gets the closed flag of all polylines of all patches.

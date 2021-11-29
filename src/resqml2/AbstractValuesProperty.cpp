@@ -579,7 +579,7 @@ int64_t AbstractValuesProperty::getNullValueOfPatch(unsigned int patchIndex) con
 	}
 }
 
-int AbstractValuesProperty::getIntValuesOfPatch(unsigned int patchIndex, int * values) const
+int32_t AbstractValuesProperty::getIntValuesOfPatch(unsigned int patchIndex, int32_t * values) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
@@ -587,10 +587,14 @@ int AbstractValuesProperty::getIntValuesOfPatch(unsigned int patchIndex, int * v
 
 	hdfProxy->readArrayNdOfIntValues(dsPath, values);
 
-	return nullValue;
+	if (nullValue < (std::numeric_limits<int32_t>::lowest)() || nullValue > (std::numeric_limits<int32_t>::max)()) {
+		throw range_error("The null value is not in the int32_t range");
+	}
+
+	return static_cast<int32_t>(nullValue);
 }
 
-unsigned int AbstractValuesProperty::getUIntValuesOfPatch(unsigned int patchIndex, unsigned int * values) const
+uint32_t AbstractValuesProperty::getUIntValuesOfPatch(unsigned int patchIndex, uint32_t * values) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
@@ -598,10 +602,14 @@ unsigned int AbstractValuesProperty::getUIntValuesOfPatch(unsigned int patchInde
 
 	hdfProxy->readArrayNdOfUIntValues(dsPath, values);
 
-	return nullValue;
+	if (nullValue < (std::numeric_limits<uint32_t>::lowest)() || nullValue >(std::numeric_limits<uint32_t>::max)()) {
+		throw range_error("The null value is not in the uint32_t range");
+	}
+
+	return static_cast<uint32_t>(nullValue);
 }
 
-short AbstractValuesProperty::getShortValuesOfPatch(unsigned int patchIndex, short * values) const
+int16_t AbstractValuesProperty::getShortValuesOfPatch(unsigned int patchIndex, int16_t * values) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
@@ -609,10 +617,14 @@ short AbstractValuesProperty::getShortValuesOfPatch(unsigned int patchIndex, sho
 
 	hdfProxy->readArrayNdOfShortValues(dsPath, values);
 
-	return nullValue;
+	if (nullValue < (std::numeric_limits<int16_t>::lowest)() || nullValue >(std::numeric_limits<int16_t>::max)()) {
+		throw range_error("The null value is not in the int16_t range");
+	}
+
+	return static_cast<int16_t>(nullValue);
 }
 
-unsigned short AbstractValuesProperty::getUShortValuesOfPatch(unsigned int patchIndex, unsigned short * values) const
+uint16_t AbstractValuesProperty::getUShortValuesOfPatch(unsigned int patchIndex, uint16_t * values) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
@@ -620,7 +632,11 @@ unsigned short AbstractValuesProperty::getUShortValuesOfPatch(unsigned int patch
 
 	hdfProxy->readArrayNdOfUShortValues(dsPath, values);
 
-	return nullValue;
+	if (nullValue < (std::numeric_limits<uint16_t>::lowest)() || nullValue >(std::numeric_limits<uint16_t>::max)()) {
+		throw range_error("The null value is not in the uint16_t range");
+	}
+
+	return static_cast<uint16_t>(nullValue);
 }
 
 char AbstractValuesProperty::getCharValuesOfPatch(unsigned int patchIndex, char * values) const
@@ -631,10 +647,14 @@ char AbstractValuesProperty::getCharValuesOfPatch(unsigned int patchIndex, char 
 
 	hdfProxy->readArrayNdOfCharValues(dsPath, values);
 
-	return nullValue;
+	if (nullValue < (std::numeric_limits<char>::lowest)() || nullValue >(std::numeric_limits<char>::max)()) {
+		throw range_error("The null value is not in the char range");
+	}
+
+	return static_cast<char>(nullValue);
 }
 
-unsigned char AbstractValuesProperty::getUCharValuesOfPatch(unsigned int patchIndex, unsigned char * values) const
+uint8_t AbstractValuesProperty::getUCharValuesOfPatch(unsigned int patchIndex, uint8_t * values) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
@@ -642,7 +662,11 @@ unsigned char AbstractValuesProperty::getUCharValuesOfPatch(unsigned int patchIn
 
 	hdfProxy->readArrayNdOfUCharValues(dsPath, values);
 
-	return nullValue;
+	if (nullValue < (std::numeric_limits<uint8_t>::lowest)() || nullValue >(std::numeric_limits<uint8_t>::max)()) {
+		throw range_error("The null value is not in the uint8_t range");
+	}
+
+	return static_cast<uint8_t>(nullValue);
 }
 
 void AbstractValuesProperty::pushBackLongHdf5Array3dOfValues(
@@ -807,9 +831,9 @@ void AbstractValuesProperty::getLongValuesOf3dPatch(
 	);
 }
 
-int AbstractValuesProperty::getIntValuesOfPatch(
+int32_t AbstractValuesProperty::getIntValuesOfPatch(
 	unsigned int patchIndex,
-	int* values,
+	int32_t* values,
 	unsigned long long* numValuesInEachDimension,
 	unsigned long long* offsetInEachDimension,
 	unsigned int numArrayDimensions) const
@@ -825,12 +849,16 @@ int AbstractValuesProperty::getIntValuesOfPatch(
 		offsetInEachDimension,
 		numArrayDimensions);
 
-	return nullValue;
+	if (nullValue < (std::numeric_limits<int32_t>::lowest)() || nullValue > (std::numeric_limits<int32_t>::max)()) {
+		throw range_error("The null value is not in the int32_t range");
+	}
+
+	return static_cast<int32_t>(nullValue);
 }
 
 void AbstractValuesProperty::getIntValuesOf3dPatch(
 	unsigned int patchIndex,
-	int* values,
+	int32_t* values,
 	unsigned int valueCountInFastestDim,
 	unsigned int valueCountInMiddleDim,
 	unsigned int valueCountInSlowestDim,

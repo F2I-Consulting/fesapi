@@ -18,13 +18,14 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Streamlines.h"
 
-#include "../catch.hpp"
-#include "resqml2_0_1/TimeSeries.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
 #include "resqml2/StreamlinesFeature.h"
-#include "resqml2_2/StreamlinesRepresentation.h"
 #include "resqml2/AbstractIjkGridRepresentation.h"
 #include "resqml2/GenericFeatureInterpretation.h"
+
+#include "resqml2_0_1/TimeSeries.h"
+#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
+
+#include "resqml2_2/StreamlinesRepresentation.h"
 
 using namespace std;
 using namespace COMMON_NS;

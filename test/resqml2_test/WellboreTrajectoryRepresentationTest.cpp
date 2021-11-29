@@ -20,12 +20,13 @@ under the License.
 
 #include <stdexcept>
 
-#include "catch.hpp"
-#include "resqml2/LocalDepth3dCrs.h"
-#include "resqml2/LocalTime3dCrs.h"
-#include "resqml2/MdDatum.h"
-#include "resqml2_0_1/WellboreInterpretation.h"
+#include "eml2/AbstractLocal3dCrs.h"
+#include "eml2/ReferencePointInALocalEngineeringCompoundCrs.h"
+
 #include "resqml2/WellboreTrajectoryRepresentation.h"
+
+#include "resqml2_0_1/WellboreInterpretation.h"
+
 using namespace std;
 using namespace resqml2_test;
 using namespace COMMON_NS;
@@ -46,7 +47,7 @@ WellboreTrajectoryRepresentationTest::WellboreTrajectoryRepresentationTest(const
 
 void WellboreTrajectoryRepresentationTest::initRepo() {
 	WellboreInterpretation* interp = repo->createPartial<RESQML2_0_1_NS::WellboreInterpretation>("", "");
-	MdDatum* mdDatum = repo->createMdDatum("", "", nullptr, gsoap_eml2_3::eml23__WellboreDatumReference::mean_x0020sea_x0020level, 275, 75, 0);
+	auto* mdDatum = repo->createReferencePointInALocalEngineeringCompoundCrs("", "", nullptr, gsoap_eml2_3::eml23__WellboreDatumReference::mean_x0020sea_x0020level, 275, 75, 0);
 
 	// creating the WellboreTrajectoryRepresentation in m and ft and depth
 	WellboreTrajectoryRepresentation* rep = repo->createWellboreTrajectoryRepresentation(interp, defaultUuid, defaultTitle, mdDatum);
@@ -124,7 +125,7 @@ void WellboreTrajectoryRepresentationTest::readRepo() {
 	REQUIRE(azimuths[3] < pi / 2 + epsilon);
 
 	traj = repo->getDataObjectByUuid<WellboreTrajectoryRepresentation>(TRAJ_MMTIME_UUID);
-	REQUIRE(dynamic_cast<RESQML2_NS::LocalTime3dCrs*>(traj->getLocalCrs(0)) != nullptr);
+	REQUIRE(traj->getLocalCrs(0)->isATimeCrs());
 
 	traj = repo->getDataObjectByUuid<WellboreTrajectoryRepresentation>(TRAJ_MMELEV_UUID);
 	traj->getInclinationsAndAzimuths(inclinations, azimuths);

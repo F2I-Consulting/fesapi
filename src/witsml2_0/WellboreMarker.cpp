@@ -27,8 +27,6 @@ using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
 
-const char* WellboreMarker::XML_TAG = "WellboreMarker";
-
 WellboreMarker::WellboreMarker(COMMON_NS::DataObjectRepository * repo,
 	const std::string & guid,
 	const std::string & title,

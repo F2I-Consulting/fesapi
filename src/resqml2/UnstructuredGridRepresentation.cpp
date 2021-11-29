@@ -259,39 +259,53 @@ void UnstructuredGridRepresentation::unloadGeometry()
 
 unsigned int UnstructuredGridRepresentation::getFaceCountOfCell(uint64_t cellIndex) const
 {
-	if (cellIndex >= getCellCount())
+	if (cellIndex >= getCellCount()) {
 		throw out_of_range("The cell index is out of range.");
+	}
 
-	if (constantFaceCountPerCell != 0)
+	if (constantFaceCountPerCell != 0) {
 		return constantFaceCountPerCell;
+	}
 
-	if (!faceIndicesOfCells)
+	if (!faceIndicesOfCells) {
 		throw logic_error("The geometry must have been loaded first.");
+	}
 
-	if (cellIndex == 0)
-		return cumulativeFaceCountPerCell[0];
+	if (cellIndex == 0) {
+		if (cumulativeFaceCountPerCell[0] < (std::numeric_limits<uint32_t>::lowest)() || cumulativeFaceCountPerCell[0] >(std::numeric_limits<uint32_t>::max)()) {
+			throw range_error("The count of face is not in the uint32_t range");
+		}
+
+		return static_cast<uint32_t>(cumulativeFaceCountPerCell[0]);
+	}
 	
-	return cumulativeFaceCountPerCell[cellIndex] -  cumulativeFaceCountPerCell[cellIndex-1];
+	auto result = cumulativeFaceCountPerCell[cellIndex] - cumulativeFaceCountPerCell[cellIndex - 1];
+	if (result < (std::numeric_limits<uint32_t>::lowest)() || result >(std::numeric_limits<uint32_t>::max)()) {
+		throw range_error("The count of face is not in the uint32_t range");
+	}
+	return static_cast<uint32_t>(result);
 }
 
 uint64_t UnstructuredGridRepresentation::getGlobalFaceIndex(uint64_t cellIndex, unsigned int localFaceIndex) const
 {
-	if (!faceIndicesOfCells)
+	if (!faceIndicesOfCells) {
 		throw invalid_argument("The geometry must have been loaded first.");
-	if (cellIndex >= getCellCount())
+	}
+	if (cellIndex >= getCellCount()) {
 		throw range_error("The cell index is out of range.");
-	if (localFaceIndex >= getFaceCountOfCell(cellIndex))
+	}
+	if (localFaceIndex >= getFaceCountOfCell(cellIndex)) {
 		throw range_error("The face index is out of range.");
+	}
 
 	uint64_t globalFaceIndex = 0;
-	if (cellIndex == 0)
+	if (cellIndex == 0) {
 		globalFaceIndex = faceIndicesOfCells[localFaceIndex];
-	else
-	{
-		if (constantFaceCountPerCell != 0)
-			globalFaceIndex = faceIndicesOfCells[constantFaceCountPerCell * cellIndex + localFaceIndex];
-		else
-			globalFaceIndex = faceIndicesOfCells[cumulativeFaceCountPerCell[cellIndex - 1] + localFaceIndex];
+	}
+	else {
+		globalFaceIndex = constantFaceCountPerCell != 0
+			? faceIndicesOfCells[constantFaceCountPerCell * cellIndex + localFaceIndex]
+			: faceIndicesOfCells[cumulativeFaceCountPerCell[cellIndex - 1] + localFaceIndex];
 	}
 
 	return globalFaceIndex;
@@ -299,22 +313,33 @@ uint64_t UnstructuredGridRepresentation::getGlobalFaceIndex(uint64_t cellIndex, 
 
 unsigned int UnstructuredGridRepresentation::getNodeCountOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const
 {
-	if (constantNodeCountPerFace != 0)
+	if (constantNodeCountPerFace != 0) {
 		return constantNodeCountPerFace;
+	}
 
 	const uint64_t globalFaceIndex = getGlobalFaceIndex(cellIndex, localFaceIndex);
 
-	return globalFaceIndex == 0
-		? cumulativeNodeCountPerFace[0]
-		: cumulativeNodeCountPerFace[globalFaceIndex] - cumulativeNodeCountPerFace[globalFaceIndex - 1];
+	if (globalFaceIndex == 0) {
+		if (cumulativeFaceCountPerCell[0] < (std::numeric_limits<uint32_t>::lowest)() || cumulativeFaceCountPerCell[0] >(std::numeric_limits<uint32_t>::max)()) {
+			throw range_error("The count of face is not in the uint32_t range");
+		}
+		return static_cast<uint32_t>(cumulativeNodeCountPerFace[0]);
+	}
+
+	auto result = cumulativeNodeCountPerFace[globalFaceIndex] - cumulativeNodeCountPerFace[globalFaceIndex - 1];
+	if (result < (std::numeric_limits<uint32_t>::lowest)() || result >(std::numeric_limits<uint32_t>::max)()) {
+		throw range_error("The count of nodes is not in the uint32_t range");
+	}
+	return static_cast<uint32_t>(result);
 }
 
 uint64_t const * UnstructuredGridRepresentation::getNodeIndicesOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const
 {
 	const uint64_t globalFaceIndex = getGlobalFaceIndex(cellIndex, localFaceIndex);
 
-	if (globalFaceIndex == 0)
+	if (globalFaceIndex == 0) {
 		return nodeIndicesOfFaces.get();
+	}
 
 	if (constantNodeCountPerFace != 0)
 		return &(nodeIndicesOfFaces[constantNodeCountPerFace * globalFaceIndex]);

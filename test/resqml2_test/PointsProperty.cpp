@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/PointsProperty.h"
 
-#include "catch.hpp"
-
 #include "eml2/AbstractHdfProxy.h"
 
 #include "resqml2/AbstractIjkGridRepresentation.h"
@@ -47,7 +45,7 @@ void PointsProperty::initRepo() {
 	auto* propertyKind = repo->createPropertyKind("", "Fake prop kind", gsoap_eml2_1::eml21__QuantityClassKind::length);
 	RESQML2_NS::PointsProperty* pointsProperty = repo->createPointsProperty(
 		ijkGrid, defaultUuid, "points prop",
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		repo->getDefaultCrs(), propertyKind);
 	double coordValues[6] = { .0, .1, .2, .3, .4, .5 };
 	pointsProperty->pushBackArray3dOfXyzPoints(coordValues, 2, 1, 1, hdfProxy);

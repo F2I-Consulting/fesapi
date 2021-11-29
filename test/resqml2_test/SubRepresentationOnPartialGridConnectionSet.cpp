@@ -17,10 +17,10 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/SubRepresentationOnPartialGridConnectionSet.h"
-#include "../catch.hpp"
-#include "resqml2_0_1/GridConnectionSetRepresentation.h"
+
 #include "resqml2/SubRepresentation.h"
-#include "resqml2/AbstractRepresentation.h"
+
+#include "resqml2_0_1/GridConnectionSetRepresentation.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -41,20 +41,19 @@ void SubRepresentationOnPartialGridConnectionSet::initRepo()
 
 	RESQML2_NS::GridConnectionSetRepresentation* partialGcsr = repo->createPartial<RESQML2_0_1_NS::GridConnectionSetRepresentation>("00a7d22f-4746-409b-87dc-5bdb83660d27", "GCSR");
 	REQUIRE(partialGcsr != nullptr);
-	RESQML2_NS::SubRepresentation* subRep = repo->createSubRepresentation(defaultUuid, defaultTitle);
-	subRep->pushBackSupportingRepresentation(partialGcsr);
+	RESQML2_NS::SubRepresentation* subRep = repo->createSubRepresentation(defaultUuid, defaultTitle, gsoap_eml2_3::eml23__IndexableElement::cells);
 
-	uint64_t elements[2] = { 1, 2 };
-	subRep->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement::cells, 2, elements, hdfProxy);
+	int64_t elements[2] = { 1, 2 };
+	subRep->pushBackSubRepresentationPatch(2, elements, partialGcsr, hdfProxy);
 }
 
 void SubRepresentationOnPartialGridConnectionSet::readRepo()
 {
 	// getting the subrep
-	RESQML2_NS::SubRepresentation* subRep = repo->getDataObjectByUuid<RESQML2_NS::SubRepresentation>(defaultUuid);
+	auto* subRep = repo->getDataObjectByUuid<RESQML2_NS::SubRepresentation>(defaultUuid);
 
-	REQUIRE(subRep->getSupportingRepresentation(0)->isPartial());
-	REQUIRE(subRep->getSupportingRepresentation(0)->getXmlTag().compare("GridConnectionSetRepresentation") == 0);
-	REQUIRE(subRep->getSupportingRepresentation(0)->getUuid().compare("00a7d22f-4746-409b-87dc-5bdb83660d27") == 0);
-	REQUIRE(subRep->getSupportingRepresentation(0)->getTitle().compare("GCSR") == 0);
+	REQUIRE(subRep->getSupportingRepresentationOfPatch(0)->isPartial());
+	REQUIRE(subRep->getSupportingRepresentationOfPatch(0)->getXmlTag().compare("GridConnectionSetRepresentation") == 0);
+	REQUIRE(subRep->getSupportingRepresentationOfPatch(0)->getUuid().compare("00a7d22f-4746-409b-87dc-5bdb83660d27") == 0);
+	REQUIRE(subRep->getSupportingRepresentationOfPatch(0)->getTitle().compare("GCSR") == 0);
 }

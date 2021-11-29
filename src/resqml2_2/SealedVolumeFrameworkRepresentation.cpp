@@ -19,6 +19,7 @@ under the License.
 #include "SealedVolumeFrameworkRepresentation.h"
 
 #include <limits>
+#include <numeric>
 
 #include <hdf5.h>
 
@@ -69,7 +70,7 @@ void SealedVolumeFrameworkRepresentation::setXmlSealedSurfaceFramework(RESQML2_N
 	static_cast<_resqml22__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_3)->BasedOn = ssf->newEml23Reference();
 }
 
-void SealedVolumeFrameworkRepresentation::setXmlInterpretationOfVolumeRegion(unsigned int regionIndex, RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp)
+void SealedVolumeFrameworkRepresentation::setXmlInterpretationOfVolumeRegion(uint64_t regionIndex, RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp)
 {
 	if (stratiUnitInterp == nullptr) {
 		throw invalid_argument("Cannot set a null strati Unit Interpretation");
@@ -210,24 +211,24 @@ gsoap_eml2_3::resqml22__VolumeShell* SealedVolumeFrameworkRepresentation::getReg
 	return getRegion(regionIndex)->InternalShells[internalShellIndex];
 }
 
-unsigned int SealedVolumeFrameworkRepresentation::getFaceCountOfExternalShell(unsigned int regionIndex) const
+uint64_t SealedVolumeFrameworkRepresentation::getFaceCountOfExternalShell(unsigned int regionIndex) const
 {
-	unsigned int result = 0;
+	uint64_t result = 0;
 
 	gsoap_eml2_3::resqml22__VolumeShell* shell = getRegionExternalShell(regionIndex);
 	for (auto const* daPart : shell->SideIsPlus->Values->ExternalDataArrayPart) {
-		result += daPart->Count;
+		result += std::accumulate(std::begin(daPart->Count), std::end(daPart->Count), static_cast<LONG64>(1), std::multiplies<LONG64>()); 
 	}
 	return result;
 }
 
-unsigned int SealedVolumeFrameworkRepresentation::getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const
+uint64_t SealedVolumeFrameworkRepresentation::getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const
 {
-	unsigned int result = 0;
+	uint64_t result = 0;
 
 	gsoap_eml2_3::resqml22__VolumeShell* shell = getRegionInternalShell(regionIndex, internalShellIndex);
 	for (auto const* daPart : shell->SideIsPlus->Values->ExternalDataArrayPart) {
-		result += daPart->Count;
+		result += std::accumulate(std::begin(daPart->Count), std::end(daPart->Count), static_cast<LONG64>(1), std::multiplies<LONG64>());
 	}
 	return result;
 }
@@ -235,8 +236,7 @@ unsigned int SealedVolumeFrameworkRepresentation::getFaceCountOfInternalShell(un
 void SealedVolumeFrameworkRepresentation::loadShell(unsigned int regionIndex, unsigned int internalShellIndex)
 {
 	auto tmpPair = std::make_pair(regionIndex, internalShellIndex);
-	if (loadedShell_ != tmpPair)
-	{
+	if (loadedShell_ != tmpPair) {
 		loadedShell_ = tmpPair;
 
 		gsoap_eml2_3::resqml22__VolumeShell const* shell = internalShellIndex == (std::numeric_limits<unsigned int>::max)()
@@ -269,13 +269,13 @@ RESQML2_NS::AbstractRepresentation* SealedVolumeFrameworkRepresentation::getRepO
 	return getRepresentation(faceRepresentationIndices_[faceIndex]);
 }
 
-unsigned int SealedVolumeFrameworkRepresentation::getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex)
+uint64_t SealedVolumeFrameworkRepresentation::getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex)
 {
 	loadShell(regionIndex);
 	return faceRepPatchIndices_[faceIndex];
 }
 
-unsigned int SealedVolumeFrameworkRepresentation::getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex)
+uint64_t SealedVolumeFrameworkRepresentation::getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex)
 {
 	loadShell(regionIndex, internalShellIndex);
 	return faceRepPatchIndices_[faceIndex];

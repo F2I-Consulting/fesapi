@@ -193,7 +193,13 @@ char BlockedWellboreRepresentation::getGridIndices(char* gridIndices) const
 		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(xmlGridIndices)->Values;
 		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, gridIndices);
-		return static_cast<resqml20__IntegerHdf5Array*>(xmlGridIndices)->NullValue;
+
+		const LONG64 nullValue = static_cast<resqml20__IntegerHdf5Array*>(xmlGridIndices)->NullValue;
+		if (nullValue < (std::numeric_limits<char>::lowest)() || nullValue > (std::numeric_limits<char>::max)()) {
+			throw range_error("The null value is not in the char range");
+		}
+
+		return static_cast<char>(nullValue);
 	}
 	else if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
 		const int64_t constantXmlValue = static_cast<resqml20__IntegerConstantArray*>(xmlGridIndices)->Value;
@@ -253,8 +259,13 @@ char BlockedWellboreRepresentation::getLocalFacePairPerCellIndices(char* localFa
 	auto cellCount = getCellCount();
 
 	if (xmlLocalFacePairPerCellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-		LONG64 nullvalue = static_cast<resqml20__IntegerHdf5Array*>(xmlLocalFacePairPerCellIndices)->NullValue;
-		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(xmlLocalFacePairPerCellIndices)->Values;
+		const LONG64 nullValue = static_cast<resqml20__IntegerHdf5Array*>(xmlLocalFacePairPerCellIndices)->NullValue;
+		if (nullValue < (std::numeric_limits<char>::lowest)() || nullValue >(std::numeric_limits<char>::max)()) {
+			throw range_error("The null value is not in the char range");
+		}
+		const char nullValueChar = static_cast<char>(nullValue);
+
+		gsoap_resqml2_0_1::eml20__Hdf5Dataset const* dataset = static_cast<resqml20__IntegerHdf5Array*>(xmlLocalFacePairPerCellIndices)->Values;
 		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		if (cellCount == intervalCount) {
 			hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, localFacePairPerCellIndices);
@@ -271,12 +282,12 @@ char BlockedWellboreRepresentation::getLocalFacePairPerCellIndices(char* localFa
 					localFacePairPerCellIndices[intervalIndex * 2 + 1] = nonNullCellLocalFacePairPerCellIndices[tmp++];
 				}
 				else {
-					localFacePairPerCellIndices[intervalIndex * 2] = nullvalue;
-					localFacePairPerCellIndices[intervalIndex * 2 + 1] = nullvalue;
+					localFacePairPerCellIndices[intervalIndex * 2] = nullValueChar;
+					localFacePairPerCellIndices[intervalIndex * 2 + 1] = nullValueChar;
 				}
 			}
 		}
-		return nullvalue;
+		return nullValueChar;
 	}
 	else if (xmlLocalFacePairPerCellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
 		const int64_t constantXmlValue = static_cast<resqml20__IntegerConstantArray*>(xmlLocalFacePairPerCellIndices)->Value;

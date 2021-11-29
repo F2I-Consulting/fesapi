@@ -44,12 +44,12 @@ DoubleTableLookup::DoubleTableLookup(COMMON_NS::DataObjectRepository* repo, cons
 	repo->addDataObject(this);
 }
 
-uint32_t DoubleTableLookup::getRowCount() const
+uint64_t DoubleTableLookup::getRowCount() const
 {
 	return static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1)->Value.size();
 }
 
-COMMON_NS::DataObjectReference DoubleTableLookup::getPropertyKindDor(uint32_t columnIndex) const
+COMMON_NS::DataObjectReference DoubleTableLookup::getPropertyKindDor(uint64_t columnIndex) const
 {
 	RESQML2_0_1_NS::PropertyKind* proKind = nullptr;
 	if (columnIndex == 0) {
@@ -64,12 +64,7 @@ COMMON_NS::DataObjectReference DoubleTableLookup::getPropertyKindDor(uint32_t co
 	return COMMON_NS::DataObjectReference(proKind->newResqmlReference());
 }
 
-std::vector<std::string> DoubleTableLookup::getStringValues(uint32_t columnIndex) const
-{
-	throw logic_error("The column does not contain string values");
-}
-
-std::vector<double> DoubleTableLookup::getDoubleValues(uint32_t columnIndex) const
+std::vector<double> DoubleTableLookup::getDoubleValues(uint64_t columnIndex) const
 {
 	std::vector<double> result;
 
@@ -92,7 +87,22 @@ std::vector<double> DoubleTableLookup::getDoubleValues(uint32_t columnIndex) con
 	return result;
 }
 
-std::vector<int64_t> DoubleTableLookup::getInt64Values(uint32_t columnIndex) const
+void DoubleTableLookup::setDoubleValues(uint64_t columnIndex, const std::vector<double>& values)
 {
-	throw logic_error("The column does not contain integer values");
+	if (columnIndex > 1) {
+		throw logic_error("It only exists 2 columns in this table");
+	}
+
+	auto* dtl = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1);
+	for (size_t i = 0; i < values.size(); ++i) {
+		if (dtl->Value.size() == i) {
+			dtl->Value.push_back(soap_new_resqml20__DoubleLookup(gsoapProxy2_0_1->soap));
+		}
+		if (columnIndex == 0) {
+			dtl->Value[i]->Key = values[i];
+		}
+		else {
+			dtl->Value[i]->Value = values[i];
+		}
+	}
 }

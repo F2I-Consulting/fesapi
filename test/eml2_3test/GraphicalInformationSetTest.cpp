@@ -17,10 +17,9 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "GraphicalInformationSetTest.h"
-#include "catch.hpp"
+
 #include "eml2/GraphicalInformationSet.h"
 #include "resqml2/BoundaryFeature.h"
-#include "resqml2/LocalTime3dCrs.h"
 
 using namespace std;
 using namespace EML2_NS;

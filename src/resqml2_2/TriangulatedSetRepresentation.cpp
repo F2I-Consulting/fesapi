@@ -49,10 +49,11 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(COMMON_NS::DataObje
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
+	setInterpretation(repo->createPartial<RESQML2_2_NS::GenericFeatureInterpretation>("", "Unknown interp"));
 }
 
 TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-		const std::string & guid, const std::string & title)
+		const std::string& guid, const std::string& title)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The interpretation of the subrepresentation cannot be null.");
@@ -71,8 +72,7 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::Abstrac
 COMMON_NS::DataObjectReference TriangulatedSetRepresentation::getHdfProxyDor() const
 {
 	resqml22__TrianglePatch* patch = static_cast<_resqml22__TriangulatedSetRepresentation*>(gsoapProxy2_3)->TrianglePatch[0];
-	if (patch->Triangles->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
-	{
+	if (patch->Triangles->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
 		return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(patch->Triangles)->Values->ExternalDataArrayPart[0]));
 	}
 
@@ -83,10 +83,12 @@ resqml22__PointGeometry* TriangulatedSetRepresentation::getPointGeometry2_2(unsi
 {
 	_resqml22__TriangulatedSetRepresentation* triRep = static_cast<_resqml22__TriangulatedSetRepresentation*>(gsoapProxy2_3);
 	
-	if (triRep->TrianglePatch.size() > patchIndex)
+	if (triRep->TrianglePatch.size() > patchIndex) {
 		return triRep->TrianglePatch[patchIndex]->Geometry;
-	else
+	}
+	else {
 		throw out_of_range("The patchIndex is out of range");
+	}
 }
 
 void TriangulatedSetRepresentation::pushBackTrianglePatch(
@@ -197,8 +199,7 @@ void TriangulatedSetRepresentation::getTriangleNodeIndicesOfPatch(unsigned int p
 void TriangulatedSetRepresentation::getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const
 {
 	_resqml22__TriangulatedSetRepresentation* triRep = static_cast<_resqml22__TriangulatedSetRepresentation*>(gsoapProxy2_3);
-	unsigned int patchCount = triRep->TrianglePatch.size();
-	for (unsigned int patchIndex = 0; patchIndex < patchCount; patchIndex++)
+	for (unsigned int patchIndex = 0; patchIndex < triRep->TrianglePatch.size(); patchIndex++)
 	{
 		getTriangleNodeIndicesOfPatch(patchIndex, triangleNodeIndices);
 		triangleNodeIndices += getTriangleCountOfPatch(patchIndex) * 3;

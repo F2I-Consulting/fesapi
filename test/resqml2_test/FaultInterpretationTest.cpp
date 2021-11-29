@@ -17,10 +17,9 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "FaultInterpretationTest.h"
+
 #include "resqml2/BoundaryFeature.h"
 #include "resqml2/FaultInterpretation.h"
-#include "../catch.hpp"
-#include "AbstractTest.h"
 
 using namespace std;
 using namespace resqml2_test;

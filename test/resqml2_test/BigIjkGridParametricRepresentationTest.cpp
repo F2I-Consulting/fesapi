@@ -18,10 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/BigIjkGridParametricRepresentationTest.h"
 
-#include "catch.hpp"
-#include "resqml2_test/LocalDepth3dCrsTest.h"
-
-#include "resqml2/LocalDepth3dCrs.h"
 #include "resqml2/IjkGridParametricRepresentation.h"
 #include "resqml2/DiscreteProperty.h"
 #include "resqml2/ContinuousProperty.h"
@@ -51,13 +47,11 @@ void BigIjkGridParametricRepresentationTest::initParametersAndControlPoints(doub
 {
 	const uint64_t nodeCount = initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount);
 
-	for (unsigned int index = 0; index < nodeCount; ++index)
-	{
+	for (uint64_t index = 0; index < nodeCount; ++index) {
 		parameters[index] = nodesIjkGridRepresentation[3 * index + 2];
 	}
 
-	for (unsigned int index = 0; index < (iCount + 1) * (jCount + 1) * 3; ++index)
-	{
+	for (uint64_t index = 0; index < (iCount + 1) * (jCount + 1) * 3; ++index) {
 		controlPoints[index] = nodesIjkGridRepresentation[index];
 	}
 }
@@ -79,10 +73,10 @@ void BigIjkGridParametricRepresentationTest::initRepo() {
 		faultCount * (jCount + 1), pillarOfCoordinateLine.get(), splitCoordinateLineColumnCumulativeCount.get(), splitCoordinateLineColumns.get());
 
 	// adding a discrete property
-	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
+	auto* propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
 	RESQML2_NS::DiscreteProperty* discreteProperty = repo->createDiscreteProperty(
 		ijkGrid, discretePropertyUuid, discretePropertyTitle,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	std::unique_ptr<unsigned short[]> discretePropertyValues(new unsigned short[iCount * jCount * kCount]);
 	initDiscreteProperty(discretePropertyValues.get());
@@ -92,7 +86,7 @@ void BigIjkGridParametricRepresentationTest::initRepo() {
 	propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
 	RESQML2_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(
 		ijkGrid, continuousPropertyUuid, continuousPropertyTitle,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	std::unique_ptr<double[]> continuousPropertyValues(new double[iCount * jCount * kCount]);

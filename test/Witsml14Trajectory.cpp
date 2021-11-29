@@ -20,10 +20,11 @@ under the License.
 
 #include <numeric>
 
-#include "common/DataObjectRepository.h"
-#include "witsml1_4/Trajectory.h"
-
 #include "catch.hpp"
+
+#include "common/DataObjectRepository.h"
+
+#include "witsml1_4/Trajectory.h"
 
 using namespace std;
 

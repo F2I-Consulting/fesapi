@@ -27,8 +27,6 @@ using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
 
-const char* WellboreCompletion::XML_TAG = "WellboreCompletion";
-
 WellboreCompletion::WellboreCompletion(WITSML2_NS::Wellbore* witsmlWellbore,
 	class WellCompletion* wellCompletion,
 	const string & guid,
@@ -528,7 +526,7 @@ void WellboreCompletion::setPerforationHistoryComment(unsigned int historyIndex,
 	witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
 
 	if (perforationStatusHistory->Comment == nullptr) {
-		perforationStatusHistory->Comment = soap_new_std__string(gsoapProxy2_1->soap, 1);
+		perforationStatusHistory->Comment = soap_new_std__string(gsoapProxy2_1->soap);
 	}
 	perforationStatusHistory->Comment->assign(comment);
 }

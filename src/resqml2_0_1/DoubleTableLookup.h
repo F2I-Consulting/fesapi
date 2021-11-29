@@ -59,12 +59,12 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Gets the row count of this table
 		 */
-		DLL_IMPORT_OR_EXPORT uint32_t getRowCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getRowCount() const final;
 
 		/**
 		 * Gets the column count of this table
 		 */
-		DLL_IMPORT_OR_EXPORT uint32_t getColumnCount() const final { return 2; }
+		DLL_IMPORT_OR_EXPORT uint64_t getColumnCount() const final { return 2; }
 
 		/**
 		 * Gets the property kind DOR associated to a particular column count of this table
@@ -73,34 +73,37 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @return				The associated property kind DOR.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getPropertyKindDor(uint32_t columnIndex) const final;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getPropertyKindDor(uint64_t columnIndex) const final;
 
 		/**
 		 * @return				Empty since DoubleTableLookup has not got any uom never
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getUomAsString(uint32_t) const final { return ""; }
+		DLL_IMPORT_OR_EXPORT std::string getUomAsString(uint64_t) const final { return ""; }
 
 		/**
 		 * @return				1 since DoubleTableLookup has only one value per column
 		 */
-		DLL_IMPORT_OR_EXPORT uint32_t getValueCountPerRow(uint32_t) const final { return 1; }
+		DLL_IMPORT_OR_EXPORT uint64_t getValueCountPerRow(uint64_t) const final { return 1; }
 
 		/**
 		 * @return				A double table lookkup only contains double by definition
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::hdfDatatypeEnum getDatatype(uint32_t) const final
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::hdfDatatypeEnum getDatatype(uint64_t) const final
 		{
 			return COMMON_NS::AbstractObject::hdfDatatypeEnum::DOUBLE;
 		}
 
 		/**
-		 * Gets the values of a column as string values
-		 *
-		 * @param columnIndex	The index of the column which we want the values from
-		 *
-		 * @return				The string values
+		 * Not supported in v2.0.1
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<std::string> getStringValues(uint32_t columnIndex) const final;
+		DLL_IMPORT_OR_EXPORT std::vector<std::string> getStringValues(uint64_t) const final
+			{ throw std::logic_error("The column does not contain string values"); }
+
+		/**
+		 * Not supported in v2.0.1
+		 */
+		DLL_IMPORT_OR_EXPORT void setStringValues(uint64_t, const std::vector<std::string>&) final
+			{ throw std::logic_error("The column does not contain string values"); }
 
 		/**
 		 * Gets the values of a column as double values
@@ -109,16 +112,30 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @return				The double values
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<double> getDoubleValues(uint32_t columnIndex) const final;
+		DLL_IMPORT_OR_EXPORT std::vector<double> getDoubleValues(uint64_t columnIndex) const final;
 
 		/**
-		 * Gets the values of a column as int64 values
+		 * Sets the values of a column as XML double values
 		 *
-		 * @param columnIndex	The index of the column which we want the values from
-		 *
-		 * @return				The int64 values
+		 * @param columnIndex	The index of the column which we want to set the values. Can only be zero or one.
+		 * @param values		The values to set
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<int64_t> getInt64Values(uint32_t columnIndex) const final;
+		DLL_IMPORT_OR_EXPORT void setDoubleValues(uint64_t columnIndex, const std::vector<double>& values) final;
+
+		/**
+		 * Not supported in v2.0.1
+		 */
+		DLL_IMPORT_OR_EXPORT std::vector<int64_t> getInt64Values(uint64_t) const final
+			{ throw std::logic_error("The column does not contain integer values"); }
+
+		/**
+		 * Not supported in v2.0.1
+		 */
+		DLL_IMPORT_OR_EXPORT void setInt64Values(uint64_t, const std::vector<int64_t>&) final
+			{ throw std::logic_error("The column does not contain integer values"); }
+
+		DLL_IMPORT_OR_EXPORT void pushBackColumnHeader(bool, EML2_NS::PropertyKind*, uint64_t = 1) final
+			{ throw std::logic_error("You cannot push back new column to a double table lookup."); }
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

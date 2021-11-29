@@ -17,7 +17,8 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "LocalTime3dCrs.h"
-#include "../catch.hpp"
+
+#include "eml2/AbstractLocal3dCrs.h"
 
 using namespace resqml2_test;
 using namespace COMMON_NS;
@@ -38,5 +39,11 @@ void LocalTime3dCrs::initRepo()
 
 void LocalTime3dCrs::readRepo()
 {
-	REQUIRE( repo->getLocalTime3dCrsSet().size() == 1 );
+	size_t timeCrsCount = 0;
+	for (auto* crs : repo->getLocal3dCrsSet()) {
+		if (crs->isATimeCrs()) {
+			++timeCrsCount;
+		}
+	}
+	REQUIRE(timeCrsCount == 1 );
 }

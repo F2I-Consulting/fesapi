@@ -118,8 +118,8 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	If the cell indices are neither stored in a HDF5 integer
 		 * 									array nor in an integer constant array.
 		 *
-		 * @param [out]	gridIndices	An array for receiving the cell indices. The size of this array is
-		 * 							the interval count of the wellbore frame representation.
+		 * @param [out]	cellIndices			An array for receiving the cell indices. The size of this array is
+		 * 									the interval count of the wellbore frame representation.
 		 *
 		 * @returns	The null value used in @p cellIndices in order to indicate that an interval does not
 		 * 			correspond to any intersected cell.
@@ -135,8 +135,8 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	If the local face indices are neither stored in a HDF5 integer
 		 * 									array nor in an integer constant array.
 		 *
-		 * @param [out]	gridIndices	An array for receiving the local face indices. The size of this array is twice
-		 * 							the interval count of the wellbore frame representation.
+		 * @param [out]	localFacePairPerCellIndices	An array for receiving the local face indices. The size of this array is twice
+		 * 											the interval count of the wellbore frame representation.
 		 *
 		 * @returns	The null value used in @p localFacePairPerCellIndices in order to indicate that no face is intersected.
 		 */

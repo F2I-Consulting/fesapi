@@ -17,16 +17,16 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/HorizonOnSeismicLine.h"
-#include "../catch.hpp"
 
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "resqml2_0_1/PolylineRepresentation.h"
-#include "resqml2_0_1/HorizonInterpretation.h"
-#include "resqml2/LocalDepth3dCrs.h"
-#include "eml2/AbstractHdfProxy.h"
+#include "LocalDepth3dCrsTest.h"
+
 #include "resqml2_test/HorizonInterpretationTest.h"
 #include "resqml2_test/SeismicLineRepresentationTest.h"
-#include "LocalDepth3dCrsTest.h"
+
+#include "eml2/AbstractHdfProxy.h"
+
+#include "resqml2_0_1/PolylineRepresentation.h"
+#include "resqml2_0_1/HorizonInterpretation.h"
 
 using namespace std;
 using namespace resqml2_test;

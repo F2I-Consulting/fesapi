@@ -22,8 +22,8 @@ under the License.
 
 #include "AbstractSeismicLineFeature.h"
 #include "AbstractFeatureInterpretation.h"
-#include "CategoricalProperty.h"
 #include "ContinuousProperty.h"
+#include "DiscreteProperty.h"
 
 using namespace std;
 using namespace RESQML2_NS;
@@ -57,7 +57,8 @@ bool PolylineRepresentation::isAFaciesLine() const
 	bool atLeastOneCateProp = false;
 	vector<RESQML2_NS::AbstractValuesProperty *> allValuesProperty = getValuesPropertySet();
     for (size_t propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex) {
-        if (dynamic_cast<RESQML2_NS::CategoricalProperty*>(allValuesProperty[propIndex]) != nullptr) {
+		auto* discretProp = dynamic_cast<RESQML2_NS::DiscreteProperty*>(allValuesProperty[propIndex]);
+        if (discretProp != nullptr && !discretProp->getLookupDor().isEmpty()) {
             atLeastOneCateProp = true;
             break;
         }

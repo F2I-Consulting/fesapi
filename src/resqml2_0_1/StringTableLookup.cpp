@@ -39,17 +39,17 @@ StringTableLookup::StringTableLookup(COMMON_NS::DataObjectRepository* repo, cons
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStringTableLookup(repo->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
 }
 
-uint32_t StringTableLookup::getRowCount() const
+uint64_t StringTableLookup::getRowCount() const
 {
 	return static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1)->Value.size();
 }
 
-COMMON_NS::DataObjectReference StringTableLookup::getPropertyKindDor(uint32_t columnIndex) const
+COMMON_NS::DataObjectReference StringTableLookup::getPropertyKindDor(uint64_t columnIndex) const
 {
 	RESQML2_0_1_NS::PropertyKind* proKind = nullptr;
 	if (columnIndex == 0) {
@@ -64,7 +64,7 @@ COMMON_NS::DataObjectReference StringTableLookup::getPropertyKindDor(uint32_t co
 	return COMMON_NS::DataObjectReference(proKind->newResqmlReference());
 }
 
-std::vector<std::string> StringTableLookup::getStringValues(uint32_t columnIndex) const
+std::vector<std::string> StringTableLookup::getStringValues(uint64_t columnIndex) const
 {
 	if (columnIndex != 1) {
 		throw logic_error("Only the column at index 1 does contain string values");
@@ -80,12 +80,27 @@ std::vector<std::string> StringTableLookup::getStringValues(uint32_t columnIndex
 	return result;
 }
 
-std::vector<double> StringTableLookup::getDoubleValues(uint32_t columnIndex) const
+void StringTableLookup::setStringValues(uint64_t columnIndex, const std::vector<std::string>& values)
+{
+	if (columnIndex != 1) {
+		throw logic_error("Only the column at index 1 does contain string values");
+	}
+
+	auto* stl = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
+	for (size_t i = 0; i < values.size(); ++i) {
+		if (stl->Value.size() == i) {
+			stl->Value.push_back(soap_new_resqml20__StringLookup(gsoapProxy2_0_1->soap));
+		}
+		stl->Value[i]->Value = values[i];
+	}
+}
+
+std::vector<double> StringTableLookup::getDoubleValues(uint64_t) const
 {
 	throw logic_error("The column does not contain floating point values");
 }
 
-std::vector<int64_t> StringTableLookup::getInt64Values(uint32_t columnIndex) const
+std::vector<int64_t> StringTableLookup::getInt64Values(uint64_t columnIndex) const
 {
 	if (columnIndex != 0) {
 		throw logic_error("Only the column at index 0 does contain string values");
@@ -99,4 +114,19 @@ std::vector<int64_t> StringTableLookup::getInt64Values(uint32_t columnIndex) con
 	}
 
 	return result;
+}
+
+void StringTableLookup::setInt64Values(uint64_t columnIndex, const std::vector<int64_t>& values)
+{
+	if (columnIndex != 0) {
+		throw logic_error("Only the column at index 0 does contain integer values");
+	}
+
+	auto* stl = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
+	for (size_t i = 0; i < values.size(); ++i) {
+		if (stl->Value.size() == i) {
+			stl->Value.push_back(soap_new_resqml20__StringLookup(gsoapProxy2_0_1->soap));
+		}
+		stl->Value[i]->Key = values[i];
+	}
 }

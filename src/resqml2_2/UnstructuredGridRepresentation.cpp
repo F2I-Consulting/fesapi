@@ -35,7 +35,7 @@ using namespace RESQML2_2_NS;
 const char* UnstructuredGridRepresentation::XML_NS = "resqml22";
 
 void UnstructuredGridRepresentation::init(COMMON_NS::DataObjectRepository* repo,
-	const std::string & guid, const std::string & title,
+	const std::string& guid, const std::string& title,
 	uint64_t cellCount)
 {
 	if (repo == nullptr) {
@@ -54,14 +54,16 @@ void UnstructuredGridRepresentation::init(COMMON_NS::DataObjectRepository* repo,
 }
 
 UnstructuredGridRepresentation::UnstructuredGridRepresentation(COMMON_NS::DataObjectRepository* repo,
-	const std::string & guid, const std::string & title,
+	const std::string& guid, const std::string& title,
 	uint64_t cellCount)
 {
 	init(repo, guid, title, cellCount);
+
+	setInterpretation(repo->createPartial<RESQML2_2_NS::EarthModelInterpretation>("", "Unknown interp"));
 }
 
 UnstructuredGridRepresentation::UnstructuredGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-	const std::string & guid, const std::string & title,
+	const std::string& guid, const std::string& title,
 	uint64_t cellCount)
 {
 	if (interp == nullptr) {
@@ -123,7 +125,7 @@ uint64_t UnstructuredGridRepresentation::getNodeCount() const
 	return 0;
 }
 
-void UnstructuredGridRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void UnstructuredGridRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double* xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -140,7 +142,7 @@ void UnstructuredGridRepresentation::getXyzPointsOfPatch(unsigned int patchIndex
 	}
 }
 
-void UnstructuredGridRepresentation::getFaceIndicesOfCells(uint64_t * faceIndices) const
+void UnstructuredGridRepresentation::getFaceIndicesOfCells(uint64_t* faceIndices) const
 {
 	_resqml22__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (grid->Geometry == nullptr) {
@@ -156,7 +158,7 @@ void UnstructuredGridRepresentation::getFaceIndicesOfCells(uint64_t * faceIndice
 	}
 }
 
-void UnstructuredGridRepresentation::getCumulativeFaceCountPerCell(uint64_t * cumulativeFaceCountPerCell_) const
+void UnstructuredGridRepresentation::getCumulativeFaceCountPerCell(uint64_t* cumulativeFaceCountPerCell_) const
 {
 	_resqml22__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (grid->Geometry == nullptr)
@@ -491,7 +493,7 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 		eml23__IntegerLatticeArray* cumulativeLength = soap_new_eml23__IntegerLatticeArray(gsoapProxy2_3->soap);
 		geom->FacesPerCell->CumulativeLength = cumulativeLength;
 		cumulativeLength->StartValue = faceCountPerCell;
-		cumulativeLength->Offset.push_back(soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap, 1));
+		cumulativeLength->Offset.push_back(soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap));
 		cumulativeLength->Offset[0]->Count = cellCount - 1;
 		cumulativeLength->Offset[0]->Value = faceCountPerCell;
 	}
@@ -509,7 +511,7 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 	eml23__IntegerLatticeArray* cumulativeLength = soap_new_eml23__IntegerLatticeArray(gsoapProxy2_3->soap);
 	geom->NodesPerFace->CumulativeLength = cumulativeLength;
 	cumulativeLength->StartValue = nodeCountPerFace;
-	cumulativeLength->Offset.push_back(soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap, 1));
+	cumulativeLength->Offset.push_back(soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap));
 	cumulativeLength->Offset[0]->Count = geom->FaceCount - 1;
 	cumulativeLength->Offset[0]->Value = nodeCountPerFace;
 	// Elements

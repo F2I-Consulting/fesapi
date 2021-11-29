@@ -40,6 +40,7 @@ using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* DiscreteProperty::XML_NS = "resqml20";
+const char* DiscreteProperty::XML_TAG = "DiscreteProperty";
 
 DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	gsoap_eml2_3::eml23__IndexableElement attachmentKind, resqml20__ResqmlPropertyKind energisticsPropertyKind,
@@ -93,28 +94,6 @@ DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, con
 	setRepresentation(rep);
 
 	setPropertyKind(localPropKind);
-}
-
-std::string DiscreteProperty::pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName, int64_t nullValue, int64_t minimumValue, int64_t maximumValue)
-{
-	const string result = AbstractValuesProperty::pushBackRefToExistingIntegerDataset(proxy, datasetName, nullValue);
-
-	_resqml20__DiscreteProperty* prop = static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1);
-
-	if (prop->Count == 1)
-	{
-		if (prop->MinimumValue.empty())
-			prop->MinimumValue.push_back(minimumValue);
-		else
-			prop->MinimumValue[0] = minimumValue;
-
-		if (prop->MaximumValue.empty())
-			prop->MaximumValue.push_back(maximumValue);
-		else
-			prop->MaximumValue[0] = maximumValue;
-	}
-
-	return result;
 }
 
 bool DiscreteProperty::validatePropertyKindAssociation(EML2_NS::PropertyKind* pk)
@@ -241,16 +220,6 @@ void DiscreteProperty::setMaximumValue(int64_t value, unsigned int index) const
 	}
 
 	prop->MaximumValue[index] = value;
-}
-
-size_t DiscreteProperty::getMinimumValueSize() const
-{
-	return static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1)->MinimumValue.size();
-}
-
-size_t DiscreteProperty::getMaximumValueSize() const
-{
-	return static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1)->MaximumValue.size();
 }
 
 gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind DiscreteProperty::getEnergisticsPropertyKind() const

@@ -86,11 +86,11 @@ namespace RESQML2_0_1_NS
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPolylineCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getPolylineCountOfPatch(uint64_t patchIndex) const final;
 		
-		DLL_IMPORT_OR_EXPORT unsigned int getPolylineCountOfAllPatches() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getPolylineCountOfAllPatches() const final;
 
-		DLL_IMPORT_OR_EXPORT void getNodeCountPerPolylineInPatch(unsigned int patchIndex, unsigned int * nodeCountPerPolyline) const final;
+		DLL_IMPORT_OR_EXPORT void getNodeCountPerPolylineInPatch(uint64_t patchIndex, unsigned int * nodeCountPerPolyline) const final;
 
 		DLL_IMPORT_OR_EXPORT void getNodeCountPerPolylineOfAllPatches(unsigned int * NodeCountPerPolyline) const final;
 
@@ -108,15 +108,15 @@ namespace RESQML2_0_1_NS
 			unsigned int polylineCount, bool * polylineClosedFlags,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
-		DLL_IMPORT_OR_EXPORT bool areAllPolylinesClosedOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT bool areAllPolylinesClosedOfPatch(uint64_t patchIndex) const final;
 
 		DLL_IMPORT_OR_EXPORT bool areAllPolylinesClosedOfAllPatches() const final;
 
-		DLL_IMPORT_OR_EXPORT bool areAllPolylinesNonClosedOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT bool areAllPolylinesNonClosedOfPatch(uint64_t patchIndex) const final;
 
 		DLL_IMPORT_OR_EXPORT bool areAllPolylinesNonClosedOfAllPatches() const final;
 
-		DLL_IMPORT_OR_EXPORT void getClosedFlagPerPolylineOfPatch(unsigned int patchIndex, bool * closedFlagPerPolyline) const final;
+		DLL_IMPORT_OR_EXPORT void getClosedFlagPerPolylineOfPatch(uint64_t patchIndex, bool * closedFlagPerPolyline) const final;
 
 		DLL_IMPORT_OR_EXPORT void getClosedFlagPerPolylineOfAllPatches(bool * closedFlagPerPolyline) const final;
 

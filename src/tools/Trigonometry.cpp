@@ -73,4 +73,3 @@ std::pair<double, double> trigonometry::rotateXY(const double & xSource, const d
 
 	return result;
 }
-

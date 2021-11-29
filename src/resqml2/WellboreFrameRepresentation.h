@@ -19,7 +19,6 @@ under the License.
 #pragma once
 
 #include "AbstractRepresentation.h"
-#include "AbstractValuesProperty.h"
 
 namespace RESQML2_NS
 {

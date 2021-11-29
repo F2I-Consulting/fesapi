@@ -24,9 +24,6 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* SeismicLineFeature::XML_TAG = "SeismicLineFeature";
-const char* SeismicLineFeature::XML_NS = "resqml20";
-
 SeismicLineFeature::SeismicLineFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
 	int traceIndexIncrement, int firstTraceIndex, unsigned int traceCount)
 {
@@ -42,7 +39,7 @@ SeismicLineFeature::SeismicLineFeature(COMMON_NS::DataObjectRepository* repo, co
 	seismicLine->TraceCount = traceCount;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
 }
@@ -57,7 +54,7 @@ int SeismicLineFeature::getFirstTraceIndex() const
 	return static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->FirstTraceIndex;
 }
 		
-unsigned int SeismicLineFeature::getTraceCount() const
+uint64_t SeismicLineFeature::getTraceCount() const
 {
 	return static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->TraceCount;
 }

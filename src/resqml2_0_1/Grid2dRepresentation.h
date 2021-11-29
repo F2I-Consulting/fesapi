@@ -118,13 +118,13 @@ namespace RESQML2_0_1_NS
 
 		COMMON_NS::DataObjectReference getSupportingRepresentationDor() const final;
 
-		DLL_IMPORT_OR_EXPORT int getIndexOriginOnSupportingRepresentation() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getIndexOriginOnSupportingRepresentation() const final;
 
-		DLL_IMPORT_OR_EXPORT int getIndexOriginOnSupportingRepresentation(unsigned int dimension) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getIndexOriginOnSupportingRepresentation(unsigned int dimension) const final;
 
-		DLL_IMPORT_OR_EXPORT int getNodeCountOnSupportingRepresentation(unsigned int dimension) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getNodeCountOnSupportingRepresentation(unsigned int dimension) const final;
 
-		DLL_IMPORT_OR_EXPORT int getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.
@@ -218,7 +218,7 @@ namespace RESQML2_0_1_NS
 			unsigned int patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
 			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
 			RESQML2_NS::Grid2dRepresentation * supportingRepresentation,
-			unsigned int startGlobalIndex = 0,
+			uint64_t startGlobalIndex = 0,
 			int indexIncrementI = 1, int indexIncrementJ = 1);
 
 		/**

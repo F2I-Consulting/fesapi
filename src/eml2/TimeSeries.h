@@ -104,7 +104,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The timestamp at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT time_t getTimestamp(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT time_t getTimestamp(uint64_t index) const;
 
 		/**
 		 * Gets a timestamp as a time structure at a particular index of this time series. It allows to
@@ -127,7 +127,7 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractProperty*> getPropertySet() const;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "TimeSeries";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 

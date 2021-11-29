@@ -83,7 +83,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The parameter count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getParameterCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getParameterCount() const final;
 
 		/**
 		 * Get the count of all the parameters which have got the same title.
@@ -92,7 +92,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The parameter count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getParameterCount(const std::string & paramTitle) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getParameterCount(const std::string & paramTitle) const final;
 
 		/**
 		 * Gets parameter title

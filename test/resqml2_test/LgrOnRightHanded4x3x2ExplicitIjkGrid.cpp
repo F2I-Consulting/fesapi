@@ -20,16 +20,10 @@ under the License.
 
 #include <stdexcept>
 
-#include "catch.hpp"
-
-#include "resqml2/ContinuousProperty.h"
-#include "resqml2/DiscreteProperty.h"
 #include "resqml2/IjkGridExplicitRepresentation.h"
-#include "resqml2/LocalDepth3dCrs.h"
 #include "resqml2/RepresentationSetRepresentation.h"
 
 #include "resqml2_test/RightHanded4x3x2ExplicitIjkGrid.h"
-#include "resqml2_test/LocalDepth3dCrsTest.h"
 
 using namespace std;
 using namespace resqml2_test;

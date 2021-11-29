@@ -20,8 +20,6 @@ under the License.
 
 #include <stdexcept>
 
-#include "catch.hpp"
-
 #include "resqml2_0_1/OrganizationFeature.h"
 #include "resqml2_0_1/StratigraphicUnitInterpretation.h"
 #include "resqml2/StratigraphicColumnRankInterpretation.h"

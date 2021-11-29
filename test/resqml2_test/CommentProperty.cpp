@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/CommentProperty.h"
 
-#include "catch.hpp"
 #include "resqml2_test/WellboreFrameRepresentationTest.h"
 
 #include "resqml2/CommentProperty.h"
@@ -48,7 +47,7 @@ void CommentProperty::initRepo() {
 	auto propertyKind = repo->createPropertyKind("", "comment", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
 	RESQML2_NS::CommentProperty* commentProperty = repo->createCommentProperty(
 		frame, defaultUuid, defaultTitle,
-		gsoap_eml2_3::resqml22__IndexableElement::nodes,
+		gsoap_eml2_3::eml23__IndexableElement::nodes,
 		propertyKind);
 	REQUIRE(commentProperty != nullptr);
 	std::vector<string> values;
@@ -71,7 +70,7 @@ void CommentProperty::readRepo() {
 	REQUIRE(commentProperty->getElementCountPerValue() == 1);
 
 	// getAttachmentKind
-	REQUIRE(commentProperty->getAttachmentKind() == gsoap_eml2_3::resqml22__IndexableElement::nodes);
+	REQUIRE(commentProperty->getAttachmentKind() == gsoap_eml2_3::eml23__IndexableElement::nodes);
 
 	std::vector<string> values = commentProperty->getStringValuesOfPatch(0);
 	REQUIRE(values.size() == 5);

@@ -23,7 +23,9 @@ under the License.
 #include <hdf5.h>
 
 #include "../eml2/AbstractHdfProxy.h"
-#include "MdDatum.h"
+#include "../eml2/ReferencePointInALocalEngineeringCompoundCrs.h"
+
+#include "AbstractValuesProperty.h"
 #include "WellboreTrajectoryRepresentation.h"
 
 using namespace std;
@@ -65,7 +67,7 @@ void WellboreFrameRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, d
 	std::unique_ptr<double[]> mdFrameValues(new double[mdCount]);
 	getMdAsDoubleValues(mdFrameValues.get());
 	size_t nextTrajStationIndex = 1;
-	for (unsigned int i = 0; i < mdCount; ++i) {
+	for (size_t i = 0; i < mdCount; ++i) {
 		while (nextTrajStationIndex < trajStationCount &&
 			mdTrajValues[nextTrajStationIndex] <= mdFrameValues[i]) {
 			++nextTrajStationIndex;
@@ -349,7 +351,7 @@ void WellboreFrameRepresentation::getMdAsDoubleValues(double* values) const
 		{
 			values[0] = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd)->StartValue;
 			eml23__FloatingPointConstantArray* constantArray = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd)->Offset[0];
-			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
+			for (int64_t inc = 1; inc <= constantArray->Count; ++inc)
 				values[inc] = values[0] + (inc * constantArray->Value);
 		}
 		else {
@@ -378,8 +380,9 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 		{
 			values[0] = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd)->StartValue;
 			resqml20__DoubleConstantArray* constantArray = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd)->Offset[0];
-			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
+			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc) {
 				values[inc] = values[0] + (inc * constantArray->Value);
+			}
 		}
 		else {
 			throw logic_error("The array structure of MD is not supported?");
@@ -399,7 +402,7 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 		{
 			values[0] = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd)->StartValue;
 			eml23__FloatingPointConstantArray* constantArray = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd)->Offset[0];
-			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
+			for (int64_t inc = 1; inc <= constantArray->Count; ++inc)
 				values[inc] = values[0] + (inc * constantArray->Value);
 		}
 		else {

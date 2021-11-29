@@ -29,8 +29,6 @@ using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
 
-const char* ChannelSet::XML_TAG = "ChannelSet";
-
 ChannelSet::ChannelSet(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title)
 {
 	gsoapProxy2_1 = soap_new_witsml20__ChannelSet(repo->getGsoapContext());
@@ -121,7 +119,7 @@ const std::string& ChannelSet::getDataAsFileUri() const
 
 #define SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(attributeDatatype, attributeName, constructor)\
 void ChannelSet::set##attributeName(const attributeDatatype & attributeName) {\
-	if (static_cast<witsml20__ChannelSet*>(gsoapProxy2_1)->attributeName == nullptr) { static_cast<witsml20__ChannelSet*>(gsoapProxy2_1)->attributeName = constructor(gsoapProxy2_1->soap, 1); }\
+	if (static_cast<witsml20__ChannelSet*>(gsoapProxy2_1)->attributeName == nullptr) { static_cast<witsml20__ChannelSet*>(gsoapProxy2_1)->attributeName = constructor(gsoapProxy2_1->soap); }\
 	*static_cast<witsml20__ChannelSet*>(gsoapProxy2_1)->attributeName = attributeName;\
 }
 

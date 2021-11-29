@@ -115,7 +115,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The parameter count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getParameterCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getParameterCount() const = 0;
 
 		/**
 		 * Gets the count of all the parameters which have the same title.
@@ -124,7 +124,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The parameter count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getParameterCount(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getParameterCount(const std::string & paramTitle) const = 0;
 
 		/**
 		 * Gets the title of a given parameter
@@ -386,7 +386,7 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT std::vector<AbstractObject*> getResqmlObjectSet() const;
 
 		/** The standard XML tag without XML namespace for serializing this data object */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "Activity";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 

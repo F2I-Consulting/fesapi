@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "DiscretePropertyUsingLocalKindOnWellFrameTest.h"
 
-#include "catch.hpp"
 #include "resqml2_test/WellboreFrameRepresentationTest.h"
 #include "resqml2_test/PropertyKindTest.h"
 
@@ -53,7 +52,7 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::initRepo()
 	// creating the DiscreteProperty
 	RESQML2_NS::DiscreteProperty* discreteProperty = repo->createDiscreteProperty(
 		frame, defaultUuid, defaultTitle,
-		gsoap_eml2_3::resqml22__IndexableElement::intervals,
+		gsoap_eml2_3::eml23__IndexableElement::intervals,
 		propertyKind);
 	REQUIRE(discreteProperty != nullptr);
 	int values[5] = { 0, 1, 2, 3 };
@@ -72,7 +71,7 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::readRepo()
 	REQUIRE(discreteProperty->getElementCountPerValue() == 1);
 
 	// getAttachmentKind
-	REQUIRE(discreteProperty->getAttachmentKind() == gsoap_eml2_3::resqml22__IndexableElement::intervals);
+	REQUIRE(discreteProperty->getAttachmentKind() == gsoap_eml2_3::eml23__IndexableElement::intervals);
 
 	// getEnergisticsPropertyKind
 	REQUIRE_FALSE(discreteProperty->isAssociatedToOneStandardEnergisticsPropertyKind());

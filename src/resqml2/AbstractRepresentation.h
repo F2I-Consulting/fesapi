@@ -37,9 +37,6 @@ namespace RESQML2_NS
 	{
 	public:
 
-		/** Values that represent indexable elements */
-		enum indexableElement { NODE = 0, EDGE = 1, FACE = 2, VOLUME = 3, PILLAR = 4 };
-
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~AbstractRepresentation() = default;
 
@@ -424,7 +421,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
 		 */
-		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(uint32_t patchIndex, double const * points, EML2_NS::AbstractLocal3dCrs const* localCrs, uint64_t const * numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
+		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(uint64_t patchIndex, double const * points, EML2_NS::AbstractLocal3dCrs const* localCrs, uint64_t const * numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * Creates a v2.2 point geometry patch.
@@ -444,7 +441,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
 		 */
-		gsoap_eml2_3::resqml22__PointGeometry* createPointGeometryPatch2_2(uint32_t patchIndex, double const * points, EML2_NS::AbstractLocal3dCrs const* localCrs, uint64_t const * numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
+		gsoap_eml2_3::resqml22__PointGeometry* createPointGeometryPatch2_2(uint64_t patchIndex, double const * points, EML2_NS::AbstractLocal3dCrs const* localCrs, uint64_t const * numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * Gets hdf proxy dor from point geometry patch

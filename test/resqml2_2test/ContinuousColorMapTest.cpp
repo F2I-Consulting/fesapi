@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "ContinuousColorMapTest.h"
-#include "catch.hpp"
+
 #include "eml2/AbstractHdfProxy.h"
 #include "eml2/GraphicalInformationSet.h"
 #include "eml2/PropertyKind.h"
@@ -26,7 +26,6 @@ under the License.
 #include "resqml2/Grid2dRepresentation.h"
 #include "resqml2/Model.h"
 #include "resqml2/EarthModelInterpretation.h"
-#include "resqml2/LocalDepth3dCrs.h"
 #include "resqml2/ContinuousProperty.h"
 #include "resqml2_2/ContinuousColorMap.h"
 
@@ -51,8 +50,6 @@ char const* ContinuousColorMapTest::uuidOrganizationFeature = "ceefeac1-21b1-4a3
 char const* ContinuousColorMapTest::titleOrganizationFeature = "Organization Feature";
 char const* ContinuousColorMapTest::uuidEarthModelInterpretation = "8f6afd90-71e1-4a1e-891f-9c628feeb980";
 char const* ContinuousColorMapTest::titleEarthModelInterpretation = "Earth Model Interpretation";
-char const* ContinuousColorMapTest::uuidLocalDepth3dCrs = "69aa7e50-1538-4818-93a4-11fcfdc2292e";
-char const* ContinuousColorMapTest::titleLocalDepth3dCrs = "Loacl Depth 3d Crs";
 char const* ContinuousColorMapTest::uuidGraphicalInformationSet = "3b5c1be9-d2a0-4bd3-806f-883d928d1a7d";
 char const* ContinuousColorMapTest::titleGraphicalInformationSet = "Graphical Information Set";
 
@@ -66,8 +63,8 @@ void ContinuousColorMapTest::initRepo() {
 	HorizonInterpretation* horizonInterpretation = repo->createHorizonInterpretation(horizon, uuidHorizonInterpretation, titleHorizonInterpretation);
 	AbstractHdfProxy* hdfProxy = this->repo->getHdfProxySet()[0];
 	Grid2dRepresentation* grid2dRepresentation = repo->createGrid2dRepresentation(horizonInterpretation, uuidGrid2dRepresentation, titleGrid2dRepresentation);
-	const unsigned int numPointInFastestDirection = 2;
-	const unsigned int numPointsInSlowestDirection = 1;
+	const unsigned int numPointInFastestDirection = 3;
+	const unsigned int numPointsInSlowestDirection = 2;
 	grid2dRepresentation->setGeometryAsArray2dOfLatticePoints3d(numPointInFastestDirection, numPointsInSlowestDirection,
 		0., 0., 0.,
 		1., 0., 0.,
@@ -77,8 +74,8 @@ void ContinuousColorMapTest::initRepo() {
 	// assotiating a Continuous property to the grid 2d representation
 	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
 	ContinuousProperty* continuousProperty = repo->createContinuousProperty(grid2dRepresentation, uuidContinuousProperty, titleContinuousProperty,
-		gsoap_eml2_3::resqml22__IndexableElement::nodes, "continuousColorMapIndex", propertyKind);
-	double values[2] = { 0., 1. };
+		gsoap_eml2_3::eml23__IndexableElement::nodes, "continuousColorMapIndex", propertyKind);
+	double values[6] = { 0., 1., 0., 1., 0., 1. };
 	continuousProperty->pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 
 	// creating the continuous color map
@@ -117,4 +114,3 @@ void ContinuousColorMapTest::readRepo() {
 	REQUIRE(graphicalInformationSet->getColorMapMax(continuousProperty) == 1.);
 	REQUIRE(graphicalInformationSet->getValueVectorIndex(continuousProperty) == 1);
 }
-

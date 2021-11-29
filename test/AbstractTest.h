@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
+#include "catch.hpp"
+
 #include "common/DataObjectRepository.h"
 
 namespace commontest {

@@ -35,7 +35,7 @@ namespace RESQML2_2_NS
 	public:
 
 		/**
-		 * Creates an instance of this class in a gSOAP context.
+		 * Creates a wellbore marker at the latest no marker MD of a wellboreMarkerFrame.
 		 *
 		 * @exception	std::invalid_argument	If @p wellboreMarkerFrame is @c nullptr.
 		 *
@@ -49,7 +49,7 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT WellboreMarker(RESQML2_2_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title);
 
 		/**
-		 * Creates an instance of this class in a gSOAP context.
+		 * Creates a wellbore marker at the latest no marker MD of a wellboreMarkerFrame.
 		 *
 		 * @exception	std::invalid_argument	If @p wellboreMarkerFrame is @c nullptr.
 		 *

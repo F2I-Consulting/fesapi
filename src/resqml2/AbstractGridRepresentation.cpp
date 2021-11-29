@@ -1436,7 +1436,7 @@ void AbstractGridRepresentation::getRegridCellCountPerInterval(char dimension, u
 		gsoap_eml2_3::eml23__AbstractIntegerArray const* childCountPerInterval = getCellCountPerInterval2_2(dimension, childVsParentCellCount);
 		switch (childCountPerInterval->soap_type()) {
 		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
-			for (uint64_t i = 0; i < static_cast<const gsoap_eml2_3::eml23__IntegerConstantArray*>(childCountPerInterval)->Count; ++i) {
+			for (int64_t i = 0; i < static_cast<const gsoap_eml2_3::eml23__IntegerConstantArray*>(childCountPerInterval)->Count; ++i) {
 				childCellCountPerInterval[i] = static_cast<const gsoap_eml2_3::eml23__IntegerConstantArray*>(childCountPerInterval)->Value;
 			}
 			break;
@@ -1909,7 +1909,7 @@ int64_t AbstractGridRepresentation::getCellFluidPhaseUnitIndices(int64_t * rockF
 			if (latticeArray->StartValue == 1 && latticeArray->Offset.size() == 1 &&
 				latticeArray->Offset[0]->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray &&
 				static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(latticeArray->Offset[0])->Value == 1 &&
-				static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(latticeArray->Offset[0])->Count == getCellCount()) {
+				static_cast<uint64_t>(static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(latticeArray->Offset[0])->Count) == getCellCount()) {
 				auto const* daPart = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->CellFluidPhaseUnits->PhaseUnitIndices->Elements)->Values->ExternalDataArrayPart[0];
 				EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
 				hdfProxy->readArrayNdOfInt64Values(daPart->PathInExternalFile, rockFluidUnitIndices);
@@ -2112,7 +2112,7 @@ void AbstractGridRepresentation::getTruncatedCellIndices(uint64_t* cellIndices) 
 			getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfUInt64Values(daPart->PathInExternalFile, cellIndices);
 		}
 		else if (rep->TruncationCellPatch->ParentCellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
-			for (uint64_t i = 0; i < static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(rep->TruncationCellPatch->ParentCellIndices)->Count; ++i) {
+			for (int64_t i = 0; i < static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(rep->TruncationCellPatch->ParentCellIndices)->Count; ++i) {
 				cellIndices[i] = static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(rep->TruncationCellPatch->ParentCellIndices)->Value;
 			}
 		}
@@ -2354,7 +2354,7 @@ void AbstractGridRepresentation::getTruncatedFaceIsRightHanded(unsigned char* ce
 			getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfUCharValues(daPart->PathInExternalFile, cellFaceIsRightHanded);
 		}
 		else if (rep->TruncationCellPatch->TruncationCellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray) {
-			for (uint64_t i = 0; i < static_cast<gsoap_eml2_3::eml23__BooleanConstantArray*>(rep->TruncationCellPatch->TruncationCellFaceIsRightHanded)->Count; ++i) {
+			for (int64_t i = 0; i < static_cast<gsoap_eml2_3::eml23__BooleanConstantArray*>(rep->TruncationCellPatch->TruncationCellFaceIsRightHanded)->Count; ++i) {
 				cellFaceIsRightHanded[i] = static_cast<gsoap_eml2_3::eml23__BooleanConstantArray*>(rep->TruncationCellPatch->TruncationCellFaceIsRightHanded)->Value;
 			}
 		}

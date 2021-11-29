@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/WellboreRegularFrameRepresentationTest.h"
 
-#include "catch.hpp"
-
 #include "resqml2_test/WellboreTrajectoryRepresentationTest.h"
 
 #include "resqml2_0_1/WellboreInterpretation.h"

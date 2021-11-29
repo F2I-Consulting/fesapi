@@ -20,10 +20,9 @@ under the License.
 
 #include <stdexcept>
 
-#include "../catch.hpp"
+#include "witsml2/Trajectory.h"
 
 #include "witsml2_0/Wellbore.h"
-#include "witsml2/Trajectory.h"
 
 using namespace std;
 using namespace witsml2_test;

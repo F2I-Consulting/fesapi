@@ -199,6 +199,7 @@ COMMON_NS::DataObjectReference IjkGridParametricRepresentation::getHdfProxyDor()
 		throw invalid_argument("There is no geometry on this grid.");
 	}
 	resqml22__Point3dParametricArray* points = static_cast<resqml22__Point3dParametricArray*>(geom->Points);
+
 	if (points->Parameters->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
 		return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__FloatingPointExternalArray*>(points->Parameters)->Values->ExternalDataArrayPart[0]));
 	}
@@ -220,8 +221,8 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatch(unsigned int patchInde
 		resqml22__AbstractGridGeometry* truncatedGeom = static_cast<resqml22__AbstractGridGeometry*>(geom);
 		if (truncatedGeom->AdditionalGridPoints.size() == 1 && truncatedGeom->AdditionalGridPoints[0]->Attachment == resqml22__GridGeometryAttachment::nodes) {
 			if (truncatedGeom->AdditionalGridPoints[0]->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray) {
-				auto daPart = static_cast<resqml22__Point3dExternalArray*>(truncatedGeom->AdditionalGridPoints[0]->Points)->Coordinates->ExternalFileProxy[0];
-				EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(daPart);
+				auto const* daPart = static_cast<resqml22__Point3dExternalArray*>(truncatedGeom->AdditionalGridPoints[0]->Points)->Coordinates->ExternalDataArrayPart[0];
+				EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
 				xyzPoints += (getXyzPointCountOfPatch(patchIndex) - static_cast<_resqml22__TruncatedIjkGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationNodeCount) * 3;
 				hdfProxy->readArrayNdOfDoubleValues(daPart->PathInExternalFile, xyzPoints);
 			}

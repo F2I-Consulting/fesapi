@@ -17,16 +17,18 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/Grid2dRepresentationTest.h"
-#include "../catch.hpp"
-#include "resqml2/BoundaryFeature.h"
-#include "resqml2/HorizonInterpretation.h"
-#include "resqml2_0_1/Grid2dRepresentation.h"
-#include "resqml2/LocalDepth3dCrs.h"
-#include "eml2/AbstractHdfProxy.h"
+
 #include "resqml2_test/SeismicLatticeRepresentationTest.h"
 #include "resqml2_test/LocalDepth3dCrsTest.h"
+
+#include "eml2/AbstractHdfProxy.h"
+
+#include "resqml2/BoundaryFeature.h"
+#include "resqml2/HorizonInterpretation.h"
 #include "resqml2/SeismicLatticeFeature.h"
 #include "resqml2/GenericFeatureInterpretation.h"
+
+#include "resqml2_0_1/Grid2dRepresentation.h"
 
 using namespace std;
 using namespace resqml2_test;

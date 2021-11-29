@@ -22,13 +22,11 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* GeologicUnitFeature::XML_TAG = "GeologicUnitFeature";
-const char* GeologicUnitFeature::XML_NS = "resqml20";
-
 GeologicUnitFeature::GeologicUnitFeature(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title)
 {
-	if (repo == nullptr)
+	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be null.");
+	}
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGeologicUnitFeature(repo->getGsoapContext());
 

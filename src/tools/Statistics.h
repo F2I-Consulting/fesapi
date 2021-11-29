@@ -39,8 +39,8 @@ namespace statistics
 	template <class T>
 	std::pair<T, T> getMinMax(
 		const T* values,
-		const T & noValue,
-		const size_t & valueCount)
+		T noValue,
+		size_t valueCount)
 	{
 		if (valueCount == 0) {
 			throw std::invalid_argument("You cannot compute min max on an empty array.");

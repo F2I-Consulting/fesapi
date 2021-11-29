@@ -18,18 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "ShotPointLineFeature.h"
 
-#include "../resqml2/SeismicLineSetFeature.h"
-
 using namespace std;
 using namespace RESQML2_NS;
-using namespace gsoap_eml2_3;
 
 const char* ShotPointLineFeature::XML_TAG = "ShotPointLineFeature";
 		
-unsigned int ShotPointLineFeature::getTraceCount() const
+uint64_t ShotPointLineFeature::getTraceCount() const
 {
 	auto labels = getTraceLabels();
 	return labels.empty()
-		? -1
+		? (std::numeric_limits<uint64_t>::max)()
 		: labels.size();
 }

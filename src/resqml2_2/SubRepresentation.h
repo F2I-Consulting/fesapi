@@ -41,11 +41,12 @@ namespace RESQML2_2_NS
 		 * Creates an instance of this class in a gsoap context. This instance is not linked to any
 		 * interpretation.
 		 *
-		 * @param [in,out]	repo 	The repo where the underlying gsoap proxy will be created.
-		 * @param 		  	guid 	The guid to set to this instance.
-		 * @param 		  	title	A title for the instance to create.
+		 * @param [in,out]	repo 		The repo where the underlying gsoap proxy will be created.
+		 * @param 		  	guid 		The guid to set to this instance.
+		 * @param 		  	title		A title for the instance to create.
+		 * @param 		  	elementKind	The indexable element which will be by default used for selecting the subrepresentation of a supporting representation.
 		 */
-		SubRepresentation(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
+		SubRepresentation(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title, gsoap_eml2_3::eml23__IndexableElement elementKind);
 
 		/**
 		 * @brief	Creates an instance of this class in a gsoap context. This instance must be linked to
@@ -53,12 +54,13 @@ namespace RESQML2_2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The interpretation the instance represents.
-		 * @param 	  	guid  	The guid to set to this instance.
-		 * @param 	  	title 	A title for the instance to create.
+		 * @param [in]	interp		The interpretation the instance represents.
+		 * @param 	  	guid  		The guid to set to this instance.
+		 * @param 	  	title 		A title for the instance to create.
+		 * @param 		elementKind	The indexable element which will be by default used for selecting the subrepresentation of a supporting representation.
 		 */
 		SubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-                const std::string & guid, const std::string & title);
+                const std::string & guid, const std::string & title, gsoap_eml2_3::eml23__IndexableElement elementKind);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
@@ -72,43 +74,33 @@ namespace RESQML2_2_NS
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation::indexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const final;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__IndexableElement getElementKind() const final { return getSpecializedGsoapProxy()->IndexableElement; }
 
 		DLL_IMPORT_OR_EXPORT uint64_t getElementCountOfPatch(unsigned int patchIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT void getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, uint64_t * elementIndices) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getElementIndicesOfPatch(unsigned int patchIndex, int64_t* elementIndices) const final;
 
-		DLL_IMPORT_OR_EXPORT void getSupportingRepresentationIndicesOfPatch(unsigned int patchIndex, short * supportingRepresentationIndices) const final;
+		DLL_IMPORT_OR_EXPORT bool areElementIndicesBasedOnLattice(unsigned int patchIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT bool areElementIndicesPairwise(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getLatticeElementIndicesStartValue(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getLatticeElementIndicesDimensionCount(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT bool areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const final;
-
-		DLL_IMPORT_OR_EXPORT int64_t getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
-		DLL_IMPORT_OR_EXPORT unsigned int getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const final;
-		DLL_IMPORT_OR_EXPORT int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const final;
-		DLL_IMPORT_OR_EXPORT uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const final;
-
-		using RESQML2_NS::SubRepresentation::pushBackSubRepresentationPatch;
-
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t originIndex,
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(uint64_t originIndex,
 			unsigned int elementCountInSlowestDimension,
 			unsigned int elementCountInMiddleDimension,
-			unsigned int elementCountInFastestDimension) final;
+			unsigned int elementCountInFastestDimension, RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid) final;
 
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind0, gsoap_eml2_3::eml23__IndexableElement elementKind1,
-			uint64_t elementCount,
-			uint64_t * elementIndices0, uint64_t * elementIndices1,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr) final;
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(uint64_t elementCount, int64_t* elementIndices,
+			RESQML2_NS::AbstractRepresentation* supportingRep, EML2_NS::AbstractHdfProxy* proxy = nullptr) final;
 
-		DLL_IMPORT_OR_EXPORT void pushBackRefToExistingDataset(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount, const std::string & elementDataset,
-			int64_t nullValue, EML2_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset = "") final;
+		DLL_IMPORT_OR_EXPORT void pushBackRefToExistingDataset(uint64_t elementCount, const std::string& elementDataset,
+			int64_t nullValue, RESQML2_NS::AbstractRepresentation* supportingRep, EML2_NS::AbstractHdfProxy* proxy = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getSupportingRepresentationCount() const final;
-
-		COMMON_NS::DataObjectReference getSupportingRepresentationDor(unsigned int index) const final;
+		COMMON_NS::DataObjectReference getSupportingRepresentationOfPatchDor(unsigned int patchIndex = 0) const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.
@@ -120,16 +112,20 @@ namespace RESQML2_2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
+		/** Loads target relationships */
+		void loadTargetRelationships() final;
+
 	private:
 
 		/**
 		 * Initializes this object
 		 *
-		 * @param [in,out]	repo 	The repo where the underlying gsoap proxy will be created.
-		 * @param 		  	guid 	The guid to set to this instance.
-		 * @param 		  	title	A title for the instance to init.
+		 * @param [in,out]	repo 		The repo where the underlying gsoap proxy will be created.
+		 * @param 		  	guid 		The guid to set to this instance.
+		 * @param 		  	title		A title for the instance to init.
+		 * @param 		  	elementKind	The indexable element which will be by default used for selecting the subrepresentation of a supporting representation.
 		 */
-		void init(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
+		void init(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title, gsoap_eml2_3::eml23__IndexableElement elementKind);
 
 		/**
 		 * Gets specialized gsoap proxy
@@ -142,13 +138,5 @@ namespace RESQML2_2_NS
 		* Get a patch of the current subrepresentation at a particluar index.
 		*/
 		gsoap_eml2_3::resqml22__SubRepresentationPatch* getSubRepresentationPatch(unsigned int index) const;
-
-		/**
-		 * Push back a representation which is one of the support of this subrepresentation. And push
-		 * back this representation as a subrepresenation of the representation as well.
-		 *
-		 * @param 	supportingRep	The supporting rep.
-		 */
-		void pushBackXmlSupportingRepresentation(RESQML2_NS::AbstractRepresentation const * supportingRep);
 	};
 }

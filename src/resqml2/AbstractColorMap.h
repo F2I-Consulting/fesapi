@@ -36,7 +36,7 @@ namespace RESQML2_NS
 		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
 		* @param indices		array (of size solorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
 		*/
-		virtual DLL_IMPORT_OR_EXPORT void setHsvColors(unsigned int colorCount,
+		virtual DLL_IMPORT_OR_EXPORT void setHsvColors(uint64_t colorCount,
 			double const* hsvColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
 			double const* indices = nullptr) = 0;
 
@@ -48,7 +48,7 @@ namespace RESQML2_NS
 		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
 		* @param indices		array (of size solorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
 		*/
-		DLL_IMPORT_OR_EXPORT void setRgbColors(unsigned int colorCount,
+		DLL_IMPORT_OR_EXPORT void setRgbColors(uint64_t colorCount,
 			double const* rgbColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
 			double const* indices = nullptr);
 
@@ -60,7 +60,7 @@ namespace RESQML2_NS
 		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
 		* @param indices		array (of size solorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
 		*/
-		DLL_IMPORT_OR_EXPORT void setRgbColors(unsigned int colorCount,
+		DLL_IMPORT_OR_EXPORT void setRgbColors(uint64_t colorCount,
 			unsigned int const* rgbColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
 			double const* indices = nullptr);
 
@@ -69,7 +69,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The color count.
 		 */
-		virtual DLL_IMPORT_OR_EXPORT unsigned int getColorCount() const = 0;
+		virtual DLL_IMPORT_OR_EXPORT uint64_t getColorCount() const = 0;
 
 		/**
 		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
@@ -131,12 +131,6 @@ namespace RESQML2_NS
 
 		void loadTargetRelationships() {};
 
-	private:
-		/**
-		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
-		 */
-		virtual gsoap_eml2_3::resqml22__HsvColor* getColor(double colorIndex) const = 0;
-
 	protected:
 		/**
 		 * Only to be used in partial transfer context
@@ -153,5 +147,11 @@ namespace RESQML2_NS
 		* Set the gsoap proxy to nullptr from superclass constructor
 		*/
 		AbstractColorMap() {}
+
+	private:
+		/**
+		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 */
+		virtual gsoap_eml2_3::resqml22__HsvColor* getColor(double colorIndex) const = 0;
 	};
 }

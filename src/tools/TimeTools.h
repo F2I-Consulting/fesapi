@@ -76,9 +76,9 @@ namespace timeTools
 		days daysSinceJan1 = date - sys_days(ymd.year() / 1 / 1);
 
 		std::tm result;
-		result.tm_sec = tod.seconds().count();
-		result.tm_min = tod.minutes().count();
-		result.tm_hour = tod.hours().count();
+		result.tm_sec = static_cast<int>(tod.seconds().count()); // Must be in range 0-61
+		result.tm_min = static_cast<int>(tod.minutes().count()); // Must be in range 0-59
+		result.tm_hour = static_cast<int>(tod.hours().count()); // Must be in range 0-23
 		result.tm_mday = (ymd.day() - 0_d).count();
 		result.tm_mon = (ymd.month() - January).count();
 		result.tm_year = (ymd.year() - 1900_y).count();

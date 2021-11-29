@@ -27,8 +27,6 @@ using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
 
-const char* WellCompletion::XML_TAG = "WellCompletion";
-
 WellCompletion::WellCompletion(WITSML2_NS::Well* witsmlWell,
 	const std::string & guid,
 	const std::string & title)

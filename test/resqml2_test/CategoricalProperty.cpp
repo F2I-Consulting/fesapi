@@ -18,18 +18,20 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/CategoricalProperty.h"
 
-#include "catch.hpp"
 #include "resqml2_test/LgrOnRightHanded4x3x2ExplicitIjkGrid.h"
 #include "resqml2_test/PropertyKindTest.h"
 #include "resqml2_test/WellboreFrameRepresentationTest.h"
 
-#include "resqml2_0_1/PropertyKind.h"
-#include "eml2_3/PropertyKind.h"
-#include "resqml2/CategoricalProperty.h"
-#include "resqml2/DoubleTableLookup.h"
-#include "resqml2/StringTableLookup.h"
-#include "resqml2/AbstractIjkGridRepresentation.h"
 #include "eml2/AbstractHdfProxy.h"
+#include "eml2/ColumnBasedTable.h"
+
+#include "eml2_3/PropertyKind.h"
+
+#include "resqml2/AbstractIjkGridRepresentation.h"
+#include "resqml2/DiscreteProperty.h"
+
+#include "resqml2_0_1/PropertyKind.h"
+#include "resqml2_0_1/DoubleTableLookup.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -50,35 +52,28 @@ void CategoricalProperty::initRepo() {
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
 	// creating the String Table Lookup
-	RESQML2_NS::StringTableLookup* stringTableLookup = repo->createStringTableLookup("62245eb4-dbf4-4871-97de-de9e4f4597be", "My String Table Lookup");
-	stringTableLookup->addValue("Item 0", 0);
-	stringTableLookup->addValue("Item 1", 1);
-	stringTableLookup->addValue("Item 2", 2);
-	stringTableLookup->addValue("Item 3", 3);
-	stringTableLookup->addValue("Item 4", 4);
-	stringTableLookup->addValue("Item 5", 5);
+	auto* stringTableLookup = repo->createFaciesTable("62245eb4-dbf4-4871-97de-de9e4f4597be", "My String Table Lookup");
+	stringTableLookup->setInt64Values(0, { 0,1,2,3,4,5 });
+	stringTableLookup->setStringValues(1, { "Item 0","Item 1","Item 2","Item 3","Item 4","Item 5" });
 	
 	// creating the char CategoricalProperty
-	RESQML2_NS::CategoricalProperty* charCategoricalProperty = repo->createCategoricalProperty(
+	RESQML2_NS::DiscreteProperty* charCategoricalProperty = repo->createCategoricalProperty(
 		ijkGrid, defaultUuid, defaultTitle,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		stringTableLookup,
 		propertyKind);
 	char charValues[6] = { 0, 1, 2, 3, 4, 5 };
 	charCategoricalProperty->pushBackCharHdf5Array3dOfValues(charValues, 1, 2, 3, hdfProxy, -1);
 
 	// creating the Double Table Lookup
-	RESQML2_NS::DoubleTableLookup* dblTableLookup = repo->createDoubleTableLookup("0df04180-8bb1-4ca2-90c2-c48bfd4b0958", "My Double Table Lookup");
-	dblTableLookup->addValue(.0, .0);
-	dblTableLookup->addValue(1.25, 0.52);
-	dblTableLookup->addValue(2.451, 0.625);
-	dblTableLookup->addValue(3.9, 0.845662);
-	dblTableLookup->addValue(6.1, .1);
+	RESQML2_0_1_NS::DoubleTableLookup* dblTableLookup = repo->createDoubleTableLookup("0df04180-8bb1-4ca2-90c2-c48bfd4b0958", "My Double Table Lookup");
+	dblTableLookup->setDoubleValues(0, { .0, 1.25, 2.451, 3.9, 6.1 });
+	dblTableLookup->setDoubleValues(1, { .0, 0.52, 0.625, 0.845662, .1 });
 
 	// creating the char CategoricalProperty
-	RESQML2_NS::CategoricalProperty* dblCategoricalProperty = repo->createCategoricalProperty(
+	RESQML2_NS::DiscreteProperty* dblCategoricalProperty = repo->createCategoricalProperty(
 		ijkGrid, "3de7a1d8-8b5b-45f3-b90c-6c14b2dcb43e", "Continuous Categorical Property",
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		dblTableLookup,
 		propertyKind);
 	double dblValues[6] = { .0, .1, .2, .3, .4, .5 };
@@ -87,21 +82,42 @@ void CategoricalProperty::initRepo() {
 
 void CategoricalProperty::readRepo() {
 	// getting the string CategoricalProperty
-	RESQML2_NS::CategoricalProperty* categoricalProperty = repo->getDataObjectByUuid<RESQML2_NS::CategoricalProperty>(defaultUuid);
-	auto strTableLookup = categoricalProperty->getStringLookup();
-	REQUIRE(strTableLookup->getItemCount() == 6);
-	REQUIRE(strTableLookup->getStringValue(0) == "Item 0");
-	REQUIRE(strTableLookup->getStringValueAtIndex(1) == "Item 1");
-	REQUIRE(strTableLookup->getKeyAtIndex(2) == 2);
-	REQUIRE(strTableLookup->getStringValue(3) == "Item 3");
-	REQUIRE(strTableLookup->getStringValue(4) == "Item 4");
-	REQUIRE(strTableLookup->getStringValue(5) == "Item 5");
+	RESQML2_NS::DiscreteProperty* categoricalProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultUuid);
+	auto* strTableLookup = categoricalProperty->getLookup();
+	REQUIRE(strTableLookup->getRowCount() == 6);
+	REQUIRE(strTableLookup->getColumnCount() == 2);
+	REQUIRE(strTableLookup->getDatatype(0) == COMMON_NS::AbstractObject::hdfDatatypeEnum::LONG_64);
+	REQUIRE(strTableLookup->getDatatype(1) == COMMON_NS::AbstractObject::hdfDatatypeEnum::STRING);
+	REQUIRE(strTableLookup->getInt64Values(0)[0] == 0);
+	REQUIRE(strTableLookup->getStringValues(1)[0] == "Item 0");
+	REQUIRE(strTableLookup->getInt64Values(0)[1] == 1);
+	REQUIRE(strTableLookup->getStringValues(1)[1] == "Item 1");
+	REQUIRE(strTableLookup->getInt64Values(0)[2] == 2);
+	REQUIRE(strTableLookup->getStringValues(1)[2] == "Item 2");
+	REQUIRE(strTableLookup->getInt64Values(0)[3] == 3);
+	REQUIRE(strTableLookup->getStringValues(1)[3] == "Item 3");
+	REQUIRE(strTableLookup->getInt64Values(0)[4] == 4);
+	REQUIRE(strTableLookup->getStringValues(1)[4] == "Item 4");
+	REQUIRE(strTableLookup->getInt64Values(0)[5] == 5);
+	REQUIRE(strTableLookup->getStringValues(1)[5] == "Item 5");
 
 	// getting the continuous CategoricalProperty
-	categoricalProperty = repo->getDataObjectByUuid<RESQML2_NS::CategoricalProperty>("3de7a1d8-8b5b-45f3-b90c-6c14b2dcb43e");
-	auto dblTableLookup = categoricalProperty->getDoubleLookup();
-	REQUIRE(dblTableLookup->getItemCount() == 5);
-	REQUIRE(dblTableLookup->getValueAtIndex(0) == .0);
-	REQUIRE(dblTableLookup->getValueAtKey(1.25) == 0.52);
-	REQUIRE(dblTableLookup->getKeyAtIndex(2) == 2.451);
+	categoricalProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>("3de7a1d8-8b5b-45f3-b90c-6c14b2dcb43e");
+	auto* dblTableLookup = categoricalProperty->getLookup();
+	REQUIRE(dblTableLookup->getRowCount() == 5);
+	REQUIRE(dblTableLookup->getColumnCount() == 2);
+	REQUIRE(dblTableLookup->getDatatype(0) == COMMON_NS::AbstractObject::hdfDatatypeEnum::DOUBLE);
+	REQUIRE(dblTableLookup->getDatatype(1) == COMMON_NS::AbstractObject::hdfDatatypeEnum::DOUBLE);
+	const auto keys = dblTableLookup->getDoubleValues(0);
+	const auto values = dblTableLookup->getDoubleValues(1);
+	REQUIRE(keys[0] == .0);
+	REQUIRE(values[0] == .0);
+	REQUIRE(keys[1] == 1.25);
+	REQUIRE(values[1] == 0.52);
+	REQUIRE(keys[2] == 2.451);
+	REQUIRE(values[2] == 0.625);
+	REQUIRE(keys[3] == 3.9);
+	REQUIRE(values[3] == 0.845662);
+	REQUIRE(keys[4] == 6.1);
+	REQUIRE(values[4] == .1);
 }

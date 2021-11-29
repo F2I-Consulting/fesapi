@@ -18,12 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "DateTimeTest.h"
 
-#include "catch.hpp"
-
-#include "common/DataObjectRepository.h"
-
-#include "eml2/AbstractHdfProxy.h"
-#include "eml2/LocalDepth3dCrs.h"
+#include "eml2/AbstractLocal3dCrs.h"
 
 #include "resqml2/BoundaryFeature.h"
 
@@ -38,7 +33,7 @@ DateTimeTest::DateTimeTest(const string & epcDocPath)
 
 void DateTimeTest::initRepo()
 {
-	BoundaryFeature* fault = repo->createFault("606df008-78dc-4949-993d-c70d8c7e766d", "testingFault");
+	AbstractObject* fault = repo->createFault("606df008-78dc-4949-993d-c70d8c7e766d", "testingFault");
 	fault->setCreation(36003); // ten hours and 3 seconds after 1970-01-01T00:00:00Z
 	REQUIRE_THROWS(fault->setLastUpdate(3602));
 
@@ -55,7 +50,7 @@ void DateTimeTest::initRepo()
 
 void DateTimeTest::readRepo()
 {
-	auto* localCrs = repo->getLocalDepth3dCrs(0);
+	auto* localCrs = repo->getLocal3dCrs(0);
 	time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 	REQUIRE(localCrs->getCreation() > now - 5);
 	REQUIRE(localCrs->getCreation() < now + 5);

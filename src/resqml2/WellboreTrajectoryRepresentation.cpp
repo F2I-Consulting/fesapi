@@ -24,8 +24,8 @@ under the License.
 #include <math.h>
 
 #include "../eml2/AbstractLocal3dCrs.h"
+#include "../eml2/ReferencePointInALocalEngineeringCompoundCrs.h"
 
-#include "MdDatum.h"
 #include "WellboreFrameRepresentation.h"
 
 using namespace std;
@@ -45,7 +45,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 			throw std::invalid_argument("A (default) CRS must be provided.");
 		}
 	}
-	if (localCrs->getAxisOrder() != gsoap_resqml2_0_1::eml20__AxisOrder2d::easting_x0020northing) {
+	if (localCrs->getAxisOrder() != gsoap_eml2_3::eml23__AxisOrder2d::easting_x0020northing) {
 		throw std::invalid_argument("Cannot compute inclinations and azimuths if the local CRS is not an easting northing one.");
 	}
 
@@ -86,7 +86,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 void WellboreTrajectoryRepresentation::getInclinationsAndAzimuths(double * inclinations, double * azimuths)
 {
 	auto* localCrs = getLocalCrs(0);
-	if (localCrs->getAxisOrder() != gsoap_resqml2_0_1::eml20__AxisOrder2d::easting_x0020northing) {
+	if (localCrs->getAxisOrder() != gsoap_eml2_3::eml23__AxisOrder2d::easting_x0020northing) {
 		throw std::invalid_argument("Cannot compute inclinations and azimuths if the local CRS is not an easting northing one.");
 	}
 
@@ -141,7 +141,7 @@ void WellboreTrajectoryRepresentation::loadTargetRelationships()
 	AbstractRepresentation::loadTargetRelationships();
 
 	COMMON_NS::DataObjectReference dor = getMdDatumDor();
-	convertDorIntoRel<MdDatum>(dor);
+	convertDorIntoRel<EML2_NS::ReferencePointInALocalEngineeringCompoundCrs>(dor);
 
 	dor = getParentTrajectoryDor();
 	if (!dor.isEmpty()) {
@@ -149,9 +149,9 @@ void WellboreTrajectoryRepresentation::loadTargetRelationships()
 	}
 }
 
-RESQML2_NS::MdDatum * WellboreTrajectoryRepresentation::getMdDatum() const
+EML2_NS::ReferencePointInALocalEngineeringCompoundCrs * WellboreTrajectoryRepresentation::getMdDatum() const
 {
-	return getRepository()->getDataObjectByUuid<RESQML2_NS::MdDatum>(getMdDatumDor().getUuid());
+	return getRepository()->getDataObjectByUuid<EML2_NS::ReferencePointInALocalEngineeringCompoundCrs>(getMdDatumDor().getUuid());
 }
 
 WellboreTrajectoryRepresentation* WellboreTrajectoryRepresentation::getParentTrajectory() const
@@ -184,7 +184,7 @@ RESQML2_NS::WellboreFrameRepresentation * WellboreTrajectoryRepresentation::getW
 	const std::vector<RESQML2_NS::WellboreFrameRepresentation *>& wfrs = getWellboreFrameRepresentationSet();
 
 	if (index >= wfrs.size()) {
-		throw out_of_range("The index if out of range");
+		throw out_of_range("The WellboreFrameRepresentation index of the WellboreTrajecotryRepresentation is out of range");
 	}
 
 	return wfrs[index];

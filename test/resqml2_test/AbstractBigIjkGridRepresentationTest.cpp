@@ -18,14 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/AbstractBigIjkGridRepresentationTest.h"
 
-#include "catch.hpp"
-#include "resqml2_test/LocalDepth3dCrsTest.h"
-
-#include "resqml2/LocalDepth3dCrs.h"
-#include "resqml2/IjkGridExplicitRepresentation.h"
-#include "resqml2/DiscreteProperty.h"
-#include "resqml2/ContinuousProperty.h"
-
 using namespace std;
 using namespace COMMON_NS;
 using namespace resqml2_test;
@@ -41,18 +33,15 @@ AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(
 	iCount(iCount), jCount(jCount), kCount(kCount), faultCount(faultCount),
 	xMin(xMin), xMax(xMax), yMin(yMin), yMax(yMax), zMin(zMin), zMax(zMax), faultThrow(faultThrow)
 {
-	if ((iCount < 1) || (jCount < 1) || (kCount < 1))
-	{
+	if ((iCount < 1) || (jCount < 1) || (kCount < 1)) {
 		throw invalid_argument("iCount, jCount and kCount must be >= 1.");
 	}
 
-	if (faultCount > (iCount - 1))
-	{
+	if (faultCount > (iCount - 1)) {
 		throw invalid_argument("faultCount must be strictly less than iCount.");
 	}
 
-	if ((xMin == xMax) || (yMin == yMax) || (zMin == zMax))
-	{
+	if ((xMin == xMax) || (yMin == yMax) || (zMin == zMax)) {
 		throw invalid_argument("In each dimension, grid length cannot be 0.");
 	}
 }

@@ -75,7 +75,7 @@ void SealedVolumeFrameworkRepresentation::setXmlSealedSurfaceFramework(RESQML2_N
 	static_cast<_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->BasedOn = ssf->newResqmlReference();
 }
 
-void SealedVolumeFrameworkRepresentation::setXmlInterpretationOfVolumeRegion(unsigned int regionIndex, RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp)
+void SealedVolumeFrameworkRepresentation::setXmlInterpretationOfVolumeRegion(uint64_t regionIndex, RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp)
 {
 	if (stratiUnitInterp == nullptr) {
 		throw invalid_argument("Cannot set a null strati Unit Interpretation");
@@ -186,23 +186,15 @@ gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::g
 	return getRegion(regionIndex)->InternalShells[internalShellIndex];
 }
 
-unsigned int SealedVolumeFrameworkRepresentation::getFaceCountOfExternalShell(unsigned int regionIndex) const
+uint64_t SealedVolumeFrameworkRepresentation::getFaceCountOfExternalShell(unsigned int regionIndex) const
 {
 	gsoap_resqml2_0_1::resqml20__VolumeShell* shell = getRegionExternalShell(regionIndex);
-	if (shell->MacroFaces.size() >= (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("The count of faces in this shell is too big for fesapi.");
-	}
-
 	return static_cast<unsigned int>(shell->MacroFaces.size());
 }
 
-unsigned int SealedVolumeFrameworkRepresentation::getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const
+uint64_t SealedVolumeFrameworkRepresentation::getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const
 {
 	gsoap_resqml2_0_1::resqml20__VolumeShell* shell = getRegionInternalShell(regionIndex, internalShellIndex);
-	if (shell->MacroFaces.size() >= (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("The count of faces in this shell is too big for fesapi.");
-	}
-
 	return static_cast<unsigned int>(shell->MacroFaces.size());
 }
 
@@ -234,12 +226,12 @@ RESQML2_NS::AbstractRepresentation* SealedVolumeFrameworkRepresentation::getRepO
 	return getRepresentation(getRegionInternalShellFace(regionIndex, internalShellIndex, faceIndex)->RepresentationIndex);
 }
 
-unsigned int SealedVolumeFrameworkRepresentation::getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex)
+uint64_t SealedVolumeFrameworkRepresentation::getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex)
 {
 	return getRegionExternalShellFace(regionIndex, faceIndex)->PatchIndexOfRepresentation;
 }
 
-unsigned int SealedVolumeFrameworkRepresentation::getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex)
+uint64_t SealedVolumeFrameworkRepresentation::getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex)
 {
 	return getRegionInternalShellFace(regionIndex, internalShellIndex, faceIndex)->PatchIndexOfRepresentation;
 }

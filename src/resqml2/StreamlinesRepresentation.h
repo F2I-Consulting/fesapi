@@ -68,7 +68,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of line contained in this streamlines representation.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual uint32_t getLineCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getLineCount() const = 0;
 		
 		//********************************
 		//****  WELLBORE INFO ************
@@ -82,7 +82,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of wellbore trajectories.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint16_t getWellboreTrajectoryCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getWellboreTrajectoryCount() const = 0;
 
 		/**
 		 * Gets the wellbore trajectory located at a specific index of this streamlines
@@ -95,7 +95,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The wellbore trajectory at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory(uint16_t index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory(uint64_t index) const;
 
 		/**
 		 * Get the DOR of the wellbore trajectory located at a specific index of this streamlines representation.
@@ -107,7 +107,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the wellbore trajectory at position @p index.
 		 */
-		virtual COMMON_NS::DataObjectReference getWellboreTrajectoryDor(uint16_t index) const = 0;
+		virtual COMMON_NS::DataObjectReference getWellboreTrajectoryDor(uint64_t index) const = 0;
 
 		/**
 		 * @brief	Gets all the wellbore indices which are injectors.
@@ -168,12 +168,12 @@ namespace RESQML2_NS
 				throw std::out_of_range("The patch index is out of range and should only be zero.");
 			}
 
-			const uint32_t lineCount = getLineCount();
+			const uint64_t lineCount = getLineCount();
 			std::unique_ptr<uint32_t[]> nodeCountPerPolyline(new uint32_t[lineCount]);
 			getNodeCountPerLine(nodeCountPerPolyline.get());
 
 			uint64_t result = 0;
-			for (uint32_t lineIndex = 0; lineIndex < lineCount; ++lineIndex) {
+			for (uint64_t lineIndex = 0; lineIndex < lineCount; ++lineIndex) {
 				result += nodeCountPerPolyline[lineIndex];
 			}
 			return result;
@@ -189,26 +189,22 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void getIntervalCountPerLine(uint32_t * intervalCountPerPolyline) const {
 			getNodeCountPerLine(intervalCountPerPolyline);
 
-			const uint32_t lineCount = getLineCount();
-			for (uint32_t lineIndex = 0; lineIndex < lineCount; ++lineIndex) {
+			const uint64_t lineCount = getLineCount();
+			for (uint64_t lineIndex = 0; lineIndex < lineCount; ++lineIndex) {
 				intervalCountPerPolyline[lineIndex] -= 1;
 			}
 		}
 
 		/**
 		 * Gets the total interval count in this streamlines representation.
-		 *
-		 * @param [out]	nodeCountPerPolyline	A preallocated array to receive the node count per
-		 * 										line. Its size must be
-		 * 										<tt>getLineCount(patchIndex)</tt>.
 		 */
 		DLL_IMPORT_OR_EXPORT uint64_t getIntervalCount() const {
-			const uint32_t lineCount = getLineCount();
+			const uint64_t lineCount = getLineCount();
 			std::unique_ptr<uint32_t[]> intervalCountPerPolyline(new uint32_t[lineCount]);
 			getIntervalCountPerLine (intervalCountPerPolyline.get());
 
 			uint64_t result = 0;
-			for (uint32_t lineIndex = 0; lineIndex < lineCount; ++lineIndex) {
+			for (uint64_t lineIndex = 0; lineIndex < lineCount; ++lineIndex) {
 				result += intervalCountPerPolyline[lineIndex];
 			}
 			return result;
@@ -346,7 +342,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of grid representation.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint16_t getGridRepresentationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getGridRepresentationCount() const = 0;
 
 		/**
 		 * Gets the grid representation located at a specific index of this streamlines
@@ -359,7 +355,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The grid representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation* getGridRepresentation(uint16_t index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation* getGridRepresentation(uint64_t index) const;
 
 		/**
 		 * Get the DOR of the grid representation located at a specific index of this streamlines representation.
@@ -371,7 +367,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the grid representation at position @p index.
 		 */
-		virtual COMMON_NS::DataObjectReference getGridRepresentationDor(uint16_t index) const = 0;
+		virtual COMMON_NS::DataObjectReference getGridRepresentationDor(uint64_t index) const = 0;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final { return 1; }
 

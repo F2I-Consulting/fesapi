@@ -60,7 +60,7 @@ namespace RESQML2_NS
 		 * @param [in]	stratiUnitInterp	The stratigraphic unit interpretation represented by the
 		 * 									region at position @p regionIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT void setInterpretationOfVolumeRegion(unsigned int regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp);
+		DLL_IMPORT_OR_EXPORT void setInterpretationOfVolumeRegion(uint64_t regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp);
 
 		/**
 		 * Pushes back a volume region in this sealed volume framework.
@@ -168,7 +168,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of faces in the external shell of the region at position @p regionIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getFaceCountOfExternalShell(unsigned int regionIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getFaceCountOfExternalShell(unsigned int regionIndex) const = 0;
 
 		/**
 		 * Gets the count of faces in a particular region internal shell.
@@ -184,7 +184,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of faces of the region @p regionIndex internal shell @p internalShellIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const = 0;
 
 		/**
 		 * Gets the representation (for instance the triangulated surface) which contains a particular
@@ -238,7 +238,7 @@ namespace RESQML2_NS
 		 * 			<tt>getRepOfExternalShellFace(regionIndex, faceIndex)</tt>) which is the face @p
 		 * 			faceIndex of the external shell of the region @p regionIndex of this framework.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) = 0;
 
 		/**
 		 * Get the representation patch index corresponding to a particular face of particular internal
@@ -260,7 +260,7 @@ namespace RESQML2_NS
 		 * 			is the face @p faceIndex of the internal shell @p internalShellIndex of the region @p
 		 * 			regionIndex of this framework.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) = 0;
 
 		/**
 		 * Get the orientation (the side flag) of a particular face of the external shell of a
@@ -353,6 +353,6 @@ namespace RESQML2_NS
 		 * @param 		  	regionIndex			Zero-based index of the region.
 		 * @param [in,out]	stratiUnitInterp	If non-null, the strati unit interp.
 		 */
-		virtual void setXmlInterpretationOfVolumeRegion(unsigned int regionIndex, class StratigraphicUnitInterpretation * stratiUnitInterp) = 0;
+		virtual void setXmlInterpretationOfVolumeRegion(uint64_t regionIndex, class StratigraphicUnitInterpretation * stratiUnitInterp) = 0;
 	};
 }

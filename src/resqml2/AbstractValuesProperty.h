@@ -334,7 +334,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT int getIntValuesOfPatch(unsigned int patchIndex, int * values) const;
+		DLL_IMPORT_OR_EXPORT int32_t getIntValuesOfPatch(unsigned int patchIndex, int32_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -349,7 +349,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getUIntValuesOfPatch(unsigned int patchIndex, unsigned int * values) const;
+		DLL_IMPORT_OR_EXPORT uint32_t getUIntValuesOfPatch(unsigned int patchIndex, uint32_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be short ones.
@@ -363,7 +363,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT short getShortValuesOfPatch(unsigned int patchIndex, short * values) const;
+		DLL_IMPORT_OR_EXPORT int16_t getShortValuesOfPatch(unsigned int patchIndex, int16_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -378,7 +378,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned short getUShortValuesOfPatch(unsigned int patchIndex, unsigned short * values) const;
+		DLL_IMPORT_OR_EXPORT uint16_t getUShortValuesOfPatch(unsigned int patchIndex, uint16_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be char ones.
@@ -392,7 +392,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT char getCharValuesOfPatch(unsigned int patchIndex, char * values) const;
+		DLL_IMPORT_OR_EXPORT char getCharValuesOfPatch(unsigned int patchIndex, char* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -407,7 +407,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned char getUCharValuesOfPatch(unsigned int patchIndex, unsigned char * values) const;
+		DLL_IMPORT_OR_EXPORT uint8_t getUCharValuesOfPatch(unsigned int patchIndex, uint8_t* values) const;
 
 		//***********************************
 		//*** INTEGER For hyperslabbing *****
@@ -635,9 +635,9 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT int getIntValuesOfPatch(
+		DLL_IMPORT_OR_EXPORT int32_t getIntValuesOfPatch(
 			unsigned int patchIndex,
-			int* values,
+			int32_t* values,
 			unsigned long long* numValuesInEachDimension,
 			unsigned long long* offsetInEachDimension,
 			unsigned int numArrayDimensions
@@ -668,7 +668,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void getIntValuesOf3dPatch(
 			unsigned int patchIndex,
-			int* values,
+			int32_t* values,
 			unsigned int valueCountInFastestDim,
 			unsigned int valueCountInMiddleDim,
 			unsigned int valueCountInSlowestDim,

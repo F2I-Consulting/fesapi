@@ -34,6 +34,13 @@ using namespace gsoap_resqml2_0_1;
 
 const char* SubRepresentation::XML_NS = "resqml20";
 
+SubRepresentation::SubRepresentation(gsoap_resqml2_0_1::_resqml20__SubRepresentation* fromGsoap): RESQML2_NS::SubRepresentation(fromGsoap) {
+	std::string indexableEltStr = soap_resqml20__IndexableElements2s(fromGsoap->soap, fromGsoap->SubRepresentationPatch[0]->ElementIndices[0]->IndexableElement);
+	if (gsoap_eml2_3::soap_s2eml23__IndexableElement(fromGsoap->soap, indexableEltStr.c_str(), &defaultIndexableElement) != SOAP_OK) {
+		throw invalid_argument("The indexable element \"" + indexableEltStr + "\"of the subrepresentation is not supported yet");
+	}
+}
+
 void SubRepresentation::init(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESubRepresentation(repo->getGsoapContext());
@@ -44,13 +51,15 @@ void SubRepresentation::init(COMMON_NS::DataObjectRepository* repo, const string
 	repo->addDataObject(this);
 }
 
-SubRepresentation::SubRepresentation(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
+SubRepresentation::SubRepresentation(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title, gsoap_eml2_3::eml23__IndexableElement defaultElementKind):
+	defaultIndexableElement(defaultElementKind)
 {
 	init(repo, guid, title);
 }
 
 SubRepresentation::SubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-	const string & guid, const string & title)
+	const string & guid, const string & title, gsoap_eml2_3::eml23__IndexableElement defaultElementKind) :
+	defaultIndexableElement(defaultElementKind)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The interpretation of the subrepresentation cannot be null.");
@@ -108,6 +117,70 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__Inde
 	integerArray->Offset.push_back(offset);
 }
 
+void SubRepresentation::pushBackSubRepresentationPatch(uint64_t elementCount, int64_t* elementIndices,
+	RESQML2_NS::AbstractRepresentation* supportingRep, EML2_NS::AbstractHdfProxy* proxy)
+{
+	uint64_t supportingRepIndex = pushBackSupportingRepresentation(supportingRep);
+	if (supportingRepIndex > (std::numeric_limits<short>::max)()) {
+		throw range_error("There are too much supporting representations.");
+	}
+
+	std::unique_ptr<short[]> supportingRepIndices(new short[elementCount]);
+	std::fill(supportingRepIndices.get(), supportingRepIndices.get() + elementCount, static_cast<short>(supportingRepIndex));
+	pushBackSubRepresentationPatch(defaultIndexableElement, elementCount, elementIndices, proxy, supportingRepIndices.get());
+}
+
+void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount, int64_t * elementIndices, EML2_NS::AbstractHdfProxy * proxy, short * supportingRepIndices)
+{
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+
+	const auto patchCount = getPatchCount();
+	// ************ HDF ************		
+	hsize_t numValues = elementCount;
+	proxy->writeArrayNdOfInt64Values(getHdfGroup(), "subrepresentation_elementIndices0_patch" + std::to_string(patchCount), elementIndices, &numValues, 1);
+	if (supportingRepIndices != nullptr) {
+		proxy->writeArrayNd(getHdfGroup(), "subrepresentation_supportingRepresentationIndices_patch" + std::to_string(patchCount), H5T_NATIVE_SHORT, supportingRepIndices, &numValues, 1);
+	}
+
+	const std::string supportingRepDataset = supportingRepIndices != nullptr ? getHdfGroup() + "/subrepresentation_supportingRepresentationIndices_patch" + std::to_string(patchCount) : "";
+	// Arbitrarily set null value to -1 since it has no interest to write element index null value in this method
+	pushBackRefToExistingDataset(elementKind, elementCount, getHdfGroup() + "/subrepresentation_elementIndices0_patch" + std::to_string(patchCount), -1, proxy, supportingRepDataset);
+}
+
+void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind0, gsoap_eml2_3::eml23__IndexableElement elementKind1,
+	uint64_t elementCount,
+	int64_t * elementIndices0, int64_t * elementIndices1,
+	EML2_NS::AbstractHdfProxy * proxy)
+{
+	pushBackSubRepresentationPatch(elementKind0, elementCount, elementIndices0, proxy);
+
+	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
+
+	resqml20__SubRepresentationPatch* patch = rep->SubRepresentationPatch[rep->SubRepresentationPatch.size() - 1];
+
+	// XML
+	resqml20__ElementIndices* elements = soap_new_resqml20__ElementIndices(gsoapProxy2_0_1->soap);
+	patch->ElementIndices.push_back(elements);
+	elements->IndexableElement = mapIndexableElement(elementKind1);
+
+	resqml20__IntegerHdf5Array * integerArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
+	eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
+	resqmlHDF5dataset->HdfProxy = proxy->newResqmlReference();
+	resqmlHDF5dataset->PathInHdfFile = getHdfGroup() + "/subrepresentation_elementIndices1_patch" + std::to_string(patch->PatchIndex);
+	integerArray->Values = resqmlHDF5dataset;
+	integerArray->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write index null value in this method
+	elements->Indices = integerArray;
+
+	// ************ HDF ************		
+	hsize_t numValues = elementCount;
+	proxy->writeArrayNdOfInt64Values(getHdfGroup(), "subrepresentation_elementIndices1_patch" + std::to_string(patch->PatchIndex), elementIndices1, &numValues, 1);
+}
+
 void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount, const std::string & elementDataset,
 	int64_t nullValue, EML2_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset)
 {
@@ -150,39 +223,25 @@ void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::eml23__Indexa
 	}
 }
 
+void SubRepresentation::pushBackRefToExistingDataset(uint64_t elementCount, const std::string& elementDataset,
+	int64_t nullValue, RESQML2_NS::AbstractRepresentation* supportingRep, EML2_NS::AbstractHdfProxy* proxy) {
+	const auto supRepCount = getSupportingRepresentationCount();
+	if (supRepCount > 1 ||
+		(supRepCount == 1 && getSupportingRepresentationDor(0).getUuid() != supportingRep->getUuid())) {
+		throw std::invalid_argument("Downcast your instance to v2.0 namespace and use the dedicated other pushBackRefToExistingDataset if your subrepresentation depends on more than one representation.");
+	}
+	else {
+		if (supRepCount == 0) {
+			pushBackSupportingRepresentation(supportingRep);
+		}
+		pushBackRefToExistingDataset(defaultIndexableElement, elementCount, elementDataset, nullValue, proxy);
+	}
+}
+
 DiscreteProperty* SubRepresentation::getSupportingRepresentationIndicesDiscretePropOfPatch(unsigned int patchIndex) const
 {
 	vector<string> uuid = getExtraMetadata("SubRepresentationPatch[" + std::to_string(patchIndex) + "]/ElementIndices/SupportingRepresentationIndex");
 	return getRepository()->getDataObjectByUuid<DiscreteProperty>(uuid[0]);
-}
-
-void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind0, gsoap_eml2_3::eml23__IndexableElement elementKind1,
-	uint64_t elementCount,
-	uint64_t * elementIndices0, uint64_t * elementIndices1,
-	EML2_NS::AbstractHdfProxy * proxy)
-{
-	pushBackSubRepresentationPatch(elementKind0, elementCount, elementIndices0, proxy);
-
-	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
-
-	resqml20__SubRepresentationPatch* patch = rep->SubRepresentationPatch[rep->SubRepresentationPatch.size() - 1];
-
-	// XML
-	resqml20__ElementIndices* elements = soap_new_resqml20__ElementIndices(gsoapProxy2_0_1->soap);
-	patch->ElementIndices.push_back(elements);
-	elements->IndexableElement = mapIndexableElement(elementKind1);
-
-	resqml20__IntegerHdf5Array * integerArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
-	eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
-	resqmlHDF5dataset->HdfProxy = proxy->newResqmlReference();
-	resqmlHDF5dataset->PathInHdfFile = getHdfGroup() + "/subrepresentation_elementIndices1_patch" + std::to_string(patch->PatchIndex);
-	integerArray->Values = resqmlHDF5dataset;
-	integerArray->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write index null value in this method
-	elements->Indices = integerArray;
-
-	// ************ HDF ************		
-	hsize_t numValues = elementCount;
-	proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "subrepresentation_elementIndices1_patch" + std::to_string(patch->PatchIndex), elementIndices1, &numValues, 1);
 }
 
 COMMON_NS::DataObjectReference SubRepresentation::getHdfProxyDor() const
@@ -200,20 +259,17 @@ COMMON_NS::DataObjectReference SubRepresentation::getHdfProxyDor() const
 	return COMMON_NS::DataObjectReference();
 }
 
-RESQML2_NS::AbstractRepresentation::indexableElement SubRepresentation::getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const
+gsoap_eml2_3::eml23__IndexableElement SubRepresentation::getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const
 {
 	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
 	if (rep->SubRepresentationPatch.size() > patchIndex) {
 		if (rep->SubRepresentationPatch[patchIndex]->ElementIndices.size() > elementIndicesIndex) {
-			switch (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->IndexableElement) {
-			case resqml20__IndexableElements::nodes: return NODE;
-			case resqml20__IndexableElements::edges:
-			case resqml20__IndexableElements::intervals: return EDGE;
-			case resqml20__IndexableElements::faces: return FACE;
-			case resqml20__IndexableElements::cells: return VOLUME;
-			case resqml20__IndexableElements::pillars: return PILLAR;
-			default: throw invalid_argument("The indexable element of the subrepresentation is not supported yet");
+			std::string indexableEltStr = soap_resqml20__IndexableElements2s(rep->soap, rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->IndexableElement);
+			gsoap_eml2_3::eml23__IndexableElement result;
+			if (gsoap_eml2_3::soap_s2eml23__IndexableElement(rep->soap, indexableEltStr.c_str(), &result) == SOAP_OK) {
+				return result;
 			}
+			throw invalid_argument("The indexable element \"" + indexableEltStr + "\"of the subrepresentation is not supported yet");
 		}
 		else {
 			throw out_of_range("The elementIndices does not exist at this index.");
@@ -222,6 +278,33 @@ RESQML2_NS::AbstractRepresentation::indexableElement SubRepresentation::getEleme
 	else {
 		throw out_of_range("The patch does not exist at this index.");
 	}
+}
+
+gsoap_eml2_3::eml23__IndexableElement SubRepresentation::getElementKind() const
+{
+	gsoap_eml2_3::eml23__IndexableElement result = getElementKindOfPatch(0, 0);
+	if (areElementIndicesPairwise(0)) {
+		gsoap_eml2_3::eml23__IndexableElement tmp = getElementKindOfPatch(0, 1);
+		if (tmp != result) {
+			throw invalid_argument("There are multiple element kinds in this subrepresentation. Please downcast to RESQML2.0 namespace if necessary and use dedicated methods.");
+		}
+	}
+
+	const unsigned int patchCount = getPatchCount();
+	for (unsigned int patchIndex = 1; patchIndex < patchCount; ++patchIndex) {
+		gsoap_eml2_3::eml23__IndexableElement tmp = getElementKindOfPatch(patchIndex, 0);
+		if (tmp != result) {
+			throw invalid_argument("There are multiple element kinds in this subrepresentation. Please downcast to RESQML2.0 namespace if necessary and use dedicated methods.");
+		}
+		if (areElementIndicesPairwise(patchIndex)) {
+			tmp = getElementKindOfPatch(patchIndex, 1);
+			if (tmp != result) {
+				throw invalid_argument("There are multiple element kinds in this subrepresentation. Please downcast to RESQML2.0 namespace if necessary and use dedicated methods.");
+			}
+		}
+	}
+
+	return result;
 }
 
 gsoap_resqml2_0_1::resqml20__SubRepresentationPatch* SubRepresentation::getSubRepresentationPatch(unsigned int index) const
@@ -314,7 +397,7 @@ uint64_t SubRepresentation::getLatticeElementIndicesOffsetCount(unsigned int lat
 	return lattice->Offset[latticeDimensionIndex]->Count;
 }
 
-void SubRepresentation::getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, uint64_t * elementIndices) const
+int64_t SubRepresentation::getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, int64_t * elementIndices) const
 {
 	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
 	if (rep->SubRepresentationPatch.size() <= patchIndex) {
@@ -327,7 +410,8 @@ void SubRepresentation::getElementIndicesOfPatch(unsigned int patchIndex, unsign
 	if (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices)->Values;
 		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfUInt64Values(dataset->PathInHdfFile, elementIndices);
+		hdfProxy->readArrayNdOfInt64Values(dataset->PathInHdfFile, elementIndices);
+		return static_cast<resqml20__IntegerHdf5Array*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices)->NullValue;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -350,12 +434,42 @@ void SubRepresentation::getSupportingRepresentationIndicesOfPatch(unsigned int p
 	}
 
 	DiscreteProperty* prop = getSupportingRepresentationIndicesDiscretePropOfPatch(patchIndex);
+	if (prop == nullptr) {
+		throw std::invalid_argument("The subrepresentation patch inde " + std::to_string(patchIndex) + " has not got any supportingRepresentationIndices");
+	}
 	prop->getShortValuesOfPatch(0, supportingRepresentationIndices);
 }
 
 unsigned int SubRepresentation::getPatchCount() const
 {
 	return getSpecializedGsoapProxy()->SubRepresentationPatch.size();
+}
+
+uint64_t SubRepresentation::pushBackSupportingRepresentation(AbstractRepresentation * supportingRep)
+{
+	if (supportingRep == nullptr) {
+		throw invalid_argument("The supporting Representation cannot be null.");
+	}
+
+	const auto supportingRepCount = getSupportingRepresentationCount();
+	for (unsigned int i = 0; i < supportingRepCount; ++i) {
+		if (getSupportingRepresentationDor(i).getUuid() == supportingRep->getUuid()) {
+			return i;
+		}
+	}
+
+	getRepository()->addRelationship(this, supportingRep);
+
+	pushBackXmlSupportingRepresentation(supportingRep);
+	return getSupportingRepresentationCount() - 1;
+}
+
+void SubRepresentation::pushBackSubRepresentationPatch(uint64_t originIndex,
+	unsigned int elementCountInSlowestDimension,
+	unsigned int elementCountInMiddleDimension,
+	unsigned int elementCountInFastestDimension, RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid) {
+	pushBackSupportingRepresentation(ijkGrid);
+	pushBackSubRepresentationPatch(defaultIndexableElement, originIndex, elementCountInSlowestDimension, elementCountInMiddleDimension, elementCountInFastestDimension);
 }
 
 unsigned int SubRepresentation::getSupportingRepresentationCount() const
@@ -377,7 +491,7 @@ COMMON_NS::DataObjectReference SubRepresentation::getSupportingRepresentationDor
 		throw invalid_argument("No supporting rep");
 	}
 	if (index >= supRepCount) {
-		throw out_of_range("The index of the supporting represenation is out of range.");
+		throw out_of_range("The index of the supporting representation is out of range.");
 	}
 
 	if (supRepCount == 1) {
@@ -389,6 +503,36 @@ COMMON_NS::DataObjectReference SubRepresentation::getSupportingRepresentationDor
 	result->Title = getSpecializedGsoapProxy()->SupportingRepresentation->Title;
 	result->UUID = getExtraMetadata("SupportingRepresentation")[index];
 	return COMMON_NS::DataObjectReference(result);
+}
+
+COMMON_NS::DataObjectReference SubRepresentation::getSupportingRepresentationOfPatchDor(unsigned int patchIndex) const
+{
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The patch index " + std::to_string(patchIndex) + " is out of range.");
+	}
+	if (getSupportingRepresentationCount() == 0) {
+		throw invalid_argument("There is not associated supporting represenation at all in this subrepresentation.");
+	}
+
+	if (getSupportingRepresentationCount() == 1) {
+		return getSupportingRepresentationDor(0);
+	}
+
+	const auto elementCount = getElementCountOfPatch(patchIndex);
+	std::unique_ptr<short[]> supportingRepIndices(new short[elementCount]);
+	getSupportingRepresentationIndicesOfPatch(patchIndex, supportingRepIndices.get());
+	short uniqueSubRepIndex = supportingRepIndices[0];
+	for (auto i = 1; i < elementCount; ++i) {
+		if (supportingRepIndices[i] != uniqueSubRepIndex) {
+			throw logic_error("Downcast your instance to v2.0 namespace and use the dedicated getSupportingRepresentationIndicesOfPatch method if your subrepresentation patch depends on more than one representation");
+		}
+	}
+	return getSupportingRepresentationDor(uniqueSubRepIndex);
+}
+
+RESQML2_NS::AbstractRepresentation* SubRepresentation::getSupportingRepresentation(unsigned int index) const
+{
+	return static_cast<AbstractRepresentation*>(repository->getDataObjectByUuid(getSupportingRepresentationDor(index).getUuid()));
 }
 
 void SubRepresentation::pushBackXmlSupportingRepresentation(RESQML2_NS::AbstractRepresentation const * supportingRep)
@@ -404,5 +548,17 @@ void SubRepresentation::pushBackXmlSupportingRepresentation(RESQML2_NS::Abstract
 		}
 		// push back the new supporting rep
 		pushBackExtraMetadata("SupportingRepresentation", supportingRep->getUuid());
+	}
+}
+
+void SubRepresentation::loadTargetRelationships()
+{
+	AbstractRepresentation::loadTargetRelationships();
+
+	// Supporting representation
+	const unsigned int supRepCount = getSupportingRepresentationCount();
+	for (unsigned int supRepIndex = 0; supRepIndex < supRepCount; ++supRepIndex) {
+		COMMON_NS::DataObjectReference dor = getSupportingRepresentationDor(supRepIndex);
+		convertDorIntoRel<RESQML2_NS::AbstractRepresentation>(dor);
 	}
 }

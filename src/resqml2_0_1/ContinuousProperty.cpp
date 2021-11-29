@@ -177,16 +177,6 @@ void ContinuousProperty::setMaximumValue(double value, unsigned int index) const
 	prop->MaximumValue[index] = value;
 }
 
-size_t ContinuousProperty::getMinimumValueSize() const
-{
-	return static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->MinimumValue.size();
-}
-
-size_t ContinuousProperty::getMaximumValueSize() const
-{
-	return static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->MaximumValue.size();
-}
-
 bool ContinuousProperty::validatePropertyKindAssociation(EML2_NS::PropertyKind* pk)
 {
 	if (pk == nullptr) {

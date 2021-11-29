@@ -20,17 +20,12 @@ under the License.
 
 #include <stdexcept>
 
-#include "../catch.hpp"
-
-#include "resqml2_test/FaultInterpretationTest.h"
-#include "resqml2_test/FaultSinglePatchTriangulatedSetRepresentationTest.h"
-#include "resqml2_test/PolylineSetRepresentation.h"
+#include "resqml2/TriangulatedSetRepresentation.h"
+#include "resqml2/PolylineSetRepresentation.h"
 
 #include "resqml2_0_1/TectonicBoundaryFeature.h"
 #include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2_0_1/LocalTime3dCrs.h"
-#include "resqml2/TriangulatedSetRepresentation.h"
-#include "resqml2/PolylineSetRepresentation.h"
 
 using namespace std;
 using namespace resqml2_test;
@@ -45,7 +40,7 @@ InterpretationDomain::InterpretationDomain(const string & repoPath)
 void InterpretationDomain::initRepo()
 {
 	BoundaryFeature* fault = repo->createPartial<RESQML2_0_1_NS::TectonicBoundaryFeature>("", "");
-	FaultInterpretation* faultInterp = repo->createFaultInterpretation(fault, FaultInterpretationTest::defaultUuid, "");
+	FaultInterpretation* faultInterp = repo->createFaultInterpretation(fault, "", "");
 
 	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain::mixed);
 	faultInterp->initDomain(gsoap_resqml2_0_1::resqml20__Domain::time);
@@ -54,14 +49,11 @@ void InterpretationDomain::initRepo()
 	if (dynamic_cast<RESQML2_0_1_NS::FaultInterpretation*>(faultInterp) != nullptr) {
 		TriangulatedSetRepresentation* depthRep = repo->createTriangulatedSetRepresentation(faultInterp, "", "");
 		double nodesFaultSinglePatchTriangulatedSetRepresentation[9] = { 0,0,0,1,1,1,2,2,2 };
-		unsigned int triangleNodeIndexFault[3] = { 0,1,2, };
+		unsigned int triangleNodeIndexFault[3] = { 0,1,2 };
 		depthRep->pushBackTrianglePatch(3, nodesFaultSinglePatchTriangulatedSetRepresentation, 1, triangleNodeIndexFault, repo->getHdfProxySet()[0]);
 		REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain::depth);
 
-		RESQML2_NS::LocalTime3dCrs * timeCrs = repo->getDataObjectByUuid<RESQML2_NS::LocalTime3dCrs>("");
-		if (timeCrs == nullptr) {
-			timeCrs = repo->createPartial<RESQML2_0_1_NS::LocalTime3dCrs>("", "");
-		}
+		RESQML2_0_1_NS::LocalTime3dCrs* timeCrs = repo->createPartial<RESQML2_0_1_NS::LocalTime3dCrs>("", "");
 		RESQML2_NS::PolylineSetRepresentation* timeRep = repo->createPolylineSetRepresentation(faultInterp, "", "");
 		unsigned int numNodesPerPolylinePerPatch[] = { 1 };
 		double polylinePoints[3] = { 150, 0, 200 };

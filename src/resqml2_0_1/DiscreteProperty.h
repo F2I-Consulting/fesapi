@@ -93,8 +93,7 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~DiscreteProperty() = default;
 
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName, int64_t nullValue, int64_t minimumValue, int64_t maximumValue) final;
-		using AbstractValuesProperty::pushBackRefToExistingIntegerDataset;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getLookupDor() const final { return COMMON_NS::DataObjectReference(); }
 
 		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) final;
 
@@ -112,7 +111,7 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT void setMinimumValue(int64_t value, unsigned int index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT void setMaximumValue(int64_t value, unsigned int index = 0) const;
+		DLL_IMPORT_OR_EXPORT void setMaximumValue(int64_t value, unsigned int index = 0) const final;
 
 		/**
 		 * Gets the Energistics property kind which is associated to this intance
@@ -134,10 +133,9 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final{ return XML_NS; }
 
-	private:
+		/** The standard XML tag without XML namespace for serializing this data object. */
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		size_t getMinimumValueSize() const;
-		size_t getMaximumValueSize() const;
-
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};
 }

@@ -79,17 +79,17 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT int getFirstTraceIndex() const;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getTraceCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getTraceCount() const final;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "SeismicLineFeature";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml20";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.

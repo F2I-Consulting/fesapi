@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/MultirealPropertyTest.h"
 
-#include "catch.hpp"
-
 #include "resqml2/AbstractIjkGridRepresentation.h"
 #include "resqml2/ContinuousProperty.h"
 
@@ -47,49 +45,49 @@ void MultirealPropertyTest::initRepo() {
 	auto propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
 	RESQML2_NS::ContinuousProperty* continuousPropertyReal0 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal0, "real0",
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	REQUIRE(continuousPropertyReal0 != nullptr);
 	double values[2] = { 0.0, 0.0 };
 	continuousPropertyReal0->pushBackDoubleHdf5Array1dOfValues(values, 2, hdfProxy);
-	continuousPropertyReal0->setRealizationIndices(0, 1);
+	continuousPropertyReal0->setRealizationIndices({ 0 });
 
 	// creating the ContinuousProperty real 1
 	RESQML2_NS::ContinuousProperty* continuousPropertyReal1 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal1, "real1",
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	REQUIRE(continuousPropertyReal1 != nullptr);
 	values[0] = 1.0;
 	values[1] = 1.0;
 	continuousPropertyReal1->pushBackDoubleHdf5Array1dOfValues(values, 2, hdfProxy);
-	continuousPropertyReal1->setRealizationIndices(1, 1);
+	continuousPropertyReal1->setRealizationIndices({ 1 });
 
 	// creating the ContinuousProperty real 10
 	RESQML2_NS::ContinuousProperty* continuousPropertyReal10 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal10, "real10",
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	REQUIRE(continuousPropertyReal10 != nullptr);
 	values[0] = 10;
 	values[1] = 10;
 	continuousPropertyReal10->pushBackDoubleHdf5Array1dOfValues(values, 2, hdfProxy);
-	continuousPropertyReal10->setRealizationIndices(0, 1);
+	continuousPropertyReal10->setRealizationIndices({ 0 });
 
 	// creating the ContinuousProperty real 15
 	RESQML2_NS::ContinuousProperty* continuousPropertyReal15 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal15, "real15",
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	REQUIRE(continuousPropertyReal0 != nullptr);
 	values[0] = 15;
 	values[1] = 15;
 	continuousPropertyReal15->pushBackDoubleHdf5Array1dOfValues(values, 2, hdfProxy);
-	continuousPropertyReal15->setRealizationIndices(0, 1);
+	continuousPropertyReal15->setRealizationIndices({ 0 });
 }
 
 void MultirealPropertyTest::readRepo() {
