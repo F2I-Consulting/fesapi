@@ -490,3 +490,8 @@ INSTALL (
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/resources/
 	COMPONENT fesapi_runtime
 )
+
+if (WITH_PYTHON_WRAPPING)
+	install(CODE "execute_process(COMMAND	${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/swig/setup.py build_ext --build-lib ../python/src
+											WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/swig)")
+endif (WITH_PYTHON_WRAPPING)

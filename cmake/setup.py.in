@@ -2,13 +2,13 @@ from distutils.core import setup, Extension
 
 fesapi_module = Extension('_fesapi',
 	sources=['swigGeneratedPythonWrapper.cpp'],
-	library_dirs=['${CMAKE_INSTALL_PREFIX}/lib'],
+	library_dirs=['${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}'],
 	libraries=['${ASSEMBLY_NAME}',],
 	extra_compile_args=['-std=c++11'],
 )
 
 setup (name = 'fesapi',
-	version = '2.1',
+	version = '${Fesapi_VERSION}',
 	author      = "F2I-CONSULTING",
 	description = """An API for the Energistics standards""",
 	ext_modules = [fesapi_module],
