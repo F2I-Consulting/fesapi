@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "FaultInterpretation.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include "../resqml2/BoundaryFeature.h"
 
 using namespace std;

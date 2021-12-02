@@ -19,8 +19,6 @@ under the License.
 #include "Log.h"
 
 #include <sstream>
-#include <stdexcept>
-#include <limits>
 
 #include "Wellbore.h"
 #include "ChannelSet.h"

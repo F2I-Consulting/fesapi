@@ -19,17 +19,10 @@ under the License.
 
 #include "AbstractObject.h"
 
-#include <limits>
-#include <stdexcept>
 #include <string>
 #include <sstream>
 #include <numeric>
 
-#if !defined(__GLIBCXX__) || __GLIBCXX__ > 20150623 || __GLIBCXX__ == 20140422 || __GLIBCXX__ == 20140716 || __GLIBCXX__ == 20141030
-#include <regex>
-#else
-#include <boost/regex.hpp>
-#endif
 #include <algorithm>
 
 #include <boost/uuid/random_generator.hpp>
@@ -984,10 +977,11 @@ void AbstractObject::addAlias(const std::string & authority, const std::string &
 	}
 }
 
-unsigned int AbstractObject::getAliasCount() const
+uint64_t AbstractObject::getAliasCount() const
 {
-	if (isPartial())
+	if (isPartial()) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
+	}
 
 	size_t count = 0;
 	
@@ -1004,57 +998,48 @@ unsigned int AbstractObject::getAliasCount() const
 		count = gsoapProxy2_3->Aliases.size();
 	}
 
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("There is too much aliases for fesapi.");
-	}
-
-	return static_cast<unsigned int>(count);
+	return count;
 }
 
-std::string AbstractObject::getAliasAuthorityAtIndex(unsigned int index) const
+std::string AbstractObject::getAliasAuthorityAtIndex(uint64_t index) const
 {
 	if (isPartial())
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
-	if (getAliasCount() <= index) {
-		throw out_of_range("The index is out of range.");
-	}
-
 	if (gsoapProxy2_0_1 != nullptr) {
-		return (gsoapProxy2_0_1->Aliases)[index]->authority? *((gsoapProxy2_0_1->Aliases)[index]->authority): std::string();
+		return (gsoapProxy2_0_1->Aliases).at(index)->authority
+			? *((gsoapProxy2_0_1->Aliases).at(index)->authority)
+			: "";
 	}
 	else if (gsoapProxy2_1 != nullptr) {
-		return gsoapProxy2_1->Aliases[index]->authority;
+		return gsoapProxy2_1->Aliases.at(index)->authority;
 	}
 	else if (gsoapProxy2_2 != nullptr) {
-		return gsoapProxy2_2->Aliases[index]->authority;
+		return gsoapProxy2_2->Aliases.at(index)->authority;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return gsoapProxy2_3->Aliases[index]->authority;
+		return gsoapProxy2_3->Aliases.at(index)->authority;
 	}
 
 	throw invalid_argument("No underlying gsoap proxy.");
 }
 
-std::string AbstractObject::getAliasTitleAtIndex(unsigned int index) const
+std::string AbstractObject::getAliasTitleAtIndex(uint64_t index) const
 {
 	if (isPartial())
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
-	if (getAliasCount() <= index)
-		throw out_of_range("The index is out of range.");
-
 	if (gsoapProxy2_0_1 != nullptr) {
-		return (gsoapProxy2_0_1->Aliases)[index]->Identifier;
+		return (gsoapProxy2_0_1->Aliases).at(index)->Identifier;
 	}
 	else if (gsoapProxy2_1 != nullptr) {
-		return gsoapProxy2_1->Aliases[index]->Identifier;
+		return gsoapProxy2_1->Aliases.at(index)->Identifier;
 	}
 	else if (gsoapProxy2_2 != nullptr) {
-		return gsoapProxy2_2->Aliases[index]->Identifier;
+		return gsoapProxy2_2->Aliases.at(index)->Identifier;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return gsoapProxy2_3->Aliases[index]->Identifier;
+		return gsoapProxy2_3->Aliases.at(index)->Identifier;
 	}
 
 	throw invalid_argument("No underlying gsoap proxy.");
@@ -1065,28 +1050,14 @@ std::vector<EML2_NS::Activity *> AbstractObject::getActivitySet() const
 	return getRepository()->getSourceObjects<EML2_NS::Activity>(this);
 }
 
-unsigned int AbstractObject::getActivityCount() const
+uint64_t AbstractObject::getActivityCount() const
 {
-	const size_t result = getActivitySet().size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too many associated activities.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return getActivitySet().size();
 }
 
-EML2_NS::Activity * AbstractObject::getActivity(unsigned int index) const
+EML2_NS::Activity* AbstractObject::getActivity(uint64_t index) const
 {
-	if (isPartial()) {
-		throw invalid_argument("The wrapped gsoap proxy must not be null");
-	}
-
-	const std::vector<EML2_NS::Activity *>& activites = getActivitySet();
-	if (index >= activites.size())
-		throw out_of_range("The index is out of range.");
-
-	return activites[index];
+	return getActivitySet().at(index);
 }
 
 void AbstractObject::pushBackExtraMetadata(const std::string & key, const std::string & value)
@@ -1164,71 +1135,56 @@ vector<string> AbstractObject::getExtraMetadata(const std::string & key) const
 	return result;
 }
 
-unsigned int AbstractObject::getExtraMetadataCount() const
+uint64_t AbstractObject::getExtraMetadataCount() const
 {
-	size_t result = 0;
 	if (gsoapProxy2_0_1 != nullptr) {
-		result = static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.size();
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.size();
 	}
 	else if (gsoapProxy2_1 != nullptr) {
-		result = static_cast<gsoap_eml2_1::eml21__AbstractObject*>(gsoapProxy2_1)->ExtensionNameValue.size();
+		return static_cast<gsoap_eml2_1::eml21__AbstractObject*>(gsoapProxy2_1)->ExtensionNameValue.size();
 	}
 	else if (gsoapProxy2_2 != nullptr) {
-		result = static_cast<gsoap_eml2_2::eml22__AbstractObject*>(gsoapProxy2_2)->ExtensionNameValue.size();
+		return static_cast<gsoap_eml2_2::eml22__AbstractObject*>(gsoapProxy2_2)->ExtensionNameValue.size();
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		result = static_cast<gsoap_eml2_3::eml23__AbstractObject*>(gsoapProxy2_3)->ExtensionNameValue.size();
+		return static_cast<gsoap_eml2_3::eml23__AbstractObject*>(gsoapProxy2_3)->ExtensionNameValue.size();
 	}
 	else {
 		throw logic_error("Not implemented yet.");
 	}
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too much extra metadata.");
-	}
-
-	return static_cast<unsigned int>(result);
 }
 
-std::string AbstractObject::getExtraMetadataKeyAtIndex(unsigned int index) const
+std::string AbstractObject::getExtraMetadataKeyAtIndex(uint64_t index) const
 {
-	if (getExtraMetadataCount() <= index) {
-		throw out_of_range("The index is out of range.");
-	}
-
 	if (gsoapProxy2_0_1 != nullptr) {
-		return (static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata)[index]->Name;
+		return (static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata).at(index)->Name;
 	}
 	else if (gsoapProxy2_1 != nullptr) {
-		return (static_cast<gsoap_eml2_1::eml21__AbstractObject*>(gsoapProxy2_1)->ExtensionNameValue)[index]->Name;
+		return (static_cast<gsoap_eml2_1::eml21__AbstractObject*>(gsoapProxy2_1)->ExtensionNameValue).at(index)->Name;
 	}
 	else if (gsoapProxy2_2 != nullptr) {
-		return (static_cast<gsoap_eml2_2::eml22__AbstractObject*>(gsoapProxy2_2)->ExtensionNameValue)[index]->Name;
+		return (static_cast<gsoap_eml2_2::eml22__AbstractObject*>(gsoapProxy2_2)->ExtensionNameValue).at(index)->Name;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return (static_cast<gsoap_eml2_3::eml23__AbstractObject*>(gsoapProxy2_3)->ExtensionNameValue)[index]->Name;
+		return (static_cast<gsoap_eml2_3::eml23__AbstractObject*>(gsoapProxy2_3)->ExtensionNameValue).at(index)->Name;
 	}
 	
 	throw logic_error("Not implemented yet.");
 }
 
-std::string AbstractObject::getExtraMetadataStringValueAtIndex(unsigned int index) const
+std::string AbstractObject::getExtraMetadataStringValueAtIndex(uint64_t index) const
 {
-	if (getExtraMetadataCount() <= index) {
-		throw out_of_range("The index is out of range.");
-	}
-
 	if (gsoapProxy2_0_1 != nullptr) {
-		return (static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata)[index]->Value;
+		return (static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata).at(index)->Value;
 	}
 	else if (gsoapProxy2_1 != nullptr) {
-		return (static_cast<gsoap_eml2_1::eml21__AbstractObject*>(gsoapProxy2_1)->ExtensionNameValue)[index]->Value->__item;
+		return (static_cast<gsoap_eml2_1::eml21__AbstractObject*>(gsoapProxy2_1)->ExtensionNameValue).at(index)->Value->__item;
 	}
 	else if (gsoapProxy2_2 != nullptr) {
-		return (static_cast<gsoap_eml2_2::eml22__AbstractObject*>(gsoapProxy2_2)->ExtensionNameValue)[index]->Value->__item;
+		return (static_cast<gsoap_eml2_2::eml22__AbstractObject*>(gsoapProxy2_2)->ExtensionNameValue).at(index)->Value->__item;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return (static_cast<gsoap_eml2_3::eml23__AbstractObject*>(gsoapProxy2_3)->ExtensionNameValue)[index]->Value->__item;
+		return (static_cast<gsoap_eml2_3::eml23__AbstractObject*>(gsoapProxy2_3)->ExtensionNameValue).at(index)->Value->__item;
 	}
 
 	throw logic_error("Not implemented yet.");

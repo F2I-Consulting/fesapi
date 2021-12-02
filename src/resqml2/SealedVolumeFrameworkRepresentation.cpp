@@ -24,8 +24,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* SealedVolumeFrameworkRepresentation::XML_TAG = "SealedVolumeFrameworkRepresentation";
-
 void SealedVolumeFrameworkRepresentation::setSealedSurfaceFramework(SealedSurfaceFrameworkRepresentation* ssf)
 {
 	if (ssf == nullptr) {
@@ -57,7 +55,7 @@ SealedSurfaceFrameworkRepresentation* SealedVolumeFrameworkRepresentation::getSe
 	return repository->getDataObjectByUuid<SealedSurfaceFrameworkRepresentation>(getSealedStructuralFrameworkDor().getUuid());
 }
 
-StratigraphicUnitInterpretation* SealedVolumeFrameworkRepresentation::getStratiUnitInterp(unsigned int regionIndex) const
+StratigraphicUnitInterpretation* SealedVolumeFrameworkRepresentation::getStratiUnitInterp(uint64_t regionIndex) const
 {
 	return repository->getDataObjectByUuid<StratigraphicUnitInterpretation>(getStratiUnitInterpDor(regionIndex).getUuid());
 }
@@ -68,8 +66,8 @@ void SealedVolumeFrameworkRepresentation::loadTargetRelationships()
 
 	convertDorIntoRel<SealedSurfaceFrameworkRepresentation>(getSealedStructuralFrameworkDor());
 
-	const unsigned int count = getRegionCount();
-	for (unsigned int regionIdx = 0; regionIdx < count; ++regionIdx) {
+	const uint64_t count = getRegionCount();
+	for (uint64_t regionIdx = 0; regionIdx < count; ++regionIdx) {
 		convertDorIntoRel<StratigraphicUnitInterpretation>(getStratiUnitInterpDor(regionIdx));
 	}
 }

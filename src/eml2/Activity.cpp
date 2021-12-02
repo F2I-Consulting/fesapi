@@ -30,7 +30,7 @@ std::vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectSet() const
 	std::vector<COMMON_NS::AbstractObject*> result;
 
 	const uint64_t paramCount = getParameterCount();
-	for (unsigned int index=0; index < paramCount; ++index) {
+	for (uint64_t index=0; index < paramCount; ++index) {
 		if (isAResqmlObjectParameter(index)) {
 			COMMON_NS::AbstractObject* obj = getResqmlObjectParameterValue(index);
 			if (std::find(result.begin(), result.end(), obj) == result.end()) {

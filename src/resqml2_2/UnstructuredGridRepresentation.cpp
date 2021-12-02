@@ -16,23 +16,18 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
 #include "UnstructuredGridRepresentation.h"
 
-#include <stdexcept>
-
 #include "../eml2/AbstractHdfProxy.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../eml2/AbstractLocal3dCrs.h"
 
 #include "../resqml2_2/EarthModelInterpretation.h"
 
 using namespace std;
 using namespace gsoap_eml2_3;
 using namespace RESQML2_2_NS;
-
-const char* UnstructuredGridRepresentation::XML_NS = "resqml22";
 
 void UnstructuredGridRepresentation::init(COMMON_NS::DataObjectRepository* repo,
 	const std::string& guid, const std::string& title,
@@ -90,7 +85,7 @@ _resqml22__UnstructuredGridRepresentation* UnstructuredGridRepresentation::getSp
 	return static_cast<_resqml22__UnstructuredGridRepresentation*>(gsoapProxy2_3);
 }
 
-gsoap_eml2_3::resqml22__PointGeometry* UnstructuredGridRepresentation::getPointGeometry2_2(unsigned int patchIndex) const
+gsoap_eml2_3::resqml22__PointGeometry* UnstructuredGridRepresentation::getPointGeometry2_2(uint64_t patchIndex) const
 {
 	return patchIndex == 0 ? getSpecializedGsoapProxy()->Geometry : nullptr;
 }
@@ -125,7 +120,7 @@ uint64_t UnstructuredGridRepresentation::getNodeCount() const
 	return 0;
 }
 
-void UnstructuredGridRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double* xyzPoints) const
+void UnstructuredGridRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double* xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -210,7 +205,7 @@ bool UnstructuredGridRepresentation::isFaceCountOfCellsConstant() const
 	return false;
 }
 
-unsigned int UnstructuredGridRepresentation::getConstantFaceCountOfCells() const
+uint64_t UnstructuredGridRepresentation::getConstantFaceCountOfCells() const
 {
 	_resqml22__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (!isFaceCountOfCellsConstant())
@@ -297,7 +292,7 @@ bool UnstructuredGridRepresentation::isNodeCountOfFacesConstant() const
 	return false;
 }
 
-unsigned int UnstructuredGridRepresentation::getConstantNodeCountOfFaces() const
+uint64_t UnstructuredGridRepresentation::getConstantNodeCountOfFaces() const
 {
 	_resqml22__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (isNodeCountOfFacesConstant() == false)
@@ -322,20 +317,22 @@ unsigned int UnstructuredGridRepresentation::getConstantNodeCountOfFaces() const
 void UnstructuredGridRepresentation::getCellFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const
 {
   _resqml22__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
-  if (grid->Geometry == nullptr)
-    throw invalid_argument("There is no geometry in this grid.");
-  if (grid->Geometry->CellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray)  {
+  if (grid->Geometry == nullptr) {
+	  throw invalid_argument("There is no geometry in this grid.");
+  }
+  if (grid->Geometry->CellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
 	  auto dataset = static_cast<eml23__BooleanExternalArray*>(grid->Geometry->CellFaceIsRightHanded)->Values->ExternalDataArrayPart[0];
 	  EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset);
 	  hdfProxy->readArrayNdOfUCharValues(dataset->PathInExternalFile, cellFaceIsRightHanded);
   }
-  else if (grid->Geometry->CellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray)  {
-	  for (size_t i = 0; i < static_cast<eml23__BooleanConstantArray*>(grid->Geometry->CellFaceIsRightHanded)->Count; ++i)  {
+  else if (grid->Geometry->CellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray) {
+	  for (auto i = 0; i < static_cast<eml23__BooleanConstantArray*>(grid->Geometry->CellFaceIsRightHanded)->Count; ++i) {
 		  cellFaceIsRightHanded[i] = static_cast<eml23__BooleanConstantArray*>(grid->Geometry->CellFaceIsRightHanded)->Value;
 	  }
   }
-  else
+  else {
 	  throw logic_error("Not yet implemented.");
+  }
 }
 
 void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,

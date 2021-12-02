@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "BoundaryFeatureInterpretation.h"
 
-#include <stdexcept>
-
 #include "BoundaryFeature.h"
 
 using namespace std;

@@ -59,7 +59,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of associated grid representations.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getGridRepresentationCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getGridRepresentationCount() const;
 
 		/**
 		 * Gets a grid representation associated to this stratigraphic organization interpretation by
@@ -72,7 +72,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The associated grid representation at index @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation * getGridRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation* getGridRepresentation(uint64_t index) const;
 
 		/**
 		 * Checks whether a given grid representation is associated to this stratigraphic organization

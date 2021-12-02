@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "SealedSurfaceFrameworkRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include "H5Tpublic.h"
 
 #include "../resqml2/StructuralOrganizationInterpretation.h"

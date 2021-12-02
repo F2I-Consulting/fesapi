@@ -18,9 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreGeometry.h"
 
-#include <limits>
 #include <sstream>
-#include <stdexcept>
 
 #include "Wellbore.h"
 
@@ -96,10 +94,9 @@ GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(WellboreGeometry, We
 // Optional Mass per Length Measure
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(WellboreGeometry, WellboreGeometrySection, WtPerLen, gsoap_eml2_1::eml21__MassPerLengthUom, gsoap_eml2_1::soap_new_eml21__MassPerLengthMeasure)
 
-void WellboreGeometry::setWellboreGeometrySectionMdInterval(unsigned int index, double top, double base, const std::string & datum, gsoap_eml2_1::eml21__LengthUom uom)
+void WellboreGeometry::setWellboreGeometrySectionMdInterval(uint64_t index, double top, double base, const std::string & datum, gsoap_eml2_1::eml21__LengthUom uom)
 {
-	if (index >= static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.size()) { throw std::range_error("The index is out of range"); }
-	witsml20__WellboreGeometrySection* section = static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection[index];
+	witsml20__WellboreGeometrySection* section = static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.at(index);
 
 	section->SectionMdInterval = soap_new_eml21__MdInterval(gsoapProxy2_1->soap);
 	section->SectionMdInterval->datum = datum;
@@ -111,52 +108,39 @@ void WellboreGeometry::setWellboreGeometrySectionMdInterval(unsigned int index, 
 	section->SectionMdInterval->MdBase->__item = base;
 }
 
-double WellboreGeometry::getWellboreGeometrySectionMdIntervalTop(unsigned int index) const
+double WellboreGeometry::getWellboreGeometrySectionMdIntervalTop(uint64_t index) const
 {
-	if (index >= static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.size()) { throw std::range_error("The index is out of range"); }
-
-	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection[index]->SectionMdInterval->MdTop->__item;
+	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.at(index)->SectionMdInterval->MdTop->__item;
 }
 
-gsoap_eml2_1::eml21__LengthUom WellboreGeometry::getWellboreGeometrySectionMdIntervalTopUom(unsigned int index) const
+gsoap_eml2_1::eml21__LengthUom WellboreGeometry::getWellboreGeometrySectionMdIntervalTopUom(uint64_t index) const
 {
-	if (index >= static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.size()) { throw std::range_error("The index is out of range"); }
-
-	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection[index]->SectionMdInterval->MdTop->uom;
+	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.at(index)->SectionMdInterval->MdTop->uom;
 }
 
-double WellboreGeometry::getWellboreGeometrySectionMdIntervalBase(unsigned int index) const
+double WellboreGeometry::getWellboreGeometrySectionMdIntervalBase(uint64_t index) const
 {
-	if (index >= static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.size()) { throw std::range_error("The index is out of range"); }
-
-	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection[index]->SectionMdInterval->MdBase->__item;
+	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.at(index)->SectionMdInterval->MdBase->__item;
 }
 
-gsoap_eml2_1::eml21__LengthUom WellboreGeometry::getWellboreGeometrySectionMdIntervalBaseUom(unsigned int index) const
+gsoap_eml2_1::eml21__LengthUom WellboreGeometry::getWellboreGeometrySectionMdIntervalBaseUom(uint64_t index) const
 {
-	if (index >= static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.size()) { throw std::range_error("The index is out of range"); }
-
-	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection[index]->SectionMdInterval->MdBase->uom;
+	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.at(index)->SectionMdInterval->MdBase->uom;
 }
 
-std::string WellboreGeometry::getWellboreGeometrySectionMdIntervaldatum(unsigned int index) const
+std::string WellboreGeometry::getWellboreGeometrySectionMdIntervaldatum(uint64_t index) const
 {
-	if (index >= static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.size()) { throw std::range_error("The index is out of range"); }
-
-	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection[index]->SectionMdInterval->datum;
+	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.at(index)->SectionMdInterval->datum;
 }
 
-bool WellboreGeometry::hasWellboreGeometrySectionMdInterval(unsigned int index) const
+bool WellboreGeometry::hasWellboreGeometrySectionMdInterval(uint64_t index) const
 {
-	if (index >= static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.size()) { throw std::range_error("The index is out of range"); }
-
-	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection[index]->SectionMdInterval != nullptr;
+	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.at(index)->SectionMdInterval != nullptr;
 }
 
-void WellboreGeometry::setWellboreGeometrySectionTvdInterval(unsigned int index, double top, double base, const std::string & datum, gsoap_eml2_1::eml21__LengthUom uom)
+void WellboreGeometry::setWellboreGeometrySectionTvdInterval(uint64_t index, double top, double base, const std::string & datum, gsoap_eml2_1::eml21__LengthUom uom)
 {
-	if (index >= static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.size()) { throw std::range_error("The index is out of range"); }
-	witsml20__WellboreGeometrySection* section = static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection[index];
+	witsml20__WellboreGeometrySection* section = static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.at(index);
 
 	section->SectionTvdInterval = soap_new_eml21__TvdInterval(gsoapProxy2_1->soap);
 	section->SectionTvdInterval->datum = datum;
@@ -168,61 +152,44 @@ void WellboreGeometry::setWellboreGeometrySectionTvdInterval(unsigned int index,
 	section->SectionTvdInterval->TvdBase->__item = base;
 }
 
-double WellboreGeometry::getWellboreGeometrySectionTvdIntervalTop(unsigned int index) const
+double WellboreGeometry::getWellboreGeometrySectionTvdIntervalTop(uint64_t index) const
 {
-	if (index >= static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.size()) { throw std::range_error("The index is out of range"); }
-
-	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection[index]->SectionTvdInterval->TvdTop->__item;
+	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.at(index)->SectionTvdInterval->TvdTop->__item;
 }
 
-gsoap_eml2_1::eml21__LengthUom WellboreGeometry::getWellboreGeometrySectionTvdIntervalTopUom(unsigned int index) const
+gsoap_eml2_1::eml21__LengthUom WellboreGeometry::getWellboreGeometrySectionTvdIntervalTopUom(uint64_t index) const
 {
-	if (index >= static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.size()) { throw std::range_error("The index is out of range"); }
-
-	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection[index]->SectionTvdInterval->TvdTop->uom;
+	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.at(index)->SectionTvdInterval->TvdTop->uom;
 }
 
-double WellboreGeometry::getWellboreGeometrySectionTvdIntervalBase(unsigned int index) const
+double WellboreGeometry::getWellboreGeometrySectionTvdIntervalBase(uint64_t index) const
 {
-	if (index >= static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.size()) { throw std::range_error("The index is out of range"); }
-
-return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection[index]->SectionTvdInterval->TvdBase->__item;
+	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.at(index)->SectionTvdInterval->TvdBase->__item;
 }
 
-gsoap_eml2_1::eml21__LengthUom WellboreGeometry::getWellboreGeometrySectionTvdIntervalBaseUom(unsigned int index) const
+gsoap_eml2_1::eml21__LengthUom WellboreGeometry::getWellboreGeometrySectionTvdIntervalBaseUom(uint64_t index) const
 {
-	if (index >= static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.size()) { throw std::range_error("The index is out of range"); }
-
-	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection[index]->SectionTvdInterval->TvdBase->uom;
+	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.at(index)->SectionTvdInterval->TvdBase->uom;
 }
 
-std::string WellboreGeometry::getWellboreGeometrySectionTvdIntervaldatum(unsigned int index) const
+std::string WellboreGeometry::getWellboreGeometrySectionTvdIntervaldatum(uint64_t index) const
 {
-	if (index >= static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.size()) { throw std::range_error("The index is out of range"); }
-
-	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection[index]->SectionTvdInterval->datum;
+	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.at(index)->SectionTvdInterval->datum;
 }
 
-bool WellboreGeometry::hasWellboreGeometrySectionTvdInterval(unsigned int index) const
+bool WellboreGeometry::hasWellboreGeometrySectionTvdInterval(uint64_t index) const
 {
-	if (index >= static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.size()) { throw std::range_error("The index is out of range"); }
-
-	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection[index]->SectionTvdInterval != nullptr;
+	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.at(index)->SectionTvdInterval != nullptr;
 }
 
 void WellboreGeometry::pushBackSection(const std::string & uid)
 {
 	static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.push_back(gsoap_eml2_1::soap_new_witsml20__WellboreGeometrySection(gsoapProxy2_1->soap));
-	unsigned int index = getSectionCount() - 1;
+	uint64_t index = getSectionCount() - 1;
 	setWellboreGeometrySectionuid(index, uid.empty() ? std::to_string(index) : uid);
 }
 
-unsigned int WellboreGeometry::getSectionCount() const
+uint64_t WellboreGeometry::getSectionCount() const
 {
-	const size_t count = static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.size();
-	if (count >= (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("Too much sections");
-	}
-
-	return static_cast<unsigned int>(count);
+	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->WellboreGeometrySection.size();
 }

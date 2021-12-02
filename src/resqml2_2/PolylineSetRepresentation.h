@@ -93,9 +93,9 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT void getNodeCountPerPolylineOfAllPatches(unsigned int * NodeCountPerPolyline) const final;
 
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
 			unsigned int const * nodeCountPerPolyline, double const * nodes,
@@ -136,7 +136,7 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
 	private:
-		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
+		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(uint64_t patchIndex) const;
 
 		/**
 		 * Initializes this object

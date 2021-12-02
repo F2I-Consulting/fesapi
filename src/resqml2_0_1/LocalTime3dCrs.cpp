@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "LocalTime3dCrs.h"
 
-#include <stdexcept>
-
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;

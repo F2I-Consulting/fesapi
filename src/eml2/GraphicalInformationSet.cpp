@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "GraphicalInformationSet.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include "../eml2/PropertyKind.h"
 
 #include "../resqml2/AbstractFeature.h"
@@ -37,17 +34,9 @@ using namespace gsoap_eml2_3;
 using namespace COMMON_NS;
 using namespace RESQML2_NS;
 
-unsigned int GraphicalInformationSet::getGraphicalInformationSetCount() const
+uint64_t GraphicalInformationSet::getGraphicalInformationSetCount() const
 {
-	_eml23__GraphicalInformationSet const * gis = static_cast<_eml23__GraphicalInformationSet*>(gsoapProxy2_3);
-
-	const size_t count = gis->GraphicalInformation.size();
-	
-	if (count > (numeric_limits<unsigned int>::max)()) {
-		throw range_error("The graphical information set count is out of range.");
-	}
-
-	return static_cast<unsigned int>(count);
+	return static_cast<_eml23__GraphicalInformationSet*>(gsoapProxy2_3)->GraphicalInformation.size();
 }
 
 uint64_t GraphicalInformationSet::getTargetObjectCount(uint64_t graphicalInformationIndex) const
@@ -159,10 +148,7 @@ bool GraphicalInformationSet::hasDirectGraphicalInformation(AbstractObject const
 
 	const std::string targetUuid = targetObject->getUuid();
 	const size_t graphicalInfoCount = gis->GraphicalInformation.size();
-	if (graphicalInfoCount > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much Graphical Informations");
-	}
-	for (size_t giIndex = 0; giIndex < static_cast<unsigned int>(gis->GraphicalInformation.size()); ++giIndex) {
+	for (size_t giIndex = 0; giIndex < gis->GraphicalInformation.size(); ++giIndex) {
 		for (size_t targetIndex = 0; targetIndex < gis->GraphicalInformation[giIndex]->TargetObject.size(); ++targetIndex) {
 			if (getTargetObjectUuid(giIndex, targetIndex).compare(targetUuid) == 0) {
 				return true;

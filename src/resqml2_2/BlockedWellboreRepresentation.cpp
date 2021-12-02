@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "BlockedWellboreRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include <hdf5.h>
 
 #include "../resqml2/AbstractGridRepresentation.h"
@@ -31,8 +28,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
-
-const char* BlockedWellboreRepresentation::XML_NS = "resqml22";
 
 void BlockedWellboreRepresentation::init(const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj)
 {
@@ -242,23 +237,13 @@ void BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(RESQML2
 	static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->Grid.push_back(supportingGridRep->newEml23Reference());
 }
 
-COMMON_NS::DataObjectReference BlockedWellboreRepresentation::getSupportingGridRepresentationDor(unsigned int index) const
+COMMON_NS::DataObjectReference BlockedWellboreRepresentation::getSupportingGridRepresentationDor(uint64_t index) const
 {
 	_resqml22__BlockedWellboreRepresentation* rep = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3);
-
-	if (index >= rep->IntervalGridCells->Grid.size()) {
-		throw out_of_range("The requested index is out of range of the available supporting grid representations.");
-	}
-	return rep->IntervalGridCells->Grid[index];
+	return rep->IntervalGridCells->Grid.at(index);
 }
 
-unsigned int BlockedWellboreRepresentation::getSupportingGridRepresentationCount() const
+uint64_t BlockedWellboreRepresentation::getSupportingGridRepresentationCount() const
 {
-	const size_t result = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->Grid.size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much supporting representations");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->Grid.size();
 }

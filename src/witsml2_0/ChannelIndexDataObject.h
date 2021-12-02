@@ -20,8 +20,6 @@ under the License.
 
 #include "ChannelMetaDataObject.h"
 
-#include <limits>
-
 namespace WITSML2_0_NS
 {
 	/**
@@ -74,13 +72,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The channel index count.
 		 */
-		unsigned int getChannelIndexCount() const {
-			const size_t result = static_cast<T*>(this->gsoapProxy2_1)->Index.size();
-			if (result > (std::numeric_limits<unsigned int>::max)()) {
-				throw std::range_error("There are too much channel index.");
-			}
-
-			return static_cast<unsigned int>(result);
+		uint64_t getChannelIndexCount() const {
+			return static_cast<T*>(this->gsoapProxy2_1)->Index.size();
 		}
 
 		/**
@@ -92,11 +85,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The channel index type.
 		 */
-		gsoap_eml2_1::witsml20__ChannelIndexType getChannelIndexType(unsigned int index) {
-			if (index >= getChannelIndexCount()) {
-				throw std::out_of_range("The channel index is out of range");
-			}
-			return static_cast<T*>(this->gsoapProxy2_1)->Index[index]->IndexType;
+		gsoap_eml2_1::witsml20__ChannelIndexType getChannelIndexType(uint64_t index) {
+			return static_cast<T*>(this->gsoapProxy2_1)->Index.at(index)->IndexType;
 		}
 
 		/**
@@ -108,11 +98,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The channel index uom.
 		 */
-		std::string getChannelIndexUom(unsigned int index) {
-			if (index >= getChannelIndexCount()) {
-				throw std::out_of_range("The channel index is out of range");
-			}
-			return static_cast<T*>(this->gsoapProxy2_1)->Index[index]->Uom;
+		std::string getChannelIndexUom(uint64_t index) {
+			return static_cast<T*>(this->gsoapProxy2_1)->Index.at(index)->Uom;
 		}
 
 		/**
@@ -124,11 +111,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	True if it succeeds, false if it fails.
 		 */
-		bool getChannelIndexIsIncreasing(unsigned int index) {
-			if (index >= getChannelIndexCount()) {
-				throw std::out_of_range("The channel index is out of range");
-			}
-			return static_cast<T*>(this->gsoapProxy2_1)->Index[index]->Direction == gsoap_eml2_1::witsml20__IndexDirection::increasing;
+		bool getChannelIndexIsIncreasing(uint64_t index) {
+			return static_cast<T*>(this->gsoapProxy2_1)->Index.at(index)->Direction == gsoap_eml2_1::witsml20__IndexDirection::increasing;
 		}
 
 		/**
@@ -140,11 +124,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The channel index mnemonic.
 		 */
-		std::string getChannelIndexMnemonic(unsigned int index) {
-			if (index >= getChannelIndexCount()) {
-				throw std::out_of_range("The channel index is out of range");
-			}
-			return static_cast<T*>(this->gsoapProxy2_1)->Index[index]->Mnemonic;
+		std::string getChannelIndexMnemonic(uint64_t index) {
+			return static_cast<T*>(this->gsoapProxy2_1)->Index.at(index)->Mnemonic;
 		}
 
 		/**
@@ -156,11 +137,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The channel index datum.
 		 */
-		std::string getChannelIndexDatum(unsigned int index) {
-			if (index >= getChannelIndexCount()) {
-				throw std::out_of_range("The channel index is out of range");
-			}
-			return static_cast<T*>(this->gsoapProxy2_1)->Index[index]->DatumReference == nullptr ? "" : *static_cast<T*>(this->gsoapProxy2_1)->Index[index]->DatumReference;
+		std::string getChannelIndexDatum(uint64_t index) {
+			return static_cast<T*>(this->gsoapProxy2_1)->Index.at(index)->DatumReference == nullptr ? "" : *static_cast<T*>(this->gsoapProxy2_1)->Index[index]->DatumReference;
 		}
 	};
 }

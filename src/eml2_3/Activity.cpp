@@ -21,7 +21,6 @@ under the License.
 #include "../eml2/ActivityTemplate.h"
 
 #include <algorithm>
-#include <stdexcept>
 
 using namespace std;
 using namespace EML2_3_NS;
@@ -51,7 +50,7 @@ void Activity::pushBackParameter(const std::string title, double value, gsoap_re
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
 		}
 		const int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title)) {
+		if (maxOccurs > -1 && static_cast<uint64_t>(maxOccurs) <= getParameterCount(title)) {
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		}
 		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr) {
@@ -78,7 +77,7 @@ void Activity::pushBackParameter(const std::string title, const std::string & va
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
 		}
 		const int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title)) {
+		if (maxOccurs > -1 && static_cast<uint64_t>(maxOccurs) <= getParameterCount(title)) {
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		}
 		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr) {
@@ -104,7 +103,7 @@ void Activity::pushBackParameter(const std::string title, int64_t value)
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
 		}
 		const int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title)) {
+		if (maxOccurs > -1 && static_cast<uint64_t>(maxOccurs) <= getParameterCount(title)) {
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		}
 		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr) {
@@ -133,10 +132,9 @@ void Activity::pushBackParameter(const std::string title, AbstractObject* resqml
 		if (activityTemplate->isAnExistingParameter(title) == false)
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
 		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
+		if (maxOccurs > -1 && static_cast<uint64_t>(maxOccurs) <= getParameterCount(title))
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
-		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr)
-		{
+		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr) {
 			vector<gsoap_resqml2_0_1::resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
 			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), gsoap_resqml2_0_1::resqml20__ParameterKind::dataObject) == allowedKinds.end())
 				throw invalid_argument("The parameter template " + title + " does not allow a data object datatype.");
@@ -163,22 +161,19 @@ uint64_t Activity::getParameterCount(const std::string & paramTitle) const
 	return getParameterFromTitle(paramTitle).size();
 }
 
-const std::string & Activity::getParameterTitle(unsigned int index) const
+std::string Activity::getParameterTitle(uint64_t index) const
 {
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
 
-	if (activity->Parameter.size() <= index)
-		throw out_of_range("The parameter index is not in the parameter range.");
-
-	return activity->Parameter[index]->Title;
+	return activity->Parameter.at(index)->Title;
 }
 
-std::vector<unsigned int> Activity::getParameterIndexOfTitle(const std::string & paramTitle) const
+std::vector<uint64_t> Activity::getParameterIndexOfTitle(const std::string & paramTitle) const
 {
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
 
-	vector<unsigned int> paramIndex;
-	for (unsigned int i = 0; i < activity->Parameter.size(); ++i) {
+	vector<uint64_t> paramIndex;
+	for (uint64_t i = 0; i < activity->Parameter.size(); ++i) {
 		if (activity->Parameter[i]->Title == paramTitle) {
 			paramIndex.push_back(i);
 		}
@@ -221,26 +216,23 @@ bool Activity::isAFloatingPointQuantityParameter(const std::string & paramTitle)
 	return true;
 }
 
-bool Activity::isAFloatingPointQuantityParameter(unsigned int index) const
+bool Activity::isAFloatingPointQuantityParameter(uint64_t index) const
 {
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
 
-	if (activity->Parameter.size() <= index)
-		throw out_of_range("The parameter index is not in the parameter range.");
-
-	return activity->Parameter[index]->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleQuantityParameter;
+	return activity->Parameter.at(index)->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleQuantityParameter;
 }
 
 vector<double> Activity::getFloatingPointQuantityParameterValue(const std::string & paramTitle) const
 {
 	std::vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
 
-	if (param.size() < 1)
+	if (param.size() < 1) {
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
+	}
 
 	vector<double> result;
-	for (unsigned int i = 0; i < param.size(); ++i)
-	{
+	for (size_t i = 0; i < param.size(); ++i) {
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__DoubleQuantityParameter)
 			throw invalid_argument("The parameter " + paramTitle + " contains some non double values.");
 		else
@@ -250,14 +242,11 @@ vector<double> Activity::getFloatingPointQuantityParameterValue(const std::strin
 	return result;
 }
 
-double Activity::getFloatingPointQuantityParameterValue(unsigned int index) const
+double Activity::getFloatingPointQuantityParameterValue(uint64_t index) const
 {
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
 
-	if (activity->Parameter.size() <= index)
-		throw out_of_range("The parameter index is not in the parameter range.");
-
-	if (activity->Parameter[index]->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__DoubleQuantityParameter)
+	if (activity->Parameter.at(index)->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__DoubleQuantityParameter)
 		throw invalid_argument("The parameter at index is not a floating point quantity parameter.");
 
 	return static_cast<eml23__DoubleQuantityParameter*>(activity->Parameter[index])->Value;
@@ -284,14 +273,11 @@ vector<gsoap_resqml2_0_1::resqml20__ResqmlUom> Activity::getFloatingPointQuantit
 	return result;
 }
 
-gsoap_resqml2_0_1::resqml20__ResqmlUom Activity::getFloatingPointQuantityParameterUom(unsigned int index) const
+gsoap_resqml2_0_1::resqml20__ResqmlUom Activity::getFloatingPointQuantityParameterUom(uint64_t index) const
 {
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
 
-	if (activity->Parameter.size() <= index)
-		throw range_error("The parameter index is not in the parameter range.");
-
-	if (activity->Parameter[index]->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__DoubleQuantityParameter)
+	if (activity->Parameter.at(index)->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__DoubleQuantityParameter)
 		throw invalid_argument("The parameter index is not in the parameter range.");
 
 	gsoap_resqml2_0_1::resqml20__ResqmlUom uom;
@@ -309,7 +295,7 @@ bool Activity::isAnIntegerQuantityParameter(const std::string & paramTitle) cons
 	if (param.size() < 1)
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
-	for (unsigned int i = 0; i < param.size(); ++i)
+	for (size_t i = 0; i < param.size(); ++i)
 	{
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__IntegerQuantityParameter)
 			return false;
@@ -318,14 +304,11 @@ bool Activity::isAnIntegerQuantityParameter(const std::string & paramTitle) cons
 	return true;
 }
 
-bool Activity::isAnIntegerQuantityParameter(unsigned int index) const
+bool Activity::isAnIntegerQuantityParameter(uint64_t index) const
 {
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
 
-	if (activity->Parameter.size() <= index)
-		throw out_of_range("The parameter index is not in the parameter range.");
-
-	return activity->Parameter[index]->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerQuantityParameter;
+	return activity->Parameter.at(index)->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerQuantityParameter;
 }
 
 vector<int64_t> Activity::getIntegerQuantityParameterValue(const std::string & paramTitle) const
@@ -336,7 +319,7 @@ vector<int64_t> Activity::getIntegerQuantityParameterValue(const std::string & p
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
 	vector<int64_t> result;
-	for (unsigned int i = 0; i < param.size(); ++i)
+	for (size_t i = 0; i < param.size(); ++i)
 	{
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__IntegerQuantityParameter)
 			throw invalid_argument("The parameter " + paramTitle + " contains some non integer values.");
@@ -347,7 +330,7 @@ vector<int64_t> Activity::getIntegerQuantityParameterValue(const std::string & p
 	return result;
 }
 
-int64_t Activity::getIntegerQuantityParameterValue(unsigned int index) const
+int64_t Activity::getIntegerQuantityParameterValue(uint64_t index) const
 {
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
 
@@ -370,7 +353,7 @@ bool Activity::isAStringParameter(const std::string & paramTitle) const
 	if (param.size() < 1)
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
-	for (unsigned int i = 0; i < param.size(); ++i)
+	for (size_t i = 0; i < param.size(); ++i)
 	{
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__StringParameter)
 			return false;
@@ -379,14 +362,11 @@ bool Activity::isAStringParameter(const std::string & paramTitle) const
 	return true;
 }
 
-bool Activity::isAStringParameter(unsigned int index) const
+bool Activity::isAStringParameter(uint64_t index) const
 {
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
 
-	if (activity->Parameter.size() <= index)
-		throw out_of_range("The parameter index is not in the parameter range.");
-
-	return activity->Parameter[index]->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__StringParameter;
+	return activity->Parameter.at(index)->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__StringParameter;
 }
 
 vector<string> Activity::getStringParameterValue(const std::string & paramTitle) const
@@ -397,7 +377,7 @@ vector<string> Activity::getStringParameterValue(const std::string & paramTitle)
 		invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
 	vector<string> result;
-	for (unsigned int i = 0; i < param.size(); ++i)
+	for (size_t i = 0; i < param.size(); ++i)
 	{
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__StringParameter)
 			throw invalid_argument("The parameter " + paramTitle + " contains some non string values.");
@@ -408,7 +388,7 @@ vector<string> Activity::getStringParameterValue(const std::string & paramTitle)
 	return result;
 }
 
-const std::string & Activity::getStringParameterValue(unsigned int index) const
+std::string Activity::getStringParameterValue(uint64_t index) const
 {
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
 
@@ -440,14 +420,11 @@ bool Activity::isAResqmlObjectParameter(const std::string & paramTitle) const
 	return true;
 }
 
-bool Activity::isAResqmlObjectParameter(unsigned int index) const
+bool Activity::isAResqmlObjectParameter(uint64_t index) const
 {
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
 
-	if (activity->Parameter.size() <= index)
-		throw out_of_range("The parameter index is not in the parameter range.");
-
-	return activity->Parameter[index]->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DataObjectParameter;
+	return activity->Parameter.at(index)->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DataObjectParameter;
 }
 
 vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectParameterValue(const std::string & paramTitle) const
@@ -458,7 +435,7 @@ vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectParameterValue(const
 		invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
 	vector<COMMON_NS::AbstractObject*> result;
-	for (unsigned int i = 0; i < param.size(); ++i)
+	for (size_t i = 0; i < param.size(); ++i)
 	{
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__DataObjectParameter)
 			throw invalid_argument("The parameter " + paramTitle + " contains some non RESQML object values.");
@@ -469,14 +446,11 @@ vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectParameterValue(const
 	return result;
 }
 
-COMMON_NS::AbstractObject* Activity::getResqmlObjectParameterValue(unsigned int index) const
+COMMON_NS::AbstractObject* Activity::getResqmlObjectParameterValue(uint64_t index) const
 {
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
 
-	if (activity->Parameter.size() <= index)
-		throw out_of_range("The parameter index is not in the parameter range.");
-
-	if (activity->Parameter[index]->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__DataObjectParameter)
+	if (activity->Parameter.at(index)->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__DataObjectParameter)
 		throw invalid_argument("The parameter at index is not a RESQML object parameter.");
 
 	return getRepository()->getDataObjectByUuid(static_cast<eml23__DataObjectParameter*>(activity->Parameter[index])->DataObject->Uuid);

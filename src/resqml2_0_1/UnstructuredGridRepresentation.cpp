@@ -16,20 +16,16 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
 #include "UnstructuredGridRepresentation.h"
 
-#include <stdexcept>
-
-#include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../eml2/AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
+
+#include "../resqml2/AbstractFeatureInterpretation.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_0_1_NS;
-
-const char* UnstructuredGridRepresentation::XML_NS = "resqml20";
 
 void UnstructuredGridRepresentation::init(COMMON_NS::DataObjectRepository* repo,
 	const std::string & guid, const std::string & title,
@@ -85,7 +81,7 @@ _resqml20__UnstructuredGridRepresentation* UnstructuredGridRepresentation::getSp
 	return static_cast<_resqml20__UnstructuredGridRepresentation*>(gsoapProxy2_0_1);
 }
 
-gsoap_resqml2_0_1::resqml20__PointGeometry* UnstructuredGridRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
+gsoap_resqml2_0_1::resqml20__PointGeometry* UnstructuredGridRepresentation::getPointGeometry2_0_1(uint64_t patchIndex) const
 {
 	return patchIndex == 0 ? getSpecializedGsoapProxy()->Geometry : nullptr;
 }
@@ -120,7 +116,7 @@ uint64_t UnstructuredGridRepresentation::getNodeCount() const
 	return 0;
 }
 
-void UnstructuredGridRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void UnstructuredGridRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -206,7 +202,7 @@ bool UnstructuredGridRepresentation::isFaceCountOfCellsConstant() const
 	return false;
 }
 
-unsigned int UnstructuredGridRepresentation::getConstantFaceCountOfCells() const
+uint64_t UnstructuredGridRepresentation::getConstantFaceCountOfCells() const
 {
 	_resqml20__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (!isFaceCountOfCellsConstant())
@@ -295,7 +291,7 @@ bool UnstructuredGridRepresentation::isNodeCountOfFacesConstant() const
 	return false;
 }
 
-unsigned int UnstructuredGridRepresentation::getConstantNodeCountOfFaces() const
+uint64_t UnstructuredGridRepresentation::getConstantNodeCountOfFaces() const
 {
 	_resqml20__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (isNodeCountOfFacesConstant() == false)

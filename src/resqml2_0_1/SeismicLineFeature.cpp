@@ -20,15 +20,14 @@ under the License.
 
 #include "../resqml2/SeismicLineSetFeature.h"
 
-using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 SeismicLineFeature::SeismicLineFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
-	int traceIndexIncrement, int firstTraceIndex, unsigned int traceCount)
+	int64_t traceIndexIncrement, int64_t firstTraceIndex, uint64_t traceCount)
 {
 	if (repo == nullptr) {
-		throw invalid_argument("The soap context cannot be null.");
+		throw std::invalid_argument("The soap context cannot be null.");
 	}
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESeismicLineFeature(repo->getGsoapContext());
@@ -42,19 +41,4 @@ SeismicLineFeature::SeismicLineFeature(COMMON_NS::DataObjectRepository* repo, co
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
-}
-
-int SeismicLineFeature::getTraceIndexIncrement() const
-{
-	return static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->TraceIndexIncrement;
-}
-		
-int SeismicLineFeature::getFirstTraceIndex() const
-{
-	return static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->FirstTraceIndex;
-}
-		
-uint64_t SeismicLineFeature::getTraceCount() const
-{
-	return static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->TraceCount;
 }

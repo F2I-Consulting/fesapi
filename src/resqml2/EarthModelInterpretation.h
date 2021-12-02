@@ -45,7 +45,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of associated structural organization interpretations.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getStructuralOrganizationInterpretationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getStructuralOrganizationInterpretationCount() const = 0;
 
 		/**
 		 * Gets the DOR of a given associated structural organization interpretation.
@@ -58,7 +58,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the structural organization interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStructuralOrganizationInterpertationDor(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStructuralOrganizationInterpertationDor(uint64_t index) const = 0;
 
 		/**
 		 * Gets a given associated structural organization interpretation.
@@ -71,7 +71,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The structural organization interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT StructuralOrganizationInterpretation* getStructuralOrganizationInterpertation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT StructuralOrganizationInterpretation* getStructuralOrganizationInterpertation(uint64_t index) const;
 
 		/**
 		 * Pushes back a structural organization interpretation.
@@ -125,7 +125,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of associated geologic unit occurrence interpretations.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getGeologicUnitOccurrenceCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getGeologicUnitOccurrenceCount() const = 0;
 
 		/**
 		 * Gets the DOR of a given associated geologic unit occurrence interpretation.
@@ -137,7 +137,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the geologic unit occurrence interpretation at position @p index.
 		 */
-		virtual COMMON_NS::DataObjectReference getGeologicUnitOccurrenceDor(unsigned int index) const = 0;
+		virtual COMMON_NS::DataObjectReference getGeologicUnitOccurrenceDor(uint64_t index) const = 0;
 
 		/**
 		 * Gets a given associated geologic unit occurrence interpretation.
@@ -149,7 +149,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The geologic unit occurrence interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT GeologicUnitOccurrenceInterpretation* getGeologicUnitOccurrence(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT GeologicUnitOccurrenceInterpretation* getGeologicUnitOccurrence(uint64_t index) const;
 
 		/**
 		 * @brief	Pushes back a geologic unit occurrence interpretation.
@@ -166,7 +166,7 @@ namespace RESQML2_NS
 		  *
 		  * @returns	The count of associated rock fluid organization interpretations.
 		  */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getRockFluidOrganizationInterpretationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getRockFluidOrganizationInterpretationCount() const = 0;
 
 		 /**
 		  * Pushes back a rock fluid organization interpretation.
@@ -188,7 +188,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the rock fluid organization interpretation at position @p index.
 		 */
-		virtual COMMON_NS::DataObjectReference getRockFluidOrganizationInterpretationDor(unsigned int index) const = 0;
+		virtual COMMON_NS::DataObjectReference getRockFluidOrganizationInterpretationDor(uint64_t index) const = 0;
 
 		/**
 		 * Gets a given associated rock fluid organization interpretation.
@@ -201,10 +201,10 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The rock fluid organization interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT RockFluidOrganizationInterpretation* getRockFluidOrganizationInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RockFluidOrganizationInterpretation* getRockFluidOrganizationInterpretation(uint64_t index) const;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "EarthModelInterpretation";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 

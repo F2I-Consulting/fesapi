@@ -56,7 +56,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of grid representations associated to this rock fluid organization.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getGridRepresentationCount() const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
+		DLL_IMPORT_OR_EXPORT uint64_t getGridRepresentationCount() const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 		/**
 		 * Gets a grid representation associated to this rock fluid organization by means of its index.
@@ -68,7 +68,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The associated grid representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation* getGridRepresentation(unsigned int index) const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
+		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation* getGridRepresentation(uint64_t index) const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 		/**
 		 * Checks whether a given grid representation is associated to this rock fluid organization.
@@ -94,7 +94,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of rock fluid unit interpretations of this rock fluid organization.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getRockFluidUnitInterpCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getRockFluidUnitInterpCount() const = 0;
 
 		/**
 		 * Gets the DOR of a rock fluid unit interpretation of this rock fluid organization by means of
@@ -107,7 +107,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the rock fluid unit interpretation at position @p index.
 		 */
-		virtual COMMON_NS::DataObjectReference getRockFluidUnitInterpretationDor(unsigned int index) const = 0;
+		virtual COMMON_NS::DataObjectReference getRockFluidUnitInterpretationDor(uint64_t index) const = 0;
 
 		/**
 		 * Gets a rock fluid unit interpretation of this rock fluid organization by means of

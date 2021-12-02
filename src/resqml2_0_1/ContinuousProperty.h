@@ -19,10 +19,6 @@ under the License.
 #pragma once
 
 #include "../resqml2/ContinuousProperty.h"
-#include "../eml2/AbstractHdfProxy.h"
-
-#include <stdexcept>
-#include <sstream>
 
 namespace RESQML2_0_1_NS
 {
@@ -187,13 +183,13 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getUomAsString() const final;
 
-		DLL_IMPORT_OR_EXPORT double getMinimumValue(unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT double getMinimumValue(uint64_t index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT double getMaximumValue(unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT double getMaximumValue(uint64_t index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT void setMinimumValue(double value, unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT void setMinimumValue(double value, uint64_t index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT void setMaximumValue(double value, unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT void setMaximumValue(double value, uint64_t index = 0) const final;
 
 		/**
 		 * Gets the Energistics property kind which is associated to this intance
@@ -236,6 +232,6 @@ namespace RESQML2_0_1_NS
 			gsoap_eml2_3::eml23__IndexableElement attachmentKind,
 			std::vector<int> dimensions = std::vector<int>());
 
-		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const;
+		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(uint64_t patchIndex, std::string & datasetPath) const;
 	};
 }

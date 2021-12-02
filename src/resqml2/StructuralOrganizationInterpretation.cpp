@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "StructuralOrganizationInterpretation.h"
 
-#include <stdexcept>
-
 #include "FaultInterpretation.h"
 #include "HorizonInterpretation.h"
 

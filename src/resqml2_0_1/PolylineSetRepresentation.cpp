@@ -19,9 +19,7 @@ under the License.
 #include "PolylineSetRepresentation.h"
 
 #include <algorithm>
-#include <limits>
 #include <sstream>
-#include <stdexcept>
 
 #include <hdf5.h>
 
@@ -218,7 +216,7 @@ COMMON_NS::DataObjectReference PolylineSetRepresentation::getHdfProxyDor() const
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
-resqml20__PointGeometry* PolylineSetRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
+resqml20__PointGeometry* PolylineSetRepresentation::getPointGeometry2_0_1(uint64_t patchIndex) const
 {
 	if (patchIndex < static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.size() &&
 		static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch[patchIndex]->Geometry->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__PointGeometry)
@@ -278,7 +276,7 @@ void PolylineSetRepresentation::getNodeCountPerPolylineOfAllPatches(unsigned int
 	}
 }
 
-void PolylineSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void PolylineSetRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -294,7 +292,7 @@ void PolylineSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, dou
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
 }
 
-unsigned int PolylineSetRepresentation::getPatchCount() const
+uint64_t PolylineSetRepresentation::getPatchCount() const
 {
     return static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.size();
 }

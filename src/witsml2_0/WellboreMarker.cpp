@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreMarker.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include "Wellbore.h"
 
 using namespace std;

@@ -121,24 +121,24 @@ namespace RESQML2_0_1_NS
 		*/
 		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) final;
 
-		DLL_IMPORT_OR_EXPORT int64_t getNullValue(unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getNullValue(uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) const final;
 
-		DLL_IMPORT_OR_EXPORT bool hasMinimumValue(unsigned int = 0) const final { return false; }
+		DLL_IMPORT_OR_EXPORT bool hasMinimumValue(uint64_t = 0) const final { return false; }
 
-		DLL_IMPORT_OR_EXPORT int64_t getMinimumValue(unsigned int = 0) const final { throw std::logic_error("A RESQML2.0.1 cannot have a minimum value."); }
+		DLL_IMPORT_OR_EXPORT int64_t getMinimumValue(uint64_t = 0) const final { throw std::logic_error("A RESQML2.0.1 cannot have a minimum value."); }
 
-		DLL_IMPORT_OR_EXPORT bool hasMaximumValue(unsigned int = 0) const final { return false; }
+		DLL_IMPORT_OR_EXPORT bool hasMaximumValue(uint64_t = 0) const final { return false; }
 
-		DLL_IMPORT_OR_EXPORT int64_t getMaximumValue(unsigned int = 0) const final { throw std::logic_error("A RESQML2.0.1 cannot have a maximum value."); }
+		DLL_IMPORT_OR_EXPORT int64_t getMaximumValue(uint64_t = 0) const final { throw std::logic_error("A RESQML2.0.1 cannot have a maximum value."); }
 
-		DLL_IMPORT_OR_EXPORT void setMinimumValue(int64_t, unsigned int = 0) const final { throw std::logic_error("A RESQML2.0.1 cannot have a minimum value."); }
+		DLL_IMPORT_OR_EXPORT void setMinimumValue(int64_t, uint64_t = 0) const final { throw std::logic_error("A RESQML2.0.1 cannot have a minimum value."); }
 
-		DLL_IMPORT_OR_EXPORT void setMaximumValue(int64_t, unsigned int = 0) const final { throw std::logic_error("A RESQML2.0.1 cannot have a maximum value."); }
+		DLL_IMPORT_OR_EXPORT void setMaximumValue(int64_t, uint64_t = 0) const final { throw std::logic_error("A RESQML2.0.1 cannot have a maximum value."); }
 
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml20";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.
@@ -146,7 +146,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "CategoricalProperty";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};

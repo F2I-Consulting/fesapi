@@ -34,11 +34,9 @@ namespace EML2_NS
 		/**
 		 * Gets the size of this graphical information set
 		 *
-		 * @exception	std::range_error	If the size is strictly greater than unsigned int max.
-		 *
 		 * @returns	The size of this graphical information set.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getGraphicalInformationSetCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getGraphicalInformationSetCount() const;
 
 		/**
 		 * Gets the count of data objects which are targeted by a graphical information at @p graphicalInformationIndex.

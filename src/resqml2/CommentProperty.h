@@ -81,7 +81,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The string values of the patch.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<std::string> getStringValuesOfPatch(unsigned int patchIndex);
+		DLL_IMPORT_OR_EXPORT std::vector<std::string> getStringValuesOfPatch(uint64_t patchIndex);
 
 		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
@@ -113,6 +113,6 @@ namespace RESQML2_NS
 		 */
 		CommentProperty(gsoap_eml2_3::_resqml22__CommentProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 
-		virtual EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const = 0;
+		virtual EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(uint64_t patchIndex, std::string & datasetPath) const = 0;
 	};
 }

@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Wellbore.h"
 
-#include <stdexcept>
-
 #include "../witsml2/Well.h"
 
 #include "../resqml2_0_1/WellboreFeature.h"

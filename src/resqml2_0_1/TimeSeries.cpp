@@ -18,15 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "TimeSeries.h"
 
-#include <stdexcept>
-
 #include "../tools/TimeTools.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-
-const char* TimeSeries::XML_NS = "resqml20";
 
 TimeSeries::TimeSeries(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {
@@ -53,7 +49,7 @@ void TimeSeries::pushBackTimestamp(const tm & timestamp, LONG64 yearOffset)
 	static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1)->Time.push_back(ts);
 }
 
-unsigned int TimeSeries::getTimestampIndex(time_t timestamp, LONG64 yearOffset) const
+uint64_t TimeSeries::getTimestampIndex(time_t timestamp, LONG64 yearOffset) const
 {
 	gsoap_resqml2_0_1::_resqml20__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1);
 
@@ -67,7 +63,7 @@ unsigned int TimeSeries::getTimestampIndex(time_t timestamp, LONG64 yearOffset) 
 	throw out_of_range("The timestamp has not been found in the allowed range.");
 }
 
-unsigned int TimeSeries::getTimestampIndex(const tm & timestamp, LONG64 yearOffset) const
+uint64_t TimeSeries::getTimestampIndex(const tm & timestamp, LONG64 yearOffset) const
 {
 	gsoap_resqml2_0_1::_resqml20__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1);
 
@@ -87,12 +83,12 @@ unsigned int TimeSeries::getTimestampIndex(const tm & timestamp, LONG64 yearOffs
 	throw out_of_range("The timestamp has not been found in the allowed range.");
 }
 
-unsigned int TimeSeries::getTimestampCount() const
+uint64_t TimeSeries::getTimestampCount() const
 {
 	return static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1)->Time.size();
 }
 
-tm TimeSeries::getTimestampAsTimeStructure(unsigned int index) const
+tm TimeSeries::getTimestampAsTimeStructure(uint64_t index) const
 {
 	gsoap_resqml2_0_1::_resqml20__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1);
 

@@ -161,7 +161,7 @@ namespace WITSML2_NS
 		 *
 		 * @returns	the count of trajectory stations in this trajectory.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getTrajectoryStationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getTrajectoryStationCount() const noexcept = 0;
 
 	protected:
 

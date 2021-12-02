@@ -78,24 +78,24 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void pushBackTrianglePatch(unsigned int nodeCount, double const * nodes, unsigned int triangleCount, unsigned int const * triangleNodeIndices,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
-		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getTriangleCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getTriangleCountOfPatch(uint64_t patchIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getTriangleCountOfAllPatches() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getTriangleCountOfAllPatches() const final;
 
-		DLL_IMPORT_OR_EXPORT void getTriangleNodeIndicesOfPatch(unsigned int patchIndex, unsigned int * triangleNodeIndices) const final;
+		DLL_IMPORT_OR_EXPORT void getTriangleNodeIndicesOfPatch(uint64_t patchIndex, unsigned int * triangleNodeIndices) const final;
 
 		DLL_IMPORT_OR_EXPORT void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const * XML_NS = "resqml20";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.
@@ -103,6 +103,6 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
 	private:
-		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(uint64_t patchIndex) const;
 	};
 }

@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Channel.h"
 
-#include <stdexcept>
-
 #include "../eml2/PropertyKind.h"
 
 #include "Well.h"

@@ -51,7 +51,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT bool isAFaciesCube() const;
 
 		/** Please do note use: not implemented yet. Please use lattice information. */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double* xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double* xyzPoints) const final;
 
 		/**
 		 * Gets the X coordinate of the origin of this geometry. The X coordinate is given in the local
@@ -361,7 +361,7 @@ namespace RESQML2_NS
 		 * @param [in]	seismicSupport	The seismic support of the patch to push.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void addSeismic3dCoordinatesToPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			double startInline, double incrInline, unsigned int countInline,
 			double startCrossline, double incrCrossline, unsigned int countCrossline,
 			unsigned int countSample, RESQML2_NS::AbstractRepresentation * seismicSupport) = 0;

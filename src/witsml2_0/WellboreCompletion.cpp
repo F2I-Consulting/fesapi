@@ -127,7 +127,7 @@ void WellboreCompletion::pushBackPerforation(const string & datum,
 	wellboreCompletion->ContactIntervalSet->PerforationSetInterval.push_back(perforationSetInterval);
 }
 
-void WellboreCompletion::pushBackPerforationHistory(unsigned int index,
+void WellboreCompletion::pushBackPerforationHistory(uint64_t index,
 	const std::string & guid)
 {
 	witsml20__PerforationSetInterval * perforationSetInterval = getPerforation(index);
@@ -146,7 +146,7 @@ void WellboreCompletion::pushBackPerforationHistory(unsigned int index,
 	perforationSetInterval->PerforationStatusHistory.push_back(perforationStatusHistory);
 }
 
-void WellboreCompletion::pushBackPerforationHistory(unsigned int index,
+void WellboreCompletion::pushBackPerforationHistory(uint64_t index,
 	gsoap_eml2_1::witsml20__PerforationStatus perforationStatus,
 	time_t startDate,
 	const std::string & guid)
@@ -175,7 +175,7 @@ void WellboreCompletion::pushBackPerforationHistory(unsigned int index,
 	perforationSetInterval->PerforationStatusHistory.push_back(perforationStatusHistory);
 }
 
-unsigned int WellboreCompletion::getPerforationCount() const
+uint64_t WellboreCompletion::getPerforationCount() const
 {
 	witsml20__WellboreCompletion* wellboreCompletion = static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1);
 
@@ -186,17 +186,17 @@ unsigned int WellboreCompletion::getPerforationCount() const
 	return wellboreCompletion->ContactIntervalSet->PerforationSetInterval.size();
 }
 
-std::string WellboreCompletion::getPerforationUid(unsigned int index) const
+std::string WellboreCompletion::getPerforationUid(uint64_t index) const
 {
 	return getPerforation(index)->uid;
 }
 
-bool WellboreCompletion::hasPerforationMdDatum(unsigned int index) const
+bool WellboreCompletion::hasPerforationMdDatum(uint64_t index) const
 {
 	return getPerforation(index)->PerforationSetMdInterval != nullptr;
 }
 
-string WellboreCompletion::getPerforationMdDatum(unsigned int index) const
+string WellboreCompletion::getPerforationMdDatum(uint64_t index) const
 {
 	if (!hasPerforationMdDatum(index)) {
 		throw invalid_argument("No perforation md datum is defined.");
@@ -205,7 +205,7 @@ string WellboreCompletion::getPerforationMdDatum(unsigned int index) const
 	return getPerforation(index)->PerforationSetMdInterval->datum;
 }
 
-bool WellboreCompletion::hasPerforationMdUnit(unsigned int index) const
+bool WellboreCompletion::hasPerforationMdUnit(uint64_t index) const
 {
 	witsml20__PerforationSetInterval const * const perforationSetInterval = getPerforation(index);
 
@@ -214,7 +214,7 @@ bool WellboreCompletion::hasPerforationMdUnit(unsigned int index) const
 		: perforationSetInterval->PerforationSetMdInterval->MdBase != nullptr || perforationSetInterval->PerforationSetMdInterval->MdTop != nullptr;
 }
 
-eml21__LengthUom WellboreCompletion::getPerforationMdUnit(unsigned int index) const
+eml21__LengthUom WellboreCompletion::getPerforationMdUnit(uint64_t index) const
 {
 	if (!hasPerforationMdUnit(index)) {
 		throw invalid_argument("No perforation md unit is defined.");
@@ -227,12 +227,12 @@ eml21__LengthUom WellboreCompletion::getPerforationMdUnit(unsigned int index) co
 		: perforationSetInterval->PerforationSetMdInterval->MdTop->uom;
 }
 
-string WellboreCompletion::getPerforationMdUnitAsString(unsigned int index) const
+string WellboreCompletion::getPerforationMdUnitAsString(uint64_t index) const
 {
 	return gsoap_eml2_1::soap_eml21__LengthUom2s(gsoapProxy2_1->soap, getPerforationMdUnit(index));
 }
 
-bool WellboreCompletion::hasPerforationTopMd(unsigned int index) const
+bool WellboreCompletion::hasPerforationTopMd(uint64_t index) const
 {
 	witsml20__PerforationSetInterval const * const perforationSetInterval = getPerforation(index);
 
@@ -241,7 +241,7 @@ bool WellboreCompletion::hasPerforationTopMd(unsigned int index) const
 		: perforationSetInterval->PerforationSetMdInterval->MdTop != nullptr;
 }
 
-double WellboreCompletion::getPerforationTopMd(unsigned int index) const
+double WellboreCompletion::getPerforationTopMd(uint64_t index) const
 {
 	if (!hasPerforationTopMd(index)) {
 		throw invalid_argument("No perforation top md is defined.");
@@ -250,7 +250,7 @@ double WellboreCompletion::getPerforationTopMd(unsigned int index) const
 	return getPerforation(index)->PerforationSetMdInterval->MdTop->__item;
 }
 
-bool WellboreCompletion::hasPerforationBaseMd(unsigned int index) const
+bool WellboreCompletion::hasPerforationBaseMd(uint64_t index) const
 {
 	witsml20__PerforationSetInterval const * const perforationSetInterval = getPerforation(index);
 
@@ -259,7 +259,7 @@ bool WellboreCompletion::hasPerforationBaseMd(unsigned int index) const
 		: perforationSetInterval->PerforationSetMdInterval->MdBase != nullptr;
 }
 
-double WellboreCompletion::getPerforationBaseMd(unsigned int index) const
+double WellboreCompletion::getPerforationBaseMd(uint64_t index) const
 {
 	if (!hasPerforationBaseMd(index)) {
 		throw invalid_argument("No perforation base md is defined.");
@@ -268,19 +268,19 @@ double WellboreCompletion::getPerforationBaseMd(unsigned int index) const
 	return getPerforation(index)->PerforationSetMdInterval->MdBase->__item;
 }
 
-unsigned int WellboreCompletion::getPerforationHistoryCount(unsigned int index) const
+uint64_t WellboreCompletion::getPerforationHistoryCount(uint64_t index) const
 {
 	return getPerforation(index)->PerforationStatusHistory.size();
 }
 
-bool WellboreCompletion::hasPerforationHistoryStatus(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+bool WellboreCompletion::hasPerforationHistoryStatus(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	return getPerforationHistoryEntry(historyIndex, perforationIndex)->PerforationStatus != nullptr;
 }
 
-witsml20__PerforationStatus WellboreCompletion::getPerforationHistoryStatus(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+witsml20__PerforationStatus WellboreCompletion::getPerforationHistoryStatus(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	if (!hasPerforationHistoryStatus(historyIndex, perforationIndex)) {
 		throw invalid_argument("No perforation history entry is defined.");
@@ -289,14 +289,14 @@ witsml20__PerforationStatus WellboreCompletion::getPerforationHistoryStatus(unsi
 	return *getPerforationHistoryEntry(historyIndex, perforationIndex)->PerforationStatus;
 }
 
-string WellboreCompletion::getPerforationHistoryStatusToString(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+string WellboreCompletion::getPerforationHistoryStatusToString(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	return gsoap_eml2_1::soap_witsml20__PerforationStatus2s(gsoapProxy2_1->soap, getPerforationHistoryStatus(historyIndex, perforationIndex));
 }
 
-void WellboreCompletion::setPerforationHistoryStatus(unsigned int historyIndex,
-	unsigned int perforationIndex,
+void WellboreCompletion::setPerforationHistoryStatus(uint64_t historyIndex,
+	uint64_t perforationIndex,
 	gsoap_eml2_1::witsml20__PerforationStatus perforationStatus)
 {
 	witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
@@ -308,14 +308,14 @@ void WellboreCompletion::setPerforationHistoryStatus(unsigned int historyIndex,
 	*perforationStatusHistory->PerforationStatus = perforationStatus;
 }
 
-bool WellboreCompletion::hasPerforationHistoryStartDate(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+bool WellboreCompletion::hasPerforationHistoryStartDate(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	return getPerforationHistoryEntry(historyIndex, perforationIndex)->StartDate != nullptr;
 }
 
-time_t WellboreCompletion::getPerforationHistoryStartDate(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+time_t WellboreCompletion::getPerforationHistoryStartDate(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	if (!hasPerforationHistoryStartDate(historyIndex, perforationIndex)) {
 		throw invalid_argument("No perforation history entry start date is defined.");
@@ -324,8 +324,8 @@ time_t WellboreCompletion::getPerforationHistoryStartDate(unsigned int historyIn
 	return timeTools::convertIsoToUnixTimestamp(*getPerforationHistoryEntry(historyIndex, perforationIndex)->StartDate);
 }
 
-void WellboreCompletion::setPerforationHistoryStartDate(unsigned int historyIndex,
-	unsigned int perforationIndex, time_t startDate) const
+void WellboreCompletion::setPerforationHistoryStartDate(uint64_t historyIndex,
+	uint64_t perforationIndex, time_t startDate) const
 {
 	witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
 
@@ -336,14 +336,14 @@ void WellboreCompletion::setPerforationHistoryStartDate(unsigned int historyInde
 	perforationStatusHistory->StartDate->assign(timeTools::convertUnixTimestampToIso(startDate));
 }
 
-bool WellboreCompletion::hasPerforationHistoryEndDate(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+bool WellboreCompletion::hasPerforationHistoryEndDate(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	return getPerforationHistoryEntry(historyIndex, perforationIndex)->EndDate != nullptr;
 }
 
-time_t WellboreCompletion::getPerforationHistoryEndDate(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+time_t WellboreCompletion::getPerforationHistoryEndDate(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	if (!hasPerforationHistoryEndDate(historyIndex, perforationIndex)) {
 		throw invalid_argument("No perforation history entry end date is defined.");
@@ -352,8 +352,8 @@ time_t WellboreCompletion::getPerforationHistoryEndDate(unsigned int historyInde
 	return timeTools::convertIsoToUnixTimestamp(*getPerforationHistoryEntry(historyIndex, perforationIndex)->EndDate);
 }
 
-void WellboreCompletion::setPerforationHistoryEndDate(unsigned int historyIndex,
-	unsigned int perforationIndex, time_t endDate) const
+void WellboreCompletion::setPerforationHistoryEndDate(uint64_t historyIndex,
+	uint64_t perforationIndex, time_t endDate) const
 {
 	witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
 
@@ -364,14 +364,14 @@ void WellboreCompletion::setPerforationHistoryEndDate(unsigned int historyIndex,
 	perforationStatusHistory->EndDate->assign(timeTools::convertUnixTimestampToIso(endDate));
 }
 
-bool WellboreCompletion::hasPerforationHistoryMdDatum(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+bool WellboreCompletion::hasPerforationHistoryMdDatum(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	return (getPerforationHistoryEntry(historyIndex, perforationIndex)->PerforationMdInterval != nullptr);
 }
 
-string WellboreCompletion::getPerforationHistoryMdDatum(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+string WellboreCompletion::getPerforationHistoryMdDatum(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	if (!hasPerforationHistoryMdDatum(historyIndex, perforationIndex)) {
 		throw invalid_argument("No perforation history entry md datum is defined.");
@@ -380,8 +380,8 @@ string WellboreCompletion::getPerforationHistoryMdDatum(unsigned int historyInde
 	return getPerforationHistoryEntry(historyIndex, perforationIndex)->PerforationMdInterval->datum;
 }
 
-bool WellboreCompletion::hasPerforationHistoryMdUnit(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+bool WellboreCompletion::hasPerforationHistoryMdUnit(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	witsml20__PerforationStatusHistory const * const perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
 
@@ -390,8 +390,8 @@ bool WellboreCompletion::hasPerforationHistoryMdUnit(unsigned int historyIndex,
 		: perforationStatusHistory->PerforationMdInterval->MdBase != nullptr ||perforationStatusHistory->PerforationMdInterval->MdTop != nullptr;
 }
 
-eml21__LengthUom WellboreCompletion::getPerforationHistoryMdUnit(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+eml21__LengthUom WellboreCompletion::getPerforationHistoryMdUnit(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	if (!hasPerforationHistoryMdUnit(historyIndex, perforationIndex)) {
 		throw invalid_argument("No perforation history entry md unit is defined.");
@@ -404,14 +404,14 @@ eml21__LengthUom WellboreCompletion::getPerforationHistoryMdUnit(unsigned int hi
 		: perforationStatusHistory->PerforationMdInterval->MdTop->uom;
 }
 
-string WellboreCompletion::getPerforationHistoryMdUnitAsString(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+string WellboreCompletion::getPerforationHistoryMdUnitAsString(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	return gsoap_eml2_1::soap_eml21__LengthUom2s(gsoapProxy2_1->soap, getPerforationHistoryMdUnit(historyIndex, perforationIndex));
 }
 
-bool WellboreCompletion::hasPerforationHistoryTopMd(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+bool WellboreCompletion::hasPerforationHistoryTopMd(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	witsml20__PerforationStatusHistory const * const perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
 	if (perforationStatusHistory == nullptr) {
@@ -425,8 +425,8 @@ bool WellboreCompletion::hasPerforationHistoryTopMd(unsigned int historyIndex,
 	return perforationStatusHistory->PerforationMdInterval->MdTop != nullptr;
 }
 
-double WellboreCompletion::getPerforationHistoryTopMd(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+double WellboreCompletion::getPerforationHistoryTopMd(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	if (!hasPerforationHistoryTopMd(historyIndex, perforationIndex)) {
 		throw invalid_argument("No perforation history entry top md is defined.");
@@ -435,8 +435,8 @@ double WellboreCompletion::getPerforationHistoryTopMd(unsigned int historyIndex,
 	return getPerforationHistoryEntry(historyIndex, perforationIndex)->PerforationMdInterval->MdTop->__item;
 }
 
-void WellboreCompletion::setPerforationHistoryTopMd(unsigned int historyIndex,
-	unsigned int perforationIndex,
+void WellboreCompletion::setPerforationHistoryTopMd(uint64_t historyIndex,
+	uint64_t perforationIndex,
 	const std::string & datum,
 	gsoap_eml2_1::eml21__LengthUom MdUnit,
 	double TopMd)
@@ -453,8 +453,8 @@ void WellboreCompletion::setPerforationHistoryTopMd(unsigned int historyIndex,
 	perforationStatusHistory->PerforationMdInterval->MdTop->__item = TopMd;
 }
 
-bool WellboreCompletion::hasPerforationHistoryBaseMd(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+bool WellboreCompletion::hasPerforationHistoryBaseMd(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	witsml20__PerforationStatusHistory const * const perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
 	if (perforationStatusHistory == nullptr) {
@@ -468,8 +468,8 @@ bool WellboreCompletion::hasPerforationHistoryBaseMd(unsigned int historyIndex,
 	return perforationStatusHistory->PerforationMdInterval->MdBase != nullptr;
 }
 
-double WellboreCompletion::getPerforationHistoryBaseMd(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+double WellboreCompletion::getPerforationHistoryBaseMd(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	if (!hasPerforationHistoryBaseMd(historyIndex, perforationIndex))
 	{
@@ -479,8 +479,8 @@ double WellboreCompletion::getPerforationHistoryBaseMd(unsigned int historyIndex
 	return getPerforationHistoryEntry(historyIndex, perforationIndex)->PerforationMdInterval->MdBase->__item;
 }
 
-void WellboreCompletion::setPerforationHistoryBaseMd(unsigned int historyIndex,
-	unsigned int perforationIndex,
+void WellboreCompletion::setPerforationHistoryBaseMd(uint64_t historyIndex,
+	uint64_t perforationIndex,
 	const std::string & datum,
 	gsoap_eml2_1::eml21__LengthUom MdUnit,
 	double BaseMd)
@@ -497,8 +497,8 @@ void WellboreCompletion::setPerforationHistoryBaseMd(unsigned int historyIndex,
 	perforationStatusHistory->PerforationMdInterval->MdBase->__item = BaseMd;
 }
 
-bool WellboreCompletion::hasPerforationHistoryComment(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+bool WellboreCompletion::hasPerforationHistoryComment(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
 	witsml20__PerforationStatusHistory const* const perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
 	if (perforationStatusHistory == nullptr) {
@@ -508,19 +508,18 @@ bool WellboreCompletion::hasPerforationHistoryComment(unsigned int historyIndex,
 	return perforationStatusHistory->Comment != nullptr;
 }
 
-std::string WellboreCompletion::getPerforationHistoryComment(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+std::string WellboreCompletion::getPerforationHistoryComment(uint64_t historyIndex,
+	uint64_t perforationIndex) const
 {
-	if (!hasPerforationHistoryComment(historyIndex, perforationIndex))
-	{
+	if (!hasPerforationHistoryComment(historyIndex, perforationIndex)) {
 		throw invalid_argument("No perforation history comment is defined.");
 	}
 
 	return *getPerforationHistoryEntry(historyIndex, perforationIndex)->Comment;
 }
 
-void WellboreCompletion::setPerforationHistoryComment(unsigned int historyIndex,
-	unsigned int perforationIndex,
+void WellboreCompletion::setPerforationHistoryComment(uint64_t historyIndex,
+	uint64_t perforationIndex,
 	const std::string & comment)
 {
 	witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
@@ -538,7 +537,7 @@ void WellboreCompletion::loadTargetRelationships()
 	convertDorIntoRel<WellCompletion>(getWellCompletionDor());
 }
 
-gsoap_eml2_1::witsml20__PerforationSetInterval* WellboreCompletion::getPerforation(unsigned int index) const
+gsoap_eml2_1::witsml20__PerforationSetInterval* WellboreCompletion::getPerforation(uint64_t index) const
 {
 	witsml20__WellboreCompletion const * const wellboreCompletion = static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1);
 
@@ -553,8 +552,8 @@ gsoap_eml2_1::witsml20__PerforationSetInterval* WellboreCompletion::getPerforati
 	return wellboreCompletion->ContactIntervalSet->PerforationSetInterval[index];
 }
 
-gsoap_eml2_1::witsml20__PerforationStatusHistory* WellboreCompletion::getPerforationHistoryEntry(unsigned int index,
-	unsigned int perforationIndex) const
+gsoap_eml2_1::witsml20__PerforationStatusHistory* WellboreCompletion::getPerforationHistoryEntry(uint64_t index,
+	uint64_t perforationIndex) const
 {
 	witsml20__PerforationSetInterval const * const perforationSetInterval = getPerforation(perforationIndex);
 

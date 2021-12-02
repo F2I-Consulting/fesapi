@@ -76,16 +76,16 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__IndexableElement getElementKind() const final { return getSpecializedGsoapProxy()->IndexableElement; }
 
-		DLL_IMPORT_OR_EXPORT uint64_t getElementCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getElementCountOfPatch(uint64_t patchIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT int64_t getElementIndicesOfPatch(unsigned int patchIndex, int64_t* elementIndices) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getElementIndicesOfPatch(uint64_t patchIndex, int64_t* elementIndices) const final;
 
-		DLL_IMPORT_OR_EXPORT bool areElementIndicesBasedOnLattice(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT bool areElementIndicesBasedOnLattice(uint64_t patchIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT int64_t getLatticeElementIndicesStartValue(unsigned int patchIndex) const;
-		DLL_IMPORT_OR_EXPORT unsigned int getLatticeElementIndicesDimensionCount(unsigned int patchIndex) const final;
-		DLL_IMPORT_OR_EXPORT int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex) const final;
-		DLL_IMPORT_OR_EXPORT uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getLatticeElementIndicesStartValue(uint64_t patchIndex) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getLatticeElementIndicesDimensionCount(uint64_t patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, uint64_t patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, uint64_t patchIndex) const final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(uint64_t originIndex,
 			unsigned int elementCountInSlowestDimension,
@@ -98,14 +98,14 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackRefToExistingDataset(uint64_t elementCount, const std::string& elementDataset,
 			int64_t nullValue, RESQML2_NS::AbstractRepresentation* supportingRep, EML2_NS::AbstractHdfProxy* proxy = nullptr) final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final;
 
-		COMMON_NS::DataObjectReference getSupportingRepresentationOfPatchDor(unsigned int patchIndex = 0) const final;
+		COMMON_NS::DataObjectReference getSupportingRepresentationOfPatchDor(uint64_t patchIndex = 0) const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml22";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.
@@ -137,6 +137,6 @@ namespace RESQML2_2_NS
 		/**
 		* Get a patch of the current subrepresentation at a particluar index.
 		*/
-		gsoap_eml2_3::resqml22__SubRepresentationPatch* getSubRepresentationPatch(unsigned int index) const;
+		gsoap_eml2_3::resqml22__SubRepresentationPatch* getSubRepresentationPatch(uint64_t index) const;
 	};
 }

@@ -19,8 +19,6 @@ under the License.
 #include "GridConnectionSetRepresentation.h"
 
 #include <algorithm>
-#include <limits>
-#include <stdexcept>
 
 #include <hdf5.h>
 

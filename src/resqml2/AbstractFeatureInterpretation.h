@@ -107,12 +107,9 @@ namespace RESQML2_NS
 		/**
 		 * Get the representation count of this interpretation.
 		 *
-		 * @exception	std::range_error	If the representation count is strictly greater than unsigned
-		 * 									int max.
-		 *
 		 * @returns	The representation count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getRepresentationCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getRepresentationCount() const;
 
 		/**
 		 * Get all the grid connection set representations which reference this interpretation.
@@ -131,7 +128,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	A pointer to the representation at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractRepresentation * getRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractRepresentation* getRepresentation(uint64_t index) const;
 		
 		/** Loads target relationships */
 		virtual void loadTargetRelationships();

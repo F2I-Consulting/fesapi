@@ -124,37 +124,21 @@ std::string TimeSeriesData::getMeasureClassAsString() const
 		: gsoap_eml2_2::soap_eml22__MeasureClass2s(gsoapProxy2_2->soap, *static_cast<prodml21__TimeSeriesData*>(gsoapProxy2_2)->MeasureClass);
 }
 
-unsigned int TimeSeriesData::getValueCount() const
-{
-	const size_t result = static_cast<prodml21__TimeSeriesData*>(gsoapProxy2_2)->DataValue.size();
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much values.");
-	}
-
-	return static_cast<unsigned int>(result);
-}
-
-bool TimeSeriesData::isDoubleValue(unsigned int index) const
+bool TimeSeriesData::isDoubleValue(uint64_t index) const
 {
 	prodml21__TimeSeriesData* tsData = static_cast<prodml21__TimeSeriesData*>(gsoapProxy2_2);
-	if (index >= tsData->DataValue.size()) {
-		throw std::out_of_range("The index is out of range.");
-	}
 
-	return tsData->DataValue[index]->soap_type() == SOAP_TYPE_gsoap_eml2_2_prodml21__DoubleValue;
+	return tsData->DataValue.at(index)->soap_type() == SOAP_TYPE_gsoap_eml2_2_prodml21__DoubleValue;
 }
 
-bool TimeSeriesData::isStringValue(unsigned int index) const
+bool TimeSeriesData::isStringValue(uint64_t index) const
 {
 	prodml21__TimeSeriesData* tsData = static_cast<prodml21__TimeSeriesData*>(gsoapProxy2_2);
-	if (index >= tsData->DataValue.size()) {
-		throw std::out_of_range("The index is out of range.");
-	}
 
-	return tsData->DataValue[index]->soap_type() == SOAP_TYPE_gsoap_eml2_2_prodml21__StringValue;
+	return tsData->DataValue.at(index)->soap_type() == SOAP_TYPE_gsoap_eml2_2_prodml21__StringValue;
 }
 
-double TimeSeriesData::getDoubleValue(unsigned int index) const
+double TimeSeriesData::getDoubleValue(uint64_t index) const
 {
 	if (!isDoubleValue(index)) {
 		throw std::logic_error("This value is not a double one");
@@ -164,7 +148,7 @@ double TimeSeriesData::getDoubleValue(unsigned int index) const
 	return static_cast<prodml21__DoubleValue*>(tsData->DataValue[index])->DoubleValue->__item;
 }
 
-std::string TimeSeriesData::getStringValue(unsigned int index) const
+std::string TimeSeriesData::getStringValue(uint64_t index) const
 {
 	if (!isStringValue(index)) {
 		throw std::logic_error("This value is not a string one");
@@ -174,7 +158,7 @@ std::string TimeSeriesData::getStringValue(unsigned int index) const
 	return static_cast<prodml21__StringValue*>(tsData->DataValue[index])->StringValue->__item;
 }
 
-time_t TimeSeriesData::getValueTimestamp(unsigned int index) const
+time_t TimeSeriesData::getValueTimestamp(uint64_t index) const
 {
 	prodml21__TimeSeriesData* tsData = static_cast<prodml21__TimeSeriesData*>(gsoapProxy2_2);
 	tm* result = nullptr;
@@ -193,7 +177,7 @@ time_t TimeSeriesData::getValueTimestamp(unsigned int index) const
 		: timeTools::timegm(*result);
 }
 
-bool TimeSeriesData::hasValueStatus(unsigned int index) const
+bool TimeSeriesData::hasValueStatus(uint64_t index) const
 {
 	if (!isDoubleValue(index)) {
 		return false;
@@ -203,7 +187,7 @@ bool TimeSeriesData::hasValueStatus(unsigned int index) const
 	return static_cast<prodml21__DoubleValue*>(tsData->DataValue[index])->DoubleValue->status != nullptr;
 }
 
-gsoap_eml2_2::prodml21__ValueStatus TimeSeriesData::getValueStatus(unsigned int index) const
+gsoap_eml2_2::prodml21__ValueStatus TimeSeriesData::getValueStatus(uint64_t index) const
 {
 	if (!hasValueStatus(index)) {
 		throw std::logic_error("This value has no status");
@@ -213,32 +197,12 @@ gsoap_eml2_2::prodml21__ValueStatus TimeSeriesData::getValueStatus(unsigned int 
 	return *static_cast<prodml21__DoubleValue*>(tsData->DataValue[index])->DoubleValue->status;
 }
 
-unsigned int TimeSeriesData::getKeywordCount() const
+gsoap_eml2_2::prodml21__TimeSeriesKeyword TimeSeriesData::getKeyword(uint64_t index) const
 {
-	const size_t result = static_cast<prodml21__TimeSeriesData*>(gsoapProxy2_2)->Key.size();
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much keywords.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<prodml21__TimeSeriesData*>(gsoapProxy2_2)->Key.at(index)->keyword;
 }
 
-gsoap_eml2_2::prodml21__TimeSeriesKeyword TimeSeriesData::getKeyword(unsigned int index) const
+std::string TimeSeriesData::getKeywordValue(uint64_t index) const
 {
-	prodml21__TimeSeriesData* tsData = static_cast<prodml21__TimeSeriesData*>(gsoapProxy2_2);
-	if (index >= tsData->Key.size()) {
-		throw std::out_of_range("The index is out of range.");
-	}
-
-	return tsData->Key[index]->keyword;
-}
-
-std::string TimeSeriesData::getKeywordValue(unsigned int index) const
-{
-	prodml21__TimeSeriesData* tsData = static_cast<prodml21__TimeSeriesData*>(gsoapProxy2_2);
-	if (index >= tsData->Key.size()) {
-		throw std::out_of_range("The index is out of range.");
-	}
-
-	return tsData->Key[index]->__item;
+	return static_cast<prodml21__TimeSeriesData*>(gsoapProxy2_2)->Key.at(index)->__item;
 }

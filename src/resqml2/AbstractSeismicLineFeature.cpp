@@ -76,7 +76,7 @@ std::vector<std::string> AbstractSeismicLineFeature::getTraceLabels() const
 	std::vector<std::string> result;
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::_resqml20__SeismicLineFeature* seismicLine = static_cast<gsoap_resqml2_0_1::_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1);
-		for (unsigned int incr = 0; incr < seismicLine->TraceCount; ++incr) {
+		for (uint64_t incr = 0; incr < seismicLine->TraceCount; ++incr) {
 			result.push_back(std::to_string(seismicLine->FirstTraceIndex + incr * seismicLine->TraceIndexIncrement));
 		}
 	}
@@ -102,17 +102,17 @@ std::vector<std::string> AbstractSeismicLineFeature::getTraceLabels() const
 			return result;
 		}
 
-		const unsigned int nbStrings = (unsigned int)dims[0]; // The count of strings in the HDF dataset.
-		const unsigned int stringLength = (unsigned int)dims[1]; // The constant string length in the hdf dataset.
+		const uint64_t nbStrings = dims[0]; // The count of strings in the HDF dataset.
+		const uint64_t stringLength = dims[1]; // The constant string length in the hdf dataset.
 
 		// Read all char/strings from the hdf dataset
 		std::unique_ptr<unsigned char[]> values(new unsigned char[nbStrings * stringLength]);
 		hdfProxy->readArrayNdOfUCharValues(datasetPath, values.get());
 
-		for (unsigned int stringIndex = 0; stringIndex < nbStrings; ++stringIndex) {
+		for (uint64_t stringIndex = 0; stringIndex < nbStrings; ++stringIndex) {
 			std::string comment = string();
-			unsigned int globalCharIndex = stringIndex * stringLength;
-			for (unsigned int localCharIndex = 0; localCharIndex < stringLength; ++localCharIndex) {
+			uint64_t globalCharIndex = stringIndex * stringLength;
+			for (uint64_t localCharIndex = 0; localCharIndex < stringLength; ++localCharIndex) {
 				if (values[globalCharIndex] != '\0') {
 					comment.push_back(values[globalCharIndex]);
 				}
@@ -174,12 +174,11 @@ void AbstractSeismicLineFeature::setTraceLabels(const std::vector<std::string> &
 	}
 
 	hsize_t nbValPerDim[2] = { strNb, dimTwo };
-	const unsigned int nbDimensions = 2;
 	// HDF
 	proxy->writeArrayNd(getHdfGroup(),
 		daPart->PathInExternalFile,
 		H5T_NATIVE_UCHAR,
 		cTab.get(),
 		nbValPerDim,   // 0 = number of strings, 1 = length of the longest string 
-		nbDimensions); // 2
+		2);
 }

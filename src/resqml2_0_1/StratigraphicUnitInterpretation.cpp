@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "StratigraphicUnitInterpretation.h"
 
-#include <stdexcept>
-
 #include "../resqml2/RockVolumeFeature.h"
 
 using namespace std;

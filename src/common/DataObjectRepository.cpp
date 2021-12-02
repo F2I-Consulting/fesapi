@@ -1455,9 +1455,9 @@ RESQML2_NS::WellboreFeature* DataObjectRepository::createWellboreFeature(const s
 }
 
 RESQML2_NS::SeismicLatticeFeature* DataObjectRepository::createSeismicLattice(const std::string & guid, const std::string & title,
-	int inlineIncrement, int crosslineIncrement,
-	unsigned int originInline, unsigned int originCrossline,
-	unsigned int inlineCount, unsigned int crosslineCount)
+	int64_t inlineIncrement, int64_t crosslineIncrement,
+	uint64_t originInline, uint64_t originCrossline,
+	uint64_t inlineCount, uint64_t crosslineCount)
 {
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
@@ -1472,19 +1472,19 @@ RESQML2_NS::SeismicLatticeFeature* DataObjectRepository::createSeismicLattice(co
 }
 
 RESQML2_0_1_NS::SeismicLineFeature* DataObjectRepository::createSeismicLine(const std::string & guid, const std::string & title,
-	int traceIndexIncrement, unsigned int firstTraceIndex, unsigned int traceCount)
+	int64_t traceIndexIncrement, uint64_t firstTraceIndex, uint64_t traceCount)
 {
 	return new RESQML2_0_1_NS::SeismicLineFeature(this, guid, title, traceIndexIncrement, firstTraceIndex, traceCount);
 }
 
 #ifdef WITH_RESQML2_2
 RESQML2_NS::CmpLineFeature* DataObjectRepository::createCmpLine(const std::string & guid, const std::string & title,
-	int nearestShotPointIndicesIncrement, int firstNearestShotPointIndex, unsigned int nearestShotPointCount)
+	int64_t nearestShotPointIndicesIncrement, int64_t firstNearestShotPointIndex, uint64_t nearestShotPointCount)
 {
 	return new RESQML2_2_NS::CmpLineFeature(this, guid, title, nearestShotPointIndicesIncrement, firstNearestShotPointIndex, nearestShotPointCount);
 #else
 RESQML2_NS::CmpLineFeature* DataObjectRepository::createCmpLine(const std::string&, const std::string&,
-	int, int, unsigned int)
+	int64_t, int64_t, uint64_t)
 {
 	throw std::logic_error("RESQML2.2 support has not been built in this library.");
 #endif
@@ -2336,7 +2336,7 @@ RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialTr
 }
 
 RESQML2_NS::IjkGridExplicitRepresentation* DataObjectRepository::createIjkGridExplicitRepresentation(const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
+	uint32_t iCount, uint32_t jCount, uint32_t kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1 : return new RESQML2_0_1_NS::IjkGridExplicitRepresentation(this, guid, title, iCount, jCount, kCount, kGaps, proxy);
@@ -2349,7 +2349,7 @@ RESQML2_NS::IjkGridExplicitRepresentation* DataObjectRepository::createIjkGridEx
 
 RESQML2_NS::IjkGridExplicitRepresentation* DataObjectRepository::createIjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
+	uint32_t iCount, uint32_t jCount, uint32_t kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridExplicitRepresentation(interp, guid, title, iCount, jCount, kCount, kGaps, proxy);
@@ -2361,7 +2361,7 @@ RESQML2_NS::IjkGridExplicitRepresentation* DataObjectRepository::createIjkGridEx
 }
 
 RESQML2_NS::IjkGridParametricRepresentation* DataObjectRepository::createIjkGridParametricRepresentation(const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
+	uint32_t iCount, uint32_t jCount, uint32_t kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridParametricRepresentation(this, guid, title, iCount, jCount, kCount, kGaps, proxy);
@@ -2374,7 +2374,7 @@ RESQML2_NS::IjkGridParametricRepresentation* DataObjectRepository::createIjkGrid
 
 RESQML2_NS::IjkGridParametricRepresentation* DataObjectRepository::createIjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
+	uint32_t iCount, uint32_t jCount, uint32_t kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridParametricRepresentation(interp, guid, title, iCount, jCount, kCount, kGaps, proxy);
@@ -2386,7 +2386,7 @@ RESQML2_NS::IjkGridParametricRepresentation* DataObjectRepository::createIjkGrid
 }
 
 RESQML2_NS::IjkGridLatticeRepresentation* DataObjectRepository::createIjkGridLatticeRepresentation(const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount)
+	uint32_t iCount, uint32_t jCount, uint32_t kCount)
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridLatticeRepresentation(this, guid, title, iCount, jCount, kCount);
@@ -2399,7 +2399,7 @@ RESQML2_NS::IjkGridLatticeRepresentation* DataObjectRepository::createIjkGridLat
 
 RESQML2_NS::IjkGridLatticeRepresentation* DataObjectRepository::createIjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount)
+	uint32_t iCount, uint32_t jCount, uint32_t kCount)
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridLatticeRepresentation(interp, guid, title, iCount, jCount, kCount);
@@ -2412,7 +2412,7 @@ RESQML2_NS::IjkGridLatticeRepresentation* DataObjectRepository::createIjkGridLat
 
 RESQML2_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGridNoGeometryRepresentation(
 	const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
+	uint32_t iCount, uint32_t jCount, uint32_t kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridNoGeometryRepresentation(this, guid, title, iCount, jCount, kCount, kGaps, proxy);
@@ -2425,7 +2425,7 @@ RESQML2_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGrid
 
 RESQML2_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
-	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
+	uint32_t iCount, uint32_t jCount, uint32_t kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy)
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridNoGeometryRepresentation(interp, guid, title, iCount, jCount, kCount, kGaps, proxy);
@@ -2437,7 +2437,7 @@ RESQML2_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGrid
 }
 
 RESQML2_NS::UnstructuredGridRepresentation* DataObjectRepository::createUnstructuredGridRepresentation(const std::string & guid, const std::string & title,
-	const uint64_t & cellCount)
+	uint64_t cellCount)
 {
 	switch (defaultResqmlVersion) {
 	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::UnstructuredGridRepresentation(this, guid, title, cellCount);

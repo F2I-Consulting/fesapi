@@ -58,7 +58,7 @@ under the License.
 	bool GLUE(,className)::has##fesapiAttributeName() const\
 		{ return static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence != nullptr && static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->witsmlAttributeName != nullptr; }
 
-#define GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(className, fesapiVectorName, witsmlVectorName, fesapiAttributeName, witsmlAttributeName) bool GLUE(,className)::has##fesapiVectorName##fesapiAttributeName(unsigned int index) const {\
+#define GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(className, fesapiVectorName, witsmlVectorName, fesapiAttributeName, witsmlAttributeName) bool GLUE(,className)::has##fesapiVectorName##fesapiAttributeName(uint64_t index) const {\
 	CHECK_RANGE_1_4(witsmlVectorName, index)\
 	return static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->witsmlVectorName[index]->witsmlAttributeName != nullptr;\
 }
@@ -95,14 +95,14 @@ under the License.
   * @param 	attributeName	 	Name of the attribute.
   */
 #define GETTER_AND_SETTER_ENUM_ATTRIBUTE_IN_VECTOR_IMPL_1_4(attributeDatatype, attributeDatatype14, className, fesapiVectorName, witsmlVectorName, fesapiAttributeName, witsmlAttributeName, eml2_1ToStr, strToEml2_1, witsml1_4ToStr, strToWitsml1_4)\
-	void GLUE(,className)::set##fesapiVectorName##fesapiAttributeName(unsigned int index, const attributeDatatype & value) {\
+	void GLUE(,className)::set##fesapiVectorName##fesapiAttributeName(uint64_t index, const attributeDatatype & value) {\
 		CHECK_RANGE_1_4(witsmlVectorName, index)\
 		std::string attStr = eml2_1ToStr(gsoapProxyTraj1_4->soap, value);\
 		attributeDatatype14 att1_4;\
 		if (strToWitsml1_4(gsoapProxyTraj1_4->soap, attStr.c_str(), &att1_4) == SOAP_OK) { static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->witsmlVectorName[index]->witsmlAttributeName = att1_4; }\
 		else { throw invalid_argument("The enum " + attStr + " is not recognized."); }\
 	}\
-	attributeDatatype GLUE(,className)::get##fesapiVectorName##fesapiAttributeName(unsigned int index) const {\
+	attributeDatatype GLUE(,className)::get##fesapiVectorName##fesapiAttributeName(uint64_t index) const {\
 		CHECK_RANGE_1_4(witsmlVectorName, index)\
 		std::string attStr = witsml1_4ToStr(gsoapProxyTraj1_4->soap, static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->witsmlVectorName[index]->witsmlAttributeName);\
 		attributeDatatype att2_1;\
@@ -139,12 +139,12 @@ under the License.
    * @param 	constructor		 	The constructor.
    */
 #define GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL_1_4(attributeDatatype, className, fesapiVectorName, witsmlVectorName, fesapiAttributeName, witsmlAttributeName, constructor)\
-	void GLUE(,className)::set##fesapiVectorName##fesapiAttributeName(unsigned int index, const attributeDatatype & value) {\
+	void GLUE(,className)::set##fesapiVectorName##fesapiAttributeName(uint64_t index, const attributeDatatype & value) {\
 		CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT_1_4(witsmlVectorName, witsmlAttributeName, constructor)\
 		*static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->witsmlVectorName[index]->witsmlAttributeName = value;\
 	}\
 	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(className, fesapiVectorName, witsmlVectorName, fesapiAttributeName, witsmlAttributeName)\
-	attributeDatatype GLUE(,className)::get##fesapiVectorName##fesapiAttributeName(unsigned int index) const {\
+	attributeDatatype GLUE(,className)::get##fesapiVectorName##fesapiAttributeName(uint64_t index) const {\
 		CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE_1_4(className, witsmlVectorName, witsmlAttributeName)\
 		return *static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->witsmlVectorName[index]->witsmlAttributeName;\
 	}
@@ -167,7 +167,7 @@ under the License.
 	}
 
 #define GETTER_AND_SETTER_ENUM_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL_1_4(attributeDatatype, attributeDatatype14, className, fesapiVectorName, witsmlVectorName, fesapiAttributeName, witsmlAttributeName, constructor, eml2_1ToStr, strToEml2_1, witsml1_4ToStr, strToWitsml1_4)\
-	void GLUE(,className)::set##fesapiVectorName##fesapiAttributeName(unsigned int index, const attributeDatatype & attributeName) {\
+	void GLUE(,className)::set##fesapiVectorName##fesapiAttributeName(uint64_t index, const attributeDatatype & attributeName) {\
 		CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT_1_4(witsmlVectorName, witsmlAttributeName, constructor)\
 		std::string attStr = eml2_1ToStr(gsoapProxyTraj1_4->soap, attributeName);\
 		attributeDatatype14 att1_4;\
@@ -175,7 +175,7 @@ under the License.
 		else { throw invalid_argument("The enum " + attStr + " is not recognized."); }\
 	}\
 	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(className, fesapiVectorName, witsmlVectorName, fesapiAttributeName, witsmlAttributeName)\
-	attributeDatatype GLUE(,className)::get##fesapiVectorName##fesapiAttributeName(unsigned int index) const {\
+	attributeDatatype GLUE(,className)::get##fesapiVectorName##fesapiAttributeName(uint64_t index) const {\
 		CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE_1_4(className, witsmlVectorName, witsmlAttributeName)\
 		std::string attStr = witsml1_4ToStr(gsoapProxyTraj1_4->soap, *static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->witsmlVectorName[index]->witsmlAttributeName);\
 		attributeDatatype att2_1;\
@@ -221,7 +221,7 @@ under the License.
 	* @param 	attributeName	Name of the attribute.
 	*/
 #define GETTER_VALUE_OF_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(className, fesapiVectorName, witsmlVectorName, fesapiAttributeName, witsmlAttributeName)\
-	double GLUE(,className)::get##fesapiVectorName##fesapiAttributeName##Value(unsigned int index) const {\
+	double GLUE(,className)::get##fesapiVectorName##fesapiAttributeName##Value(uint64_t index) const {\
 		CHECK_RANGE_1_4(witsmlVectorName, index)\
 		return static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->witsmlVectorName[index]->witsmlAttributeName->__item;\
 	}
@@ -251,7 +251,7 @@ under the License.
  * @param 	uomDatatype  	The uom datatype.
  */
 #define GETTER_UOM_OF_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(className, fesapiVectorName, witsmlVectorName, fesapiAttributeName, witsmlAttributeName, uomDatatype, uom1_4ToStr, strToUom2_1)\
-	uomDatatype GLUE(,className)::get##fesapiVectorName##fesapiAttributeName##Uom(unsigned int index) const {\
+	uomDatatype GLUE(,className)::get##fesapiVectorName##fesapiAttributeName##Uom(uint64_t index) const {\
 		CHECK_RANGE_1_4(witsmlVectorName, index)\
 		std::string uomStr = uom1_4ToStr(gsoapProxyTraj1_4->soap, static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->witsmlVectorName[index]->witsmlAttributeName->uom);\
 		uomDatatype result;\
@@ -303,7 +303,7 @@ under the License.
   * @param 	constructor  	The constructor.
   */
 #define GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(className, fesapiVectorName, witsmlVectorName, fesapiAttributeName, witsmlAttributeName, uomDatatype, uomDatatype14, constructor, eml2_1ToStr, strToEml2_1, witsml1_4ToStr, strToWitsml1_4)\
-	void GLUE(,className)::set##fesapiVectorName##fesapiAttributeName(unsigned int index, double value, uomDatatype uom) {\
+	void GLUE(,className)::set##fesapiVectorName##fesapiAttributeName(uint64_t index, double value, uomDatatype uom) {\
 		if (value != value) { throw invalid_argument("You cannot set an undefined measured depth coord"); }\
 		CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT_1_4(witsmlVectorName, witsmlAttributeName, constructor)\
 		static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->witsmlVectorName[index]->witsmlAttributeName->__item = value;\
@@ -355,7 +355,7 @@ under the License.
    * @param 	constructor  	The constructor.
    */
 #define GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(className, fesapiVectorName, witsmlVectorName, fesapiAttributeName, witsmlAttributeName, uomDatatype, constructor)\
-	void GLUE(,className)::set##fesapiVectorName##fesapiAttributeName(unsigned int index, double value, uomDatatype uom, const std::string & datum) {\
+	void GLUE(,className)::set##fesapiVectorName##fesapiAttributeName(uint64_t index, double value, uomDatatype uom, const std::string & datum) {\
 		if (value != value) { throw invalid_argument("You cannot set an undefined measured depth coord"); }\
 		CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT_1_4(witsmlVectorName, witsmlAttributeName, constructor)\
 		static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->witsmlVectorName[index]->witsmlAttributeName->__item = value;\
@@ -370,7 +370,7 @@ under the License.
 	}\
 	GETTER_VALUE_OF_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(className, fesapiVectorName, witsmlVectorName, fesapiAttributeName, witsmlAttributeName)\
 	GETTER_UOM_OF_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(className, fesapiVectorName, witsmlVectorName, fesapiAttributeName, witsmlAttributeName, uomDatatype, soap_witsml14__MeasuredDepthUom2s, gsoap_eml2_1::soap_s2eml21__LengthUom)\
-	std::string GLUE(, className)::get##fesapiVectorName##fesapiAttributeName##Datum(unsigned int index) const {\
+	std::string GLUE(, className)::get##fesapiVectorName##fesapiAttributeName##Datum(uint64_t index) const {\
 		CHECK_RANGE_1_4(witsmlVectorName, index)\
 		if (static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->witsmlVectorName[index]->witsmlAttributeName->datum == nullptr) return "";\
 		return *static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->witsmlVectorName[index]->witsmlAttributeName->datum;\

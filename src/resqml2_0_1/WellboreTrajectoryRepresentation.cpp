@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreTrajectoryRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include "H5public.h"
 
 #include "../eml2/AbstractHdfProxy.h"
@@ -239,7 +236,7 @@ double WellboreTrajectoryRepresentation::getParentTrajectoryMd() const
 	throw logic_error("This wellbore trajectory has no parent trajecory.");
 }
 
-uint64_t WellboreTrajectoryRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t WellboreTrajectoryRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The index patch is not in the allowed range of patch.");
@@ -252,7 +249,7 @@ uint64_t WellboreTrajectoryRepresentation::getXyzPointCountOfPatch(unsigned int 
 	return static_cast<resqml20__ParametricLineGeometry*>(rep->Geometry)->KnotCount;
 }
 
-void WellboreTrajectoryRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void WellboreTrajectoryRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");
@@ -398,7 +395,7 @@ gsoap_resqml2_0_1::_resqml20__WellboreTrajectoryRepresentation* WellboreTrajecto
 	return static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 }
 
-COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getLocalCrsDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getLocalCrsDor(uint64_t patchIndex) const
 {
 	if (patchIndex > 0) {
 		throw out_of_range("There is no more than one patch in a wellbore trajectory.");

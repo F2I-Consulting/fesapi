@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreObject.h"
 
-#include <stdexcept>
-
 #include "Wellbore.h"
 
 using namespace std;

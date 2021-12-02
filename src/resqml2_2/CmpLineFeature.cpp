@@ -25,7 +25,7 @@ using namespace gsoap_eml2_3;
 const char* CmpLineFeature::XML_NS = "resqml22";
 
 CmpLineFeature::CmpLineFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
-	int nearestShotPointIndicesIncrement, int firstNearestShotPointIndex, unsigned int nearestShotPointCount)
+	int64_t nearestShotPointIndicesIncrement, int64_t firstNearestShotPointIndex, uint64_t nearestShotPointCount)
 {
 	if (repo == nullptr) {
 		throw invalid_argument("The soap context cannot be null.");

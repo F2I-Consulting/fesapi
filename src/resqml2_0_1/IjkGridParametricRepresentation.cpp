@@ -18,15 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "IjkGridParametricRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include <hdf5.h>
 
-#include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../eml2/AbstractLocal3dCrs.h"
-#include "../resqml2/AbstractValuesProperty.h"
 #include "../eml2/AbstractHdfProxy.h"
+#include "../eml2/AbstractLocal3dCrs.h"
+
+#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "../resqml2/AbstractValuesProperty.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
@@ -207,7 +205,7 @@ COMMON_NS::DataObjectReference IjkGridParametricRepresentation::getHdfProxyDor()
 		throw std::logic_error("Not yet implemented");
 }
 
-void IjkGridParametricRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void IjkGridParametricRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	getXyzPointsFromParametricPoints(xyzPoints);
 

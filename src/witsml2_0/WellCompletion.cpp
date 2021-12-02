@@ -21,8 +21,6 @@ under the License.
 #include "../witsml2/Well.h"
 #include "WellboreCompletion.h"
 
-#include <stdexcept>
-
 using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;

@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreFrameRepresentation.h"
 
-#include <stdexcept>
-
 #include <hdf5.h>
 
 #include "../eml2/AbstractHdfProxy.h"
@@ -33,7 +31,7 @@ using namespace RESQML2_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace gsoap_eml2_3;
 
-void WellboreFrameRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void WellboreFrameRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -253,7 +251,7 @@ double WellboreFrameRepresentation::getMdFirstValue() const
 	throw invalid_argument("Not implemented yet");
 }
 
-unsigned int WellboreFrameRepresentation::getMdValuesCount() const
+uint64_t WellboreFrameRepresentation::getMdValuesCount() const
 {
 	uint64_t result;
 
@@ -267,11 +265,7 @@ unsigned int WellboreFrameRepresentation::getMdValuesCount() const
 		throw invalid_argument("Not implemented yet");
 	}
 
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much md values.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return result;
 }
 
 COMMON_NS::AbstractObject::hdfDatatypeEnum WellboreFrameRepresentation::getMdHdfDatatype() const
@@ -426,7 +420,7 @@ COMMON_NS::DataObjectReference WellboreFrameRepresentation::getWellboreTrajector
 	throw invalid_argument("Not implemented yet");
 }
 
-COMMON_NS::DataObjectReference WellboreFrameRepresentation::getLocalCrsDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference WellboreFrameRepresentation::getLocalCrsDor(uint64_t patchIndex) const
 {
 	auto* traj = getWellboreTrajectory();
 	return traj->isPartial() ? COMMON_NS::DataObjectReference() : getWellboreTrajectory()->getLocalCrsDor(patchIndex);
@@ -454,7 +448,7 @@ COMMON_NS::DataObjectReference WellboreFrameRepresentation::getHdfProxyDor() con
 	return COMMON_NS::DataObjectReference();
 }
 
-uint64_t WellboreFrameRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t WellboreFrameRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The patch index is out of range");

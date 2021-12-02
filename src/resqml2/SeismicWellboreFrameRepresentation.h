@@ -65,7 +65,7 @@ namespace RESQML2_NS
 		/**
 		* Get the number of time values in this seismic wellbore frame.
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getTimeValuesCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getTimeValuesCount() const;
 
 		/**
 		* Get the time values datatype in the HDF dataset

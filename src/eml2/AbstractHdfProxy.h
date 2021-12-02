@@ -89,7 +89,7 @@ namespace EML2_NS
 		 * Opens the HDF5 file for reading and writing. The read and write rights are determined by the EPC
 		 * document configuration
 		 */
-		virtual void open() = 0;
+		DLL_IMPORT_OR_EXPORT virtual void open() = 0;
 
 		/**
 		 * Checks if the HDF5 file is open or not

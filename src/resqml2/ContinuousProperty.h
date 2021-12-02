@@ -213,7 +213,7 @@ namespace RESQML2_NS
 		 * 									
 		 * @copydetails	pushBackDoubleHdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions,
+		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(float const * values, uint64_t const * numValues, unsigned int numArrayDimensions,
 			float * minimumValue, float * maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 		using AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues;
 
@@ -227,7 +227,7 @@ namespace RESQML2_NS
 		 * @returns	The minimum value of the non vector property or the minimum value at position @p
 		 * 			index of the vector value or @c NaN if @p index is out of range of if no minimum is present.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual double getMinimumValue(unsigned int index = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getMinimumValue(uint64_t index = 0) const = 0;
 
 		/**
 		 * @brief	Gets the maximum value of a property. This maximum value is read (it is not computed).
@@ -239,7 +239,7 @@ namespace RESQML2_NS
 		 * @returns	The maximum value of the non vector property or the maximum value at position @p
 		 * 			index of the vector value or @c NaN if @p index is out of range of if no maximum is present.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual double getMaximumValue(unsigned int index = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getMaximumValue(uint64_t index = 0) const = 0;
 
 		/**
 		 * @brief	Sets the minimum value of a non vector property or the minimum value of one given
@@ -250,7 +250,7 @@ namespace RESQML2_NS
 		 * 					case) or zero-based index of the vector value for which we want to set the
 		 * 					minimum value (vector property case).
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setMinimumValue(double value, unsigned int index = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setMinimumValue(double value, uint64_t index = 0) const = 0;
 
 		/**
 		 * @brief	Sets the maximum value of a non vector property or the maximum value of one given
@@ -261,7 +261,7 @@ namespace RESQML2_NS
 		 * 					case) or zero-based index of the vector value for which we want to set the
 		 * 					maximum value (vector property case).
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setMaximumValue(double value, unsigned int index = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setMaximumValue(double value, uint64_t index = 0) const = 0;
 
 		//***************************
 		//*** For hyperslabbing *****
@@ -379,7 +379,7 @@ namespace RESQML2_NS
 			uint64_t offsetInSlowestDim,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()
 		);
 		using AbstractValuesProperty::setValuesOfFloatHdf5Array3dOfValues;
 
@@ -423,7 +423,7 @@ namespace RESQML2_NS
 			unsigned int numArrayDimensions,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()
 		);
 		using AbstractValuesProperty::setValuesOfFloatHdf5ArrayOfValues;
 
@@ -487,11 +487,11 @@ namespace RESQML2_NS
 				throw std::logic_error("You cannot set min without max and vice versa.");
 			}
 
-			const unsigned int elementCount = getElementCountPerValue();
+			const uint64_t elementCount = getElementCountPerValue();
 
 			// Some minimum and maximum values are given : No need to compute them.
 			if (minimumValue != nullptr) {
-				for (unsigned int componentIndex = 0; componentIndex < elementCount; ++componentIndex) {
+				for (uint64_t componentIndex = 0; componentIndex < elementCount; ++componentIndex) {
 					const double currentMinimumValue = getMinimumValue(componentIndex);
 					const double currentMaximumValue = getMaximumValue(componentIndex);
 					setMinimumValue(fmin(currentMinimumValue, minimumValue[componentIndex]), componentIndex);
@@ -502,17 +502,17 @@ namespace RESQML2_NS
 
 			uint64_t nValues = numValuesInEachDimension[0];
 			//If count > 1, the last (fastest) dimension has the number of properties per indexable element of the representation.
-			for (unsigned int dim = 1; dim < (elementCount == 1 ? numArrayDimensions : numArrayDimensions - 1); ++dim) {
+			for (uint64_t dim = 1; dim < (elementCount == 1 ? numArrayDimensions : numArrayDimensions - 1); ++dim) {
 				nValues *= numValuesInEachDimension[dim];
 			}
 
 			// Minimum or maximum values are not given : Need to compute them.
 			std::unique_ptr<T[]> allComputedMin(new T[elementCount]);
 			std::unique_ptr<T[]> allComputedMax(new T[elementCount]);
-			for (unsigned int propIndex = 0; propIndex < elementCount; ++propIndex) {
+			for (uint64_t propIndex = 0; propIndex < elementCount; ++propIndex) {
 				allComputedMin[propIndex] = std::numeric_limits<T>::quiet_NaN();
 				allComputedMax[propIndex] = std::numeric_limits<T>::quiet_NaN();
-				for (auto i = 0; i < nValues; i += elementCount) {
+				for (uint64_t i = 0; i < nValues; i += elementCount) {
 					allComputedMin[propIndex] = fmin(allComputedMin[propIndex], values[i]);
 					allComputedMax[propIndex] = fmax(allComputedMax[propIndex], values[i]);
 				}

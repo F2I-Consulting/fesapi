@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PolylineRepresentation.h"
 
-#include <stdexcept>
-
 #include "AbstractSeismicLineFeature.h"
 #include "AbstractFeatureInterpretation.h"
 #include "ContinuousProperty.h"

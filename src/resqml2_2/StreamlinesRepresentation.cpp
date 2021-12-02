@@ -236,7 +236,7 @@ void StreamlinesRepresentation::setGeometry(
 	getRepository()->addRelationship(this, localCrs);
 }
 
-resqml22__PointGeometry* StreamlinesRepresentation::getPointGeometry2_2(unsigned int patchIndex) const
+resqml22__PointGeometry* StreamlinesRepresentation::getPointGeometry2_2(uint64_t patchIndex) const
 {
 	if (patchIndex == 0 && static_cast<resqml22__StreamlinesRepresentation*>(gsoapProxy2_3)->Geometry != nullptr &&
 		static_cast<resqml22__StreamlinesRepresentation*>(gsoapProxy2_3)->Geometry->Geometry->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__PointGeometry)
@@ -245,7 +245,7 @@ resqml22__PointGeometry* StreamlinesRepresentation::getPointGeometry2_2(unsigned
 	return nullptr;
 }
 
-void StreamlinesRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void StreamlinesRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");

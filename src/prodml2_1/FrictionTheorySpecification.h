@@ -46,12 +46,8 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The prsv parameter count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPrsvParameterCount() const {
-			size_t count = static_cast<gsoap_eml2_2::prodml21__FrictionTheory*>(gsoapProxy)->PrsvParameter.size();
-			if (count > (std::numeric_limits<unsigned int>::max)()) {
-				throw std::out_of_range("There are too much Prsv parameters");
-			}
-			return static_cast<unsigned int>(count);
+		DLL_IMPORT_OR_EXPORT uint64_t getPrsvParameterCount() const noexcept {
+			return static_cast<gsoap_eml2_2::prodml21__FrictionTheory*>(gsoapProxy)->PrsvParameter.size();
 		}
 
 		/**
@@ -63,13 +59,8 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The prsv parameter a 1.
 		 */
-		DLL_IMPORT_OR_EXPORT double getPrsvParameterA1(unsigned int index) const
-		{
-			if (index >= getPrsvParameterCount()) {
-				throw std::out_of_range("The index is out of range");
-			}
-
-			return static_cast<gsoap_eml2_2::prodml21__FrictionTheory*>(gsoapProxy)->PrsvParameter[index]->a1;
+		DLL_IMPORT_OR_EXPORT double getPrsvParameterA1(uint64_t index) const {
+			return static_cast<gsoap_eml2_2::prodml21__FrictionTheory*>(gsoapProxy)->PrsvParameter.at(index)->a1;
 		}
 
 		/**
@@ -81,13 +72,8 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The prsv parameter a 2.
 		 */
-		DLL_IMPORT_OR_EXPORT double getPrsvParameterA2(unsigned int index) const
-		{
-			if (index >= getPrsvParameterCount()) {
-				throw std::out_of_range("The index is out of range");
-			}
-
-			return static_cast<gsoap_eml2_2::prodml21__FrictionTheory*>(gsoapProxy)->PrsvParameter[index]->a2;
+		DLL_IMPORT_OR_EXPORT double getPrsvParameterA2(uint64_t index) const {
+			return static_cast<gsoap_eml2_2::prodml21__FrictionTheory*>(gsoapProxy)->PrsvParameter.at(index)->a2;
 		}
 
 		/**
@@ -99,13 +85,8 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The prsv parameter b 1.
 		 */
-		DLL_IMPORT_OR_EXPORT double getPrsvParameterB1(unsigned int index) const
-		{
-			if (index >= getPrsvParameterCount()) {
-				throw std::out_of_range("The index is out of range");
-			}
-
-			return static_cast<gsoap_eml2_2::prodml21__FrictionTheory*>(gsoapProxy)->PrsvParameter[index]->b1;
+		DLL_IMPORT_OR_EXPORT double getPrsvParameterB1(uint64_t index) const {
+			return static_cast<gsoap_eml2_2::prodml21__FrictionTheory*>(gsoapProxy)->PrsvParameter.at(index)->b1;
 		}
 
 		/**
@@ -117,13 +98,8 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The prsv parameter b 2.
 		 */
-		DLL_IMPORT_OR_EXPORT double getPrsvParameterB2(unsigned int index) const
-		{
-			if (index >= getPrsvParameterCount()) {
-				throw std::out_of_range("The index is out of range");
-			}
-
-			return static_cast<gsoap_eml2_2::prodml21__FrictionTheory*>(gsoapProxy)->PrsvParameter[index]->b2;
+		DLL_IMPORT_OR_EXPORT double getPrsvParameterB2(uint64_t index) const {
+			return static_cast<gsoap_eml2_2::prodml21__FrictionTheory*>(gsoapProxy)->PrsvParameter.at(index)->b2;
 		}
 
 		/**
@@ -135,13 +111,8 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The prsv parameter c 2.
 		 */
-		DLL_IMPORT_OR_EXPORT double getPrsvParameterC2(unsigned int index) const
-		{
-			if (index >= getPrsvParameterCount()) {
-				throw std::out_of_range("The index is out of range");
-			}
-
-			return static_cast<gsoap_eml2_2::prodml21__FrictionTheory*>(gsoapProxy)->PrsvParameter[index]->c2;
+		DLL_IMPORT_OR_EXPORT double getPrsvParameterC2(uint64_t index) const {
+			return static_cast<gsoap_eml2_2::prodml21__FrictionTheory*>(gsoapProxy)->PrsvParameter.at(index)->c2;
 		}
 
 		/**
@@ -153,13 +124,8 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The prsv parameter fluid component reference.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getPrsvParameterFluidComponentReference(unsigned int index) const
-		{
-			if (index >= getPrsvParameterCount()) {
-				throw std::out_of_range("The index is out of range");
-			}
-
-			return static_cast<gsoap_eml2_2::prodml21__FrictionTheory*>(gsoapProxy)->PrsvParameter[index]->fluidComponentReference;
+		DLL_IMPORT_OR_EXPORT std::string getPrsvParameterFluidComponentReference(uint64_t index) const {
+			return static_cast<gsoap_eml2_2::prodml21__FrictionTheory*>(gsoapProxy)->PrsvParameter.at(index)->fluidComponentReference;
 		}
 
 		/**

@@ -18,10 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Trajectory.h"
 
-#include <limits>
-#include <sstream>
-#include <stdexcept>
-
 #include "../witsml2/Wellbore.h"
 
 #include "../tools/TimeTools.h"
@@ -155,11 +151,9 @@ GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, Trajecto
 void Trajectory::pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType kind, double mdValue, gsoap_eml2_1::eml21__LengthUom uom, const std::string & datum, const std::string & uid)
 {
 	static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->TrajectoryStation.push_back(gsoap_eml2_1::soap_new_witsml20__TrajectoryStation(gsoapProxy2_1->soap));
-	unsigned int index = getTrajectoryStationCount() - 1;
+	uint64_t index = getTrajectoryStationCount() - 1;
 	if (uid.empty()) {
-		std::ostringstream oss;
-		oss << index;
-		setTrajectoryStationuid(index, oss.str());
+		setTrajectoryStationuid(index, std::to_string(index));
 	}
 	else {
 		setTrajectoryStationuid(index, uid);
@@ -167,14 +161,4 @@ void Trajectory::pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationTy
 
 	setTrajectoryStationTypeTrajStation(index, kind);
 	setTrajectoryStationMd(index, mdValue, uom, datum);
-}
-
-unsigned int Trajectory::getTrajectoryStationCount() const
-{
-	const size_t count = static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->TrajectoryStation.size();
-	if (count >= (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("Too much trajectory stations");
-	}
-
-	return static_cast<unsigned int>(count);
 }

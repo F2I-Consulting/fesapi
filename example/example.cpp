@@ -2410,7 +2410,7 @@ void deserializeActivity(COMMON_NS::AbstractObject const * resqmlObject)
 					}
 				}
 				else {
-					const vector<unsigned int> & paramIndex = activity->getParameterIndexOfTitle(paramTitle);
+					vector<uint64_t> paramIndex = activity->getParameterIndexOfTitle(paramTitle);
 					for (size_t k = 0; k < paramIndex.size(); ++k) {
 						if (activity->isAFloatingPointQuantityParameter(paramIndex[k]))
 							cout << "Floating Point value : " << activity->getFloatingPointQuantityParameterValue(paramIndex[k]);
@@ -2704,8 +2704,8 @@ void deserializeStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn, con
 		else {
 			cout << "This is not a chrono rank!" << endl;
 		}
-		unsigned int contactCount = stratiColumnRankInterp->getContactCount();
-		for (unsigned int contactIndex = 0; contactIndex < contactCount; ++contactIndex) {
+		uint64_t contactCount = stratiColumnRankInterp->getContactCount();
+		for (uint64_t contactIndex = 0; contactIndex < contactCount; ++contactIndex) {
 			cout << "SUBJECT : " << endl;
 			showAllMetadata(stratiColumnRankInterp->getSubjectOfContact(contactIndex));
 			cout << "DIRECT OBJECT : " << endl;
@@ -2749,8 +2749,8 @@ void deserializeSealedSurfaceFramework(const COMMON_NS::DataObjectRepository & p
 		showAllMetadata(ssf);
 
 		std::cout << "\tCONTAINED REPRESENTATIONS" << std::endl;
-		const unsigned int repCount = ssf->getRepresentationCount();
-		for (unsigned int repIdx = 0; repIdx < repCount; ++repIdx) {
+		const uint64_t repCount = ssf->getRepresentationCount();
+		for (uint64_t repIdx = 0; repIdx < repCount; ++repIdx) {
 			showAllMetadata(ssf->getRepresentation(repIdx));
 		}
 
@@ -2821,17 +2821,16 @@ void deserializeSealedVolumeFramework(const COMMON_NS::DataObjectRepository & pc
 {
 	const std::vector<RESQML2_NS::SealedVolumeFrameworkRepresentation*> svfVec = pck.getDataObjects<RESQML2_NS::SealedVolumeFrameworkRepresentation>();
 
-	for (size_t svfIndex = 0; svfIndex < svfVec.size(); ++svfIndex) {
+	for (RESQML2_NS::SealedVolumeFrameworkRepresentation* svf : svfVec) {
 		std::cout << "\tSEALED VOLUME FRAMEWORK" << std::endl;
-		RESQML2_NS::SealedVolumeFrameworkRepresentation* svf = svfVec[svfIndex];
 		showAllMetadata(svf);
 
 		std::cout << "\tis based on sealed structural framework " << endl;
 		showAllMetadata(svf->getSealedStructuralFramework());
 
 		std::cout << "\t\tCONTAINED REGIONS" << std::endl;
-		const unsigned int regionCount = svf->getRegionCount();
-		for (unsigned int regionIdx = 0; regionIdx < regionCount; ++regionIdx) {
+		const uint64_t regionCount = svf->getRegionCount();
+		for (uint64_t regionIdx = 0; regionIdx < regionCount; ++regionIdx) {
 			showAllMetadata(svf->getStratiUnitInterp(regionIdx));
 
 			const uint64_t faceCount = svf->getFaceCountOfExternalShell(regionIdx);
@@ -2840,7 +2839,6 @@ void deserializeSealedVolumeFramework(const COMMON_NS::DataObjectRepository & pc
 				showAllMetadata(svf->getRepOfExternalShellFace(regionIdx, faceIdx));
 			}
 		}
-
 	}
 }
 
@@ -3017,8 +3015,8 @@ void deserializeTimeSeriesData(COMMON_NS::DataObjectRepository & pck)
 void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRepository & pck)
 {
 	cout << endl << "BEGIN: IJK GRID REP (hyperslabbing)" << std::endl;
-	unsigned int ijkGridCount = pck.getIjkGridRepresentationCount();
-	for (unsigned int ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx)
+	uint64_t ijkGridCount = pck.getIjkGridRepresentationCount();
+	for (uint64_t ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx)
 	{
 		RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = pck.getIjkGridRepresentation(ijkGridIdx);
 
@@ -4461,7 +4459,7 @@ void deserializeLog(COMMON_NS::DataObjectRepository & repo)
 						cout << "Datum: " << channelSet->getChannelIndexDatum(channelIndexIdx) << std::endl;
 					}
 					std::vector<WITSML2_0_NS::Channel*> channels = channelSet->getChannels();
-					for (size_t channelIdx = 0; channelIdx < channels.size(); ++channelIdx) {
+					for (uint64_t channelIdx = 0; channelIdx < channels.size(); ++channelIdx) {
 						WITSML2_0_NS::Channel* channel = channels[channelIdx];
 						cout << "witsml channel: " << channel->getTitle() << " (" << channel->getUuid() << ")" << std::endl;
 						if (channel->hasTimeDepth()) { cout << "TimeDepth: " << channel->getTimeDepth() << std::endl; }
@@ -4497,7 +4495,7 @@ void deserializeWbGeometry(COMMON_NS::DataObjectRepository & repo)
 				if (wbGeom->hasDepthWaterMean()) { cout << "DepthWaterMean: " << wbGeom->getDepthWaterMeanValue() << " " << static_cast<int>(wbGeom->getDepthWaterMeanUom()) << std::endl; }
 				if (wbGeom->hasGapAir()) { cout << "GapAir: " << wbGeom->getGapAirValue() << " " << static_cast<int>(wbGeom->getGapAirUom()) << std::endl; }
 				if (wbGeom->hasMdBase()) { cout << "MdBase: " << wbGeom->getMdBaseValue() << " " << static_cast<int>(wbGeom->getMdBaseUom()) << " datum=" << wbGeom->getMdBaseDatum() << std::endl; }
-				for (size_t sectionIdx = 0; sectionIdx < wbGeom->getSectionCount(); ++sectionIdx) {
+				for (uint64_t sectionIdx = 0; sectionIdx < wbGeom->getSectionCount(); ++sectionIdx) {
 					std::cout << "Section " << sectionIdx << endl;
 					if (wbGeom->hasWellboreGeometrySectionCurveConductor(sectionIdx)) { cout << "CurveConductor: " << wbGeom->getWellboreGeometrySectionCurveConductor(sectionIdx) << std::endl; }
 					if (wbGeom->hasWellboreGeometrySectionDiaDrift(sectionIdx)) { cout << "DiaDrift: " << wbGeom->getWellboreGeometrySectionDiaDriftValue(sectionIdx) << " " << static_cast<int>(wbGeom->getWellboreGeometrySectionDiaDriftUom(sectionIdx)) << std::endl; }
@@ -4675,9 +4673,8 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 {
 	std::cout << endl << "IJK GRID REP" << endl;
-	unsigned int ijkGridCount = repo.getIjkGridRepresentationCount();
-	for (unsigned int ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx)
-	{
+	uint64_t ijkGridCount = repo.getIjkGridRepresentationCount();
+	for (uint64_t ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx) {
 		RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo.getIjkGridRepresentation(ijkGridIdx);
 
 		showAllMetadata(ijkGrid);
@@ -4746,8 +4743,8 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 						}
 					}
 
-					unsigned int patchCount = ijkGrid->getPatchCount();
-					for (unsigned int currentPatch = 0; currentPatch < patchCount; ++currentPatch) {
+					uint64_t patchCount = ijkGrid->getPatchCount();
+					for (uint64_t currentPatch = 0; currentPatch < patchCount; ++currentPatch) {
 						uint64_t nbVertex = ijkGrid->getXyzPointCountOfPatch(currentPatch);
 
 						std::unique_ptr<double[]> xyzPts(new double[nbVertex * 3]);
@@ -4898,11 +4895,11 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 		//*****************************
 		// GRID CONNECTION SET 
 		//*****************************
-		unsigned int gridConnectionSetCount = ijkGrid->getGridConnectionSetRepresentationCount();
+		uint64_t gridConnectionSetCount = ijkGrid->getGridConnectionSetRepresentationCount();
 		std::cout << "Grid Connection Count is : " << gridConnectionSetCount << std::endl;
 		if (gridConnectionSetCount > 0) {
 			RESQML2_NS::GridConnectionSetRepresentation const * gridConnectionSet = ijkGrid->getGridConnectionSetRepresentation(0);
-			unsigned int faultInterpOfGridConnCount = gridConnectionSet->getInterpretationCount();
+			uint64_t faultInterpOfGridConnCount = gridConnectionSet->getInterpretationCount();
 			std::cout << "Interpretation Count of this grid connection set is : " << faultInterpOfGridConnCount << endl;
 			if (faultInterpOfGridConnCount > 0)
 			{
@@ -4910,10 +4907,9 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 				std::cout << "Interpretation of this grid connection set is : " << faultInterpOfGridConn->getTitle() << " With UUID " << faultInterpOfGridConn->getUuid() << endl;
 			}
 
-			int* localFacePerCellIndexPairs = new int[gridConnectionSet->getCellIndexPairCount() * 2];
-			int64_t gcsNullValue = gridConnectionSet->getLocalFacePerCellIndexPairs(localFacePerCellIndexPairs);
+			std::unique_ptr<int[]> localFacePerCellIndexPairs(new int[gridConnectionSet->getCellIndexPairCount() * 2]);
+			int64_t gcsNullValue = gridConnectionSet->getLocalFacePerCellIndexPairs(localFacePerCellIndexPairs.get());
 			std::cout << "Null Value for LocalFacePerCellIndexPairs : " << gcsNullValue << endl;
-			delete[] localFacePerCellIndexPairs;
 		}
 
 		//*****************************
@@ -5024,9 +5020,9 @@ void deserialize(const string & inputFile)
 	}
 	pck.close();
 
-	const unsigned int hdfProxyCount = repo.getHdfProxyCount();
+	const uint64_t hdfProxyCount = repo.getHdfProxyCount();
 	cout << "There are " << hdfProxyCount << " hdf files associated to this epc document." << endl;
-	for (unsigned int hdfProxyIndex = 0; hdfProxyIndex < hdfProxyCount; ++hdfProxyIndex) {
+	for (uint64_t hdfProxyIndex = 0; hdfProxyIndex < hdfProxyCount; ++hdfProxyIndex) {
 		cout << "Hdf file relative path : " << repo.getHdfProxy(hdfProxyIndex)->getRelativePath() << endl;
 	}
 	for (size_t warningIndex = 0; warningIndex < repo.getWarnings().size(); ++warningIndex) {
@@ -5156,7 +5152,7 @@ void deserialize(const string & inputFile)
 		showAllMetadata(faultTriRep);
 
 		uint64_t pointCount = faultTriRep->getXyzPointCountOfAllPatches();
-		unsigned int triangleCount = faultTriRep->getTriangleCountOfAllPatches();
+		uint64_t triangleCount = faultTriRep->getTriangleCountOfAllPatches();
 		cout << "point Count " << pointCount << endl;
 		cout << "triangle Count " << triangleCount << endl;
 
@@ -5235,7 +5231,7 @@ void deserialize(const string & inputFile)
 		showAllMetadata(horizonTriRep);
 
 		const uint64_t pointCount = horizonTriRep->getXyzPointCountOfAllPatches();
-		unsigned int triangleCount = horizonTriRep->getTriangleCountOfAllPatches();
+		uint64_t triangleCount = horizonTriRep->getTriangleCountOfAllPatches();
 		cout << "point Count " << pointCount << endl;
 		cout << "triangle Count " << triangleCount << endl;
 
@@ -5251,8 +5247,8 @@ void deserialize(const string & inputFile)
 			std::cout << "\t--------------------------------------------------" << std::endl;
 		}
 
-		const unsigned int patchCount = horizonTriRep->getPatchCount();
-		for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
+		const uint64_t patchCount = horizonTriRep->getPatchCount();
+		for (uint64_t patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
 			RESQML2_NS::AbstractRepresentation* seismicSupport = horizonTriRep->getSeismicSupportOfPatch(patchIndex);
 			if (seismicSupport != nullptr) {
 				const uint64_t pointCountForPatch = horizonTriRep->getXyzPointCountOfPatch(patchIndex);
@@ -5289,8 +5285,8 @@ void deserialize(const string & inputFile)
 	{
 		showAllMetadata(horizonSinglePolylineRep);
 
-		const unsigned int patchCount = horizonSinglePolylineRep->getPatchCount();
-		for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
+		const uint64_t patchCount = horizonSinglePolylineRep->getPatchCount();
+		for (uint64_t patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
 			RESQML2_NS::AbstractRepresentation* seismicSupport = horizonSinglePolylineRep->getSeismicSupportOfPatch(patchIndex);
 			if (seismicSupport != nullptr) {
 				cout << "Seismic support of patch " << patchIndex << " is : " << seismicSupport->getTitle() << endl;

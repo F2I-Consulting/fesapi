@@ -113,12 +113,11 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Gets the count of all children property set of this instance.
 		 *
-		 * @exception	std::range_error	If the count of children property set is strictly greater
-		 * 									than unsigned int max.
-		 *
 		 * @returns	The children count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getChildrenCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getChildrenCount() const noexcept {
+			return getChildren().size();
+		}
 
 		/**
 		 * Gets a particular child property set of this property set.
@@ -129,7 +128,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The child property set at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT PropertySet* getChildren(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT PropertySet* getChildren(uint64_t index) const;
 
 		/**
 		 * Pushes back a property into this property set.
@@ -155,7 +154,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The count of contained properties.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPropertyCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getPropertyCount() const noexcept;
 
 		/**
 		 * Gets a particular property among the properties directly contained in this property set.
@@ -168,7 +167,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The contained property at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractProperty* getProperty(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractProperty* getProperty(uint64_t index) const;
 
 		DLL_IMPORT_OR_EXPORT bool hasMultipleRealizations() const;
 

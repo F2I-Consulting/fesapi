@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "FaultInterpretation.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include "TectonicBoundaryFeature.h"
 
 using namespace std;

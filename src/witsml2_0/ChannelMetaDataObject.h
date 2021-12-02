@@ -20,8 +20,6 @@ under the License.
 
 #include "../witsml2/WellboreObject.h"
 
-#include <stdexcept>
-
 #include "../eml2/PropertyKind.h"
 
 namespace WITSML2_0_NS

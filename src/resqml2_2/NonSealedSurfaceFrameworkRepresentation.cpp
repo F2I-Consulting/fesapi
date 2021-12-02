@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "NonSealedSurfaceFrameworkRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
 #include <sstream>
 
 #include <H5public.h>

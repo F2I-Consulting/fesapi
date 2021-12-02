@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "StructuralOrganizationInterpretation.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include "OrganizationFeature.h"
 #include "../resqml2/FaultInterpretation.h"
 #include "../resqml2/HorizonInterpretation.h"

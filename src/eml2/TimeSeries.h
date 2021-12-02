@@ -70,7 +70,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The index of @p timestamp in this time series.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getTimestampIndex(time_t timestamp, LONG64 yearOffset = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getTimestampIndex(time_t timestamp, LONG64 yearOffset = 0) const = 0;
 
 		/**
 		 * Gets the index of a given timestamp in this time series.
@@ -83,7 +83,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The index of @p timestamp in this time series.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getTimestampIndex(const tm & timestamp, LONG64 yearOffset = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getTimestampIndex(const tm & timestamp, LONG64 yearOffset = 0) const = 0;
 
 		/**
 		 * Get the count of timestamps in this time series.
@@ -92,7 +92,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The timestamp count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getTimestampCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getTimestampCount() const = 0;
 
 		/**
 		 * Gets a timestamp at a particular index of this time series.
@@ -117,7 +117,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The timestamp at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual tm getTimestampAsTimeStructure(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual tm getTimestampAsTimeStructure(uint64_t index) const = 0;
 
 		/**
 		 * Get all the properties which use this time series
@@ -129,7 +129,7 @@ namespace EML2_NS
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "TimeSeries";
 
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const final { return XML_TAG; }
 
 	protected:
 

@@ -98,7 +98,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The contact count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getContactCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getContactCount() const = 0;
 
 		/**
 		 * Gets the contact mode of the subject stratigraphic unit of a contact located at a particular
@@ -113,7 +113,7 @@ namespace RESQML2_NS
 		 * @returns	Proportional contact mode by default (if no contact mode is associated to the subject
 		 * 			stratigraphic unit) or the contact mode of the subject stratigraphic unit.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::resqml22__ContactMode getSubjectContactModeOfContact(unsigned int contactIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::resqml22__ContactMode getSubjectContactModeOfContact(uint64_t contactIndex) const = 0;
 
 		/** Gets the stratigraphic unit interpretation which is the subject of a particular contact.
 		 *
@@ -125,7 +125,7 @@ namespace RESQML2_NS
 		 * @returns The subject stratigraphic unit interpretation of the contact at position @p contactIndex
 		 * 			if it exists, else @c nullptr.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual class StratigraphicUnitInterpretation* getSubjectOfContact(unsigned int contactIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual class StratigraphicUnitInterpretation* getSubjectOfContact(uint64_t contactIndex) const = 0;
 
 		/**
 		 * Gets the contact mode of the direct object stratigraphic unit of a contact located at a
@@ -139,7 +139,7 @@ namespace RESQML2_NS
 		 * 			object stratigraphic unit) or the contact mode of the direct object stratigraphic
 		 * 			unit.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::resqml22__ContactMode getDirectObjectContactModeOfContact(unsigned int contactIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::resqml22__ContactMode getDirectObjectContactModeOfContact(uint64_t contactIndex) const = 0;
 
 		/** Gets the stratigraphic unit interpretation which is the direct object of a particular contact.
 		 *
@@ -151,7 +151,7 @@ namespace RESQML2_NS
 		 * @returns The direct object stratigraphic unit interpretation of the contact at position 
 		 * 			@p contactIndex if it exists, else @c nullptr.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual StratigraphicUnitInterpretation* getDirectObjectOfContact(unsigned int contactIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual StratigraphicUnitInterpretation* getDirectObjectOfContact(uint64_t contactIndex) const = 0;
 
 		/**
 		 * Gets the horizon interpretation which is the contact between two stratigraphic units.
@@ -164,7 +164,7 @@ namespace RESQML2_NS
 		 * @returns	@c nullptr if the horizon corresponding to the contact at position @p contactIndex is
 		 * 			unknown, else the corresponding horizon interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual HorizonInterpretation* getHorizonInterpretationOfContact(unsigned int contactIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual HorizonInterpretation* getHorizonInterpretationOfContact(uint64_t contactIndex) const = 0;
 
 		/**
 		 * Gets the count of all the stratigraphic unit interpretations which are contained in this
@@ -173,7 +173,7 @@ namespace RESQML2_NS
 		 * @returns	The count of all the stratigraphic unit interpretations which are contained in this
 		 * 			stratigraphic column rank.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getStratigraphicUnitInterpretationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getStratigraphicUnitInterpretationCount() const = 0;
 
 		/**
 		 * Gets the data object reference of the stratigraphic unit interpretations at a particular
@@ -187,7 +187,7 @@ namespace RESQML2_NS
 		 * @returns	The data object reference of the stratigraphic unit interpretation at position @p
 		 * 			index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStratigraphicUnitInterpretationDor(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStratigraphicUnitInterpretationDor(uint64_t index) const = 0;
 
 		/**
 		 * Gets all the stratigraphic unit interpretations contained in this stratigraphic column rank
@@ -207,7 +207,7 @@ namespace RESQML2_NS
 		 * @returns	The count of all the contact horizon interpretations which are contained in this
 		 * 			stratigraphic column rank.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getHorizonInterpretationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getHorizonInterpretationCount() const = 0;
 
 		/**
 		 * Gets the data object reference of a contact horizon interpretation at a particular index.
@@ -219,7 +219,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The data object reference of the contact horizon interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getHorizonInterpretationDor(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getHorizonInterpretationDor(uint64_t index) const = 0;
 
 		/**
 		 * Gets the contact horizon interpretation at a particular index.
@@ -230,7 +230,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The contact horizon interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT HorizonInterpretation* getHorizonInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT HorizonInterpretation* getHorizonInterpretation(uint64_t index) const;
 
 		/**
 		 * Gets all the horizon interpretations contained in this stratigraphic column rank
@@ -244,7 +244,7 @@ namespace RESQML2_NS
 		GETTER_DATAOBJECTS(StratigraphicColumn, StratigraphicColumn)
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "StratigraphicColumnRankInterpretation";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 

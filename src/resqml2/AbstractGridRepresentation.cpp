@@ -19,8 +19,6 @@ under the License.
 #include "AbstractGridRepresentation.h"
 
 #include <algorithm>
-#include <limits>
-#include <stdexcept>
 
 #include <hdf5.h>
 
@@ -42,26 +40,15 @@ std::vector<RESQML2_NS::GridConnectionSetRepresentation *> AbstractGridRepresent
 	return repository->getSourceObjects<RESQML2_NS::GridConnectionSetRepresentation>(this);
 }
 
-unsigned int AbstractGridRepresentation::getGridConnectionSetRepresentationCount() const
+uint64_t AbstractGridRepresentation::getGridConnectionSetRepresentationCount() const
 {
-	const size_t result = getGridConnectionSetRepresentationSet().size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("The count of the GridConnectionSet Representations is too big.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return getGridConnectionSetRepresentationSet().size();
 }
 
-RESQML2_NS::GridConnectionSetRepresentation * AbstractGridRepresentation::getGridConnectionSetRepresentation(unsigned int index) const
+RESQML2_NS::GridConnectionSetRepresentation * AbstractGridRepresentation::getGridConnectionSetRepresentation(uint64_t index) const
 {
 	const std::vector<RESQML2_NS::GridConnectionSetRepresentation *>& gridConnectionSetRepresentationSet = getGridConnectionSetRepresentationSet();
-
-	if (gridConnectionSetRepresentationSet.size() > index) {
-		return gridConnectionSetRepresentationSet[index];
-	}
-	
-	throw std::out_of_range("No GridConnectionSetRepresentation at this index.");
+	return gridConnectionSetRepresentationSet.at(index);
 }
 
 gsoap_resqml2_0_1::resqml20__AbstractParentWindow* AbstractGridRepresentation::getParentWindow2_0_1() const
@@ -131,25 +118,14 @@ std::vector<RESQML2_NS::AbstractGridRepresentation *> AbstractGridRepresentation
 	return repository->getSourceObjects<RESQML2_NS::AbstractGridRepresentation>(this);
 }
 
-unsigned int AbstractGridRepresentation::getChildGridCount() const {
-	const size_t result = getChildGridSet().size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("The count of the child grids is too big.");
-	}
-
-	return static_cast<unsigned int>(result);
+uint64_t AbstractGridRepresentation::getChildGridCount() const {
+	return getChildGridSet().size();
 }
 
-AbstractGridRepresentation * AbstractGridRepresentation::getChildGrid(unsigned int index) const
+AbstractGridRepresentation * AbstractGridRepresentation::getChildGrid(uint64_t index) const
 {
 	const std::vector<RESQML2_NS::AbstractGridRepresentation *>& childGridSet = getChildGridSet();
-
-	if (childGridSet.size() > index) {
-		return childGridSet[index];
-	}
-
-	throw std::out_of_range("The child grid index is out of range.");
+	return childGridSet.at(index);
 }
 
 gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid2_0_1(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,

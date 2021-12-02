@@ -35,7 +35,7 @@ void AbstractSurfaceRepresentation::loadTargetRelationships()
 	}
 }
 
-unsigned int AbstractSurfaceRepresentation::getBoundariesCount() const
+uint64_t AbstractSurfaceRepresentation::getBoundariesCount() const
 {
 	size_t result;
 
@@ -49,28 +49,20 @@ unsigned int AbstractSurfaceRepresentation::getBoundariesCount() const
 		throw std::logic_error("Unsupported version of RESQML");
 	}
 
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much boundaries");
-	}
-
-	return static_cast<unsigned int>(result);
+	return result;
 }
 
-COMMON_NS::DataObjectReference AbstractSurfaceRepresentation::getOuterRingDor(unsigned int index) const
+COMMON_NS::DataObjectReference AbstractSurfaceRepresentation::getOuterRingDor(uint64_t index) const
 {
-	if (index >= getBoundariesCount()) {
-		throw std::out_of_range("The index is out of range");
-	}
-
 	if (gsoapProxy2_0_1 != nullptr) {
 		auto boundaries = static_cast<gsoap_resqml2_0_1::resqml20__AbstractSurfaceRepresentation*>(gsoapProxy2_0_1)->Boundaries;
-		return boundaries[index]->OuterRing == nullptr
+		return boundaries.at(index)->OuterRing == nullptr
 			? COMMON_NS::DataObjectReference()
 			: COMMON_NS::DataObjectReference(boundaries[index]->OuterRing);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		auto boundaries = static_cast<gsoap_eml2_3::resqml22__AbstractSurfaceRepresentation*>(gsoapProxy2_3)->Boundaries;
-		return boundaries[index]->OuterRing == nullptr
+		return boundaries.at(index)->OuterRing == nullptr
 			? COMMON_NS::DataObjectReference()
 			: COMMON_NS::DataObjectReference(boundaries[index]->OuterRing);
 	}

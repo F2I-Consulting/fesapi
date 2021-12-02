@@ -23,7 +23,7 @@ under the License.
 using namespace PRODML2_1_NS;
 using namespace gsoap_eml2_2;
 
-gsoap_eml2_2::prodml21__PvtModelParameterKind PvtSpecification::getCoefficientKind(unsigned int index) const
+gsoap_eml2_2::prodml21__PvtModelParameterKind PvtSpecification::getCoefficientKind(uint64_t index) const
 {
 	if (index >= getCoefficientCount()) {
 		throw std::out_of_range("The index is out of range");

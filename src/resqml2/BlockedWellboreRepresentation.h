@@ -159,7 +159,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of supporting grid representation.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getSupportingGridRepresentationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getSupportingGridRepresentationCount() const = 0;
 
 		/**
 		 * Gets the supporting grid representation located at a specific index of this blocked wellbore
@@ -172,7 +172,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The supporting grid representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation* getSupportingGridRepresentation(uint64_t index) const;
 
 		/**
 		 * Get the DOR of the supporting grid representation located at a specific index of this blocked
@@ -185,10 +185,10 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the supporting grid representation at position @p index.
 		 */
-		virtual COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const = 0;
+		virtual COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(uint64_t index) const = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "BlockedWellboreRepresentation";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 

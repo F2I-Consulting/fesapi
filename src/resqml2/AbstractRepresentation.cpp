@@ -77,7 +77,7 @@ COMMON_NS::DataObjectReference AbstractRepresentation::getHdfProxyDorFromPointGe
 	return COMMON_NS::DataObjectReference();
 }
 
-gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* AbstractRepresentation::getSeismic3dCoordinates2_0_1(unsigned int patchIndex) const
+gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* AbstractRepresentation::getSeismic3dCoordinates2_0_1(uint64_t patchIndex) const
 {
 	gsoap_resqml2_0_1::resqml20__PointGeometry* const geom = getPointGeometry2_0_1(patchIndex);
 	if (geom == nullptr) {
@@ -91,7 +91,7 @@ gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* AbstractRepresentation::getSe
 	return nullptr;
 }
 
-gsoap_eml2_3::resqml22__Seismic3dCoordinates* AbstractRepresentation::getSeismic3dCoordinates2_2(unsigned int patchIndex) const
+gsoap_eml2_3::resqml22__Seismic3dCoordinates* AbstractRepresentation::getSeismic3dCoordinates2_2(uint64_t patchIndex) const
 {
 	gsoap_eml2_3::resqml22__PointGeometry* const geom = getPointGeometry2_2(patchIndex);
 	if (geom == nullptr) {
@@ -198,13 +198,13 @@ gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::createPointGeomet
 	}
 }
 
-EML2_NS::AbstractLocal3dCrs* AbstractRepresentation::getLocalCrs(unsigned int patchIndex) const
+EML2_NS::AbstractLocal3dCrs* AbstractRepresentation::getLocalCrs(uint64_t patchIndex) const
 {
 	auto dor = getLocalCrsDor(patchIndex);
 	return dor.isEmpty() ? nullptr : getRepository()->getDataObjectByUuid<EML2_NS::AbstractLocal3dCrs>(dor.getUuid());
 }
 
-COMMON_NS::DataObjectReference AbstractRepresentation::getLocalCrsDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference AbstractRepresentation::getLocalCrsDor(uint64_t patchIndex) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PointGeometry* pointGeom = getPointGeometry2_0_1(patchIndex);
@@ -307,16 +307,15 @@ uint64_t AbstractRepresentation::getXyzPointCountOfAllPatches() const
 {
 	uint64_t result = 0;
 
-	const unsigned int patchCount = getPatchCount();
-	for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex)
-	{
+	const uint64_t patchCount = getPatchCount();
+	for (uint64_t patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
 		result += getXyzPointCountOfPatch(patchIndex);
 	}
 
 	return result;
 }
 
-void AbstractRepresentation::getXyzPointsOfPatchInGlobalCrs(unsigned int patchIndex, double* xyzPoints) const
+void AbstractRepresentation::getXyzPointsOfPatchInGlobalCrs(uint64_t patchIndex, double* xyzPoints) const
 {
 	if (getLocalCrs(patchIndex)->isPartial()) {
 		throw invalid_argument("You cannot get the points in the global CRS if the lcoal CRS is partial");
@@ -329,10 +328,9 @@ void AbstractRepresentation::getXyzPointsOfPatchInGlobalCrs(unsigned int patchIn
 
 void AbstractRepresentation::getXyzPointsOfAllPatches(double* xyzPoints) const
 {
-	const unsigned int patchCount = getPatchCount();
+	const uint64_t patchCount = getPatchCount();
 	getXyzPointsOfPatch(0, xyzPoints);
-	for (unsigned int patchIndex = 1; patchIndex < patchCount; patchIndex++)
-	{
+	for (uint64_t patchIndex = 1; patchIndex < patchCount; patchIndex++) {
 		xyzPoints += getXyzPointCountOfPatch(patchIndex - 1) * 3;
 		getXyzPointsOfPatch(patchIndex, xyzPoints);
 	}
@@ -340,13 +338,13 @@ void AbstractRepresentation::getXyzPointsOfAllPatches(double* xyzPoints) const
 
 bool AbstractRepresentation::isInSingleLocalCrs() const
 {
-	const unsigned int patchCount = getPatchCount();
+	const uint64_t patchCount = getPatchCount();
 	if (patchCount < 2) {
 		return true;
 	}
 	EML2_NS::AbstractLocal3dCrs const* localCrsRef = getLocalCrs(0);
 
-	for (unsigned int patchIndex = 1; patchIndex < patchCount; ++patchIndex) {
+	for (uint64_t patchIndex = 1; patchIndex < patchCount; ++patchIndex) {
 		if (getLocalCrs(patchIndex) != localCrsRef) {
 			return false;
 		}
@@ -357,14 +355,14 @@ bool AbstractRepresentation::isInSingleLocalCrs() const
 
 bool AbstractRepresentation::isInSingleGlobalCrs() const
 {
-	const unsigned int patchCount = getPatchCount();
+	const uint64_t patchCount = getPatchCount();
 	if (patchCount < 2) {
 		return true;
 	}
 	EML2_NS::AbstractLocal3dCrs const* localCrs = getLocalCrs(0);
 	const uint64_t epsgCode = (localCrs != nullptr && localCrs->isProjectedCrsDefinedWithEpsg()) ? localCrs->getProjectedCrsEpsgCode() : (std::numeric_limits<uint64_t>::max)();
 
-	for (unsigned int patchIndex = 1; patchIndex < patchCount; ++patchIndex) {
+	for (uint64_t patchIndex = 1; patchIndex < patchCount; ++patchIndex) {
 		localCrs = getLocalCrs(patchIndex);
 		if (epsgCode != ((localCrs != nullptr && localCrs->isProjectedCrsDefinedWithEpsg()) ? localCrs->getProjectedCrsEpsgCode() : (std::numeric_limits<uint64_t>::max)())) {
 			return false;
@@ -384,7 +382,7 @@ void AbstractRepresentation::getXyzPointsOfAllPatchesInGlobalCrs(double* xyzPoin
 	getLocalCrs(0)->convertXyzPointsToGlobalCrs(xyzPoints, getXyzPointCountOfAllPatches());
 }
 
-AbstractRepresentation* AbstractRepresentation::getSeismicSupportOfPatch(const unsigned int& patchIndex) const
+AbstractRepresentation* AbstractRepresentation::getSeismicSupportOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The seismic support of the patch at the specified index is out of range.");
@@ -414,12 +412,12 @@ AbstractRepresentation* AbstractRepresentation::getSeismicSupportOfPatch(const u
 std::set<AbstractRepresentation*> AbstractRepresentation::getAllSeismicSupport() const
 {
 	std::set<AbstractRepresentation*> result;
-	const unsigned int patchCount = getPatchCount();
-	for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex)
-	{
+	const uint64_t patchCount = getPatchCount();
+	for (uint64_t patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
 		AbstractRepresentation* seismicSupport = getSeismicSupportOfPatch(patchIndex);
-		if (seismicSupport != nullptr)
+		if (seismicSupport != nullptr) {
 			result.insert(seismicSupport);
+		}
 	}
 
 	return result;
@@ -447,7 +445,7 @@ void AbstractRepresentation::loadTargetRelationships()
 	}
 
 	// CRS
-	for (unsigned int patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
+	for (uint64_t patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
 		dor = getLocalCrsDor(patchIndex);
 		if (!dor.isEmpty()) {
 			convertDorIntoRel<EML2_NS::AbstractLocal3dCrs>(dor);
@@ -463,7 +461,7 @@ void AbstractRepresentation::loadTargetRelationships()
 	// Seismic support
 	if (gsoapProxy2_0_1 != nullptr) {
 		// Seismic support
-		for (unsigned int patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
+		for (uint64_t patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
 			gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(patchIndex);
 			if (geom != nullptr && geom->SeismicCoordinates != nullptr) {
 				if (geom->SeismicCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Seismic3dCoordinates) {
@@ -478,7 +476,7 @@ void AbstractRepresentation::loadTargetRelationships()
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		for (unsigned int patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
+		for (uint64_t patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
 			gsoap_eml2_3::resqml22__PointGeometry* geom = getPointGeometry2_2(patchIndex);
 			if (geom != nullptr && geom->SeismicCoordinates != nullptr) {
 				if (geom->SeismicCoordinates->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Seismic3dCoordinates) {
@@ -494,7 +492,7 @@ void AbstractRepresentation::loadTargetRelationships()
 	}
 }
 
-void AbstractRepresentation::addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double* inlines, double* crosslines, unsigned int pointCount,
+void AbstractRepresentation::addSeismic3dCoordinatesToPatch(uint64_t patchIndex, double* inlines, double* crosslines, uint64_t pointCount,
 	RESQML2_NS::AbstractRepresentation* seismicSupport, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (gsoapProxy2_0_1 != nullptr || gsoapProxy2_3 != nullptr) {
@@ -581,7 +579,7 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(unsigned int patchIn
 	}
 }
 
-void AbstractRepresentation::addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double startInline, double incrInline, unsigned int countInline,
+void AbstractRepresentation::addSeismic3dCoordinatesToPatch(uint64_t patchIndex, double startInline, double incrInline, unsigned int countInline,
 	double startCrossline, double incrCrossline, unsigned int countCrossline, RESQML2_NS::AbstractRepresentation* seismicSupport)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -663,7 +661,7 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(unsigned int patchIn
 	}
 }
 
-void AbstractRepresentation::addSeismic2dCoordinatesToPatch(unsigned int patchIndex, double* lineAbscissa,
+void AbstractRepresentation::addSeismic2dCoordinatesToPatch(uint64_t patchIndex, double* lineAbscissa,
 	RESQML2_NS::AbstractRepresentation* seismicSupport, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (gsoapProxy2_0_1 != nullptr || gsoapProxy2_3 != nullptr) {
@@ -729,7 +727,7 @@ void AbstractRepresentation::addSeismic2dCoordinatesToPatch(unsigned int patchIn
 	}
 }
 
-void AbstractRepresentation::getSeismicLineAbscissaOfPointsOfPatch(unsigned int patchIndex, double* values) const
+void AbstractRepresentation::getSeismicLineAbscissaOfPointsOfPatch(uint64_t patchIndex, double* values) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PointGeometry* const geom = getPointGeometry2_0_1(patchIndex);
@@ -767,7 +765,7 @@ void AbstractRepresentation::getSeismicLineAbscissaOfPointsOfPatch(unsigned int 
 	}
 }
 
-void AbstractRepresentation::getInlinesOfPointsOfPatch(unsigned int patchIndex, double* values) const
+void AbstractRepresentation::getInlinesOfPointsOfPatch(uint64_t patchIndex, double* values) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* seisInfo = getSeismic3dCoordinates2_0_1(patchIndex);
@@ -801,7 +799,7 @@ void AbstractRepresentation::getInlinesOfPointsOfPatch(unsigned int patchIndex, 
 	}
 }
 
-void AbstractRepresentation::getCrosslinesOfPointsOfPatch(unsigned int patchIndex, double* values) const
+void AbstractRepresentation::getCrosslinesOfPointsOfPatch(uint64_t patchIndex, double* values) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* seisInfo = getSeismic3dCoordinates2_0_1(patchIndex);
@@ -834,7 +832,7 @@ void AbstractRepresentation::getCrosslinesOfPointsOfPatch(unsigned int patchInde
 	}
 }
 
-gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
+gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::getPointGeometry2_0_1(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The patch index is out of range");
@@ -843,7 +841,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::getPointGeom
 	return nullptr;
 }
 
-gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::getPointGeometry2_2(unsigned int patchIndex) const
+gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::getPointGeometry2_2(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The patch index is out of range");

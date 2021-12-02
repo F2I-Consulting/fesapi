@@ -18,13 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "IjkGridParametricRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include <hdf5.h>
 
 #include "../eml2/AbstractHdfProxy.h"
-
 #include "../eml2/AbstractLocal3dCrs.h"
 
 using namespace std;

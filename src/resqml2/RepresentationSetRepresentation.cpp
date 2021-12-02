@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "RepresentationSetRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
-
 using namespace std;
 using namespace RESQML2_NS;
 
@@ -30,19 +27,19 @@ void RepresentationSetRepresentation::loadTargetRelationships()
 {
 	AbstractRepresentation::loadTargetRelationships();
 
-	const unsigned int repCount = getRepresentationCount();
-	for (unsigned int i = 0; i < repCount; ++i) {
+	const uint64_t repCount = getRepresentationCount();
+	for (uint64_t i = 0; i < repCount; ++i) {
 		COMMON_NS::DataObjectReference dor = getRepresentationDor(i);
 		convertDorIntoRel(dor);
 	}
 }
 
-uint64_t RepresentationSetRepresentation::getXyzPointCountOfPatch(unsigned int) const
+uint64_t RepresentationSetRepresentation::getXyzPointCountOfPatch(uint64_t) const
 {
 	throw logic_error("Not implemented yet.");
 }
 
-void RepresentationSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
+void RepresentationSetRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");
@@ -65,7 +62,7 @@ bool RepresentationSetRepresentation::isHomogeneous() const
 	}
 }
 
-unsigned int RepresentationSetRepresentation::getRepresentationCount() const
+uint64_t RepresentationSetRepresentation::getRepresentationCount() const
 {
 	size_t count = 0;
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -78,11 +75,7 @@ unsigned int RepresentationSetRepresentation::getRepresentationCount() const
 		throw logic_error("Not implemented yet");
 	}
 
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("The count is too big.");
-	}
-
-	return static_cast<unsigned int>(count);
+	return count;
 }
 
 RESQML2_NS::AbstractRepresentation* RepresentationSetRepresentation::getRepresentation(uint64_t index) const

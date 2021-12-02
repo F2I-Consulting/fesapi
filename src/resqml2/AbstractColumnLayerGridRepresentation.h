@@ -39,7 +39,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The K layer count of this grid.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getKCellCount() const;
+		DLL_IMPORT_OR_EXPORT uint32_t getKCellCount() const;
 
 		/**
 		 * Sets the K layer count of this grid
@@ -48,7 +48,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 	kCount	The K layer count to set to this grid.
 		 */
-		DLL_IMPORT_OR_EXPORT void setKCellCount(unsigned int kCount);
+		DLL_IMPORT_OR_EXPORT void setKCellCount(uint32_t kCount);
 
 		/**
 		 * Gets the K direction (up, down or not monotonic) of this grid.

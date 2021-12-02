@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "StratigraphicOccurrenceInterpretation.h"
 
-#include <stdexcept>
-
 #include "OrganizationFeature.h"
 #include "../resqml2/StratigraphicColumnRankInterpretation.h"
 

@@ -16,14 +16,12 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
 #include "IjkGridLatticeRepresentation.h"
 
-#include <stdexcept>
+#include "../eml2/AbstractLocal3dCrs.h"
 
 #include "AbstractFeature.h"
 #include "AbstractFeatureInterpretation.h"
-#include "../eml2/AbstractLocal3dCrs.h"
 #include "AbstractValuesProperty.h"
 
 using namespace std;
@@ -70,7 +68,7 @@ bool IjkGridLatticeRepresentation::isAFaciesCube() const
     return getInterpretation() != nullptr && getInterpretation()->getInterpretedFeature()->getXmlTag() == "SeismicLatticeFeature";
 }
 
-void IjkGridLatticeRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
+void IjkGridLatticeRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double *) const
 {
 	if (patchIndex < getPatchCount())
 	{

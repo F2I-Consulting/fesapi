@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractLocal3dCrs.h"
 
-#include <stdexcept>
 #include <algorithm>
 
 #include "../eml2_3/LocalEngineering2dCrs.h"

@@ -76,7 +76,7 @@ namespace RESQML2_2_NS
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const final;
 
 		DLL_IMPORT_OR_EXPORT void getFaceIndicesOfCells(uint64_t * faceIndices) const final;
 
@@ -84,7 +84,7 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT bool isFaceCountOfCellsConstant() const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getConstantFaceCountOfCells() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getConstantFaceCountOfCells() const final;
 
 		DLL_IMPORT_OR_EXPORT void getNodeIndicesOfFaces(uint64_t * nodeIndices) const final;
 
@@ -92,7 +92,7 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT bool isNodeCountOfFacesConstant() const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getConstantNodeCountOfFaces() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getConstantNodeCountOfFaces() const final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getCellCount() const final;
 
@@ -110,7 +110,7 @@ namespace RESQML2_2_NS
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml22";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.
@@ -128,7 +128,7 @@ namespace RESQML2_2_NS
 
 		gsoap_eml2_3::_resqml22__UnstructuredGridRepresentation* getSpecializedGsoapProxy() const;
 
-		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const final;
+		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(uint64_t patchIndex) const final;
 
 		/**
 		* Set a geometry using some existing hdf5 dataset. This geometry only contains polyedra with constant face count per cell and constant node count per face.

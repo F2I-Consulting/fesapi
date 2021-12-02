@@ -111,7 +111,7 @@ namespace WITSML2_0_NS
 		 * @param 	datum	The datum.
 		 * @param 	uom  	The uom.
 		 */
-		DLL_IMPORT_OR_EXPORT void setWellboreGeometrySectionMdInterval(unsigned int index, double top, double base, const std::string & datum, gsoap_eml2_1::eml21__LengthUom uom);
+		DLL_IMPORT_OR_EXPORT void setWellboreGeometrySectionMdInterval(uint64_t index, double top, double base, const std::string & datum, gsoap_eml2_1::eml21__LengthUom uom);
 
 		/**
 		 * Gets wellbore geometry section md interval top
@@ -120,7 +120,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The wellbore geometry section md interval top.
 		 */
-		DLL_IMPORT_OR_EXPORT double getWellboreGeometrySectionMdIntervalTop(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT double getWellboreGeometrySectionMdIntervalTop(uint64_t index) const;
 
 		/**
 		 * Gets wellbore geometry section md interval top uom
@@ -129,7 +129,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The wellbore geometry section md interval top uom.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getWellboreGeometrySectionMdIntervalTopUom(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getWellboreGeometrySectionMdIntervalTopUom(uint64_t index) const;
 
 		/**
 		 * Gets wellbore geometry section md interval base
@@ -138,7 +138,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The wellbore geometry section md interval base.
 		 */
-		DLL_IMPORT_OR_EXPORT double getWellboreGeometrySectionMdIntervalBase(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT double getWellboreGeometrySectionMdIntervalBase(uint64_t index) const;
 
 		/**
 		 * Gets wellbore geometry section md interval base uom
@@ -147,7 +147,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The wellbore geometry section md interval base uom.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getWellboreGeometrySectionMdIntervalBaseUom(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getWellboreGeometrySectionMdIntervalBaseUom(uint64_t index) const;
 
 		/**
 		 * Gets wellbore geometry section md intervaldatum
@@ -156,7 +156,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The wellbore geometry section md intervaldatum.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getWellboreGeometrySectionMdIntervaldatum(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getWellboreGeometrySectionMdIntervaldatum(uint64_t index) const;
 
 		/**
 		 * Query if 'index' has wellbore geometry section md interval
@@ -165,7 +165,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	True if wellbore geometry section md interval, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasWellboreGeometrySectionMdInterval(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT bool hasWellboreGeometrySectionMdInterval(uint64_t index) const;
 
 		/**
 		 * Sets wellbore geometry section tvd interval
@@ -176,7 +176,7 @@ namespace WITSML2_0_NS
 		 * @param 	datum	The datum.
 		 * @param 	uom  	The uom.
 		 */
-		DLL_IMPORT_OR_EXPORT void setWellboreGeometrySectionTvdInterval(unsigned int index, double top, double base, const std::string & datum, gsoap_eml2_1::eml21__LengthUom uom);
+		DLL_IMPORT_OR_EXPORT void setWellboreGeometrySectionTvdInterval(uint64_t index, double top, double base, const std::string & datum, gsoap_eml2_1::eml21__LengthUom uom);
 
 		/**
 		 * Gets wellbore geometry section tvd interval top
@@ -185,7 +185,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The wellbore geometry section tvd interval top.
 		 */
-		DLL_IMPORT_OR_EXPORT double getWellboreGeometrySectionTvdIntervalTop(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT double getWellboreGeometrySectionTvdIntervalTop(uint64_t index) const;
 
 		/**
 		 * Gets wellbore geometry section tvd interval top uom
@@ -194,7 +194,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The wellbore geometry section tvd interval top uom.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getWellboreGeometrySectionTvdIntervalTopUom(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getWellboreGeometrySectionTvdIntervalTopUom(uint64_t index) const;
 
 		/**
 		 * Gets wellbore geometry section tvd interval base
@@ -203,7 +203,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The wellbore geometry section tvd interval base.
 		 */
-		DLL_IMPORT_OR_EXPORT double getWellboreGeometrySectionTvdIntervalBase(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT double getWellboreGeometrySectionTvdIntervalBase(uint64_t index) const;
 
 		/**
 		 * Gets wellbore geometry section tvd interval base uom
@@ -212,7 +212,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The wellbore geometry section tvd interval base uom.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getWellboreGeometrySectionTvdIntervalBaseUom(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getWellboreGeometrySectionTvdIntervalBaseUom(uint64_t index) const;
 
 		/**
 		 * Gets wellbore geometry section tvd intervaldatum
@@ -221,7 +221,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The wellbore geometry section tvd intervaldatum.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getWellboreGeometrySectionTvdIntervaldatum(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getWellboreGeometrySectionTvdIntervaldatum(uint64_t index) const;
 
 		/**
 		 * Query if 'index' has wellbore geometry section tvd interval
@@ -230,7 +230,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	True if wellbore geometry section tvd interval, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasWellboreGeometrySectionTvdInterval(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT bool hasWellboreGeometrySectionTvdInterval(uint64_t index) const;
 
 		/**
 		 * Push back an empty section into the isntance.
@@ -244,7 +244,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	the count of sections in this instance.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getSectionCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getSectionCount() const;
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

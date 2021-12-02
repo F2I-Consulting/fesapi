@@ -73,14 +73,14 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The triangle count of the patch at position @p patchIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getTriangleCountOfPatch(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getTriangleCountOfPatch(uint64_t patchIndex) const = 0;
 
 		/**
 		 * Get the triangle count of all patches of this representation.
 		 *
 		 * @returns	The triangle count of all patches.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getTriangleCountOfAllPatches() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getTriangleCountOfAllPatches() const = 0;
 
 		/**
 		 * Gets all the triangle node indices of a particular patch of this representation. See
@@ -98,7 +98,7 @@ namespace RESQML2_NS
 		 * 									following values define the 3 vertices of the second triangle
 		 * 									and so on.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getTriangleNodeIndicesOfPatch(unsigned int patchIndex, unsigned int * triangleNodeIndices) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getTriangleNodeIndicesOfPatch(uint64_t patchIndex, unsigned int * triangleNodeIndices) const = 0;
 
 		/**
 		 * Gets all the triangle node indices of all patches of this representation. See
@@ -112,10 +112,10 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const = 0;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override = 0;
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const override = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "TriangulatedSetRepresentation";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
@@ -125,8 +125,6 @@ namespace RESQML2_NS
 		 * Only to be used in partial transfer context
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * 
 		 */
 		DLL_IMPORT_OR_EXPORT TriangulatedSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSurfaceRepresentation(partialObject) {}
 

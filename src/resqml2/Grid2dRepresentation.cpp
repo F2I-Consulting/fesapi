@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Grid2dRepresentation.h"
 
-#include <stdexcept>
-
 #include "../eml2/AbstractLocal3dCrs.h"
 
 using namespace std;
@@ -27,7 +25,7 @@ using namespace RESQML2_NS;
 
 const char* Grid2dRepresentation::XML_TAG = "Grid2dRepresentation";
 
-uint64_t Grid2dRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t Grid2dRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");
@@ -36,7 +34,7 @@ uint64_t Grid2dRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) 
 	return getNodeCountAlongIAxis() * getNodeCountAlongJAxis();
 }
 
-void Grid2dRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
+void Grid2dRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");

@@ -114,16 +114,10 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The binary interaction coefficient count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getBinaryInteractionCoefficientCount() const {
-			if (static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->BinaryInteractionCoefficientSet == nullptr) {
-				return 0;
-			}
-
-			size_t count = static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->BinaryInteractionCoefficientSet->BinaryInteractionCoefficient.size();
-			if (count > (std::numeric_limits<unsigned int>::max)()) {
-				throw std::out_of_range("There are too much coefficient");
-			}
-			return static_cast<unsigned int>(count);
+		DLL_IMPORT_OR_EXPORT uint64_t getBinaryInteractionCoefficientCount() const noexcept {
+			return static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->BinaryInteractionCoefficientSet == nullptr
+				? 0
+				: static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->BinaryInteractionCoefficientSet->BinaryInteractionCoefficient.size();
 		}
 
 		/**
@@ -135,13 +129,13 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The binary interaction coefficient fluid component 1 reference.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getBinaryInteractionCoefficientFluidComponent1Reference(unsigned int index) const
+		DLL_IMPORT_OR_EXPORT std::string getBinaryInteractionCoefficientFluidComponent1Reference(uint64_t index) const
 		{
-			if (index >= getBinaryInteractionCoefficientCount()) {
+			if (static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->BinaryInteractionCoefficientSet == nullptr) {
 				throw std::out_of_range("The index is out of range");
 			}
 
-			return static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->BinaryInteractionCoefficientSet->BinaryInteractionCoefficient[index]->fluidComponent1Reference;
+			return static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->BinaryInteractionCoefficientSet->BinaryInteractionCoefficient.at(index)->fluidComponent1Reference;
 		}
 
 		/**
@@ -196,16 +190,10 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The fluid component property count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getFluidComponentPropertyCount() const {
-			if (static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->ComponentPropertySet == nullptr) {
-				return 0;
-			}
-
-			size_t count = static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->ComponentPropertySet->FluidComponentProperty.size();
-			if (count > (std::numeric_limits<unsigned int>::max)()) {
-				throw std::out_of_range("There are too much component property");
-			}
-			return static_cast<unsigned int>(count);
+		DLL_IMPORT_OR_EXPORT uint64_t getFluidComponentPropertyCount() const noexcept {
+			return static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->ComponentPropertySet == nullptr
+				? 0
+				: static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->ComponentPropertySet->FluidComponentProperty.size();
 		}
 
 		/**
@@ -224,13 +212,12 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The fluid component property fluid component reference.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getFluidComponentPropertyFluidComponentReference(unsigned int index) const{
-			if (static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->ComponentPropertySet == nullptr ||
-				static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->ComponentPropertySet->FluidComponentProperty.size() <= index) {
+		DLL_IMPORT_OR_EXPORT std::string getFluidComponentPropertyFluidComponentReference(uint64_t index) const{
+			if (static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->ComponentPropertySet == nullptr) {
 				throw std::out_of_range("The FluidComponentProperty at this index does not exist");
 			}
 
-			return static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->ComponentPropertySet->FluidComponentProperty[index]->fluidComponentReference;
+			return static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->ComponentPropertySet->FluidComponentProperty.at(index)->fluidComponentReference;
 		}
 
 		GETTER_AND_SETTER_FLUID_COMPONENT_PROPERTY_OPTIONAL_ATTRIBUTE(FluidComponentProperty, AcentricFactor, double)

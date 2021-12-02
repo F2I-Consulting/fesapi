@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreMarkerFrameRepresentation.h"
 
-#include <stdexcept>
-
 #include "WellboreMarker.h"
 #include "GeologicUnitOccurrenceInterpretation.h"
 

@@ -61,7 +61,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of the selected elements.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getElementCountOfPatch(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getElementCountOfPatch(uint64_t patchIndex) const = 0;
 
 		/**
 		 * Gets the indices of the selected elements for a particular patch of this sub-representation.
@@ -76,7 +76,7 @@ namespace RESQML2_NS
 		 * 									{@link getElementCountOfPatch()} size.
 		 * @return The null value
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int64_t getElementIndicesOfPatch(unsigned int patchIndex, int64_t* elementIndices) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getElementIndicesOfPatch(uint64_t patchIndex, int64_t* elementIndices) const = 0;
 
 		/**
 		 * Checks if the element indices of a particular patch are based on a lattice or not.
@@ -87,7 +87,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if element indices based on lattice, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesBasedOnLattice(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesBasedOnLattice(uint64_t patchIndex) const = 0;
 
 		/**
 		 * Gets the start value of the lattice the element indices of a particular patch are based on.
@@ -99,7 +99,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The lattice start value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int64_t getLatticeElementIndicesStartValue(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getLatticeElementIndicesStartValue(uint64_t patchIndex) const = 0;
 
 		/**
 		 * Gets the dimension count of the lattice the element indices of a particular patch are based
@@ -112,7 +112,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The lattice dimension count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getLatticeElementIndicesDimensionCount(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getLatticeElementIndicesDimensionCount(uint64_t patchIndex) const = 0;
 
 		/**
 		 * Gets the offset value at a given dimension of the lattice the element indices of a particular
@@ -136,7 +136,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The offset value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, uint64_t patchIndex) const = 0;
 
 		/**
 		 * Gets the offset count at a given dimension of the lattice the element indices of a particular
@@ -151,7 +151,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The offset count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, uint64_t patchIndex) const = 0;
 
 		/**
 		 * Pushes back a new lattice-based patch (without pairwise elements) in this sub-representation.
@@ -216,12 +216,12 @@ namespace RESQML2_NS
 		 * 							   pairwise) or if the kind of the left part of the pairs of elements is
 		 * 							    not node (pairwise case).
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const override;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const override;
 
 		/** Please do note use : not implemented yet. */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double* xyzPoints) const override;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double* xyzPoints) const override;
 
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getPatchCount() const override = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getPatchCount() const override = 0;
 
 		/**
 		 * Gets the supporting representation of a specific patch of this sub-representation.
@@ -234,7 +234,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The supporting representation of patch @p patchIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractRepresentation* getSupportingRepresentationOfPatch(unsigned int patchIndex = 0) const;
+		DLL_IMPORT_OR_EXPORT AbstractRepresentation* getSupportingRepresentationOfPatch(uint64_t patchIndex = 0) const;
 
 		/**
 		 * Gets the data object reference of the supporting representation of a specific patch of this sub-representation.
@@ -247,10 +247,10 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The data object reference of the supporting representation of patch @p patchIndex.
 		 */
-		virtual COMMON_NS::DataObjectReference getSupportingRepresentationOfPatchDor(unsigned int patchIndex = 0) const = 0;
+		virtual COMMON_NS::DataObjectReference getSupportingRepresentationOfPatchDor(uint64_t patchIndex = 0) const = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "SubRepresentation";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 

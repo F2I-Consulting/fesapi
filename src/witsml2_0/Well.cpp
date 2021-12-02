@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Well.h"
 
-#include <limits>
-#include <stdexcept>
 #include <sstream>
 
 #include "Wellbore.h"
@@ -186,28 +184,22 @@ unsigned short Well::getTimeZoneMinutes() const {
 	return result;
 }
 
-double Well::getLocationProjectedX(unsigned int locationIndex)
+double Well::getLocationProjectedX(uint64_t locationIndex)
 {
 	witsml20__Well* well = static_cast<witsml20__Well*>(gsoapProxy2_1);
 
-	if (well->WellLocation.size() <= locationIndex) {
-		throw range_error("The well location index is out of range.");
-	}
-	if (well->WellLocation[locationIndex]->soap_type() != SOAP_TYPE_gsoap_eml2_1_witsml20__ProjectedWellLocation){
+	if (well->WellLocation.at(locationIndex)->soap_type() != SOAP_TYPE_gsoap_eml2_1_witsml20__ProjectedWellLocation){
 		throw invalid_argument("The well location is not a projected one.");
 	}
 
 	return static_cast<witsml20__ProjectedWellLocation*>(well->WellLocation[locationIndex])->Coordinate1;
 }
 
-double Well::getLocationProjectedY(unsigned int locationIndex)
+double Well::getLocationProjectedY(uint64_t locationIndex)
 {
 	witsml20__Well* well = static_cast<witsml20__Well*>(gsoapProxy2_1);
 
-	if (well->WellLocation.size() <= locationIndex) {
-		throw range_error("The well location index is out of range.");
-	}
-	if (well->WellLocation[locationIndex]->soap_type() != SOAP_TYPE_gsoap_eml2_1_witsml20__ProjectedWellLocation){
+	if (well->WellLocation.at(locationIndex)->soap_type() != SOAP_TYPE_gsoap_eml2_1_witsml20__ProjectedWellLocation){
 		throw invalid_argument("The well location is not a projected one.");
 	}
 
@@ -237,16 +229,6 @@ void Well::pushBackLocation(
 	static_cast<eml21__ProjectedEpsgCrs*>(location->Crs)->EpsgCode = projectedCrsEpsgCode;
 
 	well->WellLocation.push_back(location);
-}
-
-unsigned int Well::geLocationCount() const {
-	const size_t result = static_cast<witsml20__Well*>(gsoapProxy2_1)->WellLocation.size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much locations");
-	}
-
-	return static_cast<unsigned int>(result);
 }
 
 void Well::pushBackDatum(
@@ -283,15 +265,4 @@ void Well::pushBackDatum(
 	wellDatum->Elevation->__item = elevation;
 
 	well->WellDatum.push_back(wellDatum);
-}
-
-unsigned int Well::getDatumCount() const
-{
-	const size_t result = static_cast<witsml20__Well*>(gsoapProxy2_1)->WellDatum.size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much datums");
-	}
-
-	return static_cast<unsigned int>(result);
 }

@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "TimeSeries.h"
 
-#include <stdexcept>
-
 #include "../tools/TimeTools.h"
 
 #include "../resqml2/AbstractProperty.h"

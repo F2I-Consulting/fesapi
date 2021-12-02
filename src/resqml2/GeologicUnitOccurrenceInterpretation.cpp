@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "GeologicUnitOccurrenceInterpretation.h"
 
-#include <stdexcept>
-
 #include "StratigraphicColumnRankInterpretation.h"
 #include "WellboreMarkerFrameRepresentation.h"
 

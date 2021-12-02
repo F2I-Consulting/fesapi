@@ -191,7 +191,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The location projected x coordinate.
 		 */
-		DLL_IMPORT_OR_EXPORT double getLocationProjectedX(unsigned int locationIndex) final;
+		DLL_IMPORT_OR_EXPORT double getLocationProjectedX(uint64_t locationIndex) final;
 
 		/**
 		 * Gets location projected y coordinate
@@ -200,7 +200,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The location projected y coordinate.
 		 */
-		DLL_IMPORT_OR_EXPORT double getLocationProjectedY(unsigned int locationIndex) final;
+		DLL_IMPORT_OR_EXPORT double getLocationProjectedY(uint64_t locationIndex) final;
 
 		/**
 		 * Pushes a back location
@@ -217,14 +217,16 @@ namespace WITSML2_0_NS
 			unsigned int projectedCrsEpsgCode) final;
 
 		/**
-		 * Ge location count
+		 * Get location count
 		 *
-		 * @returns	An int.
+		 * @returns	The count of lcoation contained by this well.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int geLocationCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t geLocationCount() const noexcept final {
+			return static_cast<gsoap_eml2_1::witsml20__Well*>(gsoapProxy2_1)->WellLocation.size();
+		}
 
 		/**
-		 * Pushes a back datum
+		 * Pushes back a datum
 		 *
 		 * @param 	guid			   	Unique identifier.
 		 * @param 	title			   	The title.
@@ -248,7 +250,9 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The datum count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getDatumCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getDatumCount() const noexcept final {
+			return static_cast<gsoap_eml2_1::witsml20__Well*>(gsoapProxy2_1)->WellDatum.size();
+		}
 
 		/**
 		* The standard XML namespace for serializing this data object.

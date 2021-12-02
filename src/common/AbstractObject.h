@@ -21,6 +21,12 @@ under the License.
 #include <unordered_map>
 #include <vector>
 #include <stdexcept>
+#if !defined(__GLIBCXX__) || __GLIBCXX__ > 20150623 || __GLIBCXX__ == 20140422 || __GLIBCXX__ == 20140716 || __GLIBCXX__ == 20141030
+#include <regex>
+#else
+#include <boost/regex.hpp>
+#endif
+#include <limits>
 
 #include "../proxies/gsoap_witsml1_4H.h"
 
@@ -545,12 +551,10 @@ namespace COMMON_NS
 		 * Gets the count of aliases in this instance
 		 *
 		 * @exception	std::invalid_argument	If this instance is actually a partial object.
-		 * @exception	std::range_error	 	If the count of aliases is strictly greater than unsigned
-		 * 										int max.
 		 *
 		 * @returns	The alias count of this instance.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getAliasCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getAliasCount() const;
 
 		/**
 		 * Gets the alias authority at a particular index in the aliases set
@@ -563,7 +567,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The alias authority at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getAliasAuthorityAtIndex(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getAliasAuthorityAtIndex(uint64_t index) const;
 
 		/**
 		 * Gets the alias title at a particular index in the aliases set
@@ -576,7 +580,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The alias title at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getAliasTitleAtIndex(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getAliasTitleAtIndex(uint64_t index) const;
 
 		/**
 		 * Gets all the activities where this instance is involved
@@ -588,12 +592,9 @@ namespace COMMON_NS
 		/**
 		 * Gets the count of the activities where this instance is involved
 		 *
-		 * @exception	std::out_of_range	If the count of activities is strictly greater than unsigned
-		 * 									int max.
-		 *
 		 * @returns	The count of all activities involving this instance.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getActivityCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getActivityCount() const;
 
 		/**
 		 * Gets an associated activity at a particular index
@@ -606,7 +607,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The associated activity at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::Activity* getActivity(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT EML2_NS::Activity* getActivity(uint64_t index) const;
 
 		/**
 		 * Pushes back an extra metadata (not a standard one) onto this instance
@@ -641,11 +642,9 @@ namespace COMMON_NS
 		/**
 		 * Get the count of extra metadata in this instance
 		 *
-		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 or EML2.2 one.
-		 *
 		 * @returns	The extra metadata count of this instance.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getExtraMetadataCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getExtraMetadataCount() const;
 
 		/**
 		 * Get the key of a key value pair at a particular index in the extra metadata set of this
@@ -657,7 +656,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The extra metadata key at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getExtraMetadataKeyAtIndex(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getExtraMetadataKeyAtIndex(uint64_t index) const;
 
 		/**
 		 * Get the value of a key value pair at a particular index in the extra metadata set of this
@@ -669,7 +668,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The extra metadata value at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getExtraMetadataStringValueAtIndex(uint64_t index) const;
 		
 		/**
 		* Build and return an ETP1.2 URI from an Energistics dataobject.
@@ -885,7 +884,7 @@ namespace COMMON_NS
 			{
 				gsoap_resqml2_0_1::resqml20__IntegerRangeArray const* rangeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerRangeArray const *>(arrayInput);
 				if (rangeArray->Value + rangeArray->Count > (std::numeric_limits<T>::max)()) {
-					throw std::range_error("The range integer values are superior to unsigned int maximum value.");
+					throw std::range_error("The range integer values are superior to maximum value of read datatype.");
 				}
 				for (T i = 0; i < static_cast<T>(rangeArray->Count); ++i) {
 					arrayOutput[i] = i + static_cast<T>(rangeArray->Value);
@@ -896,7 +895,7 @@ namespace COMMON_NS
 			{
 				gsoap_resqml2_0_1::resqml20__IntegerConstantArray const* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(arrayInput);
 				if (constantArray->Value > (std::numeric_limits<T>::max)()) {
-					throw std::range_error("The constant integer value is superior to unsigned int maximum value.");
+					throw std::range_error("The constant integer value is superior to maximum value of read datatype.");
 				}
 				for (size_t i = 0; i < constantArray->Count; ++i) {
 					arrayOutput[i] = static_cast<T>(constantArray->Value);
@@ -926,7 +925,7 @@ namespace COMMON_NS
 			{
 				gsoap_eml2_3::eml23__IntegerConstantArray const* constantArray = static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(arrayInput);
 				if (constantArray->Value > (std::numeric_limits<T>::max)()) {
-					throw std::range_error("The constant integer value is superior to unsigned int maximum value.");
+					throw std::range_error("The constant integer value is superior to maximum value of read datatype.");
 				}
 				std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<T>(constantArray->Value));
 				return (std::numeric_limits<T>::max)();
@@ -946,8 +945,13 @@ namespace COMMON_NS
 			{
 				gsoap_eml2_3::eml23__IntegerXmlArray const * xmlArray = static_cast<gsoap_eml2_3::eml23__IntegerXmlArray const*>(arrayInput);
 				const std::regex ws_re("\\s+"); // whitespace
+#if !defined(__GLIBCXX__) || __GLIBCXX__ > 20150623 || __GLIBCXX__ == 20140422 || __GLIBCXX__ == 20140716 || __GLIBCXX__ == 20141030
 				std::sregex_token_iterator it(xmlArray->Values.begin(), xmlArray->Values.end(), ws_re, -1);
 				std::sregex_token_iterator endToken;
+#else
+				boost::sregex_token_iterator it(xmlArray->Values.begin(), xmlArray->Values.end(), ws_re, -1);
+				boost::sregex_token_iterator endToken;
+#endif
 				size_t index = 0;
 				while (it != endToken) {
 					arrayOutput[index++] = std::stoll(*it++);

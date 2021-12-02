@@ -79,7 +79,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getNodeCountPerPolylineOfAllPatches(unsigned int * NodeCountPerPolyline) const = 0;
 
-		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const final;
 
 		/**
 		 * Pushes back a new patch of polylines. Here, the closed flag of all of the polylines is the

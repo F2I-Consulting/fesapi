@@ -19,26 +19,22 @@ under the License.
 #include "DiscreteProperty.h"
 
 #include <algorithm>
-#include <limits>
-#include <sstream>
-#include <stdexcept>
 
 #include <hdf5.h>
 
 #include "../common/EnumStringMapper.h"
+
 #include "../eml2/AbstractHdfProxy.h"
 #include "../eml2/ColumnBasedTable.h"
 #include "../eml2/PropertyKind.h"
 
-#include "../tools/Statistics.h"
 #include "../resqml2/AbstractRepresentation.h"
+
+#include "../tools/Statistics.h"
 
 using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
-
-const char* DiscreteProperty::XML_NS = "resqml22";
-const char* DiscreteProperty::XML_TAG = "DiscreteProperty";
 
 DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::PropertyKind * propKind,
@@ -105,11 +101,11 @@ DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, con
 	getRepository()->addRelationship(this, strLookup);
 }
 
-int64_t DiscreteProperty::getNullValue(unsigned int patchIndex) const
+int64_t DiscreteProperty::getNullValue(uint64_t patchIndex) const
 {
 	_resqml22__DiscreteProperty* prop = static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3);
 
-	auto abstractIntArray = prop->ValuesForPatch[patchIndex == (numeric_limits<unsigned int>::max)() ? prop->ValuesForPatch.size() - 1 : patchIndex];
+	auto abstractIntArray = prop->ValuesForPatch[patchIndex == (numeric_limits<uint64_t>::max)() ? prop->ValuesForPatch.size() - 1 : patchIndex];
 	if (abstractIntArray->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
 		return (std::numeric_limits<int64_t>::max)();
 	}
@@ -117,7 +113,7 @@ int64_t DiscreteProperty::getNullValue(unsigned int patchIndex) const
 	return static_cast<eml23__IntegerExternalArray*>(abstractIntArray)->NullValue;
 }
 
-bool DiscreteProperty::hasMinimumValue(unsigned int index) const
+bool DiscreteProperty::hasMinimumValue(uint64_t index) const
 {
 	_resqml22__DiscreteProperty* prop = static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3);
 
@@ -134,7 +130,7 @@ bool DiscreteProperty::hasMinimumValue(unsigned int index) const
 	return true;
 }
 
-int64_t DiscreteProperty::getMinimumValue(unsigned int index) const
+int64_t DiscreteProperty::getMinimumValue(uint64_t index) const
 {
 	if (!hasMinimumValue(index)) {
 		throw std::logic_error("This property has not minimum value at index " + std::to_string(index));
@@ -154,7 +150,7 @@ int64_t DiscreteProperty::getMinimumValue(unsigned int index) const
 	return result;
 }
 
-bool DiscreteProperty::hasMaximumValue(unsigned int index) const
+bool DiscreteProperty::hasMaximumValue(uint64_t index) const
 {
 	_resqml22__DiscreteProperty* prop = static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3);
 
@@ -171,7 +167,7 @@ bool DiscreteProperty::hasMaximumValue(unsigned int index) const
 	return true;
 }
 
-int64_t DiscreteProperty::getMaximumValue(unsigned int index) const
+int64_t DiscreteProperty::getMaximumValue(uint64_t index) const
 {
 	if (!hasMinimumValue(index)) {
 		throw std::logic_error("This property has not minimum value at index " + std::to_string(index));
@@ -191,7 +187,7 @@ int64_t DiscreteProperty::getMaximumValue(unsigned int index) const
 	return result;
 }
 
-void DiscreteProperty::setMinimumValue(int64_t value, unsigned int index) const
+void DiscreteProperty::setMinimumValue(int64_t value, uint64_t index) const
 {
 	_resqml22__DiscreteProperty* prop = static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3);
 
@@ -209,7 +205,7 @@ void DiscreteProperty::setMinimumValue(int64_t value, unsigned int index) const
 	}
 }
 
-void DiscreteProperty::setMaximumValue(int64_t value, unsigned int index) const
+void DiscreteProperty::setMaximumValue(int64_t value, uint64_t index) const
 {
 	_resqml22__DiscreteProperty* prop = static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3);
 

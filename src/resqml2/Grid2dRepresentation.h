@@ -43,10 +43,10 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual uint64_t getNodeCountAlongJAxis() const = 0;
 
-		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const final;
 
 		/** Please do note use: please compute x and y values with the lattice information. */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Gets all the z values of this 2d grid representation. The z values are given in the local CRS.
@@ -489,7 +489,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual uint64_t getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const = 0;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final {return 1;}
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final {return 1;}
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

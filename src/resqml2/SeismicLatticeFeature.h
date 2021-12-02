@@ -41,31 +41,31 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The crossline increment.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int getCrosslineIncrement() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getCrosslineIncrement() const = 0;
 
 		/**
 		 * Gets the inline index increment between two consecutive inlines.
 		 *
 		 * @returns	The inline increment.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int getInlineIncrement() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getInlineIncrement() const = 0;
 
 		/**
 		 * Gets the index of the first crossline.
 		 *
 		 * @returns	The origin crossline.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int getOriginCrossline() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getOriginCrossline() const = 0;
 
 		/**
 		 * Gets the index of the first inline.
 		 *
 		 * @returns	The origin inline.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int getOriginInline() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getOriginInline() const = 0;
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "SeismicLatticeFeature";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 

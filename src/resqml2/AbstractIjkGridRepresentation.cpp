@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractIjkGridRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include <hdf5.h>
 
 #include "../eml2/AbstractHdfProxy.h"
@@ -34,9 +31,6 @@ under the License.
 using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_NS;
-
-const char* AbstractIjkGridRepresentation::XML_TAG = "IjkGridRepresentation";
-const char* AbstractIjkGridRepresentation::XML_TAG_TRUNCATED = "TruncatedIjkGridRepresentation";
 
 AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars) :
 	AbstractColumnLayerGridRepresentation(partialObject, withTruncatedPillars), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr)
@@ -224,7 +218,7 @@ gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* AbstractIjkGridRepresen
 	return static_cast<gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation*>(gsoapProxy2_3);
 }
 
-gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractIjkGridRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
+gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractIjkGridRepresentation::getPointGeometry2_0_1(uint64_t patchIndex) const
 {
 	if (gsoapProxy2_0_1 == nullptr) {
 		throw logic_error("This is not a RESQML 2.0.1 dataobject.");
@@ -237,7 +231,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractIjkGridRepresentation::getPo
 	throw range_error("There cannot be more than one patch is an ijk grid representation.");
 }
 
-gsoap_eml2_3::resqml22__PointGeometry* AbstractIjkGridRepresentation::getPointGeometry2_2(unsigned int patchIndex) const
+gsoap_eml2_3::resqml22__PointGeometry* AbstractIjkGridRepresentation::getPointGeometry2_2(uint64_t patchIndex) const
 {
 	if (gsoapProxy2_3 == nullptr) {
 		throw logic_error("This is not a RESQML 2.2 dataobject.");
@@ -1051,9 +1045,9 @@ void AbstractIjkGridRepresentation::getKGaps(bool * kGaps) const
 	}
 }
 
-unsigned int AbstractIjkGridRepresentation::getFaceCount() const
+uint64_t AbstractIjkGridRepresentation::getFaceCount() const
 {
-	unsigned int faceCount = getICellCount() * getJCellCount() * (getKCellCount() + 1); // K faces which are assumed to be not splitted
+	uint64_t faceCount = getICellCount() * getJCellCount() * (getKCellCount() + 1); // K faces which are assumed to be not splitted
 	faceCount += getICellCount() * (getJCellCount() + 1) * getKCellCount(); // non splitted J faces
 	faceCount += (getICellCount() + 1) * getJCellCount() * getKCellCount(); // non splitted I faces
 
@@ -1369,7 +1363,7 @@ void AbstractIjkGridRepresentation::getXyzPointsOfBlock(double *)
 	throw std::logic_error("Partial object");
 }
 
-uint64_t AbstractIjkGridRepresentation::getXyzPointCountOfPatch(unsigned int) const
+uint64_t AbstractIjkGridRepresentation::getXyzPointCountOfPatch(uint64_t) const
 {
 	const uint64_t result = getXyzPointCountOfKInterface() * (getKCellCount() + 1 + getKGapsCount()) + getSplitNodeCount();
 
@@ -1387,7 +1381,7 @@ uint64_t AbstractIjkGridRepresentation::getXyzPointCountOfPatch(unsigned int) co
 	throw std::logic_error("The IJK Grid is in an unknown Energistics standard version.");
 }
 
-void AbstractIjkGridRepresentation::getXyzPointsOfPatch(unsigned int, double *) const
+void AbstractIjkGridRepresentation::getXyzPointsOfPatch(uint64_t, double *) const
 {
 	throw std::logic_error("Partial object");
 }

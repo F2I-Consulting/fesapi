@@ -165,7 +165,7 @@ namespace WITSML2_NS
 			*
 			* @returns	The location projected x coordinate.
 			*/
-		DLL_IMPORT_OR_EXPORT virtual double getLocationProjectedX(unsigned int locationIndex) = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getLocationProjectedX(uint64_t locationIndex) = 0;
 
 		/**
 		 * Gets location projected y coordinate
@@ -174,7 +174,7 @@ namespace WITSML2_NS
 		 *
 		 * @returns	The location projected y coordinate.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual double getLocationProjectedY(unsigned int locationIndex) = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getLocationProjectedY(uint64_t locationIndex) = 0;
 
 		/**
 		 * Pushes a back location
@@ -195,7 +195,7 @@ namespace WITSML2_NS
 		 *
 		 * @returns	An int.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int geLocationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t geLocationCount() const noexcept = 0;
 
 		/**
 		 * Pushes a back datum
@@ -222,7 +222,7 @@ namespace WITSML2_NS
 		 *
 		 * @returns	The datum count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getDatumCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getDatumCount() const noexcept = 0;
 
 		/**
 		 * Gets resqml wellbore features

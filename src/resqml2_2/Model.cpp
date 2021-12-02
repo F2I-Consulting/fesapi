@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Model.h"
 
-#include <stdexcept>
-
 using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;

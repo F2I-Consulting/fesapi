@@ -52,17 +52,17 @@ namespace RESQML2_NS
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final { return COMMON_NS::DataObjectReference(); }
 
 		/** Please do note use: not implemented yet. */ 
-		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const override;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const override;
 
 		/** Please do note use: not implemented yet. */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const override;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const override;
 
 		/**
 		 * Gets the patch count.
 		 *
 		 * @returns 1 since we consider that representation set representations have only 1 patch.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override {return 1;}
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const override {return 1;}
 
 		/**
 		 * Checks if this representation set contains only one type of representations (homogeneous) or
@@ -82,7 +82,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The representation count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getRepresentationCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getRepresentationCount() const;
 
 		/**
 		 * Gets a particular representation in this representation set according to its position.

@@ -88,16 +88,16 @@ AbstractFeature* AbstractFeatureInterpretation::getInterpretedFeature() const
 
 gsoap_resqml2_0_1::resqml20__Domain AbstractFeatureInterpretation::initDomain(gsoap_resqml2_0_1::resqml20__Domain defaultDomain) const
 {
-	const unsigned int repCount = getRepresentationCount();
+	const uint64_t repCount = getRepresentationCount();
 	bool isTimeDomain = false;
 	bool isDepthDomain = false;
-	for (unsigned int repIndex = 0; repIndex < repCount && (!isTimeDomain || !isDepthDomain); ++repIndex) {
+	for (uint64_t repIndex = 0; repIndex < repCount && (!isTimeDomain || !isDepthDomain); ++repIndex) {
 		AbstractRepresentation const * rep = getRepresentation(repIndex);
 		if (rep->isPartial()) {
 			continue;
 		}
-		const unsigned int patchCount = rep->getPatchCount();
-		for (unsigned int patchIndex = 0; patchIndex < patchCount && (!isTimeDomain || !isDepthDomain); ++patchIndex) {
+		const uint64_t patchCount = rep->getPatchCount();
+		for (uint64_t patchIndex = 0; patchIndex < patchCount && (!isTimeDomain || !isDepthDomain); ++patchIndex) {
 			EML2_NS::AbstractLocal3dCrs* local3dCrs = rep->getLocalCrs(patchIndex);
 			if (local3dCrs != nullptr && (!local3dCrs->isPartial() || local3dCrs->getXmlNamespaceVersion() == "2.0")) {
 				if (local3dCrs->isATimeCrs()) {
@@ -198,25 +198,16 @@ vector<AbstractRepresentation *> AbstractFeatureInterpretation::getRepresentatio
 	return result;
 }
 
-unsigned int AbstractFeatureInterpretation::getRepresentationCount() const
+uint64_t AbstractFeatureInterpretation::getRepresentationCount() const
 {
-	size_t result = getRepresentationSet().size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("The representation count is superior to unsigned int max");
-	}
-
-	return static_cast<unsigned int>(result);
+	return getRepresentationSet().size();
 }
 
-AbstractRepresentation * AbstractFeatureInterpretation::getRepresentation(unsigned int index) const
+AbstractRepresentation* AbstractFeatureInterpretation::getRepresentation(uint64_t index) const
 {
 	const std::vector<AbstractRepresentation*>& representationSet = getRepresentationSet();
 
-	if (representationSet.size() > index)
-		return representationSet[index];
-	
-	throw out_of_range("The representation index you are requesting is out of range.");
+	return representationSet.at(index);
 }
 
 std::vector<GridConnectionSetRepresentation *> AbstractFeatureInterpretation::getGridConnectionSetRepresentationSet() const

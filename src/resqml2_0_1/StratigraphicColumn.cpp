@@ -24,8 +24,6 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* StratigraphicColumn::XML_NS = "resqml20";
-
 StratigraphicColumn::StratigraphicColumn(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title)
 {
 	if (repo == nullptr) {
@@ -47,12 +45,12 @@ void StratigraphicColumn::pushBackStratiColumnRank(RESQML2_NS::StratigraphicColu
 	static_cast<_resqml20__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks.push_back(stratiColumnRank->newResqmlReference());
 }
 
-unsigned int StratigraphicColumn::getStratigraphicColumnRankInterpretationCount() const
+uint64_t StratigraphicColumn::getStratigraphicColumnRankInterpretationCount() const
 {
 	return static_cast<_resqml20__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks.size();
 }
 
-COMMON_NS::DataObjectReference StratigraphicColumn::getStratigraphicColumnRankInterpretationDor(unsigned int index) const
+COMMON_NS::DataObjectReference StratigraphicColumn::getStratigraphicColumnRankInterpretationDor(uint64_t index) const
 {
 	if (index >= getStratigraphicColumnRankInterpretationCount()) {
 		throw std::out_of_range("The index is out of range");

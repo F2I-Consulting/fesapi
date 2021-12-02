@@ -108,7 +108,7 @@ double SeismicWellboreFrameRepresentation::getTimeFirstValue() const
 		throw logic_error("The array structure of time is not supported?");
 }
 
-unsigned int SeismicWellboreFrameRepresentation::getTimeValuesCount() const
+uint64_t SeismicWellboreFrameRepresentation::getTimeValuesCount() const
 {
 	return getMdValuesCount();
 }

@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "BlockedWellboreRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include <hdf5.h>
 
 #include "../resqml2/AbstractGridRepresentation.h"
@@ -31,8 +28,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-
-const char* BlockedWellboreRepresentation::XML_NS = "resqml20";
 
 void BlockedWellboreRepresentation::init(const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj)
 {
@@ -316,23 +311,13 @@ void BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(RESQML2
 	static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.push_back(supportingGridRep->newResqmlReference());
 }
 
-COMMON_NS::DataObjectReference BlockedWellboreRepresentation::getSupportingGridRepresentationDor(unsigned int index) const
+COMMON_NS::DataObjectReference BlockedWellboreRepresentation::getSupportingGridRepresentationDor(uint64_t index) const
 {
 	_resqml20__BlockedWellboreRepresentation* rep = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
-
-	if (index >= rep->Grid.size()) {
-		throw out_of_range("The requested index is out of range of the available supporting grid representations.");
-	}
-	return rep->Grid[index];
+	return rep->Grid.at(index);
 }
 
-unsigned int BlockedWellboreRepresentation::getSupportingGridRepresentationCount() const
+uint64_t BlockedWellboreRepresentation::getSupportingGridRepresentationCount() const
 {
-	const size_t result = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much supporting representations");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.size();
 }

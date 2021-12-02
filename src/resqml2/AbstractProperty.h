@@ -74,7 +74,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The element count per value.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getElementCountPerValue() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getElementCountPerValue() const;
 
 		/**
 		 * Gets the kind of elements on which the property values are attached to
@@ -92,7 +92,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The patch count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getPatchCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getPatchCount() const = 0;
 
 		/**
 		 * Get the values data type in the HDF dataset
@@ -111,7 +111,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values of the @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getValuesCountOfPatch(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT int64_t getValuesCountOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Gets the count of values on a specific dimension of the underlying HDF5 dataset of a given
@@ -125,7 +125,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values in the @p dimIndex dimension of @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getValuesCountOfDimensionOfPatch(unsigned int dimIndex, uint64_t patchIndex) const;
 
 		/**
 		 * Gets the count of dimensions of the underlying HDF5 dataset of a given patch of this property.
@@ -136,7 +136,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The number of values, 0 otherwise.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getDimensionsCountOfPatch(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getDimensionsCountOfPatch(uint64_t patchIndex) const;
 
 		//*********************************************
 		//************* PROPERTY SET ******************
@@ -157,7 +157,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of property sets which contain this property.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPropertySetCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getPropertySetCount() const;
 
 		/**
 		 * Gets a given property set taken from all property sets which contain this property
@@ -168,7 +168,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The property set at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertySet * getPropertySet(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertySet* getPropertySet(uint64_t index) const;
 		
 		//*********************************************
 		//****************** CRS **********************
@@ -428,7 +428,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the HDF Proxy of patch.
 		 */
-		virtual EML2_NS::AbstractHdfProxy* getDatasetOfPatch(unsigned int patchIndex, int64_t & nullValue, std::string & dsPath) const = 0;
+		virtual EML2_NS::AbstractHdfProxy* getDatasetOfPatch(uint64_t patchIndex, int64_t & nullValue, std::string & dsPath) const = 0;
 
 		/**
 		 * Gets the data object reference of the HDF proxy which is associated to a particular
@@ -439,6 +439,6 @@ namespace RESQML2_NS
 		 * 			Otherwise returns the data object reference of the associated representation. Null
 		 * 			should not occured since each property must be associated to a representation.
 		 */
-		virtual COMMON_NS::DataObjectReference getHdfProxyDor(unsigned int patchIndex) const = 0;
+		virtual COMMON_NS::DataObjectReference getHdfProxyDor(uint64_t patchIndex) const = 0;
 	};
 }

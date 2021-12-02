@@ -64,26 +64,10 @@ std::vector<PropertySet *> PropertySet::getChildren() const
 	return repository->getSourceObjects<PropertySet>(this);
 }
 
-unsigned int PropertySet::getChildrenCount() const
+PropertySet* PropertySet::getChildren(uint64_t index) const
 {
 	const std::vector<PropertySet *> & children = getChildren();
-
-	if (children.size() > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("Too much children in this property set");
-	}
-
-	return static_cast<unsigned int>(children.size());
-}
-
-PropertySet* PropertySet::getChildren(unsigned int index) const
-{
-	const std::vector<PropertySet *> & children = getChildren();
-
-	if (index < children.size()) {
-		return children[index];
-	}
-
-	throw out_of_range("The index of the child is out of range");
+	return children.at(index);
 }
 
 void PropertySet::pushBackProperty(RESQML2_NS::AbstractProperty * prop)
@@ -101,26 +85,15 @@ std::vector<RESQML2_NS::AbstractProperty *> PropertySet::getProperties() const
 	return repository->getTargetObjects<RESQML2_NS::AbstractProperty>(this);
 }
 
-unsigned int PropertySet::getPropertyCount() const
+uint64_t PropertySet::getPropertyCount() const noexcept
 {
-	const std::vector<RESQML2_NS::AbstractProperty *> & props = getProperties();
-
-	if (props.size() > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("Too much property in this property set");
-	}
-
-	return static_cast<unsigned int>(props.size());
+	return getProperties().size();
 }
 
-RESQML2_NS::AbstractProperty* PropertySet::getProperty(unsigned int index) const
+RESQML2_NS::AbstractProperty* PropertySet::getProperty(uint64_t index) const
 {
 	const std::vector<RESQML2_NS::AbstractProperty *> & props = getProperties();
-
-	if (index < props.size()) {
-		return props[index];
-	}
-
-	throw out_of_range("The index of the property is out of range");
+	return props.at(index);
 }
 
 void PropertySet::loadTargetRelationships()

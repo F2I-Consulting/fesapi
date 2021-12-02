@@ -32,15 +32,15 @@ uint64_t PointsProperty::getXyzPointCountOfAllPatches() const
 {
 	uint64_t result = 0;
 
-	const unsigned int patchCount = getPatchCount();
-	for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
+	const uint64_t patchCount = getPatchCount();
+	for (uint64_t patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
 		result += getXyzPointCountOfPatch(patchIndex);
 	}
 
 	return result;
 }
 
-void PointsProperty::getXyzPointsOfPatchInGlobalCrs(unsigned int patchIndex, double* xyzPoints) const
+void PointsProperty::getXyzPointsOfPatchInGlobalCrs(uint64_t patchIndex, double* xyzPoints) const
 {
 	getXyzPointsOfPatch(patchIndex, xyzPoints);
 
@@ -52,9 +52,9 @@ void PointsProperty::getXyzPointsOfPatchInGlobalCrs(unsigned int patchIndex, dou
 
 void PointsProperty::getXyzPointsOfAllPatches(double* xyzPoints) const
 {
-	const unsigned int patchCount = getPatchCount();
+	const uint64_t patchCount = getPatchCount();
 	getXyzPointsOfPatch(0, xyzPoints);
-	for (unsigned int patchIndex = 1; patchIndex < patchCount; patchIndex++) {
+	for (uint64_t patchIndex = 1; patchIndex < patchCount; patchIndex++) {
 		xyzPoints += getXyzPointCountOfPatch(patchIndex - 1) * 3;
 		getXyzPointsOfPatch(patchIndex, xyzPoints);
 	}
@@ -64,13 +64,13 @@ void PointsProperty::getXyzPointsOfAllPatchesInGlobalCrs(double* xyzPoints) cons
 {
 	getXyzPointsOfAllPatches(xyzPoints);
 
-	auto localCrs = getLocalCrs();
+	auto const* localCrs = getLocalCrs();
 	if (localCrs != nullptr) {
 		localCrs->convertXyzPointsToGlobalCrs(xyzPoints, getXyzPointCountOfAllPatches());
 	}
 }
 
-void PointsProperty::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void PointsProperty::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	std::string datasetPath;
 	EML2_NS::AbstractHdfProxy* hdfProxy = getValuesHdfProxyAndDatasetPathOfPatch(patchIndex, datasetPath);

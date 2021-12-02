@@ -19,7 +19,6 @@ under the License.
 #include "RockFluidOrganizationInterpretation.h"
 
 #include <algorithm>
-#include <limits>
 
 #include "RockFluidUnitInterpretation.h"
 #include "AbstractGridRepresentation.h"
@@ -33,25 +32,15 @@ std::vector<AbstractGridRepresentation *> RockFluidOrganizationInterpretation::g
 	return getRepository()->getSourceObjects<AbstractGridRepresentation>(this);
 }
 
-unsigned int RockFluidOrganizationInterpretation::getGridRepresentationCount() const
+uint64_t RockFluidOrganizationInterpretation::getGridRepresentationCount() const
 {
-	const size_t count = getGridRepresentationSet().size();
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("Too much grid representations.");
-	}
-
-	return static_cast<unsigned int>(count);
+	return getGridRepresentationSet().size();
 }
 
-AbstractGridRepresentation * RockFluidOrganizationInterpretation::getGridRepresentation(unsigned int index) const
+AbstractGridRepresentation * RockFluidOrganizationInterpretation::getGridRepresentation(uint64_t index) const
 {
 	const std::vector<AbstractGridRepresentation *>& gridRepresentationSet = getGridRepresentationSet();
-
-	if (index >= gridRepresentationSet.size()) {
-		throw out_of_range("The index of the grid representation to get is out of range.");
-	}
-
-	return gridRepresentationSet[index];
+	return gridRepresentationSet.at(index);
 }
 
 bool RockFluidOrganizationInterpretation::isAssociatedToGridRepresentation(AbstractGridRepresentation* gridRep) const

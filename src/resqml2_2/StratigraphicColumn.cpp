@@ -24,8 +24,6 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
-const char* StratigraphicColumn::XML_NS = "resqml22";
-
 StratigraphicColumn::StratigraphicColumn(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title)
 {
 	if (repo == nullptr) {
@@ -47,16 +45,12 @@ void StratigraphicColumn::pushBackStratiColumnRank(RESQML2_NS::StratigraphicColu
 	static_cast<_resqml22__StratigraphicColumn*>(gsoapProxy2_3)->Ranks.push_back(stratiColumnRank->newEml23Reference());
 }
 
-unsigned int StratigraphicColumn::getStratigraphicColumnRankInterpretationCount() const
+uint64_t StratigraphicColumn::getStratigraphicColumnRankInterpretationCount() const
 {
 	return static_cast<_resqml22__StratigraphicColumn*>(gsoapProxy2_3)->Ranks.size();
 }
 
-COMMON_NS::DataObjectReference StratigraphicColumn::getStratigraphicColumnRankInterpretationDor(unsigned int index) const
+COMMON_NS::DataObjectReference StratigraphicColumn::getStratigraphicColumnRankInterpretationDor(uint64_t index) const
 {
-	if (index >= getStratigraphicColumnRankInterpretationCount()) {
-		throw std::out_of_range("The index is out of range");
-	}
-
-	return COMMON_NS::DataObjectReference(static_cast<_resqml22__StratigraphicColumn*>(gsoapProxy2_3)->Ranks[index]);
+	return COMMON_NS::DataObjectReference(static_cast<_resqml22__StratigraphicColumn*>(gsoapProxy2_3)->Ranks.at(index));
 }

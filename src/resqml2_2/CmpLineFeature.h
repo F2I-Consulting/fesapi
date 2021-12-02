@@ -54,7 +54,7 @@ namespace RESQML2_2_NS
 		 * @param 		  	nearestShotPointCount				The count of traces in this seismic line.
 		 */
 		CmpLineFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
-			int nearestShotPointIndicesIncrement, int firstNearestShotPointIndex, unsigned int nearestShotPointCount);
+			int64_t nearestShotPointIndicesIncrement, int64_t firstNearestShotPointIndex, uint64_t nearestShotPointCount);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.

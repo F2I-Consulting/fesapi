@@ -50,7 +50,7 @@ namespace RESQML2_NS
 		 * @returns	The null value of this discrete property if present otherwise the maximum int 64 bits
 		 * 			value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int64_t getNullValue(unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getNullValue(uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) const = 0;
 
 		/**
 		 * @brief	Checks if a non vector property or a given value of a vector property has got a
@@ -62,7 +62,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if there exists a minimum value, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool hasMinimumValue(unsigned int index = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool hasMinimumValue(uint64_t index = 0) const = 0;
 
 		/**
 		 * @brief	Gets the minimum value of a non vector property or the minimum value of one given
@@ -79,7 +79,7 @@ namespace RESQML2_NS
 		 * 			than @p 0 for a non vector property or greater than the vector size for a vector
 		 * 			property).
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int64_t getMinimumValue(unsigned int index = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getMinimumValue(uint64_t index = 0) const = 0;
 
 		/**
 		 * @brief	Checks if a non vector property or a given value of a vector property has got a
@@ -91,7 +91,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if there exists a maximum value, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool hasMaximumValue(unsigned int index = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool hasMaximumValue(uint64_t index = 0) const = 0;
 
 		/**
 		 * @brief	Gets the maximum value of a non vector property or the maximum value of one given
@@ -108,7 +108,7 @@ namespace RESQML2_NS
 		 * 			than @p 0 for a non vector property or greater than the vector size for a vector
 		 * 			property).
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int64_t getMaximumValue(unsigned int index = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getMaximumValue(uint64_t index = 0) const = 0;
 
 		/**
 		 * @brief	Sets the minimum value of a non vector property or the minimum value of one given
@@ -119,7 +119,7 @@ namespace RESQML2_NS
 		 * 					case) or zero-based index of the vector value for which we want to set the
 		 * 					minimum value (vector property case).
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setMinimumValue(int64_t value, unsigned int index = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setMinimumValue(int64_t value, uint64_t index = 0) const = 0;
 
 		/**
 		 * @brief	Sets the maximum value of a non vector property or the maximum value of one given
@@ -130,7 +130,7 @@ namespace RESQML2_NS
 		 * 					case) or zero-based index of the vector value for which we want to set the
 		 * 					maximum value (vector property case).
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setMaximumValue(int64_t value, unsigned int index = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setMaximumValue(int64_t value, uint64_t index = 0) const = 0;
 
 		/**
 		 * Gets the DOR of the lookup which is associated to this categorical property values.

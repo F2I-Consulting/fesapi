@@ -61,16 +61,10 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The coefficient count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getCoefficientCount() const {
-			if (static_cast<gsoap_eml2_2::prodml21__AbstractPvtModel*>(gsoapProxy)->PvtModelParameterSet == nullptr) {
-				return 0;
-			}
-
-			size_t count = static_cast<gsoap_eml2_2::prodml21__AbstractPvtModel*>(gsoapProxy)->PvtModelParameterSet->Coefficient.size();
-			if (count > (std::numeric_limits<unsigned int>::max)()) {
-				throw std::out_of_range("There are too much coefficient");
-			}
-			return static_cast<unsigned int>(count);
+		DLL_IMPORT_OR_EXPORT uint64_t getCoefficientCount() const noexcept {
+			return static_cast<gsoap_eml2_2::prodml21__AbstractPvtModel*>(gsoapProxy)->PvtModelParameterSet == nullptr
+				? 0
+				: static_cast<gsoap_eml2_2::prodml21__AbstractPvtModel*>(gsoapProxy)->PvtModelParameterSet->Coefficient.size();
 		}
 
 		/**
@@ -82,7 +76,7 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The coefficient value.
 		 */
-		DLL_IMPORT_OR_EXPORT double getCoefficientValue(unsigned int index) const
+		DLL_IMPORT_OR_EXPORT double getCoefficientValue(uint64_t index) const
 		{
 			if (index >= getCoefficientCount()) {
 				throw std::out_of_range("The index is out of range");
@@ -98,7 +92,7 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The coefficient kind.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::prodml21__PvtModelParameterKind getCoefficientKind(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::prodml21__PvtModelParameterKind getCoefficientKind(uint64_t index) const;
 
 		/**
 		 * Query if 'index' has coefficient name
@@ -109,7 +103,7 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	True if coefficient name, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasCoefficientName(unsigned int index) const
+		DLL_IMPORT_OR_EXPORT bool hasCoefficientName(uint64_t index) const
 		{
 			if (index >= getCoefficientCount()) {
 				throw std::out_of_range("The index is out of range");
@@ -127,7 +121,7 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The coefficient name.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getCoefficientName(unsigned int index) const
+		DLL_IMPORT_OR_EXPORT std::string getCoefficientName(uint64_t index) const
 		{
 			if (!hasCoefficientName(index)) {
 				throw std::invalid_argument("Ther is no coefficient name at this index");

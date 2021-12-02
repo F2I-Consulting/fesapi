@@ -18,27 +18,23 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "BlockedWellboreRepresentation.h"
 
-#include <stdexcept>
-
 #include "AbstractGridRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_NS;
-
-const char* BlockedWellboreRepresentation::XML_TAG = "BlockedWellboreRepresentation";
 
 void BlockedWellboreRepresentation::loadTargetRelationships()
 {
 	WellboreFrameRepresentation::loadTargetRelationships();
 
 	// Supporting grid representation
-	for (unsigned int i = 0; i < getSupportingGridRepresentationCount(); ++i) {
+	for (uint64_t i = 0; i < getSupportingGridRepresentationCount(); ++i) {
 		convertDorIntoRel<RESQML2_NS::AbstractGridRepresentation>(getSupportingGridRepresentationDor(i));
 	}
 
 }
 
-RESQML2_NS::AbstractGridRepresentation* BlockedWellboreRepresentation::getSupportingGridRepresentation(unsigned int index) const
+RESQML2_NS::AbstractGridRepresentation* BlockedWellboreRepresentation::getSupportingGridRepresentation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(getSupportingGridRepresentationDor(index).getUuid());
 }

@@ -151,7 +151,9 @@ namespace PRODML2_1_NS
 		/**
 		* Get the count of value in this time series
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getValueCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getValueCount() const noexcept {
+			return static_cast<gsoap_eml2_2::prodml21__TimeSeriesData*>(gsoapProxy2_2)->DataValue.size();
+		}
 
 		/**
 		* Check if a value at a particular index is a double one.
@@ -159,7 +161,7 @@ namespace PRODML2_1_NS
 		* @param index	The index of the value in this timeseries
 		* @return true if the value at this index is a double one
 		*/
-		DLL_IMPORT_OR_EXPORT bool isDoubleValue(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT bool isDoubleValue(uint64_t index) const;
 
 		/**
 		* Check if a value at a particular index is a string one.
@@ -167,7 +169,7 @@ namespace PRODML2_1_NS
 		* @param index	The index of the value in this timeseries
 		* @return true if the value at this index is a string one
 		*/
-		DLL_IMPORT_OR_EXPORT bool isStringValue(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT bool isStringValue(uint64_t index) const;
 
 		/**
 		* Get a double value at a particular index.
@@ -175,7 +177,7 @@ namespace PRODML2_1_NS
 		* @param index	The index of the value in this timeseries
 		* @return the double value at a particular index
 		*/
-		DLL_IMPORT_OR_EXPORT double getDoubleValue(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT double getDoubleValue(uint64_t index) const;
 
 		/**
 		* Get a string value at a particular index.
@@ -183,7 +185,7 @@ namespace PRODML2_1_NS
 		* @param index	The index of the value in this timeseries
 		* @return the string value at a particular index
 		*/
-		DLL_IMPORT_OR_EXPORT std::string getStringValue(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getStringValue(uint64_t index) const;
 
 		/**
 		* Get the timestamp associated to a value at a particular index.
@@ -191,7 +193,7 @@ namespace PRODML2_1_NS
 		* @param index	The index of the value in this timeseries
 		* @return the timestamp associated to a value at a particular index. -1 if no timesteamp is provided for this value.
 		*/
-		DLL_IMPORT_OR_EXPORT time_t getValueTimestamp(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT time_t getValueTimestamp(uint64_t index) const;
 
 		/**
 		* Check if a value at a particular index has a status.
@@ -199,7 +201,7 @@ namespace PRODML2_1_NS
 		* @param index	The index of the value in this timeseries
 		* @return true if the value at this index has a status
 		*/
-		DLL_IMPORT_OR_EXPORT bool hasValueStatus(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT bool hasValueStatus(uint64_t index) const;
 
 		/**
 		* Get the status associated to a value at a particular index.
@@ -207,12 +209,14 @@ namespace PRODML2_1_NS
 		* @param index	The index of the value in this timeseries
 		* @return the status associated to a value at a particular index.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::prodml21__ValueStatus getValueStatus(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::prodml21__ValueStatus getValueStatus(uint64_t index) const;
 
 		/**
 		* Get the count of keywords in this time series
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getKeywordCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getKeywordCount() const noexcept {
+			return static_cast<gsoap_eml2_2::prodml21__TimeSeriesData*>(gsoapProxy2_2)->Key.size();
+		}
 
 		/**
 		* Get a keyword at a particular index.
@@ -220,7 +224,7 @@ namespace PRODML2_1_NS
 		* @param index	The index of the keyword in this timeseries
 		* @return the keyword at a particular index
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::prodml21__TimeSeriesKeyword getKeyword(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::prodml21__TimeSeriesKeyword getKeyword(uint64_t index) const;
 
 		/**
 		* Get the value of a keyword at a particular index.
@@ -228,7 +232,7 @@ namespace PRODML2_1_NS
 		* @param index	The index of the value in this timeseries
 		* @return the value of a keyword at a particular index.
 		*/
-		DLL_IMPORT_OR_EXPORT std::string getKeywordValue(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getKeywordValue(uint64_t index) const;
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

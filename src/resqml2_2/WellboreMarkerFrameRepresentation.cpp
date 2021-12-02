@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreMarkerFrameRepresentation.h"
 
-#include <stdexcept>
-
 #include <H5Tpublic.h>
 
 #include "../eml2/AbstractHdfProxy.h"

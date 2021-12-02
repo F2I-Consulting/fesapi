@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PointSetRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include "H5public.h"
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
@@ -92,7 +89,7 @@ COMMON_NS::DataObjectReference PointSetRepresentation::getHdfProxyDor() const
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
-resqml20__PointGeometry* PointSetRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
+resqml20__PointGeometry* PointSetRepresentation::getPointGeometry2_0_1(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -101,7 +98,7 @@ resqml20__PointGeometry* PointSetRepresentation::getPointGeometry2_0_1(unsigned 
 	return static_cast<_resqml20__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch[patchIndex]->Geometry;
 }
 
-uint64_t PointSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t PointSetRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -110,7 +107,7 @@ uint64_t PointSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex
 	return static_cast<_resqml20__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch[patchIndex]->Count;
 }
 
-void PointSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void PointSetRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount())
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -126,13 +123,7 @@ void PointSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
 }
 
-unsigned int PointSetRepresentation::getPatchCount() const
+uint64_t PointSetRepresentation::getPatchCount() const
 {
-	const size_t result = static_cast<_resqml20__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch.size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much patches");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<_resqml20__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch.size();
 }

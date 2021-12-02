@@ -19,10 +19,7 @@ under the License.
 #include "HdfProxy.h"
 
 #include <algorithm>
-#include <limits>
 #include <numeric>
-#include <stdexcept>
-#include <sstream>
 
 #include <hdf5.h>
 
@@ -205,9 +202,7 @@ void HdfProxy::readArrayNdOfValues(
 	if (H5Sget_simple_extent_ndims(filespace) != (int) numDimensions) {
 		H5Sclose(filespace);
 		H5Dclose(dataset);
-		ostringstream oss;
-		oss << numDimensions;
-		throw invalid_argument("The resqml dataset " + datasetName + " does not have " + oss.str() + " dimensions.");
+		throw invalid_argument("The resqml dataset " + datasetName + " does not have " + std::to_string(numDimensions) + " dimensions.");
 	}
 
 	hsize_t slab_size = 1;
@@ -274,9 +269,7 @@ void HdfProxy::selectArrayNdOfValues(
 		{
 			H5Sclose(filespace);
 			H5Dclose(dataset);
-			ostringstream oss;
-			oss << numDimensions;
-			throw invalid_argument("The resqml dataset " + datasetName + " does not have " + oss.str() + " dimensions.");
+			throw invalid_argument("The resqml dataset " + datasetName + " does not have " + std::to_string(numDimensions) + " dimensions.");
 		}
 	}
 

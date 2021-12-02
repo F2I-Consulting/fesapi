@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include <limits>
 #include "AbstractProperty.h"
 
 namespace RESQML2_NS
@@ -42,7 +41,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The patch count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final;
 
 		/**
 		 * Pushes back a new facet to this instance. Facets are qualifiers for property values which
@@ -58,7 +57,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The facet count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getFacetCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getFacetCount() const;
 
 		/**
 		 * Gets the facet at a particular index of the facet collection of this instance.
@@ -69,7 +68,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The facet at index @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__FacetKind getFacetKind(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__FacetKind getFacetKind(uint64_t index) const;
 
 		/**
 		 * Gets the facet value at a particular index of the facet collection of this instance.
@@ -80,7 +79,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The facet value at index @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getFacetValue(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getFacetValue(uint64_t index) const;
 
 		//****************************
 		//****** INTEGER *************
@@ -243,35 +242,35 @@ namespace RESQML2_NS
 		 * 											be defined in the repository.
 		 * @param 		  	nullValue				The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackLongHdf5ArrayOfValues(const int64_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+		DLL_IMPORT_OR_EXPORT virtual void pushBackLongHdf5ArrayOfValues(const int64_t * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
 		 * Adds an nd array of explicit integer values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		DLL_IMPORT_OR_EXPORT virtual void pushBackIntHdf5ArrayOfValues(const int * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds an nd array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		DLL_IMPORT_OR_EXPORT virtual void pushBackShortHdf5ArrayOfValues(const short * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds an nd array of explicit unsigned short values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		DLL_IMPORT_OR_EXPORT virtual void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds an nd array of explicit char values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue);
+		DLL_IMPORT_OR_EXPORT virtual void pushBackCharHdf5ArrayOfValues(const char * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue);
 
 		/**
 		 * Pushes back a new patch of values for this property where the values have not to be written
@@ -306,7 +305,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getLongValuesOfPatch(unsigned int patchIndex, int64_t * values) const;
+		DLL_IMPORT_OR_EXPORT int64_t getLongValuesOfPatch(uint64_t patchIndex, int64_t * values) const;
 
 		/**
 		 * Gets the null value of a given patch of this instance. Values are supposed to be integer ones.
@@ -320,7 +319,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	the null value.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getNullValueOfPatch(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT int64_t getNullValueOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be integer ones.
@@ -334,7 +333,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT int32_t getIntValuesOfPatch(unsigned int patchIndex, int32_t* values) const;
+		DLL_IMPORT_OR_EXPORT int32_t getIntValuesOfPatch(uint64_t patchIndex, int32_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -349,7 +348,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT uint32_t getUIntValuesOfPatch(unsigned int patchIndex, uint32_t* values) const;
+		DLL_IMPORT_OR_EXPORT uint32_t getUIntValuesOfPatch(uint64_t patchIndex, uint32_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be short ones.
@@ -363,7 +362,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT int16_t getShortValuesOfPatch(unsigned int patchIndex, int16_t* values) const;
+		DLL_IMPORT_OR_EXPORT int16_t getShortValuesOfPatch(uint64_t patchIndex, int16_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -378,7 +377,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT uint16_t getUShortValuesOfPatch(unsigned int patchIndex, uint16_t* values) const;
+		DLL_IMPORT_OR_EXPORT uint16_t getUShortValuesOfPatch(uint64_t patchIndex, uint16_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be char ones.
@@ -392,7 +391,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT char getCharValuesOfPatch(unsigned int patchIndex, char* values) const;
+		DLL_IMPORT_OR_EXPORT char getCharValuesOfPatch(uint64_t patchIndex, char* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -407,7 +406,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT uint8_t getUCharValuesOfPatch(unsigned int patchIndex, uint8_t* values) const;
+		DLL_IMPORT_OR_EXPORT uint8_t getUCharValuesOfPatch(uint64_t patchIndex, uint8_t* values) const;
 
 		//***********************************
 		//*** INTEGER For hyperslabbing *****
@@ -434,7 +433,7 @@ namespace RESQML2_NS
 		 * 										repository.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5ArrayOfValues(
-			unsigned long long* numValues,
+			uint64_t* numValues,
 			unsigned int numArrayDimensions,
 			int64_t nullValue = (std::numeric_limits<int64_t>::max)(),
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
@@ -513,7 +512,7 @@ namespace RESQML2_NS
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)());
 
 		/**
 		 * Adds an nd array of explicit long 64 bits values into to the property values. Since this
@@ -547,11 +546,11 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setValuesOfLongHdf5ArrayOfValues(
 			int64_t* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)());
 
 		/**
 		 * Gets some of the values of a given patch of this instance. Values are supposed to be long 64
@@ -573,10 +572,10 @@ namespace RESQML2_NS
 		 * @param 	   	numArrayDimensions			The number of dimensions of the array to write.
 		 */
 		DLL_IMPORT_OR_EXPORT void getLongValuesOfPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			int64_t* values,
-			unsigned long long const * numValuesInEachDimension,
-			unsigned long long const * offsetInEachDimension,
+			uint64_t const * numValuesInEachDimension,
+			uint64_t const * offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
@@ -604,7 +603,7 @@ namespace RESQML2_NS
 		 * 										(mainly K dimension).
 		 */
 		DLL_IMPORT_OR_EXPORT void getLongValuesOf3dPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			int64_t* values,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
@@ -636,10 +635,10 @@ namespace RESQML2_NS
 		 * @returns	The null value.
 		 */
 		DLL_IMPORT_OR_EXPORT int32_t getIntValuesOfPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			int32_t* values,
-			unsigned long long* numValuesInEachDimension,
-			unsigned long long* offsetInEachDimension,
+			uint64_t* numValuesInEachDimension,
+			uint64_t* offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
@@ -667,7 +666,7 @@ namespace RESQML2_NS
 		 * 										(mainly K dimension).
 		 */
 		DLL_IMPORT_OR_EXPORT void getIntValuesOf3dPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			int32_t* values,
 			unsigned int valueCountInFastestDim,
 			unsigned int valueCountInMiddleDim,
@@ -816,7 +815,7 @@ namespace RESQML2_NS
 		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
 		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT void getDoubleValuesOfPatch(unsigned int patchIndex, double * values) const;
+		DLL_IMPORT_OR_EXPORT void getDoubleValuesOfPatch(uint64_t patchIndex, double * values) const;
 
 		/**
 		 * Gets all the values of a particular patch of this instance which are supposed to be float
@@ -828,7 +827,7 @@ namespace RESQML2_NS
 		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
 		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(unsigned int patchIndex, float * values) const;
+		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(uint64_t patchIndex, float * values) const;
 
 		//******************************************
 		//*** For FLOATING POINT hyperslabbing *****
@@ -928,7 +927,7 @@ namespace RESQML2_NS
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()
 		);
 
 		/**
@@ -967,7 +966,7 @@ namespace RESQML2_NS
 			unsigned long long const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()
 		);
 
 		/**
@@ -989,7 +988,7 @@ namespace RESQML2_NS
 		 * @param 	   	numArrayDimensions			The number of dimensions of the HDF5 array to read.
 		 */
 		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			float* values,
 			unsigned long long const * numValuesInEachDimension,
 			unsigned long long const * offsetInEachDimension,
@@ -1019,7 +1018,7 @@ namespace RESQML2_NS
 		 * 											(mainly K dimension).
 		 */
 		DLL_IMPORT_OR_EXPORT void getFloatValuesOf3dPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			float* values,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
@@ -1063,7 +1062,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the HDF Proxy of patch.
 		 */
-		EML2_NS::AbstractHdfProxy* getDatasetOfPatch(unsigned int patchIndex, int64_t & nullValue, std::string & dsPath) const final;
+		EML2_NS::AbstractHdfProxy* getDatasetOfPatch(uint64_t patchIndex, int64_t & nullValue, std::string & dsPath) const final;
 
 		/**
 		 * Gets the data object reference of the HDF proxy which is associated to a particular
@@ -1074,6 +1073,6 @@ namespace RESQML2_NS
 		 * 			Otherwise returns the data object reference of the associated representation. Null
 		 * 			should not occured since each property must be associated to a representation.
 		 */
-		COMMON_NS::DataObjectReference getHdfProxyDor(unsigned int patchIndex) const final;
+		COMMON_NS::DataObjectReference getHdfProxyDor(uint64_t patchIndex) const final;
 	};
 }

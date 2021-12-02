@@ -66,12 +66,9 @@ namespace RESQML2_NS
 		/**
 		 * Gets the interpretation count of this feature.
 		 *
-		 * @exception	std::range_error	If the interpretation count is strictly greater than unsigned
-		 * 									int max.
-		 *
 		 * @returns	The interpretation count of this feature.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getInterpretationCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getInterpretationCount() const;
 
 		/**
 		 * Gets a particular interpretation of this feature according to its position in the
@@ -84,7 +81,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	A pointer to the interpretation at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation *	getInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getInterpretation(uint64_t index) const;
 
 		virtual void loadTargetRelationships() {}
 	};

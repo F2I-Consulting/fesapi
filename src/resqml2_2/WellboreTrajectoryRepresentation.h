@@ -78,7 +78,7 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getMdDatumDor() const final;
 
-		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const final;
 
 		/**
 		 * @copybrief resqml2::AbstractRepresentation::getXyzPointsOfPatch
@@ -88,7 +88,7 @@ namespace RESQML2_2_NS
 		 * 
 		 * @copydetails resqml2::AbstractRepresentation::getXyzPointsOfPatch
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const final;
 
 		DLL_IMPORT_OR_EXPORT bool hasMdValues() const final;
 
@@ -110,7 +110,7 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT double getParentTrajectoryMd() const final;
 
-		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const final;
+		COMMON_NS::DataObjectReference getLocalCrsDor(uint64_t patchIndex) const final;
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 

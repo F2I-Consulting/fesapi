@@ -28,7 +28,7 @@ under the License.
 using namespace RESQML2_NS;
 using namespace std;
 
-unsigned int AbstractValuesProperty::getPatchCount() const
+uint64_t AbstractValuesProperty::getPatchCount() const
 {
 	size_t result = 0;
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -41,14 +41,10 @@ unsigned int AbstractValuesProperty::getPatchCount() const
 		throw logic_error("Not implemented yet");
 	}
 
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("The count of the patches is too big.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return result;
 }
 
-EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(unsigned int patchIndex, int64_t & nullValue, std::string & dsPath) const
+EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(uint64_t patchIndex, int64_t & nullValue, std::string & dsPath) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
@@ -110,7 +106,7 @@ EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(unsigned i
 	}
 }
 
-COMMON_NS::DataObjectReference AbstractValuesProperty::getHdfProxyDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference AbstractValuesProperty::getHdfProxyDor(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
@@ -183,7 +179,7 @@ void AbstractValuesProperty::pushBackFacet(gsoap_eml2_3::eml23__FacetKind facet,
 	}
 }
 
-unsigned int AbstractValuesProperty::getFacetCount() const
+uint64_t AbstractValuesProperty::getFacetCount() const
 {
 	size_t result;
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -196,41 +192,29 @@ unsigned int AbstractValuesProperty::getFacetCount() const
 		throw logic_error("Not implemented yet");
 	}
 
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much facets");
-	}
-
-	return static_cast<unsigned int>(result);
+	return result;
 }
 
-gsoap_eml2_3::eml23__FacetKind AbstractValuesProperty::getFacetKind(unsigned int index) const
+gsoap_eml2_3::eml23__FacetKind AbstractValuesProperty::getFacetKind(uint64_t index) const
 {
-	if (index >= getFacetCount()) {
-		throw out_of_range("The facet index is out of range");
-	}
-
 	if (gsoapProxy2_0_1 != nullptr) {
-		auto facetKind = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet[index];
+		auto facetKind = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet.at(index);
 		return facetKind->Facet == gsoap_resqml2_0_1::resqml20__Facet::conditions ? gsoap_eml2_3::eml23__FacetKind::conditions : static_cast<gsoap_eml2_3::eml23__FacetKind>(static_cast<int>(facetKind->Facet) + 1);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet[index]->Kind;
+		return static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet.at(index)->Kind;
 	}
 
 	throw logic_error("Not implemented yet");
 }
 
-std::string AbstractValuesProperty::getFacetValue(unsigned int index) const
+std::string AbstractValuesProperty::getFacetValue(uint64_t index) const
 {
-	if (index >= getFacetCount()){
-		throw out_of_range("The facet index is out of range");
-	}
-
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet[index]->Value;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet.at(index)->Value;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet[index]->Facet;
+		return static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet.at(index)->Facet;
 	}
 	
 	throw logic_error("Not implemented yet");
@@ -441,7 +425,7 @@ std::string AbstractValuesProperty::pushBackRefToExistingFloatingPointDataset(EM
 	throw logic_error("Unrecognized RESQML version");
 }
 
-void AbstractValuesProperty::pushBackLongHdf5ArrayOfValues(const int64_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy, int64_t nullValue)
+void AbstractValuesProperty::pushBackLongHdf5ArrayOfValues(const int64_t * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy, int64_t nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -461,7 +445,7 @@ void AbstractValuesProperty::pushBackLongHdf5ArrayOfValues(const int64_t * value
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
-void AbstractValuesProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue)
+void AbstractValuesProperty::pushBackIntHdf5ArrayOfValues(const int * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -481,7 +465,7 @@ void AbstractValuesProperty::pushBackIntHdf5ArrayOfValues(const int * values, un
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
-void AbstractValuesProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue)
+void AbstractValuesProperty::pushBackShortHdf5ArrayOfValues(const short * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -501,7 +485,7 @@ void AbstractValuesProperty::pushBackShortHdf5ArrayOfValues(const short * values
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
-void AbstractValuesProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
+void AbstractValuesProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -521,7 +505,7 @@ void AbstractValuesProperty::pushBackUShortHdf5ArrayOfValues(const unsigned shor
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
-void AbstractValuesProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue)
+void AbstractValuesProperty::pushBackCharHdf5ArrayOfValues(const char * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -541,7 +525,7 @@ void AbstractValuesProperty::pushBackCharHdf5ArrayOfValues(const char * values, 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
-int64_t AbstractValuesProperty::getLongValuesOfPatch(unsigned int patchIndex, int64_t * values) const
+int64_t AbstractValuesProperty::getLongValuesOfPatch(uint64_t patchIndex, int64_t * values) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
@@ -552,7 +536,7 @@ int64_t AbstractValuesProperty::getLongValuesOfPatch(unsigned int patchIndex, in
 	return nullValue;
 }
 
-int64_t AbstractValuesProperty::getNullValueOfPatch(unsigned int patchIndex) const
+int64_t AbstractValuesProperty::getNullValueOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
@@ -579,7 +563,7 @@ int64_t AbstractValuesProperty::getNullValueOfPatch(unsigned int patchIndex) con
 	}
 }
 
-int32_t AbstractValuesProperty::getIntValuesOfPatch(unsigned int patchIndex, int32_t * values) const
+int32_t AbstractValuesProperty::getIntValuesOfPatch(uint64_t patchIndex, int32_t * values) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
@@ -594,7 +578,7 @@ int32_t AbstractValuesProperty::getIntValuesOfPatch(unsigned int patchIndex, int
 	return static_cast<int32_t>(nullValue);
 }
 
-uint32_t AbstractValuesProperty::getUIntValuesOfPatch(unsigned int patchIndex, uint32_t * values) const
+uint32_t AbstractValuesProperty::getUIntValuesOfPatch(uint64_t patchIndex, uint32_t * values) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
@@ -609,7 +593,7 @@ uint32_t AbstractValuesProperty::getUIntValuesOfPatch(unsigned int patchIndex, u
 	return static_cast<uint32_t>(nullValue);
 }
 
-int16_t AbstractValuesProperty::getShortValuesOfPatch(unsigned int patchIndex, int16_t * values) const
+int16_t AbstractValuesProperty::getShortValuesOfPatch(uint64_t patchIndex, int16_t * values) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
@@ -624,7 +608,7 @@ int16_t AbstractValuesProperty::getShortValuesOfPatch(unsigned int patchIndex, i
 	return static_cast<int16_t>(nullValue);
 }
 
-uint16_t AbstractValuesProperty::getUShortValuesOfPatch(unsigned int patchIndex, uint16_t * values) const
+uint16_t AbstractValuesProperty::getUShortValuesOfPatch(uint64_t patchIndex, uint16_t * values) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
@@ -639,7 +623,7 @@ uint16_t AbstractValuesProperty::getUShortValuesOfPatch(unsigned int patchIndex,
 	return static_cast<uint16_t>(nullValue);
 }
 
-char AbstractValuesProperty::getCharValuesOfPatch(unsigned int patchIndex, char * values) const
+char AbstractValuesProperty::getCharValuesOfPatch(uint64_t patchIndex, char * values) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
@@ -654,7 +638,7 @@ char AbstractValuesProperty::getCharValuesOfPatch(unsigned int patchIndex, char 
 	return static_cast<char>(nullValue);
 }
 
-uint8_t AbstractValuesProperty::getUCharValuesOfPatch(unsigned int patchIndex, uint8_t * values) const
+uint8_t AbstractValuesProperty::getUCharValuesOfPatch(uint64_t patchIndex, uint8_t * values) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
@@ -689,7 +673,7 @@ void AbstractValuesProperty::setValuesOfLongHdf5Array3dOfValues(
 	uint64_t offsetInMiddleDim,
 	uint64_t offsetInSlowestDim,
 	EML2_NS::AbstractHdfProxy * proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	hsize_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
@@ -766,9 +750,9 @@ void AbstractValuesProperty::setValuesOfLongHdf5ArrayOfValues(
 	int64_t* values, hsize_t const * numValuesInEachDimension,
 	hsize_t const * offsetInEachDimension, unsigned int numArrayDimensions,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
-	if (patchIndex >= getPatchCount() && patchIndex != (numeric_limits<unsigned int>::max)()) {
+	if (patchIndex >= getPatchCount() && patchIndex != (numeric_limits<uint64_t>::max)()) {
 		throw out_of_range("The values property patch is out of range");
 	}
 
@@ -782,7 +766,7 @@ void AbstractValuesProperty::setValuesOfLongHdf5ArrayOfValues(
 
 	// HDF
 	proxy->writeArrayNdSlab(getHdfGroup(),
-		"values_patch" + std::to_string(patchIndex == (numeric_limits<unsigned int>::max)() ? getPatchCount() - 1 : patchIndex),
+		"values_patch" + std::to_string(patchIndex == (numeric_limits<uint64_t>::max)() ? getPatchCount() - 1 : patchIndex),
 		H5T_NATIVE_INT64,
 		values,
 		numValuesInEachDimension,
@@ -791,7 +775,7 @@ void AbstractValuesProperty::setValuesOfLongHdf5ArrayOfValues(
 }
 
 void AbstractValuesProperty::getLongValuesOfPatch(
-	unsigned int patchIndex,
+	uint64_t patchIndex,
 	int64_t* values,
 	hsize_t const * numValuesInEachDimension,
 	hsize_t const * offsetInEachDimension,
@@ -810,7 +794,7 @@ void AbstractValuesProperty::getLongValuesOfPatch(
 }
 
 void AbstractValuesProperty::getLongValuesOf3dPatch(
-	unsigned int patchIndex,
+	uint64_t patchIndex,
 	int64_t* values,
 	uint64_t valueCountInFastestDim,
 	uint64_t valueCountInMiddleDim,
@@ -832,10 +816,10 @@ void AbstractValuesProperty::getLongValuesOf3dPatch(
 }
 
 int32_t AbstractValuesProperty::getIntValuesOfPatch(
-	unsigned int patchIndex,
+	uint64_t patchIndex,
 	int32_t* values,
-	unsigned long long* numValuesInEachDimension,
-	unsigned long long* offsetInEachDimension,
+	uint64_t* numValuesInEachDimension,
+	uint64_t* offsetInEachDimension,
 	unsigned int numArrayDimensions) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
@@ -857,7 +841,7 @@ int32_t AbstractValuesProperty::getIntValuesOfPatch(
 }
 
 void AbstractValuesProperty::getIntValuesOf3dPatch(
-	unsigned int patchIndex,
+	uint64_t patchIndex,
 	int32_t* values,
 	unsigned int valueCountInFastestDim,
 	unsigned int valueCountInMiddleDim,
@@ -900,7 +884,7 @@ void AbstractValuesProperty::pushBackDoubleHdf5Array3dOfValues(const double * va
 	pushBackDoubleHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy);
 }
 
-void AbstractValuesProperty::pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy)
+void AbstractValuesProperty::pushBackDoubleHdf5ArrayOfValues(double const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -957,7 +941,7 @@ void AbstractValuesProperty::setValuesOfFloatHdf5Array3dOfValues(
 	uint64_t offsetInMiddleDim,
 	uint64_t offsetInSlowestDim,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
 	const hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	const hsize_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
@@ -971,7 +955,7 @@ void AbstractValuesProperty::setValuesOfFloatHdf5Array3dOfValues(
 	);
 }
 
-void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy)
+void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(float const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -992,7 +976,7 @@ void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(float const * values
 }
 
 void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(
-	unsigned long long const * numValues,
+	uint64_t const * numValues,
 	unsigned int numArrayDimensions,
 	EML2_NS::AbstractHdfProxy* proxy)
 {
@@ -1014,12 +998,12 @@ void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(
 }
 
 void AbstractValuesProperty::setValuesOfFloatHdf5ArrayOfValues(
-	float const * values, unsigned long long const * numValuesInEachDimension,
-	unsigned long long const * offsetInEachDimension, unsigned int numArrayDimensions,
+	float const * values, uint64_t const * numValuesInEachDimension,
+	uint64_t const * offsetInEachDimension, unsigned int numArrayDimensions,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
-	if (patchIndex >= getPatchCount() && patchIndex != (numeric_limits<unsigned int>::max)()) {
+	if (patchIndex >= getPatchCount() && patchIndex != (numeric_limits<uint64_t>::max)()) {
 		throw out_of_range("The values property patch is out of range");
 	}
 
@@ -1032,7 +1016,7 @@ void AbstractValuesProperty::setValuesOfFloatHdf5ArrayOfValues(
 	}
 	proxy->writeArrayNdSlab(
 		getHdfGroup(),
-		"values_patch" + std::to_string(patchIndex == (numeric_limits<unsigned int>::max)() ? getPatchCount() - 1 : patchIndex),
+		"values_patch" + std::to_string(patchIndex == (numeric_limits<uint64_t>::max)() ? getPatchCount() - 1 : patchIndex),
 		H5T_NATIVE_FLOAT,
 		values,
 		numValuesInEachDimension,
@@ -1040,7 +1024,7 @@ void AbstractValuesProperty::setValuesOfFloatHdf5ArrayOfValues(
 		numArrayDimensions);
 }
 
-void AbstractValuesProperty::getDoubleValuesOfPatch(unsigned int patchIndex, double * values) const
+void AbstractValuesProperty::getDoubleValuesOfPatch(uint64_t patchIndex, double * values) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string datasetPath;
@@ -1049,7 +1033,7 @@ void AbstractValuesProperty::getDoubleValuesOfPatch(unsigned int patchIndex, dou
 	hdfProxy->readArrayNdOfDoubleValues(datasetPath, values);
 }
 
-void AbstractValuesProperty::getFloatValuesOfPatch(unsigned int patchIndex, float * values) const
+void AbstractValuesProperty::getFloatValuesOfPatch(uint64_t patchIndex, float * values) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string datasetPath;
@@ -1059,10 +1043,10 @@ void AbstractValuesProperty::getFloatValuesOfPatch(unsigned int patchIndex, floa
 }
 
 void AbstractValuesProperty::getFloatValuesOfPatch(
-	unsigned int patchIndex,
+	uint64_t patchIndex,
 	float* values,
-	unsigned long long const * numValuesInEachDimension,
-	unsigned long long const * offsetInEachDimension,
+	uint64_t const * numValuesInEachDimension,
+	uint64_t const * offsetInEachDimension,
 	unsigned int numArrayDimensions) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
@@ -1078,7 +1062,7 @@ void AbstractValuesProperty::getFloatValuesOfPatch(
 }
 
 void AbstractValuesProperty::getFloatValuesOf3dPatch(
-	unsigned int patchIndex,
+	uint64_t patchIndex,
 	float* values,
 	uint64_t valueCountInFastestDim,
 	uint64_t valueCountInMiddleDim,

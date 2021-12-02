@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "IjkGridLatticeRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include "../resqml2/AbstractFeature.h"
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../eml2/AbstractLocal3dCrs.h"
@@ -391,7 +388,7 @@ void IjkGridLatticeRepresentation::setGeometryAsCoordinateLineNodes(
 }
 
 void IjkGridLatticeRepresentation::addSeismic3dCoordinatesToPatch(
-	unsigned int patchIndex,
+	uint64_t patchIndex,
 	double startInline, double incrInline, unsigned int countInline,
 	double startCrossline, double incrCrossline, unsigned int countCrossline,
 	unsigned int countSample, RESQML2_NS::AbstractRepresentation * seismicSupport)

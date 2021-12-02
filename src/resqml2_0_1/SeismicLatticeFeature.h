@@ -60,9 +60,9 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	crosslineCount	  	The count of crosslines in this seismic lattice.
 		 */
 		SeismicLatticeFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
-			int inlineIncrement, int crosslineIncrement,
-			unsigned int originInline, unsigned int originCrossline,
-			unsigned int inlineCount, unsigned int crosslineCount);
+			int64_t inlineIncrement, int64_t crosslineIncrement,
+			uint64_t originInline, uint64_t originCrossline,
+			uint64_t inlineCount, uint64_t crosslineCount);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
@@ -74,18 +74,18 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
 		~SeismicLatticeFeature() = default;
 
-		DLL_IMPORT_OR_EXPORT int getCrosslineIncrement() const final;
+		DLL_IMPORT_OR_EXPORT int64_t getCrosslineIncrement() const final;
 
-		DLL_IMPORT_OR_EXPORT int getInlineIncrement() const final;
+		DLL_IMPORT_OR_EXPORT int64_t getInlineIncrement() const final;
 
-		DLL_IMPORT_OR_EXPORT int getOriginCrossline() const final;
+		DLL_IMPORT_OR_EXPORT int64_t getOriginCrossline() const final;
 
-		DLL_IMPORT_OR_EXPORT int getOriginInline() const final;
+		DLL_IMPORT_OR_EXPORT int64_t getOriginInline() const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml20";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.

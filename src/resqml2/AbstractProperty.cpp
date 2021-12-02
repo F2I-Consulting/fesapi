@@ -19,8 +19,6 @@ under the License.
 #include "AbstractProperty.h"
 
 #include <algorithm>
-#include <limits>
-#include <stdexcept>
 
 #include <hdf5.h>
 
@@ -61,7 +59,7 @@ void AbstractProperty::loadTargetRelationships()
 		convertDorIntoRel<EML2_NS::PropertyKind>(dor);
 	}
 
-	for (unsigned int patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
+	for (uint64_t patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
 		convertDorIntoRel(getHdfProxyDor(patchIndex));
 	}
 }
@@ -234,7 +232,7 @@ bool AbstractProperty::useInterval() const
 	throw logic_error("Not implemented yet");
 }
 
-unsigned int AbstractProperty::getElementCountPerValue() const
+uint64_t AbstractProperty::getElementCountPerValue() const
 {
 	uint64_t result;
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -250,11 +248,7 @@ unsigned int AbstractProperty::getElementCountPerValue() const
 		throw logic_error("Not implemented yet");
 	}
 
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much Element Count Per Value");
-	}
-
-	return static_cast<unsigned int>(result);
+	return result;
 }
 
 gsoap_eml2_3::eml23__IndexableElement AbstractProperty::getAttachmentKind() const
@@ -283,26 +277,14 @@ std::vector<RESQML2_0_1_NS::PropertySet *> AbstractProperty::getPropertySets() c
 	return repository->getSourceObjects<RESQML2_0_1_NS::PropertySet>(this);
 }
 
-unsigned int AbstractProperty::getPropertySetCount() const
+uint64_t AbstractProperty::getPropertySetCount() const
 {
-	const std::vector<RESQML2_0_1_NS::PropertySet*>& propSets = getPropertySets();
-
-	if (propSets.size() > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("Too much property set containing this property");
-	}
-
-	return static_cast<unsigned int>(propSets.size());
+	return getPropertySets().size();
 }
 
-RESQML2_0_1_NS::PropertySet * AbstractProperty::getPropertySet(unsigned int index) const
+RESQML2_0_1_NS::PropertySet * AbstractProperty::getPropertySet(uint64_t index) const
 {
-	const std::vector<RESQML2_0_1_NS::PropertySet*>& propSets = getPropertySets();
-
-	if (index < propSets.size()) {
-		return propSets[index];
-	}
-
-	throw out_of_range("The index of the prop Set is out of range");
+	return getPropertySets().at(index);
 }
 
 void AbstractProperty::setLocalCrs(EML2_NS::AbstractLocal3dCrs * crs)
@@ -550,7 +532,7 @@ COMMON_NS::AbstractObject::hdfDatatypeEnum AbstractProperty::getValuesHdfDatatyp
 	return hdfProxy->getHdfDatatypeInDataset(dsPath);
 }
 
-uint64_t AbstractProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const
+uint64_t AbstractProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, uint64_t patchIndex) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
@@ -565,7 +547,7 @@ uint64_t AbstractProperty::getValuesCountOfDimensionOfPatch(unsigned int dimInde
 	throw out_of_range("The dim index to get the count is out of range.");
 }
 
-unsigned int AbstractProperty::getDimensionsCountOfPatch(unsigned int patchIndex) const
+unsigned int AbstractProperty::getDimensionsCountOfPatch(uint64_t patchIndex) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
@@ -574,7 +556,7 @@ unsigned int AbstractProperty::getDimensionsCountOfPatch(unsigned int patchIndex
 	return hdfProxy->getDimensionCount(dsPath);
 }
 
-int64_t AbstractProperty::getValuesCountOfPatch(unsigned int patchIndex) const
+int64_t AbstractProperty::getValuesCountOfPatch(uint64_t patchIndex) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;

@@ -19,8 +19,6 @@ under the License.
 #include "AbstractStratigraphicOrganizationInterpretation.h"
 
 #include <algorithm>
-#include <limits>
-#include <stdexcept>
 
 #include "AbstractGridRepresentation.h"
 
@@ -32,26 +30,16 @@ std::vector<AbstractGridRepresentation *> AbstractStratigraphicOrganizationInter
 	return getRepository()->getSourceObjects<AbstractGridRepresentation>(this);
 }
 
-unsigned int AbstractStratigraphicOrganizationInterpretation::getGridRepresentationCount() const
+uint64_t AbstractStratigraphicOrganizationInterpretation::getGridRepresentationCount() const
 {
-	const size_t count = getGridRepresentations().size();
-
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("Too much associated grids");
-	}
-
-	return static_cast<unsigned int>(count);
+	return getGridRepresentations().size();
 }
 
-AbstractGridRepresentation * AbstractStratigraphicOrganizationInterpretation::getGridRepresentation(unsigned int index) const
+AbstractGridRepresentation * AbstractStratigraphicOrganizationInterpretation::getGridRepresentation(uint64_t index) const
 {
 	const std::vector<AbstractGridRepresentation *>& gridRepresentationSet = getGridRepresentations();
 
-	if (index >= gridRepresentationSet.size()) {
-		throw out_of_range("The index of the grid representation to get is out of range.");
-	}
-
-	return gridRepresentationSet[index];
+	return gridRepresentationSet.at(index);
 }
 
 bool AbstractStratigraphicOrganizationInterpretation::isAssociatedToGridRepresentation(AbstractGridRepresentation* gridRep) const

@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreMarker.h"
 
-#include <stdexcept>
-
 #include "WellboreMarkerFrameRepresentation.h"
 #include "../resqml2/BoundaryFeatureInterpretation.h"
 #include "../witsml2_0/WellboreMarker.h"

@@ -78,7 +78,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The index of @p timestamp in this time series.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(time_t timestamp, LONG64 yearOffset = 0) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getTimestampIndex(time_t timestamp, LONG64 yearOffset = 0) const final;
 
 		/**
 		 * Gets the index of a given timestamp in this time series.
@@ -91,7 +91,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The index of @p timestamp in this time series.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(const tm & timestamp, LONG64 yearOffset = 0) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getTimestampIndex(const tm & timestamp, LONG64 yearOffset = 0) const final;
 
 		/**
 		 * Get the count of timestamps in this time series.
@@ -100,7 +100,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The timestamp count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTimestampCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getTimestampCount() const final;
 
 		/**
 		 * Gets a timestamp as a time structure at a particular index of this time series. It allows to
@@ -113,7 +113,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The timestamp at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT tm getTimestampAsTimeStructure(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT tm getTimestampAsTimeStructure(uint64_t index) const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

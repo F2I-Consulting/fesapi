@@ -76,7 +76,7 @@ void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::str
 	const string datasetName = pushBackRefToExistingDataset(proxy, getHdfGroup() + "/values_patch" + std::to_string(getPatchCount()));
 }
 
-std::vector<std::string> CommentProperty::getStringValuesOfPatch(unsigned int patchIndex)
+std::vector<std::string> CommentProperty::getStringValuesOfPatch(uint64_t patchIndex)
 {	
 	std::vector<std::string> result;
 

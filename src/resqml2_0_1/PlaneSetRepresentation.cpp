@@ -19,8 +19,6 @@ under the License.
 #include "PlaneSetRepresentation.h"
 
 #include <algorithm>
-#include <limits>
-#include <stdexcept>
 #include <sstream>
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
@@ -48,7 +46,7 @@ PlaneSetRepresentation::PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterp
 	setInterpretation(interp);
 }
 
-COMMON_NS::DataObjectReference PlaneSetRepresentation::getLocalCrsDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference PlaneSetRepresentation::getLocalCrsDor(uint64_t patchIndex) const
 {
 	_resqml20__PlaneSetRepresentation* rep = static_cast<_resqml20__PlaneSetRepresentation*>(gsoapProxy2_0_1);
 	gsoap_resqml2_0_1::eml20__DataObjectReference* result = rep->Planes[patchIndex]->LocalCrs;
@@ -113,7 +111,7 @@ void PlaneSetRepresentation::pushBackTiltedPlaneGeometryPatch(
 	getRepository()->addRelationship(this, localCrs);
 }
 
-uint64_t PlaneSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t PlaneSetRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");
@@ -125,7 +123,7 @@ uint64_t PlaneSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex
 		: static_cast<resqml20__TiltedPlaneGeometry*>(rep->Planes[patchIndex])->Plane.size() * 3;
 }
 
-void PlaneSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void PlaneSetRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");
@@ -156,7 +154,7 @@ void PlaneSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double
 	}
 }
 
-unsigned int PlaneSetRepresentation::getPatchCount() const
+uint64_t PlaneSetRepresentation::getPatchCount() const
 {
     return static_cast<_resqml20__PlaneSetRepresentation*>(gsoapProxy2_0_1)->Planes.size();
 }

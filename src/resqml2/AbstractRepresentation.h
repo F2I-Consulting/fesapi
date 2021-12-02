@@ -50,7 +50,7 @@ namespace RESQML2_NS
 		 * 						
 		 * @returns Null if it fails, else the local CRS associated to the @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* getLocalCrs(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* getLocalCrs(uint64_t patchIndex) const;
 
 		/**
 		 * Gets the data object reference of the local 3d CRS associated to a given patch of this
@@ -63,7 +63,7 @@ namespace RESQML2_NS
 		 * @returns	Empty data object reference if it fails, else the data object reference of the local
 		 * 			CRS associated to the @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getLocalCrsDor(uint64_t patchIndex) const;
 
 		/**
 		 * @brief Gets the data object reference of the HDF proxy which is used for storing the numerical
@@ -125,7 +125,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The xyz point count of the patch at position @p patchIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const = 0;
 
 		/**
 		 * Get the xyz point count of all patches of this representation.
@@ -147,7 +147,7 @@ namespace RESQML2_NS
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const = 0;
 
 		/**
 		 * @brief Gets all the xyz points of a particular patch of this representation. xyz points are given in
@@ -161,7 +161,7 @@ namespace RESQML2_NS
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatchInGlobalCrs(unsigned int patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatchInGlobalCrs(uint64_t patchIndex, double * xyzPoints) const;
 
 		/**
 		 * @brief Gets all the xyz points of all patches of this representation. xyz points are given in the
@@ -211,7 +211,7 @@ namespace RESQML2_NS
 		 * @returns	Null if no seismic information have been provided for the patch at position @p
 		 * 			patchIndex. Else, its seismic support.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractRepresentation* getSeismicSupportOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT AbstractRepresentation* getSeismicSupportOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Gets all seismic supports of the current geometry of this representation (that is to say the
@@ -227,7 +227,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The patch count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getPatchCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getPatchCount() const = 0;
 
 		/**
 		 * Pushes back this representation into a representation set representation.
@@ -262,7 +262,7 @@ namespace RESQML2_NS
 		 * 									values. It must be already opened for writing and won't be
 		 * 									closed in this method.
 		 */
-		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double* inlines, double* crosslines, unsigned int pointCount,
+		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(uint64_t patchIndex, double* inlines, double* crosslines, uint64_t pointCount,
 			RESQML2_NS::AbstractRepresentation* seismicSupport, EML2_NS::AbstractHdfProxy* proxy);
 
 		/**
@@ -283,7 +283,7 @@ namespace RESQML2_NS
 		 * @param 	  	countCrossline	The crossline count.
 		 * @param [in]	seismicSupport	The representation of the seismic line.
 		 */
-		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double startInline, double incrInline, unsigned int countInline,
+		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(uint64_t patchIndex, double startInline, double incrInline, unsigned int countInline,
 			double startCrossline, double incrCrossline, unsigned int countCrossline,
 			RESQML2_NS::AbstractRepresentation* seismicSupport);
 
@@ -305,7 +305,7 @@ namespace RESQML2_NS
 		 * 									must be already opened for writing and won't be closed in
 		 * 									this method.
 		 */
-		DLL_IMPORT_OR_EXPORT void addSeismic2dCoordinatesToPatch(unsigned int patchIndex, double* lineAbscissa,
+		DLL_IMPORT_OR_EXPORT void addSeismic2dCoordinatesToPatch(uint64_t patchIndex, double* lineAbscissa,
 			RESQML2_NS::AbstractRepresentation * seismicSupport, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
@@ -319,7 +319,7 @@ namespace RESQML2_NS
 		 * @param [out]	values	  	The array where the abscissa are going to be stored. The count of
 		 * 							this array must be equal to <tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT void getSeismicLineAbscissaOfPointsOfPatch(unsigned int patchIndex, double* values) const;
+		DLL_IMPORT_OR_EXPORT void getSeismicLineAbscissaOfPointsOfPatch(uint64_t patchIndex, double* values) const;
 
 		/**
 		 * Gets all the inline coordinates of the points of a specific patch related to seismic lattice.
@@ -333,7 +333,7 @@ namespace RESQML2_NS
 		 * 							count of this array must be equal to
 		 * 							<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT void getInlinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
+		DLL_IMPORT_OR_EXPORT void getInlinesOfPointsOfPatch(uint64_t patchIndex, double * values) const;
 
 		/**
 		 * Gets all the crossline coordinates of the points of a specific patch related to seismic
@@ -348,7 +348,7 @@ namespace RESQML2_NS
 		 * 							count of this array must be equal to
 		 * 							<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT void getCrosslinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
+		DLL_IMPORT_OR_EXPORT void getCrosslinesOfPointsOfPatch(uint64_t patchIndex, double * values) const;
 
 		/** The standard XML tag without XML namespace for serializing this data object */
 		static const char* XML_TAG;
@@ -391,7 +391,7 @@ namespace RESQML2_NS
 		 * @returns	nullptr if there is no point geometry for this particular patch otherwise the found
 		 * 			point geometry.
 		 */
-		virtual gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+		virtual gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(uint64_t patchIndex) const;
 
 		/**
 		 * Get the point geometry of a specific v2.2 patch of the representation.
@@ -401,7 +401,7 @@ namespace RESQML2_NS
 		 * @returns	nullptr if there is no point geometry for this particular patch otherwise the found
 		 * 			point geometry.
 		 */
-		virtual gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
+		virtual gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(uint64_t patchIndex) const;
 
 		/**
 		 * Creates a v2.0.1 point geometry patch.
@@ -468,7 +468,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the seismic 3D coordinates.
 		 */
-		gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* getSeismic3dCoordinates2_0_1(unsigned int patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* getSeismic3dCoordinates2_0_1(uint64_t patchIndex) const;
 
 		/**
 		 * Gets seismic 3D coordinates
@@ -477,6 +477,6 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the seismic 3D coordinates.
 		 */
-		gsoap_eml2_3::resqml22__Seismic3dCoordinates* getSeismic3dCoordinates2_2(unsigned int patchIndex) const;
+		gsoap_eml2_3::resqml22__Seismic3dCoordinates* getSeismic3dCoordinates2_2(uint64_t patchIndex) const;
 	};
 }

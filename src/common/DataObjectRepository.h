@@ -528,15 +528,11 @@ namespace COMMON_NS
 		*/
 #define GETTER_DATAOBJECTS(returnedDataType, dataObjectName)\
 		DLL_IMPORT_OR_EXPORT std::vector<returnedDataType*> get##dataObjectName##Set() const;\
-		DLL_IMPORT_OR_EXPORT unsigned int get##dataObjectName##Count() const {\
-			const size_t result = get##dataObjectName##Set().size();\
-			if (result > (std::numeric_limits<unsigned int>::max)()) { throw std::range_error("The count is superior to unsigned int max"); }\
-			return static_cast<unsigned int>(result);\
+		DLL_IMPORT_OR_EXPORT uint64_t get##dataObjectName##Count() const {\
+			return get##dataObjectName##Set().size();\
 		}\
-		DLL_IMPORT_OR_EXPORT returnedDataType* get##dataObjectName(unsigned int index) const {\
-			std::vector<returnedDataType*> all = get##dataObjectName##Set();\
-			if (index >= all.size()) { throw std::out_of_range("The index is out of range"); }\
-			return all[index];\
+		DLL_IMPORT_OR_EXPORT returnedDataType* get##dataObjectName(uint64_t index) const {\
+			return get##dataObjectName##Set().at(index);\
 		}
 
 		GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)
@@ -1207,9 +1203,9 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new seismic lattice.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::SeismicLatticeFeature* createSeismicLattice(const std::string & guid, const std::string & title,
-			int inlineIncrement, int crosslineIncrement,
-			unsigned int originInline, unsigned int originCrossline,
-			unsigned int inlineCount, unsigned int crosslineCount);
+			int64_t inlineIncrement, int64_t crosslineIncrement,
+			uint64_t originInline, uint64_t originCrossline,
+			uint64_t inlineCount, uint64_t crosslineCount);
 
 		/**
 		 * Creates a seismic line into this repository
@@ -1225,7 +1221,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new seismic line.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::SeismicLineFeature* createSeismicLine(const std::string & guid, const std::string & title,
-			int traceIndexIncrement, unsigned int firstTraceIndex, unsigned int traceCount);
+			int64_t traceIndexIncrement, uint64_t firstTraceIndex, uint64_t traceCount);
 
 		/**
 		 * @brief	Creates a CMP line into this repository
@@ -1242,7 +1238,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new CMP line.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::CmpLineFeature* createCmpLine(const std::string & guid, const std::string & title,
-			int nearestShotPointIndicesIncrement, int firstNearestShotPointIndex, unsigned int nearestShotPointCount);
+			int64_t nearestShotPointIndicesIncrement, int64_t firstNearestShotPointIndex, uint64_t nearestShotPointCount);
 
 		/**
 		 * Creates a shot point line into this repository
@@ -2277,7 +2273,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new ijk grid explicit representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(const std::string& guid, const std::string& title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+			uint32_t iCount, uint32_t jCount, uint32_t kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * @brief	Creates an ijk grid explicit representation into this repository
@@ -2304,7 +2300,7 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string& guid, const std::string& title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+			uint32_t iCount, uint32_t jCount, uint32_t kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * @brief	Creates an ijk grid parametric representation into this repository
@@ -2328,7 +2324,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new ijk grid parametric representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(const std::string& guid, const std::string& title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+			uint32_t iCount, uint32_t jCount, uint32_t kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * @brief	Creates an ijk grid parametric representation into this repository
@@ -2355,7 +2351,7 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string& guid, const std::string& title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+			uint32_t iCount, uint32_t jCount, uint32_t kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * @brief	Creates an ijk grid lattice representation into this repository
@@ -2373,7 +2369,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new ijk grid lattice representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(const std::string& guid, const std::string& title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount);
+			uint32_t iCount, uint32_t jCount, uint32_t kCount);
 
 		/**
 		 * @brief	Creates an ijk grid lattice representation into this repository
@@ -2394,7 +2390,7 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string& guid, const std::string& title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount);
+			uint32_t iCount, uint32_t jCount, uint32_t kCount);
 
 		/**
 		 * @brief	Creates an ijk grid with no geometry representation into this repository
@@ -2419,7 +2415,7 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(
 			const std::string& guid, const std::string& title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+			uint32_t iCount, uint32_t jCount, uint32_t kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * @brief	Creates an ijk grid with no geometry representation into this repository
@@ -2446,7 +2442,7 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string& guid, const std::string& title,
-			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+			uint32_t iCount, uint32_t jCount, uint32_t kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * @brief	Creates an unstructured grid representation into this repository
@@ -2462,7 +2458,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new unstructured grid representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(const std::string& guid, const std::string& title,
-			const uint64_t & cellCount);
+			uint64_t cellCount);
 
 		/**
 		 * @brief	Creates a sub-representation into this repository
@@ -3492,7 +3488,7 @@ namespace COMMON_NS
 
 		//*************** WARNINGS *************
 		
-		/** Clears the repository the warnings */
+		/** Clears the warnings from the repository*/
 		DLL_IMPORT_OR_EXPORT void clearWarnings() { warnings.clear();  }
 
 		/**

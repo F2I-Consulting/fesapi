@@ -59,9 +59,9 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~PlaneSetRepresentation() = default;
 
-		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const final;
+		COMMON_NS::DataObjectReference getLocalCrsDor(uint64_t patchIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const final;
 
 		/**
 		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
@@ -72,14 +72,14 @@ namespace RESQML2_2_NS
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be pre allocated.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Get the number of triangle patch
 		 *
 		 * @returns	The patch count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
@@ -92,7 +92,7 @@ namespace RESQML2_2_NS
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml22";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.

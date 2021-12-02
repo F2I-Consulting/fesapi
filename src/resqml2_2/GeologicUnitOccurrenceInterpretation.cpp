@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "GeologicUnitOccurrenceInterpretation.h"
 
-#include <stdexcept>
-
 #include "../resqml2/Model.h"
 #include "../resqml2/StratigraphicColumnRankInterpretation.h"
 

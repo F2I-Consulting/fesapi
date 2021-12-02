@@ -16,16 +16,13 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
 #include "IjkGridNoGeometryRepresentation.h"
-
-#include <stdexcept>
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_NS;
 
-uint64_t IjkGridNoGeometryRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t IjkGridNoGeometryRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("An ijk grid has a maximum of one patch.");
@@ -65,7 +62,7 @@ uint64_t IjkGridNoGeometryRepresentation::getXyzPointCountOfPatch(unsigned int p
 	}
 }
 
-void IjkGridNoGeometryRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
+void IjkGridNoGeometryRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount())
 		throw out_of_range("An ijk grid has a maximum of one patch.");

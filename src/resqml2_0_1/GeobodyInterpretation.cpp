@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "GeobodyInterpretation.h"
 
-#include <stdexcept>
-
 #include "GeobodyFeature.h"
 
 using namespace std;

@@ -19,15 +19,13 @@ under the License.
 #include "NonSealedSurfaceFrameworkRepresentation.h"
 
 #include <algorithm>
-#include <limits>
-#include <stdexcept>
 #include <sstream>
 
 #include <H5public.h>
 
 #include "../eml2/AbstractHdfProxy.h"
-
 #include "../eml2/AbstractLocal3dCrs.h"
+
 #include "../resqml2/StructuralOrganizationInterpretation.h"
 
 using namespace std;

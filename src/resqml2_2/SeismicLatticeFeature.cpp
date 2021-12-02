@@ -22,12 +22,10 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
-const char* SeismicLatticeFeature::XML_NS = "resqml22";
-
 SeismicLatticeFeature::SeismicLatticeFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
-	int inlineIncrement, int crosslineIncrement,
-	unsigned int originInline, unsigned int originCrossline,
-	unsigned int inlineCount, unsigned int crosslineCount)
+	int64_t inlineIncrement, int64_t crosslineIncrement,
+	uint64_t originInline, uint64_t originCrossline,
+	uint64_t inlineCount, uint64_t crosslineCount)
 {
 	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be null.");
@@ -56,22 +54,22 @@ SeismicLatticeFeature::SeismicLatticeFeature(COMMON_NS::DataObjectRepository* re
 	repo->addDataObject(this);
 }
 
-int SeismicLatticeFeature::getCrosslineIncrement() const
+int64_t SeismicLatticeFeature::getCrosslineIncrement() const
 {
 	return static_cast<_resqml22__SeismicLatticeFeature*>(gsoapProxy2_3)->CrosslineLabels->Offset[0]->Value;
 }
 		
-int SeismicLatticeFeature::getInlineIncrement() const
+int64_t SeismicLatticeFeature::getInlineIncrement() const
 {
 	return static_cast<_resqml22__SeismicLatticeFeature*>(gsoapProxy2_3)->InlineLabels->Offset[0]->Value;
 }
 		
-int SeismicLatticeFeature::getOriginCrossline() const
+int64_t SeismicLatticeFeature::getOriginCrossline() const
 {
 	return static_cast<_resqml22__SeismicLatticeFeature*>(gsoapProxy2_3)->CrosslineLabels->StartValue;
 }
 		
-int SeismicLatticeFeature::getOriginInline() const
+int64_t SeismicLatticeFeature::getOriginInline() const
 {
 	return static_cast<_resqml22__SeismicLatticeFeature*>(gsoapProxy2_3)->InlineLabels->StartValue;
 }

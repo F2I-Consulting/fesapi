@@ -139,7 +139,7 @@ void ContinuousProperty::setValuesOfFloatHdf5Array3dOfValues(
 	uint64_t offsetInSlowestDim,
 	bool computeMinMax,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
 	const hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
 	const hsize_t offsetPerDimension[3] = {offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim};
@@ -184,7 +184,7 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 	unsigned long long const * offsetInEachDimension, unsigned int numArrayDimensions,
 	bool computeMinMax,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
 	AbstractValuesProperty::setValuesOfFloatHdf5ArrayOfValues(values, numValuesInEachDimension, offsetInEachDimension, numArrayDimensions, proxy, patchIndex);
 

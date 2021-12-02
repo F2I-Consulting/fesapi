@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreFeature.h"
 
-#include <stdexcept>
-
 #include "../witsml2_0/Wellbore.h"
 
 using namespace std;

@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "EarthModelInterpretation.h"
 
-#include <stdexcept>
-
 #include "StructuralOrganizationInterpretation.h"
 #include "StratigraphicColumn.h"
 #include "GeologicUnitOccurrenceInterpretation.h"
@@ -28,9 +26,7 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* EarthModelInterpretation::XML_TAG = "EarthModelInterpretation";
-
-StructuralOrganizationInterpretation* EarthModelInterpretation::getStructuralOrganizationInterpertation(unsigned int index) const
+StructuralOrganizationInterpretation* EarthModelInterpretation::getStructuralOrganizationInterpertation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<StructuralOrganizationInterpretation>(getStructuralOrganizationInterpertationDor(index).getUuid());
 }
@@ -40,12 +36,12 @@ StratigraphicColumn* EarthModelInterpretation::getStratiColumn() const
 	return repository->getDataObjectByUuid<StratigraphicColumn>(getStratiColumnDor().getUuid());
 }
 
-GeologicUnitOccurrenceInterpretation* EarthModelInterpretation::getGeologicUnitOccurrence(unsigned int index) const
+GeologicUnitOccurrenceInterpretation* EarthModelInterpretation::getGeologicUnitOccurrence(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<GeologicUnitOccurrenceInterpretation>(getGeologicUnitOccurrenceDor(index).getUuid());
 }
 
-RockFluidOrganizationInterpretation* EarthModelInterpretation::getRockFluidOrganizationInterpretation(unsigned int index) const
+RockFluidOrganizationInterpretation* EarthModelInterpretation::getRockFluidOrganizationInterpretation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<RockFluidOrganizationInterpretation>(getRockFluidOrganizationInterpretationDor(index).getUuid());
 }
@@ -59,18 +55,18 @@ void EarthModelInterpretation::loadTargetRelationships()
 		convertDorIntoRel<StratigraphicColumn>(dor);
 	}
 	
-	unsigned int count = getStructuralOrganizationInterpretationCount();
-	for (unsigned int i = 0; i < count; ++i) {
+	uint64_t count = getStructuralOrganizationInterpretationCount();
+	for (uint64_t i = 0; i < count; ++i) {
 		convertDorIntoRel<StructuralOrganizationInterpretation>(getStructuralOrganizationInterpertationDor(i));
 	}
 
 	count = getGeologicUnitOccurrenceCount();
-	for (unsigned int i = 0; i < count; ++i) {
+	for (uint64_t i = 0; i < count; ++i) {
 		convertDorIntoRel<GeologicUnitOccurrenceInterpretation>(getGeologicUnitOccurrenceDor(i));
 	}
 
 	count = getRockFluidOrganizationInterpretationCount();
-	for (unsigned int i = 0; i < count; ++i) {
+	for (uint64_t i = 0; i < count; ++i) {
 		convertDorIntoRel<RockFluidOrganizationInterpretation>(getRockFluidOrganizationInterpretationDor(i));
 	}
 }

@@ -161,7 +161,11 @@ namespace WITSML1_4_NS
 		 *
 		 * @returns	the count of trajectory stations in this trajectory.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTrajectoryStationCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getTrajectoryStationCount() const noexcept final {
+			return static_cast<gsoap_witsml1_4::witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence != nullptr
+				? static_cast<gsoap_witsml1_4::witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation.size()
+				: 0;
+		}
 
 		/**
 		* The standard XML namespace for serializing this data object.

@@ -140,9 +140,9 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT bool isFinal() const;
 
-		uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
+		uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Gets the unit of measure of the MDs along this deviation survey.
@@ -212,7 +212,7 @@ namespace RESQML2_0_1_NS
 		 * @returns	The the count of wellbore frame representations of the associated wellbore trajectory
 		 * 			which share the same MD datum and MD uom than this deviation survey representation.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getWellboreFrameRepresentationCount() const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
+		DLL_IMPORT_OR_EXPORT uint64_t getWellboreFrameRepresentationCount() const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 		/**
 		 * Gets a particular wellbore frame representation according to its position in the set of all
@@ -227,7 +227,7 @@ namespace RESQML2_0_1_NS
 		 * 			frame representations of the associated wellbore trajectory which share the same MD
 		 * 			datum and MD uom than this deviation survey representation.
 		 */
-		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
+		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(uint64_t index) const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 		/**
 		 * Gets all the wellbore trajectories which are associated to this deviation survey
@@ -245,7 +245,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The count of associated wellbore trajectories.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getWellboreTrajectoryRepresentationCount() const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
+		DLL_IMPORT_OR_EXPORT uint64_t getWellboreTrajectoryRepresentationCount() const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 		/**
 		 * Gets the associated wellbore trajectory at a particular position.
@@ -256,21 +256,21 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns The associated wellbore trajectory at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreTrajectoryRepresentation* getWellboreTrajectoryRepresentation(unsigned int index) const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreTrajectoryRepresentation* getWellboreTrajectoryRepresentation(uint64_t index) const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final { return 1; }
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final { return 1; }
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "DeviationSurveyRepresentation";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml20";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.

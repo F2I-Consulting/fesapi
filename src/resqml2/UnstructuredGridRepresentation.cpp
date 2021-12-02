@@ -18,21 +18,16 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "UnstructuredGridRepresentation.h"
 
-#include <stdexcept>
-
 #include <hdf5.h>
 
 #include "../eml2/AbstractHdfProxy.h"
-
 #include "../eml2/AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_NS;
 
-const char* UnstructuredGridRepresentation::XML_TAG = "UnstructuredGridRepresentation";
-
-uint64_t UnstructuredGridRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t UnstructuredGridRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The index of the patch is not in the allowed range of patch.");
@@ -60,8 +55,7 @@ void UnstructuredGridRepresentation::getFaceCountPerCell(uint64_t * faceCountPer
 	const uint64_t cellCount = getCellCount();
 	uint64_t buffer = faceCountPerCell[0];
 	uint64_t bufferCumCount = 0;
-	for (uint64_t cumulativeFaceCountPerCellIndex = 1; cumulativeFaceCountPerCellIndex < cellCount; ++cumulativeFaceCountPerCellIndex)
-	{
+	for (uint64_t cumulativeFaceCountPerCellIndex = 1; cumulativeFaceCountPerCellIndex < cellCount; ++cumulativeFaceCountPerCellIndex) {
 		bufferCumCount = faceCountPerCell[cumulativeFaceCountPerCellIndex];
 		faceCountPerCell[cumulativeFaceCountPerCellIndex] -= buffer;
 		buffer = bufferCumCount;
@@ -74,8 +68,7 @@ void UnstructuredGridRepresentation::getNodeCountPerFace(uint64_t * nodeCountPer
 	const uint64_t faceCount = getFaceCount();
 	uint64_t buffer = nodeCountPerFace[0];
 	uint64_t bufferCumCount = 0;
-	for (uint64_t cumulativeNodeCountPerFaceIndex = 1; cumulativeNodeCountPerFaceIndex < faceCount; ++cumulativeNodeCountPerFaceIndex)
-	{
+	for (uint64_t cumulativeNodeCountPerFaceIndex = 1; cumulativeNodeCountPerFaceIndex < faceCount; ++cumulativeNodeCountPerFaceIndex) {
 		bufferCumCount = nodeCountPerFace[cumulativeNodeCountPerFaceIndex];
 		nodeCountPerFace[cumulativeNodeCountPerFaceIndex] -= buffer;
 		buffer = bufferCumCount;
@@ -87,18 +80,24 @@ void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRight
 	uint64_t faceCount, uint64_t * nodeIndicesPerFace, uint64_t * nodeIndicesCumulativeCountPerFace,
 	gsoap_resqml2_0_1::resqml20__CellShape cellShape, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
-	if (cellFaceIsRightHanded == nullptr)
+	if (cellFaceIsRightHanded == nullptr) {
 		throw invalid_argument("The cellFaceIsRightHanded information cannot be null.");
-	if (points == nullptr)
+	}
+	if (points == nullptr) {
 		throw invalid_argument("The points of the ijk grid cannot be null.");
-	if (faceIndicesPerCell == nullptr)
+	}
+	if (faceIndicesPerCell == nullptr) {
 		throw invalid_argument("The definition of the face indices per cell is incomplete.");
-	if (faceIndicesCumulativeCountPerCell == nullptr)
+	}
+	if (faceIndicesCumulativeCountPerCell == nullptr) {
 		throw invalid_argument("The definition of the face indices count per cell is incomplete.");
-	if (nodeIndicesPerFace == nullptr)
+	}
+	if (nodeIndicesPerFace == nullptr) {
 		throw invalid_argument("The definition of the node indices per face is incomplete.");
-	if (nodeIndicesCumulativeCountPerFace == nullptr)
+	}
+	if (nodeIndicesCumulativeCountPerFace == nullptr) {
 		throw invalid_argument("The definition of the node indices count per face is incomplete.");
+	}
 
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -257,7 +256,7 @@ void UnstructuredGridRepresentation::unloadGeometry()
 	faceIndicesOfCells.reset();
 }
 
-unsigned int UnstructuredGridRepresentation::getFaceCountOfCell(uint64_t cellIndex) const
+uint64_t UnstructuredGridRepresentation::getFaceCountOfCell(uint64_t cellIndex) const
 {
 	if (cellIndex >= getCellCount()) {
 		throw out_of_range("The cell index is out of range.");
@@ -286,7 +285,7 @@ unsigned int UnstructuredGridRepresentation::getFaceCountOfCell(uint64_t cellInd
 	return static_cast<uint32_t>(result);
 }
 
-uint64_t UnstructuredGridRepresentation::getGlobalFaceIndex(uint64_t cellIndex, unsigned int localFaceIndex) const
+uint64_t UnstructuredGridRepresentation::getGlobalFaceIndex(uint64_t cellIndex, uint64_t localFaceIndex) const
 {
 	if (!faceIndicesOfCells) {
 		throw invalid_argument("The geometry must have been loaded first.");
@@ -311,7 +310,7 @@ uint64_t UnstructuredGridRepresentation::getGlobalFaceIndex(uint64_t cellIndex, 
 	return globalFaceIndex;
 }
 
-unsigned int UnstructuredGridRepresentation::getNodeCountOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const
+uint64_t UnstructuredGridRepresentation::getNodeCountOfFaceOfCell(uint64_t cellIndex, uint64_t localFaceIndex) const
 {
 	if (constantNodeCountPerFace != 0) {
 		return constantNodeCountPerFace;
@@ -333,7 +332,7 @@ unsigned int UnstructuredGridRepresentation::getNodeCountOfFaceOfCell(uint64_t c
 	return static_cast<uint32_t>(result);
 }
 
-uint64_t const * UnstructuredGridRepresentation::getNodeIndicesOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const
+uint64_t const * UnstructuredGridRepresentation::getNodeIndicesOfFaceOfCell(uint64_t cellIndex, uint64_t localFaceIndex) const
 {
 	const uint64_t globalFaceIndex = getGlobalFaceIndex(cellIndex, localFaceIndex);
 
@@ -341,8 +340,7 @@ uint64_t const * UnstructuredGridRepresentation::getNodeIndicesOfFaceOfCell(uint
 		return nodeIndicesOfFaces.get();
 	}
 
-	if (constantNodeCountPerFace != 0)
-		return &(nodeIndicesOfFaces[constantNodeCountPerFace * globalFaceIndex]);
-	else
-		return &(nodeIndicesOfFaces[cumulativeNodeCountPerFace[globalFaceIndex - 1]]);
+	return constantNodeCountPerFace != 0
+		? &(nodeIndicesOfFaces[constantNodeCountPerFace * globalFaceIndex])
+		: &(nodeIndicesOfFaces[cumulativeNodeCountPerFace[globalFaceIndex - 1]]);
 }

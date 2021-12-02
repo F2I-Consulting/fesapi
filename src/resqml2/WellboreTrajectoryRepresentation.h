@@ -405,7 +405,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of associated wellbore frame representations.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getWellboreFrameRepresentationCount() const; // Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
+		DLL_IMPORT_OR_EXPORT uint64_t getWellboreFrameRepresentationCount() const; // Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
 
 		/**
 		 * Gets a particular wellbore frame representation of this wellbore trajectory representation
@@ -415,13 +415,13 @@ namespace RESQML2_NS
 		 * 								
 		 * @returns The associated wellbore frame representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const; // Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
+		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(uint64_t index) const; // Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
 
-		virtual COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const override = 0;
+		virtual COMMON_NS::DataObjectReference getLocalCrsDor(uint64_t patchIndex) const override = 0;
 
 		virtual COMMON_NS::DataObjectReference getHdfProxyDor() const override = 0;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final {return 1;}
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final {return 1;}
 
 		/**
 		 * Queries if this trajectory has a geometry.
@@ -431,7 +431,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual bool hasGeometry() const = 0;
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "WellboreTrajectoryRepresentation";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 

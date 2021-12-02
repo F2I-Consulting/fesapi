@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "StringTableLookup.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include "PropertyKind.h"
 
 using namespace std;

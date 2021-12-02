@@ -109,7 +109,7 @@ namespace WITSML2_0_NS
 		 * @param 	index	Zero-based index of the.
 		 * @param 	guid 	(Optional) Unique identifier.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackPerforationHistory(unsigned int index,
+		DLL_IMPORT_OR_EXPORT void pushBackPerforationHistory(uint64_t index,
 			const std::string & guid = "");
 
 		/**
@@ -120,7 +120,7 @@ namespace WITSML2_0_NS
 		 * @param 	startDate		 	The start date.
 		 * @param 	guid			 	(Optional) Unique identifier.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackPerforationHistory(unsigned int index,
+		DLL_IMPORT_OR_EXPORT void pushBackPerforationHistory(uint64_t index,
 			gsoap_eml2_1::witsml20__PerforationStatus perforationStatus,
 			time_t startDate,
 			const std::string & guid = "");
@@ -130,7 +130,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPerforationCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getPerforationCount() const;
 
 		/**
 		 * Gets perforation UID
@@ -139,7 +139,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation UID.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getPerforationUid(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getPerforationUid(uint64_t index) const;
 
 		/**
 		 * Query if 'index' has perforation md datum
@@ -148,7 +148,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	True if perforation md datum, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationMdDatum(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT bool hasPerforationMdDatum(uint64_t index) const;
 
 		/**
 		 * Gets perforation md datum
@@ -157,7 +157,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation md datum.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getPerforationMdDatum(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getPerforationMdDatum(uint64_t index) const;
 
 		/**
 		 * Query if 'index' has perforation md unit
@@ -166,7 +166,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	True if perforation md unit, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationMdUnit(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT bool hasPerforationMdUnit(uint64_t index) const;
 
 		/**
 		 * Returns md base uom if exists, else returns md top uom. Raises an exception if no md is
@@ -176,7 +176,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation md unit.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getPerforationMdUnit(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getPerforationMdUnit(uint64_t index) const;
 
 		/**
 		 * Returns md base uom (as string) if exists, else returns md top uom (as string). Raises an
@@ -186,7 +186,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation md unit as string.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getPerforationMdUnitAsString(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getPerforationMdUnitAsString(uint64_t index) const;
 
 		/**
 		 * Query if 'index' has perforation top md
@@ -195,7 +195,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	True if perforation top md, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationTopMd(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT bool hasPerforationTopMd(uint64_t index) const;
 
 		/**
 		 * Gets perforation top md
@@ -204,7 +204,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation top md.
 		 */
-		DLL_IMPORT_OR_EXPORT double getPerforationTopMd(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT double getPerforationTopMd(uint64_t index) const;
 
 		/**
 		 * Query if 'index' has perforation base md
@@ -213,7 +213,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	True if perforation base md, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationBaseMd(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT bool hasPerforationBaseMd(uint64_t index) const;
 
 		/**
 		 * Gets perforation base md
@@ -222,7 +222,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation base md.
 		 */
-		DLL_IMPORT_OR_EXPORT double getPerforationBaseMd(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT double getPerforationBaseMd(uint64_t index) const;
 
 		/**
 		 * Gets perforation history count
@@ -231,7 +231,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation history count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPerforationHistoryCount(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getPerforationHistoryCount(uint64_t index) const;
 
 		/**
 		 * Query if 'historyIndex' has perforation history status
@@ -241,8 +241,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	True if perforation history status, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryStatus(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryStatus(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Gets perforation history status
@@ -252,8 +252,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation history status.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::witsml20__PerforationStatus getPerforationHistoryStatus(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::witsml20__PerforationStatus getPerforationHistoryStatus(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Gets perforation history status to string
@@ -263,8 +263,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation history status to string.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryStatusToString(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryStatusToString(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Sets perforation history status
@@ -273,8 +273,8 @@ namespace WITSML2_0_NS
 		 * @param 	perforationIndex 	Zero-based index of the perforation.
 		 * @param 	perforationStatus	The perforation status.
 		 */
-		DLL_IMPORT_OR_EXPORT void setPerforationHistoryStatus(unsigned int historyIndex,
-			unsigned int perforationIndex, 
+		DLL_IMPORT_OR_EXPORT void setPerforationHistoryStatus(uint64_t historyIndex,
+			uint64_t perforationIndex, 
 			gsoap_eml2_1::witsml20__PerforationStatus perforationStatus);
 
 		/**
@@ -285,8 +285,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	True if perforation history start date, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryStartDate(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryStartDate(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Gets perforation history start date
@@ -296,8 +296,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation history start date.
 		 */
-		DLL_IMPORT_OR_EXPORT time_t getPerforationHistoryStartDate(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT time_t getPerforationHistoryStartDate(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Sets perforation history start date
@@ -306,8 +306,8 @@ namespace WITSML2_0_NS
 		 * @param 	perforationIndex	Zero-based index of the perforation.
 		 * @param 	startDate			The start date.
 		 */
-		DLL_IMPORT_OR_EXPORT void setPerforationHistoryStartDate(unsigned int historyIndex,
-			unsigned int perforationIndex, time_t startDate) const;
+		DLL_IMPORT_OR_EXPORT void setPerforationHistoryStartDate(uint64_t historyIndex,
+			uint64_t perforationIndex, time_t startDate) const;
 
 		/**
 		 * Query if 'historyIndex' has perforation history end date
@@ -317,8 +317,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	True if perforation history end date, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryEndDate(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryEndDate(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Gets perforation history end date
@@ -328,8 +328,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation history end date.
 		 */
-		DLL_IMPORT_OR_EXPORT time_t getPerforationHistoryEndDate(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT time_t getPerforationHistoryEndDate(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Sets perforation history end date
@@ -338,8 +338,8 @@ namespace WITSML2_0_NS
 		 * @param 	perforationIndex	Zero-based index of the perforation.
 		 * @param 	endDate				The end date.
 		 */
-		DLL_IMPORT_OR_EXPORT void setPerforationHistoryEndDate(unsigned int historyIndex,
-			unsigned int perforationIndex, time_t endDate) const;
+		DLL_IMPORT_OR_EXPORT void setPerforationHistoryEndDate(uint64_t historyIndex,
+			uint64_t perforationIndex, time_t endDate) const;
 
 		/**
 		 * Query if 'historyIndex' has perforation history md datum
@@ -349,8 +349,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	True if perforation history md datum, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryMdDatum(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryMdDatum(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Gets perforation history md datum
@@ -360,8 +360,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation history md datum.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryMdDatum(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryMdDatum(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Query if 'historyIndex' has perforation history md unit
@@ -371,8 +371,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	True if perforation history md unit, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryMdUnit(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryMdUnit(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Returns md base uom if exists, else returns md top uom. Raises an exception if no md is
@@ -383,8 +383,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation history md unit.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getPerforationHistoryMdUnit(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getPerforationHistoryMdUnit(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Returns md base uom (as string) if exists, else returns md top uom (as string). Raises an
@@ -395,8 +395,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation history md unit as string.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryMdUnitAsString(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryMdUnitAsString(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Query if 'historyIndex' has perforation history top md
@@ -406,8 +406,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	True if perforation history top md, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryTopMd(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryTopMd(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Gets perforation history top md
@@ -417,8 +417,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation history top md.
 		 */
-		DLL_IMPORT_OR_EXPORT double getPerforationHistoryTopMd(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT double getPerforationHistoryTopMd(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Perforation history datum is overwritten if exists. For instance if a base md is already
@@ -430,8 +430,8 @@ namespace WITSML2_0_NS
 		 * @param 	MdUnit				The md unit.
 		 * @param 	TopMd				The top md.
 		 */
-		DLL_IMPORT_OR_EXPORT void setPerforationHistoryTopMd(unsigned int historyIndex,
-			unsigned int perforationIndex,
+		DLL_IMPORT_OR_EXPORT void setPerforationHistoryTopMd(uint64_t historyIndex,
+			uint64_t perforationIndex,
 			const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
 			double TopMd);
@@ -444,8 +444,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	True if perforation history base md, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryBaseMd(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryBaseMd(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Gets perforation history base md
@@ -455,8 +455,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation history base md.
 		 */
-		DLL_IMPORT_OR_EXPORT double getPerforationHistoryBaseMd(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT double getPerforationHistoryBaseMd(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Perforation history datum is overwritten if exists. For instance if a top md is already
@@ -468,8 +468,8 @@ namespace WITSML2_0_NS
 		 * @param 	MdUnit				The md unit.
 		 * @param 	BaseMd				The base md.
 		 */
-		DLL_IMPORT_OR_EXPORT void setPerforationHistoryBaseMd(unsigned int historyIndex,
-			unsigned int perforationIndex,
+		DLL_IMPORT_OR_EXPORT void setPerforationHistoryBaseMd(uint64_t historyIndex,
+			uint64_t perforationIndex,
 			const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
 			double BaseMd);
@@ -482,8 +482,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	True if perforation history comment, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryComment(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryComment(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Gets perforation history comment
@@ -493,8 +493,8 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The perforation history comment.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryComment(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryComment(uint64_t historyIndex,
+			uint64_t perforationIndex) const;
 
 		/**
 		 * Sets perforation history comment
@@ -503,8 +503,8 @@ namespace WITSML2_0_NS
 		 * @param 	perforationIndex	Zero-based index of the perforation.
 		 * @param 	comment				The comment.
 		 */
-		DLL_IMPORT_OR_EXPORT void setPerforationHistoryComment(unsigned int historyIndex,
-			unsigned int perforationIndex,
+		DLL_IMPORT_OR_EXPORT void setPerforationHistoryComment(uint64_t historyIndex,
+			uint64_t perforationIndex,
 			const std::string & comment);				
 
 		/**
@@ -545,7 +545,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	Null if it fails, else the perforation.
 		 */
-		gsoap_eml2_1::witsml20__PerforationSetInterval* getPerforation(unsigned int index) const;
+		gsoap_eml2_1::witsml20__PerforationSetInterval* getPerforation(uint64_t index) const;
 
 		/**
 		 * Gets perforation history entry
@@ -555,7 +555,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	Null if it fails, else the perforation history entry.
 		 */
-		gsoap_eml2_1::witsml20__PerforationStatusHistory* getPerforationHistoryEntry(unsigned int index,
-			unsigned int perforationIndex) const;
+		gsoap_eml2_1::witsml20__PerforationStatusHistory* getPerforationHistoryEntry(uint64_t index,
+			uint64_t perforationIndex) const;
 	};
 }

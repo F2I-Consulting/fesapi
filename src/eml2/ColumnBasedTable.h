@@ -34,12 +34,12 @@ namespace EML2_NS
 		/**
 		 * Gets the row count of this table
 		 */
-		virtual uint64_t getRowCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getRowCount() const = 0;
 
 		/**
 		 * Gets the column count of this table
 		 */
-		virtual uint64_t getColumnCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getColumnCount() const = 0;
 
 		/**
 		 * Gets the property kind DOR associated to a particular column count of this table

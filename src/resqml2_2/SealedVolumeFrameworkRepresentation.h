@@ -64,37 +64,37 @@ namespace RESQML2_2_NS
 		~SealedVolumeFrameworkRepresentation() = default;
 
 		DLL_IMPORT_OR_EXPORT void pushBackVolumeRegion(RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp,
-			unsigned int externalShellFaceCount,
+			uint64_t externalShellFaceCount,
 			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide) final;
 
-		DLL_IMPORT_OR_EXPORT void pushBackInternalShell(unsigned int regionIndex,
-			unsigned int externalShellFaceCount,
+		DLL_IMPORT_OR_EXPORT void pushBackInternalShell(uint64_t regionIndex,
+			uint64_t externalShellFaceCount,
 			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide) final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getRegionCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getRegionCount() const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getInternalShellCount(unsigned int regionIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getInternalShellCount(uint64_t regionIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT uint64_t getFaceCountOfExternalShell(unsigned int regionIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getFaceCountOfExternalShell(uint64_t regionIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT uint64_t getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getFaceCountOfInternalShell(uint64_t regionIndex, uint64_t internalShellIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) final;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepOfExternalShellFace(uint64_t regionIndex, uint64_t faceIndex) final;
 
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) final;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepOfInternalShellFace(uint64_t regionIndex, uint64_t internalShellIndex, uint64_t faceIndex) final;
 
-		DLL_IMPORT_OR_EXPORT uint64_t getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) final;
+		DLL_IMPORT_OR_EXPORT uint64_t getRepPatchIndexOfExternalShellFace(uint64_t regionIndex, uint64_t faceIndex) final;
 
-		DLL_IMPORT_OR_EXPORT uint64_t getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) final;
+		DLL_IMPORT_OR_EXPORT uint64_t getRepPatchIndexOfInternalShellFace(uint64_t regionIndex, uint64_t internalShellIndex, uint64_t faceIndex) final;
 
-		DLL_IMPORT_OR_EXPORT bool getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) final;
+		DLL_IMPORT_OR_EXPORT bool getSideFlagOfExternalShellFace(uint64_t regionIndex, uint64_t faceIndex) final;
 
-		DLL_IMPORT_OR_EXPORT bool getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) final;
+		DLL_IMPORT_OR_EXPORT bool getSideFlagOfInternalShellFace(uint64_t regionIndex, uint64_t internalShellIndex, uint64_t faceIndex) final;
 
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml22";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.
@@ -103,7 +103,7 @@ namespace RESQML2_2_NS
 
 	private:
 
-		std::pair<unsigned int, unsigned int> loadedShell_ = std::make_pair((std::numeric_limits<unsigned int>::max)(), (std::numeric_limits<unsigned int>::max)());
+		std::pair<uint64_t, uint64_t> loadedShell_ = std::make_pair((std::numeric_limits<uint64_t>::max)(), (std::numeric_limits<uint64_t>::max)());
 		std::unique_ptr<unsigned int[]> faceRepresentationIndices_;
 		std::unique_ptr<unsigned int[]> faceRepPatchIndices_;
 		std::unique_ptr<char[]> faceSide_;
@@ -111,7 +111,7 @@ namespace RESQML2_2_NS
 		/**
 		* internalShellIndex = (std::numeric_limits<unsigned int>::max)() means that we load the external shell
 		*/
-		void loadShell(unsigned int regionIndex, unsigned int internalShellIndex = (std::numeric_limits<unsigned int>::max)());
+		void loadShell(uint64_t regionIndex, uint64_t internalShellIndex = (std::numeric_limits<uint64_t>::max)());
 
 		/**
 		 * Creates volume shell
@@ -126,7 +126,7 @@ namespace RESQML2_2_NS
 		 * @returns	Null if it fails, else the new volume shell.
 		 */
 		gsoap_eml2_3::resqml22__VolumeShell* createVolumeShell(size_t regionIndex, size_t shellIndex,
-			unsigned int shellFaceCount,
+			uint64_t shellFaceCount,
 			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide);
 
 		/**
@@ -136,7 +136,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	Null if it fails, else the region.
 		 */
-		gsoap_eml2_3::resqml22__VolumeRegion* getRegion(unsigned int regionIndex) const;
+		gsoap_eml2_3::resqml22__VolumeRegion* getRegion(uint64_t regionIndex) const;
 
 		/**
 		 * Gets region external shell
@@ -145,7 +145,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	Null if it fails, else the region external shell.
 		 */
-		gsoap_eml2_3::resqml22__VolumeShell* getRegionExternalShell(unsigned int regionIndex) const;
+		gsoap_eml2_3::resqml22__VolumeShell* getRegionExternalShell(uint64_t regionIndex) const;
 
 		/**
 		 * Gets region internal shell
@@ -155,11 +155,11 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	Null if it fails, else the region internal shell.
 		 */
-		gsoap_eml2_3::resqml22__VolumeShell* getRegionInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const;
+		gsoap_eml2_3::resqml22__VolumeShell* getRegionInternalShell(uint64_t regionIndex, uint64_t internalShellIndex) const;
 
 		COMMON_NS::DataObjectReference getSealedStructuralFrameworkDor() const final;
 
-		COMMON_NS::DataObjectReference getStratiUnitInterpDor(unsigned int regionIndex) const final;
+		COMMON_NS::DataObjectReference getStratiUnitInterpDor(uint64_t regionIndex) const final;
 
 		/**
 		 * Sets XML sealed surface framework

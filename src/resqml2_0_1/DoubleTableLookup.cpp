@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "DoubleTableLookup.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include "PropertyKind.h"
 
 using namespace std;

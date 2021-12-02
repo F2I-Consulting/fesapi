@@ -66,18 +66,12 @@ PointsProperty::PointsProperty(RESQML2_NS::AbstractRepresentation * rep, const s
 	setPropertyKind(localPropKind);
 }
 
-unsigned int PointsProperty::getPatchCount() const
+uint64_t PointsProperty::getPatchCount() const
 {
-	size_t result = static_cast<gsoap_resqml2_0_1::_resqml20__PointsProperty*>(gsoapProxy2_0_1)->PatchOfPoints.size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("The count of the patches is too big.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<gsoap_resqml2_0_1::_resqml20__PointsProperty*>(gsoapProxy2_0_1)->PatchOfPoints.size();
 }
 
-EML2_NS::AbstractHdfProxy * PointsProperty::getDatasetOfPatch(unsigned int patchIndex, int64_t & nullValue, std::string & dsPath) const
+EML2_NS::AbstractHdfProxy * PointsProperty::getDatasetOfPatch(uint64_t patchIndex, int64_t & nullValue, std::string & dsPath) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
@@ -96,7 +90,7 @@ EML2_NS::AbstractHdfProxy * PointsProperty::getDatasetOfPatch(unsigned int patch
 	}
 }
 
-COMMON_NS::DataObjectReference PointsProperty::getHdfProxyDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference PointsProperty::getHdfProxyDor(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
@@ -113,7 +107,7 @@ COMMON_NS::DataObjectReference PointsProperty::getHdfProxyDor(unsigned int patch
 	}
 }
 
-EML2_NS::AbstractHdfProxy* PointsProperty::getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const
+EML2_NS::AbstractHdfProxy* PointsProperty::getValuesHdfProxyAndDatasetPathOfPatch(uint64_t patchIndex, std::string & datasetPath) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");

@@ -19,8 +19,6 @@ under the License.
 #include "Grid2dRepresentation.h"
 
 #include <algorithm>
-#include <limits>
-#include <stdexcept>
 
 #include "H5public.h"
 
@@ -56,7 +54,7 @@ Grid2dRepresentation::Grid2dRepresentation(RESQML2_NS::AbstractFeatureInterpreta
 	setInterpretation(interp);
 }
 
-resqml20__PointGeometry* Grid2dRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
+resqml20__PointGeometry* Grid2dRepresentation::getPointGeometry2_0_1(uint64_t patchIndex) const
 {
 	return patchIndex == 0 ? static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry : nullptr;
 }
@@ -752,7 +750,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* Grid2dRepresentation::createArray2dO
 }
 
 gsoap_resqml2_0_1::resqml20__PointGeometry* Grid2dRepresentation::createArray2dOfExplicitZ(
-	unsigned int patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
+	uint64_t patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
 	unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy * proxy,
 	RESQML2_NS::Grid2dRepresentation * supportingRepresentation,
 	uint64_t startGlobalIndex,
@@ -819,7 +817,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* Grid2dRepresentation::createArray2dO
 }
 
 gsoap_resqml2_0_1::resqml20__PointGeometry* Grid2dRepresentation::createArray2dOfExplicitZ(
-	unsigned int patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
+	uint64_t patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
 	unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy * proxy,
 	double originX, double originY, double originZ,
 	double offsetIX, double offsetIY, double offsetIZ, double spacingI,

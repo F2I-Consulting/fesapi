@@ -18,9 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Trajectory.h"
 
-#include <limits>
 #include <sstream>
-#include <stdexcept>
 
 #include "../witsml2/Well.h"
 #include "../witsml2/Wellbore.h"
@@ -117,13 +115,13 @@ GETTER_AND_SETTER_ENUM_OPTIONAL_ATTRIBUTE_IMPL_1_4(gsoap_eml2_1::witsml20__AziRe
 // ******* TRAJECTORY STATIONS **********
 //***************************************
 
-void Trajectory::setTrajectoryStationuid(unsigned int index, const std::string & value)
+void Trajectory::setTrajectoryStationuid(uint64_t index, const std::string & value)
 {
 	CHECK_RANGE_1_4(trajectoryStation, index)
 	static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation[index]->uid = soap_new_std__string(gsoapProxyTraj1_4->soap);
 	static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation[index]->uid->assign(value);
 }
-std::string Trajectory::getTrajectoryStationuid(unsigned int index) const {
+std::string Trajectory::getTrajectoryStationuid(uint64_t index) const {
 	CHECK_RANGE_1_4(trajectoryStation, index)
 		return static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation[index]->uid == nullptr
 		? ""
@@ -135,13 +133,13 @@ GETTER_AND_SETTER_ENUM_ATTRIBUTE_IN_VECTOR_IMPL_1_4(gsoap_eml2_1::witsml20__Traj
 	gsoap_eml2_1::soap_witsml20__TrajStationType2s, gsoap_eml2_1::soap_s2witsml20__TrajStationType, gsoap_witsml1_4::soap_witsml14__TrajStationType2s, gsoap_witsml1_4::soap_s2witsml14__TrajStationType)
 GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(Trajectory, TrajectoryStation, trajectoryStation, Md, md, gsoap_eml2_1::eml21__LengthUom, gsoap_witsml1_4::soap_new_witsml14__measuredDepthCoord)
 
-void Trajectory::setTrajectoryStationManuallyEntered(unsigned int, const bool &) {
+void Trajectory::setTrajectoryStationManuallyEntered(uint64_t, const bool &) {
 	throw logic_error("WITSML1.4.1.1 has not this kind of information");
 }
 
-bool Trajectory::hasTrajectoryStationManuallyEntered(unsigned int) const { return false; }
+bool Trajectory::hasTrajectoryStationManuallyEntered(uint64_t) const { return false; }
 
-bool Trajectory::getTrajectoryStationManuallyEntered(unsigned int) const {
+bool Trajectory::getTrajectoryStationManuallyEntered(uint64_t) const {
 	throw logic_error("WITSML1.4.1.1 has not this kind of information");
 }
 
@@ -158,12 +156,12 @@ GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL_1_4(bool, Trajectory
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL_1_4(bool, Trajectory, TrajectoryStation, trajectoryStation, MSACorUsed, MSACorUsed, gsoap_witsml1_4::soap_new_bool)
 
 // Optional string
-void Trajectory::setTrajectoryStationTarget(unsigned int index, const std::string & value) {
+void Trajectory::setTrajectoryStationTarget(uint64_t index, const std::string & value) {
 	CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT_1_4(trajectoryStation, target, gsoap_witsml1_4::soap_new_witsml14__refNameString)
 	static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation[index]->target->__item = value;
 }
 GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(Trajectory, TrajectoryStation, trajectoryStation, Target, target)
-std::string Trajectory::getTrajectoryStationTarget(unsigned int index) const {
+std::string Trajectory::getTrajectoryStationTarget(uint64_t index) const {
 	CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE_1_4(Trajectory, trajectoryStation, target)
 	return static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation[index]->target->__item;
 }
@@ -172,7 +170,7 @@ GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL_1_4(std::string, Tra
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL_1_4(std::string, Trajectory, TrajectoryStation, trajectoryStation, GeoModelUsed, geoModelUsed, gsoap_witsml1_4::soap_new_std__string)
 
 // Optional timestamp
-void Trajectory::setTrajectoryStationDTimStn(unsigned int index, const time_t & attributeName) {
+void Trajectory::setTrajectoryStationDTimStn(uint64_t index, const time_t & attributeName) {
 	CHECK_RANGE_1_4(trajectoryStation, index)
 	if (static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation[index]->dTimStn == nullptr) {
 		static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation[index]->dTimStn = (tm*)soap_malloc(gsoapProxyTraj1_4->soap, sizeof(tm));
@@ -181,20 +179,20 @@ void Trajectory::setTrajectoryStationDTimStn(unsigned int index, const time_t & 
 	*static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation[index]->dTimStn = tmConversion;
 }
 GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(Trajectory, TrajectoryStation, trajectoryStation, DTimStn, dTimStn)
-time_t Trajectory::getTrajectoryStationDTimStn(unsigned int index) const {
+time_t Trajectory::getTrajectoryStationDTimStn(uint64_t index) const {
 	CHECK_RANGE_1_4(trajectoryStation, index)
 	CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE_1_4(Trajectory, trajectoryStation, dTimStn)
 	return timeTools::timegm(*static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation[index]->dTimStn);
 }
 
 // Optional enum
-void Trajectory::setTrajectoryStationTypeSurveyTool(unsigned int index, const gsoap_eml2_1::witsml20__TypeSurveyTool & attributeName) {
+void Trajectory::setTrajectoryStationTypeSurveyTool(uint64_t index, const gsoap_eml2_1::witsml20__TypeSurveyTool & attributeName) {
 	CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT_1_4(trajectoryStation, typeSurveyTool, gsoap_witsml1_4::soap_new_std__string)
 	std::string attStr = gsoap_eml2_1::soap_witsml20__TypeSurveyTool2s(gsoapProxyTraj1_4->soap, attributeName);
 	*static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation[index]->typeSurveyTool = attStr;
 }
 GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(Trajectory, TrajectoryStation, trajectoryStation, TypeSurveyTool, typeSurveyTool)
-gsoap_eml2_1::witsml20__TypeSurveyTool Trajectory::getTrajectoryStationTypeSurveyTool(unsigned int index) const {
+gsoap_eml2_1::witsml20__TypeSurveyTool Trajectory::getTrajectoryStationTypeSurveyTool(uint64_t index) const {
 	CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE_1_4(Trajectory, trajectoryStation, typeSurveyTool)
 	std::string attStr = *static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation[index]->typeSurveyTool;
 	gsoap_eml2_1::witsml20__TypeSurveyTool att2_1;
@@ -202,13 +200,13 @@ gsoap_eml2_1::witsml20__TypeSurveyTool Trajectory::getTrajectoryStationTypeSurve
 	else { throw invalid_argument("The enum " + attStr + " is not recognized."); }
 }
 
-void Trajectory::setTrajectoryStationCalcAlgorithm(unsigned int index, const gsoap_eml2_1::witsml20__TrajStnCalcAlgorithm & attributeName) {
+void Trajectory::setTrajectoryStationCalcAlgorithm(uint64_t index, const gsoap_eml2_1::witsml20__TrajStnCalcAlgorithm & attributeName) {
 	CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT_1_4(trajectoryStation, calcAlgorithm, gsoap_witsml1_4::soap_new_std__string)
 		std::string attStr = gsoap_eml2_1::soap_witsml20__TrajStnCalcAlgorithm2s(gsoapProxyTraj1_4->soap, attributeName);
 	*static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation[index]->calcAlgorithm = attStr;
 }
 GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(Trajectory, TrajectoryStation, trajectoryStation, CalcAlgorithm, calcAlgorithm)
-gsoap_eml2_1::witsml20__TrajStnCalcAlgorithm Trajectory::getTrajectoryStationCalcAlgorithm(unsigned int index) const {
+gsoap_eml2_1::witsml20__TrajStnCalcAlgorithm Trajectory::getTrajectoryStationCalcAlgorithm(uint64_t index) const {
 	CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE_1_4(Trajectory, trajectoryStation, calcAlgorithm)
 		std::string attStr = *static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation[index]->calcAlgorithm;
 	gsoap_eml2_1::witsml20__TrajStnCalcAlgorithm att2_1;
@@ -220,7 +218,7 @@ GETTER_AND_SETTER_ENUM_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL_1_4(gsoap_eml2_1::witsm
 	gsoap_eml2_1::soap_witsml20__TrajStationStatus2s, gsoap_eml2_1::soap_s2witsml20__TrajStationStatus, gsoap_witsml1_4::soap_witsml14__TrajStationStatus2s, gsoap_witsml1_4::soap_s2witsml14__TrajStationStatus)
 
 // Well vertical measure
-void Trajectory::setTrajectoryStationTvd(unsigned int index, double value, gsoap_eml2_1::eml21__LengthUom uom, const std::string & datum) {
+void Trajectory::setTrajectoryStationTvd(uint64_t index, double value, gsoap_eml2_1::eml21__LengthUom uom, const std::string & datum) {
 	if (value != value) { throw invalid_argument("You cannot set an undefined measured depth coord"); }
 	CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT_1_4(trajectoryStation, tvd, gsoap_witsml1_4::soap_new_witsml14__wellVerticalDepthCoord)
 	static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation[index]->tvd->__item = value;
@@ -235,7 +233,7 @@ void Trajectory::setTrajectoryStationTvd(unsigned int index, double value, gsoap
 }
 GETTER_VALUE_OF_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(Trajectory, TrajectoryStation, trajectoryStation, Tvd, tvd)
 GETTER_UOM_OF_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL_1_4(Trajectory, TrajectoryStation, trajectoryStation, Tvd, tvd, gsoap_eml2_1::eml21__LengthUom, soap_witsml14__WellVerticalCoordinateUom2s, gsoap_eml2_1::soap_s2eml21__LengthUom)
-std::string Trajectory::getTrajectoryStationTvdDatum(unsigned int index) const {
+std::string Trajectory::getTrajectoryStationTvdDatum(uint64_t index) const {
 	CHECK_RANGE_1_4(trajectoryStation, index)
 	if (static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation[index]->tvd->datum == nullptr) return "";
 	return *static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation[index]->tvd->datum;
@@ -295,20 +293,8 @@ void Trajectory::pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationTy
 	}
 
 	static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation.push_back(soap_new_witsml14__cs_USCOREtrajectoryStation(gsoapProxyTraj1_4->soap));
-	unsigned int index = getTrajectoryStationCount() - 1;
+	uint64_t index = getTrajectoryStationCount() - 1;
 	if (!uid.empty()) { setTrajectoryStationuid(index, uid); }
 	setTrajectoryStationTypeTrajStation(index, kind);
 	setTrajectoryStationMd(index, mdValue, uom, datum);
-}
-
-unsigned int Trajectory::getTrajectoryStationCount() const
-{
-	const size_t count = static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence != nullptr
-		? static_cast<witsml14__obj_USCOREtrajectory*>(gsoapProxyTraj1_4)->__obj_USCOREtrajectory_sequence->trajectoryStation.size()
-		: 0;
-	if (count >= (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("Too much trajectory stations");
-	}
-
-	return static_cast<unsigned int>(count);
 }

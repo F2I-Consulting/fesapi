@@ -99,19 +99,19 @@ namespace RESQML2_0_1_NS
 
 		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) final;
 
-		DLL_IMPORT_OR_EXPORT int64_t getNullValue(unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getNullValue(uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) const final;
 
-		DLL_IMPORT_OR_EXPORT bool hasMinimumValue(unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT bool hasMinimumValue(uint64_t index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT int64_t getMinimumValue(unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getMinimumValue(uint64_t index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT bool hasMaximumValue(unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT bool hasMaximumValue(uint64_t index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT int64_t getMaximumValue(unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getMaximumValue(uint64_t index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT void setMinimumValue(int64_t value, unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT void setMinimumValue(int64_t value, uint64_t index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT void setMaximumValue(int64_t value, unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT void setMaximumValue(int64_t value, uint64_t index = 0) const final;
 
 		/**
 		 * Gets the Energistics property kind which is associated to this intance
@@ -126,7 +126,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml20";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.
@@ -134,7 +134,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final{ return XML_NS; }
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "DiscreteProperty";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};

@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "SealedVolumeFrameworkRepresentation.h"
 
-#include <limits>
-
 #include "../resqml2/StratigraphicColumnRankInterpretation.h"
 #include "../resqml2/SealedSurfaceFrameworkRepresentation.h"
 #include "../resqml2/StratigraphicUnitInterpretation.h"
@@ -27,8 +25,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-
-const char* SealedVolumeFrameworkRepresentation::XML_NS = "resqml20";
 
 SealedVolumeFrameworkRepresentation::SealedVolumeFrameworkRepresentation(RESQML2_NS::StratigraphicColumnRankInterpretation* interp,
 	const std::string & guid,
@@ -89,7 +85,7 @@ void SealedVolumeFrameworkRepresentation::setXmlInterpretationOfVolumeRegion(uin
 }
 
 gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::createVolumeShell(
-	unsigned int shellFaceCount,
+	uint64_t shellFaceCount,
 	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide)
 {
 	if (shellFaceCount == 0) {
@@ -112,7 +108,7 @@ gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::c
 }
 
 void SealedVolumeFrameworkRepresentation::pushBackVolumeRegion(RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp,
-	unsigned int externalShellFaceCount,
+	uint64_t externalShellFaceCount,
 	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide)
 {
 	// Region
@@ -126,8 +122,8 @@ void SealedVolumeFrameworkRepresentation::pushBackVolumeRegion(RESQML2_NS::Strat
 		faceRepresentationIndices, faceRepPatchIndices, faceSide);
 }
 
-void SealedVolumeFrameworkRepresentation::pushBackInternalShell(unsigned int regionIndex,
-	unsigned int internalShellFaceCount,
+void SealedVolumeFrameworkRepresentation::pushBackInternalShell(uint64_t regionIndex,
+	uint64_t internalShellFaceCount,
 	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide)
 {
 	getRegion(regionIndex)->InternalShells.push_back(createVolumeShell(internalShellFaceCount,
@@ -139,7 +135,7 @@ COMMON_NS::DataObjectReference SealedVolumeFrameworkRepresentation::getSealedStr
 	return COMMON_NS::DataObjectReference(static_cast<gsoap_resqml2_0_1::_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->BasedOn);
 }
 
-gsoap_resqml2_0_1::resqml20__VolumeRegion* SealedVolumeFrameworkRepresentation::getRegion(unsigned int regionIndex) const
+gsoap_resqml2_0_1::resqml20__VolumeRegion* SealedVolumeFrameworkRepresentation::getRegion(uint64_t regionIndex) const
 {
 	if (regionIndex >= getRegionCount()) {
 		throw out_of_range("The region index is out of range.");
@@ -147,37 +143,27 @@ gsoap_resqml2_0_1::resqml20__VolumeRegion* SealedVolumeFrameworkRepresentation::
 	return static_cast<gsoap_resqml2_0_1::_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->Regions[regionIndex];
 }
 
-COMMON_NS::DataObjectReference SealedVolumeFrameworkRepresentation::getStratiUnitInterpDor(unsigned int regionIndex) const
+COMMON_NS::DataObjectReference SealedVolumeFrameworkRepresentation::getStratiUnitInterpDor(uint64_t regionIndex) const
 {
 	return COMMON_NS::DataObjectReference(getRegion(regionIndex)->Represents);
 }
 
-unsigned int SealedVolumeFrameworkRepresentation::getRegionCount() const
+uint64_t SealedVolumeFrameworkRepresentation::getRegionCount() const
 {
-	_resqml20__SealedVolumeFrameworkRepresentation* svf = static_cast<_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1);
-	if (svf->Regions.size() >= (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("The count of regions in this framework is too big for fesapi.");
-	}
-
-	return static_cast<unsigned int>(svf->Regions.size());
+	return static_cast<_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->Regions.size();
 }
 
-unsigned int SealedVolumeFrameworkRepresentation::getInternalShellCount(unsigned int regionIndex) const
+uint64_t SealedVolumeFrameworkRepresentation::getInternalShellCount(uint64_t regionIndex) const
 {
-	const size_t count = getRegion(regionIndex)->InternalShells.size();
-	if (count >= (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("The count of internal shells in this region is too big for fesapi.");
-	}
-
-	return static_cast<unsigned int>(count);
+	return getRegion(regionIndex)->InternalShells.size();
 }
 
-gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::getRegionExternalShell(unsigned int regionIndex) const
+gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::getRegionExternalShell(uint64_t regionIndex) const
 {
 	return getRegion(regionIndex)->ExternalShell;
 }
 
-gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::getRegionInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const
+gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::getRegionInternalShell(uint64_t regionIndex, uint64_t internalShellIndex) const
 {
 	if (internalShellIndex >= getInternalShellCount(regionIndex)) {
 		throw out_of_range("The internal shell index is out of range.");
@@ -186,19 +172,19 @@ gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::g
 	return getRegion(regionIndex)->InternalShells[internalShellIndex];
 }
 
-uint64_t SealedVolumeFrameworkRepresentation::getFaceCountOfExternalShell(unsigned int regionIndex) const
+uint64_t SealedVolumeFrameworkRepresentation::getFaceCountOfExternalShell(uint64_t regionIndex) const
 {
 	gsoap_resqml2_0_1::resqml20__VolumeShell* shell = getRegionExternalShell(regionIndex);
 	return static_cast<unsigned int>(shell->MacroFaces.size());
 }
 
-uint64_t SealedVolumeFrameworkRepresentation::getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const
+uint64_t SealedVolumeFrameworkRepresentation::getFaceCountOfInternalShell(uint64_t regionIndex, uint64_t internalShellIndex) const
 {
 	gsoap_resqml2_0_1::resqml20__VolumeShell* shell = getRegionInternalShell(regionIndex, internalShellIndex);
 	return static_cast<unsigned int>(shell->MacroFaces.size());
 }
 
-gsoap_resqml2_0_1::resqml20__OrientedMacroFace* SealedVolumeFrameworkRepresentation::getRegionExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const
+gsoap_resqml2_0_1::resqml20__OrientedMacroFace* SealedVolumeFrameworkRepresentation::getRegionExternalShellFace(uint64_t regionIndex, uint64_t faceIndex) const
 {
 	if (faceIndex >= getFaceCountOfExternalShell(regionIndex)) {
 		throw out_of_range("The face index of the region external shell is out of range.");
@@ -207,7 +193,7 @@ gsoap_resqml2_0_1::resqml20__OrientedMacroFace* SealedVolumeFrameworkRepresentat
 	return getRegionExternalShell(regionIndex)->MacroFaces[faceIndex];
 }
 
-gsoap_resqml2_0_1::resqml20__OrientedMacroFace* SealedVolumeFrameworkRepresentation::getRegionInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const
+gsoap_resqml2_0_1::resqml20__OrientedMacroFace* SealedVolumeFrameworkRepresentation::getRegionInternalShellFace(uint64_t regionIndex, uint64_t internalShellIndex, uint64_t faceIndex) const
 {
 	if (faceIndex >= getFaceCountOfInternalShell(regionIndex, internalShellIndex)) {
 		throw out_of_range("The face index of the region internal shell is out of range.");
@@ -216,32 +202,32 @@ gsoap_resqml2_0_1::resqml20__OrientedMacroFace* SealedVolumeFrameworkRepresentat
 	return getRegionInternalShell(regionIndex, internalShellIndex)->MacroFaces[faceIndex];
 }
 
-RESQML2_NS::AbstractRepresentation* SealedVolumeFrameworkRepresentation::getRepOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex)
+RESQML2_NS::AbstractRepresentation* SealedVolumeFrameworkRepresentation::getRepOfExternalShellFace(uint64_t regionIndex, uint64_t faceIndex)
 {
 	return getRepresentation(getRegionExternalShellFace(regionIndex, faceIndex)->RepresentationIndex);
 }
 
-RESQML2_NS::AbstractRepresentation* SealedVolumeFrameworkRepresentation::getRepOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex)
+RESQML2_NS::AbstractRepresentation* SealedVolumeFrameworkRepresentation::getRepOfInternalShellFace(uint64_t regionIndex, uint64_t internalShellIndex, uint64_t faceIndex)
 {
 	return getRepresentation(getRegionInternalShellFace(regionIndex, internalShellIndex, faceIndex)->RepresentationIndex);
 }
 
-uint64_t SealedVolumeFrameworkRepresentation::getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex)
+uint64_t SealedVolumeFrameworkRepresentation::getRepPatchIndexOfExternalShellFace(uint64_t regionIndex, uint64_t faceIndex)
 {
 	return getRegionExternalShellFace(regionIndex, faceIndex)->PatchIndexOfRepresentation;
 }
 
-uint64_t SealedVolumeFrameworkRepresentation::getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex)
+uint64_t SealedVolumeFrameworkRepresentation::getRepPatchIndexOfInternalShellFace(uint64_t regionIndex, uint64_t internalShellIndex, uint64_t faceIndex)
 {
 	return getRegionInternalShellFace(regionIndex, internalShellIndex, faceIndex)->PatchIndexOfRepresentation;
 }
 
-bool SealedVolumeFrameworkRepresentation::getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex)
+bool SealedVolumeFrameworkRepresentation::getSideFlagOfExternalShellFace(uint64_t regionIndex, uint64_t faceIndex)
 {
 	return getRegionExternalShellFace(regionIndex, faceIndex)->SideIsPlus;
 }
 
-bool SealedVolumeFrameworkRepresentation::getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex)
+bool SealedVolumeFrameworkRepresentation::getSideFlagOfInternalShellFace(uint64_t regionIndex, uint64_t internalShellIndex, uint64_t faceIndex)
 {
 	return getRegionInternalShellFace(regionIndex, internalShellIndex, faceIndex)->SideIsPlus;
 }

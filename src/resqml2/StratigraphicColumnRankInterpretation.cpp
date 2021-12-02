@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "StratigraphicColumnRankInterpretation.h"
 
-#include <stdexcept>
-
 #include "StratigraphicUnitInterpretation.h"
 #include "HorizonInterpretation.h"
 #include "GeologicUnitOccurrenceInterpretation.h"
@@ -27,20 +25,18 @@ under the License.
 
 using namespace std;
 using namespace RESQML2_NS;
-
-const char* StratigraphicColumnRankInterpretation::XML_TAG = "StratigraphicColumnRankInterpretation";
 		
 void StratigraphicColumnRankInterpretation::loadTargetRelationships()
 {
 	AbstractStratigraphicOrganizationInterpretation::loadTargetRelationships();
 
-	unsigned int count = getStratigraphicUnitInterpretationCount();
-	for (unsigned int i = 0; i < count; ++i) {
+	uint64_t count = getStratigraphicUnitInterpretationCount();
+	for (uint64_t i = 0; i < count; ++i) {
 		convertDorIntoRel<StratigraphicUnitInterpretation>(getStratigraphicUnitInterpretationDor(i));
 	}
 
 	count = getHorizonInterpretationCount();
-	for (unsigned int i = 0; i < count; ++i) {
+	for (uint64_t i = 0; i < count; ++i) {
 		convertDorIntoRel<RESQML2_NS::HorizonInterpretation>(getHorizonInterpretationDor(i));
 	}
 }
@@ -55,7 +51,7 @@ std::vector<GeologicUnitOccurrenceInterpretation *> StratigraphicColumnRankInter
 	return getRepository()->getSourceObjects<GeologicUnitOccurrenceInterpretation>(this);
 }
 
-HorizonInterpretation* StratigraphicColumnRankInterpretation::getHorizonInterpretation(unsigned int index) const
+HorizonInterpretation* StratigraphicColumnRankInterpretation::getHorizonInterpretation(uint64_t index) const
 {
 	return getRepository()->getDataObjectByUuid<HorizonInterpretation>(getHorizonInterpretationDor(index).getUuid());
 }

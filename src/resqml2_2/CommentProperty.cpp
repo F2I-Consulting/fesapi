@@ -75,7 +75,7 @@ std::string CommentProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfPr
 	return actualDataArrayName;
 }
 
-EML2_NS::AbstractHdfProxy* CommentProperty::getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string& datasetPath) const
+EML2_NS::AbstractHdfProxy* CommentProperty::getValuesHdfProxyAndDatasetPathOfPatch(uint64_t patchIndex, std::string& datasetPath) const
 {
 	// Look for the hdf where the comments are stored.
 	_resqml22__CommentProperty* prop = static_cast<_resqml22__CommentProperty*>(gsoapProxy2_3);

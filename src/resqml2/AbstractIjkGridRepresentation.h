@@ -252,13 +252,11 @@ namespace RESQML2_NS
 		 * information thanks to loadSplitInformation().
 		 *
 		 * @exception	std::logic_error	 	If this grid is partial.
-		 * @exception	std::range_error	 	If the count of cells in I, J or K
-		 * 										direction is strictly greater than unsigned int max.
 		 * @exception	std::invalid_argument	If there is no geometry on this grid.
 		 *
 		 * @returns	The face count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getFaceCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getFaceCount() const;
 
 		/**
 		 * Gets the I index of a pillar from its global index in this grid. The global (or
@@ -747,7 +745,7 @@ namespace RESQML2_NS
 
 		virtual COMMON_NS::DataObjectReference getHdfProxyDor() const override { throw std::logic_error("Partial object"); }
 
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const override;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const override;
 
 		/**
 		* @copybrief AbstractRepresentation::getXyzPointsOfPatch
@@ -759,17 +757,17 @@ namespace RESQML2_NS
 		* 					with a count of <tt>((iCellCount+1) * (jCellCount+1) + splitCoordinateLineCount)</tt>
 		* 					<tt> * kCellCount.</tt>
 		*/
-		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const override;
+		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const override;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "IjkGridRepresentation";
 
 		/** The standard XML tag without XML namespace for serializing this data object if truncated. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG_TRUNCATED;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG_TRUNCATED = "TruncatedIjkGridRepresentation";
 
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override {return 1;}
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const override {return 1;}
 
 		/**
 		* Get the standard XML namespace for serializing this data object.
@@ -817,8 +815,8 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the point geometry 2 0 1.
 		 */
-		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const final;
-		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const final;
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(uint64_t patchIndex) const final;
+		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(uint64_t patchIndex) const final;
 
 		/**
 		* Information about the splits (mainly due to faults) which occur in this grid.

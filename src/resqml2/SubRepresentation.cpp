@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "SubRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include <hdf5.h>
 
 #include "../eml2/AbstractHdfProxy.h"
@@ -28,9 +25,7 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* SubRepresentation::XML_TAG = "SubRepresentation";
-
-uint64_t SubRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t SubRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -44,7 +39,7 @@ uint64_t SubRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) con
 	}
 }
 
-void SubRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
+void SubRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -53,7 +48,7 @@ void SubRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) c
 	throw logic_error("Not implemented yet");
 }
 
-AbstractRepresentation* SubRepresentation::getSupportingRepresentationOfPatch(unsigned int patchIndex) const
+AbstractRepresentation* SubRepresentation::getSupportingRepresentationOfPatch(uint64_t patchIndex) const
 {
 	return getRepository()->getDataObjectByUuid<AbstractRepresentation>(getSupportingRepresentationOfPatchDor(patchIndex).getUuid());
 }

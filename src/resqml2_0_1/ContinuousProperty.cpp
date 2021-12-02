@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "ContinuousProperty.h"
 
-#include <limits>
-
 #include "../common/EnumStringMapper.h"
 
 #include "../eml2/AbstractHdfProxy.h"
@@ -118,8 +116,8 @@ std::string ContinuousProperty::getUomAsString() const
 	gsoap_resqml2_0_1::resqml20__ResqmlUom uom = getUom();
 
 	if (uom == gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc) {
-		unsigned int emCount = getExtraMetadataCount();
-		for (unsigned int i = 0; i < emCount; ++i) {
+		uint64_t emCount = getExtraMetadataCount();
+		for (uint64_t i = 0; i < emCount; ++i) {
 			if (getExtraMetadataKeyAtIndex(i) == "Uom") {
 				return getExtraMetadataStringValueAtIndex(i);
 			}
@@ -129,7 +127,7 @@ std::string ContinuousProperty::getUomAsString() const
 	return gsoap_resqml2_0_1::soap_resqml20__ResqmlUom2s(gsoapProxy2_0_1->soap, uom);
 }
 
-EML2_NS::AbstractHdfProxy* ContinuousProperty::getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const
+EML2_NS::AbstractHdfProxy* ContinuousProperty::getValuesHdfProxyAndDatasetPathOfPatch(uint64_t patchIndex, std::string & datasetPath) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
@@ -141,21 +139,21 @@ EML2_NS::AbstractHdfProxy* ContinuousProperty::getValuesHdfProxyAndDatasetPathOf
 	return getHdfProxyFromDataset(dataset);
 }
 
-double ContinuousProperty::getMinimumValue(unsigned int index) const
+double ContinuousProperty::getMinimumValue(uint64_t index) const
 {
 	_resqml20__ContinuousProperty* prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 
 	return prop->MinimumValue.size() <= index ? std::numeric_limits<double>::quiet_NaN() : prop->MinimumValue[index];
 }
 
-double ContinuousProperty::getMaximumValue(unsigned int index) const
+double ContinuousProperty::getMaximumValue(uint64_t index) const
 {
 	_resqml20__ContinuousProperty* prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 
 	return prop->MaximumValue.size() <= index ? std::numeric_limits<double>::quiet_NaN() : prop->MaximumValue[index];
 }
 
-void ContinuousProperty::setMinimumValue(double value, unsigned int index) const
+void ContinuousProperty::setMinimumValue(double value, uint64_t index) const
 {
 	_resqml20__ContinuousProperty* prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 
@@ -166,7 +164,7 @@ void ContinuousProperty::setMinimumValue(double value, unsigned int index) const
 	prop->MinimumValue[index] = value;
 }
 
-void ContinuousProperty::setMaximumValue(double value, unsigned int index) const
+void ContinuousProperty::setMaximumValue(double value, uint64_t index) const
 {
 	_resqml20__ContinuousProperty* prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 

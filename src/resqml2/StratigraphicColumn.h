@@ -54,7 +54,7 @@ namespace RESQML2_NS
 		 * @returns	The count of all the stratigraphic column rank interpretations which are contained in
 		 * 			this stratigraphic column.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getStratigraphicColumnRankInterpretationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getStratigraphicColumnRankInterpretationCount() const = 0;
 
 		/**
 		 * Gets the DOR of a stratigraphic column rank interpretations at a particular index.
@@ -66,7 +66,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the stratigraphic column rank interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStratigraphicColumnRankInterpretationDor(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStratigraphicColumnRankInterpretationDor(uint64_t index) const = 0;
 
 		/**
 		 * Gets the stratigraphic column rank interpretations at a particular index.
@@ -78,7 +78,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The stratigraphic column rank interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT StratigraphicColumnRankInterpretation* getStratigraphicColumnRankInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT StratigraphicColumnRankInterpretation* getStratigraphicColumnRankInterpretation(uint64_t index) const;
 
 		/**
 		 * Gets all the stratigraphic column rank interpretations which are contained in this
@@ -90,7 +90,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT std::vector<StratigraphicColumnRankInterpretation *> getStratigraphicColumnRankInterpretationSet() const;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG= "StratigraphicColumn";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 

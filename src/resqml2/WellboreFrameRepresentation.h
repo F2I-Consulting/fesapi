@@ -106,17 +106,17 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The MD values count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getMdValuesCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getMdValuesCount() const;
 
 		/**
 		* Get the xyz point count in a given patch.
 		*/
-		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const override;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const override;
 
 		/**
 		* Use linear interpolation between 2 trajectory stations.
 		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const override;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const override;
 
 		/**
 		 * Gets the MD datatype in the HDF dataset.
@@ -179,7 +179,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 
-		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const override;
+		COMMON_NS::DataObjectReference getLocalCrsDor(uint64_t patchIndex) const override;
 
 		/**
 		 * @copybrief AbstractRepresentation::getHdfProxyDor()
@@ -190,7 +190,7 @@ namespace RESQML2_NS
 		 */
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final {return 1;}
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final {return 1;}
 
 	protected:
 		/** Default constructor */

@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "GeobodyBoundaryInterpretation.h"
 
-#include <stdexcept>
-
 #include "../resqml2/BoundaryFeature.h"
 
 using namespace std;

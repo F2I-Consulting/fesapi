@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PolylineRepresentation.h"
 
-#include <stdexcept>
-
 #include "../resqml2/AbstractFeature.h"
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../eml2/AbstractLocal3dCrs.h"
@@ -80,12 +78,12 @@ COMMON_NS::DataObjectReference PolylineRepresentation::getHdfProxyDor() const
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_2(0));
 }
 
-resqml22__PointGeometry* PolylineRepresentation::getPointGeometry2_2(unsigned int patchIndex) const
+resqml22__PointGeometry* PolylineRepresentation::getPointGeometry2_2(uint64_t patchIndex) const
 {
 	return patchIndex == 0 ? static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->NodePatch->Geometry : nullptr;
 }
 
-uint64_t PolylineRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t PolylineRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -94,7 +92,7 @@ uint64_t PolylineRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex
 	return static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->NodePatch->Count;
 }
 
-void PolylineRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void PolylineRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");

@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractColumnLayerGridRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include <hdf5.h>
 
 #include "AbstractStratigraphicOrganizationInterpretation.h"
@@ -30,7 +27,7 @@ using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_NS;
 using namespace std;
 
-unsigned int AbstractColumnLayerGridRepresentation::getKCellCount() const
+uint32_t AbstractColumnLayerGridRepresentation::getKCellCount() const
 {
 	if (isPartial()) {
 		throw logic_error("This method cannot be called on a partial object");
@@ -46,7 +43,7 @@ unsigned int AbstractColumnLayerGridRepresentation::getKCellCount() const
 	return static_cast<unsigned int>(kCellCount);
 }
 
-void AbstractColumnLayerGridRepresentation::setKCellCount(unsigned int kCount)
+void AbstractColumnLayerGridRepresentation::setKCellCount(uint32_t kCount)
 {
 	if (isPartial()) {
 		throw logic_error("Partial object");

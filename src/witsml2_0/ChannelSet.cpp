@@ -19,8 +19,6 @@ under the License.
 #include "ChannelSet.h"
 
 #include <sstream>
-#include <stdexcept>
-#include <limits>
 
 #include "Log.h"
 #include "Channel.h"

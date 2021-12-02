@@ -245,7 +245,11 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The formation water count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getFormationWaterCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getFormationWaterCount() const noexcept {
+			return static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog == nullptr
+				? 0
+				: static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->FormationWater.size();
+		}
 
 		/**
 		 * Pushes a back formation water
@@ -262,7 +266,11 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The pure fluid component count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPureFluidComponentCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getPureFluidComponentCount() const noexcept {
+			return static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog == nullptr
+				? 0
+				: static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->PureFluidComponent.size();
+		}
 
 		/**
 		 * Pushes a back pure fluid component
@@ -282,7 +290,11 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The plus fluid component count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPlusFluidComponentCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getPlusFluidComponentCount() const noexcept {
+			return static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog == nullptr
+				? 0
+				: static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->PlusFluidComponent.size();
+		}
 
 		/**
 		 * Pushes a back plus fluid component
@@ -303,7 +315,11 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The stock tank oil count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getStockTankOilCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getStockTankOilCount() const noexcept {
+			return static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog == nullptr
+				? 0
+				: static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->StockTankOil.size();
+		}
 
 		/**
 		 * Pushes a back stock tank oil
@@ -324,7 +340,11 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The natural gas count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getNaturalGasCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getNaturalGasCount() const noexcept {
+			return static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog == nullptr
+				? 0
+				: static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->NaturalGas.size();
+		}
 
 		/**
 		 * Pushes a back natural gas
@@ -345,7 +365,11 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The pseudo fluid component count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPseudoFluidComponentCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getPseudoFluidComponentCount() const noexcept {
+			return static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog == nullptr
+				? 0
+				: static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->PseudoFluidComponent.size();
+		}
 
 		/**
 		 * Pushes a back pseudo fluid component
@@ -387,7 +411,9 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The model count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getModelCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getModelCount() const noexcept {
+			return static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel.size();
+		}
 
 		/**
 		 * Pushes a back model
@@ -403,7 +429,7 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	Null if it fails, else the model specification.
 		 */
-		DLL_IMPORT_OR_EXPORT PvtSpecification* getModelSpecification(unsigned int modelIndex) { return modelSpecifications[modelIndex]; }
+		DLL_IMPORT_OR_EXPORT PvtSpecification* getModelSpecification(uint64_t modelIndex) { return modelSpecifications.at(modelIndex); }
 
 		/**
 		 * Return the PvtSpecification according to the kind. Please downcast it and set all attributes
@@ -414,7 +440,7 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	Null if it fails, else a pointer to a PvtSpecification.
 		 */
-		DLL_IMPORT_OR_EXPORT PvtSpecification* initModelSpecification(unsigned int modelIndex, ModelSpecification kind);
+		DLL_IMPORT_OR_EXPORT PvtSpecification* initModelSpecification(uint64_t modelIndex, ModelSpecification kind);
 
 		GETTER_SETTER_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_2::prodml21__FluidCharacterization, gsoapProxy2_2, FluidCharacterizationModel, Name, std::string)
 		GETTER_SETTER_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_2::prodml21__FluidCharacterization, gsoapProxy2_2, FluidCharacterizationModel, Remark, std::string)
@@ -426,7 +452,9 @@ namespace PRODML2_1_NS
 		 *
 		 * @returns	The table format count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTableFormatCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getTableFormatCount() const noexcept {
+			return static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationTableFormat.size();
+		}
 
 		/**
 		* Pushes a table format
@@ -486,7 +514,7 @@ namespace PRODML2_1_NS
 		 * @param	modelIndex		Zero-based index of the model in this fluid characterization.
 		 * @returns	The table count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTableCount(unsigned int modelIndex) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getTableCount(uint64_t modelIndex) const;
 
 		/**
 		 * Gets the name of a table.
@@ -495,7 +523,7 @@ namespace PRODML2_1_NS
 		 * @param 	tableIndex		Zero-based index of the table in a model of this fluid characterization.
 		 * @returns	The name of a table.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getTableName(unsigned int modelIndex, unsigned int tableIndex) const;
+		DLL_IMPORT_OR_EXPORT std::string getTableName(uint64_t modelIndex, uint64_t tableIndex) const;
 
 		/**
 		 * Gets the uid of the table format of a table.
@@ -504,7 +532,7 @@ namespace PRODML2_1_NS
 		 * @param 	tableIndex		Zero-based index of the table in a model of this fluid characterization.
 		 * @returns	The uid of the table format of a table.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getTableFormatUid(unsigned int modelIndex, unsigned int tableIndex) const;
+		DLL_IMPORT_OR_EXPORT std::string getTableFormatUid(uint64_t modelIndex, uint64_t tableIndex) const;
 
 		/**
 		* Pushes back a table
@@ -514,7 +542,7 @@ namespace PRODML2_1_NS
 		* @param 	tableFormatUid	The UID of the table format this table is using.The table format defines the semantic of the colums and values.
 		* @param 	uid				The UID of this table. If empty, it will be set to its index in this Fluid Characterization
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackTable(unsigned int modelIndex, const std::string & name, const std::string & tableFormatUid, const std::string & uid = "");
+		DLL_IMPORT_OR_EXPORT void pushBackTable(uint64_t modelIndex, const std::string & name, const std::string & tableFormatUid, const std::string & uid = "");
 
 		/**
 		 * Gets the table row count
@@ -523,7 +551,7 @@ namespace PRODML2_1_NS
 		 * @param 	tableIndex		Zero-based index of the table in a model of this fluid characterization.
 		 * @returns	The table row count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTableRowCount(unsigned int modelIndex, unsigned int tableIndex) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getTableRowCount(uint64_t modelIndex, uint64_t tableIndex) const;
 
 		/**
 		 * Gets the content of a row of a table.
@@ -533,7 +561,7 @@ namespace PRODML2_1_NS
 		 * @param 	rowIndex		Zero-based index of the row of the table in a model of this fluid characterization.
 		 * @returns	The content of a row of a table.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getTableRowContent(unsigned int modelIndex, unsigned int tableIndex, unsigned int rowIndex) const;
+		DLL_IMPORT_OR_EXPORT std::string getTableRowContent(uint64_t modelIndex, uint64_t tableIndex, uint64_t rowIndex) const;
 
 		/**
 		* Pushes back a row in a table of a model without indicating if the data are either saturated or under-saturated.
@@ -542,7 +570,7 @@ namespace PRODML2_1_NS
 		* @param 	tableIndex		Zero-based index of the table in a model of this fluid characterization.
 		* @param 	rowContent		The values representing the content of the row in the table.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackTableRow(unsigned int modelIndex, unsigned int tableIndex, const std::vector<double> & rowContent);
+		DLL_IMPORT_OR_EXPORT void pushBackTableRow(uint64_t modelIndex, uint64_t tableIndex, const std::vector<double> & rowContent);
 
 		/**
 		* Pushes back a row in a table of a model indicating if the data are either saturated or under-saturated.
@@ -552,7 +580,7 @@ namespace PRODML2_1_NS
 		* @param 	rowContent		The values representing the content of the row in the table.
 		* @param	isSaturated		True if the data correspond to saturated data, false if the data correspond to undersaturated data
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackTableRow(unsigned int modelIndex, unsigned int tableIndex, const std::vector<double> & rowContent, bool isSaturated);
+		DLL_IMPORT_OR_EXPORT void pushBackTableRow(uint64_t modelIndex, uint64_t tableIndex, const std::vector<double> & rowContent, bool isSaturated);
 
 		/**
 		* Pushes back a phase-unrelated parameter in a model.
@@ -562,7 +590,7 @@ namespace PRODML2_1_NS
 		* @param 	uom				The uom associated to the value of this parameter
 		* @param	fluidProperty	The property kind of this value
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackParameter(unsigned int modelIndex, double value, gsoap_eml2_2::eml22__UnitOfMeasure uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty);
+		DLL_IMPORT_OR_EXPORT void pushBackParameter(uint64_t modelIndex, double value, gsoap_eml2_2::eml22__UnitOfMeasure uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty);
 
 		/**
 		* Pushes back a phase related parameter in a model.
@@ -573,7 +601,7 @@ namespace PRODML2_1_NS
 		* @param	fluidProperty	The property kind of this value
 		* @param	phase			The pahse associated to the parameter
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackParameter(unsigned int modelIndex, double value, gsoap_eml2_2::eml22__UnitOfMeasure uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty, gsoap_eml2_2::prodml21__ThermodynamicPhase phase);
+		DLL_IMPORT_OR_EXPORT void pushBackParameter(uint64_t modelIndex, double value, gsoap_eml2_2::eml22__UnitOfMeasure uom, gsoap_eml2_2::prodml21__OutputFluidProperty fluidProperty, gsoap_eml2_2::prodml21__ThermodynamicPhase phase);
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

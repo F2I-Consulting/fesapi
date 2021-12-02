@@ -52,7 +52,7 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	traceCount		   	The count of traces in this seismic line.
 		 */
 		SeismicLineFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
-			int traceIndexIncrement, int firstTraceIndex, unsigned int traceCount);
+			int64_t traceIndexIncrement, int64_t firstTraceIndex, uint64_t traceCount);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
@@ -70,16 +70,22 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The trace index increment.
 		 */
-		DLL_IMPORT_OR_EXPORT int getTraceIndexIncrement() const;
+		DLL_IMPORT_OR_EXPORT int64_t getTraceIndexIncrement() const {
+			return static_cast<gsoap_resqml2_0_1::_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->TraceIndexIncrement;
+		}
 
 		/**
 		 * Get the first trace index.
 		 *
 		 * @returns	The first trace index.
 		 */
-		DLL_IMPORT_OR_EXPORT int getFirstTraceIndex() const;
+		DLL_IMPORT_OR_EXPORT int64_t getFirstTraceIndex() const {
+			return static_cast<gsoap_resqml2_0_1::_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->FirstTraceIndex;
+		}
 
-		DLL_IMPORT_OR_EXPORT uint64_t getTraceCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getTraceCount() const final {
+			return static_cast<gsoap_resqml2_0_1::_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->TraceCount;
+		}
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "SeismicLineFeature";

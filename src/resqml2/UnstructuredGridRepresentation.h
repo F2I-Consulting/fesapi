@@ -78,7 +78,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool hasGeometry() const = 0;
 
-		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const final;
 
 		/**
 		 * Gets all the face indices of all the cells.
@@ -182,7 +182,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The constant face count per cell.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getConstantFaceCountOfCells() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getConstantFaceCountOfCells() const = 0;
 
 		/**
 		 * Gets all the node indices of all the faces.
@@ -264,7 +264,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The constant node count per face.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getConstantNodeCountOfFaces() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getConstantNodeCountOfFaces() const = 0;
 
 		/**
 		 * Loads the geoemtry into memory in order to ease access. Be aware that you must unload by
@@ -302,7 +302,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of faces in the cell at position @p cellIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getFaceCountOfCell(uint64_t cellIndex) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getFaceCountOfCell(uint64_t cellIndex) const;
 
 		/**
 		 * Gets the node count of a particular face of a particular cell. This method requires you to
@@ -321,7 +321,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of nodes in the face @p localFaceIndex of the cell @p cellIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getNodeCountOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getNodeCountOfFaceOfCell(uint64_t cellIndex, uint64_t localFaceIndex) const;
 
 		/**
 		 * Gets all the node indices of a particular face of a particular cell. This method requires you
@@ -342,7 +342,7 @@ namespace RESQML2_NS
 		 * 			the cell @p cellIndex. This array is allocated by loadGeometry() and is freed by
 		 * 			unloadGeometry().
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t const * getNodeIndicesOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const;
+		DLL_IMPORT_OR_EXPORT uint64_t const * getNodeIndicesOfFaceOfCell(uint64_t cellIndex, uint64_t localFaceIndex) const;
 
 		DLL_IMPORT_OR_EXPORT virtual uint64_t getCellCount() const override = 0;
 
@@ -618,10 +618,10 @@ namespace RESQML2_NS
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final {return 1;}
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final {return 1;}
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "UnstructuredGridRepresentation";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
@@ -661,8 +661,8 @@ namespace RESQML2_NS
 			uint64_t * faceIndicesPerCell, uint64_t faceCountPerCell,
 			uint64_t * nodeIndicesPerFace, uint64_t nodeCountPerFace);
 
-		unsigned int constantNodeCountPerFace;
-		unsigned int constantFaceCountPerCell;
+		uint64_t constantNodeCountPerFace;
+		uint64_t constantFaceCountPerCell;
 		std::unique_ptr<uint64_t[]> cumulativeNodeCountPerFace;
 		std::unique_ptr<uint64_t[]> cumulativeFaceCountPerCell;
 		std::unique_ptr<uint64_t[]> nodeIndicesOfFaces;
@@ -675,6 +675,6 @@ namespace RESQML2_NS
 		* @param localFaceIndex The local face index regarding the cell of the face we are getting its global index.
 		* @return				The global face index from its local face index in a cell.
 		*/
-		uint64_t getGlobalFaceIndex(uint64_t cellIndex, unsigned int localFaceIndex) const;
+		uint64_t getGlobalFaceIndex(uint64_t cellIndex, uint64_t localFaceIndex) const;
 	};
 }

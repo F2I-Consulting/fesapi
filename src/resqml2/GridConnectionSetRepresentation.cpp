@@ -19,8 +19,6 @@ under the License.
 #include "GridConnectionSetRepresentation.h"
 
 #include <algorithm>
-#include <limits>
-#include <stdexcept>
 
 #include <hdf5.h>
 
@@ -120,12 +118,12 @@ void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(uint64_t cel
 	setLocalFacePerCellIndexPairsUsingExistingDataset(getHdfGroup() + "/LocalFacePerCellIndexPairs", nullValue, proxy);
 }
 
-uint64_t GridConnectionSetRepresentation::getXyzPointCountOfPatch(unsigned int) const
+uint64_t GridConnectionSetRepresentation::getXyzPointCountOfPatch(uint64_t) const
 {
 	throw logic_error("Not implemented yet");
 }
 
-void GridConnectionSetRepresentation::getXyzPointsOfPatch(unsigned int, double *) const
+void GridConnectionSetRepresentation::getXyzPointsOfPatch(uint64_t, double *) const
 {
 	throw logic_error("Not implemented yet");
 }

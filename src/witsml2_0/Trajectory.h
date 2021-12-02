@@ -172,7 +172,9 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	the count of trajectory stations in this trajectory.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTrajectoryStationCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getTrajectoryStationCount() const noexcept final {
+			return static_cast<gsoap_eml2_1::witsml20__Trajectory*>(gsoapProxy2_1)->TrajectoryStation.size();
+		}
 
 		/**
 		* The standard XML namespace for serializing this data object.

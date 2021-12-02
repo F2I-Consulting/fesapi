@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PropertyKind.h"
 
-#include <stdexcept>
-
 #include "../common/EnumStringMapper.h"
 
 #include "../resqml2/AbstractValuesProperty.h"
@@ -163,8 +161,8 @@ std::string PropertyKind::getBaseUomAsString() const
 	gsoap_resqml2_0_1::resqml20__ResqmlUom representativeUom = getSpecializedGsoapProxy()->RepresentativeUom;
 
 	if (representativeUom == gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc) {
-		unsigned int emCount = getExtraMetadataCount();
-		for (unsigned int i = 0; i < emCount; ++i) {
+		uint64_t emCount = getExtraMetadataCount();
+		for (uint64_t i = 0; i < emCount; ++i) {
 			if (getExtraMetadataKeyAtIndex(i) == "Uom") {
 				return getExtraMetadataStringValueAtIndex(i);
 			}

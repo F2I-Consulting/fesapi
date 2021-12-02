@@ -135,7 +135,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The parameter title.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual const std::string & getParameterTitle(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::string getParameterTitle(uint64_t index) const = 0;
 
 		/**
 		 * Gets the indices of all the parameters sharing a given title.
@@ -144,7 +144,7 @@ namespace EML2_NS
 		 *
 		 * @returns	A vector of parameter indices.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::vector<unsigned int> getParameterIndexOfTitle(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<uint64_t> getParameterIndexOfTitle(const std::string & paramTitle) const = 0;
 
 		/**
 		 * Queries if all of the parameters sharing a given title are floating point quantity parameters.
@@ -169,7 +169,7 @@ namespace EML2_NS
 		 * @returns	True if the parameter at position @p index is a floating point quantity parameter,
 		 * 			false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool isAFloatingPointQuantityParameter(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAFloatingPointQuantityParameter(uint64_t index) const = 0;
 
 		/**
 		 * Gets the values of all the floating point quantity parameters sharing a given title.
@@ -197,7 +197,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The floating point quantity value of the parameter at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual double getFloatingPointQuantityParameterValue(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getFloatingPointQuantityParameterValue(uint64_t index) const = 0;
 
 		/**
 		 * Queries if all of the parameters sharing a given title are integer quantity parameters.
@@ -222,7 +222,7 @@ namespace EML2_NS
 		 * @returns	True if the parameter at position @p index is an integer quantity parameter,
 		 * 			false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool isAnIntegerQuantityParameter(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAnIntegerQuantityParameter(uint64_t index) const = 0;
 
 		/**
 		 * Gets the values of all the integer quantity parameters sharing a given title.
@@ -250,7 +250,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The integer quantity value of the parameter at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int64_t getIntegerQuantityParameterValue(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getIntegerQuantityParameterValue(uint64_t index) const = 0;
 
 		/**
 		 * @brief	Queries if all of the parameters sharing a given title are string parameters.
@@ -274,7 +274,7 @@ namespace EML2_NS
 		 * @returns	True if the parameter at position @p index is a string parameter,
 		 * 			false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool isAStringParameter(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAStringParameter(uint64_t index) const = 0;
 
 		/**
 		 * Gets the values of all the string parameters sharing a given title.
@@ -301,7 +301,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The string value of the parameter at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual const std::string & getStringParameterValue(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::string getStringParameterValue(uint64_t index) const = 0;
 
 		/**
 		 * Queries if all of the parameters sharing a given title are RESQML object parameters.
@@ -325,7 +325,7 @@ namespace EML2_NS
 		 * @returns	True if the parameter at position @p index is a RESQML object parameter,
 		 * 			false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool isAResqmlObjectParameter(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAResqmlObjectParameter(uint64_t index) const = 0;
 
 		/**
 		 * Gets the values of all the RESQML object parameters sharing a given title.
@@ -353,7 +353,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The RESQML object value of the parameter at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual AbstractObject* getResqmlObjectParameterValue(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual AbstractObject* getResqmlObjectParameterValue(uint64_t index) const = 0;
 
 		/**
 		 * Sets the activity template of this activity.

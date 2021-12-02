@@ -61,16 +61,12 @@ void RockFluidOrganizationInterpretation::pushBackRockFluidUnitInterpretation(RE
 	static_cast<_resqml20__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->GeologicUnitIndex.push_back(unitIndex);
 }
 
-unsigned int RockFluidOrganizationInterpretation::getRockFluidUnitInterpCount() const
+uint64_t RockFluidOrganizationInterpretation::getRockFluidUnitInterpCount() const
 {
 	return static_cast<_resqml20__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->GeologicUnitIndex.size();
 }
 
-COMMON_NS::DataObjectReference RockFluidOrganizationInterpretation::getRockFluidUnitInterpretationDor(unsigned int index) const
+COMMON_NS::DataObjectReference RockFluidOrganizationInterpretation::getRockFluidUnitInterpretationDor(uint64_t index) const
 {
-	if (index >= getRockFluidUnitInterpCount()) {
-		throw out_of_range("The index is out of range");
-	}
-
-	return COMMON_NS::DataObjectReference(static_cast<_resqml20__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->GeologicUnitIndex[index]->Unit);
+	return COMMON_NS::DataObjectReference(static_cast<_resqml20__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->GeologicUnitIndex.at(index)->Unit);
 }

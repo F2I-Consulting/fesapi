@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "DeviationSurveyRepresentation.h"
 
-#include <stdexcept>
-
 #include "H5public.h"
 
 #include "../eml2/AbstractHdfProxy.h"
@@ -35,9 +33,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-
-const char* DeviationSurveyRepresentation::XML_TAG = "DeviationSurveyRepresentation";
-const char* DeviationSurveyRepresentation::XML_NS = "resqml20";
 
 DeviationSurveyRepresentation::DeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const string& guid, const std::string& title, bool isFinal, EML2_NS::ReferencePointInALocalEngineeringCompoundCrs* mdInfo)
 {
@@ -130,7 +125,7 @@ EML2_NS::ReferencePointInALocalEngineeringCompoundCrs* DeviationSurveyRepresenta
 	return getRepository()->getDataObjectByUuid<EML2_NS::ReferencePointInALocalEngineeringCompoundCrs>(getMdDatumDor().getUuid());
 }
 
-uint64_t DeviationSurveyRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t DeviationSurveyRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");
@@ -140,7 +135,7 @@ uint64_t DeviationSurveyRepresentation::getXyzPointCountOfPatch(unsigned int pat
 	return rep->StationCount;
 }
 
-void DeviationSurveyRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
+void DeviationSurveyRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");
@@ -256,10 +251,10 @@ vector<RESQML2_NS::WellboreFrameRepresentation*> DeviationSurveyRepresentation::
 	return result;
 }
 
-unsigned int DeviationSurveyRepresentation::getWellboreFrameRepresentationCount() const
+uint64_t DeviationSurveyRepresentation::getWellboreFrameRepresentationCount() const
 {
 	const vector<RESQML2_NS::WellboreTrajectoryRepresentation *>& trajectories = getWellboreTrajectoryRepresentationSet();
-	unsigned int result = 0;
+	uint64_t result = 0;
 	for (size_t index = 0; index < trajectories.size(); ++index) {
 		if (trajectories[index]->getMdDatumDor().getUuid() == getMdDatumDor().getUuid() && trajectories[index]->getMdUom() == getMdUom()) {
 			result += trajectories[index]->getWellboreFrameRepresentationCount();
@@ -269,12 +264,12 @@ unsigned int DeviationSurveyRepresentation::getWellboreFrameRepresentationCount(
 	return result;
 }
 
-RESQML2_NS::WellboreFrameRepresentation * DeviationSurveyRepresentation::getWellboreFrameRepresentation(unsigned int index) const
+RESQML2_NS::WellboreFrameRepresentation * DeviationSurveyRepresentation::getWellboreFrameRepresentation(uint64_t index) const
 {
 	const vector<RESQML2_NS::WellboreTrajectoryRepresentation *>& trajectories = getWellboreTrajectoryRepresentationSet();
 	for (RESQML2_NS::WellboreTrajectoryRepresentation const* traj : trajectories) {
 		if (traj->getMdDatumDor().getUuid() == getMdDatumDor().getUuid() && traj->getMdUom() == getMdUom()) {
-			unsigned int count = traj->getWellboreFrameRepresentationCount();
+			uint64_t count = traj->getWellboreFrameRepresentationCount();
 			if (index < count) {
 				return traj->getWellboreFrameRepresentation(index);
 			}
@@ -292,26 +287,15 @@ std::vector<RESQML2_NS::WellboreTrajectoryRepresentation *> DeviationSurveyRepre
 	return getRepository()->getSourceObjects<RESQML2_NS::WellboreTrajectoryRepresentation>(this);
 }
 
-unsigned int DeviationSurveyRepresentation::getWellboreTrajectoryRepresentationCount() const
+uint64_t DeviationSurveyRepresentation::getWellboreTrajectoryRepresentationCount() const
 {
-	const size_t result = getWellboreTrajectoryRepresentationSet().size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too many associated WellboreTrajectoryRepresentation.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return getWellboreTrajectoryRepresentationSet().size();
 }
 
-RESQML2_NS::WellboreTrajectoryRepresentation* DeviationSurveyRepresentation::getWellboreTrajectoryRepresentation(unsigned int index) const
+RESQML2_NS::WellboreTrajectoryRepresentation* DeviationSurveyRepresentation::getWellboreTrajectoryRepresentation(uint64_t index) const
 {
 	const std::vector<RESQML2_NS::WellboreTrajectoryRepresentation*>& wbTrajectoryRepSet = getWellboreTrajectoryRepresentationSet();
-
-	if (index >= wbTrajectoryRepSet.size()) {
-		throw out_of_range("The index is out of range");
-	}
-
-	return wbTrajectoryRepSet[index];
+	return wbTrajectoryRepSet.at(index);
 }
 
 void DeviationSurveyRepresentation::loadTargetRelationships()

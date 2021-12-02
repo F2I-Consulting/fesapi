@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MdDatum.h"
 
-#include <stdexcept>
-
 #include "../eml2/AbstractLocal3dCrs.h"
 
 using namespace std;

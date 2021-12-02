@@ -26,7 +26,7 @@ namespace RESQML2_2_NS
 	class PointSetRepresentation final : public RESQML2_NS::PointSetRepresentation
 	{
 	private :
-		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
+		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(uint64_t patchIndex) const;
 
 	public:
 		/**
@@ -72,7 +72,7 @@ namespace RESQML2_2_NS
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
-		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const final;
 
 		/**
 		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
@@ -83,9 +83,9 @@ namespace RESQML2_2_NS
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be pre allocated.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
 			unsigned int xyzPointCount, double const * xyzPoints,

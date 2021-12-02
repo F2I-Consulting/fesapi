@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "GenericFeatureInterpretation.h"
 
-#include <stdexcept>
-
 #include "../resqml2/AbstractFeature.h"
 
 using namespace RESQML2_0_1_NS;
