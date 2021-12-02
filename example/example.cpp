@@ -733,7 +733,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	//**************
 
 	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-		propType1 =  pck->createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		propType1 = pck->createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 	}
 #if WITH_RESQML2_2
 	else {
@@ -1071,16 +1071,10 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		double valuesTime2[2] = { 3, 4 };
 		continuousPropTime2->pushBackDoubleHdf5Array3dOfValues(valuesTime2, 2, 1, 1, hdfProxy);
 	}
-	else {
-		EML2_NS::PropertyKind * standardLengthPropKind = nullptr;
-		if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-			standardLengthPropKind = pck->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
-		}
 #if WITH_RESQML2_2
-		else {
-			standardLengthPropKind = pck->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
-		}
-#endif
+	else {
+		EML2_NS::PropertyKind * standardLengthPropKind = pck->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
+
 		RESQML2_NS::ContinuousProperty* dynamicContinuousProp = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
 			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, standardLengthPropKind);
 		dynamicContinuousProp->setTimeIndices(0, 3, timeSeries);
@@ -1089,6 +1083,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		dynamicContinuousProp->pushBackDoubleHdf5ArrayOfValues(
 			valuesTime, dimensions, 4, hdfProxy);
 	}
+#endif
 
 	//**************
 	// Categorical Properties
@@ -1192,16 +1187,9 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		double propValues[2] = { 12.3, 45.6 };
 		unstructuredGridProp->pushBackDoubleHdf5Array1dOfValues(propValues, 2);
 	}
-	else {
-		EML2_NS::PropertyKind * standardLengthPropKind = nullptr;
-		if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-			standardLengthPropKind = pck->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
-		}
 #if WITH_RESQML2_2
-		else {
-			standardLengthPropKind = pck->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
-		}
-#endif
+	else {
+		EML2_NS::PropertyKind * standardLengthPropKind = pck->getDataObjectByUuid<EML2_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d");
 		RESQML2_NS::ContinuousProperty* unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyhedra property", 1,
 			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, standardLengthPropKind);
 
@@ -1209,6 +1197,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		double propValues[2] = { 12.3, 45.6 };
 		unstructuredGridProp->pushBackDoubleHdf5Array1dOfValues(propValues, 2);
 	}
+#endif
 }
 
 void serializeRepresentationSetRepresentation(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfProxy*)
