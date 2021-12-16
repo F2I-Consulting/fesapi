@@ -20,7 +20,7 @@ under the License.
 
 #include "AbstractTechnicalFeature.h"
 
-namespace WITSML2_0_NS
+namespace WITSML2_NS
 {
 	class Wellbore;
 }
@@ -83,7 +83,7 @@ namespace RESQML2_NS
 		 * @returns	@c nullptr if no WITSML wellbore is associated to this wellbore feature, else the
 		 * 			associated WITSML wellbore.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Wellbore* getWitsmlWellbore() const;
+		DLL_IMPORT_OR_EXPORT WITSML2_NS::Wellbore* getWitsmlWellbore() const;
 
 		/**
 		 * Sets the WITSML wellbore associated to this instance.
@@ -92,7 +92,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	wellbore	The WITSML wellbore to associate to this wellbore. It cannot be null.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setWitsmlWellbore(WITSML2_NS::Wellbore * wellbore) = 0;
 
 		/**
 		* The standard XML tag without XML namespace for serializing this data object.

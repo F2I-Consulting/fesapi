@@ -27,9 +27,9 @@ using namespace RESQML2_NS;
 
 const char* WellboreFeature::XML_TAG = "WellboreFeature";
 
-WITSML2_0_NS::Wellbore* WellboreFeature::getWitsmlWellbore() const
+WITSML2_NS::Wellbore* WellboreFeature::getWitsmlWellbore() const
 {
-	const auto& witsmlWellbores = getRepository()->getTargetObjects<WITSML2_0_NS::Wellbore>(this);
+	const auto& witsmlWellbores = getRepository()->getTargetObjects<WITSML2_NS::Wellbore>(this);
 	switch (witsmlWellbores.size()) {
 	case 0: return nullptr;
 	case 1: return witsmlWellbores[0];

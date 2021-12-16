@@ -57,7 +57,7 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~WellboreFeature() = default;
 
-		DLL_IMPORT_OR_EXPORT void setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore) final;
+		DLL_IMPORT_OR_EXPORT void setWitsmlWellbore(WITSML2_NS::Wellbore * wellbore) final;
 
 		/**
 		* The standard XML namespace for serializing this data object.
