@@ -1262,19 +1262,19 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, EML2_NS::Ab
 
 	// Contact 0: fault1Interp1 HANGING_WALL_SIDE STOPS horizon1Interp1 BOTH_SIDES
 	structuralOrganizationInterpretation->pushBackBinaryContact(fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide::hanging_x0020wall,
-		gsoap_eml2_3::resqml22__ContactVerb::interrupts,
+		gsoap_eml2_3::resqml22__ContactVerb::splits,
 		horizon1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide::both);
 	// Contact 1: fault1Interp1 FOOT_WALL_SIDE STOPS horizon1Interp1 BOTH_SIDES
 	structuralOrganizationInterpretation->pushBackBinaryContact(fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide::footwall,
-		gsoap_eml2_3::resqml22__ContactVerb::interrupts,
+		gsoap_eml2_3::resqml22__ContactVerb::splits,
 		horizon1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide::both);
 	// Contact 2: fault1Interp1 HANGING_WALL_SIDE STOPS horizon2Interp1 BOTH_SIDES
 	structuralOrganizationInterpretation->pushBackBinaryContact(fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide::hanging_x0020wall,
-		gsoap_eml2_3::resqml22__ContactVerb::interrupts,
+		gsoap_eml2_3::resqml22__ContactVerb::splits,
 		horizon2Interp1, gsoap_resqml2_0_1::resqml20__ContactSide::both);
 	// Contact 3: fault1Interp1 FOOT_WALL_SIDE STOPS horizon2Interp1 BOTH_SIDES
 	structuralOrganizationInterpretation->pushBackBinaryContact(fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide::footwall,
-		gsoap_eml2_3::resqml22__ContactVerb::interrupts,
+		gsoap_eml2_3::resqml22__ContactVerb::splits,
 		horizon2Interp1, gsoap_resqml2_0_1::resqml20__ContactSide::both);
 
 	// Contact 4: horizon1Interp1 STOPS AT yMinusFrontierInterp

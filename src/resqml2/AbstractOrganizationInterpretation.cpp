@@ -84,7 +84,7 @@ namespace {
 	resqml20__ContactVerb mapVerbFrom(gsoap_eml2_3::resqml22__ContactVerb verb) {
 		switch (verb) {
 		case gsoap_eml2_3::resqml22__ContactVerb::crosses : return resqml20__ContactVerb::crosses;
-		case gsoap_eml2_3::resqml22__ContactVerb::interrupts :return resqml20__ContactVerb::splits; // see https://energistics.atlassian.net/browse/RESQML-578
+		case gsoap_eml2_3::resqml22__ContactVerb::splits :return resqml20__ContactVerb::splits; // see https://energistics.atlassian.net/browse/RESQML-578
 		case gsoap_eml2_3::resqml22__ContactVerb::stops:return resqml20__ContactVerb::stops_x0020at;
 		}
 

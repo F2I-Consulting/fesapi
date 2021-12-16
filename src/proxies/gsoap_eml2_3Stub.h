@@ -5114,7 +5114,7 @@ enum class resqml22__ContactSide {
 /* resqml22:ContactVerb */
 enum class resqml22__ContactVerb {
 	stops = 0,
-	interrupts = 1,
+	splits = 1,
 	crosses = 2
 };
 #endif
