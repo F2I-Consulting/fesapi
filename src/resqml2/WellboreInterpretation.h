@@ -24,6 +24,7 @@ under the License.
 namespace RESQML2_NS
 {
 	class WellboreFeature;
+	class WellboreTrajectoryRepresentation;
 
 	/**
 	 * @brief	Contains the data describing an opinion of a borehole.This interpretation is relative
@@ -71,12 +72,7 @@ namespace RESQML2_NS
 		 */
 		virtual bool isDrilled() const = 0;
 
-		/**
-		 * Gets all the trajectory representations of this interpretation.
-		 *
-		 * @returns	A vector of pointers to the trajectory representations of this interpretation.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<class WellboreTrajectoryRepresentation *> getWellboreTrajectoryRepresentationSet() const;
+		GETTER_DATAOBJECTS(RESQML2_NS::WellboreTrajectoryRepresentation, WellboreTrajectoryRepresentation);
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

@@ -45,6 +45,11 @@ void StratigraphicColumnRankInterpretation::loadTargetRelationships()
 	}
 }
 
+StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getStratigraphicUnitInterpretation(unsigned int index) const
+{
+	return getRepository()->getDataObjectByUuid<StratigraphicUnitInterpretation>(getStratigraphicUnitInterpretationDor(index).getUuid());
+}
+
 std::vector<StratigraphicUnitInterpretation *> StratigraphicColumnRankInterpretation::getStratigraphicUnitInterpretationSet() const
 {
 	return getRepository()->getTargetObjects<StratigraphicUnitInterpretation>(this);
