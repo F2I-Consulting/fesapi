@@ -59,6 +59,7 @@ import com.f2i_consulting.fesapi.resqml2.AbstractRepresentation;
 import com.f2i_consulting.fesapi.resqml2.AbstractSeismicLineFeature;
 import com.f2i_consulting.fesapi.resqml2.AbstractValuesProperty;
 import com.f2i_consulting.fesapi.resqml2.BoundaryFeature;
+import com.f2i_consulting.fesapi.resqml2.CommentProperty;
 import com.f2i_consulting.fesapi.resqml2.ContinuousProperty;
 import com.f2i_consulting.fesapi.resqml2.DiscreteProperty;
 import com.f2i_consulting.fesapi.resqml2.EarthModelInterpretation;
@@ -82,10 +83,10 @@ import com.f2i_consulting.fesapi.resqml2.WellboreTrajectoryRepresentation;
 import com.f2i_consulting.fesapi.resqml2.ContinuousColorMap;
 import com.f2i_consulting.fesapi.resqml2.DiscreteColorMap;
 import com.f2i_consulting.fesapi.resqml2.SeismicWellboreFrameRepresentation;
-import com.f2i_consulting.fesapi.resqml2_0_1.resqml20_Horizon;
+import com.f2i_consulting.fesapi.resqml2_0_1.Resqml20_Horizon;
 import com.f2i_consulting.fesapi.witsml2.Well;
 import com.f2i_consulting.fesapi.witsml2.Wellbore;
-import com.f2i_consulting.fesapi.witsml2_0.witsml20_WellboreGeometry;
+import com.f2i_consulting.fesapi.witsml2_0.Witsml20_WellboreGeometry;
 
 public class FesapiJavaExample {
 	private static String storageDirectory = System.getProperty("user.dir"); 
@@ -130,7 +131,7 @@ public class FesapiJavaExample {
 		witsmlWellbore.setMdPlanned(1000, eml21__LengthUom.m, "d3ac5401-d3e7-4474-b846-070673b210ae");
 
 		// Geometry
-		witsml20_WellboreGeometry witsmlWbGeom = repo.createWellboreGeometry(witsmlWellbore, "c9dc03e9-722c-478b-b0ae-b2dd9da67c11", "My wellbore geometry", witsml20__ChannelStatus.closed);
+		Witsml20_WellboreGeometry witsmlWbGeom = repo.createWellboreGeometry(witsmlWellbore, "c9dc03e9-722c-478b-b0ae-b2dd9da67c11", "My wellbore geometry", witsml20__ChannelStatus.closed);
 		witsmlWbGeom.setMdBase(0, eml21__LengthUom.m, "d3ac5401-d3e7-4474-b846-070673b210ae");
 		witsmlWbGeom.pushBackSection();
 		witsmlWbGeom.setWellboreGeometrySectionTypeHoleCasing(0, witsml20__HoleCasingType.casing);
@@ -299,8 +300,8 @@ ${COMMENT_END}
 
 		// Features
 		horizon1 = repo.createHorizon("35d7b57e-e5ff-4062-95af-ba2d7c4ce347", "Horizon1");
-		if (horizon1 instanceof resqml20_Horizon) {
-			((resqml20_Horizon)horizon1).setAge(300000000);
+		if (horizon1 instanceof Resqml20_Horizon) {
+			((Resqml20_Horizon)horizon1).setAge(300000000);
 		}
 
 		// Interpretations
@@ -340,6 +341,15 @@ ${COMMENT_END}
 		finally {
 			fesapi.delete_DoubleArray(seismicLineAbscissa);
 		}
+		
+		PropertyKind commentPropType = repo.createPropertyKind("0845ad74-2673-408e-b125-8dabc26ae552", "comment prop type", "urn:resqml:f2i.com:testingAPI", resqml20__ResqmlUom.Euc, resqml20__ResqmlPropertyKind.RESQML_x0020root_x0020property);
+		CommentProperty commentProperty = repo.createCommentProperty(h1i1SinglePolylineRep, "ab70d9ca-7745-474a-8b43-f2cf7ed11838", "My comment property", 1, resqml22__IndexableElement.nodes, commentPropType);
+		StringVector myComments = new StringVector();
+		myComments.add("Comment0");
+		myComments.add("Comment1");
+		myComments.add("Comment2");
+		myComments.add("Comment3");
+		commentProperty.pushBackStringHdf5ArrayOfValues(myComments, hdfProxy);
 
 		Grid2dRepresentation h1i1SingleGrid2dRep = repo.createGrid2dRepresentation(horizon1Interp1, "7281e7b0-ca21-477d-b118-e9b7200e2809", "Horizon1 Interp1 Grid2dRep");
 		SWIGTYPE_p_double zValues = fesapi.new_DoubleArray(8);
@@ -712,9 +722,24 @@ ${COMMENT_END}
 					System.out.println("Spacing in J is not constant.");
 				}
 			}
+			
+			long horizonPolylineCount = repo.getHorizonPolylineRepresentationCount();
+			for (long i = 0; i < horizonPolylineCount; i++) {
+				PolylineRepresentation horizonPolyline = repo.getHorizonPolylineRepresentation(i);
+				long propCount = horizonPolyline.getValuesPropertyCount();
+				for (long j = 0; j < propCount; j++) {
+					AbstractValuesProperty prop = horizonPolyline.getValuesProperty(j);
+					if (prop instanceof CommentProperty) {
+						StringVector myComments = ((CommentProperty)prop).getStringValuesOfPatch(0);
+						for (int k = 0; k < myComments.size(); k++) {
+							System.out.println(myComments.get(k));
+						}
+					}
+				}
+			}
 
 			deserializeWell(repo);
-			
+
 			deserializeIjkGrid(repo);
 ${COMMENT_START}
 			System.out.println("GRAPHICAL INFORMATIONS");
@@ -808,7 +833,7 @@ ${COMMENT_END}
 				Wellbore witsmlWellbore = witsmlWell.getWellbore(wellboreIdx);
 				System.out.println("witsml wellbore: " + witsmlWellbore.getTitle() + " (" + witsmlWellbore.getUuid() + ")");
 				for (int wbGeomIdx = 0; wbGeomIdx < witsmlWellbore.getWellboreGeometryCount(); ++wbGeomIdx) {
-					witsml20_WellboreGeometry wbGeom = witsmlWellbore.getWellboreGeometry(wbGeomIdx);
+					Witsml20_WellboreGeometry wbGeom = witsmlWellbore.getWellboreGeometry(wbGeomIdx);
 					System.out.println("witsml wellbore geom: " + wbGeom.getTitle() + " (" + wbGeom.getUuid() + ")");
 					if (wbGeom.hasDepthWaterMean()) { System.out.println("DepthWaterMean: " + wbGeom.getDepthWaterMeanValue() + " " + wbGeom.getDepthWaterMeanUom()); }
 					if (wbGeom.hasGapAir()) { System.out.println("GapAir: " + wbGeom.getGapAirValue() + " " + wbGeom.getGapAirUom()); }
