@@ -2643,6 +2643,7 @@ namespace RESQML2_NS
 	{
 	public:
 		bool isDrilled() const;
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreTrajectoryRepresentation, WellboreTrajectoryRepresentation);
 	};
 
 	//************************************/
