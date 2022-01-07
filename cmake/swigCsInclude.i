@@ -101,6 +101,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		TIMESERIESDATA,
 		TRAJECTORY,
 		TRIANGULATEDSETREPRESENTATION,
+		TRUNCATEDIJKGRIDREPRESENTATION,
 		UNSTRUCTUREDGRIDREPRESENTATION,
 		WELL,
 		WELLBORE,
@@ -1090,6 +1091,7 @@ ${COMMENT_END}
 		case DataObjectName.TIMESERIESDATA : return new F2iConsulting.Fesapi.${FESAPI_PRODML2_1_NS}.TimeSeriesData(cPtr, owner);
 		case DataObjectName.TRAJECTORY : return witsml2_instantiateTrajectory(cPtr, owner);
 		case DataObjectName.TRIANGULATEDSETREPRESENTATION : return resqml2_instantiateTriangulatedSetRepresentation(cPtr, owner);
+		case DataObjectName.TRUNCATEDIJKGRIDREPRESENTATION : return resqml2_instantiateConcreteIjkGridRepresentation(cPtr, owner);
 		case DataObjectName.UNSTRUCTUREDGRIDREPRESENTATION : return resqml2_instantiateUnstructuredGridRepresentation(cPtr, owner);
 		case DataObjectName.WELL : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.Well(cPtr, owner);
 		case DataObjectName.WELLBORE : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.Wellbore(cPtr, owner);
