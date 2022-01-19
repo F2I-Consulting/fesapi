@@ -309,7 +309,6 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 						localFaceIndexPairs[cellIndexPairIndex*2+1] = totalLocalFaceIndexPairs[i*2+1];
 					}
 					++cellIndexPairIndex;
-					break;
 				}
 			}
 		}
