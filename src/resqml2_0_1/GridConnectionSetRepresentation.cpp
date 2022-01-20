@@ -87,7 +87,7 @@ void GridConnectionSetRepresentation::setCellIndexPairsUsingExistingDataset(uint
 	}
 	getRepository()->addRelationship(this, proxy);
 
-	_resqml20__GridConnectionSetRepresentation* const rep = static_cast<_resqml20__GridConnectionSetRepresentation* const>(gsoapProxy2_0_1);
+	_resqml20__GridConnectionSetRepresentation* const rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 	rep->Count = cellIndexPairCount;
 
 	// XML cell index pair
