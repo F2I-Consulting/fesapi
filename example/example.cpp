@@ -965,15 +965,16 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	gridConnSet->pushBackSupportingGridRepresentation(ijkgrid);
 	int64_t cellConn[6] = { 0, 9999, 0, 1, 9999, 1 };
 	gridConnSet->setCellIndexPairs(3, cellConn, 9999, hdfProxy);
-	int localFacePerCellIndexPairs[6] = { 3, 9999, 3, 5, 9999, 5 };
+	int localFacePerCellIndexPairs[6] = { 3, -1, 3, 5, -1, 5 };
 	gridConnSet->setLocalFacePerCellIndexPairs(3, localFacePerCellIndexPairs, -1, hdfProxy);
 
 	if (fault1Interp1 != nullptr)
 	{
 		// link to fault
 		gridConnSet->pushBackInterpretation(fault1Interp1);
+		unsigned int interpCumulativeCount[3] = { 0, 1, 1 };
 		unsigned int faultIndices = 0;
-		gridConnSet->setConnectionInterpretationIndices(&faultIndices, 1, 9999, hdfProxy);
+		gridConnSet->setConnectionInterpretationIndices(interpCumulativeCount, &faultIndices, hdfProxy);
 	}
 
 	RESQML2_NS::GridConnectionSetRepresentation * gridConnSet432 = pck->createGridConnectionSetRepresentation("20b480a8-5e3b-4336-8f6e-1b3099c2c60f", "GridConnectionSetRepresentation");
@@ -987,11 +988,11 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	};
 	gridConnSet432->setCellIndexPairs(15, cellConn432, 9999, hdfProxy);
 	int localFacePerCellIndexPairs432[30] = {
-		3, 9999, 3, 9999, 3, 9999,
+		3, -1, 3, -1, 3, -1,
 		3, 5, 3, 5, 3, 5,
 		3, 5, 3, 5, 3, 5,
 		3, 5, 3, 5, 3, 5,
-		9999, 5, 9999, 5, 9999, 5
+		-1, 5, -1, 5, -1, 5
 	};
 	gridConnSet432->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, -1, hdfProxy);
 
@@ -4694,6 +4695,40 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 }
 #endif
 
+void deserializeGridConnectionSetRepresentation(RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid)
+{
+	unsigned int gridConnectionSetCount = ijkGrid->getGridConnectionSetRepresentationCount();
+	std::cout << "Grid Connection Count is : " << gridConnectionSetCount << std::endl;
+	if (gridConnectionSetCount > 0) {
+		RESQML2_NS::GridConnectionSetRepresentation const * gridConnectionSet = ijkGrid->getGridConnectionSetRepresentation(0);
+		unsigned int faultInterpOfGridConnCount = gridConnectionSet->getInterpretationCount();
+		std::cout << "Interpretation Count of this grid connection set is : " << faultInterpOfGridConnCount << " and its cell index pair count is " << gridConnectionSet->getCellIndexPairCount() << endl;
+
+		std::unique_ptr<int[]> localFacePerCellIndexPairs;
+		if (gridConnectionSet->hasLocalFacePerCell()) {
+			localFacePerCellIndexPairs.reset(new int[gridConnectionSet->getCellIndexPairCount() * 2]);
+			int64_t gcsNullValue = gridConnectionSet->getLocalFacePerCellIndexPairs(localFacePerCellIndexPairs.get());
+			std::cout << "Null Value for LocalFacePerCellIndexPairs : " << gcsNullValue << endl;
+		}
+
+		for (int interpIndex = -1; interpIndex < static_cast<int>(faultInterpOfGridConnCount); ++interpIndex)
+		{
+			if (interpIndex != -1) {
+				RESQML2_NS::AbstractFeatureInterpretation* faultInterpOfGridConn = gridConnectionSet->getInterpretationFromIndex(interpIndex);
+				std::cout << "Interpretation title of this grid connection set is : " << faultInterpOfGridConn->getTitle() << ". Its UUID is" << faultInterpOfGridConn->getUuid();
+			}
+			else {
+				std::cout << "Study of the block of connections which are not associated to any interpretation ";
+			}
+			uint64_t interpCellIndexPairCount = gridConnectionSet->getCellIndexPairCountFromInterpretationIndex(interpIndex);
+			std::cout << ". It contains " << interpCellIndexPairCount << " cell index pairs." << endl;
+			std::unique_ptr<int64_t[]> interpCellIndexPairs(new int64_t[interpCellIndexPairCount * 2]);
+			localFacePerCellIndexPairs.reset(new int[interpCellIndexPairCount * 2]);
+			gridConnectionSet->getGridConnectionSetInformationFromInterpretationIndex(interpCellIndexPairs.get(), nullptr, localFacePerCellIndexPairs.get(), interpIndex);
+		}
+	}
+}
+
 void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 {
 	std::cout << endl << "IJK GRID REP" << endl;
@@ -4911,26 +4946,7 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 			delete[] rightHandnessTruncFace;
 		}
 
-		//*****************************
-		// GRID CONNECTION SET 
-		//*****************************
-		unsigned int gridConnectionSetCount = ijkGrid->getGridConnectionSetRepresentationCount();
-		std::cout << "Grid Connection Count is : " << gridConnectionSetCount << std::endl;
-		if (gridConnectionSetCount > 0) {
-			RESQML2_NS::GridConnectionSetRepresentation const * gridConnectionSet = ijkGrid->getGridConnectionSetRepresentation(0);
-			unsigned int faultInterpOfGridConnCount = gridConnectionSet->getInterpretationCount();
-			std::cout << "Interpretation Count of this grid connection set is : " << faultInterpOfGridConnCount << endl;
-			if (faultInterpOfGridConnCount > 0)
-			{
-				RESQML2_NS::AbstractFeatureInterpretation* faultInterpOfGridConn = gridConnectionSet->getInterpretationFromIndex(0);
-				std::cout << "Interpretation of this grid connection set is : " << faultInterpOfGridConn->getTitle() << " With UUID " << faultInterpOfGridConn->getUuid() << endl;
-			}
-
-			int* localFacePerCellIndexPairs = new int[gridConnectionSet->getCellIndexPairCount() * 2];
-			int64_t gcsNullValue = gridConnectionSet->getLocalFacePerCellIndexPairs(localFacePerCellIndexPairs);
-			std::cout << "Null Value for LocalFacePerCellIndexPairs : " << gcsNullValue << endl;
-			delete[] localFacePerCellIndexPairs;
-		}
+		deserializeGridConnectionSetRepresentation(ijkGrid);
 
 		//*****************************
 		// LGR 

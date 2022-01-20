@@ -125,7 +125,8 @@ namespace EML2_NS
 		 * @param 	elementsDatatype			The datatype of the elements to write.
 		 * @param 	elements					1d array of elements containing the aggregation of
 		 * 										individual lists contents.
-		 * @param 	elementsSize				Size of the elements array.
+		 * @param 	elementsSize				Size of the elements array. It must be equal to
+		 *										cumulativeLength[cumulativeLengthSize-1].
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void writeItemizedListOfList(const std::string & groupName,
 			const std::string & name,

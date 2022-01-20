@@ -3407,10 +3407,10 @@ namespace RESQML2_NS
 		int64_t getInterpretationIndexNullValue() const;
 	
 		uint64_t getCellIndexPairCount() const;
-		unsigned int getCellIndexPairCountFromInterpretationIndex(unsigned int interpretationIndex) const;
+		uint64_t getCellIndexPairCountFromInterpretationIndex(int interpretationIndex) const;
 		
 		int64_t getCellIndexPairs(int64_t * cellIndexPairs) const;
-		void getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const;
+		void getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, int interpretationIndex) const;
 		bool hasLocalFacePerCell() const;
 		int64_t getLocalFacePerCellIndexPairs(int * localFacePerCellIndexPairs) const;
 		bool isBasedOnMultiGrids() const;
@@ -3421,7 +3421,7 @@ namespace RESQML2_NS
 		void setCellIndexPairs(uint64_t cellIndexPairCount, int64_t * cellIndexPair, int64_t cellIndexPairNullValue = -1, EML2_NS::AbstractHdfProxy * proxy = nullptr);
 		void setCellIndexPairs(uint64_t cellIndexPairCount, int64_t * cellIndexPair, int64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, uint16_t gridIndexPairNullValue, uint16_t const * gridIndexPair);
 		void setLocalFacePerCellIndexPairs(uint64_t cellIndexPairCount, int * localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy);
-		void setConnectionInterpretationIndices(unsigned int * interpretationIndices, unsigned int interpretationIndiceCount, unsigned int nullValue, EML2_NS::AbstractHdfProxy * proxy);
+		void setConnectionInterpretationIndices(unsigned int const* cumulativeInterpCount, unsigned int const* interpIndices, EML2_NS::AbstractHdfProxy * proxy);
 		void pushBackInterpretation(AbstractFeatureInterpretation* interp);
 		
 		std::string getInterpretationUuidFromIndex(unsigned int interpretationIndex) const;

@@ -41,7 +41,7 @@ void GridConnectionSetRepresentation::init(COMMON_NS::DataObjectRepository * rep
 	gsoapProxy2_3 = soap_new_resqml22__GridConnectionSetRepresentation(repo->getGsoapContext());
 
     initMandatoryMetadata();
-    setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+    setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
 }
@@ -200,16 +200,33 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCount() const
 	return static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3)->Count;
 }
 
-unsigned int GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretationIndex(unsigned int interpretationIndex) const
+uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretationIndex(int interpretationIndex) const
 {
-	if (interpretationIndex >= getInterpretationCount()) {
+	const unsigned int interpCount = getInterpretationCount();
+	if (interpretationIndex < -1 || interpretationIndex >= static_cast<int>(interpCount)) {
 		throw out_of_range("The interpretation index is out of range.");
 	}
-	
-	unsigned int result = 0;
+
+	uint64_t result = 0;
 	_resqml22__GridConnectionSetRepresentation* rep = static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3);
 
-	if (rep->ConnectionInterpretations != nullptr)
+	if (interpretationIndex < 0) {
+		const uint64_t totalCellIndexPairCount = getCellIndexPairCount();
+		if (interpCount == 0) {
+			return totalCellIndexPairCount;
+		}
+		else {
+			std::unique_ptr<unsigned int[]> const cumulative(new unsigned int[totalCellIndexPairCount]);
+			readArrayNdOfUInt32Values(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength, cumulative.get());
+			result = cumulative[0] > 0 ? 0 : 1;
+			for (uint64_t i = 1; i < totalCellIndexPairCount; ++i) {
+				if (cumulative[i] == cumulative[i - 1]) {
+					result++;
+				}
+			}
+		}
+	}
+	else
 	{
 		if (rep->ConnectionInterpretations->InterpretationIndices->Elements->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 		{
@@ -223,7 +240,7 @@ unsigned int GridConnectionSetRepresentation::getCellIndexPairCountFromInterpret
 
 			hdfProxy->readArrayNdOfUIntValues(dsPart->PathInExternalFile, faultIndices.get());
 			for (size_t i = 0; i < static_cast<size_t>(faultIndexCount); ++i) {
-				if (faultIndices[i] == interpretationIndex) {
+				if (faultIndices[i] == static_cast<unsigned int>(interpretationIndex)) {
 					result++;
 				}
 			}
@@ -232,79 +249,97 @@ unsigned int GridConnectionSetRepresentation::getCellIndexPairCountFromInterpret
 			throw std::logic_error("Not implemented yet");
 		}
 	}
-	else {
-		throw invalid_argument("The grid connection does not contain any (fault) interpretation association."); 
-	}
 
 	return result;
 }
 
-void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const
+void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, int interpretationIndex) const
 {
+	const unsigned int interpCount = getInterpretationCount();
+	if (interpretationIndex < -1 || interpretationIndex >= static_cast<int>(interpCount)) {
+		throw out_of_range("The interpretation index is out of range.");
+	}
+
 	//load global information into memory
 	const uint64_t totalCellIndexPairCount = getCellIndexPairCount();
 	std::unique_ptr<int64_t[]> const totalCellIndexPairs(new int64_t[totalCellIndexPairCount*2]);
 	getCellIndexPairs(totalCellIndexPairs.get());
 	std::unique_ptr<unsigned short[]> totalGridIndexPairs;
-	if (gridIndexPairs != nullptr)
-	{
+	if (gridIndexPairs != nullptr) {
 		totalGridIndexPairs = std::unique_ptr<unsigned short[]>(new unsigned short[totalCellIndexPairCount * 2]);
 		getGridIndexPairs(totalGridIndexPairs.get());
 	}
 	std::unique_ptr<int[]> totalLocalFaceIndexPairs;
-	if (localFaceIndexPairs != nullptr)
-	{
+	if (localFaceIndexPairs != nullptr) {
 		totalLocalFaceIndexPairs = std::unique_ptr<int[]>(new int[totalCellIndexPairCount*2]);
 		getLocalFacePerCellIndexPairs(totalLocalFaceIndexPairs.get());
 	}
 
 	_resqml22__GridConnectionSetRepresentation* const rep = static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3);
 
-	if (rep->ConnectionInterpretations != nullptr)
+	std::unique_ptr<unsigned int[]> cumulativeCount(new unsigned int[totalCellIndexPairCount]);
+	if (interpCount > 0) {
+		readArrayNdOfUInt32Values(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength, cumulativeCount.get());
+	}
+	else {
+		std::fill(cumulativeCount.get(), cumulativeCount.get() + totalCellIndexPairCount, 0);
+	}
+	if (interpretationIndex < 0) {
+		size_t cellIndexPairIndex = 0;
+		if (cumulativeCount[0] == 0) {
+			cellIndexPairs[0] = totalCellIndexPairs[0];
+			cellIndexPairs[1] = totalCellIndexPairs[1];
+			if (gridIndexPairs != nullptr) {
+				gridIndexPairs[0] = totalGridIndexPairs[0];
+				gridIndexPairs[1] = totalGridIndexPairs[1];
+			}
+			if (localFaceIndexPairs != nullptr) {
+				localFaceIndexPairs[0] = totalLocalFaceIndexPairs[0];
+				localFaceIndexPairs[1] = totalLocalFaceIndexPairs[1];
+			}
+			++cellIndexPairIndex;
+		}
+		for (uint64_t i = 1; i < totalCellIndexPairCount; ++i) {
+			if (cumulativeCount[i] == cumulativeCount[i - 1]) {
+				cellIndexPairs[cellIndexPairIndex * 2] = totalCellIndexPairs[i * 2];
+				cellIndexPairs[cellIndexPairIndex * 2 + 1] = totalCellIndexPairs[i * 2 + 1];
+				if (gridIndexPairs != nullptr)	{
+					gridIndexPairs[cellIndexPairIndex * 2] = totalGridIndexPairs[i * 2];
+					gridIndexPairs[cellIndexPairIndex * 2 + 1] = totalGridIndexPairs[i * 2 + 1];
+				}
+				if (localFaceIndexPairs != nullptr) {
+					localFaceIndexPairs[cellIndexPairIndex * 2] = totalLocalFaceIndexPairs[i * 2];
+					localFaceIndexPairs[cellIndexPairIndex * 2 + 1] = totalLocalFaceIndexPairs[i * 2 + 1];
+				}
+				++cellIndexPairIndex;
+			}
+		}
+	}
+	else
 	{
-		// Get the fault indices information
-		std::unique_ptr<unsigned int[]> cumulativeCount;
-		if (rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
-		{
-			cumulativeCount = std::unique_ptr<unsigned int[]>(new unsigned int[totalCellIndexPairCount]);
-			eml23__ExternalDatasetPart* dsPart = static_cast<eml23__IntegerExternalArray*>(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength)->Values->ExternalFileProxy[0];
-			getHdfProxyFromDataset(dsPart)->readArrayNdOfUIntValues(dsPart->PathInExternalFile, cumulativeCount.get());
-		}
-		else
-		{
-			throw std::logic_error("Not yet implemented");
-		}
-
 		std::unique_ptr<unsigned int[]> faultIndices;
-		if (rep->ConnectionInterpretations->InterpretationIndices->Elements->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
-		{
+		if (rep->ConnectionInterpretations->InterpretationIndices->Elements->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
 			faultIndices = std::unique_ptr<unsigned int[]>(new unsigned int[cumulativeCount[totalCellIndexPairCount-1]]);
 			eml23__ExternalDatasetPart* dsPart = static_cast<eml23__IntegerExternalArray*>(rep->ConnectionInterpretations->InterpretationIndices->Elements)->Values->ExternalFileProxy[0];
 			getHdfProxyFromDataset(dsPart)->readArrayNdOfUIntValues(dsPart->PathInExternalFile, faultIndices.get());
 		}
-		else
-		{
+		else {
 			throw std::logic_error("Not yet implemented");
 		}
 
 		// Based on the fault indices information, construct the required subset of information
 		size_t cellIndexPairIndex = 0;
 		unsigned int j = 0;
-		for (unsigned int i = 0; i < totalCellIndexPairCount; ++i)
-		{
-			for (; j < cumulativeCount[i]; ++j)
-			{
-				if (faultIndices[j] == interpretationIndex)
-				{
+		for (unsigned int i = 0; i < totalCellIndexPairCount; ++i) {
+			for (; j < cumulativeCount[i]; ++j) {
+				if (faultIndices[j] == interpretationIndex) {
 					cellIndexPairs[cellIndexPairIndex*2] = totalCellIndexPairs[i*2];
 					cellIndexPairs[cellIndexPairIndex*2+1] = totalCellIndexPairs[i*2+1];
-					if (gridIndexPairs != nullptr)
-					{
+					if (gridIndexPairs != nullptr) {
 						gridIndexPairs[cellIndexPairIndex*2] = totalGridIndexPairs[i*2];
 						gridIndexPairs[cellIndexPairIndex*2+1] = totalGridIndexPairs[i*2+1];
 					}
-					if (localFaceIndexPairs != nullptr)
-					{
+					if (localFaceIndexPairs != nullptr) {
 						localFaceIndexPairs[cellIndexPairIndex*2] = totalLocalFaceIndexPairs[i*2];
 						localFaceIndexPairs[cellIndexPairIndex*2+1] = totalLocalFaceIndexPairs[i*2+1];
 					}
@@ -312,10 +347,6 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 				}
 			}
 		}
-	}
-	else
-	{
-		throw invalid_argument("The grid connection does not contain any (fault) interpretation association."); 
 	}
 }
 
@@ -424,7 +455,7 @@ void GridConnectionSetRepresentation::pushBackXmlSupportingGridRepresentation(RE
 }
 
 // TODO: Resqml allows to map with more than one feature interpretation.
-void GridConnectionSetRepresentation::setConnectionInterpretationIndices(unsigned int const * interpretationIndices, unsigned int interpretationIndiceCount, unsigned int nullValue, EML2_NS::AbstractHdfProxy * proxy)
+void GridConnectionSetRepresentation::setConnectionInterpretationIndices(unsigned int const* cumulativeInterpCount, unsigned int const* interpIndices, EML2_NS::AbstractHdfProxy * proxy)
 {
 	getRepository()->addRelationship(this, proxy);
 
@@ -437,7 +468,7 @@ void GridConnectionSetRepresentation::setConnectionInterpretationIndices(unsigne
 	// Cumulative
 	eml23__IntegerExternalArray* cumulativeLength = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength = cumulativeLength;
-	cumulativeLength->NullValue = nullValue;
+	cumulativeLength->NullValue = -1;
 	cumulativeLength->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
 	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
 	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
@@ -446,7 +477,7 @@ void GridConnectionSetRepresentation::setConnectionInterpretationIndices(unsigne
 	// Elements
 	eml23__IntegerExternalArray* elements = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	rep->ConnectionInterpretations->InterpretationIndices->Elements = elements;
-	elements->NullValue = nullValue;
+	elements->NullValue = -1;
 	elements->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
 	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
 	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
@@ -454,11 +485,11 @@ void GridConnectionSetRepresentation::setConnectionInterpretationIndices(unsigne
 	elements->Values->ExternalFileProxy.push_back(dsPart);
 
 	// HDF
-	std::unique_ptr<unsigned int[]> cumulative(new unsigned int[interpretationIndiceCount]);
-	for (unsigned int i = 0; i < interpretationIndiceCount; ++i) {
-		cumulative[i] = i + 1;
+	const uint64_t cellIndexPairCount = getCellIndexPairCount();
+	if (cellIndexPairCount == 0) {
+		throw logic_error("You must set the cell index pairs before to set the connection interpretations.");
 	}
-	proxy->writeItemizedListOfList(getHdfGroup(), "InterpretationIndices", H5T_NATIVE_UINT, cumulative.get(), interpretationIndiceCount, H5T_NATIVE_UINT, interpretationIndices, interpretationIndiceCount);
+	proxy->writeItemizedListOfList(getHdfGroup(), "InterpretationIndices", H5T_NATIVE_UINT, cumulativeInterpCount, cellIndexPairCount, H5T_NATIVE_UINT, interpIndices, cumulativeInterpCount[cellIndexPairCount - 1]);
 }
 
 void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::AbstractFeatureInterpretation* interp)

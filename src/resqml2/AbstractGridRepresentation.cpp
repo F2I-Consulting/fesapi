@@ -1991,7 +1991,7 @@ bool AbstractGridRepresentation::isTruncated() const
 uint64_t AbstractGridRepresentation::getTruncatedFaceCount() const
 {
 	if (!isTruncated()) {
-		throw invalid_argument("The grid is not truncated");
+		return 0;
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -2116,7 +2116,7 @@ void AbstractGridRepresentation::getNodeCountPerTruncatedFace(uint64_t * nodeCou
 uint64_t AbstractGridRepresentation::getTruncatedCellCount() const
 {
 	if (!isTruncated()) {
-		throw invalid_argument("The grid is not truncated");
+		return 0;
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
