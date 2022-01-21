@@ -1,4 +1,4 @@
-from distutils.core import setup, Extension
+from setuptools import setup, Extension
 
 fesapi_module = Extension('_fesapi',
 	sources=['swigGeneratedPythonWrapper.cpp'],
@@ -8,9 +8,12 @@ fesapi_module = Extension('_fesapi',
 )
 
 setup (name = 'fesapi',
-	version = '${Fesapi_VERSION}',
+	version     = '${Fesapi_VERSION}',
 	author      = "F2I-CONSULTING",
+	maintainer  = "F2I-CONSULTING",
+	url         = 'https://github.com/F2I-Consulting/fesapi',
 	description = """An API for the Energistics standards""",
+	license     = 'Apache 2.0',
 	ext_modules = [fesapi_module],
-	py_modules = ["fesapi"],
+	py_modules  = ["fesapi"],
 )
