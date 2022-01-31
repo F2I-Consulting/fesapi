@@ -62,12 +62,18 @@ As a first way to start, we advise people to look at examples provided with FESA
 - Python3 (no support for Python2) : [in python/src/example.py](./python/src/example.py) (please follow instructions in the documentation header of this example python file)
 
 You can also find Doxygen generated documentation [here](https://f2i-consulting.com/fesapi/doxygen/)
+
+# Testing
+This software was tested with :
+- Catch2 from [Catch Org](https://github.com/catchorg/Catch2)
+- [GitHub actions](https://github.com/features/actions)
+- [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/)
+
 # Credits
 This software was developed with :
 - the gSOAP toolkit from [Genivia Inc](http://genivia.com/)
 - the date library from [Howard Hinnant](https://github.com/HowardHinnant/date)
 
-This software was tested with :
-- Catch2 from [Catch Org](https://github.com/catchorg/Catch2)
-- [Travis CI](https://travis-ci.org/)
-- [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/)
+FESAPI Product incorporates RESQML&#8482;, WITSML&#8482; and PRODML&#8482; technology/standards provided by the Energistics Consortium, Inc.
+
+RESQML, WITSML and PRODML are trademarks or registered trademarks of Energistics Consortium, Inc.
