@@ -492,6 +492,17 @@ INSTALL (
 )
 
 if (WITH_PYTHON_WRAPPING)
-	install(CODE "execute_process(COMMAND	${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/swig/setup.py build_ext --build-lib ../python/src
-											WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/swig)")
+	IF (WIN32)
+		INSTALL (
+			TARGETS ${CPP_LIBRARY_NAME}
+			RUNTIME DESTINATION ${FESAPI_ROOT_DIR}/python/fesapi/
+		)
+	ELSE ()
+		INSTALL (
+			TARGETS ${CPP_LIBRARY_NAME}
+			LIBRARY DESTINATION ${FESAPI_ROOT_DIR}/python/fesapi/
+		)
+	ENDIF (WIN32)
+	INSTALL(CODE "execute_process(COMMAND	${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/python/setup.py bdist_wheel
+											WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/python)")
 endif (WITH_PYTHON_WRAPPING)

@@ -7,13 +7,7 @@ set(SWIG_LINKED_TO_RELEASE ON CACHE BOOL "Is your SWIG generated library linked 
 # See http://swig.org/Doc4.0/SWIGDocumentation.html#Python_nn28 for more information about SWIG python builtin parameter
 set(SWIG_PYTHON_BUILTIN OFF CACHE BOOL "The use of Python proxy classes has performance implications that may be unacceptable for a high-performance library. The new -builtin option instructs SWIG to forego the use of proxy classes, and instead create wrapped types as new built-in Python types.")
 
-message("Generating SWIG Python files...")
-file (GLOB TO_DELETE ${CMAKE_SOURCE_DIR}/python/src/*.pyd)
-if (TO_DELETE)
-	file (REMOVE ${TO_DELETE})
-endif (TO_DELETE)
-file (REMOVE ${CMAKE_SOURCE_DIR}/python/src/fesapi.py)
-file (REMOVE_RECURSE ${CMAKE_SOURCE_DIR}/python/src/__pycache__)
+file (REMOVE ${CMAKE_SOURCE_DIR}/python/fesapi/__init__.py)
 
 # The name of the library is different on Windows because it includes the version
 # The assembly name is used to load the debug vs release FESAPI library in the distutils setup.py script
@@ -31,9 +25,10 @@ else (WIN32)
 	endif (SWIG_LINKED_TO_RELEASE)
 endif (WIN32)
 configure_file(${CMAKE_SOURCE_DIR}/cmake/swigPythonInclude.i.in ${CMAKE_SOURCE_DIR}/swig/swigPythonInclude.i) # Overwrite if different
-configure_file(${CMAKE_SOURCE_DIR}/cmake/setup.py.in ${CMAKE_SOURCE_DIR}/swig/setup.py) # Overwrite if different
+configure_file(${CMAKE_SOURCE_DIR}/cmake/setup.py.in ${CMAKE_SOURCE_DIR}/python/setup.py) # Overwrite if different
 
 # SWIG execution
+message("Generating SWIG Python files...")
 set (EXECUTE_COMMAND "${SWIG_EXECUTABLE}")
 if (WITH_RESQML2_2)
         list (APPEND EXECUTE_COMMAND -DWITH_RESQML2_2)
@@ -46,13 +41,14 @@ if (SWIG_PYTHON_BUILTIN)
 endif (SWIG_PYTHON_BUILTIN)
 list (APPEND EXECUTE_COMMAND -py3)
 list (APPEND EXECUTE_COMMAND -o)
-list (APPEND EXECUTE_COMMAND ${CMAKE_SOURCE_DIR}/swig/swigGeneratedPythonWrapper.cpp)
+list (APPEND EXECUTE_COMMAND ${CMAKE_SOURCE_DIR}/python/swigGeneratedPythonWrapper.cpp)
 list (APPEND EXECUTE_COMMAND -outdir)
-list (APPEND EXECUTE_COMMAND ${CMAKE_SOURCE_DIR}/python/src)
+list (APPEND EXECUTE_COMMAND ${CMAKE_SOURCE_DIR}/python/fesapi)
 list (APPEND EXECUTE_COMMAND ${CMAKE_SOURCE_DIR}/swig/swigModule.i)
 if (WIN32)
         execute_process(COMMAND powershell ${EXECUTE_COMMAND})
 elseif (UNIX)
         execute_process(COMMAND ${EXECUTE_COMMAND})
 endif (WIN32)
+file (RENAME ${CMAKE_SOURCE_DIR}/python/fesapi/fesapi.py ${CMAKE_SOURCE_DIR}/python/fesapi/__init__.py)
 message("SWIG Python files have been generated.")

@@ -1,7 +1,5 @@
 """
-Be sure that the FesapiCpp library and its dependencies are accessible
-i.e. are in the (LD_LIBRARY_)PATH meaning for example on Windows that
-they are in the same directory than this file and the generated pyd file.
+Please first install the wheel located in fesapi/python/dist
 """
 
 from datetime import datetime

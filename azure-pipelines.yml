@@ -309,5 +309,6 @@ jobs:
         
       - script: |
           export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(Build.BinariesDirectory)/install/lib
-          python3 $(Build.SourcesDirectory)/python/src/example.py
+          pip3 install $(Build.SourcesDirectory)/python/dist/*.whl
+          python3 $(Build.SourcesDirectory)/python/example/example.py
         displayName: 'Run Python example'
