@@ -210,20 +210,12 @@ COMMON_NS::DataObjectReference SubRepresentation::getHdfProxyDor() const
 	return COMMON_NS::DataObjectReference();
 }
 
-RESQML2_NS::AbstractRepresentation::indexableElement SubRepresentation::getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const
+gsoap_eml2_3::resqml22__IndexableElement SubRepresentation::getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const
 {
 	_resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
 	if (rep->SubRepresentationPatch.size() > patchIndex) {
 		if (rep->SubRepresentationPatch[patchIndex]->ElementIndices.size() > elementIndicesIndex) {
-			switch (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->IndexableElement) {
-			case resqml22__IndexableElement::nodes: return NODE;
-			case resqml22__IndexableElement::edges:
-			case resqml22__IndexableElement::intervals: return EDGE;
-			case resqml22__IndexableElement::faces: return FACE;
-			case resqml22__IndexableElement::cells: return VOLUME;
-			case resqml22__IndexableElement::pillars: return PILLAR;
-			default: throw invalid_argument("The indexable element of the subrepresentation is not supported yet");
-			}
+			return rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->__ElementIndices_sequence->IndexableElement;
 		}
 		else {
 			throw out_of_range("The elementIndices does not exist at this index.");

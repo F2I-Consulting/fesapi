@@ -78,7 +78,7 @@ uint64_t SubRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) con
 		throw range_error("The index of the patch is not in the allowed range of patch.");
 	}
 
-	if (getElementKindOfPatch(patchIndex, 0) == NODE) {
+	if (getElementKindOfPatch(patchIndex, 0) == gsoap_eml2_3::resqml22__IndexableElement::nodes) {
 		return getElementCountOfPatch(patchIndex);
 	}
 	else {

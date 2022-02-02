@@ -2660,8 +2660,6 @@ namespace RESQML2_NS
 	class AbstractRepresentation : public COMMON_NS::AbstractObject
 	{
 	public:
-
-		enum indexableElement { NODE = 0, EDGE = 1, FACE = 2, VOLUME = 3, PILLAR = 4 };
 		
 		AbstractFeatureInterpretation* getInterpretation() const;
 		AbstractLocal3dCrs * getLocalCrs(unsigned int patchIndex);
@@ -2902,7 +2900,7 @@ namespace RESQML2_NS
 			uint64_t elementCount,
 			uint64_t * elementIndices0, uint64_t * elementIndices1,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr) = 0;
-		
+
 		bool areElementIndicesPairwise(unsigned int patchIndex) const;
 		bool areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
 
@@ -2910,11 +2908,10 @@ namespace RESQML2_NS
 		unsigned int getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
 		int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
 		uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
-		
-		AbstractRepresentation::indexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const;
+
+		gsoap_eml2_3::resqml22__IndexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const;
 		uint64_t getElementCountOfPatch(unsigned int patchIndex) const;
 		void getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, uint64_t * elementIndices) const;
-		
 
 		void pushBackSupportingRepresentation(AbstractRepresentation * supportingRep);
 		unsigned int getSupportingRepresentationCount() const = 0;

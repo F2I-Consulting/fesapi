@@ -63,7 +63,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The kind of the selected elements.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual indexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::resqml22__IndexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const = 0;
 
 		/**
 		 * Gets the count of the selected elements of a particular patch of this sub-representation.

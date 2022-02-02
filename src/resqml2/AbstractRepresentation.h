@@ -32,9 +32,6 @@ namespace RESQML2_NS
 	{
 	public:
 
-		/** Values that represent indexable elements */
-		enum indexableElement { NODE = 0, EDGE = 1, FACE = 2, VOLUME = 3, PILLAR = 4 };
-
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~AbstractRepresentation() = default;
 

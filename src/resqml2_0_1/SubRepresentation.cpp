@@ -209,19 +209,20 @@ COMMON_NS::DataObjectReference SubRepresentation::getHdfProxyDor() const
 	return COMMON_NS::DataObjectReference();
 }
 
-RESQML2_NS::AbstractRepresentation::indexableElement SubRepresentation::getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const
+gsoap_eml2_3::resqml22__IndexableElement SubRepresentation::getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const
 {
 	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
 	if (rep->SubRepresentationPatch.size() > patchIndex) {
 		if (rep->SubRepresentationPatch[patchIndex]->ElementIndices.size() > elementIndicesIndex) {
-			switch (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->IndexableElement) {
-			case resqml20__IndexableElements::nodes: return NODE;
-			case resqml20__IndexableElements::edges:
-			case resqml20__IndexableElements::intervals: return EDGE;
-			case resqml20__IndexableElements::faces: return FACE;
-			case resqml20__IndexableElements::cells: return VOLUME;
-			case resqml20__IndexableElements::pillars: return PILLAR;
-			default: throw invalid_argument("The indexable element of the subrepresentation is not supported yet");
+			gsoap_resqml2_0_1::resqml20__IndexableElements ie201 = rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->IndexableElement;
+			if (ie201 == gsoap_resqml2_0_1::resqml20__IndexableElements::cells) {
+				return gsoap_eml2_3::resqml22__IndexableElement::cells;
+			}
+			else if (static_cast<int>(ie201) < 17) {
+				return static_cast<gsoap_eml2_3::resqml22__IndexableElement>(static_cast<int>(ie201) + 1);
+			}
+			else {
+				return static_cast<gsoap_eml2_3::resqml22__IndexableElement>(static_cast<int>(ie201) + 2);
 			}
 		}
 		else {
