@@ -157,7 +157,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	A vector of pointers to all child grids of this grid.
 		 */
-		std::vector<RESQML2_NS::AbstractGridRepresentation *> getChildGridSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractGridRepresentation *> getChildGridSet() const;
 
 		/**
 		 * Gets the count of child grids of this grid.

@@ -773,14 +773,15 @@ unsigned int AbstractIjkGridRepresentation::getJPillarFromGlobalIndex(unsigned i
 
 unsigned int AbstractIjkGridRepresentation::getGlobalIndexPillarFromIjIndex(unsigned int iPillar, unsigned int jPillar) const
 {
-	if (iPillar > getICellCount()) {
+	const unsigned int iCellCount = getICellCount();
+	if (iPillar > iCellCount) {
 		throw out_of_range("The pillar I index is out of range.");
 	}
 	if (jPillar > getJCellCount()) {
 		throw out_of_range("The pillar J index is out of range.");
 	}
 
-	return iPillar + (getICellCount() + 1) * jPillar;
+	return iPillar + (iCellCount + 1) * jPillar;
 }
 
 unsigned int AbstractIjkGridRepresentation::getIColumnFromGlobalIndex(unsigned int globalIndex) const
@@ -803,29 +804,32 @@ unsigned int AbstractIjkGridRepresentation::getJColumnFromGlobalIndex(unsigned i
 
 unsigned int AbstractIjkGridRepresentation::getGlobalIndexColumnFromIjIndex(unsigned int iColumn, unsigned int jColumn) const
 {
-	if (iColumn >= getICellCount()) {
+	const unsigned int iCellCount = getICellCount();
+	if (iColumn >= iCellCount) {
 		throw out_of_range("The column I index is out of range.");
 	}
 	if (jColumn >= getJCellCount()) {
 		throw out_of_range("The column J index is out of range.");
 	}
 
-	return iColumn + getICellCount() * jColumn;
+	return iColumn + iCellCount * jColumn;
 }
 
 unsigned int AbstractIjkGridRepresentation::getGlobalIndexCellFromIjkIndex(unsigned int iCell, unsigned int jCell, unsigned int kCell) const
 {
-	if (iCell >= getICellCount()) {
+	const unsigned int iCellCount = getICellCount();
+	if (iCell >= iCellCount) {
 		throw out_of_range("The cell I index is out of range.");
 	}
-	if (jCell >= getJCellCount()) {
+	const unsigned int jCellCount = getJCellCount();
+	if (jCell >= jCellCount) {
 		throw out_of_range("The cell J index is out of range.");
 	}
 	if (kCell >= getKCellCount()) {
 		throw out_of_range("The cell K index is out of range.");
 	}
 
-	return iCell + getICellCount() * jCell + getColumnCount() * kCell;
+	return iCell + iCellCount * jCell + iCellCount * jCellCount * kCell;
 }
 
 void AbstractIjkGridRepresentation::loadSplitInformation()
@@ -1192,30 +1196,44 @@ uint64_t AbstractIjkGridRepresentation::getXyzPointIndexFromCellCorner(unsigned 
 	if (corner > 7) {
 		throw out_of_range("Corner is out of range.");
 	}
-
 	const unsigned int iPillarIndex = corner == 1 || corner == 2 || corner == 5 || corner == 6
 		? iCell + 1
 		: iCell;
 	const unsigned int jPillarIndex = corner == 2 || corner == 3 || corner == 6 || corner == 7
 		? jCell + 1
 		: jCell;
+
+	if (kCell > getKCellCount()) {
+		throw out_of_range("K Cell is out of range.");
+	}
 	const unsigned int kPointIndex = corner > 3
 		? kCellIndexWithGapLayer[kCell] + 1
 		: kCellIndexWithGapLayer[kCell];
 
-	const unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
+	const unsigned int iCellCount = getICellCount();
+	if (iCell > iCellCount) {
+		throw out_of_range("I Cell is out of range.");
+	}
+	const unsigned int iPillarCount = iCellCount + 1;
+	const unsigned int jCellCount = getJCellCount();
+	if (jCell > jCellCount) {
+		throw out_of_range("J Cell is out of range.");
+	}
+	const unsigned int jPillarCount = jCellCount + 1;
+
+	const unsigned int pillarIndex = iPillarIndex + iPillarCount * jPillarIndex; // Do not call getGlobalIndexPillarFromIjIndex for performance reason.
 	if (!splitInformation[pillarIndex].empty()) {
-		const unsigned int columnIndex = getGlobalIndexColumnFromIjIndex(iCell, jCell);
-		for (size_t columnSet = 0; columnSet < splitInformation[pillarIndex].size(); ++columnSet) {
-			for (size_t column = 0; column < splitInformation[pillarIndex][columnSet].second.size(); ++column) {
-				if (splitInformation[pillarIndex][columnSet].second[column] == columnIndex) {
-					return (getICellCount() + 1) * (getJCellCount() + 1) + splitInformation[pillarIndex][columnSet].first + kPointIndex * ((getICellCount() + 1) * (getJCellCount() + 1) + getSplitCoordinateLineCount()); // splitted point
+		const unsigned int columnIndex = iCell + iCellCount * jCell; // Do not call getGlobalIndexColumnFromIjIndex for performance reason.
+		for (const auto& columnSet : splitInformation[pillarIndex]) {
+			for (const unsigned int column : columnSet.second) {
+				if (column == columnIndex) {
+					return iPillarCount * jPillarCount + columnSet.first + kPointIndex * (iPillarCount * jPillarCount + getSplitCoordinateLineCount()); // splitted point
 				}
 			}
 		}
 	}
 
-	return iPillarIndex + jPillarIndex * (getICellCount()+1) + kPointIndex * ((getICellCount()+1) * (getJCellCount()+1) + getSplitCoordinateLineCount()); // non splitted point
+	return pillarIndex + kPointIndex * (iPillarCount * jPillarCount + getSplitCoordinateLineCount()); // non splitted point
 }
 
 void AbstractIjkGridRepresentation::getXyzPointOfBlockFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner,

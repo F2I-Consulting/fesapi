@@ -92,12 +92,7 @@ namespace WITSML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setWell(Well* witsmlWell) = 0;
 
-		/**
-		 * Gets resqml wellbore feature
-		 *
-		 * @returns	Null if it fails, else the resqml wellbore feature.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::WellboreFeature *> getResqmlWellboreFeature() const;
+		GETTER_DATAOBJECTS(RESQML2_NS::WellboreFeature, ResqmlWellboreFeature);
 
 		GETTER_DATAOBJECTS(WITSML2_NS::Trajectory, Trajectory)
 		GETTER_DATAOBJECTS(WITSML2_0_NS::WellboreCompletion, WellboreCompletion)

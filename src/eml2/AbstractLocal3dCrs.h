@@ -147,7 +147,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The areal rotation unit of measure.
 		 */
-		gsoap_resqml2_0_1::eml20__PlaneAngleUom getArealRotationUom() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__PlaneAngleUom getArealRotationUom() const;
 
 		/**
 		 * Gets the projected CRS unit of measure.

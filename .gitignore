@@ -10,7 +10,6 @@
 /swig/swigCsInclude.i
 /swig/swigJavaInclude.i
 /swig/swigPythonInclude.i
-/swig/setup.py
 /src/nsDefinitions.h
 /src/version_config.h
 /src/common/HidtType.h
@@ -22,10 +21,6 @@
 ## Ignore java swig generated files
 /swig/swigGeneratedJavaWrapper.cpp
 /swig/swigGeneratedJavaWrapper.h
-
-## Ignore python swig generated files
-/swig/swigGeneratedPythonWrapper.cpp
-/swig/swigGeneratedPythonWrapper.h
 
 ## Ignore Visual Studio Code files
 ##

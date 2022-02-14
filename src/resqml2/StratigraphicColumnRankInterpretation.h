@@ -190,6 +190,17 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStratigraphicUnitInterpretationDor(uint64_t index) const = 0;
 
 		/**
+		 * Gets the stratigraphic unit interpretation at a particular index.
+		 *
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the stratigraphic unit interpretation we look for.
+		 *
+		 * @returns	The stratigraphic unit interpretation at position @p index.
+		 */
+		DLL_IMPORT_OR_EXPORT StratigraphicUnitInterpretation* getStratigraphicUnitInterpretation(unsigned int index) const;
+
+		/**
 		 * Gets all the stratigraphic unit interpretations contained in this stratigraphic column rank
 		 * interpretation.
 		 *

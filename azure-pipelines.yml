@@ -226,9 +226,9 @@ jobs:
         displayName: 'Example'
         
   - job:
-    displayName: Ubuntu 16.04 with HDF5 1.8.16
+    displayName: Ubuntu 20.04 with valgrind and unit test
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: 'ubuntu-20.04'
     timeoutInMinutes: 120
     steps:
       - script: |
@@ -241,7 +241,6 @@ jobs:
         inputs:
           cmakeArgs:
             -Wno-dev -Wno-deprecated
-            -DHDF5_1_8=TRUE
             -DHDF5_C_INCLUDE_DIR=/usr/include/hdf5/serial/
             -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so
             -DMINIZIP_INCLUDE_DIR=/usr/include/minizip
@@ -290,7 +289,7 @@ jobs:
             -DMINIZIP_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libminizip.so
             -DZLIB_INCLUDE_DIR=/usr/include
             -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
-            -DWITH_EXAMPLE=TRUE
+            -DWITH_EXAMPLE=FALSE
             -DWITH_RESQML2_2=TRUE
             -DWITH_PYTHON_WRAPPING=TRUE
             -DSWIG_EXECUTABLE=/usr/bin/swig
@@ -307,13 +306,9 @@ jobs:
         displayName: "Install FESAPI"
         inputs:
           cmakeArgs: --install $(Build.BinariesDirectory)
-          
-      - script: |
-          cd $(Build.SourcesDirectory)/swig
-          python3 setup.py build_ext --build-lib ../python/src
-        displayName: 'Build FESAPI Python extension into ../python/src'
         
       - script: |
           export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(Build.BinariesDirectory)/install/lib
-          python3 $(Build.SourcesDirectory)/python/src/example.py
+          pip3 install $(Build.SourcesDirectory)/python/dist/*.whl
+          python3 $(Build.SourcesDirectory)/python/example/example.py
         displayName: 'Run Python example'

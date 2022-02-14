@@ -18,8 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreFeature.h"
 
-#include "../witsml2_0/Well.h"
-#include "../witsml2_0/Wellbore.h"
+#include <stdexcept>
+
+#include "../witsml2/Well.h"
+#include "../witsml2/Wellbore.h"
 
 using namespace std;
 using namespace RESQML2_2_NS;
@@ -41,7 +43,7 @@ WellboreFeature::WellboreFeature(COMMON_NS::DataObjectRepository* repo, const st
 	repo->addDataObject(this);
 }
 
-void WellboreFeature::setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore)
+void WellboreFeature::setWitsmlWellbore(WITSML2_NS::Wellbore * wellbore)
 {
 	getRepository()->addRelationship(this, wellbore);
 

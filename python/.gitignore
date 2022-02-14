@@ -1,0 +1,12 @@
+# ignore cmake and swig auto generated files
+setup.py
+swigGeneratedPythonWrapper.cpp
+swigGeneratedPythonWrapper.h
+
+# Ignore everything in these directories
+build/*
+dist/*
+*.egg-info/*
+example/*
+
+!example/example.py

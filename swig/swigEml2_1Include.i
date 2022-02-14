@@ -32,7 +32,7 @@ namespace EML2_1_NS
 	//************ HDF *******************
 	//************************************
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(eml21_PropertyKind) PropertyKind;
+	%rename(Eml21_PropertyKind) PropertyKind;
 #endif
 	class PropertyKind : public EML2_NS::PropertyKind
 	{

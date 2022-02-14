@@ -76,10 +76,8 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual int64_t getCellIndexPairs(int64_t * cellIndexPairs) const = 0;
 
 		/**
-		 * @brief	Gets the count of cell index pairs which correspond to a particular interpretation.
+		 * @brief	Gets the count of cell index pairs which correspond to a particular interpretation or to no interpretation.
 		 *
-		 * @exception	std::invalid_argument	If this grid connection set representation does not
-		 * 										contain any (fault) interpretation association.
 		 * @exception	std::invalid_argument	If the HDF5 library could not read the count of
 		 * 										interpretation indices associated to this grid connection
 		 * 										set representation.
@@ -89,11 +87,12 @@ namespace RESQML2_NS
 		 *
 		 * @param 	interpretationIndex	The index of an interpretation in the collection of feature
 		 * 								interpretation of this grid connection set.
+		 *								Or -1 for having cell index pair count which are not associated to any interpretation at all.
 		 *
 		 * @returns	The count of cell index pairs which correspond to the interpretation at index @p
-		 * 			interpretationIndex.
+		 * 			interpretationIndex or to no interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getCellIndexPairCountFromInterpretationIndex(unsigned int interpretationIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getCellIndexPairCountFromInterpretationIndex(int interpretationIndex) const = 0;
 
 		/**
 		 * Indicates whether the cell connections are associated to interpretation or not.
@@ -147,12 +146,11 @@ namespace RESQML2_NS
 
 		/**
 		 * Gets the cell index pairs, the grid index pairs (optional) and the local face index pairs
-		 * (optional) which correspond to a particular interpretation.
+		 * (optional) which correspond to a particular interpretation or to no interpretation.
 		 *
-		 * @exception	std::invalid_argument	If this grid connection set representation does not
-		 * 										contain any (fault) interpretation association.
 		 * @exception	std::logic_error	 	If the intepretation indices or interpretation indices
 		 * 										cumulative counts are not stored in a HDF5 integer array.
+		 * @exception	std::out_of_range	 	If @p interpretationIndex is out of range.
 		 *
 		 * @param [out]	  	cellIndexPairs	   	Mandatory buffer to receive the cell index pairs. Must be
 		 * 										preallocated with
@@ -167,8 +165,9 @@ namespace RESQML2_NS
 		 * 										<tt>getCellIndexPairCountFromInterpretationIndex(interpretationIndex)</tt>.
 		 * @param 		  	interpretationIndex	The index of an interpretation in the collection of
 		 * 										feature interpretation of this grid connection set.
+		 *										Or -1 for having information for cells which are not associated to any interpretation at all.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, int interpretationIndex) const = 0;
 
 		/**
 		 * Gets the UUID of a particular (fault) interpretation of this grid connection set.
@@ -387,25 +386,21 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void setLocalFacePerCellIndexPairs(uint64_t cellIndexPairCount, int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
-		 * For each connection in this grid connection set representation, allows to map zero or one
-		 * feature interpretation. RESQML allows to map with more than one feature interpretation but
-		 * this feature is not implemented yet.
+		 * For each connection in this grid connection set representation, allows to map zero to several
+		 * feature interpretation. 
 		 *
 		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt>.
+		 * @exception	std::logic_error		If <tt>getCellIndexPairs() == 0</tt>.
 		 *
-		 * @param [in]	  	interpretationIndices	 	For each connection, the index of the
-		 * 												corresponding interpretation in the
-		 * 												interpretation set of this grid connection set.
+		 * @param [in]	  	cumulativeInterpCount	 	For each connection, the cumulative count of the
+		 * 												associated interpretations. Count must be equal to getCellIndexPairs().
+		 * @param [in]	  	interpIndices			 	The index of the interpretation associated to cell index pairs.
 		 * 												The count of this array is @p
-		 * 												interpretationIndiceCount.
-		 * @param 		  	interpretationIndiceCount	The count of interpretation indices.
-		 * @param 		  	nullValue				 	The null value must be used as the corresponding
-		 * 												interpretation index for each connection which is
-		 * 												not associated to any interpretation.
+		 * 												cumulativeInterpCount[cumulativeInterpCount.size() - 1].
 		 * @param [in,out]	proxy					 	The Hdf proxy where the numerical values will be
 		 * 												stored.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setConnectionInterpretationIndices(unsigned int const* interpretationIndices, unsigned int interpretationIndiceCount, unsigned int nullValue, EML2_NS::AbstractHdfProxy * proxy) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setConnectionInterpretationIndices(unsigned int const* cumulativeInterpCount, unsigned int const* interpIndices, EML2_NS::AbstractHdfProxy * proxy) = 0;
 
 		/**
 		 * Pushes back an interpretation which can be mapped with some connections.

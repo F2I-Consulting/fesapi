@@ -1,10 +1,5 @@
 """
-You must run the following command (only once) in order to create the FESAPI Python extension.
-Run it from fesapi/swig working directory : python3 setup.py build_ext --build-lib ../python/src
-
-Be sure that the FesapiCpp library and its dependencies are accessible
-i.e. are in the (LD_LIBRARY_)PATH meaning for example on Windows that
-they are in the same directory than this file and the generated pyd file.
+Please first install the wheel located in fesapi/python/dist
 """
 
 from datetime import datetime
@@ -12,13 +7,13 @@ import fesapi
 
 def serialize_grid(repo):
     """
-    This function create some grids in the repo to be serialized
+    This function creates a one cell grid + a property on a partial ijk grid in the repo to be serialized
     """
     earth_model = repo.createEarthModel("f2060ce0-fa3d-11e5-8620-0002a5d5c51b", "Grid")
     earth_model_interp = repo.createEarthModelInterpretation(
         earth_model, "f5cd7520-fa3d-11e5-b65b-0002a5d5c51b", "Grid interp")
 
-    # ONE SUGAR
+    # ONE CELL GRID
     single_cell_ijk_grid = repo.createIjkGridExplicitRepresentation(
         earth_model_interp, "e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b", "One unfaulted sugar cube",
         1, 1, 1)
@@ -30,6 +25,16 @@ def serialize_grid(repo):
     single_cell_ijk_grid.setGeometryAsCoordinateLineNodes(
         fesapi.resqml20__PillarShape_vertical, fesapi.resqml20__KDirection_down, False,
         resqml_points)
+
+    # ONE CONTINUOUS PROPERTY ON A PARTIAL 3 cells I=1 J=1 K=3 GRID
+    partial_ijk_grid = repo.createPartialIjkGridRepresentation("bc92a216-aa17-4a1f-9253-8b3ab094bf84", "partial grid")
+    continuous_prop = repo.createContinuousProperty(partial_ijk_grid, "827d1074-5b16-4c7d-80bb-a8f3e1413753", "My length property", 1, fesapi.resqml22__IndexableElement_cells,
+        fesapi.resqml20__ResqmlUom_m, fesapi.resqml20__ResqmlPropertyKind_length)
+    prop_values = [1.1, 2.2, 3.3]
+    resqml_values = fesapi.FloatArray(3)
+    for i, value in enumerate(prop_values):
+        resqml_values.setitem(i, value)
+    continuous_prop.pushBackFloatHdf5Array3dOfValues(resqml_values, 1, 1, 3, 1.1, 3.3)
 
 def serialize(file_name):
     """
@@ -80,8 +85,10 @@ def show_ijk_grid(ijk_grid):
     This function shows some ijk grids which have been deserialized
     """
     show_all_metadata(ijk_grid)
+    if ijk_grid.isPartial():
+        return
 
-    if ijk_grid.getGeometryKind() != fesapi.resqml2_AbstractIjkGridRepresentation.NO_GEOMETRY:
+    if ijk_grid.getGeometryKind() != fesapi.Resqml2_AbstractIjkGridRepresentation.NO_GEOMETRY:
         most_complex_pillar_geom = ijk_grid.getMostComplexPillarGeometry()
         if most_complex_pillar_geom == fesapi.resqml20__PillarShape_vertical:
             print("Most complex pillar geometry is vertical")
@@ -95,15 +102,15 @@ def show_ijk_grid(ijk_grid):
         k_gap_count = ijk_grid.getKGapsCount()
         print("K Gap Count = ", k_gap_count)
 
-        if ijk_grid.getGeometryKind() == fesapi.resqml2_AbstractIjkGridRepresentation.LATTICE:
+        if ijk_grid.getGeometryKind() == fesapi.Resqml2_AbstractIjkGridRepresentation.LATTICE:
             print("This 3d grid has a lattice geometry.")
         else:
             if ijk_grid.getGeometryKind() == \
-               fesapi.resqml2_AbstractIjkGridRepresentation.PARAMETRIC:
+               fesapi.Resqml2_AbstractIjkGridRepresentation.PARAMETRIC:
                 print("This 3d grid has a parametric geometry.")
             else:
                 if ijk_grid.getGeometryKind() == \
-                   fesapi.resqml2_AbstractIjkGridRepresentation.EXPLICIT:
+                   fesapi.Resqml2_AbstractIjkGridRepresentation.EXPLICIT:
                     print("This 3d grid has an explicit geometry.")
                 else:
                     print("This 3d grid has an unknown geometry.")

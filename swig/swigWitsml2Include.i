@@ -2206,7 +2206,7 @@ namespace WITSML2_NS
 	 * @brief	Contains all information that is the same for all wellbores (sidetracks). 
 	 */
 #if defined(SWIGPYTHON)
-	%rename(witsml2_Well) Well;
+	%rename(Witsml2_Well) Well;
 #endif
 	/** 
 	 * @brief	Contains all information that is the same for all wellbores (sidetracks). 
@@ -2279,7 +2279,7 @@ namespace WITSML2_NS
 	};
 
 #if defined(SWIGPYTHON)
-	%rename(witsml2_Wellbore) Wellbore;
+	%rename(Witsml2_Wellbore) Wellbore;
 #endif
 	/** 
 	 * @brief	A wellbore represents the path from surface to a unique bottomhole location.
@@ -2305,6 +2305,8 @@ namespace WITSML2_NS
 		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdPlanned, gsoap_eml2_1::eml21__LengthUom);
 		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdSubSeaPlanned, gsoap_eml2_1::eml21__LengthUom);
 		
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreFeature, ResqmlWellboreFeature)
+		
 		SWIG_GETTER_DATAOBJECTS(WITSML2_NS::Trajectory, Trajectory)
 		SWIG_GETTER_DATAOBJECTS(WITSML2_0_NS::WellboreCompletion, WellboreCompletion)
 		SWIG_GETTER_DATAOBJECTS(WITSML2_0_NS::WellboreGeometry, WellboreGeometry)
@@ -2312,7 +2314,7 @@ namespace WITSML2_NS
 	};
 	
 #if defined(SWIGPYTHON)
-	%rename(witsml2_WellboreObject) WellboreObject;
+	%rename(Witsml2_WellboreObject) WellboreObject;
 #endif
 	/**
 	 * The class is the super class for all wellbore objects (all top level objects pointing to
@@ -2326,7 +2328,7 @@ namespace WITSML2_NS
 	};
 	
 #if defined(SWIGPYTHON)
-	%rename(witsml2_Trajectory) Trajectory;
+	%rename(Witsml2_Trajectory) Trajectory;
 #endif
 	/** 
 	 * @brief	It contains many trajectory stations to capture the information about individual survey points.

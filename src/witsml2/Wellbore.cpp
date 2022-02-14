@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Wellbore.h"
 
-#include "../resqml2_0_1/WellboreFeature.h"
+#include "../resqml2/WellboreFeature.h"
 
 #include "../witsml2_0/WellboreCompletion.h"
 #include "../witsml2_0/WellboreGeometry.h"
@@ -39,9 +39,9 @@ void Wellbore::loadTargetRelationships()
 	convertDorIntoRel<Well>(getWellDor());
 }
 
-std::vector<RESQML2_0_1_NS::WellboreFeature *> Wellbore::getResqmlWellboreFeature() const
+std::vector<RESQML2_NS::WellboreFeature*> Wellbore::getResqmlWellboreFeatureSet() const
 {
-	return getRepository()->getSourceObjects<RESQML2_0_1_NS::WellboreFeature>(this);
+	return getRepository()->getSourceObjects<RESQML2_NS::WellboreFeature>(this);
 }
 
 std::vector<WITSML2_0_NS::WellboreCompletion *> Wellbore::getWellboreCompletionSet() const

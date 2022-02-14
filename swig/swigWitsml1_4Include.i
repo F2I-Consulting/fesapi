@@ -29,7 +29,7 @@ namespace WITSML1_4_NS
 	%nodefaultctor; // Disable creation of default constructors
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(witsml14_Trajectory) Trajectory;
+	%rename(Witsml14_Trajectory) Trajectory;
 #endif
 	/**
 	 * @brief	It contains many trajectory stations to capture the information about individual survey points.

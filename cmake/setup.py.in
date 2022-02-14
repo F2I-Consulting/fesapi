@@ -1,16 +1,42 @@
-from distutils.core import setup, Extension
+from setuptools import setup, Extension
 
 fesapi_module = Extension('_fesapi',
-	sources=['swigGeneratedPythonWrapper.cpp'],
-	library_dirs=['${CMAKE_INSTALL_PREFIX}/lib'],
-	libraries=['${ASSEMBLY_NAME}',],
-	extra_compile_args=['-std=c++11'],
+    sources=['swigGeneratedPythonWrapper.cpp'],
+    library_dirs=['${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}'],
+    libraries=['${ASSEMBLY_NAME}',],
+    extra_compile_args=['-std=c++11'],
 )
 
 setup (name = 'fesapi',
-	version = '2.1',
-	author      = "F2I-CONSULTING",
-	description = """An API for the Energistics standards""",
-	ext_modules = [fesapi_module],
-	py_modules = ["fesapi"],
+    version     = '2.3.0.0',
+    author      = 'F2I-CONSULTING',
+    maintainer  = 'F2I-CONSULTING',
+    url         = 'https://github.com/F2I-Consulting/fesapi',
+    description = 'An API for the Energistics standards',
+    license     = 'Apache 2.0',
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+
+        'Intended Audience :: Developers',
+        'Topic :: Software Development :: Build Tools',
+
+        'License :: OSI Approved :: Apache Software License',
+        
+        'Natural Language :: English',
+
+        'Programming Language :: Python :: 3',
+    ],
+    keywords='energistics resqml witsml prodml development',
+    project_urls={
+        'Documentation': 'https://f2i-consulting.com/fesapi/doxygen/',
+        'Discourse': 'https://discourse.f2i-consulting.com/',
+        'Tracker': 'https://github.com/F2I-Consulting/fesapi/issues',
+    },
+    python_requires='>=3',
+    include_package_data=True,
+    packages=['fesapi'],
+    package_dir={'fesapi': 'fesapi'},
+    package_data={'fesapi': ['*.dll', '*.so', '*.so.*']},
+    ext_package='fesapi',
+    ext_modules = [fesapi_module],
 )

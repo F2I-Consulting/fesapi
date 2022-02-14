@@ -47,7 +47,7 @@ namespace EML2_3_NS
 	%nodefaultctor; // Disable creation of default constructors
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(eml23_Activity) Activity;
+	%rename(Eml23_Activity) Activity;
 #endif
 	class Activity : public EML2_NS::Activity
 	{
@@ -55,7 +55,7 @@ namespace EML2_3_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(eml23_ActivityTemplate) ActivityTemplate;
+	%rename(Eml23_ActivityTemplate) ActivityTemplate;
 #endif
 	class ActivityTemplate : public EML2_NS::ActivityTemplate
 	{
@@ -63,7 +63,7 @@ namespace EML2_3_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(eml23_ColumnBasedTable) ColumnBasedTable;
+	%rename(Eml23_ColumnBasedTable) ColumnBasedTable;
 #endif
 	class ColumnBasedTable : public EML2_NS::ColumnBasedTable
 	{
@@ -71,7 +71,7 @@ namespace EML2_3_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(eml23_GraphicalInformationSet) GraphicalInformationSet;
+	%rename(Eml23_GraphicalInformationSet) GraphicalInformationSet;
 #endif
 	class GraphicalInformationSet : public EML2_NS::GraphicalInformationSet
 	{
@@ -79,7 +79,7 @@ namespace EML2_3_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(eml23_LocalEngineeringCompoundCrs) LocalEngineeringCompoundCrs;
+	%rename(Eml23_LocalEngineeringCompoundCrs) LocalEngineeringCompoundCrs;
 #endif
 	class LocalEngineeringCompoundCrs : public EML2_NS::LocalEngineeringCompoundCrs
 	{
@@ -87,7 +87,7 @@ namespace EML2_3_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(eml23_PropertyKind) PropertyKind;
+	%rename(Eml23_PropertyKind) PropertyKind;
 #endif
 	class PropertyKind : public EML2_NS::PropertyKind
 	{
@@ -95,7 +95,7 @@ namespace EML2_3_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(eml23_ReferencePointInALocalEngineeringCompoundCrs) ReferencePointInALocalEngineeringCompoundCrs;
+	%rename(Eml23_ReferencePointInALocalEngineeringCompoundCrs) ReferencePointInALocalEngineeringCompoundCrs;
 #endif
 	class ReferencePointInALocalEngineeringCompoundCrs : public EML2_NS::ReferencePointInALocalEngineeringCompoundCrs
 	{
@@ -103,7 +103,7 @@ namespace EML2_3_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(eml23_TimeSeries) TimeSeries;
+	%rename(Eml23_TimeSeries) TimeSeries;
 #endif
 	class TimeSeries : public EML2_NS::TimeSeries
 	{
