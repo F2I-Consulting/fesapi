@@ -19,16 +19,22 @@ under the License.
 %{
 #include "../src/eml2_3/Activity.h"
 #include "../src/eml2_3/ActivityTemplate.h"
+#include "../src/eml2_3/ColumnBasedTable.h"
 #include "../src/eml2_3/GraphicalInformationSet.h"
+#include "../src/eml2_3/LocalEngineeringCompoundCrs.h"
 #include "../src/eml2_3/PropertyKind.h"
+#include "../src/eml2_3/ReferencePointInALocalEngineeringCompoundCrs.h"
 #include "../src/eml2_3/TimeSeries.h"
 %}
 
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
 	%nspace EML2_3_NS::Activity;
 	%nspace EML2_3_NS::ActivityTemplate;
+	%nspace EML2_3_NS::ColumnBasedTable;
 	%nspace EML2_3_NS::GraphicalInformationSet;
+	%nspace EML2_3_NS::LocalEngineeringCompoundCrs;
 	%nspace EML2_3_NS::PropertyKind;
+	%nspace EML2_3_NS::ReferencePointInALocalEngineeringCompoundCrs;
 	%nspace EML2_3_NS::TimeSeries;
 #endif
 
@@ -46,12 +52,20 @@ namespace EML2_3_NS
 	class Activity : public EML2_NS::Activity
 	{
 	public:
-	};	
-	
+	};
+
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(eml23_ActivityTemplate) ActivityTemplate;
 #endif
 	class ActivityTemplate : public EML2_NS::ActivityTemplate
+	{
+	public:
+	};
+
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(eml23_ColumnBasedTable) ColumnBasedTable;
+#endif
+	class ColumnBasedTable : public EML2_NS::ColumnBasedTable
 	{
 	public:
 	};
@@ -65,9 +79,25 @@ namespace EML2_3_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(eml23_LocalEngineeringCompoundCrs) LocalEngineeringCompoundCrs;
+#endif
+	class LocalEngineeringCompoundCrs : public EML2_NS::LocalEngineeringCompoundCrs
+	{
+	public:
+	};
+
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(eml23_PropertyKind) PropertyKind;
 #endif
 	class PropertyKind : public EML2_NS::PropertyKind
+	{
+	public:
+	};
+
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(eml23_ReferencePointInALocalEngineeringCompoundCrs) ReferencePointInALocalEngineeringCompoundCrs;
+#endif
+	class ReferencePointInALocalEngineeringCompoundCrs : public EML2_NS::ReferencePointInALocalEngineeringCompoundCrs
 	{
 	public:
 	};

@@ -679,7 +679,7 @@ namespace COMMON_NS
 		/**
 		* Set the EPC document absolute path or the ETP dataspace URI where this dataobject comes from.
 		*/
-		void setUriSource(const std::string & uriSource) { uriSource_ = uriSource; }
+		DLL_IMPORT_OR_EXPORT void setUriSource(const std::string & uriSource) { uriSource_ = uriSource; }
 
 		/**
 		* Get the EPC document absolute path or the ETP dataspace URI where this dataobject comes from.

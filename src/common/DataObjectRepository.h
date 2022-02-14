@@ -3488,7 +3488,7 @@ namespace COMMON_NS
 
 		//*************** WARNINGS *************
 		
-		/** Clears the warnings from the repository*/
+		/** Clears the warnings from the repository */
 		DLL_IMPORT_OR_EXPORT void clearWarnings() { warnings.clear();  }
 
 		/**

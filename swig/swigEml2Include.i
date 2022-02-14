@@ -17,22 +17,51 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 %{
+#include "../src/eml2/AbstractLocal3dCrs.h"
 #include "../src/eml2/Activity.h"
 #include "../src/eml2/ActivityTemplate.h"
+#include "../src/eml2/ColumnBasedTable.h"
 #include "../src/eml2/GraphicalInformationSet.h"
 #include "../src/eml2/PropertyKind.h"
+#include "../src/eml2/ReferencePointInALocalEngineeringCompoundCrs.h"
 #include "../src/eml2/TimeSeries.h"
 %}
 
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
 	%nspace EML2_NS::AbstractHdfProxy;
+	%nspace EML2_NS::AbstractLocal3dCrs;
 	%nspace EML2_NS::Activity;
 	%nspace EML2_NS::ActivityTemplate;
+	%nspace EML2_NS::ColumnBasedTable;
 	%nspace EML2_NS::EpcExternalPartReference;
 	%nspace EML2_NS::GraphicalInformationSet;
 	%nspace EML2_NS::PropertyKind;
+	%nspace EML2_NS::ReferencePointInALocalEngineeringCompoundCrs;
 	%nspace EML2_NS::TimeSeries;
 #endif
+
+namespace gsoap_eml2_3 {
+	enum class eml23__ReferencePointKind {
+		casing_x0020flange = 0,
+		crown_x0020valve = 1,
+		derrick_x0020floor = 2,
+		ground_x0020level = 3,
+		kelly_x0020bushing = 4,
+		kickoff_x0020point = 5,
+		lowest_x0020astronomical_x0020tide = 6,
+		mean_x0020high_x0020water = 7,
+		mean_x0020higher_x0020high_x0020water = 8,
+		mean_x0020low_x0020water = 9,
+		mean_x0020lower_x0020low_x0020water = 10,
+		mean_x0020sea_x0020level = 11,
+		mean_x0020tide_x0020level = 12,
+		rotary_x0020bushing = 13,
+		rotary_x0020table = 14,
+		seafloor = 15,
+		wellhead = 16,
+		well_x0020surface_x0020location = 17
+	};
+}
 
 %module(directors="1") fesapi
 %feature("director") EML2_NS::AbstractHdfProxy;
@@ -42,6 +71,10 @@ namespace EML2_NS
 	%nodefaultctor; // Disable creation of default constructors
 	
 	/************ HDF *******************/
+	/**
+	 * @brief	Proxy class for handling external parts of an EPC package. It must be used at least
+	 * 			for external HDF5 parts.
+	 */
 	class EpcExternalPartReference : public COMMON_NS::AbstractObject {
 	public:
 	};
@@ -54,19 +87,47 @@ namespace EML2_NS
 	HdfProxyExample.cs).
 	*/
 #if defined(SWIGPYTHON)
-	%rename(Eml2_AbstractHdfProxy) AbstractHdfProxy;
+	%rename(eml2_AbstractHdfProxy) AbstractHdfProxy;
 #endif
 	class AbstractHdfProxy : public EpcExternalPartReference
 	{
 	public:
 		virtual ~AbstractHdfProxy();
 
+		/**
+		 * Sets the path of the directory containing the EPC file associated to this HDF5 file
+		 *
+		 * @param 	rootPath	Path of the directory containing the EPC file.
+		 */
 		void setRootPath(const std::string& rootPath);
+		
+		/**
+		 * Sets the relative path of the HDF5 file regarding the path of the directory containing the EPC
+		 * file associated to this HDF5 file
+		 *
+		 * @param 	relPath	Relative path of the HDF5 file.
+		 */
 		void setRelativePath(const std::string& relPath);
+
+		/**
+		 * Sets the rights when opening the HDF5 file
+		 *
+		 * @param 	openingMode_	The opening mode of the HDF5 file.
+		 */
 		void setOpeningMode(COMMON_NS::DataObjectRepository::openingMode openingMode_);
-	
+
+		/**
+		 * Gets the relative path of the HDF5 file regarding the path of the directory containing the
+		 * EPC file associated to this HDF5 file
+		 *
+		 * @returns	The relative path of the HDF5 file.
+		 */
 		std::string getRelativePath();
 
+		/**
+		 * Opens the HDF5 file for reading and writing. The read and write rights are determined by the EPC
+		 * document configuration
+		 */
 		virtual void open() = 0;
 		virtual bool isOpened() const = 0;
 		virtual void close() = 0;
@@ -270,10 +331,714 @@ namespace EML2_NS
 		
 	};
 	
-	/************ GraphicalInformationSet **************/
+	
+	/** @brief	Proxy class for an abstract local 3D coordinate reference system (CRS). */
 	
 #if defined(SWIGPYTHON)
-	%rename(Eml2_GraphicalInformationSet) GraphicalInformationSet;
+	%rename(eml2_AbstractLocal3dCrs) AbstractLocal3dCrs;
+#endif
+	class AbstractLocal3dCrs : public COMMON_NS::AbstractObject
+	{
+	public:
+		virtual ~AbstractLocal3dCrs();
+
+		/**
+		 * Gets the first origin ordinal of this local CRS. This is the X location of the origin of the
+		 * local areal axes relative to the projected CRS origin. The unit of measure is defined by the
+		 * unit of measure for the projected 2d CRS.
+		 *
+		 * @returns	The first origin ordinal of this local CRS.
+		 */
+		 double getOriginOrdinal1() const;
+
+		/**
+		 * Gets the second origin ordinal of this local CRS. This is the Y location of the origin of the
+		 * local areal axes relative to the projected CRS origin. The unit of measure is defined by the
+		 * unit of measure for the projected 2d CRS.
+		 *
+		 * @returns	The second origin ordinal of this local CRS.
+		 */
+		double getOriginOrdinal2() const;
+
+		/**
+		 * Get the depth or elevation origin of this local CRS. This is Z offset of the origin of the
+		 * local vertical axis relative to the vertical CRS origin. According to CRS type (depth or time)
+		 * it corresponds to the depth or time datum. If this local CRS is a time CRS, this value
+		 * defines the seismic reference datum. The unit of measure is defined by the unit of measure
+		 * for the vertical CRS
+		 *
+		 * @returns	The origin depth or elevation.
+		 */
+		double getOriginDepthOrElevation() const;
+
+		/**
+		 * Get the rotation in radians of the local Y axis relative to the global projected Y axis which
+		 * is 90 degrees counter-clockwise from the other global axis. A positive value indicates a
+		 * clockwise rotation from the global axis. A negative value indicates a counterclockwise
+		 * rotation form the global axis.
+		 *
+		 * @returns	The areal rotation.
+		 */
+		double getArealRotation() const;
+
+		/**
+		 * Indicates that Z values correspond to depth values and are increasing downward, as opposite
+		 * to elevation values increasing upward. When the vertical CRS is known, it must correspond to
+		 * the axis orientation of the vertical CRS.
+		 *
+		 * @returns	True if Z values are depth oriented, false if not.
+		 */
+		bool isDepthOriented() const;
+
+		/**
+		 * Indicates either the associated projected CRS is identified by means of an EPSG code or not.
+		 *
+		 * @returns	True if the projected CRS is defined with an EPSG code, false if not.
+		 */
+		bool isProjectedCrsDefinedWithEpsg() const;
+
+		/**
+		 * Indicates either the associated projected CRS is unknown or not.
+		 *
+		 * @returns	True if projected CRS is unknown, false if not.
+		 */
+		virtual bool isProjectedCrsUnknown() const;
+
+		/**
+		 * Gets the reason why the projected CRS is unknown.
+		 *
+		 * @exception	std::invalid_argument	If the associated projected CRS is not unknown.
+		 *
+		 * @returns	The projected CRS unknown reason.
+		 */
+		std::string getProjectedCrsUnknownReason() const;
+
+		/**
+		 * Gets the EPSG code of the projected CRS
+		 *
+		 * @exception	std::invalid_argument	If the associated projected CRS is not an EPSG one.
+		 *
+		 * @returns	The projected CRS EPSG code.
+		 */
+		int64_t getProjectedCrsEpsgCode() const;
+
+		/**
+		 * Indicates either the associated vertical CRS is identified by means of EPSG or not.
+		 *
+		 * @returns	True if the vertical CRS is defined with an EPSG code, false if not.
+		 */
+		bool isVerticalCrsDefinedWithEpsg() const;
+
+		/**
+		 * Indicates either the associated vertical CRS is unknown or not.
+		 *
+		 * @returns	True if vertical CRS is unknown, false if not.
+		 */
+		bool isVerticalCrsUnknown() const;
+
+		/**
+		 * Gets the reason why the vertical CRS is unknown.
+		 *
+		 * @exception	std::invalid_argument	If the associated vertical CRS is not unknown.
+		 *
+		 * @returns	The vertical CRS unknown reason.
+		 */
+		std::string getVerticalCrsUnknownReason() const;
+
+		/**
+		 * Gets the EPSG code of the vertical CRS
+		 *
+		 * @exception	std::invalid_argument	If the associated projected CRS is not an EPSG one.
+		 *
+		 * @returns	The vertical CRS EPSG code.
+		 */
+		int64_t getVerticalCrsEpsgCode() const;
+
+		/**
+		 * Gets the projected CRS unit of measure.
+		 *
+		 * @returns	The projected CRS unit unit of measure.
+		 */
+		gsoap_resqml2_0_1::eml20__LengthUom getProjectedCrsUnit() const;
+
+		/**
+		 * Gets the projected CRS unit of measure as a string
+		 *
+		 * @returns	The projected CRS unit of measure as string.
+		 */
+		std::string getProjectedCrsUnitAsString() const;
+
+		/**
+		 * Gets the vertical CRS unit of measure.
+		 *
+		 * @returns	The vertical CRS unit of measure.
+		 */
+		gsoap_resqml2_0_1::eml20__LengthUom getVerticalCrsUnit() const;
+
+		/**
+		 * Gets the vertical CRS unit of measure as a string
+		 *
+		 * @returns	The vertical CRS unit of measure as string.
+		 */
+		std::string getVerticalCrsUnitAsString() const;
+
+		/**
+		 * Check if the third axis of this local 3d CRS is in timeor not.
+		 *
+		 * @returns	True if this local 3d CRS is a time one. False if it is a depth/elevation one.
+		 */
+		virtual bool isATimeCrs() const;
+
+		/**
+		 * Gets the unit of measure of the third axis of this local CRS if it is a time CRS.
+		 * Otherwise throw an exception (if isATimeCrs() returns false)
+		 *
+		 * @returns	The time unit of measure of the third axis.
+		 */
+		virtual gsoap_resqml2_0_1::eml20__TimeUom getTimeUom() const;
+
+		/**
+		 * Gets the unit of measure as a sting of the third axis of this local CRS if it is a time CRS.
+		 * Otherwise throw an exception (if isATimeCrs() returns false)
+		 *
+		 * @returns	The time unit of measure of the third axis.
+		 */
+		std::string getTimeUomAsString() const;
+
+		/**
+		 * Gets the axis order of the projected CRS.
+		 *
+		 * @returns	The axis order of the projected CRS.
+		 */
+		gsoap_eml2_3::eml23__AxisOrder2d getAxisOrder() const;
+
+		/**
+		 * Sets the axis order of the projected CRS. It defines the coordinate system axis order of the
+		 * global projected CRS when the projected CRS is an unknown CRS, else it must correspond to the
+		 * axis order of the projected CRS.
+		 *
+		 * @param 	axisOrder	The axis order to set.
+		 */
+		void setAxisOrder(gsoap_eml2_3::eml23__AxisOrder2d axisOrder) const;
+
+		/**
+		 * Convert some xyz points from local to global CRS.
+		 *
+		 * @param [in,out]	xyzPoints		  	An array of xyz points. The i-th point is defined by
+		 * 										<tt>(x, y, z) = (xyzPoints[i], xyzPoints[i+1],
+		 * 										xyzPoints[i+2])</tt>.
+		 * @param 		  	xyzPointCount	  	The number of xyz points. Must be equal to the size of @p
+		 * 										xyzPoints divided by 3.
+		 * @param 		  	withoutTranslation	(Optional) True to only compute the rotation (no
+		 * 										translation is computed). Default value if false.
+		 */
+		void convertXyzPointsToGlobalCrs(double * xyzPoints, uint64_t xyzPointCount, bool withoutTranslation = false) const;
+	};
+
+	/************ Activity **************/
+
+	class ActivityTemplate : public COMMON_NS::AbstractObject
+	{
+	public:
+		/**
+		 * Pushes back a parameter in this activity template instance. This parameter has an
+		 * unconstrained type.
+		 *
+		 * @exception	std::invalid_argument	If @p maxOccurs is strictly lesser than @p minOccurs.
+		 *
+		 * @param 	title	 	The title of the parameter to push back.
+		 * @param 	isInput  	True if the parameter is an input parameter, false if not.
+		 * @param 	isOutput 	True if the parameter is an output parameter, false if not.
+		 * @param 	minOccurs	The minimum number of occurrences of this parameter.
+		 * @param 	maxOccurs	The maximum number of occurrences of this parameter.
+		 */
+		void pushBackParameter(const std::string & title,
+			bool isInput, bool isOutput,
+			uint64_t minOccurs, int64_t maxOccurs);
+
+		/**
+		 * Pushes back a parameter in the activity template instance. This parameter must be of a RESQML
+		 * object kind.
+		 *
+		 * @exception	std::invalid_argument	If @p maxOccurs is strictly lesser than @p minOccurs.
+		 *
+		 * @param 	title				   	The title of the parameter to push back.
+		 * @param 	isInput				   	True if the parameter is an input parameter, false if not.
+		 * @param 	isOutput			   	True if the parameter is an output parameter, false if not.
+		 * @param 	minOccurs			   	The minimum number of occurrences of this parameter.
+		 * @param 	maxOccurs			   	The maximum number of occurrences of this parameter.
+		 * @param 	resqmlObjectContentType	The content type of the RESQML object kind of the parameter.
+		 * 									If empty, there is no constraint on the content type of this
+		 * 									parameter.
+		 */
+		void pushBackParameter(const std::string & title,
+			bool isInput, bool isOutput,
+			uint64_t minOccurs, int64_t maxOccurs,
+			std::string resqmlObjectContentType);
+
+		/**
+		 * Checks if this instance contains a parameter with a particular title.
+		 *
+		 * @param 	paramTitle	The title of the parameter we are looking for into this instance.
+		 *
+		 * @returns	True if there exists a @p paramTitle parameter in this instance false if not.
+		 */
+		bool isAnExistingParameter(const std::string & paramTitle) const;
+
+		/**
+		 * Gets the parameter count.
+		 *
+		 * @returns	The parameter count.
+		 */
+		uint64_t getParameterCount() const;
+
+		/**
+		 * Gets the title of a particular parameter.
+		 *
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
+		 *
+		 * @param 	index	Zero-based index of the parameter we look for the title.
+		 *
+		 * @returns	The title of the parameter at position @p index.
+		 */
+		std::string getParameterTitle(uint64_t index) const;
+
+		/**
+		 * Gets parameter allowed kinds
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	The parameter allowed kinds.
+		 */
+		std::vector<gsoap_resqml2_0_1::resqml20__ParameterKind> getParameterAllowedKinds(uint64_t index) const;
+
+		/**
+		 * Gets parameter allowed kinds
+		 *
+		 * @param 	paramTitle	The parameter title.
+		 *
+		 * @returns	The parameter allowed kinds.
+		 */
+		std::vector<gsoap_resqml2_0_1::resqml20__ParameterKind> getParameterAllowedKinds(const std::string & paramTitle) const;
+
+		/**
+		 * Queries if a particular parameter is an input parameter.
+		 *
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
+		 *
+		 * @param 	index	Zero-based index of the parameter we want to know if it is an input one.
+		 *
+		 * @returns	True is the parameter at @p index is an input parameter, false if not.
+		 */
+		bool getParameterIsInput(uint64_t index) const;
+
+		/**
+		 * Queries if a particular parameter is an input parameter.
+		 *
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 *
+		 * @param 	paramTitle	The title of the parameter we want to know if it is an input one.
+		 *
+		 * @returns	True is the parameter @p paramTitle is an input parameter, false if not.
+		 */
+		bool getParameterIsInput(const std::string & paramTitle) const;
+
+		/**
+		 * Queries if a particular parameter is an output parameter.
+		 *
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
+		 *
+		 * @param 	index	Zero-based index of the parameter we want to know if it is an output one.
+		 *
+		 * @returns	True is the parameter at @p index is an output parameter, false if not.
+		 */
+		bool getParameterIsOutput(uint64_t index) const;
+
+		/**
+		 * Queries if a particular parameter is an output parameter.
+		 *
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 *
+		 * @param 	paramTitle	The title of the parameter we want to know if it is an output one.
+		 *
+		 * @returns	True is the parameter @p paramTitle is an output parameter, false if not.
+		 */
+		bool getParameterIsOutput(const std::string & paramTitle) const;
+
+		/**
+		 * Gets the minimum occurrences of a particular parameter.
+		 *
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
+		 *
+		 * @param 	index	Zero-based index of the parameter we want to know the minimum occurrences.
+		 *
+		 * @returns	The parameter minimum occurrences.
+		 */
+		int64_t getParameterMinOccurences(uint64_t index) const;
+
+		/**
+		 * Gets the minimum occurrences of a particular parameter.
+		 *
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 *
+		 * @param 	paramTitle	The title of the parameter we want to know the minimum occurrences.
+		 *
+		 * @returns	The parameter minimum occurrences.
+		 */
+		int64_t getParameterMinOccurences(const std::string & paramTitle) const;
+
+		/**
+		 * Gets the maximum occurrences of a particular parameter.
+		 *
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
+		 *
+		 * @param 	index	Zero-based index of the parameter we want to know the maximum occurrences.
+		 *
+		 * @returns	The parameter maximum occurrences.
+		 */
+		int64_t getParameterMaxOccurences(uint64_t index) const;
+
+		/**
+		 * Gets the maximum occurrences of a particular parameter.
+		 *
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 *
+		 * @param 	paramTitle	The title of the parameter we want to know the maximum occurrences.
+		 *
+		 * @returns	The parameter maximum occurrences.
+		 */
+		int64_t getParameterMaxOccurences(const std::string & paramTitle) const;
+	};
+
+	class Activity : public COMMON_NS::AbstractObject
+	{
+	public:
+		/**
+		 * Pushes back a string parameter in this instance. This parameter must exist in the associated
+		 * activity template.
+		 *
+		 * @exception	std::invalid_argument	If the parameter @p title does not exist in the
+		 * 										associated activity template.
+		 * @exception	std::invalid_argument	If the maximum number of occurrences has already been
+		 * 										reached for parameter @p title.
+		 * @exception	std::invalid_argument	If The parameter template @p title does not allow a
+		 * 										string datatype.
+		 *
+		 * @param 	title	The title of the parameter to push back.
+		 * @param 	value	The value of the parameter to push back.
+		 */
+		void pushBackParameter(const std::string title,
+			const std::string & value);
+
+		/**
+		 * Pushes back an integer parameter in this instance. This parameter must exist in the associated
+		 * activity template.
+		 *
+		 * @exception	std::invalid_argument	If the parameter @p title does not exist in the
+		 * 										associated activity template.
+		 * @exception	std::invalid_argument	If the maximum number of occurrences has already been
+		 * 										reached for parameter @p title.
+		 * @exception	std::invalid_argument	If The parameter template @p title does not allow a
+		 * 										an integer datatype.
+		 *
+		 * @param 	title	The title of the parameter to push back.
+		 * @param 	value	The value of the parameter to push back.
+		 */
+		void pushBackParameter(const std::string title,
+			int64_t value);
+
+		/**
+		 * Pushes back a RESQML object parameter in this instance. This parameter must exist in the
+		 * associated activity template.
+		 *
+		 * @exception	std::invalid_argument	If @p resqmlObject is null.
+		 * 										* @exception	std::invalid_argument	If the parameter @p
+		 * 										title does not exist in the
+		 * 											associated activity template.
+		 * @exception	std::invalid_argument	If the maximum number of occurrences has already been
+		 * 										reached for parameter @p title.
+		 * @exception	std::invalid_argument	If The parameter template @p title does not allow a a
+		 * 										data object datatype.
+		 *
+		 * @param 	  	title			The title of the parameter to push back.
+		 * @param [in]	resqmlObject	The RESQML object, value of the parameter to push back.
+		 */
+		void pushBackParameter(const std::string title,
+			AbstractObject* resqmlObject);
+
+		/**
+		 * Get the count of all the parameters
+		 *
+		 * @returns	The parameter count.
+		 */
+		uint64_t getParameterCount() const;
+
+		/**
+		 * Gets the count of all the parameters which have the same title.
+		 *
+		 * @param 	paramTitle	The title of the parameters we look for.
+		 *
+		 * @returns	The parameter count.
+		 */
+		uint64_t getParameterCount(const std::string & paramTitle) const;
+
+		/**
+		 * Gets the title of a given parameter
+		 *
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
+		 *
+		 * @param 	index	Zero-based index of the parameter for which we look for the title.
+		 *
+		 * @returns	The parameter title.
+		 */
+		std::string getParameterTitle(uint64_t index) const;
+
+		/**
+		 * Gets the indices of all the parameters sharing a given title.
+		 *
+		 * @param 	paramTitle	The title of the parameters we look for.
+		 *
+		 * @returns	A vector of parameter indices.
+		 */
+		std::vector<uint64_t> getParameterIndexOfTitle(const std::string & paramTitle) const;
+
+		/**
+		 * Queries if all of the parameters sharing a given title are floating point quantity parameters.
+		 *
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 *
+		 * @param 	paramTitle	The title of the parameters we want to test the datatype.
+		 *
+		 * @returns	True if all of the @p paramTitle parameters are floating point quantity parameters,
+		 * 			false if not.
+		 */
+		bool isAFloatingPointQuantityParameter(const std::string & paramTitle) const;
+
+		/**
+		 * Queries if a given parameter is a floating point quantity parameter.
+		 *
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
+		 *
+		 * @param 	index	Zero-based index of the parameter we want to test the datatype.
+		 *
+		 * @returns	True if the parameter at position @p index is a floating point quantity parameter,
+		 * 			false if not.
+		 */
+		bool isAFloatingPointQuantityParameter(uint64_t index) const;
+
+		/**
+		 * Gets the values of all the floating point quantity parameters sharing a given title.
+		 *
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 * @exception	std::invalid_argument	If one @p paramTitle parameter contains some non double
+		 * 										values.
+		 *
+		 * @param 	paramTitle	The title of the floating point parameters we look for the value.
+		 *
+		 * @returns	A vector of the value of all the @p paramTitle floating point quantity parameters.
+		 */
+		std::vector<double> getFloatingPointQuantityParameterValue(const std::string & paramTitle) const;
+
+		/**
+		 * Gets the floating point quantity value of a given parameter.
+		 *
+		 * @exception	std::out_of_range	 	If @p index is not in the parameter range.
+		 * @exception	std::invalid_argument	If the parameter at @p index is not a floating point
+		 * 										quantity parameter.
+		 *
+		 * @param 	index	Zero-based index of the parameter we look for the value. This index is taken
+		 * 					in the set of all parameters of this activity.
+		 *
+		 * @returns	The floating point quantity value of the parameter at position @p index.
+		 */
+		double getFloatingPointQuantityParameterValue(uint64_t index) const;
+
+		/**
+		 * Queries if all of the parameters sharing a given title are integer quantity parameters.
+		 *
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 *
+		 * @param 	paramTitle	The title of the parameters we want to test the datatype.
+		 *
+		 * @returns	True if all of the @p paramTitle parameters are integer quantity parameters,
+		 * 			false if not.
+		 */
+		bool isAnIntegerQuantityParameter(const std::string & paramTitle) const;
+
+		/**
+		 * Queries if a given parameter is an integer quantity parameter.
+		 *
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
+		 *
+		 * @param 	index	Zero-based index of the parameter we want to test the datatype.
+		 *
+		 * @returns	True if the parameter at position @p index is an integer quantity parameter,
+		 * 			false if not.
+		 */
+		bool isAnIntegerQuantityParameter(uint64_t index) const;
+
+		/**
+		 * Gets the values of all the integer quantity parameters sharing a given title.
+		 *
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 * @exception	std::invalid_argument	If one @p paramTitle parameter contains some non integer
+		 * 										values.
+		 *
+		 * @param 	paramTitle	The title of the integer parameters we look for the value.
+		 *
+		 * @returns	A vector of the value of all the @p paramTitle integer quantity parameters.
+		 */
+		std::vector<int64_t> getIntegerQuantityParameterValue(const std::string & paramTitle) const;
+
+		/**
+		 * Gets the integer quantity value of a given parameter.
+		 *
+		 * @exception	std::out_of_range	 	If @p index is not in the parameter range.
+		 * @exception	std::invalid_argument	If the parameter at @p index is not an integer quantity
+		 * 										parameter.
+		 *
+		 * @param 	index	Zero-based index of the parameter we look for the value. This index is taken
+		 * 					in the set of all parameters of this activity.
+		 *
+		 * @returns	The integer quantity value of the parameter at position @p index.
+		 */
+		int64_t getIntegerQuantityParameterValue(uint64_t index) const;
+
+		/**
+		 * @brief	Queries if all of the parameters sharing a given title are string parameters.
+		 *
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 *
+		 * @param 	paramTitle	The title of the parameters we want to test the datatype.
+		 *
+		 * @returns	True if all of the @p paramTitle parameters are string parameters, false if not.
+		 */
+		bool isAStringParameter(const std::string & paramTitle) const;
+
+		/**
+		 * Queries if a given parameter is a string parameter.
+		 *
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
+		 *
+		 * @param 	index	Zero-based index of the parameter we want to test the datatype.
+		 *
+		 * @returns	True if the parameter at position @p index is a string parameter,
+		 * 			false if not.
+		 */
+		bool isAStringParameter(uint64_t index) const;
+
+		/**
+		 * Gets the values of all the string parameters sharing a given title.
+		 *
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 * @exception	std::invalid_argument	If one @p paramTitle parameter contains some non string
+		 * 										values.
+		 *
+		 * @param 	paramTitle	The title of the string parameters we look for the value.
+		 *
+		 * @returns	A vector of the value of all the @p paramTitle string parameters.
+		 */
+		std::vector<std::string> getStringParameterValue(const std::string & paramTitle) const;
+
+		/**
+		 * Gets the string value of a given parameter.
+		 *
+		 * @exception	std::out_of_range	 	If @p index is not in the parameter range.
+		 * @exception	std::invalid_argument	If the parameter at @p index is not an string parameter.
+		 *
+		 * @param 	index	Zero-based index of the parameter we look for the value. This index is taken
+		 * 					in the set of all parameters of this activity.
+		 *
+		 * @returns	The string value of the parameter at position @p index.
+		 */
+		std::string getStringParameterValue(uint64_t index) const;
+
+		/**
+		 * Queries if all of the parameters sharing a given title are RESQML object parameters.
+		 *
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 *
+		 * @param 	paramTitle	The title of the parameters we want to test the datatype.
+		 *
+		 * @returns	True if all of the @p paramTitle parameters are RESQML object parameters, false if not.
+		 */
+		bool isAResqmlObjectParameter(const std::string & paramTitle) const;
+
+		/**
+		 * Queries if a given parameter is a RESQML object parameter.
+		 *
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
+		 *
+		 * @param 	index	Zero-based index of the parameter we want to test the datatype.
+		 *
+		 * @returns	True if the parameter at position @p index is a RESQML object parameter,
+		 * 			false if not.
+		 */
+		bool isAResqmlObjectParameter(uint64_t index) const;
+
+		/**
+		 * Gets the values of all the RESQML object parameters sharing a given title.
+		 *
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 * @exception	std::invalid_argument	If one @p paramTitle parameter contains some non RESQML object
+		 * 										values.
+		 *
+		 * @param 	paramTitle	The title of the RESQML object parameters we look for the value.
+		 *
+		 * @returns	A vector of the value of all the @p paramTitle RESQML object parameters.
+		 */
+		std::vector<AbstractObject*> getResqmlObjectParameterValue(const std::string & paramTitle) const;
+
+		/**
+		 * Gets the RESQML object value of a given parameter.
+		 *
+		 * @exception	std::out_of_range	 	If @p index is not in the parameter range.
+		 * @exception	std::invalid_argument	If the parameter at @p index is not an RESQML object
+		 * 										parameter.
+		 *
+		 * @param 	index	Zero-based index of the parameter we look for the value. This index is taken
+		 * 					in the set of all parameters of this activity.
+		 *
+		 * @returns	The RESQML object value of the parameter at position @p index.
+		 */
+		AbstractObject* getResqmlObjectParameterValue(uint64_t index) const;
+
+		/**
+		 * Sets the activity template of this activity.
+		 *
+		 * @param [in]	activityTemplate	If non-null, the activity template.
+		 */
+		void setActivityTemplate(ActivityTemplate* activityTemplate);
+
+		/**
+		 * Gets the data object reference of the activity template of this activity.
+		 *
+		 * @returns	The data object reference of the activity template.
+		 */
+		COMMON_NS::DataObjectReference getActivityTemplateDor() const;
+		
+		/** 
+		 * Gets the activity template of this activity.
+		 * 
+		 * @returns The activity template of this activity.
+		 */
+		ActivityTemplate* getActivityTemplate() const;
+	};
+
+#if defined(SWIGPYTHON)
+	%rename(eml2_GraphicalInformationSet) GraphicalInformationSet;
 #endif
 	class GraphicalInformationSet : public COMMON_NS::AbstractObject
 	{
@@ -281,12 +1046,35 @@ namespace EML2_NS
 		/**
 		 * Gets the size of this graphical information set
 		 *
-		 * @exception	std::range_error	If the size is strictly greater than unsigned int max.
-		 *
 		 * @returns	The size of this graphical information set.
 		 */
-		unsigned int getGraphicalInformationSetCount() const;
-		
+		uint64_t getGraphicalInformationSetCount() const;
+
+		/**
+		 * Gets the count of data objects which are targeted by a graphical information at @p graphicalInformationIndex.
+		 *
+		 * @exception	std::range_error	If @p index is out of range.
+		 *
+		 * @param 	graphicalInformationIndex	Zero-based index of the graphical information in the GraphicalInformationSet
+		 *
+		 * @returns	the count of data objects which are targeted by a graphical information at @p graphicalInformationIndex.
+		 */
+		uint64_t getTargetObjectCount(uint64_t graphicalInformationIndex) const;
+
+		/**
+		 * Gets a data object reference to the data object which receives some graphical information at a
+		 * particular index of the graphical information set and at a particular target index.
+		 *
+		 * @exception	std::range_error	If @p index is out of range.
+		 *
+		 * @param 	graphicalInformationIndex	Zero-based index of the graphical information in the GraphicalInformationSet
+		 * @param	targetIndex					Zero-based index of the data object reference in the graphical information
+		 *
+		 * @returns	The data object reference to the data object which receives some graphical information at
+		 * 			@p graphicalInformationIndex and target @p targetIndex.
+		 */
+		gsoap_eml2_3::eml23__DataObjectReference* getTargetObjectDor(uint64_t graphicalInformationIndex, uint64_t targetIndex) const;
+
 		/**
 		 * Gets the UUID of the object which receives some graphical information at a particular index
 		 * of the graphical information set and at a particular target index.
@@ -298,7 +1086,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The UUUID of the object which receives some graphical information at @p graphicalInformationIndex and target @p targetIndex.
 		 */
-		std::string getTargetObjectUuid(unsigned int graphicalInformationIndex, unsigned int targetIndex) const;
+		std::string getTargetObjectUuid(uint64_t graphicalInformationIndex, uint64_t targetIndex) const;
 
 		/**
 		 * Gets the data object which receives some graphical information at a particular index of the
@@ -309,7 +1097,19 @@ namespace EML2_NS
 		 *
 		 * @returns	The data object which receives some graphical information at @p graphicalInformationIndex and target @p targetIndex.
 		 */
-		COMMON_NS::AbstractObject* getTargetObject(unsigned int graphicalInformationIndex, unsigned int targetIndex) const;
+		COMMON_NS::AbstractObject* getTargetObject(uint64_t graphicalInformationIndex, uint64_t targetIndex) const;
+
+		/**
+		 * Query if a given data object has some direct graphical information, that is to say if there exists
+		 * a direct association between this data object and a graphical information
+		 *
+		 * @exception	std::invalid_argument	If the target object is null.
+		 *
+		 * @param 	targetObject	The data object we want to test for having some graphical information.
+		 *
+		 * @returns	True if @p targetObject has some graphical information, else false.
+		 */
+		bool hasDirectGraphicalInformation(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Query if a given data object has some graphical information. If it has no direct graphical
@@ -510,104 +1310,585 @@ namespace EML2_NS
 		 * @returns	True if @p targetObject (or its property kind) has a discrete color map, else false.
 		 */
 		bool hasDiscreteColorMap(COMMON_NS::AbstractObject const* targetObject) const;
-		
+
+		/**
+		 * Gets the discrete color map data object reference of a given data object. If the data object
+		 * has no discrete color map and if it is a property, we also look for its property kind
+		 * discrete color map
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no discrete color
+		 * 										map.
+		 *
+		 * @param 	targetObject	The data object for which we look for a discrete color map.
+		 *
+		 * @returns	A data object reference on the discrete color map of @p targetObject (or of its
+		 * 			property kind).
+		 */
+		gsoap_eml2_3::eml23__DataObjectReference* getDiscreteColorMapDor(COMMON_NS::AbstractObject const* targetObject) const;
+
+		/**
+		 * Gets the discrete color map data UUID of a given data object. If the data object has no
+		 * discrete color map and if it is a property, we also look for its property kind discrete color
+		 * map
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no discrete color
+		 * 										map.
+		 *
+		 * @param 	targetObject	The data object for which we look for a discrete color map.
+		 *
+		 * @returns	The UUID of the discrete color map of @p targetObject (or of its property kind).
+		 */
 		std::string getDiscreteColorMapUuid(COMMON_NS::AbstractObject const* targetObject) const;
+
+		/**
+		 * Gets the discrete color map of a given data object. If the data object has no discrete color
+		 * map and if it is a property, we also look for its property kind discrete color map
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no discrete color
+		 * 										map.
+		 *
+		 * @param 	targetObject	The data object for which we look for a discrete color map.
+		 *
+		 * @returns	The discrete color map of @p targetObject (or of its property kind).
+		 */
 		RESQML2_NS::DiscreteColorMap* getDiscreteColorMap(COMMON_NS::AbstractObject const* targetObject) const;
-		void setDiscreteColorMap(COMMON_NS::AbstractObject * targetObject, RESQML2_NS::DiscreteColorMap* discreteColorMap,
+
+		/**
+		 * Sets a discrete color map on a given data object
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject or @p discreteColorMap is null.
+		 * @exception	std::invalid_argument	If @p targetObject is neither a property nor a property
+		 * 										kind.
+		 *
+		 * @param [in]	targetObject		 	The data object on which we want to set a discrete color
+		 * 										map.
+		 * @param [in]	discreteColorMap	 	The discrete color map we want to set on the data object.
+		 * @param 	  	useReverseMapping	 	(Optional) It true, it indicates that the minimum value
+		 * 										of the property corresponds to the maximum index of the
+		 * 										color map and that the maximum value of the property
+		 * 										corresponds to the minimum index of the color map.
+		 * 										Default value is false.
+		 * @param 	  	useLogarithmicMapping	(Optional) If true, it indicates that the log of the
+		 * 										property values are taken into account when mapped with
+		 * 										the index of the color map. Default value is false.
+		 */
+		void setDiscreteColorMap(COMMON_NS::AbstractObject* targetObject, RESQML2_NS::DiscreteColorMap* discreteColorMap,
 			bool useReverseMapping = false, bool useLogarithmicMapping = false);
 
+		/**
+		 * Query if a given data object has a continuous color map. If it has not and it is a property,
+		 * we also look for its property kind continuous color map
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null.
+		 *
+		 * @param 	targetObject	The data object for which we look for a continuous color map.
+		 *
+		 * @returns	True if @p targetObject (or its property kind) has a continuous color map, else false.
+		 */
 		bool hasContinuousColorMap(COMMON_NS::AbstractObject const* targetObject) const;
+
+		/**
+		 * Gets the continuous color map data object reference of a given data object. If the data
+		 * object has no continuous color map and if it is a property, we also look for its property kind
+		 * continuous color map
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no continuous
+		 * 										color map.
+		 *
+		 * @param 	targetObject	The data object for which we look for a continuous color map.
+		 *
+		 * @returns	A data object reference on the continuous color map of @p targetObject (or of its
+		 * 			property kind).
+		 */
+		gsoap_eml2_3::eml23__DataObjectReference* getContinuousColorMapDor(COMMON_NS::AbstractObject const* targetObject) const;
+
+		/**
+		 * Gets the continuous color map data UUID of a given data object. If the data object has no
+		 * continuous color map and if it is a property, we also look for its property kind continuous
+		 * color map
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no continuous
+		 * 										color map.
+		 *
+		 * @param 	targetObject	The data object for which we look for a continuous color map.
+		 *
+		 * @returns	The UUID of the continuous color map of @p targetObject (or of its property kind).
+		 */
 		std::string getContinuousColorMapUuid(COMMON_NS::AbstractObject const* targetObject) const;
+
+		/**
+		 * Gets the continuous color map of a given data object. If the data object has no continuous
+		 * color map and if it is a property, we also look for its property kind continuous color map
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no continuous
+		 * 										color map.
+		 *
+		 * @param 	targetObject	The data object for which we look for a continuous color map.
+		 *
+		 * @returns	The continuous color map of @p targetObject (or of its property kind).
+		 */
 		RESQML2_NS::ContinuousColorMap* getContinuousColorMap(COMMON_NS::AbstractObject const* targetObject) const;
-		void setContinuousColorMap(COMMON_NS::AbstractObject * targetObject, RESQML2_NS::ContinuousColorMap* continuousColorMap,
+
+		/**
+		 * Sets a continuous color map on a given data object
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject or @p continuous is null.
+		 * @exception	std::invalid_argument	If @p targetObject is neither a property nor a property
+		 * 										kind.
+		 *
+		 * @param [in]	targetObject		 	The data object on which we want to set a continuous
+		 * 										color map.
+		 * @param [in]	continuousColorMap   	The continuous color map we want to set on the data
+		 * 										object.
+		 * @param 	  	useReverseMapping	 	(Optional) It true, it indicates that the minimum value
+		 * 										of the property corresponds to the maximum index of the
+		 * 										color map and that the maximum value of the property
+		 * 										corresponds to the minimum index of the color map.
+		 * 										Default value is false.
+		 * @param 	  	useLogarithmicMapping	(Optional) If true, it indicates that the log of the
+		 * 										property values are taken into account when mapped with
+		 * 										the index of the color map. Default value is false.
+		 */
+		void setContinuousColorMap(COMMON_NS::AbstractObject* targetObject, RESQML2_NS::ContinuousColorMap* continuousColorMap,
 			bool useReverseMapping = false, bool useLogarithmicMapping = false);
 
+		/**
+		 * Query if a given data object has minimum and maximum values to map with a color map. It only
+		 * looks at direct color association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no color
+		 * 										information.
+		 *
+		 * @param 	targetObject	The data object for which we look for the minimum and maximum values.
+		 *
+		 * @returns	True if minimum and maximum values exist, else false.
+		 */
 		bool hasColorMapMinMax(COMMON_NS::AbstractObject const* targetObject) const;
+
+		/**
+		 * Gets the minimum value to map with a color map for a given data object. It only looks at
+		 * direct color association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If the color information associated @p targetObject has
+		 * 										no minimum value.
+		 *
+		 * @param 	targetObject	The data object for which we look for the minimum value.
+		 *
+		 * @returns	The minimum value.
+		 */
 		double getColorMapMin(COMMON_NS::AbstractObject const* targetObject) const;
+
+		/**
+		 * Gets the maximum value to map with a color map for a given data object. It only looks at
+		 * direct color association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If the color information associated @p targetObject has
+		 * 										no maximum value.
+		 *
+		 * @param 	targetObject	The data object for which we look for the maximum value.
+		 *
+		 * @returns	The maximum value.
+		 */
 		double getColorMapMax(COMMON_NS::AbstractObject const* targetObject) const;
+
+		/**
+		 * Sets the minimum and maximum values to map with a color map for a given data object
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no color information.
+		 *
+		 * @param 	targetObject	The data object for which we want to set the minimum and maximum
+		 * 							values to map with a color map.
+		 * @param 	min				The minimum value.
+		 * @param 	max				The maximum value.
+		 */
 		void setColorMapMinMax(COMMON_NS::AbstractObject const* targetObject, double min, double max) const;
 
+		/**
+		 * Query if a given data object indicates which value vector index to look when mapping with a
+		 * color map. It is especially useful for vectorial property and for geometry
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no color
+		 * 										information.
+		 *
+		 * @param 	targetObject	The data object for which we look for a value vector index to look
+		 * 							when mapping with a color map.
+		 *
+		 * @returns	True if a value vector index exists, else false.
+		 */
 		bool hasValueVectorIndex(COMMON_NS::AbstractObject const* targetObject);
+
+		/**
+		 * Gets the value vector index to look when mapping with a color map. It is especially useful
+		 * for vectorial property and for geometry
+		 *
+		 * @exception	std::invalid_argument	If the color information associated to @p targetObject
+		 * 										has no value vector index.
+		 *
+		 * @param 	targetObject	The data object for which we look for a value vector index to look
+		 * 							when mapping with a color map.
+		 *
+		 * @returns	The value vector index.
+		 */
 		int64_t getValueVectorIndex(COMMON_NS::AbstractObject const* targetObject);
+
+		/**
+		 * Sets the value vector index to look when mapping with a color map. It is especially useful
+		 * for vectorial property and for geometry
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no color information.
+		 *
+		 * @param 	targetObject		The data object for which we want to set the value vector index
+		 * 								to look when mapping with a color map.
+		 * @param 	valueVectorIndex	The value vector index to set.
+		 */
 		void setValueVectorIndex(COMMON_NS::AbstractObject const* targetObject, int64_t valueVectorIndex);
 
+		/**
+		 * Converts RGB to HSV color (using https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB
+		 * algorithm). No range check is done on parameters
+		 *
+		 * @param 	   	red		  	Numeric value in the range [0, 1].
+		 * @param 	   	green	  	Numeric value in the range [0, 1].
+		 * @param 	   	blue	  	Numeric value in the range [0, 1].
+		 * @param [out]	hue		  	Angle in degrees in the range [0, 360].
+		 * @param [out]	saturation	Numeric value in the range [0, 1].
+		 * @param [out]	value	  	Numeric value in the range [0, 1].
+		 */
 		static void rgbToHsv(double red, double green, double blue, double& hue, double& saturation, double& value);
+
+		/**
+		 * Converts RGB to HSV color (using https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB
+		 * algorithm). No range check is done on parameters
+		 *
+		 * @param 	   	red		  	Numeric value in the range [0, 255].
+		 * @param 	   	green	  	Numeric value in the range [0, 255].
+		 * @param 	   	blue	  	Numeric value in the range [0, 255].
+		 * @param [out]	hue		  	Angle in degrees in the range [0, 360].
+		 * @param [out]	saturation	Numeric value in the range [0, 1].
+		 * @param [out]	value	  	Numeric value in the range [0, 1].
+		 */
 		static void rgbToHsv(unsigned int red, unsigned int green, unsigned int blue, double& hue, double& saturation, double& value);
+
+		/**
+		 * Converts HSV to RGB color (using https://en.wikipedia.org/wiki/HSL_and_HSV#HSV_to_RGB
+		 * algorithm). No range check is done on parameters
+		 *
+		 * @param 	   	hue		  	Angle in degrees in the range [0, 360].
+		 * @param 	   	saturation	Numeric value in the range [0, 1].
+		 * @param 	   	value	  	Numeric value in the range [0, 1].
+		 * @param [out]	red		  	Numeric value in the range.
+		 * @param [out]	green	  	Numeric value in the range.
+		 * @param [out]	blue	  	Numeric value in the range.
+		 */
 		static void hsvToRgb(double hue, double saturation, double value, double& red, double& green, double& blue);
+
+		/**
+		 * Converts HSV to RGB color (using
+		 * https://stackoverflow.com/questions/1914115/converting-color-value-from-float-0-1-to-byte-0-255
+		 * algorithm). No range check is done on parameters
+		 *
+		 * @param 	   	hue		  	Angle in degrees in the range [0, 360].
+		 * @param 	   	saturation	Numeric value in the range [0, 1].
+		 * @param 	   	value	  	Numeric value in the range [0, 1].
+		 * @param [out]	red		  	Numeric value in the range.
+		 * @param [out]	green	  	Numeric value in the range.
+		 * @param [out]	blue	  	Numeric value in the range.
+		 */
 		static void hsvToRgb(double hue, double saturation, double value, unsigned int& red, unsigned int& green, unsigned int& blue);
 	};
 	
 	/************ Property **************/
-	
+
+#if defined(SWIGPYTHON)
+	%rename(eml2_PropertyKind) PropertyKind;
+#endif
 	class PropertyKind : public COMMON_NS::AbstractObject {
 	public:
+		/**
+		 * Gets (in read only mode) the naming system of this property type. It is the name of the
+		 * dictionary within which the property is unique. This also defines the name of the controlling
+		 * authority. It is an URN of the form <tt>urn:x-resqml:domainOrEmail:dictionaryName</tt>
+		 *
+		 * @returns	The naming system.
+		 */
+		std::string getNamingSystem() const;
+
+		/**
+		* Get the base unit of measure for conversion of the values of this property kind as a string.
+		*
+		* @returns The unit or measure of the values of this property kind as a string.
+		*/
 		std::string getBaseUomAsString() const;
+
+		/**
+		 * Gets the parent local property kind
+		 *
+		 * @exception	std::invalid_argument	If the parent property kind is not a local one (it is an
+		 * 										Energistics standard one).
+		 *
+		 * @returns	The parent local property kind.
+		 */
+		PropertyKind* getParentPropertyKind() const;
+
+		/**
+		 * Checks if this property kind is abstract or not
+		 *
+		 * @returns	True if abstract, false if not.
+		 */
+		virtual bool isAbstract() const.
 	};
-	
+
+#if defined(SWIGPYTHON)
+	%rename(eml2_ColumnBasedTable) ColumnBasedTable;
+#endif
+	class ColumnBasedTable : public COMMON_NS::AbstractObject
+	{
+	public:
+		/**
+		 * Gets the row count of this table
+		 */
+		uint64_t getRowCount() const;
+
+		/**
+		 * Gets the column count of this table
+		 */
+		uint64_t getColumnCount() const;
+
+		/**
+		 * Gets the property kind associated to a particular column count of this table
+		 *
+		 * @param columnIndex	The index of the column which we want the associated property kind from
+		 *
+		 * @return				The associated property kind.
+		 */
+		class PropertyKind* getPropertyKind(uint64_t columnIndex) const;
+
+		/**
+		 * Gets the uom associated to a particular column count of this table
+		 *
+		 * @param columnIndex	The index of the column which we want the associated uom from
+		 *
+		 * @return				The associated uom. If no uom is provided or if Euc is provided, this method returns Euc.
+		 */
+		gsoap_eml2_3::eml23__UnitOfMeasure getUom(uint64_t columnIndex) const;
+
+		/**
+		 * Gets the uom associated to a particular column count of this table
+		 *
+		 * @param columnIndex	The index of the column which we want the associated uom from
+		 *
+		 * @return				The associated uom as string. If no uom is provided, this method returns an empty string.
+		 */
+		std::string getUomAsString(uint64_t columnIndex) const;
+
+		/**
+		 * Gets the value count per row for a particular column count of this table
+		 *
+		 * @param columnIndex	The index of the column which we want the associated uom from
+		 *
+		 * @return				The associated uom. If no uom is provided or if Euc is provided, this method returns Euc.
+		 */
+		uint64_t getValueCountPerRow(uint64_t columnIndex) const;
+
+		/**
+		 * Gets the datatype of a column
+		 *
+		 * @param columnIndex	The index of the column which we want the datatype from
+		 *
+		 * @return				The datatype which is used for values in this column
+		 */
+		COMMON_NS::AbstractObject::hdfDatatypeEnum getDatatype(uint64_t columnIndex) const;
+
+		/**
+		 * Gets the values of a column as string values
+		 *
+		 * @param columnIndex	The index of the column which we want the values from
+		 *
+		 * @return				The string values
+		 */
+		std::vector<std::string> getStringValues(uint64_t columnIndex) const;
+
+		/**
+		 * Sets the values of a column as XML string values
+		 *
+		 * @param columnIndex	The index of the column which we want to set the values
+		 * @param values		The values to set
+		 */
+		void setStringValues(uint64_t columnIndex, const std::vector<std::string> & values);
+
+		/**
+		 * Gets the values of a column as double values
+		 *
+		 * @param columnIndex	The index of the column which we want the values from
+		 *
+		 * @return				The double values
+		 */
+		std::vector<double> getDoubleValues(uint64_t columnIndex) const;
+
+		/**
+		 * Sets the values of a column as XML double values
+		 *
+		 * @param columnIndex	The index of the column which we want to set the values
+		 * @param values		The values to set
+		 */
+		void setDoubleValues(uint64_t columnIndex, const std::vector<double> & values);
+
+		/**
+		 * Gets the values of a column as int64 values
+		 *
+		 * @param columnIndex	The index of the column which we want the values from
+		 *
+		 * @return				The int64 values
+		 */
+		std::vector<int64_t> getInt64Values(uint64_t columnIndex) const;
+
+		/**
+		 * Sets the values of a column as XML int64 values
+		 *
+		 * @param columnIndex	The index of the column which we want to set the values
+		 * @param values		The values to set
+		 */
+		void setInt64Values(uint64_t columnIndex, const std::vector<int64_t> & values);
+
+		/**
+		* Pushes back a new column in this table and fill in its header
+		*
+		* @param isAKeyColumn		Indicate if the column to push back is a key one or not
+		* @param propKind			The property kind associated to the value of this column
+		* @param valueCountPerRow	The count of values in each row of this column
+		*/
+		void pushBackColumnHeader(bool isAKeyColumn, PropertyKind* propKind, uint64_t valueCountPerRow = 1);
+	};
+
+#if defined(SWIGPYTHON)
+	%rename(eml2_ReferencePointInALocalEngineeringCompoundCrs) ReferencePointInALocalEngineeringCompoundCrs;
+#endif
+	class ReferencePointInALocalEngineeringCompoundCrs : public COMMON_NS::AbstractObject
+	{
+	public:
+
+		/** 
+		 * Gets the local 3d CRS where the reference point ordinals are given.
+		 *
+		 * @exception	std::invalid_argument	If the local CRS is not set.
+		 * 										
+		 * @returns	A pointer to the local CRS.
+		 */
+		AbstractLocal3dCrs * getLocalCrs() const;
+
+		/**
+		 * Gets the first ordinal (x) of the location of the MD reference point relative to the local CRS.
+		 *
+		 * @returns	The first ordinal of the reference location relative to the local CRS.
+		 */
+		double getX() const;
+
+		/**
+		 * Gets the first ordinal (x) of the location of the MD reference in the global CRS.
+		 *
+		 * @exception	std::invalid_argument	If the local CRS is not set.
+		 *
+		 * @returns	The first ordinal of the reference location relative to the global CRS.
+		 */
+		double getXInGlobalCrs() const;
+
+		/**
+		 * Gets the second ordinal (y) of the location of the MD reference point relative to the local CRS.
+		 *
+		 * @returns	The second ordinal of the reference location relative to the local CRS.
+		 */
+		double getY() const;
+
+		/**
+		 * Gets the second ordinal (y) of the location of the MD reference in the global CRS.
+		 *
+		 * @exception	std::invalid_argument	If the local CRS is not set.
+		 *
+		 * @returns	The second ordinal of the reference location relative to the global CRS.
+		 */
+		double getYInGlobalCrs() const;
+
+		/**
+		 * Gets the third ordinal (z) of the location of the MD reference point relative to the local CRS.
+		 *
+		 * @returns	The third ordinal of the reference location relative to the local CRS.
+		 */
+		double getZ() const;
+
+		/**
+		 * Gets the third ordinal (z) of the location of the MD reference in the global CRS.
+		 *
+		 * @exception	std::invalid_argument	If the local CRS is not set.
+		 *
+		 * @returns	The third ordinal of the reference location relative to the global CRS.
+		 */
+		double getZInGlobalCrs() const;
+
+		/**
+		 * Check if this reference point has a defined kind.
+		 *
+		 * @returns	True if this reference point has a defined kind.
+		 */
+		bool hasKind() const;
+
+		/**
+		 * Gets the kind of this reference point.
+		 *
+		 * @returns	The kind of this reference point.
+		 */
+		gsoap_eml2_3::eml23__ReferencePointKind getKind() const;
+	};
+
+#if defined(SWIGPYTHON)
+	%rename(eml2_TimeSeries) TimeSeries;
+#endif
 	class TimeSeries : public COMMON_NS::AbstractObject
 	{
 	public:
+
+		/**
+		 * Pushes back an timestamp into this time series.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @param 	timestamp	The timestamp to push back.
+		 * @param 	yearOffset	Indicates that the dateTime attribute must be translated according to this value.
+		 */
 		void pushBackTimestamp(time_t timestamp);
-		unsigned int getTimestampIndex(time_t timestamp) const;
-		unsigned int getTimestampCount() const;
-		time_t getTimestamp(unsigned int index) const;
-	};
-	
-	/************ Activity **************/
 
-	class ActivityTemplate : public COMMON_NS::AbstractObject
-	{
-	public:
-		void pushBackParameter(const std::string & title,
-			bool isInput, bool isOutput,
-			unsigned int minOccurs, int maxOccurs);
-		void pushBackParameter(const std::string & title,
-			bool isInput, bool isOutput,
-			unsigned int minOccurs, int maxOccurs,
-			std::string resqmlObjectContentType);
-		bool isAnExistingParameter(const std::string & paramTitle) const;
-		const unsigned int getParameterCount() const;
-		const std::string & getParameterTitle(unsigned int index) const;
-		bool getParameterIsInput(unsigned int index) const;
-		bool getParameterIsInput(const std::string & paramTitle) const;
-		bool getParameterIsOutput(unsigned int index) const;
-		bool getParameterIsOutput(const std::string & paramTitle) const;
-		int64_t getParameterMinOccurences(unsigned int index) const;
-		int64_t getParameterMinOccurences(const std::string & paramTitle) const;
-		int64_t getParameterMaxOccurences(unsigned int index) const;
-		int64_t getParameterMaxOccurences(const std::string & paramTitle) const;
-	};
+		/**
+		 * Gets the index of a given timestamp in this time series.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p timestamp has not been found in this time series.
+		 *
+		 * @param 	timestamp	The timestamp we look for.
+		 * @param 	yearOffset	Indicates that the dateTime attribute must be translated according to this value.
+		 *
+		 * @returns	The index of @p timestamp in this time series.
+		 */
+		uint64_t getTimestampIndex(time_t timestamp) const;
 
-	class Activity : public COMMON_NS::AbstractObject
-	{
-	public:
-		void pushBackParameter(const std::string title, const std::string & value);
-		void pushBackParameter(const std::string title, int64_t value);
-		void pushBackParameter(const std::string title, COMMON_NS::AbstractObject* resqmlObject);
+		/**
+		 * Get the count of timestamps in this time series.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	The timestamp count.
+		 */
+		uint64_t getTimestampCount() const;
 		
-		unsigned int getParameterCount() const;
-		unsigned int getParameterCount(const std::string & paramTitle) const;
-
-		const std::string & getParameterTitle(unsigned int index) const;
-
-		bool isAFloatingPointQuantityParameter(const std::string & paramTitle) const;
-		bool isAFloatingPointQuantityParameter(unsigned int index) const;
-		double getFloatingPointQuantityParameterValue(unsigned int index) const;
-
-		bool isAnIntegerQuantityParameter(const std::string & paramTitle) const;
-		bool isAnIntegerQuantityParameter(unsigned int index) const;
-		int64_t getIntegerQuantityParameterValue(unsigned int index) const;
-
-		bool isAStringParameter(const std::string & paramTitle) const;
-		bool isAStringParameter(unsigned int index) const;
-		const std::string & getStringParameterValue(unsigned int index) const;
-
-		bool isAResqmlObjectParameter(const std::string & paramTitle) const;
-		bool isAResqmlObjectParameter(unsigned int index) const;
-		COMMON_NS::AbstractObject* getResqmlObjectParameterValue(unsigned int index) const;
-
-		void setActivityTemplate(ActivityTemplate* activityTemplate);
-		ActivityTemplate* getActivityTemplate() const;
+		/**
+		 * Gets a timestamp at a particular index of this time series.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the timestamp we look for.
+		 *
+		 * @returns	The timestamp at position @p index.
+		 */
+		time_t getTimestamp(uint64_t index) const;
 	};
 }
 
