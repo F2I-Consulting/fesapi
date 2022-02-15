@@ -28,8 +28,6 @@ using namespace std;
 using namespace RESQML2_NS;
 using namespace gsoap_eml2_3;
 
-const char* SeismicWellboreFrameRepresentation::XML_TAG = "SeismicWellboreFrameRepresentation";
-
 void SeismicWellboreFrameRepresentation::setTimeValues(double const * timeValues, unsigned int timeValueCount, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (proxy == nullptr) {

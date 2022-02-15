@@ -23,8 +23,6 @@ using namespace gsoap_eml2_3;
 using namespace COMMON_NS;
 using namespace RESQML2_NS;
 
-const char* DiscreteColorMap::XML_TAG = "DiscreteColorMap";
-
 void DiscreteColorMap::setHsvColors(uint64_t colorCount,
 	double const* hsvColors, double const* alphas, vector<string> const& colorTitles,
 	double const* indices)

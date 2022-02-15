@@ -172,6 +172,8 @@ under the License.
 #include "../resqml2_2/WellboreMarkerFrameRepresentation.h"
 #include "../resqml2_2/WellboreTrajectoryRepresentation.h"
 #else
+#include "../eml2/ColumnBasedTable.h"
+#include "../eml2/GraphicalInformationSet.h"
 #include "../resqml2/CmpLineFeature.h"
 #include "../resqml2/Model.h"
 #include "../resqml2/SeismicWellboreFrameRepresentation.h"

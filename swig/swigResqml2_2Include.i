@@ -20,7 +20,6 @@ under the License.
 #include "../src/resqml2_2/BlockedWellboreRepresentation.h"
 #include "../src/resqml2_2/BoundaryFeature.h"
 #include "../src/resqml2_2/BoundaryFeatureInterpretation.h"
-#include "../src/resqml2_2/CategoricalProperty.h"
 #include "../src/resqml2_2/CmpLineFeature.h"
 #include "../src/resqml2_2/CommentProperty.h"
 #include "../src/resqml2_2/ContinuousColorMap.h"
@@ -28,7 +27,6 @@ under the License.
 #include "../src/resqml2_2/CulturalFeature.h"
 #include "../src/resqml2_2/DiscreteColorMap.h"
 #include "../src/resqml2_2/DiscreteProperty.h"
-#include "../src/resqml2_2/DoubleTableLookup.h"
 #include "../src/resqml2_2/EarthModelInterpretation.h"
 #include "../src/resqml2_2/FaultInterpretation.h"
 #include "../src/resqml2_2/FluidBoundaryInterpretation.h"
@@ -42,9 +40,6 @@ under the License.
 #include "../src/resqml2_2/IjkGridLatticeRepresentation.h"
 #include "../src/resqml2_2/IjkGridNoGeometryRepresentation.h"
 #include "../src/resqml2_2/IjkGridParametricRepresentation.h"
-#include "../src/resqml2_2/LocalDepth3dCrs.h"
-#include "../src/resqml2_2/LocalTime3dCrs.h"
-#include "../src/resqml2_2/MdDatum.h"
 #include "../src/resqml2_2/Model.h"
 #include "../src/resqml2_2/NonSealedSurfaceFrameworkRepresentation.h"
 #include "../src/resqml2_2/PlaneSetRepresentation.h"
@@ -68,7 +63,6 @@ under the License.
 #include "../src/resqml2_2/StratigraphicUnitInterpretation.h"
 #include "../src/resqml2_2/StreamlinesFeature.h"
 #include "../src/resqml2_2/StreamlinesRepresentation.h"
-#include "../src/resqml2_2/StringTableLookup.h"
 #include "../src/resqml2_2/StructuralOrganizationInterpretation.h"
 #include "../src/resqml2_2/SubRepresentation.h"
 #include "../src/resqml2_2/TriangulatedSetRepresentation.h"
@@ -85,7 +79,6 @@ under the License.
 	%nspace RESQML2_2_NS::BlockedWellboreRepresentation;
 	%nspace RESQML2_2_NS::BoundaryFeature;
 	%nspace RESQML2_2_NS::BoundaryFeatureInterpretation;
-	%nspace RESQML2_2_NS::CategoricalProperty;
 	%nspace RESQML2_2_NS::CmpLineFeature;
 	%nspace RESQML2_2_NS::CommentProperty;
 	%nspace RESQML2_2_NS::ContinuousColorMap;
@@ -93,7 +86,6 @@ under the License.
 	%nspace RESQML2_2_NS::CulturalFeature;
 	%nspace RESQML2_2_NS::DiscreteColorMap;
 	%nspace RESQML2_2_NS::DiscreteProperty;
-	%nspace RESQML2_2_NS::DoubleTableLookup;
 	%nspace RESQML2_2_NS::EarthModelInterpretation;
 	%nspace RESQML2_2_NS::FaultInterpretation;
 	%nspace RESQML2_2_NS::FluidBoundaryInterpretation;
@@ -107,8 +99,6 @@ under the License.
 	%nspace RESQML2_2_NS::IjkGridLatticeRepresentation;
 	%nspace RESQML2_2_NS::IjkGridNoGeometryRepresentation;
 	%nspace RESQML2_2_NS::IjkGridParametricRepresentation;
-	%nspace RESQML2_2_NS::LocalDepth3dCrs;
-	%nspace RESQML2_2_NS::LocalTime3dCrs ;
 	%nspace RESQML2_2_NS::MdDatum;
 	%nspace RESQML2_2_NS::Model;
 	%nspace RESQML2_2_NS::NonSealedSurfaceFrameworkRepresentation;
@@ -133,7 +123,6 @@ under the License.
 	%nspace RESQML2_2_NS::StratigraphicUnitInterpretation;
 	%nspace RESQML2_2_NS::StreamlinesFeature;
 	%nspace RESQML2_2_NS::StreamlinesRepresentation;
-	%nspace RESQML2_2_NS::StringTableLookup;
 	%nspace RESQML2_2_NS::StructuralOrganizationInterpretation;
 	%nspace RESQML2_2_NS::SubRepresentation;
 	%nspace RESQML2_2_NS::TriangulatedSetRepresentation;
@@ -181,33 +170,6 @@ namespace RESQML2_2_NS
 	%rename(Resqml22_ContinuousColorMap) ContinuousColorMap;
 #endif	
 	class ContinuousColorMap : public RESQML2_NS::ContinuousColorMap 
-	{
-	public:
-	};
-
-	//************************************/
-	//************ CRS *******************/
-	//************************************/
-#if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(Resqml22_LocalDepth3dCrs) LocalDepth3dCrs;
-#endif
-	class LocalDepth3dCrs : public RESQML2_NS::LocalDepth3dCrs
-	{
-	public:
-	};
-
-#if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(Resqml22_LocalTime3dCrs) LocalTime3dCrs;
-#endif
-	class LocalTime3dCrs : public RESQML2_NS::LocalTime3dCrs
-	{
-	public:
-	};
-	
-#if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(Resqml22_MdDatum) MdDatum;
-#endif
-	class MdDatum : public RESQML2_NS::MdDatum
 	{
 	public:
 	};
@@ -625,22 +587,6 @@ namespace RESQML2_2_NS
 	//************************************/
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(Resqml22_DoubleTableLookup) DoubleTableLookup;
-#endif	
-	class DoubleTableLookup : public RESQML2_NS::DoubleTableLookup
-	{
-	public:
-	};
-	
-#if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(Resqml22_StringTableLookup) StringTableLookup;
-#endif	
-	class StringTableLookup : public RESQML2_NS::StringTableLookup
-	{
-	public:
-	};
-	
-#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Resqml22_CommentProperty) CommentProperty;
 #endif	
 	class CommentProperty : public RESQML2_NS::CommentProperty
@@ -660,14 +606,6 @@ namespace RESQML2_2_NS
 	%rename(Resqml22_DiscreteProperty) DiscreteProperty;
 #endif
 	class DiscreteProperty : public RESQML2_NS::DiscreteProperty
-	{
-	public:
-	};
-	
-#if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(Resqml22_CategoricalProperty) CategoricalProperty;
-#endif
-	class CategoricalProperty : public RESQML2_NS::CategoricalProperty
 	{
 	public:
 	};

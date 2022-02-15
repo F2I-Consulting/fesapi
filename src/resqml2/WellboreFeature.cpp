@@ -18,12 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreFeature.h"
 
-#include "../witsml2_0/Wellbore.h"
+#include "../witsml2/Wellbore.h"
 
 using namespace std;
 using namespace RESQML2_NS;
-
-const char* WellboreFeature::XML_TAG = "WellboreFeature";
 
 WITSML2_NS::Wellbore* WellboreFeature::getWitsmlWellbore() const
 {

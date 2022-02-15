@@ -87,7 +87,7 @@ namespace EML2_NS
 	HdfProxyExample.cs).
 	*/
 #if defined(SWIGPYTHON)
-	%rename(eml2_AbstractHdfProxy) AbstractHdfProxy;
+	%rename(Eml2_AbstractHdfProxy) AbstractHdfProxy;
 #endif
 	class AbstractHdfProxy : public EpcExternalPartReference
 	{
@@ -335,7 +335,7 @@ namespace EML2_NS
 	/** @brief	Proxy class for an abstract local 3D coordinate reference system (CRS). */
 	
 #if defined(SWIGPYTHON)
-	%rename(eml2_AbstractLocal3dCrs) AbstractLocal3dCrs;
+	%rename(Eml2_AbstractLocal3dCrs) AbstractLocal3dCrs;
 #endif
 	class AbstractLocal3dCrs : public COMMON_NS::AbstractObject
 	{
@@ -768,7 +768,7 @@ namespace EML2_NS
 		 * @param [in]	resqmlObject	The RESQML object, value of the parameter to push back.
 		 */
 		void pushBackParameter(const std::string title,
-			AbstractObject* resqmlObject);
+			COMMON_NS::AbstractObject* resqmlObject);
 
 		/**
 		 * Get the count of all the parameters
@@ -988,20 +988,6 @@ namespace EML2_NS
 		bool isAResqmlObjectParameter(uint64_t index) const;
 
 		/**
-		 * Gets the values of all the RESQML object parameters sharing a given title.
-		 *
-		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
-		 * 										activity.
-		 * @exception	std::invalid_argument	If one @p paramTitle parameter contains some non RESQML object
-		 * 										values.
-		 *
-		 * @param 	paramTitle	The title of the RESQML object parameters we look for the value.
-		 *
-		 * @returns	A vector of the value of all the @p paramTitle RESQML object parameters.
-		 */
-		std::vector<AbstractObject*> getResqmlObjectParameterValue(const std::string & paramTitle) const;
-
-		/**
 		 * Gets the RESQML object value of a given parameter.
 		 *
 		 * @exception	std::out_of_range	 	If @p index is not in the parameter range.
@@ -1013,7 +999,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The RESQML object value of the parameter at position @p index.
 		 */
-		AbstractObject* getResqmlObjectParameterValue(uint64_t index) const;
+		COMMON_NS::AbstractObject* getResqmlObjectParameterValue(uint64_t index) const;
 
 		/**
 		 * Sets the activity template of this activity.
@@ -1038,7 +1024,7 @@ namespace EML2_NS
 	};
 
 #if defined(SWIGPYTHON)
-	%rename(eml2_GraphicalInformationSet) GraphicalInformationSet;
+	%rename(Eml2_GraphicalInformationSet) GraphicalInformationSet;
 #endif
 	class GraphicalInformationSet : public COMMON_NS::AbstractObject
 	{
@@ -1600,7 +1586,7 @@ namespace EML2_NS
 	/************ Property **************/
 
 #if defined(SWIGPYTHON)
-	%rename(eml2_PropertyKind) PropertyKind;
+	%rename(Eml2_PropertyKind) PropertyKind;
 #endif
 	class PropertyKind : public COMMON_NS::AbstractObject {
 	public:
@@ -1639,7 +1625,7 @@ namespace EML2_NS
 	};
 
 #if defined(SWIGPYTHON)
-	%rename(eml2_ColumnBasedTable) ColumnBasedTable;
+	%rename(Eml2_ColumnBasedTable) ColumnBasedTable;
 #endif
 	class ColumnBasedTable : public COMMON_NS::AbstractObject
 	{
@@ -1761,7 +1747,7 @@ namespace EML2_NS
 	};
 
 #if defined(SWIGPYTHON)
-	%rename(eml2_ReferencePointInALocalEngineeringCompoundCrs) ReferencePointInALocalEngineeringCompoundCrs;
+	%rename(Eml2_ReferencePointInALocalEngineeringCompoundCrs) ReferencePointInALocalEngineeringCompoundCrs;
 #endif
 	class ReferencePointInALocalEngineeringCompoundCrs : public COMMON_NS::AbstractObject
 	{
@@ -1840,7 +1826,7 @@ namespace EML2_NS
 	};
 
 #if defined(SWIGPYTHON)
-	%rename(eml2_TimeSeries) TimeSeries;
+	%rename(Eml2_TimeSeries) TimeSeries;
 #endif
 	class TimeSeries : public COMMON_NS::AbstractObject
 	{

@@ -25,8 +25,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 using namespace gsoap_eml2_3;
-
-const char* CmpLineFeature::XML_TAG = "CmpLineFeature";
 		
 uint64_t CmpLineFeature::getTraceCount() const
 {

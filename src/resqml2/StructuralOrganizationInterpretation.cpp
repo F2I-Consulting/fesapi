@@ -24,8 +24,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* StructuralOrganizationInterpretation::XML_TAG = "StructuralOrganizationInterpretation";
-
 RESQML2_NS::FaultInterpretation* StructuralOrganizationInterpretation::getFaultInterpretation(unsigned int index) const
 {
 	return repository->getDataObjectByUuid<RESQML2_NS::FaultInterpretation>(getFaultInterpretationDor(index).getUuid());

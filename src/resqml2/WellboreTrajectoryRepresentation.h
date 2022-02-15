@@ -354,7 +354,7 @@ namespace RESQML2_NS
 		 * @param 	  	parentMd	 	The MD on the parent wellbore trajectory where this trajectory is starting. It can be NaN if same as kickoffMd.
 		 * @param [in]	parentTrajRep	The parent trajectory.
 		 */
-		DLL_IMPORT_OR_EXPORT void virtual addParentTrajectory(double kickoffMd, double parentMd, WellboreTrajectoryRepresentation* parentTrajRep) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void addParentTrajectory(double kickoffMd, double parentMd, WellboreTrajectoryRepresentation* parentTrajRep) = 0;
 
 		/**
 		 * Gets the parent trajectory of this trajectory.
@@ -397,7 +397,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	A vector of pointers to all the wellbore frame representations associated to this trajectory.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<class RESQML2_NS::WellboreFrameRepresentation *> getWellboreFrameRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class WellboreFrameRepresentation *> getWellboreFrameRepresentationSet() const;
 
 		/**
 		 * Gets the count of wellbore frame representations which are associated with this wellbore
@@ -415,7 +415,7 @@ namespace RESQML2_NS
 		 * 								
 		 * @returns The associated wellbore frame representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(uint64_t index) const; // Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
+		DLL_IMPORT_OR_EXPORT class WellboreFrameRepresentation * getWellboreFrameRepresentation(uint64_t index) const; // Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
 
 		virtual COMMON_NS::DataObjectReference getLocalCrsDor(uint64_t patchIndex) const override = 0;
 

@@ -138,9 +138,9 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
     resqml20__SealedContactRepresentationPart* contactRep = static_cast<resqml20__SealedContactRepresentationPart*>(orgRep->SealedContactRepresentation[contactIndex]);
 
     // we look for the supporting representation index
-    int representationIndex = -1;
-	const unsigned int representationCount = getRepresentationCount();
-	for (unsigned int i = 0; i < representationCount; ++i) {
+	int64_t representationIndex = -1;
+	const uint64_t representationCount = getRepresentationCount();
+	for (uint64_t i = 0; i < representationCount; ++i) {
 		if (getRepresentation(i)->getUuid() == supportingRepresentation->getUuid()) {
 			representationIndex = i;
 			break;

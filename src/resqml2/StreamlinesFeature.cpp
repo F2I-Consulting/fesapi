@@ -22,8 +22,6 @@ under the License.
 
 using namespace RESQML2_NS;
 
-const char* StreamlinesFeature::XML_TAG = "StreamlinesFeature";
-
 EML2_NS::TimeSeries* StreamlinesFeature::getTimeSeries() const
 {
 	return repository->getDataObjectByUuid<EML2_NS::TimeSeries>(getTimeSeriesDor().getUuid());

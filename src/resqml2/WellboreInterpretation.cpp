@@ -23,8 +23,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* WellboreInterpretation::XML_TAG = "WellboreInterpretation";
-
 std::vector<WellboreTrajectoryRepresentation*> WellboreInterpretation::getWellboreTrajectoryRepresentationSet() const
 {
 	return getRepository()->getSourceObjects<WellboreTrajectoryRepresentation>(this);

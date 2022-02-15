@@ -591,7 +591,7 @@ namespace COMMON_NS
 		*
 		* @returns	The XML namespace of this instance.
 		*/
-		std::string getXmlNamespace() const;
+		virtual std::string getXmlNamespace() const = 0;
 
 		/**
 		 * Gets the standard XML tag without XML namespace for serializing this data object.
@@ -882,7 +882,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the default CRS if it is defined, else null.
 		 */
-		RESQML2_NS::AbstractLocal3dCrs* getDefaultCrs() const;
+		EML2_NS::AbstractLocal3dCrs* getDefaultCrs() const;
 
 		/**
 		 * Sets a default CRS for writing. It will be used in all writing methods if no explicit CRS is
@@ -890,7 +890,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @param [in]	crs	If non-null, the default CRS.
 		 */
-		void setDefaultCrs(RESQML2_NS::AbstractLocal3dCrs* crs);
+		void setDefaultCrs(EML2_NS::AbstractLocal3dCrs* crs);
 
 		/**
 		 * Gets the default HDF5 file proxy for writing. It is used in all writing methods if no

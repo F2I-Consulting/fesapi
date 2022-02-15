@@ -21,8 +21,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* RepresentationSetRepresentation::XML_TAG = "RepresentationSetRepresentation";
-
 void RepresentationSetRepresentation::loadTargetRelationships()
 {
 	AbstractRepresentation::loadTargetRelationships();

@@ -81,7 +81,7 @@ namespace EML2_3_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Eml23_LocalEngineeringCompoundCrs) LocalEngineeringCompoundCrs;
 #endif
-	class LocalEngineeringCompoundCrs : public EML2_NS::LocalEngineeringCompoundCrs
+	class LocalEngineeringCompoundCrs : public EML2_NS::AbstractLocal3dCrs
 	{
 	public:
 	};

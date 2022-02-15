@@ -23,8 +23,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* Grid2dRepresentation::XML_TAG = "Grid2dRepresentation";
-
 uint64_t Grid2dRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {

@@ -28,8 +28,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* CommentProperty::XML_TAG = "CommentProperty";
-
 void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values,
 	EML2_NS::AbstractHdfProxy * proxy)
 {

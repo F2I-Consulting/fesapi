@@ -649,7 +649,7 @@ namespace RESQML2_0_1_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Resqml20_LocalDepth3dCrs) LocalDepth3dCrs;
 #endif
-	class LocalDepth3dCrs : public RESQML2_NS::LocalDepth3dCrs
+	class LocalDepth3dCrs : public EML2_NS::AbstractLocal3dCrs
 	{
 	public:
 	};
@@ -657,7 +657,7 @@ namespace RESQML2_0_1_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Resqml20_LocalTime3dCrs) LocalTime3dCrs;
 #endif
-	class LocalTime3dCrs : public RESQML2_NS::LocalTime3dCrs
+	class LocalTime3dCrs : public EML2_NS::AbstractLocal3dCrs
 	{
 	public:
 	};
@@ -665,7 +665,7 @@ namespace RESQML2_0_1_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Resqml20_MdDatum) MdDatum;
 #endif
-	class MdDatum : public RESQML2_NS::MdDatum
+	class MdDatum : public EML2_NS::ReferencePointInALocalEngineeringCompoundCrs
 	{
 	public:
 	};
@@ -1048,14 +1048,14 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in]	mdDatum	The MD datum to set.
 		 */
-		void setMdDatum(RESQML2_NS::MdDatum * mdDatum);
+		void setMdDatum(EML2_NS::ReferencePointInALocalEngineeringCompoundCrs * mdDatum);
 		
 		/**
 		 * Gets the MD datum of this deviation survey representation.
 		 *
 		 * @returns The MD datum of this deviation survey representation.
 		 */
-		RESQML2_NS::MdDatum* getMdDatum() const;
+		EML2_NS::ReferencePointInALocalEngineeringCompoundCrs* getMdDatum() const;
 
 		/**
 		 * Checks whether this is a final version of the deviation survey, as distinct from the
@@ -1300,7 +1300,7 @@ namespace RESQML2_0_1_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Resqml20_DoubleTableLookup) DoubleTableLookup;
 #endif	
-	class DoubleTableLookup : public RESQML2_NS::DoubleTableLookup
+	class DoubleTableLookup : public EML2_NS::ColumnBasedTable
 	{
 	public:
 	};
@@ -1308,7 +1308,7 @@ namespace RESQML2_0_1_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Resqml20_StringTableLookup) StringTableLookup;
 #endif	
-	class StringTableLookup : public RESQML2_NS::StringTableLookup
+	class StringTableLookup : public EML2_NS::ColumnBasedTable
 	{
 	public:
 	};
@@ -1389,7 +1389,7 @@ namespace RESQML2_0_1_NS
 
 		bool hasMultipleRealizations() const;
 		bool hasSinglePropertyKind() const;
-		gsoap_eml2_3::resqml22__TimeSetKind getTimeSetKind() const;
+		gsoap_resqml2_0_1::resqml20__TimeSetKind getTimeSetKind() const;
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
@@ -1422,7 +1422,7 @@ namespace RESQML2_0_1_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Resqml20_CategoricalProperty) CategoricalProperty;
 #endif
-	class CategoricalProperty : public RESQML2_NS::CategoricalProperty
+	class CategoricalProperty : public RESQML2_NS::DiscreteProperty
 	{
 	public:
 		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind() const;

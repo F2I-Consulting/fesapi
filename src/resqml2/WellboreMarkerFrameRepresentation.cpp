@@ -24,8 +24,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* WellboreMarkerFrameRepresentation::XML_TAG = "WellboreMarkerFrameRepresentation";
-
 GeologicUnitOccurrenceInterpretation* WellboreMarkerFrameRepresentation::getGeologicUnitOccurrenceInterpretation() const
 {
 	return getRepository()->getDataObjectByUuid<GeologicUnitOccurrenceInterpretation>(getGeologicUnitOccurrenceInterpretationDor().getUuid());

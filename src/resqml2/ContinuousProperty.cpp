@@ -27,8 +27,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* ContinuousProperty::XML_TAG = "ContinuousProperty";
-
 void ContinuousProperty::pushBackDoubleHdf5Array1dOfValues(const double * values, uint64_t valueCount,
 	double minimumValue, double maximumValue, EML2_NS::AbstractHdfProxy * proxy)
 {

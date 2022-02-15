@@ -20,8 +20,6 @@ under the License.
 
 using namespace std;
 using namespace RESQML2_NS;
-
-const char* ShotPointLineFeature::XML_TAG = "ShotPointLineFeature";
 		
 uint64_t ShotPointLineFeature::getTraceCount() const
 {

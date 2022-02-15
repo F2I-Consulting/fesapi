@@ -21,8 +21,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* PolylineSetRepresentation::XML_TAG = "PolylineSetRepresentation";
-
 uint64_t PolylineSetRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {

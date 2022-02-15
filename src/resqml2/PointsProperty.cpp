@@ -26,8 +26,6 @@ under the License.
 using namespace RESQML2_NS;
 using namespace std;
 
-const char* PointsProperty::XML_TAG = "PointsProperty";
-
 uint64_t PointsProperty::getXyzPointCountOfAllPatches() const
 {
 	uint64_t result = 0;

@@ -9,8 +9,8 @@ set (FESAPI_ROOT_DIR ${CMAKE_SOURCE_DIR})
 set (FESAPI_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 # version mechanism
-set (Fesapi_VERSION_MAJOR 2)
-set (Fesapi_VERSION_MINOR 3)
+set (Fesapi_VERSION_MAJOR 3)
+set (Fesapi_VERSION_MINOR 0)
 set (Fesapi_VERSION_PATCH 0)
 set (Fesapi_VERSION_TWEAK 0)
 

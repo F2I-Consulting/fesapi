@@ -31,8 +31,6 @@ using namespace std;
 using namespace RESQML2_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* GridConnectionSetRepresentation::XML_TAG = "GridConnectionSetRepresentation";
-
 void GridConnectionSetRepresentation::pushBackSupportingGridRepresentation(AbstractGridRepresentation * supportingGridRep)
 {
 	if (supportingGridRep == nullptr) {

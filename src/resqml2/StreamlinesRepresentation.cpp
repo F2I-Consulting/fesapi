@@ -23,8 +23,6 @@ under the License.
 
 using namespace RESQML2_NS;
 
-const char* StreamlinesRepresentation::XML_TAG = "StreamlinesRepresentation";
-
 RESQML2_NS::WellboreTrajectoryRepresentation* StreamlinesRepresentation::getWellboreTrajectory(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<RESQML2_NS::WellboreTrajectoryRepresentation>(getWellboreTrajectoryDor(index).getUuid());

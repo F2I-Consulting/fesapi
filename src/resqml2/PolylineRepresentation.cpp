@@ -26,8 +26,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* PolylineRepresentation::XML_TAG = "PolylineRepresentation";
-
 bool PolylineRepresentation::isASeismicLine() const
 {
 	// A Seismic line is defined by an PolylineRepresentation that has a feature of type SeismicLineFeature and that

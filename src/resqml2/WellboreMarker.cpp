@@ -26,8 +26,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* WellboreMarker::XML_TAG = "WellboreMarker";
-
 RESQML2_NS::BoundaryFeatureInterpretation* WellboreMarker::getBoundaryFeatureInterpretation() const
 {
 	return getWellboreMarkerFrameRepresentation()->getRepository()->getDataObjectByUuid<RESQML2_NS::BoundaryFeatureInterpretation>(getBoundaryFeatureInterpretationDor().getUuid());

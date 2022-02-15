@@ -37,7 +37,6 @@ under the License.
 	%nspace RESQML2_NS::AbstractFeatureInterpretation;
 	%nspace RESQML2_NS::AbstractGridRepresentation;
 	%nspace RESQML2_NS::AbstractIjkGridRepresentation;
-	%nspace RESQML2_NS::AbstractLocal3dCrs;
 	%nspace RESQML2_NS::AbstractOrganizationInterpretation;
 	%nspace RESQML2_NS::AbstractProperty;
 	%nspace RESQML2_NS::AbstractRepresentation;
@@ -50,7 +49,6 @@ under the License.
 	%nspace RESQML2_NS::BlockedWellboreRepresentation;
 	%nspace RESQML2_NS::BoundaryFeature;
 	%nspace RESQML2_NS::BoundaryFeatureInterpretation;
-	%nspace RESQML2_NS::CategoricalProperty;
 	%nspace RESQML2_NS::CmpLineFeature;
 	%nspace RESQML2_NS::CommentProperty;
 	%nspace RESQML2_NS::ContinuousColorMap;
@@ -58,7 +56,6 @@ under the License.
 	%nspace RESQML2_NS::CulturalFeature;
 	%nspace RESQML2_NS::DiscreteColorMap;
 	%nspace RESQML2_NS::DiscreteProperty;
-	%nspace RESQML2_NS::DoubleTableLookup;
 	%nspace RESQML2_NS::EarthModelInterpretation;
 	%nspace RESQML2_NS::FaultInterpretation;
 	%nspace RESQML2_NS::FluidBoundaryInterpretation;
@@ -72,9 +69,6 @@ under the License.
 	%nspace RESQML2_NS::IjkGridLatticeRepresentation;
 	%nspace RESQML2_NS::IjkGridNoGeometryRepresentation;
 	%nspace RESQML2_NS::IjkGridParametricRepresentation;
-	%nspace RESQML2_NS::LocalDepth3dCrs;
-	%nspace RESQML2_NS::LocalTime3dCrs;
-	%nspace RESQML2_NS::MdDatum;
 	%nspace RESQML2_NS::Model;
 	%nspace RESQML2_NS::NonSealedSurfaceFrameworkRepresentation;
 	%nspace RESQML2_NS::PlaneSetRepresentation;
@@ -98,7 +92,6 @@ under the License.
 	%nspace RESQML2_NS::StratigraphicUnitInterpretation;
 	%nspace RESQML2_NS::StreamlinesFeature;
 	%nspace RESQML2_NS::StreamlinesRepresentation;
-	%nspace RESQML2_NS::StringTableLookup;
 	%nspace RESQML2_NS::StructuralOrganizationInterpretation;
 	%nspace RESQML2_NS::SubRepresentation;
 	%nspace RESQML2_NS::TriangulatedSetRepresentation;
@@ -2138,73 +2131,6 @@ namespace RESQML2_NS
 		void setNanRgbColor(double red, double green, double blue, double alpha = 1, std::string const& colorTitle = "");
 		void setNanRgbColor(unsigned int red, unsigned int green, unsigned int blue, double alpha = 1, std::string const& colorTitle = "");
 	};
-	
-#if defined(SWIGPYTHON)
-	%rename(Resqml2_AbstractLocal3dCrs) AbstractLocal3dCrs;
-#endif	
-	class AbstractLocal3dCrs : public COMMON_NS::AbstractObject
-	{
-	public:
-		double getOriginOrdinal1() const;
-		double getOriginOrdinal2() const;
-		double getOriginDepthOrElevation() const;
-		double getArealRotation() const;
-		bool isDepthOriented() const;
-		
-		bool isProjectedCrsDefinedWithEpsg() const;
-		bool isProjectedCrsUnknown() const;
-		const std::string & getProjectedCrsUnknownReason() const;
-		unsigned long long getProjectedCrsEpsgCode() const;
-		
-		bool isVerticalCrsDefinedWithEpsg() const;
-		bool isVerticalCrsUnknown() const;
-		const std::string & getVerticalCrsUnknownReason() const;
-		unsigned long long getVerticalCrsEpsgCode() const;
-
-		gsoap_resqml2_0_1::eml20__LengthUom getProjectedCrsUnit() const;
-		std::string getProjectedCrsUnitAsString() const;
-		gsoap_resqml2_0_1::eml20__LengthUom getVerticalCrsUnit() const;
-		std::string getVerticalCrsUnitAsString() const;
-		
-		gsoap_resqml2_0_1::eml20__AxisOrder2d getAxisOrder() const;
-		void setAxisOrder(gsoap_resqml2_0_1::eml20__AxisOrder2d axisOrder) const;
-	};
-	
-#ifdef SWIGPYTHON
-	%rename(Resqml2_LocalDepth3dCrs) LocalDepth3dCrs;
-#endif
-	class LocalDepth3dCrs : public AbstractLocal3dCrs
-	{
-	public:
-	};
-
-#ifdef SWIGPYTHON
-	%rename(Resqml2_LocalTime3dCrs) LocalTime3dCrs;
-#endif
-	class LocalTime3dCrs : public AbstractLocal3dCrs
-	{
-	public:
-		gsoap_resqml2_0_1::eml20__TimeUom getUnit() const;
-		std::string getUnitAsString() const;
-	};
-	
-#ifdef SWIGPYTHON
-	%rename(Resqml2_MdDatum) LocalTime3dCrs;
-#endif
-	class MdDatum : public COMMON_NS::AbstractObject
-	{
-	public:
-		AbstractLocal3dCrs * getLocalCrs() const;
-
-		virtual double getX() const = 0;
-		virtual double getXInGlobalCrs() const = 0;
-		virtual double getY() const = 0;
-		virtual double getYInGlobalCrs() const = 0;
-		virtual double getZ() const = 0;
-		virtual double getZInGlobalCrs() const = 0;
-		
-		gsoap_eml2_3::eml23__WellboreDatumReference getOriginKind() const;
-	};
 
 	class AbstractFeatureInterpretation;
 #ifdef SWIGPYTHON
@@ -2319,8 +2245,8 @@ namespace RESQML2_NS
 	class AbstractFeatureInterpretation : public COMMON_NS::AbstractObject
 	{
 	public:
-		unsigned int						getRepresentationCount() const;
-		AbstractFeature*				getInterpretedFeature();
+		unsigned int				getRepresentationCount() const;
+		AbstractFeature*			getInterpretedFeature();
 		AbstractRepresentation* 	getRepresentation(unsigned int index) const;
 		
 		gsoap_resqml2_0_1::resqml20__Domain initDomain(gsoap_resqml2_0_1::resqml20__Domain defaultDomain) const;
@@ -2659,7 +2585,7 @@ namespace RESQML2_NS
 	public:
 		
 		AbstractFeatureInterpretation* getInterpretation() const;
-		AbstractLocal3dCrs * getLocalCrs(unsigned int patchIndex);
+		EML2_NS::AbstractLocal3dCrs * getLocalCrs(unsigned int patchIndex);
 		
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::AbstractValuesProperty, ValuesProperty)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PointsProperty, PointsProperty)
@@ -2752,12 +2678,12 @@ namespace RESQML2_NS
 			double xOrigin, double yOrigin, double zOrigin,
 			double xOffsetInFastestDirection, double yOffsetInFastestDirection, double zOffsetInFastestDirection,
 			double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
-			double spacingInFastestDirection, double spacingInSlowestDirection, AbstractLocal3dCrs * localCrs = nullptr);
+			double spacingInFastestDirection, double spacingInSlowestDirection, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsArray2dOfExplicitZ(
 			double * zValues,
 			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
-			Grid2dRepresentation * supportingGrid2dRepresentation, AbstractLocal3dCrs * localCrs = nullptr,
+			Grid2dRepresentation * supportingGrid2dRepresentation, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr,
 			unsigned int startIndexI = 0, unsigned int startIndexJ = 0,
 			int indexIncrementI = 1, int indexIncrementJ = 1);
 
@@ -2766,7 +2692,7 @@ namespace RESQML2_NS
 			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
 			double originX, double originY, double originZ,
 			double offsetIX, double offsetIY, double offsetIZ, double spacingI,
-			double offsetJX, double offsetJY, double offsetJZ, double spacingJ, AbstractLocal3dCrs * localCrs = nullptr);
+			double offsetJX, double offsetJY, double offsetJZ, double spacingJ, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 		
 		Grid2dRepresentation*  getSupportingRepresentation();
 	};
@@ -2784,12 +2710,12 @@ namespace RESQML2_NS
 		void pushBackGeometryPatch(
 			unsigned int * nodeCountPerPolyline, double * nodes,
 			unsigned int polylineCount, bool allPolylinesClosedFlag,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		void pushBackGeometryPatch(
 			unsigned int * nodeCountPerPolyline, double * nodes,
 			unsigned int polylineCount, bool * polylineClosedFlags,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 				
 		bool areAllPolylinesClosedOfPatch(unsigned int patchIndex) const;
 		bool areAllPolylinesClosedOfAllPatches() const;
@@ -2810,7 +2736,7 @@ namespace RESQML2_NS
 	public:
 		void pushBackGeometryPatch(
 			unsigned int xyzPointCount, double * xyzPoints,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs * localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 	};
 	
 #ifdef SWIGPYTHON
@@ -2819,13 +2745,13 @@ namespace RESQML2_NS
 	class PlaneSetRepresentation : public AbstractRepresentation
 	{
 	public:
-		void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, AbstractLocal3dCrs* localCrs = nullptr);
+		void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		void pushBackTiltedPlaneGeometryPatch(
 			double x1, double y1, double z1,
 			double x2, double y2, double z2,
 			double x3, double y3, double z3,
-			AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 	};
 
 #ifdef SWIGPYTHON
@@ -2834,7 +2760,7 @@ namespace RESQML2_NS
 	class PolylineRepresentation : public AbstractRepresentation
 	{
 	public:
-		void setGeometry(double * points, unsigned int pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+		void setGeometry(double * points, unsigned int pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 		bool isClosed() const;
 		bool hasALineRole() const;
 		gsoap_eml2_3::resqml22__LineRole getLineRole() const;
@@ -2851,7 +2777,7 @@ namespace RESQML2_NS
 		unsigned int getTriangleCountOfAllPatches() const;
 		void getTriangleNodeIndicesOfPatch(unsigned int patchIndex, unsigned int * triangleNodeIndices) const;
 		void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const;
-		void pushBackTrianglePatch(unsigned int nodeCount, double * nodes, unsigned int triangleCount, unsigned int * triangleNodeIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+		void pushBackTrianglePatch(unsigned int nodeCount, double * nodes, unsigned int triangleCount, unsigned int * triangleNodeIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 	};
 
 #ifdef SWIGPYTHON
@@ -2879,7 +2805,7 @@ namespace RESQML2_NS
 	class NonSealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
 	{
 	public:
-		void pushBackNonSealedContactRepresentation(unsigned int pointCount, double * points, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+		void pushBackNonSealedContactRepresentation(unsigned int pointCount, double * points, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 	};
 	
 #ifdef SWIGPYTHON
@@ -2888,31 +2814,199 @@ namespace RESQML2_NS
 	class SubRepresentation : public AbstractRepresentation
 	{
 	public:
-		void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t originIndex,
+		/**
+		 * Gets the kind of the selected elements for all patches of this sub-representation.
+		 *
+		 * @exception	std::invalid_argument	If the RESQML instance has got various selected element kinds
+		 *										as RESQML2.0 allows.
+		 *
+		 * @returns	The kind of the selected elements.
+		 */
+		gsoap_eml2_3::eml23__IndexableElement getElementKind() const;
+
+		/**
+		 * Gets the count of the selected elements of a particular patch of this sub-representation.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch from which we want to count the selected
+		 * 						elements.
+		 *
+		 * @returns	The count of the selected elements.
+		 */
+		uint64_t getElementCountOfPatch(uint64_t patchIndex) const;
+
+		/**
+		 * Gets the indices of the selected elements for a particular patch of this sub-representation.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 * @exception	logic_error		 	If the selected elements indices of the patch are not stored
+		 * 									in a HDF5 integer array.
+		 *
+		 * @param 	   	patchIndex		   	Zero-based index of the patch.
+		 * @param [out]	elementIndices	   	Output array for collecting the indices of the selected
+		 * 									elements. It must be preallocated with
+		 * 									{@link getElementCountOfPatch()} size.
+		 * @return The null value
+		 */
+		int64_t getElementIndicesOfPatch(uint64_t patchIndex, int64_t* elementIndices) const;
+
+		/**
+		 * Checks if the element indices of a particular patch are based on a lattice or not.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 *
+		 * @param 	patchIndex		   	Zero-based index of the patch.
+		 *
+		 * @returns	True if element indices based on lattice, false if not.
+		 */
+		bool areElementIndicesBasedOnLattice(uint64_t patchIndex) const;
+
+		/**
+		 * Gets the start value of the lattice the element indices of a particular patch are based on.
+		 *
+		 * @exception	std::invalid_argument	If the element indices are not based on a lattice.
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 *
+		 * @param 	patchIndex		   	Zero-based index of the patch.
+		 *
+		 * @returns	The lattice start value.
+		 */
+		int64_t getLatticeElementIndicesStartValue(uint64_t patchIndex) const;
+
+		/**
+		 * Gets the dimension count of the lattice the element indices of a particular patch are based
+		 * on.
+		 *
+		 * @exception	std::invalid_argument	If the element indices are not based on a lattice.
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 *
+		 * @param 	patchIndex		   	Zero-based index of the patch.
+		 *
+		 * @returns	The lattice dimension count.
+		 */
+		uint64_t getLatticeElementIndicesDimensionCount(uint64_t patchIndex) const;
+
+		/**
+		 * Gets the offset value at a given dimension of the lattice the element indices of a particular
+		 * patch are based on.
+		 *
+		 * @exception	std::invalid_argument	If the element indices are not based on a lattice.
+		 * @exception	std::out_of_range	 	If @p latticeDimensionIndex is out of range.
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::out_of_range	 	If @p elementIndicesIndex is out of range. Must be: 0 for
+		 * 										non pairwise element indices; 0 or 1 for pairwise element
+		 * 										indices (0 for the left and 1 for the right part of the
+		 * 										pairs).
+		 *
+		 * @param 	latticeDimensionIndex	Zero-based index of the lattice dimension.
+		 * @param 	patchIndex			 	Zero-based index of the patch.
+		 * @param 	elementIndicesIndex  	(Optional) In case of pairwise elements, allow to select the
+		 * 									first (<tt>elementIndicesIndex = 0</tt>)
+		 * 									or second (<tt>elementIndicesIndex = 1</tt>) element index of
+		 * 									the pair. Default value is @c 0, corresponding to both non-
+		 * 									pairwise elements and first element of a pair.
+		 *
+		 * @returns	The offset value.
+		 */
+		int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, uint64_t patchIndex) const;
+
+		/**
+		 * Gets the offset count at a given dimension of the lattice the element indices of a particular
+		 * patch are based on.
+		 *
+		 * @exception	std::invalid_argument	If the element indices are not based on a lattice.
+		 * @exception	std::out_of_range	 	If @p latticeDimensionIndex is out of range.
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 *
+		 * @param 	latticeDimensionIndex	Zero-based index of the lattice dimension.
+		 * @param 	patchIndex			 	Zero-based index of the patch.
+		 *
+		 * @returns	The offset count.
+		 */
+		uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, uint64_t patchIndex) const;
+
+		/**
+		 * Pushes back a new lattice-based patch (without pairwise elements) in this sub-representation.
+		 * The offset value is set to 1 in each dimension of the lattice.
+		 *
+		 * @param 	originIndex					  	The index of the origin (its start value).
+		 * @param 	elementCountInSlowestDimension	The number of elements in the slowest dimension
+		 * 											(commonly in K dimension).
+		 * @param 	elementCountInMiddleDimension 	The number of elements in the middle dimension
+		 * 											(commonly in J dimension).
+		 * @param 	elementCountInFastestDimension	The number of elements in the fastest dimension
+		 * 											(commonly in I dimension).
+		 * @param	ijkGrid							The supporting IJK grid representation.
+		 */
+		void pushBackSubRepresentationPatch(uint64_t originIndex,
 			unsigned int elementCountInSlowestDimension,
 			unsigned int elementCountInMiddleDimension,
-			unsigned int elementCountInFastestDimension);
-		void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, uint64_t* elementIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, short* supportingRepIndices = nullptr);
-		void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind0, gsoap_eml2_3::resqml22__IndexableElement elementKind1,
-			uint64_t elementCount,
-			uint64_t * elementIndices0, uint64_t * elementIndices1,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr) = 0;
+			unsigned int elementCountInFastestDimension, RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid);
 
-		bool areElementIndicesPairwise(unsigned int patchIndex) const;
-		bool areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
+		/**
+		 * Pushes back a new patch in this sub-representation.
+		 *
+		 * @param 	  	elementCount			The count of elements which constitutes the sub-
+		 * 										representation patch.
+		 * @param [in]	elementIndices			The indices of the elements in the supporting
+		 * 										representation.
+		 * @param [in]	supportingRep			The supporting representation
+		 * 										corresponding to the element indices.
+		 * @param [in]	proxy					(Optional) The HDF proxy where the numerical values (indices)
+		 * 										are stored.
+		 */
+		void pushBackSubRepresentationPatch(uint64_t elementCount, int64_t* elementIndices,
+			RESQML2_NS::AbstractRepresentation* supportingRep, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
-		int64_t getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
-		unsigned int getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
-		int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
-		uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
+		/**
+		 * Pushes back a new patch in this sub-representation where the
+		 * indices values have not to yet been written in the HDF5 file. The reason can be that the
+		 * indices values already exist in an external file (only HDF5 for now) or that the writing of
+		 * these indices values in the external file is postponed in time.
+		 *
+		 * @param 	  	elementCount			The count of elements which constitutes the sub-
+		 * 										representation patch.
+		 * @param 	  	elementDataset			The HDF5 dataset name where the element indices are
+		 * 										stored. If empty, the dataset will be named the same as the
+		 * 										dataset naming convention fesapi : <tt>getHdfGroup() + subRep-
+		 * 										&gt;uuid + "/subrepresentation_elementIndices0_patch" +
+		 * 										patchIndex;</tt>
+		 * @param 	  	nullValue				The null value which has been chosen in the referenced
+		 * 										HDF5 dataset.
+		 * @param [in]	supportingRep			The supporting representation
+		 * 										corresponding to the element indices.
+		 * @param [in]	proxy					(Optional) The HDF5 proxy where the values are already stored or
+		 * 										will be stored.
+		 */
+		void pushBackRefToExistingDataset(uint64_t elementCount, const std::string& elementDataset,
+			int64_t nullValue, RESQML2_NS::AbstractRepresentation* supportingRep, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
-		gsoap_eml2_3::resqml22__IndexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const;
-		uint64_t getElementCountOfPatch(unsigned int patchIndex) const;
-		void getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, uint64_t * elementIndices) const;
+		/**
+		 * Gets the supporting representation of a specific patch of this sub-representation.
+		 *
+		 * @exception	std::invalid_argument	If no supporting representation is already associated to
+		 * 										this sub-representation.
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch of the subrepresentation.
+		 *
+		 * @returns	The supporting representation of patch @p patchIndex.
+		 */
+		AbstractRepresentation* getSupportingRepresentationOfPatch(uint64_t patchIndex = 0) const;
 
-		void pushBackSupportingRepresentation(AbstractRepresentation * supportingRep);
-		unsigned int getSupportingRepresentationCount() const = 0;
-		AbstractRepresentation* getSupportingRepresentation(unsigned int index) const;
+		/**
+		 * Gets the data object reference of the supporting representation of a specific patch of this sub-representation.
+		 *
+		 * @exception	std::invalid_argument	If no supporting representation is already associated to
+		 * 										this sub-representation.
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch of the subrepresentation.
+		 *
+		 * @returns	The data object reference of the supporting representation of patch @p patchIndex.
+		 */
+		COMMON_NS::DataObjectReference getSupportingRepresentationOfPatchDor(uint64_t patchIndex = 0) const = 0;
 	};
 	
 #ifdef SWIGPYTHON
@@ -3062,28 +3156,28 @@ namespace RESQML2_NS
 		void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& faceIndicesCumulativeCountPerCell,
 			uint64_t faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
-			gsoap_resqml2_0_1::resqml20__CellShape cellShape, AbstractLocal3dCrs * localCrs = nullptr);
+			gsoap_resqml2_0_1::resqml20__CellShape cellShape, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometry(unsigned char * cellFaceIsRightHanded, double * points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t * faceIndicesCumulativeCountPerCell,
 			uint64_t faceCount, uint64_t * nodeIndicesPerFace, uint64_t * nodeIndicesCumulativeCountPerFace,
-			gsoap_resqml2_0_1::resqml20__CellShape cellShape, AbstractLocal3dCrs * localCrs = nullptr);
+			gsoap_resqml2_0_1::resqml20__CellShape cellShape, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setTetrahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
-			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setTetrahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
-			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
+			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setHexahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
-			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setHexahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
-			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
+			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 	};
 	
 #ifdef SWIGPYTHON
@@ -3304,7 +3398,7 @@ namespace RESQML2_NS
 			double originX, double originY, double originZ,
 			double directionIX, double directionIY, double directionIZ, double spacingI,
 			double directionJX, double directionJY, double directionJZ, double spacingJ,
-			double directionKX, double directionKY, double directionKZ, double spacingK, AbstractLocal3dCrs * localCrs = nullptr);
+			double directionKX, double directionKY, double directionKZ, double spacingK, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void addSeismic3dCoordinatesToPatch(
 			unsigned int patchIndex,
@@ -3324,14 +3418,14 @@ namespace RESQML2_NS
 			double * points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned long splitCoordinateLineCount = 0, unsigned int * pillarOfCoordinateLine = nullptr,
 			unsigned int * splitCoordinateLineColumnCumulativeCount = nullptr, unsigned int * splitCoordinateLineColumns = nullptr,
-			char * definedPillars = nullptr, AbstractLocal3dCrs * localCrs = nullptr);
+			char * definedPillars = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsCoordinateLineNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned long splitCoordinateLineCount = 0, const std::string & pillarOfCoordinateLine = "",
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
-			const std::string & definedPillars = "", AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string & definedPillars = "", EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 	};
 
 #ifdef SWIGPYTHON
@@ -3350,35 +3444,35 @@ namespace RESQML2_NS
 		void setGeometryAsParametricNonSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs * localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricNonSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs * localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, EML2_NS::AbstractHdfProxy* proxy,
 			unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, AbstractLocal3dCrs * localCrs = nullptr);
+			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, EML2_NS::AbstractHdfProxy* proxy,
 			unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodes(bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy* proxy,
 			unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, AbstractLocal3dCrs * localCrs = nullptr);
+			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy* proxy,
 			unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 	};
 	
 #ifdef SWIGPYTHON
@@ -3575,7 +3669,7 @@ namespace RESQML2_NS
 		 */
 		void setGeometry(
 			uint32_t const * nodeCountPerPolyline, double const * xyzPoints,
-			EML2_NS::AbstractHdfProxy* hdfProxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* hdfProxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		 * For each interval of the lines of the representation, gets the index of the grid it is associated to.
@@ -3655,8 +3749,47 @@ namespace RESQML2_NS
 	class AbstractProperty: public COMMON_NS::AbstractObject
 	{
 	public:
-		AbstractRepresentation* getRepresentation();
+		/**
+		 * Sets the representation which is associated to the current property
+		 *
+		 * @exception	std::invalid_argument	If @p rep is null.
+		 *
+		 * @param [in]	rep	The representation to associate to the current property.
+		 */
 		void setRepresentation(AbstractRepresentation * rep);
+		
+		/**
+		 * Gets the data object reference of the representation which is associated to the current
+		 * property
+		 *
+		 * @returns	Empty data object reference if no representation is associated to this property.
+		 * 			Otherwise returns the data object reference of the associated representation. Null
+		 * 			should not occured since each property must be associated to a representation.
+		 */
+		COMMON_NS::DataObjectReference getRepresentationDor() const;
+
+		/**  
+		 * Gets the representation which is associated to the current property. That is to say the one
+		 * which supports this instance values, also called supporting representation
+		 * 
+		 * @returns The representation which is associated to the current property.
+		 */
+		AbstractRepresentation* getRepresentation() const;
+		
+		/**  
+		 * Gets the representation which is associated to the current property. That is to say the one
+		 * which supports this instance values, also called supporting representation
+		 * 
+		 * @returns The representation which is associated to the current property.
+		 */
+		unsigned int getElementCountPerValue() const;
+		
+		/**
+		 * Gets the kind of elements on which the property values are attached to
+		 *
+		 * @returns	The kind of elements on which the property values are attached to.
+		 */
+		gsoap_eml2_3::eml23__IndexableElement getAttachmentKind() const;
 		
 		/**
 		 * Get the values data type in the HDF dataset
@@ -3701,32 +3834,216 @@ namespace RESQML2_NS
 		 * @returns	The number of values, 0 otherwise.
 		 */
 		unsigned int getDimensionsCountOfPatch(unsigned int patchIndex) const;
+
+		/**
+		 * Gets the count of property sets which contain this property
+		 *
+		 * @exception	std::range_error	If the count of property sets is strictly greater than
+		 * 									unsigned int max.
+		 *
+		 * @returns	The count of property sets which contain this property.
+		 */
+		uint64_t getPropertySetCount() const;
+
+		/**
+		 * Gets a given property set taken from all property sets which contain this property
+		 *
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the property set we look for.
+		 *
+		 * @returns	The property set at @p index.
+		 */
+		RESQML2_0_1_NS::PropertySet* getPropertySet(uint64_t index) const;
 		
-		std::string getPropertyKindDescription() const;
-		std::string getPropertyKindAsString() const;
-		std::string getPropertyKindParentAsString() const;
-		bool isAssociatedToOneStandardEnergisticsPropertyKind() const;
-		
-		EML2_NS::PropertyKind* getPropertyKind() const;
-		
-		unsigned int getElementCountPerValue() const;
-		
-		gsoap_eml2_3::resqml22__IndexableElement getAttachmentKind() const;
-		
-		unsigned int getPropertySetCount() const;
-		RESQML2_0_1_NS::PropertySet* getPropertySet(unsigned int index) const;
-		
+		//*********************************************
+		//****************** CRS **********************
+		//*********************************************
+
+		/**
+		 * Sets the local CRS which is associated to the current property. You should not set any CRS if
+		 * your property is not CRS related
+		 *
+		 * @exception	std::invalid_argument	If @p crs is null.
+		 *
+		 * @param [in]	crs	The local CRS to associate with the current property.
+		 */
+		void setLocalCrs(EML2_NS::AbstractLocal3dCrs * crs);
+
+		/**
+		 * Gets the local CRS which is associated to this property.
+		 * 
+		 * @returns The local CRS which is associated to the current property if exists, null if not 
+		 * 			(usually for a property which is not CRS related).
+		 */
+		EML2_NS::AbstractLocal3dCrs* getLocalCrs() const;
+
+		/**
+		 * Gets the data object reference of the local CRS which is associated to this property
+		 *
+		 * @returns	Empty data object reference if no local CRS is associated to this property. Otherwise
+		 * 			returns the data object reference of the associated local CRS.
+		 */
+		COMMON_NS::DataObjectReference getLocalCrsDor() const;
+
+		//*********************************************
+		//********** REALIZATION DIMENSION ************
+		//*********************************************
+
+		/**
+		 * Checks if this property has at least one realization index. Realization index is used if the property is
+		 * the result of a multi-realization process.
+		 * Reamrk : v2.0.1 is constrained to have a maximum of one realisation index
+		 *
+		 * @returns	True if the property has at least one realization index, false if not.
+		 */
 		bool hasRealizationIndices() const;
-		std::vector<unsigned int> getRealizationIndices() const;
-		void setRealizationIndices(int64_t startRealizationIndex, int64_t countRealizationIndices);
-		void setRealizationIndices(const std::vector<unsigned int> & realizationIndices, EML2_NS::AbstractHdfProxy* hdfProxy = nullptr);
-		
+
+		/**
+		 * Gets the realization index of this property. Realization index is used if the property is the
+		 * result of a multi-realization process. You should have checked before that this property
+		 * actually has a realization index.
+		 *
+		 * @exception	std::invalid_argument	If this property has actually no realization index.
+		 *
+		 * @returns	The realization index.
+		 */
+		std::vector<int64_t> getRealizationIndices() const;
+
+		/**
+		 * Sets the realization indices of this property
+		 *
+		 * @exception	std::invalid_argument	If the @p realizationIndices size is strictly greater
+		 * 										than 1 in a RESQML 2.0.1 context.
+		 * @exception	std::logic_error	 	If no supported gSOAP proxy is available.
+		 *
+		 * @param 		  	realizationIndices	The realization indices to set to this property. If empty, remove all realization indices from the property.
+		 */
+		void setRealizationIndices(std::vector<int64_t> realizationIndices);
+
+		//*********************************************
+		//************ TIME DIMENSION *****************
+		//*********************************************
+
+		/**
+		 * Sets the time series associated to the current property
+		 * RESQML2.0.1	:	Must be used with and before to call setSingleTimestamp.
+							Properties in v2.0.1 cannot contain values for a whole time series but only for a single timestamp of a time series.
+		 * RESQML2.2	:	If, used the property must contain values for the whole time series. It cannot be used with setSingleTimestamp.
+		 *
+		 * @exception	invalid_argument	If @p ts is null or if the current property has no time
+		 * 									indices.
+		 *
+		 * @param [in]	ts	The time series to associate to this property
+		 */
 		void setTimeSeries(EML2_NS::TimeSeries * ts);
+
+		/**
+		 * Set a single associated timestamp for this property.
+		 * RESQML2.0.1	: Must be used with and after setTimeSeries.
+		 * RESQML2.2	: If, used the property must contain values for a single timestamp (as in 2.0.1). It cannot be used with setTimeSeries.
+		 *
+		 * @exception	invalid_argument	Regarding RESQML2.0.1, this method cannot be called if setTimeSeries has not been called before.
+		 *
+		 * @param [in]	timestamp	The single timestamps to associate to this property
+		 * @param [in]	yearOffset	Indicates that the dateTime attribute must be translated according to this value.
+		 */
+		void setSingleTimestamp(time_t timestamp, LONG64 yearOffset = 0);
+
+		/**
+		 * Get a single associated timestamp for this property.
+		 *
+		 * @return	-1 if there is not a single timestamp related to this property meaning that no timestamp is present or more than one (i.e. a whole time series)
+		 */
+		time_t getSingleTimestamp() const;
+
+		/**
+		 * Gets the time series which is associated to this property
+		 *
+		 * @returns	Null pointer if no time series is associated to this property. Otherwise returns the
+		 * 			associated time series.
+		 */
 		EML2_NS::TimeSeries* getTimeSeries() const;
-		void setTimeIndices(unsigned int startTimeIndex, unsigned int countTimeIndices, EML2_NS::TimeSeries* ts, bool useInterval = false);
-		unsigned int getTimeIndexStart() const;
-		unsigned int getTimeIndicesCount() const;
+
+		/**
+		 * Gets the data object reference of the time series associated to this property
+		 *
+		 * @returns	Empty data object reference if no time series is associated to this property. Otherwise returns the
+		 * 			data object reference of the associated time series.
+		 */
+		COMMON_NS::DataObjectReference getTimeSeriesDor() const;
+
+		/**
+		 * Check if the values are given at each time index or between each time index.
+		 */
 		bool useInterval() const;
+
+		//*********************************************
+		//****** PROP KIND ****************************
+		//*********************************************
+
+		/**
+		 * Indicates if the property kind attached to this property is either from the standard catalog
+		 * of Energistics or from a local property kind
+		 *
+		 * @returns	True if associated to one standard Energistics property kind, false if not.
+		 */
+		bool isAssociatedToOneStandardEnergisticsPropertyKind() const;
+
+		/**
+		 * Gets the description of the property kind of this property
+		 *
+		 * @exception	std::invalid_argument	If the property kind is a standard Energistics one and
+		 * 										the property kind mapping file is not loaded.
+		 *
+		 * @returns	The property kind description.
+		 */
+		std::string getPropertyKindDescription() const;
+
+		/**
+		 * Gets the title of the property kind of this property
+		 *
+		 * @returns	The property kind title.
+		 */
+		std::string getPropertyKindAsString() const;
+
+		/**
+		 * Get the title of the parent property kind of this property
+		 *
+		 * @exception	std::invalid_argument	If the property kind is a standard Energistics one and
+		 * 										the property kind mapping file is not loaded.
+		 *
+		 * @returns	The parent property kind title.
+		 */
+		std::string getPropertyKindParentAsString() const;
+
+		/**
+		 * Sets the property kind of this property to a local one
+		 *
+		 * @exception	std::invalid_argument	If @p propKind is null.
+		 *
+		 * @param [in]	propKind	The local property kind to set to this property.
+		 */
+		void setPropertyKind(EML2_NS::PropertyKind* propKind);
+
+		/**
+		 * Gets the data object reference of the property kind associated to this property
+		 *
+		 * @exception	std::invalid_argument	If the property kind of this property is not a local one.
+		 *
+		 * @returns	Empty data object reference if no property kind is associated to this property.
+		 * 			Otherwise return the data object reference of the associated local property kind.
+		 */
+		COMMON_NS::DataObjectReference getPropertyKindDor() const;
+
+		/**
+		 * Gets the local property kind which is associated to this instance
+		 *
+		 * @exception	std::invalid_argument	If the property kind of this property is not a local one.
+
+		 * @returns	A pointer to the property kind.
+		 */
+		EML2_NS::PropertyKind* getPropertyKind() const;
 	};
 	
 #ifdef SWIGPYTHON
@@ -3735,16 +4052,60 @@ namespace RESQML2_NS
 	class AbstractValuesProperty : public RESQML2_NS::AbstractProperty
 	{
 	public:
-		unsigned int getValuesCountOfPatch (unsigned int patchIndex) const;
-
-		void pushBackFacet(gsoap_eml2_3::eml23__FacetKind facet, const std::string & facetValue);
-		unsigned int getFacetCount() const const;
-		gsoap_eml2_3::eml23__FacetKind getFacetKind(unsigned int index) const;
-		std::string getFacetValue(unsigned int index) const;
 		
-		//****************************/
-		//****** INTEGER *************/
-		//****************************/
+
+		/**
+		 * Gets the number of patches in this values property. It should be the same count as the patch
+		 * count of the associated representation.
+		 *
+		 * @exception	std::out_of_range	If the patch count is strictly greater than unsigned int max
+		 * 									value.
+		 *
+		 * @returns	The patch count.
+		 */
+		uint64_t getPatchCount() const final;
+
+		/**
+		 * Pushes back a new facet to this instance. Facets are qualifiers for property values which
+		 * allow users to semantically specialize a property without creating a new property kind.
+		 *
+		 * @param 	facet	  	The facet.
+		 * @param 	facetValue	The facet value.
+		 */
+		void pushBackFacet(gsoap_eml2_3::eml23__FacetKind facet, const std::string & facetValue);
+
+		/**
+		 * Gets the count of facet of this instance
+		 *
+		 * @returns	The facet count.
+		 */
+		uint64_t getFacetCount() const;
+
+		/**
+		 * Gets the facet at a particular index of the facet collection of this instance.
+		 *
+		 * @exception	std::out_of_range	If @p index is strictly greater than facet count.
+		 *
+		 * @param 	index	Zero-based index of the facet we want to get.
+		 *
+		 * @returns	The facet at index @p index.
+		 */
+		gsoap_eml2_3::eml23__FacetKind getFacetKind(uint64_t index) const;
+
+		/**
+		 * Gets the facet value at a particular index of the facet collection of this instance.
+		 *
+		 * @exception	std::out_of_range	If @p index is strictly greater than facet count.
+		 *
+		 * @param 	index	Zero-based index of the facet we want to get.
+		 *
+		 * @returns	The facet value at index @p index.
+		 */
+		std::string getFacetValue(uint64_t index) const;
+
+		//****************************
+		//****** INTEGER *************
+		//****************************
 
 		/**
 		 * @brief	Adds a 1d array of explicit long values to the property values.
@@ -3903,35 +4264,35 @@ namespace RESQML2_NS
 		 * 											be defined in the repository.
 		 * @param 		  	nullValue				The null value.
 		 */
-		void pushBackLongHdf5ArrayOfValues(const int64_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+		virtual void pushBackLongHdf5ArrayOfValues(const int64_t * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
 		 * Adds an nd array of explicit integer values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		virtual void pushBackIntHdf5ArrayOfValues(const int * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds an nd array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		virtual void pushBackShortHdf5ArrayOfValues(const short * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds an nd array of explicit unsigned short values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		virtual void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds an nd array of explicit char values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		void pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue);
+		virtual void pushBackCharHdf5ArrayOfValues(const char * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue);
 
 		/**
 		 * Pushes back a new patch of values for this property where the values have not to be written
@@ -3944,15 +4305,13 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	hdfProxy 	The HDF5 proxy where the values are already or will be stored. If @c
 		 * 							nullptr, then a default HDF proxy must be defined in the repository.
-		 * @param 	  	dataset  	(Optional) If not provided during the method call, the dataset will
-		 * 							be named the same as the dataset naming convention of fesapi :
-		 * 							<tt>getHdfGroup() + "/values_patch" + patchIndex</tt>
-		 * @param 	  	nullValue	(Optional) Only relevant for integer HDF5 datasets. Indeed, RESQML
+		 * @param 	  	dataset  	Dataset where to write the data
+		 * @param 	  	nullValue	Only relevant for integer HDF5 datasets. Indeed, RESQML
 		 * 							(and fesapi) forces null value for floating point to be @c NaN value.
 		 *
 		 * @returns	The name of the HDF5 dataset.
 		 */
-		std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & dataset = "", int64_t nullValue = std::numeric_limits<int64_t>::max());
+		virtual std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & dataset, int64_t nullValue);
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be long ones.
@@ -3966,7 +4325,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		int64_t getLongValuesOfPatch(unsigned int patchIndex, int64_t * values) const;
+		int64_t getLongValuesOfPatch(uint64_t patchIndex, int64_t * values) const;
 
 		/**
 		 * Gets the null value of a given patch of this instance. Values are supposed to be integer ones.
@@ -3980,7 +4339,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	the null value.
 		 */
-		int64_t getNullValueOfPatch(unsigned int patchIndex) const;
+		int64_t getNullValueOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be integer ones.
@@ -3994,7 +4353,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		int getIntValuesOfPatch(unsigned int patchIndex, int * values) const;
+		int32_t getIntValuesOfPatch(uint64_t patchIndex, int32_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -4009,7 +4368,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		unsigned int getUIntValuesOfPatch(unsigned int patchIndex, unsigned int * values) const;
+		uint32_t getUIntValuesOfPatch(uint64_t patchIndex, uint32_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be short ones.
@@ -4023,7 +4382,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		short getShortValuesOfPatch(unsigned int patchIndex, short * values) const;
+		int16_t getShortValuesOfPatch(uint64_t patchIndex, int16_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -4038,7 +4397,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		unsigned short getUShortValuesOfPatch(unsigned int patchIndex, unsigned short * values) const;
+		uint16_t getUShortValuesOfPatch(uint64_t patchIndex, uint16_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be char ones.
@@ -4052,7 +4411,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		char getCharValuesOfPatch(unsigned int patchIndex, char * values) const;
+		char getCharValuesOfPatch(uint64_t patchIndex, char* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -4067,11 +4426,11 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		unsigned char getUCharValuesOfPatch(unsigned int patchIndex, unsigned char * values) const;
+		uint8_t getUCharValuesOfPatch(uint64_t patchIndex, uint8_t* values) const;
 
-		//***********************************/
-		//*** INTEGER For hyperslabbing *****/
-		//***********************************/
+		//***********************************
+		//*** INTEGER For hyperslabbing *****
+		//***********************************
 
 		/**
 		 * Creates an nd array of explicit long 64 bits values into the property values. No values are
@@ -4085,8 +4444,7 @@ namespace RESQML2_NS
 		 * 										array to write. It is ordered from slowest dimension to
 		 * 										fastest dimension.
 		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param 		  	nullValue		  	(Optional) The null value. Default value is long 64 bits
-		 * 										maximum value.
+		 * @param 		  	nullValue		  	The null value.
 		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
 		 * 										be closed in this method. If @c nullptr (default value),
@@ -4094,9 +4452,9 @@ namespace RESQML2_NS
 		 * 										repository.
 		 */
 		void pushBackLongHdf5ArrayOfValues(
-			unsigned long long* numValues,
+			uint64_t* numValues,
 			unsigned int numArrayDimensions,
-			int64_t nullValue = std::numeric_limits<int64_t>::max(),
+			int64_t nullValue,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -4113,8 +4471,7 @@ namespace RESQML2_NS
 		 * 											J dimension).
 		 * @param 		  	valueCountInSlowestDim	The number of values in the slowest dimension (mainly
 		 * 											K dimension).
-		 * @param 		  	nullValue			  	(Optional) The null value. Default value is long 64
-		 * 											bits maximum value.
+		 * @param 		  	nullValue			  	The null value.
 		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
@@ -4125,7 +4482,7 @@ namespace RESQML2_NS
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
 			uint64_t valueCountInSlowestDim,
-			int64_t nullValue = std::numeric_limits<int64_t>::max(),
+			int64_t nullValue,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -4152,17 +4509,13 @@ namespace RESQML2_NS
 		 * 											(mainly J dimension).
 		 * @param 		  	offsetInSlowestDim	  	The offset value for writing in the slowest dimension
 		 * 											(mainly K dimension).
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param [in,out]	proxy				  	The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
-		 * 											(default value), a default HDF proxy must be defined
+		 * 											, a default HDF proxy must be defined
 		 * 											into the data object repository.
-		 * @param 		  	patchIndex			  	(Optional) Zero-based index of the patch where to
-		 * 											write the property values. If not provided, its
-		 * 											default value is by convention set to unsigned int
-		 * 											maximum value and the property values will be written
-		 * 											in the last property values patch (the one with the
-		 * 											greatest index).
+		 * @param 		  	patchIndex			  	Zero-based index of the patch where to
+		 * 											write the property values.
 		 */
 		void setValuesOfLongHdf5Array3dOfValues(
 			int64_t* values,
@@ -4172,8 +4525,8 @@ namespace RESQML2_NS
 			uint64_t offsetInFastestDim,
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			EML2_NS::AbstractHdfProxy* proxy,
+			uint64_t patchIndex);
 
 		/**
 		 * Adds an nd array of explicit long 64 bits values into to the property values. Since this
@@ -4188,31 +4541,27 @@ namespace RESQML2_NS
 		 * @param [in]	  	values			  	All the property values to set ordered according to the
 		 * 										topology of the representation it is based on.
 		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
-		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
 		 * 										array to write. It is ordered from slowest dimension to
 		 * 										fastest dimension.
 		 * @param 		  	offsetValues	  	The offset values ordered by dimension of the array to
 		 * 										write. It is ordered from slowest dimension to fastest
 		 * 										dimension.
 		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * @param [in,out]	proxy			  	The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
-		 * 										be closed in this method. If null (default value), a
+		 * 										be closed in this method. If nullptr, a
 		 * 										default HDF proxy must be defined into the data object
 		 * 										repository.
-		 * @param 		  	patchIndex		  	(Optional) Zero-based index of the patch where to write
-		 * 										the property values. If not provided, its default value
-		 * 										is by convention set to unsigned int maximum value and
-		 * 										the property values will be written in the last property
-		 * 										values patch (the one with the greatest index).
+		 * @param 		  	patchIndex		  	Zero-based index of the patch where to write
+		 * 										the property values.
 		 */
 		void setValuesOfLongHdf5ArrayOfValues(
 			int64_t* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			EML2_NS::AbstractHdfProxy* proxy,
+			uint64_t patchIndex);
 
 		/**
 		 * Gets some of the values of a given patch of this instance. Values are supposed to be long 64
@@ -4234,10 +4583,10 @@ namespace RESQML2_NS
 		 * @param 	   	numArrayDimensions			The number of dimensions of the array to write.
 		 */
 		void getLongValuesOfPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			int64_t* values,
-			unsigned long long const * numValuesInEachDimension,
-			unsigned long long const * offsetInEachDimension,
+			uint64_t const * numValuesInEachDimension,
+			uint64_t const * offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
@@ -4265,7 +4614,7 @@ namespace RESQML2_NS
 		 * 										(mainly K dimension).
 		 */
 		void getLongValuesOf3dPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			int64_t* values,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
@@ -4296,11 +4645,11 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		int getIntValuesOfPatch(
-			unsigned int patchIndex,
-			int* values,
-			unsigned long long* numValuesInEachDimension,
-			unsigned long long* offsetInEachDimension,
+		int32_t getIntValuesOfPatch(
+			uint64_t patchIndex,
+			int32_t* values,
+			uint64_t* numValuesInEachDimension,
+			uint64_t* offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
@@ -4328,8 +4677,8 @@ namespace RESQML2_NS
 		 * 										(mainly K dimension).
 		 */
 		void getIntValuesOf3dPatch(
-			unsigned int patchIndex,
-			int* values,
+			uint64_t patchIndex,
+			int32_t* values,
 			unsigned int valueCountInFastestDim,
 			unsigned int valueCountInMiddleDim,
 			unsigned int valueCountInSlowestDim,
@@ -4338,9 +4687,9 @@ namespace RESQML2_NS
 			unsigned int offsetInSlowestDim
 		) const;
 
-		//***********************************/
-		//****** FLOATING POINT *************/
-		//***********************************/
+		//***********************************
+		//****** FLOATING POINT *************
+		//***********************************
 
 		/**
 		 * @brief Adds a 1d array of explicit double values to the property values.
@@ -4443,9 +4792,6 @@ namespace RESQML2_NS
 		/**
 		 * Adds an nd array of explicit float values to the property values.
 		 *
-		 * @exception std::invalid_argument If <tt> minimumValue == nullptr </tt> and <tt> maximumValue != nullptr </tt>.
-		 * @exception std::invalid_argument	If <tt> minimumValue != nullptr </tt> and <tt> maximumValue == nullptr </tt>.
-		 *
 		 * @copydetails	pushBackDoubleHdf5ArrayOfValues
 		 */
 		void pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
@@ -4480,7 +4826,7 @@ namespace RESQML2_NS
 		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
 		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
 		 */
-		void getDoubleValuesOfPatch(unsigned int patchIndex, double * values) const;
+		void getDoubleValuesOfPatch(uint64_t patchIndex, double * values) const;
 
 		/**
 		 * Gets all the values of a particular patch of this instance which are supposed to be float
@@ -4492,11 +4838,11 @@ namespace RESQML2_NS
 		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
 		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
 		 */
-		void getFloatValuesOfPatch(unsigned int patchIndex, float * values) const;
+		void getFloatValuesOfPatch(uint64_t patchIndex, float * values) const;
 
-		//******************************************/
-		//*** For FLOATING POINT hyperslabbing *****/
-		//******************************************/
+		//******************************************
+		//*** For FLOATING POINT hyperslabbing *****
+		//******************************************
 
 		/**
 		 * Create an nd array of explicit float values to the property values. No values are written to
@@ -4571,17 +4917,13 @@ namespace RESQML2_NS
 		 * 											(mainly J dimension).
 		 * @param 		  	offsetInSlowestDim	  	The offset value for writing in the slowest dimension
 		 * 											(mainly K dimension).
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param [in,out]	proxy				  	The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
-		 * 											(default), a default HDF proxy must be defined into
+		 * 											, a default HDF proxy must be defined into
 		 * 											the data object repository.
-		 * @param 		  	patchIndex			  	(Optional) Zero-based index of the patch where to
-		 * 											write the property values. If not provided, its
-		 * 											default value is by convention set to unsigned int
-		 * 											maximum value and the property values will be written
-		 * 											in the last property values patch (the one with the
-		 * 											greatest index).
+		 * @param 		  	patchIndex			  	Zero-based index of the patch where to
+		 * 											write the property values.
 		 */
 		void setValuesOfFloatHdf5Array3dOfValues(
 			float const * values,
@@ -4591,8 +4933,8 @@ namespace RESQML2_NS
 			uint64_t offsetInFastestDim,
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max()
+			EML2_NS::AbstractHdfProxy* proxy,
+			uint64_t patchIndex
 		);
 
 		/**
@@ -4614,24 +4956,21 @@ namespace RESQML2_NS
 		 * 										write. It is ordered from slowest dimension to fastest
 		 * 										dimension.
 		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * @param [in,out]	proxy			  	The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
-		 * 										be closed in this method. If @p nullptr (default), a
+		 * 										be closed in this method. If @p nullptr, a
 		 * 										default HDF proxy must be defined into the data object
 		 * 										repository.
-		 * @param 		  	patchIndex		  	(Optional) Zero-based index of the patch where to write
-		 * 										the property values. If not provided, its default value
-		 * 										is by convention set to unsigned int maximum value and
-		 * 										the property values will be written in the last property
-		 * 										values patch (the one with the greatest index).
+		 * @param 		  	patchIndex		  	Zero-based index of the patch where to write
+		 * 										the property values.
 		 */
 		void setValuesOfFloatHdf5ArrayOfValues(
 			float const * values,
 			unsigned long long const * numValues,
 			unsigned long long const * offsetValues,
 			unsigned int numArrayDimensions,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max()
+			EML2_NS::AbstractHdfProxy* proxy,
+			uint64_t patchIndex
 		);
 
 		/**
@@ -4653,7 +4992,7 @@ namespace RESQML2_NS
 		 * @param 	   	numArrayDimensions			The number of dimensions of the HDF5 array to read.
 		 */
 		void getFloatValuesOfPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			float* values,
 			unsigned long long const * numValuesInEachDimension,
 			unsigned long long const * offsetInEachDimension,
@@ -4683,7 +5022,7 @@ namespace RESQML2_NS
 		 * 											(mainly K dimension).
 		 */
 		void getFloatValuesOf3dPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			float* values,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
@@ -4693,16 +5032,24 @@ namespace RESQML2_NS
 			uint64_t offsetInSlowestDim
 		) const;
 	};
-
-#ifdef SWIGPYTHON
+	
+#if defined(SWIGPYTHON)
 	%rename(Resqml2_CommentProperty) CommentProperty;
 #endif	
 	class CommentProperty : public AbstractValuesProperty
 	{
 	public:
-		void pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values, EML2_NS::AbstractHdfProxy * proxy);
-		std::vector<std::string> getStringValuesOfPatch(unsigned int patchIndex);
-		
+		/**
+		 * Adds an array of string values to the property values.
+		 *
+		 * @param 	  	values	All the property values to set ordered according the topology of the
+		 * 						representation it is based on.
+		 * @param [in]	proxy 	The HDF proxy where to write the property values. It must be already
+		 * 						opened for writing and won't be closed in this method. If null then a
+		 * 						default HDF proxy must be defined in the data object repository.
+		 */
+		void pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values, EML2_NS::AbstractHdfProxy* proxy);
+
 		/**
 		 * Pushes back a new patch of values for this property where the values have not to be written in
 		 * the HDF5 file. The reason can be that the values already exist in an external file (only HDF5
@@ -4720,191 +5067,116 @@ namespace RESQML2_NS
 		 * @returns	The name of the HDF5 dataset.
 		 */
 		std::string pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "");
+
+		/**
+		 * Gets all the values of a given patch of this instance. Values are supposed to be string ones.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	patchIndex	The index of the patch we want the values from.
+		 *
+		 * @returns	The string values of the patch.
+		 */
+		std::vector<std::string> getStringValuesOfPatch(uint64_t patchIndex);
 	};
 	
-#ifdef SWIGPYTHON
+#if defined(SWIGPYTHON)
 	%rename(Resqml2_ContinuousProperty) ContinuousProperty;
 #endif
 	class ContinuousProperty : public AbstractValuesProperty
 	{
 	public:
-
+		/**
+		 * Gets the unit of measure of the values of this property. If <tt>
+		 * resqml20__ResqmlUom::resqml20__ResqmlUom::Euc </tt> is returned, you should check if
+		 * getUomAsString() gives you another result: it would be that the writer would have used a non
+		 * standard unit of measure.
+		 *
+		 * @returns	The unit of measure of the values of this property.
+		 */
 		gsoap_resqml2_0_1::resqml20__ResqmlUom getUom() const;
+
+		/**
+		 * Gets the unit of measure of the values of this property as a string.
+		 *
+		 * @returns	The unit of measure of the values of this property as a string.
+		 */
 		std::string getUomAsString() const;
-		
+	};
+	
+#ifdef SWIGPYTHON
+	%rename(Resqml2_DiscreteProperty) DiscreteProperty;
+#endif
+	class DiscreteProperty : public AbstractValuesProperty
+	{
+	public:
 		/**
-		 * @brief Adds a 1d array of explicit double values to the property values.
+		 * @brief	Gets the null value in this discrete property.
 		 *
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined in the repository.
+		 * @param 	patchIndex	Zero-based index of the patch for which we want to get the null value.
 		 *
-		 * @param 		  	values			All the property values to set ordered according the topology
-		 * 									of the representation it is based on.
-		 * @param 		  	valueCount  	The number of values to write.
-		 * @param 		  	minimumValue	The minimum value of the values to add. If @c NaN is
-		 * 									provided then both minimum and maximum values will be computed
-		 * 									from the values.
-		 * @param 		  	maximumValue	The maximum value of the values to add. If @c NaN is
-		 * 									provided then both maximum and minimum values will be computed
-		 * 									from the values.
-		 * @param [in,out]	proxy			(Optional) The HDF proxy where to write the property values.
-		 * 									It must be already opened for writing and won't be closed in this
-		 * 									method. If @c nullptr (default value), then a default HDF proxy
-		 * 									must be defined in the repository.
+		 * @returns	The null value of this discrete property if present otherwise the maximum int 64 bits
+		 * 			value.
 		 */
-		void pushBackDoubleHdf5Array1dOfValues(const double * values, uint64_t valueCount,
-			double minimumValue, double maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		int64_t getNullValue(uint64_t patchIndex) const;
 
 		/**
-		 * @brief Adds a 2d array of explicit double values to the property values.
+		 * @brief	Checks if a non vector property or a given value of a vector property has got a
+		 * 			minimum value already computed (or set).
 		 *
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined in the repository.
+		 * @param 	index	(Optional) @c 0 (default value, corresponding to the non vector property
+		 * 					case) or zero-based index of the vector value for which we want to know if a
+		 * 					minimum value exists (vector property case).
 		 *
-		 * @param 		  	values				  	All the property values to set ordered according the
-		 * 											topology of the representation it is based on.
-		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
-		 * 											dimension (mainly I dimension).
-		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
-		 * 											dimension (mainly J dimension).
-		 * @param 		  	minimumValue		  	The minimum value of the values to add. If
-		 * 											@c NaN is provided then both minimum and maximum
-		 * 											values will be computed from the values.
-		 * @param 		  	maximumValue		  	The maximum value of the values to add. If
-		 * 											@c NaN is provided then both maximum and minimum
-		 * 											values will be computed from the values.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
-		 * 											values. It must be already opened for writing and
-		 * 											won't be closed in this method. If @c nullptr
-		 * 											(default value), then a default HDF proxy must be
-		 * 											defined in the repository.
+		 * @returns	True if there exists a minimum value, false if not.
 		 */
-		void pushBackDoubleHdf5Array2dOfValues(const double * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim,
-			double minimumValue, double maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
-
-		/**
-		 * @brief Adds a 3d array of explicit double values to the property values.
-		 *
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined in the repository.
-		 *
-		 * @param 		  	values				  	All the property values to set ordered according the
-		 * 											topology of the representation it is based on.
-		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
-		 * 											dimension (mainly I dimension).
-		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
-		 * 											(mainly J dimension).
-		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
-		 * 											dimension (mainly K dimension).
-		 * @param 		  	minimumValue		  	The minimum value of the values to add. If
-		 * 											@c NaN is provided then both minimum and maximum
-		 * 											values will be computed from the values.
-		 * @param 		  	maximumValue		  	The maximum value of the values to add. If
-		 * 											@c NaN is provided then both maximum and minimum
-		 * 											values will be computed from the values.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
-		 * 											values. It must be already opened for writing and
-		 * 											won't be closed in this method. If @c nullptr
-		 * 											(default value), then a default HDF proxy must be
-		 * 											defined in the repository.
-		 */
-		void pushBackDoubleHdf5Array3dOfValues(const double * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim,
-			double minimumValue, double maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
-
-		/**
-		 * @brief Adds an nd array of explicit double values to the property values.
-		 *
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined in the repository.
-		 *
-		 * @param 		  	values			  	All the property values to set ordered according the
-		 * 										topology of the representation it is based on.
-		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
-		 * 										array to write.
-		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
-		 * 										values. It must be already opened for writing and won't
-		 * 										be closed in this method. If @c nullptr (default value),
-		 * 										then a default HDF proxy must be defined in the
-		 * 										repository.
-		 * @param [in]	  	minimumValue	  	The minimum value (or value vector) of the
-		 * 										values to add. If @c nullptr is provided for both @p
-		 * 										minimumValue and @p maximumValue and if the dimension of
-		 * 										value is 1 then both minimum and maximum values will be
-		 * 										computed from the values.
-		 * @param [in]	  	maximumValue	  	The maximum value (or value vector) of the
-		 * 										values to add. If @ nullptr is provided for both @p
-		 * 										maximumValue and @p minimumValue and if the dimension of
-		 * 										value is 1 then both maximum and minimum values will be
-		 * 										computed from the values.
-		 */
-		void pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions,
-			double * minimumValue, double * maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
-
-		/**
-		 * Adds a 1d array of explicit float values to the property values.
-		 *
-		 * @copydetails pushBackDoubleHdf5Array1dOfValues
-		 */
-		void pushBackFloatHdf5Array1dOfValues(const float * values, uint64_t valueCount,
-			float minimumValue, float maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
-
-		/**
-		 * Adds a 2d array of explicit float values to the property values.
-		 *
-		 * @copydetails pushBackDoubleHdf5Array2dOfValues
-		 */
-		void pushBackFloatHdf5Array2dOfValues(const float * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim,
-			float minimumValue, float maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
-
-		/**
-		 * Adds a 3d array of explicit float values to the property values.
-		 *
-		 * @copydetails pushBackDoubleHdf5Array3dOfValues
-		 */
-		void pushBackFloatHdf5Array3dOfValues(const float * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim,
-			float minimumValue, float maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
-
-		/**
-		 * Adds an nd array of explicit float values to the property values.
-		 * 
-		 * @exception std::invalid_argument If <tt> minimumValue == nullptr </tt> and <tt> maximumValue != nullptr </tt>.
-		 * @exception std::invalid_argument	If <tt> minimumValue != nullptr </tt> and <tt> maximumValue == nullptr </tt>.
-		 * 									
-		 * @copydetails	pushBackDoubleHdf5ArrayOfValues
-		 */
-		void pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions,
-			float * minimumValue, float * maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		bool hasMinimumValue(uint64_t index = 0) const;
 
 		/**
 		 * @brief	Gets the minimum value of a non vector property or the minimum value of one given
 		 * 			value of a vector property. This minimum value is read (it is not computed).
 		 *
-		 * @param 	index	(Optional) @c 0 (default value, corresponding to the non vector property case) or
-		 * 					zero-based index of the vector value for which we look for the minimum value
-		 * 					(vector property case).
+		 * @exception	std::logic_error	If this property has no minimum value.
+		 *
+		 * @param 	index	(Optional) @c 0 (default value, corresponding to the non vector property
+		 * 					case) or zero-based index of the vector value for which we look for the
+		 * 					minimum value (vector property case).
 		 *
 		 * @returns	The minimum value of the non vector property or the minimum value at position @p
-		 * 			index of the vector value or @c NaN if @p index is out of range (strictly
-		 * 			greater than @p 0 for a non vector property or greater than the vector size for a
-		 * 			vector property).
+		 * 			index of the vector value or @c NaN if @p index is out of range (strictly greater
+		 * 			than @p 0 for a non vector property or greater than the vector size for a vector
+		 * 			property).
 		 */
-		double getMinimumValue(unsigned int index = 0) const;
+		int64_t getMinimumValue(uint64_t index = 0) const;
+
+		/**
+		 * @brief	Checks if a non vector property or a given value of a vector property has got a
+		 * 			maximum value already computed (or set).
+		 *
+		 * @param 	index	(Optional) @c 0 (default value, corresponding to the non vector property
+		 * 					case) or zero-based index of the vector value for which we want to know if a
+		 * 					maximum value exists (vector property case).
+		 *
+		 * @returns	True if there exists a maximum value, false if not.
+		 */
+		bool hasMaximumValue(uint64_t index = 0) const;
 
 		/**
 		 * @brief	Gets the maximum value of a non vector property or the maximum value of one given
 		 * 			value of a vector property. This maximum value is read (it is not computed).
 		 *
-		 * @param 	index	(Optional) @c 0 (default value, corresponding to the non vector property case) or
-		 * 					zero-based index of the vector value for which we look for the maximum value
-		 * 					(vector property case).
+		 * @exception	std::logic_error	If this property has no maximum value.
+		 *
+		 * @param 	index	(Optional) @c 0 (default value, corresponding to the non vector property
+		 * 					case) or zero-based index of the vector value for which we look for the
+		 * 					maximum value (vector property case).
 		 *
 		 * @returns	The maximum value of the non vector property or the maximum value at position @p
-		 * 			index of the vector value or @c NaN if @p index is out of range (strictly
-		 * 			greater than @p 0 for a non vector property or greater than the vector size for a
-		 * 			vector property).
+		 * 			index of the vector value or @c NaN if @p index is out of range (strictly greater
+		 * 			than @p 0 for a non vector property or greater than the vector size for a vector
+		 * 			property).
 		 */
-		double getMaximumValue(unsigned int index = 0) const;
+		int64_t getMaximumValue(uint64_t index = 0) const;
 
 		/**
 		 * @brief	Sets the minimum value of a non vector property or the minimum value of one given
@@ -4915,7 +5187,7 @@ namespace RESQML2_NS
 		 * 					case) or zero-based index of the vector value for which we want to set the
 		 * 					minimum value (vector property case).
 		 */
-		void setMinimumValue(double value, unsigned int index = 0) const;
+		void setMinimumValue(int64_t value, uint64_t index = 0) const;
 
 		/**
 		 * @brief	Sets the maximum value of a non vector property or the maximum value of one given
@@ -4926,290 +5198,22 @@ namespace RESQML2_NS
 		 * 					case) or zero-based index of the vector value for which we want to set the
 		 * 					maximum value (vector property case).
 		 */
-		void setMaximumValue(double value, unsigned int index = 0) const;
-
-		//***************************/
-		//*** For hyperslabbing *****/
-		//***************************/
+		void setMaximumValue(int64_t value, uint64_t index = 0) const;
 
 		/**
-		 * Create an nd array of explicit float values to the property values. No values are written to
-		 * this array yet then the HDF5 array contains uninitialized values.
+		 * Gets the DOR of the lookup which is associated to this categorical property values.
 		 *
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined into the data object repository.
-		 *
-		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
-		 * 										array to write.  It is ordered from slowest dimension to
-		 * 										fastest dimension.
-		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in]	  	minimumValue	  	The minimum value (or value vector) of the
-		 * 										values to add. If @c nullptr (default) is provided then
-		 * 										neither minimum nor maximum value will be set.
-		 * @param [in]	  	maximumValue	  	The maximum value (or value vector) of the
-		 * 										values to add. If @c nullptr (default) is provided then
-		 * 										neither maximum nor minimum value will be set.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
-		 * 										values. It must be already opened for writing and won't
-		 * 										be closed in this method. If @c nullptr (default), a
-		 * 										default HDF proxy must be defined into the data object
-		 * 										repository.
+		 * @returns	The DOR of the lookup which is associated to this categorical property.
 		 */
-		void pushBackFloatHdf5ArrayOfValues(
-			unsigned long long const * numValues,
-			unsigned int numArrayDimensions,
-			float * minimumValue, float * maximumValue,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr
-		);
+		COMMON_NS::DataObjectReference getLookupDor() const;
 
 		/**
-		 * Creates a 3d array of explicit float values to the property values. No values are written to
-		 * this array yet then the HDF5 array contains uninitialized values.
+		 * @brief	Gets the lookup table which is associated to this categorical property values.
 		 *
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined into the data object repository.
-		 *
-		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
-		 * 											dimension (mainly I dimension).
-		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
-		 * 											(mainly J dimension).
-		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
-		 * 											dimension (mainly K dimension).
-		 * @param 		  	minimumValue		  	The minimum value of the values to add. If
-		 * 											@c NaN is provided (default) then neither minimum nor
-		 * 											maximum value will be set.
-		 * @param 		  	maximumValue		  	The maximum value of the values to add. If
-		 * 											@c NaN is provided (default) then neither maximum nor
-		 * 											minimum value will be set.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
-		 * 											values. It must be already opened for writing and
-		 * 											won't be closed in this method. If @c nullptr
-		 * 											(default), a default HDF proxy must be defined into
-		 * 											the data object repository.
+		 * @returns	A pointer to the lookup table which is associated to this categorical property
+		 * 			 values.
 		 */
-		void pushBackFloatHdf5Array3dOfValues(
-			uint64_t valueCountInFastestDim,
-			uint64_t valueCountInMiddleDim,
-			uint64_t valueCountInSlowestDim,
-			float minimumValue, float maximumValue,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr
-		);
-
-		/**
-		 * Sets some values of an existing 3d array of explicit float values of a particular patch. This
-		 * method makes use of HDF5 hyperslabbing. Since this methods only pushes back values into an
-		 * existing array, it is to be used along with pushBackFloatHdf5Array3dOfValues().
-		 *
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined into the data object repository.
-		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
-		 * 										different from unsigned int maximum value.
-		 *
-		 * @param 		  	values				  	All the property values to set ordered according to
-		 * 											the topology of the representation it is based on.
-		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
-		 * 											dimension (mainly I dimension).
-		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
-		 * 											(mainly J dimension).
-		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
-		 * 											dimension (mainly K dimension).
-		 * @param 		  	offsetInFastestDim	  	The offset value for writing in the fastest dimension
-		 * 											(mainly I dimension).
-		 * @param 		  	offsetInMiddleDim	  	The offset value for writing in the middle dimension
-		 * 											(mainly J dimension).
-		 * @param 		  	offsetInSlowestDim	  	The offset value for writing in the slowest dimension
-		 * 											(mainly K dimension).
-		 * @param 		  	computeMinMax		  	True if FESAPI needs to compute
-		 * 											the min and  max from the given @p values in order to
-		 * 											set them.
-		 * @param [in,out]	proxy				  	The HDF proxy where to write the property
-		 * 											values. It must be already opened for writing and
-		 * 											won't be closed in this method. If @p nullptr
-		 * 											(default), a default HDF proxy must be defined into
-		 * 											the data object repository.
-		 * @param 		  	patchIndex			  	(Optional) Zero-based index of the patch where to
-		 * 											write the property values. If not provided, its
-		 * 											default value is by convention set to unsigned int
-		 * 											maximum value and the property values will be written
-		 * 											in the last property values patch (the one with the
-		 * 											greatest index).
-		 */
-		void setValuesOfFloatHdf5Array3dOfValues(
-			float const * values,
-			uint64_t valueCountInFastestDim,
-			uint64_t valueCountInMiddleDim,
-			uint64_t valueCountInSlowestDim,
-			uint64_t offsetInFastestDim,
-			uint64_t offsetInMiddleDim,
-			uint64_t offsetInSlowestDim,
-			bool computeMinMax,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max()
-		);
-
-		/**
-		 * Set some values of an existing 3d array of explicit float values of a particular patch.  This
-		 * method makes use of HDF5 hyperslabbing. This method is to be used along with one of the
-		 * pushBackFloatHdf5ArrayOfValues() methods which do not write any value.
-		 *
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined into the data object repository.
-		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
-		 * 										different from unsigned int maximum value.
-		 *
-		 * @param 		  	values			  	All the property values to set ordered according to the
-		 * 										topology of the representation it is based on.
-		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
-		 * 										array to write. It is ordered from slowest dimension to
-		 * 										fastest dimension.
-		 * @param 		  	offsetValues	  	The offset values ordered by dimension of the array to
-		 * 										write. It is ordered from slowest dimension to fastest
-		 * 										dimension.
-		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param 		  	computeMinMax	  	True if FESAPI needs to compute the
-		 * 										min and  max from the given @p values in order to set
-		 * 										them.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
-		 * 										values. It must be already opened for writing and won't
-		 * 										be closed in this method. If @p nullptr (default), a
-		 * 										default HDF proxy must be defined into the data object
-		 * 										repository.
-		 * @param 		  	patchIndex		  	(Optional) Zero-based index of the patch where to write
-		 * 										the property values. If not provided, its default value
-		 * 										is by convention set to unsigned int maximum value and
-		 * 										the property values will be written in the last property
-		 * 										values patch (the one with the greatest index).
-		 */
-		void setValuesOfFloatHdf5ArrayOfValues(
-			float const * values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
-			unsigned int numArrayDimensions,
-			bool computeMinMax,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max()
-		);
-	};
-	
-#ifdef SWIGPYTHON
-	%rename(Resqml2_DiscreteProperty) DiscreteProperty;
-#endif
-	class DiscreteProperty : public AbstractValuesProperty
-	{
-	public:
-		void pushBackLongHdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
-		void pushBackIntHdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		void pushBackShortHdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
-		void pushBackCharHdf5Array1dOfValues(const char * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, char nullValue, char minimumValue, char maximumValue);
-
-		void pushBackLongHdf5Array2dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
-		void pushBackIntHdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		void pushBackShortHdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
-		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
-		void pushBackCharHdf5Array2dOfValues(const char * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, char nullValue, char minimumValue, char maximumValue);
-
-		void pushBackLongHdf5Array3dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
-		void pushBackIntHdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		void pushBackShortHdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
-		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
-		void pushBackCharHdf5Array3dOfValues(const char * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, char nullValue, char minimumValue, char maximumValue);
-
-		void pushBackLongHdf5ArrayOfValues(const int64_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
-		void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
-		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
-		void pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue, char minimumValue, char maximumValue);
-		
-		void pushBackLongHdf5ArrayOfValues(
-			unsigned long long* numValues,
-			unsigned int numArrayDimensions,
-			int64_t* minimumValue, int64_t* maximumValue,
-			int64_t nullValue = std::numeric_limits<int64_t>::max(),
-			EML2_NS::AbstractHdfProxy* proxy = nullptr);
-
-		void pushBackLongHdf5Array3dOfValues(
-			uint64_t valueCountInFastestDim,
-			uint64_t valueCountInMiddleDim,
-			uint64_t valueCountInSlowestDim,
-			int64_t minimumValue, int64_t maximumValue,
-			int64_t nullValue = std::numeric_limits<int64_t>::max(),
-			EML2_NS::AbstractHdfProxy* proxy = nullptr);
-
-		void setValuesOfLongHdf5Array3dOfValues(
-			int64_t* values,
-			uint64_t valueCountInFastestDim,
-			uint64_t valueCountInMiddleDim,
-			uint64_t valueCountInSlowestDim,
-			uint64_t offsetInFastestDim,
-			uint64_t offsetInMiddleDim,
-			uint64_t offsetInSlowestDim,
-			bool computeMinMax,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
-
-		void setValuesOfLongHdf5ArrayOfValues(
-			int64_t* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
-			unsigned int numArrayDimensions,
-			bool computeMinMax,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
-		
-		bool hasMinimumValue() const;
-		int64_t getMinimumValue() const;
-		bool hasMaximumValue() const;
-		int64_t getMaximumValue() const;
-	};
-	
-#ifdef SWIGPYTHON
-	%rename(Resqml2_DoubleTableLookup) DoubleTableLookup;
-#endif	
-	class DoubleTableLookup : public COMMON_NS::AbstractObject
-	{
-	public:
-		bool containsKey(double key);
-	
-		unsigned int getItemCount() const;
-		double getKeyAtIndex(unsigned int index) const;
-		double getValueAtIndex(unsigned int index) const;
-		double getValueAtKey(double key);
-		
-		void addValue(double key, double longValue);
-		void setValue(double key, double longValue);
-		
-		double getMinimumValue();
-		double getMaximumValue();
-	};
-	
-#ifdef SWIGPYTHON
-	%rename(Resqml2_StringTableLookup) StringTableLookup;
-#endif	
-	class StringTableLookup : public COMMON_NS::AbstractObject
-	{
-	public:
-		bool containsKey(long longValue);
-	
-		unsigned int getItemCount() const;
-		long getKeyAtIndex(unsigned int index) const;
-		std::string getStringValueAtIndex(unsigned int index) const;
-		std::string getStringValue(long longValue);
-		
-		void addValue(const std::string & strValue, long longValue);
-		void setValue(const std::string & strValue, long longValue);
-		
-		int64_t getMinimumValue();
-		int64_t getMaximumValue();
-	};
-	
-#ifdef SWIGPYTHON
-	%rename(Resqml2_CategoricalProperty) CategoricalProperty;
-#endif
-	class CategoricalProperty : public AbstractValuesProperty
-	{
-	public:
-		DoubleTableLookup* getDoubleLookup();
-		StringTableLookup* getStringLookup();
+		EML2_NS::ColumnBasedTable* getLookup() const;
 	};
 	
 #ifdef SWIGPYTHON
@@ -5445,7 +5449,7 @@ namespace RESQML2_NS
 		 * 										CRS of the data object repository will be arbitrarily
 		 * 										selected.
 		 */
-		virtual void setGeometry(double const* controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr) = 0;
+		virtual void setGeometry(double const* controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD information.
@@ -5486,7 +5490,7 @@ namespace RESQML2_NS
 		 * 											arbitrarily selected.
 		 */
 		virtual void setGeometry(double const* controlPoints, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr) = 0;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD and tangent
@@ -5536,7 +5540,7 @@ namespace RESQML2_NS
 		 */
 		virtual void setGeometry(double const* controlPoints,
 			double const* tangentVectors, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr) = 0;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD and tangent
@@ -5586,30 +5590,7 @@ namespace RESQML2_NS
 		 */
 		void setGeometry(double const* controlPoints,
 			double const* inclinations, double const* azimuths, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
-			
-		/**
-		 * Sets the MD datum of this trajectory.
-		 *
-		 * @exception	std::invalid_argument	If @p mdDatum is @c nullptr.
-		 *
-		 * @param [in]	mdDatum	The MD damtum to set to this trajectory. It cannot be null.
-		 */
-		virtual void setMdDatum(MdDatum * mdDatum) = 0;
-		
-		/**
-		 * Gets the MD information associated to this wellbore trajectory representation.
-		 *
-		 * @returns	The associated MD information.
-		 */
-		RESQML2_NS::MdDatum * getMdDatum() const;
-
-		/**
-		 * Queries if this trajectory has a geometry.
-		 *
-		 * @returns	True if this trajectory has a geometry, false if not.
-		 */
-		virtual bool hasGeometry() const = 0;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 		
 		/**
 		 * Gets the geometry kind.
@@ -5622,7 +5603,76 @@ namespace RESQML2_NS
 		 * @returns	0 for vertical, 1 for linear spline, 2 for natural cubic spline, 3 for cubic spline,
 		 * 			4 for z linear cubic spline, 5 for minimum-curvature spline, (-1) for null: no line.
 		 */
-		virtual int getGeometryKind() const = 0;
+		int getGeometryKind() const;
+			
+		/**
+		 * Sets the MD datum of this trajectory.
+		 *
+		 * @exception	std::invalid_argument	If @p mdDatum is @c nullptr.
+		 *
+		 * @param [in]	mdDatum	The MD damtum to set to this trajectory. It cannot be null.
+		 */
+		void setMdDatum(EML2_NS::ReferencePointInALocalEngineeringCompoundCrs * mdDatum);
+		
+		/**
+		 * Gets the MD information associated to this wellbore trajectory representation.
+		 *
+		 * @returns	The associated MD information.
+		 */
+		EML2_NS::ReferencePointInALocalEngineeringCompoundCrs * getMdDatum() const;
+
+		/**
+		 * Gets the data object reference of the MD information associated to this wellbore trajectory
+		 * representation.
+		 *
+		 * @returns	The data object reference of the associated MD information.
+		 */
+		COMMON_NS::DataObjectReference getMdDatumDor() const;
+
+		/**
+		 * Indicates if the wellbore trajectory has got MD values attached to each trajectory station.
+		 *
+		 * @exception	std::logic_error	If the geometry of this trajectory is not a parametric line.
+		 *
+		 * @returns	True if there is some MD values, false if not.
+		 */
+		bool hasMdValues() const;
+		
+		/**
+		 * Gets the unit of measure of the MDs along this trajectory.
+		 *
+		 * @returns	The unit of measure of the MDs along this trajectory.
+		 */
+		gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const;
+		
+		/**
+		 * Gets the MD double values associated to each trajectory station of this trajectory.
+		 *
+		 * @exception	std::invalid_argument	If this trajectory has no MD value.
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If MD values are not defined using the right data
+		 * 										structure.
+		 *
+		 * @param [out]	values	A buffer for receiving the MD values. It must be preallocated with size
+		 * 						of getXyzPointCountOfAllPatches().
+		 */
+		void getMdValues(double* values) const;
+		
+		/**
+		 * Gets the starting MD of this wellbore trajectory. Range may often be from kickoff to TD, but
+		 * this is not necessary.
+		 *
+		 * @returns	The start MD.
+		 */
+		virtual double getStartMd() const = 0;
+
+		/**
+		 * Gets the ending MD of this wellbore trajectory. Range may often be from kickoff to TD, but
+		 * this is not necessary.
+		 *
+		 * @returns	The end MD.
+		 */
+		virtual double getFinishMd() const = 0;
 
 		/**
 		 * Indicates if the wellbore trajectory has got tangent vectors attached to each trajectory
@@ -5662,54 +5712,53 @@ namespace RESQML2_NS
 		 */
 		void getInclinationsAndAzimuths(double * inclinations, double * azimuths);
 
-		/**
-		 * Indicates if the wellbore trajectory has got MD values attached to each trajectory station.
-		 *
-		 * @exception	std::logic_error	If the geometry of this trajectory is not a parametric line.
-		 *
-		 * @returns	True if there is some MD values, false if not.
-		 */
-		virtual bool hasMdValues() const = 0;
-		
-		/**
-		 * Gets the unit of measure of the MDs along this trajectory.
-		 *
-		 * @returns	The unit of measure of the MDs along this trajectory.
-		 */
-		virtual gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const = 0;
-		
-		/**
-		 * Gets the MD double values associated to each trajectory station of this trajectory.
-		 *
-		 * @exception	std::invalid_argument	If this trajectory has no MD value.
-		 * @exception	std::invalid_argument	If the HDF proxy is missing.
-		 * @exception	std::invalid_argument	If MD values are not defined using the right data
-		 * 										structure.
-		 *
-		 * @param [out]	values	A buffer for receiving the MD values. It must be preallocated with size
-		 * 						of getXyzPointCountOfAllPatches().
-		 */
-		virtual void getMdValues(double* values) const = 0;
-		
-		/**
-		 * Gets the starting MD of this wellbore trajectory. Range may often be from kickoff to TD, but
-		 * this is not necessary.
-		 *
-		 * @returns	The start MD.
-		 */
-		virtual double getStartMd() const = 0;
+		//*****************
+		//*** PARENTAGE ***
+		//*****************
 
 		/**
-		 * Gets the ending MD of this wellbore trajectory. Range may often be from kickoff to TD, but
-		 * this is not necessary.
+		 * Adds a trajectory parent to this trajectory in case of trajectory branching. Does add the
+		 * inverse relationship i.e. from the parent trajectory to this trajectory.
 		 *
-		 * @returns	The end MD.
+		 * @exception	std::invalid_argument	If @p parentTrajRep is @c nullptr.
+		 *
+		 * @param 	  	kickoffMd	 	The kickoff MD.
+		 * @param 	  	parentMd	 	The MD on the parent wellbore trajectory where this trajectory is starting. It can be NaN if same as kickoffMd.
+		 * @param [in]	parentTrajRep	The parent trajectory.
 		 */
-		virtual double getFinishMd() const = 0;
-			
 		void addParentTrajectory(double kickoffMd, double parentMd, WellboreTrajectoryRepresentation* parentTrajRep);
+
+		/**
+		 * Gets the parent trajectory of this trajectory.
+		 *
+		 * @returns	@c nullptr if this trajectory has no parent trajectory, otherwise the parent
+		 * 			trajectory.
+		 */
 		WellboreTrajectoryRepresentation* getParentTrajectory() const;
+
+		/**
+		 * Gets the data object reference of the parent trajectory of this trajectory.
+		 *
+		 * @returns	Empty if this trajectory has no parent trajectory, otherwise the data object
+		 * 			reference of the parent trajectory.
+		 */
+		COMMON_NS::DataObjectReference getParentTrajectoryDor() const;
+
+		/**
+		 * Gets the MD on the parent wellbore trajectory where this trajectory is starting.
+		 *
+		 * @exception	std::logic_error	If this wellbore trajectory has no parent trajecory.
+		 *
+		 * @returns	The parent trajectory MD.
+		 */
 		double getParentTrajectoryMd() const;
+
+		/**
+		 * Queries if this trajectory has a geometry.
+		 *
+		 * @returns	True if this trajectory has a geometry, false if not.
+		 */
+		virtual bool hasGeometry() const = 0;
 	};
 
 #ifdef SWIGPYTHON
