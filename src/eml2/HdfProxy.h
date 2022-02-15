@@ -260,8 +260,6 @@ namespace EML2_NS
 
 		void readArrayNdOfUCharValues(const std::string& datasetName, unsigned char* values) final;
 
-		std::vector<unsigned long long> readArrayDimensions(const std::string& datasetName) final;
-
 		bool exist(const std::string& absolutePathInHdfFile) const final;
 
 		bool isCompressed(const std::string& datasetName) final;

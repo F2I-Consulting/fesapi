@@ -266,11 +266,6 @@ namespace Example
             throw new NotImplementedException();
         }
 
-        public override SWIGTYPE_p_std__vectorT_unsigned_long_long_t readArrayDimensions(string datasetName)
-        {
-            throw new NotImplementedException();
-        }
-
         public override bool exist(string absolutePathInHdfFile)
         {
             throw new NotImplementedException();

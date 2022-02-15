@@ -959,25 +959,6 @@ hid_t HdfProxy::openOrCreateGroup(const string & groupName)
 	return currentOpenedGroup;
 }
 
-std::vector<hsize_t> HdfProxy::readArrayDimensions(const std::string & datasetName)
-{
-	if (!isOpened()) {
-		open();
-	}
-
-	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
-
-	hid_t dataspace = H5Dget_space(dataset);
-	int nDim = H5Sget_simple_extent_ndims(dataspace);
-	std::vector<hsize_t> dims(nDim, 0);
-	H5Sget_simple_extent_dims(dataspace, &dims[0], nullptr);
-
-	H5Sclose(dataspace);
-	H5Dclose(dataset);
-
-	return dims;
-}
-
 void HdfProxy::writeGroupAttributes(const std::string & groupName,
 	const std::vector<std::string> & attributeNames,
 	const std::vector<std::string> & values)

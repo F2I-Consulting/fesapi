@@ -93,7 +93,7 @@ std::vector<std::string> AbstractSeismicLineFeature::getTraceLabels() const
 		EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
 
 		// Check if the hdf dataset really contains constant length string.
-		std::vector<hsize_t> dims = hdfProxy->readArrayDimensions(datasetPath);
+		std::vector<hsize_t> dims = hdfProxy->getElementCountPerDimension(datasetPath);
 		if (dims.size() != 2) {
 			return result;
 		}

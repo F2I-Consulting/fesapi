@@ -522,12 +522,6 @@ public:
 	void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
-	 * Read the dimensions of an array stored in a specific dataset
-	 * @param datasetName	The absolute dataset name where to read the array dimensions
-	 */
-	std::vector<unsigned long long> readArrayDimensions(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
-
-	/**
 	* Check wether an absolute path exists in the hdf file or not.
 	*/
 	bool exist(const std::string & absolutePathInHdfFile) const { throw std::logic_error("Not implemented yet"); }

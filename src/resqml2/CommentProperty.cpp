@@ -82,7 +82,7 @@ std::vector<std::string> CommentProperty::getStringValuesOfPatch(uint64_t patchI
 	EML2_NS::AbstractHdfProxy* hdfProxy = getValuesHdfProxyAndDatasetPathOfPatch(patchIndex, datasetPath);
 
 	// Check if the hdf dataset really contains constant length string.
-	std::vector<hsize_t> dims = hdfProxy->readArrayDimensions(datasetPath);
+	std::vector<hsize_t> dims = hdfProxy->getElementCountPerDimension(datasetPath);
 	if (dims.size() != 2) {
 		return result;
 	}

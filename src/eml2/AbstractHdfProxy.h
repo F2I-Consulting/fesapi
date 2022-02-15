@@ -850,15 +850,6 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) = 0;
 
 		/**
-		 * Reads the dimensions size of an nd array stored in a specific dataset
-		 *
-		 * @param 	datasetName	The absolute name of the nd array dataset.
-		 *
-		 * @returns	A vector of dimensions size.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::vector<unsigned long long> readArrayDimensions(const std::string & datasetName) = 0;
-
-		/**
 		 * Checks whether an absolute path exists in the HDF5 file
 		 *
 		 * @param 	absolutePathInHdfFile	An absolute path in the HDF5 file.

@@ -295,7 +295,6 @@ namespace EML2_NS
 		virtual void readArrayNdOfUShortValues(const std::string & datasetName, unsigned short* values) = 0;
 		virtual void readArrayNdOfCharValues(const std::string & datasetName, char* values) = 0;
 		virtual void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) = 0;
-		virtual std::vector<unsigned long long> readArrayDimensions(const std::string & datasetName) = 0;
 		
 		virtual bool exist(const std::string & absolutePathInHdfFile) const = 0;
 		
