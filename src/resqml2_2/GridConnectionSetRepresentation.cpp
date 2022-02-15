@@ -324,7 +324,7 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 		unsigned int j = 0;
 		for (unsigned int i = 0; i < totalCellIndexPairCount; ++i) {
 			for (; j < cumulativeCount[i]; ++j) {
-				if (faultIndices[j] == interpretationIndex) {
+				if (faultIndices[j] == static_cast<unsigned int>(interpretationIndex)) {
 					cellIndexPairs[cellIndexPairIndex*2] = totalCellIndexPairs[i*2];
 					cellIndexPairs[cellIndexPairIndex*2+1] = totalCellIndexPairs[i*2+1];
 					if (gridIndexPairs != nullptr) {
@@ -449,6 +449,11 @@ void GridConnectionSetRepresentation::pushBackXmlSupportingGridRepresentation(RE
 // TODO: Resqml allows to map with more than one feature interpretation.
 void GridConnectionSetRepresentation::setConnectionInterpretationIndices(unsigned int const* cumulativeInterpCount, unsigned int const* interpIndices, EML2_NS::AbstractHdfProxy * proxy)
 {
+	const uint64_t cellIndexPairCount = getCellIndexPairCount();
+	if (cellIndexPairCount == 0) {
+		throw logic_error("You must set the cell index pairs before to set the connection interpretations.");
+	}
+
 	getRepository()->addRelationship(this, proxy);
 
 	_resqml22__GridConnectionSetRepresentation* rep = static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3);
@@ -462,19 +467,15 @@ void GridConnectionSetRepresentation::setConnectionInterpretationIndices(unsigne
 	rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength = cumulativeLength;
 	cumulativeLength->NullValue = -1;
 	cumulativeLength->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
-	cumulativeLength->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/InterpretationIndices/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME, interpretationIndiceCount, proxy));
+	cumulativeLength->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/InterpretationIndices/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME, cellIndexPairCount, proxy));
 	// Elements
 	eml23__IntegerExternalArray* elements = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	rep->ConnectionInterpretations->InterpretationIndices->Elements = elements;
 	elements->NullValue = -1;
 	elements->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
-	elements->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/InterpretationIndices/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, interpretationIndiceCount, proxy));
+	elements->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/InterpretationIndices/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, cumulativeInterpCount[cellIndexPairCount - 1], proxy));
 
 	// HDF
-	const uint64_t cellIndexPairCount = getCellIndexPairCount();
-	if (cellIndexPairCount == 0) {
-		throw logic_error("You must set the cell index pairs before to set the connection interpretations.");
-	}
 	proxy->writeItemizedListOfList(getHdfGroup(), "InterpretationIndices", H5T_NATIVE_UINT, cumulativeInterpCount, cellIndexPairCount, H5T_NATIVE_UINT, interpIndices, cumulativeInterpCount[cellIndexPairCount - 1]);
 }
 

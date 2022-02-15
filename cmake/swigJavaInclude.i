@@ -422,7 +422,7 @@ ${COMMENT_END}
 		}
 ${COMMENT_START}
 		else if ("resqml22".equals(xmlNs)) {
-			return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_2_NS}.resqml22_GeologicUnitOccurrenceInterpretation(cPtr, owner);
+			return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_2_NS}.Resqml22_GeologicUnitOccurrenceInterpretation(cPtr, owner);
 		}
 ${COMMENT_END}
 		
@@ -999,7 +999,7 @@ ${COMMENT_END}
 ${COMMENT_START}
 		case CULTURALFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_2_NS}.Resqml22_CulturalFeature(cPtr, owner);
 ${COMMENT_END}
-		case DEVIATIONSURVEYREPRESENTATION : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.resqml20_DeviationSurveyRepresentation(cPtr, owner);
+		case DEVIATIONSURVEYREPRESENTATION : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_DeviationSurveyRepresentation(cPtr, owner);
 ${COMMENT_START}
 		case DISCRETECOLORMAP : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_2_NS}.Resqml22_DiscreteColorMap(cPtr, owner);
 ${COMMENT_END}
@@ -1022,7 +1022,7 @@ ${COMMENT_END}
 		case GEOBODYBOUNDARYINTERPRETATION : return resqml2_instantiateGeobodyBoundaryInterpretation(cPtr, owner);
 		case GEOBODYINTERPRETATION : return resqml2_instantiateGeobodyInterpretation(cPtr, owner);
 		case GENERICFEATUREINTERPRETATION : return resqml2_instantiateGenericFeatureInterpretation(cPtr, owner);
-		case GEOLOGICUNITFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.resqml20_GeologicUnitFeature(cPtr, owner);
+		case GEOLOGICUNITFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_GeologicUnitFeature(cPtr, owner);
 		case GEOLOGICUNITOCCURRENCEINTERPRETATION :
 		case STRATIGRAPHICOCCURRENCEINTERPRETATION : return resqml2_instantiateStratigraphicOccurrenceInterpretation(cPtr, owner);
 ${COMMENT_START}
@@ -1066,7 +1066,7 @@ ${COMMENT_START}
 ${COMMENT_END}
 		case STRATIGRAPHICCOLUMN : return resqml2_instantiateStratigraphicColumn(cPtr, owner);
 		case STRATIGRAPHICCOLUMNRANKINTERPRETATION : return resqml2_instantiateStratigraphicColumnRankInterpretation(cPtr, owner);
-		case STRATIGRAPHICUNITFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.resqml20_StratigraphicUnitFeature(cPtr, owner);
+		case STRATIGRAPHICUNITFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_StratigraphicUnitFeature(cPtr, owner);
 		case STRATIGRAPHICUNITINTERPRETATION : return resqml2_instantiateStratigraphicUnitInterpretation(cPtr, owner);
 		case STREAMLINESFEATURE : return resqml2_instantiateStreamlinesFeature(cPtr, owner);
 		case STREAMLINESREPRESENTATION : return resqml2_instantiateStreamlinesRepresentation(cPtr, owner);

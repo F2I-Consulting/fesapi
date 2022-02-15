@@ -1635,7 +1635,7 @@ namespace EML2_NS
 		 *
 		 * @returns	True if abstract, false if not.
 		 */
-		virtual bool isAbstract() const.
+		virtual bool isAbstract() const;
 	};
 
 #if defined(SWIGPYTHON)

@@ -1177,6 +1177,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		double propValues[2] = { 12.3, 45.6 };
 		unstructuredGridProp->pushBackDoubleHdf5Array1dOfValues(propValues, 2);
 	}
+#if WITH_RESQML2_2
 	else {
 		RESQML2_NS::ContinuousProperty* unstructuredGridProp = nullptr;
 		if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
@@ -4674,7 +4675,7 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 
 void deserializeGridConnectionSetRepresentation(RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid)
 {
-	unsigned int gridConnectionSetCount = ijkGrid->getGridConnectionSetRepresentationCount();
+	uint64_t gridConnectionSetCount = ijkGrid->getGridConnectionSetRepresentationCount();
 	std::cout << "Grid Connection Count is : " << gridConnectionSetCount << std::endl;
 	if (gridConnectionSetCount > 0) {
 		RESQML2_NS::GridConnectionSetRepresentation const * gridConnectionSet = ijkGrid->getGridConnectionSetRepresentation(0);
