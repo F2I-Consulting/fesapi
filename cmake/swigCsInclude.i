@@ -776,21 +776,6 @@ ${COMMENT_END}
 		return null;
 	}
 	
-	public static F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.CategoricalProperty resqml2_instantiateCategoricalProperty(global::System.IntPtr cPtr, bool owner)
-	{
-		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
-		if (xmlNs.Equals("resqml20")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.CategoricalProperty(cPtr, owner);
-		}
-${COMMENT_START}
-		else if (xmlNs.Equals("resqml22")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.CategoricalProperty(cPtr, owner);
-		}
-${COMMENT_END}
-		
-		return null;
-	}
-	
 	public static F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.CommentProperty resqml2_instantiateCommentProperty(global::System.IntPtr cPtr, bool owner)
 	{
 		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
@@ -881,66 +866,6 @@ ${COMMENT_END}
 		return null;
 	}
 	
-	public static F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.LocalDepth3dCrs resqml2_instantiateLocalDepth3dCrs(global::System.IntPtr cPtr, bool owner)
-	{
-		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
-		if (xmlNs.Equals("resqml20")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.LocalDepth3dCrs(cPtr, owner);
-		}
-${COMMENT_START}
-		else if (xmlNs.Equals("resqml22")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.LocalDepth3dCrs(cPtr, owner);
-		}
-${COMMENT_END}
-		
-		return null;
-	}
-	
-	public static F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.LocalTime3dCrs resqml2_instantiateLocalTime3dCrs(global::System.IntPtr cPtr, bool owner)
-	{
-		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
-		if (xmlNs.Equals("resqml20")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.LocalTime3dCrs(cPtr, owner);
-		}
-${COMMENT_START}
-		else if (xmlNs.Equals("resqml22")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.LocalTime3dCrs(cPtr, owner);
-		}
-${COMMENT_END}
-		
-		return null;
-	}
-	
-	public static F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.DoubleTableLookup resqml2_instantiateDoubleTableLookup(global::System.IntPtr cPtr, bool owner)
-	{
-		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
-		if (xmlNs.Equals("resqml20")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.DoubleTableLookup(cPtr, owner);
-		}
-${COMMENT_START}
-		else if (xmlNs.Equals("resqml22")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.DoubleTableLookup(cPtr, owner);
-		}
-${COMMENT_END}
-		
-		return null;
-	}
-	
-	public static F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.StringTableLookup resqml2_instantiateStringTableLookup(global::System.IntPtr cPtr, bool owner)
-	{
-		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
-		if (xmlNs.Equals("resqml20")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.StringTableLookup(cPtr, owner);
-		}
-${COMMENT_START}
-		else if (xmlNs.Equals("resqml22")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.StringTableLookup(cPtr, owner);
-		}
-${COMMENT_END}
-		
-		return null;
-	}
-	
 	public static F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.StreamlinesFeature resqml2_instantiateStreamlinesFeature(global::System.IntPtr cPtr, bool owner)
 	{
 		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
@@ -986,7 +911,7 @@ ${COMMENT_END}
 		case DataObjectName.BLOCKEDWELLBOREREPRESENTATION : return resqml2_instantiateBlockedWellboreRepresentation(cPtr, owner);
 		case DataObjectName.BOUNDARYFEATURE : return resqml2_instantiateBoundaryFeature(cPtr, owner);
 		case DataObjectName.BOUNDARYFEATUREINTERPRETATION : return resqml2_instantiateBoundaryFeatureInterpretation(cPtr, owner);
-		case DataObjectName.CATEGORICALPROPERTY : return resqml2_instantiateCategoricalProperty(cPtr, owner);
+		case DataObjectName.CATEGORICALPROPERTY : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.CategoricalProperty(cPtr, owner);
 		case DataObjectName.CHANNEL : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.Channel(cPtr, owner);
 		case DataObjectName.CHANNELSET : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.ChannelSet(cPtr, owner);
 ${COMMENT_START}
@@ -1005,7 +930,7 @@ ${COMMENT_START}
 		case DataObjectName.DISCRETECOLORMAP : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.DiscreteColorMap(cPtr, owner);
 ${COMMENT_END}
 		case DataObjectName.DISCRETEPROPERTY : return resqml2_instantiateDiscreteProperty(cPtr, owner);
-		case DataObjectName.DOUBLETABLELOOKUP : return resqml2_instantiateDoubleTableLookup(cPtr, owner);
+		case DataObjectName.DOUBLETABLELOOKUP : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.DoubleTableLookup(cPtr, owner);
 		case DataObjectName.EARTHMODELINTERPRETATION : return resqml2_instantiateEarthModelInterpretation(cPtr, owner);
 		case DataObjectName.EPCEXTERNALPARTREFERENCE : return eml2_instantiateEpcExternalPartReference(cPtr, owner);
 		case DataObjectName.FAULTINTERPRETATION : return resqml2_instantiateFaultInterpretation(cPtr, owner);
@@ -1033,8 +958,8 @@ ${COMMENT_END}
 		case DataObjectName.GRIDCONNECTIONSETREPRESENTATION : return resqml2_instantiateGridConnectionSetRepresentation(cPtr, owner);
 		case DataObjectName.HORIZONINTERPRETATION : return resqml2_instantiateHorizonInterpretation(cPtr, owner);
 		case DataObjectName.IJKGRIDREPRESENTATION : return resqml2_instantiateConcreteIjkGridRepresentation(cPtr, owner);
-		case DataObjectName.LOCALDEPTH3DCRS : return resqml2_instantiateLocalDepth3dCrs(cPtr, owner);
-		case DataObjectName.LOCALTIME3DCRS : return resqml2_instantiateLocalTime3dCrs(cPtr, owner);
+		case DataObjectName.LOCALDEPTH3DCRS : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.LocalDepth3dCrs(cPtr, owner);
+		case DataObjectName.LOCALTIME3DCRS : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.LocalTime3dCrs(cPtr, owner);
 		case DataObjectName.LOG : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.Log(cPtr, owner);
 		case DataObjectName.MDDATUM : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.MdDatum(cPtr, owner);
 ${COMMENT_START}
@@ -1071,7 +996,7 @@ ${COMMENT_END}
 		case DataObjectName.STRATIGRAPHICUNITINTERPRETATION : return resqml2_instantiateStratigraphicUnitInterpretation(cPtr, owner);
 		case DataObjectName.STREAMLINESFEATURE : return resqml2_instantiateStreamlinesFeature(cPtr, owner);
 		case DataObjectName.STREAMLINESREPRESENTATION : return resqml2_instantiateStreamlinesRepresentation(cPtr, owner);
-		case DataObjectName.STRINGTABLELOOKUP : return resqml2_instantiateStringTableLookup(cPtr, owner);
+		case DataObjectName.STRINGTABLELOOKUP : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.StringTableLookup(cPtr, owner);
 		case DataObjectName.STRUCTURALORGANIZATIONINTERPRETATION : return resqml2_instantiateStructuralOrganizationInterpretation(cPtr, owner);
 		case DataObjectName.SUBREPRESENTATION : return resqml2_instantiateSubRepresentation(cPtr, owner);
 		case DataObjectName.TECTONICBOUNDARYFEATURE : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.TectonicBoundaryFeature(cPtr, owner);
@@ -1140,7 +1065,6 @@ namespace RESQML2_NS
 										BlockedWellboreRepresentation*,
 										BoundaryFeature*,
 										BoundaryFeatureInterpretation*,
-										CategoricalProperty*,
 #ifdef WITH_RESQML2_2
 										CmpLineFeature*,
 #endif
@@ -1154,7 +1078,6 @@ namespace RESQML2_NS
 										DiscreteColorMap*,
 #endif
 										DiscreteProperty*,
-										DoubleTableLookup*,
 										EarthModelInterpretation*,
 										FaultInterpretation*,
 #ifdef WITH_RESQML2_2
@@ -1171,9 +1094,6 @@ namespace RESQML2_NS
 										IjkGridLatticeRepresentation*,
 										IjkGridNoGeometryRepresentation*,
 										IjkGridParametricRepresentation*,
-										LocalDepth3dCrs*,
-										LocalTime3dCrs*,
-										MdDatum*,
 										Model*,
 										NonSealedSurfaceFrameworkRepresentation*,
 										PlaneSetRepresentation*,
@@ -1199,7 +1119,6 @@ namespace RESQML2_NS
 										StratigraphicUnitInterpretation*,
 										StreamlinesFeature*,
 										StreamlinesRepresentation*,
-										StringTableLookup*,
 										StructuralOrganizationInterpretation*,
 										SubRepresentation*,
 										TriangulatedSetRepresentation*,
