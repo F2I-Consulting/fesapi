@@ -116,7 +116,7 @@ namespace WITSML2_NS
 		/**
 		* Resolve all relationships of the object in the repository.
 		*/
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 
 	protected:
 

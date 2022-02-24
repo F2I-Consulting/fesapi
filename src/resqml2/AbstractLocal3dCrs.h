@@ -245,6 +245,6 @@ namespace RESQML2_NS
 		virtual double getZOffset() const = 0;
 		
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 	};
 }

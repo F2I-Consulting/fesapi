@@ -95,6 +95,6 @@ namespace RESQML2_NS
 		StratigraphicOccurrenceInterpretation(gsoap_eml2_3::_resqml22__StratigraphicOccurrenceInterpretation* fromGsoap) : AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
 
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 	};
 }

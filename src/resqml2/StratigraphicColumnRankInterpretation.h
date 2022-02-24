@@ -282,6 +282,6 @@ namespace RESQML2_NS
 		StratigraphicColumnRankInterpretation(gsoap_eml2_3::_resqml22__StratigraphicColumnRankInterpretation* fromGsoap) : AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
 
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 	};
 }

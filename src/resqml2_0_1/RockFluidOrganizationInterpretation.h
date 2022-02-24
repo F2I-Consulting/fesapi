@@ -59,15 +59,17 @@ namespace RESQML2_0_1_NS
 
 		COMMON_NS::DataObjectReference getRockFluidUnitInterpretationDor(unsigned int index) const final;
 
-		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		/** The standard XML tag without XML namespace for serializing this data object.
+		 *  It is not a bug to have a strati occurence tag instead of a rock fluid org one : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
+		 */
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "StratigraphicOccurrenceInterpretation";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml20";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.

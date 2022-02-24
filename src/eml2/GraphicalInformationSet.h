@@ -595,7 +595,7 @@ namespace EML2_NS
 		 * Reads the forward relationships of this data object and update the <tt>.rels</tt> of the
 		 * associated data repository.
 		 */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 	
 	protected:
 

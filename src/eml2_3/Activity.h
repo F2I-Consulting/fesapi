@@ -30,7 +30,7 @@ namespace EML2_3_NS
 		Activity() : EML2_NS::Activity() {}
 
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 
 	public:
 

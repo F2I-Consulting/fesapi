@@ -305,7 +305,7 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 
 	private:
 

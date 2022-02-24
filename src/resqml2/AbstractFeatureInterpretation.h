@@ -134,6 +134,6 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT AbstractRepresentation * getRepresentation(unsigned int index) const;
 		
 		/** Loads target relationships */
-		virtual void loadTargetRelationships();
+		virtual void loadTargetRelationships() override;
 	};
 }

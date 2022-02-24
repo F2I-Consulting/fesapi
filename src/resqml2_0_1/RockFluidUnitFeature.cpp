@@ -76,8 +76,6 @@ std::vector<PRODML2_1_NS::FluidCharacterization *> RockFluidUnitFeature::getFlui
 
 void RockFluidUnitFeature::loadTargetRelationships()
 {
-	GeologicUnitFeature::loadTargetRelationships();
-
 	_resqml20__RockFluidUnitFeature* interp = static_cast<_resqml20__RockFluidUnitFeature*>(gsoapProxy2_0_1);
 
 	COMMON_NS::DataObjectReference dor(interp->FluidBoundaryTop);

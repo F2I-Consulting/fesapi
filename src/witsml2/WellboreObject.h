@@ -57,7 +57,7 @@ namespace WITSML2_NS
 		/**
 		* Resolve all relationships of the object in a repository.
 		*/
-		virtual void loadTargetRelationships();
+		virtual void loadTargetRelationships() override;
 
 	protected:
 

@@ -104,7 +104,7 @@ namespace EML2_3_NS
 		COMMON_NS::DataObjectReference getParentPropertyKindDor() const final;
 
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

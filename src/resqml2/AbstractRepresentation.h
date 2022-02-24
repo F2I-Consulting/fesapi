@@ -344,11 +344,11 @@ namespace RESQML2_NS
 		 * 							<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
 		DLL_IMPORT_OR_EXPORT void getCrosslinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
-
+		
 		/** The standard XML tag without XML namespace for serializing this data object */
 		static const char* XML_TAG;
 
-		virtual void loadTargetRelationships();
+		virtual void loadTargetRelationships() override;
 
 	protected:
 
