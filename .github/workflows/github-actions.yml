@@ -10,7 +10,6 @@ jobs:
           Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.1/bin/windows/hdf5-1.12.1-Std-win10_64-vs16.zip -OutFile ${{ runner.temp }}\hdf5-1.12.1-Std-win10_64-vs16.zip
           Expand-Archive ${{ runner.temp }}\hdf5-1.12.1-Std-win10_64-vs16.zip -DestinationPath ${{ runner.temp }}
           msiexec.exe /i "${{ runner.temp }}\hdf\HDF5-1.12.1-win64.msi" /qn INSTALL_ROOT=${{ runner.temp }}\hdf5-1.12.1-Std-win10_64-vs16
-        shell: pwsh
       - name: Minizip install
         run: |
           git clone https://github.com/F2I-Consulting/Minizip.git ${{ runner.temp }}/Minizip
