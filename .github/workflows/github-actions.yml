@@ -39,9 +39,9 @@ jobs:
           cmake --build . -j2
           cmake --install .
       - name: Add msbuild to PATH
-          uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v1.1
       - name: Build the C# example
-          run: msbuild ${{ github.workspace }}/cs/example/example.sln -t:rebuild -verbosity:diag -property:Configuration=Release
+        run: msbuild ${{ github.workspace }}/cs/example/example.sln -t:rebuild -verbosity:diag -property:Configuration=Release
       - name: Copy hdf5 dll
         run: |
           Copy-Item ${{RUNNER_TEMP}}\hdf5-1.12.1-Std-win10_64-vs16\bin\hdf5.dll -Destination .\Release

@@ -1,3 +1,4 @@
+trigger: none
 jobs:
   - job:
     displayName: Windows VS2019 with HDF5 1.12.0
