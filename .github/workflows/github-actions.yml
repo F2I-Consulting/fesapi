@@ -7,16 +7,16 @@ jobs:
       - uses: actions/checkout@v2
       - name: HDF5 install
         run: |
-          Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.1/bin/windows/hdf5-1.12.1-Std-win10_64-vs16.zip -OutFile ${{ runner.temp }}\hdf5-1.12.1-Std-win10_64-vs16.zip
-          Expand-Archive ${{ runner.temp }}\hdf5-1.12.1-Std-win10_64-vs16.zip -DestinationPath ${{ runner.temp }}
-          msiexec.exe /i "${{ runner.temp }}\hdf\HDF5-1.12.1-win64.msi" /qn INSTALL_ROOT=${{ runner.temp }}\hdf5-1.12.1-Std-win10_64-vs16
+          Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.0/bin/hdf5-1.12.0-Std-win10_64-vs16.zip -OutFile ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16.zip
+          Expand-Archive ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16.zip -DestinationPath ${{ runner.temp }}
+          msiexec.exe /i "${{ runner.temp }}\hdf\HDF5-1.12.0-win64.msi" /qn INSTALL_ROOT=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16
       - name: Minizip install
         run: |
           git clone https://github.com/F2I-Consulting/Minizip.git ${{ runner.temp }}/Minizip
           cd ${{ runner.temp }}
           mkdir minizip-build
           cd minizip-build
-          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DZLIB_INCLUDE_DIR=${{ runner.temp }}/hdf5-1.12.1-Std-win10_64-vs16/include -DZLIB_LIBRARY_RELEASE=${{ runner.temp }}/hdf5-1.12.1-Std-win10_64-vs16/lib/hdf5.lib -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/minizip-install ${{ runner.temp }}/Minizip
+          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DZLIB_INCLUDE_DIR=${{ runner.temp }}/hdf5-1.12.0-Std-win10_64-vs16/include -DZLIB_LIBRARY_RELEASE=${{ runner.temp }}/hdf5-1.12.0-Std-win10_64-vs16/lib/hdf5.lib -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/minizip-install ${{ runner.temp }}/Minizip
           cmake --build . -j2
           cmake --install .
       - name: Boost install
@@ -34,7 +34,7 @@ jobs:
           cd ${{ github.workspace }}/..
           mkdir build
           cd build
-          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE -DHDF5_C_INCLUDE_DIR=${{ runner.temp }}\hdf5-1.12.1-Std-win10_64-vs16/include -DHDF5_C_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.1-Std-win10_64-vs16/lib/hdf5.lib -DMINIZIP_INCLUDE_DIR=${{ runner.temp }}/minizip-install/include -DMINIZIP_LIBRARY_RELEASE=${{ runner.temp }}/minizip-install/lib/minizip.lib -DZLIB_INCLUDE_DIR=${{ runner.temp }}\hdf5-1.12.1-Std-win10_64-vs16/include -DZLIB_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.1-Std-win10_64-vs16/lib/zlib.lib -DSZIP_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.1-Std-win10_64-vs16/lib/szip.lib -DBoost_INCLUDE_DIR=${{ runner.temp }}\boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.0.2/swig.exe ${{ github.workspace }}
+          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE -DHDF5_C_INCLUDE_DIR=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/include -DHDF5_C_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/hdf5.lib -DMINIZIP_INCLUDE_DIR=${{ runner.temp }}/minizip-install/include -DMINIZIP_LIBRARY_RELEASE=${{ runner.temp }}/minizip-install/lib/minizip.lib -DZLIB_INCLUDE_DIR=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/include -DZLIB_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/zlib.lib -DSZIP_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/szip.lib -DBoost_INCLUDE_DIR=${{ runner.temp }}\boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.0.2/swig.exe ${{ github.workspace }}
           cmake --build . -j2
           cmake --install .
       - name: Add msbuild to PATH
@@ -43,8 +43,8 @@ jobs:
         run: msbuild ${{ github.workspace }}/cs/example/example.sln -t:rebuild -verbosity:diag -property:Configuration=Release
       - name: Copy hdf5 dll
         run: |
-          Copy-Item ${{ runner.temp }}\hdf5-1.12.1-Std-win10_64-vs16\bin\hdf5.dll -Destination .\Release
-          Copy-Item ${{ runner.temp }}\hdf5-1.12.1-Std-win10_64-vs16\bin\zlib.dll -Destination .\Release
+          Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\hdf5.dll -Destination .\Release
+          Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\zlib.dll -Destination .\Release
         shell: pwsh
       - name: Run Cpp example
         run: |
