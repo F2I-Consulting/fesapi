@@ -16,27 +16,25 @@ jobs:
           cd ${{ runner.temp }}
           mkdir minizip-build
           cd minizip-build
-          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DCMAKE_BUILD_TYPE=Release -DZLIB_INCLUDE_DIR=${{ runner.temp }}/hdf5-1.12.0-Std-win10_64-vs16/include -DZLIB_LIBRARY_RELEASE=${{ runner.temp }}/hdf5-1.12.0-Std-win10_64-vs16/lib/hdf5.lib -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/minizip-install ${{ runner.temp }}/Minizip
-          cmake --build . -j2
-          cmake --install .
+          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DZLIB_INCLUDE_DIR=${{ runner.temp }}/hdf5-1.12.0-Std-win10_64-vs16/include -DZLIB_LIBRARY_RELEASE=${{ runner.temp }}/hdf5-1.12.0-Std-win10_64-vs16/lib/hdf5.lib -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/minizip-install ${{ runner.temp }}/Minizip
+          cmake --build . --config Release -j2
+          cmake --build . --config Release --target INSTALL
       - name: Boost install
         run: |
           (New-Object System.Net.WebClient).DownloadFile("https://sourceforge.net/projects/boost/files/boost-binaries/1.78.0//boost_1_78_0-msvc-14.2-64.exe", "${{ runner.temp }}\boost.exe")
           Start-Process -Wait -FilePath "${{ runner.temp }}\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=${{ runner.temp }}\boost-install"
-        shell: pwsh
       - name: Swig install
         run: |
           (New-Object System.Net.WebClient).DownloadFile("http://prdownloads.sourceforge.net/swig/swigwin-4.0.2.zip", "${{ runner.temp }}\swigwin-4.0.2.zip")
           7z x ${{ runner.temp }}\swigwin-4.0.2.zip
-        shell: pwsh
       - name: CMake build and install
         run: |
           cd ${{ github.workspace }}/..
           mkdir build
           cd build
           cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DCMAKE_BUILD_TYPE=Release -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE -DHDF5_C_INCLUDE_DIR=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/include -DHDF5_C_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/hdf5.lib -DMINIZIP_INCLUDE_DIR=${{ runner.temp }}/minizip-install/include -DMINIZIP_LIBRARY_RELEASE=${{ runner.temp }}/minizip-install/lib/minizip.lib -DZLIB_INCLUDE_DIR=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/include -DZLIB_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/zlib.lib -DSZIP_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/szip.lib -DBoost_INCLUDE_DIR=${{ runner.temp }}\boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.0.2/swig.exe ${{ github.workspace }}
-          cmake --build . -j2
-          cmake --install .
+          cmake --build . --config Release -j2
+          cmake --build . --config Release --target INSTALL
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
       - name: Build the C# example
@@ -45,14 +43,12 @@ jobs:
         run: |
           Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\hdf5.dll -Destination .\Release
           Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\zlib.dll -Destination .\Release
-        shell: pwsh
       - name: Run Cpp example
         run: |
           .\Release\example.exe
       - name: Copy all dlls for C#
         run: |
           Copy-Item .\Release\*.dll -Destination ${{ github.workspace }}\cs\example\bin\x64\Release
-        shell: pwsh
       - name: Run C# example
         run: |
           ${{ github.workspace }}\cs\example\bin\x64\Release\example.exe
