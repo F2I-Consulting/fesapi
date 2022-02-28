@@ -56,7 +56,6 @@ jobs:
       - name: Run C# example
         run: |
           ${{ github.workspace }}\cs\example\bin\x64\Release\example.exe
-  ubuntu-20-java8:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
