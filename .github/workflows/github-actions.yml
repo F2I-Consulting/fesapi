@@ -26,13 +26,13 @@ jobs:
       - name: Swig install
         run: |
           (New-Object System.Net.WebClient).DownloadFile("http://prdownloads.sourceforge.net/swig/swigwin-4.0.2.zip", "${{ runner.temp }}\swigwin-4.0.2.zip")
-          7z x ${{ runner.temp }}\swigwin-4.0.2.zip
+          7z x ${{ runner.temp }}\swigwin-4.0.2.zip -o${{ runner.temp }}
       - name: CMake build and install
         run: |
           cd ${{ github.workspace }}/..
           mkdir build
           cd build
-          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DCMAKE_BUILD_TYPE=Release -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE -DHDF5_C_INCLUDE_DIR=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/include -DHDF5_C_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/hdf5.lib -DMINIZIP_INCLUDE_DIR=${{ runner.temp }}/minizip-install/include -DMINIZIP_LIBRARY_RELEASE=${{ runner.temp }}/minizip-install/lib/minizip.lib -DZLIB_INCLUDE_DIR=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/include -DZLIB_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/zlib.lib -DSZIP_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/szip.lib -DBoost_INCLUDE_DIR=${{ runner.temp }}\boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.0.2/swig.exe ${{ github.workspace }}
+          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE -DHDF5_C_INCLUDE_DIR=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/include -DHDF5_C_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/hdf5.lib -DMINIZIP_INCLUDE_DIR=${{ runner.temp }}/minizip-install/include -DMINIZIP_LIBRARY_RELEASE=${{ runner.temp }}/minizip-install/lib/minizip.lib -DZLIB_INCLUDE_DIR=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/include -DZLIB_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/zlib.lib -DSZIP_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/szip.lib -DBoost_INCLUDE_DIR=${{ runner.temp }}\boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.0.2/swig.exe ${{ github.workspace }}
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: Add msbuild to PATH
