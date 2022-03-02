@@ -37,18 +37,20 @@ jobs:
           cmake --build . --config Release --target INSTALL
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
+        with:
+          msbuild-architecture: x64
       - name: Build the C# example
         run: msbuild ${{ github.workspace }}/cs/example/example.sln -t:rebuild -verbosity:diag -property:Configuration=Release
       - name: Copy hdf5 dll
         run: |
-          Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\hdf5.dll -Destination .\Release
-          Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\zlib.dll -Destination .\Release
+          Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\hdf5.dll -Destination ${{ github.workspace }}\..\build\Release
+          Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\zlib.dll -Destination ${{ github.workspace }}\..\build\Release
       - name: Run Cpp example
         run: |
-          .\Release\example.exe
+          ${{ github.workspace }}\..\build\Release\example.exe
       - name: Copy all dlls for C#
         run: |
-          Copy-Item .\Release\*.dll -Destination ${{ github.workspace }}\cs\example\bin\x64\Release
+          Copy-Item ${{ github.workspace }}\..\build\Release\*.dll -Destination ${{ github.workspace }}\cs\example\bin\x64\Release
       - name: Run C# example
         run: |
           ${{ github.workspace }}\cs\example\bin\x64\Release\example.exe
