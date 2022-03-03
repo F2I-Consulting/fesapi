@@ -40,7 +40,7 @@ jobs:
         with:
           msbuild-architecture: x64
       - name: Build the C# example
-        run: msbuild ${{ github.workspace }}/cs/example/example.sln -t:rebuild -verbosity:diag -property:Configuration=Release
+        run: msbuild ${{ github.workspace }}/cs/example/example.sln -t:rebuild -verbosity:diag -property:Configuration=Release;Platform=x64
       - name: Copy hdf5 dll
         run: |
           Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\hdf5.dll -Destination ${{ github.workspace }}\..\build\Release
