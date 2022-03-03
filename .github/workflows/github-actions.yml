@@ -50,7 +50,7 @@ jobs:
           ${{ github.workspace }}\..\build\Release\example.exe
       - name: Copy all dlls for C#
         run: |
-          Copy-Item ${{ github.workspace }}\..\build\Release\*.dll -Destination ${{ github.workspace }}\cs\example\bin\x64\Release
+          Copy-Item ${{ github.workspace }}\..\build\Release\*.dll -Destination ${{ github.workspace }}\cs\example\bin\Release
       - name: Run C# example
         run: |
-          ${{ github.workspace }}\cs\example\bin\x64\Release\example.exe
+          ${{ github.workspace }}\cs\example\bin\Release\example.exe
