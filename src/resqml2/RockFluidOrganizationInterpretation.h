@@ -136,6 +136,6 @@ namespace RESQML2_NS
 		RockFluidOrganizationInterpretation(gsoap_eml2_3::_resqml22__RockFluidOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
 
 	private:
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 	};
 }

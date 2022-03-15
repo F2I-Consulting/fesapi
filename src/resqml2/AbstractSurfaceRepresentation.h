@@ -119,6 +119,6 @@ namespace RESQML2_NS
 		AbstractSurfaceRepresentation(gsoap_eml2_3::resqml22__AbstractSurfaceRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
 
 		/** Loads target relationships */
-		virtual void loadTargetRelationships();
+		virtual void loadTargetRelationships() override;
 	};
 }

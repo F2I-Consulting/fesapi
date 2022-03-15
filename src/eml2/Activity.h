@@ -392,6 +392,6 @@ namespace EML2_NS
 
 	protected:
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() override;
 	};
 }

@@ -106,6 +106,6 @@ namespace RESQML2_0_1_NS
 
 	private:
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 	};
 }

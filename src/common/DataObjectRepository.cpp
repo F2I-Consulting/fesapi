@@ -524,7 +524,13 @@ void DataObjectRepository::updateAllRelationships()
 	std::for_each(forwardRels.begin(), forwardRels.end(), clearVectorOfMapEntry);
 	std::for_each(backwardRels.begin(), backwardRels.end(), clearVectorOfMapEntry);
 	for (size_t nonPartialObjIndex = 0; nonPartialObjIndex < nonPartialObjects.size(); ++nonPartialObjIndex) {
-		nonPartialObjects[nonPartialObjIndex]->loadTargetRelationships();
+		try {
+			nonPartialObjects[nonPartialObjIndex]->loadTargetRelationships();
+		}
+		catch (const std::exception& ex) {
+			addWarning("The dataobject UUID=\"" + nonPartialObjects[nonPartialObjIndex]->getUuid() + "\" has got a relationship towards an unrecognized datatype, it will be considered as a partial (i.e empty) dataobject : " + ex.what());
+			nonPartialObjects[nonPartialObjIndex]->changeToPartialObject();
+		}
 	}
 }
 
@@ -648,7 +654,13 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 				(*same)->setUriSource(proxy->getUriSource());
 				delete proxy;
 				if (!(*same)->isPartial()) {
-					(*same)->loadTargetRelationships();
+					try {
+						(*same)->loadTargetRelationships();
+					}
+					catch (const std::exception& ex) {
+						addWarning("The dataobject UUID=\"" + (*same)->getUuid() + "\" has got a relationship towards an unrecognized datatype, it will be considered as a partial (i.e empty) dataobject : " + ex.what());
+						(*same)->changeToPartialObject();
+					}
 				}
 				return *same;
 			}
@@ -656,7 +668,13 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 	}
 
 	if (!proxy->isPartial()) {
-		proxy->loadTargetRelationships();
+		try {
+			proxy->loadTargetRelationships();
+		}
+		catch (const std::exception& ex) {
+			addWarning("The dataobject UUID=\"" + proxy->getUuid() + "\" has got a relationship towards an unrecognized datatype, it will be considered as a partial (i.e empty) dataobject : " + ex.what());
+			proxy->changeToPartialObject();
+		}
 	}
 	return proxy;
 }
@@ -976,7 +994,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PropertyKind)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::PropertySet)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::RepresentationSetRepresentation)
-		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::RockFluidOrganizationInterpretation)
+		// Special case below because its XML tag is StratigraphicOccurrenceInterpretation
+		else if (dataType.compare("RockFluidOrganizationInterpretation") == 0) {
+			return createPartial<RESQML2_0_1_NS::RockFluidOrganizationInterpretation>(uuid, title, version);
+		}
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::RockFluidUnitFeature)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::RockFluidUnitInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation)

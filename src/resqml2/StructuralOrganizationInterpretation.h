@@ -293,6 +293,6 @@ namespace RESQML2_NS
 		StructuralOrganizationInterpretation(gsoap_eml2_3::_resqml22__StructuralOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
 		
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 	};
 }

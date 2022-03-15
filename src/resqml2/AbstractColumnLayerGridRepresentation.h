@@ -139,7 +139,7 @@ namespace RESQML2_NS
 		*/
 		AbstractColumnLayerGridRepresentation(bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(withTruncatedPillars) {}
 
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

@@ -25,9 +25,6 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* RockFluidOrganizationInterpretation::XML_TAG = "StratigraphicOccurrenceInterpretation";
-const char* RockFluidOrganizationInterpretation::XML_NS = "resqml20";
-
 RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title)
 {
 	if (orgFeat == nullptr) {
@@ -38,7 +35,7 @@ RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(RESQML2
 		throw invalid_argument("The kind of the v2.0.1 organization feature is not a fluid organization.");
 	}
 
-	// it is not a bug to create a strati occurence instead of a reock fluid org : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
+	// it is not a bug to create a strati occurence instead of a rock fluid org : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStratigraphicOccurrenceInterpretation(orgFeat->getGsoapContext());
 
 	initMandatoryMetadata();

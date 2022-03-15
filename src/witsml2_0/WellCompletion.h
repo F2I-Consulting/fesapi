@@ -102,7 +102,7 @@ namespace WITSML2_0_NS
 		/**
 		* Resolve all relationships of the object in the repository.
 		*/
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

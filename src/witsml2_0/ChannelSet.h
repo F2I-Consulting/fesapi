@@ -162,7 +162,7 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 		/** Loads target relationships */
-		void loadTargetRelationships();
+		void loadTargetRelationships() final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

@@ -700,6 +700,11 @@ namespace COMMON_NS
 			return slashPos != std::string::npos ? uriSource_.substr(0, slashPos + 1) : "";
 		}
 		
+		/** Transform a non partial object into a partial one
+		 *  It is particularly useful when a dataobject happens to be unvalid.
+		 */
+		void changeToPartialObject();
+		
 		/**
 		 * Reads the forward relationships of this data object and update the <tt>.rels</tt> of the
 		 * associated data repository.
@@ -855,9 +860,6 @@ namespace COMMON_NS
 
 		/** Throw an exception if the instance if partial. */
 		void cannotBePartial() const;
-
-		/** Transform a non partial object into a partial one */
-		void changeToPartialObject();
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a

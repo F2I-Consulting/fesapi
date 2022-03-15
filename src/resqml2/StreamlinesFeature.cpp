@@ -29,7 +29,5 @@ EML2_NS::TimeSeries* StreamlinesFeature::getTimeSeries() const
 
 void StreamlinesFeature::loadTargetRelationships()
 {
-	AbstractTechnicalFeature::loadTargetRelationships();
-
 	convertDorIntoRel(getTimeSeriesDor());
 }

@@ -405,7 +405,7 @@ namespace RESQML2_NS
 		AbstractProperty(gsoap_eml2_3::resqml22__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/** Loads target relationships */
-		virtual void loadTargetRelationships();
+		virtual void loadTargetRelationships() override;
 
 		/**
 		 * Gets the Energistics property kind which is associated to this intance

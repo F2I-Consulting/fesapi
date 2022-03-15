@@ -47,7 +47,7 @@ under the License.
 using namespace std;
 using namespace COMMON_NS;
 
-char AbstractObject::citationFormat[2001] = "F2I-CONSULTING:FESAPI: " FESAPI_VERSION;
+char AbstractObject::citationFormat[2001] = "F2I-CONSULTING:FESAPI:" FESAPI_VERSION;
 
 void AbstractObject::cannotBePartial() const
 {
@@ -70,6 +70,12 @@ void AbstractObject::changeToPartialObject()
 	partialObject->UUID = getUuid();
 	partialObject->Title = getTitle();
 	partialObject->ContentType = getContentType();
+
+	gsoapProxy2_0_1 = nullptr;
+	gsoapProxy2_1 = nullptr;
+	gsoapProxy2_2 = nullptr;
+	gsoapProxy2_3 = nullptr;
+	gsoapProxyTraj1_4 = nullptr;
 }
 
 soap* AbstractObject::getGsoapContext() const
@@ -590,14 +596,12 @@ void AbstractObject::setLastUpdate(const tm & lastUpdate)
 
 void AbstractObject::setFormat(const std::string & vendor, const std::string & applicationName, const std::string & applicationVersionNumber)
 {
-	string format = "[";
-	format += vendor;
+	string format = vendor;
 	format += ':';
 	format += applicationName;
-	format += ' ';
+	format += ':';
 	format += applicationVersionNumber;
-	format += ']';
-	if (vendor.size() + applicationName.size() + applicationVersionNumber.size() > 1996) {
+	if (vendor.size() + applicationName.size() + applicationVersionNumber.size() > 1998) {
 		throw range_error("The format cannot be more than 2000 chars long");
 	}
 
