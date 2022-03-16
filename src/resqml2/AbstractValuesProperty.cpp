@@ -970,8 +970,8 @@ void AbstractValuesProperty::setValuesOfFloatHdf5Array3dOfValues(
 	const uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
 	setValuesOfFloatHdf5ArrayOfValues(
 		values,
-		copyToHdf5Datatype(valueCountPerDimension, 3).data(),
-		copyToHdf5Datatype(offsetPerDimension, 3).data(),
+		valueCountPerDimension,
+		offsetPerDimension,
 		3,
 		proxy,
 		patchIndex
@@ -1102,8 +1102,8 @@ void AbstractValuesProperty::getFloatValuesOf3dPatch(
 	getFloatValuesOfPatch(
 		patchIndex,
 		values,
-		copyToHdf5Datatype(valueCountPerDimension, 3).data(),
-		copyToHdf5Datatype(offsetPerDimension, 3).data(),
+		valueCountPerDimension,
+		offsetPerDimension,
 		3
 	);
 }
