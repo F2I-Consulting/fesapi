@@ -179,7 +179,7 @@ namespace RESQML2_NS
 		 * 											then a default HDF proxy must be defined in the
 		 * 											repository.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackArrayOfXyzPoints(double const * xyzPoints, unsigned long long const * pointCountByDimension, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackArrayOfXyzPoints(double const * xyzPoints, uint64_t const * pointCountByDimension, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF
