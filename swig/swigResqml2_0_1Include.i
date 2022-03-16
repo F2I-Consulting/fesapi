@@ -98,6 +98,11 @@ under the License.
 
 namespace gsoap_resqml2_0_1
 {
+	enum class resqml20__TimeSetKind {
+		single_x0020time = 0,
+		equivalent_x0020times = 1,
+		not_x0020a_x0020time_x0020set = 2
+	};
 	enum class resqml20__ParameterKind {
 		dataObject = 0,
 		floatingPoint = 1,

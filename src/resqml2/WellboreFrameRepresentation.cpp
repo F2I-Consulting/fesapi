@@ -215,9 +215,8 @@ double WellboreFrameRepresentation::getMdFirstValue() const
 			}
 			std::unique_ptr<double[]> values(new double[getMdValuesCount()]);
 			hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values.get());
-			double result = values[0];
 
-			return result;
+			return values[0];
 		}
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 		{
@@ -236,9 +235,8 @@ double WellboreFrameRepresentation::getMdFirstValue() const
 			}
 			std::unique_ptr<double[]> values(new double[getMdValuesCount()]);
 			hdfProxy->readArrayNdOfDoubleValues(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values->ExternalDataArrayPart[0]->PathInExternalFile, values.get());
-			double result = values[0];
 
-			return result;
+			return values[0];
 		}
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 		{
@@ -322,10 +320,12 @@ void WellboreFrameRepresentation::getMdAsDoubleValues(double* values) const
 		}
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 		{
-			values[0] = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd)->StartValue;
-			resqml20__DoubleConstantArray* constantArray = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd)->Offset[0];
-			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
-				values[inc] = values[0] + (inc * constantArray->Value);
+			auto const* dla = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd);
+			values[0] = dla->StartValue;
+			resqml20__DoubleConstantArray* constantArray = dla->Offset[0];
+			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc) {
+				values[inc] = values[inc - 1] + constantArray->Value;
+			}
 		}
 		else {
 			throw logic_error("The array structure of MD is not supported?");
@@ -343,10 +343,12 @@ void WellboreFrameRepresentation::getMdAsDoubleValues(double* values) const
 		}
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 		{
-			values[0] = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd)->StartValue;
-			eml23__FloatingPointConstantArray* constantArray = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd)->Offset[0];
-			for (int64_t inc = 1; inc <= constantArray->Count; ++inc)
-				values[inc] = values[0] + (inc * constantArray->Value);
+			auto const* fla = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd);
+			values[0] = fla->StartValue;
+			eml23__FloatingPointConstantArray* constantArray = fla->Offset[0];
+			for (int64_t inc = 1; inc <= constantArray->Count; ++inc) {
+				values[inc] = values[inc - 1] + constantArray->Value;
+			}
 		}
 		else {
 			throw logic_error("The array structure of MD is not supported?");
@@ -372,10 +374,11 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 		}
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 		{
-			values[0] = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd)->StartValue;
-			resqml20__DoubleConstantArray* constantArray = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd)->Offset[0];
+			auto const* dla = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd);
+			values[0] = dla->StartValue;
+			resqml20__DoubleConstantArray* constantArray = dla->Offset[0];
 			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc) {
-				values[inc] = values[0] + (inc * constantArray->Value);
+				values[inc] = values[inc - 1] + constantArray->Value;
 			}
 		}
 		else {
@@ -394,10 +397,12 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 		}
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 		{
-			values[0] = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd)->StartValue;
-			eml23__FloatingPointConstantArray* constantArray = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd)->Offset[0];
-			for (int64_t inc = 1; inc <= constantArray->Count; ++inc)
-				values[inc] = values[0] + (inc * constantArray->Value);
+			auto const* fla = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd);
+			values[0] = fla->StartValue;
+			eml23__FloatingPointConstantArray* constantArray = fla->Offset[0];
+			for (int64_t inc = 1; inc <= constantArray->Count; ++inc) {
+				values[inc] = values[inc - 1] + constantArray->Value;
+			}
 		}
 		else {
 			throw logic_error("The array structure of MD is not supported?");
