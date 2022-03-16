@@ -28,8 +28,6 @@ using namespace std;
 using namespace EML2_3_NS;
 using namespace gsoap_eml2_3;
 
-const char* ColumnBasedTable::XML_TAG = "ColumnBasedTable";
-
 ColumnBasedTable::ColumnBasedTable(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {
 	if (repo == nullptr) {

@@ -348,10 +348,7 @@ namespace RESQML2_NS
 		 * 							count of this array must be equal to
 		 * 							<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT void getCrosslinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
-		
-		/** The standard XML tag without XML namespace for serializing this data object */
-		static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT void getCrosslinesOfPointsOfPatch(uint64_t patchIndex, double * values) const;
 
 		virtual void loadTargetRelationships() override;
 

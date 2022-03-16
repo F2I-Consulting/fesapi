@@ -186,7 +186,7 @@ namespace EML2_3_NS
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "LocalEngineering2dCrs";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 

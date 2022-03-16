@@ -27,8 +27,6 @@ using namespace std;
 using namespace EML2_3_NS;
 using namespace gsoap_eml2_3;
 
-const char* LocalEngineering2dCrs::XML_TAG = "LocalEngineering2dCrs";
-
 void LocalEngineering2dCrs::init(eml23__LocalEngineering2dCrs* local2dCrs, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, gsoap_eml2_3::eml23__LengthUom projectedUom,
 	double azimuth, gsoap_eml2_3::eml23__PlaneAngleUom azimuthUom, eml23__NorthReferenceKind azimuthReference,

@@ -37,8 +37,6 @@ under the License.
 using namespace RESQML2_NS;
 using namespace std;
 
-const char* AbstractRepresentation::XML_TAG = "AbstractRepresentation";
-
 COMMON_NS::DataObjectReference AbstractRepresentation::getHdfProxyDorFromPointGeometryPatch(gsoap_resqml2_0_1::resqml20__PointGeometry* patch) const
 {
 	if (patch != nullptr) {

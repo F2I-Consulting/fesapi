@@ -24,8 +24,6 @@ using namespace std;
 using namespace EML2_3_NS;
 using namespace gsoap_eml2_3;
 
-const char* VerticalCrs::XML_TAG = "VerticalCrs";
-
 void VerticalCrs::init(eml23__VerticalCrs* verticalCrs, const std::string& guid, const std::string& title,
 	gsoap_eml2_3::eml23__LengthUom verticalUom,
 	bool isUpOriented)

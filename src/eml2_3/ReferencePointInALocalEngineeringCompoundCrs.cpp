@@ -28,8 +28,6 @@ using namespace std;
 using namespace EML2_3_NS;
 using namespace gsoap_eml2_3;
 
-const char* ReferencePointInALocalEngineeringCompoundCrs::XML_TAG = "ReferencePointInALocalEngineeringCompoundCrs";
-
 ReferencePointInALocalEngineeringCompoundCrs::ReferencePointInALocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title,
 	EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__WellboreDatumReference originKind,
 	double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3)
