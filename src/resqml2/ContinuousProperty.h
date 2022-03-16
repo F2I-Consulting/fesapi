@@ -174,7 +174,7 @@ namespace RESQML2_NS
 		 * 										maximumValue and @p minimumValue then both minimum and
 		 *										maximum values will be computed from the values.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions,
+		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5ArrayOfValues(double const * values, uint64_t const * numValues, unsigned int numArrayDimensions,
 			double * minimumValue, double * maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 		using AbstractValuesProperty::pushBackDoubleHdf5ArrayOfValues;
 
@@ -291,7 +291,7 @@ namespace RESQML2_NS
 		 * 										repository.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(
-			unsigned long long const * numValues,
+			uint64_t const * numValues,
 			unsigned int numArrayDimensions,
 			float * minimumValue, float * maximumValue,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr
@@ -418,8 +418,8 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5ArrayOfValues(
 			float const * values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
@@ -479,7 +479,7 @@ namespace RESQML2_NS
 		template <class T>
 		void setPropertyMinMax(
 			T const * values, 
-			unsigned long long const * numValuesInEachDimension,
+			uint64_t const * numValuesInEachDimension,
 			unsigned int numArrayDimensions,
 			T * minimumValue = nullptr, T * maximumValue = nullptr)
 		{
