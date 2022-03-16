@@ -881,8 +881,8 @@ void AbstractValuesProperty::getIntValuesOf3dPatch(
 	getIntValuesOfPatch(
 		patchIndex,
 		values,
-		copyToHdf5Datatype(valueCountPerDimension, 3).data(),
-		copyToHdf5Datatype(offsetPerDimension, 3).data(),
+		valueCountPerDimension,
+		offsetPerDimension,
 		3
 	);
 }

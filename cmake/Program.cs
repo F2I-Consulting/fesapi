@@ -15,12 +15,12 @@ namespace Example
 		private static void serializeIjkGrid(DataObjectRepository repo)
         {
             AbstractIjkGridRepresentation ijkGrid = repo.createPartialIjkGridRepresentation("6ac6c8c8-68c4-4c78-bae9-61b5832a8f53", "partial IJK Grid");
-            F2iConsulting.Fesapi.${FESAPI_EML2_NS}.PropertyKind propertyKind = repo.createPartialPropertyKind("", "Partial prop kind");
+            F2iConsulting.Fesapi.${FESAPI_EML2_NS}.PropertyKind propertyKind = (F2iConsulting.Fesapi.eml2.PropertyKind) repo.createPartial("", "Partial prop kind", "application/x-resqml+xml;version=2.0;type=obj_PropertyKind");
 
             // creating the continuous Property with computing min max
             ContinuousProperty propertyCompute = repo.createContinuousProperty(
                 ijkGrid, "9d0a717f-2cd3-4d43-9cbf-3484105ed384", "slab prop compute min max",
-                resqml22__IndexableElement.cells,
+                eml23__IndexableElement.cells,
                 resqml20__ResqmlUom.m,
                 propertyKind);
             propertyCompute.pushBackFloatHdf5Array3dOfValues(2, 3, 4);
@@ -39,7 +39,7 @@ namespace Example
             kLayerValues.setitem(4, .04f);
             kLayerValues.setitem(5, .05f);
             propertyCompute.setValuesOfFloatHdf5Array3dOfValues(kLayerValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
-                offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
+                offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, true);
             kLayerValues.setitem(0, .10f);
             kLayerValues.setitem(1, .11f);
             kLayerValues.setitem(2, .12f);
@@ -48,7 +48,7 @@ namespace Example
             kLayerValues.setitem(5, .15f);
             ++offsetInSlowestDim;
             propertyCompute.setValuesOfFloatHdf5Array3dOfValues(kLayerValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
-                offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
+                offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, true);
             kLayerValues.setitem(0, .20f);
             kLayerValues.setitem(1, .21f);
             kLayerValues.setitem(2, .22f);
@@ -57,7 +57,7 @@ namespace Example
             kLayerValues.setitem(5, .25f);
             ++offsetInSlowestDim;
             propertyCompute.setValuesOfFloatHdf5Array3dOfValues(kLayerValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
-                offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
+                offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, true);
             kLayerValues.setitem(0, .30f);
             kLayerValues.setitem(1, .31f);
             kLayerValues.setitem(2, .32f);
@@ -66,13 +66,13 @@ namespace Example
             kLayerValues.setitem(5, .35f);
             ++offsetInSlowestDim;
             propertyCompute.setValuesOfFloatHdf5Array3dOfValues(kLayerValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
-                offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
+                offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, true);
             GC.KeepAlive(kLayerValues);
 
             // creating the discrete Property with computing min max
             DiscreteProperty discretePropertyCompute = repo.createDiscreteProperty(
                 ijkGrid, "50935c31-93ec-4084-8891-6e9f130c49c3", "testing discrete prop",
-                resqml22__IndexableElement.cells,
+                eml23__IndexableElement.cells,
                 resqml20__ResqmlPropertyKind.index);
             discretePropertyCompute.pushBackLongHdf5Array3dOfValues(2, 3, 4, 9999);
 
@@ -121,7 +121,7 @@ namespace Example
             EpcDocument epc_file = new EpcDocument("TestingPackageCs.epc");
             using (DataObjectRepository repo = new DataObjectRepository())
             {
-                LocalDepth3dCrs crs = repo.createLocalDepth3dCrs(Guid.NewGuid().ToString(), "UTF8 Crs title : éàç : олег1", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.m, 5215, eml20__LengthUom.m, "Unknown", false);
+                AbstractLocal3dCrs crs = repo.createLocalDepth3dCrs(Guid.NewGuid().ToString(), "UTF8 Crs title : éàç : олег1", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.m, 5215, eml20__LengthUom.m, "Unknown", false);
                 repo.setDefaultCrs(crs);
                 System.Console.WriteLine("Serialize : CRS title is " + crs.getTitle());
                 Well well = repo.createWell("1425632e-3c22-4845-b431-ecd36da0671e", "Well");
@@ -141,7 +141,7 @@ namespace Example
                 WellboreInterpretation wellbore1Interp1 = repo.createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
 
                 // Representation
-                F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.MdDatum mdInfo = repo.createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", repo.getDefaultCrs(), eml23__WellboreDatumReference.mean_x0020sea_x0020level, 275, 75, 0);
+                ReferencePointInALocalEngineeringCompoundCrs mdInfo = repo.createReferencePointInALocalEngineeringCompoundCrs("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", repo.getDefaultCrs(), eml23__WellboreDatumReference.mean_x0020sea_x0020level, 275, 75, 0);
 
                 //Geometry	
                 WellboreTrajectoryRepresentation w1i1TrajRep = repo.createWellboreTrajectoryRepresentation(wellbore1Interp1, "acd2cdcf-bb5d-48da-bd0e-9aeff3e52180", "Wellbore1 Interp1 TrajRep", mdInfo);
@@ -195,7 +195,7 @@ namespace Example
                 w1i1RegularFrameRep.setMdValues(0, 200, 6);
 ${COMMENT_START}
                 // WellboreFeature seismic frame
-                LocalTime3dCrs localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, eml20__LengthUom.m, 23031, eml20__TimeUom.s, eml20__LengthUom.m, "Unknown", false);
+                AbstractLocal3dCrs localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, eml20__LengthUom.m, 23031, eml20__TimeUom.s, eml20__LengthUom.m, "Unknown", false);
 
                 SeismicWellboreFrameRepresentation w1i1SeismicFrameRep = repo.createSeismicWellboreFrameRepresentation(
                     wellbore1Interp1, "dcbeea2e-8327-4c5b-97e3-bdced0680de5", "Wellbore1 Interp1 SeismicFrameRep",

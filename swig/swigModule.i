@@ -1033,6 +1033,11 @@ import com.f2i_consulting.fesapi.*;
 		std::vector<std::string> getUuids() const;
 
 		/**
+		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title + a content type + a version
+		*/
+		COMMON_NS::AbstractObject* createPartial(const std::string & uuid, const std::string & title, const std::string & contentType, const std::string & version = "");
+
+		/**
 		 * Creates a partial object in this repository based on a data object reference.
 		 *
 		 * @exception	std::invalid_argument	If no partial object can be created from @p dor.

@@ -755,7 +755,7 @@ namespace RESQML2_NS
 		 * 										then a default HDF proxy must be defined in the
 		 * 										repository.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5ArrayOfValues(double const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Adds a 1d array of explicit float values to the property values.
@@ -783,7 +783,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails	pushBackDoubleHdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(float const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF
@@ -851,7 +851,7 @@ namespace RESQML2_NS
 		 * 										repository.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(
-			unsigned long long const * numValues,
+			uint64_t const * numValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr
 		);
@@ -962,8 +962,8 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5ArrayOfValues(
 			float const * values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()
@@ -990,8 +990,8 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(
 			uint64_t patchIndex,
 			float* values,
-			unsigned long long const * numValuesInEachDimension,
-			unsigned long long const * offsetInEachDimension,
+			uint64_t const * numValuesInEachDimension,
+			uint64_t const * offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 

@@ -4509,13 +4509,11 @@ namespace RESQML2_NS
 		 * 											(mainly J dimension).
 		 * @param 		  	offsetInSlowestDim	  	The offset value for writing in the slowest dimension
 		 * 											(mainly K dimension).
-		 * @param [in,out]	proxy				  	The HDF proxy where to write the property
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
-		 * 											, a default HDF proxy must be defined
+		 * 											(default value), a default HDF proxy must be defined
 		 * 											into the data object repository.
-		 * @param 		  	patchIndex			  	Zero-based index of the patch where to
-		 * 											write the property values.
 		 */
 		void setValuesOfLongHdf5Array3dOfValues(
 			int64_t* values,
@@ -4525,8 +4523,7 @@ namespace RESQML2_NS
 			uint64_t offsetInFastestDim,
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
-			EML2_NS::AbstractHdfProxy* proxy,
-			uint64_t patchIndex);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Adds an nd array of explicit long 64 bits values into to the property values. Since this
@@ -5102,6 +5099,90 @@ namespace RESQML2_NS
 		 * @returns	The unit of measure of the values of this property as a string.
 		 */
 		std::string getUomAsString() const;
+		
+		/**
+		 * Sets some values of an existing 3d array of explicit float values of a particular patch. This
+		 * method makes use of HDF5 hyperslabbing. Since this methods only pushes back values into an
+		 * existing array, it is to be used along with pushBackFloatHdf5Array3dOfValues().
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
+		 * 										different from unsigned int maximum value.
+		 *
+		 * @param 		  	values				  	All the property values to set ordered according to
+		 * 											the topology of the representation it is based on.
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly K dimension).
+		 * @param 		  	offsetInFastestDim	  	The offset value for writing in the fastest dimension
+		 * 											(mainly I dimension).
+		 * @param 		  	offsetInMiddleDim	  	The offset value for writing in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	offsetInSlowestDim	  	The offset value for writing in the slowest dimension
+		 * 											(mainly K dimension).
+		 * @param 		  	computeMinMax		  	True if FESAPI needs to compute
+		 * 											the min and  max from the given @p values in order to
+		 * 											set them.
+		 * @param [in,out]	proxy				  	The HDF proxy where to write the property
+		 * 											values. It must be already opened for writing and
+		 * 											won't be closed in this method. If @p nullptr
+		 * 											(default), a default HDF proxy must be defined into
+		 * 											the data object repository.
+		 */
+		void setValuesOfFloatHdf5Array3dOfValues(
+			float const * values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			bool computeMinMax,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr
+		);
+		using AbstractValuesProperty::setValuesOfFloatHdf5Array3dOfValues;
+
+		/**
+		 * Set some values of an existing 3d array of explicit float values of a particular patch.  This
+		 * method makes use of HDF5 hyperslabbing. This method is to be used along with one of the
+		 * pushBackFloatHdf5ArrayOfValues() methods which do not write any value.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
+		 * 										different from unsigned int maximum value.
+		 *
+		 * @param 		  	values			  	All the property values to set ordered according to the
+		 * 										topology of the representation it is based on.
+		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
+		 * 										array to write. It is ordered from slowest dimension to
+		 * 										fastest dimension.
+		 * @param 		  	offsetValues	  	The offset values ordered by dimension of the array to
+		 * 										write. It is ordered from slowest dimension to fastest
+		 * 										dimension.
+		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
+		 * @param 		  	computeMinMax	  	True if FESAPI needs to compute the
+		 * 										min and  max from the given @p values in order to set
+		 * 										them.
+		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * 										values. It must be already opened for writing and won't
+		 * 										be closed in this method. If @p nullptr (default), a
+		 * 										default HDF proxy must be defined into the data object
+		 * 										repository.
+		 */
+		void setValuesOfFloatHdf5ArrayOfValues(
+			float const * values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions,
+			bool computeMinMax,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr
+		);
+		using AbstractValuesProperty::setValuesOfFloatHdf5ArrayOfValues;
 	};
 	
 #ifdef SWIGPYTHON

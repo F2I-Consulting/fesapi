@@ -42,6 +42,40 @@ namespace std {
 	%template(GraphicalInformationSetVector) vector<EML2_3_NS::GraphicalInformationSet*>;
 }
 
+namespace gsoap_eml2_3 {
+	enum class eml23__IndexableElement {
+		cells = 0,
+		intervals_x0020from_x0020datum = 1,
+		column_x0020edges = 2,
+		columns = 3,
+		contacts = 4,
+		coordinate_x0020lines = 5,
+		edges = 6,
+		edges_x0020per_x0020column = 7,
+		enumerated_x0020elements = 8,
+		faces = 9,
+		faces_x0020per_x0020cell = 10,
+		interval_x0020edges = 11,
+		intervals = 12,
+		I0 = 13,
+		I0_x0020edges = 14,
+		J0 = 15,
+		J0_x0020edges = 16,
+		layers = 17,
+		lines = 18,
+		nodes = 19,
+		nodes_x0020per_x0020cell = 20,
+		nodes_x0020per_x0020edge = 21,
+		nodes_x0020per_x0020face = 22,
+		patches = 23,
+		pillars = 24,
+		regions = 25,
+		representation = 26,
+		subnodes = 27,
+		triangles = 28
+	};
+}
+
 namespace EML2_3_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
