@@ -4357,13 +4357,13 @@ void discretePropertyHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentatio
 	std::cout << endl << "BEGIN: IJK GRID REP (hyperslabbed and non-hyperslabbed property reading comparison)" << std::endl << std::endl;
 	std::cout.precision(17);
 
-	int* values = new int[prop->getValuesCountOfPatch(0)];
+	std::unique_ptr<int[]> values(new int[prop->getValuesCountOfPatch(0)]);
 
-	unsigned long long* numValuesInEachDimension = new unsigned long long[3];
+	uint64_t numValuesInEachDimension[3];
 	numValuesInEachDimension[0] = ijkGrid->getKCellCount();
 	numValuesInEachDimension[1] = ijkGrid->getJCellCount();
 	numValuesInEachDimension[2] = ijkGrid->getICellCount();
-	unsigned long long* offsetInEachDimension = new unsigned long long[3];
+	uint64_t offsetInEachDimension[3];
 	offsetInEachDimension[0] = 0;
 	offsetInEachDimension[1] = 0;
 	offsetInEachDimension[2] = 0;
@@ -4383,8 +4383,9 @@ void discretePropertyHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentatio
 		// non hyperslabbing
 		clockStart = clock();
 		time(&timeStart);
-		for (unsigned int n = 0; n < nbIter; ++n)
-			prop->getIntValuesOfPatch(0, values);
+		for (unsigned int n = 0; n < nbIter; ++n) {
+			prop->getIntValuesOfPatch(0, values.get());
+		}
 		clockEnd = clock();
 		time(&timeEnd);
 		nonHyperslabClockDuration = clockEnd - clockStart;
@@ -4393,16 +4394,14 @@ void discretePropertyHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentatio
 		// hyperslabbing
 		clockStart = clock();
 		time(&timeStart);
-		for (unsigned int n = 0; n < nbIter; ++n)
-			prop->getIntValuesOfPatch(0, values, numValuesInEachDimension, offsetInEachDimension, 3);
+		for (unsigned int n = 0; n < nbIter; ++n) {
+			prop->getIntValuesOfPatch(0, values.get(), numValuesInEachDimension, offsetInEachDimension, 3);
+		}
 		clockEnd = clock();
 		time(&timeEnd);
 		hyperslabClockDuration = clockEnd - clockStart;
 		hyperslabTimeDuration = difftime(timeEnd, timeStart);
 	}
-
-	delete[] numValuesInEachDimension;
-	delete[] offsetInEachDimension;
 
 	nonHyperslabClockDuration /= smoothingConstant;
 	nonHyperslabTImeDuration /= smoothingConstant;
@@ -4418,8 +4417,6 @@ void discretePropertyHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentatio
 	std::cout << "Hyperslab:     property " << ijkGrid->getTitle() << " have been read " << nbIter << " times in " << fixed << hyperslabTimeDuration << " seconds" << std::endl;
 	result = (hyperslabTimeDuration * 100) / nonHyperslabTImeDuration;
 	std::cout << "hyperslab version took " << result << " % of non hyperslab version" << std::endl;
-
-	delete[] values;
 
 	std::cout << endl << "END: IJK GRID REP (hyperslabbed and non-hyperslabbed property reading comparison)" << std::endl;
 }

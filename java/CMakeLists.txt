@@ -57,15 +57,6 @@ else (WITH_RESQML2_2)
 endif(WITH_RESQML2_2)
 configure_file(${FESAPI_ROOT_DIR}/cmake/swigJavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigJavaInclude.i) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/FesapiJavaExample.java) # Overwrite if different
-if (WITH_ETP)
-	configure_file(${FESAPI_ROOT_DIR}/cmake/EtpClientExample.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/EtpClientExample.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/EtpServerExample.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/EtpServerExample.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnClientCoreHandlers.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/MyOwnClientCoreHandlers.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnServerCoreHandlers.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/MyOwnServerCoreHandlers.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnDiscoveryProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/MyOwnDiscoveryProtocolHandlers.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnStoreProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/MyOwnStoreProtocolHandlers.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyServerInitializationParameters.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/MyServerInitializationParameters.java) # Overwrite if different
-endif ()
 
 set (SWIG_DEFINITIONS "")
 if (WITH_RESQML2_2)
