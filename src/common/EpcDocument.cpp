@@ -279,7 +279,7 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 						if (target.find("http://") == 0 || target.find("https://") == 0) {
 							repo.setHdfProxyFactory(new HdfProxyROS3Factory());
 						}
-						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
+						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType, filePath);
 						break;
 					}
 				}
@@ -295,7 +295,7 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 				}
 			}
 			else {
-				repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
+				repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType, filePath);
 			}
 		}
 	}
@@ -370,7 +370,7 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 							else {
 								repo.setHdfProxyFactory(new HdfProxyFactory());
 							}
-							wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
+							wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType, filePath);
 							static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setRelativePath(target);
 							break;
 						}

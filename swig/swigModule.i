@@ -346,7 +346,21 @@ namespace COMMON_NS
 		std::string getExtraMetadataKeyAtIndex(unsigned int index) const;
 		std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
 
+		/**
+		* Build and return an ETP1.2 URI from an Energistics dataobject.
+		* @return	The ETP1.2 URI built from the Energistics dataobject
+		*/
 		std::string buildEtp12Uri() const;
+
+		/**
+		* Set the EPC document absolute path or the ETP dataspace URI where this dataobject comes from.
+		*/
+		void setUriSource(const std::string & uriSource);
+
+		/**
+		* Get the EPC document absolute path or the ETP dataspace URI where this dataobject comes from.
+		*/
+		const std::string& getUriSource() const;
 
 		unsigned int getActivityCount() const;
 
@@ -474,11 +488,12 @@ import com.f2i_consulting.fesapi.*;
 		 * @param 	xml		   	The XML which is the serialization of the Energistics data object to add
 		 * 						or to replace.
 		 * @param 	contentOrDataType	The content or qualified data type of the Energistics dataobject to add or to replace.
+		 * @param	uriSource			The EPC document absolute path or the ETP dataspace URI where this dataobject comes from
 		 *
 		 * @returns	Null if the content type of the data object cannot be wrapped by fesapi, else a
 		 * 			pointer the added or replaced data object.
 		 */
-		COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentType);
+		COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentType, const std::string& uriSource);
 		
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)

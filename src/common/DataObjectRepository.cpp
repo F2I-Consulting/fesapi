@@ -649,6 +649,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 					(*same)->setGsoapProxy(proxy->getEml23GsoapProxy());
 				}
 #endif
+				(*same)->setUriSource(proxy->getUriSource());
 				delete proxy;
 				if (!(*same)->isPartial()) {
 					try {
@@ -676,7 +677,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 	return proxy;
 }
 
-COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const std::string & xml, const string & contentOrDataType)
+COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const std::string & xml, const string & contentOrDataType, const std::string& uriSource)
 {
 	istringstream iss(xml);
 	setGsoapStream(&iss);
@@ -754,6 +755,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 			}
 			for (auto traj : read->trajectory) {
 				wrapper = new WITSML1_4_NS::Trajectory(traj);
+				wrapper->setUriSource(uriSource);
 				addOrReplaceDataObject(wrapper, true);
 			}
 
@@ -769,6 +771,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 			delete wrapper;
 		}
 		else {
+			wrapper->setUriSource(uriSource);
 			return addOrReplaceDataObject(wrapper, true);
 		}
 	}
@@ -3785,10 +3788,11 @@ void DataObjectRepository::setHdfProxyFactory(COMMON_NS::HdfProxyFactory * facto
 
 COMMON_NS::AbstractObject* DataObjectRepository::resolvePartial(COMMON_NS::AbstractObject * partialObj)
 {
-	for (size_t i = 0; i < dataFeeders.size(); ++i) {
-		const std::string xml = dataFeeders[i]->resolvePartial(partialObj);
+	for (auto const* dataFeeder : dataFeeders) {
+		const std::string xml = dataFeeder->resolvePartial(partialObj);
 		if (!xml.empty()) {
-			return addOrReplaceGsoapProxy(xml, partialObj->getContentType());
+			// TODO : Set the URI source
+			return addOrReplaceGsoapProxy(xml, partialObj->getContentType(), "");
 		}
 	}
 

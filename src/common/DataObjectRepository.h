@@ -431,11 +431,12 @@ namespace COMMON_NS
 		 * @param 	xml		   	The XML which is the serialization of the Energistics data object to add
 		 * 						or to replace.
 		 * @param 	contentOrDataType	The content or qualified data type of the Energistics dataobject to add or to replace.
+		 * @param	uriSource			The EPC document absolute path or the ETP dataspace URI where this dataobject comes from
 		 *
 		 * @returns	Null if the content type of the data object cannot be wrapped by fesapi, else a
 		 * 			pointer the added or replaced data object.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentType);
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentType, const std::string& uriSource);
 
 		/**
 		 * Gets all the data objects which are part of this repository
