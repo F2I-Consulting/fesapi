@@ -166,6 +166,9 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, 
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
+	if (controlPointCount == 0) {
+		throw invalid_argument("The control point count cannot be 0.");
+	}
 
 	setGeometry(controlPoints, controlPointParameters[0], controlPointParameters[controlPointCount - 1], controlPointCount, lineKind, proxy, localCrs);
 	_resqml22__WellboreTrajectoryRepresentation* rep = static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3);
