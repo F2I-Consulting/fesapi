@@ -117,17 +117,17 @@ void ContinuousColorMap::setNanHsvColor(double hue, double saturation, double va
 
 	resqml22__ContinuousColorMap * const continuousColorMap = static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_3);
 
-	if (continuousColorMap->NaNColor == nullptr) {
-		continuousColorMap->NaNColor = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap);
+	if (continuousColorMap->NullColor == nullptr) {
+		continuousColorMap->NullColor = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap);
 	}
 
-	continuousColorMap->NaNColor->Hue = hue;
-	continuousColorMap->NaNColor->Saturation = saturation;
-	continuousColorMap->NaNColor->Value = value;
-	continuousColorMap->NaNColor->Alpha = alpha;
+	continuousColorMap->NullColor->Hue = hue;
+	continuousColorMap->NullColor->Saturation = saturation;
+	continuousColorMap->NullColor->Value = value;
+	continuousColorMap->NullColor->Alpha = alpha;
 	if (!colorTitle.empty()) {
-		continuousColorMap->NaNColor->Title = soap_new_std__string(gsoapProxy2_3->soap);
-		*continuousColorMap->NaNColor->Title = colorTitle;
+		continuousColorMap->NullColor->Title = soap_new_std__string(gsoapProxy2_3->soap);
+		*continuousColorMap->NullColor->Title = colorTitle;
 	}
 }
 

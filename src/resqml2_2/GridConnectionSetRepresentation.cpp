@@ -348,7 +348,7 @@ COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getInterpretatio
 
 	if (rep->ConnectionInterpretations != nullptr) {
 		if (rep->ConnectionInterpretations->FeatureInterpretation.size() > interpretationIndex) {
-			if (rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]->ContentType.find("FaultInterpretation") != string::npos) {
+			if (rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]->QualifiedType.find("FaultInterpretation") != string::npos) {
 				return COMMON_NS::DataObjectReference(rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]);
 			}
 			else {

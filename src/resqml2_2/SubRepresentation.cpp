@@ -90,7 +90,6 @@ void SubRepresentation::pushBackSubRepresentationPatch(uint64_t originIndex,
 
 	// XML
 	rep->SubRepresentationPatch.push_back(patch);
-	patch->Count = elementCountInSlowestDimension * elementCountInMiddleDimension * elementCountInFastestDimension;
 
 	eml23__IntegerLatticeArray * integerArray = soap_new_eml23__IntegerLatticeArray(gsoapProxy2_3->soap);
 	patch->Indices = integerArray;
@@ -111,7 +110,7 @@ void SubRepresentation::pushBackSubRepresentationPatch(uint64_t originIndex,
 	offset->Value = 1;
 	integerArray->Offset.push_back(offset);
 
-	patch->SupportingRepresentation.push_back(ijkGrid->newEml23Reference());
+	patch->SupportingRepresentation = ijkGrid->newEml23Reference();
 	getRepository()->addRelationship(this, ijkGrid);
 }
 
@@ -152,7 +151,6 @@ void SubRepresentation::pushBackRefToExistingDataset(uint64_t elementCount, cons
 
 	// XML
 	_resqml22__SubRepresentation* rep = getSpecializedGsoapProxy();
-	patch->Count = elementCount;
 
 	eml23__IntegerExternalArray * integerArray = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	integerArray->NullValue = nullValue;
@@ -163,7 +161,7 @@ void SubRepresentation::pushBackRefToExistingDataset(uint64_t elementCount, cons
 	integerArray->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(actualDatasetName, proxy->getElementCount(actualDatasetName), proxy));
 	patch->Indices = integerArray;
 
-	patch->SupportingRepresentation.push_back(supportingRep->newEml23Reference());
+	patch->SupportingRepresentation = supportingRep->newEml23Reference();
 	getRepository()->addRelationship(this, supportingRep);
 
 	rep->SubRepresentationPatch.push_back(patch);
@@ -181,7 +179,7 @@ resqml22__SubRepresentationPatch* SubRepresentation::getSubRepresentationPatch(u
 
 uint64_t SubRepresentation::getElementCountOfPatch(uint64_t patchIndex) const
 {
-	return getSubRepresentationPatch(patchIndex)->Count;
+	return getCountOfArray(getSubRepresentationPatch(patchIndex)->Indices);
 }
 
 bool SubRepresentation::areElementIndicesBasedOnLattice(uint64_t patchIndex) const
@@ -274,7 +272,7 @@ COMMON_NS::DataObjectReference SubRepresentation::getSupportingRepresentationOfP
 		throw out_of_range("The index \"" +std::to_string(patchIndex) + "\" of the supporting representation is out of range.");
 	}
 
-	return COMMON_NS::DataObjectReference(getSpecializedGsoapProxy()->SubRepresentationPatch[patchIndex]->SupportingRepresentation[0]);
+	return COMMON_NS::DataObjectReference(getSpecializedGsoapProxy()->SubRepresentationPatch[patchIndex]->SupportingRepresentation);
 }
 
 void SubRepresentation::loadTargetRelationships()

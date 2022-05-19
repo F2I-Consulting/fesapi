@@ -94,7 +94,7 @@ namespace RESQML2_2_NS
 		~DiscreteProperty() = default;
 
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getLookupDor() const final {
-			return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_3::resqml22__DiscreteProperty*>(gsoapProxy2_3)->Lookup);
+			return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_3::resqml22__DiscreteProperty*>(gsoapProxy2_3)->CategoryLookup);
 		}
 
 		DLL_IMPORT_OR_EXPORT int64_t getNullValue(uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) const final;

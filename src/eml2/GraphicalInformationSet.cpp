@@ -406,7 +406,7 @@ bool GraphicalInformationSet::hasDiscreteColorMap(AbstractObject const* targetOb
 
 	resqml22__ColorInformation const* const colorInformation = getColorInformation(targetObject);
 
-	if (colorInformation != nullptr && colorInformation->ColorMap->ContentType.find("DiscreteColorMap") != std::string::npos) {
+	if (colorInformation != nullptr && colorInformation->ColorMap->QualifiedType.find("DiscreteColorMap") != std::string::npos) {
 		return true;
 	}
 	else if (dynamic_cast<AbstractValuesProperty const*>(targetObject) != nullptr) {
@@ -495,7 +495,7 @@ bool GraphicalInformationSet::hasContinuousColorMap(AbstractObject const* target
 
 	resqml22__ColorInformation const * const colorInformation = getColorInformation(targetObject);
 
-	if (colorInformation != nullptr && colorInformation->ColorMap->ContentType.find("ContinuousColorMap") != std::string::npos) {
+	if (colorInformation != nullptr && colorInformation->ColorMap->QualifiedType.find("ContinuousColorMap") != std::string::npos) {
 		return true;
 	}
 	else if (dynamic_cast<AbstractValuesProperty const*>(targetObject) != nullptr) {

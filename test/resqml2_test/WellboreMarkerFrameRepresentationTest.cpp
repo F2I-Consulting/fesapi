@@ -27,9 +27,6 @@ under the License.
 
 #include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
 
-#include "resqml2_2/WellboreMarkerFrameRepresentation.h"
-#include "resqml2_2/WellboreMarker.h"
-
 #include "witsml2_0/WellboreMarker.h"
 
 using namespace std;
@@ -46,7 +43,7 @@ WellboreMarkerFrameRepresentationTest::WellboreMarkerFrameRepresentationTest(con
 
 void WellboreMarkerFrameRepresentationTest::initRepo() {
 	WellboreInterpretation* interp = repo->createPartial<RESQML2_0_1_NS::WellboreInterpretation>("", "");
-	auto* mdDatum = repo->createReferencePointInALocalEngineeringCompoundCrs("", "", nullptr, gsoap_eml2_3::eml23__WellboreDatumReference::mean_x0020sea_x0020level, 275, 75, 0);
+	auto* mdDatum = repo->createReferencePointInALocalEngineeringCompoundCrs("", "", nullptr, gsoap_eml2_3::eml23__ReferencePointKind::mean_x0020sea_x0020level, 275, 75, 0);
 
 	// creating the WellboreTrajectoryRepresentation in m and ft and depth
 	WellboreTrajectoryRepresentation* traj = repo->createWellboreTrajectoryRepresentation(interp, "", "", mdDatum);
@@ -56,10 +53,10 @@ void WellboreMarkerFrameRepresentationTest::initRepo() {
 	traj->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, 0, repo->getHdfProxySet()[0]);
 
 	// WellboreFeature marker frame
-	WellboreMarkerFrameRepresentation* wmf = repo->createWellboreMarkerFrameRepresentation(interp, defaultUuid, defaultTitle, traj);
+	RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* wmf = repo->createWellboreMarkerFrameRepresentation(interp, defaultUuid, defaultTitle, traj);
 	double markerMdValues[2] = { 350, 550 };
 	wmf->setMdValues(markerMdValues, 2, repo->getHdfProxySet()[0]);
-	auto resqmlMarker = repo->createWellboreMarker(wmf, "dfc5292d-88cd-4c20-977f-e808f5a1d56e", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind::horizon);
+	RESQML2_0_1_NS::WellboreMarker* resqmlMarker = repo->createWellboreMarker(wmf, "dfc5292d-88cd-4c20-977f-e808f5a1d56e", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind::horizon);
 	repo->createWellboreMarker(wmf, "0f35ddef-d13e-4921-ab5b-3ee68b24a714", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind::fault);
 
 	// WITSML link for dip and azimuth

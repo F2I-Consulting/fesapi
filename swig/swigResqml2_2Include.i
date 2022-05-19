@@ -70,8 +70,6 @@ under the License.
 #include "../src/resqml2_2/WellboreFeature.h"
 #include "../src/resqml2_2/WellboreFrameRepresentation.h"
 #include "../src/resqml2_2/WellboreInterpretation.h"
-#include "../src/resqml2_2/WellboreMarker.h"
-#include "../src/resqml2_2/WellboreMarkerFrameRepresentation.h"
 #include "../src/resqml2_2/WellboreTrajectoryRepresentation.h"
 %}
 
@@ -130,8 +128,6 @@ under the License.
 	%nspace RESQML2_2_NS::WellboreFeature;
 	%nspace RESQML2_2_NS::WellboreFrameRepresentation;
 	%nspace RESQML2_2_NS::WellboreInterpretation;
-	%nspace RESQML2_2_NS::WellboreMarker;
-	%nspace RESQML2_2_NS::WellboreMarkerFrameRepresentation;
 	%nspace RESQML2_2_NS::WellboreTrajectoryRepresentation;
 #endif
 
@@ -352,7 +348,6 @@ namespace RESQML2_2_NS
 	public:
 	};
 	
-	class WellboreMarkerFrameRepresentation;	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Resqml22_GeologicUnitOccurrenceInterpretation) GeologicUnitOccurrenceInterpretation;
 #endif
@@ -458,22 +453,6 @@ namespace RESQML2_2_NS
 	%rename(Resqml22_SeismicWellboreFrameRepresentation) SeismicWellboreFrameRepresentation;
 #endif
 	class SeismicWellboreFrameRepresentation : public RESQML2_NS::SeismicWellboreFrameRepresentation
-	{
-	public:
-	};
-	
-#if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(Resqml22_WellboreMarker) WellboreMarker;
-#endif
-	class WellboreMarker : public RESQML2_NS::WellboreMarker
-	{
-	public:
-	};
-	
-#if defined(SWIGJAVA) || defined(SWIGPYTHON)
-	%rename(Resqml22_WellboreMarkerFrameRepresentation) WellboreMarkerFrameRepresentation;
-#endif
-	class WellboreMarkerFrameRepresentation : public RESQML2_NS::WellboreMarkerFrameRepresentation
 	{
 	public:
 	};

@@ -29,7 +29,7 @@ using namespace EML2_3_NS;
 using namespace gsoap_eml2_3;
 
 ReferencePointInALocalEngineeringCompoundCrs::ReferencePointInALocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title,
-	EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__WellboreDatumReference originKind,
+	EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
 	double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3)
 {
 	if (repo == nullptr) {
@@ -40,12 +40,12 @@ ReferencePointInALocalEngineeringCompoundCrs::ReferencePointInALocalEngineeringC
 	_eml23__ReferencePointInALocalEngineeringCompoundCrs* refPt = static_cast<_eml23__ReferencePointInALocalEngineeringCompoundCrs*>(gsoapProxy2_3);
 
 	refPt->Kind = soap_new_std__string(repo->getGsoapContext());
-	refPt->Kind->assign(soap_eml23__WellboreDatumReference2s(gsoapProxy2_3->soap, originKind));
-	refPt->Coordinates1And2 = soap_new_eml23__HorizontalCoordinates(repo->getGsoapContext());
-	refPt->Coordinates1And2->Coordinate1 = referenceLocationOrdinal1;
-	refPt->Coordinates1And2->Coordinate2 = referenceLocationOrdinal2;
-	refPt->Coordinate3 = soap_new_double(repo->getGsoapContext());
-	*refPt->Coordinate3 = referenceLocationOrdinal3;
+	refPt->Kind->assign(soap_eml23__ReferencePointKind2s(gsoapProxy2_3->soap, originKind));
+	refPt->HorizontalCoordinates = soap_new_eml23__HorizontalCoordinates(repo->getGsoapContext());
+	refPt->HorizontalCoordinates->Coordinate1 = referenceLocationOrdinal1;
+	refPt->HorizontalCoordinates->Coordinate2 = referenceLocationOrdinal2;
+	refPt->VerticalCoordinate = soap_new_double(repo->getGsoapContext());
+	*refPt->VerticalCoordinate = referenceLocationOrdinal3;
 	
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -73,23 +73,23 @@ void ReferencePointInALocalEngineeringCompoundCrs::setLocalCrs(EML2_NS::Abstract
 
 double ReferencePointInALocalEngineeringCompoundCrs::getX() const
 {
-	return static_cast<_eml23__ReferencePointInALocalEngineeringCompoundCrs*>(gsoapProxy2_3)->Coordinates1And2 == nullptr
+	return static_cast<_eml23__ReferencePointInALocalEngineeringCompoundCrs*>(gsoapProxy2_3)->HorizontalCoordinates == nullptr
 		? .0
-		: static_cast<_eml23__ReferencePointInALocalEngineeringCompoundCrs*>(gsoapProxy2_3)->Coordinates1And2->Coordinate1;
+		: static_cast<_eml23__ReferencePointInALocalEngineeringCompoundCrs*>(gsoapProxy2_3)->HorizontalCoordinates->Coordinate1;
 }
 
 double ReferencePointInALocalEngineeringCompoundCrs::getY() const
 {
-	return static_cast<_eml23__ReferencePointInALocalEngineeringCompoundCrs*>(gsoapProxy2_3)->Coordinates1And2 == nullptr
+	return static_cast<_eml23__ReferencePointInALocalEngineeringCompoundCrs*>(gsoapProxy2_3)->HorizontalCoordinates == nullptr
 		? .0
-		: static_cast<_eml23__ReferencePointInALocalEngineeringCompoundCrs*>(gsoapProxy2_3)->Coordinates1And2->Coordinate2;
+		: static_cast<_eml23__ReferencePointInALocalEngineeringCompoundCrs*>(gsoapProxy2_3)->HorizontalCoordinates->Coordinate2;
 }
 
 double ReferencePointInALocalEngineeringCompoundCrs::getZ() const
 {
-	return static_cast<_eml23__ReferencePointInALocalEngineeringCompoundCrs*>(gsoapProxy2_3)->Coordinate3 == nullptr
+	return static_cast<_eml23__ReferencePointInALocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalCoordinate == nullptr
 		? .0
-		: *static_cast<_eml23__ReferencePointInALocalEngineeringCompoundCrs*>(gsoapProxy2_3)->Coordinate3;
+		: *static_cast<_eml23__ReferencePointInALocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalCoordinate;
 }
 
 bool ReferencePointInALocalEngineeringCompoundCrs::hasKind() const

@@ -115,7 +115,6 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 
 	getRepository()->addRelationship(this, proxy);
 
-	patch->Count = triangleCount;
 	eml23__IntegerExternalArray* hdfTriangles = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	patch->Triangles = hdfTriangles;
 	hdfTriangles->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write triangle node index null value in this method
@@ -159,16 +158,15 @@ void TriangulatedSetRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, dou
 
 uint64_t TriangulatedSetRepresentation::getTriangleCountOfPatch(uint64_t patchIndex) const
 {
-	return static_cast<_resqml22__TriangulatedSetRepresentation*>(gsoapProxy2_3)->TrianglePatch.at(patchIndex)->Count;
+	return getCountOfArray(static_cast<_resqml22__TriangulatedSetRepresentation*>(gsoapProxy2_3)->TrianglePatch.at(patchIndex)->Triangles) / 3;;
 }
 
 uint64_t TriangulatedSetRepresentation::getTriangleCountOfAllPatches() const
 {
 	uint64_t result = 0;
 
-	std::vector<resqml22__TrianglePatch * > patches = static_cast<_resqml22__TriangulatedSetRepresentation*>(gsoapProxy2_3)->TrianglePatch;
-	for (auto const* patch : patches) {
-		result += patch->Count;
+	for (size_t i = 0; i < getPatchCount(); ++i) {
+		result += getTriangleCountOfPatch(i);
 	}
 
 	return result;

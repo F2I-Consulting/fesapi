@@ -97,7 +97,7 @@ DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, con
 
 	setPropertyKind(propKind);
 
-	prop->Lookup = strLookup->newEml23Reference();
+	prop->CategoryLookup = strLookup->newEml23Reference();
 	getRepository()->addRelationship(this, strLookup);
 }
 

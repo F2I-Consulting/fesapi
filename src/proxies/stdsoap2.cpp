@@ -1,10 +1,10 @@
 /*
-        stdsoap2.c[pp] 2.8.117E
+        stdsoap2.c[pp] 2.8.122E
 
         gSOAP runtime engine
 
 gSOAP XML Web services tools
-Copyright (C) 2000-2021, Robert van Engelen, Genivia Inc., All Rights Reserved.
+Copyright (C) 2000-2022, Robert van Engelen, Genivia Inc., All Rights Reserved.
 This part of the software is released under ONE of the following licenses:
 
 --------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_LIB_VERSION 208117
+#define GSOAP_LIB_VERSION 208122
 
 #ifdef AS400
 # pragma convert(819)   /* EBCDIC to ASCII */
@@ -52,10 +52,10 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 #endif
 
 #ifdef __cplusplus
-SOAP_SOURCE_STAMP("@(#) stdsoap2.cpp ver 2.8.117E 2021-08-19 00:00:00 GMT")
+SOAP_SOURCE_STAMP("@(#) stdsoap2.cpp ver 2.8.122E 2022-05-11 00:00:00 GMT")
 extern "C" {
 #else
-SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.117E 2021-08-19 00:00:00 GMT")
+SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.122E 2022-05-11 00:00:00 GMT")
 #endif
 
 /* 8bit character representing unknown character entity or multibyte data */
@@ -252,12 +252,12 @@ static const char *soap_strerror(struct soap*);
   #define SOAP_SOCKBLOCK(fd) \
   { \
     u_long blocking = 0; \
-    ioctl(fd, FIONBIO, (int)(&blocking)); \
+    ioctl(fd, FIONBIO, (void*)(&blocking)); \
   }
   #define SOAP_SOCKNONBLOCK(fd) \
   { \
     u_long nonblocking = 1; \
-    ioctl(fd, FIONBIO, (int)(&nonblocking)); \
+    ioctl(fd, FIONBIO, (void*)(&nonblocking)); \
   }
 #elif defined(__VMS)
   #define SOAP_SOCKBLOCK(fd) \
@@ -1395,6 +1395,7 @@ zlib_again:
     {
       soap_wchar c;
       char *t, tmp[17];
+      unsigned long chunksize;
       if (soap->chunksize)
       {
         soap->buflen = ret = soap->frecv(soap, soap->buf, soap->chunksize > sizeof(soap->buf) ? sizeof(soap->buf) : soap->chunksize);
@@ -1449,8 +1450,15 @@ zlib_again:
       }
       *t = '\0';
       DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Chunk size = %s (hex)\n", tmp));
-      soap->chunksize = (size_t)soap_strtoul(tmp, &t, 16);
-      if (!soap->chunksize)
+      chunksize = soap_strtoul(tmp, &t, 16);
+      if (*t || chunksize > SOAP_MAXHTTPCHUNK || (soap->recv_maxlength && chunksize > soap->recv_maxlength))
+      {
+        DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Chunk size %lu exceeds max\n", chunksize));
+        return soap->error = SOAP_HTTP_ERROR;
+      }
+      soap->chunksize = (size_t)chunksize;
+      soap->buflen = soap->bufidx + soap->chunksize;
+      if (soap->buflen <= soap->bufidx)
       {
         soap->bufidx = soap->buflen = soap->chunkbuflen = 0;
         DBGLOG(TEST, SOAP_MESSAGE(fdebug, "End of chunked message\n"));
@@ -1458,7 +1466,6 @@ zlib_again:
         soap->ahead = EOF;
         break;
       }
-      soap->buflen = soap->bufidx + soap->chunksize;
       DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Moving buf len to idx=%u len=%u (%s)\n", (unsigned int)soap->bufidx, (unsigned int)soap->buflen, tmp));
       if (soap->buflen > soap->chunkbuflen)
       {
@@ -2078,6 +2085,7 @@ soap_getpi(struct soap *soap)
     s = strstr(buf, " encoding=");
     if (s && s[10])
     {
+      int err;
       if (!soap_tag_cmp(s + 11, "iso-8859-*")
        || !soap_tag_cmp(s + 11, "latin*"))
       {
@@ -2088,6 +2096,12 @@ soap_getpi(struct soap *soap)
       {
         DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Switching to utf-8 encoding\n"));
         soap->mode &= ~SOAP_ENC_LATIN;
+      }
+      else if (soap->fencoding && (err = soap->fencoding(soap, s + 11) != SOAP_OK))
+      {
+        DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Callback fencoding returned %d\n", err));
+        soap->error = err;
+        c = EOF;
       }
     }
   }
@@ -4112,7 +4126,7 @@ soap_ssl_init()
     SSL_load_error_strings();
 #endif
 #endif
-#if !defined(WIN32) && !defined(CYGWIN) && !defined(__MINGW32__) && !defined(__MINGW64__)
+#if !defined(WIN32) && !defined(CYGWIN) && !defined(__MINGW32__) && !defined(__MINGW64__) && !defined(VXWORKS)
     if (!RAND_load_file("/dev/urandom", 1024))
 #else
     if (1)
@@ -4273,7 +4287,7 @@ ssl_auth_init(struct soap *soap)
   if (!soap->ctx)
   {
 #if OPENSSL_VERSION_NUMBER >= 0x10100000L
-    /* TLS_method: a TLS/SSL connection established may understand the SSLv3, TLSv1, TLSv1.1 and TLSv1.2 protocols. */
+    /* TLS_method: a TLS/SSL connection established may understand the SSLv3, TLSv1, TLSv1.1, TLSv1.2 and TLSv1.3 protocols. */
     soap->ctx = SSL_CTX_new(TLS_method());
 #else
     /* SSLv23_method: a TLS/SSL connection established may understand the SSLv3, TLSv1, TLSv1.1 and TLSv1.2 protocols. */
@@ -4308,11 +4322,11 @@ ssl_auth_init(struct soap *soap)
     if (soap_ssl_crl(soap, soap->crlfile))
       return soap->error;
   }
-/* This code assumes a typical scenario with key and cert in one PEM file, see alternative code below */
+/* This code assumes a typical scenario with key and cert combined in one PEM file */
 #if 1
   if (soap->keyfile)
   {
-    if (!SSL_CTX_use_certificate_chain_file(soap->ctx, soap->keyfile))
+    if (SSL_CTX_use_certificate_chain_file(soap->ctx, soap->keyfile) != 1)
       return soap_set_receiver_error(soap, "SSL/TLS error", "Can't find or read certificate in private key PEM file", SOAP_SSL_ERROR);
     if (soap->password)
     {
@@ -4320,34 +4334,40 @@ ssl_auth_init(struct soap *soap)
       SSL_CTX_set_default_passwd_cb(soap->ctx, ssl_password);
     }
 #ifndef WM_SECURE_KEY_STORAGE
-    if (!SSL_CTX_use_PrivateKey_file(soap->ctx, soap->keyfile, SSL_FILETYPE_PEM))
+    if (SSL_CTX_use_PrivateKey_file(soap->ctx, soap->keyfile, SSL_FILETYPE_PEM) != 1)
       return soap_set_receiver_error(soap, "SSL/TLS error", "Can't read private key PEM file", SOAP_SSL_ERROR);
 #endif
   }
 #else
-/* Suggested alternative approach to check the key file for cert only when cafile==NULL */
+/* Alternative approach to check the key file for cert only when cafile==NULL */
+#ifndef WM_SECURE_KEY_STORAGE
   if (soap->password)
   {
     SSL_CTX_set_default_passwd_cb_userdata(soap->ctx, (void*)soap->password);
     SSL_CTX_set_default_passwd_cb(soap->ctx, ssl_password);
   }
+#endif
   if (!soap->cafile)
   {
     if (soap->keyfile)
     {
-      if (!SSL_CTX_use_certificate_chain_file(soap->ctx, soap->keyfile))
+      if (SSL_CTX_use_certificate_chain_file(soap->ctx, soap->keyfile) != 1)
         return soap_set_receiver_error(soap, "SSL/TLS error", "Can't find or read certificate in private key PEM file", SOAP_SSL_ERROR);
-      if (!SSL_CTX_use_PrivateKey_file(soap->ctx, soap->keyfile, SSL_FILETYPE_PEM))
+#ifndef WM_SECURE_KEY_STORAGE
+      if (SSL_CTX_use_PrivateKey_file(soap->ctx, soap->keyfile, SSL_FILETYPE_PEM) != 1)
         return soap_set_receiver_error(soap, "SSL/TLS error", "Can't read private key PEM file", SOAP_SSL_ERROR);
+#endif
     }
   }
-  else /* use cafile for (server) cert and keyfile for (server) key */
+  else /* use cafile for the root CA and (server) cert, and keyfile for (server) key */
   {
-    if (!SSL_CTX_use_certificate_chain_file(soap->ctx, soap->cafile))
+    if (SSL_CTX_use_certificate_chain_file(soap->ctx, soap->cafile) != 1)
       return soap_set_receiver_error(soap, "SSL/TLS error", "Can't read CA PEM file", SOAP_SSL_ERROR);
+#ifndef WM_SECURE_KEY_STORAGE
     if (soap->keyfile)
-      if (!SSL_CTX_use_PrivateKey_file(soap->ctx, soap->keyfile, SSL_FILETYPE_PEM))
+      if (SSL_CTX_use_PrivateKey_file(soap->ctx, soap->keyfile, SSL_FILETYPE_PEM) != 1)
         return soap_set_receiver_error(soap, "SSL/TLS error", "Can't read private key PEM file", SOAP_SSL_ERROR);
+#endif
   }
 #endif
 #if defined(VXWORKS) && defined(WM_SECURE_KEY_STORAGE)
@@ -5078,7 +5098,7 @@ tcp_gethostbyname(struct soap *soap, const char *addr, struct hostent *hostent, 
     hostent = NULL;
     soap->errnum = h_errno;
   }
-#elif (!defined(_GNU_SOURCE) || (!(~_GNU_SOURCE+1) && !defined(_POSIX_C_SOURCE) && !defined(_XOPEN_SOURCE)) || _POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600 || defined(__ANDROID__) || defined(FREEBSD) || defined(__FreeBSD__)) && defined(HAVE_GETHOSTBYNAME_R)
+#elif (!defined(_GNU_SOURCE) || (!(~_GNU_SOURCE+1) && !defined(_POSIX_C_SOURCE) && !defined(_XOPEN_SOURCE)) || _POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600 || defined(__ANDROID__) || defined(FREEBSD) || defined(__FreeBSD__)) && !defined(SUN_OS) && defined(HAVE_GETHOSTBYNAME_R)
   while ((r = gethostbyname_r(addr, hostent, tmpbuf, tmplen, &hostent, &soap->errnum)) < 0)
   {
     if (tmpbuf != soap->tmpbuf)
@@ -7333,6 +7353,7 @@ soap_done(struct soap *soap)
 #endif
   soap->fseterror = NULL;
   soap->fignore = NULL;
+  soap->fencoding = NULL;
   soap->fserveloop = NULL;
 #ifdef WITH_OPENSSL
   if (soap->session)
@@ -12090,6 +12111,7 @@ soap_versioning(soap_init)(struct soap *soap, soap_mode imode, soap_mode omode)
 #endif
   soap->fseterror = NULL;
   soap->fignore = NULL;
+  soap->fencoding = NULL;
   soap->fserveloop = NULL;
   soap->fplugin = fplugin;
 #ifndef WITH_LEANER
@@ -14650,8 +14672,13 @@ soap_peek_element(struct soap *soap)
       } while (soap_coblank(c));
       if (c != SOAP_QT && c != SOAP_AP)
       {
+        if ((soap->mode & SOAP_XML_STRICT))
+        {
+          DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Unquoted attribute value in %s\n", soap->tag));
+          return soap->error = SOAP_SYNTAX_ERROR;
+        }
         soap_unget(soap, c);
-        c = ' '; /* blank delimiter */
+        c = ' '; /* allow blank delimiter for non-well formed XML like HTML */
       }
       k = tp->size;
       if (soap_getattrval(soap, tp->value, &k, c))
@@ -14753,6 +14780,11 @@ soap_peek_element(struct soap *soap)
     }
     else
     {
+      if ((soap->mode & SOAP_XML_STRICT))
+      {
+        DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Attribute withput a value in %s\n", soap->tag));
+        return soap->error = SOAP_SYNTAX_ERROR;
+      }
       tp->visible = 1; /* seen this attribute w/o value */
     }
 #ifdef WITH_DOM
@@ -17116,6 +17148,7 @@ soap_s2unsignedInt(struct soap *soap, const char *s, unsigned int *p)
 {
   if (s)
   {
+    unsigned long n;
     char *r;
     if (!*s)
       return soap->error = SOAP_EMPTY;
@@ -17124,8 +17157,11 @@ soap_s2unsignedInt(struct soap *soap, const char *s, unsigned int *p)
     soap_reset_errno;
 #endif
 #endif
-    *p = (unsigned int)soap_strtoul(s, &r, 10);
+    n = soap_strtoul(s, &r, 10);
     if (s == r || *r
+#ifndef WITH_LEAN
+        || n != (unsigned int)n
+#endif
 #ifndef WITH_NOIO
 #ifndef WITH_LEAN
         || soap_errno == SOAP_ERANGE
@@ -17134,9 +17170,10 @@ soap_s2unsignedInt(struct soap *soap, const char *s, unsigned int *p)
     )
       soap->error = SOAP_TYPE;
 #ifdef HAVE_STRTOUL
-    if (*p > 0 && strchr(s, '-'))
+    if (n > 0 && strchr(s, '-'))
       return soap->error = SOAP_TYPE;
 #endif
+    *p = (unsigned int)n;
   }
   return soap->error;
 }
@@ -22947,6 +22984,7 @@ soap_register_plugin_arg(struct soap *soap, int (*fcreate)(struct soap*, struct 
       return SOAP_OK;
     }
     DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Could not register plugin '%s': plugin with the same ID already registered\n", p->id));
+    p->fdelete(soap, p);
     SOAP_FREE(soap, p);
     return SOAP_OK;
   }

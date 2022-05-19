@@ -178,7 +178,7 @@ namespace COMMON_NS
 				return dor22->ContentType;
 			}
 			else if (dor23 != nullptr) {
-				return dor23->ContentType;
+				return dor23->QualifiedType;
 			}
 			else {
 				return "";

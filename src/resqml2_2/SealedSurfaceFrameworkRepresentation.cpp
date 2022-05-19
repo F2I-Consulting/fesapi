@@ -146,7 +146,6 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
 	}
 
     resqml22__ContactPatch* contactPatch = soap_new_resqml22__ContactPatch(gsoapProxy2_3->soap);
-    contactPatch->Count = nodeCount;
     contactPatch->RepresentationIndex = representationIndex;
 
     eml23__IntegerExternalArray* xmlSupportingRepresentationNodes = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);

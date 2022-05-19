@@ -49,11 +49,9 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	if (mdInfo->getLocalCrs() != nullptr) {
-		rep->MdUom = mdInfo->getLocalCrs()->getVerticalCrsUnitAsString();
-	}
-	rep->StartMd = std::numeric_limits<double>::quiet_NaN();
-	rep->FinishMd = std::numeric_limits<double>::quiet_NaN();
+	rep->MdInterval = soap_new_eml23__MdInterval(interp->getGsoapContext());
+	rep->MdInterval->MdMin = std::numeric_limits<double>::quiet_NaN();
+	rep->MdInterval->MdMax = std::numeric_limits<double>::quiet_NaN();
 
 	interp->getRepository()->addDataObject(this);
 	setMdDatum(mdInfo);
@@ -63,8 +61,8 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 void WellboreTrajectoryRepresentation::setMinimalGeometry(double startMd, double endMd)
 {
 	_resqml22__WellboreTrajectoryRepresentation* rep = static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3);
-	rep->StartMd = startMd;
-	rep->FinishMd = endMd;
+	rep->MdInterval->MdMin = startMd;
+	rep->MdInterval->MdMax = endMd;
 }
 
 void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
@@ -271,7 +269,7 @@ bool WellboreTrajectoryRepresentation::hasMdValues() const
 gsoap_resqml2_0_1::eml20__LengthUom WellboreTrajectoryRepresentation::getMdUom() const
 {
 	gsoap_resqml2_0_1::eml20__LengthUom result;
-	gsoap_resqml2_0_1::soap_s2eml20__LengthUom(gsoapProxy2_3->soap, static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3)->MdUom.c_str(), &result);
+	gsoap_resqml2_0_1::soap_s2eml20__LengthUom(gsoapProxy2_3->soap, getMdDatum()->getLocalCrs()->getVerticalCrsUnitAsString().c_str(), &result);
 	return result;
 }
 
@@ -297,12 +295,12 @@ void WellboreTrajectoryRepresentation::getMdValues(double * values) const
 
 double WellboreTrajectoryRepresentation::getStartMd() const
 {
-	return static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3)->StartMd;
+	return static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3)->MdInterval->MdMin;
 }
 
 double WellboreTrajectoryRepresentation::getFinishMd() const
 {
-	return static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3)->FinishMd;
+	return static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3)->MdInterval->MdMax;
 }
 
 bool WellboreTrajectoryRepresentation::hasTangentVectors() const
@@ -338,14 +336,14 @@ void WellboreTrajectoryRepresentation::setMdDatum(EML2_NS::ReferencePointInALoca
 		throw invalid_argument("The MD Datum is missing.");
 	}
 
-	static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3)->MdDatum = mdDatum->newEml23Reference();
+	static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3)->MdInterval->Datum = mdDatum->newEml23Reference();
 
 	getRepository()->addRelationship(this, mdDatum);
 }
 
 COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getMdDatumDor() const
 {
-	return COMMON_NS::DataObjectReference(static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3)->MdDatum);
+	return COMMON_NS::DataObjectReference(static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3)->MdInterval->Datum);
 }
 
 COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getHdfProxyDor() const
