@@ -139,7 +139,7 @@ else (BUILD_SHARED_LIBS)
 	set (LIB_TYPE STATIC)
 endif (BUILD_SHARED_LIBS)
 
-set (WITH_RESQML2_2 OFF CACHE BOOL "Compile RESQML2.2 experimental support. Don't use it in production.")
+set (WITH_RESQML2_2 ON CACHE BOOL "Compile RESQML2.2 support")
 
 # ============================================================================
 # Gsoap proxies source

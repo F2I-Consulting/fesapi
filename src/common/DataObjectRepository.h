@@ -99,8 +99,6 @@ namespace RESQML2_NS
 	class WellboreFeature;
 	class WellboreFrameRepresentation;
 	class WellboreInterpretation;
-	class WellboreMarker;
-	class WellboreMarkerFrameRepresentation;
 	class WellboreTrajectoryRepresentation;
 }
 
@@ -123,6 +121,8 @@ namespace RESQML2_0_1_NS
 	class RockFluidUnitFeature;
 	class SeismicLineFeature;
 	class TectonicBoundaryFeature;
+	class WellboreMarker;
+	class WellboreMarkerFrameRepresentation;
 	class WellboreTrajectoryRepresentation;
 }
 
@@ -1081,7 +1081,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new reference point.
 		 */
 		DLL_IMPORT_OR_EXPORT EML2_NS::ReferencePointInALocalEngineeringCompoundCrs* createReferencePointInALocalEngineeringCompoundCrs(const std::string & guid, const std::string & title,
-			EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__WellboreDatumReference originKind,
+			EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
 			double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3);
 
 		//************ FEATURE ***************
@@ -2079,7 +2079,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new wellbore marker frame representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj);
 
 		/**
 		 * @brief	Creates a wellbore marker within a given wellbore marker frame representation.
@@ -2095,7 +2095,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new wellbore marker.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreMarker* createWellboreMarker(RESQML2_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreMarker* createWellboreMarker(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title);
 
 		/**
 		 * @brief	Creates a wellbore marker within a given wellbore marker frame representation.
@@ -2112,7 +2112,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new wellbore marker.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreMarker* createWellboreMarker(RESQML2_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreMarker* createWellboreMarker(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind);
 
 		/**
 		 * @brief	Creates a blocked wellbore representation into this repository

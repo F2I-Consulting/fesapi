@@ -71,7 +71,7 @@ jobs:
           cd ..
           mkdir build
           cd build
-          cmake -DHDF5_C_INCLUDE_DIR=/usr/include/hdf5/serial -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libhdf5_serial.so.103.0.0 -DMINIZIP_INCLUDE_DIR=/usr/include/minizip -DMINIZIP_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libminizip.so.1.0.0 -DZLIB_INCLUDE_DIR=/usr/include -DZLIB_LIBRARY_RELEASE=/lib/x86_64-linux-gnu/libz.so.1.2.11 -DCMAKE_BUILD_TYPE=Release -DWITH_JAVA_WRAPPING=TRUE ${{ github.workspace }}
+          cmake -DHDF5_C_INCLUDE_DIR=/usr/include/hdf5/serial -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libhdf5_serial.so.103.0.0 -DMINIZIP_INCLUDE_DIR=/usr/include/minizip -DMINIZIP_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libminizip.so.1.0.0 -DZLIB_INCLUDE_DIR=/usr/include -DZLIB_LIBRARY_RELEASE=/lib/x86_64-linux-gnu/libz.so.1.2.11 -DCMAKE_BUILD_TYPE=Release -DWITH_RESQML2_2=TRUE -DWITH_JAVA_WRAPPING=TRUE ${{ github.workspace }}
           cmake --build . -j2
           cmake --install .
       - name: Run java example

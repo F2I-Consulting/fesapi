@@ -141,7 +141,7 @@ namespace Example
                 WellboreInterpretation wellbore1Interp1 = repo.createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
 
                 // Representation
-                ReferencePointInALocalEngineeringCompoundCrs mdInfo = repo.createReferencePointInALocalEngineeringCompoundCrs("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", repo.getDefaultCrs(), eml23__WellboreDatumReference.mean_x0020sea_x0020level, 275, 75, 0);
+                ReferencePointInALocalEngineeringCompoundCrs mdInfo = repo.createReferencePointInALocalEngineeringCompoundCrs("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", repo.getDefaultCrs(), eml23__ReferencePointKind.mean_x0020sea_x0020level, 275, 75, 0);
 
                 //Geometry	
                 WellboreTrajectoryRepresentation w1i1TrajRep = repo.createWellboreTrajectoryRepresentation(wellbore1Interp1, "acd2cdcf-bb5d-48da-bd0e-9aeff3e52180", "Wellbore1 Interp1 TrajRep", mdInfo);

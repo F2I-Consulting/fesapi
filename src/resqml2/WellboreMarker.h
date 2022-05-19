@@ -207,13 +207,6 @@ namespace RESQML2_NS
 		 */
 		WellboreMarker(gsoap_resqml2_0_1::resqml20__WellboreMarker* fromGsoap) : AbstractObject(fromGsoap) {}
 
-		/**
-		 * Creates an instance of this class by wrapping a gSOAP instance.
-		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
-		 */
-		WellboreMarker(gsoap_eml2_3::resqml22__WellboreMarker* fromGsoap) : AbstractObject(fromGsoap) {}
-
 		/** Loads target relationships */
 		void loadTargetRelationships() final;
 	};

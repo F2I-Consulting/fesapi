@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PolylineRepresentation.h"
 
+#include <numeric>
+
 #include "../resqml2/AbstractFeature.h"
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../eml2/AbstractLocal3dCrs.h"
@@ -80,7 +82,7 @@ COMMON_NS::DataObjectReference PolylineRepresentation::getHdfProxyDor() const
 
 resqml22__PointGeometry* PolylineRepresentation::getPointGeometry2_2(uint64_t patchIndex) const
 {
-	return patchIndex == 0 ? static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->NodePatch->Geometry : nullptr;
+	return patchIndex == 0 ? static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->NodePatchGeometry : nullptr;
 }
 
 uint64_t PolylineRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
@@ -88,8 +90,17 @@ uint64_t PolylineRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) co
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
 	}
+	auto const* ptArray = static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->NodePatchGeometry->Points;
+	resqml22__Point3dExternalArray const* externalPtArray = dynamic_cast<resqml22__Point3dExternalArray const*>(ptArray);
+	if (externalPtArray == nullptr) {
+		throw range_error("Does only support point set where points are in a resqml22__Point3dExternalArray");
+	}
 
-	return static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->NodePatch->Count;
+	uint64_t result = 0;
+	for (auto* dataArrayPart : externalPtArray->Coordinates->ExternalDataArrayPart) {
+		result += std::accumulate(std::begin(dataArrayPart->Count), std::end(dataArrayPart->Count), static_cast<LONG64>(1), std::multiplies<LONG64>());
+	}
+	return result / 3;
 }
 
 void PolylineRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
@@ -118,11 +129,8 @@ void PolylineRepresentation::setGeometry(double const* points, unsigned int poin
 	}
 
 	_resqml22__PolylineRepresentation* polylineRep = static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3);
-	polylineRep->NodePatch = soap_new_resqml22__NodePatch(gsoapProxy2_3->soap);
-	polylineRep->NodePatch->Count = pointCount;
-
 	uint64_t pointCountDims = pointCount;
-	polylineRep->NodePatch->Geometry = createPointGeometryPatch2_2(0, points, localCrs, &pointCountDims, 1, proxy);
+	polylineRep->NodePatchGeometry = createPointGeometryPatch2_2(0, points, localCrs, &pointCountDims, 1, proxy);
 	getRepository()->addRelationship(this, localCrs);
 }
 

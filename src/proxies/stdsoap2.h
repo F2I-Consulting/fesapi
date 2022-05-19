@@ -1,10 +1,10 @@
 /*
-        stdsoap2.h 2.8.117E
+        stdsoap2.h 2.8.122E
 
         gSOAP runtime engine
 
 gSOAP XML Web services tools
-Copyright (C) 2000-2021, Robert van Engelen, Genivia Inc., All Rights Reserved.
+Copyright (C) 2000-2022, Robert van Engelen, Genivia Inc., All Rights Reserved.
 This part of the software is released under ONE of the following licenses:
 
 --------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_VERSION 208117
+#define GSOAP_VERSION 208122
 
 #ifdef WITH_SOAPDEFS_H
 # include "soapdefs.h"          /* include user-defined stuff in soapdefs.h */
@@ -628,7 +628,7 @@ extern intmax_t __strtoull(const char*, char**, int);
 #  include <ctype.h>
 # endif
 # if !defined(HAVE_CONFIG_H) || defined(HAVE_LIMITS_H)
-#  include <limits.h>   /* for MB_LEN_MAX */
+#  include <limits.h>   /* for MB_LEN_MAX strtol strtoll strtoul strtoull */
 # endif
 # if !defined(HAVE_CONFIG_H) || defined(HAVE_FLOAT_H)
 #  include <float.h>    /* for INFINITY */
@@ -1212,6 +1212,11 @@ extern "C" {
 # define SOAP_INDEX_RECV  (0)
 # define SOAP_INDEX_SENT  (1)
 # define SOAP_INDEX_TEST  (2)
+#endif
+
+/* max HTTP chunk size is 2GB by default, can be larger but not to exceed size_t range max */
+#ifndef SOAP_MAXHTTPCHUNK
+# define SOAP_MAXHTTPCHUNK (2147483647)
 #endif
 
 /* Tag name of multiref elements in SOAP 1.1 encoding */
@@ -2738,6 +2743,7 @@ struct SOAP_CMAC soap
   size_t (*frecv)(struct soap*, char*, size_t);
   int (*fpoll)(struct soap*);
   void (*fseterror)(struct soap*, const char **c, const char **s);
+  int (*fencoding)(struct soap*, const char*);
   int (*fignore)(struct soap*, const char*);
   int (*fserveloop)(struct soap*);
   void *(*fplugin)(struct soap*, const char*);

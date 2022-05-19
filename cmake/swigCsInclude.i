@@ -836,36 +836,6 @@ ${COMMENT_END}
 		return null;
 	}
 	
-	public static F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.WellboreMarker resqml2_instantiateWellboreMarker(global::System.IntPtr cPtr, bool owner)
-	{
-		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
-		if (xmlNs.Equals("resqml20")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.WellboreMarker(cPtr, owner);
-		}
-${COMMENT_START}
-		else if (xmlNs.Equals("resqml22")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.WellboreMarker(cPtr, owner);
-		}
-${COMMENT_END}
-		
-		return null;
-	}
-	
-	public static F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.WellboreMarkerFrameRepresentation resqml2_instantiateWellboreMarkerFrameRepresentation(global::System.IntPtr cPtr, bool owner)
-	{
-		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
-		if (xmlNs.Equals("resqml20")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.WellboreMarkerFrameRepresentation(cPtr, owner);
-		}
-${COMMENT_START}
-		else if (xmlNs.Equals("resqml22")) {
-			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.WellboreMarkerFrameRepresentation(cPtr, owner);
-		}
-${COMMENT_END}
-		
-		return null;
-	}
-	
 	public static F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.StreamlinesFeature resqml2_instantiateStreamlinesFeature(global::System.IntPtr cPtr, bool owner)
 	{
 		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
@@ -1013,8 +983,8 @@ ${COMMENT_END}
 		case DataObjectName.WELLBOREFRAMEREPRESENTATION : return resqml2_instantiateWellboreFrameRepresentation(cPtr, owner);
 		case DataObjectName.WELLBOREGEOMETRY : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.WellboreGeometry(cPtr, owner);
 		case DataObjectName.WELLBOREINTERPRETATION : return resqml2_instantiateWellboreInterpretation(cPtr, owner);
-		case DataObjectName.WELLBOREMARKER : return resqml2_instantiateWellboreMarker(cPtr, owner);
-		case DataObjectName.WELLBOREMARKERFRAMEREPRESENTATION : return resqml2_instantiateWellboreMarkerFrameRepresentation(cPtr, owner);
+		case DataObjectName.WELLBOREMARKER : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.WellboreMarker(cPtr, owner);
+		case DataObjectName.WELLBOREMARKERFRAMEREPRESENTATION : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.WellboreMarkerFrameRepresentation(cPtr, owner);
 		case DataObjectName.WELLBORETRAJECTORYREPRESENTATION : return resqml2_instantiateWellboreTrajectoryRepresentation(cPtr, owner);
 		case DataObjectName.WELLCOMPLETION : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.WellCompletion(cPtr, owner);
 		default : throw new System.ArgumentException("Encountered type " + type + " that is not known to be a RESQML or WITSML concrete class");

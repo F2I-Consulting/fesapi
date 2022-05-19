@@ -1359,7 +1359,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @returns	A pointer to the new reference point.
 		 */
 		EML2_NS::ReferencePointInALocalEngineeringCompoundCrs* createReferencePointInALocalEngineeringCompoundCrs(const std::string & guid, const std::string & title,
-			EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__WellboreDatumReference originKind,
+			EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
 			double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3);
 
 		//************ FEATURE ***************
@@ -2357,7 +2357,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new wellbore marker frame representation.
 		 */
-		RESQML2_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj);
+		RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* DataObjectRepository::createWellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj);
 
 		/**
 		 * @brief	Creates a wellbore marker within a given wellbore marker frame representation.
@@ -2373,7 +2373,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new wellbore marker.
 		 */
-		RESQML2_NS::WellboreMarker* createWellboreMarker(RESQML2_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title);
+		RESQML2_0_1_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title);
 
 		/**
 		 * @brief	Creates a wellbore marker within a given wellbore marker frame representation.
@@ -2390,7 +2390,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new wellbore marker.
 		 */
-		RESQML2_NS::WellboreMarker* createWellboreMarker(RESQML2_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind);
+		RESQML2_0_1_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string& guid, const std::string& title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind);
 
 		/**
 		 * @brief	Creates a blocked wellbore representation into this repository

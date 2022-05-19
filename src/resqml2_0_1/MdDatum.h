@@ -54,7 +54,7 @@ namespace RESQML2_0_1_NS
 		 * 												third axis of the local 3d CRS.
 		 */
 		MdDatum(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__WellboreDatumReference originKind,
+			EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
 			double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3);
 
 		/**

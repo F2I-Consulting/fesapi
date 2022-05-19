@@ -25,7 +25,7 @@ using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title,
-	EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__WellboreDatumReference originKind,
+	EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
 	double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3)
 {
 	if (repo == nullptr)
@@ -34,9 +34,7 @@ MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, co
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREMdDatum(repo->getGsoapContext());
 	_resqml20__MdDatum* mdInfo = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1);
 
-	mdInfo->MdReference = static_cast<std::underlying_type<gsoap_eml2_3::eml23__WellboreDatumReference>::type>(originKind) < 5
-		? static_cast<resqml20__MdReference>(static_cast<std::underlying_type<gsoap_eml2_3::eml23__WellboreDatumReference>::type>(originKind))
-		: static_cast<resqml20__MdReference>(static_cast<std::underlying_type<gsoap_eml2_3::eml23__WellboreDatumReference>::type>(originKind) + 1);
+	soap_s2resqml20__MdReference(gsoapProxy2_0_1->soap, gsoap_eml2_3::soap_eml23__ReferencePointKind2s(gsoapProxy2_0_1->soap, originKind), &mdInfo->MdReference);
 	mdInfo->Location = soap_new_resqml20__Point3d(repo->getGsoapContext());
 	mdInfo->Location->Coordinate1 = referenceLocationOrdinal1;
 	mdInfo->Location->Coordinate2 = referenceLocationOrdinal2;

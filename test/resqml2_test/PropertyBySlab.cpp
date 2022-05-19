@@ -154,7 +154,7 @@ void PropertyBySlab::initRepo() {
 	otherDiscretePropertyNoCompute->pushBackLongHdf5Array3dOfValues(2, 3, 4, 9999);
 	offsetInSlowestDim = 0;
 	otherDiscretePropertyNoCompute->setValuesOfLongHdf5Array3dOfValues(kLayerlongValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
-		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, false);
+		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
 	REQUIRE_THROWS(otherDiscretePropertyNoCompute->getMinimumValue() == -10);
 	REQUIRE_THROWS(otherDiscretePropertyNoCompute->getMaximumValue() == 35);
 

@@ -63,7 +63,7 @@ unsigned int StructuralOrganizationInterpretation::getFaultInterpretationCount()
 
 	unsigned int result = 0;
 	for (auto const* boundary : structuralOrganization->OrderedBoundaryFeatureInterpretation) {
-		if (boundary->BoundaryFeatureInterpretation != nullptr && boundary->BoundaryFeatureInterpretation->ContentType.find("FaultInterpretation") != std::string::npos) {
+		if (boundary->BoundaryFeatureInterpretation != nullptr && boundary->BoundaryFeatureInterpretation->QualifiedType.find("FaultInterpretation") != std::string::npos) {
 			++result;
 		}
 	}
@@ -76,7 +76,7 @@ COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getFaultInt
 	_resqml22__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3);
 	unsigned int currentIndex = 0;
 	for (auto const* boundary : structuralOrganization->OrderedBoundaryFeatureInterpretation) {
-		if (boundary->BoundaryFeatureInterpretation != nullptr && boundary->BoundaryFeatureInterpretation->ContentType.find("FaultInterpretation") != std::string::npos) {
+		if (boundary->BoundaryFeatureInterpretation != nullptr && boundary->BoundaryFeatureInterpretation->QualifiedType.find("FaultInterpretation") != std::string::npos) {
 			if (currentIndex == index) {
 				return COMMON_NS::DataObjectReference(boundary->BoundaryFeatureInterpretation);
 			}
@@ -108,7 +108,7 @@ unsigned int StructuralOrganizationInterpretation::getHorizonInterpretationCount
 
 	unsigned int result = 0;
 	for (auto const* boundary : structuralOrganization->OrderedBoundaryFeatureInterpretation) {
-		if (boundary->BoundaryFeatureInterpretation != nullptr && boundary->BoundaryFeatureInterpretation->ContentType.find("HorizonInterpretation") != std::string::npos) {
+		if (boundary->BoundaryFeatureInterpretation != nullptr && boundary->BoundaryFeatureInterpretation->QualifiedType.find("HorizonInterpretation") != std::string::npos) {
 			++result;
 		}
 	}
@@ -121,7 +121,7 @@ COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getHorizonI
 	_resqml22__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3);
 	unsigned int currentIndex = 0;
 	for (auto const* boundary : structuralOrganization->OrderedBoundaryFeatureInterpretation) {
-		if (boundary->BoundaryFeatureInterpretation != nullptr && boundary->BoundaryFeatureInterpretation->ContentType.find("HorizonInterpretation") != std::string::npos) {
+		if (boundary->BoundaryFeatureInterpretation != nullptr && boundary->BoundaryFeatureInterpretation->QualifiedType.find("HorizonInterpretation") != std::string::npos) {
 			if (currentIndex == index) {
 				return COMMON_NS::DataObjectReference(boundary->BoundaryFeatureInterpretation);
 			}

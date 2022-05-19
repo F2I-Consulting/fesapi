@@ -144,7 +144,7 @@ uint64_t StratigraphicColumnRankInterpretation::getHorizonInterpretationCount() 
 	uint64_t result = 0;
 	for (auto const* contactIdx : cr->ContactInterpretation) {
 		if (contactIdx->PartOf != nullptr &&
-			contactIdx->PartOf->ContentType.find("HorizonInterpretation") != std::string::npos) {
+			contactIdx->PartOf->QualifiedType.find("HorizonInterpretation") != std::string::npos) {
 			++result;
 		}
 	}
@@ -162,7 +162,7 @@ COMMON_NS::DataObjectReference StratigraphicColumnRankInterpretation::getHorizon
 	unsigned int result = 0;
 	for (auto const* contactIdx : cr->ContactInterpretation) {
 		if (contactIdx->PartOf != nullptr &&
-			contactIdx->PartOf->ContentType.find(RESQML2_NS::HorizonInterpretation::XML_TAG) != std::string::npos) {
+			contactIdx->PartOf->QualifiedType.find(RESQML2_NS::HorizonInterpretation::XML_TAG) != std::string::npos) {
 			++result;
 		}
 		if (result > 0 && index == result - 1) {

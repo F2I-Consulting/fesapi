@@ -34,9 +34,6 @@ under the License.
 #include "../resqml2/WellboreMarkerFrameRepresentation.h"
 
 #include "../resqml2_0_1/WellboreMarker.h"
-#if WITH_RESQML2_2
-#include "../resqml2_2/WellboreMarker.h"
-#endif
 
 #include "../witsml2_0/Log.h"
 #include "../witsml2_0/Channel.h"
@@ -209,9 +206,6 @@ void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64
 		for (auto* dataobject : uuidDataobjectPair.second) {
 			if (!dataobject->isPartial() &&
 				dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(dataobject) == nullptr &&
-#if WITH_RESQML2_2
-				dynamic_cast<RESQML2_2_NS::WellboreMarker*>(dataobject) == nullptr &&
-#endif
 				(dynamic_cast<WITSML2_0_NS::ChannelSet*>(dataobject) == nullptr || static_cast<WITSML2_0_NS::ChannelSet*>(dataobject)->getLogs().empty()) &&
 				(dynamic_cast<WITSML2_0_NS::Channel*>(dataobject) == nullptr || static_cast<WITSML2_0_NS::Channel*>(dataobject)->getChannelSets().empty())) {
 				// Dataobject

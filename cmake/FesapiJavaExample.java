@@ -32,8 +32,10 @@ import com.f2i_consulting.fesapi.eml21__LengthUom;
 import com.f2i_consulting.fesapi.eml21__MassPerLengthUom;
 import com.f2i_consulting.fesapi.eml21__WellStatus;
 import com.f2i_consulting.fesapi.eml21__WellboreDatumReference;
+${COMMENT_START}
 import com.f2i_consulting.fesapi.eml23__IndexableElement;
-import com.f2i_consulting.fesapi.eml23__WellboreDatumReference;
+import com.f2i_consulting.fesapi.eml23__ReferencePointKind;
+${COMMENT_END}
 import com.f2i_consulting.fesapi.fesapi;
 import com.f2i_consulting.fesapi.resqml20__ResqmlPropertyKind;
 import com.f2i_consulting.fesapi.resqml20__ResqmlUom;
@@ -155,7 +157,7 @@ public class FesapiJavaExample {
 		WellboreInterpretation wellbore1Interp1 = repo.createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
 
 		// Representation
-		ReferencePointInALocalEngineeringCompoundCrs mdInfo = repo.createReferencePointInALocalEngineeringCompoundCrs("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", repo.getDefaultCrs(), eml23__WellboreDatumReference.mean_x0020sea_x0020level, 275, 75, 0);
+		ReferencePointInALocalEngineeringCompoundCrs mdInfo = repo.createReferencePointInALocalEngineeringCompoundCrs("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", repo.getDefaultCrs(), eml23__ReferencePointKind.mean_x0020sea_x0020level, 275, 75, 0);
 
 		//Geometry	
 		WellboreTrajectoryRepresentation w1i1TrajRep = repo.createWellboreTrajectoryRepresentation(wellbore1Interp1, "acd2cdcf-bb5d-48da-bd0e-9aeff3e52180", "Wellbore1 Interp1 TrajRep", mdInfo);
@@ -298,7 +300,7 @@ ${COMMENT_END}
 		}
 
 		// Features
-		horizon1 = repo.createHorizon("35d7b57e-e5ff-4062-95af-ba2d7c4ce347", "Horizon1");
+		horizon1 = repo.createBoundaryFeature("35d7b57e-e5ff-4062-95af-ba2d7c4ce347", "Horizon1");
 		if (horizon1 instanceof Resqml20_Horizon) {
 			((Resqml20_Horizon)horizon1).setAge(300000000);
 		}
@@ -479,7 +481,7 @@ ${COMMENT_END}
 	private static void serializeIjkGrid(DataObjectRepository repo, AbstractHdfProxy hdfProxy)
 	{
 		cellIndexPropKind = repo.createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", resqml20__ResqmlUom.Euc, resqml20__ResqmlPropertyKind.discrete);
-		Model earthModel = repo.createEarthModel("f2060ce0-fa3d-11e5-8620-0002a5d5c51b", "Grid");
+		Model earthModel = repo.createModel("f2060ce0-fa3d-11e5-8620-0002a5d5c51b", "Grid");
 		EarthModelInterpretation earthModelInterp = repo.createEarthModelInterpretation(earthModel, "f5cd7520-fa3d-11e5-b65b-0002a5d5c51b", "Grid interp");
 		ijkgrid = repo.createIjkGridExplicitRepresentation(earthModelInterp, "df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Two faulted sugar cubes (explicit geometry)", 2, 1, 1);
 		DiscreteProperty discreteProp1 = repo.createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex",
@@ -593,7 +595,7 @@ ${COMMENT_START}
 		// Continuous color map
 		// ********************
 
-		BoundaryFeature contColMapHrz = repo.createHorizon("b9ec6ec9-2766-4af7-889e-5565b5fa5022", "Horizon for continuous color map");
+		BoundaryFeature contColMapHrz = repo.createBoundaryFeature("b9ec6ec9-2766-4af7-889e-5565b5fa5022", "Horizon for continuous color map");
 		HorizonInterpretation contColMapHrzInterp = repo.createHorizonInterpretation(contColMapHrz, "34b69c81-6cfa-4531-be5b-f6bd9b74802f", "Horizon interpretation for continuous color map");
 		Grid2dRepresentation contColMapGrid2dRep = repo.createGrid2dRepresentation(contColMapHrzInterp, "4e56b0e4-2cd1-4efa-97dd-95f72bcf9f80", "100x10 grid 2d for continuous color map");
 		int numPointInFastestDirection = 50;

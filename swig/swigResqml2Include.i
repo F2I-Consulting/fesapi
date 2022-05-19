@@ -1959,29 +1959,25 @@ namespace gsoap_resqml2_0_1
 }
 namespace gsoap_eml2_3
 {
-	enum class resqml22__TimeSetKind {
-		single_x0020time = 0,
-		single_x0020time_x0020series = 1,
-		equivalent_x0020times = 2,
-		not_x0020a_x0020time_x0020set = 3
-	};
-	enum class eml23__WellboreDatumReference {
-		ground_x0020level = 0,
-		kelly_x0020bushing = 1,
-		mean_x0020sea_x0020level = 2,
-		derrick_x0020floor = 3,
-		casing_x0020flange = 4,
-		crown_x0020valve = 5,
-		rotary_x0020bushing = 6,
-		rotary_x0020table = 7,
-		sea_x0020floor = 8,
-		lowest_x0020astronomical_x0020tide = 9,
-		mean_x0020higher_x0020high_x0020water = 10,
-		mean_x0020high_x0020water = 11,
-		mean_x0020lower_x0020low_x0020water = 12,
-		mean_x0020low_x0020water = 13,
-		mean_x0020tide_x0020level = 14,
-		kickoff_x0020point = 15
+	enum class eml23__ReferencePointKind {
+		casing_x0020flange = 0,
+		crown_x0020valve = 1,
+		derrick_x0020floor = 2,
+		ground_x0020level = 3,
+		kelly_x0020bushing = 4,
+		kickoff_x0020point = 5,
+		lowest_x0020astronomical_x0020tide = 6,
+		mean_x0020high_x0020water = 7,
+		mean_x0020higher_x0020high_x0020water = 8,
+		mean_x0020low_x0020water = 9,
+		mean_x0020lower_x0020low_x0020water = 10,
+		mean_x0020sea_x0020level = 11,
+		mean_x0020tide_x0020level = 12,
+		rotary_x0020bushing = 13,
+		rotary_x0020table = 14,
+		seafloor = 15,
+		wellhead = 16,
+		well_x0020surface_x0020location = 17
 	};
 	enum class resqml22__Shape3d {
 		sheet = 0,

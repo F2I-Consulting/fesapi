@@ -225,7 +225,7 @@ FESAPI_TEST("Export and import continuous properties on a partial grid", "[prope
 
 // RESQML WELL
 FESAPI_TEST("Export and import a wellbore trajectory", "[well][trajectory]", WellboreTrajectoryRepresentationTest)
-FESAPI_TEST("Export and import a wellbore marker frame", "[well][stratigraphy]", WellboreMarkerFrameRepresentationTest)
+FESAPI_TEST2_0("Export and import a wellbore marker frame", "[well][stratigraphy]", WellboreMarkerFrameRepresentationTest)
 FESAPI_TEST("Export and import a wellbore frame (regular md spacings)", "[well]", resqml2_test::WellboreRegularFrameRepresentationTest)
 
 FESAPI_TEST("Export and import a wellbore frame (irregular md spacings) with a single continuous property on node", "[well][property]", ContinuousPropertyOnWellFrameTest)

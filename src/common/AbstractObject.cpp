@@ -854,7 +854,7 @@ gsoap_eml2_3::eml23__DataObjectReference* AbstractObject::newEml23Reference() co
 	gsoap_eml2_3::eml23__DataObjectReference* result = gsoap_eml2_3::soap_new_eml23__DataObjectReference(getGsoapContext());
 	result->Uuid = getUuid();
 	result->Title = getTitle();
-	result->ContentType = getContentType();
+	result->QualifiedType = getContentType();
 	if (!getVersion().empty()) // Not partial transfer
 	{
 		result->ObjectVersion = gsoap_eml2_3::soap_new_std__string(getGsoapContext());
@@ -897,7 +897,7 @@ gsoap_eml2_3::resqml22__ContactElement* AbstractObject::newContactElementReferen
 		result->ObjectVersion->assign(getVersion());
 	}
 	result->Title = getTitle();
-	result->ContentType = getContentType();
+	result->QualifiedType = getContentType();
 
 	return result;
 }
@@ -1196,7 +1196,7 @@ std::string AbstractObject::getExtraMetadataStringValueAtIndex(uint64_t index) c
 
 std::string AbstractObject::buildEtp12Uri() const
 {
-	return "eml:///" + getQualifiedType() + "(" + getUuid() + ")";
+	return uriSource_ + getQualifiedType() + "(" + getUuid() + ")";
 }
 
 void AbstractObject::readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray * arrayInput, double * arrayOutput) const
