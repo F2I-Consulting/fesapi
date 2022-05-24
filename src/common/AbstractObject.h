@@ -1113,6 +1113,7 @@ namespace COMMON_NS
 				if (targetObj == nullptr) {
 					throw std::invalid_argument("The DOR looks invalid.");
 				}
+				targetObj->setUriSource(getUriSource());
 			}
 			getRepository()->addRelationship(this, targetObj);
 		}

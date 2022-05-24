@@ -186,6 +186,26 @@ namespace COMMON_NS
 		}
 
 		/**
+		 * Gets the Energistics URI of the referenced data object
+		 *
+		 * @returns	The Energistics URI of the referenced data object if it exists, otherwise empty string.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getEnergisticsUri() const {
+			if (dor21 != nullptr && dor21->Uri != nullptr) {
+				return *dor21->Uri;
+			}
+			else if (dor22 != nullptr && dor22->Uri != nullptr) {
+				return *dor22->Uri;
+			}
+			else if (dor23 != nullptr && dor23->Uri != nullptr) {
+				return *dor23->Uri;
+			}
+			else {
+				return "";
+			}
+		}
+
+		/**
 		* Convert this instance to an EML2.0 DataObjectReference
 		* The return type memory will be managed by gSoap, don't delete it.
 		*
