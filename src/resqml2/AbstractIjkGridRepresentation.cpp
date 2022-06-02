@@ -640,7 +640,7 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 	}
 }
 
-bool AbstractIjkGridRepresentation::hasEnabledCellInformation() const
+bool AbstractIjkGridRepresentation::hasCellGeometryIsDefinedFlags() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
@@ -652,10 +652,10 @@ bool AbstractIjkGridRepresentation::hasEnabledCellInformation() const
 	}
 }
 
-void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool reverseIAxis, bool reverseJAxis, bool reverseKAxis) const
+void AbstractIjkGridRepresentation::getCellGeometryIsDefinedFlags(bool * cellGeometryIsDefinedFlags, bool reverseIAxis, bool reverseJAxis, bool reverseKAxis) const
 {
-	if (!hasEnabledCellInformation()) {
-		throw invalid_argument("The grid has no geometry or no information about enabled cells.");
+	if (!hasCellGeometryIsDefinedFlags()) {
+		throw invalid_argument("The grid has no geometry or no information about CellGeometryIsDefined Flags.");
 	}
 
 	const uint64_t cellCount = getCellCount();
@@ -670,13 +670,13 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 			std::unique_ptr<char[]> tmp(new char[cellCount]);
 			hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, tmp.get());
 			for (uint64_t i = 0; i < cellCount; ++i) {
-				enabledCells[i] = tmp[i] != 0;
+				cellGeometryIsDefinedFlags[i] = tmp[i] != 0;
 			}
 		}
 		else if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray) {
 			const bool enabled = static_cast<resqml20__BooleanConstantArray*>(geom->CellGeometryIsDefined)->Value;
 			for (uint64_t i = 0; i < cellCount; ++i) {
-				enabledCells[i] = enabled;
+				cellGeometryIsDefinedFlags[i] = enabled;
 			}
 		}
 		else {
@@ -694,13 +694,13 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 			std::unique_ptr<char[]> tmp(new char[cellCount]);
 			hdfProxy->readArrayNdOfCharValues(dataset->ExternalFileProxy[0]->PathInExternalFile, tmp.get());
 			for (unsigned int i = 0; i < cellCount; ++i) {
-				enabledCells[i] = tmp[i] != 0;
+				cellGeometryIsDefinedFlags[i] = tmp[i] != 0;
 			}
 		}
 		else if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray) {
 			const bool enabled = static_cast<gsoap_eml2_3::eml23__BooleanConstantArray*>(geom->CellGeometryIsDefined)->Value;
 			for (uint64_t i = 0; i < cellCount; ++i) {
-				enabledCells[i] = enabled;
+				cellGeometryIsDefinedFlags[i] = enabled;
 			}
 		}
 		else {
@@ -713,7 +713,7 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 		const uint64_t arrayCount = getCellCount();
 		std::unique_ptr<bool[]> initialCellGeometryIsDefined(new bool[arrayCount]);
 		for (uint64_t index = 0; index < arrayCount; ++index) {
-			initialCellGeometryIsDefined[index] = enabledCells[index];
+			initialCellGeometryIsDefined[index] = cellGeometryIsDefinedFlags[index];
 		}
 
 		if (reverseIAxis) {
@@ -721,7 +721,7 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 			for (unsigned int k = 0; k < getKCellCount(); ++k) {
 				for (unsigned int j = 0; j < getJCellCount(); ++j) {
 					for (unsigned int i = 0; i < getICellCount(); ++i) {
-						enabledCells[cellIndex] = initialCellGeometryIsDefined[getICellCount() - 1 - i + j*getICellCount() + k*getICellCount()*getJCellCount()];
+						cellGeometryIsDefinedFlags[cellIndex] = initialCellGeometryIsDefined[getICellCount() - 1 - i + j*getICellCount() + k*getICellCount()*getJCellCount()];
 						++cellIndex;
 					}
 				}
@@ -733,7 +733,7 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 			for (unsigned int k = 0; k < getKCellCount(); ++k) {
 				for (unsigned int j = 0; j < getJCellCount(); ++j) {
 					for (unsigned int i = 0; i < getICellCount(); ++i) {
-						enabledCells[cellIndex] = initialCellGeometryIsDefined[i + (getJCellCount() - 1 -j)*getICellCount() + k*getICellCount()*getJCellCount()];
+						cellGeometryIsDefinedFlags[cellIndex] = initialCellGeometryIsDefined[i + (getJCellCount() - 1 -j)*getICellCount() + k*getICellCount()*getJCellCount()];
 						++cellIndex;
 					}
 				}
@@ -745,7 +745,7 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 			for (unsigned int k = 0; k < getKCellCount(); ++k) {
 				for (unsigned int j = 0; j < getJCellCount(); ++j) {
 					for (unsigned int i = 0; i < getICellCount(); ++i) {
-						enabledCells[cellIndex] = initialCellGeometryIsDefined[i + j*getICellCount() + (getKCellCount() - 1 -k)*getICellCount()*getJCellCount()];
+						cellGeometryIsDefinedFlags[cellIndex] = initialCellGeometryIsDefined[i + j*getICellCount() + (getKCellCount() - 1 -k)*getICellCount()*getJCellCount()];
 						++cellIndex;
 					}
 				}
@@ -1314,7 +1314,7 @@ void AbstractIjkGridRepresentation::getXyzPointsOfKInterface(unsigned int kInter
 	getXyzPointsOfKInterfaceSequence(kInterface, kInterface, xyzPoints);
 }
 
-void AbstractIjkGridRepresentation::setEnabledCells(unsigned char* enabledCells, EML2_NS::AbstractHdfProxy* proxy)
+void AbstractIjkGridRepresentation::setCellGeometryIsDefinedFlags(unsigned char* cellGeometryIsDefinedFlags, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -1354,7 +1354,33 @@ void AbstractIjkGridRepresentation::setEnabledCells(unsigned char* enabledCells,
 
 	// HDF
 	hsize_t cellGeometryIsDefinedCount[3] = { getKCellCount(), getJCellCount(), getICellCount() };
-	proxy->writeArrayNd(getHdfGroup(), "CellGeometryIsDefined", H5T_NATIVE_UCHAR, enabledCells, cellGeometryIsDefinedCount, 3);
+	proxy->writeArrayNd(getHdfGroup(), "CellGeometryIsDefined", H5T_NATIVE_UCHAR, cellGeometryIsDefinedFlags, cellGeometryIsDefinedCount, 3);
+}
+
+void AbstractIjkGridRepresentation::setAllCellGeometryFlagsToDefined()
+{
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
+		if (geom == nullptr) {
+			throw invalid_argument("There is no geometry on this IJK grid.");
+		}
+
+		resqml20__BooleanConstantArray* boolArray = soap_new_resqml20__BooleanConstantArray(gsoapProxy2_0_1->soap);
+		boolArray->Count = getCellCount();
+		boolArray->Value = true;
+		geom->CellGeometryIsDefined = boolArray;
+	}
+	else {
+		gsoap_eml2_3::resqml22__IjkGridGeometry* geom = static_cast<gsoap_eml2_3::resqml22__IjkGridGeometry*>(getPointGeometry2_2(0));
+		if (geom == nullptr) {
+			throw invalid_argument("There is no geometry on this IJK grid.");
+		}
+
+		gsoap_eml2_3::eml23__BooleanConstantArray* boolArray = gsoap_eml2_3::soap_new_eml23__BooleanConstantArray(gsoapProxy2_3->soap);
+		boolArray->Count = getCellCount();
+		boolArray->Value = true;
+		geom->CellGeometryIsDefined = boolArray;
+	}
 }
 
 gsoap_resqml2_0_1::resqml20__KDirection AbstractIjkGridRepresentation::getKDirection() const

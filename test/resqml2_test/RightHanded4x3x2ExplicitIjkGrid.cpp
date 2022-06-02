@@ -67,12 +67,12 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepo() {
 	ijkGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape::vertical, gsoap_resqml2_0_1::resqml20__KDirection::down, false, nodesIjkGridRepresentation, nullptr,
 		4, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
-	// Enabling cell
-	unsigned char enabledCells[24] = {
+	// CellGeometryIsDefinedFlags
+	unsigned char cellGeometryIsDefinedFlags[24] = {
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0
 	};
-	ijkGrid->setEnabledCells(enabledCells);
+	ijkGrid->setCellGeometryIsDefinedFlags(cellGeometryIsDefinedFlags);
 
 	// Grid connection set representation
 	RESQML2_NS::GridConnectionSetRepresentation * gridConnSet432 = repo->createGridConnectionSetRepresentation("a3d1462a-04e3-4374-921b-a4a1e9ba3ea3", "GridConnectionSetRepresentation");

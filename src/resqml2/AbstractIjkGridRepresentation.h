@@ -506,49 +506,61 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void getPillarGeometryIsDefined(bool * pillarGeometryIsDefined, bool reverseIAxis = false, bool reverseJAxis = false) const;
 
 		/**
-		 * Indicates if this grid contains information about enabled and disabled (dead/invisible) cells.
+		 * Indicates if this grid contains a flag on each cell indicating if its geometry is defined or not
+		 * (i.e. meaning that at least one of the coordinates of at least one of the cell vertex is NaN).
+		 * Do not mix this flag with the active one : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-289-0-C-sv2010.html
 		 *
-		 * @returns	True if this grid contains information about enabled and disabled cells, false if not.
+		 * @returns	True if this grid contains a flag on each cell indicating if its geometry is defined or not, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasEnabledCellInformation() const;
+		DLL_IMPORT_OR_EXPORT bool hasCellGeometryIsDefinedFlags() const;
 
 		/**
-		 * Get the information about enabled and disabled (dead/invisible) cells.
+		 * Get the flags for each cell indicating if its geometry is defined or not
+		 * (i.e. meaning that at least one of the coordinates of at least one of the cell vertex is NaN).
+		 * Do not mix this flag with the active one : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-289-0-C-sv2010.html
 		 *
-		 * @exception	std::invalid_argument	If this grid has no geometry or no information about enabled
-		 * 										are disabled cells.
-		 * @exception	std::invalid_argument	If the enabled and disabled celles information is neither
+		 * @exception	std::invalid_argument	If this grid has no geometry or no CellGeometryIsDefined flags.
+		 * @exception	std::invalid_argument	If the CellGeometryIsDefined flags are neither
 		 * 										stored in an HDF5 boolean array nor in a boolean constant
 		 * 										array.
 		 *
-		 * @param [out]	enabledCells	An array for receiving the information about enabled and disabled
-		 * 								cells. It must have a count of getCellCount() and must follow the
+		 * @param [out]	cellGeometryIsDefinedFlags	An array for receiving the CellGeometryIsDefined flags.
+		 *								It must have a count of getCellCount() and must follow the
 		 * 								index ordering I then J then K. It won't be free. A zero value in
-		 * 								@p enabledCells means that the corresponding cell is disabled. A non
-		 * 								zero value means that the corresponding cell is enabled.
+		 * 								@p cellGeometryIsDefinedFlags means that the corresponding cell geometry is not defined. A non
+		 * 								zero value means that the corresponding cell geometry is defined.
 		 * @param 	   	reverseIAxis	(Optional) True to reverse i axis. Default value is false.
 		 * @param 	   	reverseJAxis	(Optional) True to reverse j axis. Default value is false.
 		 * @param 	   	reverseKAxis	(Optional) True to reverse k axis. Default value is false.
 		 */
-		DLL_IMPORT_OR_EXPORT void getEnabledCells(bool * enabledCells, bool reverseIAxis = false, bool reverseJAxis= false, bool reverseKAxis= false) const;
+		DLL_IMPORT_OR_EXPORT void getCellGeometryIsDefinedFlags(bool* cellGeometryIsDefinedFlags, bool reverseIAxis = false, bool reverseJAxis= false, bool reverseKAxis= false) const;
 
 		/**
-		 * Sets the information about the enabled and disabled (dead/invisible) cells.
+		 * Sets the flags for each cell indicating if its geometry is defined or not
+		 * (i.e. meaning that at least one of the coordinates of at least one of the cell vertex is NaN).
+		 * Do not mix this flag with the active one : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-289-0-C-sv2010.html
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
 		 * @exception	std::invalid_argument	If this grid has no geometry.
 		 *
-		 * @param [in]	  	enabledCells	An array containing the enabled/disabled information for each
-		 * 									cell. It must have a count of getCellCount() and must follow the
-		 * 									index ordering I then J then K. A zero value in @p enabledCells
-		 * 									means that the corresponding cell is disabled. A non zero value
-		 * 									means that the corresponding cell is enabled.
-		 * @param [in]		proxy			(Optional) The HDF proxy for writing the @p enabledCells
+		 * @param [in]	  	cellGeometryIsDefinedFlags	An array containing the CellGeometryIsDefined flags.
+		 *									It must have a count of getCellCount() and must follow the
+		 * 									index ordering I then J then K. A zero value in
+		 * 									@p cellGeometryIsDefinedFlags means that the corresponding cell geometry is not defined. A non
+		 * 									zero value means that the corresponding cell geometry is defined.
+		 * @param [in]		proxy			(Optional) The HDF proxy for writing the @p cellGeometryIsDefinedFlags
 		 * 									values. If @c nullptr (default), then the default HDF proxy will be
 		 * 									used.
 		 */
-		DLL_IMPORT_OR_EXPORT void setEnabledCells(unsigned char* enabledCells, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void setCellGeometryIsDefinedFlags(unsigned char* cellGeometryIsDefinedFlags, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * Set to "defined" the flags for each cell indicating if its geometry is defined or not
+		 * (i.e. meaning that at least one of the coordinates of at least one of the cell vertex is NaN).
+		 * Do not mix this flag with the active one : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-289-0-C-sv2010.html
+		 */
+		DLL_IMPORT_OR_EXPORT void setAllCellGeometryFlagsToDefined();
 
 		/**
 		 * Loads the split information into memory to speed up processes. Be aware that you must unload

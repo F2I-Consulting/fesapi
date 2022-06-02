@@ -881,7 +881,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0
 	};
-	ijkgrid432rh->setEnabledCells(enabledCells32rh);
+	ijkgrid432rh->setCellGeometryIsDefinedFlags(enabledCells32rh);
 
 	// 4*3*2 explicit grid with gap layer
 	bool kgap[1] = { true };
@@ -920,7 +920,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0
 	};
-	ijkgrid432gap->setEnabledCells(enabledCells32gap);
+	ijkgrid432gap->setCellGeometryIsDefinedFlags(enabledCells32gap);
 
 	//**************
 	// Subrepresentations
@@ -5003,10 +5003,10 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 		}
 
 		std::unique_ptr<bool[]> enabledCells;
-		if (ijkGrid->hasEnabledCellInformation()) {
-			std::cout << "Has enabled/disabled cell information" << std::endl;
+		if (ijkGrid->hasCellGeometryIsDefinedFlags()) {
+			std::cout << "Has CellGeometryIsDefined Flags" << std::endl;
 			enabledCells = std::unique_ptr<bool[]>(new bool[ijkGrid->getCellCount()]);
-			ijkGrid->getEnabledCells(enabledCells.get());
+			ijkGrid->getCellGeometryIsDefinedFlags(enabledCells.get());
 		}
 		showAllProperties(ijkGrid, enabledCells.get());
 	}
@@ -5579,14 +5579,14 @@ void deserialize(const string & inputFile)
 int main()
 {
 	//try {
-	if (serialize(filePath)) {
-		deserialize(filePath);
-	}
+		if (serialize(filePath)) {
+			deserialize(filePath);
+		}
 	/*}
 	catch (const std::invalid_argument & Exp)
 	{
-	std::cerr << "Error : " << Exp.what() << ".\n";
-	return 1;
+		std::cerr << "Error : " << Exp.what() << ".\n";
+		return 1;
 	}*/
 
 #ifdef _WIN32
