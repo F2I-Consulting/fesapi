@@ -713,121 +713,73 @@ namespace COMMON_NS
 
 	protected:
 		/** Should be instantiated when the object is (or was) a partial object. */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject = nullptr;
 
 		/** The underlying generated gSoap proxy for a EML 2.0 dataobject. */
-		gsoap_witsml1_4::witsml14__obj_USCOREtrajectory* gsoapProxyTraj1_4;
+		gsoap_witsml1_4::witsml14__obj_USCOREtrajectory* gsoapProxyTraj1_4 = nullptr;
 
 		/** The underlying generated gSoap proxy for a EML 2.0 dataobject. */
-		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
+		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1 = nullptr;
 
 		/** The underlying generated gSoap proxy for a EML 2.1 dataobject. */
-		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1;
+		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1 = nullptr;
 
 		/** The underlying generated gSoap proxy for a EML 2.2 dataobject. */
-		gsoap_eml2_2::eml22__AbstractObject* gsoapProxy2_2;
+		gsoap_eml2_2::eml22__AbstractObject* gsoapProxy2_2 = nullptr;
 
 		/** The underlying generated gSoap proxy for a EML 2.3 dataobject. */
-		gsoap_eml2_3::eml23__AbstractObject* gsoapProxy2_3;
+		gsoap_eml2_3::eml23__AbstractObject* gsoapProxy2_3 = nullptr;
 
 		/** The repository which contains this data object. */
-		COMMON_NS::DataObjectRepository* repository;
+		COMMON_NS::DataObjectRepository* repository = nullptr;
 
 		/**
 		* Default constructor
 		*/
-		AbstractObject() :
-			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
-			gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
+		AbstractObject() = default;
 
 		/**
 		 * Constructor for partial transfer
 		 *
 		 * @param [in,out]	partialObject_	If non-null, the partial object.
 		 */
-		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_) :
-			partialObject(partialObject_), gsoapProxyTraj1_4(nullptr),
-			gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
-		AbstractObject(const DataObjectReference& dor) :
-			partialObject(dor.toDor20()), gsoapProxyTraj1_4(nullptr),
-			gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
+		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_) : partialObject(partialObject_) {}
+		AbstractObject(const DataObjectReference& dor) : partialObject(dor.toDor20()) {}
 
 		/**
 		 * Constructor when importing a WITSML1.4 trajectory
 		 *
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
-		AbstractObject(gsoap_witsml1_4::witsml14__obj_USCOREtrajectory* proxy) :
-			partialObject(nullptr), gsoapProxyTraj1_4(proxy),
-			gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
+		AbstractObject(gsoap_witsml1_4::witsml14__obj_USCOREtrajectory* proxy) : gsoapProxyTraj1_4(proxy) {}
 
 		/**
 		 * Constructor when importing EML 2.0 (i.e RESQML2.0.1) dataobjects
 		 *
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
-		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy) :
-			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
-			gsoapProxy2_0_1(proxy),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
+		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy) : gsoapProxy2_0_1(proxy) {}
 
 		/**
 		 * Constructor when importing EML 2.1 dataobjects
 		 *
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
-		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) :
-			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
-			gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(proxy),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
+		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) : gsoapProxy2_1(proxy) {}
 
 		/**
 		 * Constructor when importing EML 2.2 dataobjects
 		 *
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
-		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) :
-			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
-			gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(proxy),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
+		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) : gsoapProxy2_2(proxy) {}
 
 		/**
 		 * Constructor when importing EML 2.3 dataobjects
 		 *
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
-		AbstractObject(gsoap_eml2_3::eml23__AbstractObject* proxy) :
-			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
-			gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(proxy),
-			repository(nullptr) {}
+		AbstractObject(gsoap_eml2_3::eml23__AbstractObject* proxy) : gsoapProxy2_3(proxy) {}
 
 		
 		friend bool COMMON_NS::DataObjectRepository::addDataObject(COMMON_NS::AbstractObject* proxy);

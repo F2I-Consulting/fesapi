@@ -306,7 +306,7 @@ ${COMMENT_END}
 		}
 
 		// Interpretations
-		HorizonInterpretation horizon1Interp1 = repo.createBoundaryFeatureInterpretation(horizon1, "ac12dc12-4951-459b-b585-90f48aa88a5a", "Horizon1 Interp1");
+		HorizonInterpretation horizon1Interp1 = repo.createHorizonInterpretation(horizon1, "ac12dc12-4951-459b-b585-90f48aa88a5a", "Horizon1 Interp1");
 
 		// Horizon Representations
 		PolylineRepresentation h1i1SinglePolylineRep = repo.createPolylineRepresentation(horizon1Interp1, "", "Horizon1 Interp1 SinglePolylineRep");
