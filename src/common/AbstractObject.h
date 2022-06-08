@@ -674,7 +674,31 @@ namespace COMMON_NS
 		* Build and return an ETP1.2 URI from an Energistics dataobject.
 		* @return	The ETP1.2 URI built from the Energistics dataobject
 		*/
-		DLL_IMPORT_OR_EXPORT std::string buildEtp12Uri() const;
+		DLL_IMPORT_OR_EXPORT std::string buildEtp12Uri() const { return uriSource_ + "/" + getQualifiedType() + "(" + getUuid() + ")"; }
+
+		/**
+		* Set the EPC document absolute path or the ETP dataspace URI where this dataobject comes from.
+		*/
+		DLL_IMPORT_OR_EXPORT void setUriSource(const std::string & uriSource) { uriSource_ = uriSource; }
+
+		/**
+		* Get the EPC document absolute path or the ETP dataspace URI where this dataobject comes from.
+		*/
+		DLL_IMPORT_OR_EXPORT const std::string& getUriSource() const { return uriSource_; }
+
+		/**
+		* Get the absolute folder path where the source EPC document is located.
+		* Returns empty if this dataobject does not come from an EPC document.
+		*/
+		std::string getEpcSourceFolder() const {
+			if (uriSource_.find(".epc") != uriSource_.size() - 4 &&
+				uriSource_.find(".EPC") != uriSource_.size() - 4) {
+				return "";
+			}
+
+			const size_t slashPos = uriSource_.find_last_of("/\\");
+			return slashPos != std::string::npos ? uriSource_.substr(0, slashPos + 1) : "";
+		}
 
 		/**
 		* Set the EPC document absolute path or the ETP dataspace URI where this dataobject comes from.
@@ -1081,6 +1105,7 @@ namespace COMMON_NS
 				if (targetObj == nullptr) {
 					throw std::invalid_argument("The DOR looks invalid.");
 				}
+				targetObj->setUriSource(getUriSource());
 			}
 			getRepository()->addRelationship(this, targetObj);
 		}

@@ -1594,6 +1594,7 @@ void AbstractObject::convertDorIntoRel(const DataObjectReference& dor)
 		if (targetObj == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
 		}
+		targetObj->setUriSource(getUriSource());
 	}
 	getRepository()->addRelationship(this, targetObj);
 }

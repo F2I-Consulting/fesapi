@@ -397,15 +397,7 @@ int64_t SubRepresentation::getElementIndicesOfPatch(uint64_t patchIndex, unsigne
 		throw out_of_range("The elementIndices does not exist at this index.");
 	}
 
-	if (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices)->Values;
-		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfInt64Values(dataset->PathInHdfFile, elementIndices);
-		return static_cast<resqml20__IntegerHdf5Array*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices)->NullValue;
-	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+	readArrayNdOfUInt64Values(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices, elementIndices);
 }
 
 void SubRepresentation::getSupportingRepresentationIndicesOfPatch(uint64_t patchIndex, short * supportingRepresentationIndices) const

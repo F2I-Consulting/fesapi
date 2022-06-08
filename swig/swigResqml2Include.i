@@ -3293,10 +3293,82 @@ namespace RESQML2_NS
 		 */
 		uint64_t getXyzPointIndexFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner) const;
 		
+		/**
+		 * Tells for each pillar if its geometry is defined. This method only looks at the corresponding
+		 * @c PillarGeometryIsDefined attribute in the gSOAP proxy.
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::range_error	 	If the count of cells in I or J direction is strictly
+		 * 										greater than unsigned int max.
+		 * @exception	std::invalid_argument	If there is no geometry on this IJK grid.
+		 * @exception	std::invalid_argument	If the values indicating for each pillar if its geometry
+		 * 										is defined are neither stored in an HDF5 boolean array
+		 * 										nor in a boolean constant array.
+		 *
+		 * @param [out]	pillarGeometryIsDefined	An array for receiving a boolean value for each pillar
+		 * 										indicating if its geometry is defined or not. It must be
+		 * 										preallocated with a size of getPillarCount().
+		 * @param 	   	reverseIAxis		   	(Optional) True to reverse i axis. Default value is false.
+		 * @param 	   	reverseJAxis		   	(Optional) True to reverse j axis. Default value is false.
+		 */
 		void getPillarGeometryIsDefined(bool * pillarGeometryIsDefined, bool reverseIAxis = false, bool reverseJAxis = false) const;
-		bool hasEnabledCellInformation() const;
-		void getEnabledCells(bool * enabledCells, bool reverseIAxis = false, bool reverseJAxis= false, bool reverseKAxis= false) const;
-		void setEnabledCells(unsigned char* enabledCells, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		
+		/**
+		 * Indicates if this grid contains a flag on each cell indicating if its geometry is defined or not
+		 * (i.e. meaning that at least one of the coordinates of at least one of the cell vertex is NaN).
+		 * Do not mix this flag with the active one : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-289-0-C-sv2010.html
+		 *
+		 * @returns	True if this grid contains a flag on each cell indicating if its geometry is defined or not, false if not.
+		 */
+		bool hasCellGeometryIsDefinedFlags() const;
+
+		/**
+		 * Get the flags for each cell indicating if its geometry is defined or not
+		 * (i.e. meaning that at least one of the coordinates of at least one of the cell vertex is NaN).
+		 * Do not mix this flag with the active one : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-289-0-C-sv2010.html
+		 *
+		 * @exception	std::invalid_argument	If this grid has no geometry or no CellGeometryIsDefined flags.
+		 * @exception	std::invalid_argument	If the CellGeometryIsDefined flags are neither
+		 * 										stored in an HDF5 boolean array nor in a boolean constant
+		 * 										array.
+		 *
+		 * @param [out]	cellGeometryIsDefinedFlags	An array for receiving the information about CellGeometryIsDefined flags.
+		 *								It must have a count of getCellCount() and must follow the
+		 * 								index ordering I then J then K. It won't be free. A zero value in
+		 * 								@p cellGeometryIsDefinedFlags means that the corresponding cell geometry is not defined. A non
+		 * 								zero value means that the corresponding cell geometry is defined.
+		 * @param 	   	reverseIAxis	(Optional) True to reverse i axis. Default value is false.
+		 * @param 	   	reverseJAxis	(Optional) True to reverse j axis. Default value is false.
+		 * @param 	   	reverseKAxis	(Optional) True to reverse k axis. Default value is false.
+		 */
+		void getCellGeometryIsDefinedFlags(bool * cellGeometryIsDefinedFlags, bool reverseIAxis = false, bool reverseJAxis= false, bool reverseKAxis= false) const;
+		
+		/**
+		 * Sets the flags for each cell indicating if its geometry is defined or not
+		 * (i.e. meaning that at least one of the coordinates of at least one of the cell vertex is NaN).
+		 * Do not mix this flag with the active one : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-289-0-C-sv2010.html
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If this grid has no geometry.
+		 *
+		 * @param [in]	  	cellGeometryIsDefinedFlags	An array containing the CellGeometryIsDefined flags.
+		 *									It must have a count of getCellCount() and must follow the
+		 * 									index ordering I then J then K. A zero value in
+		 * 									@p cellGeometryIsDefinedFlags means that the corresponding cell geometry is not defined. A non
+		 * 									zero value means that the corresponding cell geometry is defined.
+		 * @param [in]		proxy			(Optional) The HDF proxy for writing the @p cellGeometryIsDefinedFlags
+		 * 									values. If @c nullptr (default), then the default HDF proxy will be
+		 * 									used.
+		 */
+		void setCellGeometryIsDefinedFlags(unsigned char* cellGeometryIsDefinedFlags, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * Set to "defined" the flags for each cell indicating if its geometry is defined or not
+		 * (i.e. meaning that at least one of the coordinates of at least one of the cell vertex is NaN).
+		 * Do not mix this flag with the active one : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-289-0-C-sv2010.html
+		 */
+		void setAllCellGeometryFlagsToDefined();
 		
 		/**
 		 * Get the XYZ points count in each K layer interface.

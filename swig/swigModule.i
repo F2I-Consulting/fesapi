@@ -717,6 +717,22 @@ namespace COMMON_NS
 		 */
 		std::string getExtraMetadataKeyAtIndex(uint64_t index) const;
 
+		/*
+		* Build and return an ETP1.2 URI from an Energistics dataobject.
+		* @return	The ETP1.2 URI built from the Energistics dataobject
+		*/
+		std::string buildEtp12Uri() const;
+
+		/**
+		* Set the EPC document absolute path or the ETP dataspace URI where this dataobject comes from.
+		*/
+		void setUriSource(const std::string & uriSource);
+
+		/**
+		* Get the EPC document absolute path or the ETP dataspace URI where this dataobject comes from.
+		*/
+		const std::string& getUriSource() const;
+
 		/**
 		 * Get the value of a key value pair at a particular index in the extra metadata set of this
 		 * instance

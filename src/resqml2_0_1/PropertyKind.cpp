@@ -144,16 +144,7 @@ bool PropertyKind::isParentPartial() const
 		return false;
 	}
 
-	EML2_NS::PropertyKind* parentPk = getParentPropertyKind();
-	while (!parentPk->isPartial()) {
-		parentPk = parentPk->getParentPropertyKind();
-		auto parentPk201 = dynamic_cast<RESQML2_0_1_NS::PropertyKind*>(parentPk);
-		if (parentPk201->isParentAnEnergisticsPropertyKind()) {
-			break;
-		}
-	}
-
-	return parentPk->isPartial();
+	return getParentPropertyKind()->isParentPartial();
 }
 
 std::string PropertyKind::getBaseUomAsString() const
@@ -188,7 +179,7 @@ std::string PropertyKind::getParentAsString() const
 COMMON_NS::DataObjectReference PropertyKind::getParentPropertyKindDor() const
 {
 	if (isParentAnEnergisticsPropertyKind()) {
-		throw invalid_argument("The property kind parent of this property kind is not a local one.");
+		throw invalid_argument("The property kind parent of the property kind " + getUuid() + " is not a local one.");
 	}
 
 	gsoap_resqml2_0_1::_resqml20__PropertyKind* propKind = static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1);
