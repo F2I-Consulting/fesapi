@@ -734,14 +734,8 @@ void AbstractRepresentation::getSeismicLineAbscissaOfPointsOfPatch(uint64_t patc
 			throw invalid_argument("The patch of this representation has not got any seismic information.");
 		}
 
-		gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates* seisInfo = static_cast<gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates*>(geom->SeismicCoordinates);
-		if (seisInfo->LineAbscissa->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
-			gsoap_resqml2_0_1::resqml20__DoubleHdf5Array* dblValues = static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array*>(seisInfo->LineAbscissa);
-			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dblValues->Values->HdfProxy->UUID)
-				->readArrayNdOfDoubleValues(dblValues->Values->PathInHdfFile, values);
-		}
-		else
-			throw logic_error("Not implemented yet");
+		gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates const* seisInfo = static_cast<gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates*>(geom->SeismicCoordinates);
+		readArrayNdOfDoubleValues(seisInfo->LineAbscissa, values);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::resqml22__PointGeometry* const geom = getPointGeometry2_2(patchIndex);
@@ -750,13 +744,8 @@ void AbstractRepresentation::getSeismicLineAbscissaOfPointsOfPatch(uint64_t patc
 			throw invalid_argument("The patch of this representation has not got any seismic information.");
 		}
 
-		gsoap_eml2_3::resqml22__Seismic2dCoordinates* seisInfo = static_cast<gsoap_eml2_3::resqml22__Seismic2dCoordinates*>(geom->SeismicCoordinates);
-		if (seisInfo->LineAbscissa->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
-			gsoap_eml2_3::eml23__FloatingPointExternalArray* dblValues = static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(seisInfo->LineAbscissa);
-			getOrCreateHdfProxyFromDataArrayPart(dblValues->Values->ExternalDataArrayPart[0])->readArrayNdOfDoubleValues(dblValues->Values->ExternalDataArrayPart[0]->PathInExternalFile, values);
-		}
-		else
-			throw logic_error("Not implemented yet");
+		gsoap_eml2_3::resqml22__Seismic2dCoordinates const* seisInfo = static_cast<gsoap_eml2_3::resqml22__Seismic2dCoordinates*>(geom->SeismicCoordinates);
+		readArrayNdOfDoubleValues(seisInfo->LineAbscissa, values);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -771,13 +760,7 @@ void AbstractRepresentation::getInlinesOfPointsOfPatch(uint64_t patchIndex, doub
 			throw invalid_argument("The patch of this representation has not got any seismic information.");
 		}
 
-		if (seisInfo->InlineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
-			gsoap_resqml2_0_1::resqml20__DoubleHdf5Array* dblValues = static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array*>(seisInfo->InlineCoordinates);
-			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dblValues->Values->HdfProxy->UUID)
-				->readArrayNdOfDoubleValues(dblValues->Values->PathInHdfFile, values);
-		}
-		else
-			throw logic_error("Not implemented yet");
+		readArrayNdOfDoubleValues(seisInfo->InlineCoordinates, values);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		auto seisInfo = getSeismic3dCoordinates2_2(patchIndex);
@@ -785,12 +768,7 @@ void AbstractRepresentation::getInlinesOfPointsOfPatch(uint64_t patchIndex, doub
 			throw invalid_argument("The patch of this representation has not got any seismic information.");
 		}
 
-		if (seisInfo->InlineCoordinates->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
-			gsoap_eml2_3::eml23__FloatingPointExternalArray* dblValues = static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(seisInfo->InlineCoordinates);
-			getOrCreateHdfProxyFromDataArrayPart(dblValues->Values->ExternalDataArrayPart[0])->readArrayNdOfDoubleValues(dblValues->Values->ExternalDataArrayPart[0]->PathInExternalFile, values);
-		}
-		else
-			throw logic_error("Not implemented yet");
+		readArrayNdOfDoubleValues(seisInfo->InlineCoordinates, values);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -804,26 +782,14 @@ void AbstractRepresentation::getCrosslinesOfPointsOfPatch(uint64_t patchIndex, d
 		if (seisInfo == nullptr) {
 			throw invalid_argument("The patch of this representation has not got any seismic information.");
 		}
-
-		if (seisInfo->CrosslineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
-			gsoap_resqml2_0_1::resqml20__DoubleHdf5Array* dblValues = static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array*>(seisInfo->CrosslineCoordinates);
-			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dblValues->Values->HdfProxy->UUID)->readArrayNdOfDoubleValues(dblValues->Values->PathInHdfFile, values);
-		}
-		else
-			throw logic_error("Not implemented yet");
+		readArrayNdOfDoubleValues(seisInfo->CrosslineCoordinates, values);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		auto seisInfo = getSeismic3dCoordinates2_2(patchIndex);
 		if (seisInfo == nullptr) {
 			throw invalid_argument("The patch of this representation has not got any seismic information.");
 		}
-
-		if (seisInfo->CrosslineCoordinates->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
-			gsoap_eml2_3::eml23__FloatingPointExternalArray* dblValues = static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(seisInfo->CrosslineCoordinates);
-			getOrCreateHdfProxyFromDataArrayPart(dblValues->Values->ExternalDataArrayPart[0])->readArrayNdOfDoubleValues(dblValues->Values->ExternalDataArrayPart[0]->PathInExternalFile, values);
-		}
-		else
-			throw logic_error("Not implemented yet");
+		readArrayNdOfDoubleValues(seisInfo->CrosslineCoordinates, values);
 	}
 	else {
 		throw logic_error("Not implemented yet");

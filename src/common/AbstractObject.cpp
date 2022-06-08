@@ -1194,11 +1194,6 @@ std::string AbstractObject::getExtraMetadataStringValueAtIndex(uint64_t index) c
 	throw logic_error("Not implemented yet.");
 }
 
-std::string AbstractObject::buildEtp12Uri() const
-{
-	return uriSource_ + getQualifiedType() + "(" + getUuid() + ")";
-}
-
 void AbstractObject::readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray * arrayInput, double * arrayOutput) const
 {
 	long soapType = arrayInput->soap_type();

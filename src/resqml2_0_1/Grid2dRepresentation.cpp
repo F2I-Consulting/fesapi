@@ -80,14 +80,7 @@ void Grid2dRepresentation::getZValues(double* values) const
 
 	if (rep->Grid2dPatch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dZValueArray) {
 		resqml20__AbstractDoubleArray* zValues = static_cast<resqml20__Point3dZValueArray*>(rep->Grid2dPatch->Geometry->Points)->ZValues;
-		if (zValues->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
-			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(zValues)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values);
-		}
-		else {
-			throw std::logic_error("The Z values can only be retrieved if they are described as a DoubleHdf5Array.");
-		}
+		readArrayNdOfDoubleValues(zValues, values);
 	}
 	else if (rep->Grid2dPatch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray) {
 		const double zOrigin = getZOrigin();
@@ -392,23 +385,7 @@ void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 	const uint64_t jSpacingCount = getNodeCountAlongJAxis() - 1;
 
 	if (arrayLatticeOfPoints3d != nullptr) {
-		if (arrayLatticeOfPoints3d->Offset[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray) {
-			const double constantSpacing = static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Value;
-			for (uint64_t j = 0; j < jSpacingCount; ++j) {
-				jSpacings[j] = constantSpacing;
-			}
-		}
-		else if (arrayLatticeOfPoints3d->Offset[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
-			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
-			if (hdfProxy == nullptr) {
-				throw logic_error("The HDF proxy is missing.");
-			}
-			hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, jSpacings);
-		}
-		else {
-			throw logic_error("Not implemented yet.");
-		}
+		readArrayNdOfDoubleValues(arrayLatticeOfPoints3d->Offset[0]->Spacing, jSpacings);
 	}
 	else if (!getSupportingRepresentationDor().isEmpty())
 	{
@@ -463,23 +440,7 @@ void Grid2dRepresentation::getISpacing(double* const iSpacings) const
 	const uint64_t iSpacingCount = getNodeCountAlongIAxis() - 1;
 
 	if (arrayLatticeOfPoints3d != nullptr) {
-		if (arrayLatticeOfPoints3d->Offset[1]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray) {
-			const double constantSpacing = static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[1]->Spacing)->Value;
-			for (uint64_t i = 0; i < iSpacingCount; ++i) {
-				iSpacings[i] = constantSpacing;
-			}
-		}
-		else if (arrayLatticeOfPoints3d->Offset[1]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
-			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(arrayLatticeOfPoints3d->Offset[1]->Spacing)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
-			if (hdfProxy == nullptr) {
-				throw invalid_argument("The HDF proxy is missing.");
-			}
-			hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, iSpacings);
-		}
-		else {
-			throw logic_error("Not implemented yet.");
-		}
+		readArrayNdOfDoubleValues(arrayLatticeOfPoints3d->Offset[1]->Spacing, iSpacings);
 	}
 	else if (!getSupportingRepresentationDor().isEmpty())
 	{

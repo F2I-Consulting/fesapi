@@ -184,15 +184,8 @@ int64_t AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		resqml20__AbstractColumnLayerGridRepresentation* rep = static_cast<resqml20__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
-
-		if (rep->IntervalStratigraphicUnits->UnitIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->IntervalStratigraphicUnits->UnitIndices)->Values;
-			getHdfProxyFromDataset(dataset)->readArrayNdOfInt64Values(dataset->PathInHdfFile, stratiUnitIndices);
-			return static_cast<resqml20__IntegerHdf5Array*>(rep->IntervalStratigraphicUnits->UnitIndices)->NullValue;
-		}
-
-		throw logic_error("Not implemented yet.");
+		resqml20__AbstractColumnLayerGridRepresentation const* rep = static_cast<resqml20__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
+		readArrayNdOfInt64Values(rep->IntervalStratigraphicUnits->UnitIndices, stratiUnitIndices);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		auto rep = static_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_3);

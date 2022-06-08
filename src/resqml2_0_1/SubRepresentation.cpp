@@ -397,7 +397,7 @@ int64_t SubRepresentation::getElementIndicesOfPatch(uint64_t patchIndex, unsigne
 		throw out_of_range("The elementIndices does not exist at this index.");
 	}
 
-	readArrayNdOfUInt64Values(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices, elementIndices);
+	readArrayNdOfInt64Values(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices, elementIndices);
 }
 
 void SubRepresentation::getSupportingRepresentationIndicesOfPatch(uint64_t patchIndex, short * supportingRepresentationIndices) const

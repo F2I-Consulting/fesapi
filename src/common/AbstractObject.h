@@ -699,30 +699,6 @@ namespace COMMON_NS
 			const size_t slashPos = uriSource_.find_last_of("/\\");
 			return slashPos != std::string::npos ? uriSource_.substr(0, slashPos + 1) : "";
 		}
-
-		/**
-		* Set the EPC document absolute path or the ETP dataspace URI where this dataobject comes from.
-		*/
-		DLL_IMPORT_OR_EXPORT void setUriSource(const std::string & uriSource) { uriSource_ = uriSource; }
-
-		/**
-		* Get the EPC document absolute path or the ETP dataspace URI where this dataobject comes from.
-		*/
-		DLL_IMPORT_OR_EXPORT const std::string& getUriSource() const { return uriSource_; }
-
-		/**
-		* Get the absolute folder path where the source EPC document is located.
-		* Returns empty if this dataobject does not come from an EPC document.
-		*/
-		std::string getEpcSourceFolder() const {
-			if (uriSource_.find(".epc") != uriSource_.size() - 4 &&
-				uriSource_.find(".EPC") != uriSource_.size() - 4) {
-				return "";
-			}
-
-			const size_t slashPos = uriSource_.find_last_of("/\\");
-			return slashPos != std::string::npos ? uriSource_.substr(0, slashPos + 1) : "";
-		}
 		
 		/** Transform a non partial object into a partial one
 		 *  It is particularly useful when a dataobject happens to be unvalid.

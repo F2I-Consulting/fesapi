@@ -393,23 +393,7 @@ void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 	const uint64_t jSpacingCount = getNodeCountAlongJAxis() - 1;
 
 	if (arrayLatticeOfPoints3d != nullptr) {
-		if (arrayLatticeOfPoints3d->Dimension[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray) {
-			const double constantSpacing = static_cast<eml23__FloatingPointConstantArray*>(arrayLatticeOfPoints3d->Dimension[0]->Spacing)->Value;
-			for (uint64_t j = 0; j < jSpacingCount; ++j) {
-				jSpacings[j] = constantSpacing;
-			}
-		}
-		else if (dynamic_cast<eml23__FloatingPointExternalArray*>(arrayLatticeOfPoints3d->Dimension[0]->Spacing) != nullptr) {
-			eml23__ExternalDataArrayPart const* daPart = static_cast<eml23__FloatingPointExternalArray*>(arrayLatticeOfPoints3d->Dimension[0]->Spacing)->Values->ExternalDataArrayPart[0];
-			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
-			if (hdfProxy == nullptr) {
-				throw logic_error("The HDF proxy is missing.");
-			}
-			hdfProxy->readArrayNdOfDoubleValues(daPart->PathInExternalFile, jSpacings);
-		}
-		else {
-			throw logic_error("Not implemented yet.");
-		}
+		readArrayNdOfDoubleValues(arrayLatticeOfPoints3d->Dimension[0]->Spacing, jSpacings);
 	}
 	else if (!getSupportingRepresentationDor().isEmpty())
 	{
@@ -464,23 +448,7 @@ void Grid2dRepresentation::getISpacing(double* iSpacings) const
 	const uint64_t iSpacingCount = getNodeCountAlongIAxis() - 1;
 
 	if (arrayLatticeOfPoints3d != nullptr) {
-		if (arrayLatticeOfPoints3d->Dimension[1]->Spacing->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray) {
-			const double constantSpacing = static_cast<eml23__FloatingPointConstantArray*>(arrayLatticeOfPoints3d->Dimension[1]->Spacing)->Value;
-			for (uint64_t i = 0; i < iSpacingCount; ++i) {
-				iSpacings[i] = constantSpacing;
-			}
-		}
-		else if (dynamic_cast<eml23__FloatingPointExternalArray*>(arrayLatticeOfPoints3d->Dimension[1]->Spacing) != nullptr) {
-			eml23__ExternalDataArrayPart const* daPart = static_cast<eml23__FloatingPointExternalArray*>(arrayLatticeOfPoints3d->Dimension[1]->Spacing)->Values->ExternalDataArrayPart[0];
-			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
-			if (hdfProxy == nullptr) {
-				throw invalid_argument("The HDF proxy is missing.");
-			}
-			hdfProxy->readArrayNdOfDoubleValues(daPart->PathInExternalFile, iSpacings);
-		}
-		else {
-			throw logic_error("Not implemented yet.");
-		}
+		readArrayNdOfDoubleValues(arrayLatticeOfPoints3d->Dimension[1]->Spacing, iSpacings);
 	}
 	else if (!getSupportingRepresentationDor().isEmpty())
 	{

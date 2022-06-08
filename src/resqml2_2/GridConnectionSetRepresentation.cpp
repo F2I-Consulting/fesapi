@@ -140,14 +140,8 @@ bool GridConnectionSetRepresentation::isAssociatedToInterpretations() const
 void GridConnectionSetRepresentation::getInterpretationIndexCumulativeCount(unsigned int * cumulativeCount) const
 {
 	if (isAssociatedToInterpretations()) {		
-		_resqml22__GridConnectionSetRepresentation* rep = static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3);
-		if (rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			eml23__ExternalDataArrayPart* daPart =  static_cast<eml23__IntegerExternalArray*>(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength)->Values->ExternalDataArrayPart[0];
-			getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfUIntValues(daPart->PathInExternalFile, cumulativeCount);
-		}
-		else {
-			throw std::logic_error("Not implemented yet");
-		}
+		_resqml22__GridConnectionSetRepresentation const* rep = static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3);
+		readArrayNdOfUInt32Values(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength, cumulativeCount);
 	}
 	else {
 		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");

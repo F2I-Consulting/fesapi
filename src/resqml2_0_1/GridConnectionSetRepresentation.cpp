@@ -382,16 +382,8 @@ unsigned int GridConnectionSetRepresentation::getInterpretationCount() const
 
 int64_t GridConnectionSetRepresentation::getCellIndexPairs(int64_t * cellIndexPairs) const
 {
-	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
-
-	if (rep->CellIndexPairs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->CellIndexPairs)->Values;
-		getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID)->readArrayNdOfInt64Values(dataset->PathInHdfFile, cellIndexPairs);
-		return static_cast<resqml20__IntegerHdf5Array*>(rep->CellIndexPairs)->NullValue;
-	}
-	else {
-		throw std::logic_error("Not yet implemented");
-	}
+	_resqml20__GridConnectionSetRepresentation const* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
+	readArrayNdOfInt64Values(rep->CellIndexPairs, cellIndexPairs);
 }
 
 bool GridConnectionSetRepresentation::isBasedOnMultiGrids() const 
@@ -406,15 +398,8 @@ void GridConnectionSetRepresentation::getGridIndexPairs(unsigned short * gridInd
 		throw std::invalid_argument("This representation has no multiple grid support.");
 	}
 
-	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
-
-	if (rep->GridIndexPairs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->GridIndexPairs)->Values;
-		getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID)->readArrayNdOfUShortValues(dataset->PathInHdfFile, gridIndexPairs);
-	}
-	else {
-		throw std::logic_error("Not implemented yet");
-	}
+	_resqml20__GridConnectionSetRepresentation const* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
+	readArrayNdOfUInt16Values(rep->GridIndexPairs, gridIndexPairs);
 }
 
 bool GridConnectionSetRepresentation::hasLocalFacePerCell() const
@@ -428,7 +413,7 @@ int64_t GridConnectionSetRepresentation::getLocalFacePerCellIndexPairs(int * loc
 		throw std::invalid_argument("This representation has no local face per cell.");
 	}
 
-	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__GridConnectionSetRepresentation const* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
 	if (rep->LocalFacePerCellIndexPairs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->LocalFacePerCellIndexPairs)->Values;

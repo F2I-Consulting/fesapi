@@ -146,41 +146,20 @@ void DeviationSurveyRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, dou
 
 void DeviationSurveyRepresentation::getMdValues(double * values) const
 {		
-	_resqml20__DeviationSurveyRepresentation* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
-	if (rep->Mds->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(rep->Mds)->Values;
-		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values);
-	}
-	else {
-		throw logic_error("Mds can only be defined using DoubleHdf5Array for now in fesapi.");
-	}
+	_resqml20__DeviationSurveyRepresentation const* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
+	readArrayNdOfDoubleValues(rep->Mds, values);
 }
 
 void DeviationSurveyRepresentation::getInclinations(double* values) const
 {
-	_resqml20__DeviationSurveyRepresentation* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
-	if (rep->Inclinations->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(rep->Inclinations)->Values;
-		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values);
-	}
-	else {
-		throw invalid_argument("Inclinations can only be defined using DoubleHdf5Array for now in fesapi.");
-	}
+	_resqml20__DeviationSurveyRepresentation const* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
+	readArrayNdOfDoubleValues(rep->Inclinations, values);
 }
 
 void DeviationSurveyRepresentation::getAzimuths(double* values) const
 {
-	_resqml20__DeviationSurveyRepresentation* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
-	if (rep->Azimuths->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(rep->Azimuths)->Values;
-		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values);
-	}
-	else {
-		throw invalid_argument("Azimuths can only be defined using DoubleHdf5Array for now in fesapi.");
-	}
+	_resqml20__DeviationSurveyRepresentation const* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
+	readArrayNdOfDoubleValues(rep->Azimuths, values);
 }
 
 void DeviationSurveyRepresentation::setMdDatum(EML2_NS::ReferencePointInALocalEngineeringCompoundCrs * mdDatum)

@@ -313,18 +313,8 @@ void WellboreTrajectoryRepresentation::getMdValues(double * values) const
 		throw invalid_argument("This trajectory has not got any md value.");
 	}
 		
-	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
-	if (static_cast<resqml20__ParametricLineGeometry*>(rep->Geometry)->ControlPointParameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(static_cast<resqml20__ParametricLineGeometry*>(rep->Geometry)->ControlPointParameters)->Values;
-		EML2_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
-		if (hdfProxy == nullptr) {
-			throw invalid_argument("The HDF proxy is missing.");
-		}
-		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values);
-	}
-	else {
-		throw invalid_argument("Mds can only be defined using DoubleHdf5Array for now in fesapi.");
-	}
+	_resqml20__WellboreTrajectoryRepresentation const* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
+	readArrayNdOfDoubleValues(static_cast<resqml20__ParametricLineGeometry const*>(rep->Geometry)->ControlPointParameters, values);
 }
 
 double WellboreTrajectoryRepresentation::getStartMd() const

@@ -246,14 +246,7 @@ int64_t SubRepresentation::getElementIndicesOfPatch(uint64_t patchIndex, int64_t
 		throw out_of_range("The patch does not exist at this index.");
 	}
 
-	if (rep->SubRepresentationPatch[patchIndex]->Indices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		eml23__ExternalDataArrayPart const * daPart = static_cast<eml23__IntegerExternalArray*>(rep->SubRepresentationPatch[patchIndex]->Indices)->Values->ExternalDataArrayPart[0];
-		getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfInt64Values(daPart->PathInExternalFile, elementIndices);
-		return static_cast<eml23__IntegerExternalArray*>(rep->SubRepresentationPatch[patchIndex]->Indices)->NullValue;
-	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+	readArrayNdOfInt64Values(rep->SubRepresentationPatch[patchIndex]->Indices, elementIndices);
 }
 
 uint64_t SubRepresentation::getPatchCount() const

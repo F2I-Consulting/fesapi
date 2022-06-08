@@ -335,28 +335,14 @@ void AbstractIjkGridRepresentation::getPillarsOfSplitCoordinateLines(unsigned in
 		if (geom == nullptr || geom->SplitCoordinateLines == nullptr) {
 			throw invalid_argument("There is no geometry or no split coordinate line in this grid.");
 		}
-		if (geom->SplitCoordinateLines->PillarIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(geom->SplitCoordinateLines->PillarIndices)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfUIntValues(dataset->PathInHdfFile, pillarIndices);
-		}
-		else {
-			throw std::logic_error("Not implemented yet");
-		}
+		readArrayNdOfUInt32Values(geom->SplitCoordinateLines->PillarIndices, pillarIndices);
 	}
 	else {
 		gsoap_eml2_3::resqml22__IjkGridGeometry* geom = static_cast<gsoap_eml2_3::resqml22__IjkGridGeometry*>(getPointGeometry2_2(0));
 		if (geom == nullptr || geom->ColumnLayerSplitCoordinateLines == nullptr) {
 			throw invalid_argument("There is no geometry or no split coordinate line in this grid.");
 		}
-		if (geom->ColumnLayerSplitCoordinateLines->PillarIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			gsoap_eml2_3::eml23__ExternalDataArray const * dataset = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(geom->ColumnLayerSplitCoordinateLines->PillarIndices)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset->ExternalDataArrayPart[0]);
-			hdfProxy->readArrayNdOfUIntValues(dataset->ExternalDataArrayPart[0]->PathInExternalFile, pillarIndices);
-		}
-		else {
-			throw std::logic_error("Not implemented yet");
-		}
+		readArrayNdOfUInt32Values(geom->ColumnLayerSplitCoordinateLines->PillarIndices, pillarIndices);
 	}
 
 	if (reverseIAxis || reverseJAxis) {
@@ -441,28 +427,14 @@ void AbstractIjkGridRepresentation::getColumnCountOfSplitCoordinateLines(unsigne
 		if (geom == nullptr || geom->SplitCoordinateLines == nullptr) {
 			throw invalid_argument("There is no geometry or no split coordinate line in this grid.");
 		}
-		if (geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfUIntValues(dataset->PathInHdfFile, columnIndexCountPerSplitCoordinateLine);
-		}
-		else {
-			throw std::logic_error("Not implemented yet");
-		}
+		readArrayNdOfUInt32Values(geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength, columnIndexCountPerSplitCoordinateLine);
 	}
 	else {
 		gsoap_eml2_3::resqml22__IjkGridGeometry* geom = static_cast<gsoap_eml2_3::resqml22__IjkGridGeometry*>(getPointGeometry2_2(0));
 		if (geom == nullptr || geom->ColumnLayerSplitCoordinateLines == nullptr) {
 			throw invalid_argument("There is no geometry or no split coordinate line in this IJK grid.");
 		}
-		if (geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			gsoap_eml2_3::eml23__ExternalDataArray const * dataset = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset->ExternalDataArrayPart[0]);
-			hdfProxy->readArrayNdOfUIntValues(dataset->ExternalDataArrayPart[0]->PathInExternalFile, columnIndexCountPerSplitCoordinateLine);
-		}
-		else {
-			throw std::logic_error("Not implemented yet");
-		}
+		readArrayNdOfUInt32Values(geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength, columnIndexCountPerSplitCoordinateLine);
 	}
 }
 

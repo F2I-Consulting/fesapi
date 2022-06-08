@@ -197,8 +197,8 @@ namespace COMMON_NS
 			else if (dor22 != nullptr && dor22->Uri != nullptr) {
 				return *dor22->Uri;
 			}
-			else if (dor23 != nullptr && dor23->Uri != nullptr) {
-				return *dor23->Uri;
+			else if (dor23 != nullptr && dor23->EnergisticsUri != nullptr) {
+				return *dor23->EnergisticsUri;
 			}
 			else {
 				return "";
