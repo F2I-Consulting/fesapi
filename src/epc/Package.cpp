@@ -41,11 +41,8 @@ under the License.
 
 #define CASESENSITIVITY (0)
 
-using namespace std; // in order not to prefix by "std::" for each class in the "std" namespace. Never use "using namespace" in *.h file but only in *.cpp file!!!
-using namespace epc; // in order not to prefix by "epc::" for each class in the "epc" namespace. Never use "using namespace" in *.h file but only in *.cpp file!!!
-
-const char* Package::CORE_PROP_REL_TYPE = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties";
-const char* Package::EXTENDED_CORE_PROP_REL_TYPE = "http://schemas.f2i-consulting.com/package/2014/relationships/extended-core-properties";
+using namespace std;
+using namespace epc;
 
 class Package::CheshireCat {
 public:

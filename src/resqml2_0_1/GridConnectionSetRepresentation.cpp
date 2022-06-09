@@ -384,6 +384,7 @@ int64_t GridConnectionSetRepresentation::getCellIndexPairs(int64_t * cellIndexPa
 {
 	_resqml20__GridConnectionSetRepresentation const* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 	readArrayNdOfInt64Values(rep->CellIndexPairs, cellIndexPairs);
+	return static_cast<resqml20__IntegerHdf5Array*>(rep->CellIndexPairs)->NullValue;
 }
 
 bool GridConnectionSetRepresentation::isBasedOnMultiGrids() const 

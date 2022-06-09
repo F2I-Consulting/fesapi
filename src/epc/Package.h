@@ -52,9 +52,9 @@ namespace epc
 		void writeStringIntoNewPart(const std::string &input, const std::string & partPath);
 		
 		/** Type of the core property relative */
-		static const char* CORE_PROP_REL_TYPE;
+		static constexpr const char* CORE_PROP_REL_TYPE = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties";
 		/** Type of the extended core property relative */
-		static const char* EXTENDED_CORE_PROP_REL_TYPE;
+		static constexpr const char* EXTENDED_CORE_PROP_REL_TYPE = "http://schemas.f2i-consulting.com/package/2014/relationships/extended-core-properties";
 
 	public:
 		/** Create a Package with pathname. */
