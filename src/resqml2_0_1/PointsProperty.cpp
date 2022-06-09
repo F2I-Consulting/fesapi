@@ -133,7 +133,7 @@ std::string PointsProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfPro
 		}
 	}
 	if (proxy->getXmlNamespace() == "eml23") {
-		throw std::invalid_argument("You cannot associate a RESQML 2.0.1 dataobject to an EML 2.3 HDF proxy (which is no more a dataobject by the way).");
+		throw std::invalid_argument("You cannot associate a RESQML 2.0.1 points property to an EML 2.3 HDF proxy (which is no more a dataobject by the way).");
 	}
 	if (datasetName.empty()) {
 		throw std::invalid_argument("The dataset name wher to store of the points property cannot be empty.");

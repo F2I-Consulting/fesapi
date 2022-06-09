@@ -41,7 +41,7 @@ typedef long long int		int64_t;
 typedef unsigned char		uint8_t;
 typedef unsigned short int	uint16_t;
 typedef unsigned int		uint32_t;
-#ifndef SWIGJAVA	
+#ifndef SWIGJAVA
 #if defined(SWIGWORDSIZE64)
 typedef unsigned long int	uint64_t;
 #else
@@ -744,12 +744,6 @@ namespace COMMON_NS
 		 * @returns	The extra metadata value at @p index.
 		 */
 		std::string getExtraMetadataStringValueAtIndex(uint64_t index) const;
-		
-		/**
-		* Build and return an ETP1.2 URI from an Energistics dataobject.
-		* @return	The ETP1.2 URI built from the Energistics dataobject
-		*/
-		std::string buildEtp12Uri() const;
 	};
 
 %warnfilter(473) HdfProxyFactory::make;

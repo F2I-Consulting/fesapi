@@ -96,6 +96,7 @@ public class FesapiJavaExample {
 	private static BoundaryFeature horizon1;
 	private static IjkGridExplicitRepresentation ijkgrid;
 	private static PropertyKind cellIndexPropKind;
+	private static PropertyKind continuousPropKind;
 
 	/**
 	 * Loading the FesapiCpp native library
@@ -449,9 +450,9 @@ ${COMMENT_END}
 		//
 		// Properties
 		//
-		PropertyKind  propType1 = repo.createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", resqml20__ResqmlUom.Euc, resqml20__ResqmlPropertyKind.continuous);
+		continuousPropKind = repo.createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", resqml20__ResqmlUom.Euc, resqml20__ResqmlPropertyKind.continuous);
 		ContinuousProperty contProp1 = repo.createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1",
-				eml23__IndexableElement.nodes, "exoticMeter", propType1);
+				eml23__IndexableElement.nodes, "exoticMeter", continuousPropKind);
 		SWIGTYPE_p_double prop1Values = fesapi.new_DoubleArray(16);
 		try {
 			fesapi.DoubleArray_setitem(prop1Values, 0, 301);
@@ -607,7 +608,7 @@ ${COMMENT_START}
 				1., 1.);
 
 		ContinuousProperty contColMapContProp = repo.createContinuousProperty(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map",
-				eml23__IndexableElement.nodes, "continuousColorMapIndex", resqml20__ResqmlPropertyKind.continuous);
+				eml23__IndexableElement.nodes, "continuousColorMapIndex", continuousPropKind);
 		SWIGTYPE_p_double values = fesapi.new_DoubleArray(numPointInFastestDirection * numPointsInSlowestDirection);
 		try {
 			for (int slowestIndex = 0; slowestIndex < numPointsInSlowestDirection; ++slowestIndex) {

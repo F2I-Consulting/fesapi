@@ -335,7 +335,7 @@ std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(EML2_NS:
 		throw std::invalid_argument("The property dataset name cannot be empty.");
 	}
 	if (gsoapProxy2_0_1 != nullptr && hdfProxy->getXmlNamespace() == "eml23") {
-		throw std::invalid_argument("You cannot associate a RESQML 2.0.1 dataobject to an EML 2.3 HDF proxy (which is no more a dataobject by the way).");
+		throw std::invalid_argument("You cannot associate a RESQML 2.0.1 property to an EML 2.3 HDF proxy (which is no more a dataobject by the way).");
 	}
 
 	getRepository()->addRelationship(this, hdfProxy);
@@ -390,7 +390,7 @@ std::string AbstractValuesProperty::pushBackRefToExistingFloatingPointDataset(EM
 		throw std::invalid_argument("The property dataset name cannot be empty.");
 	}
 	if (gsoapProxy2_0_1 != nullptr && proxy->getXmlNamespace() == "eml23") {
-		throw std::invalid_argument("You cannot associate a RESQML 2.0.1 dataobject to an EML 2.3 HDF proxy (which is no more a dataobject by the way).");
+		throw std::invalid_argument("You cannot associate a RESQML 2.0.1 property to an EML 2.3 HDF proxy (which is no more a dataobject by the way).");
 	}
 
 	getRepository()->addRelationship(this, proxy);
