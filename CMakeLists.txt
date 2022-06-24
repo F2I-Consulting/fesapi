@@ -10,7 +10,7 @@ set (FESAPI_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 # version mechanism
 set (Fesapi_VERSION_MAJOR 2)
-set (Fesapi_VERSION_MINOR 3)
+set (Fesapi_VERSION_MINOR 4)
 set (Fesapi_VERSION_PATCH 0)
 set (Fesapi_VERSION_TWEAK 0)
 
@@ -42,23 +42,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 # hdf5
-# FIND_PACKAGE (HDF5) is not used because we need debug and release versions of hdf5 for windows build environments. The cmake module does not provide both debug and release library cmake variables.
-set (HDF5_C_INCLUDE_DIR HDF5_C_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the HDF5 C header files")
-IF (NOT IS_DIRECTORY ${HDF5_C_INCLUDE_DIR})
-	MESSAGE(WARNING "The HDF5 include dir (HDF5_C_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
-ENDIF ()
-set (HDF5_C_LIBRARY_RELEASE HDF5_C_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path to the file which contains the HDF5 C library release")
-IF (NOT EXISTS ${HDF5_C_LIBRARY_RELEASE})
-	MESSAGE(WARNING "The HDF5 library (HDF5_C_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
-ENDIF ()
-set (HDF5_C_LIBRARY_DEBUG HDF5_C_LIBRARY_DEBUG-NOTFOUND CACHE FILEPATH "Path to the file which contains the HDF5 C library debug")
-IF (NOT EXISTS ${HDF5_C_LIBRARY_DEBUG})
-	MESSAGE(WARNING "The HDF5 library (HDF5_C_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
-ENDIF ()
-IF (WIN32)
-	set (HDF5_BUILT_AS_DYNAMIC_LIB ON CACHE BOOL "Is your HDF5 library built as a dynamic library ?")
-ENDIF (WIN32)
-set (HDF5_1_8 OFF CACHE BOOL "Is your HDF5 library version 1.8 ?")
+FIND_PACKAGE (HDF5 1.8.18 REQUIRED COMPONENTS C)
 
 # Zlib
 FIND_PACKAGE (ZLIB)
