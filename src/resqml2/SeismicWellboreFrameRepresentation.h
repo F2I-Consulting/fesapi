@@ -70,7 +70,7 @@ namespace RESQML2_NS
 		/**
 		* Get the time values datatype in the HDF dataset
 		*/
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::hdfDatatypeEnum getTimeHdfDatatype() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::numericalDatatypeEnum getTimeHdfDatatype() const;
 
 		/**
 		* Get all the time values of the instance which are supposed to be double ones.

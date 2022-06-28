@@ -489,7 +489,7 @@ void GridConnectionSetRepresentation::setConnectionInterpretationIndices(unsigne
 	if (cellIndexPairCount == 0) {
 		throw logic_error("You must set the cell index pairs before to set the connection interpretations.");
 	}
-	proxy->writeItemizedListOfList(getHdfGroup(), "InterpretationIndices", H5T_NATIVE_UINT, cumulativeInterpCount, cellIndexPairCount, H5T_NATIVE_UINT, interpIndices, cumulativeInterpCount[cellIndexPairCount - 1]);
+	proxy->writeItemizedListOfList(getHdfGroup(), "InterpretationIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, cumulativeInterpCount, cellIndexPairCount, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, interpIndices, cumulativeInterpCount[cellIndexPairCount - 1]);
 }
 
 void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::AbstractFeatureInterpretation* interp)

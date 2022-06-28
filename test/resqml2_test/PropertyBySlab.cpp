@@ -177,7 +177,7 @@ void PropertyBySlab::initRepo() {
 void PropertyBySlab::readRepo()
 {
 	RESQML2_NS::ContinuousProperty* propertyCompute = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>(defaultContinuousPropComputeUuid);
-	REQUIRE(propertyCompute->getValuesHdfDatatype() == AbstractValuesProperty::FLOAT);
+	REQUIRE(propertyCompute->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT);
 	REQUIRE(propertyCompute->getMinimumValue() == -123.0);
 	REQUIRE(propertyCompute->getMaximumValue() == .35f);
 

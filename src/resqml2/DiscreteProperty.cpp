@@ -196,7 +196,7 @@ void DiscreteProperty::pushBackLongHdf5ArrayOfValues(const int64_t * values, uns
 
 	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
-		H5T_NATIVE_INT64,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 		values,
 		numValues, numDimensionsInArray);
 }
@@ -212,7 +212,7 @@ void DiscreteProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned
 
 	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
-		H5T_NATIVE_INT,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		values,
 		numValues, numDimensionsInArray);
 }
@@ -228,7 +228,7 @@ void DiscreteProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsi
 
 	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
-		H5T_NATIVE_SHORT,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16,
 		values,
 		numValues, numDimensionsInArray);
 }
@@ -244,7 +244,7 @@ void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * va
 
 	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
-		H5T_NATIVE_USHORT,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16,
 		values,
 		numValues, numDimensionsInArray);
 }
@@ -260,7 +260,7 @@ void DiscreteProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsign
 
 	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
-		H5T_NATIVE_CHAR,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,
 		values,
 		numValues, numDimensionsInArray);
 }

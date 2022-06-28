@@ -570,7 +570,7 @@ void AbstractProperty::setRealizationIndices(const std::vector<unsigned int> & r
 
 		// HDF
 		hsize_t numValues = realizationIndices.size();
-		hdfProxy->writeArrayNd(getHdfGroup(), "RealizationIndices", H5T_NATIVE_UINT, realizationIndices.data(), &numValues, 1);
+		hdfProxy->writeArrayNd(getHdfGroup(), "RealizationIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, realizationIndices.data(), &numValues, 1);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -593,13 +593,13 @@ gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind AbstractProperty::getEnergistics
 }
 
 
-COMMON_NS::AbstractObject::hdfDatatypeEnum AbstractProperty::getValuesHdfDatatype() const
+COMMON_NS::AbstractObject::numericalDatatypeEnum AbstractProperty::getValuesHdfDatatype() const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
 	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(0, nullValue, dsPath);
 
-	return hdfProxy->getHdfDatatypeInDataset(dsPath);
+	return hdfProxy->getNumericalDatatype(dsPath);
 }
 
 unsigned int AbstractProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const

@@ -2564,13 +2564,13 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 		std::cout << "\tValues count in all dimensions is : " << valueCount << std::endl;
 
 		// Datatype
-		std::cout << "\tDatatype is : " << prop->getValuesHdfDatatype() << std::endl;
-		if (prop->getValuesHdfDatatype() == 0) {
+		std::cout << "\tDatatype is : " << static_cast<unsigned char>(prop->getValuesHdfDatatype()) << std::endl;
+		if (prop->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::UNKNOWN) {
 			cerr << "\tERROR !!!!! The hdf datatype is unknown" << endl;
 			cout << "\tPress enter to continue..." << endl;
 			cin.get();
 		}
-		else if (prop->getValuesHdfDatatype() > 2) {
+		else if (static_cast<unsigned char>(prop->getValuesHdfDatatype()) > 2) {
 			if (dynamic_cast<RESQML2_NS::DiscreteProperty const *>(prop) == nullptr && dynamic_cast<RESQML2_NS::CategoricalProperty const *>(prop) == nullptr) {
 				cerr << "\tERROR !!!!! Only categorical or Discrete properties should be associated to an integer dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
@@ -5368,7 +5368,7 @@ void deserialize(const string & inputFile)
 					for (auto* prop : wmf->getPropertySet()) {
 						if (prop->getXmlTag() == RESQML2_NS::CategoricalProperty::XML_TAG) {
 							RESQML2_NS::CategoricalProperty const * catVal = static_cast<RESQML2_NS::CategoricalProperty const *>(prop);
-							if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG_64) {
+							if (catVal->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64) {
 								std::cout << "Hdf datatype is NATIVE LONG" << std::endl;
 								std::unique_ptr<int64_t[]> tmp(new int64_t[wmf->getMdValuesCount()]);
 								catVal->getLongValuesOfPatch(0, tmp.get());
@@ -5376,7 +5376,7 @@ void deserialize(const string & inputFile)
 									std::cout << "Value " << ind << " : " << tmp[ind] << std::endl;
 								}
 							}
-							else if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::INT) {
+							else if (catVal->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32) {
 								std::cout << "Hdf datatype is NATIVE INT" << std::endl;
 							}
 						}
@@ -5420,13 +5420,13 @@ void deserialize(const string & inputFile)
 			else {
 				std::cout << "Iregularly spaced" << std::endl;
 			}
-			if (wellboreFrame->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE) {
+			if (wellboreFrame->getMdHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE) {
 				std::cout << "Hdf datatype is NATIVE DOUBLE" << std::endl;
 			}
-			else if (wellboreFrame->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::FLOAT) {
+			else if (wellboreFrame->getMdHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT) {
 				std::cout << "Hdf datatype is NATIVE FLOAT" << std::endl;
 			}
-			else if (wellboreFrame->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN) {
+			else if (wellboreFrame->getMdHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::UNKNOWN) {
 				std::cout << "Hdf datatype is UNKNOWN" << std::endl;
 			}
 			std::cout << std::endl;
@@ -5464,13 +5464,13 @@ void deserialize(const string & inputFile)
 				else {
 					std::cout << "Time values iregularly spaced" << std::endl;
 				}
-				if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE) {
+				if (seismicWellboreFrame->getTimeHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE) {
 					std::cout << "Hdf datatype is NATIVE DOUBLE" << std::endl;
 				}
-				else if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::FLOAT) {
+				else if (seismicWellboreFrame->getTimeHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT) {
 					std::cout << "Hdf datatype is NATIVE FLOAT" << std::endl;
 				}
-				else if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN) {
+				else if (seismicWellboreFrame->getTimeHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::UNKNOWN) {
 					std::cout << "Hdf datatype is UNKNOWN" << std::endl;
 				}
 				std::cout << std::endl;

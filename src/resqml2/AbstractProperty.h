@@ -98,7 +98,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The data type of the values if successful, else @c UNKNOWN.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::hdfDatatypeEnum getValuesHdfDatatype() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::numericalDatatypeEnum getValuesHdfDatatype() const;
 
 		/**
 		 * Gets the count of all values contained into the underlying HDF5 dataset of a given patch of

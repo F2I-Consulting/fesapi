@@ -47,7 +47,7 @@ import com.f2i_consulting.fesapi.witsml20__HoleCasingType;
 import com.f2i_consulting.fesapi.witsml20__WellboreShape;
 import com.f2i_consulting.fesapi.witsml20__WellboreType;
 import com.f2i_consulting.fesapi.common.AbstractObject;
-import com.f2i_consulting.fesapi.common.AbstractObject.hdfDatatypeEnum;
+import com.f2i_consulting.fesapi.common.AbstractObject.numericalDatatypeEnum;
 import com.f2i_consulting.fesapi.common.DataObjectRepository;
 import com.f2i_consulting.fesapi.common.DataObjectRepository.EnergisticsStandard;
 import com.f2i_consulting.fesapi.common.EpcDocument;
@@ -881,11 +881,11 @@ ${COMMENT_END}
 				else {
 					System.out.println("Iregularly spaced");
 				}
-				if (wbf.getMdHdfDatatype() == hdfDatatypeEnum.DOUBLE)
+				if (wbf.getMdHdfDatatype() == numericalDatatypeEnum.DOUBLE)
 					System.out.println("Hdf datatype is NATIVE DOUBLE");
-				else if (wbf.getMdHdfDatatype() == hdfDatatypeEnum.FLOAT)
+				else if (wbf.getMdHdfDatatype() == numericalDatatypeEnum.FLOAT)
 					System.out.println("Hdf datatype is NATIVE FLOAT");
-				else if (wbf.getMdHdfDatatype() == hdfDatatypeEnum.UNKNOWN)
+				else if (wbf.getMdHdfDatatype() == numericalDatatypeEnum.UNKNOWN)
 					System.out.println("Hdf datatype is UNKNOWN");
 				if (wbf.getXmlTag().equals("SeismicWellboreFrameRepresentation")) {
 					SeismicWellboreFrameRepresentation swbf = (SeismicWellboreFrameRepresentation) wbf;
@@ -900,11 +900,11 @@ ${COMMENT_END}
 					else {
 						System.out.println("Time values iregularly spaced");
 					}
-					if (swbf.getTimeHdfDatatype() == hdfDatatypeEnum.DOUBLE)
+					if (swbf.getTimeHdfDatatype() == numericalDatatypeEnum.DOUBLE)
 						System.out.println("Hdf datatype is NATIVE DOUBLE");
-					else if (swbf.getTimeHdfDatatype() == hdfDatatypeEnum.FLOAT)
+					else if (swbf.getTimeHdfDatatype() == numericalDatatypeEnum.FLOAT)
 						System.out.println("Hdf datatype is NATIVE FLOAT");
-					else if (swbf.getTimeHdfDatatype() == hdfDatatypeEnum.UNKNOWN)
+					else if (swbf.getTimeHdfDatatype() == numericalDatatypeEnum.UNKNOWN)
 						System.out.println("Hdf datatype is UNKNOWN");
 				}
 			}

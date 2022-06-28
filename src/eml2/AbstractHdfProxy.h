@@ -95,10 +95,9 @@ namespace EML2_NS
 		 *
 		 * @param 	datasetName	Name of the dataset.
 		 *
-		 * @returns	The native HDF5 datatype identifier of the dataset if successful, otherwise returns a
-		 * 			negative value.
+		 * @returns	The native datatype identifier of the dataset if successful, otherwise returns unknown;
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & datasetName) = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::AbstractObject::numericalDatatypeEnum getNumericalDatatype(const std::string & datasetName) = 0;
 
 		/**
 		 * Gets the datatype class (@c H5T_INTEGER, @c H5T_FLOAT, @c H5T_STRING, etc.) of a dataset
@@ -130,10 +129,10 @@ namespace EML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void writeItemizedListOfList(const std::string & groupName,
 			const std::string & name,
-			hdf5_hid_t cumulativeLengthDatatype,
+			COMMON_NS::AbstractObject::numericalDatatypeEnum cumulativeLengthDatatype,
 			const void * cumulativeLength,
 			unsigned long long cumulativeLengthSize,
-			hdf5_hid_t elementsDatatype,
+			COMMON_NS::AbstractObject::numericalDatatypeEnum elementsDatatype,
 			const void * elements,
 			unsigned long long elementsSize) = 0;
 
@@ -188,11 +187,13 @@ namespace EML2_NS
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of dimensions (n) of the nd array to write.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void writeArrayNdOfFloatValues(const std::string & groupName,
-		  const std::string & name,
-		  const float * floatValues,
-		  const unsigned long long * numValuesInEachDimension,
-		  unsigned int numDimensions) = 0;
+		DLL_IMPORT_OR_EXPORT void writeArrayNdOfFloatValues(const std::string & groupName,
+			const std::string & name,
+			const float * values,
+			const unsigned long long * numValuesInEachDimension,
+			unsigned int numDimensions) {
+			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT, values, numValuesInEachDimension, numDimensions);
+		}
 
 		/**
 		 * Writes an nd array of double values into the HDF5 file by means of a single dataset
@@ -208,11 +209,13 @@ namespace EML2_NS
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of dimensions (n) of the nd array to write.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void writeArrayNdOfDoubleValues(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT void writeArrayNdOfDoubleValues(const std::string & groupName,
 		  const std::string & name,
-		  const double * dblValues,
+		  const double * values,
 		  const unsigned long long * numValuesInEachDimension,
-		  unsigned int numDimensions) = 0;
+		  unsigned int numDimensions) {
+			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE, values, numValuesInEachDimension, numDimensions);
+		}
 
 		/**
 		 * Writes an nd array of char values into the HDF5 file by means of a single dataset
@@ -228,11 +231,13 @@ namespace EML2_NS
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void writeArrayNdOfCharValues(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT void writeArrayNdOfCharValues(const std::string & groupName,
 			const std::string & name,
-			const char * intValues,
+			const char * values,
 			const unsigned long long * numValuesInEachDimension,
-			unsigned int numDimensions) = 0;
+			unsigned int numDimensions) {
+			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8, values, numValuesInEachDimension, numDimensions);
+		}
 
 		/**
 		 * Writes an nd array of int values into the HDF5 file by means of a single dataset
@@ -248,11 +253,13 @@ namespace EML2_NS
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void writeArrayNdOfIntValues(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT void writeArrayNdOfIntValues(const std::string & groupName,
 		  const std::string & name,
-		  const int * intValues,
+		  const int * values,
 		  const unsigned long long * numValuesInEachDimension,
-		  unsigned int numDimensions) = 0;
+		  unsigned int numDimensions) {
+			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32, values, numValuesInEachDimension, numDimensions);
+		}
 
 		/**
 		 * Writes an nd array of integer 64 values into the HDF5 file by means of a single
@@ -269,11 +276,13 @@ namespace EML2_NS
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void writeArrayNdOfInt64Values(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT void writeArrayNdOfInt64Values(const std::string & groupName,
 			const std::string & name,
 			const int64_t * values,
 			const unsigned long long * numValuesInEachDimension,
-			unsigned int numDimensions) = 0;
+			unsigned int numDimensions) {
+			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, values, numValuesInEachDimension, numDimensions);
+		}
 
  		/**
  		 * Writes an nd array of unsigned integer 64 values into the HDF5 file by means of a single
@@ -290,11 +299,13 @@ namespace EML2_NS
  		 * 										write. They are ordered from fastest index to slowest index.
  		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
  		 */
-		DLL_IMPORT_OR_EXPORT virtual void writeArrayNdOfUInt64Values(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT void writeArrayNdOfUInt64Values(const std::string & groupName,
 			const std::string & name,
 			const uint64_t * values,
 			const unsigned long long * numValuesInEachDimension,
-			unsigned int numDimensions) = 0;
+			unsigned int numDimensions) {
+			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, values, numValuesInEachDimension, numDimensions);
+		}
 
 		/**
 		 * Writes an nd array of a specific datatype into the HDF5 file by means of a single dataset
@@ -313,7 +324,7 @@ namespace EML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void writeArrayNd(const std::string & groupName,
 		  const std::string & name,
-		  hdf5_hid_t datatype,
+		  COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 		  const void * values,
 		  const unsigned long long * numValuesInEachDimension,
 		  unsigned int numDimensions) = 0;
@@ -335,7 +346,7 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void createArrayNd(
 		  const std::string& groupName,
 		  const std::string& name,
-		  hdf5_hid_t datatype,
+		  COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 		  const unsigned long long* numValuesInEachDimension,
 		  unsigned int numDimensions
 		  ) = 0;
@@ -358,7 +369,7 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void writeArrayNdSlab(
 		  const std::string& groupName,
 		  const std::string& name,
-		  hdf5_hid_t datatype,
+		  COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 		  const void* values,
 		  const unsigned long long* numValuesInEachDimension,
 		  const unsigned long long* offsetValuesInEachDimension,

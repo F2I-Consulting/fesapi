@@ -139,7 +139,7 @@ void WellboreFrameRepresentation::setMdValues(double const * mdValues, unsigned 
 	hsize_t dim = mdValueCount;
 	proxy->writeArrayNd(getHdfGroup(),
 		"mdValues",
-		H5T_NATIVE_DOUBLE,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE,
 		mdValues,
 		&dim, 1);
 }
@@ -278,7 +278,7 @@ unsigned int WellboreFrameRepresentation::getMdValuesCount() const
 	return static_cast<unsigned int>(result);
 }
 
-COMMON_NS::AbstractObject::hdfDatatypeEnum WellboreFrameRepresentation::getMdHdfDatatype() const
+COMMON_NS::AbstractObject::numericalDatatypeEnum WellboreFrameRepresentation::getMdHdfDatatype() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		_resqml20__WellboreFrameRepresentation* frame = static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
@@ -289,14 +289,14 @@ COMMON_NS::AbstractObject::hdfDatatypeEnum WellboreFrameRepresentation::getMdHdf
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
-			return hdfProxy->getHdfDatatypeInDataset(dataset->PathInHdfFile);
+			return hdfProxy->getNumericalDatatype(dataset->PathInHdfFile);
 		}
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 		{
-			return RESQML2_NS::AbstractValuesProperty::DOUBLE;
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE;
 		}
 
-		return RESQML2_NS::AbstractValuesProperty::UNKNOWN; // unknwown datatype...
+		return COMMON_NS::AbstractObject::numericalDatatypeEnum::UNKNOWN; // unknwown datatype...
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3);
@@ -307,11 +307,11 @@ COMMON_NS::AbstractObject::hdfDatatypeEnum WellboreFrameRepresentation::getMdHdf
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
-			return hdfProxy->getHdfDatatypeInDataset(dataset->ExternalFileProxy[0]->PathInExternalFile);
+			return hdfProxy->getNumericalDatatype(dataset->ExternalFileProxy[0]->PathInExternalFile);
 		}
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 		{
-			return RESQML2_NS::AbstractValuesProperty::DOUBLE;
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE;
 		}
 	}
 

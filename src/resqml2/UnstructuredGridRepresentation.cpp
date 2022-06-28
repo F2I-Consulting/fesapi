@@ -116,13 +116,13 @@ void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRight
 
 	// HDF Face Right handness
 	unsigned long long faceCountTmp = faceIndicesCumulativeCountPerCell[cellCount - 1]; // For GCC : uint64_t is not exactly an unsigned long long with GCC but an uint64_t {aka long unsigned int}
-	proxy->writeArrayNd(getHdfGroup(), "CellFaceIsRightHanded", H5T_NATIVE_UCHAR, cellFaceIsRightHanded, &faceCountTmp, 1);
+	proxy->writeArrayNd(getHdfGroup(), "CellFaceIsRightHanded", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, cellFaceIsRightHanded, &faceCountTmp, 1);
 
 	// HDF Face indices
-	proxy->writeItemizedListOfList(getHdfGroup(), "FacesPerCell", H5T_NATIVE_UINT64, faceIndicesCumulativeCountPerCell, cellCount, H5T_NATIVE_UINT64, faceIndicesPerCell, faceIndicesCumulativeCountPerCell[cellCount - 1]);
+	proxy->writeItemizedListOfList(getHdfGroup(), "FacesPerCell", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, faceIndicesCumulativeCountPerCell, cellCount, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, faceIndicesPerCell, faceIndicesCumulativeCountPerCell[cellCount - 1]);
 
 	// HDF Node indices
-	proxy->writeItemizedListOfList(getHdfGroup(), "NodesPerFace", H5T_NATIVE_UINT64, nodeIndicesCumulativeCountPerFace, faceCount, H5T_NATIVE_UINT64, nodeIndicesPerFace, nodeIndicesCumulativeCountPerFace[faceCount - 1]);
+	proxy->writeItemizedListOfList(getHdfGroup(), "NodesPerFace", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, nodeIndicesCumulativeCountPerFace, faceCount, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, nodeIndicesPerFace, nodeIndicesCumulativeCountPerFace[faceCount - 1]);
 
 	// HDF points
 	hsize_t numValues[2];
@@ -164,18 +164,18 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometry(unsigned char 
 
 	// HDF Face Right handness
 	unsigned long long faceCountTmp = faceCountPerCell * cellCount; // For GCC : uint64_t is not exactly an unsigned long long with GCC but an uint64_t {aka long unsigned int}
-	proxy->writeArrayNd(getHdfGroup(), "CellFaceIsRightHanded", H5T_NATIVE_UCHAR, cellFaceIsRightHanded, &faceCountTmp, 1);
+	proxy->writeArrayNd(getHdfGroup(), "CellFaceIsRightHanded", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, cellFaceIsRightHanded, &faceCountTmp, 1);
 
 	// HDF Face indices
 	hsize_t numValues[2];
 	numValues[0] = cellCount;
 	numValues[1] = faceCountPerCell;
-	proxy->writeArrayNd(getHdfGroup(), "FacesPerCell", H5T_NATIVE_UINT64, faceIndicesPerCell, numValues, 2);
+	proxy->writeArrayNd(getHdfGroup(), "FacesPerCell", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, faceIndicesPerCell, numValues, 2);
 
 	// HDF Node indices
 	numValues[0] = faceCount;
 	numValues[1] = nodeCountPerFace;
-	proxy->writeArrayNd(getHdfGroup(), "NodesPerFace", H5T_NATIVE_UINT64, nodeIndicesPerFace, numValues, 2);
+	proxy->writeArrayNd(getHdfGroup(), "NodesPerFace", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, nodeIndicesPerFace, numValues, 2);
 
 	// HDF points
 	numValues[0] = pointCount;

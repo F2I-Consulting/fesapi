@@ -58,7 +58,7 @@ void SeismicWellboreFrameRepresentation::setTimeValues(double const * timeValues
 	hsize_t dim = timeValueCount;
 	proxy->writeArrayNd(getHdfGroup(),
 		"timeValues",
-		H5T_NATIVE_DOUBLE,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE,
 		timeValues,
 		&dim, 1);
 }
@@ -123,7 +123,7 @@ unsigned int SeismicWellboreFrameRepresentation::getTimeValuesCount() const
 	return getMdValuesCount();
 }
 
-COMMON_NS::AbstractObject::hdfDatatypeEnum SeismicWellboreFrameRepresentation::getTimeHdfDatatype() const
+COMMON_NS::AbstractObject::numericalDatatypeEnum SeismicWellboreFrameRepresentation::getTimeHdfDatatype() const
 {
 	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3);
 	if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
@@ -133,14 +133,14 @@ COMMON_NS::AbstractObject::hdfDatatypeEnum SeismicWellboreFrameRepresentation::g
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
 		}
-		return hdfProxy->getHdfDatatypeInDataset(dataset->ExternalFileProxy[0]->PathInExternalFile);
+		return hdfProxy->getNumericalDatatype(dataset->ExternalFileProxy[0]->PathInExternalFile);
 	}
 	else if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 	{
-		return RESQML2_NS::AbstractValuesProperty::DOUBLE;
+		return COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE;
 	}
 
-	return RESQML2_NS::AbstractValuesProperty::UNKNOWN; // unknwown datatype...
+	return COMMON_NS::AbstractObject::numericalDatatypeEnum::UNKNOWN; // unknwown datatype...
 }
 
 void SeismicWellboreFrameRepresentation::getTimeAsDoubleValues(double* values) const

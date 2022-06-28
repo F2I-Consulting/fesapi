@@ -68,7 +68,7 @@ public:
 	/**
 	 * Get the used (native) datatype in a dataset
 	 */
-	COMMON_NS::AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & datasetName) final { throw std::logic_error("Not implemented yet"); }
+	COMMON_NS::AbstractObject::numericalDatatypeEnum getNumericalDatatype(const std::string & datasetName) final { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Get the used datatype class in a dataset
@@ -90,10 +90,10 @@ public:
 	*/
 	void writeItemizedListOfList(const std::string & groupName,
 		const std::string & name,
-		hdf5_hid_t cumulativeLengthDatatype,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum cumulativeLengthDatatype,
 		const void * cumulativeLength,
 		unsigned long long cumulativeLengthSize,
-		hdf5_hid_t elementsDatatype,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum elementsDatatype,
 		const void * elements,
 		unsigned long long elementsSize) { throw std::logic_error("Not implemented yet"); }
 
@@ -121,82 +121,6 @@ public:
 	 */
 	void setCompressionLevel(unsigned int newCompressionLevel) { throw std::logic_error("Not implemented yet"); }
 
-	void writeArrayNdOfFloatValues(const std::string & groupName,
-		const std::string & name,
-		const float * floatValues,
-		const unsigned long long * numValuesInEachDimension,
-		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
-
-	/**
-	 * Write an array (potentially with multi dimensions) of double values into the HDF file by means of a single dataset.
-	 * @param groupName						The name of the group where to create the array of double values.
-	 *										This name must not contain '/' character and must be directly contained in RESQML group.
-	 * @param name							The name of the array of double values hdf dataset. It must not already exist.
-	 * @param dblValues						1d array of double values ordered firstly by fastest direction.
-	 * @param numValuesInEachDimension		Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
-	 * @param numDimensions					The number of the dimensions of the array to write
-	 */
-	void writeArrayNdOfDoubleValues(const std::string & groupName,
-		const std::string & name,
-		const double * dblValues,
-		const unsigned long long * numValuesInEachDimension,
-		unsigned int numDimensions) {
-		std::cout << "Write values starting with " << dblValues[0] << std::endl;
-	}
-
-	/**
-	* Write an array (potentially with multi dimensions) of char values into the HDF file by means of a single dataset.
-	* @param groupName						The name of the group where to create the array of int values.
-	*										This name must not contain '/' character and must be directly contained in RESQML group.
-	* @param name							The name of the array of int values hdf dataset. It must not already exist.
-	* @param intValues						1d array of char values ordered firstly by fastest direction.
-	* @param numValuesInEachDimension		Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
-	* @param numDimensions					The number of the dimensions of the array to write
-	*/
-	void writeArrayNdOfCharValues(const std::string & groupName,
-		const std::string & name,
-		const char * intValues,
-		const unsigned long long * numValuesInEachDimension,
-		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
-
-	/**
-	 * Write an array (potentially with multi dimensions) of int values into the HDF file by means of a single dataset.
-	 * @param groupName						The name of the group where to create the array of int values.
-	 *										This name must not contain '/' character and must be directly contained in RESQML group.
-	 * @param name							The name of the array of int values hdf dataset. It must not already exist.
-	 * @param intValues						1d array of int values ordered firstly by fastest direction.
-	 * @param numValuesInEachDimension		Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
-	 * @param numDimensions					The number of the dimensions of the array to write
-	 */
-	void writeArrayNdOfIntValues(const std::string & groupName,
-		const std::string & name,
-		const int * intValues,
-		const unsigned long long * numValuesInEachDimension,
-		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
-
-	void writeArrayNdOfInt64Values(const std::string & groupName,
-		const std::string & name,
-		const int64_t * values,
-		const unsigned long long * numValuesInEachDimension,
-		unsigned int numDimensions) {
-		throw std::logic_error("Not implemented yet");
-	}
-
-	/**
-	* Write an array (potentially with multi dimensions) of gSoap unsigned long 64 values into the HDF file by means of a single dataset.
-	* @param groupName						The name of the group where to create the array of int values.
-	*										This name must not contain '/' character and must be directly contained in RESQML group.
-	* @param name							The name of the array of gSoap unsigned long 64 values hdf dataset. It must not already exist.
-	* @param ulong64Values					1d array of gSoap unsigned long 64 values ordered firstly by fastest direction.
-	* @param numValuesInEachDimension		Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
-	* @param numDimensions					The number of the dimensions of the array to write
-	*/
-	void writeArrayNdOfUInt64Values(const std::string & groupName,
-		const std::string & name,
-		const uint64_t * values,
-		const unsigned long long * numValuesInEachDimension,
-		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
-
 	/**
 	 * Write an array (potentially with multi dimensions) of a specific datatype into the HDF file by means of a single dataset.
 	 * @param groupName						The name of the group where to create the array of values.
@@ -209,10 +133,12 @@ public:
 	 */
 	void writeArrayNd(const std::string & groupName,
 		const std::string & name,
-		hdf5_hid_t datatype,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 		const void * values,
 		const unsigned long long * numValuesInEachDimension,
-		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
+		unsigned int numDimensions) {
+		std::cout << "Call values writing from the HDF proxy example." << std::endl;
+	}
 
 	/**
 	 * Create an array (potentially with multi dimensions) of a specific datatype into the HDF file. Values are not yet written to this array.
@@ -226,7 +152,7 @@ public:
 	void createArrayNd(
 		const std::string& groupName,
 		const std::string& name,
-		hdf5_hid_t datatype,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 		const unsigned long long* numValuesInEachDimension,
 		unsigned int numDimensions
 	) { throw std::logic_error("Not implemented yet"); }
@@ -243,7 +169,7 @@ public:
 	void writeArrayNdSlab(
 		const std::string& groupName,
 		const std::string& name,
-		hdf5_hid_t datatype,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 		const void* values,
 		const unsigned long long* numValuesInEachDimension,
 		const unsigned long long* offsetValuesInEachDimension,

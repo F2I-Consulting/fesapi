@@ -106,7 +106,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
     // ************ HDF *************
     hsize_t dim[2] = {identicalNodesCount, patchCount};
     proxy->writeArrayNd(getHdfGroup(),
-        ossForHdf.str(), H5T_NATIVE_UINT,
+        ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
         identicalNodes,
         dim, 2);
 }
@@ -173,7 +173,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
     // ************ HDF *************
     hsize_t dim = nodeCount;
     proxy->writeArrayNd(getHdfGroup(),
-                        ossForHdf.str(), H5T_NATIVE_UINT,
+                        ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
                         nodeIndicesOnSupportingRepresentation,
                         &dim, 1);
 

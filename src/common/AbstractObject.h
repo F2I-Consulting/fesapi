@@ -33,7 +33,7 @@ namespace COMMON_NS
 	{
 	public:
 
-		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG_64 = 3, ULONG_64 = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
+		enum class numericalDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, INT64 = 3, UINT64 = 4, INT32 = 5, UINT32 = 6, INT16 = 7, UINT16 = 8, INT8 = 9, UINT8 = 10};
 
 		DLL_IMPORT_OR_EXPORT virtual ~AbstractObject() = default;
 
@@ -673,9 +673,13 @@ namespace COMMON_NS
 		
 		/**
 		* Build and return an ETP1.2 URI from an Energistics dataobject.
+		* If its URI source has not been set, the Energistics dataobject is considered belonging to the default ETP dataspace.
 		* @return	The ETP1.2 URI built from the Energistics dataobject
 		*/
-		DLL_IMPORT_OR_EXPORT std::string buildEtp12Uri() const { return uriSource_ + "/" + getQualifiedType() + "(" + getUuid() + ")"; }
+		DLL_IMPORT_OR_EXPORT std::string buildEtp12Uri() const {
+			std::string tmp = uriSource_.empty() ? "eml:///" : uriSource_;
+			return (tmp.back() == '/' ? tmp : tmp + '/') + getQualifiedType() + '(' + getUuid() + ')';
+		}
 
 		/**
 		* Set the EPC document absolute path or the ETP dataspace URI where this dataobject comes from.

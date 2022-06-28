@@ -115,7 +115,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	// ************ HDF *************
 	hsize_t dim = polylineCount;
 	proxy->writeArrayNd(getHdfGroup(),
-		ossForHdf.str(), H5T_NATIVE_UINT,
+		ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		nodeCountPerPolyline,
 		&dim, 1);
 
@@ -171,7 +171,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	// ************ HDF *************
 	hsize_t dim = polylineCount;
 	proxy->writeArrayNd(getHdfGroup(),
-		ossForHdf.str(), H5T_NATIVE_UINT,
+		ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		nodeCountPerPolyline,
 		&dim, 1);
 
@@ -186,7 +186,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	patch->ClosedPolylines = xmlClosedPolylines;
 	// ************ HDF *************
 	proxy->writeArrayNd(getHdfGroup(),
-		ossForHdf.str(), H5T_NATIVE_UCHAR,
+		ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8,
 		polylineClosedFlags,
 		&dim, 1);
 

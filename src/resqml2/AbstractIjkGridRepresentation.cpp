@@ -136,7 +136,7 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 			for (size_t k = 0; k < kCount - 1; ++k) {
 				tmp[k] = kGaps[k] ? 1 : 0;
 			}
-			proxy->writeArrayNd("/" + getXmlNamespace() + "/" + guid, "GapAfterLayer", H5T_NATIVE_UCHAR, tmp.get(), &kGapCount, 1);
+			proxy->writeArrayNd("/" + getXmlNamespace() + "/" + guid, "GapAfterLayer", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, tmp.get(), &kGapCount, 1);
 		}
 	}
 	else {
@@ -1354,7 +1354,7 @@ void AbstractIjkGridRepresentation::setCellGeometryIsDefinedFlags(unsigned char*
 
 	// HDF
 	hsize_t cellGeometryIsDefinedCount[3] = { getKCellCount(), getJCellCount(), getICellCount() };
-	proxy->writeArrayNd(getHdfGroup(), "CellGeometryIsDefined", H5T_NATIVE_UCHAR, cellGeometryIsDefinedFlags, cellGeometryIsDefinedCount, 3);
+	proxy->writeArrayNd(getHdfGroup(), "CellGeometryIsDefined", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, cellGeometryIsDefinedFlags, cellGeometryIsDefinedCount, 3);
 }
 
 void AbstractIjkGridRepresentation::setAllCellGeometryFlagsToDefined()

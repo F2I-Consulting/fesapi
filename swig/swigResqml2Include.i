@@ -3761,7 +3761,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The data type of the values if successful, else @c UNKNOWN.
 		 */
-		COMMON_NS::AbstractObject::hdfDatatypeEnum getValuesHdfDatatype() const;
+		COMMON_NS::AbstractObject::numericalDatatypeEnum getValuesHdfDatatype() const;
 
 		/**
 		 * Gets the count of all values contained into the underlying HDF5 dataset of a given patch of
@@ -5828,7 +5828,7 @@ namespace RESQML2_NS
 		double getMdConstantIncrementValue() const;
 		double getMdFirstValue() const;
 		unsigned int getMdValuesCount() const;
-		AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
+		COMMON_NS::AbstractObject::numericalDatatypeEnum getMdHdfDatatype() const;
 		void getMdAsDoubleValues(double * values) const;
 		void getMdAsFloatValues(float * values) const;
 
@@ -5848,7 +5848,7 @@ namespace RESQML2_NS
 		double getTimeConstantIncrementValue() const;
 		double getTimeFirstValue() const;
 		unsigned int getTimeValuesCount() const;
-		AbstractValuesProperty::hdfDatatypeEnum getTimeHdfDatatype() const;
+		COMMON_NS::AbstractObject::numericalDatatypeEnum getTimeHdfDatatype() const;
 		void getTimeAsDoubleValues(double* values) const;
 		void getTimeAsFloatValues(float* values) const;
 		double getSeismicReferenceDatum() const;

@@ -996,9 +996,11 @@ void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * paramete
 
 		// split coordinate lines
 		hsize_t hdfSplitCoordinateLineCount = splitCoordinateLineCount;
-		proxy->writeArrayNd(getHdfGroup(), "PillarIndices", H5T_NATIVE_UINT, pillarOfCoordinateLine, &hdfSplitCoordinateLineCount, 1);
+		proxy->writeArrayNd(getHdfGroup(), "PillarIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, pillarOfCoordinateLine, &hdfSplitCoordinateLineCount, 1);
 
-		proxy->writeItemizedListOfList(getHdfGroup(), "ColumnsPerSplitCoordinateLine", H5T_NATIVE_UINT, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineCount, H5T_NATIVE_UINT, splitCoordinateLineColumns, splitCoordinateLineColumnCumulativeCount[splitCoordinateLineCount - 1]);
+		proxy->writeItemizedListOfList(getHdfGroup(), "ColumnsPerSplitCoordinateLine",
+			COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineCount,
+			COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, splitCoordinateLineColumns, splitCoordinateLineColumnCumulativeCount[splitCoordinateLineCount - 1]);
 	}
 
 	// *********************************
@@ -1006,7 +1008,7 @@ void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * paramete
 	// *********************************
 	// HDF control points
 	hsize_t controlPointCount[4] = { controlPointCountPerPillar, getJCellCount() + 1, getICellCount() + 1, 3 };
-	proxy->writeArrayNd(getHdfGroup(), "ControlPoints", H5T_NATIVE_DOUBLE, controlPoints, controlPointCount, 4);
+	proxy->writeArrayNd(getHdfGroup(), "ControlPoints", COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE, controlPoints, controlPointCount, 4);
 
 	// *********************************
 	// Control point parameters are defined
@@ -1014,7 +1016,7 @@ void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * paramete
 	if (controlPointParameters != nullptr) {
 		// HDF control points parameters
 		hsize_t controlPointParamCount[3] = { controlPointCountPerPillar, getJCellCount() + 1, getICellCount() + 1 };
-		proxy->writeArrayNd(getHdfGroup(), "controlPointParameters", H5T_NATIVE_DOUBLE, controlPointParameters, controlPointParamCount, 3);
+		proxy->writeArrayNd(getHdfGroup(), "controlPointParameters", COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE, controlPointParameters, controlPointParamCount, 3);
 	}
 }
 

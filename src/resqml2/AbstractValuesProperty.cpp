@@ -473,7 +473,7 @@ void AbstractValuesProperty::pushBackLongHdf5ArrayOfValues(const int64_t * value
 
 	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingIntegerDataset(proxy, "", nullValue),
-		H5T_NATIVE_INT64,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 		values,
 		numValues, numDimensionsInArray);
 }
@@ -489,7 +489,7 @@ void AbstractValuesProperty::pushBackIntHdf5ArrayOfValues(const int * values, un
 
 	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingIntegerDataset(proxy, "", nullValue),
-		H5T_NATIVE_INT,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		values,
 		numValues, numDimensionsInArray);
 }
@@ -505,7 +505,7 @@ void AbstractValuesProperty::pushBackShortHdf5ArrayOfValues(const short * values
 
 	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingIntegerDataset(proxy, "", nullValue),
-		H5T_NATIVE_SHORT,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16,
 		values,
 		numValues, numDimensionsInArray);
 }
@@ -521,7 +521,7 @@ void AbstractValuesProperty::pushBackUShortHdf5ArrayOfValues(const unsigned shor
 
 	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingIntegerDataset(proxy, "", nullValue),
-		H5T_NATIVE_USHORT,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16,
 		values,
 		numValues, numDimensionsInArray);
 }
@@ -537,7 +537,7 @@ void AbstractValuesProperty::pushBackCharHdf5ArrayOfValues(const char * values, 
 
 	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingIntegerDataset(proxy, "", nullValue),
-		H5T_NATIVE_CHAR,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,
 		values,
 		numValues, numDimensionsInArray);
 }
@@ -738,7 +738,7 @@ void AbstractValuesProperty::pushBackLongHdf5ArrayOfValues(
 	oss << "values_patch" << getPatchCount() - 1;
 	proxy->createArrayNd(getHdfGroup(),
 		oss.str(),
-		H5T_NATIVE_INT64,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 		numValues, numArrayDimensions);
 }
 
@@ -772,7 +772,7 @@ void AbstractValuesProperty::setValuesOfLongHdf5ArrayOfValues(
 	// HDF
 	proxy->writeArrayNdSlab(getHdfGroup(),
 		oss.str(),
-		H5T_NATIVE_INT64,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 		values,
 		numValuesInEachDimension,
 		offsetInEachDimension,
@@ -898,7 +898,7 @@ void AbstractValuesProperty::pushBackDoubleHdf5ArrayOfValues(double const * valu
 	// HDF
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
-		H5T_NATIVE_DOUBLE,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE,
 		values,
 		numValues, numArrayDimensions);
 }
@@ -967,7 +967,7 @@ void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(float const * values
 	// HDF
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
-		H5T_NATIVE_FLOAT,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT,
 		values,
 		numValues, numArrayDimensions);
 }
@@ -988,7 +988,7 @@ void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(
 	// HDF
 	proxy->createArrayNd(getHdfGroup(),
 		datasetName,
-		H5T_NATIVE_FLOAT,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT,
 		numValues, numArrayDimensions);
 }
 
@@ -1021,7 +1021,7 @@ void AbstractValuesProperty::setValuesOfFloatHdf5ArrayOfValues(
 	proxy->writeArrayNdSlab(
 		getHdfGroup(),
 		oss.str(),
-		H5T_NATIVE_FLOAT,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT,
 		values,
 		numValuesInEachDimension,
 		offsetInEachDimension,

@@ -293,7 +293,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		definedPillars[i] = pillarKind[i] == -1 ? 0 : 1;
 	}
 	hsize_t pillarGeometryIsDefinedCount[2] = { getJCellCount() + 1, getICellCount() + 1 };
-	proxy->writeArrayNd(getHdfGroup(), "PillarGeometryIsDefined", H5T_NATIVE_UCHAR, definedPillars.get(), pillarGeometryIsDefinedCount, 2);
+	proxy->writeArrayNd(getHdfGroup(), "PillarGeometryIsDefined", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, definedPillars.get(), pillarGeometryIsDefinedCount, 2);
 
 	// *********************************
 	// Overwrite line kind hdf dataset
@@ -314,7 +314,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 
 	// HDF Line kinds
 	hsize_t lineKindCount[2] = { getJCellCount() + 1, getICellCount() + 1 };
-	proxy->writeArrayNd(getHdfGroup(), "LineKindIndices", H5T_NATIVE_SHORT, pillarKind, lineKindCount, 2);
+	proxy->writeArrayNd(getHdfGroup(), "LineKindIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16, pillarKind, lineKindCount, 2);
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(

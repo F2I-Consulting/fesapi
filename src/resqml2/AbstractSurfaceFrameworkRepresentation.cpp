@@ -86,7 +86,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	// ************ HDF *************
 	hsize_t dimContactRepresentations = contactCount;
 	proxy->writeArrayNd(getHdfGroup(),
-		ossForHdfContactRepresentations.str(), H5T_NATIVE_UINT,
+		ossForHdfContactRepresentations.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		contactIndices,
 		&dimContactRepresentations, 1);
 }
@@ -170,14 +170,14 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	// ************ HDF *************
 	hsize_t dimContactRepresentations = contactCount;
 	proxy->writeArrayNd(getHdfGroup(),
-		ossForHdfContactRepresentations.str(), H5T_NATIVE_UINT,
+		ossForHdfContactRepresentations.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		contactIndices,
 		&dimContactRepresentations, 1);
 
 	// ************ HDF *************
 	hsize_t dimIdenticalNodes[2] = { identicalNodesCount, contactCount };
 	proxy->writeArrayNd(getHdfGroup(),
-		ossForHdfIdenticalNodes.str(), H5T_NATIVE_UINT,
+		ossForHdfIdenticalNodes.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		identicalNodesIndexes,
 		dimIdenticalNodes, 2);
 }

@@ -199,8 +199,8 @@ gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid2_0
 		
 		// HDF
 		hsize_t numValues = intervalCount;
-		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ChildCountPerInterval", H5T_NATIVE_UINT, childCellCountPerInterval, &numValues, 1);
-		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ParentCountPerInterval", H5T_NATIVE_UINT, parentCellCountPerInterval, &numValues, 1);
+		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ChildCountPerInterval", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, childCellCountPerInterval, &numValues, 1);
+		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ParentCountPerInterval", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, parentCellCountPerInterval, &numValues, 1);
 	}
 	
 	if (childCellWeights != nullptr) {
@@ -285,8 +285,8 @@ gsoap_eml2_3::resqml22__Regrid* AbstractGridRepresentation::createRegrid2_2(unsi
 
 		// HDF
 		hsize_t numValues = intervalCount;
-		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ChildCountPerInterval", H5T_NATIVE_UINT, childCellCountPerInterval, &numValues, 1);
-		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ParentCountPerInterval", H5T_NATIVE_UINT, parentCellCountPerInterval, &numValues, 1);
+		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ChildCountPerInterval", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, childCellCountPerInterval, &numValues, 1);
+		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ParentCountPerInterval", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, parentCellCountPerInterval, &numValues, 1);
 	}
 
 	if (childCellWeights != nullptr) {
@@ -442,7 +442,7 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, u
 
 			// HDF
 			hsize_t numValues = columnIndexCount;
-			proxy->writeArrayNd(getHdfGroup(), "ParentWindow_ColumnIndices", H5T_NATIVE_UINT, columnIndices, &numValues, 1);
+			proxy->writeArrayNd(getHdfGroup(), "ParentWindow_ColumnIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, columnIndices, &numValues, 1);
 		}
 		else if (columnIndexCount == 1)
 		{
@@ -486,7 +486,7 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, u
 
 			// HDF
 			hsize_t numValues = columnIndexCount;
-			proxy->writeArrayNd(getHdfGroup(), "ParentWindow_ColumnIndices", H5T_NATIVE_UINT, columnIndices, &numValues, 1);
+			proxy->writeArrayNd(getHdfGroup(), "ParentWindow_ColumnIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, columnIndices, &numValues, 1);
 		}
 		else if (columnIndexCount == 1)
 		{
@@ -1787,7 +1787,7 @@ void AbstractGridRepresentation::setCellAssociationWithStratigraphicOrganization
 
 		// ************ HDF *************
 		const hsize_t dim = getCellCount();
-		proxy->writeArrayNd(getHdfGroup(), "CellStratigraphicUnits", H5T_NATIVE_INT64, stratiUnitIndices, &dim, 1);
+		proxy->writeArrayNd(getHdfGroup(), "CellStratigraphicUnits", COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, stratiUnitIndices, &dim, 1);
 	}
 	else {
 		throw logic_error("Only RESQML 2.0.1 allows to assocaite cells with Stratigraphic Organization Interpretation. Use IntervalStratigraphicUnits instead.");
@@ -1803,7 +1803,7 @@ void AbstractGridRepresentation::setCellAssociationWithRockFluidOrganizationInte
 
 	// ************ HDF *************
 	const hsize_t dim = getCellCount();
-	proxy->writeArrayNd(getHdfGroup(), "CellFluidPhaseUnits", H5T_NATIVE_INT64, rockFluidUnitIndices, &dim, 1);
+	proxy->writeArrayNd(getHdfGroup(), "CellFluidPhaseUnits", COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, rockFluidUnitIndices, &dim, 1);
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation*>(gsoapProxy2_0_1);

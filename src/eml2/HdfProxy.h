@@ -52,16 +52,16 @@ namespace EML2_NS
 
 		void close() final;
 
-		COMMON_NS::AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string& groupName) final;
+		COMMON_NS::AbstractObject::numericalDatatypeEnum getNumericalDatatype(const std::string& groupName) final;
 
 		int getHdfDatatypeClassInDataset(const std::string& datasetName) final;
 
 		void writeItemizedListOfList(const std::string& groupName,
 			const std::string& name,
-			hdf5_hid_t cumulativeLengthDatatype,
+			COMMON_NS::AbstractObject::numericalDatatypeEnum cumulativeLengthDatatype,
 			const void* cumulativeLength,
 			unsigned long long cumulativeLengthSize,
-			hdf5_hid_t elementsDatatype,
+			COMMON_NS::AbstractObject::numericalDatatypeEnum elementsDatatype,
 			const void* elements,
 			unsigned long long elementsSize) final;
 
@@ -79,45 +79,9 @@ namespace EML2_NS
 			compressionLevel = newCompressionLevel > 9 ? 9 : newCompressionLevel;
 		}
 
-		void writeArrayNdOfFloatValues(const std::string& groupName,
-			const std::string& name,
-			const float* floatValues,
-			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions) final;
-
-		void writeArrayNdOfDoubleValues(const std::string& groupName,
-			const std::string& name,
-			const double* dblValues,
-			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions) final;
-
-		void writeArrayNdOfCharValues(const std::string& groupName,
-			const std::string& name,
-			const char* intValues,
-			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions) final;
-
-		void writeArrayNdOfIntValues(const std::string& groupName,
-			const std::string& name,
-			const int* intValues,
-			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions) final;
-
-		void writeArrayNdOfInt64Values(const std::string & groupName,
-			const std::string & name,
-			const int64_t * values,
-			const unsigned long long * numValuesInEachDimension,
-			unsigned int numDimensions) final;
-
-		void writeArrayNdOfUInt64Values(const std::string& groupName,
-			const std::string& name,
-			const uint64_t * values,
-			const unsigned long long* numValuesInEachDimension,
-			unsigned int numDimensions) final;
-
 		void writeArrayNd(const std::string& groupName,
 			const std::string& name,
-			hdf5_hid_t datatype,
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 			const void* values,
 			const unsigned long long* numValuesInEachDimension,
 			unsigned int numDimensions) final;
@@ -125,7 +89,7 @@ namespace EML2_NS
 		void createArrayNd(
 			const std::string& groupName,
 			const std::string& name,
-			hdf5_hid_t datatype,
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 			const unsigned long long* numValuesInEachDimension,
 			unsigned int numDimensions
 		) final;
@@ -133,7 +97,7 @@ namespace EML2_NS
 		void writeArrayNdSlab(
 			const std::string& groupName,
 			const std::string& name,
-			hdf5_hid_t datatype,
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 			const void* values,
 			const unsigned long long* numValuesInEachDimension,
 			const unsigned long long* offsetValuesInEachDimension,

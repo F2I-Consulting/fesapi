@@ -130,7 +130,7 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	// ************ HDF *************
 	hsize_t dim[2] = {triangleCount, 3};
 	proxy->writeArrayNd(getHdfGroup(),
-		ossForHdf.str(), H5T_NATIVE_UINT,
+		ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		triangleNodeIndices,
 		dim, 2);
 

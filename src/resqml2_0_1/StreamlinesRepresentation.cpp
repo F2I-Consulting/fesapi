@@ -139,7 +139,7 @@ void StreamlinesRepresentation::setWellboreInformation(uint32_t const* injectorP
 	hsize_t datasetDim = rep->LineCount;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"InjectorPerLine",
-		H5T_NATIVE_UINT32,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		injectorPerLine,
 		&datasetDim, 1);
 
@@ -154,7 +154,7 @@ void StreamlinesRepresentation::setWellboreInformation(uint32_t const* injectorP
 	// HDF
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"ProducerPerLine",
-		H5T_NATIVE_UINT32,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		producerPerLine,
 		&datasetDim, 1);
 
@@ -227,7 +227,7 @@ void StreamlinesRepresentation::setGeometry(
 	hsize_t datasetDim = lineCount;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"NodeCountPerPolyline",
-		H5T_NATIVE_UINT32,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		nodeCountPerPolyline,
 		&datasetDim, 1);
 }
@@ -279,7 +279,7 @@ void StreamlinesRepresentation::setIntervalGridCells(uint16_t const* gridIndices
 	hsize_t datasetDim = igc->CellCount;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"GridIndices",
-		H5T_NATIVE_UINT16,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16,
 		gridIndices,
 		&datasetDim, 1);
 
@@ -295,7 +295,7 @@ void StreamlinesRepresentation::setIntervalGridCells(uint16_t const* gridIndices
 	datasetDim = igc->CellCount;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"CellIndices",
-		H5T_NATIVE_INT64,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 		cellIndices,
 		&datasetDim, 1);
 
@@ -311,7 +311,7 @@ void StreamlinesRepresentation::setIntervalGridCells(uint16_t const* gridIndices
 	datasetDim = igc->CellCount * 2;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"LocalFacePairPerCellIndices",
-		H5T_NATIVE_UINT8,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8,
 		localFacePairPerCellIndices,
 		&datasetDim, 1);
 

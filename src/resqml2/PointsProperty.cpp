@@ -111,7 +111,7 @@ void PointsProperty::pushBackArrayOfXyzPoints(double const * points, unsigned lo
 	coordinateCountByDimension[numArrayDimensions] = 3; // For the XYZ triplet
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
-		H5T_NATIVE_DOUBLE,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE,
 		points,
 		coordinateCountByDimension.get(), numArrayDimensions + 1);
 }
