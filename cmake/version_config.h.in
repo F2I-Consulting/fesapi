@@ -18,4 +18,23 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#define FESAPI_VERSION "${Fesapi_VERSION}"
+/**
+ * Major change such as an architectural one
+ */
+#define FESAPI_VERSION_MAJOR ${Fesapi_VERSION_MAJOR}
+/**
+ * Minor change which modifies at least one public method/function
+ */
+#define FESAPI_VERSION_MINOR ${Fesapi_VERSION_MINOR}
+/**
+ * Bug fix or developement which does not modify any public method/function
+ */
+#define FESAPI_VERSION_PATCH ${Fesapi_VERSION_PATCH}
+/**
+ * Tweak such as typo which does not change functionality of FESAPI
+ */
+#define FESAPI_VERSION_TWEAK ${Fesapi_VERSION_TWEAK}
+/**
+ * The FESAPI version as a string
+ */
+#define FESAPI_VERSION_STR "${Fesapi_VERSION}"
