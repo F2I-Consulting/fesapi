@@ -154,15 +154,16 @@ namespace RESQML2_NS
 		 *
 		 * @param [out]	  	cellIndexPairs	   	Mandatory buffer to receive the cell index pairs. Must be
 		 * 										preallocated with
-		 * 										<tt>getCellIndexPairCountFromInterpretationIndex(interpretationIndex)</tt>.
+		 * 										<tt>2 * getCellIndexPairCountFromInterpretationIndex(interpretationIndex)</tt>.
 		 * @param [in,out]	gridIndexPairs	   	Optional buffer to receive the grid index pairs. Please
 		 * 										set to @p nullptr for not collecting these pairs. Must be
 		 * 										preallocated with
-		 * 										<tt>getCellIndexPairCountFromInterpretationIndex(interpretationIndex)</tt>.
+		 * 										<tt>2 * getCellIndexPairCountFromInterpretationIndex(interpretationIndex)</tt>.
 		 * @param [in,out]	localFaceIndexPairs	Optional buffer to receive the local face index pairs.
 		 * 										Please set to @p nullptr for not collecting these pairs.
 		 * 										Must be preallocated with
-		 * 										<tt>getCellIndexPairCountFromInterpretationIndex(interpretationIndex)</tt>.
+		 * 										<tt>2 * getCellIndexPairCountFromInterpretationIndex(interpretationIndex)</tt>.
+		 *										See http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-252-0-C-sv2010.html for IJK cell face index convention.
 		 * @param 		  	interpretationIndex	The index of an interpretation in the collection of
 		 * 										feature interpretation of this grid connection set.
 		 *										Or -1 for having information for cells which are not associated to any interpretation at all.
@@ -252,7 +253,8 @@ namespace RESQML2_NS
 		 * @param [out]	localFacePerCellIndexPairs	A buffer for receiving the local face per cell index
 		 * 											pairs. It must be preallocated with a size of
 		 * 											<tt>getCellIndexPairCount()*2</tt> and won't be freed
-		 * 											by fesapi.
+		 * 											by FESAPI.
+		 *											See http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-252-0-C-sv2010.html for IJK cell face index convention.
 		 *
 		 * @returns	The null value used in @p localFacePerCellIndexPairs.
 		 */
@@ -355,6 +357,7 @@ namespace RESQML2_NS
 		 * 												number of connections array of local face-per-
 		 * 												cell indices for (Cell1,Cell2) for each
 		 * 												connection.
+		 *												See http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-252-0-C-sv2010.html for IJK cell face index convention.
 		 * @param 		  	nullValue				 	The null value.
 		 * @param [in,out]	proxy					 	The HDF proxy where the numerical values (cell
 		 * 												indices) are stored. if @c nullptr, then the
@@ -378,6 +381,7 @@ namespace RESQML2_NS
 		 * 												an index must correspond to the cell at the same
 		 * 												index in the 1d array containing the cell index
 		 * 												pairs.
+		 *												See http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-252-0-C-sv2010.html for IJK cell face index convention.
 		 * @param 		  	nullValue				 	The null value in @p localFacePerCellIndexPair.
 		 * @param [in,out]	proxy					 	The HDF proxy where the numerical values (cell
 		 * 												indices) are stored. If @c nullptr, then the
