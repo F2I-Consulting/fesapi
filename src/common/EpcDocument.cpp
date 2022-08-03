@@ -304,8 +304,10 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 
 	// Validate properties
 	const vector<RESQML2_NS::AbstractProperty*> allprops = repo.getDataObjects<RESQML2_NS::AbstractProperty>();
-	for (size_t propIndex = 0; propIndex < allprops.size(); ++propIndex) {
-		allprops[propIndex]->validate();
+	for (auto* prop : allprops) {
+		if (!prop->isPartial()) {
+			prop->validate();
+		}
 	}
 
 	for (const auto& warning : repo.getWarnings()) {
