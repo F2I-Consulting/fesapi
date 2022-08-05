@@ -39,7 +39,6 @@ void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::str
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	const string datasetName = pushBackRefToExistingDataset(proxy, "");
 
 	// Build the CHAR array
 	hsize_t dimTwo = 0;
@@ -67,11 +66,13 @@ void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::str
 
     // HDF
 	proxy->writeArrayNd(getHdfGroup(),
-		datasetName,
+		"values_patch" + std::to_string(getPatchCount()),
         COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8,
         cTab.get(),
         nbValPerDim,   // 0 = number of strings, 1 = length of the longest string 
 		nbDimensions); // 2
+
+	const string datasetName = pushBackRefToExistingDataset(proxy, getHdfGroup() + "/values_patch" + std::to_string(getPatchCount()));
 }
 
 std::vector<std::string> CommentProperty::getStringValuesOfPatch(unsigned int patchIndex)

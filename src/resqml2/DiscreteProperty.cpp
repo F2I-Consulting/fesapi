@@ -193,12 +193,15 @@ void DiscreteProperty::pushBackLongHdf5ArrayOfValues(const int64_t * values, uns
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
+		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue, minimumValue, maximumValue);
 }
 
 void DiscreteProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int  minimumValue, int  maximumValue)
@@ -209,12 +212,15 @@ void DiscreteProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
+		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue, minimumValue, maximumValue);
 }
 
 void DiscreteProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short  minimumValue, short  maximumValue)
@@ -225,12 +231,15 @@ void DiscreteProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsi
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
+		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue, minimumValue, maximumValue);
 }
 
 void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short  minimumValue, unsigned short  maximumValue)
@@ -241,12 +250,15 @@ void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * va
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
+		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue, minimumValue, maximumValue);
 }
 
 void DiscreteProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue, char  minimumValue, char  maximumValue)
@@ -257,12 +269,15 @@ void DiscreteProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsign
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue, minimumValue, maximumValue),
+		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue, minimumValue, maximumValue);
 }
 
 void DiscreteProperty::pushBackLongHdf5Array3dOfValues(

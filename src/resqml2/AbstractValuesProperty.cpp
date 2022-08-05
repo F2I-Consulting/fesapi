@@ -471,11 +471,15 @@ void AbstractValuesProperty::pushBackLongHdf5ArrayOfValues(const int64_t * value
 		}
 	}
 
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue),
+		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
 void AbstractValuesProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue)
@@ -487,11 +491,15 @@ void AbstractValuesProperty::pushBackIntHdf5ArrayOfValues(const int * values, un
 		}
 	}
 
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue),
+		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
 void AbstractValuesProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue)
@@ -503,11 +511,15 @@ void AbstractValuesProperty::pushBackShortHdf5ArrayOfValues(const short * values
 		}
 	}
 
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue),
+		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
 void AbstractValuesProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
@@ -519,11 +531,15 @@ void AbstractValuesProperty::pushBackUShortHdf5ArrayOfValues(const unsigned shor
 		}
 	}
 
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue),
+		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
 void AbstractValuesProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue)
@@ -535,11 +551,15 @@ void AbstractValuesProperty::pushBackCharHdf5ArrayOfValues(const char * values, 
 		}
 	}
 
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
 	proxy->writeArrayNd(getHdfGroup(),
-		pushBackRefToExistingIntegerDataset(proxy, "", nullValue),
+		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,
 		values,
 		numValues, numDimensionsInArray);
+
+	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
 int64_t AbstractValuesProperty::getLongValuesOfPatch(unsigned int patchIndex, int64_t * values) const
@@ -893,7 +913,7 @@ void AbstractValuesProperty::pushBackDoubleHdf5ArrayOfValues(double const * valu
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	const string datasetName = pushBackRefToExistingFloatingPointDataset(proxy, "");
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
 	// HDF
 	proxy->writeArrayNd(getHdfGroup(),
@@ -901,6 +921,8 @@ void AbstractValuesProperty::pushBackDoubleHdf5ArrayOfValues(double const * valu
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE,
 		values,
 		numValues, numArrayDimensions);
+
+	pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
 }
 
 void AbstractValuesProperty::pushBackFloatHdf5Array1dOfValues(const float * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy)
@@ -962,7 +984,7 @@ void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(float const * values
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	const string datasetName = pushBackRefToExistingFloatingPointDataset(proxy, "");
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
 	// HDF
 	proxy->writeArrayNd(getHdfGroup(),
@@ -970,6 +992,8 @@ void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(float const * values
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT,
 		values,
 		numValues, numArrayDimensions);
+
+	pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
 }
 
 void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(
@@ -983,13 +1007,15 @@ void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	const string datasetName = pushBackRefToExistingFloatingPointDataset(proxy, "");
+	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
 	// HDF
 	proxy->createArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT,
 		numValues, numArrayDimensions);
+
+	pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
 }
 
 void AbstractValuesProperty::setValuesOfFloatHdf5ArrayOfValues(
