@@ -98,22 +98,10 @@ public:
 		unsigned long long elementsSize) { throw std::logic_error("Not implemented yet"); }
 
 	/**
-	 * Get the number of dimensions in an HDF dataset of the proxy.
-	 * @param datasetName	The absolute name of the dataset we want to get the number of dimensions.
-	 */
-	unsigned int getDimensionCount(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
-
-	/**
 	 * Get the number of elements in each dimension in an HDF dataset of the proxy.
 	 * @param datasetName	The absolute name of the dataset we want to get the number of elements.
 	 */
 	std::vector<unsigned long long> getElementCountPerDimension(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
-
-	/**
-	 * Get the number of elements in an HDF dataset of the proxy. The number of elements is get from all dimensions.
-	 * @param datasetName	The absolute name of the dataset we want to get the number of elements.
-	 */
-	signed long long getElementCount(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Set the new compression level which will be used for all data to be written
@@ -446,12 +434,6 @@ public:
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
 	void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) { throw std::logic_error("Not implemented yet"); }
-
-	/**
-	 * Read the dimensions of an array stored in a specific dataset
-	 * @param datasetName	The absolute dataset name where to read the array dimensions
-	 */
-	std::vector<unsigned long long> readArrayDimensions(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Check wether an absolute path exists in the hdf file or not.

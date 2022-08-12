@@ -158,7 +158,7 @@ namespace EML2_NS
 		 * @returns	The number of dimensions of the dataset if successful, otherwise returns a negative
 		 * 			value.
 		 */
-		virtual unsigned int getDimensionCount(const std::string & datasetName) = 0;
+		unsigned int getDimensionCount(const std::string & datasetName);
 
 		/**
 		 * Get the number of elements in each dimension of an HDF5 dataset.
@@ -176,7 +176,7 @@ namespace EML2_NS
 		 * @returns	The number of elements of the dataset if successful, otherwise returns a negative
 		 * 			value.
 		 */
-		virtual signed long long getElementCount(const std::string & datasetName) = 0;
+		signed long long getElementCount(const std::string & datasetName);
 
 		/**
 		 * Sets the new compression level which will be used for all data to be written
@@ -480,7 +480,6 @@ namespace EML2_NS
 		virtual void readArrayNdOfUShortValues(const std::string & datasetName, unsigned short* values) = 0;
 		virtual void readArrayNdOfCharValues(const std::string & datasetName, char* values) = 0;
 		virtual void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) = 0;
-		virtual std::vector<unsigned long long> readArrayDimensions(const std::string & datasetName) = 0;
 		
 		virtual bool exist(const std::string & absolutePathInHdfFile) const = 0;
 		

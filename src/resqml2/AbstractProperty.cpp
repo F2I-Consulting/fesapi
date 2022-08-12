@@ -608,7 +608,7 @@ unsigned int AbstractProperty::getValuesCountOfDimensionOfPatch(unsigned int dim
 	std::string dsPath;
 	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
-	std::vector<hsize_t> dims = hdfProxy->readArrayDimensions(dsPath);
+	std::vector<hsize_t> dims = hdfProxy->getElementCountPerDimension(dsPath);
 
 	if (dimIndex < dims.size()) {
 		return dims[dimIndex];

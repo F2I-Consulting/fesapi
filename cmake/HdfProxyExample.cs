@@ -58,17 +58,7 @@ namespace Example
             throw new NotImplementedException();
         }
 
-        public override uint getDimensionCount(string datasetName)
-        {
-            throw new NotImplementedException();
-        }
-
         public override SWIGTYPE_p_std__vectorT_unsigned_long_long_t getElementCountPerDimension(string datasetName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override long getElementCount(string datasetName)
         {
             throw new NotImplementedException();
         }
@@ -234,11 +224,6 @@ namespace Example
         }
 
         public override void readArrayNdOfUCharValues(string datasetName, SWIGTYPE_p_unsigned_char values)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override SWIGTYPE_p_std__vectorT_unsigned_long_long_t readArrayDimensions(string datasetName)
         {
             throw new NotImplementedException();
         }

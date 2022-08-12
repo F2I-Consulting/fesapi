@@ -145,7 +145,7 @@ namespace EML2_NS
 		 * @returns	The number of dimensions of the dataset if successful, otherwise returns a negative
 		 * 			value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getDimensionCount(const std::string & datasetName) = 0;
+		DLL_IMPORT_OR_EXPORT unsigned int getDimensionCount(const std::string & datasetName) { return getElementCountPerDimension(datasetName).size(); }
 
 		/**
 		 * Get the number of elements in each dimension of an HDF5 dataset.
@@ -163,7 +163,7 @@ namespace EML2_NS
 		 * @returns	The number of elements of the dataset if successful, otherwise returns a negative
 		 * 			value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual signed long long getElementCount(const std::string & datasetName) = 0;
+		DLL_IMPORT_OR_EXPORT signed long long getElementCount(const std::string & datasetName);
 
 		/**
 		 * Sets the new compression level which will be used for all data to be written
@@ -848,15 +848,6 @@ namespace EML2_NS
 		 * 							this method.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) = 0;
-
-		/**
-		 * Reads the dimensions size of an nd array stored in a specific dataset
-		 *
-		 * @param 	datasetName	The absolute name of the nd array dataset.
-		 *
-		 * @returns	A vector of dimensions size.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::vector<unsigned long long> readArrayDimensions(const std::string & datasetName) = 0;
 
 		/**
 		 * Checks whether an absolute path exists in the HDF5 file

@@ -65,15 +65,11 @@ namespace EML2_NS
 			const void* elements,
 			unsigned long long elementsSize) final;
 
-		unsigned int getDimensionCount(const std::string& datasetName) final;
-
 		/**
 		 * Get the number of elements in each dimension in an HDF dataset of the proxy.
 		 * @param datasetName	The absolute name of the dataset we want to get the number of elements.
 		 */
 		std::vector<unsigned long long> getElementCountPerDimension(const std::string & datasetName) final;
-
-		signed long long getElementCount(const std::string& datasetName) final;
 
 		DLL_IMPORT_OR_EXPORT void setCompressionLevel(unsigned int newCompressionLevel) final {
 			compressionLevel = newCompressionLevel > 9 ? 9 : newCompressionLevel;
@@ -223,8 +219,6 @@ namespace EML2_NS
 		void readArrayNdOfCharValues(const std::string& datasetName, char* values) final;
 
 		void readArrayNdOfUCharValues(const std::string& datasetName, unsigned char* values) final;
-
-		std::vector<unsigned long long> readArrayDimensions(const std::string& datasetName) final;
 
 		bool exist(const std::string& absolutePathInHdfFile) const final;
 
