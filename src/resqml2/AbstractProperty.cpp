@@ -523,13 +523,13 @@ gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind AbstractProperty::getEnergistics
 }
 
 
-COMMON_NS::AbstractObject::hdfDatatypeEnum AbstractProperty::getValuesHdfDatatype() const
+COMMON_NS::AbstractObject::numericalDatatypeEnum AbstractProperty::getValuesHdfDatatype() const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
 	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(0, nullValue, dsPath);
 
-	return hdfProxy->getHdfDatatypeInDataset(dsPath);
+	return hdfProxy->getNumericalDatatype(dsPath);
 }
 
 uint64_t AbstractProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, uint64_t patchIndex) const

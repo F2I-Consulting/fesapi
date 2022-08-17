@@ -96,7 +96,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
     // ************ HDF *************
     hsize_t dim[2] = {identicalNodesCount, patchCount};
     proxy->writeArrayNd(getHdfGroup(),
-		"listOfIdenticalNodes_contact" + std::to_string(contactRep->Index), H5T_NATIVE_UINT,
+		"listOfIdenticalNodes_contact" + std::to_string(contactRep->Index), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
         identicalNodes,
         dim, 2);
 }
@@ -157,7 +157,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
     // ************ HDF *************
     hsize_t dim = nodeCount;
     proxy->writeArrayNd(getHdfGroup(),
-		"SupportingRepresentationNodes_contact" + std::to_string(contactIndex) + "_patch" + std::to_string(contactRep->Patches.size()), H5T_NATIVE_UINT,
+		"SupportingRepresentationNodes_contact" + std::to_string(contactIndex) + "_patch" + std::to_string(contactRep->Patches.size()), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		nodeIndicesOnSupportingRepresentation, &dim, 1);
 
     // adding the contact patch to the contact representation

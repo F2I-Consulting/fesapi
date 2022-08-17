@@ -88,9 +88,9 @@ void GridConnectionSetRepresentation::setCellIndexPairs(uint64_t cellIndexPairCo
 
 	// ************ HDF ************		
 	hsize_t numValues[2] = { cellIndexPairCount, 2 };
-	proxy->writeArrayNd(getHdfGroup(), "CellIndexPairs", H5T_NATIVE_INT64, cellIndexPair, numValues, 2);
+	proxy->writeArrayNd(getHdfGroup(), "CellIndexPairs", COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, cellIndexPair, numValues, 2);
 	if (gridIndexPair != nullptr) {
-		proxy->writeArrayNd(getHdfGroup(), "GridIndexPairs", H5T_NATIVE_UINT16, gridIndexPair, numValues, 2);
+		proxy->writeArrayNd(getHdfGroup(), "GridIndexPairs", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16, gridIndexPair, numValues, 2);
 	}
 
 	setCellIndexPairsUsingExistingDataset(cellIndexPairCount, getHdfGroup() + "/CellIndexPairs", cellIndexPairNullValue, proxy, gridIndexPairNullValue, gridIndexPair != nullptr ? getHdfGroup() + "/GridIndexPairs" : "");
@@ -111,7 +111,7 @@ void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(uint64_t cel
 
 	// ************ HDF ************		
 	hsize_t numValues[2] = { cellIndexPairCount,2 };
-	proxy->writeArrayNd(getHdfGroup(), "LocalFacePerCellIndexPairs", H5T_NATIVE_INT, localFacePerCellIndexPair, numValues, 2);
+	proxy->writeArrayNd(getHdfGroup(), "LocalFacePerCellIndexPairs", COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32, localFacePerCellIndexPair, numValues, 2);
 
 	setLocalFacePerCellIndexPairsUsingExistingDataset(getHdfGroup() + "/LocalFacePerCellIndexPairs", nullValue, proxy);
 }

@@ -26,12 +26,9 @@ Fesapi uses cmake as its build tool. A 3.12 version or later of cmake is require
 - yourPath/fesapiEnv/build/theNameYouWant defines where to build the binaries
 - Click on "Configure" button and select your favorite compiler : it will raise several errors.
 - give real values, path and files to the following cmake variables:
-	- HDF5
-		- HDF5_1_8 : true if you link to a HDF5 library version 1.8 false (default) if you link to a HDF5 library version 1.10 or 1.12
-		- (ONLY FOR WINDOWS) HD5_BUILT_AS_DYNAMIC_LIB : true if you link to a shared HDF5 library else false
-		- HDF5_C_INCLUDE_DIR : where the HDF5 headers are located
-		- (ONLY FOR WINDOWS) HDF5_C_LIBRARY_DEBUG : Optional, only used by Visual studio Debug configuration, the HDF5 debug library you want to link to .
-		- HDF5_C_LIBRARY_RELEASE : the HDF5 library you want to link to. On Visual studio, it is used on Release configuration. With other compilers, it is the default HDF5 library to link to.
+	- HDF5 (using [cmake find module](https://cmake.org/cmake/help/latest/module/FindHDF5.html))
+		- (ONLY IF NOT AUTOMATICALLY FOUND) HDF5_ROOT : The path to the folder containing include and lib folders of HDF5
+		- ONLY IF YOU WANT TO STATICALLY LINK TO HDF5, set a cmake variable called HDF5_USE_STATIC_LIBRARIES to ON
 	- MINIZIP
 		- MINIZIP_INCLUDE_DIR : where the HDF5 headers are located
 		- (ONLY FOR WINDOWS) MINIZIP_LIBRARY_DEBUG : Optional, only used by Visual studio Debug configuration, the MINIZIP debug library you want to link to

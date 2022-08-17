@@ -41,7 +41,7 @@ namespace Example
             throw new NotImplementedException();
         }
 
-        public override F2iConsulting.Fesapi.common.AbstractObject.hdfDatatypeEnum getHdfDatatypeInDataset(string datasetName)
+        public override numericalDatatypeEnum getNumericalDatatype(string datasetName)
         {
             throw new NotImplementedException();
         }
@@ -51,12 +51,9 @@ namespace Example
             throw new NotImplementedException();
         }
 
-        public override void writeItemizedListOfList(string groupName, string name, SWIGTYPE_p_hdf5_hid_t cumulativeLengthDatatype, SWIGTYPE_p_void cumulativeLength, ulong cumulativeLengthSize, SWIGTYPE_p_hdf5_hid_t elementsDatatype, SWIGTYPE_p_void elements, ulong elementsSize)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override uint getDimensionCount(string datasetName)
+        public override void writeItemizedListOfList(string groupName, string name,
+			numericalDatatypeEnum cumulativeLengthDatatype, SWIGTYPE_p_void cumulativeLength, ulong cumulativeLengthSize,
+			numericalDatatypeEnum elementsDatatype, SWIGTYPE_p_void elements, ulong elementsSize)
         {
             throw new NotImplementedException();
         }
@@ -66,57 +63,22 @@ namespace Example
             throw new NotImplementedException();
         }
 
-        public override long getElementCount(string datasetName)
-        {
-            throw new NotImplementedException();
-        }
-
         public override void setCompressionLevel(uint newCompressionLevel)
         {
             throw new NotImplementedException();
         }
 
-        public override void writeArrayNdOfFloatValues(string groupName, string name, SWIGTYPE_p_float floatValues, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, uint numDimensions)
+        public override void writeArrayNd(string groupName, string name, numericalDatatypeEnum datatype, SWIGTYPE_p_void values, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, uint numDimensions)
+        {
+            Console.WriteLine("MyHdfProxy::writeArrayNd");
+        }
+
+        public override void createArrayNd(string groupName, string name, numericalDatatypeEnum datatype, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, uint numDimensions)
         {
             throw new NotImplementedException();
         }
 
-        public override void writeArrayNdOfDoubleValues(string groupName, string name, SWIGTYPE_p_double dblValues, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, uint numDimensions)
-        {
-            System.Console.WriteLine("MyHdfProxy::writeArrayNdOfDoubleValues");
-        }
-
-        public override void writeArrayNdOfCharValues(string groupName, string name, string intValues, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, uint numDimensions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void writeArrayNdOfIntValues(string groupName, string name, SWIGTYPE_p_int intValues, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, uint numDimensions)
-        {
-            throw new NotImplementedException();
-        }
-		
-		public override void writeArrayNdOfInt64Values(string groupName, string name, SWIGTYPE_p_long_long values, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, uint numDimensions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void writeArrayNdOfUInt64Values(string groupName, string name, SWIGTYPE_p_unsigned_long_long values, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, uint numDimensions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void writeArrayNd(string groupName, string name, SWIGTYPE_p_hdf5_hid_t datatype, SWIGTYPE_p_void values, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, uint numDimensions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void createArrayNd(string groupName, string name, SWIGTYPE_p_hdf5_hid_t datatype, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, uint numDimensions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void writeArrayNdSlab(string groupName, string name, SWIGTYPE_p_hdf5_hid_t datatype, SWIGTYPE_p_void values, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, SWIGTYPE_p_unsigned_long_long offsetValuesInEachDimension, uint numDimensions)
+        public override void writeArrayNdSlab(string groupName, string name, numericalDatatypeEnum datatype, SWIGTYPE_p_void values, SWIGTYPE_p_unsigned_long_long numValuesInEachDimension, SWIGTYPE_p_unsigned_long_long offsetValuesInEachDimension, uint numDimensions)
         {
             throw new NotImplementedException();
         }

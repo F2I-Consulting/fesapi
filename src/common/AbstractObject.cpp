@@ -47,7 +47,7 @@ under the License.
 using namespace std;
 using namespace COMMON_NS;
 
-char AbstractObject::citationFormat[2001] = "F2I-CONSULTING:FESAPI:" FESAPI_VERSION;
+char AbstractObject::citationFormat[2001] = "F2I-CONSULTING:FESAPI:" FESAPI_VERSION_STR;
 
 void AbstractObject::cannotBePartial() const
 {

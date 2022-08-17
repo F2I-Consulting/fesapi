@@ -89,13 +89,13 @@ void DiscreteProperty::initRepo() {
 void DiscreteProperty::readRepo() {
 	// getting the DiscreteProperty
 	RESQML2_NS::DiscreteProperty* charDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultCharPropUuid);
-	REQUIRE(charDiscreteProperty->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::CHAR);
+	REQUIRE(charDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8);
 	RESQML2_NS::DiscreteProperty* shortDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultShortPropUuid);
-	REQUIRE(shortDiscreteProperty->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::SHORT);
+	REQUIRE(shortDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16);
 	RESQML2_NS::DiscreteProperty* ushortDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultUShortPropUuid);
-	REQUIRE(ushortDiscreteProperty->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::USHORT);
+	REQUIRE(ushortDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16);
 	RESQML2_NS::DiscreteProperty* intDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultIntPropUuid);
-	REQUIRE(intDiscreteProperty->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::INT);
+	REQUIRE(intDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32);
 	RESQML2_NS::DiscreteProperty* longDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultLongPropUuid);
-	REQUIRE(longDiscreteProperty->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG_64);
+	REQUIRE(longDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64);
 }

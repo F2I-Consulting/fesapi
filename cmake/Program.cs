@@ -123,12 +123,12 @@ namespace Example
             {
                 AbstractLocal3dCrs crs = repo.createLocalDepth3dCrs(Guid.NewGuid().ToString(), "UTF8 Crs title : éàç : олег1", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.m, 5215, eml20__LengthUom.m, "Unknown", false);
                 repo.setDefaultCrs(crs);
-                System.Console.WriteLine("Serialize : CRS title is " + crs.getTitle());
+                Console.WriteLine("Serialize : CRS title is " + crs.getTitle());
                 Well well = repo.createWell("1425632e-3c22-4845-b431-ecd36da0671e", "Well");
                 well.setNameLegal("Legal Name");
                 well.setWaterDepth(0.0, eml21__LengthUom._0_x002e1_x0020ft);
                 well.setTimeZone(true, 0, 0);
-                System.Console.WriteLine("Serialize : Well title is " + well.getTitle());
+                Console.WriteLine("Serialize : Well title is " + well.getTitle());
 
                 // HdfProxy
                 AbstractHdfProxy hdfProxy = repo.createHdfProxy("", "Hdf Proxy", epc_file.getStorageDirectory(), epc_file.getName() + ".h5", DataObjectRepository.openingMode.OVERWRITE);
@@ -266,16 +266,16 @@ ${COMMENT_END}
                 string status = epc_file.deserializeInto(repo);
                 if (status.Length > 0)
                 {
-                    System.Console.WriteLine("Warnings are " + status);
+                    Console.WriteLine("Warnings are " + status);
                 }
-                System.Console.WriteLine("Deserialize : CRS title is " + repo.getWellboreTrajectoryRepresentation(0).getTitle());
+                Console.WriteLine("Deserialize : CRS title is " + repo.getWellboreTrajectoryRepresentation(0).getTitle());
                 Well well = repo.getDataObjectByUuid("1425632e-3c22-4845-b431-ecd36da0671e") as Well;
-                System.Console.WriteLine("Deserialize : Well title is " + well.getTitle());
-                System.Console.WriteLine("\tnameLegal : " + well.getNameLegal());
-                System.Console.WriteLine("\twaterDepth : " + well.getWaterDepthValue() + " (" + well.getWaterDepthUom() + ")");
+                Console.WriteLine("Deserialize : Well title is " + well.getTitle());
+                Console.WriteLine("\tnameLegal : " + well.getNameLegal());
+                Console.WriteLine("\twaterDepth : " + well.getWaterDepthValue() + " (" + well.getWaterDepthUom() + ")");
                 if (well.hasTimeZone())
                 {
-                    System.Console.WriteLine("\ttimeZone : " + well.getTimeZoneHours() + " hours");
+                    Console.WriteLine("\ttimeZone : " + well.getTimeZoneHours() + " hours");
                 }
 
                 for (uint trajIndex = 0; trajIndex < repo.getWellboreTrajectoryRepresentationCount(); trajIndex++)
@@ -284,58 +284,58 @@ ${COMMENT_END}
                     for (uint wbfIndex = 0; wbfIndex < traj.getWellboreFrameRepresentationCount(); wbfIndex++)
                     {
                         F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation wbf = traj.getWellboreFrameRepresentation(wbfIndex);
-                        System.Console.WriteLine("Deserialize : WellboreFrameRepresentation title is " + wbf.getTitle());
-                        System.Console.WriteLine("Deserialize : WellboreFrameRepresentation uuid is " + wbf.getUuid());
-                        System.Console.WriteLine("Value Count : " + wbf.getMdValuesCount());
+                        Console.WriteLine("Deserialize : WellboreFrameRepresentation title is " + wbf.getTitle());
+                        Console.WriteLine("Deserialize : WellboreFrameRepresentation uuid is " + wbf.getUuid());
+                        Console.WriteLine("Value Count : " + wbf.getMdValuesCount());
                         if (wbf.areMdValuesRegularlySpaced())
                         {
-                            System.Console.WriteLine("Regularly spaced");
-                            System.Console.WriteLine("First Value : " + wbf.getMdFirstValue());
-                            System.Console.WriteLine("Increment : " + wbf.getMdConstantIncrementValue());
+                            Console.WriteLine("Regularly spaced");
+                            Console.WriteLine("First Value : " + wbf.getMdFirstValue());
+                            Console.WriteLine("Increment : " + wbf.getMdConstantIncrementValue());
                         }
                         else
                         {
-                            System.Console.WriteLine("Iregularly spaced");
+                            Console.WriteLine("Iregularly spaced");
                         }
-                        if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.DOUBLE)
+                        if (wbf.getMdHdfDatatype() == AbstractObject.numericalDatatypeEnum.DOUBLE)
 						{
-                            System.Console.WriteLine("Hdf datatype is NATIVE DOUBLE");
+                            Console.WriteLine("Hdf datatype is NATIVE DOUBLE");
 						}
-                        if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.FLOAT)
+                        if (wbf.getMdHdfDatatype() == AbstractObject.numericalDatatypeEnum.FLOAT)
 						{
-                            System.Console.WriteLine("Hdf datatype is NATIVE FLOAT");
+                            Console.WriteLine("Hdf datatype is NATIVE FLOAT");
 						}
-                        if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.UNKNOWN)
+                        if (wbf.getMdHdfDatatype() == AbstractObject.numericalDatatypeEnum.UNKNOWN)
 						{
-                            System.Console.WriteLine("Hdf datatype is NATIVE UNKNOWN");
+                            Console.WriteLine("Hdf datatype is NATIVE UNKNOWN");
 						}
 						if (wbf.getXmlTag() == "SeismicWellboreFrameRepresentation")
 						{
 							SeismicWellboreFrameRepresentation swbf = (SeismicWellboreFrameRepresentation) wbf;
 							
-							System.Console.WriteLine("Seismic reference datum : " + swbf.getSeismicReferenceDatum());
-							System.Console.WriteLine("Weathering velocity : " + swbf.getWeatheringVelocity());
+							Console.WriteLine("Seismic reference datum : " + swbf.getSeismicReferenceDatum());
+							Console.WriteLine("Weathering velocity : " + swbf.getWeatheringVelocity());
 							if (swbf.areTimeValuesRegularlySpaced())
 							{
-								System.Console.WriteLine("Time values regularly spaced");
-								System.Console.WriteLine("First Value : " + swbf.getTimeFirstValue());
-								System.Console.WriteLine("Increment : " + swbf.getTimeConstantIncrementValue());
+								Console.WriteLine("Time values regularly spaced");
+								Console.WriteLine("First Value : " + swbf.getTimeFirstValue());
+								Console.WriteLine("Increment : " + swbf.getTimeConstantIncrementValue());
 							}
 							else
 							{
-								System.Console.WriteLine("Time values iregularly spaced");
+								Console.WriteLine("Time values iregularly spaced");
 							}
-							if (swbf.getTimeHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.DOUBLE)
+							if (swbf.getTimeHdfDatatype() == AbstractObject.numericalDatatypeEnum.DOUBLE)
 							{
-								System.Console.WriteLine("Hdf datatype is NATIVE DOUBLE");
+								Console.WriteLine("Hdf datatype is NATIVE DOUBLE");
 							}
-							else if (swbf.getTimeHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.FLOAT)
+							else if (swbf.getTimeHdfDatatype() == AbstractObject.numericalDatatypeEnum.FLOAT)
 							{
-								System.Console.WriteLine("Hdf datatype is NATIVE FLOAT");
+								Console.WriteLine("Hdf datatype is NATIVE FLOAT");
 							}
-							else if (swbf.getTimeHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.UNKNOWN)
+							else if (swbf.getTimeHdfDatatype() == AbstractObject.numericalDatatypeEnum.UNKNOWN)
 							{
-								System.Console.WriteLine("Hdf datatype is UNKNOWN");
+								Console.WriteLine("Hdf datatype is UNKNOWN");
 							}
 						}
                     }

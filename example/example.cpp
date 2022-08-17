@@ -622,11 +622,11 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	h1i1SinglePolylineRep->addSeismic2dCoordinatesToPatch(0, seismicLineAbscissa, seismicLineRep, hdfProxy);
 
 #if defined(OFFICIAL)
-	h1i1SingleGrid2dRep = pck->createGrid2dRepresentation(horizon1Interp1, local3dCrs, "", "Horizon1 Interp1 Grid2dRep");
+	h1i1SingleGrid2dRep = pck->createGrid2dRepresentation(horizon1Interp1, local3dCrs, "030a82f6-10a7-4ecf-af03-54749e098624", "Horizon1 Interp1 Grid2dRep");
 	double zValues[8] = { 300, 300, 350, 350, 300, 300, 350, 350 };
 	h1i1SingleGrid2dRep->setGeometryAsArray2dOfExplicitZ(zValues, 4, 2, hdfProxy, seismicLatticeRep);
 #else
-	h1i1SingleGrid2dRep = pck->createGrid2dRepresentation(horizon1Interp1, "", "Horizon1 Interp1 Grid2dRep");
+	h1i1SingleGrid2dRep = pck->createGrid2dRepresentation(horizon1Interp1, "030a82f6-10a7-4ecf-af03-54749e098624", "Horizon1 Interp1 Grid2dRep");
 	double zValues[8] = { 300, 300, 350, 350, 300, 300, 350, 350 };
 	h1i1SingleGrid2dRep->setGeometryAsArray2dOfExplicitZ(zValues, 4, 2, hdfProxy, seismicLatticeRep, localTime3dCrs);
 #endif
@@ -757,7 +757,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	RESQML2_NS::ContinuousProperty* contProp2 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "d3efb337-19f8-4b91-8b4f-3698afe17f01", "Horizon1 Interp1 Grid2dRep Prop2",
 		gsoap_eml2_3::eml23__IndexableElement::nodes, gsoap_resqml2_0_1::resqml20__ResqmlUom::ft, propType2);
 	double prop2Values[8] = { 302, 302, 352, 352, 302, 302, 352, 352 };
-	contProp2->pushBackDoubleHdf5Array1dOfValues(prop2Values, 8, hdfProxy);
+	contProp2->pushBackDoubleHdf5Array2dOfValues(prop2Values, 4, 2, hdfProxy);
 }
 
 void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfProxy* hdfProxy)
@@ -2440,7 +2440,7 @@ bool serialize(const string & filePath)
 	repo.setDefaultStandard(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3);
 #endif
 
-	COMMON_NS::AbstractObject::setFormat("F2I-CONSULTING", "FESAPI Example", FESAPI_VERSION);
+	COMMON_NS::AbstractObject::setFormat("F2I-CONSULTING", "FESAPI Example", FESAPI_VERSION_STR);
 
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5", COMMON_NS::DataObjectRepository::openingMode::OVERWRITE);
 	//hdfProxy->setCompressionLevel(6);
@@ -2558,8 +2558,8 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 		std::cout << "\tValues count in all dimensions is : " << valueCount << std::endl;
 
 		// Datatype
-		std::cout << "\tDatatype is : " << prop->getValuesHdfDatatype() << std::endl;
-		if (prop->getValuesHdfDatatype() == 0) {
+		std::cout << "\tDatatype is : " << static_cast<unsigned char>(prop->getValuesHdfDatatype()) << std::endl;
+		if (prop->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::UNKNOWN) {
 			cerr << "\tERROR !!!!! The hdf datatype is unknown" << endl;
 			cout << "\tPress enter to continue..." << endl;
 			cin.get();
@@ -5392,13 +5392,13 @@ void deserialize(const string & inputFile)
 			else {
 				std::cout << "Iregularly spaced" << std::endl;
 			}
-			if (wellboreFrame->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE) {
+			if (wellboreFrame->getMdHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE) {
 				std::cout << "Hdf datatype is NATIVE DOUBLE" << std::endl;
 			}
-			else if (wellboreFrame->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::FLOAT) {
+			else if (wellboreFrame->getMdHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT) {
 				std::cout << "Hdf datatype is NATIVE FLOAT" << std::endl;
 			}
-			else if (wellboreFrame->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN) {
+			else if (wellboreFrame->getMdHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::UNKNOWN) {
 				std::cout << "Hdf datatype is UNKNOWN" << std::endl;
 			}
 			std::cout << std::endl;
@@ -5436,13 +5436,13 @@ void deserialize(const string & inputFile)
 				else {
 					std::cout << "Time values iregularly spaced" << std::endl;
 				}
-				if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE) {
+				if (seismicWellboreFrame->getTimeHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE) {
 					std::cout << "Hdf datatype is NATIVE DOUBLE" << std::endl;
 				}
-				else if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::FLOAT) {
+				else if (seismicWellboreFrame->getTimeHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT) {
 					std::cout << "Hdf datatype is NATIVE FLOAT" << std::endl;
 				}
-				else if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN) {
+				else if (seismicWellboreFrame->getTimeHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::UNKNOWN) {
 					std::cout << "Hdf datatype is UNKNOWN" << std::endl;
 				}
 				std::cout << std::endl;

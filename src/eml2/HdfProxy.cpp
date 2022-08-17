@@ -20,11 +20,55 @@ under the License.
 
 #include <algorithm>
 #include <numeric>
+#include <stdexcept>
 
 #include <hdf5.h>
 
 using namespace std;
 using namespace EML2_NS;
+
+namespace {
+	hid_t convertToHdf5Datatype(COMMON_NS::AbstractObject::numericalDatatypeEnum fesapiDatatype) {
+		switch (fesapiDatatype) {
+		case COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE: return H5T_NATIVE_DOUBLE;
+		case COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT: return H5T_NATIVE_FLOAT;
+		case COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64: return H5T_NATIVE_INT64;
+		case COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64: return H5T_NATIVE_UINT64;
+		case COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32: return H5T_NATIVE_INT32;
+		case COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32: return H5T_NATIVE_UINT32;
+		case COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16: return H5T_NATIVE_INT16;
+		case COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16: return H5T_NATIVE_UINT16;
+		case COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8: return H5T_NATIVE_INT8;
+		case COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8: return H5T_NATIVE_UINT8;
+		default: throw invalid_argument("The FESAPI datatype is unknown.");
+		}
+	}
+
+	COMMON_NS::AbstractObject::numericalDatatypeEnum convertToFesapiDatatype(hid_t hdf5Datatype) {
+		if (H5Tequal(hdf5Datatype, H5T_NATIVE_DOUBLE) > 0)
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE;
+		else if (H5Tequal(hdf5Datatype, H5T_NATIVE_FLOAT) > 0)
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT;
+		else if (H5Tequal(hdf5Datatype, H5T_NATIVE_INT64) > 0)
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64;
+		else if (H5Tequal(hdf5Datatype, H5T_NATIVE_UINT64) > 0)
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64;
+		else if (H5Tequal(hdf5Datatype, H5T_NATIVE_INT) > 0)
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32;
+		else if (H5Tequal(hdf5Datatype, H5T_NATIVE_UINT) > 0)
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32;
+		else if (H5Tequal(hdf5Datatype, H5T_NATIVE_INT16) > 0)
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16;
+		else if (H5Tequal(hdf5Datatype, H5T_NATIVE_UINT16) > 0)
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16;
+		else if (H5Tequal(hdf5Datatype, H5T_NATIVE_INT8) > 0)
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8;
+		else if (H5Tequal(hdf5Datatype, H5T_NATIVE_UINT8) > 0)
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8;
+
+		return COMMON_NS::AbstractObject::numericalDatatypeEnum::UNKNOWN;
+	}
+}
 
 HdfProxy::HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess) :
 	AbstractHdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess), hdfFile(-1), compressionLevel(0), openedGroups() {}
@@ -149,13 +193,13 @@ void HdfProxy::readArrayNdOfValues(const std::string & datasetName, void* values
 
 	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
 	if (dataset < 0) {
-		throw invalid_argument("The resqml dataset " + datasetName + " could not be opened.");
+		throw invalid_argument("The HDF5 dataset " + datasetName + " could not be opened.");
 	}
 	hid_t readingError = H5Dread (dataset, datatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, values);
 
 	H5Dclose(dataset);
 	if (readingError < 0) {
-		throw invalid_argument("The resqml dataset " + datasetName + " could not be read.");
+		throw invalid_argument("The HDF5 dataset " + datasetName + " could not be read.");
 	}
 }
 
@@ -184,25 +228,25 @@ void HdfProxy::readArrayNdOfValues(
 
 	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
 	if (dataset < 0) {
-		throw invalid_argument("The resqml dataset " + datasetName + " could not be opened.");
+		throw invalid_argument("The HDF5 dataset " + datasetName + " could not be opened.");
 	}
 
 	hid_t filespace = H5Dget_space(dataset);
 	if (filespace < 0) {
 		H5Dclose(dataset);
-		throw invalid_argument("The filespace of resqml dataset " + datasetName + " could not be opened.");
+		throw invalid_argument("The filespace of HDF5 dataset " + datasetName + " could not be opened.");
 	}
 	herr_t result = H5Sselect_hyperslab(filespace, H5S_SELECT_SET, offsetInEachDimension, strideInEachDimension, blockCountPerDimension, blockSizeInEachDimension);
 	if (result < 0) {
 		H5Sclose(filespace);
 		H5Dclose(dataset);
-		throw invalid_argument("The hyperslabbing of resqml dataset " + datasetName + " could not be selected.");
+		throw invalid_argument("The hyperslabbing of HDF5 dataset " + datasetName + " could not be selected.");
 	}
 
 	if (H5Sget_simple_extent_ndims(filespace) != (int) numDimensions) {
 		H5Sclose(filespace);
 		H5Dclose(dataset);
-		throw invalid_argument("The resqml dataset " + datasetName + " does not have " + std::to_string(numDimensions) + " dimensions.");
+		throw invalid_argument("The HDF5 dataset " + datasetName + " does not have " + std::to_string(numDimensions) + " dimensions.");
 	}
 
 	hsize_t slab_size = 1;
@@ -224,7 +268,7 @@ void HdfProxy::readArrayNdOfValues(
 	if (memspace < 0) {
 		H5Sclose(filespace);
 		H5Dclose(dataset);
-		throw invalid_argument("The memory space for the slabbing of resqml dataset " + datasetName + " could not be created.");
+		throw invalid_argument("The memory space for the slabbing of HDF5 dataset " + datasetName + " could not be created.");
 	}
 
 	hid_t readingError = H5Dread(dataset, datatype, memspace, filespace, H5P_DEFAULT, values);
@@ -234,7 +278,7 @@ void HdfProxy::readArrayNdOfValues(
 	H5Dclose(dataset);
 
 	if (readingError < 0) {
-		throw invalid_argument("The resqml dataset " + datasetName + " could not be read.");
+		throw invalid_argument("The HDF5 dataset " + datasetName + " could not be read.");
 	}
 }
 
@@ -256,20 +300,20 @@ void HdfProxy::selectArrayNdOfValues(
 	if (newSelection) {
 		dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
 		if (dataset < 0) {
-			throw invalid_argument("The resqml dataset " + datasetName + " could not be opened.");
+			throw invalid_argument("The HDF5 dataset " + datasetName + " could not be opened.");
 		}
 
 		filespace = H5Dget_space(dataset);
 		if (filespace < 0) {
 			H5Dclose(dataset);
-			throw invalid_argument("The filespace of resqml dataset " + datasetName + " could not be opened.");
+			throw invalid_argument("The filespace of HDF5 dataset " + datasetName + " could not be opened.");
 		}
 
 		if (H5Sget_simple_extent_ndims(filespace) != (int) numDimensions)
 		{
 			H5Sclose(filespace);
 			H5Dclose(dataset);
-			throw invalid_argument("The resqml dataset " + datasetName + " does not have " + std::to_string(numDimensions) + " dimensions.");
+			throw invalid_argument("The HDF5 dataset " + datasetName + " does not have " + std::to_string(numDimensions) + " dimensions.");
 		}
 	}
 
@@ -301,7 +345,7 @@ void HdfProxy::readArrayNdOfValues(
 		free(name);
 		H5Sclose(filespace);
 		H5Dclose(dataset);
-		throw invalid_argument("The memory space for the slabbing of resqml dataset " + datasetName + " could not be created.");
+		throw invalid_argument("The memory space for the slabbing of HDF5 dataset " + datasetName + " could not be created.");
 	}
 
 	hid_t readingError = H5Dread(dataset, datatype, memspace, filespace, H5P_DEFAULT, values);
@@ -319,11 +363,11 @@ void HdfProxy::readArrayNdOfValues(
 	H5Dclose(dataset);
 
 	if (readingError < 0) {
-		throw invalid_argument("The resqml dataset " + datasetName + " could not be read.");
+		throw invalid_argument("The HDF5 dataset " + datasetName + " could not be read.");
 	}
 }
 
-COMMON_NS::AbstractObject::hdfDatatypeEnum HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName)
+COMMON_NS::AbstractObject::numericalDatatypeEnum HdfProxy::getNumericalDatatype(const std::string & datasetName)
 {
 	if (!isOpened()) {
 		open();
@@ -336,28 +380,7 @@ COMMON_NS::AbstractObject::hdfDatatypeEnum HdfProxy::getHdfDatatypeInDataset(con
 	H5Dclose(dataset);
 	H5Tclose(datatype);
 
-	if (H5Tequal(native_datatype, H5T_NATIVE_DOUBLE) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::DOUBLE;
-	else if (H5Tequal(native_datatype, H5T_NATIVE_FLOAT) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::FLOAT;
-	else if (H5Tequal(native_datatype, H5T_NATIVE_INT64) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::LONG_64;
-	else if (H5Tequal(native_datatype, H5T_NATIVE_UINT64) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::ULONG_64;
-	else if (H5Tequal(native_datatype, H5T_NATIVE_INT) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::INT;
-	else if (H5Tequal(native_datatype, H5T_NATIVE_UINT) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::UINT;
-	else if (H5Tequal(native_datatype, H5T_NATIVE_SHORT) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::SHORT;
-	else if (H5Tequal(native_datatype, H5T_NATIVE_USHORT) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::USHORT;
-	else if (H5Tequal(native_datatype, H5T_NATIVE_CHAR) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::CHAR;
-	else if (H5Tequal(native_datatype, H5T_NATIVE_UCHAR) > 0)
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::UCHAR;
-
-	return COMMON_NS::AbstractObject::hdfDatatypeEnum::UNKNOWN;
+	return convertToFesapiDatatype(native_datatype);
 }
 
 int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName)
@@ -419,13 +442,13 @@ vector<unsigned long long> HdfProxy::reduceForChunking(hid_t datatype,
 }
 
 void HdfProxy::writeItemizedListOfList(const string & groupName,
-			const string & name,
-			hid_t cumulativeLengthDatatype,
-			const void * cumulativeLength,
-			unsigned long long cumulativeLengthSize,
-			hid_t elementsDatatype,
-			const void * elements,
-			unsigned long long elementsSize)
+	const string & name,
+	COMMON_NS::AbstractObject::numericalDatatypeEnum cumulativeLengthDatatype,
+	const void * cumulativeLength,
+	unsigned long long cumulativeLengthSize,
+	COMMON_NS::AbstractObject::numericalDatatypeEnum elementsDatatype,
+	const void * elements,
+	unsigned long long elementsSize)
 {
 	if (!isOpened()) {
 		open();
@@ -439,26 +462,27 @@ void HdfProxy::writeItemizedListOfList(const string & groupName,
 	hid_t fspaceCL = H5Screate_simple(1, &cumulativeLengthSize, nullptr);
 
 	hid_t datasetCL;
+	const hid_t hdf5DatatypeCL = convertToHdf5Datatype(cumulativeLengthDatatype);
 	if (compressionLevel > 0) {
 		// Create dataset and write it into the file.
 		hid_t dcpl = H5Pcreate (H5P_DATASET_CREATE);
 		H5Pset_deflate (dcpl, compressionLevel);
 
 		vector<unsigned long long> newValues =
-			reduceForChunking (cumulativeLengthDatatype,
+			reduceForChunking (hdf5DatatypeCL,
 					   &cumulativeLengthSize,
 					   1);
 		H5Pset_chunk (dcpl, 1, newValues.data());
 
-		datasetCL = H5Dcreate(grp, CUMULATIVE_LENGTH_DS_NAME, cumulativeLengthDatatype, fspaceCL, H5P_DEFAULT, dcpl, H5P_DEFAULT);
+		datasetCL = H5Dcreate(grp, CUMULATIVE_LENGTH_DS_NAME, hdf5DatatypeCL, fspaceCL, H5P_DEFAULT, dcpl, H5P_DEFAULT);
 
 		H5Pclose(dcpl);
 	}
 	else {
-		datasetCL = H5Dcreate(grp, CUMULATIVE_LENGTH_DS_NAME, cumulativeLengthDatatype, fspaceCL, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+		datasetCL = H5Dcreate(grp, CUMULATIVE_LENGTH_DS_NAME, hdf5DatatypeCL, fspaceCL, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 	}
 
-	H5Dwrite(datasetCL, cumulativeLengthDatatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, cumulativeLength);
+	H5Dwrite(datasetCL, hdf5DatatypeCL, H5S_ALL, H5S_ALL, H5P_DEFAULT, cumulativeLength);
 	H5Sclose(fspaceCL);
 	H5Dclose(datasetCL);
 
@@ -467,48 +491,32 @@ void HdfProxy::writeItemizedListOfList(const string & groupName,
 	hid_t fspaceE = H5Screate_simple(1, &elementsSize, nullptr);
 
 	hid_t datasetE;
+	const hid_t hdf5DatatypeE = convertToHdf5Datatype(elementsDatatype);
 	if (compressionLevel > 0) {
 		// Create dataset and write it into the file.
 		hid_t dcpl = H5Pcreate (H5P_DATASET_CREATE);
 		H5Pset_deflate (dcpl, compressionLevel);
 
 		vector<unsigned long long> newValues =
-			reduceForChunking (elementsDatatype,
+			reduceForChunking (hdf5DatatypeE,
 					   &elementsSize,
 					   1);
 
 		H5Pset_chunk (dcpl, 1, newValues.data());
 
-		datasetE = H5Dcreate(grp, ELEMENTS_DS_NAME, elementsDatatype, fspaceE, H5P_DEFAULT, dcpl, H5P_DEFAULT);
+		datasetE = H5Dcreate(grp, ELEMENTS_DS_NAME, hdf5DatatypeE, fspaceE, H5P_DEFAULT, dcpl, H5P_DEFAULT);
 
 		H5Pclose(dcpl);
 	}
 	else {
-		datasetE = H5Dcreate(grp, ELEMENTS_DS_NAME, elementsDatatype, fspaceE, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+		datasetE = H5Dcreate(grp, ELEMENTS_DS_NAME, hdf5DatatypeE, fspaceE, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 	}
 
-	H5Dwrite(datasetE, elementsDatatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, elements);
+	H5Dwrite(datasetE, hdf5DatatypeE, H5S_ALL, H5S_ALL, H5P_DEFAULT, elements);
 	H5Sclose(fspaceE);
 	H5Dclose(datasetE);
 
 	H5Gclose(grp);
-}
-
-unsigned int HdfProxy::getDimensionCount(const std::string & datasetName)
-{
-	if (!isOpened()) {
-		open();
-	}
-
-	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
-
-	hid_t dataspace = H5Dget_space(dataset);
-	int result = H5Sget_simple_extent_ndims(dataspace);
-
-	H5Sclose(dataspace);
-	H5Dclose(dataset);
-
-	return result;
 }
 
 std::vector<unsigned long long> HdfProxy::getElementCountPerDimension(const std::string & datasetName)
@@ -552,80 +560,9 @@ std::vector<unsigned long long> HdfProxy::getElementCountPerDimension(const std:
 	return result;
 }
 
-hssize_t HdfProxy::getElementCount(const std::string & datasetName)
-{
-	if (!isOpened()) {
-		open();
-	}
-
-    hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
-	
-	hid_t dataspace = H5Dget_space(dataset);
-	hssize_t result = H5Sget_simple_extent_npoints(dataspace);
-
-	H5Sclose(dataspace);
-	H5Dclose(dataset);
-
-	return result;
-}
-
-void HdfProxy::writeArrayNdOfFloatValues(const string & groupName,
-	const string & name,
-	const float * floatValues,
-	const hsize_t * numValuesInEachDimension,
-	unsigned int numDimensions)
-{
-	writeArrayNd(groupName, name, H5T_NATIVE_FLOAT, floatValues, numValuesInEachDimension, numDimensions);
-}
-
-void HdfProxy::writeArrayNdOfDoubleValues(const string & groupName,
-	const string & name,
-	const double * dblValues,
-	const hsize_t * numValuesInEachDimension,
-	unsigned int numDimensions)
-{
-	writeArrayNd(groupName, name, H5T_NATIVE_DOUBLE, dblValues, numValuesInEachDimension, numDimensions);
-}
-
-void HdfProxy::writeArrayNdOfCharValues(const std::string & groupName,
-	const std::string & name,
-	const char * intValues,
-	const unsigned long long * numValuesInEachDimension,
-	unsigned int numDimensions)
-{
-	writeArrayNd(groupName, name, H5T_NATIVE_CHAR, intValues, numValuesInEachDimension, numDimensions);
-}
-
-void HdfProxy::writeArrayNdOfIntValues(const string & groupName,
-    const string & name,
-    const int * intValues,
-    const hsize_t * numValuesInEachDimension,
-	unsigned int numDimensions)
-{
-	writeArrayNd(groupName, name, H5T_NATIVE_INT, intValues, numValuesInEachDimension, numDimensions);
-}
-
-void HdfProxy::writeArrayNdOfInt64Values(const std::string & groupName,
-	const std::string & name,
-	const int64_t * values,
-	const hsize_t * numValuesInEachDimension,
-	unsigned int numDimensions)
-{
-	writeArrayNd(groupName, name, H5T_NATIVE_INT64, values, numValuesInEachDimension, numDimensions);
-}
-
-void HdfProxy::writeArrayNdOfUInt64Values(const std::string & groupName,
-	const std::string & name,
-	const uint64_t * values,
-	const hsize_t * numValuesInEachDimension,
-	unsigned int numDimensions)
-{
-	writeArrayNd(groupName, name, H5T_NATIVE_UINT64, values, numValuesInEachDimension, numDimensions);
-}
-
 void HdfProxy::writeArrayNd(const std::string & groupName,
 	const std::string & name,
-	hid_t datatype,
+	COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 	const void * values,
 	const unsigned long long * numValuesInEachDimension,
 	unsigned int numDimensions)
@@ -648,17 +585,18 @@ void HdfProxy::writeArrayNd(const std::string & groupName,
     // Create the dataset.
 	herr_t error;
 	hid_t dataset;
+	const hid_t hdf5Datatype = convertToHdf5Datatype(datatype);
 	if (compressionLevel) {
 		hid_t dcpl = H5Pcreate (H5P_DATASET_CREATE);
 		H5Pset_deflate (dcpl, compressionLevel);
 		vector<unsigned long long> newValues =
-			reduceForChunking (datatype,
+			reduceForChunking (hdf5Datatype,
 					   numValuesInEachDimension,
 					   numDimensions);
 
 		H5Pset_chunk (dcpl, numDimensions, newValues.data());
 
-		dataset = H5Dcreate(grp, name.c_str(), datatype, space, H5P_DEFAULT, dcpl, H5P_DEFAULT);
+		dataset = H5Dcreate(grp, name.c_str(), hdf5Datatype, space, H5P_DEFAULT, dcpl, H5P_DEFAULT);
 		H5Pclose(dcpl);
 		if (dataset < 0) {
 			H5Sclose(space);
@@ -666,14 +604,14 @@ void HdfProxy::writeArrayNd(const std::string & groupName,
 		}
 	}
 	else {
-		dataset = H5Dcreate (grp, name.c_str(), datatype, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+		dataset = H5Dcreate (grp, name.c_str(), hdf5Datatype, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 		if (dataset < 0) {
 			H5Sclose(space);
 			throw invalid_argument("The dataset " + name + " could not be created.");
 		}
 	}
 
-	error = H5Dwrite(dataset, datatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, values);
+	error = H5Dwrite(dataset, hdf5Datatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, values);
 	H5Sclose(space);
 	H5Dclose(dataset);
 	if (error < 0) {
@@ -684,7 +622,7 @@ void HdfProxy::writeArrayNd(const std::string & groupName,
 void HdfProxy::createArrayNd(
 	const std::string& groupName,
 	const std::string& datasetName,
-	hid_t datatype,
+	COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 	const unsigned long long* numValuesInEachDimension,
 	unsigned int numDimensions
 ) {
@@ -705,18 +643,19 @@ void HdfProxy::createArrayNd(
 
 	// Create the dataset.
 	hid_t dataset;
+	const hid_t hdf5Datatype = convertToHdf5Datatype(datatype);
 	if (compressionLevel > 0) {
 		hid_t dcpl = H5Pcreate (H5P_DATASET_CREATE);
 		H5Pset_deflate (dcpl, compressionLevel);
 
 		vector<unsigned long long> newValues =
-			reduceForChunking (datatype,
+			reduceForChunking (hdf5Datatype,
 			numValuesInEachDimension,
 			numDimensions);
 
 		H5Pset_chunk (dcpl, numDimensions, newValues.data());
 
-		dataset = H5Dcreate(grp, datasetName.c_str(), datatype, space, H5P_DEFAULT, dcpl, H5P_DEFAULT);
+		dataset = H5Dcreate(grp, datasetName.c_str(), hdf5Datatype, space, H5P_DEFAULT, dcpl, H5P_DEFAULT);
 		H5Pclose(dcpl);
 		if (dataset < 0) {			
 			H5Sclose(space);
@@ -724,7 +663,7 @@ void HdfProxy::createArrayNd(
 		}
 	}
 	else {
-		dataset = H5Dcreate(grp, datasetName.c_str(), datatype, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+		dataset = H5Dcreate(grp, datasetName.c_str(), hdf5Datatype, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 		if (dataset < 0) {
 			H5Sclose(space);
 			throw invalid_argument("The dataset " + datasetName + " could not be created.");
@@ -738,7 +677,7 @@ void HdfProxy::createArrayNd(
 void HdfProxy::writeArrayNdSlab(
 	const string& groupName,
 	const string& datasetName,
-	hid_t datatype,
+	COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 	const void* values,
 	const hsize_t* numValuesInEachDimension,
 	const hsize_t* offsetInEachDimension,
@@ -751,7 +690,7 @@ void HdfProxy::writeArrayNdSlab(
 	hid_t grp = openOrCreateGroup(groupName);
 	hid_t dataset = H5Dopen(grp, datasetName.c_str(), H5P_DEFAULT);
 	if (dataset < 0) {
-		throw invalid_argument("The resqml dataset " + datasetName + " could not be opened.");
+		throw invalid_argument("The HDF5 dataset " + datasetName + " could not be opened.");
 	}
 	
 	hid_t filespace = H5Dget_space(dataset);
@@ -780,10 +719,11 @@ void HdfProxy::writeArrayNdSlab(
 	if (datatypeOfDataset < 0) {
 		throw invalid_argument("The datatype of the dataset " + datasetName + " could not be retrieved.");
 	}
-	if (H5Tequal(datatype, datatypeOfDataset) <= 0) {
+	const hid_t hdf5Datatype = convertToHdf5Datatype(datatype);
+	if (H5Tequal(hdf5Datatype, datatypeOfDataset) <= 0) {
 		throw invalid_argument("The given datatype for the slab is not compatible with the datatype of the dataset.");
 	}
-	errorCode = H5Dwrite(dataset, datatype, memspace, filespace, H5P_DEFAULT, values);
+	errorCode = H5Dwrite(dataset, hdf5Datatype, memspace, filespace, H5P_DEFAULT, values);
 
 	H5Sclose(memspace);
 	H5Sclose(filespace);
@@ -1345,7 +1285,7 @@ bool HdfProxy::isCompressed(const std::string & datasetName)
 
 	int numfilt = H5Pget_nfilters(plist_id);
 	if (numfilt < 0) {
-		throw invalid_argument("The filters cannot be got on the RESQML dataset " + datasetName);
+		throw invalid_argument("The filters cannot be got on the HDF5 dataset " + datasetName);
 	}
 	for (unsigned i = 0; i < static_cast<unsigned>(numfilt); ++i) {
 		size_t nelmts = 0;

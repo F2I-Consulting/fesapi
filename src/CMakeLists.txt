@@ -8,7 +8,7 @@ add_library (${CPP_LIBRARY_NAME} ${LIB_TYPE} "")
 configure_file(${FESAPI_ROOT_DIR}/cmake/version_config.h.in ${FESAPI_ROOT_DIR}/src/version_config.h)
 
 #configure the HDF5 hidt type to use in Fesapi according to the HDF5 version
-if (HDF5_1_8)
+if (HDF5_VERSION VERSION_LESS "1.10")
 	set (COMMENT_HDF5_1_8 "")
 	set (COMMENT_HDF5_1_10 "//")
 	if (DEFINED HDF5_ROS3_ENABLED)
@@ -58,25 +58,25 @@ if (WIN32)
 	if (NOT BUILD_SHARED_LIBS)
 		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE FESAPI_STATIC)
 	endif ()
-	if (HDF5_BUILT_AS_DYNAMIC_LIB)
-		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE H5_BUILT_AS_DYNAMIC_LIB)
-	endif ()
 endif (WIN32)
 
+target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_DEFINITIONS})
 target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE BOOST_ALL_NO_LIB)
 
 # Linker instructions
+target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${HDF5_LIBRARIES})
 if (WIN32)
-	if (EXISTS ${MINIZIP_LIBRARY_DEBUG} AND EXISTS ${HDF5_C_LIBRARY_DEBUG})
+	if (EXISTS ${MINIZIP_LIBRARY_DEBUG} AND EXISTS ${HDF5_hdf5_LIBRARY_DEBUG})
 		set(CMAKE_CONFIGURATION_TYPES "Release;MinSizeRel;RelWithDebInfo;Debug" CACHE STRING "" FORCE)
 	endif ()
-	if (NOT EXISTS ${MINIZIP_LIBRARY_DEBUG} OR NOT EXISTS ${HDF5_C_LIBRARY_DEBUG})
+	if (NOT EXISTS ${MINIZIP_LIBRARY_DEBUG} OR NOT EXISTS ${HDF5_hdf5_LIBRARY_DEBUG})
 		set(CMAKE_CONFIGURATION_TYPES "Release;MinSizeRel;RelWithDebInfo" CACHE STRING "" FORCE)
 	endif ()
-	if (NOT EXISTS ${MINIZIP_LIBRARY_RELEASE} OR NOT EXISTS ${HDF5_C_LIBRARY_RELEASE})
+	if (NOT EXISTS ${MINIZIP_LIBRARY_RELEASE} OR NOT EXISTS ${HDF5_hdf5_LIBRARY_RELEASE})
 		set(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "" FORCE)
 	endif ()
 
+	# On windows, boost uuid depends on bcrypt library.
 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE bcrypt.lib)
 
 	if (EXISTS ${MINIZIP_LIBRARY_RELEASE} AND EXISTS ${MINIZIP_LIBRARY_DEBUG})
@@ -87,16 +87,6 @@ if (WIN32)
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_DEBUG})
 	else ()
 		message(ERROR "No minizip library has been set.")
-	endif ()
-
-	if (EXISTS ${HDF5_C_LIBRARY_RELEASE} AND EXISTS ${HDF5_C_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${HDF5_C_LIBRARY_RELEASE} debug ${HDF5_C_LIBRARY_DEBUG})
-	elseif (EXISTS ${HDF5_C_LIBRARY_RELEASE})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${HDF5_C_LIBRARY_RELEASE})
-	elseif (EXISTS ${HDF5_C_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${HDF5_C_LIBRARY_DEBUG})
-	else ()
-		message(ERROR "No hdf5 library has been set.")
 	endif ()
 
 # zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
@@ -128,7 +118,7 @@ if (WIN32)
 		VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}
 	)
 ELSEIF (UNIX)
-	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE})
 # zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
 # zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
 	if (EXISTS ${ZLIB_LIBRARY_RELEASE})
@@ -139,10 +129,6 @@ ELSEIF (UNIX)
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${SZIP_LIBRARY_RELEASE})
 	endif ()
 
-	# In case of static link to hdf5 libraries, then we need to also link to some other libraries
-	if( ${HDF5_C_LIBRARY_RELEASE} MATCHES ".*\.a$" )
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE dl)
-	endif ()
 	set_target_properties(${CPP_LIBRARY_NAME} PROPERTIES
 		VERSION ${Fesapi_VERSION}
 		SOVERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
@@ -281,7 +267,7 @@ endif (WITH_WITSML2_1)
 
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
 
-target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_INCLUDE_DIR} ${HDF5_C_INCLUDE_DIR} ${MINIZIP_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
+target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS} ${MINIZIP_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
 
 target_include_directories(${CPP_LIBRARY_NAME} INTERFACE
 	$<INSTALL_INTERFACE:include>

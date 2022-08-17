@@ -32,7 +32,7 @@ jobs:
           cd ${{ github.workspace }}/..
           mkdir build
           cd build
-          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE -DHDF5_C_INCLUDE_DIR=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/include -DHDF5_C_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/hdf5.lib -DMINIZIP_INCLUDE_DIR=${{ runner.temp }}/minizip-install/include -DMINIZIP_LIBRARY_RELEASE=${{ runner.temp }}/minizip-install/lib/minizip.lib -DZLIB_INCLUDE_DIR=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/include -DZLIB_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/zlib.lib -DSZIP_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/szip.lib -DBoost_INCLUDE_DIR=${{ runner.temp }}\boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.0.2/swig.exe ${{ github.workspace }}
+          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ROOT=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16 -DMINIZIP_INCLUDE_DIR=${{ runner.temp }}/minizip-install/include -DMINIZIP_LIBRARY_RELEASE=${{ runner.temp }}/minizip-install/lib/minizip.lib -DZLIB_INCLUDE_DIR=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/include -DZLIB_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/zlib.lib -DSZIP_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/szip.lib -DBoost_INCLUDE_DIR=${{ runner.temp }}\boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.0.2/swig.exe ${{ github.workspace }}
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: Add msbuild to PATH
@@ -71,7 +71,7 @@ jobs:
           cd ..
           mkdir build
           cd build
-          cmake -DHDF5_C_INCLUDE_DIR=/usr/include/hdf5/serial -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libhdf5_serial.so.103.0.0 -DMINIZIP_INCLUDE_DIR=/usr/include/minizip -DMINIZIP_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libminizip.so.1.0.0 -DZLIB_INCLUDE_DIR=/usr/include -DZLIB_LIBRARY_RELEASE=/lib/x86_64-linux-gnu/libz.so.1.2.11 -DCMAKE_BUILD_TYPE=Release -DWITH_RESQML2_2=TRUE -DWITH_JAVA_WRAPPING=TRUE ${{ github.workspace }}
+          cmake -DMINIZIP_INCLUDE_DIR=/usr/include/minizip -DMINIZIP_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libminizip.so.1.0.0 -DCMAKE_BUILD_TYPE=Release -DWITH_JAVA_WRAPPING=TRUE ${{ github.workspace }}
           cmake --build . -j2
           cmake --install .
       - name: Run java example

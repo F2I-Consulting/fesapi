@@ -66,7 +66,7 @@ void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::str
     // HDF
 	proxy->writeArrayNd(getHdfGroup(),
 		"values_patch" + std::to_string(getPatchCount()),
-        H5T_NATIVE_UCHAR,
+        COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8,
         cTab.get(),
         nbValPerDim,   // 0 = number of strings, 1 = length of the longest string 
 		nbDimensions); // 2
@@ -87,7 +87,7 @@ std::vector<std::string> CommentProperty::getStringValuesOfPatch(uint64_t patchI
 		return result;
 	}
 	// Check if the hdf dataset really contains unsigned char values.
-	if (getValuesHdfDatatype() != AbstractValuesProperty::UCHAR) {
+	if (getValuesHdfDatatype() != COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8) {
 		return result;
 	}
 

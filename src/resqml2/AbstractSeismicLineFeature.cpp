@@ -98,7 +98,7 @@ std::vector<std::string> AbstractSeismicLineFeature::getTraceLabels() const
 			return result;
 		}
 		// Check if the hdf dataset really contains unsigned char values.
-		if (hdfProxy->getHdfDatatypeInDataset(daPart->PathInExternalFile) != COMMON_NS::AbstractObject::hdfDatatypeEnum::UCHAR) {
+		if (hdfProxy->getNumericalDatatype(dsPart->PathInExternalFile) != COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8) {
 			return result;
 		}
 
@@ -176,8 +176,8 @@ void AbstractSeismicLineFeature::setTraceLabels(const std::vector<std::string> &
 	hsize_t nbValPerDim[2] = { strNb, dimTwo };
 	// HDF
 	proxy->writeArrayNd(getHdfGroup(),
-		daPart->PathInExternalFile,
-		H5T_NATIVE_UCHAR,
+		dsPart->PathInExternalFile,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8,
 		cTab.get(),
 		nbValPerDim,   // 0 = number of strings, 1 = length of the longest string 
 		2);

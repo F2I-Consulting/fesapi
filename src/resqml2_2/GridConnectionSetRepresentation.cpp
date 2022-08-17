@@ -470,7 +470,7 @@ void GridConnectionSetRepresentation::setConnectionInterpretationIndices(unsigne
 	elements->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/InterpretationIndices/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, cumulativeInterpCount[cellIndexPairCount - 1], proxy));
 
 	// HDF
-	proxy->writeItemizedListOfList(getHdfGroup(), "InterpretationIndices", H5T_NATIVE_UINT, cumulativeInterpCount, cellIndexPairCount, H5T_NATIVE_UINT, interpIndices, cumulativeInterpCount[cellIndexPairCount - 1]);
+	proxy->writeItemizedListOfList(getHdfGroup(), "InterpretationIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, cumulativeInterpCount, cellIndexPairCount, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, interpIndices, cumulativeInterpCount[cellIndexPairCount - 1]);
 }
 
 void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::AbstractFeatureInterpretation* interp)

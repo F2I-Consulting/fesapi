@@ -219,7 +219,7 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodes(
 	// Pillar defined
 	if (definedPillars != nullptr) {
 		hsize_t pillarGeometryIsDefinedCount[2] = { getJCellCount() + 1, getICellCount() + 1 };
-		proxy->writeArrayNd(getHdfGroup(), "PillarGeometryIsDefined", H5T_NATIVE_CHAR, definedPillars, pillarGeometryIsDefinedCount, 2);
+		proxy->writeArrayNd(getHdfGroup(), "PillarGeometryIsDefined", COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8, definedPillars, pillarGeometryIsDefinedCount, 2);
 	}
 
 	if (splitCoordinateLineCount == 0) {
@@ -234,7 +234,7 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodes(
 		
 		// split coordinate lines
 		hsize_t hdfSplitCoordinateLineCount = splitCoordinateLineCount;
-		proxy->writeArrayNd(getHdfGroup(), "PillarIndices", H5T_NATIVE_UINT, pillarOfCoordinateLine, &hdfSplitCoordinateLineCount, 1);
-		proxy->writeItemizedListOfList(getHdfGroup(), "ColumnsPerSplitCoordinateLine", H5T_NATIVE_UINT, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineCount, H5T_NATIVE_UINT, splitCoordinateLineColumns, splitCoordinateLineColumnCumulativeCount[splitCoordinateLineCount - 1]);
+		proxy->writeArrayNd(getHdfGroup(), "PillarIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, pillarOfCoordinateLine, &hdfSplitCoordinateLineCount, 1);
+		proxy->writeItemizedListOfList(getHdfGroup(), "ColumnsPerSplitCoordinateLine", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineCount, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, splitCoordinateLineColumns, splitCoordinateLineColumnCumulativeCount[splitCoordinateLineCount - 1]);
 	}
 }

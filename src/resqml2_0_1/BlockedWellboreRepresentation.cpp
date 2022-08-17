@@ -103,7 +103,7 @@ void BlockedWellboreRepresentation::setIntervalGridCells(char const* gridIndices
 	hsize_t intervalCount = rep->NodeCount - 1;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"GridIndices",
-		H5T_NATIVE_CHAR,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,
 		gridIndices,
 		&intervalCount, 1);
 
@@ -120,7 +120,7 @@ void BlockedWellboreRepresentation::setIntervalGridCells(char const* gridIndices
 	if (cellCount == intervalCount) {
 		hdfProxy->writeArrayNd(getHdfGroup(),
 			"CellIndices",
-			H5T_NATIVE_INT64,
+			COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 			cellIndices,
 			&dimCellIndices, 1);
 	}
@@ -135,7 +135,7 @@ void BlockedWellboreRepresentation::setIntervalGridCells(char const* gridIndices
 		}
 		hdfProxy->writeArrayNd(getHdfGroup(),
 			"CellIndices",
-			H5T_NATIVE_INT64,
+			COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 			nonNullCellIndices.get(),
 			&dimCellIndices, 1);
 	}
@@ -153,7 +153,7 @@ void BlockedWellboreRepresentation::setIntervalGridCells(char const* gridIndices
 	if (cellCount == intervalCount) {
 		hdfProxy->writeArrayNd(getHdfGroup(),
 			"LocalFacePairPerCellIndices",
-			H5T_NATIVE_CHAR,
+			COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,
 			localFacePairPerCellIndices,
 			&dimLocalFacePerCellIndicesNullValue, 1);
 	}
@@ -169,7 +169,7 @@ void BlockedWellboreRepresentation::setIntervalGridCells(char const* gridIndices
 		}
 		hdfProxy->writeArrayNd(getHdfGroup(),
 			"LocalFacePairPerCellIndices",
-			H5T_NATIVE_CHAR,
+			COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,
 			nonNullLocalFacePairPerCellIndices.get(),
 			&dimLocalFacePerCellIndicesNullValue, 1);
 	}

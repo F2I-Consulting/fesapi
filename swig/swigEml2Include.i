@@ -129,79 +129,301 @@ namespace EML2_NS
 		 * document configuration
 		 */
 		virtual void open() = 0;
+
+		/**
+		 * Checks if the HDF5 file is open or not
+		 *
+		 * @returns	True if opened, false if not.
+		 */
 		virtual bool isOpened() const = 0;
+
+		/** Closes the HDF5 file */
 		virtual void close() = 0;
 
-		virtual COMMON_NS::AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & datasetName) = 0;
+		/**
+		 * Gets the native datatype of a dataset
+		 *
+		 * @param 	datasetName	Name of the dataset.
+		 *
+		 * @returns	The native datatype identifier of the dataset if successful, otherwise returns unknown.
+		 */
+		virtual COMMON_NS::AbstractObject::numericalDatatypeEnum getNumericalDatatype(const std::string & datasetName) = 0;
+
+		/**
+		 * Gets the datatype class (@c H5T_INTEGER, @c H5T_FLOAT, @c H5T_STRING, etc.) of a dataset
+		 *
+		 * @param 	datasetName	Name of the dataset.
+		 *
+		 * @returns	The HDF5 datatype class identifier if successful, otherwise @c H5T_NO_CLASS (-1).
+		 */
 		virtual int getHdfDatatypeClassInDataset(const std::string & datasetName) = 0;
 
+		/**
+		 * Writes an itemized list of lists into the HDF5 file by means of a single group containing two
+		 * datasets: one for the elements and one for the cumulative lengths of the lists of elements.
+		 *
+		 * @param 	groupName					The name of the group where to create the itemized list
+		 * 										of lists. This name must not contain '/' character and must
+		 * 										be directly contained in the RESQML group.
+		 * @param 	name						The name of the itemized list of lists HDF5 group.
+		 * @param 	cumulativeLengthDatatype	The datatype of the cumulative lengths dataset to write.
+		 * @param 	cumulativeLength			1d array of positive integers containing for each list
+		 * 										the sum of all the previous lists lengths including the
+		 * 										current one.
+		 * @param 	cumulativeLengthSize		Size of the cumulative lengths array.
+		 * @param 	elementsDatatype			The datatype of the elements to write.
+		 * @param 	elements					1d array of elements containing the aggregation of
+		 * 										individual lists contents.
+		 * @param 	elementsSize				Size of the elements array. It must be equal to
+		 *										cumulativeLength[cumulativeLengthSize-1].
+		 */
 		virtual void writeItemizedListOfList(const std::string & groupName,
 			const std::string & name,
-			hdf5_hid_t cumulativeLengthDatatype,
+			COMMON_NS::AbstractObject::numericalDatatypeEnum cumulativeLengthDatatype,
 			const void * cumulativeLength,
 			unsigned long long cumulativeLengthSize,
-			hdf5_hid_t elementsDatatype,
+			COMMON_NS::AbstractObject::numericalDatatypeEnum elementsDatatype,
 			const void * elements,
 			unsigned long long elementsSize) = 0;
-		
-		virtual unsigned int getDimensionCount(const std::string & datasetName) = 0;
-		virtual std::vector<unsigned long long> getElementCountPerDimension(const std::string & datasetName) = 0;
-		virtual signed long long getElementCount(const std::string & datasetName) = 0;
 
+		/**
+		 * Gets the number of dimensions in an HDF5 dataset of the proxy.
+		 *
+		 * @param 	datasetName	The absolute name (not relative to a group) of the dataset we want to get
+		 * 						the number of dimensions.
+		 *
+		 * @returns	The number of dimensions of the dataset if successful, otherwise returns a negative
+		 * 			value.
+		 */
+		unsigned int getDimensionCount(const std::string & datasetName);
+
+		/**
+		 * Get the number of elements in each dimension of an HDF5 dataset.
+		 * @param datasetName	The absolute name of the dataset which we want to get the number of elements from.
+		 */
+		virtual std::vector<unsigned long long> getElementCountPerDimension(const std::string & datasetName) = 0;
+
+		/**
+		 * Gets the number of elements in an HDF5 dataset of the proxy. The number of elements is got
+		 * from all dimensions.
+		 *
+		 * @param 	datasetName	The absolute name (not relative to a group) of the dataset we want to get
+		 * 						the number of elements.
+		 *
+		 * @returns	The number of elements of the dataset if successful, otherwise returns a negative
+		 * 			value.
+		 */
+		signed long long getElementCount(const std::string & datasetName);
+
+		/**
+		 * Sets the new compression level which will be used for all data to be written
+		 *
+		 * @param 	newCompressionLevel	The new compression level in range [0..9]. Lower compression
+		 * 								levels are faster but result in less compression.
+		 */
 		virtual void setCompressionLevel(unsigned int newCompressionLevel) = 0;
 
-		virtual void writeArrayNdOfFloatValues(const std::string & groupName,
+		/**
+		 * Writes an nd array of float values into the HDF5 file by means of a single dataset
+		 *
+		 * @param 	groupName					The name of the group where to create the nd array of
+		 * 										float values. This name must not contain '/' character and
+		 * 										must be directly contained in RESQML group.
+		 * @param 	name						The name of the nd array HDF5 dataset. It must not
+		 * 										already exist.
+		 * @param 	floatValues					1d array of float values ordered firstly by fastest
+		 * 										direction.
+		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
+		 * 										write. They are ordered from fastest index to slowest index.
+		 * @param 	numDimensions				The number of dimensions (n) of the nd array to write.
+		 */
+		void writeArrayNdOfFloatValues(const std::string & groupName,
 		  const std::string & name,
 		  const float * floatValues,
 		  const unsigned long long * numValuesInEachDimension,
-		  unsigned int numDimensions) = 0;
-		virtual void writeArrayNdOfDoubleValues(const std::string & groupName,
+		  unsigned int numDimensions);
+
+		/**
+		 * Writes an nd array of double values into the HDF5 file by means of a single dataset
+		 *
+		 * @param 	groupName					The name of the group where to create the nd array of
+		 * 										double values. This name must not contain '/' character and
+		 * 										must be directly contained in RESQML group.
+		 * @param 	name						The name of the nd array HDF5 dataset. It must not
+		 * 										already exist.
+		 * @param 	dblValues					1d array of double values ordered firstly by fastest
+		 * 										direction.
+		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
+		 * 										write. They are ordered from fastest index to slowest index.
+		 * @param 	numDimensions				The number of dimensions (n) of the nd array to write.
+		 */
+		void writeArrayNdOfDoubleValues(const std::string & groupName,
 		  const std::string & name,
 		  const double * dblValues,
 		  const unsigned long long * numValuesInEachDimension,
-		  unsigned int numDimensions) = 0;
-		virtual void writeArrayNdOfCharValues(const std::string & groupName,
+		  unsigned int numDimensions);
+
+		/**
+		 * Writes an nd array of char values into the HDF5 file by means of a single dataset
+		 *
+		 * @param 	groupName					The name of the group where to create the nd array of int
+		 * 										values. This name must not contain '/' character and must be
+		 * 										directly contained in RESQML group.
+		 * @param 	name						The name of the nd array HDF5 dataset. It must not
+		 * 										already exist.
+		 * @param 	intValues					1d array of char values ordered firstly by fastest
+		 * 										direction.
+		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
+		 * 										write. They are ordered from fastest index to slowest index.
+		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
+		 */
+		void writeArrayNdOfCharValues(const std::string & groupName,
 			const std::string & name,
 			const char * intValues,
 			const unsigned long long * numValuesInEachDimension,
-			unsigned int numDimensions) = 0;
-		virtual void writeArrayNdOfIntValues(const std::string & groupName,
+			unsigned int numDimensions);
+
+		/**
+		 * Writes an nd array of int values into the HDF5 file by means of a single dataset
+		 *
+		 * @param 	groupName					The name of the group where to create the nd array of int
+		 * 										values. This name must not contain '/' character and must be
+		 * 										directly contained in RESQML group.
+		 * @param 	name						The name of the nd array HDF5 dataset. It must not
+		 * 										already exist.
+		 * @param 	intValues					1d array of int values ordered firstly by fastest
+		 * 										direction.
+		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
+		 * 										write. They are ordered from fastest index to slowest index.
+		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
+		 */
+		void writeArrayNdOfIntValues(const std::string & groupName,
 		  const std::string & name,
 		  const int * intValues,
 		  const unsigned long long * numValuesInEachDimension,
-		  unsigned int numDimensions) = 0;
- 		virtual void writeArrayNdOfInt64Values(const std::string & groupName,
+		  unsigned int numDimensions);
+
+		/**
+		 * Writes an nd array of integer 64 values into the HDF5 file by means of a single
+		 * dataset
+		 *
+		 * @param 	groupName					The name of the group where to create the nd array of
+		 * 										gSOAP unsigned long 64 values. This name must not contain '/'
+		 * 										character and must be directly contained in RESQML group.
+		 * @param 	name						The name of the nd array HDF5 dataset. It must not
+		 * 										already exist.
+		 * @param 	values						1d array of integer 64 values ordered firstly
+		 * 										by fastest direction.
+		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
+		 * 										write. They are ordered from fastest index to slowest index.
+		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
+		 */
+ 		void writeArrayNdOfInt64Values(const std::string & groupName,
 			const std::string & name,
 			const int64_t * values,
 			const unsigned long long * numValuesInEachDimension,
-			unsigned int numDimensions) = 0;
- 		virtual void writeArrayNdOfUInt64Values(const std::string & groupName,
+			unsigned int numDimensions);
+
+ 		/**
+ 		 * Writes an nd array of unsigned integer 64 values into the HDF5 file by means of a single
+ 		 * dataset
+ 		 *
+ 		 * @param 	groupName					The name of the group where to create the nd array of
+ 		 * 										gSOAP unsigned long 64 values. This name must not contain '/'
+ 		 * 										character and must be directly contained in RESQML group.
+ 		 * @param 	name						The name of the nd array HDF5 dataset. It must not
+ 		 * 										already exist.
+ 		 * @param 	values						1d array of unsigned integer 64 values ordered firstly
+ 		 * 										by fastest direction.
+ 		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
+ 		 * 										write. They are ordered from fastest index to slowest index.
+ 		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
+ 		 */
+ 		void writeArrayNdOfUInt64Values(const std::string & groupName,
 			const std::string & name,
 			const uint64_t * values,
 			const unsigned long long * numValuesInEachDimension,
-			unsigned int numDimensions) = 0;
+			unsigned int numDimensions);
+
+		/**
+		 * Writes an nd array of a specific datatype into the HDF5 file by means of a single dataset
+		 *
+		 * @param 	groupName					The name of the group where to create the nd array of
+		 * 										specific datatype values. This name must not contain '/'
+		 * 										character and must be directly contained in RESQML group.
+		 * @param 	name						The name of the nd array HDF5 dataset. It must not
+		 * 										already exist.
+		 * @param 	datatype					The specific datatype of the values to write.
+		 * @param 	values						1d array of specific datatype values ordered firstly by
+		 * 										fastest direction.
+		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
+		 * 										write. They are ordered from fastest index to slowest index.
+		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
+		 */
 		virtual void writeArrayNd(const std::string & groupName,
 		  const std::string & name,
-		  hdf5_hid_t datatype,
+		  COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 		  const void * values,
 		  const unsigned long long * numValuesInEachDimension,
 		  unsigned int numDimensions) = 0;
+
+		/**
+		 * Creates an nd array of a specific datatype into the HDF5 file by means of a single dataset.
+		 * Values are not yet written to this array
+		 *
+		 * @param 	groupName					The name of the group where to create the nd array of
+		 * 										specific datatype values. This name must not contain '/'
+		 * 										character and must be directly contained in RESQML group.
+		 * @param 	name						The name of the nd array HDF5 dataset. It must not exist.
+		 * @param 	datatype					The specific datatype of the nd array values.
+		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array. They
+		 * 										are ordered from fastest index to slowest index.
+		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to
+		 * 										create.
+		 */
 		virtual void createArrayNd(
 		  const std::string& groupName,
 		  const std::string& name,
-		  hdf5_hid_t datatype,
+		  COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 		  const unsigned long long* numValuesInEachDimension,
 		  unsigned int numDimensions
 		  ) = 0;
+
+		/**
+		 * Finds the nd array associated with @p groupName and @p name and writes into it
+		 *
+		 * @param 	groupName				   	The name of the group associated with the nd array.
+		 * @param 	name					   	The name of the nd array dataset.
+		 * @param 	datatype				   	The datatype of the nd array values.
+		 * @param 	values					   	1d array of datatype values ordered firstly by fastest
+		 * 										direction.
+		 * @param 	numValuesInEachDimension   	Number of values in each dimension of the nd array to
+		 * 										write. They are ordered from fastest index to slowest
+		 * 										index.
+		 * @param 	offsetValuesInEachDimension	Offset values in each dimension of the nd array to write.
+		 * 										They are ordered from fastest index to slowest index.
+		 * @param 	numDimensions			   	The number of the dimensions (n) of the nd array to write.
+		 */
 		virtual void writeArrayNdSlab(
 		  const std::string& groupName,
 		  const std::string& name,
-		  hdf5_hid_t datatype,
+		  COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 		  const void* values,
 		  const unsigned long long* numValuesInEachDimension,
 		  const unsigned long long* offsetValuesInEachDimension,
 		  unsigned int numDimensions
 		  ) = 0;
+
+		/**
+		 * Writes some string attributes into a group
+		 *
+		 * @exception	std::invalid_argument	Attributes names and string values vector do not have the same
+		 * 										size.
+		 *
+		 * @param 	groupName	  	Name of the group.
+		 * @param 	attributeNames	Vector of attributes names.
+		 * @param 	values		  	Vector of string values.
+		 */
 		virtual void writeGroupAttributes(const std::string & groupName,
 			const std::vector<std::string> & attributeNames,
 			const std::vector<std::string> & values) = 0;

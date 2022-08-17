@@ -54,7 +54,7 @@ void PointsProperty::initRepo() {
 void PointsProperty::readRepo() {
 	// getting the PointsProperty
 	RESQML2_NS::PointsProperty* pointsProperty = repo->getDataObjectByUuid<RESQML2_NS::PointsProperty>(defaultUuid);
-	REQUIRE(pointsProperty->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE);
+	REQUIRE(pointsProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE);
 	REQUIRE(pointsProperty->getXyzPointCountOfPatch(0) == 2);
 	std::unique_ptr<double[]> coords(new double[6]);
 	pointsProperty->getXyzPointsOfPatch(0, coords.get());

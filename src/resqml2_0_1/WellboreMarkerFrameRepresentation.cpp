@@ -104,7 +104,7 @@ void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned i
 
 	// ************ HDF *************
 	const hsize_t dim = frame->NodeCount - 1;
-	proxy->writeArrayNd(getHdfGroup(), "IntervalStratigraphicUnits", H5T_NATIVE_UINT, stratiUnitIndices, &dim, 1);
+	proxy->writeArrayNd(getHdfGroup(), "IntervalStratigraphicUnits", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, stratiUnitIndices, &dim, 1);
 }
 
 void WellboreMarkerFrameRepresentation::loadTargetRelationships()
