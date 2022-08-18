@@ -93,7 +93,7 @@ namespace EML2_NS
 		 *
 		 * @return				The datatype which is used for values in this column
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::AbstractObject::hdfDatatypeEnum getDatatype(uint64_t columnIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::AbstractObject::numericalDatatypeEnum getDatatype(uint64_t columnIndex) const = 0;
 
 		/**
 		 * Gets the values of a column as string values

@@ -246,7 +246,7 @@ int64_t SubRepresentation::getElementIndicesOfPatch(uint64_t patchIndex, int64_t
 		throw out_of_range("The patch does not exist at this index.");
 	}
 
-	readArrayNdOfInt64Values(rep->SubRepresentationPatch[patchIndex]->Indices, elementIndices);
+	return readArrayNdOfInt64Values(rep->SubRepresentationPatch[patchIndex]->Indices, elementIndices);
 }
 
 uint64_t SubRepresentation::getPatchCount() const

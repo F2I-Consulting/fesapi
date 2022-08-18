@@ -84,17 +84,17 @@ uint64_t ColumnBasedTable::getValueCountPerRow(uint64_t columnIndex) const
 	return getColumn(columnIndex)->ValueCountPerRow;
 }
 
-COMMON_NS::AbstractObject::hdfDatatypeEnum ColumnBasedTable::getDatatype(uint64_t columnIndex) const
+COMMON_NS::AbstractObject::numericalDatatypeEnum ColumnBasedTable::getDatatype(uint64_t columnIndex) const
 {
 	auto const * columnValues = getColumn(columnIndex)->Values;
 	if (dynamic_cast<eml23__AbstractFloatingPointArray const*>(columnValues) != nullptr) {
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::DOUBLE;
+		return COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE;
 	}
 	else if (dynamic_cast<eml23__AbstractIntegerArray const*>(columnValues) != nullptr) {
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::LONG_64;
+		return COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64;
 	}
 	else if (dynamic_cast<eml23__AbstractStringArray const*>(columnValues) != nullptr) {
-		return COMMON_NS::AbstractObject::hdfDatatypeEnum::STRING;
+		return COMMON_NS::AbstractObject::numericalDatatypeEnum::STRING;
 	}
 
 	throw logic_error("The datatype of the table column index \"" + std::to_string(columnIndex) + "\"is not supported by FESAPI yet.");

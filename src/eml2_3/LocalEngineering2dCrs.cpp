@@ -107,6 +107,9 @@ LocalEngineering2dCrs::LocalEngineering2dCrs(COMMON_NS::DataObjectRepository* re
 	if (repo == nullptr) {
 		throw invalid_argument("The soap context where the local 2d CRS will be instantiated must exist.");
 	}
+	if (projectedEpsgCode == 0) {
+		throw invalid_argument("The EPSG code must be positive");
+	}
 
 	gsoapProxy2_3 = soap_new_eml23__LocalEngineering2dCrs(repo->getGsoapContext());
 	eml23__LocalEngineering2dCrs* local2dCrs = static_cast<eml23__LocalEngineering2dCrs*>(gsoapProxy2_3);

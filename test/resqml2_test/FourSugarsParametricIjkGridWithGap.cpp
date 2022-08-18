@@ -76,7 +76,7 @@ void FourSugarsParametricIjkGridWithGap::readRepo() {
 	ijkGrid->loadSplitInformation();
 
 	ijkGrid->loadBlockInformation(0, 1, 0, 1, 0, 3);	// using block hyperslabbing
-	unsigned int xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
+	uint64_t xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
 	std::unique_ptr<double[]> blockXyzPoints = std::unique_ptr<double[]>(new double[xyzPointCountOfBlock * 3]);
 	ijkGrid->getXyzPointsOfBlock(blockXyzPoints.get());
 

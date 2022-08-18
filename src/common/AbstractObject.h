@@ -39,7 +39,7 @@ namespace COMMON_NS
 	{
 	public:
 
-		enum class numericalDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, INT64 = 3, UINT64 = 4, INT32 = 5, UINT32 = 6, INT16 = 7, UINT16 = 8, INT8 = 9, UINT8 = 10};
+		enum class numericalDatatypeEnum { STRING = -1, UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, INT64 = 3, UINT64 = 4, INT32 = 5, UINT32 = 6, INT16 = 7, UINT16 = 8, INT8 = 9, UINT8 = 10};
 
 		DLL_IMPORT_OR_EXPORT virtual ~AbstractObject() = default;
 

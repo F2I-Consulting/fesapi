@@ -58,7 +58,7 @@ LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const s
 	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented)
 {
 	if (projectedEpsgCode == 0 || verticalEpsgCode == 0) {
-		throw invalid_argument("An EPSG code cannot be set to 0.");
+		throw invalid_argument("The EPSG code must be positive.");
 	}
 	init(repo, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation, projectedUom, verticalUom, isUpOriented);
 	_resqml20__LocalDepth3dCrs* local3dCrs = static_cast<_resqml20__LocalDepth3dCrs*>(gsoapProxy2_0_1);
@@ -101,7 +101,7 @@ LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const s
 	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented)
 {
 	if (projectedEpsgCode == 0) {
-		throw invalid_argument("An EPSG code cannot be set to 0.");
+		throw invalid_argument("The EPSG code must be positive.");
 	}
 	init(repo, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation, projectedUom, verticalUom, isUpOriented);
 	_resqml20__LocalDepth3dCrs* local3dCrs = static_cast<_resqml20__LocalDepth3dCrs*>(gsoapProxy2_0_1);
@@ -124,7 +124,7 @@ LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const s
 	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented)
 {
 	if (verticalEpsgCode == 0) {
-		throw invalid_argument("An EPSG code cannot be set to 0.");
+		throw invalid_argument("The EPSG code must be positive.");
 	}
 	init(repo, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation, projectedUom, verticalUom, isUpOriented);
 	_resqml20__LocalDepth3dCrs* local3dCrs = static_cast<_resqml20__LocalDepth3dCrs*>(gsoapProxy2_0_1);

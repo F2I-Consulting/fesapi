@@ -547,7 +547,7 @@ uint64_t AbstractProperty::getValuesCountOfDimensionOfPatch(unsigned int dimInde
 	throw out_of_range("The dim index to get the count is out of range.");
 }
 
-unsigned int AbstractProperty::getDimensionsCountOfPatch(uint64_t patchIndex) const
+uint64_t AbstractProperty::getDimensionsCountOfPatch(uint64_t patchIndex) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;

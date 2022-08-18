@@ -195,7 +195,7 @@ namespace EML2_NS
 		 * @returns	The number of dimensions of the dataset if successful, otherwise returns a negative
 		 * 			value.
 		 */
-		unsigned int getDimensionCount(const std::string & datasetName);
+		uint64_t getDimensionCount(const std::string & datasetName);
 
 		/**
 		 * Get the number of elements in each dimension of an HDF5 dataset.
@@ -1904,7 +1904,7 @@ namespace EML2_NS
 		 *
 		 * @return				The datatype which is used for values in this column
 		 */
-		COMMON_NS::AbstractObject::hdfDatatypeEnum getDatatype(uint64_t columnIndex) const;
+		COMMON_NS::AbstractObject::numericalDatatypeEnum getDatatype(uint64_t columnIndex) const;
 
 		/**
 		 * Gets the values of a column as string values

@@ -743,7 +743,7 @@ void AbstractObject::setMetadata(const std::string & title, const std::string & 
 
 	setDescriptiveKeywords(descriptiveKeywords);
 
-	if (strcmp(citationFormat, "[F2I-CONSULTING:FESAPI " FESAPI_VERSION "]") == 0) {
+	if (strcmp(citationFormat, "[F2I-CONSULTING:FESAPI " FESAPI_VERSION_STR "]") == 0) {
 		throw std::logic_error("Please first set the exporting vendor application version before to create dataobjects. You just have to call once AbstractObject.setFormat. This information is mandatory per the standard.");
 	}
 	if (gsoapProxy2_0_1 != nullptr) {

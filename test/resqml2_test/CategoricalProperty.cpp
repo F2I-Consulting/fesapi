@@ -86,8 +86,8 @@ void CategoricalProperty::readRepo() {
 	auto* strTableLookup = categoricalProperty->getLookup();
 	REQUIRE(strTableLookup->getRowCount() == 6);
 	REQUIRE(strTableLookup->getColumnCount() == 2);
-	REQUIRE(strTableLookup->getDatatype(0) == COMMON_NS::AbstractObject::hdfDatatypeEnum::LONG_64);
-	REQUIRE(strTableLookup->getDatatype(1) == COMMON_NS::AbstractObject::hdfDatatypeEnum::STRING);
+	REQUIRE(strTableLookup->getDatatype(0) == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64);
+	REQUIRE(strTableLookup->getDatatype(1) == COMMON_NS::AbstractObject::numericalDatatypeEnum::STRING);
 	REQUIRE(strTableLookup->getInt64Values(0)[0] == 0);
 	REQUIRE(strTableLookup->getStringValues(1)[0] == "Item 0");
 	REQUIRE(strTableLookup->getInt64Values(0)[1] == 1);
@@ -106,8 +106,8 @@ void CategoricalProperty::readRepo() {
 	auto* dblTableLookup = categoricalProperty->getLookup();
 	REQUIRE(dblTableLookup->getRowCount() == 5);
 	REQUIRE(dblTableLookup->getColumnCount() == 2);
-	REQUIRE(dblTableLookup->getDatatype(0) == COMMON_NS::AbstractObject::hdfDatatypeEnum::DOUBLE);
-	REQUIRE(dblTableLookup->getDatatype(1) == COMMON_NS::AbstractObject::hdfDatatypeEnum::DOUBLE);
+	REQUIRE(dblTableLookup->getDatatype(0) == COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE);
+	REQUIRE(dblTableLookup->getDatatype(1) == COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE);
 	const auto keys = dblTableLookup->getDoubleValues(0);
 	const auto values = dblTableLookup->getDoubleValues(1);
 	REQUIRE(keys[0] == .0);

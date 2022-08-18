@@ -2549,9 +2549,9 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 		}
 
 		// Dimension
-		unsigned int dimCount = prop->getDimensionsCountOfPatch(0);
+		uint64_t dimCount = prop->getDimensionsCountOfPatch(0);
 		std::cout << "\tDimension count is : " << dimCount << std::endl;
-		for (unsigned int dimIndex = 0; dimIndex < dimCount; ++dimIndex) {
+		for (uint64_t dimIndex = 0; dimIndex < dimCount; ++dimIndex) {
 			std::cout << "\tValues count in dimension " << dimIndex << " is : " << prop->getValuesCountOfDimensionOfPatch(dimIndex, 0) << std::endl;
 		}
 		int64_t valueCount = prop->getValuesCountOfPatch(0);
@@ -2564,7 +2564,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 			cout << "\tPress enter to continue..." << endl;
 			cin.get();
 		}
-		else if (prop->getValuesHdfDatatype() > 2) {
+		else if (prop->getValuesHdfDatatype() > COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT) {
 			if (dynamic_cast<RESQML2_NS::DiscreteProperty const *>(prop) == nullptr) {
 				cerr << "\tERROR !!!!! Only categorical or Discrete properties should be associated to an integer dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
@@ -5346,11 +5346,11 @@ void deserialize(const string & inputFile)
 					}
 
 					for (auto* prop : wmf->getPropertySet()) {
-						if (prop->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG_64) {
-							std::cout << "Hdf datatype is NATIVE LONG" << std::endl;
+						if (prop->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64) {
+							std::cout << "Hdf datatype is INT64" << std::endl;
 						}
-						else if (prop->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::INT) {
-							std::cout << "Hdf datatype is NATIVE INT" << std::endl;
+						else if (prop->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32) {
+							std::cout << "Hdf datatype is INT32" << std::endl;
 						}
 					}
 				}

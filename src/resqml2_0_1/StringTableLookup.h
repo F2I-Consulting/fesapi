@@ -92,9 +92,9 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @return				The datatype which is used for values in this column
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::hdfDatatypeEnum getDatatype(uint64_t columnIndex) const final
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::numericalDatatypeEnum getDatatype(uint64_t columnIndex) const final
 		{
-			return columnIndex == 0 ? COMMON_NS::AbstractObject::hdfDatatypeEnum::LONG_64 : COMMON_NS::AbstractObject::hdfDatatypeEnum::STRING;
+			return columnIndex == 0 ? COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64 : COMMON_NS::AbstractObject::numericalDatatypeEnum::STRING;
 		}
 
 		/**

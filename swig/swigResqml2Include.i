@@ -3881,7 +3881,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The number of values, 0 otherwise.
 		 */
-		unsigned int getDimensionsCountOfPatch(unsigned int patchIndex) const;
+		uint64_t getDimensionsCountOfPatch(unsigned int patchIndex) const;
 
 		/**
 		 * Gets the count of property sets which contain this property

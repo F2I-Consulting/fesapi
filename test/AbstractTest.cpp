@@ -35,7 +35,7 @@ AbstractTest::AbstractTest(const string & epcDocPath) :
 
 void AbstractTest::serialize() {
 	COMMON_NS::EpcDocument epcDocument(epcDocPath);
-	COMMON_NS::AbstractObject::setFormat("F2I-CONSULTING", "FESAPI Unit test", FESAPI_VERSION);
+	COMMON_NS::AbstractObject::setFormat("F2I-CONSULTING", "FESAPI Unit test", FESAPI_VERSION_STR);
 	repo = new COMMON_NS::DataObjectRepository();
 	repo->setDefaultStandard(defaultEmlVersion);
 	repo->setDefaultStandard(defaultResqmlVersion);

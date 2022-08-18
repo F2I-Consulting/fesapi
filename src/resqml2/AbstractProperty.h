@@ -136,7 +136,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The number of values, 0 otherwise.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getDimensionsCountOfPatch(uint64_t patchIndex) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getDimensionsCountOfPatch(uint64_t patchIndex) const;
 
 		//*********************************************
 		//************* PROPERTY SET ******************

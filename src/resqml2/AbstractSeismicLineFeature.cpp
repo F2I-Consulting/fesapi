@@ -98,7 +98,7 @@ std::vector<std::string> AbstractSeismicLineFeature::getTraceLabels() const
 			return result;
 		}
 		// Check if the hdf dataset really contains unsigned char values.
-		if (hdfProxy->getNumericalDatatype(dsPart->PathInExternalFile) != COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8) {
+		if (hdfProxy->getNumericalDatatype(daPart->PathInExternalFile) != COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8) {
 			return result;
 		}
 
@@ -110,7 +110,7 @@ std::vector<std::string> AbstractSeismicLineFeature::getTraceLabels() const
 		hdfProxy->readArrayNdOfUCharValues(datasetPath, values.get());
 
 		for (uint64_t stringIndex = 0; stringIndex < nbStrings; ++stringIndex) {
-			std::string comment = string();
+			std::string comment;
 			uint64_t globalCharIndex = stringIndex * stringLength;
 			for (uint64_t localCharIndex = 0; localCharIndex < stringLength; ++localCharIndex) {
 				if (values[globalCharIndex] != '\0') {
@@ -176,7 +176,7 @@ void AbstractSeismicLineFeature::setTraceLabels(const std::vector<std::string> &
 	hsize_t nbValPerDim[2] = { strNb, dimTwo };
 	// HDF
 	proxy->writeArrayNd(getHdfGroup(),
-		dsPart->PathInExternalFile,
+		daPart->PathInExternalFile,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8,
 		cTab.get(),
 		nbValPerDim,   // 0 = number of strings, 1 = length of the longest string 

@@ -139,7 +139,7 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__Inde
 	hsize_t numValues = elementCount;
 	proxy->writeArrayNdOfInt64Values(getHdfGroup(), "subrepresentation_elementIndices0_patch" + std::to_string(patchCount), elementIndices, &numValues, 1);
 	if (supportingRepIndices != nullptr) {
-		proxy->writeArrayNd(getHdfGroup(), "subrepresentation_supportingRepresentationIndices_patch" + std::to_string(patchCount), H5T_NATIVE_SHORT, supportingRepIndices, &numValues, 1);
+		proxy->writeArrayNd(getHdfGroup(), "subrepresentation_supportingRepresentationIndices_patch" + std::to_string(patchCount), COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16, supportingRepIndices, &numValues, 1);
 	}
 
 	const std::string supportingRepDataset = supportingRepIndices != nullptr ? getHdfGroup() + "/subrepresentation_supportingRepresentationIndices_patch" + std::to_string(patchCount) : "";
@@ -397,7 +397,7 @@ int64_t SubRepresentation::getElementIndicesOfPatch(uint64_t patchIndex, unsigne
 		throw out_of_range("The elementIndices does not exist at this index.");
 	}
 
-	readArrayNdOfInt64Values(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices, elementIndices);
+	return readArrayNdOfInt64Values(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices, elementIndices);
 }
 
 void SubRepresentation::getSupportingRepresentationIndicesOfPatch(uint64_t patchIndex, short * supportingRepresentationIndices) const
@@ -434,7 +434,7 @@ uint64_t SubRepresentation::pushBackSupportingRepresentation(AbstractRepresentat
 	}
 
 	const auto supportingRepCount = getSupportingRepresentationCount();
-	for (unsigned int i = 0; i < supportingRepCount; ++i) {
+	for (auto i = 0; i < supportingRepCount; ++i) {
 		if (getSupportingRepresentationDor(i).getUuid() == supportingRep->getUuid()) {
 			return i;
 		}
@@ -503,7 +503,7 @@ COMMON_NS::DataObjectReference SubRepresentation::getSupportingRepresentationOfP
 	const auto elementCount = getElementCountOfPatch(patchIndex);
 	std::unique_ptr<short[]> supportingRepIndices(new short[elementCount]);
 	getSupportingRepresentationIndicesOfPatch(patchIndex, supportingRepIndices.get());
-	short uniqueSubRepIndex = supportingRepIndices[0];
+	const short uniqueSubRepIndex = supportingRepIndices[0];
 	for (auto i = 1; i < elementCount; ++i) {
 		if (supportingRepIndices[i] != uniqueSubRepIndex) {
 			throw logic_error("Downcast your instance to v2.0 namespace and use the dedicated getSupportingRepresentationIndicesOfPatch method if your subrepresentation patch depends on more than one representation");

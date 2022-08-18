@@ -84,7 +84,7 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 		}
 		getRepository()->addRelationship(this, hdfProxy);
 		hsize_t dim = getKCellCount();
-		hdfProxy->writeArrayNd(getHdfGroup(), "IntervalStratigraphicUnits", H5T_NATIVE_INT64, stratiUnitIndices, &dim, 1);
+		hdfProxy->writeArrayNd(getHdfGroup(), "IntervalStratigraphicUnits", COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, stratiUnitIndices, &dim, 1);
 
 		resqml20__AbstractColumnLayerGridRepresentation* rep = static_cast<resqml20__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
 		rep->IntervalStratigraphicUnits = soap_new_resqml20__IntervalStratigraphicUnits(rep->soap);

@@ -43,6 +43,9 @@ VerticalCrs::VerticalCrs(COMMON_NS::DataObjectRepository* repo, const std::strin
 	if (repo == nullptr) {
 		throw invalid_argument("The soap context where the local 2d CRS will be instantiated must exist.");
 	}
+	if (verticalEpsgCode == 0) {
+		throw invalid_argument("The EPSG code must be positive");
+	}
 
 	gsoapProxy2_3 = soap_new_eml23__VerticalCrs(repo->getGsoapContext());
 	eml23__VerticalCrs* verticalCrs = static_cast<eml23__VerticalCrs*>(gsoapProxy2_3);

@@ -88,9 +88,9 @@ namespace RESQML2_0_1_NS
 		/**
 		 * @return				A double table lookkup only contains double by definition
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::hdfDatatypeEnum getDatatype(uint64_t) const final
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::numericalDatatypeEnum getDatatype(uint64_t) const final
 		{
-			return COMMON_NS::AbstractObject::hdfDatatypeEnum::DOUBLE;
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE;
 		}
 
 		/**

@@ -212,6 +212,10 @@ void Well::pushBackLocation(
 	double projectedY,
 	unsigned int projectedCrsEpsgCode)
 {
+	if (projectedCrsEpsgCode == 0) {
+		throw invalid_argument("The EPSG code must be positive.");
+	}
+
 	witsml20__Well* well = static_cast<witsml20__Well*>(gsoapProxy2_1);
 
 	witsml20__ProjectedWellLocation* location = soap_new_witsml20__ProjectedWellLocation(gsoapProxy2_1->soap);
@@ -240,6 +244,10 @@ void Well::pushBackDatum(
 	double elevation,
 	unsigned int verticalCrsEpsgCode)
 {
+	if (verticalCrsEpsgCode == 0) {
+		throw invalid_argument("The EPSG code must be positive.");
+	}
+
 	witsml20__Well* well = static_cast<witsml20__Well*>(gsoapProxy2_1);
 
 	witsml20__WellDatum* wellDatum = soap_new_witsml20__WellDatum(gsoapProxy2_1->soap);

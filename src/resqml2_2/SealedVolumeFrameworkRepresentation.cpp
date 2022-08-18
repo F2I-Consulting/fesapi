@@ -116,17 +116,17 @@ gsoap_eml2_3::resqml22__VolumeShell* SealedVolumeFrameworkRepresentation::create
 	hsize_t hdfCount = shellFaceCount;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"RepresentationIndices_Region" + std::to_string(regionIndex) + "_Shell" + std::to_string(shellIndex),
-		H5T_NATIVE_UINT,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		faceRepresentationIndices,
 		&hdfCount, 1);
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"PatchIndicesOfRepresentation_Region" + std::to_string(regionIndex) + "_Shell" + std::to_string(shellIndex),
-		H5T_NATIVE_UINT,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		faceRepPatchIndices,
 		&hdfCount, 1);
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"SideIsPlus_Region" + std::to_string(regionIndex) + "_Shell" + std::to_string(shellIndex),
-		H5T_NATIVE_CHAR,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,
 		faceSide,
 		&hdfCount, 1);
 

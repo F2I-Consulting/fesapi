@@ -117,7 +117,7 @@ public class FesapiJavaExample {
 		witsmlWell.setNameLegal("Legal Name");
 		witsmlWell.setWaterDepth(0.0, eml21__LengthUom.ft);
 		witsmlWell.setTimeZone(true, 0, 0);
-		witsmlWell.pushBackLocation("8cd3c8b2-face-4426-8aea-ae34870bd969", 275, 75, 0);
+		witsmlWell.pushBackLocation("8cd3c8b2-face-4426-8aea-ae34870bd969", 275, 75, 5100);
 		witsmlWell.pushBackDatum("aa92fa8b-d6cc-459e-b456-27fec0c08b24", "well1 msl datum", eml21__WellboreDatumReference.kelly_x0020bushing, "Mean Sea Level", eml21__LengthUom.m, 0, 5100);
 		witsmlWell.pushBackDatum("d3ac5401-d3e7-4474-b846-070673b210ae", "KB", eml21__WellboreDatumReference.kelly_x0020bushing, "Mean Sea Level", eml21__LengthUom.m, 15, 5100);
 	
