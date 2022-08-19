@@ -8,7 +8,7 @@ fesapi_module = Extension('_fesapi',
 )
 
 setup (name = 'fesapi',
-    version     = '2.3.0.0',
+    version     = '${Fesapi_VERSION}',
     author      = 'F2I-CONSULTING',
     maintainer  = 'F2I-CONSULTING',
     url         = 'https://github.com/F2I-Consulting/fesapi',

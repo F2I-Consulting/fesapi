@@ -109,7 +109,7 @@ namespace RESQML2_NS
 		 * @returns	Empty data object reference if no interpretation is associated to this
 		 * 			representation. Otherwise the data object reference of the associated interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getInterpretationDor() const;
+		COMMON_NS::DataObjectReference getInterpretationDor() const;
 
 		GETTER_DATAOBJECTS(SubRepresentation, SubRepresentation)
 		GETTER_DATAOBJECTS(SubRepresentation, FaultSubRepresentation)

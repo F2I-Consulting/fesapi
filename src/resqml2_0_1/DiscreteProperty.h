@@ -93,7 +93,7 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~DiscreteProperty() = default;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getLookupDor() const final { return COMMON_NS::DataObjectReference(); }
+		COMMON_NS::DataObjectReference getLookupDor() const final { return COMMON_NS::DataObjectReference(); }
 
 		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) final;
 

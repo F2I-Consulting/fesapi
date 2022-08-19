@@ -61,31 +61,31 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT unsigned int getFaultInterpretationCount() const final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getFaultInterpretationDor(unsigned int index) const final;
+		COMMON_NS::DataObjectReference getFaultInterpretationDor(unsigned int index) const final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackHorizonInterpretation(RESQML2_NS::HorizonInterpretation * horizonInterpretation, int stratigraphicRank) final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getHorizonInterpretationCount() const final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getHorizonInterpretationDor(unsigned int index) const final;
+		COMMON_NS::DataObjectReference getHorizonInterpretationDor(unsigned int index) const final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackTopFrontierInterpretation(RESQML2_NS::AbstractFeatureInterpretation * topFrontierInterpretation) final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getTopFrontierInterpretationCount() const final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getTopFrontierInterpretationDor(unsigned int index) const final;
+		COMMON_NS::DataObjectReference getTopFrontierInterpretationDor(unsigned int index) const final;
 
 		DLL_IMPORT_OR_EXPORT  void pushBackBottomFrontierInterpretation(RESQML2_NS::AbstractFeatureInterpretation * bottomFrontierInterpretation) final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getBottomFrontierInterpretationCount() const final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getBottomFrontierInterpretationDor(unsigned int index) const final;
+		COMMON_NS::DataObjectReference getBottomFrontierInterpretationDor(unsigned int index) const final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackSideFrontierInterpretation(RESQML2_NS::AbstractFeatureInterpretation * sideFrontierInterpretation) final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getSideFrontierInterpretationCount() const final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getSideFrontierInterpretationDor(unsigned int index) const final;
+		COMMON_NS::DataObjectReference getSideFrontierInterpretationDor(unsigned int index) const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

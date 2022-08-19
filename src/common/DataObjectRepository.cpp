@@ -1147,11 +1147,6 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	throw invalid_argument("The content type " + contentType + " of the partial object to create has not been recognized by fesapi.");
 }
 
-COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectReference& dor)
-{
-	return createPartial(dor.getUuid(), dor.getTitle(), dor.getContentType(), dor.getVersion());
-}
-
 //************************************
 //************ HDF *******************
 //************************************

@@ -57,7 +57,7 @@ namespace RESQML2_NS
 		 * 			Otherwise returns the data object reference of the associated representation. Null
 		 * 			should not occured since each property must be associated to a representation.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getRepresentationDor() const;
+		COMMON_NS::DataObjectReference getRepresentationDor() const;
 
 		/**  
 		 * Gets the representation which is associated to the current property. That is to say the one
@@ -198,7 +198,7 @@ namespace RESQML2_NS
 		 * @returns	Empty data object reference if no local CRS is associated to this property. Otherwise
 		 * 			returns the data object reference of the associated local CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getLocalCrsDor() const;
+		COMMON_NS::DataObjectReference getLocalCrsDor() const;
 
 		//*********************************************
 		//********** REALIZATION DIMENSION ************
@@ -285,7 +285,7 @@ namespace RESQML2_NS
 		 * @returns	Empty data object reference if no time series is associated to this property. Otherwise returns the
 		 * 			data object reference of the associated time series.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getTimeSeriesDor() const;
+		COMMON_NS::DataObjectReference getTimeSeriesDor() const;
 
 		/**
 		 * Check if the values are given at each time index or between each time index.

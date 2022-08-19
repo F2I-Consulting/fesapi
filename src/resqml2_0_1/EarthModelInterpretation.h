@@ -60,7 +60,7 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT uint64_t getStructuralOrganizationInterpretationCount() const final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStructuralOrganizationInterpertationDor(uint64_t index) const final;
+		COMMON_NS::DataObjectReference getStructuralOrganizationInterpertationDor(uint64_t index) const final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackStructuralOrganizationInterpretation(RESQML2_NS::StructuralOrganizationInterpretation * structOrganization) final;
 
@@ -70,11 +70,11 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT void setStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn) final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiColumnDor() const final;
+		COMMON_NS::DataObjectReference getStratiColumnDor() const final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getGeologicUnitOccurrenceCount() const final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getGeologicUnitOccurrenceDor(uint64_t index) const final;
+		COMMON_NS::DataObjectReference getGeologicUnitOccurrenceDor(uint64_t index) const final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackGeologicUnitOccurrence(RESQML2_NS::GeologicUnitOccurrenceInterpretation * occurence) final;
 
@@ -93,6 +93,6 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getRockFluidOrganizationInterpretationDor(uint64_t index) const final;
+		COMMON_NS::DataObjectReference getRockFluidOrganizationInterpretationDor(uint64_t index) const final;
 	};
 }

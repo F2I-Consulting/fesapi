@@ -1228,13 +1228,6 @@ namespace EML2_NS
 		 * @param [in]	activityTemplate	If non-null, the activity template.
 		 */
 		void setActivityTemplate(ActivityTemplate* activityTemplate);
-
-		/**
-		 * Gets the data object reference of the activity template of this activity.
-		 *
-		 * @returns	The data object reference of the activity template.
-		 */
-		COMMON_NS::DataObjectReference getActivityTemplateDor() const;
 		
 		/** 
 		 * Gets the activity template of this activity.
@@ -1269,20 +1262,6 @@ namespace EML2_NS
 		uint64_t getTargetObjectCount(uint64_t graphicalInformationIndex) const;
 
 		/**
-		 * Gets a data object reference to the data object which receives some graphical information at a
-		 * particular index of the graphical information set and at a particular target index.
-		 *
-		 * @exception	std::range_error	If @p index is out of range.
-		 *
-		 * @param 	graphicalInformationIndex	Zero-based index of the graphical information in the GraphicalInformationSet
-		 * @param	targetIndex					Zero-based index of the data object reference in the graphical information
-		 *
-		 * @returns	The data object reference to the data object which receives some graphical information at
-		 * 			@p graphicalInformationIndex and target @p targetIndex.
-		 */
-		gsoap_eml2_3::eml23__DataObjectReference* getTargetObjectDor(uint64_t graphicalInformationIndex, uint64_t targetIndex) const;
-
-		/**
 		 * Gets the UUID of the object which receives some graphical information at a particular index
 		 * of the graphical information set and at a particular target index.
 		 *
@@ -1305,18 +1284,6 @@ namespace EML2_NS
 		 * @returns	The data object which receives some graphical information at @p graphicalInformationIndex and target @p targetIndex.
 		 */
 		COMMON_NS::AbstractObject* getTargetObject(uint64_t graphicalInformationIndex, uint64_t targetIndex) const;
-
-		/**
-		 * Query if a given data object has some direct graphical information, that is to say if there exists
-		 * a direct association between this data object and a graphical information
-		 *
-		 * @exception	std::invalid_argument	If the target object is null.
-		 *
-		 * @param 	targetObject	The data object we want to test for having some graphical information.
-		 *
-		 * @returns	True if @p targetObject has some graphical information, else false.
-		 */
-		bool hasDirectGraphicalInformation(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Query if a given data object has some graphical information. If it has no direct graphical
@@ -1519,21 +1486,6 @@ namespace EML2_NS
 		bool hasDiscreteColorMap(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
-		 * Gets the discrete color map data object reference of a given data object. If the data object
-		 * has no discrete color map and if it is a property, we also look for its property kind
-		 * discrete color map
-		 *
-		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no discrete color
-		 * 										map.
-		 *
-		 * @param 	targetObject	The data object for which we look for a discrete color map.
-		 *
-		 * @returns	A data object reference on the discrete color map of @p targetObject (or of its
-		 * 			property kind).
-		 */
-		gsoap_eml2_3::eml23__DataObjectReference* getDiscreteColorMapDor(COMMON_NS::AbstractObject const* targetObject) const;
-
-		/**
 		 * Gets the discrete color map data UUID of a given data object. If the data object has no
 		 * discrete color map and if it is a property, we also look for its property kind discrete color
 		 * map
@@ -1593,21 +1545,6 @@ namespace EML2_NS
 		 * @returns	True if @p targetObject (or its property kind) has a continuous color map, else false.
 		 */
 		bool hasContinuousColorMap(COMMON_NS::AbstractObject const* targetObject) const;
-
-		/**
-		 * Gets the continuous color map data object reference of a given data object. If the data
-		 * object has no continuous color map and if it is a property, we also look for its property kind
-		 * continuous color map
-		 *
-		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no continuous
-		 * 										color map.
-		 *
-		 * @param 	targetObject	The data object for which we look for a continuous color map.
-		 *
-		 * @returns	A data object reference on the continuous color map of @p targetObject (or of its
-		 * 			property kind).
-		 */
-		gsoap_eml2_3::eml23__DataObjectReference* getContinuousColorMapDor(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
 		 * Gets the continuous color map data UUID of a given data object. If the data object has no

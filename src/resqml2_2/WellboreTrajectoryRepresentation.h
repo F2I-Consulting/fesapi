@@ -76,7 +76,7 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT void setMdDatum(EML2_NS::ReferencePointInALocalEngineeringCompoundCrs * mdDatum) final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getMdDatumDor() const final;
+		COMMON_NS::DataObjectReference getMdDatumDor() const final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const final;
 
@@ -106,7 +106,7 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT void addParentTrajectory(double kickoffMd, double parentMd, RESQML2_NS::WellboreTrajectoryRepresentation* parentTrajRep) final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getParentTrajectoryDor() const final;
+		COMMON_NS::DataObjectReference getParentTrajectoryDor() const final;
 
 		DLL_IMPORT_OR_EXPORT double getParentTrajectoryMd() const final;
 

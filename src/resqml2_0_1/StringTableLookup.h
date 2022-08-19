@@ -73,7 +73,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @return				The associated property kind DOR.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getPropertyKindDor(uint64_t columnIndex) const final;
+		COMMON_NS::DataObjectReference getPropertyKindDor(uint64_t columnIndex) const final;
 
 		/**
 		 * @return				Empty since DoubleTableLookup has not got any uom never

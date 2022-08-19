@@ -72,11 +72,11 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind getGeologicBoundaryKind() const final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getBoundaryFeatureInterpretationDor() const final;
+		COMMON_NS::DataObjectReference getBoundaryFeatureInterpretationDor() const final;
 
 		DLL_IMPORT_OR_EXPORT void setBoundaryFeatureInterpretation(RESQML2_NS::BoundaryFeatureInterpretation* interp) final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getWitsmlWellboreMarkerDor() const final;
+		COMMON_NS::DataObjectReference getWitsmlWellboreMarkerDor() const final;
 
 		DLL_IMPORT_OR_EXPORT void setWitsmlWellboreMarker(WITSML2_0_NS::WellboreMarker * wellboreMarker) final;
 

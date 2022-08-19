@@ -71,7 +71,7 @@ namespace EML2_3_NS
 		 *
 		 * @return				The associated property kind DOR.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getPropertyKindDor(uint64_t columnIndex) const final;
+		COMMON_NS::DataObjectReference getPropertyKindDor(uint64_t columnIndex) const final;
 
 		/**
 		 * Gets the uom associated to a particular column count of this table

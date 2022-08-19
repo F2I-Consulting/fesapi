@@ -66,7 +66,7 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT void setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, RESQML2_NS::GeologicUnitOccurrenceInterpretation* stratiOccurrenceInterp, EML2_NS::AbstractHdfProxy* proxy) final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getGeologicUnitOccurrenceInterpretationDor() const final;
+		COMMON_NS::DataObjectReference getGeologicUnitOccurrenceInterpretationDor() const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

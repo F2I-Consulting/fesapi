@@ -705,7 +705,7 @@ namespace COMMON_NS
 		/**
 		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title + a content type + a version
 		*/
-		COMMON_NS::AbstractObject* createPartial(const std::string & uuid, const std::string & title, const std::string & contentType, const std::string & version = "");
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* createPartial(const std::string & uuid, const std::string & title, const std::string & contentType, const std::string & version = "");
 
 		/**
 		 * Creates a partial object in this repository based on a data object reference.
@@ -716,7 +716,9 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the created partial object.
 		 */
-		COMMON_NS::AbstractObject* createPartial(const DataObjectReference& dor);
+		COMMON_NS::AbstractObject* createPartial(const DataObjectReference& dor) {
+			return createPartial(dor.getUuid(), dor.getTitle(), dor.getContentType(), dor.getVersion());
+		}
 
 		/**
 		 * Creates a partial object (i.e. a data object reference - or DOR - based on both uuid, title

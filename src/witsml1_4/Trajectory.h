@@ -52,7 +52,7 @@ namespace WITSML1_4_NS
 
 		DLL_IMPORT_OR_EXPORT bool isTopLevelElement() const final { return false; }
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getWellboreDor() const final;
+		COMMON_NS::DataObjectReference getWellboreDor() const final;
 		DLL_IMPORT_OR_EXPORT void setWellbore(WITSML2_NS::Wellbore* witsmlWellbore) final;
 
 		FINAL_GETTER_AND_SETTER_GENERIC_ATTRIBUTE(gsoap_eml2_1::witsml20__ChannelStatus, GrowingStatus)

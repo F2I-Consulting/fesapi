@@ -59,7 +59,7 @@ namespace RESQML2_NS
 		 * @returns	Empty data object reference	if this seismic line does not belong to a seismic line
 		 * 			set, else the data object reference of the seismic line set it belongs to.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getSeismicLineSetDor() const;
+		COMMON_NS::DataObjectReference getSeismicLineSetDor() const;
 
 		/**
 		 * Gets the total count of traces in this seismic line.

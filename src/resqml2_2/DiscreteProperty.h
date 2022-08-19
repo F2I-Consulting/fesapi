@@ -93,7 +93,7 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~DiscreteProperty() = default;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getLookupDor() const final {
+		COMMON_NS::DataObjectReference getLookupDor() const final {
 			return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_3::resqml22__DiscreteProperty*>(gsoapProxy2_3)->CategoryLookup);
 		}
 

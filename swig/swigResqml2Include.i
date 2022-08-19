@@ -1997,40 +1997,11 @@ namespace gsoap_eml2_3
 		contact = 6,
 		depositional_x0020line = 7,
 		erosion_x0020line = 8,
-		contouring = 9,
+		contour = 9,
 		pillar = 10,
-		break_x0020line = 11
-	};
-	enum class resqml22__IndexableElement {
-		cells = 0,
-		intervals_x0020from_x0020datum = 1,
-		column_x0020edges = 2,
-		columns = 3,
-		contacts = 4,
-		coordinate_x0020lines = 5,
-		edges = 6,
-		edges_x0020per_x0020column = 7,
-		enumerated_x0020elements = 8,
-		faces = 9,
-		faces_x0020per_x0020cell = 10,
-		interval_x0020edges = 11,
-		intervals = 12,
-		I0 = 13,
-		I0_x0020edges = 14,
-		J0 = 15,
-		J0_x0020edges = 16,
-		layers = 17,
-		lines = 18,
-		nodes = 19,
-		nodes_x0020per_x0020cell = 20,
-		nodes_x0020per_x0020edge = 21,
-		nodes_x0020per_x0020face = 22,
-		patches = 23,
-		pillars = 24,
-		regions = 25,
-		representation = 26,
-		subnodes = 27,
-		triangles = 28
+		break_x0020line = 11,
+		structural_x0020closure = 12,
+		culture = 13
 	};
 	enum class eml23__FacetKind {
 		conditions = 0,
@@ -2970,19 +2941,6 @@ namespace RESQML2_NS
 		 * @returns	The supporting representation of patch @p patchIndex.
 		 */
 		AbstractRepresentation* getSupportingRepresentationOfPatch(uint64_t patchIndex = 0) const;
-
-		/**
-		 * Gets the data object reference of the supporting representation of a specific patch of this sub-representation.
-		 *
-		 * @exception	std::invalid_argument	If no supporting representation is already associated to
-		 * 										this sub-representation.
-		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch of the subrepresentation.
-		 *
-		 * @returns	The data object reference of the supporting representation of patch @p patchIndex.
-		 */
-		COMMON_NS::DataObjectReference getSupportingRepresentationOfPatchDor(uint64_t patchIndex = 0) const = 0;
 	};
 	
 #ifdef SWIGPYTHON
@@ -3805,16 +3763,6 @@ namespace RESQML2_NS
 		 * @param [in]	rep	The representation to associate to the current property.
 		 */
 		void setRepresentation(AbstractRepresentation * rep);
-		
-		/**
-		 * Gets the data object reference of the representation which is associated to the current
-		 * property
-		 *
-		 * @returns	Empty data object reference if no representation is associated to this property.
-		 * 			Otherwise returns the data object reference of the associated representation. Null
-		 * 			should not occured since each property must be associated to a representation.
-		 */
-		COMMON_NS::DataObjectReference getRepresentationDor() const;
 
 		/**  
 		 * Gets the representation which is associated to the current property. That is to say the one
@@ -3926,14 +3874,6 @@ namespace RESQML2_NS
 		 */
 		EML2_NS::AbstractLocal3dCrs* getLocalCrs() const;
 
-		/**
-		 * Gets the data object reference of the local CRS which is associated to this property
-		 *
-		 * @returns	Empty data object reference if no local CRS is associated to this property. Otherwise
-		 * 			returns the data object reference of the associated local CRS.
-		 */
-		COMMON_NS::DataObjectReference getLocalCrsDor() const;
-
 		//*********************************************
 		//********** REALIZATION DIMENSION ************
 		//*********************************************
@@ -4014,14 +3954,6 @@ namespace RESQML2_NS
 		EML2_NS::TimeSeries* getTimeSeries() const;
 
 		/**
-		 * Gets the data object reference of the time series associated to this property
-		 *
-		 * @returns	Empty data object reference if no time series is associated to this property. Otherwise returns the
-		 * 			data object reference of the associated time series.
-		 */
-		COMMON_NS::DataObjectReference getTimeSeriesDor() const;
-
-		/**
 		 * Check if the values are given at each time index or between each time index.
 		 */
 		bool useInterval() const;
@@ -4073,16 +4005,6 @@ namespace RESQML2_NS
 		 * @param [in]	propKind	The local property kind to set to this property.
 		 */
 		void setPropertyKind(EML2_NS::PropertyKind* propKind);
-
-		/**
-		 * Gets the data object reference of the property kind associated to this property
-		 *
-		 * @exception	std::invalid_argument	If the property kind of this property is not a local one.
-		 *
-		 * @returns	Empty data object reference if no property kind is associated to this property.
-		 * 			Otherwise return the data object reference of the associated local property kind.
-		 */
-		COMMON_NS::DataObjectReference getPropertyKindDor() const;
 
 		/**
 		 * Gets the local property kind which is associated to this instance
@@ -5330,13 +5252,6 @@ namespace RESQML2_NS
 		void setMaximumValue(int64_t value, uint64_t index = 0) const;
 
 		/**
-		 * Gets the DOR of the lookup which is associated to this categorical property values.
-		 *
-		 * @returns	The DOR of the lookup which is associated to this categorical property.
-		 */
-		COMMON_NS::DataObjectReference getLookupDor() const;
-
-		/**
 		 * @brief	Gets the lookup table which is associated to this categorical property values.
 		 *
 		 * @returns	A pointer to the lookup table which is associated to this categorical property
@@ -5751,14 +5666,6 @@ namespace RESQML2_NS
 		EML2_NS::ReferencePointInALocalEngineeringCompoundCrs * getMdDatum() const;
 
 		/**
-		 * Gets the data object reference of the MD information associated to this wellbore trajectory
-		 * representation.
-		 *
-		 * @returns	The data object reference of the associated MD information.
-		 */
-		COMMON_NS::DataObjectReference getMdDatumDor() const;
-
-		/**
 		 * Indicates if the wellbore trajectory has got MD values attached to each trajectory station.
 		 *
 		 * @exception	std::logic_error	If the geometry of this trajectory is not a parametric line.
@@ -5864,14 +5771,6 @@ namespace RESQML2_NS
 		 * 			trajectory.
 		 */
 		WellboreTrajectoryRepresentation* getParentTrajectory() const;
-
-		/**
-		 * Gets the data object reference of the parent trajectory of this trajectory.
-		 *
-		 * @returns	Empty if this trajectory has no parent trajectory, otherwise the data object
-		 * 			reference of the parent trajectory.
-		 */
-		COMMON_NS::DataObjectReference getParentTrajectoryDor() const;
 
 		/**
 		 * Gets the MD on the parent wellbore trajectory where this trajectory is starting.
@@ -6078,19 +5977,6 @@ namespace RESQML2_NS
 		 * @returns	The supporting grid representation at position @p index.
 		 */
 		RESQML2_NS::AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index) const;
-
-		/**
-		 * Get the DOR of the supporting grid representation located at a specific index of this blocked
-		 * wellbore representation.
-		 *
-		 * @exception	std::out_of_range	If <tt>index &gt;=</tt>
-		 * 									getSupportingGridRepresentationCount().
-		 *
-		 * @param 	index	Zero-based index of the supporting grid representation we look for.
-		 *
-		 * @returns	The DOR of the supporting grid representation at position @p index.
-		 */
-		COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const;
 	};
 	
 #ifdef SWIGPYTHON

@@ -58,7 +58,7 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT void setStratigraphicColumnRankInterpretation(RESQML2_NS::StratigraphicColumnRankInterpretation * stratiColumnRankInterp) final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratigraphicColumnRankInterpretationDor() const final;
+		COMMON_NS::DataObjectReference getStratigraphicColumnRankInterpretationDor() const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

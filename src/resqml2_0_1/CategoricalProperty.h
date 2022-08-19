@@ -99,7 +99,7 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~CategoricalProperty() = default;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getLookupDor() const final;
+		COMMON_NS::DataObjectReference getLookupDor() const final;
 
 		/**
 		 * Gets the Energistics property kind which is associated to this intance
