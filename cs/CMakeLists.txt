@@ -22,16 +22,19 @@ configure_file(${FESAPI_ROOT_DIR}/cmake/Program.cs ${FESAPI_ROOT_DIR}/cs/example
 configure_file(${FESAPI_ROOT_DIR}/cmake/HdfProxyFactoryExample.cs ${FESAPI_ROOT_DIR}/cs/example/HdfProxyFactoryExample.cs) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/HdfProxyExample.cs ${FESAPI_ROOT_DIR}/cs/example/HdfProxyExample.cs) # Overwrite if different
 
-set (SWIG_DEFINITION "")
+set (SWIG_DEFINITIONS "")
 if (WITH_RESQML2_2)
-	string(APPEND SWIG_DEFINITION "-DWITH_RESQML2_2")
+	string(APPEND SWIG_DEFINITIONS "-DWITH_RESQML2_2")
 endif (WITH_RESQML2_2)
+if (UNIX)
+	string(APPEND SWIG_DEFINITIONS " -DSWIGWORDSIZE64")
+endif (WIN32)
 
 # SWIG execution
 if (SWIG_LINKED_TO_RELEASE)
-	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITION} -v -c++ -csharp -dllimport ${CPP_LIBRARY_NAME}${CMAKE_RELEASE_POSTFIX}.${Fesapi_VERSION}.dll -namespace F2iConsulting.Fesapi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/cs/src ${FESAPI_ROOT_DIR}/swig/swigModule.i")
+	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -v -c++ -csharp -dllimport ${CPP_LIBRARY_NAME}${CMAKE_RELEASE_POSTFIX}.${Fesapi_VERSION}.dll -namespace F2iConsulting.Fesapi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/cs/src ${FESAPI_ROOT_DIR}/swig/swigModule.i")
 else (SWIG_LINKED_TO_RELEASE)
-	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITION} -v -c++ -csharp -dllimport ${CPP_LIBRARY_NAME}${CMAKE_DEBUG_POSTFIX}.${Fesapi_VERSION}.dll -namespace F2iConsulting.Fesapi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/cs/src ${FESAPI_ROOT_DIR}/swig/swigModule.i")
+	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -v -c++ -csharp -dllimport ${CPP_LIBRARY_NAME}${CMAKE_DEBUG_POSTFIX}.${Fesapi_VERSION}.dll -namespace F2iConsulting.Fesapi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/cs/src ${FESAPI_ROOT_DIR}/swig/swigModule.i")
 endif (SWIG_LINKED_TO_RELEASE)
 execute_process(COMMAND powershell  ${EXECUTE_COMMAND})
 message("SWIG C# files have been generated.")

@@ -28,13 +28,18 @@ def serialize_grid(repo):
 
     # ONE CONTINUOUS PROPERTY ON A PARTIAL 3 cells I=1 J=1 K=3 GRID
     partial_ijk_grid = repo.createPartialIjkGridRepresentation("bc92a216-aa17-4a1f-9253-8b3ab094bf84", "partial grid")
-    continuous_prop = repo.createContinuousProperty(partial_ijk_grid, "827d1074-5b16-4c7d-80bb-a8f3e1413753", "My length property", 1, fesapi.resqml22__IndexableElement_cells,
-        fesapi.resqml20__ResqmlUom_m, fesapi.resqml20__ResqmlPropertyKind_length)
+    if repo.getDefaultResqmlVersion() == fesapi.DataObjectRepository.EnergisticsStandard_RESQML2_0_1:
+        continuous_prop = repo.createContinuousProperty(partial_ijk_grid, "827d1074-5b16-4c7d-80bb-a8f3e1413753", "My length property", fesapi.eml23__IndexableElement_cells,
+            fesapi.resqml20__ResqmlUom_m, fesapi.resqml20__ResqmlPropertyKind_length)
+    else:
+        pwls3Length = repo.createPartial("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", "application/x-eml+xml;version=2.3;type=PropertyKind")
+        continuous_prop = repo.createContinuousProperty(partial_ijk_grid, "827d1074-5b16-4c7d-80bb-a8f3e1413753", "My length property", fesapi.eml23__IndexableElement_cells,
+            fesapi.resqml20__ResqmlUom_m, pwls3Length)
     prop_values = [1.1, 2.2, 3.3]
     resqml_values = fesapi.FloatArray(3)
     for i, value in enumerate(prop_values):
         resqml_values.setitem(i, value)
-    continuous_prop.pushBackFloatHdf5Array3dOfValues(resqml_values, 1, 1, 3, 1.1, 3.3)
+    continuous_prop.pushBackFloatHdf5Array3dOfValues(resqml_values, 1, 1, 3)
 
 def serialize(file_name):
     """
@@ -173,23 +178,18 @@ def deserialize(file_name):
         enum_str_mapper.getEnergisticsUnitOfMeasure("m")))
 
     print("CRS")
-    for depth_crs_index in range(repo.getLocalDepth3dCrsCount()):
-        depth_crs = repo.getLocalDepth3dCrs(depth_crs_index)
-        print("Title is : " + depth_crs.getTitle())
-        if depth_crs.isProjectedCrsDefinedWithEpsg():
-            print("Projected : EPSG " + str(depth_crs.getProjectedCrsEpsgCode()))
+    for crs_index in range(repo.getLocal3dCrsCount()):
+        crs = repo.getLocal3dCrs(crs_index)
+        print("CRS Title is : " + crs.getTitle())
+        if crs.isProjectedCrsDefinedWithEpsg():
+            print("Projected : EPSG " + str(crs.getProjectedCrsEpsgCode()))
+        elif crs.isProjectedCrsUnknown():
+                print("Projected : Unknown. Reason is:" + crs.getProjectedCrsUnknownReason())
+        elif crs.isVerticalCrsDefinedWithEpsg():
+             print("Vertical : EPSG one")
         else:
-            if depth_crs.isProjectedCrsUnknown():
-                print("Projected : Unknown. Reason is:" + depth_crs.getProjectedCrsUnknownReason())
-
-    for time_crs_index in range(repo.getLocalTime3dCrsCount()):
-        time_crs = repo.getLocalTime3dCrs(time_crs_index)
-        print("Title is : " + time_crs.getTitle())
-        if time_crs.isVerticalCrsDefinedWithEpsg():
-            print("Vertical : EPSG one")
-        else:
-            if time_crs.isVerticalCrsUnknown():
-                print("Vertical : Unknown. Reason is:" + time_crs.getVerticalCrsUnknownReason())
+            if crs.isVerticalCrsUnknown():
+                print("Vertical : Unknown. Reason is:" + crs.getVerticalCrsUnknownReason())
 
     ijk_grid_count = repo.getIjkGridRepresentationCount()
     for ijk_grid_index in range(ijk_grid_count):

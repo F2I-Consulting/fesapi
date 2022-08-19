@@ -22,8 +22,6 @@ under the License.
 #include <stdint.h>		// Use the C99 official header
 %}
 
-%include <swigarch.i>
-
 /* Exact integral types.  */
 
 /* Signed.  */
