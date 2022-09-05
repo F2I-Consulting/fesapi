@@ -49,7 +49,7 @@ set(EMCC_ARGS
   #
   -s FORCE_FILESYSTEM=1
   #
-  -s EXPORTED_RUNTIME_METHODS=\"['FS', 'AsciiToString', 'UTF8ToString']\"
+  -s EXPORTED_RUNTIME_METHODS=\"['FS', 'AsciiToString', 'UTF8ToString', 'getExceptionMessage']\"
 
   # WebAssembly integration with JavaScript BigInt
   -s WASM_BIGINT
