@@ -492,3 +492,8 @@ if (WITH_PYTHON_WRAPPING)
 	INSTALL(CODE "execute_process(COMMAND	${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/python/setup.py bdist_wheel
 											WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/python)")
 endif (WITH_PYTHON_WRAPPING)
+
+
+if (WITH_WASM_WRAPPING)
+	include(${FESAPI_ROOT_DIR}/webassembly/CMakeLists.txt)
+endif (WITH_WASM_WRAPPING)
