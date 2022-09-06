@@ -24,7 +24,9 @@ set(EMCC_ARGS
   # Highest level of optimization (code size reduction)
   -Oz
   # Whether to use compile code to WebAssembly
-   -s WASM=1
+  -s WASM=1
+  #
+  -fwasm-exceptions
   #
   -s ALLOW_MEMORY_GROWTH=${ALLOW_MEMORY_GROWTH}    
   #
