@@ -49,7 +49,10 @@ set(EMCC_ARGS
   #
   -s FORCE_FILESYSTEM=1
   #
-  -s EXPORTED_RUNTIME_METHODS=\"['FS', 'AsciiToString', 'UTF8ToString', 'getExceptionMessage']\"
+  -s EXPORTED_RUNTIME_METHODS=\"['FS', 'AsciiToString', 'UTF8ToString']\"
+  # Make the exception message printing function, 'getExceptionMessage' available
+  # in the JS library
+  -s EXPORT_EXCEPTION_HANDLING_HELPERS=1
 
   # WebAssembly integration with JavaScript BigInt
   -s WASM_BIGINT
@@ -68,7 +71,7 @@ set(EMCC_ARGS
   # build in libcxxabi's full c++ demangling code, to allow stackTrace() to emit fully proper demangled c++ names
   -s DEMANGLE_SUPPORT=1
   #  Disables generating code to actually catch Emscripten exceptions
-  -s DISABLE_EXCEPTION_CATCHING=0
+#   -s DISABLE_EXCEPTION_CATCHING=0
   # Print out exceptions in emscriptened code
   -s EXCEPTION_DEBUG=1
 )

@@ -20,14 +20,7 @@ using namespace emscripten;
 using namespace COMMON_NS;
 
 
-std::string getExceptionMessage(intptr_t exceptionPtr)
-{
-  return std::string(reinterpret_cast<std::exception*>(exceptionPtr)->what());
-}
-
 EMSCRIPTEN_BINDINGS(fesapi) {
-
-  function("getExceptionMessage", &getExceptionMessage);
 
   enum_<DataObjectRepository::EnergisticsStandard>("EnergisticsStandard")
     .value("RESQML2_0_1", DataObjectRepository::EnergisticsStandard::RESQML2_0_1)
