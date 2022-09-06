@@ -1,6 +1,6 @@
 {
   "name": "@f2i-consulting/fesapi",
-  "version": "2.4.0-alpha.0",
+  "version": "2.4.0-alpha.1",
   "description": "Direct port of the fesapi libary to JavaScript using Emscripten",
   "type": "module",
   "main": "./dist/node/fesapi.mjs",
