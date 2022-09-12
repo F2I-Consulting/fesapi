@@ -1125,7 +1125,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	}
 #endif
 
-	throw invalid_argument("The content type " + contentType + " of the partial object to create has not been recognized by fesapi.");
+	throw invalid_argument("The content type \"" + contentType + "\" of the partial object UUID=\"" + uuid + "\" to create has not been recognized by FESAPI.");
 }
 
 COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectReference& dor)
