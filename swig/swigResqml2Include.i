@@ -2313,8 +2313,8 @@ namespace RESQML2_NS
 	class WellboreFeature : public AbstractTechnicalFeature
 	{
 	public:
-		WITSML2_0_NS::Wellbore* getWitsmlWellbore();
-		void setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore);
+		WITSML2_NS::Wellbore* getWitsmlWellbore();
+		void setWitsmlWellbore(WITSML2_NS::Wellbore * wellbore);
 	};
 
 	class AbstractRepresentation;
