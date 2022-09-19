@@ -56,8 +56,26 @@ jobs:
           ${{ github.workspace }}\cs\example\bin\x64\Release\example.exe
   ubuntu-20-java8:
     runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false  # 'false' means Don't stop matrix workflows even if some matrix failed.
+      matrix:
+        include: [
+          { xcc_name: 'gcc 9',      xcc_pkg: gcc-9,       cc: gcc-9,      cxx: g++-9 },
+          { xcc_name: 'gcc 10',     xcc_pkg: gcc-10,      cc: gcc-10,     cxx: g++-10 },
+          { xcc_name: 'clang 9',    xcc_pkg: clang-9,     cc: clang-9,    cxx: clang++-9 },
+          { xcc_name: 'clang 10',   xcc_pkg: clang-10,    cc: clang-10,   cxx: clang++-10 },
+          { xcc_name: 'clang 11',   xcc_pkg: clang-11,    cc: clang-11,   cxx: clang++-11 },
+          # { xcc_name: 'clang 12',   xcc_pkg: clang-12,    cc: clang,   cxx: clang++ },
+        ]
+    env:
+      XCC: $${{ matrix.xcc_name }}                        # Set environment variables
+      CC: ${{ matrix.cc }}
+      CXX: ${{ matrix.cxx }}
     steps:
       - uses: actions/checkout@v2
+      - name: apt-get install
+        run: |
+          sudo apt-get install gcc-multilib ${{ matrix.xcc_pkg }} 
       - uses: actions/setup-java@v2
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
@@ -66,12 +84,16 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y libhdf5-dev libminizip-dev libboost-all-dev
+      # - name: Environment info
+      #   run: |
+      #     echo && which $XCC
+      #     # echo && $CC --version
       - name: CMake build and install
         run: |
           cd ..
           mkdir build
           cd build
-          cmake -DMINIZIP_INCLUDE_DIR=/usr/include/minizip -DMINIZIP_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libminizip.so.1.0.0 -DCMAKE_BUILD_TYPE=Release -DWITH_JAVA_WRAPPING=TRUE ${{ github.workspace }}
+          cmake -DMINIZIP_INCLUDE_DIR=/usr/include/minizip -DMINIZIP_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libminizip.so.1.0.0 -DCMAKE_BUILD_TYPE=Release -DWITH_JAVA_WRAPPING=TRUE ${{ github.workspace }} -D CMAKE_C_COMPILER=${{ matrix.cc }} -D CMAKE_CXX_COMPILER=${{ matrix.cxx }}
           cmake --build . -j2
           cmake --install .
       - name: Run java example
@@ -79,3 +101,93 @@ jobs:
           cd ${{ github.workspace }}/java/src
           javac -cp `find ${{ github.workspace }}/../build/install -name fesapiJava*.jar` com/f2i_consulting/example/FesapiJavaExample.java
           java -Djava.library.path=${{ github.workspace }}/../build/install/lib -cp `find ${{ github.workspace }}/../build/install -name fesapiJava*.jar`:. com.f2i_consulting.example.FesapiJavaExample
+  webassembly:
+    runs-on: ubuntu-20.04    
+    steps:
+      - uses: mymindstorm/setup-emsdk@v11
+      - uses: actions/checkout@v2
+      - name: Verify
+        run: emcc -v
+      - name: "Set environmental variables"
+        run: |
+          echo "WASM_INSTALL_DIR=${{ github.workspace }}/install" >> $GITHUB_ENV
+          echo "WASM_LIB_DIR=${{ github.workspace }}/install/lib" >> $GITHUB_ENV
+          echo "WASM_INCLUDE_DIR=${{ github.workspace }}/install/include" >> $GITHUB_ENV
+      - name: HDF5 install
+        env:          
+          HDF5_DOWNLOAD_URL: https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5-1_12_1.tar.gz
+        run: |
+          wget ${{ env.HDF5_DOWNLOAD_URL }} -O hdf5_src.tgz           
+          tar -xvzf hdf5_src.tgz 
+          mkdir -p hdf5_build
+          cd hdf5_build
+          LDFLAGS="-s NODERAWFS=1 -s USE_ZLIB=1" emcmake cmake ../hdf5-hdf5-1_12_1 \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=${{ env.WASM_INSTALL_DIR }} \
+            -DH5_HAVE_GETPWUID=0 \
+            -DH5_HAVE_SIGNAL=0 \
+            -DBUILD_SHARED_LIBS=0 \
+            -DBUILD_STATIC_LIBS=1 \
+            -DBUILD_TESTING=0 \
+            -DHDF5_BUILD_EXAMPLES=0 \
+            -DHDF5_BUILD_TOOLS=0 \
+            -DHDF5_ENABLE_Z_LIB_SUPPORT=1
+          emmake make -j8 install
+      - name: Minizip install
+        run: |
+          git clone https://github.com/F2I-Consulting/Minizip.git
+          mkdir -p minizip_build
+          cd minizip_build
+          LDFLAGS="-s USE_ZLIB=1" emcmake cmake ../Minizip \
+            -DCMAKE_INSTALL_PREFIX=${{ env.WASM_INSTALL_DIR }}
+          emmake make -j8 install
+      - name: CMake build 
+        env:
+          FESAPI_BUILD_DIR: fesapi_build
+        run: |
+          cd ${{ github.workspace }}
+          wget https://gist.github.com/untereiner/3af2e52fbd135235457d2a707d5480d4/raw/7f7e0706b3421593c4c617b9703e5a90e30bfa51/gsoap_wasm.patch
+          git apply gsoap_wasm.patch
+          mkdir -p fesapi_build
+          cd fesapi_build
+          LDFLAGS="-s USE_ZLIB=1 -s USE_BOOST_HEADERS=1" emcmake cmake ../ \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=${{ env.WASM_INSTALL_DIR }} \
+            -DWITH_LOCAL_HDF5=ON \
+            -DHDF5_INCLUDE_DIRS=${{ env.WASM_INCLUDE_DIR }} \
+            -DHDF5_LIBRARIES=${{ env.WASM_LIB_DIR }}/libhdf5.a \
+            -DMINIZIP_INCLUDE_DIR=${{ env.WASM_INCLUDE_DIR }} \
+            -DMINIZIP_LIBRARY_RELEASE=${{ env.WASM_LIB_DIR }}/libminizip.a \
+            -DWITH_EXAMPLE=0 \
+            -DWITH_RESQML2_2=1 \
+            -DWITH_TEST=0 \
+            -DWITH_WASM_WRAPPING=1
+          emmake make -j8 fesapi-wasm
+          emmake make -j8 fesapi-wasm-node
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: fesapi-mjs
+          path: |
+            ${{ github.workspace }}/webassembly/dist/esm/fesapi.mjs
+            ${{ github.workspace }}/webassembly/dist/esm/fesapi.wasm
+      # Setup .npmrc file to publish to npm
+      #- name: 'Setup node'
+      #  uses: actions/setup-node@v3
+      #  with:
+      #    node-version: '16.x'
+      #    registry-url: 'https://registry.npmjs.org'
+      #    cache-dependency-path: ${{ github.workspace }}/webassembly/package-lock.json
+      #- name: Configure NPM
+      #  working-directory: ${{ github.workspace }}/webassembly/
+      #  run: |
+      #    echo "//npm.pkg.github.com/:_authToken=\${NODE_AUTH_TOKEN}" >> .npmrc
+      #    echo "always-auth: true" >> .npmrc
+      #  env:
+      #    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      #- run: npm ci
+      #  working-directory: ${{ github.workspace }}/webassembly/
+      #- run: npm publish --access public
+      #  working-directory: ${{ github.workspace }}/webassembly/
+      #  env:
+      #    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
