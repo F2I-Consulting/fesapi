@@ -172,22 +172,22 @@ jobs:
             ${{ github.workspace }}/webassembly/dist/esm/fesapi.mjs
             ${{ github.workspace }}/webassembly/dist/esm/fesapi.wasm
       # Setup .npmrc file to publish to npm
-      - name: 'Setup node'
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
-          registry-url: 'https://registry.npmjs.org'
-          cache-dependency-path: ${{ github.workspace }}/webassembly/package-lock.json
-      - name: Configure NPM
-        working-directory: ${{ github.workspace }}/webassembly/
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=\${NODE_AUTH_TOKEN}" >> .npmrc
-          echo "always-auth: true" >> .npmrc
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: npm ci
-        working-directory: ${{ github.workspace }}/webassembly/
-      - run: npm publish --access public
-        working-directory: ${{ github.workspace }}/webassembly/
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      #- name: 'Setup node'
+      #  uses: actions/setup-node@v3
+      #  with:
+      #    node-version: '16.x'
+      #    registry-url: 'https://registry.npmjs.org'
+      #    cache-dependency-path: ${{ github.workspace }}/webassembly/package-lock.json
+      #- name: Configure NPM
+      #  working-directory: ${{ github.workspace }}/webassembly/
+      #  run: |
+      #    echo "//npm.pkg.github.com/:_authToken=\${NODE_AUTH_TOKEN}" >> .npmrc
+      #    echo "always-auth: true" >> .npmrc
+      #  env:
+      #    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      #- run: npm ci
+      #  working-directory: ${{ github.workspace }}/webassembly/
+      #- run: npm publish --access public
+      #  working-directory: ${{ github.workspace }}/webassembly/
+      #  env:
+      #    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
