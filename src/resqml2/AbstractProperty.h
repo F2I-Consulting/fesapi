@@ -98,7 +98,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The data type of the values if successful, else @c UNKNOWN.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::numericalDatatypeEnum getValuesHdfDatatype() const;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::AbstractObject::numericalDatatypeEnum getValuesHdfDatatype() const = 0;
 
 		/**
 		 * Gets the count of all values contained into the underlying HDF5 dataset of a given patch of
@@ -124,7 +124,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values in the @p dimIndex dimension of @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const = 0;
 
 		/**
 		 * Gets the count of dimensions of the underlying HDF5 dataset of a given patch of this property.
@@ -135,7 +135,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The number of values, 0 otherwise.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getDimensionsCountOfPatch(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getDimensionsCountOfPatch(unsigned int patchIndex) const = 0;
 
 		//*********************************************
 		//************* PROPERTY SET ******************

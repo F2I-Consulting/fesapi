@@ -98,6 +98,15 @@ void ContinuousProperty::initRepo() {
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
 	forcingMinMaxDblProperty->pushBackDoubleHdf5Array3dOfValues(dblValues, 2, 3, 4, -5.5, 2.0);
+
+	// creating Constant Floating point prop
+	RESQML2_NS::ContinuousProperty* constantDblProperty = repo->createContinuousProperty(
+		rep, "3ce662a6-c94b-4d19-b9df-b241693dba41", "Constant FloatingPoint Property",
+		1,
+		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
+		propertyKind);
+	constantDblProperty->pushBackFloatingPointConstantArrayOfValues(3.33, 3);
 }
 
 void ContinuousProperty::readRepo() {
@@ -181,5 +190,13 @@ void ContinuousProperty::readRepo() {
 	RESQML2_NS::ContinuousProperty* forcingMinMaxDblProperty = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>("ad589326-dfc7-4af2-a6ed-08c81657b72b");
 	REQUIRE(forcingMinMaxDblProperty->getMinimumValue() == -5.5);
 	REQUIRE(forcingMinMaxDblProperty->getMaximumValue() == 2.0);
+
+	RESQML2_NS::ContinuousProperty* constantFloatingPointProperty = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>("3ce662a6-c94b-4d19-b9df-b241693dba41");
+	REQUIRE(constantFloatingPointProperty->getValuesCountOfPatch(0) == 3);
+	double constantFloatingPointValues[3];
+	constantFloatingPointProperty->getDoubleValuesOfPatch(0, constantFloatingPointValues);
+	REQUIRE(constantFloatingPointValues[0] == 3.33);
+	REQUIRE(constantFloatingPointValues[1] == 3.33);
+	REQUIRE(constantFloatingPointValues[2] == 3.33);
 
 }

@@ -873,7 +873,7 @@ namespace COMMON_NS
 		 * @param [in]	arrayInput 	If non-null, the array input.
 		 * @param [out]	arrayOutput	If non-null, the array output.
 		 */
-		void readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray * arrayInput, double * arrayOutput) const;
+		void readArrayNdOfFloatValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray const* arrayInput, float* arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.3 (and potentially HDF5) and store it into a
@@ -882,7 +882,25 @@ namespace COMMON_NS
 		 * @param [in]	arrayInput 	If non-null, the array input.
 		 * @param [out]	arrayOutput	If non-null, the array output.
 		 */
-		void readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloatingPointArray * arrayInput, double * arrayOutput) const;
+		void readArrayNdOfFloatValues(gsoap_eml2_3::eml23__AbstractFloatingPointArray const* arrayInput, float* arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 */
+		void readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray const* arrayInput, double * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.3 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 */
+		void readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloatingPointArray const* arrayInput, double * arrayOutput) const;
 
 		template <class T>
 		void readArrayNdOfNonHdf5IntegerValues(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, T * arrayOutput) const {
@@ -972,7 +990,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint8_t::max
 		 */
-		uint8_t readArrayNdOfUInt8Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint8_t * arrayOutput) const;
+		uint8_t readArrayNdOfUInt8Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput, uint8_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -983,7 +1001,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint16_t::max
 		 */
-		uint8_t readArrayNdOfUInt8Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint8_t * arrayOutput) const;
+		uint8_t readArrayNdOfUInt8Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, uint8_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -994,7 +1012,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint16_t::max
 		 */
-		uint16_t readArrayNdOfUInt16Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint16_t * arrayOutput) const;
+		uint16_t readArrayNdOfUInt16Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput, uint16_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1005,7 +1023,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint8_t::max
 		 */
-		uint16_t readArrayNdOfUInt16Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint16_t * arrayOutput) const;
+		uint16_t readArrayNdOfUInt16Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, uint16_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1016,7 +1034,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint32_t::max
 		 */
-		uint32_t readArrayNdOfUInt32Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint32_t * arrayOutput) const;
+		uint32_t readArrayNdOfUInt32Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput, uint32_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.3 (and potentially HDF5) and store it into a
@@ -1027,7 +1045,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint32_t::max
 		 */
-		uint32_t readArrayNdOfUInt32Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint32_t * arrayOutput) const;
+		uint32_t readArrayNdOfUInt32Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, uint32_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1038,7 +1056,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint64_t::max
 		 */
-		uint64_t readArrayNdOfUInt64Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, uint64_t * arrayOutput) const;
+		uint64_t readArrayNdOfUInt64Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput, uint64_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1049,7 +1067,73 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint64_t::max
 		 */
-		uint64_t readArrayNdOfUInt64Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, uint64_t * arrayOutput) const;
+		uint64_t readArrayNdOfUInt64Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, uint64_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint8_t::max
+		 */
+		int8_t readArrayNdOfInt8Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput, int8_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint16_t::max
+		 */
+		int8_t readArrayNdOfInt8Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, int8_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint8_t::max
+		 */
+		int16_t readArrayNdOfInt16Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput, int16_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint16_t::max
+		 */
+		int16_t readArrayNdOfInt16Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, int16_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint8_t::max
+		 */
+		int32_t readArrayNdOfInt32Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput, int32_t * arrayOutput) const;
+
+		/**
+		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
+		 * preallocated output array in memory. It does not allocate or deallocate memory.
+		 *
+		 * @param [in]	arrayInput 	If non-null, the array input.
+		 * @param [out]	arrayOutput	If non-null, the array output.
+		 *
+		 * @returns	The null value of this array. Default returned value is uint16_t::max
+		 */
+		int32_t readArrayNdOfInt32Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, int32_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1060,7 +1144,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint64_t::max
 		 */
-		int64_t readArrayNdOfInt64Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, int64_t * arrayOutput) const;
+		int64_t readArrayNdOfInt64Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput, int64_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1071,7 +1155,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint64_t::max
 		 */
-		int64_t readArrayNdOfInt64Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, int64_t * arrayOutput) const;
+		int64_t readArrayNdOfInt64Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, int64_t * arrayOutput) const;
 
 		/**
 		 * Get the count of item in an array of integer
@@ -1080,7 +1164,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The count of item in the array of integer.
 		 */
-		uint64_t getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const;
+		uint64_t getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput) const;
 
 		/**
 		 * Get the count of item in an array of integer
@@ -1089,7 +1173,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The count of item in the array of integer.
 		 */
-		uint64_t getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractIntegerArray * arrayInput) const;
+		uint64_t getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput) const;
 
 		/**
 		 * Converts a data object reference into a data object repository relationship.

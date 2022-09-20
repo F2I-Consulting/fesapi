@@ -305,8 +305,8 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfP
 
 	RESQML2_NS::DiscreteProperty* discreteProp = pck->createDiscreteProperty(w1i1FrameRep, "61c2917c-2334-4205-824e-d4f4a0cf6d8e", "Wellbore1 Interp1 FrameRep IntervalIndex", 1,
 		gsoap_eml2_3::resqml22__IndexableElement::intervals, unitNumberPropType);
-	char unitNumbers[5] = { 0, 1, 2, 3, 4 };
-	discreteProp->pushBackCharHdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
+	int8_t unitNumbers[5] = { 0, 1, 2, 3, 4 };
+	discreteProp->pushBackInt8Hdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
 #if WITH_RESQML2_2
 	// SeismicWellboreFrameRepresentation
 	RESQML2_NS::SeismicWellboreFrameRepresentation* w1i1SeismicFrameRep = pck->createSeismicWellboreFrameRepresentation(
