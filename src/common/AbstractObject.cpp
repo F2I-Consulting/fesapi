@@ -1220,27 +1220,27 @@ std::string AbstractObject::getExtraMetadataStringValueAtIndex(unsigned int inde
 	throw logic_error("Not implemented yet.");
 }
 
-void AbstractObject::readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray * arrayInput, double * arrayOutput) const
+void AbstractObject::readArrayNdOfFloatValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray const* arrayInput, float* arrayOutput) const
 {
 	long soapType = arrayInput->soap_type();
 	if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array)
 	{
-		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array*>(arrayInput)->Values->HdfProxy->UUID);
+		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array const*>(arrayInput)->Values->HdfProxy->UUID);
 		if (hdfProxy == nullptr) {
-			throw invalid_argument("The hdf proxy " + static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array*>(arrayInput)->Values->HdfProxy->UUID + " is not available.");
+			throw invalid_argument("The hdf proxy " + static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array const*>(arrayInput)->Values->HdfProxy->UUID + " is not available.");
 		}
-		hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array*>(arrayInput)->Values->PathInHdfFile, arrayOutput);
+		hdfProxy->readArrayNdOfFloatValues(static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array const*>(arrayInput)->Values->PathInHdfFile, arrayOutput);
 	}
 	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
 	{
-		gsoap_resqml2_0_1::resqml20__DoubleConstantArray* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__DoubleConstantArray*>(arrayInput);
+		gsoap_resqml2_0_1::resqml20__DoubleConstantArray const* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__DoubleConstantArray const*>(arrayInput);
 		for (size_t i = 0; i < constantArray->Count; ++i) {
 			arrayOutput[i] = constantArray->Value;
 		}
 	}
 	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 	{
-		gsoap_resqml2_0_1::resqml20__DoubleLatticeArray* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__DoubleLatticeArray*>(arrayInput);
+		gsoap_resqml2_0_1::resqml20__DoubleLatticeArray const* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__DoubleLatticeArray const*>(arrayInput);
 		if (latticeArray->Offset.size() > 1) {
 			throw invalid_argument("The integer lattice array contains more than one offset.");
 		}
@@ -1252,14 +1252,83 @@ void AbstractObject::readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__Abst
 		throw invalid_argument("The integer array type is not supported yet.");
 }
 
-void AbstractObject::readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloatingPointArray * arrayInput, double * arrayOutput) const
+void AbstractObject::readArrayNdOfFloatValues(gsoap_eml2_3::eml23__AbstractFloatingPointArray const* arrayInput, float* arrayOutput) const
 {
 	switch (arrayInput->soap_type()) {
 	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray:
 	case SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray:
 	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatExternalArray:
 	{
-		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(arrayInput)->Values->ExternalFileProxy) {
+		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
+			if (hdfProxy == nullptr) {
+				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
+			}
+			hdfProxy->readArrayNdOfFloatValues(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		}
+		break;
+	}
+	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray:
+	{
+		gsoap_eml2_3::eml23__FloatingPointConstantArray const* constantArray = static_cast<gsoap_eml2_3::eml23__FloatingPointConstantArray const*>(arrayInput);
+		std::fill(arrayOutput, arrayOutput + constantArray->Count, constantArray->Value);
+		break;
+	}
+	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray:
+	{
+		gsoap_eml2_3::eml23__FloatingPointLatticeArray const* latticeArray = static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray const*>(arrayInput);
+		if (latticeArray->Offset.size() > 1) {
+			throw invalid_argument("The integer lattice array contains more than one offset.");
+		}
+		for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
+			arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
+		}
+		break;
+	}
+	default: throw invalid_argument("The integer array type is not supported yet.");
+	}
+}
+
+void AbstractObject::readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray const* arrayInput, double * arrayOutput) const
+{
+	long soapType = arrayInput->soap_type();
+	if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array)
+	{
+		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array const*>(arrayInput)->Values->HdfProxy->UUID);
+		if (hdfProxy == nullptr) {
+			throw invalid_argument("The hdf proxy " + static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array const*>(arrayInput)->Values->HdfProxy->UUID + " is not available.");
+		}
+		hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array const*>(arrayInput)->Values->PathInHdfFile, arrayOutput);
+	}
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
+	{
+		gsoap_resqml2_0_1::resqml20__DoubleConstantArray const* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__DoubleConstantArray const*>(arrayInput);
+		for (size_t i = 0; i < constantArray->Count; ++i) {
+			arrayOutput[i] = constantArray->Value;
+		}
+	}
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
+	{
+		gsoap_resqml2_0_1::resqml20__DoubleLatticeArray const* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__DoubleLatticeArray const*>(arrayInput);
+		if (latticeArray->Offset.size() > 1) {
+			throw invalid_argument("The integer lattice array contains more than one offset.");
+		}
+		for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
+			arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
+		}
+	}
+	else
+		throw invalid_argument("The integer array type is not supported yet.");
+}
+
+void AbstractObject::readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloatingPointArray const* arrayInput, double * arrayOutput) const
+{
+	switch (arrayInput->soap_type()) {
+	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray:
+	case SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray:
+	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatExternalArray:
+	{
+		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
 			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
@@ -1270,13 +1339,13 @@ void AbstractObject::readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloa
 	}
 	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray:
 	{
-		gsoap_eml2_3::eml23__FloatingPointConstantArray* constantArray = static_cast<gsoap_eml2_3::eml23__FloatingPointConstantArray*>(arrayInput);
+		gsoap_eml2_3::eml23__FloatingPointConstantArray const* constantArray = static_cast<gsoap_eml2_3::eml23__FloatingPointConstantArray const*>(arrayInput);
 		std::fill(arrayOutput, arrayOutput + constantArray->Count, constantArray->Value);
 		break;
 	}
 	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray:
 	{
-		gsoap_eml2_3::eml23__FloatingPointLatticeArray* latticeArray = static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray*>(arrayInput);
+		gsoap_eml2_3::eml23__FloatingPointLatticeArray const* latticeArray = static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray const*>(arrayInput);
 		if (latticeArray->Offset.size() > 1) {
 			throw invalid_argument("The integer lattice array contains more than one offset.");
 		}
@@ -1455,6 +1524,117 @@ uint64_t AbstractObject::readArrayNdOfUInt64Values(gsoap_eml2_3::eml23__Abstract
 	return (std::numeric_limits<uint64_t>::max)();
 }
 
+int8_t AbstractObject::readArrayNdOfInt8Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, int8_t* arrayOutput) const
+{
+	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+		auto const * hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
+		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(hdfArray->Values->HdfProxy->UUID);
+		if (hdfProxy == nullptr) {
+			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
+		}
+		hdfProxy->readArrayNdOfCharValues(hdfArray->Values->PathInHdfFile, (char*)arrayOutput);
+		return hdfArray->NullValue;
+	}
+	else {
+		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
+	}
+
+	return (std::numeric_limits<int16_t>::max)();
+}
+
+int8_t AbstractObject::readArrayNdOfInt8Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, int8_t* arrayOutput) const
+{
+	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
+			if (hdfProxy == nullptr) {
+				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
+			}
+			hdfProxy->readArrayNdOfCharValues(dsPart->PathInExternalFile, (char*)arrayOutput + dsPart->StartIndex);
+		}
+		return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue;
+	}
+	else {
+		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
+	}
+
+	return (std::numeric_limits<int16_t>::max)();
+}
+
+int16_t AbstractObject::readArrayNdOfInt16Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, int16_t* arrayOutput) const
+{
+	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+		auto const * hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
+		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(hdfArray->Values->HdfProxy->UUID);
+		if (hdfProxy == nullptr) {
+			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
+		}
+		hdfProxy->readArrayNdOfShortValues(hdfArray->Values->PathInHdfFile, arrayOutput);
+		return hdfArray->NullValue;
+	}
+	else {
+		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
+	}
+
+	return (std::numeric_limits<int16_t>::max)();
+}
+
+int16_t AbstractObject::readArrayNdOfInt16Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, int16_t* arrayOutput) const
+{
+	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
+			if (hdfProxy == nullptr) {
+				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
+			}
+			hdfProxy->readArrayNdOfShortValues(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		}
+		return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue;
+	}
+	else {
+		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
+	}
+
+	return (std::numeric_limits<int16_t>::max)();
+}
+
+int32_t AbstractObject::readArrayNdOfInt32Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, int32_t* arrayOutput) const
+{
+	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+		auto const * hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
+		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(hdfArray->Values->HdfProxy->UUID);
+		if (hdfProxy == nullptr) {
+			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
+		}
+		hdfProxy->readArrayNdOfIntValues(hdfArray->Values->PathInHdfFile, arrayOutput);
+		return hdfArray->NullValue;
+	}
+	else {
+		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
+	}
+
+	return (std::numeric_limits<int32_t>::max)();
+}
+
+int32_t AbstractObject::readArrayNdOfInt32Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, int32_t* arrayOutput) const
+{
+	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
+		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
+			if (hdfProxy == nullptr) {
+				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
+			}
+			hdfProxy->readArrayNdOfIntValues(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		}
+		return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue;
+	}
+	else {
+		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
+	}
+
+	return (std::numeric_limits<int32_t>::max)();
+}
+
 int64_t AbstractObject::readArrayNdOfInt64Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, int64_t * arrayOutput) const
 {
 	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
@@ -1492,63 +1672,63 @@ int64_t AbstractObject::readArrayNdOfInt64Values(gsoap_eml2_3::eml23__AbstractIn
 	return (std::numeric_limits<int64_t>::max)();
 }
 
-uint64_t AbstractObject::getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const
+uint64_t AbstractObject::getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput) const
 {
 	long soapType = arrayInput->soap_type();
 	if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
 	{
-		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(arrayInput)->Values->HdfProxy->UUID);
+		EML2_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput)->Values->HdfProxy->UUID);
 		if (hdfProxy == nullptr) {
-			throw invalid_argument("The hdf proxy " + static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(arrayInput)->Values->HdfProxy->UUID + " is not available.");
+			throw invalid_argument("The hdf proxy " + static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput)->Values->HdfProxy->UUID + " is not available.");
 		}
-		return hdfProxy->getElementCount(static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(arrayInput)->Values->PathInHdfFile);
+		return hdfProxy->getElementCount(static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput)->Values->PathInHdfFile);
 	}
 	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerRangeArray)
 	{
-		return static_cast<gsoap_resqml2_0_1::resqml20__IntegerRangeArray*>(arrayInput)->Count;
+		return static_cast<gsoap_resqml2_0_1::resqml20__IntegerRangeArray const*>(arrayInput)->Count;
 	}
 	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray)
 	{
-		return static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray*>(arrayInput)->Count;
+		return static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(arrayInput)->Count;
 	}
 	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)
 	{
-		gsoap_resqml2_0_1::resqml20__IntegerLatticeArray* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(arrayInput);
+		gsoap_resqml2_0_1::resqml20__IntegerLatticeArray const* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray const*>(arrayInput);
 		if (latticeArray->Offset.size() > 1) {
 			throw invalid_argument("The integer lattice array contains more than one offset.");
 		}
-		return static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(arrayInput)->Offset[0]->Count + 1;
+		return latticeArray->Offset[0]->Count + 1;
 	}
 
 	throw invalid_argument("The integer array type is not supported yet.");
 }
 
-uint64_t AbstractObject::getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractIntegerArray * arrayInput) const
+uint64_t AbstractObject::getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput) const
 {
 	long soapType = arrayInput->soap_type();
 	if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 	{
 		uint64_t result = 0;
-		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(arrayInput)->Values->ExternalFileProxy) {
+		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
 			result += dsPart->Count;
 		}
 		return result;
 	}
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerRangeArray)
 	{
-		return static_cast<gsoap_eml2_3::eml23__IntegerRangeArray*>(arrayInput)->Count;
+		return static_cast<gsoap_eml2_3::eml23__IntegerRangeArray const*>(arrayInput)->Count;
 	}
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray)
 	{
-		return static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(arrayInput)->Count;
+		return static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(arrayInput)->Count;
 	}
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray)
 	{
-		gsoap_eml2_3::eml23__IntegerLatticeArray* latticeArray = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(arrayInput);
+		gsoap_eml2_3::eml23__IntegerLatticeArray const* latticeArray = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray const*>(arrayInput);
 		if (latticeArray->Offset.size() > 1) {
 			throw invalid_argument("The integer lattice array contains more than one offset.");
 		}
-		return static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(arrayInput)->Offset[0]->Count + 1;
+		return latticeArray->Offset[0]->Count + 1;
 	}
 
 	throw invalid_argument("The integer array type is not supported yet.");

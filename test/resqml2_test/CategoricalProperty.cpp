@@ -65,8 +65,8 @@ void CategoricalProperty::initRepo() {
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		stringTableLookup,
 		propertyKind);
-	char charValues[6] = { 0, 1, 2, 3, 4, 5 };
-	charCategoricalProperty->pushBackCharHdf5Array3dOfValues(charValues, 1, 2, 3, hdfProxy, -1);
+	int8_t charValues[6] = { 0, 1, 2, 3, 4, 5 };
+	charCategoricalProperty->pushBackInt8Hdf5Array3dOfValues(charValues, 1, 2, 3, hdfProxy, -1);
 
 	// creating the Double Table Lookup
 	RESQML2_NS::DoubleTableLookup* dblTableLookup = repo->createDoubleTableLookup("0df04180-8bb1-4ca2-90c2-c48bfd4b0958", "My Double Table Lookup");

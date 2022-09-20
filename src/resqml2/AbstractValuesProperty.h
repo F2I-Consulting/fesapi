@@ -45,6 +45,38 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
 
 		/**
+		 * Get the values data type in the HDF dataset
+		 *
+		 * @returns	The data type of the values if successful, else @c UNKNOWN.
+		 */
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::numericalDatatypeEnum getValuesHdfDatatype() const final;
+
+		/**
+		 * Gets the count of values on a specific dimension of the underlying HDF5 dataset of a given
+		 * patch of this property.
+		 *
+		 * @exception	std::out_of_range	If @p dimIndex is strictly greater than dimension count.
+		 * @exception	std::range_error 	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	dimIndex  	The index of the dimension we want to count the values from.
+		 * @param 	patchIndex	The index of the patch we want to count the values from.
+		 *
+		 * @returns	The count of values in the @p dimIndex dimension of @p patchIndex patch.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const final;
+
+		/**
+		 * Gets the count of dimensions of the underlying HDF5 dataset of a given patch of this property.
+		 *
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	patchIndex	The index of the patch we want to count the dimensions from.
+		 *
+		 * @returns	The number of values, 0 otherwise.
+		 */
+		DLL_IMPORT_OR_EXPORT unsigned int getDimensionsCountOfPatch(unsigned int patchIndex) const final;
+
+		/**
 		 * Pushes back a new facet to this instance. Facets are qualifiers for property values which
 		 * allow users to semantically specialize a property without creating a new property kind.
 		 *
@@ -87,6 +119,16 @@ namespace RESQML2_NS
 		//****************************
 
 		/**
+		 * @brief	Adds an array constant integer values to the property values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 or 2.2 one.
+		 *
+		 * @param 		  	value	  	The constant value in the array.
+		 * @param 		  	valueCount	The number of values to write.
+		 */
+		DLL_IMPORT_OR_EXPORT void pushBackIntegerConstantArrayOfValues(int64_t value, uint64_t valueCount);
+
+		/**
 		 * @brief	Adds a 1d array of explicit long values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
@@ -119,11 +161,11 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackShortHdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
-		 * Adds a 1d array of explicit char values to the property values.
+		 * Adds a 1d array of explicit int8_t values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5Array1dOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackCharHdf5Array1dOfValues(const char * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, char nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array1dOfValues(const int8_t* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
 		 * @brief Adds a 2d array of explicit long values to the property values.
@@ -168,11 +210,11 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
-		 * Adds a 2d array of explicit char values to the property values.
+		 * Adds a 2d array of explicit int8_t values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5Array2dOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackCharHdf5Array2dOfValues(const char * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, char nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array2dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
 		 * @brief Adds a 3d array of explicit long values to the property values.
@@ -219,11 +261,11 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
-		 * Adds a 3d array of explicit char values to the property values.
+		 * Adds a 3d array of explicit int8_t values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5Array3dOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackCharHdf5Array3dOfValues(const char * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, char nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
 		 * @brief	Adds an nd array of explicit long values to the property values.
@@ -267,11 +309,11 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
-		 * Adds an nd array of explicit char values to the property values.
+		 * Adds an nd array of explicit int8_t values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue);
+		DLL_IMPORT_OR_EXPORT virtual void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
 		 * Pushes back a new patch of values for this property where the values have not to be written
@@ -381,7 +423,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT unsigned short getUShortValuesOfPatch(unsigned int patchIndex, unsigned short * values) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be char ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be int8 ones.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
@@ -392,11 +434,10 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT char getCharValuesOfPatch(unsigned int patchIndex, char * values) const;
+		DLL_IMPORT_OR_EXPORT int8_t getInt8ValuesOfPatch(unsigned int patchIndex, int8_t* values) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
-		 * char ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be uint8 ones
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
@@ -407,7 +448,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned char getUCharValuesOfPatch(unsigned int patchIndex, unsigned char * values) const;
+		DLL_IMPORT_OR_EXPORT uint8_t getUInt8ValuesOfPatch(unsigned int patchIndex, uint8_t* values) const;
 
 		//***********************************
 		//*** INTEGER For hyperslabbing *****
@@ -680,6 +721,16 @@ namespace RESQML2_NS
 		//***********************************
 		//****** FLOATING POINT *************
 		//***********************************
+
+		/**
+		 * @brief	Adds an array constant flaoting point values to the property values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 or 2.2 one.
+		 *
+		 * @param 		  	value	  	The constant value in the array.
+		 * @param 		  	valueCount	The number of values to write.
+		 */
+		DLL_IMPORT_OR_EXPORT void pushBackFloatingPointConstantArrayOfValues(double value, uint64_t valueCount);
 
 		/**
 		 * @brief Adds a 1d array of explicit double values to the property values.

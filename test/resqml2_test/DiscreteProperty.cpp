@@ -53,8 +53,8 @@ void DiscreteProperty::initRepo() {
 		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		propertyKind);
-	char charValues[6] = { 0, 1, 2, 3, 4, 5 };
-	charDiscreteProperty->pushBackCharHdf5Array3dOfValues(charValues, 1, 2, 3, hdfProxy, -1);
+	int8_t charValues[6] = { 0, 1, 2, 3, 4, 5 };
+	charDiscreteProperty->pushBackInt8Hdf5Array3dOfValues(charValues, 1, 2, 3, hdfProxy, -1);
 
 	// creating the short DiscreteProperty
 	RESQML2_NS::DiscreteProperty* shortDiscreteProperty = repo->createDiscreteProperty(
@@ -91,6 +91,14 @@ void DiscreteProperty::initRepo() {
 		propertyKind);
 	int64_t longValues[6] = { 0, 1, 2, 3, 4, 5 };
 	longDiscreteProperty->pushBackLongHdf5Array3dOfValues(longValues, 1, 2, 3, hdfProxy, -1);
+
+	// creating Constant Integer prop
+	RESQML2_NS::DiscreteProperty* constantIntegerProperty = repo->createDiscreteProperty(
+		ijkGrid, "d6896172-795c-46be-bdd1-f9f9ed42f1f0", "Constant Integer Property",
+		1,
+		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		propertyKind);
+	constantIntegerProperty->pushBackIntegerConstantArrayOfValues(10, 3);
 }
 
 void DiscreteProperty::readRepo() {
@@ -105,4 +113,13 @@ void DiscreteProperty::readRepo() {
 	REQUIRE(intDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32);
 	RESQML2_NS::DiscreteProperty* longDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultLongPropUuid);
 	REQUIRE(longDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64);
+
+	RESQML2_NS::DiscreteProperty* constantDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>("d6896172-795c-46be-bdd1-f9f9ed42f1f0");
+	REQUIRE(constantDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64);
+	REQUIRE(constantDiscreteProperty->getValuesCountOfPatch(0) == 3);
+	int64_t constantDiscreteValues[3];
+	constantDiscreteProperty->getLongValuesOfPatch(0, constantDiscreteValues);
+	REQUIRE(constantDiscreteValues[0] == 10);
+	REQUIRE(constantDiscreteValues[1] == 10);
+	REQUIRE(constantDiscreteValues[2] == 10);
 }

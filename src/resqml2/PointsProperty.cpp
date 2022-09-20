@@ -29,6 +29,51 @@ using namespace std;
 
 const char* PointsProperty::XML_TAG = "PointsProperty";
 
+COMMON_NS::AbstractObject::numericalDatatypeEnum PointsProperty::getValuesHdfDatatype() const
+{
+	if (isPartial()) {
+		throw logic_error("You cannot get values from a partial property.");
+	}
+
+	int64_t nullValue = (numeric_limits<int64_t>::min)();
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(0, nullValue, dsPath);
+
+	return hdfProxy->getNumericalDatatype(dsPath);
+}
+
+unsigned int PointsProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const
+{
+	if (isPartial()) {
+		throw logic_error("You cannot get values from a partial property.");
+	}
+
+	int64_t nullValue = (numeric_limits<int64_t>::min)();
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
+
+	std::vector<hsize_t> dims = hdfProxy->getElementCountPerDimension(dsPath);
+
+	if (dimIndex < dims.size()) {
+		return dims[dimIndex];
+	}
+
+	throw out_of_range("The dim index to get the count is out of range.");
+}
+
+unsigned int PointsProperty::getDimensionsCountOfPatch(unsigned int patchIndex) const
+{
+	if (isPartial()) {
+		throw logic_error("You cannot get values from a partial property.");
+	}
+
+	int64_t nullValue = (numeric_limits<int64_t>::min)();
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
+
+	return hdfProxy->getDimensionCount(dsPath);
+}
+
 uint64_t PointsProperty::getXyzPointCountOfAllPatches() const
 {
 	uint64_t result = 0;
