@@ -50,9 +50,7 @@ unsigned int AbstractValuesProperty::getPatchCount() const
 
 COMMON_NS::AbstractObject::numericalDatatypeEnum AbstractValuesProperty::getValuesHdfDatatype() const
 {
-	if (isPartial()) {
-		throw logic_error("You cannot get values from a partial property.");
-	}
+	cannotBePartial();
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[0];
@@ -98,9 +96,7 @@ COMMON_NS::AbstractObject::numericalDatatypeEnum AbstractValuesProperty::getValu
 
 unsigned int AbstractValuesProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const
 {
-	if (isPartial()) {
-		throw logic_error("You cannot get values from a partial property.");
-	}
+	cannotBePartial();
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
@@ -164,9 +160,7 @@ unsigned int AbstractValuesProperty::getValuesCountOfDimensionOfPatch(unsigned i
 
 unsigned int AbstractValuesProperty::getDimensionsCountOfPatch(unsigned int patchIndex) const
 {
-	if (isPartial()) {
-		throw logic_error("You cannot get values from a partial property.");
-	}
+	cannotBePartial();
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
@@ -403,9 +397,7 @@ std::string AbstractValuesProperty::getFacetValue(unsigned int index) const
 
 void AbstractValuesProperty::pushBackIntegerConstantArrayOfValues(int64_t value, uint64_t valueCount)
 {
-	if (isPartial()) {
-		throw logic_error("You cannot push back values from a partial property.");
-	}
+	cannotBePartial();
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
@@ -603,9 +595,7 @@ std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(EML2_NS:
 
 std::string AbstractValuesProperty::pushBackRefToExistingFloatingPointDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName)
 {
-	if (isPartial()) {
-		throw logic_error("You cannot push back values from a partial property.");
-	}
+	cannotBePartial();
 
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -771,9 +761,7 @@ void AbstractValuesProperty::pushBackInt8Hdf5ArrayOfValues(const int8_t * values
 
 int64_t AbstractValuesProperty::getLongValuesOfPatch(unsigned int patchIndex, int64_t * values) const
 {
-	if (isPartial()) {
-		throw logic_error("You cannot read values from a partial property.");
-	}
+	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
 	}
@@ -832,9 +820,7 @@ int64_t AbstractValuesProperty::getNullValueOfPatch(unsigned int patchIndex) con
 
 int AbstractValuesProperty::getIntValuesOfPatch(unsigned int patchIndex, int * values) const
 {
-	if (isPartial()) {
-		throw logic_error("You cannot read values from a partial property.");
-	}
+	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
 	}
@@ -866,9 +852,7 @@ int AbstractValuesProperty::getIntValuesOfPatch(unsigned int patchIndex, int * v
 
 unsigned int AbstractValuesProperty::getUIntValuesOfPatch(unsigned int patchIndex, unsigned int * values) const
 {
-	if (isPartial()) {
-		throw logic_error("You cannot read values from a partial property.");
-	}
+	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
 	}
@@ -900,9 +884,7 @@ unsigned int AbstractValuesProperty::getUIntValuesOfPatch(unsigned int patchInde
 
 short AbstractValuesProperty::getShortValuesOfPatch(unsigned int patchIndex, short * values) const
 {
-	if (isPartial()) {
-		throw logic_error("You cannot read values from a partial property.");
-	}
+	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
 	}
@@ -934,9 +916,7 @@ short AbstractValuesProperty::getShortValuesOfPatch(unsigned int patchIndex, sho
 
 unsigned short AbstractValuesProperty::getUShortValuesOfPatch(unsigned int patchIndex, unsigned short * values) const
 {
-	if (isPartial()) {
-		throw logic_error("You cannot read values from a partial property.");
-	}
+	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
 	}
@@ -1002,9 +982,7 @@ int8_t AbstractValuesProperty::getInt8ValuesOfPatch(unsigned int patchIndex, int
 
 uint8_t AbstractValuesProperty::getUInt8ValuesOfPatch(unsigned int patchIndex, uint8_t* values) const
 {
-	if (isPartial()) {
-		throw logic_error("You cannot read values from a partial property.");
-	}
+	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
 	}
@@ -1257,9 +1235,7 @@ void AbstractValuesProperty::getIntValuesOf3dPatch(
 
 void AbstractValuesProperty::pushBackFloatingPointConstantArrayOfValues(double value, uint64_t valueCount)
 {
-	if (isPartial()) {
-		throw logic_error("You cannot push back values from a partial property.");
-	}
+	cannotBePartial();
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
@@ -1461,9 +1437,7 @@ void AbstractValuesProperty::setValuesOfFloatHdf5ArrayOfValues(
 
 void AbstractValuesProperty::getDoubleValuesOfPatch(unsigned int patchIndex, double * values) const
 {
-	if (isPartial()) {
-		throw logic_error("You cannot read values from a partial property.");
-	}
+	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
 	}
@@ -1497,9 +1471,7 @@ void AbstractValuesProperty::getDoubleValuesOfPatch(unsigned int patchIndex, dou
 
 void AbstractValuesProperty::getFloatValuesOfPatch(unsigned int patchIndex, float * values) const
 {
-	if (isPartial()) {
-		throw logic_error("You cannot read values from a partial property.");
-	}
+	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
 	}

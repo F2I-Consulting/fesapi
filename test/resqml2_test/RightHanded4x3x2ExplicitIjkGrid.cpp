@@ -92,7 +92,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepo() {
 		3, 5, 3, 5, 3, 5,
 		9999, 5, 9999, 5, 9999, 5
 	};
-	gridConnSet432->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, -1, nullptr);
+	gridConnSet432->setLocalFacePerCellIndexPairs(localFacePerCellIndexPairs432, -1, nullptr);
 
 	// Discrete property
 	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);

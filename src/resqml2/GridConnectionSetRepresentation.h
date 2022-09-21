@@ -92,7 +92,7 @@ namespace RESQML2_NS
 		 * @returns	The count of cell index pairs which correspond to the interpretation at index @p
 		 * 			interpretationIndex or to no interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getCellIndexPairCountFromInterpretationIndex(int interpretationIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getCellIndexPairCountFromInterpretationIndex(int64_t interpretationIndex) const = 0;
 
 		/**
 		 * Indicates whether the cell connections are associated to interpretation or not.
@@ -115,7 +115,7 @@ namespace RESQML2_NS
 		 * 								of interpretations associated to the connection at index @c i is
 		 * 								<tt>cumulativeCount[i]</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getInterpretationIndexCumulativeCount(unsigned int * cumulativeCount) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getInterpretationIndexCumulativeCount(uint64_t * cumulativeCount) const = 0;
 
 		/**
 		 * Gets the (fault) interpretation indices of this grid connection representation.
@@ -130,7 +130,7 @@ namespace RESQML2_NS
 		 * 										of @c cumulativeCount after calling
 		 * 										<tt>getInterpretationIndexCumulativeCount(cumulativeCount).</tt>
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getInterpretationIndices(unsigned int * interpretationIndices) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getInterpretationIndices(int64_t * interpretationIndices) const = 0;
 
 		/**
 		 * Gets the null value for interpretation index.
@@ -168,7 +168,7 @@ namespace RESQML2_NS
 		 * 										feature interpretation of this grid connection set.
 		 *										Or -1 for having information for cells which are not associated to any interpretation at all.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, int interpretationIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, int64_t interpretationIndex) const = 0;
 
 		/**
 		 * Gets the UUID of a particular (fault) interpretation of this grid connection set.
@@ -204,7 +204,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the (fault) interpretation at index @p interpretationIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getInterpretationDorFromIndex(unsigned int interpretationIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getInterpretationDorFromIndex(int64_t interpretationIndex) const = 0;
 
 		/**
 		 * Gets a particular (fault) interpretation of this grid connection set.
@@ -221,7 +221,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The (fault) interpretation at index @p interpretationIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT class AbstractFeatureInterpretation* getInterpretationFromIndex(unsigned int interpretationIndex) const;
+		DLL_IMPORT_OR_EXPORT class AbstractFeatureInterpretation* getInterpretationFromIndex(int64_t interpretationIndex) const;
 
 		/**
 		 * Get the count of interpretations in this grid connection set.
@@ -231,7 +231,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The interpretation count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getInterpretationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getInterpretationCount() const = 0;
 
 		/**
 		 * Indicates if this grid connection set representation contains information on the connected
@@ -311,7 +311,8 @@ namespace RESQML2_NS
 		 * 										index pair will be set and parameter @p
 		 * 										gridIndexPairNullValue will be unused.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setCellIndexPairsUsingExistingDataset(uint64_t cellIndexPairCount, const std::string & cellIndexPair, int64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy = nullptr, int64_t gridIndexPairNullValue = -1, const std::string & gridIndexPair = "") = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setCellIndexPairsUsingExistingDataset(uint64_t cellIndexPairCount, const std::string & cellIndexPair, int64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy = nullptr,
+			int64_t gridIndexPairNullValue = -1, const std::string & gridIndexPair = "") = 0;
 
 		/**
 		 * @brief	Sets the cell index pairs of this grid connection set representation.
@@ -340,7 +341,8 @@ namespace RESQML2_NS
 		 * 											grid at an index must correspond to the cell at the
 		 * 											same index in the @p cellIndexPair array.
 		 */
-		DLL_IMPORT_OR_EXPORT void setCellIndexPairs(uint64_t cellIndexPairCount, int64_t const* cellIndexPair, int64_t cellIndexPairNullValue = -1, EML2_NS::AbstractHdfProxy * proxy = nullptr, uint16_t gridIndexPairNullValue = (std::numeric_limits<uint16_t>::max)(), uint16_t const* gridIndexPair = nullptr);
+		DLL_IMPORT_OR_EXPORT void setCellIndexPairs(uint64_t cellIndexPairCount, int64_t const* cellIndexPair, int64_t cellIndexPairNullValue = -1, EML2_NS::AbstractHdfProxy * proxy = nullptr,
+			uint16_t gridIndexPairNullValue = (std::numeric_limits<uint16_t>::max)(), uint16_t const* gridIndexPair = nullptr);
 
 		/**
 		 * @brief	Sets the local face per cell index pairs of this grid connection set representation.
@@ -350,6 +352,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
 		 * 										defined in the repository.
+		 *				std::logic_error		If the cell index pairs have not been set yet.
 		 *
 		 * @param 		  	localFacePerCellIndexPair	The HDF dataset path where we can find all the
 		 * 												local Face Per CellIndex Pair in a 1d array. The
@@ -363,7 +366,7 @@ namespace RESQML2_NS
 		 * 												indices) are stored. if @c nullptr, then the
 		 * 												repository default HDF proxy will be used.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, int64_t nullValue, EML2_NS::AbstractHdfProxy * proxy) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, int64_t nullValue, EML2_NS::AbstractHdfProxy * proxy = nullptr) = 0;
 
 		/**
 		 * @brief Sets the local face per cell index pairs of this grid connection set representation. Local
@@ -372,9 +375,8 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
+		 *				std::logic_error		If the cell index pairs have not been set yet.
 		 *
-		 * @param 		  	cellIndexPairCount		 	The count of cell index pair. It is half the size
-		 * 												of @p localFacePerCellIndexPair.
 		 * @param [in]	  	localFacePerCellIndexPair	All the local face per cell index pairs in a 1d
 		 * 												array where the local face per cell indices go
 		 * 												faster than the pair. The local face per cell at
@@ -387,33 +389,47 @@ namespace RESQML2_NS
 		 * 												indices) are stored. If @c nullptr, then the
 		 * 												default HDF proxy of the repository will be used.
 		 */
-		DLL_IMPORT_OR_EXPORT void setLocalFacePerCellIndexPairs(uint64_t cellIndexPairCount, int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy);
+		DLL_IMPORT_OR_EXPORT void setLocalFacePerCellIndexPairs(int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy = nullptr);
 
 		/**
 		 * For each connection in this grid connection set representation, allows to map zero to several
 		 * feature interpretation. 
 		 *
-		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt>.
 		 * @exception	std::logic_error		If <tt>getCellIndexPairs() == 0</tt>.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
 		 *
 		 * @param [in]	  	cumulativeInterpCount	 	For each connection, the cumulative count of the
 		 * 												associated interpretations. Count must be equal to getCellIndexPairs().
 		 * @param [in]	  	interpIndices			 	The index of the interpretation associated to cell index pairs.
 		 * 												The count of this array is @p
-		 * 												cumulativeInterpCount[cumulativeInterpCount.size() - 1].
+		 * 												cumulativeInterpCount[cumulativeInterpCount.size() - 1]. The nullValue is -1.
+		 *												Interpretation index is related to pushBackInterpretation.
 		 * @param [in,out]	proxy					 	The Hdf proxy where the numerical values will be
 		 * 												stored.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setConnectionInterpretationIndices(unsigned int const* cumulativeInterpCount, unsigned int const* interpIndices, EML2_NS::AbstractHdfProxy * proxy) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setConnectionInterpretationIndices(uint64_t const* cumulativeInterpCount, int64_t const* interpIndices, EML2_NS::AbstractHdfProxy * proxy = nullptr) = 0;
 
 		/**
 		 * Pushes back an interpretation which can be mapped with some connections.
+		 * Do not use this method when you assign a single interpreation to all connections. Use
 		 *
 		 * @exception	std::invalid_argument	If @p interp is @c nullptr.
 		 *
 		 * @param [in]	interp	The interpretation to push back.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackInterpretation(class AbstractFeatureInterpretation* interp);
+
+		/**
+		 * For each connection in this grid connection set representation, associate the same interpretation.
+		 *
+		 * @exception	std::logic_error		If <tt>getCellIndexPairs() == 0</tt>.
+		 * @exception	std::logic_error		If interpretation has already been pushed into this instance.
+		 *
+		 * @param [in]	  	interp				The interpretation to associate to all connections.
+		 * @param [in,out]	proxy				The Hdf proxy where the numerical values will be stored.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual void setInterpretationForAllConnections(class AbstractFeatureInterpretation* interp, EML2_NS::AbstractHdfProxy * proxy = nullptr) = 0;
 
 		/**
 		 * Pushes back a grid representation which is one of the support of this representation. Pushes

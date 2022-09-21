@@ -922,9 +922,9 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	};
 	ijkgrid432gap->setCellGeometryIsDefinedFlags(enabledCells32gap);
 
-	//**************
-	// Subrepresentations
-	//**************
+	/**************
+	 Subrepresentations
+	***************/
 	if (fault1Interp1 != nullptr)
 	{
 		RESQML2_NS::SubRepresentation * faultSubRep = pck->createSubRepresentation(fault1Interp1, "ff248280-fa3d-11e5-a35c-0002a5d5c51b", "Fault Subrep In Grid");
@@ -958,22 +958,22 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 
 	doubleGridSubrep->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement::cells, 23, doubleGridSubrepValues, hdfProxy, doubleGridSubrepSupportingRepIndices);
 
-	//**************
-	// Grid Connection
-	//**************
+	/**************
+	 Grid Connection
+	***************/
 	RESQML2_NS::GridConnectionSetRepresentation * gridConnSet = pck->createGridConnectionSetRepresentation("03bb6fc0-fa3e-11e5-8c09-0002a5d5c51b", "GridConnectionSetRepresentation");
 	gridConnSet->pushBackSupportingGridRepresentation(ijkgrid);
 	int64_t cellConn[6] = { 0, 9999, 0, 1, 9999, 1 };
 	gridConnSet->setCellIndexPairs(3, cellConn, 9999, hdfProxy);
 	int localFacePerCellIndexPairs[6] = { 3, -1, 3, 5, -1, 5 };
-	gridConnSet->setLocalFacePerCellIndexPairs(3, localFacePerCellIndexPairs, -1, hdfProxy);
+	gridConnSet->setLocalFacePerCellIndexPairs(localFacePerCellIndexPairs, -1, hdfProxy);
 
 	if (fault1Interp1 != nullptr)
 	{
 		// link to fault
 		gridConnSet->pushBackInterpretation(fault1Interp1);
-		unsigned int interpCumulativeCount[3] = { 0, 1, 1 };
-		unsigned int faultIndices = 0;
+		uint64_t interpCumulativeCount[3] = { 0, 1, 1 };
+		int64_t faultIndices = 0;
 		gridConnSet->setConnectionInterpretationIndices(interpCumulativeCount, &faultIndices, hdfProxy);
 	}
 
@@ -994,16 +994,16 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		3, 5, 3, 5, 3, 5,
 		-1, 5, -1, 5, -1, 5
 	};
-	gridConnSet432->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, -1, hdfProxy);
+	gridConnSet432->setLocalFacePerCellIndexPairs(localFacePerCellIndexPairs432, -1, hdfProxy);
 
 	RESQML2_NS::GridConnectionSetRepresentation * gridConnSet432rh = pck->createGridConnectionSetRepresentation("a3d1462a-04e3-4374-921b-a4a1e9ba3ea3", "GridConnectionSetRepresentation");
 	gridConnSet432rh->pushBackSupportingGridRepresentation(ijkgrid432rh);
 	gridConnSet432rh->setCellIndexPairs(15, cellConn432, 9999, hdfProxy);
-	gridConnSet432rh->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, -1, hdfProxy);
+	gridConnSet432rh->setLocalFacePerCellIndexPairs(localFacePerCellIndexPairs432, -1, hdfProxy);
 
-	//**************
-	// Discrete Properties
-	//**************
+	/**************
+	 Discrete Properties
+	***************/
 	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
 		propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::discrete);
 	}
@@ -1039,9 +1039,9 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	//hdfProxy->setMaxChunkSize(192/2); // Create two chunks
 	discreteProp432->pushBackLongHdf5Array3dOfValues(discreteProp432Values, 4, 3, 2, hdfProxy, 1111);
 
-	//**************
-	// Time Series
-	//**************
+	/**************
+	 Time Series
+	***************/
 	EML2_NS::TimeSeries * timeSeries = pck->createTimeSeries("1187d8a0-fa3e-11e5-ac3a-0002a5d5c51b", "Testing time series");
 	tm timeStruct;
 	timeStruct.tm_hour = 15;
@@ -1086,9 +1086,9 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	}
 #endif
 
-	//**************
-	// Categorical Properties
-	//**************
+	/**************
+	 Categorical Properties
+	***************/
 
 	RESQML2_NS::StringTableLookup* stringTableLookup = pck->createStringTableLookup("62245eb4-dbf4-4871-97de-de9e4f4597be", "My String Table Lookup");
 	stringTableLookup->addValue("Cell index 0", 0);
@@ -1112,18 +1112,18 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		gsoap_eml2_3::resqml22__IndexableElement::cells, waterRelPermTable, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::relative_x0020permeability);
 	waterRelPerm->pushBackRefToExistingFloatingPointDataset(nullptr, "/resqml20/cbbc24b1-9a4b-4088-9d0e-e254088d3840/values_patch0");
 
-	//**************
-	// Points Properties
-	//**************
+	/**************
+	 Points Properties
+	***************/
 
 	RESQML2_NS::PointsProperty* pointsProp = pck->createPointsProperty(ijkgrid, "fdf3e92b-1ac2-4589-832d-69ee7c167db7", "Cell center", 1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells, local3dCrs);
 	double cellCenters[6] = { 185, 75, 400, 560, 75, 450 };
 	pointsProp->pushBackArray3dOfXyzPoints(cellCenters, 2, 1, 1, hdfProxy);
 
-	//**************
-	// LGR
-	//**************
+	/**************
+	 LGR
+	***************/
 
 	RESQML2_NS::IjkGridExplicitRepresentation* lgrGrid = pck->createIjkGridExplicitRepresentation("2aec1720-fa3e-11e5-a116-0002a5d5c51b", "LGR", 2, 1, 3);
 	lgrGrid->setParentWindow(
@@ -1132,9 +1132,9 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		0, 3, 1,
 		ijkgrid);
 
-	//**************
-	// Stratigraphy
-	//**************
+	/**************
+	 Stratigraphy
+	***************/
 	int64_t stratiUnitIndice = 0;
 	ijkgrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank0);
 
@@ -4701,6 +4701,7 @@ void deserializeGridConnectionSetRepresentation(RESQML2_NS::AbstractIjkGridRepre
 	std::cout << "Grid Connection Count is : " << gridConnectionSetCount << std::endl;
 	if (gridConnectionSetCount > 0) {
 		RESQML2_NS::GridConnectionSetRepresentation const * gridConnectionSet = ijkGrid->getGridConnectionSetRepresentation(0);
+		showAllMetadata(gridConnectionSet);
 		unsigned int faultInterpOfGridConnCount = gridConnectionSet->getInterpretationCount();
 		std::cout << "Interpretation Count of this grid connection set is : " << faultInterpOfGridConnCount << " and its cell index pair count is " << gridConnectionSet->getCellIndexPairCount() << endl;
 
@@ -4715,7 +4716,7 @@ void deserializeGridConnectionSetRepresentation(RESQML2_NS::AbstractIjkGridRepre
 		{
 			if (interpIndex != -1) {
 				RESQML2_NS::AbstractFeatureInterpretation* faultInterpOfGridConn = gridConnectionSet->getInterpretationFromIndex(interpIndex);
-				std::cout << "Interpretation title of this grid connection set is : " << faultInterpOfGridConn->getTitle() << ". Its UUID is" << faultInterpOfGridConn->getUuid();
+				std::cout << "Interpretation title of this grid connection set is : " << faultInterpOfGridConn->getTitle() << ". Its UUID is " << faultInterpOfGridConn->getUuid();
 			}
 			else {
 				std::cout << "Study of the block of connections which are not associated to any interpretation ";

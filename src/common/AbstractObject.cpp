@@ -54,7 +54,7 @@ char AbstractObject::citationFormat[2001] = "F2I-CONSULTING:FESAPI:" FESAPI_VERS
 void AbstractObject::cannotBePartial() const
 {
 	if (isPartial()) {
-		throw logic_error("This method cannot be called on a partial object (" + getUuid() + ")");
+		throw logic_error("You cannot get anything but a Title and an UUID from a partial " + getXmlTag() + " (" + getUuid() + ")");
 	}
 }
 

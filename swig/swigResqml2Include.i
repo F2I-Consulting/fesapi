@@ -3470,34 +3470,366 @@ namespace RESQML2_NS
 	class GridConnectionSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
+		/**
+		 * Indicates whether the cell connections are associated to interpretation or not.
+		 *
+		 * @returns	True if associated to interpretations, false if not.
+		 */
 		bool isAssociatedToInterpretations() const;
-		void getInterpretationIndexCumulativeCount(unsigned int * cumulativeCount) const;
-		void getInterpretationIndices(unsigned int * interpretationIndices) const;
+
+		/**
+		 * Gets the (fault) interpretation index cumulative counts of this grid connection
+		 * representation.
+		 *
+		 * @exception	std::invalid_argument	If this grid connection set representation does not
+		 * 										contain any (fault) interpretation association.
+		 * @exception	std::logic_error	 	If the intepretation indices cumulative counts are not
+		 * 										stored in a HDF5 integer array.
+		 *
+		 * @param [out]	cumulativeCount	A buffer for receiving the cumulative counts. Must be
+		 * 								preallocated with a size of getCellIndexPairCount(). The number
+		 * 								of interpretations associated to the connection at index @c i is
+		 * 								<tt>cumulativeCount[i]</tt>.
+		 */
+		void getInterpretationIndexCumulativeCount(uint64_t* cumulativeCount) const;
+
+		/**
+		 * Gets the (fault) interpretation indices of this grid connection representation.
+		 *
+		 * @exception	std::invalid_argument	If this grid connection set representation does not
+		 * 										contain any (fault) interpretation association.
+		 * @exception	std::logic_error	 	If the intepretation indices are not stored in a HDF5
+		 * 										integer array.
+		 *
+		 * @param [out]	interpretationIndices	A buffer for receiving the interpretation indices. It
+		 * 										must be preallocated with a size equals to the last value
+		 * 										of @c cumulativeCount after calling
+		 * 										<tt>getInterpretationIndexCumulativeCount(cumulativeCount).</tt>
+		 */
+		void getInterpretationIndices(int64_t * interpretationIndices) const;
+
+		/**
+		 * Gets the null value for interpretation index.
+		 *
+		 * @exception	std::invalid_argument	If this grid connection set representation does not
+		 * 										contain any (fault) interpretation association.
+		 * @exception	std::logic_error	 	If the intepretation indices are not stored in a HDF5
+		 * 										integer array.
+		 *
+		 * @returns	The interpretation index null value.
+		 */
 		int64_t getInterpretationIndexNullValue() const;
-	
-		uint64_t getCellIndexPairCount() const;
-		uint64_t getCellIndexPairCountFromInterpretationIndex(int interpretationIndex) const;
 		
+		/**
+		 * Gets the cell index pair count of this grid connection set representation.
+		 *
+		 * @returns	The cell index pair count.
+		 */
+		uint64_t getCellIndexPairCount() const;
+
+		/**
+		 * @brief	Gets the count of cell index pairs which correspond to a particular interpretation or to no interpretation.
+		 *
+		 * @exception	std::invalid_argument	If the HDF5 library could not read the count of
+		 * 										interpretation indices associated to this grid connection
+		 * 										set representation.
+		 * @exception	std::logic_error	 	If the intepretation indices are not stored in a HDF5
+		 * 										integer array.
+		 * @exception	std::out_of_range	 	If @p interpretationIndex is out of range.
+		 *
+		 * @param 	interpretationIndex	The index of an interpretation in the collection of feature
+		 * 								interpretation of this grid connection set.
+		 *								Or -1 for having cell index pair count which are not associated to any interpretation at all.
+		 *
+		 * @returns	The count of cell index pairs which correspond to the interpretation at index @p
+		 * 			interpretationIndex or to no interpretation.
+		 */
+		uint64_t getCellIndexPairCountFromInterpretationIndex(int64_t interpretationIndex) const;
+		
+		/**
+		 * Gets the cell index pairs of this grid connection set representation
+		 *
+		 * @exception	logic_error	If the cell index pairs are not stored in a HDF5 integer array.
+		 *
+		 * @param [out]	cellIndexPairs	A buffer for receiving the cell index pairs. It must be
+		 * 								preallocated with a size of <tt>2 * getCellIndexPairCount()</tt>.
+		 * 								Two consecutive values <tt>cellIndexPairs[i]</tt> and
+		 * 								<tt>cellIndexPairs[i+1]</tt> constitute a pair of cell index.
+		 *
+		 * @returns	The null value.
+		 */
 		int64_t getCellIndexPairs(int64_t * cellIndexPairs) const;
-		void getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, int interpretationIndex) const;
+		
+		/**
+		 * Gets the cell index pairs, the grid index pairs (optional) and the local face index pairs
+		 * (optional) which correspond to a particular interpretation or to no interpretation.
+		 *
+		 * @exception	std::logic_error	 	If the intepretation indices or interpretation indices
+		 * 										cumulative counts are not stored in a HDF5 integer array.
+		 * @exception	std::out_of_range	 	If @p interpretationIndex is out of range.
+		 *
+		 * @param [out]	  	cellIndexPairs	   	Mandatory buffer to receive the cell index pairs. Must be
+		 * 										preallocated with
+		 * 										<tt>2 * getCellIndexPairCountFromInterpretationIndex(interpretationIndex)</tt>.
+		 * @param [in,out]	gridIndexPairs	   	Optional buffer to receive the grid index pairs. Please
+		 * 										set to @p nullptr for not collecting these pairs. Must be
+		 * 										preallocated with
+		 * 										<tt>2 * getCellIndexPairCountFromInterpretationIndex(interpretationIndex)</tt>.
+		 * @param [in,out]	localFaceIndexPairs	Optional buffer to receive the local face index pairs.
+		 * 										Please set to @p nullptr for not collecting these pairs.
+		 * 										Must be preallocated with
+		 * 										<tt>2 * getCellIndexPairCountFromInterpretationIndex(interpretationIndex)</tt>.
+		 *										See http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-252-0-C-sv2010.html for IJK cell face index convention.
+		 * @param 		  	interpretationIndex	The index of an interpretation in the collection of
+		 * 										feature interpretation of this grid connection set.
+		 *										Or -1 for having information for cells which are not associated to any interpretation at all.
+		 */
+		void getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, int64_t interpretationIndex) const;
+
+		/**
+		 * Indicates if this grid connection set representation contains information on the connected
+		 * faces of the cell pairs.
+		 *
+		 * @returns	True if there exists information on connected faces, false if not.
+		 */
 		bool hasLocalFacePerCell() const;
+
+		/**
+		 * Gets the local face per cell index pairs of this grid connection representation. Please check
+		 * that this grid connection set representation has local face per cell index pairs thanks to
+		 * hasLocalFacePerCell() before calling this method.
+		 *
+		 * @exception	std::invalid_argument	If this representation has no local face per cell pair.
+		 * @exception	std::logic_error	 	If the local face per cell index pairs are not stored
+		 * 										in a HDF5 integer array.
+		 *
+		 * @param [out]	localFacePerCellIndexPairs	A buffer for receiving the local face per cell index
+		 * 											pairs. It must be preallocated with a size of
+		 * 											<tt>getCellIndexPairCount()*2</tt> and won't be freed
+		 * 											by FESAPI.
+		 *											See http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-252-0-C-sv2010.html for IJK cell face index convention.
+		 *
+		 * @returns	The null value used in @p localFacePerCellIndexPairs.
+		 */
 		int64_t getLocalFacePerCellIndexPairs(int * localFacePerCellIndexPairs) const;
+		
+		/**
+		 * Indicates if this grid connection set representation is based on several grids.
+		 *
+		 * @returns	True if it is based on several grids, false if not.
+		 */
 		bool isBasedOnMultiGrids() const;
+		
+		/**
+		 * Gets the grid index pairs of this grid connection representation. Please check that this grid
+		 * connection set representation is based on several grids thanks to isBasedOnMultiGrids()
+		 * before calling this method.
+		 *
+		 * @exception	std::invalid_argument	If this representation is not based on several grids.
+		 * @exception	std::logic_error	 	If the grid index pairs are not stored in a HDF5 integer
+		 * 										array.
+		 *
+		 * @param [out]	gridIndexPairs	A buffer for receiving the grid index pairs. It must be
+		 * 								preallocated with a size <tt>getCellIndexPairCount()*2</tt> and
+		 * 								won't be freed by fesapi.
+		 */
 		void getGridIndexPairs(unsigned short * gridIndexPairs) const;
 		
+		/**
+		 * Pushes back a grid representation which is one of the support of this representation. Pushes
+		 * back this representation as a grid connection information of the grid representation as well.
+		 *
+		 * @exception	std::invalid_argument	If @p supportingGridRep is @c nullptr.
+		 *
+		 * @param [in]	supportingGridRep	The supporting grid representation to push back.
+		 */
 		void pushBackSupportingGridRepresentation(AbstractGridRepresentation * supportingGridRep);
 		
+		/**
+		 * @brief	Sets the cell index pairs of this grid connection set representation.
+		 *			If this instance is supported by a single grid, then optional gridIndex* parameters are not needed.
+		 *			Default cell index null value is set to -1.
+		 *
+		 * @exception	std::invalid_argument	If @p cellIndexPairCount is 0.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If @p cellIndexPairNullValue is strictly greater than
+		 * 										uint64_t max. The XML null value cannot be greater than a
+		 * 										64 bits signed integer cause of gSOAP mappings.
+		 *
+		 * @param 		  	cellIndexPairCount	  	The count of cell index pairs. It is half the size of
+		 * 											@p cellIndexPair (and of @p gridIndexPair if used).
+		 * @param [in]	  	cellIndexPair		  	All the cell index pair in a 1d array where the cell
+		 * 											indices go faster than the pair.
+		 * @param 		  	cellIndexPairNullValue	(Optional) The integer null value used in @p cellIndexPair.
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where the numerical values (cell
+		 * 											indices) are stored. If @c nullptr, then the default
+		 * 											HDF proxy of the repository will be used.
+		 * @param 		  	gridIndexPairNullValue	(Optional) The integer null value used in @p
+		 * 											gridIndexPair. 
+		 * @param [in]	  	gridIndexPair		  	(Optional) All the grid index pair in a 1d array
+		 * 											where the grid indices go faster than the pair. The
+		 * 											grid at an index must correspond to the cell at the
+		 * 											same index in the @p cellIndexPair array.
+		 */
 		void setCellIndexPairs(uint64_t cellIndexPairCount, int64_t * cellIndexPair, int64_t cellIndexPairNullValue = -1, EML2_NS::AbstractHdfProxy * proxy = nullptr);
+		
+		/**
+		 * @brief	Sets the cell index pairs of this grid connection set representation.
+		 *			If this instance is supported by a single grid, then optional gridIndex* parameters are not needed.
+		 *			Default cell index null value is set to -1.
+		 *
+		 * @exception	std::invalid_argument	If @p cellIndexPairCount is 0.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If @p cellIndexPairNullValue is strictly greater than
+		 * 										uint64_t max. The XML null value cannot be greater than a
+		 * 										64 bits signed integer cause of gSOAP mappings.
+		 *
+		 * @param 		  	cellIndexPairCount	  	The count of cell index pairs. It is half the size of
+		 * 											@p cellIndexPair (and of @p gridIndexPair if used).
+		 * @param [in]	  	cellIndexPair		  	All the cell index pair in a 1d array where the cell
+		 * 											indices go faster than the pair.
+		 * @param 		  	cellIndexPairNullValue	(Optional) The integer null value used in @p cellIndexPair.
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where the numerical values (cell
+		 * 											indices) are stored. If @c nullptr, then the default
+		 * 											HDF proxy of the repository will be used.
+		 * @param 		  	gridIndexPairNullValue	(Optional) The integer null value used in @p
+		 * 											gridIndexPair. 
+		 * @param [in]	  	gridIndexPair		  	(Optional) All the grid index pair in a 1d array
+		 * 											where the grid indices go faster than the pair. The
+		 * 											grid at an index must correspond to the cell at the
+		 * 											same index in the @p cellIndexPair array.
+		 */
 		void setCellIndexPairs(uint64_t cellIndexPairCount, int64_t * cellIndexPair, int64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, uint16_t gridIndexPairNullValue, uint16_t const * gridIndexPair);
-		void setLocalFacePerCellIndexPairs(uint64_t cellIndexPairCount, int * localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy);
-		void setConnectionInterpretationIndices(unsigned int const* cumulativeInterpCount, unsigned int const* interpIndices, EML2_NS::AbstractHdfProxy * proxy);
+		
+		/**
+		 * @brief Sets the local face per cell index pairs of this grid connection set representation. Local
+		 * face-per-cell indices are used because global face indices need not have been defined. The
+		 * numerical values will be written as a new HDF5 dataset in an existing HDF5 file.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *				std::logic_error		If the cell index pairs have not been set yet.
+		 *
+		 * @param [in]	  	localFacePerCellIndexPair	All the local face per cell index pairs in a 1d
+		 * 												array where the local face per cell indices go
+		 * 												faster than the pair. The local face per cell at
+		 * 												an index must correspond to the cell at the same
+		 * 												index in the 1d array containing the cell index
+		 * 												pairs.
+		 *												See http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-252-0-C-sv2010.html for IJK cell face index convention.
+		 * @param 		  	nullValue				 	The null value in @p localFacePerCellIndexPair.
+		 * @param [in,out]	proxy					 	The HDF proxy where the numerical values (cell
+		 * 												indices) are stored. If @c nullptr, then the
+		 * 												default HDF proxy of the repository will be used.
+		 */
+		void setLocalFacePerCellIndexPairs(int * localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy = nullptr);
+		
+		/**
+		 * For each connection in this grid connection set representation, allows to map zero to several
+		 * feature interpretation. 
+		 *
+		 * @exception	std::logic_error		If <tt>getCellIndexPairs() == 0</tt>.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param [in]	  	cumulativeInterpCount	 	For each connection, the cumulative count of the
+		 * 												associated interpretations. Count must be equal to getCellIndexPairs().
+		 * @param [in]	  	interpIndices			 	The index of the interpretation associated to cell index pairs.
+		 * 												The count of this array is @p
+		 * 												cumulativeInterpCount[cumulativeInterpCount.size() - 1]. The nullValue is -1.
+		 *												Interpretation index is related to pushBackInterpretation.
+		 * @param [in,out]	proxy					 	The Hdf proxy where the numerical values will be
+		 * 												stored.
+		 */
+		void setConnectionInterpretationIndices(uint64_t const* cumulativeInterpCount, int64_t const* interpIndices, EML2_NS::AbstractHdfProxy * proxy = nullptr);
+		
+		/**
+		 * Pushes back an interpretation which can be mapped with some connections.
+		 * Do not use this method when you assign a single interpreation to all connections. Use
+		 *
+		 * @exception	std::invalid_argument	If @p interp is @c nullptr.
+		 *
+		 * @param [in]	interp	The interpretation to push back.
+		 */
 		void pushBackInterpretation(AbstractFeatureInterpretation* interp);
-		
+
+		/**
+		 * For each connection in this grid connection set representation, associate the same interpretation.
+		 *
+		 * @exception	std::logic_error		If <tt>getCellIndexPairs() == 0</tt>.
+		 * @exception	std::logic_error		If interpretation has already been pushed into this instance.
+		 *
+		 * @param [in]	  	interp				The interpretation to associate to all connections.
+		 * @param [in,out]	proxy				The Hdf proxy where the numerical values will be stored.
+		 */
+		void setInterpretationForAllConnections(class AbstractFeatureInterpretation* interp, EML2_NS::AbstractHdfProxy * proxy = nullptr);
+
+		/**
+		 * Gets the UUID of a particular (fault) interpretation of this grid connection set.
+		 *
+		 * @exception	std::invalid_argument	If this grid connection set representation does not
+		 * 										contain fault interpretation association.
+		 * @exception	std::invalid_argument	If the associated feature interpretation at position @p
+		 * 										interpretationIndex is not a fault one. This is legal but
+		 * 										not yet implemented.
+		 * @exception	std::out_of_range	 	If @p interpretationIndex is out of range.
+		 *
+		 * @param 	interpretationIndex	The index of a (fault) interpretation in the collection of
+		 * 								feature interpretation of this grid connection set.
+		 *
+		 * @returns	The UUID of the (fault) interpretation at index @p interpretationIndex.
+		 */
 		std::string getInterpretationUuidFromIndex(unsigned int interpretationIndex) const;
-		AbstractFeatureInterpretation * getInterpretationFromIndex(unsigned int interpretationIndex) const;
-		unsigned int getInterpretationCount() const;
-		
+
+		/**
+		 * Gets a particular (fault) interpretation of this grid connection set.
+		 *
+		 * @exception	std::invalid_argument	If this grid connection set representation does not
+		 * 										contain fault interpretation association.
+		 * @exception	std::invalid_argument	If the associated feature interpretation at position @p
+		 * 										interpretationIndex is not a fault one. This is legal but
+		 * 										not yet implemented.
+		 * @exception	std::out_of_range	 	If @p interpretationIndex is out of range.
+		 *
+		 * @param 	interpretationIndex	The index of a (fault) interpretation in the collection of
+		 * 								feature interpretation of this grid connection set.
+		 *
+		 * @returns	The (fault) interpretation at index @p interpretationIndex.
+		 */
+		AbstractFeatureInterpretation * getInterpretationFromIndex(int64_t interpretationIndex) const;
+
+		/**
+		 * Get the count of interpretations in this grid connection set.
+		 *
+		 * @exception	range_error	If the count of associated interpretations is strictly greater than
+		 * 							unsigned int.
+		 *
+		 * @returns	The interpretation count.
+		 */
+		uint64_t getInterpretationCount() const;
+
+		/**
+		 * Gets the count of supporting grid representations of this grid connection representation.
+		 *
+		 * @exception	std::range_error	If the count of supporting grid representations is strictly
+		 * 									greater than unsigned int maximum value.
+		 *
+		 * @returns	The supporting grid representation count.
+		 */
 		unsigned int getSupportingGridRepresentationCount() const;
+
+		/**
+		 * Gets the supporting grid representation located at a specific index of this grid connection set
+		 * representation.
+		 * 
+		 * @exception std::out_of_range If @p index is out of range.
+		 * 								
+		 * @param	index	Zero-based index of the supporting grid representation we look for.
+		 * 
+		 * @returns The supporting grid representation at position @p index.
+		 */
 		AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index);
 	};
 	
