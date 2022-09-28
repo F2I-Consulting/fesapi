@@ -203,8 +203,7 @@ FESAPI_TEST("Export and import streamlines on a partial grid", "[grid]", Streaml
 
 FESAPI_TEST("Export and import Blocked wellbore", "[grid][well]", BlockedWellbore)
 
-// fail
-//FESAPI_TEST("Export and import grid connection set on partial grid", "[grid]", GridConnectionSetOnPartialGridSet)
+FESAPI_TEST("Export and import grid connection set on partial grid", "[grid]", GridConnectionSetOnPartialGridSet)
 
 TEST_CASE("Export and import a big explicit ijk grid", "[grid][property]")
 {

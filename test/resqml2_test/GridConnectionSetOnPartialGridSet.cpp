@@ -19,6 +19,8 @@ under the License.
 #include "resqml2_test/GridConnectionSetOnPartialGridSet.h"
 
 #include "resqml2/AbstractIjkGridRepresentation.h"
+#include "resqml2_0_1/FaultInterpretation.h"
+#include "resqml2_0_1/UnstructuredGridRepresentation.h"
 #include "resqml2/ContinuousProperty.h"
 #include "resqml2/GridConnectionSetRepresentation.h"
 
@@ -45,7 +47,7 @@ void GridConnectionSetOnPartialGridSet::initRepo() {
 	// Unstructured grid
 	RESQML2_NS::UnstructuredGridRepresentation* partialGrid = repo->createPartial<RESQML2_0_1_NS::UnstructuredGridRepresentation>(unstructuredGridUuid, unstructuredGridTitle);
 	REQUIRE( partialGrid != nullptr );
-	auto propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
+	auto* propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
 	RESQML2_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(partialGrid, "62d7e07d-5e17-4e42-b4b2-a4c26204cba2", "Continuous prop on partial unstructured grid",
 		gsoap_eml2_3::eml23__IndexableElement::cells, 
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m, 
@@ -54,7 +56,7 @@ void GridConnectionSetOnPartialGridSet::initRepo() {
 	continuousProperty->pushBackDoubleHdf5Array1dOfValues(continuousProp1Values, 6, hdfProxy);
 
 	// IJK grid
-	RESQML2_NS::AbstractIjkGridRepresentation* partialIjkGrid = repo->createPartialIjkGridRepresentation("b0ec8bf4-9b93-428b-a814-87c38887f6d0", "PartialIjk Grid");
+	RESQML2_NS::AbstractIjkGridRepresentation* partialIjkGrid = repo->createPartialIjkGridRepresentation("b0ec8bf4-9b93-428b-a814-87c38887f6d0", "Partial Ijk Grid");
 	REQUIRE(partialIjkGrid != nullptr);
 	RESQML2_NS::ContinuousProperty* continuousPropertyOnIjk = repo->createContinuousProperty(partialIjkGrid, "b20299b9-6881-4b91-ae2f-a87213437dce", "Continuous prop on partial ijk grid",
 		gsoap_eml2_3::eml23__IndexableElement::cells,
@@ -64,7 +66,7 @@ void GridConnectionSetOnPartialGridSet::initRepo() {
 	continuousPropertyOnIjk->pushBackDoubleHdf5Array1dOfValues(continuousPropOnIjkValues, 6, hdfProxy);
 
 	// Truncated IJK grid
-	RESQML2_NS::AbstractIjkGridRepresentation* partialTruncIjkGrid = repo->createPartialTruncatedIjkGridRepresentation("def167fb-89b2-45bc-92ff-01d228142350", "PartialIjk Grid");
+	RESQML2_NS::AbstractIjkGridRepresentation* partialTruncIjkGrid = repo->createPartialTruncatedIjkGridRepresentation("def167fb-89b2-45bc-92ff-01d228142350", "Partial Truncated Ijk Grid");
 	REQUIRE(partialIjkGrid != nullptr);
 	RESQML2_NS::ContinuousProperty* continuousPropertyOnTruncIjk = repo->createContinuousProperty(partialTruncIjkGrid, "4caa8e9a-00b3-40c2-9460-72cb8790393a", "Continuous prop on partial truncated ijk grid",
 		gsoap_eml2_3::eml23__IndexableElement::cells,
@@ -73,13 +75,21 @@ void GridConnectionSetOnPartialGridSet::initRepo() {
 	double continuousPropOnTruncIjkValues[6] = { 0, 1, 2, 3, 4, 5 };
 	continuousPropertyOnTruncIjk->pushBackDoubleHdf5Array1dOfValues(continuousPropOnTruncIjkValues, 6, hdfProxy);
 
+	// Partial fault
+	RESQML2_NS::FaultInterpretation* partialFaultInterp = repo->createPartial<RESQML2_0_1_NS::FaultInterpretation>("83504f50-9301-4565-9615-44099cc73ae3", "Partial Fault");
+	REQUIRE(partialFaultInterp != nullptr);
+
 	// Grid Connection Set on one grid
 	RESQML2_NS::GridConnectionSetRepresentation* gcs = repo->createGridConnectionSetRepresentation("c0214c71-eed8-4ea2-9de4-f7508caeb3c6", "Single grid gcs");
 	gcs->pushBackSupportingGridRepresentation(partialGrid);
-	int64_t cellConn[2] = {
-		1, 2
+	int64_t cellConn[4] = {
+		1, 2, 3, 4
 	};
-	gcs->setCellIndexPairs(1, cellConn, -1, hdfProxy);
+	gcs->setCellIndexPairs(2, cellConn, -1, hdfProxy);
+	gcs->pushBackInterpretation(partialFaultInterp);
+	uint64_t cumulative[2] = { 1, 2 };
+	int64_t interpIndex[2] = { 0, -1 };
+	gcs->setConnectionInterpretationIndices(cumulative, interpIndex, hdfProxy);
 
 	// Grid Connection Set on several grid
 	RESQML2_NS::GridConnectionSetRepresentation* gcsMultiGrids = repo->createGridConnectionSetRepresentation(defaultUuid, defaultTitle);
@@ -93,7 +103,7 @@ void GridConnectionSetOnPartialGridSet::initRepo() {
 		0, 0, 1, 1, 1, 2
 	};
 	gcsMultiGrids->setCellIndexPairs(3, cellConnMultiGrids, -1, hdfProxy, (std::numeric_limits<unsigned short>::max)(), multiGridIndices);
-
+	gcsMultiGrids->setInterpretationForAllConnections(partialFaultInterp);
 }
 
 void GridConnectionSetOnPartialGridSet::readRepo() {
@@ -105,13 +115,22 @@ void GridConnectionSetOnPartialGridSet::readRepo() {
 	REQUIRE(!gcsSingleGrid->isBasedOnMultiGrids());
 	REQUIRE(gcsSingleGrid->getSupportingGridRepresentationCount() == 1);
 	REQUIRE(gcsSingleGrid->getSupportingGridRepresentation(0)->isPartial());
-	REQUIRE(gcsSingleGrid->getCellIndexPairCount() == 1);
+	REQUIRE(gcsSingleGrid->getCellIndexPairCount() == 2);
 	{
-		int64_t cellIndexPair[2];
+		int64_t cellIndexPair[4];
 		gcsSingleGrid->getCellIndexPairs(cellIndexPair);
 		REQUIRE(cellIndexPair[0] == 1);
 		REQUIRE(cellIndexPair[1] == 2);
+		REQUIRE(cellIndexPair[2] == 3);
+		REQUIRE(cellIndexPair[3] == 4);
 	}
+	REQUIRE(gcsSingleGrid->isAssociatedToInterpretations());
+	REQUIRE(gcsSingleGrid->getInterpretationCount() == 1);
+	REQUIRE(gcsSingleGrid->getCellIndexPairCountFromInterpretationIndex(0) == 1);
+	int64_t cellConn[2];
+	gcsSingleGrid->getGridConnectionSetInformationFromInterpretationIndex(cellConn, nullptr, nullptr, 0);
+	REQUIRE(cellConn[0] == 1);
+	REQUIRE(cellConn[1] == 2);
 
 	REQUIRE(gcsMultiGrids->isBasedOnMultiGrids());
 	REQUIRE(gcsMultiGrids->getSupportingGridRepresentationCount() == 3);
@@ -119,17 +138,18 @@ void GridConnectionSetOnPartialGridSet::readRepo() {
 	REQUIRE(gcsMultiGrids->getSupportingGridRepresentation(1)->isPartial());
 	REQUIRE(gcsMultiGrids->getSupportingGridRepresentation(2)->isPartial());
 	REQUIRE(gcsMultiGrids->getCellIndexPairCount() == 3);
-
-	int64_t cellIndexPair[6];
-	gcsMultiGrids->getCellIndexPairs(cellIndexPair);
-	REQUIRE(cellIndexPair[0] == 1);
-	REQUIRE(cellIndexPair[1] == 2);
-	REQUIRE(cellIndexPair[2] == 1);
-	REQUIRE(cellIndexPair[3] == 2);
-	REQUIRE(cellIndexPair[4] == 1);
-	REQUIRE(cellIndexPair[5] == 2);
-
-	unsigned short gridIndexPair[6];
+	REQUIRE(gcsMultiGrids->isAssociatedToInterpretations());
+	{
+		int64_t cellIndexPair[6];
+		gcsMultiGrids->getCellIndexPairs(cellIndexPair);
+		REQUIRE(cellIndexPair[0] == 1);
+		REQUIRE(cellIndexPair[1] == 2);
+		REQUIRE(cellIndexPair[2] == 1);
+		REQUIRE(cellIndexPair[3] == 2);
+		REQUIRE(cellIndexPair[4] == 1);
+		REQUIRE(cellIndexPair[5] == 2);
+	}
+	uint16_t gridIndexPair[6];
 	gcsMultiGrids->getGridIndexPairs(gridIndexPair);
 	REQUIRE(gridIndexPair[0] == 0);
 	REQUIRE(gridIndexPair[1] == 0);
@@ -137,4 +157,16 @@ void GridConnectionSetOnPartialGridSet::readRepo() {
 	REQUIRE(gridIndexPair[3] == 1);
 	REQUIRE(gridIndexPair[4] == 1);
 	REQUIRE(gridIndexPair[5] == 2);
+
+	REQUIRE(gcsMultiGrids->isAssociatedToInterpretations());
+	REQUIRE(gcsMultiGrids->getInterpretationCount() == 1);
+	REQUIRE(gcsMultiGrids->getCellIndexPairCountFromInterpretationIndex(0) == 3);
+	int64_t cellIndexPair[6];
+	gcsMultiGrids->getGridConnectionSetInformationFromInterpretationIndex(cellIndexPair, nullptr, nullptr, 0);
+	REQUIRE(cellIndexPair[0] == 1);
+	REQUIRE(cellIndexPair[1] == 2);
+	REQUIRE(cellIndexPair[2] == 1);
+	REQUIRE(cellIndexPair[3] == 2);
+	REQUIRE(cellIndexPair[4] == 1);
+	REQUIRE(cellIndexPair[5] == 2);
 }

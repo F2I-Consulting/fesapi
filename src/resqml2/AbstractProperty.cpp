@@ -60,7 +60,10 @@ void AbstractProperty::loadTargetRelationships()
 	}
 
 	for (uint64_t patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
-		convertDorIntoRel(getHdfProxyDor(patchIndex));
+		dor = getHdfProxyDor(patchIndex);
+		if (!dor.isEmpty()) {
+			convertDorIntoRel(dor);
+		}
 	}
 }
 
@@ -522,17 +525,7 @@ gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind AbstractProperty::getEnergistics
 	throw invalid_argument("The property kind of this property is not an Energistics one.");
 }
 
-
-COMMON_NS::AbstractObject::numericalDatatypeEnum AbstractProperty::getValuesHdfDatatype() const
-{
-	int64_t nullValue = (numeric_limits<int64_t>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(0, nullValue, dsPath);
-
-	return hdfProxy->getNumericalDatatype(dsPath);
-}
-
-uint64_t AbstractProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, uint64_t patchIndex) const
+unsigned int AbstractProperty::getValuesCountOfPatch(unsigned int patchIndex) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;

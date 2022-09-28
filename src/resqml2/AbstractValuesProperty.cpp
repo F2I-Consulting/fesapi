@@ -48,10 +48,172 @@ uint64_t AbstractValuesProperty::getPatchCount() const
 		result = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch.size();
 	}
 	else {
-		throw logic_error("Not implemented yet");
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
 	}
 
 	return result;
+}
+
+COMMON_NS::AbstractObject::numericalDatatypeEnum AbstractValuesProperty::getValuesHdfDatatype() const
+{
+	cannotBePartial();
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[0];
+
+		switch (patch->Values->soap_type()) {
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray:
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray:
+		{
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE;
+		}
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray:
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray:
+		{
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64;
+		}
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[0];
+		switch (patch->soap_type()) {
+		case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray:
+		case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray:
+		{
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE;
+		}
+		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
+		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray:
+		{
+			return COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64;
+		}
+		}
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
+
+	int64_t nullValue = (numeric_limits<int64_t>::min)();
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(0, nullValue, dsPath);
+
+	return hdfProxy->getNumericalDatatype(dsPath);
+}
+
+unsigned int AbstractValuesProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const
+{
+	cannotBePartial();
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+
+		switch (patch->Values->soap_type()) {
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray:
+		{
+			return static_cast<gsoap_resqml2_0_1::resqml20__DoubleConstantArray*>(patch->Values)->Count;
+		}
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray:
+		{
+			return static_cast<gsoap_resqml2_0_1::resqml20__DoubleLatticeArray*>(patch->Values)->Offset[dimIndex]->Count + 1;
+		}
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray:
+		{
+			return static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray*>(patch->Values)->Count;
+		}
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray:
+		{
+			return static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(patch->Values)->Offset[dimIndex]->Count + 1;
+		}
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		switch (patch->soap_type()) {
+		case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray:
+		{
+			return static_cast<gsoap_eml2_3::eml23__FloatingPointConstantArray*>(patch)->Count;
+		}
+		case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray:
+		{
+			return static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray*>(patch)->Offset[dimIndex]->Count + 1;
+		}
+		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
+		{
+			return static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(patch)->Count;
+		}
+		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray:
+		{
+			return static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(patch)->Offset[dimIndex]->Count + 1;
+		}
+		}
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
+
+	int64_t nullValue = (numeric_limits<int64_t>::min)();
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
+
+	std::vector<hsize_t> dims = hdfProxy->getElementCountPerDimension(dsPath);
+
+	if (dimIndex < dims.size()) {
+		return dims[dimIndex];
+	}
+
+	throw out_of_range("The dim index to get the count is out of range.");
+}
+
+unsigned int AbstractValuesProperty::getDimensionsCountOfPatch(unsigned int patchIndex) const
+{
+	cannotBePartial();
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+
+		switch (patch->Values->soap_type()) {
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray:
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray:
+		{
+			return 1;
+		}
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray:
+		{
+			return static_cast<gsoap_resqml2_0_1::resqml20__DoubleLatticeArray*>(patch->Values)->Offset.size();
+		}
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray:
+		{
+			return static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(patch->Values)->Offset.size();
+		}
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		switch (patch->soap_type()) {
+		case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray:
+		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
+		{
+			return 1;
+		}
+		case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray:
+		{
+			return static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray*>(patch)->Offset.size();
+		}
+		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray:
+		{
+			return static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(patch)->Offset.size();
+		}
+		}
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
+
+	int64_t nullValue = (numeric_limits<int64_t>::min)();
+	std::string dsPath;
+	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
+
+	return hdfProxy->getDimensionCount(dsPath);
 }
 
 EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(uint64_t patchIndex, int64_t & nullValue, std::string & dsPath) const
@@ -112,7 +274,7 @@ EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(uint64_t p
 		}
 	}
 	else {
-		throw logic_error("Not implemented yet");
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
 	}
 }
 
@@ -138,9 +300,6 @@ COMMON_NS::DataObjectReference AbstractValuesProperty::getHdfProxyDor(uint64_t p
 		else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__StringHdf5Array) {
 			return static_cast<gsoap_resqml2_0_1::resqml20__StringHdf5Array*>(patch->Values)->Values->HdfProxy;
 		}
-		else {
-			throw logic_error("The type of the property values is not implemented yet.");
-		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
@@ -158,13 +317,12 @@ COMMON_NS::DataObjectReference AbstractValuesProperty::getHdfProxyDor(uint64_t p
 		else if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__StringExternalArray) {
 			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__StringExternalArray*>(patch)->Values->ExternalDataArrayPart[0]));
 		}
-		else {
-			throw logic_error("The type of the property values is not implemented yet.");
-		}
 	}
 	else {
-		throw logic_error("Not implemented yet");
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
 	}
+
+	return COMMON_NS::DataObjectReference();
 }
 
 void AbstractValuesProperty::pushBackFacet(gsoap_eml2_3::eml23__FacetKind facet, const std::string & facetValue)
@@ -185,7 +343,7 @@ void AbstractValuesProperty::pushBackFacet(gsoap_eml2_3::eml23__FacetKind facet,
 		static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet.push_back(newFacet);
 	}
 	else {
-		throw logic_error("Not implemented yet");
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
 	}
 }
 
@@ -199,7 +357,7 @@ uint64_t AbstractValuesProperty::getFacetCount() const
 		result = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet.size();
 	}
 	else {
-		throw logic_error("Not implemented yet");
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
 	}
 
 	return result;
@@ -214,8 +372,9 @@ gsoap_eml2_3::eml23__FacetKind AbstractValuesProperty::getFacetKind(uint64_t ind
 	else if (gsoapProxy2_3 != nullptr) {
 		return static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet.at(index)->Kind;
 	}
-
-	throw logic_error("Not implemented yet");
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
 }
 
 std::string AbstractValuesProperty::getFacetValue(uint64_t index) const
@@ -226,8 +385,44 @@ std::string AbstractValuesProperty::getFacetValue(uint64_t index) const
 	else if (gsoapProxy2_3 != nullptr) {
 		return static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet.at(index)->Facet;
 	}
-	
-	throw logic_error("Not implemented yet");
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
+}
+
+void AbstractValuesProperty::pushBackIntegerConstantArrayOfValues(int64_t value, uint64_t valueCount)
+{
+	cannotBePartial();
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
+
+		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = gsoap_resqml2_0_1::soap_new_resqml20__PatchOfValues(gsoapProxy2_0_1->soap);
+		patch->RepresentationPatchIndex = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(ULONG64)));
+		*(patch->RepresentationPatchIndex) = prop->PatchOfValues.size();
+
+		// XML
+		gsoap_resqml2_0_1::resqml20__IntegerConstantArray* xmlValues = gsoap_resqml2_0_1::soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap);
+		xmlValues->Count = valueCount;
+		xmlValues->Value = value;
+
+		patch->Values = xmlValues;
+
+		prop->PatchOfValues.push_back(patch);
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::resqml22__AbstractValuesProperty* prop = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3);
+
+		// XML
+		gsoap_eml2_3::eml23__IntegerConstantArray* xmlValues = gsoap_eml2_3::soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap);
+		xmlValues->Count = valueCount;
+		xmlValues->Value = value;
+
+		prop->ValuesForPatch.push_back(xmlValues);
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
 }
 
 void AbstractValuesProperty::pushBackLongHdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy,
@@ -248,10 +443,10 @@ void AbstractValuesProperty::pushBackShortHdf5Array1dOfValues(const short * valu
 	pushBackShortHdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackCharHdf5Array1dOfValues(const char * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy,
-	char nullValue)
+void AbstractValuesProperty::pushBackInt8Hdf5Array1dOfValues(const int8_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy,
+	int8_t nullValue)
 {
-	pushBackCharHdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
+	pushBackInt8Hdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackLongHdf5Array2dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
@@ -281,11 +476,11 @@ void AbstractValuesProperty::pushBackUShortHdf5Array2dOfValues(const unsigned sh
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackCharHdf5Array2dOfValues(const char * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
-	char nullValue)
+void AbstractValuesProperty::pushBackInt8Hdf5Array2dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
+	int8_t nullValue)
 {
 	uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-	pushBackCharHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
+	pushBackInt8Hdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackLongHdf5Array3dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
@@ -316,11 +511,11 @@ void AbstractValuesProperty::pushBackUShortHdf5Array3dOfValues(const unsigned sh
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackCharHdf5Array3dOfValues(const char * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
-	char nullValue)
+void AbstractValuesProperty::pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
+	int8_t nullValue)
 {
 	uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	pushBackCharHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
+	pushBackInt8Hdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
 std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, int64_t nullValue)
@@ -380,6 +575,8 @@ std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(EML2_NS:
 
 std::string AbstractValuesProperty::pushBackRefToExistingFloatingPointDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName)
 {
+	cannotBePartial();
+
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
 		if (proxy == nullptr) {
@@ -523,7 +720,7 @@ void AbstractValuesProperty::pushBackUShortHdf5ArrayOfValues(const unsigned shor
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
-void AbstractValuesProperty::pushBackCharHdf5ArrayOfValues(const char * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, char nullValue)
+void AbstractValuesProperty::pushBackInt8Hdf5ArrayOfValues(const int8_t * values, uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -548,13 +745,34 @@ void AbstractValuesProperty::pushBackCharHdf5ArrayOfValues(const char * values, 
 
 int64_t AbstractValuesProperty::getLongValuesOfPatch(uint64_t patchIndex, int64_t * values) const
 {
-	int64_t nullValue = (numeric_limits<int64_t>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
+	cannotBePartial();
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
+	}
 
-	hdfProxy->readArrayNdOfInt64Values(dsPath, values);
-
-	return nullValue;
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+		auto const* xmlArray = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const*>(patch->Values);
+		if (xmlArray != nullptr) {
+			return readArrayNdOfInt64Values(xmlArray, values);
+		}
+		else {
+			throw logic_error("Reading integer values from a non integer array is not supported.");
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
+		if (xmlArray != nullptr) {
+			return readArrayNdOfInt64Values(xmlArray, values);
+		}
+		else {
+			throw logic_error("Reading integer values from a non integer array is not supported.");
+		}
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
 }
 
 int64_t AbstractValuesProperty::getNullValueOfPatch(uint64_t patchIndex) const
@@ -586,92 +804,196 @@ int64_t AbstractValuesProperty::getNullValueOfPatch(uint64_t patchIndex) const
 
 int32_t AbstractValuesProperty::getIntValuesOfPatch(uint64_t patchIndex, int32_t * values) const
 {
-	int64_t nullValue = (numeric_limits<int64_t>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
-
-	hdfProxy->readArrayNdOfIntValues(dsPath, values);
-
-	if (nullValue < (std::numeric_limits<int32_t>::lowest)() || nullValue > (std::numeric_limits<int32_t>::max)()) {
-		throw range_error("The null value is not in the int32_t range");
+	cannotBePartial();
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
 	}
 
-	return static_cast<int32_t>(nullValue);
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+		auto const* xmlArray = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const*>(patch->Values);
+		if (xmlArray != nullptr) {
+			return readArrayNdOfInt32Values(xmlArray, values);
+		}
+		else {
+			throw logic_error("Reading integer values from a non integer array is not supported.");
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
+		if (xmlArray != nullptr) {
+			return readArrayNdOfInt32Values(xmlArray, values);
+		}
+		else {
+			throw logic_error("Reading integer values from a non integer array is not supported.");
+		}
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
 }
 
 uint32_t AbstractValuesProperty::getUIntValuesOfPatch(uint64_t patchIndex, uint32_t * values) const
 {
-	int64_t nullValue = (numeric_limits<int64_t>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
-
-	hdfProxy->readArrayNdOfUIntValues(dsPath, values);
-
-	if (nullValue < (std::numeric_limits<uint32_t>::lowest)() || nullValue >(std::numeric_limits<uint32_t>::max)()) {
-		throw range_error("The null value is not in the uint32_t range");
+	cannotBePartial();
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
 	}
 
-	return static_cast<uint32_t>(nullValue);
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+		auto const* xmlArray = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const*>(patch->Values);
+		if (xmlArray != nullptr) {
+			return readArrayNdOfUInt32Values(xmlArray, values);
+		}
+		else {
+			throw logic_error("Reading integer values from a non integer array is not supported.");
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
+		if (xmlArray != nullptr) {
+			return readArrayNdOfUInt32Values(xmlArray, values);
+		}
+		else {
+			throw logic_error("Reading integer values from a non integer array is not supported.");
+		}
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
 }
 
 int16_t AbstractValuesProperty::getShortValuesOfPatch(uint64_t patchIndex, int16_t * values) const
 {
-	int64_t nullValue = (numeric_limits<int64_t>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
-
-	hdfProxy->readArrayNdOfShortValues(dsPath, values);
-
-	if (nullValue < (std::numeric_limits<int16_t>::lowest)() || nullValue >(std::numeric_limits<int16_t>::max)()) {
-		throw range_error("The null value is not in the int16_t range");
+	cannotBePartial();
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
 	}
 
-	return static_cast<int16_t>(nullValue);
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+		auto const* xmlArray = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const*>(patch->Values);
+		if (xmlArray != nullptr) {
+			return readArrayNdOfInt16Values(xmlArray, values);
+		}
+		else {
+			throw logic_error("Reading integer values from a non integer array is not supported.");
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
+		if (xmlArray != nullptr) {
+			return readArrayNdOfInt16Values(xmlArray, values);
+		}
+		else {
+			throw logic_error("Reading integer values from a non integer array is not supported.");
+		}
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
 }
 
 uint16_t AbstractValuesProperty::getUShortValuesOfPatch(uint64_t patchIndex, uint16_t * values) const
 {
-	int64_t nullValue = (numeric_limits<int64_t>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
-
-	hdfProxy->readArrayNdOfUShortValues(dsPath, values);
-
-	if (nullValue < (std::numeric_limits<uint16_t>::lowest)() || nullValue >(std::numeric_limits<uint16_t>::max)()) {
-		throw range_error("The null value is not in the uint16_t range");
+	cannotBePartial();
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
 	}
 
-	return static_cast<uint16_t>(nullValue);
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+		auto const* xmlArray = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const*>(patch->Values);
+		if (xmlArray != nullptr) {
+			return readArrayNdOfUInt16Values(xmlArray, values);
+		}
+		else {
+			throw logic_error("Reading integer values from a non integer array is not supported.");
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
+		if (xmlArray != nullptr) {
+			return readArrayNdOfUInt16Values(xmlArray, values);
+		}
+		else {
+			throw logic_error("Reading integer values from a non integer array is not supported.");
+		}
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
 }
 
-char AbstractValuesProperty::getCharValuesOfPatch(uint64_t patchIndex, char * values) const
+int8_t AbstractValuesProperty::getInt8ValuesOfPatch(unsigned int patchIndex, int8_t* values) const
 {
-	int64_t nullValue = (numeric_limits<int64_t>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
-
-	hdfProxy->readArrayNdOfCharValues(dsPath, values);
-
-	if (nullValue < (std::numeric_limits<char>::lowest)() || nullValue >(std::numeric_limits<char>::max)()) {
-		throw range_error("The null value is not in the char range");
+	if (isPartial()) {
+		throw logic_error("You cannot read values from a partial property.");
+	}
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
 	}
 
-	return static_cast<char>(nullValue);
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+		auto const* xmlArray = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const*>(patch->Values);
+		if (xmlArray != nullptr) {
+			return readArrayNdOfInt8Values(xmlArray, values);
+		}
+		else {
+			throw logic_error("Reading integer values from a non integer array is not supported.");
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
+		if (xmlArray != nullptr) {
+			return readArrayNdOfInt8Values(xmlArray, values);
+		}
+		else {
+			throw logic_error("Reading integer values from a non integer array is not supported.");
+		}
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
 }
 
-uint8_t AbstractValuesProperty::getUCharValuesOfPatch(uint64_t patchIndex, uint8_t * values) const
+uint8_t AbstractValuesProperty::getUInt8ValuesOfPatch(unsigned int patchIndex, uint8_t* values) const
 {
-	int64_t nullValue = (numeric_limits<int64_t>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
-
-	hdfProxy->readArrayNdOfUCharValues(dsPath, values);
-
-	if (nullValue < (std::numeric_limits<uint8_t>::lowest)() || nullValue >(std::numeric_limits<uint8_t>::max)()) {
-		throw range_error("The null value is not in the uint8_t range");
+	cannotBePartial();
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
 	}
 
-	return static_cast<uint8_t>(nullValue);
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+		auto const* xmlArray = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const*>(patch->Values);
+		if (xmlArray != nullptr) {
+			return readArrayNdOfUInt8Values(xmlArray, values);
+		}
+		else {
+			throw logic_error("Reading integer values from a non integer array is not supported.");
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
+		if (xmlArray != nullptr) {
+			return readArrayNdOfUInt8Values(xmlArray, values);
+		}
+		else {
+			throw logic_error("Reading integer values from a non integer array is not supported.");
+		}
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
 }
 
 void AbstractValuesProperty::pushBackLongHdf5Array3dOfValues(
@@ -891,6 +1213,41 @@ void AbstractValuesProperty::getIntValuesOf3dPatch(
 //****** FLOATING POINT *************
 //***********************************
 
+void AbstractValuesProperty::pushBackFloatingPointConstantArrayOfValues(double value, uint64_t valueCount)
+{
+	cannotBePartial();
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
+
+		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = gsoap_resqml2_0_1::soap_new_resqml20__PatchOfValues(gsoapProxy2_0_1->soap);
+		patch->RepresentationPatchIndex = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(ULONG64)));
+		*(patch->RepresentationPatchIndex) = prop->PatchOfValues.size();
+
+		// XML
+		gsoap_resqml2_0_1::resqml20__DoubleConstantArray* xmlValues = gsoap_resqml2_0_1::soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap);
+		xmlValues->Count = valueCount;
+		xmlValues->Value = value;
+
+		patch->Values = xmlValues;
+
+		prop->PatchOfValues.push_back(patch);
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::resqml22__AbstractValuesProperty* prop = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3);
+
+		// XML
+		gsoap_eml2_3::eml23__FloatingPointConstantArray* xmlValues = gsoap_eml2_3::soap_new_eml23__FloatingPointConstantArray(gsoapProxy2_3->soap);
+		xmlValues->Count = valueCount;
+		xmlValues->Value = value;
+
+		prop->ValuesForPatch.push_back(xmlValues);
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
+}
+
 void AbstractValuesProperty::pushBackDoubleHdf5Array1dOfValues(const double * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy)
 {
 	pushBackDoubleHdf5ArrayOfValues(values, &valueCount, 1, proxy);
@@ -1051,20 +1408,70 @@ void AbstractValuesProperty::setValuesOfFloatHdf5ArrayOfValues(
 
 void AbstractValuesProperty::getDoubleValuesOfPatch(uint64_t patchIndex, double * values) const
 {
-	int64_t nullValue = (numeric_limits<int64_t>::min)();
-	std::string datasetPath;
-	EML2_NS::AbstractHdfProxy* hdfProxy = getDatasetOfPatch(patchIndex, nullValue, datasetPath);
+	cannotBePartial();
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
+	}
 
-	hdfProxy->readArrayNdOfDoubleValues(datasetPath, values);
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+		auto const* xmlArrayOfDouble = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractDoubleArray const*>(patch->Values);
+		if (xmlArrayOfDouble != nullptr) {
+			readArrayNdOfDoubleValues(xmlArrayOfDouble, values);
+			return;
+		}
+		else {
+			throw logic_error("Reading double values from a non double array is not supported.");
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		auto const* xmlArrayOfFloatingPoints = dynamic_cast<gsoap_eml2_3::eml23__AbstractFloatingPointArray const*>(xmlValues);
+		if (xmlArrayOfFloatingPoints != nullptr) {
+			readArrayNdOfDoubleValues(xmlArrayOfFloatingPoints, values);
+			return;
+		}
+		else {
+			throw logic_error("Reading double values from a non floating point array is not supported.");
+		}
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
 }
 
 void AbstractValuesProperty::getFloatValuesOfPatch(uint64_t patchIndex, float * values) const
 {
-	int64_t nullValue = (numeric_limits<int64_t>::min)();
-	std::string datasetPath;
-	EML2_NS::AbstractHdfProxy* hdfProxy = getDatasetOfPatch(patchIndex, nullValue, datasetPath);
+	cannotBePartial();
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
+	}
 
-	hdfProxy->readArrayNdOfFloatValues(datasetPath, values);
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+		auto const* xmlArrayOfDouble = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractDoubleArray const*>(patch->Values);
+		if (xmlArrayOfDouble != nullptr) {
+			readArrayNdOfFloatValues(xmlArrayOfDouble, values);
+			return;
+		}
+		else {
+			throw logic_error("Reading float values from a non double array is not supported.");
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		auto const* xmlArrayOfFloatingPoints = dynamic_cast<gsoap_eml2_3::eml23__AbstractFloatingPointArray const*>(xmlValues);
+		if (xmlArrayOfFloatingPoints != nullptr) {
+			readArrayNdOfFloatValues(xmlArrayOfFloatingPoints, values);
+			return;
+		}
+		else {
+			throw logic_error("Reading float values from a non floating point array is not supported.");
+		}
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
 }
 
 void AbstractValuesProperty::getFloatValuesOfPatch(

@@ -42,7 +42,20 @@ set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 # hdf5
-FIND_PACKAGE (HDF5 1.8.18 REQUIRED COMPONENTS C)
+set (WITH_LOCAL_HDF5 OFF CACHE BOOL "Also builds and installs an example executable which allows to serialize and deserialize a basic EPC document.")
+IF(WITH_LOCAL_HDF5)
+	set (HDF5_INCLUDE_DIRS HDF5_INCLUDE_DIRS-NOTFOUND CACHE PATH "Path to the directory which contains the hdf5 header files")	
+	IF (NOT IS_DIRECTORY ${HDF5_INCLUDE_DIRS})
+		MESSAGE(WARNING "The HDF5 include dir (HDF5_INCLUDE_DIRS variable) does not look to be a valid directory. Please modify it.")
+	ENDIF ()
+	set (HDF5_LIBRARIES HDF5_LIBRARIES-NOTFOUND CACHE FILEPATH "Path to the file which contains the hdf5 library")
+	IF (NOT EXISTS ${HDF5_LIBRARIES})
+		MESSAGE(WARNING "The HDF5 library (HDF5_LIBRARIES variable) does not look to be a valid file. Please modify it.")
+	ENDIF ()
+	set(HDF5_VERSION "99.99")
+ELSE()
+	FIND_PACKAGE (HDF5 1.8.18 REQUIRED COMPONENTS C)
+ENDIF()
 
 # Zlib
 FIND_PACKAGE (ZLIB)

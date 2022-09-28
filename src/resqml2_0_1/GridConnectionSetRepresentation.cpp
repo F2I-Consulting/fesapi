@@ -136,33 +136,27 @@ bool GridConnectionSetRepresentation::isAssociatedToInterpretations() const
 	return static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->ConnectionInterpretations != nullptr;
 }
 
-void GridConnectionSetRepresentation::getInterpretationIndexCumulativeCount(unsigned int * cumulativeCount) const
+void GridConnectionSetRepresentation::getInterpretationIndexCumulativeCount(uint64_t * cumulativeCount) const
 {
 	if (isAssociatedToInterpretations()) {		
 		_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
-		if (rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-			eml20__Hdf5Dataset* dataset =  static_cast<resqml20__IntegerHdf5Array*>(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength)->Values;
-			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID)->readArrayNdOfUIntValues(dataset->PathInHdfFile, cumulativeCount);
-		}
-		else {
-			throw std::logic_error("Not implemented yet");
-		}
+		readArrayNdOfUInt64Values(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength, cumulativeCount);
 	}
 	else {
 		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");
 	}
 }
 
-void GridConnectionSetRepresentation::getInterpretationIndices(unsigned int * interpretationIndices) const
+void GridConnectionSetRepresentation::getInterpretationIndices(int64_t * interpretationIndices) const
 {
 	if (isAssociatedToInterpretations()) {
 		_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
-		if (rep->ConnectionInterpretations->InterpretationIndices->Elements->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-			eml20__Hdf5Dataset* dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->ConnectionInterpretations->InterpretationIndices->Elements)->Values;
-			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID)->readArrayNdOfUIntValues(dataset->PathInHdfFile, interpretationIndices);
+		auto const* integerArray = dynamic_cast<resqml20__AbstractIntegerArray const*>(rep->ConnectionInterpretations->InterpretationIndices->Elements);
+		if (integerArray != nullptr) {
+			readArrayNdOfInt64Values(integerArray, interpretationIndices);
 		}
 		else {
-			throw std::logic_error("Not implemented yet");
+			throw std::logic_error("The interpretation indices array should be an integer one.");
 		}
 	}
 	else {
@@ -178,7 +172,7 @@ int64_t GridConnectionSetRepresentation::getInterpretationIndexNullValue() const
 			return static_cast<resqml20__IntegerHdf5Array*>(rep->ConnectionInterpretations->InterpretationIndices->Elements)->NullValue;
 		}
 		else {
-			throw std::logic_error("Not implemented yet");
+			return -1; // this value cannot be used since it should only be indices.
 		}
 	}
 	else {
@@ -191,7 +185,7 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCount() const
 	return static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->Count;
 }
 
-uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretationIndex(int interpretationIndex) const
+uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretationIndex(int64_t interpretationIndex) const
 {
 	const unsigned int interpCount = getInterpretationCount();
 	if (interpretationIndex < -1 || interpretationIndex >= static_cast<int>(interpCount)) {
@@ -219,7 +213,8 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretatio
 	}
 	else
 	{
-		if (rep->ConnectionInterpretations->InterpretationIndices->Elements->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
+		long arrayType = rep->ConnectionInterpretations->InterpretationIndices->Elements->soap_type();
+		if (arrayType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
 		{
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->ConnectionInterpretations->InterpretationIndices->Elements)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
@@ -227,24 +222,31 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretatio
 			if (faultIndexCount < 0) {
 				throw invalid_argument("The HDF5 library could not read the element count of this dataset.");
 			}
-			std::unique_ptr<unsigned int[]> const faultIndices(new unsigned int[static_cast<size_t>(faultIndexCount)]);
+			std::unique_ptr<int64_t[]> const faultIndices(new int64_t[static_cast<size_t>(faultIndexCount)]);
 
-			hdfProxy->readArrayNdOfUIntValues(dataset->PathInHdfFile, faultIndices.get());
+			hdfProxy->readArrayNdOfInt64Values(dataset->PathInHdfFile, faultIndices.get());
 			for (size_t i = 0; i < static_cast<size_t>(faultIndexCount); ++i) {
-				if (faultIndices[i] == static_cast<unsigned int>(interpretationIndex)) {
+				if (faultIndices[i] == interpretationIndex) {
 					result++;
 				}
 			}
 		}
+		else if (arrayType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray)
+		{
+			resqml20__IntegerConstantArray const * constantArray = static_cast<resqml20__IntegerConstantArray const*>(rep->ConnectionInterpretations->InterpretationIndices->Elements);
+			return constantArray->Value == interpretationIndex
+				? constantArray->Count
+				: 0;
+		}
 		else {
-			throw std::logic_error("Not implemented yet");
+			throw std::logic_error("Interpretation indices: only constant or HDF5 arrays are supported for now");
 		}
 	}
 
 	return result;
 }
 
-void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, int interpretationIndex) const
+void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, int64_t interpretationIndex) const
 {
 	const unsigned int interpCount = getInterpretationCount();
 	if (interpretationIndex < -1 || interpretationIndex >= static_cast<int>(interpCount)) {
@@ -308,14 +310,24 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 	}
 	else
 	{
-		std::unique_ptr<unsigned int[]> faultIndices;
-		if (rep->ConnectionInterpretations->InterpretationIndices->Elements->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-			faultIndices.reset(new unsigned int[cumulativeCount[totalCellIndexPairCount-1]]);
+		long arrayType = rep->ConnectionInterpretations->InterpretationIndices->Elements->soap_type();
+		std::unique_ptr<int64_t[]> faultIndices;
+		if (arrayType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+			faultIndices.reset(new int64_t[cumulativeCount[totalCellIndexPairCount-1]]);
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->ConnectionInterpretations->InterpretationIndices->Elements)->Values;
-			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID)->readArrayNdOfUIntValues(dataset->PathInHdfFile, faultIndices.get());
+			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID)->readArrayNdOfInt64Values(dataset->PathInHdfFile, faultIndices.get());
+		}
+		else if (arrayType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray)
+		{
+			resqml20__IntegerConstantArray const * constantArray = static_cast<resqml20__IntegerConstantArray const*>(rep->ConnectionInterpretations->InterpretationIndices->Elements);
+			if (constantArray->Value != interpretationIndex) {
+				throw std::invalid_argument("There is no GridConnectionSet Information for the interpretation at index " + std::to_string(interpretationIndex));
+			}
+			faultIndices.reset(new int64_t[constantArray->Count]);
+			std::fill_n(faultIndices.get(), constantArray->Count, constantArray->Value);
 		}
 		else {
-			throw std::logic_error("Not yet implemented");
+			throw std::logic_error("Interpretation indices: only constant or HDF5 arrays are supported for now");
 		}
 
 		// Based on the fault indices information, construct the required subset of information
@@ -323,7 +335,7 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 		unsigned int j = 0;
 		for (uint64_t i = 0; i < totalCellIndexPairCount; ++i) {
 			for (; j < cumulativeCount[i]; ++j) {
-				if (faultIndices[j] == static_cast<unsigned int>(interpretationIndex)) {
+				if (faultIndices[j] == interpretationIndex) {
 					cellIndexPairs[cellIndexPairIndex*2] = totalCellIndexPairs[i*2];
 					cellIndexPairs[cellIndexPairIndex*2+1] = totalCellIndexPairs[i*2+1];
 					if (gridIndexPairs != nullptr) {
@@ -341,7 +353,7 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 	}
 }
 
-COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getInterpretationDorFromIndex(unsigned int interpretationIndex) const
+COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getInterpretationDorFromIndex(int64_t interpretationIndex) const
 {
 	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
@@ -363,32 +375,25 @@ COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getInterpretatio
 	}
 }
 
-unsigned int GridConnectionSetRepresentation::getInterpretationCount() const
+uint64_t GridConnectionSetRepresentation::getInterpretationCount() const
 {
 	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
-	if (rep->ConnectionInterpretations != nullptr) {
-		const size_t result = rep->ConnectionInterpretations->FeatureInterpretation.size();
-
-		if (result > (numeric_limits<unsigned int>::max)()) {
-			throw range_error("There are too many associated interpretations.");
-		}
-
-		return static_cast<unsigned int>(result);
-	}
-
-	return 0;
+	return rep->ConnectionInterpretations != nullptr
+		? rep->ConnectionInterpretations->FeatureInterpretation.size()
+		: 0;
 }
 
 int64_t GridConnectionSetRepresentation::getCellIndexPairs(int64_t * cellIndexPairs) const
 {
 	_resqml20__GridConnectionSetRepresentation const* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
-	readArrayNdOfInt64Values(rep->CellIndexPairs, cellIndexPairs);
-	return static_cast<resqml20__IntegerHdf5Array*>(rep->CellIndexPairs)->NullValue;
+	return readArrayNdOfInt64Values(rep->CellIndexPairs, cellIndexPairs);
 }
 
 bool GridConnectionSetRepresentation::isBasedOnMultiGrids() const 
 {
+	cannotBePartial();
+
 	return static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->GridIndexPairs != nullptr && 
 		static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->Grid.size() > 1;
 }
@@ -408,22 +413,12 @@ bool GridConnectionSetRepresentation::hasLocalFacePerCell() const
 	return static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->LocalFacePerCellIndexPairs != nullptr;
 }
 
-int64_t GridConnectionSetRepresentation::getLocalFacePerCellIndexPairs(int * localFaceCellIndexPairs) const
+int64_t GridConnectionSetRepresentation::getLocalFacePerCellIndexPairs(int* localFaceCellIndexPairs) const
 {
 	if (!hasLocalFacePerCell()) {
 		throw std::invalid_argument("This representation has no local face per cell.");
 	}
-
-	_resqml20__GridConnectionSetRepresentation const* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
-
-	if (rep->LocalFacePerCellIndexPairs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->LocalFacePerCellIndexPairs)->Values;
-		getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID)->readArrayNdOfIntValues(dataset->PathInHdfFile, localFaceCellIndexPairs);
-		return static_cast<resqml20__IntegerHdf5Array*>(rep->LocalFacePerCellIndexPairs)->NullValue;
-	}
-	else {
-		throw std::logic_error("Not implemented yet");
-	}
+	return readArrayNdOfInt32Values(static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->LocalFacePerCellIndexPairs, localFaceCellIndexPairs);
 }
 
 void GridConnectionSetRepresentation::pushBackXmlSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep)
@@ -431,8 +426,8 @@ void GridConnectionSetRepresentation::pushBackXmlSupportingGridRepresentation(RE
 	static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->Grid.push_back(supportingGridRep->newResqmlReference());
 }
 
-// TODO: Resqml allows to map with more than one feature interpretation.
-void GridConnectionSetRepresentation::setConnectionInterpretationIndices(unsigned int const* cumulativeInterpCount, unsigned int const* interpIndices, EML2_NS::AbstractHdfProxy * proxy)
+// TODO: RESQML allows to map with more than one feature interpretation.
+void GridConnectionSetRepresentation::setConnectionInterpretationIndices(uint64_t const* cumulativeInterpCount, int64_t const* interpIndices, EML2_NS::AbstractHdfProxy * proxy)
 {
 	getRepository()->addRelationship(this, proxy);
 
@@ -463,8 +458,53 @@ void GridConnectionSetRepresentation::setConnectionInterpretationIndices(unsigne
 		throw logic_error("You must set the cell index pairs before to set the connection interpretations.");
 	}
 	proxy->writeItemizedListOfList(getHdfGroup(), "InterpretationIndices",
-		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, cumulativeInterpCount, cellIndexPairCount,
-		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, interpIndices, cumulativeInterpCount[cellIndexPairCount-1]);
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, cumulativeInterpCount, cellIndexPairCount,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, interpIndices, cumulativeInterpCount[cellIndexPairCount-1]);
+}
+
+void GridConnectionSetRepresentation::setInterpretationForAllConnections(RESQML2_NS::AbstractFeatureInterpretation* interp, EML2_NS::AbstractHdfProxy * proxy)
+{
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+	getRepository()->addRelationship(this, proxy);
+
+	const uint64_t cellIndexPairCount = getCellIndexPairCount();
+	if (cellIndexPairCount == 0) {
+		throw logic_error("You must set the cell index pairs before to set the connection interpretations.");
+	}
+
+	pushBackInterpretation(interp);
+
+	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
+	if (rep->ConnectionInterpretations == nullptr) {
+		rep->ConnectionInterpretations = soap_new_resqml20__ConnectionInterpretations(gsoapProxy2_0_1->soap);
+	}
+	rep->ConnectionInterpretations->InterpretationIndices = soap_new_resqml20__ResqmlJaggedArray(gsoapProxy2_0_1->soap);
+
+	// Cumulative
+	resqml20__IntegerHdf5Array* cumulativeLength = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
+	rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength = cumulativeLength;
+	cumulativeLength->NullValue = -1;
+	cumulativeLength->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
+	cumulativeLength->Values->HdfProxy = proxy->newResqmlReference();
+	cumulativeLength->Values->PathInHdfFile = getHdfGroup() + "/InterpretationIndicesCumulativeLength";
+	// Elements
+	resqml20__IntegerConstantArray* elements = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap);
+	rep->ConnectionInterpretations->InterpretationIndices->Elements = elements;
+	elements->Value = 0;
+	elements->Count = cellIndexPairCount;
+
+	// HDF
+	std::unique_ptr<uint32_t[]> const cumulative(new uint32_t[cellIndexPairCount]);
+	for (size_t i = 0; i < cellIndexPairCount; ++i) {
+		cumulative[i] = i + 1;
+	}
+	hsize_t numValueInEachDim = cellIndexPairCount;
+	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, cumulative.get(), &numValueInEachDim, 1);
 }
 
 void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::AbstractFeatureInterpretation* interp)

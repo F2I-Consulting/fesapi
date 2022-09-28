@@ -671,7 +671,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 			proxy->loadTargetRelationships();
 		}
 		catch (const std::exception& ex) {
-			addWarning("The dataobject UUID=\"" + proxy->getUuid() + "\" has got a relationship towards an unrecognized datatype, it will be considered as a partial (i.e empty) dataobject : " + ex.what());
+			addWarning("The " + proxy->getXmlTag() + " UUID=\"" + proxy->getUuid() + "\" has got a relationship towards an unrecognized datatype, it will be considered as a partial (i.e empty) dataobject : " + ex.what());
 			proxy->changeToPartialObject();
 		}
 	}
@@ -1023,7 +1023,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreTrajectoryRepresentation)
-		else if (dataType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG) == 0) {
+		else if (dataType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG) == 0 ||
+			dataType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG_TRUNCATED) == 0) {
 			if (getDataObjectByUuid(uuid) != nullptr) {
 				throw std::invalid_argument("You cannot create a partial dataobject " + uuid + " which already exists in the repository.");
 			}
@@ -1036,7 +1037,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 				dor->VersionString->assign(version);
 			}
 			dor->ContentType = contentType;
-			RESQML2_NS::AbstractIjkGridRepresentation* result = new RESQML2_NS::AbstractIjkGridRepresentation(dor);
+			RESQML2_NS::AbstractIjkGridRepresentation* result = new RESQML2_NS::AbstractIjkGridRepresentation(dor, dataType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG_TRUNCATED) == 0);
 			addDataObject(result);
 			return result;
 		}
@@ -1105,7 +1106,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::WellboreFrameRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::WellboreInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::WellboreTrajectoryRepresentation)
-		else if (dataType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG) == 0) {
+		else if (dataType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG) == 0 ||
+			dataType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG_TRUNCATED) == 0) {
 			if (getDataObjectByUuid(uuid) != nullptr) {
 				throw std::invalid_argument("You cannot create a partial dataobject " + uuid + " which already exists in the repository.");
 			}
@@ -1118,7 +1120,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 				dor->VersionString->assign(version);
 			}
 			dor->ContentType = contentType;
-			RESQML2_NS::AbstractIjkGridRepresentation* result = new RESQML2_NS::AbstractIjkGridRepresentation(dor);
+			RESQML2_NS::AbstractIjkGridRepresentation* result = new RESQML2_NS::AbstractIjkGridRepresentation(dor, dataType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG_TRUNCATED) == 0);
 			addDataObject(result);
 			return result;
 		}
@@ -1144,7 +1146,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	}
 #endif
 
-	throw invalid_argument("The content type " + contentType + " of the partial object to create has not been recognized by fesapi.");
+	throw invalid_argument("The content type \"" + contentType + "\" of the partial object UUID=\"" + uuid + "\" to create has not been recognized by FESAPI.");
 }
 
 //************************************

@@ -96,10 +96,14 @@ void GridConnectionSetRepresentation::setCellIndexPairs(uint64_t cellIndexPairCo
 	setCellIndexPairsUsingExistingDataset(cellIndexPairCount, getHdfGroup() + "/CellIndexPairs", cellIndexPairNullValue, proxy, gridIndexPairNullValue, gridIndexPair != nullptr ? getHdfGroup() + "/GridIndexPairs" : "");
 }
 
-void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(uint64_t cellIndexPairCount, int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy)
+void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (gsoapProxy2_0_1 != nullptr && nullValue != -1) {
 		throw invalid_argument("The null value must be -1 in RESQML2.0.1");
+	}
+	const hsize_t cellIndexPairCount = getCellIndexPairCount();
+	if (cellIndexPairCount == 0) {
+		throw logic_error("You must set some cell connections before to set local face connections");
 	}
 
 	if (proxy == nullptr) {
@@ -110,7 +114,7 @@ void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(uint64_t cel
 	}
 
 	// ************ HDF ************		
-	hsize_t numValues[2] = { cellIndexPairCount,2 };
+	hsize_t numValues[2] = { cellIndexPairCount, 2 };
 	proxy->writeArrayNd(getHdfGroup(), "LocalFacePerCellIndexPairs", COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32, localFacePerCellIndexPair, numValues, 2);
 
 	setLocalFacePerCellIndexPairsUsingExistingDataset(getHdfGroup() + "/LocalFacePerCellIndexPairs", nullValue, proxy);
@@ -126,7 +130,7 @@ void GridConnectionSetRepresentation::getXyzPointsOfPatch(uint64_t, double *) co
 	throw logic_error("Not implemented yet");
 }
 
-AbstractFeatureInterpretation * GridConnectionSetRepresentation::getInterpretationFromIndex(unsigned int interpretationIndex) const
+AbstractFeatureInterpretation * GridConnectionSetRepresentation::getInterpretationFromIndex(int64_t interpretationIndex) const
 {
 	return repository->getDataObjectByUuid<AbstractFeatureInterpretation>(getInterpretationUuidFromIndex(interpretationIndex));
 }

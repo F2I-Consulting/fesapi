@@ -56,18 +56,12 @@ void AbstractTest::deserialize() {
 
 	std::string validationResult = epcDocument.deserializeInto(*repo);
 	if (!validationResult.empty()) {
-		cerr << "Validation error: " << validationResult << endl;
+		cout << "EPC document " << epcDocument.getName() << ".epc deserialized with warnings" << endl;
+		cout << validationResult << endl;
 	}
 	//REQUIRE( validationResult.empty() );
 
-	std::vector<std::string> warningSet = repo->getWarnings();
-	if (!warningSet.empty()) {
-		cout << "EPC document " << epcDocument.getName() << ".epc deserialized with " << warningSet.size() << " warning(s)" << endl;
-		for (size_t i=0; i < warningSet.size(); ++i){
-			cout << "Warning " << i+1 << ": " << warningSet[i] << endl;
-		}
-		cout << endl;
-	}
+	REQUIRE( repo->getHdfProxySet().size() == 1 );
 
 	readRepo();
 	epcDocument.close();
