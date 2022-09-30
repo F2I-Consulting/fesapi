@@ -322,7 +322,7 @@ void UnstructuredGridRepresentation::getCellFaceIsRightHanded(unsigned char* cel
   {
 	  eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(grid->Geometry->CellFaceIsRightHanded)->Values;
 	  EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-	  hdfProxy->readArrayNdOfUCharValues(dataset->PathInHdfFile, cellFaceIsRightHanded);
+	  hdfProxy->readArrayNdOfUInt8Values(dataset->PathInHdfFile, cellFaceIsRightHanded);
   }
   else if (grid->Geometry->CellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray) {
 	  for (size_t i = 0; i < static_cast<resqml20__BooleanConstantArray*>(grid->Geometry->CellFaceIsRightHanded)->Count; ++i) {

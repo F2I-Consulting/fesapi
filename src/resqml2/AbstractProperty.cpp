@@ -525,35 +525,14 @@ gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind AbstractProperty::getEnergistics
 	throw invalid_argument("The property kind of this property is not an Energistics one.");
 }
 
-unsigned int AbstractProperty::getValuesCountOfPatch(unsigned int patchIndex) const
-{
-	int64_t nullValue = (numeric_limits<int64_t>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
-
-	std::vector<hsize_t> dims = hdfProxy->getElementCountPerDimension(dsPath);
-
-	if (dimIndex < dims.size()) {
-		return dims[dimIndex];
-	}
-
-	throw out_of_range("The dim index to get the count is out of range.");
-}
-
-uint64_t AbstractProperty::getDimensionsCountOfPatch(uint64_t patchIndex) const
-{
-	int64_t nullValue = (numeric_limits<int64_t>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
-
-	return hdfProxy->getDimensionCount(dsPath);
-}
-
 int64_t AbstractProperty::getValuesCountOfPatch(uint64_t patchIndex) const
 {
-	int64_t nullValue = (numeric_limits<int64_t>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
+	unsigned int result = 1;
 
-	return hdfProxy->getElementCount(dsPath);
+	uint64_t dimCount = getDimensionsCountOfPatch(patchIndex);
+	for (uint64_t dimIndex = 0; dimIndex < dimCount; ++dimIndex) {
+		result *= getValuesCountOfDimensionOfPatch(dimIndex, patchIndex);
+	}
+
+	return result;
 }

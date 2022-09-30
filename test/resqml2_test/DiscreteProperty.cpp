@@ -88,8 +88,7 @@ void DiscreteProperty::initRepo() {
 	// creating Constant Integer prop
 	RESQML2_NS::DiscreteProperty* constantIntegerProperty = repo->createDiscreteProperty(
 		ijkGrid, "d6896172-795c-46be-bdd1-f9f9ed42f1f0", "Constant Integer Property",
-		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	constantIntegerProperty->pushBackIntegerConstantArrayOfValues(10, 3);
 }

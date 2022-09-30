@@ -106,7 +106,7 @@ namespace RESQML2_2_NS
 		std::pair<uint64_t, uint64_t> loadedShell_ = std::make_pair((std::numeric_limits<uint64_t>::max)(), (std::numeric_limits<uint64_t>::max)());
 		std::unique_ptr<unsigned int[]> faceRepresentationIndices_;
 		std::unique_ptr<unsigned int[]> faceRepPatchIndices_;
-		std::unique_ptr<char[]> faceSide_;
+		std::unique_ptr<int8_t[]> faceSide_;
 
 		/**
 		* internalShellIndex = (std::numeric_limits<unsigned int>::max)() means that we load the external shell

@@ -76,7 +76,7 @@ COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getHdfProxyDor()
 		return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(rep->CellIndexPairs)->Values->ExternalDataArrayPart[0]));
 	}
 
-	throw std::logic_error("Not implemented yet");
+	return COMMON_NS::DataObjectReference();
 }
 
 void GridConnectionSetRepresentation::setCellIndexPairsUsingExistingDataset(uint64_t cellIndexPairCount, const std::string & cellIndexPair, int64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, int64_t gridIndexPairNullValue, const std::string & gridIndexPair)
@@ -192,8 +192,8 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCount() const
 
 uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretationIndex(int64_t interpretationIndex) const
 {
-	const unsigned int interpCount = getInterpretationCount();
-	if (interpretationIndex < -1 || interpretationIndex >= static_cast<int>(interpCount)) {
+	const uint64_t interpCount = getInterpretationCount();
+	if (interpretationIndex < -1 || interpretationIndex >= static_cast<int64_t>(interpCount)) {
 		throw out_of_range("The interpretation index is out of range.");
 	}
 
@@ -253,8 +253,8 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretatio
 
 void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, int64_t interpretationIndex) const
 {
-	const unsigned int interpCount = getInterpretationCount();
-	if (interpretationIndex < -1 || interpretationIndex >= static_cast<int>(interpCount)) {
+	const uint64_t interpCount = getInterpretationCount();
+	if (interpretationIndex < -1 || interpretationIndex >= static_cast<int64_t>(interpCount)) {
 		throw out_of_range("The interpretation index is out of range.");
 	}
 
@@ -315,32 +315,22 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 	}
 	else
 	{
-		long arrayType = rep->ConnectionInterpretations->InterpretationIndices->Elements->soap_type();
-		std::unique_ptr<int64_t[]> faultIndices;
-		if (arrayType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			faultIndices.reset(new int64_t[cumulativeCount[totalCellIndexPairCount-1]]);
-			eml23__ExternalDatasetPart* dsPart = static_cast<eml23__IntegerExternalArray*>(rep->ConnectionInterpretations->InterpretationIndices->Elements)->Values->ExternalFileProxy[0];
-			getHdfProxyFromDataset(dsPart)->readArrayNdOfInt64Values(dsPart->PathInExternalFile, faultIndices.get());
-		}
-		else if (arrayType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray)
-		{
-			eml23__IntegerConstantArray const * constantArray = static_cast<eml23__IntegerConstantArray const*>(rep->ConnectionInterpretations->InterpretationIndices->Elements);
-			if (constantArray->Value != interpretationIndex) {
-				throw std::invalid_argument("There is no GridConnectionSet Information for the interpretation at index " + std::to_string(interpretationIndex));
-			}
-			faultIndices.reset(new int64_t[constantArray->Count]);
-			std::fill_n(faultIndices.get(), constantArray->Count, constantArray->Value);
+		auto const* xmlArray = rep->ConnectionInterpretations->InterpretationIndices->Elements;
+		std::unique_ptr<int64_t[]> faultIndices(new int64_t[getCountOfArray(xmlArray)]);
+		eml23__AbstractIntegerArray const* xmlIntArray = dynamic_cast<eml23__AbstractIntegerArray const*>(xmlArray);
+		if (xmlIntArray != nullptr) {
+			readArrayNdOfInt64Values(xmlIntArray, faultIndices.get());
 		}
 		else {
-			throw std::logic_error("Interpretation indices: only constant or HDF5 arrays are supported for now");
+			throw std::logic_error("Interpretation indices: only integer arrays are supported for now");
 		}
 
 		// Based on the fault indices information, construct the required subset of information
 		size_t cellIndexPairIndex = 0;
 		unsigned int j = 0;
-		for (unsigned int i = 0; i < totalCellIndexPairCount; ++i) {
+		for (uint64_t i = 0; i < totalCellIndexPairCount; ++i) {
 			for (; j < cumulativeCount[i]; ++j) {
-				if (faultIndices[j] == static_cast<unsigned int>(interpretationIndex)) {
+				if (faultIndices[j] == interpretationIndex) {
 					cellIndexPairs[cellIndexPairIndex*2] = totalCellIndexPairs[i*2];
 					cellIndexPairs[cellIndexPairIndex*2+1] = totalCellIndexPairs[i*2+1];
 					if (gridIndexPairs != nullptr) {
@@ -358,7 +348,7 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 	}
 }
 
-COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getInterpretationDorFromIndex(int64_t interpretationIndex) const
+COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getInterpretationDorFromIndex(uint64_t interpretationIndex) const
 {
 	_resqml22__GridConnectionSetRepresentation* rep = static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3);
 
@@ -490,11 +480,8 @@ void GridConnectionSetRepresentation::setInterpretationForAllConnections(RESQML2
 	eml23__IntegerExternalArray* cumulativeLength = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength = cumulativeLength;
 	cumulativeLength->NullValue = -1;
-	cumulativeLength->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/InterpretationIndicesCumulativeLength";
-	cumulativeLength->Values->ExternalFileProxy.push_back(dsPart);
+	cumulativeLength->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	cumulativeLength->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/InterpretationIndicesCumulativeLength", cellIndexPairCount));
 	// Elements
 	eml23__IntegerConstantArray* elements = soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap);
 	rep->ConnectionInterpretations->InterpretationIndices->Elements = elements;
@@ -502,12 +489,12 @@ void GridConnectionSetRepresentation::setInterpretationForAllConnections(RESQML2
 	elements->Count = cellIndexPairCount;
 
 	// HDF
-	std::unique_ptr<uint32_t[]> const cumulative(new uint32_t[cellIndexPairCount]);
-	for (size_t i = 0; i < cellIndexPairCount; ++i) {
+	std::unique_ptr<uint64_t[]> const cumulative(new uint64_t[cellIndexPairCount]);
+	for (uint64_t i = 0; i < cellIndexPairCount; ++i) {
 		cumulative[i] = i + 1;
 	}
 	hsize_t numValueInEachDim = cellIndexPairCount;
-	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, cumulative.get(), &numValueInEachDim, 1);
+	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, cumulative.get(), &numValueInEachDim, 1);
 }
 
 void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::AbstractFeatureInterpretation* interp)
@@ -520,18 +507,12 @@ void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::Abst
 	rep->ConnectionInterpretations->FeatureInterpretation.push_back(interp->newEml23Reference());
 }
 
-unsigned int GridConnectionSetRepresentation::getSupportingGridRepresentationCount() const
+uint64_t GridConnectionSetRepresentation::getSupportingGridRepresentationCount() const
 {
-	const size_t result = static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3)->Grid.size();
-
-	if (result > (numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too many supporting grid representations.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3)->Grid.size();
 }
 
-COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getSupportingGridRepresentationDor(unsigned int index) const
+COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getSupportingGridRepresentationDor(uint64_t index) const
 {
 	_resqml22__GridConnectionSetRepresentation* rep = static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3);
 

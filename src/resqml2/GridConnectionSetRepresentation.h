@@ -185,7 +185,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The UUID of the (fault) interpretation at index @p interpretationIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getInterpretationUuidFromIndex(unsigned int interpretationIndex) const {
+		DLL_IMPORT_OR_EXPORT std::string getInterpretationUuidFromIndex(uint64_t interpretationIndex) const {
 			return getInterpretationDorFromIndex(interpretationIndex).getUuid();
 		}
 
@@ -204,7 +204,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the (fault) interpretation at index @p interpretationIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getInterpretationDorFromIndex(int64_t interpretationIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getInterpretationDorFromIndex(uint64_t interpretationIndex) const = 0;
 
 		/**
 		 * Gets a particular (fault) interpretation of this grid connection set.
@@ -221,7 +221,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The (fault) interpretation at index @p interpretationIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT class AbstractFeatureInterpretation* getInterpretationFromIndex(int64_t interpretationIndex) const;
+		DLL_IMPORT_OR_EXPORT class AbstractFeatureInterpretation* getInterpretationFromIndex(uint64_t interpretationIndex) const;
 
 		/**
 		 * Get the count of interpretations in this grid connection set.
@@ -449,7 +449,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The supporting grid representation count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getSupportingGridRepresentationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getSupportingGridRepresentationCount() const = 0;
 
 		/**
 		 * Gets the supporting grid representation located at a specific index of this grid connection set
@@ -461,7 +461,7 @@ namespace RESQML2_NS
 		 * 
 		 * @returns The supporting grid representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT class AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT class AbstractGridRepresentation* getSupportingGridRepresentation(uint64_t index) const;
 
 		/**
 		 * Gets the data object reference of the supporting grid representation located at a specific
@@ -473,7 +473,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The data object reference of the supporting grid representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(uint64_t index) const = 0;
 
 		/** Please do note use: not implemented yet. */
 		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const override;

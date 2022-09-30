@@ -57,8 +57,8 @@ BlockedWellboreRepresentation::BlockedWellboreRepresentation(RESQML2_NS::Wellbor
 	}
 }
 
-void BlockedWellboreRepresentation::setIntervalGridCells(char const* gridIndices, char gridIndicesNullValue, int64_t const* cellIndices,
-	char const* localFacePairPerCellIndices, char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy)
+void BlockedWellboreRepresentation::setIntervalGridCells(int8_t const* gridIndices, int8_t gridIndicesNullValue, int64_t const* cellIndices,
+	int8_t const* localFacePairPerCellIndices, int8_t localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy)
 {
 	// Preconditions
 	if (getXyzPointCountOfAllPatches() == 0) {
@@ -144,81 +144,22 @@ uint64_t BlockedWellboreRepresentation::getCellCount() const
 	return static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->CellCount;
 }
 
-char BlockedWellboreRepresentation::getGridIndices(char * gridIndices) const
+int8_t BlockedWellboreRepresentation::getGridIndices(int8_t * gridIndices) const
 {
-	auto xmlGridIndices = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->GridIndices;
-
-	if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		eml23__ExternalDataArrayPart const * daPart = static_cast<eml23__IntegerExternalArray*>(xmlGridIndices)->Values->ExternalDataArrayPart[0];
-		getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfCharValues(daPart->PathInExternalFile, gridIndices);
-
-		const LONG64 nullValue = static_cast<eml23__IntegerExternalArray*>(xmlGridIndices)->NullValue;
-		if (nullValue < (std::numeric_limits<char>::lowest)() || nullValue >(std::numeric_limits<char>::max)()) {
-			throw range_error("The null value is not in the char range");
-		}
-
-		return static_cast<char>(nullValue);
-	}
-	else if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
-		const int64_t constantXmlValue = static_cast<eml23__IntegerConstantArray*>(xmlGridIndices)->Value;
-		if (constantXmlValue > (std::numeric_limits<char>::max)()) {
-			throw std::range_error("The constant value is strictly superior than char maximum value.");
-		}
-		std::fill_n(gridIndices, getMdValuesCount() - 1, static_cast<char>(constantXmlValue));
-	}
-	else {
-		throw std::logic_error("Not implemented yet");
-	}
-
-	return (numeric_limits<char>::max)();
+	auto const* xmlGridIndices = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->GridIndices;
+	return readArrayNdOfInt8Values(xmlGridIndices, gridIndices);
 }
 
 int64_t BlockedWellboreRepresentation::getCellIndices(int64_t* cellIndices) const
 {
-	auto xmlCellIndices = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->CellIndices;
-
-	if (xmlCellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		eml23__ExternalDataArrayPart const* dsPart = static_cast<eml23__IntegerExternalArray*>(xmlCellIndices)->Values->ExternalDataArrayPart[0];
-		getOrCreateHdfProxyFromDataArrayPart(dsPart)->readArrayNdOfInt64Values(dsPart->PathInExternalFile, cellIndices);
-		return static_cast<eml23__IntegerExternalArray*>(xmlCellIndices)->NullValue;
-	}
-	else if (xmlCellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
-		std::fill_n(cellIndices, getMdValuesCount() - 1, static_cast<eml23__IntegerConstantArray*>(xmlCellIndices)->Value);
-	}
-	else {
-		throw std::logic_error("Not implemented yet");
-	}
-
-	return (numeric_limits<int64_t>::max)();
+	auto const* xmlCellIndices = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->CellIndices;
+	return readArrayNdOfInt64Values(xmlCellIndices, cellIndices);
 }
 
-char BlockedWellboreRepresentation::getLocalFacePairPerCellIndices(char* localFacePairPerCellIndices) const
+int8_t BlockedWellboreRepresentation::getLocalFacePairPerCellIndices(int8_t* localFacePairPerCellIndices) const
 {
-	auto xmlLocalFacePairPerCellIndices = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->LocalFacePairPerCellIndices;
-
-	if (xmlLocalFacePairPerCellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		eml23__ExternalDataArrayPart const* dsPart = static_cast<eml23__IntegerExternalArray*>(xmlLocalFacePairPerCellIndices)->Values->ExternalDataArrayPart[0];
-		getOrCreateHdfProxyFromDataArrayPart(dsPart)->readArrayNdOfCharValues(dsPart->PathInExternalFile, localFacePairPerCellIndices);
-
-		const LONG64 nullValue = static_cast<eml23__IntegerExternalArray*>(xmlLocalFacePairPerCellIndices)->NullValue;
-		if (nullValue < (std::numeric_limits<char>::lowest)() || nullValue >(std::numeric_limits<char>::max)()) {
-			throw range_error("The null value is not in the char range");
-		}
-
-		return static_cast<char>(nullValue);
-	}
-	else if (xmlLocalFacePairPerCellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
-		const int64_t constantXmlValue = static_cast<eml23__IntegerConstantArray*>(xmlLocalFacePairPerCellIndices)->Value;
-		if (constantXmlValue > (std::numeric_limits<char>::max)()) {
-			throw std::range_error("The constant value is strictly superior than char maximum value.");
-		}
-		std::fill_n(localFacePairPerCellIndices, (getMdValuesCount() - 1)*2, static_cast<char>(constantXmlValue));
-	}
-	else {
-		throw std::logic_error("Not implemented yet");
-	}
-
-	return (numeric_limits<char>::max)();
+	auto const* xmlLocalFacePairPerCellIndices = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->LocalFacePairPerCellIndices;
+	return readArrayNdOfInt8Values(xmlLocalFacePairPerCellIndices, localFacePairPerCellIndices);
 }
 
 void BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep)

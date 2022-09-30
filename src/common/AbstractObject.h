@@ -947,7 +947,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint16_t::max
 		 */
-		void readArrayNdOfBooleanValues(gsoap_eml2_3::eml23__BooleanExternalArray const * arrayInput, char * arrayOutput) const;
+		void readArrayNdOfBooleanValues(gsoap_eml2_3::eml23__BooleanExternalArray const * arrayInput, int8_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a

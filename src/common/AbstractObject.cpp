@@ -1231,12 +1231,11 @@ void AbstractObject::readArrayNdOfFloatValues(gsoap_eml2_3::eml23__AbstractFloat
 	switch (arrayInput->soap_type()) {
 	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray:
 	{
-		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
-			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
-			if (hdfProxy == nullptr) {
-				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
-			}
-			hdfProxy->readArrayNdOfFloatValues(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		size_t offset = 0;
+		for (auto* dataArrayPart : static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataArrayPart);
+			hdfProxy->readArrayNdOfFloatValues(dataArrayPart->PathInExternalFile, arrayOutput + offset);
+			offset += std::accumulate(std::begin(dataArrayPart->Count), std::end(dataArrayPart->Count), static_cast<LONG64>(1), std::multiplies<LONG64>());
 		}
 		break;
 	}
@@ -1254,6 +1253,18 @@ void AbstractObject::readArrayNdOfFloatValues(gsoap_eml2_3::eml23__AbstractFloat
 		}
 		for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
 			arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
+		}
+		break;
+	}
+	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointXmlArray:
+	{
+		gsoap_eml2_3::eml23__FloatingPointXmlArray const* xmlArray = static_cast<gsoap_eml2_3::eml23__FloatingPointXmlArray const*>(arrayInput);
+		const std::regex ws_re("\\s+"); // whitespace
+		std::sregex_token_iterator it(xmlArray->Values.begin(), xmlArray->Values.end(), ws_re, -1);
+		std::sregex_token_iterator endToken;
+		size_t index = 0;
+		while (it != endToken) {
+			arrayOutput[index++] = std::stof(*it++);
 		}
 		break;
 	}
@@ -1297,11 +1308,9 @@ void AbstractObject::readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloa
 {
 	switch (arrayInput->soap_type()) {
 	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray:
-	case SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray:
-	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatExternalArray:
 	{
 		size_t offset = 0;
-		for (auto* dataArrayPart : static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(arrayInput)->Values->ExternalDataArrayPart) {
+		for (auto* dataArrayPart : static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart) {
 			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataArrayPart);
 			hdfProxy->readArrayNdOfDoubleValues(dataArrayPart->PathInExternalFile, arrayOutput + offset);
 			offset += std::accumulate(std::begin(dataArrayPart->Count), std::end(dataArrayPart->Count), static_cast<LONG64>(1), std::multiplies<LONG64>());
@@ -1327,7 +1336,7 @@ void AbstractObject::readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloa
 	}
 	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointXmlArray:
 	{
-		gsoap_eml2_3::eml23__FloatingPointXmlArray* xmlArray = static_cast<gsoap_eml2_3::eml23__FloatingPointXmlArray*>(arrayInput);
+		gsoap_eml2_3::eml23__FloatingPointXmlArray const* xmlArray = static_cast<gsoap_eml2_3::eml23__FloatingPointXmlArray const*>(arrayInput);
 		const std::regex ws_re("\\s+"); // whitespace
 		std::sregex_token_iterator it(xmlArray->Values.begin(), xmlArray->Values.end(), ws_re, -1);
 		std::sregex_token_iterator endToken;
@@ -1341,12 +1350,12 @@ void AbstractObject::readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloa
 	}
 }
 
-void AbstractObject::readArrayNdOfBooleanValues(gsoap_eml2_3::eml23__BooleanExternalArray const * arrayInput, char * arrayOutput) const
+void AbstractObject::readArrayNdOfBooleanValues(gsoap_eml2_3::eml23__BooleanExternalArray const * arrayInput, int8_t* arrayOutput) const
 {
 	size_t offset = 0;
 	for (auto const* dataArrayPart : arrayInput->Values->ExternalDataArrayPart) {
 		EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataArrayPart);
-		hdfProxy->readArrayNdOfCharValues(dataArrayPart->PathInExternalFile, arrayOutput + offset);
+		hdfProxy->readArrayNdOfInt8Values(dataArrayPart->PathInExternalFile, arrayOutput + offset);
 		offset += std::accumulate(std::begin(dataArrayPart->Count), std::end(dataArrayPart->Count), static_cast<LONG64>(1), std::multiplies<LONG64>());
 	}
 }
@@ -1359,7 +1368,7 @@ uint8_t AbstractObject::readArrayNdOfUInt8Values(gsoap_resqml2_0_1::resqml20__Ab
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
 		}
-		hdfProxy->readArrayNdOfUCharValues(hdfArray->Values->PathInHdfFile, arrayOutput);
+		hdfProxy->readArrayNdOfUInt8Values(hdfArray->Values->PathInHdfFile, arrayOutput);
 		if (hdfArray->NullValue > (std::numeric_limits<uint8_t>::max)()) {
 			throw range_error("The null value is greater than uint8_t max.");
 		}
@@ -1375,7 +1384,7 @@ uint8_t AbstractObject::readArrayNdOfUInt8Values(gsoap_eml2_3::eml23__AbstractIn
 		size_t offset = 0;
 		for (auto const* dataArrayPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart) {
 			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataArrayPart);
-			hdfProxy->readArrayNdOfUCharValues(dataArrayPart->PathInExternalFile, arrayOutput + offset);
+			hdfProxy->readArrayNdOfUInt8Values(dataArrayPart->PathInExternalFile, arrayOutput + offset);
 			offset += std::accumulate(std::begin(dataArrayPart->Count), std::end(dataArrayPart->Count), static_cast<LONG64>(1), std::multiplies<LONG64>());
 		}
 		if (static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue > (std::numeric_limits<uint8_t>::max)()) {
@@ -1497,25 +1506,24 @@ int8_t AbstractObject::readArrayNdOfInt8Values(gsoap_resqml2_0_1::resqml20__Abst
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
 		}
-		hdfProxy->readArrayNdOfCharValues(hdfArray->Values->PathInHdfFile, (char*)arrayOutput);
+		hdfProxy->readArrayNdOfInt8Values(hdfArray->Values->PathInHdfFile, arrayOutput);
 		return hdfArray->NullValue;
 	}
 	else {
 		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
 	}
 
-	return (std::numeric_limits<int16_t>::max)();
+	return (std::numeric_limits<uint8_t>::max)();
 }
 
 int8_t AbstractObject::readArrayNdOfInt8Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, int8_t* arrayOutput) const
 {
 	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
-			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
-			if (hdfProxy == nullptr) {
-				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
-			}
-			hdfProxy->readArrayNdOfCharValues(dsPart->PathInExternalFile, (char*)arrayOutput + dsPart->StartIndex);
+		size_t offset = 0;
+		for (auto* dataArrayPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataArrayPart);
+			hdfProxy->readArrayNdOfInt8Values(dataArrayPart->PathInExternalFile, arrayOutput + offset);
+			offset += std::accumulate(std::begin(dataArrayPart->Count), std::end(dataArrayPart->Count), static_cast<LONG64>(1), std::multiplies<LONG64>());
 		}
 		return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue;
 	}
@@ -1523,7 +1531,7 @@ int8_t AbstractObject::readArrayNdOfInt8Values(gsoap_eml2_3::eml23__AbstractInte
 		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
 	}
 
-	return (std::numeric_limits<int16_t>::max)();
+	return (std::numeric_limits<int8_t>::max)();
 }
 
 int16_t AbstractObject::readArrayNdOfInt16Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, int16_t* arrayOutput) const
@@ -1547,12 +1555,11 @@ int16_t AbstractObject::readArrayNdOfInt16Values(gsoap_resqml2_0_1::resqml20__Ab
 int16_t AbstractObject::readArrayNdOfInt16Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, int16_t* arrayOutput) const
 {
 	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
-			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
-			if (hdfProxy == nullptr) {
-				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
-			}
-			hdfProxy->readArrayNdOfShortValues(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		size_t offset = 0;
+		for (auto* dataArrayPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataArrayPart);
+			hdfProxy->readArrayNdOfShortValues(dataArrayPart->PathInExternalFile, arrayOutput + offset);
+			offset += std::accumulate(std::begin(dataArrayPart->Count), std::end(dataArrayPart->Count), static_cast<LONG64>(1), std::multiplies<LONG64>());
 		}
 		return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue;
 	}
@@ -1584,12 +1591,11 @@ int32_t AbstractObject::readArrayNdOfInt32Values(gsoap_resqml2_0_1::resqml20__Ab
 int32_t AbstractObject::readArrayNdOfInt32Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, int32_t* arrayOutput) const
 {
 	if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		for (auto dsPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalFileProxy) {
-			EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
-			if (hdfProxy == nullptr) {
-				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
-			}
-			hdfProxy->readArrayNdOfIntValues(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+		size_t offset = 0;
+		for (auto* dataArrayPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart) {
+			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataArrayPart);
+			hdfProxy->readArrayNdOfIntValues(dataArrayPart->PathInExternalFile, arrayOutput + offset);
+			offset += std::accumulate(std::begin(dataArrayPart->Count), std::end(dataArrayPart->Count), static_cast<LONG64>(1), std::multiplies<LONG64>());
 		}
 		return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue;
 	}
@@ -1661,21 +1667,17 @@ uint64_t AbstractObject::getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__Abs
 	throw invalid_argument("The integer array type is not supported yet.");
 }
 
-uint64_t AbstractObject::getCountOfArray(gsoap_eml2_3::eml23__AbstractValueArray const * arrayInput) const
+uint64_t AbstractObject::getCountOfArray(gsoap_eml2_3::eml23__AbstractValueArray const* arrayInput) const
 {
 	long soapType = arrayInput->soap_type();
 	// *********** INTEGER ********
 	if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 	{
 		uint64_t result = 0;
-		for (auto dataArrayPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(arrayInput)->Values->ExternalDataArrayPart) {
+		for (auto const* dataArrayPart : static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart) {
 			result += std::accumulate(std::begin(dataArrayPart->Count), std::end(dataArrayPart->Count), static_cast<LONG64>(1), std::multiplies<LONG64>());
 		}
 		return result;
-	}
-	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerRangeArray)
-	{
-		return static_cast<gsoap_eml2_3::eml23__IntegerRangeArray const*>(arrayInput)->Count;
 	}
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray)
 	{
@@ -1691,73 +1693,73 @@ uint64_t AbstractObject::getCountOfArray(gsoap_eml2_3::eml23__AbstractValueArray
 	}
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerXmlArray)
 	{
-		gsoap_eml2_3::eml23__IntegerXmlArray* xmlArray = static_cast<gsoap_eml2_3::eml23__IntegerXmlArray*>(arrayInput);
+		gsoap_eml2_3::eml23__IntegerXmlArray const* xmlArray = static_cast<gsoap_eml2_3::eml23__IntegerXmlArray const*>(arrayInput);
 		return std::count(xmlArray->Values.begin(), xmlArray->Values.end(), ' ') + 1;
 	}
 	// *********** FLOATING POINT ********
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
 	{
 		uint64_t result = 0;
-		for (auto dataArrayPart : static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(arrayInput)->Values->ExternalDataArrayPart) {
+		for (auto const* dataArrayPart : static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart) {
 			result += std::accumulate(std::begin(dataArrayPart->Count), std::end(dataArrayPart->Count), static_cast<LONG64>(1), std::multiplies<LONG64>());
 		}
 		return result;
 	}
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray)
 	{
-		return static_cast<gsoap_eml2_3::eml23__FloatingPointConstantArray*>(arrayInput)->Count;
+		return static_cast<gsoap_eml2_3::eml23__FloatingPointConstantArray const*>(arrayInput)->Count;
 	}
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 	{
-		gsoap_eml2_3::eml23__FloatingPointLatticeArray* latticeArray = static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray*>(arrayInput);
+		gsoap_eml2_3::eml23__FloatingPointLatticeArray const* latticeArray = static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray const*>(arrayInput);
 		if (latticeArray->Offset.size() > 1) {
 			throw invalid_argument("The lattice array contains more than one offset.");
 		}
-		return static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray*>(arrayInput)->Offset[0]->Count + 1;
+		return static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray const*>(arrayInput)->Offset[0]->Count + 1;
 	}
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointXmlArray)
 	{
-		gsoap_eml2_3::eml23__FloatingPointXmlArray* xmlArray = static_cast<gsoap_eml2_3::eml23__FloatingPointXmlArray*>(arrayInput);
+		gsoap_eml2_3::eml23__FloatingPointXmlArray const* xmlArray = static_cast<gsoap_eml2_3::eml23__FloatingPointXmlArray const*>(arrayInput);
 		return std::count(xmlArray->Values.begin(), xmlArray->Values.end(), ' ') + 1;
 	}
 	// *********** BOOLEAN ********
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray)
 	{
 		uint64_t result = 0;
-		for (auto dataArrayPart : static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(arrayInput)->Values->ExternalDataArrayPart) {
+		for (auto dataArrayPart : static_cast<gsoap_eml2_3::eml23__BooleanExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart) {
 			result += std::accumulate(std::begin(dataArrayPart->Count), std::end(dataArrayPart->Count), static_cast<LONG64>(1), std::multiplies<LONG64>());
 		}
 		return result;
 	}
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray)
 	{
-		return static_cast<gsoap_eml2_3::eml23__BooleanConstantArray*>(arrayInput)->Count;
+		return static_cast<gsoap_eml2_3::eml23__BooleanConstantArray const*>(arrayInput)->Count;
 	}
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanXmlArray)
 	{
-		gsoap_eml2_3::eml23__BooleanXmlArray* xmlArray = static_cast<gsoap_eml2_3::eml23__BooleanXmlArray*>(arrayInput);
+		gsoap_eml2_3::eml23__BooleanXmlArray const* xmlArray = static_cast<gsoap_eml2_3::eml23__BooleanXmlArray const*>(arrayInput);
 		return std::count(xmlArray->Values.begin(), xmlArray->Values.end(), ' ') + 1;
 	}
 	// *********** STRING ********
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__StringExternalArray)
 	{
 		uint64_t result = 0;
-		for (auto dataArrayPart : static_cast<gsoap_eml2_3::eml23__StringExternalArray*>(arrayInput)->Values->ExternalDataArrayPart) {
+		for (auto const* dataArrayPart : static_cast<gsoap_eml2_3::eml23__StringExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart) {
 			result += std::accumulate(std::begin(dataArrayPart->Count), std::end(dataArrayPart->Count), static_cast<LONG64>(1), std::multiplies<LONG64>());
 		}
 		return result;
 	}
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__StringConstantArray)
 	{
-		return static_cast<gsoap_eml2_3::eml23__StringConstantArray*>(arrayInput)->Count;
+		return static_cast<gsoap_eml2_3::eml23__StringConstantArray const*>(arrayInput)->Count;
 	}
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__StringXmlArray)
 	{
-		return static_cast<gsoap_eml2_3::eml23__StringXmlArray*>(arrayInput)->Values.size();
+		return static_cast<gsoap_eml2_3::eml23__StringXmlArray const*>(arrayInput)->Values.size();
 	}
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__StringXmlArray)
 	{
-		gsoap_eml2_3::eml23__StringXmlArray* xmlArray = static_cast<gsoap_eml2_3::eml23__StringXmlArray*>(arrayInput);
+		gsoap_eml2_3::eml23__StringXmlArray const* xmlArray = static_cast<gsoap_eml2_3::eml23__StringXmlArray const*>(arrayInput);
 		return xmlArray->Values.size();
 	}
 

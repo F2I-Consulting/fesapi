@@ -323,7 +323,7 @@ void UnstructuredGridRepresentation::getCellFaceIsRightHanded(unsigned char* cel
   if (grid->Geometry->CellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
 	  auto dataset = static_cast<eml23__BooleanExternalArray*>(grid->Geometry->CellFaceIsRightHanded)->Values->ExternalDataArrayPart[0];
 	  EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset);
-	  hdfProxy->readArrayNdOfUCharValues(dataset->PathInExternalFile, cellFaceIsRightHanded);
+	  hdfProxy->readArrayNdOfUInt8Values(dataset->PathInExternalFile, cellFaceIsRightHanded);
   }
   else if (grid->Geometry->CellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray) {
 	  for (auto i = 0; i < static_cast<eml23__BooleanConstantArray*>(grid->Geometry->CellFaceIsRightHanded)->Count; ++i) {

@@ -535,8 +535,8 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 		{
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			std::unique_ptr<char[]> tmp(new char[pillarCount]);
-			hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, tmp.get());
+			std::unique_ptr<int8_t[]> tmp(new int8_t[pillarCount]);
+			hdfProxy->readArrayNdOfInt8Values(dataset->PathInHdfFile, tmp.get());
 			for (unsigned int i = 0; i < pillarCount; ++i) {
 				pillarGeometryIsDefined[i] = tmp[i] != 0;
 			}
@@ -560,8 +560,8 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 		{
 			gsoap_eml2_3::eml23__ExternalDataArray const * dataset = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(geom->PillarGeometryIsDefined)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset->ExternalDataArrayPart[0]);
-			std::unique_ptr<char[]> tmp(new char[pillarCount]);
-			hdfProxy->readArrayNdOfCharValues(dataset->ExternalDataArrayPart[0]->PathInExternalFile, tmp.get());
+			std::unique_ptr<int8_t[]> tmp(new int8_t[pillarCount]);
+			hdfProxy->readArrayNdOfInt8Values(dataset->ExternalDataArrayPart[0]->PathInExternalFile, tmp.get());
 			for (unsigned int i = 0; i < pillarCount; ++i) {
 				pillarGeometryIsDefined[i] = tmp[i] != 0;
 			}
@@ -638,8 +638,8 @@ void AbstractIjkGridRepresentation::getCellGeometryIsDefinedFlags(bool * cellGeo
 		if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(geom->CellGeometryIsDefined)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			std::unique_ptr<char[]> tmp(new char[cellCount]);
-			hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, tmp.get());
+			std::unique_ptr<int8_t[]> tmp(new int8_t[cellCount]);
+			hdfProxy->readArrayNdOfInt8Values(dataset->PathInHdfFile, tmp.get());
 			for (uint64_t i = 0; i < cellCount; ++i) {
 				cellGeometryIsDefinedFlags[i] = tmp[i] != 0;
 			}
@@ -662,8 +662,8 @@ void AbstractIjkGridRepresentation::getCellGeometryIsDefinedFlags(bool * cellGeo
 		if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
 			gsoap_eml2_3::eml23__ExternalDataArray const * dataset = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(geom->CellGeometryIsDefined)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset->ExternalDataArrayPart[0]);
-			std::unique_ptr<char[]> tmp(new char[cellCount]);
-			hdfProxy->readArrayNdOfCharValues(dataset->ExternalDataArrayPart[0]->PathInExternalFile, tmp.get());
+			std::unique_ptr<int8_t[]> tmp(new int8_t[cellCount]);
+			hdfProxy->readArrayNdOfInt8Values(dataset->ExternalDataArrayPart[0]->PathInExternalFile, tmp.get());
 			for (unsigned int i = 0; i < cellCount; ++i) {
 				cellGeometryIsDefinedFlags[i] = tmp[i] != 0;
 			}
@@ -979,8 +979,8 @@ void AbstractIjkGridRepresentation::getKGaps(bool * kGaps) const
 		if (ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			std::unique_ptr<char[]> tmp(new char[getKCellCount() - 1]);
-			hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, tmp.get());
+			std::unique_ptr<int8_t[]> tmp(new int8_t[getKCellCount() - 1]);
+			hdfProxy->readArrayNdOfInt8Values(dataset->PathInHdfFile, tmp.get());
 			for (uint64_t k = 0; k < getKCellCount() - 1; ++k) {
 				kGaps[k] = tmp[k] != 0;
 			}
@@ -1000,8 +1000,8 @@ void AbstractIjkGridRepresentation::getKGaps(bool * kGaps) const
 		if (ijkGrid->KGaps->GapAfterLayer->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
 			gsoap_eml2_3::eml23__ExternalDataArray const * dataset = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(ijkGrid->KGaps->GapAfterLayer)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset->ExternalDataArrayPart[0]);
-			std::unique_ptr<char[]> tmp(new char[getKCellCount() - 1]);
-			hdfProxy->readArrayNdOfCharValues(dataset->ExternalDataArrayPart[0]->PathInExternalFile, tmp.get());
+			std::unique_ptr<int8_t[]> tmp(new int8_t[getKCellCount() - 1]);
+			hdfProxy->readArrayNdOfInt8Values(dataset->ExternalDataArrayPart[0]->PathInExternalFile, tmp.get());
 			for (uint64_t k = 0; k < getKCellCount() - 1; ++k) {
 				kGaps[k] = tmp[k] != 0;
 			}

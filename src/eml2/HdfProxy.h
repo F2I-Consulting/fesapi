@@ -216,9 +216,9 @@ namespace EML2_NS
 
 		void readArrayNdOfUShortValues(const std::string& datasetName, unsigned short* values) final;
 
-		void readArrayNdOfCharValues(const std::string& datasetName, char* values) final;
+		void readArrayNdOfInt8Values(const std::string& datasetName, int8_t* values) final;
 
-		void readArrayNdOfUCharValues(const std::string& datasetName, unsigned char* values) final;
+		void readArrayNdOfUInt8Values(const std::string& datasetName, uint8_t* values) final;
 
 		bool exist(const std::string& absolutePathInHdfFile) const final;
 

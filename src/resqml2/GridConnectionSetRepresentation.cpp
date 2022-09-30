@@ -58,8 +58,8 @@ void GridConnectionSetRepresentation::loadTargetRelationships()
 	AbstractRepresentation::loadTargetRelationships();
 
 	// Supporting grid representation
-	unsigned int supportingGridCount = getSupportingGridRepresentationCount();
-	for (unsigned int i = 0; i < supportingGridCount; ++i) {
+	const uint64_t supportingGridCount = getSupportingGridRepresentationCount();
+	for (uint64_t i = 0; i < supportingGridCount; ++i) {
 		COMMON_NS::DataObjectReference dor = getSupportingGridRepresentationDor(i);
 		if (!dor.isEmpty()) {
 			convertDorIntoRel(dor);
@@ -67,8 +67,8 @@ void GridConnectionSetRepresentation::loadTargetRelationships()
 	}
 
 	if (isAssociatedToInterpretations()) {
-		unsigned int interpCount = getInterpretationCount();
-		for (unsigned int i = 0; i < interpCount; ++i) {
+		const uint64_t interpCount = getInterpretationCount();
+		for (uint64_t i = 0; i < interpCount; ++i) {
 			COMMON_NS::DataObjectReference dor = getInterpretationDorFromIndex(i);
 			if (!dor.isEmpty()) {
 				convertDorIntoRel(dor);
@@ -130,12 +130,12 @@ void GridConnectionSetRepresentation::getXyzPointsOfPatch(uint64_t, double *) co
 	throw logic_error("Not implemented yet");
 }
 
-AbstractFeatureInterpretation * GridConnectionSetRepresentation::getInterpretationFromIndex(int64_t interpretationIndex) const
+AbstractFeatureInterpretation * GridConnectionSetRepresentation::getInterpretationFromIndex(uint64_t interpretationIndex) const
 {
 	return repository->getDataObjectByUuid<AbstractFeatureInterpretation>(getInterpretationUuidFromIndex(interpretationIndex));
 }
 
-AbstractGridRepresentation* GridConnectionSetRepresentation::getSupportingGridRepresentation(unsigned int index) const 
+AbstractGridRepresentation* GridConnectionSetRepresentation::getSupportingGridRepresentation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<AbstractGridRepresentation>(getSupportingGridRepresentationDor(index).getUuid());
 }

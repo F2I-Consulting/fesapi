@@ -59,9 +59,6 @@ void AbstractTest::deserialize() {
 		cout << "EPC document " << epcDocument.getName() << ".epc deserialized with warnings" << endl;
 		cout << validationResult << endl;
 	}
-	//REQUIRE( validationResult.empty() );
-
-	REQUIRE( repo->getHdfProxySet().size() == 1 );
 
 	readRepo();
 	epcDocument.close();

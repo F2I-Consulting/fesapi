@@ -26,8 +26,6 @@ under the License.
 using namespace RESQML2_NS;
 using namespace std;
 
-const char* PointsProperty::XML_TAG = "PointsProperty";
-
 COMMON_NS::AbstractObject::numericalDatatypeEnum PointsProperty::getValuesHdfDatatype() const
 {
 	if (isPartial()) {
@@ -41,7 +39,7 @@ COMMON_NS::AbstractObject::numericalDatatypeEnum PointsProperty::getValuesHdfDat
 	return hdfProxy->getNumericalDatatype(dsPath);
 }
 
-unsigned int PointsProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const
+uint64_t PointsProperty::getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uint64_t patchIndex) const
 {
 	if (isPartial()) {
 		throw logic_error("You cannot get values from a partial property.");
@@ -60,7 +58,7 @@ unsigned int PointsProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIn
 	throw out_of_range("The dim index to get the count is out of range.");
 }
 
-unsigned int PointsProperty::getDimensionsCountOfPatch(unsigned int patchIndex) const
+uint64_t PointsProperty::getDimensionsCountOfPatch(uint64_t patchIndex) const
 {
 	if (isPartial()) {
 		throw logic_error("You cannot get values from a partial property.");

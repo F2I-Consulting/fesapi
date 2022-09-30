@@ -69,7 +69,7 @@ COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getHdfProxyDor()
 		return COMMON_NS::DataObjectReference(static_cast<resqml20__IntegerHdf5Array*>(rep->CellIndexPairs)->Values->HdfProxy);
 	}
 
-	throw std::logic_error("Not implemented yet");
+	return COMMON_NS::DataObjectReference();
 }
 
 void GridConnectionSetRepresentation::setCellIndexPairsUsingExistingDataset(uint64_t cellIndexPairCount, const std::string & cellIndexPair, int64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, int64_t gridIndexPairNullValue, const std::string & gridIndexPair)
@@ -187,8 +187,8 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCount() const
 
 uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretationIndex(int64_t interpretationIndex) const
 {
-	const unsigned int interpCount = getInterpretationCount();
-	if (interpretationIndex < -1 || interpretationIndex >= static_cast<int>(interpCount)) {
+	const uint64_t interpCount = getInterpretationCount();
+	if (interpretationIndex < -1 || interpretationIndex >= static_cast<int64_t>(interpCount)) {
 		throw out_of_range("The interpretation index is out of range.");
 	}
 	
@@ -248,8 +248,8 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretatio
 
 void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, int64_t interpretationIndex) const
 {
-	const unsigned int interpCount = getInterpretationCount();
-	if (interpretationIndex < -1 || interpretationIndex >= static_cast<int>(interpCount)) {
+	const uint64_t interpCount = getInterpretationCount();
+	if (interpretationIndex < -1 || interpretationIndex >= static_cast<int64_t>(interpCount)) {
 		throw out_of_range("The interpretation index is out of range.");
 	}
 
@@ -353,7 +353,7 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 	}
 }
 
-COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getInterpretationDorFromIndex(int64_t interpretationIndex) const
+COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getInterpretationDorFromIndex(uint64_t interpretationIndex) const
 {
 	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
@@ -499,12 +499,12 @@ void GridConnectionSetRepresentation::setInterpretationForAllConnections(RESQML2
 	elements->Count = cellIndexPairCount;
 
 	// HDF
-	std::unique_ptr<uint32_t[]> const cumulative(new uint32_t[cellIndexPairCount]);
-	for (size_t i = 0; i < cellIndexPairCount; ++i) {
+	std::unique_ptr<uint64_t[]> const cumulative(new uint64_t[cellIndexPairCount]);
+	for (uint64_t i = 0; i < cellIndexPairCount; ++i) {
 		cumulative[i] = i + 1;
 	}
 	hsize_t numValueInEachDim = cellIndexPairCount;
-	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, cumulative.get(), &numValueInEachDim, 1);
+	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, cumulative.get(), &numValueInEachDim, 1);
 }
 
 void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::AbstractFeatureInterpretation* interp)
@@ -517,18 +517,12 @@ void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::Abst
 	rep->ConnectionInterpretations->FeatureInterpretation.push_back(interp->newResqmlReference());
 }
 
-unsigned int GridConnectionSetRepresentation::getSupportingGridRepresentationCount() const
+uint64_t GridConnectionSetRepresentation::getSupportingGridRepresentationCount() const
 {
-	const size_t result = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->Grid.size();
-
-	if (result > (numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too many supporting grid representations.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->Grid.size();
 }
 
-COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getSupportingGridRepresentationDor(unsigned int index) const
+COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getSupportingGridRepresentationDor(uint64_t index) const
 {
 	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 

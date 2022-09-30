@@ -277,9 +277,9 @@ namespace EML2_NS
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
 		 */
-		void writeArrayNdOfCharValues(const std::string & groupName,
+		void writeArrayNdOfInt8Values(const std::string & groupName,
 			const std::string & name,
-			const char * intValues,
+			const int8_t* intValues,
 			const unsigned long long * numValuesInEachDimension,
 			unsigned int numDimensions);
 
@@ -515,8 +515,8 @@ namespace EML2_NS
 		virtual void readArrayNdOfUIntValues(const std::string & datasetName, unsigned int* values) = 0;
 		virtual void readArrayNdOfShortValues(const std::string & datasetName, short* values) = 0;
 		virtual void readArrayNdOfUShortValues(const std::string & datasetName, unsigned short* values) = 0;
-		virtual void readArrayNdOfCharValues(const std::string & datasetName, char* values) = 0;
-		virtual void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) = 0;
+		virtual void readArrayNdOfInt8Values(const std::string & datasetName, int8_t* values) = 0;
+		virtual void readArrayNdOfUInt8Values(const std::string & datasetName, uint8_t* values) = 0;
 		
 		virtual bool exist(const std::string & absolutePathInHdfFile) const = 0;
 		

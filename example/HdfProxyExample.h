@@ -426,14 +426,14 @@ public:
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
-	void readArrayNdOfCharValues(const std::string & datasetName, char* values) { throw std::logic_error("Not implemented yet"); }
+	void readArrayNdOfInt8Values(const std::string & datasetName, int8_t* values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Read an array Nd of unsigned char values stored in a specific dataset.
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
-	void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) { throw std::logic_error("Not implemented yet"); }
+	void readArrayNdOfUInt8Values(const std::string & datasetName, uint8_t* values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Check wether an absolute path exists in the hdf file or not.
@@ -455,10 +455,10 @@ public:
 	/**
 	* The standard XML namespace for serializing this data object.
 	*/
-	static const char* XML_NS;
+	static constexpr char const* XML_NS = "eml20";
 
 	/**
 	* Get the standard XML namespace for serializing this data object.
 	*/
-	virtual std::string getXmlNamespace() const { return XML_NS; }
+	std::string getXmlNamespace() const final { return XML_NS; }
 };

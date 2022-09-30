@@ -93,8 +93,7 @@ void ContinuousProperty::initRepo() {
 	// creating Constant Floating point prop
 	RESQML2_NS::ContinuousProperty* constantDblProperty = repo->createContinuousProperty(
 		rep, "3ce662a6-c94b-4d19-b9df-b241693dba41", "Constant FloatingPoint Property",
-		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
 	constantDblProperty->pushBackFloatingPointConstantArrayOfValues(3.33, 3);

@@ -100,7 +100,7 @@ COMMON_NS::AbstractObject::numericalDatatypeEnum AbstractValuesProperty::getValu
 	return hdfProxy->getNumericalDatatype(dsPath);
 }
 
-unsigned int AbstractValuesProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const
+uint64_t AbstractValuesProperty::getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uint64_t patchIndex) const
 {
 	cannotBePartial();
 
@@ -164,7 +164,7 @@ unsigned int AbstractValuesProperty::getValuesCountOfDimensionOfPatch(unsigned i
 	throw out_of_range("The dim index to get the count is out of range.");
 }
 
-unsigned int AbstractValuesProperty::getDimensionsCountOfPatch(unsigned int patchIndex) const
+uint64_t AbstractValuesProperty::getDimensionsCountOfPatch(uint64_t patchIndex) const
 {
 	cannotBePartial();
 
@@ -930,7 +930,7 @@ uint16_t AbstractValuesProperty::getUShortValuesOfPatch(uint64_t patchIndex, uin
 	}
 }
 
-int8_t AbstractValuesProperty::getInt8ValuesOfPatch(unsigned int patchIndex, int8_t* values) const
+int8_t AbstractValuesProperty::getInt8ValuesOfPatch(uint64_t patchIndex, int8_t* values) const
 {
 	if (isPartial()) {
 		throw logic_error("You cannot read values from a partial property.");
@@ -964,7 +964,7 @@ int8_t AbstractValuesProperty::getInt8ValuesOfPatch(unsigned int patchIndex, int
 	}
 }
 
-uint8_t AbstractValuesProperty::getUInt8ValuesOfPatch(unsigned int patchIndex, uint8_t* values) const
+uint8_t AbstractValuesProperty::getUInt8ValuesOfPatch(uint64_t patchIndex, uint8_t* values) const
 {
 	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {

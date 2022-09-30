@@ -96,7 +96,7 @@ std::vector<std::string> CommentProperty::getStringValuesOfPatch(uint64_t patchI
 
 	// Read all char/strings from the hdf dataset
 	std::unique_ptr<unsigned char[]> values(new unsigned char[nbStrings * stringLength]);
-	hdfProxy->readArrayNdOfUCharValues (datasetPath, values.get());
+	hdfProxy->readArrayNdOfUInt8Values (datasetPath, values.get());
 
 	for (unsigned int stringIndex = 0; stringIndex < nbStrings; ++stringIndex) {
 		std::string comment = string();

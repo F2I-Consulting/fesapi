@@ -27,7 +27,7 @@ namespace EML2_NS
 	* It is possible to derive this class in a custom class in order for the FESAPI user
 	* to get change the FESAPI reads from and writes to HDF5 file.
 	* However, please note that the RESQML standard mandates so far a HDF5 1.8 backward compatibility.
-	* In ordre to achieve this backward compatibility please use
+	* In order to achieve this backward compatibility please use
 	*	hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
 	*	H5Pset_libver_bounds (access_props, H5F_LIBVER_V18, H5F_LIBVER_V18);
 	* when you create an HDF5 file before to write into it.
@@ -229,22 +229,22 @@ namespace EML2_NS
 		}
 
 		/**
-		 * Writes an nd array of char values into the HDF5 file by means of a single dataset
+		 * Writes an nd array of int8 values into the HDF5 file by means of a single dataset
 		 *
 		 * @param 	groupName					The name of the group where to create the nd array of int
 		 * 										values. This name must not contain '/' character and must be
 		 * 										directly contained in RESQML group.
 		 * @param 	name						The name of the nd array HDF5 dataset. It must not
 		 * 										already exist.
-		 * @param 	intValues					1d array of char values ordered firstly by fastest
+		 * @param 	intValues					1d array of int8 values ordered firstly by fastest
 		 * 										direction.
 		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
 		 * 										write. They are ordered from fastest index to slowest index.
 		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
 		 */
-		DLL_IMPORT_OR_EXPORT void writeArrayNdOfCharValues(const std::string & groupName,
+		DLL_IMPORT_OR_EXPORT void writeArrayNdOfInt8Values(const std::string & groupName,
 			const std::string & name,
-			const char * values,
+			const int8_t * values,
 			const unsigned long long * numValuesInEachDimension,
 			unsigned int numDimensions) {
 			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8, values, numValuesInEachDimension, numDimensions);
@@ -838,27 +838,27 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfUShortValues(const std::string & datasetName, unsigned short* values) = 0;
 
 		/**
-		 * Reads an nd array of char values stored in a specific dataset
+		 * Reads an nd array of int8 values stored in a specific dataset
 		 *
 		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
 		 *
 		 * @param 	   	datasetName	The absolute name of the nd array dataset.
-		 * @param [out]	values	   	1d array of char values ordered firstly by fastest direction. The
+		 * @param [out]	values	   	1d array of int8 values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfCharValues(const std::string & datasetName, char* values) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfInt8Values(const std::string & datasetName, int8_t* values) = 0;
 
 		/**
-		 * Reads an nd array of unsigned char values stored in a specific dataset
+		 * Reads an nd array of unsigned int8 values stored in a specific dataset
 		 *
 		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
 		 *
 		 * @param 	   	datasetName	The absolute name of the nd array dataset.
-		 * @param [out]	values	   	1d array of unsigned char values ordered firstly by fastest
+		 * @param [out]	values	   	1d array of unsigned int8 ordered firstly by fastest
 		 * 							direction. The values must be pre-allocated and won't be freed by
 		 * 							this method.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfUInt8Values(const std::string & datasetName, uint8_t* values) = 0;
 
 		/**
 		 * Checks whether an absolute path exists in the HDF5 file

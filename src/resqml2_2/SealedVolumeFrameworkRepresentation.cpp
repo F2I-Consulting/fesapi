@@ -239,7 +239,7 @@ void SealedVolumeFrameworkRepresentation::loadShell(uint64_t regionIndex, uint64
 		faceRepPatchIndices_.reset(new unsigned int[faceCount]);
 		readArrayNdOfUInt32Values(shell->PatchIndicesOfRepresentation, faceRepPatchIndices_.get());
 
-		faceSide_.reset(new char[faceCount]);
+		faceSide_.reset(new int8_t[faceCount]);
 		readArrayNdOfBooleanValues(shell->SideIsPlus, faceSide_.get());
 	}
 }

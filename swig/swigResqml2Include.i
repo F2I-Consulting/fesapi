@@ -3806,7 +3806,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The UUID of the (fault) interpretation at index @p interpretationIndex.
 		 */
-		std::string getInterpretationUuidFromIndex(unsigned int interpretationIndex) const;
+		std::string getInterpretationUuidFromIndex(int64_t interpretationIndex) const;
 
 		/**
 		 * Gets a particular (fault) interpretation of this grid connection set.
@@ -3823,7 +3823,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The (fault) interpretation at index @p interpretationIndex.
 		 */
-		AbstractFeatureInterpretation * getInterpretationFromIndex(int64_t interpretationIndex) const;
+		AbstractFeatureInterpretation * getInterpretationFromIndex(uint64_t interpretationIndex) const;
 
 		/**
 		 * Get the count of interpretations in this grid connection set.
@@ -3843,7 +3843,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The supporting grid representation count.
 		 */
-		unsigned int getSupportingGridRepresentationCount() const;
+		uint64_t getSupportingGridRepresentationCount() const;
 
 		/**
 		 * Gets the supporting grid representation located at a specific index of this grid connection set
@@ -3855,7 +3855,7 @@ namespace RESQML2_NS
 		 * 
 		 * @returns The supporting grid representation at position @p index.
 		 */
-		AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index);
+		AbstractGridRepresentation* getSupportingGridRepresentation(uint64_t index);
 	};
 	
 	/**
@@ -4150,7 +4150,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values in the @p dimIndex dimension of @p patchIndex patch.
 		 */
-		unsigned int getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const;
+		uint64_t getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uint64_t patchIndex) const;
 
 		/**
 		 * Gets the count of dimensions of the underlying HDF5 dataset of a given patch of this property.
@@ -4161,7 +4161,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The number of values, 0 otherwise.
 		 */
-		uint64_t getDimensionsCountOfPatch(unsigned int patchIndex) const;
+		uint64_t getDimensionsCountOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Gets the count of property sets which contain this property
@@ -6216,8 +6216,8 @@ namespace RESQML2_NS
 		 * 															values will be stored. If set to nullptr,
 		 *															the default HdfProxy will be used instead.
 		 */
-		void setIntervalGridCells(char const* gridIndices, char gridIndicesNullValue, int64_t const* cellIndices,
-			char const* localFacePairPerCellIndices, char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy = nullptr);
+		void setIntervalGridCells(int8_t const* gridIndices, int8_t gridIndicesNullValue, int64_t const* cellIndices,
+			int8_t const* localFacePairPerCellIndices, int8_t localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy = nullptr);
 
 		/**
 		 * Gets the cell count, that is to say the number of non-null entries in the grid indices array.
@@ -6243,7 +6243,7 @@ namespace RESQML2_NS
 		 * @returns	The null value used in @p gridIndices in order to indicate that an interval does not
 		 * 			correspond to any intersected grid.
 		 */
-		char getGridIndices(char * gridIndices) const;
+		int8_t getGridIndices(int8_t * gridIndices) const;
 
 		/**
 		 * For each interval of the wellbore frame, gets the index of the cell it is associated to.
@@ -6276,7 +6276,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value used in @p localFacePairPerCellIndices in order to indicate that no face is intersected.
 		 */
-		char getLocalFacePairPerCellIndices(char* localFacePairPerCellIndices) const;
+		int8_t getLocalFacePairPerCellIndices(int8_t* localFacePairPerCellIndices) const;
 
 		/**
 		 * Pushes back a grid representation which is one of the support of this representation.

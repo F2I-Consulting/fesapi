@@ -840,14 +840,14 @@ void HdfProxy::readArrayNdOfUShortValues(const std::string & datasetName, unsign
 	readArrayNdOfValues(datasetName, values, H5T_NATIVE_USHORT);
 }
 
-void HdfProxy::readArrayNdOfCharValues(const std::string & datasetName, char* values)
+void HdfProxy::readArrayNdOfInt8Values(const std::string & datasetName, int8_t* values)
 {
-	readArrayNdOfValues(datasetName, values, H5T_NATIVE_CHAR);
+	readArrayNdOfValues(datasetName, values, H5T_NATIVE_INT8);
 }
 
-void HdfProxy::readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values)
+void HdfProxy::readArrayNdOfUInt8Values(const std::string & datasetName, uint8_t* values)
 {
-	readArrayNdOfValues(datasetName, values, H5T_NATIVE_UCHAR);
+	readArrayNdOfValues(datasetName, values, H5T_NATIVE_UINT8);
 }
 
 hid_t HdfProxy::openOrCreateGroup(const string & groupName)

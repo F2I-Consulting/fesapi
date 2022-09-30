@@ -185,7 +185,7 @@ int64_t AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		resqml20__AbstractColumnLayerGridRepresentation const* rep = static_cast<resqml20__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
-		readArrayNdOfInt64Values(rep->IntervalStratigraphicUnits->UnitIndices, stratiUnitIndices);
+		return readArrayNdOfInt64Values(rep->IntervalStratigraphicUnits->UnitIndices, stratiUnitIndices);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		auto rep = static_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_3);

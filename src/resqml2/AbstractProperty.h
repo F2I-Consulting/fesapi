@@ -125,7 +125,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values in the @p dimIndex dimension of @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getValuesCountOfDimensionOfPatch(unsigned int dimIndex, uint64_t patchIndex) const;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uint64_t patchIndex) const = 0;
 
 		/**
 		 * Gets the count of dimensions of the underlying HDF5 dataset of a given patch of this property.
@@ -136,7 +136,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The number of values, 0 otherwise.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getDimensionsCountOfPatch(uint64_t patchIndex) const;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getDimensionsCountOfPatch(uint64_t patchIndex) const = 0;
 
 		//*********************************************
 		//************* PROPERTY SET ******************
