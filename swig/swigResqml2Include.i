@@ -3146,7 +3146,7 @@ namespace RESQML2_NS
 	{
 	public:
 		uint64_t getPolylineCountOfPatch(uint64_t patchIndex) const;
-		uint64_tt getPolylineCountOfAllPatches() const;
+		uint64_t getPolylineCountOfAllPatches() const;
 		void getNodeCountPerPolylineInPatch(unsigned int patchIndex, unsigned int * nodeCountPerPolyline) const;
 		void getNodeCountPerPolylineOfAllPatches(unsigned int * nodeCountPerPolyline) const;
 		void pushBackGeometryPatch(
@@ -3215,7 +3215,7 @@ namespace RESQML2_NS
 	class TriangulatedSetRepresentation : public AbstractSurfaceRepresentation
 	{
 	public:
-		uint64_tt getTriangleCountOfPatch(unsigned int patchIndex) const;
+		uint64_t getTriangleCountOfPatch(unsigned int patchIndex) const;
 		uint64_t getTriangleCountOfAllPatches() const;
 		void getTriangleNodeIndicesOfPatch(unsigned int patchIndex, unsigned int * triangleNodeIndices) const;
 		void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const;
@@ -3230,7 +3230,7 @@ namespace RESQML2_NS
 	public:
 		bool isHomogeneous() const;
 		uint64_t 						getRepresentationCount() const;
-		AbstractRepresentation*				getRepresentationuint64_t index) const;
+		AbstractRepresentation*			getRepresentation(uint64_t index) const;
 	};
 		
 #ifdef SWIGPYTHON

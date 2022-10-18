@@ -1088,7 +1088,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 
 		dynamicContinuousProp->setTimeSeries(timeSeries);
 		double valuesTime[6] = { 0, 1, 2, 3, 3, 4 };
-		uint64_t dimensions[4] = { 2, 1, 1, 3 };
+		unsigned long long dimensions[4] = { 2, 1, 1, 3 };
 		dynamicContinuousProp->pushBackDoubleHdf5ArrayOfValues(
 			valuesTime, dimensions, 4, hdfProxy);
 	}

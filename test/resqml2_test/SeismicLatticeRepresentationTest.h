@@ -24,12 +24,13 @@ under the License.
 namespace resqml2_test {
 	class SeismicLatticeRepresentationTest : public commontest::AbstractTest {
 	public:
-		static const char* defaultUuidFeature;
-		static const char* defaultTitleFeature;
-		static const char* defaultUuidInterp;
-		static const char* defaultTitleInterp;
-		static const char* defaultUuid;
-		static const char* defaultTitle;
+		static constexpr char const* defaultUuidFeature = "3e04d513-7d2c-4cc3-853c-a3a651c5eb4a";
+		static constexpr char const* defaultTitleFeature = "Seismic Lattice Feature";
+		static constexpr char const* defaultUuidInterp = "3d7ae7ac-c605-493c-8067-547411fe30de";
+		static constexpr char const* defaultTitleInterp = "Seismic Lattice Interp";
+		static constexpr char const* defaultUuid = "c218fe9a-5080-4322-82fc-d7a1efb6da99";
+		static constexpr char const* defaultTitle = "Seismic Grid 2d Representation";
+		static constexpr char const* ijkLatticeGridUuid = "a0b270bf-c50c-4f74-a6df-169a5dcc13a7";
 
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,
