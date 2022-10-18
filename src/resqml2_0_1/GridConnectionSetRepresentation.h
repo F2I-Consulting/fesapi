@@ -85,9 +85,9 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT int64_t getInterpretationIndexNullValue() const final;
 
-		DLL_IMPORT_OR_EXPORT void getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, int64_t interpretationIndex) const final;
+		DLL_IMPORT_OR_EXPORT void getGridConnectionSetInformationFromInterpretationIndex(int64_t* cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, int64_t interpretationIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getInterpretationDorFromIndex(int64_t interpretationIndex) const final;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getInterpretationDorFromIndex(uint64_t interpretationIndex) const final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getInterpretationCount() const final;
 

@@ -51,7 +51,7 @@ namespace EML2_NS
 		 * @returns	The data object reference of the object which receives some graphical information at
 		 * 			@p index.
 		 */
-		gsoap_eml2_3::eml23__DataObjectReference* getTargetObjectDor(unsigned int index) const;
+		gsoap_eml2_3::eml23__DataObjectReference* getTargetObjectDor(uint64_t index) const;
 
 		/**
 		 * Gets the UUID of the object which receives some graphical information at a particular index
@@ -63,7 +63,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The UUUID of the object which receives some graphical information at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getTargetObjectUuid(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getTargetObjectUuid(uint64_t index) const;
 
 		/**
 		 * Gets the data object which receives some graphical information at a particular index of the
@@ -73,7 +73,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The data object which receives some graphical information at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractObject* getTargetObject(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractObject* getTargetObject(uint64_t index) const;
 
 		/**
 		 * Query if a given data object has some direct graphical information, that is to say if there exists

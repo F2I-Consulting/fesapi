@@ -69,7 +69,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The color count.
 		 */
-		virtual DLL_IMPORT_OR_EXPORT unsigned int getColorCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getColorCount() const = 0;
 
 		/**
 		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map

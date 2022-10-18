@@ -85,7 +85,7 @@ _resqml20__UnstructuredGridRepresentation* UnstructuredGridRepresentation::getSp
 	return static_cast<_resqml20__UnstructuredGridRepresentation*>(gsoapProxy2_0_1);
 }
 
-gsoap_resqml2_0_1::resqml20__PointGeometry* UnstructuredGridRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
+gsoap_resqml2_0_1::resqml20__PointGeometry* UnstructuredGridRepresentation::getPointGeometry2_0_1(uint64_t patchIndex) const
 {
 	return patchIndex == 0 ? getSpecializedGsoapProxy()->Geometry : nullptr;
 }

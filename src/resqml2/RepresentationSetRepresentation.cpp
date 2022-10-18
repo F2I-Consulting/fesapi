@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "RepresentationSetRepresentation.h"
 
-#include <limits>
 #include <stdexcept>
 
 using namespace std;
@@ -30,8 +29,8 @@ void RepresentationSetRepresentation::loadTargetRelationships()
 {
 	AbstractRepresentation::loadTargetRelationships();
 
-	const unsigned int repCount = getRepresentationCount();
-	for (unsigned int i = 0; i < repCount; ++i) {
+	const uint64_t repCount = getRepresentationCount();
+	for (uint64_t i = 0; i < repCount; ++i) {
 		COMMON_NS::DataObjectReference dor = getRepresentationDor(i);
 		convertDorIntoRel(dor);
 	}
@@ -65,9 +64,9 @@ bool RepresentationSetRepresentation::isHomogeneous() const
 	}
 }
 
-unsigned int RepresentationSetRepresentation::getRepresentationCount() const
+uint64_t RepresentationSetRepresentation::getRepresentationCount() const
 {
-	size_t count = 0;
+	uint64_t count = 0;
 	if (gsoapProxy2_0_1 != nullptr) {
 		count = static_cast<gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->Representation.size();
 	}
@@ -78,19 +77,15 @@ unsigned int RepresentationSetRepresentation::getRepresentationCount() const
 		throw logic_error("Not implemented yet");
 	}
 
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("The count is too big.");
-	}
-
-	return static_cast<unsigned int>(count);
+	return count;
 }
 
-RESQML2_NS::AbstractRepresentation* RepresentationSetRepresentation::getRepresentation(unsigned int index) const
+RESQML2_NS::AbstractRepresentation* RepresentationSetRepresentation::getRepresentation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(getRepresentationDor(index).getUuid());
 }
 
-COMMON_NS::DataObjectReference RepresentationSetRepresentation::getRepresentationDor(unsigned int index) const
+COMMON_NS::DataObjectReference RepresentationSetRepresentation::getRepresentationDor(uint64_t index) const
 {
 	if (index >= getRepresentationCount()) {
 		throw out_of_range("The index of the representation to get is out of range in this representaiton set representation");

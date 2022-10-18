@@ -128,7 +128,7 @@ namespace RESQML2_2_NS
 
 		gsoap_eml2_3::_resqml22__UnstructuredGridRepresentation* getSpecializedGsoapProxy() const;
 
-		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const final;
+		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(uint64_t patchIndex) const final;
 
 		/**
 		* Set a geometry using some existing hdf5 dataset. This geometry only contains polyedra with constant face count per cell and constant node count per face.

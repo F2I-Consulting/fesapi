@@ -185,7 +185,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The UUID of the (fault) interpretation at index @p interpretationIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getInterpretationUuidFromIndex(unsigned int interpretationIndex) const {
+		DLL_IMPORT_OR_EXPORT std::string getInterpretationUuidFromIndex(uint64_t interpretationIndex) const {
 			return getInterpretationDorFromIndex(interpretationIndex).getUuid();
 		}
 
@@ -204,7 +204,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the (fault) interpretation at index @p interpretationIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getInterpretationDorFromIndex(int64_t interpretationIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getInterpretationDorFromIndex(uint64_t interpretationIndex) const = 0;
 
 		/**
 		 * Gets a particular (fault) interpretation of this grid connection set.
@@ -221,7 +221,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The (fault) interpretation at index @p interpretationIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT class AbstractFeatureInterpretation* getInterpretationFromIndex(int64_t interpretationIndex) const;
+		DLL_IMPORT_OR_EXPORT class AbstractFeatureInterpretation* getInterpretationFromIndex(uint64_t interpretationIndex) const;
 
 		/**
 		 * Get the count of interpretations in this grid connection set.
@@ -481,7 +481,7 @@ namespace RESQML2_NS
 		/** Please do note use: not implemented yet. */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const override;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override {return 1;}
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const override {return 1;}
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

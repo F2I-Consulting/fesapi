@@ -50,7 +50,7 @@ StreamlinesRepresentation::StreamlinesRepresentation(RESQML2_NS::GenericFeatureI
 	setInterpretation(interp);
 }
 
-uint32_t StreamlinesRepresentation::getLineCount() const
+uint64_t StreamlinesRepresentation::getLineCount() const
 {
 	if (isPartial()) {
 		throw std::logic_error("The representation is partial.");
@@ -59,7 +59,7 @@ uint32_t StreamlinesRepresentation::getLineCount() const
 	return static_cast<_resqml20__StreamlinesRepresentation*>(gsoapProxy2_0_1)->LineCount;
 }
 
-uint16_t StreamlinesRepresentation::getWellboreTrajectoryCount() const
+uint64_t StreamlinesRepresentation::getWellboreTrajectoryCount() const
 {
 	auto const* wellbores = static_cast<_resqml20__StreamlinesRepresentation*>(gsoapProxy2_0_1)->StreamlineWellbores;
 	if (wellbores == nullptr) {
@@ -69,7 +69,7 @@ uint16_t StreamlinesRepresentation::getWellboreTrajectoryCount() const
 	return wellbores->WellboreTrajectoryRepresentation.size();
 }
 
-COMMON_NS::DataObjectReference StreamlinesRepresentation::getWellboreTrajectoryDor(uint16_t index) const
+COMMON_NS::DataObjectReference StreamlinesRepresentation::getWellboreTrajectoryDor(uint64_t index) const
 {
 	auto const* wellbores = static_cast<_resqml20__StreamlinesRepresentation*>(gsoapProxy2_0_1)->StreamlineWellbores;
 	if (wellbores == nullptr) {
@@ -363,7 +363,7 @@ uint8_t StreamlinesRepresentation::getLocalFacePairPerCellIndices(uint8_t * loca
 	return readArrayNdOfUInt8Values(gridLink->LocalFacePairPerCellIndices, localFacePairPerCellIndices);
 }
 
-uint16_t StreamlinesRepresentation::getGridRepresentationCount() const
+uint64_t StreamlinesRepresentation::getGridRepresentationCount() const
 {
 	auto const* geometry = static_cast<_resqml20__StreamlinesRepresentation*>(gsoapProxy2_0_1)->Geometry;
 	if (geometry == nullptr) {
@@ -377,7 +377,7 @@ uint16_t StreamlinesRepresentation::getGridRepresentationCount() const
 	return gridLink->Grids.size();
 }
 
-COMMON_NS::DataObjectReference StreamlinesRepresentation::getGridRepresentationDor(uint16_t index) const
+COMMON_NS::DataObjectReference StreamlinesRepresentation::getGridRepresentationDor(uint64_t index) const
 {
 	auto const* geometry = static_cast<_resqml20__StreamlinesRepresentation*>(gsoapProxy2_0_1)->Geometry;
 	if (geometry == nullptr) {

@@ -69,7 +69,7 @@ void DiscreteColorMap::setHsvColors(unsigned int colorCount,
 	}
 }
 
-unsigned int DiscreteColorMap::getColorCount() const
+uint64_t DiscreteColorMap::getColorCount() const
 {
 	resqml22__DiscreteColorMap const* const discreteColorMap = static_cast<resqml22__DiscreteColorMap*>(gsoapProxy2_3);
 	return discreteColorMap->Entry.size();

@@ -91,7 +91,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The patch count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getPatchCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getPatchCount() const = 0;
 
 		/**
 		 * Get the values data type in the HDF dataset
@@ -110,7 +110,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values of the @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getValuesCountOfPatch(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getValuesCountOfPatch(unsigned int patchIndex) const;
 
 		/**
 		 * Gets the count of values on a specific dimension of the underlying HDF5 dataset of a given
@@ -124,7 +124,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values in the @p dimIndex dimension of @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getValuesCountOfDimensionOfPatch(uint64_t dimIndex, unsigned int patchIndex) const = 0;
 
 		/**
 		 * Gets the count of dimensions of the underlying HDF5 dataset of a given patch of this property.
@@ -135,7 +135,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The number of values, 0 otherwise.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getDimensionsCountOfPatch(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getDimensionsCountOfPatch(unsigned int patchIndex) const = 0;
 
 		//*********************************************
 		//************* PROPERTY SET ******************
@@ -263,6 +263,24 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void setTimeSeries(EML2_NS::TimeSeries * ts);
 
 		/**
+		 * Set a single associated timestamp for this property.
+		 * Must be used with and after setTimeSeries.
+		 *
+		 * @exception	invalid_argument	Regarding RESQML2.0.1, this method cannot be called if setTimeSeries has not been called before.
+		 *
+		 * @param [in]	timestamp	The single timestamps to associate to this property
+		 * @param [in]	yearOffset	Indicates that the dateTime attribute must be translated according to this value.
+		 */
+		DLL_IMPORT_OR_EXPORT void setSingleTimestamp(time_t timestamp, LONG64 yearOffset = 0);
+
+		/**
+		 * Get a single associated timestamp for this property.
+		 *
+		 * @return	-1 if there is not a single timestamp related to this property meaning that no timestamp is present or more than one (i.e. a whole time series)
+		 */
+		DLL_IMPORT_OR_EXPORT time_t getSingleTimestamp() const;
+
+		/**
 		 * Gets the time series which is associated to this property
 		 *
 		 * @returns	Null pointer if no time series is associated to this property. Otherwise returns the
@@ -277,39 +295,6 @@ namespace RESQML2_NS
 		 * 			data object reference of the associated time series.
 		 */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getTimeSeriesDor() const;
-
-		/**
-		 * @brief	Sets the timestamps of this property by means of an index in a time series
-		 *
-		 * @exception	invalid_argument	If @p ts is null or if the current property has no time index.
-		 *
-		 * @param [in]	startTimeIndex  	The first time index to set to this property.
-		 * @param [in]	countTimeIndices	The count of time indices to set to this property.
-		 * @param [in]	ts					The time series which contains the timestamps of this
-		 * 									property.
-		 * @param [in]	useInterval			(Optional) When UseInterval is true, the values are
-		 * 									associated with each time intervals between two consecutive time
-		 * 									entries instead of each individual time entry. As a consequence
-		 * 									the dimension of the value array corresponding to the time series
-		 * 									is the number of entry in the series minus one.
-		 */
-		DLL_IMPORT_OR_EXPORT void setTimeIndices(uint64_t startTimeIndex, uint64_t countTimeIndices, EML2_NS::TimeSeries* ts, bool useInterval = false);
-
-		/**
-		 * Get the time index of this property in its associated time series
-		 *
-		 * @exception	std::invalid_argument	If this property does not have any time index.
-		 *
-		 * @returns	The time index of this property.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTimeIndexStart() const;
-
-		/**
-		 * Get the time indices count of this property in its associated time series
-		 *
-		 * @returns	The time indices count of this property.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTimeIndicesCount() const;
 
 		/**
 		 * Check if the values are given at each time index or between each time index.
@@ -452,7 +437,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the HDF Proxy of patch.
 		 */
-		virtual EML2_NS::AbstractHdfProxy* getDatasetOfPatch(unsigned int patchIndex, int64_t & nullValue, std::string & dsPath) const = 0;
+		virtual EML2_NS::AbstractHdfProxy* getDatasetOfPatch(uint64_t patchIndex, int64_t & nullValue, std::string & dsPath) const = 0;
 
 		/**
 		 * Gets the data object reference of the HDF proxy which is associated to a particular

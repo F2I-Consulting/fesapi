@@ -235,7 +235,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The K Layer gaps count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getKGapsCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getKGapsCount() const;
 
 		/**
 		* For each K Layer except the last one, indicate wether there is a layer or not after it.
@@ -781,7 +781,7 @@ namespace RESQML2_NS
 
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override {return 1;}
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const override {return 1;}
 
 		/**
 		* Get the standard XML namespace for serializing this data object.
@@ -829,8 +829,8 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the point geometry 2 0 1.
 		 */
-		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const final;
-		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const final;
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(uint64_t patchIndex) const final;
+		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(uint64_t patchIndex) const final;
 
 		/**
 		* Information about the splits (mainly due to faults) which occur in this grid.

@@ -47,14 +47,14 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The polyline count of patch @p patchIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getPolylineCountOfPatch(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getPolylineCountOfPatch(uint64_t patchIndex) const = 0;
 
 		/**
 		 * Gets the polyline count of all patches.
 		 *
 		 * @returns	The polyline count of all patches.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getPolylineCountOfAllPatches() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getPolylineCountOfAllPatches() const = 0;
 
 		/**
 		 * Gets the node count per polyline in a given patch.

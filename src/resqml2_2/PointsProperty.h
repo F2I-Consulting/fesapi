@@ -78,7 +78,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The patch count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final;
 		
 		/**
 		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF
@@ -123,7 +123,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	Null if it fails, else the HDF Proxy of patch.
 		 */
-		EML2_NS::AbstractHdfProxy* getDatasetOfPatch(unsigned int patchIndex, int64_t & nullValue, std::string & dsPath) const final;
+		EML2_NS::AbstractHdfProxy* getDatasetOfPatch(uint64_t patchIndex, int64_t & nullValue, std::string & dsPath) const final;
 
 		/**
 		 * Gets the data object reference of the HDF proxy which is associated to a particular

@@ -145,7 +145,7 @@ namespace EML2_NS
 		 * @returns	The number of dimensions of the dataset if successful, otherwise returns a negative
 		 * 			value.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getDimensionCount(const std::string & datasetName) { return getElementCountPerDimension(datasetName).size(); }
+		DLL_IMPORT_OR_EXPORT uint64_t getDimensionCount(const std::string & datasetName) { return getElementCountPerDimension(datasetName).size(); }
 
 		/**
 		 * Get the number of elements in each dimension of an HDF5 dataset.

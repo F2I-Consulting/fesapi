@@ -119,13 +119,13 @@ namespace RESQML2_2_NS
 
 		COMMON_NS::DataObjectReference getSupportingRepresentationDor() const final;
 
-		DLL_IMPORT_OR_EXPORT int getIndexOriginOnSupportingRepresentation() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getIndexOriginOnSupportingRepresentation() const final;
 
 		DLL_IMPORT_OR_EXPORT int getIndexOriginOnSupportingRepresentation(unsigned int dimension) const final;
 
-		DLL_IMPORT_OR_EXPORT int getNodeCountOnSupportingRepresentation(unsigned int dimension) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getNodeCountOnSupportingRepresentation(unsigned int dimension) const final;
 
-		DLL_IMPORT_OR_EXPORT int getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.
@@ -139,7 +139,7 @@ namespace RESQML2_2_NS
 
 	private:
 
-		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const final;
+		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(uint64_t patchIndex) const final;
 
 		/**
 		 * Gets array lattice of points 3D
@@ -219,7 +219,7 @@ namespace RESQML2_2_NS
 			unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs * localCrs,
 			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
 			RESQML2_NS::Grid2dRepresentation * supportingRepresentation,
-			unsigned int startGlobalIndex = 0,
+			uint64_t startGlobalIndex = 0,
 			int indexIncrementI = 1, int indexIncrementJ = 1);
 
 		/**

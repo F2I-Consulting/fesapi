@@ -79,7 +79,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	The patch count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 

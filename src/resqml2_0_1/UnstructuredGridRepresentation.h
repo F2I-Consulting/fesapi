@@ -132,7 +132,7 @@ namespace RESQML2_0_1_NS
 
 		gsoap_resqml2_0_1::_resqml20__UnstructuredGridRepresentation* getSpecializedGsoapProxy() const;
 
-		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const final;
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(uint64_t patchIndex) const final;
 
 		/**
 		* Set a geometry using some existing hdf5 dataset. This geometry only contains polyedra with constant face count per cell and constant node count per face.

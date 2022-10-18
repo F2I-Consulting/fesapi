@@ -325,17 +325,9 @@ DataObjectRepository::DataObjectRepository() :
 	warnings(),
 	propertyKindMapper(), defaultHdfProxy(nullptr), defaultCrs(nullptr),
 	hdfProxyFactory(new COMMON_NS::HdfProxyFactory()),
-#if WITH_RESQML2_2
-	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3),
-#else
 	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0),
-#endif
 	defaultProdmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::PRODML2_1),
-#if WITH_RESQML2_2
-	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_2),
-#else
 	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1),
-#endif
 	defaultWitsmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::WITSML2_0) {}
 
 DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappingFilesDirectory) :
@@ -346,17 +338,9 @@ DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappi
 	warnings(),
 	propertyKindMapper(new PropertyKindMapper(this)), defaultHdfProxy(nullptr), defaultCrs(nullptr),
 	hdfProxyFactory(new COMMON_NS::HdfProxyFactory()),
-#if WITH_RESQML2_2
-	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3),
-#else
 	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0),
-#endif
 	defaultProdmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::PRODML2_1),
-#if WITH_RESQML2_2
-	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_2),
-#else
 	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1),
-#endif
 	defaultWitsmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::WITSML2_0)
 {
 	const string error = propertyKindMapper->loadMappingFilesFromDirectory(propertyKindMappingFilesDirectory);

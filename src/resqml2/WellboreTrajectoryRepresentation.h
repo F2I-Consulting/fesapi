@@ -450,7 +450,7 @@ namespace RESQML2_NS
 
 		virtual COMMON_NS::DataObjectReference getHdfProxyDor() const override = 0;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final {return 1;}
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final {return 1;}
 
 		/**
 		 * Queries if this trajectory has a geometry.

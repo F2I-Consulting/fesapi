@@ -107,7 +107,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole) = 0;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final {return 1;}
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final {return 1;}
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

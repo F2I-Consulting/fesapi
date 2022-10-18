@@ -82,7 +82,7 @@ COMMON_NS::DataObjectReference PolylineRepresentation::getHdfProxyDor() const
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_2(0));
 }
 
-resqml22__PointGeometry* PolylineRepresentation::getPointGeometry2_2(unsigned int patchIndex) const
+resqml22__PointGeometry* PolylineRepresentation::getPointGeometry2_2(uint64_t patchIndex) const
 {
 	return patchIndex == 0 ? static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->NodePatch->Geometry : nullptr;
 }

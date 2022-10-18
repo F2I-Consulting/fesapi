@@ -51,7 +51,7 @@ StreamlinesRepresentation::StreamlinesRepresentation(RESQML2_NS::GenericFeatureI
 	setInterpretation(interp);
 }
 
-uint32_t StreamlinesRepresentation::getLineCount() const
+uint64_t StreamlinesRepresentation::getLineCount() const
 {
 	if (isPartial()) {
 		throw std::logic_error("The representation is partial.");
@@ -60,7 +60,7 @@ uint32_t StreamlinesRepresentation::getLineCount() const
 	return static_cast<resqml22__StreamlinesRepresentation*>(gsoapProxy2_3)->LineCount;
 }
 
-uint16_t StreamlinesRepresentation::getWellboreTrajectoryCount() const
+uint64_t StreamlinesRepresentation::getWellboreTrajectoryCount() const
 {
 	auto const* wellbores = static_cast<resqml22__StreamlinesRepresentation*>(gsoapProxy2_3)->StreamlineWellbores;
 	if (wellbores == nullptr) {
@@ -70,7 +70,7 @@ uint16_t StreamlinesRepresentation::getWellboreTrajectoryCount() const
 	return wellbores->WellboreTrajectoryRepresentation.size();
 }
 
-COMMON_NS::DataObjectReference StreamlinesRepresentation::getWellboreTrajectoryDor(uint16_t index) const
+COMMON_NS::DataObjectReference StreamlinesRepresentation::getWellboreTrajectoryDor(uint64_t index) const
 {
 	auto const* wellbores = static_cast<resqml22__StreamlinesRepresentation*>(gsoapProxy2_3)->StreamlineWellbores;
 	if (wellbores == nullptr) {
@@ -248,7 +248,7 @@ void StreamlinesRepresentation::setGeometry(
 	getRepository()->addRelationship(this, localCrs);
 }
 
-resqml22__PointGeometry* StreamlinesRepresentation::getPointGeometry2_2(unsigned int patchIndex) const
+resqml22__PointGeometry* StreamlinesRepresentation::getPointGeometry2_2(uint64_t patchIndex) const
 {
 	if (patchIndex == 0 && static_cast<resqml22__StreamlinesRepresentation*>(gsoapProxy2_3)->Geometry != nullptr &&
 		static_cast<resqml22__StreamlinesRepresentation*>(gsoapProxy2_3)->Geometry->Geometry->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__PointGeometry)
@@ -410,7 +410,7 @@ uint8_t StreamlinesRepresentation::getLocalFacePairPerCellIndices(uint8_t * loca
 	return readArrayNdOfUInt8Values(gridLink->LocalFacePairPerCellIndices, localFacePairPerCellIndices);
 }
 
-uint16_t StreamlinesRepresentation::getGridRepresentationCount() const
+uint64_t StreamlinesRepresentation::getGridRepresentationCount() const
 {
 	auto const* geometry = static_cast<resqml22__StreamlinesRepresentation*>(gsoapProxy2_3)->Geometry;
 	if (geometry == nullptr) {
@@ -424,7 +424,7 @@ uint16_t StreamlinesRepresentation::getGridRepresentationCount() const
 	return gridLink->Grid.size();
 }
 
-COMMON_NS::DataObjectReference StreamlinesRepresentation::getGridRepresentationDor(uint16_t index) const
+COMMON_NS::DataObjectReference StreamlinesRepresentation::getGridRepresentationDor(uint64_t index) const
 {
 	auto const* geometry = static_cast<resqml22__StreamlinesRepresentation*>(gsoapProxy2_3)->Geometry;
 	if (geometry == nullptr) {

@@ -116,7 +116,7 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
 	private:
-		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const final;
+		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(uint64_t patchIndex) const final;
 
 		/**
 		 * Initializes this object

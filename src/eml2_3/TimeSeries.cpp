@@ -49,12 +49,13 @@ void TimeSeries::pushBackTimestamp(const tm & timestamp)
 	static_cast<gsoap_eml2_3::_eml23__TimeSeries*>(gsoapProxy2_3)->Time.push_back(ts);
 }
 
-unsigned int TimeSeries::getTimestampIndex(time_t timestamp) const
+uint64_t TimeSeries::getTimestampIndex(time_t timestamp, LONG64 yearOffset) const
 {
 	gsoap_eml2_3::_eml23__TimeSeries* timeSeries = static_cast<gsoap_eml2_3::_eml23__TimeSeries*>(gsoapProxy2_3);
 
 	for (size_t result = 0; result < timeSeries->Time.size(); ++result) {
-		if (timeTools::timegm(timeSeries->Time[result]->DateTime) == timestamp) {
+		if (timeTools::timegm(timeSeries->Time[result]->DateTime) == timestamp &&
+			((yearOffset == 0 && timeSeries->Time[result]->AgeOffsetAttribute == nullptr) || (timeSeries->Time[result]->AgeOffsetAttribute != nullptr && *timeSeries->Time[result]->AgeOffsetAttribute == yearOffset))) {
 			return result;
 		}
 	}
@@ -62,18 +63,19 @@ unsigned int TimeSeries::getTimestampIndex(time_t timestamp) const
 	throw out_of_range("The timestamp has not been found in the allowed range.");
 }
 
-unsigned int TimeSeries::getTimestampIndex(const tm & timestamp) const
+uint64_t TimeSeries::getTimestampIndex(const tm & timestamp, LONG64 yearOffset) const
 {
 	gsoap_eml2_3::_eml23__TimeSeries* timeSeries = static_cast<gsoap_eml2_3::_eml23__TimeSeries*>(gsoapProxy2_3);
 
 	for (size_t result = 0; result < timeSeries->Time.size(); ++result) {
 		// Very basic equality check between two tm
-		if (timeSeries->Time[result]->DateTime.tm_year == timestamp.tm_year &&
+		if ((timeSeries->Time[result]->DateTime.tm_year == timestamp.tm_year &&
 			timeSeries->Time[result]->DateTime.tm_mon == timestamp.tm_mon &&
 			timeSeries->Time[result]->DateTime.tm_mday == timestamp.tm_mday &&
 			timeSeries->Time[result]->DateTime.tm_hour == timestamp.tm_hour &&
 			timeSeries->Time[result]->DateTime.tm_min == timestamp.tm_min &&
-			timeSeries->Time[result]->DateTime.tm_sec == timestamp.tm_sec) {
+			timeSeries->Time[result]->DateTime.tm_sec == timestamp.tm_sec) &&
+			((yearOffset == 0 && timeSeries->Time[result]->AgeOffsetAttribute == nullptr) || (timeSeries->Time[result]->AgeOffsetAttribute != nullptr && *timeSeries->Time[result]->AgeOffsetAttribute == yearOffset))) {
 			return result;
 		}
 	}

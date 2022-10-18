@@ -65,8 +65,8 @@ void SubRepresentation::loadTargetRelationships()
 	AbstractRepresentation::loadTargetRelationships();
 
 	// Supporting representation
-	const unsigned int supRepCount = getSupportingRepresentationCount();
-	for (unsigned int supRepIndex = 0; supRepIndex < supRepCount; ++supRepIndex) {
+	const uint64_t supRepCount = getSupportingRepresentationCount();
+	for (uint64_t supRepIndex = 0; supRepIndex < supRepCount; ++supRepIndex) {
 		COMMON_NS::DataObjectReference dor = getSupportingRepresentationDor(supRepIndex);
 		convertDorIntoRel<RESQML2_NS::AbstractRepresentation>(dor);
 	}
@@ -106,7 +106,7 @@ void SubRepresentation::pushBackSupportingRepresentation(AbstractRepresentation 
 	pushBackXmlSupportingRepresentation(supportingRep);
 }
 
-AbstractRepresentation* SubRepresentation::getSupportingRepresentation(unsigned int index) const
+AbstractRepresentation* SubRepresentation::getSupportingRepresentation(uint64_t index) const
 {
 	return static_cast<AbstractRepresentation*>(repository->getDataObjectByUuid(getSupportingRepresentationDor(index).getUuid()));
 }

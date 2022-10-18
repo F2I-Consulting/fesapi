@@ -56,7 +56,7 @@ Grid2dRepresentation::Grid2dRepresentation(RESQML2_NS::AbstractFeatureInterpreta
 	setInterpretation(interp);
 }
 
-resqml20__PointGeometry* Grid2dRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
+resqml20__PointGeometry* Grid2dRepresentation::getPointGeometry2_0_1(uint64_t patchIndex) const
 {
 	return patchIndex == 0 ? static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry : nullptr;
 }
@@ -381,7 +381,7 @@ double Grid2dRepresentation::getJSpacing() const
 		return static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Value;
 	}
 
-	const int jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
+	const int64_t jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
 	const double jSpacingOnSupportingRep = getSupportingRepresentation()->getJSpacing();
 
 	return jIndexOffset * jSpacingOnSupportingRep;
@@ -415,7 +415,7 @@ void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 	else if (!getSupportingRepresentationDor().isEmpty())
 	{
 		const int jIndexOrigin = getIndexOriginOnSupportingRepresentation(0);
-		const int jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
+		const int64_t jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
 		std::unique_ptr<double[]> jSpacingsOnSupportingRep(new double[jSpacingCount]);
 		getSupportingRepresentation()->getJSpacing(jSpacingsOnSupportingRep.get());
 		
@@ -452,7 +452,7 @@ double Grid2dRepresentation::getISpacing() const
 		return static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[1]->Spacing)->Value;
 	}
 
-	const int iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
+	const int64_t iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
 	const double iSpacingOnSupportingRep = getSupportingRepresentation()->getISpacing();
 
 	return iIndexOffset * iSpacingOnSupportingRep;
@@ -486,7 +486,7 @@ void Grid2dRepresentation::getISpacing(double* const iSpacings) const
 	else if (!getSupportingRepresentationDor().isEmpty())
 	{
 		const int iIndexOrigin = getIndexOriginOnSupportingRepresentation(1);
-		const int iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
+		const int64_t iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
 		std::unique_ptr<double[]> iSpacingsOnSupportingRep(new double[iSpacingCount]);
 		getSupportingRepresentation()->getISpacing(iSpacingsOnSupportingRep.get());
 
@@ -619,15 +619,18 @@ COMMON_NS::DataObjectReference Grid2dRepresentation::getSupportingRepresentation
 	return COMMON_NS::DataObjectReference();
 }
 
-int Grid2dRepresentation::getIndexOriginOnSupportingRepresentation() const
+uint64_t Grid2dRepresentation::getIndexOriginOnSupportingRepresentation() const
 {
 	resqml20__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry);
 
 	if (geom != nullptr) {
-		return geom->NodeIndicesOnSupportingRepresentation->StartValue;
+		if (geom->NodeIndicesOnSupportingRepresentation->StartValue < 0L) {
+			throw logic_error("The index origin on supporting representation is negative on grid 2d " + getUuid());
+		}
+		return static_cast<uint64_t>(geom->NodeIndicesOnSupportingRepresentation->StartValue);
 	}
 
-	throw logic_error("It does not exist supporting representation for this representation.");
+	throw logic_error("It does not exist supporting representation for the grid 2d representation " + getUuid());
 }
 
 int Grid2dRepresentation::getIndexOriginOnSupportingRepresentation(unsigned int dimension) const
@@ -643,10 +646,10 @@ int Grid2dRepresentation::getIndexOriginOnSupportingRepresentation(unsigned int 
 		throw invalid_argument("There cannot be more than 2 dimensions for a grid 2d representation.");
 	}
 
-	throw logic_error("It does not exist supporting representation for this representation.");
+	throw logic_error("It does not exist supporting representation for the grid 2d representation " + getUuid());
 }
 
-int Grid2dRepresentation::getNodeCountOnSupportingRepresentation(unsigned int dimension) const
+uint64_t Grid2dRepresentation::getNodeCountOnSupportingRepresentation(unsigned int dimension) const
 {
 	resqml20__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry);
 
@@ -659,10 +662,10 @@ int Grid2dRepresentation::getNodeCountOnSupportingRepresentation(unsigned int di
 		}
 	}
 	
-	throw logic_error("It does not exist supporting representation for this representation.");
+	throw logic_error("It does not exist supporting representation for the grid 2d representation " + getUuid());
 }
 
-int Grid2dRepresentation::getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const
+int64_t Grid2dRepresentation::getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const
 {
 	resqml20__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry);
 
@@ -675,7 +678,7 @@ int Grid2dRepresentation::getIndexOffsetOnSupportingRepresentation(unsigned int 
 		}
 	}
 
-	throw logic_error("It does not exist supporting representation for this representation.");
+	throw logic_error("It does not exist supporting representation for the grid 2d representation " + getUuid());
 }
 
 gsoap_resqml2_0_1::resqml20__Point3dFromRepresentationLatticeArray* Grid2dRepresentation::getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(gsoap_resqml2_0_1::resqml20__PointGeometry* patch) const
@@ -753,7 +756,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* Grid2dRepresentation::createArray2dO
 	unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs * localCrs,
 	unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy * proxy,
 	RESQML2_NS::Grid2dRepresentation * supportingRepresentation,
-	unsigned int startGlobalIndex,
+	uint64_t startGlobalIndex,
 	int indexIncrementI, int indexIncrementJ)
 {
 	if (localCrs == nullptr) {

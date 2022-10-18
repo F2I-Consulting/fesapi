@@ -302,7 +302,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of faces in the cell at position @p cellIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getFaceCountOfCell(uint64_t cellIndex) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getFaceCountOfCell(uint64_t cellIndex) const;
 
 		/**
 		 * Gets the node count of a particular face of a particular cell. This method requires you to
@@ -321,7 +321,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of nodes in the face @p localFaceIndex of the cell @p cellIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getNodeCountOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getNodeCountOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const;
 
 		/**
 		 * Gets all the node indices of a particular face of a particular cell. This method requires you
@@ -618,7 +618,7 @@ namespace RESQML2_NS
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final {return 1;}
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final {return 1;}
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

@@ -22,6 +22,11 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
+namespace EML2_NS
+{
+	class TimeSeries;
+}
+
 namespace RESQML2_NS
 {
 	class AbstractValuesProperty;
@@ -70,6 +75,42 @@ namespace RESQML2_NS
 		 * 			data object reference if it fails.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getHdfProxyDor() const = 0;
+
+		/**
+		 * Set a time index in a time series for all point geometries of all existing patches of this representation.
+		 *
+		 * @param 	timeIndex	The time index of the time to associate to this representation.
+		 * @param 	timeSeries	The time series containing the time of the representation at @p timeIndex.
+		 */
+		DLL_IMPORT_OR_EXPORT void setTimeIndex(uint64_t timeIndex, EML2_NS::TimeSeries* timeSeries);
+
+		/**
+		 * @brief Gets the time index of this representation in the associated TimeSeries.
+		 *		Be sure to first check that a TimeSeries is associated this representation by calling getTimeSeriesDor or getTimeSeries;
+		 *
+		 * @exception	std::logic_error	If this representation is partial. Or if the representation is not associated to any TimeSeries.
+		 *
+		 * @returns	The time index of this representation in the associated TimeSeries.
+		 */
+		DLL_IMPORT_OR_EXPORT uint64_t getTimeIndex() const;
+
+		/**
+		 * Gets the TimeSeries associated to this representation.
+		 *
+		 * @returns Null if it fails, else the TimeSeries associated to this representation.
+		 */
+		DLL_IMPORT_OR_EXPORT EML2_NS::TimeSeries* getTimeSeries() const;
+
+		/**
+		 * @brief Gets the data object reference of the TimeSeries containing the time of this representation at a particular index.
+		 *		For now, this method only look for a TimeSeries at the first patch containing a point geometry.
+		 *
+		 * @exception	std::logic_error	If this representation is partial.
+		 *
+		 * @returns	The data object reference of the TimeSeries, or empty
+		 * 			data object reference there is not TimeSeries found.
+		 */
+		COMMON_NS::DataObjectReference getTimeSeriesDor() const;
 
 		/**
 		 * Gets all the properties which use this representation as support.
@@ -222,7 +263,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The patch count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getPatchCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getPatchCount() const = 0;
 
 		/**
 		 * Pushes back this representation into a representation set representation.
@@ -386,7 +427,7 @@ namespace RESQML2_NS
 		 * @returns	nullptr if there is no point geometry for this particular patch otherwise the found
 		 * 			point geometry.
 		 */
-		virtual gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+		virtual gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(uint64_t patchIndex) const;
 
 		/**
 		 * Get the point geometry of a specific v2.2 patch of the representation.
@@ -396,7 +437,7 @@ namespace RESQML2_NS
 		 * @returns	nullptr if there is no point geometry for this particular patch otherwise the found
 		 * 			point geometry.
 		 */
-		virtual gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
+		virtual gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(uint64_t patchIndex) const;
 
 		/**
 		 * Creates a v2.0.1 point geometry patch.
@@ -416,7 +457,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
 		 */
-		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(uint32_t patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, uint64_t const * numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
+		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(uint64_t patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, uint64_t const * numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * Creates a v2.2 point geometry patch.
@@ -436,7 +477,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
 		 */
-		gsoap_eml2_3::resqml22__PointGeometry* createPointGeometryPatch2_2(uint32_t patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, uint64_t const * numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
+		gsoap_eml2_3::resqml22__PointGeometry* createPointGeometryPatch2_2(uint64_t patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, uint64_t const * numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * Gets hdf proxy dor from point geometry patch

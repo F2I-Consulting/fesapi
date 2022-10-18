@@ -77,8 +77,8 @@ void GridConnectionSetRepresentation::loadTargetRelationships()
 	}
 
 	if (isAssociatedToInterpretations()) {
-		unsigned int interpCount = getInterpretationCount();
-		for (unsigned int i = 0; i < interpCount; ++i) {
+		uint64_t interpCount = getInterpretationCount();
+		for (uint64_t i = 0; i < interpCount; ++i) {
 			COMMON_NS::DataObjectReference dor = getInterpretationDorFromIndex(i);
 			RESQML2_NS::AbstractFeatureInterpretation* interp = getRepository()->getDataObjectByUuid<AbstractFeatureInterpretation>(dor.getUuid());
 			if (interp == nullptr) {
@@ -144,7 +144,7 @@ void GridConnectionSetRepresentation::getXyzPointsOfPatch(unsigned int, double *
 	throw logic_error("Not implemented yet");
 }
 
-AbstractFeatureInterpretation * GridConnectionSetRepresentation::getInterpretationFromIndex(int64_t interpretationIndex) const
+AbstractFeatureInterpretation * GridConnectionSetRepresentation::getInterpretationFromIndex(uint64_t interpretationIndex) const
 {
 	return repository->getDataObjectByUuid<AbstractFeatureInterpretation>(getInterpretationUuidFromIndex(interpretationIndex));
 }

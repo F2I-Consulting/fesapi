@@ -31,13 +31,13 @@ uint64_t PolylineSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIn
 		throw range_error("The index of the patch is not in the allowed range of patch.");
 	}
 
-	const unsigned int polylineCount = getPolylineCountOfPatch(patchIndex);
+	const uint64_t polylineCount = getPolylineCountOfPatch(patchIndex);
 	std::unique_ptr<unsigned int[]> nodeCountPerPolyline(new unsigned int[polylineCount]);
 
 	getNodeCountPerPolylineInPatch(patchIndex, nodeCountPerPolyline.get());
 
 	uint64_t nodeCount = 0;
-	for (unsigned int nodeCountPerPolylineIndex = 0; nodeCountPerPolylineIndex < polylineCount; ++nodeCountPerPolylineIndex) {
+	for (uint64_t nodeCountPerPolylineIndex = 0; nodeCountPerPolylineIndex < polylineCount; ++nodeCountPerPolylineIndex) {
 		nodeCount += nodeCountPerPolyline[nodeCountPerPolylineIndex];
 	}
 	return nodeCount;

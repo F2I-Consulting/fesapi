@@ -37,7 +37,7 @@ void SealedVolumeFrameworkRepresentation::setSealedSurfaceFramework(SealedSurfac
 	getRepository()->addRelationship(this, ssf);
 }
 
-void SealedVolumeFrameworkRepresentation::setInterpretationOfVolumeRegion(unsigned int regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp)
+void SealedVolumeFrameworkRepresentation::setInterpretationOfVolumeRegion(uint64_t regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp)
 {
 	if (stratiUnitInterp == nullptr) {
 		throw invalid_argument("Cannot set a null strati Unit Interpretation");
@@ -57,7 +57,7 @@ SealedSurfaceFrameworkRepresentation* SealedVolumeFrameworkRepresentation::getSe
 	return repository->getDataObjectByUuid<SealedSurfaceFrameworkRepresentation>(getSealedStructuralFrameworkDor().getUuid());
 }
 
-StratigraphicUnitInterpretation* SealedVolumeFrameworkRepresentation::getStratiUnitInterp(unsigned int regionIndex) const
+StratigraphicUnitInterpretation* SealedVolumeFrameworkRepresentation::getStratiUnitInterp(uint64_t regionIndex) const
 {
 	return repository->getDataObjectByUuid<StratigraphicUnitInterpretation>(getStratiUnitInterpDor(regionIndex).getUuid());
 }
@@ -68,8 +68,8 @@ void SealedVolumeFrameworkRepresentation::loadTargetRelationships()
 
 	convertDorIntoRel<SealedSurfaceFrameworkRepresentation>(getSealedStructuralFrameworkDor());
 
-	const unsigned int count = getRegionCount();
-	for (unsigned int regionIdx = 0; regionIdx < count; ++regionIdx) {
+	const uint64_t count = getRegionCount();
+	for (uint64_t regionIdx = 0; regionIdx < count; ++regionIdx) {
 		convertDorIntoRel<StratigraphicUnitInterpretation>(getStratiUnitInterpDor(regionIdx));
 	}
 }

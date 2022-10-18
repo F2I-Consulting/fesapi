@@ -1056,19 +1056,26 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	timeSeries->pushBackTimestamp(1409753895);
 	timeSeries->pushBackTimestamp(1441289895);
 	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		// RESQML2.0 forces to export values at each timestamp of the a whole time series in a single property
+
 		RESQML2_NS::ContinuousProperty* continuousPropTime0 = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
 			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
-		RESQML2_NS::ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
-		RESQML2_NS::ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property", 1,
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
-		continuousPropTime0->setTimeIndices(0, 1, timeSeries);
+		continuousPropTime0->setTimeSeries(timeSeries);
+		continuousPropTime0->setSingleTimestamp(timeSeries->getTimestamp(0));
 		double valuesTime0[2] = { 0, 1 };
 		continuousPropTime0->pushBackDoubleHdf5Array3dOfValues(valuesTime0, 2, 1, 1, hdfProxy);
-		continuousPropTime1->setTimeIndices(1, 1, timeSeries);
+
+		RESQML2_NS::ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
+			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		continuousPropTime1->setTimeSeries(timeSeries);
+		continuousPropTime1->setSingleTimestamp(1409753895);
 		double valuesTime1[2] = { 2, 3 };
 		continuousPropTime1->pushBackDoubleHdf5Array3dOfValues(valuesTime1, 2, 1, 1, hdfProxy);
-		continuousPropTime2->setTimeIndices(2, 1, timeSeries);
+
+		RESQML2_NS::ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property", 1,
+			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		continuousPropTime2->setTimeSeries(timeSeries);
+		continuousPropTime2->setSingleTimestamp(1441289895);
 		double valuesTime2[2] = { 3, 4 };
 		continuousPropTime2->pushBackDoubleHdf5Array3dOfValues(valuesTime2, 2, 1, 1, hdfProxy);
 	}
@@ -1078,9 +1085,10 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 
 		RESQML2_NS::ContinuousProperty* dynamicContinuousProp = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
 			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, standardLengthPropKind);
-		dynamicContinuousProp->setTimeIndices(0, 3, timeSeries);
+
+		dynamicContinuousProp->setTimeSeries(timeSeries);
 		double valuesTime[6] = { 0, 1, 2, 3, 3, 4 };
-		unsigned long long dimensions[4] = { 2, 1, 1, 3 };
+		uint64_t dimensions[4] = { 2, 1, 1, 3 };
 		dynamicContinuousProp->pushBackDoubleHdf5ArrayOfValues(
 			valuesTime, dimensions, 4, hdfProxy);
 	}
@@ -2668,10 +2676,21 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 		}
 
 		// Time Series
-		if (prop->getTimeIndicesCount() != 0) {
-			std::cout << "\tThis property is a dynamic one" << std::endl;
-			std::cout << "\tTime index start is " << prop->getTimeIndexStart() << std::endl;
-			std::cout << "\tTime index count is " << prop->getTimeIndicesCount() << std::endl;
+		auto singleTs = prop->getSingleTimestamp();
+		if (prop->getTimeSeries() != nullptr || singleTs != -1) {
+			std::cout << "\tThis property is a time related one" << std::endl;
+			if (singleTs != -1) {
+				std::cout << "\tThis property is a related to single timestamp " << std::endl;
+				if (prop->getTimeSeries() != nullptr) {
+					std::cout << "which is part of a time series at index " << prop->getTimeSeries()->getTimestampIndex(singleTs) << std::endl;
+				}
+				else {
+					std::cout << "which is not part of a time series." << std::endl;
+				}
+			}
+			else {
+				std::cout << "\tThis property is a related to a whole time series" << std::endl;
+			}
 		}
 	}
 

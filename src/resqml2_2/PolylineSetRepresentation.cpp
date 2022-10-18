@@ -218,7 +218,7 @@ COMMON_NS::DataObjectReference PolylineSetRepresentation::getHdfProxyDor() const
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
-resqml22__PointGeometry* PolylineSetRepresentation::getPointGeometry2_2(unsigned int patchIndex) const
+resqml22__PointGeometry* PolylineSetRepresentation::getPointGeometry2_2(uint64_t patchIndex) const
 {
 	if (patchIndex < static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size() &&
 		static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch[patchIndex]->Geometry->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__PointGeometry)
@@ -227,7 +227,7 @@ resqml22__PointGeometry* PolylineSetRepresentation::getPointGeometry2_2(unsigned
 	return nullptr;
 }
 
-unsigned int PolylineSetRepresentation::getPolylineCountOfPatch(unsigned int patchIndex) const
+uint64_t PolylineSetRepresentation::getPolylineCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw std::out_of_range("patchIndex id out of range.");
@@ -241,15 +241,15 @@ unsigned int PolylineSetRepresentation::getPolylineCountOfPatch(unsigned int pat
 	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray)
 	{
 		auto dsPart = static_cast<eml23__BooleanExternalArray*>(patch->ClosedPolylines)->Values->ExternalFileProxy[0];
-		return getHdfProxyFromDataset(dsPart) ->getElementCount(dsPart->PathInExternalFile);
+		return getHdfProxyFromDataset(dsPart)->getElementCount(dsPart->PathInExternalFile);
 	}
 
 	return 0;
 }
 
-unsigned int PolylineSetRepresentation::getPolylineCountOfAllPatches() const
+uint64_t PolylineSetRepresentation::getPolylineCountOfAllPatches() const
 {
-	unsigned int result = 0;
+	uint64_t result = 0;
 
 	for (size_t i = 0; i < static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size(); i++) {
 		result += getPolylineCountOfPatch(i);
@@ -294,7 +294,7 @@ void PolylineSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, dou
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
 }
 
-unsigned int PolylineSetRepresentation::getPatchCount() const
+uint64_t PolylineSetRepresentation::getPatchCount() const
 {
     return static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size();
 }

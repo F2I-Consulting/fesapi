@@ -71,7 +71,7 @@ void ContinuousColorMap::setHsvColors(unsigned int colorCount,
 	}
 }
 
-unsigned int ContinuousColorMap::getColorCount() const
+uint64_t ContinuousColorMap::getColorCount() const
 {
 	resqml22__ContinuousColorMap const* const continuousColorMap = static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_3);
 	return continuousColorMap->Entry.size();

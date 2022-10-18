@@ -42,7 +42,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The patch count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final;
 
 		/**
 		 * Get the values data type in the HDF dataset
@@ -63,7 +63,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values in the @p dimIndex dimension of @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getValuesCountOfDimensionOfPatch(uint64_t dimIndex, unsigned int patchIndex) const final;
 
 		/**
 		 * Gets the count of dimensions of the underlying HDF5 dataset of a given patch of this property.
@@ -74,7 +74,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The number of values, 0 otherwise.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getDimensionsCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getDimensionsCountOfPatch(unsigned int patchIndex) const final;
 
 		/**
 		 * Pushes back a new facet to this instance. Facets are qualifiers for property values which
@@ -1114,7 +1114,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the HDF Proxy of patch.
 		 */
-		EML2_NS::AbstractHdfProxy* getDatasetOfPatch(unsigned int patchIndex, int64_t & nullValue, std::string & dsPath) const final;
+		EML2_NS::AbstractHdfProxy* getDatasetOfPatch(uint64_t patchIndex, int64_t & nullValue, std::string & dsPath) const final;
 
 		/**
 		 * Gets the data object reference of the HDF proxy which is associated to a particular

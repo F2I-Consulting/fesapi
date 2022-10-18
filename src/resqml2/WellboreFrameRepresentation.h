@@ -191,7 +191,7 @@ namespace RESQML2_NS
 		 */
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final {return 1;}
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final {return 1;}
 
 	protected:
 		/** Default constructor */

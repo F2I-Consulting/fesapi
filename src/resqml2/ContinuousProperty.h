@@ -496,12 +496,12 @@ namespace RESQML2_NS
 
 			// Some minimum and maximum values are given : No need to compute them.
 			if (minimumValue != nullptr) {
-				for (size_t propIndex = 0; propIndex < elementCount; ++propIndex) {
+				for (unsigned int propIndex = 0; propIndex < elementCount; ++propIndex) {
 					setMinimumValue(getMinimumValueSize() > propIndex ? fmin(getMinimumValue(propIndex), minimumValue[propIndex]) : minimumValue[propIndex], propIndex);
 				}
 			}
 			if (maximumValue != nullptr) {
-				for (size_t propIndex = 0; propIndex < elementCount; ++propIndex) {
+				for (unsigned int propIndex = 0; propIndex < elementCount; ++propIndex) {
 					setMaximumValue(getMaximumValueSize() > propIndex ? fmax(getMaximumValue(propIndex), maximumValue[propIndex]) : maximumValue[propIndex], propIndex);
 				}
 			}

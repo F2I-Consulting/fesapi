@@ -183,12 +183,12 @@ int64_t DiscreteProperty::getNullValue(unsigned int patchIndex) const
 	return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(abstractIntArray)->NullValue;
 }
 
-bool DiscreteProperty::hasMinimumValue(unsigned int index) const
+bool DiscreteProperty::hasMinimumValue(uint64_t index) const
 {
 	return static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1)->MinimumValue.size() > index;
 }
 
-int64_t DiscreteProperty::getMinimumValue(unsigned int index) const
+int64_t DiscreteProperty::getMinimumValue(uint64_t index) const
 {
 	if (!hasMinimumValue(index)) {
 		throw std::logic_error("This property has not minimum value at index " + std::to_string(index) );
@@ -197,12 +197,12 @@ int64_t DiscreteProperty::getMinimumValue(unsigned int index) const
 	return static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1)->MinimumValue[index];
 }
 
-bool DiscreteProperty::hasMaximumValue(unsigned int index) const
+bool DiscreteProperty::hasMaximumValue(uint64_t index) const
 {
 	return static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1)->MaximumValue.size() > index;
 }
 
-int64_t DiscreteProperty::getMaximumValue(unsigned int index) const
+int64_t DiscreteProperty::getMaximumValue(uint64_t index) const
 {
 	if (!hasMaximumValue(index)) {
 		throw std::logic_error("This property has not maximum value at index " + std::to_string(index));
@@ -211,7 +211,7 @@ int64_t DiscreteProperty::getMaximumValue(unsigned int index) const
 	return static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1)->MaximumValue[index];
 }
 
-void DiscreteProperty::setMinimumValue(int64_t value, unsigned int index) const
+void DiscreteProperty::setMinimumValue(int64_t value, uint64_t index) const
 {
 	_resqml20__DiscreteProperty* prop = static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1);
 
@@ -222,7 +222,7 @@ void DiscreteProperty::setMinimumValue(int64_t value, unsigned int index) const
 	prop->MinimumValue[index] = value;
 }
 
-void DiscreteProperty::setMaximumValue(int64_t value, unsigned int index) const
+void DiscreteProperty::setMaximumValue(int64_t value, uint64_t index) const
 {
 	_resqml20__DiscreteProperty* prop = static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1);
 

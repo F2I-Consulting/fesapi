@@ -219,7 +219,7 @@ gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* AbstractIjkGridRepresen
 	return static_cast<gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation*>(gsoapProxy2_3);
 }
 
-gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractIjkGridRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
+gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractIjkGridRepresentation::getPointGeometry2_0_1(uint64_t patchIndex) const
 {
 	if (gsoapProxy2_0_1 == nullptr) {
 		throw logic_error("This is not a RESQML 2.0.1 dataobject.");
@@ -232,7 +232,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractIjkGridRepresentation::getPo
 	throw range_error("There cannot be more than one patch is an ijk grid representation.");
 }
 
-gsoap_eml2_3::resqml22__PointGeometry* AbstractIjkGridRepresentation::getPointGeometry2_2(unsigned int patchIndex) const
+gsoap_eml2_3::resqml22__PointGeometry* AbstractIjkGridRepresentation::getPointGeometry2_2(uint64_t patchIndex) const
 {
 	if (gsoapProxy2_3 == nullptr) {
 		throw logic_error("This is not a RESQML 2.2 dataobject.");
@@ -871,15 +871,15 @@ void AbstractIjkGridRepresentation::loadSplitInformation()
 
 	auto kCount = getKCellCount();
 	kCellIndexWithGapLayer = new unsigned int[kCount];
-	for (size_t k = 0; k < kCount; ++k) {
+	for (unsigned int k = 0; k < kCount; ++k) {
 		kCellIndexWithGapLayer[k] = k;
 	}
 	const auto kGapCount = getKGapsCount();
 	if (kGapCount > 0) {
 		std::unique_ptr<bool[]> gapAfterLayer(new bool[kCount - 1]);
 		getKGaps(gapAfterLayer.get());
-		size_t offset = 0;
-		for (size_t k = 0; k < kCount - 1; ++k) {
+		unsigned int offset = 0;
+		for (unsigned int k = 0; k < kCount - 1; ++k) {
 			kCellIndexWithGapLayer[k] += offset;
 			if (gapAfterLayer[k]) {
 				++offset;
@@ -975,7 +975,7 @@ void AbstractIjkGridRepresentation::unloadSplitInformation()
 	}
 }
 
-unsigned int AbstractIjkGridRepresentation::getKGapsCount() const
+uint64_t AbstractIjkGridRepresentation::getKGapsCount() const
 {
 	if (isTruncated()) {
 		return 0;

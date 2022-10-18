@@ -156,7 +156,7 @@ void PlaneSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double
 	}
 }
 
-unsigned int PlaneSetRepresentation::getPatchCount() const
+uint64_t PlaneSetRepresentation::getPatchCount() const
 {
     return static_cast<_resqml20__PlaneSetRepresentation*>(gsoapProxy2_0_1)->Planes.size();
 }

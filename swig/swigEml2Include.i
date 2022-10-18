@@ -158,7 +158,7 @@ namespace EML2_NS
 		 * @returns	The number of dimensions of the dataset if successful, otherwise returns a negative
 		 * 			value.
 		 */
-		unsigned int getDimensionCount(const std::string & datasetName);
+		uint64_t getDimensionCount(const std::string & datasetName);
 
 		/**
 		 * Get the number of elements in each dimension of an HDF5 dataset.
@@ -524,8 +524,8 @@ namespace EML2_NS
 	{
 	public:
 		unsigned int getGraphicalInformationSetCount() const;
-		std::string getTargetObjectUuid(unsigned int index) const;
-		COMMON_NS::AbstractObject* getTargetObject(unsigned int index) const;
+		std::string getTargetObjectUuid(uint64_t index) const;
+		COMMON_NS::AbstractObject* getTargetObject(uint64_t index) const;
 		bool hasGraphicalInformation(COMMON_NS::AbstractObject const* targetObject) const;
 		
 		bool hasDefaultColor(COMMON_NS::AbstractObject const* targetObject) const;
@@ -578,9 +578,39 @@ namespace EML2_NS
 	class TimeSeries : public COMMON_NS::AbstractObject
 	{
 	public:
+
+		/**
+		 * Pushes back an timestamp into this time series.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @param 	timestamp	The timestamp to push back.
+		 */
 		void pushBackTimestamp(time_t timestamp);
-		unsigned int getTimestampIndex(time_t timestamp) const;
-		unsigned int getTimestampCount() const;
+
+		/**
+		 * Gets the index of a given timestamp in this time series.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p timestamp has not been found in this time series.
+		 *
+		 * @param 	timestamp	The timestamp we look for.
+		 * @param 	yearOffset	Indicates that the dateTime attribute must be translated according to this value.
+		 *
+		 * @returns	The index of @p timestamp in this time series.
+		 */
+		uint64_t getTimestampIndex(time_t timestamp, LONG64 yearOffset = 0) const;
+
+		/**
+		 * Gets a timestamp at a particular index of this time series.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the timestamp we look for.
+		 *
+		 * @returns	The timestamp at position @p index.
+		 */
 		time_t getTimestamp(unsigned int index) const;
 	};
 	

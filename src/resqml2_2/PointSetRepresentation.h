@@ -26,7 +26,7 @@ namespace RESQML2_2_NS
 	class PointSetRepresentation final : public RESQML2_NS::PointSetRepresentation
 	{
 	private :
-		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
+		gsoap_eml2_3::resqml22__PointGeometry* getPointGeometry2_2(uint64_t patchIndex) const;
 
 	public:
 		/**
@@ -85,7 +85,7 @@ namespace RESQML2_2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
 			unsigned int xyzPointCount, double const * xyzPoints,

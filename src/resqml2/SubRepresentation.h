@@ -190,7 +190,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The lattice dimension count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
 
 		/**
 		 * Gets the offset value at a given dimension of the lattice the element indices of a particular
@@ -336,7 +336,7 @@ namespace RESQML2_NS
 		/** Please do note use : not implemented yet. */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double* xyzPoints) const override;
 
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getPatchCount() const override = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getPatchCount() const override = 0;
 
 		/**
 		 * Pushes back a representation which is one of the support of this sub-representation. And push
@@ -357,7 +357,7 @@ namespace RESQML2_NS
 		 * 			a serialized state but can occur after creating a sub-representation and before
 		 * 			associating any supporting representation to it.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getSupportingRepresentationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getSupportingRepresentationCount() const = 0;
 
 		/**
 		 * Gets the supporting representation located at a specific index of this sub-representation.
@@ -370,7 +370,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The supporting representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractRepresentation* getSupportingRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractRepresentation* getSupportingRepresentation(uint64_t index) const;
 
 		/**
 		 * Gets the data object reference of the supporting representation located at a specific index
@@ -384,7 +384,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The data object reference of the supporting representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSupportingRepresentationDor(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSupportingRepresentationDor(uint64_t index) const = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

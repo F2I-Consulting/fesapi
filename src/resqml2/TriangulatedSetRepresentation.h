@@ -73,14 +73,14 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The triangle count of the patch at position @p patchIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getTriangleCountOfPatch(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getTriangleCountOfPatch(unsigned int patchIndex) const = 0;
 
 		/**
 		 * Get the triangle count of all patches of this representation.
 		 *
 		 * @returns	The triangle count of all patches.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getTriangleCountOfAllPatches() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getTriangleCountOfAllPatches() const = 0;
 
 		/**
 		 * Gets all the triangle node indices of a particular patch of this representation. See
@@ -112,7 +112,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const = 0;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override = 0;
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const override = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

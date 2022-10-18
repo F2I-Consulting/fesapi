@@ -189,8 +189,8 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCount() const
 
 uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretationIndex(int64_t interpretationIndex) const
 {
-	const unsigned int interpCount = getInterpretationCount();
-	if (interpretationIndex < -1 || interpretationIndex >= static_cast<int>(interpCount)) {
+	const uint64_t interpCount = getInterpretationCount();
+	if (interpretationIndex < -1 || interpretationIndex >= static_cast<int64_t>(interpCount)) {
 		throw out_of_range("The interpretation index is out of range.");
 	}
 	
@@ -250,8 +250,8 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretatio
 
 void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, int64_t interpretationIndex) const
 {
-	const unsigned int interpCount = getInterpretationCount();
-	if (interpretationIndex < -1 || interpretationIndex >= static_cast<int>(interpCount)) {
+	const uint64_t interpCount = getInterpretationCount();
+	if (interpretationIndex < -1 || interpretationIndex >= static_cast<int64_t>(interpCount)) {
 		throw out_of_range("The interpretation index is out of range.");
 	}
 
@@ -355,7 +355,7 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 	}
 }
 
-COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getInterpretationDorFromIndex(int64_t interpretationIndex) const
+COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getInterpretationDorFromIndex(uint64_t interpretationIndex) const
 {
 	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
@@ -498,12 +498,12 @@ void GridConnectionSetRepresentation::setInterpretationForAllConnections(RESQML2
 	elements->Count = cellIndexPairCount;
 
 	// HDF
-	std::unique_ptr<uint32_t[]> const cumulative(new uint32_t[cellIndexPairCount]);
+	std::unique_ptr<uint64_t[]> const cumulative(new uint64_t[cellIndexPairCount]);
 	for (size_t i = 0; i < cellIndexPairCount; ++i) {
 		cumulative[i] = i + 1;
 	}
 	hsize_t numValueInEachDim = cellIndexPairCount;
-	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, cumulative.get(), &numValueInEachDim, 1);
+	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, cumulative.get(), &numValueInEachDim, 1);
 }
 
 void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::AbstractFeatureInterpretation* interp)

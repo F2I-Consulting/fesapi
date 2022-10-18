@@ -336,7 +336,7 @@ void DiscreteProperty::pushBackLongHdf5ArrayOfValues(
 
 	if (minimumValue != nullptr && maximumValue != nullptr) {
 		const unsigned int elementCount = getElementCountPerValue();
-		for (size_t propIndex = 0; propIndex < elementCount; ++propIndex) {
+		for (unsigned int propIndex = 0; propIndex < elementCount; ++propIndex) {
 			setMinimumValue(getMinimumValueSize() > propIndex 
 					? (getMinimumValue(propIndex) > minimumValue[propIndex] ? minimumValue[propIndex] : getMinimumValue(propIndex))
 					: minimumValue[propIndex]
@@ -376,7 +376,7 @@ void DiscreteProperty::setValuesOfLongHdf5ArrayOfValues(
 
 		int64_t nullValue = getNullValue(patchIndex);
 
-		for (size_t propIndex = 0; propIndex < elementCount; ++propIndex) {
+		for (unsigned int propIndex = 0; propIndex < elementCount; ++propIndex) {
 			for (size_t i = 0; i < nValues; i += elementCount) {
 				if (values[i] == nullValue) { continue; }
 				if (getMinimumValue(propIndex) > values[i]) {

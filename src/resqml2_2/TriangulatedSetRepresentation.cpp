@@ -77,7 +77,7 @@ COMMON_NS::DataObjectReference TriangulatedSetRepresentation::getHdfProxyDor() c
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_2(0));
 }
 
-resqml22__PointGeometry* TriangulatedSetRepresentation::getPointGeometry2_2(unsigned int patchIndex) const
+resqml22__PointGeometry* TriangulatedSetRepresentation::getPointGeometry2_2(uint64_t patchIndex) const
 {
 	_resqml22__TriangulatedSetRepresentation* triRep = static_cast<_resqml22__TriangulatedSetRepresentation*>(gsoapProxy2_3);
 	
@@ -161,7 +161,7 @@ void TriangulatedSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex,
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
 }
 
-unsigned int TriangulatedSetRepresentation::getTriangleCountOfPatch(unsigned int patchIndex) const
+uint64_t TriangulatedSetRepresentation::getTriangleCountOfPatch(unsigned int patchIndex) const
 {
 	_resqml22__TriangulatedSetRepresentation* triRep = static_cast<_resqml22__TriangulatedSetRepresentation*>(gsoapProxy2_3);
 	
@@ -171,12 +171,12 @@ unsigned int TriangulatedSetRepresentation::getTriangleCountOfPatch(unsigned int
 		throw out_of_range("The patchIndex is out of range");
 }
 
-unsigned int TriangulatedSetRepresentation::getTriangleCountOfAllPatches() const
+uint64_t TriangulatedSetRepresentation::getTriangleCountOfAllPatches() const
 {
-	unsigned int result = 0;
+	uint64_t result = 0;
 
 	std::vector<resqml22__TrianglePatch * > patches = static_cast<_resqml22__TriangulatedSetRepresentation*>(gsoapProxy2_3)->TrianglePatch;
-	for (unsigned int i = 0; i < patches.size(); ++i)
+	for (size_t i = 0; i < patches.size(); ++i)
 		result += patches[i]->Count;
 
 	return result;
@@ -196,15 +196,15 @@ void TriangulatedSetRepresentation::getTriangleNodeIndicesOfPatch(unsigned int p
 void TriangulatedSetRepresentation::getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const
 {
 	_resqml22__TriangulatedSetRepresentation* triRep = static_cast<_resqml22__TriangulatedSetRepresentation*>(gsoapProxy2_3);
-	unsigned int patchCount = triRep->TrianglePatch.size();
-	for (unsigned int patchIndex = 0; patchIndex < patchCount; patchIndex++)
+	size_t patchCount = triRep->TrianglePatch.size();
+	for (size_t patchIndex = 0; patchIndex < patchCount; patchIndex++)
 	{
 		getTriangleNodeIndicesOfPatch(patchIndex, triangleNodeIndices);
 		triangleNodeIndices += getTriangleCountOfPatch(patchIndex) * 3;
 	}
 }
 
-unsigned int TriangulatedSetRepresentation::getPatchCount() const
+uint64_t TriangulatedSetRepresentation::getPatchCount() const
 {
 	return static_cast<_resqml22__TriangulatedSetRepresentation*>(gsoapProxy2_3)->TrianglePatch.size();
 }

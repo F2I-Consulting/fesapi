@@ -266,7 +266,7 @@ int64_t SubRepresentation::getLatticeElementIndicesStartValue(unsigned int patch
 	return lattice->StartValue;
 }
 
-unsigned int SubRepresentation::getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex) const
+uint64_t SubRepresentation::getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex) const
 {
 	_resqml22__SubRepresentation const * rep = getSpecializedGsoapProxy();
 
@@ -360,19 +360,19 @@ void SubRepresentation::getSupportingRepresentationIndicesOfPatch(unsigned int p
 	}
 }
 
-unsigned int SubRepresentation::getPatchCount() const
+uint64_t SubRepresentation::getPatchCount() const
 {
 	return getSpecializedGsoapProxy()->SubRepresentationPatch.size();
 }
 
-unsigned int SubRepresentation::getSupportingRepresentationCount() const
+uint64_t SubRepresentation::getSupportingRepresentationCount() const
 {
 	return getSpecializedGsoapProxy()->SupportingRepresentation.size();
 }
 
-COMMON_NS::DataObjectReference SubRepresentation::getSupportingRepresentationDor(unsigned int index) const
+COMMON_NS::DataObjectReference SubRepresentation::getSupportingRepresentationDor(uint64_t index) const
 {
-	const unsigned int supRepCount = getSupportingRepresentationCount();
+	const uint64_t supRepCount = getSupportingRepresentationCount();
 
 	if (supRepCount == 0) {
 		throw invalid_argument("No supporting rep");

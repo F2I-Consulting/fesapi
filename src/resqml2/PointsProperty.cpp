@@ -42,7 +42,7 @@ COMMON_NS::AbstractObject::numericalDatatypeEnum PointsProperty::getValuesHdfDat
 	return hdfProxy->getNumericalDatatype(dsPath);
 }
 
-unsigned int PointsProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const
+uint64_t PointsProperty::getValuesCountOfDimensionOfPatch(uint64_t dimIndex, unsigned int patchIndex) const
 {
 	if (isPartial()) {
 		throw logic_error("You cannot get values from a partial property.");
@@ -61,7 +61,7 @@ unsigned int PointsProperty::getValuesCountOfDimensionOfPatch(unsigned int dimIn
 	throw out_of_range("The dim index to get the count is out of range.");
 }
 
-unsigned int PointsProperty::getDimensionsCountOfPatch(unsigned int patchIndex) const
+uint64_t PointsProperty::getDimensionsCountOfPatch(unsigned int patchIndex) const
 {
 	if (isPartial()) {
 		throw logic_error("You cannot get values from a partial property.");
@@ -78,7 +78,7 @@ uint64_t PointsProperty::getXyzPointCountOfAllPatches() const
 {
 	uint64_t result = 0;
 
-	const unsigned int patchCount = getPatchCount();
+	const uint64_t patchCount = getPatchCount();
 	for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex)
 	{
 		result += getXyzPointCountOfPatch(patchIndex);
@@ -99,7 +99,7 @@ void PointsProperty::getXyzPointsOfPatchInGlobalCrs(unsigned int patchIndex, dou
 
 void PointsProperty::getXyzPointsOfAllPatches(double* xyzPoints) const
 {
-	const unsigned int patchCount = getPatchCount();
+	const uint64_t patchCount = getPatchCount();
 	getXyzPointsOfPatch(0, xyzPoints);
 	for (unsigned int patchIndex = 1; patchIndex < patchCount; patchIndex++)
 	{

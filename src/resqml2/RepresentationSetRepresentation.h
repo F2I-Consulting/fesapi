@@ -62,7 +62,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns 1 since we consider that representation set representations have only 1 patch.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override {return 1;}
+		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const override {return 1;}
 
 		/**
 		 * Checks if this representation set contains only one type of representations (homogeneous) or
@@ -82,7 +82,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The representation count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getRepresentationCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getRepresentationCount() const;
 
 		/**
 		 * Gets a particular representation in this representation set according to its position.
@@ -94,7 +94,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	A pointer to the representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepresentation(uint64_t index) const;
 
 		/**
 		 * Gets the data object reference of a particular representation in this representation set
@@ -107,7 +107,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The data object reference of the representation at position @p index.
 		 */
-		COMMON_NS::DataObjectReference getRepresentationDor(unsigned int index) const;
+		COMMON_NS::DataObjectReference getRepresentationDor(uint64_t index) const;
 
 		/**
 		 * Pushes back a representation into this representation set. The value of the @c

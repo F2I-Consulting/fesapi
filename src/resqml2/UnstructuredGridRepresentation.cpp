@@ -265,7 +265,7 @@ void UnstructuredGridRepresentation::unloadGeometry()
 	faceIndicesOfCells.reset();
 }
 
-unsigned int UnstructuredGridRepresentation::getFaceCountOfCell(uint64_t cellIndex) const
+uint64_t UnstructuredGridRepresentation::getFaceCountOfCell(uint64_t cellIndex) const
 {
 	if (cellIndex >= getCellCount())
 		throw out_of_range("The cell index is out of range.");
@@ -305,7 +305,7 @@ uint64_t UnstructuredGridRepresentation::getGlobalFaceIndex(uint64_t cellIndex, 
 	return globalFaceIndex;
 }
 
-unsigned int UnstructuredGridRepresentation::getNodeCountOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const
+uint64_t UnstructuredGridRepresentation::getNodeCountOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const
 {
 	if (constantNodeCountPerFace != 0)
 		return constantNodeCountPerFace;
