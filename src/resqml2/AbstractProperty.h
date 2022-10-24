@@ -255,7 +255,7 @@ namespace RESQML2_NS
 		/**
 		 * Set a single associated timestamp for this property.
 		 * RESQML2.0.1	: Must be used with and after setTimeSeries.
-		 * RESQML2.2	: If, used the property must contain values for a single timestamp (as in 2.0.1). It cannot be used with setTimeSeries.
+		 * RESQML2.2	: The property must contain values for a single timestamp (as in 2.0.1). It cannot be used with setTimeSeries.
 		 *
 		 * @exception	invalid_argument	Regarding RESQML2.0.1, this method cannot be called if setTimeSeries has not been called before.
 		 *
