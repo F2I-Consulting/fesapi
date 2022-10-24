@@ -57,7 +57,7 @@ uint64_t TimeSeries::getTimestampIndex(time_t timestamp, LONG64 yearOffset) cons
 
 	for (size_t result = 0; result < timeSeries->Time.size(); ++result) {
 		if (timeTools::timegm(timeSeries->Time[result]->DateTime) == timestamp &&
-			((yearOffset == 0 && timeSeries->Time[result]->AgeOffsetAttribute == nullptr) || (timeSeries->Time[result]->AgeOffsetAttribute!= nullptr && *timeSeries->Time[result]->AgeOffsetAttribute == yearOffset))) {
+			((yearOffset == 0 && timeSeries->Time[result]->AgeOffsetAttribute == nullptr) || (timeSeries->Time[result]->AgeOffsetAttribute != nullptr && *timeSeries->Time[result]->AgeOffsetAttribute == yearOffset))) {
 			return result;
 		}
 	}

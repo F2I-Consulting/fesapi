@@ -138,7 +138,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
     resqml20__SealedContactRepresentationPart* contactRep = static_cast<resqml20__SealedContactRepresentationPart*>(orgRep->SealedContactRepresentation[contactIndex]);
 
     // we look for the supporting representation index
-	int64_t representationIndex = -1;
+	uint64_t representationIndex = (std::numeric_limits<uint64_t>::max)();
 	const uint64_t representationCount = getRepresentationCount();
 	for (uint64_t i = 0; i < representationCount; ++i) {
 		if (getRepresentation(i)->getUuid() == supportingRepresentation->getUuid()) {
@@ -146,7 +146,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
 			break;
 		}
 	}
-	if (representationIndex == -1) {
+	if (representationIndex == (std::numeric_limits<uint64_t>::max)()) {
 		throw invalid_argument("The supporting representation is not referenced by the sealed surface framework");
 	}
 

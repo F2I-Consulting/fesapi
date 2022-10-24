@@ -41,9 +41,9 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void setHsvColors(uint64_t colorCount,
 			double const* hsvColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const* indices = nullptr);
+			double const* indices = nullptr) final;
 
-		DLL_IMPORT_OR_EXPORT uint64_t getColorCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getColorCount() const final;
 
 		/**
 		 * @brief	Gets interpolation domain

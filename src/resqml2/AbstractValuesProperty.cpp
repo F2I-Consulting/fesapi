@@ -40,18 +40,14 @@ namespace {
 
 uint64_t AbstractValuesProperty::getPatchCount() const
 {
-	size_t result = 0;
 	if (gsoapProxy2_0_1 != nullptr) {
-		result = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues.size();
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues.size();
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		result = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch.size();
+		return static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch.size();
 	}
-	else {
-		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
-	}
-
-	return result;
+	
+	throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
 }
 
 COMMON_NS::AbstractObject::numericalDatatypeEnum AbstractValuesProperty::getValuesHdfDatatype() const

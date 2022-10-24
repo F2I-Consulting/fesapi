@@ -577,7 +577,10 @@ uint64_t Grid2dRepresentation::getIndexOriginOnSupportingRepresentation() const
 	resqml22__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml22__Grid2dRepresentation*>(gsoapProxy2_3)->Geometry);
 
 	if (geom != nullptr) {
-		return geom->NodeIndicesOnSupportingRepresentation->StartValue;
+		if (geom->NodeIndicesOnSupportingRepresentation->StartValue < 0L) {
+			throw logic_error("The index origin on supporting representation is negative on grid 2d " + getUuid());
+		}
+		return static_cast<uint64_t>(geom->NodeIndicesOnSupportingRepresentation->StartValue);
 	}
 
 	throw logic_error("It does not exist supporting representation for this representation.");

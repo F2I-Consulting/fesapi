@@ -67,9 +67,8 @@ double AbstractLocal3dCrs::getOriginOrdinal1() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->getOriginOrdinal1();
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 double AbstractLocal3dCrs::getOriginOrdinal2() const
@@ -80,9 +79,8 @@ double AbstractLocal3dCrs::getOriginOrdinal2() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->getOriginOrdinal2();
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 double AbstractLocal3dCrs::getOriginDepthOrElevation() const
@@ -93,9 +91,8 @@ double AbstractLocal3dCrs::getOriginDepthOrElevation() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->OriginVerticalCoordinate;
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 double AbstractLocal3dCrs::getArealRotation() const
@@ -106,9 +103,8 @@ double AbstractLocal3dCrs::getArealRotation() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->getAzimuth();
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 gsoap_resqml2_0_1::eml20__PlaneAngleUom AbstractLocal3dCrs::getArealRotationUom() const
@@ -124,9 +120,8 @@ gsoap_resqml2_0_1::eml20__PlaneAngleUom AbstractLocal3dCrs::getArealRotationUom(
 		}
 		return result;
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 bool AbstractLocal3dCrs::isDepthOriented() const
@@ -137,9 +132,8 @@ bool AbstractLocal3dCrs::isDepthOriented() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalAxis->Direction == gsoap_eml2_3::eml23__VerticalDirection::down;
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found.It is probably a partial one.");
 }
 
 bool AbstractLocal3dCrs::isProjectedCrsDefinedWithEpsg() const
@@ -150,9 +144,8 @@ bool AbstractLocal3dCrs::isProjectedCrsDefinedWithEpsg() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->isProjectedCrsDefinedWithEpsg();
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 bool AbstractLocal3dCrs::isProjectedCrsUnknown() const
@@ -163,9 +156,8 @@ bool AbstractLocal3dCrs::isProjectedCrsUnknown() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->isProjectedCrsUnknown();
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 std::string AbstractLocal3dCrs::getProjectedCrsUnknownReason() const
@@ -179,9 +171,8 @@ std::string AbstractLocal3dCrs::getProjectedCrsUnknownReason() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->getProjectedCrsUnknownReason();
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 int64_t AbstractLocal3dCrs::getProjectedCrsEpsgCode() const
@@ -195,9 +186,8 @@ int64_t AbstractLocal3dCrs::getProjectedCrsEpsgCode() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->getProjectedCrsEpsgCode();
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 bool AbstractLocal3dCrs::isVerticalCrsDefinedWithEpsg() const
@@ -208,9 +198,8 @@ bool AbstractLocal3dCrs::isVerticalCrsDefinedWithEpsg() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return getRepository()->getDataObjectByUuid<EML2_3_NS::VerticalCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalCrs->Uuid)->isVerticalCrsDefinedWithEpsg();
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 bool AbstractLocal3dCrs::isVerticalCrsUnknown() const
@@ -221,9 +210,8 @@ bool AbstractLocal3dCrs::isVerticalCrsUnknown() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return getRepository()->getDataObjectByUuid<EML2_3_NS::VerticalCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalCrs->Uuid)->isVerticalCrsUnknown();
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 std::string AbstractLocal3dCrs::getVerticalCrsUnknownReason() const
@@ -238,9 +226,8 @@ std::string AbstractLocal3dCrs::getVerticalCrsUnknownReason() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return getRepository()->getDataObjectByUuid<EML2_3_NS::VerticalCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalCrs->Uuid)->getVerticalCrsUnknownReason();
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 int64_t AbstractLocal3dCrs::getVerticalCrsEpsgCode() const
@@ -255,9 +242,8 @@ int64_t AbstractLocal3dCrs::getVerticalCrsEpsgCode() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return getRepository()->getDataObjectByUuid<EML2_3_NS::VerticalCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalCrs->Uuid)->getVerticalCrsEpsgCode();
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 gsoap_resqml2_0_1::eml20__LengthUom AbstractLocal3dCrs::getProjectedCrsUnit() const
@@ -273,9 +259,8 @@ gsoap_resqml2_0_1::eml20__LengthUom AbstractLocal3dCrs::getProjectedCrsUnit() co
 		}
 		return result;
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 string AbstractLocal3dCrs::getProjectedCrsUnitAsString() const
@@ -286,9 +271,8 @@ string AbstractLocal3dCrs::getProjectedCrsUnitAsString() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->getProjectedCrsUnitAsString();
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 gsoap_resqml2_0_1::eml20__LengthUom AbstractLocal3dCrs::getVerticalCrsUnit() const
@@ -304,9 +288,8 @@ gsoap_resqml2_0_1::eml20__LengthUom AbstractLocal3dCrs::getVerticalCrsUnit() con
 		}
 		return result;
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 string AbstractLocal3dCrs::getVerticalCrsUnitAsString() const
@@ -317,9 +300,8 @@ string AbstractLocal3dCrs::getVerticalCrsUnitAsString() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalAxis->Uom;
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 std::string AbstractLocal3dCrs::getTimeUomAsString() const
@@ -342,9 +324,8 @@ gsoap_eml2_3::eml23__AxisOrder2d AbstractLocal3dCrs::getAxisOrder() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->getAxisOrder();
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
 void AbstractLocal3dCrs::setAxisOrder(gsoap_eml2_3::eml23__AxisOrder2d axisOrder) const
@@ -362,6 +343,6 @@ void AbstractLocal3dCrs::setAxisOrder(gsoap_eml2_3::eml23__AxisOrder2d axisOrder
 		getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->setAxisOrder(axisOrder);
 	}
 	else {
-		throw logic_error("Not implemented yet");
+		throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 	}
 }

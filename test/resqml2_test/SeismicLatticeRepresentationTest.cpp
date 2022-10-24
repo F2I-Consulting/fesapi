@@ -28,13 +28,6 @@ using namespace resqml2_test;
 using namespace COMMON_NS;
 using namespace RESQML2_NS;
 
-const char* SeismicLatticeRepresentationTest::defaultUuidFeature = "3e04d513-7d2c-4cc3-853c-a3a651c5eb4a";
-const char* SeismicLatticeRepresentationTest::defaultTitleFeature = "Seismic Lattice Feature";
-const char* SeismicLatticeRepresentationTest::defaultUuidInterp = "3d7ae7ac-c605-493c-8067-547411fe30de";
-const char* SeismicLatticeRepresentationTest::defaultTitleInterp = "Seismic Lattice Interp";
-const char* SeismicLatticeRepresentationTest::defaultUuid = "c218fe9a-5080-4322-82fc-d7a1efb6da99";
-const char* SeismicLatticeRepresentationTest::defaultTitle = "Seismic Grid 2d Representation";
-
 SeismicLatticeRepresentationTest::SeismicLatticeRepresentationTest(const string & repoPath)
 	: commontest::AbstractTest(repoPath)
 {
@@ -46,6 +39,15 @@ void SeismicLatticeRepresentationTest::initRepo()
 	GenericFeatureInterpretation* seismicLatticeInterp = repo->createGenericFeatureInterpretation(seismicLattice, defaultUuidInterp, defaultTitleInterp);
 	Grid2dRepresentation* seismicLatticeRep = repo->createGrid2dRepresentation(seismicLatticeInterp, defaultUuid, defaultTitle);
 	seismicLatticeRep->setGeometryAsArray2dOfLatticePoints3d(4, 2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 250, 200);
+
+	// IJK seismic grid
+	IjkGridLatticeRepresentation* ijkGrid = repo->createIjkGridLatticeRepresentation(ijkLatticeGridUuid, "seismic block", 4, 2, 10);
+	ijkGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape::vertical, gsoap_resqml2_0_1::resqml20__KDirection::down, true,
+		.0, 1.0, 2.0,
+		1, .0, .0, 1,
+		.0, 1, .0, 2,
+		.0, .0, 1, 3
+	);
 }
 
 void SeismicLatticeRepresentationTest::readRepo()
@@ -73,4 +75,30 @@ void SeismicLatticeRepresentationTest::readRepo()
 	REQUIRE_THROWS(rep->getIndexOriginOnSupportingRepresentation());
 	REQUIRE_THROWS(rep->getIndexOffsetOnSupportingRepresentation(0));
 	REQUIRE_THROWS(rep->getNodeCountOnSupportingRepresentation(1));
+
+	// IJK Grid
+	IjkGridLatticeRepresentation* ijkGrid = repo->getDataObjectByUuid<RESQML2_NS::IjkGridLatticeRepresentation>(ijkLatticeGridUuid);
+	REQUIRE(ijkGrid->getICellCount() == 4);
+	REQUIRE(ijkGrid->getJCellCount() == 2);
+	REQUIRE(ijkGrid->getKCellCount() == 10);
+
+	REQUIRE(ijkGrid->getXOrigin() == .0);
+	REQUIRE(ijkGrid->getYOrigin() == 1.0);
+	REQUIRE(ijkGrid->getZOrigin() == 2.0);
+
+	REQUIRE(ijkGrid->getXIOffset() == 1);
+	REQUIRE(ijkGrid->getYIOffset() == .0);
+	REQUIRE(ijkGrid->getZIOffset() == .0);
+
+	REQUIRE(ijkGrid->getXJOffset() == .0);
+	REQUIRE(ijkGrid->getYJOffset() == 1);
+	REQUIRE(ijkGrid->getZJOffset() == .0);
+
+	REQUIRE(ijkGrid->getXKOffset() == .0);
+	REQUIRE(ijkGrid->getYKOffset() == .0);
+	REQUIRE(ijkGrid->getZKOffset() == 1);
+
+	REQUIRE(ijkGrid->getISpacing() == 1);
+	REQUIRE(ijkGrid->getJSpacing() == 2);
+	REQUIRE(ijkGrid->getKSpacing() == 3);
 }

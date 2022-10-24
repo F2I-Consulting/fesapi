@@ -84,12 +84,6 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT double getZOrigin() const final;
 
-		/*****************************************************
-		* Notice that, in seismic context, I is the slowest axis, J is the intermediate axis and K is the fastest axis.
-		* In reservoir grid, I is the fastest axis, J is the intermediate axis and K is slowest axis.
-		* It should be improved in future Resqml versions.
-		*****************************************************/
-
 		DLL_IMPORT_OR_EXPORT double getXIOffset() const final;
 
 		DLL_IMPORT_OR_EXPORT double getYIOffset() const final;

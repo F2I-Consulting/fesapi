@@ -23,10 +23,10 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * @brief	The main use case for this class is the representation of a seismic cubes. Notice
-	 * 			that, in seismic context, I is the slowest axis, J is the intermediate axis and K is
-	 * 			the fastest axis. In reservoir grid, I is the fastest axis, J is the intermediate
-	 * 			axis and K is slowest axis. It should be improved in future RESQML versions.
+	 * @brief	The main use case for this class is the representation of a seismic cubes.
+	 *			I is the fastest axis and K is the slowest axis.
+	 *			Notice that seismic domain will more likely use a vertical axis as the fastest one
+	 *			where a reservori domain will more likely use a vertical axis as the fastest one.
 	 */
 	class IjkGridLatticeRepresentation : public AbstractIjkGridRepresentation
 	{
@@ -111,8 +111,9 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT double getZOriginInGlobalCrs() const;
 
 		/**
-		 * Gets the X coordinate of the I offset of this geometry. Notice that I is the slowest axis in
-		 * the seismic context. The X coordinate is given in the local CRS.
+		 * Gets the X coordinate of the I offset of this geometry. The X coordinate is given in the local CRS.
+		 * I axis is fastest one in memory, whatever its direction is.
+		 * K axis is fastest one in memory, whatever its direction is.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
@@ -121,8 +122,9 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual double getXIOffset() const = 0;
 
 		/**
-		 * Gets the Y coordinate of the I offset of this geometry. Notice that I is the slowest axis in
-		 * the seismic context. The Y coordinate is given in the local CRS.
+		 * Gets the Y coordinate of the I offset of this geometry. The Y coordinate is given in the local CRS.
+		 * I axis is fastest one in memory, whatever its direction is.
+		 * K axis is fastest one in memory, whatever its direction is.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
@@ -131,8 +133,9 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual double getYIOffset() const = 0;
 
 		/**
-		 * Gets the Z coordinate of the I offset of this geometry. Notice that I is the slowest axis in
-		 * the seismic context. The Z coordinate is given in the local CRS.
+		 * Gets the Z coordinate of the I offset of this geometry. The Z coordinate is given in the local CRS.
+		 * I axis is fastest one in memory, whatever its direction is.
+		 * K axis is fastest one in memory, whatever its direction is.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
@@ -143,6 +146,8 @@ namespace RESQML2_NS
 		/**
 		 * Gets the X coordinate of the J offset of this geometry. The X coordinate is given in the
 		 * local CRS.
+		 * I axis is fastest one in memory, whatever its direction is.
+		 * K axis is fastest one in memory, whatever its direction is.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
@@ -153,6 +158,8 @@ namespace RESQML2_NS
 		/**
 		 * Gets the Y coordinate of the J offset of this geometry. The Y coordinate is given in the
 		 * local CRS.
+		 * I axis is fastest one in memory, whatever its direction is.
+		 * K axis is fastest one in memory, whatever its direction is.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
@@ -163,6 +170,8 @@ namespace RESQML2_NS
 		/**
 		 * Gets the Z coordinate of the J offset of this geometry. The Z coordinate is given in the
 		 * local CRS.
+		 * I axis is fastest one in memory, whatever its direction is.
+		 * K axis is fastest one in memory, whatever its direction is.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
@@ -171,8 +180,9 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual double getZJOffset() const = 0;
 
 		/**
-		 * Gets the X coordinate of the K offset of this geometry. Notice that K is the fastest axis in
-		 * the seismic context. The X coordinate is given in the local CRS.
+		 * Gets the X coordinate of the K offset of this geometry. The X coordinate is given in the local CRS.
+		 * I axis is fastest one in memory, whatever its direction is.
+		 * K axis is fastest one in memory, whatever its direction is.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
@@ -181,8 +191,9 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual double getXKOffset() const = 0;
 
 		/**
-		 * Gets the Y coordinate of the K offset of this geometry. Notice that K is the fastest axis in
-		 * the seismic context. The Y coordinate is given in the local CRS.
+		 * Gets the Y coordinate of the K offset of this geometry. The Y coordinate is given in the local CRS.
+		 * I axis is fastest one in memory, whatever its direction is.
+		 * K axis is fastest one in memory, whatever its direction is.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
@@ -191,8 +202,9 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual double getYKOffset() const = 0;
 
 		/**
-		 * Gets the Z coordinate of the K offset of this geometry. Notice that K is the fastest axis in
-		 * the seismic context. The Z coordinate is given in the local CRS.
+		 * Gets the Z coordinate of the K offset of this geometry. The Z coordinate is given in the local CRS.
+		 * I axis is fastest one in memory, whatever its direction is.
+		 * K axis is fastest one in memory, whatever its direction is.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
@@ -201,8 +213,9 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual double getZKOffset() const = 0;
 
 		/**
-		 * Gets the I spacing of this regular (seismic) grid. Notice that I is the slowest axis in the
-		 * seismic context.
+		 * Gets the I spacing of this regular (seismic) grid.
+		 * I axis is fastest one in memory, whatever its direction is.
+		 * K axis is fastest one in memory, whatever its direction is.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
@@ -212,6 +225,8 @@ namespace RESQML2_NS
 
 		/**
 		 * Gets the J spacing of this regular (seismic) grid.
+		 * I axis is fastest one in memory, whatever its direction is.
+		 * K axis is fastest one in memory, whatever its direction is.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
@@ -220,8 +235,9 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual double getJSpacing() const = 0;
 
 		/**
-		 * Gets the K spacing of this regular (seismic) grid. Notice that K is the fastest axis in the
-		 * seismic context.
+		 * Gets the K spacing of this regular (seismic) grid.
+		 * I axis is fastest one in memory, whatever its direction is.
+		 * K axis is fastest one in memory, whatever its direction is.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
@@ -248,7 +264,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual int getOriginCrossline() const = 0;
 
 		/**
-		 * Gets the inline I offset value. Notice that I is the slowest axis in the seismic context.
+		 * Gets the inline I offset value.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
@@ -266,7 +282,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual int getInlineJOffset() const = 0;
 
 		/**
-		 * Gets the inline K offset value. Notice that K is the fastest axis in the seismic context.
+		 * Gets the inline K offset value.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
@@ -275,7 +291,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual int getInlineKOffset() const = 0;
 
 		/**
-		 * Gets the crossline I offset value. Notice that I is the slowest axis in the seismic context.
+		 * Gets the crossline I offset value.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
@@ -293,7 +309,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual int getCrosslineJOffset() const = 0;
 
 		/**
-		 * Gets the crossline K offset value. Notice that K is the fastest axis in the seismic context.
+		 * Gets the crossline K offset value.
 		 *
 		 * @exception	std::logic_error	If this grid is partial.
 		 *
@@ -302,7 +318,9 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual int getCrosslineKOffset() const = 0;
 
 		/**
-		 * Sets the geometry of this IJK grid as a regular IJK grid
+		 * Sets the geometry of this IJK grid as a regular IJK grid.
+		 * I axis is fastest one in memory, whatever its direction is.
+		 * K axis is fastest one in memory, whatever its direction is.
 		 *
 		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default local 3d CRS
 		 * 										is defined.

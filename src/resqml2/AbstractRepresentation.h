@@ -25,6 +25,7 @@ under the License.
 namespace EML2_NS
 {
 	class AbstractLocal3dCrs;
+	class TimeSeries;
 }
 
 namespace RESQML2_NS
@@ -75,6 +76,42 @@ namespace RESQML2_NS
 		 * 			data object reference if it fails.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getHdfProxyDor() const = 0;
+
+		/**
+		 * Set a time index in a time series for all point geometries of all existing patches of this representation.
+		 *
+		 * @param 	timeIndex	The time index of the time to associate to this representation.
+		 * @param 	timeSeries	The time series containing the time of the representation at @p timeIndex.
+		 */
+		DLL_IMPORT_OR_EXPORT void setTimeIndex(uint64_t timeIndex, EML2_NS::TimeSeries* timeSeries);
+
+		/**
+		 * @brief Gets the time index of this representation in the associated TimeSeries.
+		 *		Be sure to first check that a TimeSeries is associated this representation by calling getTimeSeriesDor or getTimeSeries;
+		 *
+		 * @exception	std::logic_error	If this representation is partial. Or if the representation is not associated to any TimeSeries.
+		 *
+		 * @returns	The time index of this representation in the associated TimeSeries.
+		 */
+		DLL_IMPORT_OR_EXPORT uint64_t getTimeIndex() const;
+
+		/**
+		 * Gets the TimeSeries associated to this representation.
+		 *
+		 * @returns Null if it fails, else the TimeSeries associated to this representation.
+		 */
+		DLL_IMPORT_OR_EXPORT EML2_NS::TimeSeries* getTimeSeries() const;
+
+		/**
+		 * @brief Gets the data object reference of the TimeSeries containing the time of this representation at a particular index.
+		 *		For now, this method only look for a TimeSeries at the first patch containing a point geometry.
+		 *
+		 * @exception	std::logic_error	If this representation is partial.
+		 *
+		 * @returns	The data object reference of the TimeSeries, or empty
+		 * 			data object reference there is not TimeSeries found.
+		 */
+		COMMON_NS::DataObjectReference getTimeSeriesDor() const;
 
 		/**
 		 * Gets all the properties which use this representation as support.

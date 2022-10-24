@@ -174,7 +174,7 @@ bool AbstractColumnLayerGridRepresentation::hasIntervalStratigraphicUnitIndices(
 	return false;
 }
 
-int64_t AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndices(int64_t * stratiUnitIndices)
+int64_t AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndices(int64_t* stratiUnitIndices)
 {
 	if (isTruncated()) {
 		throw invalid_argument("A truncated grid cannot be linked to a strati columnumn in Resqml v2.0");

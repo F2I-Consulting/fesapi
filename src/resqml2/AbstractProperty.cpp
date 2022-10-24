@@ -525,9 +525,9 @@ gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind AbstractProperty::getEnergistics
 	throw invalid_argument("The property kind of this property is not an Energistics one.");
 }
 
-int64_t AbstractProperty::getValuesCountOfPatch(uint64_t patchIndex) const
+uint64_t AbstractProperty::getValuesCountOfPatch(uint64_t patchIndex) const
 {
-	unsigned int result = 1;
+	uint64_t result = 1;
 
 	uint64_t dimCount = getDimensionsCountOfPatch(patchIndex);
 	for (uint64_t dimIndex = 0; dimIndex < dimCount; ++dimIndex) {

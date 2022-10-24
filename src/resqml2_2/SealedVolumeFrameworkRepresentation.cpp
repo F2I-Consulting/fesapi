@@ -149,7 +149,7 @@ void SealedVolumeFrameworkRepresentation::pushBackVolumeRegion(RESQML2_NS::Strat
 
 void SealedVolumeFrameworkRepresentation::pushBackInternalShell(uint64_t regionIndex,
 	uint64_t internalShellFaceCount,
-	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide)
+	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide)
 {
 	auto* region = getRegion(regionIndex);
 	region->InternalShells.push_back(createVolumeShell(regionIndex, region->InternalShells.size()+1, internalShellFaceCount,

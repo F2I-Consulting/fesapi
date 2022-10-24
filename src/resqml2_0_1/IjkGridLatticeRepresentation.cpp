@@ -79,7 +79,7 @@ double IjkGridLatticeRepresentation::getXIOffset() const
 {
 	resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
-		return arrayLatticeOfPoint3d->Offset[0]->Offset->Coordinate1;
+		return arrayLatticeOfPoint3d->Offset[2]->Offset->Coordinate1;
 	else
 		return std::numeric_limits<double>::signaling_NaN();
 }
@@ -88,7 +88,7 @@ double IjkGridLatticeRepresentation::getYIOffset() const
 {
     resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
-		return arrayLatticeOfPoint3d->Offset[0]->Offset->Coordinate2;
+		return arrayLatticeOfPoint3d->Offset[2]->Offset->Coordinate2;
 	else
 		return std::numeric_limits<double>::signaling_NaN();
 }
@@ -97,7 +97,7 @@ double IjkGridLatticeRepresentation::getZIOffset() const
 {
 	resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
-		return arrayLatticeOfPoint3d->Offset[0]->Offset->Coordinate3;
+		return arrayLatticeOfPoint3d->Offset[2]->Offset->Coordinate3;
 	else
 		return std::numeric_limits<double>::signaling_NaN();
 }
@@ -133,7 +133,7 @@ double IjkGridLatticeRepresentation::getXKOffset() const
 {
 	resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
-		return arrayLatticeOfPoint3d->Offset[2]->Offset->Coordinate1;
+		return arrayLatticeOfPoint3d->Offset[0]->Offset->Coordinate1;
 	else
 		return std::numeric_limits<double>::signaling_NaN();
 }
@@ -142,7 +142,7 @@ double IjkGridLatticeRepresentation::getYKOffset() const
 {
 	resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
-		return arrayLatticeOfPoint3d->Offset[2]->Offset->Coordinate2;
+		return arrayLatticeOfPoint3d->Offset[0]->Offset->Coordinate2;
 	else
 		return std::numeric_limits<double>::signaling_NaN();
 }
@@ -151,7 +151,7 @@ double IjkGridLatticeRepresentation::getZKOffset() const
 {
 	resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
-		return arrayLatticeOfPoint3d->Offset[2]->Offset->Coordinate3;
+		return arrayLatticeOfPoint3d->Offset[0]->Offset->Coordinate3;
 	else
 		return std::numeric_limits<double>::signaling_NaN();
 }
@@ -160,8 +160,8 @@ double IjkGridLatticeRepresentation::getISpacing() const
 {
     resqml20__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
-    if (arrayLatticeOfPoints3d && arrayLatticeOfPoints3d->Offset[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
-        return static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Value;
+    if (arrayLatticeOfPoints3d && arrayLatticeOfPoints3d->Offset[2]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
+        return static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[2]->Spacing)->Value;
     else
         return std::numeric_limits<double>::signaling_NaN();
 }
@@ -180,8 +180,8 @@ double IjkGridLatticeRepresentation::getKSpacing() const
 {
 	resqml20__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
-    if (arrayLatticeOfPoints3d && arrayLatticeOfPoints3d->Offset[2]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
-        return static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[2]->Spacing)->Value;
+    if (arrayLatticeOfPoints3d && arrayLatticeOfPoints3d->Offset[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
+        return static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Value;
     else
         return std::numeric_limits<double>::signaling_NaN();
 }

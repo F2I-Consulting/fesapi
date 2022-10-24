@@ -2024,23 +2024,107 @@ namespace RESQML2_NS
 	class AbstractColorMap : public COMMON_NS::AbstractObject
 	{
 	public:
+
+		/**
+		* https://en.wikipedia.org/wiki/HSV_color_space
+		* @param colorCount		the size (number of colors) of the color map
+		* @param hsvColors		array (of size colorCount * 3) of HSV colors with hsvColors[3*i] is the hue, hsvColors[3*i + 1] is the saturation and hsvColors[3*i + 2] is the value of the ith color (hue is in range [0, 360] while saturation and value are in range [0, 1])
+		* @param alphas			array (of size colorCount) of numeric values in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). If alphas == nullptr (default value), default alpha value is 1.
+		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
+		* @param indices		array (of size solorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
+		*/
+		void setHsvColors(unsigned int colorCount,
+			double const* hsvColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
+			double const* indices = nullptr);
+
+		/**
+		* https://en.wikipedia.org/wiki/HSV_color_space
+		* @param colorCount		the size (number of colors) of the color map
+		* @param rgbColors		array (of size colorCount * 3) of RGB colors with hsvColors[3*i] is red componant, hsvColors[3*i + 1] is green component and hsvColors[3*i + 2] is blue component of the ith color (red, green and blue are in range [0, 1])
+		* @param alphas			array (of size colorCount) of numeric values in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). If alphas == nullptr (default value), default alpha value is 1.
+		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
+		* @param indices		array (of size solorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
+		*/
 		void setRgbColors(unsigned int colorCount,
 			double const* rgbColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
 			double const* indices = nullptr);
+
+		/**
+		* https://en.wikipedia.org/wiki/HSV_color_space
+		* @param colorCount		the size (number of colors) of the color map
+		* @param rgbColors		array (of size colorCount * 3) of RGB colors with hsvColors[3*i] is red componant, hsvColors[3*i + 1] is green component and hsvColors[3*i + 2] is blue component of the ith color (red, green and blue are in range [0, 255])
+		* @param alphas			array (of size colorCount) of numeric values in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). If alphas == nullptr (default value), default alpha value is 1.
+		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
+		* @param indices		array (of size solorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
+		*/
 		void setRgbColors(unsigned int colorCount,
 			unsigned int const* rgbColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
 			double const* indices = nullptr);
 
+		/**
+		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 * @return				hue in the range [0, 360]
+		 */
 		double getHue(double colorIndex) const;
-		double getSaturation(double colorIndex) const;
-		double getValue(double colorIndex) const;
-		double getAlpha(double colorIndex) const;
-		
-		void getRgbColor(double colorIndex, double& red, double& green, double& blue) const;
-		void getRgbColor(double colorIndex, unsigned int& red, unsigned int& green, unsigned int& blue) const;
 
+		/**
+		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 * @return				saturation in the range [0, 1]
+		 */
+		double getSaturation(double colorIndex) const;
+
+		/**
+		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 * @return				value in the range [0, 1]
+		 */
+		double getValue(double colorIndex) const;
+
+		/**
+		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 * @return				alpha in the range [0, 1] (0 means transparent and 1 means opaque)
+		 */
+		double getAlpha(double colorIndex) const;
+
+		/**
+		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 * @param red			(output parameter) red value in the range [0, 1]
+		 * @param green			(output parameter) green value in the range [0, 1]
+		 * @param blue			(output parameter) blue value in the range [0, 1]
+		 */
+		void getRgbColor(double colorIndex, double& red, double& green, double& blue) const;
+
+		/**
+		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 * @param red			(output parameter) red value in the range [0, 1]
+		 * @param green			(output parameter) green value in the range [0, 1]
+		 * @param blue			(output parameter) blue value in the range [0, 1]
+		 */
+		void getRgbColor(double colorIndex, unsigned int& red, unsigned int& green, unsigned int& blue) const;
+		
+		/**
+		 * @brief	Queries if 'colorIndex' has color title
+		 *
+		 * @param 	colorIndex	Zero-based index of the color.
+		 *
+		 * @returns	True if color title, false if not.
+		 */
 		bool hasColorTitle(double colorIndex) const;
+
+		/**
+		 * @brief	Gets color title
+		 *
+		 * @param 	colorIndex	Zero-based index of the color.
+		 *
+		 * @returns	The color title.
+		 */
 		std::string getColorTitle(double colorIndex) const;
+		
+		/**
+		 * @brief	Gets color count
+		 *
+		 * @returns	The color count.
+		 */
+		uint64_t getColorCount() const;
 	};
 	
 #if defined(SWIGPYTHON)
@@ -2049,11 +2133,6 @@ namespace RESQML2_NS
 	class DiscreteColorMap : public AbstractColorMap
 	{
 	public:
-		void setHsvColors(unsigned int colorCount, 
-			double const * hsvColors, double const * alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const * indices = nullptr);
-
-		unsigned int getColorCount() const;
 	};
 	
 #if defined(SWIGPYTHON)
@@ -2062,12 +2141,6 @@ namespace RESQML2_NS
 	class ContinuousColorMap : public AbstractColorMap 
 	{
 	public:
-		void setHsvColors(unsigned int colorCount,
-			double const* hsvColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const* indices = nullptr);
-
-		unsigned int getColorCount() const;
-
 		gsoap_eml2_3::resqml22__InterpolationDomain getInterpolationDomain();
 		std::string getInterpolationDomainAsString();
 
@@ -2282,17 +2355,17 @@ namespace RESQML2_NS
 		/**
 		* Indicates if this instance is a structural one.
 		*/
-		virtual bool isStructural() const;
+		bool isStructural() const;
 
 		/**
 		* Indicates if this instance is a structural one.
 		*/
-		virtual bool isStratigraphic() const;
+		bool isStratigraphic() const;
 
 		/**
 		* Indicates if this instance is a structural one.
 		*/
-		virtual bool isRockFluid() const;
+		bool isRockFluid() const;
 		
 		/**
 		 * Adds a binary contact to this organization interpretation by means of a simple sentence.
@@ -2462,8 +2535,8 @@ namespace RESQML2_NS
 	public:
 		AbstractGridRepresentation* getGridRepresentation(unsigned int index) const;
 		bool isAssociatedToGridRepresentation(AbstractGridRepresentation* gridRep) const;
-		void pushBackRockFluidUnitInterpretation(RockFluidUnitInterpretation* rockFluidUnitInterpretation) = 0;
-		unsigned int getRockFluidUnitInterpCount() const = 0;
+		void pushBackRockFluidUnitInterpretation(RockFluidUnitInterpretation* rockFluidUnitInterpretation);
+		unsigned int getRockFluidUnitInterpCount() const;
 		RockFluidUnitInterpretation* getRockFluidUnitInterpretation(unsigned int index) const;
 	};
 	
@@ -2530,9 +2603,38 @@ namespace RESQML2_NS
 	class AbstractRepresentation : public COMMON_NS::AbstractObject
 	{
 	public:
-		
+		/** 
+		 * Gets the interpretation associated to this representation.
+		 *
+		 * @returns Null pointer if no interpretation is associated to this representation. Otherwise
+		 * 			the associated interpretation.
+		 */
 		AbstractFeatureInterpretation* getInterpretation() const;
 		EML2_NS::AbstractLocal3dCrs * getLocalCrs(unsigned int patchIndex);
+		
+		/**
+		 * Set a time index in a time series for all point geometries of all existing patches of this representation.
+		 *
+		 * @param 	timeIndex	The time index of the time to associate to this representation.
+		 * @param 	timeSeries	The time series containing the time of the representation at @p timeIndex.
+		 */
+		void setTimeIndex(uint64_t timeIndex, EML2_NS::TimeSeries* timeSeries);
+		
+		/**
+		 * @brief Gets the time index of this representation in the associated TimeSeries.
+		 *		Be sure to first check that a TimeSeries is associated this representation by calling getTimeSeriesDor or getTimeSeries;
+		 *
+		 * @exception	std::logic_error	If this representation is partial. Or if the representation is not associated to any TimeSeries.
+		 *
+		 * @returns	The time index of this representation in the associated TimeSeries.
+		 */
+		uint64_t getTimeIndex() const;
+		/**
+		 * Gets the TimeSeries associated to this representation.
+		 *
+		 * @returns Null if it fails, else the TimeSeries associated to this representation.
+		 */
+		EML2_NS::TimeSeries* getTimeSeries() const;
 		
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::AbstractValuesProperty, ValuesProperty)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::PointsProperty, PointsProperty)
@@ -2541,28 +2643,230 @@ namespace RESQML2_NS
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::SubRepresentation, FaultSubRepresentation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::RepresentationSetRepresentation, RepresentationSetRepresentation)
 
-		virtual uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const = 0;
-		uint64_t getXyzPointCountOfAllPatches() const;
-		void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const;
-		void getXyzPointsOfPatchInGlobalCrs(unsigned int patchIndex, double * xyzPoints) const;
-		void getXyzPointsOfAllPatches(double * xyzPoints) const;
-		bool isInSingleLocalCrs() const;
-		bool isInSingleGlobalCrs() const;
-		void getXyzPointsOfAllPatchesInGlobalCrs(double * xyzPoints) const;
-		virtual unsigned int getPatchCount() const;
+		/**
+		 * Get the xyz point count in a given patch of this representation.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 * @exception	std::logic_error 	If this representation is partial.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch from which we look for the xyz points.
+		 *
+		 * @returns	The xyz point count of the patch at position @p patchIndex.
+		 */
+		uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const;
 		
+		/**
+		 * Get the xyz point count of all patches of this representation.
+		 *
+		 * @returns	The xyz point count of all patches.
+		 */
+		uint64_t getXyzPointCountOfAllPatches() const;
+		
+		/**
+		 * @brief	Gets all the xyz points of a particular patch of this representation. xyz points are
+		 * 			given in the local CRS.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 * @exception	std::logic_error 	If this representation is partial.
+		 *
+		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
+		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
+		 * 							coordinate dimension (x, y or z) and second dimension is vertex
+		 * 							dimension. It must be preallocated with a size of <tt>3 *
+		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
+		 */
+		void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const;
+		
+		/**
+		 * @brief Gets all the xyz points of a particular patch of this representation. xyz points are given in
+		 * the global CRS.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 *
+		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
+		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
+		 * 							coordinate dimension (x, y or z) and second dimension is vertex
+		 * 							dimension. It must be preallocated with a size of <tt>3 *
+		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
+		 */
+		void getXyzPointsOfPatchInGlobalCrs(unsigned int patchIndex, double * xyzPoints) const;
+		
+		/**
+		 * @brief Gets all the xyz points of all patches of this representation. xyz points are given in the
+		 * local CRS.
+		 *
+		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
+		 * 							coordinate dimension (x, y or z) and second dimension is vertex
+		 * 							dimension. It must be preallocated with a size of <tt>3 *
+		 * 							getXyzPointCountOfAllPatches()</tt>.
+		 */
+		void getXyzPointsOfAllPatches(double * xyzPoints) const;
+		
+		/**
+		 * Checks if all of the patches (geometries) of this representation are defined in a same local
+		 * CRS.
+		 *
+		 * @returns	True if this representation is defined in a single local CRS, false if not.
+		 */
+		bool isInSingleLocalCrs() const;
+		
+		/**
+		 * Checks if all of the patches (geometries) of this representation are defined in a same global
+		 * CRS.
+		 *
+		 * @returns	True if this representation is defined in a single global CRS, false if not.
+		 */
+		bool isInSingleGlobalCrs() const;
+		
+		/**
+		 * Gets all the xyz points of all patches of this individual representation. xyz points are
+		 * given in the global CRS.
+		 *
+		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
+		 * 							coordinate dimension (x, y or Z) and second dimension is vertex
+		 * 							dimension. Thus, its size is 3*(3*[count of all xyz points]). It must
+		 * 							be preallocated.
+		 */
+		void getXyzPointsOfAllPatchesInGlobalCrs(double * xyzPoints) const;
+		
+		/**
+		 * Gets the patch count.
+		 *
+		 * @returns	The patch count.
+		 */
+		uint64_t getPatchCount() const;
+		
+		/**
+		 * Gets the seismic support of a specific patch of this representation.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of the patch count range.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch from which we look for the seismic support.
+		 *
+		 * @returns	Null if no seismic information have been provided for the patch at position @p
+		 * 			patchIndex. Else, its seismic support.
+		 */
 		AbstractRepresentation* getSeismicSupportOfPatch(unsigned int patchIndex);
+		
+		/**
+		 * Gets all the abscissa of the points of a specific patch related to 2d seismic line.
+		 *
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::invalid_argument	If the patch at position @p patchIndex has no seismic
+		 * 										information.
+		 *
+		 * @param 	   	patchIndex	The index of the geometry patch which stores the seismic coordinates.
+		 * @param [out]	values	  	The array where the abscissa are going to be stored. The count of
+		 * 							this array must be equal to <tt>getXyzPointCountOfPatch(patchIndex)</tt>.
+		 */
 		void getSeismicLineAbscissaOfPointsOfPatch(unsigned int patchIndex, double* values) const;
+		
+		/**
+		 * Adds seismic 2d coordinates to an existing point geometry patch.
+		 *
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::invalid_argument	If @p patchIndex does not identify a point geometry patch.
+		 * @exception	std::invalid_argument	If there already exists some seismic 3d coordinates for
+		 * 										the geometry patch at position @p patchIndex.
+		 *
+		 * @param 		  	patchIndex	  	The index of the geometry patch which receives the seismic
+		 * 									coordinates.
+		 * @param [in,out]	lineAbscissa  	The abscissa of each points of the patch on the seismic line.
+		 * 									The count of this array must be equal to
+		 * 									<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
+		 * @param [in,out]	seismicSupport	The representation of the seismic line.
+		 * @param [in,out]	proxy		  	The HDF proxy where to write the @p lineAbscissa values. It
+		 * 									must be already opened for writing and won't be closed in
+		 * 									this method.
+		 */
 		void addSeismic2dCoordinatesToPatch(unsigned int patchIndex, double * lineAbscissa,
 			AbstractRepresentation * seismicSupport, EML2_NS::AbstractHdfProxy * proxy);
+		
+		/**
+		 * Gets all the inline coordinates of the points of a specific patch related to seismic lattice.
+		 *
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::invalid_argument	If the patch at position @p patchIndex has no seismic
+		 * 										information.
+		 *
+		 * @param 	   	patchIndex	The index of the geometry patch which stores the seismic coordinates.
+		 * @param [out]	values	  	The array where the inlines coordinates are going to be stored. The
+		 * 							count of this array must be equal to
+		 * 							<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
+		 */
 		void getInlinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
+		
+		/**
+		 * Gets all the crossline coordinates of the points of a specific patch related to seismic
+		 * lattice.
+		 *
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::invalid_argument	If the patch at position @p patchIndex has no seismic
+		 * 										information.
+		 *
+		 * @param 	   	patchIndex	The index of the geometry patch which stores the seismic coordinates.
+		 * @param [out]	values	  	The array where the crossline coordinates are going to be stored. The
+		 * 							count of this array must be equal to
+		 * 							<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
+		 */
 		void getCrosslinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
+		
+		/**
+		 * Adds seismic 3d coordinates to an existing point geometry patch.
+		 *
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::invalid_argument	If @p patchIndex does not identify a point geometry patch.
+		 * @exception	std::invalid_argument	If there already exists some seismic 2d coordinates for
+		 * 										the geometry patch at position @p patchIndex.
+		 *
+		 * @param 		   	patchIndex	  	The index of the geometry patch which receives the seismic
+		 * 									coordinates.
+		 * @param [in]	   	inlines		  	The sequence of trace or inter-trace inline positions that
+		 * 									correspond to the geometry coordinates. It must be in the
+		 * 									same order than @p crosslines.
+		 * @param [in]	   	crosslines	  	The sequence of trace or inter-trace crossline positions that
+		 * 									correspond to the geometry coordinates. It must be in the
+		 * 									same order than @p inlines.
+		 * @param 		   	pointCount	  	Number of points. It is the size of both @p inlines and @p
+		 * 									crosslines.
+		 * @param [in]	   	seismicSupport	The representation of the seismic line.
+		 * @param [in, out]	proxy		  	The HDF proxy where to write the @p inlines and @p crosslines
+		 * 									values. It must be already opened for writing and won't be
+		 * 									closed in this method.
+		 */
 		void addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double * inlines, double * crosslines, unsigned int pointCount,
 			AbstractRepresentation * seismicSupport, EML2_NS::AbstractHdfProxy * proxy);
+
+		/**
+		 * Adds seismic 3d coordinates to an existing point geometry patch.
+		 *
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::invalid_argument	If @p patchIndex does not identify a point geometry patch.
+		 * @exception	std::invalid_argument	If there already exists some seismic 2d coordinates for
+		 * 										the geometry patch at position @p patchIndex.
+		 *
+		 * @param 	  	patchIndex	  	The index of the geometry patch which receives the seismic
+		 * 								coordinates.
+		 * @param 	  	startInline   	The first inline.
+		 * @param 	  	incrInline	  	The inline increment.
+		 * @param 	  	countInline   	The inline count.
+		 * @param 	  	startCrossline	The first crossline.
+		 * @param 	  	incrCrossline 	The crossline increment.
+		 * @param 	  	countCrossline	The crossline count.
+		 * @param [in]	seismicSupport	The representation of the seismic line.
+		 */
 		void addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double startInline, double incrInline, unsigned int countInline,
 			double startCrossline, double incrCrossline, unsigned int countCrossline,
 			AbstractRepresentation * seismicSupport);
 
+		/**
+		 * Pushes back this representation into a representation set representation.
+		 *
+		 * @exception	std::invalid_argument	If @p repSet is null.
+		 *
+		 * @param [in]	repSet	The representation set representation which will contain this
+		 * 							representation.
+		 */
 		void pushBackIntoRepresentationSet(RepresentationSetRepresentation * repSet);
 	};
 	
@@ -2614,11 +2918,61 @@ namespace RESQML2_NS
 		
 		void getZValues(double * values) const;
 		void getZValuesInGlobalCrs(double * values) const;
-		
-		int getIndexOriginOnSupportingRepresentation() const;
+
+		/**
+		 * Gets the index of the origin of the current geometry on the supporting representation. The
+		 * index is given by means of the formula <tt>iOrigin + jOrigin *
+		 * iNodeCountOnSupportingRepresentation</tt>
+		 *
+		 * @exception	std::logic_error	If no supporting representation is associated to this 2d grid
+		 * 									representation.
+		 *
+		 * @returns	The index of the origin on the supporting representation.
+		 */
+		uint64_t getIndexOriginOnSupportingRepresentation() const;
+
+		/**
+		 * Gets the index of the origin of the current geometry on a particular dimension of the
+		 * supporting representation.
+		 *
+		 * @exception	std::logic_error	 	If no supporting representation is associated to this 2d
+		 * 										grid representation.
+		 * @exception	std::invalid_argument	If @p dimension differs from @c 0 or @c 1.
+		 *
+		 * @param 	dimension	The dimension for which we look for the index of the origin. It can be @c
+		 * 						0 for J (slowest) dimension or @c 1 for I (fastest) dimension.
+		 *
+		 * @returns	The index of the origin on the supporting representation on the dimension @p dimension.
+		 */
 		int getIndexOriginOnSupportingRepresentation(unsigned int dimension) const;
-		int getNodeCountOnSupportingRepresentation(unsigned int dimension) const;
-		int getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const;
+
+		/**
+		 * Gets the number of nodes of the current geometry which is extracted from a particular
+		 * dimension of the supporting representation.
+		 *
+		 * @exception	std::logic_error 	If no supporting representation is associated to this 2d grid
+		 * 									representation.
+		 * @exception	std::out_of_range	If @p dimension is out of range.
+		 *
+		 * @param 	dimension	The dimension for which we look for the number of nodes.
+		 *
+		 * @returns	The number of nodes on the dimension @p dimension.
+		 */
+		uint64_t getNodeCountOnSupportingRepresentation(unsigned int dimension) const;
+		
+		/**
+		 * @brief	Gets the index offset of the nodes of the current geometry on a particular dimension
+		 * 			of the supporting representation.
+		 *
+		 * @exception	std::logic_error 	If no supporting representation is associated to this 2d grid
+		 * 									representation.
+		 * @exception	std::out_of_range	If @p dimension is out of range.
+		 *
+		 * @param 	dimension	The dimension for which we look for the index offset.
+		 *
+		 * @returns	The index offset on the dimension @p dimension.
+		 */
+		int64_t getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const;
 		
 		void setGeometryAsArray2dOfLatticePoints3d(
 			unsigned int numPointsInFastestDirection, unsigned int numPointsInSlowestDirection,
@@ -2650,8 +3004,8 @@ namespace RESQML2_NS
 	class PolylineSetRepresentation : public AbstractRepresentation
 	{
 	public:
-		unsigned int getPolylineCountOfPatch(unsigned int patchIndex) const;
-		unsigned int getPolylineCountOfAllPatches() const;
+		uint64_t getPolylineCountOfPatch(uint64_t patchIndex) const;
+		uint64_t getPolylineCountOfAllPatches() const;
 		void getNodeCountPerPolylineInPatch(unsigned int patchIndex, unsigned int * nodeCountPerPolyline) const;
 		void getNodeCountPerPolylineOfAllPatches(unsigned int * nodeCountPerPolyline) const;
 		void pushBackGeometryPatch(
@@ -2720,8 +3074,8 @@ namespace RESQML2_NS
 	class TriangulatedSetRepresentation : public AbstractSurfaceRepresentation
 	{
 	public:
-		unsigned int getTriangleCountOfPatch(unsigned int patchIndex) const;
-		unsigned int getTriangleCountOfAllPatches() const;
+		uint64_t getTriangleCountOfPatch(unsigned int patchIndex) const;
+		uint64_t getTriangleCountOfAllPatches() const;
 		void getTriangleNodeIndicesOfPatch(unsigned int patchIndex, unsigned int * triangleNodeIndices) const;
 		void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const;
 		void pushBackTrianglePatch(unsigned int nodeCount, double * nodes, unsigned int triangleCount, unsigned int * triangleNodeIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
@@ -2734,8 +3088,8 @@ namespace RESQML2_NS
 	{
 	public:
 		bool isHomogeneous() const;
-		unsigned int 						getRepresentationCount() const;
-		AbstractRepresentation*				getRepresentation(unsigned int index) const;
+		uint64_t 						getRepresentationCount() const;
+		AbstractRepresentation*			getRepresentation(uint64_t index) const;
 	};
 		
 #ifdef SWIGPYTHON
@@ -2960,14 +3314,14 @@ namespace RESQML2_NS
 		SealedSurfaceFrameworkRepresentation* getSealedStructuralFramework() const;
 		void setSealedSurfaceFramework(SealedSurfaceFrameworkRepresentation* ssf);
 		
-		void setInterpretationOfVolumeRegion(unsigned int regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp);
+		void setInterpretationOfVolumeRegion(uint64_t regionindex, StratigraphicUnitInterpretation * stratiUnitInterp);
 		
 		void pushBackVolumeRegion(StratigraphicUnitInterpretation * stratiUnitInterp,
 			unsigned int externalShellFaceCount,
-			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide);
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide);
 		pushBackInternalShell(unsigned int regionIndex,
 			unsigned int internalShellFaceCount,
-			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide);
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide);
 			
 		unsigned int getRegionCount() const;
 
@@ -2998,7 +3352,7 @@ namespace RESQML2_NS
 	public:
 		unsigned int getGridConnectionSetRepresentationCount() const;
 		GridConnectionSetRepresentation* getGridConnectionSetRepresentation(unsigned int index) const;
-		virtual uint64_t getCellCount() const = 0;
+		uint64_t getCellCount() const;
 		
 		AbstractGridRepresentation* getParentGrid() const;
 		unsigned int getChildGridCount() const;
@@ -3082,8 +3436,8 @@ namespace RESQML2_NS
 		unsigned int getConstantNodeCountOfFaces() const;
 		
 		void loadGeometry();
-		unsigned int getFaceCountOfCell(uint64_t cellIndex) const;
-		unsigned int getNodeCountOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const;
+		uint64_t getFaceCountOfCell(uint64_t cellIndex) const;
+		uint64_t getNodeCountOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const;
 		uint64_t const * getNodeIndicesOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const;
 		void unloadGeometry();
 		
@@ -3146,7 +3500,7 @@ namespace RESQML2_NS
 		unsigned int getColumnCount() const;
 		unsigned int getPillarCount() const;
 		
-		unsigned int getKGapsCount() const;
+		uint64_t getKGapsCount() const;
 		void getKGaps(bool * kGaps) const;
 		
 		unsigned int getIPillarFromGlobalIndex(unsigned int globalIndex) const;
@@ -3354,11 +3708,11 @@ namespace RESQML2_NS
 		 */
 		void getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints);
 		
-		virtual bool isNodeGeometryCompressed() const;
+		bool isNodeGeometryCompressed() const;
 		
 		gsoap_resqml2_0_1::resqml20__KDirection getKDirection() const;
 		
-		virtual geometryKind getGeometryKind() const = 0;
+		geometryKind getGeometryKind() const;
 	};
 	
 	
@@ -3908,7 +4262,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of line contained in this streamlines representation.
 		*/
-		uint32_t getLineCount() const;
+		uint64_t getLineCount() const;
 
 		/**
 		 * Gets the count of wellbore trajectories of this streamlines representation.
@@ -3918,7 +4272,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of wellbore trajectories.
 		 */
-		uint16_t getWellboreTrajectoryCount() const;
+		uint64_t getWellboreTrajectoryCount() const;
 
 		/**
 		 * Gets the wellbore trajectory located at a specific index of this streamlines
@@ -3931,7 +4285,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The wellbore trajectory at position @p index.
 		 */
-		RESQML2_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory(uint16_t index);
+		RESQML2_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory(uint64_t index);
 
 		/**
 		 * @brief	Gets all the wellbore indices which are injectors.
@@ -4065,7 +4419,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of grid representation.
 		 */
-		uint16_t getGridRepresentationCount() const;
+		uint64_t getGridRepresentationCount() const;
 
 		/**
 		 * Gets the grid representation located at a specific index of this streamlines
@@ -4078,7 +4432,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The grid representation at position @p index.
 		 */
-		RESQML2_NS::AbstractGridRepresentation* getGridRepresentation(uint16_t index) const;
+		RESQML2_NS::AbstractGridRepresentation* getGridRepresentation(uint64_t index) const;
 	};
 	
 #ifdef SWIGPYTHON
@@ -4136,7 +4490,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values of the @p patchIndex patch.
 		 */
-		unsigned int getValuesCountOfPatch(unsigned int patchIndex) const;
+		uint64_t getValuesCountOfPatch(unsigned int patchIndex) const;
 
 		/**
 		 * Gets the count of values on a specific dimension of the underlying HDF5 dataset of a given
@@ -5113,7 +5467,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The name of the referenced HDF5 dataset.
 		 */
-		virtual std::string pushBackRefToExistingFloatingPointDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "");
+		std::string pushBackRefToExistingFloatingPointDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "");
 
 		/**
 		 * Gets all the values of a particular patch of this instance which are supposed to be double
@@ -5788,7 +6142,7 @@ namespace RESQML2_NS
 		 * @param 	endMd  	The end MD of the trajectory. Uom is the same as the one for the associated
 		 * 					MdDatum coordinates.
 		 */
-		virtual void setMinimalGeometry(double startMd, double endMd) = 0;
+		void setMinimalGeometry(double startMd, double endMd);
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line without MD information
@@ -5825,7 +6179,7 @@ namespace RESQML2_NS
 		 * 										CRS of the data object repository will be arbitrarily
 		 * 										selected.
 		 */
-		virtual void setGeometry(double const* controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
+		void setGeometry(double const* controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD information.
@@ -5865,8 +6219,8 @@ namespace RESQML2_NS
 		 * 											Local CRS of the DataObject repository will be
 		 * 											arbitrarily selected.
 		 */
-		virtual void setGeometry(double const* controlPoints, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
+		void setGeometry(double const* controlPoints, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD and tangent
@@ -5914,7 +6268,7 @@ namespace RESQML2_NS
 		 * 											the DataObject repository will be arbitrarily
 		 * 											selected.
 		 */
-		virtual void setGeometry(double const* controlPoints,
+		void setGeometry(double const* controlPoints,
 			double const* tangentVectors, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
@@ -6050,7 +6404,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if there is some tangent vectors, false if not.
 		 */
-		virtual bool hasTangentVectors() const = 0;
+		bool hasTangentVectors() const;
 		
 		/**
 		 * Gets the tangent vectors associated to each trajectory station of this trajectory.
@@ -6062,7 +6416,7 @@ namespace RESQML2_NS
 		 * 								preallocated with size of <tt>3 * </tt>
 		 * 								getXyzPointCountOfAllPatches(). It won't be freed by FESAPI.
 		 */
-		virtual void getTangentVectors(double* tangentVectors) = 0;
+		void getTangentVectors(double* tangentVectors);
 
 		/**
 		 * Gets the inclination (angle against vertical) and the azimuths (clockwise angle against grid north)
@@ -6118,7 +6472,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if this trajectory has a geometry, false if not.
 		 */
-		virtual bool hasGeometry() const = 0;
+		bool hasGeometry() const;
 	};
 
 #ifdef SWIGPYTHON
@@ -6334,7 +6688,7 @@ namespace RESQML2_NS
 		BoundaryFeatureInterpretation* getBoundaryFeatureInterpretation() const;
 		void setBoundaryFeatureInterpretation(BoundaryFeatureInterpretation* interp);
 		WITSML2_0_NS::WellboreMarker* getWitsmlWellboreMarker() const;
-		virtual void setWitsmlWellboreMarker(WITSML2_0_NS::WellboreMarker * wellboreMarker) = 0;
+		void setWitsmlWellboreMarker(WITSML2_0_NS::WellboreMarker * wellboreMarker);
 		bool hasDipAngle() const;
 		double getDipAngleValue() const;
 		gsoap_eml2_1::eml21__PlaneAngleUom getDipAngleUom() const;

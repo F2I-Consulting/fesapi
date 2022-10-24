@@ -186,7 +186,7 @@ void TriangulatedSetRepresentation::getTriangleNodeIndicesOfPatch(uint64_t patch
 void TriangulatedSetRepresentation::getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const
 {
 	_resqml22__TriangulatedSetRepresentation* triRep = static_cast<_resqml22__TriangulatedSetRepresentation*>(gsoapProxy2_3);
-	for (uint64_t patchIndex = 0; patchIndex < triRep->TrianglePatch.size(); patchIndex++)
+	for (uint64_t patchIndex = 0; patchIndex < triRep->TrianglePatch.size(); ++patchIndex)
 	{
 		getTriangleNodeIndicesOfPatch(patchIndex, triangleNodeIndices);
 		triangleNodeIndices += getTriangleCountOfPatch(patchIndex) * 3;

@@ -583,10 +583,13 @@ uint64_t Grid2dRepresentation::getIndexOriginOnSupportingRepresentation() const
 	resqml20__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch->Geometry);
 
 	if (geom != nullptr) {
-		return geom->NodeIndicesOnSupportingRepresentation->StartValue;
+		if (geom->NodeIndicesOnSupportingRepresentation->StartValue < 0L) {
+			throw logic_error("The index origin on supporting representation is negative on grid 2d " + getUuid());
+		}
+		return static_cast<uint64_t>(geom->NodeIndicesOnSupportingRepresentation->StartValue);
 	}
 
-	throw logic_error("It does not exist supporting representation for this representation.");
+	throw logic_error("It does not exist supporting representation for the grid 2d representation " + getUuid());
 }
 
 uint64_t Grid2dRepresentation::getIndexOriginOnSupportingRepresentation(unsigned int dimension) const
@@ -604,7 +607,7 @@ uint64_t Grid2dRepresentation::getIndexOriginOnSupportingRepresentation(unsigned
 		throw invalid_argument("There cannot be more than 2 dimensions for a grid 2d representation.");
 	}
 
-	throw logic_error("It does not exist supporting representation for this representation.");
+	throw logic_error("It does not exist supporting representation for the grid 2d representation " + getUuid());
 }
 
 uint64_t Grid2dRepresentation::getNodeCountOnSupportingRepresentation(unsigned int dimension) const
@@ -620,7 +623,7 @@ uint64_t Grid2dRepresentation::getNodeCountOnSupportingRepresentation(unsigned i
 		}
 	}
 	
-	throw logic_error("It does not exist supporting representation for this representation.");
+	throw logic_error("It does not exist supporting representation for the grid 2d representation " + getUuid());
 }
 
 uint64_t Grid2dRepresentation::getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const
@@ -636,7 +639,7 @@ uint64_t Grid2dRepresentation::getIndexOffsetOnSupportingRepresentation(unsigned
 		}
 	}
 
-	throw logic_error("It does not exist supporting representation for this representation.");
+	throw logic_error("It does not exist supporting representation for the grid 2d representation " + getUuid());
 }
 
 gsoap_resqml2_0_1::resqml20__Point3dFromRepresentationLatticeArray* Grid2dRepresentation::getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(gsoap_resqml2_0_1::resqml20__PointGeometry* patch) const

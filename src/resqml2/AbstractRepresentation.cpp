@@ -27,6 +27,7 @@ under the License.
 
 #include "../eml2/AbstractHdfProxy.h"
 #include "../eml2/AbstractLocal3dCrs.h"
+#include "../eml2/TimeSeries.h"
 
 #include "AbstractFeatureInterpretation.h"
 #include "RepresentationSetRepresentation.h"
@@ -198,7 +199,7 @@ gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::createPointGeomet
 
 EML2_NS::AbstractLocal3dCrs* AbstractRepresentation::getLocalCrs(uint64_t patchIndex) const
 {
-	auto dor = getLocalCrsDor(patchIndex);
+	const auto dor = getLocalCrsDor(patchIndex);
 	return dor.isEmpty() ? nullptr : getRepository()->getDataObjectByUuid<EML2_NS::AbstractLocal3dCrs>(dor.getUuid());
 }
 
@@ -214,6 +215,87 @@ COMMON_NS::DataObjectReference AbstractRepresentation::getLocalCrsDor(uint64_t p
 		gsoap_eml2_3::resqml22__PointGeometry* pointGeom = getPointGeometry2_2(patchIndex);
 		if (pointGeom != nullptr) {
 			return COMMON_NS::DataObjectReference(pointGeom->LocalCrs);
+		}
+	}
+
+	return COMMON_NS::DataObjectReference();
+}
+
+void AbstractRepresentation::setTimeIndex(uint64_t timeIndex, EML2_NS::TimeSeries* timeSeries)
+{
+	const uint64_t patchCount = getPatchCount();
+
+	bool addRel = false;
+	for (uint64_t i = 0; i < patchCount; ++i) {
+		if (gsoapProxy2_0_1 != nullptr) {
+			gsoap_resqml2_0_1::resqml20__PointGeometry* pointGeom = getPointGeometry2_0_1(i);
+			if (pointGeom != nullptr) {
+				pointGeom->TimeIndex = gsoap_resqml2_0_1::soap_new_resqml20__TimeIndex(gsoapProxy2_0_1->soap);
+				pointGeom->TimeIndex->Index = timeIndex;
+				pointGeom->TimeIndex->TimeSeries = timeSeries->newResqmlReference();
+				addRel = true;
+			}
+		}
+		else if (gsoapProxy2_3 != nullptr) {
+			gsoap_eml2_3::resqml22__PointGeometry* pointGeom = getPointGeometry2_2(i);
+			if (pointGeom != nullptr) {
+				pointGeom->TimeIndex = gsoap_eml2_3::soap_new_eml23__TimeIndex(gsoapProxy2_3->soap);
+				pointGeom->TimeIndex->Index = timeIndex;
+				pointGeom->TimeIndex->TimeSeries = timeSeries->newEml23Reference();
+				addRel = true;
+			}
+		}
+	}
+
+	if (addRel) {
+		getRepository()->addRelationship(this, timeSeries);
+	}
+}
+
+uint64_t AbstractRepresentation::getTimeIndex() const
+{
+	const uint64_t patchCount = getPatchCount();
+
+	for (uint64_t i = 0; i < patchCount; ++i) {
+		if (gsoapProxy2_0_1 != nullptr) {
+			gsoap_resqml2_0_1::resqml20__PointGeometry const* pointGeom = getPointGeometry2_0_1(i);
+			if (pointGeom != nullptr && pointGeom->TimeIndex != nullptr) {
+				return pointGeom->TimeIndex->Index;
+			}
+		}
+		else if (gsoapProxy2_3 != nullptr) {
+			gsoap_eml2_3::resqml22__PointGeometry const* pointGeom = getPointGeometry2_2(i);
+			if (pointGeom != nullptr && pointGeom->TimeIndex != nullptr) {
+				return pointGeom->TimeIndex->Index;
+			}
+		}
+	}
+
+	throw std::logic_error("There is no time index associated to the representation " + getUuid());
+}
+
+EML2_NS::TimeSeries* AbstractRepresentation::getTimeSeries() const
+{
+	const auto dor = getTimeSeriesDor();
+	return dor.isEmpty() ? nullptr : getRepository()->getDataObjectByUuid<EML2_NS::TimeSeries>(dor.getUuid());
+}
+
+COMMON_NS::DataObjectReference AbstractRepresentation::getTimeSeriesDor() const
+{
+	const uint64_t patchCount = getPatchCount();
+
+	for (uint64_t i = 0; i < patchCount; ++i) {
+		if (gsoapProxy2_0_1 != nullptr) {
+			gsoap_resqml2_0_1::resqml20__PointGeometry const* pointGeom = getPointGeometry2_0_1(i);
+			if (pointGeom != nullptr && pointGeom->TimeIndex != nullptr) {
+				return COMMON_NS::DataObjectReference(pointGeom->TimeIndex->TimeSeries);
+			}
+		}
+		else if (gsoapProxy2_3 != nullptr) {
+			gsoap_eml2_3::resqml22__PointGeometry const* pointGeom = getPointGeometry2_2(i);
+			if (pointGeom != nullptr && pointGeom->TimeIndex != nullptr) {
+				return COMMON_NS::DataObjectReference(pointGeom->TimeIndex->TimeSeries);
+			}
 		}
 	}
 
@@ -316,7 +398,7 @@ uint64_t AbstractRepresentation::getXyzPointCountOfAllPatches() const
 void AbstractRepresentation::getXyzPointsOfPatchInGlobalCrs(uint64_t patchIndex, double* xyzPoints) const
 {
 	if (getLocalCrs(patchIndex)->isPartial()) {
-		throw invalid_argument("You cannot get the points in the global CRS if the lcoal CRS is partial");
+		throw invalid_argument("You cannot get the points in the global CRS if the local CRS is partial");
 	}
 
 	getXyzPointsOfPatch(patchIndex, xyzPoints);
@@ -328,7 +410,7 @@ void AbstractRepresentation::getXyzPointsOfAllPatches(double* xyzPoints) const
 {
 	const uint64_t patchCount = getPatchCount();
 	getXyzPointsOfPatch(0, xyzPoints);
-	for (uint64_t patchIndex = 1; patchIndex < patchCount; patchIndex++) {
+	for (uint64_t patchIndex = 1; patchIndex < patchCount; ++patchIndex) {
 		xyzPoints += getXyzPointCountOfPatch(patchIndex - 1) * 3;
 		getXyzPointsOfPatch(patchIndex, xyzPoints);
 	}
@@ -372,6 +454,13 @@ bool AbstractRepresentation::isInSingleGlobalCrs() const
 
 void AbstractRepresentation::getXyzPointsOfAllPatchesInGlobalCrs(double* xyzPoints) const
 {
+	const uint64_t patchCount = getPatchCount();
+	for (uint64_t patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
+		if (getLocalCrs(patchIndex)->isPartial()) {
+			throw invalid_argument("You cannot get the points in the global CRS because the local CRS of patch " + std::to_string(patchIndex) 
+				+ " of representation " + getUuid() + " is partial");
+		}
+	}
 	if (!isInSingleGlobalCrs()) {
 		throw invalid_argument("The representation is not inside a single global CRS.");
 	}
@@ -454,6 +543,11 @@ void AbstractRepresentation::loadTargetRelationships()
 	dor = getHdfProxyDor();
 	if (!dor.isEmpty()) {
 		convertDorIntoRel<EML2_NS::AbstractHdfProxy>(dor);
+	}
+
+	dor = getTimeSeriesDor();
+	if (!dor.isEmpty()) {
+		convertDorIntoRel<EML2_NS::TimeSeries>(dor);
 	}
 
 	// Seismic support

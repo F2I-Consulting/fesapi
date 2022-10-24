@@ -332,13 +332,13 @@ void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, 
 	// Copy in order not to modify the controlPoints pointer
 	if (reverseIAxis || reverseJAxis || reverseKAxis)
 	{
-		const unsigned int iCellCount = getICellCount();
-		const unsigned int jCellCount = getJCellCount();
-		const unsigned int kCellCount = getKCellCount();
-		const unsigned int iPillarCount = iCellCount + 1;
-		const unsigned int jPillarCount = jCellCount + 1;
+		const uint64_t iCellCount = getICellCount();
+		const uint64_t jCellCount = getJCellCount();
+		const uint64_t kCellCount = getKCellCount();
+		const uint64_t iPillarCount = iCellCount + 1;
+		const uint64_t jPillarCount = jCellCount + 1;
 		const uint64_t kNodeCount = kCellCount + 1 + getKGapsCount();
-		const unsigned int splitCoordinateLineCount = getSplitCoordinateLineCount();
+		const uint64_t splitCoordinateLineCount = getSplitCoordinateLineCount();
 		const uint64_t arrayCount = iPillarCount * jPillarCount * kNodeCount + splitCoordinateLineCount *kNodeCount;
 		std::unique_ptr<double[]> initialParameters(new double[arrayCount]);
 		for (size_t index = 0; index < arrayCount; ++index) {
@@ -346,11 +346,11 @@ void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, 
 		}
 
 		if (reverseIAxis) {
-			unsigned int nodeIndex = 0;
+			uint64_t nodeIndex = 0;
 			for (uint64_t k = 0; k < kNodeCount; ++k) {
-				for (unsigned int j = 0; j < jPillarCount; ++j) {
-					for (unsigned int i = 0; i < iPillarCount; ++i) {
-						parameters[nodeIndex] = initialParameters[iCellCount - i + j*iPillarCount + k*(jPillarCount*iPillarCount+ splitCoordinateLineCount)];
+				for (uint64_t j = 0; j < jPillarCount; ++j) {
+					for (uint64_t i = 0; i < iPillarCount; ++i) {
+						parameters[nodeIndex] = initialParameters[iCellCount - i + j*iPillarCount + k*(jPillarCount*iPillarCount + splitCoordinateLineCount)];
 						++nodeIndex;
 					}
 				}
@@ -359,11 +359,11 @@ void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, 
 		}
 
 		if (reverseJAxis) {
-			unsigned int nodeIndex = 0;
+			uint64_t nodeIndex = 0;
 			for (uint64_t k = 0; k < kNodeCount; ++k) {
-				for (unsigned int j = 0; j < jPillarCount; ++j) {
-					for (unsigned int i = 0; i < iPillarCount; ++i) {
-						parameters[nodeIndex] = initialParameters[i + (jCellCount -j)*iPillarCount + k*(jPillarCount*iPillarCount+ splitCoordinateLineCount)];
+				for (uint64_t j = 0; j < jPillarCount; ++j) {
+					for (uint64_t i = 0; i < iPillarCount; ++i) {
+						parameters[nodeIndex] = initialParameters[i + (jCellCount -j)*iPillarCount + k*(jPillarCount*iPillarCount + splitCoordinateLineCount)];
 						++nodeIndex;
 					}
 				}
@@ -372,11 +372,11 @@ void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, 
 		}
 
 		if (reverseKAxis) {
-			unsigned int nodeIndex = 0;
+			uint64_t nodeIndex = 0;
 			for (uint64_t k = 0; k < kNodeCount; ++k) {
-				for (unsigned int j = 0; j < jPillarCount; ++j) {
-					for (unsigned int i = 0; i < iPillarCount; ++i) {
-						parameters[nodeIndex] = initialParameters[i + j*iPillarCount + (kCellCount - k)*(jPillarCount*iPillarCount+ splitCoordinateLineCount)];
+				for (uint64_t j = 0; j < jPillarCount; ++j) {
+					for (uint64_t i = 0; i < iPillarCount; ++i) {
+						parameters[nodeIndex] = initialParameters[i + j*iPillarCount + (kCellCount - k)*(jPillarCount*iPillarCount + splitCoordinateLineCount)];
 						++nodeIndex;
 					}
 				}

@@ -88,7 +88,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackVolumeRegion(StratigraphicUnitInterpretation * stratiUnitInterp,
 			uint64_t externalShellFaceCount,
-			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide) = 0;
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide) = 0;
 
 		/**
 		 * Pushes back an internal shell in a particular volume region of this sealed volume framework.
@@ -115,7 +115,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackInternalShell(uint64_t regionIndex,
 			uint64_t internalShellFaceCount,
-			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide) = 0;
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide) = 0;
 
 		/** 
 		 * Gets the sealed structural framework this sealed volume framework is based on.

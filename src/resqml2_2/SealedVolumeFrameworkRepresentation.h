@@ -65,11 +65,11 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT void pushBackVolumeRegion(RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp,
 			uint64_t externalShellFaceCount,
-			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide) final;
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide) final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackInternalShell(uint64_t regionIndex,
 			uint64_t externalShellFaceCount,
-			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide) final;
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide) final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getRegionCount() const final;
 

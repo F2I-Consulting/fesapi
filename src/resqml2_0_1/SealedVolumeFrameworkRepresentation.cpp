@@ -86,7 +86,7 @@ void SealedVolumeFrameworkRepresentation::setXmlInterpretationOfVolumeRegion(uin
 
 gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::createVolumeShell(
 	uint64_t shellFaceCount,
-	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide)
+	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide)
 {
 	if (shellFaceCount == 0) {
 		throw invalid_argument("Cannot create a shell with has got a face count of zero.");
@@ -96,7 +96,7 @@ gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::c
 	externalShell->ShellUid = "dummy uid";
 
 	// Faces
-	for (unsigned int faceIdx = 0; faceIdx < shellFaceCount; ++faceIdx) {
+	for (uint64_t faceIdx = 0; faceIdx < shellFaceCount; ++faceIdx) {
 		resqml20__OrientedMacroFace* face = soap_new_resqml20__OrientedMacroFace(gsoapProxy2_0_1->soap);
 		face->RepresentationIndex = faceRepresentationIndices[faceIdx];
 		face->PatchIndexOfRepresentation = faceRepPatchIndices[faceIdx];
@@ -109,7 +109,7 @@ gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::c
 
 void SealedVolumeFrameworkRepresentation::pushBackVolumeRegion(RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp,
 	uint64_t externalShellFaceCount,
-	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide)
+	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide)
 {
 	// Region
 	resqml20__VolumeRegion* region = soap_new_resqml20__VolumeRegion(gsoapProxy2_0_1->soap);
@@ -124,7 +124,7 @@ void SealedVolumeFrameworkRepresentation::pushBackVolumeRegion(RESQML2_NS::Strat
 
 void SealedVolumeFrameworkRepresentation::pushBackInternalShell(uint64_t regionIndex,
 	uint64_t internalShellFaceCount,
-	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide)
+	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide)
 {
 	getRegion(regionIndex)->InternalShells.push_back(createVolumeShell(internalShellFaceCount,
 		faceRepresentationIndices, faceRepPatchIndices, faceSide));

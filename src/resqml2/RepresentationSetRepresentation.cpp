@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "RepresentationSetRepresentation.h"
 
+#include <stdexcept>
+
 using namespace std;
 using namespace RESQML2_NS;
 
@@ -62,7 +64,7 @@ bool RepresentationSetRepresentation::isHomogeneous() const
 
 uint64_t RepresentationSetRepresentation::getRepresentationCount() const
 {
-	size_t count = 0;
+	uint64_t count = 0;
 	if (gsoapProxy2_0_1 != nullptr) {
 		count = static_cast<gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->Representation.size();
 	}

@@ -111,7 +111,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values of the @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getValuesCountOfPatch(uint64_t patchIndex) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getValuesCountOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Gets the count of values on a specific dimension of the underlying HDF5 dataset of a given
