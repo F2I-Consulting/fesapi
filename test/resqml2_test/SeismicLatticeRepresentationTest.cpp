@@ -18,9 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/SeismicLatticeRepresentationTest.h"
 
-#include "resqml2/SeismicLatticeFeature.h"
 #include "resqml2/GenericFeatureInterpretation.h"
 #include "resqml2/Grid2dRepresentation.h"
+#include "resqml2/IjkGridLatticeRepresentation.h"
+#include "resqml2/SeismicLatticeFeature.h"
+
 #include "resqml2_test/LocalDepth3dCrsTest.h"
 
 using namespace std;

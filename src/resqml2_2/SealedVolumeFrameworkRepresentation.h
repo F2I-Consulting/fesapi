@@ -127,7 +127,7 @@ namespace RESQML2_2_NS
 		 */
 		gsoap_eml2_3::resqml22__VolumeShell* createVolumeShell(size_t regionIndex, size_t shellIndex,
 			uint64_t shellFaceCount,
-			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide);
+			unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide);
 
 		/**
 		 * Gets a region

@@ -909,10 +909,14 @@ namespace COMMON_NS
 			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray:
 			{
 				gsoap_eml2_3::eml23__IntegerLatticeArray const* latticeArray = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray const*>(arrayInput);
-				if (latticeArray->Offset.size() > 1) {
-					throw std::invalid_argument("The integer lattice array contains more than one offset.");
+				if (latticeArray->Offset.empty() || latticeArray->Offset.size() > 1) {
+					throw std::invalid_argument("The integer lattice array of UUID " + getUuid() + " contains zero or more than one offset.");
 				}
-				for (LONG64 i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
+				if (latticeArray->Offset[0]->Count < 0) {
+					throw std::invalid_argument("The count of the integer lattice array of UUID " + getUuid() + " is negative which is not valid.");
+				}
+
+				for (size_t i = 0; i <= static_cast<size_t>(latticeArray->Offset[0]->Count); ++i) {
 					arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
 				}
 				return (std::numeric_limits<T>::max)();

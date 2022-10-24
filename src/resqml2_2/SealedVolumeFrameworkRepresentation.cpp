@@ -82,7 +82,7 @@ void SealedVolumeFrameworkRepresentation::setXmlInterpretationOfVolumeRegion(uin
 
 gsoap_eml2_3::resqml22__VolumeShell* SealedVolumeFrameworkRepresentation::createVolumeShell(size_t regionIndex, size_t shellIndex,
 	uint64_t shellFaceCount,
-	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide)
+	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide)
 {
 	if (shellFaceCount == 0) {
 		throw invalid_argument("Cannot create a shell with has got a face count of zero.");
@@ -135,7 +135,7 @@ gsoap_eml2_3::resqml22__VolumeShell* SealedVolumeFrameworkRepresentation::create
 
 void SealedVolumeFrameworkRepresentation::pushBackVolumeRegion(RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp,
 	uint64_t externalShellFaceCount,
-	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, char const* faceSide)
+	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide)
 {
 	// Region
 	resqml22__VolumeRegion* region = soap_new_resqml22__VolumeRegion(gsoapProxy2_3->soap);
