@@ -51,7 +51,7 @@ target_compile_options(${CPP_LIBRARY_NAME}	PRIVATE
 	$<$<CXX_COMPILER_ID:CLANG>:-Weverything>
 )
 if (WITH_RESQML2_2)
-	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DWITH_RESQML2_2")
+	target_compile_definitions(${CPP_LIBRARY_NAME} PUBLIC "-DWITH_RESQML2_2")
 endif(WITH_RESQML2_2)
 
 if (WIN32)
@@ -64,7 +64,11 @@ target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_DEFINITIONS})
 target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE BOOST_ALL_NO_LIB)
 
 # Linker instructions
-target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${HDF5_LIBRARIES})
+if(WITH_LOCAL_HDF5)
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${HDF5_LIBRARIES})
+else()
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE hdf5::hdf5)
+endif()
 if (WIN32)
 	if (EXISTS ${MINIZIP_LIBRARY_DEBUG} AND EXISTS ${HDF5_hdf5_LIBRARY_DEBUG})
 		set(CMAKE_CONFIGURATION_TYPES "Release;MinSizeRel;RelWithDebInfo;Debug" CACHE STRING "" FORCE)
@@ -129,6 +133,10 @@ ELSEIF (UNIX)
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${SZIP_LIBRARY_RELEASE})
 	endif ()
 
+	# In case of static link to hdf5 libraries, then we need to also link to some other libraries
+	if(${HDF5_USE_STATIC_LIBRARIES})
+		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE dl)
+	endif ()
 	set_target_properties(${CPP_LIBRARY_NAME} PROPERTIES
 		VERSION ${Fesapi_VERSION}
 		SOVERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
